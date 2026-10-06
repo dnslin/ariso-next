@@ -1,9 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import type { LibraryItem } from '../../../src/server/library/types';
-import {
-  layoutGallery,
-  visibleGalleryIndexes,
-} from '../../../src/app/library/gallery-layout';
+import { layoutGallery } from '../../../src/app/library/gallery-layout';
+import { visibleGalleryIndexes } from '../../../src/components/gallery/layout';
 import { intersectingGalleryIds } from '../../../src/app/library/gallery-drag-selection';
 
 const image: LibraryItem = {

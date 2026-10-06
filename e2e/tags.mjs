@@ -154,8 +154,46 @@ async function layouts(state, widths = [390, 1440]) {
             );
           });
         }
+        // Gallery ResizeObserver measurement follows the viewport change. Wait
+        // for actual cards to fit and stay still, without duplicating its layout.
+        await page.waitForFunction(async () => {
+          let previous;
+          for (let frame = 0; frame < 2; frame++) {
+            await new Promise(requestAnimationFrame);
+            const gallery = document.querySelector(
+              '[data-testid="library-gallery"]',
+            );
+            if (!gallery) return true;
+            const bounds = gallery.getBoundingClientRect();
+            const cards = [
+              ...gallery.querySelectorAll('[data-testid="library-card"]'),
+            ].map((node) => node.getBoundingClientRect().toJSON());
+            if (
+              cards.some(
+                (rect) =>
+                  !rect.width ||
+                  rect.left < bounds.left ||
+                  rect.right > bounds.right,
+              )
+            )
+              return false;
+            const signature = JSON.stringify({
+              columns: gallery.dataset.columns,
+              bounds: bounds.toJSON(),
+              cards,
+            });
+            if (previous && signature !== previous) return false;
+            previous = signature;
+          }
+          return true;
+        });
         const geometry = await readGeometry(page);
-        assertGeometry(geometry, `${state}/${theme}/${width}`);
+        try {
+          assertGeometry(geometry, `${state}/${theme}/${width}`);
+        } catch (error) {
+          report.geometryFailure = { state, theme, width, immediate: geometry };
+          throw error;
+        }
         geometry.tags = await tagStyles(page, theme, width);
         geometry.toast = await verifyToastTextLayout(page);
         geometry.toastTargets = await page.evaluate(() =>

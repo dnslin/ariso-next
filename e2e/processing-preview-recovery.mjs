@@ -107,12 +107,62 @@ export async function verifyProcessingPreviewRecovery(
       1,
       'An addressable POST failure offers exactly one status refresh',
     );
+    const refreshGeometry = () =>
+      page.evaluate(() => {
+        const button = document.querySelector(
+          '[data-testid="processing-preview-refresh"]',
+        );
+        const main = document.querySelector('.shell-content');
+        const footer = document.querySelector('.shell-footer');
+        const rect = (node) => {
+          if (!node) return null;
+          const { top, bottom, left, right, width, height } =
+            node.getBoundingClientRect();
+          return { top, bottom, left, right, width, height };
+        };
+        const box = button?.getBoundingClientRect();
+        return {
+          at: Date.now(),
+          viewport: { width: innerWidth, height: innerHeight },
+          button: rect(button),
+          disabled: button?.disabled,
+          main: rect(main),
+          scrollTop: main?.scrollTop,
+          footer: rect(footer),
+          hits: box
+            ? document
+                .elementsFromPoint(
+                  box.x + box.width / 2,
+                  box.y + box.height / 2,
+                )
+                .slice(0, 4)
+                .map((node) => ({
+                  tag: node.tagName,
+                  slot: node.getAttribute('data-slot'),
+                  testId: node.getAttribute('data-testid'),
+                  className: node.getAttribute('class'),
+                }))
+            : [],
+        };
+      });
+    report.previewReceiveRefresh = { before: await refreshGeometry() };
     const readsBefore = (await browser()).requests.filter(
       (row) =>
         row.method === 'GET' &&
         row.path === `/api/media/previews/${receivedFailure.id}`,
     ).length;
-    await page.click(testId('preview-refresh'));
+    try {
+      await page.click(testId('preview-refresh'));
+    } catch (error) {
+      report.previewReceiveRefresh.failure = await refreshGeometry();
+      await page.screenshot({
+        path: join(
+          config.output,
+          'processing-preview-receive-refresh-failure.png',
+        ),
+      });
+      throw error;
+    }
     await page.waitForFunction(
       ({ id, readsBefore }) =>
         window.__processingBrowser.requests.filter(

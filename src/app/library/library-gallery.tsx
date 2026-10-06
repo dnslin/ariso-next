@@ -1,12 +1,13 @@
 'use client';
 
-import { useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import type { LibraryItem } from '../../server/library/types';
+import { layoutGallery } from './gallery-layout';
 import {
-  layoutGallery,
   visibleGalleryIndexes,
   type GalleryLayout,
-} from './gallery-layout';
+} from '../../components/gallery/layout';
+import { useGalleryViewport } from '../../components/gallery/use-gallery-viewport';
 import { LibraryCard } from './library-card';
 import { GalleryDragSelection } from './gallery-drag-selection';
 import type { LibrarySelection } from './use-library-selection';
@@ -31,45 +32,8 @@ export function LibraryGallery({
 }) {
   const container = useRef<HTMLDivElement>(null);
   const dragged = useRef(false);
-  const [viewport, setViewport] = useState({
-    width: 0,
-    windowWidth: 0,
-    top: 0,
-    height: 0,
-  });
+  const viewport = useGalleryViewport(container, 'main');
   const [focusedId, setFocusedId] = useState<string | null>(null);
-  useLayoutEffect(() => {
-    const element = container.current!;
-    const scroller = element.closest('main')!;
-    let frame = 0;
-    function measure() {
-      const rect = element.getBoundingClientRect();
-      if (!rect.width) return;
-      const scrollRect = scroller.getBoundingClientRect();
-      setViewport({
-        width: rect.width,
-        windowWidth: window.innerWidth,
-        top: scrollRect.top - rect.top,
-        height: scroller.clientHeight,
-      });
-    }
-    function schedule() {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(measure);
-    }
-    const observer = new ResizeObserver(schedule);
-    observer.observe(element);
-    observer.observe(scroller);
-    scroller.addEventListener('scroll', schedule, { passive: true });
-    window.addEventListener('resize', schedule);
-    measure();
-    return () => {
-      cancelAnimationFrame(frame);
-      observer.disconnect();
-      scroller.removeEventListener('scroll', schedule);
-      window.removeEventListener('resize', schedule);
-    };
-  }, []);
   const positions = useMemo(
     () =>
       layoutGallery(items, layout, viewport.width, viewport.windowWidth, album),

@@ -1,0 +1,352 @@
+{
+  "environment": {
+    "node": "24.18.1",
+    "pnpm": "11.19.0",
+    "worktree": "/Users/dnslin/.codex/worktrees/issue-192-sharing/ariso",
+    "browser": "Ego Lite; TaskSpace37/p1"
+  },
+  "checks": [
+    {
+      "command": "pnpm install --frozen-lockfile",
+      "exitCode": 0,
+      "log": "regression-install.log"
+    },
+    {
+      "command": "pnpm exec vitest run --project unit tests/unit/runtime/browser-plan.test.ts tests/unit/runtime/browser-runner.test.ts",
+      "phase": "red",
+      "exitCode": 1,
+      "passed": 175,
+      "failed": 9,
+      "log": "regression-plan-red.log"
+    },
+    {
+      "command": "pnpm exec vitest run --project unit tests/unit/runtime/browser-plan.test.ts tests/unit/runtime/browser-runner.test.ts",
+      "phase": "green",
+      "exitCode": 0,
+      "tests": 185,
+      "files": 2,
+      "log": "regression-plan-green.log"
+    },
+    {
+      "command": "pnpm exec vitest run --project unit tests/unit/storage/storage-alert.test.ts",
+      "phase": "red",
+      "exitCode": 1,
+      "failed": 2,
+      "log": "regression-storage-alert-red.log"
+    },
+    {
+      "command": "pnpm exec vitest run --project unit tests/unit/storage/storage-alert.test.ts",
+      "phase": "green",
+      "exitCode": 0,
+      "tests": 2,
+      "log": "regression-storage-alert-green.log"
+    },
+    {
+      "command": "pnpm run build",
+      "exitCode": 0,
+      "log": "regression-build.log",
+      "limitations": "Existing optional cross-platform/tracing dependency warnings retained."
+    },
+    {
+      "command": "pnpm run test:unit",
+      "exitCode": 0,
+      "files": 107,
+      "tests": 1459,
+      "log": "regression-unit.log"
+    },
+    {
+      "command": "pnpm run typecheck",
+      "exitCode": 0,
+      "log": "regression-typecheck.log"
+    },
+    {
+      "command": "pnpm run lint",
+      "exitCode": 0,
+      "log": "regression-lint.log",
+      "inputBoundary": "Before subsequent viewer/trash/sharing and evidence additions; affected source files received scoped lint."
+    },
+    {
+      "command": "pnpm run test:integration --maxWorkers=4",
+      "exitCode": 1,
+      "filesPassed": 149,
+      "filesFailed": 3,
+      "testsPassed": 1482,
+      "testsFailed": 3,
+      "durationSeconds": 312.08,
+      "log": "regression-integration.log",
+      "failedFiles": [
+        "tests/integration/analytics/count.test.ts",
+        "tests/integration/runtime/secret-preflight.test.ts",
+        "tests/integration/media/watermark-http.test.ts"
+      ]
+    },
+    {
+      "command": "pnpm exec vitest run --project integration --project media-tools tests/integration/runtime/secret-preflight.test.ts tests/integration/analytics/count.test.ts tests/integration/media/watermark-http.test.ts --maxWorkers=1",
+      "exitCode": 0,
+      "files": 3,
+      "tests": 25,
+      "durationSeconds": 39.93,
+      "log": "regression-integration-failures.log"
+    },
+    {
+      "command": "pnpm run test:integration --maxWorkers=1",
+      "exitCode": 1,
+      "filesPassed": 151,
+      "filesFailed": 1,
+      "testsPassed": 1484,
+      "testsFailed": 1,
+      "durationSeconds": 813.81,
+      "log": "regression-integration-final.log",
+      "failure": {
+        "file": "tests/integration/media/trash-http.test.ts",
+        "stage": "beforeEach fixture transaction",
+        "error": "SqliteError: database is locked",
+        "location": "acceptOriginal first INSERT; trash-http.test.ts:124-125",
+        "test": "returns 202 acceptance and durable status across restart, then retains a deleted terminal result"
+      }
+    },
+    {
+      "command": "pnpm run test:browser",
+      "exitCode": 1,
+      "stagesPassed": 48,
+      "stagesFailed": 3,
+      "stagesBlocked": 0,
+      "log": "regression-full.log",
+      "report": "default-run-results.json"
+    },
+    {
+      "command": "pnpm exec vitest run --project integration tests/integration/media/trash-http.test.ts --maxWorkers=1",
+      "exitCode": 0,
+      "files": 1,
+      "tests": 5,
+      "durationSeconds": 9.46,
+      "log": "regression-trash-http-green.log",
+      "inputBoundary": "Only the failing fixture transaction changed; all five business tests and assertions retained."
+    },
+    {
+      "command": "pnpm install --frozen-lockfile",
+      "exitCode": 0,
+      "phase": "after-main-integration",
+      "log": "regression-merge-install.log"
+    },
+    {
+      "command": "pnpm run build",
+      "exitCode": 0,
+      "phase": "after-main-integration",
+      "log": "regression-merge-build.log",
+      "limitations": "Standalone tracing still emits cross-platform, development-file and optional dependency resolution warnings; runtime validation recorded separately."
+    },
+    {
+      "command": "pnpm run typecheck",
+      "exitCode": 0,
+      "phase": "after-main-integration",
+      "log": "regression-merge-typecheck.log"
+    },
+    {
+      "command": "pnpm run test:unit",
+      "exitCode": 0,
+      "phase": "after-main-integration",
+      "files": 111,
+      "tests": 1531,
+      "durationSeconds": 61.69,
+      "log": "regression-merge-unit.log"
+    },
+    {
+      "command": "pnpm exec vitest run --project integration --project media-tools tests/integration/identity tests/integration/sharing tests/integration/analytics/count.test.ts tests/integration/media/defaults.test.ts tests/integration/media/reprocess-http.test.ts tests/integration/media/svg.test.ts tests/integration/media/trash-http.test.ts tests/integration/runtime/health.test.ts tests/integration/runtime/secret-preflight.test.ts --maxWorkers=2",
+      "phase": "after-main-integration",
+      "exitCode": 0,
+      "files": 29,
+      "tests": 283,
+      "durationSeconds": 162.04,
+      "log": "regression-merge-integration.log",
+      "selection": "Shared authentication and sharing consumers, modified SVG/media settings/HTTP fixtures, prior affected analytics/runtime/trash lifecycle."
+    },
+    {
+      "command": "pnpm run lint",
+      "exitCode": 0,
+      "phase": "after-main-integration and final source freeze",
+      "log": "regression-final-lint.log"
+    },
+    {
+      "command": "node test-results/sharing-192/regression-preview-continuity.mjs",
+      "exitCode": 0,
+      "phase": "latest immutable manual preview",
+      "report": "code-review.md (historical preview continuity record)",
+      "sourceCommit": "97f8807c"
+    },
+    {
+      "command": "ego-browser nodejs < test-results/sharing-192/regression-preview-browser.mjs",
+      "exitCode": 0,
+      "phase": "latest immutable manual preview",
+      "report": "preview-browser.json",
+      "sourceCommit": "97f8807c"
+    },
+    {
+      "command": "pnpm run build",
+      "phase": "after main 5d72f178 integration",
+      "sourceCommit": "8ffe5329",
+      "exitCode": 0,
+      "log": "regression-sharing-merge-build.log",
+      "limitations": "Existing standalone tracing and optional/cross-platform dependency warnings retained."
+    },
+    {
+      "command": "pnpm run typecheck",
+      "phase": "after main 5d72f178 integration",
+      "sourceCommit": "8ffe5329",
+      "exitCode": 0,
+      "log": "regression-sharing-merge-typecheck.log"
+    },
+    {
+      "command": "pnpm exec vitest run --project unit tests/unit/runtime/browser-plan.test.ts tests/unit/runtime/browser-runner.test.ts tests/unit/identity/return-to.test.ts tests/unit/sharing/management-model.test.ts",
+      "phase": "after main 5d72f178 integration",
+      "sourceCommit": "8ffe5329",
+      "exitCode": 0,
+      "files": 4,
+      "tests": 260,
+      "durationSeconds": 57.24,
+      "log": "regression-sharing-merge-unit.log"
+    },
+    {
+      "command": "pnpm run lint",
+      "phase": "after main 5d72f178 integration",
+      "sourceCommit": "8ffe5329",
+      "exitCode": 0,
+      "log": "regression-sharing-merge-lint.log"
+    },
+    {
+      "command": "node test-results/sharing-192/regression-preview-continuity.mjs",
+      "phase": "manual preview updated after main 5d72f178",
+      "sourceCommit": "8ffe5329",
+      "exitCode": 0,
+      "report": "preview-continuity.json"
+    },
+    {
+      "command": "pnpm exec vitest run --project integration --project media-tools tests/integration/sharing tests/integration/collections/album-management.test.ts tests/integration/collections/cover.test.ts tests/integration/collections/cover-presentation.test.ts tests/integration/delivery/cover-thumbnails.test.ts --maxWorkers=2",
+      "phase": "after main 5d72f178 integration",
+      "sourceCommit": "8ffe5329",
+      "exitCode": 0,
+      "files": 12,
+      "tests": 90,
+      "durationSeconds": 14.33,
+      "log": "regression-sharing-merge-integration.log",
+      "selection": "Changed owner album summaries and thumbnail helper plus all sharing integration including anonymous public contract."
+    },
+    {
+      "command": "node docs/tasks/check.mjs",
+      "phase": "final evidence and latest main",
+      "exitCode": 0,
+      "tasks": 120,
+      "requirements": 298,
+      "log": "regression-final-docs.log"
+    },
+    {
+      "command": "git diff --check",
+      "phase": "final source and evidence",
+      "exitCode": 0
+    },
+    {
+      "command": "Node credential scan of public sharing-192 evidence and task diff against origin/main",
+      "phase": "final evidence",
+      "exitCode": 0,
+      "credentialMatches": 0,
+      "limitations": "Only match counts and paths printed; credential values stayed in ignored private preview config."
+    },
+    {
+      "command": "pnpm run format:check",
+      "phase": "final project after formatting newly archived evidence",
+      "exitCode": 0,
+      "log": "regression-final-format.log",
+      "inputBoundary": "Subsequent result-only JSON updates receive scoped format check."
+    }
+  ],
+  "logs": "Raw logs retained in ignored test-results/sharing-192; public summaries exclude credentials and clipboard contents.",
+  "completion": "Code and independent incremental reviews complete. Original ten failing scenes have passing evidence; unreproduced historical causes remain unknown. Historical complete integration/browser commands retain exit 1; affected complete suites/files passed. Main 03db847c combination passed full unit/build/types/lint and affected integration/browser. Latest main 5d72f178 merged as 8ffe5329: build/types/lint and 4 files / 260 affected unit passed; 12 files / 90 affected integration passed. Browser hard stopped after task space ended; latest sharing-public/management and new Token browser stages unverified. Screen-reader behavior remains unverified. User confirmed manual UI on 2026-10-06; latest automated browser checks stay paused. Draft PR. Subsequent full-PR review at 397627bc requested changes: one P2 fixture race and three P2 structural categories remain unresolved; historical incremental review approval is not the latest verdict.",
+  "merge": {
+    "previousBase": "ffecff2ea55d65ad4af8cc2877f20f06b54e62c1",
+    "newMain": "03db847c",
+    "mergeCommit": "97f8807c5e1ed38f0c62f1ea23f97ca75b8a1f9f",
+    "concurrentWork": ["#249 GitHub binding", "#250 upload Tokens"],
+    "resolvedFiles": [
+      "docs/design/handoff.md",
+      "tests/unit/runtime/browser-plan.test.ts",
+      "tests/unit/runtime/browser-runner.test.ts"
+    ],
+    "review": "Both approved design sections and all targeted/default scene boundaries preserved; independent incremental review accepted."
+  },
+  "additionalMerge": {
+    "previousCommit": "97f8807c5e1ed38f0c62f1ea23f97ca75b8a1f9f",
+    "newMain": "5d72f178821fb8916e77b59abc8c5e255dbfcb43",
+    "mergeCommit": "8ffe5329347b199f25130439aaedf2a7c19aa987",
+    "concurrentWork": "#252 / #191 sharing management",
+    "resolvedFiles": [
+      "docs/design/handoff.md",
+      "e2e/library-viewer-fixtures.mjs",
+      "scripts/browser-plan.mjs",
+      "scripts/verify-browser.mjs",
+      "tests/unit/runtime/browser-plan.test.ts",
+      "tests/unit/runtime/browser-runner.test.ts"
+    ],
+    "review": "Independent incremental review accepted both module parameters, all default stages, design approvals and anonymous/owner DTO boundaries; viewer fixture remained byte-identical to 97f."
+  },
+  "browserBoundary": {
+    "status": "paused",
+    "report": "browser-stop.json",
+    "spaceId": 37,
+    "latestNativeEvidenceSource": "97f8807c",
+    "pending": [
+      "sharing-public full after main 5d72f178",
+      "sharing-management behavior after main 5d72f178",
+      "new main Token full browser stage"
+    ],
+    "resume": "Await explicit user continuation, then claimTaskSpace(37); no retry or alternate space."
+  },
+  "manualUIAcceptance": {
+    "date": "2026-10-06",
+    "source": "Direct user feedback in this conversation",
+    "statement": "我手动验证的UI没什么问题",
+    "status": "accepted by user",
+    "boundary": "Manual UI feedback does not replace the paused latest automated browser checks or screen-reader testing."
+  },
+  "fullPRReview": {
+    "date": "2026-10-06",
+    "head": "397627bcf5943e4d78a096ca8cdfca85857d8da2",
+    "base": "5d72f178821fb8916e77b59abc8c5e255dbfcb43",
+    "quality": {
+      "agent": "pr251_quality_review",
+      "skill": "code-review-and-quality",
+      "verdict": "request changes",
+      "requiredP2": 1,
+      "report": "../pr-review-2026-10-06/quality.md"
+    },
+    "structure": {
+      "agent": "pr251_structure_review",
+      "skill": "thermo-nuclear-code-quality-review",
+      "verdict": "request changes",
+      "requiredP2Categories": 3,
+      "optionalP3": 2,
+      "report": "../pr-review-2026-10-06/structure.md"
+    },
+    "requiredFixes": "unresolved",
+    "sourceAndTestsChanged": false,
+    "browserResumed": false,
+    "newProductTests": false,
+    "evidenceChecks": {
+      "format": {
+        "scope": "README, check-results and both new review reports",
+        "exitCode": 0,
+        "log": "pr251-review-format-check.log"
+      },
+      "documents": {
+        "command": "node docs/tasks/check.mjs",
+        "exitCode": 0,
+        "tasks": 120,
+        "requirements": 298,
+        "log": "pr251-review-docs-check.log"
+      },
+      "diff": {
+        "command": "git diff --check",
+        "exitCode": 0
+      }
+    }
+  }
+}

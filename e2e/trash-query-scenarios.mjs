@@ -46,18 +46,43 @@ export async function verifyQueryLayouts(
     }
 }
 export async function verifyRepresentativeQuery(context) {
-  const { sql, page, config, loaded } = context;
+  const { sql, page, config, loaded, report } = context;
+  // Leave lazy trash previews before restoring their fixture records.
+  await page.goto('about:blank');
+  report.fixtureTransitions.push({
+    scenario: 'representative-query',
+    event: 'restore-started-after-leaving-page',
+    at: Date.now(),
+  });
   await sql(
     "UPDATE media_images SET trashed_at=NULL WHERE id LIKE 'issue177-%' AND id > 'issue177-007'",
   );
+  report.fixtureTransitions.push({
+    scenario: 'representative-query',
+    event: 'restore-completed',
+    at: Date.now(),
+  });
   await page.goto(`${config.origin}/trash?pageSize=40&page=1`);
   await loaded(8);
   await verifyQueryLayouts(context, [1440, 390], 8);
 }
 export async function verifyEmptyInvalidQuery(context) {
-  await context.sql(
+  const { page, sql, report } = context;
+  // Restoring fixtures must not invalidate previews still used by this page.
+  await page.goto('about:blank');
+  report.fixtureTransitions.push({
+    scenario: 'empty-invalid-query',
+    event: 'restore-started-after-leaving-page',
+    at: Date.now(),
+  });
+  await sql(
     "UPDATE media_images SET trashed_at=NULL WHERE id LIKE 'issue177-%'",
   );
+  report.fixtureTransitions.push({
+    scenario: 'empty-invalid-query',
+    event: 'restore-completed',
+    at: Date.now(),
+  });
   await verifyInvalidQuery(context, 0);
 }
 export async function verifyDefaultInvalidQuery(context) {

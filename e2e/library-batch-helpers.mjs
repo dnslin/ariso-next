@@ -643,93 +643,134 @@ export function createBatchHelpers({ page, config, report }) {
     return { title, description, sourceUrl };
   }
   async function toastLayouts(state, expected, widths = [390, 1440]) {
-    for (const theme of ['light', 'dark']) {
-      await setTheme(theme);
-      for (const width of widths) {
-        await resize(width);
-        await page.hover('[data-slot="toast"][data-frontmost="true"]');
-        const toast = await verifyToastTextLayout(page);
-        assert.ok(
-          toast,
-          'The real success Toast remains visible during the viewport comparison',
-        );
-        assert.equal(toast.title, expected.title);
-        const rendered = await page.evaluate(() => {
-          const toast = document.querySelector(
-            '[data-slot="toast"][data-frontmost="true"]',
-          );
-          const node = toast.querySelector('[data-slot="toast-description"]');
-          const rect = toast.getBoundingClientRect();
-          const close = toast
-            .querySelector('[data-slot="toast-close"]')
-            .getBoundingClientRect();
-          const fragments = [];
-          const walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT);
-          let text;
-          while ((text = walker.nextNode())) {
-            const range = document.createRange();
-            range.selectNodeContents(text);
-            for (const fragment of range.getClientRects())
-              if (fragment.width && fragment.height)
-                fragments.push(fragment.toJSON());
-          }
-          return {
-            description: node.textContent,
-            rect: rect.toJSON(),
-            close: close.toJSON(),
-            fragments,
-            workspace: !!document.querySelector(
-              '[data-testid="library-batch"]',
-            ),
-            documentWidth: document.documentElement.scrollWidth,
-            width: innerWidth,
-          };
-        });
-        assert.equal(rendered.description, expected.description);
-        assert.equal(rendered.workspace, false);
-        assert.ok(rendered.documentWidth <= width);
-        assert.ok(rendered.rect.left >= 0 && rendered.rect.right <= width);
-        assert.ok(rendered.close.width >= 44 && rendered.close.height >= 44);
-        assert.ok(rendered.fragments.length > 0);
-        for (const rect of rendered.fragments) {
+    await page.evaluate(() => {
+      window.__batchToastSourceFocus = document.activeElement;
+    });
+    try {
+      // Resizing moves a hovered Toast away from the pointer. Real focus keeps
+      // HeroUI's normal interaction pause active across viewport changes.
+      await page.focus(
+        '[data-slot="toast"][data-frontmost="true"] [data-slot="toast-close"]',
+      );
+      for (const theme of ['light', 'dark']) {
+        await setTheme(theme);
+        for (const width of widths) {
+          await resize(width);
+          await page.hover('[data-slot="toast"][data-frontmost="true"]');
+          const toast = await verifyToastTextLayout(page);
           assert.ok(
-            rect.left >= rendered.rect.left - 1 &&
-              rect.right <= rendered.rect.right + 1 &&
-              rect.top >= rendered.rect.top - 1 &&
-              rect.bottom <= rendered.rect.bottom + 1,
-            'Every actual Toast description line fits its surface',
+            toast,
+            'The real success Toast remains visible during the viewport comparison',
           );
+          assert.equal(toast.title, expected.title);
+          const rendered = await page.evaluate(() => {
+            const toast = document.querySelector(
+              '[data-slot="toast"][data-frontmost="true"]',
+            );
+            const node = toast.querySelector('[data-slot="toast-description"]');
+            const rect = toast.getBoundingClientRect();
+            const close = toast
+              .querySelector('[data-slot="toast-close"]')
+              .getBoundingClientRect();
+            const fragments = [];
+            const walker = document.createTreeWalker(
+              node,
+              NodeFilter.SHOW_TEXT,
+            );
+            let text;
+            while ((text = walker.nextNode())) {
+              const range = document.createRange();
+              range.selectNodeContents(text);
+              for (const fragment of range.getClientRects())
+                if (fragment.width && fragment.height)
+                  fragments.push(fragment.toJSON());
+            }
+            return {
+              closeFocused:
+                document.activeElement ===
+                toast.querySelector('[data-slot="toast-close"]'),
+              description: node.textContent,
+              rect: rect.toJSON(),
+              close: close.toJSON(),
+              fragments,
+              workspace: !!document.querySelector(
+                '[data-testid="library-batch"]',
+              ),
+              documentWidth: document.documentElement.scrollWidth,
+              width: innerWidth,
+            };
+          });
+          assert.equal(rendered.description, expected.description);
           assert.equal(
-            rect.left < rendered.close.right &&
-              rect.right > rendered.close.left &&
-              rect.top < rendered.close.bottom &&
-              rect.bottom > rendered.close.top,
-            false,
-            'The close target does not cover the actual changed/unchanged text',
+            rendered.closeFocused,
+            true,
+            'Real Toast focus remains active across the viewport comparison',
           );
+          assert.equal(rendered.workspace, false);
+          assert.ok(rendered.documentWidth <= width);
+          assert.ok(rendered.rect.left >= 0 && rendered.rect.right <= width);
+          assert.ok(rendered.close.width >= 44 && rendered.close.height >= 44);
+          assert.ok(rendered.fragments.length > 0);
+          for (const rect of rendered.fragments) {
+            assert.ok(
+              rect.left >= rendered.rect.left - 1 &&
+                rect.right <= rendered.rect.right + 1 &&
+                rect.top >= rendered.rect.top - 1 &&
+                rect.bottom <= rendered.rect.bottom + 1,
+              'Every actual Toast description line fits its surface',
+            );
+            assert.equal(
+              rect.left < rendered.close.right &&
+                rect.right > rendered.close.left &&
+                rect.top < rendered.close.bottom &&
+                rect.bottom > rendered.close.top,
+              false,
+              'The close target does not cover the actual changed/unchanged text',
+            );
+          }
+          report.layouts.push({
+            state,
+            theme,
+            width,
+            toast,
+            description: rendered,
+          });
+          await shot(state, width, theme);
         }
-        report.layouts.push({
-          state,
-          theme,
-          width,
-          toast,
-          description: rendered,
-        });
-        await shot(state, width, theme);
       }
+      await page.focus(
+        '[data-slot="toast"][data-frontmost="true"] [data-slot="toast-close"]',
+      );
+      await page.keyboard.press('Enter');
+      await page.waitForFunction(
+        (title) =>
+          ![...document.querySelectorAll('[data-slot="toast-title"]')].some(
+            (node) => node.textContent === title,
+          ),
+        expected.title,
+      );
+      await resize(1440);
+    } catch (error) {
+      report.toastFailure = await page.evaluate(() => {
+        const toast = document.querySelector(
+          '[data-slot="toast"][data-frontmost="true"]',
+        );
+        return {
+          width: innerWidth,
+          height: innerHeight,
+          toast: toast?.getBoundingClientRect().toJSON(),
+          title: toast?.querySelector('[data-slot="toast-title"]')?.textContent,
+          focused: !!toast?.contains(document.activeElement),
+        };
+      });
+      throw error;
+    } finally {
+      await page.evaluate(() => {
+        const source = window.__batchToastSourceFocus;
+        if (source?.isConnected) source.focus({ preventScroll: true });
+        delete window.__batchToastSourceFocus;
+      });
     }
-    await page.focus(
-      '[data-slot="toast"][data-frontmost="true"] [data-slot="toast-close"]',
-    );
-    await page.keyboard.press('Enter');
-    await page.waitForFunction(
-      (title) =>
-        ![...document.querySelectorAll('[data-slot="toast-title"]')].some(
-          (node) => node.textContent === title,
-        ),
-      expected.title,
-    );
-    await resize(1440);
   }
 
   return {

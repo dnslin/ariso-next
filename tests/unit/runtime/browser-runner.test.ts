@@ -78,8 +78,15 @@ describe('browser runner argument boundaries', () => {
     ['library-batch', 'lifecycle'],
     ['library-batch', 'cache'],
     ['library-batch', 'review-fixes'],
+    ['library-batch', 'recovery'],
     ['sharing-experiment'],
     ['sharing-protocol'],
+    ['sharing-public'],
+    ['sharing-public', 'representative'],
+    ['sharing-public', 'behavior'],
+    ['sharing-public', 'race'],
+    ['sharing-public', 'recovery'],
+
     ['sharing-management'],
     ['sharing-management', 'representative'],
     ['sharing-management', 'behavior'],
@@ -87,6 +94,7 @@ describe('browser runner argument boundaries', () => {
     ['shell-navigation'],
     ['library'],
     ['library', 'recovery'],
+    ['library-feedback'],
     ['albums'],
     ['album-cover'],
     ['tags'],
@@ -141,6 +149,7 @@ describe('browser runner argument boundaries', () => {
     'album-cover',
     'tags',
     'upload-input',
+    'library-feedback',
   ])(
     'rejects non-primary page labels in suite %s before runtime startup',
     (suite) => {
@@ -173,11 +182,13 @@ describe('browser runner argument boundaries', () => {
           'sharing-management',
         ].includes(suite),
     ),
-  )('rejects library recovery in suite %s', (suite) => {
+  )('handles recovery according to suite %s ownership', (suite) => {
     const result = parse(['--suite', suite, '--only', 'recovery']);
     expect(result.status).not.toBe(0);
     expect(result.stderr).toContain(
-      '--only requires an applicable targeted suite',
+      ['sharing-public', 'library-batch'].includes(suite)
+        ? 'Invalid EGO_PAGE_LABEL'
+        : '--only requires an applicable targeted suite',
     );
   });
 
@@ -210,6 +221,17 @@ describe('browser runner argument boundaries', () => {
     expect(result.status).not.toBe(0);
     expect(result.stderr).toContain(error);
   });
+
+  it.each(['representative', 'behavior', 'race', 'recovery'])(
+    'limits sharing-public phase %s to its own suite',
+    (only) => {
+      const result = parse(['--suite', 'sharing-protocol', '--only', only]);
+      expect(result.status).not.toBe(0);
+      expect(result.stderr).toContain(
+        '--only requires an applicable targeted suite',
+      );
+    },
+  );
 
   it.each([
     ['--storage-config', '--storage-config applies only to storage-admin live'],
@@ -301,13 +323,12 @@ describe('browser runner argument boundaries', () => {
     );
   });
 
-  it('requires an existing space without starting unrelated production fixtures', () => {
-    const output = mkdtempSync(join(tmpdir(), 'sharing-runner-'));
-    try {
-      const result = spawnSync(
-        process.execPath,
-        [runner, '--suite', 'sharing-experiment'],
-        {
+  it.each(['sharing-experiment', 'sharing-protocol', 'sharing-public'])(
+    'requires an existing space for %s without starting unrelated production fixtures',
+    (suite) => {
+      const output = mkdtempSync(join(tmpdir(), 'sharing-runner-'));
+      try {
+        const result = spawnSync(process.execPath, [runner, '--suite', suite], {
           env: {
             ...process.env,
             EGO_TASK_SPACE: '',
@@ -316,22 +337,22 @@ describe('browser runner argument boundaries', () => {
           },
           encoding: 'utf8',
           timeout: 10000,
-        },
-      );
-      expect(result.status).not.toBe(0);
-      expect(result.stderr).toContain('Existing Ego space required');
-      const report = JSON.parse(
-        readFileSync(join(output, 'runner.json'), 'utf8'),
-      );
-      expect(report).toMatchObject({
-        suite: 'sharing-experiment',
-        status: 'failed',
-      });
-      expect(report.error).toContain('Existing Ego space required');
-      expect(report).not.toHaveProperty('origin');
-      expect(report).not.toHaveProperty('sharingOrigin');
-    } finally {
-      rmSync(output, { recursive: true, force: true });
-    }
-  });
+        });
+        expect(result.status).not.toBe(0);
+        expect(result.stderr).toContain('Existing Ego space required');
+        const report = JSON.parse(
+          readFileSync(join(output, 'runner.json'), 'utf8'),
+        );
+        expect(report).toMatchObject({
+          suite,
+          status: 'failed',
+        });
+        expect(report.error).toContain('Existing Ego space required');
+        expect(report).not.toHaveProperty('origin');
+        expect(report).not.toHaveProperty('sharingOrigin');
+      } finally {
+        rmSync(output, { recursive: true, force: true });
+      }
+    },
+  );
 });

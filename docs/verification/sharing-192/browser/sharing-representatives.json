@@ -1,0 +1,1340 @@
+{
+  "status": "representative checks passed; full stage failed later",
+  "phase": "full",
+  "checks": [
+    {
+      "scenario": "Anonymous HTML/RSC gate, noindex and owner session preserving anonymous scope"
+    },
+    {
+      "scenario": "Password submit has a visible keyboard focus indicator",
+      "outlineWidth": "2px",
+      "outlineStyle": "none",
+      "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(24, 26, 34) 0px 0px 0px 2px, rgb(130, 219, 211) 0px 0px 0px 4px, rgba(0, 0, 0, 0) 0px 0px 0px 0px"
+    },
+    {
+      "scenario": "Empty password and keyboard submit provide field feedback"
+    },
+    {
+      "scenario": "Overlong password is rejected by the real form"
+    },
+    {
+      "scenario": "Wrong password UI and overlong password HTTP validation"
+    },
+    {
+      "scenario": "Real unlock persists grant and prevents duplicate submission"
+    },
+    {
+      "scenario": "Cropped public DTO, pure text, fixed cover and processing/failed/disabled/thumbnail error placeholders"
+    },
+    {
+      "scenario": "A fixed cover with a missing published file recovers from an eager/pre-hydration error without another version"
+    },
+    {
+      "scenario": "Short viewport scroll reaches the real load-more target",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "加载更多",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          },
+          {
+            "name": "重新加载",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      }
+    },
+    {
+      "scenario": "Long description clears on refresh and all visible gallery columns recover without a scroll event",
+      "scrollTop": 0,
+      "galleryTop": 416,
+      "firstTop": 416,
+      "secondTop": 416,
+      "viewportBottom": 844
+    }
+  ],
+  "layouts": [
+    {
+      "state": "password",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "screenshot": "sharing-public-password-light-1440.png",
+      "geometry": {
+        "width": 1440,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "password",
+            "width": 430,
+            "height": 48,
+            "navigation": false
+          },
+          {
+            "name": "验证并查看",
+            "width": 430,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null
+    },
+    {
+      "state": "password",
+      "theme": "dark",
+      "width": 1440,
+      "height": 1080,
+      "screenshot": "sharing-public-password-dark-1440.png",
+      "geometry": {
+        "width": 1440,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "password",
+            "width": 430,
+            "height": 48,
+            "navigation": false
+          },
+          {
+            "name": "验证并查看",
+            "width": 430,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null
+    },
+    {
+      "state": "password",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "screenshot": "sharing-public-password-light-390.png",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "password",
+            "width": 308,
+            "height": 48,
+            "navigation": false
+          },
+          {
+            "name": "验证并查看",
+            "width": 308,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null
+    },
+    {
+      "state": "password",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "screenshot": "sharing-public-password-dark-390.png",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "password",
+            "width": 308,
+            "height": 48,
+            "navigation": false
+          },
+          {
+            "name": "验证并查看",
+            "width": 308,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null
+    },
+    {
+      "state": "wrong-password",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "screenshot": "sharing-public-wrong-password-light-1440.png",
+      "geometry": {
+        "width": 1440,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "password",
+            "width": 430,
+            "height": 48,
+            "navigation": false
+          },
+          {
+            "name": "验证并查看",
+            "width": 430,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null
+    },
+    {
+      "state": "wrong-password",
+      "theme": "dark",
+      "width": 1440,
+      "height": 1080,
+      "screenshot": "sharing-public-wrong-password-dark-1440.png",
+      "geometry": {
+        "width": 1440,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "password",
+            "width": 430,
+            "height": 48,
+            "navigation": false
+          },
+          {
+            "name": "验证并查看",
+            "width": 430,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null
+    },
+    {
+      "state": "wrong-password",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "screenshot": "sharing-public-wrong-password-light-390.png",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "password",
+            "width": 308,
+            "height": 48,
+            "navigation": false
+          },
+          {
+            "name": "验证并查看",
+            "width": 308,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null
+    },
+    {
+      "state": "wrong-password",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "screenshot": "sharing-public-wrong-password-dark-390.png",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "password",
+            "width": 308,
+            "height": 48,
+            "navigation": false
+          },
+          {
+            "name": "验证并查看",
+            "width": 308,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null
+    },
+    {
+      "state": "unlocking",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "screenshot": "sharing-public-unlocking-light-390.png",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "password",
+            "width": 308,
+            "height": 48,
+            "navigation": false
+          },
+          {
+            "name": "正在验证…",
+            "width": 308,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null
+    },
+    {
+      "state": "disabled",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "screenshot": "sharing-public-disabled-light-1440.png",
+      "geometry": {
+        "width": 1440,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null
+    },
+    {
+      "state": "disabled",
+      "theme": "dark",
+      "width": 1440,
+      "height": 1080,
+      "screenshot": "sharing-public-disabled-dark-1440.png",
+      "geometry": {
+        "width": 1440,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null
+    },
+    {
+      "state": "disabled",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "screenshot": "sharing-public-disabled-light-390.png",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null
+    },
+    {
+      "state": "disabled",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "screenshot": "sharing-public-disabled-dark-390.png",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null
+    },
+    {
+      "state": "expired",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "screenshot": "sharing-public-expired-light-1440.png",
+      "geometry": {
+        "width": 1440,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null
+    },
+    {
+      "state": "expired",
+      "theme": "dark",
+      "width": 1440,
+      "height": 1080,
+      "screenshot": "sharing-public-expired-dark-1440.png",
+      "geometry": {
+        "width": 1440,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null
+    },
+    {
+      "state": "expired",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "screenshot": "sharing-public-expired-light-390.png",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null
+    },
+    {
+      "state": "expired",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "screenshot": "sharing-public-expired-dark-390.png",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null
+    },
+    {
+      "state": "invalid",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "screenshot": "sharing-public-invalid-light-1440.png",
+      "geometry": {
+        "width": 1440,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null
+    },
+    {
+      "state": "invalid",
+      "theme": "dark",
+      "width": 1440,
+      "height": 1080,
+      "screenshot": "sharing-public-invalid-dark-1440.png",
+      "geometry": {
+        "width": 1440,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null
+    },
+    {
+      "state": "invalid",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "screenshot": "sharing-public-invalid-light-390.png",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null
+    },
+    {
+      "state": "invalid",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "screenshot": "sharing-public-invalid-dark-390.png",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null
+    },
+    {
+      "state": "empty",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "screenshot": "sharing-public-empty-light-1440.png",
+      "geometry": {
+        "width": 1440,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": {
+        "contentWidth": 1160,
+        "columns": null
+      },
+      "recoveryStateHeight": 280
+    },
+    {
+      "state": "empty",
+      "theme": "dark",
+      "width": 1440,
+      "height": 1080,
+      "screenshot": "sharing-public-empty-dark-1440.png",
+      "geometry": {
+        "width": 1440,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": {
+        "contentWidth": 1160,
+        "columns": null
+      },
+      "recoveryStateHeight": 280
+    },
+    {
+      "state": "empty",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "screenshot": "sharing-public-empty-light-390.png",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": {
+        "contentWidth": 358,
+        "columns": null
+      },
+      "recoveryStateHeight": 220
+    },
+    {
+      "state": "empty",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "screenshot": "sharing-public-empty-dark-390.png",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": {
+        "contentWidth": 358,
+        "columns": null
+      },
+      "recoveryStateHeight": 220
+    },
+    {
+      "state": "grid",
+      "theme": "light",
+      "width": 360,
+      "height": 844,
+      "screenshot": "sharing-public-grid-light-360.png",
+      "geometry": {
+        "width": 360,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "加载更多",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          },
+          {
+            "name": "重新加载",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": {
+        "contentWidth": 328,
+        "galleryWidth": 328,
+        "columns": 2
+      },
+      "recoveryStateHeight": null
+    },
+    {
+      "state": "grid",
+      "theme": "dark",
+      "width": 360,
+      "height": 844,
+      "screenshot": "sharing-public-grid-dark-360.png",
+      "geometry": {
+        "width": 360,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "加载更多",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          },
+          {
+            "name": "重新加载",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": {
+        "contentWidth": 328,
+        "galleryWidth": 328,
+        "columns": 2
+      },
+      "recoveryStateHeight": null
+    },
+    {
+      "state": "grid",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "screenshot": "sharing-public-grid-light-390.png",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "加载更多",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          },
+          {
+            "name": "重新加载",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": {
+        "contentWidth": 358,
+        "galleryWidth": 358,
+        "columns": 2
+      },
+      "recoveryStateHeight": null
+    },
+    {
+      "state": "grid",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "screenshot": "sharing-public-grid-dark-390.png",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "加载更多",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          },
+          {
+            "name": "重新加载",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": {
+        "contentWidth": 358,
+        "galleryWidth": 358,
+        "columns": 2
+      },
+      "recoveryStateHeight": null
+    },
+    {
+      "state": "grid",
+      "theme": "light",
+      "width": 430,
+      "height": 844,
+      "screenshot": "sharing-public-grid-light-430.png",
+      "geometry": {
+        "width": 430,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "加载更多",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          },
+          {
+            "name": "重新加载",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": {
+        "contentWidth": 398,
+        "galleryWidth": 398,
+        "columns": 2
+      },
+      "recoveryStateHeight": null
+    },
+    {
+      "state": "grid",
+      "theme": "dark",
+      "width": 430,
+      "height": 844,
+      "screenshot": "sharing-public-grid-dark-430.png",
+      "geometry": {
+        "width": 430,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "加载更多",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          },
+          {
+            "name": "重新加载",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": {
+        "contentWidth": 398,
+        "galleryWidth": 398,
+        "columns": 2
+      },
+      "recoveryStateHeight": null
+    },
+    {
+      "state": "grid",
+      "theme": "light",
+      "width": 768,
+      "height": 844,
+      "screenshot": "sharing-public-grid-light-768.png",
+      "geometry": {
+        "width": 768,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "加载更多",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          },
+          {
+            "name": "重新加载",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": {
+        "contentWidth": 720,
+        "galleryWidth": 720,
+        "columns": 3
+      },
+      "recoveryStateHeight": null
+    },
+    {
+      "state": "grid",
+      "theme": "dark",
+      "width": 768,
+      "height": 844,
+      "screenshot": "sharing-public-grid-dark-768.png",
+      "geometry": {
+        "width": 768,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "加载更多",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          },
+          {
+            "name": "重新加载",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": {
+        "contentWidth": 720,
+        "galleryWidth": 720,
+        "columns": 3
+      },
+      "recoveryStateHeight": null
+    },
+    {
+      "state": "grid",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "screenshot": "sharing-public-grid-light-1440.png",
+      "geometry": {
+        "width": 1440,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "加载更多",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          },
+          {
+            "name": "重新加载",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": {
+        "contentWidth": 1160,
+        "galleryWidth": 1160,
+        "columns": 4
+      },
+      "recoveryStateHeight": null
+    },
+    {
+      "state": "grid",
+      "theme": "dark",
+      "width": 1440,
+      "height": 1080,
+      "screenshot": "sharing-public-grid-dark-1440.png",
+      "geometry": {
+        "width": 1440,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "加载更多",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          },
+          {
+            "name": "重新加载",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": {
+        "contentWidth": 1160,
+        "galleryWidth": 1160,
+        "columns": 4
+      },
+      "recoveryStateHeight": null
+    },
+    {
+      "state": "short",
+      "width": 390,
+      "height": 420,
+      "theme": "light",
+      "screenshot": "sharing-public-short-light-390.png",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "加载更多",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          },
+          {
+            "name": "重新加载",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      }
+    },
+    {
+      "state": "short",
+      "width": 390,
+      "height": 420,
+      "theme": "dark",
+      "screenshot": "sharing-public-short-dark-390.png",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "加载更多",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          },
+          {
+            "name": "重新加载",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      }
+    },
+    {
+      "state": "masonry-names",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "screenshot": "sharing-public-masonry-names-light-1440.png",
+      "geometry": {
+        "width": 1440,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "加载更多",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          },
+          {
+            "name": "重新加载",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": {
+        "contentWidth": 1160,
+        "galleryWidth": 1160,
+        "columns": 4
+      },
+      "recoveryStateHeight": null
+    },
+    {
+      "state": "masonry-names",
+      "theme": "dark",
+      "width": 1440,
+      "height": 1080,
+      "screenshot": "sharing-public-masonry-names-dark-1440.png",
+      "geometry": {
+        "width": 1440,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "加载更多",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          },
+          {
+            "name": "重新加载",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": {
+        "contentWidth": 1160,
+        "galleryWidth": 1160,
+        "columns": 4
+      },
+      "recoveryStateHeight": null
+    },
+    {
+      "state": "masonry-names",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "screenshot": "sharing-public-masonry-names-light-390.png",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "加载更多",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          },
+          {
+            "name": "重新加载",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": {
+        "contentWidth": 358,
+        "galleryWidth": 358,
+        "columns": 2
+      },
+      "recoveryStateHeight": null
+    },
+    {
+      "state": "masonry-names",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "screenshot": "sharing-public-masonry-names-dark-390.png",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "加载更多",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          },
+          {
+            "name": "重新加载",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": {
+        "contentWidth": 358,
+        "galleryWidth": 358,
+        "columns": 2
+      },
+      "recoveryStateHeight": null
+    }
+  ],
+  "limitations": [
+    "Physical phones, software keyboards, nonzero safe area and Release containers were not exercised. Anonymous lightbox belongs to T-SHR-04."
+  ]
+}

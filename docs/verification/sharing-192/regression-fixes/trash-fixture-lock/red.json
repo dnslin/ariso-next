@@ -1,0 +1,14 @@
+{
+  "stages": [
+    "fixture-read-processing-snapshot",
+    "other-connection-write-committed"
+  ],
+  "status": "failed",
+  "error": {
+    "name": "SqliteError",
+    "code": "SQLITE_BUSY_SNAPSHOT",
+    "message": "database is locked"
+  },
+  "fixtureImages": 0,
+  "fixtureObjects": 0
+}

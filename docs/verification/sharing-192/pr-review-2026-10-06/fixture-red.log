@@ -1,0 +1,40 @@
+Already up to date
+Done in 34ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-192-sharing/ariso
+
+ ❯ |integration| tests/integration/sharing/public-fixture-lifecycle.test.ts (2 tests | 1 failed) 53ms
+   × protects real thumbnail bytes during a scan before version/member publication; intentional missing remains missing 33ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/sharing/public-fixture-lifecycle.test.ts > protects real thumbnail bytes during a scan before version/member publication; intentional missing remains missing
+AssertionError: expected { …(11) } to match object { status: 'passed', …(2) }
+(14 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "deletedCount": 0,
+-   "protectedCount": 2,
++   "deletedCount": 1,
++   "protectedCount": 1,
+    "status": "passed",
+  }
+
+ ❯ tests/integration/sharing/public-fixture-lifecycle.test.ts:84:20
+     82|   const path = await publish();
+     83|   expect(scans).toHaveLength(1);
+     84|   expect(scans[0]).toMatchObject({ status: 'passed', deletedCount: 0, …
+       |                    ^
+     85|   expect(await readFile(path)).toEqual(await readFile(image.path));
+     86|   expect(fixture.db.select().from(mediaVersions).all().map((row) => ro…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed (2)
+   Start at  20:22:52
+   Duration  567ms (import 67%, transform 22%, tests 10%)

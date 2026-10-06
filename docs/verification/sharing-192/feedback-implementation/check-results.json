@@ -1,0 +1,83 @@
+{
+  "date": "2026-10-06",
+  "node": "24.18.1",
+  "pnpm": "11.19.0",
+  "sourceScope": "Approved password Tips, LockKeyhole and EmptyState; final sharing-label-row Info16 fix",
+  "checks": [
+    {
+      "command": "pnpm install --frozen-lockfile",
+      "exit": 0
+    },
+    {
+      "command": "pnpm run typecheck",
+      "exit": 0,
+      "finalLog": "test-results/sharing-192/feedback-info-typecheck.log"
+    },
+    {
+      "command": "pnpm run lint",
+      "exit": 0,
+      "finalLog": "test-results/sharing-192/feedback-info-lint.log"
+    },
+    {
+      "command": "pnpm run build",
+      "exit": 0,
+      "finalLog": "test-results/sharing-192/feedback-info-build.log"
+    },
+    {
+      "command": "node docs/tasks/check.mjs",
+      "exit": 0,
+      "result": "120 tasks, 298 requirements, no missing IDs or cycles"
+    },
+    {
+      "command": "node scripts/verify-browser.mjs --suite sharing-public --only representative",
+      "exit": 0,
+      "status": "passed",
+      "checks": 14,
+      "layouts": 61
+    },
+    {
+      "command": "node scripts/verify-browser.mjs --suite sharing-public --only recovery",
+      "exit": 0,
+      "status": "passed",
+      "checks": 7,
+      "layouts": 36
+    },
+    {
+      "command": "ego-browser nodejs < test-results/sharing-192/feedback-limit-browser.mjs",
+      "exit": 0,
+      "status": "passed",
+      "retryAfterSeconds": 59,
+      "actualElapsedMs": 59808,
+      "layouts": 4
+    },
+    {
+      "command": "ego-browser nodejs < test-results/sharing-192/feedback-live-gate.mjs",
+      "exit": 0,
+      "status": "passed",
+      "layouts": 4,
+      "images": 8
+    },
+    {
+      "command": "pnpm run format:check",
+      "exit": 0,
+      "finalLog": "test-results/sharing-192/feedback-format-final.log",
+      "initialFailure": {
+        "exit": 1,
+        "log": "test-results/sharing-192/feedback-format.log",
+        "cause": "four newly added JSON evidence files needed formatting",
+        "resolution": "format changed evidence; preserve failure; full final command passed"
+      }
+    }
+  ],
+  "boundaries": {
+    "historicalDefaultBrowser": "failed; 10 out-of-scope failures remain",
+    "remoteChecks": "none",
+    "humanAcceptance": "pending",
+    "releaseContainers": "not run"
+  },
+  "reviews": {
+    "code": "passed",
+    "design": "passed",
+    "humanAcceptance": "pending"
+  }
+}

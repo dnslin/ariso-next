@@ -8,6 +8,7 @@ function select(suite: string, only?: string) {
 describe('focused browser execution plans', () => {
   it.each([
     ['library', ['library']],
+    ['library-feedback', ['library-query']],
     ['account', ['account']],
     ['tokens', ['tokens']],
     ['shell-navigation', ['shell-navigation']],
@@ -49,6 +50,8 @@ describe('focused browser execution plans', () => {
     ['trash', 'cleanup', ['trash-cleanup']],
     ['trash', 'approved-results', ['trash-query-batch']],
     ['library', 'recovery', ['library']],
+    ['library-batch', 'recovery', ['library-batch']],
+
     ['sharing-management', 'representative', ['sharing-management']],
     ['sharing-management', 'behavior', ['sharing-management']],
     ['sharing-management', 'recovery', ['sharing-management']],
@@ -75,6 +78,14 @@ describe('focused browser execution plans', () => {
     ['tokens', 'create-recovery', { tokensPhase: 'create-recovery' }],
     ['tokens', 'action-recovery', { tokensPhase: 'action-recovery' }],
     [
+      'sharing-public',
+      'representative',
+      { sharingPublicPhase: 'representative' },
+    ],
+    ['sharing-public', 'behavior', { sharingPublicPhase: 'behavior' }],
+    ['sharing-public', 'race', { sharingPublicPhase: 'race' }],
+    ['sharing-public', 'recovery', { sharingPublicPhase: 'recovery' }],
+    [
       'viewer',
       'recovery',
       { viewerRepresentativeOnly: false, viewerCheck: 'recovery' },
@@ -86,6 +97,7 @@ describe('focused browser execution plans', () => {
     ],
     ['library-copy', 'revision', { libraryCopyPhase: 'revision' }],
     ['library-batch', 'cache', { libraryBatchPhase: 'cache' }],
+    ['library-batch', 'recovery', { libraryBatchPhase: 'recovery' }],
     ['trash', 'approved-results', { trashPhase: 'approved-results' }],
     ['upload-s3', 'cleanup', { onlyCleanup: true }],
     ['sharing-management', 'recovery', { sharingManagementPhase: 'recovery' }],
@@ -116,6 +128,10 @@ describe('focused browser execution plans', () => {
     });
     expect(select('upload-regression', 'main').config).toEqual({});
     expect(select('account').config).toEqual({});
+    expect(select('library-feedback').config).toEqual({
+      libraryQueryPhase: 'feedback',
+    });
+
     expect(select('tokens').config).toEqual({ tokensPhase: undefined });
   });
 

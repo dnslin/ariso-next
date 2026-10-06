@@ -521,11 +521,44 @@ export async function verifyProcessingSettings(page, config, tools, report) {
     },
   });
 
-  await page.cdp('Network.enable');
+  const { identifier: failedAssetRead } = await page.cdp(
+    'Page.addScriptToEvaluateOnNewDocument',
+    {
+      source: `(() => {
+        const original = window.fetch;
+        const originalMonitor = window.__processingOriginalFetch;
+        const recovery = { released: false, activation: null, requests: [] };
+        window.__processingAssetReadRecovery = recovery;
+        window.fetch = async (...args) => {
+          if (new URL(String(args[0]), location.href).pathname !== ${JSON.stringify(`/api/media/watermark-assets/${assetId}`)} ||
+              (args[1]?.method ?? 'GET') !== 'GET') return original(...args);
+          const row = { startedAt: Date.now(), responseLost: !recovery.released };
+          recovery.requests.push(row);
+          const response = await original(...args);
+          row.status = response.status;
+          row.finishedAt = Date.now();
+          if (row.responseLost) throw new TypeError('Verification: actual saved-asset response was lost');
+          return response;
+        };
+        const release = (event) => {
+          const retry = event.target?.closest?.('[data-testid="processing-asset-retry"]');
+          if (!event.isTrusted || !retry || retry.disabled || recovery.released) return;
+          if (event.type === 'pointerdown' ? event.button !== 0 : !['Enter', ' '].includes(event.key)) return;
+          recovery.activation = { event: event.type, at: Date.now(), trusted: event.isTrusted };
+          recovery.released = true;
+        };
+        for (const event of ['pointerdown', 'keydown']) document.addEventListener(event, release, true);
+        window.__restoreProcessingAssetReadRecovery = () => {
+          for (const event of ['pointerdown', 'keydown']) document.removeEventListener(event, release, true);
+          window.fetch = original;
+          if (originalMonitor) window.__processingOriginalFetch = originalMonitor;
+          else delete window.__processingOriginalFetch;
+          delete window.__restoreProcessingAssetReadRecovery;
+        };
+      })();`,
+    },
+  );
   try {
-    await page.cdp('Network.setBlockedURLs', {
-      urls: ['*/api/media/watermark-assets/*'],
-    });
     await open();
     await page.waitForSelector(testId('asset-retry'));
     assert.equal(
@@ -538,25 +571,68 @@ export async function verifyProcessingSettings(page, config, tools, report) {
     );
     await evidence('asset-read-error', 390, 'dark');
     await assetDetails('asset-read-error');
-  } finally {
-    await page.cdp('Network.setBlockedURLs', { urls: [] });
-  }
-  await monitor();
-  await page.click(testId('asset-retry'));
-  await page.waitForFunction(
-    (id) =>
-      window.__processingBrowser.requests.some(
+    await monitor();
+    await page.click(testId('asset-retry'));
+    await page.waitForFunction(
+      (id) =>
+        window.__processingBrowser.requests.some(
+          (row) =>
+            row.path === `/api/media/watermark-assets/${id}` &&
+            row.method === 'GET' &&
+            row.status === 200,
+        ),
+      assetId,
+    );
+    await page.waitForSelector(`${testId('asset')}[data-state="saved"]`);
+    const recovery = await page.evaluate(
+      () => window.__processingAssetReadRecovery,
+    );
+    assert.equal(recovery.activation.trusted, true);
+    assert.ok(
+      recovery.requests.some((row) => row.responseLost && row.status === 200),
+    );
+    assert.ok(
+      recovery.requests.some(
         (row) =>
-          row.path === `/api/media/watermark-assets/${id}` &&
-          row.method === 'GET' &&
-          row.status === 200,
+          !row.responseLost &&
+          row.status === 200 &&
+          row.startedAt >= recovery.activation.at,
       ),
-    assetId,
-  );
-  assert.equal((await settings()).watermarkAssetId, assetId);
+    );
+    assert.equal(
+      (await browser()).requests.filter(
+        (row) =>
+          row.path === '/api/media/watermark-assets' && row.method === 'POST',
+      ).length,
+      0,
+    );
+    assert.equal((await settings()).watermarkAssetId, assetId);
+  } catch (error) {
+    await page.screenshot({
+      path: join(config.output, 'processing-asset-read-failure.png'),
+    });
+    throw error;
+  } finally {
+    try {
+      report.assetReadRecovery = await page.evaluate(
+        () => window.__processingAssetReadRecovery,
+      );
+    } finally {
+      try {
+        await page.evaluate(() => {
+          window.__restoreProcessingAssetReadRecovery?.();
+          delete window.__processingAssetReadRecovery;
+        });
+      } finally {
+        await page.cdp('Page.removeScriptToEvaluateOnNewDocument', {
+          identifier: failedAssetRead,
+        });
+      }
+    }
+  }
   report.checks.push({
     check:
-      'A blocked actual saved-asset metadata request retains its persisted ID and exposes a retry; successful retry reads the actual row without uploading a replacement.',
+      'Lost real saved-asset reads retain the persisted ID, including background focus reads. Only native retry activation releases the fault; its real GET restores saved metadata without uploading a replacement.',
   });
 
   for (const [name, bytes, status] of [

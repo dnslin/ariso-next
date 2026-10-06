@@ -24,6 +24,10 @@ const suites = {
   },
   'sharing-experiment': {},
   'sharing-protocol': {},
+  'sharing-public': {
+    only: ['representative', 'behavior', 'race', 'recovery'],
+    config: (only) => ({ sharingPublicPhase: only }),
+  },
   'sharing-management': {
     only: ['representative', 'behavior', 'recovery'],
     stages: [['sharing-management', 'sharingManagement']],
@@ -47,6 +51,11 @@ const suites = {
     only: ['recovery'],
     stages: [['library', 'library']],
     config: (only) => ({ libraryPhase: only }),
+  },
+  'library-feedback': {
+    primaryPage: true,
+    stages: [['library-query', 'libraryFeedback']],
+    config: () => ({ libraryQueryPhase: 'feedback' }),
   },
   'shell-navigation': { stages: [['shell-navigation', 'shellNavigation']] },
   albums: { primaryPage: true, stages: [['albums', 'albums']] },
@@ -116,6 +125,7 @@ const suites = {
       'lifecycle',
       'cache',
       'review-fixes',
+      'recovery',
     ],
     stages: [['library-batch', 'libraryBatch']],
     config: (only) => ({ libraryBatchPhase: only }),

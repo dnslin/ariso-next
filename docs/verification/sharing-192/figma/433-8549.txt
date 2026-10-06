@@ -1,0 +1,409 @@
+const img = "https://www.figma.com/api/mcp/asset/75d4440f-957b-44cb-b836-aa9ff6c515e0.png";
+const img1 = "https://www.figma.com/api/mcp/asset/447f24a9-b1ab-4f91-a84b-3ae8c7d71996.png";
+const img2 = "https://www.figma.com/api/mcp/asset/766136ba-d38b-4a6b-bec5-d93d3ee6962d.png";
+const img3 = "https://www.figma.com/api/mcp/asset/5f0369a6-a49b-420a-bf38-e5b396627846.png";
+const img4 = "https://www.figma.com/api/mcp/asset/eead40c8-c532-4b0e-b33e-cae4f59a4f97.png";
+const img5 = "https://www.figma.com/api/mcp/asset/3a3c832c-e8f6-4b9d-b431-f2497db10af6.png";
+const img36M = "https://www.figma.com/api/mcp/asset/328461fd-338f-48d7-8c37-f7a142bbddb7.svg";
+
+type ButtonPrimaryProps = {
+  className?: string;
+  label?: string;
+};
+
+function ButtonPrimary({ className, label = "按钮" }: ButtonPrimaryProps) {
+  return (
+    <div className={className || "bg-[var(--primary,#ffd807)] content-stretch flex h-[36px] items-center justify-center relative rounded-[8px] w-[398px]"} data-node-id="3:21" data-name="Button/Primary">
+      <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--primary-foreground,#272343)] whitespace-nowrap" data-node-id="3:22">
+        {label}
+      </p>
+    </div>
+  );
+}
+
+export default function Component36M() {
+  return (
+    <div className="bg-[var(--background,#fffffe)] relative size-full" data-node-id="433:8549" data-name="36 · M / 公开分享 / 山野之间">
+      <img alt="" className="absolute block inset-0 max-w-none size-full" src={img36M} />
+      <div className="absolute content-stretch flex flex-col gap-[6px] h-[71px] items-center left-[24px] overflow-clip top-[58px] w-[342px]" data-node-id="433:8551" data-name="品牌">
+        <p className="[word-break:break-word] font-['Caveat:Regular'] font-normal leading-[normal] relative shrink-0 text-[56px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="433:8552">
+          Ariso
+        </p>
+      </div>
+      <a className="absolute content-stretch cursor-pointer flex h-[44px] items-center justify-center left-[16px] px-[12px] rounded-[8px] top-[16px] w-[112px]" data-node-id="433:8559" data-name="公共导航 / 返回首页">
+        <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] text-left whitespace-nowrap" data-node-id="I433:8559;3:30">
+          ← 返回首页
+        </p>
+      </a>
+      <div className="absolute h-[694px] left-[16px] overflow-x-clip overflow-y-auto top-[150px] w-[358px]" data-node-id="433:8563" data-name="公开分享内容滚动区">
+        <div className="absolute content-stretch flex flex-col gap-[16px] items-start left-0 overflow-clip pb-[32px] top-0 w-[358px]" data-node-id="433:8564" data-name="公开内容">
+          <div className="content-stretch flex flex-col h-[120px] items-start overflow-clip relative rounded-[12px] shrink-0 w-[358px]" data-node-id="435:7958" data-name="相册封面">
+            <div className="h-[120px] relative shrink-0 w-full" data-node-id="435:7959" data-name="相册封面图片">
+              <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={img} />
+            </div>
+          </div>
+          <p className="[word-break:break-word] font-['Noto_Sans_SC:Medium'] font-medium leading-[32px] min-w-full relative shrink-0 text-[28px] text-[color:var(--foreground,#272343)] w-[min-content]" data-node-id="433:8565">
+            山野之间
+          </p>
+          <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[22px] min-w-full relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-[min-content]" data-node-id="433:8566">
+            把走过的山、见过的光，留在这里。
+          </p>
+          <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[22px] min-w-full relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-[min-content]" data-node-id="433:8567">
+            48 张图片 · 已加载 40 张
+          </p>
+          <div className="content-stretch flex gap-[12px] items-start overflow-clip relative shrink-0 w-full" data-node-id="433:8568" data-name="公开图片列表">
+            <div className="content-stretch flex flex-col gap-[12px] items-start overflow-clip relative shrink-0 w-[173px]" data-node-id="433:8569" data-name="瀑布列 0">
+              <button className="bg-[var(--background,#fffffe)] content-stretch cursor-pointer flex flex-col gap-[8px] items-start overflow-clip relative rounded-[12px] shrink-0 w-[173px]" data-node-id="433:8571" data-name="公开图片 1">
+                <div className="h-[130px] relative shrink-0 w-full" data-node-id="433:8572" data-name="图片">
+                  <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={img} />
+                </div>
+                <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[22px] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] text-left w-full" data-node-id="433:8573">
+                  林间晨光 1
+                </p>
+              </button>
+              <button className="bg-[var(--background,#fffffe)] content-stretch cursor-pointer flex flex-col gap-[8px] items-start overflow-clip relative rounded-[12px] shrink-0 w-[173px]" data-node-id="433:8577" data-name="公开图片 3">
+                <div className="h-[173px] relative shrink-0 w-full" data-node-id="433:8578" data-name="图片">
+                  <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={img1} />
+                </div>
+                <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[22px] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] text-left w-full" data-node-id="433:8579">
+                  远山 3
+                </p>
+              </button>
+              <div className="bg-[var(--background,#fffffe)] content-stretch flex flex-col gap-[8px] items-start overflow-clip relative rounded-[12px] shrink-0 w-[173px]" data-node-id="433:8583" data-name="公开图片 5">
+                <div className="h-[130px] relative shrink-0 w-full" data-node-id="433:8584" data-name="图片">
+                  <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={img2} />
+                </div>
+                <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[22px] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-full" data-node-id="433:8585">
+                  晴日 5
+                </p>
+              </div>
+              <div className="bg-[var(--background,#fffffe)] content-stretch flex flex-col gap-[8px] items-start overflow-clip relative rounded-[12px] shrink-0 w-[173px]" data-node-id="433:8589" data-name="公开图片 7">
+                <div className="h-[173px] relative shrink-0 w-full" data-node-id="433:8590" data-name="图片">
+                  <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={img} />
+                </div>
+                <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[22px] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-full" data-node-id="433:8591">
+                  林间晨光 7
+                </p>
+              </div>
+              <div className="bg-[var(--background,#fffffe)] content-stretch flex flex-col gap-[8px] items-start overflow-clip relative rounded-[12px] shrink-0 w-[173px]" data-node-id="433:8595" data-name="公开图片 9">
+                <div className="h-[130px] relative shrink-0 w-full" data-node-id="433:8596" data-name="图片">
+                  <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={img1} />
+                </div>
+                <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[22px] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-full" data-node-id="433:8597">
+                  远山 9
+                </p>
+              </div>
+              <div className="bg-[var(--background,#fffffe)] content-stretch flex flex-col gap-[8px] items-start overflow-clip relative rounded-[12px] shrink-0 w-[173px]" data-node-id="433:8601" data-name="公开图片 11">
+                <div className="h-[173px] relative shrink-0 w-full" data-node-id="433:8602" data-name="图片">
+                  <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={img2} />
+                </div>
+                <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[22px] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-full" data-node-id="433:8603">
+                  晴日 11
+                </p>
+              </div>
+              <div className="bg-[var(--background,#fffffe)] content-stretch flex flex-col gap-[8px] items-start overflow-clip relative rounded-[12px] shrink-0 w-[173px]" data-node-id="433:8607" data-name="公开图片 13">
+                <div className="h-[130px] relative shrink-0 w-full" data-node-id="433:8608" data-name="图片">
+                  <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={img} />
+                </div>
+                <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[22px] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-full" data-node-id="433:8609">
+                  林间晨光 13
+                </p>
+              </div>
+              <div className="bg-[var(--background,#fffffe)] content-stretch flex flex-col gap-[8px] items-start overflow-clip relative rounded-[12px] shrink-0 w-[173px]" data-node-id="433:8613" data-name="公开图片 15">
+                <div className="h-[173px] relative shrink-0 w-full" data-node-id="433:8614" data-name="图片">
+                  <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={img1} />
+                </div>
+                <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[22px] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-full" data-node-id="433:8615">
+                  远山 15
+                </p>
+              </div>
+              <div className="bg-[var(--background,#fffffe)] content-stretch flex flex-col gap-[8px] items-start overflow-clip relative rounded-[12px] shrink-0 w-[173px]" data-node-id="433:8619" data-name="公开图片 17">
+                <div className="h-[130px] relative shrink-0 w-full" data-node-id="433:8620" data-name="图片">
+                  <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={img2} />
+                </div>
+                <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[22px] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-full" data-node-id="433:8621">
+                  晴日 17
+                </p>
+              </div>
+              <div className="bg-[var(--background,#fffffe)] content-stretch flex flex-col gap-[8px] items-start overflow-clip relative rounded-[12px] shrink-0 w-[173px]" data-node-id="433:8625" data-name="公开图片 19">
+                <div className="h-[173px] relative shrink-0 w-full" data-node-id="433:8626" data-name="图片">
+                  <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={img} />
+                </div>
+                <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[22px] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-full" data-node-id="433:8627">
+                  林间晨光 19
+                </p>
+              </div>
+              <div className="bg-[var(--background,#fffffe)] content-stretch flex flex-col gap-[8px] items-start overflow-clip relative rounded-[12px] shrink-0 w-[173px]" data-node-id="433:8631" data-name="公开图片 21">
+                <div className="h-[130px] relative shrink-0 w-full" data-node-id="433:8632" data-name="图片">
+                  <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={img1} />
+                </div>
+                <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[22px] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-full" data-node-id="433:8633">
+                  远山 21
+                </p>
+              </div>
+              <div className="bg-[var(--background,#fffffe)] content-stretch flex flex-col gap-[8px] items-start overflow-clip relative rounded-[12px] shrink-0 w-[173px]" data-node-id="433:8637" data-name="公开图片 23">
+                <div className="h-[173px] relative shrink-0 w-full" data-node-id="433:8638" data-name="图片">
+                  <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={img2} />
+                </div>
+                <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[22px] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-full" data-node-id="433:8639">
+                  晴日 23
+                </p>
+              </div>
+              <div className="bg-[var(--background,#fffffe)] content-stretch flex flex-col gap-[8px] items-start overflow-clip relative rounded-[12px] shrink-0 w-[173px]" data-node-id="433:8643" data-name="公开图片 25">
+                <div className="h-[130px] relative shrink-0 w-full" data-node-id="433:8644" data-name="图片">
+                  <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={img} />
+                </div>
+                <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[22px] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-full" data-node-id="433:8645">
+                  林间晨光 25
+                </p>
+              </div>
+              <div className="bg-[var(--background,#fffffe)] content-stretch flex flex-col gap-[8px] items-start overflow-clip relative rounded-[12px] shrink-0 w-[173px]" data-node-id="433:8649" data-name="公开图片 27">
+                <div className="h-[173px] relative shrink-0 w-full" data-node-id="433:8650" data-name="图片">
+                  <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={img1} />
+                </div>
+                <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[22px] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-full" data-node-id="433:8651">
+                  远山 27
+                </p>
+              </div>
+              <div className="bg-[var(--background,#fffffe)] content-stretch flex flex-col gap-[8px] items-start overflow-clip relative rounded-[12px] shrink-0 w-[173px]" data-node-id="433:8655" data-name="公开图片 29">
+                <div className="h-[130px] relative shrink-0 w-full" data-node-id="433:8656" data-name="图片">
+                  <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={img2} />
+                </div>
+                <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[22px] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-full" data-node-id="433:8657">
+                  晴日 29
+                </p>
+              </div>
+              <div className="bg-[var(--background,#fffffe)] content-stretch flex flex-col gap-[8px] items-start overflow-clip relative rounded-[12px] shrink-0 w-[173px]" data-node-id="433:8661" data-name="公开图片 31">
+                <div className="h-[173px] relative shrink-0 w-full" data-node-id="433:8662" data-name="图片">
+                  <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={img} />
+                </div>
+                <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[22px] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-full" data-node-id="433:8663">
+                  林间晨光 31
+                </p>
+              </div>
+              <div className="bg-[var(--background,#fffffe)] content-stretch flex flex-col gap-[8px] items-start overflow-clip relative rounded-[12px] shrink-0 w-[173px]" data-node-id="433:8667" data-name="公开图片 33">
+                <div className="h-[130px] relative shrink-0 w-full" data-node-id="433:8668" data-name="图片">
+                  <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={img1} />
+                </div>
+                <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[22px] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-full" data-node-id="433:8669">
+                  远山 33
+                </p>
+              </div>
+              <div className="bg-[var(--background,#fffffe)] content-stretch flex flex-col gap-[8px] items-start overflow-clip relative rounded-[12px] shrink-0 w-[173px]" data-node-id="433:8673" data-name="公开图片 35">
+                <div className="h-[173px] relative shrink-0 w-full" data-node-id="433:8674" data-name="图片">
+                  <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={img2} />
+                </div>
+                <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[22px] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-full" data-node-id="433:8675">
+                  晴日 35
+                </p>
+              </div>
+              <div className="bg-[var(--background,#fffffe)] content-stretch flex flex-col gap-[8px] items-start overflow-clip relative rounded-[12px] shrink-0 w-[173px]" data-node-id="433:8679" data-name="公开图片 37">
+                <div className="h-[130px] relative shrink-0 w-full" data-node-id="433:8680" data-name="图片">
+                  <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={img} />
+                </div>
+                <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[22px] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-full" data-node-id="433:8681">
+                  林间晨光 37
+                </p>
+              </div>
+              <div className="bg-[var(--background,#fffffe)] content-stretch flex flex-col gap-[8px] items-start overflow-clip relative rounded-[12px] shrink-0 w-[173px]" data-node-id="433:8685" data-name="公开图片 39">
+                <div className="h-[173px] relative shrink-0 w-full" data-node-id="433:8686" data-name="图片">
+                  <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={img1} />
+                </div>
+                <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[22px] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-full" data-node-id="433:8687">
+                  远山 39
+                </p>
+              </div>
+            </div>
+            <div className="content-stretch flex flex-col gap-[12px] items-start overflow-clip relative shrink-0 w-[173px]" data-node-id="433:8570" data-name="瀑布列 1">
+              <button className="bg-[var(--background,#fffffe)] content-stretch cursor-pointer flex flex-col gap-[8px] items-start overflow-clip relative rounded-[12px] shrink-0 w-[173px]" data-node-id="433:8574" data-name="公开图片 2">
+                <div className="h-[216px] relative shrink-0 w-full" data-node-id="433:8575" data-name="图片">
+                  <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={img3} />
+                </div>
+                <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[22px] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] text-left w-full" data-node-id="433:8576">
+                  溪流 2
+                </p>
+              </button>
+              <div className="bg-[var(--background,#fffffe)] content-stretch flex flex-col gap-[8px] items-start overflow-clip relative rounded-[12px] shrink-0 w-[173px]" data-node-id="433:8580" data-name="公开图片 4">
+                <div className="h-[156px] relative shrink-0 w-full" data-node-id="433:8581" data-name="图片">
+                  <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={img4} />
+                </div>
+                <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[22px] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-full" data-node-id="433:8582">
+                  山谷 4
+                </p>
+              </div>
+              <div className="bg-[var(--background,#fffffe)] content-stretch flex flex-col gap-[8px] items-start overflow-clip relative rounded-[12px] shrink-0 w-[173px]" data-node-id="433:8586" data-name="公开图片 6">
+                <div className="h-[216px] relative shrink-0 w-full" data-node-id="433:8587" data-name="图片">
+                  <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={img5} />
+                </div>
+                <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[22px] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-full" data-node-id="433:8588">
+                  风景 6
+                </p>
+              </div>
+              <div className="bg-[var(--background,#fffffe)] content-stretch flex flex-col gap-[8px] items-start overflow-clip relative rounded-[12px] shrink-0 w-[173px]" data-node-id="433:8592" data-name="公开图片 8">
+                <div className="h-[156px] relative shrink-0 w-full" data-node-id="433:8593" data-name="图片">
+                  <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={img3} />
+                </div>
+                <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[22px] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-full" data-node-id="433:8594">
+                  溪流 8
+                </p>
+              </div>
+              <div className="bg-[var(--background,#fffffe)] content-stretch flex flex-col gap-[8px] items-start overflow-clip relative rounded-[12px] shrink-0 w-[173px]" data-node-id="433:8598" data-name="公开图片 10">
+                <div className="h-[216px] relative shrink-0 w-full" data-node-id="433:8599" data-name="图片">
+                  <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={img4} />
+                </div>
+                <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[22px] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-full" data-node-id="433:8600">
+                  山谷 10
+                </p>
+              </div>
+              <div className="bg-[var(--background,#fffffe)] content-stretch flex flex-col gap-[8px] items-start overflow-clip relative rounded-[12px] shrink-0 w-[173px]" data-node-id="433:8604" data-name="公开图片 12">
+                <div className="h-[156px] relative shrink-0 w-full" data-node-id="433:8605" data-name="图片">
+                  <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={img5} />
+                </div>
+                <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[22px] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-full" data-node-id="433:8606">
+                  风景 12
+                </p>
+              </div>
+              <div className="bg-[var(--background,#fffffe)] content-stretch flex flex-col gap-[8px] items-start overflow-clip relative rounded-[12px] shrink-0 w-[173px]" data-node-id="433:8610" data-name="公开图片 14">
+                <div className="h-[216px] relative shrink-0 w-full" data-node-id="433:8611" data-name="图片">
+                  <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={img3} />
+                </div>
+                <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[22px] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-full" data-node-id="433:8612">
+                  溪流 14
+                </p>
+              </div>
+              <div className="bg-[var(--background,#fffffe)] content-stretch flex flex-col gap-[8px] items-start overflow-clip relative rounded-[12px] shrink-0 w-[173px]" data-node-id="433:8616" data-name="公开图片 16">
+                <div className="h-[156px] relative shrink-0 w-full" data-node-id="433:8617" data-name="图片">
+                  <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={img4} />
+                </div>
+                <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[22px] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-full" data-node-id="433:8618">
+                  山谷 16
+                </p>
+              </div>
+              <div className="bg-[var(--background,#fffffe)] content-stretch flex flex-col gap-[8px] items-start overflow-clip relative rounded-[12px] shrink-0 w-[173px]" data-node-id="433:8622" data-name="公开图片 18">
+                <div className="h-[216px] relative shrink-0 w-full" data-node-id="433:8623" data-name="图片">
+                  <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={img5} />
+                </div>
+                <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[22px] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-full" data-node-id="433:8624">
+                  风景 18
+                </p>
+              </div>
+              <div className="bg-[var(--background,#fffffe)] content-stretch flex flex-col gap-[8px] items-start overflow-clip relative rounded-[12px] shrink-0 w-[173px]" data-node-id="433:8628" data-name="公开图片 20">
+                <div className="h-[156px] relative shrink-0 w-full" data-node-id="433:8629" data-name="图片">
+                  <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={img3} />
+                </div>
+                <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[22px] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-full" data-node-id="433:8630">
+                  溪流 20
+                </p>
+              </div>
+              <div className="bg-[var(--background,#fffffe)] content-stretch flex flex-col gap-[8px] items-start overflow-clip relative rounded-[12px] shrink-0 w-[173px]" data-node-id="433:8634" data-name="公开图片 22">
+                <div className="h-[216px] relative shrink-0 w-full" data-node-id="433:8635" data-name="图片">
+                  <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={img4} />
+                </div>
+                <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[22px] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-full" data-node-id="433:8636">
+                  山谷 22
+                </p>
+              </div>
+              <div className="bg-[var(--background,#fffffe)] content-stretch flex flex-col gap-[8px] items-start overflow-clip relative rounded-[12px] shrink-0 w-[173px]" data-node-id="433:8640" data-name="公开图片 24">
+                <div className="h-[156px] relative shrink-0 w-full" data-node-id="433:8641" data-name="图片">
+                  <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={img5} />
+                </div>
+                <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[22px] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-full" data-node-id="433:8642">
+                  风景 24
+                </p>
+              </div>
+              <div className="bg-[var(--background,#fffffe)] content-stretch flex flex-col gap-[8px] items-start overflow-clip relative rounded-[12px] shrink-0 w-[173px]" data-node-id="433:8646" data-name="公开图片 26">
+                <div className="h-[216px] relative shrink-0 w-full" data-node-id="433:8647" data-name="图片">
+                  <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={img3} />
+                </div>
+                <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[22px] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-full" data-node-id="433:8648">
+                  溪流 26
+                </p>
+              </div>
+              <div className="bg-[var(--background,#fffffe)] content-stretch flex flex-col gap-[8px] items-start overflow-clip relative rounded-[12px] shrink-0 w-[173px]" data-node-id="433:8652" data-name="公开图片 28">
+                <div className="h-[156px] relative shrink-0 w-full" data-node-id="433:8653" data-name="图片">
+                  <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={img4} />
+                </div>
+                <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[22px] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-full" data-node-id="433:8654">
+                  山谷 28
+                </p>
+              </div>
+              <div className="bg-[var(--background,#fffffe)] content-stretch flex flex-col gap-[8px] items-start overflow-clip relative rounded-[12px] shrink-0 w-[173px]" data-node-id="433:8658" data-name="公开图片 30">
+                <div className="h-[216px] relative shrink-0 w-full" data-node-id="433:8659" data-name="图片">
+                  <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={img5} />
+                </div>
+                <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[22px] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-full" data-node-id="433:8660">
+                  风景 30
+                </p>
+              </div>
+              <div className="bg-[var(--background,#fffffe)] content-stretch flex flex-col gap-[8px] items-start overflow-clip relative rounded-[12px] shrink-0 w-[173px]" data-node-id="433:8664" data-name="公开图片 32">
+                <div className="h-[156px] relative shrink-0 w-full" data-node-id="433:8665" data-name="图片">
+                  <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={img3} />
+                </div>
+                <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[22px] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-full" data-node-id="433:8666">
+                  溪流 32
+                </p>
+              </div>
+              <div className="bg-[var(--background,#fffffe)] content-stretch flex flex-col gap-[8px] items-start overflow-clip relative rounded-[12px] shrink-0 w-[173px]" data-node-id="433:8670" data-name="公开图片 34">
+                <div className="h-[216px] relative shrink-0 w-full" data-node-id="433:8671" data-name="图片">
+                  <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={img4} />
+                </div>
+                <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[22px] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-full" data-node-id="433:8672">
+                  山谷 34
+                </p>
+              </div>
+              <div className="bg-[var(--background,#fffffe)] content-stretch flex flex-col gap-[8px] items-start overflow-clip relative rounded-[12px] shrink-0 w-[173px]" data-node-id="433:8676" data-name="公开图片 36">
+                <div className="h-[156px] relative shrink-0 w-full" data-node-id="433:8677" data-name="图片">
+                  <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={img5} />
+                </div>
+                <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[22px] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-full" data-node-id="433:8678">
+                  风景 36
+                </p>
+              </div>
+              <div className="bg-[var(--background,#fffffe)] content-stretch flex flex-col gap-[8px] items-start overflow-clip relative rounded-[12px] shrink-0 w-[173px]" data-node-id="433:8682" data-name="公开图片 38">
+                <div className="h-[216px] relative shrink-0 w-full" data-node-id="433:8683" data-name="图片">
+                  <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={img3} />
+                </div>
+                <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[22px] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-full" data-node-id="433:8684">
+                  溪流 38
+                </p>
+              </div>
+              <div className="bg-[var(--background,#fffffe)] content-stretch flex flex-col gap-[8px] items-start overflow-clip relative rounded-[12px] shrink-0 w-[173px]" data-node-id="433:8688" data-name="公开图片 40">
+                <div className="h-[156px] relative shrink-0 w-full" data-node-id="433:8689" data-name="图片">
+                  <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={img4} />
+                </div>
+                <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[22px] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-full" data-node-id="433:8690">
+                  山谷 40
+                </p>
+              </div>
+            </div>
+          </div>
+          <ButtonPrimary className="bg-[var(--primary,#ffd807)] content-stretch cursor-pointer flex h-[48px] items-center justify-center relative rounded-[8px] shrink-0 w-full" label="加载更多" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+SUPER CRITICAL: The generated React+Tailwind code MUST be converted to match the target project's technology stack and styling system.
+1. Analyze the target codebase to identify: technology stack, styling approach, component patterns, and design tokens
+2. Convert React syntax to the target framework/library
+3. Transform all Tailwind classes to the target styling system while preserving exact visual design
+4. Follow the project's existing patterns and conventions
+DO NOT install any Tailwind as a dependency unless the user instructs you to do so.
+
+
+Node ids have been added to the code as data attributes, e.g. `data-node-id="1:2"`.
+
+Component descriptions: The following components have usage descriptions or documentation links defined in Figma. These descriptions provide important context about the intended usage, best practices, and any constraints for each component. Follow these guidelines when implementing or using these components.
+
+## Public/Soft glow/Mobile
+**Node ID:** 192:1836
+
+非后台手机页面共同背景。直接复用手机首页两处柔光的位置、大小、颜色与透明度，放在页面内容之下，不参与点击。
+
+## Button/Primary
+**Node ID:** 3:21
+
+Ariso Button/Primary；36px 高；标签可覆盖。
+
+Images and SVGs will be stored as constants, e.g. const image = 'https://www.figma.com/api/mcp/asset/550e8400-e29b-41d4-a716-446655440000.png'. These constants will be used in the code as the source for the image, ex: <img src={image} />. Image assets are stored on a remote server for 7 days and can be fetched using the provided URLs until they expire.

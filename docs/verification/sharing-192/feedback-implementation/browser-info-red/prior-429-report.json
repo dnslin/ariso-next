@@ -1,0 +1,234 @@
+{
+  "status": "passed",
+  "space": 37,
+  "scope": "actual independent production 429 password form",
+  "checks": [
+    {
+      "scenario": "real 20 failures then HTTP429; production Retry-After blocks UI retry; Tips does not unlock; retry succeeds after actual countdown",
+      "elapsed": 58071,
+      "responses": [
+        {
+          "status": 429,
+          "retryAfter": "57",
+          "time": 1791272932412
+        },
+        {
+          "status": 200,
+          "retryAfter": null,
+          "time": 1791272990081
+        }
+      ]
+    }
+  ],
+  "layouts": [
+    {
+      "width": 1440,
+      "height": 1080,
+      "theme": "light",
+      "state": {
+        "message": "验证请求过于频繁，请稍后重试。 57 秒后可重试。",
+        "disabled": true,
+        "inputVisible": true,
+        "lock": {
+          "width": 16,
+          "height": 16
+        },
+        "tips": "button",
+        "inlineHelp": false
+      },
+      "geometry": {
+        "width": 1440,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "查看访问说明",
+            "width": 86,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "password",
+            "width": 430,
+            "height": 48,
+            "target": "HeroUI InputGroup",
+            "inputWidth": 392,
+            "inputHeight": 46,
+            "navigation": false
+          },
+          {
+            "name": "验证并查看",
+            "width": 430,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "screenshot": "rate-limited-light-1440.png"
+    },
+    {
+      "width": 1440,
+      "height": 1080,
+      "theme": "dark",
+      "state": {
+        "message": "验证请求过于频繁，请稍后重试。 55 秒后可重试。",
+        "disabled": true,
+        "inputVisible": true,
+        "lock": {
+          "width": 16,
+          "height": 16
+        },
+        "tips": "button",
+        "inlineHelp": false
+      },
+      "geometry": {
+        "width": 1440,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "查看访问说明",
+            "width": 86,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "password",
+            "width": 430,
+            "height": 48,
+            "target": "HeroUI InputGroup",
+            "inputWidth": 392,
+            "inputHeight": 46,
+            "navigation": false
+          },
+          {
+            "name": "验证并查看",
+            "width": 430,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "screenshot": "rate-limited-dark-1440.png"
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "theme": "light",
+      "state": {
+        "message": "验证请求过于频繁，请稍后重试。 51 秒后可重试。",
+        "disabled": true,
+        "inputVisible": true,
+        "lock": {
+          "width": 16,
+          "height": 16
+        },
+        "tips": "button",
+        "inlineHelp": false
+      },
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "查看访问说明",
+            "width": 90,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "password",
+            "width": 308,
+            "height": 48,
+            "target": "HeroUI InputGroup",
+            "inputWidth": 270,
+            "inputHeight": 46,
+            "navigation": false
+          },
+          {
+            "name": "验证并查看",
+            "width": 308,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "screenshot": "rate-limited-light-390.png"
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "theme": "dark",
+      "state": {
+        "message": "验证请求过于频繁，请稍后重试。 49 秒后可重试。",
+        "disabled": true,
+        "inputVisible": true,
+        "lock": {
+          "width": 16,
+          "height": 16
+        },
+        "tips": "button",
+        "inlineHelp": false
+      },
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "查看访问说明",
+            "width": 90,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "password",
+            "width": 308,
+            "height": 48,
+            "target": "HeroUI InputGroup",
+            "inputWidth": 270,
+            "inputHeight": 46,
+            "navigation": false
+          },
+          {
+            "name": "验证并查看",
+            "width": 308,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "screenshot": "rate-limited-dark-390.png"
+    }
+  ],
+  "response": {
+    "status": 429,
+    "retryAfter": "57",
+    "time": 1791272932412
+  }
+}

@@ -1,0 +1,2958 @@
+{
+  "status": "passed",
+  "taskSpaceId": 37,
+  "phase": "representative",
+  "scope": "production anonymous sharing page, cropped DTO and refresh",
+  "checks": [
+    {
+      "scenario": "Anonymous HTML/RSC gate, noindex and owner session preserving anonymous scope"
+    },
+    {
+      "scenario": "password access Tips support click, Enter/Space, Escape and outside dismissal with focus return and no submission",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light",
+      "scroll": 0
+    },
+    {
+      "scenario": "password access Tips support click, Enter/Space, Escape and outside dismissal with focus return and no submission",
+      "width": 390,
+      "height": 420,
+      "theme": "light",
+      "scroll": 113.5
+    },
+    {
+      "scenario": "password access Tips support click, Enter/Space, Escape and outside dismissal with focus return and no submission",
+      "width": 390,
+      "height": 420,
+      "theme": "dark",
+      "scroll": 111.5
+    },
+    {
+      "scenario": "Password submit has a visible keyboard focus indicator",
+      "outlineWidth": "2px",
+      "outlineStyle": "none",
+      "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(24, 26, 34) 0px 0px 0px 2px, rgb(130, 219, 211) 0px 0px 0px 4px, rgba(0, 0, 0, 0) 0px 0px 0px 0px"
+    },
+    {
+      "scenario": "Empty password and keyboard submit provide field feedback"
+    },
+    {
+      "scenario": "Overlong password is rejected by the real form"
+    },
+    {
+      "scenario": "Wrong password UI and overlong password HTTP validation"
+    },
+    {
+      "scenario": "Real unlock persists grant and prevents duplicate submission"
+    },
+    {
+      "scenario": "Short empty album scroll reaches the complete icon and text while preserving the 220px state",
+      "theme": "light",
+      "emptyGeometry": {
+        "scroll": 278,
+        "height": 220,
+        "viewport": {
+          "width": 390,
+          "height": 420
+        },
+        "scroller": {
+          "left": 0,
+          "right": 390,
+          "top": 150,
+          "bottom": 420,
+          "width": 390,
+          "height": 270
+        },
+        "icon": {
+          "left": 177,
+          "right": 213,
+          "top": 243,
+          "bottom": 279,
+          "width": 36,
+          "height": 36
+        },
+        "text": {
+          "left": 139,
+          "right": 251,
+          "top": 291,
+          "bottom": 313,
+          "width": 112,
+          "height": 22,
+          "content": "暂无可展示的图片"
+        }
+      }
+    },
+    {
+      "scenario": "Short empty album scroll reaches the complete icon and text while preserving the 220px state",
+      "theme": "dark",
+      "emptyGeometry": {
+        "scroll": 278,
+        "height": 220,
+        "viewport": {
+          "width": 390,
+          "height": 420
+        },
+        "scroller": {
+          "left": 0,
+          "right": 390,
+          "top": 150,
+          "bottom": 420,
+          "width": 390,
+          "height": 270
+        },
+        "icon": {
+          "left": 177,
+          "right": 213,
+          "top": 243,
+          "bottom": 279,
+          "width": 36,
+          "height": 36
+        },
+        "text": {
+          "left": 139,
+          "right": 251,
+          "top": 291,
+          "bottom": 313,
+          "width": 112,
+          "height": 22,
+          "content": "暂无可展示的图片"
+        }
+      }
+    },
+    {
+      "scenario": "Cropped public DTO, pure text, fixed cover and processing/failed/disabled/thumbnail error placeholders"
+    },
+    {
+      "scenario": "A fixed cover with a missing published file recovers from an eager/pre-hydration error without another version"
+    },
+    {
+      "scenario": "Short viewport scroll reaches the real load-more target",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "加载更多",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          },
+          {
+            "name": "重新加载",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      }
+    }
+  ],
+  "layouts": [
+    {
+      "state": "password",
+      "theme": "light",
+      "width": 360,
+      "height": 844,
+      "screenshot": "sharing-public-password-light-360.png",
+      "geometry": {
+        "width": 360,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "查看访问说明",
+            "width": 90,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "password",
+            "width": 278,
+            "height": 48,
+            "target": "HeroUI InputGroup",
+            "inputWidth": 240,
+            "inputHeight": 46,
+            "navigation": false
+          },
+          {
+            "name": "验证并查看",
+            "width": 278,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null,
+      "passwordControl": {
+        "label": ["分享密码"],
+        "grouped": true,
+        "lock": {
+          "width": 16,
+          "height": 16,
+          "hidden": "true"
+        },
+        "tipType": "button",
+        "inlineHelp": false
+      },
+      "emptyState": null
+    },
+    {
+      "state": "password",
+      "theme": "dark",
+      "width": 360,
+      "height": 844,
+      "screenshot": "sharing-public-password-dark-360.png",
+      "geometry": {
+        "width": 360,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "查看访问说明",
+            "width": 90,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "password",
+            "width": 278,
+            "height": 48,
+            "target": "HeroUI InputGroup",
+            "inputWidth": 240,
+            "inputHeight": 46,
+            "navigation": false
+          },
+          {
+            "name": "验证并查看",
+            "width": 278,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null,
+      "passwordControl": {
+        "label": ["分享密码"],
+        "grouped": true,
+        "lock": {
+          "width": 16,
+          "height": 16,
+          "hidden": "true"
+        },
+        "tipType": "button",
+        "inlineHelp": false
+      },
+      "emptyState": null
+    },
+    {
+      "state": "password",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "screenshot": "sharing-public-password-light-390.png",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "查看访问说明",
+            "width": 90,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "password",
+            "width": 308,
+            "height": 48,
+            "target": "HeroUI InputGroup",
+            "inputWidth": 270,
+            "inputHeight": 46,
+            "navigation": false
+          },
+          {
+            "name": "验证并查看",
+            "width": 308,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null,
+      "passwordControl": {
+        "label": ["分享密码"],
+        "grouped": true,
+        "lock": {
+          "width": 16,
+          "height": 16,
+          "hidden": "true"
+        },
+        "tipType": "button",
+        "inlineHelp": false
+      },
+      "emptyState": null
+    },
+    {
+      "state": "password",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "screenshot": "sharing-public-password-dark-390.png",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "查看访问说明",
+            "width": 90,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "password",
+            "width": 308,
+            "height": 48,
+            "target": "HeroUI InputGroup",
+            "inputWidth": 270,
+            "inputHeight": 46,
+            "navigation": false
+          },
+          {
+            "name": "验证并查看",
+            "width": 308,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null,
+      "passwordControl": {
+        "label": ["分享密码"],
+        "grouped": true,
+        "lock": {
+          "width": 16,
+          "height": 16,
+          "hidden": "true"
+        },
+        "tipType": "button",
+        "inlineHelp": false
+      },
+      "emptyState": null
+    },
+    {
+      "state": "password",
+      "theme": "light",
+      "width": 430,
+      "height": 844,
+      "screenshot": "sharing-public-password-light-430.png",
+      "geometry": {
+        "width": 430,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "查看访问说明",
+            "width": 90,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "password",
+            "width": 348,
+            "height": 48,
+            "target": "HeroUI InputGroup",
+            "inputWidth": 310,
+            "inputHeight": 46,
+            "navigation": false
+          },
+          {
+            "name": "验证并查看",
+            "width": 348,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null,
+      "passwordControl": {
+        "label": ["分享密码"],
+        "grouped": true,
+        "lock": {
+          "width": 16,
+          "height": 16,
+          "hidden": "true"
+        },
+        "tipType": "button",
+        "inlineHelp": false
+      },
+      "emptyState": null
+    },
+    {
+      "state": "password",
+      "theme": "dark",
+      "width": 430,
+      "height": 844,
+      "screenshot": "sharing-public-password-dark-430.png",
+      "geometry": {
+        "width": 430,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "查看访问说明",
+            "width": 90,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "password",
+            "width": 348,
+            "height": 48,
+            "target": "HeroUI InputGroup",
+            "inputWidth": 310,
+            "inputHeight": 46,
+            "navigation": false
+          },
+          {
+            "name": "验证并查看",
+            "width": 348,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null,
+      "passwordControl": {
+        "label": ["分享密码"],
+        "grouped": true,
+        "lock": {
+          "width": 16,
+          "height": 16,
+          "hidden": "true"
+        },
+        "tipType": "button",
+        "inlineHelp": false
+      },
+      "emptyState": null
+    },
+    {
+      "state": "password",
+      "theme": "light",
+      "width": 768,
+      "height": 844,
+      "screenshot": "sharing-public-password-light-768.png",
+      "geometry": {
+        "width": 768,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "查看访问说明",
+            "width": 86,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "password",
+            "width": 430,
+            "height": 48,
+            "target": "HeroUI InputGroup",
+            "inputWidth": 392,
+            "inputHeight": 46,
+            "navigation": false
+          },
+          {
+            "name": "验证并查看",
+            "width": 430,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null,
+      "passwordControl": {
+        "label": ["分享密码"],
+        "grouped": true,
+        "lock": {
+          "width": 16,
+          "height": 16,
+          "hidden": "true"
+        },
+        "tipType": "button",
+        "inlineHelp": false
+      },
+      "emptyState": null
+    },
+    {
+      "state": "password",
+      "theme": "dark",
+      "width": 768,
+      "height": 844,
+      "screenshot": "sharing-public-password-dark-768.png",
+      "geometry": {
+        "width": 768,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "查看访问说明",
+            "width": 86,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "password",
+            "width": 430,
+            "height": 48,
+            "target": "HeroUI InputGroup",
+            "inputWidth": 392,
+            "inputHeight": 46,
+            "navigation": false
+          },
+          {
+            "name": "验证并查看",
+            "width": 430,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null,
+      "passwordControl": {
+        "label": ["分享密码"],
+        "grouped": true,
+        "lock": {
+          "width": 16,
+          "height": 16,
+          "hidden": "true"
+        },
+        "tipType": "button",
+        "inlineHelp": false
+      },
+      "emptyState": null
+    },
+    {
+      "state": "password",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "screenshot": "sharing-public-password-light-1440.png",
+      "geometry": {
+        "width": 1440,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "查看访问说明",
+            "width": 86,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "password",
+            "width": 430,
+            "height": 48,
+            "target": "HeroUI InputGroup",
+            "inputWidth": 392,
+            "inputHeight": 46,
+            "navigation": false
+          },
+          {
+            "name": "验证并查看",
+            "width": 430,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null,
+      "passwordControl": {
+        "label": ["分享密码"],
+        "grouped": true,
+        "lock": {
+          "width": 16,
+          "height": 16,
+          "hidden": "true"
+        },
+        "tipType": "button",
+        "inlineHelp": false
+      },
+      "emptyState": null
+    },
+    {
+      "state": "password",
+      "theme": "dark",
+      "width": 1440,
+      "height": 1080,
+      "screenshot": "sharing-public-password-dark-1440.png",
+      "geometry": {
+        "width": 1440,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "查看访问说明",
+            "width": 86,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "password",
+            "width": 430,
+            "height": 48,
+            "target": "HeroUI InputGroup",
+            "inputWidth": 392,
+            "inputHeight": 46,
+            "navigation": false
+          },
+          {
+            "name": "验证并查看",
+            "width": 430,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null,
+      "passwordControl": {
+        "label": ["分享密码"],
+        "grouped": true,
+        "lock": {
+          "width": 16,
+          "height": 16,
+          "hidden": "true"
+        },
+        "tipType": "button",
+        "inlineHelp": false
+      },
+      "emptyState": null
+    },
+    {
+      "state": "password-help",
+      "theme": "light",
+      "width": 360,
+      "height": 844,
+      "screenshot": "sharing-public-password-help-light-360.png",
+      "geometry": {
+        "width": 360,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "查看访问说明",
+            "width": 90,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "password",
+            "width": 278,
+            "height": 48,
+            "target": "HeroUI InputGroup",
+            "inputWidth": 240,
+            "inputHeight": 46,
+            "navigation": false
+          },
+          {
+            "name": "验证并查看",
+            "width": 278,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null,
+      "passwordControl": {
+        "label": ["分享密码"],
+        "grouped": true,
+        "lock": {
+          "width": 16,
+          "height": 16,
+          "hidden": "true"
+        },
+        "tipType": "button",
+        "inlineHelp": false
+      },
+      "emptyState": null,
+      "helpGeometry": {
+        "left": 29,
+        "right": 347,
+        "top": 370,
+        "bottom": 442,
+        "viewportHeight": 844,
+        "text": "验证成功后，此浏览器可在24小时内免输密码；分享关闭、改密或到期仍会使访问失效。"
+      },
+      "geometryContext": "Underlying form before access Tips open"
+    },
+    {
+      "state": "password-help",
+      "theme": "dark",
+      "width": 360,
+      "height": 844,
+      "screenshot": "sharing-public-password-help-dark-360.png",
+      "geometry": {
+        "width": 360,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "查看访问说明",
+            "width": 90,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "password",
+            "width": 278,
+            "height": 48,
+            "target": "HeroUI InputGroup",
+            "inputWidth": 240,
+            "inputHeight": 46,
+            "navigation": false
+          },
+          {
+            "name": "验证并查看",
+            "width": 278,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null,
+      "passwordControl": {
+        "label": ["分享密码"],
+        "grouped": true,
+        "lock": {
+          "width": 16,
+          "height": 16,
+          "hidden": "true"
+        },
+        "tipType": "button",
+        "inlineHelp": false
+      },
+      "emptyState": null,
+      "helpGeometry": {
+        "left": 29,
+        "right": 347,
+        "top": 370,
+        "bottom": 442,
+        "viewportHeight": 844,
+        "text": "验证成功后，此浏览器可在24小时内免输密码；分享关闭、改密或到期仍会使访问失效。"
+      },
+      "geometryContext": "Underlying form before access Tips open"
+    },
+    {
+      "state": "password-help",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "screenshot": "sharing-public-password-help-light-390.png",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "查看访问说明",
+            "width": 90,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "password",
+            "width": 308,
+            "height": 48,
+            "target": "HeroUI InputGroup",
+            "inputWidth": 270,
+            "inputHeight": 46,
+            "navigation": false
+          },
+          {
+            "name": "验证并查看",
+            "width": 308,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null,
+      "passwordControl": {
+        "label": ["分享密码"],
+        "grouped": true,
+        "lock": {
+          "width": 16,
+          "height": 16,
+          "hidden": "true"
+        },
+        "tipType": "button",
+        "inlineHelp": false
+      },
+      "emptyState": null,
+      "helpGeometry": {
+        "left": 59,
+        "right": 377,
+        "top": 370,
+        "bottom": 442,
+        "viewportHeight": 844,
+        "text": "验证成功后，此浏览器可在24小时内免输密码；分享关闭、改密或到期仍会使访问失效。"
+      },
+      "geometryContext": "Underlying form before access Tips open"
+    },
+    {
+      "state": "password-help",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "screenshot": "sharing-public-password-help-dark-390.png",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "查看访问说明",
+            "width": 90,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "password",
+            "width": 308,
+            "height": 48,
+            "target": "HeroUI InputGroup",
+            "inputWidth": 270,
+            "inputHeight": 46,
+            "navigation": false
+          },
+          {
+            "name": "验证并查看",
+            "width": 308,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null,
+      "passwordControl": {
+        "label": ["分享密码"],
+        "grouped": true,
+        "lock": {
+          "width": 16,
+          "height": 16,
+          "hidden": "true"
+        },
+        "tipType": "button",
+        "inlineHelp": false
+      },
+      "emptyState": null,
+      "helpGeometry": {
+        "left": 59,
+        "right": 377,
+        "top": 370,
+        "bottom": 442,
+        "viewportHeight": 844,
+        "text": "验证成功后，此浏览器可在24小时内免输密码；分享关闭、改密或到期仍会使访问失效。"
+      },
+      "geometryContext": "Underlying form before access Tips open"
+    },
+    {
+      "state": "password-help",
+      "theme": "light",
+      "width": 430,
+      "height": 844,
+      "screenshot": "sharing-public-password-help-light-430.png",
+      "geometry": {
+        "width": 430,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "查看访问说明",
+            "width": 90,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "password",
+            "width": 348,
+            "height": 48,
+            "target": "HeroUI InputGroup",
+            "inputWidth": 310,
+            "inputHeight": 46,
+            "navigation": false
+          },
+          {
+            "name": "验证并查看",
+            "width": 348,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null,
+      "passwordControl": {
+        "label": ["分享密码"],
+        "grouped": true,
+        "lock": {
+          "width": 16,
+          "height": 16,
+          "hidden": "true"
+        },
+        "tipType": "button",
+        "inlineHelp": false
+      },
+      "emptyState": null,
+      "helpGeometry": {
+        "left": 99,
+        "right": 417,
+        "top": 370,
+        "bottom": 442,
+        "viewportHeight": 844,
+        "text": "验证成功后，此浏览器可在24小时内免输密码；分享关闭、改密或到期仍会使访问失效。"
+      },
+      "geometryContext": "Underlying form before access Tips open"
+    },
+    {
+      "state": "password-help",
+      "theme": "dark",
+      "width": 430,
+      "height": 844,
+      "screenshot": "sharing-public-password-help-dark-430.png",
+      "geometry": {
+        "width": 430,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "查看访问说明",
+            "width": 90,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "password",
+            "width": 348,
+            "height": 48,
+            "target": "HeroUI InputGroup",
+            "inputWidth": 310,
+            "inputHeight": 46,
+            "navigation": false
+          },
+          {
+            "name": "验证并查看",
+            "width": 348,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null,
+      "passwordControl": {
+        "label": ["分享密码"],
+        "grouped": true,
+        "lock": {
+          "width": 16,
+          "height": 16,
+          "hidden": "true"
+        },
+        "tipType": "button",
+        "inlineHelp": false
+      },
+      "emptyState": null,
+      "helpGeometry": {
+        "left": 99,
+        "right": 417,
+        "top": 370,
+        "bottom": 442,
+        "viewportHeight": 844,
+        "text": "验证成功后，此浏览器可在24小时内免输密码；分享关闭、改密或到期仍会使访问失效。"
+      },
+      "geometryContext": "Underlying form before access Tips open"
+    },
+    {
+      "state": "password-help",
+      "theme": "light",
+      "width": 768,
+      "height": 844,
+      "screenshot": "sharing-public-password-help-light-768.png",
+      "geometry": {
+        "width": 768,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "查看访问说明",
+            "width": 86,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "password",
+            "width": 430,
+            "height": 48,
+            "target": "HeroUI InputGroup",
+            "inputWidth": 392,
+            "inputHeight": 46,
+            "navigation": false
+          },
+          {
+            "name": "验证并查看",
+            "width": 430,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null,
+      "passwordControl": {
+        "label": ["分享密码"],
+        "grouped": true,
+        "lock": {
+          "width": 16,
+          "height": 16,
+          "hidden": "true"
+        },
+        "tipType": "button",
+        "inlineHelp": false
+      },
+      "emptyState": null,
+      "helpGeometry": {
+        "left": 437,
+        "right": 755,
+        "top": 414,
+        "bottom": 486,
+        "viewportHeight": 844,
+        "text": "验证成功后，此浏览器可在24小时内免输密码；分享关闭、改密或到期仍会使访问失效。"
+      },
+      "geometryContext": "Underlying form before access Tips open"
+    },
+    {
+      "state": "password-help",
+      "theme": "dark",
+      "width": 768,
+      "height": 844,
+      "screenshot": "sharing-public-password-help-dark-768.png",
+      "geometry": {
+        "width": 768,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "查看访问说明",
+            "width": 86,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "password",
+            "width": 430,
+            "height": 48,
+            "target": "HeroUI InputGroup",
+            "inputWidth": 392,
+            "inputHeight": 46,
+            "navigation": false
+          },
+          {
+            "name": "验证并查看",
+            "width": 430,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null,
+      "passwordControl": {
+        "label": ["分享密码"],
+        "grouped": true,
+        "lock": {
+          "width": 16,
+          "height": 16,
+          "hidden": "true"
+        },
+        "tipType": "button",
+        "inlineHelp": false
+      },
+      "emptyState": null,
+      "helpGeometry": {
+        "left": 437,
+        "right": 755,
+        "top": 414,
+        "bottom": 486,
+        "viewportHeight": 844,
+        "text": "验证成功后，此浏览器可在24小时内免输密码；分享关闭、改密或到期仍会使访问失效。"
+      },
+      "geometryContext": "Underlying form before access Tips open"
+    },
+    {
+      "state": "password-help",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "screenshot": "sharing-public-password-help-light-1440.png",
+      "geometry": {
+        "width": 1440,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "查看访问说明",
+            "width": 86,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "password",
+            "width": 430,
+            "height": 48,
+            "target": "HeroUI InputGroup",
+            "inputWidth": 392,
+            "inputHeight": 46,
+            "navigation": false
+          },
+          {
+            "name": "验证并查看",
+            "width": 430,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null,
+      "passwordControl": {
+        "label": ["分享密码"],
+        "grouped": true,
+        "lock": {
+          "width": 16,
+          "height": 16,
+          "hidden": "true"
+        },
+        "tipType": "button",
+        "inlineHelp": false
+      },
+      "emptyState": null,
+      "helpGeometry": {
+        "left": 851.2890625,
+        "right": 1169.2890625,
+        "top": 414,
+        "bottom": 486,
+        "viewportHeight": 1080,
+        "text": "验证成功后，此浏览器可在24小时内免输密码；分享关闭、改密或到期仍会使访问失效。"
+      },
+      "geometryContext": "Underlying form before access Tips open"
+    },
+    {
+      "state": "password-help",
+      "theme": "dark",
+      "width": 1440,
+      "height": 1080,
+      "screenshot": "sharing-public-password-help-dark-1440.png",
+      "geometry": {
+        "width": 1440,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "查看访问说明",
+            "width": 86,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "password",
+            "width": 430,
+            "height": 48,
+            "target": "HeroUI InputGroup",
+            "inputWidth": 392,
+            "inputHeight": 46,
+            "navigation": false
+          },
+          {
+            "name": "验证并查看",
+            "width": 430,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null,
+      "passwordControl": {
+        "label": ["分享密码"],
+        "grouped": true,
+        "lock": {
+          "width": 16,
+          "height": 16,
+          "hidden": "true"
+        },
+        "tipType": "button",
+        "inlineHelp": false
+      },
+      "emptyState": null,
+      "helpGeometry": {
+        "left": 851.2890625,
+        "right": 1169.2890625,
+        "top": 414,
+        "bottom": 486,
+        "viewportHeight": 1080,
+        "text": "验证成功后，此浏览器可在24小时内免输密码；分享关闭、改密或到期仍会使访问失效。"
+      },
+      "geometryContext": "Underlying form before access Tips open"
+    },
+    {
+      "state": "password-help-short",
+      "width": 390,
+      "height": 420,
+      "theme": "light",
+      "screenshot": "sharing-public-password-help-short-light-390.png",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "查看访问说明",
+            "width": 90,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "password",
+            "width": 308,
+            "height": 48,
+            "target": "HeroUI InputGroup",
+            "inputWidth": 270,
+            "inputHeight": 46,
+            "navigation": false
+          },
+          {
+            "name": "验证并查看",
+            "width": 308,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "geometryContext": "Underlying form before access Tips open",
+      "helpGeometry": {
+        "text": "验证成功后，此浏览器可在24小时内免输密码；分享关闭、改密或到期仍会使访问失效。",
+        "left": 59,
+        "right": 377,
+        "top": 256.5,
+        "bottom": 328.5,
+        "viewport": 420
+      }
+    },
+    {
+      "state": "password-help-short",
+      "width": 390,
+      "height": 420,
+      "theme": "dark",
+      "screenshot": "sharing-public-password-help-short-dark-390.png",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "查看访问说明",
+            "width": 90,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "password",
+            "width": 308,
+            "height": 48,
+            "target": "HeroUI InputGroup",
+            "inputWidth": 270,
+            "inputHeight": 46,
+            "navigation": false
+          },
+          {
+            "name": "验证并查看",
+            "width": 308,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "geometryContext": "Underlying form before access Tips open",
+      "helpGeometry": {
+        "text": "验证成功后，此浏览器可在24小时内免输密码；分享关闭、改密或到期仍会使访问失效。",
+        "left": 59,
+        "right": 377,
+        "top": 258.5,
+        "bottom": 330.5,
+        "viewport": 420
+      }
+    },
+    {
+      "state": "wrong-password",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "screenshot": "sharing-public-wrong-password-light-1440.png",
+      "geometry": {
+        "width": 1440,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "查看访问说明",
+            "width": 86,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "password",
+            "width": 430,
+            "height": 48,
+            "target": "HeroUI InputGroup",
+            "inputWidth": 392,
+            "inputHeight": 46,
+            "navigation": false
+          },
+          {
+            "name": "验证并查看",
+            "width": 430,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null,
+      "passwordControl": {
+        "label": ["分享密码"],
+        "grouped": true,
+        "lock": {
+          "width": 16,
+          "height": 16,
+          "hidden": "true"
+        },
+        "tipType": "button",
+        "inlineHelp": false
+      },
+      "emptyState": null
+    },
+    {
+      "state": "wrong-password",
+      "theme": "dark",
+      "width": 1440,
+      "height": 1080,
+      "screenshot": "sharing-public-wrong-password-dark-1440.png",
+      "geometry": {
+        "width": 1440,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "查看访问说明",
+            "width": 86,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "password",
+            "width": 430,
+            "height": 48,
+            "target": "HeroUI InputGroup",
+            "inputWidth": 392,
+            "inputHeight": 46,
+            "navigation": false
+          },
+          {
+            "name": "验证并查看",
+            "width": 430,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null,
+      "passwordControl": {
+        "label": ["分享密码"],
+        "grouped": true,
+        "lock": {
+          "width": 16,
+          "height": 16,
+          "hidden": "true"
+        },
+        "tipType": "button",
+        "inlineHelp": false
+      },
+      "emptyState": null
+    },
+    {
+      "state": "wrong-password",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "screenshot": "sharing-public-wrong-password-light-390.png",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "查看访问说明",
+            "width": 90,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "password",
+            "width": 308,
+            "height": 48,
+            "target": "HeroUI InputGroup",
+            "inputWidth": 270,
+            "inputHeight": 46,
+            "navigation": false
+          },
+          {
+            "name": "验证并查看",
+            "width": 308,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null,
+      "passwordControl": {
+        "label": ["分享密码"],
+        "grouped": true,
+        "lock": {
+          "width": 16,
+          "height": 16,
+          "hidden": "true"
+        },
+        "tipType": "button",
+        "inlineHelp": false
+      },
+      "emptyState": null
+    },
+    {
+      "state": "wrong-password",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "screenshot": "sharing-public-wrong-password-dark-390.png",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "查看访问说明",
+            "width": 90,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "password",
+            "width": 308,
+            "height": 48,
+            "target": "HeroUI InputGroup",
+            "inputWidth": 270,
+            "inputHeight": 46,
+            "navigation": false
+          },
+          {
+            "name": "验证并查看",
+            "width": 308,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null,
+      "passwordControl": {
+        "label": ["分享密码"],
+        "grouped": true,
+        "lock": {
+          "width": 16,
+          "height": 16,
+          "hidden": "true"
+        },
+        "tipType": "button",
+        "inlineHelp": false
+      },
+      "emptyState": null
+    },
+    {
+      "state": "unlocking",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "screenshot": "sharing-public-unlocking-light-390.png",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "查看访问说明",
+            "width": 90,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "password",
+            "width": 308,
+            "height": 48,
+            "target": "HeroUI InputGroup",
+            "inputWidth": 270,
+            "inputHeight": 46,
+            "navigation": false
+          },
+          {
+            "name": "正在验证…",
+            "width": 308,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null,
+      "passwordControl": {
+        "label": ["分享密码"],
+        "grouped": true,
+        "lock": {
+          "width": 16,
+          "height": 16,
+          "hidden": "true"
+        },
+        "tipType": "button",
+        "inlineHelp": false
+      },
+      "emptyState": null
+    },
+    {
+      "state": "disabled",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "screenshot": "sharing-public-disabled-light-1440.png",
+      "geometry": {
+        "width": 1440,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null,
+      "passwordControl": null,
+      "emptyState": null
+    },
+    {
+      "state": "disabled",
+      "theme": "dark",
+      "width": 1440,
+      "height": 1080,
+      "screenshot": "sharing-public-disabled-dark-1440.png",
+      "geometry": {
+        "width": 1440,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null,
+      "passwordControl": null,
+      "emptyState": null
+    },
+    {
+      "state": "disabled",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "screenshot": "sharing-public-disabled-light-390.png",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null,
+      "passwordControl": null,
+      "emptyState": null
+    },
+    {
+      "state": "disabled",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "screenshot": "sharing-public-disabled-dark-390.png",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null,
+      "passwordControl": null,
+      "emptyState": null
+    },
+    {
+      "state": "expired",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "screenshot": "sharing-public-expired-light-1440.png",
+      "geometry": {
+        "width": 1440,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null,
+      "passwordControl": null,
+      "emptyState": null
+    },
+    {
+      "state": "expired",
+      "theme": "dark",
+      "width": 1440,
+      "height": 1080,
+      "screenshot": "sharing-public-expired-dark-1440.png",
+      "geometry": {
+        "width": 1440,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null,
+      "passwordControl": null,
+      "emptyState": null
+    },
+    {
+      "state": "expired",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "screenshot": "sharing-public-expired-light-390.png",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null,
+      "passwordControl": null,
+      "emptyState": null
+    },
+    {
+      "state": "expired",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "screenshot": "sharing-public-expired-dark-390.png",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null,
+      "passwordControl": null,
+      "emptyState": null
+    },
+    {
+      "state": "invalid",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "screenshot": "sharing-public-invalid-light-1440.png",
+      "geometry": {
+        "width": 1440,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null,
+      "passwordControl": null,
+      "emptyState": null
+    },
+    {
+      "state": "invalid",
+      "theme": "dark",
+      "width": 1440,
+      "height": 1080,
+      "screenshot": "sharing-public-invalid-dark-1440.png",
+      "geometry": {
+        "width": 1440,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null,
+      "passwordControl": null,
+      "emptyState": null
+    },
+    {
+      "state": "invalid",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "screenshot": "sharing-public-invalid-light-390.png",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null,
+      "passwordControl": null,
+      "emptyState": null
+    },
+    {
+      "state": "invalid",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "screenshot": "sharing-public-invalid-dark-390.png",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null,
+      "passwordControl": null,
+      "emptyState": null
+    },
+    {
+      "state": "empty",
+      "theme": "light",
+      "width": 360,
+      "height": 844,
+      "screenshot": "sharing-public-empty-light-360.png",
+      "geometry": {
+        "width": 360,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": {
+        "contentWidth": 328,
+        "columns": null
+      },
+      "recoveryStateHeight": 220,
+      "passwordControl": null,
+      "emptyState": {
+        "component": "empty-state",
+        "role": "status",
+        "headings": 0,
+        "text": "暂无可展示的图片",
+        "fontSize": "14px",
+        "lineHeight": "22px",
+        "icon": {
+          "width": 36,
+          "height": 36,
+          "hidden": "true"
+        },
+        "occurrences": 1,
+        "zeroCount": true,
+        "centered": {
+          "horizontal": 0,
+          "vertical": 0
+        }
+      }
+    },
+    {
+      "state": "empty",
+      "theme": "dark",
+      "width": 360,
+      "height": 844,
+      "screenshot": "sharing-public-empty-dark-360.png",
+      "geometry": {
+        "width": 360,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": {
+        "contentWidth": 328,
+        "columns": null
+      },
+      "recoveryStateHeight": 220,
+      "passwordControl": null,
+      "emptyState": {
+        "component": "empty-state",
+        "role": "status",
+        "headings": 0,
+        "text": "暂无可展示的图片",
+        "fontSize": "14px",
+        "lineHeight": "22px",
+        "icon": {
+          "width": 36,
+          "height": 36,
+          "hidden": "true"
+        },
+        "occurrences": 1,
+        "zeroCount": true,
+        "centered": {
+          "horizontal": 0,
+          "vertical": 0
+        }
+      }
+    },
+    {
+      "state": "empty",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "screenshot": "sharing-public-empty-light-390.png",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": {
+        "contentWidth": 358,
+        "columns": null
+      },
+      "recoveryStateHeight": 220,
+      "passwordControl": null,
+      "emptyState": {
+        "component": "empty-state",
+        "role": "status",
+        "headings": 0,
+        "text": "暂无可展示的图片",
+        "fontSize": "14px",
+        "lineHeight": "22px",
+        "icon": {
+          "width": 36,
+          "height": 36,
+          "hidden": "true"
+        },
+        "occurrences": 1,
+        "zeroCount": true,
+        "centered": {
+          "horizontal": 0,
+          "vertical": 0
+        }
+      }
+    },
+    {
+      "state": "empty",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "screenshot": "sharing-public-empty-dark-390.png",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": {
+        "contentWidth": 358,
+        "columns": null
+      },
+      "recoveryStateHeight": 220,
+      "passwordControl": null,
+      "emptyState": {
+        "component": "empty-state",
+        "role": "status",
+        "headings": 0,
+        "text": "暂无可展示的图片",
+        "fontSize": "14px",
+        "lineHeight": "22px",
+        "icon": {
+          "width": 36,
+          "height": 36,
+          "hidden": "true"
+        },
+        "occurrences": 1,
+        "zeroCount": true,
+        "centered": {
+          "horizontal": 0,
+          "vertical": 0
+        }
+      }
+    },
+    {
+      "state": "empty",
+      "theme": "light",
+      "width": 430,
+      "height": 844,
+      "screenshot": "sharing-public-empty-light-430.png",
+      "geometry": {
+        "width": 430,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": {
+        "contentWidth": 398,
+        "columns": null
+      },
+      "recoveryStateHeight": 220,
+      "passwordControl": null,
+      "emptyState": {
+        "component": "empty-state",
+        "role": "status",
+        "headings": 0,
+        "text": "暂无可展示的图片",
+        "fontSize": "14px",
+        "lineHeight": "22px",
+        "icon": {
+          "width": 36,
+          "height": 36,
+          "hidden": "true"
+        },
+        "occurrences": 1,
+        "zeroCount": true,
+        "centered": {
+          "horizontal": 0,
+          "vertical": 0
+        }
+      }
+    },
+    {
+      "state": "empty",
+      "theme": "dark",
+      "width": 430,
+      "height": 844,
+      "screenshot": "sharing-public-empty-dark-430.png",
+      "geometry": {
+        "width": 430,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": {
+        "contentWidth": 398,
+        "columns": null
+      },
+      "recoveryStateHeight": 220,
+      "passwordControl": null,
+      "emptyState": {
+        "component": "empty-state",
+        "role": "status",
+        "headings": 0,
+        "text": "暂无可展示的图片",
+        "fontSize": "14px",
+        "lineHeight": "22px",
+        "icon": {
+          "width": 36,
+          "height": 36,
+          "hidden": "true"
+        },
+        "occurrences": 1,
+        "zeroCount": true,
+        "centered": {
+          "horizontal": 0,
+          "vertical": 0
+        }
+      }
+    },
+    {
+      "state": "empty",
+      "theme": "light",
+      "width": 768,
+      "height": 844,
+      "screenshot": "sharing-public-empty-light-768.png",
+      "geometry": {
+        "width": 768,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": {
+        "contentWidth": 720,
+        "columns": null
+      },
+      "recoveryStateHeight": 280,
+      "passwordControl": null,
+      "emptyState": {
+        "component": "empty-state",
+        "role": "status",
+        "headings": 0,
+        "text": "暂无可展示的图片",
+        "fontSize": "14px",
+        "lineHeight": "22px",
+        "icon": {
+          "width": 36,
+          "height": 36,
+          "hidden": "true"
+        },
+        "occurrences": 1,
+        "zeroCount": true,
+        "centered": {
+          "horizontal": 0,
+          "vertical": 0
+        }
+      }
+    },
+    {
+      "state": "empty",
+      "theme": "dark",
+      "width": 768,
+      "height": 844,
+      "screenshot": "sharing-public-empty-dark-768.png",
+      "geometry": {
+        "width": 768,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": {
+        "contentWidth": 720,
+        "columns": null
+      },
+      "recoveryStateHeight": 280,
+      "passwordControl": null,
+      "emptyState": {
+        "component": "empty-state",
+        "role": "status",
+        "headings": 0,
+        "text": "暂无可展示的图片",
+        "fontSize": "14px",
+        "lineHeight": "22px",
+        "icon": {
+          "width": 36,
+          "height": 36,
+          "hidden": "true"
+        },
+        "occurrences": 1,
+        "zeroCount": true,
+        "centered": {
+          "horizontal": 0,
+          "vertical": 0
+        }
+      }
+    },
+    {
+      "state": "empty",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "screenshot": "sharing-public-empty-light-1440.png",
+      "geometry": {
+        "width": 1440,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": {
+        "contentWidth": 1160,
+        "columns": null
+      },
+      "recoveryStateHeight": 280,
+      "passwordControl": null,
+      "emptyState": {
+        "component": "empty-state",
+        "role": "status",
+        "headings": 0,
+        "text": "暂无可展示的图片",
+        "fontSize": "14px",
+        "lineHeight": "22px",
+        "icon": {
+          "width": 36,
+          "height": 36,
+          "hidden": "true"
+        },
+        "occurrences": 1,
+        "zeroCount": true,
+        "centered": {
+          "horizontal": 0,
+          "vertical": 0
+        }
+      }
+    },
+    {
+      "state": "empty",
+      "theme": "dark",
+      "width": 1440,
+      "height": 1080,
+      "screenshot": "sharing-public-empty-dark-1440.png",
+      "geometry": {
+        "width": 1440,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": {
+        "contentWidth": 1160,
+        "columns": null
+      },
+      "recoveryStateHeight": 280,
+      "passwordControl": null,
+      "emptyState": {
+        "component": "empty-state",
+        "role": "status",
+        "headings": 0,
+        "text": "暂无可展示的图片",
+        "fontSize": "14px",
+        "lineHeight": "22px",
+        "icon": {
+          "width": 36,
+          "height": 36,
+          "hidden": "true"
+        },
+        "occurrences": 1,
+        "zeroCount": true,
+        "centered": {
+          "horizontal": 0,
+          "vertical": 0
+        }
+      }
+    },
+    {
+      "state": "empty-short",
+      "width": 390,
+      "height": 420,
+      "theme": "light",
+      "screenshot": "sharing-public-empty-short-light-390.png",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          }
+        ]
+      },
+      "emptyGeometry": {
+        "scroll": 278,
+        "height": 220,
+        "viewport": {
+          "width": 390,
+          "height": 420
+        },
+        "scroller": {
+          "left": 0,
+          "right": 390,
+          "top": 150,
+          "bottom": 420,
+          "width": 390,
+          "height": 270
+        },
+        "icon": {
+          "left": 177,
+          "right": 213,
+          "top": 243,
+          "bottom": 279,
+          "width": 36,
+          "height": 36
+        },
+        "text": {
+          "left": 139,
+          "right": 251,
+          "top": 291,
+          "bottom": 313,
+          "width": 112,
+          "height": 22,
+          "content": "暂无可展示的图片"
+        }
+      }
+    },
+    {
+      "state": "empty-short",
+      "width": 390,
+      "height": 420,
+      "theme": "dark",
+      "screenshot": "sharing-public-empty-short-dark-390.png",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          }
+        ]
+      },
+      "emptyGeometry": {
+        "scroll": 278,
+        "height": 220,
+        "viewport": {
+          "width": 390,
+          "height": 420
+        },
+        "scroller": {
+          "left": 0,
+          "right": 390,
+          "top": 150,
+          "bottom": 420,
+          "width": 390,
+          "height": 270
+        },
+        "icon": {
+          "left": 177,
+          "right": 213,
+          "top": 243,
+          "bottom": 279,
+          "width": 36,
+          "height": 36
+        },
+        "text": {
+          "left": 139,
+          "right": 251,
+          "top": 291,
+          "bottom": 313,
+          "width": 112,
+          "height": 22,
+          "content": "暂无可展示的图片"
+        }
+      }
+    },
+    {
+      "state": "grid",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "screenshot": "sharing-public-grid-light-1440.png",
+      "geometry": {
+        "width": 1440,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "加载更多",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          },
+          {
+            "name": "重新加载",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": {
+        "contentWidth": 1160,
+        "galleryWidth": 1160,
+        "columns": 4
+      },
+      "recoveryStateHeight": null,
+      "passwordControl": null,
+      "emptyState": null
+    },
+    {
+      "state": "grid",
+      "theme": "dark",
+      "width": 1440,
+      "height": 1080,
+      "screenshot": "sharing-public-grid-dark-1440.png",
+      "geometry": {
+        "width": 1440,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "加载更多",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          },
+          {
+            "name": "重新加载",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": {
+        "contentWidth": 1160,
+        "galleryWidth": 1160,
+        "columns": 4
+      },
+      "recoveryStateHeight": null,
+      "passwordControl": null,
+      "emptyState": null
+    },
+    {
+      "state": "grid",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "screenshot": "sharing-public-grid-light-390.png",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "加载更多",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          },
+          {
+            "name": "重新加载",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": {
+        "contentWidth": 358,
+        "galleryWidth": 358,
+        "columns": 2
+      },
+      "recoveryStateHeight": null,
+      "passwordControl": null,
+      "emptyState": null
+    },
+    {
+      "state": "grid",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "screenshot": "sharing-public-grid-dark-390.png",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "加载更多",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          },
+          {
+            "name": "重新加载",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": {
+        "contentWidth": 358,
+        "galleryWidth": 358,
+        "columns": 2
+      },
+      "recoveryStateHeight": null,
+      "passwordControl": null,
+      "emptyState": null
+    },
+    {
+      "state": "short",
+      "width": 390,
+      "height": 420,
+      "theme": "light",
+      "screenshot": "sharing-public-short-light-390.png",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "加载更多",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          },
+          {
+            "name": "重新加载",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      }
+    },
+    {
+      "state": "short",
+      "width": 390,
+      "height": 420,
+      "theme": "dark",
+      "screenshot": "sharing-public-short-dark-390.png",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "加载更多",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          },
+          {
+            "name": "重新加载",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      }
+    },
+    {
+      "state": "masonry-names",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "screenshot": "sharing-public-masonry-names-light-1440.png",
+      "geometry": {
+        "width": 1440,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "加载更多",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          },
+          {
+            "name": "重新加载",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": {
+        "contentWidth": 1160,
+        "galleryWidth": 1160,
+        "columns": 4
+      },
+      "recoveryStateHeight": null,
+      "passwordControl": null,
+      "emptyState": null
+    },
+    {
+      "state": "masonry-names",
+      "theme": "dark",
+      "width": 1440,
+      "height": 1080,
+      "screenshot": "sharing-public-masonry-names-dark-1440.png",
+      "geometry": {
+        "width": 1440,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "加载更多",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          },
+          {
+            "name": "重新加载",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": {
+        "contentWidth": 1160,
+        "galleryWidth": 1160,
+        "columns": 4
+      },
+      "recoveryStateHeight": null,
+      "passwordControl": null,
+      "emptyState": null
+    },
+    {
+      "state": "masonry-names",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "screenshot": "sharing-public-masonry-names-light-390.png",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "加载更多",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          },
+          {
+            "name": "重新加载",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": {
+        "contentWidth": 358,
+        "galleryWidth": 358,
+        "columns": 2
+      },
+      "recoveryStateHeight": null,
+      "passwordControl": null,
+      "emptyState": null
+    },
+    {
+      "state": "masonry-names",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "screenshot": "sharing-public-masonry-names-dark-390.png",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "加载更多",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          },
+          {
+            "name": "重新加载",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": {
+        "contentWidth": 358,
+        "galleryWidth": 358,
+        "columns": 2
+      },
+      "recoveryStateHeight": null,
+      "passwordControl": null,
+      "emptyState": null
+    }
+  ],
+  "limitations": [
+    "Physical phones, software keyboards, nonzero safe area and Release containers were not exercised. Anonymous lightbox belongs to T-SHR-04."
+  ],
+  "stage": "gate-and-representatives",
+  "expectedThumbnailErrors": 5
+}

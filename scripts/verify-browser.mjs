@@ -16,6 +16,7 @@ import { runBrowserStage } from './browser-stages.mjs';
 import { selectBrowserPlan } from './browser-plan.mjs';
 import { runM2Restart } from './browser-m2.mjs';
 import { runIdentityManagement } from './browser-identity-management.mjs';
+import { createSharingRunner } from './browser-sharing.mjs';
 
 assert.equal(process.versions.node.split('.')[0], '24', 'Use Node 24');
 const { values } = parseArgs({
@@ -102,6 +103,9 @@ for (const name of [
   'delivery-s3/browser.json',
   'sharing-experiment.json',
   'sharing-protocol.json',
+  'sharing-public.json',
+  'sharing-public-failure.png',
+
   'sharing-management.json',
   'sharing-management-failure.png',
   'm2-1440.json',
@@ -134,7 +138,6 @@ let browser;
 let shellServer;
 let corsFixture;
 let deliveryFixture;
-const sharingFixtures = new Set();
 const uploadFixtures = [];
 let shellLogs = '';
 let logs = '';
@@ -217,63 +220,16 @@ async function runBrowser(script, browserConfig, logName) {
     await writeFile(join(output, logName), safeLogs);
   }
 }
-async function runSharingExperiment(spaceId) {
-  const { launchSharing } =
-    await import('../tests/experiments/sharing/harness.ts');
-  const sharingFixture = await launchSharing(controller.signal);
-  sharingFixtures.add(sharingFixture);
-  try {
-    secrets.push('sharing-password', 'sharing-experiment-password');
-    report.sharingOrigin = sharingFixture.origin;
-    await runBrowser(
-      '../tests/experiments/sharing/browser.mjs',
-      { origin: sharingFixture.origin, spaceId, pageLabel, output },
-      'sharing-experiment.log',
-    );
-    report.sharingExperiment = 'passed';
-    report.sharingBrowserContexts = 'unverified';
-  } finally {
-    try {
-      await writeFile(
-        join(output, 'sharing-server.log'),
-        redact(sharingFixture.logs()),
-      );
-    } finally {
-      await sharingFixture.stop();
-      sharingFixtures.delete(sharingFixture);
-    }
-  }
-}
-async function runSharingProtocol(spaceId) {
-  const { launchSharingProtocol } =
-    await import('../e2e/sharing-protocol-fixture.ts');
-  const sharingFixture = await launchSharingProtocol(controller.signal);
-  sharingFixtures.add(sharingFixture);
-  try {
-    secrets.push(
-      'sharing-protocol-password',
-      ...sharingFixture.browserInput.tokens,
-      ...setupCodes(sharingFixture.logs()),
-    );
-    await runBrowser(
-      '../e2e/sharing-protocol.mjs',
-      { ...sharingFixture.browserInput, spaceId, pageLabel, output },
-      'sharing-protocol.log',
-    );
-    await sharingFixture.verify();
-    report.sharingProtocol = 'passed';
-  } finally {
-    try {
-      await writeFile(
-        join(output, 'sharing-protocol-server.log'),
-        redact(sharingFixture.logs()),
-      );
-    } finally {
-      await sharingFixture.stop();
-      sharingFixtures.delete(sharingFixture);
-    }
-  }
-}
+const sharing = createSharingRunner({
+  signal: controller.signal,
+  runBrowser,
+  pageLabel,
+  output,
+  report,
+  secrets,
+  setupCodes,
+  redact,
+});
 if (suite === 'full') {
   report.stages = {};
   report.taskSpaceId = process.env.EGO_TASK_SPACE
@@ -310,7 +266,9 @@ const check = (name, operation, dependencies = []) => {
   );
 };
 
-if (suite === 'sharing-experiment' || suite === 'sharing-protocol') {
+if (
+  ['sharing-experiment', 'sharing-protocol', 'sharing-public'].includes(suite)
+) {
   try {
     const spaceId = Number(process.env.EGO_TASK_SPACE);
     assert.ok(
@@ -318,8 +276,10 @@ if (suite === 'sharing-experiment' || suite === 'sharing-protocol') {
       'Existing Ego space required',
     );
     report.taskSpaceId = spaceId;
-    if (suite === 'sharing-protocol') await runSharingProtocol(spaceId);
-    else await runSharingExperiment(spaceId);
+    if (suite === 'sharing-public')
+      await sharing.runPublic(spaceId, plan.config.sharingPublicPhase);
+    else if (suite === 'sharing-protocol') await sharing.runProtocol(spaceId);
+    else await sharing.runExperiment(spaceId);
     report.status = 'passed';
   } catch (error) {
     report.error = redact(error.stack ?? String(error));
@@ -327,7 +287,7 @@ if (suite === 'sharing-experiment' || suite === 'sharing-protocol') {
     console.error(report.error);
   } finally {
     await stop(browser);
-    for (const fixture of sharingFixtures) await fixture.stop();
+    await sharing.stop();
     report.finishedAt = new Date().toISOString();
     await writeFile(
       join(output, 'runner.json'),
@@ -898,10 +858,11 @@ try {
       }
     });
     await check('sharing-protocol', () =>
-      runSharingProtocol(report.taskSpaceId),
+      sharing.runProtocol(report.taskSpaceId),
     );
+    await check('sharing-public', () => sharing.runPublic(report.taskSpaceId));
     await check('sharing-experiment', () =>
-      runSharingExperiment(report.taskSpaceId),
+      sharing.runExperiment(report.taskSpaceId),
     );
     await check('isolated-ui', async () => {
       browser = spawn(process.execPath, ['run-browser.mjs'], {
@@ -948,7 +909,7 @@ try {
     stop(shellServer),
     corsFixture?.close(),
     deliveryFixture?.close(),
-    ...[...sharingFixtures].map((fixture) => fixture.stop()),
+    sharing.stop(),
     ...uploadFixtures.map((endpoint) => endpoint.close()),
   ]);
   const cleanupErrors = cleanup

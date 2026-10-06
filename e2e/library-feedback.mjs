@@ -440,13 +440,17 @@ export async function verifyLibraryContextEdges({ page, config, report }) {
       );
       for (const [index, action] of enabledActions.entries()) {
         await page.keyboard.press(index === 0 ? 'Home' : 'ArrowDown');
-        await page.waitForFunction(
-          (name) =>
-            document.activeElement
-              ?.closest('[role="menuitem"]')
-              ?.textContent.trim() === name,
-          action.name,
-        );
+        await page.waitForFunction((name) => {
+          const item = document.activeElement?.closest('[role="menuitem"]');
+          const popup = document.querySelector(
+            '[data-slot="dropdown-popover"]',
+          );
+          if (item?.textContent.trim() !== name || !popup) return false;
+          const target = item.getBoundingClientRect();
+          const boundary = popup.getBoundingClientRect();
+          // React Aria scrolls the new keyboard focus on its next frame.
+          return target.top >= boundary.top && target.bottom <= boundary.bottom;
+        }, action.name);
         const focused = await page.evaluate(() => {
           const target = document.activeElement
             .closest('[role="menuitem"]')
@@ -455,17 +459,30 @@ export async function verifyLibraryContextEdges({ page, config, report }) {
             .querySelector('[data-slot="dropdown-popover"]')
             .getBoundingClientRect();
           return {
+            at: performance.now(),
             targetTop: target.top,
             targetBottom: target.bottom,
             popupTop: popup.top,
             popupBottom: popup.bottom,
+            scrollTop: document.querySelector('[role="menu"]')?.scrollTop,
           };
         });
-        assert.ok(
-          focused.targetTop >= focused.popupTop &&
-            focused.targetBottom <= focused.popupBottom,
-          `Keyboard navigation scrolls ${action.name} completely into the visible context menu`,
-        );
+        try {
+          assert.ok(
+            focused.targetTop >= focused.popupTop &&
+              focused.targetBottom <= focused.popupBottom,
+            `Keyboard navigation scrolls ${action.name} completely into the visible context menu`,
+          );
+        } catch (error) {
+          report.menuFocusFailure = {
+            theme,
+            width,
+            height,
+            action: action.name,
+            immediate: focused,
+          };
+          throw error;
+        }
       }
       const filename = `library-feedback-menu-edge-${theme}-${width}x${height}.png`;
       await page.screenshot({ path: join(config.output, filename) });

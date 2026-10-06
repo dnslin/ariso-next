@@ -7,6 +7,9 @@ const { selectCopyFormat } = await import(config.libraryDetailScript);
 const { createUploadLayouts } = await import(
   new URL('./upload-layouts.mjs', config.libraryDetailScript).href
 );
+const { runUploadStorageAvailability } = await import(
+  new URL('./upload-storage-availability.mjs', config.libraryDetailScript).href
+);
 const task = await taskSpace(config.spaceId);
 const page = task.page(config.pageLabel ?? 'p1');
 const sql = (statement) => identitySql(config, statement);
@@ -791,108 +794,18 @@ try {
     'Hard document navigation from an accepted processing upload discards local queue; releasing the persisted scheduling fixture lets the real worker finish the same image after reopening.',
   );
 
-  await trackReferences();
-  const [storageSetting] = await sql(
-    'SELECT default_storage_id FROM storage_settings',
-  );
-  const storageId = storageSetting.default_storage_id;
-  // The UI still displays the default loaded earlier, but an untouched default
-  // is resolved transactionally when Start is clicked, not pinned by the page.
-  await select();
-  try {
-    await sql('UPDATE storage_settings SET default_storage_id=NULL');
-    await page.click(button('开始上传'));
-    await state('upload-failed');
-    assert.ok(!(await imageId()));
-    await page.waitForFunction(() =>
-      document
-        .querySelector('[data-testid="upload-item"]')
-        .textContent.includes('没有默认存储'),
-    );
-    await released();
-  } finally {
-    await sql(`UPDATE storage_settings SET default_storage_id='${storageId}'`);
-  }
-  await clear();
-  report.checks.push(
-    'Removing the default after file selection makes the real Start request fail without imageId; untouched default is resolved on the server at submission time.',
-  );
-  try {
-    await sql('UPDATE storage_settings SET default_storage_id=NULL');
-    await page.reload();
-    await page.waitForSelector('input[aria-label="选择图片文件"]', {
-      state: 'attached',
-    });
-    await select();
-    await page.waitForFunction(() =>
-      document.body.textContent.includes('默认存储缺失或已停用'),
-    );
-    await layouts('missing-default');
-    assert.equal(
-      await page.evaluate(
-        () =>
-          [...document.querySelectorAll('button')].find(
-            (node) => node.textContent === '开始上传',
-          ).disabled,
-      ),
-      true,
-    );
-    await page.click(button('移除'));
-    await sql(`UPDATE storage_settings SET default_storage_id='${storageId}'`);
-    await sql(`UPDATE storage_configs SET enabled=0 WHERE id='${storageId}'`);
-    await page.reload();
-    await page.waitForSelector('input[aria-label="选择图片文件"]', {
-      state: 'attached',
-    });
-    await select();
-    await page.waitForFunction(() =>
-      document.body.textContent.includes('暂无可用存储'),
-    );
-    await layouts('disabled-storage');
-    assert.equal(
-      await page.evaluate(
-        () =>
-          [...document.querySelectorAll('button')].find(
-            (node) => node.textContent === '开始上传',
-          ).disabled,
-      ),
-      true,
-    );
-    await page.click(button('移除'));
-  } finally {
-    await sql(`UPDATE storage_settings SET default_storage_id='${storageId}'`);
-    await sql(`UPDATE storage_configs SET enabled=1 WHERE id='${storageId}'`);
-  }
-  const settingsFault = await page.cdp(
-    'Page.addScriptToEvaluateOnNewDocument',
-    {
-      source: `const originalUploadSettingsFetch = window.__uploadFetch; window.__uploadFetch = async (...args) => { if (new URL(String(args[0]), location.href).pathname === '/upload/settings') { window.__uploadFetch = originalUploadSettingsFetch; await originalUploadSettingsFetch(...args); await new Promise(resolve => { window.__uploadReleaseSettings = resolve; }); delete window.__uploadReleaseSettings; throw new TypeError('Verification: settings response lost'); } return originalUploadSettingsFetch(...args); };`,
-    },
-  );
-  try {
-    await page.reload();
-    await page.waitForFunction(
-      () =>
-        typeof window.__uploadReleaseSettings === 'function' &&
-        document.body.textContent.includes('正在读取上传设置'),
-    );
-    await layouts('settings-loading');
-    await page.evaluate(() => window.__uploadReleaseSettings());
-    await page.waitForSelector(button('重试读取设置'));
-    await layouts('settings-error');
-    await page.click(button('重试读取设置'));
-    await page.waitForSelector('input[aria-label="选择图片文件"]', {
-      state: 'attached',
-    });
-  } finally {
-    await page.evaluate(() => window.__uploadReleaseSettings?.());
-    await page.cdp('Page.removeScriptToEvaluateOnNewDocument', {
-      identifier: settingsFault.identifier,
-    });
-  }
-  report.checks.push(
-    'Real missing default and disabled storage prevent manual start without silently choosing another target; lost real settings response displays retry and recovers.',
-  );
+  await runUploadStorageAvailability({
+    page,
+    report,
+    sql,
+    select,
+    state,
+    released,
+    clear,
+    imageId,
+    layouts,
+    trackReferences,
+  });
   report.status = 'passed';
 } catch (error) {
   report.error = String(error.stack ?? error);

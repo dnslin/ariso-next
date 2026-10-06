@@ -1,0 +1,15 @@
+{
+  "kind": "actual-product-preview-data",
+  "space": 37,
+  "productLayout": "previous committed implementation; proposed tips and empty component not applied",
+  "checks": [],
+  "actualPage": {
+    "status": 200,
+    "albumName": "旅行手记",
+    "description": "记录沿途的光影与日常。",
+    "total": 0,
+    "itemCount": 0
+  },
+  "status": "fail",
+  "failure": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n+   description: 'Ariso',\n-   description: '记录沿途的光影与日常。',\n    empty: true,\n    markerExposed: false,\n    title: '旅行手记'\n  }\n\n    at file:////[eval2]:32:14"
+}

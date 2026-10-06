@@ -7,7 +7,7 @@ import {
   type Box,
 } from '@air/react-drag-to-select';
 import type { LibraryItem } from '../../server/library/types';
-import type { GallerySlot } from './gallery-layout';
+import type { GallerySlot } from '../../components/gallery/layout';
 import type { LibrarySelection } from './use-library-selection';
 
 /** Layout slots cover loaded records, including cards outside the DOM window. */

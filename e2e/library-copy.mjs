@@ -477,10 +477,12 @@ try {
     );
   // Keyboard native copy is independent of navigator.clipboard permission. The probe records only its denied write attempt.
   await renderedManual(manualOutput.text);
+  await h.observePasteboard(manualOutput.text, 'manual-native-copy-complete');
   if (!feedbackOnly) {
     await h.capture('manual', widths);
     await h.capture('manual', [390], true);
   }
+  await h.observePasteboard(manualOutput.text, 'manual-after-layouts');
   await page.focus('[data-testid="library-copy-manual"]');
   await page.keyboard.press('Tab');
   assert.equal(
@@ -491,6 +493,7 @@ try {
     'Manual focus remains trapped within the dialog',
   );
   await page.click('[data-testid="library-copy-manual-return"]');
+  await h.observePasteboard(manualOutput.text, 'manual-return-click');
   await page.waitForSelector('[data-testid="library-copy-dialog"]', {
     state: 'hidden',
   });
@@ -511,10 +514,20 @@ try {
 
   if (!representative) {
     report.stage = 'all-unavailable';
+    await h.observePasteboard(
+      manualOutput.text,
+      'unavailable-before-navigation',
+    );
     await page.goto(`${config.origin}/library?q=issue177-&pageSize=80&page=3`);
     await h.loaded(41);
+    await h.observePasteboard(
+      manualOutput.text,
+      'unavailable-after-navigation',
+    );
     await h.choose(199);
+    await h.observePasteboard(manualOutput.text, 'unavailable-after-selection');
     await h.open(1);
+    await h.observePasteboard(manualOutput.text, 'unavailable-after-open');
     await h.monitor();
     const sentinel = (await h.traffic()).length;
     await h.format('url');
@@ -528,6 +541,10 @@ try {
       /没有可复制的链接/,
     );
     assert.deepEqual(await page.evaluate(() => window.__copyWrites), []);
+    await h.observePasteboard(
+      manualOutput.text,
+      'unavailable-after-empty-result',
+    );
     await h.verifyPasteboard(manualOutput.text);
     assert.equal(sentinel, 0);
     await assertModalFocus('all-unavailable');
@@ -756,11 +773,13 @@ try {
     }
     await h.again();
     report.stage = 'unauthorized';
+    await h.monitor();
+    await h.recordCopyState('before-session-revocation');
     assert.ok(
       (await sql('DELETE FROM session')).changes > 0,
       'Only disposable real owner sessions are revoked',
     );
-    await h.monitor();
+    await h.recordCopyState('after-session-revocation');
     await h.format('url');
     await page.waitForFunction(() => location.pathname === '/login');
     report.unauthorized = await page.evaluate(() =>
@@ -800,6 +819,7 @@ try {
     throw error;
   }
   try {
+    if (report.stage === 'unauthorized') await h.recordCopyState('failure');
     report.focus = await page.evaluate(() => ({
       tag: document.activeElement?.tagName,
       id: document.activeElement?.id,
@@ -832,6 +852,7 @@ try {
     });
     await page.evaluate(() => {
       sessionStorage.removeItem('ariso:issue187-copy-auth');
+      sessionStorage.removeItem('ariso:issue187-copy-auth-diagnostics');
       window.__copyRelease?.();
       if (window.__copyOriginalFetch) window.fetch = window.__copyOriginalFetch;
       if (window.__copyNativeWrite)

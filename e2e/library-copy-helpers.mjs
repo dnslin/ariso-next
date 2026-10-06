@@ -59,6 +59,8 @@ export function createCopyHelpers(context) {
   }
   async function selectFormat(value, keyboard = false) {
     const selector = `[data-copy-format="${value}"]`;
+    if (report.stage === 'unauthorized')
+      await recordCopyState('before-format-selection');
     if (keyboard) {
       // React Aria restores the last focused item when entering the group.
       // Enter with Tab, then use its supported horizontal arrow navigation.
@@ -84,6 +86,8 @@ export function createCopyHelpers(context) {
       );
       await page.keyboard.press('Space');
     } else await page.click(selector);
+    if (report.stage === 'unauthorized')
+      await recordCopyState('after-format-selection');
     assert.equal(
       await page.evaluate(
         (selector) =>
@@ -108,6 +112,13 @@ export function createCopyHelpers(context) {
       window.__copyTraffic = [];
       window.__copyWrites = [];
       window.__copyRelease = null;
+      sessionStorage.removeItem('ariso:issue187-copy-auth-diagnostics');
+      const record = (event) => {
+        const key = 'ariso:issue187-copy-auth-diagnostics';
+        const events = JSON.parse(sessionStorage.getItem(key) ?? '[]');
+        events.push({ at: Date.now(), ...event });
+        sessionStorage.setItem(key, JSON.stringify(events.slice(-40)));
+      };
       navigator.clipboard.writeText = async (text) => {
         window.__copyWrites.push(text);
         await native(text);
@@ -118,13 +129,38 @@ export function createCopyHelpers(context) {
           typeof args[0] === 'string' ? args[0] : args[0].url,
           location.href,
         );
+        if (url.pathname === '/api/auth/get-session') {
+          record({
+            path: url.pathname,
+            event: 'request',
+            hidden: document.hidden,
+          });
+          const response = await original(...args);
+          const session = response.ok
+            ? await response.clone().json()
+            : undefined;
+          record({
+            path: url.pathname,
+            event: 'response',
+            status: response.status,
+            hasSession: response.ok ? !!session : undefined,
+          });
+          return response;
+        }
         if (url.pathname !== '/api/images/copy') return original(...args);
+        record({ path: url.pathname, event: 'request' });
         const request = JSON.parse(args[1].body);
         const row = { request };
         window.__copyTraffic.push(row);
         const response = await original(...args);
         row.status = response.status;
         row.response = await response.clone().json();
+        record({
+          path: url.pathname,
+          event: 'response',
+          status: response.status,
+          writes: window.__copyWrites.length,
+        });
         if (response.status === 401)
           sessionStorage.setItem(
             'ariso:issue187-copy-auth',
@@ -169,6 +205,29 @@ export function createCopyHelpers(context) {
         return response;
       };
     }, mode);
+  }
+  async function recordCopyState(stage) {
+    report.authRecoveryStates ??= [];
+    report.authRecoveryStates.push(
+      await page.evaluate(
+        (stage) => ({
+          stage,
+          at: Date.now(),
+          path: location.pathname,
+          dialog: !!document.querySelector(
+            '[data-testid="library-copy-dialog"]',
+          ),
+          selectedFormat: document
+            .querySelector('[data-copy-format][aria-checked="true"]')
+            ?.getAttribute('data-copy-format'),
+          authEvents: JSON.parse(
+            sessionStorage.getItem('ariso:issue187-copy-auth-diagnostics') ??
+              '[]',
+          ),
+        }),
+        stage,
+      ),
+    );
   }
   const traffic = () => page.evaluate(() => window.__copyTraffic);
   async function completed() {
@@ -216,12 +275,25 @@ export function createCopyHelpers(context) {
     await verifyPasteboard(expected);
   }
   async function verifyPasteboard(expected) {
-    const { stdout } = await run('pbpaste', [], { encoding: 'utf8' });
+    const evidence = await observePasteboard(expected, 'exact-output');
     assert.equal(
-      stdout,
-      expected,
+      evidence.matches,
+      true,
       'Native pasteboard contains the complete exact output',
     );
+  }
+  async function observePasteboard(expected, stage) {
+    const { stdout } = await run('pbpaste', [], { encoding: 'utf8' });
+    const evidence = {
+      stage,
+      at: Date.now(),
+      matches: stdout === expected,
+      actualLength: stdout.length,
+      expectedLength: expected.length,
+    };
+    report.pasteboardChecks ??= [];
+    report.pasteboardChecks.push(evidence);
+    return evidence;
   }
   async function noImageReads() {
     const paths = await page.evaluate(() =>
@@ -337,6 +409,8 @@ export function createCopyHelpers(context) {
     again,
     verifyNative,
     verifyPasteboard,
+    observePasteboard,
+    recordCopyState,
     noImageReads,
     capture,
   };

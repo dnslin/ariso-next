@@ -122,6 +122,7 @@ const scenariosByPhase = {
     ...feedbackScenarios,
   ],
   cache: [verifyBatchCache],
+  recovery: [verifyVisibilityRecovery],
   lifecycle: [verifyBatchLifecycle],
   representative: [(context) => verifyAlbumTargetLayouts(context, [390, 1440])],
   visibility: feedbackScenarios,

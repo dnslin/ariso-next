@@ -1,0 +1,30 @@
+{
+  "environment": {
+    "node": "24.18.1",
+    "workingDirectory": "repository root"
+  },
+  "actualCommands": [
+    {
+      "command": "node test-results/sharing-192/viewer-fixture-lifecycle/verify.mjs red",
+      "input": "12fd776d8ec855a6add69a7c5968ec6436029a44:e2e/library-viewer-fixtures.mjs, before the edit",
+      "result": "exit 0; expected real scanner deletion and missing original reproduced"
+    },
+    {
+      "command": "node test-results/sharing-192/viewer-fixture-lifecycle/verify.mjs green",
+      "input": "modified working tree fixture",
+      "result": "exit 0; real scanner deletes 0, 121 registered files protected"
+    },
+    {
+      "command": "node --input-type=module via stdin",
+      "input": "generation-error.stdin.mjs content; modified fixture and genuinely missing sample input",
+      "result": "exit 0; original generation error, no database registration, temporary output cleaned"
+    }
+  ],
+  "archive": "verify.mjs only changes relative import depth for this evidence directory; generation-error stdin body is preserved. These saved archive entrypoints were not re-executed.",
+  "reproduction": [
+    "mkdir -p test-results/sharing-192/viewer-fixture-lifecycle",
+    "node docs/verification/sharing-192/regression-fixes/viewer-fixture-lifecycle/verify.mjs green",
+    "node --input-type=module < docs/verification/sharing-192/regression-fixes/viewer-fixture-lifecycle/generation-error.stdin.mjs"
+  ],
+  "redReplay": "The red argument labels evidence and does not select old source; original red requires the above pre-edit fixture in an isolated checkout."
+}

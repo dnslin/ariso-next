@@ -121,30 +121,34 @@ beforeEach(async () => {
   );
   expect(await readFile(originalPath)).toEqual(bytes);
   imageId = randomUUID();
-  connection.db.transaction((tx) => {
-    const accepted = acceptOriginal(tx, {
-      imageId,
-      storageId: storage.id,
-      key: plan.key,
-      originalName: 'HTTP-original.png',
-      visibility: 'private',
-      format: 'PNG',
-      mime: 'image/png',
-      byteSize: bytes.length,
-      snapshot: createProcessingSnapshot(tx),
-      expectedVersions: ['compressed', 'thumbnail'],
-    });
-    // Persist a terminal failed asset fixture before the live queue can claim it.
-    // This tests metadata HTTP and does not claim that processing was performed.
-    tx.update(mediaJobs)
-      .set({ status: 'failed', error: 'fixture: prior processing failed' })
-      .where(eq(mediaJobs.id, accepted.jobId))
-      .run();
-    tx.update(mediaImages)
-      .set({ processingStatus: 'failed' })
-      .where(eq(mediaImages.id, imageId))
-      .run();
-  });
+  // Acquire the fixture write lock before reading settings beside the live worker.
+  connection.db.transaction(
+    (tx) => {
+      const accepted = acceptOriginal(tx, {
+        imageId,
+        storageId: storage.id,
+        key: plan.key,
+        originalName: 'HTTP-original.png',
+        visibility: 'private',
+        format: 'PNG',
+        mime: 'image/png',
+        byteSize: bytes.length,
+        snapshot: createProcessingSnapshot(tx),
+        expectedVersions: ['compressed', 'thumbnail'],
+      });
+      // Persist a terminal failed asset fixture before the live queue can claim it.
+      // This tests metadata HTTP and does not claim that processing was performed.
+      tx.update(mediaJobs)
+        .set({ status: 'failed', error: 'fixture: prior processing failed' })
+        .where(eq(mediaJobs.id, accepted.jobId))
+        .run();
+      tx.update(mediaImages)
+        .set({ processingStatus: 'failed' })
+        .where(eq(mediaImages.id, imageId))
+        .run();
+    },
+    { behavior: 'immediate' },
+  );
 }, 30000);
 
 afterEach(async () => {

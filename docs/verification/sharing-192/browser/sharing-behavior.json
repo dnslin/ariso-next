@@ -1,0 +1,641 @@
+{
+  "status": "failed",
+  "stage": "recovery",
+  "error": "ElementResolutionError: page.click timed out after 3000ms: Selector [data-testid=\"share-check-retry\"] matched 0 elements\n    at #retryElementAction (file:////[eval1]:18884:27)\n    at async file:////[eval1]:18968:29\n    at async file:////[eval1]:16691:28",
+  "checks": [
+    {
+      "scenario": "Long description clears on refresh and all visible gallery columns recover without a scroll event",
+      "scrollTop": 0,
+      "galleryTop": 416,
+      "firstTop": 416,
+      "secondTop": 416,
+      "viewportBottom": 844
+    },
+    {
+      "scenario": "Observed pagination refresh requests",
+      "requests": [
+        {
+          "size": 40,
+          "startedAt": 1791234992146,
+          "hidden": false,
+          "finishedAt": 1791234992256,
+          "error": "AbortError: signal is aborted without reason"
+        },
+        {
+          "size": 40,
+          "startedAt": 1791234992257,
+          "hidden": false,
+          "finishedAt": 1791234992332,
+          "status": 200,
+          "returned": 40,
+          "total": 124,
+          "showName": false,
+          "layout": "grid"
+        },
+        {
+          "size": 80,
+          "startedAt": 1791234994333,
+          "hidden": false,
+          "finishedAt": 1791234994375,
+          "status": 200,
+          "returned": 80,
+          "total": 124,
+          "showName": false,
+          "layout": "grid"
+        },
+        {
+          "size": 80,
+          "startedAt": 1791234996435,
+          "hidden": false,
+          "finishedAt": 1791234996510,
+          "status": 200,
+          "returned": 80,
+          "total": 124,
+          "showName": false,
+          "layout": "grid"
+        },
+        {
+          "size": 40,
+          "startedAt": 1791234996511,
+          "hidden": false,
+          "finishedAt": 1791234996513,
+          "error": "AbortError: signal is aborted without reason"
+        },
+        {
+          "size": 80,
+          "startedAt": 1791235001516,
+          "hidden": false,
+          "finishedAt": 1791235001532,
+          "status": 200,
+          "returned": 80,
+          "total": 124,
+          "showName": false,
+          "layout": "grid"
+        },
+        {
+          "size": 44,
+          "startedAt": 1791235001532,
+          "hidden": false,
+          "finishedAt": 1791235001541,
+          "status": 200,
+          "returned": 44,
+          "total": 124,
+          "showName": false,
+          "layout": "grid"
+        }
+      ]
+    },
+    {
+      "scenario": "40 member batches, ID deduplication and bounded 80+44 refresh with segmented rendering",
+      "pageSizes": [40, 40, 4],
+      "refreshSizes": [80, 44]
+    },
+    {
+      "scenario": "Hidden visibility stops polling and resume immediately checks loaded members",
+      "visibility": "real browser tab activation and production requests",
+      "events": [
+        {
+          "hidden": true,
+          "at": 1791235008478
+        },
+        {
+          "hidden": false,
+          "at": 1791235014029
+        }
+      ]
+    },
+    {
+      "scenario": "Next refresh removes private/trashed/removed members and updates processing in the original position"
+    },
+    {
+      "scenario": "Removed public anchor hides old cards and restores the real first page after explicit refresh"
+    },
+    {
+      "scenario": "Production HTTP 429 countdown blocks retry until real limiter window and then unlock succeeds"
+    }
+  ],
+  "layouts": [
+    {
+      "state": "all-loaded",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "screenshot": "sharing-public-all-loaded-light-1440.png",
+      "geometry": {
+        "width": 1440,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "重新加载",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": {
+        "contentWidth": 1160,
+        "galleryWidth": 1160,
+        "columns": 4
+      },
+      "recoveryStateHeight": null
+    },
+    {
+      "state": "all-loaded",
+      "theme": "dark",
+      "width": 1440,
+      "height": 1080,
+      "screenshot": "sharing-public-all-loaded-dark-1440.png",
+      "geometry": {
+        "width": 1440,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "重新加载",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": {
+        "contentWidth": 1160,
+        "galleryWidth": 1160,
+        "columns": 4
+      },
+      "recoveryStateHeight": null
+    },
+    {
+      "state": "all-loaded",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "screenshot": "sharing-public-all-loaded-light-390.png",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "重新加载",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": {
+        "contentWidth": 358,
+        "galleryWidth": 358,
+        "columns": 2
+      },
+      "recoveryStateHeight": null
+    },
+    {
+      "state": "all-loaded",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "screenshot": "sharing-public-all-loaded-dark-390.png",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "重新加载",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": {
+        "contentWidth": 358,
+        "galleryWidth": 358,
+        "columns": 2
+      },
+      "recoveryStateHeight": null
+    },
+    {
+      "state": "members-removed",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "screenshot": "sharing-public-members-removed-light-1440.png",
+      "geometry": {
+        "width": 1440,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "重新加载",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": {
+        "contentWidth": 1160,
+        "galleryWidth": 1160,
+        "columns": 4
+      },
+      "recoveryStateHeight": null
+    },
+    {
+      "state": "members-removed",
+      "theme": "dark",
+      "width": 1440,
+      "height": 1080,
+      "screenshot": "sharing-public-members-removed-dark-1440.png",
+      "geometry": {
+        "width": 1440,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "重新加载",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": {
+        "contentWidth": 1160,
+        "galleryWidth": 1160,
+        "columns": 4
+      },
+      "recoveryStateHeight": null
+    },
+    {
+      "state": "members-removed",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "screenshot": "sharing-public-members-removed-light-390.png",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "重新加载",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": {
+        "contentWidth": 358,
+        "galleryWidth": 358,
+        "columns": 2
+      },
+      "recoveryStateHeight": null
+    },
+    {
+      "state": "members-removed",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "screenshot": "sharing-public-members-removed-dark-390.png",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "重新加载",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": {
+        "contentWidth": 358,
+        "galleryWidth": 358,
+        "columns": 2
+      },
+      "recoveryStateHeight": null
+    },
+    {
+      "state": "invalid-cursor",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "screenshot": "sharing-public-invalid-cursor-light-1440.png",
+      "geometry": {
+        "width": 1440,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "刷新相册",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": {
+        "contentWidth": 1160,
+        "columns": null
+      },
+      "recoveryStateHeight": 280
+    },
+    {
+      "state": "invalid-cursor",
+      "theme": "dark",
+      "width": 1440,
+      "height": 1080,
+      "screenshot": "sharing-public-invalid-cursor-dark-1440.png",
+      "geometry": {
+        "width": 1440,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "刷新相册",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": {
+        "contentWidth": 1160,
+        "columns": null
+      },
+      "recoveryStateHeight": 280
+    },
+    {
+      "state": "invalid-cursor",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "screenshot": "sharing-public-invalid-cursor-light-390.png",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "刷新相册",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": {
+        "contentWidth": 358,
+        "columns": null
+      },
+      "recoveryStateHeight": 220
+    },
+    {
+      "state": "invalid-cursor",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "screenshot": "sharing-public-invalid-cursor-dark-390.png",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "刷新相册",
+            "width": 88,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": {
+        "contentWidth": 358,
+        "columns": null
+      },
+      "recoveryStateHeight": 220
+    },
+    {
+      "state": "rate-limited",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "screenshot": "sharing-public-rate-limited-light-1440.png",
+      "geometry": {
+        "width": 1440,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "password",
+            "width": 430,
+            "height": 48,
+            "navigation": false
+          },
+          {
+            "name": "验证并查看",
+            "width": 430,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null
+    },
+    {
+      "state": "rate-limited",
+      "theme": "dark",
+      "width": 1440,
+      "height": 1080,
+      "screenshot": "sharing-public-rate-limited-dark-1440.png",
+      "geometry": {
+        "width": 1440,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "password",
+            "width": 430,
+            "height": 48,
+            "navigation": false
+          },
+          {
+            "name": "验证并查看",
+            "width": 430,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null
+    },
+    {
+      "state": "rate-limited",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "screenshot": "sharing-public-rate-limited-light-390.png",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "password",
+            "width": 308,
+            "height": 48,
+            "navigation": false
+          },
+          {
+            "name": "验证并查看",
+            "width": 308,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null
+    },
+    {
+      "state": "rate-limited",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "screenshot": "sharing-public-rate-limited-dark-390.png",
+      "geometry": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": false,
+        "targets": [
+          {
+            "name": "返回首页",
+            "width": 100,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "password",
+            "width": 308,
+            "height": 48,
+            "navigation": false
+          },
+          {
+            "name": "验证并查看",
+            "width": 308,
+            "height": 48,
+            "navigation": false
+          }
+        ]
+      },
+      "sharingGeometry": null,
+      "recoveryStateHeight": null
+    }
+  ],
+  "limitations": [
+    "Physical phones, software keyboards, nonzero safe area and Release containers were not exercised. Anonymous lightbox belongs to T-SHR-04."
+  ],
+  "notes": [
+    "Original behavior failed in recovery at the old retry step; unchanged behavior checks passed. Latest recovery screenshots and geometry belong to sharing-recovery.json."
+  ]
+}

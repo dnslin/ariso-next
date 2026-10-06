@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { execFile } from 'node:child_process';
-import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { promisify } from 'node:util';
 import { quote } from './library-detail-171-helpers.mjs';
@@ -15,10 +15,6 @@ export const viewerQuery =
 // same ImageMagick runtime used by media produces real PNG/WebP versions; no
 // business response is substituted and no worker completion is fabricated.
 export async function seedViewerFixtures(config, sql) {
-  // Rendering sources are not stored media objects. Keep them outside the
-  // namespace scanned by the production orphan-maintenance worker.
-  const sourceDirectory = join(config.dataDirectory, 'viewer-source-fixtures');
-  await mkdir(sourceDirectory, { recursive: true });
   const directory = join(
     config.dataDirectory,
     'storage/default/ariso',
@@ -26,44 +22,65 @@ export async function seedViewerFixtures(config, sql) {
     'viewer-fixtures',
   );
   await mkdir(directory, { recursive: true });
+  // Generation inputs are not stored media objects and must stay outside the
+  // Local namespace, where maintenance removes unreferenced files.
+  const sourceDirectory = await mkdtemp(join(config.output, 'viewer-assets-'));
   const run = promisify(execFile);
-  await run('magick', [
-    join(config.projectDirectory, 'tests/fixtures/runtime/images/sample.png'),
-    '-resize',
-    '1200x900!',
-    join(sourceDirectory, 'original.png'),
-  ]);
-  await run('magick', [
-    join(sourceDirectory, 'original.png'),
-    '-quality',
-    '85',
-    join(sourceDirectory, 'compressed.webp'),
-  ]);
-  await run('magick', [
-    join(sourceDirectory, 'original.png'),
-    '-resize',
-    '400x300',
-    '-quality',
-    '85',
-    join(sourceDirectory, 'thumbnail.webp'),
-  ]);
-  await run('magick', [
-    join(sourceDirectory, 'original.png'),
-    '-fill',
-    '#ffffff80',
-    '-draw',
-    'rectangle 940,800 1160,860',
-    join(sourceDirectory, 'watermark.png'),
-  ]);
   const assets = {};
-  for (const [kind, format, width, height] of [
-    ['original', 'png', 1200, 900],
-    ['compressed', 'webp', 1200, 900],
-    ['thumbnail', 'webp', 400, 300],
-    ['watermark', 'png', 1200, 900],
-  ]) {
-    const bytes = await readFile(join(sourceDirectory, `${kind}.${format}`));
-    assets[kind] = { bytes, format, mime: `image/${format}`, width, height };
+  let partialThumbnail;
+  try {
+    await run('magick', [
+      join(config.projectDirectory, 'tests/fixtures/runtime/images/sample.png'),
+      '-resize',
+      '1200x900!',
+      join(sourceDirectory, 'original.png'),
+    ]);
+    await run('magick', [
+      join(sourceDirectory, 'original.png'),
+      '-quality',
+      '85',
+      join(sourceDirectory, 'compressed.webp'),
+    ]);
+    await run('magick', [
+      join(sourceDirectory, 'original.png'),
+      '-resize',
+      '400x300',
+      '-quality',
+      '85',
+      join(sourceDirectory, 'thumbnail.webp'),
+    ]);
+    await run('magick', [
+      join(sourceDirectory, 'original.png'),
+      '-fill',
+      '#ffffff80',
+      '-draw',
+      'rectangle 940,800 1160,860',
+      join(sourceDirectory, 'watermark.png'),
+    ]);
+    for (const [kind, format, width, height] of [
+      ['original', 'png', 1200, 900],
+      ['compressed', 'webp', 1200, 900],
+      ['thumbnail', 'webp', 400, 300],
+      ['watermark', 'png', 1200, 900],
+    ]) {
+      const bytes = await readFile(join(sourceDirectory, `${kind}.${format}`));
+      assets[kind] = { bytes, format, mime: `image/${format}`, width, height };
+    }
+    await run('magick', [
+      join(sourceDirectory, 'original.png'),
+      '-resize',
+      '320x240!',
+      join(sourceDirectory, 'partial-thumbnail.webp'),
+    ]);
+    partialThumbnail = {
+      bytes: await readFile(join(sourceDirectory, 'partial-thumbnail.webp')),
+      format: 'webp',
+      mime: 'image/webp',
+      width: null,
+      height: 240,
+    };
+  } finally {
+    await rm(sourceDirectory, { recursive: true, force: true });
   }
   const created = 1700000000000;
   await sql(
@@ -76,11 +93,11 @@ export async function seedViewerFixtures(config, sql) {
   }
   async function version(id, kind, asset, { missing = false } = {}) {
     const filename = `${id}-${kind}.${asset.format}`;
-    if (!missing) await writeFile(join(directory, filename), asset.bytes);
     const object = `${id}-${kind}`;
     await sql(
       `INSERT INTO media_objects (id,image_id,storage_id,key,purpose,status,byte_size,width,height,format,mime,created_at,updated_at) VALUES (${quote(object)},${quote(id)},'${viewerStorage}',${quote(`viewer-fixtures/${filename}`)},${quote(kind)},'stored',${asset.bytes.length},${asset.width},${asset.height},${quote(asset.format)},${quote(asset.mime)},${created},${created})`,
     );
+    if (!missing) await writeFile(join(directory, filename), asset.bytes);
     await sql(
       `INSERT INTO media_versions (image_id,kind,object_id,width,height,byte_size,format,mime,created_at) VALUES (${quote(id)},${quote(kind)},${quote(object)},${asset.width},${asset.height},${asset.bytes.length},${quote(asset.format)},${quote(asset.mime)},${created})`,
     );
@@ -106,20 +123,6 @@ export async function seedViewerFixtures(config, sql) {
   );
   for (const kind of ['original', 'compressed'])
     await version('issue185-no-dimensions', kind, noDimensions(assets[kind]));
-  await run('magick', [
-    join(sourceDirectory, 'original.png'),
-    '-resize',
-    '320x240!',
-    join(sourceDirectory, 'partial-thumbnail.webp'),
-  ]);
-  const partialThumbnail = {
-    bytes: await readFile(join(sourceDirectory, 'partial-thumbnail.webp')),
-    format: 'webp',
-    mime: 'image/webp',
-    width: null,
-    height: 240,
-  };
-  await rm(sourceDirectory, { recursive: true, force: true });
   await image(
     'issue185-partial-dimensions',
     'issue185-partial-dimensions.png',
@@ -172,10 +175,10 @@ export async function seedViewerFixtures(config, sql) {
   }
   // A stored-but-unpublished candidate has real bytes and no media_versions
   // pointer. It must not become a saved version through a viewer fallback.
-  await writeFile(join(directory, 'candidate.webp'), assets.compressed.bytes);
   await sql(
     `INSERT INTO media_objects (id,image_id,storage_id,key,purpose,status,byte_size,width,height,format,mime,created_at,updated_at) VALUES ('issue185-candidate','issue185-empty','${viewerStorage}','viewer-fixtures/candidate.webp','compressed','stored',${assets.compressed.bytes.length},1200,900,'webp','image/webp',${created},${created})`,
   );
+  await writeFile(join(directory, 'candidate.webp'), assets.compressed.bytes);
   const result = await sql(
     `SELECT count(*) AS count FROM media_images WHERE storage_id='${viewerStorage}'`,
   );

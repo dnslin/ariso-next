@@ -15,6 +15,9 @@ const {
 } = await import(
   new URL('./storage-admin-layout.mjs', config.identitySessionScript).href
 );
+const { runStorageLocalValidation } = await import(
+  new URL('./storage-local-validation.mjs', config.identitySessionScript).href
+);
 const task = await taskSpace(config.spaceId);
 const page = task.page(config.pageLabel ?? 'p1');
 const report = {
@@ -208,17 +211,7 @@ try {
   await open(local.id);
   await storageLayouts(page, config, report, 'local-editor');
   await storageShortViewport(page, config, report);
-  await page.fill(field('localPath'), '../../outside-storage');
-  await save();
-  await page.waitForSelector('[role="alert"]');
-  assert.equal(
-    await page.evaluate(
-      () => document.querySelector('input[name="localPath"]').value,
-    ),
-    '../../outside-storage',
-  );
-  assert.equal((await storage(local.id)).localPath, 'storage-admin-198');
-  await storageLayouts(page, config, report, 'local-field-error', [1440, 390]);
+  await runStorageLocalValidation({ page, config, report, local, storage });
   await page.fill(field('localPath'), 'storage-admin-198');
   await page.fill(field('name'), 'Issue 198 renamed local');
   await loseStorageMutation(page, `/api/storages/${local.id}`, 'PATCH');
