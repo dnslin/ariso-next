@@ -4,6 +4,8 @@ import { asc, count, desc, eq, sql } from 'drizzle-orm';
 import type { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
 import { z } from 'zod';
 import { albums } from '../collections/schema.ts';
+import { readAlbumSummaries } from '../collections/album-management.ts';
+import { readCoverThumbnails } from '../delivery/cover-thumbnails.ts';
 import { requireSiteSettings } from '../site/settings.ts';
 import { buildSiteUrl } from '../site/urls.ts';
 import { SharingError } from './errors.ts';
@@ -280,10 +282,33 @@ export function listShares(
       .all();
     const settings = requireSiteSettings(tx);
     const now = new Date();
-    return {
-      items: rows.map(({ share, albumName }) =>
-        serializeShare(share, albumName, settings, now),
+    const summaries = readAlbumSummaries(
+      tx,
+      rows.map(({ share }) => share.albumId),
+    );
+    const thumbnails = readCoverThumbnails(
+      tx,
+      [...summaries.values()].flatMap(({ cover }) =>
+        cover.imageId ? [cover.imageId] : [],
       ),
+    );
+    return {
+      items: rows.map(({ share, albumName }) => {
+        const summary = summaries.get(share.albumId)!;
+        const thumbnail = summary.cover.imageId
+          ? thumbnails.get(summary.cover.imageId)
+          : undefined;
+        return {
+          ...serializeShare(share, albumName, settings, now),
+          publicImageCount: summary.publicImageCount,
+          cover: {
+            imageId: summary.cover.imageId,
+            displayName: thumbnail?.displayName ?? null,
+            status: thumbnail?.status ?? ('empty' as const),
+            thumbnailUrl: thumbnail?.thumbnailUrl ?? null,
+          },
+        };
+      }),
       total,
       page,
       pageSize,

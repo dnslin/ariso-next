@@ -11,6 +11,7 @@ describe('focused browser execution plans', () => {
     ['account', ['account']],
     ['tokens', ['tokens']],
     ['shell-navigation', ['shell-navigation']],
+    ['sharing-management', ['sharing-management']],
     ['albums', ['albums']],
     ['album-cover', ['album-cover']],
     ['tags', ['tags']],
@@ -48,6 +49,9 @@ describe('focused browser execution plans', () => {
     ['trash', 'cleanup', ['trash-cleanup']],
     ['trash', 'approved-results', ['trash-query-batch']],
     ['library', 'recovery', ['library']],
+    ['sharing-management', 'representative', ['sharing-management']],
+    ['sharing-management', 'behavior', ['sharing-management']],
+    ['sharing-management', 'recovery', ['sharing-management']],
     ['tokens', 'representative', ['tokens']],
     ['tokens', 'behavior', ['tokens']],
     ['tokens', 'lifecycle', ['tokens']],
@@ -84,6 +88,7 @@ describe('focused browser execution plans', () => {
     ['library-batch', 'cache', { libraryBatchPhase: 'cache' }],
     ['trash', 'approved-results', { trashPhase: 'approved-results' }],
     ['upload-s3', 'cleanup', { onlyCleanup: true }],
+    ['sharing-management', 'recovery', { sharingManagementPhase: 'recovery' }],
   ] as const)(
     'passes only the owning scene fields for %s / %s',
     (suite, only, config) => {
@@ -92,6 +97,9 @@ describe('focused browser execution plans', () => {
   );
 
   it('keeps consumer navigation and representative viewer behavior explicit', () => {
+    expect(select('sharing-management').config).toEqual({
+      sharingManagementPhase: undefined,
+    });
     expect(select('processing').config).toEqual({
       processingPhase: undefined,
       processingNavigationFixtures: true,
@@ -109,5 +117,28 @@ describe('focused browser execution plans', () => {
     expect(select('upload-regression', 'main').config).toEqual({});
     expect(select('account').config).toEqual({});
     expect(select('tokens').config).toEqual({ tokensPhase: undefined });
+  });
+
+  it('includes every existing business stage and all sharing scenes in the default full flow', () => {
+    expect(select('full')).toEqual({
+      stages: [
+        ['library-batch', 'library-batch'],
+        ['library-batch-reprocess', 'library-reprocess'],
+        ['library-copy', 'library-copy'],
+        ['trash-query-batch', 'trash-query-batch'],
+        ['trash-cleanup', 'trash-cleanup'],
+        ['shell-navigation', 'shell-navigation'],
+        ['albums', 'albums'],
+        ['album-cover', 'album-cover'],
+        ['tags', 'tags'],
+        ['upload', 'upload'],
+        ['upload-polling', 'upload-polling'],
+        ['upload-input', 'upload-input'],
+        ['upload-submissions', 'upload-submissions'],
+        ['upload-relations', 'upload-relations'],
+        ['sharing-management', 'sharing-management'],
+      ],
+      config: {},
+    });
   });
 });

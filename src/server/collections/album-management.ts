@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { mediaImages } from '../media/schema.ts';
 import { CollectionError } from './errors.ts';
 import { albums, albumImages } from './schema.ts';
-import { resolveAlbumCovers } from './cover.ts';
+import { resolveAlbumCovers, type AlbumCoverIdentity } from './cover.ts';
 import type { CollectionsTransaction } from './types.ts';
 
 const querySchema = z.object({
@@ -39,11 +39,19 @@ export function parseAlbumQuery(params: URLSearchParams) {
   return result.data;
 }
 
-function serializeAlbums(
+export type AlbumSummary = {
+  imageCount: number;
+  publicImageCount: number;
+  cover: AlbumCoverIdentity;
+};
+
+/** Counts and cover identities for explicit albums in the caller's read transaction. */
+export function readAlbumSummaries(
   tx: CollectionsTransaction,
-  rows: (typeof albums.$inferSelect)[],
-) {
-  if (!rows.length) return [];
+  albumIds: readonly string[],
+): Map<string, AlbumSummary> {
+  const ids = [...new Set(albumIds)];
+  if (!ids.length) return new Map();
   const counts = tx
     .select({
       id: albumImages.albumId,
@@ -54,10 +62,7 @@ function serializeAlbums(
     .innerJoin(mediaImages, eq(albumImages.imageId, mediaImages.id))
     .where(
       and(
-        inArray(
-          albumImages.albumId,
-          rows.map((row) => row.id),
-        ),
+        inArray(albumImages.albumId, ids),
         isNull(mediaImages.trashedAt),
         isNull(mediaImages.deletionStatus),
       ),
@@ -65,7 +70,24 @@ function serializeAlbums(
     .groupBy(albumImages.albumId)
     .all();
   const byId = new Map(counts.map((row) => [row.id, row]));
-  const covers = resolveAlbumCovers(
+  const covers = resolveAlbumCovers(tx, ids);
+  return new Map(
+    ids.map((id) => [
+      id,
+      {
+        imageCount: byId.get(id)?.value ?? 0,
+        publicImageCount: byId.get(id)?.publicCount ?? 0,
+        cover: covers.get(id)!,
+      },
+    ]),
+  );
+}
+
+function serializeAlbums(
+  tx: CollectionsTransaction,
+  rows: (typeof albums.$inferSelect)[],
+) {
+  const summaries = readAlbumSummaries(
     tx,
     rows.map((row) => row.id),
   );
@@ -75,9 +97,7 @@ function serializeAlbums(
     description,
     createdAt: createdAt.toISOString(),
     updatedAt: updatedAt.toISOString(),
-    imageCount: byId.get(id)?.value ?? 0,
-    publicImageCount: byId.get(id)?.publicCount ?? 0,
-    cover: covers.get(id)!,
+    ...summaries.get(id)!,
   }));
 }
 

@@ -4,6 +4,7 @@ import {
   listAlbums,
   parseAlbumQuery,
   readAlbum,
+  readAlbumSummaries,
 } from '../../../src/server/collections/album-management.ts';
 import {
   createAlbum,
@@ -127,4 +128,55 @@ it('counts normal private/failed members even with disabled storage and deletes 
   expect(db.transaction((tx) => readAlbum(tx, recreated.id)).imageCount).toBe(
     0,
   );
+});
+
+it('reads explicit album summaries in one batch without changing cover identity or counting removed members', () => {
+  const { db } = fixture;
+  const full = db.transaction((tx) => createAlbum(tx, { name: '有图片' }));
+  const empty = db.transaction((tx) => createAlbum(tx, { name: '空相册' }));
+  const ids = ['public', 'private', 'trashed', 'deleting'].map((id) =>
+    fixture.image(id),
+  );
+  addMemberships(db, ids, { albumIds: [full.id], tagIds: [] });
+  db.update(mediaImages)
+    .set({ visibility: 'private', processingStatus: 'failed' })
+    .where(eq(mediaImages.id, 'private'))
+    .run();
+  db.update(mediaImages)
+    .set({ trashedAt: new Date() })
+    .where(eq(mediaImages.id, 'trashed'))
+    .run();
+  db.update(mediaImages)
+    .set({ deletionStatus: 'deleting' })
+    .where(eq(mediaImages.id, 'deleting'))
+    .run();
+  db.update(storageConfigs).set({ enabled: false }).run();
+  const summaries = db.transaction((tx) =>
+    readAlbumSummaries(tx, [empty.id, full.id, full.id]),
+  );
+  expect([...summaries.keys()]).toEqual([empty.id, full.id]);
+  expect(summaries.get(full.id)).toEqual({
+    imageCount: 2,
+    publicImageCount: 1,
+    cover: {
+      imageId: 'public',
+      mode: 'automatic',
+      preferredCoverImageId: null,
+      temporaryFallback: false,
+    },
+  });
+  expect(summaries.get(empty.id)).toEqual({
+    imageCount: 0,
+    publicImageCount: 0,
+    cover: {
+      imageId: null,
+      mode: 'empty',
+      preferredCoverImageId: null,
+      temporaryFallback: false,
+    },
+  });
+  expect(db.transaction((tx) => readAlbumSummaries(tx, []))).toEqual(new Map());
+  expect(() =>
+    db.transaction((tx) => readAlbumSummaries(tx, [full.id, 'missing'])),
+  ).toThrow('相册不存在');
 });

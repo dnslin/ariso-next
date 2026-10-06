@@ -2,9 +2,33 @@ import assert from 'node:assert/strict';
 
 // A focused suite owns its accepted phases, page boundary and execution plan.
 const suites = {
-  full: { primaryPage: true },
+  full: {
+    primaryPage: true,
+    stages: [
+      ['library-batch', 'library-batch'],
+      ['library-batch-reprocess', 'library-reprocess'],
+      ['library-copy', 'library-copy'],
+      ['trash-query-batch', 'trash-query-batch'],
+      ['trash-cleanup', 'trash-cleanup'],
+      ['shell-navigation', 'shell-navigation'],
+      ['albums', 'albums'],
+      ['album-cover', 'album-cover'],
+      ['tags', 'tags'],
+      ['upload', 'upload'],
+      ['upload-polling', 'upload-polling'],
+      ['upload-input', 'upload-input'],
+      ['upload-submissions', 'upload-submissions'],
+      ['upload-relations', 'upload-relations'],
+      ['sharing-management', 'sharing-management'],
+    ],
+  },
   'sharing-experiment': {},
   'sharing-protocol': {},
+  'sharing-management': {
+    only: ['representative', 'behavior', 'recovery'],
+    stages: [['sharing-management', 'sharingManagement']],
+    config: (only) => ({ sharingManagementPhase: only }),
+  },
   account: { stages: [['account', 'account']] },
   tokens: {
     only: [

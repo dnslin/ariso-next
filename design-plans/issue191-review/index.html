@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Ariso · 分享管理交互提案</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        color: #272343;
+        background: #f4f4f7;
+        font:
+          14px/1.5 system-ui,
+          sans-serif;
+      }
+      header {
+        padding: 16px 24px;
+        background: white;
+        border-bottom: 1px solid #dcdce5;
+      }
+      h1 {
+        margin: 0;
+        font-size: 20px;
+      }
+      p {
+        margin: 6px 0 12px;
+      }
+      .tools {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      button,
+      select {
+        font: inherit;
+        min-height: 44px;
+        border: 1px solid #d3d4dd;
+        border-radius: 8px;
+        padding: 8px 12px;
+        background: white;
+        color: inherit;
+      }
+      button[aria-pressed='true'] {
+        background: #ffd807;
+        border-color: #ffd807;
+      }
+      label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      :focus-visible {
+        outline: 2px solid #287e79;
+        outline-offset: 3px;
+      }
+      .stage {
+        padding: 24px 12px;
+        display: flex;
+        justify-content: center;
+        overflow: auto;
+      }
+      .viewport {
+        width: 390px;
+        height: 844px;
+        flex: none;
+        border: 1px solid #d3d4dd;
+        border-radius: 12px;
+        overflow: hidden;
+        background: white;
+      }
+      .viewport.desktop {
+        width: 1440px;
+        height: 1080px;
+      }
+      iframe {
+        border: 0;
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+      .caption {
+        padding: 0 24px 24px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>分享设置 · 布局与交互提案（第二版）</h1>
+      <p>
+        使用真实 HeroUI 组件与 Ariso
+        公共外壳。地址改为只读文本与复制图标，访问设置采用折叠面板，展示设置直接可选。数据和响应均为模拟，方案已批准。
+      </p>
+      <div class="tools">
+        <button id="phone" aria-pressed="false">手机 390</button>
+        <button id="desktop" aria-pressed="true">桌面 1440</button>
+        <label
+          >页面<select id="screen">
+            <option value="settings">分享设置</option>
+            <option value="list">管理列表</option>
+            <option value="create">未创建分享</option>
+            <option value="expired">已过期分享</option>
+            <option value="disabled">已停用分享</option>
+          </select></label
+        >
+        <label
+          >响应模拟<select id="outcome">
+            <option value="success">成功</option>
+            <option value="manual">复制被拒绝</option>
+            <option value="failed">保存失败</option>
+            <option value="unknown">断连后核对</option>
+            <option value="read-failed">断连且核对失败</option>
+          </select></label
+        >
+        <button id="dark" aria-pressed="false">深色</button>
+        <button id="long" aria-pressed="false">长地址</button>
+        <button id="reset">重置</button>
+      </div>
+    </header>
+    <div class="stage">
+      <div class="viewport desktop" id="viewport">
+        <iframe
+          id="surface"
+          title="分享管理已批准原型"
+          src="http://127.0.0.1:53525/shares"
+        ></iframe>
+      </div>
+    </div>
+    <p class="caption">
+      建议先看整页，再展开密码与有效期，切换网格/瀑布流及名称开关，最后查看手机布局。复制成功保留原页；过期启用可直接延期或选择不过期。管理列表与创建页仍为第一版示意。
+    </p>
+    <script>
+      const frame = document.getElementById('surface');
+      let dark = false,
+        long = false;
+      function render() {
+        const screen = document.getElementById('screen').value;
+        const endpoint =
+          screen === 'list' || screen === 'create'
+            ? 'surface.html'
+            : 'http://127.0.0.1:53525/shares';
+        frame.src = `${endpoint}?revision=routing-3&screen=${screen}&outcome=${document.getElementById('outcome').value}&dark=${Number(dark)}&long=${Number(long)}`;
+      }
+      for (const id of ['phone', 'desktop'])
+        document.getElementById(id).onclick = () => {
+          document
+            .getElementById('viewport')
+            .classList.toggle('desktop', id === 'desktop');
+          for (const other of ['phone', 'desktop'])
+            document
+              .getElementById(other)
+              .setAttribute('aria-pressed', String(other === id));
+        };
+      for (const id of ['screen', 'outcome'])
+        document.getElementById(id).onchange = render;
+      document.getElementById('dark').onclick = () => {
+        dark = !dark;
+        document
+          .getElementById('dark')
+          .setAttribute('aria-pressed', String(dark));
+        render();
+      };
+      document.getElementById('long').onclick = () => {
+        long = !long;
+        document
+          .getElementById('long')
+          .setAttribute('aria-pressed', String(long));
+        render();
+      };
+      document.getElementById('reset').onclick = render;
+      window.addEventListener('message', (event) => {
+        if (
+          event.source !== frame.contentWindow ||
+          !['http://127.0.0.1:53524', 'http://127.0.0.1:53525'].includes(
+            event.origin,
+          )
+        )
+          return;
+        if (
+          !['settings', 'list', 'create', 'expired', 'disabled'].includes(
+            event.data?.screen,
+          )
+        )
+          return;
+        document.getElementById('screen').value = event.data.screen;
+        render();
+      });
+    </script>
+  </body>
+</html>

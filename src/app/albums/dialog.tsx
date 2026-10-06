@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { Button } from '@heroui/react/button';
+import { Link } from '@heroui/react/link';
 import { Modal } from '@heroui/react/modal';
 import { TextField } from '@heroui/react/textfield';
 import { Input } from '@heroui/react/input';
@@ -315,6 +316,12 @@ export function AlbumDialog({
         </p>
         {mode === 'menu' ? (
           <>
+            <Link
+              href={`/shares/${encodeURIComponent(album!.id)}?from=album`}
+              className="h-12 w-full justify-center rounded-lg border border-border bg-background text-sm font-normal text-foreground no-underline"
+            >
+              分享设置
+            </Link>
             <Button
               variant="outline"
               isDisabled

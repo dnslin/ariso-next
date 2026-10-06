@@ -1,0 +1,2397 @@
+{
+  "status": "passed",
+  "phase": "behavior",
+  "taskSpaceId": 41,
+  "origin": "http://ariso-62894.localhost:62894",
+  "checks": [
+    "Real long current-root address wraps without truncation; native Clipboard success preserves route/scroll; denied permission exposes full selectable manual text, copies with native keyboard and returns focus on Escape; mobile completion hit tests and actual clicks are recorded separately.",
+    "Independent display PATCH omits unsaved password; held password PATCH submits once, preserves spaces and another client’s showName change.",
+    "Two real owner browser tabs edit layout and showName from the same initial record; both exact partial PATCHes survive sequential completion without stale-field overwrite.",
+    "Password clear is a separate confirmed PATCH; cancel keeps protection, success clears only the password and retains the URL.",
+    "Real future calendar selection is reachable at 360×640 with 44px day targets, saves only expiresAt in UTC, and a site timezone fixture change updates display without moving that ISO instant.",
+    "Disabled and expired sharing requires a deadline choice; selecting never expires restores the original URL in one PATCH without overwriting password/display.",
+    "Real album menu enters sharing with return context; concurrent creation returns the existing record, preserves its actual settings and never claims submitted defaults replaced them.",
+    "Create rejects 129 ASCII code points without POST and retains the input; 65 emoji code points remain editable and submit normally without native UTF-16 truncation."
+  ],
+  "layouts": [
+    {
+      "state": "long-address",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "复制分享地址",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "访问密码",
+          "width": 324,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "有效期",
+          "width": 324,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "网格",
+          "width": 155,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "瀑布流",
+          "width": 155,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存展示",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新生成",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回分享管理",
+          "width": 142,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "预览分享",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "long-address",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "分享管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "复制分享地址",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "访问密码",
+          "width": 510,
+          "height": 80,
+          "navigation": false
+        },
+        {
+          "name": "有效期",
+          "width": 510,
+          "height": 80,
+          "navigation": false
+        },
+        {
+          "name": "网格",
+          "width": 248,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "瀑布流",
+          "width": 248,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存展示",
+          "width": 88,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "重新生成",
+          "width": 90,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "返回分享管理",
+          "width": 138,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "预览分享",
+          "width": 108,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "long-address",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "复制分享地址",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "访问密码",
+          "width": 324,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "有效期",
+          "width": 324,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "网格",
+          "width": 155,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "瀑布流",
+          "width": 155,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存展示",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新生成",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回分享管理",
+          "width": 142,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "预览分享",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "long-address",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "分享管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "复制分享地址",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "访问密码",
+          "width": 510,
+          "height": 80,
+          "navigation": false
+        },
+        {
+          "name": "有效期",
+          "width": 510,
+          "height": 80,
+          "navigation": false
+        },
+        {
+          "name": "网格",
+          "width": 248,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "瀑布流",
+          "width": 248,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存展示",
+          "width": 88,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "重新生成",
+          "width": 90,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "返回分享管理",
+          "width": 138,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "预览分享",
+          "width": 108,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "copy-manual",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "完整分享地址",
+          "width": 308,
+          "height": 112,
+          "navigation": false
+        },
+        {
+          "name": "选中完整地址",
+          "width": 118,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "完成",
+          "width": 60,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "copy-manual",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "完整分享地址",
+          "width": 430,
+          "height": 112,
+          "navigation": false
+        },
+        {
+          "name": "选中完整地址",
+          "width": 118,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "完成",
+          "width": 60,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "copy-manual",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "完整分享地址",
+          "width": 308,
+          "height": 112,
+          "navigation": false
+        },
+        {
+          "name": "选中完整地址",
+          "width": 118,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "完成",
+          "width": 60,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "copy-manual",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "完整分享地址",
+          "width": 430,
+          "height": 112,
+          "navigation": false
+        },
+        {
+          "name": "选中完整地址",
+          "width": 118,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "完成",
+          "width": 60,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "display-unsaved-selected-choice",
+      "theme": "light",
+      "width": 390,
+      "text": "瀑布流",
+      "color": "rgb(39, 35, 67)",
+      "backgroundColor": "rgb(255, 216, 7)",
+      "opacity": "1",
+      "iconOpacity": "1"
+    },
+    {
+      "state": "display-unsaved",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "复制分享地址",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "访问密码",
+          "width": 324,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 292,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 242,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "保存密码",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "有效期",
+          "width": 324,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "网格",
+          "width": 155,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "瀑布流",
+          "width": 155,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存展示",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新生成",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回分享管理",
+          "width": 142,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "预览分享",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "display-unsaved-selected-choice",
+      "theme": "light",
+      "width": 1440,
+      "text": "瀑布流",
+      "color": "rgb(39, 35, 67)",
+      "backgroundColor": "rgb(255, 216, 7)",
+      "opacity": "1",
+      "iconOpacity": "1"
+    },
+    {
+      "state": "display-unsaved",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "分享管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "复制分享地址",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "访问密码",
+          "width": 510,
+          "height": 80,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 378,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 328,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "保存密码",
+          "width": 88,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "有效期",
+          "width": 510,
+          "height": 80,
+          "navigation": false
+        },
+        {
+          "name": "网格",
+          "width": 248,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "瀑布流",
+          "width": 248,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存展示",
+          "width": 88,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "重新生成",
+          "width": 90,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "返回分享管理",
+          "width": 138,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "预览分享",
+          "width": 108,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "display-unsaved-selected-choice",
+      "theme": "dark",
+      "width": 390,
+      "text": "瀑布流",
+      "color": "rgb(39, 35, 67)",
+      "backgroundColor": "rgb(255, 216, 7)",
+      "opacity": "1",
+      "iconOpacity": "1"
+    },
+    {
+      "state": "display-unsaved",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "复制分享地址",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "访问密码",
+          "width": 324,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 292,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 242,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "保存密码",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "有效期",
+          "width": 324,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "网格",
+          "width": 155,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "瀑布流",
+          "width": 155,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存展示",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新生成",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回分享管理",
+          "width": 142,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "预览分享",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "display-unsaved-selected-choice",
+      "theme": "dark",
+      "width": 1440,
+      "text": "瀑布流",
+      "color": "rgb(39, 35, 67)",
+      "backgroundColor": "rgb(255, 216, 7)",
+      "opacity": "1",
+      "iconOpacity": "1"
+    },
+    {
+      "state": "display-unsaved",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "分享管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "复制分享地址",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "访问密码",
+          "width": 510,
+          "height": 80,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 378,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 328,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "保存密码",
+          "width": 88,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "有效期",
+          "width": 510,
+          "height": 80,
+          "navigation": false
+        },
+        {
+          "name": "网格",
+          "width": 248,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "瀑布流",
+          "width": 248,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存展示",
+          "width": 88,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "重新生成",
+          "width": 90,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "返回分享管理",
+          "width": 138,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "预览分享",
+          "width": 108,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "future-calendar",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "上个月",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下个月",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "future-calendar",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "上个月",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下个月",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "future-calendar",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "上个月",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下个月",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "future-calendar",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "上个月",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下个月",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "expiry-specified",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "复制分享地址",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "访问密码",
+          "width": 324,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "有效期",
+          "width": 324,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "不过期",
+          "width": 139,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "指定时间",
+          "width": 139,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "打开日历",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "保存有效期",
+          "width": 102,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "网格",
+          "width": 155,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "瀑布流",
+          "width": 155,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存展示",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新生成",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回分享管理",
+          "width": 142,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "预览分享",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "expiry-specified",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "分享管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "复制分享地址",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "访问密码",
+          "width": 510,
+          "height": 80,
+          "navigation": false
+        },
+        {
+          "name": "有效期",
+          "width": 510,
+          "height": 80,
+          "navigation": false
+        },
+        {
+          "name": "不过期",
+          "width": 232,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "指定时间",
+          "width": 232,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "打开日历",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "保存有效期",
+          "width": 102,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "网格",
+          "width": 248,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "瀑布流",
+          "width": 248,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存展示",
+          "width": 88,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "重新生成",
+          "width": 90,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "返回分享管理",
+          "width": 138,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "预览分享",
+          "width": 108,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "expiry-specified",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "复制分享地址",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "访问密码",
+          "width": 324,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "有效期",
+          "width": 324,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "不过期",
+          "width": 139,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "指定时间",
+          "width": 139,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "打开日历",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "保存有效期",
+          "width": 102,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "网格",
+          "width": 155,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "瀑布流",
+          "width": 155,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存展示",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新生成",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回分享管理",
+          "width": 142,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "预览分享",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "expiry-specified",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "分享管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "复制分享地址",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "访问密码",
+          "width": 510,
+          "height": 80,
+          "navigation": false
+        },
+        {
+          "name": "有效期",
+          "width": 510,
+          "height": 80,
+          "navigation": false
+        },
+        {
+          "name": "不过期",
+          "width": 232,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "指定时间",
+          "width": 232,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "打开日历",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "保存有效期",
+          "width": 102,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "网格",
+          "width": 248,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "瀑布流",
+          "width": 248,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存展示",
+          "width": 88,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "重新生成",
+          "width": 90,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "返回分享管理",
+          "width": 138,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "预览分享",
+          "width": 108,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "expired-enable",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "不过期",
+          "width": 147,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "指定时间",
+          "width": 147,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 62,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "启用分享",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "expired-enable",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "不过期",
+          "width": 208,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "指定时间",
+          "width": 208,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 62,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "启用分享",
+          "width": 88,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "expired-enable",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "不过期",
+          "width": 147,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "指定时间",
+          "width": 147,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 62,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "启用分享",
+          "width": 88,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "expired-enable",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "不过期",
+          "width": 208,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "指定时间",
+          "width": 208,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 62,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "启用分享",
+          "width": 88,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "create",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 308,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 306,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "不过期",
+          "width": 147,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "指定时间",
+          "width": 147,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 62,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "创建并启用",
+          "width": 102,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "create",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 430,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 428,
+          "inputHeight": 36,
+          "navigation": false
+        },
+        {
+          "name": "不过期",
+          "width": 208,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "指定时间",
+          "width": 208,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 62,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "创建并启用",
+          "width": 102,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "create",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 308,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 306,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "不过期",
+          "width": 147,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "指定时间",
+          "width": 147,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 62,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "创建并启用",
+          "width": 102,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "create",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 430,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 428,
+          "inputHeight": 36,
+          "navigation": false
+        },
+        {
+          "name": "不过期",
+          "width": 208,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "指定时间",
+          "width": 208,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 62,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "创建并启用",
+          "width": 102,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "create-password-error",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 308,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 306,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "不过期",
+          "width": 147,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "指定时间",
+          "width": 147,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 62,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "创建并启用",
+          "width": 102,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "create-password-error",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 430,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 428,
+          "inputHeight": 36,
+          "navigation": false
+        },
+        {
+          "name": "不过期",
+          "width": 208,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "指定时间",
+          "width": 208,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 62,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "创建并启用",
+          "width": 102,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "create-password-error",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 308,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 306,
+          "inputHeight": 44,
+          "navigation": false
+        },
+        {
+          "name": "不过期",
+          "width": 147,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "指定时间",
+          "width": 147,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 62,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "创建并启用",
+          "width": 102,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "state": "create-password-error",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 430,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 428,
+          "inputHeight": 36,
+          "navigation": false
+        },
+        {
+          "name": "不过期",
+          "width": 208,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "指定时间",
+          "width": 208,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 62,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "创建并启用",
+          "width": 102,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    "sharing-management-long-address-light-390.png",
+    "sharing-management-long-address-light-1440.png",
+    "sharing-management-long-address-dark-390.png",
+    "sharing-management-long-address-dark-1440.png",
+    "sharing-management-copy-toast-light-390.png",
+    "sharing-management-copy-manual-light-390.png",
+    "sharing-management-copy-manual-light-1440.png",
+    "sharing-management-copy-manual-dark-390.png",
+    "sharing-management-copy-manual-dark-1440.png",
+    "sharing-management-display-unsaved-light-390.png",
+    "sharing-management-display-unsaved-light-1440.png",
+    "sharing-management-display-unsaved-dark-390.png",
+    "sharing-management-display-unsaved-dark-1440.png",
+    "sharing-management-future-calendar-light-390.png",
+    "sharing-management-future-calendar-light-1440.png",
+    "sharing-management-future-calendar-dark-390.png",
+    "sharing-management-future-calendar-dark-1440.png",
+    "sharing-management-future-calendar-360-short.png",
+    "sharing-management-expiry-specified-light-390.png",
+    "sharing-management-expiry-specified-light-1440.png",
+    "sharing-management-expiry-specified-dark-390.png",
+    "sharing-management-expiry-specified-dark-1440.png",
+    "sharing-management-expiry-timezone-utc.png",
+    "sharing-management-expired-enable-light-390.png",
+    "sharing-management-expired-enable-light-1440.png",
+    "sharing-management-expired-enable-dark-390.png",
+    "sharing-management-expired-enable-dark-1440.png",
+    "sharing-management-create-light-390.png",
+    "sharing-management-create-light-1440.png",
+    "sharing-management-create-dark-390.png",
+    "sharing-management-create-dark-1440.png",
+    "sharing-management-create-password-error-light-390.png",
+    "sharing-management-create-password-error-light-1440.png",
+    "sharing-management-create-password-error-dark-390.png",
+    "sharing-management-create-password-error-dark-1440.png",
+    "sharing-management-created-return-with-notice-dark-1440.png"
+  ],
+  "limitations": [
+    "Production owner UI and disposable SQLite data; browser transport faults are explicit injections after real commits where specified.",
+    "Anonymous gallery rendering belongs to T-SHR-03; physical phones and Release containers were not exercised."
+  ],
+  "stage": "complete",
+  "manualCompletion": [
+    {
+      "theme": "light",
+      "width": 390,
+      "unobstructed": true,
+      "hitText": "完成",
+      "toastTitles": [],
+      "clicked": true
+    },
+    {
+      "theme": "dark",
+      "width": 390,
+      "unobstructed": true,
+      "hitText": "完成",
+      "toastTitles": [],
+      "clicked": true
+    }
+  ],
+  "peerErrors": [],
+  "creationErrorField": {
+    "invalid": true,
+    "adjacent": true,
+    "borderColor": "rgb(255, 133, 138)",
+    "outlineColor": "rgb(255, 133, 138)",
+    "outlineWidth": "1px",
+    "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px inset",
+    "errorColor": "rgb(255, 133, 138)"
+  },
+  "returnNoticeEntrance": {
+    "unobstructed": false,
+    "hitSlot": "toast",
+    "hitTag": "DIV",
+    "modalCount": 0,
+    "notices": [
+      {
+        "entering": "true",
+        "transform": "matrix(1, 0, 0, 1, 0, 58)",
+        "top": 980,
+        "bottom": 1038
+      }
+    ],
+    "buttonTop": 1012,
+    "toastTitles": ["已读取分享设置"]
+  },
+  "returnDuringNotice": {
+    "unobstructed": true,
+    "hitSlot": "button",
+    "hitTag": "BUTTON",
+    "modalCount": 0,
+    "notices": [
+      {
+        "entering": null,
+        "transform": "matrix(1, 0, 0, 1, 0, 0)",
+        "top": 922,
+        "bottom": 980
+      }
+    ],
+    "buttonTop": 1012,
+    "toastTitles": ["已读取分享设置"]
+  },
+  "errors": [],
+  "clipboardRestored": true,
+  "themeRestored": true,
+  "finishedAt": "2026-10-06T10:19:09.090Z"
+}
