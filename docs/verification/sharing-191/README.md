@@ -16,7 +16,7 @@
 | 原型批准       | 2026-10-06用户明确指令“OK，现在按照这个原型进行实施”，第二版已批准；原型数据与响应为模拟                                          |
 | Figma同步      | 本次业务与公共局部已真实同步；错误态、Alert、日历及24个通知位置已窄同步并独立回读                                                 |
 | 人工验收       | 未完成；独立验收预览保留，凭证私下提供                                                                                            |
-| 提交、推送、PR | 实现已本地提交；整合并发main的复验与交付中，未完成验收时保持草稿                                                                  |
+| 提交、推送、PR | 已提交并推送；[PR #252](https://github.com/dnslin/ariso-next/pull/252) 为OPEN/DRAFT，远端没有检查，不记作CI通过                   |
 
 ## 范围与现状
 
@@ -213,3 +213,9 @@ Figma 对照源为 [桌面设置 431:3753](https://www.figma.com/design/74sT9Hrf
 完整 `pnpm run format:check`、`node docs/tasks/check.mjs` 与 `node docs/tasks/check.mjs --self-test` 也已通过，后两项分别为120任务/298需求与5个拒绝用例。
 
 命令日志在 `test-results/issue191-local/main-sync-*.log`，可提交的概要为 [main-sync.json](product/main-sync.json)。验收预览也已刷新到此新成品，独立数据与密钥保留；新构建的服务健康检查通过，其新增API消费页面仍未取得本轮浏览器/设计对照，不据服务健康改写为UI已验证。
+
+## 远端交付
+
+实现提交 `09b55067`、并发整合提交 `e7f8af23` 已推送到 `codex/issue-191-sharing-management`。[PR #252](https://github.com/dnslin/ariso-next/pull/252) 已创建并附到本任务，base为main，Issue #191保持开放。创建后的实际 `gh pr view 252 --json ...` 回读为OPEN、isDraft=true、MERGEABLE/CLEAN、base `03db847c`，见 [创建时状态](product/pr-created.json)。`gh pr checks 252` 输出no checks（该CLI退出1）；没有远端检查，不记作CI通过，也不等待不存在的工作流。
+
+剩余项为新增API消费路由的浏览器/设计补查及用户人工验收。已提供具体恢复浏览器的授权问题；未收到明确回复前不接管已交还空间。当前保留草稿、分支、worktree与预览；没有合并PR、关闭Issue、发布或部署，也未清理上述资源。后续纯证据提交补充本链接，不重复业务检查。
