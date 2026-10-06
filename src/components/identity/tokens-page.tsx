@@ -121,40 +121,45 @@ export function TokensPage({ timeZone, ...shell }: Props) {
       >
         <SettingsHeading />
         <SettingsCategories items={settingsCategories}>
-          <Card className="grid min-w-0 gap-5 rounded-[20px] border border-border bg-surface px-4 py-6 shadow-none min-[1200px]:p-6">
-            <div className="flex items-center justify-between gap-2">
-              <div className="flex min-w-0 items-center gap-1">
-                <h2 className="flex items-center gap-2 whitespace-nowrap text-xl font-medium">
-                  <KeyRound className="size-6 shrink-0" aria-hidden />
-                  上传 Token
-                </h2>
-                <TokenTimeInfo timeZone={timeZone} />
+          <Card className="grid min-w-0 gap-6 rounded-[20px] border border-border bg-surface p-5 shadow-none sm:p-6">
+            <div className="grid gap-4">
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex min-w-0 items-center gap-0">
+                  <h2 className="flex items-center gap-2 whitespace-nowrap text-xl font-medium">
+                    <KeyRound className="size-6 shrink-0" aria-hidden />
+                    上传 Token
+                  </h2>
+                  <TokenTimeInfo timeZone={timeZone} />
+                </div>
+                <div className="flex shrink-0 items-center gap-2">
+                  <span className="hidden sm:block">
+                    <TokenUsageInfo />
+                  </span>
+                  <Button
+                    ref={createButton}
+                    data-testid="api-create-open"
+                    className="h-12 min-h-12 w-25 shrink-0 rounded-lg text-sm font-normal"
+                    isDisabled={
+                      loading ||
+                      sessionLost ||
+                      query.isError ||
+                      !!actions.action
+                    }
+                    onPress={() => setCreating(true)}
+                  >
+                    <Plus className="size-4" aria-hidden />
+                    创建
+                  </Button>
+                </div>
               </div>
-              <div className="flex shrink-0 items-center gap-2">
-                <span className="hidden sm:block">
+              <div className="flex items-start justify-between gap-2">
+                <p className="text-sm leading-relaxed text-muted">
+                  让脚本上传图片。Token 不能登录后台、浏览或管理图库。
+                </p>
+                <span className="-mt-2 shrink-0 sm:hidden">
                   <TokenUsageInfo />
                 </span>
-                <Button
-                  ref={createButton}
-                  data-testid="api-create-open"
-                  className="h-12 min-h-12 w-25 shrink-0 rounded-lg text-sm font-normal"
-                  isDisabled={
-                    loading || sessionLost || query.isError || !!actions.action
-                  }
-                  onPress={() => setCreating(true)}
-                >
-                  <Plus className="size-4" aria-hidden />
-                  创建
-                </Button>
               </div>
-            </div>
-            <div className="flex items-start gap-2">
-              <p className="text-sm leading-normal text-muted">
-                让脚本上传图片。Token 不能登录后台、浏览或管理图库。
-              </p>
-              <span className="shrink-0 sm:hidden">
-                <TokenUsageInfo />
-              </span>
             </div>
             {sessionLost ? (
               <div className="grid gap-3">
@@ -205,7 +210,7 @@ export function TokensPage({ timeZone, ...shell }: Props) {
             ) : (
               <div
                 data-testid="api-empty"
-                className="grid justify-items-center gap-3 py-6 text-center"
+                className="grid min-h-44 content-center justify-items-center gap-3 py-6 text-center"
               >
                 <KeyRound className="size-8 text-muted" aria-hidden />
                 <h3 className="text-base font-medium">暂无上传 Token</h3>

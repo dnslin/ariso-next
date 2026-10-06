@@ -23,7 +23,7 @@ export function TokenCreateForm({
   const { errors } = creator;
   return (
     <Form
-      className="grid w-full gap-4"
+      className="grid w-full gap-5"
       validationBehavior="aria"
       onSubmit={(event) => {
         event.preventDefault();
@@ -98,11 +98,11 @@ export function TokenCreateForm({
           </p>
         ) : null}
       </Modal.Body>
-      <Modal.Footer className="m-0 flex w-full justify-end p-0">
+      <Modal.Footer className="m-0 flex w-full justify-end border-t border-border p-0 pt-4">
         <Button
           data-testid="api-create-submit"
           type="submit"
-          className="h-12 min-h-12 min-w-25 rounded-lg text-sm font-normal"
+          className="h-12 min-h-12 w-28 rounded-lg text-sm font-normal"
         >
           <Plus className="size-4" aria-hidden />
           创建

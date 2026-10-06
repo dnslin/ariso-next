@@ -53,7 +53,7 @@ export function TokenCreateDialog(props: {
                       : 'many'
                   : undefined
               }
-              className="relative flex max-h-[calc(var(--visual-viewport-height)-32px)] w-full max-w-120 flex-col gap-4 overflow-y-auto rounded-2xl border border-border bg-surface p-5 text-foreground shadow-none sm:p-6"
+              className={`relative flex max-h-[calc(var(--visual-viewport-height)-32px)] w-full max-w-120 flex-col overflow-y-auto rounded-2xl border border-border bg-surface p-5 text-foreground shadow-none sm:p-6 ${editing || creator.secret ? 'gap-5' : 'gap-4'}`}
             >
               <Modal.Header className="m-0 flex min-h-11 flex-row items-start justify-between gap-3 p-0">
                 <Modal.Heading className="flex items-start gap-2 text-lg font-medium leading-normal sm:text-[22px]">
@@ -150,10 +150,11 @@ export function TokenCreateDialog(props: {
           <AlertDialog.Container placement="center" className="w-full p-4">
             <AlertDialog.Dialog
               data-testid="api-close-confirm"
-              className="flex max-h-[calc(var(--visual-viewport-height)-32px)] w-full max-w-120 flex-col gap-4 overflow-y-auto rounded-2xl border border-border bg-surface p-5 text-foreground shadow-none sm:p-6"
+              className="flex max-h-[calc(var(--visual-viewport-height)-32px)] w-full max-w-120 flex-col gap-5 overflow-y-auto rounded-2xl border border-border bg-surface p-5 text-foreground shadow-none sm:p-6"
             >
               <AlertDialog.Header className="m-0 flex min-h-11 flex-row items-start justify-between gap-3 p-0">
-                <AlertDialog.Heading className="text-lg font-medium leading-normal sm:text-[22px]">
+                <AlertDialog.Heading className="flex items-start gap-2 text-lg font-medium leading-normal sm:text-[22px]">
+                  <KeyRound className="mt-1 size-5 shrink-0" aria-hidden />
                   {creator.record?.expiresAt
                     ? '确认关闭限时 Token？'
                     : '确认关闭？'}
@@ -165,8 +166,8 @@ export function TokenCreateDialog(props: {
                   onPress={creator.keepSecret}
                 />
               </AlertDialog.Header>
-              <AlertDialog.Body className="m-0 flex-none p-0 text-sm leading-normal text-foreground">
-                关闭后无法再次查看完整 Token。如果还没有保存，请先返回复制。
+              <AlertDialog.Body className="m-0 flex-none p-0 text-sm leading-relaxed text-foreground">
+                关闭后无法再次查看完整 Token。请先确认已将它保存在你信任的位置。
               </AlertDialog.Body>
               <AlertDialog.Footer className="m-0 flex flex-wrap justify-end gap-3 p-0">
                 <Button
