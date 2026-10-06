@@ -1,0 +1,153 @@
+Already up to date
+Done in 588ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-145-github-binding/ariso
+
+stdout | tests/integration/media/preview.test.ts > temporary previews use the real formal encoding pipeline > original SVG with viewBox-only matches actual formal properties and preserves source bytes
+{"svg":"viewBox=\"0 0 80 40\"","phase":"accepted","elapsedMs":9.793249999999716,"phaseMs":9.793249999999716}
+
+stdout | tests/integration/media/preview.test.ts > temporary previews use the real formal encoding pipeline > original SVG with viewBox-only matches actual formal properties and preserves source bytes
+{"svg":"viewBox=\"0 0 80 40\"","command":"exiftool","phase":"tool-child","elapsedMs":150.32975000000033}
+
+stdout | tests/integration/media/preview.test.ts > temporary previews use the real formal encoding pipeline > original SVG with viewBox-only matches actual formal properties and preserves source bytes
+{"svg":"viewBox=\"0 0 80 40\"","command":"exiftool","phase":"tool-settled","elapsedMs":206.94387499999993}
+
+stdout | tests/integration/media/preview.test.ts > temporary previews use the real formal encoding pipeline > original SVG with viewBox-only matches actual formal properties and preserves source bytes
+{"svg":"viewBox=\"0 0 80 40\"","command":"exiftool","phase":"tool-child","elapsedMs":112.37654100000009}
+
+stdout | tests/integration/media/preview.test.ts > temporary previews use the real formal encoding pipeline > original SVG with viewBox-only matches actual formal properties and preserves source bytes
+{"svg":"viewBox=\"0 0 80 40\"","command":"exiftool","phase":"tool-settled","elapsedMs":169.29158300000017}
+
+stdout | tests/integration/media/preview.test.ts > temporary previews use the real formal encoding pipeline > original SVG with viewBox-only matches actual formal properties and preserves source bytes
+{"svg":"viewBox=\"0 0 80 40\"","command":"node","phase":"tool-child","elapsedMs":2406.2862090000003}
+
+stdout | tests/integration/media/preview.test.ts > temporary previews use the real formal encoding pipeline > original SVG with viewBox-only matches actual formal properties and preserves source bytes
+{"svg":"viewBox=\"0 0 80 40\"","command":"node","phase":"tool-settled","elapsedMs":2513.830209}
+
+stdout | tests/integration/media/preview.test.ts > temporary previews use the real formal encoding pipeline > original SVG with viewBox-only matches actual formal properties and preserves source bytes
+{"svg":"viewBox=\"0 0 80 40\"","command":"magick","phase":"tool-child","elapsedMs":37.549167000000125}
+
+stdout | tests/integration/media/preview.test.ts > temporary previews use the real formal encoding pipeline > original SVG with viewBox-only matches actual formal properties and preserves source bytes
+{"svg":"viewBox=\"0 0 80 40\"","command":"magick","phase":"tool-settled","elapsedMs":178.41870899999958}
+
+stdout | tests/integration/media/preview.test.ts > temporary previews use the real formal encoding pipeline > original SVG with viewBox-only matches actual formal properties and preserves source bytes
+{"svg":"viewBox=\"0 0 80 40\"","command":"exiftool","phase":"tool-child","elapsedMs":179.35912499999995}
+
+stdout | tests/integration/media/preview.test.ts > temporary previews use the real formal encoding pipeline > original SVG with viewBox-only matches actual formal properties and preserves source bytes
+{"svg":"viewBox=\"0 0 80 40\"","command":"exiftool","phase":"tool-settled","elapsedMs":235.99829200000022}
+
+stdout | tests/integration/media/preview.test.ts > temporary previews use the real formal encoding pipeline > original SVG with viewBox-only matches actual formal properties and preserves source bytes
+{"svg":"viewBox=\"0 0 80 40\"","phase":"formal-processed","elapsedMs":3450.1594579999996,"phaseMs":3440.366208}
+
+stdout | tests/integration/media/preview.test.ts > temporary previews use the real formal encoding pipeline > original SVG with viewBox-only matches actual formal properties and preserves source bytes
+{"svg":"viewBox=\"0 0 80 40\"","phase":"formal-read","elapsedMs":3503.396875,"phaseMs":53.23741700000028}
+{"svg":"viewBox=\"0 0 80 40\"","phase":"formal-assert-and-state","elapsedMs":3509.8455,"phaseMs":6.448624999999993}
+
+stdout | tests/integration/media/preview.test.ts > temporary previews use the real formal encoding pipeline > original SVG with viewBox-only matches actual formal properties and preserves source bytes
+{"svg":"viewBox=\"0 0 80 40\"","command":"exiftool","phase":"tool-child","elapsedMs":262.0997499999994}
+
+stdout | tests/integration/media/preview.test.ts > temporary previews use the real formal encoding pipeline > original SVG with viewBox-only matches actual formal properties and preserves source bytes
+{"svg":"viewBox=\"0 0 80 40\"","command":"exiftool","phase":"tool-settled","elapsedMs":315.71058300000004}
+
+stdout | tests/integration/media/preview.test.ts > temporary previews use the real formal encoding pipeline > original SVG with physical units matches actual formal properties and preserves source bytes
+{"svg":"viewBox=\"0 0 80 40\"","command":"node","phase":"tool-settled","elapsedMs":1279.4700839999996,"error":"Command was canceled: /Users/dnslin/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node /Users/dnslin/.codex/worktrees/issue-145-github-binding/ariso/scripts/media/svg-render.mjs /var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-preview-qQKqiR/tmp/preview-2e97da15-adbc-4797-8c36-0ad81686aa5d/source /var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-preview-qQKqiR/tmp/preview-2e97da15-adbc-4797-8c36-0ad81686aa5d/work/preview.png preview -- 'ArisoWorkspace=/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-preview-qQKqiR/tmp/preview-2e97da15-adbc-4797-8c36-0ad81686aa5d/work'\nENOENT: no such file or directory, statfs '/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-preview-qQKqiR/tmp/preview-2e97da15-adbc-4797-8c36-0ad81686aa5d/work'"}
+
+ × |media-tools| tests/integration/media/preview.test.ts > temporary previews use the real formal encoding pipeline > original SVG with viewBox-only matches actual formal properties and preserves source bytes 5154ms
+   → Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+stdout | tests/integration/media/preview.test.ts > temporary previews use the real formal encoding pipeline > original SVG with physical units matches actual formal properties and preserves source bytes
+{"svg":"width=\"2in\" height=\"1in\"","phase":"accepted","elapsedMs":6.169665999999779,"phaseMs":6.169665999999779}
+
+stdout | tests/integration/media/preview.test.ts > temporary previews use the real formal encoding pipeline > original SVG with physical units matches actual formal properties and preserves source bytes
+{"svg":"width=\"2in\" height=\"1in\"","command":"exiftool","phase":"tool-child","elapsedMs":130.93104099999982}
+
+stdout | tests/integration/media/preview.test.ts > temporary previews use the real formal encoding pipeline > original SVG with physical units matches actual formal properties and preserves source bytes
+{"svg":"width=\"2in\" height=\"1in\"","command":"exiftool","phase":"tool-settled","elapsedMs":182.72958300000028}
+
+stdout | tests/integration/media/preview.test.ts > temporary previews use the real formal encoding pipeline > original SVG with physical units matches actual formal properties and preserves source bytes
+{"svg":"width=\"2in\" height=\"1in\"","command":"exiftool","phase":"tool-child","elapsedMs":105.7684160000008}
+
+stdout | tests/integration/media/preview.test.ts > temporary previews use the real formal encoding pipeline > original SVG with physical units matches actual formal properties and preserves source bytes
+{"svg":"width=\"2in\" height=\"1in\"","command":"exiftool","phase":"tool-settled","elapsedMs":188.88300000000163}
+
+stdout | tests/integration/media/preview.test.ts > temporary previews use the real formal encoding pipeline > original SVG with physical units matches actual formal properties and preserves source bytes
+{"svg":"width=\"2in\" height=\"1in\"","command":"node","phase":"tool-child","elapsedMs":1815.3502090000002}
+
+stdout | tests/integration/media/preview.test.ts > temporary previews use the real formal encoding pipeline > original SVG with physical units matches actual formal properties and preserves source bytes
+{"svg":"width=\"2in\" height=\"1in\"","command":"node","phase":"tool-settled","elapsedMs":1881.1213339999995}
+
+stdout | tests/integration/media/preview.test.ts > temporary previews use the real formal encoding pipeline > original SVG with physical units matches actual formal properties and preserves source bytes
+{"svg":"width=\"2in\" height=\"1in\"","command":"magick","phase":"tool-child","elapsedMs":32.987874999998894}
+
+stdout | tests/integration/media/preview.test.ts > temporary previews use the real formal encoding pipeline > original SVG with physical units matches actual formal properties and preserves source bytes
+{"svg":"width=\"2in\" height=\"1in\"","command":"magick","phase":"tool-settled","elapsedMs":81.68116599999848}
+
+stdout | tests/integration/media/preview.test.ts > temporary previews use the real formal encoding pipeline > original SVG with physical units matches actual formal properties and preserves source bytes
+{"svg":"width=\"2in\" height=\"1in\"","command":"exiftool","phase":"tool-child","elapsedMs":137.0657910000009}
+
+stdout | tests/integration/media/preview.test.ts > temporary previews use the real formal encoding pipeline > original SVG with physical units matches actual formal properties and preserves source bytes
+{"svg":"width=\"2in\" height=\"1in\"","command":"exiftool","phase":"tool-settled","elapsedMs":194.56945799999994}
+
+stdout | tests/integration/media/preview.test.ts > temporary previews use the real formal encoding pipeline > original SVG with physical units matches actual formal properties and preserves source bytes
+{"svg":"width=\"2in\" height=\"1in\"","phase":"formal-processed","elapsedMs":2627.435791,"phaseMs":2621.266125}
+
+stdout | tests/integration/media/preview.test.ts > temporary previews use the real formal encoding pipeline > original SVG with physical units matches actual formal properties and preserves source bytes
+{"svg":"width=\"2in\" height=\"1in\"","phase":"formal-read","elapsedMs":2635.626124999999,"phaseMs":8.190333999998984}
+{"svg":"width=\"2in\" height=\"1in\"","phase":"formal-assert-and-state","elapsedMs":2638.1771249999983,"phaseMs":2.550999999999476}
+
+stdout | tests/integration/media/preview.test.ts > temporary previews use the real formal encoding pipeline > original SVG with physical units matches actual formal properties and preserves source bytes
+{"svg":"width=\"2in\" height=\"1in\"","command":"exiftool","phase":"tool-child","elapsedMs":136.78650000000016}
+
+stdout | tests/integration/media/preview.test.ts > temporary previews use the real formal encoding pipeline > original SVG with physical units matches actual formal properties and preserves source bytes
+{"svg":"width=\"2in\" height=\"1in\"","command":"exiftool","phase":"tool-settled","elapsedMs":223.20195799999965}
+
+ × |media-tools| tests/integration/media/preview.test.ts > temporary previews use the real formal encoding pipeline > original SVG with physical units matches actual formal properties and preserves source bytes 5122ms
+   → Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ↓ |media-tools| tests/integration/media/preview.test.ts > temporary previews use the real formal encoding pipeline > original with {} matches actual formal bytes and leaves every business table unchanged
+ ↓ |media-tools| tests/integration/media/preview.test.ts > temporary previews use the real formal encoding pipeline > thumbnail with { outputFormat: 'jpeg', …(2) } matches actual formal bytes and leaves every business table unchanged
+ ↓ |media-tools| tests/integration/media/preview.test.ts > temporary previews use the real formal encoding pipeline > compressed with { outputFormat: 'jpeg', …(3) } matches actual formal bytes and leaves every business table unchanged
+ ↓ |media-tools| tests/integration/media/preview.test.ts > temporary previews use the real formal encoding pipeline > compressed with { outputFormat: 'webp', …(3) } matches actual formal bytes and leaves every business table unchanged
+ ↓ |media-tools| tests/integration/media/preview.test.ts > temporary previews use the real formal encoding pipeline > compressed with { outputFormat: 'avif', …(3) } matches actual formal bytes and leaves every business table unchanged
+ ↓ |media-tools| tests/integration/media/preview.test.ts > temporary previews use the real formal encoding pipeline > watermark with { compressionEnabled: false, …(6) } matches actual formal bytes and leaves every business table unchanged
+ ↓ |media-tools| tests/integration/media/preview.test.ts > temporary previews use the real formal encoding pipeline > watermark with { compressionEnabled: true, …(6) } matches actual formal bytes and leaves every business table unchanged
+ ↓ |media-tools| tests/integration/media/preview.test.ts > temporary previews use the real formal encoding pipeline > image watermark (compression=false) matches actual formal bytes and releases its temporary reference
+ ↓ |media-tools| tests/integration/media/preview.test.ts > temporary previews use the real formal encoding pipeline > image watermark (compression=true) matches actual formal bytes and releases its temporary reference
+ ↓ |media-tools| tests/integration/media/preview.test.ts > temporary previews use the real formal encoding pipeline > explains disabled compressed without fabricating an output
+ ↓ |media-tools| tests/integration/media/preview.test.ts > temporary previews use the real formal encoding pipeline > explains disabled watermark without fabricating an output
+ ↓ |media-tools| tests/integration/media/preview.test.ts > temporary previews use the real formal encoding pipeline > explains why an animated GIF cannot produce compressed
+ ↓ |media-tools| tests/integration/media/preview.test.ts > temporary previews use the real formal encoding pipeline > explains why an animated GIF cannot produce watermark
+ ↓ |media-tools| tests/integration/media/preview.test.ts > preview lifetime and owned resources > awaits original SVG preparation settlement on cancellation before deleting files or releasing its disk budget
+ ↓ |media-tools| tests/integration/media/preview.test.ts > preview lifetime and owned resources > retains a private result until exactly 30 minutes and removes it at expiry
+ ↓ |media-tools| tests/integration/media/preview.test.ts > preview lifetime and owned resources > records ENOSPC from output writing, publishes no partial result and removes owned files
+ ↓ |media-tools| tests/integration/media/preview.test.ts > preview lifetime and owned resources > awaits encoding settlement on cancellation before deleting files or releasing the image watermark
+ ↓ |media-tools| tests/integration/media/preview.test.ts > preview lifetime and owned resources > keeps cleanup failures visible and retains material references until a retry settles
+ ↓ |media-tools| tests/integration/media/preview.test.ts > preview lifetime and owned resources > restarts with exact registered directories only and holds watermark references until recovery cleanup settles
+ ↓ |media-tools| tests/integration/media/preview.test.ts > preview lifetime and owned resources > shares the single queue slot when preview starts first
+ ↓ |media-tools| tests/integration/media/preview.test.ts > preview lifetime and owned resources > shares the single queue slot when media starts first
+ ↓ |media-tools| tests/integration/media/preview.test.ts > keeps a failed receive addressable by its previewId when directory cleanup fails
+ ↓ |media-tools| tests/integration/media/preview.test.ts > waits for a pending source write before completing cancellation or releasing its disk reservation
+ ↓ |media-tools| tests/integration/media/preview.test.ts > exposes previewId when receiving cleanup cannot confirm tool shutdown
+ ↓ |media-tools| tests/integration/media/preview.test.ts > propagates encoder tool shutdown failure after persisting its failed preview state
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |media-tools| tests/integration/media/preview.test.ts > temporary previews use the real formal encoding pipeline > original SVG with viewBox-only matches actual formal properties and preserves source bytes
+ FAIL  |media-tools| tests/integration/media/preview.test.ts > temporary previews use the real formal encoding pipeline > original SVG with physical units matches actual formal properties and preserves source bytes
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/integration/media/preview.test.ts:292:5
+    290|       height: 96,
+    291|     },
+    292|   ])(
+       |     ^
+    293|     'original SVG with $size matches actual formal properties and pres…
+    294|     async ({ attributes, width, height }) => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 25 skipped (27)
+   Start at  15:34:01
+   Duration  13.37s (tests 78%, import 13%, transform 9%)

@@ -65,14 +65,17 @@ export function updateMediaSettings(
 /** Merge and validate within the same write transaction, including asset adoption. */
 export function patchMediaSettings(db: BetterSQLite3Database, input: unknown) {
   const patch = mediaSettingsPatchSchema.parse(input);
-  return db.transaction((tx) => {
-    const current: Partial<ReturnType<typeof requireMediaSettings>> = {
-      ...requireMediaSettings(tx),
-    };
-    delete current.id;
-    delete current.updatedAt;
-    return updateMediaSettings(tx, { ...current, ...patch });
-  });
+  return db.transaction(
+    (tx) => {
+      const current: Partial<ReturnType<typeof requireMediaSettings>> = {
+        ...requireMediaSettings(tx),
+      };
+      delete current.id;
+      delete current.updatedAt;
+      return updateMediaSettings(tx, { ...current, ...patch });
+    },
+    { behavior: 'immediate' },
+  );
 }
 
 /** A fresh value for each upload batch. Delivery and scheduling read live settings instead. */

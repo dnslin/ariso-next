@@ -1,6 +1,12 @@
 import { request as httpRequest } from 'node:http';
 import { randomBytes } from 'node:crypto';
-import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import {
+  existsSync,
+  mkdtempSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterAll, beforeAll, expect, it, vi } from 'vitest';
@@ -59,7 +65,13 @@ async function ready() {
   await vi.waitFor(() => expect(server.logs()).toContain('Ready in'), {
     timeout: 30000,
   });
-  expect((await request('/')).status, server.logs()).toBe(200);
+  try {
+    expect((await request('/')).status, server.logs()).toBe(200);
+  } catch (error) {
+    throw new Error(`Identity HTTP readiness failed\n${server.logs()}`, {
+      cause: error,
+    });
+  }
 }
 beforeAll(async () => {
   directory = mkdtempSync(join(tmpdir(), 'ariso-identity-http-'));
@@ -455,3 +467,59 @@ it('GitHub credentials and enablement change only on restart while origin refres
     ).status,
   ).toBe(200);
 }, 120000);
+
+it('concurrent identity experiments use separate build output and remove only their own output on stop', async () => {
+  const sourceConfig = readFileSync(
+    'tests/experiments/identity/next-app/tsconfig.json',
+    'utf8',
+  );
+  const secondDatabase = join(directory, 'second.db');
+  const secondConfig = join(directory, 'second-origin.json');
+  const secondConnection = openFixture(secondDatabase);
+  let secondServer: Awaited<ReturnType<typeof launchIdentity>> | undefined;
+  try {
+    await seedOwner(
+      secondConnection.db,
+      'second@example.test',
+      'second-fixture-password',
+    );
+    secondServer = await launchIdentity(
+      secondDatabase,
+      secondConfig,
+      randomBytes(32).toString('hex'),
+    );
+    const secondOrigin = `http://127.0.0.1:${secondServer.port}`;
+    writeFileSync(secondConfig, JSON.stringify({ origin: secondOrigin }));
+    await vi.waitFor(() => expect(secondServer!.logs()).toContain('Ready in'), {
+      timeout: 30000,
+    });
+    const login = await fetch(`${secondOrigin}/api/auth/sign-in/email`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', origin: secondOrigin },
+      body: JSON.stringify({
+        email: 'second@example.test',
+        password: 'second-fixture-password',
+      }),
+      signal: AbortSignal.timeout(30000),
+    });
+    expect(login.status, secondServer.logs()).toBe(200);
+    expect(await login.json()).toMatchObject({
+      user: { email: 'second@example.test' },
+    });
+    expect(secondServer.buildDirectory).not.toBe(server.buildDirectory);
+    expect(existsSync(secondServer.buildDirectory)).toBe(true);
+    expect(existsSync(server.buildDirectory)).toBe(true);
+    const secondBuild = secondServer.buildDirectory;
+    await secondServer.stop();
+    secondServer = undefined;
+    expect(existsSync(secondBuild)).toBe(false);
+    expect(existsSync(server.buildDirectory)).toBe(true);
+    expect((await signIn()).status).toBe(200);
+    expect(
+      readFileSync('tests/experiments/identity/next-app/tsconfig.json', 'utf8'),
+    ).toBe(sourceConfig);
+  } finally {
+    if (secondServer) await secondServer.stop();
+    secondConnection.close();
+  }
+}, 60000);
