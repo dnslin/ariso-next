@@ -12,12 +12,14 @@ import {
 } from './cleanup.ts';
 import {
   cancelSession,
+  getPreparedSession,
   getSession,
   getSubmission,
   resubmitSession,
 } from './sessions.ts';
 import { beginSession, completeSession } from './s3.ts';
 import { receiveSession } from './receive.ts';
+import { receivePublicSession } from './public-receive.ts';
 import { UploadError } from './errors.ts';
 import { uploadSessions } from './schema.ts';
 
@@ -28,7 +30,7 @@ export function startUploadRuntime(
   const active = new Map<
     string,
     {
-      storageId: string;
+      storageId: string | null;
       controller: AbortController;
       promise: ReturnType<typeof receiveSession>;
     }
@@ -103,7 +105,7 @@ export function startUploadRuntime(
           },
           'Upload accepted',
         );
-        return getSession(context.db, id);
+        return getPreparedSession(context.db, id);
       })
       .finally(() => active.delete(id));
     active.set(id, { storageId, controller, promise });
@@ -111,9 +113,12 @@ export function startUploadRuntime(
   }
   return {
     activeWrites(storageId: string) {
-      return [...active.values()].filter(
-        (operation) => operation.storageId === storageId,
-      ).length;
+      let writes = 0;
+      for (const [id, operation] of active) {
+        operation.storageId = getSession(context.db, id).storageId;
+        if (operation.storageId === storageId) writes++;
+      }
+      return writes;
     },
     async resubmit(id: string, requestId: string) {
       if (stopping.signal.aborted)
@@ -155,8 +160,15 @@ export function startUploadRuntime(
         throw new UploadError('UPLOAD_STATE_CONFLICT', '会话正在接收', 409);
       return run(id, (signal) => receiveSession(context, id, request, signal));
     },
+    receivePublic(id: string, request: Request, tokenId: string) {
+      if (active.has(id))
+        throw new UploadError('UPLOAD_STATE_CONFLICT', '会话正在接收', 409);
+      return run(id, (signal) =>
+        receivePublicSession(context, id, request, signal, tokenId),
+      );
+    },
     complete(id: string) {
-      const session = getSession(context.db, id);
+      const session = getPreparedSession(context.db, id);
       if (session.route !== 'direct')
         throw new UploadError('UPLOAD_STATE_CONFLICT', '该会话不是直传', 409);
       const existing = active.get(id);

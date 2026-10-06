@@ -10,6 +10,7 @@ import {
   uploadSettings,
   uploadSessions,
   uploadSubmissions,
+  type PreparedUploadSession,
   type UploadSession,
 } from './schema.ts';
 import { normalizeOriginalName, submissionInputSchema } from './validation.ts';
@@ -27,6 +28,25 @@ export function getSession(db: BetterSQLite3Database, id: string) {
       404,
     );
   return session;
+}
+
+function preparedSession(session: UploadSession): PreparedUploadSession {
+  if (!session.submissionId || !session.storageId)
+    throw new UploadError(
+      'UPLOAD_STATE_CONFLICT',
+      '上传会话尚未固定提交和存储目标',
+      409,
+      session.imageId,
+    );
+  return {
+    ...session,
+    submissionId: session.submissionId,
+    storageId: session.storageId,
+  };
+}
+
+export function getPreparedSession(db: BetterSQLite3Database, id: string) {
+  return preparedSession(getSession(db, id));
 }
 
 export function getSubmission(db: BetterSQLite3Database, id: string) {
@@ -49,7 +69,7 @@ export function getSubmission(db: BetterSQLite3Database, id: string) {
       .orderBy(asc(uploadSessions.groupIndex), asc(uploadSessions.createdAt))
       .all()
       .map((session) => ({
-        ...session,
+        ...preparedSession(session),
         image: session.imageId
           ? (tx
               .select()
@@ -73,6 +93,13 @@ export function requireSessionStorage(
   db: BetterSQLite3Database,
   session: UploadSession,
 ) {
+  if (!session.storageId)
+    throw new UploadError(
+      'UPLOAD_STATE_CONFLICT',
+      '上传会话尚未固定存储目标',
+      409,
+      session.imageId,
+    );
   return resolveUploadStorage(db, session.storageId);
 }
 
@@ -240,7 +267,7 @@ export function resubmitSession(
           );
         return getSubmission(tx, existing.id);
       }
-      const previous = getSession(tx, id);
+      const previous = getPreparedSession(tx, id);
       const now = new Date();
       if (
         previous.route !== 'direct' ||

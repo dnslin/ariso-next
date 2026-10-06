@@ -167,6 +167,7 @@ export const mediaJobs = sqliteTable(
     }).notNull(),
     error: text('error'),
     step: text('step').notNull().default('identify'),
+    metadataWarning: text('metadata_warning'),
     retryCount: integer('retry_count').notNull().default(0),
     recoveryCount: integer('recovery_count').notNull().default(0),
     nextAttemptAt: integer('next_attempt_at', { mode: 'timestamp_ms' }),

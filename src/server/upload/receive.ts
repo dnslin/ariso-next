@@ -13,7 +13,7 @@ import { type UploadContext } from './cleanup.ts';
 import { UploadError } from './errors.ts';
 import { receiveMultipart } from './multipart.ts';
 import { uploadSessions, uploadSubmissions } from './schema.ts';
-import { getSession, requireSessionStorage } from './sessions.ts';
+import { getPreparedSession, requireSessionStorage } from './sessions.ts';
 
 /** The runtime owns cancellation; request disconnect applies only while reading bytes. */
 export async function receiveSession(
@@ -23,7 +23,7 @@ export async function receiveSession(
   signal: AbortSignal,
 ) {
   const { db, storageRoot } = context;
-  const initial = getSession(db, id);
+  const initial = getPreparedSession(db, id);
   if (
     initial.route === 'direct' ||
     (initial.state !== 'queued' &&
@@ -42,7 +42,7 @@ export async function receiveSession(
   try {
     const session = db.transaction(
       (tx) => {
-        const current = getSession(tx, id);
+        const current = getPreparedSession(tx, id);
         if (
           current.state !== 'queued' &&
           !(
@@ -85,7 +85,7 @@ export async function receiveSession(
           .set({ lastActivityAt: now })
           .where(eq(uploadSubmissions.id, current.submissionId))
           .run();
-        return getSession(tx, id);
+        return getPreparedSession(tx, id);
       },
       { behavior: 'immediate' },
     );

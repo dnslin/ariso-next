@@ -201,10 +201,17 @@ export async function readAndStoreMetadata(
     )
       throw error;
     const diagnostic = `metadata: ${analyzeMediaError(error).diagnostic}`;
-    db.update(mediaMetadata)
-      .set({ status: 'failed', error: diagnostic })
-      .where(eq(mediaMetadata.imageId, image.id))
-      .run();
+    db.transaction((tx) => {
+      activeMediaJob(tx, jobId);
+      tx.update(mediaMetadata)
+        .set({ status: 'failed', error: diagnostic })
+        .where(eq(mediaMetadata.imageId, image.id))
+        .run();
+      tx.update(mediaJobs)
+        .set({ metadataWarning: diagnostic })
+        .where(eq(mediaJobs.id, jobId))
+        .run();
+    });
     logger.error(
       { err: error, imageId: image.id, jobId, step: 'metadata', diagnostic },
       'Metadata read failed',
@@ -214,6 +221,10 @@ export async function readAndStoreMetadata(
   // Database/storage validity failures are not extraction failures and must remain visible to the job runner.
   db.transaction((tx) => {
     const { job } = activeMediaJob(tx, jobId);
+    tx.update(mediaJobs)
+      .set({ metadataWarning: null })
+      .where(eq(mediaJobs.id, jobId))
+      .run();
     const now = new Date();
     tx.update(mediaMetadata)
       .set({

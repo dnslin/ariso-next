@@ -4,7 +4,7 @@ import { attachAcceptedImage } from '../collections/memberships.ts';
 import { acceptOriginal } from '../media/images.ts';
 import type { identifyImageFile } from '../media/file-formats.ts';
 import { uploadSessions, uploadSubmissions } from './schema.ts';
-import { getSession, requireSessionStorage } from './sessions.ts';
+import { getPreparedSession, requireSessionStorage } from './sessions.ts';
 import { UploadError } from './errors.ts';
 
 /** All four owners commit together; file I/O has already settled. */
@@ -18,7 +18,7 @@ export function acceptSession(
 ) {
   return db.transaction(
     (tx) => {
-      const session = getSession(tx, id);
+      const session = getPreparedSession(tx, id);
       if (
         session.state !== 'finalizing' ||
         !session.finalKey ||
@@ -56,6 +56,8 @@ export function acceptSession(
         albumIds: submission.albumIds,
         tagIds: submission.tagIds,
       });
+      const pendingCleanup =
+        session.route === 'direct' || submission.source === 'api';
       tx.update(uploadSessions)
         .set({
           state: 'accepted',
@@ -63,11 +65,12 @@ export function acceptSession(
           jobId: result.jobId,
           temporaryKey:
             session.route === 'direct' ? session.temporaryKey : null,
-          temporaryPath: null,
+          temporaryPath:
+            submission.source === 'api' ? session.temporaryPath : null,
           finalKey: null,
           finalBytes: null,
-          cleanupStatus: session.route === 'direct' ? 'pending' : 'none',
-          nextCleanupAt: session.route === 'direct' ? new Date() : null,
+          cleanupStatus: pendingCleanup ? 'pending' : 'none',
+          nextCleanupAt: pendingCleanup ? new Date() : null,
           updatedAt: new Date(),
         })
         .where(eq(uploadSessions.id, id))
@@ -76,7 +79,7 @@ export function acceptSession(
         .set({ lastActivityAt: new Date() })
         .where(eq(uploadSubmissions.id, session.submissionId))
         .run();
-      return getSession(tx, id);
+      return getPreparedSession(tx, id);
     },
     { behavior: 'immediate' },
   );

@@ -1,0 +1,106 @@
+{
+  "service": "r2",
+  "node": "v24.18.1",
+  "startedAt": "2026-10-06T14:14:36.517Z",
+  "finishedAt": "2026-10-06T14:15:08.335Z",
+  "status": "passed",
+  "storageId": "0fbb54cf-6672-4c38-b07b-c9bd77073280",
+  "checks": [
+    {
+      "name": "owner-creates-and-enables-isolated-real-s3-storage",
+      "status": "passed",
+      "detail": {
+        "storageId": "0fbb54cf-6672-4c38-b07b-c9bd77073280",
+        "connectionPassed": true,
+        "probeCleaned": true
+      }
+    },
+    {
+      "name": "unauthorized-is-rejected-before-body",
+      "status": "passed",
+      "detail": {
+        "status": 401,
+        "stage": "authentication"
+      }
+    },
+    {
+      "name": "invalid-fields-create-no-image-or-remote-object",
+      "status": "passed",
+      "detail": {
+        "status": 400,
+        "error": {
+          "code": "UPLOAD_DUPLICATE_FIELD",
+          "stage": "receiving",
+          "message": "字段不可重复: visibility"
+        },
+        "objects": []
+      }
+    },
+    {
+      "name": "bearer-upload-waits-for-own-job-ready-and-actual-s3-versions",
+      "status": "passed",
+      "detail": {
+        "imageId": "84df707e-15d5-44b8-9c74-a29190392f6b",
+        "jobId": "e6283eb3-2c53-4dc0-9e25-8f6d260a6ba3",
+        "status": "ready",
+        "versions": ["compressed", "original", "thumbnail"],
+        "privateBearerStatus": 401,
+        "byteSize": 6631
+      }
+    },
+    {
+      "name": "processing-failure-preserves-real-image-original-and-earlier-versions",
+      "status": "passed",
+      "detail": {
+        "imageId": "2f68073a-9f40-4501-8900-1835e6d0135c",
+        "jobId": "50656edd-75b2-4fdf-be86-7e3041a138d1",
+        "status": "failed",
+        "stage": "thumbnail",
+        "versions": ["compressed", "original"]
+      }
+    },
+    {
+      "name": "own-namespace-is-empty-after-cleanup",
+      "status": "passed",
+      "detail": []
+    }
+  ],
+  "keys": [
+    "original/84df707e-15d5-44b8-9c74-a29190392f6b.png",
+    "images/84df707e-15d5-44b8-9c74-a29190392f6b/compressed/4be30f60-2ba3-44e3-8068-63d55b13a432",
+    "images/84df707e-15d5-44b8-9c74-a29190392f6b/thumbnail/cf13fd8d-cf24-4aa6-8681-bfb989410c8b",
+    "original/2f68073a-9f40-4501-8900-1835e6d0135c.png",
+    "images/2f68073a-9f40-4501-8900-1835e6d0135c/compressed/522a79ac-cf1a-4521-ad69-e6cc7f0e321a",
+    "images/2f68073a-9f40-4501-8900-1835e6d0135c/thumbnail/b3bc9269-68ee-40ae-894d-4409d8bfdb4c"
+  ],
+  "cleanup": [
+    {
+      "key": "original/84df707e-15d5-44b8-9c74-a29190392f6b.png",
+      "result": "absent"
+    },
+    {
+      "key": "images/84df707e-15d5-44b8-9c74-a29190392f6b/compressed/4be30f60-2ba3-44e3-8068-63d55b13a432",
+      "result": "absent"
+    },
+    {
+      "key": "images/84df707e-15d5-44b8-9c74-a29190392f6b/thumbnail/cf13fd8d-cf24-4aa6-8681-bfb989410c8b",
+      "result": "absent"
+    },
+    {
+      "key": "original/2f68073a-9f40-4501-8900-1835e6d0135c.png",
+      "result": "absent"
+    },
+    {
+      "key": "images/2f68073a-9f40-4501-8900-1835e6d0135c/compressed/522a79ac-cf1a-4521-ad69-e6cc7f0e321a",
+      "result": "absent"
+    },
+    {
+      "key": "images/2f68073a-9f40-4501-8900-1835e6d0135c/thumbnail/b3bc9269-68ee-40ae-894d-4409d8bfdb4c",
+      "result": "absent"
+    }
+  ],
+  "limits": [
+    "Standalone HTTP upload, persisted jobs, authenticated original delivery and own namespace only.",
+    "No bucket policy/CORS changes, AWS service, browser, container release or deployment."
+  ]
+}

@@ -26,7 +26,8 @@ export const uploadSubmissions = sqliteTable('upload_submissions', {
   id: text('id').primaryKey().notNull(),
   requestId: text('request_id').notNull().unique(),
   requestInput: text('request_input').notNull(),
-  source: text('source', { enum: ['web'] }).notNull(),
+  source: text('source', { enum: ['web', 'api'] }).notNull(),
+  apiTokenId: text('api_token_id'),
   storageId: text('storage_id')
     .notNull()
     .references(() => storageConfigs.id),
@@ -59,17 +60,13 @@ export const uploadSessions = sqliteTable(
   'upload_sessions',
   {
     id: text('id').primaryKey().notNull(),
-    submissionId: text('submission_id')
-      .notNull()
-      .references(() => uploadSubmissions.id),
+    submissionId: text('submission_id').references(() => uploadSubmissions.id),
     queueItemId: text('queue_item_id').notNull(),
     groupIndex: integer('group_index').notNull(),
     originalName: text('original_name').notNull(),
     declaredSize: integer('declared_size').notNull(),
     declaredMime: text('declared_mime'),
-    storageId: text('storage_id')
-      .notNull()
-      .references(() => storageConfigs.id),
+    storageId: text('storage_id').references(() => storageConfigs.id),
     state: text('state', { enum: sessionStates }).notNull(),
     candidateImageId: text('candidate_image_id').notNull(),
     candidateJobId: text('candidate_job_id'),
@@ -113,4 +110,8 @@ export const uploadSessions = sqliteTable(
   ],
 );
 export type UploadSession = typeof uploadSessions.$inferSelect;
+export type PreparedUploadSession = UploadSession & {
+  submissionId: string;
+  storageId: string;
+};
 export type UploadSubmission = typeof uploadSubmissions.$inferSelect;

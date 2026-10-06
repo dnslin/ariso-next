@@ -355,7 +355,7 @@ describe('T-MED-07 complete metadata with real ExifTool and ImageMagick', () => 
     'an initial complete-read %s failure does not invalidate reliable classification or ready versions',
     async (limit) => {
       const bytes = await complexJpeg();
-      const { imageId } = await accept(bytes);
+      const { imageId, jobId } = await accept(bytes);
       const restricted = restrictCompleteRead(limit);
       await processNext();
       expect(imageState(imageId).image).toMatchObject({
@@ -381,6 +381,14 @@ describe('T-MED-07 complete metadata with real ExifTool and ImageMagick', () => 
       expect(readMediaMetadata(connection.db, imageId)!.error).toContain(
         limit === 'timeout' ? 'MEDIA_TOOL_TIMEOUT' : 'maxBuffer',
       );
+      const originalWarning = connection.db
+        .select()
+        .from(mediaJobs)
+        .where(eq(mediaJobs.id, jobId))
+        .get()!.metadataWarning;
+      expect(originalWarning).toBe(
+        readMediaMetadata(connection.db, imageId)!.error,
+      );
       expect(await versionBytes(imageId, 'original')).toEqual(bytes);
       expect(await readdir(runtime.temporaryRoot)).toEqual([]);
 
@@ -396,6 +404,13 @@ describe('T-MED-07 complete metadata with real ExifTool and ImageMagick', () => 
         photography: { make: 'NIKON' },
       });
       expect(imageState(imageId)).toEqual(readyState);
+      expect(
+        connection.db
+          .select()
+          .from(mediaJobs)
+          .where(eq(mediaJobs.id, jobId))
+          .get()!.metadataWarning,
+      ).toBe(originalWarning);
     },
   );
 

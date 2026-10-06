@@ -740,26 +740,16 @@ it('从旧 schema 升级保留默认、图片对象和上传会话引用，外�
         JSON.stringify(['thumbnail']),
       );
     const accepted = { jobId: 'existing-job' };
-    const now = new Date(1000);
-    previous.db
-      .insert(uploadSubmissions)
-      .values({
-        id: 'existing-submission',
-        requestId: 'request',
-        requestInput: '{}',
-        source: 'web',
-        storageId: 'existing-storage',
-        visibility: 'private',
-        snapshot,
-        albumIds: [],
-        tagIds: [],
-        maxFileBytes: 1024,
-        batchSize: 1,
-        queueLimit: 1,
-        lastActivityAt: now,
-        createdAt: now,
-      })
-      .run();
+    // Freeze this predecessor too: 0024 adds api_token_id to the current ORM schema.
+    previous.db.$client
+      .prepare(
+        `INSERT INTO upload_submissions
+      (id, request_id, request_input, source, storage_id, visibility, snapshot,
+        album_ids, tag_ids, max_file_bytes, batch_size, queue_limit, last_activity_at, created_at)
+      VALUES ('existing-submission', 'request', '{}', 'web', 'existing-storage', 'private', ?,
+        '[]', '[]', 1024, 1, 1, 1000, 1000)`,
+      )
+      .run(JSON.stringify(snapshot));
     // Migration 0019 adds nullable transfer fields absent in this historical schema.
     previous.db.$client.exec(`
       INSERT INTO upload_sessions (id, submission_id, queue_item_id, group_index,
@@ -775,7 +765,13 @@ it('从旧 schema 升级保留默认、图片对象和上传会话引用，外�
         status, byte_size, format, mime, error, created_at, updated_at FROM media_objects`,
         )
         .all(),
-      previous.db.select().from(uploadSubmissions).all(),
+      previous.db.$client
+        .prepare(
+          `SELECT id, request_id, request_input, source, storage_id,
+        visibility, snapshot, album_ids, tag_ids, max_file_bytes, batch_size,
+        queue_limit, last_activity_at, created_at FROM upload_submissions`,
+        )
+        .all(),
       previous.db.$client
         .prepare(
           `SELECT id, submission_id, queue_item_id, group_index, original_name,
@@ -788,6 +784,9 @@ it('从旧 schema 升级保留默认、图片对象和上传会话引用，外�
     const before = readReferences();
     migrateRuntimeDatabase(previous.db, resolve('drizzle'));
     expect(readReferences()).toEqual(before);
+    expect(
+      previous.db.select().from(uploadSubmissions).get()!.apiTokenId,
+    ).toBeNull();
     expect(previous.db.select().from(mediaObjects).get()).toMatchObject({
       width: null,
       height: null,

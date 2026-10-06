@@ -29,6 +29,7 @@ describe('isolated production directory', () => {
       'scripts/verify-image.mjs',
       'dist/cli/prestart.js',
       'dist/cli/logging.js',
+      'dist/cli/http.js',
       'drizzle/meta/_journal.json',
       'public/runtime.svg',
       'verification/fixtures/sample.jpg',

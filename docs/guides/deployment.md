@@ -37,6 +37,14 @@ docker compose --env-file .env.local up --detach --no-build --wait
 
 Compose 给停止留出 30 秒。当前 Next 16.3.5 的标准 SIGTERM 清理会返回退出码 143（128 + 15）；它与超时强制 SIGKILL 的 137 不同。`/data/ariso.db`、可能存在的 SQLite WAL/SHM 文件、`storage/`、`assets/watermarks/`、`assets/branding/` 和 `tmp/` 均位于挂载目录。容器重建不会替换挂载数据。不要将此运行示例当作自动测试执行在已有部署上。
 
+## 公共同步上传的请求预算
+
+`POST /api/upload` 在完整接收文件后才交接媒体任务，随后等待本次任务结果。当前接收连续 120 秒无进展或总计 1800 秒后失败；交接后的等待预算为 900 秒，包含排队。等待超时只结束 HTTP 等待，后台任务继续，调用方应先到所有者图库核对，再决定是否重新 POST；重复 POST 可以生成新图片。
+
+标准启动入口与本地开发均加载 `dist/cli/http.js`，在 Next 创建 HTTP Server 后、监听前将 `requestTimeout` 设置为 1860 秒，覆盖 1800 秒 body 与默认 60 秒头部预算。保留 Node 默认的头部、socket 和 keep-alive 设置。Node 的默认完整请求接收期限只有 300 秒；该属性不限制 body 收完后的处理等待，见 [Node HTTP 文档](https://nodejs.org/docs/latest-v24.x/api/http.html#serverrequesttimeout)。直接运行生成的 `server.js` 会绕过此启动适配，应使用 `pnpm start` 或打包的 `entrypoint.sh`。
+
+部署者的反向代理和调用方也须覆盖这些期限：外层总请求截止时间应超过 2760 秒（头部、接收、处理等待合计），响应读取空闲期限至少覆盖 900 秒并留余量，上传请求体的正常传输可持续 1800 秒。不要用短于上述预算的默认代理期限作为同步 API 入口。实际 HTTP、curl、断连及两对象服务证据见 [Issue #167 验证记录](../verification/upload-167/README.md)；生产代理和完整墙钟等待不由本地测试代替。
+
 ## 正式部署目录
 
 将已验证镜像标记为自己的固定版本，例如 `ariso:reviewed-runtime`，或者在将来正式发布后使用确切的 GHCR 版本或摘要。不要把以下本地标签当成已发布版本：

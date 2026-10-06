@@ -1,0 +1,315 @@
+{
+  "issue": 167,
+  "date": "2026-10-06",
+  "environment": {
+    "os": "macOS",
+    "architecture": "arm64",
+    "node": "24.18.1",
+    "pnpm": "11.19.0",
+    "next": "16.3.5"
+  },
+  "baseCommit": "a0384c78a05f8457c22fb9e442dc169f25fa8a1d",
+  "checks": [
+    {
+      "command": "pnpm install --frozen-lockfile",
+      "exitCode": 0,
+      "result": "No dependency or lockfile changes."
+    },
+    {
+      "command": "pnpm run db:generate",
+      "exitCode": 0,
+      "result": "0024 migration and snapshot generated and reviewed."
+    },
+    {
+      "command": "pnpm run build",
+      "exitCode": 0,
+      "phase": "final product source",
+      "result": "Application, runtime and standalone package built; existing optional @opentelemetry/api trace warnings retained."
+    },
+    {
+      "command": "pnpm run test:unit",
+      "exitCode": 0,
+      "filesPassed": 114,
+      "testsPassed": 1572,
+      "phase": "initial implementation"
+    },
+    {
+      "command": "pnpm exec vitest run --project unit tests/unit/upload/public-http.test.ts",
+      "exitCode": 0,
+      "testsPassed": 13,
+      "phase": "after review changes"
+    },
+    {
+      "command": "pnpm exec vitest run --project unit tests/unit/runtime/http-timeout.test.ts",
+      "exitCode": 0,
+      "testsPassed": 1,
+      "phase": "new HTTP startup adaptation"
+    },
+    {
+      "command": "pnpm run lint",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm run typecheck",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm run test:integration --maxWorkers=2",
+      "exitCode": 1,
+      "phase": "first run",
+      "filesPassed": 157,
+      "filesFailed": 7,
+      "testsPassed": 1565,
+      "testsFailed": 16,
+      "durationSeconds": 835.7,
+      "result": "Failures retained. Old-schema fixture, purge snapshot-write race, old error code, timeouts and build replacement during tests; final stable-package run started after fixes."
+    },
+    {
+      "command": "pnpm run test:integration --maxWorkers=2",
+      "phase": "stable final product source",
+      "status": "failed",
+      "exitCode": 1,
+      "filesPassed": 159,
+      "filesFailed": 6,
+      "testsPassed": 1577,
+      "testsFailed": 8,
+      "durationSeconds": 976.79,
+      "failures": [
+        {
+          "file": "tests/integration/identity/auth.test.ts",
+          "name": "uninitialized production auth requests return setup-required without creating an owner"
+        },
+        {
+          "file": "tests/integration/identity/auth.test.ts",
+          "name": "initialized production auth > production constraints reject invalid owners and duplicate providers; incomplete identity is explicit"
+        },
+        {
+          "file": "tests/integration/identity/setup-dev.test.ts",
+          "name": "real Next dev recompilation retains the startup code and the original code creates a login-capable owner"
+        },
+        {
+          "file": "tests/integration/identity/setup-lifecycle.test.ts",
+          "name": "setup process lifecycle > prestart prepares storage without issuing a code; real module reloads share one startup code"
+        },
+        {
+          "file": "tests/integration/runtime/build.test.ts",
+          "name": "无密钥和数据库时在独立目录完成生产构建，不写数据或输出初始化码"
+        },
+        {
+          "file": "tests/integration/runtime/prestart.test.ts",
+          "name": "compiled prestart CLI > 迁移失败回滚待执行 SQL，关闭连接，修复后继续且不重放"
+        },
+        {
+          "file": "tests/integration/runtime/secret-preflight.test.ts",
+          "name": "空生产数据库接受不同合法密钥，生产产物不包含测试表、组合或密钥校验记录"
+        },
+        {
+          "file": "tests/integration/runtime/secret-preflight.test.ts",
+          "name": "wrong key 阻止入口启动 Web，保留已提交迁移与密文，修复后继续且不重放迁移"
+        }
+      ],
+      "result": "All new and affected upload/media/old-schema tests passed in the default entry. Eight old startup/build tests timed out; serial retry retains original assertions and deadlines."
+    },
+    {
+      "command": "node tests/integration/upload/api-live.ts --config /Volumes/data/project/ariso/.data/upload-v02.json --output test-results/upload-167-live-final",
+      "exitCode": 0,
+      "phase": "final product source",
+      "services": [
+        {
+          "name": "r2",
+          "checksPassed": 6,
+          "objectsAbsentAfterCleanup": 6,
+          "report": "live/r2.json"
+        },
+        {
+          "name": "seaweedfs",
+          "checksPassed": 6,
+          "objectsAbsentAfterCleanup": 6,
+          "report": "live/seaweedfs.json"
+        }
+      ]
+    },
+    {
+      "command": "pnpm exec eslint tests/integration/upload/api-fixture.ts tests/integration/upload/api.test.ts --max-warnings=0",
+      "exitCode": 0,
+      "phase": "new real HTTP clock test"
+    },
+    {
+      "command": "pnpm exec tsc --project /tmp/ariso-167-api-tsconfig.json",
+      "exitCode": 0,
+      "phase": "new real HTTP clock test",
+      "result": "Project config extended for api-fixture/api-live/api.test and imported dependencies; later removal of unused preload stdout did not affect types."
+    },
+    {
+      "command": "pnpm run format:check",
+      "exitCode": 0
+    },
+    {
+      "command": "node docs/tasks/check.mjs",
+      "exitCode": 0,
+      "result": "120 tasks, 298 requirements, no missing IDs or cycles."
+    },
+    {
+      "command": "node docs/tasks/check.mjs --self-test",
+      "exitCode": 0,
+      "result": "5 rejection cases passed."
+    },
+    {
+      "command": "pnpm exec vitest run --project integration --maxWorkers=1 'tests/integration/identity/auth.test.ts' 'tests/integration/identity/setup-dev.test.ts' 'tests/integration/identity/setup-lifecycle.test.ts' 'tests/integration/runtime/build.test.ts' 'tests/integration/runtime/prestart.test.ts' 'tests/integration/runtime/secret-preflight.test.ts' --testNamePattern 'uninitialized production auth requests return setup-required without creating an owner|initialized production auth > production constraints reject invalid owners and duplicate providers; incomplete identity is explicit|real Next dev recompilation retains the startup code and the original code creates a login-capable owner|setup process lifecycle > prestart prepares storage without issuing a code; real module reloads share one startup code|无密钥和数据库时在独立目录完成生产构建，不写数据或输出初始化码|compiled prestart CLI > 迁移失败回滚待执行 SQL，关闭连接，修复后继续且不重放|空生产数据库接受不同合法密钥，生产产物不包含测试表、组合或密钥校验记录|wrong key 阻止入口启动 Web，保留已提交迁移与密文，修复后继续且不重放迁移' --reporter=default --reporter=json --outputFile=test-results/upload-167-recheck.json",
+      "status": "passed",
+      "phase": "only the eight failed deadline cases",
+      "exitCode": 0,
+      "filesPassed": 6,
+      "testsPassed": 8,
+      "testsSkipped": 36,
+      "durationSeconds": 186.21,
+      "result": "Serial retry selected precisely the eight failed cases. Other 36 tests in these files were already exercised by the default run; no assertions, deadlines or product code changed.",
+      "cases": [
+        {
+          "file": "tests/integration/identity/auth.test.ts",
+          "name": "uninitialized production auth requests return setup-required without creating an owner",
+          "status": "passed",
+          "durationMs": 3058.553208
+        },
+        {
+          "file": "tests/integration/identity/auth.test.ts",
+          "name": "initialized production auth production constraints reject invalid owners and duplicate providers; incomplete identity is explicit",
+          "status": "passed",
+          "durationMs": 2374.428458
+        },
+        {
+          "file": "tests/integration/identity/setup-dev.test.ts",
+          "name": "real Next dev recompilation retains the startup code and the original code creates a login-capable owner",
+          "status": "passed",
+          "durationMs": 57575.078042
+        },
+        {
+          "file": "tests/integration/identity/setup-lifecycle.test.ts",
+          "name": "setup process lifecycle prestart prepares storage without issuing a code; real module reloads share one startup code",
+          "status": "passed",
+          "durationMs": 1367.664584
+        },
+        {
+          "file": "tests/integration/runtime/build.test.ts",
+          "name": "无密钥和数据库时在独立目录完成生产构建，不写数据或输出初始化码",
+          "status": "passed",
+          "durationMs": 107190.78433400001
+        },
+        {
+          "file": "tests/integration/runtime/prestart.test.ts",
+          "name": "compiled prestart CLI 迁移失败回滚待执行 SQL，关闭连接，修复后继续且不重放",
+          "status": "passed",
+          "durationMs": 1301.949458
+        },
+        {
+          "file": "tests/integration/runtime/secret-preflight.test.ts",
+          "name": "空生产数据库接受不同合法密钥，生产产物不包含测试表、组合或密钥校验记录",
+          "status": "passed",
+          "durationMs": 3296.7554580000005
+        },
+        {
+          "file": "tests/integration/runtime/secret-preflight.test.ts",
+          "name": "wrong key 阻止入口启动 Web，保留已提交迁移与密文，修复后继续且不重放迁移",
+          "status": "passed",
+          "durationMs": 3273.0213330000006
+        }
+      ]
+    },
+    {
+      "command": "pnpm exec prettier --check docs/verification/upload-167/README.md docs/verification/upload-167/code-review.md docs/verification/upload-167/checks.json",
+      "exitCode": 0,
+      "phase": "final evidence formatting"
+    },
+    {
+      "command": "git diff --check",
+      "exitCode": 0
+    },
+    {
+      "command": "real object-service credential scan of all changed files",
+      "exitCode": 0,
+      "filesScanned": 47
+    }
+  ],
+  "reviews": {
+    "independentReviewers": ["receipt_schema", "public_result"],
+    "unresolvedRequired": 0,
+    "unresolvedCritical": 0,
+    "report": "code-review.md"
+  },
+  "notApplicable": [
+    "UI browser verification",
+    "Figma comparison",
+    "UI design review",
+    "UI manual acceptance",
+    "daily-PR release/container verification"
+  ],
+  "unverified": [
+    "AWS S3 (not required by current execution agreement)",
+    "actual production reverse proxy",
+    "1800-second continuous transfer wall clock",
+    "900-second waiting wall clock",
+    "Linux AMD64/ARM64 release containers"
+  ],
+  "defaultNewAndAffectedSuites": [
+    {
+      "suite": "integration:tests/integration/upload/receipt-state.test.ts",
+      "duration": 224.84479199999998,
+      "failed": false
+    },
+    {
+      "suite": "integration:tests/integration/upload/receipt-runtime.test.ts",
+      "duration": 82.50025000000005,
+      "failed": false
+    },
+    {
+      "suite": "integration:tests/integration/upload/receipt-migration.test.ts",
+      "duration": 36.816250000000025,
+      "failed": false
+    },
+    {
+      "suite": "unit:tests/unit/upload/public-http.test.ts",
+      "duration": 10.32854199999997,
+      "failed": false
+    },
+    {
+      "suite": "integration:tests/integration/storage/settings.test.ts",
+      "duration": 634.1942919999999,
+      "failed": false
+    },
+    {
+      "suite": "integration:tests/integration/upload/public-result.test.ts",
+      "duration": 680.3775420000001,
+      "failed": false
+    },
+    {
+      "suite": "integration:tests/integration/upload/public-multipart.test.ts",
+      "duration": 43.32683299999999,
+      "failed": false
+    },
+    {
+      "suite": "media-tools:tests/integration/media/metadata.test.ts",
+      "duration": 11985.194,
+      "failed": false
+    },
+    {
+      "suite": "media-tools:tests/integration/upload/api.test.ts",
+      "duration": 49797.201458,
+      "failed": false
+    },
+    {
+      "suite": "media-tools:tests/integration/upload/public-receive.test.ts",
+      "duration": 411.95225000000005,
+      "failed": false
+    }
+  ],
+  "finalState": {
+    "implementation": "complete",
+    "independentCodeReview": "complete",
+    "localApplicableChecks": "complete after retained full-run failures and passing affected retries",
+    "realHttpAndS3Verification": "complete",
+    "uiBrowserDesignManualAcceptance": "not applicable",
+    "remoteCi": "Not a local verification result; live PR checks are inspected at delivery.",
+    "merge": "not authorized",
+    "releaseAndDeployment": "not authorized"
+  }
+}
