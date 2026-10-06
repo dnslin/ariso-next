@@ -1,0 +1,188 @@
+Error: TypeError: page.evaluate argument must be JSON-serializable
+    at serializeJsonValue (file:////[eval1]:19363:15)
+    at serializeEvaluateArgument (file:////[eval1]:19204:12)
+    at validateEvaluateInput (file:////[eval1]:19201:26)
+    at #evaluate (file:////[eval1]:18803:36)
+    at Page.evaluate (file:////[eval1]:18488:30)
+    at install (file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/e2e/tokens-transport.mjs:9:21)
+    at tokensExpiryFault (file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/e2e/tokens-transport.mjs:170:10)
+    at verifyTokensSessionExpiry (file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/e2e/tokens-reads.mjs:84:23)
+    at async file:////[eval2]:83:7
+    at file:////[eval2]:124:20
+
+ego's nodejs process exited with code 1.
+Browser stage failed (tokens): AssertionError [ERR_ASSERTION]: Ego browser verification failed (tokens.log)
+
+1 !== 0
+
+    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/scripts/verify-browser.mjs:209:12)
+    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/scripts/browser-stages.mjs:17:5)
+    at async file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/scripts/verify-browser.mjs:713:24
+{ taskSpaceId: 36, ownership: 'agent' }
+[p1 "Ariso" | space "Issue 166 Token 实施与验证"(36): 3 managed, 0 untracked — p1* "Ariso", p3 "Ariso", p6 "Sharing protocol experiment"]
+root
+  container "后台侧栏"
+    anchor "Ariso 首页" [ref=684, url=http://ariso-54172.localhost:54172/]
+      text "Ariso"
+    button "收起侧栏" [ref=685, loc=css:button[aria-label="收起侧栏"]]
+      svg_root
+    container "后台导航"
+      svg_root
+      text "总览"
+      text "尚未开放"
+      anchor "上传" [ref=686, loc=css:a[aria-label="上传"], url=http://ariso-54172.localhost:54172/upload]
+        svg_root
+        text "上传"
+      anchor "图库" [ref=687, loc=css:a[aria-label="图库"], url=http://ariso-54172.localhost:54172/library]
+        svg_root
+        text "图库"
+      anchor "相册" [ref=688, loc=css:a[aria-label="相册"], url=http://ariso-54172.localhost:54172/albums]
+        svg_root
+        text "相册"
+      anchor "标签" [ref=689, loc=css:a[aria-label="标签"], url=http://ariso-54172.localhost:54172/tags]
+        svg_root
+        text "标签"
+      svg_root
+      text "分享管理"
+      text "尚未开放"
+      anchor "回收站" [ref=690, loc=css:a[aria-label="回收站"], url=http://ariso-54172.localhost:54172/trash]
+        svg_root
+        text "回收站"
+      paragraph
+        text "管理"
+      svg_root
+      text "访问统计"
+      text "尚未开放"
+      anchor "存储管理" [ref=691, loc=css:a[aria-label="存储管理"], url=http://ariso-54172.localhost:54172/settings/storage]
+        svg_root
+        text "存储管理"
+      anchor "站点设置" [ref=692, loc=css:a[aria-label="站点设置"], url=http://ariso-54172.localhost:54172/settings/processing]
+        svg_root
+        text "站点设置"
+    button "账号菜单" [ref=693, loc=css:button[aria-label="账号菜单"]]
+      text "O"
+      text "Owner"
+      text "站点所有者"
+  container
+    heading
+      svg_root
+      text "站点设置"
+    paragraph
+      text "管理站点、图片处理与账号偏好。"
+    container
+      svg_root
+      text "图片处理"
+      svg_root
+      text "账号与安全"
+      svg_root
+      text "上传 API"
+    heading
+      svg_root
+      text "上传 Token"
+    button [ref=694]
+      svg_root
+      text "创建"
+    paragraph
+      text "让脚本上传图片。Token 不能登录后台、浏览或管理图库。"
+    heading
+      svg_root
+      text "会话失效清理明文"
+    paragraph
+      svg_root
+      text "已启用"
+      text "·"
+      text "永不过期"
+    paragraph
+      svg_root
+      text "创建于"
+      text "2026/10/06 04:34:30"
+    paragraph
+      text "ID："
+      text "jzBLYP1m6vdUa7JkhP2BMnp4w0obny7P"
+    button [ref=695]
+      svg_root
+      text "停用"
+    button [ref=696]
+      svg_root
+      text "撤销"
+    heading
+      svg_root
+      text "浏览器一次明文-1440"
+    paragraph
+      svg_root
+      text "已启用"
+      text "·"
+      text "永不过期"
+    paragraph
+      svg_root
+      text "创建于"
+      text "2026/10/06 04:32:37"
+    paragraph
+      text "ID："
+      text "Gvg41KaZvIQTLEt46OHNNszvgDoeh2dj"
+    button [ref=697]
+      svg_root
+      text "停用"
+    button [ref=698]
+      svg_root
+      text "撤销"
+    heading
+      svg_root
+      text "浏览器-short-1440"
+    paragraph
+      svg_root
+      text "已启用"
+      text "·"
+      text "2026/10/06 04:42:56"
+    paragraph
+      svg_root
+      text "创建于"
+      text "2026/10/06 04:32:57"
+    paragraph
+      text "ID："
+      text "gqfHwufoeqa6CJVoCedVPn4Z1PkupBy3"
+    button [ref=699]
+      svg_root
+      text "停用"
+    button [ref=700]
+      svg_root
+      text "撤销"
+    heading
+      svg_root
+      text "浏览器-long-1440"
+    paragraph
+      svg_root
+      text "已启用"
+      text "·"
+      text "2028/10/05 04:33:00"
+    paragraph
+      svg_root
+      text "创建于"
+      text "2026/10/06 04:33:02"
+  dialog "保存你的 Token" [ref=701, loc=role:dialog[name="保存你的 Token"]]
+    container
+      heading
+        svg_root
+        text "保存你的 Token"
+      button "关闭 Token 弹窗" [ref=702, loc=css:button[aria-label="关闭 Token 弹窗"]]
+        svg_root
+    container
+      paragraph
+        text "会话失效清理明文"
+        text "·"
+        text "永不过期"
+      textbox "完整 Token" [ref=703, loc=css:textarea[aria-label="完整 Token"]]
+      paragraph
+        text "关闭后无法再次查看。请将完整 Token 保存在你信任的位置。"
+    container
+      button [ref=704]
+        svg_root
+        text "复制 Token"
+      button [ref=705]
+        svg_root
+        text "我已保存，关闭"
+
+
+AssertionError [ERR_ASSERTION]: Focused browser stages failed
+    at file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/scripts/verify-browser.mjs:719:12
+Browser report: /Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/test-results/tokens-166-behavior-final

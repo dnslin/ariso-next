@@ -1,0 +1,31 @@
+Already up to date
+Done in 37ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso
+
+ ❯ |unit| tests/unit/identity/return-to.test.ts (22 tests | 1 failed) 5ms
+   × returns to upload Token management after session expiry 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/identity/return-to.test.ts > returns to upload Token management after session expiry
+AssertionError: expected '/admin' to be '/settings/api' // Object.is equality
+
+Expected: "/settings/api"
+Received: "/admin"
+
+ ❯ tests/unit/identity/return-to.test.ts:78:45
+     76|
+     77| it('returns to upload Token management after session expiry', () => {
+     78|   expect(loginDestination('/settings/api')).toBe('/settings/api');
+       |                                             ^
+     79|   expect(loginDestination('/settings/api#main-content')).toBe(
+     80|     '/settings/api#main-content',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 21 passed (22)
+   Start at  02:27:05
+   Duration  87ms (transform 51%, tests 21%, import 21%, worker 7%)

@@ -1,0 +1,189 @@
+Already up to date
+Done in 66ms using pnpm v11.19.0
+$ pnpm run build:shell && pnpm --dir tests/experiments/ui run build && node scripts/verify-browser.mjs --suite tokens --only recovery
+$ next build tests/experiments/shell --webpack
+▲ Next.js 16.3.5 (webpack)
+✓ Running next.config.mjs took 15ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 19.2s
+  Running TypeScript ...
+  Finished TypeScript in 2.3s ...
+  Collecting page data using 4 workers ...
+  Generating static pages using 4 workers (0/2) ...
+✓ Generating static pages using 4 workers (2/2) in 337ms
+  Finalizing page optimization ...
+  Collecting build traces ...
+
+Route (app)
+┌ ○ /_not-found
+└ ƒ /[[...path]]
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+$ next build
+▲ Next.js 16.3.5 (Turbopack)
+✓ Running next.config.mjs took 10ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 543ms
+  Running TypeScript ...
+  Finished TypeScript in 1009ms ...
+  Collecting page data using 7 workers ...
+  Generating static pages using 7 workers (0/6) ...
+  Generating static pages using 7 workers (1/6)
+  Generating static pages using 7 workers (2/6)
+  Generating static pages using 7 workers (4/6)
+✓ Generating static pages using 7 workers (6/6) in 458ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /library
+├ ƒ /library/data
+└ ƒ /probe
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+Error: Error: page.waitForSelector timed out after 10000ms: [data-testid="api-page"][data-state="loading"]
+    at waitForSelectorInPage (file:////[eval1]:16159:11)
+    at async file:////[eval1]:16691:28
+    at file:////[eval2]:110:20
+
+ego's nodejs process exited with code 1.
+Browser stage failed (tokens): AssertionError [ERR_ASSERTION]: Ego browser verification failed (tokens.log)
+
+1 !== 0
+
+    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/scripts/verify-browser.mjs:209:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/scripts/browser-stages.mjs:17:5)
+    at async file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/scripts/verify-browser.mjs:713:24
+{ taskSpaceId: 36, ownership: 'agent' }
+[p3 "Ariso" | space "Issue 166 Token 实施与验证"(36): 3 managed, 0 untracked — p1 "Ariso", p3* "Ariso", p4 "Ariso"]
+root
+  container
+    container "后台侧栏"
+      container
+        anchor "Ariso 首页" [ref=1, url=http://ariso-56226.localhost:56226/]
+          text "Ariso"
+        button "收起侧栏" [ref=2, loc=css:button[aria-label="收起侧栏"]]
+          svg_root
+      container "后台导航"
+        group "总览，尚未开放" [ref=3, loc=role:group[name="总览，尚未开放"]]
+          link "总览，尚未开放"
+            svg_root
+            text "总览"
+            text "尚未开放"
+        anchor "上传" [ref=4, loc=css:a[aria-label="上传"], url=http://ariso-56226.localhost:56226/upload]
+          svg_root
+          text "上传"
+        anchor "图库" [ref=5, loc=css:a[aria-label="图库"], url=http://ariso-56226.localhost:56226/library]
+          svg_root
+          text "图库"
+        anchor "相册" [ref=6, loc=css:a[aria-label="相册"], url=http://ariso-56226.localhost:56226/albums]
+          svg_root
+          text "相册"
+        anchor "标签" [ref=7, loc=css:a[aria-label="标签"], url=http://ariso-56226.localhost:56226/tags]
+          svg_root
+          text "标签"
+        group "分享管理，尚未开放" [ref=8, loc=role:group[name="分享管理，尚未开放"]]
+          link "分享管理，尚未开放"
+            svg_root
+            text "分享管理"
+            text "尚未开放"
+        anchor "回收站" [ref=9, loc=css:a[aria-label="回收站"], url=http://ariso-56226.localhost:56226/trash]
+          svg_root
+          text "回收站"
+        paragraph
+          text "管理"
+        group "访问统计，尚未开放" [ref=10, loc=role:group[name="访问统计，尚未开放"]]
+          link "访问统计，尚未开放"
+            svg_root
+            text "访问统计"
+            text "尚未开放"
+        anchor "存储管理" [ref=11, loc=css:a[aria-label="存储管理"], url=http://ariso-56226.localhost:56226/settings/storage]
+          svg_root
+          text "存储管理"
+        anchor "站点设置" [ref=12, loc=css:a[aria-label="站点设置"], url=http://ariso-56226.localhost:56226/settings/processing]
+          svg_root
+          text "站点设置"
+      button "账号菜单" [ref=13, loc=css:button[aria-label="账号菜单"]]
+        text "O"
+        container
+          text "Owner"
+          text "站点所有者"
+    container [ref=14]
+      container
+        container
+          heading
+            svg_root
+            text "站点设置"
+          paragraph
+            text "管理站点、图片处理与账号偏好。"
+        container
+          tablist "设置分类"
+            tab [ref=15]
+              svg_root
+              text "图片处理"
+            tab [ref=16]
+              svg_root
+              text "账号与安全"
+            tab [ref=17]
+              svg_root
+              text "上传 API"
+          tabpanel "上传 API"
+            container
+              heading
+                svg_root
+                text "上传 Token"
+              button [ref=18]
+                svg_root
+                text "创建"
+            paragraph
+              text "让脚本上传图片。Token 不能登录后台、浏览或管理图库。"
+            container
+              heading
+                svg_root
+                text "退出未知后的核对-1440"
+              paragraph
+                svg_root
+                container
+                  text "已启用"
+                  text "·"
+                  text "永不过期"
+              paragraph
+                svg_root
+                container
+                  text "创建于"
+                  text "2026/10/06 02:47:16"
+              paragraph
+                text "ID："
+                text "8zHhNfK0BhvZZ4y38x08tKHNz9KXEUFQ"
+              container
+                button [ref=19]
+                  svg_root
+                  text "停用"
+                button [ref=20]
+                  svg_root
+                  text "撤销"
+            paragraph
+              text "时间按站点时区显示（"
+              text "Asia/Shanghai"
+              text "）。过期记录可能被自动清理。"
+            container
+              button [ref=21]
+                text "查看上传用法"
+              paragraph
+                text "尚未开放"
+
+
+AssertionError [ERR_ASSERTION]: Focused browser stages failed
+    at file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/scripts/verify-browser.mjs:719:12
+Browser report: /Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/test-results/tokens-166-red
+[ELIFECYCLE] Command failed with exit code 1.

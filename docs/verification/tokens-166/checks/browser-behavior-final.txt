@@ -1,0 +1,195 @@
+Error: AssertionError [ERR_ASSERTION]: The source page and scroll remain unchanged
++ actual - expected
+
+  {
++   content: 551.5,
+-   content: 0,
+    url: 'http://ariso-53561.localhost:53561/settings/api',
+    window: 0
+  }
+
+    at Object.returnFocus (file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/e2e/tokens-page.mjs:310:12)
+    at async verifyTokensCreates (file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/e2e/tokens-behavior.mjs:635:5)
+    at async file:////[eval2]:76:5
+    at file:////[eval2]:124:20
+
+ego's nodejs process exited with code 1.
+Browser stage failed (tokens): AssertionError [ERR_ASSERTION]: Ego browser verification failed (tokens.log)
+
+1 !== 0
+
+    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/scripts/verify-browser.mjs:209:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/scripts/browser-stages.mjs:17:5)
+    at async file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/scripts/verify-browser.mjs:713:24
+{ taskSpaceId: 36, ownership: 'agent' }
+[p1 "Ariso" | space "Issue 166 Token 实施与验证"(36): 3 managed, 0 untracked — p1* "Ariso", p3 "Ariso", p6 "Sharing protocol experiment"]
+root
+  container
+    container "后台侧栏"
+      container
+        anchor "Ariso 首页" [ref=661, url=http://ariso-53561.localhost:53561/]
+          text "Ariso"
+        button "收起侧栏" [ref=662, loc=css:button[aria-label="收起侧栏"]]
+          svg_root
+      container "后台导航"
+        group "总览，尚未开放" [ref=663, loc=role:group[name="总览，尚未开放"]]
+          link "总览，尚未开放"
+            svg_root
+            text "总览"
+            text "尚未开放"
+        anchor "上传" [ref=664, loc=css:a[aria-label="上传"], url=http://ariso-53561.localhost:53561/upload]
+          svg_root
+          text "上传"
+        anchor "图库" [ref=665, loc=css:a[aria-label="图库"], url=http://ariso-53561.localhost:53561/library]
+          svg_root
+          text "图库"
+        anchor "相册" [ref=666, loc=css:a[aria-label="相册"], url=http://ariso-53561.localhost:53561/albums]
+          svg_root
+          text "相册"
+        anchor "标签" [ref=667, loc=css:a[aria-label="标签"], url=http://ariso-53561.localhost:53561/tags]
+          svg_root
+          text "标签"
+        group "分享管理，尚未开放" [ref=668, loc=role:group[name="分享管理，尚未开放"]]
+          link "分享管理，尚未开放"
+            svg_root
+            text "分享管理"
+            text "尚未开放"
+        anchor "回收站" [ref=669, loc=css:a[aria-label="回收站"], url=http://ariso-53561.localhost:53561/trash]
+          svg_root
+          text "回收站"
+        paragraph
+          text "管理"
+        group "访问统计，尚未开放" [ref=670, loc=role:group[name="访问统计，尚未开放"]]
+          link "访问统计，尚未开放"
+            svg_root
+            text "访问统计"
+            text "尚未开放"
+        anchor "存储管理" [ref=671, loc=css:a[aria-label="存储管理"], url=http://ariso-53561.localhost:53561/settings/storage]
+          svg_root
+          text "存储管理"
+        anchor "站点设置" [ref=672, loc=css:a[aria-label="站点设置"], url=http://ariso-53561.localhost:53561/settings/processing]
+          svg_root
+          text "站点设置"
+      button "账号菜单" [ref=673, loc=css:button[aria-label="账号菜单"]]
+        text "O"
+        container
+          text "Owner"
+          text "站点所有者"
+    container [ref=674]
+      tabpanel "上传 API"
+        container
+          container
+            heading
+              svg_root
+              text "浏览器-short-1440"
+            paragraph
+              svg_root
+              container
+                text "已启用"
+                text "·"
+                text "2026/10/06 04:38:26"
+            paragraph
+              svg_root
+              container
+                text "创建于"
+                text "2026/10/06 04:28:28"
+            paragraph
+              text "ID："
+              text "gyO7XfjXK7mKc4lfo2SAxw40p4583QFk"
+            container
+              button [ref=675]
+                svg_root
+                text "停用"
+              button [ref=676]
+                svg_root
+                text "撤销"
+          container
+            heading
+              svg_root
+              text "浏览器-long-1440"
+            paragraph
+              svg_root
+              container
+                text "已启用"
+                text "·"
+                text "2028/10/05 04:28:32"
+            paragraph
+              svg_root
+              container
+                text "创建于"
+                text "2026/10/06 04:28:34"
+            paragraph
+              text "ID："
+              text "3F9wTgS4vVQiWRb7qqKQnOlz0nrAI0mE"
+            container
+              button [ref=677]
+                svg_root
+                text "停用"
+              button [ref=678]
+                svg_root
+                text "撤销"
+          container
+            heading
+              svg_root
+              text "刷新清除明文-1440"
+            paragraph
+              svg_root
+              container
+                text "已启用"
+                text "·"
+                text "永不过期"
+            paragraph
+              svg_root
+              container
+                text "创建于"
+                text "2026/10/06 04:28:40"
+            paragraph
+              text "ID："
+              text "kDxRWQ25Lokkw0fTeYWMtphDtO4gp0CL"
+            container
+              button [ref=679]
+                svg_root
+                text "停用"
+              button [ref=680]
+                svg_root
+                text "撤销"
+          container
+            heading
+              svg_root
+              text "即时过期-1440"
+            paragraph
+              svg_root
+              container
+                text "已过期"
+                text "·"
+                text "2026/10/06 04:28:47"
+            paragraph
+              svg_root
+              container
+                text "创建于"
+                text "2026/10/06 04:28:42"
+            paragraph
+              text "ID："
+              text "FQEBtTgtPCFamCNCyaBUhd85lqG2ai0a"
+            container
+              button [ref=681]
+                svg_root
+                text "已过期"
+              button [ref=682]
+                svg_root
+                text "撤销"
+        paragraph
+          text "时间按站点时区显示（"
+          text "Asia/Shanghai"
+          text "）。过期记录可能被自动清理。"
+        container
+          button [ref=683]
+            text "查看上传用法"
+          paragraph
+            text "尚未开放"
+
+
+AssertionError [ERR_ASSERTION]: Focused browser stages failed
+    at file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/scripts/verify-browser.mjs:719:12
+Browser report: /Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/test-results/tokens-166-behavior-green

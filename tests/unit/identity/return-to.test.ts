@@ -73,3 +73,12 @@ it('returns to account management after session expiry or explicit login verific
   expect(loginDestination('/settings/github')).toBe('/admin');
   expect(loginDestination('https://evil.test/settings/account')).toBe('/admin');
 });
+
+it('returns to upload Token management after session expiry', () => {
+  expect(loginDestination('/settings/api')).toBe('/settings/api');
+  expect(loginDestination('/settings/api#main-content')).toBe(
+    '/settings/api#main-content',
+  );
+  expect(loginDestination('/settings/api/unimplemented')).toBe('/admin');
+  expect(loginDestination('https://evil.test/settings/api')).toBe('/admin');
+});

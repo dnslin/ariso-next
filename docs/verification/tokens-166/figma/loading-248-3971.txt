@@ -1,0 +1,97 @@
+const imgSelectIndicator = "https://www.figma.com/api/mcp/asset/972c4c81-00d4-4be7-abde-db42b253fb4e.svg";
+
+type ButtonOutlineProps = {
+  className?: string;
+  label?: string;
+};
+
+function ButtonOutline({ className, label = "按钮" }: ButtonOutlineProps) {
+  return (
+    <div className={className || "bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex h-[36px] items-center justify-center relative rounded-[8px] w-[398px]"} data-node-id="3:23" data-name="Button/Outline">
+      <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="3:24">
+        {label}
+      </p>
+    </div>
+  );
+}
+
+type ButtonDisabledProps = {
+  className?: string;
+  label?: string;
+};
+
+function ButtonDisabled({ className, label = "按钮" }: ButtonDisabledProps) {
+  return (
+    <div className={className || "bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex h-[36px] items-center justify-center opacity-42 relative rounded-[8px] w-[398px]"} data-node-id="3:25" data-name="Button/Disabled">
+      <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="3:26">
+        {label}
+      </p>
+    </div>
+  );
+}
+
+type MobileSettingsSelectorProps = {
+  className?: string;
+  label?: string;
+};
+
+function MobileSettingsSelector({ className, label = "基本设置" }: MobileSettingsSelectorProps) {
+  return (
+    <div className={className || "bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex h-[48px] items-center justify-between px-[14px] relative rounded-[8px] w-[358px]"} data-node-id="113:1498" data-name="Mobile / SettingsSelector">
+      <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[16px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="113:1495">
+        {label}
+      </p>
+      <div className="relative shrink-0 size-[16px]" data-node-id="113:1496" data-name="Select / Indicator">
+        <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgSelectIndicator} />
+      </div>
+    </div>
+  );
+}
+
+export default function MApiToken() {
+  return (
+    <div className="bg-[var(--background,#fffffe)] relative size-full" data-node-id="248:3971" data-name="M / API Token / 加载列表">
+      <div className="absolute content-stretch flex flex-col gap-[20px] items-start left-[16px] pb-[40px] top-[88px] w-[358px]" data-node-id="248:3972" data-name="Main">
+        <div className="content-stretch flex items-start justify-between pb-[4px] relative shrink-0 w-[358px]" data-node-id="248:3973" data-name="页面标题">
+          <div className="[word-break:break-word] content-stretch flex flex-col gap-[6px] items-start leading-[1.5] relative shrink-0 text-[color:var(--foreground,#272343)] w-[210px] whitespace-nowrap" data-node-id="248:3974" data-name="欢迎">
+            <p className="font-['Noto_Sans_SC:Medium'] font-medium relative shrink-0 text-[30px]" data-node-id="248:3975">
+              站点设置
+            </p>
+            <p className="font-['Noto_Sans_SC:Regular'] font-normal relative shrink-0 text-[14px]" data-node-id="248:3976">
+              管理站点、图片处理与账号偏好。
+            </p>
+          </div>
+        </div>
+        <MobileSettingsSelector className="bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch cursor-pointer flex h-[48px] items-center justify-between px-[14px] relative rounded-[8px] shrink-0 w-[358px]" label="上传 API" />
+        <div className="bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex flex-col gap-[20px] items-start px-[16px] py-[24px] relative rounded-[20px] shrink-0 w-[358px]" data-node-id="248:3978" data-name="设置内容">
+          <p className="[word-break:break-word] font-['Noto_Sans_SC:Medium'] font-medium leading-[1.5] relative shrink-0 text-[20px] text-[color:var(--foreground,#272343)] w-full" data-node-id="248:3979">
+            上传 Token
+          </p>
+          <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--muted-foreground,#2d334a)] w-full" data-node-id="248:3980">
+            让脚本上传图片。Token 不能登录后台、浏览或管理图库。
+          </p>
+          <ButtonDisabled className="bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex h-[48px] items-center justify-center opacity-42 relative rounded-[8px] shrink-0 w-full" label="创建 Token" />
+          <div className="content-stretch flex flex-col items-start overflow-clip relative shrink-0 w-full" data-node-id="248:3982" data-name="Token / 列表">
+            <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[16px] text-[color:var(--foreground,#272343)] w-full" data-node-id="248:4055">
+              正在读取 Token…
+            </p>
+          </div>
+          <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[12px] text-[color:var(--muted-foreground,#2d334a)] w-full" data-node-id="248:3985">
+            时间按站点时区显示（Asia/Shanghai）。过期记录可能被自动清理。
+          </p>
+          <ButtonOutline className="bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch cursor-pointer flex h-[48px] items-center justify-center relative rounded-[8px] shrink-0 w-full" label="查看上传用法" />
+        </div>
+      </div>
+      <div className="absolute bg-[var(--background,#fffffe)] content-stretch flex h-[64px] items-center justify-between left-0 overflow-clip px-[16px] top-0 w-[390px]" data-node-id="248:3987" data-name="Mobile / Header">
+        <p className="[word-break:break-word] font-['Caveat:Regular'] font-normal leading-[1.5] relative shrink-0 text-[36px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="I248:3987;112:1495">
+          Ariso
+        </p>
+        <button className="bg-[var(--secondary,#e3f6f5)] content-stretch cursor-pointer flex h-[44px] items-center justify-center overflow-clip relative rounded-[22px] shrink-0 w-[64px]" data-node-id="I248:3987;112:1496" data-name="Mobile / 打开菜单">
+          <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] text-left whitespace-nowrap" data-node-id="I248:3987;112:1497">
+            菜单
+          </p>
+        </button>
+      </div>
+    </div>
+  );
+}

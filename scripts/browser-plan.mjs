@@ -6,6 +6,19 @@ const suites = {
   'sharing-experiment': {},
   'sharing-protocol': {},
   account: { stages: [['account', 'account']] },
+  tokens: {
+    only: [
+      'representative',
+      'behavior',
+      'lifecycle',
+      'recovery',
+      'create-recovery',
+      'action-recovery',
+      'consumers',
+    ],
+    stages: [['tokens', 'tokens']],
+    config: (only) => ({ tokensPhase: only }),
+  },
   library: {
     only: ['recovery'],
     stages: [['library', 'library']],
