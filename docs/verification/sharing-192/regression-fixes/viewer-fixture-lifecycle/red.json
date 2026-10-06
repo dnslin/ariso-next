@@ -1,0 +1,26 @@
+{
+  "phase": "red",
+  "scans": [
+    {
+      "stage": "after-storage-registration",
+      "status": "passed",
+      "discoveredCount": 4,
+      "deletedCount": 4,
+      "protectedCount": 0,
+      "failedCount": 0
+    },
+    {
+      "stage": "before-first-object-registration",
+      "status": "passed",
+      "discoveredCount": 1,
+      "deletedCount": 1,
+      "protectedCount": 0,
+      "failedCount": 0
+    }
+  ],
+  "completed": false,
+  "error": {
+    "message": "Command failed: magick /var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-viewer-fixture-lifecycle-bqGbZe/storage/default/ariso/issue185-storage/viewer-fixtures/original.png -resize 320x240! /var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-viewer-fixture-lifecycle-bqGbZe/storage/default/ariso/issue185-storage/viewer-fixtures/partial-thumbnail.webp\nmagick: unable to open image '/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-viewer-fixture-lifecycle-bqGbZe/storage/default/ariso/issue185-storage/viewer-fixtures/original.png': No such file or directory @ error/blob.c/OpenBlob/3683.\n",
+    "code": 1
+  }
+}

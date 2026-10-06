@@ -1,0 +1,677 @@
+{
+  "processing": {
+    "status": "passed",
+    "stage": "recovery",
+    "checks": 44,
+    "layouts": 100,
+    "source": "test-results/sharing-192/regression-full/processing.json",
+    "assetReadRecovery": {
+      "released": true,
+      "activation": {
+        "event": "pointerdown",
+        "at": 1791278891909,
+        "trusted": true
+      },
+      "requests": [
+        {
+          "startedAt": 1791278890992,
+          "responseLost": true,
+          "status": 200,
+          "finishedAt": 1791278891000
+        },
+        {
+          "startedAt": 1791278891925,
+          "responseLost": false,
+          "status": 200,
+          "finishedAt": 1791278891942
+        }
+      ]
+    }
+  },
+  "storage-admin": {
+    "status": "passed",
+    "checks": 10,
+    "layouts": 120,
+    "source": "test-results/sharing-192/regression-full/storage-admin.json",
+    "localPathDiagnostic": {
+      "requests": [
+        {
+          "path": "/api/storages/7705c7b2-5d47-458a-8e2e-275599101cb4",
+          "startedAt": 1791279003927,
+          "status": 400,
+          "finishedAt": 1791279003943
+        }
+      ],
+      "input": "../../outside-storage",
+      "alerts": [
+        {
+          "role": "alert",
+          "text": "请检查存储配置字段"
+        }
+      ],
+      "storedPath": "storage-admin-198"
+    }
+  },
+  "library-feedback": {
+    "status": "passed",
+    "stage": "geometry",
+    "checks": 4,
+    "layouts": 0,
+    "source": "test-results/sharing-192/regression-full/library-feedback.json"
+  },
+  "library-batch": {
+    "status": "passed",
+    "activeCheck": "trash-restore-preserves-surviving-data",
+    "checks": 17,
+    "layouts": 150,
+    "source": "test-results/sharing-192/regression-full/library-batch.json"
+  },
+  "library-copy": {
+    "status": "passed",
+    "stage": "complete",
+    "checks": 10,
+    "layouts": 85,
+    "source": "test-results/sharing-192/regression-full/library-copy.json",
+    "pasteboardChecks": [
+      {
+        "stage": "exact-output",
+        "at": 1791279583420,
+        "matches": true,
+        "actualLength": 9999,
+        "expectedLength": 9999
+      },
+      {
+        "stage": "exact-output",
+        "at": 1791279585864,
+        "matches": true,
+        "actualLength": 12799,
+        "expectedLength": 12799
+      },
+      {
+        "stage": "exact-output",
+        "at": 1791279587368,
+        "matches": true,
+        "actualLength": 13199,
+        "expectedLength": 13199
+      },
+      {
+        "stage": "exact-output",
+        "at": 1791279588066,
+        "matches": true,
+        "actualLength": 14611,
+        "expectedLength": 14611
+      },
+      {
+        "stage": "exact-output",
+        "at": 1791279588684,
+        "matches": true,
+        "actualLength": 17025,
+        "expectedLength": 17025
+      },
+      {
+        "stage": "exact-output",
+        "at": 1791279589298,
+        "matches": true,
+        "actualLength": 12799,
+        "expectedLength": 12799
+      },
+      {
+        "stage": "exact-output",
+        "at": 1791279589883,
+        "matches": true,
+        "actualLength": 17411,
+        "expectedLength": 17411
+      },
+      {
+        "stage": "exact-output",
+        "at": 1791279590446,
+        "matches": true,
+        "actualLength": 19825,
+        "expectedLength": 19825
+      },
+      {
+        "stage": "exact-output",
+        "at": 1791279591013,
+        "matches": true,
+        "actualLength": 13199,
+        "expectedLength": 13199
+      },
+      {
+        "stage": "exact-output",
+        "at": 1791279591616,
+        "matches": true,
+        "actualLength": 17811,
+        "expectedLength": 17811
+      },
+      {
+        "stage": "exact-output",
+        "at": 1791279592178,
+        "matches": true,
+        "actualLength": 20225,
+        "expectedLength": 20225
+      },
+      {
+        "stage": "exact-output",
+        "at": 1791279592729,
+        "matches": true,
+        "actualLength": 12999,
+        "expectedLength": 12999
+      },
+      {
+        "stage": "exact-output",
+        "at": 1791279593296,
+        "matches": true,
+        "actualLength": 17611,
+        "expectedLength": 17611
+      },
+      {
+        "stage": "exact-output",
+        "at": 1791279593863,
+        "matches": true,
+        "actualLength": 20025,
+        "expectedLength": 20025
+      },
+      {
+        "stage": "exact-output",
+        "at": 1791279594447,
+        "matches": true,
+        "actualLength": 12934,
+        "expectedLength": 12934
+      },
+      {
+        "stage": "exact-output",
+        "at": 1791279594994,
+        "matches": true,
+        "actualLength": 17523,
+        "expectedLength": 17523
+      },
+      {
+        "stage": "exact-output",
+        "at": 1791279595563,
+        "matches": true,
+        "actualLength": 19925,
+        "expectedLength": 19925
+      },
+      {
+        "stage": "exact-output",
+        "at": 1791279596145,
+        "matches": true,
+        "actualLength": 19825,
+        "expectedLength": 19825
+      },
+      {
+        "stage": "manual-native-copy-complete",
+        "at": 1791279596153,
+        "matches": true,
+        "actualLength": 19825,
+        "expectedLength": 19825
+      },
+      {
+        "stage": "manual-after-layouts",
+        "at": 1791279597664,
+        "matches": true,
+        "actualLength": 19825,
+        "expectedLength": 19825
+      },
+      {
+        "stage": "manual-return-click",
+        "at": 1791279597902,
+        "matches": true,
+        "actualLength": 19825,
+        "expectedLength": 19825
+      },
+      {
+        "stage": "unavailable-before-navigation",
+        "at": 1791279597948,
+        "matches": true,
+        "actualLength": 19825,
+        "expectedLength": 19825
+      },
+      {
+        "stage": "unavailable-after-navigation",
+        "at": 1791279598244,
+        "matches": true,
+        "actualLength": 19825,
+        "expectedLength": 19825
+      },
+      {
+        "stage": "unavailable-after-selection",
+        "at": 1791279599329,
+        "matches": true,
+        "actualLength": 19825,
+        "expectedLength": 19825
+      },
+      {
+        "stage": "unavailable-after-open",
+        "at": 1791279600180,
+        "matches": true,
+        "actualLength": 19825,
+        "expectedLength": 19825
+      },
+      {
+        "stage": "unavailable-after-empty-result",
+        "at": 1791279600424,
+        "matches": true,
+        "actualLength": 19825,
+        "expectedLength": 19825
+      },
+      {
+        "stage": "exact-output",
+        "at": 1791279600432,
+        "matches": true,
+        "actualLength": 19825,
+        "expectedLength": 19825
+      },
+      {
+        "stage": "exact-output",
+        "at": 1791279603670,
+        "matches": true,
+        "actualLength": 49,
+        "expectedLength": 49
+      },
+      {
+        "stage": "exact-output",
+        "at": 1791279612231,
+        "matches": true,
+        "actualLength": 149,
+        "expectedLength": 149
+      },
+      {
+        "stage": "exact-output",
+        "at": 1791279613580,
+        "matches": true,
+        "actualLength": 191,
+        "expectedLength": 191
+      },
+      {
+        "stage": "exact-output",
+        "at": 1791279615064,
+        "matches": true,
+        "actualLength": 191,
+        "expectedLength": 191
+      },
+      {
+        "stage": "exact-output",
+        "at": 1791279616690,
+        "matches": true,
+        "actualLength": 191,
+        "expectedLength": 191
+      },
+      {
+        "stage": "exact-output",
+        "at": 1791279618078,
+        "matches": true,
+        "actualLength": 191,
+        "expectedLength": 191
+      }
+    ],
+    "authRecoveryStates": [
+      {
+        "stage": "before-session-revocation",
+        "at": 1791279618416,
+        "path": "/albums/issue177-album-a",
+        "dialog": true,
+        "selectedFormat": "url",
+        "authEvents": []
+      },
+      {
+        "stage": "after-session-revocation",
+        "at": 1791279618458,
+        "path": "/albums/issue177-album-a",
+        "dialog": true,
+        "selectedFormat": "url",
+        "authEvents": []
+      },
+      {
+        "stage": "before-format-selection",
+        "at": 1791279618461,
+        "path": "/albums/issue177-album-a",
+        "dialog": true,
+        "selectedFormat": "url",
+        "authEvents": []
+      },
+      {
+        "stage": "after-format-selection",
+        "at": 1791279618548,
+        "path": "/albums/issue177-album-a",
+        "dialog": true,
+        "selectedFormat": "url",
+        "authEvents": []
+      }
+    ]
+  },
+  "tags": {
+    "status": "passed",
+    "checks": 14,
+    "layouts": 114,
+    "source": "test-results/sharing-192/regression-full/tags.json"
+  },
+  "upload": {
+    "status": "passed",
+    "checks": 16,
+    "layouts": 140,
+    "source": "test-results/sharing-192/regression-full/upload.json",
+    "storageAvailability": [
+      {
+        "stage": "disabled-default",
+        "database": {
+          "settings": [
+            {
+              "default_storage_id": "68e115a3-7698-435d-849a-bbfbf1ac8bf7"
+            }
+          ],
+          "storages": [
+            {
+              "id": "46889b13-e437-4aec-b983-d827060a2968",
+              "enabled": 1
+            },
+            {
+              "id": "68e115a3-7698-435d-849a-bbfbf1ac8bf7",
+              "enabled": 0
+            },
+            {
+              "id": "9a4a2a62-2b05-48fe-8075-5e526915f106",
+              "enabled": 0
+            },
+            {
+              "id": "issue185-storage",
+              "enabled": 1
+            },
+            {
+              "id": "library-disabled",
+              "enabled": 0
+            }
+          ]
+        },
+        "response": {
+          "status": 200,
+          "defaultStorageId": "68e115a3-7698-435d-849a-bbfbf1ac8bf7",
+          "storages": [
+            {
+              "id": "issue185-storage",
+              "enabled": true
+            },
+            {
+              "id": "library-disabled",
+              "enabled": false
+            },
+            {
+              "id": "68e115a3-7698-435d-849a-bbfbf1ac8bf7",
+              "enabled": false
+            },
+            {
+              "id": "9a4a2a62-2b05-48fe-8075-5e526915f106",
+              "enabled": false
+            },
+            {
+              "id": "46889b13-e437-4aec-b983-d827060a2968",
+              "enabled": true
+            }
+          ]
+        },
+        "message": "默认存储缺失或已停用，请明确选择可用的存储。"
+      },
+      {
+        "stage": "all-disabled",
+        "database": {
+          "settings": [
+            {
+              "default_storage_id": "68e115a3-7698-435d-849a-bbfbf1ac8bf7"
+            }
+          ],
+          "storages": [
+            {
+              "id": "46889b13-e437-4aec-b983-d827060a2968",
+              "enabled": 0
+            },
+            {
+              "id": "68e115a3-7698-435d-849a-bbfbf1ac8bf7",
+              "enabled": 0
+            },
+            {
+              "id": "9a4a2a62-2b05-48fe-8075-5e526915f106",
+              "enabled": 0
+            },
+            {
+              "id": "issue185-storage",
+              "enabled": 0
+            },
+            {
+              "id": "library-disabled",
+              "enabled": 0
+            }
+          ]
+        },
+        "response": {
+          "status": 200,
+          "defaultStorageId": "68e115a3-7698-435d-849a-bbfbf1ac8bf7",
+          "storages": [
+            {
+              "id": "issue185-storage",
+              "enabled": false
+            },
+            {
+              "id": "library-disabled",
+              "enabled": false
+            },
+            {
+              "id": "68e115a3-7698-435d-849a-bbfbf1ac8bf7",
+              "enabled": false
+            },
+            {
+              "id": "9a4a2a62-2b05-48fe-8075-5e526915f106",
+              "enabled": false
+            },
+            {
+              "id": "46889b13-e437-4aec-b983-d827060a2968",
+              "enabled": false
+            }
+          ]
+        },
+        "message": "暂无可用存储，请先配置并启用存储。"
+      },
+      {
+        "stage": "before-restoring-storage",
+        "database": {
+          "settings": [
+            {
+              "default_storage_id": "68e115a3-7698-435d-849a-bbfbf1ac8bf7"
+            }
+          ],
+          "storages": [
+            {
+              "id": "46889b13-e437-4aec-b983-d827060a2968",
+              "enabled": 0
+            },
+            {
+              "id": "68e115a3-7698-435d-849a-bbfbf1ac8bf7",
+              "enabled": 0
+            },
+            {
+              "id": "9a4a2a62-2b05-48fe-8075-5e526915f106",
+              "enabled": 0
+            },
+            {
+              "id": "issue185-storage",
+              "enabled": 0
+            },
+            {
+              "id": "library-disabled",
+              "enabled": 0
+            }
+          ]
+        },
+        "response": {
+          "status": 200,
+          "defaultStorageId": "68e115a3-7698-435d-849a-bbfbf1ac8bf7",
+          "storages": [
+            {
+              "id": "issue185-storage",
+              "enabled": false
+            },
+            {
+              "id": "library-disabled",
+              "enabled": false
+            },
+            {
+              "id": "68e115a3-7698-435d-849a-bbfbf1ac8bf7",
+              "enabled": false
+            },
+            {
+              "id": "9a4a2a62-2b05-48fe-8075-5e526915f106",
+              "enabled": false
+            },
+            {
+              "id": "46889b13-e437-4aec-b983-d827060a2968",
+              "enabled": false
+            }
+          ]
+        },
+        "message": "暂无可用存储，请先配置并启用存储。"
+      }
+    ],
+    "storageFixture": {
+      "id": "46889b13-e437-4aec-b983-d827060a2968",
+      "deleted": true
+    }
+  },
+  "upload-input": {
+    "status": "passed",
+    "checks": 11,
+    "layouts": 82,
+    "source": "test-results/sharing-192/regression-full/upload-input.json",
+    "directoryChooser": [
+      {
+        "type": "change",
+        "files": 501,
+        "relativePathCount": 501,
+        "relativePathSample": [
+          "大队列/图片-2.png",
+          "大队列/图片-259.png",
+          "大队列/图片-271.png"
+        ],
+        "time": 6508.400000095367
+      }
+    ],
+    "fixturesRemoved": true
+  },
+  "upload-relations": {
+    "status": "passed",
+    "checks": 12,
+    "layouts": 49,
+    "source": "test-results/sharing-192/regression-full/upload-relations.json",
+    "creationNavigation": [
+      {
+        "kind": "albums",
+        "x": 1229,
+        "y": 567,
+        "delta": 0,
+        "scrollable": false,
+        "mainScroll": 0
+      },
+      {
+        "kind": "tags",
+        "x": 199,
+        "y": 443,
+        "delta": 0,
+        "scrollable": false,
+        "mainScroll": 247
+      },
+      {
+        "kind": "albums",
+        "x": 199,
+        "y": 542,
+        "delta": 0,
+        "scrollable": false,
+        "mainScroll": 0
+      },
+      {
+        "kind": "albums",
+        "x": 199,
+        "y": 305.5,
+        "delta": 89,
+        "scrollable": true,
+        "mainScroll": 505.5
+      },
+      {
+        "kind": "albums",
+        "x": 199,
+        "y": 305.5,
+        "delta": 89,
+        "scrollable": true,
+        "mainScroll": 505.5
+      },
+      {
+        "kind": "tags",
+        "x": 199,
+        "y": 305.5,
+        "delta": 73,
+        "scrollable": true,
+        "mainScroll": 645.5
+      },
+      {
+        "kind": "albums",
+        "x": 199,
+        "y": 305.5,
+        "delta": 89,
+        "scrollable": true,
+        "mainScroll": 505.5
+      },
+      {
+        "kind": "tags",
+        "x": 199,
+        "y": 305.5,
+        "delta": 73,
+        "scrollable": true,
+        "mainScroll": 697.5
+      }
+    ],
+    "relationReadRecovery": {
+      "responses": [
+        {
+          "path": "/upload/settings",
+          "method": "GET",
+          "status": 500
+        },
+        {
+          "path": "/upload/settings",
+          "method": "GET",
+          "status": 200
+        }
+      ],
+      "albumIds": ["86601c0a-3e60-46e9-82b1-5d6484cc9884"],
+      "tagIds": ["8c8a7f7d-571f-4e23-8990-b8821cc390ce"]
+    }
+  },
+  "library": {
+    "status": "failed",
+    "error": "Error: Command failed: magick /var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-browser-f8ooz7/identity-390/storage/default/ariso/issue185-storage/viewer-fixtures/original.png -resize 320x240! /var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-browser-f8ooz7/identity-390/storage/default/ariso/issue185-storage/viewer-fixtures/partial-thumbnail.webp\nmagick: unable to open image '/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-browser-f8ooz7/identity-390/storage/default/ariso/issue185-storage/viewer-fixtures/original.png': No such file or directory @ error/blob.c/OpenBlob/3683.\n\n    at genericNodeError (node:internal/errors:985:15)\n    at wrappedFn (node:internal/errors:539:14)\n    at ChildProcess.exithandler (node:child_process:417:12)\n    at ChildProcess.emit (node:events:509:28)\n    at maybeClose (node:internal/child_process:1124:16)\n    at ChildProcess._handle.onexit (node:internal/child_process:306:5)",
+    "checks": 39,
+    "layouts": 200,
+    "source": "test-results/sharing-192/regression-full/library.json"
+  },
+  "library-viewer": {
+    "status": "failed",
+    "stage": "fixture-seed",
+    "error": "Error: Command failed: magick /var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-browser-f8ooz7/identity-390/storage/default/ariso/issue185-storage/viewer-fixtures/original.png -resize 320x240! /var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-browser-f8ooz7/identity-390/storage/default/ariso/issue185-storage/viewer-fixtures/partial-thumbnail.webp\nmagick: unable to open image '/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-browser-f8ooz7/identity-390/storage/default/ariso/issue185-storage/viewer-fixtures/original.png': No such file or directory @ error/blob.c/OpenBlob/3683.\n\n    at genericNodeError (node:internal/errors:985:15)\n    at wrappedFn (node:internal/errors:539:14)\n    at ChildProcess.exithandler (node:child_process:417:12)\n    at ChildProcess.emit (node:events:509:28)\n    at maybeClose (node:internal/child_process:1124:16)\n    at ChildProcess._handle.onexit (node:internal/child_process:306:5)",
+    "checks": 0,
+    "layouts": 0,
+    "source": "test-results/sharing-192/regression-full/library-viewer.json"
+  },
+  "trash-query-batch": {
+    "status": "failed",
+    "activeCheck": "review-batch-cleanup-cycles",
+    "error": "AssertionError [ERR_ASSERTION]: No browser runtime or resource errors\n+ actual - expected\n\n+ [\n+   {\n+     kind: 'error',\n+     message: 'Resource failed: http://ariso-52085.localhost:52085/api/trash/issue177-027/preview?type=thumbnail',\n+     url: 'http://ariso-52085.localhost:52085/trash?q=issue177-&pageSize=80&page=1'\n+   },\n+   {\n+     kind: 'error',\n+     message: 'Resource failed: http://ariso-52085.localhost:52085/api/trash/issue177-026/preview?type=thumbnail',\n+     url: 'http://ariso-52085.localhost:52085/trash?q=issue177-&pageSize=80&page=1'\n+   }\n+ ]\n- []\n\n    at assertNoBrowserErrors (file:///Users/dnslin/.codex/worktrees/issue-192-sharing/ariso/e2e/browser-errors.mjs:44:10)\n    at async file:////[eval2]:152:19",
+    "checks": 10,
+    "layouts": 122,
+    "source": "test-results/sharing-192/regression-full/trash-query-batch.json"
+  },
+  "sharing-public": {
+    "status": "failed",
+    "stage": "gate-and-representatives",
+    "error": "AssertionError [ERR_ASSERTION]: Real scrolling reaches the entire primary action\n    at passwordHelp (file:////[eval2]:547:16)\n    at async gateAndRepresentatives (file:////[eval2]:751:3)\n    at async file:////[eval2]:1743:5",
+    "checks": 2,
+    "layouts": 20,
+    "source": "test-results/sharing-192/regression-full/sharing-public.json"
+  }
+}

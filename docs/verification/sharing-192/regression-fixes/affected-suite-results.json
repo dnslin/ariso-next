@@ -1,0 +1,3556 @@
+[
+  {
+    "status": "passed",
+    "suite": "library",
+    "node": "v24.18.1",
+    "platform": "darwin",
+    "arch": "arm64",
+    "startedAt": "2026-10-06T10:08:32.795Z",
+    "finishedAt": "2026-10-06T10:12:50.756Z",
+    "stages": {
+      "library": {
+        "status": "passed"
+      }
+    },
+    "temporaryDirectoryRemoved": true,
+    "command": "EGO_TASK_SPACE=37 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/sharing-192/regression-green-library node scripts/verify-browser.mjs --suite library",
+    "exitCode": 0,
+    "scenes": [
+      {
+        "scene": "library",
+        "status": "passed",
+        "checks": [
+          "Anonymous API refuses access; protected library returns to real login; successful login preserves /library; real empty SQLite renders empty state.",
+          "Real disabled storage remains listed without a thumbnail request; trash is excluded from cards and count; processing/failed assets retain decoded real thumbnails; active and previous failed jobs display independently.",
+          "Actual missing thumbnail file renders explicit failure without original fallback; leaving an open refresh tooltip and opening the mobile menu lets the first Escape close the menu and restore trigger focus.",
+          "Real mixed assets and timestamp ties paginate 40 → 80 → 85 in ascending ID order within timestamp ties; lost real next-page response retains cards; keyboard retry uses same cursor; held response rejects duplicate submission.",
+          "Initial reload transport failure is explicit and retries the real endpoint.",
+          "The single water-green access capsule preserves hover and visible keyboard focus; the explanation opens by pointer and keyboard, fits the viewport, and Escape restores its trigger.",
+          "Decoded preview preserves its natural aspect ratio without cropping or a large colored background.",
+          "Holding the real detail response exposes loading; losing a real refresh response exposes an error and hides stale content; refresh retries the real endpoint.",
+          "Version tabs switch by keyboard arrows and wrap past the disabled unsaved watermark tab.",
+          "Detail opens through actual keyboard card activation; Escape restores the card focus and library scroll position.",
+          "Desktop action Toolbar moves Copy → Download → Delete by keyboard; Escape cancels deletion and returns focus to its direct trigger.",
+          "Real Clipboard write succeeds after clicking Copy URL; no clipboard read permission is requested.",
+          "Direct detail URL decodes real saved bytes; viewing compressed does not change default copy selection; actual Chromium Permissions-Policy clipboard denial exposes focused selected text; download preserves Chinese filename and real bytes.",
+          "Changing the real default setting is reflected when copy reopens while the compressed preview stays selected; default URLs omit type; unsaved explicit watermark returns 404.",
+          "Missing thumbnail download HEAD returns 404 and displays the explicit download error without requesting another version.",
+          "After a real thumbnail file read failure, restoring the fixture file and manually refreshing decodes that same thumbnail without an original fallback.",
+          "Mobile details keep Copy, current-version Download and Delete directly in the fixed footer; cancelling deletion returns focus to Delete.",
+          "Real failed/private, pending and disabled-storage records show their states across five widths and both themes; missing watermark is disabled; short viewport copy action opens the real copy dialog.",
+          "Real owner-cookie PATCH trims Unicode displayName and changes visibility without rewriting originalName, ID, object Key or stored state; empty/control-character edits reject without changing data. Edit UI remains design-blocked.",
+          "Single-image final-set relations use real collection provider transactions; omitted album selection retains its join timestamp while an empty tag set clears tags.",
+          "Metadata GET distinguishes unread null; existing POST queues real ExifTool read, returns complete grouped JSON and timestamps, and leaves process state unchanged. Tree/search UI remains design-blocked.",
+          "Version workspace uses one owner shell, shows four actual states across five widths/light-dark, preserves the explicit compressed preview on keyboard return, and closes subview directly to the source list.",
+          "Version explanation defaults closed; pointer and Enter open its real dialog, Escape restores trigger focus, popup fits desktop/phone viewport, and the icon return control keeps transparent hover and keyboard focus.",
+          {
+            "state": "detail-171-cold-focus",
+            "theme": "light",
+            "width": 1440,
+            "focused": "detail-workspace-title",
+            "scrollTop": 0,
+            "overflow": false
+          },
+          {
+            "state": "detail-171-cold-focus",
+            "theme": "light",
+            "width": 390,
+            "focused": "detail-workspace-title",
+            "scrollTop": 0,
+            "overflow": false
+          },
+          {
+            "state": "detail-171-cold-focus",
+            "theme": "dark",
+            "width": 1440,
+            "focused": "detail-workspace-title",
+            "scrollTop": 0,
+            "overflow": false
+          },
+          {
+            "state": "detail-171-cold-focus",
+            "theme": "dark",
+            "width": 390,
+            "focused": "detail-workspace-title",
+            "scrollTop": 0,
+            "overflow": false
+          },
+          "Single-version selection opens a small real AlertDialog with saved-version update/retain rows and cancel autofocus; cancel/Escape preserve scope, restore its input focus, make no POST, and the retained-scope footer reopens confirmation. Desktop/phone light-dark dialog fits its viewport, hides the shell footer, and short-view content scrolls inside the dialog while both 48px actions stay reachable.",
+          "Album reprocess uses the same footer boundary: desktop/phone in both themes remove the whole footer during confirmation, and Escape restores its actions, selected scope, focus and album route.",
+          "Confirmed successful receipt resets when reopening the version-page reprocess action on the same image; a second real thumbnail-only job completes without closing/reloading and preserves all unselected versions.",
+          "Real all-scope retry from a selected failed-filter card runs ImageMagick, creates compressed/thumbnail/text-watermark versions and succeeds in UI; original stays fixed, derived object IDs change, submission occurs once, status batches remain ≤80 and current-ID polling stops. Completion marks list refresh available, reconciliation removes the no-longer-failed selection, and manual refresh excludes the image from the real failed query.",
+          "A real accepted thumbnail-only response and its follow-up detail read are disconnected at fetch transport; pending dialog actions and Escape cannot cancel, the retained popup shows the GET error with cancel/explicit keyboard verification, and cancel exposes cached scope plus parent retry with choices disabled. Successful detail verification claims the new matching terminal receipt and displays its actual success without another POST. The browser submits once and the DB gains one real job; actual worker success replaces only thumbnail while original/compressed/watermark object IDs remain unchanged.",
+          "A POST disconnected before reaching the server creates no job. Failed detail verification cannot resume or submit; a real successful GET with unchanged latest job keeps unknown and exposes explicit range recovery. That keyboard action resets to all without another POST, job or object change.",
+          "All four version tabs download actual stored bytes and production Content-Disposition filenames; public original download toast explicitly discloses GPS/photography risk.",
+          "Saved compression/watermark remain downloadable after settings turn off; disabled scope reasons render, stopped storage forbids submit, and a persisted first-processing failure offers only all-scope retry.",
+          "Controlled persisted job (not queued to worker) renders single-thumbnail queued, then all-scope running with a real stored compressed fixture candidate: generated/not-yet-replaced and remaining thumbnail/watermark rows render separately while published object IDs stay fixed. This is rendering evidence, not real worker generation. Failed state keeps old versions, retry returns to current settings; losing a real current-ID status response stops polling and keyboard retry reads the real endpoint again.",
+          "Real public source order locates the card at 5; 44 items are loaded and actual virtual windows are traversed. Card keyboard opening → version workspace → detail retains watermark preview; closing preserves visibility/sort URL, masonry layout, source scroll and exact trigger focus.",
+          "Manual File upload runs the real receiver and worker to ready (2765dd8d-738a-4e75-adff-bf63abc33f20); upload detail selects thumbnail and routes to version information with that selection. Browser Back at desktop/phone in both themes preserves the same document, queue ID, image ID and ready state.",
+          "Real album POST and final-set collections PATCH place the uploaded image in 0d8d8700-260f-4445-b924-c6249c5ca203; keyboard card → detail → versions → detail → close preserves album route, selected thumbnail, one selected image, source scroll and trigger focus on desktop/phone in both themes. Shared shell brand, account, ten navigation entries and current route remain consistent.",
+          "The immersive picture stage occupies five real viewport widths in both themes, uses maximum proportional contain, and exposes only a reachable 44px close icon. 390/1440×400 preserve these properties. Screenshots require independent review and user acceptance.",
+          "Direct URL detail makes zero neighbor calls and opens compressed while the real site default link is watermark. Selecting each saved version in detail is inherited by the immersive viewer, whose actual delivery MIME and byte length match the saved metadata. Selection never changes the default; the viewer has no version/download/share/slideshow controls.",
+          "Real GIF/APNG visible pixels animate. SVG/HEIC default to their saved WebP preview; explicitly selecting attachment-only original in detail shows a reason without substituting another kind. Missing versions are disabled in detail. Failed images retain saved original. Three Tab and three Shift+Tab operations keep actual focus inside the direct viewer; Escape closes it and returns to the detail entry. Resizing the focused entry closes its tooltip without viewport expansion or moving focus.",
+          "A real filtered private uploaded_asc query crosses page 1 index 19→20, advances five consecutive times to 24, returns to 23 with ArrowLeft and advances again to 24. Each current image uses the actual delivery URL, every neighbor request retains search/visibility/sort, and actual adjacent IDs follow the ascending order. First/last boundaries never loop. Only three slides/current±1 delivery requests are allowed. After three Tab and three Shift+Tab operations keep focus inside, Escape restores original detail entry, then closing detail restores exact selected source card focus/scroll, URL page, masonry layout and selection without loading page 2 into the list.",
+          "Desktop real double-click, +/− keyboard and wheel zoom work without visible zoom controls. Mouse/arrow pan while zoomed retains image identity; keyboard reset restores maximum proportional contain, the viewport stage and Escape return to detail.",
+          "Real 400×300 thumbnail uses the maximum proportional viewport and can zoom/pan. A real 1200×900 PNG/WebP fixture whose image and saved object/version dimensions are all NULL still decodes, fills proportional contain, then + zoom and two-axis mouse pan work before Escape returns to detail.",
+          "A real 320×240 thumbnail with width=NULL and height=240, attached to a 1200×900 original, uses its decoded pair for proportional contain and zoom. Two-axis pan, including vertical movement, succeeds without mixing original width into thumbnail height.",
+          "Chromium touch emulation performs real two-finger pinch in/out and diagonal single-finger zoomed pan while preserving image identity. After proportional contain is restored, actual left/right swipes navigate to the known neighbor and back. This is browser emulation, not physical-device evidence.",
+          "Missing real compressed bytes, held network delivery, zero saved versions, lost real neighbor response and blocked real adjacent delivery have explicit recoverable states. Reading errors retain selected kind/current identity; no original/thumbnail fallback occurs. Both ArrowLeft toward a readable preceding image and ArrowRight inside the focused failure dialog retain the same dialog, actual current src/id/version and focus without starting background neighbor or target reads. The return-current action works; reopening the real delivery error then pressing Escape dismisses only the error dialog, retains current bytes and viewer focus, and a second Escape returns to the original detail entry.",
+          "Real persisted public/private changes preserve owner access; storage disable/trash/deleting remove current content on the next actual status update with reasons. Known neighbor identity remains usable; a query-detached image requires context refresh. Fixture states are restored between cases.",
+          "A held real neighbor response released after closing/reopening cannot replace the new explicit original version or change its current image.",
+          "Holding the actual neighbor detail response while pressing ArrowRight repeatedly preserves the visible current slide URL. Releasing the response performs one successful transition to the intended next image.",
+          "Current compressed and explicitly selected watermark use actual delivery bytes, then reject at the browser decode boundary. Both show the selected-version failure without substituting another version or treating the image load event as successful decoding.",
+          "Deleting the actual disposable current image/version/object records produces a real 404 and removes visible current content. Previously known next image remains navigable; closing through the missing source detail returns focus to the list search toolbar rather than a removed card. Original fixture records are restored afterward.",
+          "Four existing samples in the disposable album follow the actual joined order 8→7→6→5 through three consecutive ArrowRight operations, then ArrowLeft returns to 6. Actual first/last neighbors are null and extra arrow input never loops. Every neighbor request retains album-only scope/id without a library sort, and navigation/close keep the original album detail URL/route. A real uploaded/processed ready queue item opens the same viewer with explicit thumbnail and zero neighbor requests, then returns to the unchanged ready upload row.",
+          "A real 255-character Chinese display-name PATCH does not alter the immersive 360×400 stage or close icon; filename remains absent, contain and Escape work, and the original name is restored.",
+          "The current compressed delivery initially fails because its real file is absent. A successful real reprocess publishes readable bytes; the existing broadcast clears the saved failure and displays independently checked new pixels without retry, version change or closing.",
+          "A controlled future queued job makes active-state POSTs observable: only the visible viewer polls current-ID status, and closing restores the detail observer. This is observer ownership evidence, not actual worker execution.",
+          "An actual expired isolated SQLite session makes the viewer refresh return 401, removes the viewer and redirects to login with the original detail returnTo; real sign-in restores the isolated test session.",
+          "Real compressed reprocessing refreshes the open current picture through the existing library broadcast, preserving image identity and selected kind. Both dimension-changing output and same-dimension/same-byte-size JPEG output are compared with actual independently fetched decoded delivery pixels; no successful worker state or business response is fabricated.",
+          "A rejected write reconciles the real renamed record into the visible detail cache while later background reads remain held.",
+          "Pre-write GET race (normal): confirmed trash survives old-read completion, removes detail/card, and sends exactly one real POST.",
+          "Pre-write GET race (lost-write): confirmed trash survives old-read completion, removes detail/card, and sends exactly one real POST after explicit unknown-result reconciliation.",
+          "Pre-write GET race (late-success): confirmed trash survives old-read completion, removes detail/card, and sends exactly one real POST.",
+          "Trash cancellation and Escape restore trigger focus without writes; held real POST disables duplicate submission; successful trash removes detail/card and every saved version rejects owner and anonymous reads.",
+          "A blocked real thumbnail request shows a readable failure; refreshing the trash list retries the unchanged preview URL and displays the decoded image.",
+          "Opening a trash record and using its top return control restores focus to the original record.",
+          "Decoded preview preserves its natural aspect ratio without cropping or a large colored background.",
+          "Real trash records render decoded thumbnails and detail previews through the owner-only route; anonymous preview is rejected and no /i content is requested; restore cancellation restores focus; restoration removes the record and the identical anonymous URL returns identical original bytes.",
+          "Disabled storage permits record trash/restore; success explicitly says the storage remains disabled; real content remains unreadable and storage is not enabled.",
+          "A real concurrent deleting transition returns HTTP 409 and triggers a current-record read; the trashed record remains and reopening disables restore.",
+          "Losing the real successful restore response and its real reconciliation read preserves an unknown-result state; manual reconciliation discovers the committed result without repeating the write.",
+          "Leaving a held real restore through browser Back and opening another record prevents the late response from closing or changing the new record; reopening the original record resumes a real read and shows its already-restored state without another write.",
+          "A record really deleted after confirmation opens produces HTTP 404 and a definite missing-record result, not an indefinitely unknown mutation.",
+          "A real expired owner session during restore/reconciliation redirects to login with the exact trash record return target; signing in returns to that record.",
+          "A real zero-record query renders empty; losing the real refresh response renders an error rather than an empty state; retry reads the real endpoint.",
+          "The 390×400 shortened viewport keeps the real record restore action reachable; this is not a physical keyboard or safe-area device test.",
+          "Expired real SQLite session makes the next library API read return to login."
+        ],
+        "layoutCount": 327,
+        "limitations": [
+          "Ego Chromium only; shortened viewport is not a physical soft keyboard or notched device test."
+        ]
+      },
+      {
+        "scene": "library-viewer",
+        "status": "passed",
+        "checks": [
+          "The immersive picture stage occupies five real viewport widths in both themes, uses maximum proportional contain, and exposes only a reachable 44px close icon. 390/1440×400 preserve these properties. Screenshots require independent review and user acceptance.",
+          "Direct URL detail makes zero neighbor calls and opens compressed while the real site default link is watermark. Selecting each saved version in detail is inherited by the immersive viewer, whose actual delivery MIME and byte length match the saved metadata. Selection never changes the default; the viewer has no version/download/share/slideshow controls.",
+          "Real GIF/APNG visible pixels animate. SVG/HEIC default to their saved WebP preview; explicitly selecting attachment-only original in detail shows a reason without substituting another kind. Missing versions are disabled in detail. Failed images retain saved original. Three Tab and three Shift+Tab operations keep actual focus inside the direct viewer; Escape closes it and returns to the detail entry. Resizing the focused entry closes its tooltip without viewport expansion or moving focus.",
+          "A real filtered private uploaded_asc query crosses page 1 index 19→20, advances five consecutive times to 24, returns to 23 with ArrowLeft and advances again to 24. Each current image uses the actual delivery URL, every neighbor request retains search/visibility/sort, and actual adjacent IDs follow the ascending order. First/last boundaries never loop. Only three slides/current±1 delivery requests are allowed. After three Tab and three Shift+Tab operations keep focus inside, Escape restores original detail entry, then closing detail restores exact selected source card focus/scroll, URL page, masonry layout and selection without loading page 2 into the list.",
+          "Desktop real double-click, +/− keyboard and wheel zoom work without visible zoom controls. Mouse/arrow pan while zoomed retains image identity; keyboard reset restores maximum proportional contain, the viewport stage and Escape return to detail.",
+          "Real 400×300 thumbnail uses the maximum proportional viewport and can zoom/pan. A real 1200×900 PNG/WebP fixture whose image and saved object/version dimensions are all NULL still decodes, fills proportional contain, then + zoom and two-axis mouse pan work before Escape returns to detail.",
+          "A real 320×240 thumbnail with width=NULL and height=240, attached to a 1200×900 original, uses its decoded pair for proportional contain and zoom. Two-axis pan, including vertical movement, succeeds without mixing original width into thumbnail height.",
+          "Chromium touch emulation performs real two-finger pinch in/out and diagonal single-finger zoomed pan while preserving image identity. After proportional contain is restored, actual left/right swipes navigate to the known neighbor and back. This is browser emulation, not physical-device evidence.",
+          "Missing real compressed bytes, held network delivery, zero saved versions, lost real neighbor response and blocked real adjacent delivery have explicit recoverable states. Reading errors retain selected kind/current identity; no original/thumbnail fallback occurs. Both ArrowLeft toward a readable preceding image and ArrowRight inside the focused failure dialog retain the same dialog, actual current src/id/version and focus without starting background neighbor or target reads. The return-current action works; reopening the real delivery error then pressing Escape dismisses only the error dialog, retains current bytes and viewer focus, and a second Escape returns to the original detail entry.",
+          "Real persisted public/private changes preserve owner access; storage disable/trash/deleting remove current content on the next actual status update with reasons. Known neighbor identity remains usable; a query-detached image requires context refresh. Fixture states are restored between cases.",
+          "A held real neighbor response released after closing/reopening cannot replace the new explicit original version or change its current image.",
+          "Holding the actual neighbor detail response while pressing ArrowRight repeatedly preserves the visible current slide URL. Releasing the response performs one successful transition to the intended next image.",
+          "Current compressed and explicitly selected watermark use actual delivery bytes, then reject at the browser decode boundary. Both show the selected-version failure without substituting another version or treating the image load event as successful decoding.",
+          "Deleting the actual disposable current image/version/object records produces a real 404 and removes visible current content. Previously known next image remains navigable; closing through the missing source detail returns focus to the list search toolbar rather than a removed card. Original fixture records are restored afterward.",
+          "Four existing samples in the disposable album follow the actual joined order 8→7→6→5 through three consecutive ArrowRight operations, then ArrowLeft returns to 6. Actual first/last neighbors are null and extra arrow input never loops. Every neighbor request retains album-only scope/id without a library sort, and navigation/close keep the original album detail URL/route. A real uploaded/processed ready queue item opens the same viewer with explicit thumbnail and zero neighbor requests, then returns to the unchanged ready upload row.",
+          "A real 255-character Chinese display-name PATCH does not alter the immersive 360×400 stage or close icon; filename remains absent, contain and Escape work, and the original name is restored.",
+          "The current compressed delivery initially fails because its real file is absent. A successful real reprocess publishes readable bytes; the existing broadcast clears the saved failure and displays independently checked new pixels without retry, version change or closing.",
+          "A controlled future queued job makes active-state POSTs observable: only the visible viewer polls current-ID status, and closing restores the detail observer. This is observer ownership evidence, not actual worker execution.",
+          "An actual expired isolated SQLite session makes the viewer refresh return 401, removes the viewer and redirects to login with the original detail returnTo; real sign-in restores the isolated test session.",
+          "Real compressed reprocessing refreshes the open current picture through the existing library broadcast, preserving image identity and selected kind. Both dimension-changing output and same-dimension/same-byte-size JPEG output are compared with actual independently fetched decoded delivery pixels; no successful worker state or business response is fabricated."
+        ],
+        "layoutCount": 27,
+        "limitations": [
+          "Ego Chromium; touch is browser emulation, not physical device/Safari/soft-keyboard/notch verification.",
+          "Screenshots and geometric assertions require independent review against the revised user instruction and remaining applicable Figma error states, plus user manual acceptance; they do not grant design approval."
+        ]
+      }
+    ]
+  },
+  {
+    "status": "passed",
+    "suite": "trash",
+    "node": "v24.18.1",
+    "platform": "darwin",
+    "arch": "arm64",
+    "startedAt": "2026-10-06T10:13:02.034Z",
+    "finishedAt": "2026-10-06T10:15:15.195Z",
+    "stages": {
+      "trash-query-batch": {
+        "status": "passed"
+      },
+      "trash-cleanup": {
+        "status": "passed"
+      }
+    },
+    "temporaryDirectoryRemoved": true,
+    "command": "EGO_TASK_SPACE=37 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/sharing-192/regression-green-trash node scripts/verify-browser.mjs --suite trash",
+    "exitCode": 0,
+    "scenes": [
+      {
+        "scene": "trash-query-batch",
+        "status": "passed",
+        "checks": [
+          "三个真实HeroUI筛选改变URL并重置页1、清选择，已停用存储可筛选；搜索与存储显式清除；20/40/80实际条数、分页和记录返回保留完整查询。",
+          "真实桌面Table、手机Accordion键盘Enter及单项展开、44px目标、20项结果分页；汇总仅一处且无常驻确认说明。",
+          "21项真实结果分页：数据库受理失败和Local目录故障在item正文可见；逐项重新提交与剩余对象重试分别只发送该ID，并保留原任务周期基线。",
+          "201项200+1分批；失联停止后续；持久任务只读核对；未发送显式继续；仅全部清理移除",
+          "非法查询显示中文恢复提示、保留错误并显式重置",
+          "图库及相册详情实际回归：桌面/手机默认condition控件仍44px，存储/标签菜单真实查询与选择正常，公共当前导航正确。",
+          "一项真实永久删除：只延迟已收到的真实受理响应保留提交中Spinner；活动写责任保持queued等待；未来next_cleanup_at使production worker进入running并真实清理1/2；到期后实际完成。Table/展开Accordion各浅深截图，不写清理任务状态或伪造HTTP。",
+          "另一真实窗口恢复A；本页搜索A→B→A主动重新查询得到空结果，后退恢复B，清空查询显示实际200条。",
+          "单图页面保留失败周期1，另一真实窗口重试并实际失败周期2；修复Local文件后本页202明确受理周期3，自动完成且不误报未知。",
+          "批量结果真实周期1失败，本页重试周期2等待写入并返回暂停轮询；另一窗口修复并完成周期3，重开结果只读当前任务，展示周期3成功且无自动重复写入。"
+        ],
+        "layoutCount": 122,
+        "limitations": [],
+        "browserChecks": [
+          {
+            "scenario": "verifyQueryLayouts",
+            "page": "main",
+            "boundary": "scenario-completed",
+            "at": 1791281590801,
+            "url": "http://ariso-62214.localhost:62214/trash?q=issue177-&pageSize=80&page=1",
+            "previews": [
+              {
+                "path": "/api/trash/issue177-000/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281588272,
+                "duration": 54.5
+              },
+              {
+                "path": "/api/trash/issue177-001/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281588272.1,
+                "duration": 54.5
+              },
+              {
+                "path": "/api/trash/issue177-002/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281588272.1,
+                "duration": 54.89999997615814
+              },
+              {
+                "path": "/api/trash/issue177-003/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281588272.1,
+                "duration": 57
+              },
+              {
+                "path": "/api/trash/issue177-004/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281588272.1,
+                "duration": 57.200000047683716
+              },
+              {
+                "path": "/api/trash/issue177-005/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281588272.1,
+                "duration": 57.89999997615814
+              },
+              {
+                "path": "/api/trash/issue177-006/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281588272.2,
+                "duration": 95.89999997615814
+              },
+              {
+                "path": "/api/trash/issue177-007/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281588272.2,
+                "duration": 96.10000002384186
+              },
+              {
+                "path": "/api/trash/issue177-008/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281588272.2,
+                "duration": 102.60000002384186
+              },
+              {
+                "path": "/api/trash/issue177-009/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281588272.2,
+                "duration": 103
+              },
+              {
+                "path": "/api/trash/issue177-010/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281588272.2,
+                "duration": 103.79999995231628
+              },
+              {
+                "path": "/api/trash/issue177-011/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281588272.2,
+                "duration": 104
+              },
+              {
+                "path": "/api/trash/issue177-013/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281588272.2,
+                "duration": 126.19999992847443
+              },
+              {
+                "path": "/api/trash/issue177-012/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281588272.2,
+                "duration": 126
+              },
+              {
+                "path": "/api/trash/issue177-014/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281588272.2,
+                "duration": 134
+              },
+              {
+                "path": "/api/trash/issue177-015/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281588272.3,
+                "duration": 134.29999995231628
+              },
+              {
+                "path": "/api/trash/issue177-016/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281588272.3,
+                "duration": 138.09999990463257
+              },
+              {
+                "path": "/api/trash/issue177-017/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281588272.3,
+                "duration": 138.19999992847443
+              },
+              {
+                "path": "/api/trash/issue177-018/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281588272.3,
+                "duration": 155.59999990463257
+              },
+              {
+                "path": "/api/trash/issue177-019/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281588272.3,
+                "duration": 155.69999992847443
+              },
+              {
+                "path": "/api/trash/issue177-020/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281588272.3,
+                "duration": 159.69999992847443
+              },
+              {
+                "path": "/api/trash/issue177-021/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281588272.3,
+                "duration": 159.79999995231628
+              },
+              {
+                "path": "/api/trash/issue177-022/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281588272.4,
+                "duration": 172
+              },
+              {
+                "path": "/api/trash/issue177-023/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281588272.4,
+                "duration": 172.20000004768372
+              },
+              {
+                "path": "/api/trash/issue177-024/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281588272.4,
+                "duration": 182.40000009536743
+              },
+              {
+                "path": "/api/trash/issue177-025/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281588272.4,
+                "duration": 182.60000002384186
+              },
+              {
+                "path": "/api/trash/issue177-026/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281588272.4,
+                "duration": 185.40000009536743
+              },
+              {
+                "path": "/api/trash/issue177-027/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281588272.4,
+                "duration": 185.60000002384186
+              }
+            ]
+          },
+          {
+            "scenario": "verifyQueryLayouts",
+            "page": "peer",
+            "boundary": "scenario-completed",
+            "at": 1791281590816,
+            "url": "http://ariso-62214.localhost:62214/trash",
+            "previews": []
+          },
+          {
+            "scenario": "approved-query-controls",
+            "page": "main",
+            "boundary": "scenario-completed",
+            "at": 1791281608524,
+            "url": "http://ariso-62214.localhost:62214/trash?pageSize=80&page=1",
+            "previews": [
+              {
+                "path": "/api/trash/issue177-000/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281603708.5,
+                "duration": 26
+              },
+              {
+                "path": "/api/trash/issue177-001/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281603708.5,
+                "duration": 26.200000047683716
+              },
+              {
+                "path": "/api/trash/issue177-003/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281603708.5,
+                "duration": 26.90000009536743
+              },
+              {
+                "path": "/api/trash/issue177-002/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281603708.5,
+                "duration": 26.600000023841858
+              },
+              {
+                "path": "/api/trash/issue177-004/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281603708.5,
+                "duration": 27
+              },
+              {
+                "path": "/api/trash/issue177-005/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281603708.6,
+                "duration": 27.700000047683716
+              },
+              {
+                "path": "/api/trash/issue177-006/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281603708.6,
+                "duration": 46
+              },
+              {
+                "path": "/api/trash/issue177-007/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281603708.7002,
+                "duration": 46.10000002384186
+              },
+              {
+                "path": "/api/trash/issue177-008/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281603708.7002,
+                "duration": 46.5
+              },
+              {
+                "path": "/api/trash/issue177-009/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281603708.7002,
+                "duration": 46.60000002384186
+              },
+              {
+                "path": "/api/trash/issue177-010/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281603708.7002,
+                "duration": 47.200000047683716
+              },
+              {
+                "path": "/api/trash/issue177-011/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281603708.7002,
+                "duration": 47.39999997615814
+              },
+              {
+                "path": "/api/trash/issue177-012/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281603708.7002,
+                "duration": 66.89999997615814
+              },
+              {
+                "path": "/api/trash/issue177-013/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281603708.7002,
+                "duration": 67.20000004768372
+              },
+              {
+                "path": "/api/trash/issue177-014/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281603708.7002,
+                "duration": 67.39999997615814
+              },
+              {
+                "path": "/api/trash/issue177-015/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281603708.8,
+                "duration": 68
+              },
+              {
+                "path": "/api/trash/issue177-016/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281603708.8,
+                "duration": 68.10000002384186
+              },
+              {
+                "path": "/api/trash/issue177-017/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281603708.8,
+                "duration": 68.19999992847443
+              },
+              {
+                "path": "/api/trash/issue177-018/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281603708.8,
+                "duration": 92.39999997615814
+              },
+              {
+                "path": "/api/trash/issue177-019/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281603708.8,
+                "duration": 92.60000002384186
+              },
+              {
+                "path": "/api/trash/issue177-020/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281603708.8,
+                "duration": 93.10000002384186
+              },
+              {
+                "path": "/api/trash/issue177-021/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281603708.8,
+                "duration": 93.39999997615814
+              },
+              {
+                "path": "/api/trash/issue177-022/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281603708.8,
+                "duration": 97.10000002384186
+              },
+              {
+                "path": "/api/trash/issue177-023/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281603708.8,
+                "duration": 98.19999992847443
+              },
+              {
+                "path": "/api/trash/issue177-024/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281603708.8,
+                "duration": 111.60000002384186
+              },
+              {
+                "path": "/api/trash/issue177-025/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281603708.8,
+                "duration": 111.60000002384186
+              },
+              {
+                "path": "/api/trash/issue177-026/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281603708.8,
+                "duration": 111.79999995231628
+              },
+              {
+                "path": "/api/trash/issue177-027/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281603708.8,
+                "duration": 112.10000002384186
+              },
+              {
+                "path": "/api/trash/issue177-080/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281607510.6,
+                "duration": 38.5
+              },
+              {
+                "path": "/api/trash/issue177-083/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281607510.6,
+                "duration": 40.60000002384186
+              },
+              {
+                "path": "/api/trash/issue177-081/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281607510.6,
+                "duration": 39.300000071525574
+              },
+              {
+                "path": "/api/trash/issue177-084/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281607510.6,
+                "duration": 41
+              },
+              {
+                "path": "/api/trash/issue177-082/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281607510.6,
+                "duration": 40.200000047683716
+              },
+              {
+                "path": "/api/trash/issue177-085/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281607510.7002,
+                "duration": 41.5
+              },
+              {
+                "path": "/api/trash/issue177-086/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281607510.7002,
+                "duration": 86.39999997615814
+              },
+              {
+                "path": "/api/trash/issue177-088/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281607510.7002,
+                "duration": 89
+              },
+              {
+                "path": "/api/trash/issue177-087/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281607510.7002,
+                "duration": 88.29999995231628
+              },
+              {
+                "path": "/api/trash/issue177-089/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281607510.7002,
+                "duration": 89.79999995231628
+              },
+              {
+                "path": "/api/trash/issue177-090/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281607510.7002,
+                "duration": 90.29999995231628
+              },
+              {
+                "path": "/api/trash/issue177-091/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281607510.8,
+                "duration": 90.5
+              },
+              {
+                "path": "/api/trash/issue177-092/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281607510.8,
+                "duration": 105.5
+              },
+              {
+                "path": "/api/trash/issue177-093/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281607510.8,
+                "duration": 114.19999992847443
+              },
+              {
+                "path": "/api/trash/issue177-095/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281607510.8,
+                "duration": 116.60000002384186
+              },
+              {
+                "path": "/api/trash/issue177-094/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281607510.8,
+                "duration": 116.29999995231628
+              },
+              {
+                "path": "/api/trash/issue177-097/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281607510.8,
+                "duration": 117.39999997615814
+              },
+              {
+                "path": "/api/trash/issue177-096/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281607510.8,
+                "duration": 116.89999997615814
+              },
+              {
+                "path": "/api/trash/issue177-098/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281607510.9001,
+                "duration": 134.79999995231628
+              },
+              {
+                "path": "/api/trash/issue177-099/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281607510.9001,
+                "duration": 134.89999997615814
+              },
+              {
+                "path": "/api/trash/issue177-100/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281607510.9001,
+                "duration": 138.5
+              },
+              {
+                "path": "/api/trash/issue177-101/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281607510.9001,
+                "duration": 138.59999990463257
+              },
+              {
+                "path": "/api/trash/issue177-102/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281607510.9001,
+                "duration": 141.5
+              },
+              {
+                "path": "/api/trash/issue177-103/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281607510.9001,
+                "duration": 141.69999992847443
+              },
+              {
+                "path": "/api/trash/issue177-104/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281607510.9001,
+                "duration": 150.89999997615814
+              },
+              {
+                "path": "/api/trash/issue177-105/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281607510.9001,
+                "duration": 152
+              },
+              {
+                "path": "/api/trash/issue177-106/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281607510.9001,
+                "duration": 152.29999995231628
+              },
+              {
+                "path": "/api/trash/issue177-000/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281608457.1,
+                "duration": 36.200000047683716
+              },
+              {
+                "path": "/api/trash/issue177-001/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281608457.1,
+                "duration": 37.89999997615814
+              },
+              {
+                "path": "/api/trash/issue177-002/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281608457.1,
+                "duration": 37.700000047683716
+              },
+              {
+                "path": "/api/trash/issue177-003/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281608457.2002,
+                "duration": 38.60000002384186
+              },
+              {
+                "path": "/api/trash/issue177-004/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281608457.2002,
+                "duration": 38.799999952316284
+              },
+              {
+                "path": "/api/trash/issue177-005/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281608457.2002,
+                "duration": 39.10000002384186
+              },
+              {
+                "path": "/api/trash/issue177-007/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281608457.2002,
+                "duration": 60
+              },
+              {
+                "path": "/api/trash/issue177-006/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281608457.2002,
+                "duration": 60.700000047683716
+              },
+              {
+                "path": "/api/trash/issue177-008/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281608457.2002,
+                "duration": 60.39999997615814
+              },
+              {
+                "path": "/api/trash/issue177-009/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281608457.2002,
+                "duration": 61
+              },
+              {
+                "path": "/api/trash/issue177-011/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281608457.3,
+                "duration": 61.89999997615814
+              },
+              {
+                "path": "/api/trash/issue177-010/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281608457.3,
+                "duration": 61.5
+              }
+            ]
+          },
+          {
+            "scenario": "approved-query-controls",
+            "page": "peer",
+            "boundary": "scenario-completed",
+            "at": 1791281608542,
+            "url": "http://ariso-62214.localhost:62214/settings/processing",
+            "previews": []
+          },
+          {
+            "scenario": "approved-per-item-failures",
+            "page": "main",
+            "boundary": "scenario-completed",
+            "at": 1791281632531,
+            "url": "http://ariso-62214.localhost:62214/trash?q=issue177-&pageSize=80&page=3",
+            "previews": [
+              {
+                "path": "/api/trash/issue177-000/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281609841.7998,
+                "duration": 28.700000047683716
+              },
+              {
+                "path": "/api/trash/issue177-001/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281609841.7998,
+                "duration": 29.100000023841858
+              },
+              {
+                "path": "/api/trash/issue177-002/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281609841.7998,
+                "duration": 29.200000047683716
+              },
+              {
+                "path": "/api/trash/issue177-003/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281609841.7998,
+                "duration": 29.399999976158142
+              },
+              {
+                "path": "/api/trash/issue177-004/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281609841.9,
+                "duration": 31.100000023841858
+              },
+              {
+                "path": "/api/trash/issue177-005/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281609841.9,
+                "duration": 31.399999976158142
+              },
+              {
+                "path": "/api/trash/issue177-006/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281609841.9,
+                "duration": 48.10000002384186
+              },
+              {
+                "path": "/api/trash/issue177-007/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281609841.9,
+                "duration": 48.200000047683716
+              },
+              {
+                "path": "/api/trash/issue177-008/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281609841.9,
+                "duration": 48.5
+              },
+              {
+                "path": "/api/trash/issue177-009/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281609841.9,
+                "duration": 49.700000047683716
+              },
+              {
+                "path": "/api/trash/issue177-010/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281609842,
+                "duration": 51.299999952316284
+              },
+              {
+                "path": "/api/trash/issue177-011/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281609842,
+                "duration": 51.5
+              },
+              {
+                "path": "/api/trash/issue177-013/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281609842,
+                "duration": 61.699999928474426
+              },
+              {
+                "path": "/api/trash/issue177-012/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281609842,
+                "duration": 61.60000002384186
+              },
+              {
+                "path": "/api/trash/issue177-014/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281610004.7998,
+                "duration": 9.399999976158142
+              },
+              {
+                "path": "/api/trash/issue177-015/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281610004.7998,
+                "duration": 34.200000047683716
+              },
+              {
+                "path": "/api/trash/issue177-018/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281610004.7998,
+                "duration": 35
+              },
+              {
+                "path": "/api/trash/issue177-016/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281610004.7998,
+                "duration": 34.300000071525574
+              },
+              {
+                "path": "/api/trash/issue177-017/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281610004.7998,
+                "duration": 34.700000047683716
+              },
+              {
+                "path": "/api/trash/issue177-019/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281610004.9,
+                "duration": 36.39999997615814
+              },
+              {
+                "path": "/api/trash/issue177-020/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281610004.9,
+                "duration": 40.700000047683716
+              },
+              {
+                "path": "/api/trash/issue177-021/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281610004.9,
+                "duration": 56.39999997615814
+              },
+              {
+                "path": "/api/trash/issue177-022/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281610004.9,
+                "duration": 56.60000002384186
+              },
+              {
+                "path": "/api/trash/issue177-023/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281610004.9,
+                "duration": 56.799999952316284
+              },
+              {
+                "path": "/api/trash/issue177-024/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281610004.9,
+                "duration": 58.700000047683716
+              },
+              {
+                "path": "/api/trash/issue177-025/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281610004.9,
+                "duration": 58.700000047683716
+              },
+              {
+                "path": "/api/trash/issue177-026/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281610004.9,
+                "duration": 62.299999952316284
+              },
+              {
+                "path": "/api/trash/issue177-027/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281610004.9,
+                "duration": 66.39999997615814
+              },
+              {
+                "path": "/api/trash/issue177-028/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281611705.9,
+                "duration": 7.5
+              },
+              {
+                "path": "/api/trash/issue177-029/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281611706,
+                "duration": 8.600000023841858
+              },
+              {
+                "path": "/api/trash/issue177-030/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281611739.5999,
+                "duration": 5.5
+              },
+              {
+                "path": "/api/trash/issue177-031/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281611772.5999,
+                "duration": 8.5
+              },
+              {
+                "path": "/api/trash/issue177-032/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281611772.7,
+                "duration": 10.100000023841858
+              },
+              {
+                "path": "/api/trash/issue177-033/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281611806.2,
+                "duration": 6.100000023841858
+              },
+              {
+                "path": "/api/trash/issue177-034/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281612923,
+                "duration": 13.899999976158142
+              },
+              {
+                "path": "/api/trash/issue177-035/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281612957.0999,
+                "duration": 10.899999976158142
+              },
+              {
+                "path": "/api/trash/issue177-036/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281612989.5999,
+                "duration": 7.899999976158142
+              },
+              {
+                "path": "/api/trash/issue177-037/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281613024,
+                "duration": 13.5
+              },
+              {
+                "path": "/api/trash/issue177-038/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281613024,
+                "duration": 15.299999952316284
+              },
+              {
+                "path": "/api/trash/issue177-039/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281613057.2998,
+                "duration": 7.700000047683716
+              },
+              {
+                "path": "/api/trash/issue177-040/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281613090.5,
+                "duration": 7.199999928474426
+              },
+              {
+                "path": "/api/trash/issue177-080/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281613900,
+                "duration": 26.199999928474426
+              },
+              {
+                "path": "/api/trash/issue177-081/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281613900,
+                "duration": 26.399999976158142
+              },
+              {
+                "path": "/api/trash/issue177-082/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281613900,
+                "duration": 27
+              },
+              {
+                "path": "/api/trash/issue177-083/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281613900,
+                "duration": 28.699999928474426
+              },
+              {
+                "path": "/api/trash/issue177-084/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281613900.0999,
+                "duration": 27.5
+              },
+              {
+                "path": "/api/trash/issue177-085/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281613900.0999,
+                "duration": 28.09999990463257
+              },
+              {
+                "path": "/api/trash/issue177-087/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281613900.0999,
+                "duration": 46.89999997615814
+              },
+              {
+                "path": "/api/trash/issue177-086/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281613900.0999,
+                "duration": 47.299999952316284
+              },
+              {
+                "path": "/api/trash/issue177-088/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281613900.0999,
+                "duration": 47.5
+              },
+              {
+                "path": "/api/trash/issue177-089/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281613900.0999,
+                "duration": 47.699999928474426
+              },
+              {
+                "path": "/api/trash/issue177-090/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281613900.0999,
+                "duration": 47.89999997615814
+              },
+              {
+                "path": "/api/trash/issue177-091/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281613900.0999,
+                "duration": 49.39999997615814
+              },
+              {
+                "path": "/api/trash/issue177-093/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281613900.0999,
+                "duration": 65.5
+              },
+              {
+                "path": "/api/trash/issue177-092/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281613900.0999,
+                "duration": 66.09999990463257
+              },
+              {
+                "path": "/api/trash/issue177-094/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281613900.0999,
+                "duration": 66.39999997615814
+              },
+              {
+                "path": "/api/trash/issue177-095/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281613900.0999,
+                "duration": 67.19999992847443
+              },
+              {
+                "path": "/api/trash/issue177-096/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281613900.2,
+                "duration": 67.30000007152557
+              },
+              {
+                "path": "/api/trash/issue177-097/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281613900.2,
+                "duration": 69.5
+              },
+              {
+                "path": "/api/trash/issue177-098/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281613900.2,
+                "duration": 83.70000004768372
+              },
+              {
+                "path": "/api/trash/issue177-099/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281613900.2,
+                "duration": 84.10000002384186
+              },
+              {
+                "path": "/api/trash/issue177-100/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281613900.2,
+                "duration": 84.40000009536743
+              },
+              {
+                "path": "/api/trash/issue177-101/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281613900.2998,
+                "duration": 84.39999997615814
+              },
+              {
+                "path": "/api/trash/issue177-102/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281613900.2998,
+                "duration": 84.70000004768372
+              },
+              {
+                "path": "/api/trash/issue177-103/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281613900.2998,
+                "duration": 85.80000007152557
+              },
+              {
+                "path": "/api/trash/issue177-106/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281613900.2998,
+                "duration": 96.20000004768372
+              },
+              {
+                "path": "/api/trash/issue177-104/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281613900.2998,
+                "duration": 95.5
+              },
+              {
+                "path": "/api/trash/issue177-105/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281613900.2998,
+                "duration": 95.60000002384186
+              },
+              {
+                "path": "/api/trash/issue177-160/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281614187.4,
+                "duration": 28.100000023841858
+              },
+              {
+                "path": "/api/trash/issue177-161/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281614187.5,
+                "duration": 32
+              },
+              {
+                "path": "/api/trash/issue177-162/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281614187.5,
+                "duration": 39.799999952316284
+              },
+              {
+                "path": "/api/trash/issue177-163/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281614187.5,
+                "duration": 40.10000002384186
+              },
+              {
+                "path": "/api/trash/issue177-165/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281614187.5,
+                "duration": 44.39999997615814
+              },
+              {
+                "path": "/api/trash/issue177-164/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281614187.5,
+                "duration": 44.60000002384186
+              },
+              {
+                "path": "/api/trash/issue177-166/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281614187.5,
+                "duration": 59.39999997615814
+              },
+              {
+                "path": "/api/trash/issue177-167/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281614187.5999,
+                "duration": 59.199999928474426
+              },
+              {
+                "path": "/api/trash/issue177-169/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281614187.5999,
+                "duration": 62.59999990463257
+              },
+              {
+                "path": "/api/trash/issue177-168/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281614187.5999,
+                "duration": 62.699999928474426
+              },
+              {
+                "path": "/api/trash/issue177-170/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281614187.5999,
+                "duration": 73.79999995231628
+              },
+              {
+                "path": "/api/trash/issue177-171/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281614187.5999,
+                "duration": 74
+              },
+              {
+                "path": "/api/trash/issue177-172/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281614187.5999,
+                "duration": 85.29999995231628
+              },
+              {
+                "path": "/api/trash/issue177-173/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281614187.5999,
+                "duration": 85.39999997615814
+              },
+              {
+                "path": "/api/trash/issue177-174/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281614187.5999,
+                "duration": 88.5
+              },
+              {
+                "path": "/api/trash/issue177-175/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281614187.5999,
+                "duration": 88.5
+              },
+              {
+                "path": "/api/trash/issue177-176/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281614187.5999,
+                "duration": 97.19999992847443
+              },
+              {
+                "path": "/api/trash/issue177-177/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281614187.7,
+                "duration": 97.40000009536743
+              },
+              {
+                "path": "/api/trash/issue177-178/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281614187.7998,
+                "duration": 107
+              },
+              {
+                "path": "/api/trash/issue177-179/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281614187.7998,
+                "duration": 109.10000002384186
+              },
+              {
+                "path": "/api/trash/issue177-180/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281614187.7998,
+                "duration": 109.30000007152557
+              },
+              {
+                "path": "/api/trash/issue177-181/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281614187.7998,
+                "duration": 112.39999997615814
+              },
+              {
+                "path": "/api/trash/issue177-182/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281614187.7998,
+                "duration": 119.5
+              },
+              {
+                "path": "/api/trash/issue177-183/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281614187.7998,
+                "duration": 123.70000004768372
+              },
+              {
+                "path": "/api/trash/issue177-184/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281614187.7998,
+                "duration": 126
+              },
+              {
+                "path": "/api/trash/issue177-185/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281614187.7998,
+                "duration": 128.5
+              },
+              {
+                "path": "/api/trash/issue177-186/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281614187.7998,
+                "duration": 128.80000007152557
+              },
+              {
+                "path": "/api/trash/issue177-187/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281614337.5,
+                "duration": 9.399999976158142
+              },
+              {
+                "path": "/api/trash/issue177-188/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281614337.5,
+                "duration": 11.100000023841858
+              },
+              {
+                "path": "/api/trash/issue177-189/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281614337.5,
+                "duration": 10.899999976158142
+              },
+              {
+                "path": "/api/trash/issue177-190/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281614354.7998,
+                "duration": 10.300000071525574
+              },
+              {
+                "path": "/api/trash/issue177-191/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281614354.9,
+                "duration": 10.399999976158142
+              },
+              {
+                "path": "/api/trash/issue177-192/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281614354.9,
+                "duration": 10.899999976158142
+              },
+              {
+                "path": "/api/trash/issue177-193/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281614386.9,
+                "duration": 12.200000047683716
+              },
+              {
+                "path": "/api/trash/issue177-194/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281614386.9,
+                "duration": 12.399999976158142
+              },
+              {
+                "path": "/api/trash/issue177-195/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281614386.9,
+                "duration": 14.299999952316284
+              },
+              {
+                "path": "/api/trash/issue177-196/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281614387,
+                "duration": 14.100000023841858
+              },
+              {
+                "path": "/api/trash/issue177-197/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281614404,
+                "duration": 12.100000023841858
+              },
+              {
+                "path": "/api/trash/issue177-198/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281614404.0999,
+                "duration": 12.099999904632568
+              },
+              {
+                "path": "/api/trash/issue177-199/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281614404.0999,
+                "duration": 12.399999976158142
+              },
+              {
+                "path": "/api/trash/issue177-200/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281614404.0999,
+                "duration": 12.799999952316284
+              }
+            ]
+          },
+          {
+            "scenario": "approved-per-item-failures",
+            "page": "peer",
+            "boundary": "scenario-completed",
+            "at": 1791281632550,
+            "url": "http://ariso-62214.localhost:62214/settings/processing",
+            "previews": []
+          },
+          {
+            "scenario": "approved-unknown-and-unsent",
+            "page": "main",
+            "boundary": "scenario-completed",
+            "at": 1791281654481,
+            "url": "http://ariso-62214.localhost:62214/trash?q=issue177-&pageSize=80&page=3",
+            "previews": [
+              {
+                "path": "/api/trash/issue177-000/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281633871.7,
+                "duration": 40.799999952316284
+              },
+              {
+                "path": "/api/trash/issue177-001/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281633871.7,
+                "duration": 40.89999997615814
+              },
+              {
+                "path": "/api/trash/issue177-002/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281633871.7,
+                "duration": 43.700000047683716
+              },
+              {
+                "path": "/api/trash/issue177-003/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281633871.7,
+                "duration": 50.700000047683716
+              },
+              {
+                "path": "/api/trash/issue177-004/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281633871.7,
+                "duration": 57.60000002384186
+              },
+              {
+                "path": "/api/trash/issue177-005/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281633871.7,
+                "duration": 67.60000002384186
+              },
+              {
+                "path": "/api/trash/issue177-006/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281633871.8,
+                "duration": 87.29999995231628
+              },
+              {
+                "path": "/api/trash/issue177-007/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281633871.8,
+                "duration": 87.69999992847443
+              },
+              {
+                "path": "/api/trash/issue177-008/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281633871.8,
+                "duration": 94.79999995231628
+              },
+              {
+                "path": "/api/trash/issue177-010/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281633871.8,
+                "duration": 95.69999992847443
+              },
+              {
+                "path": "/api/trash/issue177-009/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281633871.8,
+                "duration": 102.89999997615814
+              },
+              {
+                "path": "/api/trash/issue177-011/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281633871.8,
+                "duration": 107.79999995231628
+              },
+              {
+                "path": "/api/trash/issue177-012/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281633871.8,
+                "duration": 120.5
+              },
+              {
+                "path": "/api/trash/issue177-013/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281633871.8,
+                "duration": 120.60000002384186
+              },
+              {
+                "path": "/api/trash/issue177-014/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281633871.9001,
+                "duration": 127.39999997615814
+              },
+              {
+                "path": "/api/trash/issue177-015/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281633871.9001,
+                "duration": 130.59999990463257
+              },
+              {
+                "path": "/api/trash/issue177-016/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281633871.9001,
+                "duration": 134.89999997615814
+              },
+              {
+                "path": "/api/trash/issue177-017/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281633871.9001,
+                "duration": 138
+              },
+              {
+                "path": "/api/trash/issue177-018/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281633871.9001,
+                "duration": 143.29999995231628
+              },
+              {
+                "path": "/api/trash/issue177-019/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281633871.9001,
+                "duration": 145.79999995231628
+              },
+              {
+                "path": "/api/trash/issue177-020/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281633871.9001,
+                "duration": 153.39999997615814
+              },
+              {
+                "path": "/api/trash/issue177-022/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281633872,
+                "duration": 157.60000002384186
+              },
+              {
+                "path": "/api/trash/issue177-021/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281633872,
+                "duration": 157.5
+              },
+              {
+                "path": "/api/trash/issue177-023/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281633872,
+                "duration": 165.30000007152557
+              },
+              {
+                "path": "/api/trash/issue177-024/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281633872,
+                "duration": 168.70000004768372
+              },
+              {
+                "path": "/api/trash/issue177-025/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281633872.1,
+                "duration": 174.39999997615814
+              },
+              {
+                "path": "/api/trash/issue177-026/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281633872.1,
+                "duration": 174.60000002384186
+              },
+              {
+                "path": "/api/trash/issue177-027/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281633872.1,
+                "duration": 174.70000004768372
+              },
+              {
+                "path": "/api/trash/issue177-080/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281634645.2,
+                "duration": 37.5
+              },
+              {
+                "path": "/api/trash/issue177-081/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281634645.2,
+                "duration": 40.299999952316284
+              },
+              {
+                "path": "/api/trash/issue177-082/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281634645.3,
+                "duration": 41.799999952316284
+              },
+              {
+                "path": "/api/trash/issue177-083/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281634645.3,
+                "duration": 42.699999928474426
+              },
+              {
+                "path": "/api/trash/issue177-084/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281634645.3,
+                "duration": 43.39999997615814
+              },
+              {
+                "path": "/api/trash/issue177-085/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281634645.3,
+                "duration": 44.199999928474426
+              },
+              {
+                "path": "/api/trash/issue177-087/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281634645.3,
+                "duration": 69.39999997615814
+              },
+              {
+                "path": "/api/trash/issue177-086/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281634645.3,
+                "duration": 72.29999995231628
+              },
+              {
+                "path": "/api/trash/issue177-089/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281634645.4001,
+                "duration": 63.89999997615814
+              },
+              {
+                "path": "/api/trash/issue177-088/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281634645.4001,
+                "duration": 69.59999990463257
+              },
+              {
+                "path": "/api/trash/issue177-090/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281634645.4001,
+                "duration": 72.5
+              },
+              {
+                "path": "/api/trash/issue177-091/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281634645.4001,
+                "duration": 72.79999995231628
+              },
+              {
+                "path": "/api/trash/issue177-092/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281634645.4001,
+                "duration": 89.89999997615814
+              },
+              {
+                "path": "/api/trash/issue177-093/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281634645.4001,
+                "duration": 95.79999995231628
+              },
+              {
+                "path": "/api/trash/issue177-094/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281634645.4001,
+                "duration": 95.59999990463257
+              },
+              {
+                "path": "/api/trash/issue177-095/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281634645.5,
+                "duration": 104
+              },
+              {
+                "path": "/api/trash/issue177-097/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281634645.5,
+                "duration": 104.5
+              },
+              {
+                "path": "/api/trash/issue177-096/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281634645.5,
+                "duration": 104.20000004768372
+              },
+              {
+                "path": "/api/trash/issue177-098/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281634645.5,
+                "duration": 117.70000004768372
+              },
+              {
+                "path": "/api/trash/issue177-099/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281634645.6,
+                "duration": 121.60000002384186
+              },
+              {
+                "path": "/api/trash/issue177-100/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281634645.6,
+                "duration": 121.89999997615814
+              },
+              {
+                "path": "/api/trash/issue177-101/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281634645.6,
+                "duration": 127.80000007152557
+              },
+              {
+                "path": "/api/trash/issue177-102/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281634645.6,
+                "duration": 128
+              },
+              {
+                "path": "/api/trash/issue177-103/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281634645.6,
+                "duration": 128.30000007152557
+              },
+              {
+                "path": "/api/trash/issue177-104/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281634645.6,
+                "duration": 136.39999997615814
+              },
+              {
+                "path": "/api/trash/issue177-105/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281634645.6,
+                "duration": 139.70000004768372
+              },
+              {
+                "path": "/api/trash/issue177-106/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281634645.6,
+                "duration": 139.70000004768372
+              },
+              {
+                "path": "/api/trash/issue177-160/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281635077.7,
+                "duration": 27.899999976158142
+              },
+              {
+                "path": "/api/trash/issue177-162/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281635077.7,
+                "duration": 38.39999997615814
+              },
+              {
+                "path": "/api/trash/issue177-161/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281635077.7,
+                "duration": 38.60000002384186
+              },
+              {
+                "path": "/api/trash/issue177-163/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281635077.7,
+                "duration": 39.299999952316284
+              },
+              {
+                "path": "/api/trash/issue177-164/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281635077.8,
+                "duration": 39.60000002384186
+              },
+              {
+                "path": "/api/trash/issue177-165/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281635077.8,
+                "duration": 40
+              },
+              {
+                "path": "/api/trash/issue177-167/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281635077.8,
+                "duration": 49.299999952316284
+              },
+              {
+                "path": "/api/trash/issue177-166/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281635077.8,
+                "duration": 72.10000002384186
+              },
+              {
+                "path": "/api/trash/issue177-168/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281635077.8,
+                "duration": 72.29999995231628
+              },
+              {
+                "path": "/api/trash/issue177-169/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281635077.8,
+                "duration": 72.79999995231628
+              },
+              {
+                "path": "/api/trash/issue177-171/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281635077.8,
+                "duration": 73.69999992847443
+              },
+              {
+                "path": "/api/trash/issue177-170/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281635077.8,
+                "duration": 74.39999997615814
+              },
+              {
+                "path": "/api/trash/issue177-172/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281635077.8,
+                "duration": 86.69999992847443
+              },
+              {
+                "path": "/api/trash/issue177-173/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281635077.8,
+                "duration": 100.89999997615814
+              },
+              {
+                "path": "/api/trash/issue177-174/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281635077.8,
+                "duration": 101.10000002384186
+              },
+              {
+                "path": "/api/trash/issue177-175/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281635077.8,
+                "duration": 101.39999997615814
+              },
+              {
+                "path": "/api/trash/issue177-176/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281635077.9001,
+                "duration": 101.79999995231628
+              },
+              {
+                "path": "/api/trash/issue177-177/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281635077.9001,
+                "duration": 102.29999995231628
+              },
+              {
+                "path": "/api/trash/issue177-178/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281635078,
+                "duration": 104.40000009536743
+              },
+              {
+                "path": "/api/trash/issue177-179/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281635078,
+                "duration": 124.20000004768372
+              },
+              {
+                "path": "/api/trash/issue177-181/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281635078,
+                "duration": 128.10000002384186
+              },
+              {
+                "path": "/api/trash/issue177-182/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281635078,
+                "duration": 128.90000009536743
+              },
+              {
+                "path": "/api/trash/issue177-180/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281635078,
+                "duration": 127.30000007152557
+              },
+              {
+                "path": "/api/trash/issue177-183/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281635078,
+                "duration": 129.70000004768372
+              },
+              {
+                "path": "/api/trash/issue177-184/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281635078,
+                "duration": 133.5
+              },
+              {
+                "path": "/api/trash/issue177-185/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281635078,
+                "duration": 140.20000004768372
+              },
+              {
+                "path": "/api/trash/issue177-186/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281635078,
+                "duration": 142
+              },
+              {
+                "path": "/api/trash/issue177-200/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281642887.8,
+                "duration": 19.699999928474426
+              }
+            ]
+          },
+          {
+            "scenario": "approved-unknown-and-unsent",
+            "page": "peer",
+            "boundary": "scenario-completed",
+            "at": 1791281654500,
+            "url": "http://ariso-62214.localhost:62214/settings/processing",
+            "previews": []
+          },
+          {
+            "scenario": "verifyEmptyInvalidQuery",
+            "page": "main",
+            "boundary": "scenario-completed",
+            "at": 1791281656770,
+            "url": "http://ariso-62214.localhost:62214/trash?page=1&pageSize=40",
+            "previews": []
+          },
+          {
+            "scenario": "verifyEmptyInvalidQuery",
+            "page": "peer",
+            "boundary": "scenario-completed",
+            "at": 1791281656785,
+            "url": "http://ariso-62214.localhost:62214/settings/processing",
+            "previews": []
+          },
+          {
+            "scenario": "approved-filter-consumers",
+            "page": "main",
+            "boundary": "scenario-completed",
+            "at": 1791281666672,
+            "url": "http://ariso-62214.localhost:62214/albums/issue177-album-a?storageId=bc276652-1360-4a21-ac7b-13c9d6f8a8bc&pageSize=40&tagId=issue177-tag-a",
+            "previews": []
+          },
+          {
+            "scenario": "approved-filter-consumers",
+            "page": "peer",
+            "boundary": "scenario-completed",
+            "at": 1791281666688,
+            "url": "http://ariso-62214.localhost:62214/settings/processing",
+            "previews": []
+          },
+          {
+            "scenario": "approved-progress-running",
+            "page": "main",
+            "boundary": "scenario-completed",
+            "at": 1791281676039,
+            "url": "http://ariso-62214.localhost:62214/trash?q=issue177-&pageSize=80&page=1",
+            "previews": [
+              {
+                "path": "/api/trash/issue177-001/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281667993.9,
+                "duration": 31.5
+              },
+              {
+                "path": "/api/trash/issue177-000/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281667993.9,
+                "duration": 31.299999952316284
+              },
+              {
+                "path": "/api/trash/issue177-002/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281667993.9,
+                "duration": 31.699999928474426
+              },
+              {
+                "path": "/api/trash/issue177-003/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281667993.9,
+                "duration": 41.10000002384186
+              },
+              {
+                "path": "/api/trash/issue177-004/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281667993.9,
+                "duration": 49
+              },
+              {
+                "path": "/api/trash/issue177-005/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281667993.9,
+                "duration": 51.299999952316284
+              },
+              {
+                "path": "/api/trash/issue177-006/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281667993.9,
+                "duration": 56.199999928474426
+              },
+              {
+                "path": "/api/trash/issue177-007/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281667993.9,
+                "duration": 59.60000002384186
+              },
+              {
+                "path": "/api/trash/issue177-008/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281667993.9,
+                "duration": 59.89999997615814
+              },
+              {
+                "path": "/api/trash/issue177-009/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281667994,
+                "duration": 67.19999992847443
+              },
+              {
+                "path": "/api/trash/issue177-010/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281667994,
+                "duration": 69.79999995231628
+              },
+              {
+                "path": "/api/trash/issue177-011/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281667994,
+                "duration": 72.89999997615814
+              },
+              {
+                "path": "/api/trash/issue177-012/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281667994,
+                "duration": 72.69999992847443
+              },
+              {
+                "path": "/api/trash/issue177-013/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281667994,
+                "duration": 75.09999990463257
+              },
+              {
+                "path": "/api/trash/issue177-014/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281668167.5999,
+                "duration": 38.60000002384186
+              },
+              {
+                "path": "/api/trash/issue177-015/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281668167.7,
+                "duration": 38.800000071525574
+              },
+              {
+                "path": "/api/trash/issue177-016/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281668167.7,
+                "duration": 40.800000071525574
+              },
+              {
+                "path": "/api/trash/issue177-018/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281668167.7,
+                "duration": 41.200000047683716
+              },
+              {
+                "path": "/api/trash/issue177-017/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281668167.7,
+                "duration": 41
+              },
+              {
+                "path": "/api/trash/issue177-019/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281668167.7,
+                "duration": 41.700000047683716
+              },
+              {
+                "path": "/api/trash/issue177-020/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281668167.7,
+                "duration": 63.10000002384186
+              },
+              {
+                "path": "/api/trash/issue177-021/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281668167.7,
+                "duration": 63.200000047683716
+              },
+              {
+                "path": "/api/trash/issue177-022/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281668167.7998,
+                "duration": 69.70000004768372
+              },
+              {
+                "path": "/api/trash/issue177-024/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281668167.7998,
+                "duration": 70.29999995231628
+              },
+              {
+                "path": "/api/trash/issue177-025/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281668167.7998,
+                "duration": 70.70000004768372
+              },
+              {
+                "path": "/api/trash/issue177-023/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281668167.7998,
+                "duration": 71.29999995231628
+              },
+              {
+                "path": "/api/trash/issue177-026/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281668167.7998,
+                "duration": 77.60000002384186
+              },
+              {
+                "path": "/api/trash/issue177-027/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281668167.7998,
+                "duration": 77.79999995231628
+              }
+            ]
+          },
+          {
+            "scenario": "approved-progress-running",
+            "page": "peer",
+            "boundary": "scenario-completed",
+            "at": 1791281676056,
+            "url": "http://ariso-62214.localhost:62214/settings/processing",
+            "previews": []
+          },
+          {
+            "scenario": "review-query-cache",
+            "page": "main",
+            "boundary": "scenario-completed",
+            "at": 1791281679158,
+            "url": "http://ariso-62214.localhost:62214/trash?pageSize=80&page=1",
+            "previews": [
+              {
+                "path": "/api/trash/issue177-000/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281677379.6,
+                "duration": 26.299999952316284
+              },
+              {
+                "path": "/api/trash/issue177-001/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281677379.6,
+                "duration": 26.600000023841858
+              },
+              {
+                "path": "/api/trash/issue177-002/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281677379.7,
+                "duration": 27.399999976158142
+              },
+              {
+                "path": "/api/trash/issue177-003/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281677379.7,
+                "duration": 35.299999952316284
+              },
+              {
+                "path": "/api/trash/issue177-004/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281677379.7,
+                "duration": 47.699999928474426
+              },
+              {
+                "path": "/api/trash/issue177-005/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281677379.7,
+                "duration": 49.699999928474426
+              },
+              {
+                "path": "/api/trash/issue177-006/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281677379.8,
+                "duration": 57.200000047683716
+              },
+              {
+                "path": "/api/trash/issue177-007/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281677379.8,
+                "duration": 57.40000009536743
+              },
+              {
+                "path": "/api/trash/issue177-008/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281677379.8,
+                "duration": 57.800000071525574
+              },
+              {
+                "path": "/api/trash/issue177-009/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281677379.8,
+                "duration": 62.40000009536743
+              },
+              {
+                "path": "/api/trash/issue177-010/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281677379.8,
+                "duration": 67.90000009536743
+              },
+              {
+                "path": "/api/trash/issue177-011/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281677379.8,
+                "duration": 69.20000004768372
+              },
+              {
+                "path": "/api/trash/issue177-012/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281677379.8,
+                "duration": 73.10000002384186
+              },
+              {
+                "path": "/api/trash/issue177-013/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281677379.8,
+                "duration": 73.30000007152557
+              },
+              {
+                "path": "/api/trash/issue177-014/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281678772.1,
+                "duration": 37.699999928474426
+              },
+              {
+                "path": "/api/trash/issue177-016/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281678772.1,
+                "duration": 38
+              },
+              {
+                "path": "/api/trash/issue177-015/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281678772.1,
+                "duration": 38.199999928474426
+              },
+              {
+                "path": "/api/trash/issue177-017/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281678772.1,
+                "duration": 38.5
+              },
+              {
+                "path": "/api/trash/issue177-018/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281678772.1,
+                "duration": 39
+              },
+              {
+                "path": "/api/trash/issue177-019/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281678772.1,
+                "duration": 39.10000002384186
+              },
+              {
+                "path": "/api/trash/issue177-021/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281678772.1,
+                "duration": 63.699999928474426
+              },
+              {
+                "path": "/api/trash/issue177-020/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281678772.1,
+                "duration": 63.5
+              },
+              {
+                "path": "/api/trash/issue177-022/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281678772.2,
+                "duration": 64
+              },
+              {
+                "path": "/api/trash/issue177-023/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281678772.2,
+                "duration": 64.59999990463257
+              },
+              {
+                "path": "/api/trash/issue177-025/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281678772.2,
+                "duration": 65.39999997615814
+              },
+              {
+                "path": "/api/trash/issue177-024/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281678772.2,
+                "duration": 64.79999995231628
+              },
+              {
+                "path": "/api/trash/issue177-026/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281678772.2,
+                "duration": 75.09999990463257
+              },
+              {
+                "path": "/api/trash/issue177-027/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281678772.2,
+                "duration": 75.19999992847443
+              },
+              {
+                "path": "/api/trash/issue177-028/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281678772.2,
+                "duration": 76.59999990463257
+              }
+            ]
+          },
+          {
+            "scenario": "review-query-cache",
+            "page": "peer",
+            "boundary": "scenario-completed",
+            "at": 1791281679175,
+            "url": "http://ariso-62214.localhost:62214/settings/processing",
+            "previews": []
+          },
+          {
+            "scenario": "review-single-cleanup-cycles",
+            "page": "main",
+            "boundary": "scenario-completed",
+            "at": 1791281684161,
+            "url": "http://ariso-62214.localhost:62214/trash?image=issue177-000",
+            "previews": [
+              {
+                "path": "/api/trash/issue177-000/preview?type=original",
+                "status": 200,
+                "startedAt": 1791281680688.5,
+                "duration": 13.399999976158142
+              }
+            ]
+          },
+          {
+            "scenario": "review-single-cleanup-cycles",
+            "page": "peer",
+            "boundary": "scenario-completed",
+            "at": 1791281684179,
+            "url": "http://ariso-62214.localhost:62214/settings/processing",
+            "previews": []
+          },
+          {
+            "scenario": "review-batch-cleanup-cycles",
+            "page": "main",
+            "boundary": "scenario-completed",
+            "at": 1791281691742,
+            "url": "http://ariso-62214.localhost:62214/trash?q=issue177-&pageSize=80&page=1",
+            "previews": [
+              {
+                "path": "/api/trash/issue177-000/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281685506.8,
+                "duration": 33.200000047683716
+              },
+              {
+                "path": "/api/trash/issue177-001/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281685506.9,
+                "duration": 34.89999997615814
+              },
+              {
+                "path": "/api/trash/issue177-002/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281685506.9,
+                "duration": 35.300000071525574
+              },
+              {
+                "path": "/api/trash/issue177-003/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281685506.9,
+                "duration": 35.60000002384186
+              },
+              {
+                "path": "/api/trash/issue177-004/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281685506.9,
+                "duration": 36.10000002384186
+              },
+              {
+                "path": "/api/trash/issue177-005/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281685506.9,
+                "duration": 36.60000002384186
+              },
+              {
+                "path": "/api/trash/issue177-006/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281685506.9,
+                "duration": 53.200000047683716
+              },
+              {
+                "path": "/api/trash/issue177-007/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281685507,
+                "duration": 57.39999997615814
+              },
+              {
+                "path": "/api/trash/issue177-008/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281685507,
+                "duration": 60.10000002384186
+              },
+              {
+                "path": "/api/trash/issue177-009/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281685507,
+                "duration": 59.799999952316284
+              },
+              {
+                "path": "/api/trash/issue177-011/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281685507.0999,
+                "duration": 60.699999928474426
+              },
+              {
+                "path": "/api/trash/issue177-010/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281685507.0999,
+                "duration": 60.39999997615814
+              },
+              {
+                "path": "/api/trash/issue177-012/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281685507.0999,
+                "duration": 68.89999997615814
+              },
+              {
+                "path": "/api/trash/issue177-013/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281685507.0999,
+                "duration": 70.79999995231628
+              },
+              {
+                "path": "/api/trash/issue177-014/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281685635.3,
+                "duration": 24.600000023841858
+              },
+              {
+                "path": "/api/trash/issue177-015/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281685635.3,
+                "duration": 24.700000047683716
+              },
+              {
+                "path": "/api/trash/issue177-016/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281685635.3,
+                "duration": 25.200000047683716
+              },
+              {
+                "path": "/api/trash/issue177-017/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281685635.3,
+                "duration": 25.800000071525574
+              },
+              {
+                "path": "/api/trash/issue177-018/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281685635.3,
+                "duration": 26.100000023841858
+              },
+              {
+                "path": "/api/trash/issue177-019/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281685635.3,
+                "duration": 26.40000009536743
+              },
+              {
+                "path": "/api/trash/issue177-020/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281685635.3,
+                "duration": 62.800000071525574
+              },
+              {
+                "path": "/api/trash/issue177-021/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281685635.3,
+                "duration": 63.10000002384186
+              },
+              {
+                "path": "/api/trash/issue177-022/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281685635.4,
+                "duration": 63.200000047683716
+              },
+              {
+                "path": "/api/trash/issue177-023/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281685635.4,
+                "duration": 68.30000007152557
+              },
+              {
+                "path": "/api/trash/issue177-024/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281685635.5,
+                "duration": 68.29999995231628
+              },
+              {
+                "path": "/api/trash/issue177-025/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281685635.5,
+                "duration": 69.10000002384186
+              },
+              {
+                "path": "/api/trash/issue177-026/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281685635.5,
+                "duration": 77.29999995231628
+              },
+              {
+                "path": "/api/trash/issue177-027/preview?type=thumbnail",
+                "status": 200,
+                "startedAt": 1791281685635.5,
+                "duration": 78.29999995231628
+              }
+            ]
+          },
+          {
+            "scenario": "review-batch-cleanup-cycles",
+            "page": "peer",
+            "boundary": "scenario-completed",
+            "at": 1791281691760,
+            "url": "http://ariso-62214.localhost:62214/settings/processing",
+            "previews": []
+          },
+          {
+            "scenario": "review-batch-cleanup-cycles",
+            "page": "main",
+            "boundary": "all-fixtures-cleaned",
+            "at": 1791281692619,
+            "url": "http://ariso-62214.localhost:62214/settings/processing",
+            "previews": []
+          },
+          {
+            "scenario": "review-batch-cleanup-cycles",
+            "page": "peer",
+            "boundary": "all-fixtures-cleaned",
+            "at": 1791281692635,
+            "url": "http://ariso-62214.localhost:62214/settings/processing",
+            "previews": []
+          }
+        ],
+        "fixtureTransitions": [
+          {
+            "scenario": "verifyQueryLayouts",
+            "event": "cleanup-started-after-leaving-pages",
+            "at": 1791281591390
+          },
+          {
+            "scenario": "verifyQueryLayouts",
+            "event": "cleanup-completed",
+            "at": 1791281591803
+          },
+          {
+            "scenario": "approved-query-controls",
+            "event": "cleanup-started-after-leaving-pages",
+            "at": 1791281608969
+          },
+          {
+            "scenario": "approved-query-controls",
+            "event": "cleanup-completed",
+            "at": 1791281609375
+          },
+          {
+            "scenario": "approved-per-item-failures",
+            "event": "cleanup-started-after-leaving-pages",
+            "at": 1791281632999
+          },
+          {
+            "scenario": "approved-per-item-failures",
+            "event": "cleanup-completed",
+            "at": 1791281633405
+          },
+          {
+            "scenario": "approved-unknown-and-unsent",
+            "event": "cleanup-started-after-leaving-pages",
+            "at": 1791281654937
+          },
+          {
+            "scenario": "approved-unknown-and-unsent",
+            "event": "cleanup-completed",
+            "at": 1791281655347
+          },
+          {
+            "scenario": "empty-invalid-query",
+            "event": "restore-started-after-leaving-page",
+            "at": 1791281655994
+          },
+          {
+            "scenario": "empty-invalid-query",
+            "event": "restore-completed",
+            "at": 1791281656025
+          },
+          {
+            "scenario": "verifyEmptyInvalidQuery",
+            "event": "cleanup-started-after-leaving-pages",
+            "at": 1791281657230
+          },
+          {
+            "scenario": "verifyEmptyInvalidQuery",
+            "event": "cleanup-completed",
+            "at": 1791281657652
+          },
+          {
+            "scenario": "approved-filter-consumers",
+            "event": "cleanup-started-after-leaving-pages",
+            "at": 1791281667127
+          },
+          {
+            "scenario": "approved-filter-consumers",
+            "event": "cleanup-completed",
+            "at": 1791281667532
+          },
+          {
+            "scenario": "approved-progress-running",
+            "event": "cleanup-started-after-leaving-pages",
+            "at": 1791281676479
+          },
+          {
+            "scenario": "approved-progress-running",
+            "event": "cleanup-completed",
+            "at": 1791281676910
+          },
+          {
+            "scenario": "review-query-cache",
+            "event": "cleanup-started-after-leaving-pages",
+            "at": 1791281679606
+          },
+          {
+            "scenario": "review-query-cache",
+            "event": "cleanup-completed",
+            "at": 1791281680020
+          },
+          {
+            "scenario": "review-single-cleanup-cycles",
+            "event": "cleanup-started-after-leaving-pages",
+            "at": 1791281684608
+          },
+          {
+            "scenario": "review-single-cleanup-cycles",
+            "event": "cleanup-completed",
+            "at": 1791281685021
+          },
+          {
+            "scenario": "review-batch-cleanup-cycles",
+            "event": "cleanup-started-after-leaving-pages",
+            "at": 1791281692200
+          },
+          {
+            "scenario": "review-batch-cleanup-cycles",
+            "event": "cleanup-completed",
+            "at": 1791281692611
+          }
+        ]
+      },
+      {
+        "scene": "trash-cleanup",
+        "status": "passed",
+        "checks": [
+          "Escape cancels confirmation, restores focus to the exact permanent-delete trigger and creates no cleanup task. Desktop/mobile light/dark and short viewports retain 44px targets.",
+          "A directory at the exact Local original-object key causes a real filesystem cleanup failure. The other stored object clears, the failed object/key/error and image record remain, restore/preview refuse access. Discarded real DELETE and GET responses remain unknown until an explicit GET, without replaying DELETE.",
+          "Keeping the actual Local directory fault and explicitly retrying opens cycle 2, which fails again on the same remaining object without re-deleting the cleared object. The repeated-failure page and its distinct footer are checked at desktop/mobile light/dark and short viewports.",
+          "After replacing the failing directory with its original real file, the next explicit retry opens cycle 3 and actual Local cleanup completes; the image disappears only after the persisted succeeded task, whose read endpoint remains available.",
+          "Discarding one real successful trash-list GET after cleanup acceptance exposes the refresh failure while retaining the accepted queued task. Explicit list refresh succeeds through another actual GET and clears the error without replaying DELETE.",
+          "A persisted active-job fixture keeps actual permanent deletion queued and the record retained. Closing the cleanup view does not cancel server work; ending the active-job fixture allows the real worker to remove files/image and persist succeeded without reopening the page.",
+          "A real cleanup_pending object with a future next_cleanup_at keeps the production task running after the writer fixture ends. Actual counts are 1/2 with one retained object; making it due lets the real worker complete. The scheduled-time fixture does not simulate remote DELETE latency.",
+          "Disabled Local storage opens its dedicated warning before a separate permanent-delete confirmation; continuing the warning does not send DELETE, and Escape cancels the second step."
+        ],
+        "layoutCount": 68,
+        "limitations": [
+          "Browser responsive, keyboard and focus evidence; physical devices and Release containers not run. The queue-wait scenario uses a persisted active-job fixture and ends that fixture before observing real filesystem cleanup."
+        ]
+      }
+    ]
+  },
+  {
+    "command": "EGO_TASK_SPACE=37 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/sharing-192/regression-green-sharing-scroll node scripts/verify-browser.mjs --suite sharing-public",
+    "exitCode": 0,
+    "status": "passed",
+    "suite": "sharing-public",
+    "startedAt": "2026-10-06T10:21:17.894Z",
+    "finishedAt": "2026-10-06T10:24:06.173Z",
+    "scenes": [
+      {
+        "scene": "sharing-public",
+        "status": "passed",
+        "checks": [
+          {
+            "scenario": "Anonymous HTML/RSC gate, noindex and owner session preserving anonymous scope"
+          },
+          {
+            "scenario": "password access Tips support click, Enter/Space, Escape and outside dismissal with focus return and no submission",
+            "width": 1440,
+            "height": 1080,
+            "theme": "light",
+            "scroll": 0
+          },
+          {
+            "scenario": "password access Tips support click, Enter/Space, Escape and outside dismissal with focus return and no submission",
+            "width": 390,
+            "height": 420,
+            "theme": "light",
+            "scroll": 111
+          },
+          {
+            "scenario": "password access Tips support click, Enter/Space, Escape and outside dismissal with focus return and no submission",
+            "width": 390,
+            "height": 420,
+            "theme": "dark",
+            "scroll": 102
+          },
+          {
+            "scenario": "Password submit has a visible keyboard focus indicator",
+            "outlineWidth": "2px",
+            "outlineStyle": "none",
+            "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(24, 26, 34) 0px 0px 0px 2px, rgb(130, 219, 211) 0px 0px 0px 4px, rgba(0, 0, 0, 0) 0px 0px 0px 0px"
+          },
+          {
+            "scenario": "Empty password and keyboard submit provide field feedback"
+          },
+          {
+            "scenario": "Overlong password is rejected by the real form"
+          },
+          {
+            "scenario": "Wrong password UI and overlong password HTTP validation"
+          },
+          {
+            "scenario": "Real unlock persists grant and prevents duplicate submission"
+          },
+          {
+            "scenario": "Short empty album scroll reaches the complete icon and text while preserving the 220px state",
+            "theme": "light",
+            "emptyGeometry": {
+              "scroll": 195.5,
+              "height": 220,
+              "viewport": {
+                "width": 390,
+                "height": 420
+              },
+              "scroller": {
+                "left": 0,
+                "right": 390,
+                "top": 150,
+                "bottom": 420,
+                "width": 390,
+                "height": 270
+              },
+              "icon": {
+                "left": 177,
+                "right": 213,
+                "top": 325.5,
+                "bottom": 361.5,
+                "width": 36,
+                "height": 36
+              },
+              "text": {
+                "left": 139,
+                "right": 251,
+                "top": 373.5,
+                "bottom": 395.5,
+                "width": 112,
+                "height": 22,
+                "content": "暂无可展示的图片"
+              }
+            }
+          },
+          {
+            "scenario": "Short empty album scroll reaches the complete icon and text while preserving the 220px state",
+            "theme": "dark",
+            "emptyGeometry": {
+              "scroll": 196,
+              "height": 220,
+              "viewport": {
+                "width": 390,
+                "height": 420
+              },
+              "scroller": {
+                "left": 0,
+                "right": 390,
+                "top": 150,
+                "bottom": 420,
+                "width": 390,
+                "height": 270
+              },
+              "icon": {
+                "left": 177,
+                "right": 213,
+                "top": 325,
+                "bottom": 361,
+                "width": 36,
+                "height": 36
+              },
+              "text": {
+                "left": 139,
+                "right": 251,
+                "top": 373,
+                "bottom": 395,
+                "width": 112,
+                "height": 22,
+                "content": "暂无可展示的图片"
+              }
+            }
+          },
+          {
+            "scenario": "Cropped public DTO, pure text, fixed cover and processing/failed/disabled/thumbnail error placeholders"
+          },
+          {
+            "scenario": "A fixed cover with a missing published file recovers from an eager/pre-hydration error without another version"
+          },
+          {
+            "scenario": "Short viewport scroll reaches the real load-more target",
+            "geometry": {
+              "width": 390,
+              "overflow": false,
+              "mainOverflow": false,
+              "targets": [
+                {
+                  "name": "返回首页",
+                  "width": 100,
+                  "height": 44,
+                  "navigation": false
+                },
+                {
+                  "name": "加载更多",
+                  "width": 88,
+                  "height": 48,
+                  "navigation": false
+                },
+                {
+                  "name": "重新加载",
+                  "width": 88,
+                  "height": 48,
+                  "navigation": false
+                }
+              ]
+            }
+          },
+          {
+            "scenario": "Long description clears on refresh and all visible gallery columns recover without a scroll event",
+            "scrollTop": 0,
+            "galleryTop": 416,
+            "firstTop": 416,
+            "secondTop": 416,
+            "viewportBottom": 844
+          },
+          {
+            "scenario": "Observed pagination refresh requests",
+            "requests": [
+              {
+                "size": 80,
+                "startedAt": 1791282125899,
+                "hidden": false,
+                "finishedAt": 1791282125913,
+                "status": 200,
+                "returned": 80,
+                "total": 124,
+                "showName": false,
+                "layout": "grid"
+              },
+              {
+                "size": 44,
+                "startedAt": 1791282125913,
+                "hidden": false,
+                "finishedAt": 1791282125920,
+                "status": 200,
+                "returned": 44,
+                "total": 124,
+                "showName": false,
+                "layout": "grid"
+              }
+            ]
+          },
+          {
+            "scenario": "40 member batches, ID deduplication and bounded 80+44 refresh with segmented rendering",
+            "pageSizes": [40, 40, 4],
+            "refreshSizes": [80, 44]
+          },
+          {
+            "scenario": "Hidden visibility stops polling and resume immediately checks loaded members",
+            "visibility": "real browser tab activation and production requests",
+            "events": [
+              {
+                "hidden": true,
+                "at": 1791282127667
+              },
+              {
+                "hidden": false,
+                "at": 1791282133202
+              }
+            ]
+          },
+          {
+            "scenario": "Next refresh removes private/trashed/removed members and updates processing in the original position"
+          },
+          {
+            "scenario": "Removed public anchor hides old cards and restores the real first page after explicit refresh"
+          },
+          {
+            "scenario": "Production HTTP 429 countdown blocks retry until real limiter window and then unlock succeeds"
+          },
+          {
+            "scenario": "Injected list/check failures retain loaded cards and busy retry feedback; full successful retry stays on the same page, with expected diagnostic errors inspected",
+            "busy": {
+              "disabled": true,
+              "text": "检查中",
+              "feedback": "状态检查失败，当前内容已保留。检查中",
+              "width": 100,
+              "height": 44
+            }
+          },
+          {
+            "scenario": "authorization-expired access Tips support click, Enter/Space, Escape and outside dismissal with focus return and no submission",
+            "width": 1440,
+            "height": 1080,
+            "theme": "light",
+            "scroll": 0
+          },
+          {
+            "scenario": "authorization-expired access Tips support click, Enter/Space, Escape and outside dismissal with focus return and no submission",
+            "width": 390,
+            "height": 420,
+            "theme": "light",
+            "scroll": 88.5
+          },
+          {
+            "scenario": "authorization-expired access Tips support click, Enter/Space, Escape and outside dismissal with focus return and no submission",
+            "width": 390,
+            "height": 420,
+            "theme": "dark",
+            "scroll": 113
+          },
+          {
+            "scenario": "Password grant revocation clears album data, returns to the existing password form and focuses its input"
+          },
+          {
+            "scenario": "Successful unlock callback errors retain their actual diagnostic instead of being swallowed by network handling"
+          },
+          {
+            "scenario": "A real successful unlock retains its grant through first-read dependency failure; retry loads the album on the same URL"
+          },
+          {
+            "scenario": "Late pre-policy list response cannot restore display names after showName turns off"
+          },
+          {
+            "scenario": "No overlapping state checks; revocation clears all data and late authorized refresh cannot refill it"
+          }
+        ],
+        "layoutCount": 131,
+        "limitations": [
+          "Physical phones, software keyboards, nonzero safe area and Release containers were not exercised. Anonymous lightbox belongs to T-SHR-04."
+        ],
+        "shortPasswordScrollChecks": [
+          {
+            "state": "password",
+            "width": 390,
+            "height": 420,
+            "theme": "light",
+            "scroll": 111,
+            "top": 327,
+            "bottom": 375,
+            "viewport": 420
+          },
+          {
+            "state": "password",
+            "width": 390,
+            "height": 420,
+            "theme": "dark",
+            "scroll": 102,
+            "top": 336,
+            "bottom": 384,
+            "viewport": 420
+          },
+          {
+            "state": "authorization-expired",
+            "width": 390,
+            "height": 420,
+            "theme": "light",
+            "scroll": 88.5,
+            "top": 349.5,
+            "bottom": 397.5,
+            "viewport": 420
+          },
+          {
+            "state": "authorization-expired",
+            "width": 390,
+            "height": 420,
+            "theme": "dark",
+            "scroll": 113,
+            "top": 325,
+            "bottom": 373,
+            "viewport": 420
+          }
+        ],
+        "shortEmptyScrollActions": [
+          {
+            "theme": "light",
+            "attempt": 0,
+            "scroll": 0,
+            "viewportTop": 150,
+            "viewportBottom": 420,
+            "top": 521,
+            "bottom": 591
+          },
+          {
+            "theme": "light",
+            "attempt": 1,
+            "scroll": 0,
+            "viewportTop": 150,
+            "viewportBottom": 420,
+            "top": 521,
+            "bottom": 591
+          },
+          {
+            "theme": "light",
+            "attempt": 2,
+            "scroll": 195.5,
+            "viewportTop": 150,
+            "viewportBottom": 420,
+            "top": 325.5,
+            "bottom": 395.5
+          },
+          {
+            "theme": "dark",
+            "attempt": 0,
+            "scroll": 0,
+            "viewportTop": 150,
+            "viewportBottom": 420,
+            "top": 521,
+            "bottom": 591
+          },
+          {
+            "theme": "dark",
+            "attempt": 1,
+            "scroll": 0,
+            "viewportTop": 150,
+            "viewportBottom": 420,
+            "top": 521,
+            "bottom": 591
+          },
+          {
+            "theme": "dark",
+            "attempt": 2,
+            "scroll": 196,
+            "viewportTop": 150,
+            "viewportBottom": 420,
+            "top": 325,
+            "bottom": 395
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "command": "EGO_TASK_SPACE=37 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/sharing-192/regression-merge-viewer node scripts/verify-browser.mjs --suite viewer --only behavior",
+    "exitCode": 0,
+    "phase": "after-main-integration",
+    "status": "passed",
+    "suite": "viewer",
+    "startedAt": "2026-10-06T10:32:52.933Z",
+    "finishedAt": "2026-10-06T10:34:15.062Z",
+    "scenes": [
+      {
+        "scene": "library-viewer",
+        "status": "passed",
+        "checks": [
+          "A real filtered private uploaded_asc query crosses page 1 index 19→20, advances five consecutive times to 24, returns to 23 with ArrowLeft and advances again to 24. Each current image uses the actual delivery URL, every neighbor request retains search/visibility/sort, and actual adjacent IDs follow the ascending order. First/last boundaries never loop. Only three slides/current±1 delivery requests are allowed. After three Tab and three Shift+Tab operations keep focus inside, Escape restores original detail entry, then closing detail restores exact selected source card focus/scroll, URL page, masonry layout and selection without loading page 2 into the list.",
+          "Desktop real double-click, +/− keyboard and wheel zoom work without visible zoom controls. Mouse/arrow pan while zoomed retains image identity; keyboard reset restores maximum proportional contain, the viewport stage and Escape return to detail.",
+          "Real 400×300 thumbnail uses the maximum proportional viewport and can zoom/pan. A real 1200×900 PNG/WebP fixture whose image and saved object/version dimensions are all NULL still decodes, fills proportional contain, then + zoom and two-axis mouse pan work before Escape returns to detail.",
+          "A real 320×240 thumbnail with width=NULL and height=240, attached to a 1200×900 original, uses its decoded pair for proportional contain and zoom. Two-axis pan, including vertical movement, succeeds without mixing original width into thumbnail height.",
+          "Chromium touch emulation performs real two-finger pinch in/out and diagonal single-finger zoomed pan while preserving image identity. After proportional contain is restored, actual left/right swipes navigate to the known neighbor and back. This is browser emulation, not physical-device evidence.",
+          "Missing real compressed bytes, held network delivery, zero saved versions, lost real neighbor response and blocked real adjacent delivery have explicit recoverable states. Reading errors retain selected kind/current identity; no original/thumbnail fallback occurs. Both ArrowLeft toward a readable preceding image and ArrowRight inside the focused failure dialog retain the same dialog, actual current src/id/version and focus without starting background neighbor or target reads. The return-current action works; reopening the real delivery error then pressing Escape dismisses only the error dialog, retains current bytes and viewer focus, and a second Escape returns to the original detail entry.",
+          "Real persisted public/private changes preserve owner access; storage disable/trash/deleting remove current content on the next actual status update with reasons. Known neighbor identity remains usable; a query-detached image requires context refresh. Fixture states are restored between cases.",
+          "A held real neighbor response released after closing/reopening cannot replace the new explicit original version or change its current image.",
+          "Holding the actual neighbor detail response while pressing ArrowRight repeatedly preserves the visible current slide URL. Releasing the response performs one successful transition to the intended next image.",
+          "Current compressed and explicitly selected watermark use actual delivery bytes, then reject at the browser decode boundary. Both show the selected-version failure without substituting another version or treating the image load event as successful decoding.",
+          "Deleting the actual disposable current image/version/object records produces a real 404 and removes visible current content. Previously known next image remains navigable; closing through the missing source detail returns focus to the list search toolbar rather than a removed card. Original fixture records are restored afterward.",
+          "Four existing samples in the disposable album follow the actual joined order 8→7→6→5 through three consecutive ArrowRight operations, then ArrowLeft returns to 6. Actual first/last neighbors are null and extra arrow input never loops. Every neighbor request retains album-only scope/id without a library sort, and navigation/close keep the original album detail URL/route. A real uploaded/processed ready queue item opens the same viewer with explicit thumbnail and zero neighbor requests, then returns to the unchanged ready upload row.",
+          "A real 255-character Chinese display-name PATCH does not alter the immersive 360×400 stage or close icon; filename remains absent, contain and Escape work, and the original name is restored.",
+          "The current compressed delivery initially fails because its real file is absent. A successful real reprocess publishes readable bytes; the existing broadcast clears the saved failure and displays independently checked new pixels without retry, version change or closing.",
+          "A controlled future queued job makes active-state POSTs observable: only the visible viewer polls current-ID status, and closing restores the detail observer. This is observer ownership evidence, not actual worker execution.",
+          "An actual expired isolated SQLite session makes the viewer refresh return 401, removes the viewer and redirects to login with the original detail returnTo; real sign-in restores the isolated test session.",
+          "Real compressed reprocessing refreshes the open current picture through the existing library broadcast, preserving image identity and selected kind. Both dimension-changing output and same-dimension/same-byte-size JPEG output are compared with actual independently fetched decoded delivery pixels; no successful worker state or business response is fabricated."
+        ],
+        "layoutCount": 15,
+        "limitations": [
+          "Ego Chromium; touch is browser emulation, not physical device/Safari/soft-keyboard/notch verification.",
+          "Screenshots and geometric assertions require independent review against the revised user instruction and remaining applicable Figma error states, plus user manual acceptance; they do not grant design approval."
+        ]
+      }
+    ]
+  },
+  {
+    "command": "EGO_TASK_SPACE=37 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/sharing-192/regression-merge-sharing node scripts/verify-browser.mjs --suite sharing-public",
+    "phase": "after-main-integration",
+    "exitCode": 0,
+    "status": "passed",
+    "suite": "sharing-public",
+    "startedAt": "2026-10-06T10:35:31.161Z",
+    "finishedAt": "2026-10-06T10:38:17.861Z",
+    "scenes": [
+      {
+        "scene": "sharing-public",
+        "status": "passed",
+        "checks": [
+          {
+            "scenario": "Anonymous HTML/RSC gate, noindex and owner session preserving anonymous scope"
+          },
+          {
+            "scenario": "password access Tips support click, Enter/Space, Escape and outside dismissal with focus return and no submission",
+            "width": 1440,
+            "height": 1080,
+            "theme": "light",
+            "scroll": 0
+          },
+          {
+            "scenario": "password access Tips support click, Enter/Space, Escape and outside dismissal with focus return and no submission",
+            "width": 390,
+            "height": 420,
+            "theme": "light",
+            "scroll": 106
+          },
+          {
+            "scenario": "password access Tips support click, Enter/Space, Escape and outside dismissal with focus return and no submission",
+            "width": 390,
+            "height": 420,
+            "theme": "dark",
+            "scroll": 114.5
+          },
+          {
+            "scenario": "Password submit has a visible keyboard focus indicator",
+            "outlineWidth": "2px",
+            "outlineStyle": "none",
+            "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(24, 26, 34) 0px 0px 0px 2px, rgb(130, 219, 211) 0px 0px 0px 4px, rgba(0, 0, 0, 0) 0px 0px 0px 0px"
+          },
+          {
+            "scenario": "Empty password and keyboard submit provide field feedback"
+          },
+          {
+            "scenario": "Overlong password is rejected by the real form"
+          },
+          {
+            "scenario": "Wrong password UI and overlong password HTTP validation"
+          },
+          {
+            "scenario": "Real unlock persists grant and prevents duplicate submission"
+          },
+          {
+            "scenario": "Short empty album scroll reaches the complete icon and text while preserving the 220px state",
+            "theme": "light",
+            "emptyGeometry": {
+              "scroll": 264.5,
+              "height": 220,
+              "viewport": {
+                "width": 390,
+                "height": 420
+              },
+              "scroller": {
+                "left": 0,
+                "right": 390,
+                "top": 150,
+                "bottom": 420,
+                "width": 390,
+                "height": 270
+              },
+              "icon": {
+                "left": 177,
+                "right": 213,
+                "top": 256.5,
+                "bottom": 292.5,
+                "width": 36,
+                "height": 36
+              },
+              "text": {
+                "left": 139,
+                "right": 251,
+                "top": 304.5,
+                "bottom": 326.5,
+                "width": 112,
+                "height": 22,
+                "content": "暂无可展示的图片"
+              }
+            }
+          },
+          {
+            "scenario": "Short empty album scroll reaches the complete icon and text while preserving the 220px state",
+            "theme": "dark",
+            "emptyGeometry": {
+              "scroll": 197,
+              "height": 220,
+              "viewport": {
+                "width": 390,
+                "height": 420
+              },
+              "scroller": {
+                "left": 0,
+                "right": 390,
+                "top": 150,
+                "bottom": 420,
+                "width": 390,
+                "height": 270
+              },
+              "icon": {
+                "left": 177,
+                "right": 213,
+                "top": 324,
+                "bottom": 360,
+                "width": 36,
+                "height": 36
+              },
+              "text": {
+                "left": 139,
+                "right": 251,
+                "top": 372,
+                "bottom": 394,
+                "width": 112,
+                "height": 22,
+                "content": "暂无可展示的图片"
+              }
+            }
+          },
+          {
+            "scenario": "Cropped public DTO, pure text, fixed cover and processing/failed/disabled/thumbnail error placeholders"
+          },
+          {
+            "scenario": "A fixed cover with a missing published file recovers from an eager/pre-hydration error without another version"
+          },
+          {
+            "scenario": "Short viewport scroll reaches the real load-more target",
+            "geometry": {
+              "width": 390,
+              "overflow": false,
+              "mainOverflow": false,
+              "targets": [
+                {
+                  "name": "返回首页",
+                  "width": 100,
+                  "height": 44,
+                  "navigation": false
+                },
+                {
+                  "name": "加载更多",
+                  "width": 88,
+                  "height": 48,
+                  "navigation": false
+                },
+                {
+                  "name": "重新加载",
+                  "width": 88,
+                  "height": 48,
+                  "navigation": false
+                }
+              ]
+            }
+          },
+          {
+            "scenario": "Long description clears on refresh and all visible gallery columns recover without a scroll event",
+            "scrollTop": 0,
+            "galleryTop": 416,
+            "firstTop": 416,
+            "secondTop": 416,
+            "viewportBottom": 844
+          },
+          {
+            "scenario": "Observed pagination refresh requests",
+            "requests": [
+              {
+                "size": 80,
+                "startedAt": 1791282977397,
+                "hidden": false,
+                "finishedAt": 1791282977409,
+                "status": 200,
+                "returned": 80,
+                "total": 124,
+                "showName": false,
+                "layout": "grid"
+              },
+              {
+                "size": 44,
+                "startedAt": 1791282977410,
+                "hidden": false,
+                "finishedAt": 1791282977425,
+                "status": 200,
+                "returned": 44,
+                "total": 124,
+                "showName": false,
+                "layout": "grid"
+              }
+            ]
+          },
+          {
+            "scenario": "40 member batches, ID deduplication and bounded 80+44 refresh with segmented rendering",
+            "pageSizes": [40, 40, 4],
+            "refreshSizes": [80, 44]
+          },
+          {
+            "scenario": "Hidden visibility stops polling and resume immediately checks loaded members",
+            "visibility": "real browser tab activation and production requests",
+            "events": [
+              {
+                "hidden": true,
+                "at": 1791282979171
+              },
+              {
+                "hidden": false,
+                "at": 1791282984699
+              }
+            ]
+          },
+          {
+            "scenario": "Next refresh removes private/trashed/removed members and updates processing in the original position"
+          },
+          {
+            "scenario": "Removed public anchor hides old cards and restores the real first page after explicit refresh"
+          },
+          {
+            "scenario": "Production HTTP 429 countdown blocks retry until real limiter window and then unlock succeeds"
+          },
+          {
+            "scenario": "Injected list/check failures retain loaded cards and busy retry feedback; full successful retry stays on the same page, with expected diagnostic errors inspected",
+            "busy": {
+              "disabled": true,
+              "text": "检查中",
+              "feedback": "状态检查失败，当前内容已保留。检查中",
+              "width": 100,
+              "height": 44
+            }
+          },
+          {
+            "scenario": "authorization-expired access Tips support click, Enter/Space, Escape and outside dismissal with focus return and no submission",
+            "width": 1440,
+            "height": 1080,
+            "theme": "light",
+            "scroll": 0
+          },
+          {
+            "scenario": "authorization-expired access Tips support click, Enter/Space, Escape and outside dismissal with focus return and no submission",
+            "width": 390,
+            "height": 420,
+            "theme": "light",
+            "scroll": 113.5
+          },
+          {
+            "scenario": "authorization-expired access Tips support click, Enter/Space, Escape and outside dismissal with focus return and no submission",
+            "width": 390,
+            "height": 420,
+            "theme": "dark",
+            "scroll": 117.5
+          },
+          {
+            "scenario": "Password grant revocation clears album data, returns to the existing password form and focuses its input"
+          },
+          {
+            "scenario": "Successful unlock callback errors retain their actual diagnostic instead of being swallowed by network handling"
+          },
+          {
+            "scenario": "A real successful unlock retains its grant through first-read dependency failure; retry loads the album on the same URL"
+          },
+          {
+            "scenario": "Late pre-policy list response cannot restore display names after showName turns off"
+          },
+          {
+            "scenario": "No overlapping state checks; revocation clears all data and late authorized refresh cannot refill it"
+          }
+        ],
+        "layoutCount": 131,
+        "limitations": [
+          "Physical phones, software keyboards, nonzero safe area and Release containers were not exercised. Anonymous lightbox belongs to T-SHR-04."
+        ],
+        "shortPasswordScrollChecks": [
+          {
+            "state": "password",
+            "width": 390,
+            "height": 420,
+            "theme": "light",
+            "scroll": 106,
+            "top": 332,
+            "bottom": 380,
+            "viewport": 420
+          },
+          {
+            "state": "password",
+            "width": 390,
+            "height": 420,
+            "theme": "dark",
+            "scroll": 114.5,
+            "top": 323.5,
+            "bottom": 371.5,
+            "viewport": 420
+          },
+          {
+            "state": "authorization-expired",
+            "width": 390,
+            "height": 420,
+            "theme": "light",
+            "scroll": 113.5,
+            "top": 324.5,
+            "bottom": 372.5,
+            "viewport": 420
+          },
+          {
+            "state": "authorization-expired",
+            "width": 390,
+            "height": 420,
+            "theme": "dark",
+            "scroll": 117.5,
+            "top": 320.5,
+            "bottom": 368.5,
+            "viewport": 420
+          }
+        ],
+        "shortEmptyScrollActions": [
+          {
+            "theme": "light",
+            "attempt": 0,
+            "scroll": 0,
+            "viewportTop": 150,
+            "viewportBottom": 420,
+            "top": 521,
+            "bottom": 591
+          },
+          {
+            "theme": "light",
+            "attempt": 1,
+            "scroll": 0,
+            "viewportTop": 150,
+            "viewportBottom": 420,
+            "top": 521,
+            "bottom": 591
+          },
+          {
+            "theme": "light",
+            "attempt": 2,
+            "scroll": 264.5,
+            "viewportTop": 150,
+            "viewportBottom": 420,
+            "top": 256.5,
+            "bottom": 326.5
+          },
+          {
+            "theme": "dark",
+            "attempt": 0,
+            "scroll": 0,
+            "viewportTop": 150,
+            "viewportBottom": 420,
+            "top": 521,
+            "bottom": 591
+          },
+          {
+            "theme": "dark",
+            "attempt": 1,
+            "scroll": 0,
+            "viewportTop": 150,
+            "viewportBottom": 420,
+            "top": 521,
+            "bottom": 591
+          },
+          {
+            "theme": "dark",
+            "attempt": 2,
+            "scroll": 197,
+            "viewportTop": 150,
+            "viewportBottom": 420,
+            "top": 324,
+            "bottom": 394
+          }
+        ],
+        "expectedThumbnailErrors": 1
+      }
+    ]
+  }
+]

@@ -1,0 +1,17 @@
+{
+  "environment": {
+    "node": "24.18.1",
+    "pnpm": "11.19.0",
+    "database": "real SQLite WAL, two openRuntimeDatabase connections"
+  },
+  "executed": {
+    "command": "node test-results/sharing-192/regression-trash-fixture-lock.mjs",
+    "exitCode": 1,
+    "expected": "Controlled failure from the original deferred fixture transaction",
+    "input": "Current unchanged dist production modules from pnpm run build; explicit original deferred transaction in diagnostic script"
+  },
+  "archive": "verify-red.mjs only adjusts relative dist import depth for this directory; saved archive entrypoint was not re-executed.",
+  "replay": "From repository root after pnpm run build: node docs/verification/sharing-192/regression-fixes/trash-fixture-lock/verify-red.mjs. Exit 1 is the expected red result. Requires ignored test-results/sharing-192 output directory.",
+  "fix": "Only the existing beforeEach transaction uses behavior: immediate; no product database policy, business assertion or timeout changes.",
+  "green": "The complete trash-http.test.ts integration file must be run after the fix; outcome recorded separately in check-results.json."
+}

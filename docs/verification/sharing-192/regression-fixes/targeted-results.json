@@ -1,0 +1,6129 @@
+[
+  {
+    "status": "failed",
+    "stage": "settings",
+    "error": "ElementResolutionError: page.click timed out after 3000ms: Selector [data-testid=\"processing-asset-retry\"] matched 0 elements\n    at #retryElementAction (file:////[eval1]:18884:27)\n    at async file:////[eval1]:18968:29\n    at async file:////[eval1]:16691:28",
+    "run": "regression-red-processing-settings",
+    "scene": "processing",
+    "checks": 8,
+    "layouts": 14,
+    "source": "test-results/sharing-192/regression-red-processing-settings/processing.json",
+    "assetReadDiagnostic": {
+      "events": [
+        {
+          "event": "installed",
+          "at": 1791276641073,
+          "visibility": "visible",
+          "focused": false,
+          "retry": false
+        },
+        {
+          "event": "focus",
+          "at": 1791276641313,
+          "visibility": "visible",
+          "focused": true,
+          "retry": true,
+          "state": "error"
+        },
+        {
+          "event": "visibilitychange",
+          "at": 1791276642297,
+          "visibility": "hidden",
+          "focused": true,
+          "retry": true,
+          "state": "error"
+        },
+        {
+          "event": "visibilitychange",
+          "at": 1791276642298,
+          "visibility": "visible",
+          "focused": true,
+          "retry": true,
+          "state": "error"
+        },
+        {
+          "event": "visibilitychange",
+          "at": 1791276643473,
+          "visibility": "hidden",
+          "focused": true,
+          "retry": true,
+          "state": "error"
+        },
+        {
+          "event": "visibilitychange",
+          "at": 1791276643473,
+          "visibility": "visible",
+          "focused": true,
+          "retry": true,
+          "state": "error"
+        },
+        {
+          "event": "visibilitychange",
+          "at": 1791276643564,
+          "visibility": "hidden",
+          "focused": true,
+          "retry": true,
+          "state": "error"
+        },
+        {
+          "event": "visibilitychange",
+          "at": 1791276643564,
+          "visibility": "visible",
+          "focused": true,
+          "retry": true,
+          "state": "error"
+        },
+        {
+          "event": "visibilitychange",
+          "at": 1791276643697,
+          "visibility": "hidden",
+          "focused": true,
+          "retry": true,
+          "state": "error"
+        },
+        {
+          "event": "visibilitychange",
+          "at": 1791276643698,
+          "visibility": "visible",
+          "focused": true,
+          "retry": true,
+          "state": "error"
+        },
+        {
+          "event": "visibilitychange",
+          "at": 1791276643765,
+          "visibility": "hidden",
+          "focused": true,
+          "retry": true,
+          "state": "error"
+        },
+        {
+          "event": "visibilitychange",
+          "at": 1791276643766,
+          "visibility": "visible",
+          "focused": true,
+          "retry": true,
+          "state": "error"
+        },
+        {
+          "event": "visibilitychange",
+          "at": 1791276643846,
+          "visibility": "hidden",
+          "focused": true,
+          "retry": true,
+          "state": "error"
+        },
+        {
+          "event": "visibilitychange",
+          "at": 1791276643846,
+          "visibility": "visible",
+          "focused": true,
+          "retry": true,
+          "state": "error"
+        },
+        {
+          "event": "visibilitychange",
+          "at": 1791276643899,
+          "visibility": "hidden",
+          "focused": true,
+          "retry": true,
+          "state": "error"
+        },
+        {
+          "event": "visibilitychange",
+          "at": 1791276643899,
+          "visibility": "visible",
+          "focused": true,
+          "retry": true,
+          "state": "error"
+        }
+      ],
+      "at": 1791276646987,
+      "visibility": "visible",
+      "focused": true,
+      "retry": false,
+      "state": "saved",
+      "startedAt": 1791276641030,
+      "unblockedAt": 1791276643853,
+      "retryAttemptAt": 1791276643855,
+      "requests": [
+        {
+          "path": "/api/media/watermark-assets/19d042b7-4803-4713-8be9-1fc25b8efd2a",
+          "startedAt": 1791276641030.814,
+          "startedTimestamp": 663349.677245,
+          "status": 200,
+          "finishedTimestamp": 663349.682547
+        },
+        {
+          "path": "/api/media/watermark-assets/19d042b7-4803-4713-8be9-1fc25b8efd2a",
+          "startedAt": 1791276641203.584,
+          "startedTimestamp": 663349.849918,
+          "finishedTimestamp": 663349.850064,
+          "blockedReason": "inspector"
+        },
+        {
+          "path": "/api/media/watermark-assets/19d042b7-4803-4713-8be9-1fc25b8efd2a",
+          "startedAt": 1791276642298.467,
+          "startedTimestamp": 663350.944856,
+          "finishedTimestamp": 663350.944927,
+          "blockedReason": "inspector"
+        },
+        {
+          "path": "/api/media/watermark-assets/19d042b7-4803-4713-8be9-1fc25b8efd2a",
+          "startedAt": 1791276643473.83,
+          "startedTimestamp": 663352.120228,
+          "finishedTimestamp": 663352.12027,
+          "blockedReason": "inspector"
+        },
+        {
+          "path": "/api/media/watermark-assets/19d042b7-4803-4713-8be9-1fc25b8efd2a",
+          "startedAt": 1791276643565.0452,
+          "startedTimestamp": 663352.211446,
+          "finishedTimestamp": 663352.211482,
+          "blockedReason": "inspector"
+        },
+        {
+          "path": "/api/media/watermark-assets/19d042b7-4803-4713-8be9-1fc25b8efd2a",
+          "startedAt": 1791276643698.39,
+          "startedTimestamp": 663352.344791,
+          "finishedTimestamp": 663352.344825,
+          "blockedReason": "inspector"
+        },
+        {
+          "path": "/api/media/watermark-assets/19d042b7-4803-4713-8be9-1fc25b8efd2a",
+          "startedAt": 1791276643766.132,
+          "startedTimestamp": 663352.412537,
+          "finishedTimestamp": 663352.412567,
+          "blockedReason": "inspector"
+        },
+        {
+          "path": "/api/media/watermark-assets/19d042b7-4803-4713-8be9-1fc25b8efd2a",
+          "startedAt": 1791276643846.921,
+          "startedTimestamp": 663352.493323,
+          "finishedTimestamp": 663352.493355,
+          "blockedReason": "inspector"
+        },
+        {
+          "path": "/api/media/watermark-assets/19d042b7-4803-4713-8be9-1fc25b8efd2a",
+          "startedAt": 1791276643899.4019,
+          "startedTimestamp": 663352.545807,
+          "status": 200,
+          "finishedTimestamp": 663352.557147
+        }
+      ]
+    }
+  },
+  {
+    "status": "passed",
+    "stage": "settings",
+    "run": "regression-green-processing",
+    "scene": "processing",
+    "checks": 23,
+    "layouts": 39,
+    "source": "test-results/sharing-192/regression-green-processing/processing.json",
+    "assetReadRecovery": {
+      "released": true,
+      "activation": {
+        "event": "pointerdown",
+        "at": 1791278390245,
+        "trusted": true
+      },
+      "requests": [
+        {
+          "startedAt": 1791278389247,
+          "responseLost": true,
+          "status": 200,
+          "finishedAt": 1791278389258
+        },
+        {
+          "startedAt": 1791278390275,
+          "responseLost": false,
+          "status": 200,
+          "finishedAt": 1791278390285
+        }
+      ]
+    }
+  },
+  {
+    "status": "failed",
+    "stage": "recovery",
+    "error": "ElementResolutionError: page.click timed out after 3000ms: page.click failed: <div> intercepts pointer events\n    at #retryElementAction (file:////[eval1]:18884:27)\n    at async file:////[eval1]:18968:29\n    at async file:////[eval1]:16691:28",
+    "run": "regression-red-processing",
+    "scene": "processing",
+    "checks": 2,
+    "layouts": 3,
+    "source": "test-results/sharing-192/regression-red-processing/processing.json"
+  },
+  {
+    "status": "passed",
+    "stage": "recovery",
+    "run": "regression-green-processing-recovery",
+    "scene": "processing",
+    "checks": 13,
+    "layouts": 19,
+    "source": "test-results/sharing-192/regression-green-processing-recovery/processing.json",
+    "previewReceiveRefresh": {
+      "before": {
+        "at": 1791278569754,
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "button": {
+          "top": 840,
+          "bottom": 884,
+          "left": 33,
+          "right": 151,
+          "width": 118,
+          "height": 44
+        },
+        "disabled": false,
+        "main": {
+          "top": 64,
+          "bottom": 763,
+          "left": 0,
+          "right": 390,
+          "width": 390,
+          "height": 699
+        },
+        "scrollTop": 0,
+        "footer": {
+          "top": 763,
+          "bottom": 844,
+          "left": 0,
+          "right": 390,
+          "width": 390,
+          "height": 81
+        },
+        "hits": []
+      }
+    }
+  },
+  {
+    "status": "passed",
+    "run": "regression-storage-diagnostic",
+    "scene": "storage-admin",
+    "checks": 10,
+    "layouts": 120,
+    "source": "test-results/sharing-192/regression-storage-diagnostic/storage-admin.json",
+    "localPathDiagnostic": {
+      "requests": [
+        {
+          "path": "/api/storages/5c833bcc-a067-407f-bfad-36f7e2577bc7",
+          "startedAt": 1791278112812,
+          "status": 400,
+          "finishedAt": 1791278112820
+        }
+      ],
+      "input": "../../outside-storage",
+      "alerts": [
+        {
+          "role": "alert",
+          "text": "请检查存储配置字段"
+        }
+      ],
+      "storedPath": "storage-admin-198"
+    }
+  },
+  {
+    "status": "failed",
+    "stage": "geometry",
+    "error": "AssertionError [ERR_ASSERTION]: Keyboard navigation scrolls 重新处理 completely into the visible context menu\n    at verifyLibraryContextEdges (file:///Users/dnslin/.codex/worktrees/issue-192-sharing/ariso/e2e/library-feedback.mjs:467:18)\n    at async verifyLibraryFeedback (file:///Users/dnslin/.codex/worktrees/issue-192-sharing/ariso/e2e/library-feedback.mjs:335:5)\n    at async file:////[eval2]:265:5",
+    "run": "regression-red-feedback",
+    "scene": "library-feedback",
+    "checks": 3,
+    "layouts": 0,
+    "source": "test-results/sharing-192/regression-red-feedback/library-feedback.json",
+    "menuFocusFailure": {
+      "theme": "light",
+      "width": 390,
+      "height": 560,
+      "action": "重新处理",
+      "immediate": {
+        "at": 122843.69999992847,
+        "targetTop": 387,
+        "targetBottom": 431,
+        "popupTop": 76,
+        "popupBottom": 395,
+        "scrollTop": 0
+      },
+      "frames": [
+        {
+          "at": 123066.79999995232,
+          "target": {
+            "x": 253,
+            "y": 190.5,
+            "width": 118,
+            "height": 44,
+            "top": 190.5,
+            "right": 371,
+            "bottom": 234.5,
+            "left": 253
+          },
+          "popup": {
+            "x": 246,
+            "y": 76,
+            "width": 132,
+            "height": 319,
+            "top": 76,
+            "right": 378,
+            "bottom": 395,
+            "left": 246
+          },
+          "scrollTop": 0,
+          "focused": "重新处理"
+        },
+        {
+          "at": 123071.69999992847,
+          "target": {
+            "x": 253,
+            "y": 190.5,
+            "width": 118,
+            "height": 44,
+            "top": 190.5,
+            "right": 371,
+            "bottom": 234.5,
+            "left": 253
+          },
+          "popup": {
+            "x": 246,
+            "y": 76,
+            "width": 132,
+            "height": 319,
+            "top": 76,
+            "right": 378,
+            "bottom": 395,
+            "left": 246
+          },
+          "scrollTop": 0,
+          "focused": "重新处理"
+        },
+        {
+          "at": 123085,
+          "target": {
+            "x": 253,
+            "y": 190.5,
+            "width": 118,
+            "height": 44,
+            "top": 190.5,
+            "right": 371,
+            "bottom": 234.5,
+            "left": 253
+          },
+          "popup": {
+            "x": 246,
+            "y": 76,
+            "width": 132,
+            "height": 319,
+            "top": 76,
+            "right": 378,
+            "bottom": 395,
+            "left": 246
+          },
+          "scrollTop": 0,
+          "focused": "重新处理"
+        },
+        {
+          "at": 123119,
+          "target": {
+            "x": 253,
+            "y": 190.5,
+            "width": 118,
+            "height": 44,
+            "top": 190.5,
+            "right": 371,
+            "bottom": 234.5,
+            "left": 253
+          },
+          "popup": {
+            "x": 246,
+            "y": 76,
+            "width": 132,
+            "height": 319,
+            "top": 76,
+            "right": 378,
+            "bottom": 395,
+            "left": 246
+          },
+          "scrollTop": 0,
+          "focused": "重新处理"
+        },
+        {
+          "at": 123133.59999990463,
+          "target": {
+            "x": 253,
+            "y": 190.5,
+            "width": 118,
+            "height": 44,
+            "top": 190.5,
+            "right": 371,
+            "bottom": 234.5,
+            "left": 253
+          },
+          "popup": {
+            "x": 246,
+            "y": 76,
+            "width": 132,
+            "height": 319,
+            "top": 76,
+            "right": 378,
+            "bottom": 395,
+            "left": 246
+          },
+          "scrollTop": 0,
+          "focused": "重新处理"
+        },
+        {
+          "at": 123169,
+          "target": {
+            "x": 253,
+            "y": 190.5,
+            "width": 118,
+            "height": 44,
+            "top": 190.5,
+            "right": 371,
+            "bottom": 234.5,
+            "left": 253
+          },
+          "popup": {
+            "x": 246,
+            "y": 76,
+            "width": 132,
+            "height": 319,
+            "top": 76,
+            "right": 378,
+            "bottom": 395,
+            "left": 246
+          },
+          "scrollTop": 0,
+          "focused": "重新处理"
+        },
+        {
+          "at": 123260,
+          "target": {
+            "x": 253,
+            "y": 190.5,
+            "width": 118,
+            "height": 44,
+            "top": 190.5,
+            "right": 371,
+            "bottom": 234.5,
+            "left": 253
+          },
+          "popup": {
+            "x": 246,
+            "y": 76,
+            "width": 132,
+            "height": 319,
+            "top": 76,
+            "right": 378,
+            "bottom": 395,
+            "left": 246
+          },
+          "scrollTop": 0,
+          "focused": "重新处理"
+        },
+        {
+          "at": 123268.69999992847,
+          "target": {
+            "x": 253,
+            "y": 190.5,
+            "width": 118,
+            "height": 44,
+            "top": 190.5,
+            "right": 371,
+            "bottom": 234.5,
+            "left": 253
+          },
+          "popup": {
+            "x": 246,
+            "y": 76,
+            "width": 132,
+            "height": 319,
+            "top": 76,
+            "right": 378,
+            "bottom": 395,
+            "left": 246
+          },
+          "scrollTop": 0,
+          "focused": "重新处理"
+        }
+      ]
+    }
+  },
+  {
+    "status": "failed",
+    "stage": "tag id query and return",
+    "error": "AssertionError [ERR_ASSERTION]: renamed-library/light/390 main overflow\n\ntrue !== false\n\n    at assertGeometry (file:///Users/dnslin/.codex/worktrees/issue-192-sharing/ariso/e2e/browser-geometry.mjs:92:10)\n    at layouts (file:////[eval2]:160:11)\n    at async file:////[eval2]:531:3",
+    "run": "regression-red-tags",
+    "scene": "tags",
+    "checks": 7,
+    "layouts": 62,
+    "source": "test-results/sharing-192/regression-red-tags/tags.json",
+    "geometryFailure": {
+      "state": "renamed-library",
+      "theme": "light",
+      "width": 390,
+      "immediate": {
+        "width": 390,
+        "overflow": false,
+        "mainOverflow": true,
+        "targets": [
+          {
+            "name": "跳到主要内容",
+            "width": 120,
+            "height": 48,
+            "navigation": false
+          },
+          {
+            "name": "Ariso 首页",
+            "width": 63,
+            "height": 54,
+            "navigation": false
+          },
+          {
+            "name": "菜单",
+            "width": 44,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "搜索图片名称",
+            "width": 356,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "图片排序",
+            "width": 101.578125,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "网格",
+            "width": 44,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "瀑布流",
+            "width": 44,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "刷新图库",
+            "width": 44,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "添加条件",
+            "width": 102,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "",
+            "width": 44,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "移除标签条件",
+            "width": 44,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "清除筛选条件",
+            "width": 108,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "查看图片：标签图片0.png",
+            "width": 269,
+            "height": 270,
+            "navigation": false
+          },
+          {
+            "name": "查看图片：标签图片1.png",
+            "width": 269,
+            "height": 270,
+            "navigation": false
+          },
+          {
+            "name": "查看图片：标签图片2.png",
+            "width": 269,
+            "height": 270,
+            "navigation": false
+          },
+          {
+            "name": "图片加载方式",
+            "width": 112,
+            "height": 44,
+            "navigation": false
+          },
+          {
+            "name": "每批图片数",
+            "width": 120,
+            "height": 44,
+            "navigation": false
+          }
+        ]
+      },
+      "frames": [
+        {
+          "at": 30003.300000071526,
+          "width": 390,
+          "main": {
+            "rect": {
+              "x": 0,
+              "y": 64,
+              "width": 390,
+              "height": 675.5,
+              "top": 64,
+              "right": 390,
+              "bottom": 739.5,
+              "left": 0
+            },
+            "scrollWidth": 869,
+            "clientWidth": 390
+          },
+          "gallery": {
+            "rect": {
+              "x": 16,
+              "y": 406,
+              "width": 358,
+              "height": 272,
+              "top": 406,
+              "right": 374,
+              "bottom": 678,
+              "left": 16
+            },
+            "columns": "4",
+            "layout": "grid"
+          },
+          "cards": [
+            {
+              "rect": {
+                "x": 16,
+                "y": 406,
+                "width": 271,
+                "height": 272,
+                "top": 406,
+                "right": 287,
+                "bottom": 678,
+                "left": 16
+              },
+              "slot": "left: 0px; top: 0px; width: 271px; height: 272px;"
+            },
+            {
+              "rect": {
+                "x": 307,
+                "y": 406,
+                "width": 271,
+                "height": 272,
+                "top": 406,
+                "right": 578,
+                "bottom": 678,
+                "left": 307
+              },
+              "slot": "left: 291px; top: 0px; width: 271px; height: 272px;"
+            },
+            {
+              "rect": {
+                "x": 598,
+                "y": 406,
+                "width": 271,
+                "height": 272,
+                "top": 406,
+                "right": 869,
+                "bottom": 678,
+                "left": 598
+              },
+              "slot": "left: 582px; top: 0px; width: 271px; height: 272px;"
+            }
+          ]
+        },
+        {
+          "at": 30850.5,
+          "width": 390,
+          "main": {
+            "rect": {
+              "x": 0,
+              "y": 64,
+              "width": 390,
+              "height": 675.5,
+              "top": 64,
+              "right": 390,
+              "bottom": 739.5,
+              "left": 0
+            },
+            "scrollWidth": 869,
+            "clientWidth": 390
+          },
+          "gallery": {
+            "rect": {
+              "x": 16,
+              "y": 406,
+              "width": 358,
+              "height": 272,
+              "top": 406,
+              "right": 374,
+              "bottom": 678,
+              "left": 16
+            },
+            "columns": "4",
+            "layout": "grid"
+          },
+          "cards": [
+            {
+              "rect": {
+                "x": 16,
+                "y": 406,
+                "width": 271,
+                "height": 272,
+                "top": 406,
+                "right": 287,
+                "bottom": 678,
+                "left": 16
+              },
+              "slot": "left: 0px; top: 0px; width: 271px; height: 272px;"
+            },
+            {
+              "rect": {
+                "x": 307,
+                "y": 406,
+                "width": 271,
+                "height": 272,
+                "top": 406,
+                "right": 578,
+                "bottom": 678,
+                "left": 307
+              },
+              "slot": "left: 291px; top: 0px; width: 271px; height: 272px;"
+            },
+            {
+              "rect": {
+                "x": 598,
+                "y": 406,
+                "width": 271,
+                "height": 272,
+                "top": 406,
+                "right": 869,
+                "bottom": 678,
+                "left": 598
+              },
+              "slot": "left: 582px; top: 0px; width: 271px; height: 272px;"
+            }
+          ]
+        },
+        {
+          "at": 30914.800000071526,
+          "width": 390,
+          "main": {
+            "rect": {
+              "x": 0,
+              "y": 64,
+              "width": 390,
+              "height": 675.5,
+              "top": 64,
+              "right": 390,
+              "bottom": 739.5,
+              "left": 0
+            },
+            "scrollWidth": 390,
+            "clientWidth": 390
+          },
+          "gallery": {
+            "rect": {
+              "x": 16,
+              "y": 406,
+              "width": 358,
+              "height": 432,
+              "top": 406,
+              "right": 374,
+              "bottom": 838,
+              "left": 16
+            },
+            "columns": "2",
+            "layout": "grid"
+          },
+          "cards": [
+            {
+              "rect": {
+                "x": 16,
+                "y": 406,
+                "width": 173,
+                "height": 210,
+                "top": 406,
+                "right": 189,
+                "bottom": 616,
+                "left": 16
+              },
+              "slot": "left: 0px; top: 0px; width: 173px; height: 210px;"
+            },
+            {
+              "rect": {
+                "x": 201,
+                "y": 406,
+                "width": 173,
+                "height": 210,
+                "top": 406,
+                "right": 374,
+                "bottom": 616,
+                "left": 201
+              },
+              "slot": "left: 185px; top: 0px; width: 173px; height: 210px;"
+            },
+            {
+              "rect": {
+                "x": 16,
+                "y": 628,
+                "width": 173,
+                "height": 210,
+                "top": 628,
+                "right": 189,
+                "bottom": 838,
+                "left": 16
+              },
+              "slot": "left: 0px; top: 222px; width: 173px; height: 210px;"
+            }
+          ]
+        },
+        {
+          "at": 30928.800000071526,
+          "width": 390,
+          "main": {
+            "rect": {
+              "x": 0,
+              "y": 64,
+              "width": 390,
+              "height": 675.5,
+              "top": 64,
+              "right": 390,
+              "bottom": 739.5,
+              "left": 0
+            },
+            "scrollWidth": 390,
+            "clientWidth": 390
+          },
+          "gallery": {
+            "rect": {
+              "x": 16,
+              "y": 406,
+              "width": 358,
+              "height": 432,
+              "top": 406,
+              "right": 374,
+              "bottom": 838,
+              "left": 16
+            },
+            "columns": "2",
+            "layout": "grid"
+          },
+          "cards": [
+            {
+              "rect": {
+                "x": 16,
+                "y": 406,
+                "width": 173,
+                "height": 210,
+                "top": 406,
+                "right": 189,
+                "bottom": 616,
+                "left": 16
+              },
+              "slot": "left: 0px; top: 0px; width: 173px; height: 210px;"
+            },
+            {
+              "rect": {
+                "x": 201,
+                "y": 406,
+                "width": 173,
+                "height": 210,
+                "top": 406,
+                "right": 374,
+                "bottom": 616,
+                "left": 201
+              },
+              "slot": "left: 185px; top: 0px; width: 173px; height: 210px;"
+            },
+            {
+              "rect": {
+                "x": 16,
+                "y": 628,
+                "width": 173,
+                "height": 210,
+                "top": 628,
+                "right": 189,
+                "bottom": 838,
+                "left": 16
+              },
+              "slot": "left: 0px; top: 222px; width: 173px; height: 210px;"
+            }
+          ]
+        },
+        {
+          "at": 31929.899999976158,
+          "width": 390,
+          "main": {
+            "rect": {
+              "x": 0,
+              "y": 64,
+              "width": 390,
+              "height": 675.5,
+              "top": 64,
+              "right": 390,
+              "bottom": 739.5,
+              "left": 0
+            },
+            "scrollWidth": 390,
+            "clientWidth": 390
+          },
+          "gallery": {
+            "rect": {
+              "x": 16,
+              "y": 406,
+              "width": 358,
+              "height": 432,
+              "top": 406,
+              "right": 374,
+              "bottom": 838,
+              "left": 16
+            },
+            "columns": "2",
+            "layout": "grid"
+          },
+          "cards": [
+            {
+              "rect": {
+                "x": 16,
+                "y": 406,
+                "width": 173,
+                "height": 210,
+                "top": 406,
+                "right": 189,
+                "bottom": 616,
+                "left": 16
+              },
+              "slot": "left: 0px; top: 0px; width: 173px; height: 210px;"
+            },
+            {
+              "rect": {
+                "x": 201,
+                "y": 406,
+                "width": 173,
+                "height": 210,
+                "top": 406,
+                "right": 374,
+                "bottom": 616,
+                "left": 201
+              },
+              "slot": "left: 185px; top: 0px; width: 173px; height: 210px;"
+            },
+            {
+              "rect": {
+                "x": 16,
+                "y": 628,
+                "width": 173,
+                "height": 210,
+                "top": 628,
+                "right": 189,
+                "bottom": 838,
+                "left": 16
+              },
+              "slot": "left: 0px; top: 222px; width: 173px; height: 210px;"
+            }
+          ]
+        },
+        {
+          "at": 32945.39999997616,
+          "width": 390,
+          "main": {
+            "rect": {
+              "x": 0,
+              "y": 64,
+              "width": 390,
+              "height": 675.5,
+              "top": 64,
+              "right": 390,
+              "bottom": 739.5,
+              "left": 0
+            },
+            "scrollWidth": 390,
+            "clientWidth": 390
+          },
+          "gallery": {
+            "rect": {
+              "x": 16,
+              "y": 406,
+              "width": 358,
+              "height": 432,
+              "top": 406,
+              "right": 374,
+              "bottom": 838,
+              "left": 16
+            },
+            "columns": "2",
+            "layout": "grid"
+          },
+          "cards": [
+            {
+              "rect": {
+                "x": 16,
+                "y": 406,
+                "width": 173,
+                "height": 210,
+                "top": 406,
+                "right": 189,
+                "bottom": 616,
+                "left": 16
+              },
+              "slot": "left: 0px; top: 0px; width: 173px; height: 210px;"
+            },
+            {
+              "rect": {
+                "x": 201,
+                "y": 406,
+                "width": 173,
+                "height": 210,
+                "top": 406,
+                "right": 374,
+                "bottom": 616,
+                "left": 201
+              },
+              "slot": "left: 185px; top: 0px; width: 173px; height: 210px;"
+            },
+            {
+              "rect": {
+                "x": 16,
+                "y": 628,
+                "width": 173,
+                "height": 210,
+                "top": 628,
+                "right": 189,
+                "bottom": 838,
+                "left": 16
+              },
+              "slot": "left: 0px; top: 222px; width: 173px; height: 210px;"
+            }
+          ]
+        },
+        {
+          "at": 33946.700000047684,
+          "width": 390,
+          "main": {
+            "rect": {
+              "x": 0,
+              "y": 64,
+              "width": 390,
+              "height": 675.5,
+              "top": 64,
+              "right": 390,
+              "bottom": 739.5,
+              "left": 0
+            },
+            "scrollWidth": 390,
+            "clientWidth": 390
+          },
+          "gallery": {
+            "rect": {
+              "x": 16,
+              "y": 406,
+              "width": 358,
+              "height": 432,
+              "top": 406,
+              "right": 374,
+              "bottom": 838,
+              "left": 16
+            },
+            "columns": "2",
+            "layout": "grid"
+          },
+          "cards": [
+            {
+              "rect": {
+                "x": 16,
+                "y": 406,
+                "width": 173,
+                "height": 210,
+                "top": 406,
+                "right": 189,
+                "bottom": 616,
+                "left": 16
+              },
+              "slot": "left: 0px; top: 0px; width: 173px; height: 210px;"
+            },
+            {
+              "rect": {
+                "x": 201,
+                "y": 406,
+                "width": 173,
+                "height": 210,
+                "top": 406,
+                "right": 374,
+                "bottom": 616,
+                "left": 201
+              },
+              "slot": "left: 185px; top: 0px; width: 173px; height: 210px;"
+            },
+            {
+              "rect": {
+                "x": 16,
+                "y": 628,
+                "width": 173,
+                "height": 210,
+                "top": 628,
+                "right": 189,
+                "bottom": 838,
+                "left": 16
+              },
+              "slot": "left: 0px; top: 222px; width: 173px; height: 210px;"
+            }
+          ]
+        },
+        {
+          "at": 34986.89999997616,
+          "width": 390,
+          "main": {
+            "rect": {
+              "x": 0,
+              "y": 64,
+              "width": 390,
+              "height": 675.5,
+              "top": 64,
+              "right": 390,
+              "bottom": 739.5,
+              "left": 0
+            },
+            "scrollWidth": 390,
+            "clientWidth": 390
+          },
+          "gallery": {
+            "rect": {
+              "x": 16,
+              "y": 406,
+              "width": 358,
+              "height": 432,
+              "top": 406,
+              "right": 374,
+              "bottom": 838,
+              "left": 16
+            },
+            "columns": "2",
+            "layout": "grid"
+          },
+          "cards": [
+            {
+              "rect": {
+                "x": 16,
+                "y": 406,
+                "width": 173,
+                "height": 210,
+                "top": 406,
+                "right": 189,
+                "bottom": 616,
+                "left": 16
+              },
+              "slot": "left: 0px; top: 0px; width: 173px; height: 210px;"
+            },
+            {
+              "rect": {
+                "x": 201,
+                "y": 406,
+                "width": 173,
+                "height": 210,
+                "top": 406,
+                "right": 374,
+                "bottom": 616,
+                "left": 201
+              },
+              "slot": "left: 185px; top: 0px; width: 173px; height: 210px;"
+            },
+            {
+              "rect": {
+                "x": 16,
+                "y": 628,
+                "width": 173,
+                "height": 210,
+                "top": 628,
+                "right": 189,
+                "bottom": 838,
+                "left": 16
+              },
+              "slot": "left: 0px; top: 222px; width: 173px; height: 210px;"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "status": "failed",
+    "error": "AssertionError [ERR_ASSERTION]: The real success Toast remains visible during the viewport comparison\n    at toastLayouts (file:///Users/dnslin/.codex/worktrees/issue-192-sharing/ariso/e2e/library-batch-helpers.mjs:733:16)\n    at async verifyVisibilityRecovery (file:///Users/dnslin/.codex/worktrees/issue-192-sharing/ariso/e2e/library-batch-visibility.mjs:470:3)\n    at async file:////[eval2]:193:7",
+    "activeCheck": "201-visibility-loss-check-unsent",
+    "run": "regression-red-batch",
+    "scene": "library-batch",
+    "checks": 0,
+    "layouts": 12,
+    "source": "test-results/sharing-192/regression-red-batch/library-batch.json",
+    "toastDiagnostics": [
+      {
+        "activeCheck": "201-visibility-loss-check-unsent",
+        "events": [
+          {
+            "at": 24731.100000023842,
+            "event": "monitor-start",
+            "width": 1440,
+            "height": 1080,
+            "hidden": false,
+            "toasts": []
+          },
+          {
+            "at": 24780.5,
+            "event": "visibilitychange",
+            "width": 1440,
+            "height": 1080,
+            "hidden": true,
+            "toasts": []
+          },
+          {
+            "at": 24780.800000071526,
+            "event": "visibilitychange",
+            "width": 1440,
+            "height": 1080,
+            "hidden": false,
+            "toasts": []
+          },
+          {
+            "at": 27117.700000047684,
+            "event": "resize",
+            "width": 390,
+            "height": 844,
+            "hidden": false,
+            "toasts": []
+          },
+          {
+            "at": 28245.5,
+            "event": "resize",
+            "width": 1440,
+            "height": 1080,
+            "hidden": false,
+            "toasts": []
+          },
+          {
+            "at": 28559.300000071526,
+            "event": "resize",
+            "width": 390,
+            "height": 844,
+            "hidden": false,
+            "toasts": []
+          },
+          {
+            "at": 30682.800000071526,
+            "event": "resize",
+            "width": 1440,
+            "height": 1080,
+            "hidden": false,
+            "toasts": []
+          },
+          {
+            "at": 30956.100000023842,
+            "event": "visibilitychange",
+            "width": 1440,
+            "height": 1080,
+            "hidden": true,
+            "toasts": []
+          },
+          {
+            "at": 30956.300000071526,
+            "event": "visibilitychange",
+            "width": 1440,
+            "height": 1080,
+            "hidden": false,
+            "toasts": []
+          },
+          {
+            "at": 33165.800000071526,
+            "event": "resize",
+            "width": 390,
+            "height": 844,
+            "hidden": false,
+            "toasts": []
+          },
+          {
+            "at": 35309.10000002384,
+            "event": "resize",
+            "width": 1440,
+            "height": 1080,
+            "hidden": false,
+            "toasts": []
+          },
+          {
+            "at": 35656.800000071526,
+            "event": "resize",
+            "width": 390,
+            "height": 844,
+            "hidden": false,
+            "toasts": []
+          },
+          {
+            "at": 38778.5,
+            "event": "resize",
+            "width": 1440,
+            "height": 1080,
+            "hidden": false,
+            "toasts": []
+          },
+          {
+            "at": 39044.5,
+            "event": "visibilitychange",
+            "width": 1440,
+            "height": 1080,
+            "hidden": true,
+            "toasts": []
+          },
+          {
+            "at": 39044.800000071526,
+            "event": "visibilitychange",
+            "width": 1440,
+            "height": 1080,
+            "hidden": false,
+            "toasts": []
+          },
+          {
+            "at": 41248.300000071526,
+            "event": "visibilitychange",
+            "width": 1440,
+            "height": 1080,
+            "hidden": true,
+            "toasts": []
+          },
+          {
+            "at": 41248.700000047684,
+            "event": "visibilitychange",
+            "width": 1440,
+            "height": 1080,
+            "hidden": false,
+            "toasts": []
+          },
+          {
+            "at": 41369.700000047684,
+            "event": "mutation",
+            "width": 1440,
+            "height": 1080,
+            "hidden": false,
+            "toasts": [
+              {
+                "title": "批量设为公开完成",
+                "entering": true,
+                "exiting": false,
+                "focused": false,
+                "rect": {
+                  "x": 992,
+                  "y": 1052,
+                  "width": 420,
+                  "height": 72,
+                  "top": 1052,
+                  "right": 1412,
+                  "bottom": 1124,
+                  "left": 992
+                }
+              }
+            ]
+          },
+          {
+            "at": 42366.800000071526,
+            "event": "mutation",
+            "width": 1440,
+            "height": 1080,
+            "hidden": false,
+            "toasts": [
+              {
+                "title": "批量设为公开完成",
+                "entering": false,
+                "exiting": false,
+                "focused": false,
+                "rect": {
+                  "x": 992,
+                  "y": 980,
+                  "width": 420,
+                  "height": 72,
+                  "top": 980,
+                  "right": 1412,
+                  "bottom": 1052,
+                  "left": 992
+                }
+              }
+            ]
+          },
+          {
+            "at": 43447.200000047684,
+            "event": "pointerover",
+            "width": 1440,
+            "height": 1080,
+            "hidden": false,
+            "toasts": [
+              {
+                "title": "批量设为公开完成",
+                "entering": false,
+                "exiting": false,
+                "focused": false,
+                "rect": {
+                  "x": 992,
+                  "y": 980,
+                  "width": 420,
+                  "height": 72,
+                  "top": 980,
+                  "right": 1412,
+                  "bottom": 1052,
+                  "left": 992
+                }
+              }
+            ]
+          },
+          {
+            "at": 43450.60000002384,
+            "event": "visibilitychange",
+            "width": 1440,
+            "height": 1080,
+            "hidden": true,
+            "toasts": [
+              {
+                "title": "批量设为公开完成",
+                "entering": false,
+                "exiting": false,
+                "focused": false,
+                "rect": {
+                  "x": 992,
+                  "y": 980,
+                  "width": 420,
+                  "height": 72,
+                  "top": 980,
+                  "right": 1412,
+                  "bottom": 1052,
+                  "left": 992
+                }
+              }
+            ]
+          },
+          {
+            "at": 43451.200000047684,
+            "event": "visibilitychange",
+            "width": 1440,
+            "height": 1080,
+            "hidden": false,
+            "toasts": [
+              {
+                "title": "批量设为公开完成",
+                "entering": false,
+                "exiting": false,
+                "focused": false,
+                "rect": {
+                  "x": 992,
+                  "y": 980,
+                  "width": 420,
+                  "height": 72,
+                  "top": 980,
+                  "right": 1412,
+                  "bottom": 1052,
+                  "left": 992
+                }
+              }
+            ]
+          },
+          {
+            "at": 45482.10000002384,
+            "event": "pointerout",
+            "width": 390,
+            "height": 844,
+            "hidden": false,
+            "toasts": [
+              {
+                "title": "批量设为公开完成",
+                "entering": false,
+                "exiting": false,
+                "focused": false,
+                "rect": {
+                  "x": 16,
+                  "y": 748,
+                  "width": 358,
+                  "height": 72,
+                  "top": 748,
+                  "right": 374,
+                  "bottom": 820,
+                  "left": 16
+                }
+              }
+            ]
+          },
+          {
+            "at": 45483.200000047684,
+            "event": "resize",
+            "width": 390,
+            "height": 844,
+            "hidden": false,
+            "toasts": [
+              {
+                "title": "批量设为公开完成",
+                "entering": false,
+                "exiting": false,
+                "focused": false,
+                "rect": {
+                  "x": 16,
+                  "y": 748,
+                  "width": 358,
+                  "height": 72,
+                  "top": 748,
+                  "right": 374,
+                  "bottom": 820,
+                  "left": 16
+                }
+              }
+            ]
+          },
+          {
+            "at": 47400.800000071526,
+            "event": "mutation",
+            "width": 390,
+            "height": 844,
+            "hidden": false,
+            "toasts": []
+          },
+          {
+            "at": 47600.200000047684,
+            "event": "visibilitychange",
+            "width": 390,
+            "height": 844,
+            "hidden": true,
+            "toasts": []
+          },
+          {
+            "at": 47600.700000047684,
+            "event": "visibilitychange",
+            "width": 390,
+            "height": 844,
+            "hidden": false,
+            "toasts": []
+          },
+          {
+            "at": 47659.60000002384,
+            "event": "monitor-stop",
+            "width": 390,
+            "height": 844,
+            "hidden": false,
+            "toasts": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "status": "failed",
+    "stage": "unauthorized",
+    "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\nnull !== 'true'\n\n    at selectFormat (file:///Users/dnslin/.codex/worktrees/issue-192-sharing/ariso/e2e/library-copy-helpers.mjs:87:12)\n    at async Object.format (file:///Users/dnslin/.codex/worktrees/issue-192-sharing/ariso/e2e/library-copy-helpers.mjs:97:5)\n    at async file:////[eval2]:782:5",
+    "run": "regression-red-copy",
+    "scene": "library-copy",
+    "checks": 3,
+    "layouts": 8,
+    "source": "test-results/sharing-192/regression-red-copy/library-copy.json",
+    "pasteboardChecks": [
+      {
+        "stage": "exact-output",
+        "at": 1791277460535,
+        "matches": true,
+        "actualLength": 9999,
+        "expectedLength": 9999
+      },
+      {
+        "stage": "exact-output",
+        "at": 1791277465316,
+        "matches": true,
+        "actualLength": 19825,
+        "expectedLength": 19825
+      },
+      {
+        "stage": "manual-native-copy-complete",
+        "at": 1791277465332,
+        "matches": true,
+        "actualLength": 19825,
+        "expectedLength": 19825
+      },
+      {
+        "stage": "manual-after-layouts",
+        "at": 1791277465347,
+        "matches": true,
+        "actualLength": 19825,
+        "expectedLength": 19825
+      },
+      {
+        "stage": "manual-return-click",
+        "at": 1791277466101,
+        "matches": true,
+        "actualLength": 19825,
+        "expectedLength": 19825
+      },
+      {
+        "stage": "unavailable-before-navigation",
+        "at": 1791277467077,
+        "matches": true,
+        "actualLength": 19825,
+        "expectedLength": 19825
+      },
+      {
+        "stage": "unavailable-after-navigation",
+        "at": 1791277468447,
+        "matches": true,
+        "actualLength": 19825,
+        "expectedLength": 19825
+      },
+      {
+        "stage": "unavailable-after-selection",
+        "at": 1791277474029,
+        "matches": true,
+        "actualLength": 19825,
+        "expectedLength": 19825
+      },
+      {
+        "stage": "unavailable-after-open",
+        "at": 1791277477023,
+        "matches": true,
+        "actualLength": 19825,
+        "expectedLength": 19825
+      },
+      {
+        "stage": "unavailable-after-empty-result",
+        "at": 1791277479112,
+        "matches": true,
+        "actualLength": 19825,
+        "expectedLength": 19825
+      },
+      {
+        "stage": "exact-output",
+        "at": 1791277479125,
+        "matches": true,
+        "actualLength": 19825,
+        "expectedLength": 19825
+      },
+      {
+        "stage": "exact-output",
+        "at": 1791277501240,
+        "matches": true,
+        "actualLength": 49,
+        "expectedLength": 49
+      },
+      {
+        "stage": "exact-output",
+        "at": 1791277513195,
+        "matches": true,
+        "actualLength": 149,
+        "expectedLength": 149
+      }
+    ],
+    "unauthorized": {}
+  },
+  {
+    "status": "passed",
+    "stage": "complete",
+    "run": "regression-copy-unauthorized",
+    "scene": "library-copy",
+    "checks": 4,
+    "layouts": 8,
+    "source": "test-results/sharing-192/regression-copy-unauthorized/library-copy.json",
+    "authRecoveryStates": [
+      {
+        "stage": "before-session-revocation",
+        "at": 1791278227610,
+        "path": "/albums/issue177-album-a",
+        "dialog": true,
+        "selectedFormat": "url",
+        "authEvents": []
+      },
+      {
+        "stage": "after-session-revocation",
+        "at": 1791278227655,
+        "path": "/albums/issue177-album-a",
+        "dialog": true,
+        "selectedFormat": "url",
+        "authEvents": []
+      },
+      {
+        "stage": "before-format-selection",
+        "at": 1791278227658,
+        "path": "/albums/issue177-album-a",
+        "dialog": true,
+        "selectedFormat": "url",
+        "authEvents": []
+      },
+      {
+        "stage": "after-format-selection",
+        "at": 1791278227771,
+        "path": "/albums/issue177-album-a",
+        "dialog": true,
+        "selectedFormat": "url",
+        "authEvents": []
+      }
+    ],
+    "pasteboardChecks": [
+      {
+        "stage": "exact-output",
+        "at": 1791278218808,
+        "matches": true,
+        "actualLength": 9999,
+        "expectedLength": 9999
+      },
+      {
+        "stage": "exact-output",
+        "at": 1791278219677,
+        "matches": true,
+        "actualLength": 19825,
+        "expectedLength": 19825
+      },
+      {
+        "stage": "manual-native-copy-complete",
+        "at": 1791278219686,
+        "matches": true,
+        "actualLength": 19825,
+        "expectedLength": 19825
+      },
+      {
+        "stage": "manual-after-layouts",
+        "at": 1791278219696,
+        "matches": true,
+        "actualLength": 19825,
+        "expectedLength": 19825
+      },
+      {
+        "stage": "manual-return-click",
+        "at": 1791278219942,
+        "matches": true,
+        "actualLength": 19825,
+        "expectedLength": 19825
+      },
+      {
+        "stage": "unavailable-before-navigation",
+        "at": 1791278219987,
+        "matches": true,
+        "actualLength": 19825,
+        "expectedLength": 19825
+      },
+      {
+        "stage": "unavailable-after-navigation",
+        "at": 1791278220267,
+        "matches": true,
+        "actualLength": 19825,
+        "expectedLength": 19825
+      },
+      {
+        "stage": "unavailable-after-selection",
+        "at": 1791278221394,
+        "matches": true,
+        "actualLength": 19825,
+        "expectedLength": 19825
+      },
+      {
+        "stage": "unavailable-after-open",
+        "at": 1791278222098,
+        "matches": true,
+        "actualLength": 19825,
+        "expectedLength": 19825
+      },
+      {
+        "stage": "unavailable-after-empty-result",
+        "at": 1791278222358,
+        "matches": true,
+        "actualLength": 19825,
+        "expectedLength": 19825
+      },
+      {
+        "stage": "exact-output",
+        "at": 1791278222369,
+        "matches": true,
+        "actualLength": 19825,
+        "expectedLength": 19825
+      },
+      {
+        "stage": "exact-output",
+        "at": 1791278225633,
+        "matches": true,
+        "actualLength": 49,
+        "expectedLength": 49
+      },
+      {
+        "stage": "exact-output",
+        "at": 1791278227243,
+        "matches": true,
+        "actualLength": 149,
+        "expectedLength": 149
+      }
+    ],
+    "unauthorized": {
+      "status": 401,
+      "code": "UNAUTHORIZED",
+      "cacheControl": "no-store",
+      "writes": 0
+    }
+  },
+  {
+    "status": "passed",
+    "stage": "completed",
+    "run": "regression-red-viewer",
+    "scene": "library-viewer",
+    "checks": 17,
+    "layouts": 15,
+    "source": "test-results/sharing-192/regression-red-viewer/library-viewer.json"
+  },
+  {
+    "status": "passed",
+    "run": "regression-red-directory",
+    "scene": "upload-input",
+    "checks": 11,
+    "layouts": 82,
+    "source": "test-results/sharing-192/regression-red-directory/upload-input.json",
+    "directoryChooser": [
+      {
+        "type": "change",
+        "files": 501,
+        "relativePathCount": 501,
+        "relativePathSample": [
+          "大队列/图片-2.png",
+          "大队列/图片-259.png",
+          "大队列/图片-271.png"
+        ],
+        "time": 6050.600000023842
+      }
+    ]
+  },
+  {
+    "status": "passed",
+    "run": "regression-red-upload",
+    "scene": "upload",
+    "checks": 16,
+    "layouts": 130,
+    "source": "test-results/sharing-192/regression-red-upload/upload.json"
+  },
+  {
+    "status": "failed",
+    "error": "ElementResolutionError: page.click timed out after 3000ms: Locator loc=role:button[name=\"新建标签\"] matched 0 elements\n    at #retryElementAction (file:////[eval1]:18884:27)\n    at async file:////[eval1]:18968:29\n    at async file:////[eval1]:16691:28",
+    "run": "regression-red-relations",
+    "scene": "upload-relations",
+    "checks": 7,
+    "layouts": 32,
+    "source": "test-results/sharing-192/regression-red-relations/upload-relations.json",
+    "creationDiagnostics": [
+      {
+        "kind": "albums",
+        "events": [
+          {
+            "type": "before-opening",
+            "time": 73607.10000002384,
+            "expanded": "false",
+            "trigger": {
+              "top": 388,
+              "bottom": 432,
+              "left": 1073,
+              "right": 1383,
+              "width": 310,
+              "height": 44
+            },
+            "dialog": null,
+            "create": null,
+            "exiting": false,
+            "focused": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": "选择相册"
+            },
+            "documentScroll": 0,
+            "mainScroll": 0,
+            "viewport": {
+              "width": 1440,
+              "height": 1080
+            }
+          },
+          {
+            "type": "focusout",
+            "time": 73698.10000002384,
+            "target": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": "选择相册"
+            },
+            "scrollTop": 0,
+            "expanded": "true",
+            "trigger": {
+              "top": 388,
+              "bottom": 432,
+              "left": 1073,
+              "right": 1383,
+              "width": 310,
+              "height": 44
+            },
+            "dialog": {
+              "top": 1,
+              "bottom": 189,
+              "left": 1,
+              "right": 311,
+              "width": 310,
+              "height": 188
+            },
+            "create": {
+              "top": 133,
+              "bottom": 177,
+              "left": 13,
+              "right": 299,
+              "width": 286,
+              "height": 44
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "BODY",
+              "testId": null,
+              "slot": null,
+              "label": null
+            },
+            "documentScroll": 0,
+            "mainScroll": 0,
+            "viewport": {
+              "width": 1440,
+              "height": 1080
+            }
+          },
+          {
+            "type": "focusin",
+            "time": 73698.5,
+            "target": {
+              "tag": "INPUT",
+              "testId": null,
+              "slot": "search-field-input",
+              "label": "搜索相册"
+            },
+            "scrollTop": 0,
+            "expanded": "true",
+            "trigger": {
+              "top": 388,
+              "bottom": 432,
+              "left": 1073,
+              "right": 1383,
+              "width": 310,
+              "height": 44
+            },
+            "dialog": {
+              "top": 1,
+              "bottom": 189,
+              "left": 1,
+              "right": 311,
+              "width": 310,
+              "height": 188
+            },
+            "create": {
+              "top": 133,
+              "bottom": 177,
+              "left": 13,
+              "right": 299,
+              "width": 286,
+              "height": 44
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "INPUT",
+              "testId": null,
+              "slot": "search-field-input",
+              "label": "搜索相册"
+            },
+            "documentScroll": 0,
+            "mainScroll": 0,
+            "viewport": {
+              "width": 1440,
+              "height": 1080
+            }
+          },
+          {
+            "type": "popover-state",
+            "time": 73702,
+            "expanded": "true",
+            "trigger": {
+              "top": 388,
+              "bottom": 432,
+              "left": 1073,
+              "right": 1383,
+              "width": 310,
+              "height": 44
+            },
+            "dialog": {
+              "top": 441,
+              "bottom": 693,
+              "left": 1074,
+              "right": 1384,
+              "width": 310,
+              "height": 252
+            },
+            "create": {
+              "top": 637,
+              "bottom": 681,
+              "left": 1086,
+              "right": 1372,
+              "width": 286,
+              "height": 44
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "INPUT",
+              "testId": null,
+              "slot": "search-field-input",
+              "label": "搜索相册"
+            },
+            "documentScroll": 0,
+            "mainScroll": 0,
+            "viewport": {
+              "width": 1440,
+              "height": 1080
+            }
+          },
+          {
+            "type": "focusout",
+            "time": 74790,
+            "target": {
+              "tag": "INPUT",
+              "testId": null,
+              "slot": "search-field-input",
+              "label": "搜索相册"
+            },
+            "scrollTop": 0,
+            "expanded": "true",
+            "trigger": {
+              "top": 388,
+              "bottom": 432,
+              "left": 1073,
+              "right": 1383,
+              "width": 310,
+              "height": 44
+            },
+            "dialog": {
+              "top": 441,
+              "bottom": 693,
+              "left": 1074,
+              "right": 1384,
+              "width": 310,
+              "height": 252
+            },
+            "create": {
+              "top": 637.6600341796875,
+              "bottom": 680.3399658203125,
+              "left": 1090.2900390625,
+              "right": 1367.7099609375,
+              "width": 277.419921875,
+              "height": 42.679931640625
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "BODY",
+              "testId": null,
+              "slot": null,
+              "label": null
+            },
+            "documentScroll": 0,
+            "mainScroll": 0,
+            "viewport": {
+              "width": 1440,
+              "height": 1080
+            }
+          },
+          {
+            "type": "focusin",
+            "time": 74791.39999997616,
+            "target": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": null
+            },
+            "scrollTop": 0,
+            "expanded": "true",
+            "trigger": {
+              "top": 388,
+              "bottom": 432,
+              "left": 1073,
+              "right": 1383,
+              "width": 310,
+              "height": 44
+            },
+            "dialog": {
+              "top": 441,
+              "bottom": 693,
+              "left": 1074,
+              "right": 1384,
+              "width": 310,
+              "height": 252
+            },
+            "create": {
+              "top": 637.6600341796875,
+              "bottom": 680.3399658203125,
+              "left": 1090.2900390625,
+              "right": 1367.7099609375,
+              "width": 277.419921875,
+              "height": 42.679931640625
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": null
+            },
+            "documentScroll": 0,
+            "mainScroll": 0,
+            "viewport": {
+              "width": 1440,
+              "height": 1080
+            }
+          },
+          {
+            "type": "focusout",
+            "time": 74794.39999997616,
+            "target": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": null
+            },
+            "scrollTop": 0,
+            "expanded": "true",
+            "trigger": {
+              "top": 388,
+              "bottom": 432,
+              "left": 1073,
+              "right": 1383,
+              "width": 310,
+              "height": 44
+            },
+            "dialog": {
+              "top": 441,
+              "bottom": 693,
+              "left": 1074,
+              "right": 1384,
+              "width": 310,
+              "height": 252
+            },
+            "create": {
+              "top": 637.6600341796875,
+              "bottom": 680.3399658203125,
+              "left": 1090.2900390625,
+              "right": 1367.7099609375,
+              "width": 277.419921875,
+              "height": 42.679931640625
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "BODY",
+              "testId": null,
+              "slot": null,
+              "label": null
+            },
+            "documentScroll": 0,
+            "mainScroll": 0,
+            "viewport": {
+              "width": 1440,
+              "height": 1080
+            }
+          },
+          {
+            "type": "focusin",
+            "time": 74794.60000002384,
+            "target": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": "选择相册"
+            },
+            "scrollTop": 0,
+            "expanded": "true",
+            "trigger": {
+              "top": 388,
+              "bottom": 432,
+              "left": 1073,
+              "right": 1383,
+              "width": 310,
+              "height": 44
+            },
+            "dialog": {
+              "top": 441,
+              "bottom": 693,
+              "left": 1074,
+              "right": 1384,
+              "width": 310,
+              "height": 252
+            },
+            "create": {
+              "top": 637.6600341796875,
+              "bottom": 680.3399658203125,
+              "left": 1090.2900390625,
+              "right": 1367.7099609375,
+              "width": 277.419921875,
+              "height": 42.679931640625
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": "选择相册"
+            },
+            "documentScroll": 0,
+            "mainScroll": 0,
+            "viewport": {
+              "width": 1440,
+              "height": 1080
+            }
+          },
+          {
+            "type": "focusout",
+            "time": 74794.80000007153,
+            "target": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": "选择相册"
+            },
+            "scrollTop": 0,
+            "expanded": "true",
+            "trigger": {
+              "top": 388,
+              "bottom": 432,
+              "left": 1073,
+              "right": 1383,
+              "width": 310,
+              "height": 44
+            },
+            "dialog": {
+              "top": 441,
+              "bottom": 693,
+              "left": 1074,
+              "right": 1384,
+              "width": 310,
+              "height": 252
+            },
+            "create": {
+              "top": 637.6600341796875,
+              "bottom": 680.3399658203125,
+              "left": 1090.2900390625,
+              "right": 1367.7099609375,
+              "width": 277.419921875,
+              "height": 42.679931640625
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "BODY",
+              "testId": null,
+              "slot": null,
+              "label": null
+            },
+            "documentScroll": 0,
+            "mainScroll": 0,
+            "viewport": {
+              "width": 1440,
+              "height": 1080
+            }
+          },
+          {
+            "type": "focusin",
+            "time": 74794.89999997616,
+            "target": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": null
+            },
+            "scrollTop": 0,
+            "expanded": "true",
+            "trigger": {
+              "top": 388,
+              "bottom": 432,
+              "left": 1073,
+              "right": 1383,
+              "width": 310,
+              "height": 44
+            },
+            "dialog": {
+              "top": 441,
+              "bottom": 693,
+              "left": 1074,
+              "right": 1384,
+              "width": 310,
+              "height": 252
+            },
+            "create": {
+              "top": 637.6600341796875,
+              "bottom": 680.3399658203125,
+              "left": 1090.2900390625,
+              "right": 1367.7099609375,
+              "width": 277.419921875,
+              "height": 42.679931640625
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": null
+            },
+            "documentScroll": 0,
+            "mainScroll": 0,
+            "viewport": {
+              "width": 1440,
+              "height": 1080
+            }
+          },
+          {
+            "type": "focusout",
+            "time": 74805.10000002384,
+            "target": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": null
+            },
+            "scrollTop": 0,
+            "expanded": "false",
+            "trigger": {
+              "top": 388,
+              "bottom": 432,
+              "left": 1073,
+              "right": 1383,
+              "width": 310,
+              "height": 44
+            },
+            "dialog": {
+              "top": 441,
+              "bottom": 693,
+              "left": 1074,
+              "right": 1384,
+              "width": 310,
+              "height": 252
+            },
+            "create": {
+              "top": 637,
+              "bottom": 681,
+              "left": 1086,
+              "right": 1372,
+              "width": 286,
+              "height": 44
+            },
+            "exiting": true,
+            "focused": {
+              "tag": "BODY",
+              "testId": null,
+              "slot": null,
+              "label": null
+            },
+            "documentScroll": 0,
+            "mainScroll": 0,
+            "viewport": {
+              "width": 1440,
+              "height": 1080
+            }
+          },
+          {
+            "type": "popover-state",
+            "time": 74813.5,
+            "expanded": "false",
+            "trigger": {
+              "top": 388,
+              "bottom": 432,
+              "left": 1073,
+              "right": 1383,
+              "width": 310,
+              "height": 44
+            },
+            "dialog": null,
+            "create": null,
+            "exiting": false,
+            "focused": {
+              "tag": "INPUT",
+              "testId": null,
+              "slot": "input",
+              "label": null
+            },
+            "documentScroll": 0,
+            "mainScroll": 0,
+            "viewport": {
+              "width": 1440,
+              "height": 1080
+            }
+          },
+          {
+            "type": "finished",
+            "time": 74873.70000004768,
+            "expanded": "false",
+            "trigger": {
+              "top": 388,
+              "bottom": 432,
+              "left": 1073,
+              "right": 1383,
+              "width": 310,
+              "height": 44
+            },
+            "dialog": null,
+            "create": null,
+            "exiting": false,
+            "focused": {
+              "tag": "INPUT",
+              "testId": null,
+              "slot": "input",
+              "label": null
+            },
+            "documentScroll": 0,
+            "mainScroll": 0,
+            "viewport": {
+              "width": 1440,
+              "height": 1080
+            }
+          }
+        ]
+      },
+      {
+        "kind": "tags",
+        "events": [
+          {
+            "type": "before-opening",
+            "time": 76679,
+            "expanded": "false",
+            "trigger": {
+              "top": 817,
+              "bottom": 861,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": null,
+            "create": null,
+            "exiting": false,
+            "focused": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": "选择相册"
+            },
+            "documentScroll": 0,
+            "mainScroll": 0,
+            "viewport": {
+              "width": 390,
+              "height": 844
+            }
+          },
+          {
+            "type": "focusin",
+            "time": 76684.20000004768,
+            "target": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": "选择标签"
+            },
+            "scrollTop": 0,
+            "expanded": "false",
+            "trigger": {
+              "top": 570,
+              "bottom": 614,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": null,
+            "create": null,
+            "exiting": false,
+            "focused": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": "选择标签"
+            },
+            "documentScroll": 0,
+            "mainScroll": 247,
+            "viewport": {
+              "width": 390,
+              "height": 844
+            }
+          },
+          {
+            "type": "scroll",
+            "time": 76692.39999997616,
+            "target": {
+              "tag": "MAIN",
+              "testId": null,
+              "slot": null,
+              "label": null
+            },
+            "scrollTop": 247,
+            "expanded": "false",
+            "trigger": {
+              "top": 570,
+              "bottom": 614,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": null,
+            "create": null,
+            "exiting": false,
+            "focused": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": "选择标签"
+            },
+            "documentScroll": 0,
+            "mainScroll": 247,
+            "viewport": {
+              "width": 390,
+              "height": 844
+            }
+          },
+          {
+            "type": "focusout",
+            "time": 76766.80000007153,
+            "target": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": "选择标签"
+            },
+            "scrollTop": 0,
+            "expanded": "true",
+            "trigger": {
+              "top": 570,
+              "bottom": 614,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": {
+              "top": 1,
+              "bottom": 189,
+              "left": 1,
+              "right": 357,
+              "width": 356,
+              "height": 188
+            },
+            "create": {
+              "top": 133,
+              "bottom": 177,
+              "left": 13,
+              "right": 345,
+              "width": 332,
+              "height": 44
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "BODY",
+              "testId": null,
+              "slot": null,
+              "label": null
+            },
+            "documentScroll": 0,
+            "mainScroll": 247,
+            "viewport": {
+              "width": 390,
+              "height": 844
+            }
+          },
+          {
+            "type": "focusin",
+            "time": 76767.30000007153,
+            "target": {
+              "tag": "INPUT",
+              "testId": null,
+              "slot": "search-field-input",
+              "label": "搜索标签"
+            },
+            "scrollTop": 0,
+            "expanded": "true",
+            "trigger": {
+              "top": 570,
+              "bottom": 614,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": {
+              "top": 1,
+              "bottom": 189,
+              "left": 1,
+              "right": 357,
+              "width": 356,
+              "height": 188
+            },
+            "create": {
+              "top": 133,
+              "bottom": 177,
+              "left": 13,
+              "right": 345,
+              "width": 332,
+              "height": 44
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "INPUT",
+              "testId": null,
+              "slot": "search-field-input",
+              "label": "搜索标签"
+            },
+            "documentScroll": 0,
+            "mainScroll": 247,
+            "viewport": {
+              "width": 390,
+              "height": 844
+            }
+          },
+          {
+            "type": "popover-state",
+            "time": 76771.70000004768,
+            "expanded": "true",
+            "trigger": {
+              "top": 570,
+              "bottom": 614,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": {
+              "top": 325,
+              "bottom": 561,
+              "left": 21,
+              "right": 377,
+              "width": 356,
+              "height": 236
+            },
+            "create": {
+              "top": 505,
+              "bottom": 549,
+              "left": 33,
+              "right": 365,
+              "width": 332,
+              "height": 44
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "INPUT",
+              "testId": null,
+              "slot": "search-field-input",
+              "label": "搜索标签"
+            },
+            "documentScroll": 0,
+            "mainScroll": 247,
+            "viewport": {
+              "width": 390,
+              "height": 844
+            }
+          },
+          {
+            "type": "focusout",
+            "time": 77742.89999997616,
+            "target": {
+              "tag": "INPUT",
+              "testId": null,
+              "slot": "search-field-input",
+              "label": "搜索标签"
+            },
+            "scrollTop": 0,
+            "expanded": "true",
+            "trigger": {
+              "top": 570,
+              "bottom": 614,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": {
+              "top": 325,
+              "bottom": 561,
+              "left": 21,
+              "right": 377,
+              "width": 356,
+              "height": 236
+            },
+            "create": {
+              "top": 505.6600036621094,
+              "bottom": 548.3399658203125,
+              "left": 37.97999572753906,
+              "right": 360.02003479003906,
+              "width": 322.0400390625,
+              "height": 42.679962158203125
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "BODY",
+              "testId": null,
+              "slot": null,
+              "label": null
+            },
+            "documentScroll": 0,
+            "mainScroll": 247,
+            "viewport": {
+              "width": 390,
+              "height": 844
+            }
+          },
+          {
+            "type": "focusin",
+            "time": 77743.89999997616,
+            "target": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": null
+            },
+            "scrollTop": 0,
+            "expanded": "true",
+            "trigger": {
+              "top": 570,
+              "bottom": 614,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": {
+              "top": 325,
+              "bottom": 561,
+              "left": 21,
+              "right": 377,
+              "width": 356,
+              "height": 236
+            },
+            "create": {
+              "top": 505.6600036621094,
+              "bottom": 548.3399658203125,
+              "left": 37.97999572753906,
+              "right": 360.02003479003906,
+              "width": 322.0400390625,
+              "height": 42.679962158203125
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": null
+            },
+            "documentScroll": 0,
+            "mainScroll": 247,
+            "viewport": {
+              "width": 390,
+              "height": 844
+            }
+          },
+          {
+            "type": "focusout",
+            "time": 77745.89999997616,
+            "target": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": null
+            },
+            "scrollTop": 0,
+            "expanded": "true",
+            "trigger": {
+              "top": 570,
+              "bottom": 614,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": {
+              "top": 325,
+              "bottom": 561,
+              "left": 21,
+              "right": 377,
+              "width": 356,
+              "height": 236
+            },
+            "create": {
+              "top": 505.6600036621094,
+              "bottom": 548.3399658203125,
+              "left": 37.97999572753906,
+              "right": 360.02003479003906,
+              "width": 322.0400390625,
+              "height": 42.679962158203125
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "BODY",
+              "testId": null,
+              "slot": null,
+              "label": null
+            },
+            "documentScroll": 0,
+            "mainScroll": 247,
+            "viewport": {
+              "width": 390,
+              "height": 844
+            }
+          },
+          {
+            "type": "focusin",
+            "time": 77746.20000004768,
+            "target": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": "选择标签"
+            },
+            "scrollTop": 0,
+            "expanded": "true",
+            "trigger": {
+              "top": 570,
+              "bottom": 614,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": {
+              "top": 325,
+              "bottom": 561,
+              "left": 21,
+              "right": 377,
+              "width": 356,
+              "height": 236
+            },
+            "create": {
+              "top": 505.6600036621094,
+              "bottom": 548.3399658203125,
+              "left": 37.97999572753906,
+              "right": 360.02003479003906,
+              "width": 322.0400390625,
+              "height": 42.679962158203125
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": "选择标签"
+            },
+            "documentScroll": 0,
+            "mainScroll": 247,
+            "viewport": {
+              "width": 390,
+              "height": 844
+            }
+          },
+          {
+            "type": "focusout",
+            "time": 77746.39999997616,
+            "target": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": "选择标签"
+            },
+            "scrollTop": 0,
+            "expanded": "true",
+            "trigger": {
+              "top": 570,
+              "bottom": 614,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": {
+              "top": 325,
+              "bottom": 561,
+              "left": 21,
+              "right": 377,
+              "width": 356,
+              "height": 236
+            },
+            "create": {
+              "top": 505.6600036621094,
+              "bottom": 548.3399658203125,
+              "left": 37.97999572753906,
+              "right": 360.02003479003906,
+              "width": 322.0400390625,
+              "height": 42.679962158203125
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "BODY",
+              "testId": null,
+              "slot": null,
+              "label": null
+            },
+            "documentScroll": 0,
+            "mainScroll": 247,
+            "viewport": {
+              "width": 390,
+              "height": 844
+            }
+          },
+          {
+            "type": "focusin",
+            "time": 77746.5,
+            "target": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": null
+            },
+            "scrollTop": 0,
+            "expanded": "true",
+            "trigger": {
+              "top": 570,
+              "bottom": 614,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": {
+              "top": 325,
+              "bottom": 561,
+              "left": 21,
+              "right": 377,
+              "width": 356,
+              "height": 236
+            },
+            "create": {
+              "top": 505.6600036621094,
+              "bottom": 548.3399658203125,
+              "left": 37.97999572753906,
+              "right": 360.02003479003906,
+              "width": 322.0400390625,
+              "height": 42.679962158203125
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": null
+            },
+            "documentScroll": 0,
+            "mainScroll": 247,
+            "viewport": {
+              "width": 390,
+              "height": 844
+            }
+          },
+          {
+            "type": "focusout",
+            "time": 77755,
+            "target": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": null
+            },
+            "scrollTop": 0,
+            "expanded": "false",
+            "trigger": {
+              "top": 570,
+              "bottom": 614,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": {
+              "top": 325,
+              "bottom": 561,
+              "left": 21,
+              "right": 377,
+              "width": 356,
+              "height": 236
+            },
+            "create": {
+              "top": 505,
+              "bottom": 549,
+              "left": 33,
+              "right": 365,
+              "width": 332,
+              "height": 44
+            },
+            "exiting": true,
+            "focused": {
+              "tag": "BODY",
+              "testId": null,
+              "slot": null,
+              "label": null
+            },
+            "documentScroll": 0,
+            "mainScroll": 247,
+            "viewport": {
+              "width": 390,
+              "height": 844
+            }
+          },
+          {
+            "type": "popover-state",
+            "time": 77762.10000002384,
+            "expanded": "false",
+            "trigger": {
+              "top": 570,
+              "bottom": 614,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": null,
+            "create": null,
+            "exiting": false,
+            "focused": {
+              "tag": "INPUT",
+              "testId": null,
+              "slot": "input",
+              "label": null
+            },
+            "documentScroll": 0,
+            "mainScroll": 247,
+            "viewport": {
+              "width": 390,
+              "height": 844
+            }
+          },
+          {
+            "type": "finished",
+            "time": 77823.10000002384,
+            "expanded": "false",
+            "trigger": {
+              "top": 570,
+              "bottom": 614,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": null,
+            "create": null,
+            "exiting": false,
+            "focused": {
+              "tag": "INPUT",
+              "testId": null,
+              "slot": "input",
+              "label": null
+            },
+            "documentScroll": 0,
+            "mainScroll": 247,
+            "viewport": {
+              "width": 390,
+              "height": 844
+            }
+          }
+        ]
+      },
+      {
+        "kind": "albums",
+        "events": [
+          {
+            "type": "before-opening",
+            "time": 81683.10000002384,
+            "expanded": "false",
+            "trigger": {
+              "top": 677,
+              "bottom": 721,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": null,
+            "create": null,
+            "exiting": false,
+            "focused": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": "选择标签"
+            },
+            "documentScroll": 0,
+            "mainScroll": 0,
+            "viewport": {
+              "width": 390,
+              "height": 844
+            }
+          },
+          {
+            "type": "focusin",
+            "time": 81688,
+            "target": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": "选择相册"
+            },
+            "scrollTop": 0,
+            "expanded": "false",
+            "trigger": {
+              "top": 677,
+              "bottom": 721,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": null,
+            "create": null,
+            "exiting": false,
+            "focused": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": "选择相册"
+            },
+            "documentScroll": 0,
+            "mainScroll": 0,
+            "viewport": {
+              "width": 390,
+              "height": 844
+            }
+          },
+          {
+            "type": "focusout",
+            "time": 81764.20000004768,
+            "target": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": "选择相册"
+            },
+            "scrollTop": 0,
+            "expanded": "true",
+            "trigger": {
+              "top": 677,
+              "bottom": 721,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": {
+              "top": 1,
+              "bottom": 189,
+              "left": 1,
+              "right": 357,
+              "width": 356,
+              "height": 188
+            },
+            "create": {
+              "top": 133,
+              "bottom": 177,
+              "left": 13,
+              "right": 345,
+              "width": 332,
+              "height": 44
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "BODY",
+              "testId": null,
+              "slot": null,
+              "label": null
+            },
+            "documentScroll": 0,
+            "mainScroll": 0,
+            "viewport": {
+              "width": 390,
+              "height": 844
+            }
+          },
+          {
+            "type": "focusin",
+            "time": 81764.5,
+            "target": {
+              "tag": "INPUT",
+              "testId": null,
+              "slot": "search-field-input",
+              "label": "搜索相册"
+            },
+            "scrollTop": 0,
+            "expanded": "true",
+            "trigger": {
+              "top": 677,
+              "bottom": 721,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": {
+              "top": 1,
+              "bottom": 189,
+              "left": 1,
+              "right": 357,
+              "width": 356,
+              "height": 188
+            },
+            "create": {
+              "top": 133,
+              "bottom": 177,
+              "left": 13,
+              "right": 345,
+              "width": 332,
+              "height": 44
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "INPUT",
+              "testId": null,
+              "slot": "search-field-input",
+              "label": "搜索相册"
+            },
+            "documentScroll": 0,
+            "mainScroll": 0,
+            "viewport": {
+              "width": 390,
+              "height": 844
+            }
+          },
+          {
+            "type": "popover-state",
+            "time": 81768.10000002384,
+            "expanded": "true",
+            "trigger": {
+              "top": 677,
+              "bottom": 721,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": {
+              "top": 416,
+              "bottom": 668,
+              "left": 21,
+              "right": 377,
+              "width": 356,
+              "height": 252
+            },
+            "create": {
+              "top": 612,
+              "bottom": 656,
+              "left": 33,
+              "right": 365,
+              "width": 332,
+              "height": 44
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "INPUT",
+              "testId": null,
+              "slot": "search-field-input",
+              "label": "搜索相册"
+            },
+            "documentScroll": 0,
+            "mainScroll": 0,
+            "viewport": {
+              "width": 390,
+              "height": 844
+            }
+          },
+          {
+            "type": "focusout",
+            "time": 82745.39999997616,
+            "target": {
+              "tag": "INPUT",
+              "testId": null,
+              "slot": "search-field-input",
+              "label": "搜索相册"
+            },
+            "scrollTop": 0,
+            "expanded": "true",
+            "trigger": {
+              "top": 677,
+              "bottom": 721,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": {
+              "top": 416,
+              "bottom": 668,
+              "left": 21,
+              "right": 377,
+              "width": 356,
+              "height": 252
+            },
+            "create": {
+              "top": 612.6600341796875,
+              "bottom": 655.3399658203125,
+              "left": 37.97999572753906,
+              "right": 360.02003479003906,
+              "width": 322.0400390625,
+              "height": 42.679931640625
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "BODY",
+              "testId": null,
+              "slot": null,
+              "label": null
+            },
+            "documentScroll": 0,
+            "mainScroll": 0,
+            "viewport": {
+              "width": 390,
+              "height": 844
+            }
+          },
+          {
+            "type": "focusin",
+            "time": 82746.39999997616,
+            "target": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": null
+            },
+            "scrollTop": 0,
+            "expanded": "true",
+            "trigger": {
+              "top": 677,
+              "bottom": 721,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": {
+              "top": 416,
+              "bottom": 668,
+              "left": 21,
+              "right": 377,
+              "width": 356,
+              "height": 252
+            },
+            "create": {
+              "top": 612.6600341796875,
+              "bottom": 655.3399658203125,
+              "left": 37.97999572753906,
+              "right": 360.02003479003906,
+              "width": 322.0400390625,
+              "height": 42.679931640625
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": null
+            },
+            "documentScroll": 0,
+            "mainScroll": 0,
+            "viewport": {
+              "width": 390,
+              "height": 844
+            }
+          },
+          {
+            "type": "focusout",
+            "time": 82748.20000004768,
+            "target": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": null
+            },
+            "scrollTop": 0,
+            "expanded": "true",
+            "trigger": {
+              "top": 677,
+              "bottom": 721,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": {
+              "top": 416,
+              "bottom": 668,
+              "left": 21,
+              "right": 377,
+              "width": 356,
+              "height": 252
+            },
+            "create": {
+              "top": 612.6600341796875,
+              "bottom": 655.3399658203125,
+              "left": 37.97999572753906,
+              "right": 360.02003479003906,
+              "width": 322.0400390625,
+              "height": 42.679931640625
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "BODY",
+              "testId": null,
+              "slot": null,
+              "label": null
+            },
+            "documentScroll": 0,
+            "mainScroll": 0,
+            "viewport": {
+              "width": 390,
+              "height": 844
+            }
+          },
+          {
+            "type": "focusin",
+            "time": 82748.39999997616,
+            "target": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": "选择相册"
+            },
+            "scrollTop": 0,
+            "expanded": "true",
+            "trigger": {
+              "top": 677,
+              "bottom": 721,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": {
+              "top": 416,
+              "bottom": 668,
+              "left": 21,
+              "right": 377,
+              "width": 356,
+              "height": 252
+            },
+            "create": {
+              "top": 612.6600341796875,
+              "bottom": 655.3399658203125,
+              "left": 37.97999572753906,
+              "right": 360.02003479003906,
+              "width": 322.0400390625,
+              "height": 42.679931640625
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": "选择相册"
+            },
+            "documentScroll": 0,
+            "mainScroll": 0,
+            "viewport": {
+              "width": 390,
+              "height": 844
+            }
+          },
+          {
+            "type": "focusout",
+            "time": 82748.60000002384,
+            "target": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": "选择相册"
+            },
+            "scrollTop": 0,
+            "expanded": "true",
+            "trigger": {
+              "top": 677,
+              "bottom": 721,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": {
+              "top": 416,
+              "bottom": 668,
+              "left": 21,
+              "right": 377,
+              "width": 356,
+              "height": 252
+            },
+            "create": {
+              "top": 612.6600341796875,
+              "bottom": 655.3399658203125,
+              "left": 37.97999572753906,
+              "right": 360.02003479003906,
+              "width": 322.0400390625,
+              "height": 42.679931640625
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "BODY",
+              "testId": null,
+              "slot": null,
+              "label": null
+            },
+            "documentScroll": 0,
+            "mainScroll": 0,
+            "viewport": {
+              "width": 390,
+              "height": 844
+            }
+          },
+          {
+            "type": "focusin",
+            "time": 82748.70000004768,
+            "target": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": null
+            },
+            "scrollTop": 0,
+            "expanded": "true",
+            "trigger": {
+              "top": 677,
+              "bottom": 721,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": {
+              "top": 416,
+              "bottom": 668,
+              "left": 21,
+              "right": 377,
+              "width": 356,
+              "height": 252
+            },
+            "create": {
+              "top": 612.6600341796875,
+              "bottom": 655.3399658203125,
+              "left": 37.97999572753906,
+              "right": 360.02003479003906,
+              "width": 322.0400390625,
+              "height": 42.679931640625
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": null
+            },
+            "documentScroll": 0,
+            "mainScroll": 0,
+            "viewport": {
+              "width": 390,
+              "height": 844
+            }
+          },
+          {
+            "type": "focusout",
+            "time": 82755.80000007153,
+            "target": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": null
+            },
+            "scrollTop": 0,
+            "expanded": "false",
+            "trigger": {
+              "top": 677,
+              "bottom": 721,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": {
+              "top": 416,
+              "bottom": 668,
+              "left": 21,
+              "right": 377,
+              "width": 356,
+              "height": 252
+            },
+            "create": {
+              "top": 612,
+              "bottom": 656,
+              "left": 33,
+              "right": 365,
+              "width": 332,
+              "height": 44
+            },
+            "exiting": true,
+            "focused": {
+              "tag": "BODY",
+              "testId": null,
+              "slot": null,
+              "label": null
+            },
+            "documentScroll": 0,
+            "mainScroll": 0,
+            "viewport": {
+              "width": 390,
+              "height": 844
+            }
+          },
+          {
+            "type": "popover-state",
+            "time": 82763.10000002384,
+            "expanded": "false",
+            "trigger": {
+              "top": 677,
+              "bottom": 721,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": null,
+            "create": null,
+            "exiting": false,
+            "focused": {
+              "tag": "INPUT",
+              "testId": null,
+              "slot": "input",
+              "label": null
+            },
+            "documentScroll": 0,
+            "mainScroll": 0,
+            "viewport": {
+              "width": 390,
+              "height": 844
+            }
+          },
+          {
+            "type": "finished",
+            "time": 82828.70000004768,
+            "expanded": "false",
+            "trigger": {
+              "top": 677,
+              "bottom": 721,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": null,
+            "create": null,
+            "exiting": false,
+            "focused": {
+              "tag": "INPUT",
+              "testId": null,
+              "slot": "input",
+              "label": null
+            },
+            "documentScroll": 0,
+            "mainScroll": 0,
+            "viewport": {
+              "width": 390,
+              "height": 844
+            }
+          }
+        ]
+      },
+      {
+        "kind": "albums",
+        "events": [
+          {
+            "type": "before-opening",
+            "time": 88119.30000007153,
+            "expanded": "false",
+            "trigger": {
+              "top": 677,
+              "bottom": 721,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": null,
+            "create": null,
+            "exiting": false,
+            "focused": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": "选择相册"
+            },
+            "documentScroll": 0,
+            "mainScroll": 0,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          },
+          {
+            "type": "scroll",
+            "time": 89094,
+            "target": {
+              "tag": "MAIN",
+              "testId": null,
+              "slot": null,
+              "label": null
+            },
+            "scrollTop": 28,
+            "expanded": "false",
+            "trigger": {
+              "top": 649,
+              "bottom": 693,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": null,
+            "create": null,
+            "exiting": false,
+            "focused": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": "选择相册"
+            },
+            "documentScroll": 0,
+            "mainScroll": 28,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          },
+          {
+            "type": "scroll",
+            "time": 89142.70000004768,
+            "target": {
+              "tag": "MAIN",
+              "testId": null,
+              "slot": null,
+              "label": null
+            },
+            "scrollTop": 100,
+            "expanded": "false",
+            "trigger": {
+              "top": 577,
+              "bottom": 621,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": null,
+            "create": null,
+            "exiting": false,
+            "focused": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": "选择相册"
+            },
+            "documentScroll": 0,
+            "mainScroll": 100,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          },
+          {
+            "type": "scroll",
+            "time": 89199.10000002384,
+            "target": {
+              "tag": "MAIN",
+              "testId": null,
+              "slot": null,
+              "label": null
+            },
+            "scrollTop": 199,
+            "expanded": "false",
+            "trigger": {
+              "top": 478,
+              "bottom": 522,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": null,
+            "create": null,
+            "exiting": false,
+            "focused": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": "选择相册"
+            },
+            "documentScroll": 0,
+            "mainScroll": 199,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          },
+          {
+            "type": "scroll",
+            "time": 89282.60000002384,
+            "target": {
+              "tag": "MAIN",
+              "testId": null,
+              "slot": null,
+              "label": null
+            },
+            "scrollTop": 306.5,
+            "expanded": "false",
+            "trigger": {
+              "top": 370.5,
+              "bottom": 414.5,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": null,
+            "create": null,
+            "exiting": false,
+            "focused": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": "选择相册"
+            },
+            "documentScroll": 0,
+            "mainScroll": 306.5,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          },
+          {
+            "type": "scroll",
+            "time": 89335.5,
+            "target": {
+              "tag": "MAIN",
+              "testId": null,
+              "slot": null,
+              "label": null
+            },
+            "scrollTop": 405.5,
+            "expanded": "false",
+            "trigger": {
+              "top": 271.5,
+              "bottom": 315.5,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": null,
+            "create": null,
+            "exiting": false,
+            "focused": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": "选择相册"
+            },
+            "documentScroll": 0,
+            "mainScroll": 405.5,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          },
+          {
+            "type": "wheel",
+            "time": 89368.30000007153,
+            "target": {
+              "tag": "DIV",
+              "testId": "upload-albums",
+              "slot": null,
+              "label": null
+            },
+            "scrollTop": 0,
+            "deltaY": 144.42857360839844,
+            "expanded": "false",
+            "trigger": {
+              "top": 199.5,
+              "bottom": 243.5,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": null,
+            "create": null,
+            "exiting": false,
+            "focused": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": "选择相册"
+            },
+            "documentScroll": 0,
+            "mainScroll": 477.5,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          },
+          {
+            "type": "scroll",
+            "time": 89369.89999997616,
+            "target": {
+              "tag": "MAIN",
+              "testId": null,
+              "slot": null,
+              "label": null
+            },
+            "scrollTop": 477.5,
+            "expanded": "false",
+            "trigger": {
+              "top": 199.5,
+              "bottom": 243.5,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": null,
+            "create": null,
+            "exiting": false,
+            "focused": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": "选择相册"
+            },
+            "documentScroll": 0,
+            "mainScroll": 477.5,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          },
+          {
+            "type": "wheel",
+            "time": 89390.80000007153,
+            "target": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": "选择相册"
+            },
+            "scrollTop": 0,
+            "deltaY": 56.00291442871094,
+            "expanded": "false",
+            "trigger": {
+              "top": 171.5,
+              "bottom": 215.5,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": null,
+            "create": null,
+            "exiting": false,
+            "focused": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": "选择相册"
+            },
+            "documentScroll": 0,
+            "mainScroll": 505.5,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          },
+          {
+            "type": "scroll",
+            "time": 89391,
+            "target": {
+              "tag": "MAIN",
+              "testId": null,
+              "slot": null,
+              "label": null
+            },
+            "scrollTop": 505.5,
+            "expanded": "false",
+            "trigger": {
+              "top": 171.5,
+              "bottom": 215.5,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": null,
+            "create": null,
+            "exiting": false,
+            "focused": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": "选择相册"
+            },
+            "documentScroll": 0,
+            "mainScroll": 505.5,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          },
+          {
+            "type": "focusout",
+            "time": 90569,
+            "target": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": "选择相册"
+            },
+            "scrollTop": 0,
+            "expanded": "true",
+            "trigger": {
+              "top": 171.5,
+              "bottom": 215.5,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": {
+              "top": 1,
+              "bottom": 189,
+              "left": 1,
+              "right": 357,
+              "width": 356,
+              "height": 188
+            },
+            "create": {
+              "top": 133,
+              "bottom": 177,
+              "left": 13,
+              "right": 345,
+              "width": 332,
+              "height": 44
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "BODY",
+              "testId": null,
+              "slot": null,
+              "label": null
+            },
+            "documentScroll": 0,
+            "mainScroll": 505.5,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          },
+          {
+            "type": "focusin",
+            "time": 90569.70000004768,
+            "target": {
+              "tag": "INPUT",
+              "testId": null,
+              "slot": "search-field-input",
+              "label": "搜索相册"
+            },
+            "scrollTop": 0,
+            "expanded": "true",
+            "trigger": {
+              "top": 171.5,
+              "bottom": 215.5,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": {
+              "top": 1,
+              "bottom": 189,
+              "left": 1,
+              "right": 357,
+              "width": 356,
+              "height": 188
+            },
+            "create": {
+              "top": 133,
+              "bottom": 177,
+              "left": 13,
+              "right": 345,
+              "width": 332,
+              "height": 44
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "INPUT",
+              "testId": null,
+              "slot": "search-field-input",
+              "label": "搜索相册"
+            },
+            "documentScroll": 0,
+            "mainScroll": 505.5,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          },
+          {
+            "type": "popover-state",
+            "time": 90575.60000002384,
+            "expanded": "true",
+            "trigger": {
+              "top": 171.5,
+              "bottom": 215.5,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": {
+              "top": 224,
+              "bottom": 476,
+              "left": 21,
+              "right": 377,
+              "width": 356,
+              "height": 252
+            },
+            "create": {
+              "top": 420,
+              "bottom": 464,
+              "left": 33,
+              "right": 365,
+              "width": 332,
+              "height": 44
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "INPUT",
+              "testId": null,
+              "slot": "search-field-input",
+              "label": "搜索相册"
+            },
+            "documentScroll": 0,
+            "mainScroll": 505.5,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          },
+          {
+            "type": "wheel",
+            "time": 91499.20000004768,
+            "target": {
+              "tag": "SPAN",
+              "testId": null,
+              "slot": null,
+              "label": null
+            },
+            "scrollTop": 0,
+            "deltaY": 136.5,
+            "expanded": "true",
+            "trigger": {
+              "top": 171.5,
+              "bottom": 215.5,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": {
+              "top": 155.5,
+              "bottom": 407.5,
+              "left": 21,
+              "right": 377,
+              "width": 356,
+              "height": 252
+            },
+            "create": {
+              "top": 351.5,
+              "bottom": 395.5,
+              "left": 33,
+              "right": 365,
+              "width": 332,
+              "height": 44
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "INPUT",
+              "testId": null,
+              "slot": "search-field-input",
+              "label": "搜索相册"
+            },
+            "documentScroll": 0,
+            "mainScroll": 505.5,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          },
+          {
+            "type": "scroll",
+            "time": 91499.89999997616,
+            "target": {
+              "tag": "DIV",
+              "testId": null,
+              "slot": null,
+              "label": null
+            },
+            "scrollTop": 68.5,
+            "expanded": "true",
+            "trigger": {
+              "top": 171.5,
+              "bottom": 215.5,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": {
+              "top": 155.5,
+              "bottom": 407.5,
+              "left": 21,
+              "right": 377,
+              "width": 356,
+              "height": 252
+            },
+            "create": {
+              "top": 351.5,
+              "bottom": 395.5,
+              "left": 33,
+              "right": 365,
+              "width": 332,
+              "height": 44
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "INPUT",
+              "testId": null,
+              "slot": "search-field-input",
+              "label": "搜索相册"
+            },
+            "documentScroll": 0,
+            "mainScroll": 505.5,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          },
+          {
+            "type": "wheel",
+            "time": 91509,
+            "target": {
+              "tag": "SPAN",
+              "testId": null,
+              "slot": null,
+              "label": null
+            },
+            "scrollTop": 0,
+            "deltaY": 136.5,
+            "expanded": "true",
+            "trigger": {
+              "top": 171.5,
+              "bottom": 215.5,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": {
+              "top": 135,
+              "bottom": 387,
+              "left": 21,
+              "right": 377,
+              "width": 356,
+              "height": 252
+            },
+            "create": {
+              "top": 331,
+              "bottom": 375,
+              "left": 33,
+              "right": 365,
+              "width": 332,
+              "height": 44
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "INPUT",
+              "testId": null,
+              "slot": "search-field-input",
+              "label": "搜索相册"
+            },
+            "documentScroll": 0,
+            "mainScroll": 505.5,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          },
+          {
+            "type": "scroll",
+            "time": 91509.60000002384,
+            "target": {
+              "tag": "DIV",
+              "testId": null,
+              "slot": null,
+              "label": null
+            },
+            "scrollTop": 89,
+            "expanded": "true",
+            "trigger": {
+              "top": 171.5,
+              "bottom": 215.5,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": {
+              "top": 135,
+              "bottom": 387,
+              "left": 21,
+              "right": 377,
+              "width": 356,
+              "height": 252
+            },
+            "create": {
+              "top": 331,
+              "bottom": 375,
+              "left": 33,
+              "right": 365,
+              "width": 332,
+              "height": 44
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "INPUT",
+              "testId": null,
+              "slot": "search-field-input",
+              "label": "搜索相册"
+            },
+            "documentScroll": 0,
+            "mainScroll": 505.5,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          },
+          {
+            "type": "focusout",
+            "time": 92555.70000004768,
+            "target": {
+              "tag": "INPUT",
+              "testId": null,
+              "slot": "search-field-input",
+              "label": "搜索相册"
+            },
+            "scrollTop": 0,
+            "expanded": "true",
+            "trigger": {
+              "top": 171.5,
+              "bottom": 215.5,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": {
+              "top": 135,
+              "bottom": 387,
+              "left": 21,
+              "right": 377,
+              "width": 356,
+              "height": 252
+            },
+            "create": {
+              "top": 331.6600036621094,
+              "bottom": 374.3399963378906,
+              "left": 37.97999572753906,
+              "right": 360.02003479003906,
+              "width": 322.0400390625,
+              "height": 42.67999267578125
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "BODY",
+              "testId": null,
+              "slot": null,
+              "label": null
+            },
+            "documentScroll": 0,
+            "mainScroll": 505.5,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          },
+          {
+            "type": "focusin",
+            "time": 92556.39999997616,
+            "target": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": null
+            },
+            "scrollTop": 0,
+            "expanded": "true",
+            "trigger": {
+              "top": 171.5,
+              "bottom": 215.5,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": {
+              "top": 135,
+              "bottom": 387,
+              "left": 21,
+              "right": 377,
+              "width": 356,
+              "height": 252
+            },
+            "create": {
+              "top": 331.6600036621094,
+              "bottom": 374.3399963378906,
+              "left": 37.97999572753906,
+              "right": 360.02003479003906,
+              "width": 322.0400390625,
+              "height": 42.67999267578125
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": null
+            },
+            "documentScroll": 0,
+            "mainScroll": 505.5,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          },
+          {
+            "type": "focusout",
+            "time": 92557.5,
+            "target": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": null
+            },
+            "scrollTop": 0,
+            "expanded": "true",
+            "trigger": {
+              "top": 171.5,
+              "bottom": 215.5,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": {
+              "top": 135,
+              "bottom": 387,
+              "left": 21,
+              "right": 377,
+              "width": 356,
+              "height": 252
+            },
+            "create": {
+              "top": 331.6600036621094,
+              "bottom": 374.3399963378906,
+              "left": 37.97999572753906,
+              "right": 360.02003479003906,
+              "width": 322.0400390625,
+              "height": 42.67999267578125
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "BODY",
+              "testId": null,
+              "slot": null,
+              "label": null
+            },
+            "documentScroll": 0,
+            "mainScroll": 505.5,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          },
+          {
+            "type": "focusin",
+            "time": 92557.70000004768,
+            "target": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": "选择相册"
+            },
+            "scrollTop": 0,
+            "expanded": "true",
+            "trigger": {
+              "top": 171.5,
+              "bottom": 215.5,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": {
+              "top": 135,
+              "bottom": 387,
+              "left": 21,
+              "right": 377,
+              "width": 356,
+              "height": 252
+            },
+            "create": {
+              "top": 331.6600036621094,
+              "bottom": 374.3399963378906,
+              "left": 37.97999572753906,
+              "right": 360.02003479003906,
+              "width": 322.0400390625,
+              "height": 42.67999267578125
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": "选择相册"
+            },
+            "documentScroll": 0,
+            "mainScroll": 505.5,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          },
+          {
+            "type": "focusout",
+            "time": 92557.80000007153,
+            "target": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": "选择相册"
+            },
+            "scrollTop": 0,
+            "expanded": "true",
+            "trigger": {
+              "top": 171.5,
+              "bottom": 215.5,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": {
+              "top": 135,
+              "bottom": 387,
+              "left": 21,
+              "right": 377,
+              "width": 356,
+              "height": 252
+            },
+            "create": {
+              "top": 331.6600036621094,
+              "bottom": 374.3399963378906,
+              "left": 37.97999572753906,
+              "right": 360.02003479003906,
+              "width": 322.0400390625,
+              "height": 42.67999267578125
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "BODY",
+              "testId": null,
+              "slot": null,
+              "label": null
+            },
+            "documentScroll": 0,
+            "mainScroll": 505.5,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          },
+          {
+            "type": "focusin",
+            "time": 92557.80000007153,
+            "target": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": null
+            },
+            "scrollTop": 0,
+            "expanded": "true",
+            "trigger": {
+              "top": 171.5,
+              "bottom": 215.5,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": {
+              "top": 135,
+              "bottom": 387,
+              "left": 21,
+              "right": 377,
+              "width": 356,
+              "height": 252
+            },
+            "create": {
+              "top": 331.6600036621094,
+              "bottom": 374.3399963378906,
+              "left": 37.97999572753906,
+              "right": 360.02003479003906,
+              "width": 322.0400390625,
+              "height": 42.67999267578125
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": null
+            },
+            "documentScroll": 0,
+            "mainScroll": 505.5,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          },
+          {
+            "type": "focusout",
+            "time": 92564.80000007153,
+            "target": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": null
+            },
+            "scrollTop": 0,
+            "expanded": "false",
+            "trigger": {
+              "top": 171.5,
+              "bottom": 215.5,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": {
+              "top": 135,
+              "bottom": 387,
+              "left": 21,
+              "right": 377,
+              "width": 356,
+              "height": 252
+            },
+            "create": {
+              "top": 331,
+              "bottom": 375,
+              "left": 33,
+              "right": 365,
+              "width": 332,
+              "height": 44
+            },
+            "exiting": true,
+            "focused": {
+              "tag": "BODY",
+              "testId": null,
+              "slot": null,
+              "label": null
+            },
+            "documentScroll": 0,
+            "mainScroll": 505.5,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          },
+          {
+            "type": "popover-state",
+            "time": 92569.5,
+            "expanded": "false",
+            "trigger": {
+              "top": 171.5,
+              "bottom": 215.5,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": null,
+            "create": null,
+            "exiting": false,
+            "focused": {
+              "tag": "SECTION",
+              "testId": null,
+              "slot": "modal-dialog",
+              "label": null
+            },
+            "documentScroll": 0,
+            "mainScroll": 505.5,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          },
+          {
+            "type": "finished",
+            "time": 92631.30000007153,
+            "expanded": "false",
+            "trigger": {
+              "top": 171.5,
+              "bottom": 215.5,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": null,
+            "create": null,
+            "exiting": false,
+            "focused": {
+              "tag": "SECTION",
+              "testId": null,
+              "slot": "modal-dialog",
+              "label": null
+            },
+            "documentScroll": 0,
+            "mainScroll": 505.5,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          }
+        ]
+      },
+      {
+        "kind": "albums",
+        "events": [
+          {
+            "type": "before-opening",
+            "time": 95849.30000007153,
+            "expanded": "false",
+            "trigger": {
+              "top": 171.5,
+              "bottom": 215.5,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": null,
+            "create": null,
+            "exiting": false,
+            "focused": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": "选择相册"
+            },
+            "documentScroll": 0,
+            "mainScroll": 505.5,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          },
+          {
+            "type": "popover-state",
+            "time": 95931.89999997616,
+            "expanded": "false",
+            "trigger": {
+              "top": 171.5,
+              "bottom": 215.5,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": null,
+            "create": null,
+            "exiting": false,
+            "focused": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": "选择相册"
+            },
+            "documentScroll": 0,
+            "mainScroll": 505.5,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          },
+          {
+            "type": "focusout",
+            "time": 95943.60000002384,
+            "target": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": "选择相册"
+            },
+            "scrollTop": 0,
+            "expanded": "true",
+            "trigger": {
+              "top": 171.5,
+              "bottom": 215.5,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": {
+              "top": 1,
+              "bottom": 189,
+              "left": 1,
+              "right": 357,
+              "width": 356,
+              "height": 188
+            },
+            "create": {
+              "top": 133,
+              "bottom": 177,
+              "left": 13,
+              "right": 345,
+              "width": 332,
+              "height": 44
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "BODY",
+              "testId": null,
+              "slot": null,
+              "label": null
+            },
+            "documentScroll": 0,
+            "mainScroll": 505.5,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          },
+          {
+            "type": "focusin",
+            "time": 95944.89999997616,
+            "target": {
+              "tag": "INPUT",
+              "testId": null,
+              "slot": "search-field-input",
+              "label": "搜索相册"
+            },
+            "scrollTop": 0,
+            "expanded": "true",
+            "trigger": {
+              "top": 171.5,
+              "bottom": 215.5,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": {
+              "top": 1,
+              "bottom": 189,
+              "left": 1,
+              "right": 357,
+              "width": 356,
+              "height": 188
+            },
+            "create": {
+              "top": 133,
+              "bottom": 177,
+              "left": 13,
+              "right": 345,
+              "width": 332,
+              "height": 44
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "INPUT",
+              "testId": null,
+              "slot": "search-field-input",
+              "label": "搜索相册"
+            },
+            "documentScroll": 0,
+            "mainScroll": 505.5,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          },
+          {
+            "type": "popover-state",
+            "time": 95949.39999997616,
+            "expanded": "true",
+            "trigger": {
+              "top": 171.5,
+              "bottom": 215.5,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": {
+              "top": 224,
+              "bottom": 476,
+              "left": 21,
+              "right": 377,
+              "width": 356,
+              "height": 252
+            },
+            "create": {
+              "top": 420,
+              "bottom": 464,
+              "left": 33,
+              "right": 365,
+              "width": 332,
+              "height": 44
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "INPUT",
+              "testId": null,
+              "slot": "search-field-input",
+              "label": "搜索相册"
+            },
+            "documentScroll": 0,
+            "mainScroll": 505.5,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          },
+          {
+            "type": "wheel",
+            "time": 96830.10000002384,
+            "target": {
+              "tag": "SPAN",
+              "testId": null,
+              "slot": null,
+              "label": null
+            },
+            "scrollTop": 0,
+            "deltaY": 136.5,
+            "expanded": "true",
+            "trigger": {
+              "top": 171.5,
+              "bottom": 215.5,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": {
+              "top": 155.5,
+              "bottom": 407.5,
+              "left": 21,
+              "right": 377,
+              "width": 356,
+              "height": 252
+            },
+            "create": {
+              "top": 351.5,
+              "bottom": 395.5,
+              "left": 33,
+              "right": 365,
+              "width": 332,
+              "height": 44
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "INPUT",
+              "testId": null,
+              "slot": "search-field-input",
+              "label": "搜索相册"
+            },
+            "documentScroll": 0,
+            "mainScroll": 505.5,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          },
+          {
+            "type": "scroll",
+            "time": 96831.60000002384,
+            "target": {
+              "tag": "DIV",
+              "testId": null,
+              "slot": null,
+              "label": null
+            },
+            "scrollTop": 68.5,
+            "expanded": "true",
+            "trigger": {
+              "top": 171.5,
+              "bottom": 215.5,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": {
+              "top": 155.5,
+              "bottom": 407.5,
+              "left": 21,
+              "right": 377,
+              "width": 356,
+              "height": 252
+            },
+            "create": {
+              "top": 351.5,
+              "bottom": 395.5,
+              "left": 33,
+              "right": 365,
+              "width": 332,
+              "height": 44
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "INPUT",
+              "testId": null,
+              "slot": "search-field-input",
+              "label": "搜索相册"
+            },
+            "documentScroll": 0,
+            "mainScroll": 505.5,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          },
+          {
+            "type": "wheel",
+            "time": 96892.60000002384,
+            "target": {
+              "tag": "SPAN",
+              "testId": null,
+              "slot": null,
+              "label": null
+            },
+            "scrollTop": 0,
+            "deltaY": 136.5,
+            "expanded": "true",
+            "trigger": {
+              "top": 171.5,
+              "bottom": 215.5,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": {
+              "top": 135,
+              "bottom": 387,
+              "left": 21,
+              "right": 377,
+              "width": 356,
+              "height": 252
+            },
+            "create": {
+              "top": 331,
+              "bottom": 375,
+              "left": 33,
+              "right": 365,
+              "width": 332,
+              "height": 44
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "INPUT",
+              "testId": null,
+              "slot": "search-field-input",
+              "label": "搜索相册"
+            },
+            "documentScroll": 0,
+            "mainScroll": 505.5,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          },
+          {
+            "type": "scroll",
+            "time": 96894.20000004768,
+            "target": {
+              "tag": "DIV",
+              "testId": null,
+              "slot": null,
+              "label": null
+            },
+            "scrollTop": 89,
+            "expanded": "true",
+            "trigger": {
+              "top": 171.5,
+              "bottom": 215.5,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": {
+              "top": 135,
+              "bottom": 387,
+              "left": 21,
+              "right": 377,
+              "width": 356,
+              "height": 252
+            },
+            "create": {
+              "top": 331,
+              "bottom": 375,
+              "left": 33,
+              "right": 365,
+              "width": 332,
+              "height": 44
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "INPUT",
+              "testId": null,
+              "slot": "search-field-input",
+              "label": "搜索相册"
+            },
+            "documentScroll": 0,
+            "mainScroll": 505.5,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          },
+          {
+            "type": "focusout",
+            "time": 96969.60000002384,
+            "target": {
+              "tag": "INPUT",
+              "testId": null,
+              "slot": "search-field-input",
+              "label": "搜索相册"
+            },
+            "scrollTop": 0,
+            "expanded": "true",
+            "trigger": {
+              "top": 171.5,
+              "bottom": 215.5,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": {
+              "top": 135,
+              "bottom": 387,
+              "left": 21,
+              "right": 377,
+              "width": 356,
+              "height": 252
+            },
+            "create": {
+              "top": 331.6600036621094,
+              "bottom": 374.3399963378906,
+              "left": 37.97999572753906,
+              "right": 360.02003479003906,
+              "width": 322.0400390625,
+              "height": 42.67999267578125
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "BODY",
+              "testId": null,
+              "slot": null,
+              "label": null
+            },
+            "documentScroll": 0,
+            "mainScroll": 505.5,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          },
+          {
+            "type": "focusin",
+            "time": 96971.5,
+            "target": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": null
+            },
+            "scrollTop": 0,
+            "expanded": "true",
+            "trigger": {
+              "top": 171.5,
+              "bottom": 215.5,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": {
+              "top": 135,
+              "bottom": 387,
+              "left": 21,
+              "right": 377,
+              "width": 356,
+              "height": 252
+            },
+            "create": {
+              "top": 331.6600036621094,
+              "bottom": 374.3399963378906,
+              "left": 37.97999572753906,
+              "right": 360.02003479003906,
+              "width": 322.0400390625,
+              "height": 42.67999267578125
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": null
+            },
+            "documentScroll": 0,
+            "mainScroll": 505.5,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          },
+          {
+            "type": "focusout",
+            "time": 96973.30000007153,
+            "target": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": null
+            },
+            "scrollTop": 0,
+            "expanded": "true",
+            "trigger": {
+              "top": 171.5,
+              "bottom": 215.5,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": {
+              "top": 135,
+              "bottom": 387,
+              "left": 21,
+              "right": 377,
+              "width": 356,
+              "height": 252
+            },
+            "create": {
+              "top": 331.6600036621094,
+              "bottom": 374.3399963378906,
+              "left": 37.97999572753906,
+              "right": 360.02003479003906,
+              "width": 322.0400390625,
+              "height": 42.67999267578125
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "BODY",
+              "testId": null,
+              "slot": null,
+              "label": null
+            },
+            "documentScroll": 0,
+            "mainScroll": 505.5,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          },
+          {
+            "type": "focusin",
+            "time": 96973.60000002384,
+            "target": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": "选择相册"
+            },
+            "scrollTop": 0,
+            "expanded": "true",
+            "trigger": {
+              "top": 171.5,
+              "bottom": 215.5,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": {
+              "top": 135,
+              "bottom": 387,
+              "left": 21,
+              "right": 377,
+              "width": 356,
+              "height": 252
+            },
+            "create": {
+              "top": 331.6600036621094,
+              "bottom": 374.3399963378906,
+              "left": 37.97999572753906,
+              "right": 360.02003479003906,
+              "width": 322.0400390625,
+              "height": 42.67999267578125
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": "选择相册"
+            },
+            "documentScroll": 0,
+            "mainScroll": 505.5,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          },
+          {
+            "type": "focusout",
+            "time": 96973.70000004768,
+            "target": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": "选择相册"
+            },
+            "scrollTop": 0,
+            "expanded": "true",
+            "trigger": {
+              "top": 171.5,
+              "bottom": 215.5,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": {
+              "top": 135,
+              "bottom": 387,
+              "left": 21,
+              "right": 377,
+              "width": 356,
+              "height": 252
+            },
+            "create": {
+              "top": 331.6600036621094,
+              "bottom": 374.3399963378906,
+              "left": 37.97999572753906,
+              "right": 360.02003479003906,
+              "width": 322.0400390625,
+              "height": 42.67999267578125
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "BODY",
+              "testId": null,
+              "slot": null,
+              "label": null
+            },
+            "documentScroll": 0,
+            "mainScroll": 505.5,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          },
+          {
+            "type": "focusin",
+            "time": 96973.89999997616,
+            "target": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": null
+            },
+            "scrollTop": 0,
+            "expanded": "true",
+            "trigger": {
+              "top": 171.5,
+              "bottom": 215.5,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": {
+              "top": 135,
+              "bottom": 387,
+              "left": 21,
+              "right": 377,
+              "width": 356,
+              "height": 252
+            },
+            "create": {
+              "top": 331.6600036621094,
+              "bottom": 374.3399963378906,
+              "left": 37.97999572753906,
+              "right": 360.02003479003906,
+              "width": 322.0400390625,
+              "height": 42.67999267578125
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": null
+            },
+            "documentScroll": 0,
+            "mainScroll": 505.5,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          },
+          {
+            "type": "focusout",
+            "time": 96981.89999997616,
+            "target": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": null
+            },
+            "scrollTop": 0,
+            "expanded": "false",
+            "trigger": {
+              "top": 171.5,
+              "bottom": 215.5,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": {
+              "top": 135,
+              "bottom": 387,
+              "left": 21,
+              "right": 377,
+              "width": 356,
+              "height": 252
+            },
+            "create": {
+              "top": 331,
+              "bottom": 375,
+              "left": 33,
+              "right": 365,
+              "width": 332,
+              "height": 44
+            },
+            "exiting": true,
+            "focused": {
+              "tag": "BODY",
+              "testId": null,
+              "slot": null,
+              "label": null
+            },
+            "documentScroll": 0,
+            "mainScroll": 505.5,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          },
+          {
+            "type": "popover-state",
+            "time": 96988.10000002384,
+            "expanded": "false",
+            "trigger": {
+              "top": 171.5,
+              "bottom": 215.5,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": null,
+            "create": null,
+            "exiting": false,
+            "focused": {
+              "tag": "INPUT",
+              "testId": null,
+              "slot": "input",
+              "label": null
+            },
+            "documentScroll": 0,
+            "mainScroll": 505.5,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          },
+          {
+            "type": "finished",
+            "time": 97049.39999997616,
+            "expanded": "false",
+            "trigger": {
+              "top": 171.5,
+              "bottom": 215.5,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": null,
+            "create": null,
+            "exiting": false,
+            "focused": {
+              "tag": "INPUT",
+              "testId": null,
+              "slot": "input",
+              "label": null
+            },
+            "documentScroll": 0,
+            "mainScroll": 505.5,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          }
+        ]
+      },
+      {
+        "kind": "tags",
+        "events": [
+          {
+            "type": "before-opening",
+            "time": 98171.10000002384,
+            "expanded": "false",
+            "trigger": {
+              "top": 311.5,
+              "bottom": 355.5,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": null,
+            "create": null,
+            "exiting": false,
+            "focused": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": "选择相册"
+            },
+            "documentScroll": 0,
+            "mainScroll": 505.5,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          },
+          {
+            "type": "focusin",
+            "time": 98179.80000007153,
+            "target": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": "选择标签"
+            },
+            "scrollTop": 0,
+            "expanded": "false",
+            "trigger": {
+              "top": 171.5,
+              "bottom": 215.5,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": null,
+            "create": null,
+            "exiting": false,
+            "focused": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": "选择标签"
+            },
+            "documentScroll": 0,
+            "mainScroll": 645.5,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          },
+          {
+            "type": "focusout",
+            "time": 98261.80000007153,
+            "target": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": "选择标签"
+            },
+            "scrollTop": 0,
+            "expanded": "true",
+            "trigger": {
+              "top": 171.5,
+              "bottom": 215.5,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": {
+              "top": 1,
+              "bottom": 189,
+              "left": 1,
+              "right": 357,
+              "width": 356,
+              "height": 188
+            },
+            "create": {
+              "top": 133,
+              "bottom": 177,
+              "left": 13,
+              "right": 345,
+              "width": 332,
+              "height": 44
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "BODY",
+              "testId": null,
+              "slot": null,
+              "label": null
+            },
+            "documentScroll": 0,
+            "mainScroll": 645.5,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          },
+          {
+            "type": "focusin",
+            "time": 98262.20000004768,
+            "target": {
+              "tag": "INPUT",
+              "testId": null,
+              "slot": "search-field-input",
+              "label": "搜索标签"
+            },
+            "scrollTop": 0,
+            "expanded": "true",
+            "trigger": {
+              "top": 171.5,
+              "bottom": 215.5,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": {
+              "top": 1,
+              "bottom": 189,
+              "left": 1,
+              "right": 357,
+              "width": 356,
+              "height": 188
+            },
+            "create": {
+              "top": 133,
+              "bottom": 177,
+              "left": 13,
+              "right": 345,
+              "width": 332,
+              "height": 44
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "INPUT",
+              "testId": null,
+              "slot": "search-field-input",
+              "label": "搜索标签"
+            },
+            "documentScroll": 0,
+            "mainScroll": 645.5,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          },
+          {
+            "type": "popover-state",
+            "time": 98265.70000004768,
+            "expanded": "true",
+            "trigger": {
+              "top": 171.5,
+              "bottom": 215.5,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": {
+              "top": 224,
+              "bottom": 460,
+              "left": 21,
+              "right": 377,
+              "width": 356,
+              "height": 236
+            },
+            "create": {
+              "top": 404,
+              "bottom": 448,
+              "left": 33,
+              "right": 365,
+              "width": 332,
+              "height": 44
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "INPUT",
+              "testId": null,
+              "slot": "search-field-input",
+              "label": "搜索标签"
+            },
+            "documentScroll": 0,
+            "mainScroll": 645.5,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          },
+          {
+            "type": "scroll",
+            "time": 99127.20000004768,
+            "target": {
+              "tag": "MAIN",
+              "testId": null,
+              "slot": null,
+              "label": null
+            },
+            "scrollTop": 645.5,
+            "expanded": "true",
+            "trigger": {
+              "top": 171.5,
+              "bottom": 215.5,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": {
+              "top": 224,
+              "bottom": 460,
+              "left": 21,
+              "right": 377,
+              "width": 356,
+              "height": 236
+            },
+            "create": {
+              "top": 404,
+              "bottom": 448,
+              "left": 33,
+              "right": 365,
+              "width": 332,
+              "height": 44
+            },
+            "exiting": false,
+            "focused": {
+              "tag": "INPUT",
+              "testId": null,
+              "slot": "search-field-input",
+              "label": "搜索标签"
+            },
+            "documentScroll": 0,
+            "mainScroll": 645.5,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          },
+          {
+            "type": "focusout",
+            "time": 99138.20000004768,
+            "target": {
+              "tag": "INPUT",
+              "testId": null,
+              "slot": "search-field-input",
+              "label": "搜索标签"
+            },
+            "scrollTop": 0,
+            "expanded": "false",
+            "trigger": {
+              "top": 171.5,
+              "bottom": 215.5,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": {
+              "top": 224,
+              "bottom": 460,
+              "left": 21,
+              "right": 377,
+              "width": 356,
+              "height": 236
+            },
+            "create": {
+              "top": 404,
+              "bottom": 448,
+              "left": 33,
+              "right": 365,
+              "width": 332,
+              "height": 44
+            },
+            "exiting": true,
+            "focused": {
+              "tag": "BODY",
+              "testId": null,
+              "slot": null,
+              "label": null
+            },
+            "documentScroll": 0,
+            "mainScroll": 645.5,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          },
+          {
+            "type": "popover-state",
+            "time": 99138.80000007153,
+            "expanded": "false",
+            "trigger": {
+              "top": 171.5,
+              "bottom": 215.5,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": null,
+            "create": null,
+            "exiting": false,
+            "focused": {
+              "tag": "BODY",
+              "testId": null,
+              "slot": null,
+              "label": null
+            },
+            "documentScroll": 0,
+            "mainScroll": 645.5,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          },
+          {
+            "type": "wheel",
+            "time": 99141.70000004768,
+            "target": {
+              "tag": "MAIN",
+              "testId": null,
+              "slot": null,
+              "label": null
+            },
+            "scrollTop": 691,
+            "deltaY": 120.5,
+            "expanded": "false",
+            "trigger": {
+              "top": 126,
+              "bottom": 170,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": null,
+            "create": null,
+            "exiting": false,
+            "focused": {
+              "tag": "BODY",
+              "testId": null,
+              "slot": null,
+              "label": null
+            },
+            "documentScroll": 0,
+            "mainScroll": 691,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          },
+          {
+            "type": "scroll",
+            "time": 99142.20000004768,
+            "target": {
+              "tag": "MAIN",
+              "testId": null,
+              "slot": null,
+              "label": null
+            },
+            "scrollTop": 691,
+            "expanded": "false",
+            "trigger": {
+              "top": 126,
+              "bottom": 170,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": null,
+            "create": null,
+            "exiting": false,
+            "focused": {
+              "tag": "BODY",
+              "testId": null,
+              "slot": null,
+              "label": null
+            },
+            "documentScroll": 0,
+            "mainScroll": 691,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          },
+          {
+            "type": "focusin",
+            "time": 99142.39999997616,
+            "target": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": "选择标签"
+            },
+            "scrollTop": 0,
+            "expanded": "false",
+            "trigger": {
+              "top": 126,
+              "bottom": 170,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": null,
+            "create": null,
+            "exiting": false,
+            "focused": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": "选择标签"
+            },
+            "documentScroll": 0,
+            "mainScroll": 691,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          },
+          {
+            "type": "wheel",
+            "time": 99240.80000007153,
+            "target": {
+              "tag": "MAIN",
+              "testId": null,
+              "slot": null,
+              "label": null
+            },
+            "scrollTop": 691,
+            "deltaY": 120.5,
+            "expanded": "false",
+            "trigger": {
+              "top": 126,
+              "bottom": 170,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": null,
+            "create": null,
+            "exiting": false,
+            "focused": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": "选择标签"
+            },
+            "documentScroll": 0,
+            "mainScroll": 691,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          },
+          {
+            "type": "finished",
+            "time": 101414.5,
+            "expanded": "false",
+            "trigger": {
+              "top": 126,
+              "bottom": 170,
+              "left": 33,
+              "right": 357,
+              "width": 324,
+              "height": 44
+            },
+            "dialog": null,
+            "create": null,
+            "exiting": false,
+            "focused": {
+              "tag": "BUTTON",
+              "testId": null,
+              "slot": "button",
+              "label": "选择标签"
+            },
+            "documentScroll": 0,
+            "mainScroll": 691,
+            "viewport": {
+              "width": 390,
+              "height": 400
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

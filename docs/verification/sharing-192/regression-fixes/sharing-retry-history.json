@@ -1,0 +1,194 @@
+[
+  {
+    "command": "EGO_TASK_SPACE=37 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/sharing-192/regression-green-sharing node scripts/verify-browser.mjs --suite sharing-public",
+    "phase": "full-first-retry",
+    "exitCode": 1,
+    "status": "failed",
+    "checkCount": 9,
+    "layoutCount": 49,
+    "stage": "gate-and-representatives",
+    "shortPasswordScrollChecks": [
+      {
+        "state": "password",
+        "width": 390,
+        "height": 420,
+        "theme": "light",
+        "scroll": 83.5,
+        "top": 354.5,
+        "bottom": 402.5,
+        "viewport": 420
+      },
+      {
+        "state": "password",
+        "width": 390,
+        "height": 420,
+        "theme": "dark",
+        "scroll": 109,
+        "top": 329,
+        "bottom": 377,
+        "viewport": 420
+      }
+    ],
+    "emptyShort": [],
+    "error": "Error: page.waitForFunction timed out after 10000ms on page p1; last URL was \"http://sharing-62619.localhost:62619/s/[redacted]\"; last title was \"摄影手记 · 相册分享\".\n    at waitForFunctionTimeoutError (file:////[eval1]:19235:12)\n    at file:////[eval1]:18564:19\n    at async file:////[eval1]:16691:28"
+  },
+  {
+    "command": "EGO_TASK_SPACE=37 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/sharing-192/regression-sharing-empty-diagnostic node scripts/verify-browser.mjs --suite sharing-public --only representative",
+    "phase": "representative-with-failure-diagnostic",
+    "exitCode": 0,
+    "status": "passed",
+    "checkCount": 14,
+    "layoutCount": 61,
+    "stage": "gate-and-representatives",
+    "shortPasswordScrollChecks": [
+      {
+        "state": "password",
+        "width": 390,
+        "height": 420,
+        "theme": "light",
+        "scroll": 102,
+        "top": 336,
+        "bottom": 384,
+        "viewport": 420
+      },
+      {
+        "state": "password",
+        "width": 390,
+        "height": 420,
+        "theme": "dark",
+        "scroll": 122.5,
+        "top": 315.5,
+        "bottom": 363.5,
+        "viewport": 420
+      }
+    ],
+    "emptyShort": [
+      {
+        "scroll": 278,
+        "height": 220,
+        "viewport": {
+          "width": 390,
+          "height": 420
+        },
+        "scroller": {
+          "left": 0,
+          "right": 390,
+          "top": 150,
+          "bottom": 420,
+          "width": 390,
+          "height": 270
+        },
+        "icon": {
+          "left": 177,
+          "right": 213,
+          "top": 243,
+          "bottom": 279,
+          "width": 36,
+          "height": 36
+        },
+        "text": {
+          "left": 139,
+          "right": 251,
+          "top": 291,
+          "bottom": 313,
+          "width": 112,
+          "height": 22,
+          "content": "暂无可展示的图片"
+        }
+      },
+      {
+        "scroll": 278,
+        "height": 220,
+        "viewport": {
+          "width": 390,
+          "height": 420
+        },
+        "scroller": {
+          "left": 0,
+          "right": 390,
+          "top": 150,
+          "bottom": 420,
+          "width": 390,
+          "height": 270
+        },
+        "icon": {
+          "left": 177,
+          "right": 213,
+          "top": 243,
+          "bottom": 279,
+          "width": 36,
+          "height": 36
+        },
+        "text": {
+          "left": 139,
+          "right": 251,
+          "top": 291,
+          "bottom": 313,
+          "width": 112,
+          "height": 22,
+          "content": "暂无可展示的图片"
+        }
+      }
+    ],
+    "error": null
+  },
+  {
+    "phase": "full-retry-with-original-position-diagnostic",
+    "command": "EGO_TASK_SPACE=37 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/sharing-192/regression-green-sharing-final node scripts/verify-browser.mjs --suite sharing-public",
+    "status": "failed",
+    "exitCode": 1,
+    "checkCount": 9,
+    "layoutCount": 49,
+    "shortEmptyFailure": {
+      "step": "reach-empty-content",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 420
+      },
+      "scroll": 95,
+      "scrollHeight": 548,
+      "clientHeight": 270,
+      "scroller": {
+        "top": 150,
+        "bottom": 420,
+        "height": 270
+      },
+      "content": [
+        {
+          "top": 426,
+          "bottom": 462,
+          "height": 36
+        },
+        {
+          "top": 474,
+          "bottom": 496,
+          "height": 22
+        }
+      ]
+    },
+    "shortPasswordScrollChecks": [
+      {
+        "state": "password",
+        "width": 390,
+        "height": 420,
+        "theme": "light",
+        "scroll": 99.5,
+        "top": 338.5,
+        "bottom": 386.5,
+        "viewport": 420
+      },
+      {
+        "state": "password",
+        "width": 390,
+        "height": 420,
+        "theme": "dark",
+        "scroll": 123,
+        "top": 315,
+        "bottom": 363,
+        "viewport": 420
+      }
+    ],
+    "error": "Error: page.waitForFunction timed out after 10000ms on page p1; last URL was \"http://sharing-63078.localhost:63078/s/[redacted]\"; last title was \"摄影手记 · 相册分享\".\n    at waitForFunctionTimeoutError (file:////[eval1]:19235:12)\n    at file:////[eval1]:18564:19\n    at async file:////[eval1]:16691:28"
+  }
+]

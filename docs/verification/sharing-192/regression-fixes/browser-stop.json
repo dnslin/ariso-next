@@ -1,0 +1,15 @@
+{
+  "at": "2026-10-06T10:48:01Z",
+  "spaceId": 37,
+  "command": "takeOverTaskSpace(37)",
+  "exitCode": 1,
+  "status": "paused",
+  "reason": "The user has taken control of this task space and ended the task, so it is no longer assigned to the agent and browser commands are paused.",
+  "boundary": "Do not retry or route around the stop. Await new explicit user continuation; then claimTaskSpace(37).",
+  "skill": "/Users/dnslin/.agents/skills/ego-browser/SKILL.md",
+  "notExecuted": [
+    "sharing-public full after main 5d72f178",
+    "sharing-management behavior after main 5d72f178"
+  ],
+  "offlineWorkContinues": true
+}
