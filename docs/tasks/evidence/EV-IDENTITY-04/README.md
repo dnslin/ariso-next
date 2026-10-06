@@ -50,6 +50,8 @@ JSON 配置使用 `{ smtp: { host, port, mode, username?, password?, fromName, f
 
 **SMTP 接受与服务商投递状态已验证；最终邮箱收件仍待独立确认。**实际收件 Gmail 尚未登录，Ego 已按技能交还所有者；待所有者确认两封 marker，或登录收件箱后恢复检查。没有把 Resend 的 `delivered` 或发件预览记作真实邮箱收件，也没有改写运行器的 `finalReceipt: unverified`。
 
+所有者随后指定另一个真实 Gmail 收件人。使用原运行器执行 `node tests/experiments/identity/smtp-run.ts .data/resend-smtp-dnslint.json`，进程退出 1；实际诊断为 `EMESSAGE` / `DATA` / **550** / `delivery: not-accepted`，没有将失败记作已发送。官方 domains API 同时确认账号域名列表为空。上述默认测试发件地址限制不允许发到不同于注册邮箱的收件人，需验证所有者提供的发件域名，或使用注册邮箱与指定收件人匹配的 Resend 环境。本次没有重复发送、修改账号邮箱或创建域名；诊断与域名观察时间保留在外部 SMTP 记录的 `additionalAttempts`。
+
 ## 重置凭据与中断恢复
 
 `reset-password.test.ts` 的 14 项定向测试通过。使用固定发布包的 handler、真实磁盘 SQLite、库生成的 token、密码登录及 Cookie 会话；没有自己实现另一套邮件重置协议。不存在的邮箱得到通用响应，地址随当前 origin 更新，回跳固定 `/reset-password`，令牌有效期为 1 小时。无效、过期和重放均失败，成功重置不自动创建会话。
@@ -101,7 +103,7 @@ CLI 首轮错误的 Release 路径假设和 PTY 连续命令缓冲问题均取�
 
 完整集成结束后，评审者另行只读解析真实 JUnit，确认文件、用例、19 个失败名称及新增三组统计与公开摘要逐项一致。实际读取 Vitest 5 名称匹配实现，确认 JUnit 中的嵌套名称适用于这次定向过滤。CLI 回滚用例的真实登录、会话保留和明确重试均有验收目的，未发现需要删除的无效复杂度或新的代码必改项。
 
-2026-10-07 外部 SMTP 证据另经独立 agent 使用 `code-review-and-quality` 只读复审。公开记录与两份实际 runner JSON、provider JSON 逐字段一致，凭证与收件地址未进入公开材料。SMTP 接受、服务商 delivered、实际邮箱待确认的边界准确，无必改问题；没有重复运行已通过的测试或操作已交还的浏览器。本轮仅新增文档证据，范围内 Prettier 检查、`node docs/tasks/check.mjs`（120 个任务、298 个需求）和 `git diff --check` 通过。
+2026-10-07 外部 SMTP 证据另经独立 agent 使用 `code-review-and-quality` 只读复审。公开记录与两份实际 runner JSON、provider JSON 逐字段一致，凭证与收件地址未进入公开材料。SMTP 接受、服务商 delivered、实际邮箱待确认的边界准确，无必改问题。随后指定另一收件人的拒绝诊断、完成时间与空域名列表也经独立增量复核一致，无必改项。评审没有重复运行已通过的测试或操作已交还的浏览器。本轮仅新增文档证据，范围内 Prettier 检查、`node docs/tasks/check.mjs`（120 个任务、298 个需求）和 `git diff --check` 通过。
 
 ## 依赖审计
 

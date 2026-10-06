@@ -80,5 +80,32 @@
     "https://resend.com/docs/send-with-smtp",
     "https://resend.com/docs/knowledge-base/403-error-resend-dev-domain",
     "https://resend.com/docs/api-reference/emails/retrieve-email"
+  ],
+  "additionalAttempts": [
+    {
+      "recipient": "Owner requested another Gmail recipient (omitted)",
+      "mode": "tls",
+      "port": 465,
+      "command": "node tests/experiments/identity/smtp-run.ts .data/resend-smtp-dnslint.json",
+      "exitCode": 1,
+      "completedAt": "2026-10-06T17:39:56.674Z",
+      "diagnostic": {
+        "stage": "delivery",
+        "code": "EMESSAGE",
+        "command": "DATA",
+        "responseCode": 550,
+        "delivery": "not-accepted"
+      },
+      "accountDomainObservation": {
+        "observedAt": "2026-10-06T17:40:31.291Z",
+        "verifiedDomains": 0,
+        "domains": 0,
+        "hasMore": false
+      },
+      "mailbox": {
+        "status": "not-sent"
+      },
+      "restriction": "Default onboarding@resend.dev sender is restricted to the email associated with the Resend account. Sending to the requested different Gmail needs a verified sender domain or an account associated with that recipient."
+    }
   ]
 }
