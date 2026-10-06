@@ -91,6 +91,7 @@ export function assertStaticSvg(source) {
   )
     throw new Error('Expected an SVG root element');
   const nodes = [document];
+  let hasText = false;
   while (nodes.length) {
     const node = nodes.pop();
     // XML declarations are parsed separately; stylesheet PIs can fetch resources.
@@ -98,6 +99,7 @@ export function assertStaticSvg(source) {
       throw new Error('SVG processing instruction is prohibited');
     if (node.nodeType === 1) {
       const name = node.localName.toLowerCase();
+      if (['text', 'tspan', 'textpath'].includes(name)) hasText = true;
       if (forbiddenElements.has(name) || name.startsWith('animate'))
         throw new Error(`SVG active element: ${name}`);
       for (let index = 0; index < node.attributes.length; index++) {
@@ -122,4 +124,5 @@ export function assertStaticSvg(source) {
     for (let child = node.firstChild; child; child = child.nextSibling)
       nodes.push(child);
   }
+  return { hasText };
 }

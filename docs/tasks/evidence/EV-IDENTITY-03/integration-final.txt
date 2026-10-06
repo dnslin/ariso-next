@@ -1,0 +1,29 @@
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |media-tools| tests/integration/media/reprocess-http.test.ts > returns a logged persistence failure without mutating existing content or jobs
+SqliteError: database is locked
+ ❯ PreparedQuery.run node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/src/better-sqlite3/session.ts:132:20
+ ❯ QueryPromise.run node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/src/sqlite-core/query-builders/insert.ts:398:26
+ ❯ acceptOriginal src/server/media/images.ts:68:6
+     66|       updatedAt: now,
+     67|     })
+     68|     .run();
+       |      ^
+     69|   const objectId = randomUUID();
+     70|   tx.insert(mediaObjects)
+ ❯ sqliteTransaction.<anonymous> tests/integration/media/reprocess-http.test.ts:146:5
+ ❯ sqliteTransaction node_modules/.pnpm/better-sqlite3@13.0.3/node_modules/better-sqlite3/lib/methods/transaction.js:65:24
+ ❯ BetterSQLiteSession.transaction node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/src/better-sqlite3/session.ts:81:48
+ ❯ BetterSQLite3Database.transaction node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/src/sqlite-core/db.ts:593:23
+ ❯ tests/integration/media/reprocess-http.test.ts:145:34
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 150 passed (151)
+      Tests  1 failed | 1486 passed (1487)
+   Start at  02:45:21
+   Duration  515.98s (tests 96%, import 4%)
+
+JUNIT report written to /Users/dnslin/.codex/worktrees/issue-145-github-binding/ariso/test-results/issue145-integration-final.xml
+[ELIFECYCLE] Command failed with exit code 1.

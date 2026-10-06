@@ -1,0 +1,73 @@
+Already up to date
+Done in 181ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-145-github-binding/ariso
+
+stdout | tests/integration/analytics/count.test.ts > counts each original GET and download once without database writes
+{ deliveryMs: 51.65483400000005, assertionMs: 0.16070799999999963 }
+
+stdout | tests/integration/analytics/count.test.ts > counts each original GET and download once without database writes
+{ deliveryMs: 5.6870420000000195, assertionMs: 0.08345799999995052 }
+
+stdout | tests/integration/analytics/count.test.ts > counts each compressed GET and download once without database writes
+{ deliveryMs: 4.264083000000028, assertionMs: 0.08562499999993634 }
+
+stdout | tests/integration/analytics/count.test.ts > counts each compressed GET and download once without database writes
+{ deliveryMs: 4.725999999999999, assertionMs: 0.08304099999998016 }
+
+stdout | tests/integration/analytics/count.test.ts > counts each watermark GET and download once without database writes
+{ deliveryMs: 3.8419999999999845, assertionMs: 0.06595900000002075 }
+
+stdout | tests/integration/analytics/count.test.ts > counts each watermark GET and download once without database writes
+{ deliveryMs: 4.4920000000000755, assertionMs: 0.0984169999999267 }
+
+stdout | tests/integration/analytics/count.test.ts > counts the actual original when the default version is inapplicable
+{ deliveryMs: 3.6683750000000828, assertionMs: 0.05483399999991434 }
+
+ ✓ |integration| tests/integration/analytics/count.test.ts > counts each original GET and download once without database writes 109ms
+ ✓ |integration| tests/integration/analytics/count.test.ts > counts each compressed GET and download once without database writes 33ms
+ ✓ |integration| tests/integration/analytics/count.test.ts > counts each watermark GET and download once without database writes 29ms
+ ✓ |integration| tests/integration/analytics/count.test.ts > counts the actual original when the default version is inapplicable 24ms
+stdout | tests/integration/analytics/count.test.ts > excludes owner/private/thumbnail/HEAD/304 and rejected or missing content
+{ deliveryMs: 3.655124999999998, assertionMs: 0.05383299999994051 }
+
+stdout | tests/integration/analytics/count.test.ts > excludes owner/private/thumbnail/HEAD/304 and rejected or missing content
+{ deliveryMs: 5.413457999999991, assertionMs: 0.18308300000001054 }
+
+stdout | tests/integration/analytics/count.test.ts > excludes owner/private/thumbnail/HEAD/304 and rejected or missing content
+{ deliveryMs: 5.709333000000015, assertionMs: 0.12062500000001819 }
+
+stdout | tests/integration/analytics/count.test.ts > reads committed timezone after response preparation and keeps already archived dates unchanged
+{ deliveryMs: 4.420040999999969, assertionMs: 0.07745899999997619 }
+
+stdout | tests/integration/analytics/count.test.ts > reads committed timezone after response preparation and keeps already archived dates unchanged
+{ deliveryMs: 5.255166999999915, assertionMs: 0.15804100000002563 }
+
+ ✓ |integration| tests/integration/analytics/count.test.ts > excludes owner/private/thumbnail/HEAD/304 and rejected or missing content 51ms
+ ✓ |integration| tests/integration/analytics/count.test.ts > reads committed timezone after response preparation and keeps already archived dates unchanged 32ms
+stdout | tests/integration/analytics/count.test.ts > does not retry or duplicate a repeated delivery callback within one request
+{ deliveryMs: 7.767291999999998, assertionMs: 0.06512500000008004 }
+
+stdout | tests/integration/analytics/count.test.ts > does not retry or duplicate a repeated delivery callback within one request
+{ deliveryMs: 4.076999999999998, assertionMs: 0.06825000000003456 }
+
+stdout | tests/integration/analytics/count.test.ts > logs aggregation failure with event context and still returns complete legal content
+{ deliveryMs: 4.701832999999851, assertionMs: 0.08270900000002257 }
+
+ ✓ |integration| tests/integration/analytics/count.test.ts > does not retry or duplicate a repeated delivery callback within one request 44ms
+ ✓ |integration| tests/integration/analytics/count.test.ts > handles first-block real file failure over HTTP 24ms
+ ✓ |integration| tests/integration/analytics/count.test.ts > handles later-block real file failure over HTTP 22ms
+ ✓ |integration| tests/integration/analytics/count.test.ts > keeps one count after client cancellation following the first network block 25ms
+stdout | tests/integration/analytics/count.test.ts > logs capacity loss without truncating content
+{ deliveryMs: 7.090249999999969, assertionMs: 0.10545799999999872 }
+
+ ✓ |integration| tests/integration/analytics/count.test.ts > logs aggregation failure with event context and still returns complete legal content 28ms
+ ✓ |integration| tests/integration/analytics/count.test.ts > logs capacity loss without truncating content 73ms
+ ✓ |integration| tests/integration/analytics/count.test.ts > does not count a client cancelled before its first body block 87ms
+
+ Test Files  1 passed (1)
+      Tests  13 passed (13)
+   Start at  15:17:32
+   Duration  1.32s (tests 46%, import 36%, transform 17%)
+
+JUNIT report written to /Users/dnslin/.codex/worktrees/issue-145-github-binding/ariso/test-results/issue145-count-fixed.xml

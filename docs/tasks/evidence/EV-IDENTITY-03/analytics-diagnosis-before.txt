@@ -1,0 +1,32 @@
+Already up to date
+Done in 183ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-145-github-binding/ariso
+
+stdout | tests/integration/analytics/count.test.ts > excludes owner/private/thumbnail/HEAD/304 and rejected or missing content
+{ deliveryMs: 17.883041999999932, assertionMs: 961.56275 }
+
+ ↓ |integration| tests/integration/analytics/count.test.ts > counts each original GET and download once without database writes
+ ↓ |integration| tests/integration/analytics/count.test.ts > counts each compressed GET and download once without database writes
+ ↓ |integration| tests/integration/analytics/count.test.ts > counts each watermark GET and download once without database writes
+ ↓ |integration| tests/integration/analytics/count.test.ts > counts the actual original when the default version is inapplicable
+stdout | tests/integration/analytics/count.test.ts > excludes owner/private/thumbnail/HEAD/304 and rejected or missing content
+{ deliveryMs: 6.535666999999876, assertionMs: 909.2934170000001 }
+
+stdout | tests/integration/analytics/count.test.ts > excludes owner/private/thumbnail/HEAD/304 and rejected or missing content
+{ deliveryMs: 3.1624590000001263, assertionMs: 888.7098329999999 }
+
+ ✓ |integration| tests/integration/analytics/count.test.ts > excludes owner/private/thumbnail/HEAD/304 and rejected or missing content 2851ms
+ ↓ |integration| tests/integration/analytics/count.test.ts > reads committed timezone after response preparation and keeps already archived dates unchanged
+ ↓ |integration| tests/integration/analytics/count.test.ts > does not retry or duplicate a repeated delivery callback within one request
+ ↓ |integration| tests/integration/analytics/count.test.ts > handles first-block real file failure over HTTP
+ ↓ |integration| tests/integration/analytics/count.test.ts > handles later-block real file failure over HTTP
+ ↓ |integration| tests/integration/analytics/count.test.ts > keeps one count after client cancellation following the first network block
+ ↓ |integration| tests/integration/analytics/count.test.ts > logs aggregation failure with event context and still returns complete legal content
+ ↓ |integration| tests/integration/analytics/count.test.ts > logs capacity loss without truncating content
+ ↓ |integration| tests/integration/analytics/count.test.ts > does not count a client cancelled before its first body block
+
+ Test Files  1 passed (1)
+      Tests  1 passed | 12 skipped (13)
+   Start at  15:16:04
+   Duration  3.46s (tests 84%, import 12%, transform 4%)

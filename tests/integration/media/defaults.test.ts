@@ -1,5 +1,6 @@
 import { randomUUID } from 'node:crypto';
-import { execFileSync } from 'node:child_process';
+import { execFileSync, spawn } from 'node:child_process';
+import { once } from 'node:events';
 import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
@@ -277,6 +278,62 @@ it('merges partial saves atomically and retains inactive text and fractional ren
   expect(old.watermarkText).toBe(text.watermarkText);
   expect(old.watermarkOpacity).toBe(70.5);
   expect(snapshot().watermarkText).toBe('新的文字');
+});
+it('waits for another writer before merging a partial settings save', async () => {
+  const initial = initialize();
+  const child = spawn(
+    process.execPath,
+    [
+      '--input-type=module',
+      '-e',
+      `
+        import { once } from 'node:events';
+        import { openRuntimeDatabase } from './src/server/runtime/db.ts';
+        const connection = openRuntimeDatabase(process.argv[1]);
+        try {
+          connection.db.$client.exec('BEGIN IMMEDIATE');
+          connection.db.$client.exec('UPDATE media_settings SET concurrency = 3');
+          process.send('writer-reserved');
+          const [message] = await once(process, 'message');
+          if (message !== 'begin-patch') throw new Error('Unexpected patch checkpoint');
+          Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 300);
+          connection.db.$client.exec('COMMIT');
+        } finally {
+          if (connection.db.$client.inTransaction) connection.db.$client.exec('ROLLBACK');
+          connection.close();
+        }
+      `,
+      join(directory, 'ariso.db'),
+    ],
+    { cwd: resolve('.'), stdio: ['ignore', 'ignore', 'pipe', 'ipc'] },
+  );
+  const closed = once(child, 'close');
+  let errors = '';
+  let patchStarted = false;
+  child.stderr!.on('data', (chunk) => (errors += chunk));
+  try {
+    const [message] = await Promise.race([
+      once(child, 'message'),
+      closed.then(() => {
+        throw new Error(`Writer exited before taking the lock: ${errors}`);
+      }),
+    ]);
+    expect(message).toBe('writer-reserved');
+    child.send('begin-patch');
+    patchStarted = true;
+    const saved = patchMediaSettings(connection.db, { quality: 47 });
+    expect(saved).toEqual({
+      ...initial,
+      concurrency: 3,
+      quality: 47,
+      updatedAt: expect.any(Date),
+    });
+    expect(requireMediaSettings(connection.db)).toEqual(saved);
+  } finally {
+    if (!patchStarted) child.kill();
+    const [code] = await closed;
+    if (patchStarted) expect(code, errors).toBe(0);
+  }
 });
 it('adopts only selectable assets atomically and freezes the exact selected asset in snapshots', () => {
   initialize();
