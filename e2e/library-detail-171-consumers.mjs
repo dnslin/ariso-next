@@ -17,7 +17,7 @@ export async function verifyDetail171Consumers({ page, config, sql, report }) {
     ['图库', '/library'],
     ['相册', '/albums'],
     ['标签', '/tags'],
-    ['分享管理', null],
+    ['分享管理', '/shares'],
     ['回收站', '/trash'],
     ['访问统计', null],
     ['存储管理', '/settings/storage'],

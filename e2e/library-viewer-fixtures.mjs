@@ -15,6 +15,10 @@ export const viewerQuery =
 // same ImageMagick runtime used by media produces real PNG/WebP versions; no
 // business response is substituted and no worker completion is fabricated.
 export async function seedViewerFixtures(config, sql) {
+  // Rendering sources are not stored media objects. Keep them outside the
+  // namespace scanned by the production orphan-maintenance worker.
+  const sourceDirectory = join(config.dataDirectory, 'viewer-source-fixtures');
+  await mkdir(sourceDirectory, { recursive: true });
   const directory = join(
     config.dataDirectory,
     'storage/default/ariso',
@@ -27,29 +31,29 @@ export async function seedViewerFixtures(config, sql) {
     join(config.projectDirectory, 'tests/fixtures/runtime/images/sample.png'),
     '-resize',
     '1200x900!',
-    join(directory, 'original.png'),
+    join(sourceDirectory, 'original.png'),
   ]);
   await run('magick', [
-    join(directory, 'original.png'),
+    join(sourceDirectory, 'original.png'),
     '-quality',
     '85',
-    join(directory, 'compressed.webp'),
+    join(sourceDirectory, 'compressed.webp'),
   ]);
   await run('magick', [
-    join(directory, 'original.png'),
+    join(sourceDirectory, 'original.png'),
     '-resize',
     '400x300',
     '-quality',
     '85',
-    join(directory, 'thumbnail.webp'),
+    join(sourceDirectory, 'thumbnail.webp'),
   ]);
   await run('magick', [
-    join(directory, 'original.png'),
+    join(sourceDirectory, 'original.png'),
     '-fill',
     '#ffffff80',
     '-draw',
     'rectangle 940,800 1160,860',
-    join(directory, 'watermark.png'),
+    join(sourceDirectory, 'watermark.png'),
   ]);
   const assets = {};
   for (const [kind, format, width, height] of [
@@ -58,7 +62,7 @@ export async function seedViewerFixtures(config, sql) {
     ['thumbnail', 'webp', 400, 300],
     ['watermark', 'png', 1200, 900],
   ]) {
-    const bytes = await readFile(join(directory, `${kind}.${format}`));
+    const bytes = await readFile(join(sourceDirectory, `${kind}.${format}`));
     assets[kind] = { bytes, format, mime: `image/${format}`, width, height };
   }
   const created = 1700000000000;
@@ -103,18 +107,19 @@ export async function seedViewerFixtures(config, sql) {
   for (const kind of ['original', 'compressed'])
     await version('issue185-no-dimensions', kind, noDimensions(assets[kind]));
   await run('magick', [
-    join(directory, 'original.png'),
+    join(sourceDirectory, 'original.png'),
     '-resize',
     '320x240!',
-    join(directory, 'partial-thumbnail.webp'),
+    join(sourceDirectory, 'partial-thumbnail.webp'),
   ]);
   const partialThumbnail = {
-    bytes: await readFile(join(directory, 'partial-thumbnail.webp')),
+    bytes: await readFile(join(sourceDirectory, 'partial-thumbnail.webp')),
     format: 'webp',
     mime: 'image/webp',
     width: null,
     height: 240,
   };
+  await rm(sourceDirectory, { recursive: true, force: true });
   await image(
     'issue185-partial-dimensions',
     'issue185-partial-dimensions.png',

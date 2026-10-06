@@ -73,3 +73,12 @@ it('returns to account management after session expiry or explicit login verific
   expect(loginDestination('/settings/github')).toBe('/admin');
   expect(loginDestination('https://evil.test/settings/account')).toBe('/admin');
 });
+
+it('retains delivered sharing routes and album return context', () => {
+  expect(loginDestination('/shares')).toBe('/shares');
+  expect(loginDestination('/shares/album-1?from=album')).toBe(
+    '/shares/album-1?from=album',
+  );
+  expect(loginDestination('/shares/album-1/unimplemented')).toBe('/admin');
+  expect(loginDestination('https://evil.test/shares')).toBe('/admin');
+});

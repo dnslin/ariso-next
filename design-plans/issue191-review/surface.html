@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Ariso · 分享管理原型</title>
+    <link rel="stylesheet" href="surface.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <aside class="sidebar">
+        <div class="brand-row">
+          <span class="brand">Ariso</span
+          ><button
+            class="icon"
+            data-icon="ChevronsLeft"
+            aria-label="收起侧栏"
+            id="collapse"
+          ></button>
+        </div>
+        <p class="tagline">图片，自在收纳。</p>
+        <nav aria-label="后台导航"></nav>
+        <div class="account">
+          <span class="avatar">T</span>
+          <div>原型所有者<small>站点所有者</small></div>
+        </div>
+      </aside>
+      <div class="workspace">
+        <header class="mobile-header">
+          <span class="brand">Ariso</span
+          ><button
+            id="menu"
+            class="icon"
+            data-icon="Menu"
+            aria-label="菜单"
+          ></button>
+        </header>
+        <main id="content" class="content"></main>
+        <footer id="footer"></footer>
+      </div>
+    </div>
+    <dialog id="confirmation" aria-labelledby="dialog-title"></dialog>
+    <div id="toast" role="status" hidden></div>
+    <script src="../issue189-review/icons.js"></script>
+    <script src="surface.js?revision=routing-3"></script>
+  </body>
+</html>

@@ -95,6 +95,8 @@ for (const name of [
   'delivery-s3/browser.json',
   'sharing-experiment.json',
   'sharing-protocol.json',
+  'sharing-management.json',
+  'sharing-management-failure.png',
   'm2-1440.json',
   'm2-390.json',
   'interaction-polish-1440.json',
@@ -848,23 +850,7 @@ try {
             libraryQueryPhase: phase,
           });
         }
-        for (const [name, script] of [
-          ['library-batch', 'library-batch'],
-          ['library-reprocess', 'library-batch-reprocess'],
-          ['library-copy', 'library-copy'],
-          ['trash-query-batch', 'trash-query-batch'],
-          ['trash-cleanup', 'trash-cleanup'],
-          ['shell-navigation', 'shell-navigation'],
-          ['albums', 'albums'],
-          ['album-cover', 'album-cover'],
-          ['tags', 'tags'],
-          ['upload', 'upload'],
-          ['upload-polling', 'upload-polling'],
-          ['upload-input', 'upload-input'],
-          ['upload-submissions', 'upload-submissions'],
-          ['upload-relations', 'upload-relations'],
-        ])
-          await business(name, script);
+        for (const [script, name] of plan.stages) await business(name, script);
       }
       await runM2Restart({
         check,

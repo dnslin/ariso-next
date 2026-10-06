@@ -135,6 +135,8 @@ Cookie 提议名 `ariso_share_grant`，每次成功验证生成随机 32 字节�
 
 生产管理入口为上表 `/api/shares`、`/api/albums/{id}/share`（GET/POST/PATCH）、`/api/albums/{id}/share/rotate`，匿名解锁为 `POST /s/{token}/unlock`。管理返回 `{share}`，相册存在但尚未创建时 GET 返回 `{share:null}`；创建及重复创建均返回 200。列表参数 `q/page/pageSize` 沿用 20/40/80，默认 40，按创建时间降序和分享 ID 升序分页。
 
+管理列表在分享配置字段上增加真实 `publicImageCount` 与 `cover:{imageId,displayName,status,thumbnailUrl}`。公开数量和封面身份由 collections 按本页相册 ID 批量读取，缩略图展示由 delivery 按明确图片 ID 批量组合；未取完整图库记录或逐行请求相册。封面状态为 empty/processing/failed/disabled/missing/ready，异常时保留选定身份并返回空缩略图路径，不换下一张或原图。相册分享 GET/POST/PATCH/rotate 的配置响应不添加这些列表展示字段；匿名输出仍由 T-SHR-03 独立裁剪。
+
 密码输入为 `password:{action:'keep'}`、`{action:'set',value:'原样密码'}`、`{action:'clear'}`。期限输入 `expiresAt` 仅接受带 Z 的 UTC ISO 字符串或 null；省略保留原值。`parseShareExpiry(localDateTime, site.timeZone, disambiguation)` 供后续表单转换本地输入，默认拒绝夏令时缺失／重复小时，重复小时可明确选择 earlier/later。输出期限为 UTC ISO；管理状态每次按当前时间计算，不存状态字符串。
 
 `readShareAccess(tx,{token,grantSecret,now})` 是服务端同步契约：拒绝仅返回 allowed=false 与 404/410/401，成功返回当前分享记录供同一读事务内查询成员。记录含服务端字段，不能直接发送给匿名客户端。本任务不新增 `/s/{token}` HTML、items/refresh/邻居入口；它们在 T-SHR-03 中组合本校验与裁剪查询。实际检查与剩余限制只在 [T-SHR-01 证据](../verification/sharing-190/README.md)维护。
