@@ -64,3 +64,7 @@ Written against: `0b5f237c`。空态布局待用户批准局部原型；预览�
 ## Design documentation
 
 - 批准后只追加到已有handoff及 `docs/verification/sharing-192/`。旧截图/通过记录作为历史，新增反馈与返修分别记录，PR #251仍为草稿。
+
+## Approved implementation
+
+2026-10-06用户明确要求按本原型开发实施并同步Figma。本提案已获批准，产品改为已锁 HeroUI EmptyState，沿用 Images 图标、单一中性空态文字和真实零数量。相册标题和简介由既有匿名DTO提供；自然中文只是独立人工预览数据，不改变安全测试样本或限制所有者命名。上文待批准结论保留为当时历史；本轮产品、Figma和独立审计的实际证据统一见[#192记录](../../docs/verification/sharing-192/README.md)，最终人工验收另记。

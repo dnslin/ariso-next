@@ -58,3 +58,7 @@ Written against: `0b5f237c`。本方案待用户查看局部原型后批准；�
 ## Design documentation
 
 - 批准及实际验证后，追加到 `docs/design/handoff.md` 已有匿名分享优化段和 `docs/verification/sharing-192/` 统一证据，保留上一轮通过历史及本轮待验状态。
+
+## Approved implementation
+
+2026-10-06用户明确要求“新的布局和tips要同步Figma 按照这个原型进行开发和实施”，并指出密码框缺少左侧图标。这一指令批准本提案；产品使用已锁 HeroUI InputGroup、纯展示 DetailTip 和16px Lucide LockKeyhole，原型也补上真实库图标。上文待批准及原型验证结论保留为当时历史。本轮实际产品验证、Figma同步、独立复审和人工验收状态统一见[#192证据](../../docs/verification/sharing-192/README.md)，不能由原型通过替代。

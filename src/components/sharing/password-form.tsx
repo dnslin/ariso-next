@@ -5,10 +5,12 @@ import { Alert } from '@heroui/react/alert';
 import { Button } from '@heroui/react/button';
 import { FieldError } from '@heroui/react/field-error';
 import { Form } from '@heroui/react/form';
-import { Input } from '@heroui/react/input';
+import { InputGroup } from '@heroui/react/input-group';
 import { Label } from '@heroui/react/label';
 import { Spinner } from '@heroui/react/spinner';
 import { TextField } from '@heroui/react/textfield';
+import { LockKeyhole } from 'lucide-react';
+import { DetailTip } from '../library/detail-controls';
 
 export function SharePasswordForm({
   token,
@@ -116,7 +118,7 @@ export function SharePasswordForm({
       }}
     >
       <TextField
-        className="gap-4"
+        className="gap-3"
         name="password"
         value={password}
         onChange={(value) => {
@@ -127,18 +129,31 @@ export function SharePasswordForm({
         isInvalid={!!error && remaining === 0}
         isDisabled={busy}
       >
-        <Label className="text-sm font-medium after:content-none">
-          分享密码
-        </Label>
-        <Input
-          ref={input}
-          data-testid="share-password-input"
-          type="password"
-          autoComplete="current-password"
-          autoFocus={revoked}
-          placeholder="请输入分享密码"
-          className="h-12 min-h-12 rounded-lg border pl-9 text-base shadow-none placeholder:text-foreground min-[1200px]:text-sm"
-        />
+        <div className="flex min-h-11 items-center justify-between gap-3 [&_svg]:mx-0 [&_svg]:size-4">
+          <Label className="text-sm font-medium after:content-none">
+            分享密码
+          </Label>
+          <DetailTip label="访问说明">
+            <p>
+              验证成功后，此浏览器可在 24
+              小时内免输密码；分享关闭、改密或到期仍会使访问失效。
+            </p>
+          </DetailTip>
+        </div>
+        <InputGroup className="h-12 min-h-12 w-full rounded-lg border bg-background shadow-none">
+          <InputGroup.Prefix className="border-0 pr-2 text-foreground">
+            <LockKeyhole className="size-4" aria-hidden="true" />
+          </InputGroup.Prefix>
+          <InputGroup.Input
+            ref={input}
+            data-testid="share-password-input"
+            type="password"
+            autoComplete="current-password"
+            autoFocus={revoked}
+            placeholder="请输入分享密码"
+            className="h-full min-w-0 py-0 text-base leading-[1.5] placeholder:text-foreground min-[1200px]:text-sm"
+          />
+        </InputGroup>
         {remaining === 0 ? <FieldError>{error}</FieldError> : null}
       </TextField>
       {remaining > 0 ? (
@@ -150,10 +165,6 @@ export function SharePasswordForm({
           </Alert.Content>
         </Alert>
       ) : null}
-      <p className={`text-sm leading-[22px] ${revoked ? 'text-muted' : ''}`}>
-        验证成功后，此浏览器可在 24
-        小时内免输密码；分享关闭、改密或到期仍会使访问失效。
-      </p>
       <Button
         data-testid="share-password-submit"
         type="submit"

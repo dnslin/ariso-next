@@ -1,10 +1,10 @@
 # Issue #192 / T-SHR-03 实施与验证
 
-[草稿PR #251](https://github.com/dnslin/ariso-next/pull/251)，分支 `codex/issue-192-sharing`；产品实现提交 `0e1d4ab6`。GitHub实际回读为OPEN、draft、可合并，statusCheckRollup为空；没有远端检查，不记作CI通过。Issue #192仍OPEN，未合并或关闭。
+[草稿PR #251](https://github.com/dnslin/ariso-next/pull/251)，分支 `codex/issue-192-sharing`；初始产品实现提交 `0e1d4ab6`，本轮局部返修另提交。GitHub实际回读为OPEN、draft、可合并，statusCheckRollup为空；没有远端检查，不记作CI通过。Issue #192仍OPEN，未合并或关闭。
 
 本记录维护本次匿名分享密码页、公开列表及状态检查的实际交付证据；设计规则沿用 [handoff](../../design/handoff.md)，执行及完成条件沿用 [execution](../../tasks/execution.md)。产品需求归 [SPEC-sharing](../../specs/SPEC-sharing.md)，不改写冻结 PRD。
 
-最新人工反馈要求说明改为Tips、空态使用占位组件、预览标题/简介使用自然中文。中文独立预览数据已实际修正；局部提案已恢复真实浏览器验证，产品布局与Figma变更仍待该提案批准。下方既有实现与通过记录对应已获批的 `refined.html` 版本，不能代替本轮返修实施或人工验收。
+最新人工反馈的 Tips、EmptyState 和密码锁图标已获明确批准并实施，Figma 已同步；独立人工预览使用自然中文名称与简介。原提案记录保留为历史，最新实际验证见“获批局部反馈实施”。最终人工验收仍未完成，PR 保持草稿。
 
 ## 范围与前置
 
@@ -131,10 +131,40 @@ DOM断言核对实际 `main` 及全部名称属性；锁定HTML/RSC响应仍核�
 
 作者实际查看桌面、手机、浅深色和短视口截图，先核对公共背景、返回入口、品牌与主区，再核对数量、占位和Tips。独立设计者实际重读Figma密码 `432:3573/432:7913`、空态 `433:4020/433:8693` 及截图，逐图评审提案；结果见 [局部提案独立设计评审](feedback-proposal/design-review.md)。此审计只对应提案，不能代替产品实施、真实HeroUI回归、Figma同步或人工批准。
 
+## 获批局部反馈实施（2026-10-06）
+
+用户随后明确要求“新的布局和tips要同步Figma 按照这个原型进行开发和实施”，并补充密码输入框缺少左侧图标。本轮据此实施获批提案，未再次请求确认。上节原型和待批准结论保留为当时历史；它们不替代本节实际产品证据。
+
+产品只改分享密码表单和列表空态：输入采用已有 HeroUI InputGroup 与16px Lucide LockKeyhole；授权说明复用无数据/无管理控制器的既有 DetailTip（HeroUI Popover），从常驻段落移入标签旁44px“访问说明”。正常/错密/提交中/限流/撤权均消费同一表单，错误和生产倒计时继续直接可见。空列表复用已锁 HeroUI EmptyState，以36px Images、14/22px中性文字显示一次“暂无可展示的图片”，数量显示真实“0 张图片”，保留220/280px区域。相册名称与简介仍由匿名DTO提供；自然中文仅用于独立人工预览数据，不增加英文限制或静默翻译。
+
+修改前真实产品失败证据见[原实现检查](feedback-implementation/browser-red/report.json)及其桌面截图，明确记录缺锁图标、无Tips入口、常驻说明和重复空态。原型也补了实际 Lucide 锁图标，未手绘路径。使用 frontend-ui-engineering、vercel-react-best-practices、适用 Figma 技能和 ego-browser；继续同一 Space37，未新建空间或下载浏览器。
+
+| 本轮实际检查           | 命令与结果                                                                                                                                                                                                                                                                                                                                                                                                   | 证据                                                                                                                                       |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| 安装、类型、静态、构建 | Node24.18.1 / pnpm11.19.0；`pnpm install --frozen-lockfile`、`pnpm run typecheck`、`pnpm run lint`、`pnpm run build`均exit0，锁文件未变。浏览器脚本时序修正另执行受影响两文件ESLint/语法检查；随后Info图标范围修正重新执行类型、静态检查与构建，均exit0。构建仍有已记录的可选异平台/追踪依赖警告。                                                                                                           | [最终命令与退出结果](feedback-implementation/check-results.json)；原始日志保存在忽略的 `test-results/sharing-192/feedback-*`               |
+| 浏览器前置构建         | `pnpm run test:browser -- --suite sharing-public --only representative`实际完成外壳/UI夹具构建；首次因未传原空间ID在浏览器启动前失败。随后复用已生成产物，明确传 `EGO_TASK_SPACE=37` 执行原共用运行器，没有另建浏览器。                                                                                                                                                                                      | 忽略的 `feedback-browser-representative-command.log`保留失败，不记作浏览器通过                                                             |
+| 代表状态               | `EGO_TASK_SPACE=37 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/sharing-192/feedback-info-representative node scripts/verify-browser.mjs --suite sharing-public --only representative` exit0：14项、61个布局。五宽度浅深色、真实密码校验/解锁、错误字段、空态、44px目标；Tips点击/Enter/Space、Escape/外部关闭/回焦、输入和URL及滚动严格保留、零误提交/解锁；390×420真实滚轮后完整主操作与空态图文可达。 | [实际报告](feedback-implementation/browser-representative/sharing-public.json)及同目录PNG                                                  |
+| 恢复状态               | 同一运行器 `--suite sharing-public --only recovery`（独立报告目录 `feedback-info-recovery`）exit0：7项、36个布局。原503保留内容/重试、真实auth_revision撤权清空并回焦、撤权Tips五宽度浅深/短视口、成功解锁后首读失败恢复和内部诊断均执行。                                                                                                                                                                   | [实际报告](feedback-implementation/browser-recovery/sharing-public.json)及同目录PNG                                                        |
+| 生产限流               | `ego-browser nodejs < test-results/sharing-192/feedback-limit-browser.mjs` exit0；独立生产夹具真实20次401后429，`Retry-After=59`，59.808秒后启用重试并实际解锁200；Info实际16px。修正前57/58.071秒结果保留于Info红证据目录，不覆盖历史。四个桌面/手机浅深色显示保留输入、锁、Tips、直接倒计时与禁用主按钮；Tips没有额外解锁请求。没有改生产时间窗或伪造倒计时。                                              | [实际报告](feedback-implementation/browser-429/report.json)及四张PNG                                                                       |
+| 自然中文预览           | `ego-browser nodejs < test-results/sharing-192/feedback-live-implemented.mjs` exit0，1440×1080/390×844浅深四态；真实items200、total0/items0，旅行手记与中文简介，无验证标记，实际EmptyState已实施。                                                                                                                                                                                                          | [真实中文数据与新空态](feedback-implementation/browser-live/live-copy-report.json)及四张PNG                                                |
+| 格式检查               | `pnpm run format:check` 最终exit0。初次仅四个新增JSON未格式化，失败日志保留；针对实际新增证据格式化后重查全项目，未改规则或忽略范围。结果记录的后续两文档更新另定向格式检查。                                                                                                                                                                                                                                | 忽略的 `feedback-format.log`（初次失败）与 `feedback-format-final.log`（最终通过）；[最终检查](feedback-implementation/check-results.json) |
+| 文档一致性             | Node24 `node docs/tasks/check.mjs` exit0：120 tasks / 298 requirements，无缺号或循环；`git diff --check` exit0。                                                                                                                                                                                                                                                                                             | 忽略的 `feedback-taskcheck-final.log`；不冒充运行时功能验证                                                                                |
+| 真实品牌密码预览       | `ego-browser nodejs < test-results/sharing-192/feedback-live-gate.mjs` exit0；1440×1080/390×844浅深四组闭合/展开共八图，真实Ariso品牌、16px手机输入、48px框、16px锁与44pxTips入口。                                                                                                                                                                                                                          | [相同视口的正式预览](feedback-implementation/browser-live/live-gate-report.json)及八张PNG                                                  |
+
+新行为仍在默认全量调用链：`package.json test:browser`→共用运行器full的sharing-public→代表与behavior/recoveries；普通Tips、错密、429、撤权和新短空态均未因定向验证从默认入口省略。分享专属 `sharing-public-feedback.mjs`只读取字体/原生滚动和短空态；动态导入沿既有场景URL，不增加共享suite参数。本轮未改服务端、schema、ShareSession、分页或竞态逻辑；前列已执行单元/集成与未改行为证据保留，不把本轮定向UI通过称为新的全量通过。
+
+收尾真实核对发现已锁HeroUI `button.css` 的 `size-5 / sm:size-4 / -mx-0.5` 覆盖了 Lucide 的 size 属性：[修正前实际手机20px与负边距](feedback-implementation/browser-info-red/report.json)。本轮仅在分享密码表单现有标签行以Tailwind固定Info 16px及零水平margin，不修改公共DetailTip或其他消费者；默认场景新增实际计算尺寸与边距断言，修正前通过报告另保留于 `browser-info-red/prior-*-report.json`，不能代替修正后验证。
+
+本轮三次测试观察失败原样保留：[初次短密码滚动未完成](feedback-implementation/browser-representative-first/sharing-public.json)、[滚动中取基线导致117→115.5](feedback-implementation/browser-representative-second/sharing-public.json)、[切宽度时网格尚未由2列更新到4列](feedback-implementation/browser-recovery-first/sharing-public.json)。实际独立短页[诊断](feedback-implementation/browser-short-diagnostic/scroll-settling.json)证明原生滚动稳定后123px在Tips打开/关闭期间保持；[主按钮截图及几何](feedback-implementation/browser-short-diagnostic/report.json)证明完整48px操作可达。修正仅等待字体就绪、原生坐标连续稳定和真实响应式列数完成；全部严格位置、尺寸与列数断言保留，未设置滚动位置、增加容差、跳过检查或改产品。首次失败截图在helper恢复视口后捕获，不能冒充短页失败瞬间，另留真实短页诊断图。
+
+本轮 Figma 原节点和浅深/展开代表图同步见[节点、属性读回与实际PNG](feedback-implementation/figma-sync.md)。普通、错密、限流和撤权以实际同一密码表单为依据；旧Figma错误页/无输入等待稿的偏差在本轮同步处理，不删除公共规则。功能审查与设计对照分别见[独立代码评审](feedback-implementation/code-review.md)和[独立设计评审](feedback-implementation/design-review.md)，最终人工验收仍单独开放。
+
+人工预览已迁到忽略目录中的独立生产运行副本，后续构建不再删除其运行路径。数据库、图片、账号、分享地址与密码保留；初次迁移旧测试进程未保存启动密钥，经现有加密配置校验确认测试数据可正常启动后，保存私有启动配置，原有登录可能需重新验证。[实际连续性](feedback-implementation/preview-continuity.json)核对健康200、所有者登录200、未授权401、正确解锁200和公开40/124。私有配置0600，凭证不进入代码/文档/PR。人工验收实例保留直到用户明确停止或清理。
+
 ## 完成状态与剩余项
 
-既有获批版本的代码实施、本卡适用单元/集成/类型/静态检查和本地构建完成，独立代码审查通过。本卡浏览器代表、分页/刷新/恢复及竞态均已取得实际通过证据；默认全量已结束但保持失败，10个范围外失败未修复。既有版本独立设计评审已逐项对照Figma与真实页面并通过，范围内偏差均关闭。本轮反馈的中文预览数据已实际修正并验证；局部提案已做真实浏览器验证，产品与Figma返修尚未实施，待提案批准。最终人工验收尚未完成，PR保持草稿。这些状态分别核对，不由其他检查或Figma同步代替。
+既有获批版本的代码实施、本卡适用单元/集成/类型/静态检查和本地构建完成，独立代码审查通过。本卡浏览器代表、分页/刷新/恢复及竞态均已取得实际通过证据；默认全量已结束但保持失败，10个范围外失败未修复。既有版本独立设计评审已逐项对照Figma与真实页面并通过，范围内偏差均关闭。本轮局部提案已获明确批准并实施，产品代表/恢复/生产429与自然中文预览实际通过；代码独立复审通过。本轮Figma状态同步完成，独立设计复审已逐项通过；收尾Info图标覆盖问题已局部修正，受影响类型、静态、构建、代表、恢复和生产429验证已通过；独立设计复审已实际对照修正后的受影响截图与Figma，所有范围内偏差关闭。最终人工验收尚未完成，PR保持草稿。这些状态分别核对，不由其他检查或Figma同步代替。
 
 后续人工验收使用独立测试实例及随机账号/密码，地址和凭证仅在私有对话提供；预览保留直到用户明确要求停止或清理。物理手机/软键盘/非零安全区依execution不作为本轮必需实测，事实保持未实测。Release双架构容器按发布流程取得，不能标为本地CI通过。
 
-人工验收重点：桌面与手机的封面/标题/数量层级、40张后追加、网格与占位、空相册、错误密码及正确解锁；比较浅/深色和短视口的滚动与键盘焦点。受控503/撤销/迟到响应已由真实浏览器验证，截图及注入边界见上方报告；预览故障不通过改动用户数据制造。对应获批主节点为 `433:3610/433:8265`，恢复节点为 `728:16084/728:15743` 与 `728:16202/728:15870`。
+人工验收重点：密码框左侧Lock、访问说明点击/键盘展开及关闭回焦、真实零数量和唯一空态占位、自然中文相册信息；桌面与手机的封面/标题/数量层级、40张后追加、网格与占位、错误密码及正确解锁；比较浅/深色和短视口的滚动与键盘焦点。受控503/撤销/迟到响应已由真实浏览器验证，截图及注入边界见上方报告；预览故障不通过改动用户数据制造。对应获批主节点为 `433:3610/433:8265`，恢复节点为 `728:16084/728:15743` 与 `728:16202/728:15870`。

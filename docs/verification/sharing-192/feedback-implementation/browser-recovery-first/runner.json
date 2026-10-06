@@ -1,0 +1,13 @@
+{
+  "startedAt": "2026-10-06T07:42:23.691Z",
+  "platform": "darwin",
+  "arch": "arm64",
+  "node": "v24.18.1",
+  "status": "failed",
+  "suite": "sharing-public",
+  "only": "recovery",
+  "pageLabel": "p1",
+  "taskSpaceId": 37,
+  "error": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (sharing-public.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-192-sharing/ariso/scripts/verify-browser.mjs:205:12)\n    at async runSharingPublic (file:///Users/dnslin/.codex/worktrees/issue-192-sharing/ariso/scripts/verify-browser.mjs:282:5)\n    at async file:///Users/dnslin/.codex/worktrees/issue-192-sharing/ariso/scripts/verify-browser.mjs:363:37",
+  "finishedAt": "2026-10-06T07:42:43.748Z"
+}

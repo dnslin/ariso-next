@@ -1,0 +1,36 @@
+{
+  "status": "expected-failure",
+  "productCommit": "0e1d4ab6",
+  "checks": [
+    {
+      "scenario": "approved-password-tips-and-icon",
+      "actual": {
+        "tip": false,
+        "lock": false,
+        "inlineHelp": true
+      },
+      "expected": {
+        "tip": true,
+        "lock": true,
+        "inlineHelp": false
+      }
+    },
+    {
+      "scenario": "approved-empty-component-and-count",
+      "actual": {
+        "component": null,
+        "icon": false,
+        "heading": true,
+        "count": false,
+        "occurrences": 2
+      },
+      "expected": {
+        "component": "empty-state",
+        "icon": true,
+        "heading": false,
+        "count": true,
+        "occurrences": 1
+      }
+    }
+  ]
+}

@@ -1,7 +1,9 @@
 import { Button } from '@heroui/react/button';
+import { EmptyState } from '@heroui/react/empty-state';
 import { useState } from 'react';
 import { Skeleton } from '@heroui/react/skeleton';
 import { Spinner } from '@heroui/react/spinner';
+import { Images } from 'lucide-react';
 import type { PublicSharePage } from '../../server/sharing/public-types';
 import { ShareBrandHeading, type ShareBrand } from './brand';
 import { ShareGallery } from './gallery';
@@ -90,7 +92,7 @@ export function ShareList({
               {cursorInvalid ? (
                 '请刷新相册后继续浏览。'
               ) : page.total === 0 ? (
-                '暂无可展示的图片'
+                `${page.total} 张图片`
               ) : !page.hasMore && page.items.length === page.total ? (
                 `已显示全部 ${page.total} 张图片`
               ) : (
@@ -153,15 +155,14 @@ export function ShareList({
               ))}
             </div>
           ) : (
-            <div
+            <EmptyState
               data-testid="share-empty"
-              className="grid h-[220px] content-center text-center min-[768px]:h-[280px]"
+              className="text-muted grid h-[220px] content-center justify-items-center gap-3 p-0 text-center min-[768px]:h-[280px]"
               role="status"
             >
-              <h2 className="text-[22px] leading-8 font-medium">
-                暂无可展示的图片
-              </h2>
-            </div>
+              <Images size={36} aria-hidden="true" />
+              <p className="text-sm leading-[22px]">暂无可展示的图片</p>
+            </EmptyState>
           )}
           {cursorInvalid ? (
             <Button
