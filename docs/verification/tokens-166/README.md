@@ -124,3 +124,7 @@ HeroUI3.2.6没有Code/Snippet导出，实际检查组件与React Aria类型后�
 按 `ego-browser` 技能（本机 `/Users/dnslin/.agents/skills/ego-browser/SKILL.md`） 的原文“Stop when the user takes control or the space is inactive or unassigned. Do not retry or route around the stop.”，未重新claim、另建空间或切换浏览器。恢复需要用户明确授权“继续浏览器验证”，此前同一个请求保持待答，不重复询问。
 
 [产品预览](http://tokens-166.localhost:3169/settings/api)与[已审原型](http://127.0.0.1:3168/settings/api)均保持，产品预览复用原独立账号和数据库，不用它作为自动测试数据。私有凭证不写入文档或PR。用户再次查看产品时，重点核对tips、有效期切换、单行全文/复制拒绝、关闭提醒和两端记录操作排列。
+
+最终源码对照获批原型时修正了两个视觉细节：HeroUI horizontal RadioGroup只控制键盘方向，原型要求标签在上，因此显式保留纵向容器；44px高度放到实际Radio.Content点击标签。单行代码框补回原型细边框、6px内边距、4px间距、Copy图标与中性12px提醒。未改复制或期限数据流。上述输入已实际重新构建（退出0且TypeScript完成）及[定向ESLint](checks/refinement/lint-layout.txt)；新浏览器仍未执行。
+
+全量格式检查首次实际失败于既有 `checks/credential-scan.json` 的数组换行，[原结果](checks/refinement/format-red.txt)保留。该文件仅按Prettier规范化排版，内容不变；命令日志副本只去掉终端进度行尾与多余空行，原始输出仍保留在忽略目录。格式复验结果在最终证据补充，不用构建或源码审查代替。

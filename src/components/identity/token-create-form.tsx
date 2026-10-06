@@ -30,7 +30,7 @@ export function TokenCreateForm({
         void creator.submit();
       }}
     >
-      <Modal.Body className="m-0 grid flex-none gap-3.5 overflow-visible p-0 text-sm leading-normal text-foreground">
+      <Modal.Body className="m-0 grid flex-none gap-5 overflow-visible p-0 text-sm leading-normal text-foreground">
         <p className="text-muted">仅允许上传图片，可创建多个 Token。</p>
         <TextField
           name="name"
@@ -59,29 +59,21 @@ export function TokenCreateForm({
             value === 'finite' ? creator.enableExpiry() : creator.removeExpiry()
           }
           orientation="horizontal"
-          className="gap-1.5"
+          className="flex-col! items-stretch gap-2"
         >
           <Label className="text-sm font-normal">有效期</Label>
           <div className="flex flex-wrap gap-x-6 gap-y-1">
-            <Radio
-              value="never"
-              data-testid="api-no-expiry"
-              className="min-h-11"
-            >
-              <Radio.Content>
-                <Radio.Control className="border border-border">
+            <Radio value="never" data-testid="api-no-expiry">
+              <Radio.Content className="min-h-11 gap-2.5 font-normal">
+                <Radio.Control className="border border-muted/50">
                   <Radio.Indicator />
                 </Radio.Control>
                 <Label className="text-sm font-normal">永不过期</Label>
               </Radio.Content>
             </Radio>
-            <Radio
-              value="finite"
-              data-testid="api-set-expiry"
-              className="min-h-11"
-            >
-              <Radio.Content>
-                <Radio.Control className="border border-border">
+            <Radio value="finite" data-testid="api-set-expiry">
+              <Radio.Content className="min-h-11 gap-2.5 font-normal">
+                <Radio.Control className="border border-muted/50">
                   <Radio.Indicator />
                 </Radio.Control>
                 <Label className="text-sm font-normal">指定时间</Label>
@@ -97,7 +89,7 @@ export function TokenCreateForm({
             error={errors.expiresIn}
           />
         ) : null}
-        <p className="text-[13px] text-muted">
+        <p className="text-xs leading-relaxed text-muted">
           完整 Token 只显示一次，创建后请立即保存。
         </p>
         {creator.feedback ? (

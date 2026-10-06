@@ -5,7 +5,7 @@ import { Button } from '@heroui/react/button';
 import { Input } from '@heroui/react/input';
 import { Modal } from '@heroui/react/modal';
 import { Tooltip } from '@heroui/react/tooltip';
-import { ClipboardCopy, Check } from 'lucide-react';
+import { Copy, Check } from 'lucide-react';
 import { formatTokenTime } from './token-time';
 import type { TokenCreator } from './token-use-create';
 
@@ -71,21 +71,21 @@ export function TokenSecret({
       ? 'Token 已复制'
       : '复制 Token';
   return (
-    <Modal.Body className="m-0 grid flex-none gap-3.5 overflow-visible p-0 text-sm leading-normal text-foreground">
+    <Modal.Body className="m-0 grid flex-none gap-4 overflow-visible p-0 text-sm leading-normal text-foreground">
       <p className="wrap-anywhere">
         {creator.record?.name ?? creator.record?.id} ·{' '}
         {creator.record?.expiresAt
           ? `到期于 ${formatTokenTime(creator.record.expiresAt, timeZone)}`
           : '永不过期'}
       </p>
-      <div className="flex min-w-0 items-center gap-2 rounded-xl bg-default p-2">
+      <div className="flex min-w-0 items-center gap-1 rounded-xl border border-border bg-default p-1.5">
         <Input
           ref={secretField}
           data-testid="api-secret"
           aria-label="完整 Token"
           defaultValue={creator.secret}
           readOnly
-          className="h-11 min-w-0 flex-1 rounded-lg border-0 bg-transparent px-2 font-mono text-sm text-foreground shadow-none"
+          className="h-11 min-w-0 flex-1 rounded-lg border-0 bg-transparent px-2.5 font-mono text-sm text-foreground shadow-none"
         />
         <Tooltip delay={150}>
           <Button
@@ -101,13 +101,12 @@ export function TokenSecret({
             {copied ? (
               <Check className="size-[18px]" aria-hidden />
             ) : (
-              <ClipboardCopy className="size-[18px]" aria-hidden />
+              <Copy className="size-[18px]" aria-hidden />
             )}
           </Button>
           <Tooltip.Content className="text-xs">{copyLabel}</Tooltip.Content>
         </Tooltip>
       </div>
-      <p>关闭后无法再次查看。请将完整 Token 保存在你信任的位置。</p>
       {creator.copyFailed ? (
         <p
           data-testid="api-copy-error"
@@ -117,6 +116,9 @@ export function TokenSecret({
           复制失败：无法写入剪贴板。请选中上方完整 Token 手动复制。
         </p>
       ) : null}
+      <p className="text-xs leading-relaxed text-muted">
+        关闭后无法再次查看。请将完整 Token 保存在你信任的位置。
+      </p>
     </Modal.Body>
   );
 }
