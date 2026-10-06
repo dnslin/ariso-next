@@ -6,7 +6,7 @@
 
 已实现独立 Better Auth / SQLite / Next 协议实验。生产 identity 仍只开放本地邮箱登录、退出和会话；GitHub 配置与账号界面由 #181 实施。用户随后明确授权检查并修复全量集成失败，本次追加统计测试断言性能修正、媒体夹具和生产媒体设置保存的事务修正、身份实验构建目录隔离，以及无文字 SVG 的字体扫描优化。没有修改 schema、冻结 PRD、Figma 或产品 UI。桌面、手机、主题、公共组件和人工 UI 验收不适用；实验页面只复用 #52 的 HTTP 外壳，不作为产品界面证据。
 
-真实 GitHub 已验证同/不同邮箱主动绑定、两者绑定后登录、注册拒绝、解绑及配置生效。追加的“同邮箱绑定后再次 GitHub 登录”首次在授权页超时，实施者在检查页面前提前关闭 TaskSpace 38。用户随后明确授权新空间；TaskSpace 39 遇到 GitHub 重新授权限制，交给用户处理。用户完成授权并交回后，在同一空间补验通过，整体真实 GitHub 浏览器记录为 pass。代码和适用本地检查完成。前三轮全量失败均保留；四项修复后最终完整集成 151 文件 / 1,491 项全部通过，没有失败或跳过，见[最终全量报告](./integration-ready.txt)。真实 GitHub 浏览器验证与独立代码评审完成。设计评审与人工 UI 验收不适用；本实验不代替 #181 的产品实现和验收。PR 将在本轮提交推送后转为正式待评审，不合并或关闭 #145。
+真实 GitHub 已验证同/不同邮箱主动绑定、两者绑定后登录、注册拒绝、解绑及配置生效。追加的“同邮箱绑定后再次 GitHub 登录”首次在授权页超时，实施者在检查页面前提前关闭 TaskSpace 38。用户随后明确授权新空间；TaskSpace 39 遇到 GitHub 重新授权限制，交给用户处理。用户完成授权并交回后，在同一空间补验通过，整体真实 GitHub 浏览器记录为 pass。代码和适用本地检查完成。前三轮全量失败均保留；四项修复后最终完整集成 151 文件 / 1,491 项全部通过，没有失败或跳过，见[最终全量报告](./integration-ready.txt)。真实 GitHub 浏览器验证与独立代码评审完成。设计评审与人工 UI 验收不适用；本实验不代替 #181 的产品实现和验收。PR 已转为正式待评审，尚未合并或关闭 #145。
 
 原实现的两轮全量集成都失败。首轮 1,485 项通过，统计模块一项默认 5 秒超时；当时该文件 13 项定向复跑通过，见[首轮报告](./integration-initial.txt)与[复跑报告](./analytics-retry.xml)。第二轮 1,486 项通过，媒体夹具准备数据时出现 SQLite 锁定；当时该文件 8 项定向复跑通过，见[第二轮报告](./integration-final.txt)与[媒体复跑报告](./media-retry.xml)。这些历史结果保留，后续修复不把定向通过改记成原两轮全量通过。
 
@@ -125,4 +125,4 @@ macOS 26.6.2 / arm64，Node 24.19.0，pnpm 11.19.0，Better Auth / Drizzle adapt
 
 本地 HTTP 不等于真实 TLS 部署。Linux/AMD64/ARM64 镜像只在既有 Release 流程验证；本次没有创建 Release、发布镜像或部署。
 
-初次身份实验已提交并推送分支 `codex/issue-145-github-binding`，创建 [PR #249](https://github.com/dnslin/ariso-next/pull/249)。本轮追加修复推送前，实际 `gh pr view 249 --json state,isDraft,headRefName,statusCheckRollup,mergeStateStatus` 返回 OPEN、isDraft=true、statusCheckRollup=[]、mergeStateStatus=CLEAN；`gh pr checks 249` 返回 no checks reported。这是没有远端检查，不是 CI 通过。追加修复、全量结果和独立复审已收齐，将提交推送后更新 PR 状态；未合并、关闭 Issue 或清理分支/worktree。前三轮失败保留为历史结果，最终全量通过单独记录。
+本轮追加修复及证据已随提交 `9ecdd4552c4bac2666172e951152b28740edd030` 推送到 `codex/issue-145-github-binding`。[PR #249](https://github.com/dnslin/ariso-next/pull/249) 已通过 `gh pr ready 249` 转为正式待评审。实际 `gh pr view 249 --json state,isDraft,headRefName,headRefOid,statusCheckRollup,mergeStateStatus` 返回 OPEN、isDraft=false、headRefOid=9ecdd4552c4bac2666172e951152b28740edd030、statusCheckRollup=[]、mergeStateStatus=CLEAN；`gh pr checks 249` 返回 no checks reported。这是没有远端检查，不是 CI 通过，没有等待不存在的工作流。未合并、关闭 Issue 或清理分支/worktree。前三轮失败保留为历史结果，最终全量通过单独记录。最后检查待提交的 27 个文件没有真实 Secret、密码、credential hash 或邮箱匹配。保留的实验预览 `http://127.0.0.1:3145/` 实际返回 200，凭证仍只在忽略目录。
