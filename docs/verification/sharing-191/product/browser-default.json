@@ -1,0 +1,167 @@
+{
+  "status": "failed",
+  "suite": "full",
+  "startedAt": "2026-10-06T07:55:34.362Z",
+  "finishedAt": "2026-10-06T08:21:38.830Z",
+  "temporaryDirectoryRemoved": true,
+  "stages": {
+    "runtime-start": {
+      "status": "passed"
+    },
+    "shell-start": {
+      "status": "passed"
+    },
+    "runtime": {
+      "status": "passed"
+    },
+    "identity-1440-start": {
+      "status": "passed"
+    },
+    "identity-1440-setup": {
+      "status": "passed"
+    },
+    "owner-runtime-1440": {
+      "status": "passed"
+    },
+    "identity-1440-restart": {
+      "status": "passed"
+    },
+    "m2-1440-before": {
+      "status": "passed"
+    },
+    "m2-1440-after": {
+      "status": "passed"
+    },
+    "interaction-polish-1440": {
+      "status": "passed"
+    },
+    "workspace-continuity-1440": {
+      "status": "passed"
+    },
+    "account-1440": {
+      "status": "passed"
+    },
+    "identity-390-start": {
+      "status": "passed"
+    },
+    "identity-390-setup": {
+      "status": "passed"
+    },
+    "owner-runtime-390": {
+      "status": "passed"
+    },
+    "identity-390-restart": {
+      "status": "passed"
+    },
+    "processing": {
+      "status": "passed"
+    },
+    "storage-admin": {
+      "status": "passed"
+    },
+    "storage-cors": {
+      "status": "passed"
+    },
+    "storage-cors-close": {
+      "status": "passed"
+    },
+    "library": {
+      "status": "failed"
+    },
+    "library-feedback": {
+      "status": "passed"
+    },
+    "library-selection": {
+      "status": "passed"
+    },
+    "library-selection-reconciliation": {
+      "status": "passed"
+    },
+    "library-query": {
+      "status": "passed"
+    },
+    "library-filters": {
+      "status": "passed"
+    },
+    "library-scale": {
+      "status": "passed"
+    },
+    "library-batch": {
+      "status": "passed"
+    },
+    "library-reprocess": {
+      "status": "passed"
+    },
+    "library-copy": {
+      "status": "passed"
+    },
+    "trash-query-batch": {
+      "status": "passed"
+    },
+    "trash-cleanup": {
+      "status": "passed"
+    },
+    "shell-navigation": {
+      "status": "passed"
+    },
+    "albums": {
+      "status": "passed"
+    },
+    "album-cover": {
+      "status": "passed"
+    },
+    "tags": {
+      "status": "passed"
+    },
+    "upload": {
+      "status": "failed"
+    },
+    "upload-polling": {
+      "status": "passed"
+    },
+    "upload-input": {
+      "status": "passed"
+    },
+    "upload-submissions": {
+      "status": "passed"
+    },
+    "upload-relations": {
+      "status": "passed"
+    },
+    "sharing-management": {
+      "status": "failed"
+    },
+    "m2-390-before": {
+      "status": "passed"
+    },
+    "m2-390-after": {
+      "status": "passed"
+    },
+    "interaction-polish-390": {
+      "status": "passed"
+    },
+    "workspace-continuity-390": {
+      "status": "passed"
+    },
+    "account-390": {
+      "status": "passed"
+    },
+    "delivery-s3": {
+      "status": "passed"
+    },
+    "sharing-protocol": {
+      "status": "passed"
+    },
+    "sharing-experiment": {
+      "status": "passed"
+    },
+    "isolated-ui": {
+      "status": "passed"
+    }
+  },
+  "failureReasons": {
+    "library": "unregistered ImageMagick source in scanned storage namespace",
+    "upload": "enabled viewer fixture storage remained after library seed failure",
+    "sharing-management": "long URL fixture changed HTTP to HTTPS and invalidated actual session"
+  }
+}

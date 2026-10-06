@@ -155,7 +155,16 @@ it('returns actual configuration and pagination without credentials; duplicate c
     showName: true,
   });
   const list = await request('/api/shares?pageSize=20&q=协议');
-  expect((await list.json()).items).toContainEqual(patched);
+  expect((await list.json()).items).toContainEqual({
+    ...patched,
+    publicImageCount: 0,
+    cover: {
+      imageId: null,
+      displayName: null,
+      status: 'empty',
+      thumbnailUrl: null,
+    },
+  });
   for (const query of ['pageSize=30', 'page=0', 'page=1&page=2', 'unknown=1'])
     expect((await request(`/api/shares?${query}`)).status).toBe(400);
   const rotated = (await (await request(`${path}/rotate`, 'POST')).json())

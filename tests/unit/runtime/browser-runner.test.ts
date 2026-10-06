@@ -86,6 +86,11 @@ describe('browser runner argument boundaries', () => {
     ['sharing-public', 'behavior'],
     ['sharing-public', 'race'],
     ['sharing-public', 'recovery'],
+
+    ['sharing-management'],
+    ['sharing-management', 'representative'],
+    ['sharing-management', 'behavior'],
+    ['sharing-management', 'recovery'],
     ['shell-navigation'],
     ['library'],
     ['library', 'recovery'],
@@ -168,7 +173,14 @@ describe('browser runner argument boundaries', () => {
 
   it.each(
     [...new Set(combinations.map(([suite]) => suite))].filter(
-      (suite) => !['library', 'viewer', 'processing', 'tokens'].includes(suite),
+      (suite) =>
+        ![
+          'library',
+          'viewer',
+          'processing',
+          'tokens',
+          'sharing-management',
+        ].includes(suite),
     ),
   )('handles recovery according to suite %s ownership', (suite) => {
     const result = parse(['--suite', suite, '--only', 'recovery']);
@@ -232,6 +244,27 @@ describe('browser runner argument boundaries', () => {
     expect(result.status).not.toBe(0);
     expect(result.stderr).toContain(error);
   });
+
+  it.each([
+    ['--only', 'cleanup', '--only requires an applicable targeted suite'],
+    [
+      '--storage-config',
+      'unused.json',
+      '--storage-config applies only to storage-admin live',
+    ],
+    [
+      '--preview-config',
+      'unused.json',
+      '--preview-config applies only to storage-admin feedback',
+    ],
+  ])(
+    'rejects unrelated sharing management parameter %s',
+    (option, value, error) => {
+      const result = parse(['--suite', 'sharing-management', option, value]);
+      expect(result.status).not.toBe(0);
+      expect(result.stderr).toContain(error);
+    },
+  );
 
   it.each([
     [

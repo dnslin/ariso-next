@@ -20,7 +20,7 @@ export function AlbumCoverImage({
   cover,
   onError,
 }: {
-  cover: Album['cover'];
+  cover: Pick<Album['cover'], 'displayName' | 'status' | 'thumbnailUrl'>;
   onError?: () => void;
 }) {
   const [failed, setFailed] = useState(false);

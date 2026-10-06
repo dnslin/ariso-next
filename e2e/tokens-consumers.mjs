@@ -17,6 +17,10 @@ export async function verifyTokensConsumers(page, config, report) {
         await page.goto(`${config.origin}${path}`);
         await page.waitForSelector('[data-slot="tabs"]');
         await page.waitForFunction((path) => location.pathname === path, path);
+        if (path === '/settings/api')
+          await page.waitForSelector(
+            '[data-testid="api-page"][data-state="ready"]',
+          );
         if (width >= 1200) {
           const state = await page.evaluate(() => {
             const tabs = [
@@ -56,6 +60,8 @@ export async function verifyTokensConsumers(page, config, report) {
             labels,
             categories.map(([, label]) => label),
           );
+          if (path === '/settings/api')
+            await ui.screenshot(`consumer-api-categories-open-${theme}`, width);
           await page.keyboard.press('Escape');
         }
         await ui.geometry(`consumer-${path.split('/').at(-1)}-${theme}`, width);

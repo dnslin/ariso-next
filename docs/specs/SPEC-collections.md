@@ -109,6 +109,7 @@ media 回收图片只改生命周期状态，不删除这四张表中的关系�
 | `attachAcceptedImage(tx, imageId, selection)`                   | 必须加入调用者的 media 接收事务，不独立提交；检查目标仍存在                                                                                                            |
 | `addMemberships / removeMemberships`                            | 单图事务、多图逐项结果；重复操作无变化成功；不以标签名称重新绑定旧请求                                                                                                 |
 | `resolveAlbumCover`                                             | 返回选中的图片身份、手动/自动/空状态；内容授权留给 delivery 组合层                                                                                                     |
+| `readAlbumSummaries(tx, albumIds)`                              | 同一读事务内批量返回明确相册 ID 的正常成员数量、公开成员数量和封面身份；公开数量包含处理中/失败/存储停用，排除私有/回收/删除中；不读取图片版本或文件                   |
 | `readAlbumMembers / readAlbumNeighbors / readAlbumMemberStates` | 同一 tx 内按固定展示规则分页、取前后邻居或最多 80 个明确 ID 的状态；调用者明确 normal/public 范围，public 排除私有/回收/删除中，在分页和计数前过滤；不作文件读取或授权 |
 
 补充 `countAlbums(tx)` 供当前用量读取，计算现存相册行数，包含空相册，不因多个成员关联重复计数；不读取文件或向 analytics 反向回调。

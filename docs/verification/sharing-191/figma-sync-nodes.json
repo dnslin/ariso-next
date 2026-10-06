@@ -1,0 +1,1395 @@
+{
+  "fileKey": "74sT9Hrf8G4czcWeTkET5b",
+  "date": "2026-10-06",
+  "note": "IDs are actual Figma write/read results. Created list includes SVG frame IDs replaced during createComponentFromNode and instance descendants propagated by scoped component updates. Removed IDs are only explicitly recorded removals; lists describe operations, not a claim that every created ID remains live. No complete scene graph or screenshot URLs are stored. 仓库保留业务根、组件ID、操作数量与最终回读；逐条实例后代操作ID原始记录保留在本任务忽略目录，不以两万余行机械ID列表增加PR噪声。",
+  "primaryRoots": ["431:3753", "431:8415"],
+  "stateSections": ["773:16399", "773:16400"],
+  "stateRoots": [
+    {
+      "id": "431:3978",
+      "sourceRootId": "431:3978",
+      "name": "D / 分享设置 / 保存反馈",
+      "kind": "saved",
+      "platform": "desktop",
+      "theme": "2:0"
+    },
+    {
+      "id": "431:3989",
+      "sourceRootId": "431:3989",
+      "name": "D / 分享设置 / 密码保存失败·输入保留",
+      "kind": "password-failed",
+      "platform": "desktop",
+      "theme": "2:0"
+    },
+    {
+      "id": "431:4000",
+      "sourceRootId": "431:4000",
+      "name": "D / 分享设置 / 访问密码展开",
+      "kind": "password",
+      "platform": "desktop",
+      "theme": "2:0"
+    },
+    {
+      "id": "431:4017",
+      "sourceRootId": "431:4017",
+      "name": "D / 分享设置 / 访问密码已保存·留原页",
+      "kind": "password-saved",
+      "platform": "desktop",
+      "theme": "2:0"
+    },
+    {
+      "id": "431:4030",
+      "sourceRootId": "431:4030",
+      "name": "D / 分享设置 / 清除访问密码确认",
+      "kind": "clear",
+      "platform": "desktop",
+      "theme": "2:0"
+    },
+    {
+      "id": "431:4043",
+      "sourceRootId": "431:4043",
+      "name": "D / 分享设置 / 访问密码已清除·留原页",
+      "kind": "password-cleared",
+      "platform": "desktop",
+      "theme": "2:0"
+    },
+    {
+      "id": "431:4056",
+      "sourceRootId": "431:4056",
+      "name": "D / 分享设置 / 有效期指定时间",
+      "kind": "expiry",
+      "platform": "desktop",
+      "theme": "2:0"
+    },
+    {
+      "id": "431:4073",
+      "sourceRootId": "431:4073",
+      "name": "D / 分享设置 / 截止时间已过去·字段错误",
+      "kind": "expiry-past",
+      "platform": "desktop",
+      "theme": "2:0"
+    },
+    {
+      "id": "431:4090",
+      "sourceRootId": "431:4090",
+      "name": "D / 分享设置 / 过期启用·不过期",
+      "kind": "restore",
+      "platform": "desktop",
+      "theme": "2:0"
+    },
+    {
+      "id": "431:4103",
+      "sourceRootId": "431:4103",
+      "name": "D / 分享设置 / 恢复原地址访问·留原页",
+      "kind": "restored",
+      "platform": "desktop",
+      "theme": "2:0"
+    },
+    {
+      "id": "431:4114",
+      "sourceRootId": "431:4114",
+      "name": "D / 分享设置 / 停用分享确认",
+      "kind": "disable",
+      "platform": "desktop",
+      "theme": "2:0"
+    },
+    {
+      "id": "431:4127",
+      "sourceRootId": "431:4127",
+      "name": "D / 分享设置 / 分享已停用·留原页",
+      "kind": "disabled-saved",
+      "platform": "desktop",
+      "theme": "2:0"
+    },
+    {
+      "id": "431:4140",
+      "sourceRootId": "431:4140",
+      "name": "D / 分享设置 / 分享已启用·留原页",
+      "kind": "enabled-saved",
+      "platform": "desktop",
+      "theme": "2:0"
+    },
+    {
+      "id": "431:4153",
+      "sourceRootId": "431:4153",
+      "name": "D / 分享设置 / 重新生成确认",
+      "kind": "rotate",
+      "platform": "desktop",
+      "theme": "2:0"
+    },
+    {
+      "id": "431:4166",
+      "sourceRootId": "431:4166",
+      "name": "D / 分享设置 / 新地址已生成·留原页",
+      "kind": "rotated",
+      "platform": "desktop",
+      "theme": "2:0"
+    },
+    {
+      "id": "431:4183",
+      "sourceRootId": "431:4183",
+      "name": "D / 分享设置 / unknown·正在核对",
+      "kind": "checking",
+      "platform": "desktop",
+      "theme": "2:0"
+    },
+    {
+      "id": "431:4194",
+      "sourceRootId": "431:4194",
+      "name": "D / 分享设置 / 地址已复制·中性通知",
+      "kind": "copied",
+      "platform": "desktop",
+      "theme": "2:0"
+    },
+    {
+      "id": "431:4205",
+      "sourceRootId": "431:4205",
+      "name": "D / 分享设置 / 手动复制完整地址",
+      "kind": "manual",
+      "platform": "desktop",
+      "theme": "2:0"
+    },
+    {
+      "id": "431:4220",
+      "sourceRootId": "431:4220",
+      "name": "D / 分享设置 / 展示方式未保存",
+      "kind": "display-dirty",
+      "platform": "desktop",
+      "theme": "2:0"
+    },
+    {
+      "id": "431:4240",
+      "sourceRootId": "431:4240",
+      "name": "D / 分享设置 / 展示设置已保存·留原页",
+      "kind": "display-saved",
+      "platform": "desktop",
+      "theme": "2:0"
+    },
+    {
+      "id": "529:11830",
+      "sourceRootId": "529:11830",
+      "name": "D / 分享设置 / R4·修改前",
+      "kind": "base",
+      "platform": "desktop",
+      "theme": "2:0"
+    },
+    {
+      "id": "529:11960",
+      "sourceRootId": "529:11960",
+      "name": "D / 分享设置 / R4·展示未保存",
+      "kind": "display-dirty",
+      "platform": "desktop",
+      "theme": "2:0"
+    },
+    {
+      "id": "529:11976",
+      "sourceRootId": "529:11976",
+      "name": "D / 分享设置 / R4·瀑布流与名称",
+      "kind": "display-final",
+      "platform": "desktop",
+      "theme": "2:0"
+    },
+    {
+      "id": "529:12262",
+      "sourceRootId": "529:12262",
+      "name": "D / 分享设置 / R4·展示保存失败·选择保留",
+      "kind": "display-failed",
+      "platform": "desktop",
+      "theme": "2:0"
+    },
+    {
+      "id": "529:12294",
+      "sourceRootId": "529:12294",
+      "name": "D / 分享设置 / R4·展示保存通知",
+      "kind": "display-saved",
+      "platform": "desktop",
+      "theme": "2:0"
+    },
+    {
+      "id": "776:22083",
+      "sourceRootId": null,
+      "name": "D / 分享设置 / unknown·读取失败·重新核对",
+      "kind": "read-failed",
+      "platform": "desktop",
+      "theme": "2:0"
+    },
+    {
+      "id": "776:22300",
+      "sourceRootId": null,
+      "name": "D / 分享设置 / unknown·新密码无法确认",
+      "kind": "password-unknown",
+      "platform": "desktop",
+      "theme": "2:0"
+    },
+    {
+      "id": "776:22569",
+      "sourceRootId": null,
+      "name": "D / 分享设置 / 过期启用·指定未来时间",
+      "kind": "restore-date",
+      "platform": "desktop",
+      "theme": "2:0"
+    },
+    {
+      "id": "776:22828",
+      "sourceRootId": null,
+      "name": "D / 分享设置 / 启用停用状态分享确认",
+      "kind": "enable",
+      "platform": "desktop",
+      "theme": "2:0"
+    },
+    {
+      "id": "776:23062",
+      "sourceRootId": null,
+      "name": "D / 分享设置 / 访问密码·显隐",
+      "kind": "password-visible",
+      "platform": "desktop",
+      "theme": "2:0"
+    },
+    {
+      "id": "776:23321",
+      "sourceRootId": null,
+      "name": "D / 分享设置 / 有效期·不过期",
+      "kind": "expiry-forever",
+      "platform": "desktop",
+      "theme": "2:0"
+    },
+    {
+      "id": "776:23558",
+      "sourceRootId": null,
+      "name": "D / 分享设置 / 有效期·44px日期格日历",
+      "kind": "calendar",
+      "platform": "desktop",
+      "theme": "2:0"
+    },
+    {
+      "id": "776:23915",
+      "sourceRootId": null,
+      "name": "D / 分享设置 / 分享已过期·设置页",
+      "kind": "expired",
+      "platform": "desktop",
+      "theme": "2:0"
+    },
+    {
+      "id": "776:24156",
+      "sourceRootId": null,
+      "name": "D / 分享设置 / 分享已停用·设置页",
+      "kind": "disabled",
+      "platform": "desktop",
+      "theme": "2:0"
+    },
+    {
+      "id": "776:24374",
+      "sourceRootId": null,
+      "name": "D / 分享设置 / 深色·访问密码展开",
+      "kind": "password-dark",
+      "platform": "desktop",
+      "theme": "264:0"
+    },
+    {
+      "id": "776:24629",
+      "sourceRootId": null,
+      "name": "D / 分享设置 / 深色·unknown读取失败",
+      "kind": "read-failed-dark",
+      "platform": "desktop",
+      "theme": "264:0"
+    },
+    {
+      "id": "776:24846",
+      "sourceRootId": null,
+      "name": "D / 分享设置 / 地址重生成·正在核对·复制禁用",
+      "kind": "rotate-checking",
+      "platform": "desktop",
+      "theme": "2:0"
+    },
+    {
+      "id": "776:25063",
+      "sourceRootId": null,
+      "name": "D / 分享设置 / 地址重生成·读取失败·仅重新核对",
+      "kind": "rotate-read-failed",
+      "platform": "desktop",
+      "theme": "2:0"
+    },
+    {
+      "id": "776:25280",
+      "sourceRootId": null,
+      "name": "D / 分享设置 / 分享记录不存在·地址待确认",
+      "kind": "missing",
+      "platform": "desktop",
+      "theme": "2:0"
+    },
+    {
+      "id": "431:8482",
+      "sourceRootId": "431:8482",
+      "name": "M / 分享设置 / 保存反馈",
+      "kind": "saved",
+      "platform": "phone",
+      "theme": "2:0"
+    },
+    {
+      "id": "431:8493",
+      "sourceRootId": "431:8493",
+      "name": "M / 分享设置 / 密码保存失败·输入保留",
+      "kind": "password-failed",
+      "platform": "phone",
+      "theme": "2:0"
+    },
+    {
+      "id": "431:8504",
+      "sourceRootId": "431:8504",
+      "name": "M / 分享设置 / 访问密码展开",
+      "kind": "password",
+      "platform": "phone",
+      "theme": "2:0"
+    },
+    {
+      "id": "431:8521",
+      "sourceRootId": "431:8521",
+      "name": "M / 分享设置 / 访问密码已保存·留原页",
+      "kind": "password-saved",
+      "platform": "phone",
+      "theme": "2:0"
+    },
+    {
+      "id": "431:8534",
+      "sourceRootId": "431:8534",
+      "name": "M / 分享设置 / 清除访问密码确认",
+      "kind": "clear",
+      "platform": "phone",
+      "theme": "2:0"
+    },
+    {
+      "id": "431:8547",
+      "sourceRootId": "431:8547",
+      "name": "M / 分享设置 / 访问密码已清除·留原页",
+      "kind": "password-cleared",
+      "platform": "phone",
+      "theme": "2:0"
+    },
+    {
+      "id": "431:8560",
+      "sourceRootId": "431:8560",
+      "name": "M / 分享设置 / 有效期指定时间",
+      "kind": "expiry",
+      "platform": "phone",
+      "theme": "2:0"
+    },
+    {
+      "id": "431:8577",
+      "sourceRootId": "431:8577",
+      "name": "M / 分享设置 / 截止时间已过去·字段错误",
+      "kind": "expiry-past",
+      "platform": "phone",
+      "theme": "2:0"
+    },
+    {
+      "id": "431:8594",
+      "sourceRootId": "431:8594",
+      "name": "M / 分享设置 / 过期启用·不过期",
+      "kind": "restore",
+      "platform": "phone",
+      "theme": "2:0"
+    },
+    {
+      "id": "431:8607",
+      "sourceRootId": "431:8607",
+      "name": "M / 分享设置 / 恢复原地址访问·留原页",
+      "kind": "restored",
+      "platform": "phone",
+      "theme": "2:0"
+    },
+    {
+      "id": "431:8618",
+      "sourceRootId": "431:8618",
+      "name": "M / 分享设置 / 停用分享确认",
+      "kind": "disable",
+      "platform": "phone",
+      "theme": "2:0"
+    },
+    {
+      "id": "431:8631",
+      "sourceRootId": "431:8631",
+      "name": "M / 分享设置 / 分享已停用·留原页",
+      "kind": "disabled-saved",
+      "platform": "phone",
+      "theme": "2:0"
+    },
+    {
+      "id": "431:8644",
+      "sourceRootId": "431:8644",
+      "name": "M / 分享设置 / 分享已启用·留原页",
+      "kind": "enabled-saved",
+      "platform": "phone",
+      "theme": "2:0"
+    },
+    {
+      "id": "431:8657",
+      "sourceRootId": "431:8657",
+      "name": "M / 分享设置 / 重新生成确认",
+      "kind": "rotate",
+      "platform": "phone",
+      "theme": "2:0"
+    },
+    {
+      "id": "431:8670",
+      "sourceRootId": "431:8670",
+      "name": "M / 分享设置 / 新地址已生成·留原页",
+      "kind": "rotated",
+      "platform": "phone",
+      "theme": "2:0"
+    },
+    {
+      "id": "431:8687",
+      "sourceRootId": "431:8687",
+      "name": "M / 分享设置 / unknown·正在核对",
+      "kind": "checking",
+      "platform": "phone",
+      "theme": "2:0"
+    },
+    {
+      "id": "431:8698",
+      "sourceRootId": "431:8698",
+      "name": "M / 分享设置 / 地址已复制·中性通知",
+      "kind": "copied",
+      "platform": "phone",
+      "theme": "2:0"
+    },
+    {
+      "id": "431:8709",
+      "sourceRootId": "431:8709",
+      "name": "M / 分享设置 / 手动复制完整地址",
+      "kind": "manual",
+      "platform": "phone",
+      "theme": "2:0"
+    },
+    {
+      "id": "431:8724",
+      "sourceRootId": "431:8724",
+      "name": "M / 分享设置 / 展示方式未保存",
+      "kind": "display-dirty",
+      "platform": "phone",
+      "theme": "2:0"
+    },
+    {
+      "id": "431:8744",
+      "sourceRootId": "431:8744",
+      "name": "M / 分享设置 / 展示设置已保存·留原页",
+      "kind": "display-saved",
+      "platform": "phone",
+      "theme": "2:0"
+    },
+    {
+      "id": "529:11376",
+      "sourceRootId": "529:11376",
+      "name": "M / 分享设置 / R4·修改前",
+      "kind": "base",
+      "platform": "phone",
+      "theme": "2:0"
+    },
+    {
+      "id": "529:11429",
+      "sourceRootId": "529:11429",
+      "name": "M / 分享设置 / R4·展示未保存",
+      "kind": "display-dirty",
+      "platform": "phone",
+      "theme": "2:0"
+    },
+    {
+      "id": "529:11445",
+      "sourceRootId": "529:11445",
+      "name": "M / 分享设置 / R4·瀑布流与名称",
+      "kind": "display-final",
+      "platform": "phone",
+      "theme": "2:0"
+    },
+    {
+      "id": "529:12444",
+      "sourceRootId": "529:12444",
+      "name": "M / 分享设置 / R4·展示保存失败·选择保留",
+      "kind": "display-failed",
+      "platform": "phone",
+      "theme": "2:0"
+    },
+    {
+      "id": "529:12476",
+      "sourceRootId": "529:12476",
+      "name": "M / 分享设置 / R4·展示保存通知",
+      "kind": "display-saved",
+      "platform": "phone",
+      "theme": "2:0"
+    },
+    {
+      "id": "776:29405",
+      "sourceRootId": null,
+      "name": "M / 分享设置 / unknown·读取失败·重新核对",
+      "kind": "read-failed",
+      "platform": "phone",
+      "theme": "2:0"
+    },
+    {
+      "id": "776:29548",
+      "sourceRootId": null,
+      "name": "M / 分享设置 / unknown·新密码无法确认",
+      "kind": "password-unknown",
+      "platform": "phone",
+      "theme": "2:0"
+    },
+    {
+      "id": "776:29737",
+      "sourceRootId": null,
+      "name": "M / 分享设置 / 过期启用·指定未来时间",
+      "kind": "restore-date",
+      "platform": "phone",
+      "theme": "2:0"
+    },
+    {
+      "id": "776:29922",
+      "sourceRootId": null,
+      "name": "M / 分享设置 / 启用停用状态分享确认",
+      "kind": "enable",
+      "platform": "phone",
+      "theme": "2:0"
+    },
+    {
+      "id": "776:30082",
+      "sourceRootId": null,
+      "name": "M / 分享设置 / 访问密码·显隐",
+      "kind": "password-visible",
+      "platform": "phone",
+      "theme": "2:0"
+    },
+    {
+      "id": "776:30267",
+      "sourceRootId": null,
+      "name": "M / 分享设置 / 有效期·不过期",
+      "kind": "expiry-forever",
+      "platform": "phone",
+      "theme": "2:0"
+    },
+    {
+      "id": "776:30430",
+      "sourceRootId": null,
+      "name": "M / 分享设置 / 有效期·44px日期格日历",
+      "kind": "calendar",
+      "platform": "phone",
+      "theme": "2:0"
+    },
+    {
+      "id": "776:30713",
+      "sourceRootId": null,
+      "name": "M / 分享设置 / 分享已过期·设置页",
+      "kind": "expired",
+      "platform": "phone",
+      "theme": "2:0"
+    },
+    {
+      "id": "776:30880",
+      "sourceRootId": null,
+      "name": "M / 分享设置 / 分享已停用·设置页",
+      "kind": "disabled",
+      "platform": "phone",
+      "theme": "2:0"
+    },
+    {
+      "id": "776:31024",
+      "sourceRootId": null,
+      "name": "M / 分享设置 / 深色·访问密码展开",
+      "kind": "password-dark",
+      "platform": "phone",
+      "theme": "264:0"
+    },
+    {
+      "id": "776:31205",
+      "sourceRootId": null,
+      "name": "M / 分享设置 / 深色·unknown读取失败",
+      "kind": "read-failed-dark",
+      "platform": "phone",
+      "theme": "264:0"
+    },
+    {
+      "id": "776:31348",
+      "sourceRootId": null,
+      "name": "M / 分享设置 / 地址重生成·正在核对·复制禁用",
+      "kind": "rotate-checking",
+      "platform": "phone",
+      "theme": "2:0"
+    },
+    {
+      "id": "776:31491",
+      "sourceRootId": null,
+      "name": "M / 分享设置 / 地址重生成·读取失败·仅重新核对",
+      "kind": "rotate-read-failed",
+      "platform": "phone",
+      "theme": "2:0"
+    },
+    {
+      "id": "776:31634",
+      "sourceRootId": null,
+      "name": "M / 分享设置 / 分享记录不存在·地址待确认",
+      "kind": "missing",
+      "platform": "phone",
+      "theme": "2:0"
+    },
+    {
+      "id": "777:12749",
+      "sourceRootId": null,
+      "name": "D / 分享设置 / 密码已设置·设置页",
+      "kind": "password-set",
+      "platform": "desktop",
+      "theme": "2:0"
+    },
+    {
+      "id": "777:13010",
+      "sourceRootId": null,
+      "name": "D / 分享设置 / 新地址·设置页",
+      "kind": "rotated-final",
+      "platform": "desktop",
+      "theme": "2:0"
+    },
+    {
+      "id": "777:13219",
+      "sourceRootId": null,
+      "name": "D / 分享设置 / 有效期已保存·设置页",
+      "kind": "expiry-final",
+      "platform": "desktop",
+      "theme": "2:0"
+    },
+    {
+      "id": "777:13463",
+      "sourceRootId": null,
+      "name": "D / 分享设置 / 有效期已保存·中性通知",
+      "kind": "expiry-saved",
+      "platform": "desktop",
+      "theme": "2:0"
+    },
+    {
+      "id": "777:13716",
+      "sourceRootId": null,
+      "name": "D / 分享设置 / 不过期已保存·中性通知",
+      "kind": "expiry-forever-saved",
+      "platform": "desktop",
+      "theme": "2:0"
+    },
+    {
+      "id": "777:26661",
+      "sourceRootId": null,
+      "name": "M / 分享设置 / 密码已设置·设置页",
+      "kind": "password-set",
+      "platform": "phone",
+      "theme": "2:0"
+    },
+    {
+      "id": "777:26848",
+      "sourceRootId": null,
+      "name": "M / 分享设置 / 新地址·设置页",
+      "kind": "rotated-final",
+      "platform": "phone",
+      "theme": "2:0"
+    },
+    {
+      "id": "777:26983",
+      "sourceRootId": null,
+      "name": "M / 分享设置 / 有效期已保存·设置页",
+      "kind": "expiry-final",
+      "platform": "phone",
+      "theme": "2:0"
+    },
+    {
+      "id": "777:27153",
+      "sourceRootId": null,
+      "name": "M / 分享设置 / 有效期已保存·中性通知",
+      "kind": "expiry-saved",
+      "platform": "phone",
+      "theme": "2:0"
+    },
+    {
+      "id": "777:27332",
+      "sourceRootId": null,
+      "name": "M / 分享设置 / 不过期已保存·中性通知",
+      "kind": "expiry-forever-saved",
+      "platform": "phone",
+      "theme": "2:0"
+    }
+  ],
+  "auxiliaryRoots": [
+    {
+      "id": "431:3511",
+      "width": 1440,
+      "height": 1080,
+      "theme": null,
+      "count": 113
+    },
+    {
+      "id": "62:728",
+      "width": 1440,
+      "height": 1080,
+      "theme": null,
+      "count": 100
+    },
+    {
+      "id": "431:3701",
+      "width": 480,
+      "height": 426,
+      "theme": null,
+      "count": 31
+    },
+    {
+      "id": "791:13632",
+      "width": 480,
+      "height": 518,
+      "theme": null,
+      "count": 38
+    },
+    {
+      "id": "431:8331",
+      "width": 390,
+      "height": 844,
+      "theme": null,
+      "count": 37
+    },
+    {
+      "id": "102:5469",
+      "width": 390,
+      "height": 844,
+      "theme": null,
+      "count": 24
+    },
+    {
+      "id": "431:8363",
+      "width": 358,
+      "height": 450,
+      "theme": null,
+      "count": 31
+    },
+    {
+      "id": "791:27254",
+      "width": 358,
+      "height": 542,
+      "theme": null,
+      "count": 38
+    }
+  ],
+  "scopedComponents": {
+    "Sharing / Icon / Link": "759:7951",
+    "Sharing / Icon / Copy": "759:7955",
+    "Sharing / Icon / ShieldCheck": "759:7959",
+    "Sharing / Icon / LockKeyhole": "759:7964",
+    "Sharing / Icon / CalendarClock": "759:7972",
+    "Sharing / Icon / Eye": "759:7976",
+    "Sharing / Icon / EyeOff": "759:7982",
+    "Sharing / Icon / Grid2X2": "759:7987",
+    "Sharing / Icon / Columns3": "759:7992",
+    "Sharing / Icon / RefreshCw": "759:7998",
+    "Sharing / Icon / Check": "759:8001",
+    "Sharing / Icon / ChevronDown": "759:8004",
+    "Sharing / Icon / ChevronUp": "759:8007",
+    "Sharing / Icon / ChevronLeft": "759:8010",
+    "Sharing / Icon / ChevronRight": "759:8013",
+    "Sharing / Icon / X": "759:8017",
+    "Sharing / IconButton": "759:8018",
+    "Sharing / StatusChip": "759:8022",
+    "Sharing / ToggleSegment": "759:8025",
+    "Sharing / AccordionTrigger": "759:8031",
+    "Sharing / NeutralToast": "759:8041",
+    "Link": "759:7951",
+    "Copy": "759:7955",
+    "ShieldCheck": "759:7959",
+    "LockKeyhole": "759:7964",
+    "CalendarClock": "759:7972",
+    "Eye": "759:7976",
+    "EyeOff": "759:7982",
+    "Grid2X2": "759:7987",
+    "Columns3": "759:7992",
+    "RefreshCw": "759:7998",
+    "Check": "759:8001",
+    "ChevronDown": "759:8004",
+    "ChevronUp": "759:8007",
+    "ChevronLeft": "759:8010",
+    "ChevronRight": "759:8013",
+    "X": "759:8017",
+    "Sharing / Desktop / AddressCard": "761:7945",
+    "Sharing / Desktop / AccessCard": "761:7968",
+    "Sharing / Desktop / DisplayCard": "761:8064",
+    "Sharing / Desktop / RotateCard": "761:8104",
+    "Sharing / Mobile / AddressCard": "761:8116",
+    "Sharing / Mobile / AccessCard": "761:8139",
+    "Sharing / Mobile / DisplayCard": "761:8235",
+    "Sharing / Mobile / RotateCard": "761:8275",
+    "Search": "787:13535",
+    "LoaderCircle": "787:13538",
+    "CircleCheck": "768:16399"
+  },
+  "recordedOperations": [
+    {
+      "source": "primitives",
+      "created": 97,
+      "mutated": 0
+    },
+    {
+      "source": "cards",
+      "created": 296,
+      "mutated": 0
+    },
+    {
+      "source": "properties",
+      "created": 1,
+      "mutated": 51
+    },
+    {
+      "source": "desktop",
+      "created": 109,
+      "mutated": 20,
+      "removed": 37
+    },
+    {
+      "source": "phone",
+      "created": 112,
+      "mutated": 11,
+      "removed": 37
+    },
+    {
+      "source": "visualFix",
+      "created": 8,
+      "mutated": 11
+    },
+    {
+      "source": "unknownControls",
+      "created": 8,
+      "mutated": 8
+    },
+    {
+      "source": "state-batch-0",
+      "created": 1324,
+      "mutated": 17,
+      "removed": 48
+    },
+    {
+      "source": "state-batch-1",
+      "created": 1324,
+      "mutated": 22,
+      "removed": 58
+    },
+    {
+      "source": "state-batch-2",
+      "created": 1271,
+      "mutated": 11,
+      "removed": 50
+    },
+    {
+      "source": "state-batch-3",
+      "created": 1231,
+      "mutated": 32,
+      "removed": 311
+    },
+    {
+      "source": "state-batch-4",
+      "created": 1326,
+      "mutated": 19,
+      "removed": 10
+    },
+    {
+      "source": "state-batch-5",
+      "created": 1388,
+      "mutated": 16,
+      "removed": 0
+    },
+    {
+      "source": "state-batch-6",
+      "created": 627,
+      "mutated": 9,
+      "removed": 0
+    },
+    {
+      "source": "state-batch-7",
+      "created": 874,
+      "mutated": 17,
+      "removed": 48
+    },
+    {
+      "source": "state-batch-8",
+      "created": 874,
+      "mutated": 22,
+      "removed": 58
+    },
+    {
+      "source": "state-batch-9",
+      "created": 821,
+      "mutated": 11,
+      "removed": 50
+    },
+    {
+      "source": "state-batch-10",
+      "created": 781,
+      "mutated": 32,
+      "removed": 157
+    },
+    {
+      "source": "state-batch-11",
+      "created": 876,
+      "mutated": 19,
+      "removed": 10
+    },
+    {
+      "source": "state-batch-12",
+      "created": 938,
+      "mutated": 16,
+      "removed": 0
+    },
+    {
+      "source": "state-batch-13",
+      "created": 402,
+      "mutated": 9,
+      "removed": 0
+    },
+    {
+      "source": "state-batch-14",
+      "created": 1101,
+      "mutated": 15,
+      "removed": 0
+    },
+    {
+      "source": "state-batch-15",
+      "created": 726,
+      "mutated": 15,
+      "removed": 0
+    },
+    {
+      "source": "sync-wiring-desktop",
+      "mutated": 558
+    },
+    {
+      "source": "sync-wiring-phone",
+      "mutated": 558
+    },
+    {
+      "source": "sync-black-fill-fix",
+      "created": 19,
+      "mutated": 14,
+      "removed": 2
+    },
+    {
+      "source": "sync-final-visual-fix",
+      "mutated": 687
+    },
+    {
+      "source": "sync-modal-spacing-fix",
+      "mutated": 12
+    },
+    {
+      "source": "sync-phone-preview-fix",
+      "mutated": 45
+    },
+    {
+      "source": "sync-dark-colors-ledger-data-desktop",
+      "mutated": 2020
+    },
+    {
+      "source": "sync-dark-colors-ledger-data-phone",
+      "mutated": 310
+    },
+    {
+      "source": "sync-list-data-false",
+      "created": 208,
+      "mutated": 4,
+      "removed": 186
+    },
+    {
+      "source": "sync-list-data-true",
+      "created": 56,
+      "mutated": 4,
+      "removed": 32
+    },
+    {
+      "source": "sync-create-data-false",
+      "created": 64,
+      "mutated": 9,
+      "removed": 17
+    },
+    {
+      "source": "sync-create-data-true",
+      "created": 64,
+      "mutated": 9,
+      "removed": 17
+    },
+    {
+      "source": "sync-error-alpha-62:728",
+      "created": 1,
+      "mutated": 1
+    },
+    {
+      "source": "sync-error-alpha-102:5469",
+      "created": 1,
+      "mutated": 1
+    },
+    {
+      "source": "final-divider-pagination-0",
+      "created": 2,
+      "mutated": 51
+    },
+    {
+      "source": "final-divider-pagination-1",
+      "created": 2,
+      "mutated": 51
+    }
+  ],
+  "finalReadback": {
+    "rootCount": 98,
+    "wrongFonts": [],
+    "imageNodes": [],
+    "invalidReactionDestinations": [],
+    "rotateUnknownCopyDisables": [
+      {
+        "id": "776:24846",
+        "copy": {
+          "id": "I776:24937;761:7957",
+          "opacity": 0.4000000059604645,
+          "reactions": 0
+        },
+        "end": false
+      },
+      {
+        "id": "776:25063",
+        "copy": {
+          "id": "I776:25154;761:7957",
+          "opacity": 0.4000000059604645,
+          "reactions": 0
+        },
+        "end": false
+      },
+      {
+        "id": "776:25280",
+        "copy": {
+          "id": "I776:25371;761:7957",
+          "opacity": 0.4000000059604645,
+          "reactions": 0
+        },
+        "end": false
+      },
+      {
+        "id": "776:31348",
+        "copy": {
+          "id": "I776:31359;761:8128",
+          "opacity": 0.4000000059604645,
+          "reactions": 0
+        },
+        "end": false
+      },
+      {
+        "id": "776:31491",
+        "copy": {
+          "id": "I776:31502;761:8128",
+          "opacity": 0.4000000059604645,
+          "reactions": 0
+        },
+        "end": false
+      },
+      {
+        "id": "776:31634",
+        "copy": {
+          "id": "I776:31645;761:8128",
+          "opacity": 0.4000000059604645,
+          "reactions": 0
+        },
+        "end": false
+      }
+    ]
+  },
+  "screenshots": [
+    {
+      "name": "restore-desktop",
+      "nodeId": "431:4090",
+      "path": "figma/restore-desktop-synced.png",
+      "width": 1440,
+      "height": 1080
+    },
+    {
+      "name": "restore-phone",
+      "nodeId": "431:8594",
+      "path": "figma/restore-phone-synced.png",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "name": "password-desktop-dark",
+      "nodeId": "776:24374",
+      "path": "figma/password-desktop-dark-synced.png",
+      "width": 1440,
+      "height": 1080
+    },
+    {
+      "name": "password-phone-dark",
+      "nodeId": "776:31024",
+      "path": "figma/password-phone-dark-synced.png",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "name": "list-empty-desktop",
+      "nodeId": "431:3511",
+      "path": "figma/list-empty-desktop-synced.png",
+      "width": 1440,
+      "height": 1080
+    },
+    {
+      "name": "list-empty-phone",
+      "nodeId": "431:8331",
+      "path": "figma/list-empty-phone-synced.png",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "name": "create-desktop-natural",
+      "nodeId": "431:3701",
+      "path": "figma/create-desktop-natural-synced.png",
+      "width": 480,
+      "height": 426
+    },
+    {
+      "name": "create-phone-natural",
+      "nodeId": "431:8363",
+      "path": "figma/create-phone-natural-synced.png",
+      "width": 358,
+      "height": 450
+    },
+    {
+      "name": "create-date-phone-natural",
+      "nodeId": "791:27254",
+      "path": "figma/create-date-phone-natural-synced.png",
+      "width": 358,
+      "height": 542
+    },
+    {
+      "name": "settings-desktop",
+      "nodeId": "431:3753",
+      "path": "figma/settings-desktop-synced.png",
+      "width": 1440,
+      "height": 1080
+    },
+    {
+      "name": "settings-phone",
+      "nodeId": "431:8415",
+      "path": "figma/settings-phone-synced.png",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "name": "password-desktop",
+      "nodeId": "431:4000",
+      "path": "figma/password-desktop-synced.png",
+      "width": 1440,
+      "height": 1080
+    },
+    {
+      "name": "password-phone",
+      "nodeId": "431:8504",
+      "path": "figma/password-phone-synced.png",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "name": "list-error-desktop",
+      "nodeId": "62:728",
+      "path": "figma/list-error-desktop-synced.png",
+      "width": 1440,
+      "height": 1080
+    },
+    {
+      "name": "list-error-phone",
+      "nodeId": "102:5469",
+      "path": "figma/list-error-phone-synced.png",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "name": "read-failed-phone-dark",
+      "nodeId": "776:31205",
+      "path": "figma/read-failed-phone-dark-synced.png",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "name": "password-unknown-phone",
+      "nodeId": "776:29548",
+      "path": "figma/password-unknown-phone-synced.png",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "name": "rotate-read-failed-phone",
+      "nodeId": "776:31491",
+      "path": "figma/rotate-read-failed-phone-synced.png",
+      "width": 390,
+      "height": 844
+    }
+  ],
+  "nodeOperationCounts": {
+    "createdNodeIds": 17006,
+    "mutatedNodeIds": 4498,
+    "removedNodeIds": 1128
+  },
+  "narrowSync": {
+    "date": "2026-10-06",
+    "rootIds": [
+      "431:4073",
+      "431:8577",
+      "62:728",
+      "102:5469",
+      "776:23558",
+      "776:30430"
+    ],
+    "createdCount": 0,
+    "mutatedCount": 13,
+    "removedCount": 0,
+    "mutatedNodeIds": [
+      "I776:18204;761:8040",
+      "789:27382",
+      "795:13637",
+      "789:27383",
+      "789:27384",
+      "776:23802",
+      "I776:26778;761:8211",
+      "776:26770",
+      "789:27442",
+      "795:27223",
+      "789:27443",
+      "789:27444",
+      "776:30600"
+    ],
+    "evidence": "figma-sync.md#真实状态对照后的窄同步2026-10-06",
+    "dateInvalidRefinement": {
+      "createdCount": 0,
+      "mutatedCount": 10,
+      "removedCount": 0,
+      "mutatedNodeIds": [
+        "761:8038",
+        "761:8023",
+        "761:8053",
+        "761:8209",
+        "761:8194",
+        "761:8224",
+        "I776:18204;761:8039",
+        "I776:18204;761:8041",
+        "I776:26778;761:8210",
+        "I776:26778;761:8212"
+      ],
+      "sourceDateTemplateIds": ["761:8038", "761:8209"],
+      "verifiedNormalRoots": ["431:4056", "431:8560"],
+      "fieldErrorGap": 8
+    },
+    "shareToastClearance": {
+      "createdCount": 0,
+      "mutatedCount": 24,
+      "removedCount": 0,
+      "bottom": 100,
+      "mutatedNodeIds": [
+        "775:8490",
+        "775:9281",
+        "775:9812",
+        "776:18814",
+        "776:19264",
+        "776:19481",
+        "776:19922",
+        "776:20356",
+        "776:21013",
+        "776:22074",
+        "777:13707",
+        "777:13953",
+        "776:25631",
+        "776:26203",
+        "776:26588",
+        "776:27246",
+        "776:27548",
+        "776:27691",
+        "776:27984",
+        "776:28270",
+        "776:28705",
+        "776:29396",
+        "777:27323",
+        "777:27495"
+      ],
+      "roots": [
+        { "rootId": "431:3978", "toastId": "775:8490" },
+        { "rootId": "431:4017", "toastId": "775:9281" },
+        { "rootId": "431:4043", "toastId": "775:9812" },
+        { "rootId": "431:4103", "toastId": "776:18814" },
+        { "rootId": "431:4127", "toastId": "776:19264" },
+        { "rootId": "431:4140", "toastId": "776:19481" },
+        { "rootId": "431:4166", "toastId": "776:19922" },
+        { "rootId": "431:4194", "toastId": "776:20356" },
+        { "rootId": "431:4240", "toastId": "776:21013" },
+        { "rootId": "529:12294", "toastId": "776:22074" },
+        { "rootId": "777:13463", "toastId": "777:13707" },
+        { "rootId": "777:13716", "toastId": "777:13953" },
+        { "rootId": "431:8482", "toastId": "776:25631" },
+        { "rootId": "431:8521", "toastId": "776:26203" },
+        { "rootId": "431:8547", "toastId": "776:26588" },
+        { "rootId": "431:8607", "toastId": "776:27246" },
+        { "rootId": "431:8631", "toastId": "776:27548" },
+        { "rootId": "431:8644", "toastId": "776:27691" },
+        { "rootId": "431:8670", "toastId": "776:27984" },
+        { "rootId": "431:8698", "toastId": "776:28270" },
+        { "rootId": "431:8744", "toastId": "776:28705" },
+        { "rootId": "529:12476", "toastId": "776:29396" },
+        { "rootId": "777:27153", "toastId": "777:27323" },
+        { "rootId": "777:27332", "toastId": "777:27495" }
+      ]
+    },
+    "finalScreenshots": [
+      {
+        "name": "expiry-past-error-desktop",
+        "nodeId": "431:4073",
+        "path": "figma/expiry-past-error-desktop-narrow-synced.png",
+        "width": 1440,
+        "height": 1080
+      },
+      {
+        "name": "expiry-past-error-phone",
+        "nodeId": "431:8577",
+        "path": "figma/expiry-past-error-phone-narrow-synced.png",
+        "width": 390,
+        "height": 844
+      },
+      {
+        "name": "list-error-desktop",
+        "nodeId": "62:728",
+        "path": "figma/list-error-desktop-narrow-synced.png",
+        "width": 1440,
+        "height": 1080
+      },
+      {
+        "name": "list-error-phone",
+        "nodeId": "102:5469",
+        "path": "figma/list-error-phone-narrow-synced.png",
+        "width": 390,
+        "height": 844
+      },
+      {
+        "name": "calendar-desktop",
+        "nodeId": "776:23558",
+        "path": "figma/calendar-desktop-narrow-synced.png",
+        "width": 1440,
+        "height": 1080
+      },
+      {
+        "name": "calendar-phone",
+        "nodeId": "776:30430",
+        "path": "figma/calendar-phone-narrow-synced.png",
+        "width": 390,
+        "height": 844
+      },
+      {
+        "name": "copied-desktop",
+        "nodeId": "431:4194",
+        "path": "figma/copied-desktop-toast-clearance-synced.png",
+        "width": 1440,
+        "height": 1080
+      },
+      {
+        "name": "copied-phone",
+        "nodeId": "431:8698",
+        "path": "figma/copied-phone-toast-clearance-synced.png",
+        "width": 390,
+        "height": 844
+      }
+    ]
+  }
+}

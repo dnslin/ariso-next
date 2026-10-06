@@ -21,10 +21,11 @@ export function loginDestination(value: string | string[] | undefined) {
       '/trash',
       '/albums',
       '/tags',
+      '/shares',
       '/settings/account',
       '/settings/api',
     ].includes(url.pathname) ||
-      /^\/albums\/[^/]+$/.test(url.pathname))
+      /^\/(?:albums|shares)\/[^/]+$/.test(url.pathname))
     ? `${url.pathname}${url.search}${url.hash}`
     : '/admin';
 }

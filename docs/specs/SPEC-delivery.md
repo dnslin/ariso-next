@@ -197,6 +197,7 @@ S3 GET/HEAD 在 Ariso 层本应返回 302，按 HTTP 规则不在该层评估条
 | -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
 | `resolveImageVersion(image, requestedType, defaultType)`       | delivery 纯规则；区分 default/explicit、适用性与已存版本                                                     |
 | `buildImageUrl(publicUrl, imageId, selectedVersion, download)` | delivery；默认 selectedVersion 为空，不写 type；明确选版才固定，不生成存储地址                               |
+| `readCoverThumbnails(db, imageIds)`                            | delivery；按明确封面 ID 批量返回名称、展示状态及稳定 thumbnail 路径；具体调用边界见下文                      |
 | `prepareImageDelivery(request)`                                | delivery；组合身份、媒体状态、版本和存储传输准备，返回流/302/错误                                            |
 | 可选所有者会话读取                                             | identity 提供库的同一会话验证；没有 Cookie 可直接匿名，有效性异常不能吞掉                                    |
 | `getImageAccessState`、当前默认版本                            | media 提供；须返回实际对象身份与当前状态，不仅返回前端布尔值                                                 |
@@ -204,6 +205,8 @@ S3 GET/HEAD 在 Ariso 层本应返回 302，按 HTTP 规则不在该层评估条
 | 开始访问结果                                                   | delivery 提供给入口的 analytics 组合；实际聚合不能反向改变授权                                               |
 
 接口名称为提议；所有 I/O 在同步 SQLite 短事务之外。提供方已有能力优先复用，只在跨模块集成任务补齐必要字段，不另建一份会话校验、文件访问或对象签名实现。
+
+`readCoverThumbnails` 接收同一读事务中由 collections 选定的封面 ID，只读名称、处理状态、存储启停和已存 thumbnail。它不取完整图库记录或任务，不读文件或签名，不替代内容访问授权；异常封面不改用其他图片或版本。
 
 ## 11. Figma 与页面集成
 

@@ -1,0 +1,70 @@
+{
+  "remoteMain": "03db847caf0ddf28a01309fa9ee59c2bfc809a54",
+  "priorImplementationCommit": "09b55067",
+  "environment": {
+    "node": "24.18.1",
+    "pnpm": "11.19.0",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "buildId": "ASMe18YfaC_LNQM2K-vxK",
+  "checks": [
+    {
+      "command": "pnpm install --frozen-lockfile",
+      "result": "passed",
+      "ignoredLog": "test-results/issue191-local/main-sync-install.log"
+    },
+    {
+      "command": "pnpm run lint",
+      "result": "passed",
+      "ignoredLog": "test-results/issue191-local/main-sync-lint.log"
+    },
+    {
+      "command": "pnpm run typecheck",
+      "result": "passed",
+      "ignoredLog": "test-results/issue191-local/main-sync-typecheck.log"
+    },
+    {
+      "command": "pnpm exec vitest run --project unit tests/unit/identity/return-to.test.ts tests/unit/runtime/browser-plan.test.ts tests/unit/runtime/browser-runner.test.ts tests/unit/runtime/browser-identity-management.test.ts",
+      "result": "passed",
+      "ignoredLog": "test-results/issue191-local/main-sync-unit.log"
+    },
+    {
+      "command": "pnpm run build",
+      "result": "passed",
+      "ignoredLog": "test-results/issue191-local/main-sync-build.log"
+    },
+    {
+      "command": "pnpm run test:integration --maxWorkers=1 tests/integration/sharing/production-http.test.ts tests/integration/runtime/health.test.ts tests/integration/runtime/migrations.test.ts",
+      "result": "passed",
+      "ignoredLog": "test-results/issue191-local/main-sync-integration.log"
+    },
+    {
+      "command": "pnpm run format:check",
+      "result": "passed",
+      "ignoredLog": "test-results/issue191-local/main-sync-format-check.log"
+    },
+    {
+      "command": "node docs/tasks/check.mjs",
+      "result": "passed",
+      "ignoredLog": "test-results/issue191-local/main-sync-task-check.log"
+    },
+    {
+      "command": "node docs/tasks/check.mjs --self-test",
+      "result": "passed",
+      "ignoredLog": "test-results/issue191-local/main-sync-task-self-test.log"
+    }
+  ],
+  "unit": {
+    "files": 4,
+    "tests": 231
+  },
+  "integration": {
+    "files": 3,
+    "tests": 25
+  },
+  "independentStaticReview": "passed; both modules and parameter ownership retained",
+  "browserAfterSynchronization": "not run: Ego space already finished and handed to user; explicit resume required",
+  "designAfterSynchronization": "sharing review is scoped to ffecff2e plus task modifications; added /settings/api consumer unverified",
+  "humanAcceptance": "pending"
+}
