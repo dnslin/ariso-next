@@ -119,7 +119,7 @@ HeroUI3.2.6没有Code/Snippet导出，实际检查组件与React Aria类型后�
 
 新单行输入的复制成功/拒绝、指针与键盘、完整值关闭确认、单选键盘切换、tips和用法说明回焦已加入原有 `captureTokensLayouts` / Token behavior。默认 `pnpm run test:browser → verify-browser → e2e/tokens.mjs` 继续包含这些场景；定向模式只缩短重跑，不删默认能力。这些新断言还未实际运行，不写成通过。服务端/集成输入未变，沿用原证据，不重复旧检查。
 
-本轮代码已落实且本地适用检查通过；原型 UI 人工审查已通过。本轮产品浏览器复验、最新产品设计对照与产品人工验收尚未完成，之前的独立设计结论不覆盖新输入。Figma同步与最终代码复审结果将追加。PR继续草稿，无远端检查时不记为CI通过。
+本轮代码已落实，类型、静态、单元及构建通过；原型 UI 人工审查已通过。本轮产品浏览器复验、最新产品设计对照与产品人工验收尚未完成，之前的独立设计结论不覆盖新输入。Figma同步与最终代码复审结果将追加。PR继续草稿，无远端检查时不记为CI通过。
 
 按 `ego-browser` 技能（本机 `/Users/dnslin/.agents/skills/ego-browser/SKILL.md`） 的原文“Stop when the user takes control or the space is inactive or unassigned. Do not retry or route around the stop.”，未重新claim、另建空间或切换浏览器。恢复需要用户明确授权“继续浏览器验证”，此前同一个请求保持待答，不重复询问。
 
@@ -128,3 +128,24 @@ HeroUI3.2.6没有Code/Snippet导出，实际检查组件与React Aria类型后�
 最终源码对照获批原型时修正了两个视觉细节：HeroUI horizontal RadioGroup只控制键盘方向，原型要求标签在上，因此显式保留纵向容器；44px高度放到实际Radio.Content点击标签。单行代码框补回原型细边框、6px内边距、4px间距、Copy图标与中性12px提醒。未改复制或期限数据流。上述输入已实际重新构建（退出0且TypeScript完成）及[定向ESLint](checks/refinement/lint-layout.txt)；新浏览器仍未执行。
 
 全量格式检查首次实际失败于既有 `checks/credential-scan.json` 的数组换行，[原结果](checks/refinement/format-red.txt)保留。该文件仅按Prettier规范化排版，内容不变；命令日志副本只去掉终端进度行尾与多余空行，原始输出仍保留在忽略目录。格式复验结果在最终证据补充，不用构建或源码审查代替。
+
+独立设计复核随后发现主卡内边距/标题说明分组、空态高度、弹窗20px间距、创建footer分隔线与112×48按钮、关闭提醒图标和文案尚未完全对齐获批原型；已在 `9d538c7f` 修正。20px外间距只用于编辑/完整值与关闭提醒，原处理中、明确失败和核对分支保留16px，避免扩大未重设计状态。两位代码评审均复核此固定增量，源码无剩余 Critical/Required；[定向 ESLint](checks/refinement/lint-design-alignment.txt)和最终[生产构建](checks/refinement/build.txt)实际退出0。只重跑受影响检查，1469项单元与全量类型/静态结果输入未变，不机械重复。
+
+最新产品预览已按最终源码重新启动，独立数据库与账号保留，实际健康接口返回200；仅为服务可用性检查，没有操作浏览器或改人工数据。[私有预览凭证扫描](checks/refinement/credential-scan.json)在常规文件中未发现账号/密码，首次gitlink目录读取失败与处理方式保留。
+
+最终[独立静态设计复审](design-state-audit.md#获批返修的独立静态设计复审2026-10-06)通过：评审实际读取26个节点、查看24张最终Figma截图，并与1440/390获批原型和 `9d538c7f` 源码对照。手机说明截断、关闭footer对齐、秒级日期及日历图标、复制错误颜色和深色新图标绑定均在对应Figma图层关闭。仅既有四个创建/字段错误状态取得最终深色设计截图；新产品真实截图和功能仍未验证。用户的原型UI审查通过已记录，不将静态对照或原型批准写成新产品验收。
+
+Figma同步已完成，[索引](figma/refinement/sync-index.json)记录两页20主状态、10编辑（含4深色）、10完整值、4关闭状态、记录组件及说明浮层。最终45节点回读确认可编辑图层、无IMAGE节点且已删除ID不再存续；仅核验设计材料JSON/PNG尺寸，不计产品测试。首次API失败保留在sync-result与sync-success文件，后者文件名不表示成功；索引明确实际错误、修正与最终回读。guide、历史参考和其余新深色画板未改，范围及截图覆盖如实保留。
+
+全量 `pnpm run format:check` 最终退出0（[日志](checks/refinement/format-final.txt)）；首次失败仍保留。`node docs/tasks/check.mjs` 退出0，120任务/298需求、无缺失编号或循环（[日志](checks/refinement/docs-final.txt)）。最终补记检查结果后只复验变化文档的格式与依赖，不重跑未改应用。
+
+| 最终阶段 | 实际状态                                                                                                                         |
+| -------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| 代码     | 源码完成；两位独立代码评审复核9d538c7f，无剩余源码必修。                                                                         |
+| 本地检查 | 类型、全量静态、1469单元、最终构建、全量格式和文档检查通过。集成历史失败/定向修复沿原记录，不改写全量结果。                      |
+| 浏览器   | 上轮分组证据保留；新Input/Radio/tips/记录排列及编排实际链未恢复验证；默认全量历史失败/中断保持。                                 |
+| 设计     | 获批返修已同步Figma，独立原型/Figma/源码静态对照通过；最新产品实际页面视觉未验证。                                               |
+| 人工     | 用户已通过原型UI审查；返修后产品验收未完成，预览及独立账号保留。                                                                 |
+| Git / PR | 源码已提交并推送到codex/issue-166-upload-tokens；证据随本次文档提交，PR250继续OPEN/DRAFT。已核对GitHub无远端检查，未记作CI通过。 |
+
+本次未合并、关闭Issue、发布、部署或清理分支/worktree。
