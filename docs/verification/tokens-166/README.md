@@ -149,3 +149,5 @@ Figma同步已完成，[索引](figma/refinement/sync-index.json)记录两页20�
 | Git / PR | 源码已提交并推送到codex/issue-166-upload-tokens；证据随本次文档提交，PR250继续OPEN/DRAFT。已核对GitHub无远端检查，未记作CI通过。 |
 
 本次未合并、关闭Issue、发布、部署或清理分支/worktree。
+
+最后追加39个暂存文本文件的凭证增量扫描均无泄露；新增扫描结果曾因JSON数组排版在单文件Prettier检查失败（退出1），已按Prettier修正，随后[同文件格式复验](checks/refinement/format-credential-final.txt)退出0。未以之前全量格式结果覆盖这个新增输入的失败，也未重复应用检查。
