@@ -71,10 +71,12 @@ export function createSharingRunner({
       }
     }
   }
-  async function runSharingPublic(spaceId, sharingPublicPhase) {
-    const { launchSharingPublic } =
-      await import('../e2e/sharing-public-fixture.mjs');
-    const fixture = await launchSharingPublic(signal);
+  async function runSharingPublic(spaceId, phase, viewer = false) {
+    const launch = viewer
+      ? (await import('../e2e/sharing-viewer-fixture.mjs')).launchSharingViewer
+      : (await import('../e2e/sharing-public-fixture.mjs')).launchSharingPublic;
+    const fixture = await launch(signal);
+    const scene = viewer ? 'sharing-viewer' : 'sharing-public';
     fixtures.add(fixture);
     try {
       secrets.push(
@@ -86,10 +88,12 @@ export function createSharingRunner({
         ...setupCodes(fixture.logs()),
       );
       await runBrowser(
-        '../e2e/sharing-public.mjs',
+        `../e2e/${scene}.mjs`,
         {
           ...fixture.browserInput,
-          sharingPublicPhase,
+          ...(viewer
+            ? { sharingViewerPhase: phase }
+            : { sharingPublicPhase: phase }),
           spaceId,
           pageLabel,
           output,
@@ -105,14 +109,14 @@ export function createSharingRunner({
             resolve('e2e/sharing-public-errors.mjs'),
           ).href,
         },
-        'sharing-public.log',
+        `${scene}.log`,
       );
       await fixture.verify();
-      report.sharingPublic = 'passed';
+      report[viewer ? 'sharingViewer' : 'sharingPublic'] = 'passed';
     } finally {
       try {
         await writeFile(
-          join(output, 'sharing-public-server.log'),
+          join(output, `${scene}-server.log`),
           redact(fixture.logs()),
         );
       } finally {
@@ -141,6 +145,7 @@ export function createSharingRunner({
     runExperiment: runSharingExperiment,
     runProtocol: runSharingProtocol,
     runPublic: runSharingPublic,
+    runViewer: (spaceId, phase) => runSharingPublic(spaceId, phase, true),
     stop: stopFixtures,
   };
 }

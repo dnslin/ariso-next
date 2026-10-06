@@ -21,6 +21,7 @@ export function ShareList({
   onLoadMore,
   onReload,
   onCheck,
+  onOpen,
 }: {
   page: PublicSharePage;
   brand: ShareBrand;
@@ -33,6 +34,7 @@ export function ShareList({
   onLoadMore: () => void;
   onReload: () => void;
   onCheck: () => void;
+  onOpen: (imageId: string, source: HTMLElement) => void;
 }) {
   const [failed, setFailed] = useState({ revision: -1, ids: [] as string[] });
   function onThumbnailFailure(id: string) {
@@ -144,6 +146,7 @@ export function ShareList({
               layout={page.layout}
               showName={page.showName}
               onThumbnailFailure={onThumbnailFailure}
+              onOpen={onOpen}
             />
           ) : loading ? (
             <div

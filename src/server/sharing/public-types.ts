@@ -4,7 +4,17 @@ export interface PublicShareItem {
   aspectRatio: number;
   status: 'ready' | 'processing' | 'failed' | 'disabled' | 'missing';
   thumbnailUrl: string | null;
+  previewUrl: string | null;
   displayName?: string;
+}
+
+export interface PublicShareNeighbors {
+  current: PublicShareItem | null;
+  previous: PublicShareItem | null;
+  next: PublicShareItem | null;
+  showName: boolean;
+  total: number;
+  position: number | null;
 }
 
 export interface PublicShareAlbum {

@@ -1,0 +1,214 @@
+{
+  "startedAt": "2026-10-06T14:23:11.610Z",
+  "platform": "darwin",
+  "arch": "arm64",
+  "node": "v24.18.1",
+  "status": "failed",
+  "suite": "full",
+  "pageLabel": "p1",
+  "stages": {
+    "runtime-start": {
+      "status": "passed"
+    },
+    "shell-start": {
+      "status": "passed"
+    },
+    "runtime": {
+      "status": "passed"
+    },
+    "identity-1440-start": {
+      "status": "passed"
+    },
+    "identity-1440-setup": {
+      "status": "passed"
+    },
+    "owner-runtime-1440": {
+      "status": "passed"
+    },
+    "identity-1440-restart": {
+      "status": "passed"
+    },
+    "m2-1440-before": {
+      "status": "passed"
+    },
+    "m2-1440-after": {
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (m2-1440-after.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/verify-browser.mjs:215:12)\n    at async file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/browser-m2.mjs:38:5\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/browser-stages.mjs:17:5)\n    at async runM2Restart (file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/browser-m2.mjs:32:3)\n    at async file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/verify-browser.mjs:829:7"
+    },
+    "interaction-polish-1440": {
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (interaction-polish-1440.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/verify-browser.mjs:215:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/browser-stages.mjs:17:5)\n    at async file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/verify-browser.mjs:836:7"
+    },
+    "workspace-continuity-1440": {
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (workspace-continuity-1440.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/verify-browser.mjs:215:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/browser-stages.mjs:17:5)\n    at async file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/verify-browser.mjs:837:7"
+    },
+    "tokens-1440": {
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (tokens-1440.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/verify-browser.mjs:215:12)\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/browser-stages.mjs:17:5)\n    at async runIdentityManagement (file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/browser-identity-management.mjs:12:24)\n    at async file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/verify-browser.mjs:838:26"
+    },
+    "account-runtime-1440": {
+      "status": "passed"
+    },
+    "account-1440": {
+      "status": "passed"
+    },
+    "identity-390-start": {
+      "status": "passed"
+    },
+    "identity-390-setup": {
+      "status": "passed"
+    },
+    "owner-runtime-390": {
+      "status": "passed"
+    },
+    "identity-390-restart": {
+      "status": "passed"
+    },
+    "processing": {
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (processing.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/verify-browser.mjs:215:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/browser-stages.mjs:17:5)\n    at async file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/verify-browser.mjs:781:9"
+    },
+    "storage-admin": {
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (storage-admin.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/verify-browser.mjs:215:12)\n    at async file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/verify-browser.mjs:787:15\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/browser-stages.mjs:17:5)\n    at async file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/verify-browser.mjs:783:11"
+    },
+    "storage-cors": {
+      "status": "passed"
+    },
+    "storage-cors-close": {
+      "status": "passed"
+    },
+    "library": {
+      "status": "failed",
+      "error": "AbortError: The operation was aborted\n    at AbortSignal.abortListener (node:events:1025:14)\n    at [nodejs.internal.kHybridDispatch] (node:internal/event_target:843:20)\n    at AbortSignal.dispatchEvent (node:internal/event_target:776:26)\n    at runAbort (node:internal/abort_controller:547:10)\n    at abortSignal (node:internal/abort_controller:524:5)\n    at Timeout._onTimeout (node:internal/abort_controller:208:7)\n    at listOnTimeout (node:internal/timers:605:17)\n    at process.processTimers (node:internal/timers:541:7)"
+    },
+    "library-feedback": {
+      "status": "passed"
+    },
+    "library-selection": {
+      "status": "passed"
+    },
+    "library-selection-reconciliation": {
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (library-selection-reconciliation.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/verify-browser.mjs:215:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/browser-stages.mjs:17:5)\n    at async file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/verify-browser.mjs:823:11"
+    },
+    "library-query": {
+      "status": "passed"
+    },
+    "library-filters": {
+      "status": "passed"
+    },
+    "library-scale": {
+      "status": "passed"
+    },
+    "library-batch": {
+      "status": "failed",
+      "error": "AbortError: The operation was aborted\n    at AbortSignal.abortListener (node:events:1025:14)\n    at [nodejs.internal.kHybridDispatch] (node:internal/event_target:843:20)\n    at AbortSignal.dispatchEvent (node:internal/event_target:776:26)\n    at runAbort (node:internal/abort_controller:547:10)\n    at abortSignal (node:internal/abort_controller:524:5)\n    at Timeout._onTimeout (node:internal/abort_controller:208:7)\n    at listOnTimeout (node:internal/timers:605:17)\n    at process.processTimers (node:internal/timers:541:7)"
+    },
+    "library-reprocess": {
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (library-reprocess.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/verify-browser.mjs:215:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/browser-stages.mjs:17:5)\n    at async file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/verify-browser.mjs:827:51"
+    },
+    "library-copy": {
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (library-copy.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/verify-browser.mjs:215:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/browser-stages.mjs:17:5)\n    at async file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/verify-browser.mjs:827:51"
+    },
+    "trash-query-batch": {
+      "status": "passed"
+    },
+    "trash-cleanup": {
+      "status": "passed"
+    },
+    "shell-navigation": {
+      "status": "passed"
+    },
+    "albums": {
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (albums.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/verify-browser.mjs:215:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/browser-stages.mjs:17:5)\n    at async file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/verify-browser.mjs:827:51"
+    },
+    "album-cover": {
+      "status": "passed"
+    },
+    "tags": {
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (tags.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/verify-browser.mjs:215:12)\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/browser-stages.mjs:17:5)\n    at async file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/verify-browser.mjs:827:51"
+    },
+    "upload": {
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (upload.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/verify-browser.mjs:215:12)\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/browser-stages.mjs:17:5)\n    at async file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/verify-browser.mjs:827:51"
+    },
+    "upload-polling": {
+      "status": "passed"
+    },
+    "upload-input": {
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (upload-input.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/verify-browser.mjs:215:12)\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/browser-stages.mjs:17:5)\n    at async file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/verify-browser.mjs:827:51"
+    },
+    "upload-submissions": {
+      "status": "passed"
+    },
+    "upload-relations": {
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (upload-relations.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/verify-browser.mjs:215:12)\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/browser-stages.mjs:17:5)\n    at async file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/verify-browser.mjs:827:51"
+    },
+    "sharing-management": {
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (sharing-management.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/verify-browser.mjs:215:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/browser-stages.mjs:17:5)\n    at async file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/verify-browser.mjs:827:51"
+    },
+    "m2-390-before": {
+      "status": "passed"
+    },
+    "m2-390-after": {
+      "status": "passed"
+    },
+    "interaction-polish-390": {
+      "status": "passed"
+    },
+    "workspace-continuity-390": {
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (workspace-continuity-390.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/verify-browser.mjs:215:12)\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/browser-stages.mjs:17:5)\n    at async file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/verify-browser.mjs:837:7"
+    },
+    "tokens-390": {
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (tokens-390.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/verify-browser.mjs:215:12)\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/browser-stages.mjs:17:5)\n    at async runIdentityManagement (file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/browser-identity-management.mjs:12:24)\n    at async file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/verify-browser.mjs:838:26"
+    },
+    "account-runtime-390": {
+      "status": "passed"
+    },
+    "account-390": {
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (account-390.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/verify-browser.mjs:215:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/browser-stages.mjs:17:5)\n    at async runIdentityManagement (file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/browser-identity-management.mjs:19:25)\n    at async file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/verify-browser.mjs:838:26"
+    },
+    "delivery-s3": {
+      "status": "passed"
+    },
+    "sharing-protocol": {
+      "status": "passed"
+    },
+    "sharing-public": {
+      "status": "passed"
+    },
+    "sharing-viewer": {
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (sharing-viewer.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/verify-browser.mjs:215:12)\n    at async runSharingPublic (file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/browser-sharing.mjs:90:7)\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/browser-stages.mjs:17:5)\n    at async file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/verify-browser.mjs:871:5"
+    },
+    "sharing-experiment": {
+      "status": "passed"
+    },
+    "isolated-ui": {
+      "status": "passed"
+    }
+  },
+  "taskSpaceId": 43,
+  "origin": "http://ariso-54655.localhost:54655",
+  "account-1440": "passed",
+  "sharingProtocol": "passed",
+  "sharingPublic": "passed",
+  "sharingOrigin": "http://127.0.0.1:58089",
+  "sharingExperiment": "passed",
+  "sharingBrowserContexts": "unverified",
+  "error": "AssertionError [ERR_ASSERTION]: Browser stages failed or blocked: m2-1440-after, interaction-polish-1440, workspace-continuity-1440, tokens-1440, processing, storage-admin, library, library-selection-reconciliation, library-batch, library-reprocess, library-copy, albums, tags, upload, upload-input, upload-relations, sharing-management, workspace-continuity-390, tokens-390, account-390, sharing-viewer\n    at file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/scripts/verify-browser.mjs:900:12\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)",
+  "finishedAt": "2026-10-06T15:47:43.569Z",
+  "temporaryDirectoryRemoved": true
+}

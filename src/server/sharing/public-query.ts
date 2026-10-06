@@ -5,6 +5,7 @@ import { CollectionError } from '../collections/errors.ts';
 import {
   countPublicAlbumMembers,
   readPublicAlbumIds,
+  readPublicAlbumNeighbors,
   readPublicAlbumPage,
 } from '../collections/queries.ts';
 import { albums } from '../collections/schema.ts';
@@ -13,6 +14,7 @@ import { readShareAccess } from './authorization.ts';
 import { SharingError } from './errors.ts';
 import type {
   PublicShareAlbum,
+  PublicShareNeighbors,
   PublicSharePage,
   PublicShareRefresh,
 } from './public-types.ts';
@@ -110,10 +112,39 @@ export function readPublicShareItems(
   db: BetterSQLite3Database,
   input: PublicShareAccess,
   params: URLSearchParams,
-): PublicSharePage {
+): PublicSharePage | PublicShareNeighbors {
   return db.transaction((tx) => {
     const share = requirePublicShare(tx, input);
-    return readPublicPage(tx, share, parsePublicShareQuery(params));
+    const query = parsePublicShareQuery(params);
+    if (query.kind === 'page') return readPublicPage(tx, share, query.cursor);
+    const neighborhood = readPublicAlbumNeighbors(
+      tx,
+      share.albumId,
+      query.imageId,
+    );
+    const ids = [
+      neighborhood.current,
+      neighborhood.previous,
+      neighborhood.next,
+    ].filter((id): id is string => id !== null);
+    const items = new Map(
+      readAnonymousThumbnails(tx, ids, share.showName).map((item) => [
+        item.imageId,
+        item,
+      ]),
+    );
+    return {
+      current:
+        neighborhood.current === null ? null : items.get(neighborhood.current)!,
+      previous:
+        neighborhood.previous === null
+          ? null
+          : items.get(neighborhood.previous)!,
+      next: neighborhood.next === null ? null : items.get(neighborhood.next)!,
+      showName: share.showName,
+      total: neighborhood.total,
+      position: neighborhood.position,
+    };
   });
 }
 

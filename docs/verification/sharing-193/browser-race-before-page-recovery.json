@@ -1,0 +1,513 @@
+{
+  "status": "failed",
+  "taskSpaceId": 2,
+  "phase": "race",
+  "scope": "Production anonymous image viewer, bounded public neighbors and real revocation",
+  "checks": [
+    {
+      "scenario": "Actual held neighbor loading status observation",
+      "width": 390,
+      "theme": "light",
+      "loading": {
+        "text": "正在读取图片…",
+        "visible": true,
+        "background": "rgba(0, 0, 0, 0)",
+        "currentImage": "8dffb9cf-8453-4297-a8cf-b75e809c01eb",
+        "heldName": "共享照片-008"
+      }
+    },
+    {
+      "scenario": "Actual held neighbor loading status observation",
+      "width": 390,
+      "theme": "dark",
+      "loading": {
+        "text": "正在读取图片…",
+        "visible": true,
+        "background": "rgba(0, 0, 0, 0)",
+        "currentImage": "8dffb9cf-8453-4297-a8cf-b75e809c01eb",
+        "heldName": "共享照片-008"
+      }
+    },
+    {
+      "scenario": "Actual held neighbor loading status observation",
+      "width": 1440,
+      "theme": "light",
+      "loading": {
+        "text": "正在读取图片…",
+        "visible": true,
+        "background": "rgba(0, 0, 0, 0)",
+        "currentImage": "8dffb9cf-8453-4297-a8cf-b75e809c01eb",
+        "heldName": "共享照片-008"
+      }
+    },
+    {
+      "scenario": "Actual held neighbor loading status observation",
+      "width": 1440,
+      "theme": "dark",
+      "loading": {
+        "text": "正在读取图片…",
+        "visible": true,
+        "background": "rgba(0, 0, 0, 0)",
+        "currentImage": "8dffb9cf-8453-4297-a8cf-b75e809c01eb",
+        "heldName": "共享照片-008"
+      }
+    },
+    {
+      "scenario": "A late named neighbor response cannot restore names or advance an obsolete navigation after showName turns off"
+    },
+    {
+      "scenario": "Closing and opening a different image ignores the previous late neighbor result"
+    },
+    {
+      "scenario": "Neighbor HTTP failure shows the approved recovery page, preserves selected target, and real retry opens that target"
+    }
+  ],
+  "layouts": [
+    {
+      "state": "neighbor-loading",
+      "width": 390,
+      "height": 844,
+      "theme": "light",
+      "screenshot": "sharing-viewer-neighbor-loading-light-390.png",
+      "geometry": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 358,
+          "height": 360
+        },
+        "targets": [
+          {
+            "label": "全屏",
+            "width": 88,
+            "height": 44,
+            "left": 286,
+            "right": 374,
+            "top": 150,
+            "bottom": 194
+          },
+          {
+            "label": "关闭",
+            "width": 80.5,
+            "height": 48,
+            "left": 16,
+            "right": 96.5,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "上一张",
+            "width": 80.5,
+            "height": 48,
+            "left": 108.5,
+            "right": 189,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "下一张",
+            "width": 80.5,
+            "height": 48,
+            "left": 201,
+            "right": 281.5,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "放大",
+            "width": 80.5,
+            "height": 48,
+            "left": 293.5,
+            "right": 374,
+            "top": 780,
+            "bottom": 828
+          }
+        ]
+      }
+    },
+    {
+      "state": "neighbor-loading",
+      "width": 390,
+      "height": 844,
+      "theme": "dark",
+      "screenshot": "sharing-viewer-neighbor-loading-dark-390.png",
+      "geometry": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 358,
+          "height": 360
+        },
+        "targets": [
+          {
+            "label": "全屏",
+            "width": 88,
+            "height": 44,
+            "left": 286,
+            "right": 374,
+            "top": 150,
+            "bottom": 194
+          },
+          {
+            "label": "关闭",
+            "width": 80.5,
+            "height": 48,
+            "left": 16,
+            "right": 96.5,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "上一张",
+            "width": 80.5,
+            "height": 48,
+            "left": 108.5,
+            "right": 189,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "下一张",
+            "width": 80.5,
+            "height": 48,
+            "left": 201,
+            "right": 281.5,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "放大",
+            "width": 80.5,
+            "height": 48,
+            "left": 293.5,
+            "right": 374,
+            "top": 780,
+            "bottom": 828
+          }
+        ]
+      }
+    },
+    {
+      "state": "neighbor-loading",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light",
+      "screenshot": "sharing-viewer-neighbor-loading-light-1440.png",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 1080
+        },
+        "root": {
+          "left": 0,
+          "right": 1440,
+          "top": 0,
+          "bottom": 1080
+        },
+        "stage": {
+          "width": 1160,
+          "height": 660
+        },
+        "targets": [
+          {
+            "label": "全屏",
+            "width": 88,
+            "height": 44,
+            "left": 1212,
+            "right": 1300,
+            "top": 140,
+            "bottom": 184
+          },
+          {
+            "label": "关闭",
+            "width": 281,
+            "height": 48,
+            "left": 140,
+            "right": 421,
+            "top": 1016,
+            "bottom": 1064
+          },
+          {
+            "label": "上一张",
+            "width": 281,
+            "height": 48,
+            "left": 433,
+            "right": 714,
+            "top": 1016,
+            "bottom": 1064
+          },
+          {
+            "label": "下一张",
+            "width": 281,
+            "height": 48,
+            "left": 726,
+            "right": 1007,
+            "top": 1016,
+            "bottom": 1064
+          },
+          {
+            "label": "放大",
+            "width": 281,
+            "height": 48,
+            "left": 1019,
+            "right": 1300,
+            "top": 1016,
+            "bottom": 1064
+          }
+        ]
+      }
+    },
+    {
+      "state": "neighbor-loading",
+      "width": 1440,
+      "height": 1080,
+      "theme": "dark",
+      "screenshot": "sharing-viewer-neighbor-loading-dark-1440.png",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 1080
+        },
+        "root": {
+          "left": 0,
+          "right": 1440,
+          "top": 0,
+          "bottom": 1080
+        },
+        "stage": {
+          "width": 1160,
+          "height": 660
+        },
+        "targets": [
+          {
+            "label": "全屏",
+            "width": 88,
+            "height": 44,
+            "left": 1212,
+            "right": 1300,
+            "top": 140,
+            "bottom": 184
+          },
+          {
+            "label": "关闭",
+            "width": 281,
+            "height": 48,
+            "left": 140,
+            "right": 421,
+            "top": 1016,
+            "bottom": 1064
+          },
+          {
+            "label": "上一张",
+            "width": 281,
+            "height": 48,
+            "left": 433,
+            "right": 714,
+            "top": 1016,
+            "bottom": 1064
+          },
+          {
+            "label": "下一张",
+            "width": 281,
+            "height": 48,
+            "left": 726,
+            "right": 1007,
+            "top": 1016,
+            "bottom": 1064
+          },
+          {
+            "label": "放大",
+            "width": 281,
+            "height": 48,
+            "left": 1019,
+            "right": 1300,
+            "top": 1016,
+            "bottom": 1064
+          }
+        ]
+      }
+    },
+    {
+      "state": "neighbor-error",
+      "width": 390,
+      "height": 844,
+      "theme": "light",
+      "screenshot": "sharing-viewer-neighbor-error-light-390.png",
+      "geometry": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 844
+        },
+        "targets": [
+          {
+            "label": "返回相册",
+            "width": 308,
+            "height": 48,
+            "left": 41,
+            "right": 349,
+            "top": 347,
+            "bottom": 395
+          },
+          {
+            "label": "重新加载",
+            "width": 308,
+            "height": 48,
+            "left": 41,
+            "right": 349,
+            "top": 411,
+            "bottom": 459
+          }
+        ]
+      }
+    },
+    {
+      "state": "neighbor-error",
+      "width": 390,
+      "height": 844,
+      "theme": "dark",
+      "screenshot": "sharing-viewer-neighbor-error-dark-390.png",
+      "geometry": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 844
+        },
+        "targets": [
+          {
+            "label": "返回相册",
+            "width": 308,
+            "height": 48,
+            "left": 41,
+            "right": 349,
+            "top": 347,
+            "bottom": 395
+          },
+          {
+            "label": "重新加载",
+            "width": 308,
+            "height": 48,
+            "left": 41,
+            "right": 349,
+            "top": 411,
+            "bottom": 459
+          }
+        ]
+      }
+    },
+    {
+      "state": "neighbor-error",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light",
+      "screenshot": "sharing-viewer-neighbor-error-light-1440.png",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 1080
+        },
+        "root": {
+          "left": 0,
+          "right": 1440,
+          "top": 0,
+          "bottom": 1080
+        },
+        "targets": [
+          {
+            "label": "返回相册",
+            "width": 430,
+            "height": 48,
+            "left": 505,
+            "right": 935,
+            "top": 391,
+            "bottom": 439
+          },
+          {
+            "label": "重新加载",
+            "width": 430,
+            "height": 48,
+            "left": 505,
+            "right": 935,
+            "top": 455,
+            "bottom": 503
+          }
+        ]
+      }
+    },
+    {
+      "state": "neighbor-error",
+      "width": 1440,
+      "height": 1080,
+      "theme": "dark",
+      "screenshot": "sharing-viewer-neighbor-error-dark-1440.png",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 1080
+        },
+        "root": {
+          "left": 0,
+          "right": 1440,
+          "top": 0,
+          "bottom": 1080
+        },
+        "targets": [
+          {
+            "label": "返回相册",
+            "width": 430,
+            "height": 48,
+            "left": 505,
+            "right": 935,
+            "top": 391,
+            "bottom": 439
+          },
+          {
+            "label": "重新加载",
+            "width": 430,
+            "height": 48,
+            "left": 505,
+            "right": 935,
+            "top": 455,
+            "bottom": 503
+          }
+        ]
+      }
+    }
+  ],
+  "limitations": [
+    "Physical phones, software keyboards, nonzero safe area and Release containers are outside this browser run."
+  ],
+  "previousPageErrors": [],
+  "stage": "viewer-races",
+  "expectedConsoleErrors": [
+    "分享大图读取失败 [object Object]",
+    "分享状态检查失败 [object Object]"
+  ],
+  "error": "PageEvaluationTimeoutError: page.evaluate timed out after 15000ms and the renderer stopped responding. The current execution was stopped and the Page recovered, but work scheduled earlier may still produce late side effects.\n    at recoverPageEvaluationTimeout (file:////[eval1]:19297:16)\n    at async file:////[eval1]:18816:27\n    at async file:////[eval1]:16691:28"
+}
