@@ -1,0 +1,88 @@
+Error: ElementResolutionError: Invalid locator: loc=role:listbox. Expected loc=role:<role>[name="<exact name>"], loc=role:<role>[name*="<name part>"], loc=css:<selector>, loc=href:<substring>, text=..., css=..., a terminal :has-text(...) or :text-is(...), or a terminal >> nth=N
+    at parseLocatorOrThrow (file:////[eval1]:11202:15)
+    at resolveElementObjectId (file:////[eval1]:9819:21)
+    at waitForSelectorInPage (file:////[eval1]:16110:30)
+    at async file:////[eval1]:16691:28
+    at file:////[eval2]:128:20
+
+ego's nodejs process exited with code 1.
+Browser stage failed (tokens): AssertionError [ERR_ASSERTION]: Ego browser verification failed (tokens.log)
+
+1 !== 0
+
+    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/scripts/verify-browser.mjs:209:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/scripts/browser-stages.mjs:17:5)
+    at async file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/scripts/verify-browser.mjs:713:24
+{ taskSpaceId: 36, ownership: 'agent' }
+[p1 "Ariso" | space "Issue 166 Token 实施与验证"(36): 3 managed, 0 untracked — p1* "Ariso", p3 "Ariso", p6 "Sharing protocol experiment"]
+root
+  container
+    anchor "Ariso 首页" [ref=791, url=http://ariso-60341.localhost:60341/]
+      text "Ariso"
+    button "菜单" [ref=792, loc=css:button[aria-label="菜单"]]
+      svg_root
+  container
+    heading
+      svg_root
+      text "站点设置"
+    paragraph
+      text "管理站点、图片处理与账号偏好。"
+    text "设置分类"
+    button "图片处理 设置分类" [ref=793]
+      svg_root
+      text "图片处理"
+      svg_root
+    form
+      heading
+        text "默认与任务"
+      text "新上传默认可见性"
+      button "公开 新上传默认可见性" [ref=794]
+        text "公开"
+        svg_root
+      paragraph
+        text "仅影响新提交，已有图片不变。"
+      text "默认外链版本"
+      button "压缩图 默认外链版本" [ref=795]
+        text "压缩图"
+        svg_root
+      paragraph
+        text "默认链接跟随此选择，固定版本不变。"
+      text "处理并发数"
+      textbox "处理并发数" [ref=796]
+        text "1"
+      paragraph
+        text "1–4；调小后，已运行任务继续完成。"
+      heading
+        text "派生图片"
+      text "压缩版本"
+      text "已开启"
+      text "输出格式"
+      text "质量"
+  container
+    button [ref=797]
+      text "预览处理效果"
+    button [ref=798]
+      text "保存处理设置"
+  dialog "设置分类" [ref=799]
+    listbox "设置分类" [ref=800]
+      listboxoption [ref=801]
+        container
+          svg_root
+          text "图片处理"
+        svg_root
+      listboxoption [ref=802]
+        container
+          svg_root
+          text "账号与安全"
+        svg_root
+      listboxoption [ref=803]
+        container
+          svg_root
+          text "上传 API"
+        svg_root
+
+
+AssertionError [ERR_ASSERTION]: Focused browser stages failed
+    at file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/scripts/verify-browser.mjs:719:12
+Browser report: /Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/test-results/tokens-166-consumers

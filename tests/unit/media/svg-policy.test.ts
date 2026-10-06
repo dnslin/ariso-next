@@ -6,6 +6,36 @@ const wrap = (body: string) =>
 
 describe('static SVG admission policy', () => {
   it.each([
+    ['shape', '<rect width="10" height="10" fill="blue"/>', false],
+    ['plain text node', 'plain text without an SVG text element', false],
+    ['comment', '<!-- <text>comment only</text> -->', false],
+    ['CDATA', '<![CDATA[<text>text only</text>]]>', false],
+    ['text', '<text>Ariso</text>', true],
+    ['tspan', '<text><tspan>Ariso</tspan></text>', true],
+    [
+      'textPath',
+      '<defs><path id="line" d="M0 10L100 10"/></defs><text><textPath href="#line">Ariso</textPath></text>',
+      true,
+    ],
+    [
+      'namespaced text',
+      '<g xmlns:s="http://www.w3.org/2000/svg"><s:text>Ariso</s:text></g>',
+      true,
+    ],
+    [
+      'referenced text',
+      '<defs><text id="label">Ariso</text></defs><use href="#label"/>',
+      true,
+    ],
+    [
+      'referenced shape',
+      '<defs><rect id="shape" width="10" height="10"/></defs><use href="#shape"/>',
+      false,
+    ],
+  ])('reports whether %s content requires fonts', (_name, body, hasText) => {
+    expect(assertStaticSvg(wrap(body as string))).toEqual({ hasText });
+  });
+  it.each([
     '<rect width="10" height="10" fill="blue"/>',
     '<defs><linearGradient id="g"><stop stop-color="red"/></linearGradient></defs><rect fill="url(#g)"/>',
     '<style><![CDATA[rect {fill: url(#g); stroke: red}]]></style><rect style="fill:url(\'#g\')"/>',

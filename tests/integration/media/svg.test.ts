@@ -57,30 +57,42 @@ async function fixture(body: string, width = 32, height = 32, prefix = '') {
 }
 
 describe('isolated static SVG preview', () => {
-  it('renders SVG text using trusted installed fonts', async () => {
-    const f = await fixture(
+  it.each([
+    [
+      'ordinary',
       '<text x="0" y="25" font-family="sans-serif" font-size="20">SVG</text>',
-      80,
-      32,
-    );
-    const { settled } = startSvgPreview(
-      f.source,
-      f.output,
-      f.workspace,
-      new AbortController().signal,
-    );
-    expect(await settled).toBeUndefined();
-    const { stdout } = await execa('magick', [
-      f.output,
-      '-alpha',
-      'extract',
-      '-format',
-      '%[fx:mean]',
-      'info:',
-    ]);
-    expect(Number(stdout)).toBeGreaterThan(0.01);
-    expect(Number(stdout)).toBeLessThan(0.5);
-  });
+    ],
+    [
+      'internal use',
+      '<defs><text id="label" x="0" y="25" font-family="sans-serif" font-size="20">SVG</text></defs><use href="#label"/>',
+    ],
+    [
+      'namespaced',
+      '<g xmlns:s="http://www.w3.org/2000/svg"><s:text x="0" y="25" font-family="sans-serif" font-size="20">SVG</s:text></g>',
+    ],
+  ])(
+    'renders %s SVG text using trusted installed fonts',
+    async (_name, body) => {
+      const f = await fixture(body, 80, 32);
+      const { settled } = startSvgPreview(
+        f.source,
+        f.output,
+        f.workspace,
+        new AbortController().signal,
+      );
+      expect(await settled).toBeUndefined();
+      const { stdout } = await execa('magick', [
+        f.output,
+        '-alpha',
+        'extract',
+        '-format',
+        '%[fx:mean]',
+        'info:',
+      ]);
+      expect(Number(stdout)).toBeGreaterThan(0.01);
+      expect(Number(stdout)).toBeLessThan(0.5);
+    },
+  );
 
   it('persists failed preview state while retaining the accepted dangerous original', async () => {
     const f = await fixture('<image href="file:///etc/passwd"/>');

@@ -1,0 +1,158 @@
+Error: AssertionError [ERR_ASSERTION]: Clipboard denial preserves the existing partial selection
++ actual - expected
+
+  {
++   direction: 'forward',
++   end: 0,
+-   direction: 'backward',
+-   end: 12,
+    scrollTop: 0,
++   start: 0
+-   start: 5
+  }
+
+    at clipboardRound (file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/e2e/tokens-behavior.mjs:376:12)
+    at async verifyTokensCreates (file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/e2e/tokens-behavior.mjs:641:5)
+    at async file:////[eval2]:76:5
+    at file:////[eval2]:124:20
+
+ego's nodejs process exited with code 1.
+Browser stage failed (tokens): AssertionError [ERR_ASSERTION]: Ego browser verification failed (tokens.log)
+
+1 !== 0
+
+    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/scripts/verify-browser.mjs:209:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/scripts/browser-stages.mjs:17:5)
+    at async file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/scripts/verify-browser.mjs:713:24
+{ taskSpaceId: 36, ownership: 'agent' }
+[p1 "Ariso" | space "Issue 166 Token 实施与验证"(36): 3 managed, 0 untracked — p1* "Ariso", p3 "Ariso", p6 "Sharing protocol experiment"]
+root
+  container "后台侧栏"
+    anchor "Ariso 首页" [ref=640, url=http://ariso-51970.localhost:51970/]
+      text "Ariso"
+    button "收起侧栏" [ref=641, loc=css:button[aria-label="收起侧栏"]]
+      svg_root
+    container "后台导航"
+      svg_root
+      text "总览"
+      text "尚未开放"
+      anchor "上传" [ref=642, loc=css:a[aria-label="上传"], url=http://ariso-51970.localhost:51970/upload]
+        svg_root
+        text "上传"
+      anchor "图库" [ref=643, loc=css:a[aria-label="图库"], url=http://ariso-51970.localhost:51970/library]
+        svg_root
+        text "图库"
+      anchor "相册" [ref=644, loc=css:a[aria-label="相册"], url=http://ariso-51970.localhost:51970/albums]
+        svg_root
+        text "相册"
+      anchor "标签" [ref=645, loc=css:a[aria-label="标签"], url=http://ariso-51970.localhost:51970/tags]
+        svg_root
+        text "标签"
+      svg_root
+      text "分享管理"
+      text "尚未开放"
+      anchor "回收站" [ref=646, loc=css:a[aria-label="回收站"], url=http://ariso-51970.localhost:51970/trash]
+        svg_root
+        text "回收站"
+      paragraph
+        text "管理"
+      svg_root
+      text "访问统计"
+      text "尚未开放"
+      anchor "存储管理" [ref=647, loc=css:a[aria-label="存储管理"], url=http://ariso-51970.localhost:51970/settings/storage]
+        svg_root
+        text "存储管理"
+      anchor "站点设置" [ref=648, loc=css:a[aria-label="站点设置"], url=http://ariso-51970.localhost:51970/settings/processing]
+        svg_root
+        text "站点设置"
+    button "账号菜单" [ref=649, loc=css:button[aria-label="账号菜单"]]
+      text "O"
+      text "Owner"
+      text "站点所有者"
+  container
+    heading
+      svg_root
+      text "站点设置"
+    paragraph
+      text "管理站点、图片处理与账号偏好。"
+    container
+      svg_root
+      text "图片处理"
+      svg_root
+      text "账号与安全"
+      svg_root
+      text "上传 API"
+    heading
+      svg_root
+      text "上传 Token"
+    button [ref=650]
+      svg_root
+      text "创建"
+    paragraph
+      text "让脚本上传图片。Token 不能登录后台、浏览或管理图库。"
+    heading
+      svg_root
+      text "浏览器一次明文-1440"
+    paragraph
+      svg_root
+      text "已启用"
+      text "·"
+      text "永不过期"
+    paragraph
+      svg_root
+      text "创建于"
+      text "2026/10/06 04:21:23"
+    paragraph
+      text "ID："
+      text "cY1Idxez6GBLWCpI6ljrv1EkCXf8WSRy"
+    button [ref=651]
+      svg_root
+      text "停用"
+    button [ref=652]
+      svg_root
+      text "撤销"
+    paragraph
+      text "时间按站点时区显示（"
+      text "Asia/Shanghai"
+      text "）。过期记录可能被自动清理。"
+    button [ref=653]
+      text "查看上传用法"
+    paragraph
+      text "尚未开放"
+  dialog "未能自动复制" [ref=654, loc=role:dialog[name="未能自动复制"]]
+    container
+      heading
+        svg_root
+        text "未能自动复制"
+      button "关闭 Token 弹窗" [ref=655, loc=css:button[aria-label="关闭 Token 弹窗"]]
+        svg_root
+    container
+      paragraph
+        text "浏览器一次明文-1440"
+        text "·"
+        text "永不过期"
+      textbox "完整 Token" [ref=656, loc=css:textarea[aria-label="完整 Token"]]
+      paragraph
+        text "关闭后无法再次查看。请将完整 Token 保存在你信任的位置。"
+      alert
+        text "复制失败：无法写入剪贴板。请选中上方完整 Token 手动复制。"
+    container
+      button [ref=657]
+        svg_root
+        text "再次复制"
+      button [ref=658]
+        svg_root
+        text "我已保存，关闭"
+  region "操作通知"
+    alertdialog "Token 已复制" [ref=659, loc=role:alertdialog[name="Token 已复制"]]
+      svg_root
+      alert
+        text "Token 已复制"
+      button "关闭通知" [ref=660, loc=css:button[aria-label="关闭通知"]]
+        svg_root
+
+
+AssertionError [ERR_ASSERTION]: Focused browser stages failed
+    at file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/scripts/verify-browser.mjs:719:12
+Browser report: /Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/test-results/tokens-166-clipboard-dom-trace

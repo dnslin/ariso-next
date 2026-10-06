@@ -142,19 +142,22 @@ beforeEach(async () => {
     write.key,
   );
   imageId = randomUUID();
-  const accepted = connection.db.transaction((tx) =>
-    acceptOriginal(tx, {
-      imageId,
-      storageId: storage.id,
-      key: write.key,
-      originalName: 'HTTP-original.png',
-      visibility: 'public',
-      format: 'PNG',
-      mime: 'image/png',
-      byteSize: original.length,
-      snapshot: createProcessingSnapshot(tx),
-      expectedVersions: ['compressed', 'thumbnail'],
-    }),
+  // The live queue also writes; acquire the write lock before reading settings.
+  const accepted = connection.db.transaction(
+    (tx) =>
+      acceptOriginal(tx, {
+        imageId,
+        storageId: storage.id,
+        key: write.key,
+        originalName: 'HTTP-original.png',
+        visibility: 'public',
+        format: 'PNG',
+        mime: 'image/png',
+        byteSize: original.length,
+        snapshot: createProcessingSnapshot(tx),
+        expectedVersions: ['compressed', 'thumbnail'],
+      }),
+    { behavior: 'immediate' },
   );
   await settled(accepted.jobId);
 }, 30000);

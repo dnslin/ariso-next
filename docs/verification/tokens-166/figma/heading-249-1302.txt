@@ -1,0 +1,99 @@
+type ButtonOutlineProps = {
+  className?: string;
+  label?: string;
+};
+
+function ButtonOutline({ className, label = "按钮" }: ButtonOutlineProps) {
+  return (
+    <div className={className || "bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex h-[36px] items-center justify-center relative rounded-[8px] w-[398px]"} data-node-id="3:23" data-name="Button/Outline">
+      <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="3:24">
+        {label}
+      </p>
+    </div>
+  );
+}
+
+type ButtonPrimaryProps = {
+  className?: string;
+  label?: string;
+};
+
+function ButtonPrimary({ className, label = "按钮" }: ButtonPrimaryProps) {
+  return (
+    <div className={className || "bg-[var(--primary,#ffd807)] content-stretch flex h-[36px] items-center justify-center relative rounded-[8px] w-[398px]"} data-node-id="3:21" data-name="Button/Primary">
+      <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--primary-foreground,#272343)] whitespace-nowrap" data-node-id="3:22">
+        {label}
+      </p>
+    </div>
+  );
+}
+
+type LinkProps = {
+  className?: string;
+  label?: string;
+};
+
+function Link({ className, label = "链接" }: LinkProps) {
+  return (
+    <div className={className || "content-stretch flex h-[36px] items-center justify-center px-[12px] relative rounded-[8px] w-[398px]"} data-node-id="3:29" data-name="Link">
+      <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="3:30">
+        {label}
+      </p>
+    </div>
+  );
+}
+
+export default function DApiToken() {
+  return (
+    <div className="bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex flex-col gap-[16px] items-start p-[24px] relative rounded-[16px] size-full" data-node-id="249:1302" data-name="D / API Token / 请检查填写内容">
+      <div className="content-stretch flex gap-[12px] h-[44px] items-start overflow-clip relative shrink-0 w-[432px]" data-node-id="249:1303" data-name="Modal / Header">
+        <p className="[word-break:break-word] flex-[1_0_0] font-['Noto_Sans_SC:Medium'] font-medium leading-[1.5] min-w-px relative text-[22px] text-[color:var(--foreground,#272343)]" data-node-id="249:1304">
+          请检查填写内容
+        </p>
+        <Link className="content-stretch cursor-pointer flex items-center justify-center px-[12px] relative rounded-[8px] shrink-0 size-[44px]" label="×" />
+      </div>
+      <div className="content-stretch flex flex-col gap-[14px] items-start overflow-clip relative shrink-0 w-full" data-node-id="249:1307" data-name="Modal / Body">
+        <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--muted-foreground,#2d334a)] w-full" data-node-id="249:1309">
+          仅允许上传图片，可创建多个 Token。
+        </p>
+        <div className="content-stretch flex flex-col gap-[6px] items-start overflow-clip relative shrink-0 w-full" data-node-id="249:1310" data-name="名称">
+          <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-full" data-node-id="249:1311">
+            名称
+          </p>
+          <button className="bg-[var(--background,#fffffe)] border border-[var(--destructive,#de3b3d)] border-solid content-stretch cursor-pointer flex h-[48px] items-center px-[14px] relative rounded-[8px] shrink-0 w-full" data-node-id="249:1312" data-name="名称输入">
+            <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] text-left whitespace-nowrap" data-node-id="I249:1312;3:28">
+              ​
+            </p>
+          </button>
+          <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[12px] text-[color:var(--destructive,#de3b3d)] w-full" data-node-id="249:1314">
+            请填写便于识别的名称。
+          </p>
+        </div>
+        <div className="content-stretch flex flex-col gap-[6px] items-start overflow-clip relative shrink-0 w-full" data-node-id="249:1315" data-name="到期时间">
+          <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-full" data-node-id="249:1316">
+            到期时间
+          </p>
+          <div className="bg-[var(--background,#fffffe)] border border-[var(--destructive,#de3b3d)] border-solid content-stretch flex h-[48px] items-center px-[14px] relative rounded-[8px] shrink-0 w-full" data-node-id="249:1317" data-name="到期时间输入">
+            <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="I249:1317;3:28">
+              2026/09/16 18:00
+            </p>
+          </div>
+          <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[12px] text-[color:var(--destructive,#de3b3d)] w-full" data-node-id="249:1319">
+            请选择晚于当前时间的时刻。
+          </p>
+        </div>
+        <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[12px] text-[color:var(--muted-foreground,#2d334a)] w-full" data-node-id="249:1320">
+          按站点时区 Asia/Shanghai 设置。
+        </p>
+        <ButtonOutline className="bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch cursor-pointer flex h-[48px] items-center justify-center relative rounded-[8px] shrink-0 w-full" label="改为永不过期" />
+        <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[13px] text-[color:var(--muted-foreground,#2d334a)] w-full" data-node-id="249:1323">
+          完整 Token 只显示一次，创建后请立即保存。
+        </p>
+      </div>
+      <div className="content-stretch flex flex-col gap-[12px] items-start overflow-clip relative shrink-0 w-full" data-node-id="249:1308" data-name="Modal / Footer">
+        <ButtonPrimary className="bg-[var(--primary,#ffd807)] content-stretch flex h-[48px] items-center justify-center relative rounded-[8px] shrink-0 w-full" label="创建 Token" />
+        <ButtonOutline className="bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch cursor-pointer flex h-[48px] items-center justify-center relative rounded-[8px] shrink-0 w-full" label="取消" />
+      </div>
+    </div>
+  );
+}

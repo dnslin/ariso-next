@@ -15,6 +15,7 @@ import { launchProtocolDelivery } from '../tests/integration/delivery/s3-fixture
 import { runBrowserStage } from './browser-stages.mjs';
 import { selectBrowserPlan } from './browser-plan.mjs';
 import { runM2Restart } from './browser-m2.mjs';
+import { runIdentityManagement } from './browser-identity-management.mjs';
 
 assert.equal(process.versions.node.split('.')[0], '24', 'Use Node 24');
 const { values } = parseArgs({
@@ -92,6 +93,12 @@ for (const name of [
   'account-390-failure.png',
   'account-1440.json',
   'account-390.json',
+  'tokens.json',
+  'tokens-1440.json',
+  'tokens-390.json',
+  'tokens-all-failure.png',
+  'tokens-1440-failure.png',
+  'tokens-390-failure.png',
   'delivery-s3/browser.json',
   'sharing-experiment.json',
   'sharing-protocol.json',
@@ -927,9 +934,15 @@ try {
       });
       await business(`interaction-polish-${width}`, 'interaction-polish');
       await business(`workspace-continuity-${width}`, 'workspace-continuity');
-      // Account changes consume these credentials, so keep this last for the data directory.
-      if (await business(`account-${width}`, 'account'))
-        report[`account-${width}`] = 'passed';
+      const management = await runIdentityManagement({
+        check,
+        runBrowser,
+        restart: restartProduction,
+        config: identityConfig,
+        dependencies: [ownerName],
+      });
+      if (management.tokensPassed) report[`tokens-${width}`] = 'passed';
+      if (management.accountPassed) report[`account-${width}`] = 'passed';
       await stop(server);
     }
     await check('delivery-s3', async () => {

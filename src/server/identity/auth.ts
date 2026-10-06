@@ -1,6 +1,7 @@
 import { betterAuth } from 'better-auth';
 import { APIError, createAuthMiddleware } from 'better-auth/api';
 import { drizzleAdapter } from '@better-auth/drizzle-adapter';
+import { apiKey } from '@better-auth/api-key';
 import { and, eq } from 'drizzle-orm';
 import { getServerRuntime } from '../startup/server-start.ts';
 import { createRuntimeLogger } from '../runtime/logger.ts';
@@ -46,8 +47,28 @@ function createAuth(runtime: Runtime, origin: string) {
       cookieCache: { enabled: false },
     },
     account: { accountLinking: { disableImplicitLinking: true } },
+    plugins: [
+      apiKey({
+        references: 'user',
+        requireName: true,
+        storage: 'database',
+        disableKeyHashing: false,
+        startingCharactersConfig: { shouldStore: false },
+        enableSessionForAPIKeys: false,
+        keyExpiration: {
+          defaultExpiresIn: null,
+          disableCustomExpiresTime: false,
+          minExpiresIn: 1 / 86400,
+          maxExpiresIn: Number.POSITIVE_INFINITY,
+        },
+        rateLimit: { enabled: false },
+        permissions: { defaultPermissions: { upload: ['create'] } },
+      }),
+    ],
     rateLimit: { enabled: true, storage: 'memory' },
     advanced: {
+      // 插件先读取全部 Key 再分页；SQLite LIMIT -1 避免默认 100 行截断。
+      database: { defaultFindManyLimit: -1 },
       cookiePrefix: 'ariso',
       disableOriginCheck: false,
       disableCSRFCheck: false,

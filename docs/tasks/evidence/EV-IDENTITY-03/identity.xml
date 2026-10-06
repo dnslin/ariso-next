@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="18" failures="0" errors="0" time="57.961022167">
+    <testsuite name="tests/integration/identity/github.test.ts" timestamp="2026-10-05T18:33:41.736Z" hostname="dnslins-Mac-mini.local" tests="11" failures="0" errors="0" skipped="0" time="2.624658333">
+        <testcase classname="tests/integration/identity/github.test.ts" name="active binding of owner@example.test preserves the owner and credential and stores no provider tokens" time="0.292221958">
+        </testcase>
+        <testcase classname="tests/integration/identity/github.test.ts" name="active binding of different@example.test preserves the owner and credential and stores no provider tokens" time="0.31610825">
+        </testcase>
+        <testcase classname="tests/integration/identity/github.test.ts" name="unbound owner@example.test cannot sign in or register (requestSignUp=false)" time="0.340379917">
+            <system-err>
+2026-10-05T18:32:47.159Z ERROR [Better Auth]: account_not_linked
+
+            </system-err>
+        </testcase>
+        <testcase classname="tests/integration/identity/github.test.ts" name="unbound owner@example.test cannot sign in or register (requestSignUp=true)" time="0.277308083">
+            <system-err>
+2026-10-05T18:32:47.437Z ERROR [Better Auth]: account_not_linked
+
+            </system-err>
+        </testcase>
+        <testcase classname="tests/integration/identity/github.test.ts" name="unbound stranger@example.test cannot sign in or register (requestSignUp=false)" time="0.179410083">
+            <system-err>
+2026-10-05T18:32:47.617Z ERROR [Better Auth]: signup_disabled
+
+            </system-err>
+        </testcase>
+        <testcase classname="tests/integration/identity/github.test.ts" name="unbound stranger@example.test cannot sign in or register (requestSignUp=true)" time="0.214455875">
+            <system-err>
+2026-10-05T18:32:47.830Z ERROR [Better Auth]: signup_disabled
+
+            </system-err>
+        </testcase>
+        <testcase classname="tests/integration/identity/github.test.ts" name="anonymous linking and local registration are refused" time="0.210837125">
+        </testcase>
+        <testcase classname="tests/integration/identity/github.test.ts" name="missing, foreign, expired and replayed state never exchange a provider code" time="0.164234417">
+            <system-err>
+2026-10-05T18:32:48.187Z ERROR [Better Auth]: Failed to parse state [StateError [BetterAuthError]: State mismatch: State not persisted correctly] {
+  code: &apos;state_security_mismatch&apos;,
+  details: { state: &apos;63LLpPzzufblPA7rxhWQxIMJRHrvo2Qf&apos; },
+  errorURL: undefined
+}
+
+2026-10-05T18:32:48.191Z ERROR [Better Auth]: Failed to parse state [StateError [BetterAuthError]: State mismatch: State not persisted correctly] {
+  code: &apos;state_security_mismatch&apos;,
+  details: { state: &apos;63LLpPzzufblPA7rxhWQxIMJRHrvo2Qf&apos; },
+  errorURL: undefined
+}
+
+2026-10-05T18:32:48.192Z ERROR [Better Auth]: State not found undefined
+
+2026-10-05T18:32:48.199Z ERROR [Better Auth]: Failed to parse state [StateError [BetterAuthError]: State mismatch: verification not found] {
+  code: &apos;state_mismatch&apos;,
+  details: { state: &apos;63LLpPzzufblPA7rxhWQxIMJRHrvo2Qf&apos; },
+  errorURL: undefined
+}
+
+2026-10-05T18:32:48.207Z ERROR [Better Auth]: Failed to parse state [StateError [BetterAuthError]: Invalid state: request expired] {
+  code: &apos;state_mismatch&apos;,
+  details: { expiresAt: 1791225167204 },
+  errorURL: undefined
+}
+
+            </system-err>
+        </testcase>
+        <testcase classname="tests/integration/identity/github.test.ts" name="unlink uses the local GitHub row id, retains credential login and blocks later GitHub login" time="0.2767645">
+            <system-err>
+2026-10-05T18:32:48.483Z ERROR [Better Auth]: account_not_linked
+
+            </system-err>
+        </testcase>
+        <testcase classname="tests/integration/identity/github.test.ts" name="the database refuses replacing an existing GitHub binding with a second account" time="0.164397417">
+            <system-err>
+2026-10-05T18:32:48.648Z ERROR [Better Auth]: SqliteError SqliteError: UNIQUE constraint failed: account.user_id, account.provider_id
+    at PreparedQuery.values (file:///Users/dnslin/.codex/worktrees/issue-145-github-binding/ariso/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/better-sqlite3/session.js:106:28)
+    at PreparedQuery.all (file:///Users/dnslin/.codex/worktrees/issue-145-github-binding/ariso/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/better-sqlite3/session.js:81:23)
+    at QueryPromise.all (file:///Users/dnslin/.codex/worktrees/issue-145-github-binding/ariso/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/query-builders/insert.js:165:28)
+    at QueryPromise.execute (file:///Users/dnslin/.codex/worktrees/issue-145-github-binding/ariso/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/query-builders/insert.js:174:41)
+    at QueryPromise.then (file:///Users/dnslin/.codex/worktrees/issue-145-github-binding/ariso/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/query-promise.js:21:17) {
+  code: &apos;SQLITE_CONSTRAINT_UNIQUE&apos;
+}
+
+# SERVER_ERROR:  SqliteError: UNIQUE constraint failed: account.user_id, account.provider_id
+    at PreparedQuery.values (file:///Users/dnslin/.codex/worktrees/issue-145-github-binding/ariso/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/better-sqlite3/session.js:106:28)
+    at PreparedQuery.all (file:///Users/dnslin/.codex/worktrees/issue-145-github-binding/ariso/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/better-sqlite3/session.js:81:23)
+    at QueryPromise.all (file:///Users/dnslin/.codex/worktrees/issue-145-github-binding/ariso/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/query-builders/insert.js:165:28)
+    at QueryPromise.execute (file:///Users/dnslin/.codex/worktrees/issue-145-github-binding/ariso/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/query-builders/insert.js:174:41)
+    at QueryPromise.then (file:///Users/dnslin/.codex/worktrees/issue-145-github-binding/ariso/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/query-promise.js:21:17) {
+  code: &apos;SQLITE_CONSTRAINT_UNIQUE&apos;
+}
+
+            </system-err>
+        </testcase>
+        <testcase classname="tests/integration/identity/github.test.ts" name="the token exchange keeps the startup Client Secret across live origin refresh and uses a new one after restart" time="0.186099667">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/identity/http.test.ts" timestamp="2026-10-05T18:33:41.758Z" hostname="dnslins-Mac-mini.local" tests="7" failures="0" errors="0" skipped="0" time="55.336363834">
+        <testcase classname="tests/integration/identity/http.test.ts" name="direct credential seed logs in over Next HTTP, real Cookie agrees with server API and logout revokes it" time="5.4591625">
+        </testcase>
+        <testcase classname="tests/integration/identity/http.test.ts" name="public registration stays disabled at HTTP and trusted API boundaries" time="0.068050292">
+        </testcase>
+        <testcase classname="tests/integration/identity/http.test.ts" name="A→B→A refreshes Secure Cookies, rejects the previous origin and checks raw CSRF responses" time="0.67031575">
+        </testcase>
+        <testcase classname="tests/integration/identity/http.test.ts" name="A→B→A does not reset the HTTP limiter; trusted signIn API is not a public HTTP substitute" time="1.047165125">
+        </testcase>
+        <testcase classname="tests/integration/identity/http.test.ts" name="OAuth state is browser-bound, survives A→B→A instance refresh and consumes once without contacting GitHub" time="1.324828583">
+        </testcase>
+        <testcase classname="tests/integration/identity/http.test.ts" name="new process and Secret reject old signed Cookie without deleting users/credentials/sessions" time="8.08056475">
+        </testcase>
+        <testcase classname="tests/integration/identity/http.test.ts" name="GitHub credentials and enablement change only on restart while origin refreshes immediately over real Next HTTP" time="33.212822625">
+        </testcase>
+    </testsuite>
+</testsuites>

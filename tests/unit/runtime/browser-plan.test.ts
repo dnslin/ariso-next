@@ -10,6 +10,7 @@ describe('focused browser execution plans', () => {
     ['library', ['library']],
     ['library-feedback', ['library-query']],
     ['account', ['account']],
+    ['tokens', ['tokens']],
     ['shell-navigation', ['shell-navigation']],
     ['albums', ['albums']],
     ['album-cover', ['album-cover']],
@@ -49,6 +50,14 @@ describe('focused browser execution plans', () => {
     ['trash', 'approved-results', ['trash-query-batch']],
     ['library', 'recovery', ['library']],
     ['library-batch', 'recovery', ['library-batch']],
+
+    ['tokens', 'representative', ['tokens']],
+    ['tokens', 'behavior', ['tokens']],
+    ['tokens', 'lifecycle', ['tokens']],
+    ['tokens', 'recovery', ['tokens']],
+    ['tokens', 'create-recovery', ['tokens']],
+    ['tokens', 'action-recovery', ['tokens']],
+    ['tokens', 'consumers', ['tokens']],
   ] as const)(
     'selects the actual scenes for %s / %s',
     (suite, only, scripts) => {
@@ -60,6 +69,10 @@ describe('focused browser execution plans', () => {
 
   it.each([
     ['library', 'recovery', { libraryPhase: 'recovery' }],
+    ['tokens', 'recovery', { tokensPhase: 'recovery' }],
+    ['tokens', 'lifecycle', { tokensPhase: 'lifecycle' }],
+    ['tokens', 'create-recovery', { tokensPhase: 'create-recovery' }],
+    ['tokens', 'action-recovery', { tokensPhase: 'action-recovery' }],
     [
       'sharing-public',
       'representative',
@@ -110,5 +123,7 @@ describe('focused browser execution plans', () => {
     expect(select('library-feedback').config).toEqual({
       libraryQueryPhase: 'feedback',
     });
+
+    expect(select('tokens').config).toEqual({ tokensPhase: undefined });
   });
 });

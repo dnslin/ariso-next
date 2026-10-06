@@ -113,7 +113,9 @@ async function request(query = '?type=original', init: RequestInit = {}) {
 async function complete(query = '?type=original', init: RequestInit = {}) {
   const response = await request(query, init);
   expect(response.status).toBe(200);
-  expect(Buffer.from(await response.arrayBuffer())).toEqual(fixture.bytes);
+  const received = Buffer.from(await response.arrayBuffer());
+  expect(received.byteLength).toBe(fixture.bytes.byteLength);
+  expect(received.equals(fixture.bytes)).toBe(true);
   return response;
 }
 

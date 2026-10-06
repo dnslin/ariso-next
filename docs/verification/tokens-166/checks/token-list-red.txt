@@ -1,0 +1,34 @@
+Already up to date
+Done in 106ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso
+
+ ❯ |integration| tests/integration/identity/tokens-list.test.ts (1 test | 1 failed) 836ms
+   × the production plugin lists every Cookie-owned Token beyond the adapter default 100 records 834ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/identity/tokens-list.test.ts > the production plugin lists every Cookie-owned Token beyond the adapter default 100 records
+AssertionError: expected [ …(100) ] to have a length of 105 but got 100
+
+- Expected
++ Received
+
+- 105
++ 100
+
+ ❯ tests/integration/identity/tokens-list.test.ts:45:28
+     43|       headers: new Headers({ cookie }),
+     44|     });
+     45|     expect(result.apiKeys).toHaveLength(105);
+       |                            ^
+     46|     expect(new Set(result.apiKeys.map((token) => token.id))).toEqual(
+     47|       new Set(connection.db.select().from(apikey).all().map((token) =>…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  02:28:56
+   Duration  4.73s (transform 46%, import 35%, tests 20%)
