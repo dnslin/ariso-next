@@ -19,6 +19,7 @@ it('the production plugin lists every Cookie-owned Token beyond the adapter defa
     const ownerId = await seedAuthOwner(connection, origin);
     const auth = getAuth({
       connection,
+      github: { enabled: false, clientId: '', clientSecret: null },
       config: parseRuntimeEnv({
         DATA_DIR: directory,
         BETTER_AUTH_SECRET: randomBytes(32).toString('hex'),

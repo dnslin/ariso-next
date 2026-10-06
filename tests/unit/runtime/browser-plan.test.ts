@@ -10,6 +10,7 @@ describe('focused browser execution plans', () => {
     ['library', ['library']],
     ['library-feedback', ['library-query']],
     ['account', ['account']],
+    ['oauth', []],
     ['tokens', ['tokens']],
     ['shell-navigation', ['shell-navigation']],
     ['sharing-management', ['sharing-management']],
@@ -128,6 +129,7 @@ describe('focused browser execution plans', () => {
     });
     expect(select('upload-regression', 'main').config).toEqual({});
     expect(select('account').config).toEqual({});
+    expect(select('oauth').config).toEqual({});
     expect(select('library-feedback').config).toEqual({
       libraryQueryPhase: 'feedback',
     });

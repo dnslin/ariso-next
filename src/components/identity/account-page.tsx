@@ -28,6 +28,8 @@ import {
   settingsCategories,
 } from '../shell/settings-categories';
 import { AccountEditor } from './account-editor';
+import { GithubAccount } from './github-account';
+import { useGithubAccount } from './use-github-account';
 import { AccountRequestError, readAccountEmail } from './account-request';
 
 type ShellProps = Omit<
@@ -49,14 +51,16 @@ export function AccountPage(shell: ShellProps) {
     refetchOnWindowFocus: false,
   });
   const loading = !query.isFetchedAfterMount || query.isFetching;
-  const sessionLost =
-    expired ||
-    (query.error instanceof AccountRequestError && query.error.status === 401);
   const email = query.data ?? shell.email;
   const expire = useCallback(() => {
     setExpired(true);
     setKind(null);
   }, []);
+  const github = useGithubAccount(expire);
+  const sessionLost =
+    expired ||
+    github.sessionLost ||
+    (query.error instanceof AccountRequestError && query.error.status === 401);
   const changeEmail = useCallback(
     (value: string) => client.setQueryData(queryKey, value),
     [client],
@@ -183,15 +187,7 @@ export function AccountPage(shell: ShellProps) {
                   仅一个所有者账号，不开放注册。
                 </p>
               </section>
-              <section className="grid gap-3">
-                <h2 className="flex items-center gap-2.5 text-xl font-medium">
-                  <LogIn className="size-6 shrink-0" aria-hidden />
-                  GitHub 登录
-                </h2>
-                <p className="text-[13px] leading-normal text-muted">
-                  尚未开放
-                </p>
-              </section>
+              <GithubAccount account={github} />
             </Card>
           )}
         </SettingsCategories>

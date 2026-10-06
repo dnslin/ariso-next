@@ -58,6 +58,7 @@ it('未初始化的隔离生产产物返回 200 / no-store，健康检查不发�
         { name: 'analytics_image_daily' },
         { name: 'analytics_image_totals' },
         { name: 'apikey' },
+        { name: 'identity_github_settings' },
         { name: 'image_tags' },
         { name: 'media_cleanup_jobs' },
         { name: 'media_images' },
@@ -102,6 +103,7 @@ it('未初始化的隔离生产产物返回 200 / no-store，健康检查不发�
       for (const table of [
         'account',
         'apikey',
+        'identity_github_settings',
         'analytics_daily',
         'analytics_image_daily',
         'analytics_image_totals',

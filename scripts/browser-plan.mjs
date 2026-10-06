@@ -34,6 +34,7 @@ const suites = {
     config: (only) => ({ sharingManagementPhase: only }),
   },
   account: { stages: [['account', 'account']] },
+  oauth: {},
   tokens: {
     only: [
       'representative',

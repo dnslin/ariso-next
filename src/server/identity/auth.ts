@@ -1,4 +1,4 @@
-import { betterAuth } from 'better-auth';
+import { betterAuth, type BetterAuthOptions } from 'better-auth';
 import { APIError, createAuthMiddleware } from 'better-auth/api';
 import { drizzleAdapter } from '@better-auth/drizzle-adapter';
 import { apiKey } from '@better-auth/api-key';
@@ -7,10 +7,11 @@ import { getServerRuntime } from '../startup/server-start.ts';
 import { createRuntimeLogger } from '../runtime/logger.ts';
 import * as schema from './schema.ts';
 import { readSetupOwner } from './setup.ts';
+import { githubProfileSchema } from './validation.ts';
 
 type Runtime = Pick<
   ReturnType<typeof getServerRuntime>,
-  'connection' | 'config'
+  'connection' | 'config' | 'github'
 >;
 type LoginCredential = Pick<
   typeof schema.account.$inferSelect,
@@ -24,13 +25,66 @@ function createAuth(runtime: Runtime, origin: string) {
     basePath: '/api/auth',
     secret: runtime.config.betterAuthSecret,
     trustedOrigins: [origin],
-    database: drizzleAdapter(runtime.connection.db, {
-      provider: 'sqlite',
-      schema,
-      transaction: false,
-    }),
+    database(options: BetterAuthOptions) {
+      const adapter = drizzleAdapter(runtime.connection.db, {
+        provider: 'sqlite',
+        schema,
+        transaction: false,
+      })(options);
+      const create = adapter.create;
+      adapter.create = async (input) => {
+        try {
+          return await create(input);
+        } catch (error) {
+          const cause =
+            error instanceof Error && error.cause instanceof Error
+              ? error.cause
+              : error;
+          // 两个回调可同时通过前置查询；由现有唯一约束决定赢家，再把冲突带回账号页。
+          if (
+            input.model === 'account' &&
+            input.data.providerId === 'github' &&
+            cause instanceof Error &&
+            'code' in cause &&
+            cause.code === 'SQLITE_CONSTRAINT_UNIQUE' &&
+            cause.message ===
+              'UNIQUE constraint failed: account.user_id, account.provider_id'
+          )
+            throw new APIError('FOUND', undefined, {
+              Location: `${origin}/settings/account?github=error&error=github_already_linked`,
+            });
+          throw error;
+        }
+      };
+      return adapter;
+    },
     emailAndPassword: { enabled: true, disableSignUp: true },
     user: {
+      validateUserInfo({ source }, ctx) {
+        if (source.oauth?.providerId !== 'github') return;
+        const profile = githubProfileSchema.safeParse(source.oauth.profile);
+        if (!profile.success)
+          return {
+            error: 'github_profile_invalid',
+            errorDescription: 'GitHub 账号信息无效，请重新授权',
+          };
+        if (source.action === 'link-account') {
+          const existing = runtime.connection.db
+            .select({ accountId: schema.account.accountId })
+            .from(schema.account)
+            .where(eq(schema.account.providerId, 'github'))
+            .get();
+          if (existing && existing.accountId !== String(profile.data.id))
+            return {
+              error: 'github_already_linked',
+              errorDescription: '已绑定 GitHub 账号，请先解绑再更换',
+            };
+        }
+        // Better Auth 将同一个请求 context 传给随后的 account create/update hook。
+        (
+          ctx.context as typeof ctx.context & { githubLogin?: string }
+        ).githubLogin = profile.data.login;
+      },
       additionalFields: {
         ownerSlot: {
           type: 'number',
@@ -46,7 +100,44 @@ function createAuth(runtime: Runtime, origin: string) {
       updateAge: 24 * 60 * 60,
       cookieCache: { enabled: false },
     },
-    account: { accountLinking: { disableImplicitLinking: true } },
+    account: {
+      additionalFields: {
+        githubLogin: {
+          type: 'string',
+          required: false,
+          input: false,
+          returned: false,
+        },
+      },
+      accountLinking: {
+        disableImplicitLinking: true,
+        allowDifferentEmails: true,
+      },
+    },
+    socialProviders: runtime.github.enabled
+      ? {
+          github: {
+            clientId: runtime.github.clientId,
+            clientSecret: runtime.github.clientSecret!,
+            disableSignUp: true,
+          },
+        }
+      : {},
+    databaseHooks: {
+      account: {
+        create: {
+          before: async (account, ctx) => ({
+            data: account.providerId === 'github' ? githubAccountData(ctx) : {},
+          }),
+        },
+        update: {
+          before: async (account, ctx) => ({
+            data: account.providerId === 'github' ? githubAccountData(ctx) : {},
+          }),
+        },
+      },
+    },
+    onAPIError: { errorURL: `${origin}/login?github=error` },
     plugins: [
       apiKey({
         references: 'user',
@@ -76,6 +167,11 @@ function createAuth(runtime: Runtime, origin: string) {
     },
     hooks: {
       before: createAuthMiddleware(async (ctx) => {
+        if (ctx.path === '/sign-in/social' && ctx.body?.provider !== 'github')
+          throw new APIError('BAD_REQUEST', {
+            code: 'PROVIDER_NOT_FOUND',
+            message: '仅支持 GitHub 登录',
+          });
         if (
           ctx.path === '/sign-in/email' &&
           ctx.body !== null &&
@@ -169,6 +265,19 @@ function createAuth(runtime: Runtime, origin: string) {
   });
 }
 
+function githubAccountData(ctx: { context: object } | null) {
+  const githubLogin = (ctx?.context as { githubLogin?: string } | undefined)
+    ?.githubLogin;
+  return {
+    accessToken: null,
+    refreshToken: null,
+    idToken: null,
+    accessTokenExpiresAt: null,
+    refreshTokenExpiresAt: null,
+    ...(githubLogin !== undefined && { githubLogin }),
+  };
+}
+
 const processState = globalThis as typeof globalThis & {
   arisoAuthInstances?: WeakMap<
     Runtime,
@@ -206,6 +315,8 @@ export async function handleAuthRequest(request: Request) {
     '/api/auth/sign-in/email': 'POST',
     '/api/auth/sign-out': 'POST',
     '/api/auth/get-session': 'GET',
+    '/api/auth/sign-in/social': 'POST',
+    '/api/auth/callback/github': 'GET',
   };
   const pathname = new URL(request.url).pathname;
   if (

@@ -32,17 +32,20 @@ export default async function LoginPage({
     ? ''
     : query.setup === 'completed'
       ? '初始化已完成，请使用刚才设置的邮箱和密码登录。'
-      : query.reason === 'expired'
-        ? '会话已失效，请重新登录后继续。'
-        : query.reason === 'signed-out'
-          ? '已退出登录。'
-          : '';
+      : query.github === 'error'
+        ? 'GitHub 登录未完成。仅已主动绑定的账号可登录，请重试或使用邮箱和密码。'
+        : query.reason === 'expired'
+          ? '会话已失效，请重新登录后继续。'
+          : query.reason === 'signed-out'
+            ? '已退出登录。'
+            : '';
   return (
     <PublicShell layout="login">
       <LoginForm
         initialized={initialized}
         returnTo={returnTo}
         notice={notice}
+        githubEnabled={runtime.github.enabled}
       />
     </PublicShell>
   );

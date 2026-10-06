@@ -16,6 +16,7 @@ import { runBrowserStage } from './browser-stages.mjs';
 import { selectBrowserPlan } from './browser-plan.mjs';
 import { runM2Restart } from './browser-m2.mjs';
 import { runIdentityManagement } from './browser-identity-management.mjs';
+import { runOAuthManagement } from './browser-oauth.mjs';
 import { createSharingRunner } from './browser-sharing.mjs';
 
 assert.equal(process.versions.node.split('.')[0], '24', 'Use Node 24');
@@ -94,6 +95,11 @@ for (const name of [
   'account-390-failure.png',
   'account-1440.json',
   'account-390.json',
+  ...[1440, 390, 'all'].flatMap((width) =>
+    ['before', 'after', 'enabled'].map(
+      (phase) => `oauth-${width}-${phase}.json`,
+    ),
+  ),
   'tokens.json',
   'tokens-1440.json',
   'tokens-390.json',
@@ -671,6 +677,16 @@ try {
         restart: restartProduction,
         config: { ...focusedConfig, width: 390 },
       });
+    } else if (suite === 'oauth') {
+      if (
+        await runOAuthManagement({
+          check,
+          runBrowser,
+          restart: restartProduction,
+          config: focusedConfig,
+        })
+      )
+        report.oauth = 'passed';
     } else {
       for (const [script, result] of plan.stages) {
         const passed = await check(script, () =>
@@ -836,6 +852,7 @@ try {
         dependencies: [ownerName],
       });
       if (management.tokensPassed) report[`tokens-${width}`] = 'passed';
+      if (management.oauthPassed) report[`oauth-${width}`] = 'passed';
       if (management.accountPassed) report[`account-${width}`] = 'passed';
       await stop(server);
     }

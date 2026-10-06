@@ -1,4 +1,5 @@
 import { hashPassword, verifyPassword } from 'better-auth/crypto';
+import { isAPIError } from 'better-auth/api';
 import { and, eq, like, ne } from 'drizzle-orm';
 import type { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
 import type { z } from 'zod';
@@ -10,20 +11,9 @@ import type {
   accountEmailInputSchema,
   accountPasswordInputSchema,
 } from './validation.ts';
+import { AccountError } from './errors.ts';
 
 type OwnerSession = Awaited<ReturnType<typeof requireOwnerSession>>;
-type FieldError = { field: string; message: string };
-
-export class AccountError extends Error {
-  constructor(
-    readonly code: string,
-    readonly status: number,
-    message: string,
-    readonly fields?: FieldError[],
-  ) {
-    super(message);
-  }
-}
 
 function readCredential(db: BetterSQLite3Database, ownerId: string) {
   const credential = db
@@ -180,10 +170,32 @@ export async function accountResponse(
   const headers = { 'Cache-Control': 'no-store' };
   try {
     const owner = await requireOwnerSession(request);
-    return Response.json(await operation(getServerRuntime(), owner), {
-      headers,
-    });
+    const result = await operation(getServerRuntime(), owner);
+    if (result instanceof Response) {
+      result.headers.set('Cache-Control', 'no-store');
+      return result;
+    }
+    return Response.json(result, { headers });
   } catch (error) {
+    if (isAPIError(error) && error.statusCode < 500) {
+      const messages: Record<string, string> = {
+        PROVIDER_NOT_FOUND: 'GitHub 登录尚未生效，请检查配置并重启容器',
+        SESSION_NOT_FRESH: '请重新登录后解绑 GitHub',
+        UNAUTHORIZED: '会话已失效，请重新登录',
+        ACCOUNT_NOT_FOUND: 'GitHub 绑定不存在，请刷新账号信息',
+      };
+      const nativeHeaders = new Headers(error.headers);
+      nativeHeaders.set('Cache-Control', 'no-store');
+      return Response.json(
+        {
+          code: error.body?.code,
+          message:
+            messages[error.body?.code ?? ''] ??
+            'GitHub 操作未完成，请核对绑定现状',
+        },
+        { status: error.statusCode, headers: nativeHeaders },
+      );
+    }
     const detail = error as { status?: number; code?: string };
     if (
       typeof detail?.status === 'number' &&
