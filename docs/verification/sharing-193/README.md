@@ -4,6 +4,8 @@ Issue [#193](https://github.com/dnslin/ariso-next/issues/193)，需求 `R-16.3-0
 
 本次只交付匿名查看器、公开邻居查询和打开中成员/授权变化。前置 #192、#191、#185、#161、#134 在实施前已从 GitHub 原生依赖回读为 CLOSED。管理查看器、分享管理、相册删除和内容鉴权沿用实际生产能力；不新增下载、管理详情、版本菜单、幻灯片或生成文件。
 
+交付 PR：[草稿 #256](https://github.com/dnslin/ariso-next/pull/256)，分支 `codex/issue-193-public-viewer`。实施与证据提交 `ec1508fe` 已推送；实际回读为 OPEN、draft、MERGEABLE，`statusCheckRollup` 为空，`gh pr checks` 未报告检查，不能记为 CI 通过。尚未合并、关闭 Issue、发布或部署；分支和 worktree 保留，独立人工预览继续运行。
+
 ## 实际实现
 
 - `/s/{token}/items?imageId=…` 先校验分享授权，再由 collections 在同一读事务按加入时间降序、ID 升序读取当前/前后邻居、公开序号和数量。响应最多三张，只含匿名字段；名称服从当前 `showName`。
