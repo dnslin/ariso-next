@@ -72,8 +72,7 @@ export async function sendSmtpMail(
 
 // Raw SMTP responses may echo credentials or reset URLs. Keep those out of logs.
 export function smtpFailureDiagnostic(error: unknown) {
-  const failure = error as Error & {
-    code?: string;
+  const failure = error as NodeJS.ErrnoException & {
     command?: string;
     responseCode?: number;
   };
@@ -94,13 +93,21 @@ export function smtpFailureDiagnostic(error: unknown) {
   )
     stage = 'delivery';
   else stage = 'connection';
+  // CONN also describes a close or socket read failure after complete DATA.
+  const deliveryMayHaveStarted =
+    stage === 'delivery' ||
+    (code === 'ECONNECTION' &&
+      failure?.message === 'Connection closed unexpectedly') ||
+    (stage === 'connection' &&
+      code === 'ESOCKET' &&
+      failure?.syscall === 'read');
   return {
     stage,
     code,
     command,
     responseCode,
     delivery:
-      stage === 'delivery' && !(responseCode && responseCode >= 400)
+      deliveryMayHaveStarted && !(responseCode && responseCode >= 400)
         ? ('unknown' as const)
         : ('not-accepted' as const),
   };

@@ -18,13 +18,13 @@ SMTP 使用 Nodemailer **10.0.15**、smtp-server **3.19.17**，类型包为 **8.
 
 ## SMTP 实验与下游接入
 
-`smtp.test.ts` 的 18 项定向测试通过。生成当天有效的临时 CA 和服务端证书，客户端明确信任该 CA，同时保留 `rejectUnauthorized: true`。两种模式均检查真实 DATA 接收时连接已经加密；未使用 `rejectUnauthorized: false` 或 SMTP 协议替身。
+`smtp.test.ts` 初轮 18 项定向测试通过，2026-10-07 修复复审后新增四项真实断连回归，当前完整文件 22 项通过。生成当天有效的临时 CA 和服务端证书，客户端明确信任该 CA，同时保留 `rejectUnauthorized: true`。两种模式均检查真实 DATA 接收时连接已经加密；未使用 `rejectUnauthorized: false` 或 SMTP 协议替身。
 
 - TLS 从连接开始启用；STARTTLS 使用 `secure: false` 和 `requireTLS: true`，服务端没有 STARTTLS 时发送失败。
 - 有认证发送、认证拒绝、无认证内网中继均实测。未提供用户名时不创建 auth 对象，旧密码不会被拿来认证。
 - 不受信任证书、连接拒绝、问候超时、RCPT 拒绝和 DATA 拒绝分别保留阶段、错误代码、命令和响应码。
 - 实际 `verify()` 成功的连接仍可在 `sendMail()` 的 RCPT 阶段失败；只以 sendMail 返回记录 SMTP 接受。
-- 服务器收到 DATA 后延迟最终响应，socket 超时得到 `delivery: unknown`。下游应先查收件箱，不能直接声称未发送或自动重发。
+- 服务器收到 DATA 后延迟最终响应，socket 超时得到 `delivery: unknown`；完整 DATA 后在最终回复前断连也保留 `unknown`。下游应先查收件箱，不能直接声称未发送或自动重发。
 - 正式参数为连接 10 秒、问候 10 秒、socket 30 秒；受控故障用较短实验参数验证同一超时路径，未改变生产约定。
 - 真实本地 SMTP → 库生成重置地址 → 回调 → 更新密码 → 重放失败的组合通过。真实 DATA 554 拒绝经受控发送错误入口返回 502。
 
@@ -160,8 +160,34 @@ CLI 首轮错误的 Release 路径假设和 PTY 连续命令缓冲问题均取�
 
 ## 当前限制
 
-工程实验代码与独立代码/证据评审已完成；新增 45 项定向测试通过。本地静态、类型、单元和构建通过；此前失败场景均取得后续通过结果，完整首轮未通过的事实继续保留。
+工程实验首轮新增 45 项定向测试通过；本次增加四项 SMTP 断连回归后共 49 项，各自适用检查及评审状态见下方与既有记录。本地静态、类型、单元和构建原检查通过；本轮重跑受影响的 SMTP 完整文件、静态和类型检查。此前失败场景均取得后续通过结果，完整首轮未通过的事实继续保留。
 
 真实外部 Resend SMTP 的 TLS / STARTTLS 和服务商投递状态已经验证，所有者也已明确确认新验证邮件的实际收件。本次工程实验的本地验收条件已满足，PR #253 可转为正式待评审；Issue 保持开放，等待所有者另行授权合并与关闭。既有完整首轮失败记录单独保留，不将后续复验改记为一次全量通过。首轮两封邮件的邮箱头部、实际到达时间和逐封收件仍未核对，不冒充已验证。
 
 本任务不改变产品 UI，产品浏览器流程、Figma 对照、主题、响应式及人工界面验收不适用；Ego 仅用于外部 Resend 账号与协议证据。真实容器及 AMD64/ARM64 留在既有 Release 阶段验证；本地隔离打包实验不冒充双架构或生产 CLI 已交付。
+
+## 2026-10-07 双角度评审修复
+
+所有者要求两位独立 agent 分别使用 `code-review-and-quality` 与 `thermo-nuclear-code-quality-review`，对提交 `c5487a602a0a5469ab547b2749d5564c66b2fc99` 评审。行为评审发现唯一 P2 必改：真实 SMTP 已接收完整 DATA，在最终回复前断连时，Nodemailer **10.0.15** 返回 `ECONNECTION / CONN / Connection closed unexpectedly`，诊断却误记 `delivery: not-accepted`，下游可能据此重复发送。严格结构评审通过，没有其他必改或可选结构问题。发现问题后 PR #253 恢复草稿，既有评审通过结论保留为历史。
+
+先在现有真实 smtp-server 夹具增加“完整 DATA 后关闭连接”的故障节点。TLS 与 STARTTLS 均断言服务端完整收到正文且连接已加密，再检查实际错误和投递确定性。未改诊断前，两项均因期望 `unknown`、实际 `not-accepted` 失败。修复只把投递确定性与故障阶段分开：固定库的上述无明确拒绝回复的意外断连保留 `unknown`，阶段仍为 `connection`；已有响应码 4xx/5xx、连接拒绝、认证、TLS 和问候超时仍保留原判断。没有新增依赖、重试或生产状态机。
+
+增量行为复审又实际复现同一问题的 TCP reset 路径：完整 DATA 后重置底层 TCP，固定库返回 `ESOCKET / CONN / read ECONNRESET`，保留 `syscall: read`，此前仍误记 `not-accepted`。再次先补 TLS / STARTTLS 两项失败回归，再将没有明确拒绝回复的连接阶段 socket 读错纳入 `unknown`。类型直接复用 Node 的 `ErrnoException`，不依赖平台 errno 数字。拒绝连接的 `syscall: connect` 仍为 `not-accepted`，并由既有行为测试加强核对。服务端通过公开的 `net.Server` connection 事件保存底层 Socket，仅在故障节点调用 `resetAndDestroy()`，关闭时移出集合；未访问 TLS 私有字段或增加发送状态跟踪。
+
+[失败与修复逐项记录](./smtp-disconnect-fix.json)直接提取四份实际 JUnit，保留两个错误路径各自的失败及通过结果。四项新回归继续由既有 `test:integration` → `integration` 项目 → SMTP 文件执行，无新过滤配置或公共运行器变化。
+
+| 本轮实际命令                                                                                                                                                                                                                                                        | 结果                                                                                                        |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `pnpm install --frozen-lockfile`                                                                                                                                                                                                                                    | 通过，锁文件与依赖未变                                                                                      |
+| `pnpm exec vitest run --project integration tests/integration/identity/smtp.test.ts --maxWorkers=1 --testNamePattern 'connection closes before the final reply' --reporter=default --reporter=junit --outputFile=test-results/identity-146/smtp-disconnect-red.xml` | 修复前 **2 项失败**，18 项未选择；0.863 秒，确认为诊断值误判                                                |
+| `pnpm exec vitest run --project integration tests/integration/identity/smtp.test.ts --maxWorkers=1 --reporter=default --reporter=junit --outputFile=test-results/identity-146/smtp-disconnect-fix.xml`                                                              | 正常关闭路径修复后完整 SMTP 文件 **20 项通过**，3.23 秒；后续增量复审发现 TCP reset 缺口，见下两项          |
+| `pnpm exec vitest run --project integration tests/integration/identity/smtp.test.ts --maxWorkers=1 --testNamePattern 'TCP reset occurs before the final reply' --reporter=default --reporter=junit --outputFile=test-results/identity-146/smtp-reset-red.xml`       | TCP reset 修复前 **2 项失败**，20 项未选择；0.785 秒，同样为诊断值误判                                      |
+| `pnpm exec vitest run --project integration tests/integration/identity/smtp.test.ts --maxWorkers=1 --reporter=default --reporter=junit --outputFile=test-results/identity-146/smtp-reset-fix.xml`                                                                   | 两条断连路径修复后完整 SMTP 文件 **22 项通过**，3.64 秒，包含全部既有失败路径和真实 SMTP → Better Auth 组合 |
+| `pnpm run lint`                                                                                                                                                                                                                                                     | 通过，无 warning                                                                                            |
+| `pnpm run typecheck`                                                                                                                                                                                                                                                | 通过，Next 类型生成及两份 TypeScript 配置均执行                                                             |
+
+修复后两位独立 agent 分别完成行为与严格结构增量复审，均为 **Approve**，无剩余必改或可选项。实际核对固定依赖源码、类型、两个故障时点、Socket/transport/监听器/证书的关闭责任及四份 JUnit；没有机械重跑测试。原正常关闭的消息判据来自固定库源码，socket 读错复用原错误保留的 `syscall` 字段，没有新增传输状态跟踪或公共模块变化。
+
+最终 `pnpm run format:check` 全仓通过；`node docs/tasks/check.mjs` 通过（120 个任务、298 个需求），`git diff --check` 通过。Prettier 仅对诊断表达式折行，没有改变语义；最终实现的 lint 与 typecheck 也已通过。补充这段实际结果后，再检查范围内证据格式及文档依赖。公开 JSON 逐项只保留新断连回归，整次运行统计来自完整 JUnit，`caseScope` 明确区分二者。
+
+本轮修改仅涉及 SMTP 实验诊断、对应故障夹具和测试。生产构建、单元测试、重置及 CLI 实现输入未变，既有通过结果没有机械重跑；唯一完整集成的失败历史也没有改记为全量通过。此前真实 Resend 两种传输及所有者收件确认保持有效，没有重新发信、读取凭证或操作已交还的浏览器。当前代码、受影响检查和双角度复审已完成，满足恢复正式待评审的条件；没有合并 PR、关闭 Issue 或执行发布。

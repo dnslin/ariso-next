@@ -354,6 +354,7 @@ it('reports a refused connection separately from delivery', async () => {
   });
   expect(failure).toMatchObject({
     message: expect.stringContaining('ECONNREFUSED'),
+    syscall: 'connect',
   });
 });
 
@@ -461,6 +462,65 @@ it('marks delivery unknown when DATA was received but the final reply times out'
   expect(fixture.received).toHaveLength(1);
   expect(fixture.received[0].raw).toContain(mail.text);
 });
+
+it.each(['tls', 'starttls'] as const)(
+  '%s marks delivery unknown when DATA was received but the connection closes before the final reply',
+  async (mode) => {
+    const fixture = await openSmtpFixture(
+      certificates,
+      { secure: mode === 'tls' },
+      { disconnectAfterData: 'close' },
+    );
+    fixtures.push(fixture);
+    const failure = await sendSmtpMail(
+      { ...config, port: fixture.port, mode },
+      mail,
+      { ca: certificates.ca },
+    ).catch((error: unknown) => error);
+    expect(fixture.received).toHaveLength(1);
+    expect(fixture.received[0].secure).toBe(true);
+    expect(fixture.received[0].raw).toContain(mail.text);
+    expect(failure).toMatchObject({
+      message: 'Connection closed unexpectedly',
+    });
+    expect(smtpFailureDiagnostic(failure)).toMatchObject({
+      stage: 'connection',
+      code: 'ECONNECTION',
+      command: 'CONN',
+      delivery: 'unknown',
+    });
+  },
+);
+
+it.each(['tls', 'starttls'] as const)(
+  '%s marks delivery unknown when DATA was received but a TCP reset occurs before the final reply',
+  async (mode) => {
+    const fixture = await openSmtpFixture(
+      certificates,
+      { secure: mode === 'tls' },
+      { disconnectAfterData: 'reset' },
+    );
+    fixtures.push(fixture);
+    const failure = await sendSmtpMail(
+      { ...config, port: fixture.port, mode },
+      mail,
+      { ca: certificates.ca },
+    ).catch((error: unknown) => error);
+    expect(fixture.received).toHaveLength(1);
+    expect(fixture.received[0].secure).toBe(true);
+    expect(fixture.received[0].raw).toContain(mail.text);
+    expect(failure).toMatchObject({
+      message: 'read ECONNRESET',
+      syscall: 'read',
+    });
+    expect(smtpFailureDiagnostic(failure)).toMatchObject({
+      stage: 'connection',
+      code: 'ESOCKET',
+      command: 'CONN',
+      delivery: 'unknown',
+    });
+  },
+);
 
 it.each(['tls', 'starttls'] as const)(
   '%s sends real encrypted DATA through a relay without authentication',
