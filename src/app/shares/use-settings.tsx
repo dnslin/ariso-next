@@ -159,6 +159,21 @@ export function useSettings(
     setShare(next);
     setNow(Date.now());
   }
+  function finishConfirmed(next: Share, operation: PendingResult) {
+    accept(next, operation);
+    if (
+      operation.kind === 'password' ||
+      operation.kind === 'create' ||
+      (operation.kind === 'patch' && 'hasPassword' in operation.expected)
+    )
+      setPassword('');
+    if (operation.kind === 'patch' && 'expiresAt' in operation.expected)
+      setExpiry(expiryDraft(next.expiresAt, timeZone));
+    if (operation.kind === 'patch' && 'layout' in operation.expected)
+      setLayout(next.layout);
+    if (operation.kind === 'patch' && 'showName' in operation.expected)
+      setShowName(next.showName);
+  }
   function clearNotice() {
     if (noticeId.current) toast.close(noticeId.current);
     noticeId.current = null;
@@ -198,21 +213,15 @@ export function useSettings(
         { signal: controller.current.signal },
       );
       if (!mounted.current) return;
-      accept(result.share, operation);
       const outcome = reconcileResult(operation, result.share);
-      if (outcome.confirmed) {
-        if (operation.kind === 'create') setPassword('');
-        if (operation.kind === 'patch' && 'expiresAt' in operation.expected)
-          setExpiry(expiryDraft(result.share!.expiresAt, timeZone));
-        if (operation.kind === 'patch' && 'layout' in operation.expected)
-          setLayout(result.share!.layout);
-        if (operation.kind === 'patch' && 'showName' in operation.expected)
-          setShowName(result.share!.showName);
+      if (result.share && outcome.confirmed) {
+        finishConfirmed(result.share, operation);
         setPending(null);
         setFeedback(null);
         notice(outcome.title);
         requestAnimationFrame(restoreFocus);
-      } else
+      } else {
+        accept(result.share, operation);
         setFeedback({
           title: outcome.title,
           detail:
@@ -221,6 +230,7 @@ export function useSettings(
               : '可重新读取。结束核对后，可明确发起新的操作。',
           retry: true,
         });
+      }
     } catch (error) {
       if (!mounted.current || controller.current.signal.aborted) return;
       if (!terminalError(error))
@@ -259,19 +269,7 @@ export function useSettings(
         },
       );
       if (!mounted.current) return;
-      accept(result.share, operation);
-      if (
-        operation.kind === 'password' ||
-        operation.kind === 'create' ||
-        (operation.kind === 'patch' && 'hasPassword' in operation.expected)
-      )
-        setPassword('');
-      if (operation.kind === 'patch' && 'expiresAt' in operation.expected)
-        setExpiry(expiryDraft(result.share.expiresAt, timeZone));
-      if (operation.kind === 'patch' && 'layout' in operation.expected)
-        setLayout(result.share.layout);
-      if (operation.kind === 'patch' && 'showName' in operation.expected)
-        setShowName(result.share.showName);
+      finishConfirmed(result.share, operation);
       setModalOpen(false);
       notice(operation.kind === 'create' ? '已读取分享设置' : message);
     } catch (error) {

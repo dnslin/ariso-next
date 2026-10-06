@@ -800,6 +800,7 @@ try {
     );
 
     report.stage = 'clear-password-explicit-confirmation';
+    await page.fill('#share-password', '未提交的替换密码');
     await page.click(button('清除密码'));
     await page.waitForSelector('[data-testid="share-dialog"]');
     await page.keyboard.press('Escape');
@@ -823,7 +824,16 @@ try {
     );
     assert.equal((await current()).hasPassword, false);
     assert.equal((await current()).token, saved.token);
+    assert.equal(
+      await page.evaluate(
+        () => document.querySelector('#share-password').value,
+      ),
+      '',
+      'Confirmed password clear discards the replacement draft',
+    );
     await restore();
+    await page.click(button('返回分享管理'));
+    await page.waitForSelector('[data-testid="shares-screen"]');
     report.checks.push(
       'Password clear is a separate confirmed PATCH; cancel keeps protection, success clears only the password and retains the URL.',
     );
@@ -1249,6 +1259,53 @@ try {
     await restore();
     report.checks.push(
       'Known HTTP rejection retains input; a real committed password PATCH with lost response triggers GET, never claims hasPassword proves the new value and never resends automatically.',
+    );
+
+    report.stage = 'password-clear-lost-response-confirms-draft-reset';
+    await settings();
+    await accordion('访问密码');
+    await page.fill('#share-password', '未提交的替换密码');
+    const beforeClear = await current();
+    assert.equal(beforeClear.hasPassword, true);
+    await intercept({ method: 'PATCH', mode: 'lost' });
+    await page.click(button('清除密码'));
+    await page.waitForSelector('[data-testid="share-dialog"]');
+    await page.click(
+      '[data-testid="share-dialog"] button:has-text("清除密码")',
+    );
+    await toast('核对当前设置');
+    const clearTraffic = await traffic();
+    assert.deepEqual(
+      clearTraffic
+        .filter((entry) => entry.method === 'PATCH')
+        .map((entry) => entry.body),
+      [{ password: { action: 'clear' } }],
+      'A committed clear with lost response is never automatically resent',
+    );
+    assert.ok(
+      clearTraffic.some(
+        (entry) =>
+          entry.method === 'GET' &&
+          entry.response?.share?.hasPassword === false,
+      ),
+      'Readback confirms that the password was cleared',
+    );
+    assert.equal(
+      await page.evaluate(
+        () => document.querySelector('#share-password').value,
+      ),
+      '',
+      'Read-confirmed password clear discards the same draft as direct success',
+    );
+    const afterClear = await current();
+    assert.equal(afterClear.hasPassword, false);
+    for (const key of ['token', 'expiresAt', 'layout', 'showName'])
+      assert.equal(afterClear[key], beforeClear[key]);
+    await restore();
+    await page.click(button('返回分享管理'));
+    await page.waitForSelector('[data-testid="shares-screen"]');
+    report.checks.push(
+      'A real committed password clear with lost response uses one PATCH and GET only; confirmation clears the replacement draft and returns without a discard prompt, preserving all other settings.',
     );
 
     report.stage = 'rotate-response-lost-read-retry';
