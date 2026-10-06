@@ -1,0 +1,77 @@
+{
+  "recordedAt": "2026-10-06",
+  "sourceCommit": "14b5d61e955f5b4e26e75772d8468e867239874a",
+  "environment": {
+    "node": "24.18.1",
+    "pnpm": "11.19.0",
+    "platform": "macOS arm64"
+  },
+  "scope": "Sequential focused rerun of the final two timeout cases at the user request. No product code, test code, assertions, or timeout values changed.",
+  "hostObservation": "No other full integration suite was observed running before these retries; other task processes were left alone.",
+  "runs": [
+    {
+      "exitCode": 0,
+      "wallSeconds": 5.99,
+      "selected": 1,
+      "passed": 1,
+      "notSelected": 2,
+      "cases": [
+        {
+          "file": "tests/integration/runtime/logging.test.ts",
+          "name": "隔离最终产物启动及正常请求输出逐行 JSON，故障入口不进入生产应用",
+          "seconds": 1.776770792,
+          "result": "passed"
+        }
+      ],
+      "argv": [
+        "pnpm",
+        "exec",
+        "vitest",
+        "run",
+        "--project",
+        "integration",
+        "tests/integration/runtime/logging.test.ts",
+        "--maxWorkers=1",
+        "--testNamePattern",
+        "隔离最终产物启动及正常请求输出逐行 JSON，故障入口不进入生产应用",
+        "--reporter=default",
+        "--reporter=junit",
+        "--outputFile=test-results/identity-146/logging-retry-2.xml"
+      ]
+    },
+    {
+      "exitCode": 0,
+      "wallSeconds": 45.57,
+      "selected": 1,
+      "passed": 1,
+      "notSelected": 0,
+      "cases": [
+        {
+          "file": "tests/integration/identity/setup-dev.test.ts",
+          "name": "real Next dev recompilation retains the startup code and the original code creates a login-capable owner",
+          "seconds": 45.049527292,
+          "result": "passed"
+        }
+      ],
+      "argv": [
+        "pnpm",
+        "exec",
+        "vitest",
+        "run",
+        "--project",
+        "integration",
+        "tests/integration/identity/setup-dev.test.ts",
+        "--maxWorkers=1",
+        "--reporter=default",
+        "--reporter=junit",
+        "--outputFile=test-results/identity-146/setup-dev-retry-2.xml"
+      ]
+    }
+  ],
+  "fullIntegration": "The only full run still failed; focused retries do not replace that historical result. No new full integration run was executed.",
+  "smtpExternalReceipt": "unverified",
+  "pullRequest": {
+    "number": 253,
+    "draft": true
+  }
+}
