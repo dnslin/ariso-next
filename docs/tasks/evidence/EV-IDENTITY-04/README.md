@@ -38,7 +38,17 @@ node tests/experiments/identity/smtp-run.ts <本地配置文件路径>
 
 JSON 配置使用 `{ smtp: { host, port, mode, username?, password?, fromName, fromEmail }, ownerEmail, caFile?, servername? }`。`mode` 为 `tls` 或 `starttls`；认证用户名与密码同时提供，或同时省略。配置可放在已忽略的 `.data/`，也可使用仓库外文件；不要提交凭证。缺失文件保留配置路径与文件系统错误代码，不会误报为 SMTP 连接失败。
 
-运行器输出 `receiptMarker` 和 SMTP 接受结果，最终收件固定保持 `unverified`。必须在真实邮箱独立确认相同 marker、收件时间与 message ID 后，再另记收件证据。运行器本身已在本地 SMTP 端点实测，**没有**访问外部服务。
+运行器输出 `receiptMarker` 和 SMTP 接受结果，最终收件固定保持 `unverified`。必须在真实邮箱独立确认相同 marker、收件时间与 message ID 后，再另记收件证据。原定向回归使用本地 SMTP 端点；外部服务的独立实测见下一节。
+
+### Resend 外部 SMTP 实测
+
+2026-10-07 01:31（Asia/Shanghai），所有者授权使用 Ego 中已登录的 Resend 测试账号。使用同一代码提交 `946f81cd` 和上面的原运行器，分别执行 `node tests/experiments/identity/smtp-run.ts .data/resend-smtp.json`（TLS / 465）和 `node tests/experiments/identity/smtp-run.ts .data/resend-smtp-starttls.json`（STARTTLS / 587），两个进程均退出 0。没有修改实现、超时或证书校验。
+
+两封邮件均真实经 `smtp.resend.com` 认证发送，`accepted` 为 1、`rejected` 为 0；STARTTLS 强制升级，TLS 保留系统 CA 与 `rejectUnauthorized: true`。随后 Resend 页面和官方查询 API 均显示两封邮件为 `delivered`。逐封 marker、客户端与服务商 message ID、创建与观察时间见[外部 SMTP 记录](./external-smtp.json)。Resend 实际改写 Message-ID，使用 marker 关联两端，不假定客户端 ID 保持不变。
+
+账号没有验证域名。依据 [Resend SMTP 文档](https://resend.com/docs/send-with-smtp)和[默认测试发件地址限制](https://resend.com/docs/knowledge-base/403-error-resend-dev-domain)，使用 `onboarding@resend.dev` 仅发送至该账号注册的真实 Gmail；没有使用模拟成功的测试收件地址。任务专用 API Key 仅保存在已忽略的 `.data/resend-smtp*.json`，不进入代码、PR 或公开证据。公开记录省略收件邮箱与凭证。
+
+**SMTP 接受与服务商投递状态已验证；最终邮箱收件仍待独立确认。**实际收件 Gmail 尚未登录，Ego 已按技能交还所有者；待所有者确认两封 marker，或登录收件箱后恢复检查。没有把 Resend 的 `delivered` 或发件预览记作真实邮箱收件，也没有改写运行器的 `finalReceipt: unverified`。
 
 ## 重置凭据与中断恢复
 
@@ -90,6 +100,8 @@ CLI 首轮错误的 Release 路径假设和 PTY 连续命令缓冲问题均取�
 评审没有机械重跑已经通过的测试。审计结论不替代下方实际命令结果，也不替代真实外部 SMTP 和最终收件。原生发送吞错、多步骤中断和在途重置晚写边界均已明确交接；没有把这些库行为记作产品已经实现。
 
 完整集成结束后，评审者另行只读解析真实 JUnit，确认文件、用例、19 个失败名称及新增三组统计与公开摘要逐项一致。实际读取 Vitest 5 名称匹配实现，确认 JUnit 中的嵌套名称适用于这次定向过滤。CLI 回滚用例的真实登录、会话保留和明确重试均有验收目的，未发现需要删除的无效复杂度或新的代码必改项。
+
+2026-10-07 外部 SMTP 证据另经独立 agent 使用 `code-review-and-quality` 只读复审。公开记录与两份实际 runner JSON、provider JSON 逐字段一致，凭证与收件地址未进入公开材料。SMTP 接受、服务商 delivered、实际邮箱待确认的边界准确，无必改问题；没有重复运行已通过的测试或操作已交还的浏览器。本轮仅新增文档证据，范围内 Prettier 检查、`node docs/tasks/check.mjs`（120 个任务、298 个需求）和 `git diff --check` 通过。
 
 ## 依赖审计
 
@@ -144,6 +156,6 @@ CLI 首轮错误的 Release 路径假设和 PTY 连续命令缓冲问题均取�
 
 工程实验代码与独立代码/证据评审已完成；新增 45 项定向测试通过。本地静态、类型、单元和构建通过；此前失败场景均取得后续通过结果，完整首轮未通过的事实继续保留。
 
-真实外部 SMTP 服务和最终收件尚未验证。受控本地 SMTP 的 DATA 接收、`sendMail` 的接受结果不能代替外部收件箱证据。#146 保持未完成，PR #253 按所有者本次指令保留草稿；不会因两项重试通过就将外部收件记作通过。
+真实外部 Resend SMTP 的 TLS / STARTTLS 和服务商投递状态已经验证；**最终真实邮箱收件尚待独立确认**。本次唯一剩余验收项是实际收件，不再将已通过复验的两个超时场景列为阻塞。#146 的实验验收保持未完成，PR #253 保留草稿；既有完整首轮失败记录单独保留，不因外部发送通过而改记为一次全量通过。
 
-本任务不改变产品 UI，浏览器、Figma 对照、主题、响应式及人工界面验收不适用。真实容器及 AMD64/ARM64 留在既有 Release 阶段验证；本地隔离打包实验不冒充双架构或生产 CLI 已交付。
+本任务不改变产品 UI，产品浏览器流程、Figma 对照、主题、响应式及人工界面验收不适用；Ego 仅用于外部 Resend 账号与协议证据。真实容器及 AMD64/ARM64 留在既有 Release 阶段验证；本地隔离打包实验不冒充双架构或生产 CLI 已交付。
