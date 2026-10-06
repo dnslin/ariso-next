@@ -23,6 +23,7 @@ import { deleteObject } from '../storage/local.ts';
 import { storageConfigs } from '../storage/schema.ts';
 import { uploadSessions, uploadSubmissions } from './schema.ts';
 import { getSession } from './sessions.ts';
+import { UploadError } from './errors.ts';
 
 export type UploadContext = {
   db: BetterSQLite3Database;
@@ -36,17 +37,23 @@ export type UploadContext = {
 export async function cleanupSession(context: UploadContext, id: string) {
   const { db, storageRoot } = context;
   const session = getSession(db, id);
-  const storage = db
-    .select()
-    .from(storageConfigs)
-    .where(eq(storageConfigs.id, session.storageId))
-    .get()!;
   try {
     if (session.temporaryKey || session.finalKey)
       await terminateMediaTools(`${storageRoot}/upload-${id}`);
     for (const field of ['temporaryKey', 'finalKey'] as const) {
       const key = session[field];
       if (!key) continue;
+      if (!session.storageId)
+        throw new UploadError(
+          'UPLOAD_STATE_CONFLICT',
+          '对象清理缺少存储目标',
+          409,
+        );
+      const storage = db
+        .select()
+        .from(storageConfigs)
+        .where(eq(storageConfigs.id, session.storageId))
+        .get()!;
       if (storage.type === 'local') {
         requireLocalStorage(storage);
         await deleteObject(storageRoot, storage, key);
@@ -155,7 +162,13 @@ export function expireUploadSessions(
           'validating',
           'finalizing',
         ]),
-        inArray(uploadSessions.submissionId, expired),
+        or(
+          inArray(uploadSessions.submissionId, expired),
+          and(
+            isNull(uploadSessions.submissionId),
+            lte(uploadSessions.updatedAt, new Date(now.getTime() - 3_600_000)),
+          ),
+        ),
       ),
     )
     .run();
@@ -189,47 +202,73 @@ export function purgeUploadResults(
   now = new Date(),
 ) {
   const cutoff = new Date(now.getTime() - 86_400_000);
-  db.transaction((tx) => {
-    const retained = tx
-      .select({ id: uploadSessions.submissionId })
-      .from(uploadSessions)
-      .where(
-        or(
-          notInArray(uploadSessions.state, [
-            'accepted',
-            'failed',
-            'cancelled',
-            'expired',
-          ]),
-          ne(uploadSessions.cleanupStatus, 'none'),
-          isNotNull(uploadSessions.temporaryKey),
-          isNotNull(uploadSessions.finalKey),
-          isNotNull(uploadSessions.temporaryPath),
-          gt(uploadSessions.updatedAt, cutoff),
-        ),
-      );
-    const expired = tx
-      .selectDistinct({ id: uploadSessions.submissionId })
-      .from(uploadSessions)
-      .where(
-        and(
-          lte(uploadSessions.updatedAt, cutoff),
-          notInArray(uploadSessions.submissionId, retained),
-        ),
-      )
-      .all()
-      .map((submission) => submission.id);
-    if (!expired.length) return;
-    tx.delete(uploadSessions)
-      .where(
-        and(
-          inArray(uploadSessions.submissionId, expired),
-          lte(uploadSessions.updatedAt, cutoff),
-        ),
-      )
-      .run();
-    tx.delete(uploadSubmissions)
-      .where(inArray(uploadSubmissions.id, expired))
-      .run();
-  });
+  db.transaction(
+    (tx) => {
+      const retained = tx
+        .select({ id: uploadSessions.submissionId })
+        .from(uploadSessions)
+        .where(
+          and(
+            isNotNull(uploadSessions.submissionId),
+            or(
+              notInArray(uploadSessions.state, [
+                'accepted',
+                'failed',
+                'cancelled',
+                'expired',
+              ]),
+              ne(uploadSessions.cleanupStatus, 'none'),
+              isNotNull(uploadSessions.temporaryKey),
+              isNotNull(uploadSessions.finalKey),
+              isNotNull(uploadSessions.temporaryPath),
+              gt(uploadSessions.updatedAt, cutoff),
+            ),
+          ),
+        );
+      const expired = tx
+        .selectDistinct({ id: uploadSessions.submissionId })
+        .from(uploadSessions)
+        .where(
+          and(
+            isNotNull(uploadSessions.submissionId),
+            lte(uploadSessions.updatedAt, cutoff),
+            notInArray(uploadSessions.submissionId, retained),
+          ),
+        )
+        .all()
+        .map((submission) => submission.id!);
+      if (expired.length) {
+        tx.delete(uploadSessions)
+          .where(
+            and(
+              inArray(uploadSessions.submissionId, expired),
+              lte(uploadSessions.updatedAt, cutoff),
+            ),
+          )
+          .run();
+        tx.delete(uploadSubmissions)
+          .where(inArray(uploadSubmissions.id, expired))
+          .run();
+      }
+      tx.delete(uploadSessions)
+        .where(
+          and(
+            isNull(uploadSessions.submissionId),
+            inArray(uploadSessions.state, [
+              'accepted',
+              'failed',
+              'cancelled',
+              'expired',
+            ]),
+            eq(uploadSessions.cleanupStatus, 'none'),
+            isNull(uploadSessions.temporaryKey),
+            isNull(uploadSessions.finalKey),
+            isNull(uploadSessions.temporaryPath),
+            lte(uploadSessions.updatedAt, cutoff),
+          ),
+        )
+        .run();
+    },
+    { behavior: 'immediate' },
+  );
 }

@@ -59,7 +59,8 @@ export function releaseStorageHistory(
       .run();
     const retained = tx
       .select({ id: uploadSessions.submissionId })
-      .from(uploadSessions);
+      .from(uploadSessions)
+      .where(isNotNull(uploadSessions.submissionId));
     tx.delete(uploadSubmissions)
       .where(
         and(
@@ -85,20 +86,24 @@ export function readUploadReferences(db: BetterSQLite3Database) {
     })
     .from(uploadSessions)
     .where(
-      or(
-        inArray(uploadSessions.state, [
-          'queued',
-          'receiving',
-          'validating',
-          'finalizing',
-        ]),
-        ne(uploadSessions.cleanupStatus, 'none'),
-        isNotNull(uploadSessions.temporaryKey),
-        isNotNull(uploadSessions.finalKey),
-        isNotNull(uploadSessions.temporaryPath),
+      and(
+        isNotNull(uploadSessions.storageId),
+        or(
+          inArray(uploadSessions.state, [
+            'queued',
+            'receiving',
+            'validating',
+            'finalizing',
+          ]),
+          ne(uploadSessions.cleanupStatus, 'none'),
+          isNotNull(uploadSessions.temporaryKey),
+          isNotNull(uploadSessions.finalKey),
+          isNotNull(uploadSessions.temporaryPath),
+        ),
       ),
     )
-    .all();
+    .all()
+    .map((session) => ({ ...session, storageId: session.storageId! }));
 }
 /** tmp files and media-owned originals never count as configuration storage. */
 export function readUploadUsage(db: BetterSQLite3Database) {
@@ -112,6 +117,7 @@ export function readUploadUsage(db: BetterSQLite3Database) {
     }
   >();
   for (const session of db.select().from(uploadSessions).all()) {
+    if (!session.storageId) continue;
     for (const [key, bytes] of [
       [session.temporaryKey, session.temporaryBytes],
       [session.finalKey, session.finalBytes],

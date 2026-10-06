@@ -3,6 +3,7 @@ import { Readable, Transform } from 'node:stream';
 import { pipeline } from 'node:stream/promises';
 import busboy from 'busboy';
 import { writeReceivedFile } from '../media/file-write.ts';
+import { UploadError } from './errors.ts';
 
 export class MultipartReceiveError extends Error {
   readonly code: string;
@@ -29,9 +30,11 @@ export async function receiveMultipart(
     path: string;
     resources: ReturnType<typeof createMediaResources>;
     maxBytes: number;
-    declaredSize: number;
+    declaredSize?: number;
     signal: AbortSignal;
     onProgress?: (bytes: number) => void;
+    onField?: (name: string, value: string) => void;
+    onFile?: (info: busboy.FileInfo) => void;
   },
 ): Promise<{ byteSize: number }> {
   const error = (
@@ -90,7 +93,13 @@ export async function receiveMultipart(
       headers: Object.fromEntries(request.headers),
       highWaterMark: bufferSize,
       fileHwm: bufferSize,
-      limits: { files: 1, fields: 0, fileSize: options.maxBytes + 1 },
+      ...(options.onField && { defParamCharset: 'utf8', preservePath: true }),
+      limits: {
+        files: 1,
+        fields: options.onField ? Infinity : 0,
+        fieldSize: 256 * 1024,
+        fileSize: options.maxBytes + 1,
+      },
     });
   } catch (cause) {
     throw error(
@@ -147,6 +156,21 @@ export async function receiveMultipart(
   let bodyBytes = 0;
   let files = 0;
   const writers: Promise<void>[] = [];
+  let fieldBytes = 0;
+  parser.on('field', (name, value, info) => {
+    try {
+      fieldBytes += Buffer.byteLength(name) + Buffer.byteLength(value);
+      if (info.nameTruncated || info.valueTruncated || fieldBytes > 256 * 1024)
+        throw error(
+          'UPLOAD_FIELDS_TOO_LARGE',
+          400,
+          'Multipart fields exceed 256 KiB',
+        );
+      options.onField?.(name, value);
+    } catch (cause) {
+      fail(cause as Error);
+    }
+  });
   parser.on('filesLimit', () =>
     fail(error('UPLOAD_EXTRA_FILE', 400, 'Exactly one file is allowed')),
   );
@@ -155,7 +179,7 @@ export async function receiveMultipart(
       error('UPLOAD_UNKNOWN_FIELD', 400, 'Multipart fields are not allowed'),
     ),
   );
-  parser.on('file', (name, file) => {
+  parser.on('file', (name, file, info) => {
     files++;
     file.on('error', (cause) => fail(cause));
     file.on('limit', () =>
@@ -164,6 +188,13 @@ export async function receiveMultipart(
     if (name !== 'file') {
       file.resume();
       fail(error('UPLOAD_UNKNOWN_FIELD', 400, 'Expected file field'));
+      return;
+    }
+    try {
+      options.onFile?.(info);
+    } catch (cause) {
+      file.resume();
+      fail(cause as Error);
       return;
     }
     const writer = writeReceivedFile(file, {
@@ -231,7 +262,8 @@ export async function receiveMultipart(
     if (!byteSize)
       throw error('UPLOAD_EMPTY_FILE', 400, 'Empty file is not allowed');
     if (
-      byteSize !== options.declaredSize ||
+      (options.declaredSize !== undefined &&
+        byteSize !== options.declaredSize) ||
       (contentLength !== null && contentLength !== bodyBytes)
     )
       throw error(
@@ -241,7 +273,8 @@ export async function receiveMultipart(
       );
     return { byteSize };
   } catch (cause) {
-    if (cause instanceof MultipartReceiveError) throw cause;
+    if (cause instanceof MultipartReceiveError || cause instanceof UploadError)
+      throw cause;
     throw error(
       'UPLOAD_RECEIVE_FAILED',
       400,

@@ -31,6 +31,7 @@ import {
 } from '../../../src/server/upload/schema.ts';
 import {
   createSubmission,
+  getPreparedSession,
   getSession,
   getSubmission,
 } from '../../../src/server/upload/sessions.ts';
@@ -67,7 +68,7 @@ async function direct(
     body: new Uint8Array(bytes),
   });
   expect(response.status).toBe(200);
-  return getSession(fixture.db, session.id);
+  return getPreparedSession(fixture.db, session.id);
 }
 function assertNoAssets() {
   for (const table of [mediaImages, mediaJobs, mediaVersions, mediaObjects])

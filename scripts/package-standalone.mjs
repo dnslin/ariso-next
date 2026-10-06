@@ -19,6 +19,7 @@ const { fileList, warnings } = await nft.nodeFileTrace(
     'dist/cli/prestart.js',
     'dist/cli/logging.js',
     'dist/cli/shutdown.js',
+    'dist/cli/http.js',
     'scripts/media/svg-render.mjs',
   ],
   {

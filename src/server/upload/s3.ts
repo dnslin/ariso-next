@@ -14,7 +14,11 @@ import { acceptSession } from './accept.ts';
 import { cleanupSession, type UploadContext } from './cleanup.ts';
 import { UploadError } from './errors.ts';
 import { uploadSessions, uploadSubmissions } from './schema.ts';
-import { getSession, requireSessionStorage } from './sessions.ts';
+import {
+  getPreparedSession,
+  getSession,
+  requireSessionStorage,
+} from './sessions.ts';
 
 export function uploadTemporaryRoot(context: UploadContext) {
   if (!context.temporaryRoot)
@@ -42,7 +46,7 @@ export function uploadS3Storage(context: UploadContext, storageId: string) {
 import { storageConfigs } from '../storage/schema.ts';
 
 export function touchUpload(context: UploadContext, id: string) {
-  const session = getSession(context.db, id);
+  const session = getPreparedSession(context.db, id);
   const now = new Date();
   context.db
     .update(uploadSubmissions)
@@ -55,7 +59,7 @@ export async function beginSession(
   id: string,
   origin: string | null,
 ) {
-  const first = getSession(context.db, id);
+  const first = getPreparedSession(context.db, id);
   const storage = requireSessionStorage(context.db, first);
   if (storage.type === 's3') {
     const root = uploadTemporaryRoot(context);
@@ -66,7 +70,7 @@ export async function beginSession(
   }
   const session = context.db.transaction(
     (tx) => {
-      const current = getSession(tx, id);
+      const current = getPreparedSession(tx, id);
       if (current.state !== 'queued')
         throw new UploadError(
           'UPLOAD_STATE_CONFLICT',
@@ -108,7 +112,7 @@ export async function beginSession(
         .set({ lastActivityAt: now })
         .where(eq(uploadSubmissions.id, current.submissionId))
         .run();
-      return getSession(tx, id);
+      return getPreparedSession(tx, id);
     },
     { behavior: 'immediate' },
   );
@@ -184,7 +188,7 @@ export async function completeSession(
   id: string,
   signal: AbortSignal,
 ) {
-  const initial = getSession(context.db, id);
+  const initial = getPreparedSession(context.db, id);
   if (initial.state === 'accepted') return initial;
   if (initial.route !== 'direct' || initial.state !== 'receiving')
     throw new UploadError(
@@ -328,7 +332,7 @@ export async function publishS3Session(
   facts: Awaited<ReturnType<typeof identifyImageFile>>,
   signal: AbortSignal,
 ) {
-  const session = getSession(context.db, id);
+  const session = getPreparedSession(context.db, id);
   requireSessionStorage(context.db, session);
   const key = `original/${session.candidateImageId}.${facts.extension}`;
   context.db
