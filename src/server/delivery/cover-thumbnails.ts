@@ -2,12 +2,13 @@ import { and, eq, exists, inArray } from 'drizzle-orm';
 import type { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
 import { mediaImages, mediaObjects, mediaVersions } from '../media/schema.ts';
 import { storageConfigs } from '../storage/schema.ts';
-import { buildImagePath } from './links.ts';
+import {
+  thumbnailPresentation,
+  type ThumbnailPresentation,
+} from './thumbnail-presentation.ts';
 
-type CoverThumbnail = {
+type CoverThumbnail = ThumbnailPresentation & {
   displayName: string;
-  status: 'processing' | 'failed' | 'disabled' | 'missing' | 'ready';
-  thumbnailUrl: string | null;
 };
 
 /** Display facts only; collections selects eligible cover IDs in the same transaction. */
@@ -42,27 +43,17 @@ export function readCoverThumbnails(
     .where(inArray(mediaImages.id, ids))
     .all();
   return new Map(
-    rows.map((image) => {
-      const status: CoverThumbnail['status'] =
-        image.processingStatus === 'pending' ||
-        image.processingStatus === 'processing'
-          ? 'processing'
-          : image.processingStatus === 'failed'
-            ? 'failed'
-            : !image.storageEnabled
-              ? 'disabled'
-              : !image.hasThumbnail
-                ? 'missing'
-                : 'ready';
-      return [
-        image.id,
-        {
-          displayName: image.displayName,
-          status,
-          thumbnailUrl:
-            status === 'ready' ? buildImagePath(image.id, 'thumbnail') : null,
-        },
-      ];
-    }),
+    rows.map((image) => [
+      image.id,
+      {
+        displayName: image.displayName,
+        ...thumbnailPresentation({
+          imageId: image.id,
+          processingStatus: image.processingStatus,
+          storageEnabled: image.storageEnabled,
+          hasThumbnail: image.hasThumbnail,
+        }),
+      },
+    ]),
   );
 }

@@ -18,8 +18,9 @@ import type {
 } from './public-types.ts';
 import type { SharingTransaction } from './types.ts';
 import {
+  parsePublicShareCursor,
+  parsePublicShareQuery,
   publicRefreshInputSchema,
-  publicShareCursorSchema,
 } from './validation.ts';
 
 export interface PublicShareAccess {
@@ -69,44 +70,50 @@ function readPublicAlbum(
   };
 }
 
-/** HTML and JSON compose authorization, collection and delivery in one short snapshot. */
+function readPublicPage(
+  tx: SharingTransaction,
+  share: ReturnType<typeof requirePublicShare>,
+  cursor: string | null,
+): PublicSharePage {
+  try {
+    const page = readPublicAlbumPage(tx, share.albumId, cursor);
+    return {
+      ...readPublicAlbum(tx, share),
+      items: readAnonymousThumbnails(tx, page.imageIds, share.showName),
+      nextCursor: page.nextCursor,
+      hasMore: page.hasMore,
+    };
+  } catch (err) {
+    if (
+      err instanceof CollectionError &&
+      err.code === 'COLLECTION_CURSOR_INVALID'
+    )
+      throw new SharingError('SHARING_CURSOR_INVALID', err.message, 409);
+    throw err;
+  }
+}
+
+/** HTML reads validate their ID anchor after authorization in one short snapshot. */
 export function readPublicSharePage(
   db: BetterSQLite3Database,
   input: PublicShareAccess,
-  cursor: unknown = null,
+  cursor: string | null = null,
 ): PublicSharePage {
   return db.transaction((tx) => {
     const share = requirePublicShare(tx, input);
-    if (cursor instanceof URLSearchParams) {
-      if (
-        [...cursor.keys()].some((key) => key !== 'cursor') ||
-        cursor.getAll('cursor').length > 1
-      )
-        throw new SharingError(
-          'SHARING_INVALID_INPUT',
-          '列表仅接受一个加载位置参数',
-        );
-      cursor = cursor.get('cursor');
-    }
-    const parsed = publicShareCursorSchema.safeParse(cursor);
-    if (!parsed.success)
-      throw new SharingError('SHARING_INVALID_INPUT', '加载位置参数无效');
-    try {
-      const page = readPublicAlbumPage(tx, share.albumId, parsed.data);
-      return {
-        ...readPublicAlbum(tx, share),
-        items: readAnonymousThumbnails(tx, page.imageIds, share.showName),
-        nextCursor: page.nextCursor,
-        hasMore: page.hasMore,
-      };
-    } catch (err) {
-      if (
-        err instanceof CollectionError &&
-        err.code === 'COLLECTION_CURSOR_INVALID'
-      )
-        throw new SharingError('SHARING_CURSOR_INVALID', err.message, 409);
-      throw err;
-    }
+    return readPublicPage(tx, share, parsePublicShareCursor(cursor));
+  });
+}
+
+/** The JSON query's transport validation cannot precede the same share authorization. */
+export function readPublicShareItems(
+  db: BetterSQLite3Database,
+  input: PublicShareAccess,
+  params: URLSearchParams,
+): PublicSharePage {
+  return db.transaction((tx) => {
+    const share = requirePublicShare(tx, input);
+    return readPublicPage(tx, share, parsePublicShareQuery(params));
   });
 }
 

@@ -1,0 +1,27 @@
+{
+  "baseline": "7cd7bdb",
+  "tree": "9e78c2d0573a12064c0ee05b3f1b44e7e79d525a",
+  "recordLabelsPreserved": 23,
+  "captureLabelsPreserved": 21,
+  "screenshotNameDispatchRemoved": true,
+  "assertCallsBefore": 125,
+  "assertCallsAfter": 123,
+  "consolidation": "Tips text/viewport assertions read once for capture and keyboard scenes; retry width moved to first-read recovery; check-failed scroll explicit in recovery",
+  "entryOrder": ["representatives", "pagination", "recoveries", "races"],
+  "directPhases": [
+    "representative",
+    "behavior including recoveries",
+    "race",
+    "recovery"
+  ],
+  "lineCounts": {
+    "e2e/sharing-public.mjs": 89,
+    "e2e/sharing-public-pagination.mjs": 359,
+    "e2e/sharing-public-recovery.mjs": 340,
+    "e2e/sharing-public-layouts.mjs": 505,
+    "e2e/sharing-public-races.mjs": 136,
+    "e2e/sharing-public-page.mjs": 198,
+    "e2e/sharing-public-representatives.mjs": 320
+  },
+  "scope": "Static preservation audit only; browser scenarios not executed"
+}

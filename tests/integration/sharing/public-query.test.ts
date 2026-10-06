@@ -24,6 +24,7 @@ import {
 } from '../../../src/server/sharing/configuration.ts';
 import { digestGrantSecret } from '../../../src/server/sharing/authorization.ts';
 import {
+  readPublicShareItems,
   readPublicSharePage,
   refreshPublicShare,
 } from '../../../src/server/sharing/public-query.ts';
@@ -107,7 +108,7 @@ function thumbnail(id: string, objectStatus: 'stored' | 'writing' = 'stored') {
     })
     .run();
 }
-const page = (cursor: unknown = null, grantSecret?: string, time = now) =>
+const page = (cursor: string | null = null, grantSecret?: string, time = now) =>
   readPublicSharePage(fixture.db, { token, grantSecret, now: time }, cursor);
 const refresh = (ids: string[], grantSecret?: string, time = now) =>
   refreshPublicShare(fixture.db, { token, grantSecret, now: time }, { ids });
@@ -146,7 +147,7 @@ it('filters private, recycled and deleting members before total and fixed 40-ite
   expect(second.items.map((item) => item.imageId)).toEqual(ids.slice(40, 80));
   expect(third.items.map((item) => item.imageId)).toEqual(ids.slice(80));
   expect(third).toMatchObject({ hasMore: false, nextCursor: null, total: 85 });
-  expect(page(ids.at(-1)).items).toEqual([]);
+  expect(page(ids.at(-1)!).items).toEqual([]);
   for (const item of [...first.items, first.cover!]) {
     expect(Object.keys(item).sort()).toEqual([
       'aspectRatio',
@@ -226,9 +227,14 @@ it('orders by joinedAt descending then ID ascending and resolves an anchor from 
     'owner=true',
     'cursor=',
   ])
-    expect(() => page(new URLSearchParams(params))).toThrowError(
-      expect.objectContaining({ status: 400 }),
-    );
+    expect(() =>
+      readPublicShareItems(
+        fixture.db,
+        { token, now },
+        new URLSearchParams(params),
+      ),
+    ).toThrowError(expect.objectContaining({ status: 400 }));
+  expect(() => page('')).toThrowError(expect.objectContaining({ status: 400 }));
 });
 
 it('keeps pending, processing, first failures and disabled storage in place without granting links; ready reprocessing failure stays readable', () => {
@@ -375,7 +381,7 @@ it('checks the same fixed grant and current lifecycle before any anonymous album
       expiresAt: new Date(now.getTime() + 86400000),
     })
     .run();
-  for (const read of [() => page(), () => refresh(['public'])])
+  for (const read of [() => page(), () => page(''), () => refresh(['public'])])
     expect(read).toThrowError(expect.objectContaining({ status: 401 }));
   expect(page(null, secret).items).toHaveLength(1);
   const before = fixture.db.select().from(shareGrants).all();
@@ -388,12 +394,18 @@ it('checks the same fixed grant and current lifecycle before any anonymous album
   expect(() => page(null, secret)).toThrowError(
     expect.objectContaining({ status: 410 }),
   );
+  expect(() => page('', secret)).toThrowError(
+    expect.objectContaining({ status: 410 }),
+  );
   await updateShare(fixture.db, albumId, { enabled: true });
   expect(() => page(null, secret)).toThrowError(
     expect.objectContaining({ status: 401 }),
   );
   await rotateShare(fixture.db, albumId);
   expect(() => page(null, secret)).toThrowError(
+    expect.objectContaining({ status: 404 }),
+  );
+  expect(() => page('', secret)).toThrowError(
     expect.objectContaining({ status: 404 }),
   );
   fixture.db.transaction((tx) => deleteAlbum(tx, albumId));

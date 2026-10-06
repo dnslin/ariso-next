@@ -5,7 +5,7 @@ import { requireSiteSettings } from '../site/settings.ts';
 import { getServerRuntime } from '../startup/server-start.ts';
 import { shareGrantCookie } from './authorization.ts';
 import { SharingError } from './errors.ts';
-import { readPublicSharePage, refreshPublicShare } from './public-query.ts';
+import { readPublicShareItems, refreshPublicShare } from './public-query.ts';
 import { unlockInputSchema } from './validation.ts';
 
 export const shareResponseHeaders = {
@@ -116,7 +116,7 @@ export function publicShareItemsResponse(request: NextRequest, token: string) {
   try {
     const runtime = getServerRuntime();
     return NextResponse.json(
-      readPublicSharePage(
+      readPublicShareItems(
         runtime.connection.db,
         { token, grantSecret: request.cookies.get(shareGrantCookie)?.value },
         request.nextUrl.searchParams,

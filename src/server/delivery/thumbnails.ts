@@ -2,13 +2,14 @@ import { and, eq, inArray } from 'drizzle-orm';
 import type { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
 import { mediaImages, mediaObjects, mediaVersions } from '../media/schema.ts';
 import { storageConfigs } from '../storage/schema.ts';
-import { buildImagePath } from './links.ts';
+import {
+  thumbnailPresentation,
+  type ThumbnailPresentation,
+} from './thumbnail-presentation.ts';
 
-export interface AnonymousThumbnail {
+export interface AnonymousThumbnail extends ThumbnailPresentation {
   imageId: string;
   aspectRatio: number;
-  status: 'ready' | 'processing' | 'failed' | 'disabled' | 'missing';
-  thumbnailUrl: string | null;
   displayName?: string;
 }
 
@@ -56,17 +57,6 @@ export function readAnonymousThumbnails(
     const row = byId.get(imageId);
     if (!row)
       throw new Error(`Missing public image delivery state: ${imageId}`);
-    const status: AnonymousThumbnail['status'] =
-      row.processingStatus === 'pending' ||
-      row.processingStatus === 'processing'
-        ? 'processing'
-        : row.processingStatus === 'failed'
-          ? 'failed'
-          : !row.storageEnabled
-            ? 'disabled'
-            : row.thumbnailObjectId === null
-              ? 'missing'
-              : 'ready';
     const width = row.thumbnailWidth ?? row.width;
     const height = row.thumbnailHeight ?? row.height;
     return {
@@ -75,9 +65,12 @@ export function readAnonymousThumbnails(
         width !== null && height !== null && width > 0 && height > 0
           ? width / height
           : 1,
-      status,
-      thumbnailUrl:
-        status === 'ready' ? buildImagePath(imageId, 'thumbnail') : null,
+      ...thumbnailPresentation({
+        imageId,
+        processingStatus: row.processingStatus,
+        storageEnabled: row.storageEnabled,
+        hasThumbnail: row.thumbnailObjectId !== null,
+      }),
       ...(showName ? { displayName: row.displayName! } : {}),
     };
   });

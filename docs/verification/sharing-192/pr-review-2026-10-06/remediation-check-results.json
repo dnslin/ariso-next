@@ -1,0 +1,178 @@
+{
+  "date": "2026-10-06",
+  "baseCommit": "7cd7bdb33ef2566527531df90502f29298f72619",
+  "reviewedSourceTree": "9e78c2d0573a12064c0ee05b3f1b44e7e79d525a",
+  "environment": {
+    "node": "24.18.1",
+    "pnpm": "11.19.0",
+    "platform": "darwin",
+    "architecture": "arm64"
+  },
+  "scope": "All four Required categories and both Optional findings from the complete PR review; no unrelated reruns.",
+  "changes": [
+    {
+      "finding": "quality P2 fixture publication",
+      "result": "Object reference committed before mkdir/copy; version and member published only after real bytes. Scanner unchanged."
+    },
+    {
+      "finding": "structure R1",
+      "result": "89-line entry; page/layouts/representatives/pagination/recovery/races have concrete owners. No screenshot-name action dispatch; one Tips reader."
+    },
+    {
+      "finding": "structure R2",
+      "result": "One thumbnail status and URL decision; distinct owner/anonymous SQL and DTO retained."
+    },
+    {
+      "finding": "structure R3",
+      "result": "upload828/storage962/runner945; complete storage scenes and sharing fixture lifetime extracted; phase confined to public runner."
+    },
+    {
+      "finding": "structure O1",
+      "result": "One gallery viewport hook; explicit scroll roots and anonymous parent-content observer, identical DOM."
+    },
+    {
+      "finding": "structure O2",
+      "result": "URL query parser in validation; typed HTML cursor and specific JSON entry. Same transaction checks authorization before parsing."
+    }
+  ],
+  "executed": [
+    {
+      "command": "pnpm exec vitest run --project integration tests/integration/sharing/public-fixture-lifecycle.test.ts",
+      "stage": "red before ordering fix",
+      "exitCode": 1,
+      "result": "1 failed / 1 passed. Real Local scanner deleted1/protected1 before thumbnail version/member publication."
+    },
+    {
+      "command": "pnpm exec vitest run --project integration tests/integration/sharing/public-fixture-lifecycle.test.ts",
+      "stage": "green after ordering fix",
+      "exitCode": 0,
+      "files": 1,
+      "tests": 2,
+      "result": "Exact key protection, actual PNG bytes, foreign keys, interrupted copy and intentional missing checked."
+    },
+    {
+      "command": "pnpm exec vitest run --project unit tests/unit/runtime/browser-plan.test.ts tests/unit/runtime/browser-runner.test.ts tests/unit/runtime/browser-sharing.test.ts tests/unit/library/gallery.test.ts tests/unit/sharing/public-validation.test.ts",
+      "exitCode": 0,
+      "files": 5,
+      "tests": 259
+    },
+    {
+      "command": "pnpm run typecheck",
+      "stage": "initial and first retry",
+      "exitCode": 2,
+      "result": "New lifecycle test transaction/optional-key type errors; fixed without changing product behavior or assertions."
+    },
+    {
+      "command": "pnpm run typecheck",
+      "stage": "after all type corrections",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm run build",
+      "stage": "initial",
+      "exitCode": 1,
+      "result": "The same lifecycle-test optional-key type error; no product compile failure."
+    },
+    {
+      "command": "pnpm run build",
+      "stage": "after type correction",
+      "exitCode": 0,
+      "warnings": "Existing optional cross-platform/dependency tracing warnings retained, including @opentelemetry/api."
+    },
+    {
+      "command": "pnpm exec vitest run --project integration tests/integration/delivery/cover-thumbnails.test.ts tests/integration/collections/cover-presentation.test.ts tests/integration/sharing/public-query.test.ts tests/integration/sharing/public-http.test.ts tests/integration/sharing/list.test.ts tests/integration/sharing/public-fixture-lifecycle.test.ts --maxWorkers=2",
+      "exitCode": 0,
+      "files": 6,
+      "tests": 16
+    },
+    {
+      "command": "pnpm exec eslint <affected source/script/test files> --max-warnings=0; scoped final lifecycle-test lint after type correction",
+      "exitCode": 0,
+      "result": "No full-repository lint rerun; exact arguments below."
+    },
+    {
+      "command": "node --check <6 runner/upload/storage MJS files> (implementation agent); node --check <11 affected public-sharing and runner MJS files> (root)",
+      "exitCode": 0
+    },
+    {
+      "command": "Static check-label/capture-label and default/direct phase preservation comparison against 7cd7bdb",
+      "exitCode": 0,
+      "recordLabels": 23,
+      "captureLabels": 21,
+      "assertions": "125→123 solely consolidates duplicated Tips text/viewport checks; not a browser execution."
+    },
+    {
+      "command": "Private preview update preserving saved runtime environment/account/data; HTTP continuity utility",
+      "exitCode": 0,
+      "result": "health/login200, unauthorized401, unlock/items200, public40/124, Chinese empty0; private credentials never emitted."
+    }
+  ],
+  "lintArguments": [
+    "e2e/sharing-public*.mjs",
+    "e2e/{upload,upload-storage-availability,storage-admin,storage-local-validation}.mjs",
+    "scripts/{verify-browser,browser-sharing}.mjs",
+    "src/components/gallery/use-gallery-viewport.ts",
+    "src/components/sharing/gallery.tsx",
+    "src/app/library/library-gallery.tsx",
+    "src/server/delivery/{thumbnail-presentation,cover-thumbnails,thumbnails}.ts",
+    "src/server/sharing/{http,public-query,validation}.ts",
+    "tests/integration/sharing/{public-fixture-lifecycle,public-http,public-query}.test.ts",
+    "tests/unit/sharing/public-validation.test.ts",
+    "tests/unit/runtime/browser-sharing.test.ts"
+  ],
+  "notRerun": [
+    "full unit suite",
+    "full integration suite",
+    "default 51-stage browser command",
+    "unaffected backend and Token/account scenes",
+    "frozen dependency installation (dependency inputs unchanged)"
+  ],
+  "browser": {
+    "status": "not run; original hard-stop remains",
+    "requiredAfterExplicitResume": [
+      "sharing-public full and representative/behavior/race/recovery selection",
+      "library and album gallery responsive/scroll/long-description geometry",
+      "upload storage availability and storage-admin invalid Local path"
+    ],
+    "reason": "Ego Space37 ended at 2026-10-06T10:48:01Z. Manual UI acceptance/review/fix requests did not explicitly resume browser control."
+  },
+  "manualUIAcceptance": {
+    "status": "accepted earlier by user",
+    "quote": "我手动验证的UI没什么问题",
+    "newVisualChanges": false
+  },
+  "remoteChecks": "No checks reported; not CI success. PR remains draft.",
+  "rawLogs": "Ignored test-results/sharing-192/review-fixes-*; public red evidence and sanitized summaries archived beside this file.",
+  "independentReviews": {
+    "quality": {
+      "result": "accepted",
+      "newP1P2": 0,
+      "report": "quality-remediation.md"
+    },
+    "structure": {
+      "result": "accepted",
+      "newRequired": 0,
+      "newOptional": 0,
+      "report": "structure-remediation.md"
+    },
+    "requiredAndOptionalFixes": "all six categories implemented and independently re-reviewed",
+    "reviewersReranChecks": false
+  },
+  "evidenceChecks": {
+    "prettierAffectedFiles": {
+      "exitCode": 0
+    },
+    "documentation": {
+      "command": "node docs/tasks/check.mjs",
+      "node": "24.18.1",
+      "exitCode": 0,
+      "tasks": 120,
+      "requirements": 298
+    },
+    "gitDiffCheck": {
+      "workingTree": 0,
+      "index": 0
+    },
+    "privateCredentialMatches": 0
+  }
+}

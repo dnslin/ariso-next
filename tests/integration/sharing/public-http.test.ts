@@ -344,7 +344,16 @@ it('owner authentication never bypasses public password gates; current revocatio
   const imageId = image(album.id);
   const denied = async (status: number, cookie = '') => {
     for (const response of [
-      await items(share.token, cookie),
+      ...(await Promise.all(
+        [
+          '',
+          '?pageSize=80',
+          '?owner=true',
+          '?cursor=a&cursor=b',
+          '?cursor=',
+          '?cursor=a%2Fb',
+        ].map((query) => items(share.token, cookie, query)),
+      )),
       await post(share.token, 'refresh', { ids: [imageId] }, cookie),
     ]) {
       expect(response.status).toBe(status);

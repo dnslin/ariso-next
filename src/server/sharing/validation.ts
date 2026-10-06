@@ -17,6 +17,26 @@ const publicImageIdSchema = z
   .min(1)
   .regex(/^[^/\\\p{Cc}]+$/u);
 export const publicShareCursorSchema = publicImageIdSchema.nullable();
+
+export function parsePublicShareCursor(cursor: string | null): string | null {
+  const parsed = publicShareCursorSchema.safeParse(cursor);
+  if (!parsed.success)
+    throw new SharingError('SHARING_INVALID_INPUT', '加载位置参数无效');
+  return parsed.data;
+}
+
+export function parsePublicShareQuery(params: URLSearchParams): string | null {
+  if (
+    [...params.keys()].some((key) => key !== 'cursor') ||
+    params.getAll('cursor').length > 1
+  )
+    throw new SharingError(
+      'SHARING_INVALID_INPUT',
+      '列表仅接受一个加载位置参数',
+    );
+  return parsePublicShareCursor(params.get('cursor'));
+}
+
 export const publicRefreshInputSchema = z.strictObject({
   ids: z
     .array(publicImageIdSchema)

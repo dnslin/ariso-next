@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { randomUUID } from 'node:crypto';
-import { copyFile, mkdir, rm } from 'node:fs/promises';
-import { dirname, join } from 'node:path';
+import { rm } from 'node:fs/promises';
+import { dirname } from 'node:path';
 import { eq } from 'drizzle-orm';
 import { createAlbum } from '../src/server/collections/records.ts';
 import { albumImages, albums } from '../src/server/collections/schema.ts';
@@ -18,6 +18,7 @@ import {
   updateShare,
 } from '../src/server/sharing/configuration.ts';
 import { albumShares } from '../src/server/sharing/schema.ts';
+import { publishSharingImage } from './sharing-public-fixture-images.mjs';
 import { launchLocalDelivery } from '../tests/integration/delivery/local-fixture.ts';
 import {
   email,
@@ -73,62 +74,15 @@ export async function launchSharingPublic(signal) {
       const name = `共享照片-${String(index + 1).padStart(3, '0')}`;
       publicIds.push(image.imageId);
       names.push(name);
-      const source = app.db
-        .select()
-        .from(mediaObjects)
-        .where(eq(mediaObjects.imageId, image.imageId))
-        .get();
-      const version = app.db
-        .select()
-        .from(mediaVersions)
-        .where(eq(mediaVersions.imageId, image.imageId))
-        .get();
-      const thumbnailKey = `sharing-public/${image.imageId}.png`;
-      const thumbnailPath = join(
+      const thumbnailPath = await publishSharingImage({
+        db: app.db,
         dataDirectory,
-        'storage',
-        app.storage.localPath,
-        'ariso',
-        app.storage.id,
-        thumbnailKey,
-      );
-      await mkdir(dirname(thumbnailPath), { recursive: true });
-      await copyFile(image.path, thumbnailPath);
-      app.db.transaction((tx) => {
-        tx.update(mediaImages)
-          .set({
-            displayName: name,
-            originalName: `禁止泄露原名-${index}.png`,
-            width: 640,
-            height: index % 3 === 0 ? 800 : 480,
-          })
-          .where(eq(mediaImages.id, image.imageId))
-          .run();
-        const objectId = randomUUID();
-        tx.insert(mediaObjects)
-          .values({
-            ...source,
-            id: objectId,
-            purpose: 'thumbnail',
-            key: thumbnailKey,
-          })
-          .run();
-        tx.insert(mediaVersions)
-          .values({
-            ...version,
-            kind: 'thumbnail',
-            objectId,
-            width: 640,
-            height: index % 3 === 0 ? 800 : 480,
-          })
-          .run();
-        tx.insert(albumImages)
-          .values({
-            albumId: albumRecords.public.id,
-            imageId: image.imageId,
-            joinedAt: new Date(now - index * 1000),
-          })
-          .run();
+        storage: app.storage,
+        image,
+        name,
+        index,
+        albumId: albumRecords.public.id,
+        joinedAt: new Date(now - index * 1000),
       });
       if (index < 6) {
         const status = [

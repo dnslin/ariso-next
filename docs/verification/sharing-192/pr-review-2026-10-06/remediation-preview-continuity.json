@@ -1,0 +1,26 @@
+{
+  "origin": "http://sharing-56840.localhost:56840",
+  "sourceTree": "9e78c2d0573a12064c0ee05b3f1b44e7e79d525a",
+  "status": "passed",
+  "checks": {
+    "health": 200,
+    "ownerLogin": 200,
+    "public": {
+      "status": 200,
+      "total": 124,
+      "itemCount": 40
+    },
+    "unauthorized": 401,
+    "password": {
+      "unlockStatus": 200,
+      "itemsStatus": 200
+    },
+    "empty": {
+      "status": 200,
+      "name": "旅行手记",
+      "description": "记录沿途的光影与日常。",
+      "total": 0,
+      "itemCount": 0
+    }
+  }
+}
