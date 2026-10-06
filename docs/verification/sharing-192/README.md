@@ -4,6 +4,8 @@
 
 本记录维护本次匿名分享密码页、公开列表及状态检查的实际交付证据；设计规则沿用 [handoff](../../design/handoff.md)，执行及完成条件沿用 [execution](../../tasks/execution.md)。产品需求归 [SPEC-sharing](../../specs/SPEC-sharing.md)，不改写冻结 PRD。
 
+最新人工反馈要求说明改为Tips、空态使用占位组件、预览标题/简介使用自然中文。中文独立预览数据已实际修正；局部提案已恢复真实浏览器验证，产品布局与Figma变更仍待该提案批准。下方既有实现与通过记录对应已获批的 `refined.html` 版本，不能代替本轮返修实施或人工验收。
+
 ## 范围与前置
 
 本次从 `origin/main` 的 `ffecff2e` 创建 `codex/issue-192-sharing`，使用独立管理型 worktree。原工作区和其他任务的预览保留。实施前实际读取 Issue #192、评论及 GitHub 原生 blocked-by / blocking；直接前置 #190、#180、#69、#173、#134 均已关闭，无未满足前置。#193、#196 仍是本任务后置能力。
@@ -106,9 +108,32 @@ DOM断言核对实际 `main` 及全部名称属性；锁定HTML/RSC响应仍核�
 
 原始脚本正文与已执行结果分别归档于忽略的 `test-results/sharing-192/gallery-layout-comparison.cjs`、`gallery-layout-comparison.json`，保存时没有重复执行。可重现命令为 `PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH node test-results/sharing-192/gallery-layout-comparison.cjs`。原始浏览器证据位于忽略的 `test-results/browser/`：`processing.json` / `.log` / `processing-failure.png`，`storage-admin.json` / `.log`，`library.json` / `.log`、`library-viewer.json` / `library-viewer-failure.png`，`library-feedback.json` / `.log` / `library-query-failure.png`。viewer异常记在 `library.log`，没有独立 `library-viewer.log`。完整默认结果已结束，见 [按阶段结果](browser/default-run-summary.json)。默认入口失败，不能称全量浏览器通过；本卡失败的实际修正另列，不改写首次结果。
 
+## 人工反馈的局部提案与恢复验证（2026-10-06）
+
+用户指出24小时授权说明应改为Tips，空态应使用占位组件，标题和简介不能展示 `empty` 等验证标记。本轮实际重读密码/空态Figma上下文与截图，确认常驻说明及重复大号空态来自原设计；新视觉需遵守用户原始指令第4节“提供可查看的原型，取得我批准后再改产品代码”。此前整版批准不冒充本轮局部提案批准。
+
+提案在 [局部原型源码](../../../design-plans/issue192-feedback/index.html)，本地可查看 `http://127.0.0.1:53542/`，包含明确标注的原型工具。密码外标签旁提供44px高Info+“访问说明”，点击收起/展开完整授权说明；空列表数量只显示“0 张图片”，保留原220/280px区域，采用36px Images图标和14/22px灰字。产品计划分别见 [Tips](../../../design-plans/issue192-feedback/password-tips-plan.md) 与 [空态](../../../design-plans/issue192-feedback/empty-state-plan.md)。已锁HeroUI3.2.6的真实类型和实现导出 `EmptyState` / `EmptyState.Root`，会直接复用该容器及已有Popover提示组合；提案原先“无专用组件”的错误已由独立评审查出并修正。原型使用原生Popover展示交互，不能替代真实HeroUI产品验证。
+
+独立人工预览空相册的英文标记来自 `e2e/sharing-public-fixture.mjs` 安全裁剪验证样本，不是产品默认文案。通过真实所有者登录200、相册PATCH200修正该独立数据，再在匿名浏览器验证items200、名称“旅行手记”、简介“记录沿途的光影与日常。”、total=0且items=[]。保留自动安全样本和字段泄漏断言，不增加英文名称限制或翻译回退。账号、密码和私有配置没有进入文档、原型或PR。
+
+用户明确回复“我明确要求你进行验证确认，恢复授权”后，实际调用 `takeOverTaskSpace(37)`，返回ownership=agent；继续原Space37的p1，不创建新空间或绕行其他浏览器。本轮Node24.18.1与现有Ego Lite实际执行：
+
+| 受影响检查       | 实际命令/动作                                                                                                  | 结果与证据                                                                                                                                                                                                                                                                                                                                               |
+| ---------------- | -------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 原型空态         | `ego-browser nodejs < test-results/sharing-192/feedback-prototype-empty.mjs`                                   | 1440×1080、768/430/390/360×844，浅深色10态通过；真实零数量、中文名称/简介、唯一空态文字、图标/尺寸、无溢出及44px目标，[报告](feedback-proposal/empty-report.json)                                                                                                                                                                                        |
+| 原型密码/Tips    | `ego-browser nodejs < test-results/sharing-192/feedback-prototype-password.mjs` 初次及仅短视口修正后的定向执行 | 五宽度浅深色10态通过；初次整体保留失败，见 [初次报告](feedback-proposal/password-initial-failure.json)。修正后390×420浅深色、358px卡片/308px输入、正文滚动后48px主按钮可达及键盘行为通过，见 [最终短视口报告](feedback-proposal/password-short-report.json)。点击、Enter/Space、Escape、外部点击、回焦及下一Tab到密码实际执行；保留输入与URL且没有误提交 |
+| 原型短空态       | `ego-browser nodejs < test-results/sharing-192/feedback-prototype-empty-short.mjs`                             | 390×420浅深色真实滚轮操作后，36px图标+14/22px文字完整可见，保持220px区域与原断言，[报告](feedback-proposal/empty-short-report.json)                                                                                                                                                                                                                      |
+| 正式预览中文数据 | `ego-browser nodejs < test-results/sharing-192/feedback-live-copy.mjs`                                         | 56840真实页面1440×1080/390×844浅深色四态通过，公开items200/0项且无安全样本英文标记，[报告](feedback-proposal/live-copy-report.json)；截图中的旧空态布局明确未改                                                                                                                                                                                          |
+
+上述命令均在本任务worktree运行并将Node24路径加入当前PATH。脚本在忽略的测试输出目录保留，实际报告与PNG在本统一证据目录归档；默认产品验证流程尚未增加提案能力，因为产品尚未实施。短规则最终修正后仅重跑短视口，未重复运行未变的产品单元/集成/构建。
+
+真实失败及处理分别保留：短视口原型工具栏遮挡入口；预留工具栏后绝对定位未设左右边界导致卡片缩窄，补左右0修正；滚动过程中主按钮仅部分可见，使用真实滚轮使完整按钮进入视口后再点击；空态滚到最底会卷出图标顶部，按真实内部图标/文字区域回滚后验证完整可见，未缩短设计区或削弱断言。正式数据验证初次使用通用 `header p` 误读公共品牌，改为相册h1所属header取简介后四态通过，未改产品。原失败报告及对应截图保留在 [本轮证据目录](feedback-proposal/)，最终通过不覆盖初次失败。
+
+作者实际查看桌面、手机、浅深色和短视口截图，先核对公共背景、返回入口、品牌与主区，再核对数量、占位和Tips。独立设计者实际重读Figma密码 `432:3573/432:7913`、空态 `433:4020/433:8693` 及截图，逐图评审提案；结果见 [局部提案独立设计评审](feedback-proposal/design-review.md)。此审计只对应提案，不能代替产品实施、真实HeroUI回归、Figma同步或人工批准。
+
 ## 完成状态与剩余项
 
-代码实施、本卡适用单元/集成/类型/静态检查和本地构建完成，独立代码审查通过。本卡浏览器代表、分页/刷新/恢复及竞态均已取得实际通过证据；默认全量已结束但保持失败，10个范围外失败未修复。独立设计评审已逐项对照Figma与真实页面并通过，范围内偏差均关闭；人工验收尚未完成，PR保持草稿。这些状态分别核对，不由其他检查或Figma同步代替。
+既有获批版本的代码实施、本卡适用单元/集成/类型/静态检查和本地构建完成，独立代码审查通过。本卡浏览器代表、分页/刷新/恢复及竞态均已取得实际通过证据；默认全量已结束但保持失败，10个范围外失败未修复。既有版本独立设计评审已逐项对照Figma与真实页面并通过，范围内偏差均关闭。本轮反馈的中文预览数据已实际修正并验证；局部提案已做真实浏览器验证，产品与Figma返修尚未实施，待提案批准。最终人工验收尚未完成，PR保持草稿。这些状态分别核对，不由其他检查或Figma同步代替。
 
 后续人工验收使用独立测试实例及随机账号/密码，地址和凭证仅在私有对话提供；预览保留直到用户明确要求停止或清理。物理手机/软键盘/非零安全区依execution不作为本轮必需实测，事实保持未实测。Release双架构容器按发布流程取得，不能标为本地CI通过。
 
