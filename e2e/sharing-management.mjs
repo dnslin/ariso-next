@@ -1077,7 +1077,7 @@ try {
       )[0].n,
       1,
     );
-    report.returnDuringNotice = await page.evaluate(() => {
+    const returnActionState = () => {
       const button = [...document.querySelectorAll('button')].find(
         (node) => node.textContent.trim() === '返回相册',
       );
@@ -1088,11 +1088,42 @@ try {
       );
       return {
         unobstructed: hit === button || button.contains(hit),
+        hitSlot: hit?.getAttribute('data-slot'),
+        hitTag: hit?.tagName,
+        modalCount: document.querySelectorAll('[data-slot="modal-backdrop"]')
+          .length,
+        notices: [...document.querySelectorAll('[data-slot="toast"]')].map(
+          (node) => ({
+            entering: node.getAttribute('data-entering'),
+            transform: getComputedStyle(node).transform,
+            top: node.getBoundingClientRect().top,
+            bottom: node.getBoundingClientRect().bottom,
+          }),
+        ),
+        buttonTop: rect.top,
         toastTitles: [
           ...document.querySelectorAll('[data-slot="toast-title"]'),
         ].map((node) => node.textContent),
       };
+    };
+    report.returnNoticeEntrance = await page.evaluate(returnActionState);
+    await page.waitForSelector('[data-slot="modal-backdrop"]', {
+      state: 'hidden',
     });
+    await page.waitForFunction(() => {
+      const title = [
+        ...document.querySelectorAll('[data-slot="toast-title"]'),
+      ].find((node) => node.textContent === '已读取分享设置');
+      const notice = title?.closest('[data-slot="toast"]');
+      return (
+        notice &&
+        !notice.hasAttribute('data-entering') &&
+        notice
+          .getAnimations()
+          .every((animation) => animation.playState !== 'running')
+      );
+    });
+    report.returnDuringNotice = await page.evaluate(returnActionState);
     assert.ok(
       report.returnDuringNotice.toastTitles.includes('已读取分享设置'),
       'Return is checked while the actual success notice remains visible',

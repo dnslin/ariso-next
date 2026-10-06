@@ -10,13 +10,13 @@
 | 工作区         | 创建于当时最新 `origin/main ffecff2e` 的独立管理型worktree；现已整合并发main `03db847c`，仅处理本任务分支，原工作区与其他任务保留 |
 | 产品代码       | 列表、设置、相册入口及批量封面已实施；分享代码在并发同步中保持，未替代匿名访客能力                                                |
 | 本地检查       | 原基线全量与受影响失败复核完成；并发同步后的实际检查另见文末，不沿用旧构建代替新构建                                              |
-| 浏览器验证     | 原基线完整默认流程及全部失败阶段定向复核完成；新 `/settings/api` 消费路由尚未在整合分支验证                                       |
-| 独立功能审计   | 用户要求的双角度PR评审及本轮窄修复复审已完成；原P2结构项已解决，新增浏览器回归尚未执行                                            |
-| 独立设计评审   | 本次实际核对基线与分享状态终审通过；不扩大为新增API消费路由已检查                                                                 |
+| 浏览器验证     | 原基线完整默认流程及失败复核保留；本轮新增草稿回归、全部公共导航及 `/settings/api` 消费补查通过                                   |
+| 独立功能审计   | 用户要求的双角度PR评审及窄修复复审完成；原P2已解决，新增浏览器回归与测试修改独立复审通过                                          |
+| 独立设计评审   | 分享状态终审通过；本轮独立评审实际读取新增API消费路由12张截图，公共区域与分类对照通过                                             |
 | 原型批准       | 2026-10-06用户明确指令“OK，现在按照这个原型进行实施”，第二版已批准；原型数据与响应为模拟                                          |
 | Figma同步      | 本次业务与公共局部已真实同步；错误态、Alert、日历及24个通知位置已窄同步并独立回读                                                 |
-| 人工验收       | 用户已明确确认验收时UI无问题；随后本轮成功收尾修复的新增回归尚未执行；独立验收预览继续保留                                        |
-| 提交、推送、PR | 已提交并推送；[PR #252](https://github.com/dnslin/ariso-next/pull/252) 为OPEN/DRAFT，远端没有检查，不记作CI通过                   |
+| 人工验收       | 用户已确认验收时UI无问题；随后窄修复已自动回归，本轮未改UI布局，原UI验收结论有效，未冒称最新构建重验；独立预览继续保留            |
+| 提交、推送、PR | 已提交并推送；[PR #252](https://github.com/dnslin/ariso-next/pull/252) 为OPEN/READY，远端没有检查，不记作CI通过                   |
 
 ## 范围与现状
 
@@ -246,3 +246,34 @@ Figma 对照源为 [桌面设置 431:3753](https://www.figma.com/design/74sT9Hrf
 本轮完整 `pnpm run format:check` 与 `node docs/tasks/check.mjs` 也已通过，后者为120任务/298需求。日志为 `test-results/issue191-local/pr-review-{format-check,task-check}.log`；记录补充后的本文格式另作定向核对。
 
 本轮未改变服务端、依赖、数据库或共用运行器输入，不机械重跑无关全量及集成测试。剩余浏览器项为新增清除草稿behavior/recovery场景与原 `/settings/api` 消费页面补查；恢复仍需用户明确指令。PR保持草稿，分支、worktree和独立预览保留。
+
+## 授权恢复后的浏览器与API消费补查（2026-10-06）
+
+用户要求补查浏览器回归与API测试。原Ego TaskSpace35已不存在，实际调用返回 `task space not found: 35`；未转用其他任务的Space37。用户随后明确授权“允许新建本次补查空间”，才创建专用Space41（`Ariso Issue191 补查`），四组均顺序复用p1。技能采用 `ego-browser`；失败定位采用 `debugging-and-error-recovery`；测试窄差异由独立 `code-review-and-quality` 评审，API设计评审者实际使用Figma技能读取设计与截图。
+
+本轮消费已构建的生产成品 `VLSER5xqfuEBHElfizfY2`，产品HEAD为 `8283e34e`。环境仍为macOS/arm64、Node24.18.1、pnpm11.19.0与现有Ego Lite。每组由现有运行器复制standalone、创建独立SQLite数据与临时账号；不修改53526验收数据、不安装浏览器。继承并补充两种NO_PROXY本地地址变量。完整调用链仍是 `pnpm run test:browser` → `scripts/verify-browser.mjs` → 默认identity管理（Token消费者）与full业务列表（sharing-management全部阶段、shell-navigation）；定向only不改变默认分发。
+
+以下命令实际从本worktree运行。共同环境为 `EGO_TASK_SPACE=41 EGO_PAGE_LABEL=p1 EGO_KEEP_SPACE=1`，PATH优先Node24，并分别指定 `BROWSER_REPORT_DIR=test-results/issue191-browser-review-{behavior-fixed,recovery,navigation,api-consumers}`。
+
+| 实际命令                                                                     | 结果及具体行为                                                                                                                                                                                  | 统一证据                                                                                                                                   |
+| ---------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| `node scripts/verify-browser.mjs --suite=sharing-management --only=behavior` | 修正检查时机后退出0，8组/36布局；正常清除会清空替换草稿并直接返回。实际独立PATCH、并发分组不覆盖、真实复制、时区、过期启用、重复创建及码点限制均检查；主/peer浏览器错误为空                     | [行为报告](product/supplement-20261006/behavior-sharing-management.json)、[运行器](product/supplement-20261006/behavior-runner.json)       |
+| `node scripts/verify-browser.mjs --suite=sharing-management --only=recovery` | 退出0，11组/44布局；新增真实清除提交后丢失响应，只一次PATCH再GET确认false、草稿清空、其他设置不变、返回无需丢弃确认。密码未知、rotate回读、404、401与错误态保留；浏览器错误为空                 | [恢复报告](product/supplement-20261006/recovery-sharing-management.json)、[运行器](product/supplement-20261006/recovery-runner.json)       |
+| `node scripts/verify-browser.mjs --suite=shell-navigation`                   | 退出0，16个真实入口、74布局；桌面1440×1080/手机390×844、浅深色公共导航/品牌/账号/当前项一致，360/430/768/987与390×560的菜单44px、键盘焦点、Escape/关闭回焦通过                                  | [公共导航报告](product/supplement-20261006/navigation-shell-navigation.json)、[运行器](product/supplement-20261006/navigation-runner.json) |
+| `node scripts/verify-browser.mjs --suite=tokens --only=consumers`            | 退出0，12布局/14截图；processing/account/API三路由的两端两主题分类顺序、图标及当前项通过，`browserErrors=[]`。API明确等待ready后摄整页，另补手机分类展开图；此项不扩大为Token全生命周期重新验证 | [API消费报告](product/supplement-20261006/api-consumers-tokens.json)、[运行器](product/supplement-20261006/api-consumers-runner.json)      |
+
+### 本轮失败、定位与复核
+
+behavior首轮退出1，在创建后“已读取分享设置”仍存在时，固定返回按钮中心命中false。原[失败JSON](product/supplement-20261006/behavior-first-sharing-management.json)、[失败运行器](product/supplement-20261006/behavior-first-runner.json)和[失败截图](product/supplement-20261006/behavior-first-failure.png)保留；截图拍摄时已进入正常位置，不能只用静态截图判断失败原因。
+
+实际读取锁定HeroUI3.2.6的Toast源码与Modal样式：Toast文字出现后还经过两次requestAnimationFrame解除entering，Modal也有退场状态。本轮增加检查前诊断，复跑确实记录 `hitSlot=toast`、`entering=true`、下移58px、底边1038，而按钮top1012；Modal数量为0。等待该通知入场结束与Modal退场后，记录Toast变换0、底边980、按钮top1012、中心命中真实BUTTON；通知仍显示且实际点击返回来源相册通过。[稳定状态截图](product/supplement-20261006/behavior-created-return-dark-1440.png)显示与固定底栏19px间距。
+
+修正仅位于浏览器测试：等待可观察的组件状态，不增加固定延迟、不等待“命中成功”、不关闭或等通知消失，不改变产品布局。稳定状态下如果真的遮挡，原严格命中和真实导航断言仍会失败。独立正确性评审确认没有削弱断言，默认场景仍调用新增回归。API消费者另一处测试改动只等待真实ready并保存分类展开图，无产品或运行器输入修改。
+
+两份测试的定向Prettier、ESLint（`--max-warnings=0`）、`node --check`与`git diff --check`通过。最终完整 `pnpm run format:check` 退出0，`node docs/tasks/check.mjs` 通过120任务/298需求，变更文件的私下验收凭证扫描为0命中；日志为 `test-results/issue191-local/browser-review-{format-check,task-check}.log`。因产品输入没有再变，本轮没有机械重跑已通过的应用构建、类型、全量单元/集成或旧浏览器阶段；此前结果及限制仍按各自构建记录。
+
+本轮功能补查通过。独立API设计补查实际核对Figma主节点34:586/102:1837、公共菜单106:1494与分类113:1499，并逐张查看当前生产成品12张API截图；具体同视口、主题、区域结论见[设计补查](design-review.md#授权恢复后的api公共消费设计补查2026-10-06)。未发现本次范围需修复差异，不扩大为Token业务生命周期或整份公共Figma全文件审计。
+
+四组运行器都完成自身临时服务/数据清理。随后p1返回持久53526验收页，读取真实分享设置，`finish({keep:['p1']})`仅调用一次并等待返回，保留供用户查看。收尾记录使用相对路径导致Ego进程随后写文件失败；离线补记，未再接管或重复finish，见[收尾记录](product/supplement-20261006/browser-finish.json)。此记录写入失败不改写为命令全程通过。
+
+浏览器、API公共消费、功能和设计补查已完成；用户原人工确认保留为 `ASMe18YfaC_LNQM2K-vxK` 的结果。本轮没有改产品界面，已确认的UI验收结论继续有效；后续成功收尾修复已真实回归，未冒称用户再次手验最新构建，也不新增重复验收要求。独立预览保持可用，凭证仍仅在忽略的本地文件和私下交付中。实际 `gh pr ready 252` 成功，PR为OPEN且isDraft=false，mergeStateStatus=CLEAN、statusCheckRollup为空；没有远端检查，不记作CI通过。未合并、未关闭Issue、未发布或清理分支/worktree；本轮未执行的Release容器/双架构与物理手机按共用执行约定保留。
