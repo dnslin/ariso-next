@@ -52,6 +52,14 @@ describe('browser runner argument boundaries', () => {
     ['processing', 'recovery'],
     ['processing', 'consumers'],
     ['account'],
+    ['tokens'],
+    ['tokens', 'representative'],
+    ['tokens', 'behavior'],
+    ['tokens', 'lifecycle'],
+    ['tokens', 'recovery'],
+    ['tokens', 'create-recovery'],
+    ['tokens', 'action-recovery'],
+    ['tokens', 'consumers'],
     ['trash', 'representative'],
     ['trash'],
     ['trash', 'cleanup'],
@@ -157,9 +165,13 @@ describe('browser runner argument boundaries', () => {
   it.each(
     [...new Set(combinations.map(([suite]) => suite))].filter(
       (suite) =>
-        !['library', 'viewer', 'processing', 'sharing-management'].includes(
-          suite,
-        ),
+        ![
+          'library',
+          'viewer',
+          'processing',
+          'tokens',
+          'sharing-management',
+        ].includes(suite),
     ),
   )('rejects library recovery in suite %s', (suite) => {
     const result = parse(['--suite', suite, '--only', 'recovery']);
@@ -252,6 +264,41 @@ describe('browser runner argument boundaries', () => {
     const result = parse(['--suite', 'account', option, value]);
     expect(result.status).not.toBe(0);
     expect(result.stderr).toContain(error);
+  });
+
+  it.each([
+    ['--storage-config', '--storage-config applies only to storage-admin live'],
+    [
+      '--preview-config',
+      '--preview-config applies only to storage-admin feedback',
+    ],
+  ])('rejects storage-only tokens parameter %s', (option, error) => {
+    const result = parse(['--suite', 'tokens', option, 'unused.json']);
+    expect(result.status).not.toBe(0);
+    expect(result.stderr).toContain(error);
+  });
+
+  it('rejects an unrelated tokens phase', () => {
+    const result = parse(['--suite', 'tokens', '--only', 'settings']);
+    expect(result.status).not.toBe(0);
+    expect(result.stderr).toContain(
+      '--only requires an applicable targeted suite',
+    );
+  });
+
+  it.each([
+    ['account', 'create-recovery'],
+    ['account', 'action-recovery'],
+    ['library', 'create-recovery'],
+    ['library', 'action-recovery'],
+    ['viewer', 'create-recovery'],
+    ['viewer', 'action-recovery'],
+  ])('rejects Token-only phase %s / %s', (suite, only) => {
+    const result = parse(['--suite', suite, '--only', only]);
+    expect(result.status).not.toBe(0);
+    expect(result.stderr).toContain(
+      '--only requires an applicable targeted suite',
+    );
   });
 
   it('requires an existing space without starting unrelated production fixtures', () => {

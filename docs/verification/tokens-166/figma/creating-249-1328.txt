@@ -1,0 +1,34 @@
+type ButtonDisabledProps = {
+  className?: string;
+  label?: string;
+};
+
+function ButtonDisabled({ className, label = "按钮" }: ButtonDisabledProps) {
+  return (
+    <div className={className || "bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex h-[36px] items-center justify-center opacity-42 relative rounded-[8px] w-[398px]"} data-node-id="3:25" data-name="Button/Disabled">
+      <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="3:26">
+        {label}
+      </p>
+    </div>
+  );
+}
+
+export default function DApiToken() {
+  return (
+    <div className="bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex flex-col gap-[16px] items-start p-[24px] relative rounded-[16px] size-full" data-node-id="249:1328" data-name="D / API Token / 正在创建">
+      <div className="content-stretch flex gap-[12px] h-[44px] items-start overflow-clip relative shrink-0 w-[432px]" data-node-id="249:1329" data-name="Modal / Header">
+        <p className="[word-break:break-word] flex-[1_0_0] font-['Noto_Sans_SC:Medium'] font-medium leading-[1.5] min-w-px relative text-[22px] text-[color:var(--foreground,#272343)]" data-node-id="249:1330">
+          正在创建
+        </p>
+      </div>
+      <div className="content-stretch flex flex-col items-start overflow-clip relative shrink-0 w-full" data-node-id="249:1333" data-name="Modal / Body">
+        <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] w-full" data-node-id="249:1335">
+          正在生成上传 Token，请稍候。
+        </p>
+      </div>
+      <div className="content-stretch flex flex-col items-start overflow-clip relative shrink-0 w-full" data-node-id="249:1334" data-name="Modal / Footer">
+        <ButtonDisabled className="bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex h-[48px] items-center justify-center opacity-42 relative rounded-[8px] shrink-0 w-full" label="处理中…" />
+      </div>
+    </div>
+  );
+}

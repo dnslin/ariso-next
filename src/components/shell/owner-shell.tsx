@@ -49,7 +49,7 @@ const navigation = [
   },
   {
     href: '/settings/processing',
-    activePaths: ['/settings/account'],
+    activePaths: ['/settings/account', '/settings/api'],
     label: '站点设置',
     icon: <SlidersHorizontal />,
   },

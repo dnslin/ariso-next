@@ -9,6 +9,7 @@ describe('focused browser execution plans', () => {
   it.each([
     ['library', ['library']],
     ['account', ['account']],
+    ['tokens', ['tokens']],
     ['shell-navigation', ['shell-navigation']],
     ['sharing-management', ['sharing-management']],
     ['albums', ['albums']],
@@ -51,6 +52,13 @@ describe('focused browser execution plans', () => {
     ['sharing-management', 'representative', ['sharing-management']],
     ['sharing-management', 'behavior', ['sharing-management']],
     ['sharing-management', 'recovery', ['sharing-management']],
+    ['tokens', 'representative', ['tokens']],
+    ['tokens', 'behavior', ['tokens']],
+    ['tokens', 'lifecycle', ['tokens']],
+    ['tokens', 'recovery', ['tokens']],
+    ['tokens', 'create-recovery', ['tokens']],
+    ['tokens', 'action-recovery', ['tokens']],
+    ['tokens', 'consumers', ['tokens']],
   ] as const)(
     'selects the actual scenes for %s / %s',
     (suite, only, scripts) => {
@@ -62,6 +70,10 @@ describe('focused browser execution plans', () => {
 
   it.each([
     ['library', 'recovery', { libraryPhase: 'recovery' }],
+    ['tokens', 'recovery', { tokensPhase: 'recovery' }],
+    ['tokens', 'lifecycle', { tokensPhase: 'lifecycle' }],
+    ['tokens', 'create-recovery', { tokensPhase: 'create-recovery' }],
+    ['tokens', 'action-recovery', { tokensPhase: 'action-recovery' }],
     [
       'viewer',
       'recovery',
@@ -104,6 +116,7 @@ describe('focused browser execution plans', () => {
     });
     expect(select('upload-regression', 'main').config).toEqual({});
     expect(select('account').config).toEqual({});
+    expect(select('tokens').config).toEqual({ tokensPhase: undefined });
   });
 
   it('includes every existing business stage and all sharing scenes in the default full flow', () => {

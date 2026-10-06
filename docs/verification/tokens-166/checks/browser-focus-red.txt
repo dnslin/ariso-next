@@ -1,0 +1,144 @@
+Error: Error: page.waitForFunction timed out after 10000ms on page p3; last URL was "http://ariso-59818.localhost:59818/settings/api"; last title was "Ariso".
+    at waitForFunctionTimeoutError (file:////[eval1]:19235:12)
+    at file:////[eval1]:18564:19
+    at async file:////[eval1]:16691:28
+    at file:////[eval2]:112:20
+
+ego's nodejs process exited with code 1.
+Browser stage failed (tokens): AssertionError [ERR_ASSERTION]: Ego browser verification failed (tokens.log)
+
+1 !== 0
+
+    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/scripts/verify-browser.mjs:209:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/scripts/browser-stages.mjs:17:5)
+    at async file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/scripts/verify-browser.mjs:713:24
+{ taskSpaceId: 36, ownership: 'agent' }
+[p3 "Ariso" | space "Issue 166 Token 实施与验证"(36): 3 managed, 0 untracked — p1 "Sharing protocol experiment", p3* "Ariso", p6 "Sharing protocol experiment"]
+root
+  container
+    container "后台侧栏"
+      container
+        anchor "Ariso 首页" [ref=47, url=http://ariso-59818.localhost:59818/]
+          text "Ariso"
+        button "收起侧栏" [ref=48, loc=css:button[aria-label="收起侧栏"]]
+          svg_root
+      container "后台导航"
+        group "总览，尚未开放" [ref=49, loc=role:group[name="总览，尚未开放"]]
+          link "总览，尚未开放"
+            svg_root
+            text "总览"
+            text "尚未开放"
+        anchor "上传" [ref=50, loc=css:a[aria-label="上传"], url=http://ariso-59818.localhost:59818/upload]
+          svg_root
+          text "上传"
+        anchor "图库" [ref=51, loc=css:a[aria-label="图库"], url=http://ariso-59818.localhost:59818/library]
+          svg_root
+          text "图库"
+        anchor "相册" [ref=52, loc=css:a[aria-label="相册"], url=http://ariso-59818.localhost:59818/albums]
+          svg_root
+          text "相册"
+        anchor "标签" [ref=53, loc=css:a[aria-label="标签"], url=http://ariso-59818.localhost:59818/tags]
+          svg_root
+          text "标签"
+        group "分享管理，尚未开放" [ref=54, loc=role:group[name="分享管理，尚未开放"]]
+          link "分享管理，尚未开放"
+            svg_root
+            text "分享管理"
+            text "尚未开放"
+        anchor "回收站" [ref=55, loc=css:a[aria-label="回收站"], url=http://ariso-59818.localhost:59818/trash]
+          svg_root
+          text "回收站"
+        paragraph
+          text "管理"
+        group "访问统计，尚未开放" [ref=56, loc=role:group[name="访问统计，尚未开放"]]
+          link "访问统计，尚未开放"
+            svg_root
+            text "访问统计"
+            text "尚未开放"
+        anchor "存储管理" [ref=57, loc=css:a[aria-label="存储管理"], url=http://ariso-59818.localhost:59818/settings/storage]
+          svg_root
+          text "存储管理"
+        anchor "站点设置" [ref=58, loc=css:a[aria-label="站点设置"], url=http://ariso-59818.localhost:59818/settings/processing]
+          svg_root
+          text "站点设置"
+      button "账号菜单" [ref=59, loc=css:button[aria-label="账号菜单"]]
+        text "O"
+        container
+          text "Owner"
+          text "站点所有者"
+    container [ref=60]
+      container
+        container
+          heading
+            svg_root
+            text "站点设置"
+          paragraph
+            text "管理站点、图片处理与账号偏好。"
+        container
+          tablist "设置分类"
+            tab [ref=61]
+              svg_root
+              text "图片处理"
+            tab [ref=62]
+              svg_root
+              text "账号与安全"
+            tab [ref=63]
+              svg_root
+              text "上传 API"
+          tabpanel "上传 API"
+            container
+              heading
+                svg_root
+                text "上传 Token"
+              button [ref=64]
+                svg_root
+                text "创建"
+            paragraph
+              text "让脚本上传图片。Token 不能登录后台、浏览或管理图库。"
+            container
+              heading
+                svg_root
+                text "启停撤销-1440"
+              paragraph
+                svg_root
+                container
+                  text "已停用"
+                  text "·"
+                  text "永不过期"
+              paragraph
+                svg_root
+                container
+                  text "创建于"
+                  text "2026/10/06 02:51:36"
+              paragraph
+                text "ID："
+                text "upzTdEEjwlKyOAXnh9TUCyQmWSnp3s8R"
+              container
+                button [ref=65]
+                  svg_root
+                  text "启用"
+                button [ref=66]
+                  svg_root
+                  text "撤销"
+            paragraph
+              text "时间按站点时区显示（"
+              text "Asia/Shanghai"
+              text "）。过期记录可能被自动清理。"
+            container
+              button [ref=67]
+                text "查看上传用法"
+              paragraph
+                text "尚未开放"
+  region "操作通知"
+    alertdialog "Token 已停用" [ref=68, loc=role:alertdialog[name="Token 已停用"]]
+      svg_root
+      alert
+        text "Token 已停用"
+      button "关闭通知" [ref=69, loc=css:button[aria-label="关闭通知"]]
+        svg_root
+
+
+AssertionError [ERR_ASSERTION]: Focused browser stages failed
+    at file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/scripts/verify-browser.mjs:719:12
+Browser report: /Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/test-results/tokens-166-focus-red

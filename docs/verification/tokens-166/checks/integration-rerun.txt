@@ -1,0 +1,16 @@
+Already up to date
+Done in 87ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso
+
+{"level":"error","time":"2026-10-05T18:45:59.015Z","module":"identity.auth","details":[{"type":"APIError","message":"API Key has expired","stack":"APIError: API Key has expired","status":"UNAUTHORIZED","body":{"type":"Object","message":"API Key has expired","code":"KEY_EXPIRED"},"headers":{},"statusCode":401,"name":"APIError"}],"msg":"Failed to validate API key:"}
+{"level":"error","time":"2026-10-05T18:45:59.585Z","module":"identity.auth","details":[{"type":"APIError","message":"API Key is disabled","stack":"APIError: API Key is disabled","status":"UNAUTHORIZED","body":{"type":"Object","message":"API Key is disabled","code":"KEY_DISABLED"},"headers":{},"statusCode":401,"name":"APIError"}],"msg":"Failed to validate API key:"}
+{"level":"error","time":"2026-10-05T18:45:59.605Z","module":"identity.auth","details":[{"type":"APIError","message":"Invalid API key.","stack":"APIError: Invalid API key.","status":"UNAUTHORIZED","body":{"type":"Object","message":"Invalid API key.","code":"INVALID_API_KEY"},"headers":{},"statusCode":401,"name":"APIError"}],"msg":"Failed to validate API key:"}
+{"level":"error","time":"2026-10-05T18:46:01.289Z","module":"identity.auth","details":[{"type":"APIError","message":"Invalid API key.","stack":"APIError: Invalid API key.","status":"UNAUTHORIZED","body":{"type":"Object","message":"Invalid API key.","code":"INVALID_API_KEY"},"headers":{},"statusCode":401,"name":"APIError"}],"msg":"Failed to validate API key:"}
+{"level":"error","time":"2026-10-05T18:46:15.638Z","module":"identity.auth","details":[{"type":"APIError","message":"API Key not found","stack":"APIError: API Key not found","status":"UNAUTHORIZED","body":{"type":"Object","message":"API Key not found","code":"KEY_NOT_FOUND"},"headers":{},"statusCode":401,"name":"APIError"}],"msg":"Failed to validate API key:"}
+{"level":"error","time":"2026-10-05T18:46:15.658Z","module":"identity.auth","details":[{"type":"APIError","message":"API Key has expired","stack":"APIError: API Key has expired","status":"UNAUTHORIZED","body":{"type":"Object","message":"API Key has expired","code":"KEY_EXPIRED"},"headers":{},"statusCode":401,"name":"APIError"}],"msg":"Failed to validate API key:"}
+
+ Test Files  2 passed (2)
+      Tests  18 passed (18)
+   Start at  02:45:44
+   Duration  30.97s (tests 94%, import 3%, transform 2%)

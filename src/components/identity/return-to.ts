@@ -23,6 +23,7 @@ export function loginDestination(value: string | string[] | undefined) {
       '/tags',
       '/shares',
       '/settings/account',
+      '/settings/api',
     ].includes(url.pathname) ||
       /^\/(?:albums|shares)\/[^/]+$/.test(url.pathname))
     ? `${url.pathname}${url.search}${url.hash}`

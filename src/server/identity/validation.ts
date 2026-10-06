@@ -38,3 +38,20 @@ export const accountPasswordInputSchema = z
     path: ['confirmPassword'],
     message: '两次输入的密码不一致',
   });
+
+export const uploadTokenCreateInputSchema = z.strictObject({
+  name: z.string().trim().min(1, '请输入名称').max(32, '名称最多 32 个字符'),
+  expiresIn: z
+    .number({ error: '请输入有效的过期时间' })
+    .min(1, '过期时间至少晚于当前时间 1 秒')
+    .refine(
+      (seconds) =>
+        Number.isFinite(new Date(Date.now() + seconds * 1000).getTime()),
+      '请输入有效的未来时间',
+    )
+    .optional(),
+});
+
+export const uploadTokenUpdateInputSchema = z.strictObject({
+  enabled: z.boolean({ error: '请选择启用或停用' }),
+});

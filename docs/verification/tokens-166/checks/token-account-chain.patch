@@ -1,0 +1,18 @@
+--- scripts/verify-browser.mjs
++++ scripts/.verify-token-account-166.mjs
+@@ -716,6 +716,15 @@
+         if (passed) report[result] = 'passed';
+       }
+     }
++    await check(
++      'account-runtime-after-tokens',
++      () => restartProduction(focusedConfig.dataDirectory),
++    );
++    await check(
++      'account-after-tokens',
++      () => runBrowser('../e2e/account.mjs', focusedConfig, 'account-after-tokens.log'),
++      ['account-runtime-after-tokens'],
++    );
+     assert.ok(
+       Object.values(report.stages).every((stage) => stage.status === 'passed'),
+       'Focused browser stages failed',

@@ -30,6 +30,19 @@ const suites = {
     config: (only) => ({ sharingManagementPhase: only }),
   },
   account: { stages: [['account', 'account']] },
+  tokens: {
+    only: [
+      'representative',
+      'behavior',
+      'lifecycle',
+      'recovery',
+      'create-recovery',
+      'action-recovery',
+      'consumers',
+    ],
+    stages: [['tokens', 'tokens']],
+    config: (only) => ({ tokensPhase: only }),
+  },
   library: {
     only: ['recovery'],
     stages: [['library', 'library']],

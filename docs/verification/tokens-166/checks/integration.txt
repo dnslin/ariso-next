@@ -1,0 +1,98 @@
+Already up to date
+Done in 98ms using pnpm v11.19.0
+$ vitest run --project integration --project media-tools --maxWorkers=4
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso
+
+{"level":"error","time":"2026-10-05T18:37:13.561Z","module":"identity.auth","details":[{"type":"APIError","message":"API Key has expired","stack":"APIError: API Key has expired","status":"UNAUTHORIZED","body":{"type":"Object","message":"API Key has expired","code":"KEY_EXPIRED"},"headers":{},"statusCode":401,"name":"APIError"}],"msg":"Failed to validate API key:"}
+{"level":"error","time":"2026-10-05T18:37:17.015Z","module":"identity.auth","details":[{"type":"APIError","message":"Invalid API key.","stack":"APIError: Invalid API key.","status":"UNAUTHORIZED","body":{"type":"Object","message":"Invalid API key.","code":"INVALID_API_KEY"},"headers":{},"statusCode":401,"name":"APIError"}],"msg":"Failed to validate API key:"}
+{"level":"error","time":"2026-10-05T18:37:36.789Z","module":"identity.auth","details":[{"type":"APIError","message":"API Key not found","stack":"APIError: API Key not found","status":"UNAUTHORIZED","body":{"type":"Object","message":"API Key not found","code":"KEY_NOT_FOUND"},"headers":{},"statusCode":401,"name":"APIError"}],"msg":"Failed to validate API key:"}
+{"level":"error","time":"2026-10-05T18:37:36.828Z","module":"identity.auth","details":[{"type":"APIError","message":"API Key has expired","stack":"APIError: API Key has expired","status":"UNAUTHORIZED","body":{"type":"Object","message":"API Key has expired","code":"KEY_EXPIRED"},"headers":{},"statusCode":401,"name":"APIError"}],"msg":"Failed to validate API key:"}
+ ❯ |integration| tests/integration/identity/tokens.test.ts (14 tests | 1 failed) 50206ms
+   ❯ production Cookie Token management and upload-only verifier (13)
+     × enable/disable is reversible; revoke cannot restore credentials or delete old images or accepted work 2120ms
+ ❯ |integration| tests/integration/runtime/health.test.ts (4 tests | 1 failed) 8701ms
+   × 未初始化的隔离生产产物返回 200 / no-store，健康检查不发起外部连接 1097ms
+{"time":"2026-10-05T18:38:50.758Z","level":"info","module":"identity.setup","event":"setup-code","code":"wtgDHYX-UybK_sm06myQdhXMkzAb3nQt","msg":"请使用初始化码完成 setup"}
+{"level":"info","time":"2026-10-05T18:38:50.830Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+{"time":"2026-10-05T18:38:51.203Z","level":"info","module":"identity.setup","event":"setup-code","code":"xnYeTHRNBgJrAVINljtCuDBHcYUnJy93","msg":"请使用初始化码完成 setup"}
+{"level":"error","time":"2026-10-05T18:38:51.211Z","module":"identity.setup","err":{"type":"Error","message":"controlled hash failure","stack":"Error: controlled hash failure\n    at /Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/tests/integration/identity/setup-lifecycle.test.ts:122:40\n    at file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:1628:35\n    at file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:2783:26\n    at file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3319:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3314:10)\n    at file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3299:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3257:10)\n    at file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3876:64"},"databasePath":"/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-setup-lifecycle-4WuwGo/data/ariso.db","msg":"Initialization request failed"}
+{"level":"info","time":"2026-10-05T18:38:51.216Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+{"time":"2026-10-05T18:38:51.582Z","level":"info","module":"identity.setup","event":"setup-code","code":"3rQ5--xsNHVJwFb-V8wXugE5M9W6K1Eu","msg":"请使用初始化码完成 setup"}
+{"level":"info","time":"2026-10-05T18:38:51.641Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+ ❯ |media-tools| tests/integration/media/watermark.test.ts (30 tests | 1 failed) 41916ms
+   ❯ real SVG image asset (1)
+     × composites the admitted asset at the configured size 7726ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/identity/tokens.test.ts > production Cookie Token management and upload-only verifier > enable/disable is reversible; revoke cannot restore credentials or delete old images or accepted work
+AssertionError: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ tests/integration/identity/tokens.test.ts:407:34
+    405|     const deliveryPath = `/i/${imageId}?type=original`;
+    406|     const ownerDelivery = await request(deliveryPath);
+    407|     expect(ownerDelivery.status).toBe(200);
+       |                                  ^
+    408|     expect(Buffer.from(await ownerDelivery.arrayBuffer())).toEqual(byt…
+    409|     const deliveryCredentials: Record<string, string>[] = [
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  |integration| tests/integration/runtime/health.test.ts > 未初始化的隔离生产产物返回 200 / no-store，健康检查不发起外部连接
+AssertionError: expected [ { name: 'account' }, …(32) ] to deeply equal [ { name: 'account' }, …(31) ]
+
+- Expected
++ Received
+
+@@ -19,10 +19,13 @@
+    },
+    {
+      "name": "analytics_image_totals",
+    },
+    {
++     "name": "apikey",
++   },
++   {
+      "name": "image_tags",
+    },
+    {
+      "name": "media_cleanup_jobs",
+    },
+
+ ❯ tests/integration/runtime/health.test.ts:52:9
+     50|           )
+     51|           .all(),
+     52|       ).toEqual([
+       |         ^
+     53|         { name: 'account' },
+     54|         { name: 'album_images' },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  |media-tools| tests/integration/media/watermark.test.ts > real SVG image asset > composites the admitted asset at the configured size
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/integration/media/watermark.test.ts:690:3
+    688|     expect(mark.format).toBe(format);
+    689|   });
+    690|   it('composites the admitted asset at the configured size', async () …
+       |   ^
+    691|     const result = await watermark(
+    692|       await readFile(await image(['-size', '200x100', 'xc:white'])),
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  3 failed | 149 passed (152)
+      Tests  3 failed | 1487 passed (1490)
+   Start at  02:36:42
+   Duration  330.38s (tests 95%, import 5%, transform 1%)
+
+[ELIFECYCLE] Command failed with exit code 1.

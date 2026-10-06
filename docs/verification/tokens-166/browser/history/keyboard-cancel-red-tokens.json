@@ -1,0 +1,182 @@
+{
+  "status": "failed",
+  "taskSpaceId": 36,
+  "origin": "http://ariso-50546.localhost:50546",
+  "phase": "recovery",
+  "checks": [],
+  "layouts": [
+    {
+      "name": "create-known-failure-light",
+      "businessWidth": 1440,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭 Token 弹窗",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重试",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "create-known-failure-dark",
+      "businessWidth": 1440,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭 Token 弹窗",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重试",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "create-known-failure-light",
+      "businessWidth": 1440,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭 Token 弹窗",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重试",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "create-known-failure-dark",
+      "businessWidth": 1440,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭 Token 弹窗",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重试",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    "tokens-1440-create-known-failure-light.png",
+    "tokens-1440-create-known-failure-dark.png",
+    "tokens-1440-create-known-failure-light.png",
+    "tokens-1440-create-known-failure-dark.png",
+    "tokens-all-failure.png"
+  ],
+  "requests": [
+    {
+      "path": "/api/upload-tokens",
+      "method": "GET",
+      "width": 1440,
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/upload-tokens",
+      "method": "GET",
+      "width": 1440,
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/upload-tokens",
+      "method": "GET",
+      "width": 1440,
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/upload-tokens",
+      "method": "GET",
+      "width": 1440,
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/upload-tokens",
+      "method": "GET",
+      "width": 1440,
+      "attempt": 1,
+      "status": 200
+    }
+  ],
+  "business": [
+    {
+      "scenario": "known-create-failure-retry",
+      "width": 1440,
+      "actualStatus": 400,
+      "errorCode": "INVALID_UPLOAD_TOKEN_INPUT",
+      "noRecordOnRejection": true,
+      "posts": 2
+    }
+  ],
+  "clipboard": [],
+  "limitations": [
+    "Only the runner’s disposable production database is modified; the manual preview remains untouched.",
+    "Once-only secret screenshots replace key characters with bullets; the full value is asserted in memory and never emitted.",
+    "Actual Clipboard permission denial and native copy are exercised on the current macOS Ego Lite host.",
+    "Chromium viewport emulation does not constitute physical touch, soft keyboard or safe-area verification."
+  ],
+  "timeZone": "Asia/Shanghai",
+  "stage": "known-failures",
+  "error": "AssertionError [ERR_ASSERTION]: The source action has its own visible keyboard focus\n    at Object.returnFocus (file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/e2e/tokens-page.mjs:326:12)\n    at async verifyCreateFailures (file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/e2e/tokens-failures.mjs:121:9)\n    at async verifyTokenKnownFailures (file:///Users/dnslin/.codex/worktrees/issue-166-upload-tokens/ariso/e2e/tokens-failures.mjs:402:5)\n    at async file:////[eval2]:88:5",
+  "finishedAt": "2026-10-05T20:15:02.866Z"
+}

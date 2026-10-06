@@ -47,6 +47,8 @@
 
 ### EV-IDENTITY-03 GitHub 主动绑定验证
 
+独立实验、真实 GitHub 回调及检查限制见[实验报告](./evidence/EV-IDENTITY-03/README.md)。真实 GitHub 浏览器验证和独立评审已完成；全量失败经用户授权修复后，最终 151 文件 / 1,491 项通过。历史失败保留，PR 已转正式待评审但尚未合并，后续产品配置与界面归 #181。
+
 - 任务组：工程前置
 - 里程碑：按消费任务提前执行
 - 规格：[identity §7/13](../specs/SPEC-identity.md)

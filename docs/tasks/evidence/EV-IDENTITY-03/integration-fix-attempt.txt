@@ -1,0 +1,40 @@
+pnpm run test:integration --maxWorkers=4 --reporter=default --reporter=junit --outputFile=test-results/issue145-integration-fixed.xml
+Node 24.19.0 / pnpm 11.19.0
+
+ ✓ |integration| tests/integration/media/defaults.test.ts (10 tests) 1615ms
+ ✓ |integration| tests/integration/analytics/count.test.ts (13 tests) 898ms
+ ✓ |media-tools| tests/integration/media/reprocess-http.test.ts (8 tests) 26466ms
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/identity/http.test.ts [ tests/integration/identity/http.test.ts ]
+TypeError: fetch failed
+Caused by: SocketError: other side closed
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: 'UND_ERR_SOCKET', socket: { localAddress: '127.0.0.1', localPort: 53776, remoteAddress: '127.0.0.1', remotePort: 53656, remoteFamily: 'IPv4', timeout: undefined, bytesWritten: 170, bytesRead: 0 } }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |media-tools| tests/integration/media/preview.test.ts > temporary previews use the real formal encoding pipeline > original SVG with viewBox-only matches actual formal properties and preserves source bytes
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/integration/media/preview.test.ts:292:5
+    290|       height: 96,
+    291|     },
+    292|   ])(
+       |     ^
+    293|     'original SVG with $size matches actual formal properties and pres…
+    294|     async ({ attributes, width, height }) => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed | 149 passed (151)
+      Tests  1 failed | 1480 passed | 7 skipped (1488)
+   Start at  15:25:26
+   Duration  373.53s (tests 95%, import 4%)
+
+JUNIT report written to /Users/dnslin/.codex/worktrees/issue-145-github-binding/ariso/test-results/issue145-integration-fixed.xml
+[ELIFECYCLE] Command failed with exit code 1.

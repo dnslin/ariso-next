@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="37" failures="0" errors="0" time="20.328476834">
+    <testsuite name="tests/integration/media/preview.test.ts" timestamp="2026-10-06T07:40:11.140Z" hostname="dnslins-Mac-mini.local" tests="27" failures="0" errors="0" skipped="0" time="14.149652917">
+        <testcase classname="tests/integration/media/preview.test.ts" name="temporary previews use the real formal encoding pipeline &gt; original SVG with viewBox-only matches actual formal properties and preserves source bytes" time="0.944301083">
+        </testcase>
+        <testcase classname="tests/integration/media/preview.test.ts" name="temporary previews use the real formal encoding pipeline &gt; original SVG with physical units matches actual formal properties and preserves source bytes" time="1.104369334">
+        </testcase>
+        <testcase classname="tests/integration/media/preview.test.ts" name="temporary previews use the real formal encoding pipeline &gt; original with {} matches actual formal bytes and leaves every business table unchanged" time="1.013624541">
+        </testcase>
+        <testcase classname="tests/integration/media/preview.test.ts" name="temporary previews use the real formal encoding pipeline &gt; thumbnail with { outputFormat: &apos;jpeg&apos;, …(2) } matches actual formal bytes and leaves every business table unchanged" time="0.903664208">
+        </testcase>
+        <testcase classname="tests/integration/media/preview.test.ts" name="temporary previews use the real formal encoding pipeline &gt; compressed with { outputFormat: &apos;jpeg&apos;, …(3) } matches actual formal bytes and leaves every business table unchanged" time="0.849617042">
+        </testcase>
+        <testcase classname="tests/integration/media/preview.test.ts" name="temporary previews use the real formal encoding pipeline &gt; compressed with { outputFormat: &apos;webp&apos;, …(3) } matches actual formal bytes and leaves every business table unchanged" time="0.816879">
+        </testcase>
+        <testcase classname="tests/integration/media/preview.test.ts" name="temporary previews use the real formal encoding pipeline &gt; compressed with { outputFormat: &apos;avif&apos;, …(3) } matches actual formal bytes and leaves every business table unchanged" time="0.775527333">
+        </testcase>
+        <testcase classname="tests/integration/media/preview.test.ts" name="temporary previews use the real formal encoding pipeline &gt; watermark with { compressionEnabled: false, …(6) } matches actual formal bytes and leaves every business table unchanged" time="0.897403875">
+        </testcase>
+        <testcase classname="tests/integration/media/preview.test.ts" name="temporary previews use the real formal encoding pipeline &gt; watermark with { compressionEnabled: true, …(6) } matches actual formal bytes and leaves every business table unchanged" time="1.1253125">
+        </testcase>
+        <testcase classname="tests/integration/media/preview.test.ts" name="temporary previews use the real formal encoding pipeline &gt; image watermark (compression=false) matches actual formal bytes and releases its temporary reference" time="0.812349667">
+        </testcase>
+        <testcase classname="tests/integration/media/preview.test.ts" name="temporary previews use the real formal encoding pipeline &gt; image watermark (compression=true) matches actual formal bytes and releases its temporary reference" time="1.109354375">
+        </testcase>
+        <testcase classname="tests/integration/media/preview.test.ts" name="temporary previews use the real formal encoding pipeline &gt; explains disabled compressed without fabricating an output" time="0.099434959">
+        </testcase>
+        <testcase classname="tests/integration/media/preview.test.ts" name="temporary previews use the real formal encoding pipeline &gt; explains disabled watermark without fabricating an output" time="0.1030995">
+        </testcase>
+        <testcase classname="tests/integration/media/preview.test.ts" name="temporary previews use the real formal encoding pipeline &gt; explains why an animated GIF cannot produce compressed" time="0.13088375">
+        </testcase>
+        <testcase classname="tests/integration/media/preview.test.ts" name="temporary previews use the real formal encoding pipeline &gt; explains why an animated GIF cannot produce watermark" time="0.125607167">
+        </testcase>
+        <testcase classname="tests/integration/media/preview.test.ts" name="preview lifetime and owned resources &gt; awaits original SVG preparation settlement on cancellation before deleting files or releasing its disk budget" time="0.235987542">
+        </testcase>
+        <testcase classname="tests/integration/media/preview.test.ts" name="preview lifetime and owned resources &gt; retains a private result until exactly 30 minutes and removes it at expiry" time="0.230921">
+        </testcase>
+        <testcase classname="tests/integration/media/preview.test.ts" name="preview lifetime and owned resources &gt; records ENOSPC from output writing, publishes no partial result and removes owned files" time="0.146876625">
+        </testcase>
+        <testcase classname="tests/integration/media/preview.test.ts" name="preview lifetime and owned resources &gt; awaits encoding settlement on cancellation before deleting files or releasing the image watermark" time="0.389759917">
+        </testcase>
+        <testcase classname="tests/integration/media/preview.test.ts" name="preview lifetime and owned resources &gt; keeps cleanup failures visible and retains material references until a retry settles" time="0.178931584">
+        </testcase>
+        <testcase classname="tests/integration/media/preview.test.ts" name="preview lifetime and owned resources &gt; restarts with exact registered directories only and holds watermark references until recovery cleanup settles" time="0.386163042">
+        </testcase>
+        <testcase classname="tests/integration/media/preview.test.ts" name="preview lifetime and owned resources &gt; shares the single queue slot when preview starts first" time="0.692719">
+        </testcase>
+        <testcase classname="tests/integration/media/preview.test.ts" name="preview lifetime and owned resources &gt; shares the single queue slot when media starts first" time="0.717575708">
+        </testcase>
+        <testcase classname="tests/integration/media/preview.test.ts" name="keeps a failed receive addressable by its previewId when directory cleanup fails" time="0.077465708">
+        </testcase>
+        <testcase classname="tests/integration/media/preview.test.ts" name="waits for a pending source write before completing cancellation or releasing its disk reservation" time="0.072720625">
+        </testcase>
+        <testcase classname="tests/integration/media/preview.test.ts" name="exposes previewId when receiving cleanup cannot confirm tool shutdown" time="0.049232875">
+        </testcase>
+        <testcase classname="tests/integration/media/preview.test.ts" name="propagates encoder tool shutdown failure after persisting its failed preview state" time="0.15844425">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/media/svg.test.ts" timestamp="2026-10-06T07:40:11.147Z" hostname="dnslins-Mac-mini.local" tests="10" failures="0" errors="0" skipped="0" time="6.178823917">
+        <testcase classname="tests/integration/media/svg.test.ts" name="isolated static SVG preview &gt; renders ordinary SVG text using trusted installed fonts" time="1.844148667">
+        </testcase>
+        <testcase classname="tests/integration/media/svg.test.ts" name="isolated static SVG preview &gt; renders internal use SVG text using trusted installed fonts" time="1.178046959">
+        </testcase>
+        <testcase classname="tests/integration/media/svg.test.ts" name="isolated static SVG preview &gt; renders namespaced SVG text using trusted installed fonts" time="1.236145417">
+        </testcase>
+        <testcase classname="tests/integration/media/svg.test.ts" name="isolated static SVG preview &gt; persists failed preview state while retaining the accepted dangerous original" time="0.404991125">
+        </testcase>
+        <testcase classname="tests/integration/media/svg.test.ts" name="isolated static SVG preview &gt; renders solid and preserves original bytes" time="0.138452">
+        </testcase>
+        <testcase classname="tests/integration/media/svg.test.ts" name="isolated static SVG preview &gt; renders internal use and preserves original bytes" time="0.133850667">
+        </testcase>
+        <testcase classname="tests/integration/media/svg.test.ts" name="isolated static SVG preview &gt; renders internal gradient and preserves original bytes" time="0.127485">
+        </testcase>
+        <testcase classname="tests/integration/media/svg.test.ts" name="isolated static SVG preview &gt; scales a large canvas before raster allocation and retains original dimensions" time="0.136639083">
+        </testcase>
+        <testcase classname="tests/integration/media/svg.test.ts" name="isolated static SVG preview &gt; rejects network, local, entity and active resources without producing preview or fetching" time="0.948347375">
+        </testcase>
+        <testcase classname="tests/integration/media/svg.test.ts" name="isolated static SVG preview &gt; terminates a running runner when cancelled before rendering" time="0.029727333">
+        </testcase>
+    </testsuite>
+</testsuites>

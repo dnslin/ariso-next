@@ -6,7 +6,12 @@ import { Tabs } from '@heroui/react/tabs';
 import { Select } from '@heroui/react/select';
 import { Label } from '@heroui/react/label';
 import { ListBox } from '@heroui/react/list-box';
-import { Settings, ShieldCheck, SlidersHorizontal } from 'lucide-react';
+import {
+  KeyRound,
+  Settings,
+  ShieldCheck,
+  SlidersHorizontal,
+} from 'lucide-react';
 
 export const settingsCategories = [
   {
@@ -18,6 +23,11 @@ export const settingsCategories = [
     href: '/settings/account',
     label: '账号与安全',
     icon: <ShieldCheck className="size-4" aria-hidden />,
+  },
+  {
+    href: '/settings/api',
+    label: '上传 API',
+    icon: <KeyRound className="size-4" aria-hidden />,
   },
 ];
 

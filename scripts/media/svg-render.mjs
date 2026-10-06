@@ -10,8 +10,8 @@ let width;
 let height;
 let png;
 try {
-  assertStaticSvg(source);
-  const options = { font: { loadSystemFonts: true } };
+  const { hasText } = assertStaticSvg(source);
+  const options = { font: { loadSystemFonts: hasText } };
   let renderer = new Resvg(source, options);
   ({ width, height } = renderer);
   if (renderSize !== 'preview' || Math.max(width, height) > 640) {

@@ -82,3 +82,12 @@ it('retains delivered sharing routes and album return context', () => {
   expect(loginDestination('/shares/album-1/unimplemented')).toBe('/admin');
   expect(loginDestination('https://evil.test/shares')).toBe('/admin');
 });
+
+it('returns to upload Token management after session expiry', () => {
+  expect(loginDestination('/settings/api')).toBe('/settings/api');
+  expect(loginDestination('/settings/api#main-content')).toBe(
+    '/settings/api#main-content',
+  );
+  expect(loginDestination('/settings/api/unimplemented')).toBe('/admin');
+  expect(loginDestination('https://evil.test/settings/api')).toBe('/admin');
+});
