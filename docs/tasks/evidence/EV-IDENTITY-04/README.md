@@ -38,7 +38,7 @@ node tests/experiments/identity/smtp-run.ts <本地配置文件路径>
 
 JSON 配置使用 `{ smtp: { host, port, mode, username?, password?, fromName, fromEmail }, ownerEmail, caFile?, servername? }`。`mode` 为 `tls` 或 `starttls`；认证用户名与密码同时提供，或同时省略。配置可放在已忽略的 `.data/`，也可使用仓库外文件；不要提交凭证。缺失文件保留配置路径与文件系统错误代码，不会误报为 SMTP 连接失败。
 
-运行器输出 `receiptMarker` 和 SMTP 接受结果，最终收件固定保持 `unverified`。必须在真实邮箱独立确认相同 marker、收件时间与 message ID 后，再另记收件证据。原定向回归使用本地 SMTP 端点；外部服务的独立实测见下一节。
+运行器输出 `receiptMarker` 和 SMTP 接受结果，最终收件固定保持 `unverified`。必须通过真实邮箱检查或所有者明确确认相同 marker，再另记收件证据；确认来源与观察时间分别记录，未读取的收件头部和时间不冒充已核对。原定向回归使用本地 SMTP 端点；外部服务的独立实测见下一节。
 
 ### Resend 外部 SMTP 实测
 
@@ -48,9 +48,13 @@ JSON 配置使用 `{ smtp: { host, port, mode, username?, password?, fromName, f
 
 账号没有验证域名。依据 [Resend SMTP 文档](https://resend.com/docs/send-with-smtp)和[默认测试发件地址限制](https://resend.com/docs/knowledge-base/403-error-resend-dev-domain)，使用 `onboarding@resend.dev` 仅发送至该账号注册的真实 Gmail；没有使用模拟成功的测试收件地址。任务专用 API Key 仅保存在已忽略的 `.data/resend-smtp*.json`，不进入代码、PR 或公开证据。公开记录省略收件邮箱与凭证。
 
-**SMTP 接受与服务商投递状态已验证；最终邮箱收件仍待独立确认。**实际收件 Gmail 尚未登录，Ego 已按技能交还所有者；待所有者确认两封 marker，或登录收件箱后恢复检查。没有把 Resend 的 `delivered` 或发件预览记作真实邮箱收件，也没有改写运行器的 `finalReceipt: unverified`。
+首轮两封邮件的 SMTP 接受与服务商投递状态已验证，逐封最终邮箱收件保持 `unverified`。实际收件 Gmail 当时尚未登录，Ego 已按技能交还所有者。没有把 Resend 的 `delivered` 或发件预览记作真实邮箱收件，也没有改写运行器的 `finalReceipt: unverified`；后续新邮件取得所有者独立收件确认，见下文。
 
 所有者随后指定另一个真实 Gmail 收件人。使用原运行器执行 `node tests/experiments/identity/smtp-run.ts .data/resend-smtp-dnslint.json`，进程退出 1；实际诊断为 `EMESSAGE` / `DATA` / **550** / `delivery: not-accepted`，没有将失败记作已发送。官方 domains API 同时确认账号域名列表为空。上述默认测试发件地址限制不允许发到不同于注册邮箱的收件人，需验证所有者提供的发件域名，或使用注册邮箱与指定收件人匹配的 Resend 环境。本次没有重复发送、修改账号邮箱或创建域名；诊断与域名观察时间保留在外部 SMTP 记录的 `additionalAttempts`。
+
+2026-10-07 01:49（Asia/Shanghai），所有者明确选回账号注册邮箱。使用原 TLS / 465 配置和相同命令发送一封新验证邮件，进程退出 0，SMTP 接受 1、拒绝 0，服务商状态为 `delivered`。本次 marker 为 `ariso-smtp-90e3b854-7f88-48f7-bceb-958022efb127`，逐封结果追加到 `additionalAttempts`；此前不同收件人的拒绝仍保留为历史，不再要求提供域名才能继续本次验证。只发送这一封。
+
+**最终真实收件已确认。**所有者在本对话中，针对上述完整主题与 marker 明确回复“已收到这封邮件”。确认记录时间为 2026-10-07 01:52:40（Asia/Shanghai）；这是人工确认的记录时间，不冒充邮件实际到达时间。外部记录仅将这封新邮件的 `mailbox.status` 记为 `verified`，依据为所有者直接确认；未读取 Gmail 头部 Message-ID 或到达时间，前两封没有逐封确认的状态也不倒改。真实 TLS / STARTTLS、SMTP 接受、服务商投递和最终收件由各自证据覆盖，满足任务卡与 identity §8.1 的工程实验验收。
 
 ## 重置凭据与中断恢复
 
@@ -103,7 +107,7 @@ CLI 首轮错误的 Release 路径假设和 PTY 连续命令缓冲问题均取�
 
 完整集成结束后，评审者另行只读解析真实 JUnit，确认文件、用例、19 个失败名称及新增三组统计与公开摘要逐项一致。实际读取 Vitest 5 名称匹配实现，确认 JUnit 中的嵌套名称适用于这次定向过滤。CLI 回滚用例的真实登录、会话保留和明确重试均有验收目的，未发现需要删除的无效复杂度或新的代码必改项。
 
-2026-10-07 外部 SMTP 证据另经独立 agent 使用 `code-review-and-quality` 只读复审。公开记录与两份实际 runner JSON、provider JSON 逐字段一致，凭证与收件地址未进入公开材料。SMTP 接受、服务商 delivered、实际邮箱待确认的边界准确，无必改问题。随后指定另一收件人的拒绝诊断、完成时间与空域名列表也经独立增量复核一致，无必改项。评审没有重复运行已通过的测试或操作已交还的浏览器。本轮仅新增文档证据，范围内 Prettier 检查、`node docs/tasks/check.mjs`（120 个任务、298 个需求）和 `git diff --check` 通过。
+2026-10-07 外部 SMTP 证据另经独立 agent 使用 `code-review-and-quality` 只读复审。公开记录与两份实际 runner JSON、provider JSON 逐字段一致，凭证与收件地址未进入公开材料。SMTP 接受、服务商 delivered、当时实际邮箱待确认的边界准确，无必改问题。随后指定另一收件人的拒绝诊断、完成时间与空域名列表，以及选回注册邮箱的新发送记录，也经独立增量复核一致，无必改项。所有者确认新 marker 实际收到后，评审者实际核对任务卡与 identity §8.1，确认该直接人工收件证据满足外部 SMTP 验收；规格没有要求逐封读取 Gmail 头部或精确到达时间，可以取消草稿。评审没有重复运行已通过的测试或操作已交还的浏览器。本轮仅新增文档证据，范围内 Prettier 检查、`node docs/tasks/check.mjs`（120 个任务、298 个需求）和 `git diff --check` 通过。
 
 ## 依赖审计
 
@@ -158,6 +162,6 @@ CLI 首轮错误的 Release 路径假设和 PTY 连续命令缓冲问题均取�
 
 工程实验代码与独立代码/证据评审已完成；新增 45 项定向测试通过。本地静态、类型、单元和构建通过；此前失败场景均取得后续通过结果，完整首轮未通过的事实继续保留。
 
-真实外部 Resend SMTP 的 TLS / STARTTLS 和服务商投递状态已经验证；**最终真实邮箱收件尚待独立确认**。本次唯一剩余验收项是实际收件，不再将已通过复验的两个超时场景列为阻塞。#146 的实验验收保持未完成，PR #253 保留草稿；既有完整首轮失败记录单独保留，不因外部发送通过而改记为一次全量通过。
+真实外部 Resend SMTP 的 TLS / STARTTLS 和服务商投递状态已经验证，所有者也已明确确认新验证邮件的实际收件。本次工程实验的本地验收条件已满足，PR #253 可转为正式待评审；Issue 保持开放，等待所有者另行授权合并与关闭。既有完整首轮失败记录单独保留，不将后续复验改记为一次全量通过。首轮两封邮件的邮箱头部、实际到达时间和逐封收件仍未核对，不冒充已验证。
 
 本任务不改变产品 UI，产品浏览器流程、Figma 对照、主题、响应式及人工界面验收不适用；Ego 仅用于外部 Resend 账号与协议证据。真实容器及 AMD64/ARM64 留在既有 Release 阶段验证；本地隔离打包实验不冒充双架构或生产 CLI 已交付。

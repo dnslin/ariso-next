@@ -75,7 +75,7 @@
       }
     }
   ],
-  "receiptBoundary": "SMTP acceptance and provider delivered status are verified. Final mailbox receipt remains independently unverified. Resend replaces the client SMTP Message-ID with a provider Message-ID; correlate using receiptMarker.",
+  "receiptBoundary": "TLS and STARTTLS SMTP acceptance and provider delivered status are verified. The owner independently confirmed actual receipt of the additional TLS message with the exact receipt marker. Earlier messages retain unverified mailbox status. Provider timestamps and Message-IDs are not mailbox header evidence.",
   "references": [
     "https://resend.com/docs/send-with-smtp",
     "https://resend.com/docs/knowledge-base/403-error-resend-dev-domain",
@@ -106,6 +106,41 @@
         "status": "not-sent"
       },
       "restriction": "Default onboarding@resend.dev sender is restricted to the email associated with the Resend account. Sending to the requested different Gmail needs a verified sender domain or an account associated with that recipient."
+    },
+    {
+      "purpose": "Owner selected the registered recipient again",
+      "recipient": "Registered account Gmail address (omitted)",
+      "mode": "tls",
+      "port": 465,
+      "codeCommit": "c4ff0ab4a5a338c96387d594944cd0a2b6351295",
+      "command": "node tests/experiments/identity/smtp-run.ts .data/resend-smtp.json",
+      "exitCode": 0,
+      "completedAt": "2026-10-06T17:49:20.775Z",
+      "smtp": {
+        "acceptance": "smtp-accepted",
+        "acceptedCount": 1,
+        "rejectedCount": 0,
+        "messageId": "<db9603ef-7d05-c549-9296-344c49433c31@resend.dev>",
+        "runnerFinalReceipt": "unverified"
+      },
+      "receiptMarker": "ariso-smtp-90e3b854-7f88-48f7-bceb-958022efb127",
+      "provider": {
+        "id": "01a11255-9454-766e-adae-91b9cf3ccfd7",
+        "messageId": "<010001a1125595ab-e60de9e2-d0b2-43a1-8869-37cada1b541b-000000@email.amazonses.com>",
+        "createdAt": "2026-10-06 17:49:21.022000+00",
+        "status": "delivered",
+        "receiptMarker": "ariso-smtp-90e3b854-7f88-48f7-bceb-958022efb127",
+        "observedAt": "2026-10-06T17:50:11.939Z"
+      },
+      "mailbox": {
+        "status": "verified",
+        "basis": "Direct human owner confirmation in this Codex conversation",
+        "confirmedReceiptMarker": "ariso-smtp-90e3b854-7f88-48f7-bceb-958022efb127",
+        "ownerReply": "已收到这封邮件",
+        "confirmationRecordedAt": "2026-10-06T17:52:40Z",
+        "receiptTimestamp": "not independently read",
+        "mailboxMessageId": "not independently read"
+      }
     }
   ]
 }
