@@ -260,7 +260,7 @@
     }
   ],
   "logs": "Raw logs retained in ignored test-results/sharing-192; public summaries exclude credentials and clipboard contents.",
-  "completion": "Code and independent incremental reviews complete. Original ten failing scenes have passing evidence; unreproduced historical causes remain unknown. Historical complete integration/browser commands retain exit 1; affected complete suites/files passed. Main 03db847c combination passed full unit/build/types/lint and affected integration/browser. Latest main 5d72f178 merged as 8ffe5329: build/types/lint and 4 files / 260 affected unit passed; 12 files / 90 affected integration passed. Browser hard stopped after task space ended; latest sharing-public/management and new Token browser stages unverified. Screen-reader behavior and final user acceptance remain unverified; draft PR.",
+  "completion": "Code and independent incremental reviews complete. Original ten failing scenes have passing evidence; unreproduced historical causes remain unknown. Historical complete integration/browser commands retain exit 1; affected complete suites/files passed. Main 03db847c combination passed full unit/build/types/lint and affected integration/browser. Latest main 5d72f178 merged as 8ffe5329: build/types/lint and 4 files / 260 affected unit passed; 12 files / 90 affected integration passed. Browser hard stopped after task space ended; latest sharing-public/management and new Token browser stages unverified. Screen-reader behavior remains unverified. User confirmed manual UI on 2026-10-06; latest automated browser checks stay paused. Draft PR. Subsequent full-PR review at 397627bc requested changes: one P2 fixture race and three P2 structural categories remain unresolved; historical incremental review approval is not the latest verdict.",
   "merge": {
     "previousBase": "ffecff2ea55d65ad4af8cc2877f20f06b54e62c1",
     "newMain": "03db847c",
@@ -299,5 +299,54 @@
       "new main Token full browser stage"
     ],
     "resume": "Await explicit user continuation, then claimTaskSpace(37); no retry or alternate space."
+  },
+  "manualUIAcceptance": {
+    "date": "2026-10-06",
+    "source": "Direct user feedback in this conversation",
+    "statement": "我手动验证的UI没什么问题",
+    "status": "accepted by user",
+    "boundary": "Manual UI feedback does not replace the paused latest automated browser checks or screen-reader testing."
+  },
+  "fullPRReview": {
+    "date": "2026-10-06",
+    "head": "397627bcf5943e4d78a096ca8cdfca85857d8da2",
+    "base": "5d72f178821fb8916e77b59abc8c5e255dbfcb43",
+    "quality": {
+      "agent": "pr251_quality_review",
+      "skill": "code-review-and-quality",
+      "verdict": "request changes",
+      "requiredP2": 1,
+      "report": "../pr-review-2026-10-06/quality.md"
+    },
+    "structure": {
+      "agent": "pr251_structure_review",
+      "skill": "thermo-nuclear-code-quality-review",
+      "verdict": "request changes",
+      "requiredP2Categories": 3,
+      "optionalP3": 2,
+      "report": "../pr-review-2026-10-06/structure.md"
+    },
+    "requiredFixes": "unresolved",
+    "sourceAndTestsChanged": false,
+    "browserResumed": false,
+    "newProductTests": false,
+    "evidenceChecks": {
+      "format": {
+        "scope": "README, check-results and both new review reports",
+        "exitCode": 0,
+        "log": "pr251-review-format-check.log"
+      },
+      "documents": {
+        "command": "node docs/tasks/check.mjs",
+        "exitCode": 0,
+        "tasks": 120,
+        "requirements": 298,
+        "log": "pr251-review-docs-check.log"
+      },
+      "diff": {
+        "command": "git diff --check",
+        "exitCode": 0
+      }
+    }
   }
 }
