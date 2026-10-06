@@ -1,5 +1,5 @@
 {
-  "status": "incomplete",
+  "status": "pass",
   "startedAt": "2026-10-05T18:35:26.837Z",
   "taskSpaceId": 38,
   "app": "Ariso EV-IDENTITY-03 20261006",
@@ -113,19 +113,36 @@
     },
     {
       "name": "same-email-bound-login-followup",
-      "status": "unverified",
-      "reason": "TaskSpace 38 timed out and was closed prematurely; user authorized TaskSpace 39, which is now handed off because GitHub requires reauthorization and the Authorize button is disabled",
+      "status": "pass",
       "followup": {
         "taskSpaceId": 39,
         "userAuthorizedNewSpace": true,
         "sameEmailConfirmed": true,
         "githubAccounts": 1,
-        "reauthorizationRequired": true,
-        "authorizeButtonDisabled": true,
-        "sessionNotVerified": true,
-        "handedOff": true
-      }
+        "history": {
+          "reauthorizationRequired": true,
+          "authorizeButtonDisabled": true,
+          "handedOff": true
+        },
+        "status": "pass",
+        "verifiedAt": "2026-10-06T06:53:26.773Z",
+        "priorSessionEmpty": true,
+        "onlyGithubLoginUsed": true,
+        "returnedToExperiment": true,
+        "sessionStatus": 200,
+        "localOwnerRetained": true,
+        "localEmailPreserved": true,
+        "userCompletedReauthorization": true,
+        "users": 1,
+        "credentialUnchanged": true,
+        "stableGithubAccountId": true,
+        "providerTokensAbsent": true,
+        "serviceRecoveredWithoutReset": true,
+        "newFlowAfterUserAuthorization": true
+      },
+      "history": "TaskSpace 38 timed out and was closed prematurely; user authorized TaskSpace 39, which was handed off due to GitHub reauthorization and a disabled Authorize button before the user completed reauthorization and returned control"
     }
   ],
-  "followupTaskSpaceId": 39
+  "followupTaskSpaceId": 39,
+  "completedAt": "2026-10-06T06:53:26.773Z"
 }
