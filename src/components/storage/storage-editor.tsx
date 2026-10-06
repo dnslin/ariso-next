@@ -112,7 +112,7 @@ export function StorageEditor({
             正在读取存储配置
           </p>
         ) : (
-          <Alert status="danger">
+          <Alert role="alert" status="danger">
             <Alert.Content>
               <Alert.Title>无法读取存储配置</Alert.Title>
               <Alert.Description>{query.error?.message}</Alert.Description>
@@ -670,7 +670,7 @@ function StorageEditorReady({
           </Link>
         ) : null}
         {message ? (
-          <Alert status="danger">
+          <Alert role="alert" status="danger">
             <Alert.Content>
               <Alert.Description>{message}</Alert.Description>
             </Alert.Content>
@@ -721,7 +721,7 @@ function StorageEditorReady({
           </p>
         ) : null}
         {refreshError ? (
-          <Alert status="danger">
+          <Alert role="alert" status="danger">
             <Alert.Content>
               <Alert.Description>
                 无法读取最新配置：{refreshError}

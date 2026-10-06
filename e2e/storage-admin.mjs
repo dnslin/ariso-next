@@ -209,8 +209,58 @@ try {
   await storageLayouts(page, config, report, 'local-editor');
   await storageShortViewport(page, config, report);
   await page.fill(field('localPath'), '../../outside-storage');
-  await save();
-  await page.waitForSelector('[role="alert"]');
+  await page.evaluate((id) => {
+    const original = window.fetch;
+    window.__storageLocalPathDiagnostic = [];
+    window.fetch = async (...args) => {
+      const path = new URL(String(args[0]), location.href).pathname;
+      if (path !== `/api/storages/${id}` || args[1]?.method !== 'PATCH')
+        return original(...args);
+      const row = { path, startedAt: Date.now() };
+      window.__storageLocalPathDiagnostic.push(row);
+      try {
+        const response = await original(...args);
+        row.status = response.status;
+        return response;
+      } finally {
+        row.finishedAt = Date.now();
+      }
+    };
+    window.__restoreStorageLocalPathDiagnostic = () => {
+      window.fetch = original;
+      delete window.__restoreStorageLocalPathDiagnostic;
+    };
+  }, local.id);
+  try {
+    await save();
+    await page.waitForSelector('[role="alert"]');
+  } catch (error) {
+    await page.screenshot({
+      path: join(config.output, 'storage-admin-local-path-failure.png'),
+    });
+    throw error;
+  } finally {
+    try {
+      report.localPathDiagnostic = {
+        ...(await page.evaluate(() => ({
+          requests: window.__storageLocalPathDiagnostic,
+          input: document.querySelector('input[name="localPath"]')?.value,
+          alerts: [
+            ...document.querySelectorAll('[data-slot="alert-root"]'),
+          ].map((node) => ({
+            role: node.getAttribute('role'),
+            text: node.textContent.trim(),
+          })),
+        }))),
+        storedPath: (await storage(local.id)).localPath,
+      };
+    } finally {
+      await page.evaluate(() => {
+        window.__restoreStorageLocalPathDiagnostic?.();
+        delete window.__storageLocalPathDiagnostic;
+      });
+    }
+  }
   assert.equal(
     await page.evaluate(
       () => document.querySelector('input[name="localPath"]').value,

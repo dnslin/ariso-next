@@ -2,6 +2,7 @@
 const { default: assert } = await import('node:assert/strict');
 const { writeFile, readFile, mkdir } = await import('node:fs/promises');
 const { join } = await import('node:path');
+const { randomUUID } = await import('node:crypto');
 const { identitySql } = await import(config.identitySessionScript);
 const { selectCopyFormat } = await import(config.libraryDetailScript);
 const { createUploadLayouts } = await import(
@@ -98,6 +99,31 @@ async function imageId() {
   return page.evaluate(
     () => document.querySelector('[data-testid="upload-item"]').dataset.imageId,
   );
+}
+async function storageAvailability(stage) {
+  const response = await page.fetch('/upload/settings');
+  const settings = JSON.parse(response.body);
+  const snapshot = {
+    stage,
+    database: {
+      settings: await sql('SELECT default_storage_id FROM storage_settings'),
+      storages: await sql('SELECT id,enabled FROM storage_configs ORDER BY id'),
+    },
+    response: {
+      status: response.status,
+      defaultStorageId: settings.defaultStorageId,
+      storages: settings.storages?.map(({ id, enabled }) => ({ id, enabled })),
+    },
+    message: await page.evaluate(
+      () =>
+        document.querySelector('[data-testid="upload-settings"] [role="alert"]')
+          ?.textContent ?? null,
+    ),
+  };
+  report.storageAvailability ??= [];
+  report.storageAvailability.push(snapshot);
+  assert.equal(response.status, 200, 'Read real upload storage settings');
+  return snapshot.response;
 }
 let transportScript;
 try {
@@ -817,7 +843,26 @@ try {
   report.checks.push(
     'Removing the default after file selection makes the real Start request fail without imageId; untouched default is resolved on the server at submission time.',
   );
+  const enabledStorageIds = (
+    await sql('SELECT id FROM storage_configs WHERE enabled=1 ORDER BY id')
+  ).map(({ id }) => id);
+  let alternateStorageId;
   try {
+    const alternate = await page.fetch('/api/storages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        type: 'local',
+        name: 'Upload availability fixture',
+        localPath: `upload-availability-${randomUUID()}`,
+      }),
+    });
+    assert.equal(alternate.status, 201, 'Create independent Local fixture');
+    const created = JSON.parse(alternate.body);
+    alternateStorageId = created.id;
+    assert.ok(alternateStorageId);
+    assert.equal(created.enabled, true);
+    report.storageFixture = { id: alternateStorageId, deleted: false };
     await sql('UPDATE storage_settings SET default_storage_id=NULL');
     await page.reload();
     await page.waitForSelector('input[aria-label="选择图片文件"]', {
@@ -845,6 +890,50 @@ try {
       state: 'attached',
     });
     await select();
+    const withAlternate = await storageAvailability('disabled-default');
+    assert.equal(withAlternate.defaultStorageId, storageId);
+    assert.equal(
+      withAlternate.storages.find(({ id }) => id === storageId).enabled,
+      false,
+    );
+    assert.equal(
+      withAlternate.storages.find(({ id }) => id === alternateStorageId)
+        .enabled,
+      true,
+    );
+    await page.waitForFunction(() =>
+      document.body.textContent.includes('默认存储缺失或已停用'),
+    );
+    await layouts('disabled-default');
+    assert.equal(
+      await page.evaluate(
+        () =>
+          [...document.querySelectorAll('button')].find(
+            (node) => node.textContent === '开始上传',
+          ).disabled,
+      ),
+      true,
+      'An available alternative must not silently replace the disabled default',
+    );
+    assert.ok(!(await imageId()));
+    await page.click(button('移除'));
+    const availableIds = (
+      await sql('SELECT id FROM storage_configs WHERE enabled=1 ORDER BY id')
+    ).map(({ id }) => id);
+    assert.ok(availableIds.includes(alternateStorageId));
+    await sql(
+      `UPDATE storage_configs SET enabled=0 WHERE id IN (${availableIds.map((id) => `'${id}'`).join(',')})`,
+    );
+    await page.reload();
+    await page.waitForSelector('input[aria-label="选择图片文件"]', {
+      state: 'attached',
+    });
+    await select();
+    const unavailable = await storageAvailability('all-disabled');
+    assert.equal(
+      unavailable.storages.some(({ enabled }) => enabled),
+      false,
+    );
     await page.waitForFunction(() =>
       document.body.textContent.includes('暂无可用存储'),
     );
@@ -860,8 +949,31 @@ try {
     );
     await page.click(button('移除'));
   } finally {
+    try {
+      await storageAvailability('before-restoring-storage');
+    } catch (error) {
+      report.storageDiagnosticError = String(error);
+    }
     await sql(`UPDATE storage_settings SET default_storage_id='${storageId}'`);
-    await sql(`UPDATE storage_configs SET enabled=1 WHERE id='${storageId}'`);
+    if (enabledStorageIds.length)
+      await sql(
+        `UPDATE storage_configs SET enabled=1 WHERE id IN (${enabledStorageIds.map((id) => `'${id}'`).join(',')})`,
+      );
+    if (alternateStorageId) {
+      const removed = await page.fetch(`/api/storages/${alternateStorageId}`, {
+        method: 'DELETE',
+      });
+      assert.equal(removed.status, 200, 'Delete independent Local fixture');
+      assert.equal(JSON.parse(removed.body).deleted, true);
+      report.storageFixture.deleted = true;
+    }
+    assert.deepEqual(
+      (
+        await sql('SELECT id FROM storage_configs WHERE enabled=1 ORDER BY id')
+      ).map(({ id }) => id),
+      enabledStorageIds,
+      'Restore only originally enabled storages; originally disabled stay disabled',
+    );
   }
   const settingsFault = await page.cdp(
     'Page.addScriptToEvaluateOnNewDocument',
@@ -891,7 +1003,7 @@ try {
     });
   }
   report.checks.push(
-    'Real missing default and disabled storage prevent manual start without silently choosing another target; lost real settings response displays retry and recovers.',
+    'Real missing default and disabled default with another enabled Local prevent manual start without silently choosing another target; explicitly disabling every enabled storage exposes no available storage. The independent Local fixture is deleted and only originally enabled IDs are restored; lost real settings response displays retry and recovers.',
   );
   report.status = 'passed';
 } catch (error) {

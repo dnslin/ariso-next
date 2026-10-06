@@ -514,6 +514,7 @@ async function passwordHelp(state) {
               document.querySelector('main').scrollTop ===
             0,
         );
+        await waitForSharingScrollStable(page);
         await page.mouse.wheel(0, 600, {
           label: 'reach the password form actions in a short viewport',
         });
@@ -529,6 +530,7 @@ async function passwordHelp(state) {
             rect.bottom <= innerHeight
           );
         });
+        await waitForSharingScrollStable(page);
         const short = await page.evaluate(() => {
           const rect = document
             .querySelector('[data-testid="share-password-submit"]')
@@ -542,11 +544,32 @@ async function passwordHelp(state) {
             viewport: innerHeight,
           };
         });
-        assert.ok(short.scroll > 0, 'The short password page actually scrolls');
-        assert.ok(
-          short.top >= 0 && short.bottom <= short.viewport,
-          'Real scrolling reaches the entire primary action',
-        );
+        report.shortPasswordScrollChecks ??= [];
+        report.shortPasswordScrollChecks.push({
+          state,
+          width,
+          height,
+          theme,
+          ...short,
+        });
+        try {
+          assert.ok(
+            short.scroll > 0,
+            'The short password page actually scrolls',
+          );
+          assert.ok(
+            short.top >= 0 && short.bottom <= short.viewport,
+            'Real scrolling reaches the entire primary action',
+          );
+        } catch (error) {
+          await page.screenshot({
+            path: join(
+              config.output,
+              `sharing-public-${state}-scroll-failure-${theme}-390x420.png`,
+            ),
+          });
+          throw error;
+        }
       }
       await page.click(
         '[data-testid="share-password-form"] [data-slot="input-group-prefix"]',

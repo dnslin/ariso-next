@@ -146,36 +146,59 @@ async function removeQueued() {
   await released();
 }
 async function directory(path) {
-  await page.evaluate(() => {
+  const inputState = await page.evaluate(() => {
     window.__directoryChooserEvents = [];
     const input = document.querySelector('input[aria-label="选择图片文件夹"]');
+    const record = (event) =>
+      window.__directoryChooserEvents.push({
+        type: event.type,
+        files: input.files.length,
+        relativePathCount: [...input.files].filter(
+          (file) => file.webkitRelativePath.length > 0,
+        ).length,
+        relativePathSample: [...input.files]
+          .slice(0, 3)
+          .map((file) => file.webkitRelativePath),
+        time: performance.now(),
+      });
     for (const type of ['change', 'cancel'])
-      input.addEventListener(
-        type,
-        (event) =>
-          window.__directoryChooserEvents.push({
-            type: event.type,
-            files: input.files.length,
-          }),
-        { once: true },
-      );
+      input.addEventListener(type, record, { once: true, capture: true });
+    window.__restoreDirectoryChooserObserver = () => {
+      for (const type of ['change', 'cancel'])
+        input.removeEventListener(type, record, true);
+      delete window.__restoreDirectoryChooserObserver;
+    };
+    return {
+      type: input.type,
+      multiple: input.multiple,
+      webkitdirectory: input.webkitdirectory,
+      directoryAttribute: input.hasAttribute('webkitdirectory'),
+      filesBefore: input.files.length,
+    };
   });
-  const document = await page.cdp('DOM.getDocument');
-  const { nodeId } = await page.cdp('DOM.querySelector', {
-    nodeId: document.root.nodeId,
-    selector: folder,
-  });
-  assert.ok(nodeId, 'Production webkitdirectory input exists');
-  await page.cdp('DOM.setFileInputFiles', { nodeId, files: [path] });
-  await page.waitForFunction(() => window.__directoryChooserEvents.length > 0);
-  report.directoryChooser = await page.evaluate(
-    () => window.__directoryChooserEvents,
-  );
-  assert.equal(
-    report.directoryChooser.some((event) => event.type === 'cancel'),
-    false,
-    'Native directory enumeration was cancelled by the browser; folder selection remains unverified',
-  );
+  report.directoryInput = { ...inputState, ownership: task.ownership };
+  try {
+    const document = await page.cdp('DOM.getDocument');
+    const { nodeId } = await page.cdp('DOM.querySelector', {
+      nodeId: document.root.nodeId,
+      selector: folder,
+    });
+    assert.ok(nodeId, 'Production webkitdirectory input exists');
+    await page.cdp('DOM.setFileInputFiles', { nodeId, files: [path] });
+    await page.waitForFunction(
+      () => window.__directoryChooserEvents.length > 0,
+    );
+    report.directoryChooser = await page.evaluate(
+      () => window.__directoryChooserEvents,
+    );
+    assert.equal(
+      report.directoryChooser.some((event) => event.type === 'cancel'),
+      false,
+      'Native directory enumeration was cancelled by the browser; folder selection remains unverified',
+    );
+  } finally {
+    await page.evaluate(() => window.__restoreDirectoryChooserObserver());
+  }
 }
 async function drop(paths) {
   const point = await page.evaluate(() => {

@@ -205,7 +205,7 @@ export function StorageList(
             <Skeleton className="h-20 rounded-xl" />
           </div>
         ) : error ? (
-          <Alert status="danger">
+          <Alert role="alert" status="danger">
             <Alert.Content>
               <Alert.Title>无法读取存储配置</Alert.Title>
               <Alert.Description>{error.message}</Alert.Description>

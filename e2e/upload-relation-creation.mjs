@@ -7,6 +7,73 @@ export async function verifyUploadRelationCreation(
 ) {
   const literal = (value) => `'${String(value).replaceAll("'", "''")}'`;
   const button = (name) => `loc=role:button[name="${name}"]`;
+  async function revealCreate(kind) {
+    const label = kind === 'albums' ? '相册' : '标签';
+    const scroll = await page.evaluate((label) => {
+      const dialog = document.querySelector(
+        `[role="dialog"][aria-label="选择${label}"]`,
+      );
+      const overlay = dialog.closest('.popover');
+      const create = [...dialog.querySelectorAll('button')].find(
+        (node) => node.textContent.trim() === `新建${label}`,
+      );
+      const box = overlay.getBoundingClientRect();
+      const target = create.getBoundingClientRect();
+      const top = Math.max(box.top, 0) + 1;
+      const bottom = Math.min(box.bottom, innerHeight) - 1;
+      return {
+        x: box.left + box.width / 2,
+        y: (top + bottom) / 2,
+        delta:
+          target.bottom > bottom
+            ? target.bottom - bottom + 12
+            : target.top < top
+              ? target.top - top - 12
+              : 0,
+        scrollable: overlay.scrollHeight > overlay.clientHeight,
+        mainScroll: document.querySelector('main').scrollTop,
+      };
+    }, label);
+    if (scroll.delta) {
+      assert.equal(
+        scroll.scrollable,
+        true,
+        'Clipped create action has an actual scrollable popover',
+      );
+      // Keep native wheel input within the popover. Scrolling its trigger's
+      // main ancestor correctly dismisses a non-modal React Aria popover.
+      await page.mouse.move(scroll.x, scroll.y);
+      await page.mouse.wheel(0, scroll.delta, { label: '滚动关系选择浮层' });
+    }
+    await page.waitForFunction((label) => {
+      const dialog = document.querySelector(
+        `[role="dialog"][aria-label="选择${label}"]`,
+      );
+      const overlay = dialog?.closest('.popover');
+      const create = [...(dialog?.querySelectorAll('button') ?? [])].find(
+        (node) => node.textContent.trim() === `新建${label}`,
+      );
+      if (!overlay || !create) return false;
+      const box = overlay.getBoundingClientRect();
+      const target = create.getBoundingClientRect();
+      const hit = document.elementFromPoint(
+        target.left + target.width / 2,
+        target.top + target.height / 2,
+      );
+      return (
+        target.top >= Math.max(0, box.top) &&
+        target.bottom <= Math.min(innerHeight, box.bottom) &&
+        create.contains(hit)
+      );
+    }, label);
+    assert.equal(
+      await page.evaluate(() => document.querySelector('main').scrollTop),
+      scroll.mainScroll,
+      'Revealing quick creation scrolls only its popover',
+    );
+    report.creationNavigation ??= [];
+    report.creationNavigation.push({ kind, ...scroll });
+  }
   async function createDialog(kind) {
     step('open quick creation', { kind });
     step('wait prior modal backdrop exit', {
@@ -18,24 +85,62 @@ export async function verifyUploadRelationCreation(
     await page.waitForFunction(
       () => !document.querySelector('[data-slot="modal-backdrop"]'),
     );
-    await open(kind, true);
-    await page.waitForSelector(
-      button(kind === 'albums' ? '新建相册' : '新建标签'),
-      { state: 'visible' },
-    );
-    assert.equal(
-      await page.evaluate(
-        (label) =>
-          !!document
-            .querySelector(`[role="dialog"][aria-label="选择${label}"]`)
-            ?.getClientRects().length,
-        kind === 'albums' ? '相册' : '标签',
-      ),
-      true,
-      'The real choices popover remains visible before opening quick creation',
-    );
-    await page.click(button(kind === 'albums' ? '新建相册' : '新建标签'));
-    await page.waitForSelector('[role="dialog"] form input');
+    try {
+      await open(kind, true);
+      await page.waitForSelector(
+        button(kind === 'albums' ? '新建相册' : '新建标签'),
+        { state: 'visible' },
+      );
+      assert.equal(
+        await page.evaluate(
+          (label) =>
+            !!document
+              .querySelector(`[role="dialog"][aria-label="选择${label}"]`)
+              ?.getClientRects().length,
+          kind === 'albums' ? '相册' : '标签',
+        ),
+        true,
+        'The real choices popover remains visible before opening quick creation',
+      );
+      await revealCreate(kind);
+      await page.click(button(kind === 'albums' ? '新建相册' : '新建标签'));
+      await page.waitForSelector('[role="dialog"] form input');
+    } catch (error) {
+      report.creationFailure = {
+        kind,
+        geometry: await page.evaluate((kind) => {
+          const label = kind === 'albums' ? '相册' : '标签';
+          const trigger = document.querySelector(
+            `button[aria-label="选择${label}"]`,
+          );
+          const dialog = document.querySelector(
+            `[role="dialog"][aria-label="选择${label}"]`,
+          );
+          const overlay = dialog?.closest('.popover');
+          const create = [...(dialog?.querySelectorAll('button') ?? [])].find(
+            (node) => node.textContent.trim() === `新建${label}`,
+          );
+          const rect = (node) => {
+            if (!node) return null;
+            const { top, bottom, left, right, width, height } =
+              node.getBoundingClientRect();
+            return { top, bottom, left, right, width, height };
+          };
+          return {
+            expanded: trigger.getAttribute('aria-expanded'),
+            trigger: rect(trigger),
+            overlay: rect(overlay),
+            create: rect(create),
+            scrollTop: overlay?.scrollTop,
+            scrollHeight: overlay?.scrollHeight,
+            clientHeight: overlay?.clientHeight,
+            mainScroll: document.querySelector('main').scrollTop,
+            viewport: { width: innerWidth, height: innerHeight },
+          };
+        }, kind),
+      };
+      throw error;
+    }
   }
   async function restoredFocus(kind) {
     await page.waitForFunction(

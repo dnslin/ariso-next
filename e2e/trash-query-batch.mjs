@@ -21,6 +21,8 @@ const report = {
   checks: [],
   layouts: [],
   screenshots: [],
+  browserChecks: [],
+  fixtureTransitions: [],
 };
 let errorScript;
 let savedTheme;
@@ -105,6 +107,34 @@ async function captureFailure(error) {
     path: join(config.output, 'trash-query-batch-failure.png'),
   });
 }
+async function checkBrowserErrors(current, label, boundary) {
+  const evidence = await current.evaluate(() => ({
+    at: Date.now(),
+    url: location.href,
+    previews: performance
+      .getEntriesByType('resource')
+      .filter((entry) => new URL(entry.name).pathname.startsWith('/api/trash/'))
+      .map((entry) => ({
+        path: new URL(entry.name).pathname + new URL(entry.name).search,
+        status: entry.responseStatus ?? null,
+        startedAt: performance.timeOrigin + entry.startTime,
+        duration: entry.duration,
+      })),
+  }));
+  const check = {
+    scenario: report.activeCheck,
+    page: label,
+    boundary,
+    ...evidence,
+  };
+  report.browserChecks.push(check);
+  try {
+    return await assertNoBrowserErrors(current);
+  } catch (error) {
+    check.errors = error.actual;
+    throw error;
+  }
+}
 try {
   await page.goto(`${config.origin}/library`);
   await page.waitForFunction(
@@ -123,6 +153,7 @@ try {
     peerErrorScript = await installBrowserErrors(peer);
   }
   for (const verify of scenarios) {
+    report.activeCheck = verify.name;
     const fixture = await seedLibraryBatch(config, sql);
     try {
       await sql(
@@ -131,6 +162,17 @@ try {
       await page.goto(`${config.origin}/trash?q=issue177-&pageSize=80&page=1`);
       await helpers.loaded(80);
       await verify({ page, peer, config, sql, report, fixture, ...helpers });
+      report.errors = await checkBrowserErrors(
+        page,
+        'main',
+        'scenario-completed',
+      );
+      if (peer)
+        report.peerErrors = await checkBrowserErrors(
+          peer,
+          'peer',
+          'scenario-completed',
+        );
     } catch (error) {
       await captureFailure(error);
       throw error;
@@ -139,6 +181,11 @@ try {
       await restoreReviewTraffic(page);
       await page.goto(`${config.origin}/settings/processing`);
       if (peer) await peer.goto(`${config.origin}/settings/processing`);
+      report.fixtureTransitions.push({
+        scenario: report.activeCheck,
+        event: 'cleanup-started-after-leaving-pages',
+        at: Date.now(),
+      });
       await sql('DROP TRIGGER IF EXISTS issue178_cleanup_failure');
       await sql(`DELETE FROM media_jobs WHERE id='${progressJobId}'`);
       await sql(
@@ -146,10 +193,24 @@ try {
       );
       await cleanLibraryBatch(sql, fixture);
       await sql(`DELETE FROM storage_configs WHERE id='${disabledStorageId}'`);
+      report.fixtureTransitions.push({
+        scenario: report.activeCheck,
+        event: 'cleanup-completed',
+        at: Date.now(),
+      });
     }
   }
-  report.errors = await assertNoBrowserErrors(page);
-  if (peer) report.peerErrors = await assertNoBrowserErrors(peer);
+  report.errors = await checkBrowserErrors(
+    page,
+    'main',
+    'all-fixtures-cleaned',
+  );
+  if (peer)
+    report.peerErrors = await checkBrowserErrors(
+      peer,
+      'peer',
+      'all-fixtures-cleaned',
+    );
   report.status = 'passed';
 } catch (error) {
   if (Array.isArray(error.actual) && error.actual.every((entry) => entry.kind))

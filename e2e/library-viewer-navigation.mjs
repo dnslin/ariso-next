@@ -71,7 +71,31 @@ export async function verifyViewerNavigation({ page, config, report }) {
   report.stage = 'navigation:source-card-selection-and-detail';
   await findViewerCard(page, 19);
   const source = button(`查看图片：${viewerName(19)}`);
-  await page.hover(source);
+  try {
+    await page.hover(source);
+  } catch (error) {
+    report.navigationSourceFailure = await page.evaluate(
+      (name) => {
+        const source = [
+          ...document.querySelectorAll('[data-library-open]'),
+        ].find((node) => node.getAttribute('aria-label') === name);
+        const main = document.querySelector('main');
+        return {
+          at: performance.now(),
+          scrollTop: main?.scrollTop,
+          source: source?.getBoundingClientRect().toJSON(),
+          checkbox: source
+            ?.closest('[data-image-id]')
+            ?.querySelector('label')
+            ?.getBoundingClientRect()
+            .toJSON(),
+          main: main?.getBoundingClientRect().toJSON(),
+        };
+      },
+      `查看图片：${viewerName(19)}`,
+    );
+    throw error;
+  }
   await page.click(
     `label:has(input[aria-label="选择图片：${viewerName(19)}"])`,
   );

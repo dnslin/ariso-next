@@ -70,6 +70,7 @@ describe('browser runner argument boundaries', () => {
     ['library-batch', 'lifecycle'],
     ['library-batch', 'cache'],
     ['library-batch', 'review-fixes'],
+    ['library-batch', 'recovery'],
     ['sharing-experiment'],
     ['sharing-protocol'],
     ['sharing-public'],
@@ -80,6 +81,7 @@ describe('browser runner argument boundaries', () => {
     ['shell-navigation'],
     ['library'],
     ['library', 'recovery'],
+    ['library-feedback'],
     ['albums'],
     ['album-cover'],
     ['tags'],
@@ -134,6 +136,7 @@ describe('browser runner argument boundaries', () => {
     'album-cover',
     'tags',
     'upload-input',
+    'library-feedback',
   ])(
     'rejects non-primary page labels in suite %s before runtime startup',
     (suite) => {
@@ -163,7 +166,7 @@ describe('browser runner argument boundaries', () => {
     const result = parse(['--suite', suite, '--only', 'recovery']);
     expect(result.status).not.toBe(0);
     expect(result.stderr).toContain(
-      suite === 'sharing-public'
+      ['sharing-public', 'library-batch'].includes(suite)
         ? 'Invalid EGO_PAGE_LABEL'
         : '--only requires an applicable targeted suite',
     );

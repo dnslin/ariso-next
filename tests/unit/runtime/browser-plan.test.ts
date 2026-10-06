@@ -8,6 +8,7 @@ function select(suite: string, only?: string) {
 describe('focused browser execution plans', () => {
   it.each([
     ['library', ['library']],
+    ['library-feedback', ['library-query']],
     ['account', ['account']],
     ['shell-navigation', ['shell-navigation']],
     ['albums', ['albums']],
@@ -47,6 +48,7 @@ describe('focused browser execution plans', () => {
     ['trash', 'cleanup', ['trash-cleanup']],
     ['trash', 'approved-results', ['trash-query-batch']],
     ['library', 'recovery', ['library']],
+    ['library-batch', 'recovery', ['library-batch']],
   ] as const)(
     'selects the actual scenes for %s / %s',
     (suite, only, scripts) => {
@@ -78,6 +80,7 @@ describe('focused browser execution plans', () => {
     ],
     ['library-copy', 'revision', { libraryCopyPhase: 'revision' }],
     ['library-batch', 'cache', { libraryBatchPhase: 'cache' }],
+    ['library-batch', 'recovery', { libraryBatchPhase: 'recovery' }],
     ['trash', 'approved-results', { trashPhase: 'approved-results' }],
     ['upload-s3', 'cleanup', { onlyCleanup: true }],
   ] as const)(
@@ -104,5 +107,8 @@ describe('focused browser execution plans', () => {
     });
     expect(select('upload-regression', 'main').config).toEqual({});
     expect(select('account').config).toEqual({});
+    expect(select('library-feedback').config).toEqual({
+      libraryQueryPhase: 'feedback',
+    });
   });
 });

@@ -57,8 +57,53 @@ export async function storageLayouts(
   state,
   widths = [360, 390, 430, 768, 1440],
 ) {
+  const recordFailure = async (stage, theme, width) => {
+    report.layoutFailure = {
+      state,
+      stage,
+      theme,
+      width,
+      ...(await page.evaluate(() => ({
+        viewport: { width: innerWidth, height: innerHeight },
+        themeClass: document.documentElement.className,
+        storedTheme: localStorage.getItem('theme'),
+        prefersDark: matchMedia('(prefers-color-scheme: dark)').matches,
+        animations: document.getAnimations().map((animation) => ({
+          name: animation.animationName ?? null,
+          transition: animation.transitionProperty ?? null,
+          playState: animation.playState,
+          currentTime: animation.currentTime,
+          target: animation.effect?.target
+            ? {
+                tag: animation.effect.target.tagName,
+                slot: animation.effect.target.getAttribute?.('data-slot'),
+                testId: animation.effect.target.getAttribute?.('data-testid'),
+                className: animation.effect.target.getAttribute?.('class'),
+              }
+            : null,
+          timing: animation.effect
+            ? {
+                ...animation.effect.getTiming(),
+                iterations: String(animation.effect.getTiming().iterations),
+              }
+            : null,
+        })),
+      }))),
+    };
+    await page.screenshot({
+      path: join(
+        config.output,
+        `storage-admin-${state}-${theme}-${width}-layout-failure.png`,
+      ),
+    });
+  };
   for (const theme of ['light', 'dark']) {
-    await setTheme(page, theme);
+    try {
+      await setTheme(page, theme);
+    } catch (error) {
+      await recordFailure('theme', theme, widths[0]);
+      throw error;
+    }
     for (const width of widths) {
       await resizeViewport(page, width);
       await page.evaluate(() => {
@@ -70,15 +115,20 @@ export async function storageLayouts(
           .querySelector('[role="dialog"],[role="alertdialog"]')
           ?.scrollTo({ top: 0, left: 0, behavior: 'instant' });
       });
-      await page.waitForFunction(() =>
-        document
-          .getAnimations()
-          .every(
-            (animation) =>
-              animation.playState !== 'running' ||
-              animation.effect?.getTiming().iterations === Infinity,
-          ),
-      );
+      try {
+        await page.waitForFunction(() =>
+          document
+            .getAnimations()
+            .every(
+              (animation) =>
+                animation.playState !== 'running' ||
+                animation.effect?.getTiming().iterations === Infinity,
+            ),
+        );
+      } catch (error) {
+        await recordFailure('animations', theme, width);
+        throw error;
+      }
       const geometry = await readGeometry(page);
       if (state === 'list' && width === 1440) {
         const border = await page.evaluate(() => ({

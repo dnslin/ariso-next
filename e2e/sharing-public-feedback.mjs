@@ -38,10 +38,14 @@ export async function verifyShortEmpty({ page, config, report }) {
       ? 'dark'
       : 'light',
   }));
+  let step = 'resize';
+  let activeTheme = initial.theme;
   try {
     await resizeViewport(page, 390, 420);
     for (const theme of ['light', 'dark']) {
+      activeTheme = theme;
       await setTheme(page, theme);
+      step = 'scroll-to-top';
       await page.mouse.move(195, 300);
       await page.mouse.wheel(0, -100000, {
         label: 'start the short empty album at the top',
@@ -56,9 +60,43 @@ export async function verifyShortEmpty({ page, config, report }) {
         ),
         0,
       );
-      await page.mouse.wheel(0, 600, {
-        label: 'reach the compact empty icon and text in a short viewport',
-      });
+      step = 'reach-empty-content';
+      for (let attempt = 0; attempt < 6; attempt++) {
+        const position = await page.evaluate(() => {
+          const scroller = document.querySelector('[data-share-scroll]');
+          const bounds = scroller.getBoundingClientRect();
+          const content = [
+            ...document.querySelectorAll(
+              '[data-testid="share-empty"] svg, [data-testid="share-empty"] p',
+            ),
+          ].map((node) => node.getBoundingClientRect());
+          return {
+            scroll: scroller.scrollTop,
+            viewportTop: Math.max(0, bounds.top),
+            viewportBottom: Math.min(innerHeight, bounds.bottom),
+            top: Math.min(...content.map((rect) => rect.top)),
+            bottom: Math.max(...content.map((rect) => rect.bottom)),
+          };
+        });
+        (report.shortEmptyScrollActions ??= []).push({
+          theme,
+          attempt,
+          ...position,
+        });
+        if (
+          position.scroll > 0 &&
+          position.top >= position.viewportTop &&
+          position.bottom <= position.viewportBottom
+        )
+          break;
+        const delta =
+          (position.top + position.bottom) / 2 -
+          (position.viewportTop + position.viewportBottom) / 2;
+        await page.mouse.wheel(0, delta, {
+          label: 'reach the compact empty icon and text in a short viewport',
+        });
+        await waitForSharingScrollStable(page);
+      }
       await page.waitForFunction(() => {
         const scroller = document.querySelector('[data-share-scroll]');
         const bounds = scroller.getBoundingClientRect();
@@ -134,6 +172,35 @@ export async function verifyShortEmpty({ page, config, report }) {
         emptyGeometry: empty,
       });
     }
+  } catch (error) {
+    report.shortEmptyFailure = await page.evaluate(
+      ({ step, theme }) => {
+        const bounds = (node) => {
+          const { top, bottom, height } = node.getBoundingClientRect();
+          return { top, bottom, height };
+        };
+        const scroller = document.querySelector('[data-share-scroll]');
+        return {
+          step,
+          theme,
+          viewport: { width: innerWidth, height: innerHeight },
+          scroll: scroller.scrollTop,
+          scrollHeight: scroller.scrollHeight,
+          clientHeight: scroller.clientHeight,
+          scroller: bounds(scroller),
+          content: [
+            ...document.querySelectorAll(
+              '[data-testid="share-empty"] svg, [data-testid="share-empty"] p',
+            ),
+          ].map(bounds),
+        };
+      },
+      { step, theme: activeTheme },
+    );
+    await page.screenshot({
+      path: join(config.output, 'sharing-public-empty-short-failure.png'),
+    });
+    throw error;
   } finally {
     await resizeViewport(page, initial.width, initial.height);
     await setTheme(page, initial.theme);
