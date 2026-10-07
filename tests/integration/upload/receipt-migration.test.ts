@@ -16,7 +16,11 @@ it('upgrades existing upload ownership without losing cleanup fields and permits
     ) as {
       entries: { tag: string; when: number }[];
     };
-    const previous = journal.entries.slice(0, -1);
+    const receiptIndex = journal.entries.findIndex(
+      (entry) => entry.tag === '0024_supreme_skin',
+    );
+    expect(receiptIndex).toBeGreaterThan(0);
+    const previous = journal.entries.slice(0, receiptIndex);
     expect(previous.at(-1)?.tag).toBe('0023_narrow_patriot');
     const folder = writeMigrations(
       join(directory, 'previous-release'),

@@ -522,6 +522,7 @@
 - 验证方法：运行 `pnpm run test:unit`、`pnpm run test:integration`、`pnpm run test:browser`，记录真实请求、持久数据和两端交互证据。 `tests/integration/identity/oauth.test.ts` 与真实GitHub测试App验证state、同/不同邮箱、恶意requestSignUp、启停重启、换origin和秘密轮换；日志不含凭据。
 - 界面：`/settings/account`与`/login`；仅所有者配置/绑定，登录按真实生效配置显示。桌面 [34:462](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=34-462)、手机 [102:1713](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-1713)；状态桌面 [196:2001](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=196-2001)、手机 [196:2011](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=196-2011)；已绑定 桌面 [197:2245](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=197-2245)、手机 [197:2092](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=197-2092)；失败 桌面 [196:880](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=196-880)、手机 [196:1996](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=196-1996)；登录 桌面 [2:11](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=2-11)、手机 [102:3020](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-3020)。HeroUI：TextField、Switch、Button、Alert、AlertDialog；长回调完整换行和独立复制，手机失败可手动选择；仅业务绑定组合，无自制通用控件。
 - 需求：`R-6.1-02`、`R-6.2-02`、`R-6.4-01`、`R-6.4-02`、`R-5.4-04`、`R-24.2-02`、`R-24.2-03`、`A-26.1-06`、`A-26.1-07`、`A-26.1-08`
+- 本次实施证据：[Issue #181 实施与验收记录](../verification/oauth-181/README.md)。2026-10-06 用户批准两端原型后实施；代码、本地检查、生产浏览器、设计评审与人工验收分别记录，未完成项不由前置实验代替。下方 2026-10-05 DG 结论保留当时的状态。
 - 实施步骤：
   - [ ] 1. 配置保存与主动绑定：回调状态、所有者身份和冲突验证。
   - [ ] 2. GitHub 登录/解绑：真实账户完整流程及失败恢复。

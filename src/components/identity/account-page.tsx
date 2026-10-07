@@ -28,6 +28,13 @@ import {
   settingsCategories,
 } from '../shell/settings-categories';
 import { AccountEditor } from './account-editor';
+import {
+  AccountSettingRow,
+  accountActionClass,
+  accountSurfaceClass,
+} from './account-setting-row';
+import { GithubAccount } from './github-account';
+import { useGithubAccount } from './use-github-account';
 import { AccountRequestError, readAccountEmail } from './account-request';
 
 type ShellProps = Omit<
@@ -49,14 +56,16 @@ export function AccountPage(shell: ShellProps) {
     refetchOnWindowFocus: false,
   });
   const loading = !query.isFetchedAfterMount || query.isFetching;
-  const sessionLost =
-    expired ||
-    (query.error instanceof AccountRequestError && query.error.status === 401);
   const email = query.data ?? shell.email;
   const expire = useCallback(() => {
     setExpired(true);
     setKind(null);
   }, []);
+  const github = useGithubAccount(expire);
+  const sessionLost =
+    expired ||
+    github.sessionLost ||
+    (query.error instanceof AccountRequestError && query.error.status === 401);
   const changeEmail = useCallback(
     (value: string) => client.setQueryData(queryKey, value),
     [client],
@@ -144,55 +153,62 @@ export function AccountPage(shell: ShellProps) {
               </p>
             </Card>
           ) : (
-            <Card className="min-w-0 gap-6 rounded-[20px] border border-border bg-surface px-4 py-5 shadow-none min-[1200px]:p-6">
-              <section className="grid min-w-0 gap-3">
-                <h2 className="flex items-center gap-2.5 text-xl font-medium">
-                  <UserRound className="size-6 shrink-0" aria-hidden />
+            <div className="grid w-full min-w-0 max-w-240 gap-8">
+              <section
+                aria-labelledby="owner-account-heading"
+                className="grid min-w-0 gap-3"
+              >
+                <h2
+                  id="owner-account-heading"
+                  className="flex items-center gap-2 text-lg font-medium"
+                >
+                  <UserRound className="size-5 shrink-0" aria-hidden />
                   所有者账号
                 </h2>
-                <p className="flex min-w-0 items-start gap-2 text-sm leading-normal">
-                  <Mail
-                    className="mt-0.5 size-4 shrink-0 text-muted"
-                    aria-hidden
-                  />
-                  <span data-testid="account-email" className="wrap-anywhere">
-                    {email}
-                  </span>
-                </p>
-                <div className="flex gap-3">
-                  <Button
-                    data-testid="account-change-email"
-                    variant="outline"
-                    className="h-12 min-h-12 min-w-0 flex-1 gap-2 rounded-lg px-2 text-sm font-normal min-[768px]:w-48 min-[768px]:flex-none bg-background"
-                    onPress={() => setKind('email')}
+                <Card className={accountSurfaceClass}>
+                  <AccountSettingRow
+                    label="登录邮箱"
+                    icon={<Mail className="size-4 shrink-0" aria-hidden />}
+                    action={
+                      <Button
+                        data-testid="account-change-email"
+                        variant="outline"
+                        className={`${accountActionClass} bg-background`}
+                        onPress={() => setKind('email')}
+                      >
+                        修改邮箱
+                      </Button>
+                    }
                   >
-                    <Mail className="size-4" aria-hidden />
-                    修改邮箱
-                  </Button>
-                  <Button
-                    data-testid="account-change-password"
-                    variant="outline"
-                    className="h-12 min-h-12 min-w-0 flex-1 gap-2 rounded-lg px-2 text-sm font-normal min-[768px]:w-48 min-[768px]:flex-none bg-background"
-                    onPress={() => setKind('password')}
+                    <span data-testid="account-email" className="wrap-anywhere">
+                      {email}
+                    </span>
+                  </AccountSettingRow>
+                  <AccountSettingRow
+                    label="登录密码"
+                    icon={<KeyRound className="size-4 shrink-0" aria-hidden />}
+                    action={
+                      <Button
+                        data-testid="account-change-password"
+                        variant="outline"
+                        className={`${accountActionClass} bg-background`}
+                        onPress={() => setKind('password')}
+                      >
+                        修改密码
+                      </Button>
+                    }
                   >
-                    <KeyRound className="size-4" aria-hidden />
-                    修改密码
-                  </Button>
-                </div>
-                <p className="text-[13px] leading-normal text-muted">
-                  仅一个所有者账号，不开放注册。
-                </p>
+                    <span
+                      aria-label="已设置登录密码"
+                      className="tracking-[3px]"
+                    >
+                      ••••••••
+                    </span>
+                  </AccountSettingRow>
+                </Card>
               </section>
-              <section className="grid gap-3">
-                <h2 className="flex items-center gap-2.5 text-xl font-medium">
-                  <LogIn className="size-6 shrink-0" aria-hidden />
-                  GitHub 登录
-                </h2>
-                <p className="text-[13px] leading-normal text-muted">
-                  尚未开放
-                </p>
-              </section>
-            </Card>
+              <GithubAccount account={github} />
+            </div>
           )}
         </SettingsCategories>
       </section>

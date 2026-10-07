@@ -186,7 +186,11 @@ it('uninitialized token management requires a Cookie and does not create identit
 describe('production Cookie Token management and upload-only verifier', () => {
   beforeEach(async () => {
     ownerId = await seedAuthOwner(connection, origin);
-    auth = getAuth({ connection, config: parseRuntimeEnv(env) })!;
+    auth = getAuth({
+      connection,
+      config: parseRuntimeEnv(env),
+      github: { enabled: false, clientId: '', clientSecret: null },
+    })!;
     await login();
   });
 

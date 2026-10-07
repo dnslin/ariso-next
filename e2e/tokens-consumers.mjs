@@ -26,6 +26,11 @@ export async function verifyTokensConsumers(page, config, report) {
             const tabs = [
               ...document.querySelectorAll('.settings-desktop [role="tab"]'),
             ];
+            const probe = document.createElement('span');
+            probe.style.backgroundColor = 'var(--accent)';
+            tabs[0].append(probe);
+            const accent = getComputedStyle(probe).backgroundColor;
+            probe.remove();
             return {
               labels: tabs.map((node) => node.textContent.trim()),
               selected: tabs
@@ -34,6 +39,14 @@ export async function verifyTokensConsumers(page, config, report) {
               icons: tabs.every(
                 (node) => !!node.querySelector('svg[aria-hidden="true"]'),
               ),
+              backgrounds: tabs.map((node) => ({
+                selected: node.getAttribute('aria-selected') === 'true',
+                color: getComputedStyle(node).backgroundColor,
+              })),
+              accent,
+              indicatorCount: document.querySelectorAll(
+                '.settings-desktop [data-slot="tabs-indicator"]',
+              ).length,
             };
           });
           assert.deepEqual(
@@ -42,6 +55,17 @@ export async function verifyTokensConsumers(page, config, report) {
           );
           assert.deepEqual(state.selected, [label]);
           assert.equal(state.icons, true);
+          assert.equal(
+            state.indicatorCount,
+            0,
+            'Selection background cannot overlay tab text',
+          );
+          for (const background of state.backgrounds)
+            assert.equal(
+              background.color === state.accent,
+              background.selected,
+              'Only the current category has the accent background',
+            );
         } else {
           const trigger = '.settings-mobile [data-slot="select-trigger"]';
           await page.waitForFunction(

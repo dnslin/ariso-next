@@ -1,0 +1,15 @@
+Already up to date
+Done in 33ms using pnpm v11.19.0
+$ pnpm run build:runtime && next build && node scripts/package-standalone.mjs
+$ tsc --project tsconfig.runtime.json
+▲ Next.js 16.3.5 (Turbopack)
+✓ Running next.config.ts took 10ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 4.7s
+  Running TypeScript ...
+tests/integration/identity/cli-reset.test.ts(167,18): error TS2345: Argument of type '{ connection: { db: BetterSQLite3Database<Record<string, never>> & { $client: Database.Database; }; close: () => BetterSqlite3.Database; }; config: RuntimeConfig; }' is not assignable to parameter of type 'Runtime'.
+  Property 'github' is missing in type '{ connection: { db: BetterSQLite3Database<Record<string, never>> & { $client: Database.Database; }; close: () => BetterSqlite3.Database; }; config: RuntimeConfig; }' but required in type 'Runtime'.
+Failed to type check.
+
+[ELIFECYCLE] Command failed with exit code 1.

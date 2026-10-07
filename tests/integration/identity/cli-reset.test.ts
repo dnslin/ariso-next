@@ -166,6 +166,7 @@ beforeEach(async () => {
   ownerId = await seedAuthOwner(connection, origin);
   auth = getAuth({
     connection,
+    github: { enabled: false, clientId: '', clientSecret: null },
     config: parseRuntimeEnv({
       BETTER_AUTH_SECRET: randomBytes(32).toString('hex'),
       ARISO_ENCRYPTION_KEY: randomBytes(32).toString('hex'),

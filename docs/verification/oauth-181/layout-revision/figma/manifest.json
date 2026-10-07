@@ -1,0 +1,947 @@
+{
+  "fileKey": "74sT9Hrf8G4czcWeTkET5b",
+  "date": "2026-10-07",
+  "approvedScope": "用户批准带图标的紧凑settings rows原型并要求正式实施与Figma同步",
+  "approvedPrototypeFiles": [
+    ".data/oauth-181/prototype/app/account-rows-preview.tsx",
+    ".data/oauth-181/prototype/app/prototype-ui.tsx (rows branch)"
+  ],
+  "scope": {
+    "updatedExistingAccountRoots": 20,
+    "addedAccountRoots": 14,
+    "updatedExistingScrollRegions": 1,
+    "untouchedDesktopModalRoots": [
+      "196:2000",
+      "196:2005",
+      "196:2004",
+      "814:15366",
+      "814:15437",
+      "814:15511",
+      "196:1997",
+      "814:15590",
+      "817:27665"
+    ],
+    "untouchedMobileModalRoots": [
+      "196:2010",
+      "196:2015",
+      "196:2014",
+      "814:30174",
+      "814:30245",
+      "814:30319",
+      "196:2007",
+      "814:30398",
+      "817:27620"
+    ],
+    "untouchedProductStates": [
+      "local-email initial loading",
+      "local-email initial read error"
+    ],
+    "untouchedPublicMasters": ["3:21", "3:23", "112:1498"]
+  },
+  "pages": [
+    {
+      "id": "0:1",
+      "viewport": "desktop",
+      "rootNodes": [
+        {
+          "id": "34:462",
+          "key": "account-light",
+          "name": "站点设置 · 账号与安全",
+          "origin": "updated",
+          "theme": "light",
+          "viewport": [1440, 1080],
+          "body": [960, 421],
+          "state": {}
+        },
+        {
+          "id": "197:2245",
+          "key": "bound-enabled",
+          "name": "D / 账号安全 / GitHub 已绑定",
+          "origin": "updated",
+          "theme": "light",
+          "viewport": [1440, 1080],
+          "body": [960, 420],
+          "state": {}
+        },
+        {
+          "id": "196:2001",
+          "key": "pending-secret",
+          "name": "D / GitHub / 配置已保存 · 等待重启 / 密钥已更新",
+          "origin": "updated",
+          "theme": "light",
+          "viewport": [1440, 1080],
+          "body": [960, 537],
+          "state": {
+            "configured": true,
+            "enabled": true,
+            "bound": false,
+            "pending": true,
+            "savedEnabled": true,
+            "secretUpdated": true
+          }
+        },
+        {
+          "id": "196:2002",
+          "key": "pending-disable",
+          "name": "D / GitHub / 停用已保存 · 当前仍启用",
+          "origin": "updated",
+          "theme": "light",
+          "viewport": [1440, 1080],
+          "body": [960, 537],
+          "state": {
+            "configured": true,
+            "enabled": true,
+            "bound": true,
+            "pending": true,
+            "savedEnabled": false
+          }
+        },
+        {
+          "id": "196:2006",
+          "key": "pending-enable",
+          "name": "D / GitHub / 启用已保存 · 当前未启用",
+          "origin": "updated",
+          "theme": "light",
+          "viewport": [1440, 1080],
+          "body": [960, 538],
+          "state": {
+            "configured": true,
+            "enabled": false,
+            "bound": false,
+            "pending": true,
+            "savedEnabled": true
+          }
+        },
+        {
+          "id": "196:1998",
+          "key": "unlink-success",
+          "name": "D / GitHub / 解绑后保留来源 / 中性通知",
+          "origin": "updated",
+          "theme": "light",
+          "viewport": [1440, 1080],
+          "body": [960, 420],
+          "state": {
+            "configured": true,
+            "enabled": true,
+            "bound": false
+          }
+        },
+        {
+          "id": "196:1999",
+          "key": "unlink-unknown",
+          "name": "D / GitHub / 解绑结果未知 / 回读状态",
+          "origin": "updated",
+          "theme": "light",
+          "viewport": [1440, 1080],
+          "body": [960, 420],
+          "state": {
+            "configured": true,
+            "enabled": true,
+            "bound": true,
+            "unlinkUnknown": true
+          }
+        },
+        {
+          "id": "196:2003",
+          "key": "unconfigured",
+          "name": "D / GitHub / 未配置 / 绑定不可用",
+          "origin": "updated",
+          "theme": "light",
+          "viewport": [1440, 1080],
+          "body": [960, 421],
+          "state": {
+            "configured": false,
+            "enabled": false,
+            "bound": false
+          }
+        },
+        {
+          "id": "814:14898",
+          "key": "config-unknown",
+          "name": "D / GitHub / 配置保存结果未知 · 来源页",
+          "origin": "updated",
+          "theme": "light",
+          "viewport": [1440, 1080],
+          "body": [960, 397],
+          "state": {
+            "configured": true,
+            "enabled": true,
+            "bound": false,
+            "configUnknown": true
+          }
+        },
+        {
+          "id": "814:15096",
+          "key": "pending-dark",
+          "name": "D / GitHub / 停用待重启 · 通知结束 · 深色",
+          "origin": "updated",
+          "theme": "dark",
+          "viewport": [1440, 1080],
+          "body": [960, 537],
+          "state": {
+            "configured": true,
+            "enabled": true,
+            "bound": true,
+            "pending": true,
+            "savedEnabled": false,
+            "dark": true
+          }
+        },
+        {
+          "id": "847:14614",
+          "key": "enabled",
+          "name": "D / GitHub / 已启用 · 尚未绑定",
+          "origin": "added",
+          "theme": "light",
+          "viewport": [1440, 1080],
+          "body": [960, 420],
+          "state": {
+            "configured": true,
+            "enabled": true,
+            "bound": false
+          }
+        },
+        {
+          "id": "847:14736",
+          "key": "loading",
+          "name": "D / GitHub / 独立读取绑定与配置",
+          "origin": "added",
+          "theme": "light",
+          "viewport": [1440, 1080],
+          "body": [960, 374],
+          "state": {
+            "configured": true,
+            "enabled": true,
+            "bound": true,
+            "bindingLoading": true,
+            "configLoading": true
+          }
+        },
+        {
+          "id": "847:14858",
+          "key": "binding-error",
+          "name": "D / GitHub / 绑定读取失败 · 配置可操作",
+          "origin": "added",
+          "theme": "light",
+          "viewport": [1440, 1080],
+          "body": [960, 420],
+          "state": {
+            "configured": true,
+            "enabled": true,
+            "bound": true,
+            "bindingError": true
+          }
+        },
+        {
+          "id": "847:14980",
+          "key": "config-error",
+          "name": "D / GitHub / 配置读取失败 · 已绑定可解绑",
+          "origin": "added",
+          "theme": "light",
+          "viewport": [1440, 1080],
+          "body": [960, 420],
+          "state": {
+            "configured": true,
+            "enabled": true,
+            "bound": true,
+            "configError": true
+          }
+        },
+        {
+          "id": "847:15102",
+          "key": "disabled-bound",
+          "name": "D / GitHub / 登录停用 · 绑定保留",
+          "origin": "added",
+          "theme": "light",
+          "viewport": [1440, 1080],
+          "body": [960, 421],
+          "state": {
+            "configured": true,
+            "enabled": false,
+            "bound": true
+          }
+        },
+        {
+          "id": "847:15224",
+          "key": "account-dark",
+          "name": "D / GitHub / 未配置 · 深色",
+          "origin": "added",
+          "theme": "dark",
+          "viewport": [1440, 1080],
+          "body": [960, 421],
+          "state": {
+            "configured": false,
+            "enabled": false,
+            "bound": false,
+            "dark": true
+          }
+        },
+        {
+          "id": "847:15346",
+          "key": "pending-expanded",
+          "name": "D / GitHub / 停用待重启 · 配置差异已展开",
+          "origin": "added",
+          "theme": "light",
+          "viewport": [1440, 1080],
+          "body": [960, 697],
+          "state": {
+            "configured": true,
+            "enabled": true,
+            "bound": true,
+            "pending": true,
+            "savedEnabled": false,
+            "expanded": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "97:748",
+      "viewport": "mobile",
+      "rootNodes": [
+        {
+          "id": "102:1713",
+          "key": "account-light",
+          "name": "M · 站点设置 · 账号与安全",
+          "origin": "updated",
+          "theme": "light",
+          "viewport": [390, 844],
+          "body": [358, 508],
+          "state": {}
+        },
+        {
+          "id": "197:2092",
+          "key": "bound-enabled",
+          "name": "M / 账号安全 / GitHub 已绑定",
+          "origin": "updated",
+          "theme": "light",
+          "viewport": [390, 844],
+          "body": [358, 536],
+          "state": {}
+        },
+        {
+          "id": "196:2011",
+          "key": "pending-secret",
+          "name": "M / GitHub / 配置已保存 · 等待重启 / 密钥已更新",
+          "origin": "updated",
+          "theme": "light",
+          "viewport": [390, 844],
+          "body": [358, 653],
+          "state": {
+            "configured": true,
+            "enabled": true,
+            "bound": false,
+            "pending": true,
+            "savedEnabled": true,
+            "secretUpdated": true
+          }
+        },
+        {
+          "id": "196:2012",
+          "key": "pending-disable",
+          "name": "M / GitHub / 停用已保存 · 当前仍启用",
+          "origin": "updated",
+          "theme": "light",
+          "viewport": [390, 844],
+          "body": [358, 653],
+          "state": {
+            "configured": true,
+            "enabled": true,
+            "bound": true,
+            "pending": true,
+            "savedEnabled": false
+          }
+        },
+        {
+          "id": "196:2016",
+          "key": "pending-enable",
+          "name": "M / GitHub / 启用已保存 · 当前未启用",
+          "origin": "updated",
+          "theme": "light",
+          "viewport": [390, 844],
+          "body": [358, 625],
+          "state": {
+            "configured": true,
+            "enabled": false,
+            "bound": false,
+            "pending": true,
+            "savedEnabled": true
+          }
+        },
+        {
+          "id": "196:2008",
+          "key": "unlink-success",
+          "name": "M / GitHub / 解绑后保留来源 / 中性通知",
+          "origin": "updated",
+          "theme": "light",
+          "viewport": [390, 844],
+          "body": [358, 536],
+          "state": {
+            "configured": true,
+            "enabled": true,
+            "bound": false
+          }
+        },
+        {
+          "id": "196:2009",
+          "key": "unlink-unknown",
+          "name": "M / GitHub / 解绑结果未知 / 回读状态",
+          "origin": "updated",
+          "theme": "light",
+          "viewport": [390, 844],
+          "body": [358, 579],
+          "state": {
+            "configured": true,
+            "enabled": true,
+            "bound": true,
+            "unlinkUnknown": true
+          }
+        },
+        {
+          "id": "196:2013",
+          "key": "unconfigured",
+          "name": "M / GitHub / 未配置 / 绑定不可用",
+          "origin": "updated",
+          "theme": "light",
+          "viewport": [390, 844],
+          "body": [358, 508],
+          "state": {
+            "configured": false,
+            "enabled": false,
+            "bound": false
+          }
+        },
+        {
+          "id": "814:29892",
+          "key": "config-unknown",
+          "name": "M / GitHub / 配置保存结果未知 · 来源页",
+          "origin": "updated",
+          "theme": "light",
+          "viewport": [390, 844],
+          "body": [358, 547],
+          "state": {
+            "configured": true,
+            "enabled": true,
+            "bound": false,
+            "configUnknown": true
+          }
+        },
+        {
+          "id": "814:29997",
+          "key": "pending-dark",
+          "name": "M / GitHub / 停用待重启 · 通知结束 · 深色",
+          "origin": "updated",
+          "theme": "dark",
+          "viewport": [390, 844],
+          "body": [358, 653],
+          "state": {
+            "configured": true,
+            "enabled": true,
+            "bound": true,
+            "pending": true,
+            "savedEnabled": false,
+            "dark": true
+          }
+        },
+        {
+          "id": "847:32045",
+          "key": "enabled",
+          "name": "M / GitHub / 已启用 · 尚未绑定",
+          "origin": "added",
+          "theme": "light",
+          "viewport": [390, 844],
+          "body": [358, 536],
+          "state": {
+            "configured": true,
+            "enabled": true,
+            "bound": false
+          }
+        },
+        {
+          "id": "847:32081",
+          "key": "loading",
+          "name": "M / GitHub / 独立读取绑定与配置",
+          "origin": "added",
+          "theme": "light",
+          "viewport": [390, 844],
+          "body": [358, 432],
+          "state": {
+            "configured": true,
+            "enabled": true,
+            "bound": true,
+            "bindingLoading": true,
+            "configLoading": true
+          }
+        },
+        {
+          "id": "847:32117",
+          "key": "binding-error",
+          "name": "M / GitHub / 绑定读取失败 · 配置可操作",
+          "origin": "added",
+          "theme": "light",
+          "viewport": [390, 844],
+          "body": [358, 535],
+          "state": {
+            "configured": true,
+            "enabled": true,
+            "bound": true,
+            "bindingError": true
+          }
+        },
+        {
+          "id": "847:32153",
+          "key": "config-error",
+          "name": "M / GitHub / 配置读取失败 · 已绑定可解绑",
+          "origin": "added",
+          "theme": "light",
+          "viewport": [390, 844],
+          "body": [358, 535],
+          "state": {
+            "configured": true,
+            "enabled": true,
+            "bound": true,
+            "configError": true
+          }
+        },
+        {
+          "id": "847:32189",
+          "key": "disabled-bound",
+          "name": "M / GitHub / 登录停用 · 绑定保留",
+          "origin": "added",
+          "theme": "light",
+          "viewport": [390, 844],
+          "body": [358, 560],
+          "state": {
+            "configured": true,
+            "enabled": false,
+            "bound": true
+          }
+        },
+        {
+          "id": "847:32225",
+          "key": "account-dark",
+          "name": "M / GitHub / 未配置 · 深色",
+          "origin": "added",
+          "theme": "dark",
+          "viewport": [390, 844],
+          "body": [358, 508],
+          "state": {
+            "configured": false,
+            "enabled": false,
+            "bound": false,
+            "dark": true
+          }
+        },
+        {
+          "id": "847:32261",
+          "key": "pending-expanded",
+          "name": "M / GitHub / 停用待重启 · 配置差异已展开",
+          "origin": "added",
+          "theme": "light",
+          "viewport": [390, 844],
+          "body": [358, 813],
+          "state": {
+            "configured": true,
+            "enabled": true,
+            "bound": true,
+            "pending": true,
+            "savedEnabled": false,
+            "expanded": true
+          }
+        }
+      ]
+    }
+  ],
+  "components": {
+    "settingsRows": {
+      "desktop": "836:13835",
+      "mobile": "836:13855"
+    },
+    "compactButtons": {
+      "primary": "842:16420",
+      "outline": "842:16422"
+    },
+    "heroUISpinner": "846:14534",
+    "lucideIcons": {
+      "Mail": "836:13783",
+      "KeyRound": "836:13787",
+      "Link2": "836:13791",
+      "Settings2": "836:13796",
+      "UserRound": "836:13802",
+      "LogIn": "836:13806",
+      "RefreshCw": "836:13811",
+      "SlidersHorizontal": "836:13817",
+      "ShieldCheck": "836:13828",
+      "ChevronDown": "836:13832"
+    },
+    "semanticColorCollection": "VariableCollectionId:2:2",
+    "lightMode": "2:0",
+    "darkMode": "264:0",
+    "mobileMenuReuseSource": "777:27283"
+  },
+  "screenshots": [
+    {
+      "nodeId": "847:15224",
+      "key": "account-dark",
+      "viewport": "desktop",
+      "theme": "dark",
+      "width": 1440,
+      "height": 1080,
+      "file": "desktop-account-dark.png"
+    },
+    {
+      "nodeId": "34:462",
+      "key": "account-light",
+      "viewport": "desktop",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "file": "desktop-account-light.png"
+    },
+    {
+      "nodeId": "847:14858",
+      "key": "binding-error",
+      "viewport": "desktop",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "file": "desktop-binding-error.png"
+    },
+    {
+      "nodeId": "197:2245",
+      "file": "desktop-bound-enabled.png",
+      "key": "bound-enabled",
+      "viewport": "desktop",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080
+    },
+    {
+      "nodeId": "847:14980",
+      "key": "config-error",
+      "viewport": "desktop",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "file": "desktop-config-error.png"
+    },
+    {
+      "nodeId": "814:14898",
+      "key": "config-unknown",
+      "viewport": "desktop",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "file": "desktop-config-unknown.png"
+    },
+    {
+      "nodeId": "847:15102",
+      "key": "disabled-bound",
+      "viewport": "desktop",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "file": "desktop-disabled-bound.png"
+    },
+    {
+      "nodeId": "847:14614",
+      "key": "enabled",
+      "viewport": "desktop",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "file": "desktop-enabled.png"
+    },
+    {
+      "nodeId": "847:14736",
+      "key": "loading",
+      "viewport": "desktop",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "file": "desktop-loading.png"
+    },
+    {
+      "nodeId": "814:15096",
+      "file": "desktop-pending-dark.png",
+      "key": "pending-dark",
+      "viewport": "desktop",
+      "theme": "dark",
+      "width": 1440,
+      "height": 1080
+    },
+    {
+      "nodeId": "196:2002",
+      "file": "desktop-pending-disable.png",
+      "key": "pending-disable",
+      "viewport": "desktop",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080
+    },
+    {
+      "nodeId": "196:2006",
+      "file": "desktop-pending-enable.png",
+      "key": "pending-enable",
+      "viewport": "desktop",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080
+    },
+    {
+      "nodeId": "847:15346",
+      "file": "desktop-pending-expanded.png",
+      "key": "pending-expanded",
+      "viewport": "desktop",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080
+    },
+    {
+      "nodeId": "196:2001",
+      "file": "desktop-pending-secret.png",
+      "key": "pending-secret",
+      "viewport": "desktop",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080
+    },
+    {
+      "nodeId": "196:2003",
+      "key": "unconfigured",
+      "viewport": "desktop",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "file": "desktop-unconfigured.png"
+    },
+    {
+      "nodeId": "196:1998",
+      "key": "unlink-success",
+      "viewport": "desktop",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "file": "desktop-unlink-success.png"
+    },
+    {
+      "nodeId": "196:1999",
+      "key": "unlink-unknown",
+      "viewport": "desktop",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "file": "desktop-unlink-unknown.png"
+    },
+    {
+      "nodeId": "847:32225",
+      "key": "account-dark",
+      "viewport": "mobile",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "file": "mobile-account-dark.png"
+    },
+    {
+      "nodeId": "102:1713",
+      "key": "account-light",
+      "viewport": "mobile",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "file": "mobile-account-light.png"
+    },
+    {
+      "nodeId": "847:32117",
+      "key": "binding-error",
+      "viewport": "mobile",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "file": "mobile-binding-error.png"
+    },
+    {
+      "nodeId": "197:2092",
+      "file": "mobile-bound-enabled.png",
+      "key": "bound-enabled",
+      "viewport": "mobile",
+      "theme": "light",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "nodeId": "847:32153",
+      "key": "config-error",
+      "viewport": "mobile",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "file": "mobile-config-error.png"
+    },
+    {
+      "nodeId": "814:29892",
+      "key": "config-unknown",
+      "viewport": "mobile",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "file": "mobile-config-unknown.png"
+    },
+    {
+      "nodeId": "847:32189",
+      "key": "disabled-bound",
+      "viewport": "mobile",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "file": "mobile-disabled-bound.png"
+    },
+    {
+      "nodeId": "847:32045",
+      "key": "enabled",
+      "viewport": "mobile",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "file": "mobile-enabled.png"
+    },
+    {
+      "nodeId": "847:32081",
+      "key": "loading",
+      "viewport": "mobile",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "file": "mobile-loading.png"
+    },
+    {
+      "nodeId": "814:29997",
+      "file": "mobile-pending-dark.png",
+      "key": "pending-dark",
+      "viewport": "mobile",
+      "theme": "dark",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "nodeId": "196:2012",
+      "file": "mobile-pending-disable.png",
+      "key": "pending-disable",
+      "viewport": "mobile",
+      "theme": "light",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "nodeId": "196:2016",
+      "file": "mobile-pending-enable.png",
+      "key": "pending-enable",
+      "viewport": "mobile",
+      "theme": "light",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "nodeId": "847:32261",
+      "file": "mobile-pending-expanded.png",
+      "key": "pending-expanded",
+      "viewport": "mobile",
+      "theme": "light",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "nodeId": "196:2011",
+      "file": "mobile-pending-secret.png",
+      "key": "pending-secret",
+      "viewport": "mobile",
+      "theme": "light",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "nodeId": "196:2013",
+      "key": "unconfigured",
+      "viewport": "mobile",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "file": "mobile-unconfigured.png"
+    },
+    {
+      "nodeId": "196:2008",
+      "key": "unlink-success",
+      "viewport": "mobile",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "file": "mobile-unlink-success.png"
+    },
+    {
+      "nodeId": "196:2009",
+      "key": "unlink-unknown",
+      "viewport": "mobile",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "file": "mobile-unlink-unknown.png"
+    }
+  ],
+  "scrollContentScreenshots": [
+    {
+      "nodeId": "847:32274",
+      "file": "mobile-pending-expanded-full-content.png",
+      "width": 358,
+      "height": 813,
+      "theme": "light",
+      "kind": "full-content",
+      "renderMethod": "temporarily unclip 847:32261 and paint the real light page background; export body; restore clipsContent=true and transparent body fills"
+    },
+    {
+      "nodeId": "819:27634",
+      "file": "mobile-pending-full-content.png",
+      "width": 358,
+      "height": 369,
+      "theme": "dark",
+      "kind": "full-content"
+    }
+  ],
+  "checks": {
+    "accountRoots": 34,
+    "imagePaintNodes": 0,
+    "semanticBoundPaints": 3974,
+    "fontFamilies": ["Caveat", "Noto Sans SC", "Inter"],
+    "allPhoneLabelsAlignedToValueBlock": true,
+    "allVisibleActions44Px": true,
+    "rootNodeIdsPreservedForExistingStates": true
+  },
+  "completion": {
+    "figmaWritten": true,
+    "staticScreenshotsExported": true,
+    "implementerStaticReview": true,
+    "independentDesignReview": "see ../design-review.md for the independent final verdict",
+    "productBrowserValidation": false,
+    "manualAcceptance": false
+  },
+  "limitations": [
+    "静态Figma/原型不证明产品浏览器交互或真实OAuth成功",
+    "390x844画板保留真实滚动需求；完整待重启内容另有原始导出",
+    "通用设置分类/公共区按获批原型和已实现公共规则同步账号画板的本地实例，未改其它模块共享母版"
+  ],
+  "processArtifacts": {
+    "before": [
+      "before-desktop.png",
+      "before-mobile.png",
+      "before-desktop-context.json",
+      "before-mobile-context.json"
+    ],
+    "nonFinalComposition": [
+      "composition-desktop.png",
+      "composition-mobile.png"
+    ],
+    "overwrittenFiles": [
+      "mobile-account-light.png now contains the final alignment-corrected render",
+      "bound-enabled and pending PNGs now contain final review corrections"
+    ]
+  }
+}

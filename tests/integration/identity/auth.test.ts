@@ -379,12 +379,10 @@ describe('initialized production auth', () => {
     expect(await bearerSession.json()).toBeNull();
   }, 30000);
 
-  it('only the three delivered path/method pairs are reachable and all forbidden mutations leave data unchanged', async () => {
+  it('only the five delivered path/method pairs are reachable and all forbidden mutations leave data unchanged', async () => {
     const before = connection.db.select().from(user).all();
     for (const path of [
       'sign-up/email',
-      'sign-in/social',
-      'callback/github',
       'link-social',
       'unlink-account',
       'update-user',
@@ -413,6 +411,8 @@ describe('initialized production auth', () => {
       ['get-session', 'GET'],
       ['sign-in/email', 'POST'],
       ['sign-out', 'POST'],
+      ['sign-in/social', 'POST'],
+      ['callback/github', 'GET'],
     ]) {
       for (const method of [
         'GET',
@@ -428,6 +428,19 @@ describe('initialized production auth', () => {
           `${method} ${path}`,
         ).toBe(404);
     }
+    const disabledProvider = await post('sign-in/social', {
+      provider: 'github',
+    });
+    expect(disabledProvider.status).toBe(404);
+    expect(await disabledProvider.json()).toMatchObject({
+      code: 'PROVIDER_NOT_FOUND',
+    });
+    const invalidCallback = await request('callback/github');
+    expect(invalidCallback.status).toBe(302);
+    const callbackError = new URL(invalidCallback.headers.get('location')!);
+    expect(callbackError.pathname).toBe('/login');
+    expect(callbackError.searchParams.get('github')).toBe('error');
+    expect(callbackError.searchParams.get('error')).toBe('state_not_found');
     expect(connection.db.select().from(user).all()).toEqual(before);
     expect(connection.db.select().from(account).all()).toHaveLength(1);
   }, 30000);

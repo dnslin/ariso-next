@@ -8,6 +8,7 @@ import { join, resolve } from 'node:path';
 import { openRuntimeDatabase } from '../runtime/db.ts';
 import { parseRuntimeEnv } from '../runtime/env.ts';
 import { createSetupState } from '../identity/setup.ts';
+import { captureGithubSettings } from '../identity/github-settings.ts';
 import { requireInitialSettings } from './initial-settings.ts';
 import { startUploadRuntime } from '../upload/runtime.ts';
 import { startMediaQueue } from '../media/queue.ts';
@@ -30,6 +31,10 @@ function initializeServerRuntime() {
   const connection = openRuntimeDatabase(join(config.dataDir, 'ariso.db'));
   try {
     verifyStorageSecrets(
+      connection.db,
+      createSecretCrypto(config.encryptionKey),
+    );
+    const github = captureGithubSettings(
       connection.db,
       createSecretCrypto(config.encryptionKey),
     );
@@ -104,6 +109,7 @@ function initializeServerRuntime() {
       config,
       connection,
       setup,
+      github,
       mediaQueue,
       uploads,
       storageProbes,

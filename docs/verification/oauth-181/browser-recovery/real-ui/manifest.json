@@ -1,0 +1,3036 @@
+{
+  "source": "actual production UI with independent real OAuth test fixture",
+  "screenshots": [
+    "real-bound-light-1440.png",
+    "oauth-390-real-pending-expanded-top-light-390.png",
+    "oauth-390-real-pending-expanded-bottom-light-390.png",
+    "oauth-390-real-pending-expanded-bottom-dark-390.png",
+    "oauth-390-real-callback-manual-light-390.png",
+    "oauth-390-real-callback-manual-dark-390.png",
+    "oauth-390-real-oauth-settings-loading-light-390.png",
+    "oauth-390-real-oauth-settings-loading-dark-390.png",
+    "oauth-390-real-oauth-settings-read-error-light-390.png",
+    "oauth-390-real-oauth-settings-read-error-dark-390.png",
+    "oauth-390-real-account-github-loading-light-390.png",
+    "oauth-390-real-account-github-loading-dark-390.png",
+    "oauth-390-real-account-github-read-error-light-390.png",
+    "oauth-390-real-account-github-read-error-dark-390.png",
+    "oauth-390-real-phone-configuration-unknown-light-390.png",
+    "oauth-390-real-phone-configuration-unknown-dark-390.png",
+    "oauth-390-real-phone-configuration-unknown-closed-light-390.png",
+    "oauth-390-real-phone-configuration-unknown-closed-dark-390.png",
+    "oauth-390-real-phone-unlink-unknown-not-sent-light-390.png",
+    "oauth-390-real-phone-unlink-unknown-not-sent-dark-390.png",
+    "oauth-390-real-phone-unlink-unknown-closed-light-390.png",
+    "oauth-390-real-phone-unlink-unknown-closed-dark-390.png",
+    "oauth-all-real-long-email-light-1440.png",
+    "oauth-all-real-long-email-light-360.png",
+    "oauth-all-real-long-email-light-390.png",
+    "oauth-all-real-long-email-light-430.png",
+    "oauth-all-real-long-email-light-768.png",
+    "oauth-all-real-long-email-dark-1440.png",
+    "oauth-all-real-long-email-dark-360.png",
+    "oauth-all-real-long-email-dark-390.png",
+    "oauth-all-real-long-email-dark-430.png",
+    "oauth-all-real-long-email-dark-768.png",
+    "oauth-1440-real-real-unlink-confirmation-light-1440.png",
+    "oauth-1440-real-real-unlinked-light-1440.png"
+  ],
+  "layouts": [
+    {
+      "name": "pending-expanded-top-light",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "账号与安全",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改邮箱",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改密码",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "解绑账号",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "登录配置",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看配置差异",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "关闭通知",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "pending-expanded-bottom-light",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "账号与安全",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改邮箱",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改密码",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "解绑账号",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "登录配置",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看配置差异",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "关闭通知",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "pending-expanded-bottom-dark",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "账号与安全",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改邮箱",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改密码",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "解绑账号",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "登录配置",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看配置差异",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "关闭通知",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "callback-manual-light",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭登录配置",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "clientId",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "clientSecret",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "复制 GitHub 回调地址",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "完整回调地址",
+          "width": 316,
+          "height": 66,
+          "navigation": false
+        },
+        {
+          "name": "选择完整回调地址",
+          "width": 138,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "清除密钥",
+          "width": 82,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "保存配置",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "callback-manual-dark",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭登录配置",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "clientId",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "clientSecret",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "复制 GitHub 回调地址",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "完整回调地址",
+          "width": 316,
+          "height": 66,
+          "navigation": false
+        },
+        {
+          "name": "选择完整回调地址",
+          "width": 138,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "清除密钥",
+          "width": 82,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "保存配置",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "oauth-settings-loading-light",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "账号与安全",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改邮箱",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改密码",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "解绑账号",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "oauth-settings-loading-dark",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "账号与安全",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改邮箱",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改密码",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "解绑账号",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "oauth-settings-read-error-light",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "账号与安全",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改邮箱",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改密码",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "解绑账号",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新读取配置",
+          "width": 138,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "oauth-settings-read-error-dark",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "账号与安全",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改邮箱",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改密码",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "解绑账号",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新读取配置",
+          "width": 138,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "account-github-loading-light",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "账号与安全",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改邮箱",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改密码",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "登录配置",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "account-github-loading-dark",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "账号与安全",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改邮箱",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改密码",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "登录配置",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "account-github-read-error-light",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "账号与安全",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改邮箱",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改密码",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新读取绑定",
+          "width": 138,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "登录配置",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "account-github-read-error-dark",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "账号与安全",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改邮箱",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改密码",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新读取绑定",
+          "width": 138,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "登录配置",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "phone-configuration-unknown-light",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭登录配置",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "clientId",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "clientSecret",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "复制 GitHub 回调地址",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "清除密钥",
+          "width": 82,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新核对配置",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "phone-configuration-unknown-dark",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭登录配置",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "clientId",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "clientSecret",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "复制 GitHub 回调地址",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "清除密钥",
+          "width": 82,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新核对配置",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "phone-configuration-unknown-closed-light",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "账号与安全",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改邮箱",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改密码",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "解绑账号",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "核对配置",
+          "width": 108,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "phone-configuration-unknown-closed-dark",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "账号与安全",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改邮箱",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改密码",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "解绑账号",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "核对配置",
+          "width": 108,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "phone-unlink-unknown-not-sent-light",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭通知",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "关闭解绑确认",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 148,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "核对绑定状态",
+          "width": 148,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "phone-unlink-unknown-not-sent-dark",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭通知",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "关闭解绑确认",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 148,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "核对绑定状态",
+          "width": 148,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "phone-unlink-unknown-closed-light",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "账号与安全",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改邮箱",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改密码",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "核对绑定",
+          "width": 108,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "登录配置",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "关闭通知",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "phone-unlink-unknown-closed-dark",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "账号与安全",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改邮箱",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改密码",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "核对绑定",
+          "width": 108,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "登录配置",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "关闭通知",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "long-email-rows-light",
+      "width": 1440,
+      "contentWidth": 960,
+      "headings": [
+        {
+          "text": "所有者账号",
+          "icon": true
+        },
+        {
+          "text": "GitHub 登录",
+          "icon": true
+        }
+      ],
+      "rows": [
+        {
+          "label": "登录邮箱",
+          "icon": true,
+          "value": {
+            "x": 441,
+            "y": 267,
+            "width": 646,
+            "height": 40,
+            "bottom": 307,
+            "right": 1087
+          },
+          "buttons": [
+            {
+              "x": 1107,
+              "y": 265,
+              "width": 96,
+              "height": 44,
+              "bottom": 309,
+              "right": 1203
+            }
+          ]
+        },
+        {
+          "label": "登录密码",
+          "icon": true,
+          "value": {
+            "x": 441,
+            "y": 354,
+            "width": 646,
+            "height": 20,
+            "bottom": 374,
+            "right": 1087
+          },
+          "buttons": [
+            {
+              "x": 1107,
+              "y": 342,
+              "width": 96,
+              "height": 44,
+              "bottom": 386,
+              "right": 1203
+            }
+          ]
+        },
+        {
+          "label": "GitHub 账号",
+          "icon": true,
+          "value": {
+            "x": 441,
+            "y": 504,
+            "width": 646,
+            "height": 20,
+            "bottom": 524,
+            "right": 1087
+          },
+          "buttons": [
+            {
+              "x": 1107,
+              "y": 492,
+              "width": 96,
+              "height": 44,
+              "bottom": 536,
+              "right": 1203
+            }
+          ]
+        },
+        {
+          "label": "站点登录配置",
+          "icon": true,
+          "value": {
+            "x": 441,
+            "y": 581,
+            "width": 646,
+            "height": 20,
+            "bottom": 601,
+            "right": 1087
+          },
+          "buttons": [
+            {
+              "x": 1107,
+              "y": 569,
+              "width": 96,
+              "height": 44,
+              "bottom": 613,
+              "right": 1203
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "long-email-light",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "分享管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "修改邮箱",
+          "width": 96,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改密码",
+          "width": 96,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "解绑账号",
+          "width": 96,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "登录配置",
+          "width": 96,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "long-email-rows-light",
+      "width": 360,
+      "contentWidth": 328,
+      "headings": [
+        {
+          "text": "所有者账号",
+          "icon": true
+        },
+        {
+          "text": "GitHub 登录",
+          "icon": true
+        }
+      ],
+      "rows": [
+        {
+          "label": "登录邮箱",
+          "icon": true,
+          "value": {
+            "x": 161,
+            "y": 341,
+            "width": 166,
+            "height": 140,
+            "bottom": 481,
+            "right": 327
+          },
+          "buttons": [
+            {
+              "x": 161,
+              "y": 489,
+              "width": 90,
+              "height": 44,
+              "bottom": 533,
+              "right": 251
+            }
+          ]
+        },
+        {
+          "label": "登录密码",
+          "icon": true,
+          "value": {
+            "x": 161,
+            "y": 566,
+            "width": 166,
+            "height": 20,
+            "bottom": 586,
+            "right": 327
+          },
+          "buttons": [
+            {
+              "x": 161,
+              "y": 594,
+              "width": 90,
+              "height": 44,
+              "bottom": 638,
+              "right": 251
+            }
+          ]
+        },
+        {
+          "label": "GitHub 账号",
+          "icon": true,
+          "value": {
+            "x": 161,
+            "y": 744,
+            "width": 166,
+            "height": 20,
+            "bottom": 764,
+            "right": 327
+          },
+          "buttons": [
+            {
+              "x": 161,
+              "y": 772,
+              "width": 90,
+              "height": 44,
+              "bottom": 816,
+              "right": 251
+            }
+          ]
+        },
+        {
+          "label": "站点登录配置",
+          "icon": true,
+          "value": {
+            "x": 161,
+            "y": 849,
+            "width": 166,
+            "height": 20,
+            "bottom": 869,
+            "right": 327
+          },
+          "buttons": [
+            {
+              "x": 161,
+              "y": 877,
+              "width": 90,
+              "height": 44,
+              "bottom": 921,
+              "right": 251
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "long-email-light",
+      "width": 360,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "账号与安全",
+          "width": 328,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改邮箱",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改密码",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "解绑账号",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "登录配置",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "long-email-rows-light",
+      "width": 390,
+      "contentWidth": 358,
+      "headings": [
+        {
+          "text": "所有者账号",
+          "icon": true
+        },
+        {
+          "text": "GitHub 登录",
+          "icon": true
+        }
+      ],
+      "rows": [
+        {
+          "label": "登录邮箱",
+          "icon": true,
+          "value": {
+            "x": 161,
+            "y": 341,
+            "width": 196,
+            "height": 140,
+            "bottom": 481,
+            "right": 357
+          },
+          "buttons": [
+            {
+              "x": 161,
+              "y": 489,
+              "width": 90,
+              "height": 44,
+              "bottom": 533,
+              "right": 251
+            }
+          ]
+        },
+        {
+          "label": "登录密码",
+          "icon": true,
+          "value": {
+            "x": 161,
+            "y": 566,
+            "width": 196,
+            "height": 20,
+            "bottom": 586,
+            "right": 357
+          },
+          "buttons": [
+            {
+              "x": 161,
+              "y": 594,
+              "width": 90,
+              "height": 44,
+              "bottom": 638,
+              "right": 251
+            }
+          ]
+        },
+        {
+          "label": "GitHub 账号",
+          "icon": true,
+          "value": {
+            "x": 161,
+            "y": 744,
+            "width": 196,
+            "height": 20,
+            "bottom": 764,
+            "right": 357
+          },
+          "buttons": [
+            {
+              "x": 161,
+              "y": 772,
+              "width": 90,
+              "height": 44,
+              "bottom": 816,
+              "right": 251
+            }
+          ]
+        },
+        {
+          "label": "站点登录配置",
+          "icon": true,
+          "value": {
+            "x": 161,
+            "y": 849,
+            "width": 196,
+            "height": 20,
+            "bottom": 869,
+            "right": 357
+          },
+          "buttons": [
+            {
+              "x": 161,
+              "y": 877,
+              "width": 90,
+              "height": 44,
+              "bottom": 921,
+              "right": 251
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "long-email-light",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "账号与安全",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改邮箱",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改密码",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "解绑账号",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "登录配置",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "long-email-rows-light",
+      "width": 430,
+      "contentWidth": 398,
+      "headings": [
+        {
+          "text": "所有者账号",
+          "icon": true
+        },
+        {
+          "text": "GitHub 登录",
+          "icon": true
+        }
+      ],
+      "rows": [
+        {
+          "label": "登录邮箱",
+          "icon": true,
+          "value": {
+            "x": 161,
+            "y": 341,
+            "width": 236,
+            "height": 120,
+            "bottom": 461,
+            "right": 397
+          },
+          "buttons": [
+            {
+              "x": 161,
+              "y": 469,
+              "width": 90,
+              "height": 44,
+              "bottom": 513,
+              "right": 251
+            }
+          ]
+        },
+        {
+          "label": "登录密码",
+          "icon": true,
+          "value": {
+            "x": 161,
+            "y": 546,
+            "width": 236,
+            "height": 20,
+            "bottom": 566,
+            "right": 397
+          },
+          "buttons": [
+            {
+              "x": 161,
+              "y": 574,
+              "width": 90,
+              "height": 44,
+              "bottom": 618,
+              "right": 251
+            }
+          ]
+        },
+        {
+          "label": "GitHub 账号",
+          "icon": true,
+          "value": {
+            "x": 161,
+            "y": 724,
+            "width": 236,
+            "height": 20,
+            "bottom": 744,
+            "right": 397
+          },
+          "buttons": [
+            {
+              "x": 161,
+              "y": 752,
+              "width": 90,
+              "height": 44,
+              "bottom": 796,
+              "right": 251
+            }
+          ]
+        },
+        {
+          "label": "站点登录配置",
+          "icon": true,
+          "value": {
+            "x": 161,
+            "y": 829,
+            "width": 236,
+            "height": 20,
+            "bottom": 849,
+            "right": 397
+          },
+          "buttons": [
+            {
+              "x": 161,
+              "y": 857,
+              "width": 90,
+              "height": 44,
+              "bottom": 901,
+              "right": 251
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "long-email-light",
+      "width": 430,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "账号与安全",
+          "width": 398,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改邮箱",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改密码",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "解绑账号",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "登录配置",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "long-email-rows-light",
+      "width": 768,
+      "contentWidth": 736,
+      "headings": [
+        {
+          "text": "所有者账号",
+          "icon": true
+        },
+        {
+          "text": "GitHub 登录",
+          "icon": true
+        }
+      ],
+      "rows": [
+        {
+          "label": "登录邮箱",
+          "icon": true,
+          "value": {
+            "x": 193,
+            "y": 341,
+            "width": 422,
+            "height": 80,
+            "bottom": 421,
+            "right": 615
+          },
+          "buttons": [
+            {
+              "x": 635,
+              "y": 359,
+              "width": 96,
+              "height": 44,
+              "bottom": 403,
+              "right": 731
+            }
+          ]
+        },
+        {
+          "label": "登录密码",
+          "icon": true,
+          "value": {
+            "x": 193,
+            "y": 466,
+            "width": 422,
+            "height": 20,
+            "bottom": 486,
+            "right": 615
+          },
+          "buttons": [
+            {
+              "x": 635,
+              "y": 454,
+              "width": 96,
+              "height": 44,
+              "bottom": 498,
+              "right": 731
+            }
+          ]
+        },
+        {
+          "label": "GitHub 账号",
+          "icon": true,
+          "value": {
+            "x": 193,
+            "y": 616,
+            "width": 422,
+            "height": 20,
+            "bottom": 636,
+            "right": 615
+          },
+          "buttons": [
+            {
+              "x": 635,
+              "y": 604,
+              "width": 96,
+              "height": 44,
+              "bottom": 648,
+              "right": 731
+            }
+          ]
+        },
+        {
+          "label": "站点登录配置",
+          "icon": true,
+          "value": {
+            "x": 193,
+            "y": 693,
+            "width": 422,
+            "height": 20,
+            "bottom": 713,
+            "right": 615
+          },
+          "buttons": [
+            {
+              "x": 635,
+              "y": 681,
+              "width": 96,
+              "height": 44,
+              "bottom": 725,
+              "right": 731
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "long-email-light",
+      "width": 768,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "账号与安全",
+          "width": 736,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改邮箱",
+          "width": 96,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改密码",
+          "width": 96,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "解绑账号",
+          "width": 96,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "登录配置",
+          "width": 96,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "long-email-rows-dark",
+      "width": 1440,
+      "contentWidth": 960,
+      "headings": [
+        {
+          "text": "所有者账号",
+          "icon": true
+        },
+        {
+          "text": "GitHub 登录",
+          "icon": true
+        }
+      ],
+      "rows": [
+        {
+          "label": "登录邮箱",
+          "icon": true,
+          "value": {
+            "x": 441,
+            "y": 267,
+            "width": 646,
+            "height": 40,
+            "bottom": 307,
+            "right": 1087
+          },
+          "buttons": [
+            {
+              "x": 1107,
+              "y": 265,
+              "width": 96,
+              "height": 44,
+              "bottom": 309,
+              "right": 1203
+            }
+          ]
+        },
+        {
+          "label": "登录密码",
+          "icon": true,
+          "value": {
+            "x": 441,
+            "y": 354,
+            "width": 646,
+            "height": 20,
+            "bottom": 374,
+            "right": 1087
+          },
+          "buttons": [
+            {
+              "x": 1107,
+              "y": 342,
+              "width": 96,
+              "height": 44,
+              "bottom": 386,
+              "right": 1203
+            }
+          ]
+        },
+        {
+          "label": "GitHub 账号",
+          "icon": true,
+          "value": {
+            "x": 441,
+            "y": 504,
+            "width": 646,
+            "height": 20,
+            "bottom": 524,
+            "right": 1087
+          },
+          "buttons": [
+            {
+              "x": 1107,
+              "y": 492,
+              "width": 96,
+              "height": 44,
+              "bottom": 536,
+              "right": 1203
+            }
+          ]
+        },
+        {
+          "label": "站点登录配置",
+          "icon": true,
+          "value": {
+            "x": 441,
+            "y": 581,
+            "width": 646,
+            "height": 20,
+            "bottom": 601,
+            "right": 1087
+          },
+          "buttons": [
+            {
+              "x": 1107,
+              "y": 569,
+              "width": 96,
+              "height": 44,
+              "bottom": 613,
+              "right": 1203
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "long-email-dark",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "分享管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "修改邮箱",
+          "width": 96,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改密码",
+          "width": 96,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "解绑账号",
+          "width": 96,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "登录配置",
+          "width": 96,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "long-email-rows-dark",
+      "width": 360,
+      "contentWidth": 328,
+      "headings": [
+        {
+          "text": "所有者账号",
+          "icon": true
+        },
+        {
+          "text": "GitHub 登录",
+          "icon": true
+        }
+      ],
+      "rows": [
+        {
+          "label": "登录邮箱",
+          "icon": true,
+          "value": {
+            "x": 161,
+            "y": 341,
+            "width": 166,
+            "height": 140,
+            "bottom": 481,
+            "right": 327
+          },
+          "buttons": [
+            {
+              "x": 161,
+              "y": 489,
+              "width": 90,
+              "height": 44,
+              "bottom": 533,
+              "right": 251
+            }
+          ]
+        },
+        {
+          "label": "登录密码",
+          "icon": true,
+          "value": {
+            "x": 161,
+            "y": 566,
+            "width": 166,
+            "height": 20,
+            "bottom": 586,
+            "right": 327
+          },
+          "buttons": [
+            {
+              "x": 161,
+              "y": 594,
+              "width": 90,
+              "height": 44,
+              "bottom": 638,
+              "right": 251
+            }
+          ]
+        },
+        {
+          "label": "GitHub 账号",
+          "icon": true,
+          "value": {
+            "x": 161,
+            "y": 744,
+            "width": 166,
+            "height": 20,
+            "bottom": 764,
+            "right": 327
+          },
+          "buttons": [
+            {
+              "x": 161,
+              "y": 772,
+              "width": 90,
+              "height": 44,
+              "bottom": 816,
+              "right": 251
+            }
+          ]
+        },
+        {
+          "label": "站点登录配置",
+          "icon": true,
+          "value": {
+            "x": 161,
+            "y": 849,
+            "width": 166,
+            "height": 20,
+            "bottom": 869,
+            "right": 327
+          },
+          "buttons": [
+            {
+              "x": 161,
+              "y": 877,
+              "width": 90,
+              "height": 44,
+              "bottom": 921,
+              "right": 251
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "long-email-dark",
+      "width": 360,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "账号与安全",
+          "width": 328,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改邮箱",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改密码",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "解绑账号",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "登录配置",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "long-email-rows-dark",
+      "width": 390,
+      "contentWidth": 358,
+      "headings": [
+        {
+          "text": "所有者账号",
+          "icon": true
+        },
+        {
+          "text": "GitHub 登录",
+          "icon": true
+        }
+      ],
+      "rows": [
+        {
+          "label": "登录邮箱",
+          "icon": true,
+          "value": {
+            "x": 161,
+            "y": 341,
+            "width": 196,
+            "height": 140,
+            "bottom": 481,
+            "right": 357
+          },
+          "buttons": [
+            {
+              "x": 161,
+              "y": 489,
+              "width": 90,
+              "height": 44,
+              "bottom": 533,
+              "right": 251
+            }
+          ]
+        },
+        {
+          "label": "登录密码",
+          "icon": true,
+          "value": {
+            "x": 161,
+            "y": 566,
+            "width": 196,
+            "height": 20,
+            "bottom": 586,
+            "right": 357
+          },
+          "buttons": [
+            {
+              "x": 161,
+              "y": 594,
+              "width": 90,
+              "height": 44,
+              "bottom": 638,
+              "right": 251
+            }
+          ]
+        },
+        {
+          "label": "GitHub 账号",
+          "icon": true,
+          "value": {
+            "x": 161,
+            "y": 744,
+            "width": 196,
+            "height": 20,
+            "bottom": 764,
+            "right": 357
+          },
+          "buttons": [
+            {
+              "x": 161,
+              "y": 772,
+              "width": 90,
+              "height": 44,
+              "bottom": 816,
+              "right": 251
+            }
+          ]
+        },
+        {
+          "label": "站点登录配置",
+          "icon": true,
+          "value": {
+            "x": 161,
+            "y": 849,
+            "width": 196,
+            "height": 20,
+            "bottom": 869,
+            "right": 357
+          },
+          "buttons": [
+            {
+              "x": 161,
+              "y": 877,
+              "width": 90,
+              "height": 44,
+              "bottom": 921,
+              "right": 251
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "long-email-dark",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "账号与安全",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改邮箱",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改密码",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "解绑账号",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "登录配置",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "long-email-rows-dark",
+      "width": 430,
+      "contentWidth": 398,
+      "headings": [
+        {
+          "text": "所有者账号",
+          "icon": true
+        },
+        {
+          "text": "GitHub 登录",
+          "icon": true
+        }
+      ],
+      "rows": [
+        {
+          "label": "登录邮箱",
+          "icon": true,
+          "value": {
+            "x": 161,
+            "y": 341,
+            "width": 236,
+            "height": 120,
+            "bottom": 461,
+            "right": 397
+          },
+          "buttons": [
+            {
+              "x": 161,
+              "y": 469,
+              "width": 90,
+              "height": 44,
+              "bottom": 513,
+              "right": 251
+            }
+          ]
+        },
+        {
+          "label": "登录密码",
+          "icon": true,
+          "value": {
+            "x": 161,
+            "y": 546,
+            "width": 236,
+            "height": 20,
+            "bottom": 566,
+            "right": 397
+          },
+          "buttons": [
+            {
+              "x": 161,
+              "y": 574,
+              "width": 90,
+              "height": 44,
+              "bottom": 618,
+              "right": 251
+            }
+          ]
+        },
+        {
+          "label": "GitHub 账号",
+          "icon": true,
+          "value": {
+            "x": 161,
+            "y": 724,
+            "width": 236,
+            "height": 20,
+            "bottom": 744,
+            "right": 397
+          },
+          "buttons": [
+            {
+              "x": 161,
+              "y": 752,
+              "width": 90,
+              "height": 44,
+              "bottom": 796,
+              "right": 251
+            }
+          ]
+        },
+        {
+          "label": "站点登录配置",
+          "icon": true,
+          "value": {
+            "x": 161,
+            "y": 829,
+            "width": 236,
+            "height": 20,
+            "bottom": 849,
+            "right": 397
+          },
+          "buttons": [
+            {
+              "x": 161,
+              "y": 857,
+              "width": 90,
+              "height": 44,
+              "bottom": 901,
+              "right": 251
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "long-email-dark",
+      "width": 430,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "账号与安全",
+          "width": 398,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改邮箱",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改密码",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "解绑账号",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "登录配置",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "long-email-rows-dark",
+      "width": 768,
+      "contentWidth": 736,
+      "headings": [
+        {
+          "text": "所有者账号",
+          "icon": true
+        },
+        {
+          "text": "GitHub 登录",
+          "icon": true
+        }
+      ],
+      "rows": [
+        {
+          "label": "登录邮箱",
+          "icon": true,
+          "value": {
+            "x": 193,
+            "y": 341,
+            "width": 422,
+            "height": 80,
+            "bottom": 421,
+            "right": 615
+          },
+          "buttons": [
+            {
+              "x": 635,
+              "y": 359,
+              "width": 96,
+              "height": 44,
+              "bottom": 403,
+              "right": 731
+            }
+          ]
+        },
+        {
+          "label": "登录密码",
+          "icon": true,
+          "value": {
+            "x": 193,
+            "y": 466,
+            "width": 422,
+            "height": 20,
+            "bottom": 486,
+            "right": 615
+          },
+          "buttons": [
+            {
+              "x": 635,
+              "y": 454,
+              "width": 96,
+              "height": 44,
+              "bottom": 498,
+              "right": 731
+            }
+          ]
+        },
+        {
+          "label": "GitHub 账号",
+          "icon": true,
+          "value": {
+            "x": 193,
+            "y": 616,
+            "width": 422,
+            "height": 20,
+            "bottom": 636,
+            "right": 615
+          },
+          "buttons": [
+            {
+              "x": 635,
+              "y": 604,
+              "width": 96,
+              "height": 44,
+              "bottom": 648,
+              "right": 731
+            }
+          ]
+        },
+        {
+          "label": "站点登录配置",
+          "icon": true,
+          "value": {
+            "x": 193,
+            "y": 693,
+            "width": 422,
+            "height": 20,
+            "bottom": 713,
+            "right": 615
+          },
+          "buttons": [
+            {
+              "x": 635,
+              "y": 681,
+              "width": 96,
+              "height": 44,
+              "bottom": 725,
+              "right": 731
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "long-email-dark",
+      "width": 768,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "账号与安全",
+          "width": 736,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改邮箱",
+          "width": 96,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改密码",
+          "width": 96,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "解绑账号",
+          "width": 96,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "登录配置",
+          "width": 96,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "real-unlink-confirmation-light",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭解绑确认",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 193,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "确认解绑",
+          "width": 193,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "real-unlinked-light",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "分享管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "修改邮箱",
+          "width": 96,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改密码",
+          "width": 96,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "绑定 GitHub",
+          "width": 109.25,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "登录配置",
+          "width": 96,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "关闭通知",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    }
+  ],
+  "themeNote": "real-bound-light-1440.png was captured in dark theme; later names use explicitly selected theme"
+}

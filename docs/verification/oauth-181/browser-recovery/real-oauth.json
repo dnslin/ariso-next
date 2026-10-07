@@ -1,0 +1,574 @@
+{
+  "status": "passed",
+  "finishedAt": "2026-10-07T12:16:04.241399+00:00",
+  "environment": {
+    "node": "24.18.1",
+    "pnpm": "11.19.0",
+    "database": "independent real-data fixture",
+    "origin": "http://localhost:3183",
+    "githubAppId": "3909482",
+    "browserTaskSpace": 6
+  },
+  "checks": [
+    {
+      "name": "actual saved/effective/restart distinction and encrypted Secret",
+      "initial": {
+        "saved": {
+          "enabled": false,
+          "clientId": "",
+          "hasSecret": false
+        },
+        "effective": {
+          "enabled": false,
+          "clientId": "",
+          "hasSecret": false
+        },
+        "pendingRestart": false,
+        "callbackUrl": "http://localhost:3183/api/auth/callback/github"
+      },
+      "saved": {
+        "saved": {
+          "enabled": true,
+          "clientId": "Ov23liK0nyrznio53BSt",
+          "hasSecret": true
+        },
+        "effective": {
+          "enabled": false,
+          "clientId": "",
+          "hasSecret": false
+        },
+        "pendingRestart": true,
+        "callbackUrl": "http://localhost:3183/api/auth/callback/github"
+      },
+      "readback": {
+        "saved": {
+          "enabled": true,
+          "clientId": "Ov23liK0nyrznio53BSt",
+          "hasSecret": true
+        },
+        "effective": {
+          "enabled": false,
+          "clientId": "",
+          "hasSecret": false
+        },
+        "pendingRestart": true,
+        "callbackUrl": "http://localhost:3183/api/auth/callback/github"
+      },
+      "passed": true
+    },
+    {
+      "name": "actual same-data process restart enables saved provider",
+      "passed": true,
+      "settings": {
+        "saved": {
+          "enabled": true,
+          "clientId": "Ov23liK0nyrznio53BSt",
+          "hasSecret": true
+        },
+        "effective": {
+          "enabled": true,
+          "clientId": "Ov23liK0nyrznio53BSt",
+          "hasSecret": true
+        },
+        "pendingRestart": false,
+        "callbackUrl": "http://localhost:3183/api/auth/callback/github"
+      }
+    },
+    {
+      "name": "missing and invalid OAuth state reject before provider exchange and leave users/bindings/sessions unchanged",
+      "passed": true,
+      "before": {
+        "users": 1,
+        "github": 0,
+        "sessions": 1
+      },
+      "after": {
+        "users": 1,
+        "github": 0,
+        "sessions": 1
+      }
+    },
+    {
+      "name": "actual site publicUrl changes next request callback immediately without OAuth restart (SQL fixture; site settings UI outside scope)",
+      "passed": true,
+      "before": "http://localhost:3183/api/auth/callback/github",
+      "after": "http://oauth181.localhost:3183/api/auth/callback/github",
+      "restored": true
+    },
+    {
+      "name": "new production build retains effective real provider",
+      "passed": true,
+      "settings": {
+        "saved": {
+          "enabled": true,
+          "clientId": "Ov23liK0nyrznio53BSt",
+          "hasSecret": true
+        },
+        "effective": {
+          "enabled": true,
+          "clientId": "Ov23liK0nyrznio53BSt",
+          "hasSecret": true
+        },
+        "pendingRestart": false,
+        "callbackUrl": "http://localhost:3183/api/auth/callback/github"
+      }
+    },
+    {
+      "name": "real anonymous unbound GitHub authorization rejects without signup or implicit binding",
+      "passed": true,
+      "before": {
+        "users": 1,
+        "sessions": 1,
+        "github": [],
+        "credentialCount": 1,
+        "passwordStillValid": true
+      },
+      "after": {
+        "users": 1,
+        "sessions": 1,
+        "github": [],
+        "credentialCount": 1,
+        "passwordStillValid": true
+      },
+      "sessionAbsent": true,
+      "route": "/login"
+    },
+    {
+      "name": "real unbound GitHub with same provider email rejects implicit linking and signup",
+      "passed": true,
+      "sameEmail": true,
+      "emailSource": "primary",
+      "state": {
+        "users": 1,
+        "sessions": 1,
+        "github": [],
+        "credentialCount": 1,
+        "passwordStillValid": true
+      },
+      "sessionAbsent": true
+    },
+    {
+      "name": "real malicious requestSignUp does not create owner or binding",
+      "passed": true,
+      "before": {
+        "users": 1,
+        "sessions": 1,
+        "github": [],
+        "credentialCount": 1,
+        "passwordStillValid": true
+      },
+      "after": {
+        "users": 1,
+        "sessions": 1,
+        "github": [],
+        "credentialCount": 1,
+        "passwordStillValid": true
+      },
+      "sessionAbsent": true
+    },
+    {
+      "name": "real authenticated owner explicitly binds GitHub with different provider email",
+      "passed": true,
+      "differentEmails": true,
+      "binding": {
+        "accountId": "204472150",
+        "login": "airsoe"
+      },
+      "database": {
+        "users": 1,
+        "sessions": 2,
+        "github": [
+          {
+            "accountId": "204472150",
+            "login": "airsoe",
+            "tokensAllNull": true
+          }
+        ],
+        "credentialCount": 1,
+        "passwordStillValid": true
+      }
+    },
+    {
+      "name": "real bound screenshot",
+      "passed": true,
+      "viewport": {
+        "width": 1440,
+        "height": 1080
+      }
+    },
+    {
+      "name": "real bound GitHub anonymous login reuses stable provider ID and clears all provider tokens on update",
+      "passed": true,
+      "binding": {
+        "accountId": "204472150",
+        "login": "airsoe"
+      },
+      "database": {
+        "users": 1,
+        "sessions": 2,
+        "github": [
+          {
+            "accountId": "204472150",
+            "login": "airsoe",
+            "tokensAllNull": true
+          }
+        ],
+        "credentialCount": 1,
+        "passwordStillValid": true
+      },
+      "route": "/settings/account"
+    },
+    {
+      "name": "real changed site publicUrl completes GitHub authorization at new callback without process restart",
+      "passed": true,
+      "callbackUrl": "http://oauth181.localhost:3183/api/auth/callback/github",
+      "pendingRestart": false,
+      "binding": {
+        "accountId": "204472150",
+        "login": "airsoe"
+      },
+      "database": {
+        "users": 1,
+        "sessions": 3,
+        "github": [
+          {
+            "accountId": "204472150",
+            "login": "airsoe",
+            "tokensAllNull": true
+          }
+        ],
+        "credentialCount": 1,
+        "passwordStillValid": true
+      }
+    },
+    {
+      "name": "real UI disable saves pending while effective GitHub and binding remain enabled",
+      "passed": true,
+      "settings": {
+        "saved": {
+          "enabled": false,
+          "clientId": "Ov23liK0nyrznio53BSt",
+          "hasSecret": true
+        },
+        "effective": {
+          "enabled": true,
+          "clientId": "Ov23liK0nyrznio53BSt",
+          "hasSecret": true
+        },
+        "pendingRestart": true,
+        "callbackUrl": "http://localhost:3183/api/auth/callback/github"
+      },
+      "database": {
+        "users": 1,
+        "sessions": 3,
+        "github": [
+          {
+            "accountId": "204472150",
+            "login": "airsoe",
+            "tokensAllNull": true
+          }
+        ],
+        "credentialCount": 1,
+        "passwordStillValid": true
+      }
+    },
+    {
+      "name": "real same-data restart disables GitHub entry while binding and local password login survive",
+      "passed": true,
+      "settings": {
+        "saved": {
+          "enabled": false,
+          "clientId": "Ov23liK0nyrznio53BSt",
+          "hasSecret": true
+        },
+        "effective": {
+          "enabled": false,
+          "clientId": "Ov23liK0nyrznio53BSt",
+          "hasSecret": true
+        },
+        "pendingRestart": false,
+        "callbackUrl": "http://localhost:3183/api/auth/callback/github"
+      },
+      "binding": {
+        "accountId": "204472150",
+        "login": "airsoe"
+      },
+      "database": {
+        "users": 1,
+        "sessions": 3,
+        "github": [
+          {
+            "accountId": "204472150",
+            "login": "airsoe",
+            "tokensAllNull": true
+          }
+        ],
+        "credentialCount": 1,
+        "passwordStillValid": true
+      },
+      "anonymousEntryAbsent": true
+    },
+    {
+      "name": "real UI re-enable saves while effective provider stays disabled before restart",
+      "passed": true,
+      "settings": {
+        "saved": {
+          "enabled": true,
+          "clientId": "Ov23liK0nyrznio53BSt",
+          "hasSecret": true
+        },
+        "effective": {
+          "enabled": false,
+          "clientId": "Ov23liK0nyrznio53BSt",
+          "hasSecret": true
+        },
+        "pendingRestart": true,
+        "callbackUrl": "http://localhost:3183/api/auth/callback/github"
+      }
+    },
+    {
+      "name": "real re-enable process restart restores GitHub with binding retained",
+      "passed": true,
+      "settings": {
+        "saved": {
+          "enabled": true,
+          "clientId": "Ov23liK0nyrznio53BSt",
+          "hasSecret": true
+        },
+        "effective": {
+          "enabled": true,
+          "clientId": "Ov23liK0nyrznio53BSt",
+          "hasSecret": true
+        },
+        "pendingRestart": false,
+        "callbackUrl": "http://localhost:3183/api/auth/callback/github"
+      },
+      "database": {
+        "users": 1,
+        "sessions": 3,
+        "github": [
+          {
+            "accountId": "204472150",
+            "login": "airsoe",
+            "tokensAllNull": true
+          }
+        ],
+        "credentialCount": 1,
+        "passwordStillValid": true
+      }
+    },
+    {
+      "name": "real phone expanded pending settings expose both complete three-line public snapshots through actual scrolling",
+      "passed": true,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "details": [
+        {
+          "lines": [
+            "已保存 · 停用",
+            "Client ID：Ov23liK0nyrznio53BSt",
+            "密钥已设置"
+          ],
+          "rect": {
+            "top": 619.5,
+            "bottom": 683.2109375
+          }
+        },
+        {
+          "lines": [
+            "当前生效 · 启用",
+            "Client ID：Ov23liK0nyrznio53BSt",
+            "密钥已设置"
+          ],
+          "rect": {
+            "top": 695.2109375,
+            "bottom": 758.921875
+          }
+        }
+      ]
+    },
+    {
+      "name": "final real phone Clipboard success and denied retry preserve page, selection, scroll and full manual URL without previous toast covering cancel",
+      "passed": true,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "name": "real phone independent settings and binding loading, failed deliveries and real retry",
+      "passed": true,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "name": "real phone unknown configuration preserves one committed PATCH, close focus and main read-only marker until GET recovery",
+      "passed": true,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "configurationUnchanged": true
+    },
+    {
+      "name": "real phone unsent unlink with lost GET stays unknown until deliberate recovery; no DELETE or binding loss",
+      "passed": true,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "database": {
+        "users": 1,
+        "sessions": 3,
+        "github": [
+          {
+            "accountId": "204472150",
+            "login": "airsoe",
+            "tokensAllNull": true
+          }
+        ],
+        "credentialCount": 1,
+        "passwordStillValid": true
+      }
+    },
+    {
+      "name": "actual long owner email renders completely across desktop1440 and phone360/390/430/768 light/dark with 44px actions and no horizontal overflow",
+      "passed": true,
+      "emailLength": 123,
+      "widths": [1440, 360, 390, 430, 768],
+      "themes": ["light", "dark"]
+    },
+    {
+      "name": "real second GitHub Client Secret replacement persists encrypted and remains pending; current-process real GitHub login still works",
+      "passed": true,
+      "settings": {
+        "saved": {
+          "enabled": true,
+          "clientId": "Ov23liK0nyrznio53BSt",
+          "hasSecret": true
+        },
+        "effective": {
+          "enabled": true,
+          "clientId": "Ov23liK0nyrznio53BSt",
+          "hasSecret": true
+        },
+        "pendingRestart": true,
+        "callbackUrl": "http://localhost:3183/api/auth/callback/github"
+      },
+      "ciphertextChanged": true,
+      "plaintextNotStored": true,
+      "binding": {
+        "accountId": "204472150",
+        "login": "airsoe"
+      },
+      "database": {
+        "users": 1,
+        "sessions": 3,
+        "github": [
+          {
+            "accountId": "204472150",
+            "login": "airsoe",
+            "tokensAllNull": true
+          }
+        ],
+        "credentialCount": 1,
+        "passwordStillValid": true
+      }
+    },
+    {
+      "name": "real same-data restart applies rotated Secret and completes external GitHub token exchange and bound login",
+      "passed": true,
+      "settings": {
+        "saved": {
+          "enabled": true,
+          "clientId": "Ov23liK0nyrznio53BSt",
+          "hasSecret": true
+        },
+        "effective": {
+          "enabled": true,
+          "clientId": "Ov23liK0nyrznio53BSt",
+          "hasSecret": true
+        },
+        "pendingRestart": false,
+        "callbackUrl": "http://localhost:3183/api/auth/callback/github"
+      },
+      "binding": {
+        "accountId": "204472150",
+        "login": "airsoe"
+      },
+      "database": {
+        "users": 1,
+        "sessions": 3,
+        "github": [
+          {
+            "accountId": "204472150",
+            "login": "airsoe",
+            "tokensAllNull": true
+          }
+        ],
+        "credentialCount": 1,
+        "passwordStillValid": true
+      }
+    },
+    {
+      "name": "real UI unlink removes GitHub while retaining actual current session and local credential; final focus returns to current link action",
+      "passed": true,
+      "before": {
+        "users": 1,
+        "sessions": 3,
+        "github": [
+          {
+            "accountId": "204472150",
+            "login": "airsoe",
+            "tokensAllNull": true
+          }
+        ],
+        "credentialCount": 1,
+        "passwordStillValid": true
+      },
+      "after": {
+        "users": 1,
+        "sessions": 3,
+        "github": [],
+        "credentialCount": 1,
+        "passwordStillValid": true
+      },
+      "currentSessionPreserved": true,
+      "focus": "account-github-link",
+      "route": "/settings/account"
+    },
+    {
+      "name": "real GitHub login after unlink rejects without recreating user, binding or session; anonymous DELETE is unauthorized",
+      "passed": true,
+      "database": {
+        "users": 1,
+        "sessions": 2,
+        "github": [],
+        "credentialCount": 1,
+        "passwordStillValid": true
+      },
+      "sessionAbsent": true,
+      "anonymousDeleteStatus": 401
+    },
+    {
+      "name": "real local password sign-in remains usable after final GitHub unlink",
+      "passed": true,
+      "database": {
+        "users": 1,
+        "sessions": 3,
+        "github": [],
+        "credentialCount": 1,
+        "passwordStillValid": true
+      }
+    }
+  ],
+  "limitations": [
+    "Account email and site public URL are changed only in this independent fixture; site settings UI is outside scope.",
+    "Both GitHub test secrets and the test App are retained; no credentials, authorization codes or session cookies are published.",
+    "This real provider result does not turn the separate default integration/browser failures into passes."
+  ]
+}

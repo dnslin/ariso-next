@@ -52,6 +52,7 @@ describe('browser runner argument boundaries', () => {
     ['processing', 'recovery'],
     ['processing', 'consumers'],
     ['account'],
+    ['oauth'],
     ['tokens'],
     ['tokens', 'representative'],
     ['tokens', 'behavior'],

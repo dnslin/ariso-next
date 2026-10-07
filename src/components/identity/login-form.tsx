@@ -6,6 +6,7 @@ import { Button } from '@heroui/react/button';
 import { Form } from '@heroui/react/form';
 import { Link } from '@heroui/react/link';
 import { Spinner } from '@heroui/react/spinner';
+import { signInGithub } from './github-request';
 import { accountInputSchema } from '../../server/identity/validation';
 import { IdentityField } from './identity-field';
 
@@ -13,10 +14,12 @@ export function LoginForm({
   initialized,
   returnTo,
   notice,
+  githubEnabled,
 }: {
   initialized: boolean;
   returnTo: string;
   notice: string;
+  githubEnabled: boolean;
 }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -32,10 +35,22 @@ export function LoginForm({
   ) => setFeedback({ message, status });
   const [setupRequired, setSetupRequired] = useState(!initialized);
   const [busy, setBusy] = useState(false);
+  const [githubBusy, setGithubBusy] = useState(false);
   const [retryAt, setRetryAt] = useState(0);
   const [remaining, setRemaining] = useState(0);
   const inFlight = useRef(false);
+  const githubRedirecting = useRef(false);
   const alertRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    function restore(event: PageTransitionEvent) {
+      if (!event.persisted || !githubRedirecting.current) return;
+      githubRedirecting.current = false;
+      inFlight.current = false;
+      setGithubBusy(false);
+    }
+    window.addEventListener('pageshow', restore);
+    return () => window.removeEventListener('pageshow', restore);
+  }, []);
   useEffect(() => {
     if (!retryAt) return;
     const update = () =>
@@ -139,6 +154,27 @@ export function LoginForm({
     }
   }
 
+  async function githubLogin() {
+    if (inFlight.current || setupRequired) return;
+    inFlight.current = true;
+    setGithubBusy(true);
+    setMessage('');
+    try {
+      const url = await signInGithub(window.location.origin, returnTo);
+      githubRedirecting.current = true;
+      window.location.assign(url);
+    } catch (error) {
+      setMessage(
+        error instanceof Error
+          ? error.message
+          : '无法开始 GitHub 登录，请重试。',
+      );
+      inFlight.current = false;
+      githubRedirecting.current = false;
+      setGithubBusy(false);
+    }
+  }
+
   return (
     <section
       className="grid w-full max-w-md gap-4 rounded-3xl border border-dashed border-border bg-surface px-4 py-5 shadow-sm dark:border-solid min-[1200px]:p-6"
@@ -215,13 +251,32 @@ export function LoginForm({
           <Button
             className="h-11 min-h-11 w-full rounded-lg text-sm font-normal min-[1200px]:h-9 min-[1200px]:min-h-9"
             type="submit"
-            isDisabled={busy || remaining > 0}
+            isDisabled={busy || githubBusy || remaining > 0}
           >
             {busy ? <Spinner size="sm" /> : null}
             {busy ? '正在登录…' : '登录'}
           </Button>
         </Form>
       )}
+      {initialized && !setupRequired && githubEnabled ? (
+        <div className="grid gap-3">
+          <div className="flex items-center gap-3 text-xs text-foreground">
+            <span className="h-px flex-1 bg-border" />
+            或使用第三方登录
+            <span className="h-px flex-1 bg-border" />
+          </div>
+          <Button
+            data-testid="login-github"
+            variant="outline"
+            className="h-11 min-h-11 w-full rounded-lg bg-background text-sm font-normal min-[1200px]:h-9 min-[1200px]:min-h-9"
+            isDisabled={busy || githubBusy}
+            onPress={() => void githubLogin()}
+          >
+            {githubBusy ? <Spinner size="sm" /> : null}
+            {githubBusy ? '正在前往 GitHub…' : '使用 GitHub 登录'}
+          </Button>
+        </div>
+      ) : null}
     </section>
   );
 }

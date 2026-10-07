@@ -55,3 +55,21 @@ export const uploadTokenCreateInputSchema = z.strictObject({
 export const uploadTokenUpdateInputSchema = z.strictObject({
   enabled: z.boolean({ error: '请选择启用或停用' }),
 });
+
+export const githubSettingsInputSchema = z.strictObject({
+  enabled: z.boolean({ error: '请选择是否启用 GitHub 登录' }).optional(),
+  clientId: z.string().trim().max(256, 'Client ID 最多 256 个字符').optional(),
+  clientSecret: z
+    .string()
+    .min(1, '请输入新的 Client Secret，或明确清除已保存的密钥')
+    .max(4096, 'Client Secret 最多 4096 个字符')
+    .refine((value) => !/^[*•●]+$/.test(value), '不能把密钥占位符作为新密钥')
+    .nullable()
+    .optional(),
+});
+
+/** 只消费 provider 的稳定 ID 与公开用户名，不保存整份 profile。 */
+export const githubProfileSchema = z.object({
+  id: z.union([z.string().min(1), z.number().int().positive()]),
+  login: z.string().min(1).max(39),
+});

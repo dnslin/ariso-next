@@ -7,6 +7,7 @@ import { parseLogLevel } from '../server/runtime/env.ts';
 import { createRuntimeLogger } from '../server/runtime/logger.ts';
 import { readSetupOwner } from '../server/identity/setup.ts';
 import { requireInitialSettings } from '../server/startup/initial-settings.ts';
+import { captureGithubSettings } from '../server/identity/github-settings.ts';
 
 // 配置校验失败也必须可诊断；固定级别仅用于启动失败日志。
 let logger = createRuntimeLogger('runtime.prestart', 'fatal');
@@ -17,6 +18,7 @@ try {
   );
   runPreflight(process.env, (db, config) => {
     verifyStorageSecrets(db, createSecretCrypto(config.encryptionKey));
+    captureGithubSettings(db, createSecretCrypto(config.encryptionKey));
     const databasePath = join(config.dataDir, 'ariso.db');
     if (readSetupOwner(db, databasePath))
       requireInitialSettings(db, databasePath);

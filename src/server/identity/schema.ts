@@ -71,6 +71,7 @@ export const account = sqliteTable(
       mode: 'timestamp_ms',
     }),
     scope: text('scope'),
+    githubLogin: text('github_login'),
     password: text('password'),
     createdAt: integer('created_at', { mode: 'timestamp_ms' })
       .default(sql`(cast(unixepoch('subsecond') * 1000 as integer))`)
@@ -157,5 +158,19 @@ export const apikey = sqliteTable(
     index('apikey_configId_idx').on(table.configId),
     index('apikey_referenceId_idx').on(table.referenceId),
     index('apikey_key_idx').on(table.key),
+  ],
+);
+
+export const githubSettings = sqliteTable(
+  'identity_github_settings',
+  {
+    id: integer('id').primaryKey().default(1),
+    enabled: integer('enabled', { mode: 'boolean' }).notNull().default(false),
+    clientId: text('client_id').notNull().default(''),
+    clientSecretEncrypted: text('client_secret_encrypted'),
+    updatedAt: integer('updated_at', { mode: 'timestamp_ms' }).notNull(),
+  },
+  (table) => [
+    check('identity_github_settings_singleton', sql`${table.id} = 1`),
   ],
 );

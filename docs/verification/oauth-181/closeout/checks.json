@@ -1,0 +1,124 @@
+{
+  "head": "b74145b0f6f9200853e125ec7b6cedb59e8fa6ae",
+  "node": "v24.18.1",
+  "pnpm": "11.19.0",
+  "commands": [
+    {
+      "name": "build",
+      "command": ["pnpm", "run", "build"],
+      "exitCode": 0,
+      "durationSeconds": 18.75
+    },
+    {
+      "name": "typecheck",
+      "command": ["pnpm", "run", "typecheck"],
+      "exitCode": 0,
+      "durationSeconds": 8.43
+    },
+    {
+      "name": "runner-unit",
+      "command": [
+        "pnpm",
+        "run",
+        "test:unit",
+        "tests/unit/runtime/browser-plan.test.ts",
+        "tests/unit/runtime/browser-runner.test.ts",
+        "tests/unit/runtime/browser-oauth.test.ts",
+        "tests/unit/runtime/browser-identity-management.test.ts",
+        "--maxWorkers=4",
+        "--reporter=default",
+        "--reporter=junit",
+        "--outputFile=.data/reviews/pr255/closeout/runner-unit.xml"
+      ],
+      "exitCode": 0,
+      "durationSeconds": 61.26
+    },
+    {
+      "name": "oauth-integration",
+      "command": [
+        "pnpm",
+        "run",
+        "test:integration",
+        "tests/integration/identity/oauth.test.ts",
+        "tests/integration/identity/oauth-startup.test.ts",
+        "tests/integration/identity/cli-reset.test.ts",
+        "--maxWorkers=1",
+        "--reporter=default",
+        "--reporter=junit",
+        "--outputFile=.data/reviews/pr255/closeout/oauth-integration.xml"
+      ],
+      "exitCode": 0,
+      "durationSeconds": 17.7
+    },
+    {
+      "name": "lint-overlap",
+      "command": [
+        "pnpm",
+        "exec",
+        "eslint",
+        "scripts/browser-plan.mjs",
+        "scripts/verify-browser.mjs",
+        "tests/unit/runtime/browser-plan.test.ts",
+        "tests/unit/runtime/browser-runner.test.ts",
+        "tests/integration/identity/cli-reset.test.ts",
+        "--max-warnings=0"
+      ],
+      "exitCode": 0,
+      "durationSeconds": 3.29
+    },
+    {
+      "name": "docs",
+      "command": ["node", "docs/tasks/check.mjs"],
+      "exitCode": 0,
+      "durationSeconds": 0.16
+    }
+  ],
+  "mergedMain": "0c9c54de2038dc60725bf1641fcb2fc40e026f52",
+  "testedWorkingTreeChange": {
+    "file": "tests/integration/identity/cli-reset.test.ts",
+    "change": "Add github: { enabled: false, clientId: '', clientSecret: null } to existing auth fixture"
+  },
+  "firstAttempt": [
+    {
+      "name": "install",
+      "command": ["pnpm", "install", "--frozen-lockfile"],
+      "exitCode": 0,
+      "durationSeconds": 2.02
+    },
+    {
+      "name": "build",
+      "command": ["pnpm", "run", "build"],
+      "exitCode": 1,
+      "durationSeconds": 17.56
+    }
+  ],
+  "summary": {
+    "runnerUnit": {
+      "files": 4,
+      "tests": 252,
+      "failed": 0,
+      "skipped": 0
+    },
+    "identityIntegration": {
+      "files": 3,
+      "tests": 39,
+      "failed": 0,
+      "skipped": 0,
+      "oauth": 22,
+      "startup": 4,
+      "cli": 13
+    }
+  },
+  "evidenceChecks": [
+    {
+      "command": "pnpm exec prettier --check closeout Markdown/JSON, unified README and five overlapping implementation/test files plus handoff.md",
+      "exitCode": 0
+    },
+    {
+      "command": "node docs/tasks/check.mjs after evidence update",
+      "exitCode": 0,
+      "tasks": 120,
+      "requirements": 298
+    }
+  ]
+}

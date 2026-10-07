@@ -1,0 +1,21 @@
+{
+  "passed": false,
+  "error": "Error: page.waitForSelector timed out after 10000ms: [data-testid=\"oauth-page\"]",
+  "before": {
+    "active": "BODY",
+    "inside": false,
+    "phase": "verified"
+  },
+  "after": {
+    "events": [
+      {
+        "key": "Escape",
+        "target": "BODY",
+        "prevented": false
+      }
+    ],
+    "active": "oauth-page",
+    "phase": "verified",
+    "modalPresent": true
+  }
+}
