@@ -2,7 +2,9 @@
 
 Issue [#193](https://github.com/dnslin/ariso-next/issues/193)，需求 `R-16.3-01`、`R-17.2-01/02`、`R-17.3-01`、`R-17.4-02`、`A-26.10-03/05`。依据为 [sharing §7](../../specs/SPEC-sharing.md#7-列表大图与打开中的变化)、[任务卡](../../tasks/m3-m4-experience.md#t-shr-04-匿名大图与删除相册后失效联验)、[设计交接](../../design/handoff.md)和[执行约定](../../tasks/execution.md)。不修改冻结 PRD。
 
-本次只交付匿名查看器、公开邻居查询和打开中成员/授权变化。前置 #192、#191、#185、#161、#134 在实施前已从 GitHub 原生依赖回读为 CLOSED。管理查看器、分享管理、相册删除和内容鉴权沿用实际生产能力；不新增下载、管理详情、版本菜单、幻灯片或生成文件。
+匿名功能范围为查看器、公开邻居查询和打开中成员/授权变化。前置 #192、#191、#185、#161、#134 在实施前已从 GitHub 原生依赖回读为 CLOSED。管理查看器、分享管理、相册删除和内容鉴权沿用实际生产能力；不新增下载、管理详情、版本菜单、幻灯片或生成文件。
+
+2026-10-07 用户在人工预览中明确追加两项分享设置反馈：返回入口改为右上图标按钮，“已过期”仅用红色字体且不加 Halo。实现、Figma 同步、本轮适用检查和独立审查另记在[本轮反馈证据](./feedback-settings/README.md)。此处原匿名查看器的通过记录不替代新增设置控件的浏览器验证、设计对照或人工验收。
 
 交付 PR：[草稿 #256](https://github.com/dnslin/ariso-next/pull/256)，分支 `codex/issue-193-public-viewer`。实施与证据提交 `ec1508fe` 已推送；实际回读为 OPEN、draft、MERGEABLE，`statusCheckRollup` 为空，`gh pr checks` 未报告检查，不能记为 CI 通过。尚未合并、关闭 Issue、发布或部署；分支和 worktree 保留，独立人工预览继续运行。
 

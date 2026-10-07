@@ -447,6 +447,167 @@ async function seed() {
   await api(shareApi(), 'POST', {});
 }
 
+async function settingsPresentation() {
+  const [saved] = await sql(
+    `SELECT enabled,expires_at FROM album_shares WHERE album_id='${mainId}'`,
+  );
+  report.settingsPresentation = [];
+  try {
+    for (const [state, enabled, expiresAt] of [
+      ['active', 1, null],
+      ['expired', 1, Date.now() - 60_000],
+      ['disabled-expired', 0, Date.now() - 60_000],
+    ]) {
+      await sql(
+        `UPDATE album_shares SET enabled=${enabled},expires_at=${expiresAt ?? 'NULL'} WHERE album_id='${mainId}'`,
+      );
+      await settings();
+      for (const theme of ['light', 'dark']) {
+        await setTheme(page, theme);
+        for (const width of [390, 1440]) {
+          await resizeViewport(page, width);
+          const presentation = await page.evaluate(() => {
+            const header = document.querySelector(
+              '[data-testid="share-settings"]',
+            );
+            const back = document.querySelector(
+              'button[aria-label="返回分享管理"]',
+            );
+            const chip = document.querySelector('main [data-slot="chip"]');
+            const label = chip?.lastElementChild;
+            const expired = [...document.querySelectorAll('main span')].filter(
+              (node) =>
+                node.children.length === 0 && node.textContent === '已过期',
+            );
+            const reference = document.createElement('span');
+            reference.style.color = 'var(--danger)';
+            document.body.append(reference);
+            const danger = getComputedStyle(reference).color;
+            reference.remove();
+            return {
+              header: header.getBoundingClientRect().toJSON(),
+              title: header
+                .querySelector('h1')
+                .getBoundingClientRect()
+                .toJSON(),
+              back: back?.getBoundingClientRect().toJSON(),
+              icon: back
+                ?.querySelector('svg')
+                ?.getBoundingClientRect()
+                .toJSON(),
+              inHeader: header.contains(back),
+              iconOnly:
+                back?.textContent.trim() === '' && !!back.querySelector('svg'),
+              label: label?.textContent,
+              labelColor: label && getComputedStyle(label).color,
+              chipColor: chip && getComputedStyle(chip).color,
+              dotColor: chip && getComputedStyle(chip.firstElementChild).color,
+              danger,
+              expired: expired.map((node) => {
+                const style = getComputedStyle(node);
+                return {
+                  color: style.color,
+                  textShadow: style.textShadow,
+                  boxShadow: style.boxShadow,
+                  filter: style.filter,
+                };
+              }),
+            };
+          });
+          report.settingsPresentation.push({
+            state,
+            theme,
+            width,
+            ...presentation,
+          });
+          assert.equal(
+            presentation.inHeader,
+            true,
+            'Return action is in the page header',
+          );
+          assert.equal(
+            presentation.iconOnly,
+            true,
+            'Return action contains only its arrow icon',
+          );
+          assert.ok(
+            presentation.back.width >= 44 && presentation.back.height >= 44,
+          );
+          assert.equal(presentation.icon.width, 18);
+          assert.equal(presentation.icon.height, 18);
+          assert.ok(
+            Math.abs(presentation.back.right - presentation.header.right) <= 1,
+          );
+          assert.ok(
+            Math.abs(presentation.back.top - presentation.title.top) <= 1,
+          );
+          assert.equal(
+            presentation.label,
+            state === 'active' ? '分享中' : enabled ? '已过期' : '已停用',
+          );
+          assert.equal(
+            presentation.dotColor,
+            presentation.chipColor,
+            'Status dot stays neutral',
+          );
+          assert.equal(
+            presentation.expired.length,
+            state === 'active' ? 0 : enabled ? 2 : 1,
+          );
+          for (const expired of presentation.expired) {
+            assert.equal(
+              expired.color,
+              presentation.danger,
+              'Expired text uses the existing red status color',
+            );
+            assert.notEqual(expired.color, presentation.chipColor);
+            assert.equal(expired.textShadow, 'none');
+            assert.equal(expired.boxShadow, 'none');
+            assert.equal(expired.filter, 'none');
+          }
+          if (state !== 'expired')
+            assert.equal(presentation.labelColor, presentation.chipColor);
+          await shot(`presentation-${state}-${theme}-${width}`);
+        }
+      }
+    }
+  } finally {
+    await sql(
+      `UPDATE album_shares SET enabled=${saved.enabled},expires_at=${saved.expires_at ?? 'NULL'} WHERE album_id='${mainId}'`,
+    );
+  }
+  await settings();
+  await page.focus(button('返回分享管理'));
+  await page.keyboard.press('Enter');
+  await page.waitForURL(`${config.origin}/shares`);
+  await page.goto(`${config.origin}${settingsPath()}?from=album`);
+  await page.waitForSelector('[data-testid="share-address"]');
+  await page.click(choice('瀑布流'));
+  await page.click(button('返回相册'));
+  await page.waitForSelector('[data-testid="share-dialog"]');
+  await page.keyboard.press('Escape');
+  await page.waitForSelector('[data-testid="share-dialog"]', {
+    state: 'hidden',
+  });
+  await page.waitForFunction(
+    () => document.activeElement?.getAttribute('aria-label') === '返回相册',
+  );
+  assert.equal(
+    await page.evaluate(() =>
+      document
+        .querySelector('[data-slot="toggle-button"][aria-checked="true"]')
+        .textContent.trim(),
+    ),
+    '瀑布流',
+  );
+  await page.click(choice('网格'));
+  await page.click(button('返回相册'));
+  await page.waitForURL(`${config.origin}/albums/${mainId}`);
+  report.checks.push(
+    'Settings return is an accessible 44px top-right icon in both themes at desktop/mobile; active and disabled labels stay neutral, expired label/date suffix are red without halo; keyboard return, album destination, unsaved confirmation, draft and focus restoration remain working.',
+  );
+}
+
 try {
   report.stage = 'owner-and-fixtures';
   await page.goto(`${config.origin}/library`);
@@ -481,6 +642,8 @@ try {
   // The default run executes all three groups; --only narrows reruns without
   // changing the full plan or forwarding a generic phase into other suites.
   if (representative) {
+    report.stage = 'settings-presentation-feedback';
+    await settingsPresentation();
     report.stage = 'list-and-settings-layouts';
     await list();
     const listRow = await visibleShareRow(mainId);
@@ -558,8 +721,8 @@ try {
         (await current()).url,
       );
       const state = await page.evaluate(() => {
-        const back = [...document.querySelectorAll('button')].find(
-          (node) => node.textContent.trim() === '返回分享管理',
+        const back = document.querySelector(
+          'button[aria-label="返回分享管理"]',
         );
         const rect = back.getBoundingClientRect();
         const hit = document.elementFromPoint(
@@ -1078,9 +1241,7 @@ try {
       1,
     );
     const returnActionState = () => {
-      const button = [...document.querySelectorAll('button')].find(
-        (node) => node.textContent.trim() === '返回相册',
-      );
+      const button = document.querySelector('button[aria-label="返回相册"]');
       const rect = button.getBoundingClientRect();
       const hit = document.elementFromPoint(
         rect.left + rect.width / 2,
@@ -1131,7 +1292,7 @@ try {
     assert.equal(
       report.returnDuringNotice.unobstructed,
       true,
-      'Success notice does not obstruct the fixed return action',
+      'Success notice does not obstruct the header return action',
     );
     await shot('created-return-with-notice-dark-1440');
     await page.click(button('返回相册'));
