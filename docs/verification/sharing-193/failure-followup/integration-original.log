@@ -1,0 +1,32 @@
+Already up to date
+Done in 33ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso
+
+ ✓ |integration| tests/integration/runtime/build.test.ts > 无密钥和数据库时在独立目录完成生产构建，不写数据或输出初始化码 73477ms
+ ✓ |integration| tests/integration/identity/setup-dev.test.ts > real Next dev recompilation retains the startup code and the original code creates a login-capable owner 28735ms
+ ✓ |integration| tests/integration/identity/setup-lifecycle.test.ts > setup process lifecycle > imports without deployment secrets neither open a database nor issue a code 500ms
+{"time":"2026-10-07T10:09:46.542Z","level":"info","module":"identity.setup","event":"setup-code","code":"4m_ToEeBZZvkkFYLKsdPTIVWKxQT69Fv","msg":"请使用初始化码完成 setup"}
+ ✓ |integration| tests/integration/identity/setup-lifecycle.test.ts > setup process lifecycle > prestart prepares storage without issuing a code; real module reloads share one startup code 1337ms
+{"level":"info","time":"2026-10-07T10:09:46.611Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+{"time":"2026-10-07T10:09:46.925Z","level":"info","module":"identity.setup","event":"setup-code","code":"PmwYKVteTyH9ZsSpKzEwVjQa0edh3qDp","msg":"请使用初始化码完成 setup"}
+{"level":"error","time":"2026-10-07T10:09:46.931Z","module":"identity.setup","err":{"type":"Error","message":"controlled hash failure","stack":"Error: controlled hash failure\n    at /Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/tests/integration/identity/setup-lifecycle.test.ts:122:40\n    at file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:1628:35\n    at file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:2783:26\n    at file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3319:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3314:10)\n    at file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3299:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3257:10)\n    at file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3876:64"},"databasePath":"/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-setup-lifecycle-NQKeAd/data/ariso.db","msg":"Initialization request failed"}
+ ✓ |integration| tests/integration/identity/setup-lifecycle.test.ts > setup hash await boundary (controlled hash, real SQLite) > hashes outside the transaction and rechecks a code invalidated while awaiting 384ms
+{"level":"info","time":"2026-10-07T10:09:46.936Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+{"time":"2026-10-07T10:09:47.251Z","level":"info","module":"identity.setup","event":"setup-code","code":"LsaUGPKhGI6bOyv24czTtpgXSYa7Gk36","msg":"请使用初始化码完成 setup"}
+ ✓ |integration| tests/integration/identity/setup-lifecycle.test.ts > setup hash await boundary (controlled hash, real SQLite) > a hash failure leaves setup open and a later request can retry 325ms
+{"level":"info","time":"2026-10-07T10:09:47.309Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+ ✓ |integration| tests/integration/identity/setup-lifecycle.test.ts > setup hash await boundary (controlled hash, real SQLite) > a second completed request prevents the awaiting request from creating another owner 373ms
+ ✓ |integration| tests/integration/identity/setup-lifecycle.test.ts > setup real SIGKILL crash recovery > recovers after process death at hash and can use real credential login 1449ms
+ ✓ |integration| tests/integration/identity/setup-lifecycle.test.ts > setup real SIGKILL crash recovery > recovers after process death at site_settings and can use real credential login 1481ms
+ ✓ |integration| tests/integration/identity/setup-lifecycle.test.ts > setup real SIGKILL crash recovery > recovers after process death at media_settings and can use real credential login 1469ms
+ ✓ |integration| tests/integration/identity/setup-lifecycle.test.ts > setup real SIGKILL crash recovery > recovers after process death at user and can use real credential login 1487ms
+ ✓ |integration| tests/integration/identity/setup-lifecycle.test.ts > setup real SIGKILL crash recovery > recovers after process death at account and can use real credential login 1516ms
+ ✓ |integration| tests/integration/identity/setup-lifecycle.test.ts > setup real SIGKILL crash recovery > recovers after process death at committed and can use real credential login 1449ms
+
+ Test Files  3 passed (3)
+      Tests  13 passed (13)
+   Start at  18:08:00
+   Duration  115.30s (tests 99%, import 1%)
+
+JSON report written to /Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/test-results/sharing-193/failure-followup/integration-original.json

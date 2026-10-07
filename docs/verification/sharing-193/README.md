@@ -75,18 +75,56 @@ pnpm exec vitest run --project integration --project media-tools --maxWorkers=1 
 
 当前代表状态26组来自 `viewer-complete` 已完成段，撤权/成员状态九种情况来自 `viewer-final` 已完成段，分别保留其整体 failed；最后两次定向只复验受影响的 interactions/race，不机械重跑输入未变化的阶段。截图归档为 `actual/representative`、`actual/interactions`、`actual/revocation`、`actual/race`，独立设计评审逐项读取后未发现遗留视觉偏差。没有声称最后一次默认或完整 viewer 入口通过。
 
-| 交付状态            | 当前事实                                                                                       |
-| ------------------- | ---------------------------------------------------------------------------------------------- |
-| 代码实施            | 已完成本 Issue 范围，六项 P2 已修正并独立复审。                                                |
-| 本地适用检查        | 格式、静态、类型、单元与根构建通过；完整集成与默认浏览器仍有实际失败，明细保留。               |
-| 本 Issue 浏览器功能 | 代表、交互、九种撤权/成员变化和迟到响应/恢复场景分别取得实际证据；两独立浏览器上下文仍未验证。 |
-| 独立设计评审        | 已完成桌面/手机、浅/深主题和适用状态对照；无遗留本次视觉偏差。                                 |
-| 用户人工验收        | 未完成。独立预览保持运行，PR 为草稿。                                                          |
+| 交付状态            | 当前事实                                                                                                      |
+| ------------------- | ------------------------------------------------------------------------------------------------------------- |
+| 代码实施            | 已完成本 Issue 范围，六项 P2 已修正并独立复审。                                                               |
+| 本地适用检查        | 格式、静态、类型、单元与根构建通过；原串行剩余3项集成超时已原样复验通过，旧全量失败与默认浏览器未闭环项保留。 |
+| 本 Issue 浏览器功能 | 代表、交互、九种撤权/成员变化和迟到响应/恢复场景分别取得实际证据；两独立浏览器会话要求已按用户指令取消。      |
+| 独立设计评审        | 已完成桌面/手机、浅/深主题和适用状态对照；无遗留本次视觉偏差。                                                |
+| 用户人工验收        | 未完成。独立预览保持运行，PR 为草稿。                                                                         |
 
 本地原始记录保留于 `test-results/sharing-193/` 与 `test-results/sharing-193-live/`；公开证据不保存凭证。代码完成、本地检查、浏览器功能、设计评审和人工验收分别记录。默认完整检查仍有失败，人工验收尚未完成，PR 保持草稿。
 
 ## 限制与人工验收
 
-Ego 两标签是同一 profile，不能据此声称两个独立浏览器上下文通过。HTTP 联验使用独立 Cookie 请求。AWS、跨浏览器矩阵、真实手机/物理软键盘/非零安全区及 Release 容器本轮未验证，适用范围按执行约定记录。
+Ego 两标签是同一 profile，历史中没有取得两个独立浏览器会话证据。2026-10-07 用户明确取消此项要求，按[当前执行约定](../../tasks/execution.md#前端共用验收)不再作为未完成项；取消不记作测试通过。HTTP 联验使用独立 Cookie 请求。AWS、跨浏览器矩阵、真实手机/物理软键盘/非零安全区及 Release 容器本轮未验证，适用范围按执行约定记录。
 
 人工预览使用另建数据，不复用自动测试场景。地址与独立账号、密码只在本次聊天交付，不提交到仓库或 PR。需检查：网格/瀑布流点开、隐藏/显示名称、前后及首尾、缩放/平移/全屏、关闭返回与焦点、手机底栏、真实加载失败及撤权后的门禁。预览保持运行，直到用户明确要求停止或清理。
+
+## 失败原因追查与要求调整（2026-10-07）
+
+用户取消两个独立浏览器会话验收，并授权重新打开 Ego 进行失败复验。独立 agent 分别只读调查集成与默认浏览器的原始日志、源码和完整调用链，使用 debugging-and-error-recovery / code-review-and-quality；没有重复执行测试。产品代码与已获批 UI 未改，本轮仅更新实际要求及证据。
+
+Node24.18.1/pnpm11.19.0、macOS arm64、同一隔离分支，冻结离线安装通过。先单独运行原3项失败测试，保留原120秒/默认5秒/240秒预算及全部断言，未与本任务浏览器或构建并发：
+
+```sh
+pnpm exec vitest run --project integration --maxWorkers=1 tests/integration/identity/setup-lifecycle.test.ts tests/integration/identity/setup-dev.test.ts tests/integration/runtime/build.test.ts --reporter=verbose --reporter=json --outputFile.json=test-results/sharing-193/failure-followup/integration-original.json
+```
+
+实际退出0、3文件/13测试通过、总115.30秒。原生命周期失败项1.337秒，真实Next dev重编译/初始化/登录28.735秒，独立无密钥生产构建73.477秒。见[完整报告](./failure-followup/integration-original.json)、[原始日志](./failure-followup/integration-original.log)与[独立调查](./failure-followup/integration-notes.md)。旧失败都是总预算超时，没有业务断言失败；两个重测试还包含完整依赖/文件复制准备，原日志没有阶段时间，不能证明旧时点资源压力是唯一根因。当前3项失败已不复现，不修改测试预算，也不将这次定向结果拼接成单次默认完整集成通过。
+
+默认浏览器的21项历史失败已[逐项调查](./failure-followup/browser-notes.md)，没有统一归为环境问题：
+
+| 历史分类               | 已证实原因及当前状态                                                                                                                                                                                                                                                             |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 4项分页地址等待        | 页面实际返回正确目标并补 `?page=1`，旧测试要求完整地址不带query；与现有分页正规化契约不符。范围外脚本未修改。                                                                                                                                                                    |
+| 3项桌面上传/连续性等待 | 同一媒体工具清理的 `ps` 命令超过1000ms，报 `MEDIA_TOOL_SHUTDOWN_FAILED` 并停止媒体队列，后续已受理图片等不到处理；重启后同一图片完成。见[无进程列表的日志摘录](./failure-followup/media-queue-failure.json)。这是既有媒体模块的具体运行时故障，未在本Issue修改或以增加等待掩盖。 |
+| 2项图库/批量阶段中止   | 共用运行器600秒阶段预算到期，随后出现target/context失联；内部最后停点还未完全定位，不能记作产品通过或选错浏览器。                                                                                                                                                                |
+| 2项分享自身失败        | 查看器焦点和设置返回已在本Issue修复并定向通过，历史默认报告保持failed。                                                                                                                                                                                                          |
+| 其余10项               | 各自记录具体边界及缺少的证据，包括控件卸载、弹窗遮挡、通知几何、刷新监听、未知态重复关闭、原生目录取消、Token说明/选区滚动和退出后的第二次会话读取。没有把强线索当已证明根因。存储管理一项已通过下述原样复验；其余仍需按范围处理。                                               |
+
+使用用户授权的新TaskSpace5，只复用p1。浏览器在已验证的最终生产构建副本 `/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-feedback-build-Zta2LS` 执行，全部为运行器独立数据和端口，没有修改人工预览。实际命令如下，使用已有参数，没有新增共享参数或改变默认分发：
+
+```sh
+EGO_TASK_SPACE=5 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=/Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/test-results/sharing-193/failure-followup/browser-storage node scripts/verify-browser.mjs --suite storage-admin
+EGO_TASK_SPACE=5 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=/Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/test-results/sharing-193/failure-followup/browser-copy node scripts/verify-browser.mjs --suite library-copy --only revision
+```
+
+| 入口                                   | 实际结果                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `--suite storage-admin`                | 退出0。原失败的路径校验以及10项管理检查/120布局通过；该既有入口的公共导航2项检查/74布局也通过。见[业务报告](./failure-followup/storage-browser.json)、[运行器](./failure-followup/storage-runner.json)、[导航报告](./failure-followup/navigation-browser.json)、路径告警[桌面](./failure-followup/storage-local-error-1440.png)/[手机](./failure-followup/storage-local-error-390.png)。旧告警超时当前未复现，不能直接定性为后端校验缺陷。 |
+| `--suite library-copy --only revision` | 退出1，刚进入cross-page-native-copy即收到user takeover，`stoppedForUserControl=true`；尚未到达原通知消费者失败点。见[停止报告](./failure-followup/copy-stopped.json)、[运行器](./failure-followup/copy-stopped-runner.json)。保持未验证，不作为复制缺陷或通过。                                                                                                                                                                            |
+
+实际控制边界来自[ego-browser SKILL.md](/Users/dnslin/.agents/skills/ego-browser/SKILL.md#user-control-and-completion)：“Stop when the user takes control or the space is inactive or unassigned.” 主执行者已停止浏览器，没有另建空间、接管或用其他能力绕过；TaskSpace5没有调用finish。恢复需用户明确指示继续Ego5。标签Enter前后观测仅在构建副本临时准备，未执行并已还原；没有把它记录为复验。停止后继续独立离线文档工作。人工预览继续保留。
+
+本轮纯文档更新的 `pnpm run format:check`、`node docs/tasks/check.mjs` 和 `git diff --check` 均退出0。格式检查全量通过，文档检查为120任务/298需求，无缺失编号或循环，见[格式日志](./failure-followup/format.log)与[文档日志](./failure-followup/docs.log)。产品和测试源码没有变动，不重复运行已通过的静态、类型与构建检查。
