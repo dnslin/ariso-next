@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { resizeViewport, setTheme } from './browser-geometry.mjs';
 import { captureRelationLayout } from './upload-relation-layouts.mjs';
+import { waitForOwnerRoute } from './owner-shell.mjs';
 
 /** Actual relation lists: loading, search, selection, focus and read recovery. */
 export async function verifyUploadRelationChoices({
@@ -663,7 +664,7 @@ export async function verifyUploadRelationChoices({
     window.__relationSPAMarker = 'same document';
   });
   await page.click('a.shell-nav-link[href="/library"]');
-  await page.waitForURL(`${config.origin}/library`);
+  await waitForOwnerRoute(page, config, '/library');
   await page.click('a.shell-nav-link[href="/upload"]');
   await page.waitForURL(`${config.origin}/upload`);
   await page.waitForSelector('[data-testid="upload-tags"]');

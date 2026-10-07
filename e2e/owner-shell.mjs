@@ -1,6 +1,19 @@
 import { verifyUIRefinement } from './ui-refinement.mjs';
 import { assertNoBrowserErrors } from './browser-errors.mjs';
 
+export async function waitForOwnerRoute(page, config, path) {
+  const url = new URL(path, config.origin);
+  if (path === '/library' || /^\/albums\/[^/]+$/.test(path)) {
+    const usesPages = await page.evaluate(() => {
+      const saved = localStorage.getItem('ariso:library-preferences:v1');
+      return saved !== null && JSON.parse(saved).loadingMode === 'pages';
+    });
+    // Library routes initialize an omitted page from the saved loading mode.
+    if (usesPages) url.searchParams.set('page', '1');
+  }
+  await page.waitForURL(url.href);
+}
+
 // Call after owner login, before fault injection. Uses real application routes.
 export async function verifyOwnerShell(page, config) {
   const { default: assert } = await import('node:assert/strict');
@@ -272,7 +285,7 @@ export async function verifyOwnerShell(page, config) {
         report.pages.push({ width, path, heading: position, skip, ...actual });
         const next = routes[(routes.indexOf(path) + 1) % routes.length];
         await page.click(`${scope} nav a[href="${next}"]`);
-        await page.waitForURL(`${config.origin}${next}`);
+        await waitForOwnerRoute(page, config, next);
         if (width < 1200)
           await page.waitForSelector(navigationDialog, { state: 'hidden' });
       }
@@ -317,7 +330,7 @@ export async function verifyOwnerShell(page, config) {
         for (const path of routes) {
           if (path !== '/upload') {
             await page.click(`.shell-navigation nav a[href="${path}"]`);
-            await page.waitForURL(`${config.origin}${path}`);
+            await waitForOwnerRoute(page, config, path);
           }
           await sidebarWidth(72);
           const actual = await readNavigation('.shell-navigation');

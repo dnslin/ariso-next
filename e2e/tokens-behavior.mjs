@@ -95,7 +95,7 @@ async function assertSecretNotPersisted(page, config, report, width, key) {
   return listed.payload.tokens;
 }
 
-async function clipboardRound(page, ui, report, width, key) {
+export async function verifyTokenClipboard(page, ui, report, width, key) {
   const saved = await saveClipboard();
   const selection = () =>
     page.evaluate(() => {
@@ -130,45 +130,40 @@ async function clipboardRound(page, ui, report, width, key) {
         }
       };
     });
-    await page.focus(tokenControl('secret'));
-    await page.waitForFunction(
-      () =>
-        document.activeElement ===
-        document.querySelector('[data-testid="api-secret"]'),
-    );
-    // Establish a real selection without depending on native arrow-key text
-    // editing commands. Copy itself still uses the actual browser clipboard.
-    assert.equal(
-      await page.evaluate(() => {
-        const node = document.querySelector('[data-testid="api-secret"]');
-        node.setSelectionRange(40, 50, 'backward');
-        node.scrollLeft = 100;
-        return document.activeElement === node;
-      }),
-      true,
-      'The secret input owns focus when preparing its partial selection',
-    );
-    const selected = await selection();
-    assert.deepEqual(
-      {
-        start: selected.start,
-        end: selected.end,
-        direction: selected.direction,
-      },
-      { start: 40, end: 50, direction: 'backward' },
-      'The key has the exact native partial selection before copy',
-    );
-    const before = await ui.sourceState();
+    let selected, before;
     const successfulCopies = [];
     for (const theme of ['light', 'dark']) {
       await ui.dismissNotifications();
       await setTheme(page, theme);
+      await page.focus(tokenControl('secret'));
+      await page.waitForFunction(
+        () =>
+          document.activeElement ===
+          document.querySelector('[data-testid="api-secret"]'),
+      );
+      if (theme === 'dark') {
+        await page.keyboard.press('Tab');
+        await page.waitForFunction(
+          () => document.activeElement?.dataset.testid === 'api-copy',
+        );
+      }
+      // Prepare each copy after theme and focus changes, then measure its own
+      // starting state. Evidence masking must not edit the real input value.
+      await page.evaluate(() => {
+        const node = document.querySelector('[data-testid="api-secret"]');
+        node.setSelectionRange(40, 50, 'backward');
+        node.scrollLeft = 100;
+      });
+      selected = await selection();
+      assert.deepEqual(
+        selected,
+        { start: 40, end: 50, direction: 'backward', scrollLeft: 100 },
+        'Each copy starts with the exact native partial selection and horizontal scroll',
+      );
+      before = await ui.sourceState();
       await ui.copyEvidence(`secret-copied-${theme}`, width, async () => {
         if (theme === 'light') await page.click(tokenControl('copy'));
-        else {
-          await page.focus(tokenControl('copy'));
-          await page.keyboard.press('Enter');
-        }
+        else await page.keyboard.press('Enter');
       });
       successfulCopies.push({ success: true });
       assert.deepEqual(
@@ -510,7 +505,7 @@ export async function verifyTokensCreates(
       undefined,
       registerSecret,
     );
-    await clipboardRound(page, ui, report, width, key);
+    await verifyTokenClipboard(page, ui, report, width, key);
     await page.focus(tokenControl('secret-close'));
     await page.keyboard.press('Enter');
     await page.waitForSelector(`${createDialog}[data-state="close-confirm"]`);

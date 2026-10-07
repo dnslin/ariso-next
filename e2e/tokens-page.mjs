@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { join } from 'node:path';
 import { setTimeout as delay } from 'node:timers/promises';
+import { isDeepStrictEqual } from 'node:util';
 import {
   resizeViewport,
   setTheme,
@@ -124,16 +125,38 @@ export function createTokensPage(page, config, report) {
         direction: node.selectionDirection,
         scrollLeft: node.scrollLeft,
       };
-      node.value = state.value.replace(/./g, '•');
-      node.setSelectionRange(state.start, state.end, state.direction);
-      node.scrollLeft = state.scrollLeft;
+      const rect = node.getBoundingClientRect();
+      const style = getComputedStyle(node);
+      const mask = document.createElement('div');
+      mask.dataset.evidenceMask = 'api-secret';
+      mask.setAttribute('aria-hidden', 'true');
+      Object.assign(mask.style, {
+        position: 'fixed',
+        left: `${rect.left}px`,
+        top: `${rect.top}px`,
+        width: `${rect.width}px`,
+        height: `${rect.height}px`,
+        boxSizing: 'border-box',
+        backgroundColor: getComputedStyle(node.parentElement).backgroundColor,
+        color: style.color,
+        font: style.font,
+        padding: style.padding,
+        display: 'flex',
+        alignItems: 'center',
+        overflow: 'hidden',
+        whiteSpace: 'nowrap',
+        pointerEvents: 'none',
+        zIndex: '2147483647',
+      });
+      mask.textContent = '•'.repeat(state.value.length);
+      node.parentElement.append(mask);
       return state;
     });
     try {
       if (expectedSecret)
-        assert.deepEqual(
-          secret,
-          expectedSecret,
+        assert.equal(
+          isDeepStrictEqual(secret, expectedSecret),
+          true,
           'Real copy preserves the key, exact selected range and input horizontal scroll before evidence masking',
         );
       const toast = copyToast ? await copyToastReady() : undefined;
@@ -142,14 +165,9 @@ export function createTokensPage(page, config, report) {
       return toast;
     } finally {
       if (secret !== null)
-        await page.evaluate((state) => {
-          const node = document.querySelector('[data-testid="api-secret"]');
-          if (node) {
-            node.value = state.value;
-            node.setSelectionRange(state.start, state.end, state.direction);
-            node.scrollLeft = state.scrollLeft;
-          }
-        }, secret);
+        await page.evaluate(() => {
+          document.querySelector('[data-evidence-mask="api-secret"]')?.remove();
+        });
     }
   }
   async function copyToastReady() {
@@ -441,6 +459,8 @@ export async function captureTokensLayouts(page, config, report) {
       await ui.geometry(`page-${theme}-${width}`, width);
       const pageState = await ui.sourceState();
       await page.focus('loc=role:button[name="时间与记录说明"]');
+      await page.keyboard.press('Shift+Tab');
+      await page.keyboard.press('Tab');
       if (width < 640) await page.keyboard.press('Enter');
       await page.waitForFunction(
         (timeZone) =>

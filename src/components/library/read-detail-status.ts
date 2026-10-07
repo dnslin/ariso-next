@@ -7,14 +7,18 @@ import type {
 } from '../../server/library/types';
 import { DetailReadError } from './read-detail';
 
-export async function readDetailStatus(
-  imageId: string,
+export function readDetailStatus(imageId: string, signal: AbortSignal) {
+  return readLibraryStatuses([imageId], signal);
+}
+
+export async function readLibraryStatuses(
+  ids: string[],
   signal: AbortSignal,
 ): Promise<{ items: LibraryItem[]; missingIds: string[] }> {
   const response = await fetch('/api/images/status', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ ids: [imageId] }),
+    body: JSON.stringify({ ids }),
     cache: 'no-store',
     signal,
   });

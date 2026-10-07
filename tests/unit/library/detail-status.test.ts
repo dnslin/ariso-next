@@ -3,6 +3,7 @@ import {
   detailStatusChanged,
   hasActiveDetailTask,
   readDetailStatus,
+  readLibraryStatuses,
 } from '../../../src/components/library/read-detail-status';
 import type { LibraryDetail } from '../../../src/server/library/detail-types';
 import type {
@@ -11,6 +12,24 @@ import type {
 } from '../../../src/server/library/types';
 
 afterEach(() => vi.unstubAllGlobals());
+
+it('reads explicit library IDs together without fetching full details or list pages', async () => {
+  const response = { items: [], missingIds: ['first', 'second'] };
+  const fetcher = vi.fn().mockResolvedValue(Response.json(response));
+  vi.stubGlobal('fetch', fetcher);
+  const signal = new AbortController().signal;
+  expect(await readLibraryStatuses(['first', 'second'], signal)).toEqual(
+    response,
+  );
+  expect(fetcher).toHaveBeenCalledWith(
+    '/api/images/status',
+    expect.objectContaining({
+      method: 'POST',
+      body: '{"ids":["first","second"]}',
+      signal,
+    }),
+  );
+});
 
 it('uses the bounded status endpoint for the active detail rather than rereading content', async () => {
   const fetcher = vi

@@ -1,0 +1,512 @@
+{
+  "status": "passed",
+  "taskSpaceId": 8,
+  "checks": [
+    {
+      "scenario": "exact-library-route",
+      "loadingMode": "pages",
+      "passed": true
+    },
+    {
+      "scenario": "exact-library-route",
+      "loadingMode": "more",
+      "passed": true
+    },
+    {
+      "scenario": "native-time-info-focus",
+      "width": 1440,
+      "passed": true
+    },
+    {
+      "scenario": "close-warning-overlay",
+      "width": 1440,
+      "passed": true
+    },
+    {
+      "scenario": "native-time-info-focus",
+      "width": 390,
+      "passed": true
+    },
+    {
+      "scenario": "close-warning-overlay",
+      "width": 390,
+      "passed": true
+    }
+  ],
+  "layouts": [
+    {
+      "name": "secret-copied-light",
+      "businessWidth": 1440,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭 Token 弹窗",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "完整 Token",
+          "width": 368,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "Token 已复制",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "关闭通知",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "copyToast": {
+        "surface": {
+          "x": 992,
+          "y": 992,
+          "width": 420,
+          "height": 60,
+          "top": 992,
+          "right": 1412,
+          "bottom": 1052,
+          "left": 992
+        },
+        "content": {
+          "x": 1048,
+          "y": 1012,
+          "width": 348,
+          "height": 20,
+          "top": 1012,
+          "right": 1396,
+          "bottom": 1032,
+          "left": 1048
+        },
+        "title": {
+          "x": 1048,
+          "y": 1012,
+          "width": 85.4609375,
+          "height": 20,
+          "top": 1012,
+          "right": 1133.4609375,
+          "bottom": 1032,
+          "left": 1048
+        },
+        "close": {
+          "x": 1372,
+          "y": 988,
+          "width": 44,
+          "height": 44,
+          "top": 988,
+          "right": 1416,
+          "bottom": 1032,
+          "left": 1372
+        }
+      }
+    },
+    {
+      "name": "secret-copied-dark",
+      "businessWidth": 1440,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭 Token 弹窗",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "完整 Token",
+          "width": 368,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "Token 已复制",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "关闭通知",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "copyToast": {
+        "surface": {
+          "x": 992,
+          "y": 992,
+          "width": 420,
+          "height": 60,
+          "top": 992,
+          "right": 1412,
+          "bottom": 1052,
+          "left": 992
+        },
+        "content": {
+          "x": 1048,
+          "y": 1012,
+          "width": 348,
+          "height": 20,
+          "top": 1012,
+          "right": 1396,
+          "bottom": 1032,
+          "left": 1048
+        },
+        "title": {
+          "x": 1048,
+          "y": 1012,
+          "width": 85.4609375,
+          "height": 20,
+          "top": 1012,
+          "right": 1133.4609375,
+          "bottom": 1032,
+          "left": 1048
+        },
+        "close": {
+          "x": 1372,
+          "y": 988,
+          "width": 44,
+          "height": 44,
+          "top": 988,
+          "right": 1416,
+          "bottom": 1032,
+          "left": 1372
+        }
+      }
+    },
+    {
+      "name": "secret-copy-error-light",
+      "businessWidth": 1440,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭 Token 弹窗",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "完整 Token",
+          "width": 368,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "再次复制 Token",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "关闭通知",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "secret-copy-error-dark",
+      "businessWidth": 1440,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭 Token 弹窗",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "完整 Token",
+          "width": 368,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "再次复制 Token",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "secret-copied-light",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭 Token 弹窗",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "完整 Token",
+          "width": 254,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "Token 已复制",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "关闭通知",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "copyToast": {
+        "surface": {
+          "x": 16,
+          "y": 760,
+          "width": 358,
+          "height": 60,
+          "top": 760,
+          "right": 374,
+          "bottom": 820,
+          "left": 16
+        },
+        "content": {
+          "x": 72,
+          "y": 780,
+          "width": 286,
+          "height": 20,
+          "top": 780,
+          "right": 358,
+          "bottom": 800,
+          "left": 72
+        },
+        "title": {
+          "x": 72,
+          "y": 780,
+          "width": 85.4609375,
+          "height": 20,
+          "top": 780,
+          "right": 157.4609375,
+          "bottom": 800,
+          "left": 72
+        },
+        "close": {
+          "x": 334,
+          "y": 756,
+          "width": 44,
+          "height": 44,
+          "top": 756,
+          "right": 378,
+          "bottom": 800,
+          "left": 334
+        }
+      }
+    },
+    {
+      "name": "secret-copied-dark",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭 Token 弹窗",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "完整 Token",
+          "width": 254,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "Token 已复制",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "关闭通知",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "copyToast": {
+        "surface": {
+          "x": 16,
+          "y": 760,
+          "width": 358,
+          "height": 60,
+          "top": 760,
+          "right": 374,
+          "bottom": 820,
+          "left": 16
+        },
+        "content": {
+          "x": 72,
+          "y": 780,
+          "width": 286,
+          "height": 20,
+          "top": 780,
+          "right": 358,
+          "bottom": 800,
+          "left": 72
+        },
+        "title": {
+          "x": 72,
+          "y": 780,
+          "width": 85.4609375,
+          "height": 20,
+          "top": 780,
+          "right": 157.4609375,
+          "bottom": 800,
+          "left": 72
+        },
+        "close": {
+          "x": 334,
+          "y": 756,
+          "width": 44,
+          "height": 44,
+          "top": 756,
+          "right": 378,
+          "bottom": 800,
+          "left": 334
+        }
+      }
+    },
+    {
+      "name": "secret-copy-error-light",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭 Token 弹窗",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "完整 Token",
+          "width": 254,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "再次复制 Token",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "关闭通知",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "secret-copy-error-dark",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭 Token 弹窗",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "完整 Token",
+          "width": 254,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "再次复制 Token",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "关闭通知",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    "tokens-1440-secret-copied-light.png",
+    "tokens-1440-secret-copied-dark.png",
+    "tokens-1440-secret-copy-error-light.png",
+    "tokens-1440-secret-copy-error-dark.png",
+    "tokens-1440-close-warning.png",
+    "tokens-390-secret-copied-light.png",
+    "tokens-390-secret-copied-dark.png",
+    "tokens-390-secret-copy-error-light.png",
+    "tokens-390-secret-copy-error-dark.png",
+    "tokens-390-close-warning.png"
+  ],
+  "requests": [],
+  "business": [],
+  "clipboard": [
+    {
+      "width": 1440,
+      "nativeSuccess": true,
+      "nativeDenied": true,
+      "manualExact": true,
+      "valueRetained": true,
+      "partialSelection": {
+        "start": 40,
+        "end": 50,
+        "direction": "backward",
+        "scrollLeft": 100
+      },
+      "selectionPreserved": true,
+      "successfulCopies": 2,
+      "successThemes": ["light", "dark"]
+    },
+    {
+      "width": 390,
+      "nativeSuccess": true,
+      "nativeDenied": true,
+      "manualExact": true,
+      "valueRetained": true,
+      "partialSelection": {
+        "start": 40,
+        "end": 50,
+        "direction": "backward",
+        "scrollLeft": 100
+      },
+      "selectionPreserved": true,
+      "successfulCopies": 2,
+      "successThemes": ["light", "dark"]
+    }
+  ]
+}

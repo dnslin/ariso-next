@@ -568,7 +568,9 @@ try {
   await page.click(button('创建标签'));
   await waitTagDialogText(page, '待核对');
   await layouts('unknown');
+  await page.focus(`${tagDialogSelector} button[aria-label="关闭"]`);
   await page.keyboard.press('Enter');
+  await page.waitForSelector(tagDialogSelector, { state: 'hidden' });
   await assertSingleWrite();
   assert.equal(
     (
@@ -578,7 +580,6 @@ try {
     )[0].n,
     1,
   );
-  await dismiss();
   await page.waitForFunction(() =>
     document
       .querySelector('[data-testid="tags-notice"]')

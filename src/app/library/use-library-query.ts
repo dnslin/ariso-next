@@ -17,13 +17,14 @@ import {
   type QueryClient,
   type InfiniteData,
 } from '@tanstack/react-query';
-import type { LibraryPage } from '../../server/library/types';
+import type { LibraryItem, LibraryPage } from '../../server/library/types';
 import type { LibraryFilters } from '../../server/library/query-schema';
 import type {
   BatchCommand,
   BatchItemResult,
 } from '../../server/library/batch-types';
 import { subscribeLibraryChanges } from '../../components/library/library-changes';
+import { readLibraryStatuses } from '../../components/library/read-detail-status';
 import {
   libraryListKey,
   libraryRequestParams,
@@ -344,6 +345,52 @@ export function useLibraryQuery(
     });
     setRefreshAvailable(false);
     if (loadingMode === 'pages') await paged.refetch({ throwOnError: true });
+    else if (command.type === 'reprocess') {
+      const ids = items
+        .filter((item) => byId.get(item.id)?.inQuery === true)
+        .map((item) => item.id);
+      const statuses = await client.fetchQuery({
+        queryKey: ['library', 'reprocess-status', ids],
+        queryFn: async ({ signal }) => {
+          const batches = [];
+          for (let offset = 0; offset < ids.length; offset += 80)
+            batches.push(
+              await readLibraryStatuses(ids.slice(offset, offset + 80), signal),
+            );
+          return batches;
+        },
+        staleTime: 0,
+        gcTime: 0,
+        retry: false,
+        networkMode: 'always',
+      });
+      const updated = new Map<string, LibraryItem>(
+        statuses.flatMap((status) =>
+          status.items.map((item) => [item.id, item]),
+        ),
+      );
+      const missing = new Set(statuses.flatMap((status) => status.missingIds));
+      client.setQueryData<InfiniteData<LibraryPage>>(queryKey, (data) => {
+        if (!data) return data;
+        const removed = new Set(
+          data.pages.flatMap((page) =>
+            page.items
+              .filter((item) => missing.has(item.id))
+              .map((item) => item.id),
+          ),
+        );
+        return {
+          ...data,
+          pages: data.pages.map((page) => ({
+            ...page,
+            total: Math.max(0, page.total - removed.size),
+            items: page.items.flatMap((item) =>
+              missing.has(item.id) ? [] : [updated.get(item.id) ?? item],
+            ),
+          })),
+        };
+      });
+    }
   }
   function onSelectionInvalid(ids: string[]) {
     if (!ids.length || !filters) return;
