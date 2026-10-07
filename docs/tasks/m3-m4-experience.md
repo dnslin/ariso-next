@@ -483,7 +483,7 @@ T-COL-04 沿用 OwnerShell 和 T-LIB-04 查询/布局实现，手机封面图片
   - [ ] 1. 匿名精简大图：复用查看器，不提供后台字段和选版。
   - [ ] 2. 删除相册/撤权/成员变化联验：本地与S3新请求失效。
 
-2026-10-06 至 07（Issue #193）：[草稿 PR #256](https://github.com/dnslin/ariso-next/pull/256) 实施匿名精简大图、公开邻居和打开中撤权，已接入实际生产页面；Local、R2/SeaweedFS 联验、默认检查、独立功能/设计评审和剩余人工验收分别见 [统一实施证据](../verification/sharing-193/README.md)。前置 #192/#191/#185/#161/#134 已在开工时回读为 CLOSED。本卡仍保留未完成人工验收，不以代码或定向检查替代整体完成。
+2026-10-06 至 07（Issue #193）：[草稿 PR #256](https://github.com/dnslin/ariso-next/pull/256) 实施匿名精简大图、公开邻居和打开中撤权，已接入实际生产页面；Local、R2/SeaweedFS 联验、默认检查、独立功能/设计评审和剩余人工验收分别见 [统一实施证据](../verification/sharing-193/README.md)。前置 #192/#191/#185/#161/#134 已在开工时回读为 CLOSED。07日追加的右上返回图标及过期文字颜色已获用户人工通过，其受影响浏览器流程、Figma同步与独立评审见[反馈记录](../verification/sharing-193/feedback-settings/README.md)。本卡其他未验范围仍保留，不以局部UI、代码或定向检查替代整体完成。
 
 #### DG-SHARING 对 T-SHR-04 的核对结论
 

@@ -1,7 +1,7 @@
 /* global taskSpace, config */
 const assert = (await import('node:assert/strict')).default;
 const { execFile } = await import('node:child_process');
-const { promisify } = await import('node:util');
+const { isDeepStrictEqual, promisify } = await import('node:util');
 const { mkdir, readFile, rm, writeFile } = await import('node:fs/promises');
 const { join } = await import('node:path');
 const { identitySql } = await import(config.identitySessionScript);
@@ -595,7 +595,9 @@ async function settingsPresentation() {
   assert.equal(
     await page.evaluate(() =>
       document
-        .querySelector('[data-slot="toggle-button"][aria-checked="true"]')
+        .querySelector(
+          '[role="radiogroup"][aria-labelledby="layout-label"] [data-slot="toggle-button"][aria-checked="true"]',
+        )
         .textContent.trim(),
     ),
     '瀑布流',
@@ -628,6 +630,32 @@ try {
     'SELECT public_url,time_zone FROM site_settings WHERE id=1',
   );
   if (representative) {
+    report.stage = 'large-native-clipboard-restoration';
+    const largeClipboard = [
+      [
+        {
+          type: 'public.utf8-plain-text',
+          data: Buffer.from('Ariso 剪贴板恢复回归\n'.repeat(20_000)).toString(
+            'base64',
+          ),
+        },
+      ],
+    ];
+    await restoreClipboard(largeClipboard);
+    assert.equal(
+      isDeepStrictEqual(await saveClipboard(), largeClipboard),
+      true,
+      'Large native clipboard contents round-trip exactly',
+    );
+    await restoreClipboard(savedClipboard);
+    assert.equal(
+      isDeepStrictEqual(await saveClipboard(), savedClipboard),
+      true,
+      'Original clipboard contents are restored before UI checks',
+    );
+    report.checks.push(
+      'Large native clipboard contents round-trip exactly and the saved clipboard is restored before UI checks.',
+    );
     await list();
     assert.equal(
       (await api('/api/shares')).total,
