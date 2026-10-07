@@ -13,6 +13,7 @@ import { createConnection, createServer } from 'node:net';
 import { join, resolve } from 'node:path';
 import { setTimeout as delay } from 'node:timers/promises';
 import { parseArgs } from 'node:util';
+import { createInterface } from 'node:readline';
 import { execa } from 'execa';
 import {
   initialMigration,
@@ -552,6 +553,106 @@ async function main() {
     );
     await loginAndLogout();
     check('production login and logout revoke the cookie before restart');
+    const recoveryCookies = [];
+    for (let index = 0; index < 2; index++) {
+      const response = await post('/api/auth/sign-in/email', credentials);
+      assert.equal(response.status, 200);
+      recoveryCookies.push(
+        response.headers
+          .getSetCookie()
+          .map((value) => value.split(';')[0])
+          .join('; '),
+      );
+    }
+    const recoveryPassword = randomBytes(24).toString('base64url');
+    // The host PTY drives the actual docker exec -it command. Secrets only
+    // travel over stdin; the harness reports whether terminal flags recover.
+    const recovery = execa(
+      '/usr/bin/python3',
+      [
+        resolve('tests/experiments/identity/cli-terminal.py'),
+        'docker',
+        'exec',
+        '-it',
+        id,
+        'node',
+        'dist/cli/reset-password.js',
+      ],
+      {
+        timeout: 30000,
+        buffer: false,
+        env: containerEnvironment(process.env),
+        extendEnv: false,
+        cancelSignal: abort.signal,
+      },
+    );
+    // Observe rejection immediately, including when parsing exits early.
+    const outcome = recovery.then(
+      (result) => ({ result }),
+      (error) => ({ error }),
+    );
+    const lines = createInterface({ input: recovery.stdout });
+    let transcript = '';
+    let stage = 0;
+    let terminalResult;
+    try {
+      for await (const line of lines) {
+        const event = JSON.parse(line);
+        if ('output' in event) {
+          transcript += event.output;
+          if (stage === 0 && transcript.includes('新密码：')) {
+            recovery.stdin.write(
+              JSON.stringify({ input: recoveryPassword + '\r' }) + '\n',
+            );
+            stage = 1;
+          }
+          if (stage === 1 && transcript.includes('确认新密码：')) {
+            recovery.stdin.write(
+              JSON.stringify({ input: recoveryPassword + '\r' }) + '\n',
+            );
+            stage = 2;
+          }
+        } else terminalResult = event;
+      }
+      const completed = await outcome;
+      if ('error' in completed) throw completed.error;
+    } finally {
+      lines.close();
+      recovery.stdin.end();
+      if (recovery.nodeChildProcess.exitCode === null) recovery.kill();
+      await outcome;
+    }
+    assert.deepEqual(terminalResult, { exitCode: 0, terminalRestored: true });
+    assert.ok(
+      !transcript.includes(recoveryPassword),
+      'CLI does not echo the password',
+    );
+    assert.ok(transcript.includes('全部会话已撤销，请重新登录'));
+    for (const cookie of recoveryCookies) {
+      const response = await fetch(`${origin}/api/auth/get-session`, {
+        headers: { cookie },
+        signal: AbortSignal.timeout(15000),
+      });
+      assert.equal(response.status, 200);
+      assert.equal(await response.json(), null);
+    }
+    assert.equal(
+      (await post('/api/auth/sign-in/email', credentials)).status,
+      401,
+    );
+    credentials.password = recoveryPassword;
+    await loginAndLogout();
+    report.identity.cliRecovery = {
+      terminalRestored: true,
+      hiddenInput: true,
+      revokedSessions: 2,
+      oldPasswordRejected: true,
+      newPasswordAccepted: true,
+    };
+    check(
+      'packaged docker exec -it CLI resets password while Web is running and revokes both cookies on the next request',
+    );
+
     const beforeRestart = setupCodes(await logs('setup-completed')).length;
     assert.equal(beforeRestart, 1);
     await compose(['restart', 'ariso']);

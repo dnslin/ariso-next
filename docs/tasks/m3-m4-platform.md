@@ -564,6 +564,8 @@
 
 ### T-ID-09 独立容器 CLI 密码恢复
 
+实施与验证见 [Issue #183 统一记录](../verification/identity-183/README.md)。生产 CLI 与 standalone 已接入，当前结果与未完成项以该记录为准；不代替 T-ID-07 的邮件恢复交付。
+
 - 任务组：`IDENTITY-ACCOUNT`
 - 里程碑：M4
 - 范围：实现交互式隐藏密码输入的容器命令并纳入standalone打包，直接使用现有库哈希与已迁移数据库。

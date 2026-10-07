@@ -17,6 +17,7 @@ const output = join(root, '.next/standalone');
 const { fileList, warnings } = await nft.nodeFileTrace(
   [
     'dist/cli/prestart.js',
+    'dist/cli/reset-password.js',
     'dist/cli/logging.js',
     'dist/cli/shutdown.js',
     'dist/cli/http.js',

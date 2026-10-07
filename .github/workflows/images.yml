@@ -111,7 +111,7 @@ jobs:
             exiftool -ver
             test -s /usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc
             test -s /usr/share/fonts/truetype/noto/NotoSans-Regular.ttf
-            for path in server.js entrypoint.sh dist/cli/prestart.js dist/cli/logging.js drizzle/meta/_journal.json public/runtime.svg verification/fixtures/sample.jpg verification/fixtures/sample.png; do
+            for path in server.js entrypoint.sh dist/cli/prestart.js dist/cli/reset-password.js dist/cli/logging.js drizzle/meta/_journal.json public/runtime.svg verification/fixtures/sample.jpg verification/fixtures/sample.png; do
               test -s "$path"
             done
             node -e "const assert = require(\"node:assert/strict\"); const Database = require(\"better-sqlite3\"); const db = new Database(\":memory:\"); assert.equal(db.prepare(\"SELECT 1 AS ok\").get().ok, 1); db.close(); console.log(\"SQLite native query passed\");"

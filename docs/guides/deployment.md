@@ -37,6 +37,22 @@ docker compose --env-file .env.local up --detach --no-build --wait
 
 Compose 给停止留出 30 秒。当前 Next 16.3.5 的标准 SIGTERM 清理会返回退出码 143（128 + 15）；它与超时强制 SIGKILL 的 137 不同。`/data/ariso.db`、可能存在的 SQLite WAL/SHM 文件、`storage/`、`assets/watermarks/`、`assets/branding/` 和 `tmp/` 均位于挂载目录。容器重建不会替换挂载数据。不要将此运行示例当作自动测试执行在已有部署上。
 
+## 独立密码恢复
+
+初始化已经完成但忘记本地密码时，在当前容器中运行：
+
+```sh
+docker exec -it ariso node dist/cli/reset-password.js
+```
+
+使用 Compose 且容器名不是 `ariso` 时，运行 `docker compose --env-file .env.local exec ariso node dist/cli/reset-password.js`。命令读取容器的 `DATA_DIR/ariso.db`（默认 `/data/ariso.db`），只使用已经迁移的数据库。不要传密码参数、设置密码环境变量或把输入记录到日志。
+
+在终端输入 8–128 个字符的新密码，再输入一次确认。两次输入均不显示字符，保留空格并支持中文和退格。成功后密码生效，全部设备的会话及所有者未使用的邮件重置凭据撤销，需要重新登录。Web 可以持续运行，旧 Cookie 在下一次请求失效；CLI 不需要 SMTP、Web 或部署密钥，也不会启动服务、执行迁移、创建用户或生成初始化码。
+
+Ctrl+C、SIGTERM、输入关闭、确认不一致或数据库异常均以非零状态退出。取消或失败不会留下部分密码/会话修改，终端状态和数据库连接会恢复；修复原因后可以重新明确运行。尚未初始化时提示先完成 Web setup，不通过恢复命令创建账号。数据库权限和结构错误应按实际诊断修复，不删除原库。其他进程正在写库时，命令立即报数据库占用并退出，不同步等待写锁；稍后显式重试。
+
+CLI 只撤销尚未消费的邮件重置凭据。已经消费令牌并正在执行的邮件重置仍可能随后写入密码，这个组合边界由邮件恢复任务承接；不要把本命令理解为取消所有在途邮件操作。[本地 standalone 验证与发布待验项](../verification/identity-183/README.md)分别记录，AMD64/ARM64 容器验证沿下方 Release 流程执行。
+
 ## 公共同步上传的请求预算
 
 `POST /api/upload` 在完整接收文件后才交接媒体任务，随后等待本次任务结果。当前接收连续 120 秒无进展或总计 1800 秒后失败；交接后的等待预算为 900 秒，包含排队。等待超时只结束 HTTP 等待，后台任务继续，调用方应先到所有者图库核对，再决定是否重新 POST；重复 POST 可以生成新图片。
