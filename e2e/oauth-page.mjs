@@ -23,7 +23,99 @@ export function createOAuthPage(page, config, report) {
     await page.screenshot({ path: join(config.output, file) });
     report.screenshots.push(file);
   }
+  async function rowLayout(capturedWidth) {
+    const layout = await page.evaluate(() => {
+      const root = document.querySelector('[data-testid="account-page"]');
+      const rect = (node) => {
+        const { x, y, width, height, bottom, right } =
+          node.getBoundingClientRect();
+        return { x, y, width, height, bottom, right };
+      };
+      const github = root.querySelector('[data-testid="account-github"]');
+      return {
+        contentWidth: github.parentElement.getBoundingClientRect().width,
+        headings: [
+          ...root.querySelectorAll(
+            '#owner-account-heading, #account-github-heading',
+          ),
+        ].map((node) => ({
+          text: node.textContent.trim(),
+          icon: !!node.querySelector('svg[aria-hidden="true"]'),
+        })),
+        rows: [
+          ...root.querySelectorAll('[data-testid="account-setting-row"]'),
+        ].map((node) => ({
+          label: node
+            .querySelector('[data-testid="account-setting-label"]')
+            .textContent.trim(),
+          icon: !!node
+            .querySelector('[data-testid="account-setting-label"]')
+            .querySelector('svg[aria-hidden="true"]'),
+          labelRect: rect(
+            node.querySelector('[data-testid="account-setting-label"]'),
+          ),
+          value: rect(
+            node.querySelector('[data-testid="account-setting-value"]'),
+          ),
+          content: rect(
+            node.querySelector('[data-testid="account-setting-content"]'),
+          ),
+          buttons: [...node.querySelectorAll('button')].map(rect),
+        })),
+      };
+    });
+    assert.ok(
+      layout.contentWidth <= 961,
+      'Account rows use the approved maximum content width',
+    );
+    assert.deepEqual(layout.headings, [
+      { text: '所有者账号', icon: true },
+      { text: 'GitHub 登录', icon: true },
+    ]);
+    assert.deepEqual(
+      layout.rows.map(({ label, icon }) => ({ label, icon })),
+      [
+        { label: '登录邮箱', icon: true },
+        { label: '登录密码', icon: true },
+        { label: 'GitHub 账号', icon: true },
+        { label: '站点登录配置', icon: true },
+      ],
+    );
+    for (const row of layout.rows) {
+      for (const button of row.buttons) {
+        assert.ok(
+          button.width >= 44 && button.height >= 44,
+          `${row.label} action has a 44px target`,
+        );
+        if (capturedWidth < 640) {
+          assert.ok(
+            button.x >= row.content.right + 11,
+            `${row.label} action is beside its content on mobile`,
+          );
+          assert.ok(
+            Math.abs(
+              button.y +
+                button.height / 2 -
+                (row.content.y + row.content.height / 2),
+            ) < 1,
+            `${row.label} action is vertically centered on mobile`,
+          );
+        } else
+          assert.ok(
+            button.x >= row.value.right,
+            `${row.label} action follows its value on desktop`,
+          );
+      }
+    }
+    return layout;
+  }
   async function geometry(name, capturedWidth = width) {
+    const layout = await rowLayout(capturedWidth);
+    report.layouts.push({
+      name: `${name}-rows`,
+      width: capturedWidth,
+      ...layout,
+    });
     const result = await readGeometry(page);
     assertGeometry(result, name);
     report.layouts.push({ name, ...result });
@@ -137,76 +229,6 @@ export function createOAuthPage(page, config, report) {
       await setTheme(page, theme);
       for (const capturedWidth of widths) {
         await resizeViewport(page, capturedWidth);
-        const layout = await page.evaluate(() => {
-          const root = document.querySelector('[data-testid="account-page"]');
-          const rect = (node) => {
-            const { x, y, width, height, bottom, right } =
-              node.getBoundingClientRect();
-            return { x, y, width, height, bottom, right };
-          };
-          const github = root.querySelector('[data-testid="account-github"]');
-          return {
-            contentWidth: github.parentElement.getBoundingClientRect().width,
-            headings: [
-              ...root.querySelectorAll(
-                '#owner-account-heading, #account-github-heading',
-              ),
-            ].map((node) => ({
-              text: node.textContent.trim(),
-              icon: !!node.querySelector('svg[aria-hidden="true"]'),
-            })),
-            rows: [
-              ...root.querySelectorAll('[data-testid="account-setting-row"]'),
-            ].map((node) => ({
-              label: node.firstElementChild.textContent.trim(),
-              icon: !!node.firstElementChild.querySelector(
-                'svg[aria-hidden="true"]',
-              ),
-              value: rect(node.children[1]),
-              buttons: [...node.querySelectorAll('button')].map(rect),
-            })),
-          };
-        });
-        assert.ok(
-          layout.contentWidth <= 961,
-          'Account rows use the approved maximum content width',
-        );
-        assert.deepEqual(layout.headings, [
-          { text: '所有者账号', icon: true },
-          { text: 'GitHub 登录', icon: true },
-        ]);
-        assert.deepEqual(
-          layout.rows.map(({ label, icon }) => ({ label, icon })),
-          [
-            { label: '登录邮箱', icon: true },
-            { label: '登录密码', icon: true },
-            { label: 'GitHub 账号', icon: true },
-            { label: '站点登录配置', icon: true },
-          ],
-        );
-        for (const row of layout.rows) {
-          for (const button of row.buttons) {
-            assert.ok(
-              button.width >= 44 && button.height >= 44,
-              `${row.label} action has a 44px target`,
-            );
-            if (capturedWidth < 640)
-              assert.ok(
-                button.y >= row.value.bottom,
-                `${row.label} action follows its value on mobile`,
-              );
-            else
-              assert.ok(
-                button.x >= row.value.right,
-                `${row.label} action follows its value on desktop`,
-              );
-          }
-        }
-        report.layouts.push({
-          name: `${name}-rows-${theme}`,
-          width: capturedWidth,
-          ...layout,
-        });
         await geometry(`${name}-${theme}`, capturedWidth);
         if (configuration) {
           const trigger = '[data-testid="oauth-config-difference"]';

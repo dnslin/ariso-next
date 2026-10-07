@@ -1,0 +1,912 @@
+{
+  "status": "passed",
+  "requests": [],
+  "layouts": [
+    {
+      "name": "manual-preview-light-rows",
+      "width": 390,
+      "contentWidth": 358,
+      "headings": [
+        {
+          "text": "所有者账号",
+          "icon": true
+        },
+        {
+          "text": "GitHub 登录",
+          "icon": true
+        }
+      ],
+      "rows": [
+        {
+          "label": "登录邮箱",
+          "icon": true,
+          "labelRect": {
+            "x": 33,
+            "y": 341.25,
+            "width": 222,
+            "height": 19.5,
+            "bottom": 360.75,
+            "right": 255
+          },
+          "value": {
+            "x": 33,
+            "y": 364.75,
+            "width": 222,
+            "height": 20,
+            "bottom": 384.75,
+            "right": 255
+          },
+          "content": {
+            "x": 33,
+            "y": 341.25,
+            "width": 222,
+            "height": 43.5,
+            "bottom": 384.75,
+            "right": 255
+          },
+          "buttons": [
+            {
+              "x": 267,
+              "y": 341,
+              "width": 90,
+              "height": 44,
+              "bottom": 385,
+              "right": 357
+            }
+          ]
+        },
+        {
+          "label": "登录密码",
+          "icon": true,
+          "labelRect": {
+            "x": 33,
+            "y": 418.25,
+            "width": 222,
+            "height": 19.5,
+            "bottom": 437.75,
+            "right": 255
+          },
+          "value": {
+            "x": 33,
+            "y": 441.75,
+            "width": 222,
+            "height": 20,
+            "bottom": 461.75,
+            "right": 255
+          },
+          "content": {
+            "x": 33,
+            "y": 418.25,
+            "width": 222,
+            "height": 43.5,
+            "bottom": 461.75,
+            "right": 255
+          },
+          "buttons": [
+            {
+              "x": 267,
+              "y": 418,
+              "width": 90,
+              "height": 44,
+              "bottom": 462,
+              "right": 357
+            }
+          ]
+        },
+        {
+          "label": "GitHub 账号",
+          "icon": true,
+          "labelRect": {
+            "x": 33,
+            "y": 568,
+            "width": 324,
+            "height": 19.5,
+            "bottom": 587.5,
+            "right": 357
+          },
+          "value": {
+            "x": 33,
+            "y": 591.5,
+            "width": 324,
+            "height": 43.5,
+            "bottom": 635,
+            "right": 357
+          },
+          "content": {
+            "x": 33,
+            "y": 568,
+            "width": 324,
+            "height": 67,
+            "bottom": 635,
+            "right": 357
+          },
+          "buttons": []
+        },
+        {
+          "label": "站点登录配置",
+          "icon": true,
+          "labelRect": {
+            "x": 33,
+            "y": 668.25,
+            "width": 202.75,
+            "height": 19.5,
+            "bottom": 687.75,
+            "right": 235.75
+          },
+          "value": {
+            "x": 33,
+            "y": 691.75,
+            "width": 202.75,
+            "height": 20,
+            "bottom": 711.75,
+            "right": 235.75
+          },
+          "content": {
+            "x": 33,
+            "y": 668.25,
+            "width": 202.75,
+            "height": 43.5,
+            "bottom": 711.75,
+            "right": 235.75
+          },
+          "buttons": [
+            {
+              "x": 247.75,
+              "y": 668,
+              "width": 109.25,
+              "height": 44,
+              "bottom": 712,
+              "right": 357
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "manual-preview-light",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "账号与安全",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改邮箱",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改密码",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "配置 GitHub",
+          "width": 109.25,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "short-keyboard-light",
+      "testid": "account-change-email",
+      "width": 90,
+      "height": 44,
+      "top": 133,
+      "bottom": 177,
+      "viewport": 400,
+      "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(255, 255, 254) 0px 0px 0px 2px, rgb(40, 126, 121) 0px 0px 0px 4px, rgba(0, 0, 0, 0) 0px 0px 0px 0px"
+    },
+    {
+      "name": "short-keyboard-light",
+      "testid": "account-change-password",
+      "width": 90,
+      "height": 44,
+      "top": 210,
+      "bottom": 254,
+      "viewport": 400,
+      "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(255, 255, 254) 0px 0px 0px 2px, rgb(40, 126, 121) 0px 0px 0px 4px, rgba(0, 0, 0, 0) 0px 0px 0px 0px"
+    },
+    {
+      "name": "short-keyboard-light",
+      "testid": "account-github-config",
+      "width": 109.25,
+      "height": 44,
+      "top": 275,
+      "bottom": 319,
+      "viewport": 400,
+      "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(255, 255, 254) 0px 0px 0px 2px, rgb(40, 126, 121) 0px 0px 0px 4px, rgba(0, 0, 0, 0) 0px 0px 0px 0px"
+    },
+    {
+      "name": "short-keyboard-light-rows",
+      "width": 390,
+      "contentWidth": 358,
+      "headings": [
+        {
+          "text": "所有者账号",
+          "icon": true
+        },
+        {
+          "text": "GitHub 登录",
+          "icon": true
+        }
+      ],
+      "rows": [
+        {
+          "label": "登录邮箱",
+          "icon": true,
+          "labelRect": {
+            "x": 33,
+            "y": -51.75,
+            "width": 222,
+            "height": 19.5,
+            "bottom": -32.25,
+            "right": 255
+          },
+          "value": {
+            "x": 33,
+            "y": -28.25,
+            "width": 222,
+            "height": 20,
+            "bottom": -8.25,
+            "right": 255
+          },
+          "content": {
+            "x": 33,
+            "y": -51.75,
+            "width": 222,
+            "height": 43.5,
+            "bottom": -8.25,
+            "right": 255
+          },
+          "buttons": [
+            {
+              "x": 267,
+              "y": -52,
+              "width": 90,
+              "height": 44,
+              "bottom": -8,
+              "right": 357
+            }
+          ]
+        },
+        {
+          "label": "登录密码",
+          "icon": true,
+          "labelRect": {
+            "x": 33,
+            "y": 25.25,
+            "width": 222,
+            "height": 19.5,
+            "bottom": 44.75,
+            "right": 255
+          },
+          "value": {
+            "x": 33,
+            "y": 48.75,
+            "width": 222,
+            "height": 20,
+            "bottom": 68.75,
+            "right": 255
+          },
+          "content": {
+            "x": 33,
+            "y": 25.25,
+            "width": 222,
+            "height": 43.5,
+            "bottom": 68.75,
+            "right": 255
+          },
+          "buttons": [
+            {
+              "x": 267,
+              "y": 25,
+              "width": 90,
+              "height": 44,
+              "bottom": 69,
+              "right": 357
+            }
+          ]
+        },
+        {
+          "label": "GitHub 账号",
+          "icon": true,
+          "labelRect": {
+            "x": 33,
+            "y": 175,
+            "width": 324,
+            "height": 19.5,
+            "bottom": 194.5,
+            "right": 357
+          },
+          "value": {
+            "x": 33,
+            "y": 198.5,
+            "width": 324,
+            "height": 43.5,
+            "bottom": 242,
+            "right": 357
+          },
+          "content": {
+            "x": 33,
+            "y": 175,
+            "width": 324,
+            "height": 67,
+            "bottom": 242,
+            "right": 357
+          },
+          "buttons": []
+        },
+        {
+          "label": "站点登录配置",
+          "icon": true,
+          "labelRect": {
+            "x": 33,
+            "y": 275.25,
+            "width": 202.75,
+            "height": 19.5,
+            "bottom": 294.75,
+            "right": 235.75
+          },
+          "value": {
+            "x": 33,
+            "y": 298.75,
+            "width": 202.75,
+            "height": 20,
+            "bottom": 318.75,
+            "right": 235.75
+          },
+          "content": {
+            "x": 33,
+            "y": 275.25,
+            "width": 202.75,
+            "height": 43.5,
+            "bottom": 318.75,
+            "right": 235.75
+          },
+          "buttons": [
+            {
+              "x": 247.75,
+              "y": 275,
+              "width": 109.25,
+              "height": 44,
+              "bottom": 319,
+              "right": 357
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "short-keyboard-light",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "账号与安全",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改邮箱",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改密码",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "配置 GitHub",
+          "width": 109.25,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "manual-preview-dark-rows",
+      "width": 390,
+      "contentWidth": 358,
+      "headings": [
+        {
+          "text": "所有者账号",
+          "icon": true
+        },
+        {
+          "text": "GitHub 登录",
+          "icon": true
+        }
+      ],
+      "rows": [
+        {
+          "label": "登录邮箱",
+          "icon": true,
+          "labelRect": {
+            "x": 33,
+            "y": 341.25,
+            "width": 222,
+            "height": 19.5,
+            "bottom": 360.75,
+            "right": 255
+          },
+          "value": {
+            "x": 33,
+            "y": 364.75,
+            "width": 222,
+            "height": 20,
+            "bottom": 384.75,
+            "right": 255
+          },
+          "content": {
+            "x": 33,
+            "y": 341.25,
+            "width": 222,
+            "height": 43.5,
+            "bottom": 384.75,
+            "right": 255
+          },
+          "buttons": [
+            {
+              "x": 267,
+              "y": 341,
+              "width": 90,
+              "height": 44,
+              "bottom": 385,
+              "right": 357
+            }
+          ]
+        },
+        {
+          "label": "登录密码",
+          "icon": true,
+          "labelRect": {
+            "x": 33,
+            "y": 418.25,
+            "width": 222,
+            "height": 19.5,
+            "bottom": 437.75,
+            "right": 255
+          },
+          "value": {
+            "x": 33,
+            "y": 441.75,
+            "width": 222,
+            "height": 20,
+            "bottom": 461.75,
+            "right": 255
+          },
+          "content": {
+            "x": 33,
+            "y": 418.25,
+            "width": 222,
+            "height": 43.5,
+            "bottom": 461.75,
+            "right": 255
+          },
+          "buttons": [
+            {
+              "x": 267,
+              "y": 418,
+              "width": 90,
+              "height": 44,
+              "bottom": 462,
+              "right": 357
+            }
+          ]
+        },
+        {
+          "label": "GitHub 账号",
+          "icon": true,
+          "labelRect": {
+            "x": 33,
+            "y": 568,
+            "width": 324,
+            "height": 19.5,
+            "bottom": 587.5,
+            "right": 357
+          },
+          "value": {
+            "x": 33,
+            "y": 591.5,
+            "width": 324,
+            "height": 43.5,
+            "bottom": 635,
+            "right": 357
+          },
+          "content": {
+            "x": 33,
+            "y": 568,
+            "width": 324,
+            "height": 67,
+            "bottom": 635,
+            "right": 357
+          },
+          "buttons": []
+        },
+        {
+          "label": "站点登录配置",
+          "icon": true,
+          "labelRect": {
+            "x": 33,
+            "y": 668.25,
+            "width": 202.75,
+            "height": 19.5,
+            "bottom": 687.75,
+            "right": 235.75
+          },
+          "value": {
+            "x": 33,
+            "y": 691.75,
+            "width": 202.75,
+            "height": 20,
+            "bottom": 711.75,
+            "right": 235.75
+          },
+          "content": {
+            "x": 33,
+            "y": 668.25,
+            "width": 202.75,
+            "height": 43.5,
+            "bottom": 711.75,
+            "right": 235.75
+          },
+          "buttons": [
+            {
+              "x": 247.75,
+              "y": 668,
+              "width": 109.25,
+              "height": 44,
+              "bottom": 712,
+              "right": 357
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "manual-preview-dark",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "账号与安全",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改邮箱",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改密码",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "配置 GitHub",
+          "width": 109.25,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "short-keyboard-dark",
+      "testid": "account-change-email",
+      "width": 90,
+      "height": 44,
+      "top": 133,
+      "bottom": 177,
+      "viewport": 400,
+      "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(24, 26, 34) 0px 0px 0px 2px, rgb(130, 219, 211) 0px 0px 0px 4px, rgba(0, 0, 0, 0) 0px 0px 0px 0px"
+    },
+    {
+      "name": "short-keyboard-dark",
+      "testid": "account-change-password",
+      "width": 90,
+      "height": 44,
+      "top": 210,
+      "bottom": 254,
+      "viewport": 400,
+      "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(24, 26, 34) 0px 0px 0px 2px, rgb(130, 219, 211) 0px 0px 0px 4px, rgba(0, 0, 0, 0) 0px 0px 0px 0px"
+    },
+    {
+      "name": "short-keyboard-dark",
+      "testid": "account-github-config",
+      "width": 109.25,
+      "height": 44,
+      "top": 275,
+      "bottom": 319,
+      "viewport": 400,
+      "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(24, 26, 34) 0px 0px 0px 2px, rgb(130, 219, 211) 0px 0px 0px 4px, rgba(0, 0, 0, 0) 0px 0px 0px 0px"
+    },
+    {
+      "name": "short-keyboard-dark-rows",
+      "width": 390,
+      "contentWidth": 358,
+      "headings": [
+        {
+          "text": "所有者账号",
+          "icon": true
+        },
+        {
+          "text": "GitHub 登录",
+          "icon": true
+        }
+      ],
+      "rows": [
+        {
+          "label": "登录邮箱",
+          "icon": true,
+          "labelRect": {
+            "x": 33,
+            "y": -51.75,
+            "width": 222,
+            "height": 19.5,
+            "bottom": -32.25,
+            "right": 255
+          },
+          "value": {
+            "x": 33,
+            "y": -28.25,
+            "width": 222,
+            "height": 20,
+            "bottom": -8.25,
+            "right": 255
+          },
+          "content": {
+            "x": 33,
+            "y": -51.75,
+            "width": 222,
+            "height": 43.5,
+            "bottom": -8.25,
+            "right": 255
+          },
+          "buttons": [
+            {
+              "x": 267,
+              "y": -52,
+              "width": 90,
+              "height": 44,
+              "bottom": -8,
+              "right": 357
+            }
+          ]
+        },
+        {
+          "label": "登录密码",
+          "icon": true,
+          "labelRect": {
+            "x": 33,
+            "y": 25.25,
+            "width": 222,
+            "height": 19.5,
+            "bottom": 44.75,
+            "right": 255
+          },
+          "value": {
+            "x": 33,
+            "y": 48.75,
+            "width": 222,
+            "height": 20,
+            "bottom": 68.75,
+            "right": 255
+          },
+          "content": {
+            "x": 33,
+            "y": 25.25,
+            "width": 222,
+            "height": 43.5,
+            "bottom": 68.75,
+            "right": 255
+          },
+          "buttons": [
+            {
+              "x": 267,
+              "y": 25,
+              "width": 90,
+              "height": 44,
+              "bottom": 69,
+              "right": 357
+            }
+          ]
+        },
+        {
+          "label": "GitHub 账号",
+          "icon": true,
+          "labelRect": {
+            "x": 33,
+            "y": 175,
+            "width": 324,
+            "height": 19.5,
+            "bottom": 194.5,
+            "right": 357
+          },
+          "value": {
+            "x": 33,
+            "y": 198.5,
+            "width": 324,
+            "height": 43.5,
+            "bottom": 242,
+            "right": 357
+          },
+          "content": {
+            "x": 33,
+            "y": 175,
+            "width": 324,
+            "height": 67,
+            "bottom": 242,
+            "right": 357
+          },
+          "buttons": []
+        },
+        {
+          "label": "站点登录配置",
+          "icon": true,
+          "labelRect": {
+            "x": 33,
+            "y": 275.25,
+            "width": 202.75,
+            "height": 19.5,
+            "bottom": 294.75,
+            "right": 235.75
+          },
+          "value": {
+            "x": 33,
+            "y": 298.75,
+            "width": 202.75,
+            "height": 20,
+            "bottom": 318.75,
+            "right": 235.75
+          },
+          "content": {
+            "x": 33,
+            "y": 275.25,
+            "width": 202.75,
+            "height": 43.5,
+            "bottom": 318.75,
+            "right": 235.75
+          },
+          "buttons": [
+            {
+              "x": 247.75,
+              "y": 275,
+              "width": 109.25,
+              "height": 44,
+              "bottom": 319,
+              "right": 357
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "short-keyboard-dark",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "账号与安全",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改邮箱",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改密码",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "配置 GitHub",
+          "width": 109.25,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    "oauth-390-preview-manual-preview-light-390.png",
+    "oauth-390-preview-short-keyboard-light-390.png",
+    "oauth-390-preview-manual-preview-dark-390.png",
+    "oauth-390-preview-short-keyboard-dark-390.png"
+  ]
+}

@@ -19,15 +19,25 @@ export function AccountSettingRow({
   return (
     <div
       data-testid="account-setting-row"
-      className="grid min-w-0 grid-cols-[116px_minmax(0,1fr)] items-center gap-x-3 gap-y-2 border-border px-4 py-4 [&+div]:border-t sm:grid-cols-[136px_minmax(0,1fr)_auto] sm:gap-5 sm:px-5"
+      className={`grid min-w-0 ${action ? 'grid-cols-[minmax(0,1fr)_auto]' : 'grid-cols-1'} items-center gap-x-3 gap-y-2 border-border px-4 py-4 [&+div]:border-t sm:grid-cols-[136px_minmax(0,1fr)_auto] sm:gap-5 sm:px-5`}
     >
-      <div className="flex min-w-0 items-center gap-2 text-[13px] text-muted">
-        {icon}
-        <span>{label}</span>
+      <div
+        data-testid="account-setting-content"
+        className="grid min-w-0 gap-1 sm:contents"
+      >
+        <div
+          data-testid="account-setting-label"
+          className="flex min-w-0 items-center gap-2 text-[13px] text-muted"
+        >
+          {icon}
+          <span>{label}</span>
+        </div>
+        <div data-testid="account-setting-value" className="min-w-0 text-sm">
+          {children}
+        </div>
       </div>
-      <div className="min-w-0 text-sm">{children}</div>
       {action ? (
-        <div className="col-start-2 flex shrink-0 items-center gap-2 sm:col-start-3">
+        <div className="col-start-2 flex shrink-0 items-center justify-end gap-2 sm:col-start-3">
           {action}
         </div>
       ) : null}

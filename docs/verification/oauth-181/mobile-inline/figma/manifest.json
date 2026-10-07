@@ -1,0 +1,334 @@
+{
+  "fileKey": "74sT9Hrf8G4czcWeTkET5b",
+  "scope": "Approved mobile-inline account settings row arrangement only",
+  "approval": "Latest user-approved prototype mobileInline=true; supersedes prior mobile value-below-action arrangement for this issue.",
+  "prototype": {
+    "source": ".data/oauth-181/prototype/app/account-rows-preview.tsx",
+    "rowLines": "294-345",
+    "screenshots": [
+      ".data/oauth-181/prototype/mobile-inline-390-dark.png",
+      ".data/oauth-181/prototype/mobile-inline-360-long-dark.png"
+    ],
+    "review": ".data/oauth-181/prototype/mobile-inline-review.md",
+    "dataBoundary": "Prototype contains simulated example data; Figma preserves its existing sample content and state responsibilities."
+  },
+  "discovery": {
+    "codeConnect": "No relevant *.figma.ts/*.figma.tsx/*.figma.js mapping found in src or the approved prototype.",
+    "component": "836:13855",
+    "availableComponents": "Existing local row, 16px icon instances, local mobile Button, selector and public header reused. No component creation or detach.",
+    "colors": "Existing Ariso Light/Dark aliases kept; no new tokens."
+  },
+  "pages": {
+    "source": "0:1",
+    "mobile": "97:748"
+  },
+  "mainNodes": {
+    "light": "102:1713",
+    "dark": "847:32225",
+    "desktopReadOnly": "34:462"
+  },
+  "affectedMobileStates": [
+    {
+      "id": "102:1713",
+      "name": "M · 站点设置 · 账号与安全",
+      "w": 390,
+      "h": 844,
+      "rows": ["837:27943", "837:27973", "837:28006", "837:28031"]
+    },
+    {
+      "id": "197:2092",
+      "name": "M / 账号安全 / GitHub 已绑定",
+      "w": 390,
+      "h": 844,
+      "rows": ["837:28073", "837:28098", "837:28131", "837:28157"]
+    },
+    {
+      "id": "196:2011",
+      "name": "M / GitHub / 配置已保存 · 等待重启 / 密钥已更新",
+      "w": 390,
+      "h": 844,
+      "rows": ["844:28740", "844:28770", "844:28803", "844:28829"]
+    },
+    {
+      "id": "196:2012",
+      "name": "M / GitHub / 停用已保存 · 当前仍启用",
+      "w": 390,
+      "h": 844,
+      "rows": ["844:28879", "844:28904", "844:28937", "844:28963"]
+    },
+    {
+      "id": "196:2016",
+      "name": "M / GitHub / 启用已保存 · 当前未启用",
+      "w": 390,
+      "h": 844,
+      "rows": ["844:29013", "844:29038", "844:29071", "844:29096"]
+    },
+    {
+      "id": "196:2008",
+      "name": "M / GitHub / 解绑后保留来源 / 中性通知",
+      "w": 390,
+      "h": 844,
+      "rows": ["844:29146", "844:29171", "844:29204", "844:29230"]
+    },
+    {
+      "id": "196:2009",
+      "name": "M / GitHub / 解绑结果未知 / 回读状态",
+      "w": 390,
+      "h": 844,
+      "rows": ["848:32177", "848:32209", "848:32249", "848:32282"]
+    },
+    {
+      "id": "196:2013",
+      "name": "M / GitHub / 未配置 / 绑定不可用",
+      "w": 390,
+      "h": 844,
+      "rows": ["845:28802", "845:28827", "845:28860", "845:28885"]
+    },
+    {
+      "id": "814:29892",
+      "name": "M / GitHub / 配置保存结果未知 · 来源页",
+      "w": 390,
+      "h": 844,
+      "rows": ["848:32323", "848:32355", "848:32395", "848:32427"]
+    },
+    {
+      "id": "814:29997",
+      "name": "M / GitHub / 停用待重启 · 通知结束 · 深色",
+      "w": 390,
+      "h": 844,
+      "rows": ["845:29051", "845:29076", "845:29109", "845:29135"]
+    },
+    {
+      "id": "847:32045",
+      "name": "M / GitHub / 已启用 · 尚未绑定",
+      "w": 390,
+      "h": 844,
+      "rows": ["848:30515", "848:30547", "848:30587", "848:30620"]
+    },
+    {
+      "id": "847:32081",
+      "name": "M / GitHub / 独立读取绑定与配置",
+      "w": 390,
+      "h": 844,
+      "rows": ["848:30661", "848:30693", "848:30733", "848:30765"]
+    },
+    {
+      "id": "847:32117",
+      "name": "M / GitHub / 绑定读取失败 · 配置可操作",
+      "w": 390,
+      "h": 844,
+      "rows": ["848:30805", "848:30837", "848:30877", "848:30909"]
+    },
+    {
+      "id": "847:32153",
+      "name": "M / GitHub / 配置读取失败 · 已绑定可解绑",
+      "w": 390,
+      "h": 844,
+      "rows": ["848:30950", "848:30982", "848:31022", "848:31055"]
+    },
+    {
+      "id": "847:32189",
+      "name": "M / GitHub / 登录停用 · 绑定保留",
+      "w": 390,
+      "h": 844,
+      "rows": ["848:31227", "848:31259", "848:31299", "848:31332"]
+    },
+    {
+      "id": "847:32225",
+      "name": "M / GitHub / 未配置 · 深色",
+      "w": 390,
+      "h": 844,
+      "rows": ["848:31373", "848:31405", "848:31445", "848:31477"]
+    },
+    {
+      "id": "847:32261",
+      "name": "M / GitHub / 停用待重启 · 配置差异已展开",
+      "w": 390,
+      "h": 844,
+      "rows": ["848:31519", "848:31551", "848:31591", "848:31624"]
+    }
+  ],
+  "originalFullScrollRegion": "819:27634",
+  "componentWrite": [
+    "836:13855",
+    "836:13856",
+    "836:13862",
+    "836:13863",
+    "836:13866"
+  ],
+  "instanceWrite": {
+    "rowCount": 70,
+    "nodeCount": 350,
+    "raw": "write-results.json"
+  },
+  "layout": {
+    "mobile": {
+      "padding": 16,
+      "columnsGap": 12,
+      "labelIconSize": 16,
+      "labelIconGap": 8,
+      "labelSize": 13,
+      "labelLineHeight": 19.5,
+      "labelValueGap": 4,
+      "valueSize": 14,
+      "valueLineHeight": 20,
+      "actionHeight": 44,
+      "actionWidth": "natural content width; existing mobile min44",
+      "actionAlignment": "center alongside Information",
+      "withoutAction": "Information occupies full inner width"
+    },
+    "desktopBreakpoint": 640,
+    "desktop": "Existing separate Desktop source and 136px label column preserved; no Desktop mutation."
+  },
+  "verification": {
+    "mobileStates": 17,
+    "additionalFullRegion": 1,
+    "instances": 70,
+    "stateContentAndPropertiesEqual": true,
+    "publicHeaderGeometryEqual": true,
+    "desktopTrackedRoots": 17,
+    "desktopTrackedGeometryEqual": true,
+    "layoutViolations": 0,
+    "editability": {
+      "descendants": 178,
+      "counts": {
+        "FRAME": 59,
+        "VECTOR": 53,
+        "TEXT": 33,
+        "INSTANCE": 26,
+        "GROUP": 4,
+        "RECTANGLE": 3
+      },
+      "imageNodes": []
+    },
+    "fonts": ["Noto Sans SC", "Inter"],
+    "rawFiles": [
+      "before-state.json",
+      "after-state.json",
+      "layout-audit.json",
+      "write-results.json",
+      "design-context.json"
+    ]
+  },
+  "screenshots": {
+    "before": [
+      {
+        "nodeId": "102:1713",
+        "file": "main-light-before.png",
+        "width": 390,
+        "height": 844
+      },
+      {
+        "nodeId": "847:32225",
+        "file": "main-dark-before.png",
+        "width": 390,
+        "height": 844
+      },
+      {
+        "nodeId": "197:2092",
+        "file": "bound-light-before.png",
+        "width": 390,
+        "height": 844
+      },
+      {
+        "nodeId": "814:29892",
+        "file": "config-unknown-light-before.png",
+        "width": 390,
+        "height": 844
+      },
+      {
+        "nodeId": "814:29997",
+        "file": "pending-dark-before.png",
+        "width": 390,
+        "height": 844
+      },
+      {
+        "nodeId": "847:32261",
+        "file": "expanded-light-before.png",
+        "width": 390,
+        "height": 844
+      }
+    ],
+    "final": [
+      {
+        "nodeId": "102:1713",
+        "file": "main-light-after.png",
+        "width": 390,
+        "height": 844
+      },
+      {
+        "nodeId": "847:32225",
+        "file": "main-dark-after.png",
+        "width": 390,
+        "height": 844
+      },
+      {
+        "nodeId": "197:2092",
+        "file": "bound-light-after.png",
+        "width": 390,
+        "height": 844
+      },
+      {
+        "nodeId": "814:29892",
+        "file": "config-unknown-light-after-current.png",
+        "width": 390,
+        "height": 844
+      },
+      {
+        "nodeId": "814:29997",
+        "file": "pending-dark-after.png",
+        "width": 390,
+        "height": 844
+      },
+      {
+        "nodeId": "847:32261",
+        "file": "expanded-light-after.png",
+        "width": 390,
+        "height": 844
+      }
+    ],
+    "fullContent": {
+      "nodeId": "847:32274",
+      "file": "expanded-full-content-after.png",
+      "width": 358,
+      "height": 707,
+      "kind": "full-content"
+    },
+    "process": [
+      {
+        "file": "config-unknown-light-after.png",
+        "note": "Initial full-view composition export did not show the already-visible label. Native read and targeted row export confirmed intact label. A fresh full-view export is the final current file; no extra canvas/product change was needed."
+      },
+      {
+        "file": "config-unknown-row-composition.png",
+        "note": "Targeted render established the label, icon and information/action positions."
+      }
+    ]
+  },
+  "fullExportRestore": {
+    "mutatedNodeIds": ["847:32261", "847:32274"],
+    "clipsContent": true,
+    "bodyFills": []
+  },
+  "unchanged": [
+    "Public header/shell/category",
+    "Desktop components and 17 recorded root geometries",
+    "Fonts/color theme tokens",
+    "Modal interactions",
+    "State wording, loading/error/unknown responsibilities",
+    "Pending restart summary and Accordion including px16 and snapshot spacing"
+  ],
+  "completion": {
+    "figmaNativeWrite": true,
+    "staticVisualReviewBySynchronizer": true,
+    "formalProductPrecisionComparison": true,
+    "formalProductPrecisionScope": "390x844 unbound-disabled main page, both Light and Dark; parent-generated DOM metrics and screenshots read only. Other formal runtime state evidence remains owned by parent.",
+    "independentDesignReview": false,
+    "browserFunctionalVerification": "Owned by parent task; no browser was operated here.",
+    "manualAcceptance": "Owned by parent task; prototype approval is not formal product acceptance."
+  },
+  "limitations": [
+    "Formal main-page comparison is recorded in product-comparison.json. Existing caption text-box rounding leaves 0.25px value-y and 1px accumulated configuration-y approximations; natural long-button glyph width differs 0.75px. Additional actual runtime state/long-email coverage is owned by parent.",
+    "Existing Noto text-box rounding and example email/username data differ from the running fixture; not a product-contract change."
+  ]
+}
