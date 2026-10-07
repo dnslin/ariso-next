@@ -77,8 +77,8 @@ let failure;
 try {
   errorScript = await installBrowserErrors(page);
   await resizeViewport(page, config.width ?? 1440);
-  await setTheme(page, 'light');
   await accountSignIn(page, config, report, config.credentials, config.width);
+  await setTheme(page, 'light');
   await ui.ready();
   if (config.oauthPhase === 'before') {
     report.stage = 'disabled-representative';

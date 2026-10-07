@@ -59,12 +59,16 @@ export async function verifyLoginVisibility(page, config, report, enabled) {
 async function openUnlink(page) {
   await page.focus('[data-testid="account-github-unlink"]');
   await page.keyboard.press('Enter');
-  await page.waitForSelector(unlinkDialog);
+  await page.waitForSelector(`${unlinkDialog}[data-state="editing"]`);
 }
 
 async function closeUnlink(page) {
+  await page.waitForFunction(
+    (root) => !!document.activeElement?.closest(root),
+    unlinkDialog,
+  );
   await page.keyboard.press('Escape');
-  await page.waitForSelector(unlinkDialog, { state: 'hidden' });
+  await page.waitForSelector(unlinkDialog, { state: 'detached' });
   await page.waitForFunction(
     () =>
       document.activeElement ===
@@ -101,8 +105,16 @@ async function verifyClosedUnlinkUnknown(page, config, report, ui, committed) {
         'The rejected delivery did not send a DELETE or alter the seeded relation',
       );
     await page.waitForSelector(`${unlinkDialog}[data-state="unknown"]`);
+    report.stage = `closed-unlink-unknown-${committed ? 'committed' : 'not-sent'}`;
+    await page.waitForFunction(
+      () =>
+        document.activeElement ===
+        document.querySelector(
+          '[data-testid="github-unlink"] [data-testid="account-github-reload"]',
+        ),
+    );
     await page.keyboard.press('Escape');
-    await page.waitForSelector(unlinkDialog, { state: 'hidden' });
+    await page.waitForSelector(unlinkDialog, { state: 'detached' });
     await page.waitForSelector(
       '[data-testid="account-github"][data-state="unknown"]',
     );
@@ -284,12 +296,18 @@ export async function verifyGithubBinding(page, config, report, ui) {
       (root) => document.querySelector(root)?.textContent.includes('HTTP 500'),
       unlinkDialog,
     );
+    await page.waitForSelector(`${unlinkDialog}[data-state="editing"]`);
+    await page.waitForFunction(
+      (root) => document.querySelector(root)?.textContent.includes('尚未解除'),
+      unlinkDialog,
+    );
     assert.deepEqual(
       (await accountRequest(page, report, config.width, '/api/account/github'))
         .payload.binding,
       binding.payload.binding,
     );
     await ui.geometry('unlink-real-server-error');
+    report.stage = 'unlink-real-server-error-close';
     await closeUnlink(page);
   } finally {
     await identitySql(config, 'DROP TRIGGER reject_oauth_browser_unlink');
@@ -366,6 +384,11 @@ export async function verifyGithubBinding(page, config, report, ui) {
   await page.waitForSelector(unlinkDialog, { state: 'hidden' });
   await page.waitForSelector(
     '[data-testid="account-github"][data-state="unbound"]',
+  );
+  await page.waitForFunction(
+    () =>
+      document.activeElement ===
+      document.querySelector('[data-testid="account-github-link"]'),
   );
   assert.equal(new URL(await page.url()).pathname, '/settings/account');
   await assertCredentialPreserved(config);

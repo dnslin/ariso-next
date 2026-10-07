@@ -27,6 +27,9 @@ export function useGithubUnlink({
     'editing' | 'saving' | 'checking' | 'unknown'
   >('editing');
   const [feedback, setFeedback] = useState('');
+  const [focusTarget, setFocusTarget] = useState<{
+    action: 'confirm' | 'reload';
+  } | null>(null);
   const inFlight = useRef(false);
   const mounted = useRef(true);
   const busy = phase === 'saving' || phase === 'checking';
@@ -36,6 +39,14 @@ export function useGithubUnlink({
       mounted.current = false;
     };
   }, []);
+  useEffect(() => {
+    if (!focusTarget || busy) return;
+    document
+      .querySelector<HTMLElement>(
+        `[data-testid="github-unlink"] [data-testid="account-github-${focusTarget.action === 'reload' ? 'reload' : 'unlink-confirm'}"]`,
+      )
+      ?.focus({ preventScroll: true });
+  }, [focusTarget, busy]);
   function close() {
     if (!inFlight.current) onClose();
   }
@@ -63,6 +74,7 @@ export function useGithubUnlink({
         onUpdate(current);
         onVerified();
         setPhase('editing');
+        setFocusTarget({ action: 'confirm' });
         setFeedback(
           `${reason ? `${reason}。` : ''}已核对：当前 GitHub 绑定尚未解除。`,
         );
@@ -73,6 +85,7 @@ export function useGithubUnlink({
         onSessionExpire();
       else {
         setPhase('unknown');
+        setFocusTarget({ action: 'reload' });
         setFeedback(
           error instanceof Error ? error.message : '无法核对 GitHub 绑定',
         );

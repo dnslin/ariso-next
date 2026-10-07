@@ -68,11 +68,15 @@ export function createOAuthPage(page, config, report) {
     );
     await page.focus('[data-testid="account-github-config"]');
     await page.keyboard.press('Enter');
-    await page.waitForSelector(oauthDialog);
+    await page.waitForSelector(`${oauthDialog}[data-state="editing"]`);
   }
   async function close() {
+    await page.waitForFunction(
+      (root) => !!document.activeElement?.closest(root),
+      oauthDialog,
+    );
     await page.keyboard.press('Escape');
-    await page.waitForSelector(oauthDialog, { state: 'hidden' });
+    await page.waitForSelector(oauthDialog, { state: 'detached' });
     await page.waitForFunction(
       () =>
         document.activeElement ===
@@ -375,6 +379,12 @@ export async function verifyCallbackCopy(
     });
     await page.click('loc=role:button[name="复制 GitHub 回调地址"]');
     await page.waitForSelector('[data-testid="oauth-manual-copy"]');
+    await page.waitForFunction(
+      () =>
+        ![...document.querySelectorAll('[data-slot="toast-title"]')].some(
+          (node) => node.textContent.trim() === '回调地址已复制',
+        ),
+    );
     await page.click('loc=role:button[name="选择完整回调地址"]');
     assert.deepEqual(
       await page.evaluate(() => {

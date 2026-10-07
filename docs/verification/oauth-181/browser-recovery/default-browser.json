@@ -1,0 +1,295 @@
+{
+  "startedAt": "2026-10-07T10:54:00.654Z",
+  "finishedAt": "2026-10-07T11:21:49.873Z",
+  "platform": "darwin",
+  "arch": "arm64",
+  "node": "v24.18.1",
+  "status": "failed",
+  "suite": "full",
+  "taskSpaceId": 6,
+  "counts": {
+    "passed": 55,
+    "failed": 7,
+    "blocked": 6
+  },
+  "stages": [
+    {
+      "name": "runtime-start",
+      "status": "passed"
+    },
+    {
+      "name": "shell-start",
+      "status": "passed"
+    },
+    {
+      "name": "runtime",
+      "status": "passed"
+    },
+    {
+      "name": "identity-1440-start",
+      "status": "passed"
+    },
+    {
+      "name": "identity-1440-setup",
+      "status": "passed"
+    },
+    {
+      "name": "owner-runtime-1440",
+      "status": "passed"
+    },
+    {
+      "name": "identity-1440-restart",
+      "status": "passed"
+    },
+    {
+      "name": "m2-1440-before",
+      "status": "passed"
+    },
+    {
+      "name": "m2-1440-after",
+      "status": "passed"
+    },
+    {
+      "name": "interaction-polish-1440",
+      "status": "passed"
+    },
+    {
+      "name": "workspace-continuity-1440",
+      "status": "passed"
+    },
+    {
+      "name": "tokens-1440",
+      "status": "failed"
+    },
+    {
+      "name": "oauth-runtime-1440",
+      "status": "passed"
+    },
+    {
+      "name": "oauth-1440-before",
+      "status": "failed"
+    },
+    {
+      "name": "oauth-1440-restart",
+      "status": "passed"
+    },
+    {
+      "name": "oauth-1440-after",
+      "status": "blocked",
+      "blockedBy": ["oauth-1440-before"]
+    },
+    {
+      "name": "oauth-1440-enable-restart",
+      "status": "blocked",
+      "blockedBy": ["oauth-1440-after"]
+    },
+    {
+      "name": "oauth-1440-enabled",
+      "status": "blocked",
+      "blockedBy": ["oauth-1440-after", "oauth-1440-enable-restart"]
+    },
+    {
+      "name": "account-runtime-1440",
+      "status": "passed"
+    },
+    {
+      "name": "account-1440",
+      "status": "passed"
+    },
+    {
+      "name": "identity-390-start",
+      "status": "passed"
+    },
+    {
+      "name": "identity-390-setup",
+      "status": "passed"
+    },
+    {
+      "name": "owner-runtime-390",
+      "status": "passed"
+    },
+    {
+      "name": "identity-390-restart",
+      "status": "passed"
+    },
+    {
+      "name": "processing",
+      "status": "passed"
+    },
+    {
+      "name": "storage-admin",
+      "status": "passed"
+    },
+    {
+      "name": "storage-cors",
+      "status": "passed"
+    },
+    {
+      "name": "storage-cors-close",
+      "status": "passed"
+    },
+    {
+      "name": "library",
+      "status": "failed"
+    },
+    {
+      "name": "library-feedback",
+      "status": "passed"
+    },
+    {
+      "name": "library-selection",
+      "status": "passed"
+    },
+    {
+      "name": "library-selection-reconciliation",
+      "status": "passed"
+    },
+    {
+      "name": "library-query",
+      "status": "passed"
+    },
+    {
+      "name": "library-filters",
+      "status": "passed"
+    },
+    {
+      "name": "library-scale",
+      "status": "passed"
+    },
+    {
+      "name": "library-batch",
+      "status": "passed"
+    },
+    {
+      "name": "library-reprocess",
+      "status": "passed"
+    },
+    {
+      "name": "library-copy",
+      "status": "passed"
+    },
+    {
+      "name": "trash-query-batch",
+      "status": "passed"
+    },
+    {
+      "name": "trash-cleanup",
+      "status": "passed"
+    },
+    {
+      "name": "shell-navigation",
+      "status": "passed"
+    },
+    {
+      "name": "albums",
+      "status": "passed"
+    },
+    {
+      "name": "album-cover",
+      "status": "failed"
+    },
+    {
+      "name": "tags",
+      "status": "passed"
+    },
+    {
+      "name": "upload",
+      "status": "passed"
+    },
+    {
+      "name": "upload-polling",
+      "status": "passed"
+    },
+    {
+      "name": "upload-input",
+      "status": "passed"
+    },
+    {
+      "name": "upload-submissions",
+      "status": "passed"
+    },
+    {
+      "name": "upload-relations",
+      "status": "passed"
+    },
+    {
+      "name": "sharing-management",
+      "status": "passed"
+    },
+    {
+      "name": "m2-390-before",
+      "status": "passed"
+    },
+    {
+      "name": "m2-390-after",
+      "status": "passed"
+    },
+    {
+      "name": "interaction-polish-390",
+      "status": "passed"
+    },
+    {
+      "name": "workspace-continuity-390",
+      "status": "passed"
+    },
+    {
+      "name": "tokens-390",
+      "status": "failed"
+    },
+    {
+      "name": "oauth-runtime-390",
+      "status": "passed"
+    },
+    {
+      "name": "oauth-390-before",
+      "status": "failed"
+    },
+    {
+      "name": "oauth-390-restart",
+      "status": "passed"
+    },
+    {
+      "name": "oauth-390-after",
+      "status": "blocked",
+      "blockedBy": ["oauth-390-before"]
+    },
+    {
+      "name": "oauth-390-enable-restart",
+      "status": "blocked",
+      "blockedBy": ["oauth-390-after"]
+    },
+    {
+      "name": "oauth-390-enabled",
+      "status": "blocked",
+      "blockedBy": ["oauth-390-after", "oauth-390-enable-restart"]
+    },
+    {
+      "name": "account-runtime-390",
+      "status": "passed"
+    },
+    {
+      "name": "account-390",
+      "status": "passed"
+    },
+    {
+      "name": "delivery-s3",
+      "status": "passed"
+    },
+    {
+      "name": "sharing-protocol",
+      "status": "passed"
+    },
+    {
+      "name": "sharing-public",
+      "status": "failed"
+    },
+    {
+      "name": "sharing-experiment",
+      "status": "passed"
+    },
+    {
+      "name": "isolated-ui",
+      "status": "passed"
+    }
+  ]
+}

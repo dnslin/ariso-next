@@ -7,6 +7,10 @@ import type {
 } from 'react';
 import { LoginForm } from '../../../src/components/identity/login-form';
 import { useGithubAccount } from '../../../src/components/identity/use-github-account';
+import { useGithubAccountView } from '../../../src/components/identity/use-github-account-view';
+import { GithubCallbackCopy } from '../../../src/components/identity/github-callback-copy';
+import { useGithubSettingsEditor } from '../../../src/components/identity/use-github-settings-editor';
+import { useGithubUnlink } from '../../../src/components/identity/use-github-unlink';
 
 // Model retained React hook state and browser lifecycle delivery only. These
 // tests do not establish that a real browser selected bfcache for this page.
@@ -23,15 +27,34 @@ vi.mock('@heroui/react/button', () => ({ Button: 'button' }));
 vi.mock('@heroui/react/form', () => ({ Form: 'form' }));
 vi.mock('@heroui/react/link', () => ({ Link: 'a' }));
 vi.mock('@heroui/react/spinner', () => ({ Spinner: 'spinner' }));
+vi.mock('next/navigation', () => ({
+  useSearchParams: () => new URLSearchParams(),
+}));
+const notifications = vi.hoisted(() => ({
+  show: vi.fn(),
+  close: vi.fn(),
+}));
+vi.mock('@heroui/react/toast', () => ({
+  toast: Object.assign(notifications.show, { close: notifications.close }),
+}));
 vi.mock('../../../src/components/identity/identity-field', () => ({
   IdentityField: 'identity-field',
 }));
-const requests = vi.hoisted(() => ({ signIn: vi.fn(), link: vi.fn() }));
+const requests = vi.hoisted(() => ({
+  signIn: vi.fn(),
+  link: vi.fn(),
+  readSettings: vi.fn(),
+  saveSettings: vi.fn(),
+  readBinding: vi.fn(),
+  unlink: vi.fn(),
+}));
 vi.mock('../../../src/components/identity/github-request', () => ({
   signInGithub: requests.signIn,
   linkGithub: requests.link,
-  readGithubSettings: vi.fn(),
-  readGithubBinding: vi.fn(),
+  readGithubSettings: requests.readSettings,
+  saveGithubSettings: requests.saveSettings,
+  readGithubBinding: requests.readBinding,
+  unlinkGithub: requests.unlink,
 }));
 const queries = vi.hoisted(() => ({ values: new Map<string, Query>() }));
 vi.mock('@tanstack/react-query', () => ({
@@ -171,8 +194,14 @@ const flush = async () => {
 };
 
 beforeEach(() => {
+  notifications.show.mockReset().mockReturnValue('copy-notification');
+  notifications.close.mockReset();
   requests.signIn.mockReset().mockResolvedValue(authorize);
   requests.link.mockReset().mockResolvedValue(authorize);
+  requests.readSettings.mockReset();
+  requests.saveSettings.mockReset();
+  requests.readBinding.mockReset();
+  requests.unlink.mockReset();
   queries.values.clear();
   windowEvents = new EventTarget();
   vi.stubGlobal('window', {
@@ -181,6 +210,180 @@ beforeEach(() => {
     removeEventListener: windowEvents.removeEventListener.bind(windowEvents),
   });
 });
+
+it.each([false, true])(
+  'returns focus to the current configuration action after uncertain readback: verified=%s',
+  (verified) => {
+    const focus = vi.fn();
+    const selector = vi.fn(() => ({ focus }));
+    vi.stubGlobal('document', { querySelector: selector });
+    vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
+      callback(0);
+      return 1;
+    });
+    const account = {
+      settings: query({ effective: { enabled: true } }).value,
+      binding: query(null).value,
+    } as unknown as ReturnType<typeof useGithubAccount>;
+    const page = mount(() => useGithubAccountView(account));
+    page.render().openEditor();
+    page.render().settingsUncertain();
+    expect(page.render().settingsUnknown).toBe(true);
+    if (verified) page.render().settingsVerified();
+    page.render().closeEditor();
+    expect(page.render().editorOpen).toBe(false);
+    expect(selector).toHaveBeenCalledWith(
+      verified
+        ? '[data-testid="account-github-config"]'
+        : '[data-testid="oauth-settings-reload"]',
+    );
+    expect(focus).toHaveBeenCalledWith({ preventScroll: true });
+  },
+);
+
+it('closes only its previous copy notification before a denied retry exposes manual copying', async () => {
+  const writeText = vi
+    .fn()
+    .mockResolvedValueOnce(undefined)
+    .mockRejectedValueOnce(new Error('Clipboard permission denied'));
+  vi.stubGlobal('navigator', { clipboard: { writeText } });
+  const url = 'https://photos.example/api/auth/callback/github';
+  const page = mount(() => GithubCallbackCopy({ url, isDisabled: false }));
+  const copy = () =>
+    elements(page.render()).find(
+      (node) => node.props['aria-label'] === '复制 GitHub 回调地址',
+    )!;
+  press(copy());
+  await flush();
+  expect(notifications.show).toHaveBeenCalledTimes(1);
+  expect(notifications.close).not.toHaveBeenCalled();
+  press(copy());
+  await flush();
+  expect(notifications.close).toHaveBeenCalledExactlyOnceWith(
+    'copy-notification',
+  );
+  expect(notifications.show).toHaveBeenCalledTimes(1);
+  expect(writeText).toHaveBeenNthCalledWith(2, url);
+  expect(
+    elements(page.render()).find(
+      (node) => node.props['data-testid'] === 'oauth-manual-copy',
+    ),
+  ).toBeDefined();
+});
+
+it.each([false, true])(
+  'restores the current binding action when closing recovery: verified=%s',
+  (verified) => {
+    const focus = vi.fn();
+    const selector = vi.fn(() => ({ focus }));
+    vi.stubGlobal('document', { querySelector: selector });
+    vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
+      callback(0);
+      return 1;
+    });
+    const account = {
+      settings: query({ effective: { enabled: true } }).value,
+      binding: query({ accountId: 'owner', login: 'owner' }).value,
+    } as unknown as ReturnType<typeof useGithubAccount>;
+    const page = mount(() => useGithubAccountView(account));
+    page.render().openUnlink();
+    page.render().unlinkUncertain();
+    if (verified) page.render().unlinkVerified();
+    page.render().closeUnlink();
+    expect(page.render().unlinkOpen).toBe(false);
+    expect(selector).toHaveBeenCalledWith(
+      verified
+        ? '[data-testid="account-github-unlink"]'
+        : '[data-testid="account-github-reload"]',
+    );
+    expect(focus).toHaveBeenCalledWith({ preventScroll: true });
+  },
+);
+
+it.each([false, true])(
+  'focuses an enabled unlink recovery action without repeating DELETE: readback=%s',
+  async (readback) => {
+    const focus = vi.fn();
+    const selector = vi.fn(() => ({ focus }));
+    vi.stubGlobal('document', { querySelector: selector });
+    requests.unlink.mockRejectedValue(new Error('Uncertain unlink'));
+    if (readback)
+      requests.readBinding.mockResolvedValue({
+        accountId: 'owner',
+        login: 'owner',
+      });
+    else requests.readBinding.mockRejectedValue(new Error('Read failed'));
+    const page = mount(() =>
+      useGithubUnlink({
+        onClose: vi.fn(),
+        onUpdate: vi.fn(),
+        onUnlinked: vi.fn(),
+        onUncertain: vi.fn(),
+        onVerified: vi.fn(),
+        onSessionExpire: vi.fn(),
+      }),
+    );
+    await page.render().submit();
+    expect(page.render().phase).toBe(readback ? 'editing' : 'unknown');
+    expect(selector).toHaveBeenCalledExactlyOnceWith(
+      `[data-testid="github-unlink"] [data-testid="account-github-${readback ? 'unlink-confirm' : 'reload'}"]`,
+    );
+    expect(focus).toHaveBeenCalledExactlyOnceWith({ preventScroll: true });
+    expect(requests.unlink).toHaveBeenCalledTimes(1);
+    expect(requests.readBinding).toHaveBeenCalledTimes(1);
+  },
+);
+
+it.each([false, true])(
+  'focuses an enabled recovery action after uncertain saving: readback=%s',
+  async (readback) => {
+    const focus = vi.fn();
+    const byId = vi.fn(() => ({ focus }));
+    const selector = vi.fn(() => ({ focus }));
+    vi.stubGlobal('document', {
+      getElementById: byId,
+      querySelector: selector,
+    });
+    vi.stubGlobal('cancelAnimationFrame', vi.fn());
+    vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
+      callback(0);
+      return 1;
+    });
+    const saved = { enabled: false, clientId: 'saved', hasSecret: true };
+    const settings = {
+      saved,
+      effective: saved,
+      pendingRestart: false,
+      callbackUrl: 'https://photos.example/api/auth/callback/github',
+    };
+    requests.saveSettings.mockRejectedValue(new Error('Uncertain write'));
+    if (readback) requests.readSettings.mockResolvedValue(settings);
+    else requests.readSettings.mockRejectedValue(new Error('Read failed'));
+    const page = mount(() =>
+      useGithubSettingsEditor({
+        settings,
+        onClose: vi.fn(),
+        onUpdate: vi.fn(),
+        onSaved: vi.fn(),
+        onUncertain: vi.fn(),
+        onVerified: vi.fn(),
+        onSessionExpire: vi.fn(),
+      }),
+    );
+    page.render();
+    byId.mockClear();
+    focus.mockClear();
+    await page.render().submit();
+    expect(page.render().phase).toBe(readback ? 'verified' : 'unknown');
+    expect(selector).toHaveBeenCalledExactlyOnceWith(
+      `[data-testid="oauth-${readback ? 'close' : 'reload'}"]`,
+    );
+    expect(byId).not.toHaveBeenCalled();
+    expect(focus).toHaveBeenCalledExactlyOnceWith({ preventScroll: true });
+    expect(requests.saveSettings).toHaveBeenCalledTimes(1);
+    expect(requests.readSettings).toHaveBeenCalledTimes(1);
+  },
+);
 afterEach(() => {
   for (const hooks of mounted.splice(0)) hooks.unmount();
   vi.unstubAllGlobals();

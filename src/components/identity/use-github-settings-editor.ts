@@ -54,12 +54,16 @@ export function useGithubSettingsEditor(props: GithubSettingsEditorProps) {
     };
   }, []);
   useEffect(() => {
-    if (focusTarget && !busy)
-      document
-        .getElementById(
-          `oauth-${focusTarget.field === 'clientId' ? 'client-id' : 'client-secret'}`,
-        )
-        ?.focus();
+    if (!focusTarget || busy) return;
+    const target =
+      focusTarget.field === 'close' || focusTarget.field === 'reload'
+        ? document.querySelector<HTMLElement>(
+            `[data-testid="oauth-${focusTarget.field}"]`,
+          )
+        : document.getElementById(
+            `oauth-${focusTarget.field === 'clientId' ? 'client-id' : 'client-secret'}`,
+          );
+    target?.focus({ preventScroll: true });
   }, [focusTarget, busy]);
 
   function change(
@@ -98,6 +102,7 @@ export function useGithubSettingsEditor(props: GithubSettingsEditorProps) {
       props.onVerified();
       setVerified(current);
       setPhase('verified');
+      setFocusTarget({ field: 'close' });
     } catch (error) {
       if (!mounted.current) return;
       if (error instanceof AccountRequestError && error.status === 401)
@@ -107,6 +112,7 @@ export function useGithubSettingsEditor(props: GithubSettingsEditorProps) {
           error instanceof Error ? error.message : '无法核对当前配置',
         );
         setPhase('unknown');
+        setFocusTarget({ field: 'reload' });
       }
     }
   }

@@ -1,0 +1,2455 @@
+{
+  "fileKey": "74sT9Hrf8G4czcWeTkET5b",
+  "date": "2026-10-07",
+  "stage": "手机真实测量后追加同步；不将首轮桌面8px位移直接套手机",
+  "scope": {
+    "mobileAccountRootIds": [
+      "102:1713",
+      "197:2092",
+      "196:2011",
+      "196:2012",
+      "196:2016",
+      "196:2008",
+      "196:2009",
+      "196:2013",
+      "814:29892",
+      "814:29997",
+      "847:32045",
+      "847:32081",
+      "847:32117",
+      "847:32153",
+      "847:32189",
+      "847:32225",
+      "847:32261"
+    ],
+    "updatedExistingScrollRegion": "819:27634",
+    "rowSource": "836:13855",
+    "valueSource": "836:13864",
+    "labelSource": "836:13861",
+    "descriptionSource": "836:13865",
+    "newLocalComponents": {
+      "primaryButton": "863:31001",
+      "outlineButton": "863:31003",
+      "settingsSelector": "863:31005"
+    },
+    "preservedPublicMasters": [
+      "113:1498",
+      "842:16420",
+      "842:16422",
+      "112:1498"
+    ],
+    "desktopUnchangedInMobileStage": true,
+    "productCodeUnchanged": true
+  },
+  "source": {
+    "actualLayouts": "../../../../../test-results/issue181-browser-resumed/oauth-390-before.json (layouts only)",
+    "actualScreenshot": "../../../../../test-results/issue181-browser-resumed/oauth-390-before-unbound-disabled-light-390.png",
+    "numericLayoutCopy": "mobile-product-layout.json",
+    "approvedPrototype": "account-rows-preview.tsx + current SettingsCategories"
+  },
+  "before": {
+    "main": {
+      "y": 88,
+      "gap": 24
+    },
+    "public": [
+      {
+        "id": "102:1798",
+        "name": "页面标题",
+        "y": 88,
+        "h": 76,
+        "children": [
+          {
+            "text": "站点设置",
+            "y": 88,
+            "h": 45,
+            "lh": {
+              "unit": "PIXELS",
+              "value": 45
+            },
+            "size": 30
+          },
+          {
+            "text": "管理站点、图片处理与账号偏好。",
+            "y": 139,
+            "h": 21,
+            "lh": {
+              "unit": "PERCENT",
+              "value": 150
+            },
+            "size": 14
+          }
+        ],
+        "instances": []
+      },
+      {
+        "id": "837:27933",
+        "name": "Settings category",
+        "y": 188,
+        "h": 70,
+        "children": [
+          {
+            "text": "设置分类",
+            "y": 188,
+            "h": 20,
+            "lh": {
+              "unit": "PIXELS",
+              "value": 20
+            },
+            "size": 13
+          },
+          {
+            "text": "账号与安全",
+            "y": 224,
+            "h": 24,
+            "lh": {
+              "unit": "PERCENT",
+              "value": 150
+            },
+            "size": 16
+          }
+        ],
+        "instances": [
+          {
+            "id": "114:1579",
+            "name": "Mobile / SettingsSelector",
+            "y": 214,
+            "w": 358,
+            "h": 44
+          }
+        ]
+      }
+    ],
+    "body": {
+      "y": 282,
+      "pad": 0
+    },
+    "sections": [
+      {
+        "title": "所有者账号",
+        "heading": {
+          "y": 282,
+          "h": 27
+        },
+        "cardY": 321,
+        "rows": [
+          {
+            "id": "837:27943",
+            "name": "SettingRow / 登录邮箱",
+            "h": 105,
+            "value": [
+              {
+                "id": "I837:27943;836:13864",
+                "y": 338,
+                "h": 21,
+                "font": {
+                  "family": "Noto Sans SC",
+                  "style": "Regular",
+                  "variationSettings": {
+                    "wght": 400
+                  }
+                },
+                "lh": {
+                  "unit": "PIXELS",
+                  "value": 21
+                },
+                "ls": {
+                  "unit": "PERCENT",
+                  "value": 0
+                }
+              }
+            ],
+            "action": [
+              {
+                "id": "I837:27943;836:13867",
+                "x": 161,
+                "y": 367,
+                "w": 96,
+                "h": 44,
+                "minWidth": 96
+              }
+            ]
+          },
+          {
+            "id": "837:27973",
+            "name": "SettingRow / 登录密码",
+            "h": 105,
+            "value": [
+              {
+                "id": "I837:27973;836:13864",
+                "y": 444,
+                "h": 21,
+                "font": {
+                  "family": "Inter",
+                  "style": "Regular",
+                  "variationSettings": {
+                    "wght": 400,
+                    "slnt": 0
+                  }
+                },
+                "lh": {
+                  "unit": "PIXELS",
+                  "value": 21
+                },
+                "ls": {
+                  "unit": "PERCENT",
+                  "value": 0
+                }
+              }
+            ],
+            "action": [
+              {
+                "id": "I837:27973;836:13867",
+                "x": 161,
+                "y": 473,
+                "w": 96,
+                "h": 44,
+                "minWidth": 96
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "GitHub 登录",
+        "heading": {
+          "y": 566,
+          "h": 27
+        },
+        "cardY": 605,
+        "rows": [
+          {
+            "id": "837:28006",
+            "name": "SettingRow / GitHub 账号",
+            "h": 77,
+            "value": [
+              {
+                "id": "I837:28006;836:13864",
+                "y": 622,
+                "h": 21,
+                "font": {
+                  "family": "Inter",
+                  "style": "Regular",
+                  "variationSettings": {
+                    "wght": 400,
+                    "slnt": 0
+                  }
+                },
+                "lh": {
+                  "unit": "PIXELS",
+                  "value": 21
+                },
+                "ls": {
+                  "unit": "PERCENT",
+                  "value": 0
+                }
+              }
+            ],
+            "action": [
+              {
+                "id": "I837:28006;836:13867",
+                "x": 161,
+                "y": 651,
+                "w": 96,
+                "h": 44,
+                "minWidth": 96
+              }
+            ]
+          },
+          {
+            "id": "837:28031",
+            "name": "SettingRow / 站点登录配置",
+            "h": 105,
+            "value": [
+              {
+                "id": "I837:28031;836:13864",
+                "y": 700,
+                "h": 21,
+                "font": {
+                  "family": "Inter",
+                  "style": "Regular",
+                  "variationSettings": {
+                    "wght": 400,
+                    "slnt": 0
+                  }
+                },
+                "lh": {
+                  "unit": "PIXELS",
+                  "value": 21
+                },
+                "ls": {
+                  "unit": "PERCENT",
+                  "value": 0
+                }
+              }
+            ],
+            "action": [
+              {
+                "id": "I837:28031;836:13867",
+                "x": 161,
+                "y": 729,
+                "w": 110,
+                "h": 44,
+                "minWidth": 96
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "buttons": [
+      {
+        "id": "842:16420",
+        "width": 96,
+        "minWidth": 96,
+        "padding": [16, 16],
+        "strokeWeight": 1,
+        "strokeAlign": "INSIDE"
+      },
+      {
+        "id": "842:16422",
+        "width": 96,
+        "minWidth": 96,
+        "padding": [16, 16],
+        "strokeWeight": 1,
+        "strokeAlign": "INSIDE"
+      }
+    ]
+  },
+  "sourceRead": {
+    "heading": {
+      "id": "102:1798",
+      "padding": [0, 4, 0, 0],
+      "gap": 0
+    },
+    "category": {
+      "id": "837:27933",
+      "padding": [0, 0],
+      "gap": 6
+    },
+    "selector": {
+      "id": "114:1579",
+      "props": {
+        "Label#113:0": {
+          "type": "TEXT",
+          "value": "账号与安全"
+        }
+      },
+      "reactions": [
+        {
+          "action": {
+            "type": "NODE",
+            "destinationId": "113:1499",
+            "navigation": "OVERLAY",
+            "transition": null,
+            "resetVideoPosition": false
+          },
+          "actions": [
+            {
+              "type": "NODE",
+              "destinationId": "113:1499",
+              "navigation": "OVERLAY",
+              "transition": null,
+              "resetVideoPosition": false
+            }
+          ],
+          "trigger": {
+            "type": "ON_CLICK"
+          }
+        }
+      ],
+      "padding": [14, 14],
+      "children": [
+        {
+          "id": "I114:1579;113:1495",
+          "name": "基本设置",
+          "type": "TEXT",
+          "w": 80,
+          "h": 24,
+          "text": "账号与安全",
+          "lh": {
+            "unit": "PERCENT",
+            "value": 150
+          },
+          "font": {
+            "family": "Noto Sans SC",
+            "style": "Regular",
+            "variationSettings": {
+              "wght": 400
+            }
+          }
+        },
+        {
+          "id": "I114:1579;113:1496",
+          "name": "Select / Indicator",
+          "type": "FRAME",
+          "w": 16,
+          "h": 16,
+          "mode": "NONE"
+        }
+      ]
+    },
+    "master": {
+      "id": "113:1498",
+      "name": "Mobile / SettingsSelector",
+      "parent": "209:2261",
+      "w": 358,
+      "h": 48,
+      "mode": "HORIZONTAL",
+      "props": {
+        "Label#113:0": {
+          "type": "TEXT",
+          "defaultValue": "基本设置"
+        }
+      },
+      "children": [
+        {
+          "id": "113:1495",
+          "name": "基本设置",
+          "type": "TEXT",
+          "w": 64,
+          "h": 24,
+          "text": "基本设置",
+          "lh": {
+            "unit": "PERCENT",
+            "value": 150
+          },
+          "font": {
+            "family": "Noto Sans SC",
+            "style": "Regular",
+            "variationSettings": {
+              "wght": 400
+            }
+          }
+        },
+        {
+          "id": "113:1496",
+          "name": "Select / Indicator",
+          "type": "FRAME",
+          "w": 16,
+          "h": 16,
+          "mode": "NONE"
+        }
+      ]
+    },
+    "rowSource": {
+      "id": "836:13855",
+      "labelLayout": "HORIZONTAL",
+      "labelTexts": [
+        {
+          "id": "836:13861",
+          "name": "Label text",
+          "type": "TEXT",
+          "w": 92,
+          "h": 20,
+          "text": "登录邮箱",
+          "lh": {
+            "unit": "PIXELS",
+            "value": 20
+          },
+          "font": {
+            "family": "Noto Sans SC",
+            "style": "Regular",
+            "variationSettings": {
+              "wght": 400
+            }
+          }
+        }
+      ]
+    }
+  },
+  "write": {
+    "createdRootNodeIds": [
+      "863:31001",
+      "863:31003",
+      "863:31005",
+      "863:31009",
+      "863:31010"
+    ],
+    "mutatedNodeIds": [
+      "836:13864",
+      "836:13861",
+      "836:13865",
+      "836:13867",
+      "102:1798",
+      "837:27933",
+      "837:27934",
+      "114:1579",
+      "102:1808",
+      "837:27941",
+      "837:28004",
+      "I837:27943;836:13867",
+      "I837:27943;836:13856",
+      "I837:27973;836:13864",
+      "I837:27973;836:13867",
+      "I837:27973;836:13856",
+      "I837:28006;836:13867",
+      "I837:28006;836:13856",
+      "I837:28031;836:13867",
+      "I837:28031;836:13856",
+      "854:30527",
+      "837:28063",
+      "837:28064",
+      "197:2098",
+      "197:2099",
+      "837:28071",
+      "837:28129",
+      "I837:28073;836:13867",
+      "I837:28073;836:13856",
+      "I837:28098;836:13864",
+      "I837:28098;836:13867",
+      "I837:28098;836:13856",
+      "I837:28131;836:13867",
+      "I837:28131;836:13856",
+      "I837:28157;836:13867",
+      "I837:28157;836:13856",
+      "814:29243",
+      "844:28730",
+      "844:28731",
+      "814:29251",
+      "814:29252",
+      "844:28738",
+      "844:28801",
+      "I844:28740;836:13867",
+      "I844:28740;836:13856",
+      "I844:28770;836:13864",
+      "I844:28770;836:13867",
+      "I844:28770;836:13856",
+      "I844:28803;836:13867",
+      "I844:28803;836:13856",
+      "I844:28829;836:13867",
+      "I844:28829;836:13856",
+      "814:29362",
+      "844:28869",
+      "844:28870",
+      "814:29370",
+      "814:29371",
+      "844:28877",
+      "844:28935",
+      "I844:28879;836:13867",
+      "I844:28879;836:13856",
+      "I844:28904;836:13864",
+      "I844:28904;836:13867",
+      "I844:28904;836:13856",
+      "I844:28937;836:13867",
+      "I844:28937;836:13856",
+      "I844:28963;836:13867",
+      "I844:28963;836:13856",
+      "814:29484",
+      "844:29003",
+      "844:29004",
+      "814:29492",
+      "814:29493",
+      "844:29011",
+      "844:29069",
+      "I844:29013;836:13867",
+      "I844:29013;836:13856",
+      "I844:29038;836:13864",
+      "I844:29038;836:13867",
+      "I844:29038;836:13856",
+      "I844:29071;836:13867",
+      "I844:29071;836:13856",
+      "I844:29096;836:13867",
+      "I844:29096;836:13856",
+      "814:29595",
+      "844:29136",
+      "844:29137",
+      "814:29603",
+      "814:29604",
+      "844:29144",
+      "844:29202",
+      "I844:29146;836:13867",
+      "I844:29146;836:13856",
+      "I844:29171;836:13864",
+      "I844:29171;836:13867",
+      "I844:29171;836:13856",
+      "I844:29204;836:13867",
+      "I844:29204;836:13856",
+      "I844:29230;836:13867",
+      "I844:29230;836:13856",
+      "814:29699",
+      "845:28662",
+      "845:28663",
+      "814:29707",
+      "814:29708",
+      "848:32175",
+      "848:32247",
+      "I848:32177;836:13867",
+      "I848:32177;836:13856",
+      "I848:32209;836:13864",
+      "I848:32209;836:13867",
+      "I848:32209;836:13856",
+      "I848:32249;836:13864",
+      "I848:32249;836:13867",
+      "I848:32249;836:13856",
+      "I848:32282;836:13867",
+      "I848:32282;836:13856",
+      "814:29797",
+      "845:28792",
+      "845:28793",
+      "814:29805",
+      "814:29806",
+      "845:28800",
+      "845:28858",
+      "I845:28802;836:13867",
+      "I845:28802;836:13856",
+      "I845:28827;836:13864",
+      "I845:28827;836:13867",
+      "I845:28827;836:13856",
+      "I845:28860;836:13867",
+      "I845:28860;836:13856",
+      "I845:28885;836:13867",
+      "I845:28885;836:13856",
+      "814:29894",
+      "845:28917",
+      "845:28918",
+      "814:29902",
+      "814:29903",
+      "848:32321",
+      "848:32393",
+      "I848:32323;836:13867",
+      "I848:32323;836:13856",
+      "I848:32355;836:13864",
+      "I848:32355;836:13867",
+      "I848:32355;836:13856",
+      "I848:32395;836:13867",
+      "I848:32395;836:13856",
+      "I848:32427;836:13864",
+      "I848:32427;836:13867",
+      "I848:32427;836:13856",
+      "814:29999",
+      "845:29041",
+      "845:29042",
+      "814:30007",
+      "814:30008",
+      "845:29049",
+      "845:29107",
+      "I845:29051;836:13867",
+      "I845:29051;836:13856",
+      "I845:29076;836:13864",
+      "I845:29076;836:13867",
+      "I845:29076;836:13856",
+      "I845:29109;836:13867",
+      "I845:29109;836:13856",
+      "I845:29135;836:13867",
+      "I845:29135;836:13856",
+      "847:32047",
+      "847:32055",
+      "847:32056",
+      "847:32057",
+      "847:32058",
+      "848:30513",
+      "848:30585",
+      "I848:30515;836:13867",
+      "I848:30515;836:13856",
+      "I848:30547;836:13864",
+      "I848:30547;836:13867",
+      "I848:30547;836:13856",
+      "I848:30587;836:13867",
+      "I848:30587;836:13856",
+      "I848:30620;836:13867",
+      "I848:30620;836:13856",
+      "847:32083",
+      "847:32091",
+      "847:32092",
+      "847:32093",
+      "847:32094",
+      "848:30659",
+      "848:30731",
+      "I848:30661;836:13867",
+      "I848:30661;836:13856",
+      "I848:30693;836:13864",
+      "I848:30693;836:13867",
+      "I848:30693;836:13856",
+      "I848:30733;836:13867",
+      "I848:30733;836:13856",
+      "I848:30765;836:13867",
+      "I848:30765;836:13856",
+      "847:32119",
+      "847:32127",
+      "847:32128",
+      "847:32129",
+      "847:32130",
+      "848:30803",
+      "848:30875",
+      "I848:30805;836:13867",
+      "I848:30805;836:13856",
+      "I848:30837;836:13864",
+      "I848:30837;836:13867",
+      "I848:30837;836:13856",
+      "I848:30877;836:13864",
+      "I848:30877;836:13867",
+      "I848:30877;836:13856",
+      "I848:30909;836:13867",
+      "I848:30909;836:13856",
+      "847:32155",
+      "847:32163",
+      "847:32164",
+      "847:32165",
+      "847:32166",
+      "848:30948",
+      "848:31020",
+      "I848:30950;836:13867",
+      "I848:30950;836:13856",
+      "I848:30982;836:13864",
+      "I848:30982;836:13867",
+      "I848:30982;836:13856",
+      "I848:31022;836:13867",
+      "I848:31022;836:13856",
+      "I848:31055;836:13864",
+      "I848:31055;836:13867",
+      "I848:31055;836:13856",
+      "847:32191",
+      "847:32199",
+      "847:32200",
+      "847:32201",
+      "847:32202",
+      "848:31225",
+      "848:31297",
+      "I848:31227;836:13867",
+      "I848:31227;836:13856",
+      "I848:31259;836:13864",
+      "I848:31259;836:13867",
+      "I848:31259;836:13856",
+      "I848:31299;836:13867",
+      "I848:31299;836:13856",
+      "I848:31332;836:13867",
+      "I848:31332;836:13856",
+      "847:32227",
+      "847:32235",
+      "847:32236",
+      "847:32237",
+      "847:32238",
+      "848:31371",
+      "848:31443",
+      "I848:31373;836:13867",
+      "I848:31373;836:13856",
+      "I848:31405;836:13864",
+      "I848:31405;836:13867",
+      "I848:31405;836:13856",
+      "I848:31445;836:13867",
+      "I848:31445;836:13856",
+      "I848:31477;836:13867",
+      "I848:31477;836:13856",
+      "847:32263",
+      "847:32271",
+      "847:32272",
+      "847:32273",
+      "847:32274",
+      "848:31517",
+      "848:31589",
+      "I848:31519;836:13867",
+      "I848:31519;836:13856",
+      "I848:31551;836:13864",
+      "I848:31551;836:13867",
+      "I848:31551;836:13856",
+      "I848:31591;836:13867",
+      "I848:31591;836:13856",
+      "I848:31624;836:13867",
+      "I848:31624;836:13856",
+      "848:33345",
+      "I848:33347;836:13867",
+      "I848:33347;836:13856",
+      "I848:33349;836:13867",
+      "I848:33349;836:13856"
+    ],
+    "roots": [
+      {
+        "id": "102:1713",
+        "main": true
+      },
+      {
+        "id": "197:2092",
+        "main": true
+      },
+      {
+        "id": "196:2011",
+        "main": true
+      },
+      {
+        "id": "196:2012",
+        "main": true
+      },
+      {
+        "id": "196:2016",
+        "main": true
+      },
+      {
+        "id": "196:2008",
+        "main": true
+      },
+      {
+        "id": "196:2009",
+        "main": true
+      },
+      {
+        "id": "196:2013",
+        "main": true
+      },
+      {
+        "id": "814:29892",
+        "main": true
+      },
+      {
+        "id": "814:29997",
+        "main": true
+      },
+      {
+        "id": "847:32045",
+        "main": true
+      },
+      {
+        "id": "847:32081",
+        "main": true
+      },
+      {
+        "id": "847:32117",
+        "main": true
+      },
+      {
+        "id": "847:32153",
+        "main": true
+      },
+      {
+        "id": "847:32189",
+        "main": true
+      },
+      {
+        "id": "847:32225",
+        "main": true
+      },
+      {
+        "id": "847:32261",
+        "main": true
+      },
+      {
+        "id": "819:27634",
+        "main": false
+      }
+    ],
+    "components": {
+      "primary": "863:31001",
+      "outline": "863:31003",
+      "selector": "863:31005"
+    },
+    "publicMastersPreserved": ["113:1498", "842:16420", "842:16422"],
+    "notes": "Phone public heading padding4 removed; Select gap4; measured Tabs gap8 preceding business; label/description19.5, value20, section28; natural phone width with min44 and px16"
+  },
+  "borderSizingWrite": {
+    "mutatedNodeIds": ["863:31001", "863:31003"],
+    "buttons": [
+      {
+        "id": "I837:27943;836:13867",
+        "label": "修改邮箱",
+        "x": 161,
+        "y": 369,
+        "width": 90,
+        "height": 44,
+        "paddingLeft": 16,
+        "paddingRight": 16,
+        "strokesIncludedInLayout": true
+      },
+      {
+        "id": "I837:27973;836:13867",
+        "label": "修改密码",
+        "x": 161,
+        "y": 474,
+        "width": 90,
+        "height": 44,
+        "paddingLeft": 16,
+        "paddingRight": 16,
+        "strokesIncludedInLayout": true
+      },
+      {
+        "id": "I837:28031;836:13867",
+        "label": "配置 GitHub",
+        "x": 161,
+        "y": 729,
+        "width": 110,
+        "height": 44,
+        "paddingLeft": 16,
+        "paddingRight": 16,
+        "strokesIncludedInLayout": true
+      }
+    ]
+  },
+  "descriptionWrite": {
+    "mutatedNodeIds": ["863:31001", "863:31003"],
+    "components": [
+      {
+        "id": "863:31001",
+        "description": "账号页手机操作按钮。高度44px，最小宽度44px；14px/20px文字，左右16px内边距，宽度随内容自动伸展。有边框时纳入原生自动布局。只供账号手机画板使用，桌面96px按钮来源独立保留。",
+        "minWidth": 44,
+        "height": 44
+      },
+      {
+        "id": "863:31003",
+        "description": "账号页手机操作按钮。高度44px，最小宽度44px；14px/20px文字，左右16px内边距，宽度随内容自动伸展。有边框时纳入原生自动布局。只供账号手机画板使用，桌面96px按钮来源独立保留。",
+        "minWidth": 44,
+        "height": 44
+      }
+    ]
+  },
+  "finalAudit": {
+    "roots": [
+      {
+        "id": "102:1713",
+        "selector": {
+          "y": 208,
+          "h": 44,
+          "w": 358,
+          "main": "863:31005",
+          "iconWidth": 16
+        },
+        "body": {
+          "paddingTop": 8,
+          "height": 514
+        },
+        "rows": [
+          {
+            "name": "SettingRow / 登录邮箱",
+            "valueY": 341,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "button": {
+              "text": "修改邮箱",
+              "x": 161,
+              "y": 369,
+              "w": 90,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31003"
+            }
+          },
+          {
+            "name": "SettingRow / 登录密码",
+            "valueY": 446,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "passwordSpacing": 3,
+            "button": {
+              "text": "修改密码",
+              "x": 161,
+              "y": 474,
+              "w": 90,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31003"
+            }
+          },
+          {
+            "name": "SettingRow / GitHub 账号",
+            "valueY": 624,
+            "valueH": 20,
+            "blockH": 44,
+            "labelCenterDelta": 0,
+            "button": null
+          },
+          {
+            "name": "SettingRow / 站点登录配置",
+            "valueY": 701,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "button": {
+              "text": "配置 GitHub",
+              "x": 161,
+              "y": 729,
+              "w": 110,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31001"
+            }
+          }
+        ]
+      },
+      {
+        "id": "197:2092",
+        "selector": {
+          "y": 208,
+          "h": 44,
+          "w": 358,
+          "main": "863:31005",
+          "iconWidth": 16
+        },
+        "body": {
+          "paddingTop": 8,
+          "height": 542
+        },
+        "rows": [
+          {
+            "name": "SettingRow / 登录邮箱",
+            "valueY": 341,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "button": {
+              "text": "修改邮箱",
+              "x": 161,
+              "y": 369,
+              "w": 90,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31003"
+            }
+          },
+          {
+            "name": "SettingRow / 登录密码",
+            "valueY": 446,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "passwordSpacing": 3,
+            "button": {
+              "text": "修改密码",
+              "x": 161,
+              "y": 474,
+              "w": 90,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31003"
+            }
+          },
+          {
+            "name": "SettingRow / GitHub 账号",
+            "valueY": 624,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "button": {
+              "text": "解绑账号",
+              "x": 161,
+              "y": 652,
+              "w": 90,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31003"
+            }
+          },
+          {
+            "name": "SettingRow / 站点登录配置",
+            "valueY": 729,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "button": {
+              "text": "登录配置",
+              "x": 161,
+              "y": 757,
+              "w": 90,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31003"
+            }
+          }
+        ]
+      },
+      {
+        "id": "196:2011",
+        "selector": {
+          "y": 208,
+          "h": 44,
+          "w": 358,
+          "main": "863:31005",
+          "iconWidth": 16
+        },
+        "body": {
+          "paddingTop": 8,
+          "height": 659
+        },
+        "rows": [
+          {
+            "name": "SettingRow / 登录邮箱",
+            "valueY": 341,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "button": {
+              "text": "修改邮箱",
+              "x": 161,
+              "y": 369,
+              "w": 90,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31003"
+            }
+          },
+          {
+            "name": "SettingRow / 登录密码",
+            "valueY": 446,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "passwordSpacing": 3,
+            "button": {
+              "text": "修改密码",
+              "x": 161,
+              "y": 474,
+              "w": 90,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31003"
+            }
+          },
+          {
+            "name": "SettingRow / GitHub 账号",
+            "valueY": 624,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "button": {
+              "text": "绑定 GitHub",
+              "x": 161,
+              "y": 652,
+              "w": 110,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31001"
+            }
+          },
+          {
+            "name": "SettingRow / 站点登录配置",
+            "valueY": 729,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "button": {
+              "text": "登录配置",
+              "x": 161,
+              "y": 757,
+              "w": 90,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31003"
+            }
+          }
+        ]
+      },
+      {
+        "id": "196:2012",
+        "selector": {
+          "y": 208,
+          "h": 44,
+          "w": 358,
+          "main": "863:31005",
+          "iconWidth": 16
+        },
+        "body": {
+          "paddingTop": 8,
+          "height": 659
+        },
+        "rows": [
+          {
+            "name": "SettingRow / 登录邮箱",
+            "valueY": 341,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "button": {
+              "text": "修改邮箱",
+              "x": 161,
+              "y": 369,
+              "w": 90,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31003"
+            }
+          },
+          {
+            "name": "SettingRow / 登录密码",
+            "valueY": 446,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "passwordSpacing": 3,
+            "button": {
+              "text": "修改密码",
+              "x": 161,
+              "y": 474,
+              "w": 90,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31003"
+            }
+          },
+          {
+            "name": "SettingRow / GitHub 账号",
+            "valueY": 624,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "button": {
+              "text": "解绑账号",
+              "x": 161,
+              "y": 652,
+              "w": 90,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31003"
+            }
+          },
+          {
+            "name": "SettingRow / 站点登录配置",
+            "valueY": 729,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "button": {
+              "text": "登录配置",
+              "x": 161,
+              "y": 757,
+              "w": 90,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31003"
+            }
+          }
+        ]
+      },
+      {
+        "id": "196:2016",
+        "selector": {
+          "y": 208,
+          "h": 44,
+          "w": 358,
+          "main": "863:31005",
+          "iconWidth": 16
+        },
+        "body": {
+          "paddingTop": 8,
+          "height": 631
+        },
+        "rows": [
+          {
+            "name": "SettingRow / 登录邮箱",
+            "valueY": 341,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "button": {
+              "text": "修改邮箱",
+              "x": 161,
+              "y": 369,
+              "w": 90,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31003"
+            }
+          },
+          {
+            "name": "SettingRow / 登录密码",
+            "valueY": 446,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "passwordSpacing": 3,
+            "button": {
+              "text": "修改密码",
+              "x": 161,
+              "y": 474,
+              "w": 90,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31003"
+            }
+          },
+          {
+            "name": "SettingRow / GitHub 账号",
+            "valueY": 624,
+            "valueH": 20,
+            "blockH": 44,
+            "labelCenterDelta": 0,
+            "button": null
+          },
+          {
+            "name": "SettingRow / 站点登录配置",
+            "valueY": 701,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "button": {
+              "text": "登录配置",
+              "x": 161,
+              "y": 729,
+              "w": 90,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31003"
+            }
+          }
+        ]
+      },
+      {
+        "id": "196:2008",
+        "selector": {
+          "y": 208,
+          "h": 44,
+          "w": 358,
+          "main": "863:31005",
+          "iconWidth": 16
+        },
+        "body": {
+          "paddingTop": 8,
+          "height": 542
+        },
+        "rows": [
+          {
+            "name": "SettingRow / 登录邮箱",
+            "valueY": 341,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "button": {
+              "text": "修改邮箱",
+              "x": 161,
+              "y": 369,
+              "w": 90,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31003"
+            }
+          },
+          {
+            "name": "SettingRow / 登录密码",
+            "valueY": 446,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "passwordSpacing": 3,
+            "button": {
+              "text": "修改密码",
+              "x": 161,
+              "y": 474,
+              "w": 90,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31003"
+            }
+          },
+          {
+            "name": "SettingRow / GitHub 账号",
+            "valueY": 624,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "button": {
+              "text": "绑定 GitHub",
+              "x": 161,
+              "y": 652,
+              "w": 110,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31001"
+            }
+          },
+          {
+            "name": "SettingRow / 站点登录配置",
+            "valueY": 729,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "button": {
+              "text": "登录配置",
+              "x": 161,
+              "y": 757,
+              "w": 90,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31003"
+            }
+          }
+        ]
+      },
+      {
+        "id": "196:2009",
+        "selector": {
+          "y": 208,
+          "h": 44,
+          "w": 358,
+          "main": "863:31005",
+          "iconWidth": 16
+        },
+        "body": {
+          "paddingTop": 8,
+          "height": 585
+        },
+        "rows": [
+          {
+            "name": "SettingRow / 登录邮箱",
+            "valueY": 341,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "button": {
+              "text": "修改邮箱",
+              "x": 161,
+              "y": 369,
+              "w": 90,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31003"
+            }
+          },
+          {
+            "name": "SettingRow / 登录密码",
+            "valueY": 446,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "passwordSpacing": 3,
+            "button": {
+              "text": "修改密码",
+              "x": 161,
+              "y": 474,
+              "w": 90,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31003"
+            }
+          },
+          {
+            "name": "SettingRow / GitHub 账号",
+            "valueY": 624,
+            "valueH": 20,
+            "blockH": 63,
+            "labelCenterDelta": 0,
+            "button": {
+              "text": "核对绑定",
+              "x": 161,
+              "y": 695,
+              "w": 112,
+              "h": 44,
+              "minW": 44,
+              "px": [40, 16],
+              "component": "863:31001"
+            }
+          },
+          {
+            "name": "SettingRow / 站点登录配置",
+            "valueY": 772,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "button": {
+              "text": "登录配置",
+              "x": 161,
+              "y": 800,
+              "w": 90,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31003"
+            }
+          }
+        ]
+      },
+      {
+        "id": "196:2013",
+        "selector": {
+          "y": 208,
+          "h": 44,
+          "w": 358,
+          "main": "863:31005",
+          "iconWidth": 16
+        },
+        "body": {
+          "paddingTop": 8,
+          "height": 514
+        },
+        "rows": [
+          {
+            "name": "SettingRow / 登录邮箱",
+            "valueY": 341,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "button": {
+              "text": "修改邮箱",
+              "x": 161,
+              "y": 369,
+              "w": 90,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31003"
+            }
+          },
+          {
+            "name": "SettingRow / 登录密码",
+            "valueY": 446,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "passwordSpacing": 3,
+            "button": {
+              "text": "修改密码",
+              "x": 161,
+              "y": 474,
+              "w": 90,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31003"
+            }
+          },
+          {
+            "name": "SettingRow / GitHub 账号",
+            "valueY": 624,
+            "valueH": 20,
+            "blockH": 44,
+            "labelCenterDelta": 0,
+            "button": null
+          },
+          {
+            "name": "SettingRow / 站点登录配置",
+            "valueY": 701,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "button": {
+              "text": "配置 GitHub",
+              "x": 161,
+              "y": 729,
+              "w": 110,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31001"
+            }
+          }
+        ]
+      },
+      {
+        "id": "814:29892",
+        "selector": {
+          "y": 208,
+          "h": 44,
+          "w": 358,
+          "main": "863:31005",
+          "iconWidth": 16
+        },
+        "body": {
+          "paddingTop": 8,
+          "height": 552.25
+        },
+        "rows": [
+          {
+            "name": "SettingRow / 登录邮箱",
+            "valueY": 341,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "button": {
+              "text": "修改邮箱",
+              "x": 161,
+              "y": 369,
+              "w": 90,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31003"
+            }
+          },
+          {
+            "name": "SettingRow / 登录密码",
+            "valueY": 446,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "passwordSpacing": 3,
+            "button": {
+              "text": "修改密码",
+              "x": 161,
+              "y": 474,
+              "w": 90,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31003"
+            }
+          },
+          {
+            "name": "SettingRow / GitHub 账号",
+            "valueY": 624,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "button": null
+          },
+          {
+            "name": "SettingRow / 站点登录配置",
+            "valueY": 677.25,
+            "valueH": 39,
+            "blockH": 82,
+            "labelCenterDelta": 0,
+            "button": {
+              "text": "核对配置",
+              "x": 161,
+              "y": 767.25,
+              "w": 112,
+              "h": 44,
+              "minW": 44,
+              "px": [40, 16],
+              "component": "863:31001"
+            }
+          }
+        ]
+      },
+      {
+        "id": "814:29997",
+        "selector": {
+          "y": 208,
+          "h": 44,
+          "w": 358,
+          "main": "863:31005",
+          "iconWidth": 16
+        },
+        "body": {
+          "paddingTop": 8,
+          "height": 659
+        },
+        "rows": [
+          {
+            "name": "SettingRow / 登录邮箱",
+            "valueY": 341,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "button": {
+              "text": "修改邮箱",
+              "x": 161,
+              "y": 369,
+              "w": 90,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31003"
+            }
+          },
+          {
+            "name": "SettingRow / 登录密码",
+            "valueY": 446,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "passwordSpacing": 3,
+            "button": {
+              "text": "修改密码",
+              "x": 161,
+              "y": 474,
+              "w": 90,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31003"
+            }
+          },
+          {
+            "name": "SettingRow / GitHub 账号",
+            "valueY": 624,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "button": {
+              "text": "解绑账号",
+              "x": 161,
+              "y": 652,
+              "w": 90,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31003"
+            }
+          },
+          {
+            "name": "SettingRow / 站点登录配置",
+            "valueY": 729,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "button": {
+              "text": "登录配置",
+              "x": 161,
+              "y": 757,
+              "w": 90,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31003"
+            }
+          }
+        ]
+      },
+      {
+        "id": "847:32045",
+        "selector": {
+          "y": 208,
+          "h": 44,
+          "w": 358,
+          "main": "863:31005",
+          "iconWidth": 16
+        },
+        "body": {
+          "paddingTop": 8,
+          "height": 542
+        },
+        "rows": [
+          {
+            "name": "SettingRow / 登录邮箱",
+            "valueY": 341,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "button": {
+              "text": "修改邮箱",
+              "x": 161,
+              "y": 369,
+              "w": 90,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31003"
+            }
+          },
+          {
+            "name": "SettingRow / 登录密码",
+            "valueY": 446,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "passwordSpacing": 3,
+            "button": {
+              "text": "修改密码",
+              "x": 161,
+              "y": 474,
+              "w": 90,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31003"
+            }
+          },
+          {
+            "name": "SettingRow / GitHub 账号",
+            "valueY": 624,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "button": {
+              "text": "绑定 GitHub",
+              "x": 161,
+              "y": 652,
+              "w": 110,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31001"
+            }
+          },
+          {
+            "name": "SettingRow / 站点登录配置",
+            "valueY": 729,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "button": {
+              "text": "登录配置",
+              "x": 161,
+              "y": 757,
+              "w": 90,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31003"
+            }
+          }
+        ]
+      },
+      {
+        "id": "847:32081",
+        "selector": {
+          "y": 208,
+          "h": 44,
+          "w": 358,
+          "main": "863:31005",
+          "iconWidth": 16
+        },
+        "body": {
+          "paddingTop": 8,
+          "height": 438.5
+        },
+        "rows": [
+          {
+            "name": "SettingRow / 登录邮箱",
+            "valueY": 341,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "button": {
+              "text": "修改邮箱",
+              "x": 161,
+              "y": 369,
+              "w": 90,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31003"
+            }
+          },
+          {
+            "name": "SettingRow / 登录密码",
+            "valueY": 446,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "passwordSpacing": 3,
+            "button": {
+              "text": "修改密码",
+              "x": 161,
+              "y": 474,
+              "w": 90,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31003"
+            }
+          },
+          {
+            "name": "SettingRow / GitHub 账号",
+            "valueY": 624,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "button": null
+          },
+          {
+            "name": "SettingRow / 站点登录配置",
+            "valueY": 677.25,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "button": null
+          }
+        ]
+      },
+      {
+        "id": "847:32117",
+        "selector": {
+          "y": 208,
+          "h": 44,
+          "w": 358,
+          "main": "863:31005",
+          "iconWidth": 16
+        },
+        "body": {
+          "paddingTop": 8,
+          "height": 542
+        },
+        "rows": [
+          {
+            "name": "SettingRow / 登录邮箱",
+            "valueY": 341,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "button": {
+              "text": "修改邮箱",
+              "x": 161,
+              "y": 369,
+              "w": 90,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31003"
+            }
+          },
+          {
+            "name": "SettingRow / 登录密码",
+            "valueY": 446,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "passwordSpacing": 3,
+            "button": {
+              "text": "修改密码",
+              "x": 161,
+              "y": 474,
+              "w": 90,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31003"
+            }
+          },
+          {
+            "name": "SettingRow / GitHub 账号",
+            "valueY": 624,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "button": {
+              "text": "重新读取绑定",
+              "x": 161,
+              "y": 652,
+              "w": 142,
+              "h": 44,
+              "minW": 44,
+              "px": [40, 16],
+              "component": "863:31003"
+            }
+          },
+          {
+            "name": "SettingRow / 站点登录配置",
+            "valueY": 729,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "button": {
+              "text": "登录配置",
+              "x": 161,
+              "y": 757,
+              "w": 90,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31003"
+            }
+          }
+        ]
+      },
+      {
+        "id": "847:32153",
+        "selector": {
+          "y": 208,
+          "h": 44,
+          "w": 358,
+          "main": "863:31005",
+          "iconWidth": 16
+        },
+        "body": {
+          "paddingTop": 8,
+          "height": 542
+        },
+        "rows": [
+          {
+            "name": "SettingRow / 登录邮箱",
+            "valueY": 341,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "button": {
+              "text": "修改邮箱",
+              "x": 161,
+              "y": 369,
+              "w": 90,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31003"
+            }
+          },
+          {
+            "name": "SettingRow / 登录密码",
+            "valueY": 446,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "passwordSpacing": 3,
+            "button": {
+              "text": "修改密码",
+              "x": 161,
+              "y": 474,
+              "w": 90,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31003"
+            }
+          },
+          {
+            "name": "SettingRow / GitHub 账号",
+            "valueY": 624,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "button": {
+              "text": "解绑账号",
+              "x": 161,
+              "y": 652,
+              "w": 90,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31003"
+            }
+          },
+          {
+            "name": "SettingRow / 站点登录配置",
+            "valueY": 729,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "button": {
+              "text": "重新读取配置",
+              "x": 161,
+              "y": 757,
+              "w": 142,
+              "h": 44,
+              "minW": 44,
+              "px": [40, 16],
+              "component": "863:31003"
+            }
+          }
+        ]
+      },
+      {
+        "id": "847:32189",
+        "selector": {
+          "y": 208,
+          "h": 44,
+          "w": 358,
+          "main": "863:31005",
+          "iconWidth": 16
+        },
+        "body": {
+          "paddingTop": 8,
+          "height": 566
+        },
+        "rows": [
+          {
+            "name": "SettingRow / 登录邮箱",
+            "valueY": 341,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "button": {
+              "text": "修改邮箱",
+              "x": 161,
+              "y": 369,
+              "w": 90,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31003"
+            }
+          },
+          {
+            "name": "SettingRow / 登录密码",
+            "valueY": 446,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "passwordSpacing": 3,
+            "button": {
+              "text": "修改密码",
+              "x": 161,
+              "y": 474,
+              "w": 90,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31003"
+            }
+          },
+          {
+            "name": "SettingRow / GitHub 账号",
+            "valueY": 624,
+            "valueH": 20,
+            "blockH": 44,
+            "labelCenterDelta": 0,
+            "button": {
+              "text": "解绑账号",
+              "x": 161,
+              "y": 676,
+              "w": 90,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31003"
+            }
+          },
+          {
+            "name": "SettingRow / 站点登录配置",
+            "valueY": 753,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "button": {
+              "text": "登录配置",
+              "x": 161,
+              "y": 781,
+              "w": 90,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31003"
+            }
+          }
+        ]
+      },
+      {
+        "id": "847:32225",
+        "selector": {
+          "y": 208,
+          "h": 44,
+          "w": 358,
+          "main": "863:31005",
+          "iconWidth": 16
+        },
+        "body": {
+          "paddingTop": 8,
+          "height": 514
+        },
+        "rows": [
+          {
+            "name": "SettingRow / 登录邮箱",
+            "valueY": 341,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "button": {
+              "text": "修改邮箱",
+              "x": 161,
+              "y": 369,
+              "w": 90,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31003"
+            }
+          },
+          {
+            "name": "SettingRow / 登录密码",
+            "valueY": 446,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "passwordSpacing": 3,
+            "button": {
+              "text": "修改密码",
+              "x": 161,
+              "y": 474,
+              "w": 90,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31003"
+            }
+          },
+          {
+            "name": "SettingRow / GitHub 账号",
+            "valueY": 624,
+            "valueH": 20,
+            "blockH": 44,
+            "labelCenterDelta": 0,
+            "button": null
+          },
+          {
+            "name": "SettingRow / 站点登录配置",
+            "valueY": 701,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "button": {
+              "text": "配置 GitHub",
+              "x": 161,
+              "y": 729,
+              "w": 110,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31001"
+            }
+          }
+        ]
+      },
+      {
+        "id": "847:32261",
+        "selector": {
+          "y": 208,
+          "h": 44,
+          "w": 358,
+          "main": "863:31005",
+          "iconWidth": 16
+        },
+        "body": {
+          "paddingTop": 8,
+          "height": 819
+        },
+        "rows": [
+          {
+            "name": "SettingRow / 登录邮箱",
+            "valueY": 341,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "button": {
+              "text": "修改邮箱",
+              "x": 161,
+              "y": 369,
+              "w": 90,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31003"
+            }
+          },
+          {
+            "name": "SettingRow / 登录密码",
+            "valueY": 446,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "passwordSpacing": 3,
+            "button": {
+              "text": "修改密码",
+              "x": 161,
+              "y": 474,
+              "w": 90,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31003"
+            }
+          },
+          {
+            "name": "SettingRow / GitHub 账号",
+            "valueY": 624,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "button": {
+              "text": "解绑账号",
+              "x": 161,
+              "y": 652,
+              "w": 90,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31003"
+            }
+          },
+          {
+            "name": "SettingRow / 站点登录配置",
+            "valueY": 729,
+            "valueH": 20,
+            "blockH": 20,
+            "labelCenterDelta": 0,
+            "button": {
+              "text": "登录配置",
+              "x": 161,
+              "y": 757,
+              "w": 90,
+              "h": 44,
+              "minW": 44,
+              "px": [16, 16],
+              "component": "863:31003"
+            }
+          }
+        ]
+      }
+    ],
+    "source": {
+      "valueLineHeight": {
+        "unit": "PIXELS",
+        "value": 20
+      },
+      "labelLineHeight": {
+        "unit": "PIXELS",
+        "value": 19.5
+      },
+      "descriptionLineHeight": {
+        "unit": "PIXELS",
+        "value": 19.5
+      }
+    },
+    "sharedPreserved": {
+      "selectorHeight": 48,
+      "primaryMinWidth": 96,
+      "outlineMinWidth": 96
+    }
+  },
+  "fullExportRestore": {
+    "mutatedNodeIds": ["847:32261", "847:32274"],
+    "clipsContent": true,
+    "bodyFills": []
+  },
+  "screenshots": {
+    "before": [
+      {
+        "nodeId": "847:32261",
+        "file": "mobile-expanded-light-before.png",
+        "width": 390,
+        "height": 844
+      },
+      {
+        "nodeId": "847:32225",
+        "file": "mobile-main-dark-before.png",
+        "width": 390,
+        "height": 844
+      },
+      {
+        "nodeId": "102:1713",
+        "file": "mobile-main-light-before.png",
+        "width": 390,
+        "height": 844
+      },
+      {
+        "nodeId": "197:2092",
+        "file": "mobile-bound-light-before.png",
+        "width": 390,
+        "height": 844
+      }
+    ],
+    "after": [
+      {
+        "nodeId": "197:2092",
+        "file": "mobile-bound-light-after.png",
+        "width": 390,
+        "height": 844
+      },
+      {
+        "nodeId": "847:32225",
+        "file": "mobile-main-dark-after.png",
+        "width": 390,
+        "height": 844
+      },
+      {
+        "nodeId": "102:1713",
+        "file": "mobile-main-light-after.png",
+        "width": 390,
+        "height": 844
+      },
+      {
+        "nodeId": "847:32261",
+        "file": "mobile-expanded-light-after.png",
+        "width": 390,
+        "height": 844
+      }
+    ],
+    "fullContent": {
+      "nodeId": "847:32274",
+      "file": "mobile-expanded-full-content-after.png",
+      "width": 358,
+      "height": 819,
+      "kind": "full-content",
+      "renderMethod": "temporarily unclip phone viewport and paint the real light page background; export body; restore clipsContent=true and empty body fills"
+    }
+  },
+  "comparisons": {
+    "selector": {
+      "figma": {
+        "y": 208,
+        "w": 358,
+        "h": 44,
+        "selectedIcon": 16
+      },
+      "product": {
+        "y": 208,
+        "w": 358,
+        "h": 44,
+        "selectedIcon": 16
+      }
+    },
+    "ownerCardY": {
+      "figma": 324,
+      "product": 324
+    },
+    "email": {
+      "figma": {
+        "x": 161,
+        "valueY": 341,
+        "valueH": 20,
+        "buttonY": 369,
+        "buttonW": 90,
+        "buttonH": 44
+      },
+      "product": {
+        "x": 161,
+        "valueY": 341,
+        "valueH": 20,
+        "buttonY": 369,
+        "buttonW": 90,
+        "buttonH": 44
+      }
+    },
+    "password": {
+      "figma": {
+        "valueY": 446,
+        "valueH": 20,
+        "tracking": 3,
+        "buttonY": 474,
+        "buttonW": 90,
+        "buttonH": 44
+      },
+      "product": {
+        "valueY": 446,
+        "valueH": 20,
+        "tracking": 3,
+        "buttonY": 474,
+        "buttonW": 90,
+        "buttonH": 44
+      }
+    },
+    "bindingValueBlockHeight": {
+      "figma": 44,
+      "product": 43.5,
+      "approximation": 0.5
+    },
+    "configuration": {
+      "figma": {
+        "valueY": 701,
+        "buttonY": 729,
+        "buttonW": 110,
+        "buttonH": 44
+      },
+      "product": {
+        "valueY": 700.5,
+        "buttonY": 728.5,
+        "buttonW": 109.25,
+        "buttonH": 44
+      },
+      "approximations": {
+        "position": 0.5,
+        "width": 0.75
+      }
+    }
+  },
+  "completion": {
+    "figmaWritten": true,
+    "staticExported": true,
+    "independentReview": "see ../design-review.md",
+    "browserBehavior": "not inferred from static synchronization"
+  },
+  "notes": [
+    "13px caption lineHeight is19.5 in Figma; its native text bounding box rounds to20, leaving0.5px accumulated block approximation",
+    "Mobile buttons use content-driven auto sizing, min44 and px16; outlined CSS border is represented by strokesIncludedInLayout=true",
+    "Historical layout-revision screenshots and desktop precision before/after remain preserved"
+  ]
+}

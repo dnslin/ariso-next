@@ -17,11 +17,16 @@ export function GithubCallbackCopy({
 }) {
   const [manual, setManual] = useState(false);
   const field = useRef<HTMLTextAreaElement>(null);
+  const notification = useRef<string | null>(null);
   async function copy() {
+    if (notification.current) {
+      toast.close(notification.current);
+      notification.current = null;
+    }
     try {
       await navigator.clipboard.writeText(url);
       setManual(false);
-      toast('回调地址已复制', {
+      notification.current = toast('回调地址已复制', {
         variant: 'default',
         indicator: createElement(Check, {
           className: 'size-5',

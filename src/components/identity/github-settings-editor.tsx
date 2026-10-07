@@ -126,6 +126,7 @@ export function GithubSettingsEditor(props: GithubSettingsEditorProps) {
                     </Button>
                   )}
                   <Button
+                    data-testid="oauth-close"
                     type="button"
                     variant="outline"
                     isDisabled={editor.busy}

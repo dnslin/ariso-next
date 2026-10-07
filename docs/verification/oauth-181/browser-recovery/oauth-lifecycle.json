@@ -1,0 +1,98 @@
+{
+  "environment": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "node": "v24.18.1",
+    "taskSpaceId": 6
+  },
+  "runner": {
+    "startedAt": "2026-10-07T12:10:07.150Z",
+    "platform": "darwin",
+    "arch": "arm64",
+    "node": "v24.18.1",
+    "status": "passed",
+    "suite": "oauth",
+    "pageLabel": "p1",
+    "origin": "http://ariso-55498.localhost:55498",
+    "taskSpaceId": 6,
+    "stages": {
+      "oauth-all-before": {
+        "status": "passed"
+      },
+      "oauth-all-restart": {
+        "status": "passed"
+      },
+      "oauth-all-after": {
+        "status": "passed"
+      },
+      "oauth-all-enable-restart": {
+        "status": "passed"
+      },
+      "oauth-all-enabled": {
+        "status": "passed"
+      }
+    },
+    "oauth": "passed",
+    "finishedAt": "2026-10-07T12:11:00.145Z",
+    "temporaryDirectoryRemoved": true
+  },
+  "phases": [
+    {
+      "phase": "before",
+      "status": "passed",
+      "checks": [
+        "Native callback Clipboard write resolves with the complete URL; actual denied browser permission exposes full selectable readonly text in the same modal.",
+        "Closing unknown configuration discards its Secret draft while retaining only the unresolved-operation marker on the main section; failed real readback blocks reopening and repeat PATCH; successful main readback restores editing from actual values with an empty Secret.",
+        "Real encrypted persistence; blank Secret omission, explicit replacement and confirmed draft-only clearing; required fields; pending single submission; rejected-write input retention; lost successful Save and failed readback remain unknown until explicit reconciliation.",
+        "Changing only site.publicUrl updates callback readback in the next real request without an OAuth configuration restart.",
+        "Held real settings and binding reads show their independent loading states; lost real read responses expose errors and prevent stale editing/actions; the other section remains available; the owning Retry action recovers through a real read.",
+        "Anonymous GitHub login entry follows actual effective configuration (disabled). No external authorization is attempted with fixture credentials."
+      ],
+      "browserErrors": [],
+      "realGithubOAuth": "unverified",
+      "finishedAt": "2026-10-07T12:10:39.505Z"
+    },
+    {
+      "phase": "after",
+      "status": "passed",
+      "checks": [
+        "Anonymous GitHub login entry follows actual effective configuration (disabled). No external authorization is attempted with fixture credentials.",
+        "First real process restart applies disabled saved configuration and retains the binding; explicit UI re-enable saves while effective remains disabled until the next restart."
+      ],
+      "browserErrors": [],
+      "realGithubOAuth": "unverified",
+      "finishedAt": "2026-10-07T12:10:44.576Z"
+    },
+    {
+      "phase": "enabled",
+      "status": "passed",
+      "checks": [
+        "Anonymous GitHub login entry follows actual effective configuration (enabled). No external authorization is attempted with fixture credentials.",
+        "Closing unsent unknown unlink preserves the main unresolved marker and blocks repeat DELETE through failed real readbacks; successful GET restores the actual bound state without reopening stale confirmation.",
+        "Closing committed unknown unlink preserves the main unresolved marker and blocks repeat DELETE through failed real readbacks; successful GET restores the actual unbound state without reopening stale confirmation.",
+        "Seeded UI-only GitHub relation renders username and survives process configuration changes; real failed DELETE retains it; unsent DELETE plus unavailable readback stays unknown; committed DELETE plus lost response reconciles to unbound; credential is preserved; production link generates fixed GitHub authorization/state without contacting external GitHub.",
+        "Second real process restart applies enablement and exposes the anonymous GitHub entry; UI-only seeded account is removed through the actual protected unlink endpoint."
+      ],
+      "browserErrors": [],
+      "realGithubOAuth": "unverified",
+      "finishedAt": "2026-10-07T12:10:59.930Z"
+    }
+  ],
+  "screenshots": [
+    "oauth-all-before-unbound-disabled-light-1440.png",
+    "oauth-all-before-unbound-disabled-dark-390.png",
+    "oauth-all-before-configuration-server-error-1440.png",
+    "oauth-all-before-configuration-unknown-closed-light-1440.png",
+    "oauth-all-before-bound-saved-disabled-configuration-difference-light-1440.png",
+    "oauth-all-after-bound-effective-disabled-light-390.png",
+    "oauth-all-enabled-unlink-confirmation-light-1440.png",
+    "oauth-all-enabled-unlink-short-dark-390.png",
+    "oauth-all-enabled-unlink-real-server-error-1440.png",
+    "oauth-all-enabled-unlink-unknown-closed-not-sent-dark-1440.png",
+    "oauth-all-enabled-unlink-unknown-closed-committed-light-1440.png",
+    "oauth-all-enabled-unbound-enabled-light-390.png"
+  ],
+  "fullRunnerResult": "failed separately; see default-browser.json",
+  "retainedScreenshotsSource": "issue181-oauth-reconciled (same product inputs, before the final success-focus assertion)",
+  "finalBehaviorSource": "issue181-oauth-final-focus (includes final successful reconciliation focus assertion)"
+}

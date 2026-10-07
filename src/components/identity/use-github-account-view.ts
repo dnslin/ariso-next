@@ -65,21 +65,27 @@ export function useGithubAccountView(
 
   function closeEditor() {
     setEditorOpen(false);
-    if (settingsUnknown)
-      requestAnimationFrame(() =>
-        document
-          .querySelector<HTMLElement>('[data-testid="oauth-settings-reload"]')
-          ?.focus({ preventScroll: true }),
-      );
+    requestAnimationFrame(() =>
+      document
+        .querySelector<HTMLElement>(
+          settingsUnknown
+            ? '[data-testid="oauth-settings-reload"]'
+            : '[data-testid="account-github-config"]',
+        )
+        ?.focus({ preventScroll: true }),
+    );
   }
   function closeUnlink() {
     setUnlinkOpen(false);
-    if (unlinkUnknown)
-      requestAnimationFrame(() =>
-        document
-          .querySelector<HTMLElement>('[data-testid="account-github-reload"]')
-          ?.focus({ preventScroll: true }),
-      );
+    requestAnimationFrame(() =>
+      document
+        .querySelector<HTMLElement>(
+          unlinkUnknown
+            ? '[data-testid="account-github-reload"]'
+            : '[data-testid="account-github-unlink"]',
+        )
+        ?.focus({ preventScroll: true }),
+    );
   }
   async function checkSettings() {
     if (settings.isFetching) return;

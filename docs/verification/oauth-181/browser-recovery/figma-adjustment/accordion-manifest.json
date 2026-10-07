@@ -1,0 +1,442 @@
+{
+  "fileKey": "74sT9Hrf8G4czcWeTkET5b",
+  "scope": "Only account-page pending-restart Accordion trigger/body horizontal padding; product and shared public source unchanged.",
+  "sources": [
+    {
+      "file": "node_modules/@heroui/styles/dist/components/accordion.css",
+      "lines": "14-15,56-60",
+      "fact": "Installed HeroUI body-inner and trigger both retain px-4 = 16px on each side."
+    },
+    {
+      "file": "src/components/identity/github-settings-summary.tsx",
+      "lines": "76-91",
+      "fact": "Product only overrides vertical spacing/text; inherited horizontal padding remains."
+    },
+    {
+      "file": ".data/oauth-181/prototype/app/account-rows-preview.tsx",
+      "lines": "254-260",
+      "fact": "Approved prototype retains the same HeroUI horizontal padding."
+    },
+    {
+      "file": "test-results/issue181-oauth-reconciled/oauth-all-before-bound-saved-disabled-configuration-difference-light-1440.png",
+      "fact": "Actual browser image, read-only visual reference."
+    },
+    {
+      "file": "test-results/issue181-oauth-reconciled/oauth-all-before-bound-saved-disabled-configuration-difference-light-390.png",
+      "fact": "Actual browser image, read-only visual reference."
+    }
+  ],
+  "measurementBoundary": "Product trigger/snapshot x301 desktop and x49 mobile are source-derived and visually checked positions (summary x285/x33 plus 16px), not new browser DOM measurements. Figma final geometry was read from native nodes; rotated indicator bounds use absoluteBoundingBox.",
+  "desktopRoots": [
+    "196:2001",
+    "196:2002",
+    "196:2006",
+    "814:15096",
+    "847:15346"
+  ],
+  "mobileRoots": [
+    "196:2011",
+    "196:2012",
+    "196:2016",
+    "814:29997",
+    "847:32261",
+    "819:27634"
+  ],
+  "writes": {
+    "desktopNodeIds": [
+      "843:28077",
+      "843:28234",
+      "843:28390",
+      "844:14832",
+      "847:31940",
+      "854:15473"
+    ],
+    "mobileNodeIds": [
+      "844:28859",
+      "844:28993",
+      "844:29126",
+      "845:29165",
+      "848:31661",
+      "854:30743",
+      "848:33354"
+    ],
+    "property": "paddingLeft=16; paddingRight=16",
+    "unchanged": "Summary coordinates, other rows, public shell/source components, snapshot 3 lines / 4px intra-snapshot / 12px between snapshots."
+  },
+  "before": {
+    "desktop": [
+      {
+        "id": "196:2001",
+        "trigger": {
+          "id": "843:28077",
+          "padding": [0, 0],
+          "textX": 285
+        },
+        "body": null,
+        "summaryX": 285
+      },
+      {
+        "id": "196:2002",
+        "trigger": {
+          "id": "843:28234",
+          "padding": [0, 0],
+          "textX": 285
+        },
+        "body": null,
+        "summaryX": 285
+      },
+      {
+        "id": "196:2006",
+        "trigger": {
+          "id": "843:28390",
+          "padding": [0, 0],
+          "textX": 285
+        },
+        "body": null,
+        "summaryX": 285
+      },
+      {
+        "id": "814:15096",
+        "trigger": {
+          "id": "844:14832",
+          "padding": [0, 0],
+          "textX": 285
+        },
+        "body": null,
+        "summaryX": 285
+      },
+      {
+        "id": "847:15346",
+        "trigger": {
+          "id": "847:31940",
+          "padding": [0, 0],
+          "textX": 285
+        },
+        "body": {
+          "id": "854:15473",
+          "padding": [0, 0],
+          "textX": 285
+        },
+        "summaryX": 285
+      }
+    ],
+    "mobile": [
+      {
+        "id": "196:2011",
+        "summaryX": 33,
+        "trigger": {
+          "id": "844:28859",
+          "padding": [0, 0],
+          "textX": 33
+        },
+        "body": null
+      },
+      {
+        "id": "196:2012",
+        "summaryX": 33,
+        "trigger": {
+          "id": "844:28993",
+          "padding": [0, 0],
+          "textX": 33
+        },
+        "body": null
+      },
+      {
+        "id": "196:2016",
+        "summaryX": 33,
+        "trigger": {
+          "id": "844:29126",
+          "padding": [0, 0],
+          "textX": 33
+        },
+        "body": null
+      },
+      {
+        "id": "814:29997",
+        "summaryX": 33,
+        "trigger": {
+          "id": "845:29165",
+          "padding": [0, 0],
+          "textX": 33
+        },
+        "body": null
+      },
+      {
+        "id": "847:32261",
+        "summaryX": 33,
+        "trigger": {
+          "id": "848:31661",
+          "padding": [0, 0],
+          "textX": 33
+        },
+        "body": {
+          "id": "854:30743",
+          "padding": [0, 0],
+          "textX": 33
+        }
+      },
+      {
+        "id": "819:27634",
+        "summaryX": 17,
+        "trigger": {
+          "id": "848:33354",
+          "padding": [0, 0],
+          "textX": 17
+        },
+        "body": null
+      }
+    ]
+  },
+  "after": {
+    "desktop": [
+      {
+        "id": "196:2001",
+        "summaryX": 285,
+        "trigger": {
+          "id": "843:28077",
+          "padding": [16, 16],
+          "textX": 301,
+          "indicatorRotation": 0,
+          "indicatorRight": 1187,
+          "rightInset": 16
+        },
+        "body": null
+      },
+      {
+        "id": "196:2002",
+        "summaryX": 285,
+        "trigger": {
+          "id": "843:28234",
+          "padding": [16, 16],
+          "textX": 301,
+          "indicatorRotation": 0,
+          "indicatorRight": 1187,
+          "rightInset": 16
+        },
+        "body": null
+      },
+      {
+        "id": "196:2006",
+        "summaryX": 285,
+        "trigger": {
+          "id": "843:28390",
+          "padding": [16, 16],
+          "textX": 301,
+          "indicatorRotation": 0,
+          "indicatorRight": 1187,
+          "rightInset": 16
+        },
+        "body": null
+      },
+      {
+        "id": "814:15096",
+        "summaryX": 285,
+        "trigger": {
+          "id": "844:14832",
+          "padding": [16, 16],
+          "textX": 301,
+          "indicatorRotation": 0,
+          "indicatorRight": 1187,
+          "rightInset": 16
+        },
+        "body": null
+      },
+      {
+        "id": "847:15346",
+        "summaryX": 285,
+        "trigger": {
+          "id": "847:31940",
+          "padding": [16, 16],
+          "textX": 301,
+          "indicatorRotation": 180,
+          "indicatorRight": 1187,
+          "rightInset": 16
+        },
+        "body": {
+          "id": "854:15473",
+          "padding": [16, 16],
+          "textX": 301,
+          "snapshotGap": 12,
+          "snapshots": [
+            {
+              "name": "已保存",
+              "rowGap": 4,
+              "textLines": 3
+            },
+            {
+              "name": "当前生效",
+              "rowGap": 4,
+              "textLines": 3
+            }
+          ]
+        }
+      }
+    ],
+    "mobile": [
+      {
+        "id": "196:2011",
+        "summaryX": 33,
+        "trigger": {
+          "id": "844:28859",
+          "padding": [16, 16],
+          "textX": 49,
+          "indicatorRotation": 0,
+          "indicatorRight": 341,
+          "rightInset": 16
+        },
+        "body": null
+      },
+      {
+        "id": "196:2012",
+        "summaryX": 33,
+        "trigger": {
+          "id": "844:28993",
+          "padding": [16, 16],
+          "textX": 49,
+          "indicatorRotation": 0,
+          "indicatorRight": 341,
+          "rightInset": 16
+        },
+        "body": null
+      },
+      {
+        "id": "196:2016",
+        "summaryX": 33,
+        "trigger": {
+          "id": "844:29126",
+          "padding": [16, 16],
+          "textX": 49,
+          "indicatorRotation": 0,
+          "indicatorRight": 341,
+          "rightInset": 16
+        },
+        "body": null
+      },
+      {
+        "id": "814:29997",
+        "summaryX": 33,
+        "trigger": {
+          "id": "845:29165",
+          "padding": [16, 16],
+          "textX": 49,
+          "indicatorRotation": 0,
+          "indicatorRight": 341,
+          "rightInset": 16
+        },
+        "body": null
+      },
+      {
+        "id": "847:32261",
+        "summaryX": 33,
+        "trigger": {
+          "id": "848:31661",
+          "padding": [16, 16],
+          "textX": 49,
+          "indicatorRotation": 180,
+          "indicatorRight": 341,
+          "rightInset": 16
+        },
+        "body": {
+          "id": "854:30743",
+          "padding": [16, 16],
+          "textX": 49,
+          "snapshotGap": 12,
+          "snapshots": [
+            {
+              "name": "已保存",
+              "rowGap": 4,
+              "textLines": 3
+            },
+            {
+              "name": "当前生效",
+              "rowGap": 4,
+              "textLines": 3
+            }
+          ]
+        }
+      },
+      {
+        "id": "819:27634",
+        "summaryX": 17,
+        "trigger": {
+          "id": "848:33354",
+          "padding": [16, 16],
+          "textX": 33,
+          "indicatorRotation": 0,
+          "indicatorRight": 325,
+          "rightInset": 16
+        },
+        "body": null
+      }
+    ]
+  },
+  "screenshots": {
+    "before": [
+      {
+        "nodeId": "847:15346",
+        "file": "accordion-desktop-expanded-light-before.png",
+        "width": 1440,
+        "height": 1080
+      },
+      {
+        "nodeId": "847:32261",
+        "file": "accordion-mobile-expanded-light-before.png",
+        "width": 390,
+        "height": 844
+      },
+      {
+        "nodeId": "814:15096",
+        "file": "accordion-desktop-collapsed-dark-before.png",
+        "width": 1440,
+        "height": 1080
+      },
+      {
+        "nodeId": "814:29997",
+        "file": "accordion-mobile-collapsed-dark-before.png",
+        "width": 390,
+        "height": 844
+      }
+    ],
+    "after": [
+      {
+        "nodeId": "814:29997",
+        "file": "accordion-mobile-collapsed-dark-after.png",
+        "width": 390,
+        "height": 844
+      },
+      {
+        "nodeId": "847:32261",
+        "file": "accordion-mobile-expanded-light-after.png",
+        "width": 390,
+        "height": 844
+      },
+      {
+        "nodeId": "847:15346",
+        "file": "accordion-desktop-expanded-light-after.png",
+        "width": 1440,
+        "height": 1080
+      },
+      {
+        "nodeId": "814:15096",
+        "file": "accordion-desktop-collapsed-dark-after.png",
+        "width": 1440,
+        "height": 1080
+      }
+    ],
+    "fullContent": {
+      "nodeId": "847:32274",
+      "file": "accordion-mobile-expanded-full-content-after.png",
+      "width": 358,
+      "height": 819,
+      "kind": "full-content"
+    }
+  },
+  "fullContentExport": {
+    "mutatedNodeIds": ["847:32261", "847:32274"],
+    "clipsContent": true,
+    "bodyFills": [],
+    "note": "Temporary full-content export background and root overflow were restored; root clipsContent=true, body fills=[] after export."
+  },
+  "priorEvidence": "All previous layout-revision and figma-adjustment precision exports retained; accordion-* images are a separate before/after sequence.",
+  "verification": "Static Figma write, native coordinate audit and screenshots only. No browser operation, OAuth credential access, product edit, application checks, commit or push by this subtask."
+}

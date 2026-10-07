@@ -50,8 +50,14 @@ async function verifyClosedSettingsUnknown(page, config, report, ui, secret) {
       'The closed unknown editor follows a real committed PATCH',
     );
     await page.waitForSelector(`${oauthDialog}[data-state="unknown"]`);
+    report.stage = 'closed-configuration-unknown';
+    await page.waitForFunction(
+      () =>
+        document.activeElement ===
+        document.querySelector('[data-testid="oauth-reload"]'),
+    );
     await page.keyboard.press('Escape');
-    await page.waitForSelector(oauthDialog, { state: 'hidden' });
+    await page.waitForSelector(oauthDialog, { state: 'detached' });
     await page.waitForSelector(
       '[data-testid="oauth-settings"][data-state="unknown"]',
     );
@@ -286,7 +292,7 @@ export async function verifyOAuthSettings(page, config, report, ui, secrets) {
     false,
   );
 
-  // A real SQLite error must retain the draft for correction, without claiming Save succeeded.
+  // A real SQLite error retains the draft and reads back before permitting closure.
   await identitySql(
     config,
     "CREATE TRIGGER reject_oauth_browser_settings BEFORE UPDATE ON identity_github_settings BEGIN SELECT RAISE(ABORT, 'injected OAuth settings write failure'); END",
@@ -299,6 +305,7 @@ export async function verifyOAuthSettings(page, config, report, ui, secrets) {
       (root) => document.querySelector(root)?.textContent.includes('HTTP 500'),
       oauthDialog,
     );
+    await page.waitForSelector(`${oauthDialog}[data-state="verified"]`);
     assert.equal(
       await page.evaluate(
         ({ id, secret }) =>
@@ -309,12 +316,28 @@ export async function verifyOAuthSettings(page, config, report, ui, secrets) {
       true,
       'A rejected real write preserves both input values',
     );
+    assert.equal(
+      await page.evaluate(
+        () => document.querySelector('[data-testid="oauth-save"]') === null,
+      ),
+      true,
+      'Readback completes without offering another uncertain write',
+    );
+    const rejected = await readOAuthSettings(page, config, report);
+    assert.deepEqual(rejected.saved, {
+      enabled: false,
+      clientId: 'browser-oauth-replace',
+      hasSecret: false,
+    });
+    assert.deepEqual(rejected.effective, initial.effective);
     await ui.geometry('configuration-server-error');
+    report.stage = 'configuration-server-error-close';
     await ui.close();
   } finally {
     await identitySql(config, 'DROP TRIGGER reject_oauth_browser_settings');
   }
 
+  report.stage = 'configuration-unknown-open';
   await ui.open();
   await ui.fill('browser-oauth-final', secrets.final);
   const unknown = await oauthFault(page, {
@@ -359,6 +382,11 @@ export async function verifyOAuthSettings(page, config, report, ui, secrets) {
   }
   await page.click('[data-testid="oauth-reload"]');
   await page.waitForSelector('[data-testid="oauth-verified-summary"]');
+  await page.waitForFunction(
+    () =>
+      document.activeElement ===
+      document.querySelector('[data-testid="oauth-close"]'),
+  );
   assert.equal(
     await page.evaluate(
       () =>
