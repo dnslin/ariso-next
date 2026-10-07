@@ -658,43 +658,73 @@ it('reprocess status aborts when its query client is cleared without restoring d
   expect(client.getQueryData(key)).toBeUndefined();
 });
 
-it('reprocess status is cancelled together with subsequent library mutations', async () => {
-  const filters = parseLibraryLocation(new URLSearchParams()).filters;
-  const client = new QueryClient();
-  const key = libraryListKey(filters, 'more', 1);
-  client.setQueryData(key, {
-    pages: [page(['a'], 'after-a')],
-    pageParams: [null],
-  });
-  const fetcher = vi.fn().mockImplementation(
-    (_url: string, options: RequestInit) =>
-      new Promise((_resolve, reject) => {
-        options.signal!.addEventListener(
-          'abort',
-          () => reject(options.signal!.reason),
-          { once: true },
-        );
-      }),
-  );
-  vi.stubGlobal('fetch', fetcher);
-  const pending = mount(client)
-    .onBatchCompleted(
-      [{ id: 'a', status: 'failed', inQuery: true, message: '已核对' }],
-      { type: 'reprocess', scope: 'all', taskIds: { a: 'task-a' } },
-    )
-    .catch((error: unknown) => error);
-  try {
-    await vi.waitFor(() => expect(fetcher).toHaveBeenCalledTimes(1));
-    await client.cancelQueries({ queryKey: ['library'] });
-    expect(fetcher.mock.calls[0][1].signal.aborted).toBe(true);
-    expect(
-      client.getQueryData<InfiniteData<LibraryPage>>(key)?.pages[0].items[0],
-    ).toEqual(item('a'));
-  } finally {
-    client.clear();
-    await pending;
-  }
-});
+it.each([1, 81])(
+  'reprocess status is cancelled together with subsequent library mutations for %i IDs',
+  async (count) => {
+    const filters = parseLibraryLocation(new URLSearchParams()).filters;
+    const client = new QueryClient();
+    const key = libraryListKey(filters, 'more', 1);
+    const ids = Array.from({ length: count }, (_, index) => `image-${index}`);
+    const cached = {
+      pages: [page(ids, 'original-boundary')],
+      pageParams: [null],
+    };
+    client.setQueryData(key, cached);
+    const fetcher = vi
+      .fn()
+      .mockImplementation((_url: string, options: RequestInit) => {
+        if (count > 80 && fetcher.mock.calls.length === 1) {
+          const requested = JSON.parse(String(options.body)).ids as string[];
+          return Promise.resolve(
+            Response.json({
+              items: requested.map((id) => ({
+                ...item(id),
+                versions: { ...item(id).versions, thumbnail: true },
+              })),
+              missingIds: [],
+            }),
+          );
+        }
+        return new Promise((_resolve, reject) => {
+          options.signal!.addEventListener(
+            'abort',
+            () => reject(options.signal!.reason),
+            { once: true },
+          );
+        });
+      });
+    vi.stubGlobal('fetch', fetcher);
+    const pending = mount(client)
+      .onBatchCompleted(
+        ids.map((id) => ({
+          id,
+          status: 'failed' as const,
+          inQuery: true,
+          message: '已核对',
+        })),
+        {
+          type: 'reprocess',
+          scope: 'all',
+          taskIds: Object.fromEntries(ids.map((id) => [id, `task-${id}`])),
+        },
+      )
+      .catch((error: unknown) => error);
+    try {
+      await vi.waitFor(() =>
+        expect(fetcher).toHaveBeenCalledTimes(count > 80 ? 2 : 1),
+      );
+      expect(client.getQueryData(key)).toEqual(cached);
+      await client.cancelQueries({ queryKey: ['library'] });
+      expect(
+        fetcher.mock.calls.every(([, options]) => options.signal.aborted),
+      ).toBe(true);
+      expect(client.getQueryData(key)).toEqual(cached);
+    } finally {
+      client.clear();
+      await pending;
+    }
+  },
+);
 
 it('reprocess removes items outside the query without replacing deleted cursor anchors', async () => {
   context.search = 'status=failed&pageSize=20';
@@ -803,6 +833,7 @@ it('reprocess queues only affected loaded IDs in status batches of at most 80', 
     await pending;
   }
   expect(fetcher).toHaveBeenCalledTimes(2);
+  expect(fetcher.mock.calls[1][1].signal).toBe(fetcher.mock.calls[0][1].signal);
   expect(
     fetcher.mock.calls.map(
       ([, options]) => JSON.parse(String(options.body)).ids,

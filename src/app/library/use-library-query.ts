@@ -349,20 +349,21 @@ export function useLibraryQuery(
       const ids = items
         .filter((item) => byId.get(item.id)?.inQuery === true)
         .map((item) => item.id);
-      const statuses = [];
-      for (let offset = 0; offset < ids.length; offset += 80) {
-        const batch = ids.slice(offset, offset + 80);
-        statuses.push(
-          await client.fetchQuery({
-            queryKey: ['library', 'reprocess-status', batch],
-            queryFn: ({ signal }) => readLibraryStatuses(batch, signal),
-            staleTime: 0,
-            gcTime: 0,
-            retry: false,
-            networkMode: 'always',
-          }),
-        );
-      }
+      const statuses = await client.fetchQuery({
+        queryKey: ['library', 'reprocess-status', ids],
+        queryFn: async ({ signal }) => {
+          const batches = [];
+          for (let offset = 0; offset < ids.length; offset += 80)
+            batches.push(
+              await readLibraryStatuses(ids.slice(offset, offset + 80), signal),
+            );
+          return batches;
+        },
+        staleTime: 0,
+        gcTime: 0,
+        retry: false,
+        networkMode: 'always',
+      });
       const updated = new Map<string, LibraryItem>(
         statuses.flatMap((status) =>
           status.items.map((item) => [item.id, item]),
