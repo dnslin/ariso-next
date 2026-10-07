@@ -9,6 +9,20 @@ export async function verifyCopyConsumers({ page, config, report, sql, h }) {
     await page.waitForSelector(
       `[data-slot="toast-title"]:has-text("${title}")`,
     );
+    await page.waitForFunction((title) => {
+      const node = [
+        ...document.querySelectorAll('[data-slot="toast-title"]'),
+      ].find((node) => node.textContent.includes(title));
+      const toast = node?.closest('[data-slot="toast"]');
+      return (
+        !!toast &&
+        !toast.hasAttribute('data-entering') &&
+        !toast.hasAttribute('data-exiting') &&
+        toast
+          .getAnimations({ subtree: true })
+          .every((animation) => animation.playState !== 'running')
+      );
+    }, title);
     const layout = await page.evaluate((title) => {
       const node = [
         ...document.querySelectorAll('[data-slot="toast-title"]'),
@@ -30,6 +44,7 @@ export async function verifyCopyConsumers({ page, config, report, sql, h }) {
         title: node.textContent,
       };
     }, title);
+    report.layouts.push({ state, ...layout });
     assert.equal(layout.radius, '12px');
     assert.ok(
       layout.surface.bottom <= layout.height && layout.surface.top >= 0,
@@ -45,7 +60,6 @@ export async function verifyCopyConsumers({ page, config, report, sql, h }) {
     await page.screenshot({
       path: join(config.output, `copy-consumer-toast-${state}.png`),
     });
-    report.layouts.push({ state, ...layout });
     await page.click(
       '[data-slot="toast"][data-frontmost="true"] [data-slot="toast-close"]',
     );

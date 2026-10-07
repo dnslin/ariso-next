@@ -44,7 +44,7 @@ const report = {
   clipboard: [],
   limitations: [
     'Only the runner’s disposable production database is modified; the manual preview remains untouched.',
-    'Once-only secret screenshots replace key characters with bullets; the full value is asserted in memory and never emitted.',
+    'Once-only secret screenshots cover the input with a temporary bullet overlay without changing its value or selection; the full value is asserted in memory and never emitted.',
     'Actual Clipboard permission denial and native copy are exercised on the current macOS Ego Lite host.',
     'Chromium viewport emulation does not constitute physical touch, soft keyboard or safe-area verification.',
   ],
