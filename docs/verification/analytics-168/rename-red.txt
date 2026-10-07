@@ -1,0 +1,43 @@
+Already up to date
+Done in 54ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-168-analytics-usage/ariso
+
+ ❯ |media-tools| tests/integration/upload/local.test.ts (15 tests | 1 failed | 14 skipped) 194ms
+   ❯ real local upload reception and ownership (15)
+     × records the real final object after rename even when handoff and cleanup fail 194ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |media-tools| tests/integration/upload/local.test.ts > real local upload reception and ownership > records the real final object after rename even when handoff and cleanup fail
+AssertionError: expected { …(31) } to match object { temporaryKey: null, …(2) }
+(28 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "finalBytes": 6631,
+-   "temporaryBytes": null,
+-   "temporaryKey": null,
++   "finalBytes": null,
++   "temporaryBytes": 6631,
++   "temporaryKey": "uploads/c483df18-da04-4409-9c6f-b82ead4f1be1.partial",
+  }
+
+ ❯ tests/integration/upload/local.test.ts:474:22
+    472|     await expect(receive(session.id)).rejects.toThrow('上传失败且清理失败');
+    473|     const retained = getSession(fixture.db, session.id);
+    474|     expect(retained).toMatchObject({ temporaryKey: null, temporaryByte…
+       |                      ^
+    475|     expect(await readFile(filePath(retained.finalKey!))).toEqual(bytes…
+    476|     await expect(stat(filePath(`uploads/${session.id}.partial`))).reje…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 14 skipped (15)
+   Start at  00:11:32
+   Duration  1.45s (import 47%, transform 39%, tests 14%)
+

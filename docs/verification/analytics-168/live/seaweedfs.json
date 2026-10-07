@@ -1,0 +1,2891 @@
+{
+  "service": "seaweedfs",
+  "endpoint": "https://fs.447654.xyz",
+  "bucket": "images",
+  "startedAt": "2026-10-07T16:18:28.684Z",
+  "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+  "prefix": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/",
+  "environment": {
+    "node": "v24.18.1",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "status": "passed",
+  "boundary": "Real PUT/HEAD/LIST/DELETE; production SQLite schema, readUsage, acceptSession, trash/restore and scanner. Provider mutations use observed HEAD sizes. Media processing and the upload receiver are not exercised. One scanner DELETE failure is deliberately injected to inspect retained orphan responsibility before a real retry. Registered usage is not a remote realtime total.",
+  "observations": [
+    {
+      "name": "writing-unknown",
+      "at": "2026-10-07T16:18:29.100Z",
+      "evidence": {
+        "protocol": {},
+        "remoteObjects": [],
+        "objectReconciliation": [
+          {
+            "key": "temporary.bin",
+            "owner": "upload",
+            "bytes": null,
+            "remoteBytes": null
+          },
+          {
+            "key": "original.bin",
+            "owner": "upload",
+            "bytes": null,
+            "remoteBytes": null
+          }
+        ],
+        "intentionallyUnregistered": [],
+        "usage": {
+          "id": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+          "name": "seaweedfs",
+          "type": "s3",
+          "enabled": true,
+          "knownBytes": 0,
+          "unconfirmedObjects": 2,
+          "groups": {
+            "recycle": 0,
+            "original": 0,
+            "derived": 0,
+            "pending": 0
+          },
+          "confirmationStatus": "unconfirmed",
+          "confirmedAt": null
+        },
+        "media": [],
+        "upload": [
+          {
+            "id": "96cba91e-9dcc-4bbb-8f16-52f8acc904df",
+            "state": "finalizing",
+            "temporaryKey": "temporary.bin",
+            "temporaryBytes": null,
+            "finalKey": "original.bin",
+            "finalBytes": null,
+            "cleanupStatus": "none"
+          }
+        ],
+        "probes": [],
+        "orphans": []
+      }
+    },
+    {
+      "name": "upload-confirmed",
+      "at": "2026-10-07T16:18:29.555Z",
+      "evidence": {
+        "protocol": {},
+        "remoteObjects": [
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/original.bin",
+            "bytes": 1024
+          },
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/temporary.bin",
+            "bytes": 2048
+          }
+        ],
+        "objectReconciliation": [
+          {
+            "key": "temporary.bin",
+            "owner": "upload",
+            "bytes": 2048,
+            "remoteBytes": 2048
+          },
+          {
+            "key": "original.bin",
+            "owner": "upload",
+            "bytes": 1024,
+            "remoteBytes": 1024
+          }
+        ],
+        "intentionallyUnregistered": [],
+        "usage": {
+          "id": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+          "name": "seaweedfs",
+          "type": "s3",
+          "enabled": true,
+          "knownBytes": 3072,
+          "unconfirmedObjects": 0,
+          "groups": {
+            "recycle": 0,
+            "original": 0,
+            "derived": 0,
+            "pending": 3072
+          },
+          "confirmationStatus": "confirmed",
+          "confirmedAt": "2026-10-07T16:18:29.463Z"
+        },
+        "media": [],
+        "upload": [
+          {
+            "id": "96cba91e-9dcc-4bbb-8f16-52f8acc904df",
+            "state": "finalizing",
+            "temporaryKey": "temporary.bin",
+            "temporaryBytes": 2048,
+            "finalKey": "original.bin",
+            "finalBytes": 1024,
+            "cleanupStatus": "none"
+          }
+        ],
+        "probes": [],
+        "orphans": []
+      }
+    },
+    {
+      "name": "handoff-rollback",
+      "at": "2026-10-07T16:18:29.648Z",
+      "evidence": {
+        "protocol": {},
+        "remoteObjects": [
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/original.bin",
+            "bytes": 1024
+          },
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/temporary.bin",
+            "bytes": 2048
+          }
+        ],
+        "objectReconciliation": [
+          {
+            "key": "temporary.bin",
+            "owner": "upload",
+            "bytes": 2048,
+            "remoteBytes": 2048
+          },
+          {
+            "key": "original.bin",
+            "owner": "upload",
+            "bytes": 1024,
+            "remoteBytes": 1024
+          }
+        ],
+        "intentionallyUnregistered": [],
+        "usage": {
+          "id": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+          "name": "seaweedfs",
+          "type": "s3",
+          "enabled": true,
+          "knownBytes": 3072,
+          "unconfirmedObjects": 0,
+          "groups": {
+            "recycle": 0,
+            "original": 0,
+            "derived": 0,
+            "pending": 3072
+          },
+          "confirmationStatus": "confirmed",
+          "confirmedAt": "2026-10-07T16:18:29.463Z"
+        },
+        "media": [],
+        "upload": [
+          {
+            "id": "96cba91e-9dcc-4bbb-8f16-52f8acc904df",
+            "state": "finalizing",
+            "temporaryKey": "temporary.bin",
+            "temporaryBytes": 2048,
+            "finalKey": "original.bin",
+            "finalBytes": 1024,
+            "cleanupStatus": "none"
+          }
+        ],
+        "probes": [],
+        "orphans": []
+      }
+    },
+    {
+      "name": "handoff-retained-temporary",
+      "at": "2026-10-07T16:18:29.741Z",
+      "evidence": {
+        "protocol": {},
+        "remoteObjects": [
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/original.bin",
+            "bytes": 1024
+          },
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/temporary.bin",
+            "bytes": 2048
+          }
+        ],
+        "objectReconciliation": [
+          {
+            "key": "temporary.bin",
+            "owner": "upload",
+            "bytes": 2048,
+            "remoteBytes": 2048
+          },
+          {
+            "key": "original.bin",
+            "owner": "media",
+            "bytes": 1024,
+            "remoteBytes": 1024
+          }
+        ],
+        "intentionallyUnregistered": [],
+        "usage": {
+          "id": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+          "name": "seaweedfs",
+          "type": "s3",
+          "enabled": true,
+          "knownBytes": 3072,
+          "unconfirmedObjects": 0,
+          "groups": {
+            "recycle": 0,
+            "original": 1024,
+            "derived": 0,
+            "pending": 2048
+          },
+          "confirmationStatus": "confirmed",
+          "confirmedAt": "2026-10-07T16:18:29.463Z"
+        },
+        "media": [
+          {
+            "id": "2f1edbaa-7c05-4ceb-b46b-80572de00961",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "original.bin",
+            "purpose": "original",
+            "status": "stored",
+            "byteSize": 1024,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:29.649Z",
+            "width": null,
+            "height": null,
+            "format": "PNG",
+            "mime": "image/png",
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:29.649Z",
+            "updatedAt": "2026-10-07T16:18:29.649Z"
+          }
+        ],
+        "upload": [
+          {
+            "id": "96cba91e-9dcc-4bbb-8f16-52f8acc904df",
+            "state": "accepted",
+            "temporaryKey": "temporary.bin",
+            "temporaryBytes": 2048,
+            "finalKey": null,
+            "finalBytes": null,
+            "cleanupStatus": "pending"
+          }
+        ],
+        "probes": [],
+        "orphans": []
+      }
+    },
+    {
+      "name": "candidate-old-probe",
+      "at": "2026-10-07T16:18:30.759Z",
+      "evidence": {
+        "protocol": {},
+        "remoteObjects": [
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/candidate.bin",
+            "bytes": 256
+          },
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/old.bin",
+            "bytes": 128
+          },
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/original.bin",
+            "bytes": 1024
+          },
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/probe.bin",
+            "bytes": 64
+          },
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/temporary.bin",
+            "bytes": 2048
+          },
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/thumbnail.bin",
+            "bytes": 512
+          }
+        ],
+        "objectReconciliation": [
+          {
+            "key": "probe.bin",
+            "owner": "storage-probe",
+            "bytes": 64,
+            "remoteBytes": 64
+          },
+          {
+            "key": "temporary.bin",
+            "owner": "upload",
+            "bytes": 2048,
+            "remoteBytes": 2048
+          },
+          {
+            "key": "original.bin",
+            "owner": "media",
+            "bytes": 1024,
+            "remoteBytes": 1024
+          },
+          {
+            "key": "thumbnail.bin",
+            "owner": "media",
+            "bytes": 512,
+            "remoteBytes": 512
+          },
+          {
+            "key": "candidate.bin",
+            "owner": "media",
+            "bytes": 256,
+            "remoteBytes": 256
+          },
+          {
+            "key": "old.bin",
+            "owner": "media",
+            "bytes": 128,
+            "remoteBytes": 128
+          }
+        ],
+        "intentionallyUnregistered": [],
+        "usage": {
+          "id": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+          "name": "seaweedfs",
+          "type": "s3",
+          "enabled": true,
+          "knownBytes": 4032,
+          "unconfirmedObjects": 0,
+          "groups": {
+            "recycle": 0,
+            "original": 1024,
+            "derived": 512,
+            "pending": 2496
+          },
+          "confirmationStatus": "confirmed",
+          "confirmedAt": "2026-10-07T16:18:29.463Z"
+        },
+        "media": [
+          {
+            "id": "2f1edbaa-7c05-4ceb-b46b-80572de00961",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "original.bin",
+            "purpose": "original",
+            "status": "stored",
+            "byteSize": 1024,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:29.649Z",
+            "width": null,
+            "height": null,
+            "format": "PNG",
+            "mime": "image/png",
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:29.649Z",
+            "updatedAt": "2026-10-07T16:18:29.649Z"
+          },
+          {
+            "id": "d8c1e7f7-6fcb-41cf-b19c-a06f613f5ec0",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "thumbnail.bin",
+            "purpose": "thumbnail",
+            "status": "stored",
+            "byteSize": 512,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:29.931Z",
+            "width": null,
+            "height": null,
+            "format": null,
+            "mime": null,
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:28.701Z",
+            "updatedAt": "2026-10-07T16:18:28.701Z"
+          },
+          {
+            "id": "4a8cae2f-5f3e-49a5-abcf-b8a03d1486b5",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "candidate.bin",
+            "purpose": "temporary",
+            "status": "stored",
+            "byteSize": 256,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:30.128Z",
+            "width": null,
+            "height": null,
+            "format": null,
+            "mime": null,
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:28.701Z",
+            "updatedAt": "2026-10-07T16:18:28.701Z"
+          },
+          {
+            "id": "63d90051-04f2-45d9-aee9-098aed6fda35",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "old.bin",
+            "purpose": "temporary",
+            "status": "cleanup_failed",
+            "byteSize": 128,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:30.308Z",
+            "width": null,
+            "height": null,
+            "format": null,
+            "mime": null,
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:28.701Z",
+            "updatedAt": "2026-10-07T16:18:28.701Z"
+          }
+        ],
+        "upload": [
+          {
+            "id": "96cba91e-9dcc-4bbb-8f16-52f8acc904df",
+            "state": "accepted",
+            "temporaryKey": "temporary.bin",
+            "temporaryBytes": 2048,
+            "finalKey": null,
+            "finalBytes": null,
+            "cleanupStatus": "pending"
+          }
+        ],
+        "probes": [
+          {
+            "key": "probe.bin",
+            "objectState": "stored",
+            "byteSize": 64
+          }
+        ],
+        "orphans": []
+      }
+    },
+    {
+      "name": "trash",
+      "at": "2026-10-07T16:18:31.030Z",
+      "evidence": {
+        "protocol": {},
+        "remoteObjects": [
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/candidate.bin",
+            "bytes": 256
+          },
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/old.bin",
+            "bytes": 128
+          },
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/original.bin",
+            "bytes": 1024
+          },
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/probe.bin",
+            "bytes": 64
+          },
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/temporary.bin",
+            "bytes": 2048
+          },
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/thumbnail.bin",
+            "bytes": 512
+          }
+        ],
+        "objectReconciliation": [
+          {
+            "key": "probe.bin",
+            "owner": "storage-probe",
+            "bytes": 64,
+            "remoteBytes": 64
+          },
+          {
+            "key": "temporary.bin",
+            "owner": "upload",
+            "bytes": 2048,
+            "remoteBytes": 2048
+          },
+          {
+            "key": "original.bin",
+            "owner": "media",
+            "bytes": 1024,
+            "remoteBytes": 1024
+          },
+          {
+            "key": "thumbnail.bin",
+            "owner": "media",
+            "bytes": 512,
+            "remoteBytes": 512
+          },
+          {
+            "key": "candidate.bin",
+            "owner": "media",
+            "bytes": 256,
+            "remoteBytes": 256
+          },
+          {
+            "key": "old.bin",
+            "owner": "media",
+            "bytes": 128,
+            "remoteBytes": 128
+          }
+        ],
+        "intentionallyUnregistered": [],
+        "usage": {
+          "id": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+          "name": "seaweedfs",
+          "type": "s3",
+          "enabled": true,
+          "knownBytes": 4032,
+          "unconfirmedObjects": 0,
+          "groups": {
+            "recycle": 1920,
+            "original": 0,
+            "derived": 0,
+            "pending": 2112
+          },
+          "confirmationStatus": "confirmed",
+          "confirmedAt": "2026-10-07T16:18:29.463Z"
+        },
+        "media": [
+          {
+            "id": "2f1edbaa-7c05-4ceb-b46b-80572de00961",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "original.bin",
+            "purpose": "original",
+            "status": "stored",
+            "byteSize": 1024,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:29.649Z",
+            "width": null,
+            "height": null,
+            "format": "PNG",
+            "mime": "image/png",
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:29.649Z",
+            "updatedAt": "2026-10-07T16:18:29.649Z"
+          },
+          {
+            "id": "d8c1e7f7-6fcb-41cf-b19c-a06f613f5ec0",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "thumbnail.bin",
+            "purpose": "thumbnail",
+            "status": "stored",
+            "byteSize": 512,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:29.931Z",
+            "width": null,
+            "height": null,
+            "format": null,
+            "mime": null,
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:28.701Z",
+            "updatedAt": "2026-10-07T16:18:28.701Z"
+          },
+          {
+            "id": "4a8cae2f-5f3e-49a5-abcf-b8a03d1486b5",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "candidate.bin",
+            "purpose": "temporary",
+            "status": "stored",
+            "byteSize": 256,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:30.128Z",
+            "width": null,
+            "height": null,
+            "format": null,
+            "mime": null,
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:28.701Z",
+            "updatedAt": "2026-10-07T16:18:28.701Z"
+          },
+          {
+            "id": "63d90051-04f2-45d9-aee9-098aed6fda35",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "old.bin",
+            "purpose": "temporary",
+            "status": "cleanup_failed",
+            "byteSize": 128,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:30.308Z",
+            "width": null,
+            "height": null,
+            "format": null,
+            "mime": null,
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:28.701Z",
+            "updatedAt": "2026-10-07T16:18:28.701Z"
+          }
+        ],
+        "upload": [
+          {
+            "id": "96cba91e-9dcc-4bbb-8f16-52f8acc904df",
+            "state": "accepted",
+            "temporaryKey": "temporary.bin",
+            "temporaryBytes": 2048,
+            "finalKey": null,
+            "finalBytes": null,
+            "cleanupStatus": "pending"
+          }
+        ],
+        "probes": [
+          {
+            "key": "probe.bin",
+            "objectState": "stored",
+            "byteSize": 64
+          }
+        ],
+        "orphans": []
+      }
+    },
+    {
+      "name": "restore",
+      "at": "2026-10-07T16:18:31.302Z",
+      "evidence": {
+        "protocol": {},
+        "remoteObjects": [
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/candidate.bin",
+            "bytes": 256
+          },
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/old.bin",
+            "bytes": 128
+          },
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/original.bin",
+            "bytes": 1024
+          },
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/probe.bin",
+            "bytes": 64
+          },
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/temporary.bin",
+            "bytes": 2048
+          },
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/thumbnail.bin",
+            "bytes": 512
+          }
+        ],
+        "objectReconciliation": [
+          {
+            "key": "probe.bin",
+            "owner": "storage-probe",
+            "bytes": 64,
+            "remoteBytes": 64
+          },
+          {
+            "key": "temporary.bin",
+            "owner": "upload",
+            "bytes": 2048,
+            "remoteBytes": 2048
+          },
+          {
+            "key": "original.bin",
+            "owner": "media",
+            "bytes": 1024,
+            "remoteBytes": 1024
+          },
+          {
+            "key": "thumbnail.bin",
+            "owner": "media",
+            "bytes": 512,
+            "remoteBytes": 512
+          },
+          {
+            "key": "candidate.bin",
+            "owner": "media",
+            "bytes": 256,
+            "remoteBytes": 256
+          },
+          {
+            "key": "old.bin",
+            "owner": "media",
+            "bytes": 128,
+            "remoteBytes": 128
+          }
+        ],
+        "intentionallyUnregistered": [],
+        "usage": {
+          "id": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+          "name": "seaweedfs",
+          "type": "s3",
+          "enabled": true,
+          "knownBytes": 4032,
+          "unconfirmedObjects": 0,
+          "groups": {
+            "recycle": 0,
+            "original": 1024,
+            "derived": 512,
+            "pending": 2496
+          },
+          "confirmationStatus": "confirmed",
+          "confirmedAt": "2026-10-07T16:18:29.463Z"
+        },
+        "media": [
+          {
+            "id": "2f1edbaa-7c05-4ceb-b46b-80572de00961",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "original.bin",
+            "purpose": "original",
+            "status": "stored",
+            "byteSize": 1024,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:29.649Z",
+            "width": null,
+            "height": null,
+            "format": "PNG",
+            "mime": "image/png",
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:29.649Z",
+            "updatedAt": "2026-10-07T16:18:29.649Z"
+          },
+          {
+            "id": "d8c1e7f7-6fcb-41cf-b19c-a06f613f5ec0",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "thumbnail.bin",
+            "purpose": "thumbnail",
+            "status": "stored",
+            "byteSize": 512,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:29.931Z",
+            "width": null,
+            "height": null,
+            "format": null,
+            "mime": null,
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:28.701Z",
+            "updatedAt": "2026-10-07T16:18:28.701Z"
+          },
+          {
+            "id": "4a8cae2f-5f3e-49a5-abcf-b8a03d1486b5",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "candidate.bin",
+            "purpose": "temporary",
+            "status": "stored",
+            "byteSize": 256,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:30.128Z",
+            "width": null,
+            "height": null,
+            "format": null,
+            "mime": null,
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:28.701Z",
+            "updatedAt": "2026-10-07T16:18:28.701Z"
+          },
+          {
+            "id": "63d90051-04f2-45d9-aee9-098aed6fda35",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "old.bin",
+            "purpose": "temporary",
+            "status": "cleanup_failed",
+            "byteSize": 128,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:30.308Z",
+            "width": null,
+            "height": null,
+            "format": null,
+            "mime": null,
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:28.701Z",
+            "updatedAt": "2026-10-07T16:18:28.701Z"
+          }
+        ],
+        "upload": [
+          {
+            "id": "96cba91e-9dcc-4bbb-8f16-52f8acc904df",
+            "state": "accepted",
+            "temporaryKey": "temporary.bin",
+            "temporaryBytes": 2048,
+            "finalKey": null,
+            "finalBytes": null,
+            "cleanupStatus": "pending"
+          }
+        ],
+        "probes": [
+          {
+            "key": "probe.bin",
+            "objectState": "stored",
+            "byteSize": 64
+          }
+        ],
+        "orphans": []
+      }
+    },
+    {
+      "name": "disabled-retains-bytes",
+      "at": "2026-10-07T16:18:31.574Z",
+      "evidence": {
+        "protocol": {},
+        "remoteObjects": [
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/candidate.bin",
+            "bytes": 256
+          },
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/old.bin",
+            "bytes": 128
+          },
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/original.bin",
+            "bytes": 1024
+          },
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/probe.bin",
+            "bytes": 64
+          },
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/temporary.bin",
+            "bytes": 2048
+          },
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/thumbnail.bin",
+            "bytes": 512
+          }
+        ],
+        "objectReconciliation": [
+          {
+            "key": "probe.bin",
+            "owner": "storage-probe",
+            "bytes": 64,
+            "remoteBytes": 64
+          },
+          {
+            "key": "temporary.bin",
+            "owner": "upload",
+            "bytes": 2048,
+            "remoteBytes": 2048
+          },
+          {
+            "key": "original.bin",
+            "owner": "media",
+            "bytes": 1024,
+            "remoteBytes": 1024
+          },
+          {
+            "key": "thumbnail.bin",
+            "owner": "media",
+            "bytes": 512,
+            "remoteBytes": 512
+          },
+          {
+            "key": "candidate.bin",
+            "owner": "media",
+            "bytes": 256,
+            "remoteBytes": 256
+          },
+          {
+            "key": "old.bin",
+            "owner": "media",
+            "bytes": 128,
+            "remoteBytes": 128
+          }
+        ],
+        "intentionallyUnregistered": [],
+        "usage": {
+          "id": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+          "name": "seaweedfs",
+          "type": "s3",
+          "enabled": false,
+          "knownBytes": 4032,
+          "unconfirmedObjects": 0,
+          "groups": {
+            "recycle": 0,
+            "original": 1024,
+            "derived": 512,
+            "pending": 2496
+          },
+          "confirmationStatus": "confirmed",
+          "confirmedAt": "2026-10-07T16:18:29.463Z"
+        },
+        "media": [
+          {
+            "id": "2f1edbaa-7c05-4ceb-b46b-80572de00961",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "original.bin",
+            "purpose": "original",
+            "status": "stored",
+            "byteSize": 1024,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:29.649Z",
+            "width": null,
+            "height": null,
+            "format": "PNG",
+            "mime": "image/png",
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:29.649Z",
+            "updatedAt": "2026-10-07T16:18:29.649Z"
+          },
+          {
+            "id": "d8c1e7f7-6fcb-41cf-b19c-a06f613f5ec0",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "thumbnail.bin",
+            "purpose": "thumbnail",
+            "status": "stored",
+            "byteSize": 512,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:29.931Z",
+            "width": null,
+            "height": null,
+            "format": null,
+            "mime": null,
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:28.701Z",
+            "updatedAt": "2026-10-07T16:18:28.701Z"
+          },
+          {
+            "id": "4a8cae2f-5f3e-49a5-abcf-b8a03d1486b5",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "candidate.bin",
+            "purpose": "temporary",
+            "status": "stored",
+            "byteSize": 256,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:30.128Z",
+            "width": null,
+            "height": null,
+            "format": null,
+            "mime": null,
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:28.701Z",
+            "updatedAt": "2026-10-07T16:18:28.701Z"
+          },
+          {
+            "id": "63d90051-04f2-45d9-aee9-098aed6fda35",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "old.bin",
+            "purpose": "temporary",
+            "status": "cleanup_failed",
+            "byteSize": 128,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:30.308Z",
+            "width": null,
+            "height": null,
+            "format": null,
+            "mime": null,
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:28.701Z",
+            "updatedAt": "2026-10-07T16:18:28.701Z"
+          }
+        ],
+        "upload": [
+          {
+            "id": "96cba91e-9dcc-4bbb-8f16-52f8acc904df",
+            "state": "accepted",
+            "temporaryKey": "temporary.bin",
+            "temporaryBytes": 2048,
+            "finalKey": null,
+            "finalBytes": null,
+            "cleanupStatus": "pending"
+          }
+        ],
+        "probes": [
+          {
+            "key": "probe.bin",
+            "objectState": "stored",
+            "byteSize": 64
+          }
+        ],
+        "orphans": []
+      }
+    },
+    {
+      "name": "late-unregistered",
+      "at": "2026-10-07T16:18:36.215Z",
+      "evidence": {
+        "protocol": {
+          "absence": {
+            "exists": false,
+            "bytes": null
+          },
+          "deletedAt": "2026-10-07T16:18:31.858Z",
+          "writeResult": {
+            "startedAt": "2026-10-07T16:18:31.576Z",
+            "finishedAt": "2026-10-07T16:18:35.766Z",
+            "bytesSent": 1048576,
+            "bodyFinishedAt": "2026-10-07T16:18:35.662Z",
+            "outcome": "response",
+            "status": 200,
+            "requestId": "18DC4BA247B04A5FC80551AD"
+          },
+          "head": {
+            "exists": true,
+            "bytes": 1048576,
+            "requestId": "18DC4BA32911A3D6BBF4115B"
+          }
+        },
+        "remoteObjects": [
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/candidate.bin",
+            "bytes": 256
+          },
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/late.bin",
+            "bytes": 1048576
+          },
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/old.bin",
+            "bytes": 128
+          },
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/original.bin",
+            "bytes": 1024
+          },
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/probe.bin",
+            "bytes": 64
+          },
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/temporary.bin",
+            "bytes": 2048
+          },
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/thumbnail.bin",
+            "bytes": 512
+          }
+        ],
+        "objectReconciliation": [
+          {
+            "key": "probe.bin",
+            "owner": "storage-probe",
+            "bytes": 64,
+            "remoteBytes": 64
+          },
+          {
+            "key": "temporary.bin",
+            "owner": "upload",
+            "bytes": 2048,
+            "remoteBytes": 2048
+          },
+          {
+            "key": "original.bin",
+            "owner": "media",
+            "bytes": 1024,
+            "remoteBytes": 1024
+          },
+          {
+            "key": "thumbnail.bin",
+            "owner": "media",
+            "bytes": 512,
+            "remoteBytes": 512
+          },
+          {
+            "key": "candidate.bin",
+            "owner": "media",
+            "bytes": 256,
+            "remoteBytes": 256
+          },
+          {
+            "key": "old.bin",
+            "owner": "media",
+            "bytes": 128,
+            "remoteBytes": 128
+          }
+        ],
+        "intentionallyUnregistered": ["late.bin"],
+        "usage": {
+          "id": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+          "name": "seaweedfs",
+          "type": "s3",
+          "enabled": true,
+          "knownBytes": 4032,
+          "unconfirmedObjects": 0,
+          "groups": {
+            "recycle": 0,
+            "original": 1024,
+            "derived": 512,
+            "pending": 2496
+          },
+          "confirmationStatus": "confirmed",
+          "confirmedAt": "2026-10-07T16:18:29.463Z"
+        },
+        "media": [
+          {
+            "id": "2f1edbaa-7c05-4ceb-b46b-80572de00961",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "original.bin",
+            "purpose": "original",
+            "status": "stored",
+            "byteSize": 1024,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:29.649Z",
+            "width": null,
+            "height": null,
+            "format": "PNG",
+            "mime": "image/png",
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:29.649Z",
+            "updatedAt": "2026-10-07T16:18:29.649Z"
+          },
+          {
+            "id": "d8c1e7f7-6fcb-41cf-b19c-a06f613f5ec0",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "thumbnail.bin",
+            "purpose": "thumbnail",
+            "status": "stored",
+            "byteSize": 512,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:29.931Z",
+            "width": null,
+            "height": null,
+            "format": null,
+            "mime": null,
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:28.701Z",
+            "updatedAt": "2026-10-07T16:18:28.701Z"
+          },
+          {
+            "id": "4a8cae2f-5f3e-49a5-abcf-b8a03d1486b5",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "candidate.bin",
+            "purpose": "temporary",
+            "status": "stored",
+            "byteSize": 256,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:30.128Z",
+            "width": null,
+            "height": null,
+            "format": null,
+            "mime": null,
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:28.701Z",
+            "updatedAt": "2026-10-07T16:18:28.701Z"
+          },
+          {
+            "id": "63d90051-04f2-45d9-aee9-098aed6fda35",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "old.bin",
+            "purpose": "temporary",
+            "status": "cleanup_failed",
+            "byteSize": 128,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:30.308Z",
+            "width": null,
+            "height": null,
+            "format": null,
+            "mime": null,
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:28.701Z",
+            "updatedAt": "2026-10-07T16:18:28.701Z"
+          }
+        ],
+        "upload": [
+          {
+            "id": "96cba91e-9dcc-4bbb-8f16-52f8acc904df",
+            "state": "accepted",
+            "temporaryKey": "temporary.bin",
+            "temporaryBytes": 2048,
+            "finalKey": null,
+            "finalBytes": null,
+            "cleanupStatus": "pending"
+          }
+        ],
+        "probes": [
+          {
+            "key": "probe.bin",
+            "objectState": "stored",
+            "byteSize": 64
+          }
+        ],
+        "orphans": []
+      }
+    },
+    {
+      "name": "scanner-retains-orphan-after-injected-delete-failure",
+      "at": "2026-10-07T16:18:36.977Z",
+      "evidence": {
+        "protocol": {},
+        "remoteObjects": [
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/candidate.bin",
+            "bytes": 256
+          },
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/late.bin",
+            "bytes": 1048576
+          },
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/old.bin",
+            "bytes": 128
+          },
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/original.bin",
+            "bytes": 1024
+          },
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/probe.bin",
+            "bytes": 64
+          },
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/temporary.bin",
+            "bytes": 2048
+          },
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/thumbnail.bin",
+            "bytes": 512
+          }
+        ],
+        "objectReconciliation": [
+          {
+            "key": "late.bin",
+            "owner": "storage-orphan",
+            "bytes": 1048576,
+            "remoteBytes": 1048576
+          },
+          {
+            "key": "probe.bin",
+            "owner": "storage-probe",
+            "bytes": 64,
+            "remoteBytes": 64
+          },
+          {
+            "key": "temporary.bin",
+            "owner": "upload",
+            "bytes": 2048,
+            "remoteBytes": 2048
+          },
+          {
+            "key": "original.bin",
+            "owner": "media",
+            "bytes": 1024,
+            "remoteBytes": 1024
+          },
+          {
+            "key": "thumbnail.bin",
+            "owner": "media",
+            "bytes": 512,
+            "remoteBytes": 512
+          },
+          {
+            "key": "candidate.bin",
+            "owner": "media",
+            "bytes": 256,
+            "remoteBytes": 256
+          },
+          {
+            "key": "old.bin",
+            "owner": "media",
+            "bytes": 128,
+            "remoteBytes": 128
+          }
+        ],
+        "intentionallyUnregistered": [],
+        "usage": {
+          "id": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+          "name": "seaweedfs",
+          "type": "s3",
+          "enabled": true,
+          "knownBytes": 1052608,
+          "unconfirmedObjects": 0,
+          "groups": {
+            "recycle": 0,
+            "original": 1024,
+            "derived": 512,
+            "pending": 1051072
+          },
+          "confirmationStatus": "confirmed",
+          "confirmedAt": "2026-10-07T16:18:29.463Z"
+        },
+        "media": [
+          {
+            "id": "2f1edbaa-7c05-4ceb-b46b-80572de00961",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "original.bin",
+            "purpose": "original",
+            "status": "stored",
+            "byteSize": 1024,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:29.649Z",
+            "width": null,
+            "height": null,
+            "format": "PNG",
+            "mime": "image/png",
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:29.649Z",
+            "updatedAt": "2026-10-07T16:18:29.649Z"
+          },
+          {
+            "id": "d8c1e7f7-6fcb-41cf-b19c-a06f613f5ec0",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "thumbnail.bin",
+            "purpose": "thumbnail",
+            "status": "stored",
+            "byteSize": 512,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:29.931Z",
+            "width": null,
+            "height": null,
+            "format": null,
+            "mime": null,
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:28.701Z",
+            "updatedAt": "2026-10-07T16:18:28.701Z"
+          },
+          {
+            "id": "4a8cae2f-5f3e-49a5-abcf-b8a03d1486b5",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "candidate.bin",
+            "purpose": "temporary",
+            "status": "stored",
+            "byteSize": 256,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:30.128Z",
+            "width": null,
+            "height": null,
+            "format": null,
+            "mime": null,
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:28.701Z",
+            "updatedAt": "2026-10-07T16:18:28.701Z"
+          },
+          {
+            "id": "63d90051-04f2-45d9-aee9-098aed6fda35",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "old.bin",
+            "purpose": "temporary",
+            "status": "cleanup_failed",
+            "byteSize": 128,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:30.308Z",
+            "width": null,
+            "height": null,
+            "format": null,
+            "mime": null,
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:28.701Z",
+            "updatedAt": "2026-10-07T16:18:28.701Z"
+          }
+        ],
+        "upload": [
+          {
+            "id": "96cba91e-9dcc-4bbb-8f16-52f8acc904df",
+            "state": "accepted",
+            "temporaryKey": "temporary.bin",
+            "temporaryBytes": 2048,
+            "finalKey": null,
+            "finalBytes": null,
+            "cleanupStatus": "pending"
+          }
+        ],
+        "probes": [
+          {
+            "key": "probe.bin",
+            "objectState": "stored",
+            "byteSize": 64
+          }
+        ],
+        "orphans": [
+          {
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "late.bin",
+            "size": 1048576,
+            "confirmedAt": "2026-10-07T16:18:36.615Z",
+            "error": {
+              "message": "Injected scanner deletion failure for retained-orphan evidence",
+              "key": "late.bin"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "scanner-retry-deletes-orphan",
+      "at": "2026-10-07T16:18:37.777Z",
+      "evidence": {
+        "protocol": {
+          "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+          "configRevision": 1,
+          "scope": {
+            "type": "s3",
+            "localPath": null,
+            "endpoint": "https://fs.447654.xyz",
+            "bucket": "images",
+            "pathPrefix": "",
+            "namespace": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/"
+          },
+          "startedAt": "2026-10-07T16:18:36.978Z",
+          "finishedAt": "2026-10-07T16:18:37.418Z",
+          "status": "passed",
+          "discoveredCount": 0,
+          "deletedCount": 1,
+          "failedCount": 0,
+          "protectedCount": 6,
+          "error": null
+        },
+        "remoteObjects": [
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/candidate.bin",
+            "bytes": 256
+          },
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/old.bin",
+            "bytes": 128
+          },
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/original.bin",
+            "bytes": 1024
+          },
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/probe.bin",
+            "bytes": 64
+          },
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/temporary.bin",
+            "bytes": 2048
+          },
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/thumbnail.bin",
+            "bytes": 512
+          }
+        ],
+        "objectReconciliation": [
+          {
+            "key": "probe.bin",
+            "owner": "storage-probe",
+            "bytes": 64,
+            "remoteBytes": 64
+          },
+          {
+            "key": "temporary.bin",
+            "owner": "upload",
+            "bytes": 2048,
+            "remoteBytes": 2048
+          },
+          {
+            "key": "original.bin",
+            "owner": "media",
+            "bytes": 1024,
+            "remoteBytes": 1024
+          },
+          {
+            "key": "thumbnail.bin",
+            "owner": "media",
+            "bytes": 512,
+            "remoteBytes": 512
+          },
+          {
+            "key": "candidate.bin",
+            "owner": "media",
+            "bytes": 256,
+            "remoteBytes": 256
+          },
+          {
+            "key": "old.bin",
+            "owner": "media",
+            "bytes": 128,
+            "remoteBytes": 128
+          }
+        ],
+        "intentionallyUnregistered": [],
+        "usage": {
+          "id": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+          "name": "seaweedfs",
+          "type": "s3",
+          "enabled": true,
+          "knownBytes": 4032,
+          "unconfirmedObjects": 0,
+          "groups": {
+            "recycle": 0,
+            "original": 1024,
+            "derived": 512,
+            "pending": 2496
+          },
+          "confirmationStatus": "confirmed",
+          "confirmedAt": "2026-10-07T16:18:29.463Z"
+        },
+        "media": [
+          {
+            "id": "2f1edbaa-7c05-4ceb-b46b-80572de00961",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "original.bin",
+            "purpose": "original",
+            "status": "stored",
+            "byteSize": 1024,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:29.649Z",
+            "width": null,
+            "height": null,
+            "format": "PNG",
+            "mime": "image/png",
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:29.649Z",
+            "updatedAt": "2026-10-07T16:18:29.649Z"
+          },
+          {
+            "id": "d8c1e7f7-6fcb-41cf-b19c-a06f613f5ec0",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "thumbnail.bin",
+            "purpose": "thumbnail",
+            "status": "stored",
+            "byteSize": 512,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:29.931Z",
+            "width": null,
+            "height": null,
+            "format": null,
+            "mime": null,
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:28.701Z",
+            "updatedAt": "2026-10-07T16:18:28.701Z"
+          },
+          {
+            "id": "4a8cae2f-5f3e-49a5-abcf-b8a03d1486b5",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "candidate.bin",
+            "purpose": "temporary",
+            "status": "stored",
+            "byteSize": 256,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:30.128Z",
+            "width": null,
+            "height": null,
+            "format": null,
+            "mime": null,
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:28.701Z",
+            "updatedAt": "2026-10-07T16:18:28.701Z"
+          },
+          {
+            "id": "63d90051-04f2-45d9-aee9-098aed6fda35",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "old.bin",
+            "purpose": "temporary",
+            "status": "cleanup_failed",
+            "byteSize": 128,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:30.308Z",
+            "width": null,
+            "height": null,
+            "format": null,
+            "mime": null,
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:28.701Z",
+            "updatedAt": "2026-10-07T16:18:28.701Z"
+          }
+        ],
+        "upload": [
+          {
+            "id": "96cba91e-9dcc-4bbb-8f16-52f8acc904df",
+            "state": "accepted",
+            "temporaryKey": "temporary.bin",
+            "temporaryBytes": 2048,
+            "finalKey": null,
+            "finalBytes": null,
+            "cleanupStatus": "pending"
+          }
+        ],
+        "probes": [
+          {
+            "key": "probe.bin",
+            "objectState": "stored",
+            "byteSize": 64
+          }
+        ],
+        "orphans": []
+      }
+    },
+    {
+      "name": "temporary-deleted",
+      "at": "2026-10-07T16:18:38.225Z",
+      "evidence": {
+        "protocol": {},
+        "remoteObjects": [
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/candidate.bin",
+            "bytes": 256
+          },
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/old.bin",
+            "bytes": 128
+          },
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/original.bin",
+            "bytes": 1024
+          },
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/probe.bin",
+            "bytes": 64
+          },
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/thumbnail.bin",
+            "bytes": 512
+          }
+        ],
+        "objectReconciliation": [
+          {
+            "key": "probe.bin",
+            "owner": "storage-probe",
+            "bytes": 64,
+            "remoteBytes": 64
+          },
+          {
+            "key": "original.bin",
+            "owner": "media",
+            "bytes": 1024,
+            "remoteBytes": 1024
+          },
+          {
+            "key": "thumbnail.bin",
+            "owner": "media",
+            "bytes": 512,
+            "remoteBytes": 512
+          },
+          {
+            "key": "candidate.bin",
+            "owner": "media",
+            "bytes": 256,
+            "remoteBytes": 256
+          },
+          {
+            "key": "old.bin",
+            "owner": "media",
+            "bytes": 128,
+            "remoteBytes": 128
+          }
+        ],
+        "intentionallyUnregistered": [],
+        "usage": {
+          "id": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+          "name": "seaweedfs",
+          "type": "s3",
+          "enabled": true,
+          "knownBytes": 1984,
+          "unconfirmedObjects": 0,
+          "groups": {
+            "recycle": 0,
+            "original": 1024,
+            "derived": 512,
+            "pending": 448
+          },
+          "confirmationStatus": "confirmed",
+          "confirmedAt": "2026-10-07T16:18:29.649Z"
+        },
+        "media": [
+          {
+            "id": "2f1edbaa-7c05-4ceb-b46b-80572de00961",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "original.bin",
+            "purpose": "original",
+            "status": "stored",
+            "byteSize": 1024,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:29.649Z",
+            "width": null,
+            "height": null,
+            "format": "PNG",
+            "mime": "image/png",
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:29.649Z",
+            "updatedAt": "2026-10-07T16:18:29.649Z"
+          },
+          {
+            "id": "d8c1e7f7-6fcb-41cf-b19c-a06f613f5ec0",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "thumbnail.bin",
+            "purpose": "thumbnail",
+            "status": "stored",
+            "byteSize": 512,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:29.931Z",
+            "width": null,
+            "height": null,
+            "format": null,
+            "mime": null,
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:28.701Z",
+            "updatedAt": "2026-10-07T16:18:28.701Z"
+          },
+          {
+            "id": "4a8cae2f-5f3e-49a5-abcf-b8a03d1486b5",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "candidate.bin",
+            "purpose": "temporary",
+            "status": "stored",
+            "byteSize": 256,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:30.128Z",
+            "width": null,
+            "height": null,
+            "format": null,
+            "mime": null,
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:28.701Z",
+            "updatedAt": "2026-10-07T16:18:28.701Z"
+          },
+          {
+            "id": "63d90051-04f2-45d9-aee9-098aed6fda35",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "old.bin",
+            "purpose": "temporary",
+            "status": "cleanup_failed",
+            "byteSize": 128,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:30.308Z",
+            "width": null,
+            "height": null,
+            "format": null,
+            "mime": null,
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:28.701Z",
+            "updatedAt": "2026-10-07T16:18:28.701Z"
+          }
+        ],
+        "upload": [
+          {
+            "id": "96cba91e-9dcc-4bbb-8f16-52f8acc904df",
+            "state": "accepted",
+            "temporaryKey": null,
+            "temporaryBytes": null,
+            "finalKey": null,
+            "finalBytes": null,
+            "cleanupStatus": "none"
+          }
+        ],
+        "probes": [
+          {
+            "key": "probe.bin",
+            "objectState": "stored",
+            "byteSize": 64
+          }
+        ],
+        "orphans": []
+      }
+    },
+    {
+      "name": "probe-deleted",
+      "at": "2026-10-07T16:18:38.588Z",
+      "evidence": {
+        "protocol": {},
+        "remoteObjects": [
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/candidate.bin",
+            "bytes": 256
+          },
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/old.bin",
+            "bytes": 128
+          },
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/original.bin",
+            "bytes": 1024
+          },
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/thumbnail.bin",
+            "bytes": 512
+          }
+        ],
+        "objectReconciliation": [
+          {
+            "key": "original.bin",
+            "owner": "media",
+            "bytes": 1024,
+            "remoteBytes": 1024
+          },
+          {
+            "key": "thumbnail.bin",
+            "owner": "media",
+            "bytes": 512,
+            "remoteBytes": 512
+          },
+          {
+            "key": "candidate.bin",
+            "owner": "media",
+            "bytes": 256,
+            "remoteBytes": 256
+          },
+          {
+            "key": "old.bin",
+            "owner": "media",
+            "bytes": 128,
+            "remoteBytes": 128
+          }
+        ],
+        "intentionallyUnregistered": [],
+        "usage": {
+          "id": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+          "name": "seaweedfs",
+          "type": "s3",
+          "enabled": true,
+          "knownBytes": 1920,
+          "unconfirmedObjects": 0,
+          "groups": {
+            "recycle": 0,
+            "original": 1024,
+            "derived": 512,
+            "pending": 384
+          },
+          "confirmationStatus": "confirmed",
+          "confirmedAt": "2026-10-07T16:18:29.649Z"
+        },
+        "media": [
+          {
+            "id": "2f1edbaa-7c05-4ceb-b46b-80572de00961",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "original.bin",
+            "purpose": "original",
+            "status": "stored",
+            "byteSize": 1024,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:29.649Z",
+            "width": null,
+            "height": null,
+            "format": "PNG",
+            "mime": "image/png",
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:29.649Z",
+            "updatedAt": "2026-10-07T16:18:29.649Z"
+          },
+          {
+            "id": "d8c1e7f7-6fcb-41cf-b19c-a06f613f5ec0",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "thumbnail.bin",
+            "purpose": "thumbnail",
+            "status": "stored",
+            "byteSize": 512,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:29.931Z",
+            "width": null,
+            "height": null,
+            "format": null,
+            "mime": null,
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:28.701Z",
+            "updatedAt": "2026-10-07T16:18:28.701Z"
+          },
+          {
+            "id": "4a8cae2f-5f3e-49a5-abcf-b8a03d1486b5",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "candidate.bin",
+            "purpose": "temporary",
+            "status": "stored",
+            "byteSize": 256,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:30.128Z",
+            "width": null,
+            "height": null,
+            "format": null,
+            "mime": null,
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:28.701Z",
+            "updatedAt": "2026-10-07T16:18:28.701Z"
+          },
+          {
+            "id": "63d90051-04f2-45d9-aee9-098aed6fda35",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "old.bin",
+            "purpose": "temporary",
+            "status": "cleanup_failed",
+            "byteSize": 128,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:30.308Z",
+            "width": null,
+            "height": null,
+            "format": null,
+            "mime": null,
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:28.701Z",
+            "updatedAt": "2026-10-07T16:18:28.701Z"
+          }
+        ],
+        "upload": [
+          {
+            "id": "96cba91e-9dcc-4bbb-8f16-52f8acc904df",
+            "state": "accepted",
+            "temporaryKey": null,
+            "temporaryBytes": null,
+            "finalKey": null,
+            "finalBytes": null,
+            "cleanupStatus": "none"
+          }
+        ],
+        "probes": [],
+        "orphans": []
+      }
+    },
+    {
+      "name": "delete-request-retains-bytes",
+      "at": "2026-10-07T16:18:38.769Z",
+      "evidence": {
+        "protocol": {},
+        "remoteObjects": [
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/candidate.bin",
+            "bytes": 256
+          },
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/old.bin",
+            "bytes": 128
+          },
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/original.bin",
+            "bytes": 1024
+          },
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/thumbnail.bin",
+            "bytes": 512
+          }
+        ],
+        "objectReconciliation": [
+          {
+            "key": "original.bin",
+            "owner": "media",
+            "bytes": 1024,
+            "remoteBytes": 1024
+          },
+          {
+            "key": "thumbnail.bin",
+            "owner": "media",
+            "bytes": 512,
+            "remoteBytes": 512
+          },
+          {
+            "key": "candidate.bin",
+            "owner": "media",
+            "bytes": 256,
+            "remoteBytes": 256
+          },
+          {
+            "key": "old.bin",
+            "owner": "media",
+            "bytes": 128,
+            "remoteBytes": 128
+          }
+        ],
+        "intentionallyUnregistered": [],
+        "usage": {
+          "id": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+          "name": "seaweedfs",
+          "type": "s3",
+          "enabled": true,
+          "knownBytes": 1920,
+          "unconfirmedObjects": 0,
+          "groups": {
+            "recycle": 1920,
+            "original": 0,
+            "derived": 0,
+            "pending": 0
+          },
+          "confirmationStatus": "confirmed",
+          "confirmedAt": "2026-10-07T16:18:29.649Z"
+        },
+        "media": [
+          {
+            "id": "2f1edbaa-7c05-4ceb-b46b-80572de00961",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "original.bin",
+            "purpose": "original",
+            "status": "cleanup_pending",
+            "byteSize": 1024,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:29.649Z",
+            "width": null,
+            "height": null,
+            "format": "PNG",
+            "mime": "image/png",
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:29.649Z",
+            "updatedAt": "2026-10-07T16:18:38.589Z"
+          },
+          {
+            "id": "d8c1e7f7-6fcb-41cf-b19c-a06f613f5ec0",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "thumbnail.bin",
+            "purpose": "thumbnail",
+            "status": "cleanup_pending",
+            "byteSize": 512,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:29.931Z",
+            "width": null,
+            "height": null,
+            "format": null,
+            "mime": null,
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:28.701Z",
+            "updatedAt": "2026-10-07T16:18:38.589Z"
+          },
+          {
+            "id": "4a8cae2f-5f3e-49a5-abcf-b8a03d1486b5",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "candidate.bin",
+            "purpose": "temporary",
+            "status": "cleanup_pending",
+            "byteSize": 256,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:30.128Z",
+            "width": null,
+            "height": null,
+            "format": null,
+            "mime": null,
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:28.701Z",
+            "updatedAt": "2026-10-07T16:18:38.589Z"
+          },
+          {
+            "id": "63d90051-04f2-45d9-aee9-098aed6fda35",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "old.bin",
+            "purpose": "temporary",
+            "status": "cleanup_pending",
+            "byteSize": 128,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:30.308Z",
+            "width": null,
+            "height": null,
+            "format": null,
+            "mime": null,
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:28.701Z",
+            "updatedAt": "2026-10-07T16:18:38.589Z"
+          }
+        ],
+        "upload": [
+          {
+            "id": "96cba91e-9dcc-4bbb-8f16-52f8acc904df",
+            "state": "accepted",
+            "temporaryKey": null,
+            "temporaryBytes": null,
+            "finalKey": null,
+            "finalBytes": null,
+            "cleanupStatus": "none"
+          }
+        ],
+        "probes": [],
+        "orphans": []
+      }
+    },
+    {
+      "name": "old-deleted",
+      "at": "2026-10-07T16:18:39.128Z",
+      "evidence": {
+        "protocol": {},
+        "remoteObjects": [
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/candidate.bin",
+            "bytes": 256
+          },
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/original.bin",
+            "bytes": 1024
+          },
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/thumbnail.bin",
+            "bytes": 512
+          }
+        ],
+        "objectReconciliation": [
+          {
+            "key": "original.bin",
+            "owner": "media",
+            "bytes": 1024,
+            "remoteBytes": 1024
+          },
+          {
+            "key": "thumbnail.bin",
+            "owner": "media",
+            "bytes": 512,
+            "remoteBytes": 512
+          },
+          {
+            "key": "candidate.bin",
+            "owner": "media",
+            "bytes": 256,
+            "remoteBytes": 256
+          }
+        ],
+        "intentionallyUnregistered": [],
+        "usage": {
+          "id": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+          "name": "seaweedfs",
+          "type": "s3",
+          "enabled": true,
+          "knownBytes": 1792,
+          "unconfirmedObjects": 0,
+          "groups": {
+            "recycle": 1792,
+            "original": 0,
+            "derived": 0,
+            "pending": 0
+          },
+          "confirmationStatus": "confirmed",
+          "confirmedAt": "2026-10-07T16:18:29.649Z"
+        },
+        "media": [
+          {
+            "id": "2f1edbaa-7c05-4ceb-b46b-80572de00961",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "original.bin",
+            "purpose": "original",
+            "status": "cleanup_pending",
+            "byteSize": 1024,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:29.649Z",
+            "width": null,
+            "height": null,
+            "format": "PNG",
+            "mime": "image/png",
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:29.649Z",
+            "updatedAt": "2026-10-07T16:18:38.589Z"
+          },
+          {
+            "id": "d8c1e7f7-6fcb-41cf-b19c-a06f613f5ec0",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "thumbnail.bin",
+            "purpose": "thumbnail",
+            "status": "cleanup_pending",
+            "byteSize": 512,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:29.931Z",
+            "width": null,
+            "height": null,
+            "format": null,
+            "mime": null,
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:28.701Z",
+            "updatedAt": "2026-10-07T16:18:38.589Z"
+          },
+          {
+            "id": "4a8cae2f-5f3e-49a5-abcf-b8a03d1486b5",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "candidate.bin",
+            "purpose": "temporary",
+            "status": "cleanup_pending",
+            "byteSize": 256,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:30.128Z",
+            "width": null,
+            "height": null,
+            "format": null,
+            "mime": null,
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:28.701Z",
+            "updatedAt": "2026-10-07T16:18:38.589Z"
+          },
+          {
+            "id": "63d90051-04f2-45d9-aee9-098aed6fda35",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "old.bin",
+            "purpose": "temporary",
+            "status": "deleted",
+            "byteSize": 128,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:30.308Z",
+            "width": null,
+            "height": null,
+            "format": null,
+            "mime": null,
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:28.701Z",
+            "updatedAt": "2026-10-07T16:18:38.589Z"
+          }
+        ],
+        "upload": [
+          {
+            "id": "96cba91e-9dcc-4bbb-8f16-52f8acc904df",
+            "state": "accepted",
+            "temporaryKey": null,
+            "temporaryBytes": null,
+            "finalKey": null,
+            "finalBytes": null,
+            "cleanupStatus": "none"
+          }
+        ],
+        "probes": [],
+        "orphans": []
+      }
+    },
+    {
+      "name": "candidate-deleted",
+      "at": "2026-10-07T16:18:39.398Z",
+      "evidence": {
+        "protocol": {},
+        "remoteObjects": [
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/original.bin",
+            "bytes": 1024
+          },
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/thumbnail.bin",
+            "bytes": 512
+          }
+        ],
+        "objectReconciliation": [
+          {
+            "key": "original.bin",
+            "owner": "media",
+            "bytes": 1024,
+            "remoteBytes": 1024
+          },
+          {
+            "key": "thumbnail.bin",
+            "owner": "media",
+            "bytes": 512,
+            "remoteBytes": 512
+          }
+        ],
+        "intentionallyUnregistered": [],
+        "usage": {
+          "id": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+          "name": "seaweedfs",
+          "type": "s3",
+          "enabled": true,
+          "knownBytes": 1536,
+          "unconfirmedObjects": 0,
+          "groups": {
+            "recycle": 1536,
+            "original": 0,
+            "derived": 0,
+            "pending": 0
+          },
+          "confirmationStatus": "confirmed",
+          "confirmedAt": "2026-10-07T16:18:29.649Z"
+        },
+        "media": [
+          {
+            "id": "2f1edbaa-7c05-4ceb-b46b-80572de00961",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "original.bin",
+            "purpose": "original",
+            "status": "cleanup_pending",
+            "byteSize": 1024,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:29.649Z",
+            "width": null,
+            "height": null,
+            "format": "PNG",
+            "mime": "image/png",
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:29.649Z",
+            "updatedAt": "2026-10-07T16:18:38.589Z"
+          },
+          {
+            "id": "d8c1e7f7-6fcb-41cf-b19c-a06f613f5ec0",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "thumbnail.bin",
+            "purpose": "thumbnail",
+            "status": "cleanup_pending",
+            "byteSize": 512,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:29.931Z",
+            "width": null,
+            "height": null,
+            "format": null,
+            "mime": null,
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:28.701Z",
+            "updatedAt": "2026-10-07T16:18:38.589Z"
+          },
+          {
+            "id": "4a8cae2f-5f3e-49a5-abcf-b8a03d1486b5",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "candidate.bin",
+            "purpose": "temporary",
+            "status": "deleted",
+            "byteSize": 256,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:30.128Z",
+            "width": null,
+            "height": null,
+            "format": null,
+            "mime": null,
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:28.701Z",
+            "updatedAt": "2026-10-07T16:18:38.589Z"
+          },
+          {
+            "id": "63d90051-04f2-45d9-aee9-098aed6fda35",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "old.bin",
+            "purpose": "temporary",
+            "status": "deleted",
+            "byteSize": 128,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:30.308Z",
+            "width": null,
+            "height": null,
+            "format": null,
+            "mime": null,
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:28.701Z",
+            "updatedAt": "2026-10-07T16:18:38.589Z"
+          }
+        ],
+        "upload": [
+          {
+            "id": "96cba91e-9dcc-4bbb-8f16-52f8acc904df",
+            "state": "accepted",
+            "temporaryKey": null,
+            "temporaryBytes": null,
+            "finalKey": null,
+            "finalBytes": null,
+            "cleanupStatus": "none"
+          }
+        ],
+        "probes": [],
+        "orphans": []
+      }
+    },
+    {
+      "name": "thumbnail-deleted",
+      "at": "2026-10-07T16:18:39.667Z",
+      "evidence": {
+        "protocol": {},
+        "remoteObjects": [
+          {
+            "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/original.bin",
+            "bytes": 1024
+          }
+        ],
+        "objectReconciliation": [
+          {
+            "key": "original.bin",
+            "owner": "media",
+            "bytes": 1024,
+            "remoteBytes": 1024
+          }
+        ],
+        "intentionallyUnregistered": [],
+        "usage": {
+          "id": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+          "name": "seaweedfs",
+          "type": "s3",
+          "enabled": true,
+          "knownBytes": 1024,
+          "unconfirmedObjects": 0,
+          "groups": {
+            "recycle": 1024,
+            "original": 0,
+            "derived": 0,
+            "pending": 0
+          },
+          "confirmationStatus": "confirmed",
+          "confirmedAt": "2026-10-07T16:18:29.649Z"
+        },
+        "media": [
+          {
+            "id": "2f1edbaa-7c05-4ceb-b46b-80572de00961",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "original.bin",
+            "purpose": "original",
+            "status": "cleanup_pending",
+            "byteSize": 1024,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:29.649Z",
+            "width": null,
+            "height": null,
+            "format": "PNG",
+            "mime": "image/png",
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:29.649Z",
+            "updatedAt": "2026-10-07T16:18:38.589Z"
+          },
+          {
+            "id": "d8c1e7f7-6fcb-41cf-b19c-a06f613f5ec0",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "thumbnail.bin",
+            "purpose": "thumbnail",
+            "status": "deleted",
+            "byteSize": 512,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:29.931Z",
+            "width": null,
+            "height": null,
+            "format": null,
+            "mime": null,
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:28.701Z",
+            "updatedAt": "2026-10-07T16:18:38.589Z"
+          },
+          {
+            "id": "4a8cae2f-5f3e-49a5-abcf-b8a03d1486b5",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "candidate.bin",
+            "purpose": "temporary",
+            "status": "deleted",
+            "byteSize": 256,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:30.128Z",
+            "width": null,
+            "height": null,
+            "format": null,
+            "mime": null,
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:28.701Z",
+            "updatedAt": "2026-10-07T16:18:38.589Z"
+          },
+          {
+            "id": "63d90051-04f2-45d9-aee9-098aed6fda35",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "old.bin",
+            "purpose": "temporary",
+            "status": "deleted",
+            "byteSize": 128,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:30.308Z",
+            "width": null,
+            "height": null,
+            "format": null,
+            "mime": null,
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:28.701Z",
+            "updatedAt": "2026-10-07T16:18:38.589Z"
+          }
+        ],
+        "upload": [
+          {
+            "id": "96cba91e-9dcc-4bbb-8f16-52f8acc904df",
+            "state": "accepted",
+            "temporaryKey": null,
+            "temporaryBytes": null,
+            "finalKey": null,
+            "finalBytes": null,
+            "cleanupStatus": "none"
+          }
+        ],
+        "probes": [],
+        "orphans": []
+      }
+    },
+    {
+      "name": "original-deleted",
+      "at": "2026-10-07T16:18:39.939Z",
+      "evidence": {
+        "protocol": {},
+        "remoteObjects": [],
+        "objectReconciliation": [],
+        "intentionallyUnregistered": [],
+        "usage": {
+          "id": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+          "name": "seaweedfs",
+          "type": "s3",
+          "enabled": true,
+          "knownBytes": 0,
+          "unconfirmedObjects": 0,
+          "groups": {
+            "recycle": 0,
+            "original": 0,
+            "derived": 0,
+            "pending": 0
+          },
+          "confirmationStatus": "confirmed",
+          "confirmedAt": null
+        },
+        "media": [
+          {
+            "id": "2f1edbaa-7c05-4ceb-b46b-80572de00961",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "original.bin",
+            "purpose": "original",
+            "status": "deleted",
+            "byteSize": 1024,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:29.649Z",
+            "width": null,
+            "height": null,
+            "format": "PNG",
+            "mime": "image/png",
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:29.649Z",
+            "updatedAt": "2026-10-07T16:18:38.589Z"
+          },
+          {
+            "id": "d8c1e7f7-6fcb-41cf-b19c-a06f613f5ec0",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "thumbnail.bin",
+            "purpose": "thumbnail",
+            "status": "deleted",
+            "byteSize": 512,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:29.931Z",
+            "width": null,
+            "height": null,
+            "format": null,
+            "mime": null,
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:28.701Z",
+            "updatedAt": "2026-10-07T16:18:38.589Z"
+          },
+          {
+            "id": "4a8cae2f-5f3e-49a5-abcf-b8a03d1486b5",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "candidate.bin",
+            "purpose": "temporary",
+            "status": "deleted",
+            "byteSize": 256,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:30.128Z",
+            "width": null,
+            "height": null,
+            "format": null,
+            "mime": null,
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:28.701Z",
+            "updatedAt": "2026-10-07T16:18:38.589Z"
+          },
+          {
+            "id": "63d90051-04f2-45d9-aee9-098aed6fda35",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "old.bin",
+            "purpose": "temporary",
+            "status": "deleted",
+            "byteSize": 128,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:30.308Z",
+            "width": null,
+            "height": null,
+            "format": null,
+            "mime": null,
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:28.701Z",
+            "updatedAt": "2026-10-07T16:18:38.589Z"
+          }
+        ],
+        "upload": [
+          {
+            "id": "96cba91e-9dcc-4bbb-8f16-52f8acc904df",
+            "state": "accepted",
+            "temporaryKey": null,
+            "temporaryBytes": null,
+            "finalKey": null,
+            "finalBytes": null,
+            "cleanupStatus": "none"
+          }
+        ],
+        "probes": [],
+        "orphans": []
+      }
+    },
+    {
+      "name": "empty-after-confirmed-deletions",
+      "at": "2026-10-07T16:18:40.031Z",
+      "evidence": {
+        "protocol": {},
+        "remoteObjects": [],
+        "objectReconciliation": [],
+        "intentionallyUnregistered": [],
+        "usage": {
+          "id": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+          "name": "seaweedfs",
+          "type": "s3",
+          "enabled": true,
+          "knownBytes": 0,
+          "unconfirmedObjects": 0,
+          "groups": {
+            "recycle": 0,
+            "original": 0,
+            "derived": 0,
+            "pending": 0
+          },
+          "confirmationStatus": "confirmed",
+          "confirmedAt": null
+        },
+        "media": [
+          {
+            "id": "2f1edbaa-7c05-4ceb-b46b-80572de00961",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "original.bin",
+            "purpose": "original",
+            "status": "deleted",
+            "byteSize": 1024,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:29.649Z",
+            "width": null,
+            "height": null,
+            "format": "PNG",
+            "mime": "image/png",
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:29.649Z",
+            "updatedAt": "2026-10-07T16:18:38.589Z"
+          },
+          {
+            "id": "d8c1e7f7-6fcb-41cf-b19c-a06f613f5ec0",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "thumbnail.bin",
+            "purpose": "thumbnail",
+            "status": "deleted",
+            "byteSize": 512,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:29.931Z",
+            "width": null,
+            "height": null,
+            "format": null,
+            "mime": null,
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:28.701Z",
+            "updatedAt": "2026-10-07T16:18:38.589Z"
+          },
+          {
+            "id": "4a8cae2f-5f3e-49a5-abcf-b8a03d1486b5",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "candidate.bin",
+            "purpose": "temporary",
+            "status": "deleted",
+            "byteSize": 256,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:30.128Z",
+            "width": null,
+            "height": null,
+            "format": null,
+            "mime": null,
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:28.701Z",
+            "updatedAt": "2026-10-07T16:18:38.589Z"
+          },
+          {
+            "id": "63d90051-04f2-45d9-aee9-098aed6fda35",
+            "imageId": "54cd5acb-5559-4f4d-94a6-d30fc1c84c5b",
+            "jobId": null,
+            "storageId": "analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be",
+            "key": "old.bin",
+            "purpose": "temporary",
+            "status": "deleted",
+            "byteSize": 128,
+            "byteSizeConfirmedAt": "2026-10-07T16:18:30.308Z",
+            "width": null,
+            "height": null,
+            "format": null,
+            "mime": null,
+            "error": null,
+            "cleanupAttempts": 0,
+            "nextCleanupAt": null,
+            "createdAt": "2026-10-07T16:18:28.701Z",
+            "updatedAt": "2026-10-07T16:18:38.589Z"
+          }
+        ],
+        "upload": [
+          {
+            "id": "96cba91e-9dcc-4bbb-8f16-52f8acc904df",
+            "state": "accepted",
+            "temporaryKey": null,
+            "temporaryBytes": null,
+            "finalKey": null,
+            "finalBytes": null,
+            "cleanupStatus": "none"
+          }
+        ],
+        "probes": [],
+        "orphans": []
+      }
+    }
+  ],
+  "cleanup": [
+    {
+      "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/original.bin",
+      "result": {
+        "exists": false,
+        "bytes": null
+      }
+    },
+    {
+      "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/temporary.bin",
+      "result": {
+        "exists": false,
+        "bytes": null
+      }
+    },
+    {
+      "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/thumbnail.bin",
+      "result": {
+        "exists": false,
+        "bytes": null
+      }
+    },
+    {
+      "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/candidate.bin",
+      "result": {
+        "exists": false,
+        "bytes": null
+      }
+    },
+    {
+      "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/old.bin",
+      "result": {
+        "exists": false,
+        "bytes": null
+      }
+    },
+    {
+      "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/probe.bin",
+      "result": {
+        "exists": false,
+        "bytes": null
+      }
+    },
+    {
+      "key": "ariso/analytics-168-f2375a83-8831-44aa-aaa1-07e493e0f9be/late.bin",
+      "result": {
+        "exists": false,
+        "bytes": null
+      }
+    }
+  ]
+}

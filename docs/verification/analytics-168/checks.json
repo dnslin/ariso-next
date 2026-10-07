@@ -1,0 +1,63 @@
+[
+  {
+    "command": "pnpm run test:unit --maxWorkers=2",
+    "exitCode": 0,
+    "summary": [
+      " Test Files  123 passed (123)",
+      "      Tests  1680 passed (1680)",
+      "   Start at  00:13:52",
+      "   Duration  88.33s (tests 85%, import 12%, transform 3%)"
+    ]
+  },
+  {
+    "command": "pnpm run test:integration --maxWorkers=2",
+    "exitCode": 0,
+    "summary": [
+      " Test Files  175 passed (175)",
+      "      Tests  1680 passed (1680)",
+      "   Start at  00:19:18",
+      "   Duration  429.38s (tests 95%, import 5%)"
+    ]
+  },
+  {
+    "command": "pnpm run typecheck",
+    "exitCode": 0,
+    "summary": ["✓ Types generated successfully"]
+  },
+  {
+    "command": "pnpm run format:check",
+    "exitCode": 0,
+    "summary": ["All matched files use Prettier code style!"]
+  },
+  {
+    "command": "pnpm run build",
+    "exitCode": 0,
+    "summary": [
+      "✓ Compiled successfully in 1501ms",
+      "✓ Generating static pages using 9 workers (22/22) in 307ms",
+      "├ ƒ /api/analytics/overview",
+      "├ ƒ /api/analytics/usage"
+    ]
+  },
+  {
+    "command": "pnpm run lint",
+    "exitCode": 1,
+    "summary": [
+      "Existing main evidence script: unused resolve import, max-warnings=0. See lint.txt."
+    ]
+  },
+  {
+    "command": "pnpm exec tsc --noEmit --project tsconfig.json",
+    "exitCode": 0,
+    "summary": [
+      "After adding one completed processing job per image in the scale fixture; no TypeScript diagnostics."
+    ]
+  },
+  {
+    "command": "pnpm exec vitest list --project integration --project media-tools --json",
+    "exitCode": 0,
+    "summary": [
+      "Default includes current-usage.test.ts, usage-http.test.ts, current-usage-live-runner.test.ts and upload/local.test.ts."
+    ]
+  }
+]

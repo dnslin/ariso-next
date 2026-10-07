@@ -1,0 +1,37 @@
+{
+  "node": "v24.18.1",
+  "platform": "darwin",
+  "arch": "arm64",
+  "cpu": "Apple M4",
+  "memory": 17179869184,
+  "images": 100000,
+  "objects": 100000,
+  "jobs": 100000,
+  "distribution": "90k normal private ready,10k recycled; originals with one completed process job each; no access rows (report queries belong to #169)",
+  "cache": "first query after seed is not a cold filesystem benchmark; subsequent 10 queries warm",
+  "samples": {
+    "usage": [
+      163.10924999999997, 160.7172089999999, 160.5372910000001,
+      162.8604580000001, 161.26783399999977, 160.37320799999998,
+      160.49091700000008, 160.34612500000003, 164.8626250000002,
+      160.32162500000004, 161.03429200000028
+    ],
+    "overview": [
+      134.69295799999963, 133.63749999999982, 133.37920799999984,
+      136.65304100000048, 133.82904099999996, 134.05854200000067,
+      134.61912500000017, 134.43645800000013, 133.92175000000043,
+      136.5226249999996, 135.61083300000064
+    ]
+  },
+  "summary": {
+    "usage": {
+      "firstMs": 163.10924999999997,
+      "warmP95Ms": 164.8626250000002
+    },
+    "overview": {
+      "firstMs": 134.69295799999963,
+      "warmP95Ms": 136.65304100000048
+    }
+  },
+  "rss": 336084992
+}
