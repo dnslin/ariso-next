@@ -14,14 +14,14 @@
 | 账号与配置 UI         | 已按带图标的设置行原型返修，本轮本地检查与独立代码复审通过；浏览器待验              |
 | 登录页                | 按现有设计接入生效配置开关，等待浏览器验证                                          |
 | 默认验证入口          | 本轮最终单元全量 1627 项通过；原集成全量失败后对应复验通过；浏览器未执行            |
-| 真实 GitHub OAuth App | 测试 App 已创建；原 Ego 空间已不存在，Secret 与认证状态待核对                       |
+| 真实 GitHub OAuth App | 测试 App 已创建；已获准新建 Ego 空间 6，GitHub Confirm access 待用户完成            |
 | 独立功能 / 设计审计   | 后端与 UI 代码复审通过；行式 Figma 同步及静态复核完成，真实产品设计未审查           |
-| 用户人工验收          | 待执行                                                                              |
+| 用户人工验收          | 2026-10-07 用户明确确认 UI 验收通过；真实 OAuth 功能验证仍未完成                    |
 | 提交 / PR             | 已提交并推送；[PR #255](https://github.com/dnslin/ariso-next/pull/255) 为 OPEN 草稿 |
 
 ## 实现契约
 
-最新获批设置列表与图标返修的命令、失败证据、最终 1627 项单元结果、Figma 节点/截图及两份独立复审见[2026-10-07 返修记录](./layout-revision/README.md)。代码与静态 Figma 复核已完成，真实产品浏览器和人工验收仍待执行；以下原实施检查和设计记录保留各自日期与边界。
+最新获批设置列表与图标返修的命令、失败证据、最终 1627 项单元结果、Figma 节点/截图及两份独立复审见[2026-10-07 返修记录](./layout-revision/README.md)。代码与静态 Figma 复核已完成；用户已确认 UI 人工验收通过，真实产品浏览器及 OAuth 功能验证仍待执行；以下原实施检查和设计记录保留各自日期与边界。
 
 `identity_github_settings` 保存加密 Secret。Web 启动在首次认证请求前捕获生效配置；prestart 同时检查已停用配置中的保存秘密。配置变化只影响保存值，重启才切换生效凭据。站点 `publicUrl` 则在新请求中立即影响授权回调。
 
@@ -132,3 +132,11 @@ Figma 文件为 `74sT9Hrf8G4czcWeTkET5b`。已实际读取设计 context 和截�
 2026-10-07 实现提交 `b1b48eae` 已推送至 `origin/codex/issue-181-github-oauth`，创建关联 #181 的草稿 [PR #255](https://github.com/dnslin/ariso-next/pull/255)。实际 `gh pr view` 返回 OPEN、`isDraft: true`、CLEAN；`statusCheckRollup` 为空，`gh pr checks` 返回 `no checks reported`。没有远端检查，不记为 CI 通过，也不等待不存在的工作流。原附件工具未返回；恢复后实际回读确认尚未附加，重试成功，PR 已附加到本任务。
 
 交付时原型账号页、正式登录页和正式健康接口均实际 HTTP 200。人工验收可以从正式账号页检查配置浮层、回调地址复制和本地密码登录；真实 GitHub 绑定、解绑与登录须恢复 Ego 空间、核对重新认证并配置测试 App，然后完成重启生效与浏览器核对。凭据仅在本地 ignored 文件与给用户的私有回复中提供。两个预览服务、当前分支和工作区继续保留，没有合并、关闭 Issue、发布、部署或清理。
+
+## UI 人工验收与浏览器恢复（2026-10-07）
+
+用户明确回复“UI这边我验收通过了”，并允许恢复浏览器验证、创建新的 Ego 空间。该确认完成本轮获批设置行与图标的 UI 人工验收，不据此声明真实 GitHub 授权、绑定、登录或解绑已通过。此前原空间不存在的记录保留为历史。
+
+已按授权创建 TaskSpace 6 / p1，实际打开已有测试 App `3909482`，确认 GitHub 当前登录为 `airsoe`。点击 Generate a new client secret 后进入 GitHub 的 Confirm access，尚未显示或保存 Secret。已对空间 6 执行 `handOff()`，请用户完成再次身份确认；确认后接管同一空间继续。实际停止边界来自 [ego-browser SKILL.md](/Users/dnslin/.agents/skills/ego-browser/SKILL.md)：“When the user must act in the browser, call `await task.handOff()`, end the round”。没有在交回后继续操作浏览器、另建空间或更换控制入口。
+
+本轮只更新验收与恢复记录，产品和检查输入未改变。实际 `pnpm exec prettier --check docs/verification/oauth-181/README.md docs/verification/oauth-181/layout-revision/README.md` 通过；`node docs/tasks/check.mjs` 通过，120 个任务、298 个需求。浏览器、真实 OAuth 与正式页面设计对照仍未完成；PR #255 保持草稿。人工验收预览、测试数据、分支及工作区保持可用，等待用户明确清理指令。
