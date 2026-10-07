@@ -160,6 +160,16 @@ export async function receiveSession(
       session.temporaryKey!,
       finalKey,
     );
+    // Rename has settled: only the final key still occupies configuration storage.
+    db.update(uploadSessions)
+      .set({
+        temporaryKey: null,
+        temporaryBytes: null,
+        finalBytes: byteSize,
+        confirmedAt: new Date(),
+      })
+      .where(eq(uploadSessions.id, id))
+      .run();
     signal.throwIfAborted();
     return acceptSession(db, id, facts);
   } catch (error) {
