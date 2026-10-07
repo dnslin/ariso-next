@@ -1,0 +1,132 @@
+{
+  "status": "failed",
+  "taskSpaceId": 5,
+  "origin": "http://ariso-61216.localhost:61216",
+  "phase": "representative",
+  "checks": [],
+  "layouts": [
+    {
+      "name": "page-light-1440",
+      "businessWidth": 1440,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "分享管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "时间与记录说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传用法（尚未开放）",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "创建",
+          "width": 100,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    }
+  ],
+  "screenshots": ["tokens-1440-page-light-1440.png", "tokens-all-failure.png"],
+  "requests": [],
+  "business": [],
+  "clipboard": [],
+  "limitations": [
+    "Only the runner’s disposable production database is modified; the manual preview remains untouched.",
+    "Once-only secret screenshots replace key characters with bullets; the full value is asserted in memory and never emitted.",
+    "Actual Clipboard permission denial and native copy are exercised on the current macOS Ego Lite host.",
+    "Chromium viewport emulation does not constitute physical touch, soft keyboard or safe-area verification."
+  ],
+  "timeZone": "Asia/Shanghai",
+  "stage": "representative",
+  "timeInfoFocusDiagnostic": [
+    {
+      "width": 1440,
+      "theme": "light",
+      "active": "时间与记录说明",
+      "focusVisible": false,
+      "tooltipPresent": false,
+      "timeInfoPresent": false
+    }
+  ],
+  "error": "Error: page.waitForFunction timed out after 10000ms on page p1; last URL was \"http://ariso-61216.localhost:61216/settings/api\"; last title was \"Ariso\".\n    at waitForFunctionTimeoutError (file:////[eval1]:19235:12)\n    at file:////[eval1]:18564:19\n    at async file:////[eval1]:16691:28",
+  "finishedAt": "2026-10-07T10:50:10.223Z"
+}

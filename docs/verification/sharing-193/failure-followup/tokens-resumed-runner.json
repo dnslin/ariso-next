@@ -1,0 +1,21 @@
+{
+  "startedAt": "2026-10-07T10:49:01.167Z",
+  "platform": "darwin",
+  "arch": "arm64",
+  "node": "v24.18.1",
+  "status": "failed",
+  "suite": "tokens",
+  "only": "behavior",
+  "pageLabel": "p1",
+  "origin": "http://ariso-61054.localhost:61054",
+  "taskSpaceId": 5,
+  "stages": {
+    "tokens": {
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (tokens.log)\n\n1 !== 0\n\n    at runBrowser (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-feedback-build-Zta2LS/scripts/verify-browser.mjs:215:12)\n    at async runBrowserStage (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-feedback-build-Zta2LS/scripts/browser-stages.mjs:17:5)\n    at async file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-feedback-build-Zta2LS/scripts/verify-browser.mjs:683:24"
+    }
+  },
+  "error": "AssertionError [ERR_ASSERTION]: Focused browser stages failed\n    at file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-feedback-build-Zta2LS/scripts/verify-browser.mjs:689:12",
+  "finishedAt": "2026-10-07T10:49:08.775Z",
+  "temporaryDirectoryRemoved": true
+}

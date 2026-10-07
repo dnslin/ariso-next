@@ -1,0 +1,117 @@
+--- project/e2e/library-copy-consumers.mjs
++++ temporary-diagnostic/e2e/library-copy-consumers.mjs
+@@ -30,0 +31,4 @@
++        entering: toast.getAttribute('data-entering'),
++        exiting: toast.getAttribute('data-exiting'),
++        transform: getComputedStyle(toast).transform,
++        animations: toast.getAnimations({subtree:true}).map(a => ({playState:a.playState,currentTime:a.currentTime,timing:a.effect?.getComputedTiming()})),
+@@ -32,0 +37,2 @@
++    report.toastDiagnostic ??= [];
++    report.toastDiagnostic.push({state, ...layout});
+@@ -33,0 +40,15 @@
++    if (!(layout.surface.bottom <= layout.height && layout.surface.top >= 0)) {
++      await page.waitForFunction((title) => {
++        const n=[...document.querySelectorAll('[data-slot="toast-title"]')].find(n=>n.textContent.includes(title));
++        const t=n?.closest('[data-slot="toast"]');
++        return t && t.getAttribute('data-entering')!=='true' && t.getAnimations().every(a=>a.playState!=='running');
++      },title,{timeout:5000});
++      report.toastSettledDiagnostic ??= [];
++      report.toastSettledDiagnostic.push({state,...await page.evaluate((title)=>{
++        const n=[...document.querySelectorAll('[data-slot="toast-title"]')].find(n=>n.textContent.includes(title));
++        const t=n.closest('[data-slot="toast"]'),c=t.querySelector('[data-slot="toast-close"]');
++        const r=t.getBoundingClientRect(),cr=c.getBoundingClientRect();
++        return {height:innerHeight,width:innerWidth,entering:t.getAttribute('data-entering'),transform:getComputedStyle(t).transform,surface:r.toJSON(),close:cr.toJSON(),closeHit:c.contains(document.elementFromPoint(cr.x+cr.width/2,cr.y+cr.height/2)),title:n.textContent};
++      },title)});
++      await page.screenshot({path:join(config.output,`copy-toast-settled-diagnostic-${state}.png`)});
++    }
+--- project/e2e/tags.mjs
++++ temporary-diagnostic/e2e/tags.mjs
+@@ -570,0 +571,10 @@
++  async function observeUnknown(label) {
++    const state = await page.evaluate((selector) => ({
++      active: {tag:document.activeElement?.tagName,id:document.activeElement?.id,label:document.activeElement?.getAttribute('aria-label'),text:document.activeElement?.tagName==='BUTTON'?document.activeElement.textContent.trim():undefined},
++      dialogPresent:!!document.querySelector(selector),
++      notice:document.querySelector('[data-testid="tags-notice"]')?.textContent,
++    }),tagDialogSelector);
++    report.unknownEnterDiagnostic ??= [];
++    report.unknownEnterDiagnostic.push({label,...state});
++  }
++  await observeUnknown('before-enter');
+@@ -571,0 +582 @@
++  await observeUnknown('after-enter');
+--- project/e2e/tokens-page.mjs
++++ temporary-diagnostic/e2e/tokens-page.mjs
+@@ -235,0 +236,6 @@
++    report.secretScrollDiagnostic ??= [];
++    const observe = async (phase) => report.secretScrollDiagnostic.push({name,width,phase,...await page.evaluate(() => {
++      const n=document.querySelector('[data-testid="api-secret"]');
++      return {start:n?.selectionStart,end:n?.selectionEnd,direction:n?.selectionDirection,scrollLeft:n?.scrollLeft,valueLength:n?.value.length,focused:n===document.activeElement};
++    })});
++    await observe('before-copy');
+@@ -236,0 +243 @@
++    await observe('after-copy-before-mask');
+@@ -242,0 +250 @@
++    await observe('after-mask-restore');
+@@ -444,0 +453,5 @@
++      report.timeInfoFocusDiagnostic ??= [];
++      report.timeInfoFocusDiagnostic.push({width,theme,...await page.evaluate(() => ({
++        active:document.activeElement?.getAttribute('aria-label'),focusVisible:document.activeElement?.matches(':focus-visible'),
++        tooltipPresent:!!document.querySelector('[role="tooltip"]'),timeInfoPresent:document.body.textContent.includes('时间按站点时区'),
++      }))});
+--- project/e2e/account-transport.mjs
++++ temporary-diagnostic/e2e/account-transport.mjs
+@@ -264 +264,9 @@
+-      return original(...args);
++      const response = await original(...args);
++      if(path === '/api/auth/get-session') {
++        const text=await response.clone().text();
++        let payload,parseError;
++        try {payload=JSON.parse(text);} catch(e){parseError=String(e);}
++        state.observed.sessionReads ??= [];
++        state.observed.sessionReads.push({status:response.status,sessionNull:payload===null,userPresent:!!payload?.user,code:payload?.code,retryAfter:response.headers.get('x-retry-after'),parseError});
++      }
++      return response;
+--- project/e2e/account-password.mjs
++++ temporary-diagnostic/e2e/account-password.mjs
+@@ -292 +292,2 @@
+-    await page.waitForSelector('#password');
++    try { await page.waitForSelector('#password'); }
++    finally {report.logoutSessionReadDiagnostic=await page.evaluate(() => window.__accountFault?.observed.sessionReads);}
+--- project/e2e/library-batch-reprocess.mjs
++++ temporary-diagnostic/e2e/library-batch-reprocess.mjs
+@@ -890,0 +891,3 @@
++    url:location.href,
++    libraryPreferences:localStorage.getItem('ariso:library-preferences:v1'),
++    listDataset:{...document.querySelector('[data-testid="library-list"]')?.dataset},
+--- project/e2e/processing-settings.mjs
++++ temporary-diagnostic/e2e/processing-settings.mjs
+@@ -575 +575,12 @@
+-    await page.click(testId('asset-retry'));
++    const observeAssetRetry=async(label)=>{
++      report.assetRetryDiagnostic ??= [];
++      report.assetRetryDiagnostic.push({label,...await page.evaluate(()=>({
++        retryPresent:!!document.querySelector('[data-testid="processing-asset-retry"]'),
++        recovery:window.__processingAssetReadRecovery,
++        requests:window.__processingBrowser?.requests,
++        assetText:document.querySelector('[data-testid="processing-asset"]')?.textContent,
++      }))});
++    };
++    await observeAssetRetry('before-click');
++    try {await page.click(testId('asset-retry'));}
++    finally {await observeAssetRetry('after-click');}
+--- project/e2e/library-selection-reconciliation.mjs
++++ temporary-diagnostic/e2e/library-selection-reconciliation.mjs
+@@ -87,0 +88,5 @@
++    report.selectionActionDiagnostic ??= [];
++    report.selectionActionDiagnostic.push({expected,label,...await page.evaluate(()=>({
++      url:location.href,selectedPanelPresent:!!document.querySelector('[data-testid="library-selected-panel"]'),
++      dialogs:[...document.querySelectorAll('[role="dialog"],[role="alertdialog"]')].map(n=>({label:n.getAttribute('aria-label'),testId:n.dataset.testid})),
++    }))});
+--- project/scripts/browser-plan.mjs
++++ temporary-diagnostic/scripts/browser-plan.mjs
+@@ -4,0 +5,5 @@
++  'diagnostic-selection': {
++    primaryPage: true,
++    stages: [['library-query', 'selectionReconciliation']],
++    config: () => ({ libraryQueryPhase: 'selection-reconciliation' }),
++  },
