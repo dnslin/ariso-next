@@ -16,7 +16,7 @@ Figma 主节点仍为桌面 [431:3753](https://www.figma.com/design/74sT9Hrf8G4c
 
 macOS arm64，Node 24.18.1、pnpm 11.19.0、Next 16.3.5、HeroUI 3.2.6。源代码仍在隔离 worktree `codex/issue-193-public-viewer`。为保留仍服务人工预览的旧 standalone，生产构建在本轮源码独立副本执行；没有覆盖旧预览的构建目录或数据库，没有发布、部署或镜像验证。
 
-首轮副本为 `/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-feedback-build-dArkjr`。修正图标尺寸后，最终副本为 `/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-feedback-build-Zta2LS`。副本使用实际 tracked 构建输入及当前 e2e，不复制原人工预览数据或凭证。仅尺寸修正后重跑受影响检查，没有机械重跑既有匿名查看器测试。
+首轮副本为 `/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-feedback-build-dArkjr`。修正图标尺寸后，最终副本为 `/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-feedback-build-Zta2LS`。副本使用实际 tracked 构建输入及当前 e2e，不复制原人工预览数据或凭证。仅尺寸修正后重跑受影响检查，没有机械重跑既有匿名查看器测试。归档构建日志只去掉终端进度行末的回车和空格，告警内容保留；原始输出保留于私有本地 `test-results/sharing-193/feedback-settings/`。
 
 | 实际命令                                                                                   | 结果                                                                                                                                                                             |
 | ------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -61,4 +61,6 @@ macOS arm64，Node 24.18.1、pnpm 11.19.0、Next 16.3.5、HeroUI 3.2.6。源代�
 
 需要实际验收：桌面/手机的右上返回箭头、浅深色“已过期”标签与日期后缀、没有 Halo；选择未保存的展示格式后返回并取消确认，检查草稿和焦点；分别从分享管理与相册进入，检查返回目的地。正常及停用状态应保留原文字颜色。本轮主/过期设计节点见上文，响应式中间宽度、短视口、实际键盘/焦点及真实页面设计对照仍待验证。
 
-提交与PR沿用[草稿 #256](https://github.com/dnslin/ariso-next/pull/256)、分支 `codex/issue-193-public-viewer`。本轮刷新远端，`origin/main@031b1e77` 包含 #146 身份恢复并发合入，本次设置、状态逻辑、浏览器管理场景及公共外壳没有该区间的修改交集；未整合或覆盖并发工作。原 #193 完整集成/默认浏览器失败与两个独立浏览器上下文未验证仍按统一记录保留。没有合并、关闭Issue、发布、部署或清理授权范围以外的资源。
+本轮代码与证据提交 `76d7a37a` 已推送。PR沿用[草稿 #256](https://github.com/dnslin/ariso-next/pull/256)、分支 `codex/issue-193-public-viewer`；推送后实际回读为 OPEN、draft、MERGEABLE/CLEAN，检查列表为空（[原始状态快照](./pr-source-state.json)）。`gh pr checks 256` 实际退出1并返回 `no checks reported`，不能记为CI通过，也不等待未触发的工作流。
+
+本轮刷新远端，`origin/main@031b1e77` 包含 #146 身份恢复并发合入，本次设置、状态逻辑、浏览器管理场景及公共外壳没有该区间的修改交集；未整合或覆盖并发工作。原 #193 完整集成/默认浏览器失败与两个独立浏览器上下文未验证仍按统一记录保留。没有合并、关闭Issue、发布、部署或清理授权范围以外的资源。
