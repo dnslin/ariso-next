@@ -71,6 +71,8 @@ R2与SeaweedFS生产用量联验均通过，分别保留[SeaweedFS报告](./live
 
 ## 交付状态
 
-代码实现完成；默认全量集成与真实standalone HTTP通过；类型/格式/构建/单元及两服务联验通过，只有既有全库lint失败。独立代码与两服务证据复审均通过，无Required/Critical发现。无UI设计/人工验收项。本次不合并、不关闭Issue、不发布、不部署、不清理分支/worktree。分支提交并推送后创建草稿PR，最终链接在本节续填，因适用lint仍失败保留草稿；无远端检查时不记作CI通过。
+代码实现完成；默认全量集成与真实standalone HTTP通过；类型/格式/构建/单元及两服务联验通过，只有既有全库lint失败。独立代码与两服务证据复审均通过，无Required/Critical发现。无UI设计/人工验收项。本次不合并、不关闭Issue、不发布、不部署、不清理分支/worktree。已推送分支 `codex/issue-168-analytics-usage` 并创建关联 [PR #261](https://github.com/dnslin/ariso-next/pull/261)。实际 `gh pr view 261 --json url,state,isDraft,headRefName,headRefOid,mergeable,statusCheckRollup` 返回 OPEN、isDraft=true、MERGEABLE、statusCheckRollup=[]；`gh pr checks 261` 返回 no checks reported（退出1表示没有检查，不算CI失败或通过）。因既有全库lint仍失败保留草稿。
 
 最终规模脚本补100000处理任务后另执行 `pnpm exec eslint tests/verification/analytics/current-usage-scale.ts --max-warnings=0`（通过）及 `pnpm exec tsc --noEmit --project tsconfig.json`（实际结果在最终检查摘要），只重验改变的输入，不重复业务构建与测试。默认集成输出含临时初始化码，因此完整日志仅留忽略目录，不提交；[检查摘要](./checks.json)保留实际命令、计数和耗时，不含凭据。
+
+最终证据提交检查发现三份原始输出末尾多余空行；仅删除末尾空行，断言与失败内容未改写。`git diff origin/main --check` 修正后通过。独立评审最终提出的两处证据遗漏（规模tsc摘要、构建追踪诊断）均已补，不需重跑未变的业务验证。
