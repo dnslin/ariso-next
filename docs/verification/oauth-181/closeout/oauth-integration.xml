@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="39" failures="0" errors="0" time="14.325807916">
+    <testsuite name="tests/integration/identity/cli-reset.test.ts" timestamp="2026-10-07T14:40:11.897Z" hostname="dnslins-Mac-mini.local" tests="13" failures="0" errors="0" skipped="0" time="10.349120792">
+        <testcase classname="tests/integration/identity/cli-reset.test.ts" name="compiled and traced CLI resets from an unrelated cwd without Web, SMTP, migration or initialization" time="1.060874333">
+        </testcase>
+        <testcase classname="tests/integration/identity/cli-reset.test.ts" name="CLI session deletion failure rolls back password, sessions and unused resets" time="1.334465959">
+        </testcase>
+        <testcase classname="tests/integration/identity/cli-reset.test.ts" name="CLI verification deletion failure rolls back password, sessions and unused resets" time="1.332519917">
+        </testcase>
+        <testcase classname="tests/integration/identity/cli-reset.test.ts" name="CLI SIGINT cancellation leaves all rows intact and restores the terminal" time="0.526313542">
+        </testcase>
+        <testcase classname="tests/integration/identity/cli-reset.test.ts" name="CLI SIGTERM cancellation leaves all rows intact and restores the terminal" time="0.532174208">
+        </testcase>
+        <testcase classname="tests/integration/identity/cli-reset.test.ts" name="CLI Ctrl-C cancellation leaves all rows intact and restores the terminal" time="0.533945375">
+        </testcase>
+        <testcase classname="tests/integration/identity/cli-reset.test.ts" name="CLI confirmation mismatch exits without writes and restores terminal settings" time="0.545633291">
+        </testcase>
+        <testcase classname="tests/integration/identity/cli-reset.test.ts" name="CLI EOF exits without writes and restores terminal settings" time="0.496255125">
+        </testcase>
+        <testcase classname="tests/integration/identity/cli-reset.test.ts" name="CLI refuses an uninitialized database without migration, owner or initialization code" time="0.466298333">
+        </testcase>
+        <testcase classname="tests/integration/identity/cli-reset.test.ts" name="CLI uses the standard terminal editor for hidden Unicode password input" time="0.63299275">
+        </testcase>
+        <testcase classname="tests/integration/identity/cli-reset.test.ts" name="CLI hashes outside the writer transaction and an abort during hashing prevents every write" time="0.097528708">
+        </testcase>
+        <testcase classname="tests/integration/identity/cli-reset.test.ts" name="CLI commits after Web has verified its old password, so Web cannot overwrite the recovery" time="0.826119667">
+        </testcase>
+        <testcase classname="tests/integration/identity/cli-reset.test.ts" name="Web commits while CLI is collecting input, then CLI becomes the final password and revokes every session" time="0.866295625">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/identity/oauth-startup.test.ts" timestamp="2026-10-07T14:40:11.898Z" hostname="dnslins-Mac-mini.local" tests="4" failures="0" errors="0" skipped="0" time="1.518557083">
+        <testcase classname="tests/integration/identity/oauth-startup.test.ts" name="the real Web startup captures credentials before its first authentication request, and only a restarted runtime sees saved changes" time="0.150448375">
+        </testcase>
+        <testcase classname="tests/integration/identity/oauth-startup.test.ts" name="prestart rejects an undecryptable saved GitHub Secret even when enabled=true, retains data and succeeds after restoring the key" time="0.652607">
+        </testcase>
+        <testcase classname="tests/integration/identity/oauth-startup.test.ts" name="prestart rejects an undecryptable saved GitHub Secret even when enabled=false, retains data and succeeds after restoring the key" time="0.651025209">
+        </testcase>
+        <testcase classname="tests/integration/identity/oauth-startup.test.ts" name="Web startup rejects malformed ciphertext without creating a runtime and recovers with the saved ciphertext" time="0.063896541">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/identity/oauth.test.ts" timestamp="2026-10-07T14:40:11.898Z" hostname="dnslins-Mac-mini.local" tests="22" failures="0" errors="0" skipped="0" time="2.458130041">
+        <testcase classname="tests/integration/identity/oauth.test.ts" name="production management requires the owner Cookie and current saved origin, and hides both forms of the secret" time="0.133105209">
+        </testcase>
+        <testcase classname="tests/integration/identity/oauth.test.ts" name="saved enablement and client credentials remain pending across live origin changes until a fresh runtime snapshot" time="0.16182725">
+        </testcase>
+        <testcase classname="tests/integration/identity/oauth.test.ts" name="secret omission preserves ciphertext, equivalent replacement clears pending status, and removal requires disabling" time="0.103906542">
+        </testcase>
+        <testcase classname="tests/integration/identity/oauth.test.ts" name="active binding of owner@example.test preserves all local identity data and stores only the real public login" time="0.109485542">
+        </testcase>
+        <testcase classname="tests/integration/identity/oauth.test.ts" name="active binding of different@example.test preserves all local identity data and stores only the real public login" time="0.105474583">
+        </testcase>
+        <testcase classname="tests/integration/identity/oauth.test.ts" name="unbound owner@example.test cannot sign in or register with requestSignUp=false and local emailVerified=false" time="0.100969875">
+        </testcase>
+        <testcase classname="tests/integration/identity/oauth.test.ts" name="unbound owner@example.test cannot sign in or register with requestSignUp=true and local emailVerified=false" time="0.100399583">
+        </testcase>
+        <testcase classname="tests/integration/identity/oauth.test.ts" name="unbound owner@example.test cannot sign in or register with requestSignUp=false and local emailVerified=true" time="0.107485125">
+        </testcase>
+        <testcase classname="tests/integration/identity/oauth.test.ts" name="unbound owner@example.test cannot sign in or register with requestSignUp=true and local emailVerified=true" time="0.107711167">
+        </testcase>
+        <testcase classname="tests/integration/identity/oauth.test.ts" name="unbound stranger@example.test cannot sign in or register with requestSignUp=false and local emailVerified=false" time="0.099544584">
+        </testcase>
+        <testcase classname="tests/integration/identity/oauth.test.ts" name="unbound stranger@example.test cannot sign in or register with requestSignUp=true and local emailVerified=false" time="0.100352541">
+        </testcase>
+        <testcase classname="tests/integration/identity/oauth.test.ts" name="the public authentication facade refuses generic linking, unlinking, registration, other providers and token APIs" time="0.099496667">
+        </testcase>
+        <testcase classname="tests/integration/identity/oauth.test.ts" name="missing, foreign, expired and replayed state reject callbacks before provider code exchange" time="0.105239041">
+        </testcase>
+        <testcase classname="tests/integration/identity/oauth.test.ts" name="a bound account blocks a second link, including authorization begun before the first binding completed" time="0.102364292">
+        </testcase>
+        <testcase classname="tests/integration/identity/oauth.test.ts" name="unlinking ignores a supplied credential target, keeps the same local session and prevents later GitHub login" time="0.146148708">
+        </testcase>
+        <testcase classname="tests/integration/identity/oauth.test.ts" name="invalid public profile fails visibly without persisting a binding" time="0.100494083">
+        </testcase>
+        <testcase classname="tests/integration/identity/oauth.test.ts" name="disabled effective configuration stops new linking but always retains local password login" time="0.1421625">
+        </testcase>
+        <testcase classname="tests/integration/identity/oauth.test.ts" name="a stale but still-valid owner session receives a clear library refusal and does not unlink" time="0.102992792">
+        </testcase>
+        <testcase classname="tests/integration/identity/oauth.test.ts" name="settings update database failure is visible, preserves data and logs the real cause without credentials" time="0.101853042">
+        </testcase>
+        <testcase classname="tests/integration/identity/oauth.test.ts" name="binding delete database failure is visible, preserves data and logs the real cause without credentials" time="0.123972125">
+        </testcase>
+        <testcase classname="tests/integration/identity/oauth.test.ts" name="simultaneous callbacks for different GitHub accounts return to account settings and preserve the winning binding" time="0.103518917">
+        </testcase>
+        <testcase classname="tests/integration/identity/oauth.test.ts" name="the adapter preserves unrelated model/provider constraints and GitHub storage faults" time="0.098777292">
+        </testcase>
+    </testsuite>
+</testsuites>

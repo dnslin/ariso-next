@@ -1,0 +1,515 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="252" failures="0" errors="0" time="58.877487333">
+    <testsuite name="tests/unit/runtime/browser-identity-management.test.ts" timestamp="2026-10-07T14:39:52.773Z" hostname="dnslins-Mac-mini.local" tests="5" failures="0" errors="0" skipped="0" time="0.00451975">
+        <testcase classname="tests/unit/runtime/browser-identity-management.test.ts" name="runs Token, OAuth persistence and Account in order with separate scene inputs and stages" time="0.001282042">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-identity-management.test.ts" name="blocks Account if restarting fails" time="0.00203625">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-identity-management.test.ts" name="preserves independent Account verification after a Token failure" time="0.00025375">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-identity-management.test.ts" name="keeps Account independent from failed OAuth verification while retaining the failed stage" time="0.000327875">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-identity-management.test.ts" name="does not run the chain without an initialized owner" time="0.00013675">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/runtime/browser-oauth.test.ts" timestamp="2026-10-07T14:39:52.776Z" hostname="dnslins-Mac-mini.local" tests="3" failures="0" errors="0" skipped="0" time="0.003765875">
+        <testcase classname="tests/unit/runtime/browser-oauth.test.ts" name="verifies disabled persistence, then explicit enablement through two real same-data restarts" time="0.001197917">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-oauth.test.ts" name="preserves a failed OAuth scene and blocks only its dependent evidence" time="0.001803834">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-oauth.test.ts" name="does not present configuration as effective when its restart fails" time="0.0002835">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/runtime/browser-plan.test.ts" timestamp="2026-10-07T14:39:52.776Z" hostname="dnslins-Mac-mini.local" tests="68" failures="0" errors="0" skipped="0" time="0.003951166">
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; keeps all default scenes and their order for library" time="0.000862958">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; keeps all default scenes and their order for library-feedback" time="0.000097042">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; keeps all default scenes and their order for account" time="0.000058792">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; keeps all default scenes and their order for oauth" time="0.000055583">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; keeps all default scenes and their order for tokens" time="0.000062292">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; keeps all default scenes and their order for shell-navigation" time="0.000048417">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; keeps all default scenes and their order for sharing-management" time="0.000051708">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; keeps all default scenes and their order for albums" time="0.000055">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; keeps all default scenes and their order for album-cover" time="0.000061834">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; keeps all default scenes and their order for tags" time="0.000085541">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; keeps all default scenes and their order for upload-input" time="0.000049709">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; keeps all default scenes and their order for viewer" time="0.000045375">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; keeps all default scenes and their order for upload" time="0.000044709">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; keeps all default scenes and their order for upload-regression" time="0.000040875">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; keeps all default scenes and their order for upload-s3" time="0.000036625">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; keeps all default scenes and their order for copy-dropdown" time="0.000038833">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; keeps all default scenes and their order for library-batch" time="0.0000355">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; keeps all default scenes and their order for library-reprocess" time="0.000031083">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; keeps all default scenes and their order for library-copy" time="0.000093583">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; keeps all default scenes and their order for storage-admin" time="0.000047792">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; keeps all default scenes and their order for processing" time="0.000045041">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; keeps all default scenes and their order for trash" time="0.000061542">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; selects the actual scenes for upload / relations" time="0.000046875">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; selects the actual scenes for upload / submissions" time="0.000039583">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; selects the actual scenes for upload-regression / main" time="0.000031958">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; selects the actual scenes for storage-admin / live" time="0.000031958">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; selects the actual scenes for storage-admin / dialogs" time="0.000066917">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; selects the actual scenes for storage-admin / feedback" time="0.000045042">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; selects the actual scenes for storage-admin / regressions" time="0.000037334">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; selects the actual scenes for processing / consumers" time="0.000025">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; selects the actual scenes for processing / settings" time="0.000022125">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; selects the actual scenes for trash / cleanup" time="0.000021875">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; selects the actual scenes for trash / approved-results" time="0.000020292">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; selects the actual scenes for library / recovery" time="0.000021625">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; selects the actual scenes for library-batch / recovery" time="0.00001775">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; selects the actual scenes for sharing-management / representative" time="0.000019167">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; selects the actual scenes for sharing-management / behavior" time="0.000018416">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; selects the actual scenes for sharing-management / recovery" time="0.000018084">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; selects the actual scenes for tokens / representative" time="0.000019833">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; selects the actual scenes for tokens / behavior" time="0.0000195">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; selects the actual scenes for tokens / lifecycle" time="0.000019125">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; selects the actual scenes for tokens / recovery" time="0.000020167">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; selects the actual scenes for tokens / create-recovery" time="0.000023541">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; selects the actual scenes for tokens / action-recovery" time="0.00001775">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; selects the actual scenes for tokens / consumers" time="0.000018166">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; passes only the owning scene fields for library / recovery" time="0.000034875">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; passes only the owning scene fields for tokens / recovery" time="0.000020792">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; passes only the owning scene fields for tokens / lifecycle" time="0.000021125">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; passes only the owning scene fields for tokens / create-recovery" time="0.000019875">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; passes only the owning scene fields for tokens / action-recovery" time="0.00001825">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; passes only the owning scene fields for sharing-public / representative" time="0.000025458">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; passes only the owning scene fields for sharing-public / behavior" time="0.000016916">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; passes only the owning scene fields for sharing-public / race" time="0.000017458">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; passes only the owning scene fields for sharing-public / recovery" time="0.000018333">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; passes only the owning scene fields for sharing-viewer / representative" time="0.000025">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; passes only the owning scene fields for sharing-viewer / interactions" time="0.000017875">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; passes only the owning scene fields for sharing-viewer / revocation" time="0.000018042">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; passes only the owning scene fields for sharing-viewer / race" time="0.0000165">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; passes only the owning scene fields for viewer / recovery" time="0.000022542">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; passes only the owning scene fields for processing / recovery" time="0.000017792">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; passes only the owning scene fields for library-copy / revision" time="0.000019541">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; passes only the owning scene fields for library-batch / cache" time="0.0000175">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; passes only the owning scene fields for library-batch / recovery" time="0.000016083">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; passes only the owning scene fields for trash / approved-results" time="0.000017667">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; passes only the owning scene fields for upload-s3 / cleanup" time="0.000017459">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; passes only the owning scene fields for sharing-management / recovery" time="0.000017458">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; keeps consumer navigation and representative viewer behavior explicit" time="0.000101833">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-plan.test.ts" name="focused browser execution plans &gt; includes every existing business stage and all sharing scenes in the default full flow" time="0.000053125">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/runtime/browser-runner.test.ts" timestamp="2026-10-07T14:39:52.779Z" hostname="dnslins-Mac-mini.local" tests="176" failures="0" errors="0" skipped="0" time="58.865250542">
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite full and its only undefined" time="0.33679875">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite viewer and its only undefined" time="0.332820459">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite viewer and its only representative" time="0.334603084">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite viewer and its only behavior" time="0.331748375">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite viewer and its only recovery" time="0.330923083">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite viewer and its only refresh" time="0.332486625">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite viewer and its only consumers" time="0.332980084">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite viewer and its only deleted-source" time="0.3327165">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite viewer and its only pending-navigation" time="0.341619833">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite upload and its only relations" time="0.331715667">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite upload and its only undefined" time="0.332736459">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite upload and its only submissions" time="0.331522417">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite upload-regression and its only undefined" time="0.33231625">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite upload-regression and its only main" time="0.331772708">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite m2-mobile and its only undefined" time="0.339604291">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite upload-s3 and its only cleanup" time="0.333469708">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite upload-s3 and its only undefined" time="0.331329542">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite copy-dropdown and its only undefined" time="0.331895084">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite library-reprocess and its only undefined" time="0.334687292">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite library-copy and its only representative" time="0.3320875">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite library-copy and its only undefined" time="0.333006042">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite library-copy and its only feedback" time="0.330730625">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite library-copy and its only revision" time="0.332683542">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite storage-admin and its only live" time="0.331497083">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite storage-admin and its only undefined" time="0.336066958">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite storage-admin and its only dialogs" time="0.349387667">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite storage-admin and its only feedback" time="0.332390542">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite storage-admin and its only regressions" time="0.331203167">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite processing and its only undefined" time="0.358464917">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite processing and its only representative" time="0.3339105">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite processing and its only settings" time="0.332640708">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite processing and its only preview" time="0.333746875">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite processing and its only recovery" time="0.338669417">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite processing and its only consumers" time="0.336839959">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite account and its only undefined" time="0.331120458">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite oauth and its only undefined" time="0.331369875">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite tokens and its only undefined" time="0.333649916">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite tokens and its only representative" time="0.338466791">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite tokens and its only behavior" time="0.335159625">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite tokens and its only lifecycle" time="0.330060708">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite tokens and its only recovery" time="0.333129917">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite tokens and its only create-recovery" time="0.331844">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite tokens and its only action-recovery" time="0.333164917">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite tokens and its only consumers" time="0.334776959">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite trash and its only representative" time="0.333077667">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite trash and its only undefined" time="0.33293275">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite trash and its only cleanup" time="0.33223575">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite trash and its only query-error" time="0.331579542">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite trash and its only confirmation" time="0.333467666">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite trash and its only approved-ui" time="0.331086833">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite trash and its only approved-results" time="0.329291042">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite trash and its only approved-query" time="0.3342095">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite trash and its only approved-progress" time="0.335787792">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite trash and its only review-fixes" time="0.3317945">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite library-batch and its only representative" time="0.331951166">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite library-batch and its only undefined" time="0.33252725">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite library-batch and its only visibility" time="0.334042166">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite library-batch and its only feedback" time="0.332622375">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite library-batch and its only tag-states" time="0.334622167">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite library-batch and its only lifecycle" time="0.335170291">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite library-batch and its only cache" time="0.331494125">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite library-batch and its only review-fixes" time="0.332018375">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite library-batch and its only recovery" time="0.3304355">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite sharing-experiment and its only undefined" time="0.333262084">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite sharing-protocol and its only undefined" time="0.337104167">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite sharing-public and its only undefined" time="0.330969583">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite sharing-public and its only representative" time="0.334473417">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite sharing-public and its only behavior" time="0.332570792">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite sharing-public and its only race" time="0.332682292">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite sharing-public and its only recovery" time="0.332294958">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite sharing-viewer and its only undefined" time="0.331681459">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite sharing-viewer and its only representative" time="0.333340542">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite sharing-viewer and its only interactions" time="0.330718042">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite sharing-viewer and its only revocation" time="0.332682625">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite sharing-viewer and its only race" time="0.33064475">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite sharing-management and its only undefined" time="0.334990583">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite sharing-management and its only representative" time="0.33374375">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite sharing-management and its only behavior" time="0.332594083">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite sharing-management and its only recovery" time="0.332812125">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite shell-navigation and its only undefined" time="0.334121709">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite library and its only undefined" time="0.334770333">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite library and its only recovery" time="0.336766292">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite library-feedback and its only undefined" time="0.34803125">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite albums and its only undefined" time="0.329392916">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite album-cover and its only undefined" time="0.332747375">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite tags and its only undefined" time="0.334588667">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; accepts suite upload-input and its only undefined" time="0.3338325">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects upload-regression main in suite full" time="0.334781625">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects upload-regression main in suite viewer" time="0.33126675">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects upload-regression main in suite upload" time="0.331102084">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects upload-regression main in suite m2-mobile" time="0.332786166">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects upload-regression main in suite upload-s3" time="0.334805041">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects upload-regression main in suite copy-dropdown" time="0.333233083">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects upload-regression main in suite library-reprocess" time="0.331297583">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects upload-regression main in suite library-copy" time="0.332334084">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects upload-regression main in suite storage-admin" time="0.32969375">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects upload-regression main in suite processing" time="0.338776625">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects upload-regression main in suite account" time="0.33691675">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects upload-regression main in suite oauth" time="0.335721916">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects upload-regression main in suite tokens" time="0.337560667">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects upload-regression main in suite trash" time="0.33097975">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects upload-regression main in suite library-batch" time="0.332950667">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects upload-regression main in suite sharing-experiment" time="0.33700325">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects upload-regression main in suite sharing-protocol" time="0.333123875">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects upload-regression main in suite sharing-public" time="0.339717666">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects upload-regression main in suite sharing-viewer" time="0.333877125">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects upload-regression main in suite sharing-management" time="0.333469833">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects upload-regression main in suite shell-navigation" time="0.330291209">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects upload-regression main in suite library" time="0.331058417">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects upload-regression main in suite library-feedback" time="0.336004917">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects upload-regression main in suite albums" time="0.333771167">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects upload-regression main in suite album-cover" time="0.335230292">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects upload-regression main in suite tags" time="0.332947416">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects upload-regression main in suite upload-input" time="0.331950292">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects an unrelated phase in upload-regression" time="0.333624458">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects a partial m2-mobile phase before" time="0.332853334">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects a partial m2-mobile phase after" time="0.332764958">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects a partial m2-mobile phase representative" time="0.333611167">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects non-primary page labels in suite full before runtime startup" time="0.33405325">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects non-primary page labels in suite m2-mobile before runtime startup" time="0.332622709">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects non-primary page labels in suite albums before runtime startup" time="0.334032125">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects non-primary page labels in suite album-cover before runtime startup" time="0.333366042">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects non-primary page labels in suite tags before runtime startup" time="0.333092542">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects non-primary page labels in suite upload-input before runtime startup" time="0.337385792">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects non-primary page labels in suite library-feedback before runtime startup" time="0.335108792">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; handles recovery according to suite full ownership" time="0.332029458">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; handles recovery according to suite upload ownership" time="0.333499709">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; handles recovery according to suite upload-regression ownership" time="0.332496166">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; handles recovery according to suite m2-mobile ownership" time="0.332537833">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; handles recovery according to suite upload-s3 ownership" time="0.33660475">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; handles recovery according to suite copy-dropdown ownership" time="0.331622667">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; handles recovery according to suite library-reprocess ownership" time="0.333843709">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; handles recovery according to suite library-copy ownership" time="0.333499792">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; handles recovery according to suite storage-admin ownership" time="0.336105583">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; handles recovery according to suite account ownership" time="0.3388375">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; handles recovery according to suite oauth ownership" time="0.334415625">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; handles recovery according to suite trash ownership" time="0.335622584">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; handles recovery according to suite library-batch ownership" time="0.334475166">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; handles recovery according to suite sharing-experiment ownership" time="0.338409375">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; handles recovery according to suite sharing-protocol ownership" time="0.335159542">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; handles recovery according to suite sharing-public ownership" time="0.33240925">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; handles recovery according to suite sharing-viewer ownership" time="0.337195291">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; handles recovery according to suite shell-navigation ownership" time="0.337668167">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; handles recovery according to suite library-feedback ownership" time="0.332801416">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; handles recovery according to suite albums ownership" time="0.33533675">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; handles recovery according to suite album-cover ownership" time="0.334003625">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; handles recovery according to suite tags ownership" time="0.3339415">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; handles recovery according to suite upload-input ownership" time="0.332574416">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects an unrelated phase in library" time="0.332628666">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects unrelated sharing parameter --only" time="0.33380775">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects unrelated sharing parameter --storage-config" time="0.332461708">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects unrelated sharing parameter --preview-config" time="0.334156">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; limits sharing-public phase representative to its own suite" time="0.334375125">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; limits sharing-public phase behavior to its own suite" time="0.332515125">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; limits sharing-public phase race to its own suite" time="0.333487792">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; limits sharing-public phase recovery to its own suite" time="0.332799">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects storage-only processing parameter --storage-config" time="0.334293375">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects storage-only processing parameter --preview-config" time="0.334765542">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects unrelated sharing management parameter --only" time="0.332032042">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects unrelated sharing management parameter --storage-config" time="0.3323475">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects unrelated sharing management parameter --preview-config" time="0.335573459">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects unrelated account parameter --only" time="0.335371625">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects unrelated account parameter --storage-config" time="0.32992925">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects unrelated account parameter --preview-config" time="0.331959583">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects storage-only tokens parameter --storage-config" time="0.331952417">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects storage-only tokens parameter --preview-config" time="0.331200792">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects an unrelated tokens phase" time="0.335132167">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects Token-only phase account / create-recovery" time="0.333518041">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects Token-only phase account / action-recovery" time="0.335168">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects Token-only phase library / create-recovery" time="0.333007916">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects Token-only phase library / action-recovery" time="0.3492035">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects Token-only phase viewer / create-recovery" time="0.365753375">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; rejects Token-only phase viewer / action-recovery" time="0.335997875">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; requires an existing space for sharing-experiment without starting unrelated production fixtures" time="0.343379083">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; requires an existing space for sharing-protocol without starting unrelated production fixtures" time="0.353215042">
+        </testcase>
+        <testcase classname="tests/unit/runtime/browser-runner.test.ts" name="browser runner argument boundaries &gt; requires an existing space for sharing-public without starting unrelated production fixtures" time="0.344624667">
+        </testcase>
+    </testsuite>
+</testsuites>
