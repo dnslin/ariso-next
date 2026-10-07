@@ -71,8 +71,8 @@ async function verifyClosedSettingsUnknown(page, config, report, ui, secret) {
           '[data-testid="oauth-settings"]',
         );
         return (
-          document.querySelector('[data-testid="account-github-config"]')
-            .disabled &&
+          document.querySelector('[data-testid="account-github-config"]') ===
+            null &&
           !document.querySelector('#oauth-client-secret') &&
           !summary.textContent.includes(secret) &&
           summary.textContent.includes('待核对') &&
@@ -98,11 +98,11 @@ async function verifyClosedSettingsUnknown(page, config, report, ui, secret) {
     assert.equal(
       await page.evaluate(
         () =>
-          document.querySelector('[data-testid="account-github-config"]')
-            .disabled,
+          document.querySelector('[data-testid="account-github-config"]') ===
+          null,
       ),
       true,
-      'A failed real main-page read keeps configuration reopening disabled',
+      'A failed real main-page read keeps the configuration mutation action absent',
     );
     assert.equal(
       (await fault.result()).requests,

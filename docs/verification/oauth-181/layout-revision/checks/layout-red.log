@@ -1,0 +1,157 @@
+Already up to date
+Done in 34ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-181-github-oauth/ariso
+
+ ❯ |unit| tests/unit/identity/github-account-layout.test.ts (8 tests | 7 failed) 24ms
+   × offers configuration first when GitHub has not been configured, without an unavailable binding action 11ms
+   × offers binding after configuration is effective, with a separate configuration action 2ms
+   × preserves a bound account and unlink action while GitHub login is disabled 2ms
+   × keeps configuration usable after a failed binding read and exposes only the binding retry 2ms
+   × uses binding readback after an unknown unlink, while configuration remains independent 2ms
+   × requires configuration readback after an unknown save and retains the known effective state 1ms
+   × keeps saved and effective enable states visible when a restart is pending 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/identity/github-account-layout.test.ts > offers configuration first when GitHub has not been configured, without an unavailable binding action
+AssertionError: expected '<svg xmlns="http://www.w3.org/2000/sv…' to contain '配置 GitHub'
+
+Expected: "配置 GitHub"
+Received: "<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-settings-2 size-4" aria-hidden="true"><path d="M14 17H5"></path><path d="M19 7h-9"></path><circle cx="17" cy="17" r="3"></circle><circle cx="7" cy="7" r="3"></circle></svg>登录配置"
+
+ ❯ tests/unit/identity/github-account-layout.test.ts:36:54
+     34|   state.view.canLink = false;
+     35|   const html = render();
+     36|   expect(button(html, 'account-github-config')?.[2]).toContain('配置 Git…
+       |                                                      ^
+     37|   expect(button(html, 'account-github-link')).toBeNull();
+     38|   expect(html).toContain('完成配置后可绑定');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/7]⎯
+
+ FAIL  |unit| tests/unit/identity/github-account-layout.test.ts > offers binding after configuration is effective, with a separate configuration action
+AssertionError: expected '<section data-testid="account-github"…' to contain '站点登录配置'
+
+Expected: "站点登录配置"
+Received: "<section data-testid="account-github" data-state="unbound" class="grid min-w-0 gap-3"><h2 id="account-github-heading" tabindex="-1" class="flex items-center gap-2.5 text-xl font-medium"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-log-in size-6 shrink-0" aria-hidden="true"><path d="m10 17 5-5-5-5"></path><path d="M15 12H3"></path><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path></svg>GitHub 登录</h2><div data-testid="oauth-settings" data-state="ready" class="grid min-w-0 gap-3"><dl class="grid gap-x-5 gap-y-2 text-sm sm:grid-cols-[auto_1fr]"><dt class="text-muted">当前生效</dt><dd>已启用 GitHub 登录</dd></dl></div><dl class="grid gap-x-5 gap-y-2 text-sm sm:grid-cols-[auto_1fr]"><dt class="text-muted">绑定状态</dt><dd>尚未绑定 GitHub 账号</dd></dl><div class="flex gap-3"><button data-slot="button" data-testid="account-github-link" class="button button--md button--outline h-12 min-h-12 min-w-0 flex-1 gap-2 rounded-lg px-2 text-sm font-normal min-[768px]:w-48 min-[768px]:flex-none bg-background" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_n_"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-link-2 size-4" aria-hidden="true"><path d="M9 17H7A5 5 0 0 1 7 7h2"></path><path d="M15 7h2a5 5 0 1 1 0 10h-2"></path><line x1="8" x2="16" y1="12" y2="12"></line></svg>绑定 GitHub</button><button data-slot="button" data-testid="account-github-config" class="button button--md button--outline h-12 min-h-12 min-w-0 flex-1 gap-2 rounded-lg px-2 text-sm font-normal min-[768px]:w-48 min-[768px]:flex-none bg-background" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_17_"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-settings-2 size-4" aria-hidden="true"><path d="M14 17H5"></path><path d="M19 7h-9"></path><circle cx="17" cy="17" r="3"></circle><circle cx="7" cy="7" r="3"></circle></svg>登录配置</button></div><p class="text-[13px] leading-normal text-muted">只有已绑定账号可使用 GitHub 登录。本地邮箱与密码仍可使用。</p></section>"
+
+ ❯ tests/unit/identity/github-account-layout.test.ts:44:16
+     42|   expect(button(html, 'account-github-link')?.[1]).not.toMatch(/\bdisa…
+     43|   expect(button(html, 'account-github-config')?.[1]).not.toMatch(/\bdi…
+     44|   expect(html).toContain('站点登录配置');
+       |                ^
+     45|   expect(html).toContain('GitHub 账号');
+     46| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/7]⎯
+
+ FAIL  |unit| tests/unit/identity/github-account-layout.test.ts > preserves a bound account and unlink action while GitHub login is disabled
+AssertionError: expected '<section data-testid="account-github"…' to contain '登录已停用，绑定保留'
+
+Expected: "登录已停用，绑定保留"
+Received: "<section data-testid="account-github" data-state="bound" class="grid min-w-0 gap-3"><h2 id="account-github-heading" tabindex="-1" class="flex items-center gap-2.5 text-xl font-medium"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-log-in size-6 shrink-0" aria-hidden="true"><path d="m10 17 5-5-5-5"></path><path d="M15 12H3"></path><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path></svg>GitHub 登录</h2><div data-testid="oauth-settings" data-state="ready" class="grid min-w-0 gap-3"><dl class="grid gap-x-5 gap-y-2 text-sm sm:grid-cols-[auto_1fr]"><dt class="text-muted">当前生效</dt><dd>未启用 GitHub 登录</dd></dl></div><dl class="grid gap-x-5 gap-y-2 text-sm sm:grid-cols-[auto_1fr]"><dt class="text-muted">绑定状态</dt><dd><span>已绑定 <span data-testid="account-github-login" class="font-medium wrap-anywhere">@owner</span></span></dd></dl><div class="flex gap-3"><button data-slot="button" data-testid="account-github-unlink" class="button button--md button--outline h-12 min-h-12 min-w-0 flex-1 gap-2 rounded-lg px-2 text-sm font-normal min-[768px]:w-48 min-[768px]:flex-none bg-background" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_n_"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-unlink size-4" aria-hidden="true"><path d="m18.84 12.25 1.72-1.71h-.02a5.004 5.004 0 0 0-.12-7.07 5.006 5.006 0 0 0-6.95 0l-1.72 1.71"></path><path d="m5.17 11.75-1.71 1.71a5.004 5.004 0 0 0 .12 7.07 5.006 5.006 0 0 0 6.95 0l1.71-1.71"></path><line x1="8" x2="8" y1="2" y2="5"></line><line x1="2" x2="5" y1="8" y2="8"></line><line x1="16" x2="16" y1="19" y2="22"></line><line x1="19" x2="22" y1="16" y2="16"></line></svg>解绑 GitHub</button><button data-slot="button" data-testid="account-github-config" class="button button--md button--outline h-12 min-h-12 min-w-0 flex-1 gap-2 rounded-lg px-2 text-sm font-normal min-[768px]:w-48 min-[768px]:flex-none bg-background" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" id="react-aria-_R_17_"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-settings-2 size-4" aria-hidden="true"><path d="M14 17H5"></path><path d="M19 7h-9"></path><circle cx="17" cy="17" r="3"></circle><circle cx="7" cy="7" r="3"></circle></svg>登录配置</button></div><p class="text-[13px] leading-normal text-muted">只有已绑定账号可使用 GitHub 登录。本地邮箱与密码仍可使用。</p></section>"
+
+ ❯ tests/unit/identity/github-account-layout.test.ts:53:16
+     51|   const html = render();
+     52|   expect(html).toContain('@owner');
+     53|   expect(html).toContain('登录已停用，绑定保留');
+       |                ^
+     54|   expect(button(html, 'account-github-unlink')?.[1]).not.toMatch(/\bdi…
+     55| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/7]⎯
+
+ FAIL  |unit| tests/unit/identity/github-account-layout.test.ts > keeps configuration usable after a failed binding read and exposes only the binding retry
+AssertionError: expected [ …(3), index: 1601, …(2) ] to be null
+
+- Expected:
+null
+
++ Received:
+[
+  "<button data-slot=\"button\" data-testid=\"account-github-link\" class=\"button button--md button--outline h-12 min-h-12 min-w-0 flex-1 gap-2 rounded-lg px-2 text-sm font-normal min-[768px]:w-48 min-[768px]:flex-none bg-background\" data-rac=\"\" type=\"button\" disabled=\"\" data-react-aria-pressable=\"true\" id=\"react-aria-_R_n_\" data-disabled=\"true\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-link-2 size-4\" aria-hidden=\"true\"><path d=\"M9 17H7A5 5 0 0 1 7 7h2\"></path><path d=\"M15 7h2a5 5 0 1 1 0 10h-2\"></path><line x1=\"8\" x2=\"16\" y1=\"12\" y2=\"12\"></line></svg>绑定 GitHub</button>",
+  " data-slot=\"button\" data-testid=\"account-github-link\" class=\"button button--md button--outline h-12 min-h-12 min-w-0 flex-1 gap-2 rounded-lg px-2 text-sm font-normal min-[768px]:w-48 min-[768px]:flex-none bg-background\" data-rac=\"\" type=\"button\" disabled=\"\" data-react-aria-pressable=\"true\" id=\"react-aria-_R_n_\" data-disabled=\"true\"",
+  "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-link-2 size-4\" aria-hidden=\"true\"><path d=\"M9 17H7A5 5 0 0 1 7 7h2\"></path><path d=\"M15 7h2a5 5 0 1 1 0 10h-2\"></path><line x1=\"8\" x2=\"16\" y1=\"12\" y2=\"12\"></line></svg>绑定 GitHub",
+]
+
+ ❯ tests/unit/identity/github-account-layout.test.ts:62:47
+     60|   const html = render();
+     61|   expect(button(html, 'account-github-reload')).not.toBeNull();
+     62|   expect(button(html, 'account-github-link')).toBeNull();
+       |                                               ^
+     63|   expect(button(html, 'account-github-unlink')).toBeNull();
+     64|   expect(button(html, 'account-github-config')?.[1]).not.toMatch(/\bdi…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/7]⎯
+
+ FAIL  |unit| tests/unit/identity/github-account-layout.test.ts > uses binding readback after an unknown unlink, while configuration remains independent
+AssertionError: expected [ …(3), index: 1682, …(2) ] to be null
+
+- Expected:
+null
+
++ Received:
+[
+  "<button data-slot=\"button\" data-testid=\"account-github-unlink\" class=\"button button--md button--outline h-12 min-h-12 min-w-0 flex-1 gap-2 rounded-lg px-2 text-sm font-normal min-[768px]:w-48 min-[768px]:flex-none bg-background\" data-rac=\"\" type=\"button\" disabled=\"\" data-react-aria-pressable=\"true\" id=\"react-aria-_R_n_\" data-disabled=\"true\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-unlink size-4\" aria-hidden=\"true\"><path d=\"m18.84 12.25 1.72-1.71h-.02a5.004 5.004 0 0 0-.12-7.07 5.006 5.006 0 0 0-6.95 0l-1.72 1.71\"></path><path d=\"m5.17 11.75-1.71 1.71a5.004 5.004 0 0 0 .12 7.07 5.006 5.006 0 0 0 6.95 0l1.71-1.71\"></path><line x1=\"8\" x2=\"8\" y1=\"2\" y2=\"5\"></line><line x1=\"2\" x2=\"5\" y1=\"8\" y2=\"8\"></line><line x1=\"16\" x2=\"16\" y1=\"19\" y2=\"22\"></line><line x1=\"19\" x2=\"22\" y1=\"16\" y2=\"16\"></line></svg>解绑 GitHub</button>",
+  " data-slot=\"button\" data-testid=\"account-github-unlink\" class=\"button button--md button--outline h-12 min-h-12 min-w-0 flex-1 gap-2 rounded-lg px-2 text-sm font-normal min-[768px]:w-48 min-[768px]:flex-none bg-background\" data-rac=\"\" type=\"button\" disabled=\"\" data-react-aria-pressable=\"true\" id=\"react-aria-_R_n_\" data-disabled=\"true\"",
+  "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-unlink size-4\" aria-hidden=\"true\"><path d=\"m18.84 12.25 1.72-1.71h-.02a5.004 5.004 0 0 0-.12-7.07 5.006 5.006 0 0 0-6.95 0l-1.72 1.71\"></path><path d=\"m5.17 11.75-1.71 1.71a5.004 5.004 0 0 0 .12 7.07 5.006 5.006 0 0 0 6.95 0l1.71-1.71\"></path><line x1=\"8\" x2=\"8\" y1=\"2\" y2=\"5\"></line><line x1=\"2\" x2=\"5\" y1=\"8\" y2=\"8\"></line><line x1=\"16\" x2=\"16\" y1=\"19\" y2=\"22\"></line><line x1=\"19\" x2=\"22\" y1=\"16\" y2=\"16\"></line></svg>解绑 GitHub",
+]
+
+ ❯ tests/unit/identity/github-account-layout.test.ts:74:49
+     72|   expect(html).toContain('@owner');
+     73|   expect(button(html, 'account-github-reload')).not.toBeNull();
+     74|   expect(button(html, 'account-github-unlink')).toBeNull();
+       |                                                 ^
+     75|   expect(button(html, 'account-github-config')?.[1]).not.toMatch(/\bdi…
+     76| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/7]⎯
+
+ FAIL  |unit| tests/unit/identity/github-account-layout.test.ts > requires configuration readback after an unknown save and retains the known effective state
+AssertionError: expected [ …(3), index: 2418, …(2) ] to be null
+
+- Expected:
+null
+
++ Received:
+[
+  "<button data-slot=\"button\" data-testid=\"account-github-config\" class=\"button button--md button--outline h-12 min-h-12 min-w-0 flex-1 gap-2 rounded-lg px-2 text-sm font-normal min-[768px]:w-48 min-[768px]:flex-none bg-background\" data-rac=\"\" type=\"button\" disabled=\"\" data-react-aria-pressable=\"true\" id=\"react-aria-_R_17_\" data-disabled=\"true\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-settings-2 size-4\" aria-hidden=\"true\"><path d=\"M14 17H5\"></path><path d=\"M19 7h-9\"></path><circle cx=\"17\" cy=\"17\" r=\"3\"></circle><circle cx=\"7\" cy=\"7\" r=\"3\"></circle></svg>登录配置</button>",
+  " data-slot=\"button\" data-testid=\"account-github-config\" class=\"button button--md button--outline h-12 min-h-12 min-w-0 flex-1 gap-2 rounded-lg px-2 text-sm font-normal min-[768px]:w-48 min-[768px]:flex-none bg-background\" data-rac=\"\" type=\"button\" disabled=\"\" data-react-aria-pressable=\"true\" id=\"react-aria-_R_17_\" data-disabled=\"true\"",
+  "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-settings-2 size-4\" aria-hidden=\"true\"><path d=\"M14 17H5\"></path><path d=\"M19 7h-9\"></path><circle cx=\"17\" cy=\"17\" r=\"3\"></circle><circle cx=\"7\" cy=\"7\" r=\"3\"></circle></svg>登录配置",
+]
+
+ ❯ tests/unit/identity/github-account-layout.test.ts:84:49
+     82|   expect(html).toContain('配置保存结果待核对');
+     83|   expect(button(html, 'oauth-settings-reload')).not.toBeNull();
+     84|   expect(button(html, 'account-github-config')).toBeNull();
+       |                                                 ^
+     85|   expect(button(html, 'account-github-link')).toBeNull();
+     86| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/7]⎯
+
+ FAIL  |unit| tests/unit/identity/github-account-layout.test.ts > keeps saved and effective enable states visible when a restart is pending
+AssertionError: expected '<section data-testid="account-github"…' to match /已保存：[\s\S]*?停用/
+
+- Expected:
+/已保存：[\s\S]*?停用/
+
++ Received:
+"<section data-testid=\"account-github\" data-state=\"unbound\" class=\"grid min-w-0 gap-3\"><h2 id=\"account-github-heading\" tabindex=\"-1\" class=\"flex items-center gap-2.5 text-xl font-medium\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-log-in size-6 shrink-0\" aria-hidden=\"true\"><path d=\"m10 17 5-5-5-5\"></path><path d=\"M15 12H3\"></path><path d=\"M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4\"></path></svg>GitHub 登录</h2><div data-testid=\"oauth-settings\" data-state=\"ready\" class=\"grid min-w-0 gap-3\"><dl class=\"grid gap-x-5 gap-y-2 text-sm sm:grid-cols-[auto_1fr]\"><dt class=\"text-muted\">当前生效</dt><dd>已启用 GitHub 登录</dd></dl></div><dl class=\"grid gap-x-5 gap-y-2 text-sm sm:grid-cols-[auto_1fr]\"><dt class=\"text-muted\">绑定状态</dt><dd>尚未绑定 GitHub 账号</dd></dl><div data-testid=\"oauth-pending-restart\" class=\"grid gap-2 rounded-xl border border-border p-3 text-[13px] leading-normal\"><p class=\"flex items-center gap-2 font-medium\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-refresh-cw size-4 shrink-0\" aria-hidden=\"true\"><path d=\"M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8\"></path><path d=\"M21 3v5h-5\"></path><path d=\"M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16\"></path><path d=\"M8 16H3v5\"></path></svg>等待重启生效</p><dl class=\"grid gap-1.5\"><div class=\"grid gap-0.5 sm:grid-cols-[72px_1fr]\"><dt class=\"text-muted\">已保存</dt><dd class=\"min-w-0 wrap-anywhere\">停用 · Client ID：saved-client · 密钥已设置</dd></div><div class=\"grid gap-0.5 sm:grid-cols-[72px_1fr]\"><dt class=\"text-muted\">当前生效</dt><dd class=\"min-w-0 wrap-anywhere\">启用 · Client ID：saved-client · 密钥已设置</dd></div></dl><p class=\"text-muted\">重启容器后使用已保存配置。保存不会自动重启。</p></div><div class=\"flex gap-3\"><button data-slot=\"button\" data-testid=\"account-github-link\" class=\"button button--md button--outline h-12 min-h-12 min-w-0 flex-1 gap-2 rounded-lg px-2 text-sm font-normal min-[768px]:w-48 min-[768px]:flex-none bg-background\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria-_R_n_\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-link-2 size-4\" aria-hidden=\"true\"><path d=\"M9 17H7A5 5 0 0 1 7 7h2\"></path><path d=\"M15 7h2a5 5 0 1 1 0 10h-2\"></path><line x1=\"8\" x2=\"16\" y1=\"12\" y2=\"12\"></line></svg>绑定 GitHub</button><button data-slot=\"button\" data-testid=\"account-github-config\" class=\"button button--md button--outline h-12 min-h-12 min-w-0 flex-1 gap-2 rounded-lg px-2 text-sm font-normal min-[768px]:w-48 min-[768px]:flex-none bg-background\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria-_R_17_\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-settings-2 size-4\" aria-hidden=\"true\"><path d=\"M14 17H5\"></path><path d=\"M19 7h-9\"></path><circle cx=\"17\" cy=\"17\" r=\"3\"></circle><circle cx=\"7\" cy=\"7\" r=\"3\"></circle></svg>登录配置</button></div><p class=\"text-[13px] leading-normal text-muted\">只有已绑定账号可使用 GitHub 登录。本地邮箱与密码仍可使用。</p></section>"
+
+ ❯ tests/unit/identity/github-account-layout.test.ts:91:16
+     89|   state.view.settings.data!.pendingRestart = true;
+     90|   const html = render();
+     91|   expect(html).toMatch(/已保存：[\s\S]*?停用/);
+       |                ^
+     92|   expect(html).toMatch(/当前生效：[\s\S]*?启用/);
+     93|   expect(html).toContain('重启容器后使用已保存配置');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/7]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  7 failed | 1 passed (8)
+   Start at  17:44:04
+   Duration  510ms (import 76%, transform 18%, tests 6%)

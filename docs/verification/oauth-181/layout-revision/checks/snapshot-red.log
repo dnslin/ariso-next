@@ -1,0 +1,40 @@
+Already up to date
+Done in 32ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-181-github-oauth/ariso
+
+ ❯ |unit| tests/unit/identity/github-account-layout.test.ts (14 tests | 1 failed | 13 skipped) 15ms
+   × shows each expanded configuration snapshot as separate enable, Client ID and secret-state lines 14ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/identity/github-account-layout.test.ts > shows each expanded configuration snapshot as separate enable, Client ID and secret-state lines
+AssertionError: expected [] to deeply equal [ [ '已保存 · 停用', …(2) ], …(1) ]
+
+- Expected
++ Received
+
+- [
+-   [
+-     "已保存 · 停用",
+-     "Client ID：saved-client",
+-     "密钥未设置",
+-   ],
+-   [
+-     "当前生效 · 启用",
+-     "Client ID：effective-client",
+-     "密钥已设置",
+-   ],
+- ]
++ []
+
+ ❯ tests/unit/identity/github-account-layout.test.ts:246:21
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 13 skipped (14)
+   Start at  18:21:43
+   Duration  524ms (import 80%, transform 17%, tests 3%)

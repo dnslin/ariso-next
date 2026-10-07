@@ -50,8 +50,7 @@ export async function verifyOAuthReads(page, config, report, ui) {
       await page.waitForSelector(`[data-testid="${root}"][data-state="error"]`);
       assert.equal(
         await page.evaluate(
-          (id) =>
-            document.querySelector(`[data-testid="${id}"]`)?.disabled ?? true,
+          (id) => document.querySelector(`[data-testid="${id}"]`) === null,
           disabledAction,
         ),
         true,

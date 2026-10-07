@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { join } from 'node:path';
+import { accountRequest } from './account-auth.mjs';
 import {
   resizeViewport,
   setTheme,
@@ -112,6 +113,16 @@ export function createOAuthPage(page, config, report) {
     assert.equal(new URL(await page.url()).pathname, '/settings/account');
   }
   async function layouts(name, withSettings = false) {
+    const pending = await page.evaluate(
+      () => !!document.querySelector('[data-testid="oauth-pending-restart"]'),
+    );
+    const configuration = pending
+      ? await accountRequest(page, report, width, '/api/settings/github')
+      : null;
+    if (configuration) {
+      assert.equal(configuration.status, 200);
+      assert.equal(configuration.payload.pendingRestart, true);
+    }
     const widths =
       config.width === 1440
         ? [1440]
@@ -122,7 +133,151 @@ export function createOAuthPage(page, config, report) {
       await setTheme(page, theme);
       for (const capturedWidth of widths) {
         await resizeViewport(page, capturedWidth);
+        const layout = await page.evaluate(() => {
+          const root = document.querySelector('[data-testid="account-page"]');
+          const rect = (node) => {
+            const { x, y, width, height, bottom, right } =
+              node.getBoundingClientRect();
+            return { x, y, width, height, bottom, right };
+          };
+          const github = root.querySelector('[data-testid="account-github"]');
+          return {
+            contentWidth: github.parentElement.getBoundingClientRect().width,
+            headings: [
+              ...root.querySelectorAll(
+                '#owner-account-heading, #account-github-heading',
+              ),
+            ].map((node) => ({
+              text: node.textContent.trim(),
+              icon: !!node.querySelector('svg[aria-hidden="true"]'),
+            })),
+            rows: [
+              ...root.querySelectorAll('[data-testid="account-setting-row"]'),
+            ].map((node) => ({
+              label: node.firstElementChild.textContent.trim(),
+              icon: !!node.firstElementChild.querySelector(
+                'svg[aria-hidden="true"]',
+              ),
+              value: rect(node.children[1]),
+              buttons: [...node.querySelectorAll('button')].map(rect),
+            })),
+          };
+        });
+        assert.ok(
+          layout.contentWidth <= 961,
+          'Account rows use the approved maximum content width',
+        );
+        assert.deepEqual(layout.headings, [
+          { text: '所有者账号', icon: true },
+          { text: 'GitHub 登录', icon: true },
+        ]);
+        assert.deepEqual(
+          layout.rows.map(({ label, icon }) => ({ label, icon })),
+          [
+            { label: '登录邮箱', icon: true },
+            { label: '登录密码', icon: true },
+            { label: 'GitHub 账号', icon: true },
+            { label: '站点登录配置', icon: true },
+          ],
+        );
+        for (const row of layout.rows) {
+          for (const button of row.buttons) {
+            assert.ok(
+              button.width >= 44 && button.height >= 44,
+              `${row.label} action has a 44px target`,
+            );
+            if (capturedWidth < 640)
+              assert.ok(
+                button.y >= row.value.bottom,
+                `${row.label} action follows its value on mobile`,
+              );
+            else
+              assert.ok(
+                button.x >= row.value.right,
+                `${row.label} action follows its value on desktop`,
+              );
+          }
+        }
+        report.layouts.push({
+          name: `${name}-rows-${theme}`,
+          width: capturedWidth,
+          ...layout,
+        });
         await geometry(`${name}-${theme}`, capturedWidth);
+        if (configuration) {
+          const trigger = '[data-testid="oauth-config-difference"]';
+          const path = new URL(await page.url()).pathname;
+          await page.focus(trigger);
+          const snapshot = await scroll();
+          await page.keyboard.press('Enter');
+          await page.waitForFunction(
+            (selector) =>
+              document
+                .querySelector(selector)
+                ?.getAttribute('aria-expanded') === 'true',
+            trigger,
+          );
+          const details = await page.evaluate(() =>
+            [
+              ...document.querySelectorAll(
+                '[data-testid="oauth-pending-restart"] [data-testid="oauth-config-snapshot"]',
+              ),
+            ].map((node) => ({
+              lines: [...node.querySelectorAll('p')].map((line) =>
+                line.textContent.trim(),
+              ),
+              visible:
+                node.getBoundingClientRect().height > 0 &&
+                getComputedStyle(node).visibility === 'visible',
+            })),
+          );
+          assert.deepEqual(
+            details,
+            ['saved', 'effective'].map((key) => {
+              const value = configuration.payload[key];
+              return {
+                lines: [
+                  `${key === 'saved' ? '已保存' : '当前生效'} · ${value.enabled ? '启用' : '停用'}`,
+                  `Client ID：${value.clientId || '未设置'}`,
+                  `密钥${value.hasSecret ? '已设置' : '未设置'}`,
+                ],
+                visible: true,
+              };
+            }),
+            'Expanded configuration compares the actual saved and effective public snapshots',
+          );
+          await geometry(
+            `${name}-configuration-difference-${theme}`,
+            capturedWidth,
+          );
+          await page.keyboard.press('Enter');
+          await page.waitForFunction(
+            (selector) =>
+              document
+                .querySelector(selector)
+                ?.getAttribute('aria-expanded') === 'false',
+            trigger,
+          );
+          assert.equal(
+            new URL(await page.url()).pathname,
+            path,
+            'Configuration comparison preserves the account page',
+          );
+          assert.equal(
+            await page.evaluate(
+              (selector) =>
+                document.activeElement === document.querySelector(selector),
+              trigger,
+            ),
+            true,
+            'Configuration comparison retains keyboard focus',
+          );
+          assert.deepEqual(
+            await scroll(),
+            snapshot,
+            'Collapsing configuration comparison retains source scrolling',
+          );
+        }
         if (withSettings) {
           await open();
           await geometry(`${name}-configuration-${theme}`, capturedWidth);

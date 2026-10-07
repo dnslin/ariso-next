@@ -1,0 +1,345 @@
+Already up to date
+Done in 46ms using pnpm v11.19.0
+$ vitest run --project unit --maxWorkers=4 --reporter=default --reporter=junit --outputFile=test-results/issue181-layout-unit-final.xml
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-181-github-oauth/ariso
+
+ ✓ |unit| tests/unit/runtime/console-bridge.test.ts (6 tests) 940ms
+   ✓ console preload bridge (6)
+     ✓ 遵守日志级别 fatal 306ms
+ ✓ |unit| tests/unit/media/preview-route.test.ts (44 tests) 344ms
+ ✓ |unit| tests/unit/upload/controller.test.ts (36 tests) 1610ms
+ ✓ |unit| tests/unit/upload/queue.test.ts (9 tests) 1645ms
+   ✓ freezes relation IDs per submission and preserves groups of 20/20/5 across setting edits 840ms
+ ✓ |unit| tests/unit/library/trash-changes.test.ts (5 tests) 379ms
+ ✓ |unit| tests/unit/analytics/collector.test.ts (16 tests) 267ms
+ ✓ |unit| tests/unit/collections/unicode-experiment.test.ts (12 tests) 345ms
+   ✓ EV-COLLECTIONS-01 Unicode experiment (12)
+     ✓ matches the complete pinned default full-fold data and explicit name samples 339ms
+ ✓ |unit| tests/unit/runtime/http-timeout.test.ts (1 test) 282ms
+ ✓ |unit| tests/unit/runtime/oauth-transport.test.ts (8 tests) 175ms
+ ✓ |unit| tests/unit/library/viewer-neighbors.test.ts (8 tests) 172ms
+ ✓ |unit| tests/unit/library/trash-query-controller.test.ts (3 tests) 180ms
+ ✓ |unit| tests/unit/library/batch-reprocess.test.ts (22 tests) 151ms
+ ✓ |unit| tests/unit/runtime/logger.test.ts (13 tests) 81ms
+ ✓ |unit| tests/unit/library/changes.test.ts (2 tests) 163ms
+ ✓ |unit| tests/unit/upload/transport.test.ts (9 tests) 137ms
+ ✓ |unit| tests/unit/library/query-cache.test.ts (3 tests) 133ms
+ ✓ |unit| tests/unit/library/batch-controller.test.ts (18 tests) 141ms
+ ✓ |unit| tests/unit/library/gallery.test.ts (20 tests) 173ms
+ ✓ |unit| tests/unit/upload/input.test.ts (27 tests) 80ms
+ ✓ |unit| tests/unit/media/resources.test.ts (15 tests) 58ms
+ ✓ |unit| tests/unit/library/batch-request.test.ts (9 tests) 61ms
+ ✓ |unit| tests/unit/shell/navigation.test.ts (12 tests) 52ms
+ ✓ |unit| tests/unit/storage/s3-protocol.test.ts (10 tests) 30ms
+ ✓ |unit| tests/unit/identity/token-request.test.ts (16 tests) 24ms
+ ✓ |unit| tests/unit/library/detail-help.test.ts (11 tests) 58ms
+ ✓ |unit| tests/unit/sharing/share-session.test.ts (22 tests) 50ms
+ ✓ |unit| tests/unit/storage/s3-probes.test.ts (8 tests) 36ms
+ ✓ |unit| tests/unit/library/batch-targets.test.ts (6 tests) 54ms
+ ✓ |unit| tests/unit/library/batch-summary.test.ts (20 tests) 48ms
+ ✓ |unit| tests/unit/library/card.test.ts (11 tests) 48ms
+ ✓ |unit| tests/unit/storage/storage-references-panel.test.ts (6 tests) 47ms
+ ✓ |unit| tests/unit/library/cleanup-workspace.test.ts (4 tests) 20ms
+ ✓ |unit| tests/unit/media/watermark-route.test.ts (16 tests) 28ms
+ ✓ |unit| tests/unit/library/detail-status.test.ts (6 tests) 34ms
+{"level":"error","time":"2026-10-07T10:23:42.172Z","module":"storage.http","err":{"type":"Error","message":"remote operation failed","stack":"Error: remote operation failed\n    at /Users/dnslin/.codex/worktrees/issue-181-github-oauth/ariso/tests/unit/storage/probe-http.test.ts:21:27\n    at Module.storageResponse (/Users/dnslin/.codex/worktrees/issue-181-github-oauth/ariso/src/server/storage/http.ts:24:13)\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at /Users/dnslin/.codex/worktrees/issue-181-github-oauth/ariso/tests/unit/storage/probe-http.test.ts:16:20","code":"STORAGE_OPERATION_FAILED"},"path":"/api/storages/id/probes/probe/retry-cleanup","msg":"Remote storage operation failed"}
+{"level":"error","time":"2026-10-07T10:23:42.176Z","module":"storage.http","err":{"type":"Error","message":"remote operation failed","stack":"Error: remote operation failed\n    at /Users/dnslin/.codex/worktrees/issue-181-github-oauth/ariso/tests/unit/storage/probe-http.test.ts:21:27\n    at Module.storageResponse (/Users/dnslin/.codex/worktrees/issue-181-github-oauth/ariso/src/server/storage/http.ts:24:13)\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at /Users/dnslin/.codex/worktrees/issue-181-github-oauth/ariso/tests/unit/storage/probe-http.test.ts:16:20","code":"STORAGE_TIMEOUT"},"path":"/api/storages/id/probes/probe/retry-cleanup","msg":"Remote storage operation failed"}
+{"level":"error","time":"2026-10-07T10:23:42.177Z","module":"storage.http","err":{"type":"Error","message":"namespace scan failed","stack":"Error: namespace scan failed\n    at /Users/dnslin/.codex/worktrees/issue-181-github-oauth/ariso/tests/unit/storage/probe-http.test.ts:36:27\n    at Module.storageResponse (/Users/dnslin/.codex/worktrees/issue-181-github-oauth/ariso/src/server/storage/http.ts:24:13)\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at /Users/dnslin/.codex/worktrees/issue-181-github-oauth/ariso/tests/unit/storage/probe-http.test.ts:33:20","code":"STORAGE_SCAN_FAILED","status":502},"path":"/api/storages/id","msg":"Remote storage operation failed"}
+{"level":"error","time":"2026-10-07T10:23:42.177Z","module":"storage.http","err":{"type":"Error","message":"namespace scan failed","stack":"Error: namespace scan failed\n    at /Users/dnslin/.codex/worktrees/issue-181-github-oauth/ariso/tests/unit/storage/probe-http.test.ts:36:27\n    at Module.storageResponse (/Users/dnslin/.codex/worktrees/issue-181-github-oauth/ariso/src/server/storage/http.ts:24:13)\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at /Users/dnslin/.codex/worktrees/issue-181-github-oauth/ariso/tests/unit/storage/probe-http.test.ts:33:20","code":"STORAGE_SCAN_FAILED","status":504},"path":"/api/storages/id","msg":"Remote storage operation failed"}
+{"level":"error","time":"2026-10-07T10:23:42.180Z","module":"storage.http","err":{"type":"Error","message":"namespace scan failed","stack":"Error: namespace scan failed\n    at /Users/dnslin/.codex/worktrees/issue-181-github-oauth/ariso/tests/unit/storage/probe-http.test.ts:36:27\n    at Module.storageResponse (/Users/dnslin/.codex/worktrees/issue-181-github-oauth/ariso/src/server/storage/http.ts:24:13)\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at /Users/dnslin/.codex/worktrees/issue-181-github-oauth/ariso/tests/unit/storage/probe-http.test.ts:33:20","code":"STORAGE_SCAN_FAILED","status":500},"path":"/api/storages/id","msg":"Storage request failed"}
+ ✓ |unit| tests/unit/storage/probe-http.test.ts (5 tests) 33ms
+stderr | tests/unit/storage/connection-report.test.ts > does not describe skipped deletion as an object that was deleted
+Each child in a list should have a unique "key" prop.
+
+Check the render method of `OwnerShell`. It was passed a child from StorageConnectionResult. See https://react.dev/link/warning-keys for more information.
+
+stderr | tests/unit/storage/connection-report.test.ts > preserves service diagnostics and real probe identity in the running report views
+Each child in a list should have a unique "key" prop.
+
+Check the render method of `OwnerShell`. It was passed a child from StorageConnectionResult. See https://react.dev/link/warning-keys for more information.
+
+stderr | tests/unit/storage/connection-report.test.ts > keeps failed test status after cleanup succeeds and hides obsolete cleanup errors
+Each child in a list should have a unique "key" prop.
+
+Check the render method of `OwnerShell`. It was passed a child from StorageConnectionResult. See https://react.dev/link/warning-keys for more information.
+
+stderr | tests/unit/storage/connection-report.test.ts > does not offer enable from a stale passed report
+Each child in a list should have a unique "key" prop.
+
+Check the render method of `OwnerShell`. It was passed a child from StorageConnectionResult. See https://react.dev/link/warning-keys for more information.
+
+stderr | tests/unit/storage/connection-report.test.ts > keeps pending cleanup visible independently of other stages
+Each child in a list should have a unique "key" prop.
+
+Check the render method of `OwnerShell`. It was passed a child from StorageConnectionResult. See https://react.dev/link/warning-keys for more information.
+
+stderr | tests/unit/storage/connection-report.test.ts > does not describe a failed or unconfirmed anonymous read as passing
+Each child in a list should have a unique "key" prop.
+
+Check the render method of `OwnerShell`. It was passed a child from StorageConnectionResult. See https://react.dev/link/warning-keys for more information.
+
+ ✓ |unit| tests/unit/storage/connection-report.test.ts (6 tests) 48ms
+ ✓ |unit| tests/unit/library/cleanup-controller.test.ts (7 tests) 42ms
+ ✓ |unit| tests/unit/library/request-reprocess.test.ts (3 tests) 18ms
+ ✓ |unit| tests/unit/media/reprocess-route.test.ts (7 tests) 25ms
+ ✓ |unit| tests/unit/library/query-hook.test.ts (13 tests) 32ms
+ ✓ |unit| tests/unit/library/batch-route.test.ts (10 tests) 23ms
+ ✓ |unit| tests/unit/identity/owner-page.test.ts (8 tests) 18ms
+ ✓ |unit| tests/unit/identity/github-account-layout.test.ts (14 tests) 45ms
+ ✓ |unit| tests/unit/delivery/headers.test.ts (35 tests) 25ms
+ ✓ |unit| tests/unit/storage/cors-browser.test.ts (5 tests) 17ms
+ ✓ |unit| tests/unit/library/query.test.ts (30 tests) 20ms
+ ✓ |unit| tests/unit/storage/storage-reconciliation.test.ts (10 tests) 27ms
+ ✓ |unit| tests/unit/runtime/browser-sharing.test.ts (7 tests) 22ms
+ ✓ |unit| tests/unit/delivery/stream.test.ts (1 test) 23ms
+ ✓ |unit| tests/unit/library/reprocess-result.test.ts (6 tests) 19ms
+ ✓ |unit| tests/unit/site/settings.test.ts (43 tests) 24ms
+ ✓ |unit| tests/unit/identity/validation.test.ts (11 tests) 18ms
+ ✓ |unit| tests/unit/identity/github-request.test.ts (9 tests) 19ms
+ ✓ |unit| tests/unit/storage/s3.test.ts (10 tests) 22ms
+ ✓ |unit| tests/unit/library/selection.test.ts (12 tests) 24ms
+ ✓ |unit| tests/unit/identity/account-request.test.ts (11 tests) 21ms
+ ✓ |unit| tests/unit/library/selection-reconciliation.test.ts (3 tests) 20ms
+ ✓ |unit| tests/unit/identity/github-settings-draft.test.ts (4 tests) 18ms
+ ✓ |unit| tests/unit/media/watermark-read-route.test.ts (4 tests) 19ms
+ ✓ |unit| tests/unit/sharing/client.test.ts (2 tests) 20ms
+ ✓ |unit| tests/unit/sharing/configuration.test.ts (5 tests) 17ms
+ ✓ |unit| tests/unit/identity/github-navigation-restore.test.ts (6 tests) 35ms
+ ✓ |unit| tests/unit/library/batch.test.ts (41 tests) 12ms
+ ✓ |unit| tests/unit/upload/page-settings-route.test.ts (3 tests) 14ms
+ ✓ |unit| tests/unit/library/filter-options.test.ts (2 tests) 21ms
+ ✓ |unit| tests/unit/library/detail-scope.test.ts (2 tests) 21ms
+ ✓ |unit| tests/unit/library/cleanup-request.test.ts (5 tests) 21ms
+ ✓ |unit| tests/unit/collections/tags-route.test.ts (6 tests) 14ms
+ ✓ |unit| tests/unit/upload/public-http.test.ts (13 tests) 13ms
+ ✓ |unit| tests/unit/storage/cors-http.test.ts (7 tests) 17ms
+ ✓ |unit| tests/unit/sharing/management-model.test.ts (8 tests) 18ms
+ ✓ |unit| tests/unit/media/svg-policy.test.ts (52 tests) 17ms
+ ✓ |unit| tests/unit/scripts/container.test.ts (9 tests) 14ms
+ ✓ |unit| tests/unit/library/copy-request.test.ts (13 tests) 17ms
+ ✓ |unit| tests/unit/upload/settings-route.test.ts (7 tests) 17ms
+ ✓ |unit| tests/unit/library/query-state.test.ts (20 tests) 9ms
+ ✓ |unit| tests/unit/sharing/limiter.test.ts (3 tests) 6ms
+ ✓ |unit| tests/unit/identity/token-time.test.ts (8 tests) 13ms
+ ✓ |unit| tests/unit/runtime/env.test.ts (55 tests) 9ms
+ ✓ |unit| tests/unit/storage/storage-alert.test.ts (2 tests) 13ms
+ ✓ |unit| tests/unit/media/settings.test.ts (52 tests) 7ms
+ ✓ |unit| tests/unit/sharing/public-validation.test.ts (3 tests) 4ms
+ ✓ |unit| tests/unit/storage/cors-report.test.ts (1 test) 10ms
+ ✓ |unit| tests/unit/library/trash-query-state.test.ts (17 tests) 9ms
+ ✓ |unit| tests/unit/delivery/errors.test.ts (10 tests) 9ms
+ ✓ |unit| tests/unit/runtime/crypto.test.ts (15 tests) 9ms
+ ✓ |unit| tests/unit/runtime/verify-image.test.ts (5 tests) 6ms
+ ✓ |unit| tests/unit/library/viewer-model.test.ts (17 tests) 6ms
+ ✓ |unit| tests/unit/collections/validation.test.ts (29 tests) 5ms
+ ✓ |unit| tests/unit/storage/validation.test.ts (5 tests) 8ms
+ ✓ |unit| tests/unit/media/watermark-validation.test.ts (9 tests) 4ms
+ ✓ |unit| tests/unit/media/format-experiment.test.ts (5 tests) 8ms
+ ✓ |unit| tests/unit/media/processing-form.test.ts (4 tests) 6ms
+ ✓ |unit| tests/unit/scripts/browser-errors.test.ts (2 tests) 6ms
+ ✓ |unit| tests/unit/library/reprocess-recovery.test.ts (31 tests) 4ms
+ ✓ |unit| tests/unit/runtime/browser-oauth.test.ts (3 tests) 4ms
+ ✓ |unit| tests/unit/library/batch-feedback.test.ts (46 tests) 4ms
+ ✓ |unit| tests/unit/upload/validation.test.ts (8 tests) 4ms
+ ✓ |unit| tests/unit/runtime/browser-plan.test.ts (64 tests) 4ms
+ ✓ |unit| tests/unit/runtime/browser-identity-management.test.ts (5 tests) 6ms
+ ✓ |unit| tests/unit/media/metadata.test.ts (8 tests) 3ms
+ ✓ |unit| tests/unit/runtime/browser-stages.test.ts (5 tests) 4ms
+ ✓ |unit| tests/unit/runtime/browser-m2.test.ts (4 tests) 4ms
+ ✓ |unit| tests/unit/library/filter-dates.test.ts (4 tests) 5ms
+ ✓ |unit| tests/unit/identity/return-to.test.ts (23 tests) 2ms
+ ✓ |unit| tests/unit/identity/upload-token-validation.test.ts (3 tests) 4ms
+ ✓ |unit| tests/unit/identity/cookie-attributes.test.ts (7 tests) 2ms
+ ✓ |unit| tests/unit/collections/tag-query.test.ts (1 test) 4ms
+ ✓ |unit| tests/unit/library/drag-selection.test.ts (2 tests) 4ms
+ ✓ |unit| tests/unit/delivery/resolve.test.ts (25 tests) 4ms
+ ✓ |unit| tests/unit/runtime/log-redaction.test.ts (17 tests) 5ms
+ ✓ |unit| tests/unit/collections/album-query.test.ts (1 test) 4ms
+ ✓ |unit| tests/unit/identity/github-validation.test.ts (2 tests) 6ms
+ ✓ |unit| tests/unit/media/errors.test.ts (25 tests) 3ms
+ ✓ |unit| tests/unit/library/detail-preview.test.ts (5 tests) 3ms
+ ✓ |unit| tests/unit/library/trash-batch-state.test.ts (4 tests) 4ms
+ ✓ |unit| tests/unit/media/processing.test.ts (1 test) 3ms
+ ✓ |unit| tests/unit/storage/storage-form.test.ts (7 tests) 2ms
+ ✓ |unit| tests/unit/media/reprocess.test.ts (3 tests) 3ms
+ ✓ |unit| tests/unit/runtime/sharing-browser-errors.test.ts (1 test) 2ms
+ ✓ |unit| tests/unit/media/watermark.test.ts (2 tests) 2ms
+ ✓ |unit| tests/unit/runtime/browser-runner.test.ts (169 tests) 65800ms
+   ✓ browser runner argument boundaries (169)
+     ✓ accepts suite full and its only undefined 853ms
+     ✓ accepts suite viewer and its only undefined 522ms
+     ✓ accepts suite viewer and its only representative 439ms
+     ✓ accepts suite viewer and its only behavior 482ms
+     ✓ accepts suite viewer and its only recovery 427ms
+     ✓ accepts suite viewer and its only refresh 496ms
+     ✓ accepts suite viewer and its only consumers 547ms
+     ✓ accepts suite viewer and its only deleted-source 532ms
+     ✓ accepts suite viewer and its only pending-navigation 657ms
+     ✓ accepts suite upload and its only relations 567ms
+     ✓ accepts suite upload and its only undefined 504ms
+     ✓ accepts suite upload and its only submissions 490ms
+     ✓ accepts suite upload-regression and its only undefined 499ms
+     ✓ accepts suite upload-regression and its only main 488ms
+     ✓ accepts suite m2-mobile and its only undefined 418ms
+     ✓ accepts suite upload-s3 and its only cleanup 399ms
+     ✓ accepts suite upload-s3 and its only undefined 380ms
+     ✓ accepts suite copy-dropdown and its only undefined 429ms
+     ✓ accepts suite library-reprocess and its only undefined 403ms
+     ✓ accepts suite library-copy and its only representative 401ms
+     ✓ accepts suite library-copy and its only undefined 395ms
+     ✓ accepts suite library-copy and its only feedback 349ms
+     ✓ accepts suite library-copy and its only revision 335ms
+     ✓ accepts suite storage-admin and its only live 340ms
+     ✓ accepts suite storage-admin and its only undefined 332ms
+     ✓ accepts suite storage-admin and its only dialogs 328ms
+     ✓ accepts suite storage-admin and its only feedback 332ms
+     ✓ accepts suite storage-admin and its only regressions 326ms
+     ✓ accepts suite processing and its only undefined 324ms
+     ✓ accepts suite processing and its only representative 323ms
+     ✓ accepts suite processing and its only settings 322ms
+     ✓ accepts suite processing and its only preview 325ms
+     ✓ accepts suite processing and its only recovery 324ms
+     ✓ accepts suite processing and its only consumers 325ms
+     ✓ accepts suite account and its only undefined 327ms
+     ✓ accepts suite oauth and its only undefined 331ms
+     ✓ accepts suite tokens and its only undefined 332ms
+     ✓ accepts suite tokens and its only representative 325ms
+     ✓ accepts suite tokens and its only behavior 332ms
+     ✓ accepts suite tokens and its only lifecycle 324ms
+     ✓ accepts suite tokens and its only recovery 325ms
+     ✓ accepts suite tokens and its only create-recovery 322ms
+     ✓ accepts suite tokens and its only action-recovery 330ms
+     ✓ accepts suite tokens and its only consumers 326ms
+     ✓ accepts suite trash and its only representative 322ms
+     ✓ accepts suite trash and its only undefined 326ms
+     ✓ accepts suite trash and its only cleanup 324ms
+     ✓ accepts suite trash and its only query-error 330ms
+     ✓ accepts suite trash and its only confirmation 329ms
+     ✓ accepts suite trash and its only approved-ui 328ms
+     ✓ accepts suite trash and its only approved-results 329ms
+     ✓ accepts suite trash and its only approved-query 333ms
+     ✓ accepts suite trash and its only approved-progress 324ms
+     ✓ accepts suite trash and its only review-fixes 323ms
+     ✓ accepts suite library-batch and its only representative 328ms
+     ✓ accepts suite library-batch and its only undefined 329ms
+     ✓ accepts suite library-batch and its only visibility 327ms
+     ✓ accepts suite library-batch and its only feedback 329ms
+     ✓ accepts suite library-batch and its only tag-states 325ms
+     ✓ accepts suite library-batch and its only lifecycle 331ms
+     ✓ accepts suite library-batch and its only cache 330ms
+     ✓ accepts suite library-batch and its only review-fixes 328ms
+     ✓ accepts suite library-batch and its only recovery 330ms
+     ✓ accepts suite sharing-experiment and its only undefined 331ms
+     ✓ accepts suite sharing-protocol and its only undefined 326ms
+     ✓ accepts suite sharing-public and its only undefined 329ms
+     ✓ accepts suite sharing-public and its only representative 327ms
+     ✓ accepts suite sharing-public and its only behavior 330ms
+     ✓ accepts suite sharing-public and its only race 330ms
+     ✓ accepts suite sharing-public and its only recovery 372ms
+     ✓ accepts suite sharing-management and its only undefined 328ms
+     ✓ accepts suite sharing-management and its only representative 331ms
+     ✓ accepts suite sharing-management and its only behavior 336ms
+     ✓ accepts suite sharing-management and its only recovery 334ms
+     ✓ accepts suite shell-navigation and its only undefined 337ms
+     ✓ accepts suite library and its only undefined 335ms
+     ✓ accepts suite library and its only recovery 326ms
+     ✓ accepts suite library-feedback and its only undefined 333ms
+     ✓ accepts suite albums and its only undefined 324ms
+     ✓ accepts suite album-cover and its only undefined 341ms
+     ✓ accepts suite tags and its only undefined 326ms
+     ✓ accepts suite upload-input and its only undefined 328ms
+     ✓ rejects upload-regression main in suite full 331ms
+     ✓ rejects upload-regression main in suite viewer 328ms
+     ✓ rejects upload-regression main in suite upload 333ms
+     ✓ rejects upload-regression main in suite m2-mobile 334ms
+     ✓ rejects upload-regression main in suite upload-s3 333ms
+     ✓ rejects upload-regression main in suite copy-dropdown 330ms
+     ✓ rejects upload-regression main in suite library-reprocess 325ms
+     ✓ rejects upload-regression main in suite library-copy 327ms
+     ✓ rejects upload-regression main in suite storage-admin 329ms
+     ✓ rejects upload-regression main in suite processing 327ms
+     ✓ rejects upload-regression main in suite account 325ms
+     ✓ rejects upload-regression main in suite oauth 321ms
+     ✓ rejects upload-regression main in suite tokens 332ms
+     ✓ rejects upload-regression main in suite trash 326ms
+     ✓ rejects upload-regression main in suite library-batch 338ms
+     ✓ rejects upload-regression main in suite sharing-experiment 339ms
+     ✓ rejects upload-regression main in suite sharing-protocol 331ms
+     ✓ rejects upload-regression main in suite sharing-public 330ms
+     ✓ rejects upload-regression main in suite sharing-management 328ms
+     ✓ rejects upload-regression main in suite shell-navigation 322ms
+     ✓ rejects upload-regression main in suite library 328ms
+     ✓ rejects upload-regression main in suite library-feedback 325ms
+     ✓ rejects upload-regression main in suite albums 330ms
+     ✓ rejects upload-regression main in suite album-cover 330ms
+     ✓ rejects upload-regression main in suite tags 333ms
+     ✓ rejects upload-regression main in suite upload-input 330ms
+     ✓ rejects an unrelated phase in upload-regression 337ms
+     ✓ rejects a partial m2-mobile phase before 330ms
+     ✓ rejects a partial m2-mobile phase after 537ms
+     ✓ rejects a partial m2-mobile phase representative 386ms
+     ✓ rejects non-primary page labels in suite full before runtime startup 364ms
+     ✓ rejects non-primary page labels in suite m2-mobile before runtime startup 367ms
+     ✓ rejects non-primary page labels in suite albums before runtime startup 357ms
+     ✓ rejects non-primary page labels in suite album-cover before runtime startup 357ms
+     ✓ rejects non-primary page labels in suite tags before runtime startup 367ms
+     ✓ rejects non-primary page labels in suite upload-input before runtime startup 367ms
+     ✓ rejects non-primary page labels in suite library-feedback before runtime startup 366ms
+     ✓ handles recovery according to suite full ownership 378ms
+     ✓ handles recovery according to suite upload ownership 363ms
+     ✓ handles recovery according to suite upload-regression ownership 350ms
+     ✓ handles recovery according to suite m2-mobile ownership 342ms
+     ✓ handles recovery according to suite upload-s3 ownership 357ms
+     ✓ handles recovery according to suite copy-dropdown ownership 347ms
+     ✓ handles recovery according to suite library-reprocess ownership 353ms
+     ✓ handles recovery according to suite library-copy ownership 477ms
+     ✓ handles recovery according to suite storage-admin ownership 355ms
+     ✓ handles recovery according to suite account ownership 418ms
+     ✓ handles recovery according to suite oauth ownership 390ms
+     ✓ handles recovery according to suite trash ownership 376ms
+     ✓ handles recovery according to suite library-batch ownership 396ms
+     ✓ handles recovery according to suite sharing-experiment ownership 397ms
+     ✓ handles recovery according to suite sharing-protocol ownership 392ms
+     ✓ handles recovery according to suite sharing-public ownership 375ms
+     ✓ handles recovery according to suite shell-navigation ownership 366ms
+     ✓ handles recovery according to suite library-feedback ownership 407ms
+     ✓ handles recovery according to suite albums ownership 430ms
+     ✓ handles recovery according to suite album-cover ownership 428ms
+     ✓ handles recovery according to suite tags ownership 428ms
+     ✓ handles recovery according to suite upload-input ownership 625ms
+     ✓ rejects an unrelated phase in library 462ms
+     ✓ rejects unrelated sharing parameter --only 416ms
+     ✓ rejects unrelated sharing parameter --storage-config 402ms
+     ✓ rejects unrelated sharing parameter --preview-config 372ms
+     ✓ limits sharing-public phase representative to its own suite 394ms
+     ✓ limits sharing-public phase behavior to its own suite 385ms
+     ✓ limits sharing-public phase race to its own suite 397ms
+     ✓ limits sharing-public phase recovery to its own suite 616ms
+     ✓ rejects storage-only processing parameter --storage-config 525ms
+     ✓ rejects storage-only processing parameter --preview-config 477ms
+     ✓ rejects unrelated sharing management parameter --only 451ms
+     ✓ rejects unrelated sharing management parameter --storage-config 413ms
+     ✓ rejects unrelated sharing management parameter --preview-config 577ms
+     ✓ rejects unrelated account parameter --only 425ms
+     ✓ rejects unrelated account parameter --storage-config 441ms
+     ✓ rejects unrelated account parameter --preview-config 424ms
+     ✓ rejects storage-only tokens parameter --storage-config 557ms
+     ✓ rejects storage-only tokens parameter --preview-config 512ms
+     ✓ rejects an unrelated tokens phase 502ms
+     ✓ rejects Token-only phase account / create-recovery 506ms
+     ✓ rejects Token-only phase account / action-recovery 1534ms
+     ✓ rejects Token-only phase library / create-recovery 703ms
+     ✓ rejects Token-only phase library / action-recovery 438ms
+     ✓ rejects Token-only phase viewer / create-recovery 412ms
+     ✓ rejects Token-only phase viewer / action-recovery 399ms
+     ✓ requires an existing space for sharing-experiment without starting unrelated production fixtures 383ms
+     ✓ requires an existing space for sharing-protocol without starting unrelated production fixtures 396ms
+     ✓ requires an existing space for sharing-public without starting unrelated production fixtures 381ms
+
+ Test Files  122 passed (122)
+      Tests  1627 passed (1627)
+   Start at  18:23:37
+   Duration  65.96s (tests 85%, import 12%, transform 3%)
+
+JUNIT report written to /Users/dnslin/.codex/worktrees/issue-181-github-oauth/ariso/test-results/issue181-layout-unit-final.xml

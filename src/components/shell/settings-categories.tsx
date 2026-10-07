@@ -67,11 +67,10 @@ export function SettingsCategories({
               <Tabs.Tab
                 key={href}
                 id={href}
-                className="h-11 w-auto shrink-0 gap-2 rounded-xl whitespace-nowrap"
+                className="h-11 w-auto shrink-0 gap-2 rounded-xl whitespace-nowrap data-[selected=true]:bg-accent data-[selected=true]:text-foreground"
               >
                 {icon}
                 {label}
-                <Tabs.Indicator className="rounded-xl shadow-none" />
               </Tabs.Tab>
             ))}
           </Tabs.List>

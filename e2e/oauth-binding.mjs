@@ -122,11 +122,10 @@ async function verifyClosedUnlinkUnknown(page, config, report, ui, committed) {
           '[data-testid="account-github"]',
         );
         return (
-          document.querySelector('[data-testid="account-github-unlink"]')
-            .disabled &&
-          (document.querySelector('[data-testid="account-github-link"]')
-            ?.disabled ??
-            true) &&
+          document.querySelector('[data-testid="account-github-unlink"]') ===
+            null &&
+          document.querySelector('[data-testid="account-github-link"]') ===
+            null &&
           summary.textContent.includes('待核对') &&
           summary.textContent.includes('上次读取')
         );
@@ -150,8 +149,8 @@ async function verifyClosedUnlinkUnknown(page, config, report, ui, committed) {
     assert.equal(
       await page.evaluate(
         () =>
-          document.querySelector('[data-testid="account-github-unlink"]')
-            .disabled,
+          document.querySelector('[data-testid="account-github-unlink"]') ===
+          null,
       ),
       true,
       'Failed main-page readback keeps repeat DELETE unavailable',
