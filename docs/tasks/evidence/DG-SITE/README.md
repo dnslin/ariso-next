@@ -1,0 +1,64 @@
+# DG-SITE 独立保存设计适用核对
+
+日期：2026-10-08（Asia/Shanghai）；[Issue #135](https://github.com/dnslin/ariso-next/issues/135)。本次只有设计适用文档、只读 Figma 资料和审计记录，无业务代码、新产品界面或 Figma 写入。可复用规则、具体缺口与真实验收责任只维护在三个消费卡：[T-SITE-02](../../m3-m4-experience.md#dg-site-对-t-site-02-的核对结论)、[T-SITE-04](../../m3-m4-experience.md#dg-site-对-t-site-04-的核对结论)、[T-UP-08](../../m3-m4-platform.md#dg-site-对-t-up-08-的核对结论)。统一执行 [检查约定](../../execution.md#适用检查) 和 [设计交接](../../../design/handoff.md)，DES-06-SITE、RG-03/08 的真实行为验收仍开放。
+
+## 范围、前置和当前实现
+
+实际通过 `gh issue view` 读取 #135/#194/#196/#200 的正文、评论与状态，逐个读取原生 `dependencies/blocked_by`、`dependencies/blocking`；快照见 [github.json](./github.json)。#135 OPEN、无评论、无直接前置，直接阻塞 #194/T-SITE-02、#196/T-SITE-04、#200/T-UP-08。三消费Issue均OPEN、无评论；#194除本DG外七项前置均CLOSED，#200其余三项均CLOSED；#196仍有#195/T-SITE-03 OPEN，#192/#57 CLOSED。本DG可完成设计核对，但品牌真实存取/生命周期仍须等待#195。没有修改Issue或依赖关系。
+
+从 `docs/README.md` 阅读PRD §5.4–5.5/7.2/21.1–21.3/26.1、能力地图、计划、SPEC-site及关联upload/storage/identity契约、三消费卡、交接/验收和历史site/RG-03/R4记录。保留需求编号与职责，不改冻结PRD。SPEC-site §2早期“只有健康页、UI未安装”是历史基础，当前情况以如下源码盘点为准；未把任务勾选或历史固定原型当产品交付。
+
+| 实际读取依据                                                                                                                               | 当前已实现与剩余边界                                                                                                                                                                                                                       |
+| ------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `src/server/site/{schema,validation,settings,urls,time}.ts`；`tests/unit/site/settings.test.ts`、`tests/integration/site/settings.test.ts` | 单行配置、地址/时区校验、事务内写入、URL/时间帮助函数已存在。schema有默认名称描述/素材引用；update只改地址时区。没有生产site GET/PATCH、名称描述更新、branding PUT/DELETE/读取/文件生命周期、`/settings/general`。                         |
+| `src/server/storage/{settings,cors}.ts`、`src/app/api/settings/storage/route.ts`、`tests/integration/storage/cors.test.ts`                 | 默认设置API及同步invalidateS3Cors已存在，helper有组合回滚与旧回包测试。明确清空默认有效；现存默认停用不补选，显式选择停用项会拒绝。尚未接入site修改HTTP，不能称全地址流程已通过。                                                          |
+| `src/server/identity/{auth,owner,github-settings}.ts`、github设置HTTP/账号页；`tests/integration/identity/auth.test.ts`                    | auth读取最新site origin、owner写入检查当前origin、GitHub配置读取生成最新回调；OAuth密钥/启停保存与进程生效有待重启语义。site地址变化不借此变成需重启。完整新/旧origin与地址设置页仍待T-SITE-02联验。                                       |
+| `src/server/upload/{settings,sessions,http}.ts`、`src/app/api/settings/upload/route.ts`、`tests/integration/upload/settings.test.ts`       | 独立GET/PATCH与旧submission限制快照已存在，422/UPLOAD_SETTINGS_INVALID为当前错误契约；JSON没有结构化fields。字段级错误/生产设置界面仍由T-UP-08落实。                                                                                       |
+| `src/app/api/settings/media/route.ts`、处理设置页及media设置模块                                                                           | 默认可见性/外链版本/并发真实API与处理页已存在；SITE-02组合使用所属入口，不复制字段到site。                                                                                                                                                 |
+| `src/app/page.tsx`、`src/app/s/[token]/page.tsx`、`src/app/login/page.tsx`、`src/app/layout.tsx`、shell组件                                | 首页/匿名分享按请求读取名称描述与标题；登录没有动态品牌读取，root图标/公共后台标识仍未完成动态素材。OwnerShell/AdminShell、PublicShell、SettingsHeading/Categories和共享通知已有；设置分类目前处理/账号/API，不提前开放general或邮件占位。 |
+
+只读 React/Next 调用路径时按 vercel-react-best-practices 的请求内去重与最小客户端数据规则核对：首页/分享在请求期读库，React cache用于同一请求去重，后续客户端只接所需公开品牌字段，不传完整配置或密钥。本次没有React代码变更。初始最小技能为using-agent-skills、figma-use、git-workflow-and-versioning；独立审计使用code-review-and-quality。
+
+默认验证入口只读核对：`test:unit`/`test:integration` → Vitest默认目录（后者同时integration/media-tools），包含site/settings、upload/settings、storage/cors、identity/auth已有测试；`test:browser` →外壳/控件夹具构建→`scripts/verify-browser.mjs`/`scripts/browser-plan.mjs`默认full→生产身份、处理、存储、上传、分享等场景。没有general/site-brand/upload-settings设置场景。三消费任务须把新场景接完整入口；本DG未改运行器、suite/only或测试，也未用旧流程冒充新能力。
+
+## 实时设计证据与适用结论
+
+文件 `74sT9Hrf8G4czcWeTkET5b`；桌面page `0:1`/section `209:2274`，手机page `97:748`/section `209:2282`。本轮只读索引分别65/65个直接节点（旧主图/弹窗、站点状态、RG-03与R4），见 [桌面索引](./figma/desktop-index.json)、[手机索引](./figma/mobile-index.json)。具体28个主/错误节点的一层结构、文本、显式模式见 `desktop-site/mobile-site/desktop-brand-upload/mobile-brand-upload.json`；另18个R4/手动复制/深色/批次错误、6个首页/登录/匿名分享节点文本见figma补充文件。所有PNG均为本轮实际Figma设计导出，**不是产品网页截图**；未运行播放器，不证明滚动/焦点或真实持久化。
+
+主agent实际查看13张，独立设计审计者查看另12张；25张导出的尺寸见 [主状态截图](./figma/screenshots.json)、[跨页截图](./figma/cross-page-screenshots.json)。基准设置/品牌/上传为1440×1080、390×844；首页/登录为1920×960、390×844，分享1440×1080、390×844；手动复制为自然弹窗358×282，不冒充完整视口。具体责任写回消费卡，下表只记录本轮对照结果和来源。
+
+| 实际设计截图（桌面/手机）                                                                                                                                                                                    | 整页公共区域→业务/控件/状态核对                                                                                                                                                                                                                                                                                 |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 基本设置 [467:4002](./figma/467-4002.png) / [467:9001](./figma/467-9001.png)                                                                                                                                 | 232px桌面侧栏/32px主区，手机16px边距/分类Select/独立底栏可复用；四字段外标签及信息→品牌→其他入口明确。旧工作空间面包屑/菜单文字及未实现分类用当前共享来源覆盖；常驻说明水绿块按最新偏好列为消费差异。                                                                                                           |
+| 地址结果 [468:11189](./figma/468-11189.png) / [468:11481](./figma/468-11481.png)；[手动回调496:9450](./figma/496-9450.png)                                                                                   | 两独立44px复制、完整换行/可选文本、OAuth/CORS/旧域名后果齐全。旧独立成功整页不直接照搬，结果后果仍须持久可读；复制成功中性反馈留原页。手机长地址在此样例可见，不代表任意地址或Clipboard已验证。                                                                                                                 |
+| 品牌主 [468:11915](./figma/468-11915.png) / [468:12216](./figma/468-12216.png)；失败 [469:10633](./figma/469-10633.png) / [469:10934](./figma/469-10934.png)                                                 | 两卡与各自选择入口、用途格式/5MiB规则可复用。手机下半区需滚动取得；失败图只有旧素材，所选文件/预览保留和unknown核对态存在表达缺口，分配T-SITE-04。                                                                                                                                                              |
+| 素材丢失 [470:9718](./figma/470-9718.png) / [470:10021](./figma/470-10021.png)                                                                                                                               | 引用读取失败和正常内置明确区分，可复用到Favicon；上传与明确移除是两个操作。不能以默认标识掩盖丢失，也不能据PNG断言真实资源恢复。                                                                                                                                                                                |
+| 上传限制 [470:10085](./figma/470-10085.png) / [470:10377](./figma/470-10377.png)；[手机校验470:10724](./figma/470-10724.png)、[失败470:11442](./figma/470-11442.png)                                         | 三个数字字段与所属保存可复用，默认/范围/新提交说明一致。手机错误摘要需补紧邻字段错误及关联，保存中/未知/读错未完整表达；底栏与低处字段真实可达由T-UP-08验证。                                                                                                                                                   |
+| R4名称失败 [528:12954](./figma/528-12954.png) / [528:12060](./figma/528-12060.png)                                                                                                                           | 失败保留草稿与已生效品牌区分，可复用任意字段组合；“原配置”只适用于确认拒绝，连接中断不能断言未写入。离开/放弃与持续值从回读核对，未以播放器验证。                                                                                                                                                               |
+| 深色基本设置 [472:4254](./figma/472-4254.png) / [472:9458](./figma/472-9458.png)                                                                                                                             | Light/Dark语义颜色、卡片、文字/禁用/焦点适用；只提供基本设置代表。不能据两张图关闭品牌、错误或全站深色验收；主题归DG-THEME/T-SITE-05，本DG只核对消费适用。                                                                                                                                                      |
+| 首页 [2:10](./figma/2-10.png) / [102:3000](./figma/102-3000.png)；登录 [2:11](./figma/2-11.png) / [102:3020](./figma/102-3020.png)；分享 [433:3610](./figma/433-3610.png) / [433:8265](./figma/433-8265.png) | 公共双柔光/点阵、首页品牌中心、登录返回首页和分享品牌区域可作为已有布局来源；登录主图没有明确自定义品牌展示，必须由T-SITE-04在实施前补两端品牌位置/缺失状态并获批，不能自行塞控件。首页早期动作与当前身份入口不同，消费当前产品规则；分享沿最新批准交接。Favicon/browser标题实际消费须真实DOM/HTTP/标签页验证。 |
+
+可复用的加载/读错/字段错/禁用规则、空描述/无自定义品牌/未初始化区别、结果未知、各模块独立保存和浅深色范围均已分别写回三个消费者。明确缺口只交对应实施任务在编写UI前补原型/批准/同步，不改变本DG为规则核对的范围。DES/RG仍按[待验收清单](../../../design/acceptance.md)开放，没有把设计审计通过写为真实产品设计通过。
+
+## 隔离、环境与检查
+
+原目录 `/Volumes/data/project/ariso` 为main、无未提交改动；另有两个既有worktree。本轮fetch后从最新origin/main `502b5d76c77c686d722f831c6754a343f25a3c9f` 创建管理型 `/Users/dnslin/.codex/worktrees/issue-135-site-design/ariso`、分支 `codex/issue-135-site-design`。原目录与其他任务的worktree/数据/预览未改动。
+
+Darwin arm64，项目Node24.18.1、pnpm11.19.0。第一次冻结安装由终端默认Node26.10.0执行；发现后显式前置Node24路径，重新安装核对，项目验证均使用Node24。没有全局改运行时或代理配置，锁文件无变化。
+
+| 实际命令                                                                                                                                                                                    | 环境与结果                                                                                     |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| `git fetch origin`、管理型worktree创建、`git switch -c codex/issue-135-site-design`                                                                                                         | 从最新main创建隔离分支，原目录无修改。                                                         |
+| `node --version`、`pnpm --version`、`pnpm install --frozen-lockfile`                                                                                                                        | 显式Node24.18.1/pnpm11.19.0下冻结安装退出0，锁文件无变化。第一次Node26安装不作为规定环境验证。 |
+| `pnpm exec prettier --write docs/tasks/gates.md docs/tasks/m3-m4-experience.md docs/tasks/m3-m4-platform.md docs/design/acceptance.md docs/tasks/evidence/DG-SITE`；`pnpm run format:check` | 本次资料格式化后全仓格式检查退出0。后续审计/交付记录变化仅定向复查。                           |
+| `node docs/tasks/check.mjs`                                                                                                                                                                 | 退出0：120任务、298需求，无缺失编号/依赖环；生成报告无变化。                                   |
+| `node docs/tasks/check.mjs --self-test`                                                                                                                                                     | 退出0：5组拒绝样本通过。                                                                       |
+| `git diff --check`                                                                                                                                                                          | 退出0，无空白错误。                                                                            |
+
+Python3本地链接/锚点与资料走查退出0：7个Markdown、401个本地链接/锚点、25份PNG尺寸与全部设计JSON均有效，见 [links.json](./links.json)。纯文档按执行约定不运行lint/typecheck/unit/build/integration/browser、db:generate或Release镜像/容器验证；没有应用/构建输入变化、没有新增行为测试需求。响应式、键盘、焦点、短视口、真实文件/OAuth/CORS/Clipboard、产品设计对照和人工验收均未由本DG执行，由消费任务分别完成。
+
+## 审计与交付状态
+
+独立文档/实现依据审计见 [review.md](./review.md)，独立设计适用审计见 [design-review.md](./design-review.md)；两项均通过，无遗留必改项；独立实现审计发现两处实际源码路径错误（submission.ts、s/{token}）已分别修为sessions.ts、s/[token]并复审。设计评审确认未知响应、素材文件保留、登录品牌区域、公共内容及说明/成功呈现差异均已分配消费任务，未批准新视觉方案。评审者不机械重复实施者检查。本次无产品UI变更，不建立服务/预览或测试账号；三消费任务须提供独立数据的可用预览、真实产品截图和最终用户验收。本DG文档完成不等于业务代码、真实浏览器、产品设计或人工验收完成，后续未执行项不阻塞纯文档核对自身的完成条件。
+
+PR与远端检查状态将在提交推送和创建后回读记录。不合并、不关闭Issue、不发布/部署、不删除分支/worktree。
