@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="22" failures="0" errors="0" time="2.45098225">
+    <testsuite name="tests/integration/identity/oauth.test.ts" timestamp="2026-10-07T14:18:16.440Z" hostname="dnslins-Mac-mini.local" tests="22" failures="0" errors="0" skipped="0" time="2.45098225">
+        <testcase classname="tests/integration/identity/oauth.test.ts" name="production management requires the owner Cookie and current saved origin, and hides both forms of the secret" time="0.133481167">
+        </testcase>
+        <testcase classname="tests/integration/identity/oauth.test.ts" name="saved enablement and client credentials remain pending across live origin changes until a fresh runtime snapshot" time="0.16305025">
+        </testcase>
+        <testcase classname="tests/integration/identity/oauth.test.ts" name="secret omission preserves ciphertext, equivalent replacement clears pending status, and removal requires disabling" time="0.103527291">
+        </testcase>
+        <testcase classname="tests/integration/identity/oauth.test.ts" name="active binding of owner@example.test preserves all local identity data and stores only the real public login" time="0.112291667">
+        </testcase>
+        <testcase classname="tests/integration/identity/oauth.test.ts" name="active binding of different@example.test preserves all local identity data and stores only the real public login" time="0.105442375">
+        </testcase>
+        <testcase classname="tests/integration/identity/oauth.test.ts" name="unbound owner@example.test cannot sign in or register with requestSignUp=false and local emailVerified=false" time="0.102106792">
+        </testcase>
+        <testcase classname="tests/integration/identity/oauth.test.ts" name="unbound owner@example.test cannot sign in or register with requestSignUp=true and local emailVerified=false" time="0.100685084">
+        </testcase>
+        <testcase classname="tests/integration/identity/oauth.test.ts" name="unbound owner@example.test cannot sign in or register with requestSignUp=false and local emailVerified=true" time="0.107252417">
+        </testcase>
+        <testcase classname="tests/integration/identity/oauth.test.ts" name="unbound owner@example.test cannot sign in or register with requestSignUp=true and local emailVerified=true" time="0.107268417">
+        </testcase>
+        <testcase classname="tests/integration/identity/oauth.test.ts" name="unbound stranger@example.test cannot sign in or register with requestSignUp=false and local emailVerified=false" time="0.102085416">
+        </testcase>
+        <testcase classname="tests/integration/identity/oauth.test.ts" name="unbound stranger@example.test cannot sign in or register with requestSignUp=true and local emailVerified=false" time="0.100497042">
+        </testcase>
+        <testcase classname="tests/integration/identity/oauth.test.ts" name="the public authentication facade refuses generic linking, unlinking, registration, other providers and token APIs" time="0.10031025">
+        </testcase>
+        <testcase classname="tests/integration/identity/oauth.test.ts" name="missing, foreign, expired and replayed state reject callbacks before provider code exchange" time="0.105063708">
+        </testcase>
+        <testcase classname="tests/integration/identity/oauth.test.ts" name="a bound account blocks a second link, including authorization begun before the first binding completed" time="0.103373584">
+        </testcase>
+        <testcase classname="tests/integration/identity/oauth.test.ts" name="unlinking ignores a supplied credential target, keeps the same local session and prevents later GitHub login" time="0.148111209">
+        </testcase>
+        <testcase classname="tests/integration/identity/oauth.test.ts" name="invalid public profile fails visibly without persisting a binding" time="0.100002625">
+        </testcase>
+        <testcase classname="tests/integration/identity/oauth.test.ts" name="disabled effective configuration stops new linking but always retains local password login" time="0.141242125">
+        </testcase>
+        <testcase classname="tests/integration/identity/oauth.test.ts" name="a stale but still-valid owner session receives a clear library refusal and does not unlink" time="0.103262292">
+        </testcase>
+        <testcase classname="tests/integration/identity/oauth.test.ts" name="settings update database failure is visible, preserves data and logs the real cause without credentials" time="0.104379708">
+        </testcase>
+        <testcase classname="tests/integration/identity/oauth.test.ts" name="binding delete database failure is visible, preserves data and logs the real cause without credentials" time="0.104787625">
+        </testcase>
+        <testcase classname="tests/integration/identity/oauth.test.ts" name="simultaneous callbacks for different GitHub accounts return to account settings and preserve the winning binding" time="0.1029365">
+        </testcase>
+        <testcase classname="tests/integration/identity/oauth.test.ts" name="the adapter preserves unrelated model/provider constraints and GitHub storage faults" time="0.099153">
+        </testcase>
+    </testsuite>
+</testsuites>

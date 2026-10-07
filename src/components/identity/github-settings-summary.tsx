@@ -96,21 +96,17 @@ export function GithubPendingSummary({
 
 export function GithubSettingsSummary({
   settings,
-  verified = false,
 }: {
   settings: GithubSettings;
-  verified?: boolean;
 }) {
   return (
     <div
-      data-testid={
-        verified ? 'oauth-verified-summary' : 'oauth-pending-restart'
-      }
+      data-testid="oauth-verified-summary"
       className="grid gap-2 rounded-xl border border-border p-3 text-[13px] leading-normal"
     >
       <p className="flex items-center gap-2 font-medium">
         <RefreshCw className="size-4 shrink-0" aria-hidden />
-        {verified ? '已核对当前配置' : '等待重启生效'}
+        已核对当前配置
       </p>
       <ConfigurationDetails settings={settings} />
       {settings.pendingRestart ? (

@@ -1,0 +1,97 @@
+{
+  "environment": {
+    "node": "v24.18.1",
+    "pnpm": "11.19.0",
+    "platform": "darwin",
+    "betterAuth": "1.7.5"
+  },
+  "base": "8cdcd30c9b3f3a7b001c154f7c9dc78ad4a9087e",
+  "checks": [
+    {
+      "command": "pnpm install --frozen-lockfile",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm run build",
+      "exitCode": 0,
+      "notes": "Preserved existing optional native-module, source-map and OpenTelemetry tracing warnings."
+    },
+    {
+      "command": "pnpm run typecheck",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm run lint",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm run format:check",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm run test:integration tests/integration/identity/oauth.test.ts tests/integration/identity/oauth-startup.test.ts --maxWorkers=1 --reporter=default --reporter=junit --outputFile=.data/reviews/pr255/fixes/oauth-green.xml",
+      "exitCode": 0,
+      "tests": 26,
+      "failures": 0,
+      "errors": 0,
+      "files": 2,
+      "skipped": 0
+    },
+    {
+      "command": "pnpm run test:integration tests/integration/identity/oauth.test.ts --maxWorkers=1 --reporter=default --reporter=junit --outputFile=.data/reviews/pr255/fixes/oauth-mutation.xml",
+      "exitCode": 1,
+      "expectedFailure": true,
+      "tests": 22,
+      "failures": 2,
+      "errors": 0,
+      "files": 1,
+      "skipped": 0
+    },
+    {
+      "command": "pnpm run test:integration tests/integration/identity/oauth.test.ts --maxWorkers=1 --reporter=default --reporter=junit --outputFile=.data/reviews/pr255/fixes/oauth-restored.xml",
+      "exitCode": 0,
+      "tests": 22,
+      "failures": 0,
+      "errors": 0,
+      "files": 1,
+      "skipped": 0
+    },
+    {
+      "command": "pnpm run test:unit --maxWorkers=4 --reporter=default --reporter=junit --outputFile=.data/reviews/pr255/fixes/unit.xml",
+      "exitCode": 0,
+      "tests": 1636,
+      "failures": 0,
+      "errors": 0,
+      "files": 122,
+      "skipped": 0
+    }
+  ],
+  "summaryRender": {
+    "commandBefore": "ARISO_REVIEW_CAPTURE_HTML=1 pnpm exec vitest run --config .data/reviews/pr255/fixes/summary-render.config.mjs",
+    "commandAfter": "pnpm exec vitest run --config .data/reviews/pr255/fixes/summary-render.config.mjs",
+    "beforeExitCode": 0,
+    "afterExitCode": 0,
+    "comparedCompleteHtmlStrings": 3,
+    "byteEqual": true,
+    "browserVerification": false
+  },
+  "mutation": {
+    "condition": "disableImplicitLinking: true",
+    "originalSha256": "ee073f1185f844ca73a716f4d6fbb1cbdd18d1e68345afb5e3a649a7e09198d8",
+    "mutationExitCode": 1,
+    "restoredByteEqual": true,
+    "restoredSha256": "ee073f1185f844ca73a716f4d6fbb1cbdd18d1e68345afb5e3a649a7e09198d8"
+  },
+  "boundaries": {
+    "fullIntegrationRerun": false,
+    "browserRerun": false,
+    "figmaChanged": false,
+    "previewRestarted": false,
+    "latestMobileManualAcceptance": "pending",
+    "previousDefaultBrowser": {
+      "passed": 55,
+      "failed": 7,
+      "blocked": 6
+    }
+  }
+}

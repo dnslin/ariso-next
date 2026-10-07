@@ -76,10 +76,7 @@ export function GithubSettingsEditor(props: GithubSettingsEditorProps) {
                   ) : null}
                   {editor.verified ? (
                     <>
-                      <GithubSettingsSummary
-                        settings={editor.verified}
-                        verified
-                      />
+                      <GithubSettingsSummary settings={editor.verified} />
                       <p className="text-[13px] leading-normal text-muted">
                         已核对当前配置，无法确认这次密钥修改结果。关闭后可从当前配置重新编辑。
                       </p>
