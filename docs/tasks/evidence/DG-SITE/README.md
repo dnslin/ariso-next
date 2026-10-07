@@ -61,4 +61,8 @@ Python3本地链接/锚点与资料走查退出0：7个Markdown、401个本地�
 
 独立文档/实现依据审计见 [review.md](./review.md)，独立设计适用审计见 [design-review.md](./design-review.md)；两项均通过，无遗留必改项；独立实现审计发现两处实际源码路径错误（submission.ts、s/{token}）已分别修为sessions.ts、s/[token]并复审。设计评审确认未知响应、素材文件保留、登录品牌区域、公共内容及说明/成功呈现差异均已分配消费任务，未批准新视觉方案。评审者不机械重复实施者检查。本次无产品UI变更，不建立服务/预览或测试账号；三消费任务须提供独立数据的可用预览、真实产品截图和最终用户验收。本DG文档完成不等于业务代码、真实浏览器、产品设计或人工验收完成，后续未执行项不阻塞纯文档核对自身的完成条件。
 
-PR与远端检查状态将在提交推送和创建后回读记录。不合并、不关闭Issue、不发布/部署、不删除分支/worktree。
+已提交 `50939abf`（`docs(site): record DG-SITE design applicability for issue 135`），通过 `git push --set-upstream origin codex/issue-135-site-design` 推送；实际执行 `gh pr create --repo dnslin/ariso-next --base main --head codex/issue-135-site-design --title ... --body-file /tmp/codex-issue135-pr-body.md` 创建 [PR #259](https://github.com/dnslin/ariso-next/pull/259)，Refs #135，并附加到本聊天。纯文档的适用检查与必要独立审计已完成，PR为正式待评审；后续消费者的产品UI/人工验收不属于本Issue完成条件，不据此保持草稿。
+
+创建后运行 `gh pr view 259 --repo dnslin/ariso-next --json number,url,state,isDraft,headRefName,baseRefName,mergeable,statusCheckRollup,headRefOid`：OPEN、isDraft=false、base=main、head=codex/issue-135-site-design、MERGEABLE、statusCheckRollup为空，远端head与本地提交一致。`gh pr checks 259 --repo dnslin/ariso-next` 退出1，输出no checks reported，表示没有远端检查，**不是CI通过**。实际读取`.github/workflows/ci.yml`仅workflow_call，`images.yml`仅release.published触发，日常PR不运行；没有等待不存在的检查或为此创建Release。
+
+审计与远端状态补写后，仅定向格式/链接与差异检查，不重复输入未变的全仓检查。本次未合并、未关闭Issue、未发布/部署，分支与管理型worktree保留；没有产品预览进程需清理。

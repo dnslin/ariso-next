@@ -32,6 +32,11 @@
       "command": "python3 local Markdown links/anchors and Figma artifact integrity walk",
       "exitCode": 0,
       "result": "7 Markdown files, 401 local links/anchors, 25 PNG dimensions, all design JSON valid"
+    },
+    {
+      "command": "pnpm exec prettier --check (changed evidence Markdown/JSON and docs/design/acceptance.md)",
+      "exitCode": 0,
+      "result": "All matched files use Prettier code style"
     }
   ],
   "notApplicable": [
@@ -43,5 +48,17 @@
     "browser",
     "db:generate",
     "Release image/container verification"
-  ]
+  ],
+  "remote": {
+    "pr": 259,
+    "state": "OPEN",
+    "isDraft": false,
+    "base": "main",
+    "head": "codex/issue-135-site-design",
+    "mergeable": "MERGEABLE",
+    "statusCheckRollup": [],
+    "checksCommand": "gh pr checks 259 --repo dnslin/ariso-next",
+    "checksExitCode": 1,
+    "checksResult": "no checks reported; not CI success"
+  }
 }
