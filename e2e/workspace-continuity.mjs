@@ -5,6 +5,9 @@ const { join } = await import('node:path');
 const { identitySql, openIdentityAccountMenu } = await import(
   config.identitySessionScript
 );
+const { waitForOwnerRoute } = await import(
+  new URL('./owner-shell.mjs', config.identitySessionScript).href
+);
 const page = (await taskSpace(config.spaceId)).page('p1');
 const width = config.width;
 const height = width < 768 ? 844 : 1000;
@@ -35,7 +38,7 @@ async function navigate(label, pathname) {
     !receipt.dialog,
     'Internal navigation must not raise a beforeunload dialog',
   );
-  await page.waitForURL(`${config.origin}${pathname}`);
+  await waitForOwnerRoute(page, config, pathname);
   await page.waitForFunction(
     () => !document.querySelector('[role="dialog"][aria-label="导航菜单"]'),
   );

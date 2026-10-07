@@ -1,0 +1,1982 @@
+{
+  "status": "failed",
+  "taskSpaceId": 43,
+  "phase": "full",
+  "scope": "Production anonymous image viewer, bounded public neighbors and real revocation",
+  "checks": [
+    {
+      "scenario": "Desktop and 360/390/430/768, light/dark, hidden/visible names and short viewport representative captures"
+    },
+    {
+      "scenario": "Real missing preview bytes on an unviewed image show the approved error; retry reads the same original version after restoration without fallback"
+    },
+    {
+      "scenario": "Escape on the actual YARL stage closes the viewer and restores the original card focus without refocusing a button"
+    },
+    {
+      "scenario": "YARL keyboard navigation intermediate focus observation",
+      "focusAfterFirstArrow": {
+        "tag": "DIV",
+        "className": "yarl__container yarl__flex_center",
+        "insideStage": true
+      }
+    },
+    {
+      "scenario": "Continuous ArrowRight and ArrowLeft from the actual YARL stage preserve keyboard navigation without refocusing another control"
+    },
+    {
+      "scenario": "Anonymous viewer loads only current and one neighbor in each direction; hidden names stay absent",
+      "requestedImages": 3
+    },
+    {
+      "scenario": "Approved enlarged viewer layout observation",
+      "width": 390,
+      "theme": "light",
+      "showName": false,
+      "layout": {
+        "zoom": 2,
+        "heading": "7 / 124 · 已放大",
+        "centered": true,
+        "fullscreen": false,
+        "previous": false,
+        "next": false,
+        "padding": ["0px", "0px", "0px", "0px"],
+        "buttons": ["关闭", "还原"],
+        "instruction": "可拖动查看图片。",
+        "instructionVisible": true
+      }
+    },
+    {
+      "scenario": "Approved enlarged viewer layout observation",
+      "width": 390,
+      "theme": "dark",
+      "showName": false,
+      "layout": {
+        "zoom": 2,
+        "heading": "7 / 124 · 已放大",
+        "centered": true,
+        "fullscreen": false,
+        "previous": false,
+        "next": false,
+        "padding": ["0px", "0px", "0px", "0px"],
+        "buttons": ["关闭", "还原"],
+        "instruction": "可拖动查看图片。",
+        "instructionVisible": true
+      }
+    },
+    {
+      "scenario": "Approved enlarged viewer layout observation",
+      "width": 1440,
+      "theme": "light",
+      "showName": false,
+      "layout": {
+        "zoom": 2,
+        "heading": "7 / 124 · 已放大",
+        "centered": true,
+        "fullscreen": false,
+        "previous": false,
+        "next": false,
+        "padding": ["0px", "0px", "0px", "0px"],
+        "buttons": ["关闭", "还原"],
+        "instruction": "可拖动查看图片。",
+        "instructionVisible": true
+      }
+    },
+    {
+      "scenario": "Approved enlarged viewer layout observation",
+      "width": 1440,
+      "theme": "dark",
+      "showName": false,
+      "layout": {
+        "zoom": 2,
+        "heading": "7 / 124 · 已放大",
+        "centered": true,
+        "fullscreen": false,
+        "previous": false,
+        "next": false,
+        "padding": ["0px", "0px", "0px", "0px"],
+        "buttons": ["关闭", "还原"],
+        "instruction": "可拖动查看图片。",
+        "instructionVisible": true
+      }
+    }
+  ],
+  "layouts": [
+    {
+      "state": "hidden-name",
+      "width": 360,
+      "height": 844,
+      "theme": "light",
+      "screenshot": "sharing-viewer-hidden-name-light-360.png",
+      "geometry": {
+        "viewport": {
+          "width": 360,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 360,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 328,
+          "height": 360
+        },
+        "targets": [
+          {
+            "label": "全屏",
+            "width": 88,
+            "height": 44,
+            "left": 256,
+            "right": 344,
+            "top": 150,
+            "bottom": 194
+          },
+          {
+            "label": "关闭",
+            "width": 73,
+            "height": 48,
+            "left": 16,
+            "right": 89,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "上一张",
+            "width": 73,
+            "height": 48,
+            "left": 101,
+            "right": 174,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "下一张",
+            "width": 73,
+            "height": 48,
+            "left": 186,
+            "right": 259,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "放大",
+            "width": 73,
+            "height": 48,
+            "left": 271,
+            "right": 344,
+            "top": 780,
+            "bottom": 828
+          }
+        ]
+      }
+    },
+    {
+      "state": "hidden-name",
+      "width": 360,
+      "height": 844,
+      "theme": "dark",
+      "screenshot": "sharing-viewer-hidden-name-dark-360.png",
+      "geometry": {
+        "viewport": {
+          "width": 360,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 360,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 328,
+          "height": 360
+        },
+        "targets": [
+          {
+            "label": "全屏",
+            "width": 88,
+            "height": 44,
+            "left": 256,
+            "right": 344,
+            "top": 150,
+            "bottom": 194
+          },
+          {
+            "label": "关闭",
+            "width": 73,
+            "height": 48,
+            "left": 16,
+            "right": 89,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "上一张",
+            "width": 73,
+            "height": 48,
+            "left": 101,
+            "right": 174,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "下一张",
+            "width": 73,
+            "height": 48,
+            "left": 186,
+            "right": 259,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "放大",
+            "width": 73,
+            "height": 48,
+            "left": 271,
+            "right": 344,
+            "top": 780,
+            "bottom": 828
+          }
+        ]
+      }
+    },
+    {
+      "state": "hidden-name",
+      "width": 390,
+      "height": 844,
+      "theme": "light",
+      "screenshot": "sharing-viewer-hidden-name-light-390.png",
+      "geometry": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 358,
+          "height": 360
+        },
+        "targets": [
+          {
+            "label": "全屏",
+            "width": 88,
+            "height": 44,
+            "left": 286,
+            "right": 374,
+            "top": 150,
+            "bottom": 194
+          },
+          {
+            "label": "关闭",
+            "width": 80.5,
+            "height": 48,
+            "left": 16,
+            "right": 96.5,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "上一张",
+            "width": 80.5,
+            "height": 48,
+            "left": 108.5,
+            "right": 189,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "下一张",
+            "width": 80.5,
+            "height": 48,
+            "left": 201,
+            "right": 281.5,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "放大",
+            "width": 80.5,
+            "height": 48,
+            "left": 293.5,
+            "right": 374,
+            "top": 780,
+            "bottom": 828
+          }
+        ]
+      }
+    },
+    {
+      "state": "hidden-name",
+      "width": 390,
+      "height": 844,
+      "theme": "dark",
+      "screenshot": "sharing-viewer-hidden-name-dark-390.png",
+      "geometry": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 358,
+          "height": 360
+        },
+        "targets": [
+          {
+            "label": "全屏",
+            "width": 88,
+            "height": 44,
+            "left": 286,
+            "right": 374,
+            "top": 150,
+            "bottom": 194
+          },
+          {
+            "label": "关闭",
+            "width": 80.5,
+            "height": 48,
+            "left": 16,
+            "right": 96.5,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "上一张",
+            "width": 80.5,
+            "height": 48,
+            "left": 108.5,
+            "right": 189,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "下一张",
+            "width": 80.5,
+            "height": 48,
+            "left": 201,
+            "right": 281.5,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "放大",
+            "width": 80.5,
+            "height": 48,
+            "left": 293.5,
+            "right": 374,
+            "top": 780,
+            "bottom": 828
+          }
+        ]
+      }
+    },
+    {
+      "state": "hidden-name",
+      "width": 430,
+      "height": 844,
+      "theme": "light",
+      "screenshot": "sharing-viewer-hidden-name-light-430.png",
+      "geometry": {
+        "viewport": {
+          "width": 430,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 430,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 398,
+          "height": 360
+        },
+        "targets": [
+          {
+            "label": "全屏",
+            "width": 88,
+            "height": 44,
+            "left": 326,
+            "right": 414,
+            "top": 150,
+            "bottom": 194
+          },
+          {
+            "label": "关闭",
+            "width": 90.5,
+            "height": 48,
+            "left": 16,
+            "right": 106.5,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "上一张",
+            "width": 90.5,
+            "height": 48,
+            "left": 118.5,
+            "right": 209,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "下一张",
+            "width": 90.5,
+            "height": 48,
+            "left": 221,
+            "right": 311.5,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "放大",
+            "width": 90.5,
+            "height": 48,
+            "left": 323.5,
+            "right": 414,
+            "top": 780,
+            "bottom": 828
+          }
+        ]
+      }
+    },
+    {
+      "state": "hidden-name",
+      "width": 430,
+      "height": 844,
+      "theme": "dark",
+      "screenshot": "sharing-viewer-hidden-name-dark-430.png",
+      "geometry": {
+        "viewport": {
+          "width": 430,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 430,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 398,
+          "height": 360
+        },
+        "targets": [
+          {
+            "label": "全屏",
+            "width": 88,
+            "height": 44,
+            "left": 326,
+            "right": 414,
+            "top": 150,
+            "bottom": 194
+          },
+          {
+            "label": "关闭",
+            "width": 90.5,
+            "height": 48,
+            "left": 16,
+            "right": 106.5,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "上一张",
+            "width": 90.5,
+            "height": 48,
+            "left": 118.5,
+            "right": 209,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "下一张",
+            "width": 90.5,
+            "height": 48,
+            "left": 221,
+            "right": 311.5,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "放大",
+            "width": 90.5,
+            "height": 48,
+            "left": 323.5,
+            "right": 414,
+            "top": 780,
+            "bottom": 828
+          }
+        ]
+      }
+    },
+    {
+      "state": "hidden-name",
+      "width": 768,
+      "height": 844,
+      "theme": "light",
+      "screenshot": "sharing-viewer-hidden-name-light-768.png",
+      "geometry": {
+        "viewport": {
+          "width": 768,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 768,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 736,
+          "height": 544
+        },
+        "targets": [
+          {
+            "label": "全屏",
+            "width": 88,
+            "height": 44,
+            "left": 664,
+            "right": 752,
+            "top": 140,
+            "bottom": 184
+          },
+          {
+            "label": "关闭",
+            "width": 175,
+            "height": 48,
+            "left": 16,
+            "right": 191,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "上一张",
+            "width": 175,
+            "height": 48,
+            "left": 203,
+            "right": 378,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "下一张",
+            "width": 175,
+            "height": 48,
+            "left": 390,
+            "right": 565,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "放大",
+            "width": 175,
+            "height": 48,
+            "left": 577,
+            "right": 752,
+            "top": 780,
+            "bottom": 828
+          }
+        ]
+      }
+    },
+    {
+      "state": "hidden-name",
+      "width": 768,
+      "height": 844,
+      "theme": "dark",
+      "screenshot": "sharing-viewer-hidden-name-dark-768.png",
+      "geometry": {
+        "viewport": {
+          "width": 768,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 768,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 736,
+          "height": 544
+        },
+        "targets": [
+          {
+            "label": "全屏",
+            "width": 88,
+            "height": 44,
+            "left": 664,
+            "right": 752,
+            "top": 140,
+            "bottom": 184
+          },
+          {
+            "label": "关闭",
+            "width": 175,
+            "height": 48,
+            "left": 16,
+            "right": 191,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "上一张",
+            "width": 175,
+            "height": 48,
+            "left": 203,
+            "right": 378,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "下一张",
+            "width": 175,
+            "height": 48,
+            "left": 390,
+            "right": 565,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "放大",
+            "width": 175,
+            "height": 48,
+            "left": 577,
+            "right": 752,
+            "top": 780,
+            "bottom": 828
+          }
+        ]
+      }
+    },
+    {
+      "state": "hidden-name",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light",
+      "screenshot": "sharing-viewer-hidden-name-light-1440.png",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 1080
+        },
+        "root": {
+          "left": 0,
+          "right": 1440,
+          "top": 0,
+          "bottom": 1080
+        },
+        "stage": {
+          "width": 1160,
+          "height": 660
+        },
+        "targets": [
+          {
+            "label": "全屏",
+            "width": 88,
+            "height": 44,
+            "left": 1212,
+            "right": 1300,
+            "top": 140,
+            "bottom": 184
+          },
+          {
+            "label": "关闭",
+            "width": 281,
+            "height": 48,
+            "left": 140,
+            "right": 421,
+            "top": 1016,
+            "bottom": 1064
+          },
+          {
+            "label": "上一张",
+            "width": 281,
+            "height": 48,
+            "left": 433,
+            "right": 714,
+            "top": 1016,
+            "bottom": 1064
+          },
+          {
+            "label": "下一张",
+            "width": 281,
+            "height": 48,
+            "left": 726,
+            "right": 1007,
+            "top": 1016,
+            "bottom": 1064
+          },
+          {
+            "label": "放大",
+            "width": 281,
+            "height": 48,
+            "left": 1019,
+            "right": 1300,
+            "top": 1016,
+            "bottom": 1064
+          }
+        ]
+      }
+    },
+    {
+      "state": "hidden-name",
+      "width": 1440,
+      "height": 1080,
+      "theme": "dark",
+      "screenshot": "sharing-viewer-hidden-name-dark-1440.png",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 1080
+        },
+        "root": {
+          "left": 0,
+          "right": 1440,
+          "top": 0,
+          "bottom": 1080
+        },
+        "stage": {
+          "width": 1160,
+          "height": 660
+        },
+        "targets": [
+          {
+            "label": "全屏",
+            "width": 88,
+            "height": 44,
+            "left": 1212,
+            "right": 1300,
+            "top": 140,
+            "bottom": 184
+          },
+          {
+            "label": "关闭",
+            "width": 281,
+            "height": 48,
+            "left": 140,
+            "right": 421,
+            "top": 1016,
+            "bottom": 1064
+          },
+          {
+            "label": "上一张",
+            "width": 281,
+            "height": 48,
+            "left": 433,
+            "right": 714,
+            "top": 1016,
+            "bottom": 1064
+          },
+          {
+            "label": "下一张",
+            "width": 281,
+            "height": 48,
+            "left": 726,
+            "right": 1007,
+            "top": 1016,
+            "bottom": 1064
+          },
+          {
+            "label": "放大",
+            "width": 281,
+            "height": 48,
+            "left": 1019,
+            "right": 1300,
+            "top": 1016,
+            "bottom": 1064
+          }
+        ]
+      }
+    },
+    {
+      "state": "short-viewport",
+      "width": 390,
+      "height": 420,
+      "theme": "light",
+      "screenshot": "sharing-viewer-short-viewport-light-390x420.png",
+      "geometry": {
+        "viewport": {
+          "width": 390,
+          "height": 420
+        },
+        "root": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 420
+        },
+        "stage": {
+          "width": 358,
+          "height": 360
+        },
+        "targets": [
+          {
+            "label": "全屏",
+            "width": 88,
+            "height": 44,
+            "left": 286,
+            "right": 374,
+            "top": 150,
+            "bottom": 194
+          },
+          {
+            "label": "关闭",
+            "width": 80.5,
+            "height": 48,
+            "left": 16,
+            "right": 96.5,
+            "top": 356,
+            "bottom": 404
+          },
+          {
+            "label": "上一张",
+            "width": 80.5,
+            "height": 48,
+            "left": 108.5,
+            "right": 189,
+            "top": 356,
+            "bottom": 404
+          },
+          {
+            "label": "下一张",
+            "width": 80.5,
+            "height": 48,
+            "left": 201,
+            "right": 281.5,
+            "top": 356,
+            "bottom": 404
+          },
+          {
+            "label": "放大",
+            "width": 80.5,
+            "height": 48,
+            "left": 293.5,
+            "right": 374,
+            "top": 356,
+            "bottom": 404
+          }
+        ]
+      }
+    },
+    {
+      "state": "short-viewport",
+      "width": 390,
+      "height": 420,
+      "theme": "dark",
+      "screenshot": "sharing-viewer-short-viewport-dark-390x420.png",
+      "geometry": {
+        "viewport": {
+          "width": 390,
+          "height": 420
+        },
+        "root": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 420
+        },
+        "stage": {
+          "width": 358,
+          "height": 360
+        },
+        "targets": [
+          {
+            "label": "全屏",
+            "width": 88,
+            "height": 44,
+            "left": 286,
+            "right": 374,
+            "top": 150,
+            "bottom": 194
+          },
+          {
+            "label": "关闭",
+            "width": 80.5,
+            "height": 48,
+            "left": 16,
+            "right": 96.5,
+            "top": 356,
+            "bottom": 404
+          },
+          {
+            "label": "上一张",
+            "width": 80.5,
+            "height": 48,
+            "left": 108.5,
+            "right": 189,
+            "top": 356,
+            "bottom": 404
+          },
+          {
+            "label": "下一张",
+            "width": 80.5,
+            "height": 48,
+            "left": 201,
+            "right": 281.5,
+            "top": 356,
+            "bottom": 404
+          },
+          {
+            "label": "放大",
+            "width": 80.5,
+            "height": 48,
+            "left": 293.5,
+            "right": 374,
+            "top": 356,
+            "bottom": 404
+          }
+        ]
+      }
+    },
+    {
+      "state": "visible-name",
+      "width": 360,
+      "height": 844,
+      "theme": "light",
+      "screenshot": "sharing-viewer-visible-name-light-360.png",
+      "geometry": {
+        "viewport": {
+          "width": 360,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 360,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 328,
+          "height": 360
+        },
+        "targets": [
+          {
+            "label": "全屏",
+            "width": 88,
+            "height": 44,
+            "left": 256,
+            "right": 344,
+            "top": 150,
+            "bottom": 194
+          },
+          {
+            "label": "关闭",
+            "width": 73,
+            "height": 48,
+            "left": 16,
+            "right": 89,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "上一张",
+            "width": 73,
+            "height": 48,
+            "left": 101,
+            "right": 174,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "下一张",
+            "width": 73,
+            "height": 48,
+            "left": 186,
+            "right": 259,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "放大",
+            "width": 73,
+            "height": 48,
+            "left": 271,
+            "right": 344,
+            "top": 780,
+            "bottom": 828
+          }
+        ]
+      }
+    },
+    {
+      "state": "visible-name",
+      "width": 360,
+      "height": 844,
+      "theme": "dark",
+      "screenshot": "sharing-viewer-visible-name-dark-360.png",
+      "geometry": {
+        "viewport": {
+          "width": 360,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 360,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 328,
+          "height": 360
+        },
+        "targets": [
+          {
+            "label": "全屏",
+            "width": 88,
+            "height": 44,
+            "left": 256,
+            "right": 344,
+            "top": 150,
+            "bottom": 194
+          },
+          {
+            "label": "关闭",
+            "width": 73,
+            "height": 48,
+            "left": 16,
+            "right": 89,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "上一张",
+            "width": 73,
+            "height": 48,
+            "left": 101,
+            "right": 174,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "下一张",
+            "width": 73,
+            "height": 48,
+            "left": 186,
+            "right": 259,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "放大",
+            "width": 73,
+            "height": 48,
+            "left": 271,
+            "right": 344,
+            "top": 780,
+            "bottom": 828
+          }
+        ]
+      }
+    },
+    {
+      "state": "visible-name",
+      "width": 390,
+      "height": 844,
+      "theme": "light",
+      "screenshot": "sharing-viewer-visible-name-light-390.png",
+      "geometry": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 358,
+          "height": 360
+        },
+        "targets": [
+          {
+            "label": "全屏",
+            "width": 88,
+            "height": 44,
+            "left": 286,
+            "right": 374,
+            "top": 150,
+            "bottom": 194
+          },
+          {
+            "label": "关闭",
+            "width": 80.5,
+            "height": 48,
+            "left": 16,
+            "right": 96.5,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "上一张",
+            "width": 80.5,
+            "height": 48,
+            "left": 108.5,
+            "right": 189,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "下一张",
+            "width": 80.5,
+            "height": 48,
+            "left": 201,
+            "right": 281.5,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "放大",
+            "width": 80.5,
+            "height": 48,
+            "left": 293.5,
+            "right": 374,
+            "top": 780,
+            "bottom": 828
+          }
+        ]
+      }
+    },
+    {
+      "state": "visible-name",
+      "width": 390,
+      "height": 844,
+      "theme": "dark",
+      "screenshot": "sharing-viewer-visible-name-dark-390.png",
+      "geometry": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 358,
+          "height": 360
+        },
+        "targets": [
+          {
+            "label": "全屏",
+            "width": 88,
+            "height": 44,
+            "left": 286,
+            "right": 374,
+            "top": 150,
+            "bottom": 194
+          },
+          {
+            "label": "关闭",
+            "width": 80.5,
+            "height": 48,
+            "left": 16,
+            "right": 96.5,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "上一张",
+            "width": 80.5,
+            "height": 48,
+            "left": 108.5,
+            "right": 189,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "下一张",
+            "width": 80.5,
+            "height": 48,
+            "left": 201,
+            "right": 281.5,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "放大",
+            "width": 80.5,
+            "height": 48,
+            "left": 293.5,
+            "right": 374,
+            "top": 780,
+            "bottom": 828
+          }
+        ]
+      }
+    },
+    {
+      "state": "visible-name",
+      "width": 430,
+      "height": 844,
+      "theme": "light",
+      "screenshot": "sharing-viewer-visible-name-light-430.png",
+      "geometry": {
+        "viewport": {
+          "width": 430,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 430,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 398,
+          "height": 360
+        },
+        "targets": [
+          {
+            "label": "全屏",
+            "width": 88,
+            "height": 44,
+            "left": 326,
+            "right": 414,
+            "top": 150,
+            "bottom": 194
+          },
+          {
+            "label": "关闭",
+            "width": 90.5,
+            "height": 48,
+            "left": 16,
+            "right": 106.5,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "上一张",
+            "width": 90.5,
+            "height": 48,
+            "left": 118.5,
+            "right": 209,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "下一张",
+            "width": 90.5,
+            "height": 48,
+            "left": 221,
+            "right": 311.5,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "放大",
+            "width": 90.5,
+            "height": 48,
+            "left": 323.5,
+            "right": 414,
+            "top": 780,
+            "bottom": 828
+          }
+        ]
+      }
+    },
+    {
+      "state": "visible-name",
+      "width": 430,
+      "height": 844,
+      "theme": "dark",
+      "screenshot": "sharing-viewer-visible-name-dark-430.png",
+      "geometry": {
+        "viewport": {
+          "width": 430,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 430,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 398,
+          "height": 360
+        },
+        "targets": [
+          {
+            "label": "全屏",
+            "width": 88,
+            "height": 44,
+            "left": 326,
+            "right": 414,
+            "top": 150,
+            "bottom": 194
+          },
+          {
+            "label": "关闭",
+            "width": 90.5,
+            "height": 48,
+            "left": 16,
+            "right": 106.5,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "上一张",
+            "width": 90.5,
+            "height": 48,
+            "left": 118.5,
+            "right": 209,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "下一张",
+            "width": 90.5,
+            "height": 48,
+            "left": 221,
+            "right": 311.5,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "放大",
+            "width": 90.5,
+            "height": 48,
+            "left": 323.5,
+            "right": 414,
+            "top": 780,
+            "bottom": 828
+          }
+        ]
+      }
+    },
+    {
+      "state": "visible-name",
+      "width": 768,
+      "height": 844,
+      "theme": "light",
+      "screenshot": "sharing-viewer-visible-name-light-768.png",
+      "geometry": {
+        "viewport": {
+          "width": 768,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 768,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 736,
+          "height": 544
+        },
+        "targets": [
+          {
+            "label": "全屏",
+            "width": 88,
+            "height": 44,
+            "left": 664,
+            "right": 752,
+            "top": 140,
+            "bottom": 184
+          },
+          {
+            "label": "关闭",
+            "width": 175,
+            "height": 48,
+            "left": 16,
+            "right": 191,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "上一张",
+            "width": 175,
+            "height": 48,
+            "left": 203,
+            "right": 378,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "下一张",
+            "width": 175,
+            "height": 48,
+            "left": 390,
+            "right": 565,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "放大",
+            "width": 175,
+            "height": 48,
+            "left": 577,
+            "right": 752,
+            "top": 780,
+            "bottom": 828
+          }
+        ]
+      }
+    },
+    {
+      "state": "visible-name",
+      "width": 768,
+      "height": 844,
+      "theme": "dark",
+      "screenshot": "sharing-viewer-visible-name-dark-768.png",
+      "geometry": {
+        "viewport": {
+          "width": 768,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 768,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 736,
+          "height": 544
+        },
+        "targets": [
+          {
+            "label": "全屏",
+            "width": 88,
+            "height": 44,
+            "left": 664,
+            "right": 752,
+            "top": 140,
+            "bottom": 184
+          },
+          {
+            "label": "关闭",
+            "width": 175,
+            "height": 48,
+            "left": 16,
+            "right": 191,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "上一张",
+            "width": 175,
+            "height": 48,
+            "left": 203,
+            "right": 378,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "下一张",
+            "width": 175,
+            "height": 48,
+            "left": 390,
+            "right": 565,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "放大",
+            "width": 175,
+            "height": 48,
+            "left": 577,
+            "right": 752,
+            "top": 780,
+            "bottom": 828
+          }
+        ]
+      }
+    },
+    {
+      "state": "visible-name",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light",
+      "screenshot": "sharing-viewer-visible-name-light-1440.png",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 1080
+        },
+        "root": {
+          "left": 0,
+          "right": 1440,
+          "top": 0,
+          "bottom": 1080
+        },
+        "stage": {
+          "width": 1160,
+          "height": 660
+        },
+        "targets": [
+          {
+            "label": "全屏",
+            "width": 88,
+            "height": 44,
+            "left": 1212,
+            "right": 1300,
+            "top": 140,
+            "bottom": 184
+          },
+          {
+            "label": "关闭",
+            "width": 281,
+            "height": 48,
+            "left": 140,
+            "right": 421,
+            "top": 1016,
+            "bottom": 1064
+          },
+          {
+            "label": "上一张",
+            "width": 281,
+            "height": 48,
+            "left": 433,
+            "right": 714,
+            "top": 1016,
+            "bottom": 1064
+          },
+          {
+            "label": "下一张",
+            "width": 281,
+            "height": 48,
+            "left": 726,
+            "right": 1007,
+            "top": 1016,
+            "bottom": 1064
+          },
+          {
+            "label": "放大",
+            "width": 281,
+            "height": 48,
+            "left": 1019,
+            "right": 1300,
+            "top": 1016,
+            "bottom": 1064
+          }
+        ]
+      }
+    },
+    {
+      "state": "visible-name",
+      "width": 1440,
+      "height": 1080,
+      "theme": "dark",
+      "screenshot": "sharing-viewer-visible-name-dark-1440.png",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 1080
+        },
+        "root": {
+          "left": 0,
+          "right": 1440,
+          "top": 0,
+          "bottom": 1080
+        },
+        "stage": {
+          "width": 1160,
+          "height": 660
+        },
+        "targets": [
+          {
+            "label": "全屏",
+            "width": 88,
+            "height": 44,
+            "left": 1212,
+            "right": 1300,
+            "top": 140,
+            "bottom": 184
+          },
+          {
+            "label": "关闭",
+            "width": 281,
+            "height": 48,
+            "left": 140,
+            "right": 421,
+            "top": 1016,
+            "bottom": 1064
+          },
+          {
+            "label": "上一张",
+            "width": 281,
+            "height": 48,
+            "left": 433,
+            "right": 714,
+            "top": 1016,
+            "bottom": 1064
+          },
+          {
+            "label": "下一张",
+            "width": 281,
+            "height": 48,
+            "left": 726,
+            "right": 1007,
+            "top": 1016,
+            "bottom": 1064
+          },
+          {
+            "label": "放大",
+            "width": 281,
+            "height": 48,
+            "left": 1019,
+            "right": 1300,
+            "top": 1016,
+            "bottom": 1064
+          }
+        ]
+      }
+    },
+    {
+      "state": "preview-error",
+      "width": 390,
+      "height": 844,
+      "theme": "light",
+      "screenshot": "sharing-viewer-preview-error-light-390.png",
+      "geometry": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 844
+        },
+        "targets": [
+          {
+            "label": "返回相册",
+            "width": 308,
+            "height": 48,
+            "left": 41,
+            "right": 349,
+            "top": 347,
+            "bottom": 395
+          },
+          {
+            "label": "重新加载",
+            "width": 308,
+            "height": 48,
+            "left": 41,
+            "right": 349,
+            "top": 411,
+            "bottom": 459
+          }
+        ]
+      }
+    },
+    {
+      "state": "preview-error",
+      "width": 390,
+      "height": 844,
+      "theme": "dark",
+      "screenshot": "sharing-viewer-preview-error-dark-390.png",
+      "geometry": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 844
+        },
+        "targets": [
+          {
+            "label": "返回相册",
+            "width": 308,
+            "height": 48,
+            "left": 41,
+            "right": 349,
+            "top": 347,
+            "bottom": 395
+          },
+          {
+            "label": "重新加载",
+            "width": 308,
+            "height": 48,
+            "left": 41,
+            "right": 349,
+            "top": 411,
+            "bottom": 459
+          }
+        ]
+      }
+    },
+    {
+      "state": "preview-error",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light",
+      "screenshot": "sharing-viewer-preview-error-light-1440.png",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 1080
+        },
+        "root": {
+          "left": 0,
+          "right": 1440,
+          "top": 0,
+          "bottom": 1080
+        },
+        "targets": [
+          {
+            "label": "返回相册",
+            "width": 430,
+            "height": 48,
+            "left": 505,
+            "right": 935,
+            "top": 391,
+            "bottom": 439
+          },
+          {
+            "label": "重新加载",
+            "width": 430,
+            "height": 48,
+            "left": 505,
+            "right": 935,
+            "top": 455,
+            "bottom": 503
+          }
+        ]
+      }
+    },
+    {
+      "state": "preview-error",
+      "width": 1440,
+      "height": 1080,
+      "theme": "dark",
+      "screenshot": "sharing-viewer-preview-error-dark-1440.png",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 1080
+        },
+        "root": {
+          "left": 0,
+          "right": 1440,
+          "top": 0,
+          "bottom": 1080
+        },
+        "targets": [
+          {
+            "label": "返回相册",
+            "width": 430,
+            "height": 48,
+            "left": 505,
+            "right": 935,
+            "top": 391,
+            "bottom": 439
+          },
+          {
+            "label": "重新加载",
+            "width": 430,
+            "height": 48,
+            "left": 505,
+            "right": 935,
+            "top": 455,
+            "bottom": 503
+          }
+        ]
+      }
+    },
+    {
+      "state": "zoomed",
+      "width": 390,
+      "height": 844,
+      "theme": "light",
+      "screenshot": "sharing-viewer-zoomed-light-390.png",
+      "geometry": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 358,
+          "height": 390
+        },
+        "targets": [
+          {
+            "label": "关闭",
+            "width": 173,
+            "height": 48,
+            "left": 16,
+            "right": 189,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "还原",
+            "width": 173,
+            "height": 48,
+            "left": 201,
+            "right": 374,
+            "top": 780,
+            "bottom": 828
+          }
+        ]
+      }
+    },
+    {
+      "state": "zoomed",
+      "width": 390,
+      "height": 844,
+      "theme": "dark",
+      "screenshot": "sharing-viewer-zoomed-dark-390.png",
+      "geometry": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 358,
+          "height": 390
+        },
+        "targets": [
+          {
+            "label": "关闭",
+            "width": 173,
+            "height": 48,
+            "left": 16,
+            "right": 189,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "还原",
+            "width": 173,
+            "height": 48,
+            "left": 201,
+            "right": 374,
+            "top": 780,
+            "bottom": 828
+          }
+        ]
+      }
+    },
+    {
+      "state": "zoomed",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light",
+      "screenshot": "sharing-viewer-zoomed-light-1440.png",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 1080
+        },
+        "root": {
+          "left": 0,
+          "right": 1440,
+          "top": 0,
+          "bottom": 1080
+        },
+        "stage": {
+          "width": 1160,
+          "height": 690
+        },
+        "targets": [
+          {
+            "label": "关闭",
+            "width": 574,
+            "height": 48,
+            "left": 140,
+            "right": 714,
+            "top": 1016,
+            "bottom": 1064
+          },
+          {
+            "label": "还原",
+            "width": 574,
+            "height": 48,
+            "left": 726,
+            "right": 1300,
+            "top": 1016,
+            "bottom": 1064
+          }
+        ]
+      }
+    },
+    {
+      "state": "zoomed",
+      "width": 1440,
+      "height": 1080,
+      "theme": "dark",
+      "screenshot": "sharing-viewer-zoomed-dark-1440.png",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 1080
+        },
+        "root": {
+          "left": 0,
+          "right": 1440,
+          "top": 0,
+          "bottom": 1080
+        },
+        "stage": {
+          "width": 1160,
+          "height": 690
+        },
+        "targets": [
+          {
+            "label": "关闭",
+            "width": 574,
+            "height": 48,
+            "left": 140,
+            "right": 714,
+            "top": 1016,
+            "bottom": 1064
+          },
+          {
+            "label": "还原",
+            "width": 574,
+            "height": 48,
+            "left": 726,
+            "right": 1300,
+            "top": 1016,
+            "bottom": 1064
+          }
+        ]
+      }
+    }
+  ],
+  "limitations": [
+    "Physical phones, software keyboards, nonzero safe area and Release containers are outside this browser run."
+  ],
+  "stage": "viewer-interactions",
+  "expectedPreviewErrors": [
+    "http://sharing-51175.localhost:51175/i/c0e75e73-4999-4330-9b2f-8a95859f0152?type=original"
+  ],
+  "error": "CdpRequestTimeoutError: CDP request timed out: Input.dispatchMouseEvent\n    at Timeout._onTimeout (file:////[eval1]:8174:20)\n    at listOnTimeout (node:internal/timers:605:17)\n    at process.processTimers (node:internal/timers:541:7)"
+}

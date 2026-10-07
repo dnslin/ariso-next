@@ -8,6 +8,7 @@ const launches = vi.hoisted(() => ({
   experiment: vi.fn(),
   protocol: vi.fn(),
   public: vi.fn(),
+  viewer: vi.fn(),
 }));
 vi.mock('../../../tests/experiments/sharing/harness.ts', () => ({
   launchSharing: launches.experiment,
@@ -17,6 +18,9 @@ vi.mock('../../../e2e/sharing-protocol-fixture.ts', () => ({
 }));
 vi.mock('../../../e2e/sharing-public-fixture.mjs', () => ({
   launchSharingPublic: launches.public,
+}));
+vi.mock('../../../e2e/sharing-viewer-fixture.mjs', () => ({
+  launchSharingViewer: launches.viewer,
 }));
 
 const outputs: string[] = [];
@@ -106,6 +110,30 @@ it('keeps the default public flow without forcing a partial phase', async () => 
   await f.runner.runPublic(37);
   expect(f.runBrowser.mock.calls[0][1].sharingPublicPhase).toBeUndefined();
   expect(f.source.verify).toHaveBeenCalledOnce();
+  expect(f.source.stop).toHaveBeenCalledOnce();
+});
+
+it('runs anonymous viewer checks with its own phase and fixture lifecycle', async () => {
+  const f = await fixture();
+  await f.runner.runViewer(37, 'race');
+  expect(launches.viewer).toHaveBeenCalledExactlyOnceWith(f.signal);
+  expect(launches.public).not.toHaveBeenCalled();
+  expect(f.runBrowser).toHaveBeenCalledWith(
+    '../e2e/sharing-viewer.mjs',
+    expect.objectContaining({
+      sharingViewerPhase: 'race',
+      spaceId: 37,
+      pageLabel: 'p2',
+    }),
+    'sharing-viewer.log',
+  );
+  expect(f.runBrowser.mock.calls[0][1]).not.toHaveProperty(
+    'sharingPublicPhase',
+  );
+  expect(f.source.verify).toHaveBeenCalledOnce();
+  expect(f.source.stop).toHaveBeenCalledOnce();
+  expect(f.report.sharingViewer).toBe('passed');
+  await f.runner.stop();
   expect(f.source.stop).toHaveBeenCalledOnce();
 });
 

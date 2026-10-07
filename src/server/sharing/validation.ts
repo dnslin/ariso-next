@@ -25,16 +25,28 @@ export function parsePublicShareCursor(cursor: string | null): string | null {
   return parsed.data;
 }
 
-export function parsePublicShareQuery(params: URLSearchParams): string | null {
+export function parsePublicShareQuery(
+  params: URLSearchParams,
+):
+  | { kind: 'page'; cursor: string | null }
+  | { kind: 'neighbors'; imageId: string } {
   if (
-    [...params.keys()].some((key) => key !== 'cursor') ||
-    params.getAll('cursor').length > 1
+    [...params.keys()].some((key) => key !== 'cursor' && key !== 'imageId') ||
+    params.getAll('cursor').length > 1 ||
+    params.getAll('imageId').length > 1 ||
+    (params.has('cursor') && params.has('imageId'))
   )
     throw new SharingError(
       'SHARING_INVALID_INPUT',
-      '列表仅接受一个加载位置参数',
+      '列表仅接受一个加载位置或图片 ID 参数',
     );
-  return parsePublicShareCursor(params.get('cursor'));
+  if (params.has('imageId')) {
+    const imageId = publicImageIdSchema.safeParse(params.get('imageId'));
+    if (!imageId.success)
+      throw new SharingError('SHARING_INVALID_INPUT', '图片 ID 参数无效');
+    return { kind: 'neighbors', imageId: imageId.data };
+  }
+  return { kind: 'page', cursor: parsePublicShareCursor(params.get('cursor')) };
 }
 
 export const publicRefreshInputSchema = z.strictObject({

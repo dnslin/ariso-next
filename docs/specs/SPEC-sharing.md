@@ -1,7 +1,7 @@
 # Spec: sharing — 相册分享、密码授权与匿名展示
 
 - 模块 ID：`sharing`。
-- 状态：产品行为已于 2026-09-17 确认；T-SHR-01 已接入生产模型、管理接口、密码授权与清理。管理及匿名界面、公开成员查询由 T-SHR-02/03 继续实施；原型仍待对应界面验收。
+- 状态：产品行为已于 2026-09-17 确认；T-SHR-01/02/03 已接入生产协议、管理与匿名列表。T-SHR-04 匿名大图及公开邻居已实施，实际验证和仍待人工验收的部分见 [#193 证据](../verification/sharing-193/README.md)。原型不代替真实界面验收。
 - 日期：2026-09-17。
 - 前置：[site](./SPEC-site.md)、[identity](./SPEC-identity.md)、[collections](./SPEC-collections.md)、[delivery](./SPEC-delivery.md)的已确认契约。
 - 依据：[PRD](../product/Ariso-PRD-v1.1.md) 3、5.5、14、16、17、26.6/26.10；[覆盖表](../tasks/coverage.md)。
@@ -110,6 +110,8 @@ Cookie 提议名 `ariso_share_grant`，每次成功验证生成随机 32 字节�
 **已确认：允许点击可读图片看大图。** 采用已确认的默认预览选择：普通静态优先可显示的 compressed，否则可显示的 original，再用现有预览；动画优先 original，SVG/ICO/多页按既定预览。选择现存版本使用显式 type，不依赖站点默认外链，也不生成新文件。没有可读展示版本则占位，实际网络/文件错误不自动换版本。
 
 查看器只提供前后切换、缩放/平移、关闭及浏览器支持时的全屏；首尾不循环。按当前公开相册顺序按需读取邻居，最多预加载前后各一张，不请求后台详情。没有版本切换、技术信息、下载原图、分享、幻灯片按钮；名称仍服从 showName。关闭恢复原卡片焦点与滚动位置；当前图被移除时返回列表。手机手势和键盘规则复用已批准的大图交互，具体设计归 DES-03。
+
+T-SHR-04 的实际邻居入口为 `GET /s/{token}/items?imageId={uuid}`，不能与 cursor 混用，items 不接受 limit。`PublicShareNeighbors` 仅返回 `current/previous/next` 裁剪卡片、`showName/total/position`；当前不属公开成员时三项图片为 null、position 为 null。卡片增加 delivery 选择的 `previewUrl`，不返回后台版本详情；缺缩略图时 status 仍为 missing，但可读原版的 previewUrl 可以有效。打开、切图与状态检查的取消及重试由 sharing 会话统一负责。
 
 ## 8. 接口与一致性
 

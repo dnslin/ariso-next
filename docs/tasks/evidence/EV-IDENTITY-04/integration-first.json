@@ -1,0 +1,266 @@
+{
+  "recordedAt": "2026-10-06",
+  "command": "pnpm run test:integration --maxWorkers=4 --reporter=default --reporter=junit --outputFile=test-results/identity-146/integration.xml",
+  "exitCode": 1,
+  "wallSeconds": 777.02,
+  "files": {
+    "passed": 149,
+    "failed": 12,
+    "total": 161
+  },
+  "tests": {
+    "passed": 1548,
+    "failed": 19,
+    "total": 1567
+  },
+  "additionalCleanupFailure": "media/recovery-tools process inspection timed out after 1000 ms",
+  "failedSuites": [
+    {
+      "file": "tests/integration/delivery/reprocess.test.ts",
+      "tests": 5,
+      "failures": 2,
+      "seconds": 18.423071458,
+      "failedCases": [
+        {
+          "name": "T-DEL-02 local media reprocessing and stable delivery links > keeps published bytes throughout real candidate generation (success)",
+          "seconds": 5.297821417,
+          "type": "Error",
+          "message": "Test timed out in 5000ms. If this is a long-running test, pass a timeout value as the last argument or configure it globally with \"testTimeout\"."
+        },
+        {
+          "name": "T-DEL-02 local media reprocessing and stable delivery links > keeps published bytes throughout real candidate generation (write-failure)",
+          "seconds": 5.398123292,
+          "type": "Error",
+          "message": "Test timed out in 5000ms. If this is a long-running test, pass a timeout value as the last argument or configure it globally with \"testTimeout\"."
+        }
+      ]
+    },
+    {
+      "file": "tests/integration/identity/cli-reset.test.ts",
+      "tests": 13,
+      "failures": 2,
+      "seconds": 45.694291583,
+      "failedCases": [
+        {
+          "name": "CLI session deletion failure rolls back password, sessions and unused resets",
+          "seconds": 5.178355209,
+          "type": "Error",
+          "message": "Test timed out in 5000ms. If this is a long-running test, pass a timeout value as the last argument or configure it globally with \"testTimeout\"."
+        },
+        {
+          "name": "CLI verification deletion failure rolls back password, sessions and unused resets",
+          "seconds": 5.239353084,
+          "type": "Error",
+          "message": "Test timed out in 5000ms. If this is a long-running test, pass a timeout value as the last argument or configure it globally with \"testTimeout\"."
+        }
+      ]
+    },
+    {
+      "file": "tests/integration/identity/http.test.ts",
+      "tests": 8,
+      "failures": 2,
+      "seconds": 204.540018083,
+      "failedCases": [
+        {
+          "name": "GitHub credentials and enablement change only on restart while origin refreshes immediately over real Next HTTP",
+          "seconds": 120.174702583,
+          "type": "Error",
+          "message": "Test timed out in 120000ms. If this is a long-running test, pass a timeout value as the last argument or configure it globally with \"testTimeout\"."
+        },
+        {
+          "name": "concurrent identity experiments use separate build output and remove only their own output on stop",
+          "seconds": 33.587209208,
+          "type": "TimeoutError",
+          "message": "The operation was aborted due to timeout"
+        }
+      ]
+    },
+    {
+      "file": "tests/integration/identity/setup-dev.test.ts",
+      "tests": 1,
+      "failures": 1,
+      "seconds": 120.005589084,
+      "failedCases": [
+        {
+          "name": "real Next dev recompilation retains the startup code and the original code creates a login-capable owner",
+          "seconds": 120.004645417,
+          "type": "Error",
+          "message": "Test timed out in 120000ms. If this is a long-running test, pass a timeout value as the last argument or configure it globally with \"testTimeout\"."
+        }
+      ]
+    },
+    {
+      "file": "tests/integration/media/metadata.test.ts",
+      "tests": 10,
+      "failures": 4,
+      "seconds": 46.938037167,
+      "failedCases": [
+        {
+          "name": "T-MED-07 complete metadata with real ExifTool and ImageMagick > persists all groups and duplicate tags without converting strings, arrays, or nested XMP",
+          "seconds": 5.047306666,
+          "type": "Error",
+          "message": "Test timed out in 5000ms. If this is a long-running test, pass a timeout value as the last argument or configure it globally with \"testTimeout\"."
+        },
+        {
+          "name": "T-MED-07 complete metadata with real ExifTool and ImageMagick > retains the ExifTool empty-file diagnosis without logging full metadata and keeps the previous result",
+          "seconds": 5.131348209,
+          "type": "Error",
+          "message": "Test timed out in 5000ms. If this is a long-running test, pass a timeout value as the last argument or configure it globally with \"testTimeout\"."
+        },
+        {
+          "name": "T-MED-07 complete metadata with real ExifTool and ImageMagick > rechecks storage disabled during workspace preparation before accessing the original",
+          "seconds": 5.097973458,
+          "type": "Error",
+          "message": "Test timed out in 5000ms. If this is a long-running test, pass a timeout value as the last argument or configure it globally with \"testTimeout\"."
+        },
+        {
+          "name": "T-MED-07 complete metadata with real ExifTool and ImageMagick > atomically retains the previous metadata if marking a reread job succeeded fails and later recovers",
+          "seconds": 5.181412125,
+          "type": "Error",
+          "message": "Test timed out in 5000ms. If this is a long-running test, pass a timeout value as the last argument or configure it globally with \"testTimeout\"."
+        }
+      ]
+    },
+    {
+      "file": "tests/integration/media/recovery-tools.test.ts",
+      "tests": 14,
+      "failures": 2,
+      "seconds": 75.482120417,
+      "failedCases": [
+        {
+          "name": "T-MED-04 actual processing recovery > preserves healthy concurrent work for recovery after a queue claim failure",
+          "seconds": 9.892697083,
+          "type": "ExecaError",
+          "message": "Command timed out after 1000 milliseconds: process inventory"
+        },
+        {
+          "name": "T-MED-04 actual processing recovery > runs actual tools with concurrency 4, and lowering to one preserves active work",
+          "seconds": 10.740235875,
+          "type": "AssertionError",
+          "message": "expected 'running' to be 'succeeded' // Object.is equality"
+        }
+      ]
+    },
+    {
+      "file": "tests/integration/media/watermark.test.ts",
+      "tests": 30,
+      "failures": 1,
+      "seconds": 64.716117375,
+      "failedCases": [
+        {
+          "name": "places an image watermark at bottom-right with short-edge margins",
+          "seconds": 6.652814375,
+          "type": "Error",
+          "message": "Test timed out in 5000ms. If this is a long-running test, pass a timeout value as the last argument or configure it globally with \"testTimeout\"."
+        }
+      ]
+    },
+    {
+      "file": "tests/integration/runtime/build.test.ts",
+      "tests": 1,
+      "failures": 1,
+      "seconds": 240.339873584,
+      "failedCases": [
+        {
+          "name": "无密钥和数据库时在独立目录完成生产构建，不写数据或输出初始化码",
+          "seconds": 240.334477208,
+          "type": "Error",
+          "message": "Test timed out in 240000ms. If this is a long-running test, pass a timeout value as the last argument or configure it globally with \"testTimeout\"."
+        }
+      ]
+    },
+    {
+      "file": "tests/integration/runtime/logging.test.ts",
+      "tests": 3,
+      "failures": 1,
+      "seconds": 24.846975167,
+      "failedCases": [
+        {
+          "name": "隔离最终产物启动及正常请求输出逐行 JSON，故障入口不进入生产应用",
+          "seconds": 4.411379333,
+          "type": "TimeoutError",
+          "message": "The operation was aborted due to timeout"
+        }
+      ]
+    },
+    {
+      "file": "tests/integration/runtime/secret-preflight.test.ts",
+      "tests": 4,
+      "failures": 1,
+      "seconds": 41.236918209,
+      "failedCases": [
+        {
+          "name": "tampered ciphertext 阻止入口启动 Web，保留已提交迁移与密文，修复后继续且不重放迁移",
+          "seconds": 7.376207917,
+          "type": "TimeoutError",
+          "message": "The operation was aborted due to timeout"
+        }
+      ]
+    },
+    {
+      "file": "tests/integration/storage/settings-http.test.ts",
+      "tests": 7,
+      "failures": 1,
+      "seconds": 14.419763542,
+      "failedCases": [
+        {
+          "name": "停用 S3 的密文也在独立 prestart 校验；错误密钥失败且原配置不变",
+          "seconds": 5.121591625,
+          "type": "Error",
+          "message": "Test timed out in 5000ms. If this is a long-running test, pass a timeout value as the last argument or configure it globally with \"testTimeout\"."
+        }
+      ]
+    },
+    {
+      "file": "tests/integration/upload/local.test.ts",
+      "tests": 14,
+      "failures": 1,
+      "seconds": 16.716393625,
+      "failedCases": [
+        {
+          "name": "real local upload reception and ownership > retains actual image watermark A for all 45 frozen files while new submissions use B, then releases A after the last pending group terminates",
+          "seconds": 6.358423417,
+          "type": "Error",
+          "message": "Test timed out in 5000ms. If this is a long-running test, pass a timeout value as the last argument or configure it globally with \"testTimeout\"."
+        }
+      ]
+    }
+  ],
+  "issue146Suites": [
+    {
+      "file": "tests/integration/identity/cli-reset.test.ts",
+      "tests": 13,
+      "failures": 2,
+      "seconds": 45.694291583,
+      "failedCases": [
+        {
+          "name": "CLI session deletion failure rolls back password, sessions and unused resets",
+          "seconds": 5.178355209,
+          "type": "Error",
+          "message": "Test timed out in 5000ms. If this is a long-running test, pass a timeout value as the last argument or configure it globally with \"testTimeout\"."
+        },
+        {
+          "name": "CLI verification deletion failure rolls back password, sessions and unused resets",
+          "seconds": 5.239353084,
+          "type": "Error",
+          "message": "Test timed out in 5000ms. If this is a long-running test, pass a timeout value as the last argument or configure it globally with \"testTimeout\"."
+        }
+      ]
+    },
+    {
+      "file": "tests/integration/identity/reset-password.test.ts",
+      "tests": 14,
+      "failures": 0,
+      "seconds": 23.03274925,
+      "failedCases": []
+    },
+    {
+      "file": "tests/integration/identity/smtp.test.ts",
+      "tests": 18,
+      "failures": 0,
+      "seconds": 7.053417917,
+      "failedCases": []
+    }
+  ],
+  "hostLoad": "Other task worktrees were running full integration suites concurrently; no other task process was stopped."
+}

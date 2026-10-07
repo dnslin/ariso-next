@@ -1,0 +1,227 @@
+{
+  "recordedAt": "2026-10-07",
+  "baseCommit": "c5487a602a0a5469ab547b2749d5564c66b2fc99",
+  "environment": {
+    "node": "24.18.1",
+    "pnpm": "11.19.0",
+    "platform": "macOS arm64",
+    "nodemailer": "10.0.15",
+    "smtpServer": "3.19.17"
+  },
+  "scope": "Fix the reviewed DATA-complete disconnect diagnostic and strengthen the connection-refusal assertion. No product code, dependency, shared runner, timeout, or existing assertion weakened.",
+  "runs": [
+    {
+      "phase": "regression-before-fix",
+      "startedAt": "2026-10-06T18:15:35.315Z",
+      "exitCode": 1,
+      "wallSeconds": 0.863,
+      "selected": 2,
+      "passed": 0,
+      "failed": 2,
+      "notSelected": 18,
+      "argv": [
+        "pnpm",
+        "exec",
+        "vitest",
+        "run",
+        "--project",
+        "integration",
+        "tests/integration/identity/smtp.test.ts",
+        "--maxWorkers=1",
+        "--testNamePattern",
+        "connection closes before the final reply",
+        "--reporter=default",
+        "--reporter=junit",
+        "--outputFile=test-results/identity-146/smtp-disconnect-red.xml"
+      ],
+      "cases": [
+        {
+          "file": "tests/integration/identity/smtp.test.ts",
+          "name": "tls marks delivery unknown when DATA was received but the connection closes before the final reply",
+          "seconds": 0.124953458,
+          "result": "failed"
+        },
+        {
+          "file": "tests/integration/identity/smtp.test.ts",
+          "name": "starttls marks delivery unknown when DATA was received but the connection closes before the final reply",
+          "seconds": 0.110354667,
+          "result": "failed"
+        }
+      ],
+      "caseScope": "Selected new disconnect regressions only; totals above describe the complete run."
+    },
+    {
+      "phase": "smtp-file-after-fix",
+      "startedAt": "2026-10-06T18:16:09.442Z",
+      "exitCode": 0,
+      "wallSeconds": 3.23,
+      "selected": 20,
+      "passed": 20,
+      "failed": 0,
+      "notSelected": 0,
+      "argv": [
+        "pnpm",
+        "exec",
+        "vitest",
+        "run",
+        "--project",
+        "integration",
+        "tests/integration/identity/smtp.test.ts",
+        "--maxWorkers=1",
+        "--reporter=default",
+        "--reporter=junit",
+        "--outputFile=test-results/identity-146/smtp-disconnect-fix.xml"
+      ],
+      "cases": [
+        {
+          "file": "tests/integration/identity/smtp.test.ts",
+          "name": "tls marks delivery unknown when DATA was received but the connection closes before the final reply",
+          "seconds": 0.132638125,
+          "result": "passed"
+        },
+        {
+          "file": "tests/integration/identity/smtp.test.ts",
+          "name": "starttls marks delivery unknown when DATA was received but the connection closes before the final reply",
+          "seconds": 0.112024541,
+          "result": "passed"
+        }
+      ],
+      "caseScope": "Selected new disconnect regressions only; totals above describe the complete run."
+    },
+    {
+      "phase": "tcp-reset-before-fix",
+      "startedAt": "2026-10-06T18:21:27.262Z",
+      "exitCode": 1,
+      "wallSeconds": 0.785,
+      "selected": 2,
+      "passed": 0,
+      "failed": 2,
+      "notSelected": 20,
+      "argv": [
+        "pnpm",
+        "exec",
+        "vitest",
+        "run",
+        "--project",
+        "integration",
+        "tests/integration/identity/smtp.test.ts",
+        "--maxWorkers=1",
+        "--testNamePattern",
+        "TCP reset occurs before the final reply",
+        "--reporter=default",
+        "--reporter=junit",
+        "--outputFile=test-results/identity-146/smtp-reset-red.xml"
+      ],
+      "cases": [
+        {
+          "file": "tests/integration/identity/smtp.test.ts",
+          "name": "tls marks delivery unknown when DATA was received but a TCP reset occurs before the final reply",
+          "seconds": 0.125584541,
+          "result": "failed"
+        },
+        {
+          "file": "tests/integration/identity/smtp.test.ts",
+          "name": "starttls marks delivery unknown when DATA was received but a TCP reset occurs before the final reply",
+          "seconds": 0.110841416,
+          "result": "failed"
+        }
+      ],
+      "caseScope": "Selected new disconnect regressions only; totals above describe the complete run."
+    },
+    {
+      "phase": "smtp-file-after-both-fixes",
+      "startedAt": "2026-10-06T18:22:15.241Z",
+      "exitCode": 0,
+      "wallSeconds": 3.64,
+      "selected": 22,
+      "passed": 22,
+      "failed": 0,
+      "notSelected": 0,
+      "argv": [
+        "pnpm",
+        "exec",
+        "vitest",
+        "run",
+        "--project",
+        "integration",
+        "tests/integration/identity/smtp.test.ts",
+        "--maxWorkers=1",
+        "--reporter=default",
+        "--reporter=junit",
+        "--outputFile=test-results/identity-146/smtp-reset-fix.xml"
+      ],
+      "cases": [
+        {
+          "file": "tests/integration/identity/smtp.test.ts",
+          "name": "tls marks delivery unknown when DATA was received but the connection closes before the final reply",
+          "seconds": 0.114293375,
+          "result": "passed"
+        },
+        {
+          "file": "tests/integration/identity/smtp.test.ts",
+          "name": "starttls marks delivery unknown when DATA was received but the connection closes before the final reply",
+          "seconds": 0.132811167,
+          "result": "passed"
+        },
+        {
+          "file": "tests/integration/identity/smtp.test.ts",
+          "name": "tls marks delivery unknown when DATA was received but a TCP reset occurs before the final reply",
+          "seconds": 0.114934042,
+          "result": "passed"
+        },
+        {
+          "file": "tests/integration/identity/smtp.test.ts",
+          "name": "starttls marks delivery unknown when DATA was received but a TCP reset occurs before the final reply",
+          "seconds": 0.112056625,
+          "result": "passed"
+        }
+      ],
+      "caseScope": "Selected new disconnect regressions only; totals above describe the complete run."
+    }
+  ],
+  "limits": [
+    "No repeat of the full integration suite; its original 1548/1567 result and subsequent focused passes remain separately recorded.",
+    "No repeat external email send or browser operation; previously recorded receipt evidence remains unchanged."
+  ],
+  "regressions": [
+    {
+      "modes": ["tls", "starttls"],
+      "receivedEncryptedData": true,
+      "finalReplySent": false,
+      "error": {
+        "code": "ECONNECTION",
+        "command": "CONN",
+        "message": "Connection closed unexpectedly"
+      },
+      "beforeFix": {
+        "stage": "connection",
+        "delivery": "not-accepted"
+      },
+      "afterFix": {
+        "stage": "connection",
+        "delivery": "unknown"
+      },
+      "fault": "graceful-close-after-data"
+    },
+    {
+      "fault": "tcp-reset-after-data",
+      "modes": ["tls", "starttls"],
+      "receivedEncryptedData": true,
+      "finalReplySent": false,
+      "error": {
+        "code": "ESOCKET",
+        "command": "CONN",
+        "message": "read ECONNRESET",
+        "syscall": "read"
+      },
+      "beforeFix": {
+        "stage": "connection",
+        "delivery": "not-accepted"
+      },
+      "afterFix": {
+        "stage": "connection",
+        "delivery": "unknown"
+      }
+    }
+  ]
+}

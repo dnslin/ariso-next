@@ -477,11 +477,13 @@ T-COL-04 沿用 OwnerShell 和 T-LIB-04 查询/布局实现，手机封面图片
 - 范围：[sharing 规格](../specs/SPEC-sharing.md) §7；匿名精简大图、公开邻居与授权/成员变化联验，闭合删除相册和封面规则。
 - 直接前置：`T-SHR-03`、`T-SHR-02`、`T-LIB-07`、`T-DEL-02`、`DG-SHARING`
 - 验收条件：匿名只前后/缩放/平移/关闭/支持时全屏，最多预载前后各一张；无后台选版/技术信息/下载/幻灯片。当前图移除返回列表、授权失效清数据。删除相册级联分享/授权，旧Cookie不放行；图片独立公开地址遵守其状态，S3剩余有效期说明准确。
-- 验证方法：两上下文+真实本地/S3覆盖开着大图时关闭/改密/到期/rotate/删册/私有/回收/停用；触摸键盘、名称显示返回和焦点，HTTP新请求立即拒绝而旧已下载内容不冒充可撤回。
+- 验证方法：独立 Cookie HTTP 联验及同一 Ego 空间的真实本地/S3页面覆盖开着大图时关闭/改密/到期/rotate/删册/私有/回收/停用；触摸键盘、名称显示返回和焦点，HTTP新请求立即拒绝而旧已下载内容不冒充可撤回。独立浏览器会话要求按[执行约定](./execution.md#前端共用验收)取消。
 - 界面：匿名 /s/{token} 精简大图；sharing公开邻居与delivery内容。桌面[434:4003](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=434-4003)、手机[434:8782](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=434-8782)、桌面状态[432:3744](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=432-3744)、手机状态[432:8084](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=432-8084)。HeroUI：[Button](https://heroui.com/en/docs/react/components/button)、[Tooltip](https://heroui.com/en/docs/react/components/tooltip)、[Alert](https://heroui.com/en/docs/react/components/alert)。复用T-LIB-07查看组件但不接管理DTO；DG-SHARING 对应DES-03/RG-02，手机双指平移与返回来源；响应式及错误/空/加载/禁用、键盘、触摸均按本文公共要求。
 - 实施步骤：
-  - [ ] 1. 匿名精简大图：复用查看器，不提供后台字段和选版。
-  - [ ] 2. 删除相册/撤权/成员变化联验：本地与S3新请求失效。
+  - [x] 1. 匿名精简大图：复用查看器，不提供后台字段和选版。
+  - [x] 2. 删除相册/撤权/成员变化联验：本地与S3新请求失效。
+
+2026-10-06 至 07（Issue #193）：[草稿 PR #256](https://github.com/dnslin/ariso-next/pull/256) 实施匿名精简大图、公开邻居和打开中撤权，已接入实际生产页面；Local、R2/SeaweedFS 联验、默认检查、独立功能/设计评审和人工验收分别见 [统一实施证据](../verification/sharing-193/README.md)。前置 #192/#191/#185/#161/#134 已在开工时回读为 CLOSED。07日追加的右上返回图标及过期文字颜色已获用户人工通过，其受影响浏览器流程、Figma同步与独立评审见[反馈记录](../verification/sharing-193/feedback-settings/README.md)。用户进一步明确“也包含匿名大图，人工验收已通过”，本卡实施、适用场景验证、独立评审和人工验收完成。历史全量失败与范围外未验证项继续如实保留；本轮按用户澄清没有直接修改PR状态，也没有合并或关闭Issue。
 
 #### DG-SHARING 对 T-SHR-04 的核对结论
 
@@ -498,7 +500,7 @@ T-COL-04 沿用 OwnerShell 和 T-LIB-04 查询/布局实现，手机封面图片
 
 **具体表达缺口与责任：** T-SHR-04/P2-DESIGN 补齐当前图移除、打开大图时撤权、邻居加载/失败与名称关闭的连续恢复表达；沿已有列表/门禁/错误容器组合，不新造结果页。旧管理大图在[2026-10-02人工反馈](../design/handoff.md#管理大图人工反馈调整2026-10-02)改为只保留关闭图标，其批准范围是图库/相册管理，不能覆盖匿名 `434:4003/434:8782` 的底部操作、showName和Fullscreen。若展示能力复用需要改变匿名结构/交互，先提交可查看原型批准，再改产品；本DG不替用户选新方案。
 
-本卡负责真实Local及R2/SeaweedFS两上下文联验：打开大图后关闭/改密/恰好到期/rotate/删册、成员私有/回收/停用，以及关闭返回、键盘/浏览器手势和焦点。删除相册须真实级联分享/授权，旧Cookie不能放行；删除相册不删除图片，公开文件独立地址另按图片状态访问，已下载字节和最长5分钟S3旧签名不冒称立即撤回。AWS按[当前服务矩阵](./execution.md#对象存储验证目标调整)保持未验证，不计作通过。DES-03、DES-06-SHARING、RG-02/08及真实页面设计/人工验收继续开放。
+本卡负责真实Local及R2/SeaweedFS的管理操作/访客读取联验：打开大图后关闭/改密/恰好到期/rotate/删册、成员私有/回收/停用，以及关闭返回、键盘/浏览器手势和焦点。删除相册须真实级联分享/授权，旧Cookie不能放行；删除相册不删除图片，公开文件独立地址另按图片状态访问，已下载字节和最长5分钟S3旧签名不冒称立即撤回。AWS按[当前服务矩阵](./execution.md#对象存储验证目标调整)保持未验证，不计作通过。DES-03、DES-06-SHARING、RG-02/08及真实页面设计/人工验收继续开放。
 
 ### T-ANA-03 完整当前数量与对象占用
 

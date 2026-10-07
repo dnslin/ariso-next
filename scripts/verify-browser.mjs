@@ -273,7 +273,12 @@ const check = (name, operation, dependencies = []) => {
 };
 
 if (
-  ['sharing-experiment', 'sharing-protocol', 'sharing-public'].includes(suite)
+  [
+    'sharing-experiment',
+    'sharing-protocol',
+    'sharing-public',
+    'sharing-viewer',
+  ].includes(suite)
 ) {
   try {
     const spaceId = Number(process.env.EGO_TASK_SPACE);
@@ -282,7 +287,9 @@ if (
       'Existing Ego space required',
     );
     report.taskSpaceId = spaceId;
-    if (suite === 'sharing-public')
+    if (suite === 'sharing-viewer')
+      await sharing.runViewer(spaceId, plan.config.sharingViewerPhase);
+    else if (suite === 'sharing-public')
       await sharing.runPublic(spaceId, plan.config.sharingPublicPhase);
     else if (suite === 'sharing-protocol') await sharing.runProtocol(spaceId);
     else await sharing.runExperiment(spaceId);
@@ -878,6 +885,7 @@ try {
       sharing.runProtocol(report.taskSpaceId),
     );
     await check('sharing-public', () => sharing.runPublic(report.taskSpaceId));
+    await check('sharing-viewer', () => sharing.runViewer(report.taskSpaceId));
     await check('sharing-experiment', () =>
       sharing.runExperiment(report.taskSpaceId),
     );

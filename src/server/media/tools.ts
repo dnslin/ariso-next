@@ -9,25 +9,32 @@ function shutdownError(message: string, cause: unknown) {
   });
 }
 
-async function processes() {
-  const { stdout } = await execa(
+async function processes(leaders?: number[]) {
+  const result = await execa(
     'ps',
-    ['-axww', '-o', 'pid=,pgid=,stat=,command='],
+    leaders
+      ? ['-ww', '-p', leaders.join(','), '-o', 'pid=,pgid=,stat=,command=']
+      : ['-axo', 'pid=,pgid=,stat='],
     {
       timeout: 1000,
+      reject: false,
     },
-  ).catch((cause: unknown) => {
-    throw shutdownError('Cannot inspect media tool processes', cause);
-  });
-  return stdout.split('\n').flatMap((line) => {
-    const match = line.match(/^\s*(\d+)\s+(\d+)\s+(\S+)\s+(.*)$/);
+  );
+  // All selected leaders can exit between discovery and reading their arguments.
+  if (
+    result.failed &&
+    !(leaders && result.exitCode === 1 && !result.stdout && !result.stderr)
+  )
+    throw shutdownError('Cannot inspect media tool processes', result);
+  return result.stdout.split('\n').flatMap((line) => {
+    const match = line.match(/^\s*(\d+)\s+(\d+)\s+(\S+)(?:\s+(.*))?$/);
     return match
       ? [
           {
             pid: Number(match[1]),
             group: Number(match[2]),
             state: match[3],
-            command: match[4],
+            command: match[4] ?? '',
           },
         ]
       : [];
@@ -50,6 +57,18 @@ async function signalGroup(group: number, signal: NodeJS.Signals) {
 }
 
 async function groupIsRunning(group: number) {
+  try {
+    process.kill(-group, 0);
+  } catch (error) {
+    const code = (error as NodeJS.ErrnoException).code;
+    if (code === 'ESRCH') return false;
+    // An inaccessible group may still exist; inspect its states before deciding.
+    if (code !== 'EPERM')
+      throw shutdownError(
+        `Cannot inspect media tool process group ${group}`,
+        error,
+      );
+  }
   return (await processes()).some(
     (entry) => entry.group === group && !entry.state.startsWith('Z'),
   );
@@ -83,8 +102,16 @@ export async function terminateMediaTools(workspace: string) {
     `registry:temporary-path=${workspace}`,
     `ArisoWorkspace=${workspace}`,
   ];
+  // Only recovery needs arguments. Reading every process's full command line
+  // on each normal tool exit can stall an otherwise successful media queue.
+  const leaders = (await processes())
+    .filter(
+      (entry) => entry.pid === entry.group && !entry.state.startsWith('Z'),
+    )
+    .map((entry) => entry.pid);
+  if (!leaders.length) return;
   const groups = new Set(
-    (await processes())
+    (await processes(leaders))
       .filter(
         (entry) =>
           entry.pid === entry.group &&

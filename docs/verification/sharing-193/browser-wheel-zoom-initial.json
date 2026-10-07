@@ -1,0 +1,22 @@
+{
+  "status": "failed",
+  "taskSpaceId": 2,
+  "phase": "interactions",
+  "scope": "Production anonymous image viewer, bounded public neighbors and real revocation",
+  "checks": [
+    {
+      "scenario": "Escape on the actual YARL stage closes the viewer and restores the original card focus without refocusing a button"
+    },
+    {
+      "scenario": "Wheel zoom focus observation after the focused neighbor button is removed",
+      "tag": "BODY",
+      "insideViewer": false
+    }
+  ],
+  "layouts": [],
+  "limitations": [
+    "Physical phones, software keyboards, nonzero safe area and Release containers are outside this browser run."
+  ],
+  "stage": "viewer-interactions",
+  "error": "AssertionError [ERR_ASSERTION]: Wheel zoom keeps keyboard focus on the visible viewer\n\nfalse !== true\n\n    at Object.verifySharingViewerInteractions [as interactions] (file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/e2e/sharing-viewer-interactions.mjs:77:10)\n    at async file:////[eval2]:63:5"
+}

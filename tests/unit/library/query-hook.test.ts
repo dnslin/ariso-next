@@ -494,3 +494,363 @@ it('rechecking an already removed item does not decrement loaded totals again', 
   expect(data.pages[0].nextCursor).toBe('original-cursor');
   client.clear();
 });
+
+it.each(['succeeded', 'failed'] as const)(
+  'reprocess %s reads affected cards while preserving all loaded cursor boundaries',
+  async (status) => {
+    context.search = 'q=photo&pageSize=20';
+    const filters = parseLibraryLocation(
+      new URLSearchParams(context.search),
+    ).filters;
+    const client = new QueryClient();
+    const key = libraryListKey(filters, 'more', 1);
+    client.setQueryData(key, {
+      pages: [page(['a', 'b'], 'after-b', 5), page(['c', 'd'], 'after-d', 5)],
+      pageParams: [null, 'after-b'],
+    });
+    const task = {
+      id: 'task-c',
+      status,
+      scope: 'thumbnail' as const,
+      step: 'thumbnail',
+      error: status === 'failed' ? '磁盘不可写' : null,
+      expectedVersions: ['thumbnail' as const],
+      generatedVersions: status === 'succeeded' ? ['thumbnail' as const] : [],
+    };
+    const updated: LibraryItem = {
+      ...item('c'),
+      processingStatus: status === 'failed' ? 'failed' : 'ready',
+      versions: { ...item('c').versions, thumbnail: status === 'succeeded' },
+      thumbnailUrl: status === 'succeeded' ? '/i/c?type=thumbnail' : null,
+      thumbnailDimensions:
+        status === 'succeeded' ? { width: 200, height: 100 } : null,
+      processingJob: task,
+      latestFailedJob:
+        status === 'failed' ? { ...task, status: 'failed' } : null,
+    };
+    const fetcher = vi
+      .fn()
+      .mockResolvedValue(Response.json({ items: [updated], missingIds: [] }));
+    vi.stubGlobal('fetch', fetcher);
+
+    await mount(client).onBatchCompleted(
+      [
+        {
+          id: 'c',
+          status: 'accepted',
+          inQuery: true,
+          message: '已核对',
+          taskId: task.id,
+          task,
+        },
+      ],
+      { type: 'reprocess', scope: 'thumbnail', taskIds: { c: task.id } },
+    );
+
+    expect(fetcher).toHaveBeenCalledTimes(1);
+    expect(fetcher).toHaveBeenCalledWith(
+      '/api/images/status',
+      expect.objectContaining({ method: 'POST', body: '{"ids":["c"]}' }),
+    );
+    const current = client.getQueryData<InfiniteData<LibraryPage>>(key)!;
+    expect(current.pageParams).toEqual([null, 'after-b']);
+    expect(current.pages.map((page) => page.nextCursor)).toEqual([
+      'after-b',
+      'after-d',
+    ]);
+    expect(
+      current.pages.flatMap((page) => page.items.map((item) => item.id)),
+    ).toEqual(['a', 'b', 'c', 'd']);
+    expect(current.pages[1].items[0]).toEqual(updated);
+    client.clear();
+  },
+);
+
+it.each([401, 503])(
+  'reprocess status HTTP %s propagates while preserving loaded cards',
+  async (status) => {
+    const filters = parseLibraryLocation(new URLSearchParams()).filters;
+    const client = new QueryClient();
+    const key = libraryListKey(filters, 'more', 1);
+    const cached = { pages: [page(['a'], 'after-a')], pageParams: [null] };
+    client.setQueryData(key, cached);
+    vi.stubGlobal(
+      'fetch',
+      vi
+        .fn()
+        .mockResolvedValue(
+          Response.json(
+            { message: '暂时无法读取列表', code: 'LIBRARY_READ_FAILED' },
+            { status },
+          ),
+        ),
+    );
+    await expect(
+      mount(client).onBatchCompleted(
+        [{ id: 'a', status: 'failed', inQuery: true, message: '当前任务冲突' }],
+        { type: 'reprocess', scope: 'all', taskIds: { a: 'task-a' } },
+      ),
+    ).rejects.toMatchObject({
+      status,
+      message: `暂时无法读取列表（HTTP ${status}）`,
+    });
+    expect(client.getQueryData(key)).toEqual(cached);
+    client.clear();
+  },
+);
+
+it('reprocess status removes actually missing IDs without changing loaded cursor boundaries', async () => {
+  const filters = parseLibraryLocation(new URLSearchParams()).filters;
+  const client = new QueryClient();
+  const key = libraryListKey(filters, 'more', 1);
+  client.setQueryData(key, {
+    pages: [page(['a', 'b'], 'after-b', 5), page(['c', 'd'], 'after-d', 5)],
+    pageParams: [null, 'after-b'],
+  });
+  vi.stubGlobal(
+    'fetch',
+    vi.fn().mockResolvedValue(Response.json({ items: [], missingIds: ['b'] })),
+  );
+  await mount(client).onBatchCompleted(
+    [{ id: 'b', status: 'failed', inQuery: true, message: '已核对' }],
+    { type: 'reprocess', scope: 'all', taskIds: { b: 'task-b' } },
+  );
+  const current = client.getQueryData<InfiniteData<LibraryPage>>(key)!;
+  expect(
+    current.pages.map((page) => page.items.map((item) => item.id)),
+  ).toEqual([['a'], ['c', 'd']]);
+  expect(current.pages.map((page) => page.total)).toEqual([4, 4]);
+  expect(current.pages.map((page) => page.nextCursor)).toEqual([
+    'after-b',
+    'after-d',
+  ]);
+  expect(current.pageParams).toEqual([null, 'after-b']);
+  client.clear();
+});
+
+it('reprocess status aborts when its query client is cleared without restoring disposed cards', async () => {
+  const filters = parseLibraryLocation(new URLSearchParams()).filters;
+  const client = new QueryClient();
+  const key = libraryListKey(filters, 'more', 1);
+  client.setQueryData(key, {
+    pages: [page(['a'], 'after-a')],
+    pageParams: [null],
+  });
+  const fetcher = vi.fn().mockImplementation(
+    (_url: string, options: RequestInit) =>
+      new Promise((_resolve, reject) => {
+        options.signal!.addEventListener(
+          'abort',
+          () => reject(options.signal!.reason),
+          { once: true },
+        );
+      }),
+  );
+  vi.stubGlobal('fetch', fetcher);
+  const pending = mount(client).onBatchCompleted(
+    [{ id: 'a', status: 'failed', inQuery: true, message: '已核对' }],
+    { type: 'reprocess', scope: 'all', taskIds: { a: 'task-a' } },
+  );
+  await vi.waitFor(() => expect(fetcher).toHaveBeenCalledTimes(1));
+  client.clear();
+  await expect(pending).rejects.toBeDefined();
+  expect(fetcher.mock.calls[0][1].signal.aborted).toBe(true);
+  expect(client.getQueryData(key)).toBeUndefined();
+});
+
+it.each([1, 81])(
+  'reprocess status is cancelled together with subsequent library mutations for %i IDs',
+  async (count) => {
+    const filters = parseLibraryLocation(new URLSearchParams()).filters;
+    const client = new QueryClient();
+    const key = libraryListKey(filters, 'more', 1);
+    const ids = Array.from({ length: count }, (_, index) => `image-${index}`);
+    const cached = {
+      pages: [page(ids, 'original-boundary')],
+      pageParams: [null],
+    };
+    client.setQueryData(key, cached);
+    const fetcher = vi
+      .fn()
+      .mockImplementation((_url: string, options: RequestInit) => {
+        if (count > 80 && fetcher.mock.calls.length === 1) {
+          const requested = JSON.parse(String(options.body)).ids as string[];
+          return Promise.resolve(
+            Response.json({
+              items: requested.map((id) => ({
+                ...item(id),
+                versions: { ...item(id).versions, thumbnail: true },
+              })),
+              missingIds: [],
+            }),
+          );
+        }
+        return new Promise((_resolve, reject) => {
+          options.signal!.addEventListener(
+            'abort',
+            () => reject(options.signal!.reason),
+            { once: true },
+          );
+        });
+      });
+    vi.stubGlobal('fetch', fetcher);
+    const pending = mount(client)
+      .onBatchCompleted(
+        ids.map((id) => ({
+          id,
+          status: 'failed' as const,
+          inQuery: true,
+          message: '已核对',
+        })),
+        {
+          type: 'reprocess',
+          scope: 'all',
+          taskIds: Object.fromEntries(ids.map((id) => [id, `task-${id}`])),
+        },
+      )
+      .catch((error: unknown) => error);
+    try {
+      await vi.waitFor(() =>
+        expect(fetcher).toHaveBeenCalledTimes(count > 80 ? 2 : 1),
+      );
+      expect(client.getQueryData(key)).toEqual(cached);
+      await client.cancelQueries({ queryKey: ['library'] });
+      expect(
+        fetcher.mock.calls.every(([, options]) => options.signal.aborted),
+      ).toBe(true);
+      expect(client.getQueryData(key)).toEqual(cached);
+    } finally {
+      client.clear();
+      await pending;
+    }
+  },
+);
+
+it('reprocess removes items outside the query without replacing deleted cursor anchors', async () => {
+  context.search = 'status=failed&pageSize=20';
+  const filters = parseLibraryLocation(
+    new URLSearchParams(context.search),
+  ).filters;
+  const client = new QueryClient();
+  const key = libraryListKey(filters, 'more', 1);
+  client.setQueryData(key, {
+    pages: [page(['a', 'b'], 'after-b', 5), page(['c', 'd'], 'after-d', 5)],
+    pageParams: [null, 'after-b'],
+  });
+  const updated = { ...item('c'), processingStatus: 'failed' as const };
+  const fetcher = vi
+    .fn()
+    .mockResolvedValue(Response.json({ items: [updated], missingIds: [] }));
+  vi.stubGlobal('fetch', fetcher);
+  await mount(client).onBatchCompleted(
+    [
+      {
+        id: 'b',
+        status: 'failed',
+        inQuery: false,
+        message: '图片已离开当前查询',
+      },
+      { id: 'c', status: 'failed', inQuery: true, message: '本次任务失败' },
+    ],
+    { type: 'reprocess', scope: 'all', taskIds: { b: 'task-b', c: 'task-c' } },
+  );
+  expect(fetcher).toHaveBeenCalledWith(
+    '/api/images/status',
+    expect.objectContaining({ body: '{"ids":["c"]}' }),
+  );
+  const current = client.getQueryData<InfiniteData<LibraryPage>>(key)!;
+  expect(
+    current.pages.map((page) => page.items.map((item) => item.id)),
+  ).toEqual([['a'], ['c', 'd']]);
+  expect(current.pages.map((page) => page.nextCursor)).toEqual([
+    'after-b',
+    'after-d',
+  ]);
+  expect(current.pageParams).toEqual([null, 'after-b']);
+  expect(current.pages.map((page) => page.total)).toEqual([4, 4]);
+  expect(current.pages[1].items[0]).toEqual(updated);
+  client.clear();
+});
+
+it('reprocess queues only affected loaded IDs in status batches of at most 80', async () => {
+  const filters = parseLibraryLocation(new URLSearchParams()).filters;
+  const client = new QueryClient();
+  const key = libraryListKey(filters, 'more', 1);
+  const ids = Array.from({ length: 81 }, (_, index) => `image-${index}`);
+  client.setQueryData(key, {
+    pages: [
+      page(ids.slice(0, 40), 'first-boundary'),
+      page([...ids.slice(40), 'untouched'], 'last-boundary'),
+    ],
+    pageParams: [null, 'first-boundary'],
+  });
+  let finishFirst!: () => void;
+  const fetcher = vi
+    .fn()
+    .mockImplementation((_url: string, options?: RequestInit) => {
+      const requested = JSON.parse(String(options?.body ?? '{"ids":[]}'))
+        .ids as string[];
+      const response = Response.json({
+        items: requested.map((id) => ({
+          ...item(id),
+          versions: { ...item(id).versions, thumbnail: true },
+        })),
+        missingIds: [],
+      });
+      if (fetcher.mock.calls.length === 1)
+        return new Promise<Response>((resolve) => {
+          finishFirst = () => resolve(response);
+        });
+      return Promise.resolve(response);
+    });
+  vi.stubGlobal('fetch', fetcher);
+  const pending = mount(client).onBatchCompleted(
+    [...ids, 'not-loaded'].map((id) => ({
+      id,
+      status: 'failed' as const,
+      inQuery: true,
+      message: '已核对',
+    })),
+    {
+      type: 'reprocess',
+      scope: 'all',
+      taskIds: Object.fromEntries(
+        [...ids, 'not-loaded'].map((id) => [id, `task-${id}`]),
+      ),
+    },
+  );
+  try {
+    await vi.waitFor(() => expect(fetcher).toHaveBeenCalled());
+    expect(fetcher).toHaveBeenCalledTimes(1);
+    expect(
+      client
+        .getQueryData<InfiniteData<LibraryPage>>(key)
+        ?.pages.flatMap((page) => page.items)
+        .some((item) => item.versions.thumbnail),
+    ).toBe(false);
+  } finally {
+    finishFirst();
+    await pending;
+  }
+  expect(fetcher).toHaveBeenCalledTimes(2);
+  expect(fetcher.mock.calls[1][1].signal).toBe(fetcher.mock.calls[0][1].signal);
+  expect(
+    fetcher.mock.calls.map(
+      ([, options]) => JSON.parse(String(options.body)).ids,
+    ),
+  ).toEqual([ids.slice(0, 80), ids.slice(80)]);
+  const current = client.getQueryData<InfiniteData<LibraryPage>>(key)!;
+  expect(
+    current.pages
+      .flatMap((page) => page.items)
+      .filter((item) => item.versions.thumbnail)
+      .map((item) => item.id),
+  ).toEqual(ids);
+  expect(current.pages[1].items.at(-1)?.versions.thumbnail).toBe(false);
+  expect(current.pageParams).toEqual([null, 'first-boundary']);
+  expect(current.pages.map((page) => page.nextCursor)).toEqual([
+    'first-boundary',
+    'last-boundary',
+  ]);
+  client.clear();
+});

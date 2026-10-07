@@ -431,14 +431,11 @@ export async function saveClipboard() {
 }
 
 export async function restoreClipboard(saved) {
-  await run(
-    'osascript',
-    [
-      '-l',
-      'JavaScript',
-      '-e',
-      `ObjC.import('AppKit');const p=$.NSPasteboard.generalPasteboard;p.clearContents;const output=$.NSMutableArray.alloc.init;for(const row of ${JSON.stringify(saved)}){const item=$.NSPasteboardItem.alloc.init;for(const entry of row){item.setDataForType($.NSData.alloc.initWithBase64EncodedStringOptions($(entry.data),0),$(entry.type));}output.addObject(item);}if(output.count)p.writeObjects(output);`,
-    ],
-    { maxBuffer: 32 * 1024 * 1024 },
+  const restoring = run('osascript', ['-l', 'JavaScript'], {
+    maxBuffer: 32 * 1024 * 1024,
+  });
+  restoring.child.stdin.end(
+    `ObjC.import('AppKit');const p=$.NSPasteboard.generalPasteboard;p.clearContents;const output=$.NSMutableArray.alloc.init;for(const row of ${JSON.stringify(saved)}){const item=$.NSPasteboardItem.alloc.init;for(const entry of row){item.setDataForType($.NSData.alloc.initWithBase64EncodedStringOptions($(entry.data),0),$(entry.type));}output.addObject(item);}if(output.count)p.writeObjects(output);`,
   );
+  await restoring;
 }

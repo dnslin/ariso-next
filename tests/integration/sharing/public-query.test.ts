@@ -15,6 +15,7 @@ import {
   mediaJobs,
   mediaObjects,
   mediaVersions,
+  type VersionKind,
 } from '../../../src/server/media/schema.ts';
 import { initializeSiteSettings } from '../../../src/server/site/settings.ts';
 import {
@@ -33,6 +34,7 @@ import {
   shareGrants,
 } from '../../../src/server/sharing/schema.ts';
 import { storageConfigs } from '../../../src/server/storage/schema.ts';
+import type { PublicShareNeighbors } from '../../../src/server/sharing/public-types.ts';
 import { collectionFixture } from '../collections/helpers.ts';
 
 let fixture: ReturnType<typeof collectionFixture>;
@@ -108,6 +110,41 @@ function thumbnail(id: string, objectStatus: 'stored' | 'writing' = 'stored') {
     })
     .run();
 }
+function savedVersion(
+  id: string,
+  kind: VersionKind,
+  mime = 'image/webp',
+  status: 'stored' | 'writing' = 'stored',
+) {
+  fixture.db
+    .insert(mediaObjects)
+    .values({
+      id: `${kind}-${id}`,
+      imageId: id,
+      storageId: fixture.storage.id,
+      key: `private-storage-key/${kind}-${id}`,
+      purpose: kind,
+      status,
+      byteSize: 10,
+      createdAt: now,
+      updatedAt: now,
+    })
+    .run();
+  fixture.db
+    .insert(mediaVersions)
+    .values({
+      imageId: id,
+      kind,
+      objectId: `${kind}-${id}`,
+      width: 300,
+      height: 200,
+      byteSize: 10,
+      format: 'WEBP',
+      mime,
+      createdAt: now,
+    })
+    .run();
+}
 const page = (cursor: string | null = null, grantSecret?: string, time = now) =>
   readPublicSharePage(fixture.db, { token, grantSecret, now: time }, cursor);
 const refresh = (ids: string[], grantSecret?: string, time = now) =>
@@ -117,6 +154,12 @@ const idList = (count: number) =>
     { length: count },
     (_, index) => `image-${String(index).padStart(3, '0')}`,
   );
+const neighbors = (imageId: string, grantSecret?: string, time = now) =>
+  readPublicShareItems(
+    fixture.db,
+    { token, grantSecret, now: time },
+    new URLSearchParams({ imageId }),
+  ) as PublicShareNeighbors;
 
 it('filters private, recycled and deleting members before total and fixed 40-item pages; cursor only contains public IDs', () => {
   const ids = idList(85);
@@ -152,6 +195,7 @@ it('filters private, recycled and deleting members before total and fixed 40-ite
     expect(Object.keys(item).sort()).toEqual([
       'aspectRatio',
       'imageId',
+      'previewUrl',
       'status',
       'thumbnailUrl',
     ]);
@@ -174,6 +218,209 @@ it('filters private, recycled and deleting members before total and fixed 40-ite
     'passwordHash',
   ])
     expect(json).not.toContain(forbidden);
+});
+
+it('reads only the current public neighbors across page boundaries without wrapping and reports the public ordinal', () => {
+  const ids = idList(85);
+  for (const id of ids) image(id);
+  expect(neighbors(ids[39])).toMatchObject({
+    current: { imageId: ids[39], previewUrl: `/i/${ids[39]}?type=original` },
+    previous: { imageId: ids[38] },
+    next: { imageId: ids[40] },
+    position: 40,
+    total: 85,
+    showName: false,
+  });
+  expect(neighbors(ids[0])).toMatchObject({
+    current: { imageId: ids[0] },
+    previous: null,
+    next: { imageId: ids[1] },
+    position: 1,
+  });
+  expect(neighbors(ids[84])).toMatchObject({
+    current: { imageId: ids[84] },
+    previous: { imageId: ids[83] },
+    next: null,
+    position: 85,
+  });
+  const body = JSON.stringify(neighbors(ids[39]));
+  for (const forbidden of [
+    'displayName',
+    '秘密名称',
+    'originalName',
+    'storageId',
+    'byteSize',
+    'width',
+    'height',
+    'joinedAt',
+    'versions',
+    'classification',
+    'mime',
+  ])
+    expect(body).not.toContain(forbidden);
+});
+
+it('uses joinedAt descending and IDs ascending for current neighbors and keeps unreadable public positions', () => {
+  for (const [id, joinedAt] of [
+    ['z', 2],
+    ['b', 3],
+    ['a', 3],
+    ['old', 1],
+  ] as const)
+    image(id, joinedAt);
+  fixture.db
+    .update(mediaImages)
+    .set({ processingStatus: 'failed' })
+    .where(eq(mediaImages.id, 'b'))
+    .run();
+  expect(neighbors('b')).toMatchObject({
+    current: { imageId: 'b', status: 'failed', previewUrl: null },
+    previous: { imageId: 'a' },
+    next: { imageId: 'z' },
+    position: 2,
+    total: 4,
+  });
+  fixture.db
+    .update(mediaImages)
+    .set({ visibility: 'private' })
+    .where(eq(mediaImages.id, 'a'))
+    .run();
+  expect(neighbors('b')).toMatchObject({
+    previous: null,
+    position: 1,
+    total: 3,
+  });
+});
+
+it('publishes only existing displayable preview addresses with explicit versions and current processing/storage policy', () => {
+  for (const id of [
+    'static',
+    'original-only',
+    'animated',
+    'svg',
+    'container',
+    'missing-preview',
+    'writing',
+    'unsupported',
+  ])
+    image(id);
+  for (const id of [
+    'static',
+    'animated',
+    'svg',
+    'container',
+    'writing',
+    'unsupported',
+  ])
+    thumbnail(id);
+  savedVersion('static', 'compressed');
+  savedVersion('animated', 'compressed');
+  savedVersion('svg', 'compressed');
+  savedVersion('container', 'compressed');
+  savedVersion('writing', 'compressed', 'image/webp', 'writing');
+  savedVersion('unsupported', 'compressed', 'image/heic');
+  fixture.db
+    .update(mediaImages)
+    .set({ animated: true, classification: 'animated' })
+    .where(eq(mediaImages.id, 'animated'))
+    .run();
+  fixture.db
+    .update(mediaImages)
+    .set({ format: 'SVG', classification: 'preview_only' })
+    .where(eq(mediaImages.id, 'svg'))
+    .run();
+  fixture.db
+    .update(mediaImages)
+    .set({ classification: 'preview_only' })
+    .where(eq(mediaImages.id, 'container'))
+    .run();
+  fixture.db
+    .update(mediaObjects)
+    .set({ status: 'writing' })
+    .where(eq(mediaObjects.imageId, 'missing-preview'))
+    .run();
+  const selected = refresh([
+    'static',
+    'original-only',
+    'animated',
+    'svg',
+    'container',
+    'missing-preview',
+    'writing',
+    'unsupported',
+  ]);
+  expect(selected.items.map((item) => item.previewUrl)).toEqual([
+    '/i/static?type=compressed',
+    '/i/original-only?type=original',
+    '/i/animated?type=original',
+    '/i/svg?type=thumbnail',
+    '/i/container?type=thumbnail',
+    null,
+    '/i/writing?type=original',
+    '/i/unsupported?type=original',
+  ]);
+  expect(neighbors('static').current).toEqual(selected.items[0]);
+  expect(page().items.find((item) => item.imageId === 'static')).toEqual(
+    selected.items[0],
+  );
+  for (const processingStatus of ['pending', 'processing', 'failed'] as const) {
+    fixture.db
+      .update(mediaImages)
+      .set({ processingStatus })
+      .where(eq(mediaImages.id, 'static'))
+      .run();
+    expect(neighbors('static').current?.previewUrl).toBeNull();
+  }
+  fixture.db
+    .update(mediaImages)
+    .set({ processingStatus: 'ready' })
+    .where(eq(mediaImages.id, 'static'))
+    .run();
+  fixture.db.update(storageConfigs).set({ enabled: false }).run();
+  expect(neighbors('static').current).toMatchObject({
+    status: 'disabled',
+    thumbnailUrl: null,
+    previewUrl: null,
+  });
+  fixture.db.update(storageConfigs).set({ enabled: true }).run();
+  expect(neighbors('static').current?.previewUrl).toBe(
+    '/i/static?type=compressed',
+  );
+});
+
+it('uniformly clears neighbors for unknown, private, recycled, deleting and moved current members', async () => {
+  image('public');
+  for (const id of ['private', 'recycled', 'deleting', 'moved']) image(id);
+  fixture.db
+    .update(mediaImages)
+    .set({ visibility: 'private' })
+    .where(eq(mediaImages.id, 'private'))
+    .run();
+  fixture.db
+    .update(mediaImages)
+    .set({ trashedAt: now })
+    .where(eq(mediaImages.id, 'recycled'))
+    .run();
+  fixture.db
+    .update(mediaImages)
+    .set({ deletionStatus: 'deleting' })
+    .where(eq(mediaImages.id, 'deleting'))
+    .run();
+  removeMemberships(fixture.db, ['moved'], { albumIds: [albumId], tagIds: [] });
+  const empty = {
+    current: null,
+    previous: null,
+    next: null,
+    position: null,
+    total: 1,
+    showName: false,
+  };
+  for (const id of ['unknown', 'private', 'recycled', 'deleting', 'moved'])
+    expect(neighbors(id)).toEqual(empty);
+  await updateShare(fixture.db, albumId, { showName: true });
+  expect(neighbors('public').current?.displayName).toBe('秘密名称-public');
+  await updateShare(fixture.db, albumId, { showName: false });
+  expect(JSON.stringify(neighbors('public'))).not.toContain('displayName');
 });
 
 it('orders by joinedAt descending then ID ascending and resolves an anchor from only the current public set', () => {
@@ -381,14 +628,24 @@ it('checks the same fixed grant and current lifecycle before any anonymous album
       expiresAt: new Date(now.getTime() + 86400000),
     })
     .run();
-  for (const read of [() => page(), () => page(''), () => refresh(['public'])])
+  for (const read of [
+    () => page(),
+    () => page(''),
+    () => refresh(['public']),
+    () => neighbors('public'),
+    () => neighbors(''),
+  ])
     expect(read).toThrowError(expect.objectContaining({ status: 401 }));
   expect(page(null, secret).items).toHaveLength(1);
+  expect(neighbors('public', secret).current?.imageId).toBe('public');
   const before = fixture.db.select().from(shareGrants).all();
   expect(refresh(['public'], secret).items).toHaveLength(1);
   expect(fixture.db.select().from(shareGrants).all()).toEqual(before);
   expect(() =>
     page(null, secret, new Date(now.getTime() + 86400000)),
+  ).toThrowError(expect.objectContaining({ status: 401 }));
+  expect(() =>
+    neighbors('public', secret, new Date(now.getTime() + 86400000)),
   ).toThrowError(expect.objectContaining({ status: 401 }));
   await updateShare(fixture.db, albumId, { enabled: false });
   expect(() => page(null, secret)).toThrowError(
@@ -397,8 +654,14 @@ it('checks the same fixed grant and current lifecycle before any anonymous album
   expect(() => page('', secret)).toThrowError(
     expect.objectContaining({ status: 410 }),
   );
+  expect(() => neighbors('', secret)).toThrowError(
+    expect.objectContaining({ status: 410 }),
+  );
   await updateShare(fixture.db, albumId, { enabled: true });
   expect(() => page(null, secret)).toThrowError(
+    expect.objectContaining({ status: 401 }),
+  );
+  expect(() => neighbors('public', secret)).toThrowError(
     expect.objectContaining({ status: 401 }),
   );
   await rotateShare(fixture.db, albumId);
@@ -408,9 +671,14 @@ it('checks the same fixed grant and current lifecycle before any anonymous album
   expect(() => page('', secret)).toThrowError(
     expect.objectContaining({ status: 404 }),
   );
+  expect(() => neighbors('', secret)).toThrowError(
+    expect.objectContaining({ status: 404 }),
+  );
   fixture.db.transaction((tx) => deleteAlbum(tx, albumId));
   expect(() => refresh(['public'], secret)).toThrowError(
     expect.objectContaining({ status: 404 }),
   );
   expect(fixture.db.select().from(mediaImages).all()).toHaveLength(1);
+  expect(fixture.db.select().from(albumShares).all()).toEqual([]);
+  expect(fixture.db.select().from(shareGrants).all()).toEqual([]);
 });

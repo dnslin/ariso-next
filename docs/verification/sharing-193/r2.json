@@ -1,0 +1,70 @@
+{
+  "status": "passed",
+  "service": "r2",
+  "startedAt": "2026-10-06T14:05:35.239Z",
+  "environment": {
+    "node": "v24.18.1",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "checks": [
+    {
+      "condition": "closed",
+      "shareStatus": 410,
+      "newContentStatus": 302
+    },
+    {
+      "condition": "password",
+      "shareStatus": 401,
+      "newContentStatus": 302
+    },
+    {
+      "condition": "expired",
+      "shareStatus": 410,
+      "newContentStatus": 302
+    },
+    {
+      "condition": "rotated",
+      "shareStatus": 404,
+      "newContentStatus": 302
+    },
+    {
+      "condition": "deleted",
+      "shareStatus": 404,
+      "newContentStatus": 302
+    },
+    {
+      "condition": "private",
+      "shareStatus": 200,
+      "newContentStatus": 401,
+      "previousSignedStatus": 200
+    },
+    {
+      "condition": "trashed",
+      "shareStatus": 200,
+      "newContentStatus": 404,
+      "previousSignedStatus": 200
+    },
+    {
+      "condition": "removed",
+      "shareStatus": 200,
+      "newContentStatus": 302,
+      "previousSignedStatus": 200
+    },
+    {
+      "condition": "disabled",
+      "shareStatus": 200,
+      "newContentStatus": 409,
+      "previousSignedStatus": 200
+    }
+  ],
+  "cleanup": "All fixture object keys deleted and absence checked",
+  "limitations": [
+    "Issued signatures are confirmed usable after revocation and declare 300 seconds. This run does not wait five minutes for actual expiry; existing delivery evidence covers expiry separately."
+  ],
+  "target": {
+    "endpoint": "https://24aefab5f3cb70b3568d7aeaf292135b.r2.cloudflarestorage.com",
+    "bucket": "image"
+  },
+  "finishedAt": "2026-10-06T14:05:53.698Z"
+}

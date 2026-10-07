@@ -149,7 +149,17 @@ export function LibraryScreen(props: {
       results: import('../../server/library/batch-types').BatchItemResult[],
       command: import('../../server/library/batch-types').BatchCommand,
     ) => {
-      await query.onBatchCompleted(results, command);
+      try {
+        await query.onBatchCompleted(results, command);
+      } catch (error) {
+        if (
+          (error instanceof LibraryReadError ||
+            error instanceof DetailReadError) &&
+          error.status === 401
+        )
+          expireSession();
+        throw error;
+      }
       props.onRefresh?.();
     },
   };

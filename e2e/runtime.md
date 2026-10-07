@@ -54,3 +54,7 @@ EGO_TASK_SPACE=22 node scripts/verify-browser.mjs --suite sharing-experiment
 输出 `sharing-experiment.json`、`sharing-experiment.log` 和 `sharing-server.log`。报告不保存 Cookie 值、密码或完整分享 Token。范围是库与 HTTP/浏览器协议实验，不交付匿名相册界面、不替代 Figma 对照、生产 sharing 业务验收或双独立浏览器上下文证据；完成状态见 [EV-SHARING-01 报告](../docs/tasks/evidence/EV-SHARING-01/README.md)。
 
 设备实测范围按[前端共用验收](../docs/tasks/execution.md#前端共用验收)，上述三项设备要求已由所有者取消；跨浏览器矩阵仍归 T-QA-02。浏览器证据来自工作站的现有 Ego Lite；日常本地检查和 Release 发布验证范围统一按[适用检查](../docs/tasks/execution.md#适用检查)。
+
+`e2e/sharing-viewer.mjs` 验证 T-SHR-04 真实匿名查看器。默认完整入口在 sharing-public 后执行；定向 `--suite sharing-viewer` 的 `--only` 只接受 `representative`、`interactions`、`revocation`、`race`，不复用 sharing-public 的阶段参数。夹具扩展现有独立分享数据库，发布真实 compressed PNG、动画 GIF 和 SVG/ICO/多页预览；不修改人工预览或用户数据。
+
+代表状态检查浅深色 360/390/430/768/1440、名称策略和短视口，真实移除未曾加载的文件触发错误并恢复同版本。交互检查按需公开邻居、40→41跨批次、首尾、缩放/平移、浏览器手势、键盘、全屏、关闭后的滚动和焦点。另一标签通过真实所有者接口撤权；race 延迟实际响应，检查旧邻居/名称不能填回和检查失败重试。两个 Ego 标签仍属同一 profile，独立浏览器上下文保持未验证；独立 Cookie 的真实 HTTP 联验和 R2/SeaweedFS 结果见 [#193 证据](../docs/verification/sharing-193/README.md)。输出 `sharing-viewer.json/.log`、服务端日志和状态截图。

@@ -1,0 +1,1552 @@
+{
+  "status": "failed",
+  "taskSpaceId": 2,
+  "phase": "interactions",
+  "scope": "Production anonymous image viewer, bounded public neighbors and real revocation",
+  "checks": [
+    {
+      "scenario": "Escape on the actual YARL stage closes the viewer and restores the original card focus without refocusing a button"
+    },
+    {
+      "scenario": "Wheel zoom focus observation after the focused neighbor button is removed",
+      "tag": "SECTION",
+      "insideViewer": true
+    },
+    {
+      "scenario": "Escape after wheel zoom closes the viewer and restores the source card focus"
+    },
+    {
+      "scenario": "YARL keyboard navigation intermediate focus observation",
+      "focusAfterFirstArrow": {
+        "tag": "DIV",
+        "className": "yarl__container yarl__flex_center",
+        "insideStage": true
+      }
+    },
+    {
+      "scenario": "Continuous ArrowRight and ArrowLeft from the actual YARL stage preserve keyboard navigation without refocusing another control"
+    },
+    {
+      "scenario": "Anonymous viewer loads only current and one neighbor in each direction; hidden names stay absent",
+      "requestedImages": 3
+    },
+    {
+      "scenario": "Approved enlarged viewer layout observation",
+      "width": 390,
+      "theme": "light",
+      "showName": false,
+      "layout": {
+        "zoom": 2,
+        "heading": "7 / 124 · 已放大",
+        "centered": true,
+        "fullscreen": false,
+        "previous": false,
+        "next": false,
+        "padding": ["0px", "0px", "0px", "0px"],
+        "buttons": ["关闭", "还原"],
+        "instruction": "可拖动查看图片。",
+        "instructionVisible": true
+      }
+    },
+    {
+      "scenario": "Approved enlarged viewer layout observation",
+      "width": 390,
+      "theme": "dark",
+      "showName": false,
+      "layout": {
+        "zoom": 2,
+        "heading": "7 / 124 · 已放大",
+        "centered": true,
+        "fullscreen": false,
+        "previous": false,
+        "next": false,
+        "padding": ["0px", "0px", "0px", "0px"],
+        "buttons": ["关闭", "还原"],
+        "instruction": "可拖动查看图片。",
+        "instructionVisible": true
+      }
+    },
+    {
+      "scenario": "Approved enlarged viewer layout observation",
+      "width": 1440,
+      "theme": "light",
+      "showName": false,
+      "layout": {
+        "zoom": 2,
+        "heading": "7 / 124 · 已放大",
+        "centered": true,
+        "fullscreen": false,
+        "previous": false,
+        "next": false,
+        "padding": ["0px", "0px", "0px", "0px"],
+        "buttons": ["关闭", "还原"],
+        "instruction": "可拖动查看图片。",
+        "instructionVisible": true
+      }
+    },
+    {
+      "scenario": "Approved enlarged viewer layout observation",
+      "width": 1440,
+      "theme": "dark",
+      "showName": false,
+      "layout": {
+        "zoom": 2,
+        "heading": "7 / 124 · 已放大",
+        "centered": true,
+        "fullscreen": false,
+        "previous": false,
+        "next": false,
+        "padding": ["0px", "0px", "0px", "0px"],
+        "buttons": ["关闭", "还原"],
+        "instruction": "可拖动查看图片。",
+        "instructionVisible": true
+      }
+    },
+    {
+      "scenario": "Native fullscreen transition focus observation without refocusing",
+      "phase": "entered-1440-light",
+      "focus": {
+        "tag": "BUTTON",
+        "className": "button button--md button--outline h-12 min-w-0 flex-1 rounded-lg px-2 text-sm font-normal",
+        "testId": "share-viewer-fullscreen",
+        "insideViewer": true,
+        "control": true,
+        "stage": false,
+        "visible": true
+      }
+    },
+    {
+      "scenario": "Native fullscreen transition focus observation without refocusing",
+      "phase": "button-exit-1440-light",
+      "focus": {
+        "tag": "BUTTON",
+        "className": "button button--md button--outline h-12 min-w-0 flex-1 rounded-lg px-2 text-sm font-normal",
+        "testId": "share-viewer-close",
+        "insideViewer": true,
+        "control": true,
+        "stage": false,
+        "visible": true
+      }
+    },
+    {
+      "scenario": "Native fullscreen transition focus observation without refocusing",
+      "phase": "entered-1440-dark",
+      "focus": {
+        "tag": "BUTTON",
+        "className": "button button--md button--outline h-12 min-w-0 flex-1 rounded-lg px-2 text-sm font-normal",
+        "testId": "share-viewer-fullscreen",
+        "insideViewer": true,
+        "control": true,
+        "stage": false,
+        "visible": true
+      }
+    },
+    {
+      "scenario": "Native fullscreen transition focus observation without refocusing",
+      "phase": "button-exit-1440-dark",
+      "focus": {
+        "tag": "BUTTON",
+        "className": "button button--md button--outline h-12 min-w-0 flex-1 rounded-lg px-2 text-sm font-normal",
+        "testId": "share-viewer-close",
+        "insideViewer": true,
+        "control": true,
+        "stage": false,
+        "visible": true
+      }
+    },
+    {
+      "scenario": "Native fullscreen transition focus observation without refocusing",
+      "phase": "entered-390-light",
+      "focus": {
+        "tag": "BUTTON",
+        "className": "button button--md button--outline h-12 min-w-0 flex-1 rounded-lg px-2 text-sm font-normal",
+        "testId": "share-viewer-fullscreen",
+        "insideViewer": true,
+        "control": true,
+        "stage": false,
+        "visible": true
+      }
+    },
+    {
+      "scenario": "Native fullscreen transition focus observation without refocusing",
+      "phase": "button-exit-390-light",
+      "focus": {
+        "tag": "BUTTON",
+        "className": "button button--md button--outline h-12 min-w-0 flex-1 rounded-lg px-2 text-sm font-normal",
+        "testId": "share-viewer-close",
+        "insideViewer": true,
+        "control": true,
+        "stage": false,
+        "visible": true
+      }
+    },
+    {
+      "scenario": "Native fullscreen transition focus observation without refocusing",
+      "phase": "entered-390-dark",
+      "focus": {
+        "tag": "BUTTON",
+        "className": "button button--md button--outline h-12 min-w-0 flex-1 rounded-lg px-2 text-sm font-normal",
+        "testId": "share-viewer-fullscreen",
+        "insideViewer": true,
+        "control": true,
+        "stage": false,
+        "visible": true
+      }
+    },
+    {
+      "scenario": "Native fullscreen transition focus observation without refocusing",
+      "phase": "button-exit-390-dark",
+      "focus": {
+        "tag": "BUTTON",
+        "className": "button button--md button--outline h-12 min-w-0 flex-1 rounded-lg px-2 text-sm font-normal",
+        "testId": "share-viewer-close",
+        "insideViewer": true,
+        "control": true,
+        "stage": false,
+        "visible": true
+      }
+    },
+    {
+      "scenario": "Approved enlarged viewer layout observation",
+      "width": 390,
+      "theme": "light",
+      "showName": true,
+      "layout": {
+        "zoom": 2,
+        "heading": "7 / 124 · 已放大",
+        "centered": true,
+        "fullscreen": false,
+        "previous": false,
+        "next": false,
+        "padding": ["0px", "0px", "0px", "0px"],
+        "buttons": ["关闭", "还原"],
+        "instruction": "可拖动查看图片。",
+        "instructionVisible": true
+      }
+    },
+    {
+      "scenario": "Name-enabled viewer layout observation",
+      "state": "zoomed-names",
+      "width": 390,
+      "theme": "light",
+      "layout": {
+        "name": "共享照片-007",
+        "visible": true,
+        "alt": "共享照片-007",
+        "rectangle": {
+          "left": 16,
+          "right": 374,
+          "top": 188,
+          "bottom": 210
+        },
+        "stageTop": 226
+      }
+    },
+    {
+      "scenario": "Approved enlarged viewer layout observation",
+      "width": 390,
+      "theme": "dark",
+      "showName": true,
+      "layout": {
+        "zoom": 2,
+        "heading": "7 / 124 · 已放大",
+        "centered": true,
+        "fullscreen": false,
+        "previous": false,
+        "next": false,
+        "padding": ["0px", "0px", "0px", "0px"],
+        "buttons": ["关闭", "还原"],
+        "instruction": "可拖动查看图片。",
+        "instructionVisible": true
+      }
+    },
+    {
+      "scenario": "Name-enabled viewer layout observation",
+      "state": "zoomed-names",
+      "width": 390,
+      "theme": "dark",
+      "layout": {
+        "name": "共享照片-007",
+        "visible": true,
+        "alt": "共享照片-007",
+        "rectangle": {
+          "left": 16,
+          "right": 374,
+          "top": 188,
+          "bottom": 210
+        },
+        "stageTop": 226
+      }
+    },
+    {
+      "scenario": "Approved enlarged viewer layout observation",
+      "width": 1440,
+      "theme": "light",
+      "showName": true,
+      "layout": {
+        "zoom": 2,
+        "heading": "7 / 124 · 已放大",
+        "centered": true,
+        "fullscreen": false,
+        "previous": false,
+        "next": false,
+        "padding": ["0px", "0px", "0px", "0px"],
+        "buttons": ["关闭", "还原"],
+        "instruction": "可拖动查看图片。",
+        "instructionVisible": true
+      }
+    },
+    {
+      "scenario": "Name-enabled viewer layout observation",
+      "state": "zoomed-names",
+      "width": 1440,
+      "theme": "light",
+      "layout": {
+        "name": "共享照片-007",
+        "visible": true,
+        "alt": "共享照片-007",
+        "rectangle": {
+          "left": 140,
+          "right": 1300,
+          "top": 178,
+          "bottom": 200
+        },
+        "stageTop": 216
+      }
+    },
+    {
+      "scenario": "Approved enlarged viewer layout observation",
+      "width": 1440,
+      "theme": "dark",
+      "showName": true,
+      "layout": {
+        "zoom": 2,
+        "heading": "7 / 124 · 已放大",
+        "centered": true,
+        "fullscreen": false,
+        "previous": false,
+        "next": false,
+        "padding": ["0px", "0px", "0px", "0px"],
+        "buttons": ["关闭", "还原"],
+        "instruction": "可拖动查看图片。",
+        "instructionVisible": true
+      }
+    },
+    {
+      "scenario": "Name-enabled viewer layout observation",
+      "state": "zoomed-names",
+      "width": 1440,
+      "theme": "dark",
+      "layout": {
+        "name": "共享照片-007",
+        "visible": true,
+        "alt": "共享照片-007",
+        "rectangle": {
+          "left": 140,
+          "right": 1300,
+          "top": 178,
+          "bottom": 200
+        },
+        "stageTop": 216
+      }
+    },
+    {
+      "scenario": "Name-enabled viewer layout observation",
+      "state": "fullscreen-names",
+      "width": 1440,
+      "theme": "light",
+      "layout": {
+        "name": "共享照片-007",
+        "visible": true,
+        "alt": "共享照片-007",
+        "rectangle": {
+          "left": 140,
+          "right": 1300,
+          "top": 54,
+          "bottom": 76
+        },
+        "stageTop": 92
+      }
+    },
+    {
+      "scenario": "Native fullscreen transition focus observation without refocusing",
+      "phase": "entered-names-1440-light",
+      "focus": {
+        "tag": "BUTTON",
+        "className": "button button--md button--outline h-12 min-w-0 flex-1 rounded-lg px-2 text-sm font-normal",
+        "testId": "share-viewer-fullscreen",
+        "insideViewer": true,
+        "control": true,
+        "stage": false,
+        "visible": true
+      }
+    },
+    {
+      "scenario": "Native fullscreen transition focus observation without refocusing",
+      "phase": "button-exit-names-1440-light",
+      "focus": {
+        "tag": "BUTTON",
+        "className": "button button--md button--outline h-12 min-w-0 flex-1 rounded-lg px-2 text-sm font-normal",
+        "testId": "share-viewer-close",
+        "insideViewer": true,
+        "control": true,
+        "stage": false,
+        "visible": true
+      }
+    },
+    {
+      "scenario": "Name-enabled viewer layout observation",
+      "state": "fullscreen-names",
+      "width": 1440,
+      "theme": "dark",
+      "layout": {
+        "name": "共享照片-007",
+        "visible": true,
+        "alt": "共享照片-007",
+        "rectangle": {
+          "left": 140,
+          "right": 1300,
+          "top": 54,
+          "bottom": 76
+        },
+        "stageTop": 92
+      }
+    },
+    {
+      "scenario": "Native fullscreen transition focus observation without refocusing",
+      "phase": "entered-names-1440-dark",
+      "focus": {
+        "tag": "BUTTON",
+        "className": "button button--md button--outline h-12 min-w-0 flex-1 rounded-lg px-2 text-sm font-normal",
+        "testId": "share-viewer-fullscreen",
+        "insideViewer": true,
+        "control": true,
+        "stage": false,
+        "visible": true
+      }
+    },
+    {
+      "scenario": "Native fullscreen transition focus observation without refocusing",
+      "phase": "button-exit-names-1440-dark",
+      "focus": {
+        "tag": "BUTTON",
+        "className": "button button--md button--outline h-12 min-w-0 flex-1 rounded-lg px-2 text-sm font-normal",
+        "testId": "share-viewer-close",
+        "insideViewer": true,
+        "control": true,
+        "stage": false,
+        "visible": true
+      }
+    },
+    {
+      "scenario": "Name-enabled viewer layout observation",
+      "state": "fullscreen-names",
+      "width": 390,
+      "theme": "light",
+      "layout": {
+        "name": "共享照片-007",
+        "visible": true,
+        "alt": "共享照片-007",
+        "rectangle": {
+          "left": 16,
+          "right": 374,
+          "top": 54,
+          "bottom": 76
+        },
+        "stageTop": 92
+      }
+    },
+    {
+      "scenario": "Native fullscreen transition focus observation without refocusing",
+      "phase": "entered-names-390-light",
+      "focus": {
+        "tag": "BUTTON",
+        "className": "button button--md button--outline h-12 min-w-0 flex-1 rounded-lg px-2 text-sm font-normal",
+        "testId": "share-viewer-fullscreen",
+        "insideViewer": true,
+        "control": true,
+        "stage": false,
+        "visible": true
+      }
+    },
+    {
+      "scenario": "Native fullscreen transition focus observation without refocusing",
+      "phase": "button-exit-names-390-light",
+      "focus": {
+        "tag": "BUTTON",
+        "className": "button button--md button--outline h-12 min-w-0 flex-1 rounded-lg px-2 text-sm font-normal",
+        "testId": "share-viewer-close",
+        "insideViewer": true,
+        "control": true,
+        "stage": false,
+        "visible": true
+      }
+    },
+    {
+      "scenario": "Name-enabled viewer layout observation",
+      "state": "fullscreen-names",
+      "width": 390,
+      "theme": "dark",
+      "layout": {
+        "name": "共享照片-007",
+        "visible": true,
+        "alt": "共享照片-007",
+        "rectangle": {
+          "left": 16,
+          "right": 374,
+          "top": 54,
+          "bottom": 76
+        },
+        "stageTop": 92
+      }
+    },
+    {
+      "scenario": "Native fullscreen transition focus observation without refocusing",
+      "phase": "entered-names-390-dark",
+      "focus": {
+        "tag": "BUTTON",
+        "className": "button button--md button--outline h-12 min-w-0 flex-1 rounded-lg px-2 text-sm font-normal",
+        "testId": "share-viewer-fullscreen",
+        "insideViewer": true,
+        "control": true,
+        "stage": false,
+        "visible": true
+      }
+    },
+    {
+      "scenario": "Native fullscreen transition focus observation without refocusing",
+      "phase": "button-exit-names-390-dark",
+      "focus": {
+        "tag": "BUTTON",
+        "className": "button button--md button--outline h-12 min-w-0 flex-1 rounded-lg px-2 text-sm font-normal",
+        "testId": "share-viewer-close",
+        "insideViewer": true,
+        "control": true,
+        "stage": false,
+        "visible": true
+      }
+    },
+    {
+      "scenario": "Native fullscreen transition focus observation without refocusing",
+      "phase": "before-Escape-390",
+      "focus": {
+        "tag": "BUTTON",
+        "className": "button button--md button--outline h-12 min-w-0 flex-1 rounded-lg px-2 text-sm font-normal",
+        "testId": "share-viewer-fullscreen",
+        "insideViewer": true,
+        "control": true,
+        "stage": false,
+        "visible": true
+      }
+    },
+    {
+      "scenario": "Native fullscreen transition focus observation without refocusing",
+      "phase": "Escape-exit-390",
+      "focus": {
+        "tag": "BUTTON",
+        "className": "button button--md button--outline h-12 min-w-0 flex-1 rounded-lg px-2 text-sm font-normal",
+        "testId": "share-viewer-close",
+        "insideViewer": true,
+        "control": true,
+        "stage": false,
+        "visible": true
+      }
+    },
+    {
+      "scenario": "Native fullscreen Escape preserves the open viewer and current image before a subsequent Escape closes it",
+      "width": 390,
+      "imageId": "cf01b979-24e5-4885-a6fd-bf41162f6f66"
+    },
+    {
+      "scenario": "Native fullscreen transition focus observation without refocusing",
+      "phase": "before-Escape-1440",
+      "focus": {
+        "tag": "BUTTON",
+        "className": "button button--md button--outline h-12 min-w-0 flex-1 rounded-lg px-2 text-sm font-normal",
+        "testId": "share-viewer-fullscreen",
+        "insideViewer": true,
+        "control": true,
+        "stage": false,
+        "visible": true
+      }
+    },
+    {
+      "scenario": "Native fullscreen transition focus observation without refocusing",
+      "phase": "Escape-exit-1440",
+      "focus": {
+        "tag": "BUTTON",
+        "className": "button button--md button--outline h-12 min-w-0 flex-1 rounded-lg px-2 text-sm font-normal",
+        "testId": "share-viewer-close",
+        "insideViewer": true,
+        "control": true,
+        "stage": false,
+        "visible": true
+      }
+    },
+    {
+      "scenario": "Native fullscreen Escape preserves the open viewer and current image before a subsequent Escape closes it",
+      "width": 1440,
+      "imageId": "cf01b979-24e5-4885-a6fd-bf41162f6f66"
+    },
+    {
+      "scenario": "Browser fullscreen enters and exits on the current anonymous image with actual desktop/mobile light/dark captures"
+    },
+    {
+      "scenario": "Visible page Tab order including Return Home, arrow navigation, zoom/pan, Escape and original card focus return"
+    },
+    {
+      "scenario": "compressed decodes its existing compressed preview without management controls"
+    },
+    {
+      "scenario": "animation decodes its existing original preview without management controls"
+    },
+    {
+      "scenario": "svg decodes its existing thumbnail preview without management controls"
+    },
+    {
+      "scenario": "ico decodes its existing thumbnail preview without management controls"
+    },
+    {
+      "scenario": "multipage decodes its existing thumbnail preview without management controls"
+    },
+    {
+      "scenario": "Cross-page next image uses public neighbors without extending the 40-card list; close restores opening card focus and scroll",
+      "scroll": 1876.5
+    },
+    {
+      "scenario": "First and last public positions do not wrap; unavailable members retain their ordered viewer placeholders"
+    },
+    {
+      "scenario": "Emulated native touch swipe and pinch change the anonymous image and scale"
+    },
+    {
+      "scenario": "Actual short viewport scrolling reaches both image edges while the fixed controls stay usable",
+      "width": 390,
+      "height": 420,
+      "theme": "light",
+      "before": {
+        "scroll": 75,
+        "maximum": 292,
+        "top": 150,
+        "bottom": 340,
+        "imageTop": 150,
+        "imageBottom": 510,
+        "x": 8,
+        "y": 245
+      },
+      "after": {
+        "scroll": 292,
+        "maximum": 292,
+        "top": 150,
+        "bottom": 340,
+        "imageTop": -67,
+        "imageBottom": 293,
+        "x": 8,
+        "y": 245
+      }
+    },
+    {
+      "scenario": "Actual short viewport scrolling reaches both image edges while the fixed controls stay usable",
+      "width": 390,
+      "height": 420,
+      "theme": "dark",
+      "before": {
+        "scroll": 0,
+        "maximum": 292,
+        "top": 150,
+        "bottom": 340,
+        "imageTop": 225,
+        "imageBottom": 585,
+        "x": 8,
+        "y": 245
+      },
+      "after": {
+        "scroll": 292,
+        "maximum": 292,
+        "top": 150,
+        "bottom": 340,
+        "imageTop": -67,
+        "imageBottom": 293,
+        "x": 8,
+        "y": 245
+      }
+    }
+  ],
+  "layouts": [
+    {
+      "state": "zoomed",
+      "width": 390,
+      "height": 844,
+      "theme": "light",
+      "screenshot": "sharing-viewer-zoomed-light-390.png",
+      "geometry": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 358,
+          "height": 390
+        },
+        "targets": [
+          {
+            "label": "关闭",
+            "width": 173,
+            "height": 48,
+            "left": 16,
+            "right": 189,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "还原",
+            "width": 173,
+            "height": 48,
+            "left": 201,
+            "right": 374,
+            "top": 780,
+            "bottom": 828
+          }
+        ]
+      }
+    },
+    {
+      "state": "zoomed",
+      "width": 390,
+      "height": 844,
+      "theme": "dark",
+      "screenshot": "sharing-viewer-zoomed-dark-390.png",
+      "geometry": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 358,
+          "height": 390
+        },
+        "targets": [
+          {
+            "label": "关闭",
+            "width": 173,
+            "height": 48,
+            "left": 16,
+            "right": 189,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "还原",
+            "width": 173,
+            "height": 48,
+            "left": 201,
+            "right": 374,
+            "top": 780,
+            "bottom": 828
+          }
+        ]
+      }
+    },
+    {
+      "state": "zoomed",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light",
+      "screenshot": "sharing-viewer-zoomed-light-1440.png",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 1080
+        },
+        "root": {
+          "left": 0,
+          "right": 1440,
+          "top": 0,
+          "bottom": 1080
+        },
+        "stage": {
+          "width": 1160,
+          "height": 690
+        },
+        "targets": [
+          {
+            "label": "关闭",
+            "width": 574,
+            "height": 48,
+            "left": 140,
+            "right": 714,
+            "top": 1016,
+            "bottom": 1064
+          },
+          {
+            "label": "还原",
+            "width": 574,
+            "height": 48,
+            "left": 726,
+            "right": 1300,
+            "top": 1016,
+            "bottom": 1064
+          }
+        ]
+      }
+    },
+    {
+      "state": "zoomed",
+      "width": 1440,
+      "height": 1080,
+      "theme": "dark",
+      "screenshot": "sharing-viewer-zoomed-dark-1440.png",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 1080
+        },
+        "root": {
+          "left": 0,
+          "right": 1440,
+          "top": 0,
+          "bottom": 1080
+        },
+        "stage": {
+          "width": 1160,
+          "height": 690
+        },
+        "targets": [
+          {
+            "label": "关闭",
+            "width": 574,
+            "height": 48,
+            "left": 140,
+            "right": 714,
+            "top": 1016,
+            "bottom": 1064
+          },
+          {
+            "label": "还原",
+            "width": 574,
+            "height": 48,
+            "left": 726,
+            "right": 1300,
+            "top": 1016,
+            "bottom": 1064
+          }
+        ]
+      }
+    },
+    {
+      "state": "fullscreen",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light",
+      "screenshot": "sharing-viewer-fullscreen-light-1440.png",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 1080
+        },
+        "root": {
+          "left": 0,
+          "right": 1440,
+          "top": 0,
+          "bottom": 1080
+        },
+        "stage": {
+          "width": 1160,
+          "height": 920
+        },
+        "targets": [
+          {
+            "label": "退出全屏",
+            "width": 1160,
+            "height": 48,
+            "left": 140,
+            "right": 1300,
+            "top": 1016,
+            "bottom": 1064
+          }
+        ]
+      }
+    },
+    {
+      "state": "fullscreen",
+      "width": 1440,
+      "height": 1080,
+      "theme": "dark",
+      "screenshot": "sharing-viewer-fullscreen-dark-1440.png",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 1080
+        },
+        "root": {
+          "left": 0,
+          "right": 1440,
+          "top": 0,
+          "bottom": 1080
+        },
+        "stage": {
+          "width": 1160,
+          "height": 920
+        },
+        "targets": [
+          {
+            "label": "退出全屏",
+            "width": 1160,
+            "height": 48,
+            "left": 140,
+            "right": 1300,
+            "top": 1016,
+            "bottom": 1064
+          }
+        ]
+      }
+    },
+    {
+      "state": "fullscreen",
+      "width": 390,
+      "height": 844,
+      "theme": "light",
+      "screenshot": "sharing-viewer-fullscreen-light-390.png",
+      "geometry": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 358,
+          "height": 684
+        },
+        "targets": [
+          {
+            "label": "退出全屏",
+            "width": 358,
+            "height": 48,
+            "left": 16,
+            "right": 374,
+            "top": 780,
+            "bottom": 828
+          }
+        ]
+      }
+    },
+    {
+      "state": "fullscreen",
+      "width": 390,
+      "height": 844,
+      "theme": "dark",
+      "screenshot": "sharing-viewer-fullscreen-dark-390.png",
+      "geometry": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 358,
+          "height": 684
+        },
+        "targets": [
+          {
+            "label": "退出全屏",
+            "width": 358,
+            "height": 48,
+            "left": 16,
+            "right": 374,
+            "top": 780,
+            "bottom": 828
+          }
+        ]
+      }
+    },
+    {
+      "state": "zoomed-names",
+      "width": 390,
+      "height": 844,
+      "theme": "light",
+      "screenshot": "sharing-viewer-zoomed-names-light-390.png",
+      "geometry": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 358,
+          "height": 390
+        },
+        "targets": [
+          {
+            "label": "关闭",
+            "width": 173,
+            "height": 48,
+            "left": 16,
+            "right": 189,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "还原",
+            "width": 173,
+            "height": 48,
+            "left": 201,
+            "right": 374,
+            "top": 780,
+            "bottom": 828
+          }
+        ]
+      }
+    },
+    {
+      "state": "zoomed-names",
+      "width": 390,
+      "height": 844,
+      "theme": "dark",
+      "screenshot": "sharing-viewer-zoomed-names-dark-390.png",
+      "geometry": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 358,
+          "height": 390
+        },
+        "targets": [
+          {
+            "label": "关闭",
+            "width": 173,
+            "height": 48,
+            "left": 16,
+            "right": 189,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "还原",
+            "width": 173,
+            "height": 48,
+            "left": 201,
+            "right": 374,
+            "top": 780,
+            "bottom": 828
+          }
+        ]
+      }
+    },
+    {
+      "state": "zoomed-names",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light",
+      "screenshot": "sharing-viewer-zoomed-names-light-1440.png",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 1080
+        },
+        "root": {
+          "left": 0,
+          "right": 1440,
+          "top": 0,
+          "bottom": 1080
+        },
+        "stage": {
+          "width": 1160,
+          "height": 690
+        },
+        "targets": [
+          {
+            "label": "关闭",
+            "width": 574,
+            "height": 48,
+            "left": 140,
+            "right": 714,
+            "top": 1016,
+            "bottom": 1064
+          },
+          {
+            "label": "还原",
+            "width": 574,
+            "height": 48,
+            "left": 726,
+            "right": 1300,
+            "top": 1016,
+            "bottom": 1064
+          }
+        ]
+      }
+    },
+    {
+      "state": "zoomed-names",
+      "width": 1440,
+      "height": 1080,
+      "theme": "dark",
+      "screenshot": "sharing-viewer-zoomed-names-dark-1440.png",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 1080
+        },
+        "root": {
+          "left": 0,
+          "right": 1440,
+          "top": 0,
+          "bottom": 1080
+        },
+        "stage": {
+          "width": 1160,
+          "height": 690
+        },
+        "targets": [
+          {
+            "label": "关闭",
+            "width": 574,
+            "height": 48,
+            "left": 140,
+            "right": 714,
+            "top": 1016,
+            "bottom": 1064
+          },
+          {
+            "label": "还原",
+            "width": 574,
+            "height": 48,
+            "left": 726,
+            "right": 1300,
+            "top": 1016,
+            "bottom": 1064
+          }
+        ]
+      }
+    },
+    {
+      "state": "fullscreen-names",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light",
+      "screenshot": "sharing-viewer-fullscreen-names-light-1440.png",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 1080
+        },
+        "root": {
+          "left": 0,
+          "right": 1440,
+          "top": 0,
+          "bottom": 1080
+        },
+        "stage": {
+          "width": 1160,
+          "height": 920
+        },
+        "targets": [
+          {
+            "label": "退出全屏",
+            "width": 1160,
+            "height": 48,
+            "left": 140,
+            "right": 1300,
+            "top": 1016,
+            "bottom": 1064
+          }
+        ]
+      }
+    },
+    {
+      "state": "fullscreen-names",
+      "width": 1440,
+      "height": 1080,
+      "theme": "dark",
+      "screenshot": "sharing-viewer-fullscreen-names-dark-1440.png",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 1080
+        },
+        "root": {
+          "left": 0,
+          "right": 1440,
+          "top": 0,
+          "bottom": 1080
+        },
+        "stage": {
+          "width": 1160,
+          "height": 920
+        },
+        "targets": [
+          {
+            "label": "退出全屏",
+            "width": 1160,
+            "height": 48,
+            "left": 140,
+            "right": 1300,
+            "top": 1016,
+            "bottom": 1064
+          }
+        ]
+      }
+    },
+    {
+      "state": "fullscreen-names",
+      "width": 390,
+      "height": 844,
+      "theme": "light",
+      "screenshot": "sharing-viewer-fullscreen-names-light-390.png",
+      "geometry": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 358,
+          "height": 684
+        },
+        "targets": [
+          {
+            "label": "退出全屏",
+            "width": 358,
+            "height": 48,
+            "left": 16,
+            "right": 374,
+            "top": 780,
+            "bottom": 828
+          }
+        ]
+      }
+    },
+    {
+      "state": "fullscreen-names",
+      "width": 390,
+      "height": 844,
+      "theme": "dark",
+      "screenshot": "sharing-viewer-fullscreen-names-dark-390.png",
+      "geometry": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 358,
+          "height": 684
+        },
+        "targets": [
+          {
+            "label": "退出全屏",
+            "width": 358,
+            "height": 48,
+            "left": 16,
+            "right": 374,
+            "top": 780,
+            "bottom": 828
+          }
+        ]
+      }
+    },
+    {
+      "state": "fullscreen-return",
+      "width": 390,
+      "height": 844,
+      "theme": "light",
+      "screenshot": "sharing-viewer-fullscreen-return-light-390.png",
+      "geometry": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 358,
+          "height": 360
+        },
+        "targets": [
+          {
+            "label": "全屏",
+            "width": 88,
+            "height": 44,
+            "left": 286,
+            "right": 374,
+            "top": 150,
+            "bottom": 194
+          },
+          {
+            "label": "关闭",
+            "width": 80.5,
+            "height": 48,
+            "left": 16,
+            "right": 96.5,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "上一张",
+            "width": 80.5,
+            "height": 48,
+            "left": 108.5,
+            "right": 189,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "下一张",
+            "width": 80.5,
+            "height": 48,
+            "left": 201,
+            "right": 281.5,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "放大",
+            "width": 80.5,
+            "height": 48,
+            "left": 293.5,
+            "right": 374,
+            "top": 780,
+            "bottom": 828
+          }
+        ]
+      }
+    },
+    {
+      "state": "fullscreen-return",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light",
+      "screenshot": "sharing-viewer-fullscreen-return-light-1440.png",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 1080
+        },
+        "root": {
+          "left": 0,
+          "right": 1440,
+          "top": 0,
+          "bottom": 1080
+        },
+        "stage": {
+          "width": 1160,
+          "height": 660
+        },
+        "targets": [
+          {
+            "label": "全屏",
+            "width": 88,
+            "height": 44,
+            "left": 1212,
+            "right": 1300,
+            "top": 140,
+            "bottom": 184
+          },
+          {
+            "label": "关闭",
+            "width": 281,
+            "height": 48,
+            "left": 140,
+            "right": 421,
+            "top": 1016,
+            "bottom": 1064
+          },
+          {
+            "label": "上一张",
+            "width": 281,
+            "height": 48,
+            "left": 433,
+            "right": 714,
+            "top": 1016,
+            "bottom": 1064
+          },
+          {
+            "label": "下一张",
+            "width": 281,
+            "height": 48,
+            "left": 726,
+            "right": 1007,
+            "top": 1016,
+            "bottom": 1064
+          },
+          {
+            "label": "放大",
+            "width": 281,
+            "height": 48,
+            "left": 1019,
+            "right": 1300,
+            "top": 1016,
+            "bottom": 1064
+          }
+        ]
+      }
+    },
+    {
+      "state": "short-viewport-scrolled",
+      "width": 390,
+      "height": 420,
+      "theme": "light",
+      "screenshot": "sharing-viewer-short-viewport-scrolled-light-390x420.png",
+      "geometry": {
+        "scroll": {
+          "scroll": 292,
+          "maximum": 292,
+          "top": 150,
+          "bottom": 340,
+          "imageTop": -67,
+          "imageBottom": 293,
+          "x": 8,
+          "y": 245
+        },
+        "controls": [
+          {
+            "action": "close",
+            "width": 80.5,
+            "height": 48,
+            "left": 16,
+            "right": 96.5,
+            "top": 356,
+            "bottom": 404
+          },
+          {
+            "action": "previous",
+            "width": 80.5,
+            "height": 48,
+            "left": 108.5,
+            "right": 189,
+            "top": 356,
+            "bottom": 404
+          },
+          {
+            "action": "next",
+            "width": 80.5,
+            "height": 48,
+            "left": 201,
+            "right": 281.5,
+            "top": 356,
+            "bottom": 404
+          },
+          {
+            "action": "zoom",
+            "width": 80.5,
+            "height": 48,
+            "left": 293.5,
+            "right": 374,
+            "top": 356,
+            "bottom": 404
+          }
+        ]
+      }
+    },
+    {
+      "state": "short-viewport-scrolled",
+      "width": 390,
+      "height": 420,
+      "theme": "dark",
+      "screenshot": "sharing-viewer-short-viewport-scrolled-dark-390x420.png",
+      "geometry": {
+        "scroll": {
+          "scroll": 292,
+          "maximum": 292,
+          "top": 150,
+          "bottom": 340,
+          "imageTop": -67,
+          "imageBottom": 293,
+          "x": 8,
+          "y": 245
+        },
+        "controls": [
+          {
+            "action": "close",
+            "width": 80.5,
+            "height": 48,
+            "left": 16,
+            "right": 96.5,
+            "top": 356,
+            "bottom": 404
+          },
+          {
+            "action": "previous",
+            "width": 80.5,
+            "height": 48,
+            "left": 108.5,
+            "right": 189,
+            "top": 356,
+            "bottom": 404
+          },
+          {
+            "action": "next",
+            "width": 80.5,
+            "height": 48,
+            "left": 201,
+            "right": 281.5,
+            "top": 356,
+            "bottom": 404
+          },
+          {
+            "action": "zoom",
+            "width": 80.5,
+            "height": 48,
+            "left": 293.5,
+            "right": 374,
+            "top": 356,
+            "bottom": 404
+          }
+        ]
+      }
+    }
+  ],
+  "limitations": [
+    "Physical phones, software keyboards, nonzero safe area and Release containers are outside this browser run."
+  ],
+  "stage": "viewer-interactions",
+  "error": "AssertionError [ERR_ASSERTION]: No unexpected runtime or resource errors\n+ actual - expected\n\n+ [\n+   {\n+     kind: 'console.error',\n+     message: '分享状态检查失败 [object Object]',\n+     url: 'http://sharing-64235.localhost:64235/s/[redacted]'\n+   }\n+ ]\n- []\n\n    at file:////[eval2]:83:10"
+}

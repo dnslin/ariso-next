@@ -8,6 +8,9 @@ const { identitySql, openIdentityAccountMenu } = await import(
 const { resizeViewport, setTheme, readGeometry, assertGeometry } = await import(
   new URL('./browser-geometry.mjs', config.identitySessionScript).href
 );
+const { waitForOwnerRoute } = await import(
+  new URL('./owner-shell.mjs', config.identitySessionScript).href
+);
 const page = (await taskSpace(config.spaceId)).page('p1');
 const button = (name) => `loc=role:button[name="${name}"]`;
 const report = { status: 'failed', checks: [], layouts: [] };
@@ -44,8 +47,8 @@ async function signInAt(path) {
       );
       await page.click(button('登录'));
     }
-    await page.waitForURL(`${config.origin}${path}`);
   }
+  await waitForOwnerRoute(page, config, path);
 }
 const resize = (width, height) => resizeViewport(page, width, height);
 async function list() {
@@ -747,7 +750,6 @@ try {
   await signOut();
   assert.equal((await page.fetch(`/api/albums/${second}`)).status, 401);
   await signInAt(`/albums/${second}`);
-  await page.waitForURL(`${config.origin}/albums/${second}`);
   await page.waitForSelector(button('编辑相册'));
   assert.equal((await page.fetch(`/api/albums/${second}`)).status, 200);
   report.checks.push(

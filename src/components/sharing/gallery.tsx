@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useRef } from 'react';
+import { Button } from '@heroui/react/button';
 import type { PublicShareItem } from '../../server/sharing/public-types';
 import { visibleGalleryIndexes, type GalleryLayout } from '../gallery/layout';
 import { useGalleryViewport } from '../gallery/use-gallery-viewport';
@@ -12,11 +13,13 @@ export function ShareGallery({
   layout,
   showName,
   onThumbnailFailure,
+  onOpen,
 }: {
   items: PublicShareItem[];
   layout: GalleryLayout;
   showName: boolean;
   onThumbnailFailure: (imageId: string) => void;
+  onOpen: (imageId: string, source: HTMLElement) => void;
 }) {
   const container = useRef<HTMLDivElement>(null);
   const viewport = useGalleryViewport(container, '[data-share-scroll]', true);
@@ -71,7 +74,29 @@ export function ShareGallery({
                 }}
               >
                 <div style={{ height: slot.imageHeight }}>
-                  <ShareThumbnail item={item} onFailure={onThumbnailFailure} />
+                  {item.previewUrl ? (
+                    <Button
+                      data-share-open={item.imageId}
+                      aria-label={
+                        showName ? `查看图片：${item.displayName}` : '查看图片'
+                      }
+                      variant="ghost"
+                      className="size-full min-w-0 overflow-hidden rounded-none p-0"
+                      onPress={(event) =>
+                        onOpen(item.imageId, event.target as HTMLElement)
+                      }
+                    >
+                      <ShareThumbnail
+                        item={item}
+                        onFailure={onThumbnailFailure}
+                      />
+                    </Button>
+                  ) : (
+                    <ShareThumbnail
+                      item={item}
+                      onFailure={onThumbnailFailure}
+                    />
+                  )}
                 </div>
                 {showName ? (
                   <p

@@ -87,6 +87,11 @@ describe('browser runner argument boundaries', () => {
     ['sharing-public', 'behavior'],
     ['sharing-public', 'race'],
     ['sharing-public', 'recovery'],
+    ['sharing-viewer'],
+    ['sharing-viewer', 'representative'],
+    ['sharing-viewer', 'interactions'],
+    ['sharing-viewer', 'revocation'],
+    ['sharing-viewer', 'race'],
 
     ['sharing-management'],
     ['sharing-management', 'representative'],

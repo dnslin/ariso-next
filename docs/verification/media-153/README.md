@@ -1,5 +1,7 @@
 # T-MED-10 重处理范围与候选版本原子发布
 
+2026-10-07 后续修复：正常工具退出不再扫描全机完整命令行，保留仍运行后代的清理与冷恢复诊断。实施及一次进程生命周期验证见[历史失败跟进](../historical-failure-fixes-20261007/README.md)，下方原记录保持原结果。
+
 关联 [Issue #153](https://github.com/dnslin/ariso-next/issues/153)。范围与需求沿用[任务卡](../../tasks/m3-m4-platform.md#t-med-10-重处理范围与候选版本原子发布)、[SPEC-media §7/8](../../specs/SPEC-media.md)和[执行约定](../../tasks/execution.md)。不修改冻结 PRD。
 
 2026-10-01 使用 gh 实际读取 Issue、评论及原生 blocked by / blocking；没有评论。直接前置 #152、#67、#69 均 CLOSED，实现已在最新 `origin/main` 基线 `ba66361`。下游 #154、#160、#161、#171、#186 仍 OPEN。原目录有其他活跃任务，因此从最新主分支建立独立 worktree `/Users/dnslin/.codex/worktrees/issue-153-reprocess/ariso` 和分支 `codex/issue-153-reprocess`。全部测试使用独立临时数据库、图片和服务，不操作真实预览数据。

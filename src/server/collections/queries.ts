@@ -162,3 +162,47 @@ export function readPublicAlbumIds(
     .all()
     .map((row) => row.imageId);
 }
+
+/** Return a bounded neighborhood from the same public ordering as the list. */
+export function readPublicAlbumNeighbors(
+  tx: CollectionsTransaction,
+  albumId: string,
+  imageId: string,
+) {
+  const members = publicAlbumMembers(tx, albumId).as('public_members');
+  const total = countPublicAlbumMembers(tx, albumId);
+  const current = tx
+    .select()
+    .from(members)
+    .where(eq(members.imageId, imageId))
+    .get();
+  if (!current)
+    return { current: null, previous: null, next: null, position: null, total };
+  const before = or(
+    gt(members.joinedAt, current.joinedAt),
+    and(eq(members.joinedAt, current.joinedAt), lt(members.imageId, imageId)),
+  );
+  const after = or(
+    lt(members.joinedAt, current.joinedAt),
+    and(eq(members.joinedAt, current.joinedAt), gt(members.imageId, imageId)),
+  );
+  const previous =
+    tx
+      .select({ imageId: members.imageId })
+      .from(members)
+      .where(before)
+      .orderBy(asc(members.joinedAt), desc(members.imageId))
+      .limit(1)
+      .get()?.imageId ?? null;
+  const next =
+    tx
+      .select({ imageId: members.imageId })
+      .from(members)
+      .where(after)
+      .orderBy(desc(members.joinedAt), asc(members.imageId))
+      .limit(1)
+      .get()?.imageId ?? null;
+  const position =
+    tx.select({ value: count() }).from(members).where(before).get()!.value + 1;
+  return { current: imageId, previous, next, position, total };
+}

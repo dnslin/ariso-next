@@ -1,0 +1,113 @@
+{
+  "recordedAt": "2026-10-06",
+  "command": "pnpm audit --json",
+  "baselineRef": "a0384c78",
+  "result": "existing-vulnerabilities",
+  "current": {
+    "info": 0,
+    "low": 0,
+    "moderate": 3,
+    "high": 6,
+    "critical": 1
+  },
+  "baseline": {
+    "info": 0,
+    "low": 0,
+    "moderate": 3,
+    "high": 6,
+    "critical": 1
+  },
+  "newAdvisoryIds": [],
+  "advisories": [
+    {
+      "id": 1102341,
+      "module_name": "esbuild",
+      "title": "esbuild enables any website to send any requests to the development server and read the response",
+      "severity": "moderate",
+      "url": "https://github.com/advisories/GHSA-67mh-4wv8-2f99",
+      "vulnerable_versions": "<=0.24.2",
+      "patched_versions": ">=0.24.3"
+    },
+    {
+      "id": 1240100,
+      "module_name": "brace-expansion",
+      "title": "brace-expansion: Quadratic-time expansion of the `{a},b}` rewrite causes CPU denial of service",
+      "severity": "moderate",
+      "url": "https://github.com/advisories/GHSA-q2hr-2g5m-vwhr",
+      "vulnerable_versions": "<1.1.21",
+      "patched_versions": ">=1.1.21"
+    },
+    {
+      "id": 1240103,
+      "module_name": "brace-expansion",
+      "title": "brace-expansion: Quadratic-time expansion of the `{a},b}` rewrite causes CPU denial of service",
+      "severity": "moderate",
+      "url": "https://github.com/advisories/GHSA-q2hr-2g5m-vwhr",
+      "vulnerable_versions": ">=4.0.0 <5.0.12",
+      "patched_versions": ">=5.0.12"
+    },
+    {
+      "id": 1240104,
+      "module_name": "brace-expansion",
+      "title": "brace-expansion: DoS via uncontrolled recursion on nested brace groups causing stack exhaustion",
+      "severity": "high",
+      "url": "https://github.com/advisories/GHSA-qhr7-859c-m2p7",
+      "vulnerable_versions": "<1.1.20",
+      "patched_versions": ">=1.1.20"
+    },
+    {
+      "id": 1240107,
+      "module_name": "brace-expansion",
+      "title": "brace-expansion: DoS via uncontrolled recursion on nested brace groups causing stack exhaustion",
+      "severity": "high",
+      "url": "https://github.com/advisories/GHSA-qhr7-859c-m2p7",
+      "vulnerable_versions": ">=4.0.0 <5.0.11",
+      "patched_versions": ">=5.0.11"
+    },
+    {
+      "id": 1240108,
+      "module_name": "brace-expansion",
+      "title": "brace-expansion: DoS via uncontrolled recursion in parseCommaParts causing stack exhaustion",
+      "severity": "high",
+      "url": "https://github.com/advisories/GHSA-6j4f-fj2g-mc7p",
+      "vulnerable_versions": "<1.1.19",
+      "patched_versions": ">=1.1.19"
+    },
+    {
+      "id": 1240111,
+      "module_name": "brace-expansion",
+      "title": "brace-expansion: DoS via uncontrolled recursion in parseCommaParts causing stack exhaustion",
+      "severity": "high",
+      "url": "https://github.com/advisories/GHSA-6j4f-fj2g-mc7p",
+      "vulnerable_versions": ">=4.0.0 <5.0.10",
+      "patched_versions": ">=5.0.10"
+    },
+    {
+      "id": 1240609,
+      "module_name": "next",
+      "title": "Next.js: Remote Code Execution in next/og ImageResponse",
+      "severity": "critical",
+      "url": "https://github.com/advisories/GHSA-vcvr-r3jv-pc5j",
+      "vulnerable_versions": ">=16.2.0 <16.3.6",
+      "patched_versions": ">=16.3.6"
+    },
+    {
+      "id": 1240992,
+      "module_name": "braces",
+      "title": "braces vulnerable to stack-exhaustion denial of service through deeply nested patterns",
+      "severity": "high",
+      "url": "https://github.com/advisories/GHSA-vfj7-8cjw-p6xm",
+      "vulnerable_versions": "<=3.0.3",
+      "patched_versions": ">=3.0.4"
+    },
+    {
+      "id": 1241209,
+      "module_name": "source-map-js",
+      "title": "source-map-js allows event-loop denial of service through indexed source-map section offsets",
+      "severity": "high",
+      "url": "https://github.com/advisories/GHSA-68fv-2mgg-jv7q",
+      "vulnerable_versions": ">=1.0.0 <1.2.2",
+      "patched_versions": ">=1.2.2"
+    }
+  ]
+}

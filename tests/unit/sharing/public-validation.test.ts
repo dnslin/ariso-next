@@ -19,10 +19,19 @@ it('accepts opaque public image IDs and no attribute-bearing cursor contract', (
 });
 
 it('parses only one optional cursor and rejects unknown, repeated and invalid query values', () => {
-  expect(parsePublicShareQuery(new URLSearchParams())).toBeNull();
+  expect(parsePublicShareQuery(new URLSearchParams())).toEqual({
+    kind: 'page',
+    cursor: null,
+  });
   expect(
     parsePublicShareQuery(new URLSearchParams({ cursor: 'public-image' })),
-  ).toBe('public-image');
+  ).toEqual({ kind: 'page', cursor: 'public-image' });
+  expect(
+    parsePublicShareQuery(new URLSearchParams('imageId=public-image')),
+  ).toEqual({
+    kind: 'neighbors',
+    imageId: 'public-image',
+  });
   for (const query of [
     'pageSize=80',
     'owner=true',
@@ -31,6 +40,12 @@ it('parses only one optional cursor and rejects unknown, repeated and invalid qu
     'cursor=a%2Fb',
     'cursor=a%5Cb',
     'cursor=a%0A',
+    'imageId=',
+    'imageId=a%2Fb',
+    'imageId=a%5Cb',
+    'imageId=a%0A',
+    'imageId=a&imageId=b',
+    'imageId=a&cursor=b',
   ])
     expect(() =>
       parsePublicShareQuery(new URLSearchParams(query)),

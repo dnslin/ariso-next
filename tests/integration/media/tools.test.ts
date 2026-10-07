@@ -28,6 +28,7 @@ if (process.env.SPAWN_DESCENDANT) spawn(process.execPath, ['-e', "const fs=requi
 writeFileSync(join(workspace, 'ready'), String(process.pid));
 let count = 0;
 setInterval(() => writeFileSync(join(workspace, 'cache'), String(++count)), 10);
+if (process.env.EXIT_LEADER) setTimeout(() => process.exit(0), 200);
 `;
   await Promise.all(
     ['magick', 'exiftool', 'ffmpeg', 'ffprobe'].map((tool) =>
@@ -75,6 +76,25 @@ async function expectWritesStopped() {
 const env = () => ({ PATH: `${bin}:${process.env.PATH}` });
 
 describe('media tool lifecycle', () => {
+  it('settles a completed tool without requiring a process-list command', async () => {
+    const originalPath = process.env.PATH;
+    await writeFile(join(bin, 'ps'), '#!/bin/sh\nexit 3\n', { mode: 0o755 });
+    process.env.PATH = `${bin}:${originalPath}`;
+    try {
+      const tool = startMediaTool(
+        'node',
+        ['-e', 'process.stdout.write("done")'],
+        {
+          workspace,
+        },
+      );
+      expect(await tool.settled).toBeUndefined();
+      expect((await tool.child).stdout).toBe('done');
+    } finally {
+      process.env.PATH = originalPath;
+    }
+  });
+
   it('preserves process-inspection failures as shutdown failures for recovery', async () => {
     const originalPath = process.env.PATH;
     await writeFile(join(bin, 'ps'), '#!/bin/sh\nexit 3\n', { mode: 0o755 });
@@ -124,6 +144,67 @@ describe('media tool lifecycle', () => {
     expect(await readFile(join(workspace, 'descendant-cache'), 'utf8')).toBe(
       before,
     );
+    await expectWritesStopped();
+  });
+
+  it('cleans up descendants after their leader exits successfully', async () => {
+    const { settled } = startMediaTool('magick', [], {
+      workspace,
+      env: { ...env(), SPAWN_DESCENDANT: '1', EXIT_LEADER: '1' },
+    });
+    await expect
+      .poll(async () => readFile(join(workspace, 'descendant-ready'), 'utf8'))
+      .toMatch(/^\d+$/);
+    expect(await settled).toBeUndefined();
+    const before = await readFile(join(workspace, 'descendant-cache'), 'utf8');
+    await delay(100);
+    expect(await readFile(join(workspace, 'descendant-cache'), 'utf8')).toBe(
+      before,
+    );
+    await expectWritesStopped();
+  });
+
+  it('reads full arguments only for discovered group leaders during recovery', async () => {
+    const originalPath = process.env.PATH;
+    const ps = (await execa('which', ['ps'])).stdout;
+    const calls = join(directory, 'ps-calls.jsonl');
+    await writeFile(
+      join(bin, 'ps'),
+      `#!${process.execPath}
+import {appendFileSync} from 'node:fs';
+import {spawnSync} from 'node:child_process';
+const args = process.argv.slice(2);
+appendFileSync(${JSON.stringify(calls)}, JSON.stringify(args) + '\\n');
+const result = spawnSync(${JSON.stringify(ps)}, args, {encoding: 'utf8'});
+process.stdout.write(result.stdout);
+process.stderr.write(result.stderr);
+process.exit(result.status);
+`,
+      { mode: 0o755 },
+    );
+    const { settled } = startMediaTool('magick', [], {
+      workspace,
+      env: { ...env(), IGNORE_TERM: '1' },
+    });
+    const completion = settled;
+    try {
+      await ready();
+      process.env.PATH = `${bin}:${originalPath}`;
+      await terminateMediaTools(workspace);
+      await completion;
+      const argumentsRead = (await readFile(calls, 'utf8'))
+        .trim()
+        .split('\n')
+        .map((line) => JSON.parse(line) as string[])
+        .filter((args) => args.some((arg) => arg.includes('command=')));
+      expect(argumentsRead).toHaveLength(1);
+      expect(argumentsRead[0]).toContain('-p');
+      expect(argumentsRead[0]).not.toContain('-axww');
+    } finally {
+      process.env.PATH = originalPath;
+      await terminateMediaTools(workspace);
+      await completion;
+    }
     await expectWritesStopped();
   });
 
