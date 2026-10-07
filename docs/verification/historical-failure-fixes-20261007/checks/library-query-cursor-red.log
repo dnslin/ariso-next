@@ -1,0 +1,296 @@
+Already up to date
+Done in 32ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/historical-failure-fixes/ariso
+
+ ↓ |unit| tests/unit/library/query-hook.test.ts > restores explicit page 1 with the default more preference
+ ↓ |unit| tests/unit/library/query-hook.test.ts > restores explicit page 3 with the default more preference
+ ↓ |unit| tests/unit/library/query-hook.test.ts > removing an item preserves all loaded batches and the server cursor values
+ ↓ |unit| tests/unit/library/query-hook.test.ts > removing an item in pages mode refetches the same page and invalidates earlier cached pages
+ ↓ |unit| tests/unit/library/query-hook.test.ts > more mode applies a filter without a page parameter and mode switching removes page one
+ ↓ |unit| tests/unit/library/query-hook.test.ts > Back and Forward resolve the entry mode rather than the latest preference
+ ↓ |unit| tests/unit/library/query-hook.test.ts > removes confirmed invalid IDs from all same-query cached pages without refetching or losing cursors
+ ↓ |unit| tests/unit/library/query-hook.test.ts > keeps other tag combinations in pages history when selection is invalidated
+ ↓ |unit| tests/unit/library/query-hook.test.ts > keeps other tag combinations in more history when selection is invalidated
+ ↓ |unit| tests/unit/library/query-hook.test.ts > batch completion refreshes the current page and invalidates previously cached pages
+ ↓ |unit| tests/unit/library/query-hook.test.ts > batch completion preserves loaded pages and continues after the original deleted cursor anchor
+ ↓ |unit| tests/unit/library/query-hook.test.ts > batch visibility updates cached loaded cards while leaving valid failed cards unchanged
+ ↓ |unit| tests/unit/library/query-hook.test.ts > rechecking an already removed item does not decrement loaded totals again
+ × |unit| tests/unit/library/query-hook.test.ts > reprocess succeeded reads affected cards while preserving all loaded cursor boundaries 16ms
+   → expected "vi.fn()" to be called with arguments: [ '/api/images/status', …(1) ]
+
+Received:
+
+  1st vi.fn() call:
+
+  [
+-   "/api/images/status",
+-   ObjectContaining {
+-     "body": "{\"ids\":[\"c\"]}",
+-     "method": "POST",
++   "/api/images?scope=normal&pageSize=20&q=photo&sort=uploaded_desc",
++   {
++     "cache": "no-store",
++     "signal": AbortSignal {
++       Symbol(kEvents): Map {
++         "abort" => {
++           "next": Listener {
++             "callback": [Function anonymous],
++             "flags": 1,
++             "listener": [Function anonymous],
++             "next": undefined,
++             "previous": [Circular],
++           },
++           "resistStopPropagation": false,
++           "size": 1,
++         },
++       },
++       Symbol(events.maxEventTargetListeners): 0,
++       Symbol(events.maxEventTargetListenersWarned): false,
++       Symbol(kHandlers): Map {},
++       Symbol(kAborted): false,
++       Symbol(kReason): undefined,
++       Symbol(kComposite): false,
++     },
+    },
+  ]
+
+
+Number of calls: 1
+
+ × |unit| tests/unit/library/query-hook.test.ts > reprocess failed reads affected cards while preserving all loaded cursor boundaries 1ms
+   → expected "vi.fn()" to be called with arguments: [ '/api/images/status', …(1) ]
+
+Received:
+
+  1st vi.fn() call:
+
+  [
+-   "/api/images/status",
+-   ObjectContaining {
+-     "body": "{\"ids\":[\"c\"]}",
+-     "method": "POST",
++   "/api/images?scope=normal&pageSize=20&q=photo&sort=uploaded_desc",
++   {
++     "cache": "no-store",
++     "signal": AbortSignal {
++       Symbol(kEvents): Map {
++         "abort" => {
++           "next": Listener {
++             "callback": [Function anonymous],
++             "flags": 1,
++             "listener": [Function anonymous],
++             "next": undefined,
++             "previous": [Circular],
++           },
++           "resistStopPropagation": false,
++           "size": 1,
++         },
++       },
++       Symbol(events.maxEventTargetListeners): 0,
++       Symbol(events.maxEventTargetListenersWarned): false,
++       Symbol(kHandlers): Map {},
++       Symbol(kAborted): false,
++       Symbol(kReason): undefined,
++       Symbol(kComposite): false,
++     },
+    },
+  ]
+
+
+Number of calls: 1
+
+ × |unit| tests/unit/library/query-hook.test.ts > reprocess list-read failures reach the retry workspace while preserving loaded cards 1ms
+   → expected Error: 暂时无法读取列表 { status: 503, …(1) } to match object { status: 503, …(1) }
+(1 matching property omitted from actual)
+ × |unit| tests/unit/library/query-hook.test.ts > reprocess removes items outside the query without replacing deleted cursor anchors 1ms
+   → expected "vi.fn()" to be called with arguments: [ '/api/images/status', …(1) ]
+
+Received:
+
+  1st vi.fn() call:
+
+  [
+-   "/api/images/status",
+-   ObjectContaining {
+-     "body": "{\"ids\":[\"c\"]}",
++   "/api/images?scope=normal&pageSize=20&status=failed&sort=uploaded_desc",
++   {
++     "cache": "no-store",
++     "signal": AbortSignal {
++       Symbol(kEvents): Map {
++         "abort" => {
++           "next": Listener {
++             "callback": [Function anonymous],
++             "flags": 1,
++             "listener": [Function anonymous],
++             "next": undefined,
++             "previous": [Circular],
++           },
++           "resistStopPropagation": false,
++           "size": 1,
++         },
++       },
++       Symbol(events.maxEventTargetListeners): 0,
++       Symbol(events.maxEventTargetListenersWarned): false,
++       Symbol(kHandlers): Map {},
++       Symbol(kAborted): false,
++       Symbol(kReason): undefined,
++       Symbol(kComposite): false,
++     },
+    },
+  ]
+
+
+Number of calls: 1
+
+ × |unit| tests/unit/library/query-hook.test.ts > reprocess batches only affected loaded IDs into status requests of at most 80 1ms
+   → expected "vi.fn()" to be called 2 times, but got 1 times
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/library/query-hook.test.ts > reprocess succeeded reads affected cards while preserving all loaded cursor boundaries
+ FAIL  |unit| tests/unit/library/query-hook.test.ts > reprocess failed reads affected cards while preserving all loaded cursor boundaries
+AssertionError: expected "vi.fn()" to be called with arguments: [ '/api/images/status', …(1) ]
+
+Received:
+
+  1st vi.fn() call:
+
+  [
+-   "/api/images/status",
+-   ObjectContaining {
+-     "body": "{\"ids\":[\"c\"]}",
+-     "method": "POST",
++   "/api/images?scope=normal&pageSize=20&q=photo&sort=uploaded_desc",
++   {
++     "cache": "no-store",
++     "signal": AbortSignal {
++       Symbol(kEvents): Map {
++         "abort" => {
++           "next": Listener {
++             "callback": [Function anonymous],
++             "flags": 1,
++             "listener": [Function anonymous],
++             "next": undefined,
++             "previous": [Circular],
++           },
++           "resistStopPropagation": false,
++           "size": 1,
++         },
++       },
++       Symbol(events.maxEventTargetListeners): 0,
++       Symbol(events.maxEventTargetListenersWarned): false,
++       Symbol(kHandlers): Map {},
++       Symbol(kAborted): false,
++       Symbol(kReason): undefined,
++       Symbol(kComposite): false,
++     },
+    },
+  ]
+
+
+Number of calls: 1
+
+ ❯ tests/unit/library/query-hook.test.ts:551:21
+    549|
+    550|     expect(fetcher).toHaveBeenCalledTimes(1);
+    551|     expect(fetcher).toHaveBeenCalledWith(
+       |                     ^
+    552|       '/api/images/status',
+    553|       expect.objectContaining({ method: 'POST', body: '{"ids":["c"]}' …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  |unit| tests/unit/library/query-hook.test.ts > reprocess list-read failures reach the retry workspace while preserving loaded cards
+AssertionError: expected Error: 暂时无法读取列表 { status: 503, …(1) } to match object { status: 503, …(1) }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+- {
+-   "message": "暂时无法读取列表（HTTP 503）",
++ LibraryReadError {
+    "status": 503,
+  }
+
+ ❯ tests/unit/library/query-hook.test.ts:588:4
+    586|       { type: 'reprocess', scope: 'all', taskIds: { a: 'task-a' } },
+    587|     ),
+    588|   ).rejects.toMatchObject({ status: 503, message: '暂时无法读取列表（HTTP 503）'…
+       |    ^
+    589|   expect(client.getQueryData(key)).toEqual(cached);
+    590|   client.clear();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  |unit| tests/unit/library/query-hook.test.ts > reprocess removes items outside the query without replacing deleted cursor anchors
+AssertionError: expected "vi.fn()" to be called with arguments: [ '/api/images/status', …(1) ]
+
+Received:
+
+  1st vi.fn() call:
+
+  [
+-   "/api/images/status",
+-   ObjectContaining {
+-     "body": "{\"ids\":[\"c\"]}",
++   "/api/images?scope=normal&pageSize=20&status=failed&sort=uploaded_desc",
++   {
++     "cache": "no-store",
++     "signal": AbortSignal {
++       Symbol(kEvents): Map {
++         "abort" => {
++           "next": Listener {
++             "callback": [Function anonymous],
++             "flags": 1,
++             "listener": [Function anonymous],
++             "next": undefined,
++             "previous": [Circular],
++           },
++           "resistStopPropagation": false,
++           "size": 1,
++         },
++       },
++       Symbol(events.maxEventTargetListeners): 0,
++       Symbol(events.maxEventTargetListenersWarned): false,
++       Symbol(kHandlers): Map {},
++       Symbol(kAborted): false,
++       Symbol(kReason): undefined,
++       Symbol(kComposite): false,
++     },
+    },
+  ]
+
+
+Number of calls: 1
+
+ ❯ tests/unit/library/query-hook.test.ts:612:19
+    610|     { type: 'reprocess', scope: 'all', taskIds: { b: 'task-b', c: 'tas…
+    611|   );
+    612|   expect(fetcher).toHaveBeenCalledWith('/api/images/status', expect.ob…
+       |                   ^
+    613|   const current = client.getQueryData<InfiniteData<LibraryPage>>(key)!;
+    614|   expect(current.pages.map((page) => page.items.map((item) => item.id)…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  |unit| tests/unit/library/query-hook.test.ts > reprocess batches only affected loaded IDs into status requests of at most 80
+AssertionError: expected "vi.fn()" to be called 2 times, but got 1 times
+ ❯ tests/unit/library/query-hook.test.ts:640:19
+    638|     { type: 'reprocess', scope: 'all', taskIds: Object.fromEntries([..…
+    639|   );
+    640|   expect(fetcher).toHaveBeenCalledTimes(2);
+       |                   ^
+    641|   expect(fetcher.mock.calls.map(([_url, options]) => JSON.parse(String…
+    642|   const current = client.getQueryData<InfiniteData<LibraryPage>>(key)!;
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  5 failed | 13 skipped (18)
+   Start at  21:03:17
+   Duration  214ms (import 52%, transform 33%, tests 14%, worker 1%)
+

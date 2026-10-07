@@ -1,0 +1,39 @@
+Already up to date
+Done in 34ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/historical-failure-fixes/ariso
+
+ ✓ |unit| tests/unit/library/detail-status.test.ts > reads explicit library IDs together without fetching full details or list pages 11ms
+ ↓ |unit| tests/unit/library/detail-status.test.ts > uses the bounded status endpoint for the active detail rather than rereading content
+ ↓ |unit| tests/unit/library/detail-status.test.ts > retains unauthorized status for session expiry instead of returning stale success
+ ↓ |unit| tests/unit/library/detail-status.test.ts > refreshes actual detail only after observable task, lifecycle or version changes
+ ↓ |unit| tests/unit/library/detail-status.test.ts > keeps polling independent metadata tasks and stops at their actual terminal status
+ ↓ |unit| tests/unit/library/detail-status.test.ts > refreshes on actual accepted process outcomes even when existing image remains ready
+ ↓ |unit| tests/unit/library/detail-status.test.ts > refreshes when a candidate is stored without a processing step change
+ ↓ |unit| tests/unit/library/query-hook.test.ts > restores explicit page 1 with the default more preference
+ ↓ |unit| tests/unit/library/query-hook.test.ts > restores explicit page 3 with the default more preference
+ ↓ |unit| tests/unit/library/query-hook.test.ts > removing an item preserves all loaded batches and the server cursor values
+ ↓ |unit| tests/unit/library/query-hook.test.ts > removing an item in pages mode refetches the same page and invalidates earlier cached pages
+ ↓ |unit| tests/unit/library/query-hook.test.ts > more mode applies a filter without a page parameter and mode switching removes page one
+ ↓ |unit| tests/unit/library/query-hook.test.ts > Back and Forward resolve the entry mode rather than the latest preference
+ ↓ |unit| tests/unit/library/query-hook.test.ts > removes confirmed invalid IDs from all same-query cached pages without refetching or losing cursors
+ ↓ |unit| tests/unit/library/query-hook.test.ts > keeps other tag combinations in pages history when selection is invalidated
+ ↓ |unit| tests/unit/library/query-hook.test.ts > keeps other tag combinations in more history when selection is invalidated
+ ↓ |unit| tests/unit/library/query-hook.test.ts > batch completion refreshes the current page and invalidates previously cached pages
+ ↓ |unit| tests/unit/library/query-hook.test.ts > batch completion preserves loaded pages and continues after the original deleted cursor anchor
+ ↓ |unit| tests/unit/library/query-hook.test.ts > batch visibility updates cached loaded cards while leaving valid failed cards unchanged
+ ↓ |unit| tests/unit/library/query-hook.test.ts > rechecking an already removed item does not decrement loaded totals again
+ ✓ |unit| tests/unit/library/query-hook.test.ts > reprocess succeeded reads affected cards while preserving all loaded cursor boundaries 13ms
+ ✓ |unit| tests/unit/library/query-hook.test.ts > reprocess failed reads affected cards while preserving all loaded cursor boundaries 1ms
+ ✓ |unit| tests/unit/library/query-hook.test.ts > reprocess status HTTP 401 propagates while preserving loaded cards 1ms
+ ✓ |unit| tests/unit/library/query-hook.test.ts > reprocess status HTTP 503 propagates while preserving loaded cards 0ms
+ ✓ |unit| tests/unit/library/query-hook.test.ts > reprocess status removes actually missing IDs without changing loaded cursor boundaries 1ms
+ ✓ |unit| tests/unit/library/query-hook.test.ts > reprocess status aborts when its query client is cleared without restoring disposed cards 53ms
+ ✓ |unit| tests/unit/library/query-hook.test.ts > reprocess removes items outside the query without replacing deleted cursor anchors 1ms
+ ✓ |unit| tests/unit/library/query-hook.test.ts > reprocess batches only affected loaded IDs into status requests of at most 80 1ms
+
+ Test Files  2 passed (2)
+      Tests  9 passed | 19 skipped (28)
+   Start at  21:05:31
+   Duration  259ms (import 33%, transform 33%, tests 32%, worker 2%)
+

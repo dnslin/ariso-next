@@ -1,0 +1,56 @@
+Already up to date
+Done in 32ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/historical-failure-fixes/ariso
+
+ ↓ |unit| tests/unit/library/query-hook.test.ts > restores explicit page 1 with the default more preference
+ ↓ |unit| tests/unit/library/query-hook.test.ts > restores explicit page 3 with the default more preference
+ ↓ |unit| tests/unit/library/query-hook.test.ts > removing an item preserves all loaded batches and the server cursor values
+ ↓ |unit| tests/unit/library/query-hook.test.ts > removing an item in pages mode refetches the same page and invalidates earlier cached pages
+ ↓ |unit| tests/unit/library/query-hook.test.ts > more mode applies a filter without a page parameter and mode switching removes page one
+ ↓ |unit| tests/unit/library/query-hook.test.ts > Back and Forward resolve the entry mode rather than the latest preference
+ ↓ |unit| tests/unit/library/query-hook.test.ts > removes confirmed invalid IDs from all same-query cached pages without refetching or losing cursors
+ ↓ |unit| tests/unit/library/query-hook.test.ts > keeps other tag combinations in pages history when selection is invalidated
+ ↓ |unit| tests/unit/library/query-hook.test.ts > keeps other tag combinations in more history when selection is invalidated
+ ↓ |unit| tests/unit/library/query-hook.test.ts > batch completion refreshes the current page and invalidates previously cached pages
+ ↓ |unit| tests/unit/library/query-hook.test.ts > batch completion preserves loaded pages and continues after the original deleted cursor anchor
+ ↓ |unit| tests/unit/library/query-hook.test.ts > batch visibility updates cached loaded cards while leaving valid failed cards unchanged
+ ↓ |unit| tests/unit/library/query-hook.test.ts > rechecking an already removed item does not decrement loaded totals again
+ ↓ |unit| tests/unit/library/query-hook.test.ts > reprocess succeeded reads affected cards while preserving all loaded cursor boundaries
+ ↓ |unit| tests/unit/library/query-hook.test.ts > reprocess failed reads affected cards while preserving all loaded cursor boundaries
+ ↓ |unit| tests/unit/library/query-hook.test.ts > reprocess status HTTP 401 propagates while preserving loaded cards
+ ↓ |unit| tests/unit/library/query-hook.test.ts > reprocess status HTTP 503 propagates while preserving loaded cards
+ ↓ |unit| tests/unit/library/query-hook.test.ts > reprocess status removes actually missing IDs without changing loaded cursor boundaries
+ ↓ |unit| tests/unit/library/query-hook.test.ts > reprocess status aborts when its query client is cleared without restoring disposed cards
+ × |unit| tests/unit/library/query-hook.test.ts > reprocess status is cancelled together with subsequent library mutations 61ms
+   → expected false to be true // Object.is equality
+ ↓ |unit| tests/unit/library/query-hook.test.ts > reprocess removes items outside the query without replacing deleted cursor anchors
+ ↓ |unit| tests/unit/library/query-hook.test.ts > reprocess batches only affected loaded IDs into status requests of at most 80
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/library/query-hook.test.ts > reprocess status is cancelled together with subsequent library mutations
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/unit/library/query-hook.test.ts:677:53
+    675|     await vi.waitFor(() => expect(fetcher).toHaveBeenCalledTimes(1));
+    676|     await client.cancelQueries({ queryKey: ['library'] });
+    677|     expect(fetcher.mock.calls[0][1].signal.aborted).toBe(true);
+       |                                                     ^
+    678|     expect(client.getQueryData<InfiniteData<LibraryPage>>(key)?.pages[…
+    679|   } finally {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 21 skipped (22)
+   Start at  21:07:05
+   Duration  257ms (import 40%, tests 31%, transform 28%, worker 1%)
+

@@ -1,0 +1,29 @@
+Already up to date
+Done in 33ms using pnpm v11.19.0
+src/server/media/tools.ts 38ms
+tests/integration/media/tools.test.ts 18ms
+Already up to date
+Done in 35ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/historical-failure-fixes/ariso
+
+ ✓ |integration| tests/integration/media/tools.test.ts > media tool lifecycle > settles a completed tool without requiring a process-list command 59ms
+ ✓ |integration| tests/integration/media/tools.test.ts > media tool lifecycle > preserves process-inspection failures as shutdown failures for recovery 176ms
+ ✓ |integration| tests/integration/media/tools.test.ts > media tool lifecycle > kills magick after cancellation even when it ignores SIGTERM 1587ms
+ ✓ |integration| tests/integration/media/tools.test.ts > media tool lifecycle > kills exiftool after cancellation even when it ignores SIGTERM 1332ms
+ ✓ |integration| tests/integration/media/tools.test.ts > media tool lifecycle > kills ffmpeg after cancellation even when it ignores SIGTERM 1381ms
+ ✓ |integration| tests/integration/media/tools.test.ts > media tool lifecycle > kills ffprobe after cancellation even when it ignores SIGTERM 1489ms
+ ✓ |integration| tests/integration/media/tools.test.ts > media tool lifecycle > waits for descendants that ignore SIGTERM after the leader has exited 1481ms
+ ✓ |integration| tests/integration/media/tools.test.ts > media tool lifecycle > cleans up descendants after their leader exits successfully 1669ms
+ ✓ |integration| tests/integration/media/tools.test.ts > media tool lifecycle > reads full arguments only for discovered group leaders during recovery 1872ms
+ ✓ |integration| tests/integration/media/tools.test.ts > media tool lifecycle > terminates a timed-out process and preserves the timeout diagnostic 2670ms
+ ✓ |integration| tests/integration/media/tools.test.ts > media tool lifecycle > recovers tools left by a parent receiving SIGTERM 1523ms
+ ✓ |integration| tests/integration/media/tools.test.ts > media tool lifecycle > recovers tools left by a parent receiving SIGKILL 1489ms
+ ✓ |integration| tests/integration/media/tools.test.ts > media tool lifecycle > does not terminate a process whose workspace only shares the same prefix 251ms
+ ✓ |integration| tests/integration/media/tools.test.ts > bounds binary output by UTF-8 bytes rather than text length 69ms
+
+ Test Files  1 passed (1)
+      Tests  14 passed (14)
+   Start at  20:59:32
+   Duration  17.18s (tests 100%)
+
