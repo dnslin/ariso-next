@@ -17,12 +17,17 @@ try {
   const version = c.prepare(
     `INSERT INTO media_versions (image_id,kind,object_id,byte_size,format,mime,created_at) VALUES (?,'original',?,100,'PNG','image/png',1000)`,
   );
+  const job = c.prepare(
+    `INSERT INTO media_jobs (id,image_id,kind,scope,snapshot,expected_versions,status,created_at,updated_at) VALUES (?,?,'process','all',?,'[]','succeeded',1000,1000)`,
+  );
+  const snapshot = JSON.stringify(f.input().snapshot);
   c.transaction(() => {
     for (let i = 0; i < 100000; i++) {
       const id = `scale-${i}`;
       image.run(id, f.storage.id, id, id, i % 10 === 0 ? 1000 : null);
       object.run(id, id, f.storage.id, id);
       version.run(id, id);
+      job.run(id, id, snapshot);
     }
   })();
   const samples: Record<string, number[]> = { usage: [], overview: [] };
@@ -51,8 +56,9 @@ try {
     memory: os.totalmem(),
     images: 100000,
     objects: 100000,
+    jobs: 100000,
     distribution:
-      '90k normal private ready,10k recycled; originals only; no access rows (report queries belong to #169)',
+      '90k normal private ready,10k recycled; originals with one completed process job each; no access rows (report queries belong to #169)',
     cache:
       'first query after seed is not a cold filesystem benchmark; subsequent 10 queries warm',
     samples,
