@@ -1,0 +1,5572 @@
+[
+  {
+    "id": "218:1059",
+    "name": "D / 邮件服务 / 邮件设置校验错误",
+    "width": 1440,
+    "height": 1080,
+    "text": [
+      "Ariso",
+      "图片，自在收纳。",
+      "总览",
+      "上传",
+      "图库",
+      "相册",
+      "标签",
+      "分享管理",
+      "回收站",
+      "管理",
+      "访问统计",
+      "存储管理",
+      "站点设置",
+      "D",
+      "dnslin",
+      "站点所有者",
+      "工作空间  /  站点设置",
+      "站点设置",
+      "管理站点、图片处理与账号偏好。",
+      "基本设置",
+      "图片处理",
+      "账号与安全",
+      "上传 API",
+      "邮件服务",
+      "SMTP 邮件服务",
+      "请检查端口和发件人邮箱",
+      "SMTP 主机",
+      "smtp.example.com",
+      "端口",
+      "70000",
+      "请输入 1–65535 的端口",
+      "连接安全",
+      "STARTTLS",
+      "SMTP 用户名",
+      "noreply@example.com",
+      "发件人名称",
+      "Ariso",
+      "发件人邮箱",
+      "noreply@",
+      "请输入有效的邮箱地址",
+      "SMTP 密码",
+      "已设置 · 留空保留当前密码",
+      "测试仅使用已保存配置，收件人为当前所有者。",
+      "清除用户名和密码",
+      "ⓘ",
+      "编辑后请先保存，再发送测试邮件。保存无需重启，也不会自动发送邮件。",
+      "发送测试邮件",
+      "保存邮件设置"
+    ],
+    "actions": [
+      {
+        "id": "218:1068",
+        "name": "总览",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "19:38",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:1075",
+        "name": "上传图片",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:97",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:1081",
+        "name": "图库",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:285",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:1088",
+        "name": "相册",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:473",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:1092",
+        "name": "标签",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:661",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:1098",
+        "name": "分享管理",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:849",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:1103",
+        "name": "回收站",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:1037",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:1112",
+        "name": "访问统计",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:1225",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:1121",
+        "name": "存储管理",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:1413",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:1128",
+        "name": "站点设置",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:1601",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:1149",
+        "name": "Link",
+        "width": 136,
+        "height": 36,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:1601",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:1150",
+        "name": "Link",
+        "width": 136,
+        "height": 36,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "34:338",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:1151",
+        "name": "Link",
+        "width": 136,
+        "height": 36,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "34:462",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:1152",
+        "name": "Link",
+        "width": 136,
+        "height": 36,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "34:586",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "230:2487",
+        "name": "SMTP凭据清除说明",
+        "width": 1096,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "MOUSE_LEAVE",
+            "actions": [
+              {
+                "type": "SET_VARIABLE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:1192",
+        "name": "清除SMTP凭据",
+        "width": 188,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "219:2515",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "241:1132",
+        "name": "SMTP 清除用途提示",
+        "width": 44,
+        "height": 44,
+        "reactions": [
+          {
+            "trigger": "MOUSE_ENTER",
+            "actions": [
+              {
+                "type": "SET_VARIABLE"
+              }
+            ]
+          },
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "SET_VARIABLE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:1195",
+        "name": "Button/Outline",
+        "width": 192,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "218:3206",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:1196",
+        "name": "Button/Primary",
+        "width": 192,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "218:3189",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "218:1207",
+    "name": "D / 邮件服务 / 无认证 SMTP 中继",
+    "width": 1440,
+    "height": 1080,
+    "text": [
+      "Ariso",
+      "图片，自在收纳。",
+      "总览",
+      "上传",
+      "图库",
+      "相册",
+      "标签",
+      "分享管理",
+      "回收站",
+      "管理",
+      "访问统计",
+      "存储管理",
+      "站点设置",
+      "D",
+      "dnslin",
+      "站点所有者",
+      "工作空间  /  站点设置",
+      "站点设置",
+      "管理站点、图片处理与账号偏好。",
+      "基本设置",
+      "图片处理",
+      "账号与安全",
+      "上传 API",
+      "邮件服务",
+      "SMTP 邮件服务",
+      "已保存 · 使用无认证 SMTP 中继",
+      "SMTP 主机",
+      "smtp.example.com",
+      "端口",
+      "587",
+      "连接安全",
+      "STARTTLS",
+      "SMTP 用户名",
+      "未设置 · 不使用认证",
+      "发件人名称",
+      "Ariso",
+      "发件人邮箱",
+      "noreply@example.com",
+      "SMTP 密码",
+      "未设置",
+      "测试仅使用已保存配置，收件人为当前所有者。",
+      "编辑后请先保存，再发送测试邮件。保存无需重启，也不会自动发送邮件。",
+      "发送测试邮件",
+      "设置已保存"
+    ],
+    "actions": [
+      {
+        "id": "218:1216",
+        "name": "总览",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "19:38",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:1223",
+        "name": "上传图片",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:97",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:1229",
+        "name": "图库",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:285",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:1236",
+        "name": "相册",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:473",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:1240",
+        "name": "标签",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:661",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:1246",
+        "name": "分享管理",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:849",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:1251",
+        "name": "回收站",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:1037",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:1260",
+        "name": "访问统计",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:1225",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:1269",
+        "name": "存储管理",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:1413",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:1276",
+        "name": "站点设置",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:1601",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:1297",
+        "name": "Link",
+        "width": 136,
+        "height": 36,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:1601",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:1298",
+        "name": "Link",
+        "width": 136,
+        "height": 36,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "34:338",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:1299",
+        "name": "Link",
+        "width": 136,
+        "height": 36,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "34:462",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:1300",
+        "name": "Link",
+        "width": 136,
+        "height": 36,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "34:586",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:1343",
+        "name": "Button/Outline",
+        "width": 192,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "218:3206",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "218:2775",
+    "name": "D / 邮件服务 / 切换 TLS，尚未保存",
+    "width": 1440,
+    "height": 1080,
+    "text": [
+      "Ariso",
+      "图片，自在收纳。",
+      "总览",
+      "上传",
+      "图库",
+      "相册",
+      "标签",
+      "分享管理",
+      "回收站",
+      "管理",
+      "访问统计",
+      "存储管理",
+      "站点设置",
+      "D",
+      "dnslin",
+      "站点所有者",
+      "工作空间  /  站点设置",
+      "站点设置",
+      "管理站点、图片处理与账号偏好。",
+      "基本设置",
+      "图片处理",
+      "账号与安全",
+      "上传 API",
+      "邮件服务",
+      "SMTP 邮件服务",
+      "有未保存更改 · TLS 连接",
+      "SMTP 主机",
+      "smtp.example.com",
+      "端口",
+      "465",
+      "连接安全",
+      "TLS",
+      "SMTP 用户名",
+      "noreply@example.com",
+      "发件人名称",
+      "Ariso",
+      "发件人邮箱",
+      "noreply@example.com",
+      "SMTP 密码",
+      "已设置 · 留空保留当前密码",
+      "测试仅使用已保存配置，收件人为当前所有者。",
+      "清除用户名和密码",
+      "ⓘ",
+      "编辑后请先保存，再发送测试邮件。保存无需重启，也不会自动发送邮件。",
+      "发送测试邮件",
+      "保存邮件设置"
+    ],
+    "actions": [
+      {
+        "id": "218:2784",
+        "name": "总览",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "19:38",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:2791",
+        "name": "上传图片",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:97",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:2797",
+        "name": "图库",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:285",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:2804",
+        "name": "相册",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:473",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:2808",
+        "name": "标签",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:661",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:2814",
+        "name": "分享管理",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:849",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:2819",
+        "name": "回收站",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:1037",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:2828",
+        "name": "访问统计",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:1225",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:2837",
+        "name": "存储管理",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:1413",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:2844",
+        "name": "站点设置",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:1601",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:2865",
+        "name": "Link",
+        "width": 136,
+        "height": 36,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:1601",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:2866",
+        "name": "Link",
+        "width": 136,
+        "height": 36,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "34:338",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:2867",
+        "name": "Link",
+        "width": 136,
+        "height": 36,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "34:462",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:2868",
+        "name": "Link",
+        "width": 136,
+        "height": 36,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "34:586",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "230:2490",
+        "name": "SMTP凭据清除说明",
+        "width": 1096,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "MOUSE_LEAVE",
+            "actions": [
+              {
+                "type": "SET_VARIABLE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "241:1140",
+        "name": "SMTP 清除用途提示",
+        "width": 44,
+        "height": 44,
+        "reactions": [
+          {
+            "trigger": "MOUSE_ENTER",
+            "actions": [
+              {
+                "type": "SET_VARIABLE"
+              }
+            ]
+          },
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "SET_VARIABLE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:2911",
+        "name": "Button/Outline",
+        "width": 192,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "219:2523",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:2912",
+        "name": "Button/Primary",
+        "width": 192,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "220:2473",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "218:2921",
+    "name": "D / 邮件服务 / TLS 配置已保存",
+    "width": 1440,
+    "height": 1080,
+    "text": [
+      "Ariso",
+      "图片，自在收纳。",
+      "总览",
+      "上传",
+      "图库",
+      "相册",
+      "标签",
+      "分享管理",
+      "回收站",
+      "管理",
+      "访问统计",
+      "存储管理",
+      "站点设置",
+      "D",
+      "dnslin",
+      "站点所有者",
+      "工作空间  /  站点设置",
+      "站点设置",
+      "管理站点、图片处理与账号偏好。",
+      "基本设置",
+      "图片处理",
+      "账号与安全",
+      "上传 API",
+      "邮件服务",
+      "SMTP 邮件服务",
+      "已保存配置 · 使用 TLS 连接",
+      "SMTP 主机",
+      "smtp.example.com",
+      "端口",
+      "465",
+      "连接安全",
+      "TLS",
+      "SMTP 用户名",
+      "noreply@example.com",
+      "发件人名称",
+      "Ariso",
+      "发件人邮箱",
+      "noreply@example.com",
+      "SMTP 密码",
+      "已设置 · 留空保留当前密码",
+      "测试仅使用已保存配置，收件人为当前所有者。",
+      "清除用户名和密码",
+      "ⓘ",
+      "编辑后请先保存，再发送测试邮件。保存无需重启，也不会自动发送邮件。",
+      "发送测试邮件",
+      "设置已保存"
+    ],
+    "actions": [
+      {
+        "id": "218:2930",
+        "name": "总览",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "19:38",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:2937",
+        "name": "上传图片",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:97",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:2943",
+        "name": "图库",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:285",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:2950",
+        "name": "相册",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:473",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:2954",
+        "name": "标签",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:661",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:2960",
+        "name": "分享管理",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:849",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:2965",
+        "name": "回收站",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:1037",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:2974",
+        "name": "访问统计",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:1225",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:2983",
+        "name": "存储管理",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:1413",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:2990",
+        "name": "站点设置",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:1601",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:3011",
+        "name": "Link",
+        "width": 136,
+        "height": 36,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:1601",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:3012",
+        "name": "Link",
+        "width": 136,
+        "height": 36,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "34:338",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:3013",
+        "name": "Link",
+        "width": 136,
+        "height": 36,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "34:462",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:3014",
+        "name": "Link",
+        "width": 136,
+        "height": 36,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "34:586",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "230:2499",
+        "name": "SMTP凭据清除说明",
+        "width": 1096,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "MOUSE_LEAVE",
+            "actions": [
+              {
+                "type": "SET_VARIABLE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "241:1148",
+        "name": "SMTP 清除用途提示",
+        "width": 44,
+        "height": 44,
+        "reactions": [
+          {
+            "trigger": "MOUSE_ENTER",
+            "actions": [
+              {
+                "type": "SET_VARIABLE"
+              }
+            ]
+          },
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "SET_VARIABLE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:3057",
+        "name": "Button/Outline",
+        "width": 192,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "218:3206",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "34:710",
+    "name": "站点设置 · 邮件服务",
+    "width": 1440,
+    "height": 1080,
+    "text": [
+      "Ariso",
+      "图片，自在收纳。",
+      "总览",
+      "上传",
+      "图库",
+      "相册",
+      "标签",
+      "分享管理",
+      "回收站",
+      "管理",
+      "访问统计",
+      "存储管理",
+      "站点设置",
+      "D",
+      "dnslin",
+      "站点所有者",
+      "工作空间  /  站点设置",
+      "站点设置",
+      "管理站点、图片处理与账号偏好。",
+      "基本设置",
+      "图片处理",
+      "账号与安全",
+      "上传 API",
+      "邮件服务",
+      "SMTP 邮件服务",
+      "已保存配置 · 下次发送即生效",
+      "SMTP 主机",
+      "smtp.example.com",
+      "端口",
+      "587",
+      "连接安全",
+      "STARTTLS",
+      "SMTP 用户名",
+      "noreply@example.com",
+      "发件人名称",
+      "Ariso",
+      "发件人邮箱",
+      "noreply@example.com",
+      "SMTP 密码",
+      "已设置 · 留空保留当前密码",
+      "测试仅使用已保存配置，收件人为当前所有者。",
+      "清除用户名和密码",
+      "ⓘ",
+      "编辑后请先保存，再发送测试邮件。保存无需重启，也不会自动发送邮件。",
+      "发送测试邮件",
+      "保存邮件设置"
+    ],
+    "actions": [
+      {
+        "id": "34:719",
+        "name": "总览",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "19:38",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "34:726",
+        "name": "上传图片",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:97",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "34:732",
+        "name": "图库",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:285",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "34:739",
+        "name": "相册",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:473",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "34:743",
+        "name": "标签",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:661",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "34:749",
+        "name": "分享管理",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:849",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "34:754",
+        "name": "回收站",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:1037",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "34:763",
+        "name": "访问统计",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:1225",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "34:772",
+        "name": "存储管理",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:1413",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "34:779",
+        "name": "站点设置",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:1601",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "34:800",
+        "name": "Link",
+        "width": 136,
+        "height": 36,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:1601",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "34:801",
+        "name": "Link",
+        "width": 136,
+        "height": 36,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "34:338",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "34:802",
+        "name": "Link",
+        "width": 136,
+        "height": 36,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "34:462",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "34:803",
+        "name": "Link",
+        "width": 136,
+        "height": 36,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "34:586",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "76:764",
+        "name": "SMTP 主机",
+        "width": 536,
+        "height": 72,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "217:2622",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "76:773",
+        "name": "连接安全",
+        "width": 536,
+        "height": 72,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "219:2531",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "230:1116",
+        "name": "SMTP凭据清除说明",
+        "width": 1096,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "MOUSE_LEAVE",
+            "actions": [
+              {
+                "type": "SET_VARIABLE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "215:1008",
+        "name": "清除SMTP凭据",
+        "width": 188,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "219:2515",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "241:1116",
+        "name": "SMTP 清除用途提示",
+        "width": 44,
+        "height": 44,
+        "reactions": [
+          {
+            "trigger": "MOUSE_ENTER",
+            "actions": [
+              {
+                "type": "SET_VARIABLE"
+              }
+            ]
+          },
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "SET_VARIABLE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "36:308",
+        "name": "Button/Outline",
+        "width": 192,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "218:3206",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "36:310",
+        "name": "Button/Primary",
+        "width": 192,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "218:3189",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "43:446",
+    "name": "SMTP 已接受测试邮件（旧版布局）",
+    "width": 480,
+    "height": 194,
+    "text": [
+      "SMTP 已接受测试邮件",
+      "×",
+      "邮件服务器已接受发送请求，不代表最终送达。请检查当前所有者邮箱的收件箱和垃圾邮件。",
+      "知道了"
+    ],
+    "actions": [
+      {
+        "id": "72:1048",
+        "name": "Button/Outline",
+        "width": 32,
+        "height": 32,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "CLOSE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "72:1051",
+        "name": "Button/Primary",
+        "width": 116,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "CLOSE"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "217:2475",
+    "name": "D / 邮件服务 / 邮件服务未配置",
+    "width": 1440,
+    "height": 1080,
+    "text": [
+      "Ariso",
+      "图片，自在收纳。",
+      "总览",
+      "上传",
+      "图库",
+      "相册",
+      "标签",
+      "分享管理",
+      "回收站",
+      "管理",
+      "访问统计",
+      "存储管理",
+      "站点设置",
+      "D",
+      "dnslin",
+      "站点所有者",
+      "工作空间  /  站点设置",
+      "站点设置",
+      "管理站点、图片处理与账号偏好。",
+      "基本设置",
+      "图片处理",
+      "账号与安全",
+      "上传 API",
+      "邮件服务",
+      "SMTP 邮件服务",
+      "尚未配置 · 邮件找回不可用",
+      "SMTP 主机",
+      "例如 smtp.example.com",
+      "端口",
+      "587",
+      "连接安全",
+      "STARTTLS",
+      "SMTP 用户名",
+      "可选",
+      "发件人名称",
+      "Ariso",
+      "发件人邮箱",
+      "例如 noreply@example.com",
+      "SMTP 密码",
+      "未设置",
+      "测试仅使用已保存配置，收件人为当前所有者。",
+      "编辑后请先保存，再发送测试邮件。保存无需重启，也不会自动发送邮件。",
+      "先保存邮件设置",
+      "保存邮件设置"
+    ],
+    "actions": [
+      {
+        "id": "217:2484",
+        "name": "总览",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "19:38",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "217:2491",
+        "name": "上传图片",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:97",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "217:2497",
+        "name": "图库",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:285",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "217:2504",
+        "name": "相册",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:473",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "217:2508",
+        "name": "标签",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:661",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "217:2514",
+        "name": "分享管理",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:849",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "217:2519",
+        "name": "回收站",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:1037",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "217:2528",
+        "name": "访问统计",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:1225",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "217:2537",
+        "name": "存储管理",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:1413",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "217:2544",
+        "name": "站点设置",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:1601",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "217:2565",
+        "name": "Link",
+        "width": 136,
+        "height": 36,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:1601",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "217:2566",
+        "name": "Link",
+        "width": 136,
+        "height": 36,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "34:338",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "217:2567",
+        "name": "Link",
+        "width": 136,
+        "height": 36,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "34:462",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "217:2568",
+        "name": "Link",
+        "width": 136,
+        "height": 36,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "34:586",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "217:2574",
+        "name": "SMTP 主机",
+        "width": 536,
+        "height": 72,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "217:2622",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "217:2583",
+        "name": "连接安全",
+        "width": 536,
+        "height": 72,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "219:2531",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "217:2612",
+        "name": "Button/Primary",
+        "width": 192,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "218:1059",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "217:2622",
+    "name": "D / 邮件服务 / 邮件设置有未保存更改",
+    "width": 1440,
+    "height": 1080,
+    "text": [
+      "Ariso",
+      "图片，自在收纳。",
+      "总览",
+      "上传",
+      "图库",
+      "相册",
+      "标签",
+      "分享管理",
+      "回收站",
+      "管理",
+      "访问统计",
+      "存储管理",
+      "站点设置",
+      "D",
+      "dnslin",
+      "站点所有者",
+      "工作空间  /  站点设置",
+      "站点设置",
+      "管理站点、图片处理与账号偏好。",
+      "基本设置",
+      "图片处理",
+      "账号与安全",
+      "上传 API",
+      "邮件服务",
+      "SMTP 邮件服务",
+      "有未保存更改 · 测试仍使用已保存配置",
+      "SMTP 主机",
+      "smtp.example.com",
+      "端口",
+      "587",
+      "连接安全",
+      "STARTTLS",
+      "SMTP 用户名",
+      "noreply@example.com",
+      "发件人名称",
+      "Ariso",
+      "发件人邮箱",
+      "noreply@example.com",
+      "SMTP 密码",
+      "••••••••（新密码）",
+      "测试仅使用已保存配置，收件人为当前所有者。",
+      "清除用户名和密码",
+      "ⓘ",
+      "编辑后请先保存，再发送测试邮件。保存无需重启，也不会自动发送邮件。",
+      "发送测试邮件",
+      "保存邮件设置"
+    ],
+    "actions": [
+      {
+        "id": "217:2631",
+        "name": "总览",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "19:38",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "217:2638",
+        "name": "上传图片",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:97",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "217:2644",
+        "name": "图库",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:285",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "217:2651",
+        "name": "相册",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:473",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "217:2655",
+        "name": "标签",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:661",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "217:2661",
+        "name": "分享管理",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:849",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "217:2666",
+        "name": "回收站",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:1037",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "217:2675",
+        "name": "访问统计",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:1225",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "217:2684",
+        "name": "存储管理",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:1413",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "217:2691",
+        "name": "站点设置",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:1601",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "217:2712",
+        "name": "Link",
+        "width": 136,
+        "height": 36,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:1601",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "217:2713",
+        "name": "Link",
+        "width": 136,
+        "height": 36,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "34:338",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "217:2714",
+        "name": "Link",
+        "width": 136,
+        "height": 36,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "34:462",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "217:2715",
+        "name": "Link",
+        "width": 136,
+        "height": 36,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "34:586",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "217:2730",
+        "name": "连接安全",
+        "width": 536,
+        "height": 72,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "219:2531",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "230:1119",
+        "name": "SMTP凭据清除说明",
+        "width": 1096,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "MOUSE_LEAVE",
+            "actions": [
+              {
+                "type": "SET_VARIABLE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "217:2755",
+        "name": "清除SMTP凭据",
+        "width": 188,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "219:2515",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "241:1124",
+        "name": "SMTP 清除用途提示",
+        "width": 44,
+        "height": 44,
+        "reactions": [
+          {
+            "trigger": "MOUSE_ENTER",
+            "actions": [
+              {
+                "type": "SET_VARIABLE"
+              }
+            ]
+          },
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "SET_VARIABLE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "217:2758",
+        "name": "Button/Outline",
+        "width": 192,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "219:2523",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "217:2759",
+        "name": "Button/Primary",
+        "width": 192,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "218:3189",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "218:3189",
+    "name": "D / 邮件服务 / 正在保存邮件设置",
+    "width": 520,
+    "height": 192,
+    "text": ["正在保存邮件设置", "正在保存，请稍候。", "保存中…"],
+    "actions": []
+  },
+  {
+    "id": "218:3194",
+    "name": "D / 邮件服务 / 邮件设置已保存",
+    "width": 520,
+    "height": 228,
+    "text": [
+      "邮件设置已保存",
+      "下次发送邮件即使用新配置，无需重启。",
+      "尚未发送测试邮件。可返回设置后发送一封测试邮件。",
+      "返回邮件设置"
+    ],
+    "actions": [
+      {
+        "id": "218:3198",
+        "name": "邮件主操作",
+        "width": 462,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "34:710",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "218:3200",
+    "name": "D / 邮件服务 / 邮件设置未能保存",
+    "width": 520,
+    "height": 248,
+    "text": [
+      "邮件设置未能保存",
+      "保存请求失败，请重试。",
+      "若连接中断，需重新读取设置确认保存结果。尚未保存的输入保留在当前页面，离开或刷新后不保留。",
+      "返回检查设置"
+    ],
+    "actions": [
+      {
+        "id": "218:3204",
+        "name": "邮件主操作",
+        "width": 462,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "217:2622",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "218:3206",
+    "name": "D / 邮件服务 / 正在发送测试邮件",
+    "width": 520,
+    "height": 228,
+    "text": [
+      "正在发送测试邮件",
+      "使用当前已保存配置，发送到所有者邮箱。",
+      "正在等待邮件服务器响应。",
+      "发送中…"
+    ],
+    "actions": []
+  },
+  {
+    "id": "219:2451",
+    "name": "D / 邮件服务 / SMTP 已接受测试邮件",
+    "width": 520,
+    "height": 228,
+    "text": [
+      "SMTP 已接受测试邮件",
+      "邮件服务器已接受发送请求。",
+      "请检查当前所有者邮箱的收件箱和垃圾邮件。SMTP 接受不代表已经最终送达。",
+      "返回邮件设置"
+    ],
+    "actions": [
+      {
+        "id": "219:2455",
+        "name": "邮件主操作",
+        "width": 462,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "CLOSE"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "219:2457",
+    "name": "D / 邮件服务 / 无法连接邮件服务器",
+    "width": 520,
+    "height": 292,
+    "text": [
+      "无法连接邮件服务器",
+      "连接阶段失败。",
+      "请检查 SMTP 主机、端口和服务器网络，再重新测试。",
+      "重新测试",
+      "返回邮件设置"
+    ],
+    "actions": [
+      {
+        "id": "219:2461",
+        "name": "邮件主操作",
+        "width": 462,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "218:3206",
+                "navigation": "SWAP"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "219:2463",
+        "name": "邮件次操作",
+        "width": 462,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "34:710",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "219:2465",
+    "name": "D / 邮件服务 / 邮件安全连接失败",
+    "width": 520,
+    "height": 228,
+    "text": [
+      "邮件安全连接失败",
+      "TLS 握手或 STARTTLS 升级失败。",
+      "请核对连接模式、端口与服务器证书，确认服务商支持所选加密方式。",
+      "检查邮件设置"
+    ],
+    "actions": [
+      {
+        "id": "219:2469",
+        "name": "邮件主操作",
+        "width": 462,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "34:710",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "219:2471",
+    "name": "D / 邮件服务 / SMTP 身份验证失败",
+    "width": 520,
+    "height": 228,
+    "text": [
+      "SMTP 身份验证失败",
+      "邮件服务器未接受用户名或密码。",
+      "请检查账号和服务商要求的授权码，再保存配置并重新测试。",
+      "检查邮件设置"
+    ],
+    "actions": [
+      {
+        "id": "219:2475",
+        "name": "邮件主操作",
+        "width": 462,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "34:710",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "219:2477",
+    "name": "D / 邮件服务 / 邮件服务器拒绝投递",
+    "width": 520,
+    "height": 292,
+    "text": [
+      "邮件服务器拒绝投递",
+      "连接成功，但邮件服务器拒绝了邮件。",
+      "请检查发件人地址、发送权限和服务商的限制，再重新测试。",
+      "重新测试",
+      "返回邮件设置"
+    ],
+    "actions": [
+      {
+        "id": "219:2481",
+        "name": "邮件主操作",
+        "width": 462,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "218:3206",
+                "navigation": "SWAP"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "219:2483",
+        "name": "邮件次操作",
+        "width": 462,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "34:710",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "219:2485",
+    "name": "D / 邮件服务 / 等待邮件响应超时",
+    "width": 520,
+    "height": 292,
+    "text": [
+      "等待邮件响应超时",
+      "未能在等待时间内确认发送结果。",
+      "邮件可能已被服务器接受。先检查邮箱；重新测试可能再收到一封邮件。",
+      "重新测试",
+      "返回邮件设置"
+    ],
+    "actions": [
+      {
+        "id": "219:2489",
+        "name": "邮件主操作",
+        "width": 462,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "218:3206",
+                "navigation": "SWAP"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "219:2491",
+        "name": "邮件次操作",
+        "width": 462,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "34:710",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "219:2515",
+    "name": "D / 邮件服务 / 清除 SMTP 登录凭据？",
+    "width": 520,
+    "height": 292,
+    "text": [
+      "清除 SMTP 登录凭据？",
+      "将同时清除已保存的用户名和密码，并改用无认证连接。",
+      "仅适用于允许无认证发送的 SMTP 中继。主机、端口和发件人设置保留。",
+      "清除凭据并保存",
+      "取消"
+    ],
+    "actions": [
+      {
+        "id": "219:2519",
+        "name": "邮件主操作",
+        "width": 462,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "220:2478",
+                "navigation": "SWAP"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "219:2521",
+        "name": "邮件次操作",
+        "width": 462,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "CLOSE"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "219:2523",
+    "name": "D / 邮件服务 / 有尚未保存的更改",
+    "width": 520,
+    "height": 292,
+    "text": [
+      "有尚未保存的更改",
+      "测试只使用已保存的配置，不会包含当前编辑。",
+      "先保存再测试，或者明确使用原来已保存的配置。",
+      "返回并保存",
+      "测试已保存配置"
+    ],
+    "actions": [
+      {
+        "id": "219:2527",
+        "name": "邮件主操作",
+        "width": 462,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "CLOSE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "219:2529",
+        "name": "邮件次操作",
+        "width": 462,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "218:3206",
+                "navigation": "SWAP"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "219:2531",
+    "name": "D / 邮件服务 / 选择连接安全方式",
+    "width": 520,
+    "height": 356,
+    "text": [
+      "选择连接安全方式",
+      "请按邮件服务商的要求选择连接模式。",
+      "TLS 从连接开始加密；STARTTLS 连接后必须成功升级为加密连接。",
+      "TLS（常用端口 465）",
+      "STARTTLS（常用端口 587）",
+      "取消"
+    ],
+    "actions": [
+      {
+        "id": "219:2535",
+        "name": "邮件主操作",
+        "width": 462,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "218:2775",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "219:2537",
+        "name": "邮件次操作",
+        "width": 462,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "CLOSE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "219:2539",
+        "name": "邮件取消",
+        "width": 462,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "CLOSE"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "220:2473",
+    "name": "D / 邮件服务 / 正在保存 TLS 配置",
+    "width": 520,
+    "height": 192,
+    "text": ["正在保存 TLS 配置", "正在保存，请稍候。", "保存中…"],
+    "actions": []
+  },
+  {
+    "id": "220:2478",
+    "name": "D / 邮件服务 / 正在清除 SMTP 凭据",
+    "width": 520,
+    "height": 192,
+    "text": ["正在清除 SMTP 凭据", "正在保存无认证配置，请稍候。", "保存中…"],
+    "actions": []
+  },
+  {
+    "id": "265:1703",
+    "name": "D / 主题 / 邮件长表单 · 深色",
+    "width": 1440,
+    "height": 1080,
+    "text": [
+      "Ariso",
+      "图片，自在收纳。",
+      "总览",
+      "上传",
+      "图库",
+      "相册",
+      "标签",
+      "分享管理",
+      "回收站",
+      "管理",
+      "访问统计",
+      "存储管理",
+      "站点设置",
+      "D",
+      "dnslin",
+      "站点所有者",
+      "工作空间  /  站点设置",
+      "站点设置",
+      "管理站点、图片处理与账号偏好。",
+      "基本设置",
+      "图片处理",
+      "账号与安全",
+      "上传 API",
+      "邮件服务",
+      "SMTP 邮件服务",
+      "已保存配置 · 下次发送即生效",
+      "SMTP 主机",
+      "smtp.example.com",
+      "端口",
+      "587",
+      "连接安全",
+      "STARTTLS",
+      "SMTP 用户名",
+      "noreply@example.com",
+      "发件人名称",
+      "Ariso",
+      "发件人邮箱",
+      "noreply@example.com",
+      "SMTP 密码",
+      "已设置 · 留空保留当前密码",
+      "测试仅使用已保存配置，收件人为当前所有者。",
+      "清除用户名和密码",
+      "ⓘ",
+      "编辑后请先保存，再发送测试邮件。保存无需重启，也不会自动发送邮件。",
+      "发送测试邮件",
+      "保存邮件设置"
+    ],
+    "actions": [
+      {
+        "id": "265:1712",
+        "name": "总览",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "19:38",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "265:1719",
+        "name": "上传图片",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:97",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "265:1725",
+        "name": "图库",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:285",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "265:1732",
+        "name": "相册",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:473",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "265:1736",
+        "name": "标签",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:661",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "265:1742",
+        "name": "分享管理",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:849",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "265:1747",
+        "name": "回收站",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:1037",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "265:1756",
+        "name": "访问统计",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:1225",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "265:1765",
+        "name": "存储管理",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:1413",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "265:1772",
+        "name": "站点设置",
+        "width": 192,
+        "height": 40,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:1601",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "265:1793",
+        "name": "Link",
+        "width": 136,
+        "height": 36,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "30:1601",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "265:1794",
+        "name": "Link",
+        "width": 136,
+        "height": 36,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "34:338",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "265:1795",
+        "name": "Link",
+        "width": 136,
+        "height": 36,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "34:462",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "265:1796",
+        "name": "Link",
+        "width": 136,
+        "height": 36,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "34:586",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "265:1802",
+        "name": "SMTP 主机",
+        "width": 536,
+        "height": 72,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "217:2622",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "265:1811",
+        "name": "连接安全",
+        "width": 536,
+        "height": 72,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "219:2531",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "265:1836",
+        "name": "SMTP凭据清除说明",
+        "width": 1096,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "MOUSE_LEAVE",
+            "actions": [
+              {
+                "type": "SET_VARIABLE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "265:1837",
+        "name": "清除SMTP凭据",
+        "width": 188,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "219:2515",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "265:1838",
+        "name": "SMTP 清除用途提示",
+        "width": 44,
+        "height": 44,
+        "reactions": [
+          {
+            "trigger": "MOUSE_ENTER",
+            "actions": [
+              {
+                "type": "SET_VARIABLE"
+              }
+            ]
+          },
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "SET_VARIABLE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "265:1841",
+        "name": "Button/Outline",
+        "width": 192,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "218:3206",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "265:1842",
+        "name": "Button/Primary",
+        "width": 192,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "218:3189",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "530:15075",
+    "name": "03 · D / 长表单 / 深色 / 1440px",
+    "width": 1440,
+    "height": 1080,
+    "text": [
+      "Ariso",
+      "图片，自在收纳。",
+      "总览",
+      "上传",
+      "图库",
+      "相册",
+      "标签",
+      "分享管理",
+      "回收站",
+      "管理",
+      "访问统计",
+      "存储管理",
+      "站点设置",
+      "D",
+      "dnslin",
+      "站点所有者",
+      "工作空间  /  站点设置",
+      "站点设置",
+      "管理站点、图片处理与账号偏好。",
+      "基本设置",
+      "图片处理",
+      "账号与安全",
+      "上传 API",
+      "邮件服务",
+      "SMTP 邮件服务",
+      "已保存配置 · 下次发送即生效",
+      "SMTP 主机",
+      "smtp.example.com",
+      "端口",
+      "587",
+      "连接安全",
+      "STARTTLS",
+      "SMTP 用户名",
+      "noreply@example.com",
+      "发件人名称",
+      "Ariso",
+      "发件人邮箱",
+      "noreply@example.com",
+      "SMTP 密码",
+      "已设置 · 留空保留当前密码",
+      "测试仅使用已保存配置，收件人为当前所有者。",
+      "清除用户名和密码",
+      "ⓘ",
+      "编辑后请先保存，再发送测试邮件。保存无需重启，也不会自动发送邮件。",
+      "发送测试邮件",
+      "保存邮件设置"
+    ],
+    "actions": []
+  },
+  {
+    "id": "240:1116",
+    "name": "Tooltip / SMTP 清除说明",
+    "width": 340,
+    "height": 76,
+    "text": [
+      "仅在邮件服务器无需账号密码时使用。确认后会清除已保存的 SMTP 用户名和密码。"
+    ],
+    "actions": []
+  },
+  {
+    "id": "99:786",
+    "name": "M · 站点设置 · 邮件服务",
+    "width": 390,
+    "height": 844,
+    "text": [
+      "Ariso",
+      "菜单",
+      "站点设置",
+      "管理站点、图片处理与账号偏好。",
+      "邮件服务",
+      "SMTP 邮件服务",
+      "已保存配置 · 下次发送即生效",
+      "SMTP 主机",
+      "smtp.example.com",
+      "端口",
+      "587",
+      "连接安全",
+      "STARTTLS",
+      "SMTP 用户名",
+      "noreply@example.com",
+      "发件人名称",
+      "Ariso",
+      "发件人邮箱",
+      "noreply@example.com",
+      "SMTP 密码",
+      "已设置 · 留空保留当前密码",
+      "测试仅使用已保存配置，收件人为当前所有者。",
+      "清除用户名和密码",
+      "ⓘ",
+      "编辑后请先保存，再发送测试邮件。保存无需重启，也不会自动发送邮件。",
+      "发送测试邮件",
+      "保存邮件设置"
+    ],
+    "actions": [
+      {
+        "id": "I114:1504;112:1496",
+        "name": "Mobile / 打开菜单",
+        "width": 64,
+        "height": 44,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "106:1494",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "114:1509",
+        "name": "Mobile / SettingsSelector",
+        "width": 358,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "113:1499",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "99:884",
+        "name": "SMTP 主机",
+        "width": 326,
+        "height": 72,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "217:2830",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "99:893",
+        "name": "连接安全",
+        "width": 218,
+        "height": 72,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "219:2557",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "215:2258",
+        "name": "清除SMTP凭据",
+        "width": 188,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "219:2541",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "236:2478",
+        "name": "SMTP 清除用途提示",
+        "width": 44,
+        "height": 44,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "235:2477",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "99:919",
+        "name": "Button/Outline",
+        "width": 173,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "218:3229",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "99:920",
+        "name": "Button/Primary",
+        "width": 173,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "218:3212",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "102:4365",
+    "name": "M · SMTP 已接受测试邮件（旧版布局）",
+    "width": 358,
+    "height": 202,
+    "text": [
+      "SMTP 已接受测试邮件",
+      "×",
+      "邮件服务器已接受发送请求，不代表最终送达。请检查当前所有者邮箱的收件箱和垃圾邮件。",
+      "知道了"
+    ],
+    "actions": [
+      {
+        "id": "102:4368",
+        "name": "Button/Outline",
+        "width": 44,
+        "height": 44,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "CLOSE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "102:4373",
+        "name": "Button/Primary",
+        "width": 160,
+        "height": 44,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "CLOSE"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "217:2768",
+    "name": "M / 邮件服务 / 邮件服务未配置",
+    "width": 390,
+    "height": 844,
+    "text": [
+      "Ariso",
+      "菜单",
+      "站点设置",
+      "管理站点、图片处理与账号偏好。",
+      "邮件服务",
+      "SMTP 邮件服务",
+      "尚未配置 · 邮件找回不可用",
+      "SMTP 主机",
+      "例如 smtp.example.com",
+      "端口",
+      "587",
+      "连接安全",
+      "STARTTLS",
+      "SMTP 用户名",
+      "可选",
+      "发件人名称",
+      "Ariso",
+      "发件人邮箱",
+      "例如 noreply@example.com",
+      "SMTP 密码",
+      "未设置",
+      "测试仅使用已保存配置，收件人为当前所有者。",
+      "编辑后请先保存，再发送测试邮件。保存无需重启，也不会自动发送邮件。",
+      "先保存邮件设置",
+      "保存邮件设置"
+    ],
+    "actions": [
+      {
+        "id": "I217:2819;112:1496",
+        "name": "Mobile / 打开菜单",
+        "width": 64,
+        "height": 44,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "106:1494",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "217:2774",
+        "name": "Mobile / SettingsSelector",
+        "width": 358,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "113:1499",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "217:2779",
+        "name": "SMTP 主机",
+        "width": 326,
+        "height": 72,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "217:2830",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "217:2788",
+        "name": "连接安全",
+        "width": 218,
+        "height": 72,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "219:2557",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "217:2818",
+        "name": "Button/Primary",
+        "width": 173,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "218:2651",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "217:2830",
+    "name": "M / 邮件服务 / 邮件设置有未保存更改",
+    "width": 390,
+    "height": 844,
+    "text": [
+      "Ariso",
+      "菜单",
+      "站点设置",
+      "管理站点、图片处理与账号偏好。",
+      "邮件服务",
+      "SMTP 邮件服务",
+      "有未保存更改 · 测试仍使用已保存配置",
+      "SMTP 主机",
+      "smtp.example.com",
+      "端口",
+      "587",
+      "连接安全",
+      "STARTTLS",
+      "SMTP 用户名",
+      "noreply@example.com",
+      "发件人名称",
+      "Ariso",
+      "发件人邮箱",
+      "noreply@example.com",
+      "SMTP 密码",
+      "••••••••（新密码）",
+      "测试仅使用已保存配置，收件人为当前所有者。",
+      "清除用户名和密码",
+      "ⓘ",
+      "编辑后请先保存，再发送测试邮件。保存无需重启，也不会自动发送邮件。",
+      "发送测试邮件",
+      "保存邮件设置"
+    ],
+    "actions": [
+      {
+        "id": "I217:2881;112:1496",
+        "name": "Mobile / 打开菜单",
+        "width": 64,
+        "height": 44,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "106:1494",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "217:2836",
+        "name": "Mobile / SettingsSelector",
+        "width": 358,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "113:1499",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "217:2850",
+        "name": "连接安全",
+        "width": 218,
+        "height": 72,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "219:2557",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "217:2876",
+        "name": "清除SMTP凭据",
+        "width": 188,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "219:2541",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "236:2481",
+        "name": "SMTP 清除用途提示",
+        "width": 44,
+        "height": 44,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "235:2477",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "217:2879",
+        "name": "Button/Outline",
+        "width": 173,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "219:2549",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "217:2880",
+        "name": "Button/Primary",
+        "width": 173,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "218:3212",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "218:3212",
+    "name": "M / 邮件服务 / 正在保存邮件设置",
+    "width": 358,
+    "height": 192,
+    "text": ["正在保存邮件设置", "正在保存，请稍候。", "保存中…"],
+    "actions": []
+  },
+  {
+    "id": "218:3217",
+    "name": "M / 邮件服务 / 邮件设置已保存",
+    "width": 358,
+    "height": 248,
+    "text": [
+      "邮件设置已保存",
+      "下次发送邮件即使用新配置，无需重启。",
+      "尚未发送测试邮件。可返回设置后发送一封测试邮件。",
+      "返回邮件设置"
+    ],
+    "actions": [
+      {
+        "id": "218:3221",
+        "name": "邮件主操作",
+        "width": 308,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "99:786",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "218:3223",
+    "name": "M / 邮件服务 / 邮件设置未能保存",
+    "width": 358,
+    "height": 248,
+    "text": [
+      "邮件设置未能保存",
+      "保存请求失败，请重试。",
+      "若连接中断，需重新读取设置确认保存结果。尚未保存的输入保留在当前页面，离开或刷新后不保留。",
+      "返回检查设置"
+    ],
+    "actions": [
+      {
+        "id": "218:3227",
+        "name": "邮件主操作",
+        "width": 308,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "217:2830",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "218:3229",
+    "name": "M / 邮件服务 / 正在发送测试邮件",
+    "width": 358,
+    "height": 228,
+    "text": [
+      "正在发送测试邮件",
+      "使用当前已保存配置，发送到所有者邮箱。",
+      "正在等待邮件服务器响应。",
+      "发送中…"
+    ],
+    "actions": []
+  },
+  {
+    "id": "218:2651",
+    "name": "M / 邮件服务 / 邮件设置校验错误",
+    "width": 390,
+    "height": 844,
+    "text": [
+      "Ariso",
+      "菜单",
+      "站点设置",
+      "管理站点、图片处理与账号偏好。",
+      "邮件服务",
+      "SMTP 邮件服务",
+      "请检查端口和发件人邮箱",
+      "SMTP 主机",
+      "smtp.example.com",
+      "端口",
+      "70000",
+      "请输入 1–65535 的端口",
+      "连接安全",
+      "STARTTLS",
+      "SMTP 用户名",
+      "noreply@example.com",
+      "发件人名称",
+      "Ariso",
+      "发件人邮箱",
+      "noreply@",
+      "请输入有效的邮箱地址",
+      "SMTP 密码",
+      "已设置 · 留空保留当前密码",
+      "测试仅使用已保存配置，收件人为当前所有者。",
+      "清除用户名和密码",
+      "ⓘ",
+      "编辑后请先保存，再发送测试邮件。保存无需重启，也不会自动发送邮件。",
+      "发送测试邮件",
+      "保存邮件设置"
+    ],
+    "actions": [
+      {
+        "id": "I218:2702;112:1496",
+        "name": "Mobile / 打开菜单",
+        "width": 64,
+        "height": 44,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "106:1494",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:2657",
+        "name": "Mobile / SettingsSelector",
+        "width": 358,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "113:1499",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:2697",
+        "name": "清除SMTP凭据",
+        "width": 188,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "219:2541",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "236:2486",
+        "name": "SMTP 清除用途提示",
+        "width": 44,
+        "height": 44,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "235:2477",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:2700",
+        "name": "Button/Outline",
+        "width": 173,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "218:3229",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:2701",
+        "name": "Button/Primary",
+        "width": 173,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "218:3212",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "218:2714",
+    "name": "M / 邮件服务 / 无认证 SMTP 中继",
+    "width": 390,
+    "height": 844,
+    "text": [
+      "Ariso",
+      "菜单",
+      "站点设置",
+      "管理站点、图片处理与账号偏好。",
+      "邮件服务",
+      "SMTP 邮件服务",
+      "已保存 · 使用无认证 SMTP 中继",
+      "SMTP 主机",
+      "smtp.example.com",
+      "端口",
+      "587",
+      "连接安全",
+      "STARTTLS",
+      "SMTP 用户名",
+      "未设置 · 不使用认证",
+      "发件人名称",
+      "Ariso",
+      "发件人邮箱",
+      "noreply@example.com",
+      "SMTP 密码",
+      "未设置",
+      "测试仅使用已保存配置，收件人为当前所有者。",
+      "编辑后请先保存，再发送测试邮件。保存无需重启，也不会自动发送邮件。",
+      "发送测试邮件",
+      "设置已保存"
+    ],
+    "actions": [
+      {
+        "id": "I218:2765;112:1496",
+        "name": "Mobile / 打开菜单",
+        "width": 64,
+        "height": 44,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "106:1494",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:2720",
+        "name": "Mobile / SettingsSelector",
+        "width": 358,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "113:1499",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:2763",
+        "name": "Button/Outline",
+        "width": 173,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "218:3229",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "218:3067",
+    "name": "M / 邮件服务 / 切换 TLS，尚未保存",
+    "width": 390,
+    "height": 844,
+    "text": [
+      "Ariso",
+      "菜单",
+      "站点设置",
+      "管理站点、图片处理与账号偏好。",
+      "邮件服务",
+      "SMTP 邮件服务",
+      "有未保存更改 · TLS 连接",
+      "SMTP 主机",
+      "smtp.example.com",
+      "端口",
+      "465",
+      "连接安全",
+      "TLS",
+      "SMTP 用户名",
+      "noreply@example.com",
+      "发件人名称",
+      "Ariso",
+      "发件人邮箱",
+      "noreply@example.com",
+      "SMTP 密码",
+      "已设置 · 留空保留当前密码",
+      "测试仅使用已保存配置，收件人为当前所有者。",
+      "清除用户名和密码",
+      "ⓘ",
+      "编辑后请先保存，再发送测试邮件。保存无需重启，也不会自动发送邮件。",
+      "发送测试邮件",
+      "保存邮件设置"
+    ],
+    "actions": [
+      {
+        "id": "I218:3118;112:1496",
+        "name": "Mobile / 打开菜单",
+        "width": 64,
+        "height": 44,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "106:1494",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:3073",
+        "name": "Mobile / SettingsSelector",
+        "width": 358,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "113:1499",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "236:2489",
+        "name": "SMTP 清除用途提示",
+        "width": 44,
+        "height": 44,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "235:2477",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:3116",
+        "name": "Button/Outline",
+        "width": 173,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "219:2549",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:3117",
+        "name": "Button/Primary",
+        "width": 173,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "220:2463",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "218:3128",
+    "name": "M / 邮件服务 / TLS 配置已保存",
+    "width": 390,
+    "height": 844,
+    "text": [
+      "Ariso",
+      "菜单",
+      "站点设置",
+      "管理站点、图片处理与账号偏好。",
+      "邮件服务",
+      "SMTP 邮件服务",
+      "已保存配置 · 使用 TLS 连接",
+      "SMTP 主机",
+      "smtp.example.com",
+      "端口",
+      "465",
+      "连接安全",
+      "TLS",
+      "SMTP 用户名",
+      "noreply@example.com",
+      "发件人名称",
+      "Ariso",
+      "发件人邮箱",
+      "noreply@example.com",
+      "SMTP 密码",
+      "已设置 · 留空保留当前密码",
+      "测试仅使用已保存配置，收件人为当前所有者。",
+      "清除用户名和密码",
+      "ⓘ",
+      "编辑后请先保存，再发送测试邮件。保存无需重启，也不会自动发送邮件。",
+      "发送测试邮件",
+      "设置已保存"
+    ],
+    "actions": [
+      {
+        "id": "I218:3179;112:1496",
+        "name": "Mobile / 打开菜单",
+        "width": 64,
+        "height": 44,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "106:1494",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:3134",
+        "name": "Mobile / SettingsSelector",
+        "width": 358,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "113:1499",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "236:2494",
+        "name": "SMTP 清除用途提示",
+        "width": 44,
+        "height": 44,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "235:2477",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "218:3177",
+        "name": "Button/Outline",
+        "width": 173,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "218:3229",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "219:2431",
+    "name": "M / 邮件服务 / SMTP 已接受测试邮件",
+    "width": 358,
+    "height": 248,
+    "text": [
+      "SMTP 已接受测试邮件",
+      "邮件服务器已接受发送请求。",
+      "请检查当前所有者邮箱的收件箱和垃圾邮件。SMTP 接受不代表已经最终送达。",
+      "返回邮件设置"
+    ],
+    "actions": [
+      {
+        "id": "219:2435",
+        "name": "邮件主操作",
+        "width": 308,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "CLOSE"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "219:2437",
+    "name": "M / 邮件服务 / 无法连接邮件服务器",
+    "width": 358,
+    "height": 312,
+    "text": [
+      "无法连接邮件服务器",
+      "连接阶段失败。",
+      "请检查 SMTP 主机、端口和服务器网络，再重新测试。",
+      "重新测试",
+      "返回邮件设置"
+    ],
+    "actions": [
+      {
+        "id": "219:2441",
+        "name": "邮件主操作",
+        "width": 308,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "218:3229",
+                "navigation": "SWAP"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "219:2443",
+        "name": "邮件次操作",
+        "width": 308,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "99:786",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "219:2445",
+    "name": "M / 邮件服务 / 邮件安全连接失败",
+    "width": 358,
+    "height": 248,
+    "text": [
+      "邮件安全连接失败",
+      "TLS 握手或 STARTTLS 升级失败。",
+      "请核对连接模式、端口与服务器证书，确认服务商支持所选加密方式。",
+      "检查邮件设置"
+    ],
+    "actions": [
+      {
+        "id": "219:2449",
+        "name": "邮件主操作",
+        "width": 308,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "99:786",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "219:2493",
+    "name": "M / 邮件服务 / SMTP 身份验证失败",
+    "width": 358,
+    "height": 248,
+    "text": [
+      "SMTP 身份验证失败",
+      "邮件服务器未接受用户名或密码。",
+      "请检查账号和服务商要求的授权码，再保存配置并重新测试。",
+      "检查邮件设置"
+    ],
+    "actions": [
+      {
+        "id": "219:2497",
+        "name": "邮件主操作",
+        "width": 308,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "99:786",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "219:2499",
+    "name": "M / 邮件服务 / 邮件服务器拒绝投递",
+    "width": 358,
+    "height": 312,
+    "text": [
+      "邮件服务器拒绝投递",
+      "连接成功，但邮件服务器拒绝了邮件。",
+      "请检查发件人地址、发送权限和服务商的限制，再重新测试。",
+      "重新测试",
+      "返回邮件设置"
+    ],
+    "actions": [
+      {
+        "id": "219:2503",
+        "name": "邮件主操作",
+        "width": 308,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "218:3229",
+                "navigation": "SWAP"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "219:2505",
+        "name": "邮件次操作",
+        "width": 308,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "99:786",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "219:2507",
+    "name": "M / 邮件服务 / 等待邮件响应超时",
+    "width": 358,
+    "height": 312,
+    "text": [
+      "等待邮件响应超时",
+      "未能在等待时间内确认发送结果。",
+      "邮件可能已被服务器接受。先检查邮箱；重新测试可能再收到一封邮件。",
+      "重新测试",
+      "返回邮件设置"
+    ],
+    "actions": [
+      {
+        "id": "219:2511",
+        "name": "邮件主操作",
+        "width": 308,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "218:3229",
+                "navigation": "SWAP"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "219:2513",
+        "name": "邮件次操作",
+        "width": 308,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "99:786",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "219:2541",
+    "name": "M / 邮件服务 / 清除 SMTP 登录凭据？",
+    "width": 358,
+    "height": 333,
+    "text": [
+      "清除 SMTP 登录凭据？",
+      "将同时清除已保存的用户名和密码，并改用无认证连接。",
+      "仅适用于允许无认证发送的 SMTP 中继。主机、端口和发件人设置保留。",
+      "清除凭据并保存",
+      "取消"
+    ],
+    "actions": [
+      {
+        "id": "219:2545",
+        "name": "邮件主操作",
+        "width": 308,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "220:2468",
+                "navigation": "SWAP"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "219:2547",
+        "name": "邮件次操作",
+        "width": 308,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "CLOSE"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "219:2549",
+    "name": "M / 邮件服务 / 有尚未保存的更改",
+    "width": 358,
+    "height": 292,
+    "text": [
+      "有尚未保存的更改",
+      "测试只使用已保存的配置，不会包含当前编辑。",
+      "先保存再测试，或者明确使用原来已保存的配置。",
+      "返回并保存",
+      "测试已保存配置"
+    ],
+    "actions": [
+      {
+        "id": "219:2553",
+        "name": "邮件主操作",
+        "width": 308,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "CLOSE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "219:2555",
+        "name": "邮件次操作",
+        "width": 308,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "218:3229",
+                "navigation": "SWAP"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "219:2557",
+    "name": "M / 邮件服务 / 选择连接安全方式",
+    "width": 358,
+    "height": 376,
+    "text": [
+      "选择连接安全方式",
+      "请按邮件服务商的要求选择连接模式。",
+      "TLS 从连接开始加密；STARTTLS 连接后必须成功升级为加密连接。",
+      "TLS（常用端口 465）",
+      "STARTTLS（常用端口 587）",
+      "取消"
+    ],
+    "actions": [
+      {
+        "id": "219:2561",
+        "name": "邮件主操作",
+        "width": 308,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "218:3067",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "219:2563",
+        "name": "邮件次操作",
+        "width": 308,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "CLOSE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "219:2565",
+        "name": "邮件取消",
+        "width": 308,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "CLOSE"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "220:2463",
+    "name": "M / 邮件服务 / 正在保存 TLS 配置",
+    "width": 358,
+    "height": 192,
+    "text": ["正在保存 TLS 配置", "正在保存，请稍候。", "保存中…"],
+    "actions": []
+  },
+  {
+    "id": "220:2468",
+    "name": "M / 邮件服务 / 正在清除 SMTP 凭据",
+    "width": 358,
+    "height": 192,
+    "text": ["正在清除 SMTP 凭据", "正在保存无认证配置，请稍候。", "保存中…"],
+    "actions": []
+  },
+  {
+    "id": "235:2477",
+    "name": "M / 提示 / SMTP 清除说明",
+    "width": 320,
+    "height": 120,
+    "text": [
+      "用途说明",
+      "×",
+      "仅在邮件服务器无需账号密码时使用。确认后会清除已保存的 SMTP 用户名和密码。"
+    ],
+    "actions": [
+      {
+        "id": "235:2480",
+        "name": "关闭说明",
+        "width": 44,
+        "height": 44,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "CLOSE"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "115:1798",
+    "name": "R · 邮件服务 · 768px",
+    "width": 768,
+    "height": 1024,
+    "text": [
+      "Ariso",
+      "菜单",
+      "站点设置",
+      "管理站点、图片处理与账号偏好。",
+      "邮件服务",
+      "SMTP 邮件服务",
+      "SMTP 主机",
+      "smtp.example.com",
+      "端口",
+      "587",
+      "连接安全",
+      "STARTTLS",
+      "SMTP 用户名",
+      "noreply@example.com",
+      "发件人名称",
+      "Ariso",
+      "发件人邮箱",
+      "noreply@example.com",
+      "SMTP 密码",
+      "已设置 · 留空保留当前密码",
+      "发送测试邮件到当前所有者邮箱，确认配置是否可用。",
+      "发送测试邮件",
+      "保存邮件设置"
+    ],
+    "actions": []
+  },
+  {
+    "id": "265:3791",
+    "name": "M / 主题 / 邮件长表单 · 深色",
+    "width": 390,
+    "height": 844,
+    "text": [
+      "Ariso",
+      "菜单",
+      "站点设置",
+      "管理站点、图片处理与账号偏好。",
+      "邮件服务",
+      "SMTP 邮件服务",
+      "已保存配置 · 下次发送即生效",
+      "SMTP 主机",
+      "smtp.example.com",
+      "端口",
+      "587",
+      "连接安全",
+      "STARTTLS",
+      "SMTP 用户名",
+      "noreply@example.com",
+      "发件人名称",
+      "Ariso",
+      "发件人邮箱",
+      "noreply@example.com",
+      "SMTP 密码",
+      "已设置 · 留空保留当前密码",
+      "测试仅使用已保存配置，收件人为当前所有者。",
+      "清除用户名和密码",
+      "ⓘ",
+      "编辑后请先保存，再发送测试邮件。保存无需重启，也不会自动发送邮件。",
+      "发送测试邮件",
+      "保存邮件设置"
+    ],
+    "actions": [
+      {
+        "id": "I265:3844;112:1496",
+        "name": "Mobile / 打开菜单",
+        "width": 64,
+        "height": 44,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "268:3554",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "265:3797",
+        "name": "Mobile / SettingsSelector",
+        "width": 358,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "113:1499",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "265:3802",
+        "name": "SMTP 主机",
+        "width": 326,
+        "height": 72,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "217:2830",
+                "navigation": "NAVIGATE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "265:3811",
+        "name": "连接安全",
+        "width": 218,
+        "height": 72,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "219:2557",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "265:3838",
+        "name": "清除SMTP凭据",
+        "width": 188,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "219:2541",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "265:3839",
+        "name": "SMTP 清除用途提示",
+        "width": 44,
+        "height": 44,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "235:2477",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "265:3842",
+        "name": "Button/Outline",
+        "width": 173,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "218:3229",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "265:3843",
+        "name": "Button/Primary",
+        "width": 173,
+        "height": 48,
+        "reactions": [
+          {
+            "trigger": "ON_CLICK",
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "218:3212",
+                "navigation": "OVERLAY"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "530:15410",
+    "name": "05 · M / 长表单 / 浅色 / 360px",
+    "width": 360,
+    "height": 844,
+    "text": [
+      "Ariso",
+      "菜单",
+      "站点设置",
+      "管理站点、图片处理与账号偏好。",
+      "邮件服务",
+      "SMTP 邮件服务",
+      "已保存配置 · 下次发送即生效",
+      "SMTP 主机",
+      "smtp.example.com",
+      "端口",
+      "587",
+      "连接安全",
+      "STARTTLS",
+      "SMTP 用户名",
+      "noreply@example.com",
+      "发件人名称",
+      "Ariso",
+      "发件人邮箱",
+      "noreply@example.com",
+      "SMTP 密码",
+      "已设置 · 留空保留当前密码",
+      "测试仅使用已保存配置，收件人为当前所有者。",
+      "清除用户名和密码",
+      "ⓘ",
+      "编辑后请先保存，再发送测试邮件。保存无需重启，也不会自动发送邮件。",
+      "发送测试邮件",
+      "保存邮件设置"
+    ],
+    "actions": []
+  },
+  {
+    "id": "530:15476",
+    "name": "06 · M / 长表单 / 深色 / 360px",
+    "width": 360,
+    "height": 844,
+    "text": [
+      "Ariso",
+      "菜单",
+      "站点设置",
+      "管理站点、图片处理与账号偏好。",
+      "邮件服务",
+      "SMTP 邮件服务",
+      "已保存配置 · 下次发送即生效",
+      "SMTP 主机",
+      "smtp.example.com",
+      "端口",
+      "587",
+      "连接安全",
+      "STARTTLS",
+      "SMTP 用户名",
+      "noreply@example.com",
+      "发件人名称",
+      "Ariso",
+      "发件人邮箱",
+      "noreply@example.com",
+      "SMTP 密码",
+      "已设置 · 留空保留当前密码",
+      "测试仅使用已保存配置，收件人为当前所有者。",
+      "清除用户名和密码",
+      "ⓘ",
+      "编辑后请先保存，再发送测试邮件。保存无需重启，也不会自动发送邮件。",
+      "发送测试邮件",
+      "保存邮件设置"
+    ],
+    "actions": []
+  }
+]
