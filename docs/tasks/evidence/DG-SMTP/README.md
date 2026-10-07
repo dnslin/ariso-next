@@ -61,3 +61,9 @@
 ## 交付状态
 
 消费核对文档、适用本地检查、独立契约与设计适用审计均已完成，随后提交、推送并创建关联#136的正式待评审PR。本DG为纯文档任务，未来#182的产品人工验收不替代本DG检查，也不属于本次PR完成条件。Issue保持开放，未合并、未发布/部署、未删除任何分支或worktree。
+
+已提交实现记录 `e4e58d23`，`git push --set-upstream origin codex/issue-136-smtp-design` 成功；使用 `gh pr create --repo dnslin/ariso-next --base main --head codex/issue-136-smtp-design --body-file /tmp/issue136-pr-body.md`（含标题参数）创建 [PR #258](https://github.com/dnslin/ariso-next/pull/258)，已附加本聊天，正文为 `Refs #136`。PR实际回读：OPEN、isDraft=false、base=main、MERGEABLE、CLEAN、statusCheckRollup为空。
+
+`gh pr checks 258 --repo dnslin/ariso-next` 退出1并报告没有检查，`gh run list --repo dnslin/ariso-next --branch codex/issue-136-smtp-design --json …` 返回空数组；不记作CI通过，不等待不存在的工作流。实际读取ci/images工作流仅Release发布触发检查/镜像，本次没有创建Release。`gh issue view 136 --repo dnslin/ariso-next --json number,state,url`确认Issue仍OPEN。
+
+证据补写后仅定向运行 `pnpm exec prettier --check docs/tasks/evidence/DG-SMTP/README.md`、链接/节点检查与 `git diff --check`。一次缩短检查计数文字后定向格式检查报表格对齐警告，执行Prettier write修正并检查通过；未重复应用检查或输入不变的任务依赖检查。最终远端状态补录统一提交并推送，分支和管理型worktree保留。
