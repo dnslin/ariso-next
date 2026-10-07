@@ -1,5 +1,6 @@
 import type {
   PublicShareItem,
+  PublicShareNeighbors,
   PublicSharePage,
   PublicShareRefresh,
 } from '../../server/sharing/public-types';
@@ -14,6 +15,9 @@ export interface ShareSessionState {
   cursorInvalid: boolean;
   revision: number;
   revoked: boolean;
+  viewer: PublicShareNeighbors | null;
+  viewerLoading: boolean;
+  viewerError: string;
 }
 
 class ShareRequestError extends Error {
@@ -44,12 +48,28 @@ function applyNamePolicy(page: PublicSharePage): PublicSharePage {
       };
 }
 
+function applyViewerNamePolicy(
+  viewer: PublicShareNeighbors,
+): PublicShareNeighbors {
+  return viewer.showName
+    ? viewer
+    : {
+        ...viewer,
+        current: viewer.current === null ? null : withoutName(viewer.current),
+        previous:
+          viewer.previous === null ? null : withoutName(viewer.previous),
+        next: viewer.next === null ? null : withoutName(viewer.next),
+      };
+}
+
 /** One anonymous page's state. No owner query cache or cross-share data is retained. */
 export class ShareSession {
   private state: ShareSessionState;
   private readonly listeners = new Set<() => void>();
   private loadRequest: AbortController | null = null;
   private refreshRequest: AbortController | null = null;
+  private viewerRequest: AbortController | null = null;
+  private viewerTargetId: string | null = null;
   private timer: ReturnType<typeof setTimeout> | undefined;
   // Visibility is supplied by the mounted page; construction does not start I/O.
   private visible: boolean | null = null;
@@ -70,6 +90,9 @@ export class ShareSession {
       cursorInvalid: false,
       revision: 0,
       revoked: false,
+      viewer: null,
+      viewerLoading: false,
+      viewerError: '',
     };
   }
 
@@ -100,6 +123,156 @@ export class ShareSession {
   private cancelRefresh() {
     this.refreshRequest?.abort();
     this.refreshRequest = null;
+  }
+
+  private cancelViewer() {
+    this.viewerRequest?.abort();
+    this.viewerRequest = null;
+  }
+
+  openViewer = async (imageId: string) => {
+    const page = this.state.page;
+    const current = page?.items.find((item) => item.imageId === imageId);
+    if (this.stopped || this.state.status !== 200 || !current?.previewUrl)
+      return;
+    this.cancelViewer();
+    this.cancelRefresh();
+    this.update({
+      refreshing: false,
+      viewer: applyViewerNamePolicy({
+        current,
+        previous: null,
+        next: null,
+        showName: page!.showName,
+        total: page!.total,
+        position: null,
+      }),
+      viewerError: '',
+    });
+    this.scheduleRefresh();
+    await this.readViewer(imageId);
+  };
+
+  navigateViewer = async (direction: 'previous' | 'next') => {
+    const target = this.state.viewer?.[direction];
+    if (target === null || target === undefined || this.state.viewerLoading)
+      return;
+    await this.readViewer(target.imageId);
+  };
+
+  retryViewer = async () => {
+    if (this.viewerTargetId === null || this.state.viewerLoading) return;
+    await this.readViewer(this.viewerTargetId);
+  };
+
+  closeViewer = () => {
+    this.cancelViewer();
+    this.viewerTargetId = null;
+    this.cancelRefresh();
+    this.update({
+      viewer: null,
+      viewerLoading: false,
+      viewerError: '',
+      refreshing: false,
+    });
+    this.scheduleRefresh();
+  };
+
+  private async readViewer(imageId: string, background = false) {
+    if (
+      this.stopped ||
+      this.state.status !== 200 ||
+      this.state.viewer === null ||
+      (background && this.viewerRequest !== null)
+    )
+      return;
+    this.cancelViewer();
+    const controller = new AbortController();
+    this.viewerRequest = controller;
+    if (!background) this.viewerTargetId = imageId;
+    if (!background) this.update({ viewerLoading: true, viewerError: '' });
+    try {
+      const response = await this.read<PublicShareNeighbors>(
+        `items?imageId=${encodeURIComponent(imageId)}`,
+        {},
+        controller,
+      );
+      if (response === undefined || this.viewerRequest !== controller) return;
+      const page = this.state.page!;
+      const nameChanged = page.showName !== response.showName;
+      const currentViewer = this.state.viewer!;
+      if (nameChanged) {
+        this.cancelLoad();
+        this.cancelRefresh();
+        this.update({
+          page: applyNamePolicy({ ...page, showName: response.showName }),
+          viewer: applyViewerNamePolicy({
+            ...currentViewer,
+            showName: response.showName,
+          }),
+          loading: false,
+          refreshing: false,
+        });
+        this.scheduleRefresh();
+      }
+      if (response.current === null) {
+        this.cancelLoad();
+        this.cancelRefresh();
+        this.update({
+          page: {
+            ...this.state.page!,
+            total: response.total,
+            items: this.state.page!.items.filter(
+              (item) => item.imageId !== imageId,
+            ),
+            cover:
+              this.state.page!.cover?.imageId === imageId
+                ? null
+                : this.state.page!.cover!,
+          },
+          loading: false,
+          refreshing: false,
+        });
+        this.scheduleRefresh();
+        const displayedId = currentViewer.current!.imageId;
+        if (displayedId !== imageId) {
+          await this.readViewer(displayedId);
+          return;
+        }
+        this.closeViewer();
+        return;
+      }
+      const identitiesChanged = (['current', 'previous', 'next'] as const).some(
+        (key) => currentViewer[key]?.imageId !== response[key]?.imageId,
+      );
+      if (identitiesChanged) {
+        this.cancelRefresh();
+      }
+      this.update({
+        viewer: applyViewerNamePolicy(response),
+        ...(!background ? { viewerError: '' } : {}),
+        ...(identitiesChanged ? { refreshing: false } : {}),
+      });
+      if (identitiesChanged) this.scheduleRefresh();
+    } catch (error) {
+      if (!(error instanceof ShareRequestError)) throw error;
+      if (controller.signal.aborted || this.viewerRequest !== controller)
+        return;
+      this.update({
+        viewerError: this.state.viewerError || '图片读取失败，请重试',
+      });
+      this.report('分享大图读取失败', error);
+    } finally {
+      if (this.viewerRequest === controller) {
+        this.viewerRequest = null;
+        this.update({ viewerLoading: false });
+      }
+    }
+  }
+
+  private async refreshViewer() {
+    const current = this.state.viewer?.current;
+    if (current) await this.readViewer(current.imageId, true);
   }
 
   private scheduleRefresh() {
@@ -179,13 +352,22 @@ export class ShareSession {
       this.cancelLoad();
       this.cancelRefresh();
       this.clearTimer();
+      this.cancelViewer();
+      this.viewerTargetId = null;
     }
     const controller = new AbortController();
     this.loadRequest = controller;
     this.update({
       loading: true,
       loadError: '',
-      ...(replace ? { refreshing: false } : {}),
+      ...(replace
+        ? {
+            refreshing: false,
+            viewer: null,
+            viewerLoading: false,
+            viewerError: '',
+          }
+        : {}),
     });
     try {
       const suffix = replace
@@ -213,7 +395,10 @@ export class ShareSession {
         previous.showName !== merged.showName ||
         previous.layout !== merged.layout ||
         previous.items.length !== merged.items.length;
-      if (changed) this.cancelRefresh();
+      if (changed) {
+        this.cancelRefresh();
+        this.cancelViewer();
+      }
       this.update({
         status: 200,
         page: applyNamePolicy(merged),
@@ -222,6 +407,15 @@ export class ShareSession {
         revoked: false,
         revision: this.state.revision + Number(replace),
         ...(changed ? { refreshing: false } : {}),
+        ...(this.state.viewer && changed
+          ? {
+              viewer: applyViewerNamePolicy({
+                ...this.state.viewer,
+                showName: merged.showName,
+              }),
+              viewerLoading: false,
+            }
+          : {}),
       });
       if (changed) this.scheduleRefresh();
     } catch (error) {
@@ -258,7 +452,16 @@ export class ShareSession {
     const controller = new AbortController();
     this.refreshRequest = controller;
     // A check consumes only identities. Never snapshot complete images or page associations.
-    const ids = this.state.page.items.map((item) => item.imageId);
+    const ids = [
+      ...new Set([
+        ...this.state.page.items.map((item) => item.imageId),
+        ...[
+          this.state.viewer?.current,
+          this.state.viewer?.previous,
+          this.state.viewer?.next,
+        ].flatMap((item) => (item ? [item.imageId] : [])),
+      ]),
+    ];
     this.update({ refreshing: true });
     try {
       for (let start = 0; start < Math.max(ids.length, 1); start += 80) {
@@ -291,20 +494,51 @@ export class ShareSession {
           previous.layout !== metadata.layout ||
           previous.showName !== metadata.showName ||
           members.length !== previous.items.length;
+        const currentViewer = this.state.viewer;
+        const updateItem = (item: PublicShareItem | null) =>
+          item && requested.has(item.imageId)
+            ? (returned.get(item.imageId) ?? null)
+            : item;
+        const nextViewer = currentViewer
+          ? applyViewerNamePolicy({
+              ...currentViewer,
+              showName: metadata.showName,
+              total: metadata.total,
+              current: updateItem(currentViewer.current),
+              previous: updateItem(currentViewer.previous),
+              next: updateItem(currentViewer.next),
+            })
+          : null;
+        const viewerMembershipChanged =
+          currentViewer !== null &&
+          (['previous', 'next'] as const).some(
+            (key) => currentViewer[key]?.imageId !== nextViewer?.[key]?.imageId,
+          );
         const next = applyNamePolicy({
           ...previous,
           ...metadata,
           items: members,
         });
-        if (changed) {
-          this.cancelLoad();
-          this.cancelRefresh();
-          this.update({ page: next, loading: false, refreshing: false });
-          this.scheduleRefresh();
+        if (currentViewer && nextViewer?.current === null) {
+          this.update({ page: next });
+          this.closeViewer();
           return;
         }
-        this.update({ page: next });
+        if (changed || viewerMembershipChanged) {
+          this.cancelLoad();
+          this.cancelViewer();
+          this.update({
+            page: next,
+            viewer: nextViewer,
+            loading: false,
+            viewerLoading: false,
+          });
+          await this.refreshViewer();
+          return;
+        }
+        this.update({ page: next, viewer: nextViewer });
       }
+      await this.refreshViewer();
       if (this.refreshRequest === controller) this.update({ refreshError: '' });
     } catch (error) {
       if (!(error instanceof ShareRequestError)) throw error;
@@ -324,6 +558,8 @@ export class ShareSession {
   setUnavailable = (status: number) => {
     this.cancelLoad();
     this.cancelRefresh();
+    this.cancelViewer();
+    this.viewerTargetId = null;
     this.clearTimer();
     this.update({
       status,
@@ -333,6 +569,9 @@ export class ShareSession {
       loadError: '',
       refreshError: '',
       cursorInvalid: false,
+      viewer: null,
+      viewerLoading: false,
+      viewerError: '',
       revoked: this.state.page !== null || this.state.revoked,
     });
   };
@@ -343,7 +582,8 @@ export class ShareSession {
     if (!visible) {
       this.clearTimer();
       this.cancelRefresh();
-      this.update({ refreshing: false });
+      this.cancelViewer();
+      this.update({ refreshing: false, viewerLoading: false });
       return;
     }
     this.stopped = false;
@@ -356,6 +596,14 @@ export class ShareSession {
     this.clearTimer();
     this.cancelLoad();
     this.cancelRefresh();
-    this.update({ loading: false, refreshing: false });
+    this.cancelViewer();
+    this.viewerTargetId = null;
+    this.update({
+      loading: false,
+      refreshing: false,
+      viewer: null,
+      viewerLoading: false,
+      viewerError: '',
+    });
   };
 }

@@ -2,6 +2,7 @@ import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { ShareSession } from '../../../src/components/sharing/share-session';
 import type {
   PublicShareItem,
+  PublicShareNeighbors,
   PublicSharePage,
   PublicShareRefresh,
 } from '../../../src/server/sharing/public-types';
@@ -51,6 +52,7 @@ const item = (
   aspectRatio: 1.5,
   status,
   thumbnailUrl: status === 'ready' ? `/i/${imageId}?type=thumbnail` : null,
+  previewUrl: status === 'ready' ? `/i/${imageId}?type=compressed` : null,
   displayName: `name-${imageId}`,
 });
 const items = (count: number, offset = 0) =>
@@ -93,9 +95,417 @@ function session(initial: PublicSharePage, fetcher: typeof fetch) {
   sessions.push(value);
   return value;
 }
+function neighbors(
+  current: PublicShareItem | null,
+  previous: PublicShareItem | null = null,
+  next: PublicShareItem | null = null,
+  overrides: Partial<PublicShareNeighbors> = {},
+): PublicShareNeighbors {
+  return {
+    current,
+    previous,
+    next,
+    showName: true,
+    total: 200,
+    position: current ? 1 : null,
+    ...overrides,
+  };
+}
 async function flush() {
   for (let index = 0; index < 8; index++) await Promise.resolve();
 }
+
+it('opens only readable loaded cards, seeds the current item and reads anonymous neighbors by ID', async () => {
+  const http = transport();
+  const readable = { ...item('readable/图'), status: 'missing' as const };
+  const initial = page([readable, item('processing', 'processing')]);
+  const value = session(initial, http.fetcher);
+  await value.openViewer('unknown');
+  await value.openViewer('processing');
+  expect(http.requests).toHaveLength(0);
+  const opening = value.openViewer(readable.imageId);
+  expect(value.getSnapshot()).toMatchObject({
+    viewer: { current: readable, previous: null, next: null },
+    viewerLoading: true,
+    viewerError: '',
+  });
+  expect(http.requests[0].url).toBe(
+    '/s/capability-token/items?imageId=readable%2F%E5%9B%BE',
+  );
+  http.respond(0, neighbors(readable, null, item('off-page')));
+  await opening;
+  expect(value.getSnapshot()).toMatchObject({
+    viewer: { current: readable, next: item('off-page') },
+    viewerLoading: false,
+  });
+  expect(value.getSnapshot().page).toBe(initial);
+});
+
+it('cross-page navigation retains the current image on failure and retries the same target without changing its version', async () => {
+  const http = transport();
+  const value = session(page([item('first')]), http.fetcher);
+  const opening = value.openViewer('first');
+  const second = item('second');
+  http.respond(0, neighbors(item('first'), null, second));
+  await opening;
+  const navigating = value.navigateViewer('next');
+  expect(value.getSnapshot().viewer?.current?.imageId).toBe('first');
+  expect(http.requests[1].url).toBe('/s/capability-token/items?imageId=second');
+  http.respond(1, {}, 503);
+  await navigating;
+  expect(value.getSnapshot()).toMatchObject({
+    viewer: { current: item('first'), next: second },
+    viewerLoading: false,
+  });
+  expect(value.getSnapshot().viewerError).not.toBe('');
+  const retrying = value.retryViewer();
+  expect(http.requests[2].url).toBe(http.requests[1].url);
+  http.respond(2, neighbors(second, item('first'), item('third', 'disabled')));
+  await retrying;
+  expect(value.getSnapshot()).toMatchObject({
+    viewer: { current: second, next: item('third', 'disabled') },
+    viewerError: '',
+  });
+  const placeholder = value.navigateViewer('next');
+  http.respond(3, neighbors(item('third', 'disabled'), second));
+  await placeholder;
+  expect(value.getSnapshot().viewer?.current).toEqual(
+    item('third', 'disabled'),
+  );
+  await value.navigateViewer('next');
+  expect(http.requests).toHaveLength(4);
+});
+
+it.each(['close', 'stop'] as const)(
+  '%s cancels a decoded neighbor response and never restores a removed viewer',
+  async (action) => {
+    const http = transport();
+    const value = session(page([item('first')]), http.fetcher);
+    const opening = value.openViewer('first');
+    const json = deferred<PublicShareNeighbors>();
+    const response = Response.json({});
+    vi.spyOn(response, 'json').mockImplementation(() => json.promise);
+    http.requests[0].result.resolve(response);
+    await flush();
+    if (action === 'close') value.closeViewer();
+    else value.stop();
+    expect(http.requests[0].init.signal?.aborted).toBe(true);
+    json.resolve(neighbors(item('first'), null, item('second')));
+    await opening;
+    expect(value.getSnapshot()).toMatchObject({
+      viewer: null,
+      viewerLoading: false,
+      viewerError: '',
+    });
+  },
+);
+
+it.each([401, 404, 410])(
+  'viewer HTTP %s clears all anonymous data and cancels list and refresh requests',
+  async (status) => {
+    const http = transport();
+    const value = session(page([item('first')]), http.fetcher);
+    const opening = value.openViewer('first');
+    const load = value.loadMore();
+    const checking = value.refresh();
+    http.respond(0, {}, status);
+    await opening;
+    expect(value.getSnapshot()).toMatchObject({
+      status,
+      page: null,
+      viewer: null,
+      viewerLoading: false,
+      revoked: true,
+    });
+    expect(http.requests.every((request) => request.init.signal?.aborted)).toBe(
+      true,
+    );
+    http.respond(1, page([item('late-list')]));
+    http.respond(2, refreshed(page([item('late-refresh')])));
+    await Promise.all([load, checking]);
+    expect(value.getSnapshot().page).toBeNull();
+    expect(value.getSnapshot().viewer).toBeNull();
+  },
+);
+
+it('refreshes the union of loaded and three viewer IDs in bounded batches, then re-reads current neighbors and order', async () => {
+  const http = transport();
+  const initial = page(items(79));
+  const value = session(initial, http.fetcher);
+  const opening = value.openViewer('image-78');
+  http.respond(
+    0,
+    neighbors(item('image-78'), item('image-77'), item('image-79')),
+  );
+  await opening;
+  const navigating = value.navigateViewer('next');
+  http.respond(
+    1,
+    neighbors(item('image-79'), item('image-78'), item('image-80')),
+  );
+  await navigating;
+  const checking = value.refresh();
+  expect(JSON.parse(String(http.requests[2].init.body))).toEqual({
+    ids: [...initial.items.map((entry) => entry.imageId), 'image-79'],
+  });
+  http.respond(
+    2,
+    refreshed(initial, [...initial.items, item('image-79', 'disabled')]),
+  );
+  await flush();
+  expect(value.getSnapshot().viewer?.current).toEqual(
+    item('image-79', 'disabled'),
+  );
+  expect(JSON.parse(String(http.requests[3].init.body))).toEqual({
+    ids: ['image-80'],
+  });
+  http.respond(3, refreshed(initial, [item('image-80')]));
+  await flush();
+  expect(http.requests[4].url).toBe(
+    '/s/capability-token/items?imageId=image-79',
+  );
+  http.respond(
+    4,
+    neighbors(
+      item('image-79', 'disabled'),
+      item('newly-added'),
+      item('image-78'),
+      { total: 201, position: 2 },
+    ),
+  );
+  await checking;
+  expect(value.getSnapshot()).toMatchObject({
+    viewer: {
+      previous: item('newly-added'),
+      next: item('image-78'),
+      total: 201,
+      position: 2,
+    },
+    refreshing: false,
+  });
+  expect(value.getSnapshot().page?.items).toHaveLength(79);
+});
+
+it('current removal returns to the list and ignores a late navigation response', async () => {
+  const http = transport();
+  const initial = page([item('first'), item('second')]);
+  const value = session(initial, http.fetcher);
+  const opening = value.openViewer('first');
+  http.respond(0, neighbors(item('first'), null, item('second')));
+  await opening;
+  const navigating = value.navigateViewer('next');
+  const checking = value.refresh();
+  http.respond(2, refreshed(initial, [item('second')]));
+  await checking;
+  expect(value.getSnapshot().viewer).toBeNull();
+  expect(value.getSnapshot().page?.items).toEqual([item('second')]);
+  expect(http.requests[1].init.signal?.aborted).toBe(true);
+  http.respond(1, neighbors(item('second')));
+  await navigating;
+  expect(value.getSnapshot().viewer).toBeNull();
+});
+
+it('removal of an off-page neighbor cancels its pending navigation and re-reads the displayed image', async () => {
+  const http = transport();
+  const initial = page([item('first')]);
+  const value = session(initial, http.fetcher);
+  const opening = value.openViewer('first');
+  http.respond(0, neighbors(item('first'), null, item('off-page')));
+  await opening;
+  const navigating = value.navigateViewer('next');
+  const checking = value.refresh();
+  http.respond(2, refreshed(initial));
+  await flush();
+  expect(http.requests[1].init.signal?.aborted).toBe(true);
+  expect(value.getSnapshot().viewer?.current?.imageId).toBe('first');
+  expect(http.requests[3].url).toBe('/s/capability-token/items?imageId=first');
+  http.respond(3, neighbors(item('first')));
+  await checking;
+  http.respond(1, neighbors(item('off-page')));
+  await navigating;
+  expect(value.getSnapshot().viewer?.current?.imageId).toBe('first');
+});
+
+it('a removed navigation target preserves the displayed image and recovers its fresh neighbors', async () => {
+  const http = transport();
+  const value = session(page([item('first')]), http.fetcher);
+  const opening = value.openViewer('first');
+  http.respond(0, neighbors(item('first'), null, item('gone')));
+  await opening;
+  const navigating = value.navigateViewer('next');
+  http.respond(1, neighbors(null));
+  await flush();
+  expect(value.getSnapshot().viewer?.current?.imageId).toBe('first');
+  expect(http.requests[2].url).toBe('/s/capability-token/items?imageId=first');
+  http.respond(2, neighbors(item('first'), null, item('new-next')));
+  await navigating;
+  expect(value.getSnapshot()).toMatchObject({
+    viewer: { current: item('first'), next: item('new-next') },
+    viewerError: '',
+    viewerLoading: false,
+  });
+});
+
+it('a missing current neighbor response removes its loaded card and stale cover before returning to the list', async () => {
+  const http = transport();
+  const value = session(page([item('first'), item('second')]), http.fetcher);
+  const opening = value.openViewer('first');
+  http.respond(0, neighbors(null, null, null, { total: 199 }));
+  await opening;
+  expect(value.getSnapshot()).toMatchObject({
+    viewer: null,
+    page: { items: [item('second')], cover: null, total: 199 },
+  });
+});
+
+it('successful navigation cancels a status batch for the old displayed and neighboring identities', async () => {
+  const http = transport();
+  const initial = page([item('first')]);
+  const value = session(initial, http.fetcher);
+  const opening = value.openViewer('first');
+  http.respond(0, neighbors(item('first'), null, item('second')));
+  await opening;
+  const checking = value.refresh();
+  const navigating = value.navigateViewer('next');
+  http.respond(2, neighbors(item('second'), item('first'), item('third')));
+  await navigating;
+  expect(http.requests[1].init.signal?.aborted).toBe(true);
+  http.respond(1, refreshed(initial, []));
+  await checking;
+  expect(value.getSnapshot().page?.items).toEqual([item('first')]);
+  expect(value.getSnapshot().viewer?.current?.imageId).toBe('second');
+});
+
+it('background neighbor polling preserves a failed navigation target and its error until explicit retry', async () => {
+  const http = transport();
+  const initial = page([item('first')]);
+  const value = session(initial, http.fetcher);
+  const opening = value.openViewer('first');
+  http.respond(0, neighbors(item('first'), null, item('second')));
+  await opening;
+  const navigating = value.navigateViewer('next');
+  http.respond(1, {}, 500);
+  await navigating;
+  const error = value.getSnapshot().viewerError;
+  const checking = value.refresh();
+  http.respond(2, refreshed(initial, [item('first'), item('second')]));
+  await flush();
+  http.respond(3, neighbors(item('first'), null, item('second')));
+  await checking;
+  expect(value.getSnapshot().viewerError).toBe(error);
+  const retrying = value.retryViewer();
+  expect(http.requests[4].url).toBe('/s/capability-token/items?imageId=second');
+  http.respond(4, neighbors(item('second'), item('first')));
+  await retrying;
+  expect(value.getSnapshot().viewerError).toBe('');
+});
+
+it('a hidden name policy strips every viewer item and cancels late named neighbors and pagination', async () => {
+  const http = transport();
+  const initial = page([item('first')]);
+  const value = session(initial, http.fetcher);
+  const opening = value.openViewer('first');
+  http.respond(0, neighbors(item('first'), item('before'), item('after')));
+  await opening;
+  const navigating = value.navigateViewer('next');
+  const load = value.loadMore();
+  const checking = value.refresh();
+  const hidden = page([item('first')], { showName: false });
+  http.respond(
+    3,
+    refreshed(hidden, [item('first'), item('before'), item('after')]),
+  );
+  await flush();
+  expect(http.requests[1].init.signal?.aborted).toBe(true);
+  expect(http.requests[2].init.signal?.aborted).toBe(true);
+  expect(JSON.stringify(value.getSnapshot())).not.toContain('displayName');
+  expect(http.requests[4].url).toBe('/s/capability-token/items?imageId=first');
+  http.respond(
+    4,
+    neighbors(item('first'), item('before'), item('after'), {
+      showName: false,
+    }),
+  );
+  await checking;
+  http.respond(1, neighbors(item('after'), item('first'), item('later')));
+  http.respond(2, page([item('late')]));
+  await Promise.all([navigating, load]);
+  expect(value.getSnapshot().viewer?.current?.imageId).toBe('first');
+  expect(JSON.stringify(value.getSnapshot())).not.toContain('displayName');
+});
+
+it('a completed append cancels pending neighbors for the former loaded ID batch', async () => {
+  const http = transport();
+  const initial = page([item('first')]);
+  const value = session(initial, http.fetcher);
+  const opening = value.openViewer('first');
+  http.respond(0, neighbors(item('first'), null, item('second')));
+  await opening;
+  const navigating = value.navigateViewer('next');
+  const load = value.loadMore();
+  http.respond(2, page([item('second'), item('third')]));
+  await load;
+  expect(http.requests[1].init.signal?.aborted).toBe(true);
+  expect(value.getSnapshot().viewerLoading).toBe(false);
+  http.respond(1, neighbors(item('second'), item('first'), item('third')));
+  await navigating;
+  expect(value.getSnapshot().viewer?.current?.imageId).toBe('first');
+  expect(value.getSnapshot().page?.items.map((entry) => entry.imageId)).toEqual(
+    ['first', 'second', 'third'],
+  );
+});
+
+it('a neighbor response that hides names strips the loaded page immediately and cancels its old append', async () => {
+  const http = transport();
+  const value = session(page([item('first')]), http.fetcher);
+  const opening = value.openViewer('first');
+  const load = value.loadMore();
+  http.respond(
+    0,
+    neighbors(item('first'), item('before'), item('after'), {
+      showName: false,
+    }),
+  );
+  await opening;
+  expect(http.requests[1].init.signal?.aborted).toBe(true);
+  expect(JSON.stringify(value.getSnapshot())).not.toContain('displayName');
+  http.respond(1, page([item('late-named')]));
+  await load;
+  expect(JSON.stringify(value.getSnapshot())).not.toContain('displayName');
+});
+
+it('visibility also pauses neighbor polling and resumes one combined refresh cycle immediately', async () => {
+  const http = transport();
+  const initial = page([item('first')]);
+  const value = session(initial, http.fetcher);
+  const opening = value.openViewer('first');
+  http.respond(0, neighbors(item('first'), null, item('second')));
+  await opening;
+  value.setVisible(true);
+  http.respond(1, refreshed(initial, [item('first'), item('second')]));
+  await flush();
+  expect(http.requests[2].url).toBe('/s/capability-token/items?imageId=first');
+  value.setVisible(false);
+  expect(http.requests[2].init.signal?.aborted).toBe(true);
+  await vi.advanceTimersByTimeAsync(10000);
+  expect(http.requests).toHaveLength(3);
+  value.setVisible(true);
+  value.setVisible(true);
+  expect(http.requests).toHaveLength(4);
+  expect(JSON.parse(String(http.requests[3].init.body))).toEqual({
+    ids: ['first', 'second'],
+  });
+  http.respond(2, neighbors(item('first'), null, item('late')));
+  http.respond(3, refreshed(initial, [item('first'), item('second')]));
+  await flush();
+  http.respond(4, neighbors(item('first'), null, item('second')));
+  await flush();
+  expect(value.getSnapshot().viewer?.next?.imageId).toBe('second');
+  await vi.advanceTimersByTimeAsync(5000);
+  expect(http.requests).toHaveLength(6);
+  await vi.advanceTimersByTimeAsync(15000);
+  expect(http.requests).toHaveLength(6);
+});
 
 it('calls the default global transport without binding it to the session', async () => {
   const nativeLikeFetch = vi.fn(function (this: unknown) {
@@ -248,6 +658,7 @@ it('showName and layout changes strip every previously loaded name and cover, ab
         aspectRatio: 1.5,
         status: 'ready',
         thumbnailUrl: '/i/image-0?type=thumbnail',
+        previewUrl: '/i/image-0?type=compressed',
       },
     },
   );

@@ -2,15 +2,30 @@ import { randomUUID } from 'node:crypto';
 import { writeFileSync } from 'node:fs';
 import { and, eq } from 'drizzle-orm';
 import { afterAll, beforeAll, expect, it } from 'vitest';
-import { createAlbum } from '../../../src/server/collections/records.ts';
-import { addMemberships } from '../../../src/server/collections/memberships.ts';
+import {
+  createAlbum,
+  deleteAlbum,
+} from '../../../src/server/collections/records.ts';
+import {
+  addMemberships,
+  removeMemberships,
+} from '../../../src/server/collections/memberships.ts';
 import { albumImages } from '../../../src/server/collections/schema.ts';
 import { acceptOriginal } from '../../../src/server/media/images.ts';
 import { mediaImages, mediaJobs } from '../../../src/server/media/schema.ts';
 import { createProcessingSnapshot } from '../../../src/server/media/settings.ts';
-import { createShare } from '../../../src/server/sharing/configuration.ts';
-import { albumShares } from '../../../src/server/sharing/schema.ts';
-import type { PublicSharePage } from '../../../src/server/sharing/public-types.ts';
+import {
+  createShare,
+  updateShare,
+} from '../../../src/server/sharing/configuration.ts';
+import {
+  albumShares,
+  shareGrants,
+} from '../../../src/server/sharing/schema.ts';
+import type {
+  PublicSharePage,
+  PublicShareNeighbors,
+} from '../../../src/server/sharing/public-types.ts';
 import { launchLocalDelivery } from '../delivery/local-fixture.ts';
 
 let app: Awaited<ReturnType<typeof launchLocalDelivery>>;
@@ -209,10 +224,26 @@ it('the production list is the same cropped public projection with or without an
   expect(second.items.map((item) => item.imageId)).toEqual(ids.slice(40, 80));
   expect(third.items.map((item) => item.imageId)).toEqual(ids.slice(80));
   expect(third).toMatchObject({ hasMore: false, nextCursor: null });
+  const neighborResponse = await items(share.token, '', `?imageId=${ids[39]}`);
+  expect(neighborResponse.status).toBe(200);
+  cache(neighborResponse);
+  const neighborBody: PublicShareNeighbors = await neighborResponse.json();
+  expect(neighborBody).toMatchObject({
+    current: first.items[39],
+    previous: first.items[38],
+    next: second.items[0],
+    total: 85,
+    position: 40,
+    showName: false,
+  });
+  expect(
+    await (await items(share.token, app.cookie, `?imageId=${ids[39]}`)).json(),
+  ).toEqual(neighborBody);
   for (const item of [...first.items, first.cover!])
     expect(Object.keys(item).sort()).toEqual([
       'aspectRatio',
       'imageId',
+      'previewUrl',
       'status',
       'thumbnailUrl',
     ]);
@@ -241,6 +272,16 @@ it('the production list is the same cropped public projection with or without an
   cache(invalid);
   expect(await invalid.json()).toMatchObject({
     code: 'SHARING_CURSOR_INVALID',
+  });
+  expect(
+    await (await items(share.token, '', `?imageId=${first.nextCursor}`)).json(),
+  ).toEqual({
+    current: null,
+    previous: null,
+    next: null,
+    total: 84,
+    position: null,
+    showName: false,
   });
 });
 
@@ -335,7 +376,15 @@ it('refresh validates Origin and the 80-ID bound, reflects current names/layout 
   expect(
     await (await post(share.token, 'refresh', { ids: [] })).json(),
   ).toMatchObject({ total: 76, items: [] });
-  for (const query of ['?pageSize=80', '?cursor=a&cursor=b', '?cursor='])
+  for (const query of [
+    '?pageSize=80',
+    '?cursor=a&cursor=b',
+    '?cursor=',
+    '?imageId=',
+    '?imageId=a&imageId=b',
+    '?imageId=a&cursor=b',
+    '?imageId=a%2Fb',
+  ])
     expect((await items(share.token, '', query)).status).toBe(400);
 });
 
@@ -352,6 +401,10 @@ it('owner authentication never bypasses public password gates; current revocatio
           '?cursor=a&cursor=b',
           '?cursor=',
           '?cursor=a%2Fb',
+          `?imageId=${imageId}`,
+          '?imageId=a%2Fb',
+          '?imageId=',
+          '?imageId=a&cursor=b',
         ].map((query) => items(share.token, cookie, query)),
       )),
       await post(share.token, 'refresh', { ids: [imageId] }, cookie),
@@ -405,4 +458,83 @@ it('owner authentication never bypasses public password gates; current revocatio
     .where(eq(albumShares.id, share.id))
     .run();
   await denied(404, withOwner);
+});
+
+it('deleting the real album cascades its share and grants while retaining the image and its independent public bytes', async () => {
+  const album = app.db.transaction((tx) =>
+    createAlbum(tx, { name: '删除不影响独立公开图片' }),
+  );
+  const asset = await app.seed();
+  addMemberships(app.db, [asset.imageId], { albumIds: [album.id], tagIds: [] });
+  const share = await createShare(app.db, album.id, {
+    password: { action: 'set', value: 'cascade-password' },
+  });
+  const unlocked = await post(share.token, 'unlock', {
+    password: 'cascade-password',
+  });
+  expect(unlocked.status).toBe(200);
+  const cookie = unlocked.headers.getSetCookie()[0].split(';')[0];
+  const publicBytes = async () => {
+    const response = await request(`/i/${asset.imageId}?type=original`);
+    expect(response.status).toBe(200);
+    expect(Buffer.from(await response.arrayBuffer())).toEqual(asset.bytes);
+  };
+  expect(
+    (await items(share.token, cookie, `?imageId=${asset.imageId}`)).status,
+  ).toBe(200);
+  await updateShare(app.db, album.id, { enabled: false });
+  expect(
+    (await items(share.token, cookie, `?imageId=${asset.imageId}`)).status,
+  ).toBe(410);
+  await publicBytes();
+  await updateShare(app.db, album.id, { enabled: true });
+  const fresh = await post(share.token, 'unlock', {
+    password: 'cascade-password',
+  });
+  expect(fresh.status).toBe(200);
+  const freshCookie = fresh.headers.getSetCookie()[0].split(';')[0];
+  removeMemberships(app.db, [asset.imageId], {
+    albumIds: [album.id],
+    tagIds: [],
+  });
+  expect(
+    await (
+      await items(share.token, freshCookie, `?imageId=${asset.imageId}`)
+    ).json(),
+  ).toMatchObject({ current: null, total: 0 });
+  await publicBytes();
+  addMemberships(app.db, [asset.imageId], { albumIds: [album.id], tagIds: [] });
+  expect(
+    app.db
+      .select()
+      .from(shareGrants)
+      .where(eq(shareGrants.shareId, share.id))
+      .all(),
+  ).toHaveLength(1);
+  app.db.transaction((tx) => deleteAlbum(tx, album.id));
+  expect(
+    app.db.select().from(albumShares).where(eq(albumShares.id, share.id)).all(),
+  ).toEqual([]);
+  expect(
+    app.db
+      .select()
+      .from(shareGrants)
+      .where(eq(shareGrants.shareId, share.id))
+      .all(),
+  ).toEqual([]);
+  expect(
+    app.db
+      .select()
+      .from(mediaImages)
+      .where(eq(mediaImages.id, asset.imageId))
+      .get(),
+  ).toBeDefined();
+  const missing = await items(
+    share.token,
+    freshCookie,
+    `?imageId=${asset.imageId}`,
+  );
+  expect(missing.status).toBe(404);
+  cache(missing);
+  await publicBytes();
 });

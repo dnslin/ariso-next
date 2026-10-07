@@ -1,0 +1,13 @@
+{
+  "time": "2026-10-06T14:28:21.191Z",
+  "module": "media.queue",
+  "message": "Media processing interrupted or failed",
+  "code": "MEDIA_TOOL_SHUTDOWN_FAILED",
+  "error": "Cannot inspect media tool processes",
+  "cause": {
+    "message": "Command timed out after 1000 milliseconds: ps -axww -o 'pid=,pgid=,stat=,command='",
+    "timedOut": true,
+    "signal": "SIGTERM",
+    "shortMessage": "Command timed out after 1000 milliseconds: ps -axww -o 'pid=,pgid=,stat=,command='"
+  }
+}

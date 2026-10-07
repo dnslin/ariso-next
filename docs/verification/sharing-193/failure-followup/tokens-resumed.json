@@ -1,0 +1,348 @@
+{
+  "status": "failed",
+  "taskSpaceId": 5,
+  "origin": "http://ariso-61054.localhost:61054",
+  "phase": "behavior",
+  "checks": [],
+  "layouts": [
+    {
+      "name": "creating-light",
+      "businessWidth": 1440,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "处理中…",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "creating-dark",
+      "businessWidth": 1440,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "处理中…",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "secret-light",
+      "businessWidth": 1440,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭 Token 弹窗",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "完整 Token",
+          "width": 368,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "复制 Token",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "secret-dark",
+      "businessWidth": 1440,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭 Token 弹窗",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "完整 Token",
+          "width": 368,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "复制 Token",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "secret-copied-light",
+      "businessWidth": 1440,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭 Token 弹窗",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "完整 Token",
+          "width": 368,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "Token 已复制",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "关闭通知",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "copyToast": {
+        "surface": {
+          "x": 992,
+          "y": 992,
+          "width": 420,
+          "height": 60,
+          "top": 992,
+          "right": 1412,
+          "bottom": 1052,
+          "left": 992
+        },
+        "content": {
+          "x": 1048,
+          "y": 1012,
+          "width": 348,
+          "height": 20,
+          "top": 1012,
+          "right": 1396,
+          "bottom": 1032,
+          "left": 1048
+        },
+        "title": {
+          "x": 1048,
+          "y": 1012,
+          "width": 85.4609375,
+          "height": 20,
+          "top": 1012,
+          "right": 1133.4609375,
+          "bottom": 1032,
+          "left": 1048
+        },
+        "close": {
+          "x": 1372,
+          "y": 988,
+          "width": 44,
+          "height": 44,
+          "top": 988,
+          "right": 1416,
+          "bottom": 1032,
+          "left": 1372
+        }
+      }
+    },
+    {
+      "name": "secret-copied-dark",
+      "businessWidth": 1440,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭 Token 弹窗",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "完整 Token",
+          "width": 368,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "Token 已复制",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "关闭通知",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "copyToast": {
+        "surface": {
+          "x": 992,
+          "y": 992,
+          "width": 420,
+          "height": 60,
+          "top": 992,
+          "right": 1412,
+          "bottom": 1052,
+          "left": 992
+        },
+        "content": {
+          "x": 1048,
+          "y": 1012,
+          "width": 348,
+          "height": 20,
+          "top": 1012,
+          "right": 1396,
+          "bottom": 1032,
+          "left": 1048
+        },
+        "title": {
+          "x": 1048,
+          "y": 1012,
+          "width": 85.4609375,
+          "height": 20,
+          "top": 1012,
+          "right": 1133.4609375,
+          "bottom": 1032,
+          "left": 1048
+        },
+        "close": {
+          "x": 1372,
+          "y": 988,
+          "width": 44,
+          "height": 44,
+          "top": 988,
+          "right": 1416,
+          "bottom": 1032,
+          "left": 1372
+        }
+      }
+    }
+  ],
+  "screenshots": [
+    "tokens-1440-creating-light.png",
+    "tokens-1440-creating-dark.png",
+    "tokens-1440-secret-light.png",
+    "tokens-1440-secret-dark.png",
+    "tokens-1440-secret-copied-light.png",
+    "tokens-1440-secret-copied-dark.png",
+    "tokens-all-failure.png"
+  ],
+  "requests": [
+    {
+      "path": "/api/upload-tokens",
+      "method": "GET",
+      "width": 1440,
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/upload-tokens",
+      "method": "GET",
+      "width": 1440,
+      "attempt": 1,
+      "status": 200
+    }
+  ],
+  "business": [],
+  "clipboard": [],
+  "limitations": [
+    "Only the runner’s disposable production database is modified; the manual preview remains untouched.",
+    "Once-only secret screenshots replace key characters with bullets; the full value is asserted in memory and never emitted.",
+    "Actual Clipboard permission denial and native copy are exercised on the current macOS Ego Lite host.",
+    "Chromium viewport emulation does not constitute physical touch, soft keyboard or safe-area verification."
+  ],
+  "timeZone": "Asia/Shanghai",
+  "stage": "once-only-key",
+  "secretScrollDiagnostic": [
+    {
+      "name": "secret-copied-light",
+      "width": 1440,
+      "phase": "before-copy",
+      "start": 40,
+      "end": 50,
+      "direction": "backward",
+      "scrollLeft": 100,
+      "valueLength": 64,
+      "focused": true
+    },
+    {
+      "name": "secret-copied-light",
+      "width": 1440,
+      "phase": "after-copy-before-mask",
+      "start": 40,
+      "end": 50,
+      "direction": "backward",
+      "scrollLeft": 100,
+      "valueLength": 64,
+      "focused": true
+    },
+    {
+      "name": "secret-copied-light",
+      "width": 1440,
+      "phase": "after-mask-restore",
+      "start": 40,
+      "end": 50,
+      "direction": "backward",
+      "scrollLeft": 100,
+      "valueLength": 64,
+      "focused": true
+    },
+    {
+      "name": "secret-copied-dark",
+      "width": 1440,
+      "phase": "before-copy",
+      "start": 40,
+      "end": 50,
+      "direction": "backward",
+      "scrollLeft": 0,
+      "valueLength": 64,
+      "focused": true
+    },
+    {
+      "name": "secret-copied-dark",
+      "width": 1440,
+      "phase": "after-copy-before-mask",
+      "start": 40,
+      "end": 50,
+      "direction": "backward",
+      "scrollLeft": 0,
+      "valueLength": 64,
+      "focused": false
+    },
+    {
+      "name": "secret-copied-dark",
+      "width": 1440,
+      "phase": "after-mask-restore",
+      "start": 40,
+      "end": 50,
+      "direction": "backward",
+      "scrollLeft": 0,
+      "valueLength": 64,
+      "focused": false
+    }
+  ],
+  "error": "AssertionError [ERR_ASSERTION]: Every copy and redacted screenshot preserves the exact selected range and input horizontal scroll\n+ actual - expected\n\n  {\n    direction: 'backward',\n    end: 50,\n+   scrollLeft: 0,\n-   scrollLeft: 100,\n    start: 40\n  }\n\n    at clipboardRound (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-feedback-build-Zta2LS/e2e/tokens-behavior.mjs:194:14)\n    at async verifyTokensCreates (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-feedback-build-Zta2LS/e2e/tokens-behavior.mjs:513:5)\n    at async file:////[eval2]:76:5",
+  "finishedAt": "2026-10-07T10:49:08.445Z"
+}

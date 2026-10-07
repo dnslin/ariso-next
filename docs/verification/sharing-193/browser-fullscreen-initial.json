@@ -1,0 +1,217 @@
+{
+  "status": "failed",
+  "taskSpaceId": 43,
+  "phase": "interactions",
+  "scope": "Production anonymous image viewer, bounded public neighbors and real revocation",
+  "checks": [
+    {
+      "scenario": "YARL keyboard navigation intermediate focus observation",
+      "focusAfterFirstArrow": {
+        "tag": "DIV",
+        "className": "yarl__container yarl__flex_center",
+        "insideStage": true
+      }
+    },
+    {
+      "scenario": "Continuous ArrowRight and ArrowLeft from the actual YARL stage preserve keyboard navigation without refocusing another control"
+    },
+    {
+      "scenario": "Anonymous viewer loads only current and one neighbor in each direction; hidden names stay absent",
+      "requestedImages": 3
+    },
+    {
+      "scenario": "Native fullscreen transition focus observation without refocusing",
+      "phase": "entered-1440-light",
+      "focus": {
+        "tag": "BODY",
+        "className": "",
+        "testId": null,
+        "insideViewer": false,
+        "control": false,
+        "stage": false,
+        "visible": true
+      }
+    }
+  ],
+  "layouts": [
+    {
+      "state": "zoomed",
+      "width": 390,
+      "height": 844,
+      "theme": "light",
+      "screenshot": "sharing-viewer-zoomed-light-390.png",
+      "geometry": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 358,
+          "height": 360
+        },
+        "targets": [
+          {
+            "label": "全屏",
+            "width": 88,
+            "height": 44,
+            "left": 286,
+            "right": 374,
+            "top": 150,
+            "bottom": 194
+          },
+          {
+            "label": "关闭",
+            "width": 80.5,
+            "height": 48,
+            "left": 16,
+            "right": 96.5,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "上一张",
+            "width": 80.5,
+            "height": 48,
+            "left": 108.5,
+            "right": 189,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "下一张",
+            "width": 80.5,
+            "height": 48,
+            "left": 201,
+            "right": 281.5,
+            "top": 780,
+            "bottom": 828
+          },
+          {
+            "label": "缩小",
+            "width": 80.5,
+            "height": 48,
+            "left": 293.5,
+            "right": 374,
+            "top": 780,
+            "bottom": 828
+          }
+        ]
+      }
+    },
+    {
+      "state": "zoomed",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light",
+      "screenshot": "sharing-viewer-zoomed-light-1440.png",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 1080
+        },
+        "root": {
+          "left": 0,
+          "right": 1440,
+          "top": 0,
+          "bottom": 1080
+        },
+        "stage": {
+          "width": 1160,
+          "height": 660
+        },
+        "targets": [
+          {
+            "label": "全屏",
+            "width": 88,
+            "height": 44,
+            "left": 1212,
+            "right": 1300,
+            "top": 140,
+            "bottom": 184
+          },
+          {
+            "label": "关闭",
+            "width": 281,
+            "height": 48,
+            "left": 140,
+            "right": 421,
+            "top": 1016,
+            "bottom": 1064
+          },
+          {
+            "label": "上一张",
+            "width": 281,
+            "height": 48,
+            "left": 433,
+            "right": 714,
+            "top": 1016,
+            "bottom": 1064
+          },
+          {
+            "label": "下一张",
+            "width": 281,
+            "height": 48,
+            "left": 726,
+            "right": 1007,
+            "top": 1016,
+            "bottom": 1064
+          },
+          {
+            "label": "缩小",
+            "width": 281,
+            "height": 48,
+            "left": 1019,
+            "right": 1300,
+            "top": 1016,
+            "bottom": 1064
+          }
+        ]
+      }
+    },
+    {
+      "state": "fullscreen",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light",
+      "screenshot": "sharing-viewer-fullscreen-light-1440.png",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 1080
+        },
+        "root": {
+          "left": 0,
+          "right": 1440,
+          "top": 0,
+          "bottom": 1080
+        },
+        "stage": {
+          "width": 1160,
+          "height": 920
+        },
+        "targets": [
+          {
+            "label": "退出全屏",
+            "width": 1160,
+            "height": 48,
+            "left": 140,
+            "right": 1300,
+            "top": 1016,
+            "bottom": 1064
+          }
+        ]
+      }
+    }
+  ],
+  "limitations": [
+    "Physical phones, software keyboards, nonzero safe area and Release containers are outside this browser run."
+  ],
+  "stage": "viewer-interactions",
+  "error": "AssertionError [ERR_ASSERTION]: entered-1440-light: fullscreen transitions keep focus on a visible viewer control or stage; BODY is a failure\n    at recordFullscreenFocus (file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/e2e/sharing-viewer-interactions.mjs:495:10)\n    at async Object.verifySharingViewerInteractions [as interactions] (file:///Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/e2e/sharing-viewer-interactions.mjs:159:9)\n    at async file:////[eval2]:63:5"
+}

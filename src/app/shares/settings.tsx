@@ -163,6 +163,7 @@ function SettingsContent({
   returnTo: string;
 }) {
   const router = useRouter();
+  const returnLabel = props.fromAlbum ? '返回相册' : '返回分享管理';
   const settings = useSettings(
     initialShare,
     props.albumId,
@@ -266,14 +267,6 @@ function SettingsContent({
       footer={
         <>
           <Button
-            variant="outline"
-            className={buttonStyle}
-            onPress={returnPage}
-          >
-            <ArrowLeft size={16} aria-hidden />
-            {props.fromAlbum ? '返回相册' : '返回分享管理'}
-          </Button>
-          <Button
             className={buttonStyle}
             isDisabled
             aria-describedby="preview-note"
@@ -287,11 +280,26 @@ function SettingsContent({
         </>
       }
     >
-      <div data-testid="share-settings" className="mb-6 grid gap-2">
+      <div
+        data-testid="share-settings"
+        className="mb-6 grid grid-cols-[minmax(0,1fr)_auto] items-start gap-x-3 gap-y-2"
+      >
         <h1 ref={headingRef} tabIndex={-1}>
           分享设置
         </h1>
-        <p className="text-sm text-muted [overflow-wrap:anywhere]">
+        <Tooltip>
+          <Button
+            isIconOnly
+            variant="outline"
+            aria-label={returnLabel}
+            className="size-11 shrink-0 rounded-lg"
+            onPress={returnPage}
+          >
+            <ArrowLeft size={18} className="size-[18px]" aria-hidden />
+          </Button>
+          <Tooltip.Content>{returnLabel}</Tooltip.Content>
+        </Tooltip>
+        <p className="col-span-2 text-sm text-muted [overflow-wrap:anywhere]">
           {album.name} · {album.publicImageCount} 张公开图片
         </p>
       </div>
@@ -322,7 +330,11 @@ function SettingsContent({
               </div>
               <Chip variant="soft" className="bg-default text-foreground">
                 <span className="mr-1.5 inline-block size-1.5 rounded-full bg-current" />
-                {!enabled ? '已停用' : expired ? '已过期' : '分享中'}
+                <span
+                  className={enabled && expired ? 'text-danger' : undefined}
+                >
+                  {!enabled ? '已停用' : expired ? '已过期' : '分享中'}
+                </span>
               </Chip>
             </Card.Header>
             <Card.Content className="px-4 pb-4 md:px-6 md:pb-5">
@@ -490,7 +502,12 @@ function SettingsContent({
                             {share.expiresAt
                               ? formatExpiry(share.expiresAt, props.timeZone)
                               : '不过期'}
-                            {expired ? ' · 已过期' : ''}
+                            {expired ? (
+                              <>
+                                {' · '}
+                                <span className="text-danger">已过期</span>
+                              </>
+                            ) : null}
                           </span>
                         </span>
                         <Accordion.Indicator>

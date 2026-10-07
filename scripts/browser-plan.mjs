@@ -28,6 +28,10 @@ const suites = {
     only: ['representative', 'behavior', 'race', 'recovery'],
     config: (only) => ({ sharingPublicPhase: only }),
   },
+  'sharing-viewer': {
+    only: ['representative', 'interactions', 'revocation', 'race'],
+    config: (only) => ({ sharingViewerPhase: only }),
+  },
   'sharing-management': {
     only: ['representative', 'behavior', 'recovery'],
     stages: [['sharing-management', 'sharingManagement']],

@@ -1,0 +1,207 @@
+{
+  "numTotalTestSuites": 6,
+  "numPassedTestSuites": 6,
+  "numFailedTestSuites": 0,
+  "numPendingTestSuites": 0,
+  "numTotalTests": 13,
+  "numPassedTests": 13,
+  "numFailedTests": 0,
+  "numPendingTests": 0,
+  "numTodoTests": 0,
+  "snapshot": {
+    "added": 0,
+    "failure": false,
+    "filesAdded": 0,
+    "filesRemoved": 0,
+    "filesRemovedList": [],
+    "filesUnmatched": 0,
+    "filesUpdated": 0,
+    "matched": 0,
+    "total": 0,
+    "unchecked": 0,
+    "uncheckedKeysByFile": [],
+    "unmatched": 0,
+    "updated": 0,
+    "didUpdate": false
+  },
+  "startTime": 1791367680729,
+  "success": true,
+  "testResults": [
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [],
+          "fullName": "real Next dev recompilation retains the startup code and the original code creates a login-capable owner",
+          "status": "passed",
+          "title": "real Next dev recompilation retains the startup code and the original code creates a login-capable owner",
+          "duration": 28734.912333,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        }
+      ],
+      "startTime": 1791367754918,
+      "endTime": 1791367783652.9124,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/tests/integration/identity/setup-dev.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["setup process lifecycle"],
+          "fullName": "setup process lifecycle imports without deployment secrets neither open a database nor issue a code",
+          "status": "passed",
+          "title": "imports without deployment secrets neither open a database nor issue a code",
+          "duration": 500.3658750000001,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": ["setup process lifecycle"],
+          "fullName": "setup process lifecycle prestart prepares storage without issuing a code; real module reloads share one startup code",
+          "status": "passed",
+          "title": "prestart prepares storage without issuing a code; real module reloads share one startup code",
+          "duration": 1336.538542,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "setup hash await boundary (controlled hash, real SQLite)"
+          ],
+          "fullName": "setup hash await boundary (controlled hash, real SQLite) hashes outside the transaction and rechecks a code invalidated while awaiting",
+          "status": "passed",
+          "title": "hashes outside the transaction and rechecks a code invalidated while awaiting",
+          "duration": 384.199791,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "setup hash await boundary (controlled hash, real SQLite)"
+          ],
+          "fullName": "setup hash await boundary (controlled hash, real SQLite) a hash failure leaves setup open and a later request can retry",
+          "status": "passed",
+          "title": "a hash failure leaves setup open and a later request can retry",
+          "duration": 324.856667,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "setup hash await boundary (controlled hash, real SQLite)"
+          ],
+          "fullName": "setup hash await boundary (controlled hash, real SQLite) a second completed request prevents the awaiting request from creating another owner",
+          "status": "passed",
+          "title": "a second completed request prevents the awaiting request from creating another owner",
+          "duration": 373.02212499999996,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": ["setup real SIGKILL crash recovery"],
+          "fullName": "setup real SIGKILL crash recovery recovers after process death at hash and can use real credential login",
+          "status": "passed",
+          "title": "recovers after process death at hash and can use real credential login",
+          "duration": 1449.3497079999997,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": ["setup real SIGKILL crash recovery"],
+          "fullName": "setup real SIGKILL crash recovery recovers after process death at site_settings and can use real credential login",
+          "status": "passed",
+          "title": "recovers after process death at site_settings and can use real credential login",
+          "duration": 1481.1885410000004,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": ["setup real SIGKILL crash recovery"],
+          "fullName": "setup real SIGKILL crash recovery recovers after process death at media_settings and can use real credential login",
+          "status": "passed",
+          "title": "recovers after process death at media_settings and can use real credential login",
+          "duration": 1468.8978749999997,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": ["setup real SIGKILL crash recovery"],
+          "fullName": "setup real SIGKILL crash recovery recovers after process death at user and can use real credential login",
+          "status": "passed",
+          "title": "recovers after process death at user and can use real credential login",
+          "duration": 1486.8132919999998,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": ["setup real SIGKILL crash recovery"],
+          "fullName": "setup real SIGKILL crash recovery recovers after process death at account and can use real credential login",
+          "status": "passed",
+          "title": "recovers after process death at account and can use real credential login",
+          "duration": 1515.9214169999996,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": ["setup real SIGKILL crash recovery"],
+          "fullName": "setup real SIGKILL crash recovery recovers after process death at committed and can use real credential login",
+          "status": "passed",
+          "title": "recovers after process death at committed and can use real credential login",
+          "duration": 1448.5677500000002,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        }
+      ],
+      "startTime": 1791367784390,
+      "endTime": 1791367796160.5679,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/tests/integration/identity/setup-lifecycle.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [],
+          "fullName": "无密钥和数据库时在独立目录完成生产构建，不写数据或输出初始化码",
+          "status": "passed",
+          "title": "无密钥和数据库时在独立目录完成生产构建，不写数据或输出初始化码",
+          "duration": 73476.701125,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        }
+      ],
+      "startTime": 1791367680976,
+      "endTime": 1791367754452.7012,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/dnslin/.codex/worktrees/issue-193-public-viewer/ariso/tests/integration/runtime/build.test.ts"
+    }
+  ]
+}
