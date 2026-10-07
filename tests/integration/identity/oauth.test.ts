@@ -391,23 +391,60 @@ it.each([email, 'different@example.test'])(
 );
 
 it.each([
-  [email, false, 'account_not_linked'],
-  [email, true, 'account_not_linked'],
-  ['stranger@example.test', false, 'signup_disabled'],
-  ['stranger@example.test', true, 'signup_disabled'],
-])(
-  'unbound %s cannot sign in or register with requestSignUp=%s',
-  async (githubEmail, explicit, error) => {
-    providerEmail = githubEmail as string;
-    const response = await callback(await begin(false, explicit as boolean));
+  [email, false, false, 'account_not_linked'],
+  [email, true, false, 'account_not_linked'],
+  [email, false, true, 'account_not_linked'],
+  [email, true, true, 'account_not_linked'],
+  ['stranger@example.test', false, false, 'signup_disabled'],
+  ['stranger@example.test', true, false, 'signup_disabled'],
+] as const)(
+  'unbound %s cannot sign in or register with requestSignUp=%s and local emailVerified=%s',
+  async (githubEmail, explicit, verified, error) => {
+    if (verified) {
+      expect((await callback(await begin(true))).headers.get('location')).toBe(
+        `${origin}/settings/account?github=linked`,
+      );
+      const login = await callback(await begin());
+      expect(login.headers.get('location')).toBe(`${origin}/admin`);
+      expect(
+        (
+          await getAuth()!.api.getSession({
+            headers: new Headers({ cookie: cookies(login) }),
+          })
+        )?.user.id,
+      ).toBe(ownerId);
+      const unlink = await bindingDelete(
+        request('/api/account/github', 'DELETE'),
+      );
+      expect(unlink.status).toBe(200);
+      expect(await unlink.json()).toEqual({ binding: null });
+    }
+    expect(connection.db.select().from(user).get()?.emailVerified).toBe(
+      verified,
+    );
+    expect(githubAccount()).toBeUndefined();
+    const sessions = connection.db
+      .select({ id: session.id })
+      .from(session)
+      .all();
+    providerEmail = githubEmail;
+    const response = await callback(await begin(false, explicit));
     expect(
       new URL(response.headers.get('location')!).searchParams.get('error'),
     ).toBe(error);
     expect(githubAccount()).toBeUndefined();
     expect(connection.db.select().from(user).all()).toHaveLength(1);
+    expect(
+      connection.db.select({ id: session.id }).from(session).all(),
+    ).toEqual(sessions);
     expect(response.headers.getSetCookie().join(';')).not.toContain(
       'session_token=',
     );
+    expect(
+      await getAuth()!.api.getSession({
+        headers: new Headers({ cookie: cookies(response) }),
+      }),
+    ).toBeNull();
   },
 );
 
