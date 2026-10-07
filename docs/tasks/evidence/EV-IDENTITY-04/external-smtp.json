@@ -1,0 +1,146 @@
+{
+  "task": "EV-IDENTITY-04",
+  "date": "2026-10-07",
+  "timezone": "Asia/Shanghai",
+  "codeCommit": "946f81cd8ae7739e51d8012a86d353b758bfd5ad",
+  "provider": "Resend",
+  "host": "smtp.resend.com",
+  "environment": {
+    "node": "24.18.1",
+    "pnpm": "11.19.0",
+    "os": "macOS arm64",
+    "nodemailer": "10.0.15"
+  },
+  "transport": {
+    "rejectUnauthorized": true,
+    "starttlsRequired": true,
+    "authentication": "SMTP AUTH with task-specific Resend API key; credential omitted"
+  },
+  "recipient": "Registered account Gmail address (omitted)",
+  "sender": "onboarding@resend.dev",
+  "account": {
+    "verifiedDomains": 0,
+    "keyName": "ariso-issue-146-smtp-20261007",
+    "credentialLocation": "Ignored .data/resend-smtp*.json; not committed"
+  },
+  "runs": [
+    {
+      "mode": "tls",
+      "port": 465,
+      "command": "node tests/experiments/identity/smtp-run.ts .data/resend-smtp.json",
+      "exitCode": 0,
+      "smtp": {
+        "acceptance": "smtp-accepted",
+        "acceptedCount": 1,
+        "rejectedCount": 0,
+        "messageId": "<82fa03b5-97c9-4a37-0a18-070bb64dd446@resend.dev>",
+        "runnerFinalReceipt": "unverified"
+      },
+      "receiptMarker": "ariso-smtp-7e7a0ce4-79ae-4e10-82df-2d19179aa817",
+      "provider": {
+        "id": "01a11244-fddc-70a1-b7ac-51da5051332a",
+        "messageId": "<010001a11244ff4a-bd30cb73-2353-422a-bdb8-aaa883c6cec8-000000@email.amazonses.com>",
+        "createdAt": "2026-10-06 17:31:13.926000+00",
+        "status": "delivered",
+        "observedAt": "2026-10-06T17:32:29.767Z"
+      },
+      "mailbox": {
+        "status": "unverified",
+        "reason": "Recipient Gmail is not signed in; owner receipt confirmation or signed-in mailbox inspection is pending."
+      }
+    },
+    {
+      "mode": "starttls",
+      "port": 587,
+      "command": "node tests/experiments/identity/smtp-run.ts .data/resend-smtp-starttls.json",
+      "exitCode": 0,
+      "smtp": {
+        "acceptance": "smtp-accepted",
+        "acceptedCount": 1,
+        "rejectedCount": 0,
+        "messageId": "<d81cede3-3f52-90ce-9337-69579c3085ec@resend.dev>",
+        "runnerFinalReceipt": "unverified"
+      },
+      "receiptMarker": "ariso-smtp-3bf593d0-5ffc-4586-b304-0606dec3d5cd",
+      "provider": {
+        "id": "01a11245-3a5f-7236-8287-ee4bb3c292e6",
+        "messageId": "<010001a112453bb0-b5db098c-b5b5-46c6-bbb9-339cbd5eeb7e-000000@email.amazonses.com>",
+        "createdAt": "2026-10-06 17:31:29.450000+00",
+        "status": "delivered",
+        "observedAt": "2026-10-06T17:32:30.402Z"
+      },
+      "mailbox": {
+        "status": "unverified",
+        "reason": "Recipient Gmail is not signed in; owner receipt confirmation or signed-in mailbox inspection is pending."
+      }
+    }
+  ],
+  "receiptBoundary": "TLS and STARTTLS SMTP acceptance and provider delivered status are verified. The owner independently confirmed actual receipt of the additional TLS message with the exact receipt marker. Earlier messages retain unverified mailbox status. Provider timestamps and Message-IDs are not mailbox header evidence.",
+  "references": [
+    "https://resend.com/docs/send-with-smtp",
+    "https://resend.com/docs/knowledge-base/403-error-resend-dev-domain",
+    "https://resend.com/docs/api-reference/emails/retrieve-email"
+  ],
+  "additionalAttempts": [
+    {
+      "recipient": "Owner requested another Gmail recipient (omitted)",
+      "mode": "tls",
+      "port": 465,
+      "command": "node tests/experiments/identity/smtp-run.ts .data/resend-smtp-dnslint.json",
+      "exitCode": 1,
+      "completedAt": "2026-10-06T17:39:56.674Z",
+      "diagnostic": {
+        "stage": "delivery",
+        "code": "EMESSAGE",
+        "command": "DATA",
+        "responseCode": 550,
+        "delivery": "not-accepted"
+      },
+      "accountDomainObservation": {
+        "observedAt": "2026-10-06T17:40:31.291Z",
+        "verifiedDomains": 0,
+        "domains": 0,
+        "hasMore": false
+      },
+      "mailbox": {
+        "status": "not-sent"
+      },
+      "restriction": "Default onboarding@resend.dev sender is restricted to the email associated with the Resend account. Sending to the requested different Gmail needs a verified sender domain or an account associated with that recipient."
+    },
+    {
+      "purpose": "Owner selected the registered recipient again",
+      "recipient": "Registered account Gmail address (omitted)",
+      "mode": "tls",
+      "port": 465,
+      "codeCommit": "c4ff0ab4a5a338c96387d594944cd0a2b6351295",
+      "command": "node tests/experiments/identity/smtp-run.ts .data/resend-smtp.json",
+      "exitCode": 0,
+      "completedAt": "2026-10-06T17:49:20.775Z",
+      "smtp": {
+        "acceptance": "smtp-accepted",
+        "acceptedCount": 1,
+        "rejectedCount": 0,
+        "messageId": "<db9603ef-7d05-c549-9296-344c49433c31@resend.dev>",
+        "runnerFinalReceipt": "unverified"
+      },
+      "receiptMarker": "ariso-smtp-90e3b854-7f88-48f7-bceb-958022efb127",
+      "provider": {
+        "id": "01a11255-9454-766e-adae-91b9cf3ccfd7",
+        "messageId": "<010001a1125595ab-e60de9e2-d0b2-43a1-8869-37cada1b541b-000000@email.amazonses.com>",
+        "createdAt": "2026-10-06 17:49:21.022000+00",
+        "status": "delivered",
+        "receiptMarker": "ariso-smtp-90e3b854-7f88-48f7-bceb-958022efb127",
+        "observedAt": "2026-10-06T17:50:11.939Z"
+      },
+      "mailbox": {
+        "status": "verified",
+        "basis": "Direct human owner confirmation in this Codex conversation",
+        "confirmedReceiptMarker": "ariso-smtp-90e3b854-7f88-48f7-bceb-958022efb127",
+        "ownerReply": "已收到这封邮件",
+        "confirmationRecordedAt": "2026-10-06T17:52:40Z",
+        "receiptTimestamp": "not independently read",
+        "mailboxMessageId": "not independently read"
+      }
+    }
+  ]
+}

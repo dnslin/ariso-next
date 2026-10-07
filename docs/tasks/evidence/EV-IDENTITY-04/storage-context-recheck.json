@@ -1,0 +1,48 @@
+{
+  "recordedAt": "2026-10-06",
+  "command": "pnpm exec vitest run --project integration tests/integration/storage/settings-http.test.ts --maxWorkers=1 --reporter=default --reporter=junit --outputFile=test-results/identity-146/storage-context-recheck.xml",
+  "exitCode": 0,
+  "wallSeconds": 11.99,
+  "tests": {
+    "passed": 7,
+    "failed": 0,
+    "notSelected": 0
+  },
+  "cases": [
+    {
+      "name": "管理路由拒绝匿名、上传 Token 与跨来源写入",
+      "seconds": 0.272594166,
+      "result": "passed"
+    },
+    {
+      "name": "真实 HTTP 创建查询、默认读写与秘密更新均不回显秘密，无引用允许位置修改和删除",
+      "seconds": 0.214351041,
+      "result": "passed"
+    },
+    {
+      "name": "显式或默认 S3 创建排队会话，接收字节前不创建图片或处理任务",
+      "seconds": 0.156138667,
+      "result": "passed"
+    },
+    {
+      "name": "输入和持久化错误保留诊断但不回显凭据，失败后可重试",
+      "seconds": 0.06286575,
+      "result": "passed"
+    },
+    {
+      "name": "探测 HTTP 拒绝伪造通过、过期 revision、错误存储类型与跨来源重试",
+      "seconds": 0.148799583,
+      "result": "passed"
+    },
+    {
+      "name": "真实 HTTP 保留已写入对象的清理责任，删除拒绝时重试返回 502",
+      "seconds": 0.190506833,
+      "result": "passed"
+    },
+    {
+      "name": "停用 S3 的密文也在独立 prestart 校验；错误密钥失败且原配置不变",
+      "seconds": 2.285518792,
+      "result": "passed"
+    }
+  ]
+}

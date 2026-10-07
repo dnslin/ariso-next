@@ -61,6 +61,8 @@
 
 ### EV-IDENTITY-04 邮件重置与 CLI 并发验证
 
+实施、库行为与未验证范围见[实验报告](./evidence/EV-IDENTITY-04/README.md)；工程实验不等于 SMTP、邮件页面或生产 CLI 已交付。
+
 - 任务组：工程前置
 - 里程碑：按消费任务提前执行
 - 规格：[identity §6/8/13](../specs/SPEC-identity.md)

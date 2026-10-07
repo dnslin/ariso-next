@@ -1,0 +1,209 @@
+{
+  "recordedAt": "2026-10-06",
+  "argv": [
+    "pnpm",
+    "run",
+    "test:integration",
+    "--maxWorkers=1",
+    "tests/integration/delivery/reprocess.test.ts",
+    "tests/integration/identity/cli-reset.test.ts",
+    "tests/integration/identity/http.test.ts",
+    "tests/integration/identity/setup-dev.test.ts",
+    "tests/integration/media/metadata.test.ts",
+    "tests/integration/media/recovery-tools.test.ts",
+    "tests/integration/media/watermark.test.ts",
+    "tests/integration/runtime/build.test.ts",
+    "tests/integration/runtime/logging.test.ts",
+    "tests/integration/runtime/secret-preflight.test.ts",
+    "tests/integration/storage/settings-http.test.ts",
+    "tests/integration/upload/local.test.ts",
+    "--testNamePattern",
+    "T\\-DEL\\-02\\ local\\ media\\ reprocessing\\ and\\ stable\\ delivery\\ links\\ >\\ keeps\\ published\\ bytes\\ throughout\\ real\\ candidate\\ generation\\ \\(success\\)|T\\-DEL\\-02\\ local\\ media\\ reprocessing\\ and\\ stable\\ delivery\\ links\\ >\\ keeps\\ published\\ bytes\\ throughout\\ real\\ candidate\\ generation\\ \\(write\\-failure\\)|CLI\\ session\\ deletion\\ failure\\ rolls\\ back\\ password,\\ sessions\\ and\\ unused\\ resets|CLI\\ verification\\ deletion\\ failure\\ rolls\\ back\\ password,\\ sessions\\ and\\ unused\\ resets|GitHub\\ credentials\\ and\\ enablement\\ change\\ only\\ on\\ restart\\ while\\ origin\\ refreshes\\ immediately\\ over\\ real\\ Next\\ HTTP|concurrent\\ identity\\ experiments\\ use\\ separate\\ build\\ output\\ and\\ remove\\ only\\ their\\ own\\ output\\ on\\ stop|real\\ Next\\ dev\\ recompilation\\ retains\\ the\\ startup\\ code\\ and\\ the\\ original\\ code\\ creates\\ a\\ login\\-capable\\ owner|T\\-MED\\-07\\ complete\\ metadata\\ with\\ real\\ ExifTool\\ and\\ ImageMagick\\ >\\ persists\\ all\\ groups\\ and\\ duplicate\\ tags\\ without\\ converting\\ strings,\\ arrays,\\ or\\ nested\\ XMP|T\\-MED\\-07\\ complete\\ metadata\\ with\\ real\\ ExifTool\\ and\\ ImageMagick\\ >\\ retains\\ the\\ ExifTool\\ empty\\-file\\ diagnosis\\ without\\ logging\\ full\\ metadata\\ and\\ keeps\\ the\\ previous\\ result|T\\-MED\\-07\\ complete\\ metadata\\ with\\ real\\ ExifTool\\ and\\ ImageMagick\\ >\\ rechecks\\ storage\\ disabled\\ during\\ workspace\\ preparation\\ before\\ accessing\\ the\\ original|T\\-MED\\-07\\ complete\\ metadata\\ with\\ real\\ ExifTool\\ and\\ ImageMagick\\ >\\ atomically\\ retains\\ the\\ previous\\ metadata\\ if\\ marking\\ a\\ reread\\ job\\ succeeded\\ fails\\ and\\ later\\ recovers|T\\-MED\\-04\\ actual\\ processing\\ recovery\\ >\\ preserves\\ healthy\\ concurrent\\ work\\ for\\ recovery\\ after\\ a\\ queue\\ claim\\ failure|T\\-MED\\-04\\ actual\\ processing\\ recovery\\ >\\ runs\\ actual\\ tools\\ with\\ concurrency\\ 4,\\ and\\ lowering\\ to\\ one\\ preserves\\ active\\ work|places\\ an\\ image\\ watermark\\ at\\ bottom\\-right\\ with\\ short\\-edge\\ margins|无密钥和数据库时在独立目录完成生产构建，不写数据或输出初始化码|隔离最终产物启动及正常请求输出逐行\\ JSON，故障入口不进入生产应用|tampered\\ ciphertext\\ 阻止入口启动\\ Web，保留已提交迁移与密文，修复后继续且不重放迁移|停用\\ S3\\ 的密文也在独立\\ prestart\\ 校验；错误密钥失败且原配置不变|real\\ local\\ upload\\ reception\\ and\\ ownership\\ >\\ retains\\ actual\\ image\\ watermark\\ A\\ for\\ all\\ 45\\ frozen\\ files\\ while\\ new\\ submissions\\ use\\ B,\\ then\\ releases\\ A\\ after\\ the\\ last\\ pending\\ group\\ terminates",
+    "--reporter=default",
+    "--reporter=junit",
+    "--outputFile=test-results/identity-146/failure-recheck.xml"
+  ],
+  "exitCode": 1,
+  "wallSeconds": 442.97,
+  "files": {
+    "passed": 9,
+    "failed": 3,
+    "total": 12
+  },
+  "tests": {
+    "passed": 16,
+    "failed": 3,
+    "notSelected": 91,
+    "selected": 19
+  },
+  "contextCaveat": "settings-http.test.ts uses shared beforeAll state. Its last test assumes previous tests clear default_storage_id. Filtering by last test name changes that precondition; recheck the entire file instead.",
+  "suites": [
+    {
+      "file": "tests/integration/delivery/reprocess.test.ts",
+      "cases": [
+        {
+          "name": "T-DEL-02 local media reprocessing and stable delivery links > keeps published bytes throughout real candidate generation (success)",
+          "seconds": 2.861873,
+          "result": "passed"
+        },
+        {
+          "name": "T-DEL-02 local media reprocessing and stable delivery links > keeps published bytes throughout real candidate generation (write-failure)",
+          "seconds": 2.237756667,
+          "result": "passed"
+        }
+      ]
+    },
+    {
+      "file": "tests/integration/identity/cli-reset.test.ts",
+      "cases": [
+        {
+          "name": "CLI session deletion failure rolls back password, sessions and unused resets",
+          "seconds": 4.425997125,
+          "result": "passed"
+        },
+        {
+          "name": "CLI verification deletion failure rolls back password, sessions and unused resets",
+          "seconds": 4.306004583,
+          "result": "passed"
+        }
+      ]
+    },
+    {
+      "file": "tests/integration/identity/http.test.ts",
+      "cases": [
+        {
+          "name": "GitHub credentials and enablement change only on restart while origin refreshes immediately over real Next HTTP",
+          "seconds": 63.299979375,
+          "result": "passed"
+        },
+        {
+          "name": "concurrent identity experiments use separate build output and remove only their own output on stop",
+          "seconds": 21.410539708,
+          "result": "passed"
+        }
+      ]
+    },
+    {
+      "file": "tests/integration/identity/setup-dev.test.ts",
+      "cases": [
+        {
+          "name": "real Next dev recompilation retains the startup code and the original code creates a login-capable owner",
+          "seconds": 120.009750208,
+          "result": "failed",
+          "failure": {
+            "type": "Error",
+            "message": "Test timed out in 120000ms. If this is a long-running test, pass a timeout value as the last argument or configure it globally with \"testTimeout\"."
+          }
+        }
+      ]
+    },
+    {
+      "file": "tests/integration/media/metadata.test.ts",
+      "cases": [
+        {
+          "name": "T-MED-07 complete metadata with real ExifTool and ImageMagick > persists all groups and duplicate tags without converting strings, arrays, or nested XMP",
+          "seconds": 2.504460459,
+          "result": "passed"
+        },
+        {
+          "name": "T-MED-07 complete metadata with real ExifTool and ImageMagick > retains the ExifTool empty-file diagnosis without logging full metadata and keeps the previous result",
+          "seconds": 1.869732709,
+          "result": "passed"
+        },
+        {
+          "name": "T-MED-07 complete metadata with real ExifTool and ImageMagick > rechecks storage disabled during workspace preparation before accessing the original",
+          "seconds": 2.102460375,
+          "result": "passed"
+        },
+        {
+          "name": "T-MED-07 complete metadata with real ExifTool and ImageMagick > atomically retains the previous metadata if marking a reread job succeeded fails and later recovers",
+          "seconds": 2.290258334,
+          "result": "passed"
+        }
+      ]
+    },
+    {
+      "file": "tests/integration/media/recovery-tools.test.ts",
+      "cases": [
+        {
+          "name": "T-MED-04 actual processing recovery > preserves healthy concurrent work for recovery after a queue claim failure",
+          "seconds": 3.382524875,
+          "result": "passed"
+        },
+        {
+          "name": "T-MED-04 actual processing recovery > runs actual tools with concurrency 4, and lowering to one preserves active work",
+          "seconds": 3.899550959,
+          "result": "passed"
+        }
+      ]
+    },
+    {
+      "file": "tests/integration/media/watermark.test.ts",
+      "cases": [
+        {
+          "name": "places an image watermark at bottom-right with short-edge margins",
+          "seconds": 1.395154958,
+          "result": "passed"
+        }
+      ]
+    },
+    {
+      "file": "tests/integration/runtime/build.test.ts",
+      "cases": [
+        {
+          "name": "无密钥和数据库时在独立目录完成生产构建，不写数据或输出初始化码",
+          "seconds": 137.039862709,
+          "result": "passed"
+        }
+      ]
+    },
+    {
+      "file": "tests/integration/runtime/logging.test.ts",
+      "cases": [
+        {
+          "name": "隔离最终产物启动及正常请求输出逐行 JSON，故障入口不进入生产应用",
+          "seconds": 4.015067041,
+          "result": "failed",
+          "failure": {
+            "type": "TimeoutError",
+            "message": "The operation was aborted due to timeout"
+          }
+        }
+      ]
+    },
+    {
+      "file": "tests/integration/runtime/secret-preflight.test.ts",
+      "cases": [
+        {
+          "name": "tampered ciphertext 阻止入口启动 Web，保留已提交迁移与密文，修复后继续且不重放迁移",
+          "seconds": 8.764191875,
+          "result": "passed"
+        }
+      ]
+    },
+    {
+      "file": "tests/integration/storage/settings-http.test.ts",
+      "cases": [
+        {
+          "name": "停用 S3 的密文也在独立 prestart 校验；错误密钥失败且原配置不变",
+          "seconds": 1.554424917,
+          "result": "failed",
+          "failure": {
+            "type": "AssertionError",
+            "message": "expected { Object (default_storage_id) } to deeply equal { default_storage_id: null }"
+          }
+        }
+      ]
+    },
+    {
+      "file": "tests/integration/upload/local.test.ts",
+      "cases": [
+        {
+          "name": "real local upload reception and ownership > retains actual image watermark A for all 45 frozen files while new submissions use B, then releases A after the last pending group terminates",
+          "seconds": 3.980247292,
+          "result": "passed"
+        }
+      ]
+    }
+  ]
+}
