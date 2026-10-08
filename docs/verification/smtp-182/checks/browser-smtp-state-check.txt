@@ -1,0 +1,105 @@
+Error: AssertionError [ERR_ASSERTION]: Saving retains the source page and scrolling
++ actual - expected
+
+  {
++   content: 376.5,
+-   content: 320.5,
+    scroll: 0,
+    url: 'http://ariso-53623.localhost:53623/settings/email'
+  }
+
+    at file:////[eval2]:275:16
+    at file:////[eval2]:706:20
+
+ego's nodejs process exited with code 1.
+Browser stage failed (smtp): AssertionError [ERR_ASSERTION]: Ego browser verification failed (smtp.log)
+
+1 !== 0
+
+    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-182-smtp/ariso/scripts/verify-browser.mjs:225:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-182-smtp/ariso/scripts/browser-stages.mjs:17:5)
+    at async file:///Users/dnslin/.codex/worktrees/issue-182-smtp/ariso/scripts/verify-browser.mjs:709:24
+{ taskSpaceId: 3, ownership: 'agent' }
+[p1 "Ariso" | space "Ariso Issue 182 SMTP"(3): 1 managed, 0 untracked — p1* "Ariso"]
+root
+  container
+    container
+      anchor "Ariso 首页" [ref=618, url=http://ariso-53623.localhost:53623/]
+        text "Ariso"
+      button "菜单" [ref=619, loc=css:button[aria-label="菜单"]]
+        svg_root
+    container
+      container [ref=620]
+        tabpanel "邮件服务"
+          form
+            container
+              container
+                container
+                  container
+                    svg_root
+                    text "SMTP 主机"
+                  textbox "SMTP 主机" [ref=621, loc=css:input[name="host"]]
+                    text "127.0.0.1"
+                container
+                  container
+                    svg_root
+                    text "端口"
+                  spinbutton "端口" [ref=622, loc=css:input[name="port"]]
+                    text "53624"
+                container
+                  container
+                    svg_root
+                    text "连接安全"
+                  button "TLS 连接安全" [ref=623]
+                    text "TLS"
+                    svg_root
+                container
+                  container
+                    svg_root
+                    text "SMTP 用户名"
+                  textbox "SMTP 用户名" [ref=624, loc=css:input[name="username"]]
+                    text "browser-smtp"
+                container
+                  container
+                    svg_root
+                    text "发件人名称"
+                  textbox "发件人名称" [ref=625, loc=css:input[name="fromName"]]
+                    text "Ariso 浏览器测试"
+                container
+                  container
+                    svg_root
+                    text "发件人邮箱"
+                  textbox "发件人邮箱" [ref=626, loc=css:input[name="fromEmail"]]
+                    text "sender@example.test"
+              container
+                container
+                  container
+                    svg_root
+                    text "SMTP 密码"
+                  textbox "SMTP 密码" [ref=627, loc=css:input[name="password"]]
+                    text "已设置 · 留空保留当前密码"
+                paragraph
+                  text "测试仅使用已保存配置，收件人为当前所有者。"
+            paragraph
+              text "编辑后请先保存，再发送测试邮件。保存无需重启，也不会自动发送邮件。"
+      container
+        button [ref=628]
+          svg_root
+          text "发送测试邮件"
+        button [ref=629]
+          svg_root
+          text "保存邮件设置"
+  region "操作通知"
+    alertdialog "邮件设置已保存" [ref=630, loc=role:alertdialog[name="邮件设置已保存"]]
+      svg_root
+      alert
+        text "邮件设置已保存"
+        text "下次发送即生效，尚未发送测试邮件。"
+      button "关闭通知" [ref=631, loc=css:button[aria-label="关闭通知"]]
+        svg_root
+
+
+AssertionError [ERR_ASSERTION]: Focused browser stages failed
+    at file:///Users/dnslin/.codex/worktrees/issue-182-smtp/ariso/scripts/verify-browser.mjs:715:12
+Browser report: /Users/dnslin/.codex/worktrees/issue-182-smtp/ariso/test-results/browser-smtp-state-check

@@ -29,17 +29,31 @@ export async function verifySmtpLifecycle(
       200,
       'Actual sign-out invalidates the current Cookie session',
     );
-    const session = await accountRequest(
-      page,
-      report,
-      width,
-      '/api/auth/get-session',
-    );
-    assert.equal(
-      session.payload,
-      null,
-      'The server confirms there is no owner session',
-    );
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      const session = await page.fetch('/api/auth/get-session');
+      const receivedAt = Date.now();
+      const retryAfter = Number(session.headers['x-retry-after']);
+      report.requests.push({
+        path: '/api/auth/get-session',
+        method: 'GET',
+        width,
+        attempt,
+        status: session.status,
+        ...(session.status === 429 ? { retryAfter } : {}),
+      });
+      if (session.status === 429) {
+        assert.ok(retryAfter > 0 && retryAfter <= 60 && attempt < 3);
+        await delay(Math.max(0, receivedAt + retryAfter * 1000 - Date.now()));
+        continue;
+      }
+      assert.equal(session.status, 200);
+      assert.equal(
+        JSON.parse(session.body),
+        null,
+        'The server confirms there is no owner session',
+      );
+      break;
+    }
   };
   const expired = async () => {
     await page.waitForSelector(`${smtpControl('page')}[data-state="session"]`);
@@ -186,12 +200,12 @@ export async function verifySmtpLifecycle(
     await signedOut();
     await page.evaluate(() => window.dispatchEvent(new Event('focus')));
     await expired();
-    await ui.geometry(`session-before-late-write-${width}`);
+    await ui.themedGeometry(`session-before-late-write-${width}`);
     await oldWrite.release();
     await page.waitForFunction(() => window.__smtpTransport.deliveryFrame >= 1);
     await expired();
     await noLateFeedback();
-    await ui.geometry(`session-after-late-write-${width}`);
+    await ui.themedGeometry(`session-after-late-write-${width}`);
   } finally {
     await oldWrite.dispose();
   }
@@ -226,7 +240,7 @@ export async function verifySmtpLifecycle(
       'The SMTP fixture receives no mail for the unauthorized request',
     );
     await expired();
-    await ui.geometry(`smtp-401-session-${width}`);
+    await ui.themedGeometry(`smtp-401-session-${width}`);
     await unauthorized.release();
     await page.waitForFunction(
       () => window.__smtpTransport.sessionDeliveryFrame >= 1,

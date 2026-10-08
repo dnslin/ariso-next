@@ -15,11 +15,11 @@
 - 工作区与 Node 24.18.1 / pnpm 11.19.0 已建立，[冻结安装](./checks/install.txt)通过。
 - 生产后端、客户端请求/草稿和默认浏览器入口接入已实现。产品 UI 已按所有者批准的反馈版原型实施。
 - 后端定向检查与独立代码审计完成：15 项生产集成、最终 3 项后端单元通过；客户端 5 项通过。检查命令与边界见[后端记录](./checks/backend-directed.md)和[独立代码审计](./code-review.md)。邮箱大小写核对缺陷取得[失败证据](./checks/client-email-before.txt)，修复后[通过](./checks/client-email-after.txt)。
-- 浏览器计划单元 76 项通过；该 agent 使用 Node 24.19.0 / pnpm 11.19.0，未使用 Node 26 作为项目证据。真实 SMTP 夹具完成 TLS/STARTTLS/无认证收件自检；本次 SMTP 自动场景因用户接管未能执行。
+- 早期浏览器计划单元76项通过（该agent实际Node24.19.0）；合并基本设置后的实际运行器/计划265项在Node24.18.1通过。用户明确恢复原空间3后，最新完整SMTP专项phase=all通过；真实TLS/STARTTLS/无认证收件、恢复与生命周期全部执行。
 - 实际外部邮件环境尚待提供；已有实验收件证据不代替本次生产发送验收。
-- 本地适用检查已执行，首次失败与受影响重跑分别保留，见[本地记录](./checks/local.md)。默认浏览器已结束失败，并在用户接管后停止；后续 SMTP 专项也因同一控制权状态停止，无场景通过结果。详见[浏览器边界](./browser/README.md)。产品主表单已初审，完整状态/生命周期、最终设计结论及人工验收尚未完成。
+- 本地适用检查已执行，首次失败与受影响重跑分别保留，见[本地记录](./checks/local.md)。默认全量32阶段通过、6阶段失败并遇用户接管停止；历史结果未改写。明确恢复后完整SMTP专项通过10项业务检查、138项布局、73次实际请求，公共导航18个路由通过；详见[浏览器记录](./browser/README.md)。代码审计与本次SMTP业务设计审计通过；源稿窄修经另一人独立复核，人工验收尚未完成。
 
-UI 沿用桌面 `34:710` / 手机 `99:786` 主表单及 DG-SMTP 状态节点，复用 OwnerShell、SettingsHeading、SettingsCategories 与 HeroUI 控件。设计上下文和截图已实际读取；主表单真实页面已按相同视口对照，完整状态尚待浏览器报告。
+UI 沿用桌面 `34:710` / 手机 `99:786` 主表单及 DG-SMTP 状态节点，复用 OwnerShell、SettingsHeading、SettingsCategories 与 HeroUI 控件。设计上下文和截图已实际读取；最新完整专项已取得主表单与全部适用状态的真实两主题截图；独立对照结论见设计审计。
 
 ## 交互原型与审批边界
 
@@ -41,9 +41,9 @@ Node 24.18.1 下原型资源重建及 `node --check out/issue182-review/surface.
 
 生产主表单已用同一 Ego 任务空间实际查看：[桌面浅色](./production-desktop-light.png)、[桌面深色](./production-desktop-dark.png)、[手机浅色](./production-mobile-light.png)、[手机深色](./production-mobile-dark.png)及[稳定清除确认](./production-clear-mobile-dark.png)。视口为1440×1080与390×844。手机下部另有[浅色](./production-mobile-light-bottom.png)和[深色](./production-mobile-dark-bottom.png)截图。两端公共结构、右侧清除与字段图标符合获批方向；手机无横向溢出，清除166×44、Info44×44，Escape关闭回焦到清除按钮。截图中的字段值来自独立预览数据，密码未回显。
 
-独立设计初审发现待核对时隐藏清除入口与原型不符，已改为保留并禁用；发现外标签字重不一致，已统一medium。完整状态与上述改动后的实际复验仍由最终浏览器结果承接，不把旧截图当最新复验。Figma已实际同步并导出26张最终图，见[同步记录](./figma-sync.md)和[独立设计审计](./design-review.md)。
+独立设计初审发现待核对时隐藏清除入口与原型不符，已改为保留并禁用；发现外标签字重不一致，已统一medium。最新完整专项已复验字段字重、禁用入口、Tips阅读宽度、短视口、短弹窗与通知；真实截图统一在[browser/final](./browser/final/)。Figma已实际同步，main基本设置交付后又同步五分类及待核对字段/Info禁用状态，见[同步记录](./figma-sync.md)和[独立设计审计](./design-review.md)。
 
-真实预览登录没有返回邮件页，定位到已交付返回路径清单缺少`/settings/email`；取得[单元失败](./checks/return-before.txt)后仅增加该路径，修后[24项通过](./checks/return-after.txt)，子路径及外部URL继续拒绝。[最新预览HTTP](./checks/preview-http.txt)已验证真实登录与该返回位置；页内重新登录的Ego行为尚待新构建场景执行。
+真实预览登录没有返回邮件页，定位到已交付返回路径清单缺少`/settings/email`；取得[单元失败](./checks/return-before.txt)后仅增加该路径，修后[24项通过](./checks/return-after.txt)，子路径及外部URL继续拒绝。[最新预览HTTP](./checks/preview-http.txt)已验证真实登录与该返回位置；最新Ego专项中两端真实401→页内重新登录→凭证提交→返回邮件页通过，返回后密码为空。
 
 ## 并发 main 协调
 
@@ -53,12 +53,22 @@ Node 24.18.1 下原型资源重建及 `node --check out/issue182-review/surface.
 
 ## 交付与人工验收
 
-实际人工预览为[邮件服务](http://127.0.0.1:3183/settings/email)，对应获批反馈原型与Figma桌面34:710/手机99:786及同步状态。预览使用含最终medium字重与重新登录返回修复的隔离构建；main并发迁移协调未改变SMTP产品UI代码。独立测试凭证已只在当前会话提供，保存在忽略私有文件中，不进入代码、PR或公开证据。两个预览服务持续保留。
+实际人工预览为[邮件服务](http://127.0.0.1:3183/settings/email)，对应获批反馈原型与Figma桌面34:710/手机99:786及同步状态。预览已更新为最新标题左对齐、Tips、滚动和通知修正构建，账号/密码/密钥与用户发件人信息保留；见[例行更新证据](./checks/preview-resumed.txt)。仅对旧任务私有预览协调迁移账本，产品未添加兼容路径。独立测试凭证已只在当前会话提供，保存在忽略私有文件中，不进入代码、PR或公开证据。两个预览服务持续保留。
 
 人工验收检查桌面/手机浅深色、右上清除入口、字段图标、说明关闭和焦点、独立保存与已保存配置测试、成功保留原页。独立本地SMTP接收真实测试邮件；外部提供商与真实邮箱最终收件尚未验证。原型批准不等于产品人工验收，当前未收到产品验收结论。
 
-代码静态审计无新实现Required；唯一Required是新构建实际生命周期/重新登录验证证据。独立设计主表单初审完成，完整状态与最新改动未复验。Ego控制权停止后未绕过技能边界；恢复所需指令已明确给出，期间推进离线交付。草稿PR保留上述未完成项。
+公共来源差异也已单列：测试站点 description 为空，侧栏按真实数据上移；既有公共侧栏字重与旧 Figma 不一致属于范围外问题，本任务未改公共样式，也不称整页逐像素相同。见[设计审计](./design-review.md#公共来源与实际差异)。
+
+代码独立审计为0 Critical / 0未解决Required，完整SMTP与公共导航实际证据已关闭原生命周期缺口。先前接管按技能停止；用户明确恢复原空间3后才继续。设计与人工验收分别记录，草稿PR保留外部邮件最终收件、人工验收及默认全量未通过的事实。
 
 ## 分支与 PR
 
-已提交并推送 `codex/issue-182-smtp`，创建并附加[草稿PR #265](https://github.com/dnslin/ariso-next/pull/265)，关联Issue #182而不关闭Issue。main并发统计能力与迁移保留，工作区无产品未提交改动。实际PR创建状态见[GitHub回读](./checks/pr-state.json)；[检查查询](./checks/pr-checks.txt)显示无远端检查，不记作CI通过，也不等待不存在的日常工作流。证据链接提交后再实时核对最终head。未合并、未发布部署、未删除分支/worktree，预览持续保留。
+已提交并推送 `codex/issue-182-smtp`，创建并附加[草稿PR #265](https://github.com/dnslin/ariso-next/pull/265)，关联Issue #182而不关闭Issue。main并发统计和基本设置能力均保留；当前提交状态以最后GitHub回读为准。实际PR创建状态见[GitHub回读](./checks/pr-state.json)；[检查查询](./checks/pr-checks.txt)显示无远端检查，不记作CI通过，也不等待不存在的日常工作流。后续返修统一提交推送并回读实际head与检查状态。未合并、未发布部署、未删除分支/worktree，预览持续保留。
+
+## 恢复后的 main 与 UI 修正
+
+main合入基本设置PR #262（7e88af4a）后，本分支merge0b05e3ee保留真实基本设置与邮件服务分类、共同导航当前项和两页100px通知偏移；默认流程保留site-general/smtp各一次。最新Node24.18.1受影响运行器单元265项、类型与构建通过。该次main未新增数据库迁移。
+
+实际失败先保留后修复：手机保存新增凭据区造成56px滚动，局部关闭SMTP滚动锚定后严格滚动断言通过；HeroUI说明框宽度/重复内距和短弹窗标题行/关闭位置还原Figma；共享Toast覆盖样式暴露后层缩小关闭按钮，按组件真实front/expanded/退出状态隐藏后层，44px断言及连续真实双保存通过。浏览器辅助脚本修正仅等待有限时间动画、真实Tab/原生outside点击及可观察回焦，不删除或放宽断言。
+
+最新完整专项含真实get-session429（x-retry-after8秒），只读查询按服务端窗口等待后仍严格验证200+null；sign-out未重复。browserErrors为空只代表页面运行/资源错误为空，不代表没有实际HTTP诊断。所有失败报告、截图、审计与适用范围见统一浏览器记录。

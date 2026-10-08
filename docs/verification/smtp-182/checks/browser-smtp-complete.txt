@@ -1,0 +1,87 @@
+Error: ElementResolutionError: page.click timed out after 3000ms: Selector h1 matched 1 elements, but none can receive input; element is hidden or inert
+    at #retryElementAction (file:////[eval1]:18884:27)
+    at async file:////[eval1]:18968:29
+    at async file:////[eval1]:16691:28
+    at file:////[eval2]:706:20
+
+ego's nodejs process exited with code 1.
+Browser stage failed (smtp): AssertionError [ERR_ASSERTION]: Ego browser verification failed (smtp.log)
+
+1 !== 0
+
+    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-182-smtp/ariso/scripts/verify-browser.mjs:225:12)
+    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-182-smtp/ariso/scripts/browser-stages.mjs:17:5)
+    at async file:///Users/dnslin/.codex/worktrees/issue-182-smtp/ariso/scripts/verify-browser.mjs:709:24
+{ taskSpaceId: 3, ownership: 'agent' }
+[p1 "Ariso" | space "Ariso Issue 182 SMTP"(3): 1 managed, 0 untracked — p1* "Ariso"]
+root
+  container
+    anchor "Ariso 首页" [ref=590, url=http://ariso-52177.localhost:52177/]
+      text "Ariso"
+    button "菜单" [ref=591, loc=css:button[aria-label="菜单"]]
+      svg_root
+  container
+    heading
+      svg_root
+      text "站点设置"
+    paragraph
+      text "管理站点、图片处理与账号偏好。"
+    text "设置分类"
+    button "邮件服务 设置分类" [ref=592]
+      svg_root
+      text "邮件服务"
+      svg_root
+    container
+      heading
+        svg_root
+        text "SMTP 邮件服务"
+      paragraph
+        text "已保存配置 · 下次发送即生效"
+      button [ref=593]
+        svg_root
+        text "清除用户名和密码"
+      button "清除 SMTP 凭据说明" [ref=594, loc=css:button[aria-label="清除 SMTP 凭据说明"]]
+        svg_root
+    form
+      container
+        svg_root
+        text "SMTP 主机"
+      textbox "SMTP 主机" [ref=595, loc=css:input[name="host"]]
+        text "127.0.0.1"
+      container
+        svg_root
+        text "端口"
+      spinbutton "端口" [ref=596, loc=css:input[name="port"]]
+        text "52178"
+      svg_root
+      text "连接安全"
+      button "TLS 连接安全" [ref=597]
+        text "TLS"
+        svg_root
+      container
+        svg_root
+        text "SMTP 用户名"
+      textbox "SMTP 用户名" [ref=598, loc=css:input[name="username"]]
+        text "browser-smtp"
+      container
+        svg_root
+        text "发件人名称"
+      textbox "发件人名称" [ref=599, loc=css:input[name="fromName"]]
+        text "Ariso 浏览器测试"
+  container
+    button [ref=600]
+      svg_root
+      text "发送测试邮件"
+    button [ref=601]
+      svg_root
+      text "保存邮件设置"
+  dialog "清除 SMTP 凭据说明" [ref=602, loc=role:dialog[name="清除 SMTP 凭据说明"]]
+    paragraph
+      text "仅用于允许无认证发送的 SMTP 中继。清除会同时保存空用户名和密码，主机、端口、连接方式及发件人保留。"
+    button [ref=603]
+      text "关闭说明"
+
+
+AssertionError [ERR_ASSERTION]: Focused browser stages failed
+    at file:///Users/dnslin/.codex/worktrees/issue-182-smtp/ariso/scripts/verify-browser.mjs:715:12
+Browser report: /Users/dnslin/.codex/worktrees/issue-182-smtp/ariso/test-results/browser-smtp-complete

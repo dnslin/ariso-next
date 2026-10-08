@@ -4,7 +4,7 @@
 
 ## 结论与发现
 
-**最终阶段结论：静态审计通过，0 项 Critical；1 项 Required（真实 SMTP 浏览器验证未执行）保持开放。** 后端和 UI 静态范围未发现其他必改问题。最终全量检查、浏览器验证、独立设计审计和所有者人工验收仍由统一记录维护，此结论不等于整个 Issue 可以合并。
+**最终代码审计通过：0 项 Critical，0 项未解决 Required。** 完整 SMTP 专项和公共导航已实际通过，先前邮箱归一、通知堆叠与生命周期验证缺口均有修复/复验依据。默认全量仍为 failed，非 SMTP 通知消费补验已通过；独立设计结论、外部 SMTP 最终收件和所有者人工验收分别按统一记录维护；本结论不代替人工验收，也不把专项改记为默认全量通过。
 
 ### Required / P2（已修复）：邮箱大小写归一规则不一致
 
@@ -131,3 +131,109 @@ e2e 的实际 401 恢复现在点击 SMTP 页内“重新登录”，检查 logi
 合并后的离线受影响检查已有真实结果：[5个 runtime/SMTP 文件45项通过](./checks/integration-concurrency.txt)；[main26→SMTP27 两次 prestart](./checks/migration-upgrade.txt)通过，analytics 索引保留、SMTP 表创建，28个正式迁移且重复执行成功。审计者实际读了结果，没有机械重跑。
 
 **本阶段最终审计：0 Critical，1 未解决 Required / P2（SMTP 真实浏览器执行与生命周期回归证据缺失）。** 代码静态、条件 mutation、相关单元/协议集成及合并迁移复审结论保持通过。有效测试场景已经接默认流程，但尚未运行不能关闭 Required。独立设计最终状态、外部 SMTP 最终收件和所有者人工验收另依统一记录，PR 应保持草稿；后续取得明确恢复授权和真实结果后再定向复审。
+
+## 用户恢复授权后的第一次专项结果
+
+用户已明确允许恢复原空间3，主 agent 取得 agent ownership；这解除先前浏览器接管的停止条件。独立审计者仍只读报告，没有操作 Ego。
+
+`test-results/browser-smtp-resumed/smtp.json` 已在 2026-10-08 09:24:32 UTC 完成，结果 failed，阶段 representative-unconfigured，1个请求、1个布局、0项完成检查。错误为 page.waitForFunction 在 p1 的 `/settings/email` 超时（5000ms）。对应 runner 同为 failed、临时目录清理成功。原停止结果继续保留，不将第一次恢复尝试改写为成功。
+
+当前 Required 仍开放：这次已进入 SMTP，但尚不能证明完整表单、协议交互、恢复、生命周期或重新登录场景通过。超时原因尚待主 agent 定位并按受影响范围重新运行，本次审计没有仅凭超时栈推断产品缺陷。
+
+## 截图稳定等待修复与第二次专项结果
+
+复读 e2e/smtp-page.mjs 唯一新增条件及已安装 HeroUI scroll-shadow.css。该库明确使用 animation-timeline:scroll(self block/inline)；滚动时间线的进度取决于滚动位置，不能按经过时间期待结束。仅等待 DocumentTimeline 上非无限动画是对首个假阴性超时的根因修正。Modal/Toast 的有限时间动画仍检查 running 状态，超时仍为5000ms；原截图、目标尺寸、溢出、焦点和交互断言未删除或放宽。产品代码未变，无需以此重建产品。
+
+只读 `test-results/browser-smtp-verified/smtp.json`：第二次专项在 09:26:51 UTC 结束 failed，仍处于 representative-unconfigured，14个布局、1个请求、0项完成检查；这次失败为短视口最后字段不可达。动画等待问题已越过，但不能以更多截图代替完整场景通过。主 agent 已获告知，Required 继续开放，短视口原因待按实际页面定位。
+
+## 短视口测试更正与减少动态效果调用链
+
+复读短视口辅助函数差异。原先检查 from-email，该字段并非最后输入；对 resize/theme 后仍持有焦点的同一节点再次 focus 也不会产生用户键盘导航的滚动。主 agent 在同一页面实际键盘重现后，只修改测试：聚焦 from-email，再真实 Tab 进入最后 password。新断言同时要求 activeElement 为 password、字段完整位于 viewport 与 shell-content 范围，因此增加了固定 footer 不遮挡的检查。没有放宽尺寸、滚动或断言，也没有改产品代码。
+
+减少动态效果的实际调用链是 captureSmtpLayouts → setTheme（e2e/browser-geometry.mjs）→ CDP Emulation.setEmulatedMedia，features 明确包含 prefers-reduced-motion=reduce；两主题和各宽度沿此配置执行。此处不是仅报告文字宣称覆盖。当前测试没有额外断言 matchMedia 或与 no-preference 比较，所以审计只认可“在模拟 reduce 条件下运行”，不扩大为其他动效对照验证。
+
+新 browser-smtp-final 运行报告当前未完成，仍不能关闭唯一 Required。
+
+## Tips 阅读宽度与真实 outside pointer 复审
+
+只读复核 smtp-tip.tsx 和测量断言。原桌面 tip 同时存在两个 max-width 类，手机 Content p-4 加 HeroUI Dialog 默认 p-4 形成重复内边距；现用单一 min(320px,100vw−32px) 阅读面宽度，Dialog p-0，desktop 不再追加冲突 max-w-80。复读已安装 HeroUI popover.css 的 dialog p-4 与 content p-0，改动直接针对真实组件组合差异，没有改变业务规则或公共组件。
+
+新增浏览器断言测量 Tooltip 本身或 Popover Dialog 外层的实际宽度，要求不超过 min(320,viewport−32)，只允许0.5px子像素测量误差。既有关闭、焦点、连续阅读及几何断言均保留。Popover 外部区域已 inert，按可见 h1 的 DOM 矩形中心发真实鼠标点击，验证 outside dismiss；没有移除 inert、程序化 eval click 或绕过控件行为。
+
+只读 browser-smtp-tip-fixed/smtp.json：09:36:26 UTC 结束 failed，1项完成检查、18布局、2请求，Mobile Tips close returns focus 断言为 false。阅读宽度修复静态有效，但该失败尚待主 agent 在真实页面定位回焦行为或帧时序，不能改记通过。唯一运行证据 Required 保持开放。
+
+## Tips 回焦等待边界复审
+
+主 agent 在失败后的真实静止页面读到 sourceFocused=true、tipPresent=false，定位到 FocusScope/rAF 回焦晚于弹层消失。复读 helper：显式关闭后增加 waitForFunction 等待同一源按钮成为 activeElement，再执行原焦点断言。未扩大超时、未加固定 sleep、未删断言或修改产品；这个等待与既有 outside close 分支一致，仍会捕获无法归焦的真实失败。
+
+只读 browser-smtp-state-check 的当前 runner 为 running、无 finishedAt，smtp.json 尚未生成。23张已生成截图和上述测试更正不算专项通过，Required 继续开放，待最终报告。
+
+## 手机保存滚动与对话框局部还原复审
+
+独立读取 browser-smtp-state-check 最终失败证据：save-and-secrets 阶段严格 sourceState 对比显示同一路由/window scroll0，shell-content.scrollTop 从320.5变成376.5，真实增加56px。此为实际手机保存行为偏差，不改称测试通过。该轮已有3项完成检查、58个布局、9个请求，只支持已到达的局部状态。
+
+首次凭据保存会新增44px清除入口和12px间隔；本次在 SMTP section 设置 overflow-anchor:none，局部取消浏览器对该内容区的自动锚定补偿。它直接处理动态内容插入的滚动来源，不引入保存滚动快照或命令式恢复，也不改变公共滚动组件及其他路由。严格 sourceState 对比保留，等待新生产构建证明修复。
+
+复读独立 design-review 第9项的实际 Figma 回读依据：标题/关闭44px行、正文与操作16px、操作48px；产品 Header 新增 min-h-11/items-center，Footer pt-5 改pt-4，关闭仍44、按钮仍48、正文滚动/禁用/焦点分支无变化。此为本次 SMTP 短对话框局部还原，不另建规则、不修改来源匹配错误实现。最终截图复核仍由设计审计者承担。
+
+Tips 宽度/单层内距、有限 DocumentTimeline 等待、真实 Tab 短视口、inert 背景原生 outside pointer 与回焦等待的既有复审结论保持成立。新增产品改动静态通过，0 新 Critical / Required；唯一 Required 继续等待新构建上的完整 SMTP 行为结果。
+
+## Required / P2：连续通知堆叠暴露后层缩放关闭按钮
+
+独立读取 browser-smtp-scroll-modal 最终结果：保存滚动已越过，手机 testing-390 在关闭通知41.8×41.8目标处失败，44px严格检查保留。复读 Providers 与已安装 HeroUI toast.css：collapsed 后层 Toast 缩放0.95，库原本隐藏并禁用后层 close；共享 Providers 无条件 pointer-events-auto/opacity100 覆盖这一状态，直接造成后层空白通知出现缩小的关闭目标。它是本 Issue 连续保存/测试复用公共通知暴露的实际适用缺陷。
+
+建议最小修共享 CloseButton：仅非 exiting/hidden 的 frontmost 或 expanded 状态显示并启用44px关闭，单通知仍常显；collapsed 后层隐藏。用可见性状态表达真正隐藏，不仅降低opacity而保留几何可见性；不修改共用44阈值、不扩大按钮掩盖父scale。保持库退出隐藏语义，复验 SMTP 连续通知以及既有消费路由的通知状态。
+
+该共享修复必要且属于本次复用闭环，不引入新通知架构；与 origin/main 后续 Providers 的 general 路径合并时应同时保留 general/email 两者。当前尚未修复/实测，此项为新的实现 Required，原完整 SMTP 实际验证 Required 继续开放。审计者只读，没有修改产品或操作 Ego。
+
+## 第二次并行 main 合并与通知修复复审
+
+只读比较 merge `0b05e3ee610a31c592f1e70214d26795e3973356` 的两个 parent：SMTP `5b89b742`、main 基本设置 `7e88af4a`。逐项检查公共导航、设置分类、Providers、shell-navigation、browser-plan 与 verify-browser 及两份参数测试，未运行 Ego、测试或构建。
+
+- OwnerShell 使用 main 已交付 `/settings/general` 入口，同时保留 processing/account/api/email 高亮。SettingsCategories 保留基本设置和邮件服务；main 用于未保存离页处理的 onNavigate 接口仍完整，SMTP 沿原 router.push 消费，没有改变基本设置职责。
+- Providers 同时保留 general/email 的 footer 避让位置；shell-navigation 案例保留所有既有路由并包含两者。没有将另一项能力覆盖成 SMTP 专用入口。
+- `scripts/browser-plan.mjs:23–24` 的默认 stages 明确包含 site-general、smtp 各一次。完整 runner 在390循环执行该列表；两项业务脚本各自覆盖自己的宽度，默认未附定向 phase，所以各自全部场景有真实调用入口。
+- site-general 的 config 只生成 siteGeneralPhase，SMTP 只生成 smtpPhase；focusedConfig 只展开所选 suite 的 plan.config。默认 business 调用传 identityConfig，不展开定向 config。两脚本分别只读自身 phase，siteGeneralPhase 不会误分发给 SMTP。
+- 两个 parent 的测试均保留，参数适用集合、完整 stage 列表和错误参数断言未删除或减弱。实际读取主 agent [受影响参数测试结果](./checks/general-sync-unit.txt)：2文件265项通过；审计者没有重复执行。
+
+本轮 CloseButton 的基础 invisible 配合 frontmost/expanded 且非 exiting/hidden 祖先条件，直接恢复 HeroUI 对后层缩放关闭按钮的隐藏语义。visibility:hidden 使后层目标不可输入；前层/展开状态保持44px、常显。退出或超量隐藏的通知不会被新 visible 条件重新暴露，没有改全局尺寸阈值或通知布局。
+
+新增实际连续保存检查先完成两次真实 PATCH，等待至少两条非退出/隐藏 Toast，再检查共用几何与各条关闭目标 computed visibility。后续未保存测试仍对最新已保存名称比较；没有把新增保存当作隐式测试保存。追加清除前后 sourceState 严格相等断言也保留。
+
+## 最新专项真实结果与剩余 Required
+
+只读 `test-results/browser-smtp-general-toast/smtp.json`，该轮在2026-10-08 09:56:52 UTC结束 failed。已完成桌面/手机表单和 Tips、两宽度 save-and-secrets（保留密码、替换、清除保持草稿及滚动）、真实 TLS/STARTTLS/无认证收件，以及1440未知保存回读与并行写入恢复。两条 stacked-save-notices 布局均只有一个实际可见关闭目标，尺寸均44×44；新增至少两条 Toast 与逐条 visibility 断言也已越过。
+
+因此通知堆叠 Required 的实现修复与桌面/手机定向回归已通过。公共消费路由复验仍待主 agent 后续实际结果，不把该两处 SMTP 状态扩大成全部消费页面通过。
+
+本轮失败位于 `e2e/smtp-lifecycle.mjs:38`：sign-out 实际返回200后，get-session 返回真实限流消息，未返回null。该响应不能证明无所有者会话；严格 null 断言仍有效，没有被忽略或改为空测试。完整延迟响应、卸载和真实重新登录闭环尚未全部完成，唯一 Required / P2继续开放。既有失败与停止历史不改写为成功，后续只复审受影响生命周期的实际结果。
+
+**本阶段结论：0 Critical，0 未修复产品实现 Required，1 未解决运行验证 Required。** 没有新增范围、职责或维护性发现；功能审计结论与独立设计审计、外部邮件最终送达和所有者人工验收仍分别记载。
+
+## 最终生命周期修正与完整专项复审
+
+只读复核最终 `e2e/smtp-lifecycle.mjs`：实际 sign-out POST 只调用一次且仍要求200。随后 get-session 遇429，只按本次真实 x-retry-after 窗口重试只读 GET；最多3次、窗口必须大于0且不超过60秒，第三次仍限流会失败。非429仍严格断言200和JSON null，不把限流响应解释为注销成功，不禁用限流，也不重复退出写入。重新登录保持真实链接、输入、键盘提交及返回 `/settings/email` 后空密码断言。
+
+`e2e/smtp-page.mjs` 将既有有限 DocumentTimeline 动画稳定等待移到 readGeometry 之前，截图也保持同样等待；5000ms和几何断言均未放宽。HeroUI 的滚动时间线仍排除，Modal/Toast 有限时间动画继续要求结束。themedGeometry 实际遍历light/dark并在结束后恢复light，读错、保存/发送中、接受结果、密码未知、回读不一致及失效状态均通过这个调用捕获两主题；没有代替业务断言、另发请求或伪造状态。
+
+实际读取安装库 modal.css，Modal.Header 默认 flex-col；SMTP短对话框显式 flex-row/items-center/justify-start/text-left使标题保持获批44px标题行的左对齐。关闭44px、正文滚动、busy禁用和区域间距语义保留。截图视觉结论由独立设计评审者负责，本审计不将源码修正代替视觉对照。
+
+[冻结最终SMTP场景](./browser/final/smtp.json) 与实际 test-results/browser-smtp-themes-final/smtp.json 的 JSON 内容一致（公开记录经过格式化）；[最终运行器](./browser/final/runner.json) status/stage 均passed，结束2026-10-08 10:12:14 UTC，主 agent 命令exit0。phase=all实际执行representative/interactions/recovery：10项业务检查、138项布局、73次请求、10项真实HTTP SMTP诊断，browserErrors为空。两宽度实际注销、SMTP401、迟到保存200、真实Next Link卸载后的PATCH/POST/GET迟到结果，以及重新登录空密码闭环均完成。
+
+最终记录保留1次 get-session 429、retryAfter8秒以及10项有意触发的HTTP502诊断。browserErrors为空表示没有浏览器运行/资源错误，不表示HTTP错误为0。故障场景中仍有真实服务器响应与SMTP投递确定性；条件 mutation、协议测试和最终浏览器证据可以互相补充，不能相互替代。
+
+[公共导航场景](./browser/shell-navigation/shell-navigation.json) 与[运行器](./browser/shell-navigation/runner.json)均passed；18实际路由×两宽度×两主题的公共区域、分类、高亮和10项图标状态共82布局已核对。general和email同时覆盖，没有把主入口合并后的公共消费检查局限在SMTP路由。额外 site-general consumers 当前runner仍running，未取得finishedAt，本审计不将它写为通过。
+
+原默认运行器仍failed，6个失败阶段tokens-1440/processing/library/library-batch/library-reprocess/library-copy继续保留；用户接管停止及此前SMTP动画、短视口、焦点、滚动、通知、429专项失败也保留历史结果。最新专项pass不修改它们，也不构成默认全量pass。
+
+**最后未解决的SMTP运行验证 Required已关闭；最终0 Critical、0未解决Required。** 没有新的产品行为、职责、生命周期或不必要复杂度发现。本轮没有操作Ego、修改产品、重跑作者已通过检查。外部最终收件、真实设备触控/安全区、独立设计最终结论和所有者人工验收仍是各自独立完成状态；PR是否转为非草稿遵守统一执行记录和人工验收条件。
+
+## 非 SMTP 公共消费最终补验
+
+最后只读[基本设置消费者](./browser/site-consumers/site-general.json)、[公共壳](./browser/site-consumers/owner-shell.json)及[运行器](./browser/site-consumers/runner.json)：消费者 phase=consumers/passed、runner stage/site-general均passed，结束2026-10-08 10:17:26 UTC，实际命令exit0。原公开地址/站点数据与原生Clipboard恢复标志均true，没有清理错误，browserErrors为空。10项布局、1项业务检查覆盖真实长地址复制、页面/滚动/选择/焦点保留、拒绝后完整手工文本以及已有存储/处理路由导航。
+
+实际回读 SavedAddresses，成功复制会调用共享 HeroUI toast，随后复制会关闭上一条通知再发布新通知；本轮真实复制已执行该非SMTP消费路径。它与SMTP两宽度连续保存的严格堆叠/44px目标回归相互补充；本轮报告没有独立列出复制通知关闭目标测量，不能把它扩称另一轮全部Toast状态几何检查。
+
+公共壳报告为passed：9项业务检查、33条页面记录（11路由×桌面/手机/平板）、11条折叠状态记录；已实现消费页面的品牌、公共入口、焦点、收缩与手机短视口行为保留。该结果不改写默认全量失败的其他业务模块。
+
+非SMTP公共通知消费与公共壳复验已完成，未发现新Critical、Required或需要额外产品改动的问题。**最终代码审计仍为通过，0 Critical、0未解决Required。** 独立设计对照及其Figma来源同步由设计评审维护；现有描述空值导致的公共内容移位、Sidebar既有字体差异不能由本次代码审计口头改记已修复，按对应设计证据区分来源、影响与范围。

@@ -9,7 +9,7 @@ import { Info } from 'lucide-react';
 const explanation =
   '仅用于允许无认证发送的 SMTP 中继。清除会同时保存空用户名和密码，主机、端口、连接方式及发件人保留。';
 const tipClass =
-  'max-w-[calc(100vw-32px)] rounded-xl border border-border bg-surface p-4 text-[13px] leading-normal text-foreground shadow-none';
+  'max-w-[min(320px,calc(100vw-32px))] rounded-xl border border-border bg-surface p-4 text-[13px] leading-normal text-foreground shadow-none';
 
 export function SmtpTip({ disabled }: { disabled: boolean }) {
   const [mobile, setMobile] = useState(false);
@@ -47,7 +47,7 @@ export function SmtpTip({ disabled }: { disabled: boolean }) {
           <Popover.Dialog
             data-testid="smtp-tip-content"
             aria-label="清除 SMTP 凭据说明"
-            className="grid max-w-80 gap-3"
+            className="grid gap-3 p-0"
           >
             <p>{explanation}</p>
             <Button
@@ -77,7 +77,7 @@ export function SmtpTip({ disabled }: { disabled: boolean }) {
       {button}
       <Tooltip.Content
         data-testid="smtp-tip-content"
-        className={tipClass + ' max-w-80'}
+        className={tipClass}
         placement="bottom end"
         onPointerEnter={() => setOpen(true)}
         onPointerLeave={() => setOpen(false)}

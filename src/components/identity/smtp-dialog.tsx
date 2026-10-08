@@ -55,9 +55,9 @@ export function SmtpDialog({
             aria-label="关闭"
             isDisabled={editor.busy}
             onPress={editor.closeDialog}
-            className="absolute top-3 right-3 size-11 min-w-11 bg-transparent hover:bg-transparent data-[pressed=true]:transform-none"
+            className="absolute top-7 right-6 size-11 min-w-11 bg-transparent hover:bg-transparent data-[pressed=true]:transform-none sm:right-7 [&_svg]:size-5"
           />
-          <Modal.Header className="m-0 p-0 pr-10">
+          <Modal.Header className="m-0 flex min-h-11 flex-row items-center justify-start p-0 pr-10 text-left">
             <Modal.Heading className="text-[22px] font-medium leading-normal">
               {title}
             </Modal.Heading>
@@ -112,7 +112,7 @@ export function SmtpDialog({
               </p>
             ) : null}
           </Modal.Body>
-          <Modal.Footer className="m-0 grid grid-cols-2 gap-3 p-0 pt-5">
+          <Modal.Footer className="m-0 grid grid-cols-2 gap-3 p-0 pt-4">
             <Button
               variant="outline"
               isDisabled={editor.busy}

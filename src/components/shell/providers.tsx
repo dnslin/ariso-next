@@ -49,7 +49,7 @@ export function Providers({ children }: { children: ReactNode }) {
                 </Toast.Content>
                 <Toast.CloseButton
                   aria-label="关闭通知"
-                  className="pointer-events-auto size-11 border-0 bg-transparent opacity-100"
+                  className="invisible pointer-events-auto size-11 border-0 bg-transparent opacity-100 [[data-expanded=true]:not([data-exiting=true]):not([data-hidden=true])_&]:visible [[data-frontmost=true]:not([data-exiting=true]):not([data-hidden=true])_&]:visible"
                 />
               </Toast>
             )}

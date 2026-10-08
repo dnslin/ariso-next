@@ -147,7 +147,7 @@ try {
       );
       for (const width of [1440, 390]) {
         await resizeViewport(page, width);
-        await ui.geometry(`loading-${width}`);
+        await ui.themedGeometry(`loading-${width}`);
       }
       assert.equal(
         await page.evaluate(
@@ -268,7 +268,7 @@ try {
           true,
           'Saving prevents duplicate writes',
         );
-        await ui.geometry(`saving-${width}`);
+        await ui.themedGeometry(`saving-${width}`);
         await transport.release();
         await idle();
         assert.deepEqual(
@@ -312,6 +312,36 @@ try {
         await omission.dispose();
       }
       assert.equal((await request()).hasPassword, true);
+      await smtpFill(page, 'from-name', `连续保存名称 ${width}`);
+      await readySave();
+      await page.waitForFunction(
+        () =>
+          document.querySelectorAll(
+            '[data-slot="toast"]:not([data-exiting="true"]):not([data-hidden="true"])',
+          ).length >= 2,
+      );
+      await ui.themedGeometry(`stacked-save-notices-${width}`);
+      const notices = await page.evaluate(() =>
+        [...document.querySelectorAll('[data-slot="toast"]')]
+          .filter(
+            (node) =>
+              node.dataset.exiting !== 'true' && node.dataset.hidden !== 'true',
+          )
+          .map((node) => ({
+            front: node.dataset.frontmost === 'true',
+            expanded: node.dataset.expanded === 'true',
+            closeVisibility: getComputedStyle(
+              node.querySelector('[data-slot="toast-close"]'),
+            ).visibility,
+          })),
+      );
+      assert.ok(notices.some((notice) => notice.front));
+      for (const notice of notices)
+        assert.equal(
+          notice.closeVisibility,
+          notice.front || notice.expanded ? 'visible' : 'hidden',
+          'Collapsed notifications hide their scaled close targets; the front or expanded notification keeps its close available',
+        );
       await smtpFill(page, 'password', 'deliberately-wrong-fixture-password');
       const replacement = await smtpTransport(page);
       try {
@@ -371,11 +401,11 @@ try {
           true,
           'Pending send prevents duplicate testing',
         );
-        await ui.geometry(`testing-${width}`);
+        await ui.themedGeometry(`testing-${width}`);
         await send.release();
         await idle();
         await testResult('accepted');
-        await ui.geometry(`accepted-${width}`);
+        await ui.themedGeometry(`accepted-${width}`);
         assert.equal(
           (await send.observed()).requests.filter(
             (item) => item.method === 'POST',
@@ -394,7 +424,7 @@ try {
       assert.equal(receipt.secure, true);
       assert.equal(
         (await request()).fromName,
-        `保存名称 ${width}`,
+        `连续保存名称 ${width}`,
         'Testing does not silently save the dirty form',
       );
       assert.equal(await smtpValue(page, 'from-name'), '未保存的测试名称');
@@ -413,6 +443,7 @@ try {
       await page.waitForSelector(smtpControl('dialog-clear'));
       const clear = await smtpTransport(page);
       try {
+        const source = await ui.sourceState();
         await ui.activate('clear-confirm');
         await clear.settled('PATCH');
         await page.waitForSelector(smtpControl('dialog-clear'), {
@@ -422,6 +453,11 @@ try {
           (selector) =>
             document.activeElement === document.querySelector(selector),
           smtpControl('save'),
+        );
+        assert.deepEqual(
+          await ui.sourceState(),
+          source,
+          'Clearing credentials retains the source page and scrolling',
         );
         const written = (await clear.observed()).requests.find(
           (item) => item.method === 'PATCH',
@@ -486,7 +522,7 @@ try {
       await page.reload();
       await readFault.settled();
       await page.waitForSelector(`${smtpControl('page')}[data-state="error"]`);
-      await ui.geometry('read-error');
+      await ui.themedGeometry('read-error');
       await ui.activate('reload');
       await smtpReady(page);
     } finally {
@@ -536,7 +572,7 @@ try {
               true,
               'Unknown send directs owner to check their mailbox',
             );
-          await ui.geometry(`error-${target}-${width}`);
+          await ui.themedGeometry(`error-${target}-${width}`);
           assert.equal(
             (await observed.observed()).requests.filter(
               (item) => item.method === 'POST',
@@ -581,7 +617,7 @@ try {
           ).length,
           1,
         );
-        await ui.geometry(`save-readback-${width}`);
+        await ui.themedGeometry(`save-readback-${width}`);
         await ui.activate('resume-current');
         await page.waitForSelector(smtpControl('pending'), { state: 'hidden' });
         await idle();
@@ -621,7 +657,7 @@ try {
           1,
           'Unknown clear never blindly repeats PATCH',
         );
-        await ui.geometry(`clear-readback-${width}`);
+        await ui.themedGeometry(`clear-readback-${width}`);
         await ui.activate('resume-current');
         await page.waitForSelector(smtpControl('pending'), { state: 'hidden' });
         await idle();
@@ -644,7 +680,7 @@ try {
           beforeCount + 1,
           'SMTP really receives mail before the browser loses acceptance response',
         );
-        await ui.geometry(`send-response-unknown-${width}`);
+        await ui.themedGeometry(`send-response-unknown-${width}`);
         assert.equal(
           (await lostSend.observed()).requests.filter(
             (item) => item.method === 'POST',
@@ -654,6 +690,7 @@ try {
       } finally {
         await lostSend.dispose();
       }
+      report.stage = `unknown-save-recovery-${width}`;
       await verifyUnknownSmtp(page, {
         width,
         fixture,
@@ -665,6 +702,7 @@ try {
         readySave,
         acceptedTest,
       });
+      report.stage = `session-lifecycle-${width}`;
       await verifySmtpLifecycle(page, {
         config,
         width,

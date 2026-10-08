@@ -45,28 +45,40 @@ export async function smtpConfigure(page, target, credentials = {}) {
   );
 }
 export function createSmtpPage(page, config, report) {
-  async function screenshot(name) {
-    const filename = `smtp-${name}.png`;
+  async function settledLayout() {
     await page.waitForFunction(
       () =>
         document
           .getAnimations()
           .filter(
             (animation) =>
+              animation.timeline instanceof DocumentTimeline &&
               animation.effect?.getTiming().iterations !== Infinity,
           )
           .every((animation) => animation.playState !== 'running'),
       undefined,
       { timeout: 5000 },
     );
+  }
+  async function screenshot(name) {
+    const filename = `smtp-${name}.png`;
+    await settledLayout();
     await page.screenshot({ path: join(config.output, filename) });
     report.screenshots.push(filename);
   }
   async function geometry(name) {
+    await settledLayout();
     const layout = await readGeometry(page);
     assertGeometry(layout, name);
     report.layouts.push({ name, ...layout });
     await screenshot(name);
+  }
+  async function themedGeometry(name) {
+    for (const theme of ['light', 'dark']) {
+      await setTheme(page, theme);
+      await geometry(`${name}-${theme}`);
+    }
+    await setTheme(page, 'light');
   }
   async function activate(name) {
     await page.focus(smtpControl(name));
@@ -100,7 +112,15 @@ export function createSmtpPage(page, config, report) {
       smtpControl(name),
     );
   }
-  return { screenshot, geometry, activate, sourceState, dismiss, returned };
+  return {
+    screenshot,
+    geometry,
+    themedGeometry,
+    activate,
+    sourceState,
+    dismiss,
+    returned,
+  };
 }
 
 export async function captureSmtpLayouts(
@@ -122,6 +142,21 @@ export async function captureSmtpLayouts(
       if (width < 640) await page.keyboard.press('Enter');
       await page.waitForSelector(smtpControl('tip-content'));
       await ui.geometry(`tip-${theme}-${width}`);
+      const tipBounds = await page.evaluate((selector) => {
+        const content = document.querySelector(selector);
+        const surface =
+          content.dataset.slot === 'popover-dialog'
+            ? content.parentElement
+            : content;
+        return {
+          width: surface.getBoundingClientRect().width,
+          maximum: Math.min(320, innerWidth - 32),
+        };
+      }, smtpControl('tip-content'));
+      assert.ok(
+        tipBounds.width <= tipBounds.maximum + 0.5,
+        'SMTP explanation retains its approved reading width',
+      );
       await page.keyboard.press('Escape');
       await page.waitForSelector(smtpControl('tip-content'), {
         state: 'hidden',
@@ -152,7 +187,14 @@ export async function captureSmtpLayouts(
       } else {
         await ui.activate('tip');
         await page.waitForSelector(smtpControl('tip-content'));
-        await page.click('loc=role:heading[name="站点设置"]');
+        // Popover makes the background inert; click its visible outside area.
+        const outside = await page.evaluate(() => {
+          const rect = document.querySelector('h1').getBoundingClientRect();
+          return { x: rect.x + rect.width / 2, y: rect.y + rect.height / 2 };
+        });
+        await page.mouse.click(outside.x, outside.y, {
+          label: '关闭手机 SMTP 说明',
+        });
         await page.waitForSelector(smtpControl('tip-content'), {
           state: 'hidden',
         });
@@ -176,6 +218,11 @@ export async function captureSmtpLayouts(
         await page.waitForSelector(smtpControl('tip-content'), {
           state: 'hidden',
         });
+        await page.waitForFunction(
+          (selector) =>
+            document.activeElement === document.querySelector(selector),
+          smtpControl('tip'),
+        );
         assert.equal(
           await page.evaluate(
             (selector) =>
@@ -188,12 +235,23 @@ export async function captureSmtpLayouts(
       }
     }
     await resizeViewport(page, 390, 400);
-    const lastField = await smtpField(page, 'from-email');
-    await page.focus(lastField);
+    const lastField = await smtpField(page, 'password');
+    await page.focus(await smtpField(page, 'from-email'));
+    await page.keyboard.press('Tab');
     await ui.geometry(`${name}-short-${theme}`);
     const reachable = await page.evaluate((selector) => {
-      const rect = document.querySelector(selector).getBoundingClientRect();
-      return rect.top >= 0 && rect.bottom <= innerHeight;
+      const field = document.querySelector(selector);
+      const rect = field.getBoundingClientRect();
+      const content = document
+        .querySelector('.shell-content')
+        .getBoundingClientRect();
+      return (
+        document.activeElement === field &&
+        rect.top >= content.top &&
+        rect.bottom <= content.bottom &&
+        rect.top >= 0 &&
+        rect.bottom <= innerHeight
+      );
     }, lastField);
     assert.equal(
       reachable,

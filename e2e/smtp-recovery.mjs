@@ -65,7 +65,7 @@ export async function verifyUnknownSmtp(
     await ui.activate('save');
     await failedRead.settled('GET');
     await pending('read-error');
-    await ui.geometry(`unknown-read-error-${width}`);
+    await ui.themedGeometry(`unknown-read-error-${width}`);
     await assertSingleWrite(failedRead);
     await ui.activate('reload');
     await page.waitForFunction(
@@ -80,7 +80,7 @@ export async function verifyUnknownSmtp(
       `回读失败后核对 ${width}`,
       'Explicit reread sees the actual committed configuration',
     );
-    await ui.geometry(`unknown-reread-matched-${width}`);
+    await ui.themedGeometry(`unknown-reread-matched-${width}`);
     await assertSingleWrite(failedRead);
     await resume();
   } finally {
@@ -104,7 +104,7 @@ export async function verifyUnknownSmtp(
       true,
       'Public readback proves presence but cannot verify a replaced secret',
     );
-    await ui.geometry(`password-unknown-${width}`);
+    await ui.themedGeometry(`password-unknown-${width}`);
     await assertSingleWrite(passwordUnknown);
     await resume();
     assert.equal(
@@ -157,7 +157,7 @@ export async function verifyUnknownSmtp(
         currentName,
         'GET returns the actual competing server state',
       );
-      await ui.geometry(`readback-mismatch-${choice}-${width}`);
+      await ui.themedGeometry(`readback-mismatch-${choice}-${width}`);
       await assertSingleWrite(mismatch);
       await resume(choice);
       assert.equal(

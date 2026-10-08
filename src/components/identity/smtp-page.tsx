@@ -148,7 +148,7 @@ export function SmtpPage(shell: ShellProps) {
         data-testid="smtp-page"
         data-state={editor.load}
         data-operation={editor.operation}
-        className="pb-10"
+        className="pb-10 [overflow-anchor:none]"
       >
         <SettingsHeading />
         <SettingsCategories items={settingsCategories}>

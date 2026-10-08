@@ -1,0 +1,52 @@
+Issue #182 独立人工验收预览受控更新
+时间：2026-10-08 18:07 Asia/Shanghai
+环境：macOS；Node v24.18.1；本次未执行安装、构建或浏览器自动化。
+范围：仅任务私有 .data/smtp182-preview 资源及本记录。其他任务进程未停止。
+
+执行：
+1. 校验旧 parent PID 19100 命令为 node .data/smtp182-preview/start.mjs；只发送 SIGTERM 给该 parent，由原 launcher 关闭 server PID 19124 和本地 SMTP 夹具。
+2. 保存停机前私有凭证元数据；停机后完整备份 data、private.json、smtp-ca.pem、server.log、start.mjs 及旧 app。SQLite 正常关闭后 WAL 已合并入 ariso.db；备份时 data 包含 ariso.db、assets、storage、tmp，没有遗留 WAL/SHM。
+3. 校验旧迁移 0–25 与当前产物完全一致，旧 SMTP SQL 与新 0027 SMTP SQL 内容相同。
+4. 在一个短事务内执行当前产物 drizzle/0026_real_sumo.sql 的真实语句，插入 analytics 0026 账本，并将已有 SMTP 账本时间从 1791429625971 修正为 1791444795180。没有重新执行 SMTP 建表 SQL，没有删除或重建 SMTP 行。
+5. 事务后校验完整 user/account/identity_smtp_settings 行保持不变，28 条账本的 hash/time 与当前 journal 一致，数据库 integrity_check 为 ok。
+6. 将旧 app 移至保留目录，再将 app-staged-HUfQ1A 切换为 app；BUILD_ID 为 ZeYSYaeOXGLwUXmYpdN7Z。
+7. 实际重启命令（工作目录为 Issue worktree）：
+   PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH node .data/smtp182-preview/start.mjs
+   持续运行 exec session 32991；新 parent PID 86040，server PID 86061，launcher status ready。
+
+迁移实际语句：
+DROP INDEX analytics_image_daily_date_image_idx;
+CREATE INDEX analytics_image_daily_date_image_count_idx ON analytics_image_daily(date,image_id,count);
+
+验证：
+- GET /api/health：200。
+- 使用停机前原账号和原密码 POST /api/auth/sign-in/email：200。
+- GET /api/auth/get-session：200，确认原所有者；凭证与会话未写入本记录。
+- GET /api/settings/smtp：200；公开字段严格为 host/port/mode/username/fromName/fromEmail/hasPassword/updatedAt，无明文或加密密码。
+- 原账号密码、BETTER_AUTH_SECRET、ARISO_ENCRYPTION_KEY 和 dataDirectory 均保持原值。
+- 旧 SMTP 配置确实匹配本任务原本地夹具；原 launcher 仅刷新本地夹具连接参数和认证，不覆盖发件人名称或邮箱。重启后公开读取确认用户 fromName/fromEmail 保持原值、hasPassword 为 true。
+- 当前账本 28 条，每条 hash/time 与当前 journal 一致；迁移 hash 和时间均无重复。
+- 仅存在 analytics_image_daily_date_image_count_idx，旧 analytics_image_daily_date_image_idx 已不存在。
+- PRAGMA integrity_check：ok。
+
+保留资源：
+- 完整私有备份：.data/smtp182-preview/backups/update-V5vX7r
+- 旧运行产物：.data/smtp182-preview/app-previous-update-V5vX7r
+- 无凭证更新状态：.data/smtp182-preview/update-state.json / update-verification.json
+- 账号、密码及密钥仅保存在任务私有资源中，不提交。
+
+预览地址：http://127.0.0.1:3183
+状态：保持运行，备份和旧产物保留，未清理。
+边界：本次仅验证预览恢复、数据库协调及原账号公开读取；浏览器设计复核与人工验收由对应记录单独说明。本地 SMTP 接受不能证明外部邮箱最终收件，本次未验证外部收件。
+
+追加：邮件弹窗标题排列修正产物例行更新（2026-10-08）
+- 来源：Root 完成的新构建；构建记录 checks/build-dialog-align.txt。此回合未运行构建或修改产品源文件。
+- 暂存 latest .next/standalone 后，确认 journal 与运行产物相同；仅关闭任务 parent 86040，由其关闭 server 86061 和夹具。
+- 完整私有备份：.data/smtp182-preview/backups/dialog-align-c0WBeA；旧 app 另保留于 .data/smtp182-preview/app-previous-dialog-align-c0WBeA。包括停机前凭证元数据、停机后 data/private/CA/start/log/旧 app。
+- 只切换应用产物，没有执行迁移 SQL或改写迁移账本；重启后 28 条 ledger 与停机前逐项相同，且仍匹配当前 journal、没有重复。
+- 新 BUILD_ID：Nd00sWAt9avJOEb9VOHlG。
+- 实际重启命令仍为 PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH node .data/smtp182-preview/start.mjs；Node v24.18.1。
+- 持续运行 exec session 34794；当前 parent 87416 / server 87437，status ready。上一组进程已正常退出。
+- GET health、原账号登录、owner session 和 SMTP GET 均 HTTP 200。原账号密码和两个应用密钥保持；本地夹具仅刷新连接认证，用户 fromName/fromEmail 保持，公开 GET 未暴露密码。
+- analytics 新索引唯一、integrity_check 为 ok。无凭证结果保存在 .data/smtp182-preview/dialog-update-verification.json。
+- 地址仍为 http://127.0.0.1:3183；当前服务持续运行，全部备份保留。最终页面设计复核单独进行，不由本次健康与读取检查代替。

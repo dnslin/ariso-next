@@ -1,0 +1,154 @@
+Error: page.waitForFunction timed out after 5000ms on page p1; last URL was "http://ariso-50453.localhost:50453/settings/email"; last title was "Ariso".
+    at waitForFunctionTimeoutError (file:////[eval1]:19235:12)
+    at file:////[eval1]:18564:19
+    at async file:////[eval1]:16691:28
+
+ego's nodejs process exited with code 1.
+Browser stage failed (smtp): AssertionError [ERR_ASSERTION]: Ego browser verification failed (smtp.log)
+
+1 !== 0
+
+    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-182-smtp/ariso/scripts/verify-browser.mjs:225:12)
+    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-182-smtp/ariso/scripts/browser-stages.mjs:17:5)
+    at async file:///Users/dnslin/.codex/worktrees/issue-182-smtp/ariso/scripts/verify-browser.mjs:709:24
+{ taskSpaceId: 3, ownership: 'agent' }
+[p1 "Ariso" | space "Ariso Issue 182 SMTP"(3): 1 managed, 0 untracked — p1* "Ariso"]
+root
+  container
+    container "后台侧栏"
+      container
+        anchor "Ariso 首页" [ref=541, url=http://ariso-50453.localhost:50453/]
+          text "Ariso"
+        button "收起侧栏" [ref=542, loc=css:button[aria-label="收起侧栏"]]
+          svg_root
+      container "后台导航"
+        group "总览，尚未开放" [ref=543, loc=role:group[name="总览，尚未开放"]]
+          link "总览，尚未开放"
+            svg_root
+            text "总览"
+            text "尚未开放"
+        anchor "上传" [ref=544, loc=css:a[aria-label="上传"], url=http://ariso-50453.localhost:50453/upload]
+          svg_root
+          text "上传"
+        anchor "图库" [ref=545, loc=css:a[aria-label="图库"], url=http://ariso-50453.localhost:50453/library]
+          svg_root
+          text "图库"
+        anchor "相册" [ref=546, loc=css:a[aria-label="相册"], url=http://ariso-50453.localhost:50453/albums]
+          svg_root
+          text "相册"
+        anchor "标签" [ref=547, loc=css:a[aria-label="标签"], url=http://ariso-50453.localhost:50453/tags]
+          svg_root
+          text "标签"
+        anchor "分享管理" [ref=548, loc=css:a[aria-label="分享管理"], url=http://ariso-50453.localhost:50453/shares]
+          svg_root
+          text "分享管理"
+        anchor "回收站" [ref=549, loc=css:a[aria-label="回收站"], url=http://ariso-50453.localhost:50453/trash]
+          svg_root
+          text "回收站"
+        paragraph
+          text "管理"
+        group "访问统计，尚未开放" [ref=550, loc=role:group[name="访问统计，尚未开放"]]
+          link "访问统计，尚未开放"
+            svg_root
+            text "访问统计"
+            text "尚未开放"
+        anchor "存储管理" [ref=551, loc=css:a[aria-label="存储管理"], url=http://ariso-50453.localhost:50453/settings/storage]
+          svg_root
+          text "存储管理"
+        anchor "站点设置" [ref=552, loc=css:a[aria-label="站点设置"], url=http://ariso-50453.localhost:50453/settings/processing]
+          svg_root
+          text "站点设置"
+      button "账号菜单" [ref=553, loc=css:button[aria-label="账号菜单"]]
+        text "O"
+        container
+          text "Owner"
+          text "站点所有者"
+    container
+      container [ref=554]
+        container
+          container
+            heading
+              svg_root
+              text "站点设置"
+            paragraph
+              text "管理站点、图片处理与账号偏好。"
+          container
+            tablist "设置分类"
+              tab [ref=555]
+                svg_root
+                text "图片处理"
+              tab [ref=556]
+                svg_root
+                text "账号与安全"
+              tab [ref=557]
+                svg_root
+                text "上传 API"
+              tab [ref=558]
+                svg_root
+                text "邮件服务"
+            tabpanel "邮件服务"
+              container
+                heading [ref=559]
+                  svg_root
+                  text "SMTP 邮件服务"
+                paragraph
+                  text "尚未配置 · 请先保存，再发送测试邮件"
+              form
+                container
+                  container
+                    container
+                      container
+                        svg_root
+                        text "SMTP 主机"
+                      textbox "SMTP 主机" [ref=560, loc=css:input[name="host"]]
+                    container
+                      container
+                        svg_root
+                        text "端口"
+                      spinbutton "端口" [ref=561, loc=css:input[name="port"]]
+                        text "587"
+                    container
+                      container
+                        svg_root
+                        text "连接安全"
+                      button "STARTTLS 连接安全" [ref=562]
+                        text "STARTTLS"
+                        svg_root
+                    container
+                      container
+                        svg_root
+                        text "SMTP 用户名"
+                      textbox "SMTP 用户名" [ref=563, loc=css:input[name="username"]]
+                    container
+                      container
+                        svg_root
+                        text "发件人名称"
+                      textbox "发件人名称" [ref=564, loc=css:input[name="fromName"]]
+                    container
+                      container
+                        svg_root
+                        text "发件人邮箱"
+                      textbox "发件人邮箱" [ref=565, loc=css:input[name="fromEmail"]]
+                  container
+                    container
+                      container
+                        svg_root
+                        text "SMTP 密码"
+                      textbox "SMTP 密码" [ref=566, loc=css:input[name="password"]]
+                        text "未设置密码"
+                    paragraph
+                      text "测试仅使用已保存配置，收件人为当前所有者。"
+                paragraph
+                  text "编辑后请先保存，再发送测试邮件。保存无需重启，也不会自动发送邮件。"
+      container
+        button [ref=567]
+          svg_root
+          text "发送测试邮件"
+        button [ref=568]
+          svg_root
+          text "保存邮件设置"
+
+
+AssertionError [ERR_ASSERTION]: Focused browser stages failed
+    at file:///Users/dnslin/.codex/worktrees/issue-182-smtp/ariso/scripts/verify-browser.mjs:715:12
+Browser report: /Users/dnslin/.codex/worktrees/issue-182-smtp/ariso/test-results/browser-smtp-resumed
