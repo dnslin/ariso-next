@@ -549,7 +549,7 @@
 
 ### T-ID-06 SMTP 配置、真实发送与诊断
 
-生产实施与验证见 [Issue #182 统一记录](../verification/smtp-182/README.md)。SMTP 持久配置、加密、管理接口及 `/settings/email` 已接入；外部收件与 UI 人工验收以该记录的实际状态为准，不以本地 SMTP 接受替代。
+生产实施与验证见 [Issue #182 统一记录](../verification/smtp-182/README.md)。SMTP 持久配置、加密、管理接口及 `/settings/email` 已接入；所有者已明确通过UI人工验收。外部邮箱最终收件仍未验证，以统一记录为准，不以本地SMTP接受替代。
 
 - 任务组：`IDENTITY-SMTP`
 - 里程碑：M4
