@@ -13,11 +13,17 @@ def report(value):
     print(json.dumps(value), flush=True)
 
 
+def terminate(signum, _frame):
+    # SIGTERM must enter finally so cancelling the driver also reaps its child.
+    raise SystemExit(128 + signum)
+
+
 master, slave = pty.openpty()
 before = termios.tcgetattr(slave)
 child = subprocess.Popen(sys.argv[1:], stdin=slave, stdout=slave, stderr=slave)
 commands = b""
 try:
+    signal.signal(signal.SIGTERM, terminate)
     while child.poll() is None:
         readable, _, _ = select.select([master, sys.stdin], [], [], 0.1)
         if master in readable:
