@@ -64,4 +64,4 @@ pnpm exec vitest run --project integration --project media-tools --maxWorkers=1 
 
 ## 交付状态
 
-代码完成：后端切片完成，完整Issue未完成。独立后端审计通过；独立原型设计评审方向成立；三项逻辑问题和手机通知/菜单遮挡修复后，聚焦复审通过，正式产品评审未完成。本地构建/类型/静态/格式检查通过；全量首轮失败保留，全部失败场景分别定向复核通过，产品浏览器/设计/人工验收均未完成。分支将提交并推送；关联PR保持草稿。本次不合并、不关Issue、不发布、不部署、不删除分支/worktree或停止预览。Release镜像/容器验证按统一发布时机未执行。
+代码完成：后端切片完成，完整Issue未完成。独立后端审计通过；独立原型设计评审方向成立；三项逻辑问题和手机通知/菜单遮挡修复后，聚焦复审通过，正式产品评审未完成。本地构建/类型/静态/格式检查通过；全量首轮失败保留，全部失败场景分别定向复核通过，产品浏览器/设计/人工验收均未完成。分支已提交并推送；[PR #262](https://github.com/dnslin/ariso-next/pull/262) 为 OPEN 草稿，GitHub mergeStateStatus 为 CLEAN。`gh pr view 262 --json state,isDraft,headRefOid,mergeStateStatus,statusCheckRollup` 实际 statusCheckRollup 为空；`gh pr checks 262` 返回 no checks reported，不记为CI通过。创建时本地HEAD、origin分支与PR head一致；原型HEAD请求返回200，服务继续保留。本次不合并、不关Issue、不发布、不部署、不删除分支/worktree或停止预览。Release镜像/容器验证按统一发布时机未执行。
