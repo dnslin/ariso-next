@@ -63,7 +63,7 @@ function writeMigrations(
       '0015_fluffy_venus',
       '0020_woozy_swordsman',
       '0025_shiny_namora',
-      '0026_sloppy_tarot',
+      '0027_colossal_iron_lad',
     ].map((tag, index) => ({
       tag,
       when: index + 3,

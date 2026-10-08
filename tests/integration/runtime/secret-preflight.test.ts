@@ -81,7 +81,7 @@ function writeMigrations(
     {
       tag: '0012_smtp',
       when: 13,
-      sql: readFileSync(resolve('drizzle/0026_sloppy_tarot.sql'), 'utf8'),
+      sql: readFileSync(resolve('drizzle/0027_colossal_iron_lad.sql'), 'utf8'),
     },
     ...migrations,
   ]);

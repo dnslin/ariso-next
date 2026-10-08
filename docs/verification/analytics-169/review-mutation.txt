@@ -1,0 +1,45 @@
+Already up to date
+Done in 119ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-169-analytics-query/ariso
+
+ ❯ |integration| tests/integration/analytics/reports.test.ts (15 tests | 1 failed | 14 skipped) 97ms
+   ❯ persisted analytics reports (15)
+     × keeps historical counts after real permanent cleanup, drops all old content information and does not transfer counts to a same-name upload 96ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/analytics/reports.test.ts > persisted analytics reports > keeps historical counts after real permanent cleanup, drops all old content information and does not transfer counts to a same-name upload
+AssertionError: expected [ { …(7) } ] to deeply equal [ { …(7) } ]
+
+- Expected
++ Received
+
+  [
+    {
+      "count": 501,
+      "displayName": null,
+      "imageId": "bfe0bfdd-bb2e-42e3-9280-9aaa08a6a1e8",
+-     "managementUrl": null,
++     "managementUrl": "/library?image=bfe0bfdd-bb2e-42e3-9280-9aaa08a6a1e8",
+      "shortId": "bfe0bfdd",
+      "state": "deleted",
+      "thumbnailUrl": null,
+    },
+  ]
+
+ ❯ tests/integration/analytics/reports.test.ts:474:28
+    472|       500,
+    473|     );
+    474|     expect(report.popular).toEqual([
+       |                            ^
+    475|       {
+    476|         imageId,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 14 skipped (15)
+   Start at  11:27:14
+   Duration  1.24s (import 64%, transform 27%, tests 9%)

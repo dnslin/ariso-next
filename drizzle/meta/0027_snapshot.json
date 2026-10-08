@@ -1,8 +1,8 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "1f22d0e7-5e06-4cb6-ba38-bc994ba510ec",
-  "prevId": "86c53a0d-121c-4047-95b6-1c314fc565a6",
+  "id": "337d63a3-1286-47c5-bb6e-d78c009e25bf",
+  "prevId": "1f22d0e7-5e06-4cb6-ba38-bc994ba510ec",
   "tables": {
     "analytics_daily": {
       "name": "analytics_daily",
@@ -831,6 +831,98 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "checkConstraints": {}
+    },
+    "identity_smtp_settings": {
+      "name": "identity_smtp_settings",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 1
+        },
+        "host": {
+          "name": "host",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "port": {
+          "name": "port",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "mode": {
+          "name": "mode",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "username": {
+          "name": "username",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "''"
+        },
+        "password_encrypted": {
+          "name": "password_encrypted",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "from_name": {
+          "name": "from_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "from_email": {
+          "name": "from_email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "identity_smtp_settings_singleton": {
+          "name": "identity_smtp_settings_singleton",
+          "value": "\"identity_smtp_settings\".\"id\" = 1"
+        },
+        "identity_smtp_settings_port": {
+          "name": "identity_smtp_settings_port",
+          "value": "\"identity_smtp_settings\".\"port\" BETWEEN 1 AND 65535"
+        },
+        "identity_smtp_settings_mode": {
+          "name": "identity_smtp_settings_mode",
+          "value": "\"identity_smtp_settings\".\"mode\" IN ('tls', 'starttls')"
+        },
+        "identity_smtp_settings_credentials": {
+          "name": "identity_smtp_settings_credentials",
+          "value": "\"identity_smtp_settings\".\"username\" != '' OR \"identity_smtp_settings\".\"password_encrypted\" IS NULL"
+        }
+      }
     },
     "user": {
       "name": "user",
