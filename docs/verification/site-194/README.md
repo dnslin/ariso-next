@@ -114,7 +114,7 @@ Figma 文件 `74sT9Hrf8G4czcWeTkET5b` 已实际写入。保留公共组件实例
 
 ## 交付状态与人工验收
 
-代码完成；本地适用检查通过；本次站点生产浏览器四阶段、全部公共消费路由及 processing 设置往返通过；独立代码和代表状态设计评审通过。此前默认浏览器全量仍失败，人工验收未完成，PR 保持草稿。
+代码完成；本地适用检查通过；本次站点生产浏览器四阶段、全部公共消费路由及 processing 设置往返通过；独立代码和代表状态设计评审通过。此前默认浏览器全量仍失败，人工验收未完成；用户随后明确授权合并 PR、清理并更新分支、关闭 Issue，不将该授权记为人工验收通过。
 
 独立真实数据预览：http://127.0.0.1:3195/settings/general 。已重新用真实登录打开并确认四字段 ready；账号密码仅向用户私下提供，不进入代码、此文档或 PR。预览保持可用直到用户明确停止/清理。人工请核验桌面/手机关联行、四字段独立保存、错误后输入/焦点、地址展开复制、所属模块往返与未保存离开确认。改变 publicUrl 前需确保新地址可访问；维护责任见页面持久说明。
 
@@ -137,3 +137,11 @@ Figma 文件 `74sT9Hrf8G4czcWeTkET5b` 已实际写入。保留公共组件实例
 | `pnpm exec vitest run --project integration tests/integration/site/settings-http.test.ts tests/integration/site/settings-patch.test.ts tests/integration/identity/oauth.test.ts tests/integration/identity/oauth-startup.test.ts` | 构建后执行，4 文件、37/37 通过。覆盖 site/账号真实回调、新 origin 登录、旧 origin 写入拒绝、全部 S3 失效与失败回滚、OAuth 生效配置。 |
 
 本轮 `pnpm run format:check` 全量通过，`node docs/tasks/check.mjs` 通过（120 tasks / 298 requirements），`git diff --check` 通过。默认单元 glob `tests/unit/**/*.test.ts` 包含新增测试，未新增 only 或遗漏默认入口。两位独立评审者的原发现、修复复审及测试变异结果记录在 [独立评审](./review.md#双角度评审与回调归属修复)。本轮不重跑浏览器或 Figma；以前的站点定向通过、默认 full 失败和人工验收未完成各保持原边界，预览继续保留。
+
+## 授权合并与清理
+
+2026-10-08，用户明确要求合并 PR #262、清理并更新分支、关闭 Issue #194，按此指令执行；未执行项仍如实保留。原草稿状态和持续预览要求属于该指令之前的交付阶段，随后只停止和归档本任务的资源，结果以 PR/Issue 的实际状态为准。人工验收未完成，历史默认浏览器全量失败未被定向结果代替。
+
+合并前 fetch 发现 origin/main 已更新为 `655566ec`（PR #263 analytics）。双方改动交集仅任务文档：main 的 T-ANA-04 与本任务 T-SITE-02 是不同段落；无冲突合入任务分支后两者均保留。新迁移 0026 只替换 analytics 索引，不改 site/identity 表。两位独立评审者逐项检查双方内容、迁移与调用边界，正确性和结构复审均通过；本任务源码及回调修复相对 `c614a1cd` 未变，不重跑未变输入的单元与浏览器。
+
+组合后的 Node 24 `pnpm run typecheck`、`pnpm run build` 通过；构建 exit 0，既有 NFT 追踪警告保持。首次四文件集成提前于构建结束启动，37 项中 36 通过、1 项因 `.next/standalone/entrypoint.sh` 尚未生成失败。这是本轮执行顺序错误，不改断言或超时。确认构建完成后，仅重跑受影响的 `pnpm exec vitest run --project integration tests/integration/site/settings-http.test.ts`，6/6 通过；其他三个文件共 31 项此前已通过。保留首次失败，不把首次四文件结果写作 37/37 全绿。
