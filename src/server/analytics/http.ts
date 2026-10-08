@@ -1,0 +1,62 @@
+import { requireOwner } from '../identity/owner.ts';
+import { createRuntimeLogger } from '../runtime/logger.ts';
+
+export async function analyticsResponse(
+  request: Request,
+  operation: () => unknown,
+) {
+  const headers = { 'Cache-Control': 'private, no-store' };
+  try {
+    await requireOwner(request);
+    return Response.json(operation(), { headers });
+  } catch (error) {
+    if (
+      error instanceof Error &&
+      'code' in error &&
+      'status' in error &&
+      error.code === 'UNAUTHORIZED' &&
+      error.status === 401
+    )
+      return Response.json(
+        { code: error.code, message: error.message },
+        { status: 401, headers },
+      );
+    if (
+      error instanceof Error &&
+      'code' in error &&
+      error.code === 'ANALYTICS_INVALID_INPUT'
+    )
+      return Response.json(
+        { code: error.code, message: error.message },
+        { status: 400, headers },
+      );
+    const cause =
+      error instanceof Error && error.cause instanceof Error
+        ? error.cause
+        : error;
+    createRuntimeLogger('analytics.http', 'info').error(
+      { err: cause, path: new URL(request.url).pathname },
+      'Analytics read failed',
+    );
+    return Response.json(
+      {
+        code: 'ANALYTICS_READ_FAILED',
+        message: '统计读取失败，请检查服务日志后重试',
+      },
+      { status: 500, headers },
+    );
+  }
+}
+
+/** Validate the existing overview period contract, even while only counts are implemented. */
+export function parseOverviewDays(request: Request) {
+  const values = new URL(request.url).searchParams.getAll('days');
+  if (
+    values.length > 1 ||
+    (values.length && !['7', '30', '90'].includes(values[0]))
+  )
+    throw Object.assign(new Error('统计周期必须为 7、30 或 90 天'), {
+      code: 'ANALYTICS_INVALID_INPUT',
+    });
+  return Number(values[0] ?? 7);
+}

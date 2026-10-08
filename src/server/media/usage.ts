@@ -1,13 +1,8 @@
-import { and, asc, eq, notInArray, sql } from 'drizzle-orm';
+import { and, asc, eq, sql } from 'drizzle-orm';
 import type { MediaTransaction } from './images.ts';
-import {
-  mediaImages,
-  mediaJobs,
-  mediaObjects,
-  mediaVersions,
-} from './schema.ts';
+import { mediaImages, mediaJobs } from './schema.ts';
 
-type MediaUsageGroup = 'recycle' | 'original' | 'derived' | 'pending';
+export type MediaUsageGroup = 'recycle' | 'original' | 'derived' | 'pending';
 export type MediaStorageUsage = {
   storageId: string;
   normalImages: number;
@@ -22,7 +17,7 @@ export type MediaStorageUsage = {
 };
 
 /** Read only persisted observations, in the combining caller's SQLite snapshot. */
-export function readMediaUsage(tx: MediaTransaction): MediaStorageUsage[] {
+export function readMediaCounts(tx: MediaTransaction) {
   const latestProcessJobs = tx
     .select({
       imageId: mediaJobs.imageId,
@@ -54,6 +49,25 @@ export function readMediaUsage(tx: MediaTransaction): MediaStorageUsage[] {
     .groupBy(mediaImages.storageId)
     .orderBy(asc(mediaImages.storageId))
     .all();
+  return images;
+}
+
+/** Internal object observations for cross-provider composition; keys never leave the server. */
+export const mediaUsageObjects = sql`select
+  o.storage_id storageId, o.key objectKey, 0 ownerPriority, o.status != 'planned' occupied,
+  case when i.trashed_at is not null or i.deletion_status is not null then 'recycle'
+    when o.status = 'stored' and v.kind = 'original' then 'original'
+    when o.status = 'stored' and v.kind in ('compressed', 'thumbnail', 'watermark') then 'derived'
+    else 'pending' end usageGroup,
+  case when o.status = 'writing' then null else o.byte_size end knownBytes,
+  o.byte_size_confirmed_at confirmedAt
+  from media_objects o join media_images i on i.id = o.image_id
+  left join media_versions v on v.object_id = o.id and v.image_id = o.image_id
+  where o.status != 'deleted'`;
+
+/** Read only persisted observations, in the combining caller's SQLite snapshot. */
+export function readMediaUsage(tx: MediaTransaction): MediaStorageUsage[] {
+  const images = readMediaCounts(tx);
   const usage = new Map<string, MediaStorageUsage>(
     images.map((image) => [
       image.storageId,
@@ -66,35 +80,19 @@ export function readMediaUsage(tx: MediaTransaction): MediaStorageUsage[] {
       },
     ]),
   );
-  const group = sql<MediaUsageGroup>`case
-    when ${mediaImages.trashedAt} is not null or ${mediaImages.deletionStatus} is not null then 'recycle'
-    when ${mediaObjects.status} = 'stored' and ${mediaVersions.kind} = 'original' then 'original'
-    when ${mediaObjects.status} = 'stored' and ${mediaVersions.kind} in ('compressed', 'thumbnail', 'watermark') then 'derived'
-    else 'pending' end`;
-  const known = sql`${mediaObjects.status} != 'writing' and ${mediaObjects.byteSize} is not null`;
-  const objects = tx
-    .select({
-      storageId: mediaObjects.storageId,
-      group,
-      knownBytes: sql<number>`coalesce(sum(case when ${known} then ${mediaObjects.byteSize} end), 0)`,
-      unconfirmedObjects: sql<number>`count(case when not (${known}) then 1 end)`,
-      unknownConfirmationTimes: sql<number>`count(case when ${known} and ${mediaObjects.byteSizeConfirmedAt} is null then 1 end)`,
-      confirmedAt: sql<
-        number | null
-      >`min(case when ${known} then ${mediaObjects.byteSizeConfirmedAt} end)`,
-    })
-    .from(mediaObjects)
-    .innerJoin(mediaImages, eq(mediaImages.id, mediaObjects.imageId))
-    .leftJoin(
-      mediaVersions,
-      and(
-        eq(mediaVersions.objectId, mediaObjects.id),
-        eq(mediaVersions.imageId, mediaObjects.imageId),
-      ),
-    )
-    .where(notInArray(mediaObjects.status, ['planned', 'deleted']))
-    .groupBy(mediaObjects.storageId, group)
-    .all();
+  const objects = tx.all<{
+    storageId: string;
+    group: MediaUsageGroup;
+    knownBytes: number;
+    unconfirmedObjects: number;
+    unknownConfirmationTimes: number;
+    confirmedAt: number | null;
+  }>(sql`select storageId, usageGroup as "group",
+    coalesce(sum(knownBytes), 0) knownBytes,
+    count(case when knownBytes is null then 1 end) unconfirmedObjects,
+    count(case when knownBytes is not null and confirmedAt is null then 1 end) unknownConfirmationTimes,
+    min(case when knownBytes is not null then confirmedAt end) confirmedAt
+    from (${mediaUsageObjects}) where occupied = 1 group by storageId, usageGroup`);
   const missingConfirmationTimes = new Set<string>();
   for (const object of objects) {
     const row = usage.get(object.storageId)!;

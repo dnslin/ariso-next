@@ -3,6 +3,8 @@ import { join } from 'node:path';
 import { eq, sql } from 'drizzle-orm';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { crc32 } from 'node:zlib';
+import * as localStorage from '../../../src/server/storage/local.ts';
+import { readUsage } from '../../../src/server/analytics/usage.ts';
 import * as formats from '../../../src/server/media/file-formats.ts';
 import { claimNextMediaJob } from '../../../src/server/media/queue.ts';
 import { processMediaJob } from '../../../src/server/media/process.ts';
@@ -461,6 +463,35 @@ describe('real local upload reception and ownership', () => {
       temporaryKey: null,
       finalKey: null,
     });
+  });
+
+  it('records the real final object after rename even when handoff and cleanup fail', async () => {
+    const session = submission().sessions[0];
+    fixture.db.$client.exec(
+      "CREATE TRIGGER reject_handoff BEFORE UPDATE OF state ON upload_sessions WHEN NEW.state = 'accepted' BEGIN SELECT RAISE(ABORT, 'handoff failed'); END",
+    );
+    const remove = vi
+      .spyOn(localStorage, 'deleteObject')
+      .mockRejectedValue(new Error('cleanup failed'));
+    await expect(receive(session.id)).rejects.toThrow('上传失败且清理失败');
+    const retained = getSession(fixture.db, session.id);
+    expect(retained).toMatchObject({
+      temporaryKey: null,
+      temporaryBytes: null,
+      finalBytes: bytes.length,
+    });
+    expect(await readFile(filePath(retained.finalKey!))).toEqual(bytes);
+    await expect(
+      stat(filePath(`uploads/${session.id}.partial`)),
+    ).rejects.toMatchObject({ code: 'ENOENT' });
+    expect(readUsage(fixture.db).storages[0]).toMatchObject({
+      knownBytes: bytes.length,
+      unconfirmedObjects: 0,
+      groups: { pending: bytes.length },
+    });
+    remove.mockRestore();
+    await cleanupSession(fixture, session.id);
+    expect(readUsage(fixture.db).storages[0].knownBytes).toBe(0);
   });
 
   it('rolls back acceptance when recording the final submission activity fails', async () => {

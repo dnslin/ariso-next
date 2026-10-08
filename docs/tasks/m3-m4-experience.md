@@ -504,6 +504,8 @@ T-COL-04 沿用 OwnerShell 和 T-LIB-04 查询/布局实现，手机封面图片
 
 ### T-ANA-03 完整当前数量与对象占用
 
+- 实施证据：[Issue #168 数量与生产对象占用](../verification/analytics-168/README.md)。代码、真实存储与独立审计按记录区分；适用检查未全通过时保持草稿。
+
 - 任务组：`ANALYTICS-REPORT`
 - 里程碑：M4
 - 需求：`R-19.1-01`

@@ -2,6 +2,7 @@ import { randomUUID } from 'node:crypto';
 import { eq } from 'drizzle-orm';
 import { afterEach, beforeEach, expect, it } from 'vitest';
 import { readMediaUsage } from '../../../src/server/media/usage.ts';
+import { readUsage } from '../../../src/server/analytics/usage.ts';
 import {
   mediaCleanupJobs,
   mediaImages,
@@ -25,6 +26,10 @@ beforeEach(() => {
 afterEach(() => fixture.close());
 const usage = () => fixture.db.transaction(readMediaUsage);
 const confirmedAt = new Date(1000);
+const analyticsUsage = () =>
+  readUsage(fixture.db).storages.find(
+    (storage) => storage.id === fixture.storage.id,
+  )!;
 
 it.each(['delete acceptance', 'manual retry', 'budget update'] as const)(
   'keeps object size confirmation time through %s without an object inspection',
@@ -130,6 +135,12 @@ it('counts each physical object once and keeps writing or unconfirmed cleanup se
       confirmedAt,
     },
   ]);
+  expect(analyticsUsage()).toMatchObject({
+    knownBytes: 165,
+    unconfirmedObjects: 5,
+    groups: { recycle: 0, original: 100, derived: 30, pending: 35 },
+    confirmedAt,
+  });
 });
 
 it('moves all asset objects between normal and recycle without changing totals, then reduces only confirmed deletions', () => {
@@ -150,6 +161,7 @@ it('moves all asset objects between normal and recycle without changing totals, 
   object(imageId, 'cleanup_failed', 20);
   const unknownId = object(imageId, 'writing', 4000);
   const before = usage()[0];
+  const analyticsBefore = analyticsUsage();
   trashImage(db, imageId);
   expect(usage()[0]).toMatchObject({
     normalImages: 0,
@@ -158,8 +170,14 @@ it('moves all asset objects between normal and recycle without changing totals, 
     unconfirmedObjects: 1,
     groups: { recycle: 150, original: 0, derived: 0, pending: 0 },
   });
+  expect(analyticsUsage()).toMatchObject({
+    knownBytes: 150,
+    unconfirmedObjects: 1,
+    groups: { recycle: 150, original: 0, derived: 0, pending: 0 },
+  });
   restoreImage(db, imageId);
   expect(usage()[0]).toEqual(before);
+  expect(analyticsUsage()).toEqual(analyticsBefore);
   // Permanent deletion excludes the asset from the normal count even if trash is absent.
   db.update(mediaImages)
     .set({ deletionStatus: 'deleting' })
@@ -184,6 +202,11 @@ it('moves all asset objects between normal and recycle without changing totals, 
     .where(eq(mediaObjects.id, unknownId))
     .run();
   expect(usage()[0]).toMatchObject({ knownBytes: 120, unconfirmedObjects: 0 });
+  expect(analyticsUsage()).toMatchObject({
+    knownBytes: 120,
+    unconfirmedObjects: 0,
+    groups: { recycle: 120, original: 0, derived: 0, pending: 0 },
+  });
 });
 
 it('separates storage totals and leaves unknown occupancy unconfirmed without reading files', () => {
@@ -248,6 +271,11 @@ it.each(['original', 'pending'] as const)(
       )
       .run();
     expect(usage()[0]).toMatchObject({
+      knownBytes: 137,
+      unconfirmedObjects: 0,
+      confirmedAt: null,
+    });
+    expect(analyticsUsage()).toMatchObject({
       knownBytes: 137,
       unconfirmedObjects: 0,
       confirmedAt: null,

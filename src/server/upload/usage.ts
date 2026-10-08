@@ -7,6 +7,7 @@ import {
   ne,
   notInArray,
   or,
+  sql,
 } from 'drizzle-orm';
 import type { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
 import { uploadSessions, uploadSubmissions } from './schema.ts';
@@ -141,3 +142,10 @@ export function readUploadUsage(db: BetterSQLite3Database) {
   }
   return [...totals.values()];
 }
+
+/** Accepted final keys have transferred to media; retained temporary keys still belong to upload. */
+export const uploadUsageObjects = sql`select storage_id storageId, temporary_key objectKey,
+  1 ownerPriority, 1 occupied, 'pending' usageGroup, temporary_bytes knownBytes, confirmed_at confirmedAt
+  from upload_sessions where storage_id is not null and temporary_key is not null
+  union all select storage_id, final_key, 1, 1, 'pending', final_bytes, confirmed_at
+  from upload_sessions where storage_id is not null and final_key is not null and state != 'accepted'`;

@@ -1,0 +1,76 @@
+Already up to date
+Done in 42ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-168-analytics-usage/ariso
+
+ ❯ |integration| tests/integration/analytics/current-usage.test.ts (5 tests | 2 failed) 133ms
+   × deduplicates exact identities across providers, keeps planned zero and writing unknown despite scanner sizes 29ms
+   × transfers actual local objects atomically, preserves retained temp bytes, and rolls back failed handoff 28ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/analytics/current-usage.test.ts > deduplicates exact identities across providers, keeps planned zero and writing unknown despite scanner sizes
+AssertionError: expected { …(9) } to match object { knownBytes: 222, …(4) }
+(4 matching properties omitted from actual)
+
+- Expected
++ Received
+
+@@ -2,11 +2,11 @@
+    "confirmationStatus": "unconfirmed",
+    "confirmedAt": 1970-01-01T00:00:01.000Z,
+    "groups": {
+      "derived": 30,
+      "original": 100,
+-     "pending": 92,
++     "pending": 885,
+      "recycle": 0,
+    },
+-   "knownBytes": 222,
++   "knownBytes": 1015,
+    "unconfirmedObjects": 3,
+  }
+
+ ❯ tests/integration/analytics/current-usage.test.ts:217:19
+    215|     .run();
+    216|   orphan('upload', 800);
+    217|   expect(usage()).toMatchObject({
+       |                   ^
+    218|     knownBytes: 222,
+    219|     unconfirmedObjects: 3,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  |integration| tests/integration/analytics/current-usage.test.ts > transfers actual local objects atomically, preserves retained temp bytes, and rolls back failed handoff
+AssertionError: expected { …(9) } to match object { knownBytes: 20, …(2) }
+(8 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+    "groups": {
+      "original": 0,
+-     "pending": 20,
++     "pending": 0,
+    },
+-   "knownBytes": 20,
++   "knownBytes": 0,
+    "unconfirmedObjects": 0,
+  }
+
+ ❯ tests/integration/analytics/current-usage.test.ts:278:18
+    276|     .run();
+    277|   const before = usage();
+    278|   expect(before).toMatchObject({ knownBytes: 20, unconfirmedObjects: 0…
+       |                  ^
+    279|   db.$client.exec(
+    280|     "CREATE TRIGGER fail_handoff BEFORE UPDATE OF state ON upload_sess…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 3 passed (5)
+   Start at  00:14:53
+   Duration  837ms (import 47%, transform 33%, tests 19%)

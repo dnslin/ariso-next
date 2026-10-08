@@ -1,0 +1,14 @@
+ FAIL  |media-tools| tests/integration/upload/api.test.ts > rejects truncated multipart, missing files, field byte limits and configured file size limits, then removes all temporary files
+TypeError: fetch failed
+Caused by: Error: read ECONNRESET
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { errno: -54, code: 'ECONNRESET', syscall: 'read' }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 174 passed (175)
+      Tests  1 failed | 1679 passed (1680)
+   Start at  08:37:43
+   Duration  418.17s (tests 95%, import 4%)
+
+[ELIFECYCLE] Command failed with exit code 1.
