@@ -1,0 +1,104 @@
+{
+  "date": "2026-10-08",
+  "platform": "macOS arm64",
+  "node": "24.18.1",
+  "pnpm": "11.19.0",
+  "taskSpaceId": 5,
+  "checks": [
+    {
+      "command": "pnpm install --frozen-lockfile",
+      "exitCode": 0,
+      "result": "Lockfile unchanged"
+    },
+    {
+      "command": "pnpm exec vitest run --project unit tests/unit/storage/cors-screen.test.ts",
+      "phase": "red",
+      "exitCode": 1,
+      "result": "Actual CorsScreen and HeroUI markup lacked role=alert"
+    },
+    {
+      "command": "pnpm exec vitest run --project unit tests/unit/storage/cors-screen.test.ts",
+      "phase": "green",
+      "exitCode": 0,
+      "passed": 1
+    },
+    {
+      "command": "pnpm exec vitest run --project unit tests/unit/runtime/browser-plan.test.ts tests/unit/runtime/browser-runner.test.ts tests/unit/runtime/browser-stages.test.ts",
+      "exitCode": 0,
+      "files": 3,
+      "passed": 273
+    },
+    {
+      "command": "pnpm run build",
+      "exitCode": 0,
+      "result": "Next/runtime/standalone complete; existing optional platform tracing diagnostics retained"
+    },
+    {
+      "command": "pnpm run test:unit --maxWorkers=4",
+      "exitCode": 0,
+      "files": 128,
+      "passed": 1727
+    },
+    {
+      "command": "pnpm run lint",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm run typecheck",
+      "exitCode": 0
+    },
+    {
+      "command": "EGO_TASK_SPACE=5 EGO_KEEP_SPACE=1 node scripts/verify-browser.mjs --suite storage-cors",
+      "phase": "old-bundle-red",
+      "exitCode": 1,
+      "result": "Read-error role=alert selector timed out after six completed checks"
+    },
+    {
+      "command": "EGO_TASK_SPACE=5 EGO_KEEP_SPACE=1 node scripts/verify-browser.mjs --suite storage-cors",
+      "phase": "new-bundle-before-focus-wait",
+      "exitCode": 1,
+      "result": "Read error and retry passed; cleanup measured BODY before existing requestAnimationFrame focus restoration"
+    },
+    {
+      "command": "EGO_TASK_SPACE=5 EGO_KEEP_SPACE=1 node scripts/verify-browser.mjs --suite storage-cors",
+      "phase": "final",
+      "exitCode": 0,
+      "checks": 12,
+      "layouts": 54,
+      "dialogLayouts": 24,
+      "result": "readFailureAlert role=alert; cleanupFocus withinDialog=true, BUTTON refresh; runner temporaryDirectoryRemoved=true; no error or cleanupError"
+    },
+    {
+      "command": "pnpm run format:check",
+      "exitCode": 0,
+      "result": "Full project formatting passed after evidence updates"
+    },
+    {
+      "command": "pnpm exec eslint e2e/storage-cors-ui.mjs --max-warnings=0; node --check e2e/storage-cors-ui.mjs",
+      "exitCode": 0,
+      "result": "Affected E2E file rechecked after focus wait"
+    },
+    {
+      "command": "node docs/tasks/check.mjs",
+      "exitCode": 0,
+      "tasks": 120,
+      "requirements": 298
+    },
+    {
+      "command": "GET original manual preview /api/health",
+      "status": 200,
+      "result": "Original accepted preview and data preserved"
+    }
+  ],
+  "unchangedChecks": "HTTP/server/storage API inputs unchanged; previous integration evidence retained, not rerun or claimed newly passed",
+  "notVerified": [
+    "New screen-reader/device manual acceptance",
+    "AWS S3/R2/SeaweedFS external calls in this local HTTP fixture run",
+    "Release container/dual architecture/deployment",
+    "Single new full default browser run"
+  ],
+  "taskSpaceFinished": {
+    "id": 5,
+    "keep": []
+  }
+}

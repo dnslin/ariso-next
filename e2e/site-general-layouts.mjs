@@ -103,7 +103,7 @@ export async function verifySiteGeneralLayouts(page, tools, report) {
     const visible =
       bounds.top >= main.top &&
       bounds.bottom <= bottom &&
-      rows.length === 5 &&
+      rows.length === 4 &&
       rows.every(
         ({ bounds }) => bounds.top >= main.top && bounds.bottom <= bottom,
       );
@@ -139,8 +139,8 @@ export async function verifySiteGeneralLayouts(page, tools, report) {
     const detail = await page.evaluate(relatedFrame);
     assert.equal(
       detail.rows.length,
-      5,
-      'All five real related settings rows are visible',
+      4,
+      'All four real related settings rows are visible',
     );
     assert.ok(
       detail.save.top >= detail.footer.top &&

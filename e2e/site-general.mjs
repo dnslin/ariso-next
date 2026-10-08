@@ -18,6 +18,9 @@ const { verifySiteGeneralRecovery } = await import(
 const { verifySiteGeneralConsumers } = await import(
   new URL('./site-general-consumers.mjs', config.identitySessionScript).href
 );
+const { verifyGeneralSettingsMerge } = await import(
+  new URL('./general-settings-merge.mjs', config.identitySessionScript).href
+);
 const { signInToLibrary } = await import(
   new URL('./library-login.mjs', config.identitySessionScript).href
 );
@@ -77,6 +80,7 @@ try {
     [
       'behavior',
       async () => {
+        await verifyGeneralSettingsMerge(page, config, tools, report);
         await verifySiteGeneralBehavior(page, config, tools, report);
         await verifySiteGeneralAddress(page, config, tools, report);
       },

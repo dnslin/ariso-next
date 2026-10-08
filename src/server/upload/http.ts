@@ -92,6 +92,9 @@ export async function uploadResponse(
         code,
         message: error instanceof Error ? error.message : String(error),
         imageId: detail?.imageId ?? null,
+        ...(error instanceof UploadError && error.fields
+          ? { fields: error.fields }
+          : {}),
         requestId,
       },
       { status, headers },

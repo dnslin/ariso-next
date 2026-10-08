@@ -172,7 +172,6 @@ export function RelatedSettings({ onExpire }: { onExpire: () => void }) {
             </div>
           ) : null}
         </div>
-        <RelatedSetting label="上传限制" value="尚未开放" />
         <RelatedSetting label="界面主题" value="后续独立设置" />
       </div>
     </Card>

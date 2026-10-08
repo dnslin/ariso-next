@@ -1,0 +1,9 @@
+{
+  "command": "node scripts/verify-browser.mjs --suite library-copy",
+  "status": "failed",
+  "phase": "full",
+  "stage": "cross-page-native-copy",
+  "error": "Error: The user has taken control of this task space, so browser commands are paused.\nThis is a hard stop, not an obstacle to route around — do not retry and do not take control back on your own.\nWait until the user explicitly asks you to continue, then take control back and resume:\n  const task = await takeOverTaskSpace(spaceId)\n\nOffer the user choices like \"Continue\" or \"Finish task\" if your harness supports it; otherwise tell them: \"You now control this task space. Reply 'continue' when ready and I will resume.\"\n    at buildEgoError (file:////[eval1]:445:19)\n    at stopForUserControl (file:////[eval1]:8904:28)\n    at probeUserControlReason (file:////[eval1]:8882:13)",
+  "checks": [],
+  "stop": "After explicit authorization to resume the same TaskSpace 1, Ego returned another user-control pause during cross-page-native-copy. Browser work stopped again; no alternative space, browser or repeated recovery request was attempted. Shared route smoke checks later in this suite were not reached."
+}

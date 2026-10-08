@@ -1,0 +1,62 @@
+Already up to date
+Done in 34ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-200-upload-settings/ariso
+
+stderr | tests/unit/site/settings-initial-load.test.ts > 初始GET未完成时外壳会话过期，迟到成功不能重新进入编辑器
+Invalid hook call. Hooks can only be called inside of the body of a function component. This could happen for one of the following reasons:
+1. You might have mismatching versions of React and the renderer (such as React DOM)
+2. You might be breaking the Rules of Hooks
+3. You might have more than one copy of React in the same app
+See https://react.dev/link/invalid-hook-call for tips about how to debug and fix this problem.
+
+stderr | tests/unit/site/settings-initial-load.test.ts > 会话未过期时成功读取仍正常进入四字段编辑器
+Invalid hook call. Hooks can only be called inside of the body of a function component. This could happen for one of the following reasons:
+1. You might have mismatching versions of React and the renderer (such as React DOM)
+2. You might be breaking the Rules of Hooks
+3. You might have more than one copy of React in the same app
+See https://react.dev/link/invalid-hook-call for tips about how to debug and fix this problem.
+
+ ❯ |unit| tests/unit/site/settings-initial-load.test.ts (2 tests | 2 failed) 3ms
+   × 初始GET未完成时外壳会话过期，迟到成功不能重新进入编辑器 3ms
+   × 会话未过期时成功读取仍正常进入四字段编辑器 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/site/settings-initial-load.test.ts > 初始GET未完成时外壳会话过期，迟到成功不能重新进入编辑器
+TypeError: Cannot read properties of null (reading 'useRef')
+ ❯ process.env.NODE_ENV.exports.useRef node_modules/.pnpm/react@19.3.0/node_modules/react/cjs/react.development.js:1306:33
+ ❯ useUploadLimits src/components/upload-limits/use-upload-limits.ts:38:19
+     36|   const [different, setDifferent] = useState(false);
+     37|   const [expired, setExpired] = useState(false);
+     38|   const pending = useRef<UploadSettingsInput | null>(null);
+       |                   ^
+     39|   const inFlight = useRef(false);
+     40|   const noticeId = useRef<string | null>(null);
+ ❯ Module.GeneralPage src/components/site/general-page.tsx:29:18
+ ❯ InitialLoadHarness tests/unit/site/settings-initial-load.test.ts:106:12
+ ❯ tests/unit/site/settings-initial-load.test.ts:126:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  |unit| tests/unit/site/settings-initial-load.test.ts > 会话未过期时成功读取仍正常进入四字段编辑器
+TypeError: Cannot read properties of null (reading 'useRef')
+ ❯ process.env.NODE_ENV.exports.useRef node_modules/.pnpm/react@19.3.0/node_modules/react/cjs/react.development.js:1306:33
+ ❯ useUploadLimits src/components/upload-limits/use-upload-limits.ts:38:19
+     36|   const [different, setDifferent] = useState(false);
+     37|   const [expired, setExpired] = useState(false);
+     38|   const pending = useRef<UploadSettingsInput | null>(null);
+       |                   ^
+     39|   const inFlight = useRef(false);
+     40|   const noticeId = useRef<string | null>(null);
+ ❯ Module.GeneralPage src/components/site/general-page.tsx:29:18
+ ❯ InitialLoadHarness tests/unit/site/settings-initial-load.test.ts:106:12
+ ❯ tests/unit/site/settings-initial-load.test.ts:142:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed (2)
+   Start at  19:52:20
+   Duration  509ms (import 77%, transform 22%, tests 1%)

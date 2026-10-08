@@ -1,0 +1,104 @@
+Already up to date
+Done in 33ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-200-upload-settings/ariso
+
+ ❯ |unit| tests/unit/upload/limits-initialization.test.ts (4 tests | 4 failed) 6ms
+   × does not invent limits or request save/read-back/selection before the first actual read 2ms
+   × initializes once from actual values and preserves the draft when a later snapshot arrives or disappears 0ms
+   × does not initialize or unlock an expired unread editor when its initial snapshot returns late 0ms
+   × retains initialized input on expiry and rejects late changes, choices and requests 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/upload/limits-initialization.test.ts > does not invent limits or request save/read-back/selection before the first actual read
+TypeError: Cannot read properties of null (reading 'maxFileMiB')
+ ❯ uploadLimitsInput src/components/upload-limits/model.ts:25:23
+     23| ): UploadSettingsInput {
+     24|   return {
+     25|     maxFileMiB: value.maxFileMiB,
+       |                       ^
+     26|     batchSize: value.batchSize,
+     27|     queueLimit: value.queueLimit,
+ ❯ src/components/upload-limits/use-upload-limits.ts:22:44
+ ❯ Harness.state tests/unit/upload/limits-initialization.test.ts:58:59
+ ❯ useState tests/unit/upload/limits-initialization.test.ts:20:52
+ ❯ Module.useUploadLimits src/components/upload-limits/use-upload-limits.ts:22:29
+ ❯ UploadLimitsHarness tests/unit/upload/limits-initialization.test.ts:48:10
+ ❯ Harness.render tests/unit/upload/limits-initialization.test.ts:87:19
+ ❯ tests/unit/upload/limits-initialization.test.ts:124:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  |unit| tests/unit/upload/limits-initialization.test.ts > initializes once from actual values and preserves the draft when a later snapshot arrives or disappears
+TypeError: Cannot read properties of null (reading 'maxFileMiB')
+ ❯ uploadLimitsInput src/components/upload-limits/model.ts:25:23
+     23| ): UploadSettingsInput {
+     24|   return {
+     25|     maxFileMiB: value.maxFileMiB,
+       |                       ^
+     26|     batchSize: value.batchSize,
+     27|     queueLimit: value.queueLimit,
+ ❯ src/components/upload-limits/use-upload-limits.ts:22:44
+ ❯ Harness.state tests/unit/upload/limits-initialization.test.ts:58:59
+ ❯ useState tests/unit/upload/limits-initialization.test.ts:20:52
+ ❯ Module.useUploadLimits src/components/upload-limits/use-upload-limits.ts:22:29
+ ❯ UploadLimitsHarness tests/unit/upload/limits-initialization.test.ts:48:10
+ ❯ Harness.render tests/unit/upload/limits-initialization.test.ts:87:19
+ ❯ tests/unit/upload/limits-initialization.test.ts:137:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  |unit| tests/unit/upload/limits-initialization.test.ts > does not initialize or unlock an expired unread editor when its initial snapshot returns late
+TypeError: Cannot read properties of null (reading 'maxFileMiB')
+ ❯ uploadLimitsInput src/components/upload-limits/model.ts:25:23
+     23| ): UploadSettingsInput {
+     24|   return {
+     25|     maxFileMiB: value.maxFileMiB,
+       |                       ^
+     26|     batchSize: value.batchSize,
+     27|     queueLimit: value.queueLimit,
+ ❯ src/components/upload-limits/use-upload-limits.ts:22:44
+ ❯ Harness.state tests/unit/upload/limits-initialization.test.ts:58:59
+ ❯ useState tests/unit/upload/limits-initialization.test.ts:20:52
+ ❯ Module.useUploadLimits src/components/upload-limits/use-upload-limits.ts:22:29
+ ❯ UploadLimitsHarness tests/unit/upload/limits-initialization.test.ts:48:10
+ ❯ Harness.render tests/unit/upload/limits-initialization.test.ts:87:19
+ ❯ tests/unit/upload/limits-initialization.test.ts:157:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  |unit| tests/unit/upload/limits-initialization.test.ts > retains initialized input on expiry and rejects late changes, choices and requests
+AssertionError: expected { …(13) } to match object { …(3) }
+(12 matching properties omitted from actual)
+
+- Expected
++ Received
+
+@@ -1,9 +1,9 @@
+  {
+    "expired": true,
+    "input": {
+-     "maxFileMiB": 60,
++     "maxFileMiB": 80,
+    },
+    "saved": {
+      "batchSize": 20,
+      "maxFileBytes": 52428800,
+      "maxFileMiB": 50,
+
+ ❯ tests/unit/upload/limits-initialization.test.ts:181:33
+    179|   await editor.save();
+    180|   await editor.reconcile();
+    181|   expect(harness.render(later)).toMatchObject({
+       |                                 ^
+    182|     saved: initial,
+    183|     input: { maxFileMiB: 60 },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed (4)
+   Start at  19:47:39
+   Duration  144ms (import 56%, transform 35%, tests 7%, worker 2%)

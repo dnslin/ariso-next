@@ -296,7 +296,25 @@ export async function verifyCorsUiFailures({
   try {
     await page.reload();
     await page.waitForSelector(button('重新加载'));
-    await page.waitForSelector('[role="alert"]');
+    await page.waitForSelector(`${root}[data-state="error"] [role="alert"]`);
+    const unavailable = await page.evaluate(() => {
+      const screen = document.querySelector('[data-testid="storage-cors"]');
+      const alert = screen.querySelector('[role="alert"]');
+      return {
+        state: screen.dataset.state,
+        role: alert?.role,
+        text: alert?.textContent,
+      };
+    });
+    assert.equal(unavailable.state, 'error');
+    assert.equal(unavailable.role, 'alert');
+    assert.ok(unavailable.text.includes('无法读取直传设置'));
+    assert.ok(
+      unavailable.text.includes(
+        'Verification: real CORS state response was lost',
+      ),
+    );
+    report.readFailureAlert = unavailable;
     assert.equal(
       await page.evaluate(
         () =>
@@ -305,6 +323,7 @@ export async function verifyCorsUiFailures({
       ),
       false,
     );
+    await verifyCorsLayouts(page, config, 'read-error', report, [1440, 390]);
     await retryReadWithKeyboard(page, '__corsReadMode', 'normal');
     await ensureCorsOverview(page);
   } finally {
@@ -361,6 +380,11 @@ export async function verifyCorsUiFailures({
     id,
   );
   await page.waitForSelector('loc=role:dialog[name="本次测试对象已清理"]');
+  // CorsDialog restores focus on the next animation frame after removing the
+  // retry button. The changed heading can render before that focus callback.
+  await page.waitForFunction(() =>
+    document.querySelector('[role="dialog"]')?.contains(document.activeElement),
+  );
   const cleanupFocus = await page.evaluate(() => ({
     withinDialog: document
       .querySelector('[role="dialog"]')
