@@ -88,5 +88,71 @@
   "notVerified": [
     "AWS S3 (not required)",
     "Linux/final container and other architecture (Release stage)"
-  ]
+  ],
+  "cleanupFix": {
+    "date": "2026-10-08",
+    "scope": "Scale runner cleanup and original workload/report error preservation; no product or build inputs changed.",
+    "evidence": "README.md#pr-263-评审项-o1-修复",
+    "results": [
+      {
+        "command": "pnpm install --frozen-lockfile",
+        "status": "passed",
+        "evidence": "cleanup/install.txt"
+      },
+      {
+        "command": "pnpm exec vitest run --project integration tests/integration/analytics/report-scale-runner.test.ts -t 'report directory is a file|preserves both workload'",
+        "status": "failed-as-expected-before-fix",
+        "testsFailed": 2,
+        "notSelected": 2,
+        "evidence": "cleanup/red.txt"
+      },
+      {
+        "command": "pnpm exec vitest run --project integration tests/integration/analytics/report-scale-runner.test.ts",
+        "status": "passed",
+        "testsPassed": 4,
+        "evidence": "cleanup/green.txt"
+      },
+      {
+        "command": "pnpm exec eslint tests/verification/analytics/reports-scale.ts tests/integration/analytics/report-scale-runner.test.ts --max-warnings=0",
+        "status": "passed",
+        "evidence": "cleanup/lint.txt"
+      },
+      {
+        "command": "pnpm run typecheck",
+        "status": "passed-on-recheck",
+        "initialFailure": "Local reviewer source backup included by **/*.ts; preserved as .ts.txt without changing project configuration.",
+        "evidence": ["cleanup/typecheck.txt", "cleanup/typecheck-recheck.txt"]
+      },
+      {
+        "command": "pnpm exec prettier tests/verification/analytics/reports-scale.ts tests/integration/analytics/report-scale-runner.test.ts docs/verification/analytics-169/README.md docs/verification/analytics-169/review.md docs/verification/analytics-169/checks.json docs/verification/analytics-169/cleanup/*.md docs/verification/analytics-169/cleanup/*.json --check",
+        "status": "passed",
+        "evidence": "cleanup/format.txt"
+      },
+      {
+        "command": "node docs/tasks/check.mjs",
+        "status": "passed",
+        "tasks": 120,
+        "requirements": 298,
+        "evidence": "cleanup/docs-check.txt"
+      },
+      {
+        "command": "node docs/tasks/check.mjs --self-test",
+        "status": "passed",
+        "rejectionCases": 5,
+        "evidence": "cleanup/docs-self-test.txt"
+      }
+    ],
+    "independentReview": {
+      "correctness": "Approve",
+      "structure": "O1 resolved; no new Critical/Required",
+      "evidence": [
+        "cleanup/correctness-review.md",
+        "cleanup/structure-review.md"
+      ]
+    },
+    "notRerun": [
+      "Unchanged product build, units, full integration, 100k scale and live object storage inputs. Prior full integration failure remains unresolved."
+    ],
+    "prPolicy": "Remain draft; focused runner checks do not replace prior failed full integration."
+  }
 }

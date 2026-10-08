@@ -90,3 +90,27 @@ AWS不再是必需实测目标，依现有执行约定保持未验证、不记�
 代码实现、独立代码审计、真实报表HTTP/存储联验与规模验证已完成。格式、静态、类型、构建和单元通过；完整集成仍有上述1项失败，不能写作全部本地检查通过，汇总见[命令结果](./checks.json)。UI、设计审查与人工验收不适用；AWS、Release镜像及另一架构保持未验证。
 
 分支 `codex/issue-169-analytics-query` 已提交推送，创建[草稿PR #263](https://github.com/dnslin/ariso-next/pull/263)。实际 `gh pr view` 回读为 OPEN、isDraft=true、MERGEABLE；`statusCheckRollup=[]`，`gh pr checks` 返回没有检查。没有远端CI不记为通过，也不等待不存在的工作流。未经另行授权不合并、不关闭Issue、不删分支/worktree；本任务无需要保持的UI预览。
+
+## PR #263 评审项 O1 修复
+
+2026-10-08，在既有任务分支修复规模 runner 的资源清理问题。实际使用 `using-agent-skills`、`debugging-and-error-recovery` 和 `test-driven-development`；独立复审分别使用 `code-review-and-quality` 与 `thermo-nuclear-code-quality-review`。修改仅限规模验证脚本、对应集成测试与本目录证据，没有业务、迁移或构建输入变化。
+
+原实现把环境诊断、报告生成和写入放在 `finally`，报告失败会跳过后面的临时库删除，并覆盖此前测量失败。先用真实文件系统复现：把报告父目录占为普通文件，验证临时目录残留；再提供不存在的 fixture，同时阻塞报告路径，验证测量错误被覆盖。[修复前定向检查](./cleanup/red.txt)实际退出1，两项失败，另外两项未选择。测试只将 `tmpdir` 指向每个用例自有目录，文件读写、SQLite 和环境诊断没有伪造。
+
+修复后报告生成在普通执行流程中进行，外层 `finally` 只关闭当前连接并删除临时目录；关闭连接异常时仍尝试删除。测量失败但报告成功时保存 failed 报告并抛出原始错误；两者同时失败时用原生 `AggregateError.errors` 保留两个原始错误、错误码与路径。报告单独失败时直接抛出原始报告错误。查询、负载、阈值和旧实验数据不变。既有测量失败断言改为真实 `AssertionError` 类型，failed 报告中的错误文本断言继续保留。
+
+本轮环境仍为 Node 24.18.1 / pnpm 11.19.0。默认入口 `test:integration` → integration 项目的 `tests/integration/**/*.test.ts` 继续收集同一 runner 文件，新增两项没有 `skip` 或 `only`；该文件由2项增至4项。独立正确性评审实际取得[四项收集清单](./cleanup/default-collection.json)，收集不代替执行。上文全量18项报表场景与收集记录属于修复前输入，不能改写为本次全量20项已通过。
+
+| 实际命令                                                                                                                                                      | 结果与证据                                                                                                                                                                                                                      |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm install --frozen-lockfile`                                                                                                                              | [通过](./cleanup/install.txt)，锁文件不变                                                                                                                                                                                       |
+| `pnpm exec vitest run --project integration tests/integration/analytics/report-scale-runner.test.ts -t 'report directory is a file\|preserves both workload'` | [修复前失败](./cleanup/red.txt)，2失败、2未选择，实际命中目录残留和错误覆盖                                                                                                                                                     |
+| `pnpm exec vitest run --project integration tests/integration/analytics/report-scale-runner.test.ts`                                                          | [修复后通过](./cleanup/green.txt)，4/4；覆盖成功、已有快照失败及两个新错误场景                                                                                                                                                  |
+| `pnpm exec eslint tests/verification/analytics/reports-scale.ts tests/integration/analytics/report-scale-runner.test.ts --max-warnings=0`                     | [通过](./cleanup/lint.txt)                                                                                                                                                                                                      |
+| `pnpm run typecheck`                                                                                                                                          | 首次[失败](./cleanup/typecheck.txt)：上一轮独立审查留下的本地 `original-queries.ts` 备份被 `**/*.ts` 收集，原相对导入无法解析。只将备份改为 `.ts.txt` 保留内容，不改配置或业务文件；[复验通过](./cleanup/typecheck-recheck.txt) |
+
+本轮不重复未变输入的应用构建、单元、完整集成、十万图片规模和真实对象存储联验。先前上传 `ECONNRESET` 的完整集成失败仍未解决，定向通过不能代替全量通过，PR继续保持草稿。界面、浏览器、Figma与人工UI验收仍不适用。
+
+[独立正确性复审](./cleanup/correctness-review.md)结论 Approve；[独立结构复审](./cleanup/structure-review.md)确认 O1 已解决。两位评审者分别实际读取增量和 RED/GREEN，均无新增 Critical/Required。复审没有重复运行已通过的测试，也没有将复审结论替代执行证据。
+
+本轮两份修改代码及新增/更新 Markdown、JSON 的 `pnpm exec prettier … --check` [通过](./cleanup/format.txt)；检查文件为 `reports-scale.ts`、`report-scale-runner.test.ts`、本目录 `README.md`/`review.md`/`checks.json` 及 `cleanup/*.md`/`cleanup/*.json`。`node docs/tasks/check.mjs` [通过120任务/298需求](./cleanup/docs-check.txt)，`node docs/tasks/check.mjs --self-test` [通过5拒绝用例](./cleanup/docs-self-test.txt)。检查后追加的这段结果和机器记录另做局部格式核对，不重复代码测试。

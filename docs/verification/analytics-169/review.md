@@ -78,3 +78,7 @@
 实际补核最终产物 `live-final/r2.json`、`live-final/seaweedfs.json` 及 runner 完成输出：两服务均 passed，original/compressed/watermark 各 2、total 6，真实密码分享 grant 与其他非所有者授权均被拒绝；签名准备失败不计、表故障恢复保持六次、健康 idle 且 dropped=0、精确 Key 清理确认不存在。此轮在覆盖索引和有界 request 包装之后运行，补齐最终产物真实服务证据。
 
 最终代码评审仍为 Approve；完整适用检查未全通过，PR 必须保留草稿并明确这一限制。发布/容器、AWS S3 或 UI 人工验收均没有由这些证据替代，本任务无 UI。若所有者后续授权处理全量上传连接重置，应单独取得更具体失败证据，不在本次范围内猜测修复。
+
+## PR #263 后续清理修复复审
+
+2026-10-08，独立结构评审发现的 Optional O1（规模 runner 在报告失败时可能跳过临时库清理并覆盖测量错误）已在本次修复。[正确性复审](./cleanup/correctness-review.md)与[结构复审](./cleanup/structure-review.md)均未发现新增 Critical/Required，分别给出 Approve 与 O1 已解决结论。修复前两个真实失败、修复后4项 runner 集成通过以及本轮类型/静态结果由[统一证据](./README.md#pr-263-评审项-o1-修复)记录。原完整集成上传 ECONNRESET 未解决，草稿门槛保持不变。

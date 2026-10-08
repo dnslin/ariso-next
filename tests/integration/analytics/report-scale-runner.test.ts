@@ -1,11 +1,23 @@
-import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
+import { AssertionError } from 'node:assert';
+import {
+  mkdtempSync,
+  readFileSync,
+  readdirSync,
+  rmSync,
+  writeFileSync,
+} from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { expect, it } from 'vitest';
+import { expect, it, vi } from 'vitest';
 import { runReportsScale } from '../../verification/analytics/reports-scale.ts';
 import { createScaleFixture } from '../../experiments/analytics-scale/fixture.ts';
 import { initializeSiteSettings } from '../../../src/server/site/settings.ts';
 import { createAccessWriter } from '../../../src/server/analytics/flush.ts';
+
+vi.mock('node:os', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('node:os')>();
+  return { ...actual, tmpdir: vi.fn(actual.tmpdir) };
+});
 
 it('runs actual reports with captured SQL and validates interleaved persisted snapshots', async () => {
   const directory = mkdtempSync(join(tmpdir(), 'analytics-report-runner-'));
@@ -65,6 +77,55 @@ it('runs actual reports with captured SQL and validates interleaved persisted sn
   }
 }, 15_000);
 
+it('removes its temporary database when the report directory is a file', async () => {
+  const directory = mkdtempSync(join(tmpdir(), 'analytics-report-output-'));
+  const blocked = join(directory, 'blocked');
+  writeFileSync(blocked, 'occupied');
+  vi.mocked(tmpdir).mockReturnValue(directory);
+  try {
+    await expect(
+      runReportsScale({
+        reportPath: join(blocked, 'report.json'),
+        images: 1000,
+        warmRuns: 1,
+        rounds: 1,
+      }),
+    ).rejects.toMatchObject({ code: 'EEXIST', path: blocked });
+    expect(readdirSync(directory)).toEqual(['blocked']);
+  } finally {
+    vi.mocked(tmpdir).mockReset();
+    rmSync(directory, { recursive: true, force: true });
+  }
+}, 15_000);
+
+it('preserves both workload and report failures while removing its temporary database', async () => {
+  const directory = mkdtempSync(join(tmpdir(), 'analytics-report-errors-'));
+  const blocked = join(directory, 'blocked');
+  const missingFixture = join(directory, 'missing.db');
+  writeFileSync(blocked, 'occupied');
+  vi.mocked(tmpdir).mockReturnValue(directory);
+  try {
+    const result = runReportsScale({
+      fixtureDatabase: missingFixture,
+      reportPath: join(blocked, 'report.json'),
+      images: 1000,
+      warmRuns: 1,
+      rounds: 1,
+    });
+    await expect(result).rejects.toBeInstanceOf(AggregateError);
+    await expect(result).rejects.toMatchObject({
+      errors: [
+        { code: 'ENOENT', path: missingFixture },
+        { code: 'EEXIST', path: blocked },
+      ],
+    });
+    expect(readdirSync(directory)).toEqual(['blocked']);
+  } finally {
+    vi.mocked(tmpdir).mockReset();
+    rmSync(directory, { recursive: true, force: true });
+  }
+}, 15_000);
+
 it('clones the pre-workload fixture without mutating it and retains failure evidence for an already changed snapshot', async () => {
   const directory = mkdtempSync(join(tmpdir(), 'analytics-report-clone-'));
   const path = join(directory, 'source.db');
@@ -114,7 +175,7 @@ it('clones the pre-workload fixture without mutating it and retains failure evid
         warmRuns: 1,
         rounds: 1,
       }),
-    ).rejects.toThrow('AssertionError');
+    ).rejects.toThrow(AssertionError);
     const failed = JSON.parse(readFileSync(failedPath, 'utf8'));
     expect(failed.status).toBe('failed');
     expect(
