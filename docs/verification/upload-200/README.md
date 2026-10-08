@@ -65,3 +65,9 @@ macOS arm64，Node 24.18.1，pnpm 11.19.0；使用已有 Ego Lite TaskSpace 1，
 本机独立生产预览：`http://ariso-upload-200-50879.localhost:50879/settings/general`。最新生产构建的健康检查与初始化成功；用户接管后未进行真实浏览器登录，因此登录和人工预览页面仍待验收。独立账号和密码仅在本次对话提供，不写到文档或 PR。预览保持运行，直到用户明确要求停止或清理。
 
 请检查基本设置的三个数字字段、范围和批次/队列关联错误、保存与刷新、保存后原页/输入/焦点/滚动保留、手机及深色主题，并通过分类访问处理/账号/上传 API。故障注入场景由隔离的自动验证记录承接，不修改人工预览数据。
+
+## 提交与远端状态
+
+实现提交 `f3831f05` 已推送到 `codex/issue-200-upload-settings`，关联 [草稿 PR #264](https://github.com/dnslin/ariso-next/pull/264)。实际 `gh pr view` 返回 OPEN、isDraft=true、MERGEABLE；`gh pr checks` 返回 `no checks reported`，statusCheckRollup 为空，没有远端 CI 通过结论，也不等待不存在的工作流。人工验收和停止后的浏览器增量证据开放，草稿状态保持。
+
+原项目工作区保持干净。本任务分支、worktree、原型和独立人工预览保留；未合并 PR、关闭 Issue、发布、部署或清理其他任务。
