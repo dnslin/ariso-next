@@ -1,19 +1,13 @@
 import { eq } from 'drizzle-orm';
 import type { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
-import { z } from 'zod';
+import {
+  UPLOAD_MIB_BYTES,
+  uploadSettingsFieldErrors,
+  uploadSettingsInputSchema,
+  uploadSettingsPatchSchema,
+} from '../../shared/upload-settings.ts';
 import { UploadError } from './errors.ts';
 import { uploadSettings } from './schema.ts';
-
-const MiB = 1024 * 1024;
-const settingsInputSchema = z.strictObject({
-  maxFileMiB: z
-    .number()
-    .int()
-    .positive()
-    .max(Math.floor(Number.MAX_SAFE_INTEGER / MiB)),
-  batchSize: z.number().int().min(1).max(200),
-  queueLimit: z.number().int().min(100).max(2000),
-});
 
 export function requireUploadSettings(db: BetterSQLite3Database) {
   const settings = db
@@ -24,7 +18,7 @@ export function requireUploadSettings(db: BetterSQLite3Database) {
   if (!settings)
     throw new UploadError('UPLOAD_NOT_INITIALIZED', '上传设置尚未初始化', 409);
   return {
-    maxFileMiB: settings.maxFileBytes / MiB,
+    maxFileMiB: settings.maxFileBytes / UPLOAD_MIB_BYTES,
     maxFileBytes: settings.maxFileBytes,
     batchSize: settings.batchSize,
     queueLimit: settings.queueLimit,
@@ -33,13 +27,19 @@ export function requireUploadSettings(db: BetterSQLite3Database) {
 
 /** Merge and validate the limits together; existing submissions retain their snapshot. */
 export function patchUploadSettings(db: BetterSQLite3Database, input: unknown) {
-  const patch = settingsInputSchema.partial().safeParse(input);
+  const patch = uploadSettingsPatchSchema.safeParse(input);
   if (!patch.success)
-    throw new UploadError('UPLOAD_SETTINGS_INVALID', patch.error.message, 422);
+    throw new UploadError(
+      'UPLOAD_SETTINGS_INVALID',
+      '请检查上传限制字段',
+      422,
+      null,
+      uploadSettingsFieldErrors(patch.error),
+    );
   return db.transaction(
     (tx) => {
       const current = requireUploadSettings(tx);
-      const parsed = settingsInputSchema.safeParse({
+      const parsed = uploadSettingsInputSchema.safeParse({
         maxFileMiB: current.maxFileMiB,
         batchSize: current.batchSize,
         queueLimit: current.queueLimit,
@@ -48,19 +48,15 @@ export function patchUploadSettings(db: BetterSQLite3Database, input: unknown) {
       if (!parsed.success)
         throw new UploadError(
           'UPLOAD_SETTINGS_INVALID',
-          parsed.error.message,
+          '请检查上传限制字段',
           422,
+          null,
+          uploadSettingsFieldErrors(parsed.error),
         );
       const settings = parsed.data;
-      if (settings.batchSize > settings.queueLimit)
-        throw new UploadError(
-          'UPLOAD_SETTINGS_INVALID',
-          '批次大小不能超过队列上限',
-          422,
-        );
       tx.update(uploadSettings)
         .set({
-          maxFileBytes: settings.maxFileMiB * MiB,
+          maxFileBytes: settings.maxFileMiB * UPLOAD_MIB_BYTES,
           batchSize: settings.batchSize,
           queueLimit: settings.queueLimit,
           updatedAt: new Date(),

@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="zh-CN">
+  <meta charset="utf-8" /><meta
+    name="viewport"
+    content="width=device-width,initial-scale=1"
+  /><title>上传限制 · 方案预览</title
+  ><style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      background: #edf4f3;
+      color: #272343;
+      font: 14px/1.5 system-ui;
+    }
+    header {
+      position: sticky;
+      top: 0;
+      padding: 12px 20px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      z-index: 1;
+    }
+    button,
+    select {
+      min-height: 44px;
+      border: 1px solid #bae8e8;
+      border-radius: 8px;
+      background: #fff;
+      padding: 8px 12px;
+      color: #272343;
+      font: inherit;
+      cursor: pointer;
+    }
+    button.active {
+      background: #ffd807;
+    }
+    iframe {
+      display: block;
+      margin: 24px auto;
+      border: 1px solid #bae8e8;
+      border-radius: 16px;
+      background: #fff;
+      width: calc(100% - 32px);
+      height: 1080px;
+    }
+    p {
+      margin: 0;
+    }
+    strong {
+      margin-right: auto;
+    }
+    aside {
+      padding: 16px 20px;
+      max-width: 1050px;
+      margin: auto;
+    }
+    @media (max-width: 600px) {
+      header {
+        gap: 8px;
+      }
+      iframe {
+        margin: 12px auto;
+      }
+    }
+  </style>
+  <header>
+    <strong>上传限制 · 待批准方案</strong
+    ><button id="desktop" class="active">桌面</button
+    ><button id="phone">手机</button><button id="short">手机短视口</button
+    ><select id="theme" aria-label="主题">
+      <option value="light">浅色</option>
+      <option value="dark">深色</option></select
+    ><select id="state" aria-label="保存结果">
+      <option value="normal">正常保存</option>
+      <option value="failure">保存失败</option>
+      <option value="unknown">响应丢失 / 核对失败</option>
+    </select>
+  </header>
+  <aside>
+    <p>
+      推荐：基本设置内直接保存上传限制；普通文字说明，无独立成功页面。三个字段可编辑，尝试输入
+      0、201、99 或“批次 150 / 队列
+      100”后保存，查看字段错误和焦点。其余设置分类与导航仅用于展示公共结构。
+    </p>
+  </aside>
+  <iframe title="上传限制原型" src="/settings/processing"></iframe>
+  <script>
+    const frame = document.querySelector('iframe');
+    let mode = 'desktop';
+    function update() {
+      frame.src =
+        '/settings/processing?theme=' +
+        document.querySelector('#theme').value +
+        '&state=' +
+        document.querySelector('#state').value;
+      frame.style.width = mode === 'desktop' ? 'calc(100% - 32px)' : '390px';
+      frame.style.maxWidth = 'calc(100% - 16px)';
+      frame.style.height =
+        mode === 'short' ? '560px' : mode === 'phone' ? '844px' : '1080px';
+    }
+    for (const key of ['desktop', 'phone', 'short'])
+      document.querySelector('#' + key).onclick = () => {
+        mode = key;
+        document
+          .querySelectorAll('button')
+          .forEach((b) => b.classList.toggle('active', b.id === key));
+        update();
+      };
+    document
+      .querySelectorAll('select')
+      .forEach((select) => (select.onchange = update));
+  </script>
+</html>

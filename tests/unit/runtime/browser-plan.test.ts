@@ -6,6 +6,41 @@ function select(suite: string, only?: string) {
 }
 
 describe('focused browser execution plans', () => {
+  it('provides storage-cors as a complete focused stage on its primary page', () => {
+    expect(select('storage-cors')).toEqual({
+      stages: [['storage-cors', 'storageCors']],
+      config: {},
+    });
+    expect(() =>
+      selectBrowserPlan({ suite: 'storage-cors', pageLabel: 'p2' }),
+    ).toThrow('Browser suite storage-cors requires EGO_PAGE_LABEL=p1');
+  });
+
+  it.each(['representative', 'cleanup', 'recovery', 'live'])(
+    'rejects partial or unrelated phase %s in storage-cors',
+    (only) => {
+      expect(() => select('storage-cors', only)).toThrow(
+        '--only requires an applicable targeted suite',
+      );
+    },
+  );
+
+  it.each([
+    ['storageConfig', '--storage-config applies only to storage-admin live'],
+    [
+      'previewConfig',
+      '--preview-config applies only to storage-admin feedback',
+    ],
+  ])('rejects unrelated %s in storage-cors', (field, message) => {
+    expect(() =>
+      selectBrowserPlan({
+        suite: 'storage-cors',
+        pageLabel: 'p1',
+        [field]: 'unused.json',
+      }),
+    ).toThrow(message);
+  });
+
   it.each([
     ['library', ['library']],
     ['library-feedback', ['library-query']],
@@ -19,6 +54,7 @@ describe('focused browser execution plans', () => {
     ['albums', ['albums']],
     ['album-cover', ['album-cover']],
     ['tags', ['tags']],
+    ['upload-settings', ['upload-settings']],
     ['upload-input', ['upload-input']],
     ['viewer', ['library-viewer-run']],
     ['upload', ['upload-submissions', 'upload-relations']],
@@ -29,6 +65,7 @@ describe('focused browser execution plans', () => {
     ['library-reprocess', ['library-batch-reprocess']],
     ['library-copy', ['library-copy']],
     ['storage-admin', ['storage-admin', 'shell-navigation']],
+    ['storage-cors', ['storage-cors']],
     ['processing', ['processing', 'shell-navigation']],
     ['trash', ['trash-query-batch', 'trash-cleanup']],
   ] as const)(
@@ -41,6 +78,9 @@ describe('focused browser execution plans', () => {
   );
 
   it.each([
+    ...['representative', 'behavior', 'recovery', 'consumers'].map(
+      (phase) => ['upload-settings', phase, ['upload-settings']] as const,
+    ),
     ['upload', 'relations', ['upload-relations']],
     ['upload', 'submissions', ['upload-submissions']],
     ['upload-regression', 'main', ['upload']],
@@ -82,6 +122,7 @@ describe('focused browser execution plans', () => {
   );
 
   it.each([
+    ['upload-settings', 'recovery', { uploadSettingsPhase: 'recovery' }],
     ['site-general', 'recovery', { siteGeneralPhase: 'recovery' }],
     ['library', 'recovery', { libraryPhase: 'recovery' }],
     ['smtp', 'representative', { smtpPhase: 'representative' }],
@@ -188,6 +229,7 @@ describe('focused browser execution plans', () => {
         ['albums', 'albums'],
         ['album-cover', 'album-cover'],
         ['tags', 'tags'],
+        ['upload-settings', 'upload-settings'],
         ['upload', 'upload'],
         ['upload-polling', 'upload-polling'],
         ['upload-input', 'upload-input'],

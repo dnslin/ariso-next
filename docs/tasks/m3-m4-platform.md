@@ -686,8 +686,16 @@ S3 永久删除、有限重试、关停/重启和 R2/SeaweedFS 实际处理 PUT 
 - 验证方法：新增设置浏览器用例并接入 `pnpm run test:browser`，测试边界/保存失败/重启读取，以及旧submission与新submission限制差异；适用工程检查按执行约定。
 - 界面：所有者 `/settings/general`，数据来自upload settings。桌面[470:10085](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=470-10085)、手机[470:10377](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=470-10377)；字段错误桌面[470:10430](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=470-10430)、手机[470:10724](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=470-10724)。HeroUI NumberField、FieldError、Alert、Button；独立保存组，手机错误摘要首屏可读、短视口不裁底栏，通用控件按HeroUI统一，无业务差异。
 - 实施步骤：
-  - [ ] 1. 独立上传限制保存组：边界、服务失败和重启值一致。
-  - [ ] 2. 旧/新提交差异与两端短视口：不调用 site PATCH 保存上传字段。
+  - [x] 1. 独立上传限制保存组：边界、服务失败和重启值一致。
+  - [x] 2. 旧/新提交差异与两端短视口：不调用 site PATCH 保存上传字段。
+
+2026-10-08 用户已批准直接在基本设置编辑上传限制的原型，产品代码和对应 Figma 节点已同步。独立 GET/PATCH、中文字段校验、结果不确定时读取核对、旧/新提交快照、会话失效释放队列和两端状态已实施；真实 HTTP 和同数据目录进程重启已验证。适用检查、独立代码/设计评审和默认全量失败分别记录在 [Issue #200 实施证据](../verification/upload-200/README.md)。用户随后明确 UI 人工验收通过，并允许恢复同一 Ego TaskSpace；最终上传设置四组、Token 分类消费者和增量设计复审均通过。用户第三次明确交回控制后，图库完整组、复制和批量、图片处理 settings/recovery、Token 生命周期以及此前未执行的后段九组均已补跑通过。默认首轮失败及存储 CORS 未解决项仍单独记录；实施步骤和 PR 完成状态仍保留开放，PR 保持草稿，不把定向通过写成默认全量通过。
+
+2026-10-08 增量：两个独立角度评审发现的迟到保存响应 P2 已修复，新增 7 项回归先失败后通过，默认全量单元 1714 项、构建和类型检查通过，正确性与维护性复审无剩余 P1/P2。本轮新浏览器场景已接入默认 consumers；用户明确允许重建 Ego 空间后，空间 4 的桌面/手机四项迟到响应和消费者补验通过。首轮焦点及手机定位失败分别保留，仅修正测试的具体时序/选择器并定向重跑，不沿用旧四组通过代替本次回归。具体证据与剩余草稿边界仍统一见上述实施记录。
+
+2026-10-08 授权合并补充：最新main的#194四字段与本任务三字段已按用户批准的联合原型合入同一基本设置，独立保存与另一组草稿保护保留。四个Figma正常根已同步，公共导航、两按钮字重和44px帮助行内的28px站点标题居中已精确校准；独立正常/恢复代表图设计复审和代码/结构复审均无必修问题。site behavior/recovery/consumers及全部11个公共消费路由本轮已通过。上传本轮representative及后续单独recovery已完成，behavior实际422/整数反馈后新editor输入超时仍待诊断，consumers待补；processing settings本轮共同入口真实读取/保存已通过，整组旧素材重试disconnected失败，不提前记完整组通过。原#200人工UI验收和本次联合原型批准保留，不冒充新增联合产品人工逐项验收。手机上传Loading/Read-failed/Uninitialized三项卡内区域尚待截图及独立复读。最新实证、历史失败及待补结果位置见[联合验证索引](../verification/upload-200/reports/merge/README.md)；上方实施步骤继续保持未勾，待本次验证及授权收尾实际完成后更新。
+
+2026-10-08 最终补验：联合页面上传representative完成，behavior/recovery/consumers定向均通过；包括真实新旧submission差异、保存/刷新、两组独立失败恢复、迟到响应/当前队列、会话释放和三手机区域设计复读。代码/结构/设计独立复审无本次必修项。上方待补属于历史时点，实施步骤现按实际完成勾选。图片处理入口断言通过，但其整组旧水印素材重试两轮disconnected失败仍保留；不称默认全量单次通过。合并/关闭/清理按用户明确后续指令执行，不将人工或原型批准等同其他验证。
 
 #### DG-SITE 对 T-UP-08 的核对结论
 

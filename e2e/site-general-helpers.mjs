@@ -151,7 +151,7 @@ export async function siteGeneralTools(page, config, report) {
     const controls = await page.evaluate(() =>
       [
         ...document.querySelectorAll(
-          '[data-testid="site-general"] input,[data-testid="site-general"] textarea,#site-save',
+          '#site-settings-form input,#site-settings-form textarea,#site-save',
         ),
       ].map((node) => ({
         name: node.name || node.textContent,

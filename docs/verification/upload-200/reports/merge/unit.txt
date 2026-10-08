@@ -1,0 +1,54 @@
+Already up to date
+Done in 38ms using pnpm v11.19.0
+$ vitest run --project unit --maxWorkers=4
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-200-upload-settings/ariso
+
+ ❯ |unit| tests/unit/site/settings-expired.test.ts (3 tests | 2 failed) 19ms
+   × 会话失效时 phase=ready 保留四个可见草稿，锁住字段与保存按钮且结束保存中反馈 5ms
+   × 会话失效时 phase=saving 保留四个可见草稿，锁住字段与保存按钮且结束保存中反馈 0ms
+{"level":"error","time":"2026-10-08T11:59:34.911Z","module":"storage.http","err":{"type":"Error","message":"remote operation failed","stack":"Error: remote operation failed\n    at /Users/dnslin/.codex/worktrees/issue-200-upload-settings/ariso/tests/unit/storage/probe-http.test.ts:21:27\n    at Module.storageResponse (/Users/dnslin/.codex/worktrees/issue-200-upload-settings/ariso/src/server/storage/http.ts:24:13)\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at /Users/dnslin/.codex/worktrees/issue-200-upload-settings/ariso/tests/unit/storage/probe-http.test.ts:16:20","code":"STORAGE_OPERATION_FAILED"},"path":"/api/storages/id/probes/probe/retry-cleanup","msg":"Remote storage operation failed"}
+{"level":"error","time":"2026-10-08T11:59:34.915Z","module":"storage.http","err":{"type":"Error","message":"remote operation failed","stack":"Error: remote operation failed\n    at /Users/dnslin/.codex/worktrees/issue-200-upload-settings/ariso/tests/unit/storage/probe-http.test.ts:21:27\n    at Module.storageResponse (/Users/dnslin/.codex/worktrees/issue-200-upload-settings/ariso/src/server/storage/http.ts:24:13)\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at /Users/dnslin/.codex/worktrees/issue-200-upload-settings/ariso/tests/unit/storage/probe-http.test.ts:16:20","code":"STORAGE_TIMEOUT"},"path":"/api/storages/id/probes/probe/retry-cleanup","msg":"Remote storage operation failed"}
+{"level":"error","time":"2026-10-08T11:59:34.916Z","module":"storage.http","err":{"type":"Error","message":"namespace scan failed","stack":"Error: namespace scan failed\n    at /Users/dnslin/.codex/worktrees/issue-200-upload-settings/ariso/tests/unit/storage/probe-http.test.ts:36:27\n    at Module.storageResponse (/Users/dnslin/.codex/worktrees/issue-200-upload-settings/ariso/src/server/storage/http.ts:24:13)\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at /Users/dnslin/.codex/worktrees/issue-200-upload-settings/ariso/tests/unit/storage/probe-http.test.ts:33:20","code":"STORAGE_SCAN_FAILED","status":502},"path":"/api/storages/id","msg":"Remote storage operation failed"}
+{"level":"error","time":"2026-10-08T11:59:34.916Z","module":"storage.http","err":{"type":"Error","message":"namespace scan failed","stack":"Error: namespace scan failed\n    at /Users/dnslin/.codex/worktrees/issue-200-upload-settings/ariso/tests/unit/storage/probe-http.test.ts:36:27\n    at Module.storageResponse (/Users/dnslin/.codex/worktrees/issue-200-upload-settings/ariso/src/server/storage/http.ts:24:13)\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at /Users/dnslin/.codex/worktrees/issue-200-upload-settings/ariso/tests/unit/storage/probe-http.test.ts:33:20","code":"STORAGE_SCAN_FAILED","status":504},"path":"/api/storages/id","msg":"Remote storage operation failed"}
+{"level":"error","time":"2026-10-08T11:59:34.919Z","module":"storage.http","err":{"type":"Error","message":"namespace scan failed","stack":"Error: namespace scan failed\n    at /Users/dnslin/.codex/worktrees/issue-200-upload-settings/ariso/tests/unit/storage/probe-http.test.ts:36:27\n    at Module.storageResponse (/Users/dnslin/.codex/worktrees/issue-200-upload-settings/ariso/src/server/storage/http.ts:24:13)\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at /Users/dnslin/.codex/worktrees/issue-200-upload-settings/ariso/tests/unit/storage/probe-http.test.ts:33:20","code":"STORAGE_SCAN_FAILED","status":500},"path":"/api/storages/id","msg":"Storage request failed"}
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/site/settings-expired.test.ts > 会话失效时 phase=ready 保留四个可见草稿，锁住字段与保存按钮且结束保存中反馈
+ FAIL  |unit| tests/unit/site/settings-expired.test.ts > 会话失效时 phase=saving 保留四个可见草稿，锁住字段与保存按钮且结束保存中反馈
+Error: [vitest] No "useQueryClient" export is defined on the "@tanstack/react-query" mock. Did you forget to return it from "vi.mock"?
+If you need to partially mock a module, you can use "importOriginal" helper inside:
+
+vi.mock(import("@tanstack/react-query"), async (importOriginal) => {
+  const actual = await importOriginal()
+  return {
+    ...actual,
+    // your mocked methods
+  }
+})
+
+ ❯ useUploadLimits src/components/upload-limits/use-upload-limits.ts:42:18
+     40|   const noticeId = useRef<string | null>(null);
+     41|   const active = useRef(true);
+     42|   const client = useQueryClient();
+       |                  ^
+     43|   const upload = useUploadQueue();
+     44|   const resetUpload = useResetUpload();
+ ❯ GeneralPage src/components/site/general-page.tsx:47:18
+ ❯ Object.react_stack_bottom_frame node_modules/.pnpm/react-dom@19.3.0_react@19.3.0/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:10371:18
+ ❯ renderWithHooks node_modules/.pnpm/react-dom@19.3.0_react@19.3.0/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:5361:19
+ ❯ renderElement node_modules/.pnpm/react-dom@19.3.0_react@19.3.0/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:5796:23
+ ❯ retryNode node_modules/.pnpm/react-dom@19.3.0_react@19.3.0/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:6783:21
+ ❯ performWork node_modules/.pnpm/react-dom@19.3.0_react@19.3.0/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:7919:19
+ ❯ startWork node_modules/.pnpm/react-dom@19.3.0_react@19.3.0/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:8807:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+
+ Test Files  1 failed | 136 passed (137)
+      Tests  2 failed | 1797 passed (1799)
+   Start at  19:59:29
+   Duration  68.58s (tests 84%, import 12%, transform 3%)
+
+[ELIFECYCLE] Command failed with exit code 1.

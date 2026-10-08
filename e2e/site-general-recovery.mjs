@@ -9,6 +9,11 @@ import {
   prepareSiteGeneralHistory,
   verifySiteGeneralBack,
 } from './site-general-history.mjs';
+import {
+  limitsField,
+  limitsId,
+  limitsInput,
+} from './upload-settings-helpers.mjs';
 import { signInToLibrary } from './library-login.mjs';
 
 async function pair(tools, name) {
@@ -34,8 +39,9 @@ export async function verifySiteGeneralRecovery(page, config, tools, report) {
       await page.evaluate(
         () =>
           document
-            .querySelector('[data-testid="site-general"]')
-            .querySelectorAll('input,textarea,button[type="submit"]').length,
+            .querySelector('#site-settings-form')
+            ?.querySelectorAll('input,textarea,button[type="submit"]').length ??
+          0,
       ),
       0,
       'Unread values are not editable placeholders',
@@ -67,12 +73,41 @@ export async function verifySiteGeneralRecovery(page, config, tools, report) {
       await page.evaluate(
         () =>
           document
-            .querySelector('[data-testid="site-general"]')
-            .querySelectorAll('input,textarea').length,
+            .querySelector('#site-settings-form')
+            ?.querySelectorAll('input,textarea').length ?? 0,
       ),
       0,
     );
+    await page.waitForSelector(`${limitsId('editor')}[data-state="ready"]`);
+    const uploadBefore = await tools.request('/api/settings/upload');
+    const changed = {
+      ...limitsInput(uploadBefore),
+      maxFileMiB: uploadBefore.maxFileMiB + 1,
+    };
+    await page.fill(limitsField('maxFileMiB'), String(changed.maxFileMiB));
+    await page.focus(limitsId('save'));
+    await page.keyboard.press('Enter');
+    await page.waitForFunction(
+      (value) =>
+        fetch('/api/settings/upload')
+          .then((r) => r.json())
+          .then((body) => body.maxFileMiB === value),
+      changed.maxFileMiB,
+    );
+    assert.deepEqual(await tools.request('/api/settings/upload'), {
+      ...changed,
+      maxFileBytes: changed.maxFileMiB * 1048576,
+    });
+    await tools.state('error');
     await pair(tools, 'read-error');
+    await tools.request(
+      '/api/settings/upload',
+      'PATCH',
+      limitsInput(uploadBefore),
+    );
+    report.checks.push(
+      'A failed initial site GET does not block a real upload form PATCH; the upload value is independently read back and restored.',
+    );
   } finally {
     await fault.dispose();
   }
@@ -281,51 +316,73 @@ export async function verifySiteGeneralRecovery(page, config, tools, report) {
     timeZone: savedBeforeExpiry[0].time_zone === 'UTC' ? 'Asia/Tokyo' : 'UTC',
   });
   const expiredDraft = await tools.values();
-  const signedOut = await page.fetch('/api/auth/sign-out', {
-    method: 'POST',
-    headers: { 'content-type': 'application/json' },
-    body: '{}',
-  });
-  assert.equal(signedOut.status, 200, 'The actual owner session is signed out');
-  const anonymous = await page.fetch('/api/auth/get-session', {
-    cache: 'no-store',
-  });
-  assert.equal(anonymous.status, 200);
-  assert.equal(JSON.parse(anonymous.body), null);
-  await page.evaluate(() => {
-    const original = window.fetch;
-    window.__siteExpiredSave = { original, requests: [] };
-    window.fetch = async (...args) => {
-      const response = await original(...args);
-      if (
-        new URL(String(args[0]), location.href).pathname ===
-          '/api/settings/site' &&
-        args[1]?.method === 'PATCH'
-      ) {
-        const body = await response.clone().json();
-        window.__siteExpiredSave.requests.push({
-          method: 'PATCH',
-          status: response.status,
-          code: body.code,
-        });
-      }
-      return response;
-    };
+  // Both real checks are valid expiry signals. Hold only background delivery so
+  // this specific scene proves explicit PATCH 401 without racing the shell's
+  // periodic/focus session check. The original real response is released below.
+  fault = await siteFault(page, {
+    mode: 'read-hold',
+    path: '/api/auth/get-session',
   });
   try {
-    await page.click(button('保存站点信息'));
-    await tools.state('session');
-    report.expiredSave = await page.evaluate(
-      () => window.__siteExpiredSave.requests,
-    );
-    assert.deepEqual(report.expiredSave, [
-      { method: 'PATCH', status: 401, code: 'UNAUTHORIZED' },
-    ]);
-  } finally {
-    await page.evaluate(() => {
-      window.fetch = window.__siteExpiredSave.original;
-      delete window.__siteExpiredSave;
+    const signedOut = await page.fetch('/api/auth/sign-out', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: '{}',
     });
+    assert.equal(
+      signedOut.status,
+      200,
+      'The actual owner session is signed out',
+    );
+    // Read anonymity through the genuine saved fetch. The background owner's
+    // own successful GET response is held until the explicit PATCH is observed.
+    const anonymous = await page.evaluate(async () => {
+      const response = await window.__siteGeneralFault.original.call(
+        window,
+        '/api/auth/get-session',
+        { cache: 'no-store' },
+      );
+      return { status: response.status, body: await response.json() };
+    });
+    assert.equal(anonymous.status, 200);
+    assert.equal(anonymous.body, null);
+    await page.evaluate(() => {
+      const original = window.fetch;
+      window.__siteExpiredSave = { original, requests: [] };
+      window.fetch = async (...args) => {
+        const response = await original(...args);
+        if (
+          new URL(String(args[0]), location.href).pathname ===
+            '/api/settings/site' &&
+          args[1]?.method === 'PATCH'
+        ) {
+          const body = await response.clone().json();
+          window.__siteExpiredSave.requests.push({
+            method: 'PATCH',
+            status: response.status,
+            code: body.code,
+          });
+        }
+        return response;
+      };
+    });
+    try {
+      await page.click(button('保存站点信息'));
+      await tools.state('session');
+      report.expiredSave = await page.evaluate(
+        () => window.__siteExpiredSave.requests,
+      );
+      assert.deepEqual(report.expiredSave, [
+        { method: 'PATCH', status: 401, code: 'UNAUTHORIZED' },
+      ]);
+    } finally {
+      await page.evaluate(() => {
+        window.fetch = window.__siteExpiredSave.original;
+        delete window.__siteExpiredSave;
+      });
+    }
+  } finally {
+    await fault.dispose();
   }
   assert.deepEqual(await tools.values(), expiredDraft);
   await tools.enabled(false);

@@ -5,12 +5,18 @@ import { GeneralPage } from '../../../src/components/site/general-page';
 import type { useSiteSettings } from '../../../src/components/site/use-site-settings';
 import type { SiteSettingsResponse } from '../../../src/components/site/api';
 import { SiteForm } from '../../../src/components/site/site-form';
+import type { useUploadLimits } from '../../../src/components/upload-limits/use-upload-limits';
+import type { SavedUploadLimits } from '../../../src/components/upload-limits/api';
 
 const state = vi.hoisted(() => ({
   settings: {} as ReturnType<typeof useSiteSettings>,
+  upload: {} as ReturnType<typeof useUploadLimits>,
 }));
 vi.mock('../../../src/components/site/use-site-settings', () => ({
   useSiteSettings: () => state.settings,
+}));
+vi.mock('../../../src/components/upload-limits/use-upload-limits', () => ({
+  useUploadLimits: () => state.upload,
 }));
 vi.mock('../../../src/components/site/site-navigation', () => ({
   useSiteNavigation: () => ({
@@ -38,11 +44,15 @@ vi.mock('next/navigation', () => ({
   useRouter: () => ({ push: vi.fn() }),
 }));
 vi.mock('@tanstack/react-query', () => ({
-  useQuery: () => ({
+  useQuery: ({ queryKey }: { queryKey: string[] }) => ({
     isFetchedAfterMount: true,
     isFetching: false,
     isSuccess: true,
-    data: state.settings.saved,
+    data:
+      queryKey[0] === 'site-settings'
+        ? state.settings.saved
+        : state.upload.saved,
+    error: null,
   }),
 }));
 const saved: SiteSettingsResponse = {
@@ -57,6 +67,12 @@ const saved: SiteSettingsResponse = {
   faviconMime: null,
   updatedAt: '2026-10-08T00:00:00.000Z',
   githubCallbackUrl: 'https://img.example.com/api/auth/callback/github',
+};
+const savedUpload: SavedUploadLimits = {
+  maxFileMiB: 50,
+  maxFileBytes: 50 * 1048576,
+  batchSize: 20,
+  queueLimit: 500,
 };
 beforeEach(() => {
   state.settings = {
@@ -80,11 +96,27 @@ beforeEach(() => {
     reconcile: vi.fn(),
     chooseSaved: vi.fn(),
   };
+  state.upload = {
+    saved: savedUpload,
+    input: { maxFileMiB: 60, batchSize: 30, queueLimit: 600 },
+    busy: false,
+    unknown: false,
+    different: false,
+    expired: false,
+    errors: {},
+    message: '',
+    expire: vi.fn(),
+    change: vi.fn(),
+    save: vi.fn(),
+    reconcile: vi.fn(),
+    chooseSaved: vi.fn(),
+  };
 });
 it.each(['ready', 'saving'] as const)(
   '会话失效时 phase=%s 保留四个可见草稿，锁住字段与保存按钮且结束保存中反馈',
   (phase) => {
     state.settings.phase = phase;
+    state.upload.busy = phase === 'saving';
     const html = renderToStaticMarkup(
       createElement(GeneralPage, {
         name: saved.name,
@@ -109,6 +141,21 @@ it.each(['ready', 'saving'] as const)(
     expect(save![0]).toMatch(/\bdisabled=/);
     expect(save![1]).toContain('保存站点信息');
     expect(save![1]).not.toContain('正在保存');
+    const uploadInputs = inputs
+      .filter((input) => !input.includes('type="hidden"'))
+      .slice(-3);
+    expect(uploadInputs).toHaveLength(3);
+    for (const [index, value] of [60, 30, 600].entries()) {
+      expect(uploadInputs[index]).toContain(`value="${value}"`);
+      expect(uploadInputs[index]).toMatch(/\bdisabled=/);
+    }
+    const uploadSave = html.match(
+      /<button\b(?=[^>]*data-testid="upload-limits-save")[^>]*>([\s\S]*?)<\/button>/,
+    );
+    expect(uploadSave).not.toBeNull();
+    expect(uploadSave![0]).toMatch(/\bdisabled=/);
+    expect(uploadSave![1]).toContain('保存上传限制');
+    expect(uploadSave![1]).not.toContain('正在保存');
   },
 );
 it('四字段标签关联真实输入ID，保留既有selector供错误聚焦与点击标签使用', () => {

@@ -1,0 +1,1055 @@
+{
+  "environment": {
+    "node": "24.18.1",
+    "pnpm": "11.19.0",
+    "taskSpace": 1
+  },
+  "scope": "Only failed groups were rerun after the user explicitly handed the same TaskSpace back to the agent. Product, timeout, click method and original assertions were unchanged. Passes do not establish the causes of earlier failures and do not rewrite the original failed full run.",
+  "results": [
+    {
+      "command": "node scripts/verify-browser.mjs --suite processing --only settings",
+      "status": "passed",
+      "stage": "settings",
+      "checks": [
+        {
+          "check": "Same-document client navigation retains the root cache owner while a separate Node client changes server settings from quality 82 to 68. The real entry GET 200 is held: the existing reading state has no cached editor or footer. Release initializes all 20 actual controls from the fresh server result, and explicit save sends those exact 20 fields without overwriting the new server value.",
+          "cacheOwnerEvidence": "Same document/window is observed below. RootLayout retains Providers, whose useState owns the QueryClient across client navigation; no private React/QueryClient introspection is used.",
+          "initialQuality": 82,
+          "left": {
+            "sameDocument": true,
+            "sameWindow": true,
+            "sameTimeOrigin": true,
+            "path": "/upload"
+          },
+          "returned": {
+            "sameDocument": true,
+            "sameWindow": true,
+            "sameTimeOrigin": true,
+            "path": "/settings/processing"
+          },
+          "heldRead": {
+            "path": "/api/settings/media",
+            "method": "GET",
+            "status": 200,
+            "requestId": "interception-job-40.0"
+          },
+          "loading": {
+            "state": "loading",
+            "text": "站点设置\n\n管理站点、图片处理与账号偏好。\n\n基本设置\n图片处理\n账号与安全\n上传 API\n正在读取处理设置\n\n请稍候，取得已保存设置后再编辑。",
+            "form": false,
+            "fields": 0,
+            "footer": false,
+            "save": false,
+            "preview": false
+          },
+          "displayed": {
+            "compressionEnabled": true,
+            "outputFormat": "WebP",
+            "quality": 68,
+            "maxEdge": 1700,
+            "jpegBackground": "#FFFFFF",
+            "watermarkMode": "text",
+            "watermarkAssetId": null,
+            "watermarkText": "R10 本次服务器设置",
+            "watermarkFont": "内置中文字体",
+            "watermarkFontSize": 3,
+            "watermarkColor": "#FFFFFF",
+            "watermarkStrokeColor": "#000000",
+            "watermarkStrokeWidth": 0,
+            "watermarkOpacity": 50,
+            "watermarkPosition": "bottom-right",
+            "watermarkMargin": 2,
+            "watermarkWidth": 20,
+            "defaultLinkVersion": "压缩图",
+            "defaultVisibility": "私有",
+            "concurrency": 1
+          },
+          "save": {
+            "path": "/api/settings/media",
+            "method": "PATCH",
+            "body": {
+              "compressionEnabled": true,
+              "outputFormat": "webp",
+              "quality": 68,
+              "maxEdge": 1700,
+              "jpegBackground": "#FFFFFF",
+              "watermarkMode": "text",
+              "watermarkAssetId": null,
+              "watermarkText": "R10 本次服务器设置",
+              "watermarkFont": "chinese",
+              "watermarkFontSize": 3,
+              "watermarkColor": "#FFFFFF",
+              "watermarkStrokeColor": "#000000",
+              "watermarkStrokeWidth": 0,
+              "watermarkOpacity": 50,
+              "watermarkPosition": "bottom-right",
+              "watermarkMargin": 2,
+              "watermarkWidth": 20,
+              "defaultLinkVersion": "compressed",
+              "defaultVisibility": "private",
+              "concurrency": 1
+            },
+            "status": 200,
+            "response": {
+              "id": 1,
+              "compressionEnabled": true,
+              "outputFormat": "webp",
+              "quality": 68,
+              "maxEdge": 1700,
+              "jpegBackground": "#FFFFFF",
+              "watermarkMode": "text",
+              "watermarkAssetId": null,
+              "watermarkText": "R10 本次服务器设置",
+              "watermarkFont": "chinese",
+              "watermarkFontSize": 3,
+              "watermarkColor": "#FFFFFF",
+              "watermarkStrokeColor": "#000000",
+              "watermarkStrokeWidth": 0,
+              "watermarkOpacity": 50,
+              "watermarkPosition": "bottom-right",
+              "watermarkMargin": 2,
+              "watermarkWidth": 20,
+              "defaultLinkVersion": "compressed",
+              "defaultVisibility": "private",
+              "concurrency": 1,
+              "updatedAt": "2026-10-08T06:56:03.411Z"
+            }
+          }
+        },
+        {
+          "check": "A second warm client re-entry after a separate real server change blocks the actual settings GET. It shows this entry read error with no cached form, preview or save footer, and makes no mutation. Only explicit retry performs the next real GET and initializes all 20 controls from server quality 64 while document/window identity remains unchanged.",
+          "failedReturn": {
+            "sameDocument": true,
+            "sameWindow": true,
+            "sameTimeOrigin": true,
+            "path": "/settings/processing"
+          },
+          "readFailure": {
+            "state": "error",
+            "text": "站点设置\n\n管理站点、图片处理与账号偏好。\n\n基本设置\n图片处理\n账号与安全\n上传 API\n无法读取处理设置\n\nFailed to fetch\n\n重新读取设置",
+            "form": false,
+            "fields": 0,
+            "footer": false,
+            "save": false,
+            "preview": false
+          },
+          "retriedDisplay": {
+            "compressionEnabled": true,
+            "outputFormat": "WebP",
+            "quality": 64,
+            "maxEdge": 1700,
+            "jpegBackground": "#FFFFFF",
+            "watermarkMode": "text",
+            "watermarkAssetId": null,
+            "watermarkText": "R10 本次服务器设置",
+            "watermarkFont": "内置中文字体",
+            "watermarkFontSize": 3,
+            "watermarkColor": "#FFFFFF",
+            "watermarkStrokeColor": "#000000",
+            "watermarkStrokeWidth": 0,
+            "watermarkOpacity": 50,
+            "watermarkPosition": "bottom-right",
+            "watermarkMargin": 2,
+            "watermarkWidth": 20,
+            "defaultLinkVersion": "压缩图",
+            "defaultVisibility": "公开",
+            "concurrency": 1
+          }
+        },
+        {
+          "check": "Real GET fills the form; keyboard save persists quality, visibility and concurrency. Its live neutral Toast sits 100 px above the viewport bottom without intercepting save; real client navigation to Upload keeps that same notification and restores ordinary desktop/mobile offsets 28/24. Returning through the actual sidebar reads saved values without a success page.",
+          "saved": {
+            "quality": 76,
+            "defaultVisibility": "private",
+            "concurrency": 2
+          }
+        },
+        {
+          "check": "Out-of-range quality stays entered, receives its field error and keyboard focus, and sends no invalid PATCH."
+        },
+        {
+          "check": "Real HTTP 500 preserves input; a lost real successful PATCH is explicitly reconciled through GET without repeating the mutation.",
+          "requests": [
+            {
+              "path": "/api/settings/media",
+              "method": "PATCH",
+              "body": {
+                "compressionEnabled": true,
+                "outputFormat": "webp",
+                "quality": 73,
+                "maxEdge": 1700,
+                "jpegBackground": "#FFFFFF",
+                "watermarkMode": "off",
+                "watermarkAssetId": null,
+                "watermarkText": "R10 本次服务器设置",
+                "watermarkFont": "chinese",
+                "watermarkFontSize": 3,
+                "watermarkColor": "#FFFFFF",
+                "watermarkStrokeColor": "#000000",
+                "watermarkStrokeWidth": 0,
+                "watermarkOpacity": 50,
+                "watermarkPosition": "bottom-right",
+                "watermarkMargin": 2,
+                "watermarkWidth": 20,
+                "defaultLinkVersion": "compressed",
+                "defaultVisibility": "private",
+                "concurrency": 2
+              },
+              "status": 200,
+              "response": {
+                "id": 1,
+                "compressionEnabled": true,
+                "outputFormat": "webp",
+                "quality": 73,
+                "maxEdge": 1700,
+                "jpegBackground": "#FFFFFF",
+                "watermarkMode": "off",
+                "watermarkAssetId": null,
+                "watermarkText": "R10 本次服务器设置",
+                "watermarkFont": "chinese",
+                "watermarkFontSize": 3,
+                "watermarkColor": "#FFFFFF",
+                "watermarkStrokeColor": "#000000",
+                "watermarkStrokeWidth": 0,
+                "watermarkOpacity": 50,
+                "watermarkPosition": "bottom-right",
+                "watermarkMargin": 2,
+                "watermarkWidth": 20,
+                "defaultLinkVersion": "compressed",
+                "defaultVisibility": "private",
+                "concurrency": 2,
+                "updatedAt": "2026-10-08T06:56:08.323Z"
+              },
+              "responseLost": true
+            },
+            {
+              "path": "/api/settings/media",
+              "method": "GET",
+              "status": 200,
+              "response": {
+                "id": 1,
+                "compressionEnabled": true,
+                "outputFormat": "webp",
+                "quality": 73,
+                "maxEdge": 1700,
+                "jpegBackground": "#FFFFFF",
+                "watermarkMode": "off",
+                "watermarkAssetId": null,
+                "watermarkText": "R10 本次服务器设置",
+                "watermarkFont": "chinese",
+                "watermarkFontSize": 3,
+                "watermarkColor": "#FFFFFF",
+                "watermarkStrokeColor": "#000000",
+                "watermarkStrokeWidth": 0,
+                "watermarkOpacity": 50,
+                "watermarkPosition": "bottom-right",
+                "watermarkMargin": 2,
+                "watermarkWidth": 20,
+                "defaultLinkVersion": "compressed",
+                "defaultVisibility": "private",
+                "concurrency": 2,
+                "updatedAt": "2026-10-08T06:56:08.323Z"
+              }
+            },
+            {
+              "path": "/upload/settings",
+              "method": "GET",
+              "status": 200,
+              "response": {
+                "maxFileBytes": 52428800,
+                "batchSize": 20,
+                "queueLimit": 500,
+                "defaultVisibility": "private",
+                "defaultStorageId": "e0e81a49-e5a4-428d-bf1a-f0d0dd5f43be",
+                "albums": [],
+                "tags": [],
+                "storages": [
+                  {
+                    "id": "e0e81a49-e5a4-428d-bf1a-f0d0dd5f43be",
+                    "name": "默认本地存储",
+                    "enabled": true
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "check": "A real concurrent update makes reconciliation different; preserve keeps local input without saving it, and only the next explicit save submits again."
+        },
+        {
+          "check": "Disabling the default compressed version requires confirmation; Escape preserves compression, confirmation changes only the draft until explicit save."
+        },
+        {
+          "check": "Actual file upload creates an expiring asset without saving settings; explicit save adopts it; re-entry reads persisted ID, format and dimensions through the real owner metadata endpoint.",
+          "asset": {
+            "id": "b05a074e-29e3-4493-99cc-1b522566fdf1",
+            "mime": "image/png",
+            "width": 64,
+            "height": 48,
+            "byteSize": 423
+          }
+        },
+        {
+          "check": "Lost real saved-asset reads retain the persisted ID, including background focus reads. Only native retry activation releases the fault; its real GET restores saved metadata without uploading a replacement."
+        },
+        {
+          "check": "Actual invalid or oversized watermark upload is explicitly rejected and retains the previous adopted asset ID.",
+          "file": "processing-invalid-watermark.png",
+          "status": 422,
+          "retainedAssetId": "b05a074e-29e3-4493-99cc-1b522566fdf1"
+        },
+        {
+          "check": "Actual invalid or oversized watermark upload is explicitly rejected and retains the previous adopted asset ID.",
+          "file": "processing-large-watermark.png",
+          "status": 413,
+          "retainedAssetId": "b05a074e-29e3-4493-99cc-1b522566fdf1"
+        },
+        {
+          "check": "Text/image mode changes share one opacity value and retain text input."
+        },
+        {
+          "check": "All nine position buttons are keyboard-selectable. Invalid #AB survives blur and field validation without a PATCH; exact margin 2.125, font size 3.5 and width 12.25 persist through real save and re-entry.",
+          "watermarkMargin": 2.125,
+          "watermarkFontSize": 3.5,
+          "watermarkWidth": 12.25
+        },
+        {
+          "check": "Clearing the actual longest-edge numeric control turns the optional limit off and explicitly saves null; required numeric fields retain validation behavior."
+        },
+        {
+          "check": "A real temporary asset expiry timestamp is advanced only in the disposable database. Actual metadata GET returns available=false, adoption PATCH returns 409, and the draft asset ID and decimal width remain entered while the adopted server ID stays unchanged.",
+          "temporaryAssetId": "f57c8f29-e93e-4341-bf8f-596d44619a1f",
+          "retainedSavedAssetId": "b05a074e-29e3-4493-99cc-1b522566fdf1"
+        },
+        {
+          "check": "Keyboard clear of a real expired image draft changes only its asset ID: other live field values, mode, selected test file, page and scroll are retained. Focus moves to save without a scroll jump; image-empty save is a field error with zero PATCH. Explicit off save sends all 20 exact fields with null, GET/SQLite release the setting reference, and the retained real test file generates bytes matching the original without being selected again.",
+          "beforeScrollTop": 1862,
+          "afterScrollTop": 1658.5,
+          "maxScrollTop": 1658,
+          "previewBeforeClear": {
+            "id": "",
+            "target": "",
+            "state": "empty",
+            "stale": "false",
+            "resultSource": null
+          },
+          "previewAfterClear": {
+            "id": "",
+            "target": "",
+            "state": "empty",
+            "stale": "false",
+            "resultSource": null
+          },
+          "saved": {
+            "compressionEnabled": false,
+            "outputFormat": "webp",
+            "quality": 71,
+            "maxEdge": null,
+            "jpegBackground": "#FFFFFF",
+            "watermarkMode": "off",
+            "watermarkAssetId": null,
+            "watermarkText": "Ariso 验证",
+            "watermarkFont": "chinese",
+            "watermarkFontSize": 3.5,
+            "watermarkColor": "#FFFFFF",
+            "watermarkStrokeColor": "#000000",
+            "watermarkStrokeWidth": 0,
+            "watermarkOpacity": 67,
+            "watermarkPosition": "bottom-right",
+            "watermarkMargin": 2.125,
+            "watermarkWidth": 12.25,
+            "defaultLinkVersion": "original",
+            "defaultVisibility": "private",
+            "concurrency": 2
+          },
+          "retainedFileResult": {
+            "id": "0f3ae4c3-3926-4e6e-92c1-db121e58392e",
+            "target": "original",
+            "format": "PNG",
+            "mime": "image/png",
+            "width": 64,
+            "height": 48,
+            "byteSize": 420,
+            "bytesRead": 420
+          }
+        },
+        {
+          "check": "The shared clear entry remains operable in off with a real saved selected ID. Mode change alone keeps the ID; keyboard clear sends no mutation, then one full save explicitly PATCHes null and actual settings GET/SQLite confirm reference release. All other fields remain exact.",
+          "lifecycle": "saved",
+          "mode": "off",
+          "selectedId": "877437bd-236e-438e-980a-bf04e16c0571",
+          "beforeScrollTop": 926,
+          "afterScrollTop": 858,
+          "maxScrollTop": 858,
+          "previewBeforeClear": {
+            "id": "6bc3e318-9fda-4a69-a2cd-c21818766d6f",
+            "target": "original",
+            "state": "succeeded",
+            "stale": "true",
+            "resultSource": "blob:http://ariso-55633.localhost:55633/6ab59598-f001-4425-aa1a-f01bcf03f833"
+          },
+          "previewAfterClear": {
+            "id": "6bc3e318-9fda-4a69-a2cd-c21818766d6f",
+            "target": "original",
+            "state": "succeeded",
+            "stale": "true",
+            "resultSource": "blob:http://ariso-55633.localhost:55633/6ab59598-f001-4425-aa1a-f01bcf03f833"
+          },
+          "saved": {
+            "compressionEnabled": false,
+            "outputFormat": "webp",
+            "quality": 71,
+            "maxEdge": null,
+            "jpegBackground": "#FFFFFF",
+            "watermarkMode": "off",
+            "watermarkAssetId": null,
+            "watermarkText": "Ariso 验证",
+            "watermarkFont": "chinese",
+            "watermarkFontSize": 3.5,
+            "watermarkColor": "#FFFFFF",
+            "watermarkStrokeColor": "#000000",
+            "watermarkStrokeWidth": 0,
+            "watermarkOpacity": 67,
+            "watermarkPosition": "bottom-right",
+            "watermarkMargin": 2.125,
+            "watermarkWidth": 12.25,
+            "defaultLinkVersion": "original",
+            "defaultVisibility": "private",
+            "concurrency": 2
+          }
+        },
+        {
+          "check": "The shared clear entry remains operable in text with a real saved selected ID. Mode change alone keeps the ID; keyboard clear sends no mutation, then one full save explicitly PATCHes null and actual settings GET/SQLite confirm reference release. All other fields remain exact.",
+          "lifecycle": "saved",
+          "mode": "text",
+          "selectedId": "0f09b25b-4003-46ed-b989-5412b8c8696d",
+          "beforeScrollTop": 1982.5,
+          "afterScrollTop": 1887,
+          "maxScrollTop": 1887,
+          "previewBeforeClear": {
+            "id": "",
+            "target": "",
+            "state": "empty",
+            "stale": "false",
+            "resultSource": null
+          },
+          "previewAfterClear": {
+            "id": "",
+            "target": "",
+            "state": "empty",
+            "stale": "false",
+            "resultSource": null
+          },
+          "saved": {
+            "compressionEnabled": false,
+            "outputFormat": "webp",
+            "quality": 71,
+            "maxEdge": null,
+            "jpegBackground": "#FFFFFF",
+            "watermarkMode": "text",
+            "watermarkAssetId": null,
+            "watermarkText": "Ariso 验证",
+            "watermarkFont": "chinese",
+            "watermarkFontSize": 3.5,
+            "watermarkColor": "#FFFFFF",
+            "watermarkStrokeColor": "#000000",
+            "watermarkStrokeWidth": 0,
+            "watermarkOpacity": 67,
+            "watermarkPosition": "bottom-right",
+            "watermarkMargin": 2.125,
+            "watermarkWidth": 12.25,
+            "defaultLinkVersion": "original",
+            "defaultVisibility": "private",
+            "concurrency": 2
+          }
+        },
+        {
+          "check": "The shared clear entry remains operable in off with a real expired selected ID. Mode change alone keeps the ID and actual save returns 409; keyboard clear sends no mutation, then one full save explicitly PATCHes null and actual settings GET/SQLite confirm reference release. All other fields remain exact.",
+          "lifecycle": "expired",
+          "mode": "off",
+          "selectedId": "5b8ba763-85b4-453a-b29b-64e2ba84fbb5",
+          "beforeScrollTop": 1000,
+          "afterScrollTop": 932,
+          "maxScrollTop": 932,
+          "previewBeforeClear": {
+            "id": "",
+            "target": "",
+            "state": "empty",
+            "stale": "false",
+            "resultSource": null
+          },
+          "previewAfterClear": {
+            "id": "",
+            "target": "",
+            "state": "empty",
+            "stale": "false",
+            "resultSource": null
+          },
+          "saved": {
+            "compressionEnabled": false,
+            "outputFormat": "webp",
+            "quality": 71,
+            "maxEdge": null,
+            "jpegBackground": "#FFFFFF",
+            "watermarkMode": "off",
+            "watermarkAssetId": null,
+            "watermarkText": "Ariso 验证",
+            "watermarkFont": "chinese",
+            "watermarkFontSize": 3.5,
+            "watermarkColor": "#FFFFFF",
+            "watermarkStrokeColor": "#000000",
+            "watermarkStrokeWidth": 0,
+            "watermarkOpacity": 67,
+            "watermarkPosition": "bottom-right",
+            "watermarkMargin": 2.125,
+            "watermarkWidth": 12.25,
+            "defaultLinkVersion": "original",
+            "defaultVisibility": "private",
+            "concurrency": 2
+          }
+        },
+        {
+          "check": "The shared clear entry remains operable in text with a real expired selected ID. Mode change alone keeps the ID and actual save returns 409; keyboard clear sends no mutation, then one full save explicitly PATCHes null and actual settings GET/SQLite confirm reference release. All other fields remain exact.",
+          "lifecycle": "expired",
+          "mode": "text",
+          "selectedId": "c23bfeda-c553-4fc3-b565-d4bd08fe5ed9",
+          "beforeScrollTop": 2076.5,
+          "afterScrollTop": 1981,
+          "maxScrollTop": 1981,
+          "previewBeforeClear": {
+            "id": "",
+            "target": "",
+            "state": "empty",
+            "stale": "false",
+            "resultSource": null
+          },
+          "previewAfterClear": {
+            "id": "",
+            "target": "",
+            "state": "empty",
+            "stale": "false",
+            "resultSource": null
+          },
+          "saved": {
+            "compressionEnabled": false,
+            "outputFormat": "webp",
+            "quality": 71,
+            "maxEdge": null,
+            "jpegBackground": "#FFFFFF",
+            "watermarkMode": "text",
+            "watermarkAssetId": null,
+            "watermarkText": "Ariso 验证",
+            "watermarkFont": "chinese",
+            "watermarkFontSize": 3.5,
+            "watermarkColor": "#FFFFFF",
+            "watermarkStrokeColor": "#000000",
+            "watermarkStrokeWidth": 0,
+            "watermarkOpacity": 67,
+            "watermarkPosition": "bottom-right",
+            "watermarkMargin": 2.125,
+            "watermarkWidth": 12.25,
+            "defaultLinkVersion": "original",
+            "defaultVisibility": "private",
+            "concurrency": 2
+          }
+        },
+        {
+          "check": "A real blocked saved-asset metadata request exposes the same public clear entry. Explicit clear dismisses stale ID/read error locally; text save explicitly nulls the persisted setting reference without uploading a replacement."
+        },
+        {
+          "check": "Holding actual successful save and actual upload 201 responses separately proves the shared clear entry is disabled while save or asset upload is pending, preserves the old selected ID, and re-enables after each real response is released."
+        },
+        {
+          "check": "After a real successful save response is lost, explicit clear preserves unknown state and the original submitted request while moving keyboard focus to the existing enabled reconcile action. Enter performs only actual GET: it confirms the original pending save, retains the locally cleared ID, and enables a later explicit null save without an automatic repeat.",
+          "phase": "real-successful-save-response-lost",
+          "request": {
+            "path": "/api/settings/media",
+            "method": "PATCH",
+            "body": {
+              "compressionEnabled": false,
+              "outputFormat": "webp",
+              "quality": 71,
+              "maxEdge": null,
+              "jpegBackground": "#FFFFFF",
+              "watermarkMode": "image",
+              "watermarkAssetId": "cca8205d-f7c1-42b2-a4cb-2de041f35f88",
+              "watermarkText": "Ariso 验证",
+              "watermarkFont": "chinese",
+              "watermarkFontSize": 3.5,
+              "watermarkColor": "#FFFFFF",
+              "watermarkStrokeColor": "#000000",
+              "watermarkStrokeWidth": 0,
+              "watermarkOpacity": 67,
+              "watermarkPosition": "bottom-right",
+              "watermarkMargin": 2.125,
+              "watermarkWidth": 12.25,
+              "defaultLinkVersion": "original",
+              "defaultVisibility": "private",
+              "concurrency": 2
+            },
+            "status": 200,
+            "response": {
+              "id": 1,
+              "compressionEnabled": false,
+              "outputFormat": "webp",
+              "quality": 71,
+              "maxEdge": null,
+              "jpegBackground": "#FFFFFF",
+              "watermarkMode": "image",
+              "watermarkAssetId": "cca8205d-f7c1-42b2-a4cb-2de041f35f88",
+              "watermarkText": "Ariso 验证",
+              "watermarkFont": "chinese",
+              "watermarkFontSize": 3.5,
+              "watermarkColor": "#FFFFFF",
+              "watermarkStrokeColor": "#000000",
+              "watermarkStrokeWidth": 0,
+              "watermarkOpacity": 67,
+              "watermarkPosition": "bottom-right",
+              "watermarkMargin": 2.125,
+              "watermarkWidth": 12.25,
+              "defaultLinkVersion": "original",
+              "defaultVisibility": "private",
+              "concurrency": 2,
+              "updatedAt": "2026-10-08T06:57:22.407Z"
+            },
+            "responseLost": true
+          },
+          "afterClear": {
+            "path": "/settings/processing",
+            "activeTestId": "processing-settings-reconcile",
+            "activeTag": "BUTTON",
+            "saveDisabled": true,
+            "reconcilePresent": true,
+            "assetId": ""
+          },
+          "mutationsAfterClear": []
+        }
+      ],
+      "layoutCount": 39,
+      "browserErrors": [],
+      "assetReadRecovery": {
+        "released": true,
+        "activation": {
+          "event": "pointerdown",
+          "at": 1791442575312,
+          "trusted": true
+        },
+        "requests": [
+          {
+            "startedAt": 1791442574322,
+            "responseLost": true,
+            "status": 200,
+            "finishedAt": 1791442574333
+          },
+          {
+            "startedAt": 1791442575315,
+            "responseLost": false,
+            "status": 200,
+            "finishedAt": 1791442575351
+          }
+        ]
+      },
+      "settingsEntry": {
+        "cacheOwnerEvidence": "Same document/window is observed below. RootLayout retains Providers, whose useState owns the QueryClient across client navigation; no private React/QueryClient introspection is used.",
+        "initialQuality": 82,
+        "left": {
+          "sameDocument": true,
+          "sameWindow": true,
+          "sameTimeOrigin": true,
+          "path": "/upload"
+        },
+        "returned": {
+          "sameDocument": true,
+          "sameWindow": true,
+          "sameTimeOrigin": true,
+          "path": "/settings/processing"
+        },
+        "heldRead": {
+          "path": "/api/settings/media",
+          "method": "GET",
+          "status": 200,
+          "requestId": "interception-job-40.0"
+        },
+        "loading": {
+          "state": "loading",
+          "text": "站点设置\n\n管理站点、图片处理与账号偏好。\n\n基本设置\n图片处理\n账号与安全\n上传 API\n正在读取处理设置\n\n请稍候，取得已保存设置后再编辑。",
+          "form": false,
+          "fields": 0,
+          "footer": false,
+          "save": false,
+          "preview": false
+        },
+        "displayed": {
+          "compressionEnabled": true,
+          "outputFormat": "WebP",
+          "quality": 68,
+          "maxEdge": 1700,
+          "jpegBackground": "#FFFFFF",
+          "watermarkMode": "text",
+          "watermarkAssetId": null,
+          "watermarkText": "R10 本次服务器设置",
+          "watermarkFont": "内置中文字体",
+          "watermarkFontSize": 3,
+          "watermarkColor": "#FFFFFF",
+          "watermarkStrokeColor": "#000000",
+          "watermarkStrokeWidth": 0,
+          "watermarkOpacity": 50,
+          "watermarkPosition": "bottom-right",
+          "watermarkMargin": 2,
+          "watermarkWidth": 20,
+          "defaultLinkVersion": "压缩图",
+          "defaultVisibility": "私有",
+          "concurrency": 1
+        },
+        "save": {
+          "path": "/api/settings/media",
+          "method": "PATCH",
+          "body": {
+            "compressionEnabled": true,
+            "outputFormat": "webp",
+            "quality": 68,
+            "maxEdge": 1700,
+            "jpegBackground": "#FFFFFF",
+            "watermarkMode": "text",
+            "watermarkAssetId": null,
+            "watermarkText": "R10 本次服务器设置",
+            "watermarkFont": "chinese",
+            "watermarkFontSize": 3,
+            "watermarkColor": "#FFFFFF",
+            "watermarkStrokeColor": "#000000",
+            "watermarkStrokeWidth": 0,
+            "watermarkOpacity": 50,
+            "watermarkPosition": "bottom-right",
+            "watermarkMargin": 2,
+            "watermarkWidth": 20,
+            "defaultLinkVersion": "compressed",
+            "defaultVisibility": "private",
+            "concurrency": 1
+          },
+          "status": 200,
+          "response": {
+            "id": 1,
+            "compressionEnabled": true,
+            "outputFormat": "webp",
+            "quality": 68,
+            "maxEdge": 1700,
+            "jpegBackground": "#FFFFFF",
+            "watermarkMode": "text",
+            "watermarkAssetId": null,
+            "watermarkText": "R10 本次服务器设置",
+            "watermarkFont": "chinese",
+            "watermarkFontSize": 3,
+            "watermarkColor": "#FFFFFF",
+            "watermarkStrokeColor": "#000000",
+            "watermarkStrokeWidth": 0,
+            "watermarkOpacity": 50,
+            "watermarkPosition": "bottom-right",
+            "watermarkMargin": 2,
+            "watermarkWidth": 20,
+            "defaultLinkVersion": "compressed",
+            "defaultVisibility": "private",
+            "concurrency": 1,
+            "updatedAt": "2026-10-08T06:56:03.411Z"
+          }
+        },
+        "failedReturn": {
+          "sameDocument": true,
+          "sameWindow": true,
+          "sameTimeOrigin": true,
+          "path": "/settings/processing"
+        },
+        "readFailure": {
+          "state": "error",
+          "text": "站点设置\n\n管理站点、图片处理与账号偏好。\n\n基本设置\n图片处理\n账号与安全\n上传 API\n无法读取处理设置\n\nFailed to fetch\n\n重新读取设置",
+          "form": false,
+          "fields": 0,
+          "footer": false,
+          "save": false,
+          "preview": false
+        },
+        "retriedDisplay": {
+          "compressionEnabled": true,
+          "outputFormat": "WebP",
+          "quality": 64,
+          "maxEdge": 1700,
+          "jpegBackground": "#FFFFFF",
+          "watermarkMode": "text",
+          "watermarkAssetId": null,
+          "watermarkText": "R10 本次服务器设置",
+          "watermarkFont": "内置中文字体",
+          "watermarkFontSize": 3,
+          "watermarkColor": "#FFFFFF",
+          "watermarkStrokeColor": "#000000",
+          "watermarkStrokeWidth": 0,
+          "watermarkOpacity": 50,
+          "watermarkPosition": "bottom-right",
+          "watermarkMargin": 2,
+          "watermarkWidth": 20,
+          "defaultLinkVersion": "压缩图",
+          "defaultVisibility": "公开",
+          "concurrency": 1
+        }
+      }
+    },
+    {
+      "command": "node scripts/verify-browser.mjs --suite processing --only recovery",
+      "status": "passed",
+      "stage": "recovery",
+      "checks": [
+        {
+          "check": "A fresh real initial settings GET returns 200 at the existing Fetch response boundary. Holding it exposes a single neutral desktop/mobile reading card with the actual title and explanation, no editable settings or save footer; releasing it fills quality 82 without an invented loading state.",
+          "responses": [
+            {
+              "path": "/api/settings/media",
+              "requestId": "interception-job-54.0",
+              "status": 200
+            }
+          ]
+        },
+        {
+          "check": "Blocking the real settings read exposes an initial read error; unblocking and explicit retry fills actual saved values."
+        },
+        {
+          "check": "A real 5 MiB + 1 byte file exceeds the actual independently configured 5 MiB upload limit. POST returns 413 with a real previewId; GET reads its failed/cleaned record, input stays visible, and exactly one status refresh reads the same ID without repeating POST.",
+          "previewId": "38400079-4d83-49e9-923a-cf9fad48439c",
+          "byteSize": 5242881,
+          "code": "MEDIA_PREVIEW_FILE_TOO_LARGE",
+          "status": 413
+        },
+        {
+          "check": "The real accepted POST response is lost entirely: no ID is invented, no list request or automatic resubmission occurs. Escape preserves unknown state; only explicit confirmed recreation creates a new task.",
+          "unknownTaskId": "83539e52-78ce-4e3b-9671-671b9e0bc662",
+          "recreatedTaskId": "b60ce2d6-4ca9-4e4c-b49a-3b4083df3cc0"
+        },
+        {
+          "check": "A real preview clock is advanced in the disposable database. GET reports expired, bytes return 410, and explicit retry creates a fresh successful ID.",
+          "expiredId": "3319179a-119c-422b-ad29-30fb5c201e0a",
+          "retriedId": "ae387a8d-5c06-428b-b720-f9acd1b1f300"
+        },
+        {
+          "check": "An actual malformed local file is rejected by the real image inspector. The UI shows the addressable failed task and its exact server diagnostic without a partial result.",
+          "previewId": "1384afdc-261f-4239-87c7-fff50c8def75",
+          "error": "identify: MEDIA_FORMAT_UNSUPPORTED: Unsupported image format: TXT"
+        },
+        {
+          "check": "A real 4096 × 3072 JPEG generated from the CC0 source with the existing seeded ImageMagick noise remains within the actual upload byte limit. Real GET reports running and renders that state on both viewports; only its later real successful terminal GET is held for the existing late-response cancellation regression.",
+          "previewId": "ac9e5b4a-c21c-40c0-91d7-16ecc8471e84",
+          "sourceByteSize": 7970281,
+          "runningResponse": {
+            "path": "/api/media/previews/ac9e5b4a-c21c-40c0-91d7-16ecc8471e84",
+            "method": "GET",
+            "status": 200,
+            "response": {
+              "id": "ac9e5b4a-c21c-40c0-91d7-16ecc8471e84",
+              "target": "compressed",
+              "status": "running",
+              "result": null,
+              "unavailableReason": null,
+              "error": null,
+              "cleanupStatus": "pending",
+              "cleanupError": null,
+              "createdAt": "2026-10-08T06:57:46.726Z",
+              "finishedAt": null,
+              "expiresAt": null,
+              "updatedAt": "2026-10-08T06:57:46.918Z",
+              "resultUrl": null
+            }
+          },
+          "terminalResponse": {
+            "path": "/api/media/previews/ac9e5b4a-c21c-40c0-91d7-16ecc8471e84",
+            "method": "GET",
+            "status": 200,
+            "response": {
+              "id": "ac9e5b4a-c21c-40c0-91d7-16ecc8471e84",
+              "target": "compressed",
+              "status": "succeeded",
+              "result": {
+                "format": "AVIF",
+                "mime": "image/avif",
+                "width": 4096,
+                "height": 3072,
+                "byteSize": 8744168
+              },
+              "unavailableReason": null,
+              "error": null,
+              "cleanupStatus": "retained",
+              "cleanupError": null,
+              "createdAt": "2026-10-08T06:57:46.726Z",
+              "finishedAt": "2026-10-08T06:57:51.877Z",
+              "expiresAt": "2026-10-08T07:27:51.877Z",
+              "updatedAt": "2026-10-08T06:57:51.877Z",
+              "resultUrl": "/api/media/previews/ac9e5b4a-c21c-40c0-91d7-16ecc8471e84/result"
+            },
+            "held": true
+          }
+        },
+        {
+          "check": "The actual DELETE 200 response is received and held independently of the older GET. The same-ID cancelling view shows the real wait-for-settlement interaction on both viewports; releasing only DELETE then preserves the existing lost-cancel-response and late-GET recovery assertions.",
+          "previewId": "ac9e5b4a-c21c-40c0-91d7-16ecc8471e84",
+          "heldDelete": {
+            "path": "/api/media/previews/ac9e5b4a-c21c-40c0-91d7-16ecc8471e84",
+            "method": "DELETE",
+            "status": 200,
+            "response": {
+              "id": "ac9e5b4a-c21c-40c0-91d7-16ecc8471e84",
+              "target": "compressed",
+              "status": "cancelled",
+              "result": null,
+              "unavailableReason": null,
+              "error": null,
+              "cleanupStatus": "failed",
+              "cleanupError": "MEDIA_PROCESS_FAILED: processing browser cleanup persistence failure",
+              "createdAt": "2026-10-08T06:57:46.726Z",
+              "finishedAt": "2026-10-08T06:57:51.877Z",
+              "expiresAt": "2026-10-08T07:27:51.877Z",
+              "updatedAt": "2026-10-08T06:57:52.475Z",
+              "resultUrl": null
+            },
+            "held": true
+          }
+        },
+        {
+          "check": "Actual DELETE settles cancellation, but its complete response is lost while older real GET responses are held. Unknown UI keeps the task ID and says result needs verification without declaring cached queued/running facts. Known-ID GET then reads the real cancelled/failed cleanup status and exact disposable trigger diagnostic.",
+          "previewId": "ac9e5b4a-c21c-40c0-91d7-16ecc8471e84",
+          "cleanupStatus": "failed",
+          "cleanupError": "MEDIA_PROCESS_FAILED: processing browser cleanup persistence failure"
+        },
+        {
+          "check": "Explicit cleanup retry runs real DELETE once. When its response is lost, known-ID GET verifies cancelled/deleted without repeated mutation; historical cleanupError does not turn deleted into a failed cleanup."
+        },
+        {
+          "check": "CDP holds an actual same-ID DELETE before sending and the cancelling UI commits. A visibility event reaches window; three observed animation frames and drained CDP events confirm zero new same-ID GETs. DELETE 200 reaches the hook and settles cancelled/deleted before releasing its older actual successful GET; canonical cancellation does not regress.",
+          "phase": "late-focus-read-released",
+          "previewId": "81610ecf-18bc-4d6e-8258-8fe89dc7f9af",
+          "readsBefore": 7,
+          "deleteRequest": {
+            "path": "/api/media/previews/81610ecf-18bc-4d6e-8258-8fe89dc7f9af",
+            "method": "DELETE",
+            "requestId": "interception-job-55.0"
+          },
+          "visibility": {
+            "visibilityState": "visible",
+            "hidden": false
+          },
+          "visibilityEvent": {
+            "type": "visibilitychange",
+            "targetIsWindow": true
+          },
+          "observedFrames": [
+            {
+              "frame": 1,
+              "sameIdReads": 7
+            },
+            {
+              "frame": 2,
+              "sameIdReads": 7
+            },
+            {
+              "frame": 3,
+              "sameIdReads": 7
+            }
+          ],
+          "newFocusReads": [],
+          "deleteResponse": {
+            "path": "/api/media/previews/81610ecf-18bc-4d6e-8258-8fe89dc7f9af",
+            "method": "DELETE",
+            "status": 200,
+            "response": {
+              "id": "81610ecf-18bc-4d6e-8258-8fe89dc7f9af",
+              "target": "compressed",
+              "status": "cancelled",
+              "result": null,
+              "unavailableReason": null,
+              "error": null,
+              "cleanupStatus": "deleted",
+              "cleanupError": null,
+              "createdAt": "2026-10-08T06:57:55.457Z",
+              "finishedAt": "2026-10-08T06:58:00.986Z",
+              "expiresAt": "2026-10-08T07:28:00.986Z",
+              "updatedAt": "2026-10-08T06:58:02.400Z",
+              "resultUrl": null
+            }
+          },
+          "afterLateRead": {
+            "status": "cancelled",
+            "id": "81610ecf-18bc-4d6e-8258-8fe89dc7f9af",
+            "target": "compressed",
+            "stale": "false",
+            "text": "返回图片处理临时处理预览使用当前未保存的参数生成真实结果，不保存设置或加入图库。测试图片processing-running.jpg · 7.6 MiB更换测试图预览目标原图缩略图压缩图水印图选择文件和目标后，点击「生成预览」。成功结果保留30分钟。预览状态已取消processing-running.jpg · 压缩图81610ecf-18bc-4d6e-8258-8fe89dc7f9af预览已取消，输入保留，可重新生成。核对预览状态"
+          }
+        },
+        {
+          "check": "The real owner session expires in the disposable database. Save returns 401, then the shared window-focus check GET returns 200/null. After browser frames process that actual response, the same processing route/form retains quality 66 and disables editing/save/preview until explicit login; fixture restoration signs in again and captures new cookies."
+        },
+        {
+          "check": "A real Upload settings read initializes its live controller; client navigation keeps that provider alive while editing processing quality 66. The real successful settings PATCH is held after reception, the session then expires, and releasing that response invalidates the actual active Upload settings query, which returns 401. Processing retains its route/input and disables editing/save/preview until explicit login."
+        }
+      ],
+      "layoutCount": 19,
+      "browserErrors": [],
+      "previewReceiveRefresh": {
+        "before": {
+          "at": 1791442655932,
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "button": {
+            "top": 840,
+            "bottom": 884,
+            "left": 33,
+            "right": 151,
+            "width": 118,
+            "height": 44
+          },
+          "disabled": false,
+          "main": {
+            "top": 64,
+            "bottom": 763,
+            "left": 0,
+            "right": 390,
+            "width": 390,
+            "height": 699
+          },
+          "scrollTop": 0,
+          "footer": {
+            "top": 763,
+            "bottom": 844,
+            "left": 0,
+            "right": 390,
+            "width": 390,
+            "height": 81
+          },
+          "hits": []
+        }
+      },
+      "sessionAfterFocus": {
+        "path": "/settings/processing",
+        "editorState": "session",
+        "quality": "66",
+        "qualityDisabled": true,
+        "saveDisabled": true,
+        "previewDisabled": true
+      },
+      "sessionFocusResponses": [
+        {
+          "path": "/api/auth/get-session",
+          "method": "GET",
+          "status": 200,
+          "sessionNull": true
+        }
+      ]
+    },
+    {
+      "command": "node scripts/verify-browser.mjs --suite tokens --only lifecycle",
+      "status": "passed",
+      "stage": "lifecycle",
+      "checks": [
+        "Enable/disable round trips update the actual target ID; real pending writes prohibit repeats; cancel returns focus; confirmed revocation removes the credential from the list."
+      ],
+      "layoutCount": 16,
+      "browserErrors": []
+    }
+  ]
+}

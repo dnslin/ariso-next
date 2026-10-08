@@ -1,0 +1,998 @@
+{
+  "status": "failed",
+  "taskSpaceId": 6,
+  "origin": "http://ariso-51615.localhost:51615",
+  "phase": "behavior",
+  "checks": [
+    "Real CDP Back in ready: confirmation and cancel preserve draft/index/key/all history IDs; discard returns to the original history entry without push.",
+    "Real CDP Back in ready: confirmation and cancel preserve draft/index/key/all history IDs; discard returns to the original history entry without push."
+  ],
+  "layouts": [
+    {
+      "state": "general-merged",
+      "theme": "light",
+      "height": 1080,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "分享管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "站点信息说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 537,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "description",
+          "width": 537,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "publicUrl",
+          "width": 537,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "timeZone",
+          "width": 537,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看完整地址",
+          "width": 84,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 1092,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 1092,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 1092,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "默认存储默认本地存储",
+          "width": 1142,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "图片默认值与外链版本默认公开 · 压缩图",
+          "width": 1142,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "保存站点信息",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存上传限制",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "screenshot": "upload-settings-general-merged-light-1440.png"
+    },
+    {
+      "state": "general-expired-site",
+      "theme": "light",
+      "height": 1080,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "分享管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "重新登录",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "站点信息说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 537,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "description",
+          "width": 537,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "publicUrl",
+          "width": 537,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "timeZone",
+          "width": 537,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看完整地址",
+          "width": 84,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新登录",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 1092,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 1092,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 1092,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "默认存储默认本地存储",
+          "width": 1142,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "图片默认值与外链版本默认公开 · 压缩图",
+          "width": 1142,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "保存站点信息",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存上传限制",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "screenshot": "upload-settings-general-expired-site-light-1440.png"
+    },
+    {
+      "state": "general-expired-upload",
+      "theme": "light",
+      "height": 1080,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "分享管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "重新登录",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "站点信息说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 537,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "description",
+          "width": 537,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "publicUrl",
+          "width": 537,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "timeZone",
+          "width": 537,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看完整地址",
+          "width": 84,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新登录",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 1092,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 1092,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 1092,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "默认存储默认本地存储",
+          "width": 1142,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "图片默认值与外链版本默认公开 · 压缩图",
+          "width": 1142,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "保存站点信息",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存上传限制",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "screenshot": "upload-settings-general-expired-upload-light-1440.png"
+    },
+    {
+      "state": "general-merged",
+      "theme": "dark",
+      "height": 844,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "基本设置",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "站点信息说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "description",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "publicUrl",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "timeZone",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看完整地址",
+          "width": 84,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "默认存储默认本地存储",
+          "width": 356,
+          "height": 68,
+          "navigation": false
+        },
+        {
+          "name": "图片默认值与外链版本默认公开 · 压缩图",
+          "width": 356,
+          "height": 68,
+          "navigation": false
+        },
+        {
+          "name": "保存站点信息",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存上传限制",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "screenshot": "upload-settings-general-merged-dark-390.png"
+    }
+  ],
+  "browserErrors": [],
+  "limitations": [
+    "Only the runner disposable production database and independently initialized owner are used; user preview data is untouched.",
+    "Transport injections preserve real successful server responses and commits; unsent requests and Clipboard denials are explicit injected failures.",
+    "Viewport emulation does not verify physical phones, touch keyboards or Release containers; human acceptance remains separate.",
+    "Complete metadata/brand material consumption and sharing/analytics timezone interpretation belong to their own tasks."
+  ],
+  "stage": "behavior",
+  "generalMerge": [
+    {
+      "width": 1440,
+      "theme": "light",
+      "forms": {
+        "site": 1,
+        "upload": 1,
+        "actions": [
+          {
+            "form": "site-settings-form",
+            "text": "保存站点信息"
+          },
+          {
+            "form": "upload-limits-form",
+            "text": "保存上传限制"
+          }
+        ],
+        "nested": false
+      },
+      "draft": {
+        "site": {
+          "name": "Ariso",
+          "description": "联合保存站点 1440",
+          "publicUrl": "http://ariso-51615.localhost:51615",
+          "timeZone": "Asia/Shanghai"
+        },
+        "upload": {
+          "maxFileMiB": "57",
+          "batchSize": "21",
+          "queueLimit": "501"
+        }
+      },
+      "pendingSite": {
+        "name": "Ariso",
+        "description": "上传保存时保留站点草稿 1440",
+        "publicUrl": "http://ariso-51615.localhost:51615",
+        "timeZone": "Asia/Shanghai"
+      },
+      "requests": [
+        {
+          "path": "/api/settings/site",
+          "method": "PATCH",
+          "refresh": false,
+          "body": {
+            "name": "Ariso",
+            "description": "联合保存站点 1440",
+            "publicUrl": "http://ariso-51615.localhost:51615",
+            "timeZone": "Asia/Shanghai"
+          },
+          "status": 200
+        },
+        {
+          "path": "/settings/general",
+          "method": "GET",
+          "refresh": true,
+          "status": 200,
+          "contentType": "text/x-component",
+          "complete": true
+        },
+        {
+          "path": "/api/settings/upload",
+          "method": "PATCH",
+          "refresh": false,
+          "body": {
+            "maxFileMiB": 57,
+            "batchSize": 21,
+            "queueLimit": 501
+          },
+          "status": 200
+        }
+      ]
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "navigation": {
+        "input": "keyboard link activation after committed blur",
+        "back": {
+          "draft": {
+            "site": {
+              "name": "Ariso",
+              "description": "联合保存站点 1440",
+              "publicUrl": "http://ariso-51615.localhost:51615",
+              "timeZone": "Asia/Shanghai"
+            },
+            "upload": {
+              "maxFileMiB": "58",
+              "batchSize": "21",
+              "queueLimit": "501"
+            }
+          },
+          "target": {
+            "id": 4920,
+            "url": "http://ariso-51615.localhost:51615/upload",
+            "index": 18,
+            "ids": [
+              4457, 4461, 4875, 4877, 4879, 4885, 4889, 4891, 4893, 4895, 4898,
+              4900, 4905, 4907, 4910, 4914, 4916, 4918, 4920, 4922
+            ],
+            "key": "56f0935b-0108-4042-9de5-29f9b6326146",
+            "navigationIndex": 3
+          },
+          "current": {
+            "id": 4922,
+            "url": "http://ariso-51615.localhost:51615/settings/general",
+            "index": 19,
+            "ids": [
+              4457, 4461, 4875, 4877, 4879, 4885, 4889, 4891, 4893, 4895, 4898,
+              4900, 4905, 4907, 4910, 4914, 4916, 4918, 4920, 4922
+            ],
+            "key": "866d3db3-ab18-432c-aa33-ccaef44eda09",
+            "navigationIndex": 4
+          }
+        },
+        "uploadOnly": {
+          "site": {
+            "name": "Ariso",
+            "description": "联合保存站点 1440",
+            "publicUrl": "http://ariso-51615.localhost:51615",
+            "timeZone": "Asia/Shanghai"
+          },
+          "upload": {
+            "maxFileMiB": "58",
+            "batchSize": "21",
+            "queueLimit": "501"
+          }
+        },
+        "both": {
+          "site": {
+            "name": "Ariso",
+            "description": "取消联合离开保留两组 1440",
+            "publicUrl": "http://ariso-51615.localhost:51615",
+            "timeZone": "Asia/Shanghai"
+          },
+          "upload": {
+            "maxFileMiB": "58",
+            "batchSize": "21",
+            "queueLimit": "501"
+          }
+        },
+        "destination": "/settings/storage"
+      }
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "source": "site",
+      "expiredDraft": {
+        "site": {
+          "name": "Ariso",
+          "description": "失效保留 site 1440",
+          "publicUrl": "http://ariso-51615.localhost:51615",
+          "timeZone": "Asia/Shanghai"
+        },
+        "upload": {
+          "maxFileMiB": "59",
+          "batchSize": "21",
+          "queueLimit": "501"
+        }
+      },
+      "requests": [
+        {
+          "path": "/api/settings/site",
+          "method": "PATCH",
+          "refresh": false,
+          "body": {
+            "name": "Ariso",
+            "description": "失效保留 site 1440",
+            "publicUrl": "http://ariso-51615.localhost:51615",
+            "timeZone": "Asia/Shanghai"
+          },
+          "status": 401
+        }
+      ]
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "source": "upload",
+      "expiredDraft": {
+        "site": {
+          "name": "Ariso",
+          "description": "失效保留 upload 1440",
+          "publicUrl": "http://ariso-51615.localhost:51615",
+          "timeZone": "Asia/Shanghai"
+        },
+        "upload": {
+          "maxFileMiB": "59",
+          "batchSize": "21",
+          "queueLimit": "501"
+        }
+      },
+      "requests": [
+        {
+          "path": "/api/settings/upload",
+          "method": "PATCH",
+          "refresh": false,
+          "body": {
+            "maxFileMiB": 59,
+            "batchSize": 21,
+            "queueLimit": 501
+          },
+          "status": 401
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "forms": {
+        "site": 1,
+        "upload": 1,
+        "actions": [
+          {
+            "form": "site-settings-form",
+            "text": "保存站点信息"
+          },
+          {
+            "form": "upload-limits-form",
+            "text": "保存上传限制"
+          }
+        ],
+        "nested": false
+      },
+      "draft": {
+        "site": {
+          "name": "Ariso",
+          "description": "联合保存站点 390",
+          "publicUrl": "http://ariso-51615.localhost:51615",
+          "timeZone": "Asia/Shanghai"
+        },
+        "upload": {
+          "maxFileMiB": "57",
+          "batchSize": "21",
+          "queueLimit": "501"
+        }
+      },
+      "pendingSite": {
+        "name": "Ariso",
+        "description": "上传保存时保留站点草稿 390",
+        "publicUrl": "http://ariso-51615.localhost:51615",
+        "timeZone": "Asia/Shanghai"
+      },
+      "requests": [
+        {
+          "path": "/api/settings/site",
+          "method": "PATCH",
+          "refresh": false,
+          "body": {
+            "name": "Ariso",
+            "description": "联合保存站点 390",
+            "publicUrl": "http://ariso-51615.localhost:51615",
+            "timeZone": "Asia/Shanghai"
+          },
+          "status": 200
+        },
+        {
+          "path": "/settings/general",
+          "method": "GET",
+          "refresh": true,
+          "status": 200,
+          "contentType": "text/x-component",
+          "complete": true
+        },
+        {
+          "path": "/api/settings/upload",
+          "method": "PATCH",
+          "refresh": false,
+          "body": {
+            "maxFileMiB": 57,
+            "batchSize": 21,
+            "queueLimit": 501
+          },
+          "status": 200
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "navigation": {
+        "input": "keyboard link activation after committed blur",
+        "back": {
+          "draft": {
+            "site": {
+              "name": "Ariso",
+              "description": "联合保存站点 390",
+              "publicUrl": "http://ariso-51615.localhost:51615",
+              "timeZone": "Asia/Shanghai"
+            },
+            "upload": {
+              "maxFileMiB": "58",
+              "batchSize": "21",
+              "queueLimit": "501"
+            }
+          },
+          "target": {
+            "id": 4932,
+            "url": "http://ariso-51615.localhost:51615/upload",
+            "index": 22,
+            "ids": [
+              4457, 4461, 4875, 4877, 4879, 4885, 4889, 4891, 4893, 4895, 4898,
+              4900, 4905, 4907, 4910, 4914, 4916, 4918, 4920, 4923, 4925, 4930,
+              4932, 4934
+            ],
+            "key": "bbe10c58-d5d7-417a-a9e3-60561e1b3601",
+            "navigationIndex": 7
+          },
+          "current": {
+            "id": 4934,
+            "url": "http://ariso-51615.localhost:51615/settings/general",
+            "index": 23,
+            "ids": [
+              4457, 4461, 4875, 4877, 4879, 4885, 4889, 4891, 4893, 4895, 4898,
+              4900, 4905, 4907, 4910, 4914, 4916, 4918, 4920, 4923, 4925, 4930,
+              4932, 4934
+            ],
+            "key": "a183c8f8-e823-4e4e-aa44-9fe4e5bc7ac4",
+            "navigationIndex": 8
+          }
+        },
+        "uploadOnly": {
+          "site": {
+            "name": "Ariso",
+            "description": "联合保存站点 390",
+            "publicUrl": "http://ariso-51615.localhost:51615",
+            "timeZone": "Asia/Shanghai"
+          },
+          "upload": {
+            "maxFileMiB": "58",
+            "batchSize": "21",
+            "queueLimit": "501"
+          }
+        },
+        "both": {
+          "site": {
+            "name": "Ariso",
+            "description": "取消联合离开保留两组 390",
+            "publicUrl": "http://ariso-51615.localhost:51615",
+            "timeZone": "Asia/Shanghai"
+          },
+          "upload": {
+            "maxFileMiB": "58",
+            "batchSize": "21",
+            "queueLimit": "501"
+          }
+        },
+        "destination": "/settings/storage"
+      }
+    }
+  ],
+  "generalMergeStep": {
+    "width": 390,
+    "operation": "expire site"
+  },
+  "error": "Error: page.waitForFunction timed out after 10000ms on page p1; last URL was \"http://ariso-51615.localhost:51615/settings/general\"; last title was \"Ariso\".\n    at waitForFunctionTimeoutError (file:////[eval1]:19235:12)\n    at file:////[eval1]:18564:19\n    at async file:////[eval1]:16691:28",
+  "originalSiteRestored": true,
+  "finishedAt": "2026-10-08T12:01:48.350Z"
+}

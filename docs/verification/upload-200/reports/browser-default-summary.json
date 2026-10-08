@@ -1,0 +1,147 @@
+{
+  "command": "EGO_TASK_SPACE=1 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/browser-upload-200/default pnpm run test:browser",
+  "environment": {
+    "node": "24.18.1",
+    "pnpm": "11.19.0",
+    "platform": "macOS arm64"
+  },
+  "exitCode": 1,
+  "status": "failed",
+  "passed": 22,
+  "failed": 6,
+  "stop": "User took control of TaskSpace 1 during library-copy. No browser resume or alternative space was attempted.",
+  "boundaries": [
+    "Upload settings stage was not reached in this default run.",
+    "Final keyboard focus, exact recovery GET counts, nonzero scroll, real PATCH409 and queue ID additions remain unexecuted.",
+    "Processing dynamic navigation fix and Token consumer category update are statically reviewed but not rerun.",
+    "The copied default app predates final keyboard outline correction."
+  ],
+  "reports": [
+    {
+      "report": "account-1440.json",
+      "status": "passed",
+      "stage": "password-1440"
+    },
+    {
+      "report": "browser.json",
+      "status": "passed"
+    },
+    {
+      "report": "error-recovery.json",
+      "status": "passed"
+    },
+    {
+      "report": "identity-1440-restart.json",
+      "status": "passed"
+    },
+    {
+      "report": "identity-1440-setup.json",
+      "status": "passed"
+    },
+    {
+      "report": "identity-390-restart.json",
+      "status": "passed"
+    },
+    {
+      "report": "identity-390-setup.json",
+      "status": "passed"
+    },
+    {
+      "report": "interaction-polish-1440.json",
+      "status": "passed"
+    },
+    {
+      "report": "library-batch.json",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: The complete 添加标签 click target is visible"
+    },
+    {
+      "report": "library-copy.json",
+      "status": "failed",
+      "error": "Error: The user has taken control of this task space, so browser commands are paused.",
+      "stage": "cross-page-native-copy"
+    },
+    {
+      "report": "library-feedback.json",
+      "status": "passed",
+      "stage": "geometry"
+    },
+    {
+      "report": "library-filters.json",
+      "status": "passed"
+    },
+    {
+      "report": "library-query.json",
+      "status": "passed"
+    },
+    {
+      "report": "library-reprocess.json",
+      "status": "passed"
+    },
+    {
+      "report": "library-scale.json",
+      "status": "passed"
+    },
+    {
+      "report": "library-selection-reconciliation.json",
+      "status": "passed"
+    },
+    {
+      "report": "library-selection.json",
+      "status": "passed"
+    },
+    {
+      "report": "library.json",
+      "status": "failed",
+      "error": "Error: page.waitForSelector timed out after 10000ms: #email"
+    },
+    {
+      "report": "m2-1440.json",
+      "status": "passed"
+    },
+    {
+      "report": "oauth-1440-after.json",
+      "status": "passed",
+      "stage": "disabled-effective"
+    },
+    {
+      "report": "oauth-1440-before.json",
+      "status": "passed",
+      "stage": "saved-disabled"
+    },
+    {
+      "report": "oauth-1440-enabled.json",
+      "status": "passed",
+      "stage": "closed-unlink-unknown-committed"
+    },
+    {
+      "report": "processing.json",
+      "status": "failed",
+      "error": "ElementResolutionError: page.click timed out after 3000ms: Selector .shell-navigation a[href=\"/settings/processing\"] matched 0 elements",
+      "stage": "settings"
+    },
+    {
+      "report": "shell-browser.json",
+      "status": "passed"
+    },
+    {
+      "report": "storage-admin.json",
+      "status": "passed"
+    },
+    {
+      "report": "storage-cors.json",
+      "status": "failed",
+      "error": "Error: page.waitForSelector timed out after 10000ms: [role=\"alert\"]"
+    },
+    {
+      "report": "tokens-1440.json",
+      "status": "failed",
+      "error": "ElementResolutionError: page.click timed out after 3000ms: Selector [data-testid=\"api-token\"][data-token-id=\"[fixture identifier]\"] [data-testid=\"api-toggle\"] matched 1 elements, but none can receive input; <div role=\"alertdialog\"> intercepts pointer events",
+      "stage": "lifecycle"
+    },
+    {
+      "report": "workspace-continuity-1440.json",
+      "status": "passed"
+    }
+  ]
+}
