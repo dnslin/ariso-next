@@ -59,5 +59,39 @@
     "summary": [
       "Default includes current-usage.test.ts, usage-http.test.ts, current-usage-live-runner.test.ts and upload/local.test.ts."
     ]
+  },
+  {
+    "command": "pnpm run lint",
+    "exitCode": 0,
+    "phase": "2026-10-08 authorized repository lint fix",
+    "summary": [
+      "eslint . --max-warnings=0; unused resolve import removed. See lint-fixed.txt."
+    ]
+  },
+  {
+    "command": "pnpm install --frozen-lockfile",
+    "exitCode": 0,
+    "phase": "2026-10-08 authorized repository lint fix",
+    "summary": ["Already up to date; pnpm 11.19.0; lockfile unchanged."]
+  },
+  {
+    "command": "node --check docs/verification/historical-failure-fixes-20261007/browser/affected-check.mjs",
+    "exitCode": 0,
+    "phase": "2026-10-08 authorized repository lint fix",
+    "summary": ["No syntax diagnostics."]
+  },
+  {
+    "command": "pnpm exec prettier docs/verification/historical-failure-fixes-20261007/browser/affected-check.mjs --check",
+    "exitCode": 0,
+    "phase": "2026-10-08 authorized repository lint fix",
+    "summary": ["All matched files use Prettier code style!"]
+  },
+  {
+    "command": "node docs/tasks/check.mjs; node docs/tasks/check.mjs --self-test; git diff --check",
+    "exitCode": 0,
+    "phase": "2026-10-08 authorized repository lint fix evidence",
+    "summary": [
+      "120 tasks, 298 requirements; 5 rejection cases passed; no whitespace errors."
+    ]
   }
 ]
