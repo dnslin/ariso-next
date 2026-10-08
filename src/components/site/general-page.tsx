@@ -21,11 +21,7 @@ import { SiteReadState, SessionLink } from './site-read-state';
 import { RelatedSettings } from './related-settings';
 import { hasUnsavedSiteChanges } from './model';
 import { useSiteNavigation, SiteLeaveDialog } from './site-navigation';
-import {
-  uploadLimitsRequest,
-  UploadLimitsRequestError,
-  type SavedUploadLimits,
-} from '../upload-limits/api';
+import { UploadLimitsRequestError } from '../upload-limits/api';
 import { useUploadLimits } from '../upload-limits/use-upload-limits';
 import { uploadLimitsMatch } from '../upload-limits/model';
 import { UploadLimitsForm } from '../upload-limits/form';
@@ -40,33 +36,21 @@ const saveClass =
 
 export function GeneralPage(shell: ShellProps) {
   const [initial, setInitial] = useState<SiteSettingsResponse | null>(null);
-  const [initialUpload, setInitialUpload] = useState<SavedUploadLimits | null>(
-    null,
-  );
   const settings = useSiteSettings(initial);
-  const upload = useUploadLimits(initialUpload);
-  const expired = settings.expired || upload.expired;
   const query = useQuery({
     queryKey: ['site-settings'],
     queryFn: ({ signal }) => siteRequest<SiteSettingsResponse>({ signal }),
     retry: false,
-    enabled: initial === null && !expired,
+    enabled: initial === null && !settings.expired,
     networkMode: 'always',
     refetchOnWindowFocus: false,
   });
-  const uploadQuery = useQuery({
-    queryKey: ['upload-limits'],
-    queryFn: ({ signal }) => uploadLimitsRequest({ signal }),
-    retry: false,
-    enabled: initialUpload === null && !expired,
-    networkMode: 'always',
-    refetchOnWindowFocus: false,
-  });
-  const sessionLost =
-    expired ||
-    (query.error instanceof SiteRequestError && query.error.status === 401) ||
-    (uploadQuery.error instanceof UploadLimitsRequestError &&
-      uploadQuery.error.status === 401);
+  const upload = useUploadLimits(
+    settings.expired ||
+      (query.error instanceof SiteRequestError && query.error.status === 401),
+  );
+  const uploadQuery = upload.query;
+  const sessionLost = upload.sessionLost;
   const expireSite = settings.expire;
   const expireUpload = upload.expire;
   const expire = useCallback(() => {
@@ -78,13 +62,6 @@ export function GeneralPage(shell: ShellProps) {
   }, [sessionLost, expire]);
   if (!sessionLost && !initial && query.isFetchedAfterMount && query.isSuccess)
     setInitial(query.data);
-  if (
-    !sessionLost &&
-    !initialUpload &&
-    uploadQuery.isFetchedAfterMount &&
-    uploadQuery.isSuccess
-  )
-    setInitialUpload(uploadQuery.data);
   const navigation = useSiteNavigation(
     !sessionLost &&
       ((settings.saved !== null &&

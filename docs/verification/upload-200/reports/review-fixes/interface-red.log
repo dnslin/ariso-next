@@ -1,0 +1,333 @@
+Already up to date
+Done in 31ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-200-review-fixes/ariso
+
+ ❯ |unit| tests/unit/upload/limits-initialization.test.ts (4 tests | 4 failed) 4ms
+   × does not invent limits or request save/read-back/selection before the first actual read 3ms
+   × initializes once from actual values and preserves the draft when a later snapshot arrives or disappears 0ms
+   × does not initialize or unlock an expired unread editor when its initial snapshot returns late 0ms
+   × retains initialized input on expiry and rejects late changes, choices and requests 0ms
+ ❯ |unit| tests/unit/upload/limits-lifetime.test.ts (7 tests | 7 failed) 9ms
+   × does not replace newer limits when an unmounted save returns late 7ms
+   × does not replace newer limits when an unmounted read-back returns late 1ms
+   × refreshes a committed save after leaving instead of keeping the old provider limit 0ms
+   × ignores detached HTTP 401 without expiring the current queue or retrying PATCH 0ms
+   × ignores detached HTTP 503 without expiring the current queue or retrying PATCH 0ms
+   × does not restore focus when a confirmed save frame runs after navigation 0ms
+   × does not restore a cleared session queue after an earlier PATCH succeeds 0ms
+ ❯ |unit| tests/unit/site/settings-initial-load.test.ts (6 tests | 6 failed) 4ms
+   × 初始GET未完成时外壳会话过期，迟到成功不能重新进入编辑器 2ms
+   × 会话未过期时成功读取仍正常进入四字段编辑器 0ms
+   × site初读真实401使两组失效，另一组成功和两组迟到数据均不能初始化 0ms
+   × upload初读真实401使两组失效，另一组成功和两组迟到数据均不能初始化 0ms
+   × site非401初读失败只阻止本组，另一组真实表单和保存仍可用 0ms
+   × upload非401初读失败只阻止本组，另一组真实表单和保存仍可用 0ms
+ ❯ |unit| tests/unit/site/settings-expired.test.ts (3 tests | 2 failed) 18ms
+   × 会话失效时 phase=ready 保留四个可见草稿，锁住字段与保存按钮且结束保存中反馈 6ms
+   × 会话失效时 phase=saving 保留四个可见草稿，锁住字段与保存按钮且结束保存中反馈 0ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 19 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/site/settings-expired.test.ts > 会话失效时 phase=ready 保留四个可见草稿，锁住字段与保存按钮且结束保存中反馈
+ FAIL  |unit| tests/unit/site/settings-expired.test.ts > 会话失效时 phase=saving 保留四个可见草稿，锁住字段与保存按钮且结束保存中反馈
+TypeError: Cannot read properties of undefined (reading 'isFetchedAfterMount')
+ ❯ GeneralPage src/components/site/general-page.tsx:92:19
+     90|   const uploadLoading =
+     91|     !sessionLost &&
+     92|     (!uploadQuery.isFetchedAfterMount || uploadQuery.isFetching);
+       |                   ^
+     93|   const uploadPhase = sessionLost
+     94|     ? 'session'
+ ❯ Object.react_stack_bottom_frame node_modules/.pnpm/react-dom@19.3.0_react@19.3.0/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:10371:18
+ ❯ renderWithHooks node_modules/.pnpm/react-dom@19.3.0_react@19.3.0/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:5361:19
+ ❯ renderElement node_modules/.pnpm/react-dom@19.3.0_react@19.3.0/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:5796:23
+ ❯ retryNode node_modules/.pnpm/react-dom@19.3.0_react@19.3.0/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:6783:21
+ ❯ performWork node_modules/.pnpm/react-dom@19.3.0_react@19.3.0/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:7919:19
+ ❯ startWork node_modules/.pnpm/react-dom@19.3.0_react@19.3.0/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:8807:7
+ ❯ renderToStringImpl node_modules/.pnpm/react-dom@19.3.0_react@19.3.0/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:8933:7
+ ❯ Proxy.process.env.NODE_ENV.exports.renderToStaticMarkup node_modules/.pnpm/react-dom@19.3.0_react@19.3.0/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:10426:14
+ ❯ tests/unit/site/settings-expired.test.ts:120:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/19]⎯
+
+ FAIL  |unit| tests/unit/site/settings-initial-load.test.ts > 初始GET未完成时外壳会话过期，迟到成功不能重新进入编辑器
+TypeError: Cannot read properties of undefined (reading 'isFetchedAfterMount')
+ ❯ Module.GeneralPage src/components/site/general-page.tsx:92:19
+     90|   const uploadLoading =
+     91|     !sessionLost &&
+     92|     (!uploadQuery.isFetchedAfterMount || uploadQuery.isFetching);
+       |                   ^
+     93|   const uploadPhase = sessionLost
+     94|     ? 'session'
+ ❯ InitialLoadHarness tests/unit/site/settings-initial-load.test.ts:224:12
+ ❯ tests/unit/site/settings-initial-load.test.ts:275:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/19]⎯
+
+ FAIL  |unit| tests/unit/site/settings-initial-load.test.ts > 会话未过期时成功读取仍正常进入四字段编辑器
+TypeError: Cannot read properties of undefined (reading 'isFetchedAfterMount')
+ ❯ Module.GeneralPage src/components/site/general-page.tsx:92:19
+     90|   const uploadLoading =
+     91|     !sessionLost &&
+     92|     (!uploadQuery.isFetchedAfterMount || uploadQuery.isFetching);
+       |                   ^
+     93|   const uploadPhase = sessionLost
+     94|     ? 'session'
+ ❯ InitialLoadHarness tests/unit/site/settings-initial-load.test.ts:224:12
+ ❯ tests/unit/site/settings-initial-load.test.ts:306:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/19]⎯
+
+ FAIL  |unit| tests/unit/site/settings-initial-load.test.ts > site初读真实401使两组失效，另一组成功和两组迟到数据均不能初始化
+ FAIL  |unit| tests/unit/site/settings-initial-load.test.ts > upload初读真实401使两组失效，另一组成功和两组迟到数据均不能初始化
+TypeError: Cannot read properties of undefined (reading 'isFetchedAfterMount')
+ ❯ Module.GeneralPage src/components/site/general-page.tsx:92:19
+     90|   const uploadLoading =
+     91|     !sessionLost &&
+     92|     (!uploadQuery.isFetchedAfterMount || uploadQuery.isFetching);
+       |                   ^
+     93|   const uploadPhase = sessionLost
+     94|     ? 'session'
+ ❯ InitialLoadHarness tests/unit/site/settings-initial-load.test.ts:224:12
+ ❯ tests/unit/site/settings-initial-load.test.ts:344:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/19]⎯
+
+ FAIL  |unit| tests/unit/site/settings-initial-load.test.ts > site非401初读失败只阻止本组，另一组真实表单和保存仍可用
+ FAIL  |unit| tests/unit/site/settings-initial-load.test.ts > upload非401初读失败只阻止本组，另一组真实表单和保存仍可用
+TypeError: Cannot read properties of undefined (reading 'isFetchedAfterMount')
+ ❯ Module.GeneralPage src/components/site/general-page.tsx:92:19
+     90|   const uploadLoading =
+     91|     !sessionLost &&
+     92|     (!uploadQuery.isFetchedAfterMount || uploadQuery.isFetching);
+       |                   ^
+     93|   const uploadPhase = sessionLost
+     94|     ? 'session'
+ ❯ InitialLoadHarness tests/unit/site/settings-initial-load.test.ts:224:12
+ ❯ tests/unit/site/settings-initial-load.test.ts:387:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/19]⎯
+
+ FAIL  |unit| tests/unit/upload/limits-initialization.test.ts > does not invent limits or request save/read-back/selection before the first actual read
+Error: [vitest] No "useUploadLimitsSync" export is defined on the "../../../src/components/upload/provider" mock. Did you forget to return it from "vi.mock"?
+If you need to partially mock a module, you can use "importOriginal" helper inside:
+
+vi.mock(import("../../../src/components/upload/provider"), async (importOriginal) => {
+  const actual = await importOriginal()
+  return {
+    ...actual,
+    // your mocked methods
+  }
+})
+
+ ❯ Module.useUploadLimits src/components/upload-limits/use-upload-limits.ts:38:18
+     36|   const active = useRef(true);
+     37|   const client = useQueryClient();
+     38|   const upload = useUploadLimitsSync();
+       |                  ^
+     39|   const resetUpload = useResetUpload();
+     40|   const query = useQuery({
+ ❯ UploadLimitsHarness tests/unit/upload/limits-initialization.test.ts:48:10
+ ❯ Harness.render tests/unit/upload/limits-initialization.test.ts:91:19
+ ❯ tests/unit/upload/limits-initialization.test.ts:128:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/19]⎯
+
+ FAIL  |unit| tests/unit/upload/limits-initialization.test.ts > initializes once from actual values and preserves the draft when a later snapshot arrives or disappears
+Error: [vitest] No "useUploadLimitsSync" export is defined on the "../../../src/components/upload/provider" mock. Did you forget to return it from "vi.mock"?
+If you need to partially mock a module, you can use "importOriginal" helper inside:
+
+vi.mock(import("../../../src/components/upload/provider"), async (importOriginal) => {
+  const actual = await importOriginal()
+  return {
+    ...actual,
+    // your mocked methods
+  }
+})
+
+ ❯ Module.useUploadLimits src/components/upload-limits/use-upload-limits.ts:38:18
+     36|   const active = useRef(true);
+     37|   const client = useQueryClient();
+     38|   const upload = useUploadLimitsSync();
+       |                  ^
+     39|   const resetUpload = useResetUpload();
+     40|   const query = useQuery({
+ ❯ UploadLimitsHarness tests/unit/upload/limits-initialization.test.ts:48:10
+ ❯ Harness.render tests/unit/upload/limits-initialization.test.ts:91:19
+ ❯ tests/unit/upload/limits-initialization.test.ts:147:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/19]⎯
+
+ FAIL  |unit| tests/unit/upload/limits-initialization.test.ts > does not initialize or unlock an expired unread editor when its initial snapshot returns late
+Error: [vitest] No "useUploadLimitsSync" export is defined on the "../../../src/components/upload/provider" mock. Did you forget to return it from "vi.mock"?
+If you need to partially mock a module, you can use "importOriginal" helper inside:
+
+vi.mock(import("../../../src/components/upload/provider"), async (importOriginal) => {
+  const actual = await importOriginal()
+  return {
+    ...actual,
+    // your mocked methods
+  }
+})
+
+ ❯ Module.useUploadLimits src/components/upload-limits/use-upload-limits.ts:38:18
+     36|   const active = useRef(true);
+     37|   const client = useQueryClient();
+     38|   const upload = useUploadLimitsSync();
+       |                  ^
+     39|   const resetUpload = useResetUpload();
+     40|   const query = useQuery({
+ ❯ UploadLimitsHarness tests/unit/upload/limits-initialization.test.ts:48:10
+ ❯ Harness.render tests/unit/upload/limits-initialization.test.ts:91:19
+ ❯ tests/unit/upload/limits-initialization.test.ts:167:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/19]⎯
+
+ FAIL  |unit| tests/unit/upload/limits-initialization.test.ts > retains initialized input on expiry and rejects late changes, choices and requests
+Error: [vitest] No "useUploadLimitsSync" export is defined on the "../../../src/components/upload/provider" mock. Did you forget to return it from "vi.mock"?
+If you need to partially mock a module, you can use "importOriginal" helper inside:
+
+vi.mock(import("../../../src/components/upload/provider"), async (importOriginal) => {
+  const actual = await importOriginal()
+  return {
+    ...actual,
+    // your mocked methods
+  }
+})
+
+ ❯ Module.useUploadLimits src/components/upload-limits/use-upload-limits.ts:38:18
+     36|   const active = useRef(true);
+     37|   const client = useQueryClient();
+     38|   const upload = useUploadLimitsSync();
+       |                  ^
+     39|   const resetUpload = useResetUpload();
+     40|   const query = useQuery({
+ ❯ UploadLimitsHarness tests/unit/upload/limits-initialization.test.ts:48:10
+ ❯ Harness.render tests/unit/upload/limits-initialization.test.ts:91:19
+ ❯ tests/unit/upload/limits-initialization.test.ts:183:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/19]⎯
+
+ FAIL  |unit| tests/unit/upload/limits-lifetime.test.ts > does not replace newer limits when an unmounted save returns late
+ FAIL  |unit| tests/unit/upload/limits-lifetime.test.ts > does not replace newer limits when an unmounted read-back returns late
+Error: [vitest] No "useUploadLimitsSync" export is defined on the "../../../src/components/upload/provider" mock. Did you forget to return it from "vi.mock"?
+If you need to partially mock a module, you can use "importOriginal" helper inside:
+
+vi.mock(import("../../../src/components/upload/provider"), async (importOriginal) => {
+  const actual = await importOriginal()
+  return {
+    ...actual,
+    // your mocked methods
+  }
+})
+
+ ❯ Module.useUploadLimits src/components/upload-limits/use-upload-limits.ts:38:18
+     36|   const active = useRef(true);
+     37|   const client = useQueryClient();
+     38|   const upload = useUploadLimitsSync();
+       |                  ^
+     39|   const resetUpload = useResetUpload();
+     40|   const query = useQuery({
+ ❯ tests/unit/upload/limits-lifetime.test.ts:158:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/19]⎯
+
+ FAIL  |unit| tests/unit/upload/limits-lifetime.test.ts > refreshes a committed save after leaving instead of keeping the old provider limit
+Error: [vitest] No "useUploadLimitsSync" export is defined on the "../../../src/components/upload/provider" mock. Did you forget to return it from "vi.mock"?
+If you need to partially mock a module, you can use "importOriginal" helper inside:
+
+vi.mock(import("../../../src/components/upload/provider"), async (importOriginal) => {
+  const actual = await importOriginal()
+  return {
+    ...actual,
+    // your mocked methods
+  }
+})
+
+ ❯ Module.useUploadLimits src/components/upload-limits/use-upload-limits.ts:38:18
+     36|   const active = useRef(true);
+     37|   const client = useQueryClient();
+     38|   const upload = useUploadLimitsSync();
+       |                  ^
+     39|   const resetUpload = useResetUpload();
+     40|   const query = useQuery({
+ ❯ tests/unit/upload/limits-lifetime.test.ts:192:22
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/19]⎯
+
+ FAIL  |unit| tests/unit/upload/limits-lifetime.test.ts > ignores detached HTTP 401 without expiring the current queue or retrying PATCH
+ FAIL  |unit| tests/unit/upload/limits-lifetime.test.ts > ignores detached HTTP 503 without expiring the current queue or retrying PATCH
+Error: [vitest] No "useUploadLimitsSync" export is defined on the "../../../src/components/upload/provider" mock. Did you forget to return it from "vi.mock"?
+If you need to partially mock a module, you can use "importOriginal" helper inside:
+
+vi.mock(import("../../../src/components/upload/provider"), async (importOriginal) => {
+  const actual = await importOriginal()
+  return {
+    ...actual,
+    // your mocked methods
+  }
+})
+
+ ❯ Module.useUploadLimits src/components/upload-limits/use-upload-limits.ts:38:18
+     36|   const active = useRef(true);
+     37|   const client = useQueryClient();
+     38|   const upload = useUploadLimitsSync();
+       |                  ^
+     39|   const resetUpload = useResetUpload();
+     40|   const query = useQuery({
+ ❯ tests/unit/upload/limits-lifetime.test.ts:213:24
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/19]⎯
+
+ FAIL  |unit| tests/unit/upload/limits-lifetime.test.ts > does not restore focus when a confirmed save frame runs after navigation
+Error: [vitest] No "useUploadLimitsSync" export is defined on the "../../../src/components/upload/provider" mock. Did you forget to return it from "vi.mock"?
+If you need to partially mock a module, you can use "importOriginal" helper inside:
+
+vi.mock(import("../../../src/components/upload/provider"), async (importOriginal) => {
+  const actual = await importOriginal()
+  return {
+    ...actual,
+    // your mocked methods
+  }
+})
+
+ ❯ Module.useUploadLimits src/components/upload-limits/use-upload-limits.ts:38:18
+     36|   const active = useRef(true);
+     37|   const client = useQueryClient();
+     38|   const upload = useUploadLimitsSync();
+       |                  ^
+     39|   const resetUpload = useResetUpload();
+     40|   const query = useQuery({
+ ❯ tests/unit/upload/limits-lifetime.test.ts:231:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/19]⎯
+
+ FAIL  |unit| tests/unit/upload/limits-lifetime.test.ts > does not restore a cleared session queue after an earlier PATCH succeeds
+Error: [vitest] No "useUploadLimitsSync" export is defined on the "../../../src/components/upload/provider" mock. Did you forget to return it from "vi.mock"?
+If you need to partially mock a module, you can use "importOriginal" helper inside:
+
+vi.mock(import("../../../src/components/upload/provider"), async (importOriginal) => {
+  const actual = await importOriginal()
+  return {
+    ...actual,
+    // your mocked methods
+  }
+})
+
+ ❯ Module.useUploadLimits src/components/upload-limits/use-upload-limits.ts:38:18
+     36|   const active = useRef(true);
+     37|   const client = useQueryClient();
+     38|   const upload = useUploadLimitsSync();
+       |                  ^
+     39|   const resetUpload = useResetUpload();
+     40|   const query = useQuery({
+ ❯ tests/unit/upload/limits-lifetime.test.ts:238:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/19]⎯
+
+
+ Test Files  4 failed (4)
+      Tests  19 failed | 1 passed (20)
+   Start at  21:30:54
+   Duration  830ms (import 64%, transform 30%, tests 3%, worker 2%)

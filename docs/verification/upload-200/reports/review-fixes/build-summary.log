@@ -1,0 +1,58 @@
+pnpm run build: exit 0
+Optional platform dependency trace diagnostics present; full raw log remains local.
+
+    at async Job.maybeEmitDep (/Users/dnslin/.codex/worktrees/issue-200-review-fixes/ariso/node_modules/.pnpm/next@16.3.5_@babel+core@7.29.7_supports-color@7.2.0__@playwright+test@1.63.0_@types+nod_a557c6365fd19329a9ed1650f5136468/node_modules/next/dist/compiled/@vercel/nft/index.js:1:40213)
+    at async Promise.all (index 0)
+    at async Job.emitDependency (/Users/dnslin/.codex/worktrees/issue-200-review-fixes/ariso/node_modules/.pnpm/next@16.3.5_@babel+core@7.29.7_supports-color@7.2.0__@playwright+test@1.63.0_@types+nod_a557c6365fd19329a9ed1650f5136468/node_modules/next/dist/compiled/@vercel/nft/index.js:1:42342)
+    at async Job.maybeEmitDep (/Users/dnslin/.codex/worktrees/issue-200-review-fixes/ariso/node_modules/.pnpm/next@16.3.5_@babel+core@7.29.7_supports-color@7.2.0__@playwright+test@1.63.0_@types+nod_a557c6365fd19329a9ed1650f5136468/node_modules/next/dist/compiled/@vercel/nft/index.js:1:40213)
+    at async Promise.all (index 1)
+    at async Job.emitDependency (/Users/dnslin/.codex/worktrees/issue-200-review-fixes/ariso/node_modules/.pnpm/next@16.3.5_@babel+core@7.29.7_supports-color@7.2.0__@playwright+test@1.63.0_@types+nod_a557c6365fd19329a9ed1650f5136468/node_modules/next/dist/compiled/@vercel/nft/index.js:1:42342)
+    at async /Users/dnslin/.codex/worktrees/issue-200-review-fixes/ariso/node_modules/.pnpm/next@16.3.5_@babel+core@7.29.7_supports-color@7.2.0__@playwright+test@1.63.0_@types+nod_a557c6365fd19329a9ed1650f5136468/node_modules/next/dist/compiled/@vercel/nft/index.js:1:42584
+Error: Failed to resolve dependency "@resvg/resvg-js-linux-s390x-gnu":
+Cannot find module '@resvg/resvg-js-linux-s390x-gnu' loaded from /Users/dnslin/.codex/worktrees/issue-200-review-fixes/ariso/node_modules/.pnpm/@resvg+resvg-js@2.6.2/node_modules/@resvg/resvg-js/js-binding.js
+    at Job.maybeEmitDep (/Users/dnslin/.codex/worktrees/issue-200-review-fixes/ariso/node_modules/.pnpm/next@16.3.5_@babel+core@7.29.7_supports-color@7.2.0__@playwright+test@1.63.0_@types+nod_a557c6365fd19329a9ed1650f5136468/node_modules/next/dist/compiled/@vercel/nft/index.js:1:39998)
+    at async Promise.all (index 36)
+    at async Job.emitDependency (/Users/dnslin/.codex/worktrees/issue-200-review-fixes/ariso/node_modules/.pnpm/next@16.3.5_@babel+core@7.29.7_supports-color@7.2.0__@playwright+test@1.63.0_@types+nod_a557c6365fd19329a9ed1650f5136468/node_modules/next/dist/compiled/@vercel/nft/index.js:1:42342)
+    at async Job.maybeEmitDep (/Users/dnslin/.codex/worktrees/issue-200-review-fixes/ariso/node_modules/.pnpm/next@16.3.5_@babel+core@7.29.7_supports-color@7.2.0__@playwright+test@1.63.0_@types+nod_a557c6365fd19329a9ed1650f5136468/node_modules/next/dist/compiled/@vercel/nft/index.js:1:40213)
+    at async Promise.all (index 0)
+    at async Job.emitDependency (/Users/dnslin/.codex/worktrees/issue-200-review-fixes/ariso/node_modules/.pnpm/next@16.3.5_@babel+core@7.29.7_supports-color@7.2.0__@playwright+test@1.63.0_@types+nod_a557c6365fd19329a9ed1650f5136468/node_modules/next/dist/compiled/@vercel/nft/index.js:1:42342)
+    at async Job.maybeEmitDep (/Users/dnslin/.codex/worktrees/issue-200-review-fixes/ariso/node_modules/.pnpm/next@16.3.5_@babel+core@7.29.7_supports-color@7.2.0__@playwright+test@1.63.0_@types+nod_a557c6365fd19329a9ed1650f5136468/node_modules/next/dist/compiled/@vercel/nft/index.js:1:40213)
+    at async Promise.all (index 1)
+    at async Job.emitDependency (/Users/dnslin/.codex/worktrees/issue-200-review-fixes/ariso/node_modules/.pnpm/next@16.3.5_@babel+core@7.29.7_supports-color@7.2.0__@playwright+test@1.63.0_@types+nod_a557c6365fd19329a9ed1650f5136468/node_modules/next/dist/compiled/@vercel/nft/index.js:1:42342)
+    at async /Users/dnslin/.codex/worktrees/issue-200-review-fixes/ariso/node_modules/.pnpm/next@16.3.5_@babel+core@7.29.7_supports-color@7.2.0__@playwright+test@1.63.0_@types+nod_a557c6365fd19329a9ed1650f5136468/node_modules/next/dist/compiled/@vercel/nft/index.js:1:42584
+Error: Failed to resolve dependency "@resvg/resvg-js-linux-riscv64-gnu":
+Cannot find module '@resvg/resvg-js-linux-riscv64-gnu' loaded from /Users/dnslin/.codex/worktrees/issue-200-review-fixes/ariso/node_modules/.pnpm/@resvg+resvg-js@2.6.2/node_modules/@resvg/resvg-js/js-binding.js
+    at Job.maybeEmitDep (/Users/dnslin/.codex/worktrees/issue-200-review-fixes/ariso/node_modules/.pnpm/next@16.3.5_@babel+core@7.29.7_supports-color@7.2.0__@playwright+test@1.63.0_@types+nod_a557c6365fd19329a9ed1650f5136468/node_modules/next/dist/compiled/@vercel/nft/index.js:1:39998)
+    at async Promise.all (index 34)
+    at async Job.emitDependency (/Users/dnslin/.codex/worktrees/issue-200-review-fixes/ariso/node_modules/.pnpm/next@16.3.5_@babel+core@7.29.7_supports-color@7.2.0__@playwright+test@1.63.0_@types+nod_a557c6365fd19329a9ed1650f5136468/node_modules/next/dist/compiled/@vercel/nft/index.js:1:42342)
+    at async Job.maybeEmitDep (/Users/dnslin/.codex/worktrees/issue-200-review-fixes/ariso/node_modules/.pnpm/next@16.3.5_@babel+core@7.29.7_supports-color@7.2.0__@playwright+test@1.63.0_@types+nod_a557c6365fd19329a9ed1650f5136468/node_modules/next/dist/compiled/@vercel/nft/index.js:1:40213)
+    at async Promise.all (index 0)
+    at async Job.emitDependency (/Users/dnslin/.codex/worktrees/issue-200-review-fixes/ariso/node_modules/.pnpm/next@16.3.5_@babel+core@7.29.7_supports-color@7.2.0__@playwright+test@1.63.0_@types+nod_a557c6365fd19329a9ed1650f5136468/node_modules/next/dist/compiled/@vercel/nft/index.js:1:42342)
+    at async Job.maybeEmitDep (/Users/dnslin/.codex/worktrees/issue-200-review-fixes/ariso/node_modules/.pnpm/next@16.3.5_@babel+core@7.29.7_supports-color@7.2.0__@playwright+test@1.63.0_@types+nod_a557c6365fd19329a9ed1650f5136468/node_modules/next/dist/compiled/@vercel/nft/index.js:1:40213)
+    at async Promise.all (index 1)
+    at async Job.emitDependency (/Users/dnslin/.codex/worktrees/issue-200-review-fixes/ariso/node_modules/.pnpm/next@16.3.5_@babel+core@7.29.7_supports-color@7.2.0__@playwright+test@1.63.0_@types+nod_a557c6365fd19329a9ed1650f5136468/node_modules/next/dist/compiled/@vercel/nft/index.js:1:42342)
+    at async /Users/dnslin/.codex/worktrees/issue-200-review-fixes/ariso/node_modules/.pnpm/next@16.3.5_@babel+core@7.29.7_supports-color@7.2.0__@playwright+test@1.63.0_@types+nod_a557c6365fd19329a9ed1650f5136468/node_modules/next/dist/compiled/@vercel/nft/index.js:1:42584
+Error: Failed to resolve dependency "@resvg/resvg-js-linux-arm-gnueabihf":
+Cannot find module '@resvg/resvg-js-linux-arm-gnueabihf' loaded from /Users/dnslin/.codex/worktrees/issue-200-review-fixes/ariso/node_modules/.pnpm/@resvg+resvg-js@2.6.2/node_modules/@resvg/resvg-js/js-binding.js
+    at Job.maybeEmitDep (/Users/dnslin/.codex/worktrees/issue-200-review-fixes/ariso/node_modules/.pnpm/next@16.3.5_@babel+core@7.29.7_supports-color@7.2.0__@playwright+test@1.63.0_@types+nod_a557c6365fd19329a9ed1650f5136468/node_modules/next/dist/compiled/@vercel/nft/index.js:1:39998)
+    at async Promise.all (index 30)
+    at async Job.emitDependency (/Users/dnslin/.codex/worktrees/issue-200-review-fixes/ariso/node_modules/.pnpm/next@16.3.5_@babel+core@7.29.7_supports-color@7.2.0__@playwright+test@1.63.0_@types+nod_a557c6365fd19329a9ed1650f5136468/node_modules/next/dist/compiled/@vercel/nft/index.js:1:42342)
+    at async Job.maybeEmitDep (/Users/dnslin/.codex/worktrees/issue-200-review-fixes/ariso/node_modules/.pnpm/next@16.3.5_@babel+core@7.29.7_supports-color@7.2.0__@playwright+test@1.63.0_@types+nod_a557c6365fd19329a9ed1650f5136468/node_modules/next/dist/compiled/@vercel/nft/index.js:1:40213)
+    at async Promise.all (index 0)
+    at async Job.emitDependency (/Users/dnslin/.codex/worktrees/issue-200-review-fixes/ariso/node_modules/.pnpm/next@16.3.5_@babel+core@7.29.7_supports-color@7.2.0__@playwright+test@1.63.0_@types+nod_a557c6365fd19329a9ed1650f5136468/node_modules/next/dist/compiled/@vercel/nft/index.js:1:42342)
+    at async Job.maybeEmitDep (/Users/dnslin/.codex/worktrees/issue-200-review-fixes/ariso/node_modules/.pnpm/next@16.3.5_@babel+core@7.29.7_supports-color@7.2.0__@playwright+test@1.63.0_@types+nod_a557c6365fd19329a9ed1650f5136468/node_modules/next/dist/compiled/@vercel/nft/index.js:1:40213)
+    at async Promise.all (index 1)
+    at async Job.emitDependency (/Users/dnslin/.codex/worktrees/issue-200-review-fixes/ariso/node_modules/.pnpm/next@16.3.5_@babel+core@7.29.7_supports-color@7.2.0__@playwright+test@1.63.0_@types+nod_a557c6365fd19329a9ed1650f5136468/node_modules/next/dist/compiled/@vercel/nft/index.js:1:42342)
+    at async /Users/dnslin/.codex/worktrees/issue-200-review-fixes/ariso/node_modules/.pnpm/next@16.3.5_@babel+core@7.29.7_supports-color@7.2.0__@playwright+test@1.63.0_@types+nod_a557c6365fd19329a9ed1650f5136468/node_modules/next/dist/compiled/@vercel/nft/index.js:1:42584
+Error: Failed to resolve dependency "@opentelemetry/api":
+Cannot find module '@opentelemetry/api' loaded from /Users/dnslin/.codex/worktrees/issue-200-review-fixes/ariso/node_modules/.pnpm/@better-auth+core@1.7.5_@better-auth+utils@0.4.2_@better-fetch+fetch@1.3.2_better-call@_aeeaf3b82675b7015ca28463c6d3c0b3/node_modules/@better-auth/core/dist/instrumentation/api.mjs
+    at Job.maybeEmitDep (/Users/dnslin/.codex/worktrees/issue-200-review-fixes/ariso/node_modules/.pnpm/next@16.3.5_@babel+core@7.29.7_supports-color@7.2.0__@playwright+test@1.63.0_@types+nod_a557c6365fd19329a9ed1650f5136468/node_modules/next/dist/compiled/@vercel/nft/index.js:1:39998)
+    at async Promise.all (index 1)
+    at async Job.emitDependency (/Users/dnslin/.codex/worktrees/issue-200-review-fixes/ariso/node_modules/.pnpm/next@16.3.5_@babel+core@7.29.7_supports-color@7.2.0__@playwright+test@1.63.0_@types+nod_a557c6365fd19329a9ed1650f5136468/node_modules/next/dist/compiled/@vercel/nft/index.js:1:42342)
+    at async Job.maybeEmitDep (/Users/dnslin/.codex/worktrees/issue-200-review-fixes/ariso/node_modules/.pnpm/next@16.3.5_@babel+core@7.29.7_supports-color@7.2.0__@playwright+test@1.63.0_@types+nod_a557c6365fd19329a9ed1650f5136468/node_modules/next/dist/compiled/@vercel/nft/index.js:1:40213)
+    at async Promise.all (index 2)
+    at async Job.emitDependency (/Users/dnslin/.codex/worktrees/issue-200-review-fixes/ariso/node_modules/.pnpm/next@16.3.5_@babel+core@7.29.7_supports-color@7.2.0__@playwright+test@1.63.0_@types+nod_a557c6365fd19329a9ed1650f5136468/node_modules/next/dist/compiled/@vercel/nft/index.js:1:42342)
+    at async Job.maybeEmitDep (/Users/dnslin/.codex/worktrees/issue-200-review-fixes/ariso/node_modules/.pnpm/next@16.3.5_@babel+core@7.29.7_supports-color@7.2.0__@playwright+test@1.63.0_@types+nod_a557c6365fd19329a9ed1650f5136468/node_modules/next/dist/compiled/@vercel/nft/index.js:1:40213)
+    at async Promise.all (index 1)
+    at async Job.emitDependency (/Users/dnslin/.codex/worktrees/issue-200-review-fixes/ariso/node_modules/.pnpm/next@16.3.5_@babel+core@7.29.7_supports-color@7.2.0__@playwright+test@1.63.0_@types+nod_a557c6365fd19329a9ed1650f5136468/node_modules/next/dist/compiled/@vercel/nft/index.js:1:42342)
+    at async Job.maybeEmitDep (/Users/dnslin/.codex/worktrees/issue-200-review-fixes/ariso/node_modules/.pnpm/next@16.3.5_@babel+core@7.29.7_supports-color@7.2.0__@playwright+test@1.63.0_@types+nod_a557c6365fd19329a9ed1650f5136468/node_modules/next/dist/compiled/@vercel/nft/index.js:1:40142)

@@ -1,0 +1,23 @@
+Node 24.18.1 / pnpm 11.19.0
+pnpm run test:integration --maxWorkers=4: exit 1
+Full raw log remains local because it contains setup codes.
+
+ ❯ |media-tools| tests/integration/upload/api.test.ts (15 tests | 1 failed) 41328ms
+   × rejects truncated multipart, missing files, field byte limits and configured file size limits, then removes all temporary files 7893ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |media-tools| tests/integration/upload/api.test.ts > rejects truncated multipart, missing files, field byte limits and configured file size limits, then removes all temporary files
+TypeError: fetch failed
+Caused by: Error: read ECONNRESET
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { errno: -54, code: 'ECONNRESET', syscall: 'read' }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 183 passed (184)
+      Tests  1 failed | 1762 passed (1763)
+   Start at  21:40:50
+   Duration  282.09s (tests 95%, import 5%)
+
+[ELIFECYCLE] Command failed with exit code 1.

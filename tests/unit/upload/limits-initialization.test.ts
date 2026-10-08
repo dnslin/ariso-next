@@ -1,6 +1,9 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import type { DependencyList, EffectCallback } from 'react';
-import type { SavedUploadLimits } from '../../../src/components/upload-limits/api';
+import {
+  UploadLimitsRequestError,
+  type SavedUploadLimits,
+} from '../../../src/components/upload-limits/api';
 import { useUploadLimits } from '../../../src/components/upload-limits/use-upload-limits';
 
 // Retain hook state between renders, including the one-time initial snapshot.
@@ -14,6 +17,8 @@ const actions = vi.hoisted(() => ({
   cache: vi.fn(),
   cancel: vi.fn(),
   invalidate: vi.fn(),
+  query: vi.fn(),
+  publish: vi.fn(),
 }));
 vi.mock('react', async (original) => ({
   ...(await original<typeof import('react')>()),
@@ -27,29 +32,27 @@ vi.mock('@heroui/react/toast', () => ({
   toast: Object.assign(actions.toast, { close: actions.close }),
 }));
 vi.mock('@tanstack/react-query', () => ({
+  useQuery: actions.query,
   useQueryClient: () => ({
     setQueryData: actions.cache,
     invalidateQueries: actions.invalidate,
   }),
 }));
 vi.mock('../../../src/components/upload/provider', () => ({
-  useUploadQueue: () => ({
-    client: {
-      setQueryData: actions.cache,
-      cancelQueries: actions.cancel,
-      invalidateQueries: actions.invalidate,
-    },
-    controller: null,
+  useUploadLimitsSync: () => ({
+    publishLimits: actions.publish,
+    refreshSettings: actions.invalidate,
   }),
   useResetUpload: () => actions.reset,
 }));
 
-function UploadLimitsHarness(initial: SavedUploadLimits | null) {
-  return useUploadLimits(initial);
+function UploadLimitsHarness(sessionLost = false) {
+  return useUploadLimits(sessionLost);
 }
 class Harness {
   private cells: unknown[] = [];
   private cursor = 0;
+  private dirty = false;
   private pending: (() => void)[] = [];
   private cleanups = new Map<number, () => void>();
   state(initial: unknown) {
@@ -59,6 +62,7 @@ class Harness {
     return [
       this.cells[index],
       (value: unknown) => {
+        this.dirty = true;
         this.cells[index] =
           typeof value === 'function' ? value(this.cells[index]) : value;
       },
@@ -85,11 +89,26 @@ class Harness {
       });
     }
   }
-  render(initial: SavedUploadLimits | null) {
-    this.cursor = 0;
+  render(
+    initial: SavedUploadLimits | null,
+    options: { fresh?: boolean; sessionLost?: boolean; error?: Error } = {},
+  ) {
+    actions.query.mockReturnValue({
+      data: initial,
+      isFetchedAfterMount: options.fresh ?? initial !== null,
+      isFetching: initial === null && !options.error,
+      isSuccess: initial !== null && !options.error,
+      error: options.error ?? null,
+      refetch: vi.fn(),
+    });
     runtime.current = this;
-    const value = UploadLimitsHarness(initial);
-    for (const effect of this.pending.splice(0)) effect();
+    let value: ReturnType<typeof useUploadLimits>;
+    do {
+      this.dirty = false;
+      this.cursor = 0;
+      value = UploadLimitsHarness(options.sessionLost);
+      for (const effect of this.pending.splice(0)) effect();
+    } while (this.dirty);
     return value;
   }
   unmount() {
@@ -178,6 +197,111 @@ it('does not initialize or unlock an expired unread editor when its initial snap
   expect(actions.reset).toHaveBeenCalledTimes(1);
   expect(actions.toast).not.toHaveBeenCalled();
 });
+
+it('waits for a fresh successful read instead of initializing from cached success or a failed read', () => {
+  harness.render(initial, { fresh: false });
+  expect(harness.render(initial, { fresh: false }).saved).toBeNull();
+  harness.render(initial, {
+    error: new UploadLimitsRequestError(503, 'UNAVAILABLE', 'read failed'),
+  });
+  expect(harness.render(initial, { fresh: false }).saved).toBeNull();
+  harness.render(initial);
+  expect(harness.render(initial).saved).toEqual(initial);
+  expect(actions.query.mock.lastCall?.[0].enabled).toBe(false);
+});
+
+it.each(['elsewhere', 'upload'] as const)(
+  'blocks fresh initialization after %s loses the session',
+  (source) => {
+    const options =
+      source === 'elsewhere'
+        ? { sessionLost: true }
+        : {
+            error: new UploadLimitsRequestError(
+              401,
+              'UNAUTHORIZED',
+              'session expired',
+            ),
+          };
+    harness.render(initial, options);
+    expect(harness.render(initial, options)).toMatchObject({
+      saved: null,
+      input: unreadInput,
+      sessionLost: true,
+    });
+    expect(actions.publish).not.toHaveBeenCalled();
+  },
+);
+
+it('keeps an uncertain save locked through retry and only unlocks after a matching actual read', async () => {
+  harness.render(initial);
+  harness.render(initial).change('maxFileMiB', 60);
+  actions.fetch.mockRejectedValueOnce(new Error('lost PATCH response'));
+  actions.fetch.mockRejectedValueOnce(new Error('read unavailable'));
+  await harness.render(initial).save();
+  expect(harness.render(initial)).toMatchObject({
+    input: { maxFileMiB: 60 },
+    saved: initial,
+    busy: false,
+    unknown: true,
+    different: false,
+  });
+  const held = Promise.withResolvers<Response>();
+  actions.fetch.mockReturnValueOnce(held.promise);
+  const checking = harness.render(initial).reconcile();
+  expect(harness.render(initial)).toMatchObject({
+    busy: true,
+    unknown: true,
+    different: false,
+  });
+  await harness.render(initial).save();
+  await harness.render(initial).reconcile();
+  expect(actions.fetch).toHaveBeenCalledTimes(3);
+  const confirmed = { ...initial, maxFileMiB: 60, maxFileBytes: 60 * 1048576 };
+  held.resolve(Response.json(confirmed));
+  await checking;
+  expect(harness.render(initial)).toMatchObject({
+    input: { maxFileMiB: 60 },
+    saved: confirmed,
+    busy: false,
+    unknown: false,
+    different: false,
+  });
+  expect(
+    actions.fetch.mock.calls.map(([, init]) => init?.method ?? 'GET'),
+  ).toEqual(['PATCH', 'GET', 'GET']);
+  expect(actions.publish).toHaveBeenCalledExactlyOnceWith(confirmed);
+});
+
+it.each([false, true])(
+  'unlocks a differing read only after choosing useSaved=%s and retains the chosen values',
+  async (useSaved) => {
+    harness.render(initial);
+    harness.render(initial).change('maxFileMiB', 60);
+    const actual = { ...initial, maxFileMiB: 70, maxFileBytes: 70 * 1048576 };
+    actions.fetch.mockRejectedValueOnce(new Error('lost PATCH response'));
+    actions.fetch.mockResolvedValueOnce(Response.json(actual));
+    await harness.render(initial).save();
+    expect(harness.render(initial)).toMatchObject({
+      saved: actual,
+      input: { maxFileMiB: 60 },
+      busy: false,
+      unknown: true,
+      different: true,
+    });
+    await harness.render(initial).save();
+    expect(actions.fetch).toHaveBeenCalledTimes(2);
+    harness.render(initial).chooseSaved(useSaved);
+    expect(harness.render(initial)).toMatchObject({
+      saved: actual,
+      input: { maxFileMiB: useSaved ? 70 : 60 },
+      busy: false,
+      unknown: false,
+      different: false,
+    });
+    expect(actions.fetch).toHaveBeenCalledTimes(2);
+  },
+);
 
 it('retains initialized input on expiry and rejects late changes, choices and requests', async () => {
   harness.render(initial).change('maxFileMiB', 60);

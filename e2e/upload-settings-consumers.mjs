@@ -10,7 +10,13 @@ export async function uploadSettingsConsumers(page, config, tools, report) {
     await resizeViewport(page, width);
     for (const theme of ['light', 'dark']) {
       await setTheme(page, theme);
-      for (const route of ['general', 'processing', 'account', 'api']) {
+      for (const route of [
+        'general',
+        'processing',
+        'account',
+        'api',
+        'email',
+      ]) {
         await page.goto(`${config.origin}/settings/${route}`);
         await page.waitForSelector('.shell-content');
         await page.waitForFunction(() => document.fonts.status === 'loaded');
@@ -40,6 +46,7 @@ export async function uploadSettingsConsumers(page, config, tools, report) {
           '图片处理',
           '账号与安全',
           '上传 API',
+          '邮件服务',
         ]);
         assert.equal(
           categories.selected?.trim(),
@@ -48,6 +55,7 @@ export async function uploadSettingsConsumers(page, config, tools, report) {
             processing: '图片处理',
             account: '账号与安全',
             api: '上传 API',
+            email: '邮件服务',
           }[route],
         );
         if (width === 1440)
@@ -147,6 +155,6 @@ export async function uploadSettingsConsumers(page, config, tools, report) {
     'Refused edit was not saved',
   );
   report.checks.push(
-    'All four settings consumers share navigation in both themes; client navigation preserves queue; real 401 retains form and releases queue Files/URLs',
+    'All five settings consumers share navigation in both themes; client navigation preserves queue; real 401 retains form and releases queue Files/URLs',
   );
 }

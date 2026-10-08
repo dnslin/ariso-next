@@ -1,0 +1,58 @@
+Already up to date
+Done in 32ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-200-review-fixes/ariso
+
+ ❯ |unit| tests/unit/upload/limits-initialization.test.ts (7 tests | 1 failed) 7ms
+   × retains initialized input on expiry and rejects late changes, choices and requests 4ms
+ ❯ |unit| tests/unit/upload/limits-lifetime.test.ts (7 tests | 1 failed) 145ms
+   × does not restore a cleared session queue after an earlier PATCH succeeds 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/upload/limits-initialization.test.ts > retains initialized input on expiry and rejects late changes, choices and requests
+AssertionError: expected { …(15) } to match object { …(3) }
+(20 matching properties omitted from actual)
+
+- Expected
++ Received
+
+@@ -1,9 +1,9 @@
+  {
+    "expired": true,
+    "input": {
+-     "maxFileMiB": 60,
++     "maxFileMiB": 50,
+    },
+    "saved": {
+      "batchSize": 20,
+      "maxFileBytes": 52428800,
+      "maxFileMiB": 50,
+
+ ❯ tests/unit/upload/limits-initialization.test.ts:239:33
+    237|   await editor.save();
+    238|   await editor.reconcile();
+    239|   expect(harness.render(later)).toMatchObject({
+       |                                 ^
+    240|     saved: initial,
+    241|     input: { maxFileMiB: 60 },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  |unit| tests/unit/upload/limits-lifetime.test.ts > does not restore a cleared session queue after an earlier PATCH succeeds
+ReferenceError: Cannot access 'editor' before initialization
+ ❯ tests/unit/upload/limits-lifetime.test.ts:295:18
+    293|
+    294| it('does not restore a cleared session queue after an earlier PATCH su…
+    295|   const editor = editor(limits(50));
+       |                  ^
+    296|   const saving = editor.save();
+    297|   editor.expire();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed | 2 passed (4)
+      Tests  2 failed | 21 passed (23)
+   Start at  21:36:02
+   Duration  483ms (import 52%, tests 24%, transform 23%, worker 1%)

@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
-import type { EffectCallback } from 'react';
+import type { DependencyList, EffectCallback } from 'react';
 import { QueryClient, QueryObserver } from '@tanstack/react-query';
 import { UploadController } from '../../../src/components/upload/controller';
 import type { UploadSettings } from '../../../src/components/upload/settings';
@@ -9,6 +9,9 @@ import type { SavedUploadLimits } from '../../../src/components/upload-limits/ap
 // invalidation and queue admission use the actual feature and library code.
 const runtime = vi.hoisted(() => ({
   effects: [] as (() => void)[],
+  cells: [] as unknown[],
+  cursor: 0,
+  initial: null as SavedUploadLimits | null,
   client: null as QueryClient | null,
   upload: null as { client: QueryClient; controller: UploadController } | null,
   reset: vi.fn(),
@@ -17,29 +20,86 @@ const runtime = vi.hoisted(() => ({
 }));
 vi.mock('react', async (original) => ({
   ...(await original<typeof import('react')>()),
-  useState: (initial: unknown) => [
-    typeof initial === 'function' ? initial() : initial,
-    vi.fn(),
-  ],
-  useRef: (current: unknown) => ({ current }),
+  useState: (initial: unknown) => {
+    const index = runtime.cursor++;
+    if (!(index in runtime.cells))
+      runtime.cells[index] =
+        typeof initial === 'function' ? initial() : initial;
+    return [
+      runtime.cells[index],
+      (value: unknown) => {
+        runtime.cells[index] =
+          typeof value === 'function' ? value(runtime.cells[index]) : value;
+      },
+    ];
+  },
+  useRef: (current: unknown) => {
+    const index = runtime.cursor++;
+    return (runtime.cells[index] ??= { current });
+  },
   useCallback: (fn: unknown) => fn,
-  useEffect: (effect: EffectCallback) => {
-    const cleanup = effect();
-    if (cleanup) runtime.effects.push(cleanup);
+  useEffect: (effect: EffectCallback, deps: DependencyList) => {
+    const index = runtime.cursor++;
+    const previous = runtime.cells[index] as DependencyList | undefined;
+    if (!previous || deps.some((dep, i) => !Object.is(dep, previous[i]))) {
+      runtime.cells[index] = deps;
+      const cleanup = effect();
+      if (cleanup) runtime.effects.push(cleanup);
+    }
   },
 }));
 vi.mock('@tanstack/react-query', async (original) => ({
   ...(await original<typeof import('@tanstack/react-query')>()),
   useQueryClient: () => runtime.client,
+  useQuery: () => ({
+    data: runtime.initial,
+    isSuccess: true,
+    isFetchedAfterMount: true,
+    error: null,
+  }),
 }));
 vi.mock('@heroui/react/toast', () => ({
   toast: Object.assign(runtime.notice, { close: runtime.closeNotice }),
 }));
 vi.mock('../../../src/components/upload/provider', () => ({
-  useUploadQueue: () => runtime.upload,
+  // This suite models the provider's two domain actions. Their real ownership,
+  // cancellation and action identity are exercised by provider-limits-sync.test.ts.
+  useUploadLimitsSync: () => ({
+    publishLimits: (value: SavedUploadLimits) => {
+      const { client, controller } = runtime.upload!;
+      void client.cancelQueries({ queryKey: ['upload-settings'] });
+      client.setQueryData<UploadSettings>(['upload-settings'], (current) =>
+        current
+          ? {
+              ...current,
+              maxFileBytes: value.maxFileBytes,
+              batchSize: value.batchSize,
+              queueLimit: value.queueLimit,
+            }
+          : undefined,
+      );
+      controller.updateLimits(value);
+    },
+    refreshSettings: () =>
+      runtime.upload!.client.invalidateQueries({
+        queryKey: ['upload-settings'],
+      }),
+  }),
   useResetUpload: () => runtime.reset,
 }));
 import { useUploadLimits } from '../../../src/components/upload-limits/use-upload-limits';
+
+function UploadLimitsHarness() {
+  return useUploadLimits();
+}
+function createEditor(initial: SavedUploadLimits) {
+  runtime.cells = [];
+  runtime.cursor = 0;
+  runtime.initial = initial;
+  UploadLimitsHarness(); // The actual first successful read initializes retained state.
+  runtime.cursor = 0;
+  return UploadLimitsHarness();
+}
 
 const mib = 1048576;
 const limits = (maxFileMiB: number): SavedUploadLimits => ({
@@ -155,12 +215,12 @@ it.each(['save', 'read-back'] as const)(
       ),
     ).toBeNull();
     const existingIds = controller.snapshot.map(({ id }) => id);
-    const older = useUploadLimits(limits(50));
+    const older = createEditor(limits(50));
     const oldRequest = older.save();
     if (holdReadBack)
       await vi.waitFor(() => expect(reads).toContain('/api/settings/upload'));
     unmount();
-    await useUploadLimits(limits(60)).save();
+    await createEditor(limits(60)).save();
     frames.splice(0).forEach((callback) => callback(0));
     focus.mockClear();
     runtime.notice.mockClear();
@@ -189,7 +249,7 @@ it.each(['save', 'read-back'] as const)(
 );
 
 it('refreshes a committed save after leaving instead of keeping the old provider limit', async () => {
-  const oldRequest = useUploadLimits(limits(50)).save();
+  const oldRequest = createEditor(limits(50)).save();
   unmount();
   held.resolve(Response.json(limits(50)));
   await oldRequest;
@@ -210,9 +270,9 @@ it('refreshes a committed save after leaving instead of keeping the old provider
 it.each([401, 503])(
   'ignores detached HTTP %s without expiring the current queue or retrying PATCH',
   async (status) => {
-    const oldRequest = useUploadLimits(limits(50)).save();
+    const oldRequest = createEditor(limits(50)).save();
     unmount();
-    await useUploadLimits(limits(60)).save();
+    await createEditor(limits(60)).save();
     held.resolve(new Response('old failure', { status }));
     await oldRequest;
     await vi.waitFor(() => expect(reads).toContain('/upload/settings'));
@@ -228,14 +288,14 @@ it.each([401, 503])(
 
 it('does not restore focus when a confirmed save frame runs after navigation', async () => {
   patchCount = 1;
-  await useUploadLimits(limits(60)).save();
+  await createEditor(limits(60)).save();
   unmount();
   frames.splice(0).forEach((callback) => callback(0));
   expect(focus).not.toHaveBeenCalled();
 });
 
 it('does not restore a cleared session queue after an earlier PATCH succeeds', async () => {
-  const editor = useUploadLimits(limits(50));
+  const editor = createEditor(limits(50));
   const saving = editor.save();
   editor.expire();
   held.resolve(Response.json(limits(50)));

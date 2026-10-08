@@ -1,0 +1,42 @@
+Already up to date
+Done in 33ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-200-review-fixes/ariso
+
+ ❯ |unit| tests/unit/upload/provider-limits-sync.test.ts (4 tests | 4 failed) 14ms
+   × keeps narrow lifecycle actions stable across real queue emissions and owner navigation 12ms
+   × synchronously cancels an old GET, preserves complete settings and admits against published limits 1ms
+   × refreshes the current settings through a real GET without replacing the live controller 1ms
+   × does not invent a complete cache before upload starts or restore a cleared session queue 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/upload/provider-limits-sync.test.ts > keeps narrow lifecycle actions stable across real queue emissions and owner navigation
+ FAIL  |unit| tests/unit/upload/provider-limits-sync.test.ts > synchronously cancels an old GET, preserves complete settings and admits against published limits
+ FAIL  |unit| tests/unit/upload/provider-limits-sync.test.ts > refreshes the current settings through a real GET without replacing the live controller
+ FAIL  |unit| tests/unit/upload/provider-limits-sync.test.ts > does not invent a complete cache before upload starts or restore a cleared session queue
+TypeError: useUploadLimitsSync is not a function
+ ❯ Consumer tests/unit/upload/provider-limits-sync.test.ts:145:19
+    143| function Consumer() {
+    144|   queue = provider.useUploadQueue();
+    145|   sync = provider.useUploadLimitsSync();
+       |                   ^
+    146|   return null;
+    147| }
+ ❯ Object.react_stack_bottom_frame node_modules/.pnpm/react-dom@19.3.0_react@19.3.0/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:10371:18
+ ❯ renderWithHooks node_modules/.pnpm/react-dom@19.3.0_react@19.3.0/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:5361:19
+ ❯ renderElement node_modules/.pnpm/react-dom@19.3.0_react@19.3.0/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:5796:23
+ ❯ retryNode node_modules/.pnpm/react-dom@19.3.0_react@19.3.0/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:6783:21
+ ❯ renderNodeDestructive node_modules/.pnpm/react-dom@19.3.0_react@19.3.0/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:6717:11
+ ❯ renderElement node_modules/.pnpm/react-dom@19.3.0_react@19.3.0/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:6390:15
+ ❯ retryNode node_modules/.pnpm/react-dom@19.3.0_react@19.3.0/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:6783:21
+ ❯ renderNodeDestructive node_modules/.pnpm/react-dom@19.3.0_react@19.3.0/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:6717:11
+ ❯ renderElement node_modules/.pnpm/react-dom@19.3.0_react@19.3.0/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:6390:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed (4)
+   Start at  21:31:56
+   Duration  159ms (transform 46%, import 34%, tests 17%, worker 2%)

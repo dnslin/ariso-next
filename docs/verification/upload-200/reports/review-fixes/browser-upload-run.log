@@ -1,0 +1,162 @@
+AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+
+  [
+    '基本设置',
+    '图片处理',
+    '账号与安全',
+    '上传 API',
++   '邮件服务'
+  ]
+
+    at uploadSettingsConsumers (file:///Users/dnslin/.codex/worktrees/issue-200-review-fixes/ariso/e2e/upload-settings-consumers.mjs:38:16)
+    at async file:////[eval2]:135:5
+
+ego's nodejs process exited with code 1.
+Browser stage failed (upload-settings): AssertionError [ERR_ASSERTION]: Ego browser verification failed (upload-settings.log)
+
+1 !== 0
+
+    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-200-review-fixes/ariso/scripts/verify-browser.mjs:229:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-200-review-fixes/ariso/scripts/browser-stages.mjs:17:5)
+    at async file:///Users/dnslin/.codex/worktrees/issue-200-review-fixes/ariso/scripts/verify-browser.mjs:712:24
+{ taskSpaceId: 7, ownership: 'agent' }
+[p1 "Ariso" | space "Ariso 上传限制评审修复验证"(7): 1 managed, 0 untracked — p1* "Ariso"]
+root
+  container
+    container "后台侧栏"
+      container
+        anchor "Ariso 首页" [ref=1, url=http://ariso-51508.localhost:51508/]
+          text "Ariso"
+        button "收起侧栏" [ref=2, loc=css:button[aria-label="收起侧栏"]]
+          svg_root
+      container "后台导航"
+        group "总览，尚未开放" [ref=3, loc=role:group[name="总览，尚未开放"]]
+          link "总览，尚未开放"
+            svg_root
+            text "总览"
+            text "尚未开放"
+        anchor "上传" [ref=4, loc=css:a[aria-label="上传"], url=http://ariso-51508.localhost:51508/upload]
+          svg_root
+          text "上传"
+        anchor "图库" [ref=5, loc=css:a[aria-label="图库"], url=http://ariso-51508.localhost:51508/library]
+          svg_root
+          text "图库"
+        anchor "相册" [ref=6, loc=css:a[aria-label="相册"], url=http://ariso-51508.localhost:51508/albums]
+          svg_root
+          text "相册"
+        anchor "标签" [ref=7, loc=css:a[aria-label="标签"], url=http://ariso-51508.localhost:51508/tags]
+          svg_root
+          text "标签"
+        anchor "分享管理" [ref=8, loc=css:a[aria-label="分享管理"], url=http://ariso-51508.localhost:51508/shares]
+          svg_root
+          text "分享管理"
+        anchor "回收站" [ref=9, loc=css:a[aria-label="回收站"], url=http://ariso-51508.localhost:51508/trash]
+          svg_root
+          text "回收站"
+        paragraph
+          text "管理"
+        group "访问统计，尚未开放" [ref=10, loc=role:group[name="访问统计，尚未开放"]]
+          link "访问统计，尚未开放"
+            svg_root
+            text "访问统计"
+            text "尚未开放"
+        anchor "存储管理" [ref=11, loc=css:a[aria-label="存储管理"], url=http://ariso-51508.localhost:51508/settings/storage]
+          svg_root
+          text "存储管理"
+        anchor "站点设置" [ref=12, loc=css:a[aria-label="站点设置"], url=http://ariso-51508.localhost:51508/settings/general]
+          svg_root
+          text "站点设置"
+      button "账号菜单" [ref=13, loc=css:button[aria-label="账号菜单"]]
+        text "O"
+        container
+          text "Owner"
+          text "站点所有者"
+    container
+      container [ref=14]
+        container
+          container
+            heading
+              svg_root
+              text "站点设置"
+            paragraph
+              text "管理站点、图片处理与账号偏好。"
+          container
+            tablist "设置分类"
+              tab [ref=15]
+                svg_root
+                text "基本设置"
+              tab [ref=16]
+                svg_root
+                text "图片处理"
+              tab [ref=17]
+                svg_root
+                text "账号与安全"
+              tab [ref=18]
+                svg_root
+                text "上传 API"
+              tab [ref=19]
+                svg_root
+                text "邮件服务"
+            tabpanel "基本设置"
+              paragraph
+                text "站点信息和上传限制分别保存；其他设置由所属模块管理。"
+              container
+                container
+                  heading
+                    text "站点信息"
+                  button "站点信息说明" [ref=20, loc=css:button[aria-label="站点信息说明"]]
+                    svg_root
+                form
+                  container
+                    text "站点名称"
+                    textbox "站点名称" [ref=21, loc=css:input[name="name"]]
+                      text "Ariso"
+                  container
+                    text "站点描述"
+                    textbox "站点描述" [ref=22, loc=css:input[name="description"]]
+                  container
+                    text "站点公开地址"
+                    textbox "站点公开地址" [ref=23, loc=css:input[name="publicUrl"]]
+                      text "http://ariso-51508.localhost:51508"
+                  container
+                    text "站点时区"
+                    textbox "站点时区" [ref=24, loc=css:input[name="timeZone"]]
+                      text "Asia/Shanghai"
+                button [ref=25]
+                  text "查看完整地址"
+              form
+                container
+                  heading
+                    svg_root
+                    text "上传限制"
+                  paragraph
+                    text "仅影响新提交；已开始的上传沿用原设置，同时传输数量固定为 3。"
+                container
+                  text "单文件上限（MiB）"
+                  group
+                    textbox "单文件上限（MiB）" [ref=26]
+                      text "60"
+                  text "填写正整数；1 MiB = 1,048,576 字节。"
+                container
+                  text "每批文件数量"
+                  group
+                    textbox "每批文件数量" [ref=27]
+                      text "20"
+                  text "1–200 张，且不能超过队列上限。"
+                container
+                  text "队列上限"
+                  group
+                    textbox "队列上限" [ref=28]
+                      text "500"
+      container
+        button [ref=29]
+          text "保存站点信息"
+        button [ref=30]
+          text "保存上传限制"
+
+
+AssertionError [ERR_ASSERTION]: Focused browser stages failed
+    at file:///Users/dnslin/.codex/worktrees/issue-200-review-fixes/ariso/scripts/verify-browser.mjs:718:12
+Browser report: /Users/dnslin/.codex/worktrees/issue-200-review-fixes/ariso/test-results/review-fixes/browser-upload

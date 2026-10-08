@@ -1,0 +1,70 @@
+
+ RUN  v5.0.0 /private/tmp/ariso-pr264-fixes-review-k0b814jx
+
+ ❯ |unit| tests/unit/upload/limits-initialization.test.ts (10 tests | 3 failed) 21ms
+   × keeps an uncertain save locked through retry and only unlocks after a matching actual read 4ms
+   × unlocks a differing read only after choosing useSaved=false and retains the chosen values 13ms
+   × unlocks a differing read only after choosing useSaved=true and retains the chosen values 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/upload/limits-initialization.test.ts > keeps an uncertain save locked through retry and only unlocks after a matching actual read
+AssertionError: expected { …(15) } to match object { input: { maxFileMiB: 60 }, …(4) }
+(16 matching properties omitted from actual)
+
+- Expected
++ Received
+
+@@ -8,7 +8,7 @@
+      "batchSize": 20,
+      "maxFileBytes": 52428800,
+      "maxFileMiB": 50,
+      "queueLimit": 500,
+    },
+-   "unknown": true,
++   "unknown": false,
+  }
+
+ ❯ tests/unit/upload/limits-initialization.test.ts:242:35
+    240|   actions.fetch.mockRejectedValueOnce(new Error('read unavailable'));
+    241|   await harness.render(initial).save();
+    242|   expect(harness.render(initial)).toMatchObject({
+       |                                   ^
+    243|     input: { maxFileMiB: 60 },
+    244|     saved: initial,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  |unit| tests/unit/upload/limits-initialization.test.ts > unlocks a differing read only after choosing useSaved=false and retains the chosen values
+ FAIL  |unit| tests/unit/upload/limits-initialization.test.ts > unlocks a differing read only after choosing useSaved=true and retains the chosen values
+AssertionError: expected { …(15) } to match object { …(5) }
+(16 matching properties omitted from actual)
+
+- Expected
++ Received
+
+@@ -8,7 +8,7 @@
+      "batchSize": 20,
+      "maxFileBytes": 73400320,
+      "maxFileMiB": 70,
+      "queueLimit": 500,
+    },
+-   "unknown": true,
++   "unknown": false,
+  }
+
+ ❯ tests/unit/upload/limits-initialization.test.ts:285:37
+    283|     actions.fetch.mockResolvedValueOnce(Response.json(actual));
+    284|     await harness.render(initial).save();
+    285|     expect(harness.render(initial)).toMatchObject({
+       |                                     ^
+    286|       saved: actual,
+    287|       input: { maxFileMiB: 60 },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 7 passed (10)
+   Start at  21:40:10
+   Duration  169ms (transform 38%, import 38%, tests 22%, worker 2%)

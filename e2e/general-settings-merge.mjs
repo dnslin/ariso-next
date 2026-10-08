@@ -1,5 +1,10 @@
 import assert from 'node:assert/strict';
-import { editableSite, field, button } from './site-general-helpers.mjs';
+import {
+  editableSite,
+  field,
+  button,
+  siteFault,
+} from './site-general-helpers.mjs';
 import {
   uploadSettingsTools,
   limitsField,
@@ -116,6 +121,88 @@ export async function verifyGeneralSettingsMerge(page, config, site, report) {
         !document.querySelector('[data-testid="upload-limits-save"]').disabled
       );
     }, previous);
+  }
+  async function verifyInFlightExpiry(width, theme) {
+    await open();
+    await site.fill({ description: `在途保存失效保留 ${width}` });
+    await upload.fill({ maxFileMiB: 62 });
+    const draft = await values();
+    await upload.monitor({ holdSave: true });
+    // Hold background delivery so the other real form supplies the 401.
+    const session = await siteFault(page, {
+      mode: 'read-hold',
+      path: '/api/auth/get-session',
+    });
+    try {
+      await page.click(limitsId('save'));
+      await page.waitForFunction(() =>
+        window.__limitsBrowser.requests.some(
+          (request) =>
+            request.method === 'PATCH' &&
+            request.status === 200 &&
+            request.held,
+        ),
+      );
+      await site.sql(`UPDATE session SET expires_at=${Date.now() - 1}`);
+      await page.click('#site-save');
+      await site.state('session');
+      await page.waitForSelector(`${limitsId('editor')}[data-state="session"]`);
+      await upload.release();
+      await page.waitForFunction(() =>
+        window.__limitsBrowser.requests.some((request) => request.released),
+      );
+      // Let the actual React continuation and commit finish after delivery.
+      await page.evaluate(() => new Promise(requestAnimationFrame));
+      assert.deepEqual(
+        await values(),
+        draft,
+        'A late successful write retains both expired drafts',
+      );
+      await site.enabled(false);
+      assert.equal(
+        await page.evaluate(() =>
+          [
+            ...document.querySelectorAll(
+              '#upload-limits-form input:not([type="hidden"]),[data-testid="upload-limits-save"]',
+            ),
+          ].every((node) => node.disabled),
+        ),
+        true,
+        'The late response cannot unlock the expired upload group',
+      );
+      const requests = (await upload.browser()).requests.filter(
+        (request) => request.method === 'PATCH',
+      );
+      assert.deepEqual(
+        requests.map(({ path, status }) => ({ path, status })),
+        [
+          { path: '/api/settings/upload', status: 200 },
+          { path: '/api/settings/site', status: 401 },
+        ],
+      );
+      assert.equal(
+        await page.evaluate(() =>
+          [...document.querySelectorAll('[data-slot="toast"]')].some((node) =>
+            node.textContent.includes('上传限制已保存'),
+          ),
+        ),
+        false,
+        'The late success does not produce a success notification after expiry',
+      );
+      await upload.evidence('general-expired-inflight-upload', width, theme);
+      report.generalMerge.push({
+        width,
+        theme,
+        inFlightExpiry: { draft, requests },
+      });
+    } finally {
+      await upload.release();
+      await session.dispose();
+      await page.evaluate(() => {
+        window.fetch = window.__limitsOriginalFetch;
+      });
+      await upload.authenticate();
+    }
   }
   try {
     for (const [width, theme] of [
@@ -390,6 +477,7 @@ export async function verifyGeneralSettingsMerge(page, config, site, report) {
           savedUpload,
         );
       }
+      await verifyInFlightExpiry(width, theme);
       await site.patch(originalSite);
       await upload.request(
         '/api/settings/upload',

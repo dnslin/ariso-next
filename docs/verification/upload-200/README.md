@@ -2,7 +2,7 @@
 
 2026-10-08（Asia/Shanghai）。[Issue #200](https://github.com/dnslin/ariso-next/issues/200)，任务 [T-UP-08](../../tasks/m3-m4-platform.md#t-up-08-上传限制独立设置界面)，需求 `R-7.2-01/02`。执行与完成条件遵守 [execution](../../tasks/execution.md)，设计遵守 [handoff](../../design/handoff.md)。
 
-当前交付以文末[授权合并时的联合页面记录](#joint-merge-evidence)及[联合验证索引](./reports/merge/README.md)为准。站点四字段与上传三字段已共同实现在基本设置；以下原交付记录保留各轮实际结果，不倒改历史失败。
+当前后续修复以文末[评审问题修复](#review-fixes)及[本轮证据索引](./reports/review-fixes/README.md)为准。原合入记录见[授权合并时的联合页面记录](#joint-merge-evidence)及[联合验证索引](./reports/merge/README.md)。站点四字段与上传三字段已共同实现在基本设置；以下原交付记录保留各轮实际结果，不倒改历史失败。
 
 ## 原交付范围与实际实现（合入 #194 前）
 
@@ -201,3 +201,23 @@ Figma 文件 `74sT9Hrf8G4czcWeTkET5b` 的桌面正常根 `467:4002 / 470:10085`�
 手机原三张首屏没有显示下方上传卡，保留原图事实；[补图组](./reports/merge/upload-recovery-regions/upload-settings.json)实际滚动到上传区域，独立查看LoadingLight、ReadFailedDark、UninitializedLight后闭合视觉缺口。Figma四正常根最后标题为28px高，在44px帮助行y8居中，卡与后续字段边界不变：[校准记录](./reports/merge/figma/title-fix-log.md)、[桌面](./reports/merge/figma/desktop.png)、[手机](./reports/merge/figma/mobile.png)。异常独立原节点保持历史，不声称都已同步联合。
 
 原#200上传UI人工验收已明确通过，联合原型获批准；没有新增联合产品逐项人工运行验收记录。当前代码、本地检查、本次上传浏览器验证及独立设计复审分别完成；图片处理整组失败及历史默认全量失败如上保留。用户后续明确授权合并、关闭Issue、清理并更新本地main，按该指令执行，不以批准替代未验证项。最后远端核对/合并/清理实际状态由收尾回执记录，不提前宣称执行成功。无远端CI不记作CI通过，不创建Release、镜像或部署。
+
+<a id="review-fixes"></a>
+
+## 已合入 PR #264 的评审问题修复（2026-10-08）
+
+用户要求解决最新独立评审的问题，并实施有价值的可选简化。原 PR #264 已 MERGED，Issue #200 已 CLOSED；本轮从最新 `origin/main=712abe8465cb6927da84fcaddefa11871e7bae10` 创建 `codex/issue-200-review-fixes` 与独立 worktree，保留原 main 和并行 SMTP #265 能力。重新读取 Issue/原生依赖，#160/#57/#71/#135 均关闭，blocking 为空。本轮没有重新开启或关闭 Issue，也不沿用已经完成的原 PR 合并/清理授权。
+
+产品修改仅限三个文件：
+
+- UploadProvider 拥有发布已确认限制与刷新完整设置的动作。编辑器通过既有窄生命周期 Context 消费稳定动作，不再订阅整个上传队列、不再操作 provider 的缓存或 controller。取消旧 GET 后同步更新真实缓存及当前 controller；保留关系字段、队列 ID 和旧提交快照，不伪造缺失配置，reset 后旧动作不能恢复 controller。
+- 上传 hook 用 `ready/saving/checking/unknown/different` 一个阶段派生三个界面状态，删除可独立写入的冗余布尔状态。保留同步请求锁、卸载/失效生命周期和结果未知时只 GET、不重试 PATCH 的行为。
+- 上传初读由上传 hook 自己拥有，GeneralPage 删除 initialUpload 镜像与传递。只有本次真实成功读取且两组会话有效时初始化一次，缓存、后续快照与迟到响应不能覆盖草稿；另一组非401读取失败不阻断本组。
+
+同时采纳正确性评审的可选建议：新增真实 React/DOM 组合场景，持有实际上传 PATCH200 的响应交付，随后令隔离数据库会话过期并由站点保存取得实际401，再释放迟到200。桌面1440Light与手机390Dark均断言两组草稿保持、控件禁用、无上传成功通知、严格两次所属 PATCH。复用原故障助手与默认 site-general behavior 入口，没有模拟响应码或增加 runner 阶段。五分类消费者测试补齐已合并#265的邮件路由，保留精确顺序、选中状态和所有原路由断言。未修改SMTP产品或公共视觉组件，没有新增依赖、兼容层、冻结PRD修改或额外抽象。
+
+本轮实际环境、命令、原失败与补跑、截图和复审见[证据索引](./reports/review-fixes/README.md)。全量单元140文件/1826项通过；build、typecheck、格式通过，lint 首轮仅测试helper组织失败，修正后受影响文件通过，其余输入未变。全量集成183文件/1762项通过、1文件/1项截断 multipart `ECONNRESET` 失败，与已有 analytics-168/169记录一致；后端未改，本轮不修范围外问题，不称全量集成通过。默认全量浏览器未重跑；适用上传代表/行为/恢复完成6 checks/38 layouts，旧四分类消费者失败修正后仅重跑消费者2 checks/24 layouts通过；site-general完整13 checks/76 layouts及公共外壳9 checks通过。
+
+独立正确性与严格维护性复审均无Required/P1/P2；正确性评审在副本进行阶段条件变异，10项基线通过、3项捕获错误、恢复后10项通过。独立设计评审实际读取最新Figma桌面`470:10085`/手机`470:10377`及本轮真实页面截图，无本轮必修设计差异。现Figma联合稿仍四分类，当前产品已含SMTP第五分类，属于并发模块的既有差异，本轮如实记录并保留邮件功能。没有新增视觉方案或Figma写入，不宣称所有历史异常稿已同步。
+
+代码完成、本地适用检查执行、本轮浏览器验证和独立功能/设计复审分别完成；全量集成限制仍保留。原上传UI人工验收已通过，本轮新增组合场景未由用户再次人工验收，因此后续PR保留草稿。独立真实standalone预览 `/settings/general` 与 `/upload` 已准备，使用另一隔离数据目录，地址及凭证仅在本机交付，预览保持运行直到用户明确要求停止。未合并本轮PR、关闭Issue、发布、部署、创建Release或清理分支/worktree。远端状态在最终交付时实际核对；没有远端检查不记为CI通过。
