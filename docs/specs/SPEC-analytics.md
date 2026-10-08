@@ -1,7 +1,7 @@
 # Spec: analytics — 访问统计、基础用量与统计界面
 
 - 模块 ID：`analytics`。
-- 状态：产品行为已于 2026-09-17 确认；2026-09-19 已补关键原型，待查看与交互验收；工程未实现，未安装依赖。
+- 状态：产品行为已确认；访问批写/保留、本地与 S3 计数及完整当前数量/登记占用已实现。T-ANA-04 接入周期/历史/单图查询，实际结果见[本次证据](../verification/analytics-169/README.md)；T-ANA-05 的统计界面与人工验收仍未完成。
 - 日期：2026-09-17。
 - 前置：[site](./SPEC-site.md)、[identity](./SPEC-identity.md)、[storage](./SPEC-storage.md)、[media](./SPEC-media.md)、[collections](./SPEC-collections.md)、[delivery](./SPEC-delivery.md)的已确认契约。上传临时占用在组合入口接入 upload 提供方，不让 analytics 反向实现上传协议。
 - 依据：[PRD](../product/Ariso-PRD-v1.1.md) 5.5、10.1、14、18、19、23.1、26.4/26.11/26.13；[覆盖表](../tasks/coverage.md)。
@@ -116,13 +116,17 @@ provider 返回已确认字节、待核对对象数和确认时间/状态。界�
 
 ## 8. 查询接口、更新与权限
 
-| 入口（草案）                          | 返回                                                                                                                |
+| 入口                                  | 返回                                                                                                                |
 | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
 | `GET /api/analytics/overview?days=7`  | 当前图片/回收/相册数量，今日/累计访问、趋势、热门、版本量及本次查询范围；days 仅 7/30/90                            |
 | `GET /api/analytics/usage`            | 各现存存储当前互斥组成、已知字节/待核对数、启停状态和最后核实信息；不含凭据或对象 Key                               |
 | `GET /api/analytics/images/{imageId}` | 已存在图片的累计与最近 7/30/90 天合计，供所有者详情；回收记录可读统计，无内容读取特权；已永久删除由排行历史占位体现 |
 
 所有入口复用 identity 所有者验证，拒绝匿名、上传 Token 和分享授权。响应 private/no-store，无公共统计脚本；不从外部 POST 接受客户端上报访问量。输入非法 400、无管理会话 401、指定图片记录不存在 404；真实读取故障返回错误和可诊断日志，不把故障变成成功零值。
+
+T-ANA-04 的实现契约由 `src/server/analytics/queries.ts` 的返回类型提供，沿用上述入口：overview 的 `range` 含 `days/startDate/endDate`，`versions` 是周期三版本及 `total`，`cumulative` 是累计三版本及 `total`，`today` 固定为当前时区今日；`trend` 为逐日 `date/count/isTodayPartial`，`containsOldTimezone` 标记该范围的旧归档时区。`popular` 只返回前十历史 ID、次数和当前身份：正常项提供实时名称与管理入口，有现存缩略图版本且存储启用时提供所有者内容入口；回收项仅提供回收管理入口，永久删除项名称与全部链接为 null，并保留 `shortId` 供占位展示。访问数字不受这些入口可用性影响。
+
+单图入口不需要周期参数，一次返回 `cumulative` 和 `periods` 中 7/30/90 天的范围、合计与旧时区标记。HTTP 边界校验 UUID，非法 ID 为 400，已不存在的图片为 404。两个报表都返回 `generatedAt/timezone/lastFlushedAt/health/approximate`；`health` 来自本进程真实刷库器，`approximate=true` 表示未刷增量及异常退出损失边界，不能由正常健康状态推导完整精确历史。
 
 同一 overview 在一个短只读事务内查询已持久统计和当前数量，返回 generatedAt、lastFlushedAt、timezone、范围、是否含旧时区段及统计健康状态。不把不同刷新轮次的累计和趋势随意拼成同一响应；不为打开报表强制刷库或合并正在变化的内存增量。页面数据因此通常延迟一个刷库周期，不能声称严格实时。
 
@@ -201,7 +205,7 @@ pnpm run test:integration
 pnpm run test:browser
 ```
 
-本轮只做文档校验；上述业务测试和规模工具尚未创建。始终沿用既定访问规则、真实对象责任和短事务；若要新增追踪字段、改变历史保留或空间范围，先修订规格。禁止用归零、吞错、占位数字或跳过失败让统计看起来正确。
+以上是模块整体检查入口，T-ANA-04 的实际命令、生产查询规模工具和结果见[本次证据](../verification/analytics-169/README.md)，界面与浏览器仍由 T-ANA-05 承接。始终沿用既定访问规则、真实对象责任和短事务；若要新增追踪字段、改变历史保留或空间范围，先修订规格。禁止用归零、吞错、占位数字或跳过失败让统计看起来正确。
 
 ## 12. 用户确认记录
 

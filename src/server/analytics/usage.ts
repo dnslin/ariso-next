@@ -78,8 +78,8 @@ export function readUsage(db: BetterSQLite3Database, now = new Date()) {
   });
 }
 
-/** Only the current counts portion of overview; access reports belong to T-ANA-04. */
-export function readOverview(db: BetterSQLite3Database, now = new Date()) {
+/** Current asset counts, composed with access reports in the caller read transaction. */
+export function readCurrentCounts(db: BetterSQLite3Database, now = new Date()) {
   return db.transaction((tx) => {
     const rows = readMediaCounts(tx);
     const counts = {

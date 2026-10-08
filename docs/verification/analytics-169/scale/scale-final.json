@@ -1,0 +1,969 @@
+{
+  "status": "passed",
+  "recordedAt": "2026-10-08T03:46:15.362Z",
+  "environment": {
+    "node": "v24.18.1",
+    "platform": "darwin",
+    "release": "25.6.0",
+    "arch": "arm64",
+    "cpu": "Apple M4",
+    "logicalCpus": 10,
+    "memoryBytes": 17179869184,
+    "freeMemoryBytes": 2119172096,
+    "filesystem": {
+      "type": 26,
+      "blockSize": 4096,
+      "availableBlocks": 18950185
+    },
+    "diskInfo": [
+      "File System Personality:   APFS",
+      "Protocol:                  Apple Fabric",
+      "Solid State:               Yes"
+    ]
+  },
+  "fixture": {
+    "images": 100000,
+    "days": 365,
+    "events": 252997080,
+    "rows": {
+      "media_images": 100000,
+      "analytics_daily": 1095,
+      "analytics_image_daily": 1807615,
+      "analytics_image_totals": 90000,
+      "media_jobs": 0,
+      "media_objects": 0
+    },
+    "seedMs": null,
+    "seedSource": "SQLite-consistent pre-workload backup from this Issue baseline; baseline report retains original production-writer seed cost. Original backup is unchanged.",
+    "cloneMs": 158.19762500000002,
+    "writerIncrementKeysPerSecond": null,
+    "distribution": "Deterministic synthetic: 1% daily hotspots, 9% weekly, 80% monthly, 10% zero; original:compressed:watermark 3:2:1; alternating UTC/Asia/Shanghai. Reuses #143 fixture and production writer; no experiment query SQL is executed.",
+    "dateRange": ["2026-01-01", "2026-12-31"]
+  },
+  "database": {
+    "bytesAfterSeed": 247128064,
+    "bytesBeforeMigration": 247128064,
+    "migrationMs": 1148.6670829999998,
+    "indexes": [
+      {
+        "name": "sqlite_autoindex_analytics_daily_1",
+        "sql": null
+      },
+      {
+        "name": "sqlite_autoindex_analytics_image_daily_1",
+        "sql": null
+      },
+      {
+        "name": "sqlite_autoindex_analytics_image_totals_1",
+        "sql": null
+      },
+      {
+        "name": "analytics_image_daily_date_image_count_idx",
+        "sql": "CREATE INDEX `analytics_image_daily_date_image_count_idx` ON `analytics_image_daily` (`date`,`image_id`,`count`)"
+      }
+    ],
+    "journalMode": "wal",
+    "cacheSize": -16000,
+    "pageSize": 4096,
+    "sqliteVersion": {
+      "version": "3.53.4"
+    },
+    "bytesAfterWorkload": 247128064,
+    "walBytesAfterWorkload": 5294232
+  },
+  "cacheDefinition": {
+    "cold": "New connection with empty SQLite page cache. OS cache NOT evicted, warm/unknown after seeding; no OS-cold claim.",
+    "warm": "One untimed call then 25 production report calls on the same connection; production cache_size unchanged."
+  },
+  "measurements": [
+    {
+      "name": "overview-7",
+      "sqliteColdMs": 214.59108400000014,
+      "warm": {
+        "samplesMs": [
+          157.34262500000023, 66.08837500000027, 78.58304199999975,
+          66.3940419999999, 64.67816600000015, 66.03187500000013,
+          67.34733400000005, 71.35416599999962, 74.13770900000009,
+          79.5006669999998, 100.41283399999975, 76.13783400000011,
+          97.9206250000002, 77.41899999999987, 68.69158299999981,
+          54.63000000000011, 44.0842090000001, 59.54124999999976,
+          51.108000000000175, 43.736792000000605, 43.46324999999979,
+          44.46149999999943, 41.72070799999983, 46.72637499999928,
+          53.5029999999997
+        ],
+        "p50Ms": 66.08837500000027,
+        "p95Ms": 100.41283399999975,
+        "maxMs": 157.34262500000023
+      },
+      "queries": [
+        {
+          "sql": "select \"id\", \"public_url\", \"time_zone\", \"name\", \"description\", \"logo_key\", \"logo_mime\", \"favicon_key\", \"favicon_mime\", \"updated_at\" from \"site_settings\" where \"site_settings\".\"id\" = ?",
+          "parameters": [1],
+          "plan": [
+            {
+              "id": 2,
+              "parent": 0,
+              "notused": 33,
+              "detail": "SEARCH site_settings USING INTEGER PRIMARY KEY (rowid=?)"
+            }
+          ]
+        },
+        {
+          "sql": "select date, version, sum(count) count,\n      max(timezone != ?) oldTimezone\n      from analytics_daily where date between ? and ?\n      group by date, version order by date",
+          "parameters": ["UTC", "2026-12-25", "2026-12-31"],
+          "plan": [
+            {
+              "id": 8,
+              "parent": 0,
+              "notused": 55,
+              "detail": "SEARCH analytics_daily USING INDEX sqlite_autoindex_analytics_daily_1 (date>? AND date<?)"
+            },
+            {
+              "id": 18,
+              "parent": 0,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR GROUP BY"
+            },
+            {
+              "id": 67,
+              "parent": 0,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR ORDER BY"
+            }
+          ]
+        },
+        {
+          "sql": "select \"media_images\".\"storage_id\", count(case when \"media_images\".\"trashed_at\" is null and \"media_images\".\"deletion_status\" is null then 1 end), count(case when not (\"media_images\".\"trashed_at\" is null and \"media_images\".\"deletion_status\" is null) then 1 end), count(case when \"media_images\".\"trashed_at\" is null and \"media_images\".\"deletion_status\" is null and \"media_images\".\"processing_status\" = 'failed' then 1 end), count(case when \"media_images\".\"trashed_at\" is null and \"media_images\".\"deletion_status\" is null and \"media_images\".\"processing_status\" = 'ready' and \"latest_process_jobs\".\"status\" = 'failed' then 1 end) from \"media_images\" left join (select \"image_id\", \"status\", row_number() over (partition by \"image_id\" order by \"created_at\" desc, \"media_jobs\".rowid desc) as \"job_rank\" from \"media_jobs\" where \"media_jobs\".\"kind\" = ?) \"latest_process_jobs\" on (\"latest_process_jobs\".\"image_id\" = \"media_images\".\"id\" and \"job_rank\" = ?) group by \"media_images\".\"storage_id\" order by \"media_images\".\"storage_id\" asc",
+          "parameters": ["process", 1],
+          "plan": [
+            {
+              "id": 3,
+              "parent": 0,
+              "notused": 0,
+              "detail": "MATERIALIZE latest_process_jobs"
+            },
+            {
+              "id": 6,
+              "parent": 3,
+              "notused": 0,
+              "detail": "CO-ROUTINE (subquery-3)"
+            },
+            {
+              "id": 10,
+              "parent": 6,
+              "notused": 223,
+              "detail": "SCAN media_jobs USING INDEX media_jobs_image_created"
+            },
+            {
+              "id": 30,
+              "parent": 6,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR LAST 2 TERMS OF ORDER BY"
+            },
+            {
+              "id": 53,
+              "parent": 3,
+              "notused": 196,
+              "detail": "SCAN (subquery-3)"
+            },
+            {
+              "id": 108,
+              "parent": 0,
+              "notused": 177,
+              "detail": "SCAN media_images USING INDEX media_images_storage_identity"
+            },
+            {
+              "id": 115,
+              "parent": 0,
+              "notused": 0,
+              "detail": "BLOOM FILTER ON latest_process_jobs (image_id=? AND job_rank=?)"
+            },
+            {
+              "id": 129,
+              "parent": 0,
+              "notused": 53,
+              "detail": "SEARCH latest_process_jobs USING AUTOMATIC PARTIAL COVERING INDEX (image_id=? AND job_rank=?) LEFT-JOIN"
+            },
+            {
+              "id": 138,
+              "parent": 0,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR GROUP BY"
+            }
+          ]
+        },
+        {
+          "sql": "select count(*) from \"albums\"",
+          "parameters": [],
+          "plan": [
+            {
+              "id": 4,
+              "parent": 0,
+              "notused": 0,
+              "detail": "SCAN albums USING COVERING INDEX sqlite_autoindex_albums_1"
+            }
+          ]
+        },
+        {
+          "sql": "select\n    coalesce(sum(original_count), 0) original,\n    coalesce(sum(compressed_count), 0) compressed,\n    coalesce(sum(watermark_count), 0) watermark\n    from analytics_image_totals ",
+          "parameters": [],
+          "plan": [
+            {
+              "id": 3,
+              "parent": 0,
+              "notused": 177,
+              "detail": "SCAN analytics_image_totals"
+            }
+          ]
+        },
+        {
+          "sql": "with ranked as (\n    select image_id, sum(count) count from analytics_image_daily\n    indexed by analytics_image_daily_date_image_count_idx\n    where date between ? and ?\n    group by image_id having sum(count) > 0\n    order by count desc, image_id asc limit 10\n  ) select r.image_id imageId, r.count,\n    case when m.id is null then 'deleted'\n      when m.trashed_at is not null or m.deletion_status is not null then 'recycled'\n      else 'normal' end state,\n    case when m.trashed_at is null and m.deletion_status is null then m.display_name end displayName,\n    case when m.trashed_at is null and m.deletion_status is null and s.enabled = 1\n      and exists(select 1 from media_versions v where v.image_id = m.id and v.kind = 'thumbnail')\n      then 1 else 0 end hasThumbnail\n    from ranked r left join media_images m on m.id = r.image_id\n    left join storage_configs s on s.id = m.storage_id\n    order by r.count desc, r.image_id asc",
+          "parameters": ["2026-12-25", "2026-12-31"],
+          "plan": [
+            {
+              "id": 2,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CO-ROUTINE ranked"
+            },
+            {
+              "id": 10,
+              "parent": 2,
+              "notused": 162,
+              "detail": "SEARCH analytics_image_daily USING COVERING INDEX analytics_image_daily_date_image_count_idx (date>? AND date<?)"
+            },
+            {
+              "id": 19,
+              "parent": 2,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR GROUP BY"
+            },
+            {
+              "id": 62,
+              "parent": 2,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR ORDER BY"
+            },
+            {
+              "id": 73,
+              "parent": 0,
+              "notused": 49,
+              "detail": "SCAN r"
+            },
+            {
+              "id": 76,
+              "parent": 0,
+              "notused": 44,
+              "detail": "SEARCH m USING INDEX media_images_storage_identity (id=?) LEFT-JOIN"
+            },
+            {
+              "id": 84,
+              "parent": 0,
+              "notused": 14,
+              "detail": "SCAN s LEFT-JOIN"
+            },
+            {
+              "id": 118,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CORRELATED SCALAR SUBQUERY 2"
+            },
+            {
+              "id": 122,
+              "parent": 118,
+              "notused": 39,
+              "detail": "SEARCH v USING COVERING INDEX sqlite_autoindex_media_versions_1 (image_id=? AND kind=?)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "overview-30",
+      "sqliteColdMs": 75.8030830000007,
+      "warm": {
+        "samplesMs": [
+          80.03599999999915, 70.84725000000071, 82.33362500000021,
+          326.8137080000006, 316.3736250000002, 164.50774999999976,
+          132.22820799999954, 137.14150000000063, 81.69854200000009,
+          83.89737500000047, 82.20937499999945, 72.31379199999992,
+          77.46600000000035, 100.03549999999996, 113.49029200000041,
+          145.1396249999998, 103.11158299999988, 109.4844579999999,
+          80.62216699999954, 77.140625, 71.18841699999939, 72.23499999999967,
+          81.91962500000045, 69.55383299999994, 70.27129100000002
+        ],
+        "p50Ms": 82.20937499999945,
+        "p95Ms": 316.3736250000002,
+        "maxMs": 326.8137080000006
+      },
+      "queries": [
+        {
+          "sql": "select \"id\", \"public_url\", \"time_zone\", \"name\", \"description\", \"logo_key\", \"logo_mime\", \"favicon_key\", \"favicon_mime\", \"updated_at\" from \"site_settings\" where \"site_settings\".\"id\" = ?",
+          "parameters": [1],
+          "plan": [
+            {
+              "id": 2,
+              "parent": 0,
+              "notused": 33,
+              "detail": "SEARCH site_settings USING INTEGER PRIMARY KEY (rowid=?)"
+            }
+          ]
+        },
+        {
+          "sql": "select date, version, sum(count) count,\n      max(timezone != ?) oldTimezone\n      from analytics_daily where date between ? and ?\n      group by date, version order by date",
+          "parameters": ["UTC", "2026-12-02", "2026-12-31"],
+          "plan": [
+            {
+              "id": 8,
+              "parent": 0,
+              "notused": 90,
+              "detail": "SEARCH analytics_daily USING INDEX sqlite_autoindex_analytics_daily_1 (date>? AND date<?)"
+            },
+            {
+              "id": 18,
+              "parent": 0,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR GROUP BY"
+            },
+            {
+              "id": 67,
+              "parent": 0,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR ORDER BY"
+            }
+          ]
+        },
+        {
+          "sql": "select \"media_images\".\"storage_id\", count(case when \"media_images\".\"trashed_at\" is null and \"media_images\".\"deletion_status\" is null then 1 end), count(case when not (\"media_images\".\"trashed_at\" is null and \"media_images\".\"deletion_status\" is null) then 1 end), count(case when \"media_images\".\"trashed_at\" is null and \"media_images\".\"deletion_status\" is null and \"media_images\".\"processing_status\" = 'failed' then 1 end), count(case when \"media_images\".\"trashed_at\" is null and \"media_images\".\"deletion_status\" is null and \"media_images\".\"processing_status\" = 'ready' and \"latest_process_jobs\".\"status\" = 'failed' then 1 end) from \"media_images\" left join (select \"image_id\", \"status\", row_number() over (partition by \"image_id\" order by \"created_at\" desc, \"media_jobs\".rowid desc) as \"job_rank\" from \"media_jobs\" where \"media_jobs\".\"kind\" = ?) \"latest_process_jobs\" on (\"latest_process_jobs\".\"image_id\" = \"media_images\".\"id\" and \"job_rank\" = ?) group by \"media_images\".\"storage_id\" order by \"media_images\".\"storage_id\" asc",
+          "parameters": ["process", 1],
+          "plan": [
+            {
+              "id": 3,
+              "parent": 0,
+              "notused": 0,
+              "detail": "MATERIALIZE latest_process_jobs"
+            },
+            {
+              "id": 6,
+              "parent": 3,
+              "notused": 0,
+              "detail": "CO-ROUTINE (subquery-3)"
+            },
+            {
+              "id": 10,
+              "parent": 6,
+              "notused": 223,
+              "detail": "SCAN media_jobs USING INDEX media_jobs_image_created"
+            },
+            {
+              "id": 30,
+              "parent": 6,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR LAST 2 TERMS OF ORDER BY"
+            },
+            {
+              "id": 53,
+              "parent": 3,
+              "notused": 196,
+              "detail": "SCAN (subquery-3)"
+            },
+            {
+              "id": 108,
+              "parent": 0,
+              "notused": 177,
+              "detail": "SCAN media_images USING INDEX media_images_storage_identity"
+            },
+            {
+              "id": 115,
+              "parent": 0,
+              "notused": 0,
+              "detail": "BLOOM FILTER ON latest_process_jobs (image_id=? AND job_rank=?)"
+            },
+            {
+              "id": 129,
+              "parent": 0,
+              "notused": 53,
+              "detail": "SEARCH latest_process_jobs USING AUTOMATIC PARTIAL COVERING INDEX (image_id=? AND job_rank=?) LEFT-JOIN"
+            },
+            {
+              "id": 138,
+              "parent": 0,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR GROUP BY"
+            }
+          ]
+        },
+        {
+          "sql": "select count(*) from \"albums\"",
+          "parameters": [],
+          "plan": [
+            {
+              "id": 4,
+              "parent": 0,
+              "notused": 0,
+              "detail": "SCAN albums USING COVERING INDEX sqlite_autoindex_albums_1"
+            }
+          ]
+        },
+        {
+          "sql": "select\n    coalesce(sum(original_count), 0) original,\n    coalesce(sum(compressed_count), 0) compressed,\n    coalesce(sum(watermark_count), 0) watermark\n    from analytics_image_totals ",
+          "parameters": [],
+          "plan": [
+            {
+              "id": 3,
+              "parent": 0,
+              "notused": 177,
+              "detail": "SCAN analytics_image_totals"
+            }
+          ]
+        },
+        {
+          "sql": "with ranked as (\n    select image_id, sum(count) count from analytics_image_daily\n    indexed by analytics_image_daily_date_image_count_idx\n    where date between ? and ?\n    group by image_id having sum(count) > 0\n    order by count desc, image_id asc limit 10\n  ) select r.image_id imageId, r.count,\n    case when m.id is null then 'deleted'\n      when m.trashed_at is not null or m.deletion_status is not null then 'recycled'\n      else 'normal' end state,\n    case when m.trashed_at is null and m.deletion_status is null then m.display_name end displayName,\n    case when m.trashed_at is null and m.deletion_status is null and s.enabled = 1\n      and exists(select 1 from media_versions v where v.image_id = m.id and v.kind = 'thumbnail')\n      then 1 else 0 end hasThumbnail\n    from ranked r left join media_images m on m.id = r.image_id\n    left join storage_configs s on s.id = m.storage_id\n    order by r.count desc, r.image_id asc",
+          "parameters": ["2026-12-02", "2026-12-31"],
+          "plan": [
+            {
+              "id": 2,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CO-ROUTINE ranked"
+            },
+            {
+              "id": 10,
+              "parent": 2,
+              "notused": 162,
+              "detail": "SEARCH analytics_image_daily USING COVERING INDEX analytics_image_daily_date_image_count_idx (date>? AND date<?)"
+            },
+            {
+              "id": 19,
+              "parent": 2,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR GROUP BY"
+            },
+            {
+              "id": 62,
+              "parent": 2,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR ORDER BY"
+            },
+            {
+              "id": 73,
+              "parent": 0,
+              "notused": 49,
+              "detail": "SCAN r"
+            },
+            {
+              "id": 76,
+              "parent": 0,
+              "notused": 44,
+              "detail": "SEARCH m USING INDEX media_images_storage_identity (id=?) LEFT-JOIN"
+            },
+            {
+              "id": 84,
+              "parent": 0,
+              "notused": 14,
+              "detail": "SCAN s LEFT-JOIN"
+            },
+            {
+              "id": 118,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CORRELATED SCALAR SUBQUERY 2"
+            },
+            {
+              "id": 122,
+              "parent": 118,
+              "notused": 39,
+              "detail": "SEARCH v USING COVERING INDEX sqlite_autoindex_media_versions_1 (image_id=? AND kind=?)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "overview-90",
+      "sqliteColdMs": 550.8240839999999,
+      "warm": {
+        "samplesMs": [
+          251.7654169999987, 162.3663749999996, 118.83754099999896,
+          117.33316699999887, 147.2430000000004, 187.98849999999948,
+          168.2976660000004, 122.3720830000002, 109.95095899999978,
+          116.65358399999968, 116.9438339999997, 114.41549999999916,
+          115.16808300000048, 164.36291600000004, 165.34645799999998,
+          132.20566599999984, 114.67704100000083, 122.00258399999984,
+          110.30462500000067, 110.09816599999976, 110.08979199999885,
+          110.11008399999992, 120.55191699999887, 118.83316700000069,
+          110.90579199999956
+        ],
+        "p50Ms": 118.83316700000069,
+        "p95Ms": 187.98849999999948,
+        "maxMs": 251.7654169999987
+      },
+      "queries": [
+        {
+          "sql": "select \"id\", \"public_url\", \"time_zone\", \"name\", \"description\", \"logo_key\", \"logo_mime\", \"favicon_key\", \"favicon_mime\", \"updated_at\" from \"site_settings\" where \"site_settings\".\"id\" = ?",
+          "parameters": [1],
+          "plan": [
+            {
+              "id": 2,
+              "parent": 0,
+              "notused": 33,
+              "detail": "SEARCH site_settings USING INTEGER PRIMARY KEY (rowid=?)"
+            }
+          ]
+        },
+        {
+          "sql": "select date, version, sum(count) count,\n      max(timezone != ?) oldTimezone\n      from analytics_daily where date between ? and ?\n      group by date, version order by date",
+          "parameters": ["UTC", "2026-10-03", "2026-12-31"],
+          "plan": [
+            {
+              "id": 8,
+              "parent": 0,
+              "notused": 106,
+              "detail": "SEARCH analytics_daily USING INDEX sqlite_autoindex_analytics_daily_1 (date>? AND date<?)"
+            },
+            {
+              "id": 18,
+              "parent": 0,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR GROUP BY"
+            },
+            {
+              "id": 67,
+              "parent": 0,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR ORDER BY"
+            }
+          ]
+        },
+        {
+          "sql": "select \"media_images\".\"storage_id\", count(case when \"media_images\".\"trashed_at\" is null and \"media_images\".\"deletion_status\" is null then 1 end), count(case when not (\"media_images\".\"trashed_at\" is null and \"media_images\".\"deletion_status\" is null) then 1 end), count(case when \"media_images\".\"trashed_at\" is null and \"media_images\".\"deletion_status\" is null and \"media_images\".\"processing_status\" = 'failed' then 1 end), count(case when \"media_images\".\"trashed_at\" is null and \"media_images\".\"deletion_status\" is null and \"media_images\".\"processing_status\" = 'ready' and \"latest_process_jobs\".\"status\" = 'failed' then 1 end) from \"media_images\" left join (select \"image_id\", \"status\", row_number() over (partition by \"image_id\" order by \"created_at\" desc, \"media_jobs\".rowid desc) as \"job_rank\" from \"media_jobs\" where \"media_jobs\".\"kind\" = ?) \"latest_process_jobs\" on (\"latest_process_jobs\".\"image_id\" = \"media_images\".\"id\" and \"job_rank\" = ?) group by \"media_images\".\"storage_id\" order by \"media_images\".\"storage_id\" asc",
+          "parameters": ["process", 1],
+          "plan": [
+            {
+              "id": 3,
+              "parent": 0,
+              "notused": 0,
+              "detail": "MATERIALIZE latest_process_jobs"
+            },
+            {
+              "id": 6,
+              "parent": 3,
+              "notused": 0,
+              "detail": "CO-ROUTINE (subquery-3)"
+            },
+            {
+              "id": 10,
+              "parent": 6,
+              "notused": 223,
+              "detail": "SCAN media_jobs USING INDEX media_jobs_image_created"
+            },
+            {
+              "id": 30,
+              "parent": 6,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR LAST 2 TERMS OF ORDER BY"
+            },
+            {
+              "id": 53,
+              "parent": 3,
+              "notused": 196,
+              "detail": "SCAN (subquery-3)"
+            },
+            {
+              "id": 108,
+              "parent": 0,
+              "notused": 177,
+              "detail": "SCAN media_images USING INDEX media_images_storage_identity"
+            },
+            {
+              "id": 115,
+              "parent": 0,
+              "notused": 0,
+              "detail": "BLOOM FILTER ON latest_process_jobs (image_id=? AND job_rank=?)"
+            },
+            {
+              "id": 129,
+              "parent": 0,
+              "notused": 53,
+              "detail": "SEARCH latest_process_jobs USING AUTOMATIC PARTIAL COVERING INDEX (image_id=? AND job_rank=?) LEFT-JOIN"
+            },
+            {
+              "id": 138,
+              "parent": 0,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR GROUP BY"
+            }
+          ]
+        },
+        {
+          "sql": "select count(*) from \"albums\"",
+          "parameters": [],
+          "plan": [
+            {
+              "id": 4,
+              "parent": 0,
+              "notused": 0,
+              "detail": "SCAN albums USING COVERING INDEX sqlite_autoindex_albums_1"
+            }
+          ]
+        },
+        {
+          "sql": "select\n    coalesce(sum(original_count), 0) original,\n    coalesce(sum(compressed_count), 0) compressed,\n    coalesce(sum(watermark_count), 0) watermark\n    from analytics_image_totals ",
+          "parameters": [],
+          "plan": [
+            {
+              "id": 3,
+              "parent": 0,
+              "notused": 177,
+              "detail": "SCAN analytics_image_totals"
+            }
+          ]
+        },
+        {
+          "sql": "with ranked as (\n    select image_id, sum(count) count from analytics_image_daily\n    indexed by analytics_image_daily_date_image_count_idx\n    where date between ? and ?\n    group by image_id having sum(count) > 0\n    order by count desc, image_id asc limit 10\n  ) select r.image_id imageId, r.count,\n    case when m.id is null then 'deleted'\n      when m.trashed_at is not null or m.deletion_status is not null then 'recycled'\n      else 'normal' end state,\n    case when m.trashed_at is null and m.deletion_status is null then m.display_name end displayName,\n    case when m.trashed_at is null and m.deletion_status is null and s.enabled = 1\n      and exists(select 1 from media_versions v where v.image_id = m.id and v.kind = 'thumbnail')\n      then 1 else 0 end hasThumbnail\n    from ranked r left join media_images m on m.id = r.image_id\n    left join storage_configs s on s.id = m.storage_id\n    order by r.count desc, r.image_id asc",
+          "parameters": ["2026-10-03", "2026-12-31"],
+          "plan": [
+            {
+              "id": 2,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CO-ROUTINE ranked"
+            },
+            {
+              "id": 10,
+              "parent": 2,
+              "notused": 162,
+              "detail": "SEARCH analytics_image_daily USING COVERING INDEX analytics_image_daily_date_image_count_idx (date>? AND date<?)"
+            },
+            {
+              "id": 19,
+              "parent": 2,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR GROUP BY"
+            },
+            {
+              "id": 62,
+              "parent": 2,
+              "notused": 0,
+              "detail": "USE TEMP B-TREE FOR ORDER BY"
+            },
+            {
+              "id": 73,
+              "parent": 0,
+              "notused": 49,
+              "detail": "SCAN r"
+            },
+            {
+              "id": 76,
+              "parent": 0,
+              "notused": 44,
+              "detail": "SEARCH m USING INDEX media_images_storage_identity (id=?) LEFT-JOIN"
+            },
+            {
+              "id": 84,
+              "parent": 0,
+              "notused": 14,
+              "detail": "SCAN s LEFT-JOIN"
+            },
+            {
+              "id": 118,
+              "parent": 0,
+              "notused": 0,
+              "detail": "CORRELATED SCALAR SUBQUERY 2"
+            },
+            {
+              "id": 122,
+              "parent": 118,
+              "notused": 39,
+              "detail": "SEARCH v USING COVERING INDEX sqlite_autoindex_media_versions_1 (image_id=? AND kind=?)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "image-image-000000",
+      "sqliteColdMs": 4.33862500000032,
+      "warm": {
+        "samplesMs": [
+          0.32658400000036636, 0.248541999999361, 0.2215410000007978,
+          0.19954099999995378, 0.2051659999997355, 0.20600000000013097,
+          0.3504159999993135, 0.24024999999892316, 0.193583000000217,
+          0.19483299999956216, 0.18012500000077125, 0.1897499999995489,
+          0.17254200000024866, 0.17554200000085984, 0.18479200000001583,
+          0.18845800000053714, 0.19512500000018917, 0.18787499999962165,
+          0.17999999999847205, 0.1990829999995185, 0.21512500000062573,
+          0.19512500000018917, 0.26495799999975134, 0.28320800000074087,
+          0.2166670000005979
+        ],
+        "p50Ms": 0.1990829999995185,
+        "p95Ms": 0.32658400000036636,
+        "maxMs": 0.3504159999993135
+      },
+      "queries": [
+        {
+          "sql": "select \"id\" from \"media_images\" where \"media_images\".\"id\" = ?",
+          "parameters": ["image-000000"],
+          "plan": [
+            {
+              "id": 2,
+              "parent": 0,
+              "notused": 39,
+              "detail": "SEARCH media_images USING COVERING INDEX sqlite_autoindex_media_images_1 (id=?)"
+            }
+          ]
+        },
+        {
+          "sql": "select \"id\", \"public_url\", \"time_zone\", \"name\", \"description\", \"logo_key\", \"logo_mime\", \"favicon_key\", \"favicon_mime\", \"updated_at\" from \"site_settings\" where \"site_settings\".\"id\" = ?",
+          "parameters": [1],
+          "plan": [
+            {
+              "id": 2,
+              "parent": 0,
+              "notused": 33,
+              "detail": "SEARCH site_settings USING INTEGER PRIMARY KEY (rowid=?)"
+            }
+          ]
+        },
+        {
+          "sql": "select date, sum(count) count,\n      max(timezone != ?) oldTimezone from analytics_image_daily\n      where image_id = ? and date between ? and ?\n      group by date",
+          "parameters": ["UTC", "image-000000", "2026-10-03", "2026-12-31"],
+          "plan": [
+            {
+              "id": 7,
+              "parent": 0,
+              "notused": 56,
+              "detail": "SEARCH analytics_image_daily USING INDEX sqlite_autoindex_analytics_image_daily_1 (image_id=? AND date>? AND date<?)"
+            }
+          ]
+        },
+        {
+          "sql": "select\n    coalesce(sum(original_count), 0) original,\n    coalesce(sum(compressed_count), 0) compressed,\n    coalesce(sum(watermark_count), 0) watermark\n    from analytics_image_totals where image_id = ?",
+          "parameters": ["image-000000"],
+          "plan": [
+            {
+              "id": 4,
+              "parent": 0,
+              "notused": 39,
+              "detail": "SEARCH analytics_image_totals USING INDEX sqlite_autoindex_analytics_image_totals_1 (image_id=?)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "image-image-000099",
+      "sqliteColdMs": 0.2226250000003347,
+      "warm": {
+        "samplesMs": [
+          0.13804200000049605, 0.1572919999998703, 0.1445000000003347,
+          0.14262499999858846, 0.1386660000007396, 0.12937500000043656,
+          0.13429200000064156, 0.13983299999927112, 0.1349160000008851,
+          0.12620799999967858, 0.12629199999901175, 0.1336670000000595,
+          0.12783300000046438, 0.12995800000135205, 0.1402909999997064,
+          0.13129100000151084, 0.2798750000001746, 0.2055000000000291,
+          0.14658299999973678, 0.14691599999969185, 0.16954199999963748,
+          0.14641699999992852, 0.1354589999991731, 0.14749999999912689,
+          0.1391249999996944
+        ],
+        "p50Ms": 0.1391249999996944,
+        "p95Ms": 0.2055000000000291,
+        "maxMs": 0.2798750000001746
+      },
+      "queries": [
+        {
+          "sql": "select \"id\" from \"media_images\" where \"media_images\".\"id\" = ?",
+          "parameters": ["image-000099"],
+          "plan": [
+            {
+              "id": 2,
+              "parent": 0,
+              "notused": 39,
+              "detail": "SEARCH media_images USING COVERING INDEX sqlite_autoindex_media_images_1 (id=?)"
+            }
+          ]
+        },
+        {
+          "sql": "select \"id\", \"public_url\", \"time_zone\", \"name\", \"description\", \"logo_key\", \"logo_mime\", \"favicon_key\", \"favicon_mime\", \"updated_at\" from \"site_settings\" where \"site_settings\".\"id\" = ?",
+          "parameters": [1],
+          "plan": [
+            {
+              "id": 2,
+              "parent": 0,
+              "notused": 33,
+              "detail": "SEARCH site_settings USING INTEGER PRIMARY KEY (rowid=?)"
+            }
+          ]
+        },
+        {
+          "sql": "select date, sum(count) count,\n      max(timezone != ?) oldTimezone from analytics_image_daily\n      where image_id = ? and date between ? and ?\n      group by date",
+          "parameters": ["UTC", "image-000099", "2026-10-03", "2026-12-31"],
+          "plan": [
+            {
+              "id": 7,
+              "parent": 0,
+              "notused": 56,
+              "detail": "SEARCH analytics_image_daily USING INDEX sqlite_autoindex_analytics_image_daily_1 (image_id=? AND date>? AND date<?)"
+            }
+          ]
+        },
+        {
+          "sql": "select\n    coalesce(sum(original_count), 0) original,\n    coalesce(sum(compressed_count), 0) compressed,\n    coalesce(sum(watermark_count), 0) watermark\n    from analytics_image_totals where image_id = ?",
+          "parameters": ["image-000099"],
+          "plan": [
+            {
+              "id": 4,
+              "parent": 0,
+              "notused": 39,
+              "detail": "SEARCH analytics_image_totals USING INDEX sqlite_autoindex_analytics_image_totals_1 (image_id=?)"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "concurrency": {
+    "model": "25 rounds, rotating overview90 / production1000-key flush / production<=1000-row retention, queued on same Node event loop and SQLite connection; no parallel-worker claim. Each round validates committed period, per-version/trend sums, deterministic top10 IDs and cumulative preservation.",
+    "completedFlushes": 25,
+    "deletedRows": 4954,
+    "health": {
+      "accepted": 25000,
+      "flushed": 25000,
+      "dropped": 0,
+      "incomplete": false,
+      "pendingKeys": 0,
+      "pendingEvents": 0,
+      "lastFlushedAt": 1798718400000,
+      "lastError": null,
+      "nextRetryAt": 0,
+      "status": "idle"
+    },
+    "measurements": {
+      "overview": {
+        "samplesMs": [
+          103.16295900000114, 107.26616699999977, 103.3540410000005,
+          106.64337499999965, 103.83200000000033, 104.14524999999958,
+          115.10783399999855, 110.95866699999897, 110.9912089999998,
+          113.40595799999937, 113.78750000000036, 112.0262500000008,
+          109.97400000000016, 113.01054100000147, 109.8963330000006,
+          112.26158300000134, 112.6792089999999, 110.23754199999894,
+          110.34249999999884, 113.25587499999892, 112.51512499999808,
+          148.94379200000185, 110.67354200000045, 104.78900000000067,
+          110.78458300000057
+        ],
+        "p50Ms": 110.78458300000057,
+        "p95Ms": 115.10783399999855,
+        "maxMs": 148.94379200000185
+      },
+      "flush": {
+        "samplesMs": [
+          15.13970800000061, 12.840290999998615, 6.586875000000873,
+          6.534290999999939, 6.789958999999726, 7.088292000000365,
+          6.820166999999856, 7.752500000000509, 7.478500000001077,
+          7.338292000000365, 9.14483300000029, 7.9945000000006985,
+          7.249042000001282, 7.410874999999578, 7.902000000000044,
+          9.478542000000743, 8.130167000001165, 7.776499999999942,
+          8.191500000000815, 7.480166999997891, 7.415875000002416,
+          9.874332999999751, 8.151582999998936, 6.3816659999974945,
+          7.740125000000262
+        ],
+        "p50Ms": 7.740125000000262,
+        "p95Ms": 12.840290999998615,
+        "maxMs": 15.13970800000061
+      },
+      "retention": {
+        "samplesMs": [
+          59.01208300000144, 54.58529200000157, 54.613374999998996,
+          53.13558400000147, 50.99958399999923, 0.5148329999992711,
+          0.4012079999993148, 0.5685839999987365, 0.4074170000003505,
+          0.8548749999990832, 0.8009590000001481, 0.8095410000005359,
+          0.43508400000064285, 0.7022909999996045, 0.5314159999998083,
+          0.8278339999997115, 0.47316700000010314, 0.35645800000020245,
+          0.7092499999998836, 0.6394169999985024, 0.47999999999956344,
+          0.8276250000017171, 0.580167000000074, 0.6392500000001746,
+          0.5305829999997513
+        ],
+        "p50Ms": 0.6394169999985024,
+        "p95Ms": 54.613374999998996,
+        "maxMs": 59.01208300000144
+      },
+      "queuedOverview": {
+        "samplesMs": [
+          112.83429199999955, 175.19708400000127, 158.30262500000026,
+          106.71641699999964, 161.77779100000043, 104.74904199999946,
+          115.16095899999891, 119.42374999999993, 111.460959,
+          113.47533300000032, 123.85783300000003, 112.90291700000125,
+          110.04975000000013, 121.24379100000078, 110.50408299999981,
+          112.32829200000015, 121.3825420000012, 110.66912500000035,
+          110.38054199999897, 121.48562500000116, 113.06849999999758,
+          149.0801250000004, 119.48983399999997, 107.61337500000081,
+          111.24366599999848
+        ],
+        "p50Ms": 113.06849999999758,
+        "p95Ms": 161.77779100000043,
+        "maxMs": 175.19708400000127
+      },
+      "queuedFlush": {
+        "samplesMs": [
+          128.1372080000001, 13.254249999999956, 165.041709000001,
+          113.3336249999993, 6.854499999999462, 111.96087500000067,
+          122.07616699999926, 7.853541000000405, 119.0906670000004,
+          120.89679200000137, 9.200665999998819, 120.99345900000117,
+          117.41108300000087, 7.474582999999257, 118.53391600000032,
+          121.9187920000004, 8.19537500000115, 118.57116599999972,
+          118.73104199999943, 7.538333000000421, 120.60254200000054,
+          159.07016600000134, 8.204916999999114, 114.13283299999966,
+          119.09037499999977
+        ],
+        "p50Ms": 118.53391600000032,
+        "p95Ms": 159.07016600000134,
+        "maxMs": 165.041709000001
+      },
+      "queuedRetention": {
+        "samplesMs": [
+          187.1951250000002, 67.8728340000016, 54.909333999999944,
+          166.51370900000074, 57.90949999999975, 0.5930829999997513,
+          122.49241699999948, 8.441749999999956, 0.4604170000002341,
+          121.78129199999967, 10.035249999998996, 0.8603750000002037,
+          117.88037500000064, 8.214791000000332, 0.5951659999991534,
+          122.79845899999964, 8.694917000000714, 0.42604100000062317,
+          119.4997919999987, 8.21233299999949, 0.5412919999980659,
+          159.9300000000003, 8.801666999999725, 2.8132499999992433,
+          119.6538330000003
+        ],
+        "p50Ms": 10.035249999998996,
+        "p95Ms": 166.51370900000074,
+        "maxMs": 187.1951250000002
+      }
+    }
+  },
+  "resources": {
+    "elapsedMs": 17722.958125,
+    "cpu": {
+      "user": 11921686,
+      "system": 2453483
+    },
+    "memory": {
+      "rss": 231194624,
+      "heapTotal": 156745728,
+      "heapUsed": 27442248,
+      "external": 9473420,
+      "arrayBuffers": 145637
+    },
+    "maxRssKiB": 318160
+  },
+  "thresholds": {
+    "warmP95Ms": 500,
+    "sqliteColdMs": 2000,
+    "queuedP95Ms": 500,
+    "queriesPass": true,
+    "concurrencyPass": true
+  },
+  "failures": [],
+  "limitations": [
+    "Synthetic sparse distribution, not observed traffic or dense 36.5m image/day rows.",
+    "Local host only; container/other architecture verification belongs to Release.",
+    "Historical #143 evidence and experimental SQL are unchanged.",
+    "This #143 fixture has no media_jobs or media_objects rows. Overview measures the actual current-count provider on these 100k images, not the distinct #168 workload with 100k processing jobs/objects; no universal latency claim for all production distributions."
+  ]
+}

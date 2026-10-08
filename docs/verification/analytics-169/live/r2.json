@@ -1,0 +1,119 @@
+{
+  "service": "r2",
+  "status": "passed",
+  "recordedAt": "2026-10-08T03:57:55.996Z",
+  "responses": [
+    {
+      "source": "s3",
+      "version": "original",
+      "status": 302
+    },
+    {
+      "source": "local",
+      "version": "original",
+      "status": 200
+    },
+    {
+      "source": "s3",
+      "version": "compressed",
+      "status": 302
+    },
+    {
+      "source": "local",
+      "version": "compressed",
+      "status": 200
+    },
+    {
+      "source": "s3",
+      "version": "watermark",
+      "status": 302
+    },
+    {
+      "source": "local",
+      "version": "watermark",
+      "status": 200
+    },
+    {
+      "source": "s3",
+      "version": "thumbnail",
+      "status": 302
+    },
+    {
+      "source": "local",
+      "version": "thumbnail",
+      "status": 200
+    }
+  ],
+  "signPreparationFailure": {
+    "status": 500,
+    "counted": false,
+    "cause": "controlled invalid encrypted secret"
+  },
+  "excluded": ["thumbnail", "owner", "HEAD", "sign preparation failure"],
+  "periods": [
+    {
+      "days": 7,
+      "versions": {
+        "original": 2,
+        "compressed": 2,
+        "watermark": 2,
+        "total": 6
+      },
+      "range": {
+        "days": 7,
+        "startDate": "2026-10-02",
+        "endDate": "2026-10-08"
+      }
+    },
+    {
+      "days": 30,
+      "versions": {
+        "original": 2,
+        "compressed": 2,
+        "watermark": 2,
+        "total": 6
+      },
+      "range": {
+        "days": 30,
+        "startDate": "2026-09-09",
+        "endDate": "2026-10-08"
+      }
+    },
+    {
+      "days": 90,
+      "versions": {
+        "original": 2,
+        "compressed": 2,
+        "watermark": 2,
+        "total": 6
+      },
+      "range": {
+        "days": 90,
+        "startDate": "2026-07-11",
+        "endDate": "2026-10-08"
+      }
+    }
+  ],
+  "cumulative": {
+    "original": 2,
+    "compressed": 2,
+    "watermark": 2,
+    "total": 6
+  },
+  "lastFlushedAt": "2026-10-08T03:57:55.926Z",
+  "health": {
+    "accepted": 6,
+    "flushed": 6,
+    "dropped": 0,
+    "incomplete": false,
+    "pendingKeys": 0,
+    "pendingEvents": 0,
+    "lastFlushedAt": 1791431875926,
+    "lastError": null,
+    "nextRetryAt": 0,
+    "status": "idle"
+  },
+  "auth": "owner cookie only; anonymous/upload Token/real password-unlocked share grant/session Bearer rejected",
+  "failureRecovery": "analytics_daily unavailable returned 500; restored read returned six",
+  "cleanup": "standalone stopped; exact remote keys deleted and HEAD confirmed absent"
+}
