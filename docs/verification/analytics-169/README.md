@@ -89,4 +89,4 @@ AWS不再是必需实测目标，依现有执行约定保持未验证、不记�
 
 代码实现、独立代码审计、真实报表HTTP/存储联验与规模验证已完成。格式、静态、类型、构建和单元通过；完整集成仍有上述1项失败，不能写作全部本地检查通过，汇总见[命令结果](./checks.json)。UI、设计审查与人工验收不适用；AWS、Release镜像及另一架构保持未验证。
 
-分支 `codex/issue-169-analytics-query` 将统一提交推送并创建草稿PR，远端状态以交付时实际回读为准。未经另行授权不合并、不关闭Issue、不删分支/worktree；本任务无需要保持的UI预览。
+分支 `codex/issue-169-analytics-query` 已提交推送，创建[草稿PR #263](https://github.com/dnslin/ariso-next/pull/263)。实际 `gh pr view` 回读为 OPEN、isDraft=true、MERGEABLE；`statusCheckRollup=[]`，`gh pr checks` 返回没有检查。没有远端CI不记为通过，也不等待不存在的工作流。未经另行授权不合并、不关闭Issue、不删分支/worktree；本任务无需要保持的UI预览。
