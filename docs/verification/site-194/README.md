@@ -1,79 +1,83 @@
 # Issue #194 / T-SITE-02
 
-2026-10-08。本轮实施站点信息 GET/PATCH 的后端切片，并提供 DG-SITE 缺口的两端独立原型。**Issue 尚未完成；产品 UI 等待用户批准补充交互方案。** [任务卡](../../tasks/m3-m4-experience.md#t-site-02-站点地址时区与基础设置组合)、[Issue](https://github.com/dnslin/ariso-next/issues/194)、[独立评审](./review.md)。
+2026-10-08。用户已批准第二版紧凑关联行布局并明确要求实施。站点信息后端、基本设置产品页面及默认浏览器场景已接入；默认浏览器全量未通过，随后 Ego 检测到用户接管并停止；新模块生产浏览器、正式状态设计复审和人工验收未完成。[Issue](https://github.com/dnslin/ariso-next/issues/194)、[草稿 PR #262](https://github.com/dnslin/ariso-next/pull/262)、[任务卡](../../tasks/m3-m4-experience.md#t-site-02-站点地址时区与基础设置组合)、[独立评审](./review.md)。
 
-## 范围与依据
+此前后端切片及被否定的首版原型记录保留在 [历史证据](./history.md)。历史全量失败不改写为通过，原型图不代表产品验证。本文件维护当前结果。
 
-需求保留 R-5.4-03/04、R-5.5-02、R-21.1-01/02、A-26.1-12；消费 SPEC-site §4/5/7，不改冻结 PRD。实际读取 AGENTS、docs/README、能力地图、相关需求、执行和完整设计交接、DG-SITE盘点及 site/storage/identity 调用链。原生 blocked_by 的 #47/#181/#156/#158/#189/#57/#52/#135 全 CLOSED，blocking为空，Issue无评论。规划中的品牌/SMTP/主题及占位入口不计为已实现。能力地图中的阶段概述属于旧规划，不覆盖本轮实测接口状态。
+## 实施范围
 
-生产代码：GET/PATCH /api/settings/site 复用 requireOwner 的真实 Cookie/同源写入鉴权；只更新 name、description、publicUrl、timeZone，拒绝空对象及其他模块字段。实际 origin 变化时，在同一 SQLite 同步事务中更新站点与 invalidateS3Cors，失败整体回滚；同 origin 不误失效。返回当前设置、ISO UTC、GitHub回调，以及PATCH的publicUrlChanged与持续后果说明。site数据层不反向依赖storage。无新增依赖/schema/迁移；未实现品牌公开路由，不生成虚构素材 URL。
+保留 R-5.4-03/04、R-5.5-02、R-21.1-01/02、A-26.1-12 和 SPEC-site §4/5/7，不改冻结 PRD。已实际读取 AGENTS、docs/README、设计交接、执行约定、DG-SITE、实现调用链及依赖类型。Issue 无评论，原生 blocked_by #47/#181/#156/#158/#189/#57/#52/#135 均 CLOSED，blocking 为空。
 
-完整 /settings/general 的组合 UI、默认存储/处理入口、共享导航消费路由回归及默认浏览器新场景接入仍未完成。品牌文件/公开元信息归 T-SITE-03/04，上传限制归 T-UP-08，主题归 T-SITE-05，sharing/analytics日期最终消费由对应任务联验，生产重置邮件尚无入口。本次不越界补这些模块。
+- GET/PATCH `/api/settings/site` 仅接受 name、description、publicUrl、timeZone。所有者 Cookie、同源写入、真实数据库和 no-store 返回沿现有实现。规范化 origin 变化时，在同一 SQLite 同步事务中更新站点及失效全部 S3 CORS/在途检测；失败整体回滚，同 origin 不误失效。回调来自实际已保存地址，历史 UTC、图片 ID/Key 不改写。
+- `/settings/general` 真实读取和独立保存四字段。草稿与已保存值分开。会话失效后四字段保留并锁定，初始读取的迟到成功不能重新开放编辑；标签与输入正确关联。连接中断/500 不自动重提，锁定保存后显式 GET 核对，核对差异需选择服务器值或保留输入。字段错保留输入并聚焦，成功留原页中性反馈。
+- 地址变化后持续显示已保存地址、GitHub 回调、CORS 重测与旧域名维护责任；复制保留页面/选择/滚动，失败展示完整可选文本。时区变化说明保留 UTC。离开确认复用 HeroUI Modal，分类/同源链接及刷新关闭保护已实现；同文档后退的真实生产验证仍待完成。
+- 五条关联行复用真实 storage/media API；读取并行、重试独立。默认存储空、停用、不存在与读取失败分别显示，无自动补选。默认值调整仍进入所属模块。品牌、上传限制、主题为真实未开放状态，无虚假按钮/路由。
+- 公共入口改为基本设置，复用 OwnerShell、SettingsHeading、SettingsCategories、StorageTip、通知与账号区域，检查所有已实现消费路由。HeroUI 3.2.6 TextField/Input/Label/FieldError/Form/Card/Button/Link/Modal，Lucide 图标，Tailwind；无新增依赖、schema 或兼容层。
 
-## 隔离与环境
+品牌素材归 T-SITE-03/04，上传限制归 T-UP-08，主题归 T-SITE-05。sharing/analytics 的最终日期消费由对应任务联验；未实现的重置邮件不伪造。此次不发布、部署或验证 Release 镜像/容器。
 
-原目录main、无未提交改动，保留已有 worktree。fetch 后从最新origin/main创建管理型 `/Users/dnslin/.codex/worktrees/issue-194-general-settings/ariso`，分支 `codex/issue-194-general-settings`。Darwin arm64，Node24.18.1、pnpm11.19.0、ImageMagick7.1.2-32、ExifTool13.55；显式前置`~/.nvm/versions/node/v24.18.1/bin`，冻结安装通过，锁文件无改动。原目录与其他任务数据/进程未修改。
+## 环境与实际检查
 
-## 实际验证
+管理型 worktree `/Users/dnslin/.codex/worktrees/issue-194-general-settings/ariso`，分支 `codex/issue-194-general-settings`；原目录 main 和其他任务数据保留。Darwin arm64，Node 24.18.1、pnpm 11.19.0、Ego Lite Chrome 152，TaskSpace 2 / p1。所有本轮交付检查显式使用 Node 24 的 PATH。锁文件不变。
 
-| 命令                                                                                  | 结果                                                                                                                                                                        |
-| ------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| pnpm install --frozen-lockfile                                                        | 通过，Node24.18.1 / pnpm11.19.0                                                                                                                                             |
-| pnpm exec vitest run --project unit tests/unit/site/settings.test.ts                  | 新增校验先15项失败，实施后58项通过                                                                                                                                          |
-| pnpm exec tsc --noEmit --project tsconfig.json                                        | 后端定向阶段通过                                                                                                                                                            |
-| 定向 ESLint 本次7个后端/测试文件                                                      | 通过                                                                                                                                                                        |
-| pnpm run build                                                                        | 通过，含 standalone 打包；文件追踪已有可选依赖警告，退出码0                                                                                                                 |
-| pnpm run lint                                                                         | 初次误扫原型生成文件失败；按既有模式补本原型生成目录忽略后通过                                                                                                              |
-| pnpm run test:unit                                                                    | 1694通过、5失败；既有 browser-runner 子进程场景5000ms超时/空stderr；定向重跑169通过/7项5000ms超时，失败用例与首轮不同；最后仅复核两轮12个失败场景全部通过，首轮全量失败保留 |
-| pnpm run typecheck                                                                    | 通过，Next typegen 与两个 TypeScript 项目                                                                                                                                   |
-| pnpm run test:integration                                                             | 1698通过/22失败，179文件；实际加 --maxWorkers=4，包含 integration 与 media-tools。本站点1项断言错误已修；其余21项在maxWorkers=1按实际失败标题复核全部通过，首轮全量失败保留 |
-| pnpm run format:check                                                                 | 全量通过；后续证据修订采用定向格式检查                                                                                                                                      |
-| 原型 Next typegen + tsc --project design-plans/issue194-review/tsconfig.json --noEmit | 初始及最终修订后通过                                                                                                                                                        |
+| 实际命令                                                                                                                | 本轮结果                                                                             |
+| ----------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| `pnpm install --frozen-lockfile`                                                                                        | 通过                                                                                 |
+| `pnpm run test:unit`                                                                                                    | 1729/1729，通过，127 文件；后续焦点及后退新增仅定向复核                              |
+| `pnpm run test:integration --maxWorkers=4`                                                                              | 1721/1721，通过，179 文件，包含 media-tools；后端输入此后未变                        |
+| `pnpm run lint`                                                                                                         | 初次 hook 测试命名触发规则，修正后全量通过                                           |
+| `pnpm run typecheck`                                                                                                    | 通过，两个项目；后续 Navigation 类型定向检查通过                                     |
+| `pnpm run format:check`                                                                                                 | 通过；后续变更定向检查，最终全量格式检查通过                                         |
+| `pnpm run build`                                                                                                        | 生产/standalone 通过；会话、标签及关联错误修复后最终构建通过。已有可选追踪警告未隐藏 |
+| `pnpm exec vitest run --project unit tests/unit/runtime/browser-plan.test.ts tests/unit/runtime/browser-runner.test.ts` | 默认入口接入先 14 项失败，实施后 257/257 通过                                        |
+| 站点 editor 定向单元                                                                                                    | 重复无效提交焦点先取得失败，修正后 10/10 通过                                        |
+| 站点 navigation/model 定向单元                                                                                          | 5/5、6/6 通过；不代替真实 Back                                                       |
+| `pnpm --dir tests/experiments/ui install --frozen-lockfile`                                                             | 通过，首次全量浏览器被夹具缺依赖阻断后补齐                                           |
+| `pnpm --dir tests/experiments/ui run typecheck`                                                                         | 通过                                                                                 |
+| `pnpm run test:browser`                                                                                                 | 未通过，38 个已执行阶段；后续用户接管停止，新模块未执行，见下方汇总                  |
 
-默认调用链：test:unit / test:integration → Vitest项目 → unit/integration/media-tools glob；新增 site settings-http/settings-patch 两集成文件已自然纳入默认入口，不修改共享运行器。测试涵盖权限、非法/独立字段、事务两阶段回滚、CORS所有配置/在途探测失效、同origin、新origin登录/旧origin拒绝、回调、图片ID/Key/UTC。默认完整入口已执行，最终首轮结果如上。首次HTTP用例误把初始化local存储计入S3结果；取得失败后按type限定S3断言，并新增local全部字段不变的断言。修订后两个site集成文件10项全通过，独立复审通过。
+默认验证调用链：项目 `test:browser` → shell 与实验 UI 构建 → `scripts/verify-browser.mjs` → `browser-plan` 的 full stages → `e2e/site-general.mjs` → representative/behavior/recovery/consumers，包含实际 history Back。siteGeneralPhase 仅属于 site-general 的 only 模式；默认 full 不遗漏新能力。Vitest 默认 glob 自然纳入站点新增单元/集成。原消费者入口修改仍保留其行为断言，实际客户端往返不以整页刷新代替。
 
-本站点定向修订验证：`pnpm exec vitest run --project integration tests/integration/site/settings-http.test.ts tests/integration/site/settings-patch.test.ts --maxWorkers=1`，10/10通过。另新增所有者必需配置损坏的HTTP边界：`pnpm exec vitest run --project integration tests/integration/site/settings-http.test.ts -t '已有所有者' --maxWorkers=1`，1项通过，其他5项定向未执行。之前10项已通过且输入未变，不机械重复。已有所有者但site记录被删除触发现有IDENTITY_INCOMPLETE，真实HTTP为500/SITE_INTERNAL_ERROR；数据层真正未初始化为SITE_NOT_INITIALIZED，409映射保留但不声称该损坏场景为409。最终修订 `pnpm exec eslint tests/integration/site/settings-http.test.ts` 与 `pnpm exec tsc --noEmit --project tsconfig.json` 通过。
+后续会话失效、迟到初始响应和标签关联测试先取得失败，再定向 editor/initial-load/expired 共 15/15 通过。关联模块组合 401 遮蔽也先失败再修复，相关 4/4 通过；独立复审通过。Node 24 的定向 ESLint 与 TypeScript 检查通过。
 
-全量单元及首次runtime定向重跑的12个失败场景，在全量集成结束后仅按标题联合筛选复核：使用下列实际调用，12通过，其余164项定向未执行。原始全量失败记录不改写为全量通过。集成剩余21个失败场景涉及10个未修改文件，17个超时，以及CLI退出码、Token拒绝连接/子进程失败、媒体队列状态等待；降低并发为1只复核实际失败标题，10文件21项通过，其他126项定向未执行，不修改超时或断言。并发负载是可能因素，不据此宣称全部为既有问题。
+独立审计对 origin 变更条件的反向修改能触发 3/5 集成失败；对 site-general 分发条件的反向修改能触发 26 个失败，临时副本已移除。测试运行器嵌套故障注入的恢复问题取得离线失败后修正。默认全量 processing 的动态旧入口缺口属于本次变更，已修测试实际 Tabs 往返，定向生产复核待执行。Token/OAuth 失败尚未证实由本次引起，未运行基线就不称历史必现；范围外不修改。
 
-实际失败场景定向调用（标题从首轮失败记录选择；不是默认全量入口）：
+### 默认浏览器实际结果与停止边界
 
-```sh
-pnpm exec vitest run --project unit --maxWorkers=1 --testNamePattern 'accepts\ suite\ full\ and\ its\ only\ undefined|accepts\ suite\ library\-copy\ and\ its\ only\ feedback|accepts\ suite\ library\-copy\ and\ its\ only\ undefined|accepts\ suite\ trash\ and\ its\ only\ approved\-ui|accepts\ suite\ trash\ and\ its\ only\ confirmation|accepts\ suite\ upload\ and\ its\ only\ relations|accepts\ suite\ upload\ and\ its\ only\ undefined|accepts\ suite\ upload\-regression\ and\ its\ only\ undefined|accepts\ suite\ viewer\ and\ its\ only\ consumers|accepts\ suite\ viewer\ and\ its\ only\ deleted\-source|accepts\ suite\ viewer\ and\ its\ only\ pending\-navigation|accepts\ suite\ viewer\ and\ its\ only\ undefined' tests/unit/runtime/browser-runner.test.ts
-pnpm exec vitest run --project integration --project media-tools --maxWorkers=1 --testNamePattern 'CLI\ refuses\ a\ empty\ database\ without\ creating\ or\ migrating\ it|CLI\ session\ deletion\ failure\ rolls\ back\ password,\ sessions\ and\ unused\ resets|CLI\ verification\ deletion\ failure\ rolls\ back\ password,\ sessions\ and\ unused\ resets|Node\ 初始化在已迁移无所有者的磁盘库执行\ SELECT\ 1；重复调用及模块重载复用连接|a\ running\ standalone\ Web\ process\ rejects\ both\ old\ cookies\ on\ the\ next\ request\ after\ CLI\ reset|concurrent\ identity\ experiments\ use\ separate\ build\ output\ and\ remove\ only\ their\ own\ output\ on\ stop|concurrent\ setup\ commits\ one\ complete\ owner,\ creates\ no\ session,\ and\ supports\ a\ real\ password\ login|login\ body\ \{\ is\ a\ client\ error|persists\ grants\ across\ database\ shutdown\ and\ a\ fresh\ Node\ process\ without\ renewing\ the\ deadline|polls\ new\ persistent\ work\ and\ continues\ after\ an\ original\ object\ is\ missing|production\ constraints\ reject\ invalid\ owners\ and\ duplicate\ providers;\ incomplete\ identity\ is\ explicit|prunes\ bounded\ batches\ at\ startup\ and\ while\ running,\ retains\ live\ grants,\ and\ cancels\ cleanup\ on\ stop|real\ Next\ dev\ recompilation\ retains\ the\ startup\ code\ and\ the\ original\ code\ creates\ a\ login\-capable\ owner|returns\ plaintext\ only\ on\ create,\ stores\ the\ fixed\ permission\ hash,\ survives\ restart\ and\ has\ no\ ten\-use\ limit|uninitialized\ production\ auth\ requests\ return\ setup\-required\ without\ creating\ an\ owner|verification\ read/write\ faults\ are\ invalid\ with\ real\ logs,\ preserve\ data\ and\ recover\ with\ the\ same\ credential|停止幂等，队列完成前保留连接，停止后健康接口拒绝新访问|初始化缺失时健康接口返回\ 503，不按请求偷偷打开数据库|导入和非\ Web\ 初始化不读密钥或建立数据库：\{"NEXT_RUNTIME":"nodejs","NEXT_PHASE":"phase\-production\-build"\}|无密钥和数据库时在独立目录完成生产构建，不写数据或输出初始化码|真实连接关闭后返回\ 503，保留错误日志，响应没有秘密或路径且不会自动重连' tests/integration/identity/auth.test.ts tests/integration/identity/http.test.ts tests/integration/identity/reset-password-cli.test.ts tests/integration/identity/setup-dev.test.ts tests/integration/identity/setup.test.ts tests/integration/identity/tokens.test.ts tests/integration/media/queue.test.ts tests/integration/runtime/build.test.ts tests/integration/runtime/server-start.test.ts tests/integration/sharing/authorization.test.ts
-```
+[脱敏全量汇总](./browser-full-summary.json)记录实际 38 个阶段。普通公共外壳、身份初始化/重启、账号、存储管理、六个图库查询阶段等已通过。Token 弹窗点击、OAuth 焦点、storage-cors 提示、library 登录、library-batch 执行上下文/超时、library-reprocess 等实际失败保留；未取得基线，不称历史必现，也不写作通过。processing 的旧入口问题属于本次，已修复但受影响生产复核未执行。
 
-补充交付检查：最终修改文件的Prettier定向检查通过；原型页面最终ESLint通过；本轮新增文档的10个本地链接/锚点均有效，`git diff --check` 与暂存差异检查通过。未新增迁移/依赖，不执行schema生成。
+2026-10-08 07:19:24 UTC，library-copy 在跨页复制阶段收到 `stoppedForUserControl: true`，随后失败状态截图也被 Ego 停止，运行器最终失败并移除自己的临时数据库目录。此时 site-general 和后续默认阶段尚未运行。依 ego-browser 技能停止浏览器，不创建任务空间、不切换浏览器、不自行接管。恢复须用户明确指示“继续浏览器验证”，随后复用 TaskSpace 2 / p1。离线检查与草稿 PR 更新继续，人工预览不停止。
 
-## 原型与设计审批
+同文档 Back 曾在开发预览逃离未保存页面；新的 Navigation 实现仅通过事件逻辑单元检查，尚无生产复核。此项仍为待验证问题，不能把它记作已解决。真实会话失效 401、完整两端状态、部分模块失败、复制、消费者路由及正式设计复审也仍待执行。
 
-设计来源：Figma文件74sT9Hrf8G4czcWeTkET5b，实际调用 get_design_context 读取主节点467:4002/467:9001与地址更新468:11189/468:11481，取得信息与截图；DG-SITE列出的字段错/保存中/读错/深色代表仍为正式产品基线，后续实际实施再读相应细节。使用 using-agent-skills 选择最少技能；遵循 frontend-ui-engineering、vercel-react-best-practices、figma-design-to-code 和 ego-browser。实施另遵循 incremental-implementation、git-workflow-and-versioning，独立评审使用 code-review-and-quality。公共最新修订覆盖旧面包屑/文字菜单/邮件分类，不擅改公共来源。
+## 批准设计与 Figma 同步
 
-[可查看原型](http://127.0.0.1:3194/settings/general)，无需账号，仅独立示例，不连接真实写入API。原型文件见 [目录说明](../../../design-plans/issue194-review/README.md)。保持服务供用户审批，不停止/清理。
+using-agent-skills 选最少适用技能。实际使用 frontend-ui-engineering 处理两端布局与可访问性，vercel-react-best-practices 处理 React/Next 数据与生命周期，ego-browser 验证真实浏览器；figma-design-to-code 读取设计，figma-use / figma-generate-design 同步可编辑节点。独立 code-review-and-quality 和独立设计评审分别记录。
 
-以下为首版真实截图。用户最新反馈否定其关联设置的空白和按钮布局；本表不作为第二版的视觉验收。
+用户否定首版全宽卡片中的窄按钮和空白，随后批准紧凑行原型。已将 Logo/Favicon 与其他入口合为一张关联卡片，桌面名称左、状态/入口右，手机状态下置。未开放项静态；两个实际入口有箭头。原型服务 3194 保留，产品预览独立使用 3195。
 
-| 视口/状态/主题          | 真实原型截图                                                    | 对照结论                                                                    |
-| ----------------------- | --------------------------------------------------------------- | --------------------------------------------------------------------------- |
-| 1440×1080 正常/浅色     | [桌面](./screenshots/issue194-prototype-desktop.png)            | 复用公共外壳；卡片顺序、两列外标签和固定保存栏保留；中性文字/Tips为建议改变 |
-| 390×844 正常/浅色       | [手机](./screenshots/issue194-prototype-mobile.png)             | 单列与44/48px操作沿既有层级；顶部状态选择仅原型工具                         |
-| 390×844 结果未知/浅色   | [未知](./screenshots/issue194-prototype-mobile-unknown.png)     | 保留输入、禁用保存、仅只读核对；补充建议未获批                              |
-| 390×844 地址更新/浅色   | [更新](./screenshots/issue194-prototype-mobile-origin.png)      | 原页持久后果、已保存地址/回调及维护入口；新地址重新登录说明可读             |
-| 1440×1080 地址更新/浅色 | [更新桌面](./screenshots/issue194-prototype-desktop-origin.png) | 已保存地址与回调不随编辑输入改变；后果保持可读                              |
-| 390×844 核对差异/浅色   | [差异](./screenshots/issue194-prototype-mobile-reconciled.png)  | 两项选择清楚，读取不改草稿，无重复通知遮挡底栏                              |
+Figma 文件 `74sT9Hrf8G4czcWeTkET5b` 已实际写入。保留公共组件实例、变量绑定、可编辑 Text/Vector；无完整 UI 位图。复用 CopyButton，新增可复用 RelatedSetting 与 SettingsHeading。深色使用既有 surface/primary-foreground/navigation-current，普通维护说明改为中性文字。保存中、结果未知/核对和会话失效的禁用输入按已安装 HeroUI 样式同步 0.5 透明度，标签保留。[结构与字体证据](./figma-structure.json)。
 
-功能与设计分开：Ego TaskSpace 2实际打开原型、切换状态、查看两端；编译首轮导航超时但已提交到页面，按技能在原Page继续观察成功，未另建空间。原型截图不算产品UI验证，完整断点/深色对照/键盘/复制拒绝/短视口与真实API状态未验证。原型状态和其他模块动作只演示交互方向，最终实现须接实际API并默认运行新增场景。用户设计审批已提出，尚未收到答复；Figma没有写入或同步，产品人工验收没有执行，尚无产品测试账号。
+| 对应状态          | 桌面 / 手机 Figma 节点                       | Figma 截图                                                                                                                         |
+| ----------------- | -------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| 普通              | 467:4002 / 467:9001                          | [桌面](./screenshots/issue194-figma-desktop-final.png) / [手机](./screenshots/issue194-figma-mobile-final.png)                     |
+| 深色              | 472:4254 / 472:9458                          | [桌面](./screenshots/issue194-figma-dark-desktop-final.png) / [手机](./screenshots/issue194-figma-dark-mobile-final.png)           |
+| 地址更新          | 468:11189 / 468:11481                        | [桌面](./screenshots/issue194-figma-origin-desktop-final.png) / [手机](./screenshots/issue194-figma-origin-mobile-final.png)       |
+| 结果未知          | 907:15766 / 907:16750                        | [手机](./screenshots/issue194-figma-unknown-mobile-final.png)                                                                      |
+| 核对中 / 核对失败 | 907:15963 / 907:16841；907:16160 / 907:16932 | 保持草稿、禁用保存、只读核对                                                                                                       |
+| 核对差异 / 已确认 | 907:16357 / 907:17023；907:16556 / 907:17116 | [差异手机](./screenshots/issue194-figma-different-mobile-final.png)，示例草稿已与差异文字一致                                      |
+| 部分模块失败      | 914:16298 / 914:16493                        | 站点仍可独立保存，默认存储显式重读                                                                                                 |
+| 会话失效          | 930:16516 / 930:16713                        | [桌面](./screenshots/issue194-figma-session-desktop.png) / [手机](./screenshots/issue194-figma-session-mobile.png)，保留并锁定表单 |
+| 离开确认          | 529:11511 / 529:11229                        | 继续编辑 / 放弃；普通说明中性化                                                                                                    |
 
-## 第二版原型：关联设置布局修正
+原保存中、读取失败、三个字段错误及时间展示状态（468:8730/9029、9442/9722、9763/10062、10120/10419、10477/10776、11534/11834）也同步新公共层级和紧凑关联卡片。实际产品状态截图及逐项差异处理待浏览器结果后补齐，Figma 截图不能替代。
 
-2026-10-08 用户提供首版关联区域截图，指出空白过大、按钮排排坐。实际来源为本次独立原型：全宽Card内放280px按钮，尚未开放的品牌入口另占一张大卡。修正原型的具体布局，不删除公共设计规则。
+独立普通态 dev [1440×1080](./screenshots/issue194-dev-desktop.png) / [390×844](./screenshots/issue194-dev-mobile.png) 对照通过：整页公共起点、四外标签、卡片间距、固定保存栏与紧凑关联行一致。真实账号空描述使侧栏导航上移属于数据差异；旧 Figma 手机文字菜单/分类图标不覆盖最新公共组件约定。其余生产状态设计复审尚未完成。
 
-将Logo/Favicon和其他入口合并为一组“关联设置”，五条分隔线行。桌面名称左、值/状态右，可操作行有Chevron；手机值置名称下。默认存储与图片处理复用HeroUI ghost Button整行点击，未开放项为静态状态行。桌面56px/手机64px最小行高，不改站点信息、固定保存栏或模块保存边界。默认存储读取失败、空、停用的状态区分保留。没有产品UI或公共组件变更。
+## 交付状态与人工验收
 
-新版源码聚焦设计复审通过；实际留白、两端截图和焦点表现尚未验证。上轮Ego TaskSpace2已handOff给用户，按ego-browser的user-owned控制边界请求恢复；没有得到明确授权前不claim或另开浏览器。原型服务3194继续保留，HTTP请求200。Figma尚未同步；用户整体原型批准仍待回复。首版截图与原评审保留为历史，不冒充新版视觉复核。
+代码：生产实现及默认新场景已接入；本地检查：上述真实执行通过；浏览器：默认全量失败并遇用户接管，站点生产验证未执行，Back 问题尚未确认解决；设计：普通 dev 态局部通过，其余生产状态未复审；人工验收：未完成。PR 保持草稿。
 
-本轮实际检查：`pnpm exec eslint design-plans/issue194-review/app/settings/general/page.tsx`、`pnpm exec tsc --project design-plans/issue194-review/tsconfig.json --noEmit`、改动文件Prettier与`git diff --check`。仅原型布局与说明变化，不机械重复未变后端的构建/全量测试。本轮以上检查均通过。
+独立真实数据预览：http://127.0.0.1:3195/settings/general 。账号密码仅向用户私下提供，不进入代码、此文档或 PR。预览保持可用直到用户明确停止/清理。人工请核验桌面/手机关联行、四字段独立保存、错误后输入/焦点、地址展开复制、所属模块往返与未保存离开确认。改变 publicUrl 前需确保新地址可访问；维护责任见页面持久说明。
 
-## 交付状态
-
-代码完成：后端切片完成，完整Issue未完成。独立后端审计通过；独立原型设计评审方向成立；三项逻辑问题和手机通知/菜单遮挡修复后，聚焦复审通过，正式产品评审未完成。本地构建/类型/静态/格式检查通过；全量首轮失败保留，全部失败场景分别定向复核通过，产品浏览器/设计/人工验收均未完成。分支已提交并推送；[PR #262](https://github.com/dnslin/ariso-next/pull/262) 为 OPEN 草稿，GitHub mergeStateStatus 为 CLEAN。`gh pr view 262 --json state,isDraft,headRefOid,mergeStateStatus,statusCheckRollup` 实际 statusCheckRollup 为空；`gh pr checks 262` 返回 no checks reported，不记为CI通过。创建时本地HEAD、origin分支与PR head一致；原型HEAD请求返回200，服务继续保留。本次不合并、不关Issue、不发布、不部署、不删除分支/worktree或停止预览。Release镜像/容器验证按统一发布时机未执行。
+旧浏览器 Navigation API 兼容性、实体触摸/软键盘、安全区、真实外部 GitHub OAuth、sharing/analytics 最终消费以及 Release 容器未验证。明确区分本地检查、浏览器、设计及人工结果，不由任一项替代另一项。远端实际 PR/checks 状态将在最终推送后核对。

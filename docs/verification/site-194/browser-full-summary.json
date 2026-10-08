@@ -1,0 +1,137 @@
+{
+  "startedAt": "2026-10-08T06:38:29.458Z",
+  "finishedAt": "2026-10-08T07:19:26.115Z",
+  "platform": "darwin",
+  "arch": "arm64",
+  "node": "v24.18.1",
+  "status": "failed",
+  "suite": "full",
+  "taskSpaceId": 2,
+  "pageLabel": "p1",
+  "temporaryDirectoryRemoved": true,
+  "stages": {
+    "runtime-start": {
+      "status": "passed"
+    },
+    "shell-start": {
+      "status": "passed"
+    },
+    "runtime": {
+      "status": "passed"
+    },
+    "identity-1440-start": {
+      "status": "passed"
+    },
+    "identity-1440-setup": {
+      "status": "passed"
+    },
+    "owner-runtime-1440": {
+      "status": "passed"
+    },
+    "identity-1440-restart": {
+      "status": "passed"
+    },
+    "m2-1440-before": {
+      "status": "passed"
+    },
+    "m2-1440-after": {
+      "status": "passed"
+    },
+    "interaction-polish-1440": {
+      "status": "passed"
+    },
+    "workspace-continuity-1440": {
+      "status": "passed"
+    },
+    "tokens-1440": {
+      "status": "failed"
+    },
+    "oauth-runtime-1440": {
+      "status": "passed"
+    },
+    "oauth-1440-before": {
+      "status": "failed"
+    },
+    "oauth-1440-restart": {
+      "status": "passed"
+    },
+    "oauth-1440-after": {
+      "status": "blocked",
+      "blockedBy": ["oauth-1440-before"]
+    },
+    "oauth-1440-enable-restart": {
+      "status": "blocked",
+      "blockedBy": ["oauth-1440-after"]
+    },
+    "oauth-1440-enabled": {
+      "status": "blocked",
+      "blockedBy": ["oauth-1440-after", "oauth-1440-enable-restart"]
+    },
+    "account-runtime-1440": {
+      "status": "passed"
+    },
+    "account-1440": {
+      "status": "passed"
+    },
+    "identity-390-start": {
+      "status": "passed"
+    },
+    "identity-390-setup": {
+      "status": "passed"
+    },
+    "owner-runtime-390": {
+      "status": "passed"
+    },
+    "identity-390-restart": {
+      "status": "passed"
+    },
+    "processing": {
+      "status": "failed"
+    },
+    "storage-admin": {
+      "status": "passed"
+    },
+    "storage-cors": {
+      "status": "failed"
+    },
+    "storage-cors-close": {
+      "status": "passed"
+    },
+    "library": {
+      "status": "failed"
+    },
+    "library-feedback": {
+      "status": "passed"
+    },
+    "library-selection": {
+      "status": "passed"
+    },
+    "library-selection-reconciliation": {
+      "status": "passed"
+    },
+    "library-query": {
+      "status": "passed"
+    },
+    "library-filters": {
+      "status": "passed"
+    },
+    "library-scale": {
+      "status": "passed"
+    },
+    "library-batch": {
+      "status": "failed"
+    },
+    "library-reprocess": {
+      "status": "failed"
+    },
+    "library-copy": {
+      "status": "failed"
+    }
+  },
+  "stop": {
+    "source": "library-copy.json",
+    "stoppedForUserControl": true,
+    "message": "Ego user takeover; no browser resume without explicit user instruction.",
+    "remaining": "site-general and subsequent full stages did not execute."
+  }
+}

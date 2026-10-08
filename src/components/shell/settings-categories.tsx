@@ -15,6 +15,11 @@ import {
 
 export const settingsCategories = [
   {
+    href: '/settings/general',
+    label: '基本设置',
+    icon: <Settings className="size-4" aria-hidden />,
+  },
+  {
     href: '/settings/processing',
     label: '图片处理',
     icon: <SlidersHorizontal className="size-4" aria-hidden />,
@@ -47,17 +52,20 @@ export function SettingsHeading() {
 export function SettingsCategories({
   items,
   children,
+  onNavigate,
 }: {
   items: readonly { href: string; label: string; icon?: ReactNode }[];
   children: ReactNode;
+  onNavigate?: (href: string) => void;
 }) {
   const pathname = usePathname();
   const router = useRouter();
+  const navigate = onNavigate ?? ((href: string) => router.push(href));
   return (
     <Tabs
       className="outline-none"
       selectedKey={pathname}
-      onSelectionChange={(key) => router.push(String(key))}
+      onSelectionChange={(key) => navigate(String(key))}
       keyboardActivation="manual"
     >
       <div className="settings-desktop">
@@ -80,7 +88,7 @@ export function SettingsCategories({
         <Select
           value={pathname}
           onChange={(key) => {
-            if (key !== null) router.push(String(key));
+            if (key !== null) navigate(String(key));
           }}
         >
           <Label>设置分类</Label>
