@@ -27,6 +27,7 @@ import {
   Trash2,
   ChartNoAxesCombined,
   LayoutDashboard,
+  ChevronRight,
 } from 'lucide-react';
 import { AdminShell } from '../../../../../src/components/shell/admin-shell';
 import {
@@ -97,6 +98,44 @@ const states = [
   ['disabled', '默认存储停用'],
   ['uninitialized', '未初始化'],
 ];
+
+function RelatedSetting({
+  label,
+  value,
+  onPress,
+}: {
+  label: string;
+  value: string;
+  onPress?: () => void;
+}) {
+  const content = (
+    <span className="grid w-full min-w-0 grid-cols-[minmax(0,1fr)_20px] items-center gap-x-3 sm:grid-cols-[minmax(0,1fr)_auto_20px]">
+      <span className="text-sm font-medium">{label}</span>
+      <span className="col-start-1 row-start-2 mt-1 text-sm font-normal text-muted sm:col-start-2 sm:row-start-1 sm:mt-0 sm:text-right">
+        {value}
+      </span>
+      {onPress ? (
+        <ChevronRight
+          aria-hidden="true"
+          className="col-start-2 row-span-2 row-start-1 size-4 sm:col-start-3 sm:row-span-1"
+        />
+      ) : null}
+    </span>
+  );
+  const className =
+    'flex min-h-16 w-full items-center rounded-none px-4 py-3 text-left sm:min-h-14 min-[1200px]:px-6';
+  return onPress ? (
+    <Button
+      variant="ghost"
+      className={`${className} h-auto justify-start whitespace-normal`}
+      onPress={onPress}
+    >
+      {content}
+    </Button>
+  ) : (
+    <div className={className}>{content}</div>
+  );
+}
 
 export default function Page() {
   const [state, setState] = useState('normal');
@@ -425,79 +464,46 @@ export default function Page() {
                 ) : null}
               </Card>
             )}
-            <Card className={card}>
-              <h2 className="text-lg font-medium">Logo 与 Favicon</h2>
-              <p className="text-sm text-muted">品牌素材由独立功能管理。</p>
-              <Button
-                variant="outline"
-                isDisabled
-                className="h-12 w-full rounded-lg min-[1200px]:w-[280px]"
-              >
-                管理品牌素材 · 尚未开放
-              </Button>
-            </Card>
-            <Card className={card}>
-              <h2 className="text-lg font-medium">其他设置</h2>
-              <p className="text-[13px] text-muted">
-                这里的修改不随站点信息提交。
-              </p>
-              <div className="grid gap-3 justify-items-start">
-                {state === 'partial' ? (
-                  <>
-                    <p className="text-sm text-danger">
-                      默认存储读取失败，站点信息仍可单独保存。
-                    </p>
-                    <Button
-                      variant="outline"
-                      className="h-11 rounded-lg"
-                      onPress={() => setState('normal')}
-                    >
-                      重新读取默认存储
-                    </Button>
-                  </>
-                ) : (
-                  <Button
-                    variant="outline"
-                    className="h-12 w-full rounded-lg min-[1200px]:w-[280px]"
-                    onPress={() =>
-                      toast('在存储管理中独立选择或清空默认存储', {
-                        variant: 'default',
-                      })
-                    }
-                  >
-                    默认存储 ·{' '}
-                    {state === 'empty'
-                      ? '未设置'
-                      : state === 'disabled'
-                        ? '本地存储（已停用）'
-                        : '本地存储'}
-                  </Button>
-                )}
-                <Button
-                  variant="outline"
-                  className="h-12 w-full rounded-lg min-[1200px]:w-[280px]"
+            <Card className="min-w-0 gap-0 overflow-hidden rounded-[20px] border border-border bg-surface p-0 shadow-none">
+              <div className="px-4 pt-4 pb-3 min-[1200px]:px-6">
+                <h2 className="text-lg font-medium">关联设置</h2>
+                <p className="mt-1 text-[13px] text-muted">
+                  各项独立管理，不随站点信息提交。
+                </p>
+              </div>
+              <div className="divide-y divide-border border-t border-border">
+                <RelatedSetting label="Logo 与 Favicon" value="尚未开放" />
+                <RelatedSetting
+                  label="默认存储"
+                  value={
+                    state === 'partial'
+                      ? '读取失败，点击重试'
+                      : state === 'empty'
+                        ? '未设置'
+                        : state === 'disabled'
+                          ? '本地存储（已停用）'
+                          : '本地存储'
+                  }
+                  onPress={
+                    state === 'partial'
+                      ? () => setState('normal')
+                      : () =>
+                          toast('在存储管理中独立选择或清空默认存储', {
+                            variant: 'default',
+                          })
+                  }
+                />
+                <RelatedSetting
+                  label="图片默认值与外链版本"
+                  value="图片处理"
                   onPress={() =>
                     toast('在图片处理页独立保存默认值与外链版本', {
                       variant: 'default',
                     })
                   }
-                >
-                  图片默认值与外链版本
-                </Button>
-                <Button
-                  variant="outline"
-                  isDisabled
-                  className="h-12 w-full rounded-lg min-[1200px]:w-[280px]"
-                >
-                  上传限制 · 尚未开放
-                </Button>
-                <Button
-                  variant="outline"
-                  isDisabled
-                  className="h-12 w-full rounded-lg min-[1200px]:w-[280px]"
-                >
-                  界面主题 · 后续独立设置
-                </Button>
+                />
+                <RelatedSetting label="上传限制" value="尚未开放" />
+                <RelatedSetting label="界面主题" value="后续独立设置" />
               </div>
             </Card>
           </div>

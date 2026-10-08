@@ -51,6 +51,8 @@ pnpm exec vitest run --project integration --project media-tools --maxWorkers=1 
 
 [可查看原型](http://127.0.0.1:3194/settings/general)，无需账号，仅独立示例，不连接真实写入API。原型文件见 [目录说明](../../../design-plans/issue194-review/README.md)。保持服务供用户审批，不停止/清理。
 
+以下为首版真实截图。用户最新反馈否定其关联设置的空白和按钮布局；本表不作为第二版的视觉验收。
+
 | 视口/状态/主题          | 真实原型截图                                                    | 对照结论                                                                    |
 | ----------------------- | --------------------------------------------------------------- | --------------------------------------------------------------------------- |
 | 1440×1080 正常/浅色     | [桌面](./screenshots/issue194-prototype-desktop.png)            | 复用公共外壳；卡片顺序、两列外标签和固定保存栏保留；中性文字/Tips为建议改变 |
@@ -61,6 +63,16 @@ pnpm exec vitest run --project integration --project media-tools --maxWorkers=1 
 | 390×844 核对差异/浅色   | [差异](./screenshots/issue194-prototype-mobile-reconciled.png)  | 两项选择清楚，读取不改草稿，无重复通知遮挡底栏                              |
 
 功能与设计分开：Ego TaskSpace 2实际打开原型、切换状态、查看两端；编译首轮导航超时但已提交到页面，按技能在原Page继续观察成功，未另建空间。原型截图不算产品UI验证，完整断点/深色对照/键盘/复制拒绝/短视口与真实API状态未验证。原型状态和其他模块动作只演示交互方向，最终实现须接实际API并默认运行新增场景。用户设计审批已提出，尚未收到答复；Figma没有写入或同步，产品人工验收没有执行，尚无产品测试账号。
+
+## 第二版原型：关联设置布局修正
+
+2026-10-08 用户提供首版关联区域截图，指出空白过大、按钮排排坐。实际来源为本次独立原型：全宽Card内放280px按钮，尚未开放的品牌入口另占一张大卡。修正原型的具体布局，不删除公共设计规则。
+
+将Logo/Favicon和其他入口合并为一组“关联设置”，五条分隔线行。桌面名称左、值/状态右，可操作行有Chevron；手机值置名称下。默认存储与图片处理复用HeroUI ghost Button整行点击，未开放项为静态状态行。桌面56px/手机64px最小行高，不改站点信息、固定保存栏或模块保存边界。默认存储读取失败、空、停用的状态区分保留。没有产品UI或公共组件变更。
+
+新版源码聚焦设计复审通过；实际留白、两端截图和焦点表现尚未验证。上轮Ego TaskSpace2已handOff给用户，按ego-browser的user-owned控制边界请求恢复；没有得到明确授权前不claim或另开浏览器。原型服务3194继续保留，HTTP请求200。Figma尚未同步；用户整体原型批准仍待回复。首版截图与原评审保留为历史，不冒充新版视觉复核。
+
+本轮实际检查：`pnpm exec eslint design-plans/issue194-review/app/settings/general/page.tsx`、`pnpm exec tsc --project design-plans/issue194-review/tsconfig.json --noEmit`、改动文件Prettier与`git diff --check`。仅原型布局与说明变化，不机械重复未变后端的构建/全量测试。本轮以上检查均通过。
 
 ## 交付状态
 
