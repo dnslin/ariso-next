@@ -1,0 +1,36 @@
+Already up to date
+Done in 153ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-169-analytics-query/ariso
+
+ ❯ |integration| tests/integration/analytics/report-delivery.test.ts (1 test | 1 failed) 16737ms
+   × serves owner reports over real standalone HTTP and combines local bytes with S3 signed redirects 16733ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/analytics/report-delivery.test.ts > serves owner reports over real standalone HTTP and combines local bytes with S3 signed redirects
+Error: Delivery server did not become healthy: {"level":"info","time":"2026-10-08T03:22:45.420Z","module":"runtime.prestart","phase":"prestart","msg":"prestart completed"}
+{"level":"info","time":"2026-10-08T03:22:47.415Z","module":"runtime.console","msg":"▲ Next.js 16.3.5"}
+{"level":"info","time":"2026-10-08T03:22:47.417Z","module":"runtime.console","msg":"- Local:         http://127.0.0.1:55233"}
+{"level":"info","time":"2026-10-08T03:22:47.417Z","module":"runtime.console","msg":"- Network:       http://127.0.0.1:55233"}
+{"level":"info","time":"2026-10-08T03:22:47.418Z","module":"runtime.console","msg":"✓ Ready in 0ms"}
+{"level":"info","time":"2026-10-08T03:22:47.434Z","module":"runtime.console","msg":"✓ Running next.config took 13ms"}
+{"time":"2026-10-08T03:22:48.778Z","level":"info","module":"identity.setup","event":"setup-code","code":"[redacted]","msg":"请使用初始化码完成 setup"}
+
+ ❯ launchS3Delivery tests/integration/delivery/s3-fixture.ts:119:15
+    117|           .logs()
+    118|           .replace(/("code"\s*:\s*")[^"]+/g, '$1[redacted]');
+    119|         throw new Error(`Delivery server did not become healthy: ${log…
+       |               ^
+    120|       }
+    121|       try {
+ ❯ verifyReportDelivery tests/verification/analytics/report-delivery.ts:27:15
+ ❯ tests/integration/analytics/report-delivery.test.ts:8:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  11:22:39
+   Duration  20.74s (tests 82%, import 11%, transform 6%)

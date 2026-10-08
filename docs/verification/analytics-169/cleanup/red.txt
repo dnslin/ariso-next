@@ -1,0 +1,61 @@
+Already up to date
+Done in 48ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-169-analytics-query/ariso
+
+stdout | tests/integration/analytics/report-scale-runner.test.ts > removes its temporary database when the report directory is a file
+Seeding 1000 images and 365 days through production writer
+overview-7: cold=13.4ms warm p95=0.9ms
+overview-30: cold=1.2ms warm p95=1.0ms
+overview-90: cold=1.7ms warm p95=1.5ms
+image-image-000000: cold=0.6ms warm p95=0.5ms
+image-image-000099: cold=1.4ms warm p95=0.3ms
+
+stdout | tests/integration/analytics/report-scale-runner.test.ts > preserves both workload and report failures while removing its temporary database
+Cloning the pre-workload production-writer fixture and applying current production migrations
+
+ ❯ |integration| tests/integration/analytics/report-scale-runner.test.ts (4 tests | 2 failed | 2 skipped) 735ms
+   × removes its temporary database when the report directory is a file 600ms
+   × preserves both workload and report failures while removing its temporary database 134ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/analytics/report-scale-runner.test.ts > removes its temporary database when the report directory is a file
+AssertionError: expected [ 'ariso-report-scale-iGa40z', …(1) ] to deeply equal [ 'blocked' ]
+
+- Expected
++ Received
+
+  [
++   "ariso-report-scale-iGa40z",
+    "blocked",
+  ]
+
+ ❯ tests/integration/analytics/report-scale-runner.test.ts:93:36
+     91|       }),
+     92|     ).rejects.toMatchObject({ code: 'EEXIST', path: blocked });
+     93|     expect(readdirSync(directory)).toEqual(['blocked']);
+       |                                    ^
+     94|   } finally {
+     95|     vi.mocked(tmpdir).mockReset();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  |integration| tests/integration/analytics/report-scale-runner.test.ts > preserves both workload and report failures while removing its temporary database
+AssertionError: expected Error: EEXIST: file already exists, mkdir… { …(4) } to be an instance of AggregateError
+ ❯ tests/integration/analytics/report-scale-runner.test.ts:114:25
+    112|       rounds: 1,
+    113|     });
+    114|     await expect(result).rejects.toBeInstanceOf(AggregateError);
+       |                         ^
+    115|     await expect(result).rejects.toMatchObject({
+    116|       errors: [
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 2 skipped (4)
+   Start at  14:02:01
+   Duration  1.30s (tests 61%, import 30%, transform 9%)
+

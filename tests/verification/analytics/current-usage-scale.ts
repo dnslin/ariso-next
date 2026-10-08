@@ -1,7 +1,7 @@
 import { collectionFixture } from '../../integration/collections/helpers.ts';
 import {
   readUsage,
-  readOverview,
+  readCurrentCounts,
 } from '../../../src/server/analytics/usage.ts';
 import { writeFileSync } from 'node:fs';
 import os from 'node:os';
@@ -33,7 +33,7 @@ try {
   const samples: Record<string, number[]> = { usage: [], overview: [] };
   for (const [label, query] of Object.entries({
     usage: readUsage,
-    overview: readOverview,
+    overview: readCurrentCounts,
   })) {
     for (let i = 0; i < 11; i++) {
       const start = performance.now();
