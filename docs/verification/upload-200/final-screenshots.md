@@ -1,6 +1,6 @@
-# Issue #200 最终设计评审截图索引
+# Issue #200 设计评审截图索引
 
-真实页面来自audited完整四阶段运行。此表是截图入口；对照结论与差异见[独立设计评审](./design-review.md)，行为结果见[实际报告](./reports/design-review/upload-settings-audited.json)。报告有51条layout记录，其中两次服务器值不同决策共用相同截图名称，实际保存49张唯一图片，不把截图数量当成验证覆盖结论。
+下表真实页面来自audited完整四阶段运行，49张唯一图保留历史原文件。此表是截图入口；对照结论与差异见[独立设计评审](./design-review.md)，该轮行为结果见[实际报告](./reports/design-review/upload-settings-audited.json)。报告有51条layout记录，其中两次服务器值不同决策共用相同截图名称，不把截图数量当成验证覆盖结论。最新恢复后新增三图及报告另列于文末，不替换此前证据。
 
 | 状态                | 主题/视口         | 真实截图                                                                           |
 | ------------------- | ----------------- | ---------------------------------------------------------------------------------- |
@@ -53,3 +53,13 @@
 | consumer-api        | dark · 390×844    | [查看](./reports/design-review/upload-settings-consumer-api-dark-390.png)          |
 | session-expired     | dark · 1440×1080  | [查看](./reports/design-review/upload-settings-session-expired-dark-1440.png)      |
 | session-expired     | dark · 390×844    | [查看](./reports/design-review/upload-settings-session-expired-dark-390.png)       |
+
+## 恢复后增量
+
+用户授权恢复同一TaskSpace后新增焦点与实际409拒绝的真实截图。完整[恢复后报告](./reports/resumed/upload-settings.json)为passed，54条layout/52张唯一截图；本评审按新增三图做增量复核，不重复已通过应用检查。
+
+| 状态             | 主题/视口         | 真实截图                                                                  |
+| ---------------- | ----------------- | ------------------------------------------------------------------------- |
+| 键盘焦点         | Dark · 390×560    | [查看](./reports/resumed/upload-settings-keyboard-focus-dark-390x560.png) |
+| 实际PATCH409拒绝 | Light · 1440×1080 | [查看](./reports/resumed/upload-settings-save-refused-light-1440.png)     |
+| 实际PATCH409拒绝 | Light · 390×844   | [查看](./reports/resumed/upload-settings-save-refused-light-390.png)      |

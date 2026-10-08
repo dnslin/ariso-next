@@ -4,11 +4,11 @@
 
 ## 当前结论
 
-当前代码静态复审没有剩余必须修复发现。审计发现的会话失效资源释放、公共消费者旧入口以及字段范围错误覆盖已修复并复审。成功后的焦点恢复符合保留输入、页面与滚动位置的要求。细边框修复已静态核对，真实截图与独立设计复审仍需完成。
+当前代码静态复审没有剩余必须修复发现。审计发现的会话失效资源释放、公共消费者旧入口以及字段范围错误覆盖已修复并复审。最新上传四组真实浏览器验证通过，补强的键盘描边、GET 次数、非零滚动、真实拒绝及队列连续性均有实际数据支持。对应独立设计评审已完成并通过，结论见设计评审，不能由本功能审计代替。
 
-本结论不表示默认全量检查通过。此前本任务四组定向浏览器场景已通过，并由评审者只读核对 51 布局报告与当时的实际断言。默认浏览器全量入口已退出 1；在 library-copy 用户接管后中止，尚未执行本任务阶段。最新键盘描边、精确 GET 次数、非零滚动、真实 PATCH 409、队列 ID 连续性，以及 processing settings/recovery 和 tokens 新入口补验均未实跑，不能由旧通过结果替代。人工验收未完成，PR 必须保留草稿。
+本结论不表示默认全量检查通过。默认浏览器全量入口曾退出 1，在 library-copy 用户接管后中止；该历史报告不改写。恢复后最新定向上传四组为 passed/all、54 布局、5 条行为结论、browserErrors=[]，无 error/cleanupError。Token 四路分类消费者定向通过。processing settings 的本次入口断言通过，但整组随后在既有素材读取恢复场景失败；processing recovery 也在预览恢复点击失败，尚未执行旧会话恢复场景。library-copy 补跑再次因用户接管退出 1，后续七路公共消费者 smoke 未到达。用户明确确认 UI 人工验收通过；PR 仍按尚未完成的适用验证边界保持草稿。
 
-Ego 返回明确的用户接管停止要求。当前不操作 Ego、不夺回控制、不重试或改用其他浏览器；实现者已询问是否恢复，尚无恢复授权。继续离线审计和交付，浏览器增量及人工验收保持待恢复状态。
+先前 Ego 用户接管时停止所有浏览器操作，没有绕过控制边界。之后用户明确“ui 验收我通过了 继续 ego 测试”，授权恢复同一 TaskSpace 1，实际 ownership=agent 后由实现者继续。library-copy 补跑再次收到用户接管暂停后，浏览器工作已再次停止，没有重试、重复询问、替换空间或绕过。评审者始终只读源码和报告，没有操作 Ego 或重复运行应用检查。
 
 ## 审计范围与调用链
 
@@ -38,22 +38,33 @@ Ego 返回明确的用户接管停止要求。当前不操作 Ego、不夺回控
 1. **会话失效释放上传资源，已修复。** 首版 PATCH/核对 GET 401 只展示消息。现在 hook 的 expire 与初次查询 401 均调用既有 resetUpload；不在 render 中释放，也不清空编辑值。
 2. **公共消费者入口过期，已修复。** 首次静态审查定位四个场景的 processing 固定侧栏入口；默认实跑随后暴露 processing-settings-entry 根据 route 构造选择器的动态入口遗漏。该动态入口也已按 general 侧栏及图片处理分类修正，其余 route 维持原导航。原验证内容保留，补查没有剩余直接使用旧 processing 侧栏选择器。
 3. **字段范围错误被关系错误覆盖，已修复。** 0/201/99 时，同字段后续关系 issue 覆盖首条范围错误。共享映射现在按字段保留首项，新增单元回归断言三项范围消息；有效范围内的 101/100 仍返回批次/队列关系错误。实现者记录旧映射先失败、修复后 4 项通过，评审者没有重复执行。
-4. **错误边框与成功焦点，代码复审完成。** NumberField.Group 使用单一 1px 错误边框。后续检查发现 outline-none! 同时将 Tailwind 的 --tw-outline-style 和 outline-style 设为 none，原 outline-2! 不能恢复键盘描边；本组已补更具体 focus-visible 条件下的 outline-solid!，同时恢复变量和样式，不修改公共焦点规范。评审读取实际 Tailwind 4.3.3 utility 源码确认原因与修复。代表浏览器场景新增真实 Shift+Tab 后读取组 CSS，要求 data-focus-visible=true、2px、solid，并保存 keyboardFocus；新构建实跑结果仍待核对。成功解除禁用后的焦点恢复使用局部 opener 与 RAF，视觉结果仍交由真实截图与独立设计复审确认。
+4. **错误边框与成功焦点，复审完成。** NumberField.Group 使用单一 1px 错误边框。后续检查发现 outline-none! 同时将 Tailwind 的 --tw-outline-style 和 outline-style 设为 none，原 outline-2! 不能恢复键盘描边；本组已补更具体 focus-visible 条件下的 outline-solid!，同时恢复变量和样式，不修改公共焦点规范。评审读取实际 Tailwind 4.3.3 utility 源码确认原因与修复。恢复后的真实 Shift+Tab CSS 断言及 keyboardFocus 为 visible="true"、2px、solid。成功解除禁用后的焦点恢复使用局部 opener 与 RAF，实际输入焦点和非零滚动保持也已核对。
 
 ## 最终定向浏览器报告核对
 
-实际读取 `test-results/browser-upload-200/audited/upload-settings.json`：status=passed、phase=all，四组全部执行，51 个 layouts、5 条行为结论、browserErrors=[]，没有 error 或 cleanupError。评审者未重新运行浏览器，也不按截图数量推定设计通过。
+先前实际读取 `test-results/browser-upload-200/audited/upload-settings.json`：status=passed、phase=all，四组全部执行，51 个 layouts、5 条行为结论、browserErrors=[]，没有 error 或 cleanupError。该报告保留为历史阶段；以下最新增量以归档[恢复后报告](./reports/resumed/upload-settings.json)为准。评审者未重新运行浏览器，也不按截图数量推定设计通过。
 
 - `newSubmissionEdit` 的真实输入为 1 MiB/批次 1/队列 100；记录中只有一次 `/api/settings/upload` PATCH，发送且仅发送这三字段，状态 200、响应与最终 GET 均为 1/1048576 字节/1/100。
 - 行为测试实际断言非法输入值保留、首个错误字段焦点、零 PATCH、数据库不变；安全整数上限换算、Enter 提交、原页中性通知、原输入焦点与重载后的实际保存值也有断言。真实服务 422 保留字段与输入，未假造错误响应。
 - 旧提交实际为 50 MiB/20 批次及 20+1 分组，新提交为 1 MiB/1 批次及 1+1 分组；旧 submission GET 与原返回对象完全相等，实际 DB queue_limit 为旧 500、新 100。通过状态对应这些断言确实执行，不只是报告中的声明文本。
 - 恢复测试断言加载/真实 409 无伪造输入、保存禁用、提交已真实完成后的丢响应、输入保留、不确定状态禁止保存、显式读取重试不增加 PATCH、不同值两种明确选择与受控 503。公共消费者实际验证队列保存及真实 401 后 File/URL 释放。
 
-**恢复次数补强已静态复审，新增实跑结果待核对：** 51 布局报告对应旧脚本，旧脚本只精确断言 PATCH 为 1 次，GET 仅断言存在成功返回，因此不能单独证明其“one GET”声明。新脚本已只过滤 `/api/settings/upload`，精确断言自动确认成功 1 次 GET、自动确认失败 1 次、显式重试后总数 2 次、两种不同值选择前各 1 次、503 后 1 次；原输入与 PATCH 次数断言保留。请求概要仅记录 method/status 与故障标记。
+**最新补强已实跑并独立核对：** 恢复后报告为 passed/all、54 layouts、5 checks、browserErrors=[]，无 error/cleanupError。51 布局旧脚本仅精确断言 PATCH 次数，GET 只有存在性断言；这一证据缺口由新脚本的精确次数断言和实际 recoveryRequests 关闭，不倒改旧报告。
 
-同时增加已知 HTTP 拒绝场景：读取独立数据库原行、真实删除 upload_settings、编辑 63 MiB 后发真实 PATCH 并等待实际 409，断言输入仍为 63、单次 PATCH、GET 为 0、保存恢复可用，再采集两端 save-refused 截图；finally 按原字段及 updated_at 恢复确切原行。没有受控伪造 409。默认全量入口在抵达本任务前因用户接管而中止，新脚本及请求概要未实跑；不能用旧 51 布局报告替代新断言的执行。
+| 最新实际证据           | 报告值与断言核对                                                                                                                           |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| keyboardFocus          | visible="true"、width="2px"、style="solid"；先完成真实 Shift+Tab 与 CSS 断言，再采集 390×560 Dark 截图。                                   |
+| saveInteraction        | shell-content 为 100→100，window 为 0→0，focusedField=maxFileMiB。先等正文非零滚动，再提交和精确比较，证明保存后原焦点及非零正文位置保留。 |
+| queueContinuity        | beforeIds 与 afterIds 均恰好一个相同非空 UUID；源码先检查长度与非空，再比较，排除 undefined/空数组伪通过。仅保存独立 ID 数组。             |
+| 丢响应自动确认         | 真实 PATCH 200 并标记 responseLost，随后恰好一个 GET 200。                                                                                 |
+| 自动确认失败与显式重试 | 首个概要为一次真实 PATCH 200、一次受控失败 GET；重试概要仍只有同一 PATCH，GET 总数为 2，第二次 200。                                       |
+| 两种不同值选择         | 各为一次真实 PATCH 200/responseLost 和一次 GET 200；显式保留或使用已保存值的原输入断言保留。                                               |
+| 受控 gateway           | 恰好一条 PATCH 和一条 GET 200；PATCH 为浏览器边界模拟 503，概要不提供真实服务状态，不冒充远端真实 503。                                    |
+| 已知真实 409           | 恰好一条 PATCH 409、零 GET；输入 63 保留、保存恢复可用，采集两端 save-refused 状态。                                                       |
 
-另已静态复审新增 `saveInteraction` 和 `queueContinuity`：聚焦实际输入后滚动正文，并等待 shell-content.scrollTop > 0，再在保存前后精确比较 window.scrollY 与 shell-content.scrollTop，记录原字段焦点，排除仅测零滚动位置的伪覆盖。队列导航保存前先断言恰好一个非空字符串 ID，再精确比较回到上传后的同一 ID。快照只保存独立 ID 数组，不保存图片及关联对象，排除两次空数组或 undefined 造成的伪通过。旧报告尚无这些字段，实际数据待最终报告核对。所有新增校验保留原行为、焦点、字段、请求次数与几何断言，未绕过失败；它们仍属于本任务的浏览器证据，没有把上传职责扩散到 Token 或图片处理产品实现。
+真实拒绝场景读取独立数据库原行、删除 upload_settings，再发真实 PATCH；finally 按原字段及 updated_at 恢复确切原行，没有受控伪造 409。恢复后报告中 save-refused 两个布局及上述请求概要与这条调用链一致，顶层清理也没有错误。
+
+所有新增校验保留原行为、焦点、字段、请求次数与几何断言，未绕过失败；它们仍属于本任务的浏览器证据，没有把上传职责扩散到 Token 或图片处理产品实现。恢复后的 newSubmissionEdit 仍为真实 1/1/100 输入、唯一上传 PATCH 200、响应及 GET 为 1 MiB/1048576 字节/批次 1/队列 100，旧新 submission 与数据库快照断言继续执行。
 
 ## 默认检查失败分类与审计限制
 
@@ -68,12 +79,21 @@ Ego 返回明确的用户接管停止要求。当前不操作 Ego、不夺回控
 | 失败阶段      | 实际报告与当前边界                                                                                                                                              |
 | ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | tokens-1440   | lifecycle 的 api-toggle 被 alertdialog 通知拦截；尚未执行新增 general 分类消费者。该 API 路由的通知定位未因本次新增 general 条件改变，没有擅改 Token 产品逻辑。 |
-| processing    | settings 中旧动态 processing 侧栏选择器找不到目标；已作本任务必要静态修复，未补跑。                                                                             |
+| processing    | 默认轮 settings 中旧动态 processing 侧栏选择器找不到目标；已修复，恢复后本次入口断言通过，完整 settings 仍在后续素材恢复失败，详见下文。                        |
 | storage-cors  | 等待 role=alert 10 秒超时；保留失败，不推断根因或跳过。                                                                                                         |
 | library       | 等待 #email 10 秒超时；保留失败，不推断根因或跳过。                                                                                                             |
 | library-batch | 添加标签的完整点击目标可见性断言失败；未弱化断言或修改范围外产品。                                                                                              |
 | library-copy  | cross-page-native-copy 时用户接管，Ego 明确暂停；故障状态收集也因相同控制权边界停止，运行器退出。不是复制功能通过或产品断言失败。                               |
 
-processing 修复后静态核对调用链为 settings 阶段 → verifyProcessingSettings → verifyProcessingSettingsEntry；其 same-document/window/timeOrigin、真实 media GET 200 的暂停、读取阶段不展示缓存编辑器以及 20 字段精确保存断言都保留。recovery 阶段继续调用已适配入口的 verifyProcessingSessionRecovery。受影响 settings/recovery 和 Token 分类消费者尚未定向补验；恢复浏览器须获得明确指令，不能用静态修复覆盖原失败。
+processing 修复后调用链为 settings 阶段 → verifyProcessingSettings → verifyProcessingSettingsEntry；其 same-document/window/timeOrigin、真实 media GET 200 的暂停、读取阶段不展示缓存编辑器以及 20 字段精确保存断言都保留。恢复后实际 `processing --only settings` 退出 1；评审读取归档[settings 失败报告](./reports/resumed/processing-settings-failed.json)与 asset-retry 调用点，区分以下结果：
+
+- **本次入口断言实际完成。** 前两条 checks 记录 sameDocument/window/timeOrigin=true、真实 entry GET 200 暂停、loading 的 form/footer/fields 均为空，释放后 20 字段读取与 PATCH 200 完成；第二次失败读取仅显式重试，实际读取 quality=64。第三条 general→图片处理公共导航、真实保存及通知定位断言也完成。
+- **整组仍失败。** 报告 status=failed、phase/stage=settings，8 条已完成 checks 不能称为 suite 通过。后续既有素材读取恢复的 asset-retry 点击报 element is not connected；assetReadRecovery.activation=null、released=false，11 条真实 GET 200 均标记 responseLost，browserErrors=[]。没有修改 processing 产品文件、旧恢复断言或推定根因，错误为空也不抵消交互失败。
+
+评审另实际读取归档[recovery 失败报告](./reports/resumed/processing-recovery-failed.json)：status=failed、phase/stage=recovery、browserErrors=[]。前两条 checks 的真实初次 GET 200 暂停加载及读取失败后显式 retry 已完成；后续真实超预览限制后的状态刷新点击被 div 拦截，整组退出 1。调用顺序为 settingsRecovery → previewRecovery → sessionRecovery；失败发生在 previewRecovery，因此本轮未进入 verifyProcessingSessionRecovery。两条已完成检查不记作整组通过，未推断失败根因、修改范围外产品或降低原断言。
+
+归档[Token 分类消费者报告](./reports/resumed/tokens-consumers.json)为 status=passed、phase=consumers、16 layouts、browserErrors=[]。实际四路为 general/processing/account/API，桌面 1440 与手机 390、Light/Dark，原分类顺序、标签、图标及选中项断言均保留。本结果证明新增 general 的公共分类消费通过，不覆盖默认 tokens-1440 lifecycle 的通知遮挡失败。
+
+恢复后的局部通过不覆盖默认首轮失败，也不替代完整 processing settings/recovery 的未通过结果。评审实际读取归档[library-copy 再次停止摘要](./reports/resumed/library-copy-stopped.json)：补跑命令 `node scripts/verify-browser.mjs --suite library-copy` 在 cross-page-native-copy 阶段再次返回用户接管暂停，status=failed、checks=[]，退出 1。此摘要没有其他产品断言失败证据，不能据接管停止推断复制功能缺陷或通过；后续七路共享 route smoke 没有到达，因此不能声称已完成全部公共路由验证。浏览器已按新停止边界再次暂停，不继续 Ego 操作。
 
 评审者实际执行过 `git diff --check` 并通过；其余为只读源码、类型、库调用链、测试和已生成日志审计。遵守“不机械重复已通过检查”的边界，没有重新执行实现者的测试、构建或 lint，也没有做 mutation 实验。受控浏览器故障不能证明实际代理断网，静态审计不能证明物理触屏、软键盘或设备安全区。本次不审计发布镜像、容器或部署。

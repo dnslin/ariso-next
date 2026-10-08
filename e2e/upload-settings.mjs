@@ -107,6 +107,7 @@ try {
           'Keyboard NumberField focus has a visible 2px outline',
         );
         report.keyboardFocus = focus;
+        await tools.evidence('keyboard-focus', 390, 'dark', 560);
         report.checks.push(
           'Responsive 360/390/430/768/1440, both themes, 390x560, keyboard footer focus and usable controls',
         );

@@ -1,0 +1,459 @@
+{
+  "status": "failed",
+  "taskSpaceId": 1,
+  "origin": "http://ariso-55328.localhost:55328",
+  "phase": "recovery",
+  "checks": [
+    {
+      "check": "A fresh real initial settings GET returns 200 at the existing Fetch response boundary. Holding it exposes a single neutral desktop/mobile reading card with the actual title and explanation, no editable settings or save footer; releasing it fills quality 82 without an invented loading state.",
+      "responses": [
+        {
+          "path": "/api/settings/media",
+          "requestId": "interception-job-28.0",
+          "status": 200
+        }
+      ]
+    },
+    {
+      "check": "Blocking the real settings read exposes an initial read error; unblocking and explicit retry fills actual saved values."
+    }
+  ],
+  "layouts": [
+    {
+      "state": "settings-loading",
+      "theme": "light",
+      "height": 1080,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "分享管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        }
+      ],
+      "screenshot": "processing-settings-loading-light-1440.png",
+      "loading": {
+        "cards": 1,
+        "title": "正在读取处理设置",
+        "description": "请稍候，取得已保存设置后再编辑。",
+        "background": "rgb(255, 255, 254)",
+        "surface": "rgb(255, 255, 254)",
+        "inputs": 0,
+        "footer": false
+      }
+    },
+    {
+      "state": "settings-loading",
+      "theme": "dark",
+      "height": 844,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "图片处理",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "screenshot": "processing-settings-loading-dark-390.png",
+      "loading": {
+        "cards": 1,
+        "title": "正在读取处理设置",
+        "description": "请稍候，取得已保存设置后再编辑。",
+        "background": "rgb(34, 37, 47)",
+        "surface": "rgb(34, 37, 47)",
+        "inputs": 0,
+        "footer": false
+      }
+    },
+    {
+      "state": "read-failure",
+      "theme": "dark",
+      "height": 844,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "图片处理",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新读取设置",
+          "width": 118,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "screenshot": "processing-read-failure-dark-390.png"
+    }
+  ],
+  "browserErrors": [],
+  "limitations": [
+    "Only the runner’s disposable production runtime and database are changed. The manual preview and its data are untouched.",
+    "Held or lost fetch responses are real server responses; successful rules, task IDs and results are never fabricated.",
+    "Cancellation tests verify actual DELETE settlement and recovery. The existing media-tools integration suite verifies encoder shutdown while work is active.",
+    "Physical touch, soft keyboard and nonzero device safe areas are outside the current acceptance scope."
+  ],
+  "ownerSessionReused": false,
+  "stage": "recovery",
+  "settingsLoading": {
+    "responses": [
+      {
+        "path": "/api/settings/media",
+        "requestId": "interception-job-28.0",
+        "status": 200
+      }
+    ]
+  },
+  "previewReceiveRefresh": {
+    "before": {
+      "at": 1791439587994,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "button": {
+        "top": 840,
+        "bottom": 884,
+        "left": 33,
+        "right": 151,
+        "width": 118,
+        "height": 44
+      },
+      "disabled": false,
+      "main": {
+        "top": 64,
+        "bottom": 763,
+        "left": 0,
+        "right": 390,
+        "width": 390,
+        "height": 699
+      },
+      "scrollTop": 0,
+      "footer": {
+        "top": 763,
+        "bottom": 844,
+        "left": 0,
+        "right": 390,
+        "width": 390,
+        "height": 81
+      },
+      "hits": []
+    },
+    "failure": {
+      "at": 1791439591606,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "button": {
+        "top": 634,
+        "bottom": 678,
+        "left": 33,
+        "right": 151,
+        "width": 118,
+        "height": 44
+      },
+      "disabled": false,
+      "main": {
+        "top": 64,
+        "bottom": 763,
+        "left": 0,
+        "right": 390,
+        "width": 390,
+        "height": 699
+      },
+      "scrollTop": 206,
+      "footer": {
+        "top": 763,
+        "bottom": 844,
+        "left": 0,
+        "right": 390,
+        "width": 390,
+        "height": 81
+      },
+      "hits": [
+        {
+          "tag": "BUTTON",
+          "slot": "button",
+          "testId": "processing-preview-refresh",
+          "className": "button button--md button--outline min-h-11 w-fit rounded-xl"
+        },
+        {
+          "tag": "DIV",
+          "slot": "card",
+          "testId": null,
+          "className": "card card--default min-w-0 gap-5 rounded-[20px] border border-border bg-surface px-4 py-5 shadow-none min-[1200px]:gap-6 min-[1200px]:p-6"
+        },
+        {
+          "tag": "SECTION",
+          "slot": null,
+          "testId": "processing-preview",
+          "className": "grid gap-5 pb-10 min-[1200px]:gap-6"
+        },
+        {
+          "tag": "DIV",
+          "slot": null,
+          "testId": null,
+          "className": null
+        }
+      ]
+    }
+  },
+  "error": "ElementResolutionError: page.click timed out after 3000ms: page.click failed: <div> intercepts pointer events\n    at #retryElementAction (file:////[eval1]:18884:27)\n    at async file:////[eval1]:18968:29\n    at async file:////[eval1]:16691:28",
+  "originalSettingsRestored": true,
+  "browserRequests": {
+    "requests": [
+      {
+        "path": "/api/auth/get-session",
+        "method": "GET",
+        "status": 200,
+        "sessionNull": false
+      },
+      {
+        "path": "/api/media/previews",
+        "method": "POST",
+        "options": {
+          "target": "compressed",
+          "settings": {
+            "compressionEnabled": true,
+            "outputFormat": "webp",
+            "quality": 82,
+            "maxEdge": null,
+            "jpegBackground": "#FFFFFF",
+            "watermarkMode": "off",
+            "watermarkAssetId": null,
+            "watermarkText": "",
+            "watermarkFont": "chinese",
+            "watermarkFontSize": 3,
+            "watermarkColor": "#FFFFFF",
+            "watermarkStrokeColor": "#000000",
+            "watermarkStrokeWidth": 0,
+            "watermarkOpacity": 50,
+            "watermarkPosition": "bottom-right",
+            "watermarkMargin": 2,
+            "watermarkWidth": 20
+          }
+        },
+        "fileName": "processing-oversized.png",
+        "status": 413,
+        "response": {
+          "code": "MEDIA_PREVIEW_FILE_TOO_LARGE",
+          "message": "File exceeds preview limit",
+          "previewId": "be972f54-c665-4097-a031-5af0cfb09990"
+        }
+      },
+      {
+        "path": "/api/media/previews/be972f54-c665-4097-a031-5af0cfb09990",
+        "method": "GET",
+        "status": 200,
+        "response": {
+          "id": "be972f54-c665-4097-a031-5af0cfb09990",
+          "target": null,
+          "status": "failed",
+          "result": null,
+          "unavailableReason": null,
+          "error": "MEDIA_PREVIEW_FILE_TOO_LARGE: File exceeds preview limit",
+          "cleanupStatus": "deleted",
+          "cleanupError": null,
+          "createdAt": "2026-10-08T06:06:27.781Z",
+          "finishedAt": "2026-10-08T06:06:27.802Z",
+          "expiresAt": null,
+          "updatedAt": "2026-10-08T06:06:27.867Z",
+          "resultUrl": null
+        }
+      },
+      {
+        "path": "/api/auth/get-session",
+        "method": "GET",
+        "status": 200,
+        "sessionNull": false
+      },
+      {
+        "path": "/api/media/previews/be972f54-c665-4097-a031-5af0cfb09990",
+        "method": "GET",
+        "status": 200,
+        "response": {
+          "id": "be972f54-c665-4097-a031-5af0cfb09990",
+          "target": null,
+          "status": "failed",
+          "result": null,
+          "unavailableReason": null,
+          "error": "MEDIA_PREVIEW_FILE_TOO_LARGE: File exceeds preview limit",
+          "cleanupStatus": "deleted",
+          "cleanupError": null,
+          "createdAt": "2026-10-08T06:06:27.781Z",
+          "finishedAt": "2026-10-08T06:06:27.802Z",
+          "expiresAt": null,
+          "updatedAt": "2026-10-08T06:06:27.867Z",
+          "resultUrl": null
+        }
+      },
+      {
+        "path": "/api/auth/get-session",
+        "method": "GET",
+        "status": 200,
+        "sessionNull": false
+      },
+      {
+        "path": "/api/media/previews/be972f54-c665-4097-a031-5af0cfb09990",
+        "method": "GET",
+        "status": 200,
+        "response": {
+          "id": "be972f54-c665-4097-a031-5af0cfb09990",
+          "target": null,
+          "status": "failed",
+          "result": null,
+          "unavailableReason": null,
+          "error": "MEDIA_PREVIEW_FILE_TOO_LARGE: File exceeds preview limit",
+          "cleanupStatus": "deleted",
+          "cleanupError": null,
+          "createdAt": "2026-10-08T06:06:27.781Z",
+          "finishedAt": "2026-10-08T06:06:27.802Z",
+          "expiresAt": null,
+          "updatedAt": "2026-10-08T06:06:27.867Z",
+          "resultUrl": null
+        }
+      },
+      {
+        "path": "/api/auth/get-session",
+        "method": "GET",
+        "status": 200,
+        "sessionNull": false
+      },
+      {
+        "path": "/api/media/previews/be972f54-c665-4097-a031-5af0cfb09990",
+        "method": "GET",
+        "status": 200,
+        "response": {
+          "id": "be972f54-c665-4097-a031-5af0cfb09990",
+          "target": null,
+          "status": "failed",
+          "result": null,
+          "unavailableReason": null,
+          "error": "MEDIA_PREVIEW_FILE_TOO_LARGE: File exceeds preview limit",
+          "cleanupStatus": "deleted",
+          "cleanupError": null,
+          "createdAt": "2026-10-08T06:06:27.781Z",
+          "finishedAt": "2026-10-08T06:06:27.802Z",
+          "expiresAt": null,
+          "updatedAt": "2026-10-08T06:06:27.867Z",
+          "resultUrl": null
+        }
+      }
+    ],
+    "faultUsed": false,
+    "fault": null
+  },
+  "finishedAt": "2026-10-08T06:06:32.925Z"
+}

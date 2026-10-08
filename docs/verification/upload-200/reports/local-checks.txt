@@ -13,3 +13,16 @@ Final preview: actual health HTTP200 and initialization succeeded; browser login
 Release/container checks: not applicable to this daily PR; not executed
 Final affected format check: exit 0 (tests/unit/upload/limits-api.test.ts and docs/verification/upload-200)
 Private manual passwords and setup codes scanned against 139 candidate files: no matches
+
+After user UI acceptance and explicit Ego resume authorization:
+node scripts/verify-browser.mjs --suite upload-settings: exit 0, four phases / 54 layouts / 52 unique screenshots, browserErrors empty, no cleanup error
+node scripts/verify-browser.mjs --suite processing --only settings: exit 1, eight completed partial checks, later asset retry element detached
+node scripts/verify-browser.mjs --suite processing --only recovery: exit 1, two completed partial checks, later preview refresh click intercepted; old session recovery not reached
+node scripts/verify-browser.mjs --suite tokens --only consumers: exit 0, all four routes / two viewports / both themes, 16 layouts, browserErrors empty
+node scripts/verify-browser.mjs --suite library-copy: exit 1 after another user-control pause; later seven-route consumer smoke not reached
+Commands used Node 24.18.1, existing TaskSpace 1 and separate disposable runtime data; manual preview unchanged
+Added keyboard screenshot assertion: eslint and affected Prettier check exit 0
+Final resumed evidence/task-card format check: exit 0
+node docs/tasks/check.mjs: 120 tasks / 298 requirements passed
+UI manual acceptance: user explicitly confirmed passed in this conversation
+Independent code and incremental design reviews: passed for this Issue's final upload changes; broader default failures retained
