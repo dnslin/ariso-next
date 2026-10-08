@@ -74,7 +74,7 @@ macOS arm64，Node 24.18.1，pnpm 11.19.0；使用已有 Ego Lite TaskSpace 1，
 | `node scripts/verify-browser.mjs --suite library`                    | 独立新数据环境整组通过，77 checks、327 layouts；原匿名访问、详情、查看器、回收站和会话恢复断言均执行；[报告](./reports/resumed/library-complete.json)                                                                                                                   |
 | 默认此前未执行的后段                                                 | `--suite trash`（查询/批量和清理）、`shell-navigation`、`albums`、`album-cover`、`tags`、`upload-regression`（上传/polling）、`upload-input`、`upload`（submission/relations）、`sharing-management` 九组全部退出 0；[命令与结果](./reports/resumed/tail-complete.json) |
 
-剩余存储 CORS 边界：首轮已完成 6 条检查，随后 [storage-cors-ui](../../../e2e/storage-cors-ui.mjs) 的读失败恢复分支等待 `[role="alert"]` 10 秒超时。独立审计读到实际 CorsScreen 的错误 Alert 未传 role，当前 HeroUI AlertRoot 也不自动输出该属性，存在等待语义与当前 DOM 的具体不匹配；尚无当时 DOM/事件证据证明全部根因。本次没有修改该调用链。现有运行器没有 storage-cors 定向入口，storage-admin 不会执行此组；未新增范围外入口或重复完整已通过模块，该组保留未解决，不将其他通过代替它。
+当时剩余存储 CORS 边界（本次授权修复见后文）：首轮已完成 6 条检查，随后 [storage-cors-ui](../../../e2e/storage-cors-ui.mjs) 的读失败恢复分支等待 `[role="alert"]` 10 秒超时。独立审计读到实际 CorsScreen 的错误 Alert 未传 role，当前 HeroUI AlertRoot 也不自动输出该属性，存在等待语义与当前 DOM 的具体不匹配；尚无当时 DOM/事件证据证明全部根因。本次没有修改该调用链。现有运行器没有 storage-cors 定向入口，storage-admin 不会执行此组；未新增范围外入口或重复完整已通过模块，该组保留未解决，不将其他通过代替它。
 
 原始初轮与补跑记录：[unit 首轮](./reports/unit-first.txt)、[unit 失败项](./reports/unit-timeout-retry.txt)、[HTTP 与重启](./reports/settings-http.txt)。集成原始日志包含临时初始化码，仅保留在本机；仓库记录结果摘要，不公开凭证。通知测量通过真实 hover 展开 HeroUI 堆叠后执行原点击目标断言，未减弱 44px 门槛，不以展开结果声称折叠状态已实测。
 
@@ -116,13 +116,27 @@ macOS arm64，Node 24.18.1，pnpm 11.19.0；使用已有 Ego Lite TaskSpace 1，
 
 真实正常状态截图：[1440 Light](./reports/lifetime/upload-settings-lifecycle-ready-light-1440.png)、[390 Dark](./reports/lifetime/upload-settings-lifecycle-ready-dark-390.png)，对应已有 Figma `470:10085/470:10377`。实现者实际查看两张整页截图，沿用获批布局和控件；本轮不改变视觉，不声称新增设计评审或 Figma 写入。此前独立设计评审和用户人工 UI 验收保留。测试完成后一次 `finish({keep:[]})` 结束空间 4，原人工预览继续运行。
 
-独立正确性评审复核实际报告与两项测试修正；代码/测试及本次行为证据可接受。原存储 CORS 未解决，PR 继续保持草稿。
+独立正确性评审复核实际报告与两项测试修正；代码/测试及本次行为证据可接受。当时原存储 CORS 未解决，PR 保持草稿；本次授权修复见后文。
+
+## 本次授权的 CORS 告警修复（2026-10-08）
+
+用户随后明确要求修复前述 CORS 问题。本次仅修正读取失败提示的可访问语义，并补充完整 CORS 定向验证入口。实际安装的 HeroUI 3.2.6 AlertRoot 渲染 div，未默认带 `role="alert"`；CorsScreen 原读取错误分支也未传此属性。真实旧生产构建在相同读取故障场景复现超时：[浏览器红证据](./reports/cors-alert/browser-alert-red.json)。实际 CorsScreen/HeroUI 的 SSR 回归先失败，补上属性后通过：[单元红](./reports/cors-alert/unit-alert-red.txt)、[单元绿](./reports/cors-alert/unit-alert-green.txt)。未调整样式、数据契约、CORS 协议或检测结果，也未改写原失败记录。
+
+验证调用链：默认 `test:browser` 的原生 storage-cors 阶段保持执行既有完整脚本；新增 `--suite storage-cors` 复用同一阶段与本地 HTTP CORS fixture，不新增部分 `--only` 或重复默认阶段。runner/plan/stages 三文件 273 项通过，覆盖原 suite/only 组合、新入口及无关参数拒绝。新单元文件使用 `.test.ts`，确实被默认 glob 收录；默认单元 128 文件、1727 项全通过。冻结安装、构建、lint、typecheck 均退出 0；构建保留既有可选平台 tracing 诊断。实际命令和边界统一见[检查记录](./reports/cors-alert/local-checks.json)。最终全量 `pnpm run format:check`、受影响 E2E 文件 ESLint/语法及 `node docs/tasks/check.mjs`（120 任务、298 需求）通过。服务端/HTTP/数据库输入未变，既有集成结果保留，不称本轮新跑集成通过。
+
+同一 Ego Lite TaskSpace 5 使用独立账号和一次性数据，先旧 bundle 红、再新 bundle 验证。新 bundle 已通过读错误角色、实际错误正文、禁止检测及键盘重载恢复；随后清理完成的立即焦点断言失败：[失败报告](./reports/cors-alert/browser-focus-failed.json)。读取当时真实页面，焦点已在弹窗“刷新清理状态”按钮：[诊断](./reports/cors-alert/cleanup-focus-diagnostic.json)。CorsDialog 原代码明确在下一动画帧恢复焦点，标题更新先于该回调。测试现等待真实焦点恢复后测量，保留原严格断言；没有主动给测试页面聚焦、固定延迟、延长超时或改动弹窗交互。
+
+最终同空间完整 CORS 重跑退出 0：[完整报告](./reports/cors-alert/browser-final.json)、[运行器](./reports/cors-alert/runner-final.json)。12 条检查、54 页面布局、24 弹窗布局完成；读取错误真实 role/text、键盘重载、检测 PUT/GET/HEAD、内容核验、清理失败及重试、配置/来源失效、离开页面后的生产清理维护循环均执行。最终焦点为弹窗内“刷新清理状态”按钮，[真实焦点截图](./reports/cors-alert/cors-cleanup-keyboard-focus.png)。没有 error/cleanupError，临时数据与测试进程按原运行器回收；任务成功后一次 finish({keep:[]}) 结束空间 5。原人工预览保持运行。
+
+设计基准实际读取 Figma `74sT9Hrf8G4czcWeTkET5b` 的 `346:4712`（1440×1080）及 `346:4807`（390×844）设计信息和截图。读取错误没有专属状态节点，按现有公共结构和 HeroUI 错误状态审查，不把“检测失败”节点冒充“读取失败”设计。独立设计评审按同视口先核对公共侧栏/手机品牌头部/返回入口和整页层级，再核对错误原因、重载按钮与检测入口移除。四张真实读取错误图：[桌面浅色](./reports/cors-alert/cors-read-error-light-1440.png)、[桌面深色](./reports/cors-alert/cors-read-error-dark-1440.png)、[手机浅色](./reports/cors-alert/cors-read-error-light-390.png)、[手机深色](./reports/cors-alert/cors-read-error-dark-390.png)。布局和视觉未改变；返回/重载点击目标至少 44px，双主题可读，键盘重载实际恢复且不导航。无需新原型或 Figma 写入；不声称新增人工读屏器验收。
+
+上述读取故障仅改变真实响应交付，检测阶段使用实际浏览器 PUT/GET/HEAD 与真实本地 HTTP fixture。本轮未重新请求 R2/SeaweedFS/AWS，不冒充外部云服务实测或重新执行全部默认浏览器流程；既有云服务/集成与默认首轮失败证据保留。功能完整组及设计局部复审分别记录在[独立评审增量](./code-review.md#cors-告警与验证入口增量复审)。
 
 ## 独立评审与交付状态
 
 [独立代码评审](./code-review.md)使用 code-review-and-quality，核对需求、模块职责、认证与 Origin、事务、资源生命周期、焦点、错误优先级、运行器默认入口和测试有效性；修复 401 队列释放、错误文案覆盖、错误边框和成功焦点后，当前无剩余必须修复的静态发现。评审不机械重跑实现者已通过的检查。功能与设计评审分别记录，静态结论不代替真实页面验证。
 
-原交付的上传自有 HTTP/重启、四组浏览器及独立设计评审完成，用户明确确认 UI 人工验收通过。本轮 P2 修复代码和独立正确性/维护性复审完成，最新默认全量单元通过；新迟到响应浏览器四场景和消费者已补验通过，首轮与定向失败仍分别保留。原交付的默认单元/集成首轮及默认浏览器失败记录仍保留。第三轮图片处理 settings/recovery、Token 生命周期、图库完整组、批量与复制、此前未执行后段均已通过。独立图库通过不证明默认当时的认证状态或唯一根因；存储 CORS 仍未解决，不能称全量通过。因此 PR 必须保持草稿。Release、镜像、容器、发布和部署不属于日常 PR 验证边界，均未执行。未合并、关闭 Issue 或清理分支/worktree/预览。
+原交付的上传自有 HTTP/重启、四组浏览器及独立设计评审完成，用户明确确认 UI 人工验收通过。本轮 P2 修复代码和独立正确性/维护性复审完成，最新默认全量单元通过；新迟到响应浏览器四场景和消费者已补验通过，首轮与定向失败仍分别保留。原交付的默认单元/集成首轮及默认浏览器失败记录仍保留。第三轮图片处理 settings/recovery、Token 生命周期、图库完整组、批量与复制、此前未执行后段均已通过。独立图库通过不证明默认当时的认证状态或唯一根因。本次授权的 CORS 修复及完整定向重跑已经通过；各模块后续补验不改写首次默认全量失败，也不称新单轮默认全量通过。PR 继续保持草稿；本次没有新增人工读屏器验收。Release、镜像、容器、发布和部署不属于日常 PR 验证边界，均未执行。未合并、关闭 Issue 或清理分支/worktree/预览。
 
 ## 人工验收
 
@@ -132,7 +146,7 @@ macOS arm64，Node 24.18.1，pnpm 11.19.0；使用已有 Ego Lite TaskSpace 1，
 
 ## 提交与远端状态
 
-原实现提交 `f3831f05` 及此前补验已推送到 `codex/issue-200-upload-settings`，关联 [草稿 PR #264](https://github.com/dnslin/ariso-next/pull/264)。实际 `gh pr view` 返回 OPEN、isDraft=true、MERGEABLE；`gh pr checks` 返回 `no checks reported`，statusCheckRollup 为空，没有远端 CI 通过结论，也不等待不存在的工作流。人工验收和上传增量证据已完成；最新补验结果见上表，适用默认检查仍有未解决失败，草稿状态保持。
+原实现提交 `f3831f05` 及此前补验已推送到 `codex/issue-200-upload-settings`，关联 [草稿 PR #264](https://github.com/dnslin/ariso-next/pull/264)。实际 `gh pr view` 返回 OPEN、isDraft=true、MERGEABLE；`gh pr checks` 返回 `no checks reported`，statusCheckRollup 为空，没有远端 CI 通过结论，也不等待不存在的工作流。人工验收和上传增量证据已完成；最新补验结果见上表，首次默认全量的失败和补跑分别记录，本次 CORS 定向完整重验已通过；草稿状态保持。
 
 本轮 P2 修复提交 `3954ded0` 已推送至同一分支，并更新 PR 说明。推送后实际回读 PR #264 为 OPEN、isDraft=true、MERGEABLE，head=`3954ded07c0930a6df18381d0547c334f76af3a3`；`gh pr checks` 返回 `no checks reported`，不记作 CI 通过。用户随后授权新建空间 4，本轮新增迟到响应及消费者补验通过，具体失败与重跑见上表。
 

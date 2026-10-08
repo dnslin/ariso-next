@@ -615,9 +615,8 @@ try {
         'docs/tasks/evidence/EV-STORAGE-01/README.md';
     }
     if (
-      suite === 'storage-admin' &&
-      only !== 'live' &&
-      only !== 'regressions'
+      suite === 'storage-cors' ||
+      (suite === 'storage-admin' && only !== 'live' && only !== 'regressions')
     ) {
       corsFixture = await startCorsFixture(origin);
       focusedConfig.corsFixture = corsFixture.endpoint;

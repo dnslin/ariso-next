@@ -166,6 +166,10 @@ const suites = {
     },
     config: (only) => ({ storageNavigation: only === undefined }),
   },
+  'storage-cors': {
+    primaryPage: true,
+    stages: [['storage-cors', 'storageCors']],
+  },
   processing: {
     only: ['representative', 'settings', 'preview', 'recovery', 'consumers'],
     stages: (only) =>

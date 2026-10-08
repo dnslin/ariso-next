@@ -134,7 +134,7 @@ export function CorsScreen({
             正在读取直传设置
           </p>
         ) : query.isError ? (
-          <Alert status="danger">
+          <Alert status="danger" role="alert">
             <Alert.Content>
               <Alert.Title>无法读取直传设置</Alert.Title>
               <Alert.Description>{query.error.message}</Alert.Description>

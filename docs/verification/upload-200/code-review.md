@@ -140,3 +140,17 @@ processing 与 Token 补跑未改变产品、原点击方法、超时或断言�
 用户明确要求重建空间后，新增生命周期真实浏览器场景补验完成。独立评审实际读取首轮 failed、第一次 consumers retry failed 与最终 passed 三份报告和仅测试文件的8行焦点等待/1行手机选择器修正。首轮只证明 focusPreserved=false，不据它声称唯一根因；实际代码的当前保存 RAF 与脚本未等待恢复存在时序缺口。修正后最终四项均明确保持焦点，手机按实际 HeroUI role/data-key 点击，原导航、卸载及身份断言保留。没有修改产品、固定延时、降低断言或跳过失败。
 
 最终消费者报告的四项均为真实 50→60 两次保存、旧响应交付后 active provider GET60、独立 owner HTTP60、同 document/window/timeOrigin、焦点和通知保持、无旧新增通知、原非空队列 ID 和真实55 MiB入队。公共四设置路由双主题双视口及真实401释放File/Blob URL也通过，browserErrors=[]，无error/cleanupError。首轮前三phase完成证据与最终consumer通过合并覆盖此次受影响流程，不称单轮全部通过。原存储 CORS 和无远端 CI 通过边界仍保留。
+
+## CORS 告警与验证入口增量复审
+
+2026-10-08，用户明确授权修复前述 CORS 读取错误提示。独立 code-review-and-quality 评审实际读取产品、HeroUI 类型与源码、SSR 红绿、完整运行器调用链和最终浏览器报告；本次增量 Approve，无新增 Critical/Required（P1/P2）或 Optional。评审者未重复运行实现者已通过的检查。
+
+实际 HeroUI AlertRoot 不自动添加角色，现只给 CorsScreen 读取错误分支补 `role="alert"`，不改变请求/状态/重载或检测协议。SSR 使用真实 CorsScreen/HeroUI，mock 仅为查询状态和外层 shell；证明输出语义，不冒充网络或实际读屏器。浏览器定位收窄到本屏读取错误，核对实际正文，保留无检测及键盘重载恢复。新定向入口调用完整既有 CORS 阶段与实际本地 HTTP fixture，默认原生阶段未删除/重复；原 suite/only 和参数归属单元覆盖通过，fixture 保持原 finally 清理。
+
+第一次新构建完整组在清理完成后的立即焦点测量失败，实际页面随后已回焦至弹窗按钮。原 CorsDialog 的恢复在 requestAnimationFrame；新增等待仅观察 activeElement，不操作焦点/DOM，不用固定延时，原严格断言仍执行，持续不回焦仍超时失败。独立复审确认等待符合实际行为，无需产品修改。
+
+最终[完整 CORS](./reports/cors-alert/browser-final.json)与[运行器](./reports/cors-alert/runner-final.json)均 passed，12 检查、54 页面布局、24 弹窗布局。读取错误 role/text、双主题两视口、键盘重载与清理后焦点通过。评审确认完整错误/失效/离页清理场景执行完毕后，脚本才核对 fixture.objects=[]（实际为空）和 OPTIONS（实际5次），退出登录并写 passed。临时目录回收且无 error/cleanupError；报告没有通用 browserErrors 字段，不据缺字段声称控制台零错误。
+
+独立设计评审实际读取 Figma `346:4712/346:4807` 的设计信息与截图，查看四张同视口真实读取错误图、清理完成四图及键盘焦点图，并检查检测失败/待清理/修订失效代表图。先核对整页公共结构，再核对错误正文、44px重载、无检测控件及清理回焦；本次语义修复未产生视觉差异，局部设计复审通过。读取错误没有专属稿，不把检测失败画板冒充它；没有新增 Figma 写入或人工验收。
+
+旧构建缺角色红和首次新构建焦点测量失败均保留。最终定向通过不改写原默认全量失败，也不证明本轮 R2/SeaweedFS、实际读屏器、其他浏览器或发布容器验证。原上传 UI 人工验收保留；本次没有视觉/产品交互方案变更。

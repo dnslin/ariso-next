@@ -1,0 +1,1369 @@
+{
+  "status": "failed",
+  "taskSpaceId": 5,
+  "checks": [
+    "Actual missing, controlled deleted and existing Local storage routes expose their real 404/400 errors without runnable CORS controls or probe creation; CORS boundary remains separate from the management editor",
+    "local-http-fixture: authenticated HTTP request with wrong Origin rejected before issuing a probe (HTTP contract check, not a browser CORS claim)",
+    "local-http-fixture: real UI activation invokes production browser PUT/GET/HEAD, byte equality, server verification/cleanup and persisted passed result",
+    "CORS example matches the current origin and methods; keyboard dialog focus/Escape restoration, short viewport, real clipboard success and Permissions-Policy denial with complete selected text verified; actual alternate-origin access shows configured-address guidance",
+    "Audit regression: refreshing a cached passed result into a real read failure removes passed title/state; retry restores the actual persisted result",
+    "A 180-character saved name remains usable at desktop/mobile widths; a connected disabled storage can be tested before enabling"
+  ],
+  "services": [
+    {
+      "service": "local-http-fixture",
+      "storageId": "fb04e3c2-12d7-4e48-92ba-5b66b8737352",
+      "probes": [
+        {
+          "key": "probes/4941d46d-f5ce-41d2-844c-eede83595e98",
+          "results": [
+            {
+              "method": "PUT",
+              "status": 200,
+              "responseType": "cors"
+            },
+            {
+              "method": "GET",
+              "status": 200,
+              "responseType": "cors"
+            },
+            {
+              "method": "HEAD",
+              "status": 200,
+              "responseType": "cors"
+            }
+          ],
+          "report": {
+            "probeId": "4941d46d-f5ce-41d2-844c-eede83595e98",
+            "storageId": "fb04e3c2-12d7-4e48-92ba-5b66b8737352",
+            "revision": 1,
+            "origin": "http://ariso-51599.localhost:51599",
+            "passed": true,
+            "stale": false,
+            "cleanupPending": false,
+            "testedAt": "2026-10-08T09:28:48.110Z",
+            "stages": [
+              {
+                "stage": "browser-put",
+                "status": "passed",
+                "evidence": {
+                  "method": "PUT",
+                  "status": 200,
+                  "responseType": "cors"
+                }
+              },
+              {
+                "stage": "browser-get",
+                "status": "passed",
+                "evidence": {
+                  "method": "GET",
+                  "status": 200,
+                  "responseType": "cors"
+                }
+              },
+              {
+                "stage": "browser-head",
+                "status": "passed",
+                "evidence": {
+                  "method": "HEAD",
+                  "status": 200,
+                  "responseType": "cors"
+                }
+              },
+              {
+                "stage": "verify",
+                "status": "passed",
+                "evidence": {
+                  "byteSize": 25
+                }
+              },
+              {
+                "stage": "delete",
+                "status": "passed"
+              }
+            ]
+          }
+        }
+      ],
+      "connection": {
+        "probeId": "7d90e7e4-2089-4754-845b-d5f1c834c94b",
+        "storageId": "fb04e3c2-12d7-4e48-92ba-5b66b8737352",
+        "revision": 1,
+        "passed": true,
+        "stale": false,
+        "cleanupPending": false,
+        "stages": [
+          {
+            "stage": "configuration",
+            "status": "passed",
+            "evidence": {
+              "basis": "configuration-apis",
+              "automaticVersionOrLockDetection": true,
+              "versioning": {
+                "status": "unversioned",
+                "metadata": {
+                  "httpStatusCode": 200,
+                  "requestId": "cors-browser-fixture",
+                  "attempts": 1,
+                  "totalRetryDelay": 0
+                }
+              },
+              "lock": {
+                "status": "not-configured",
+                "serviceCode": "ObjectLockConfigurationNotFoundError",
+                "metadata": {
+                  "httpStatusCode": 404,
+                  "requestId": "cors-browser-fixture",
+                  "attempts": 1,
+                  "totalRetryDelay": 0
+                }
+              }
+            }
+          },
+          {
+            "stage": "write",
+            "status": "passed",
+            "evidence": {
+              "httpStatusCode": 200,
+              "requestId": "cors-browser-fixture",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          {
+            "stage": "read",
+            "status": "passed",
+            "evidence": {
+              "httpStatusCode": 200,
+              "requestId": "cors-browser-fixture",
+              "attempts": 1,
+              "totalRetryDelay": 0
+            }
+          },
+          {
+            "stage": "anonymous",
+            "status": "passed",
+            "evidence": {
+              "url": "http://127.0.0.1:51615/cors-test/ariso/fb04e3c2-12d7-4e48-92ba-5b66b8737352/probes/7d90e7e4-2089-4754-845b-d5f1c834c94b",
+              "httpStatusCode": 403,
+              "serviceCode": "AccessDenied",
+              "requestId": "cors-browser-fixture",
+              "basis": "access-denied"
+            }
+          },
+          {
+            "stage": "delete",
+            "status": "passed",
+            "evidence": {
+              "metadata": {
+                "httpStatusCode": 204,
+                "requestId": "cors-browser-fixture",
+                "attempts": 1,
+                "totalRetryDelay": 0
+              }
+            }
+          }
+        ],
+        "deploymentRequirement": "Bucket 必须保持私有，关闭公共域名/CDN 等旁路，不设置选择性公开规则；本测试不枚举公共别名。",
+        "testedAt": "2026-10-08T09:28:46.869Z",
+        "ownerConfirmation": {
+          "wholeBucketHasNoLockRules": false,
+          "confirmedAt": null
+        }
+      }
+    }
+  ],
+  "layouts": [
+    {
+      "state": "missing-storage",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "重新加载",
+          "width": 90,
+          "height": 44
+        }
+      ],
+      "screenshot": "cors-missing-storage-light-1440.png"
+    },
+    {
+      "state": "missing-storage",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "重新加载",
+          "width": 90,
+          "height": 44
+        }
+      ],
+      "screenshot": "cors-missing-storage-light-390.png"
+    },
+    {
+      "state": "missing-storage",
+      "theme": "dark",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "重新加载",
+          "width": 90,
+          "height": 44
+        }
+      ],
+      "screenshot": "cors-missing-storage-dark-1440.png"
+    },
+    {
+      "state": "missing-storage",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "重新加载",
+          "width": 90,
+          "height": 44
+        }
+      ],
+      "screenshot": "cors-missing-storage-dark-390.png"
+    },
+    {
+      "state": "deleted-storage",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "重新加载",
+          "width": 90,
+          "height": 44
+        }
+      ],
+      "screenshot": "cors-deleted-storage-light-1440.png"
+    },
+    {
+      "state": "deleted-storage",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "重新加载",
+          "width": 90,
+          "height": 44
+        }
+      ],
+      "screenshot": "cors-deleted-storage-light-390.png"
+    },
+    {
+      "state": "deleted-storage",
+      "theme": "dark",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "重新加载",
+          "width": 90,
+          "height": 44
+        }
+      ],
+      "screenshot": "cors-deleted-storage-dark-1440.png"
+    },
+    {
+      "state": "deleted-storage",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "重新加载",
+          "width": 90,
+          "height": 44
+        }
+      ],
+      "screenshot": "cors-deleted-storage-dark-390.png"
+    },
+    {
+      "state": "local-storage",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "重新加载",
+          "width": 90,
+          "height": 44
+        }
+      ],
+      "screenshot": "cors-local-storage-light-1440.png"
+    },
+    {
+      "state": "local-storage",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "重新加载",
+          "width": 90,
+          "height": 44
+        }
+      ],
+      "screenshot": "cors-local-storage-light-390.png"
+    },
+    {
+      "state": "local-storage",
+      "theme": "dark",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "重新加载",
+          "width": 90,
+          "height": 44
+        }
+      ],
+      "screenshot": "cors-local-storage-dark-1440.png"
+    },
+    {
+      "state": "local-storage",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "重新加载",
+          "width": 90,
+          "height": 44
+        }
+      ],
+      "screenshot": "cors-local-storage-dark-390.png"
+    },
+    {
+      "state": "local-http-fixture-overview",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "查看 CORS 示例",
+          "width": 200,
+          "height": 48
+        },
+        {
+          "name": "开始直传检测",
+          "width": 200,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-local-http-fixture-overview-light-1440.png"
+    },
+    {
+      "state": "local-http-fixture-overview",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "查看 CORS 示例",
+          "width": 174,
+          "height": 48
+        },
+        {
+          "name": "开始直传检测",
+          "width": 172,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-local-http-fixture-overview-light-390.png"
+    },
+    {
+      "state": "local-http-fixture-overview",
+      "theme": "dark",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "查看 CORS 示例",
+          "width": 200,
+          "height": 48
+        },
+        {
+          "name": "开始直传检测",
+          "width": 200,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-local-http-fixture-overview-dark-1440.png"
+    },
+    {
+      "state": "local-http-fixture-overview",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "查看 CORS 示例",
+          "width": 174,
+          "height": 48
+        },
+        {
+          "name": "开始直传检测",
+          "width": 172,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-local-http-fixture-overview-dark-390.png"
+    },
+    {
+      "state": "passed",
+      "theme": "light",
+      "width": 360,
+      "height": 844,
+      "scrollWidth": 360,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "查看清理状态",
+          "width": 159,
+          "height": 48
+        },
+        {
+          "name": "管理此存储",
+          "width": 157,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-passed-light-360.png"
+    },
+    {
+      "state": "passed",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "查看清理状态",
+          "width": 174,
+          "height": 48
+        },
+        {
+          "name": "管理此存储",
+          "width": 172,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-passed-light-390.png"
+    },
+    {
+      "state": "passed",
+      "theme": "light",
+      "width": 430,
+      "height": 844,
+      "scrollWidth": 430,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "查看清理状态",
+          "width": 194,
+          "height": 48
+        },
+        {
+          "name": "管理此存储",
+          "width": 192,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-passed-light-430.png"
+    },
+    {
+      "state": "passed",
+      "theme": "light",
+      "width": 768,
+      "height": 844,
+      "scrollWidth": 768,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "查看清理状态",
+          "width": 363,
+          "height": 48
+        },
+        {
+          "name": "管理此存储",
+          "width": 361,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-passed-light-768.png"
+    },
+    {
+      "state": "passed",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "查看清理状态",
+          "width": 200,
+          "height": 48
+        },
+        {
+          "name": "管理此存储",
+          "width": 200,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-passed-light-1440.png"
+    },
+    {
+      "state": "passed",
+      "theme": "dark",
+      "width": 360,
+      "height": 844,
+      "scrollWidth": 360,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "查看清理状态",
+          "width": 159,
+          "height": 48
+        },
+        {
+          "name": "管理此存储",
+          "width": 157,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-passed-dark-360.png"
+    },
+    {
+      "state": "passed",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "查看清理状态",
+          "width": 174,
+          "height": 48
+        },
+        {
+          "name": "管理此存储",
+          "width": 172,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-passed-dark-390.png"
+    },
+    {
+      "state": "passed",
+      "theme": "dark",
+      "width": 430,
+      "height": 844,
+      "scrollWidth": 430,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "查看清理状态",
+          "width": 194,
+          "height": 48
+        },
+        {
+          "name": "管理此存储",
+          "width": 192,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-passed-dark-430.png"
+    },
+    {
+      "state": "passed",
+      "theme": "dark",
+      "width": 768,
+      "height": 844,
+      "scrollWidth": 768,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "查看清理状态",
+          "width": 363,
+          "height": 48
+        },
+        {
+          "name": "管理此存储",
+          "width": 361,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-passed-dark-768.png"
+    },
+    {
+      "state": "passed",
+      "theme": "dark",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "查看清理状态",
+          "width": 200,
+          "height": 48
+        },
+        {
+          "name": "管理此存储",
+          "width": 200,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-passed-dark-1440.png"
+    },
+    {
+      "state": "overview-after-passed",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "查看 CORS 示例",
+          "width": 200,
+          "height": 48
+        },
+        {
+          "name": "重新检测",
+          "width": 200,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-overview-after-passed-light-1440.png"
+    },
+    {
+      "state": "overview-after-passed",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "查看 CORS 示例",
+          "width": 174,
+          "height": 48
+        },
+        {
+          "name": "重新检测",
+          "width": 172,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-overview-after-passed-light-390.png"
+    },
+    {
+      "state": "overview-after-passed",
+      "theme": "dark",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "查看 CORS 示例",
+          "width": 200,
+          "height": 48
+        },
+        {
+          "name": "重新检测",
+          "width": 200,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-overview-after-passed-dark-1440.png"
+    },
+    {
+      "state": "overview-after-passed",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "查看 CORS 示例",
+          "width": 174,
+          "height": 48
+        },
+        {
+          "name": "重新检测",
+          "width": 172,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-overview-after-passed-dark-390.png"
+    },
+    {
+      "state": "cached-read-error",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "重新加载",
+          "width": 90,
+          "height": 44
+        }
+      ],
+      "screenshot": "cors-cached-read-error-light-1440.png"
+    },
+    {
+      "state": "cached-read-error",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "重新加载",
+          "width": 90,
+          "height": 44
+        }
+      ],
+      "screenshot": "cors-cached-read-error-light-390.png"
+    },
+    {
+      "state": "cached-read-error",
+      "theme": "dark",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "重新加载",
+          "width": 90,
+          "height": 44
+        }
+      ],
+      "screenshot": "cors-cached-read-error-dark-1440.png"
+    },
+    {
+      "state": "cached-read-error",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "重新加载",
+          "width": 90,
+          "height": 44
+        }
+      ],
+      "screenshot": "cors-cached-read-error-dark-390.png"
+    },
+    {
+      "state": "long-name",
+      "theme": "light",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "查看清理状态",
+          "width": 200,
+          "height": 48
+        },
+        {
+          "name": "管理此存储",
+          "width": 200,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-long-name-light-1440.png"
+    },
+    {
+      "state": "long-name",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "查看清理状态",
+          "width": 174,
+          "height": 48
+        },
+        {
+          "name": "管理此存储",
+          "width": 172,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-long-name-light-390.png"
+    },
+    {
+      "state": "long-name",
+      "theme": "dark",
+      "width": 1440,
+      "height": 1080,
+      "scrollWidth": 1440,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "查看清理状态",
+          "width": 200,
+          "height": 48
+        },
+        {
+          "name": "管理此存储",
+          "width": 200,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-long-name-dark-1440.png"
+    },
+    {
+      "state": "long-name",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "targets": [
+        {
+          "name": "← 返回存储管理",
+          "width": 101.1328125,
+          "height": 44
+        },
+        {
+          "name": "查看清理状态",
+          "width": 174,
+          "height": 48
+        },
+        {
+          "name": "管理此存储",
+          "width": 172,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-long-name-dark-390.png"
+    }
+  ],
+  "dialogLayouts": [
+    {
+      "state": "example",
+      "theme": "light",
+      "width": 1440,
+      "top": 331,
+      "bottom": 749,
+      "left": 480,
+      "right": 960,
+      "footerWidth": 430,
+      "footerActions": [
+        {
+          "name": "复制 CORS 示例",
+          "width": 430
+        },
+        {
+          "name": "返回直传设置",
+          "width": 430
+        }
+      ],
+      "jsonFontSize": "13px",
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "复制 CORS 示例",
+          "width": 430,
+          "height": 48
+        },
+        {
+          "name": "返回直传设置",
+          "width": 430,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-example-light-1440.png"
+    },
+    {
+      "state": "example",
+      "theme": "light",
+      "width": 390,
+      "top": 193.5,
+      "bottom": 650.5,
+      "left": 16,
+      "right": 374,
+      "footerWidth": 308,
+      "footerActions": [
+        {
+          "name": "复制 CORS 示例",
+          "width": 308
+        },
+        {
+          "name": "返回直传设置",
+          "width": 308
+        }
+      ],
+      "jsonFontSize": "13px",
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "复制 CORS 示例",
+          "width": 308,
+          "height": 48
+        },
+        {
+          "name": "返回直传设置",
+          "width": 308,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-example-light-390.png"
+    },
+    {
+      "state": "example",
+      "theme": "dark",
+      "width": 1440,
+      "top": 331,
+      "bottom": 749,
+      "left": 480,
+      "right": 960,
+      "footerWidth": 430,
+      "footerActions": [
+        {
+          "name": "复制 CORS 示例",
+          "width": 430
+        },
+        {
+          "name": "返回直传设置",
+          "width": 430
+        }
+      ],
+      "jsonFontSize": "13px",
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "复制 CORS 示例",
+          "width": 430,
+          "height": 48
+        },
+        {
+          "name": "返回直传设置",
+          "width": 430,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-example-dark-1440.png"
+    },
+    {
+      "state": "example",
+      "theme": "dark",
+      "width": 390,
+      "top": 311.5,
+      "bottom": 768.5,
+      "left": 16,
+      "right": 374,
+      "footerWidth": 308,
+      "footerActions": [
+        {
+          "name": "复制 CORS 示例",
+          "width": 308
+        },
+        {
+          "name": "返回直传设置",
+          "width": 308
+        }
+      ],
+      "jsonFontSize": "13px",
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "复制 CORS 示例",
+          "width": 308,
+          "height": 48
+        },
+        {
+          "name": "返回直传设置",
+          "width": 308,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-example-dark-390.png"
+    },
+    {
+      "state": "origin-mismatch",
+      "theme": "light",
+      "width": 1440,
+      "top": 360.25,
+      "bottom": 719.75,
+      "left": 480,
+      "right": 960,
+      "footerWidth": 430,
+      "footerActions": [
+        {
+          "name": "打开配置地址",
+          "width": 430
+        },
+        {
+          "name": "返回直传设置",
+          "width": 430
+        }
+      ],
+      "jsonFontSize": null,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "打开配置地址",
+          "width": 430,
+          "height": 48
+        },
+        {
+          "name": "返回直传设置",
+          "width": 430,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-origin-mismatch-light-1440.png"
+    },
+    {
+      "state": "origin-mismatch",
+      "theme": "light",
+      "width": 390,
+      "top": 232.5,
+      "bottom": 611.5,
+      "left": 16,
+      "right": 374,
+      "footerWidth": 308,
+      "footerActions": [
+        {
+          "name": "打开配置地址",
+          "width": 308
+        },
+        {
+          "name": "返回直传设置",
+          "width": 308
+        }
+      ],
+      "jsonFontSize": null,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "打开配置地址",
+          "width": 308,
+          "height": 48
+        },
+        {
+          "name": "返回直传设置",
+          "width": 308,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-origin-mismatch-light-390.png"
+    },
+    {
+      "state": "origin-mismatch",
+      "theme": "dark",
+      "width": 1440,
+      "top": 360.25,
+      "bottom": 719.75,
+      "left": 480,
+      "right": 960,
+      "footerWidth": 430,
+      "footerActions": [
+        {
+          "name": "打开配置地址",
+          "width": 430
+        },
+        {
+          "name": "返回直传设置",
+          "width": 430
+        }
+      ],
+      "jsonFontSize": null,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "打开配置地址",
+          "width": 430,
+          "height": 48
+        },
+        {
+          "name": "返回直传设置",
+          "width": 430,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-origin-mismatch-dark-1440.png"
+    },
+    {
+      "state": "origin-mismatch",
+      "theme": "dark",
+      "width": 390,
+      "top": 350.5,
+      "bottom": 729.5,
+      "left": 16,
+      "right": 374,
+      "footerWidth": 308,
+      "footerActions": [
+        {
+          "name": "打开配置地址",
+          "width": 308
+        },
+        {
+          "name": "返回直传设置",
+          "width": 308
+        }
+      ],
+      "jsonFontSize": null,
+      "targets": [
+        {
+          "name": "",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "name": "打开配置地址",
+          "width": 308,
+          "height": 48
+        },
+        {
+          "name": "返回直传设置",
+          "width": 308,
+          "height": 48
+        }
+      ],
+      "screenshot": "cors-origin-mismatch-dark-390.png"
+    }
+  ],
+  "clipboardChecks": [
+    {
+      "mechanism": "macOS pbpaste immediately after application copy",
+      "completeJsonEqual": true
+    }
+  ],
+  "error": "Error: page.waitForSelector timed out after 10000ms: [data-testid=\"storage-cors\"][data-state=\"error\"] [role=\"alert\"]\n    at waitForSelectorInPage (file:////[eval1]:16159:11)\n    at async file:////[eval1]:16691:28"
+}

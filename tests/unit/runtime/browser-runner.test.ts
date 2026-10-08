@@ -45,6 +45,7 @@ describe('browser runner argument boundaries', () => {
     ['storage-admin', 'dialogs'],
     ['storage-admin', 'feedback'],
     ['storage-admin', 'regressions'],
+    ['storage-cors'],
     ['processing'],
     ['processing', 'representative'],
     ['processing', 'settings'],
@@ -161,6 +162,7 @@ describe('browser runner argument boundaries', () => {
     'tags',
     'upload-input',
     'library-feedback',
+    'storage-cors',
   ])(
     'rejects non-primary page labels in suite %s before runtime startup',
     (suite) => {

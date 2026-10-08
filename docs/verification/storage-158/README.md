@@ -127,3 +127,7 @@ AWS S3 按现行约定不要求实测，本次未验证。物理设备不在当�
 合并的迁移测试同时保留水印与 CORS 新列默认值、历史数据、迁移进度及重跑不重放断言。三个启动夹具指向新 CORS 文件；包含 media 表的两个夹具也加入实际水印迁移。独立审计发现严格数量预期漏项，[失败证据](./merge-main/fixture-red.txt)的 5 个用例均仅多出实际新增迁移记录；补齐顺序预期后[17 项聚焦检查](./merge-main/fixture-green.txt)通过，未放宽断言。
 
 首次单元检查与构建同时启动，main 新增的验证脚本依赖尚未生成的 `dist/server/media/watermark.js`，因此[初次失败](./merge-main/unit.txt)。构建退出 0 后原样重跑，[645 项单元](./merge-main/unit-final.txt)通过；没有为此改动产品代码。冻结安装、lint、类型及构建已通过；构建仍包含既有可选原生依赖跟踪诊断，不宣称零告警。完整集成已退出 0，[97 文件 / 900 项](./merge-main/integration-final.txt)通过。完整浏览器第二轮退出 0，[应用运行器](./merge-main/browser-final.json)、[CORS 专项](./merge-main/cors-final.json)及[独立 UI 运行器](./merge-main/browser-ui-final.json)均通过，临时测试目录已移除。第一轮因 CDP `Page.captureScreenshot` 超时退出，保留[失败运行器](./merge-main/browser-first.json)及[具体错误](./merge-main/browser-first-failure.json)；检查当时页面后原样重跑，没有修改产品或测试。最终格式、文档检查（120 任务 / 298 需求、5 项拒绝自测）及差异检查通过；[实际命令、环境及结果](./merge-main/checks.json)集中记录。独立迁移合并审计未发现未解决问题，见[审计附录](./code-review.md#合并最新-main-后的迁移冲突复审)。原 UI 人工验收结论保留，本轮没有界面改动。
+
+## 读取失败提示补修（2026-10-08）
+
+用户在 Issue #200 / PR #264 补验后明确授权修复 CORS 读取失败告警缺失 `role="alert"`。历史 #158 的验收及合并记录保持不变；此次修复、真实红绿验证、定向完整入口、截图对照和独立评审统一记录在[本轮交付证据](../upload-200/README.md#本次授权的-cors-告警修复2026-10-08)。未更改服务端检测协议或存储数据契约。

@@ -6,6 +6,41 @@ function select(suite: string, only?: string) {
 }
 
 describe('focused browser execution plans', () => {
+  it('provides storage-cors as a complete focused stage on its primary page', () => {
+    expect(select('storage-cors')).toEqual({
+      stages: [['storage-cors', 'storageCors']],
+      config: {},
+    });
+    expect(() =>
+      selectBrowserPlan({ suite: 'storage-cors', pageLabel: 'p2' }),
+    ).toThrow('Browser suite storage-cors requires EGO_PAGE_LABEL=p1');
+  });
+
+  it.each(['representative', 'cleanup', 'recovery', 'live'])(
+    'rejects partial or unrelated phase %s in storage-cors',
+    (only) => {
+      expect(() => select('storage-cors', only)).toThrow(
+        '--only requires an applicable targeted suite',
+      );
+    },
+  );
+
+  it.each([
+    ['storageConfig', '--storage-config applies only to storage-admin live'],
+    [
+      'previewConfig',
+      '--preview-config applies only to storage-admin feedback',
+    ],
+  ])('rejects unrelated %s in storage-cors', (field, message) => {
+    expect(() =>
+      selectBrowserPlan({
+        suite: 'storage-cors',
+        pageLabel: 'p1',
+        [field]: 'unused.json',
+      }),
+    ).toThrow(message);
+  });
+
   it.each([
     ['library', ['library']],
     ['library-feedback', ['library-query']],
@@ -28,6 +63,7 @@ describe('focused browser execution plans', () => {
     ['library-reprocess', ['library-batch-reprocess']],
     ['library-copy', ['library-copy']],
     ['storage-admin', ['storage-admin', 'shell-navigation']],
+    ['storage-cors', ['storage-cors']],
     ['processing', ['processing', 'shell-navigation']],
     ['trash', ['trash-query-batch', 'trash-cleanup']],
   ] as const)(
