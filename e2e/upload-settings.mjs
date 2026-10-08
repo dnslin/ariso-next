@@ -60,12 +60,19 @@ try {
           }
         await tools.evidence('normal-short', 390, 'dark', 560);
         await page.focus(limitsField('queueLimit'));
-        await page.keyboard.press('Tab');
-        await page.waitForFunction(
-          () =>
-            document.activeElement ===
-            document.querySelector('[data-testid="upload-limits-save"]'),
-        );
+        for (const selector of [
+          'main a[href="/settings/storage"]',
+          'main a[href="/settings/processing"]',
+          '#site-save',
+          '[data-testid="upload-limits-save"]',
+        ]) {
+          await page.keyboard.press('Tab');
+          await page.waitForFunction(
+            (selector) =>
+              document.activeElement === document.querySelector(selector),
+            selector,
+          );
+        }
         const footer = await page.evaluate(() => {
           const rect = document
             .querySelector('.shell-footer')
@@ -84,7 +91,8 @@ try {
         // Shared shell: 48px action + 12/20px padding + 1px border.
         assert.equal(footer.height, 81);
         assert.ok(footer.actionBottom <= footer.viewport);
-        await page.keyboard.press('Shift+Tab');
+        await page.focus(limitsField('batchSize'));
+        await page.keyboard.press('Tab');
         await page.waitForFunction(
           (selector) =>
             document.activeElement === document.querySelector(selector),

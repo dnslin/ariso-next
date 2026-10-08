@@ -1,0 +1,46 @@
+Already up to date
+Done in 37ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-200-upload-settings/ariso
+
+ ❯ |unit| tests/unit/site/settings-expired.test.ts (3 tests | 2 failed) 17ms
+   × 会话失效时 phase=ready 保留四个可见草稿，锁住字段与保存按钮且结束保存中反馈 4ms
+   × 会话失效时 phase=saving 保留四个可见草稿，锁住字段与保存按钮且结束保存中反馈 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/site/settings-expired.test.ts > 会话失效时 phase=ready 保留四个可见草稿，锁住字段与保存按钮且结束保存中反馈
+ FAIL  |unit| tests/unit/site/settings-expired.test.ts > 会话失效时 phase=saving 保留四个可见草稿，锁住字段与保存按钮且结束保存中反馈
+Error: [vitest] No "useQueryClient" export is defined on the "@tanstack/react-query" mock. Did you forget to return it from "vi.mock"?
+If you need to partially mock a module, you can use "importOriginal" helper inside:
+
+vi.mock(import("@tanstack/react-query"), async (importOriginal) => {
+  const actual = await importOriginal()
+  return {
+    ...actual,
+    // your mocked methods
+  }
+})
+
+ ❯ useUploadLimits src/components/upload-limits/use-upload-limits.ts:42:18
+     40|   const noticeId = useRef<string | null>(null);
+     41|   const active = useRef(true);
+     42|   const client = useQueryClient();
+       |                  ^
+     43|   const upload = useUploadQueue();
+     44|   const resetUpload = useResetUpload();
+ ❯ GeneralPage src/components/site/general-page.tsx:47:18
+ ❯ Object.react_stack_bottom_frame node_modules/.pnpm/react-dom@19.3.0_react@19.3.0/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:10371:18
+ ❯ renderWithHooks node_modules/.pnpm/react-dom@19.3.0_react@19.3.0/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:5361:19
+ ❯ renderElement node_modules/.pnpm/react-dom@19.3.0_react@19.3.0/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:5796:23
+ ❯ retryNode node_modules/.pnpm/react-dom@19.3.0_react@19.3.0/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:6783:21
+ ❯ performWork node_modules/.pnpm/react-dom@19.3.0_react@19.3.0/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:7919:19
+ ❯ startWork node_modules/.pnpm/react-dom@19.3.0_react@19.3.0/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:8807:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 1 passed (3)
+   Start at  20:01:41
+   Duration  555ms (import 72%, transform 24%, tests 3%)

@@ -89,6 +89,8 @@ for (const name of [
   'storage-admin-feedback-failure.png',
   'storage-admin-regressions.json',
   'storage-admin-regressions-failure.png',
+  'site-general.json',
+  'site-general-failure.png',
   'processing.json',
   'processing-failure.png',
   'account.json',

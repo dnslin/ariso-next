@@ -1,3 +1,5 @@
+import { z } from 'zod';
+import type { ReportDays } from './queries.ts';
 import { requireOwner } from '../identity/owner.ts';
 import { createRuntimeLogger } from '../runtime/logger.ts';
 
@@ -30,6 +32,15 @@ export async function analyticsResponse(
         { code: error.code, message: error.message },
         { status: 400, headers },
       );
+    if (
+      error instanceof Error &&
+      'code' in error &&
+      error.code === 'ANALYTICS_IMAGE_NOT_FOUND'
+    )
+      return Response.json(
+        { code: error.code, message: error.message },
+        { status: 404, headers },
+      );
     const cause =
       error instanceof Error && error.cause instanceof Error
         ? error.cause
@@ -48,7 +59,7 @@ export async function analyticsResponse(
   }
 }
 
-/** Validate the existing overview period contract, even while only counts are implemented. */
+/** Validate period at the HTTP boundary before entering synchronous report queries. */
 export function parseOverviewDays(request: Request) {
   const values = new URL(request.url).searchParams.getAll('days');
   if (
@@ -58,5 +69,13 @@ export function parseOverviewDays(request: Request) {
     throw Object.assign(new Error('统计周期必须为 7、30 或 90 天'), {
       code: 'ANALYTICS_INVALID_INPUT',
     });
-  return Number(values[0] ?? 7);
+  return Number(values[0] ?? 7) as ReportDays;
+}
+
+export function parseStatsImageId(imageId: string) {
+  if (!z.uuid().safeParse(imageId).success)
+    throw Object.assign(new Error('图片 ID 无效'), {
+      code: 'ANALYTICS_INVALID_INPUT',
+    });
+  return imageId;
 }

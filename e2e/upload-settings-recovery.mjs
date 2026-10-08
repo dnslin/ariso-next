@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { limitsField, limitsId } from './upload-settings-helpers.mjs';
+import { resizeViewport } from './browser-geometry.mjs';
 
 export async function uploadSettingsRecovery(page, tools, report) {
   const reads = async (scenario, expected) => {
@@ -36,7 +37,17 @@ export async function uploadSettingsRecovery(page, tools, report) {
       0,
       'Loading does not invent default inputs',
     );
-    for (const width of [1440, 390]) await tools.evidence('loading', width);
+    for (const width of [1440, 390]) {
+      if (width === 390) {
+        await resizeViewport(page, width);
+        await page.evaluate(() =>
+          document
+            .querySelector('[data-testid="upload-limits-editor"]')
+            .scrollIntoView({ block: 'start' }),
+        );
+      }
+      await tools.evidence('loading', width);
+    }
     await tools.release();
     await page.waitForSelector(`${limitsId('editor')}[data-state="ready"]`);
   } finally {
@@ -46,8 +57,58 @@ export async function uploadSettingsRecovery(page, tools, report) {
     remove = await tools.install({ failReads: true });
     await page.goto(`${report.origin}/settings/general`);
     await page.waitForSelector(`${limitsId('editor')}[data-state="error"]`);
-    for (const width of [1440, 390])
+    await page.waitForSelector(
+      '[data-testid="site-general"][data-state="ready"]',
+    );
+    const siteBefore = await tools.request('/api/settings/site');
+    const description = '上传读取失败不阻止站点保存';
+    await page.fill('#site-description', description);
+    await page.focus('#site-save');
+    await page.keyboard.press('Enter');
+    await page.waitForFunction(
+      () =>
+        window.__limitsBrowser.requests.some(
+          (r) =>
+            r.path === '/api/settings/site' &&
+            r.method === 'PATCH' &&
+            r.status === 200,
+        ) && !document.querySelector('#site-save').disabled,
+    );
+    assert.equal(
+      (await tools.request('/api/settings/site')).description,
+      description,
+    );
+    await page.waitForSelector(`${limitsId('editor')}[data-state="error"]`);
+    await page.fill('#site-description', siteBefore.description);
+    await page.focus('#site-save');
+    await page.keyboard.press('Enter');
+    await page.waitForFunction(
+      () =>
+        window.__limitsBrowser.requests.filter(
+          (r) =>
+            r.path === '/api/settings/site' &&
+            r.method === 'PATCH' &&
+            r.status === 200,
+        ).length === 2 && !document.querySelector('#site-save').disabled,
+    );
+    assert.equal(
+      (await tools.request('/api/settings/site')).description,
+      siteBefore.description,
+    );
+    report.checks.push(
+      'A failed initial upload GET does not block a real site form PATCH or completed server refresh; the site value is independently read back and restored.',
+    );
+    for (const width of [1440, 390]) {
+      if (width === 390) {
+        await resizeViewport(page, width);
+        await page.evaluate(() =>
+          document
+            .querySelector('[data-testid="upload-limits-editor"]')
+            .scrollIntoView({ block: 'start' }),
+        );
+      }
       await tools.evidence('read-failed', width, 'dark');
+    }
     await page.evaluate(() => {
       window.__limitsBrowser.fault.failReads = false;
     });
@@ -70,8 +131,17 @@ export async function uploadSettingsRecovery(page, tools, report) {
       0,
       'Real 409 does not fabricate defaults',
     );
-    for (const width of [1440, 390])
+    for (const width of [1440, 390]) {
+      if (width === 390) {
+        await resizeViewport(page, width);
+        await page.evaluate(() =>
+          document
+            .querySelector('[data-testid="upload-limits-editor"]')
+            .scrollIntoView({ block: 'start' }),
+        );
+      }
       await tools.evidence('uninitialized', width);
+    }
   } finally {
     await tools.sql(
       `INSERT INTO upload_settings (id,max_file_bytes,batch_size,queue_limit,updated_at) VALUES (1,${row.max_file_bytes},${row.batch_size},${row.queue_limit},${row.updated_at})`,

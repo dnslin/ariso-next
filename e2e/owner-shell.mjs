@@ -42,7 +42,19 @@ export async function verifyOwnerShell(page, config) {
     { label: '存储管理', href: '/settings/storage' },
     { label: '站点设置', href: '/settings/general' },
   ];
-  const routes = ['/upload', '/library', '/trash', '/albums', '/shares'];
+  const routes = [
+    '/upload',
+    '/library',
+    '/trash',
+    '/albums',
+    '/tags',
+    '/shares',
+    '/settings/storage',
+    '/settings/processing',
+    '/settings/account',
+    '/settings/api',
+    '/settings/general',
+  ];
   const button = (name) => `loc=role:button[name="${name}"]`;
   let accountLabel;
   async function readNavigation(scope) {
@@ -109,7 +121,11 @@ export async function verifyOwnerShell(page, config) {
       actual.entries
         .filter((entry) => entry.current === 'page')
         .map((entry) => entry.href),
-      [path],
+      [
+        path.startsWith('/settings/') && path !== '/settings/storage'
+          ? '/settings/general'
+          : path,
+      ],
     );
     for (const entry of actual.entries) {
       assert.equal(
@@ -208,7 +224,7 @@ export async function verifyOwnerShell(page, config) {
             'Design phone/tablet header is 64px',
           );
         verifyNavigation(actual, path);
-        await page.hover(`${scope} nav a[href="${path}"]`);
+        await page.hover(`${scope} nav a[aria-current="page"]`);
         assert.equal(
           await page.evaluate(
             (scope) =>
@@ -279,13 +295,21 @@ export async function verifyOwnerShell(page, config) {
         await page.screenshot({
           path: join(
             config.output,
-            `owner-shell-${path.slice(1)}-${width}.png`,
+            `owner-shell-${path.slice(1).replaceAll('/', '-')}-${width}.png`,
           ),
         });
         report.pages.push({ width, path, heading: position, skip, ...actual });
         const next = routes[(routes.indexOf(path) + 1) % routes.length];
-        await page.click(`${scope} nav a[href="${next}"]`);
-        await waitForOwnerRoute(page, config, next);
+        const menuPath =
+          next.startsWith('/settings/') && next !== '/settings/storage'
+            ? '/settings/general'
+            : next;
+        await page.click(`${scope} nav a[href="${menuPath}"]`);
+        await waitForOwnerRoute(page, config, menuPath);
+        if (menuPath !== next) {
+          await page.goto(`${config.origin}${next}`);
+          await waitForOwnerRoute(page, config, next);
+        }
         if (width < 1200)
           await page.waitForSelector(navigationDialog, { state: 'hidden' });
       }
@@ -329,7 +353,7 @@ export async function verifyOwnerShell(page, config) {
         let compactBaseline;
         for (const path of routes) {
           if (path !== '/upload') {
-            await page.click(`.shell-navigation nav a[href="${path}"]`);
+            await page.goto(`${config.origin}${path}`);
             await waitForOwnerRoute(page, config, path);
           }
           await sidebarWidth(72);
@@ -341,7 +365,7 @@ export async function verifyOwnerShell(page, config) {
           await page.screenshot({
             path: join(
               config.output,
-              `owner-shell-collapsed-${path.slice(1)}.png`,
+              `owner-shell-collapsed-${path.slice(1).replaceAll('/', '-')}.png`,
             ),
           });
           report.collapsed.push({ path, heading: position, ...actual });
@@ -497,8 +521,8 @@ export async function verifyOwnerShell(page, config) {
     await verifyUIRefinement({ page, config, report });
     await assertNoBrowserErrors(page);
     report.checks.push(
-      'Upload/library/trash/albums/shares share all ten design menu entries; the eight implemented entries are links, and overview/analytics explain that they are not yet available.',
-      'Computed navigation text decoration is none, including hover; heading origins match across all five routes at desktop, phone and tablet widths.',
+      'All implemented owner routes share the ten design menu entries; the eight implemented entries are links, and overview/analytics explain that they are not yet available.',
+      'Computed navigation text decoration is none, including hover; heading origins match across every implemented owner route at desktop, phone and tablet widths.',
       'Desktop keyboard collapse changes sidebar 232 → 72; icons, accessible names and disabled reasons remain; navigation and real reload preserve collapsed preference, and expanded preference survives reload.',
       'Account Escape restores visible account trigger; phone/tablet menu Escape restores menu trigger; navigation clicks close the menu.',
     );

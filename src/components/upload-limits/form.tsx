@@ -10,11 +10,12 @@ import { Upload } from 'lucide-react';
 import { uploadLimitFields } from './model';
 import { UploadLimitsFeedback } from './feedback';
 import type { useUploadLimits } from './use-upload-limits';
+import type { SavedUploadLimits } from './api';
 
 export function UploadLimitsForm({
   settings,
 }: {
-  settings: ReturnType<typeof useUploadLimits>;
+  settings: ReturnType<typeof useUploadLimits> & { saved: SavedUploadLimits };
 }) {
   const disabled = settings.busy || settings.unknown || settings.expired;
   return (

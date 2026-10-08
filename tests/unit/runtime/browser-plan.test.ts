@@ -49,6 +49,7 @@ describe('focused browser execution plans', () => {
     ['tokens', ['tokens']],
     ['shell-navigation', ['shell-navigation']],
     ['sharing-management', ['sharing-management']],
+    ['site-general', ['site-general']],
     ['albums', ['albums']],
     ['album-cover', ['album-cover']],
     ['tags', ['tags']],
@@ -96,6 +97,10 @@ describe('focused browser execution plans', () => {
     ['sharing-management', 'representative', ['sharing-management']],
     ['sharing-management', 'behavior', ['sharing-management']],
     ['sharing-management', 'recovery', ['sharing-management']],
+    ['site-general', 'representative', ['site-general']],
+    ['site-general', 'behavior', ['site-general']],
+    ['site-general', 'recovery', ['site-general']],
+    ['site-general', 'consumers', ['site-general']],
     ['tokens', 'representative', ['tokens']],
     ['tokens', 'behavior', ['tokens']],
     ['tokens', 'lifecycle', ['tokens']],
@@ -114,6 +119,7 @@ describe('focused browser execution plans', () => {
 
   it.each([
     ['upload-settings', 'recovery', { uploadSettingsPhase: 'recovery' }],
+    ['site-general', 'recovery', { siteGeneralPhase: 'recovery' }],
     ['library', 'recovery', { libraryPhase: 'recovery' }],
     ['tokens', 'recovery', { tokensPhase: 'recovery' }],
     ['tokens', 'lifecycle', { tokensPhase: 'lifecycle' }],
@@ -157,6 +163,24 @@ describe('focused browser execution plans', () => {
       expect(select(suite, only).config).toEqual(config);
     },
   );
+
+  it('keeps site phases out of other scenes and preserves all site phases in full', () => {
+    expect(select('site-general').config).toEqual({
+      siteGeneralPhase: undefined,
+    });
+    expect(select('full').config).not.toHaveProperty('siteGeneralPhase');
+    for (const suite of [
+      'processing',
+      'sharing-management',
+      'account',
+      'tokens',
+    ]) {
+      expect(select(suite).config).not.toHaveProperty('siteGeneralPhase');
+      expect(() => select(suite, 'consumers-site')).toThrow(
+        '--only requires an applicable targeted suite',
+      );
+    }
+  });
 
   it('keeps consumer navigation and representative viewer behavior explicit', () => {
     expect(select('sharing-management').config).toEqual({
@@ -205,6 +229,7 @@ describe('focused browser execution plans', () => {
         ['upload-submissions', 'upload-submissions'],
         ['upload-relations', 'upload-relations'],
         ['sharing-management', 'sharing-management'],
+        ['site-general', 'site-general'],
       ],
       config: {},
     });

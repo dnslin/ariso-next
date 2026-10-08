@@ -154,3 +154,15 @@ processing 与 Token 补跑未改变产品、原点击方法、超时或断言�
 独立设计评审实际读取 Figma `346:4712/346:4807` 的设计信息与截图，查看四张同视口真实读取错误图、清理完成四图及键盘焦点图，并检查检测失败/待清理/修订失效代表图。先核对整页公共结构，再核对错误正文、44px重载、无检测控件及清理回焦；本次语义修复未产生视觉差异，局部设计复审通过。读取错误没有专属稿，不把检测失败画板冒充它；没有新增 Figma 写入或人工验收。
 
 旧构建缺角色红和首次新构建焦点测量失败均保留。最终定向通过不改写原默认全量失败，也不证明本轮 R2/SeaweedFS、实际读屏器、其他浏览器或发布容器验证。原上传 UI 人工验收保留；本次没有视觉/产品交互方案变更。
+
+## 联合基本设置合入最新 main 的独立复审
+
+本次将#194站点四字段与#200上传三字段组合在唯一基本设置页，保留所属API、草稿、未知结果核对、会话失效和离开保护。[独立正确性/契约报告](./reports/merge/review-final.md)与[严格结构报告](./reports/merge/structure-final.md)均无本联合增量Required/P1/P2；没有把两个模块合并成同一持久化事务，也没有新增全局锁、请求代次或通用设置引擎。报告按各自阅读时刻记录待验内容，最新实际运行结果另见[索引](./reports/merge/README.md)，不重写独立评审的历史边界。
+
+联合site behavior（6 checks/12 layouts）、recovery（5 checks/34 layouts、真实PATCH401）及consumers（1 check/10 layouts）已实际passed；公共OwnerShell 9 checks/33 pages通过。behavior手机等待超时的唯一根因未确定，recovery第一次原生fetch接收者错误与背景真实会话先失效失败均保留。实际最终passed不是首次默认全量单轮通过。
+
+[独立设计](./reports/merge/design-final.md)实际复核正常双主题/响应式和22张恢复代表图，没有需改产品的布局问题。四正常Figma根公共导航、双保存字体和站点标题8px居中差异已修正并独立看图闭合，未改全局组件或产品；[最新精确记录](./reports/merge/figma/title-fix-log.md)。异常状态Figma仍保留原模块历史稿，仅作为所属卡内状态依据，不能声称已全部重组成联合稿。原三手机首屏未见下方上传卡；最新recovery-regions实际补图并独立复读三卡内区域，证据缺口已闭合。
+
+**本次增量最终独立复审通过，无剩余Required/P1/P2。** upload代表布局完成，behavior-keyboard、recovery-regions、consumers均实际passed。原自动fill诊断保留新document/GET50、真实wheel/input1/change51事件与无PATCH证据；测试改实际键盘输入，原FormData/所属PATCH/旧新快照断言不变，临时探针已移除。四迟到响应真实生命周期、当前队列55MiB与失效释放均通过；维护性复读没有不必要抽象。
+
+processing原脚本不变重跑仍在旧水印素材重试disconnected失败；本次冲突入口两轮均覆盖唯一GET82/68、fresh读取/失败重试64与20字段PATCH，模块产品及脚本相对main无diff，独立复审没有本次回归证据，不称完整组passed或唯一根因已确定。用户明确后续合并授权持续有效，保留该限制完成收尾。独立报告没有代替主代理提前宣称合并、关闭或清理成功。原上传人工验收通过与联合原型获批分别保留；联合产品无新增逐项人工运行验收记录。

@@ -18,8 +18,16 @@ import {
 } from './api';
 import { uploadLimitsInput, uploadLimitsMatch } from './model';
 
-export function useUploadLimits(initial: SavedUploadLimits) {
-  const [input, setInput] = useState(() => uploadLimitsInput(initial));
+export function useUploadLimits(initial: SavedUploadLimits | null) {
+  const [input, setInput] = useState<UploadSettingsInput>(() =>
+    initial
+      ? uploadLimitsInput(initial)
+      : {
+          maxFileMiB: Number.NaN,
+          batchSize: Number.NaN,
+          queueLimit: Number.NaN,
+        },
+  );
   const [saved, setSaved] = useState(initial);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [message, setMessage] = useState('');
@@ -34,6 +42,10 @@ export function useUploadLimits(initial: SavedUploadLimits) {
   const client = useQueryClient();
   const upload = useUploadQueue();
   const resetUpload = useResetUpload();
+  if (!saved && initial && !expired) {
+    setSaved(initial);
+    setInput(uploadLimitsInput(initial));
+  }
   useEffect(() => {
     active.current = true;
     return () => {
@@ -59,6 +71,7 @@ export function useUploadLimits(initial: SavedUploadLimits) {
   }
 
   function change(field: keyof UploadSettingsInput, value: number) {
+    if (!saved || !active.current) return;
     setInput((current) => ({ ...current, [field]: value }));
     setErrors((current) => {
       const next = { ...current };
@@ -133,7 +146,8 @@ export function useUploadLimits(initial: SavedUploadLimits) {
     return false;
   }
   async function save() {
-    if (!active.current || inFlight.current || unknown || expired) return;
+    if (!saved || !active.current || inFlight.current || unknown || expired)
+      return;
     clearNotice();
     const parsed = uploadSettingsInputSchema.safeParse(input);
     if (!parsed.success) {
@@ -178,7 +192,7 @@ export function useUploadLimits(initial: SavedUploadLimits) {
     }
   }
   async function reconcile() {
-    if (!active.current || inFlight.current || expired) return;
+    if (!saved || !active.current || inFlight.current || expired) return;
     clearNotice();
     const opener = document.activeElement as HTMLElement | null;
     let confirmed = false;
@@ -216,7 +230,7 @@ export function useUploadLimits(initial: SavedUploadLimits) {
     });
   }
   function chooseSaved(useSaved: boolean) {
-    if (!active.current) return;
+    if (!saved || !active.current) return;
     clearNotice();
     const opener = document.activeElement as HTMLElement | null;
     if (useSaved) {

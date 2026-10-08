@@ -2,7 +2,9 @@
 
 2026-10-08（Asia/Shanghai）。[Issue #200](https://github.com/dnslin/ariso-next/issues/200)，任务 [T-UP-08](../../tasks/m3-m4-platform.md#t-up-08-上传限制独立设置界面)，需求 `R-7.2-01/02`。执行与完成条件遵守 [execution](../../tasks/execution.md)，设计遵守 [handoff](../../design/handoff.md)。
 
-## 范围与实际实现
+当前交付以文末[授权合并时的联合页面记录](#joint-merge-evidence)及[联合验证索引](./reports/merge/README.md)为准。站点四字段与上传三字段已共同实现在基本设置；以下原交付记录保留各轮实际结果，不倒改历史失败。
+
+## 原交付范围与实际实现（合入 #194 前）
 
 从 `origin/main` 的 `96212bea` 创建 `codex/issue-200-upload-settings`，使用独立 worktree；原项目目录保持干净。实际读取 Issue 正文、评论（无评论）和原生关系，`blocked_by` #160/#57/#71/#135 均 CLOSED；`blocking` 为空。
 
@@ -132,7 +134,7 @@ macOS arm64，Node 24.18.1，pnpm 11.19.0；使用已有 Ego Lite TaskSpace 1，
 
 上述读取故障仅改变真实响应交付，检测阶段使用实际浏览器 PUT/GET/HEAD 与真实本地 HTTP fixture。本轮未重新请求 R2/SeaweedFS/AWS，不冒充外部云服务实测或重新执行全部默认浏览器流程；既有云服务/集成与默认首轮失败证据保留。功能完整组及设计局部复审分别记录在[独立评审增量](./code-review.md#cors-告警与验证入口增量复审)。
 
-## 独立评审与交付状态
+## 原独立评审与交付状态（联合合并前）
 
 [独立代码评审](./code-review.md)使用 code-review-and-quality，核对需求、模块职责、认证与 Origin、事务、资源生命周期、焦点、错误优先级、运行器默认入口和测试有效性；修复 401 队列释放、错误文案覆盖、错误边框和成功焦点后，当前无剩余必须修复的静态发现。评审不机械重跑实现者已通过的检查。功能与设计评审分别记录，静态结论不代替真实页面验证。
 
@@ -144,7 +146,7 @@ macOS arm64，Node 24.18.1，pnpm 11.19.0；使用已有 Ego Lite TaskSpace 1，
 
 交付的人工范围为三个数字字段、范围和批次/队列关联错误、保存与刷新、保存后原页/输入/焦点/滚动保留、手机及深色主题，以及处理/账号/上传 API 分类导航；用户已明确确认本次 UI 验收通过，不虚构逐项人工记录。故障注入场景由隔离的自动验证记录承接，不修改人工预览数据。
 
-## 提交与远端状态
+## 原提交与远端状态（历史核对）
 
 原实现提交 `f3831f05` 及此前补验已推送到 `codex/issue-200-upload-settings`，关联 [草稿 PR #264](https://github.com/dnslin/ariso-next/pull/264)。实际 `gh pr view` 返回 OPEN、isDraft=true、MERGEABLE；`gh pr checks` 返回 `no checks reported`，statusCheckRollup 为空，没有远端 CI 通过结论，也不等待不存在的工作流。人工验收和上传增量证据已完成；最新补验结果见上表，首次默认全量的失败和补跑分别记录，本次 CORS 定向完整重验已通过；草稿状态保持。
 
@@ -157,3 +159,45 @@ macOS arm64，Node 24.18.1，pnpm 11.19.0；使用已有 Ego Lite TaskSpace 1，
 CORS 产品/测试及证据提交 `e40b472d40dde60e0f30421e599b7ca9662948c0` 已推送。实际回读 PR #264 为 OPEN、isDraft=true，statusCheckRollup=[]；`gh pr checks` 返回 no checks reported，不记作 CI 通过。刷新最新 origin/main 后，GitHub 显示 CONFLICTING；只读 merge-tree 确认 7 处冲突：`e2e/owner-shell.mjs`、`e2e/processing-settings-entry.mjs`、`eslint.config.mjs`、`src/app/settings/general/page.tsx`、`src/components/shell/settings-categories.tsx`、两份 runtime browser-plan/browser-runner 单元文件。没有修改工作树或提前合并。
 
 本次 CORS 修复代码、本地检查、完整定向浏览器和独立设计/代码评审完成，原上传 UI 人工验收保留。最新 main 的上述并发改动尚未集成与验证；PR 继续草稿，未合并、关闭 Issue、发布、部署或清理分支/worktree/原人工预览。原人工预览健康检查仍为 HTTP 200，保留原验收构建及数据。
+
+<a id="joint-merge-evidence"></a>
+
+## 授权合并时保留并发基本设置（2026-10-08）
+
+用户明确授权合并 PR、关闭 Issue、清理本任务资源并更新本地 main，要求不覆盖并发会话功能。刷新 origin/main=`7e88af4a24194dec880f6bb6b8a7e6367fe3b188`，读懂已合并 #194/#262 与 #169 的实现后，合并最新 main。7 处冲突按双方实际能力解决：公共外壳验证保留全部 11 个已实现路由，图片处理保留主分支真实读取/质量断言，browser-plan/browser-runner 的默认与定向入口同时保留 site-general、upload-settings 和 storage-cors。
+
+两任务占用同一 `/settings/general`，因此先提供联合原型，用户明确回复“现在这个可以的，没问题”。实施获批结构：站点信息四字段在前、上传限制三字段随后、四项关联设置在后；复用一个 OwnerShell、公共标题与分类、现有 HeroUI 表单。底栏两个独立 48px 保存按钮，桌面各200px、390px手机各173px。删除已实现上传限制的旧“尚未开放”关联占位。保留 #194 的四字段、地址复制/CORS与GitHub通知、时区及离开确认；保留 #200 的校验、结果未知核对、上传队列与迟到响应生命周期。两组只调用所属 API，保存与初读互不覆盖草稿，任一真实401同步保留并锁定两组、释放上传资源；联合未保存保护覆盖链接和真实历史返回。未新增依赖、重写数据契约或改动冻结PRD。
+
+验证入口：新联合场景只在既有 site-general behavior 注册一次，因此默认全量和该定向阶段均执行；不在 upload-settings 重复注册。原其他 suite/only 参数归属与默认入口继续通过。[运行器单元](./reports/merge/runner-unit.txt)。上传 hook 改为真实异步初值，未读不填默认值，首次读取初始化、后续快照及失效迟到读取不覆盖草稿；[红](./reports/merge/upload-initialization-red.txt)、[绿](./reports/merge/upload-initialization-green.txt)。原页面单元取得旧mock缺新增模块的失败后适配，两组初读401/非401隔离与失效草稿禁用共9项通过：[原初读红](./reports/merge/joint-unit-red.txt)、[失效红](./reports/merge/expired-unit-red.txt)、[最终绿](./reports/merge/joint-unit-final.txt)。未删原字段、焦点、队列、HTTP或历史身份断言。
+
+环境仍为 Node24.18.1、pnpm11.19.0、既有 Ego Lite TaskSpace6，用户批准后实际 takeOver 同一空间；独立测试数据库/账号与人工预览分离。冻结安装、build、lint、format、typecheck均通过；最新单元默认137文件/1799项，其中136文件1797项通过、旧会话测试mock2项失败，受影响两文件修正后9项定向通过，不称首轮全量全部通过。测试类型修改后再跑应用 tsc 通过。站点 PATCH/HTTP及上传 HTTP/真实 standalone 重启持久化4文件13项通过。本次不重复无输入变化的全部集成/CORS/Release验证，也不把旧默认全量失败改写为通过。原main带入的analytics历史日志两处EOF空白保留，当前改动对origin/main的diff检查通过。
+
+联合首轮真实浏览器响应式阶段完成，[报告](./reports/merge/site-browser.json)，随后关联跳转取消断言发现batch21变27。实际已安装 React Aria NumberField 在获得焦点时消费wheel增值；新测试采用先失焦、真实键盘激活链接，仍严格核对两组草稿。第一次behavior补跑在手机一个等待超时：[报告](./reports/merge/site-behavior.json)、[诊断步骤](./reports/merge/site-behavior-diagnostic.json)。新增步骤与失败上下文记录后，同产品构建的完整behavior通过：[最终](./reports/merge/site-behavior-expiry-diagnostic.json)。该次超时未得到唯一根因，不冒充产品已修；最后实际运行覆盖两视口两原生form、所属Enter和真实PATCH、完整Next服务器刷新、另一组草稿保持、upload-only真实Back确认/取消/放弃与history IDs/key、联合链接离开及两种真实401。browserErrors=[]，无error/cleanupError。
+
+恢复首轮除最终失效场景外均完成，包括双向初读失败时另一组真实UI保存、持有请求、未知结果、GET核对、失败重试与草稿/服务器选择：[首轮](./reports/merge/site-recovery.json)。后台真实会话核对可能先观察失效而禁用保存，测试假设显式PATCH必先发生不成立。该场景复用原故障助手，仅持有后台实际会话GET的响应交付；独立原fetch确认真实匿名，再由真实UI提交取得真实401，之后finally释放原响应。没有改变产品保护、模拟401或放宽断言。后续恢复和消费者结果另列最终记录。
+
+代码、真实浏览器、设计及人工验收是独立结论。原上传UI人工验收保留；本次联合原型已批准，未据此虚构联合产品新增人工逐项验收。用户已明确给出合并指令，完成本次适用检查和复审后按该授权执行；历史未执行项仍保留。
+
+### 联合页面设计同步与本地证据
+
+Figma 文件 `74sT9Hrf8G4czcWeTkET5b` 的桌面正常根 `467:4002 / 470:10085`（1440×1080）与手机正常根 `467:9001 / 470:10377`（390×844）均已同步获批联合方案，保留根ID与可编辑组件。新增复用上传卡、删除旧关联上传占位，两个保存按钮保留48px高度。同步后独立审查发现旧站点稿公共导航将尚未交付的访问统计显示为可用，实际 OwnerShell 明确 unavailable；修正真实来源Figma公共状态，不改产品开启占位能力。保存按钮实例按当前产品统一Noto Sans SC500，不改全局按钮定义。四正常根中文/品牌字体核对、imagefills=0；[初次记录](./reports/merge/figma/sync-log.md)、[局部修正](./reports/merge/figma/postfix-log.md)、[最终桌面结构](./reports/merge/figma/desktop-final.json)、[最终手机结构](./reports/merge/figma/mobile-final.json)。历史加载/错误/会话独立节点仍为原模块稿，不声称已全部重组。
+
+真实正常页面与Figma按同视口先核对公共壳，再核对业务卡/标签/控件/两按钮：[桌面1440Light](./reports/merge/site-behavior-expiry-diagnostic/upload-settings-general-merged-light-1440.png)、[手机390Dark](./reports/merge/site-behavior-expiry-diagnostic/upload-settings-general-merged-dark-390.png)，对应最新[Figma桌面](./reports/merge/figma/desktop.png)、[Figma手机](./reports/merge/figma/mobile.png)。其他正常双主题/360/390/430/768及400px短视口见[首轮布局](./reports/merge/site-browser.json)，这些布局完成的事实不冒充该失败运行的功能全部通过。状态布局沿用两模块有效设计与获批联合结构，最终[恢复组](./reports/merge/site-recovery-bound-fetch/site-general.json)实测passed、5checks/34layouts，无error/cleanupError，真实expiredSave为PATCH401/UNAUTHORIZED。第一次响应持有测试误以对象方法调用原生fetch触发Illegal invocation：[历史报告](./reports/merge/site-recovery-final.json)，绑定真实window后完整重验通过；没有改产品或吞错误。
+
+本轮实际命令及输出：[冻结安装](./reports/merge/install.txt)、[构建](./reports/merge/build.txt)、[静态](./reports/merge/lint.txt)、[格式](./reports/merge/format.txt)、[类型](./reports/merge/typecheck.txt)、[全量单元首轮](./reports/merge/unit.txt)、[受影响单元最终](./reports/merge/joint-unit-final.txt)、[HTTP与重启集成](./reports/merge/integration.txt)、[测试修改后类型](./reports/merge/typecheck-test-final.txt)、[文档](./reports/merge/docs.txt)。各Ego命令统一为 `EGO_TASK_SPACE=6 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/merge-264/<报告目录> node scripts/verify-browser.mjs --suite site-general`，通过的定向重跑分别加 `--only behavior`、`--only recovery`；原失败与后续通过分列，不声称本轮默认所有浏览器阶段单次全通过。
+
+### 联合阶段最终补验状态（仍有待补项）
+
+最新离线归档与独立结论见[联合验证索引](./reports/merge/README.md)。site behavior最终passed（6 checks/12 layouts）、recovery最终passed（5 checks/34 layouts，真实PATCH401）、consumers最终passed（1 check/10 layouts），公共OwnerShell 9 checks/33 pages通过，覆盖11个已交付路由。完整报告分别见[行为](./reports/merge/site-behavior-expiry-diagnostic/site-general.json)、[恢复](./reports/merge/site-recovery-bound-fetch/site-general.json)、[消费者](./reports/merge/site-consumers/site-general.json)和[公共外壳](./reports/merge/site-consumers/owner-shell.json)。历史behavior超时、recovery先被背景会话失效及原fetch调用失败仍保留，不称唯一根因全部已修复。
+
+| 本轮最终补验           | 实际结果                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 上传设置               | [分阶段汇总](./reports/merge/upload-browser-final.json)：representative完成1check/12layouts；[behavior](./reports/merge/upload-behavior-keyboard/upload-settings.json)2checks/5layouts、[recovery](./reports/merge/upload-recovery-regions/upload-settings.json)2checks/19layouts、[consumers](./reports/merge/upload-consumers/upload-settings.json)2checks/20layouts均passed，无browserErrors/error/cleanupError。原首轮及两次诊断失败保留，不称单次默认全量通过。   |
+| 图片处理入口与整组限制 | [第一次](./reports/merge/processing-settings/processing.json)、[原脚本不变重跑](./reports/merge/processing-settings-retry/processing.json)均完成本次入口：同document/window/timeOrigin、唯一关联mediaGET quality82/68、freshGET持有/失败/显式重试64与20字段PATCH。随后旧水印素材重试page.click disconnected使两轮整组failed，各8checks；相对main的该模块产品及脚本没有变化，未发现本次产品回归证据，不声称唯一根因已确定或整组通过。按用户明确合并授权处理，限制保留。 |
+| 独立复审               | [代码/契约](./reports/merge/review-final.md)、[维护性](./reports/merge/structure-final.md)无本次Required/P1/P2；[设计](./reports/merge/design-final.md)实际复读新增三手机区域后，必需设计差异与证据缺口已闭合。                                                                                                                                                                                                                                                        |
+
+输入超时最终诊断见[真实事件报告](./reports/merge/upload-behavior-events/upload-settings.json)：新document已读取50，自动填值夹带真实wheel，input事件值1后change/blur为51，未发送PATCH；不据此认定唯一异步根因。测试改用项目已有的实际focus→全选→keyboard.type→Tab，严格FormData、保存及新旧submission断言全部保留。临时事件监听探针已移除，仅保留最后步骤和失败现场。最终behavior与受影响recovery/consumer按新输入方法实际通过，不改产品数字控件。
+
+手机原三张首屏没有显示下方上传卡，保留原图事实；[补图组](./reports/merge/upload-recovery-regions/upload-settings.json)实际滚动到上传区域，独立查看LoadingLight、ReadFailedDark、UninitializedLight后闭合视觉缺口。Figma四正常根最后标题为28px高，在44px帮助行y8居中，卡与后续字段边界不变：[校准记录](./reports/merge/figma/title-fix-log.md)、[桌面](./reports/merge/figma/desktop.png)、[手机](./reports/merge/figma/mobile.png)。异常独立原节点保持历史，不声称都已同步联合。
+
+原#200上传UI人工验收已明确通过，联合原型获批准；没有新增联合产品逐项人工运行验收记录。当前代码、本地检查、本次上传浏览器验证及独立设计复审分别完成；图片处理整组失败及历史默认全量失败如上保留。用户后续明确授权合并、关闭Issue、清理并更新本地main，按该指令执行，不以批准替代未验证项。最后远端核对/合并/清理实际状态由收尾回执记录，不提前宣称执行成功。无远端CI不记作CI通过，不创建Release、镜像或部署。

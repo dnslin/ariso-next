@@ -1,0 +1,3189 @@
+{
+  "status": "failed",
+  "taskSpaceId": 6,
+  "origin": "http://ariso-54869.localhost:54869",
+  "phase": "settings",
+  "checks": [
+    {
+      "check": "Same-document client navigation retains the root cache owner while a separate Node client changes server settings from quality 82 to 68. The real entry GET 200 is held: the existing reading state has no cached editor or footer. Release initializes all 20 actual controls from the fresh server result, and explicit save sends those exact 20 fields without overwriting the new server value.",
+      "cacheOwnerEvidence": "Same document/window is observed below. RootLayout retains Providers, whose useState owns the QueryClient across client navigation; no private React/QueryClient introspection is used.",
+      "initialQuality": 82,
+      "relatedMediaReads": [
+        {
+          "path": "/api/settings/media",
+          "method": "GET",
+          "route": "/settings/general",
+          "phase": "loading",
+          "settled": true,
+          "status": 200,
+          "quality": 82
+        }
+      ],
+      "left": {
+        "sameDocument": true,
+        "sameWindow": true,
+        "sameTimeOrigin": true,
+        "path": "/settings/general",
+        "relatedMediaRead": {
+          "path": "/api/settings/media",
+          "method": "GET",
+          "route": "/settings/general",
+          "phase": "loading",
+          "settled": true,
+          "status": 200,
+          "quality": 82
+        }
+      },
+      "returned": {
+        "sameDocument": true,
+        "sameWindow": true,
+        "sameTimeOrigin": true,
+        "path": "/settings/processing"
+      },
+      "heldRead": {
+        "path": "/api/settings/media",
+        "method": "GET",
+        "status": 200,
+        "requestId": "interception-job-119.0"
+      },
+      "loading": {
+        "state": "loading",
+        "text": "站点设置\n\n管理站点、图片处理与账号偏好。\n\n基本设置\n图片处理\n账号与安全\n上传 API\n正在读取处理设置\n\n请稍候，取得已保存设置后再编辑。",
+        "form": false,
+        "fields": 0,
+        "footer": false,
+        "save": false,
+        "preview": false
+      },
+      "displayed": {
+        "compressionEnabled": true,
+        "outputFormat": "WebP",
+        "quality": 68,
+        "maxEdge": 1700,
+        "jpegBackground": "#FFFFFF",
+        "watermarkMode": "text",
+        "watermarkAssetId": null,
+        "watermarkText": "R10 本次服务器设置",
+        "watermarkFont": "内置中文字体",
+        "watermarkFontSize": 3,
+        "watermarkColor": "#FFFFFF",
+        "watermarkStrokeColor": "#000000",
+        "watermarkStrokeWidth": 0,
+        "watermarkOpacity": 50,
+        "watermarkPosition": "bottom-right",
+        "watermarkMargin": 2,
+        "watermarkWidth": 20,
+        "defaultLinkVersion": "压缩图",
+        "defaultVisibility": "私有",
+        "concurrency": 1
+      },
+      "save": {
+        "path": "/api/settings/media",
+        "method": "PATCH",
+        "body": {
+          "compressionEnabled": true,
+          "outputFormat": "webp",
+          "quality": 68,
+          "maxEdge": 1700,
+          "jpegBackground": "#FFFFFF",
+          "watermarkMode": "text",
+          "watermarkAssetId": null,
+          "watermarkText": "R10 本次服务器设置",
+          "watermarkFont": "chinese",
+          "watermarkFontSize": 3,
+          "watermarkColor": "#FFFFFF",
+          "watermarkStrokeColor": "#000000",
+          "watermarkStrokeWidth": 0,
+          "watermarkOpacity": 50,
+          "watermarkPosition": "bottom-right",
+          "watermarkMargin": 2,
+          "watermarkWidth": 20,
+          "defaultLinkVersion": "compressed",
+          "defaultVisibility": "private",
+          "concurrency": 1
+        },
+        "status": 200,
+        "response": {
+          "id": 1,
+          "compressionEnabled": true,
+          "outputFormat": "webp",
+          "quality": 68,
+          "maxEdge": 1700,
+          "jpegBackground": "#FFFFFF",
+          "watermarkMode": "text",
+          "watermarkAssetId": null,
+          "watermarkText": "R10 本次服务器设置",
+          "watermarkFont": "chinese",
+          "watermarkFontSize": 3,
+          "watermarkColor": "#FFFFFF",
+          "watermarkStrokeColor": "#000000",
+          "watermarkStrokeWidth": 0,
+          "watermarkOpacity": 50,
+          "watermarkPosition": "bottom-right",
+          "watermarkMargin": 2,
+          "watermarkWidth": 20,
+          "defaultLinkVersion": "compressed",
+          "defaultVisibility": "private",
+          "concurrency": 1,
+          "updatedAt": "2026-10-08T12:22:41.478Z"
+        }
+      }
+    },
+    {
+      "check": "A second warm client re-entry after a separate real server change blocks the actual settings GET. It shows this entry read error with no cached form, preview or save footer, and makes no mutation. Only explicit retry performs the next real GET and initializes all 20 controls from server quality 64 while document/window identity remains unchanged.",
+      "failedReturn": {
+        "sameDocument": true,
+        "sameWindow": true,
+        "sameTimeOrigin": true,
+        "path": "/settings/processing"
+      },
+      "leftAgain": {
+        "sameDocument": true,
+        "sameWindow": true,
+        "sameTimeOrigin": true,
+        "path": "/settings/general",
+        "relatedMediaRead": {
+          "path": "/api/settings/media",
+          "method": "GET",
+          "route": "/settings/general",
+          "phase": "loading",
+          "settled": true,
+          "status": 200,
+          "quality": 68
+        }
+      },
+      "readFailure": {
+        "state": "error",
+        "text": "站点设置\n\n管理站点、图片处理与账号偏好。\n\n基本设置\n图片处理\n账号与安全\n上传 API\n无法读取处理设置\n\nFailed to fetch\n\n重新读取设置",
+        "form": false,
+        "fields": 0,
+        "footer": false,
+        "save": false,
+        "preview": false
+      },
+      "retriedDisplay": {
+        "compressionEnabled": true,
+        "outputFormat": "WebP",
+        "quality": 64,
+        "maxEdge": 1700,
+        "jpegBackground": "#FFFFFF",
+        "watermarkMode": "text",
+        "watermarkAssetId": null,
+        "watermarkText": "R10 本次服务器设置",
+        "watermarkFont": "内置中文字体",
+        "watermarkFontSize": 3,
+        "watermarkColor": "#FFFFFF",
+        "watermarkStrokeColor": "#000000",
+        "watermarkStrokeWidth": 0,
+        "watermarkOpacity": 50,
+        "watermarkPosition": "bottom-right",
+        "watermarkMargin": 2,
+        "watermarkWidth": 20,
+        "defaultLinkVersion": "压缩图",
+        "defaultVisibility": "公开",
+        "concurrency": 1
+      }
+    },
+    {
+      "check": "Real GET fills the form; keyboard save persists quality, visibility and concurrency. Its live neutral Toast sits 100 px above the viewport bottom without intercepting save; real client navigation to Upload keeps that same notification and restores ordinary desktop/mobile offsets 28/24. Returning through the actual sidebar reads saved values without a success page.",
+      "saved": {
+        "quality": 76,
+        "defaultVisibility": "private",
+        "concurrency": 2
+      }
+    },
+    {
+      "check": "Out-of-range quality stays entered, receives its field error and keyboard focus, and sends no invalid PATCH."
+    },
+    {
+      "check": "Real HTTP 500 preserves input; a lost real successful PATCH is explicitly reconciled through GET without repeating the mutation.",
+      "requests": [
+        {
+          "path": "/api/auth/get-session",
+          "method": "GET",
+          "status": 200,
+          "sessionNull": false
+        },
+        {
+          "path": "/api/settings/media",
+          "method": "PATCH",
+          "body": {
+            "compressionEnabled": true,
+            "outputFormat": "webp",
+            "quality": 73,
+            "maxEdge": 1700,
+            "jpegBackground": "#FFFFFF",
+            "watermarkMode": "off",
+            "watermarkAssetId": null,
+            "watermarkText": "R10 本次服务器设置",
+            "watermarkFont": "chinese",
+            "watermarkFontSize": 3,
+            "watermarkColor": "#FFFFFF",
+            "watermarkStrokeColor": "#000000",
+            "watermarkStrokeWidth": 0,
+            "watermarkOpacity": 50,
+            "watermarkPosition": "bottom-right",
+            "watermarkMargin": 2,
+            "watermarkWidth": 20,
+            "defaultLinkVersion": "compressed",
+            "defaultVisibility": "private",
+            "concurrency": 2
+          },
+          "status": 200,
+          "response": {
+            "id": 1,
+            "compressionEnabled": true,
+            "outputFormat": "webp",
+            "quality": 73,
+            "maxEdge": 1700,
+            "jpegBackground": "#FFFFFF",
+            "watermarkMode": "off",
+            "watermarkAssetId": null,
+            "watermarkText": "R10 本次服务器设置",
+            "watermarkFont": "chinese",
+            "watermarkFontSize": 3,
+            "watermarkColor": "#FFFFFF",
+            "watermarkStrokeColor": "#000000",
+            "watermarkStrokeWidth": 0,
+            "watermarkOpacity": 50,
+            "watermarkPosition": "bottom-right",
+            "watermarkMargin": 2,
+            "watermarkWidth": 20,
+            "defaultLinkVersion": "compressed",
+            "defaultVisibility": "private",
+            "concurrency": 2,
+            "updatedAt": "2026-10-08T12:23:00.252Z"
+          },
+          "responseLost": true
+        },
+        {
+          "path": "/api/auth/get-session",
+          "method": "GET",
+          "status": 200,
+          "sessionNull": false
+        },
+        {
+          "path": "/api/settings/media",
+          "method": "GET",
+          "status": 200,
+          "response": {
+            "id": 1,
+            "compressionEnabled": true,
+            "outputFormat": "webp",
+            "quality": 73,
+            "maxEdge": 1700,
+            "jpegBackground": "#FFFFFF",
+            "watermarkMode": "off",
+            "watermarkAssetId": null,
+            "watermarkText": "R10 本次服务器设置",
+            "watermarkFont": "chinese",
+            "watermarkFontSize": 3,
+            "watermarkColor": "#FFFFFF",
+            "watermarkStrokeColor": "#000000",
+            "watermarkStrokeWidth": 0,
+            "watermarkOpacity": 50,
+            "watermarkPosition": "bottom-right",
+            "watermarkMargin": 2,
+            "watermarkWidth": 20,
+            "defaultLinkVersion": "compressed",
+            "defaultVisibility": "private",
+            "concurrency": 2,
+            "updatedAt": "2026-10-08T12:23:00.252Z"
+          }
+        },
+        {
+          "path": "/upload/settings",
+          "method": "GET",
+          "status": 200,
+          "response": {
+            "maxFileBytes": 52428800,
+            "batchSize": 20,
+            "queueLimit": 500,
+            "defaultVisibility": "private",
+            "defaultStorageId": "02885fbd-2834-4bc8-9a27-6775201dab2a",
+            "albums": [],
+            "tags": [],
+            "storages": [
+              {
+                "id": "02885fbd-2834-4bc8-9a27-6775201dab2a",
+                "name": "默认本地存储",
+                "enabled": true
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "check": "A real concurrent update makes reconciliation different; preserve keeps local input without saving it, and only the next explicit save submits again."
+    },
+    {
+      "check": "Disabling the default compressed version requires confirmation; Escape preserves compression, confirmation changes only the draft until explicit save."
+    },
+    {
+      "check": "Actual file upload creates an expiring asset without saving settings; explicit save adopts it; re-entry reads persisted ID, format and dimensions through the real owner metadata endpoint.",
+      "asset": {
+        "id": "1151f39a-8c26-4ef0-97ce-035fad43fc00",
+        "mime": "image/png",
+        "width": 64,
+        "height": 48,
+        "byteSize": 423
+      }
+    }
+  ],
+  "layouts": [
+    {
+      "state": "settings-entry-loading",
+      "theme": "light",
+      "height": 1080,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "分享管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        }
+      ],
+      "screenshot": "processing-settings-entry-loading-light-1440.png"
+    },
+    {
+      "state": "settings-entry-read-failure",
+      "theme": "light",
+      "height": 1080,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭通知",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "分享管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "重新读取设置",
+          "width": 118,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "screenshot": "processing-settings-entry-read-failure-light-1440.png"
+    },
+    {
+      "state": "save-failure",
+      "theme": "dark",
+      "height": 844,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "图片处理",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "核对已保存设置",
+          "width": 132,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "私有",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "压缩图",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "WebP",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "jpegBackground",
+          "width": 272,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "文字水印",
+          "width": 155,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "图片水印",
+          "width": 157,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "左上",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "右上",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "左中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "居中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "右中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "左下",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "右下",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "预览处理效果",
+          "width": 174,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存处理设置",
+          "width": 172,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "screenshot": "processing-save-failure-dark-390.png"
+    },
+    {
+      "state": "save-different",
+      "theme": "light",
+      "height": 844,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "图片处理",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "核对已保存设置",
+          "width": 132,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "保留当前输入",
+          "width": 118,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "使用已保存设置",
+          "width": 130,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "私有",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "压缩图",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "WebP",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "jpegBackground",
+          "width": 272,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "文字水印",
+          "width": 155,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "图片水印",
+          "width": 157,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "左上",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "右上",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "左中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "居中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "右中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "左下",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "右下",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "预览处理效果",
+          "width": 174,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存处理设置",
+          "width": 172,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "screenshot": "processing-save-different-light-390.png"
+    },
+    {
+      "state": "default-confirmation",
+      "theme": "dark",
+      "height": 844,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭确认",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 149,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "改为原图并继续",
+          "width": 147,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "screenshot": "processing-default-confirmation-dark-390.png"
+    },
+    {
+      "state": "temporary-asset",
+      "theme": "dark",
+      "height": 844,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "图片处理",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "私有",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "原图",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "WebP",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "jpegBackground",
+          "width": 272,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "文字水印",
+          "width": 157,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "图片水印",
+          "width": 155,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "左上",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "右上",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "左中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "居中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "右中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "左下",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "右下",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传水印素材",
+          "width": 138,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "清空素材选择",
+          "width": 118,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "预览处理效果",
+          "width": 174,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存处理设置",
+          "width": 172,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "关闭通知",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "screenshot": "processing-temporary-asset-dark-390.png"
+    },
+    {
+      "state": "temporary-asset-identity",
+      "theme": "dark",
+      "height": 844,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "图片处理",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "私有",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "原图",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "WebP",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "jpegBackground",
+          "width": 272,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "文字水印",
+          "width": 157,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "图片水印",
+          "width": 155,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "左上",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "右上",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "左中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "居中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "右中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "左下",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "右下",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传水印素材",
+          "width": 138,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "清空素材选择",
+          "width": 118,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "预览处理效果",
+          "width": 174,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存处理设置",
+          "width": 172,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "关闭通知",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "screenshot": "processing-temporary-asset-identity-dark-390.png",
+      "scrollTop": 1553.5,
+      "detailFrame": {
+        "top": 64,
+        "bottom": 763
+      },
+      "visibleDetails": [
+        {
+          "selector": "[data-testid=\"processing-asset\"]",
+          "top": 126.421875,
+          "bottom": 380.921875,
+          "text": "水印素材上传水印素材PNG、WebP 或静态 SVG，不超过 5 MiB。1151f39a-8c26-4ef0-97ce-035fad43fc00alpha.pngPNG · image/png · 64 × 48 · 423 B尚未保存，须在 2026/10/8 21:23:15 前采用。保存处理设置后采用。"
+        }
+      ]
+    },
+    {
+      "state": "temporary-asset-controls",
+      "theme": "dark",
+      "height": 844,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "图片处理",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "私有",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "原图",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "WebP",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "jpegBackground",
+          "width": 272,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "文字水印",
+          "width": 157,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "图片水印",
+          "width": 155,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "左上",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "右上",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "左中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "居中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "右中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "左下",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "右下",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传水印素材",
+          "width": 138,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "清空素材选择",
+          "width": 118,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "预览处理效果",
+          "width": 174,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存处理设置",
+          "width": 172,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "关闭通知",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        }
+      ],
+      "screenshot": "processing-temporary-asset-controls-dark-390.png",
+      "scrollTop": 1553.5,
+      "detailFrame": {
+        "top": 64,
+        "bottom": 763
+      },
+      "visibleDetails": [
+        {
+          "selector": "[data-field=\"watermarkWidth\"]",
+          "top": 400.921875,
+          "bottom": 523.4921875,
+          "text": "相对图片宽度（画布 %）"
+        },
+        {
+          "selector": "[data-field=\"watermarkOpacity\"]",
+          "top": 400.921875,
+          "bottom": 523.4921875,
+          "text": "不透明度（%）"
+        },
+        {
+          "selector": "[data-slot=\"card\"]:has([data-field=\"watermarkWidth\"]) > p",
+          "top": 543.4921875,
+          "bottom": 582.4921875,
+          "text": "只应用当前水印模式；切换模式保留另一模式输入。 修改设置只影响新任务。"
+        }
+      ]
+    },
+    {
+      "state": "saved-asset",
+      "theme": "dark",
+      "height": 844,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "图片处理",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "私有",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "原图",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "WebP",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "jpegBackground",
+          "width": 272,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "文字水印",
+          "width": 157,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "图片水印",
+          "width": 155,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "左上",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "右上",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "左中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "居中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "右中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "左下",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "右下",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传水印素材",
+          "width": 138,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "清空素材选择",
+          "width": 118,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "预览处理效果",
+          "width": 174,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存处理设置",
+          "width": 172,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "screenshot": "processing-saved-asset-dark-390.png"
+    },
+    {
+      "state": "saved-asset-identity",
+      "theme": "dark",
+      "height": 844,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "图片处理",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "私有",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "原图",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "WebP",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "jpegBackground",
+          "width": 272,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "文字水印",
+          "width": 157,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "图片水印",
+          "width": 155,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "左上",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "右上",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "左中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "居中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "右中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "左下",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "右下",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传水印素材",
+          "width": 138,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "清空素材选择",
+          "width": 118,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "预览处理效果",
+          "width": 174,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存处理设置",
+          "width": 172,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "screenshot": "processing-saved-asset-identity-dark-390.png",
+      "scrollTop": 1534,
+      "detailFrame": {
+        "top": 64,
+        "bottom": 763
+      },
+      "visibleDetails": [
+        {
+          "selector": "[data-testid=\"processing-asset\"]",
+          "top": 145.921875,
+          "bottom": 380.921875,
+          "text": "水印素材上传水印素材PNG、WebP 或静态 SVG，不超过 5 MiB。1151f39a-8c26-4ef0-97ce-035fad43fc00已保存素材PNG · image/png · 64 × 48 · 423 B已采用，无临时到期限制。"
+        }
+      ]
+    },
+    {
+      "state": "saved-asset-controls",
+      "theme": "dark",
+      "height": 844,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "图片处理",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "私有",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "原图",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "WebP",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "jpegBackground",
+          "width": 272,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "文字水印",
+          "width": 157,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "图片水印",
+          "width": 155,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "左上",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "右上",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "左中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "居中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "右中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "左下",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "右下",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传水印素材",
+          "width": 138,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "清空素材选择",
+          "width": 118,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "预览处理效果",
+          "width": 174,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存处理设置",
+          "width": 172,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "screenshot": "processing-saved-asset-controls-dark-390.png",
+      "scrollTop": 1534,
+      "detailFrame": {
+        "top": 64,
+        "bottom": 763
+      },
+      "visibleDetails": [
+        {
+          "selector": "[data-field=\"watermarkWidth\"]",
+          "top": 400.921875,
+          "bottom": 523.4921875,
+          "text": "相对图片宽度（画布 %）"
+        },
+        {
+          "selector": "[data-field=\"watermarkOpacity\"]",
+          "top": 400.921875,
+          "bottom": 523.4921875,
+          "text": "不透明度（%）"
+        },
+        {
+          "selector": "[data-slot=\"card\"]:has([data-field=\"watermarkWidth\"]) > p",
+          "top": 543.4921875,
+          "bottom": 582.4921875,
+          "text": "只应用当前水印模式；切换模式保留另一模式输入。 修改设置只影响新任务。"
+        }
+      ]
+    },
+    {
+      "state": "asset-read-error",
+      "theme": "dark",
+      "height": 844,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "图片处理",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "私有",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "原图",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "WebP",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "jpegBackground",
+          "width": 272,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "文字水印",
+          "width": 157,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "图片水印",
+          "width": 155,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "左上",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "右上",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "左中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "居中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "右中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "左下",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "右下",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传水印素材",
+          "width": 138,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新读取素材信息",
+          "width": 146,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "清空素材选择",
+          "width": 118,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "预览处理效果",
+          "width": 174,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存处理设置",
+          "width": 172,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "screenshot": "processing-asset-read-error-dark-390.png"
+    },
+    {
+      "state": "asset-read-error-identity",
+      "theme": "dark",
+      "height": 844,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "图片处理",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "私有",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "原图",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "WebP",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "jpegBackground",
+          "width": 272,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "文字水印",
+          "width": 157,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "图片水印",
+          "width": 155,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "左上",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "右上",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "左中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "居中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "右中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "左下",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "右下",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传水印素材",
+          "width": 138,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新读取素材信息",
+          "width": 146,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "清空素材选择",
+          "width": 118,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "预览处理效果",
+          "width": 174,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存处理设置",
+          "width": 172,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "screenshot": "processing-asset-read-error-identity-dark-390.png",
+      "scrollTop": 1550.5,
+      "detailFrame": {
+        "top": 64,
+        "bottom": 763
+      },
+      "visibleDetails": [
+        {
+          "selector": "[data-testid=\"processing-asset\"]",
+          "top": 129.421875,
+          "bottom": 380.921875,
+          "text": "水印素材上传水印素材PNG、WebP 或静态 SVG，不超过 5 MiB。1151f39a-8c26-4ef0-97ce-035fad43fc00素材信息读取失败，当前 ID 已保留。Verification: actual saved-asset response was lost重新读取素材信息"
+        }
+      ]
+    },
+    {
+      "state": "asset-read-error-controls",
+      "theme": "dark",
+      "height": 844,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "图片处理",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "私有",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "原图",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "WebP",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "jpegBackground",
+          "width": 272,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "文字水印",
+          "width": 157,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "图片水印",
+          "width": 155,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "左上",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "右上",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "左中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "居中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "右中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "左下",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "下中",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "右下",
+          "width": 102.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 324,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传水印素材",
+          "width": 138,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新读取素材信息",
+          "width": 146,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 156,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "清空素材选择",
+          "width": 118,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "预览处理效果",
+          "width": 174,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存处理设置",
+          "width": 172,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "screenshot": "processing-asset-read-error-controls-dark-390.png",
+      "scrollTop": 1550.5,
+      "detailFrame": {
+        "top": 64,
+        "bottom": 763
+      },
+      "visibleDetails": [
+        {
+          "selector": "[data-field=\"watermarkWidth\"]",
+          "top": 400.921875,
+          "bottom": 523.4921875,
+          "text": "相对图片宽度（画布 %）"
+        },
+        {
+          "selector": "[data-field=\"watermarkOpacity\"]",
+          "top": 400.921875,
+          "bottom": 523.4921875,
+          "text": "不透明度（%）"
+        },
+        {
+          "selector": "[data-slot=\"card\"]:has([data-field=\"watermarkWidth\"]) > p",
+          "top": 543.4921875,
+          "bottom": 582.4921875,
+          "text": "只应用当前水印模式；切换模式保留另一模式输入。 修改设置只影响新任务。"
+        }
+      ]
+    }
+  ],
+  "browserErrors": [],
+  "limitations": [
+    "Only the runner’s disposable production runtime and database are changed. The manual preview and its data are untouched.",
+    "Held or lost fetch responses are real server responses; successful rules, task IDs and results are never fabricated.",
+    "Cancellation tests verify actual DELETE settlement and recovery. The existing media-tools integration suite verifies encoder shutdown while work is active.",
+    "Physical touch, soft keyboard and nonzero device safe areas are outside the current acceptance scope."
+  ],
+  "ownerSessionReused": false,
+  "stage": "settings",
+  "settingsEntry": {
+    "cacheOwnerEvidence": "Same document/window is observed below. RootLayout retains Providers, whose useState owns the QueryClient across client navigation; no private React/QueryClient introspection is used.",
+    "initialQuality": 82,
+    "relatedMediaReads": [
+      {
+        "path": "/api/settings/media",
+        "method": "GET",
+        "route": "/settings/general",
+        "phase": "loading",
+        "settled": true,
+        "status": 200,
+        "quality": 68
+      }
+    ],
+    "left": {
+      "sameDocument": true,
+      "sameWindow": true,
+      "sameTimeOrigin": true,
+      "path": "/settings/general",
+      "relatedMediaRead": {
+        "path": "/api/settings/media",
+        "method": "GET",
+        "route": "/settings/general",
+        "phase": "loading",
+        "settled": true,
+        "status": 200,
+        "quality": 82
+      }
+    },
+    "returned": {
+      "sameDocument": true,
+      "sameWindow": true,
+      "sameTimeOrigin": true,
+      "path": "/settings/processing"
+    },
+    "heldRead": {
+      "path": "/api/settings/media",
+      "method": "GET",
+      "status": 200,
+      "requestId": "interception-job-119.0"
+    },
+    "loading": {
+      "state": "loading",
+      "text": "站点设置\n\n管理站点、图片处理与账号偏好。\n\n基本设置\n图片处理\n账号与安全\n上传 API\n正在读取处理设置\n\n请稍候，取得已保存设置后再编辑。",
+      "form": false,
+      "fields": 0,
+      "footer": false,
+      "save": false,
+      "preview": false
+    },
+    "displayed": {
+      "compressionEnabled": true,
+      "outputFormat": "WebP",
+      "quality": 68,
+      "maxEdge": 1700,
+      "jpegBackground": "#FFFFFF",
+      "watermarkMode": "text",
+      "watermarkAssetId": null,
+      "watermarkText": "R10 本次服务器设置",
+      "watermarkFont": "内置中文字体",
+      "watermarkFontSize": 3,
+      "watermarkColor": "#FFFFFF",
+      "watermarkStrokeColor": "#000000",
+      "watermarkStrokeWidth": 0,
+      "watermarkOpacity": 50,
+      "watermarkPosition": "bottom-right",
+      "watermarkMargin": 2,
+      "watermarkWidth": 20,
+      "defaultLinkVersion": "压缩图",
+      "defaultVisibility": "私有",
+      "concurrency": 1
+    },
+    "save": {
+      "path": "/api/settings/media",
+      "method": "PATCH",
+      "body": {
+        "compressionEnabled": true,
+        "outputFormat": "webp",
+        "quality": 68,
+        "maxEdge": 1700,
+        "jpegBackground": "#FFFFFF",
+        "watermarkMode": "text",
+        "watermarkAssetId": null,
+        "watermarkText": "R10 本次服务器设置",
+        "watermarkFont": "chinese",
+        "watermarkFontSize": 3,
+        "watermarkColor": "#FFFFFF",
+        "watermarkStrokeColor": "#000000",
+        "watermarkStrokeWidth": 0,
+        "watermarkOpacity": 50,
+        "watermarkPosition": "bottom-right",
+        "watermarkMargin": 2,
+        "watermarkWidth": 20,
+        "defaultLinkVersion": "compressed",
+        "defaultVisibility": "private",
+        "concurrency": 1
+      },
+      "status": 200,
+      "response": {
+        "id": 1,
+        "compressionEnabled": true,
+        "outputFormat": "webp",
+        "quality": 68,
+        "maxEdge": 1700,
+        "jpegBackground": "#FFFFFF",
+        "watermarkMode": "text",
+        "watermarkAssetId": null,
+        "watermarkText": "R10 本次服务器设置",
+        "watermarkFont": "chinese",
+        "watermarkFontSize": 3,
+        "watermarkColor": "#FFFFFF",
+        "watermarkStrokeColor": "#000000",
+        "watermarkStrokeWidth": 0,
+        "watermarkOpacity": 50,
+        "watermarkPosition": "bottom-right",
+        "watermarkMargin": 2,
+        "watermarkWidth": 20,
+        "defaultLinkVersion": "compressed",
+        "defaultVisibility": "private",
+        "concurrency": 1,
+        "updatedAt": "2026-10-08T12:22:41.478Z"
+      }
+    },
+    "leftAgain": {
+      "sameDocument": true,
+      "sameWindow": true,
+      "sameTimeOrigin": true,
+      "path": "/settings/general",
+      "relatedMediaRead": {
+        "path": "/api/settings/media",
+        "method": "GET",
+        "route": "/settings/general",
+        "phase": "loading",
+        "settled": true,
+        "status": 200,
+        "quality": 68
+      }
+    },
+    "failedReturn": {
+      "sameDocument": true,
+      "sameWindow": true,
+      "sameTimeOrigin": true,
+      "path": "/settings/processing"
+    },
+    "readFailure": {
+      "state": "error",
+      "text": "站点设置\n\n管理站点、图片处理与账号偏好。\n\n基本设置\n图片处理\n账号与安全\n上传 API\n无法读取处理设置\n\nFailed to fetch\n\n重新读取设置",
+      "form": false,
+      "fields": 0,
+      "footer": false,
+      "save": false,
+      "preview": false
+    },
+    "retriedDisplay": {
+      "compressionEnabled": true,
+      "outputFormat": "WebP",
+      "quality": 64,
+      "maxEdge": 1700,
+      "jpegBackground": "#FFFFFF",
+      "watermarkMode": "text",
+      "watermarkAssetId": null,
+      "watermarkText": "R10 本次服务器设置",
+      "watermarkFont": "内置中文字体",
+      "watermarkFontSize": 3,
+      "watermarkColor": "#FFFFFF",
+      "watermarkStrokeColor": "#000000",
+      "watermarkStrokeWidth": 0,
+      "watermarkOpacity": 50,
+      "watermarkPosition": "bottom-right",
+      "watermarkMargin": 2,
+      "watermarkWidth": 20,
+      "defaultLinkVersion": "压缩图",
+      "defaultVisibility": "公开",
+      "concurrency": 1
+    }
+  },
+  "toastLayouts": [
+    {
+      "path": "/settings/processing",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light",
+      "title": "处理设置已保存",
+      "bottomGap": 100,
+      "footerTop": 999,
+      "saveHit": true,
+      "sameNotification": true,
+      "screenshot": "processing-toast-saved-1440.png"
+    },
+    {
+      "path": "/upload",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light",
+      "title": "处理设置已保存",
+      "bottomGap": 28,
+      "saveHit": null,
+      "sameNotification": true
+    },
+    {
+      "path": "/upload",
+      "width": 390,
+      "height": 844,
+      "theme": "light",
+      "title": "处理设置已保存",
+      "bottomGap": 24,
+      "footerTop": 767,
+      "saveHit": null,
+      "sameNotification": true
+    },
+    {
+      "path": "/settings/processing",
+      "width": 390,
+      "height": 844,
+      "theme": "dark",
+      "title": "输入已保留，请点击保存",
+      "bottomGap": 100,
+      "footerTop": 763,
+      "saveHit": true,
+      "sameNotification": false
+    },
+    {
+      "path": "/settings/processing",
+      "width": 390,
+      "height": 844,
+      "theme": "dark",
+      "title": "已确认上次保存，当前输入已保留",
+      "bottomGap": 100,
+      "footerTop": 763,
+      "saveHit": true,
+      "sameNotification": false
+    }
+  ],
+  "toastTargetLayouts": [
+    {
+      "state": "save-failure",
+      "width": 390,
+      "theme": "dark",
+      "collapsed": []
+    },
+    {
+      "state": "save-different",
+      "width": 390,
+      "theme": "light",
+      "collapsed": []
+    },
+    {
+      "state": "default-confirmation",
+      "width": 390,
+      "theme": "dark",
+      "collapsed": []
+    },
+    {
+      "state": "temporary-asset",
+      "width": 390,
+      "theme": "dark",
+      "collapsed": [
+        {
+          "title": "处理设置已保存",
+          "frontmost": true,
+          "hidden": false,
+          "blocked": false,
+          "expanded": false,
+          "ariaHidden": null,
+          "inert": false,
+          "opacity": 1,
+          "pointerEvents": "auto",
+          "tabIndex": 0,
+          "width": 44,
+          "height": 44,
+          "hit": true
+        }
+      ]
+    },
+    {
+      "state": "temporary-asset-identity",
+      "width": 390,
+      "theme": "dark",
+      "collapsed": [
+        {
+          "title": "处理设置已保存",
+          "frontmost": true,
+          "hidden": false,
+          "blocked": false,
+          "expanded": false,
+          "ariaHidden": null,
+          "inert": false,
+          "opacity": 1,
+          "pointerEvents": "auto",
+          "tabIndex": 0,
+          "width": 44,
+          "height": 44,
+          "hit": true
+        }
+      ]
+    },
+    {
+      "state": "temporary-asset-controls",
+      "width": 390,
+      "theme": "dark",
+      "collapsed": [
+        {
+          "title": "处理设置已保存",
+          "frontmost": true,
+          "hidden": false,
+          "blocked": false,
+          "expanded": false,
+          "ariaHidden": null,
+          "inert": false,
+          "opacity": 1,
+          "pointerEvents": "auto",
+          "tabIndex": 0,
+          "width": 44,
+          "height": 44,
+          "hit": true
+        }
+      ]
+    },
+    {
+      "state": "saved-asset",
+      "width": 390,
+      "theme": "dark",
+      "collapsed": []
+    },
+    {
+      "state": "saved-asset-identity",
+      "width": 390,
+      "theme": "dark",
+      "collapsed": []
+    },
+    {
+      "state": "saved-asset-controls",
+      "width": 390,
+      "theme": "dark",
+      "collapsed": []
+    },
+    {
+      "state": "asset-read-error",
+      "width": 390,
+      "theme": "dark",
+      "collapsed": []
+    },
+    {
+      "state": "asset-read-error-identity",
+      "width": 390,
+      "theme": "dark",
+      "collapsed": []
+    },
+    {
+      "state": "asset-read-error-controls",
+      "width": 390,
+      "theme": "dark",
+      "collapsed": []
+    }
+  ],
+  "assetReadRecovery": {
+    "released": false,
+    "activation": null,
+    "requests": [
+      {
+        "startedAt": 1791462200935,
+        "responseLost": true,
+        "status": 200,
+        "finishedAt": 1791462200948
+      },
+      {
+        "startedAt": 1791462202010,
+        "responseLost": true,
+        "status": 200,
+        "finishedAt": 1791462202027
+      },
+      {
+        "startedAt": 1791462203123,
+        "responseLost": true,
+        "status": 200,
+        "finishedAt": 1791462203140
+      },
+      {
+        "startedAt": 1791462203163,
+        "responseLost": true,
+        "status": 200,
+        "finishedAt": 1791462203172
+      },
+      {
+        "startedAt": 1791462203232,
+        "responseLost": true,
+        "status": 200,
+        "finishedAt": 1791462203239
+      },
+      {
+        "startedAt": 1791462203263,
+        "responseLost": true,
+        "status": 200,
+        "finishedAt": 1791462203270
+      },
+      {
+        "startedAt": 1791462203348,
+        "responseLost": true,
+        "status": 200,
+        "finishedAt": 1791462203355
+      },
+      {
+        "startedAt": 1791462203913,
+        "responseLost": true,
+        "status": 200,
+        "finishedAt": 1791462203924
+      },
+      {
+        "startedAt": 1791462204998,
+        "responseLost": true,
+        "status": 200,
+        "finishedAt": 1791462205011
+      },
+      {
+        "startedAt": 1791462206043,
+        "responseLost": true,
+        "status": 200,
+        "finishedAt": 1791462206064
+      },
+      {
+        "startedAt": 1791462207044,
+        "responseLost": true,
+        "status": 200,
+        "finishedAt": 1791462207063
+      }
+    ]
+  },
+  "error": "ElementResolutionError: page.click timed out after 3000ms: page.click failed: element is not connected\n    at #retryElementAction (file:////[eval1]:18884:27)\n    at async file:////[eval1]:18968:29\n    at async file:////[eval1]:16691:28",
+  "originalSettingsRestored": true,
+  "browserRequests": {
+    "requests": [
+      {
+        "path": "/api/auth/get-session",
+        "method": "GET",
+        "status": 200,
+        "sessionNull": false
+      },
+      {
+        "path": "/api/media/watermark-assets/1151f39a-8c26-4ef0-97ce-035fad43fc00",
+        "method": "GET"
+      },
+      {
+        "path": "/api/auth/get-session",
+        "method": "GET",
+        "status": 200,
+        "sessionNull": false
+      },
+      {
+        "path": "/api/media/watermark-assets/1151f39a-8c26-4ef0-97ce-035fad43fc00",
+        "method": "GET"
+      },
+      {
+        "path": "/api/auth/get-session",
+        "method": "GET",
+        "status": 200,
+        "sessionNull": false
+      },
+      {
+        "path": "/api/media/watermark-assets/1151f39a-8c26-4ef0-97ce-035fad43fc00",
+        "method": "GET"
+      },
+      {
+        "path": "/api/auth/get-session",
+        "method": "GET",
+        "status": 200,
+        "sessionNull": false
+      },
+      {
+        "path": "/api/media/watermark-assets/1151f39a-8c26-4ef0-97ce-035fad43fc00",
+        "method": "GET"
+      }
+    ],
+    "faultUsed": false,
+    "fault": null
+  },
+  "finishedAt": "2026-10-08T12:23:27.237Z"
+}

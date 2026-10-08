@@ -1,0 +1,11 @@
+{
+  "command": "pnpm exec vitest list --project integration --project media-tools --json",
+  "status": "passed",
+  "collectedDefinitions": {
+    "report-delivery.test.ts": 1,
+    "report-scale-runner.test.ts": 2,
+    "reports.test.ts": 12
+  },
+  "totalCollectedDefinitions": 1184,
+  "note": "Vitest list reports test definitions before parameterized cases expand. Collection proves default inclusion, not execution pass; full default integration results are recorded separately."
+}

@@ -177,18 +177,35 @@ export async function uploadSettingsTools(page, config, report) {
     return value;
   };
   const open = async () => {
+    report.uploadOperation = { action: 'open', step: 'navigate' };
     await page.goto(`${config.origin}/settings/general`);
+    report.uploadOperation.step = 'wait-ready';
     await page.waitForSelector(`${limitsId('editor')}[data-state="ready"]`);
+    report.uploadOperation.step = 'wait-save-enabled';
     await page.waitForFunction(
       () =>
         !document.querySelector('[data-testid="upload-limits-save"]').disabled,
     );
+    report.uploadOperation.step = 'complete';
   };
   const fill = async (values) => {
     for (const [name, value] of Object.entries(values)) {
-      await page.fill(limitsField(name), String(value));
-      // Finish the actual NumberField editing interaction before another action.
+      report.uploadOperation = {
+        action: 'fill',
+        field: name,
+        value,
+        step: 'focus-visible-input',
+      };
+      // page.fill wheels an off-screen target into view. NumberField consumes
+      // those wheel events while focused, so enter its value through the real
+      // keyboard and commit with Tab before checking the submitted value.
+      await page.focus(limitsField(name));
+      report.uploadOperation.step = 'replace-with-keyboard';
+      await page.keyboard.press('ControlOrMeta+A');
+      await page.keyboard.type(String(value));
+      report.uploadOperation.step = 'blur-with-tab';
       await page.keyboard.press('Tab');
+      report.uploadOperation.step = 'wait-committed-form-value';
       await page.waitForFunction(
         ({ name, value }) =>
           new FormData(document.querySelector('#upload-limits-form')).get(
@@ -196,6 +213,7 @@ export async function uploadSettingsTools(page, config, report) {
           ) === String(value),
         { name, value },
       );
+      report.uploadOperation.step = 'complete';
     }
   };
   const inputs = () =>
@@ -221,8 +239,16 @@ export async function uploadSettingsTools(page, config, report) {
   const browser = () => page.evaluate(() => window.__limitsBrowser);
   const release = () => page.evaluate(() => window.__limitsRelease());
   const evidence = async (state, width = 1440, theme = 'light', height) => {
+    report.uploadOperation = {
+      action: 'evidence',
+      state,
+      width,
+      theme,
+      step: 'viewport',
+    };
     await resizeViewport(page, width, height);
     await setTheme(page, theme);
+    report.uploadOperation.step = 'wait-toast-animation';
     await page.mouse.move(5, 5);
     await page.waitForFunction(() =>
       [...document.querySelectorAll('[data-slot="toast"]')].every(
@@ -242,6 +268,7 @@ export async function uploadSettingsTools(page, config, report) {
           .length > 1,
     );
     if (stacked) {
+      report.uploadOperation.step = 'expand-toast-stack';
       await page.hover('[data-slot="toast"][data-frontmost="true"]');
       await page.waitForFunction(() =>
         [
@@ -257,6 +284,7 @@ export async function uploadSettingsTools(page, config, report) {
         ),
       );
     }
+    report.uploadOperation.step = 'geometry-and-screenshot';
     await page.waitForFunction(() => document.fonts.status === 'loaded');
     const geometry = await readGeometry(page);
     assertGeometry(geometry, state);
@@ -270,6 +298,7 @@ export async function uploadSettingsTools(page, config, report) {
       screenshot,
     });
     await page.mouse.move(5, 5);
+    report.uploadOperation.step = 'wait-toast-collapse';
     await page.waitForFunction(
       () =>
         !document
@@ -281,12 +310,16 @@ export async function uploadSettingsTools(page, config, report) {
             .every((animation) => animation.playState !== 'running'),
         ),
     );
+    report.uploadOperation.step = 'complete';
   };
   const save = async () => {
+    report.uploadOperation = { action: 'save', step: 'read-existing-patches' };
     const previous =
       (await browser())?.requests.filter((r) => r.method === 'PATCH').length ??
       0;
+    report.uploadOperation.step = 'click-save';
     await page.click(limitsId('save'));
+    report.uploadOperation.step = 'wait-real-patch-and-unlocked-action';
     await page.waitForFunction((previous) => {
       const patches =
         window.__limitsBrowser?.requests.filter((r) => r.method === 'PATCH') ??
@@ -297,6 +330,7 @@ export async function uploadSettingsTools(page, config, report) {
         !document.querySelector('[data-testid="upload-limits-save"]').disabled
       );
     }, previous);
+    report.uploadOperation.step = 'complete';
   };
   return {
     request,

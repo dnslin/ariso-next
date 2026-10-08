@@ -1,0 +1,53 @@
+{
+  "environment": {
+    "node": "24.18.1",
+    "pnpm": "11.19.0",
+    "egoTaskSpace": 6
+  },
+  "singleDefaultFullRunPassed": false,
+  "phases": {
+    "representative": {
+      "report": "upload-browser/upload-settings.json",
+      "status": "passed",
+      "scope": "completed representative before later behavior failure",
+      "checks": [
+        "Responsive 360/390/430/768/1440, both themes, 390x560, keyboard footer focus and usable controls"
+      ],
+      "layouts": 12,
+      "browserErrors": []
+    },
+    "behavior": {
+      "report": "upload-behavior-keyboard/upload-settings.json",
+      "status": "passed",
+      "scope": "focused phase",
+      "checks": [
+        "Integers, joint boundaries, safe byte conversion, Enter save, real 422, reload, neutral same-page feedback",
+        "UI saves upload-owned fields only; old/new real submissions preserve byte, batch and queue snapshots"
+      ],
+      "layouts": 5,
+      "browserErrors": []
+    },
+    "recovery": {
+      "report": "upload-recovery-regions/upload-settings.json",
+      "status": "passed",
+      "scope": "focused phase",
+      "checks": [
+        "A failed initial upload GET does not block a real site form PATCH or completed server refresh; the site value is independently read back and restored.",
+        "Real loading/409 and refused PATCH; controlled read/gateway failures; actual committed lost responses; exact one automatic GET, explicit read retry and different-value decisions preserve inputs"
+      ],
+      "layouts": 19,
+      "browserErrors": []
+    },
+    "consumers": {
+      "report": "upload-consumers/upload-settings.json",
+      "status": "passed",
+      "scope": "focused phase",
+      "checks": [
+        "Same-document late PATCH and confirmation GET after real 50→60 saves on desktop light/mobile dark: two mutations, current form/focus/notice retained, active upload query rereads 60 after invalidation, independent owner HTTP read verifies saved 60, queue IDs retained and actual 55 MiB File accepted under displayed 60 MiB limit; inactive editor-cache invalidation does not imply an automatic GET",
+        "All four settings consumers share navigation in both themes; client navigation preserves queue; real 401 retains form and releases queue Files/URLs"
+      ],
+      "layouts": 20,
+      "browserErrors": []
+    }
+  }
+}

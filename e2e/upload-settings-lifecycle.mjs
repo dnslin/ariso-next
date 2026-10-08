@@ -114,6 +114,10 @@ async function categoryNavigate(page, width, label, path) {
   } else {
     await page.click(`.settings-desktop [role="tab"]:text-is("${label}")`);
   }
+  if (path === '/settings/processing') {
+    await page.waitForSelector('loc=role:dialog[name="放弃未保存的修改?"]');
+    await page.click('loc=role:button[name="放弃修改"]');
+  }
   await page.waitForFunction((path) => location.pathname === path, path);
   await page.waitForSelector('.shell-content');
 }

@@ -1,0 +1,3955 @@
+{
+  "status": "failed",
+  "taskSpaceId": 6,
+  "origin": "http://ariso-52638.localhost:52638",
+  "phase": "recovery",
+  "checks": [
+    "A failed initial site GET does not block a real upload form PATCH; the upload value is independently read back and restored.",
+    "Real CDP Back in saving: confirmation and cancel preserve draft/index/key/all history IDs.",
+    "Real CDP Back in unknown: confirmation and cancel preserve draft/index/key/all history IDs.",
+    "Real held initial GET, failed initial read, isolated related-module read failures, held real save, lost committed response, explicit read-back/check failure/retry/match and server-vs-draft choices are covered. Unknown outcomes do not repeat PATCH and preserve the draft."
+  ],
+  "layouts": [
+    {
+      "name": "loading",
+      "theme": "light",
+      "height": 1080,
+      "screenshot": "site-general-loading-light-1440.png",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "分享管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 1092,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 1092,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 1092,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "默认存储默认本地存储",
+          "width": 1142,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "图片默认值与外链版本默认公开 · 压缩图",
+          "width": 1142,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "保存站点信息",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存上传限制",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "loading",
+      "theme": "dark",
+      "height": 844,
+      "screenshot": "site-general-loading-dark-390.png",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "基本设置",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "默认存储默认本地存储",
+          "width": 356,
+          "height": 68,
+          "navigation": false
+        },
+        {
+          "name": "图片默认值与外链版本默认公开 · 压缩图",
+          "width": 356,
+          "height": 68,
+          "navigation": false
+        },
+        {
+          "name": "保存站点信息",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存上传限制",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "loading",
+      "theme": "light",
+      "height": 844,
+      "screenshot": "site-general-loading-light-390.png",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "基本设置",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "默认存储默认本地存储",
+          "width": 356,
+          "height": 68,
+          "navigation": false
+        },
+        {
+          "name": "图片默认值与外链版本默认公开 · 压缩图",
+          "width": 356,
+          "height": 68,
+          "navigation": false
+        },
+        {
+          "name": "保存站点信息",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存上传限制",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "read-error",
+      "theme": "light",
+      "height": 1080,
+      "screenshot": "site-general-read-error-light-1440.png",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "分享管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "重新读取站点信息",
+          "width": 146,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 1092,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 1092,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 1092,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "默认存储默认本地存储",
+          "width": 1142,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "图片默认值与外链版本默认公开 · 压缩图",
+          "width": 1142,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "保存站点信息",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存上传限制",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "关闭通知",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "read-error",
+      "theme": "dark",
+      "height": 844,
+      "screenshot": "site-general-read-error-dark-390.png",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "基本设置",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新读取站点信息",
+          "width": 146,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "默认存储默认本地存储",
+          "width": 356,
+          "height": 68,
+          "navigation": false
+        },
+        {
+          "name": "图片默认值与外链版本默认公开 · 压缩图",
+          "width": 356,
+          "height": 68,
+          "navigation": false
+        },
+        {
+          "name": "保存站点信息",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存上传限制",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "关闭通知",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "read-error",
+      "theme": "light",
+      "height": 844,
+      "screenshot": "site-general-read-error-light-390.png",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "基本设置",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新读取站点信息",
+          "width": 146,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "默认存储默认本地存储",
+          "width": 356,
+          "height": 68,
+          "navigation": false
+        },
+        {
+          "name": "图片默认值与外链版本默认公开 · 压缩图",
+          "width": 356,
+          "height": 68,
+          "navigation": false
+        },
+        {
+          "name": "保存站点信息",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存上传限制",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "关闭通知",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "partial-storage-error",
+      "theme": "dark",
+      "height": 844,
+      "screenshot": "site-general-partial-storage-error-dark-390.png",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "基本设置",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "站点信息说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "description",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "publicUrl",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "timeZone",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看完整地址",
+          "width": 84,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "默认存储读取失败",
+          "width": 356,
+          "height": 68,
+          "navigation": false
+        },
+        {
+          "name": "重新读取默认存储",
+          "width": 146,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "图片默认值与外链版本默认公开 · 压缩图",
+          "width": 356,
+          "height": 68,
+          "navigation": false
+        },
+        {
+          "name": "保存站点信息",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存上传限制",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "关闭通知",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "partial-storage-region",
+      "theme": "light",
+      "height": 844,
+      "screenshot": "site-general-partial-storage-region-light-390.png",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "基本设置",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "站点信息说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "description",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "publicUrl",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "timeZone",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看完整地址",
+          "width": 84,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "默认存储读取失败",
+          "width": 356,
+          "height": 68,
+          "navigation": false
+        },
+        {
+          "name": "重新读取默认存储",
+          "width": 146,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "图片默认值与外链版本默认公开 · 压缩图",
+          "width": 356,
+          "height": 68,
+          "navigation": false
+        },
+        {
+          "name": "保存站点信息",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存上传限制",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "关闭通知",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "partial-media-error",
+      "theme": "dark",
+      "height": 844,
+      "screenshot": "site-general-partial-media-error-dark-390.png",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "基本设置",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "站点信息说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "description",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "publicUrl",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "timeZone",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看完整地址",
+          "width": 84,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "默认存储默认本地存储",
+          "width": 356,
+          "height": 68,
+          "navigation": false
+        },
+        {
+          "name": "图片默认值与外链版本读取失败",
+          "width": 356,
+          "height": 68,
+          "navigation": false
+        },
+        {
+          "name": "重新读取图片默认值",
+          "width": 160,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "保存站点信息",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存上传限制",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "关闭通知",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "partial-media-region",
+      "theme": "light",
+      "height": 844,
+      "screenshot": "site-general-partial-media-region-light-390.png",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "基本设置",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "站点信息说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "description",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "publicUrl",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "timeZone",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看完整地址",
+          "width": 84,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "默认存储默认本地存储",
+          "width": 356,
+          "height": 68,
+          "navigation": false
+        },
+        {
+          "name": "图片默认值与外链版本读取失败",
+          "width": 356,
+          "height": 68,
+          "navigation": false
+        },
+        {
+          "name": "重新读取图片默认值",
+          "width": 160,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "保存站点信息",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存上传限制",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "关闭通知",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "saving",
+      "theme": "light",
+      "height": 1080,
+      "screenshot": "site-general-saving-light-1440.png",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "分享管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "站点信息说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 537,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "description",
+          "width": 537,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "publicUrl",
+          "width": 537,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "timeZone",
+          "width": 537,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看完整地址",
+          "width": 84,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 1092,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 1092,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 1092,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "默认存储默认本地存储",
+          "width": 1142,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "图片默认值与外链版本默认公开 · 压缩图",
+          "width": 1142,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "正在保存…",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存上传限制",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "saving",
+      "theme": "dark",
+      "height": 844,
+      "screenshot": "site-general-saving-dark-390.png",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "基本设置",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "站点信息说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "description",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "publicUrl",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "timeZone",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看完整地址",
+          "width": 84,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "默认存储默认本地存储",
+          "width": 356,
+          "height": 68,
+          "navigation": false
+        },
+        {
+          "name": "图片默认值与外链版本默认公开 · 压缩图",
+          "width": 356,
+          "height": 68,
+          "navigation": false
+        },
+        {
+          "name": "正在保存…",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存上传限制",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "saving",
+      "theme": "light",
+      "height": 844,
+      "screenshot": "site-general-saving-light-390.png",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "基本设置",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "站点信息说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "description",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "publicUrl",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "timeZone",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看完整地址",
+          "width": 84,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "默认存储默认本地存储",
+          "width": 356,
+          "height": 68,
+          "navigation": false
+        },
+        {
+          "name": "图片默认值与外链版本默认公开 · 压缩图",
+          "width": 356,
+          "height": 68,
+          "navigation": false
+        },
+        {
+          "name": "正在保存…",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存上传限制",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "unknown",
+      "theme": "light",
+      "height": 1080,
+      "screenshot": "site-general-unknown-light-1440.png",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "分享管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "站点信息说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "核对已保存设置",
+          "width": 132,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 537,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "description",
+          "width": 537,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "publicUrl",
+          "width": 537,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "timeZone",
+          "width": 537,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看完整地址",
+          "width": 84,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 1092,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 1092,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 1092,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "默认存储默认本地存储",
+          "width": 1142,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "图片默认值与外链版本默认公开 · 压缩图",
+          "width": 1142,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "保存站点信息",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存上传限制",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "unknown",
+      "theme": "dark",
+      "height": 844,
+      "screenshot": "site-general-unknown-dark-390.png",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "基本设置",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "站点信息说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "核对已保存设置",
+          "width": 132,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "description",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "publicUrl",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "timeZone",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看完整地址",
+          "width": 84,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "默认存储默认本地存储",
+          "width": 356,
+          "height": 68,
+          "navigation": false
+        },
+        {
+          "name": "图片默认值与外链版本默认公开 · 压缩图",
+          "width": 356,
+          "height": 68,
+          "navigation": false
+        },
+        {
+          "name": "保存站点信息",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存上传限制",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "unknown",
+      "theme": "light",
+      "height": 844,
+      "screenshot": "site-general-unknown-light-390.png",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "基本设置",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "站点信息说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "核对已保存设置",
+          "width": 132,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "description",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "publicUrl",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "timeZone",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看完整地址",
+          "width": 84,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "默认存储默认本地存储",
+          "width": 356,
+          "height": 68,
+          "navigation": false
+        },
+        {
+          "name": "图片默认值与外链版本默认公开 · 压缩图",
+          "width": 356,
+          "height": 68,
+          "navigation": false
+        },
+        {
+          "name": "保存站点信息",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存上传限制",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "checking",
+      "theme": "light",
+      "height": 1080,
+      "screenshot": "site-general-checking-light-1440.png",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "分享管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "站点信息说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "正在核对…",
+          "width": 104,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 537,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "description",
+          "width": 537,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "publicUrl",
+          "width": 537,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "timeZone",
+          "width": 537,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看完整地址",
+          "width": 84,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 1092,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 1092,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 1092,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "默认存储默认本地存储",
+          "width": 1142,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "图片默认值与外链版本默认公开 · 压缩图",
+          "width": 1142,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "保存站点信息",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存上传限制",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "checking",
+      "theme": "dark",
+      "height": 844,
+      "screenshot": "site-general-checking-dark-390.png",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "基本设置",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "站点信息说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "正在核对…",
+          "width": 104,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "description",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "publicUrl",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "timeZone",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看完整地址",
+          "width": 84,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "默认存储默认本地存储",
+          "width": 356,
+          "height": 68,
+          "navigation": false
+        },
+        {
+          "name": "图片默认值与外链版本默认公开 · 压缩图",
+          "width": 356,
+          "height": 68,
+          "navigation": false
+        },
+        {
+          "name": "保存站点信息",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存上传限制",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "checking",
+      "theme": "light",
+      "height": 844,
+      "screenshot": "site-general-checking-light-390.png",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "基本设置",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "站点信息说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "正在核对…",
+          "width": 104,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "description",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "publicUrl",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "timeZone",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看完整地址",
+          "width": 84,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "默认存储默认本地存储",
+          "width": 356,
+          "height": 68,
+          "navigation": false
+        },
+        {
+          "name": "图片默认值与外链版本默认公开 · 压缩图",
+          "width": 356,
+          "height": 68,
+          "navigation": false
+        },
+        {
+          "name": "保存站点信息",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存上传限制",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "confirmed",
+      "theme": "light",
+      "height": 1080,
+      "screenshot": "site-general-confirmed-light-1440.png",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "分享管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "站点信息说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 537,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "description",
+          "width": 537,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "publicUrl",
+          "width": 537,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "timeZone",
+          "width": 537,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看完整地址",
+          "width": 84,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 1092,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 1092,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 1092,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "默认存储默认本地存储",
+          "width": 1142,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "图片默认值与外链版本默认公开 · 压缩图",
+          "width": 1142,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "保存站点信息",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存上传限制",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "confirmed",
+      "theme": "dark",
+      "height": 844,
+      "screenshot": "site-general-confirmed-dark-390.png",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "基本设置",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "站点信息说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "description",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "publicUrl",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "timeZone",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看完整地址",
+          "width": 84,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "默认存储默认本地存储",
+          "width": 356,
+          "height": 68,
+          "navigation": false
+        },
+        {
+          "name": "图片默认值与外链版本默认公开 · 压缩图",
+          "width": 356,
+          "height": 68,
+          "navigation": false
+        },
+        {
+          "name": "保存站点信息",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存上传限制",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "confirmed",
+      "theme": "light",
+      "height": 844,
+      "screenshot": "site-general-confirmed-light-390.png",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "基本设置",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "站点信息说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "description",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "publicUrl",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "timeZone",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看完整地址",
+          "width": 84,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "默认存储默认本地存储",
+          "width": 356,
+          "height": 68,
+          "navigation": false
+        },
+        {
+          "name": "图片默认值与外链版本默认公开 · 压缩图",
+          "width": 356,
+          "height": 68,
+          "navigation": false
+        },
+        {
+          "name": "保存站点信息",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存上传限制",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "check-error",
+      "theme": "light",
+      "height": 1080,
+      "screenshot": "site-general-check-error-light-1440.png",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "分享管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "站点信息说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "核对已保存设置",
+          "width": 132,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 537,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "description",
+          "width": 537,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "publicUrl",
+          "width": 537,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "timeZone",
+          "width": 537,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看完整地址",
+          "width": 84,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 1092,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 1092,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 1092,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "默认存储默认本地存储",
+          "width": 1142,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "图片默认值与外链版本默认公开 · 压缩图",
+          "width": 1142,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "保存站点信息",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存上传限制",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "check-error",
+      "theme": "dark",
+      "height": 844,
+      "screenshot": "site-general-check-error-dark-390.png",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "基本设置",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "站点信息说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "核对已保存设置",
+          "width": 132,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "description",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "publicUrl",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "timeZone",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看完整地址",
+          "width": 84,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "默认存储默认本地存储",
+          "width": 356,
+          "height": 68,
+          "navigation": false
+        },
+        {
+          "name": "图片默认值与外链版本默认公开 · 压缩图",
+          "width": 356,
+          "height": 68,
+          "navigation": false
+        },
+        {
+          "name": "保存站点信息",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存上传限制",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "check-error",
+      "theme": "light",
+      "height": 844,
+      "screenshot": "site-general-check-error-light-390.png",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "基本设置",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "站点信息说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "核对已保存设置",
+          "width": 132,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "description",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "publicUrl",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "timeZone",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看完整地址",
+          "width": 84,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "默认存储默认本地存储",
+          "width": 356,
+          "height": 68,
+          "navigation": false
+        },
+        {
+          "name": "图片默认值与外链版本默认公开 · 压缩图",
+          "width": 356,
+          "height": 68,
+          "navigation": false
+        },
+        {
+          "name": "保存站点信息",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存上传限制",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "different-server",
+      "theme": "light",
+      "height": 1080,
+      "screenshot": "site-general-different-server-light-1440.png",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "分享管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "站点信息说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "使用服务器设置",
+          "width": 132,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "保留输入继续编辑",
+          "width": 146,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 537,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "description",
+          "width": 537,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "publicUrl",
+          "width": 537,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "timeZone",
+          "width": 537,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看完整地址",
+          "width": 84,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 1092,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 1092,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 1092,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "默认存储默认本地存储",
+          "width": 1142,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "图片默认值与外链版本默认公开 · 压缩图",
+          "width": 1142,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "保存站点信息",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存上传限制",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "different-server",
+      "theme": "dark",
+      "height": 844,
+      "screenshot": "site-general-different-server-dark-390.png",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "基本设置",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "站点信息说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "使用服务器设置",
+          "width": 132,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "保留输入继续编辑",
+          "width": 146,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "description",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "publicUrl",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "timeZone",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看完整地址",
+          "width": 84,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "默认存储默认本地存储",
+          "width": 356,
+          "height": 68,
+          "navigation": false
+        },
+        {
+          "name": "图片默认值与外链版本默认公开 · 压缩图",
+          "width": 356,
+          "height": 68,
+          "navigation": false
+        },
+        {
+          "name": "保存站点信息",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存上传限制",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "different-server",
+      "theme": "light",
+      "height": 844,
+      "screenshot": "site-general-different-server-light-390.png",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "基本设置",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "站点信息说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "使用服务器设置",
+          "width": 132,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "保留输入继续编辑",
+          "width": 146,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "description",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "publicUrl",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "timeZone",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看完整地址",
+          "width": 84,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "默认存储默认本地存储",
+          "width": 356,
+          "height": 68,
+          "navigation": false
+        },
+        {
+          "name": "图片默认值与外链版本默认公开 · 压缩图",
+          "width": 356,
+          "height": 68,
+          "navigation": false
+        },
+        {
+          "name": "保存站点信息",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存上传限制",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "different-keep",
+      "theme": "light",
+      "height": 1080,
+      "screenshot": "site-general-different-keep-light-1440.png",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "分享管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "站点信息说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "使用服务器设置",
+          "width": 132,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "保留输入继续编辑",
+          "width": 146,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 537,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "description",
+          "width": 537,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "publicUrl",
+          "width": 537,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "timeZone",
+          "width": 537,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看完整地址",
+          "width": 84,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 1092,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 1092,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 1092,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "默认存储默认本地存储",
+          "width": 1142,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "图片默认值与外链版本默认公开 · 压缩图",
+          "width": 1142,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "保存站点信息",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存上传限制",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "different-keep",
+      "theme": "dark",
+      "height": 844,
+      "screenshot": "site-general-different-keep-dark-390.png",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "基本设置",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "站点信息说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "使用服务器设置",
+          "width": 132,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "保留输入继续编辑",
+          "width": 146,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "description",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "publicUrl",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "timeZone",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看完整地址",
+          "width": 84,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "默认存储默认本地存储",
+          "width": 356,
+          "height": 68,
+          "navigation": false
+        },
+        {
+          "name": "图片默认值与外链版本默认公开 · 压缩图",
+          "width": 356,
+          "height": 68,
+          "navigation": false
+        },
+        {
+          "name": "保存站点信息",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存上传限制",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "different-keep",
+      "theme": "light",
+      "height": 844,
+      "screenshot": "site-general-different-keep-light-390.png",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "基本设置",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "站点信息说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "使用服务器设置",
+          "width": 132,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "保留输入继续编辑",
+          "width": 146,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "name",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "description",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "publicUrl",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "timeZone",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看完整地址",
+          "width": 84,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 322,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "默认存储默认本地存储",
+          "width": 356,
+          "height": 68,
+          "navigation": false
+        },
+        {
+          "name": "图片默认值与外链版本默认公开 · 压缩图",
+          "width": 356,
+          "height": 68,
+          "navigation": false
+        },
+        {
+          "name": "保存站点信息",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存上传限制",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    }
+  ],
+  "browserErrors": [],
+  "limitations": [
+    "Only the runner disposable production database and independently initialized owner are used; user preview data is untouched.",
+    "Transport injections preserve real successful server responses and commits; unsent requests and Clipboard denials are explicit injected failures.",
+    "Viewport emulation does not verify physical phones, touch keyboards or Release containers; human acceptance remains separate.",
+    "Complete metadata/brand material consumption and sharing/analytics timezone interpretation belong to their own tasks."
+  ],
+  "stage": "recovery",
+  "expiredSave": [],
+  "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ []\n- [\n-   {\n-     code: 'UNAUTHORIZED',\n-     method: 'PATCH',\n-     status: 401\n-   }\n- ]\n\n    at verifySiteGeneralRecovery (file:///Users/dnslin/.codex/worktrees/issue-200-upload-settings/ariso/e2e/site-general-recovery.mjs:356:12)\n    at async file:////[eval2]:98:5",
+  "originalSiteRestored": true,
+  "finishedAt": "2026-10-08T12:06:23.716Z"
+}

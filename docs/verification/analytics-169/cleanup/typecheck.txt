@@ -1,0 +1,11 @@
+Already up to date
+Done in 42ms using pnpm v11.19.0
+$ next typegen && tsc --noEmit --project tsconfig.json && tsc --noEmit --project tsconfig.runtime.json
+Generating route types...
+✓ Types generated successfully
+test-results/analytics-169/reviews/correctness/original-queries.ts(3,29): error TS2307: Cannot find module '../media/schema.ts' or its corresponding type declarations.
+test-results/analytics-169/reviews/correctness/original-queries.ts(4,37): error TS2307: Cannot find module '../site/settings.ts' or its corresponding type declarations.
+test-results/analytics-169/reviews/correctness/original-queries.ts(5,42): error TS2307: Cannot find module './flush.ts' or its corresponding type declarations.
+test-results/analytics-169/reviews/correctness/original-queries.ts(6,32): error TS2307: Cannot find module './retention.ts' or its corresponding type declarations.
+test-results/analytics-169/reviews/correctness/original-queries.ts(7,35): error TS2307: Cannot find module './usage.ts' or its corresponding type declarations.
+[ELIFECYCLE] Command failed with exit code 2.

@@ -1,4 +1,4 @@
-import { UploadLimitsPage } from '../../../components/upload-limits/page';
+import { GeneralPage } from '../../../components/site/general-page';
 import { readSidebarCollapsed } from '../../../components/shell/sidebar-preference';
 import { requirePageOwner } from '../../../server/identity/owner-page';
 import { requireSiteSettings } from '../../../server/site/settings';
@@ -8,7 +8,7 @@ export default async function Page() {
   const owner = await requirePageOwner('/settings/general');
   const settings = requireSiteSettings(getServerRuntime().connection.db);
   return (
-    <UploadLimitsPage
+    <GeneralPage
       name={settings.name}
       description={settings.description}
       email={owner.email}

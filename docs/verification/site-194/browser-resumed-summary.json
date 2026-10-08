@@ -1,0 +1,67 @@
+{
+  "date": "2026-10-08",
+  "runtime": {
+    "node": "24.18.1",
+    "pnpm": "11.19.0",
+    "browser": "Ego Lite Chrome 152",
+    "space": 2,
+    "page": "p1"
+  },
+  "authorization": "用户明确继续浏览器验证后恢复同一TaskSpace；未替换浏览器或空间。",
+  "siteGeneral": {
+    "status": "passed",
+    "phases": ["representative", "behavior", "recovery", "consumers"],
+    "finishedAt": "2026-10-08T08:08:13.052Z",
+    "report": "site-general-production.json"
+  },
+  "ownerShell": {
+    "status": "passed",
+    "routeWidthCases": 33,
+    "collapsedCases": 11,
+    "report": "owner-shell-production.json"
+  },
+  "processingSettings": {
+    "status": "passed",
+    "finishedAt": "2026-10-08T08:10:22.394Z",
+    "report": "processing-entry-production.json"
+  },
+  "failuresAndFixes": [
+    {
+      "run": "browser-194-shell-focus-red",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Initial read completion preserves the shared skip-link focus\n\nfalse !== true\n\n    at verifySiteGeneralRecovery (file:///Users/dnslin/.codex/worktrees/issue-194-general-settings/ariso/e2e/site-general-recovery.mjs:48:12)\n    at async file:////[eval2]:94:5",
+      "finishedAt": "2026-10-08T07:59:41.960Z",
+      "cause": "初次真实GET完成导致公共外壳重新挂载和skip-link焦点丢失"
+    },
+    {
+      "run": "browser-194-error-visibility-red",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: First invalid timezone field and error are revealed above the fixed footer\n\nfalse !== true\n\n    at verifySiteGeneralBehavior (file:///Users/dnslin/.codex/worktrees/issue-194-general-settings/ariso/e2e/site-general-behavior.mjs:122:16)\n    at async file:////[eval2]:81:9\n    at async file:////[eval2]:94:5",
+      "finishedAt": "2026-10-08T08:03:40.042Z",
+      "cause": "手机固定保存栏触发画外时区错误，整个field/error未显露"
+    },
+    {
+      "run": "browser-194-processing-phases",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n2 !== 1\n\n    at leaveForGeneral (file:///Users/dnslin/.codex/worktrees/issue-194-general-settings/ariso/e2e/processing-settings-entry.mjs:104:14)\n    at async verifyProcessingSettingsEntry (file:///Users/dnslin/.codex/worktrees/issue-194-general-settings/ariso/e2e/processing-settings-entry.mjs:246:33)\n    at async verifyProcessingSettings (file:///Users/dnslin/.codex/worktrees/issue-194-general-settings/ariso/e2e/processing-settings.mjs:10:3)\n    at async file:////[eval2]:59:5",
+      "finishedAt": "2026-10-08T07:53:59.511Z",
+      "cause": "loading/ready根替换导致关联media重复读取；保留唯一GET断言，随外壳修复"
+    },
+    {
+      "run": "browser-194-site-behavior",
+      "status": "failed",
+      "error": "TypeError: page.evaluate argument must be JSON-serializable\n    at serializeJsonValue (file:////[eval1]:19363:15)\n    at serializeEvaluateArgument (file:////[eval1]:19204:12)\n    at validateEvaluateInput (file:////[eval1]:19201:26)\n    at #evaluate (file:////[eval1]:18803:36)\n    at Page.evaluate (file:////[eval1]:18488:30)\n    at historyPosition (file:///Users/dnslin/.codex/worktrees/issue-194-general-settings/ariso/e2e/site-general-history.mjs:14:33)\n    at async prepareSiteGeneralHistory (file:///Users/dnslin/.codex/worktrees/issue-194-general-settings/ariso/e2e/site-general-history.mjs:37:18)\n    at async verifySiteGeneralBehavior (file:///Users/dnslin/.codex/worktrees/issue-194-general-settings/ariso/e2e/site-general-behavior.mjs:170:21)\n    at async file:////[eval2]:81:9\n    at async file:////[eval2]:94:5",
+      "finishedAt": "2026-10-08T07:47:29.242Z",
+      "cause": "Ego evaluate第二参数必须可序列化，undefined改null；历史断言保留"
+    }
+  ],
+  "historyCapacityCorrection": "CDP历史最多保留50条，新条目可能修剪头部；push后按原entryID/Navigation key重新读取目标index，仍严格检查两种history相邻性、原目标、全ID、取消不变化与放弃不push。",
+  "defaultFullStatus": "先前38阶段默认全量仍failed；本次定向结果不覆盖范围外未定位失败。",
+  "humanAcceptance": "pending",
+  "releaseContainer": "not run",
+  "copySelection": {
+    "status": "passed",
+    "phase": "consumers",
+    "report": "copy-selection-production.json"
+  }
+}

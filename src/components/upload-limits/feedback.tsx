@@ -4,6 +4,7 @@ import { Button } from '@heroui/react/button';
 import { Link } from '@heroui/react/link';
 import { uploadLimitFields } from './model';
 import type { useUploadLimits } from './use-upload-limits';
+import type { SavedUploadLimits } from './api';
 
 export function UploadLimitsSessionLink() {
   return (
@@ -19,7 +20,7 @@ export function UploadLimitsSessionLink() {
 export function UploadLimitsFeedback({
   settings,
 }: {
-  settings: ReturnType<typeof useUploadLimits>;
+  settings: ReturnType<typeof useUploadLimits> & { saved: SavedUploadLimits };
 }) {
   if (!settings.message) return null;
   return (

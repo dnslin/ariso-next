@@ -49,15 +49,69 @@ export async function verifyProcessingSettingsEntry(
     return identity;
   };
   const navigate = async (route) => {
-    if (route === '/settings/processing') {
-      await page.click('.shell-navigation a[href="/settings/general"]');
-      await page.waitForURL(`${config.origin}/settings/general`);
-      await page.click('loc=role:tab[name="图片处理"]');
-    } else {
-      await page.click(`.shell-navigation a[href="${route}"]`);
-    }
+    const tab = route === '/settings/general' ? '基本设置' : '图片处理';
+    await page.click(`loc=role:tab[name="${tab}"]`);
     await page.waitForURL(`${config.origin}${route}`);
     return sameDocument();
+  };
+  const leaveForGeneral = async (quality) => {
+    await page.evaluate(() => {
+      const original = window.fetch;
+      const state = { original, reads: [] };
+      window.__processingGeneralRead = state;
+      window.fetch = async (...args) => {
+        const path = new URL(String(args[0]), location.href).pathname;
+        const method = args[1]?.method ?? 'GET';
+        if (path !== '/api/settings/media' || method !== 'GET')
+          return original(...args);
+        const record = {
+          path,
+          method,
+          route: location.pathname,
+          phase:
+            document.querySelector('[data-testid="site-general"]')?.dataset
+              .state ?? null,
+          settled: false,
+        };
+        state.reads.push(record);
+        try {
+          const response = await original(...args);
+          record.status = response.status;
+          const body = await response.clone().json();
+          record.quality = body.quality;
+          return response;
+        } catch (error) {
+          record.error = String(error);
+          throw error;
+        } finally {
+          record.settled = true;
+        }
+      };
+    });
+    try {
+      const identity = await navigate('/settings/general');
+      await page.waitForSelector(
+        '[data-testid="site-general"][data-state="ready"]',
+      );
+      await page.waitForFunction(() => {
+        const reads = window.__processingGeneralRead.reads;
+        return reads.length > 0 && reads.every((row) => row.settled);
+      });
+      const reads = await page.evaluate(
+        () => window.__processingGeneralRead.reads,
+      );
+      report.settingsEntry.relatedMediaReads = reads;
+      assert.equal(reads.length, 1);
+      assert.equal(reads[0].status, 200);
+      assert.equal(reads[0].quality, quality);
+      assert.equal(reads[0].error, undefined);
+      return { ...identity, relatedMediaRead: reads[0] };
+    } finally {
+      await page.evaluate(() => {
+        window.fetch = window.__processingGeneralRead.original;
+        delete window.__processingGeneralRead;
+      });
+    }
   };
   const displayed = () =>
     page.evaluate(() => {
@@ -189,7 +243,7 @@ export async function verifyProcessingSettingsEntry(
   const held = new Set();
   let fetchEnabled = false;
   try {
-    report.settingsEntry.left = await navigate('/upload');
+    report.settingsEntry.left = await leaveForGeneral(82);
     const latest = editable(
       await request(path, 'PATCH', {
         quality: 68,
@@ -266,14 +320,14 @@ export async function verifyProcessingSettingsEntry(
       ...report.settingsEntry,
     });
 
-    await monitor();
-    await navigate('/upload');
+    report.settingsEntry.leftAgain = await leaveForGeneral(68);
     const afterFailure = editable(
       await request(path, 'PATCH', {
         quality: 64,
         defaultVisibility: 'public',
       }),
     );
+    await monitor();
     await page.cdp('Network.setBlockedURLs', {
       urls: ['*/api/settings/media'],
     });
@@ -320,6 +374,7 @@ export async function verifyProcessingSettingsEntry(
       check:
         'A second warm client re-entry after a separate real server change blocks the actual settings GET. It shows this entry read error with no cached form, preview or save footer, and makes no mutation. Only explicit retry performs the next real GET and initializes all 20 controls from server quality 64 while document/window identity remains unchanged.',
       failedReturn: report.settingsEntry.failedReturn,
+      leftAgain: report.settingsEntry.leftAgain,
       readFailure: report.settingsEntry.readFailure,
       retriedDisplay: report.settingsEntry.retriedDisplay,
     });
