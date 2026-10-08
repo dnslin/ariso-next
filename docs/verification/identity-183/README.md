@@ -50,7 +50,7 @@ macOS arm64，ImageMagick **7.1.2-32**、ExifTool **13.55**、OpenSSL **4.0.3**�
 
 ## 独立评审与剩余验证
 
-独立 agent 使用 `code-review-and-quality` 实际读取项目约定、Issue/原生依赖、规格、实验边界、身份schema/Web改密码路径、实现、全部新增生产CLI测试、固定Execa 10源码、打包/runtime/Release/Docker调用链。功能与职责审计通过，无剩余代码必改项；结构简单，无需额外复杂度技能。
+首轮独立 agent 使用 `code-review-and-quality` 实际读取项目约定、Issue/原生依赖、规格、实验边界、身份schema/Web改密码路径、实现、全部新增生产CLI测试、固定Execa 10源码、打包/runtime/Release/Docker调用链。功能与职责审计通过，当时无剩余代码必改项；后续两角度评审及修复见下文。
 
 初审两个必改项均先取得真实失败证据：CLI同步等写锁期间SIGTERM无法进入JS，锁释放后仍写密码；容器驱动误读Execa Promise的 `exitCode`，异常路径的Python进程直到超时才回收。前者改为不等待写锁，永久PTY回归在旧产物失败、重建后同用例通过，再完成26项全文件回归。后者读取 `nodeChildProcess.exitCode`，即时观察Promise失败，finally终止并等待结果；关闭输出缓冲，防止意外回显被复制到错误日志。评审者独立复测JSON解析提前失败、退出7、主动取消三条路径：均保留原异常、及时结束、无未处理拒绝。没有改变共享运行器或增加锁/重试抽象。
 
@@ -65,3 +65,34 @@ AMD64/ARM64 生产容器、Linux PTY 与挂载差异未在本地执行，依现�
 实际执行 `pnpm run lint` 全仓通过（退出0），`node --check docs/verification/historical-failure-fixes-20261007/browser/affected-check.mjs`、该文件及本记录的 Prettier 检查、`node docs/tasks/check.mjs`、`git diff --check` 通过。原失败记录保留，当前 lint 结论更新为通过；日志在本地忽略的 `test-results/identity-183/lint-fix.log`。
 
 独立评审者增量读取完整脚本，确认 `resolve` 没有调用、`join` 的两处调用保留，无运行行为变化、无规则放宽，复审通过。不重复构建和业务测试；此前完整集成首轮失败、失败场景后续通过与 Release 待验项仍按上文分别记录。PR #260 描述同步更新，继续保持草稿，未合并或关闭 Issue。
+
+## 两角度评审与 PTY 驱动修复（2026-10-08，用户授权）
+
+两个独立 agent 基于 `63d6a885` 分别使用 `code-review-and-quality` 核对正确性、边界与测试有效性，使用 `thermo-nuclear-code-quality-review` 核对职责与复杂度。两者均没有必改发现；结构评审建议统一生产 CLI 集成测试与容器验证的 PTY 协议及生命周期。用户随后授权规划并落实建议。
+
+本轮按 `using-agent-skills` 选择 `code-simplification`，先阅读两处驱动、Python 协议、Execa 10 的类型与流实现、默认测试入口和 Release 调用链。计划只统一这两个直接调用方，验证现有所有 CLI 场景及异常回收，再做独立增量复审；不改变密码恢复产品契约，不扩展旧实验的不同 CLI 交付物，不创建 Release。继续使用本任务独立 worktree 和分支，gh 复核 #53/#54/#146 已关闭、#184 仍开放。
+
+`scripts/terminal.ts` 只接收命令数组、cwd/env 和取消信号，统一 JSONL 解帧、提示等待、输出、输入/信号、结果观察与进程清理。密码仍只通过 stdin 传递，Execa 输出缓冲仍关闭；异常保留并立即观察。结果等待最后输出与进程结束，缺少结果明确报错。调用方保留业务断言和独立数据环境。容器验证改为顺序等待两次提示并输入，删除 `stage` 以及重复的解析/清理；生产测试也直接使用同一个提示等待方法，不再重复轮询。26 项业务场景及断言不变，无新增依赖。
+
+新增真实系统 PTY 生命周期测试取得了新的失败证据：取消 Execa 会向 Python 驱动发送 SIGTERM，默认处理绕过 `finally`，留下实际终端子进程；基线 4 项中 3 通过、1 失败，PID 仍存在。`cli-terminal.py` 现在将 SIGTERM 转为 `SystemExit`，进入已有 `finally` 的 kill/wait 回收。修复后断言实际子 PID 已不存在（`ESRCH`），取消结果仍明确为 `isCanceled`；不把仅结束驱动当作回收子进程。该本地证据不证明 Docker 内部进程或 Linux 差异已验证。
+
+环境沿用上文 Node 24.18.1、pnpm 11.19.0、macOS arm64 和系统 Python。新增 `terminal.test.ts` 由默认 `integration` 的 glob 自动收录，没有修改 suite/only、exclude、共享参数或 Release 触发。Python 的旧实验调用方也进行了回归。
+
+| 实际命令                                                                                                                                                                                                                                | 结果                                                                                                                      |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm install --frozen-lockfile`                                                                                                                                                                                                        | 通过，锁文件未变；日志 `test-results/identity-183/pty-install.log`                                                        |
+| `pnpm exec vitest run --project integration tests/integration/identity/terminal.test.ts`                                                                                                                                                | 修复前 3 通过、1 失败；取消后子 PID 仍存在，见 `pty-baseline.log`                                                         |
+| `pnpm exec vitest run --project integration tests/integration/identity/terminal.test.ts tests/integration/identity/reset-password-cli.test.ts --reporter=default --reporter=junit --outputFile=test-results/identity-183/pty-final.xml` | 修复后 30/30 通过、0 跳过；4 项真实驱动检查加 26 项实际 standalone CLI                                                    |
+| `pnpm exec vitest run --project integration tests/integration/identity/terminal.test.ts tests/integration/identity/cli-reset.test.ts --reporter=default --reporter=junit --outputFile=test-results/identity-183/pty-consumers.xml`      | 强化取消与 ESRCH 断言后 17/17 通过：4 项驱动、13 项旧实验 CLI；0 跳过                                                     |
+| `pnpm exec vitest run --project integration tests/integration/identity/reset-password-cli.test.ts --reporter=default --reporter=junit --outputFile=test-results/identity-183/cli-shared-terminal.xml`                                   | 删除提示轮询覆盖后 26/26 通过；0 跳过                                                                                     |
+| `pnpm exec vitest run --project unit tests/unit/scripts/container.test.ts`                                                                                                                                                              | 9/9 通过；见 `pty-container-unit.log`                                                                                     |
+| `pnpm run typecheck`                                                                                                                                                                                                                    | 初轮测试环境类型受 Next 全局 `ProcessEnv.NODE_ENV` 约束失败；驱动改用实际环境键值类型后通过，见 `pty-typecheck-final.log` |
+| `pnpm run lint`                                                                                                                                                                                                                         | 全仓通过；后续类型、断言与删除轮询的修改仅重跑受影响文件 ESLint，通过                                                     |
+| `node --input-type=module -e 'await import("./scripts/verify-container.mjs"); console.log("container verifier imports under Node 24")'`                                                                                                 | 原生 Node 24 能加载容器入口及新 TypeScript 驱动，不依赖 Vitest 转译；未启动 Docker                                        |
+| `node --check scripts/terminal.ts`、`node --check scripts/verify-container.mjs`                                                                                                                                                         | 通过                                                                                                                      |
+
+最终输入另执行 `pnpm exec tsc --noEmit --project tsconfig.json`，通过；全仓 `pnpm run format:check`、`node docs/tasks/check.mjs`（120任务、298需求）、`git diff --check` 均通过。类型与格式日志分别见 `pty-tsc-final.log`、`pty-format.log`。补充本段后仅再次检查本证据文件格式，不重复全仓检查。
+
+两位原评审者分别独立复审增量，实际读取实现、调用方和红/绿日志。正确性评审确认最后输出耗尽、失败传播、取消回收及测试有效性；其进一步建议删除测试的提示轮询覆盖，也已落实并复审。结构评审确认只保留一套生产验证协议及生命周期，删除容器阶段分支，没有新增状态机或泛化模式。最终均通过，无剩余 Required/Optional。评审者没有机械重复已通过的检查。
+
+本轮只修改验证工具、测试和证据，应用构建输入没有变化，复用上文已验证的实际 standalone 产物，不机械重建或重复全仓业务检查。之前默认完整集成首轮的两项失败及后续定向通过事实仍按上文保留，不改记为全量通过。网页 UI、浏览器、Figma 和人工 UI 验收不适用。AMD64/ARM64 生产容器仍留在 Release 阶段；没有发布、部署、合并、关闭 Issue 或清理工作区。

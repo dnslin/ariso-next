@@ -13,7 +13,7 @@ import { createConnection, createServer } from 'node:net';
 import { join, resolve } from 'node:path';
 import { setTimeout as delay } from 'node:timers/promises';
 import { parseArgs } from 'node:util';
-import { createInterface } from 'node:readline';
+import { startTerminal } from './terminal.ts';
 import { execa } from 'execa';
 import {
   initialMigration,
@@ -567,67 +567,30 @@ async function main() {
     const recoveryPassword = randomBytes(24).toString('base64url');
     // The host PTY drives the actual docker exec -it command. Secrets only
     // travel over stdin; the harness reports whether terminal flags recover.
-    const recovery = execa(
-      '/usr/bin/python3',
-      [
-        resolve('tests/experiments/identity/cli-terminal.py'),
-        'docker',
-        'exec',
-        '-it',
-        id,
-        'node',
-        'dist/cli/reset-password.js',
-      ],
+    const recovery = startTerminal(
+      ['docker', 'exec', '-it', id, 'node', 'dist/cli/reset-password.js'],
       {
-        timeout: 30000,
-        buffer: false,
         env: containerEnvironment(process.env),
-        extendEnv: false,
         cancelSignal: abort.signal,
       },
     );
-    // Observe rejection immediately, including when parsing exits early.
-    const outcome = recovery.then(
-      (result) => ({ result }),
-      (error) => ({ error }),
-    );
-    const lines = createInterface({ input: recovery.stdout });
-    let transcript = '';
-    let stage = 0;
-    let terminalResult;
     try {
-      for await (const line of lines) {
-        const event = JSON.parse(line);
-        if ('output' in event) {
-          transcript += event.output;
-          if (stage === 0 && transcript.includes('新密码：')) {
-            recovery.stdin.write(
-              JSON.stringify({ input: recoveryPassword + '\r' }) + '\n',
-            );
-            stage = 1;
-          }
-          if (stage === 1 && transcript.includes('确认新密码：')) {
-            recovery.stdin.write(
-              JSON.stringify({ input: recoveryPassword + '\r' }) + '\n',
-            );
-            stage = 2;
-          }
-        } else terminalResult = event;
-      }
-      const completed = await outcome;
-      if ('error' in completed) throw completed.error;
+      await recovery.waitFor('新密码：');
+      recovery.write(recoveryPassword + '\r');
+      await recovery.waitFor('确认新密码：');
+      recovery.write(recoveryPassword + '\r');
+      assert.deepEqual(await recovery.result, {
+        exitCode: 0,
+        terminalRestored: true,
+      });
+      assert.ok(
+        !recovery.output().includes(recoveryPassword),
+        'CLI does not echo the password',
+      );
+      assert.ok(recovery.output().includes('全部会话已撤销，请重新登录'));
     } finally {
-      lines.close();
-      recovery.stdin.end();
-      if (recovery.nodeChildProcess.exitCode === null) recovery.kill();
-      await outcome;
+      await recovery.stop();
     }
-    assert.deepEqual(terminalResult, { exitCode: 0, terminalRestored: true });
-    assert.ok(
-      !transcript.includes(recoveryPassword),
-      'CLI does not echo the password',
-    );
-    assert.ok(transcript.includes('全部会话已撤销，请重新登录'));
     for (const cookie of recoveryCookies) {
       const response = await fetch(`${origin}/api/auth/get-session`, {
         headers: { cookie },

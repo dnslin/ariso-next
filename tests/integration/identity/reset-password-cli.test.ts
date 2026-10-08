@@ -1,4 +1,3 @@
-import { spawn } from 'node:child_process';
 import { randomBytes, randomUUID } from 'node:crypto';
 import {
   cp,
@@ -38,6 +37,7 @@ import { email, password, seedAuthOwner } from './auth-fixture.ts';
 import { siteSettings } from '../../../src/server/site/schema.ts';
 import { launch, stop, unusedPort } from '../runtime/process-helpers.ts';
 import { prepareInitialStorage } from '../../../src/server/storage/defaults.ts';
+import { startTerminal } from '../../../scripts/terminal.ts';
 
 // The real library calculation still runs. Gates only control when it returns.
 const cryptoGates = vi.hoisted(() => ({
@@ -184,65 +184,15 @@ function owner(cookie: string) {
 }
 
 function terminal(dataDirectory = directory, args: string[] = []) {
-  const child = spawn(
-    '/usr/bin/python3',
-    [
-      resolve('tests/experiments/identity/cli-terminal.py'),
-      process.execPath,
-      packaged,
-      ...args,
-    ],
-    {
-      cwd: directory,
-      // Recovery succeeds without deployment secrets, SMTP config or Web runtime.
-      env: {
-        PATH: dirname(process.execPath),
-        NODE_ENV: 'test',
-        DATA_DIR: dataDirectory,
-      },
-      stdio: ['pipe', 'pipe', 'pipe'],
+  return startTerminal([process.execPath, packaged, ...args], {
+    cwd: directory,
+    // Recovery succeeds without deployment secrets, SMTP config or Web runtime.
+    env: {
+      PATH: dirname(process.execPath),
+      NODE_ENV: 'test',
+      DATA_DIR: dataDirectory,
     },
-  );
-  let output = '';
-  let buffered = '';
-  let diagnostics = '';
-  const result = Promise.withResolvers<{
-    exitCode: number;
-    terminalRestored: boolean;
-  }>();
-  child.stdout.setEncoding('utf8');
-  child.stdout.on('data', (chunk: string) => {
-    buffered += chunk;
-    for (let newline; (newline = buffered.indexOf('\n')) >= 0;) {
-      const message = JSON.parse(buffered.slice(0, newline));
-      buffered = buffered.slice(newline + 1);
-      if ('output' in message) output += message.output;
-      else result.resolve(message);
-    }
   });
-  child.stderr.on('data', (chunk) => (diagnostics += chunk));
-  child.on('error', result.reject);
-  child.on('close', (code) => {
-    if (code !== 0)
-      result.reject(new Error(diagnostics || `PTY exited ${code}`));
-  });
-  return {
-    output: () => output,
-    write: (input: string) =>
-      child.stdin.write(JSON.stringify({ input }) + '\n'),
-    signal: (signal: string) =>
-      child.stdin.write(JSON.stringify({ signal }) + '\n'),
-    async waitFor(text: string) {
-      await vi.waitFor(() => expect(output).toContain(text), {
-        timeout: 10000,
-      });
-    },
-    result: result.promise,
-    async stop() {
-      if (child.exitCode === null) child.stdin.end();
-      await result.promise;
-    },
-  };
 }
 
 async function enterPassword(
