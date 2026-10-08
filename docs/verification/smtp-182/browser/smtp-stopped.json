@@ -1,0 +1,17 @@
+{
+  "status": "failed",
+  "taskSpaceId": 3,
+  "phase": "all",
+  "checks": [],
+  "layouts": [],
+  "screenshots": [],
+  "requests": [],
+  "diagnostics": [],
+  "limitations": [
+    "Local TLS/STARTTLS fixture receives real mail; an external provider and final delivery to a real mailbox remain separate acceptance.",
+    "Lost HTTP responses are deliberate transport faults after real requests, not fabricated server results.",
+    "Chromium viewport emulation does not verify physical touch, keyboard or safe areas."
+  ],
+  "error": "Error: The user has taken control of this task space, so browser commands are paused.\nThis is a hard stop, not an obstacle to route around — do not retry and do not take control back on your own.\nWait until the user explicitly asks you to continue, then take control back and resume:\n  const task = await takeOverTaskSpace(spaceId)\n\nOffer the user choices like \"Continue\" or \"Finish task\" if your harness supports it; otherwise tell them: \"You now control this task space. Reply 'continue' when ready and I will resume.\"\n    at buildEgoError (file:////[eval1]:445:19)\n    at stopForUserControl (file:////[eval1]:8904:28)\n    at probeUserControlReason (file:////[eval1]:8882:13)",
+  "finishedAt": "2026-10-08T07:55:50.294Z"
+}

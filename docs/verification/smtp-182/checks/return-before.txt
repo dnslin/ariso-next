@@ -1,0 +1,31 @@
+Already up to date
+Done in 45ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-182-smtp/ariso
+
+ ❯ |unit| tests/unit/identity/return-to.test.ts (24 tests | 1 failed) 7ms
+   × returns to SMTP settings after session expiry without opening unimplemented destinations 4ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/identity/return-to.test.ts > returns to SMTP settings after session expiry without opening unimplemented destinations
+AssertionError: expected '/admin' to be '/settings/email' // Object.is equality
+
+Expected: "/settings/email"
+Received: "/admin"
+
+ ❯ tests/unit/identity/return-to.test.ts:96:47
+     94|
+     95| it('returns to SMTP settings after session expiry without opening unim…
+     96|   expect(loginDestination('/settings/email')).toBe('/settings/email');
+       |                                               ^
+     97|   expect(loginDestination('/settings/email#smtp-heading')).toBe(
+     98|     '/settings/email#smtp-heading',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 23 passed (24)
+   Start at  15:07:34
+   Duration  114ms (transform 52%, import 21%, tests 21%, worker 6%)

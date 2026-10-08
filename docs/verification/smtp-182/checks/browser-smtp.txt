@@ -1,0 +1,39 @@
+Error: The user has taken control of this task space, so browser commands are paused.
+This is a hard stop, not an obstacle to route around — do not retry and do not take control back on your own.
+Wait until the user explicitly asks you to continue, then take control back and resume:
+  const task = await takeOverTaskSpace(spaceId)
+
+Offer the user choices like "Continue" or "Finish task" if your harness supports it; otherwise tell them: "You now control this task space. Reply 'continue' when ready and I will resume."
+    at buildEgoError (file:////[eval1]:445:19)
+    at stopForUserControl (file:////[eval1]:8904:28)
+    at probeUserControlReason (file:////[eval1]:8882:13)
+
+ego's nodejs process exited with code 1.
+Browser stage failed (smtp): AssertionError [ERR_ASSERTION]: Ego browser verification failed (smtp.log)
+
+1 !== 0
+
+    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-182-smtp/ariso/scripts/verify-browser.mjs:225:12)
+    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-182-smtp/ariso/scripts/browser-stages.mjs:17:5)
+    at async file:///Users/dnslin/.codex/worktrees/issue-182-smtp/ariso/scripts/verify-browser.mjs:709:24
+AssertionError [ERR_ASSERTION]: Browser control is required to continue
++ actual - expected
+
++ 'agentDelegatedToUser'
+- 'agent'
+        ^
+
+    at file:////[eval2]:6:8
+{ taskSpaceId: 3, ownership: 'agentDelegatedToUser' }
+
+ego's nodejs process exited with code 1.
+AssertionError [ERR_ASSERTION]: Ego browser verification failed (smtp-failure-state.log)
+
+1 !== 0
+
+    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-182-smtp/ariso/scripts/verify-browser.mjs:225:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async file:///Users/dnslin/.codex/worktrees/issue-182-smtp/ariso/scripts/verify-browser.mjs:266:7
+    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-182-smtp/ariso/scripts/browser-stages.mjs:22:5)
+    at async file:///Users/dnslin/.codex/worktrees/issue-182-smtp/ariso/scripts/verify-browser.mjs:709:24
+Browser report: /Users/dnslin/.codex/worktrees/issue-182-smtp/ariso/test-results/browser-smtp

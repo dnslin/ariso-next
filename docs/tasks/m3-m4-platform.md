@@ -549,24 +549,26 @@
 
 ### T-ID-06 SMTP 配置、真实发送与诊断
 
+生产实施与验证见 [Issue #182 统一记录](../verification/smtp-182/README.md)。SMTP 持久配置、加密、管理接口及 `/settings/email` 已接入；外部收件与 UI 人工验收以该记录的实际状态为准，不以本地 SMTP 接受替代。
+
 - 任务组：`IDENTITY-SMTP`
 - 里程碑：M4
 - 范围：用Nodemailer保存SMTP配置、加密密码、发送所有者测试邮件并展示各阶段结果。
 - 规格与预计文件：SPEC-identity §8.1、ID-10/14/15；`src/server/identity/mail.ts`、SMTP路由、`src/app/settings/email/`与测试。
 - 直接前置：`T-ID-03`、`T-UI-01`、`EV-IDENTITY-04`、`DG-SMTP`
 - 验收条件：TLS/STARTTLS按已确认语义连接，保存即供下次发送、测试只用已保存配置；省略保留/字符串替换/显式同时清用户名密码。无认证中继可用，空用户名不遗留误用密码；sendMail接受与实际收件分开记录。连接/TLS/认证/投递/超时有可诊断错误，未知结果先查邮箱，不以verify冒充发送。密码不回显，错密钥启动失败保留原值。
-- 验证方法：运行 `pnpm run test:unit`、`pnpm run test:integration`、`pnpm run test:browser`，记录真实请求、持久数据和两端交互证据。 `tests/integration/identity/smtp.test.ts` 故障SMTP与真实收件账户验证发送、阶段错误及超时，收件证据不包含秘密；两端真实测试/清除Tips与焦点。
-- 界面：`/settings/email`，所有者；identity smtp持久配置、测试接口供结果。桌面 [34:710](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=34-710)、手机 [99:786](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=99-786)；状态桌面 [219:2451](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=219-2451)、手机 [219:2431](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=219-2431)；清除 桌面 [219:2515](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=219-2515)、手机 [219:2541](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=219-2541)；Tips 桌面 [240:1116](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=240-1116)、手机 [235:2477](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=235-2477)。HeroUI：TextField、NumberField、Select/RadioGroup、Button、AlertDialog、Alert、Tooltip/Popover。桌面聚焦/悬停可读，手机点击Tips可关闭归焦，清除按钮保持短按钮；保存与测试独立。
+- 验证方法：运行 `pnpm run test:unit`、`pnpm run test:integration`、`pnpm run test:browser`，记录真实请求、持久数据和两端交互证据。 `tests/integration/identity/smtp-production.test.ts` 与默认 `e2e/smtp.mjs` 使用隔离真实SMTP验证生产配置、发送、阶段错误及未知结果恢复；原 `smtp.test.ts` 保留为协议实验。外部收件账户另行验证，收件证据不包含秘密；两端真实测试/清除Tips与焦点。
+- 界面：`/settings/email`，所有者；identity smtp持久配置、测试接口供结果。桌面 [34:710](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=34-710)、手机 [99:786](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=99-786)；状态桌面 [219:2451](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=219-2451)、手机 [219:2431](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=219-2431)；清除 桌面 [219:2515](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=219-2515)、手机 [219:2541](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=219-2541)；Tips 桌面 [240:1116](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=240-1116)、手机 [235:2477](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=235-2477)。本次实际 HeroUI：TextField/Input、Label/FieldError、Select/ListBox、Button、Card、Modal、Tooltip/Popover、Toast。端口保留用户输入后显式验证，不在失焦时钳制成合法值。桌面聚焦/悬停可读，手机点击Tips可关闭归焦，清除按钮保持短按钮；保存与测试独立。
 - 需求：`R-21.4-01`、`R-21.4-02`、`R-24.2-02`、`R-24.2-03`、`A-26.1-09`
 - 实施步骤：
-  - [ ] 1. SMTP 配置独立保存：加密、读取遮蔽和启动解密。
+  - [x] 1. SMTP 配置独立保存：加密、读取遮蔽和启动解密。
   - [ ] 2. 独立测试发送与诊断页面：真实收到邮件，失败不冒充已保存。
 
 #### DG-SMTP 对 T-ID-06 的核对结论
 
 2026-10-08 只读核对完成；实时节点、代表截图、实现盘点与独立审计见 [DG-SMTP 证据](./evidence/DG-SMTP/README.md)。#136 无直接前置，原生 blocking 仅 #182；#182 的 #60、#57、#146 均已关闭。此结论只完成实施前适用核对，不关闭 DES-06-SMTP、相关 DES-05/07、RG-07 或本卡真实交互验收。
 
-当前生产代码尚无 SMTP 配置表、发送模块、管理接口或 `/settings/email` 页面；`tests/experiments/identity/smtp.ts` 与 `tests/integration/identity/smtp.test.ts` 是 EV-IDENTITY-04 的工程实验，Nodemailer 仍为开发依赖。下面的 `GET/PATCH /api/settings/smtp`、`POST /api/settings/smtp/test` 是 SPEC-identity §10 的待实施接口，不是当前已存在能力。
+本次 DG 实施前盘点时，生产代码尚无 SMTP 配置表、发送模块、管理接口或 `/settings/email` 页面；`tests/experiments/identity/smtp.ts` 与 `tests/integration/identity/smtp.test.ts` 是 EV-IDENTITY-04 的工程实验，Nodemailer 仍为开发依赖。下面的 `GET/PATCH /api/settings/smtp`、`POST /api/settings/smtp/test` 是 SPEC-identity §10 的待实施接口，不是当前已存在能力。
 
 | 可复用状态                   | 桌面 / 手机节点                                                                    | 适用规则与本卡真实验收范围                                                                                                                                                                                             |
 | ---------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -592,7 +594,7 @@
 - 清除确认旧画板上下全宽按钮且无右上关闭，与[现行短对话框规则](../design/handoff.md#表单提示与操作)有差异；由本卡按现行规范补交接。桌面Tips焦点、连续悬停、手机关闭命中区和回焦也必须实测。需要改变既定交互/视觉时先给原型获批，再实施及同步Figma。
 - 保存/测试结果弹窗可复用结果语义与单确认结构；最新指令要求即时成功保留原页、选择和滚动，使用简短中性反馈，不以彩色静态说明块或独立结果页面替代。如改变现有弹窗反馈呈现，由本卡先提交原型，不由本DG擅自选择新方案。
 
-默认集成入口已覆盖SMTP协议实验；当前默认浏览器入口没有SMTP业务场景。本卡需将真实持久配置/保存/测试/清除与Tips场景接入 `scripts/verify-browser.mjs` 的默认全量流程，并核对suite/only范围。按[执行约定](./execution.md)运行适用检查，补真实页面与Figma同视口对照、独立设计评审及独立测试数据的人工预览；不能以本次设计截图或实验收件替代。密码重置邮件业务与CLI分别归T-ID-07/T-ID-09，SMTP测试成功不关闭A-26.1-09。
+本次 DG 实施前盘点时，默认集成入口已覆盖SMTP协议实验，默认浏览器入口没有SMTP业务场景。本卡需将真实持久配置/保存/测试/清除与Tips场景接入 `scripts/verify-browser.mjs` 的默认全量流程，并核对suite/only范围。按[执行约定](./execution.md)运行适用检查，补真实页面与Figma同视口对照、独立设计评审及独立测试数据的人工预览；不能以本次设计截图或实验收件替代。密码重置邮件业务与CLI分别归T-ID-07/T-ID-09，SMTP测试成功不关闭A-26.1-09。
 
 ### T-ID-09 独立容器 CLI 密码恢复
 
