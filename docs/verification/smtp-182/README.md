@@ -72,3 +72,7 @@ main合入基本设置PR #262（7e88af4a）后，本分支merge0b05e3ee保留真
 实际失败先保留后修复：手机保存新增凭据区造成56px滚动，局部关闭SMTP滚动锚定后严格滚动断言通过；HeroUI说明框宽度/重复内距和短弹窗标题行/关闭位置还原Figma；共享Toast覆盖样式暴露后层缩小关闭按钮，按组件真实front/expanded/退出状态隐藏后层，44px断言及连续真实双保存通过。浏览器辅助脚本修正仅等待有限时间动画、真实Tab/原生outside点击及可观察回焦，不删除或放宽断言。
 
 最新完整专项含真实get-session429（x-retry-after8秒），只读查询按服务端窗口等待后仍严格验证200+null；sign-out未重复。browserErrors为空只代表页面运行/资源错误为空，不代表没有实际HTTP诊断。所有失败报告、截图、审计与适用范围见统一浏览器记录。
+
+## 本轮提交与远端回读
+
+返修实施与证据提交 `6590d1cd` 已推送，main保持7e88af4a且已包含在本分支。实际[恢复后PR回读](./checks/pr-resumed-state.json)为OPEN/DRAFT/MERGEABLE，head与返修提交一致；[检查查询](./checks/pr-resumed-checks.txt)明确no checks reported，查询退出1表示无报告，不记为CI检查失败或通过。草稿描述已更新。后续仅记录此远端观察的文档提交不改变产品/测试输入，最终提交与远端一致由完成时再次回读确认；未合并或关闭Issue，原空间3已交还人工验收，预览继续运行。
