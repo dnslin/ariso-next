@@ -1,0 +1,35 @@
+Already up to date
+Done in 37ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-182-smtp/ariso
+
+ ❯ |unit| tests/unit/identity/smtp-request.test.ts (5 tests | 1 failed) 17ms
+   × omits blank passwords, preserves exact new password bytes, and sends only explicit clear when requested 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/identity/smtp-request.test.ts > omits blank passwords, preserves exact new password bytes, and sends only explicit clear when requested
+AssertionError: expected { host: 'smtp.internal', …(6) } to not have property "password"
+
+- Expected:
+undefined
+
++ Received:
+""
+
+ ❯ tests/unit/identity/smtp-request.test.ts:43:57
+     41|   const draft = smtpDraft(saved);
+     42|   await saveSmtpSettings(smtpDraftInput(draft));
+     43|   expect(JSON.parse(fetcher.mock.calls[0][1].body)).not.toHaveProperty(
+       |                                                         ^
+     44|     'password',
+     45|   );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 passed (5)
+   Start at  20:44:00
+   Duration  178ms (import 43%, transform 36%, tests 18%, worker 3%)
+

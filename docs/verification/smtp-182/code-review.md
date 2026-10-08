@@ -243,3 +243,22 @@ Tips 宽度/单层内距、有限 DocumentTimeline 等待、真实 Tab 短视口
 2026-10-08，原独立`smtp_code_review`只读复核生产发送原始私有结果与公开`checks/external-send.json`、所有者本会话“收到了”及文档差异。13项发送字段逐项一致，包括同一客户端Message-ID、12:04:55–58UTC、attempts1、accepted1/rejected0；公开记录省略收件邮箱。新增verified仅依据所有者直接确认，recordedAt为记录时间；providerDelivery、actualArrivalTime、headersMessageId仍unverified，没有冒充HTTP或3183预览链路复验。
 
 任务卡仅勾本次T-ID-06步骤2，原需求与模块边界保留；full-runner实际仍failed、6失败阶段完整，统一记录仍明确草稿PR。**增量复审无阻塞、无新发现。** 复核者未修改文件、产品或重跑应用/浏览器。
+
+## PR #265 两个独立角度复审
+
+2026-10-08，按所有者明确要求，由新建 `pr265_correctness_review` 与 `pr265_structure_review` 两个独立 agent 分别使用 `code-review-and-quality` 与 `thermo-nuclear-code-quality-review`。审查完整 base `7e88af4a24194dec880f6bb6b8a7e6367fe3b188` → head `44883357a27ef420a117e378cc7c49dc4b54d624` 的 `base...head` 差异，不只最后一笔提交，也不沿用历史审计结论。报告后的提交仅记录本次审计。
+
+- 正确性五轴：0 Critical、0 Required、0 Optional。读取新增测试后核对需求、持久配置、真实所有者收件边界、秘密与诊断、资源关闭、未知操作回读、会话失效与卸载保护，以及默认单元/集成/浏览器调用链。没有发现高置信功能、安全、性能或模块职责缺陷。
+- 严格维护性：0 Critical、0 Required、1 Optional。新增产品代码按业务、请求、草稿、控制器、字段、弹窗和页面拆分；最大新增产品文件 `use-smtp-page.ts` 为457行，共用浏览器运行器972→983行。实际需求支撑异步保护，不建议删除它们或新增通用状态机。
+
+唯一 Optional 位于 `src/components/identity/use-smtp-page.ts:24–36`，相关核对分支为216–244行。`PendingWrite` 的2种操作和6种状态允许12种配对，其中 `save/clear-matched`、`clear/matched`、`clear/password-unknown` 三种不可达。可以让操作种类约束可达状态，核对时先处理清除再处理保存，去掉两处重复保存种类判断并只计算一次公开草稿匹配。建议局限一个控制器文件，保留现有文案、焦点和全部恢复行为；收益有限，没有外部行为缺陷，不阻塞。本轮未据此修改产品代码。
+
+正确性评审者实际执行一次条件变异，环境为Node24.18.1 / pnpm11.19.0：
+
+`pnpm exec vitest run --project unit tests/unit/identity/smtp-request.test.ts`
+
+原实现5/5通过。仅反转 `smtp-draft.ts:25` 的密码提交条件后，同一命令1失败/4通过，空密码不应出现于PATCH的断言捕获回归；见[本轮变异日志](./checks/pr265-condition-mutation.txt)。通过 `finally` 从完整字节备份精确恢复，备份比较、目标文件差异检查与工作树检查均确认无遗留变异。这个结果不外推其他场景的变异覆盖。
+
+结构评审者只执行冻结git对象/差异、证据JSON与TypeScript AST统计，未运行应用检查。两个 agent 均未重跑全量检查、浏览器或邮件，未改变人工预览数据。本轮功能结论不代替新的设计对照或人工验收。
+
+复审后核对GitHub：上述产品head仍一致，PR为OPEN/DRAFT，`statusCheckRollup=[]`，没有远端检查，不记作CI通过。默认浏览器全量仍有6个失败阶段与停止后未执行项；既有SMTP专项通过、UI人工验收及本封外部邮件已收件分别保持原证据边界。**本轮代码与结构评审均无阻塞，PR继续保持草稿。**
