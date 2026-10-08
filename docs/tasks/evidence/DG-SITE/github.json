@@ -1,0 +1,163 @@
+{
+  "date": "2026-10-08 Asia/Shanghai",
+  "issues": [
+    {
+      "body": "任务 ID：`DG-SITE`\n\n- 任务组：设计前置\n- 里程碑：关联界面实施前\n- 直接前置：无\n- 范围：DES-06-SITE、RG-03/08；核对独立保存、任意地址/品牌/Favicon与跨页消费。具体桌面/手机/状态节点由消费任务的“界面”字段列出，节点来源为 [设计交接](https://github.com/dnslin/ariso-next/blob/main/docs/design/handoff.md) 与 [验收清单](https://github.com/dnslin/ariso-next/blob/main/docs/design/acceptance.md)。\n- 验收条件：逐个消费任务列清可复用状态/规则与真实行为验收范围；确有表达缺口标明具体状态及负责人，不重画已交付代表图、不重审产品选择。\n- 验证方法：对照任务字段、两端节点索引及SPEC的输入/错误契约做文档走查；核对手机/桌面、浅深色、加载/空/错误/禁用的适用规则。结论记录到消费任务，未完成真实交互继续开放DES/RG。\n- 预计文件：消费任务定义和必要的设计索引补充；无业务代码。\n- 界面：无新产品界面；这是消费任务已有具体Figma/HeroUI映射的适用范围核对，真实验收不能由本任务代替。\n\n## 执行与依赖\n\n直接前置：无。同时建立 GitHub 原生阻塞关系；全部前置交付后才能开始依赖它的工作。\n\n按 [执行约定](https://github.com/dnslin/ariso-next/blob/main/docs/tasks/execution.md) 和 [设计交付规范](https://github.com/dnslin/ariso-next/blob/main/docs/design/handoff.md) 执行。纯文档按适用检查；业务改动先构建再集成，界面同时验证桌面/手机和设计。双架构在 Release 阶段验证，日常任务不因未发布而阻塞。真实存储矩阵为 AWS S3、R2、SeaweedFS；EV-STORAGE-01 的 AWS 豁免不自动扩展到后续验收。\n\n交付时填写 PR、实际命令、环境、结果与证据。任务创建不代表实现或验证完成。",
+      "comments": [],
+      "number": 135,
+      "state": "OPEN",
+      "title": "[DG-SITE] 独立保存设计适用核对",
+      "url": "https://github.com/dnslin/ariso-next/issues/135",
+      "blocked_by": [],
+      "blocking": [
+        {
+          "number": 194,
+          "title": "[T-SITE-02] 站点地址时区与基础设置组合",
+          "state": "open",
+          "url": "https://github.com/dnslin/ariso-next/issues/194"
+        },
+        {
+          "number": 196,
+          "title": "[T-SITE-04] 品牌设置及登录分享跨页联动",
+          "state": "open",
+          "url": "https://github.com/dnslin/ariso-next/issues/196"
+        },
+        {
+          "number": 200,
+          "title": "[T-UP-08] 上传限制独立设置界面",
+          "state": "open",
+          "url": "https://github.com/dnslin/ariso-next/issues/200"
+        }
+      ]
+    },
+    {
+      "body": "任务 ID：`T-SITE-02`\n\n- 任务组：`SITE-SETTINGS`\n- 里程碑：M4\n- 需求：`R-5.4-03`、`R-5.4-04`、`R-5.5-02`、`R-21.1-01`、`R-21.1-02`、`A-26.1-12`\n- 范围：[site 规格](https://github.com/dnslin/ariso-next/blob/main/docs/specs/SPEC-site.md) §4/5/7；/settings/general与PATCH组合site、storage默认/CORS、media默认配置，按模块保存。\n- 直接前置：`T-SITE-01`、`T-ID-05`、`T-STO-03`、`T-STO-05`、`T-MED-12`、`T-UI-01`、`EV-IDENTITY-01`、`DG-SITE`\n- 验收条件：origin更新与全部S3 CORS失效同事务，失败回滚；图片ID/Key不变，新链接使用新origin，提示OAuth回调/重测CORS/维护旧域名，不自动跳转。时区只改变解释/展示，不重写UTC；默认存储可空/停用，无可用不切换；各默认值调用所属模块，不复制校验。\n- 验证方法：真实site/storage/identity事务与新origin登录/旧origin写入、图片及OAuth地址，长地址复制；改时区核对历史不变，sharing/analytics最终消费由对应任务联验；失败保留输入与独立保存。\n- 界面：所有者 /settings/general；各模块真实设置API，site只接其字段。桌面[467:4002](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=467-4002)、手机[467:9001](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=467-9001)、桌面状态[468:11189](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=468-11189)、手机状态[468:11481](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=468-11481)。HeroUI：[TextField](https://heroui.com/en/docs/react/components/text-field)、[Select](https://heroui.com/en/docs/react/components/select)、[Button](https://heroui.com/en/docs/react/components/button)、[Alert](https://heroui.com/en/docs/react/components/alert)、[Tooltip](https://heroui.com/en/docs/react/components/tooltip)。DG-SITE核对DES-06-SITE/RG-03；手机长地址展开和手工复制、时区外标签；响应式及错误/空/加载/禁用、键盘、触摸均按本文公共要求。\n- 实施步骤：\n  - [ ] 1. 站点地址/时区独立保存：验证影响和失败输入保留。\n  - [ ] 2. 设置页组合与地址切换：OAuth/CORS/链接联验，不跨模块假保存。\n\n## 执行与依赖\n\n直接前置：#47、#181、#156、#158、#189、#57、#52、#135。同时建立 GitHub 原生阻塞关系；全部前置交付后才能开始依赖它的工作。\n\n按 [执行约定](https://github.com/dnslin/ariso-next/blob/main/docs/tasks/execution.md) 和 [设计交付规范](https://github.com/dnslin/ariso-next/blob/main/docs/design/handoff.md) 执行。纯文档按适用检查；业务改动先构建再集成，界面同时验证桌面/手机和设计。双架构在 Release 阶段验证，日常任务不因未发布而阻塞。真实存储矩阵为 AWS S3、R2、SeaweedFS；EV-STORAGE-01 的 AWS 豁免不自动扩展到后续验收。\n\n交付时填写 PR、实际命令、环境、结果与证据。任务创建不代表实现或验证完成。",
+      "comments": [],
+      "number": 194,
+      "state": "OPEN",
+      "title": "[T-SITE-02] 站点地址时区与基础设置组合",
+      "url": "https://github.com/dnslin/ariso-next/issues/194",
+      "blocked_by": [
+        {
+          "number": 47,
+          "title": "[T-SITE-01] 公开地址与时区数据契约",
+          "state": "closed",
+          "url": "https://github.com/dnslin/ariso-next/issues/47"
+        },
+        {
+          "number": 181,
+          "title": "[T-ID-05] GitHub 配置、主动绑定与登录",
+          "state": "closed",
+          "url": "https://github.com/dnslin/ariso-next/issues/181"
+        },
+        {
+          "number": 156,
+          "title": "[T-STO-03] 多本地/S3 配置与默认选择提供方",
+          "state": "closed",
+          "url": "https://github.com/dnslin/ariso-next/issues/156"
+        },
+        {
+          "number": 158,
+          "title": "[T-STO-05] 真实浏览器 CORS 检测与 origin 失效",
+          "state": "closed",
+          "url": "https://github.com/dnslin/ariso-next/issues/158"
+        },
+        {
+          "number": 189,
+          "title": "[T-MED-12] 处理设置、水印和真实预览界面",
+          "state": "closed",
+          "url": "https://github.com/dnslin/ariso-next/issues/189"
+        },
+        {
+          "number": 57,
+          "title": "[T-UI-01] HeroUI 接入与公共/后台外壳",
+          "state": "closed",
+          "url": "https://github.com/dnslin/ariso-next/issues/57"
+        },
+        {
+          "number": 52,
+          "title": "[EV-IDENTITY-01] 认证、初始化及地址切换接入验证",
+          "state": "closed",
+          "url": "https://github.com/dnslin/ariso-next/issues/52"
+        },
+        {
+          "number": 135,
+          "title": "[DG-SITE] 独立保存设计适用核对",
+          "state": "open",
+          "url": "https://github.com/dnslin/ariso-next/issues/135"
+        }
+      ],
+      "blocking": []
+    },
+    {
+      "body": "任务 ID：`T-SITE-04`\n\n- 任务组：`SITE-BRAND`\n- 里程碑：M4\n- 需求：`R-21.2-01`、`R-21.2-02`、`U-SITE-01`、`U-SITE-02`、`U-SITE-03`\n- 范围：[site 规格](https://github.com/dnslin/ariso-next/blob/main/docs/specs/SPEC-site.md) §6/7/9；品牌文本、Logo/Favicon上传替换删除、预览与首页/登录/分享/标题元信息实时配置。\n- 直接前置：`T-SITE-03`、`T-SHR-03`、`T-UI-01`、`DG-SITE`\n- 验收条件：保存后新请求/当前页面使用最新名称描述图标；修改失败保留旧配置和输入，缺失素材有明确状态不当默认素材。允许格式/5MiB提示准确，删除恢复内置品牌；不把素材选择预览当成功保存。\n- 验证方法：真实文件上传替换删除及失败，跨刷新/重启/首页/登录/匿名分享/浏览器标签对比；网络缓存不展示旧素材，无HTML注入；手机宽度下的滚动与文件选择。\n- 界面：所有者 /settings/general；匿名首页/登录与 /s/{token} 消费品牌；site配置与branding服务。桌面[468:11915](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=468-11915)、手机[468:12216](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=468-12216)、桌面状态[469:10633](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=469-10633)、手机状态[469:10934](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=469-10934)。HeroUI：[TextField](https://heroui.com/en/docs/react/components/text-field)、[Button](https://heroui.com/en/docs/react/components/button)、[AlertDialog](https://heroui.com/en/docs/react/components/alert-dialog)、[Alert](https://heroui.com/en/docs/react/components/alert)、[Card](https://heroui.com/en/docs/react/components/card)。跨页代表首页 [2:10](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=2-10) / [102:3000](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-3000)，匿名分享 [433:3610](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=433-3610) / [433:8265](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=433-8265)；DG-SITE核对RG-08的Favicon/元信息，保留失败输入；响应式及错误/空/加载/禁用、键盘、触摸均按本文公共要求。\n- 实施步骤：\n  - [ ] 1. 品牌表单上传/替换/删除：失败保留配置与输入。\n  - [ ] 2. 首页/登录/分享/标题联验：刷新与重启使用最新品牌。\n\n## 执行与依赖\n\n直接前置：#195、#192、#57、#135。同时建立 GitHub 原生阻塞关系；全部前置交付后才能开始依赖它的工作。\n\n按 [执行约定](https://github.com/dnslin/ariso-next/blob/main/docs/tasks/execution.md) 和 [设计交付规范](https://github.com/dnslin/ariso-next/blob/main/docs/design/handoff.md) 执行。纯文档按适用检查；业务改动先构建再集成，界面同时验证桌面/手机和设计。双架构在 Release 阶段验证，日常任务不因未发布而阻塞。真实存储矩阵为 AWS S3、R2、SeaweedFS；EV-STORAGE-01 的 AWS 豁免不自动扩展到后续验收。\n\n交付时填写 PR、实际命令、环境、结果与证据。任务创建不代表实现或验证完成。",
+      "comments": [],
+      "number": 196,
+      "state": "OPEN",
+      "title": "[T-SITE-04] 品牌设置及登录分享跨页联动",
+      "url": "https://github.com/dnslin/ariso-next/issues/196",
+      "blocked_by": [
+        {
+          "number": 195,
+          "title": "[T-SITE-03] 品牌素材存取、静态校验与清理",
+          "state": "open",
+          "url": "https://github.com/dnslin/ariso-next/issues/195"
+        },
+        {
+          "number": 192,
+          "title": "[T-SHR-03] 匿名密码页、裁剪列表与状态刷新",
+          "state": "closed",
+          "url": "https://github.com/dnslin/ariso-next/issues/192"
+        },
+        {
+          "number": 57,
+          "title": "[T-UI-01] HeroUI 接入与公共/后台外壳",
+          "state": "closed",
+          "url": "https://github.com/dnslin/ariso-next/issues/57"
+        },
+        {
+          "number": 135,
+          "title": "[DG-SITE] 独立保存设计适用核对",
+          "state": "open",
+          "url": "https://github.com/dnslin/ariso-next/issues/135"
+        }
+      ],
+      "blocking": []
+    },
+    {
+      "body": "任务 ID：`T-UP-08`\n\n- 任务组：`UPLOAD-QUEUE`\n- 里程碑：M3\n- 需求：`R-7.2-01`、`R-7.2-02`\n- 规格与预计文件：[upload §3/9](https://github.com/dnslin/ariso-next/blob/main/docs/specs/SPEC-upload.md)、[site 保存边界](https://github.com/dnslin/ariso-next/blob/main/docs/specs/SPEC-site.md)；`src/components/upload/settings.tsx`、`src/app/settings/general/`、相应浏览器测试。\n- 直接前置：`T-UP-03`、`T-UI-01`、`UPLOAD-V02`、`DG-SITE`\n- 范围：在基础设置页组合 upload 自有 GET/PATCH，单独保存文件大小、批次和队列上限；不把字段塞入 site PATCH。\n- 验收条件：默认50MiB/20/500，批次1–200、队列100–2000且批次不大于队列；文件大小以正整数MiB保存并显示当前配置值，前后端使用同一字节限制；只影响新提交，固定并发3不可配置；字段错误/服务失败保留输入，无其他模块假成功。\n- 验证方法：新增设置浏览器用例并接入 `pnpm run test:browser`，测试边界/保存失败/重启读取，以及旧submission与新submission限制差异；适用工程检查按执行约定。\n- 界面：所有者 `/settings/general`，数据来自upload settings。桌面[470:10085](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=470-10085)、手机[470:10377](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=470-10377)；字段错误桌面[470:10430](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=470-10430)、手机[470:10724](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=470-10724)。HeroUI NumberField、FieldError、Alert、Button；独立保存组，手机错误摘要首屏可读、短视口不裁底栏，通用控件按HeroUI统一，无业务差异。\n- 实施步骤：\n  - [ ] 1. 独立上传限制保存组：边界、服务失败和重启值一致。\n  - [ ] 2. 旧/新提交差异与两端短视口：不调用 site PATCH 保存上传字段。\n\n## 执行与依赖\n\n直接前置：#160、#57、#71、#135。同时建立 GitHub 原生阻塞关系；全部前置交付后才能开始依赖它的工作。\n\n按 [执行约定](https://github.com/dnslin/ariso-next/blob/main/docs/tasks/execution.md) 和 [设计交付规范](https://github.com/dnslin/ariso-next/blob/main/docs/design/handoff.md) 执行。纯文档按适用检查；业务改动先构建再集成，界面同时验证桌面/手机和设计。双架构在 Release 阶段验证，日常任务不因未发布而阻塞。真实存储矩阵为 AWS S3、R2、SeaweedFS；EV-STORAGE-01 的 AWS 豁免不自动扩展到后续验收。\n\n交付时填写 PR、实际命令、环境、结果与证据。任务创建不代表实现或验证完成。",
+      "comments": [],
+      "number": 200,
+      "state": "OPEN",
+      "title": "[T-UP-08] 上传限制独立设置界面",
+      "url": "https://github.com/dnslin/ariso-next/issues/200",
+      "blocked_by": [
+        {
+          "number": 160,
+          "title": "[T-UP-03] 完整批次快照、取消与结果队列",
+          "state": "closed",
+          "url": "https://github.com/dnslin/ariso-next/issues/160"
+        },
+        {
+          "number": 57,
+          "title": "[T-UI-01] HeroUI 接入与公共/后台外壳",
+          "state": "closed",
+          "url": "https://github.com/dnslin/ariso-next/issues/57"
+        },
+        {
+          "number": 71,
+          "title": "[UPLOAD-V02] 共同容量与传输超时",
+          "state": "closed",
+          "url": "https://github.com/dnslin/ariso-next/issues/71"
+        },
+        {
+          "number": 135,
+          "title": "[DG-SITE] 独立保存设计适用核对",
+          "state": "open",
+          "url": "https://github.com/dnslin/ariso-next/issues/135"
+        }
+      ],
+      "blocking": []
+    }
+  ]
+}

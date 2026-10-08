@@ -1,0 +1,64 @@
+{
+  "environment": {
+    "platform": "Darwin arm64",
+    "node": "24.18.1",
+    "pnpm": "11.19.0"
+  },
+  "commands": [
+    {
+      "command": "pnpm install --frozen-lockfile",
+      "exitCode": 0,
+      "note": "Node24 explicit PATH; earlier Node26 installation not counted as required environment verification"
+    },
+    {
+      "command": "pnpm run format:check",
+      "exitCode": 0
+    },
+    {
+      "command": "node docs/tasks/check.mjs",
+      "exitCode": 0,
+      "result": "120 tasks, 298 requirements, no missing IDs or cycles"
+    },
+    {
+      "command": "node docs/tasks/check.mjs --self-test",
+      "exitCode": 0,
+      "result": "5 rejection cases passed"
+    },
+    {
+      "command": "git diff --check",
+      "exitCode": 0
+    },
+    {
+      "command": "python3 local Markdown links/anchors and Figma artifact integrity walk",
+      "exitCode": 0,
+      "result": "7 Markdown files, 401 local links/anchors, 25 PNG dimensions, all design JSON valid"
+    },
+    {
+      "command": "pnpm exec prettier --check (changed evidence Markdown/JSON and docs/design/acceptance.md)",
+      "exitCode": 0,
+      "result": "All matched files use Prettier code style"
+    }
+  ],
+  "notApplicable": [
+    "lint",
+    "typecheck",
+    "unit",
+    "build",
+    "integration",
+    "browser",
+    "db:generate",
+    "Release image/container verification"
+  ],
+  "remote": {
+    "pr": 259,
+    "state": "OPEN",
+    "isDraft": false,
+    "base": "main",
+    "head": "codex/issue-135-site-design",
+    "mergeable": "MERGEABLE",
+    "statusCheckRollup": [],
+    "checksCommand": "gh pr checks 259 --repo dnslin/ariso-next",
+    "checksExitCode": 1,
+    "checksResult": "no checks reported; not CI success"
+  }
+}
