@@ -1,11 +1,11 @@
 import { ZodError } from 'zod';
+import { buildGithubCallbackUrl } from '../identity/github-settings.ts';
 import { requireOwner } from '../identity/owner.ts';
 import { createRuntimeLogger } from '../runtime/logger.ts';
 import { getServerRuntime } from '../startup/server-start.ts';
 import { invalidateS3Cors } from '../storage/cors.ts';
 import type { SiteSettings } from './schema.ts';
 import { requireSiteSettings, updateSiteSettings } from './settings.ts';
-import { buildSiteUrl } from './urls.ts';
 import { siteSettingsPatchSchema } from './validation.ts';
 
 type SiteDatabase = ReturnType<typeof getServerRuntime>['connection']['db'];
@@ -24,7 +24,7 @@ function serializeSiteSettings(settings: SiteSettings): SiteSettingsResponse {
   return {
     ...settings,
     updatedAt: settings.updatedAt.toISOString(),
-    githubCallbackUrl: buildSiteUrl(settings, '/api/auth/callback/github'),
+    githubCallbackUrl: buildGithubCallbackUrl(settings),
   };
 }
 

@@ -24,7 +24,7 @@
 | ----------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
 | `pnpm install --frozen-lockfile`                                                                                        | 通过                                                                                 |
 | `pnpm run test:unit`                                                                                                    | 1729/1729，通过，127 文件；后续焦点及后退新增仅定向复核                              |
-| `pnpm run test:integration --maxWorkers=4`                                                                              | 1721/1721，通过，179 文件，包含 media-tools；后端输入此后未变                        |
+| `pnpm run test:integration --maxWorkers=4`                                                                              | 此前 1721/1721，通过，179 文件，包含 media-tools；回调归属修复后的定向结果见下方     |
 | `pnpm run lint`                                                                                                         | 初次 hook 测试命名触发规则，修正后全量通过                                           |
 | `pnpm run typecheck`                                                                                                    | 通过，两个项目；后续 Navigation 类型定向检查通过                                     |
 | `pnpm run format:check`                                                                                                 | 通过；后续变更定向检查，最终全量格式检查通过                                         |
@@ -121,3 +121,19 @@ Figma 文件 `74sT9Hrf8G4czcWeTkET5b` 已实际写入。保留公共组件实例
 旧浏览器 Navigation API 兼容性、实体触摸/软键盘、安全区、真实外部 GitHub OAuth、sharing/analytics 最终消费以及 Release 容器未验证。明确区分本地检查、浏览器、设计及人工结果，不由任一项替代另一项。已回读 PR #262：OPEN、草稿、MERGEABLE，statusCheckRollup 为空；`gh pr checks 262` 返回 no checks reported，不记作 CI 通过。最终推送后再次核对真实 head 与状态。
 
 本轮最后全量 `pnpm run format:check`、受影响 ESLint、`node docs/tasks/check.mjs`（120 tasks / 298 requirements）、证据本地链接检查与 `git diff --check` 均通过；证据中不含人工预览账号和密码。独立代码评审者最后复核 nullable 初始化、在途取消/迟到响应、非空 saved 类型边界、首错滚动、历史容量和实际报告，结论通过，未重复执行已过检查。
+
+## 双角度评审后的回调归属修复
+
+2026-10-08，针对提交 `5fd59ad3` 的完整差异独立评审发现一项 P2：site HTTP 与 identity GitHub 设置重复定义 OAuth 回调路径，违反 SPEC-site §4 的路径归属。用户要求先规划再修复后，在 identity 的 `buildGithubCallbackUrl` 唯一定义路径，账号设置与 site GET/PATCH 共用；URL 组合复用已有 `buildSiteUrl`。函数仅消费已保存的 publicUrl，不读取数据库、密钥或生效配置，不缓存 origin；接口形状、鉴权、事务及页面行为保持原样。无新增依赖、schema 或 UI 变更。
+
+实际环境仍为 Darwin arm64、Node 24.18.1、pnpm 11.19.0；下列命令均显式使用 Node 24 PATH。修复仅重跑受影响检查，不重复已通过且输入未变的全部单元、media-tools 和浏览器场景。
+
+| 本次命令                                                                                                                                                                                                                          | 实际结果                                                                                                                             |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `pnpm install --frozen-lockfile`                                                                                                                                                                                                  | 通过，锁文件未变。                                                                                                                   |
+| `pnpm exec vitest run --project unit tests/unit/identity/github-callback.test.ts`                                                                                                                                                 | 先因 identity 未提供共用函数取得 4/4 失败；实现后 4/4 通过。覆盖 HTTPS、非默认端口、localhost 及连续使用最新 origin。                |
+| `pnpm run lint`、`pnpm run typecheck`                                                                                                                                                                                             | 全量静态检查及两个 TypeScript 项目通过。                                                                                             |
+| `pnpm run build`                                                                                                                                                                                                                  | 生产及 standalone 构建通过，exit 0；已有 NFT 可选依赖追踪警告保留（SQLite Debug、resvg 其他平台及 OpenTelemetry）。                  |
+| `pnpm exec vitest run --project integration tests/integration/site/settings-http.test.ts tests/integration/site/settings-patch.test.ts tests/integration/identity/oauth.test.ts tests/integration/identity/oauth-startup.test.ts` | 构建后执行，4 文件、37/37 通过。覆盖 site/账号真实回调、新 origin 登录、旧 origin 写入拒绝、全部 S3 失效与失败回滚、OAuth 生效配置。 |
+
+本轮 `pnpm run format:check` 全量通过，`node docs/tasks/check.mjs` 通过（120 tasks / 298 requirements），`git diff --check` 通过。默认单元 glob `tests/unit/**/*.test.ts` 包含新增测试，未新增 only 或遗漏默认入口。两位独立评审者的原发现、修复复审及测试变异结果记录在 [独立评审](./review.md#双角度评审与回调归属修复)。本轮不重跑浏览器或 Figma；以前的站点定向通过、默认 full 失败和人工验收未完成各保持原边界，预览继续保留。
