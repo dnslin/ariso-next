@@ -185,9 +185,10 @@ try {
         ['/admin', '/upload', 'admin-entry'],
         ['/settings/storage', '/settings/storage', 'storage-list'],
         ['/settings/storage/new', '/settings/storage', 'storage-new'],
-        ['/settings/processing', '/settings/processing', 'processing-settings'],
-        ['/settings/account', '/settings/processing', 'account-settings'],
-        ['/settings/api', '/settings/processing', 'api-settings'],
+        ['/settings/general', '/settings/general', 'general-settings'],
+        ['/settings/processing', '/settings/general', 'processing-settings'],
+        ['/settings/account', '/settings/general', 'account-settings'],
+        ['/settings/api', '/settings/general', 'api-settings'],
         [
           `/settings/storage/${storage.id}`,
           '/settings/storage',

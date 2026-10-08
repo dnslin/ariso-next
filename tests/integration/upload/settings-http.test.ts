@@ -4,6 +4,7 @@ import { join, resolve } from 'node:path';
 import { expect, it, vi } from 'vitest';
 import { openRuntimeDatabase } from '../../../src/server/runtime/db.ts';
 import type { createTag } from '../../../src/server/collections/tag-management.ts';
+import { UPLOAD_MAX_FILE_MIB } from '../../../src/shared/upload-settings.ts';
 import { email, password, seedAuthOwner } from '../identity/auth-fixture.ts';
 import { launch, stop } from '../runtime/process-helpers.ts';
 
@@ -93,11 +94,55 @@ it('protects upload settings and quick tag creation with real owner and origin c
     expect(invalidSettings.status).toBe(422);
     expect(await invalidSettings.json()).toMatchObject({
       code: 'UPLOAD_SETTINGS_INVALID',
+      message: '请检查上传限制字段',
+      fields: [{ field: 'batchSize', message: '批次大小不能超过队列上限' }],
     });
     expect(await (await fetch(settingsUrl, { headers })).json()).toMatchObject({
       batchSize: 150,
       queueLimit: 500,
     });
+    for (const [input, fields] of [
+      [
+        { maxFileMiB: 1.5, batchSize: 0, queueLimit: 2001 },
+        [
+          { field: 'maxFileMiB', message: '请输入正整数 MiB' },
+          { field: 'batchSize', message: '请输入 1–200 的整数' },
+          { field: 'queueLimit', message: '请输入 100–2000 的整数' },
+        ],
+      ],
+      [
+        { maxFileMiB: UPLOAD_MAX_FILE_MIB + 1 },
+        [
+          {
+            field: 'maxFileMiB',
+            message: '文件大小换算为字节后超出可保存范围',
+          },
+        ],
+      ],
+      [
+        { maxFileBytes: 1024 },
+        [{ field: 'maxFileBytes', message: '未知字段' }],
+      ],
+    ]) {
+      const response = await fetch(settingsUrl, {
+        method: 'PATCH',
+        headers,
+        body: JSON.stringify(input),
+      });
+      expect(response.status).toBe(422);
+      expect(response.headers.get('cache-control')).toBe('no-store');
+      expect(await response.json()).toMatchObject({
+        code: 'UPLOAD_SETTINGS_INVALID',
+        fields,
+      });
+      expect(
+        await (await fetch(settingsUrl, { headers })).json(),
+      ).toMatchObject({
+        maxFileBytes: 1048576,
+        batchSize: 150,
+        queueLimit: 500,
+      });
+    }
     expect(
       (await fetch(settingsUrl, { method: 'PATCH', headers, body: '{' }))
         .status,
@@ -188,6 +233,24 @@ it('protects upload settings and quick tag creation with real owner and origin c
         }),
       );
     });
+    live.db.$client.exec('DELETE FROM upload_settings');
+    for (const method of ['GET', 'PATCH']) {
+      const response = await fetch(settingsUrl, {
+        method,
+        headers,
+        ...(method === 'PATCH' ? { body: '{"batchSize":10}' } : {}),
+      });
+      expect(response.status).toBe(409);
+      expect(await response.json()).toMatchObject({
+        code: 'UPLOAD_NOT_INITIALIZED',
+        message: '上传设置尚未初始化',
+      });
+    }
+    expect(
+      live.db.$client
+        .prepare('SELECT COUNT(*) AS count FROM upload_settings')
+        .get(),
+    ).toEqual({ count: 0 });
   } finally {
     live?.close();
     await stop(server.child, server.closed);

@@ -1,0 +1,61 @@
+Already up to date
+Done in 67ms using pnpm v11.19.0
+$ vitest run --project unit
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-200-upload-settings/ariso
+
+{"level":"error","time":"2026-10-08T03:28:01.258Z","module":"storage.http","err":{"type":"Error","message":"remote operation failed","stack":"Error: remote operation failed\n    at /Users/dnslin/.codex/worktrees/issue-200-upload-settings/ariso/tests/unit/storage/probe-http.test.ts:21:27\n    at Module.storageResponse (/Users/dnslin/.codex/worktrees/issue-200-upload-settings/ariso/src/server/storage/http.ts:24:13)\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at /Users/dnslin/.codex/worktrees/issue-200-upload-settings/ariso/tests/unit/storage/probe-http.test.ts:16:20","code":"STORAGE_OPERATION_FAILED"},"path":"/api/storages/id/probes/probe/retry-cleanup","msg":"Remote storage operation failed"}
+{"level":"error","time":"2026-10-08T03:28:01.270Z","module":"storage.http","err":{"type":"Error","message":"remote operation failed","stack":"Error: remote operation failed\n    at /Users/dnslin/.codex/worktrees/issue-200-upload-settings/ariso/tests/unit/storage/probe-http.test.ts:21:27\n    at Module.storageResponse (/Users/dnslin/.codex/worktrees/issue-200-upload-settings/ariso/src/server/storage/http.ts:24:13)\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at /Users/dnslin/.codex/worktrees/issue-200-upload-settings/ariso/tests/unit/storage/probe-http.test.ts:16:20","code":"STORAGE_TIMEOUT"},"path":"/api/storages/id/probes/probe/retry-cleanup","msg":"Remote storage operation failed"}
+{"level":"error","time":"2026-10-08T03:28:01.274Z","module":"storage.http","err":{"type":"Error","message":"namespace scan failed","stack":"Error: namespace scan failed\n    at /Users/dnslin/.codex/worktrees/issue-200-upload-settings/ariso/tests/unit/storage/probe-http.test.ts:36:27\n    at Module.storageResponse (/Users/dnslin/.codex/worktrees/issue-200-upload-settings/ariso/src/server/storage/http.ts:24:13)\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at /Users/dnslin/.codex/worktrees/issue-200-upload-settings/ariso/tests/unit/storage/probe-http.test.ts:33:20","code":"STORAGE_SCAN_FAILED","status":502},"path":"/api/storages/id","msg":"Remote storage operation failed"}
+{"level":"error","time":"2026-10-08T03:28:01.276Z","module":"storage.http","err":{"type":"Error","message":"namespace scan failed","stack":"Error: namespace scan failed\n    at /Users/dnslin/.codex/worktrees/issue-200-upload-settings/ariso/tests/unit/storage/probe-http.test.ts:36:27\n    at Module.storageResponse (/Users/dnslin/.codex/worktrees/issue-200-upload-settings/ariso/src/server/storage/http.ts:24:13)\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at /Users/dnslin/.codex/worktrees/issue-200-upload-settings/ariso/tests/unit/storage/probe-http.test.ts:33:20","code":"STORAGE_SCAN_FAILED","status":504},"path":"/api/storages/id","msg":"Remote storage operation failed"}
+{"level":"error","time":"2026-10-08T03:28:01.279Z","module":"storage.http","err":{"type":"Error","message":"namespace scan failed","stack":"Error: namespace scan failed\n    at /Users/dnslin/.codex/worktrees/issue-200-upload-settings/ariso/tests/unit/storage/probe-http.test.ts:36:27\n    at Module.storageResponse (/Users/dnslin/.codex/worktrees/issue-200-upload-settings/ariso/src/server/storage/http.ts:24:13)\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at /Users/dnslin/.codex/worktrees/issue-200-upload-settings/ariso/tests/unit/storage/probe-http.test.ts:33:20","code":"STORAGE_SCAN_FAILED","status":500},"path":"/api/storages/id","msg":"Storage request failed"}
+ ❯ |unit| tests/unit/runtime/browser-runner.test.ts (176 tests | 7 failed) 442847ms
+   ❯ browser runner argument boundaries (176)
+     × accepts suite tokens and its only action-recovery 6319ms
+     × accepts suite tokens and its only consumers 7695ms
+     × accepts suite trash and its only representative 5484ms
+     × accepts suite trash and its only undefined 5252ms
+     × accepts suite trash and its only query-error 6228ms
+     × accepts suite albums and its only undefined 7732ms
+     × requires an existing space for sharing-experiment without starting unrelated production fixtures 5114ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/runtime/browser-runner.test.ts > browser runner argument boundaries > accepts suite tokens and its only action-recovery
+ FAIL  |unit| tests/unit/runtime/browser-runner.test.ts > browser runner argument boundaries > accepts suite tokens and its only consumers
+ FAIL  |unit| tests/unit/runtime/browser-runner.test.ts > browser runner argument boundaries > accepts suite trash and its only representative
+ FAIL  |unit| tests/unit/runtime/browser-runner.test.ts > browser runner argument boundaries > accepts suite trash and its only undefined
+ FAIL  |unit| tests/unit/runtime/browser-runner.test.ts > browser runner argument boundaries > accepts suite trash and its only query-error
+ FAIL  |unit| tests/unit/runtime/browser-runner.test.ts > browser runner argument boundaries > accepts suite albums and its only undefined
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/unit/runtime/browser-runner.test.ts:109:24
+    107|     ['upload-input'],
+    108|   ];
+    109|   it.each(combinations)('accepts suite %s and its only %s', (suite, on…
+       |                        ^
+    110|     const result = parse(['--suite', suite, ...(only ? ['--only', only…
+    111|     expect(result.status).not.toBe(0);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/7]⎯
+
+ FAIL  |unit| tests/unit/runtime/browser-runner.test.ts > browser runner argument boundaries > requires an existing space for sharing-experiment without starting unrelated production fixtures
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/unit/runtime/browser-runner.test.ts:332:72
+    330|   });
+    331|
+    332|   it.each(['sharing-experiment', 'sharing-protocol', 'sharing-public']…
+       |                                                                        ^
+    333|     'requires an existing space for %s without starting unrelated prod…
+    334|     (suite) => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/7]⎯
+
+
+ Test Files  1 failed | 124 passed (125)
+      Tests  7 failed | 1680 passed (1687)
+   Start at  11:27:52
+   Duration  444.27s (tests 90%, import 7%, transform 2%)
+
+[ELIFECYCLE] Command failed with exit code 1.

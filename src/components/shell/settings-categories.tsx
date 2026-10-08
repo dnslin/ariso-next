@@ -9,11 +9,17 @@ import { ListBox } from '@heroui/react/list-box';
 import {
   KeyRound,
   Settings,
+  Settings2,
   ShieldCheck,
   SlidersHorizontal,
 } from 'lucide-react';
 
 export const settingsCategories = [
+  {
+    href: '/settings/general',
+    label: '基本设置',
+    icon: <Settings2 className="size-4" aria-hidden />,
+  },
   {
     href: '/settings/processing',
     label: '图片处理',

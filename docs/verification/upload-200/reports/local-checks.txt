@@ -1,0 +1,15 @@
+macOS arm64; Node 24.18.1; pnpm 11.19.0
+pnpm install --frozen-lockfile: exit 0, lockfile unchanged
+pnpm run build (final keyboard outline-solid correction): exit 0, Next production and standalone packaging complete; optional-platform dependency tracing diagnostics remain
+pnpm run lint: exit 0 after excluding prototype generated .next and next-env only; prototype source remains linted
+pnpm exec eslint e2e/upload-settings*.mjs e2e/processing-settings-entry.mjs e2e/processing-settings.mjs e2e/processing-session-recovery.mjs e2e/tokens-consumers.mjs src/components/upload-limits --max-warnings=0: exit 0
+pnpm run format:check: earlier full pass; final full check exit 1 for tests/unit/upload/limits-api.test.ts only. Corrected formatting and affected-file/evidence check recorded separately. No assertions were changed.
+pnpm run typecheck: exit 0; after notice lifecycle change pnpm exec tsc --noEmit --project tsconfig.json: exit 0 (implementation agent); final keyboard modification is CSS classes and latest build passed
+Prototype source lint and tsconfig check after preserving approved four categories: exit 0
+node docs/tasks/check.mjs: 120 tasks / 298 requirements passed
+Local Markdown evidence links: 116 checked, none missing
+git diff --check: exit 0
+Final preview: actual health HTTP200 and initialization succeeded; browser login not performed after user took control
+Release/container checks: not applicable to this daily PR; not executed
+Final affected format check: exit 0 (tests/unit/upload/limits-api.test.ts and docs/verification/upload-200)
+Private manual passwords and setup codes scanned against 139 candidate files: no matches

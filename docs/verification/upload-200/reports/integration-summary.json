@@ -1,0 +1,107 @@
+{
+  "command": "pnpm run test:integration --maxWorkers=4",
+  "firstRun": {
+    "exitCode": 1,
+    "files": {
+      "passed": 168,
+      "failed": 10
+    },
+    "tests": {
+      "passed": 1700,
+      "failed": 17
+    },
+    "durationSeconds": 880.46,
+    "failures": [
+      {
+        "file": "tests/integration/identity/account.test.ts",
+        "name": "real Cookie account management > password success keeps the exact current Cookie session and revokes other sessions even when requested false"
+      },
+      {
+        "file": "tests/integration/identity/auth.test.ts",
+        "name": "initialized production auth > production constraints reject invalid owners and duplicate providers; incomplete identity is explicit"
+      },
+      {
+        "file": "tests/integration/identity/auth.test.ts",
+        "name": "initialized production auth > real login normalizes email and keeps seven-day host-only HttpOnly cookies even with rememberMe false"
+      },
+      {
+        "file": "tests/integration/identity/http.test.ts",
+        "name": "direct credential seed logs in over Next HTTP, real Cookie agrees with server API and logout revokes it"
+      },
+      {
+        "file": "tests/integration/identity/reset-password-cli.test.ts",
+        "name": "a running standalone Web process rejects both old cookies on the next request after CLI reset"
+      },
+      {
+        "file": "tests/integration/runtime/secret-preflight.test.ts",
+        "name": "空生产数据库接受不同合法密钥，生产产物不包含测试表、组合或密钥校验记录"
+      },
+      {
+        "file": "tests/integration/runtime/secret-preflight.test.ts",
+        "name": "wrong key 阻止入口启动 Web，保留已提交迁移与密文，修复后继续且不重放迁移"
+      },
+      {
+        "file": "tests/integration/identity/cli-reset.test.ts",
+        "name": "compiled and traced CLI resets from an unrelated cwd without Web, SMTP, migration or initialization"
+      },
+      {
+        "file": "tests/integration/identity/cli-reset.test.ts",
+        "name": "CLI session deletion failure rolls back password, sessions and unused resets"
+      },
+      {
+        "file": "tests/integration/identity/cli-reset.test.ts",
+        "name": "CLI verification deletion failure rolls back password, sessions and unused resets"
+      },
+      {
+        "file": "tests/integration/identity/reset-password-cli.test.ts",
+        "name": "CLI session deletion failure rolls back password, sessions and unused resets"
+      },
+      {
+        "file": "tests/integration/identity/reset-password-cli.test.ts",
+        "name": "CLI verification deletion failure rolls back password, sessions and unused resets"
+      },
+      {
+        "file": "tests/integration/identity/reset-password-cli.test.ts",
+        "name": "CLI SIGINT during first input leaves rows intact and restores the terminal"
+      },
+      {
+        "file": "tests/integration/identity/setup-dev.test.ts",
+        "name": "real Next dev recompilation retains the startup code and the original code creates a login-capable owner"
+      },
+      {
+        "file": "tests/integration/runtime/build.test.ts",
+        "name": "无密钥和数据库时在独立目录完成生产构建，不写数据或输出初始化码"
+      },
+      {
+        "file": "tests/integration/runtime/server-start.test.ts",
+        "name": "Web shutdown ownership > Next close hook waits for framework cleanup, preserves this, and stops the application once"
+      },
+      {
+        "file": "tests/integration/storage/settings-http.test.ts",
+        "name": "停用 S3 的密文也在独立 prestart 校验；错误密钥失败且原配置不变"
+      }
+    ]
+  },
+  "failedCasesRetry": {
+    "command": "pnpm exec vitest run --project integration <10 failed files> --maxWorkers=1 -t <17 failed cases>",
+    "exitCode": 1,
+    "tests": {
+      "passed": 16,
+      "failed": 1,
+      "notSelected": 87
+    },
+    "remaining": "storage/settings-http tail case shares beforeAll database and needs earlier storage deletion context"
+  },
+  "storageContextRetry": {
+    "command": "pnpm exec vitest run --project integration tests/integration/storage/settings-http.test.ts --maxWorkers=1",
+    "exitCode": 0,
+    "tests": {
+      "passed": 7
+    }
+  },
+  "limitations": [
+    "First full run remains failed; targeted retries do not become a single full-suite pass.",
+    "No product assertion or timeout was weakened.",
+    "Raw startup logs contain disposable initialization codes and remain local."
+  ]
+}

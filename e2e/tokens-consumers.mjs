@@ -5,6 +5,7 @@ import { createTokensPage } from './tokens-page.mjs';
 export async function verifyTokensConsumers(page, config, report) {
   const ui = createTokensPage(page, config, report);
   const categories = [
+    ['/settings/general', '基本设置'],
     ['/settings/processing', '图片处理'],
     ['/settings/account', '账号与安全'],
     ['/settings/api', '上传 API'],
@@ -97,6 +98,6 @@ export async function verifyTokensConsumers(page, config, report) {
   await resizeViewport(page, config.width ?? 1440);
   await setTheme(page, 'light');
   report.checks.push(
-    'Every implemented SettingsCategories consumer (processing/account/API) has the same order, labels, icons and correct selection on desktop/mobile in both themes.',
+    'Every implemented SettingsCategories consumer (general/processing/account/API) has the same order, labels, icons and correct selection on desktop/mobile in both themes.',
   );
 }

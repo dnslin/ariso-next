@@ -104,6 +104,11 @@ describe('browser runner argument boundaries', () => {
     ['albums'],
     ['album-cover'],
     ['tags'],
+    ['upload-settings'],
+    ['upload-settings', 'representative'],
+    ['upload-settings', 'behavior'],
+    ['upload-settings', 'recovery'],
+    ['upload-settings', 'consumers'],
     ['upload-input'],
   ];
   it.each(combinations)('accepts suite %s and its only %s', (suite, only) => {
@@ -186,6 +191,7 @@ describe('browser runner argument boundaries', () => {
           'processing',
           'tokens',
           'sharing-management',
+          'upload-settings',
         ].includes(suite),
     ),
   )('handles recovery according to suite %s ownership', (suite) => {

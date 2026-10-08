@@ -73,6 +73,8 @@ for (const name of [
   'upload-submissions.json',
   'upload-relations.json',
   'upload-polling.json',
+  'upload-settings.json',
+  'upload-settings-failure.png',
   'upload-input.json',
   'upload-s3.json',
   'copy-dropdown.json',

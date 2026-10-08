@@ -40,7 +40,7 @@ export async function verifyOwnerShell(page, config) {
     { label: '回收站', href: '/trash' },
     { label: '访问统计', href: null },
     { label: '存储管理', href: '/settings/storage' },
-    { label: '站点设置', href: '/settings/processing' },
+    { label: '站点设置', href: '/settings/general' },
   ];
   const routes = ['/upload', '/library', '/trash', '/albums', '/shares'];
   const button = (name) => `loc=role:button[name="${name}"]`;

@@ -14,6 +14,7 @@ const suites = {
       ['albums', 'albums'],
       ['album-cover', 'album-cover'],
       ['tags', 'tags'],
+      ['upload-settings', 'upload-settings'],
       ['upload', 'upload'],
       ['upload-polling', 'upload-polling'],
       ['upload-input', 'upload-input'],
@@ -66,6 +67,11 @@ const suites = {
   albums: { primaryPage: true, stages: [['albums', 'albums']] },
   'album-cover': { primaryPage: true, stages: [['album-cover', 'albumCover']] },
   tags: { primaryPage: true, stages: [['tags', 'tags']] },
+  'upload-settings': {
+    only: ['representative', 'behavior', 'recovery', 'consumers'],
+    stages: [['upload-settings', 'upload-settings']],
+    config: (only) => ({ uploadSettingsPhase: only }),
+  },
   'upload-input': {
     primaryPage: true,
     stages: [['upload-input', 'uploadInput']],

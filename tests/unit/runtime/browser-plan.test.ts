@@ -17,6 +17,7 @@ describe('focused browser execution plans', () => {
     ['albums', ['albums']],
     ['album-cover', ['album-cover']],
     ['tags', ['tags']],
+    ['upload-settings', ['upload-settings']],
     ['upload-input', ['upload-input']],
     ['viewer', ['library-viewer-run']],
     ['upload', ['upload-submissions', 'upload-relations']],
@@ -39,6 +40,9 @@ describe('focused browser execution plans', () => {
   );
 
   it.each([
+    ...['representative', 'behavior', 'recovery', 'consumers'].map(
+      (phase) => ['upload-settings', phase, ['upload-settings']] as const,
+    ),
     ['upload', 'relations', ['upload-relations']],
     ['upload', 'submissions', ['upload-submissions']],
     ['upload-regression', 'main', ['upload']],
@@ -73,6 +77,7 @@ describe('focused browser execution plans', () => {
   );
 
   it.each([
+    ['upload-settings', 'recovery', { uploadSettingsPhase: 'recovery' }],
     ['library', 'recovery', { libraryPhase: 'recovery' }],
     ['tokens', 'recovery', { tokensPhase: 'recovery' }],
     ['tokens', 'lifecycle', { tokensPhase: 'lifecycle' }],
@@ -157,6 +162,7 @@ describe('focused browser execution plans', () => {
         ['albums', 'albums'],
         ['album-cover', 'album-cover'],
         ['tags', 'tags'],
+        ['upload-settings', 'upload-settings'],
         ['upload', 'upload'],
         ['upload-polling', 'upload-polling'],
         ['upload-input', 'upload-input'],

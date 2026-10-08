@@ -49,7 +49,13 @@ export async function verifyProcessingSettingsEntry(
     return identity;
   };
   const navigate = async (route) => {
-    await page.click(`.shell-navigation a[href="${route}"]`);
+    if (route === '/settings/processing') {
+      await page.click('.shell-navigation a[href="/settings/general"]');
+      await page.waitForURL(`${config.origin}/settings/general`);
+      await page.click('loc=role:tab[name="图片处理"]');
+    } else {
+      await page.click(`.shell-navigation a[href="${route}"]`);
+    }
     await page.waitForURL(`${config.origin}${route}`);
     return sameDocument();
   };
