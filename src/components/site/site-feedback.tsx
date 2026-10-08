@@ -3,11 +3,14 @@
 import { Button } from '@heroui/react/button';
 import { siteFieldLabels } from './model';
 import type { useSiteSettings } from './use-site-settings';
+import type { SiteSettingsResponse } from './api';
 
 export function SiteFeedback({
   settings,
 }: {
-  settings: ReturnType<typeof useSiteSettings>;
+  settings: ReturnType<typeof useSiteSettings> & {
+    saved: SiteSettingsResponse;
+  };
 }) {
   const { phase, message, input, saved } = settings;
   const title =

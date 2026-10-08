@@ -84,6 +84,16 @@ export async function verifySiteGeneralBehavior(page, config, tools, report) {
       ['timeZone', '+08:00'],
     ]) {
       await tools.fill({ [name]: input });
+      if (name === 'timeZone') {
+        await resizeViewport(page, 390);
+        await page.mouse.move(200, 420, {
+          label: 'move into settings content',
+        });
+        await page.mouse.wheel(0, -2000, { label: 'return to form heading' });
+        await page.waitForFunction(
+          () => document.querySelector('main').scrollTop === 0,
+        );
+      }
       const previous = await tools.read();
       await page.click(button('保存站点信息'));
       await page.waitForFunction(
@@ -103,6 +113,31 @@ export async function verifySiteGeneralBehavior(page, config, tools, report) {
         previous,
         'Field validation does not partially persist',
       );
+      if (name === 'timeZone') {
+        const visible = await page.evaluate(() => {
+          const input = document.querySelector('#site-timeZone');
+          const group = input.closest('[data-slot="textfield"]');
+          const bounds = group.getBoundingClientRect();
+          const main = document.querySelector('main').getBoundingClientRect();
+          const footer = document
+            .querySelector('.shell-footer')
+            .getBoundingClientRect();
+          return {
+            focused: document.activeElement === input,
+            visible:
+              bounds.top >= main.top &&
+              bounds.bottom <= Math.min(main.bottom, footer.top),
+            text: group.textContent.trim(),
+          };
+        });
+        assert.equal(visible.focused, true);
+        assert.equal(
+          visible.visible,
+          true,
+          'First invalid timezone field and error are revealed above the fixed footer',
+        );
+        report.invalidTimeZoneVisibility = visible;
+      }
       await tools.evidence(`invalid-${name}`, 390, 'dark');
       await tools.fill({ [name]: previous[name] });
     }
@@ -233,6 +268,10 @@ export async function verifySiteGeneralAddress(page, config, tools, report) {
       );
     await tools.evidence('origin-changed', 1440, 'light');
     await tools.evidence('origin-changed', 390, 'dark');
+    await tools.reveal(
+      'main [data-slot="card"] > div.border-t',
+      'origin-region',
+    );
     const oldWrite = await page.fetch('/api/settings/site', {
       method: 'PATCH',
       headers: { 'content-type': 'application/json' },

@@ -107,6 +107,46 @@ export async function siteGeneralTools(page, config, report) {
       ...geometry,
     });
   }
+  async function reveal(selector, name, width = 390, theme = 'light', height) {
+    await resizeViewport(page, width, height);
+    await setTheme(page, theme);
+    function area(selector) {
+      const bounds = document.querySelector(selector).getBoundingClientRect();
+      const main = document.querySelector('main').getBoundingClientRect();
+      const footer = document
+        .querySelector('.shell-footer')
+        .getBoundingClientRect();
+      return {
+        visible:
+          bounds.top >= main.top &&
+          bounds.bottom <= Math.min(main.bottom, footer.top),
+        delta: bounds.top - main.top - 12,
+        x: main.left + main.width / 2,
+        y: main.top + Math.min(main.height, footer.top - main.top) / 2,
+      };
+    }
+    const before = await page.evaluate(area, selector);
+    if (!before.visible) {
+      await page.mouse.move(before.x, before.y, {
+        label: 'move into settings content',
+      });
+      await page.mouse.wheel(0, before.delta, {
+        label: 'reveal settings state region',
+      });
+    }
+    await page.waitForFunction((selector) => {
+      const bounds = document.querySelector(selector).getBoundingClientRect();
+      const main = document.querySelector('main').getBoundingClientRect();
+      const footer = document
+        .querySelector('.shell-footer')
+        .getBoundingClientRect();
+      return (
+        bounds.top >= main.top &&
+        bounds.bottom <= Math.min(main.bottom, footer.top)
+      );
+    }, selector);
+    await evidence(name, width, theme, height);
+  }
   async function enabled(enabled) {
     const controls = await page.evaluate(() =>
       [
@@ -133,6 +173,7 @@ export async function siteGeneralTools(page, config, report) {
     fill,
     save,
     evidence,
+    reveal,
     enabled,
   };
 }

@@ -64,7 +64,15 @@ export async function verifyProcessingSettingsEntry(
         const method = args[1]?.method ?? 'GET';
         if (path !== '/api/settings/media' || method !== 'GET')
           return original(...args);
-        const record = { path, method, settled: false };
+        const record = {
+          path,
+          method,
+          route: location.pathname,
+          phase:
+            document.querySelector('[data-testid="site-general"]')?.dataset
+              .state ?? null,
+          settled: false,
+        };
         state.reads.push(record);
         try {
           const response = await original(...args);
@@ -92,6 +100,7 @@ export async function verifyProcessingSettingsEntry(
       const reads = await page.evaluate(
         () => window.__processingGeneralRead.reads,
       );
+      report.settingsEntry.relatedMediaReads = reads;
       assert.equal(reads.length, 1);
       assert.equal(reads[0].status, 200);
       assert.equal(reads[0].quality, quality);

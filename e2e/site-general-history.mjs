@@ -4,23 +4,25 @@ import { resizeViewport } from './browser-geometry.mjs';
 
 const leaveDialog = 'loc=role:dialog[name="放弃未保存的修改?"]';
 
-async function historyPosition(page) {
+async function historyPosition(page, target) {
   const history = await page.cdp('Page.getNavigationHistory');
-  const entry = history.entries[history.currentIndex];
-  const navigation = await page.evaluate(() => {
-    if (!window.navigation?.currentEntry)
-      throw new Error('Navigation API current entry is required');
-    return {
-      key: window.navigation.currentEntry.key,
-      navigationIndex: window.navigation.currentEntry.index,
-    };
-  });
-  assert.ok(entry, 'CDP supplies an actual current history entry');
+  const index = target
+    ? history.entries.findIndex(({ id }) => id === target.id)
+    : history.currentIndex;
+  const entry = history.entries[index];
+  assert.ok(entry, 'CDP retains the actual history entry ID');
+  const navigation = await page.evaluate((key) => {
+    const entry = key
+      ? window.navigation?.entries().find((entry) => entry.key === key)
+      : window.navigation?.currentEntry;
+    if (!entry) throw new Error('Navigation API retains the actual entry key');
+    return { key: entry.key, navigationIndex: entry.index };
+  }, target?.key ?? null);
   assert.ok(navigation.key, 'Navigation API supplies the original entry key');
   return {
     id: entry.id,
     url: entry.url,
-    index: history.currentIndex,
+    index,
     ids: history.entries.map(({ id }) => id),
     ...navigation,
   };
@@ -37,14 +39,20 @@ export async function prepareSiteGeneralHistory(page, config, tools) {
   await page.waitForURL(`${config.origin}/settings/general`);
   await tools.state('ready');
   const current = await historyPosition(page);
+  // Chrome can trim the oldest CDP item at capacity. Sample each history
+  // system again by original ID/key rather than carrying its previous index.
+  const retainedTarget = await historyPosition(page, target);
+  assert.equal(retainedTarget.url, target.url);
   assert.equal(
     current.index,
-    target.index + 1,
+    retainedTarget.index + 1,
     'Actual client navigation adds exactly one settings history item',
   );
+  assert.equal(current.navigationIndex, retainedTarget.navigationIndex + 1);
   assert.notEqual(current.key, target.key);
   assert.notEqual(current.id, target.id);
-  return { target: { ...target, ids: current.ids }, current };
+  assert.deepEqual(retainedTarget.ids, current.ids);
+  return { target: retainedTarget, current };
 }
 
 export async function verifySiteGeneralBack(

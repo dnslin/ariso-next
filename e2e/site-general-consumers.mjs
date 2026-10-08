@@ -146,6 +146,34 @@ export async function verifySiteGeneralConsumers(page, config, tools, report) {
           `${long}/api/auth/callback/github`,
         );
         await tools.evidence('clipboard-denied', width, 'dark');
+        await page.focus(button('选择完整文本'));
+        await page.keyboard.press('Enter');
+        assert.deepEqual(
+          await page.evaluate(() => {
+            const field = document.querySelector(
+              'textarea[aria-label="完整手动复制文本"]',
+            );
+            return {
+              focused: document.activeElement === field,
+              start: field.selectionStart,
+              end: field.selectionEnd,
+              length: field.value.length,
+            };
+          }),
+          {
+            focused: true,
+            start: 0,
+            end: `${long}/api/auth/callback/github`.length,
+            length: `${long}/api/auth/callback/github`.length,
+          },
+          'Keyboard selection exposes the complete manual fallback value',
+        );
+        await tools.reveal(
+          'main [data-slot="textfield"]:has(textarea[aria-label="完整手动复制文本"]) + button',
+          'clipboard-denied-selected',
+          width,
+          'light',
+        );
       } finally {
         await page.evaluate(() => {
           navigator.clipboard.writeText = window.__siteClipboardWrite;

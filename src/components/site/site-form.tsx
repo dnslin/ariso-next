@@ -13,6 +13,7 @@ import { siteFieldLabels } from './model';
 import { SiteFeedback } from './site-feedback';
 import { SavedAddresses } from './saved-addresses';
 import type { useSiteSettings } from './use-site-settings';
+import type { SiteSettingsResponse } from './api';
 import { StorageTip } from '../storage/storage-tip';
 
 export const siteCardClass =
@@ -21,7 +22,9 @@ export const siteCardClass =
 export function SiteForm({
   settings,
 }: {
-  settings: ReturnType<typeof useSiteSettings>;
+  settings: ReturnType<typeof useSiteSettings> & {
+    saved: SiteSettingsResponse;
+  };
 }) {
   const [expanded, setExpanded] = useState(false);
   return (

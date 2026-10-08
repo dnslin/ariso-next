@@ -10,6 +10,16 @@ export async function verifySiteGeneralLayouts(page, tools, report) {
   }
   for (const width of [390, 1440])
     await tools.evidence('short', width, 'dark', 400);
+  for (const width of [390, 1440]) {
+    await tools.reveal('#site-timeZone', 'short-timezone', width, 'dark', 400);
+    await tools.reveal(
+      'main .divide-y > div:last-child',
+      'short-last-related',
+      width,
+      'dark',
+      400,
+    );
+  }
   await resizeViewport(page, 1440);
   const structure = await page.evaluate(() => {
     const main = document.querySelector('main');

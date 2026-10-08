@@ -10,6 +10,7 @@ const runtime = vi.hoisted(() => ({
   cells: [] as unknown[],
   success: false,
   enabled: true,
+  expired: false,
   editor: vi.fn(),
 }));
 vi.mock('react', async (original) => {
@@ -45,19 +46,21 @@ vi.mock('@tanstack/react-query', () => ({
   },
 }));
 vi.mock('../../../src/components/site/use-site-settings', () => ({
-  useSiteSettings: () => {
-    runtime.editor();
+  useSiteSettings: (initial: SiteSettingsResponse | null) => {
+    if (initial) runtime.editor();
     return {
-      saved,
+      saved: initial,
       input: saved,
       phase: 'ready',
-      expired: false,
+      expired: runtime.expired,
       locked: false,
       errors: {},
       message: '',
       originNotice: false,
       timeZoneNotice: false,
-      expire: vi.fn(),
+      expire: () => {
+        runtime.expired = true;
+      },
       change: vi.fn(),
       save: vi.fn(),
     };
@@ -113,6 +116,7 @@ function InitialLoadHarness() {
 beforeEach(() => {
   runtime.cells = [];
   runtime.success = false;
+  runtime.expired = false;
   runtime.editor.mockReset();
 });
 afterEach(() => {

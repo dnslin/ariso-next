@@ -34,8 +34,8 @@ vi.mock('@tanstack/react-query', () => ({
     invalidateQueries: actions.invalidate,
   }),
 }));
-function SiteSettingsHarness() {
-  return useSiteSettings(initial);
+function SiteSettingsHarness(value: SiteSettingsResponse | null) {
+  return useSiteSettings(value);
 }
 class Harness {
   private cells: unknown[] = [];
@@ -75,10 +75,10 @@ class Harness {
       });
     }
   }
-  render() {
+  render(initialValue: SiteSettingsResponse | null = initial) {
     this.cursor = 0;
     runtime.current = this;
-    const value = SiteSettingsHarness();
+    const value = SiteSettingsHarness(initialValue);
     for (const effect of this.pending.splice(0)) effect();
     return value;
   }
@@ -107,7 +107,13 @@ beforeEach(() => {
   for (const action of Object.values(actions)) action.mockReset();
   focus.mockReset();
   vi.stubGlobal('fetch', actions.fetch);
-  vi.stubGlobal('document', { getElementById: () => ({ focus }) });
+  vi.stubGlobal('document', {
+    getElementById: () => ({
+      focus,
+      matches: () => true,
+      closest: () => ({ scrollIntoView: vi.fn() }),
+    }),
+  });
 });
 afterEach(() => {
   harness.unmount();
@@ -315,5 +321,29 @@ it('HTTP 请求错误保留稳定状态、代码与字段信息', () => {
     code: 'SITE_INVALID_INPUT',
     message: '地址错误',
     fields: [{ field: 'publicUrl', message: '仅支持根地址' }],
+  });
+});
+
+it('初次读取前不允许保存，成功读取只初始化一次且后续快照不覆盖草稿', async () => {
+  expect(harness.render(null).saved).toBeNull();
+  expect(harness.render(null).locked).toBe(true);
+  await harness.render(null).save();
+  expect(actions.fetch).not.toHaveBeenCalled();
+  harness.render(initial);
+  expect(harness.render(initial).input).toMatchObject({
+    name: initial.name,
+    publicUrl: initial.publicUrl,
+  });
+  harness.render(initial).change('name', '保留编辑');
+  const later = { ...initial, name: '迟到快照' };
+  expect(harness.render(later).input.name).toBe('保留编辑');
+  expect(harness.render(later).saved).toEqual(initial);
+});
+it('初次读取前失效时，迟到快照不能解除锁定或初始化编辑值', () => {
+  harness.render(null).expire();
+  expect(harness.render(initial)).toMatchObject({
+    saved: null,
+    expired: true,
+    locked: true,
   });
 });

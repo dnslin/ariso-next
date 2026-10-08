@@ -19,8 +19,12 @@ import {
   type SitePhase,
 } from './model';
 
-export function useSiteSettings(initial: SiteSettingsResponse) {
-  const [input, setInput] = useState(() => siteDraft(initial));
+export function useSiteSettings(initial: SiteSettingsResponse | null) {
+  const [input, setInput] = useState<SiteDraft>(() =>
+    initial
+      ? siteDraft(initial)
+      : { name: '', description: '', publicUrl: '', timeZone: '' },
+  );
   const [saved, setSaved] = useState(initial);
   const [phase, setPhase] = useState<SitePhase>('ready');
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -36,7 +40,11 @@ export function useSiteSettings(initial: SiteSettingsResponse) {
   const controller = useRef<AbortController | null>(null);
   const client = useQueryClient();
   const router = useRouter();
-  const locked = expired || sitePhaseLocked(phase);
+  if (!saved && initial && !expired) {
+    setSaved(initial);
+    setInput(siteDraft(initial));
+  }
+  const locked = !saved || expired || sitePhaseLocked(phase);
   const expire = useCallback(() => {
     expiredRef.current = true;
     controller.current?.abort();
@@ -51,7 +59,12 @@ export function useSiteSettings(initial: SiteSettingsResponse) {
   }, []);
   useEffect(() => {
     if (!focusTarget || phase === 'saving' || phase === 'checking') return;
-    document.getElementById(focusTarget.id)?.focus({ preventScroll: true });
+    const target = document.getElementById(focusTarget.id);
+    if (target?.matches('input'))
+      target
+        .closest('[data-slot="textfield"]')
+        ?.scrollIntoView({ block: 'nearest' });
+    target?.focus({ preventScroll: true });
   }, [focusTarget, phase]);
   function change(field: keyof SiteDraft, value: string) {
     if (locked) return;
@@ -61,11 +74,11 @@ export function useSiteSettings(initial: SiteSettingsResponse) {
     setPhase('ready');
   }
   function accept(value: SiteSettingsResponse) {
-    if (saved.publicUrl !== value.publicUrl) setOriginNotice(true);
-    if (saved.timeZone !== value.timeZone) setTimeZoneNotice(true);
+    if (saved?.publicUrl !== value.publicUrl) setOriginNotice(true);
+    if (saved?.timeZone !== value.timeZone) setTimeZoneNotice(true);
     setSaved(value);
     client.setQueryData(['site-settings'], value);
-    if (saved.publicUrl !== value.publicUrl) {
+    if (saved?.publicUrl !== value.publicUrl) {
       void client.invalidateQueries({ queryKey: ['storage-overview'] });
       void client.invalidateQueries({ queryKey: ['github-settings'] });
     }
@@ -166,7 +179,13 @@ export function useSiteSettings(initial: SiteSettingsResponse) {
     }
   }
   function chooseSaved(useSaved: boolean) {
-    if (inFlight.current || phase !== 'different' || expiredRef.current) return;
+    if (
+      inFlight.current ||
+      phase !== 'different' ||
+      expiredRef.current ||
+      !saved
+    )
+      return;
     if (useSaved) setInput(siteDraft(saved));
     pending.current = null;
     setErrors({});

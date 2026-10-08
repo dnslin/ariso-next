@@ -14,6 +14,7 @@ import { signInToLibrary } from './library-login.mjs';
 async function pair(tools, name) {
   await tools.evidence(name, 1440, 'light');
   await tools.evidence(name, 390, 'dark');
+  await tools.evidence(name, 390, 'light');
 }
 
 export async function verifySiteGeneralRecovery(page, config, tools, report) {
@@ -40,8 +41,21 @@ export async function verifySiteGeneralRecovery(page, config, tools, report) {
       'Unread values are not editable placeholders',
     );
     await pair(tools, 'loading');
+    await page.focus('.skip-link');
+    await page.keyboard.press('Enter');
+    await page.waitForFunction(
+      () => document.activeElement === document.querySelector('#main-content'),
+    );
     await fault.release('releaseRead');
     await tools.state('ready');
+    assert.equal(
+      await page.evaluate(
+        () =>
+          document.activeElement === document.querySelector('#main-content'),
+      ),
+      true,
+      'Initial read completion preserves the shared skip-link focus',
+    );
   } finally {
     await fault.dispose();
   }
@@ -86,6 +100,12 @@ export async function verifySiteGeneralRecovery(page, config, tools, report) {
           : 'partial-media-error',
         390,
         'dark',
+      );
+      await tools.reveal(
+        `main .divide-y > div:nth-child(${path.includes('storage') ? 2 : 3})`,
+        path.includes('storage')
+          ? 'partial-storage-region'
+          : 'partial-media-region',
       );
     } finally {
       await fault.dispose();

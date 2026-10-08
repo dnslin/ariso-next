@@ -115,7 +115,7 @@ it('四字段标签关联真实输入ID，保留既有selector供错误聚焦与
   state.settings.expired = false;
   state.settings.locked = false;
   const html = renderToStaticMarkup(
-    createElement(SiteForm, { settings: state.settings }),
+    createElement(SiteForm, { settings: { ...state.settings, saved } }),
   );
   for (const name of Object.keys(state.settings.input)) {
     expect(html).toMatch(

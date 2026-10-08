@@ -1,11 +1,6 @@
 'use client';
 
-import {
-  useCallback,
-  useState,
-  type ComponentProps,
-  type ReactNode,
-} from 'react';
+import { useState, type ComponentProps, type ReactNode } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Button } from '@heroui/react/button';
 import { Card } from '@heroui/react/card';
@@ -35,23 +30,68 @@ const saveClass = 'h-12 w-full rounded-lg min-[1200px]:w-50';
 
 export function GeneralPage(shell: ShellProps) {
   const [initial, setInitial] = useState<SiteSettingsResponse | null>(null);
-  const [expired, setExpired] = useState(false);
-  const expire = useCallback(() => setExpired(true), []);
+  const settings = useSiteSettings(initial);
+  const expire = settings.expire;
   const query = useQuery({
     queryKey: ['site-settings'],
     queryFn: ({ signal }) => siteRequest<SiteSettingsResponse>({ signal }),
     retry: false,
-    enabled: initial === null && !expired,
+    enabled: initial === null && !settings.expired,
     networkMode: 'always',
     refetchOnWindowFocus: false,
   });
   const sessionLost =
-    expired ||
+    settings.expired ||
     (query.error instanceof SiteRequestError && query.error.status === 401);
   if (!sessionLost && !initial && query.isFetchedAfterMount && query.isSuccess)
     setInitial(query.data);
-  if (!sessionLost && initial)
-    return <SiteEditor {...shell} initial={initial} />;
+  const navigation = useSiteNavigation(
+    settings.saved !== null &&
+      !settings.expired &&
+      hasUnsavedSiteChanges(settings.input, settings.saved, settings.phase),
+  );
+  if (settings.saved)
+    return (
+      <GeneralFrame
+        shell={{
+          ...shell,
+          name: settings.saved.name,
+          description: settings.saved.description,
+          onSessionExpire: settings.expire,
+        }}
+        phase={settings.expired ? 'session' : settings.phase}
+        onExpire={settings.expire}
+        onNavigate={navigation.navigate}
+        footer={
+          <Button
+            id="site-save"
+            type="submit"
+            form="site-settings-form"
+            className={saveClass}
+            isDisabled={settings.locked}
+          >
+            {settings.phase === 'saving' && !settings.expired
+              ? '正在保存…'
+              : '保存站点信息'}
+          </Button>
+        }
+      >
+        {settings.expired ? (
+          <Card className={siteCardClass} role="alert">
+            <h2 className="text-lg font-medium">会话已失效</h2>
+            <p className="text-sm leading-6">
+              当前输入已保留，请重新登录后核对服务器设置。
+            </p>
+            <SessionLink />
+          </Card>
+        ) : null}
+        <SiteForm settings={{ ...settings, saved: settings.saved }} />
+        <SiteLeaveDialog
+          navigation={navigation}
+          pending={settings.locked && !settings.expired}
+        />
+      </GeneralFrame>
+    );
   const loading =
     !sessionLost && (!query.isFetchedAfterMount || query.isFetching);
   const uninitialized =
@@ -149,57 +189,6 @@ function GeneralFrame({
   );
 }
 
-function SiteEditor({
-  initial,
-  ...shell
-}: ShellProps & { initial: SiteSettingsResponse }) {
-  const settings = useSiteSettings(initial);
-  const navigation = useSiteNavigation(
-    !settings.expired &&
-      hasUnsavedSiteChanges(settings.input, settings.saved, settings.phase),
-  );
-  return (
-    <GeneralFrame
-      shell={{
-        ...shell,
-        name: settings.saved.name,
-        description: settings.saved.description,
-        onSessionExpire: settings.expire,
-      }}
-      phase={settings.expired ? 'session' : settings.phase}
-      onExpire={settings.expire}
-      onNavigate={navigation.navigate}
-      footer={
-        <Button
-          id="site-save"
-          type="submit"
-          form="site-settings-form"
-          className={saveClass}
-          isDisabled={settings.locked}
-        >
-          {settings.phase === 'saving' && !settings.expired
-            ? '正在保存…'
-            : '保存站点信息'}
-        </Button>
-      }
-    >
-      {settings.expired ? (
-        <Card className={siteCardClass} role="alert">
-          <h2 className="text-lg font-medium">会话已失效</h2>
-          <p className="text-sm leading-6">
-            当前输入已保留，请重新登录后核对服务器设置。
-          </p>
-          <SessionLink />
-        </Card>
-      ) : null}
-      <SiteForm settings={settings} />
-      <SiteLeaveDialog
-        navigation={navigation}
-        pending={settings.locked && !settings.expired}
-      />
-    </GeneralFrame>
-  );
-}
 function SessionLink() {
   return (
     <Link
