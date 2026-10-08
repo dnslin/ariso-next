@@ -1,3 +1,4 @@
+import { readSmtpConfig } from '../server/identity/mail.ts';
 import { verifyStorageSecrets } from '../server/storage/settings.ts';
 import { createSecretCrypto } from '../server/runtime/crypto.ts';
 import { join } from 'node:path';
@@ -19,6 +20,7 @@ try {
   runPreflight(process.env, (db, config) => {
     verifyStorageSecrets(db, createSecretCrypto(config.encryptionKey));
     captureGithubSettings(db, createSecretCrypto(config.encryptionKey));
+    readSmtpConfig(db, createSecretCrypto(config.encryptionKey));
     const databasePath = join(config.dataDir, 'ariso.db');
     if (readSetupOwner(db, databasePath))
       requireInitialSettings(db, databasePath);

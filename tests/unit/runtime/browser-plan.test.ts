@@ -11,6 +11,7 @@ describe('focused browser execution plans', () => {
     ['library-feedback', ['library-query']],
     ['account', ['account']],
     ['oauth', []],
+    ['smtp', ['smtp']],
     ['tokens', ['tokens']],
     ['shell-navigation', ['shell-navigation']],
     ['sharing-management', ['sharing-management']],
@@ -52,6 +53,9 @@ describe('focused browser execution plans', () => {
     ['trash', 'approved-results', ['trash-query-batch']],
     ['library', 'recovery', ['library']],
     ['library-batch', 'recovery', ['library-batch']],
+    ['smtp', 'representative', ['smtp']],
+    ['smtp', 'interactions', ['smtp']],
+    ['smtp', 'recovery', ['smtp']],
 
     ['sharing-management', 'representative', ['sharing-management']],
     ['sharing-management', 'behavior', ['sharing-management']],
@@ -74,6 +78,9 @@ describe('focused browser execution plans', () => {
 
   it.each([
     ['library', 'recovery', { libraryPhase: 'recovery' }],
+    ['smtp', 'representative', { smtpPhase: 'representative' }],
+    ['smtp', 'interactions', { smtpPhase: 'interactions' }],
+    ['smtp', 'recovery', { smtpPhase: 'recovery' }],
     ['tokens', 'recovery', { tokensPhase: 'recovery' }],
     ['tokens', 'lifecycle', { tokensPhase: 'lifecycle' }],
     ['tokens', 'create-recovery', { tokensPhase: 'create-recovery' }],
@@ -163,8 +170,24 @@ describe('focused browser execution plans', () => {
         ['upload-submissions', 'upload-submissions'],
         ['upload-relations', 'upload-relations'],
         ['sharing-management', 'sharing-management'],
+        ['smtp', 'smtp'],
       ],
       config: {},
     });
+  });
+
+  it('rejects SMTP phases on other suites and unrelated scene options on SMTP', () => {
+    expect(() => select('smtp', 'behavior')).toThrow('--only');
+    expect(() => select('sharing-management', 'interactions')).toThrow(
+      '--only',
+    );
+    for (const option of ['storageConfig', 'previewConfig'])
+      expect(() =>
+        selectBrowserPlan({
+          suite: 'smtp',
+          pageLabel: 'p1',
+          [option]: '/fixture',
+        }),
+      ).toThrow();
   });
 });

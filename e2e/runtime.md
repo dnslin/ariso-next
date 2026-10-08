@@ -58,3 +58,7 @@ EGO_TASK_SPACE=22 node scripts/verify-browser.mjs --suite sharing-experiment
 `e2e/sharing-viewer.mjs` 验证 T-SHR-04 真实匿名查看器。默认完整入口在 sharing-public 后执行；定向 `--suite sharing-viewer` 的 `--only` 只接受 `representative`、`interactions`、`revocation`、`race`，不复用 sharing-public 的阶段参数。夹具扩展现有独立分享数据库，发布真实 compressed PNG、动画 GIF 和 SVG/ICO/多页预览；不修改人工预览或用户数据。
 
 代表状态检查浅深色 360/390/430/768/1440、名称策略和短视口，真实移除未曾加载的文件触发错误并恢复同版本。交互检查按需公开邻居、40→41跨批次、首尾、缩放/平移、浏览器手势、键盘、全屏、关闭后的滚动和焦点。另一标签通过真实所有者接口撤权；race 延迟实际响应，检查旧邻居/名称不能填回和检查失败重试。两个 Ego 标签仍属同一 profile，独立浏览器上下文保持未验证；独立 Cookie 的真实 HTTP 联验和 R2/SeaweedFS 结果见 [#193 证据](../docs/verification/sharing-193/README.md)。输出 `sharing-viewer.json/.log`、服务端日志和状态截图。
+
+`e2e/smtp.mjs` 是 T-ID-06 的生产 SMTP 页面入口。默认完整流程在手机隔离数据库的业务阶段执行一次，同一脚本覆盖桌面及手机；定向 `--suite smtp` 的 `--only` 仅接受 `representative`、`interactions`、`recovery`，参数由 SMTP 场景独立消费。定向调用要求已有 `EGO_TASK_SPACE`，不创建或关闭空间。共用入口启动临时 SMTP 服务和独立生产数据目录，使用 `NODE_EXTRA_CA_CERTS` 信任该次生成的测试 CA，保留生产证书验证；不修改用户预览数据、不需要外部邮箱凭证。
+
+SMTP 场景覆盖加载/未配置、浅深色 360/390/430/768/1440、短视口、配置凭据后的 Tips 指针/键盘/手机收起与回焦、保存和测试分开、密码省略保留与替换、明确清除凭据、脏表单测试确认，以及真实 TLS/STARTTLS/无认证中继收件。连接拒绝、STARTTLS 未宣告、认证拒绝、DATA 投递拒绝和 DATA 后 socket reset 均来自本地真实 SMTP 服务。HTTP 响应丢失是在实际读写完成后丢弃响应，用于检查保存/清除回读与未知发送不自动重发。`smtp-recovery.mjs` 继续检查回读失败后的显式重读、公开密码存在状态不能证明替换、主动重输密码保存，以及第二次真实保存造成配置不一致时的两种编辑恢复选择；恢复选择本身不自动写入。输出 `smtp.json`、`smtp.log` 和状态截图，运行器结束时关闭监听并清理临时证书。可执行场景清单不等于该次验证通过；实际结果、设计对照、外部邮箱收件及人工验收状态以 [Issue #182 记录](../docs/verification/smtp-182/README.md) 为准。

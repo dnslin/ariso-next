@@ -78,6 +78,11 @@ function writeMigrations(
       when: 12,
       sql: readFileSync(resolve('drizzle/0025_shiny_namora.sql'), 'utf8'),
     },
+    {
+      tag: '0012_smtp',
+      when: 13,
+      sql: readFileSync(resolve('drizzle/0026_sloppy_tarot.sql'), 'utf8'),
+    },
     ...migrations,
   ]);
 }
@@ -180,6 +185,7 @@ it('空生产数据库接受不同合法密钥，生产产物不包含测试表�
       { name: 'analytics_image_daily' },
       { name: 'analytics_image_totals' },
       { name: 'identity_github_settings' },
+      { name: 'identity_smtp_settings' },
       { name: 'media_previews' },
       { name: 'media_settings' },
       { name: 'media_watermark_assets' },
@@ -209,6 +215,7 @@ it('空生产数据库接受不同合法密钥，生产产物不包含测试表�
       { created_at: 10 },
       { created_at: 11 },
       { created_at: 12 },
+      { created_at: 13 },
     ]);
   } finally {
     db.close();
@@ -308,6 +315,7 @@ it.each(['wrong key', 'invalid ciphertext', 'tampered ciphertext'])(
         { name: 'analytics_image_daily' },
         { name: 'analytics_image_totals' },
         { name: 'identity_github_settings' },
+        { name: 'identity_smtp_settings' },
         { name: 'media_previews' },
         { name: 'media_settings' },
         { name: 'media_watermark_assets' },
@@ -336,6 +344,7 @@ it.each(['wrong key', 'invalid ciphertext', 'tampered ciphertext'])(
         { created_at: 10 },
         { created_at: 11 },
         { created_at: 12 },
+        { created_at: 13 },
         { created_at: 1000 },
         { created_at: 2000 },
       ],

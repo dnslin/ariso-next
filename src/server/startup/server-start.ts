@@ -1,3 +1,4 @@
+import { readSmtpConfig } from '../identity/mail.ts';
 import { startStorageProbeRuntime } from '../storage/probe-runtime.ts';
 import { createMediaResources } from '../media/resources.ts';
 import { startWatermarkRuntime } from '../media/watermark-runtime.ts';
@@ -38,6 +39,7 @@ function initializeServerRuntime() {
       connection.db,
       createSecretCrypto(config.encryptionKey),
     );
+    readSmtpConfig(connection.db, createSecretCrypto(config.encryptionKey));
     const setup = createSetupState(connection.db, connection.db.$client.name);
     if (!setup.code) {
       requireInitialSettings(connection.db, connection.db.$client.name);

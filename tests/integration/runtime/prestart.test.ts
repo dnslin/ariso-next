@@ -56,6 +56,11 @@ function writeMigrations(
       when: 6,
       sql: readFileSync(resolve('drizzle/0025_shiny_namora.sql'), 'utf8'),
     },
+    {
+      tag: '0006_smtp',
+      when: 7,
+      sql: readFileSync(resolve('drizzle/0026_sloppy_tarot.sql'), 'utf8'),
+    },
     ...migrations,
   ]);
 }
@@ -130,6 +135,7 @@ describe('compiled prestart CLI', () => {
       { name: '__drizzle_migrations' },
       { name: 'account' },
       { name: 'identity_github_settings' },
+      { name: 'identity_smtp_settings' },
       { name: 'session' },
       { name: 'storage_configs' },
       { name: 'storage_probes' },

@@ -188,6 +188,7 @@ try {
         ['/settings/processing', '/settings/processing', 'processing-settings'],
         ['/settings/account', '/settings/processing', 'account-settings'],
         ['/settings/api', '/settings/processing', 'api-settings'],
+        ['/settings/email', '/settings/processing', 'smtp-settings'],
         [
           `/settings/storage/${storage.id}`,
           '/settings/storage',
@@ -297,7 +298,7 @@ try {
     }
   }
   report.checks.push(
-    'All implemented owner-shell entries, including storage list/new/edit/CORS and processing/account/API settings, retain the same brand/account/navigation order and correct current item on desktop/mobile in both themes.',
+    'All implemented owner-shell entries, including storage list/new/edit/CORS and processing/account/API/SMTP settings, retain the same brand/account/navigation order and correct current item on desktop/mobile in both themes.',
   );
   report.checks.push(
     'Menu and close are accessible icon-only 44px targets; real hover adds no background or transform, keyboard focus remains visible and close/Escape restore trigger focus at 360/430/768/987 and short 390×560.',

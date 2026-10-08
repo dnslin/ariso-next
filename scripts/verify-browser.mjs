@@ -18,6 +18,7 @@ import { runM2Restart } from './browser-m2.mjs';
 import { runIdentityManagement } from './browser-identity-management.mjs';
 import { runOAuthManagement } from './browser-oauth.mjs';
 import { createSharingRunner } from './browser-sharing.mjs';
+import { startSmtpBrowserFixture } from '../e2e/smtp-fixture.mjs';
 
 assert.equal(process.versions.node.split('.')[0], '24', 'Use Node 24');
 const { values } = parseArgs({
@@ -114,6 +115,8 @@ for (const name of [
 
   'sharing-management.json',
   'sharing-management-failure.png',
+  'smtp.json',
+  'smtp-failure.png',
   'm2-1440.json',
   'm2-390.json',
   'interaction-polish-1440.json',
@@ -144,6 +147,7 @@ let browser;
 let shellServer;
 let corsFixture;
 let deliveryFixture;
+let smtpFixture;
 const uploadFixtures = [];
 let shellLogs = '';
 let logs = '';
@@ -385,6 +389,11 @@ try {
     BETTER_AUTH_SECRET: randomBytes(32).toString('hex'),
     ARISO_ENCRYPTION_KEY: randomBytes(32).toString('hex'),
   };
+  if (suite === 'full' || suite === 'smtp') {
+    smtpFixture = await startSmtpBrowserFixture(temporary);
+    productionEnv.NODE_EXTRA_CA_CERTS = smtpFixture.caPath;
+    secrets.push(smtpFixture.browserInput.password);
+  }
   if (suite === 'storage-admin' && only === 'live') {
     for (const name of [
       'HTTP_PROXY',
@@ -541,6 +550,7 @@ try {
       : undefined,
     keepSpace: true,
     pageLabel,
+    ...(smtpFixture ? { smtpFixture: smtpFixture.browserInput } : {}),
   };
   if (config.spaceId !== undefined)
     assert.ok(
@@ -934,6 +944,7 @@ try {
     stop(shellServer),
     corsFixture?.close(),
     deliveryFixture?.close(),
+    smtpFixture?.close(),
     sharing.stop(),
     ...uploadFixtures.map((endpoint) => endpoint.close()),
   ]);

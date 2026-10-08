@@ -8,6 +8,7 @@ import { Label } from '@heroui/react/label';
 import { ListBox } from '@heroui/react/list-box';
 import {
   KeyRound,
+  Mail,
   Settings,
   ShieldCheck,
   SlidersHorizontal,
@@ -28,6 +29,11 @@ export const settingsCategories = [
     href: '/settings/api',
     label: '上传 API',
     icon: <KeyRound className="size-4" aria-hidden />,
+  },
+  {
+    href: '/settings/email',
+    label: '邮件服务',
+    icon: <Mail className="size-4" aria-hidden />,
   },
 ];
 
