@@ -1,0 +1,141 @@
+Already up to date
+Done in 44ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-200-upload-settings/ariso
+
+ ❯ |unit| tests/unit/upload/limits-lifetime.test.ts (7 tests | 7 failed) 4106ms
+   × does not replace newer limits when an unmounted save returns late 1022ms
+   × does not replace newer limits when an unmounted read-back returns late 1057ms
+   × refreshes a committed save after leaving instead of keeping the old provider limit 7ms
+   × ignores detached HTTP 401 without expiring the current queue or retrying PATCH 1006ms
+   × ignores detached HTTP 503 without expiring the current queue or retrying PATCH 1004ms
+   × does not restore focus when a confirmed save frame runs after navigation 4ms
+   × does not restore a cleared session queue after an earlier PATCH succeeds 5ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/upload/limits-lifetime.test.ts > does not replace newer limits when an unmounted save returns late
+AssertionError: expected [] to include '/upload/settings'
+ ❯ tests/unit/upload/limits-lifetime.test.ts:156:42
+    154|     held.resolve(Response.json(limits(50)));
+    155|     await oldRequest;
+    156|     await vi.waitFor(() => expect(reads).toContain('/upload/settings')…
+       |                                          ^
+    157|     expect(runtime.upload!.client.getQueryData<UploadSettings>(['uploa…
+    158|     expect(runtime.client!.getQueryData(['upload-limits'])).toEqual(li…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/7]⎯
+
+ FAIL  |unit| tests/unit/upload/limits-lifetime.test.ts > does not replace newer limits when an unmounted read-back returns late
+AssertionError: expected [ '/api/settings/upload' ] to include '/upload/settings'
+ ❯ tests/unit/upload/limits-lifetime.test.ts:156:42
+    154|     held.resolve(Response.json(limits(50)));
+    155|     await oldRequest;
+    156|     await vi.waitFor(() => expect(reads).toContain('/upload/settings')…
+       |                                          ^
+    157|     expect(runtime.upload!.client.getQueryData<UploadSettings>(['uploa…
+    158|     expect(runtime.client!.getQueryData(['upload-limits'])).toEqual(li…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/7]⎯
+
+ FAIL  |unit| tests/unit/upload/limits-lifetime.test.ts > refreshes a committed save after leaving instead of keeping the old provider limit
+AssertionError: expected [] to deeply equal [ '/upload/settings' ]
+
+- Expected
++ Received
+
+- [
+-   "/upload/settings",
+- ]
++ []
+
+ ❯ tests/unit/upload/limits-lifetime.test.ts:175:17
+    173|   await oldRequest;
+    174|   await vi.waitFor(() => expect(runtime.upload!.client.getQueryData<Up…
+    175|   expect(reads).toEqual(['/upload/settings']);
+       |                 ^
+    176|   expect(runtime.client!.getQueryData(['upload-limits'])).toEqual(limi…
+    177|   expect(runtime.client!.getQueryState(['upload-limits'])?.isInvalidat…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/7]⎯
+
+ FAIL  |unit| tests/unit/upload/limits-lifetime.test.ts > ignores detached HTTP 401 without expiring the current queue or retrying PATCH
+AssertionError: expected [] to include '/upload/settings'
+ ❯ tests/unit/upload/limits-lifetime.test.ts:187:40
+    185|   held.resolve(new Response('old failure', { status }));
+    186|   await oldRequest;
+    187|   await vi.waitFor(() => expect(reads).toContain('/upload/settings'));
+       |                                        ^
+    188|   expect(runtime.reset).not.toHaveBeenCalled();
+    189|   expect(runtime.upload!.client.getQueryData<UploadSettings>(['upload-…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/7]⎯
+
+ FAIL  |unit| tests/unit/upload/limits-lifetime.test.ts > ignores detached HTTP 503 without expiring the current queue or retrying PATCH
+AssertionError: expected [ '/api/settings/upload' ] to include '/upload/settings'
+ ❯ tests/unit/upload/limits-lifetime.test.ts:187:40
+    185|   held.resolve(new Response('old failure', { status }));
+    186|   await oldRequest;
+    187|   await vi.waitFor(() => expect(reads).toContain('/upload/settings'));
+       |                                        ^
+    188|   expect(runtime.reset).not.toHaveBeenCalled();
+    189|   expect(runtime.upload!.client.getQueryData<UploadSettings>(['upload-…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/7]⎯
+
+ FAIL  |unit| tests/unit/upload/limits-lifetime.test.ts > does not restore focus when a confirmed save frame runs after navigation
+AssertionError: expected "vi.fn()" to not be called at all, but actually been called 1 times
+
+Received:
+
+  1st vi.fn() call:
+
+    Array [
+      Object {
+        "preventScroll": true,
+      },
+    ]
+
+
+Number of calls: 1
+
+ ❯ tests/unit/upload/limits-lifetime.test.ts:199:21
+    197|   unmount();
+    198|   frames.splice(0).forEach((callback) => callback(0));
+    199|   expect(focus).not.toHaveBeenCalled();
+       |                     ^
+    200| });
+    201|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/7]⎯
+
+ FAIL  |unit| tests/unit/upload/limits-lifetime.test.ts > does not restore a cleared session queue after an earlier PATCH succeeds
+AssertionError: expected { maxFileMiB: 50, …(3) } to deeply equal { maxFileMiB: 10, …(3) }
+
+- Expected
++ Received
+
+  {
+    "batchSize": 20,
+-   "maxFileBytes": 10485760,
+-   "maxFileMiB": 10,
++   "maxFileBytes": 52428800,
++   "maxFileMiB": 50,
+    "queueLimit": 500,
+  }
+
+ ❯ tests/unit/upload/limits-lifetime.test.ts:209:59
+    207|   await saving;
+    208|   expect(runtime.upload!.client.getQueryData(['upload-settings'])).toB…
+    209|   expect(runtime.client!.getQueryData(['upload-limits'])).toEqual(limi…
+       |                                                           ^
+    210|   expect(runtime.notice).not.toHaveBeenCalled();
+    211|   frames.splice(0).forEach((callback) => callback(0));
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/7]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  7 failed (7)
+   Start at  15:50:30
+   Duration  4.35s (tests 96%, import 2%, transform 1%)

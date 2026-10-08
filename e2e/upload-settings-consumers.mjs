@@ -2,8 +2,10 @@ import assert from 'node:assert/strict';
 import { join } from 'node:path';
 import { limitsId } from './upload-settings-helpers.mjs';
 import { resizeViewport, setTheme } from './browser-geometry.mjs';
+import { uploadSettingsLifecycle } from './upload-settings-lifecycle.mjs';
 
 export async function uploadSettingsConsumers(page, config, tools, report) {
+  await uploadSettingsLifecycle(page, config, tools, report);
   for (const width of [1440, 390]) {
     await resizeViewport(page, width);
     for (const theme of ['light', 'dark']) {

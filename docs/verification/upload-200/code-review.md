@@ -122,3 +122,15 @@ processing 与 Token 补跑未改变产品、原点击方法、超时或断言�
 本次 diff 未修改 CorsScreen、useCorsTest、storage-cors-ui、CORS 服务或 HeroUI 依赖。共同 shell 改动为站点侧栏入口、新增 general 分类及 general 通知位置，未找到影响上述错误等待的具体调用链。现有 browser-plan 没有 storage-cors 独立 suite；storage-admin only 仅 live/dialogs/feedback/regressions，普通定向只有 admin 与 shell-navigation，即使启动 CORS fixture 也不执行 storage-cors 组。该组原入口仅为默认 full 的专门 stage → storage-cors.mjs → verifyCorsUiFailures，不能将 storage-admin 的通过称为 CORS 重验。本次不改范围外产品/测试、不延长超时，也不为消除记录而添加新入口；该组保持未重验、首轮未通过。
 
 评审者实际执行过 `git diff --check` 并通过；其余为只读源码、类型、库调用链、测试和已生成日志审计。遵守“不机械重复已通过检查”的边界，没有重新执行实现者的测试、构建或 lint，也没有做 mutation 实验。受控浏览器故障不能证明实际代理断网，静态审计不能证明物理触屏、软键盘或设备安全区。本次不审计发布镜像、容器或部署。
+
+## P2 生命周期增量复审
+
+再次独立评审基于 `5e3df101` 的真实 PR diff。正确性角度发现一项 P2：旧 editor 的迟到响应覆写新限制；维护性角度未发现额外 P1/P2。隔离原代码复现得到 provider/page 60→50、真实 55 MiB File 的 size 拒绝。原复现失败保留，不以之前无发现的结论覆盖新证据。
+
+用户授权修复后，正确性评审者重新读取完整 hook、query/provider/controller 消费链、安装版 TanStack Query 的 invalidate/disabled/error 路径及新测试，确认卸载/失效后的 PATCH 和核对 GET、401/503、两个 RAF 与新事件入口均受 active 约束。finishRequest 只使既有查询失效，活跃 provider 重新读取真实最新值，空缓存和 disabled observer 不会因旧请求重建队列。补读失败仍进入 query.error 和既有错误/刷新入口，不生成旧保存成功通知。
+
+维护性复审确认：复用局部生命周期标记，save/reconcile 的 finally 合并为 finishRequest；没有新全局状态、锁、兼容层或无关抽象。原草稿/已保存值/待核对值各有实际职责，不以风格理由重构。
+
+两个评审者均未发现剩余 Required/P1/P2，批准当前代码增量。评审者实际读取原实现 7 项全红、修复后 7/7 日志，未重复执行测试或浏览器。新增测试使用真实请求函数、QueryClient/Observer、UploadController，模拟 React 生命周期和 DOM；不称完整 React 或 HTTP。补读失败的库和界面消费语义由源码审计确认，本轮未单独运行该失败场景。真实新 e2e 仍待用户允许新建 Ego 空间后执行；代码批准不代替这一项交付门槛。
+
+原复现代码副本已原样移至 `/tmp/ariso-pr264-correctness-snapshot-5e3df101`，避免现有 TypeScript 全局 include 扫描忽略目录下的副本。不添加生产配置排除规则。初次构建失败和修正环境后的成功均记录在实施证据中。原始独立报告保存在本机忽略目录 `test-results/pr264-correctness-review/` 与 `test-results/pr264-structure-review/`。

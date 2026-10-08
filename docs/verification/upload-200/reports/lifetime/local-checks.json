@@ -1,0 +1,99 @@
+{
+  "environment": {
+    "node": "24.18.1",
+    "pnpm": "11.19.0",
+    "platform": "macOS arm64"
+  },
+  "baseHead": "5e3df101786634fef4642a242a998588cfc7cd79",
+  "commands": [
+    {
+      "command": "pnpm install --frozen-lockfile",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm exec vitest run --project unit tests/unit/upload/limits-lifetime.test.ts",
+      "stage": "original implementation",
+      "exitCode": 1,
+      "failed": 7,
+      "passed": 0
+    },
+    {
+      "command": "pnpm exec vitest run --project unit tests/unit/upload/limits-lifetime.test.ts",
+      "stage": "fixed implementation",
+      "exitCode": 0,
+      "passed": 7
+    },
+    {
+      "command": "pnpm run test:unit --maxWorkers=4",
+      "exitCode": 0,
+      "filesPassed": 127,
+      "testsPassed": 1714
+    },
+    {
+      "command": "pnpm run build",
+      "stage": "first",
+      "exitCode": 1,
+      "cause": "Reviewer isolated source snapshot under test-results matched existing TypeScript global includes"
+    },
+    {
+      "command": "pnpm run build",
+      "stage": "retry after environment correction",
+      "exitCode": 0,
+      "environmentCorrection": "Moved only task-owned isolated snapshot outside worktree; source and tsconfig unchanged",
+      "limitations": [
+        "Existing native optional-platform dependency tracing messages remain; standalone packaging completed"
+      ]
+    },
+    {
+      "command": "pnpm run typecheck",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm run lint",
+      "exitCode": 0
+    },
+    {
+      "command": "node docs/tasks/check.mjs",
+      "exitCode": 0,
+      "tasks": 120,
+      "requirements": 298
+    },
+    {
+      "command": "pnpm run format:check",
+      "exitCode": 0
+    },
+    {
+      "command": "node --check e2e/upload-settings-lifecycle.mjs; node --check e2e/upload-settings-consumers.mjs",
+      "executor": "e2e agent",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm exec eslint e2e/upload-settings-lifecycle.mjs e2e/upload-settings-consumers.mjs --max-warnings=0",
+      "executor": "e2e agent after final scenario correction",
+      "exitCode": 0
+    },
+    {
+      "command": "git diff --check",
+      "exitCode": 0
+    }
+  ],
+  "browser": {
+    "status": "not-run",
+    "reason": "TaskSpace 1 has finished and is absent; user decision on a new task space is pending"
+  },
+  "manualPreview": {
+    "origin": "http://ariso-upload-200-50879.localhost:50879",
+    "healthHttpStatus": 200,
+    "revision": "original accepted UI build, not the new lifecycle fix"
+  },
+  "reviews": {
+    "correctness": "original P2 fixed; no remaining P1/P2 in source",
+    "maintainability": "no required P1/P2"
+  },
+  "limitations": [
+    "New real browser regression not run",
+    "Original default full browser storage CORS failure unresolved",
+    "No remote CI reports",
+    "No release/container/deployment checks run"
+  ]
+}

@@ -30,20 +30,22 @@ export function useUploadLimits(initial: SavedUploadLimits) {
   const pending = useRef<UploadSettingsInput | null>(null);
   const inFlight = useRef(false);
   const noticeId = useRef<string | null>(null);
-  const mounted = useRef(true);
+  const active = useRef(true);
   const client = useQueryClient();
   const upload = useUploadQueue();
   const resetUpload = useResetUpload();
   useEffect(() => {
-    mounted.current = true;
+    active.current = true;
     return () => {
-      mounted.current = false;
+      active.current = false;
       if (noticeId.current) toast.close(noticeId.current);
     };
   }, []);
   const expire = useCallback(() => {
+    active.current = false;
     resetUpload();
     setExpired(true);
+    setBusy(false);
     setMessage('会话已失效，当前输入仍保留。请重新登录后继续操作。');
   }, [resetUpload]);
 
@@ -53,8 +55,7 @@ export function useUploadLimits(initial: SavedUploadLimits) {
   }
   function notice(title: string) {
     clearNotice();
-    if (mounted.current)
-      noticeId.current = toast(title, { variant: 'default' });
+    if (active.current) noticeId.current = toast(title, { variant: 'default' });
   }
 
   function change(field: keyof UploadSettingsInput, value: number) {
@@ -72,6 +73,7 @@ export function useUploadLimits(initial: SavedUploadLimits) {
     setErrors(next);
     if (!fields.length) return;
     requestAnimationFrame(() => {
+      if (!active.current) return;
       const control = document.querySelector<HTMLElement>(
         `[data-field="${CSS.escape(fields[0].field)}"] input:not([type="hidden"])`,
       );
@@ -105,6 +107,7 @@ export function useUploadLimits(initial: SavedUploadLimits) {
   async function readBack() {
     try {
       const value = await uploadLimitsRequest();
+      if (!active.current) return false;
       acceptSaved(value);
       if (pending.current && uploadLimitsMatch(pending.current, value)) {
         pending.current = null;
@@ -120,6 +123,7 @@ export function useUploadLimits(initial: SavedUploadLimits) {
         );
       }
     } catch (error) {
+      if (!active.current) return false;
       setMessage(
         `核对失败，输入已保留。请重新核对当前设置。${error instanceof Error ? error.message : String(error)}`,
       );
@@ -129,7 +133,7 @@ export function useUploadLimits(initial: SavedUploadLimits) {
     return false;
   }
   async function save() {
-    if (inFlight.current || unknown || expired) return;
+    if (!active.current || inFlight.current || unknown || expired) return;
     clearNotice();
     const parsed = uploadSettingsInputSchema.safeParse(input);
     if (!parsed.success) {
@@ -151,11 +155,13 @@ export function useUploadLimits(initial: SavedUploadLimits) {
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify(pending.current),
       });
+      if (!active.current) return;
       acceptSaved(value);
       pending.current = null;
       notice('上传限制已保存');
       confirmed = true;
     } catch (error) {
+      if (!active.current) return;
       if (error instanceof UploadLimitsRequestError && error.status < 500) {
         pending.current = null;
         applyErrors(error.fields);
@@ -168,13 +174,11 @@ export function useUploadLimits(initial: SavedUploadLimits) {
         confirmed = await readBack();
       }
     } finally {
-      inFlight.current = false;
-      setBusy(false);
-      if (confirmed) restoreControlFocus(opener);
+      finishRequest(opener, confirmed);
     }
   }
   async function reconcile() {
-    if (inFlight.current || expired) return;
+    if (!active.current || inFlight.current || expired) return;
     clearNotice();
     const opener = document.activeElement as HTMLElement | null;
     let confirmed = false;
@@ -183,12 +187,36 @@ export function useUploadLimits(initial: SavedUploadLimits) {
     try {
       confirmed = await readBack();
     } finally {
-      inFlight.current = false;
-      setBusy(false);
-      if (confirmed) restoreControlFocus(opener);
+      finishRequest(opener, confirmed);
     }
   }
+  function finishRequest(opener: HTMLElement | null, confirmed: boolean) {
+    inFlight.current = false;
+    if (!active.current) {
+      // A detached write may have committed. Read current limits instead of
+      // publishing its obsolete response into a newer editor or live queue.
+      void client.invalidateQueries({ queryKey: ['upload-limits'] });
+      void upload.client.invalidateQueries({ queryKey: ['upload-settings'] });
+      return;
+    }
+    setBusy(false);
+    if (confirmed) restoreControlFocus(opener);
+  }
+  function restoreControlFocus(opener: HTMLElement | null) {
+    requestAnimationFrame(() => {
+      if (!active.current) return;
+      const control =
+        opener?.isConnected &&
+        !opener.matches(':disabled, [aria-disabled="true"], body')
+          ? opener
+          : document.querySelector<HTMLElement>(
+              '#upload-limits-form input:not([type="hidden"]):not(:disabled)',
+            );
+      control?.focus({ preventScroll: true });
+    });
+  }
   function chooseSaved(useSaved: boolean) {
+    if (!active.current) return;
     clearNotice();
     const opener = document.activeElement as HTMLElement | null;
     if (useSaved) {
@@ -217,17 +245,4 @@ export function useUploadLimits(initial: SavedUploadLimits) {
     reconcile,
     chooseSaved,
   };
-}
-
-function restoreControlFocus(opener: HTMLElement | null) {
-  requestAnimationFrame(() => {
-    const control =
-      opener?.isConnected &&
-      !opener.matches(':disabled, [aria-disabled="true"], body')
-        ? opener
-        : document.querySelector<HTMLElement>(
-            '#upload-limits-form input:not([type="hidden"]):not(:disabled)',
-          );
-    control?.focus({ preventScroll: true });
-  });
 }
