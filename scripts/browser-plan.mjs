@@ -22,6 +22,7 @@ const suites = {
       ['upload-relations', 'upload-relations'],
       ['sharing-management', 'sharing-management'],
       ['site-general', 'site-general'],
+      ['smtp', 'smtp'],
     ],
   },
   'sharing-experiment': {},
@@ -46,6 +47,11 @@ const suites = {
   },
   account: { stages: [['account', 'account']] },
   oauth: {},
+  smtp: {
+    only: ['representative', 'interactions', 'recovery'],
+    stages: [['smtp', 'smtp']],
+    config: (only) => ({ smtpPhase: only }),
+  },
   tokens: {
     only: [
       'representative',

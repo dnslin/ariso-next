@@ -1,0 +1,46 @@
+v24.18.1
+11.19.0
+Already up to date
+Done in 191ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-182-smtp/ariso
+
+ ❯ |integration| tests/integration/identity/smtp-production.test.ts (15 tests | 1 failed | 14 skipped) 1763ms
+   × STARTTLS refuses a server without an upgrade 1290ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/identity/smtp-production.test.ts > STARTTLS refuses a server without an upgrade
+AssertionError: expected { code: 'SMTP_SEND_FAILED', …(2) } to match object { diagnostic: { stage: 'tls', …(3) } }
+(3 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+    "diagnostic": {
+-     "code": "ETLS",
+-     "command": "STARTTLS",
++     "code": "EAUTH",
++     "command": "AUTH",
+      "delivery": "not-accepted",
+-     "stage": "tls",
++     "stage": "authentication",
+    },
+  }
+
+ ❯ tests/integration/identity/smtp-production.test.ts:278:33
+    276|   const response = await POST(request('POST'));
+    277|   expect(response.status).toBe(502);
+    278|   expect(await response.json()).toMatchObject({
+       |                                 ^
+    279|     diagnostic: {
+    280|       stage: 'tls',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 14 skipped (15)
+   Start at  11:31:06
+   Duration  8.78s (import 45%, transform 33%, tests 21%)

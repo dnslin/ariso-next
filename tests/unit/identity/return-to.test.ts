@@ -91,3 +91,12 @@ it('returns to upload Token management after session expiry', () => {
   expect(loginDestination('/settings/api/unimplemented')).toBe('/admin');
   expect(loginDestination('https://evil.test/settings/api')).toBe('/admin');
 });
+
+it('returns to SMTP settings after session expiry without opening unimplemented destinations', () => {
+  expect(loginDestination('/settings/email')).toBe('/settings/email');
+  expect(loginDestination('/settings/email#smtp-heading')).toBe(
+    '/settings/email#smtp-heading',
+  );
+  expect(loginDestination('/settings/email/unimplemented')).toBe('/admin');
+  expect(loginDestination('https://evil.test/settings/email')).toBe('/admin');
+});

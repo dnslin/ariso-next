@@ -174,3 +174,33 @@ export const githubSettings = sqliteTable(
     check('identity_github_settings_singleton', sql`${table.id} = 1`),
   ],
 );
+
+export const smtpSettings = sqliteTable(
+  'identity_smtp_settings',
+  {
+    id: integer('id').primaryKey().default(1),
+    host: text('host').notNull(),
+    port: integer('port').notNull(),
+    mode: text('mode', { enum: ['tls', 'starttls'] }).notNull(),
+    username: text('username').notNull().default(''),
+    passwordEncrypted: text('password_encrypted'),
+    fromName: text('from_name').notNull(),
+    fromEmail: text('from_email').notNull(),
+    updatedAt: integer('updated_at', { mode: 'timestamp_ms' }).notNull(),
+  },
+  (table) => [
+    check('identity_smtp_settings_singleton', sql`${table.id} = 1`),
+    check(
+      'identity_smtp_settings_port',
+      sql`${table.port} BETWEEN 1 AND 65535`,
+    ),
+    check(
+      'identity_smtp_settings_mode',
+      sql`${table.mode} IN ('tls', 'starttls')`,
+    ),
+    check(
+      'identity_smtp_settings_credentials',
+      sql`${table.username} != '' OR ${table.passwordEncrypted} IS NULL`,
+    ),
+  ],
+);

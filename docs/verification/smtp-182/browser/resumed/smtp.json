@@ -1,0 +1,119 @@
+{
+  "status": "failed",
+  "taskSpaceId": 3,
+  "phase": "all",
+  "checks": [],
+  "layouts": [
+    {
+      "name": "loading-1440",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "分享管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "发送测试邮件",
+          "width": 192,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "保存邮件设置",
+          "width": 192,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    }
+  ],
+  "screenshots": [],
+  "requests": [
+    {
+      "path": "/api/settings/smtp",
+      "method": "GET",
+      "width": 390,
+      "attempt": 1,
+      "status": 200
+    }
+  ],
+  "diagnostics": [],
+  "limitations": [
+    "Local TLS/STARTTLS fixture receives real mail; an external provider and final delivery to a real mailbox remain separate acceptance.",
+    "Lost HTTP responses are deliberate transport faults after real requests, not fabricated server results.",
+    "Chromium viewport emulation does not verify physical touch, keyboard or safe areas."
+  ],
+  "stage": "representative-unconfigured",
+  "error": "Error: page.waitForFunction timed out after 5000ms on page p1; last URL was \"http://ariso-50453.localhost:50453/settings/email\"; last title was \"Ariso\".\n    at waitForFunctionTimeoutError (file:////[eval1]:19235:12)\n    at file:////[eval1]:18564:19\n    at async file:////[eval1]:16691:28",
+  "finishedAt": "2026-10-08T09:24:32.317Z"
+}

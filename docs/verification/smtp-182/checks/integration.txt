@@ -1,0 +1,664 @@
+Already up to date
+Done in 39ms using pnpm v11.19.0
+$ vitest run --project integration --project media-tools --maxWorkers=4
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-182-smtp/ariso
+
+{"level":"error","time":"2026-10-08T06:53:40.489Z","module":"identity.auth","details":[{"type":"APIError","message":"API Key has expired","stack":"APIError: API Key has expired","status":"UNAUTHORIZED","body":{"type":"Object","message":"API Key has expired","code":"KEY_EXPIRED"},"headers":{},"statusCode":401,"name":"APIError"}],"msg":"Failed to validate API key:"}
+{"level":"error","time":"2026-10-08T06:53:41.040Z","module":"identity.auth","details":[{"type":"APIError","message":"API Key is disabled","stack":"APIError: API Key is disabled","status":"UNAUTHORIZED","body":{"type":"Object","message":"API Key is disabled","code":"KEY_DISABLED"},"headers":{},"statusCode":401,"name":"APIError"}],"msg":"Failed to validate API key:"}
+{"level":"error","time":"2026-10-08T06:53:41.054Z","module":"identity.auth","details":[{"type":"APIError","message":"Invalid API key.","stack":"APIError: Invalid API key.","status":"UNAUTHORIZED","body":{"type":"Object","message":"Invalid API key.","code":"INVALID_API_KEY"},"headers":{},"statusCode":401,"name":"APIError"}],"msg":"Failed to validate API key:"}
+{"level":"error","time":"2026-10-08T06:53:42.656Z","module":"identity.auth","details":[{"type":"APIError","message":"Invalid API key.","stack":"APIError: Invalid API key.","status":"UNAUTHORIZED","body":{"type":"Object","message":"Invalid API key.","code":"INVALID_API_KEY"},"headers":{},"statusCode":401,"name":"APIError"}],"msg":"Failed to validate API key:"}
+{"level":"error","time":"2026-10-08T06:53:56.107Z","module":"identity.auth","details":[{"type":"APIError","message":"API Key not found","stack":"APIError: API Key not found","status":"UNAUTHORIZED","body":{"type":"Object","message":"API Key not found","code":"KEY_NOT_FOUND"},"headers":{},"statusCode":401,"name":"APIError"}],"msg":"Failed to validate API key:"}
+{"level":"error","time":"2026-10-08T06:53:56.124Z","module":"identity.auth","details":[{"type":"APIError","message":"API Key has expired","stack":"APIError: API Key has expired","status":"UNAUTHORIZED","body":{"type":"Object","message":"API Key has expired","code":"KEY_EXPIRED"},"headers":{},"statusCode":401,"name":"APIError"}],"msg":"Failed to validate API key:"}
+ ❯ |integration| tests/integration/runtime/prestart.test.ts (9 tests | 6 failed) 2357ms
+   ❯ compiled prestart CLI (9)
+     × 普通 Node 执行编译产物，存储迁移后重复启动成功并关闭连接 306ms
+     × 重启保留清空默认和删除配置，不重新创建默认目录 292ms
+     × 默认目录不可用时启动非零退出、关闭连接且不留下部分默认值 295ms
+     × 迁移失败回滚待执行 SQL，关闭连接，修复后继续且不重放 294ms
+     × 已有数据库比空集合更新时明确拒绝，保留数据并关闭连接 291ms
+     × preflight 返回或抛错前已关闭真实连接（故障=true） 291ms
+ ❯ |integration| tests/integration/runtime/health.test.ts (4 tests | 1 failed) 8427ms
+   × 未初始化的隔离生产产物返回 200 / no-store，健康检查不发起外部连接 1073ms
+{"time":"2026-10-08T06:55:40.542Z","level":"info","module":"identity.setup","event":"setup-code","code":"[redacted]","msg":"请使用初始化码完成 setup"}
+{"level":"info","time":"2026-10-08T06:55:40.608Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+{"time":"2026-10-08T06:55:40.951Z","level":"info","module":"identity.setup","event":"setup-code","code":"[redacted]","msg":"请使用初始化码完成 setup"}
+{"level":"error","time":"2026-10-08T06:55:40.958Z","module":"identity.setup","err":{"type":"Error","message":"controlled hash failure","stack":"Error: controlled hash failure\n    at /Users/dnslin/.codex/worktrees/issue-182-smtp/ariso/tests/integration/identity/setup-lifecycle.test.ts:122:40\n    at file:///Users/dnslin/.codex/worktrees/issue-182-smtp/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:1628:35\n    at file:///Users/dnslin/.codex/worktrees/issue-182-smtp/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:2783:26\n    at file:///Users/dnslin/.codex/worktrees/issue-182-smtp/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3319:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/dnslin/.codex/worktrees/issue-182-smtp/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3314:10)\n    at file:///Users/dnslin/.codex/worktrees/issue-182-smtp/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3299:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/dnslin/.codex/worktrees/issue-182-smtp/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3257:10)\n    at file:///Users/dnslin/.codex/worktrees/issue-182-smtp/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3876:64"},"databasePath":"/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-setup-lifecycle-kAVr7g/data/ariso.db","msg":"Initialization request failed"}
+{"level":"info","time":"2026-10-08T06:55:40.962Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+{"time":"2026-10-08T06:55:41.320Z","level":"info","module":"identity.setup","event":"setup-code","code":"[redacted]","msg":"请使用初始化码完成 setup"}
+{"level":"info","time":"2026-10-08T06:55:41.378Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+ ❯ |integration| tests/integration/runtime/secret-preflight.test.ts (4 tests | 4 failed) 61552ms
+   × 空生产数据库接受不同合法密钥，生产产物不包含测试表、组合或密钥校验记录 15016ms
+   × wrong key 阻止入口启动 Web，保留已提交迁移与密文，修复后继续且不重放迁移 15008ms
+   × invalid ciphertext 阻止入口启动 Web，保留已提交迁移与密文，修复后继续且不重放迁移 15009ms
+   × tampered ciphertext 阻止入口启动 Web，保留已提交迁移与密文，修复后继续且不重放迁移 15007ms
+ ❯ |integration| tests/integration/runtime/startup.test.ts (13 tests | 13 failed) 188839ms
+   ❯ 完整生产入口的失败与恢复 (13)
+     × BETTER_AUTH_SECRET=undefined：拒绝配置且不监听，修复后同目录启动 15495ms
+     × BETTER_AUTH_SECRET=invalid-secret：拒绝配置且不监听，修复后同目录启动 15312ms
+     × ARISO_ENCRYPTION_KEY=undefined：拒绝配置且不监听，修复后同目录启动 15319ms
+     × ARISO_ENCRYPTION_KEY=zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz：拒绝配置且不监听，修复后同目录启动 15352ms
+     × PORT=0：拒绝配置且不监听，修复后同目录启动 15343ms
+     × PORT=65536：拒绝配置且不监听，修复后同目录启动 15387ms
+     × PORT=3.5：拒绝配置且不监听，修复后同目录启动 15464ms
+     × PORT=abc：拒绝配置且不监听，修复后同目录启动 15437ms
+     × LOG_LEVEL=invalid-secret-log-level：拒绝配置且不监听，修复后同目录启动 15753ms
+     × 真实不可写目录保留权限、路径和文件，恢复写权限后启动 15606ms
+     × 占用生产端口时退出而不换端口，释放后原端口可启动 645ms
+     × 真实故障 SQL 阻止 Web 并回滚本批迁移，修复后不重放已提交迁移 15016ms
+     × 旧产物拒绝新数据库且不降级，恢复新迁移集合后保留记录及临时文件 15031ms
+ ❯ |media-tools| tests/integration/media/reprocess-http.test.ts (8 tests | 1 failed) 40470ms
+   × rejects final HTTP-worker publication after deleting occurs with all candidates saved 15010ms
+ ❯ |media-tools| tests/integration/media/metadata-http.test.ts (6 tests | 3 failed) 55464ms
+   × reports image lifecycle, active processing, and disabled storage conflicts without adding jobs 15024ms
+   × returns the same already queued metadata job on repeated HTTP requests 15007ms
+   × reads metadata through the real HTTP worker without changing original bytes or image versions 15008ms
+ ❯ |media-tools| tests/integration/upload/local-http.test.ts (4 tests | 3 failed) 47352ms
+   × requires the owner Cookie on every endpoint and checks mutation origins before accepting bytes 15046ms
+   × accepts exact PNG bytes once and recovers an unread acceptance response by querying the submission 15007ms
+   × cancels before acceptance and rejects later content without creating media 15009ms
+ ❯ |media-tools| tests/integration/media/watermark-http.test.ts (8 tests | 3 failed) 54560ms
+   × requires the owner Cookie and the saved origin before accepting watermark bytes 15034ms
+   × accepts real source.png content and retains the original bytes 15007ms
+   × accepts real static.webp content and retains the original bytes 15008ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 34 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/runtime/health.test.ts > 未初始化的隔离生产产物返回 200 / no-store，健康检查不发起外部连接
+AssertionError: expected [ { name: 'account' }, …(34) ] to deeply equal [ { name: 'account' }, …(33) ]
+
+- Expected
++ Received
+
+@@ -25,10 +25,13 @@
+    },
+    {
+      "name": "identity_github_settings",
+    },
+    {
++     "name": "identity_smtp_settings",
++   },
++   {
+      "name": "image_tags",
+    },
+    {
+      "name": "media_cleanup_jobs",
+    },
+
+ ❯ tests/integration/runtime/health.test.ts:52:9
+     50|           )
+     51|           .all(),
+     52|       ).toEqual([
+       |         ^
+     53|         { name: 'account' },
+     54|         { name: 'album_images' },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/34]⎯
+
+ FAIL  |integration| tests/integration/runtime/prestart.test.ts > compiled prestart CLI > 普通 Node 执行编译产物，存储迁移后重复启动成功并关闭连接
+AssertionError: expected 1 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 1
+
+ ❯ tests/integration/runtime/prestart.test.ts:121:44
+    121|
+    122| describe('compiled prestart CLI', () => {
+    123|   it('普通 Node 执行编译产物，存储迁移后重复启动成功并关闭连接', () => {
+       | ^
+    124|     for (let attempt = 0; attempt < 2; attempt++) {
+    125|       const result = run();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/34]⎯
+
+ FAIL  |integration| tests/integration/runtime/prestart.test.ts > compiled prestart CLI > 重启保留清空默认和删除配置，不重新创建默认目录
+AssertionError: expected 1 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 1
+
+ ❯ tests/integration/runtime/prestart.test.ts:147:26
+    145|     ]);
+    146|     expect(readRows('SELECT * FROM storage_settings')).toHaveLength(1);
+    147|     expect(readRows('SELECT * FROM storage_configs')).toHaveLength(1);
+       |                          ^
+    148|     expect(existsSync(join(env.DATA_DIR, 'assets/branding'))).toBe(tru…
+    149|     expect(existsSync(join(env.DATA_DIR, 'storage/default'))).toBe(tru…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/34]⎯
+
+ FAIL  |integration| tests/integration/runtime/prestart.test.ts > compiled prestart CLI > 默认目录不可用时启动非零退出、关闭连接且不留下部分默认值
+AssertionError: expected '{"level":"fatal","time":"2026-10-08T0…' to contain '/var/folders/vn/m5rx_gkd0pn8z5c8stq_7…'
+
+- Expected
++ Received
+
+- /var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-prestart-4dOgOD/data/storage/default
++ {"level":"fatal","time":"2026-10-08T06:55:17.209Z","module":"runtime.prestart","err":{"type":"SqliteError","message":"no such table: identity_smtp_settings","stack":"SqliteError: no such table: identity_smtp_settings\n    at Database.prepare (/Users/dnslin/.codex/worktrees/issue-182-smtp/ariso/node_modules/.pnpm/better-sqlite3@13.0.3/node_modules/better-sqlite3/lib/methods/wrappers.js:5:21)\n    at BetterSQLiteSession.prepareQuery (file:///Users/dnslin/.codex/worktrees/issue-182-smtp/ariso/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/better-sqlite3/session.js:23:30)\n    at BetterSQLiteSession.prepareOneTimeQuery (file:///Users/dnslin/.codex/worktrees/issue-182-smtp/ariso/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/session.js:141:17)\n    at SQLiteSelectBase._prepare (file:///Users/dnslin/.codex/worktrees/issue-182-smtp/ariso/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/query-builders/select.js:615:88)\n    at SQLiteSelectBase.get (file:///Users/dnslin/.codex/worktrees/issue-182-smtp/ariso/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/query-builders/select.js:644:17)\n    at savedSmtpSettings (file:///Users/dnslin/.codex/worktrees/issue-182-smtp/ariso/dist/server/identity/mail.js:6:73)\n    at readSmtpConfig (file:///Users/dnslin/.codex/worktrees/issue-182-smtp/ariso/dist/server/identity/mail.js:25:19)\n    at file:///Users/dnslin/.codex/worktrees/issue-182-smtp/ariso/dist/cli/prestart.js:19:9\n    at runPreflight (file:///Users/dnslin/.codex/worktrees/issue-182-smtp/ariso/dist/server/startup/preflight.js:14:18)\n    at file:///Users/dnslin/.codex/worktrees/issue-182-smtp/ariso/dist/cli/prestart.js:16:5","code":"SQLITE_ERROR"},"phase":"prestart","msg":"prestart failed:"}
++
+
+ ❯ tests/integration/runtime/prestart.test.ts:173:27
+    171|   });
+    172|
+    173|   it('默认目录不可用时启动非零退出、关闭连接且不留下部分默认值', () => {
+       |                           ^
+    174|     mkdirSync(join(env.DATA_DIR, 'storage'), { recursive: true });
+    175|     const path = join(env.DATA_DIR, 'storage/default');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/34]⎯
+
+ FAIL  |integration| tests/integration/runtime/prestart.test.ts > compiled prestart CLI > 迁移失败回滚待执行 SQL，关闭连接，修复后继续且不重放
+AssertionError: expected 1 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 1
+
+ ❯ tests/integration/runtime/prestart.test.ts:206:26
+    206|   });
+    207|
+    208|   it('迁移失败回滚待执行 SQL，关闭连接，修复后继续且不重放', () => {
+       |                   ^
+    209|     const folder = writeMigrations(join(directory, 'drizzle'), [
+    210|       initialMigration,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/34]⎯
+
+ FAIL  |integration| tests/integration/runtime/prestart.test.ts > compiled prestart CLI > 已有数据库比空集合更新时明确拒绝，保留数据并关闭连接
+AssertionError: expected 1 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 1
+
+ ❯ tests/integration/runtime/prestart.test.ts:243:26
+    241|     expect(readRows('SELECT value FROM sample')).toEqual([
+    242|       { value: 'original' },
+    243|       { value: 'fixed' },
+       |                          ^
+    244|     ]);
+    245|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/34]⎯
+
+ FAIL  |integration| tests/integration/runtime/prestart.test.ts > compiled prestart CLI > preflight 返回或抛错前已关闭真实连接（故障=true）
+AssertionError: expected 1 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 1
+
+ ❯ tests/integration/runtime/prestart.test.ts:267:30
+    265|           0,
+    266|           ...readMigrationFiles({ migrationsFolder: resolve('drizzle')…
+    267|             (migration) => migration.folderMillis,
+       |                              ^
+    268|           ),
+    269|         );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/34]⎯
+
+ FAIL  |integration| tests/integration/runtime/secret-preflight.test.ts > 空生产数据库接受不同合法密钥，生产产物不包含测试表、组合或密钥校验记录
+AssertionError: expected '{"level":"fatal","time":"2026-10-08T0…' to contain 'Ready in'
+
+- Expected
++ Received
+
+- Ready in
++ {"level":"fatal","time":"2026-10-08T06:54:53.502Z","module":"runtime.prestart","err":{"type":"SqliteError","message":"no such table: identity_smtp_settings","stack":"SqliteError: no such table: identity_smtp_settings\n    at Database.prepare (/private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-secret-preflight-RJ2Fpv/app/node_modules/.pnpm/better-sqlite3@13.0.3/node_modules/better-sqlite3/lib/methods/wrappers.js:5:21)\n    at BetterSQLiteSession.prepareQuery (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-secret-preflight-RJ2Fpv/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/better-sqlite3/session.js:23:30)\n    at BetterSQLiteSession.prepareOneTimeQuery (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-secret-preflight-RJ2Fpv/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/session.js:141:17)\n    at SQLiteSelectBase._prepare (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-secret-preflight-RJ2Fpv/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/query-builders/select.js:615:88)\n    at SQLiteSelectBase.get (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-secret-preflight-RJ2Fpv/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/query-builders/select.js:644:17)\n    at savedSmtpSettings (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-secret-preflight-RJ2Fpv/app/dist/server/identity/mail.js:6:73)\n    at readSmtpConfig (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-secret-preflight-RJ2Fpv/app/dist/server/identity/mail.js:25:19)\n    at file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-secret-preflight-RJ2Fpv/app/dist/cli/prestart.js:19:9\n    at runPreflight (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-secret-preflight-RJ2Fpv/app/dist/server/startup/preflight.js:14:18)\n    at file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-secret-preflight-RJ2Fpv/app/dist/cli/prestart.js:16:5","code":"SQLITE_ERROR"},"phase":"prestart","msg":"prestart failed:"}
++
+
+ ❯ expectHealthy tests/integration/runtime/secret-preflight.test.ts:131:59
+    129|
+    130| async function start(overrides: Record<string, string> = {}) {
+    131|   const run = await launch(app, directory, { ...env, ...overrides });
+       |                                                           ^
+    132|   runs.push(run);
+    133|   return run;
+ ❯ tests/integration/runtime/secret-preflight.test.ts:164:11
+
+Caused by: Error: Matcher did not succeed in time.
+ ❯ expectHealthy tests/integration/runtime/secret-preflight.test.ts:131:3
+ ❯ tests/integration/runtime/secret-preflight.test.ts:164:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/34]⎯
+
+ FAIL  |integration| tests/integration/runtime/secret-preflight.test.ts > wrong key 阻止入口启动 Web，保留已提交迁移与密文，修复后继续且不重放迁移
+AssertionError: expected '{"level":"fatal","time":"2026-10-08T0…' to contain 'Ready in'
+
+- Expected
++ Received
+
+- Ready in
++ {"level":"fatal","time":"2026-10-08T06:55:08.482Z","module":"runtime.prestart","err":{"type":"SqliteError","message":"no such table: identity_smtp_settings","stack":"SqliteError: no such table: identity_smtp_settings\n    at Database.prepare (/private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-secret-preflight-RJ2Fpv/app/node_modules/.pnpm/better-sqlite3@13.0.3/node_modules/better-sqlite3/lib/methods/wrappers.js:5:21)\n    at BetterSQLiteSession.prepareQuery (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-secret-preflight-RJ2Fpv/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/better-sqlite3/session.js:23:30)\n    at BetterSQLiteSession.prepareOneTimeQuery (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-secret-preflight-RJ2Fpv/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/session.js:141:17)\n    at SQLiteSelectBase._prepare (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-secret-preflight-RJ2Fpv/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/query-builders/select.js:615:88)\n    at SQLiteSelectBase.get (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-secret-preflight-RJ2Fpv/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/query-builders/select.js:644:17)\n    at savedSmtpSettings (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-secret-preflight-RJ2Fpv/app/dist/server/identity/mail.js:6:73)\n    at readSmtpConfig (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-secret-preflight-RJ2Fpv/app/dist/server/identity/mail.js:25:19)\n    at file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-secret-preflight-RJ2Fpv/app/dist/cli/prestart.js:19:9\n    at runPreflight (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-secret-preflight-RJ2Fpv/app/dist/server/startup/preflight.js:14:18)\n    at file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-secret-preflight-RJ2Fpv/app/dist/cli/prestart.js:16:5","code":"SQLITE_ERROR"},"phase":"prestart","msg":"prestart failed:"}
++
+
+ ❯ expectHealthy tests/integration/runtime/secret-preflight.test.ts:131:59
+    129|
+    130| async function start(overrides: Record<string, string> = {}) {
+    131|   const run = await launch(app, directory, { ...env, ...overrides });
+       |                                                           ^
+    132|   runs.push(run);
+    133|   return run;
+ ❯ tests/integration/runtime/secret-preflight.test.ts:225:11
+
+Caused by: Error: Matcher did not succeed in time.
+ ❯ expectHealthy tests/integration/runtime/secret-preflight.test.ts:131:3
+ ❯ tests/integration/runtime/secret-preflight.test.ts:225:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/34]⎯
+
+ FAIL  |integration| tests/integration/runtime/secret-preflight.test.ts > invalid ciphertext 阻止入口启动 Web，保留已提交迁移与密文，修复后继续且不重放迁移
+AssertionError: expected '{"level":"fatal","time":"2026-10-08T0…' to contain 'Ready in'
+
+- Expected
++ Received
+
+- Ready in
++ {"level":"fatal","time":"2026-10-08T06:55:23.416Z","module":"runtime.prestart","err":{"type":"SqliteError","message":"no such table: identity_smtp_settings","stack":"SqliteError: no such table: identity_smtp_settings\n    at Database.prepare (/private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-secret-preflight-RJ2Fpv/app/node_modules/.pnpm/better-sqlite3@13.0.3/node_modules/better-sqlite3/lib/methods/wrappers.js:5:21)\n    at BetterSQLiteSession.prepareQuery (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-secret-preflight-RJ2Fpv/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/better-sqlite3/session.js:23:30)\n    at BetterSQLiteSession.prepareOneTimeQuery (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-secret-preflight-RJ2Fpv/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/session.js:141:17)\n    at SQLiteSelectBase._prepare (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-secret-preflight-RJ2Fpv/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/query-builders/select.js:615:88)\n    at SQLiteSelectBase.get (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-secret-preflight-RJ2Fpv/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/query-builders/select.js:644:17)\n    at savedSmtpSettings (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-secret-preflight-RJ2Fpv/app/dist/server/identity/mail.js:6:73)\n    at readSmtpConfig (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-secret-preflight-RJ2Fpv/app/dist/server/identity/mail.js:25:19)\n    at file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-secret-preflight-RJ2Fpv/app/dist/cli/prestart.js:19:9\n    at runPreflight (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-secret-preflight-RJ2Fpv/app/dist/server/startup/preflight.js:14:18)\n    at file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-secret-preflight-RJ2Fpv/app/dist/cli/prestart.js:16:5","code":"SQLITE_ERROR"},"phase":"prestart","msg":"prestart failed:"}
++
+
+ ❯ expectHealthy tests/integration/runtime/secret-preflight.test.ts:131:59
+    129|
+    130| async function start(overrides: Record<string, string> = {}) {
+    131|   const run = await launch(app, directory, { ...env, ...overrides });
+       |                                                           ^
+    132|   runs.push(run);
+    133|   return run;
+ ❯ tests/integration/runtime/secret-preflight.test.ts:225:11
+
+Caused by: Error: Matcher did not succeed in time.
+ ❯ expectHealthy tests/integration/runtime/secret-preflight.test.ts:131:3
+ ❯ tests/integration/runtime/secret-preflight.test.ts:225:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/34]⎯
+
+ FAIL  |integration| tests/integration/runtime/secret-preflight.test.ts > tampered ciphertext 阻止入口启动 Web，保留已提交迁移与密文，修复后继续且不重放迁移
+AssertionError: expected '{"level":"fatal","time":"2026-10-08T0…' to contain 'Ready in'
+
+- Expected
++ Received
+
+- Ready in
++ {"level":"fatal","time":"2026-10-08T06:55:38.450Z","module":"runtime.prestart","err":{"type":"SqliteError","message":"no such table: identity_smtp_settings","stack":"SqliteError: no such table: identity_smtp_settings\n    at Database.prepare (/private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-secret-preflight-RJ2Fpv/app/node_modules/.pnpm/better-sqlite3@13.0.3/node_modules/better-sqlite3/lib/methods/wrappers.js:5:21)\n    at BetterSQLiteSession.prepareQuery (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-secret-preflight-RJ2Fpv/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/better-sqlite3/session.js:23:30)\n    at BetterSQLiteSession.prepareOneTimeQuery (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-secret-preflight-RJ2Fpv/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/session.js:141:17)\n    at SQLiteSelectBase._prepare (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-secret-preflight-RJ2Fpv/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/query-builders/select.js:615:88)\n    at SQLiteSelectBase.get (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-secret-preflight-RJ2Fpv/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/query-builders/select.js:644:17)\n    at savedSmtpSettings (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-secret-preflight-RJ2Fpv/app/dist/server/identity/mail.js:6:73)\n    at readSmtpConfig (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-secret-preflight-RJ2Fpv/app/dist/server/identity/mail.js:25:19)\n    at file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-secret-preflight-RJ2Fpv/app/dist/cli/prestart.js:19:9\n    at runPreflight (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-secret-preflight-RJ2Fpv/app/dist/server/startup/preflight.js:14:18)\n    at file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-secret-preflight-RJ2Fpv/app/dist/cli/prestart.js:16:5","code":"SQLITE_ERROR"},"phase":"prestart","msg":"prestart failed:"}
++
+
+ ❯ expectHealthy tests/integration/runtime/secret-preflight.test.ts:131:59
+    129|
+    130| async function start(overrides: Record<string, string> = {}) {
+    131|   const run = await launch(app, directory, { ...env, ...overrides });
+       |                                                           ^
+    132|   runs.push(run);
+    133|   return run;
+ ❯ tests/integration/runtime/secret-preflight.test.ts:225:11
+
+Caused by: Error: Matcher did not succeed in time.
+ ❯ expectHealthy tests/integration/runtime/secret-preflight.test.ts:131:3
+ ❯ tests/integration/runtime/secret-preflight.test.ts:225:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/34]⎯
+
+ FAIL  |integration| tests/integration/runtime/startup.test.ts > 完整生产入口的失败与恢复 > BETTER_AUTH_SECRET=undefined：拒绝配置且不监听，修复后同目录启动
+Error: {"level":"fatal","time":"2026-10-08T06:54:43.084Z","module":"runtime.prestart","err":{"type":"SqliteError","message":"no such table: identity_smtp_settings","stack":"SqliteError: no such table: identity_smtp_settings\n    at Database.prepare (/private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/better-sqlite3@13.0.3/node_modules/better-sqlite3/lib/methods/wrappers.js:5:21)\n    at BetterSQLiteSession.prepareQuery (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/better-sqlite3/session.js:23:30)\n    at BetterSQLiteSession.prepareOneTimeQuery (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/session.js:141:17)\n    at SQLiteSelectBase._prepare (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/query-builders/select.js:615:88)\n    at SQLiteSelectBase.get (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/query-builders/select.js:644:17)\n    at savedSmtpSettings (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/server/identity/mail.js:6:73)\n    at readSmtpConfig (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/server/identity/mail.js:25:19)\n    at file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/cli/prestart.js:19:9\n    at runPreflight (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/server/startup/preflight.js:14:18)\n    at file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/cli/prestart.js:16:5","code":"SQLITE_ERROR"},"phase":"prestart","msg":"prestart failed:"}
+
+ ❯ healthy tests/integration/runtime/startup.test.ts:192:6
+    190|       },
+    191|       { timeout: 15000 },
+    192|     )
+       |      ^
+    193|     .toBe(200);
+    194|   return run;
+ ❯ tests/integration/runtime/startup.test.ts:233:21
+
+Caused by: Error: Matcher did not succeed in time.
+ ❯ healthy tests/integration/runtime/startup.test.ts:176:3
+ ❯ tests/integration/runtime/startup.test.ts:233:21
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/34]⎯
+
+ FAIL  |integration| tests/integration/runtime/startup.test.ts > 完整生产入口的失败与恢复 > BETTER_AUTH_SECRET=invalid-secret：拒绝配置且不监听，修复后同目录启动
+Error: {"level":"fatal","time":"2026-10-08T06:54:58.064Z","module":"runtime.prestart","err":{"type":"SqliteError","message":"no such table: identity_smtp_settings","stack":"SqliteError: no such table: identity_smtp_settings\n    at Database.prepare (/private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/better-sqlite3@13.0.3/node_modules/better-sqlite3/lib/methods/wrappers.js:5:21)\n    at BetterSQLiteSession.prepareQuery (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/better-sqlite3/session.js:23:30)\n    at BetterSQLiteSession.prepareOneTimeQuery (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/session.js:141:17)\n    at SQLiteSelectBase._prepare (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/query-builders/select.js:615:88)\n    at SQLiteSelectBase.get (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/query-builders/select.js:644:17)\n    at savedSmtpSettings (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/server/identity/mail.js:6:73)\n    at readSmtpConfig (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/server/identity/mail.js:25:19)\n    at file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/cli/prestart.js:19:9\n    at runPreflight (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/server/startup/preflight.js:14:18)\n    at file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/cli/prestart.js:16:5","code":"SQLITE_ERROR"},"phase":"prestart","msg":"prestart failed:"}
+
+ ❯ healthy tests/integration/runtime/startup.test.ts:192:6
+    190|       },
+    191|       { timeout: 15000 },
+    192|     )
+       |      ^
+    193|     .toBe(200);
+    194|   return run;
+ ❯ tests/integration/runtime/startup.test.ts:233:21
+
+Caused by: Error: Matcher did not succeed in time.
+ ❯ healthy tests/integration/runtime/startup.test.ts:176:3
+ ❯ tests/integration/runtime/startup.test.ts:233:21
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/34]⎯
+
+ FAIL  |integration| tests/integration/runtime/startup.test.ts > 完整生产入口的失败与恢复 > ARISO_ENCRYPTION_KEY=undefined：拒绝配置且不监听，修复后同目录启动
+Error: {"level":"fatal","time":"2026-10-08T06:55:13.393Z","module":"runtime.prestart","err":{"type":"SqliteError","message":"no such table: identity_smtp_settings","stack":"SqliteError: no such table: identity_smtp_settings\n    at Database.prepare (/private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/better-sqlite3@13.0.3/node_modules/better-sqlite3/lib/methods/wrappers.js:5:21)\n    at BetterSQLiteSession.prepareQuery (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/better-sqlite3/session.js:23:30)\n    at BetterSQLiteSession.prepareOneTimeQuery (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/session.js:141:17)\n    at SQLiteSelectBase._prepare (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/query-builders/select.js:615:88)\n    at SQLiteSelectBase.get (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/query-builders/select.js:644:17)\n    at savedSmtpSettings (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/server/identity/mail.js:6:73)\n    at readSmtpConfig (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/server/identity/mail.js:25:19)\n    at file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/cli/prestart.js:19:9\n    at runPreflight (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/server/startup/preflight.js:14:18)\n    at file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/cli/prestart.js:16:5","code":"SQLITE_ERROR"},"phase":"prestart","msg":"prestart failed:"}
+
+ ❯ healthy tests/integration/runtime/startup.test.ts:192:6
+    190|       },
+    191|       { timeout: 15000 },
+    192|     )
+       |      ^
+    193|     .toBe(200);
+    194|   return run;
+ ❯ tests/integration/runtime/startup.test.ts:233:21
+
+Caused by: Error: Matcher did not succeed in time.
+ ❯ healthy tests/integration/runtime/startup.test.ts:176:3
+ ❯ tests/integration/runtime/startup.test.ts:233:21
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/34]⎯
+
+ FAIL  |integration| tests/integration/runtime/startup.test.ts > 完整生产入口的失败与恢复 > ARISO_ENCRYPTION_KEY=zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz：拒绝配置且不监听，修复后同目录启动
+Error: {"level":"fatal","time":"2026-10-08T06:55:28.730Z","module":"runtime.prestart","err":{"type":"SqliteError","message":"no such table: identity_smtp_settings","stack":"SqliteError: no such table: identity_smtp_settings\n    at Database.prepare (/private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/better-sqlite3@13.0.3/node_modules/better-sqlite3/lib/methods/wrappers.js:5:21)\n    at BetterSQLiteSession.prepareQuery (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/better-sqlite3/session.js:23:30)\n    at BetterSQLiteSession.prepareOneTimeQuery (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/session.js:141:17)\n    at SQLiteSelectBase._prepare (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/query-builders/select.js:615:88)\n    at SQLiteSelectBase.get (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/query-builders/select.js:644:17)\n    at savedSmtpSettings (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/server/identity/mail.js:6:73)\n    at readSmtpConfig (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/server/identity/mail.js:25:19)\n    at file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/cli/prestart.js:19:9\n    at runPreflight (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/server/startup/preflight.js:14:18)\n    at file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/cli/prestart.js:16:5","code":"SQLITE_ERROR"},"phase":"prestart","msg":"prestart failed:"}
+
+ ❯ healthy tests/integration/runtime/startup.test.ts:192:6
+    190|       },
+    191|       { timeout: 15000 },
+    192|     )
+       |      ^
+    193|     .toBe(200);
+    194|   return run;
+ ❯ tests/integration/runtime/startup.test.ts:233:21
+
+Caused by: Error: Matcher did not succeed in time.
+ ❯ healthy tests/integration/runtime/startup.test.ts:176:3
+ ❯ tests/integration/runtime/startup.test.ts:233:21
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/34]⎯
+
+ FAIL  |integration| tests/integration/runtime/startup.test.ts > 完整生产入口的失败与恢复 > PORT=0：拒绝配置且不监听，修复后同目录启动
+Error: {"level":"fatal","time":"2026-10-08T06:55:44.083Z","module":"runtime.prestart","err":{"type":"SqliteError","message":"no such table: identity_smtp_settings","stack":"SqliteError: no such table: identity_smtp_settings\n    at Database.prepare (/private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/better-sqlite3@13.0.3/node_modules/better-sqlite3/lib/methods/wrappers.js:5:21)\n    at BetterSQLiteSession.prepareQuery (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/better-sqlite3/session.js:23:30)\n    at BetterSQLiteSession.prepareOneTimeQuery (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/session.js:141:17)\n    at SQLiteSelectBase._prepare (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/query-builders/select.js:615:88)\n    at SQLiteSelectBase.get (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/query-builders/select.js:644:17)\n    at savedSmtpSettings (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/server/identity/mail.js:6:73)\n    at readSmtpConfig (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/server/identity/mail.js:25:19)\n    at file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/cli/prestart.js:19:9\n    at runPreflight (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/server/startup/preflight.js:14:18)\n    at file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/cli/prestart.js:16:5","code":"SQLITE_ERROR"},"phase":"prestart","msg":"prestart failed:"}
+
+ ❯ healthy tests/integration/runtime/startup.test.ts:192:6
+    190|       },
+    191|       { timeout: 15000 },
+    192|     )
+       |      ^
+    193|     .toBe(200);
+    194|   return run;
+ ❯ tests/integration/runtime/startup.test.ts:233:21
+
+Caused by: Error: Matcher did not succeed in time.
+ ❯ healthy tests/integration/runtime/startup.test.ts:176:3
+ ❯ tests/integration/runtime/startup.test.ts:233:21
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/34]⎯
+
+ FAIL  |integration| tests/integration/runtime/startup.test.ts > 完整生产入口的失败与恢复 > PORT=65536：拒绝配置且不监听，修复后同目录启动
+Error: {"level":"fatal","time":"2026-10-08T06:55:59.547Z","module":"runtime.prestart","err":{"type":"SqliteError","message":"no such table: identity_smtp_settings","stack":"SqliteError: no such table: identity_smtp_settings\n    at Database.prepare (/private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/better-sqlite3@13.0.3/node_modules/better-sqlite3/lib/methods/wrappers.js:5:21)\n    at BetterSQLiteSession.prepareQuery (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/better-sqlite3/session.js:23:30)\n    at BetterSQLiteSession.prepareOneTimeQuery (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/session.js:141:17)\n    at SQLiteSelectBase._prepare (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/query-builders/select.js:615:88)\n    at SQLiteSelectBase.get (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/query-builders/select.js:644:17)\n    at savedSmtpSettings (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/server/identity/mail.js:6:73)\n    at readSmtpConfig (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/server/identity/mail.js:25:19)\n    at file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/cli/prestart.js:19:9\n    at runPreflight (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/server/startup/preflight.js:14:18)\n    at file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/cli/prestart.js:16:5","code":"SQLITE_ERROR"},"phase":"prestart","msg":"prestart failed:"}
+
+ ❯ healthy tests/integration/runtime/startup.test.ts:192:6
+    190|       },
+    191|       { timeout: 15000 },
+    192|     )
+       |      ^
+    193|     .toBe(200);
+    194|   return run;
+ ❯ tests/integration/runtime/startup.test.ts:233:21
+
+Caused by: Error: Matcher did not succeed in time.
+ ❯ healthy tests/integration/runtime/startup.test.ts:176:3
+ ❯ tests/integration/runtime/startup.test.ts:233:21
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/34]⎯
+
+ FAIL  |integration| tests/integration/runtime/startup.test.ts > 完整生产入口的失败与恢复 > PORT=3.5：拒绝配置且不监听，修复后同目录启动
+Error: {"level":"fatal","time":"2026-10-08T06:56:14.985Z","module":"runtime.prestart","err":{"type":"SqliteError","message":"no such table: identity_smtp_settings","stack":"SqliteError: no such table: identity_smtp_settings\n    at Database.prepare (/private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/better-sqlite3@13.0.3/node_modules/better-sqlite3/lib/methods/wrappers.js:5:21)\n    at BetterSQLiteSession.prepareQuery (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/better-sqlite3/session.js:23:30)\n    at BetterSQLiteSession.prepareOneTimeQuery (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/session.js:141:17)\n    at SQLiteSelectBase._prepare (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/query-builders/select.js:615:88)\n    at SQLiteSelectBase.get (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/query-builders/select.js:644:17)\n    at savedSmtpSettings (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/server/identity/mail.js:6:73)\n    at readSmtpConfig (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/server/identity/mail.js:25:19)\n    at file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/cli/prestart.js:19:9\n    at runPreflight (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/server/startup/preflight.js:14:18)\n    at file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/cli/prestart.js:16:5","code":"SQLITE_ERROR"},"phase":"prestart","msg":"prestart failed:"}
+
+ ❯ healthy tests/integration/runtime/startup.test.ts:192:6
+    190|       },
+    191|       { timeout: 15000 },
+    192|     )
+       |      ^
+    193|     .toBe(200);
+    194|   return run;
+ ❯ tests/integration/runtime/startup.test.ts:233:21
+
+Caused by: Error: Matcher did not succeed in time.
+ ❯ healthy tests/integration/runtime/startup.test.ts:176:3
+ ❯ tests/integration/runtime/startup.test.ts:233:21
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/34]⎯
+
+ FAIL  |integration| tests/integration/runtime/startup.test.ts > 完整生产入口的失败与恢复 > PORT=abc：拒绝配置且不监听，修复后同目录启动
+Error: {"level":"fatal","time":"2026-10-08T06:56:30.407Z","module":"runtime.prestart","err":{"type":"SqliteError","message":"no such table: identity_smtp_settings","stack":"SqliteError: no such table: identity_smtp_settings\n    at Database.prepare (/private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/better-sqlite3@13.0.3/node_modules/better-sqlite3/lib/methods/wrappers.js:5:21)\n    at BetterSQLiteSession.prepareQuery (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/better-sqlite3/session.js:23:30)\n    at BetterSQLiteSession.prepareOneTimeQuery (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/session.js:141:17)\n    at SQLiteSelectBase._prepare (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/query-builders/select.js:615:88)\n    at SQLiteSelectBase.get (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/query-builders/select.js:644:17)\n    at savedSmtpSettings (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/server/identity/mail.js:6:73)\n    at readSmtpConfig (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/server/identity/mail.js:25:19)\n    at file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/cli/prestart.js:19:9\n    at runPreflight (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/server/startup/preflight.js:14:18)\n    at file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/cli/prestart.js:16:5","code":"SQLITE_ERROR"},"phase":"prestart","msg":"prestart failed:"}
+
+ ❯ healthy tests/integration/runtime/startup.test.ts:192:6
+    190|       },
+    191|       { timeout: 15000 },
+    192|     )
+       |      ^
+    193|     .toBe(200);
+    194|   return run;
+ ❯ tests/integration/runtime/startup.test.ts:233:21
+
+Caused by: Error: Matcher did not succeed in time.
+ ❯ healthy tests/integration/runtime/startup.test.ts:176:3
+ ❯ tests/integration/runtime/startup.test.ts:233:21
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[19/34]⎯
+
+ FAIL  |integration| tests/integration/runtime/startup.test.ts > 完整生产入口的失败与恢复 > LOG_LEVEL=invalid-secret-log-level：拒绝配置且不监听，修复后同目录启动
+Error: {"level":"fatal","time":"2026-10-08T06:56:46.629Z","module":"runtime.prestart","err":{"type":"SqliteError","message":"no such table: identity_smtp_settings","stack":"SqliteError: no such table: identity_smtp_settings\n    at Database.prepare (/private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/better-sqlite3@13.0.3/node_modules/better-sqlite3/lib/methods/wrappers.js:5:21)\n    at BetterSQLiteSession.prepareQuery (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/better-sqlite3/session.js:23:30)\n    at BetterSQLiteSession.prepareOneTimeQuery (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/session.js:141:17)\n    at SQLiteSelectBase._prepare (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/query-builders/select.js:615:88)\n    at SQLiteSelectBase.get (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/query-builders/select.js:644:17)\n    at savedSmtpSettings (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/server/identity/mail.js:6:73)\n    at readSmtpConfig (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/server/identity/mail.js:25:19)\n    at file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/cli/prestart.js:19:9\n    at runPreflight (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/server/startup/preflight.js:14:18)\n    at file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/cli/prestart.js:16:5","code":"SQLITE_ERROR"},"phase":"prestart","msg":"prestart failed:"}
+
+ ❯ healthy tests/integration/runtime/startup.test.ts:192:6
+    190|       },
+    191|       { timeout: 15000 },
+    192|     )
+       |      ^
+    193|     .toBe(200);
+    194|   return run;
+ ❯ tests/integration/runtime/startup.test.ts:233:21
+
+Caused by: Error: Matcher did not succeed in time.
+ ❯ healthy tests/integration/runtime/startup.test.ts:176:3
+ ❯ tests/integration/runtime/startup.test.ts:233:21
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[20/34]⎯
+
+ FAIL  |integration| tests/integration/runtime/startup.test.ts > 完整生产入口的失败与恢复 > 真实不可写目录保留权限、路径和文件，恢复写权限后启动
+Error: {"level":"fatal","time":"2026-10-08T06:57:01.804Z","module":"runtime.prestart","err":{"type":"SqliteError","message":"no such table: identity_smtp_settings","stack":"SqliteError: no such table: identity_smtp_settings\n    at Database.prepare (/private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/better-sqlite3@13.0.3/node_modules/better-sqlite3/lib/methods/wrappers.js:5:21)\n    at BetterSQLiteSession.prepareQuery (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/better-sqlite3/session.js:23:30)\n    at BetterSQLiteSession.prepareOneTimeQuery (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/session.js:141:17)\n    at SQLiteSelectBase._prepare (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/query-builders/select.js:615:88)\n    at SQLiteSelectBase.get (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/query-builders/select.js:644:17)\n    at savedSmtpSettings (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/server/identity/mail.js:6:73)\n    at readSmtpConfig (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/server/identity/mail.js:25:19)\n    at file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/cli/prestart.js:19:9\n    at runPreflight (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/server/startup/preflight.js:14:18)\n    at file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/cli/prestart.js:16:5","code":"SQLITE_ERROR"},"phase":"prestart","msg":"prestart failed:"}
+
+ ❯ healthy tests/integration/runtime/startup.test.ts:192:6
+    190|       },
+    191|       { timeout: 15000 },
+    192|     )
+       |      ^
+    193|     .toBe(200);
+    194|   return run;
+ ❯ tests/integration/runtime/startup.test.ts:253:19
+
+Caused by: Error: Matcher did not succeed in time.
+ ❯ healthy tests/integration/runtime/startup.test.ts:176:3
+ ❯ tests/integration/runtime/startup.test.ts:253:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[21/34]⎯
+
+ FAIL  |integration| tests/integration/runtime/startup.test.ts > 完整生产入口的失败与恢复 > 占用生产端口时退出而不换端口，释放后原端口可启动
+AssertionError: expected '{"level":"fatal","time":"2026-10-08T0…' to contain 'EADDRINUSE'
+
+- Expected
++ Received
+
+- EADDRINUSE
++ {"level":"fatal","time":"2026-10-08T06:57:17.048Z","module":"runtime.prestart","err":{"type":"SqliteError","message":"no such table: identity_smtp_settings","stack":"SqliteError: no such table: identity_smtp_settings\n    at Database.prepare (/private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/better-sqlite3@13.0.3/node_modules/better-sqlite3/lib/methods/wrappers.js:5:21)\n    at BetterSQLiteSession.prepareQuery (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/better-sqlite3/session.js:23:30)\n    at BetterSQLiteSession.prepareOneTimeQuery (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/session.js:141:17)\n    at SQLiteSelectBase._prepare (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/query-builders/select.js:615:88)\n    at SQLiteSelectBase.get (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/query-builders/select.js:644:17)\n    at savedSmtpSettings (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/server/identity/mail.js:6:73)\n    at readSmtpConfig (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/server/identity/mail.js:25:19)\n    at file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/cli/prestart.js:19:9\n    at runPreflight (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/server/startup/preflight.js:14:18)\n    at file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/cli/prestart.js:16:5","code":"SQLITE_ERROR"},"phase":"prestart","msg":"prestart failed:"}
++
+
+ ❯ tests/integration/runtime/startup.test.ts:264:26
+    262|     try {
+    263|       const run = await start();
+    264|       await failed(run, false);
+       |                          ^
+    265|       expect(run.logs()).toContain('EADDRINUSE');
+    266|       const records = run
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[22/34]⎯
+
+ FAIL  |integration| tests/integration/runtime/startup.test.ts > 完整生产入口的失败与恢复 > 真实故障 SQL 阻止 Web 并回滚本批迁移，修复后不重放已提交迁移
+Error: {"level":"fatal","time":"2026-10-08T06:57:17.629Z","module":"runtime.prestart","err":{"type":"SqliteError","message":"no such table: identity_smtp_settings","stack":"SqliteError: no such table: identity_smtp_settings\n    at Database.prepare (/private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/better-sqlite3@13.0.3/node_modules/better-sqlite3/lib/methods/wrappers.js:5:21)\n    at BetterSQLiteSession.prepareQuery (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/better-sqlite3/session.js:23:30)\n    at BetterSQLiteSession.prepareOneTimeQuery (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/session.js:141:17)\n    at SQLiteSelectBase._prepare (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/query-builders/select.js:615:88)\n    at SQLiteSelectBase.get (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/query-builders/select.js:644:17)\n    at savedSmtpSettings (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/server/identity/mail.js:6:73)\n    at readSmtpConfig (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/server/identity/mail.js:25:19)\n    at file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/cli/prestart.js:19:9\n    at runPreflight (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/server/startup/preflight.js:14:18)\n    at file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/cli/prestart.js:16:5","code":"SQLITE_ERROR"},"phase":"prestart","msg":"prestart failed:"}
+
+ ❯ healthy tests/integration/runtime/startup.test.ts:192:6
+    190|       },
+    191|       { timeout: 15000 },
+    192|     )
+       |      ^
+    193|     .toBe(200);
+    194|   return run;
+ ❯ tests/integration/runtime/startup.test.ts:289:19
+
+Caused by: Error: Matcher did not succeed in time.
+ ❯ healthy tests/integration/runtime/startup.test.ts:176:3
+ ❯ tests/integration/runtime/startup.test.ts:289:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[23/34]⎯
+
+ FAIL  |integration| tests/integration/runtime/startup.test.ts > 完整生产入口的失败与恢复 > 旧产物拒绝新数据库且不降级，恢复新迁移集合后保留记录及临时文件
+Error: {"level":"fatal","time":"2026-10-08T06:57:33.042Z","module":"runtime.prestart","err":{"type":"SqliteError","message":"no such table: identity_smtp_settings","stack":"SqliteError: no such table: identity_smtp_settings\n    at Database.prepare (/private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/better-sqlite3@13.0.3/node_modules/better-sqlite3/lib/methods/wrappers.js:5:21)\n    at BetterSQLiteSession.prepareQuery (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/better-sqlite3/session.js:23:30)\n    at BetterSQLiteSession.prepareOneTimeQuery (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/session.js:141:17)\n    at SQLiteSelectBase._prepare (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/query-builders/select.js:615:88)\n    at SQLiteSelectBase.get (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/node_modules/.pnpm/drizzle-orm@0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.3_kysely@0.29.6/node_modules/drizzle-orm/sqlite-core/query-builders/select.js:644:17)\n    at savedSmtpSettings (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/server/identity/mail.js:6:73)\n    at readSmtpConfig (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/server/identity/mail.js:25:19)\n    at file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/cli/prestart.js:19:9\n    at runPreflight (file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/server/startup/preflight.js:14:18)\n    at file:///private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-startup-wfdatE/app/dist/cli/prestart.js:16:5","code":"SQLITE_ERROR"},"phase":"prestart","msg":"prestart failed:"}
+
+ ❯ healthy tests/integration/runtime/startup.test.ts:192:6
+    190|       },
+    191|       { timeout: 15000 },
+    192|     )
+       |      ^
+    193|     .toBe(200);
+    194|   return run;
+ ❯ tests/integration/runtime/startup.test.ts:351:19
+
+Caused by: Error: Matcher did not succeed in time.
+ ❯ healthy tests/integration/runtime/startup.test.ts:176:3
+ ❯ tests/integration/runtime/startup.test.ts:351:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[24/34]⎯
+
+ FAIL  |media-tools| tests/integration/media/metadata-http.test.ts > reports image lifecycle, active processing, and disabled storage conflicts without adding jobs
+AssertionError: expected 500 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 500
+
+ ❯ vi.waitFor.timeout tests/integration/media/metadata-http.test.ts:47:31
+     45|         { signal: AbortSignal.timeout(1000) },
+     46|       );
+     47|       expect(response.status).toBe(200);
+       |                               ^
+     48|     },
+     49|     { timeout: 15000 },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[25/34]⎯
+
+ FAIL  |media-tools| tests/integration/media/metadata-http.test.ts > returns the same already queued metadata job on repeated HTTP requests
+ FAIL  |media-tools| tests/integration/media/metadata-http.test.ts > reads metadata through the real HTTP worker without changing original bytes or image versions
+Error: sh: /Users/dnslin/.codex/worktrees/issue-182-smtp/ariso/.next/standalone/entrypoint.sh: No such file or directory
+
+ ❯ vi.waitFor.timeout tests/integration/media/metadata-http.test.ts:42:49
+     40|   await vi.waitFor(
+     41|     async () => {
+     42|       if (server.child.exitCode !== null) throw new Error(server.logs(…
+       |                                                 ^
+     43|       const response = await fetch(
+     44|         `http://127.0.0.1:${server.port}/api/health`,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[26/34]⎯
+
+ FAIL  |media-tools| tests/integration/media/reprocess-http.test.ts > rejects final HTTP-worker publication after deleting occurs with all candidates saved
+Error: node:internal/modules/esm/resolve:271
+    throw new ERR_MODULE_NOT_FOUND(
+          ^
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/Users/dnslin/.codex/worktrees/issue-182-smtp/ariso/.next/standalone/dist/server/media/errors.js' imported from /Users/dnslin/.codex/worktrees/issue-182-smtp/ariso/.next/standalone/dist/server/media/watermark-validation.js
+    at finalizeResolution (node:internal/modules/esm/resolve:271:11)
+    at moduleResolve (node:internal/modules/esm/resolve:865:10)
+    at defaultResolve (node:internal/modules/esm/resolve:992:11)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:701:20)
+    at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:721:38)
+    at ModuleLoader.resolveSync (node:internal/modules/esm/loader:759:56)
+    at #resolve (node:internal/modules/esm/loader:683:17)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:35)
+    at ModuleJob.syncLink (node:internal/modules/esm/module_job:163:33)
+    at ModuleJob.link (node:internal/modules/esm/module_job:253:17) {
+  code: 'ERR_MODULE_NOT_FOUND',
+  url: 'file:///Users/dnslin/.codex/worktrees/issue-182-smtp/ariso/.next/standalone/dist/server/media/errors.js'
+}
+
+Node.js v24.18.1
+
+ ❯ vi.waitFor.timeout tests/integration/media/reprocess-http.test.ts:41:49
+     39|   await vi.waitFor(
+     40|     async () => {
+     41|       if (server.child.exitCode !== null) throw new Error(server.logs(…
+       |                                                 ^
+     42|       expect(
+     43|         (
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[27/34]⎯
+
+ FAIL  |media-tools| tests/integration/media/watermark-http.test.ts > requires the owner Cookie and the saved origin before accepting watermark bytes
+ FAIL  |media-tools| tests/integration/media/watermark-http.test.ts > accepts real source.png content and retains the original bytes
+ FAIL  |media-tools| tests/integration/media/watermark-http.test.ts > accepts real static.webp content and retains the original bytes
+AssertionError: sh: /Users/dnslin/.codex/worktrees/issue-182-smtp/ariso/.next/standalone/entrypoint.sh: No such file or directory
+: expected 127 to be null
+
+- Expected:
+null
+
++ Received:
+127
+
+ ❯ vi.waitFor.timeout tests/integration/media/watermark-http.test.ts:69:54
+     67|   await vi.waitFor(
+     68|     async () => {
+     69|       expect(server!.child.exitCode, server!.logs()).toBeNull();
+       |                                                      ^
+     70|       expect((await request('/api/health')).status).toBe(200);
+     71|     },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[28/34]⎯
+
+ FAIL  |media-tools| tests/integration/upload/local-http.test.ts > requires the owner Cookie on every endpoint and checks mutation origins before accepting bytes
+ FAIL  |media-tools| tests/integration/upload/local-http.test.ts > accepts exact PNG bytes once and recovers an unread acceptance response by querying the submission
+ FAIL  |media-tools| tests/integration/upload/local-http.test.ts > cancels before acceptance and rejects later content without creating media
+AssertionError: sh: /Users/dnslin/.codex/worktrees/issue-182-smtp/ariso/.next/standalone/entrypoint.sh: No such file or directory
+: expected 127 to be null
+
+- Expected:
+null
+
++ Received:
+127
+
+ ❯ vi.waitFor.timeout tests/integration/upload/local-http.test.ts:97:54
+     95|   await vi.waitFor(
+     96|     async () => {
+     97|       expect(server!.child.exitCode, server!.logs()).toBeNull();
+       |                                                      ^
+     98|       expect((await request('/api/health')).status).toBe(200);
+     99|     },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[29/34]⎯
+
+
+ Test Files  8 failed | 170 passed (178)
+      Tests  34 failed | 1691 passed (1725)
+   Start at  14:53:26
+   Duration  407.05s (tests 96%, import 4%)
+
+[ELIFECYCLE] Command failed with exit code 1.

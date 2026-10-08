@@ -1,0 +1,45 @@
+Already up to date
+Done in 42ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-182-smtp/ariso
+
+ ❯ |integration| tests/integration/runtime/startup.test.ts (13 tests | 1 failed) 28167ms
+   ❯ 完整生产入口的失败与恢复 (13)
+     × 真实故障 SQL 阻止 Web 并回滚本批迁移，修复后不重放已提交迁移 1619ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/runtime/startup.test.ts > 完整生产入口的失败与恢复 > 真实故障 SQL 阻止 Web 并回滚本批迁移，修复后不重放已提交迁移
+AssertionError: expected [ { created_at: 1 }, …(16) ] to deeply equal [ { created_at: 1 }, …(15) ]
+
+- Expected
++ Received
+
+@@ -43,8 +43,11 @@
+    },
+    {
+      "created_at": 15,
+    },
+    {
++     "created_at": 16,
++   },
++   {
+      "created_at": 1000,
+    },
+  ]
+
+ ❯ tests/integration/runtime/startup.test.ts:315:7
+    313|     expect(
+    314|       query('SELECT created_at FROM __drizzle_migrations ORDER BY crea…
+    315|     ).toEqual([
+       |       ^
+    316|       { created_at: 1 },
+    317|       { created_at: 2 },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 3 passed (4)
+      Tests  1 failed | 29 passed (30)
+   Start at  15:00:27
+   Duration  28.31s (tests 99%)

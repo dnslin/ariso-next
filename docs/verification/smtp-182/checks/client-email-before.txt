@@ -1,0 +1,31 @@
+Already up to date
+Done in 126ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-182-smtp/ariso
+
+ ❯ |unit| tests/unit/identity/smtp-request.test.ts (5 tests | 1 failed) 132ms
+   × normalizes sender email like the server when reconciling a lost save response 11ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/identity/smtp-request.test.ts > normalizes sender email like the server when reconciling a lost save response
+AssertionError: expected 'Owner@Example.COM' to be 'owner@example.com' // Object.is equality
+
+Expected: "owner@example.com"
+Received: "Owner@Example.COM"
+
+ ❯ tests/unit/identity/smtp-request.test.ts:28:43
+     26| it('normalizes sender email like the server when reconciling a lost sa…
+     27|   const draft = { ...smtpDraft(saved), fromEmail: ' Owner@Example.COM …
+     28|   expect(smtpDraftInput(draft).fromEmail).toBe(saved.fromEmail);
+       |                                           ^
+     29|   expect(smtpDraftMatches(draft, saved)).toBe(true);
+     30|   expect(smtpDraftChanged(draft, saved)).toBe(false);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 passed (5)
+   Start at  11:31:42
+   Duration  577ms (tests 40%, import 35%, transform 22%, worker 3%)

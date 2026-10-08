@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="zh-CN">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Issue #182 · SMTP 局部交互原型</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      background: #edf0f2;
+      color: #272343;
+      font:
+        14px/1.5 system-ui,
+        sans-serif;
+    }
+    header {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+      padding: 12px 16px;
+      background: white;
+      border-bottom: 1px solid #ccd5d7;
+    }
+    h1 {
+      font-size: 15px;
+      margin: 0 16px 0 0;
+    }
+    button,
+    select {
+      font: inherit;
+      min-height: 40px;
+      border-radius: 8px;
+      border: 1px solid #ccd5d7;
+      padding: 6px 12px;
+      background: white;
+      color: inherit;
+    }
+    button[aria-pressed='true'] {
+      background: #ffd807;
+      border-color: #ffd807;
+    }
+    label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    p {
+      margin: 0;
+      padding: 8px 16px;
+      color: #52566c;
+    }
+    #stage {
+      display: grid;
+      justify-content: center;
+      overflow: auto;
+      padding: 16px;
+    }
+    #frame-wrap {
+      overflow: hidden;
+      background: #fffffe;
+      box-shadow: 0 4px 24px #27234312;
+    }
+    iframe {
+      display: block;
+      border: 0;
+      transform-origin: top left;
+    }
+    :focus-visible {
+      outline: 2px solid #287e79;
+      outline-offset: 3px;
+    }
+  </style>
+  <header>
+    <h1>#182 SMTP · 局部交互原型</h1>
+    <button id="desktop" aria-pressed="true">桌面 1440 × 1080</button>
+    <button id="mobile" aria-pressed="false">手机 390 × 844</button>
+    <button id="theme">深色</button>
+    <label
+      >演示状态
+      <select id="scenario">
+        <option value="saved">已保存配置</option>
+        <option value="empty">未配置</option>
+        <option value="saveUnknown">保存响应未知</option>
+        <option value="readFail">核对失败</option>
+        <option value="publicMatch">核对公开配置一致</option>
+        <option value="mismatch">核对配置不一致</option>
+        <option value="passwordUnknown">密码替换无法核对</option>
+        <option value="clearUnknown">清除响应未知</option>
+        <option value="clearMatch">核对凭据已清除</option>
+        <option value="testUnknown">测试发送结果未知</option>
+        <option value="testFailure">测试连接失败</option>
+      </select>
+    </label>
+    <a href="surface.html" target="_blank">打开实际视口页面</a>
+  </header>
+  <p>
+    仅演示交互，不保存配置、不发送邮件。点击保存、发送测试、清除和说明图标可查看推荐反馈；未覆盖状态沿既有设计。
+  </p>
+  <div id="stage">
+    <div id="frame-wrap">
+      <iframe
+        id="preview"
+        title="SMTP 原型"
+        src="surface.html?v=feedback1"
+      ></iframe>
+    </div>
+  </div>
+  <script>
+    const frame = document.getElementById('preview');
+    const wrap = document.getElementById('frame-wrap');
+    let mobile = false,
+      dark = false;
+    function size() {
+      const width = mobile ? 390 : 1440,
+        height = mobile ? 844 : 1080;
+      const scale = Math.min(1, (window.innerWidth - 32) / width);
+      frame.style.width = width + 'px';
+      frame.style.height = height + 'px';
+      frame.style.transform = 'scale(' + scale + ')';
+      wrap.style.width = width * scale + 'px';
+      wrap.style.height = height * scale + 'px';
+      document
+        .getElementById('desktop')
+        .setAttribute('aria-pressed', String(!mobile));
+      document
+        .getElementById('mobile')
+        .setAttribute('aria-pressed', String(mobile));
+    }
+    function send() {
+      frame.contentWindow.postMessage(
+        {
+          type: 'smtp-prototype',
+          scenario: document.getElementById('scenario').value,
+          dark,
+        },
+        location.origin,
+      );
+    }
+    document.getElementById('desktop').onclick = () => {
+      mobile = false;
+      size();
+    };
+    document.getElementById('mobile').onclick = () => {
+      mobile = true;
+      size();
+    };
+    document.getElementById('theme').onclick = () => {
+      dark = !dark;
+      document.getElementById('theme').textContent = dark ? '浅色' : '深色';
+      send();
+    };
+    document.getElementById('scenario').onchange = send;
+    frame.onload = send;
+    window.onresize = size;
+    size();
+  </script>
+</html>

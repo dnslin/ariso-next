@@ -1,0 +1,773 @@
+import React, { useEffect, useRef, useState } from 'react';
+import { createRoot } from 'react-dom/client';
+import { Button } from '@heroui/react/button';
+import { CloseButton } from '@heroui/react/close-button';
+import { Input } from '@heroui/react/input';
+import { Label } from '@heroui/react/label';
+import { TextField } from '@heroui/react/textfield';
+import { Modal } from '@heroui/react/modal';
+import { Select } from '@heroui/react/select';
+import { ListBox } from '@heroui/react/list-box';
+import { Popover } from '@heroui/react/popover';
+import { Toast, ToastProvider, toast } from '@heroui/react/toast';
+import {
+  ChartNoAxesCombined,
+  ChevronDown,
+  ChevronsLeft,
+  CircleCheck,
+  CloudUpload,
+  Folder,
+  HardDrive,
+  Images,
+  Info,
+  KeyRound,
+  LayoutDashboard,
+  Link,
+  Menu,
+  Moon,
+  Settings,
+  ShieldCheck,
+  SlidersHorizontal,
+  Sun,
+  Tags,
+  Trash2,
+  X,
+  Mail,
+  Server,
+  Hash,
+  UserRound,
+  Badge,
+  Eraser,
+  Send,
+  Save,
+} from 'lucide-react';
+
+const navigation = [
+  ['总览', LayoutDashboard, true],
+  ['上传', CloudUpload],
+  ['图库', Images],
+  ['相册', Folder],
+  ['标签', Tags],
+  ['分享管理', Link],
+  ['回收站', Trash2],
+  ['访问统计', ChartNoAxesCombined, true],
+  ['存储管理', HardDrive],
+  ['站点设置', SlidersHorizontal],
+] as const;
+const fieldClass =
+  'h-11 rounded-xl border border-border bg-field-background px-3.5 text-sm shadow-none max-sm:text-base';
+const fieldIcons = {
+  host: Server,
+  port: Hash,
+  security: ShieldCheck,
+  username: UserRound,
+  fromName: Badge,
+  fromEmail: Mail,
+  password: KeyRound,
+};
+const initial = {
+  host: 'smtp.example.com',
+  port: '587',
+  security: 'starttls',
+  username: 'noreply@example.com',
+  fromName: 'Ariso',
+  fromEmail: 'noreply@example.com',
+  password: '',
+};
+const messages: Record<
+  string,
+  { title: string; description: string; action?: string }
+> = {
+  saveUnknown: {
+    title: '保存结果待核对',
+    description: '连接中断，尚不能确认保存结果。输入已保留，请先重新读取设置。',
+    action: '重新读取设置',
+  },
+  readFail: {
+    title: '未能读取当前设置',
+    description:
+      '核对请求失败。输入仍保留，保存、测试和清除暂不可用，请重试读取。',
+    action: '重新读取设置',
+  },
+  publicMatch: {
+    title: '当前配置与输入一致',
+    description: '已核对主机、端口、连接方式、用户名及发件人设置。未重复保存。',
+    action: '继续编辑',
+  },
+  mismatch: {
+    title: '当前配置与输入不一致',
+    description:
+      '保留了本次输入。可重新读取，或以当前保存配置重新编辑；不会自动重复保存。',
+    action: '从当前配置重新编辑',
+  },
+  passwordUnknown: {
+    title: '公开配置已核对，密码变更无法确认',
+    description:
+      '读取设置只能确认是否已设置密码，不能确认这次替换。请从当前配置重新编辑，重新输入密码后主动保存。',
+    action: '从当前配置重新编辑',
+  },
+  clearUnknown: {
+    title: '凭据清除结果待核对',
+    description: '清除请求的响应中断。请先重新读取设置，暂不重复清除。',
+    action: '重新读取设置',
+  },
+  clearMatch: {
+    title: '当前用户名和密码已清除',
+    description:
+      '已核对当前配置使用无认证连接。主机、端口、连接方式及发件人设置保留。',
+    action: '继续编辑',
+  },
+};
+
+function Prototype() {
+  const [scenario, setScenario] = useState('saved');
+  const [fields, setFields] = useState(initial);
+  const [saved, setSaved] = useState(initial);
+  const [hasPassword, setHasPassword] = useState(true);
+  const [configured, setConfigured] = useState(true);
+  const [dialog, setDialog] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [dark, setDark] = useState(false);
+  const [menu, setMenu] = useState(false);
+  const [tips, setTips] = useState(false);
+  const saveRef = useRef<HTMLButtonElement>(null);
+  const clearRef = useRef<HTMLButtonElement>(null);
+  const pending = Boolean(messages[scenario]);
+  const dirty = JSON.stringify(fields) !== JSON.stringify(saved);
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', dark);
+  }, [dark]);
+  useEffect(() => {
+    const receive = (event: MessageEvent) => {
+      if (
+        event.origin !== location.origin ||
+        event.data?.type !== 'smtp-prototype' ||
+        typeof event.data.scenario !== 'string' ||
+        ![
+          'saved',
+          'empty',
+          'testUnknown',
+          'testFailure',
+          ...Object.keys(messages),
+        ].includes(event.data.scenario)
+      )
+        return;
+      setDark(Boolean(event.data.dark));
+      const next = event.data.scenario;
+      setScenario(next);
+      setDialog(null);
+      setBusy(false);
+      setFields(
+        next === 'empty'
+          ? {
+              host: '',
+              port: '',
+              security: 'starttls',
+              username: '',
+              fromName: '',
+              fromEmail: '',
+              password: '',
+            }
+          : initial,
+      );
+      setSaved(
+        next === 'empty'
+          ? {
+              host: '',
+              port: '',
+              security: 'starttls',
+              username: '',
+              fromName: '',
+              fromEmail: '',
+              password: '',
+            }
+          : next === 'clearMatch'
+            ? { ...initial, username: '' }
+            : initial,
+      );
+      setConfigured(next !== 'empty');
+      setHasPassword(next !== 'empty' && next !== 'clearMatch');
+      if (next === 'clearMatch') setFields({ ...initial, username: '' });
+      if (next === 'mismatch')
+        setFields({ ...initial, host: 'smtp.updated.example.com' });
+      if (next === 'passwordUnknown')
+        setFields({ ...initial, password: 'new-secret-demo' });
+      if (next === 'testUnknown' || next === 'testFailure') setDialog(next);
+    };
+    window.addEventListener('message', receive);
+    return () => window.removeEventListener('message', receive);
+  }, []);
+  const update = (key: string, value: string) =>
+    setFields((prev) => ({ ...prev, [key]: value }));
+  const notify = (title: string, description?: string) =>
+    toast(title, {
+      description,
+      indicator: <CircleCheck size={20} />,
+      timeout: 6500,
+    });
+  const run = (action: string) => {
+    setBusy(true);
+    setTimeout(() => {
+      setBusy(false);
+      if (action === 'clear') {
+        setHasPassword(false);
+        setSaved({ ...saved, username: '', password: '' });
+        setFields({ ...fields, username: '', password: '' });
+        setDialog(null);
+        notify('SMTP 用户名和密码已清除');
+      }
+      if (action === 'save') {
+        setSaved({ ...fields, password: '' });
+        setFields({ ...fields, password: '' });
+        setConfigured(true);
+        setHasPassword(hasPassword || Boolean(fields.password));
+        notify('邮件设置已保存', '下次发送即生效，尚未发送测试邮件。');
+      }
+      if (action === 'test') {
+        setDialog(null);
+        notify(
+          'SMTP 已接受测试邮件',
+          '请检查当前所有者邮箱；接受不代表最终送达。',
+        );
+      }
+      if (action === 'read') {
+        setScenario(
+          scenario === 'clearUnknown'
+            ? 'clearMatch'
+            : scenario === 'passwordUnknown'
+              ? 'passwordUnknown'
+              : scenario === 'mismatch'
+                ? 'mismatch'
+                : fields.password
+                  ? 'passwordUnknown'
+                  : 'publicMatch',
+        );
+        if (scenario === 'clearUnknown') {
+          setSaved({ ...saved, username: '', password: '' });
+          setFields({ ...fields, username: '' });
+          setHasPassword(false);
+        }
+      }
+    }, 900);
+  };
+  const restore = () => {
+    setFields({ ...saved, password: '' });
+    if (scenario === 'clearMatch')
+      setFields({ ...saved, username: '', password: '' });
+    setScenario('saved');
+    notify('已恢复编辑', '可修改后主动保存。');
+    saveRef.current?.focus();
+  };
+  const nav = (isMenu = false) => (
+    <nav className="grid gap-2">
+      {navigation.map(([label, Icon, unavailable], index) => (
+        <React.Fragment key={label}>
+          {index === 7 ? <p className="text-[11px]">管理</p> : null}
+          <Button
+            variant="ghost"
+            className={
+              'shell-nav-link flex ' +
+              (label === '站点设置'
+                ? 'bg-[var(--ariso-current)] font-semibold'
+                : '')
+            }
+            aria-current={label === '站点设置' ? 'page' : undefined}
+            aria-disabled={unavailable || undefined}
+            onPress={() => isMenu && setMenu(false)}
+          >
+            <Icon size={18} />
+            <span>{label}</span>
+            {unavailable ? (
+              <span className="ml-auto text-[11px]">未开放</span>
+            ) : null}
+          </Button>
+        </React.Fragment>
+      ))}
+    </nav>
+  );
+  const user = (
+    <div className="flex gap-3 items-center min-h-14">
+      <span className="size-9 rounded-full bg-default flex items-center justify-center">
+        D
+      </span>
+      <div className="grid">
+        <span className="text-sm">dnslin</span>
+        <span className="text-xs">站点所有者</span>
+      </div>
+    </div>
+  );
+  const input = (key: keyof typeof fields, label: string, extra = {}) => (
+    <TextField className="grid gap-2" isDisabled={pending || busy}>
+      <Label className="flex items-center gap-2 text-[13px]">
+        {React.createElement(fieldIcons[key], {
+          size: 16,
+          className: 'size-4 shrink-0',
+          'aria-hidden': true,
+        })}
+        {label}
+      </Label>
+      <Input
+        className={fieldClass}
+        value={fields[key]}
+        onChange={(e) => update(key, e.target.value)}
+        {...extra}
+      />
+    </TextField>
+  );
+  const select = (
+    label: string,
+    value: string,
+    options: { id: string; label: string }[],
+    change: (key: string) => void,
+    disabled = false,
+  ) => (
+    <Select
+      value={value}
+      onChange={(key) => key !== null && change(String(key))}
+      isDisabled={disabled}
+    >
+      <Label className="flex items-center gap-2 text-[13px]">
+        {label === '连接安全' ? (
+          <ShieldCheck size={16} className="size-4 shrink-0" aria-hidden />
+        ) : null}
+        {label}
+      </Label>
+      <Select.Trigger className={fieldClass + ' min-h-11'}>
+        <Select.Value />
+        <Select.Indicator />
+      </Select.Trigger>
+      <Select.Popover>
+        <ListBox>
+          {options.map((option) => (
+            <ListBox.Item
+              key={option.id}
+              id={option.id}
+              textValue={option.label}
+              className="min-h-11"
+            >
+              {option.label}
+              <ListBox.ItemIndicator />
+            </ListBox.Item>
+          ))}
+        </ListBox>
+      </Select.Popover>
+    </Select>
+  );
+  return (
+    <>
+      <div className="admin-shell">
+        <aside className="shell-navigation">
+          <div className="h-18 flex items-center gap-[31px]">
+            <span className="shell-brand">Ariso</span>
+            <Button
+              isIconOnly
+              variant="ghost"
+              className="size-11"
+              aria-label="收起侧栏"
+            >
+              <ChevronsLeft size={18} />
+            </Button>
+          </div>
+          <p className="shell-description">图片，自在收纳。</p>
+          {nav()}
+          <div className="shell-user">
+            {user}
+            <Button
+              isIconOnly
+              variant="ghost"
+              className="size-11"
+              aria-label={dark ? '浅色主题' : '深色主题'}
+              onPress={() => setDark(!dark)}
+            >
+              {dark ? <Sun size={18} /> : <Moon size={18} />}
+            </Button>
+          </div>
+        </aside>
+        <header className="shell-mobile-header">
+          <span className="shell-brand">Ariso</span>
+          <Button
+            isIconOnly
+            variant="ghost"
+            className="size-11 rounded-lg p-0"
+            aria-label="打开菜单"
+            onPress={() => setMenu(true)}
+          >
+            <Menu size={22} />
+          </Button>
+        </header>
+        <div className="shell-workspace">
+          <main className="shell-content">
+            <div className="grid gap-1.5">
+              <h1 className="flex items-center gap-2.5 text-[30px] font-medium leading-normal">
+                <Settings className="size-6" />
+                站点设置
+              </h1>
+              <p className="text-sm">管理站点、图片处理与账号偏好。</p>
+            </div>
+            <div className="settings-desktop">
+              <div className="flex gap-1 w-fit rounded-2xl bg-default p-1">
+                {[
+                  ['图片处理', SlidersHorizontal],
+                  ['账号与安全', ShieldCheck],
+                  ['上传 API', KeyRound],
+                  ['邮件服务', Mail],
+                ].map(([label, Icon]: any) => (
+                  <Button
+                    key={label}
+                    variant={label === '邮件服务' ? 'primary' : 'ghost'}
+                    className="h-11 gap-2 rounded-xl"
+                  >
+                    <Icon size={16} />
+                    {label}
+                  </Button>
+                ))}
+              </div>
+            </div>
+            <div className="settings-mobile">
+              {select(
+                '设置分类',
+                'email',
+                [
+                  { id: 'processing', label: '图片处理' },
+                  { id: 'account', label: '账号与安全' },
+                  { id: 'api', label: '上传 API' },
+                  { id: 'email', label: '邮件服务' },
+                ],
+                () => {},
+              )}
+            </div>
+            <section className="grid gap-6 rounded-[20px] border border-border bg-surface p-6 max-sm:p-4">
+              <header className="flex items-start justify-between gap-4 max-sm:flex-col max-sm:gap-3">
+                <div className="grid gap-3">
+                  <h2 className="flex items-center gap-2 text-lg font-medium">
+                    <Mail size={20} className="size-5 shrink-0" aria-hidden />
+                    SMTP 邮件服务
+                  </h2>
+                  <p className="text-[13px] text-muted">
+                    {configured
+                      ? '已保存配置 · 下次发送即生效'
+                      : '尚未配置 · 请先保存，再发送测试邮件'}
+                  </p>
+                </div>
+                {hasPassword || saved.username ? (
+                  <div className="flex shrink-0 items-center gap-2 max-sm:self-end">
+                    <Button
+                      ref={clearRef}
+                      variant="secondary"
+                      className="h-11 gap-2 rounded-lg border border-border text-foreground"
+                      isDisabled={pending || busy}
+                      onPress={() => {
+                        clearRef.current?.focus({ preventScroll: true });
+                        setDialog('clear');
+                      }}
+                    >
+                      <Eraser size={16} className="size-4" aria-hidden />
+                      清除用户名和密码
+                    </Button>
+                    <Popover isOpen={tips} onOpenChange={setTips}>
+                      <Button
+                        isIconOnly
+                        variant="ghost"
+                        className="size-11"
+                        aria-label="清除 SMTP 凭据说明"
+                      >
+                        <Info size={20} aria-hidden />
+                      </Button>
+                      <Popover.Content className="max-w-[calc(100vw-32px)] rounded-xl border border-border bg-surface p-4">
+                        <Popover.Dialog
+                          className="grid gap-3 max-w-80"
+                          aria-label="清除凭据说明"
+                        >
+                          <p className="text-[13px]">
+                            仅用于允许无认证发送的 SMTP
+                            中继。清除会同时保存空用户名和密码，主机、端口、连接方式及发件人保留。
+                          </p>
+                          <Button
+                            variant="ghost"
+                            className="min-h-11"
+                            onPress={() => setTips(false)}
+                          >
+                            关闭说明
+                          </Button>
+                        </Popover.Dialog>
+                      </Popover.Content>
+                    </Popover>
+                  </div>
+                ) : null}
+              </header>
+              {pending ? (
+                <div
+                  role="status"
+                  className="grid gap-3 rounded-xl border border-border p-4"
+                >
+                  <h3 className="font-medium text-sm">
+                    {messages[scenario].title}
+                  </h3>
+                  <p className="text-[13px] text-muted">
+                    {messages[scenario].description}
+                  </p>
+                  <div className="flex flex-wrap gap-3">
+                    <Button
+                      variant="secondary"
+                      className="text-foreground"
+                      isDisabled={busy}
+                      onPress={() =>
+                        messages[scenario].action === '重新读取设置'
+                          ? run('read')
+                          : restore()
+                      }
+                    >
+                      {busy ? '正在核对…' : messages[scenario].action}
+                    </Button>
+                    {scenario === 'mismatch' ? (
+                      <Button
+                        variant="ghost"
+                        isDisabled={busy}
+                        onPress={() => {
+                          setScenario('saved');
+                          saveRef.current?.focus();
+                        }}
+                      >
+                        保留输入继续编辑
+                      </Button>
+                    ) : null}
+                    {scenario === 'mismatch' ||
+                    scenario === 'passwordUnknown' ? (
+                      <Button
+                        variant="ghost"
+                        isDisabled={busy}
+                        onPress={() => run('read')}
+                      >
+                        重新读取设置
+                      </Button>
+                    ) : null}
+                  </div>
+                </div>
+              ) : null}
+              <div className="grid grid-cols-2 gap-6 max-sm:gap-5">
+                <div className="max-sm:col-span-2">
+                  {input('host', 'SMTP 主机')}
+                </div>
+                <div className="max-sm:grid max-sm:grid-cols-[96px_1fr] max-sm:gap-3 max-sm:col-span-2">
+                  {input('port', '端口', { inputMode: 'numeric' })}
+                  <div className="sm:hidden">
+                    {select(
+                      '连接安全',
+                      fields.security,
+                      [
+                        { id: 'starttls', label: 'STARTTLS' },
+                        { id: 'tls', label: 'TLS' },
+                      ],
+                      (key) => update('security', key),
+                      pending || busy,
+                    )}
+                  </div>
+                </div>
+                <div className="max-sm:hidden">
+                  {select(
+                    '连接安全',
+                    fields.security,
+                    [
+                      { id: 'starttls', label: 'STARTTLS' },
+                      { id: 'tls', label: 'TLS' },
+                    ],
+                    (key) => update('security', key),
+                    pending || busy,
+                  )}
+                </div>
+                <div className="max-sm:col-span-2">
+                  {input('username', 'SMTP 用户名')}
+                </div>
+                <div className="max-sm:col-span-2">
+                  {input('fromName', '发件人名称')}
+                </div>
+                <div className="max-sm:col-span-2">
+                  {input('fromEmail', '发件人邮箱', { type: 'email' })}
+                </div>
+              </div>
+              <div className="grid gap-2">
+                {input('password', 'SMTP 密码', {
+                  type: 'password',
+                  autoComplete: 'new-password',
+                  placeholder: hasPassword
+                    ? '已设置 · 留空保留当前密码'
+                    : '未设置密码',
+                })}
+                <p className="text-[13px] text-muted">
+                  测试仅使用已保存配置，收件人为当前所有者。
+                </p>
+              </div>
+              <p className="text-[13px] text-muted">
+                编辑后请先保存，再发送测试邮件。保存无需重启，也不会自动发送邮件。
+              </p>
+            </section>
+          </main>
+          <footer className="shell-footer">
+            <Button
+              variant="secondary"
+              className="h-12 min-w-48 rounded-xl border border-border bg-background text-foreground max-sm:min-w-0 max-sm:flex-1 max-sm:px-2"
+              isDisabled={!configured || pending || busy}
+              onPress={() => (dirty ? setDialog('unsaved') : run('test'))}
+            >
+              <Send size={16} className="size-4" aria-hidden />
+              {busy ? '请稍候…' : '发送测试邮件'}
+            </Button>
+            <Button
+              ref={saveRef}
+              variant="primary"
+              className="h-12 min-w-48 rounded-xl max-sm:min-w-0 max-sm:flex-1 max-sm:px-2"
+              isDisabled={pending || busy}
+              onPress={() => run('save')}
+            >
+              <Save size={16} className="size-4" aria-hidden />
+              {busy ? '请稍候…' : '保存邮件设置'}
+            </Button>
+          </footer>
+        </div>
+      </div>
+      {dialog ? <Modal.Backdrop
+        isOpen={Boolean(dialog)}
+        isDismissable={!busy}
+        isKeyboardDismissDisabled={busy}
+        onOpenChange={(open) => !open && !busy && setDialog(null)}
+      >
+        <Modal.Container
+          className="w-[calc(100vw-32px)] max-w-[520px]"
+          placement="center"
+        >
+          <Modal.Dialog className="relative rounded-3xl border border-border bg-surface p-7 max-sm:px-6">
+            <CloseButton
+              aria-label="关闭"
+              isDisabled={busy}
+              onPress={() => setDialog(null)}
+              className="absolute top-3 right-3 size-11 bg-transparent"
+            />
+            <Modal.Header className="pr-10">
+              <Modal.Heading className="text-[22px] font-medium">
+                {dialog === 'clear'
+                  ? '清除 SMTP 登录凭据？'
+                  : dialog === 'unsaved'
+                    ? '输入尚未保存'
+                    : dialog === 'testUnknown'
+                      ? '测试邮件发送结果未知'
+                      : '无法连接邮件服务器'}
+              </Modal.Heading>
+            </Modal.Header>
+            <Modal.Body className="grid gap-4 pt-4">
+              {dialog === 'clear' ? (
+                <>
+                  <p className="text-sm">
+                    将同时清除已保存的用户名和密码，并改用无认证连接。
+                  </p>
+                  <p className="text-[13px] text-muted">
+                    仅适用于允许无认证发送的 SMTP
+                    中继。主机、端口、连接方式和发件人设置保留；不会提交其他未保存的编辑。
+                  </p>
+                </>
+              ) : dialog === 'unsaved' ? (
+                <>
+                  <p className="text-sm">
+                    测试只使用已保存配置，不会保存当前输入。
+                  </p>
+                  <p className="text-[13px] text-muted">
+                    返回后可先保存，或明确测试已保存配置。取消会保留所有输入。
+                  </p>
+                </>
+              ) : dialog === 'testUnknown' ? (
+                <>
+                  <p className="text-sm">
+                    未能确认发送结果。邮件可能已被服务器接受。
+                  </p>
+                  <p className="text-[13px] text-muted">
+                    请先检查当前所有者邮箱；主动重新测试可能再收到一封邮件。
+                  </p>
+                  <p className="text-xs text-muted">
+                    阶段：投递 · SMTP 响应中断
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p className="text-sm">
+                    连接阶段失败，服务器未接受本次测试邮件。
+                  </p>
+                  <p className="text-[13px] text-muted">
+                    请检查 SMTP 主机、端口和服务器网络，再重新测试。
+                  </p>
+                  <p className="text-xs text-muted">
+                    ECONNREFUSED · smtp.example.com:587
+                  </p>
+                </>
+              )}
+            </Modal.Body>
+            <Modal.Footer className="flex gap-3 pt-5">
+              <Button
+                variant="secondary"
+                className="min-h-12 flex-1 rounded-lg border border-border bg-background text-foreground"
+                isDisabled={busy}
+                onPress={() => setDialog(null)}
+              >
+                {dialog === 'clear' || dialog === 'unsaved'
+                  ? '取消'
+                  : '返回邮件设置'}
+              </Button>
+              <Button
+                variant="primary"
+                className="min-h-12 flex-1 rounded-lg px-3"
+                isDisabled={busy}
+                onPress={() => run(dialog === 'clear' ? 'clear' : 'test')}
+              >
+                {busy
+                  ? '请稍候…'
+                  : dialog === 'clear'
+                    ? '清除并保存'
+                    : dialog === 'unsaved'
+                      ? '测试已保存配置'
+                      : '重新测试'}
+              </Button>
+            </Modal.Footer>
+          </Modal.Dialog>
+        </Modal.Container>
+      </Modal.Backdrop> : null}
+      <Modal isOpen={menu} onOpenChange={setMenu}>
+        <Modal.Backdrop>
+          <Modal.Container className="w-full h-full max-w-full max-h-full">
+            <Modal.Dialog className="shell-menu flex flex-col">
+              <header className="shell-menu-header">
+                <span className="shell-brand">Ariso</span>
+                <Modal.CloseTrigger aria-label="关闭菜单" className="size-11">
+                  <X size={22} />
+                </Modal.CloseTrigger>
+              </header>
+              <div className="shell-menu-body">{nav(true)}</div>
+              <div>{user}</div>
+            </Modal.Dialog>
+          </Modal.Container>
+        </Modal.Backdrop>
+      </Modal>
+      <ToastProvider
+        placement="bottom end"
+        width={420}
+        className="bottom-[100px] sm:end-7"
+      >
+        {({ toast: notice }) => (
+          <Toast toast={notice} className="gap-3 rounded-xl p-4">
+            <Toast.Indicator>{notice.content.indicator}</Toast.Indicator>
+            <Toast.Content className="min-w-0 pr-8 wrap-anywhere">
+              <Toast.Title>{notice.content.title}</Toast.Title>
+              {notice.content.description ? (
+                <Toast.Description>
+                  {notice.content.description}
+                </Toast.Description>
+              ) : null}
+            </Toast.Content>
+            <Toast.CloseButton
+              aria-label="关闭通知"
+              className="size-11 border-0 bg-transparent opacity-100"
+            />
+          </Toast>
+        )}
+      </ToastProvider>
+    </>
+  );
+}
+createRoot(document.getElementById('root')!).render(<Prototype />);

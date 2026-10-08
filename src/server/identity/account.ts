@@ -134,6 +134,7 @@ export async function updateOwnerPassword(
 export async function readAccountInput<T>(
   request: Request,
   schema: z.ZodType<T>,
+  inputName = '账号信息',
 ) {
   let body: unknown;
   try {
@@ -143,7 +144,7 @@ export async function readAccountInput<T>(
     throw new AccountError(
       'INVALID_ACCOUNT_INPUT',
       400,
-      '请提交 JSON 账号信息',
+      `请提交 JSON ${inputName}`,
     );
   }
   const parsed = schema.safeParse(body);
@@ -151,7 +152,7 @@ export async function readAccountInput<T>(
     throw new AccountError(
       'INVALID_ACCOUNT_INPUT',
       400,
-      '请检查账号信息',
+      `请检查${inputName}`,
       parsed.error.issues.map((issue) => ({
         field: issue.path.join('.'),
         message: issue.message,
