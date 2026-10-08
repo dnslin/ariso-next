@@ -151,3 +151,9 @@ macOS arm64，Node 24.18.1，pnpm 11.19.0；使用已有 Ego Lite TaskSpace 1，
 本轮 P2 修复提交 `3954ded0` 已推送至同一分支，并更新 PR 说明。推送后实际回读 PR #264 为 OPEN、isDraft=true、MERGEABLE，head=`3954ded07c0930a6df18381d0547c334f76af3a3`；`gh pr checks` 返回 `no checks reported`，不记作 CI 通过。用户随后授权新建空间 4，本轮新增迟到响应及消费者补验通过，具体失败与重跑见上表。
 
 原项目工作区保持干净。本任务分支、worktree、原型和独立人工预览保留；未合并 PR、关闭 Issue、发布、部署或清理其他任务。
+
+### CORS 修复推送后的远端核对
+
+CORS 产品/测试及证据提交 `e40b472d40dde60e0f30421e599b7ca9662948c0` 已推送。实际回读 PR #264 为 OPEN、isDraft=true，statusCheckRollup=[]；`gh pr checks` 返回 no checks reported，不记作 CI 通过。刷新最新 origin/main 后，GitHub 显示 CONFLICTING；只读 merge-tree 确认 7 处冲突：`e2e/owner-shell.mjs`、`e2e/processing-settings-entry.mjs`、`eslint.config.mjs`、`src/app/settings/general/page.tsx`、`src/components/shell/settings-categories.tsx`、两份 runtime browser-plan/browser-runner 单元文件。没有修改工作树或提前合并。
+
+本次 CORS 修复代码、本地检查、完整定向浏览器和独立设计/代码评审完成，原上传 UI 人工验收保留。最新 main 的上述并发改动尚未集成与验证；PR 继续草稿，未合并、关闭 Issue、发布、部署或清理分支/worktree/原人工预览。原人工预览健康检查仍为 HTTP 200，保留原验收构建及数据。
