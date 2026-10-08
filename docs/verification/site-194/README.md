@@ -80,4 +80,4 @@ Figma 文件 `74sT9Hrf8G4czcWeTkET5b` 已实际写入。保留公共组件实例
 
 独立真实数据预览：http://127.0.0.1:3195/settings/general 。账号密码仅向用户私下提供，不进入代码、此文档或 PR。预览保持可用直到用户明确停止/清理。人工请核验桌面/手机关联行、四字段独立保存、错误后输入/焦点、地址展开复制、所属模块往返与未保存离开确认。改变 publicUrl 前需确保新地址可访问；维护责任见页面持久说明。
 
-旧浏览器 Navigation API 兼容性、实体触摸/软键盘、安全区、真实外部 GitHub OAuth、sharing/analytics 最终消费以及 Release 容器未验证。明确区分本地检查、浏览器、设计及人工结果，不由任一项替代另一项。远端实际 PR/checks 状态将在最终推送后核对。
+旧浏览器 Navigation API 兼容性、实体触摸/软键盘、安全区、真实外部 GitHub OAuth、sharing/analytics 最终消费以及 Release 容器未验证。明确区分本地检查、浏览器、设计及人工结果，不由任一项替代另一项。最终推送后已回读 PR #262：OPEN、草稿、可合并；statusCheckRollup 为空，当前没有远端检查，不记作 CI 通过。
