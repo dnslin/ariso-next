@@ -120,4 +120,6 @@ macOS arm64，Node 24.18.1，pnpm 11.19.0；使用已有 Ego Lite TaskSpace 1，
 
 原实现提交 `f3831f05` 及此前补验已推送到 `codex/issue-200-upload-settings`，关联 [草稿 PR #264](https://github.com/dnslin/ariso-next/pull/264)。实际 `gh pr view` 返回 OPEN、isDraft=true、MERGEABLE；`gh pr checks` 返回 `no checks reported`，statusCheckRollup 为空，没有远端 CI 通过结论，也不等待不存在的工作流。人工验收和上传增量证据已完成；最新补验结果见上表，适用默认检查仍有未解决失败，草稿状态保持。
 
+本轮 P2 修复提交 `3954ded0` 已推送至同一分支，并更新 PR 说明。推送后实际回读 PR #264 为 OPEN、isDraft=true、MERGEABLE，head=`3954ded07c0930a6df18381d0547c334f76af3a3`；`gh pr checks` 返回 `no checks reported`，不记作 CI 通过。本轮新增浏览器仍未执行，等待已提出的新空间授权答复。
+
 原项目工作区保持干净。本任务分支、worktree、原型和独立人工预览保留；未合并 PR、关闭 Issue、发布、部署或清理其他任务。
