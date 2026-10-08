@@ -21,7 +21,7 @@ export async function verifyDetail171Consumers({ page, config, sql, report }) {
     ['回收站', '/trash'],
     ['访问统计', null],
     ['存储管理', '/settings/storage'],
-    ['站点设置', '/settings/processing'],
+    ['站点设置', '/settings/general'],
   ];
   let branding;
   const screenshot = async (state, width, theme, current) => {

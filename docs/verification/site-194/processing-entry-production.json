@@ -1,0 +1,184 @@
+{
+  "status": "passed",
+  "phase": "settings",
+  "stage": "settings",
+  "finishedAt": "2026-10-08T08:10:22.394Z",
+  "settingsEntry": {
+    "cacheOwnerEvidence": "Same document/window is observed below. RootLayout retains Providers, whose useState owns the QueryClient across client navigation; no private React/QueryClient introspection is used.",
+    "initialQuality": 82,
+    "relatedMediaReads": [
+      {
+        "path": "/api/settings/media",
+        "method": "GET",
+        "route": "/settings/general",
+        "phase": "loading",
+        "settled": true,
+        "status": 200,
+        "quality": 68
+      }
+    ],
+    "left": {
+      "sameDocument": true,
+      "sameWindow": true,
+      "sameTimeOrigin": true,
+      "path": "/settings/general",
+      "relatedMediaRead": {
+        "path": "/api/settings/media",
+        "method": "GET",
+        "route": "/settings/general",
+        "phase": "loading",
+        "settled": true,
+        "status": 200,
+        "quality": 82
+      }
+    },
+    "returned": {
+      "sameDocument": true,
+      "sameWindow": true,
+      "sameTimeOrigin": true,
+      "path": "/settings/processing"
+    },
+    "heldRead": {
+      "path": "/api/settings/media",
+      "method": "GET",
+      "status": 200,
+      "requestId": "interception-job-115.0"
+    },
+    "loading": {
+      "state": "loading",
+      "text": "站点设置\n\n管理站点、图片处理与账号偏好。\n\n基本设置\n图片处理\n账号与安全\n上传 API\n正在读取处理设置\n\n请稍候，取得已保存设置后再编辑。",
+      "form": false,
+      "fields": 0,
+      "footer": false,
+      "save": false,
+      "preview": false
+    },
+    "displayed": {
+      "compressionEnabled": true,
+      "outputFormat": "WebP",
+      "quality": 68,
+      "maxEdge": 1700,
+      "jpegBackground": "#FFFFFF",
+      "watermarkMode": "text",
+      "watermarkAssetId": null,
+      "watermarkText": "R10 本次服务器设置",
+      "watermarkFont": "内置中文字体",
+      "watermarkFontSize": 3,
+      "watermarkColor": "#FFFFFF",
+      "watermarkStrokeColor": "#000000",
+      "watermarkStrokeWidth": 0,
+      "watermarkOpacity": 50,
+      "watermarkPosition": "bottom-right",
+      "watermarkMargin": 2,
+      "watermarkWidth": 20,
+      "defaultLinkVersion": "压缩图",
+      "defaultVisibility": "私有",
+      "concurrency": 1
+    },
+    "save": {
+      "path": "/api/settings/media",
+      "method": "PATCH",
+      "body": {
+        "compressionEnabled": true,
+        "outputFormat": "webp",
+        "quality": 68,
+        "maxEdge": 1700,
+        "jpegBackground": "#FFFFFF",
+        "watermarkMode": "text",
+        "watermarkAssetId": null,
+        "watermarkText": "R10 本次服务器设置",
+        "watermarkFont": "chinese",
+        "watermarkFontSize": 3,
+        "watermarkColor": "#FFFFFF",
+        "watermarkStrokeColor": "#000000",
+        "watermarkStrokeWidth": 0,
+        "watermarkOpacity": 50,
+        "watermarkPosition": "bottom-right",
+        "watermarkMargin": 2,
+        "watermarkWidth": 20,
+        "defaultLinkVersion": "compressed",
+        "defaultVisibility": "private",
+        "concurrency": 1
+      },
+      "status": 200,
+      "response": {
+        "id": 1,
+        "compressionEnabled": true,
+        "outputFormat": "webp",
+        "quality": 68,
+        "maxEdge": 1700,
+        "jpegBackground": "#FFFFFF",
+        "watermarkMode": "text",
+        "watermarkAssetId": null,
+        "watermarkText": "R10 本次服务器设置",
+        "watermarkFont": "chinese",
+        "watermarkFontSize": 3,
+        "watermarkColor": "#FFFFFF",
+        "watermarkStrokeColor": "#000000",
+        "watermarkStrokeWidth": 0,
+        "watermarkOpacity": 50,
+        "watermarkPosition": "bottom-right",
+        "watermarkMargin": 2,
+        "watermarkWidth": 20,
+        "defaultLinkVersion": "compressed",
+        "defaultVisibility": "private",
+        "concurrency": 1,
+        "updatedAt": "2026-10-08T08:09:08.091Z"
+      }
+    },
+    "leftAgain": {
+      "sameDocument": true,
+      "sameWindow": true,
+      "sameTimeOrigin": true,
+      "path": "/settings/general",
+      "relatedMediaRead": {
+        "path": "/api/settings/media",
+        "method": "GET",
+        "route": "/settings/general",
+        "phase": "loading",
+        "settled": true,
+        "status": 200,
+        "quality": 68
+      }
+    },
+    "failedReturn": {
+      "sameDocument": true,
+      "sameWindow": true,
+      "sameTimeOrigin": true,
+      "path": "/settings/processing"
+    },
+    "readFailure": {
+      "state": "error",
+      "text": "站点设置\n\n管理站点、图片处理与账号偏好。\n\n基本设置\n图片处理\n账号与安全\n上传 API\n无法读取处理设置\n\nFailed to fetch\n\n重新读取设置",
+      "form": false,
+      "fields": 0,
+      "footer": false,
+      "save": false,
+      "preview": false
+    },
+    "retriedDisplay": {
+      "compressionEnabled": true,
+      "outputFormat": "WebP",
+      "quality": 64,
+      "maxEdge": 1700,
+      "jpegBackground": "#FFFFFF",
+      "watermarkMode": "text",
+      "watermarkAssetId": null,
+      "watermarkText": "R10 本次服务器设置",
+      "watermarkFont": "内置中文字体",
+      "watermarkFontSize": 3,
+      "watermarkColor": "#FFFFFF",
+      "watermarkStrokeColor": "#000000",
+      "watermarkStrokeWidth": 0,
+      "watermarkOpacity": 50,
+      "watermarkPosition": "bottom-right",
+      "watermarkMargin": 2,
+      "watermarkWidth": 20,
+      "defaultLinkVersion": "压缩图",
+      "defaultVisibility": "公开",
+      "concurrency": 1
+    }
+  },
+  "browserErrors": [],
+  "originalSettingsRestored": true
+}

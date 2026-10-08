@@ -2,7 +2,9 @@ import { eq } from 'drizzle-orm';
 import type { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
 import type { z } from 'zod';
 import type { createSecretCrypto } from '../runtime/crypto.ts';
+import type { SiteSettings } from '../site/schema.ts';
 import { requireSiteSettings } from '../site/settings.ts';
+import { buildSiteUrl } from '../site/urls.ts';
 import { AccountError } from './errors.ts';
 import { githubSettings } from './schema.ts';
 import type { githubSettingsInputSchema } from './validation.ts';
@@ -50,13 +52,19 @@ function publicSnapshot(snapshot: GithubSnapshot) {
   };
 }
 
+export function buildGithubCallbackUrl(
+  settings: Pick<SiteSettings, 'publicUrl'>,
+) {
+  return buildSiteUrl(settings, '/api/auth/callback/github');
+}
+
 export function readGithubSettings(
   db: BetterSQLite3Database,
   crypto: SecretCrypto,
   effective: GithubSnapshot,
 ) {
   const saved = captureGithubSettings(db, crypto);
-  const publicUrl = requireSiteSettings(db).publicUrl;
+  const site = requireSiteSettings(db);
   return {
     saved: publicSnapshot(saved),
     effective: publicSnapshot(effective),
@@ -64,7 +72,7 @@ export function readGithubSettings(
       saved.enabled !== effective.enabled ||
       saved.clientId !== effective.clientId ||
       saved.clientSecret !== effective.clientSecret,
-    callbackUrl: `${publicUrl}/api/auth/callback/github`,
+    callbackUrl: buildGithubCallbackUrl(site),
   };
 }
 
