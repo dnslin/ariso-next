@@ -24,7 +24,7 @@
 
 本地改名回归先执行原实现，断言实际失败：临时 Key仍存在、finalBytes为空；修复后同一用例通过。见[失败](./rename-red.txt)与[修复后](./rename-green.txt)。第一次编写错误消息断言时命中“上传失败且清理失败”，校正为既有契约后才取得上述责任断言的失败证据。
 
-独立 agent 实际读取 `code-review-and-quality`、规格、实现、调用链和测试，覆盖正确性、职责、生命周期、权限、资源释放及默认入口。无 Required/Critical 发现。Optional：原有 `readMediaUsage` 与新对象观察 SQL 仍各维护同义分类逻辑，未来可能漂移；本次保留旧设置页消费契约，无兼容层或新依赖。
+初轮独立 agent 实际读取 `code-review-and-quality`、规格、实现、调用链和测试，覆盖正确性、职责、生命周期、权限、资源释放及默认入口。无 Required/Critical 发现。初轮 Optional：原有 `readMediaUsage` 与新对象观察 SQL 分别维护同义分类逻辑。后续两角度评审将此列为 Required，并按用户授权消除重复；旧设置页消费契约保留，详见下方结构补修。
 
 按审计建议将正式 Key 的 `state != accepted` 反转为 `= accepted`；最初只跑 handoff 用例仍绿，暴露局部断言不足。补交接前20字节 pending 断言后，完整生产组合文件实际2项失败，恢复原实现后相关16项通过。[mutation记录](./mutation.txt)。未削弱断言或跳过失败。
 
@@ -47,7 +47,7 @@ macOS arm64，Node 24.18.1，pnpm 11.19.0；ImageMagick/ExifTool 来自已有 PA
 | `node docs/tasks/check.mjs` / `--self-test`                                                                                                                                                                                                                                                                                                                                              | 120任务/298需求及5个拒绝用例通过                                                                                                       |
 | `git diff --check`                                                                                                                                                                                                                                                                                                                                                                       | 通过，最终提交前再核对改动后的证据                                                                                                     |
 
-最终构建退出0并生成两个 analytics 动态路由。输出追踪仍报告其它架构 native 包和可选 `@opentelemetry/api` 等依赖解析诊断；完整日志保留在忽略目录 `test-results/analytics-168/build-fixed.log`。同一产物的真实 standalone HTTP 和默认集成通过，说明本机相关运行链路可用；不声称日志无诊断，不推导Linux、跨架构或最终镜像可用。
+最终构建退出0并生成两个 analytics 动态路由。输出追踪仍报告原生包和可选 `@opentelemetry/api` 等依赖解析诊断；完整日志保留在忽略目录 `test-results/analytics-168/build-fixed.log`。同一产物的真实 standalone HTTP 和默认集成通过，说明本机相关运行链路可用；不声称日志无诊断，不推导Linux、跨架构或最终镜像可用。
 
 另实际执行 `pnpm exec vitest list --project integration --project media-tools --json`，核对默认清单确实含本次 production usage、HTTP、live runner 和 upload/local 回归。
 
@@ -86,3 +86,27 @@ R2与SeaweedFS生产用量联验均通过，分别保留[SeaweedFS报告](./live
 独立评审者沿用 `code-review-and-quality`，只读检查完整文件、使用点和唯一代码差异，确认 `resolve` 无使用点、行为和检查规则不变；无 Required 或 Optional 发现。
 
 补修后的证据使用 Prettier 格式化，`node docs/tasks/check.mjs`（120任务/298需求）、`node docs/tasks/check.mjs --self-test`（5个拒绝用例）及 `git diff --check` 均通过。实际执行 `gh pr ready 261` 后，PR 状态为 OPEN、isDraft=false、MERGEABLE，statusCheckRollup=[]；远端未配置本 PR 检查，不记作 CI 通过。
+
+## 两角度评审与结构补修（2026-10-08）
+
+用户明确要求两个独立 agent 分别使用 `code-review-and-quality` 与 `thermo-nuclear-code-quality-review` 审查完整 PR head `0773c337`。正确性角度 Approve；严格结构角度 Request changes，1项 Required、0项 Critical：新的 media 对象投影复制了旧 `readMediaUsage` 中仍在生产使用的分类、未知大小及关联规则。该发现是维护性负担，不宣称当时统计结果已错；PR 据此退回草稿。
+
+用户随后授权规划和修复。本轮使用 `using-agent-skills` 选择 `code-simplification`，仅修改 `src/server/media/usage.ts` 的旧对象聚合，使其从 `mediaUsageObjects` 子查询读取并筛选 `occupied=1`；删除第二套 CASE、known 判定、JOIN 和状态筛选。原有返回类型、计数初始化、Map 顺序、空库行为、确认时间与 Date 转换均保留。analytics 跨提供方责任排名不变，设置页 API 不变，无 UI、schema、依赖或迁移改动。
+
+保留所有旧测试断言，补同一 fixture 下两个入口的具体数值断言，涵盖 planned/writing/cleanup/当前版本与候选、回收恢复、部分删除和 original/pending 已知对象缺确认时间。新增断言在旧实现中18/18通过，结构修复后同一3文件18/18通过，分别保留[基线](./refactor-baseline.txt)与[修复后输出](./refactor-targeted.txt)。这是保持行为的重构，没有编造功能失败作为红测试。
+
+完整 PR 正确性评审还实际将新投影 `o.status = 'writing'` 反转为 `!=`：5项中4失败；按原始字节恢复后相关3文件19/19通过，本地 rename 回归1项通过（14项因名称筛选未运行）。原始 mutation/恢复输出在 worktree 忽略目录 `test-results/analytics-168/review-mutation.txt` 和 `review-restored.txt`，未碰真实远端服务。此次结构修复未再重复该已证实有效的 mutation。
+
+两位评审者分别复审修复后的完整差异和调用链。正确性核对 NULL、SUM/MIN、0字节、状态约束、空库/顺序/Date、事务与错误；结构评审确认只保留一套对象判定，没有用通用聚合包装两种不同职责。两者均 **Approve**，无 Critical/Required/Optional，原 Required 已解决。见[正确性复审](./review-correctness-fixed.md)与[结构复审](./review-structure-fixed.md)。只读审计不代替以下实际检查。
+
+本轮环境仍为 macOS / Node24.18.1 / pnpm11.19.0。实际 `pnpm install --frozen-lockfile`、`pnpm run format:check`、`pnpm run lint`、`pnpm run typecheck`、`pnpm run build` 均退出0；`pnpm run test:unit --maxWorkers=2` 为123文件、1680/1680通过。构建生成两个动态路由，仍有原生包及可选依赖输出追踪诊断，完整输出保留在忽略目录 `test-results/analytics-168/refactor-build.txt`；未将退出0记作无诊断。
+
+本轮只影响 media 单提供方聚合，真实远端运行器及 analytics 对象投影未变，R2/SeaweedFS 的既有逐 Key 联验证据保留；未重复联验或规模实验。没有新增测试运行器或 suite/only 参数，新增断言仍在默认 integration 的 media/usage.test.ts 内。浏览器、UI 设计对照和人工验收不适用；镜像/双架构仍遵守 Release 边界。
+
+修复后 `pnpm run test:integration --maxWorkers=2` 实际执行175文件/1680项，174文件/1679项通过，1项失败，418.17秒。失败为既有 `tests/integration/upload/api.test.ts` 的畸形 multipart/字段与文件限额复合场景，`fetch failed` / `ECONNRESET`，输出没有定位到其中哪个子请求。保留[失败段与全量计数](./refactor-integration-failure.txt)；完整日志仅在忽略目录，避免提交其它场景可能产生的临时凭证。此轮默认全量状态保持失败。
+
+使用 `debugging-and-error-recovery` 读取实际 public fixture、multipart/public-receive 与该场景，核对与本次 media 聚合改动无调用路径；没有在运行期间重建产物或修改产品代码。在相同产物和原断言下，仅重跑失败文件：`pnpm exec vitest run --project media-tools tests/integration/upload/api.test.ts`，15/15通过，24.08秒，见[定向复验](./refactor-upload-api-rerun.txt)。未能复现连接重置，根因尚未建立，不声称已经修好上传连接问题，也不把它无证据归因于资源、代理或本次SQL。未扩大修改到上传模块。
+
+本次结构 Required 已解决，代码与独立复审完成。全量集成仍有上述失败记录，定向复验不替代整轮通过，因此 PR #261 保持草稿；其余适用检查通过。既有完整集成通过记录属于补修前输入，继续保留当时结果，不能代替本轮默认检查。
+
+最终证据增量的 Prettier 检查与 `git diff --check` 均通过；Node24 文档检查120任务/298需求及5个拒绝用例通过。原始失败、定向通过及审计限制分别保留，没有压低默认验证范围。
