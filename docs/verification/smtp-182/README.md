@@ -2,6 +2,16 @@
 
 关联 [T-ID-06 / #182](https://github.com/dnslin/ariso-next/issues/182)。本记录区分实现、本地检查、真实浏览器、设计评审与所有者人工验收，不以 SMTP 接受替代最终收件。
 
+## 2026-10-08 授权收尾
+
+所有者在两个独立角度复审后明确要求“清理并更新本地分支，合并这个PR 关闭这个issue”。本轮按该指令执行，不把授权合并解释为默认全量浏览器通过；下方草稿、预览保留及未合并描述属于各阶段历史记录。合并与关闭的最终状态以 [PR #265](https://github.com/dnslin/ariso-next/pull/265) 和 [Issue #182](https://github.com/dnslin/ariso-next/issues/182) 的实际回读为准。
+
+收尾前获取最新main `5a3b41cd`，把已合并的上传设置PR #264整合到本任务分支，生成合并提交 `bb434b01`。四处重叠为浏览器计划、运行器、计划单元和任务卡，无产品代码冲突。独立结构评审者增量复读双父差异与最终调用链：SMTP、upload-settings均保留默认full入口，两个phase按所属suite分派，storage-cors完整入口和参数拒绝保持；T-ID-06与T-UP-08及双方证据均保留，无新阻塞。
+
+Node24.18.1 / pnpm11.19.0实际运行受影响检查：`pnpm exec vitest run --project unit tests/unit/runtime/browser-plan.test.ts` 97项通过；三个重叠脚本/测试的ESLint通过；四个重叠文件Prettier通过；两个脚本 `node --check` 通过；`node docs/tasks/check.mjs` 120任务/298需求通过。没有重跑输入未变的SMTP产品检查或操作已交还用户的浏览器。两个完整独立评审与条件变异见[代码审计](./code-review.md#pr-265-两个独立角度复审)。默认全量6个失败、停止后未执行项及外部邮件API/邮件头/精确到达时间未读取继续保留。
+
+清理范围限定本任务：先保存忽略目录中的独立测试数据、私有凭证与本地评审/验证记录，再停止本任务预览并归档管理型工作区，移除本任务本地/远端分支，快进更新原项目main；不清理其他任务。未发布、未部署，未把没有远端检查记作CI通过。
+
 ## 范围与依据
 
 2026-10-08 从最新 `origin/main`（`96212bea`）创建管理型独立工作区，分支 `codex/issue-182-smtp`；保留原 main 及其他任务。`gh issue view 182 --json number,title,body,state,comments,url` 与原生依赖接口回读：#182 OPEN、无评论，blocked by #60/#57/#146/#136 均 CLOSED；blocking #184 OPEN。
