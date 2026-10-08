@@ -26,3 +26,17 @@ Final resumed evidence/task-card format check: exit 0
 node docs/tasks/check.mjs: 120 tasks / 298 requirements passed
 UI manual acceptance: user explicitly confirmed passed in this conversation
 Independent code and incremental design reviews: passed for this Issue's final upload changes; broader default failures retained
+
+After the user explicitly handed TaskSpace 1 back for supplemental verification:
+node scripts/verify-browser.mjs --suite library-copy: exit 0; 10 checks / 85 layouts / errors=[]; seven public consumer routes reached
+node scripts/verify-browser.mjs --suite processing --only settings: exit 0; 23 checks / 39 layouts / browserErrors=[]; trusted pointer activation and real asset read recovery completed
+node scripts/verify-browser.mjs --suite processing --only recovery: exit 0; 13 checks / 19 layouts / browserErrors=[]; old-session recovery reached
+node scripts/verify-browser.mjs --suite tokens --only lifecycle: exit 0; 1 check / 16 layouts / browserErrors=[]
+node scripts/verify-browser.mjs --suite library-batch: exit 0; 17 checks / 150 layouts / errors=[]
+node scripts/verify-browser.mjs --suite <suite>: trash, shell-navigation, albums, album-cover, tags, upload-regression, upload-input, upload, sharing-management all exit 0; previously unexecuted full-run tail completed in nine focused suites
+Each used Node 24.18.1, existing Ego Lite TaskSpace 1, independent disposable runtime data and the existing production build; no product, timeout, click or assertion changes. Historical failed runs are retained and their causes are not proven by these passes.
+node scripts/verify-browser.mjs --suite library: exit 0; 77 checks / 327 layouts; real anonymous/login/detail/viewer/trash/session behavior completed. The report has no browserErrors field, so no empty-error claim is added.
+Remaining storage-cors: original full-run waitForSelector [role="alert"] timed out after 10s; current CorsScreen Alert and installed HeroUI AlertRoot do not supply that role. No dedicated storage-cors suite exists, storage-admin does not execute it. No out-of-scope source changes or timeout/assertion changes; original full result remains failed and PR remains draft.
+Manual preview handback: initial relative credential path was unavailable inside Ego nodejs; corrected to the real absolute private path. Login succeeded to /upload, so an incorrect /settings/general URL wait timed out. After real sidebar navigation an incorrect visible input[name=maxFileMiB] selector wait timed out. Current snapshot showed the three ready controls at user values 501/20/500. No save/reset was executed; actual result page retained with one resolved task.finish({keep:[p1]}). These preparation errors are not recorded as product test passes and do not alter manual acceptance.
+Final supplemental evidence checks: affected Prettier check exit 0; node docs/tasks/check.mjs passed 120 tasks / 298 requirements; 228 local Markdown links checked with no missing files; private manual passwords absent from all nine changed/new files; five new JSON reports parsed; git diff --check exit 0.
+Independent incremental code review read the new reports and original library/processing call paths; no new must-fix issue within Issue #200. Original default full browser result remains failed; remaining CORS limitation is retained.

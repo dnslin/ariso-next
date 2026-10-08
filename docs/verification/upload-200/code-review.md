@@ -6,9 +6,9 @@
 
 当前代码静态复审没有剩余必须修复发现。审计发现的会话失效资源释放、公共消费者旧入口以及字段范围错误覆盖已修复并复审。最新上传四组真实浏览器验证通过，补强的键盘描边、GET 次数、非零滚动、真实拒绝及队列连续性均有实际数据支持。对应独立设计评审已完成并通过，结论见设计评审，不能由本功能审计代替。
 
-本结论不表示默认全量检查通过。默认浏览器全量入口曾退出 1，在 library-copy 用户接管后中止；该历史报告不改写。恢复后最新定向上传四组为 passed/all、54 布局、5 条行为结论、browserErrors=[]，无 error/cleanupError。Token 四路分类消费者定向通过。processing settings 的本次入口断言通过，但整组随后在既有素材读取恢复场景失败；processing recovery 也在预览恢复点击失败，尚未执行旧会话恢复场景。library-copy 补跑再次因用户接管退出 1，后续七路公共消费者 smoke 未到达。用户明确确认 UI 人工验收通过；PR 仍按尚未完成的适用验证边界保持草稿。
+本结论不表示默认全量检查通过。默认浏览器全量入口曾退出 1，在 library-copy 用户接管后中止；该历史报告不改写。最新上传四组、Token 分类消费者、processing settings/recovery、Token lifecycle、library-copy（含七路公共 smoke）、library-batch、library 及九个此前未到达的尾部 suite 已分别定向通过。最新浏览器补验仍未通过的组只剩 storage-cors；默认 library 首轮失败也保留为历史。用户明确确认 UI 人工验收通过，独立设计评审完成；PR 保留草稿，不将独立补验集合记为默认全量单次通过。
 
-先前 Ego 用户接管时停止所有浏览器操作，没有绕过控制边界。之后用户明确“ui 验收我通过了 继续 ego 测试”，授权恢复同一 TaskSpace 1，实际 ownership=agent 后由实现者继续。library-copy 补跑再次收到用户接管暂停后，浏览器工作已再次停止，没有重试、重复询问、替换空间或绕过。评审者始终只读源码和报告，没有操作 Ego 或重复运行应用检查。
+历次 Ego 用户接管时均停止浏览器工作，没有绕过控制边界。用户随后明确“ui 验收我通过了 继续 ego 测试”，之后又明确“交给agent了 继续补验”，均由实现者恢复同一 TaskSpace 1；最新恢复后完成的结果另增记录如下，不覆盖之前的停止报告。评审者始终只读源码和报告，没有操作 Ego 或重复运行应用检查。
 
 ## 审计范围与调用链
 
@@ -95,5 +95,30 @@ processing 修复后调用链为 settings 阶段 → verifyProcessingSettings �
 归档[Token 分类消费者报告](./reports/resumed/tokens-consumers.json)为 status=passed、phase=consumers、16 layouts、browserErrors=[]。实际四路为 general/processing/account/API，桌面 1440 与手机 390、Light/Dark，原分类顺序、标签、图标及选中项断言均保留。本结果证明新增 general 的公共分类消费通过，不覆盖默认 tokens-1440 lifecycle 的通知遮挡失败。
 
 恢复后的局部通过不覆盖默认首轮失败，也不替代完整 processing settings/recovery 的未通过结果。评审实际读取归档[library-copy 再次停止摘要](./reports/resumed/library-copy-stopped.json)：补跑命令 `node scripts/verify-browser.mjs --suite library-copy` 在 cross-page-native-copy 阶段再次返回用户接管暂停，status=failed、checks=[]，退出 1。此摘要没有其他产品断言失败证据，不能据接管停止推断复制功能缺陷或通过；后续七路共享 route smoke 没有到达，因此不能声称已完成全部公共路由验证。浏览器已按新停止边界再次暂停，不继续 Ego 操作。
+
+## 最新再次授权后的独立补验
+
+上述失败与停止是此前实跑事实，均保留。用户再次明确交还同一 TaskSpace 1 后的最新补验结果如下，评审实际读取归档报告及 processing 的原始报告，不重复测试。
+
+| 最新范围                     | 实际结果与证据                                                                                                                                                                                                                                                                                                                                                                                       |
+| ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| library-copy 完整组          | [完整报告](./reports/resumed/library-copy-complete.json) passed/full，10 checks、85 layouts、errors=[]。七路 shared-toast-route-smoke 均有 loaded=true，分别为 library、albums、相册详情、tags、upload、trash、storage 详情；源码核对真实 route、main 与无横向溢出，填补之前未到达边界。                                                                                                             |
+| 默认尚未到达的九个尾部 suite | [尾部记录](./reports/resumed/tail-complete.json)中 trash、shell-navigation、albums、album-cover、tags、upload-regression、upload-input、upload、sharing-management 每项 exitCode=0、runnerStatus=passed，所属阶段全部 passed。各用独立临时运行数据，没有重复已通过的上传限制或 Token 消费者组。                                                                                                      |
+| processing settings          | [失败项补验记录](./reports/resumed/failures-retried-complete.json)与 `test-results/browser-upload-200/retry-processing-settings/processing.json` 均 passed/settings，23 checks、39 layouts、browserErrors=[]；原素材读取及清除恢复断言完整执行，设置恢复完成。                                                                                                                                       |
+| processing recovery          | 同一归档与 `test-results/browser-upload-200/retry-processing-recovery/processing.json` 为 passed/recovery，13 checks、19 layouts、browserErrors=[]。报告实际包含最后两条会话失效检查，并有 uploadLifetimeExpiry 的真实 /upload/settings 200→401、原 processing 路由/quality=66 保留且编辑/保存/预览禁用，证明已到达 verifyProcessingSessionRecovery。源码顺序仍为 settings→preview→session，无跳过。 |
+| Token lifecycle              | 失败项补验记录为 passed，1 check、16 layouts、browserErrors=[]。真实启停、禁用期间防重复、撤销等原断言保留，不倒改首次通知遮挡失败。                                                                                                                                                                                                                                                                 |
+| library-batch 完整组         | [完整报告](./reports/resumed/library-batch-complete.json) passed/full，17 checks、150 layouts、errors=[]。原添加标签点击目标断言未弱化，最新通过与首轮失败分开记录。                                                                                                                                                                                                                                 |
+
+library 最新[完整报告摘要](./reports/resumed/library-complete.json)与 `test-results/browser-upload-200/retry-library/library.json` 均 status=passed，77 checks、327 layouts，trashedFixtureCleanupChanges=0。原报告没有 browserErrors/errors 字段，不添加空数组或声称错误收集结果为空。匿名入口、登录、真实详情/上传/相册等原断言未改，独立新运行环境下完整执行成功。
+
+library 的本次公共消费者调用链为 verifyLibraryDetail171 → verifyDetail171Consumers；原报告有 16 个实际 consumer layouts，覆盖上传 ready/versions、相册 selected/versions，各为 1440/390、Light/Dark。所有记录的“站点设置”href 均为 `/settings/general`；源码继续精确核对完整导航、当前项、单一 shell/main、品牌/账号、64px 手机头部与无横向溢出，证明本次更改的公共导航消费场景确已到达。这些实际记录不只是截图进度。
+
+processing 与 Token 补跑未改变产品、原点击方法、超时或断言；通过不能反推先前瞬态失败的根因。先前提出的 query 刷新换节点、滚动期间坐标变化均只有可能路径，没有事件证据证明，不将其写成已确认原因。当前没有新增本次静态必须修复发现。
+
+**默认 library 失败的历史边界：** 首轮等待 #email 的失败保留。只读核对 library 入口：测试无条件访问 /login 并等待 #email，随后还断言匿名 /api/images=401；真实 LoginPage 对已认证 owner 会重定向。默认共享运行流程在此之前运行 owner 业务场景，进入 library 前未显式恢复匿名状态，因此存在认证前置不匹配的具体可能路径，但缺当时 cookie/重定向证据，不能断言唯一根因。focused runner 仅 Node 初始化并不自动完成浏览器 owner 登录，不能将其初始认证状态记为与默认流程相同。最新独立 library 完整通过，没有修改该匿名断言、产品或超时，不能反推默认当时状态或倒改首轮报告。
+
+**storage-cors 剩余边界的具体核对：** 原报告完成 6 条 checks 后，在 `e2e/storage-cors-ui.mjs` 的读取失败场景给真实 cors-tests GET 注入丢响应。reload 后“重新加载”按钮已找到，随后等待 `[role="alert"]` 10 秒超时。当前 CorsScreen 的 query.isError 分支使用 `<Alert status="danger">` 但没有传 role；实际安装的 HeroUI AlertRoot 仅渲染 dom.div 和 data-slot=alert-root，不自动增加 role=alert。测试等待语义与该错误分支 DOM 存在具体不匹配。未取得当时完整 DOM/事件证据，不以静态不匹配断言所有根因，也不以“范围外”代替诊断。
+
+本次 diff 未修改 CorsScreen、useCorsTest、storage-cors-ui、CORS 服务或 HeroUI 依赖。共同 shell 改动为站点侧栏入口、新增 general 分类及 general 通知位置，未找到影响上述错误等待的具体调用链。现有 browser-plan 没有 storage-cors 独立 suite；storage-admin only 仅 live/dialogs/feedback/regressions，普通定向只有 admin 与 shell-navigation，即使启动 CORS fixture 也不执行 storage-cors 组。该组原入口仅为默认 full 的专门 stage → storage-cors.mjs → verifyCorsUiFailures，不能将 storage-admin 的通过称为 CORS 重验。本次不改范围外产品/测试、不延长超时，也不为消除记录而添加新入口；该组保持未重验、首轮未通过。
 
 评审者实际执行过 `git diff --check` 并通过；其余为只读源码、类型、库调用链、测试和已生成日志审计。遵守“不机械重复已通过检查”的边界，没有重新执行实现者的测试、构建或 lint，也没有做 mutation 实验。受控浏览器故障不能证明实际代理断网，静态审计不能证明物理触屏、软键盘或设备安全区。本次不审计发布镜像、容器或部署。
