@@ -4,7 +4,7 @@ import { eq } from 'drizzle-orm';
 import { afterEach, beforeEach, expect, it } from 'vitest';
 import { collectionFixture } from '../collections/helpers.ts';
 import {
-  readOverview,
+  readCurrentCounts,
   readUsage,
 } from '../../../src/server/analytics/usage.ts';
 import {
@@ -95,7 +95,7 @@ it('returns true empty storage and counts all normal states, recycle separately 
     confirmationStatus: 'confirmed',
     groups: { original: 0, derived: 0, recycle: 0, pending: 0 },
   });
-  expect(readOverview(fixture.db).counts).toEqual({
+  expect(readCurrentCounts(fixture.db).counts).toEqual({
     normalImages: 0,
     recycledImages: 0,
     initialProcessingFailures: 0,
@@ -131,7 +131,7 @@ it('returns true empty storage and counts all normal states, recycle separately 
     files: [{ queueItemId: 'one', originalName: 'one.png', declaredSize: 20 }],
   });
   fixture.db.update(storageConfigs).set({ enabled: false }).run();
-  expect(readOverview(fixture.db).counts).toMatchObject({
+  expect(readCurrentCounts(fixture.db).counts).toMatchObject({
     normalImages: 4,
     recycledImages: 2,
     albums: 1,
@@ -293,7 +293,7 @@ it('transfers actual local objects atomically, preserves retained temp bytes, an
   };
   expect(() => acceptSession(db, session.id, facts)).toThrow('handoff failure');
   expect(usage()).toEqual(before);
-  expect(readOverview(db).counts.normalImages).toBe(0);
+  expect(readCurrentCounts(db).counts.normalImages).toBe(0);
   db.$client.exec('DROP TRIGGER fail_handoff');
   acceptSession(db, session.id, facts);
   expect(usage()).toMatchObject({

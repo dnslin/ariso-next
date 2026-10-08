@@ -1,0 +1,92 @@
+{
+  "environment": {
+    "node": "24.18.1",
+    "pnpm": "11.19.0",
+    "platform": "macOS arm64"
+  },
+  "results": [
+    {
+      "command": "pnpm install --frozen-lockfile",
+      "status": "passed"
+    },
+    {
+      "command": "pnpm run db:generate",
+      "status": "passed",
+      "note": "0026 replaces the existing date/image index with date/image/count; historical rows unchanged."
+    },
+    {
+      "command": "pnpm run format:check",
+      "status": "passed"
+    },
+    {
+      "command": "pnpm run lint",
+      "status": "passed"
+    },
+    {
+      "command": "pnpm run typecheck",
+      "status": "passed",
+      "note": "Initial scale-runner inference failure retained separately; final code fixed."
+    },
+    {
+      "command": "pnpm exec tsc --noEmit --project tsconfig.json",
+      "status": "passed",
+      "note": "After final test-helper and diagnostic changes."
+    },
+    {
+      "command": "pnpm run build",
+      "status": "passed",
+      "note": "Optional-dependency output tracing diagnostics present. Not Linux or final container verification."
+    },
+    {
+      "command": "pnpm run test:unit --maxWorkers=2",
+      "status": "passed",
+      "filesPassed": 124,
+      "testsPassed": 1684
+    },
+    {
+      "command": "pnpm run test:integration --maxWorkers=2",
+      "status": "failed",
+      "filesPassed": 179,
+      "filesFailed": 1,
+      "testsPassed": 1727,
+      "testsFailed": 1,
+      "failure": "Unchanged upload/api multipart validation case: fetch failed/read ECONNRESET. Root cause not established. All three new analytics test files belong to the passing files."
+    },
+    {
+      "command": "pnpm exec vitest run --project media-tools tests/integration/upload/api.test.ts -t 'rejects truncated multipart, missing files, field byte limits and configured file size limits'",
+      "status": "passed",
+      "testsPassed": 1,
+      "notSelected": 14,
+      "note": "Does not replace the failed full run."
+    },
+    {
+      "command": "node tests/verification/analytics/reports-scale.ts --fixture-db test-results/analytics-169/scale-baseline-profile.db --report test-results/analytics-169/scale-final.json",
+      "status": "passed"
+    },
+    {
+      "command": "node --experimental-transform-types tests/verification/analytics/reports-live.ts --config /Volumes/data/project/ariso/.data/analytics-143-targets.json --output test-results/analytics-169/live-final",
+      "status": "passed",
+      "services": ["r2", "seaweedfs"]
+    },
+    {
+      "command": "node docs/tasks/check.mjs",
+      "status": "passed",
+      "tasks": 120,
+      "requirements": 298
+    },
+    {
+      "command": "node docs/tasks/check.mjs --self-test",
+      "status": "passed",
+      "rejectionCases": 5
+    }
+  ],
+  "status": "implementation-and-code-review-complete-full-integration-not-passed",
+  "prPolicy": "Draft; retain full-run failure despite focused recheck passing.",
+  "notApplicable": [
+    "UI/browser/design/manual acceptance: no UI change in T-ANA-04"
+  ],
+  "notVerified": [
+    "AWS S3 (not required)",
+    "Linux/final container and other architecture (Release stage)"
+  ]
+}

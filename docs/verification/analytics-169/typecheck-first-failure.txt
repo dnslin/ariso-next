@@ -1,0 +1,16 @@
+Already up to date
+Done in 322ms using pnpm v11.19.0
+$ next typegen && tsc --noEmit --project tsconfig.json && tsc --noEmit --project tsconfig.runtime.json
+Generating route types...
+✓ Types generated successfully
+tests/verification/analytics/reports-scale.ts(258,39): error TS2345: Argument of type 'BetterSQLite3Database<Record<string, unknown>> & { $client: Database; }' is not assignable to parameter of type 'BetterSQLite3Database<Record<string, never>>'.
+  The types of '_.fullSchema' are incompatible between these types.
+    Type 'Record<string, unknown>' is not assignable to type 'Record<string, never>'.
+      'string' index signatures are incompatible.
+        Type 'unknown' is not assignable to type 'never'.
+tests/verification/analytics/reports-scale.ts(265,41): error TS2345: Argument of type 'BetterSQLite3Database<Record<string, unknown>> & { $client: Database; }' is not assignable to parameter of type 'BetterSQLite3Database<Record<string, never>>'.
+  The types of '_.fullSchema' are incompatible between these types.
+    Type 'Record<string, unknown>' is not assignable to type 'Record<string, never>'.
+      'string' index signatures are incompatible.
+        Type 'unknown' is not assignable to type 'never'.
+[ELIFECYCLE] Command failed with exit code 2.

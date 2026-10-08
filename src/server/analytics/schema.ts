@@ -38,7 +38,11 @@ export const analyticsImageDaily = sqliteTable(
   },
   (table) => [
     primaryKey({ columns: [table.imageId, table.date, table.timezone] }),
-    index('analytics_image_daily_date_image_idx').on(table.date, table.imageId),
+    index('analytics_image_daily_date_image_count_idx').on(
+      table.date,
+      table.imageId,
+      table.count,
+    ),
   ],
 );
 
