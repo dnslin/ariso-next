@@ -237,3 +237,9 @@ Tips 宽度/单层内距、有限 DocumentTimeline 等待、真实 Tab 短视口
 公共壳报告为passed：9项业务检查、33条页面记录（11路由×桌面/手机/平板）、11条折叠状态记录；已实现消费页面的品牌、公共入口、焦点、收缩与手机短视口行为保留。该结果不改写默认全量失败的其他业务模块。
 
 非SMTP公共通知消费与公共壳复验已完成，未发现新Critical、Required或需要额外产品改动的问题。**最终代码审计仍为通过，0 Critical、0未解决Required。** 独立设计对照及其Figma来源同步由设计评审维护；现有描述空值导致的公共内容移位、Sidebar既有字体差异不能由本次代码审计口头改记已修复，按对应设计证据区分来源、影响与范围。
+
+## 本次外部收件的增量独立复审
+
+2026-10-08，原独立`smtp_code_review`只读复核生产发送原始私有结果与公开`checks/external-send.json`、所有者本会话“收到了”及文档差异。13项发送字段逐项一致，包括同一客户端Message-ID、12:04:55–58UTC、attempts1、accepted1/rejected0；公开记录省略收件邮箱。新增verified仅依据所有者直接确认，recordedAt为记录时间；providerDelivery、actualArrivalTime、headersMessageId仍unverified，没有冒充HTTP或3183预览链路复验。
+
+任务卡仅勾本次T-ID-06步骤2，原需求与模块边界保留；full-runner实际仍failed、6失败阶段完整，统一记录仍明确草稿PR。**增量复审无阻塞、无新发现。** 复核者未修改文件、产品或重跑应用/浏览器。
