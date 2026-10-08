@@ -131,6 +131,12 @@ processing 与 Token 补跑未改变产品、原点击方法、超时或断言�
 
 维护性复审确认：复用局部生命周期标记，save/reconcile 的 finally 合并为 finishRequest；没有新全局状态、锁、兼容层或无关抽象。原草稿/已保存值/待核对值各有实际职责，不以风格理由重构。
 
-两个评审者均未发现剩余 Required/P1/P2，批准当前代码增量。评审者实际读取原实现 7 项全红、修复后 7/7 日志，未重复执行测试或浏览器。新增测试使用真实请求函数、QueryClient/Observer、UploadController，模拟 React 生命周期和 DOM；不称完整 React 或 HTTP。补读失败的库和界面消费语义由源码审计确认，本轮未单独运行该失败场景。真实新 e2e 仍待用户允许新建 Ego 空间后执行；代码批准不代替这一项交付门槛。
+两个评审者均未发现剩余 Required/P1/P2，批准当前代码增量。评审者实际读取原实现 7 项全红、修复后 7/7 日志，未重复执行测试或浏览器。新增测试使用真实请求函数、QueryClient/Observer、UploadController，模拟 React 生命周期和 DOM；不称完整 React 或 HTTP。补读失败的库和界面消费语义由源码审计确认，本轮未单独运行该失败场景。当时新 e2e 尚待新空间授权；随后用户授权的真实补验见以下最终增量，不倒改先前未验证状态。
 
 原复现代码副本已原样移至 `/tmp/ariso-pr264-correctness-snapshot-5e3df101`，避免现有 TypeScript 全局 include 扫描忽略目录下的副本。不添加生产配置排除规则。初次构建失败和修正环境后的成功均记录在实施证据中。原始独立报告保存在本机忽略目录 `test-results/pr264-correctness-review/` 与 `test-results/pr264-structure-review/`。
+
+### Ego 空间 4 最终证据复审
+
+用户明确要求重建空间后，新增生命周期真实浏览器场景补验完成。独立评审实际读取首轮 failed、第一次 consumers retry failed 与最终 passed 三份报告和仅测试文件的8行焦点等待/1行手机选择器修正。首轮只证明 focusPreserved=false，不据它声称唯一根因；实际代码的当前保存 RAF 与脚本未等待恢复存在时序缺口。修正后最终四项均明确保持焦点，手机按实际 HeroUI role/data-key 点击，原导航、卸载及身份断言保留。没有修改产品、固定延时、降低断言或跳过失败。
+
+最终消费者报告的四项均为真实 50→60 两次保存、旧响应交付后 active provider GET60、独立 owner HTTP60、同 document/window/timeOrigin、焦点和通知保持、无旧新增通知、原非空队列 ID 和真实55 MiB入队。公共四设置路由双主题双视口及真实401释放File/Blob URL也通过，browserErrors=[]，无error/cleanupError。首轮前三phase完成证据与最终consumer通过合并覆盖此次受影响流程，不称单轮全部通过。原存储 CORS 和无远端 CI 通过边界仍保留。

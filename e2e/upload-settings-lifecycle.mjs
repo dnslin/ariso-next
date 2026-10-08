@@ -110,7 +110,7 @@ async function categoryNavigate(page, width, label, path) {
   if (width < 1200) {
     await page.click('.settings-mobile [data-slot="select-trigger"]');
     await page.waitForSelector('[role="listbox"]');
-    await page.click(`[role="option"]:text-is("${label}")`);
+    await page.click(`[role="listbox"] [role="option"][data-key="${path}"]`);
   } else {
     await page.click(`.settings-desktop [role="tab"]:text-is("${label}")`);
   }
@@ -229,6 +229,14 @@ export async function uploadSettingsLifecycle(page, config, tools, report) {
               )
             );
           });
+          // The current editor restores its save opener on the next frame.
+          // Finish that confirmed interaction before choosing the focus whose
+          // identity the obsolete response must preserve.
+          await page.waitForFunction(
+            () =>
+              document.activeElement ===
+              document.querySelector('[data-testid="upload-limits-save"]'),
+          );
           await page.focus(limitsField('queueLimit'));
           await page.keyboard.press('Tab');
           await page.keyboard.press('Shift+Tab');

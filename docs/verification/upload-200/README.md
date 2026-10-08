@@ -102,13 +102,27 @@ macOS arm64，Node 24.18.1，pnpm 11.19.0；使用已有 Ego Lite TaskSpace 1，
 
 正确性与维护性独立复审均无剩余 P1/P2；未机械重复实现者已通过的检查。功能测试边界和工程状态见[代码评审增量](./code-review.md#p2-生命周期增量复审)。当前改动没有改变视觉或既定交互，沿用已获人工验收的设计；不虚构新 Figma 写入或设计截图审查。
 
-**本轮浏览器尚未验证。** 原 TaskSpace 1 已 finish，实际列表中不存在。ego-browser 规定不能另建空间绕过已停止/无法继续的空间；已向用户请求是否允许创建本次修复专用空间，当前未获得答复。没有自行另建、切换浏览器或修改人工预览数据。旧四组通过不能作为此次迟到响应修复通过。原存储 CORS 未解决，PR 继续保持草稿。
+**本轮浏览器补验完成。** 原空间已结束后，用户明确要求“重新创建 ego 空间”，本次实际创建 TaskSpace 4。使用既有 Ego Lite、Node 24.18.1 / pnpm 11.19.0 与一次性独立数据，未下载浏览器或修改人工预览。下列失败与重跑分别保留，不能记为一次四阶段全通过。
+
+| 本轮浏览器命令与阶段                                                                        | 实际结果                                                                                                                                                                            |
+| ------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `EGO_TASK_SPACE=4 EGO_KEEP_SPACE=1 node scripts/verify-browser.mjs --suite upload-settings` | 首轮退出 1；representative/behavior/recovery 完成，4 checks、36 layouts；consumers 首个迟到 PATCH 场景焦点断言失败。[完整失败报告](./reports/lifetime/browser-first-failed.json)。  |
+| 同空间 `--suite upload-settings --only consumers` 第一次定向补跑                            | 桌面迟到 PATCH/GET 全部通过；手机分类的文字选择器匹配 0，整组退出 1。[失败报告](./reports/lifetime/browser-consumers-mobile-failed.json)。                                          |
+| 同空间 `--suite upload-settings --only consumers` 最终补跑                                  | 退出 0，20 layouts、2 checks，四项生命周期和既有公共消费者/401 释放全部通过，browserErrors=[]，无 error/cleanupError。[通过报告](./reports/lifetime/browser-consumers-final.json)。 |
+
+仅修正新测试的两个具体缺口：等待当前成功保存的 RAF 焦点恢复完成后再选择待保留焦点；手机分类按实际 HeroUI `role=option/data-key=href` 定位并真实点击，继续等待路由和旧 editor 卸载。未修改产品、加入固定延时或放宽原焦点/队列/写请求断言。第一份报告未记录最终焦点节点，不能仅凭 JSON 断言唯一根因；独立 Page 读取到保存按钮焦点及仍连接的原输入，源码确认当前保存本身有下一帧恢复路径。补跑验证修正后的明确顺序通过。
+
+四场景为 1440 Light / 390 Dark 各迟到 PATCH 和核对 GET。每项实际服务器及活跃上传 GET 均为 60 MiB/62914560 字节、20/500；同 document/window/timeOrigin 保持，focusPreserved/noticePreserved=true、addedNotices=0，恰好两次 PATCH（50→60）。原队列非空 ID 保留，再加入不同非空 ID 的真实 55 MiB/57671680 字节 PNG，状态 queued；实际输入反馈展示 60.0 MiB 上限。核对 GET 场景的初次 PATCH 确实已真实提交后才模拟丢响应，不冒充外部代理断网。
+
+真实正常状态截图：[1440 Light](./reports/lifetime/upload-settings-lifecycle-ready-light-1440.png)、[390 Dark](./reports/lifetime/upload-settings-lifecycle-ready-dark-390.png)，对应已有 Figma `470:10085/470:10377`。实现者实际查看两张整页截图，沿用获批布局和控件；本轮不改变视觉，不声称新增设计评审或 Figma 写入。此前独立设计评审和用户人工 UI 验收保留。测试完成后一次 `finish({keep:[]})` 结束空间 4，原人工预览继续运行。
+
+独立正确性评审复核实际报告与两项测试修正；代码/测试及本次行为证据可接受。原存储 CORS 未解决，PR 继续保持草稿。
 
 ## 独立评审与交付状态
 
 [独立代码评审](./code-review.md)使用 code-review-and-quality，核对需求、模块职责、认证与 Origin、事务、资源生命周期、焦点、错误优先级、运行器默认入口和测试有效性；修复 401 队列释放、错误文案覆盖、错误边框和成功焦点后，当前无剩余必须修复的静态发现。评审不机械重跑实现者已通过的检查。功能与设计评审分别记录，静态结论不代替真实页面验证。
 
-原交付的上传自有 HTTP/重启、四组浏览器及独立设计评审完成，用户明确确认 UI 人工验收通过。本轮 P2 修复代码和独立正确性/维护性复审完成，最新默认全量单元通过；新迟到响应浏览器回归尚未执行。原交付的默认单元/集成首轮及默认浏览器失败记录仍保留。第三轮图片处理 settings/recovery、Token 生命周期、图库完整组、批量与复制、此前未执行后段均已通过。独立图库通过不证明默认当时的认证状态或唯一根因；存储 CORS 仍未解决，不能称全量通过。因此 PR 必须保持草稿。Release、镜像、容器、发布和部署不属于日常 PR 验证边界，均未执行。未合并、关闭 Issue 或清理分支/worktree/预览。
+原交付的上传自有 HTTP/重启、四组浏览器及独立设计评审完成，用户明确确认 UI 人工验收通过。本轮 P2 修复代码和独立正确性/维护性复审完成，最新默认全量单元通过；新迟到响应浏览器四场景和消费者已补验通过，首轮与定向失败仍分别保留。原交付的默认单元/集成首轮及默认浏览器失败记录仍保留。第三轮图片处理 settings/recovery、Token 生命周期、图库完整组、批量与复制、此前未执行后段均已通过。独立图库通过不证明默认当时的认证状态或唯一根因；存储 CORS 仍未解决，不能称全量通过。因此 PR 必须保持草稿。Release、镜像、容器、发布和部署不属于日常 PR 验证边界，均未执行。未合并、关闭 Issue 或清理分支/worktree/预览。
 
 ## 人工验收
 
@@ -120,6 +134,6 @@ macOS arm64，Node 24.18.1，pnpm 11.19.0；使用已有 Ego Lite TaskSpace 1，
 
 原实现提交 `f3831f05` 及此前补验已推送到 `codex/issue-200-upload-settings`，关联 [草稿 PR #264](https://github.com/dnslin/ariso-next/pull/264)。实际 `gh pr view` 返回 OPEN、isDraft=true、MERGEABLE；`gh pr checks` 返回 `no checks reported`，statusCheckRollup 为空，没有远端 CI 通过结论，也不等待不存在的工作流。人工验收和上传增量证据已完成；最新补验结果见上表，适用默认检查仍有未解决失败，草稿状态保持。
 
-本轮 P2 修复提交 `3954ded0` 已推送至同一分支，并更新 PR 说明。推送后实际回读 PR #264 为 OPEN、isDraft=true、MERGEABLE，head=`3954ded07c0930a6df18381d0547c334f76af3a3`；`gh pr checks` 返回 `no checks reported`，不记作 CI 通过。本轮新增浏览器仍未执行，等待已提出的新空间授权答复。
+本轮 P2 修复提交 `3954ded0` 已推送至同一分支，并更新 PR 说明。推送后实际回读 PR #264 为 OPEN、isDraft=true、MERGEABLE，head=`3954ded07c0930a6df18381d0547c334f76af3a3`；`gh pr checks` 返回 `no checks reported`，不记作 CI 通过。用户随后授权新建空间 4，本轮新增迟到响应及消费者补验通过，具体失败与重跑见上表。
 
 原项目工作区保持干净。本任务分支、worktree、原型和独立人工预览保留；未合并 PR、关闭 Issue、发布、部署或清理其他任务。

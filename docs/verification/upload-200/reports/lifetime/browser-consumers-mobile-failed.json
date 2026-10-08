@@ -1,0 +1,513 @@
+{
+  "status": "failed",
+  "origin": "http://ariso-63626.localhost:63626",
+  "phase": "consumers",
+  "checks": [],
+  "layouts": [
+    {
+      "state": "lifecycle-ready",
+      "theme": "light",
+      "height": 1080,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "分享管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 1092,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 1092,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "",
+          "width": 1092,
+          "height": 46,
+          "navigation": false
+        },
+        {
+          "name": "保存上传限制",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        }
+      ],
+      "screenshot": "upload-settings-lifecycle-ready-light-1440.png"
+    }
+  ],
+  "browserErrors": [],
+  "limitations": [
+    "Only disposable runner data is changed; the manual preview remains independent.",
+    "Network/gateway faults are controlled browser-boundary faults; lost PATCH responses follow real commits.",
+    "Actual standalone restart persistence and old/new rules are verified by default integration tests.",
+    "Physical touch, soft keyboard and device safe areas are outside current emulation acceptance."
+  ],
+  "stage": "consumers",
+  "lifecycle": [
+    {
+      "width": 1440,
+      "theme": "light",
+      "held": "patch",
+      "status": "passed",
+      "queueBefore": ["b74334c6-d6a0-4dc0-8c86-f2c87cfaf578"],
+      "afterRelease": {
+        "marker": "e78907fc-bcb6-4f13-9487-be3040bc8f52",
+        "timeOrigin": 1791449425070.9,
+        "sameDocument": true,
+        "sameWindow": true,
+        "requests": [
+          {
+            "path": "/api/settings/upload",
+            "method": "PATCH",
+            "order": 1,
+            "body": {
+              "maxFileMiB": 50,
+              "batchSize": 20,
+              "queueLimit": 500
+            },
+            "status": 200,
+            "response": {
+              "maxFileMiB": 50,
+              "maxFileBytes": 52428800,
+              "batchSize": 20,
+              "queueLimit": 500
+            },
+            "held": true,
+            "released": true,
+            "delivered": true
+          },
+          {
+            "path": "/api/settings/upload",
+            "method": "GET",
+            "order": 2,
+            "status": 200,
+            "response": {
+              "maxFileMiB": 50,
+              "maxFileBytes": 52428800,
+              "batchSize": 20,
+              "queueLimit": 500
+            },
+            "delivered": true
+          },
+          {
+            "path": "/api/settings/upload",
+            "method": "PATCH",
+            "order": 3,
+            "body": {
+              "maxFileMiB": 60,
+              "batchSize": 20,
+              "queueLimit": 500
+            },
+            "status": 200,
+            "response": {
+              "maxFileMiB": 60,
+              "maxFileBytes": 62914560,
+              "batchSize": 20,
+              "queueLimit": 500
+            },
+            "delivered": true
+          },
+          {
+            "path": "/upload/settings",
+            "method": "GET",
+            "order": 5,
+            "status": 200,
+            "response": {
+              "maxFileBytes": 62914560,
+              "batchSize": 20,
+              "queueLimit": 500
+            },
+            "delivered": true
+          }
+        ],
+        "releaseOrder": 4,
+        "focusPreserved": true,
+        "noticePreserved": true,
+        "addedNotices": 0
+      },
+      "serverAfterRelease": {
+        "maxFileMiB": 60,
+        "maxFileBytes": 62914560,
+        "batchSize": 20,
+        "queueLimit": 500
+      },
+      "queueAfter": [
+        "b74334c6-d6a0-4dc0-8c86-f2c87cfaf578",
+        "5e9dc41e-68b5-410b-be7e-0514ea6a290b"
+      ],
+      "uploadLimitText": "文件扫描完成已加入 1 张 · 未加入 1 项文件为空 1 项允许文件大小等于 60.0 MiB；服务器仍会核验真实格式。查看待上传图片重新选择文件",
+      "acceptedFileBytes": 57671680,
+      "final": {
+        "marker": "e78907fc-bcb6-4f13-9487-be3040bc8f52",
+        "requests": [
+          {
+            "path": "/api/settings/upload",
+            "method": "PATCH",
+            "order": 1,
+            "body": {
+              "maxFileMiB": 50,
+              "batchSize": 20,
+              "queueLimit": 500
+            },
+            "status": 200,
+            "response": {
+              "maxFileMiB": 50,
+              "maxFileBytes": 52428800,
+              "batchSize": 20,
+              "queueLimit": 500
+            },
+            "held": true,
+            "released": true,
+            "delivered": true
+          },
+          {
+            "path": "/api/settings/upload",
+            "method": "GET",
+            "order": 2,
+            "status": 200,
+            "response": {
+              "maxFileMiB": 50,
+              "maxFileBytes": 52428800,
+              "batchSize": 20,
+              "queueLimit": 500
+            },
+            "delivered": true
+          },
+          {
+            "path": "/api/settings/upload",
+            "method": "PATCH",
+            "order": 3,
+            "body": {
+              "maxFileMiB": 60,
+              "batchSize": 20,
+              "queueLimit": 500
+            },
+            "status": 200,
+            "response": {
+              "maxFileMiB": 60,
+              "maxFileBytes": 62914560,
+              "batchSize": 20,
+              "queueLimit": 500
+            },
+            "delivered": true
+          },
+          {
+            "path": "/upload/settings",
+            "method": "GET",
+            "order": 5,
+            "status": 200,
+            "response": {
+              "maxFileBytes": 62914560,
+              "batchSize": 20,
+              "queueLimit": 500
+            },
+            "delivered": true
+          }
+        ]
+      }
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "held": "read",
+      "status": "passed",
+      "queueBefore": ["39fd7e9e-0582-4d98-9e70-f81e64b75d13"],
+      "afterRelease": {
+        "marker": "742a8a9e-0866-4815-bbe6-83932cb6a0b3",
+        "timeOrigin": 1791449438360.8,
+        "sameDocument": true,
+        "sameWindow": true,
+        "requests": [
+          {
+            "path": "/api/settings/upload",
+            "method": "PATCH",
+            "order": 1,
+            "body": {
+              "maxFileMiB": 50,
+              "batchSize": 20,
+              "queueLimit": 500
+            },
+            "status": 200,
+            "response": {
+              "maxFileMiB": 50,
+              "maxFileBytes": 52428800,
+              "batchSize": 20,
+              "queueLimit": 500
+            },
+            "responseLost": true
+          },
+          {
+            "path": "/api/settings/upload",
+            "method": "GET",
+            "order": 2,
+            "status": 200,
+            "response": {
+              "maxFileMiB": 50,
+              "maxFileBytes": 52428800,
+              "batchSize": 20,
+              "queueLimit": 500
+            },
+            "held": true,
+            "released": true,
+            "delivered": true
+          },
+          {
+            "path": "/api/settings/upload",
+            "method": "GET",
+            "order": 3,
+            "status": 200,
+            "response": {
+              "maxFileMiB": 50,
+              "maxFileBytes": 52428800,
+              "batchSize": 20,
+              "queueLimit": 500
+            },
+            "delivered": true
+          },
+          {
+            "path": "/api/settings/upload",
+            "method": "PATCH",
+            "order": 4,
+            "body": {
+              "maxFileMiB": 60,
+              "batchSize": 20,
+              "queueLimit": 500
+            },
+            "status": 200,
+            "response": {
+              "maxFileMiB": 60,
+              "maxFileBytes": 62914560,
+              "batchSize": 20,
+              "queueLimit": 500
+            },
+            "delivered": true
+          },
+          {
+            "path": "/upload/settings",
+            "method": "GET",
+            "order": 6,
+            "status": 200,
+            "response": {
+              "maxFileBytes": 62914560,
+              "batchSize": 20,
+              "queueLimit": 500
+            },
+            "delivered": true
+          }
+        ],
+        "releaseOrder": 5,
+        "focusPreserved": true,
+        "noticePreserved": true,
+        "addedNotices": 0
+      },
+      "serverAfterRelease": {
+        "maxFileMiB": 60,
+        "maxFileBytes": 62914560,
+        "batchSize": 20,
+        "queueLimit": 500
+      },
+      "design": {
+        "node": "470:10085",
+        "screenshot": "upload-settings-lifecycle-ready-light-1440.png",
+        "note": "Existing normal state only; lifecycle evidence is not an additional design review."
+      },
+      "queueAfter": [
+        "39fd7e9e-0582-4d98-9e70-f81e64b75d13",
+        "66a7010b-80b6-4099-b28e-715f0830e8d5"
+      ],
+      "uploadLimitText": "文件扫描完成已加入 1 张 · 未加入 1 项文件为空 1 项允许文件大小等于 60.0 MiB；服务器仍会核验真实格式。查看待上传图片重新选择文件",
+      "acceptedFileBytes": 57671680,
+      "final": {
+        "marker": "742a8a9e-0866-4815-bbe6-83932cb6a0b3",
+        "requests": [
+          {
+            "path": "/api/settings/upload",
+            "method": "PATCH",
+            "order": 1,
+            "body": {
+              "maxFileMiB": 50,
+              "batchSize": 20,
+              "queueLimit": 500
+            },
+            "status": 200,
+            "response": {
+              "maxFileMiB": 50,
+              "maxFileBytes": 52428800,
+              "batchSize": 20,
+              "queueLimit": 500
+            },
+            "responseLost": true
+          },
+          {
+            "path": "/api/settings/upload",
+            "method": "GET",
+            "order": 2,
+            "status": 200,
+            "response": {
+              "maxFileMiB": 50,
+              "maxFileBytes": 52428800,
+              "batchSize": 20,
+              "queueLimit": 500
+            },
+            "held": true,
+            "released": true,
+            "delivered": true
+          },
+          {
+            "path": "/api/settings/upload",
+            "method": "GET",
+            "order": 3,
+            "status": 200,
+            "response": {
+              "maxFileMiB": 50,
+              "maxFileBytes": 52428800,
+              "batchSize": 20,
+              "queueLimit": 500
+            },
+            "delivered": true
+          },
+          {
+            "path": "/api/settings/upload",
+            "method": "PATCH",
+            "order": 4,
+            "body": {
+              "maxFileMiB": 60,
+              "batchSize": 20,
+              "queueLimit": 500
+            },
+            "status": 200,
+            "response": {
+              "maxFileMiB": 60,
+              "maxFileBytes": 62914560,
+              "batchSize": 20,
+              "queueLimit": 500
+            },
+            "delivered": true
+          },
+          {
+            "path": "/upload/settings",
+            "method": "GET",
+            "order": 6,
+            "status": 200,
+            "response": {
+              "maxFileBytes": 62914560,
+              "batchSize": 20,
+              "queueLimit": 500
+            },
+            "delivered": true
+          }
+        ]
+      }
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "held": "patch",
+      "status": "failed",
+      "queueBefore": ["104a0d4b-bc64-4656-bb31-adcc6cd31697"],
+      "final": {
+        "marker": "95616068-372f-4590-99b1-0c90d456dfc5",
+        "requests": [
+          {
+            "path": "/api/settings/upload",
+            "method": "PATCH",
+            "order": 1,
+            "body": {
+              "maxFileMiB": 50,
+              "batchSize": 20,
+              "queueLimit": 500
+            },
+            "status": 200,
+            "response": {
+              "maxFileMiB": 50,
+              "maxFileBytes": 52428800,
+              "batchSize": 20,
+              "queueLimit": 500
+            },
+            "held": true,
+            "released": true,
+            "delivered": true
+          }
+        ]
+      }
+    }
+  ],
+  "error": "ElementResolutionError: page.click timed out after 3000ms: Locator [role=\"option\"]:text-is(\"图片处理\") matched 0 elements\n    at #retryElementAction (file:////[eval1]:18884:27)\n    at async file:////[eval1]:18968:29\n    at async file:////[eval1]:16691:28"
+}

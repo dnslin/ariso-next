@@ -75,11 +75,51 @@
     {
       "command": "git diff --check",
       "exitCode": 0
+    },
+    {
+      "command": "EGO_TASK_SPACE=4 EGO_KEEP_SPACE=1 node scripts/verify-browser.mjs --suite upload-settings",
+      "exitCode": 1,
+      "report": "browser-first-failed.json",
+      "passedPhases": ["representative", "behavior", "recovery"],
+      "failure": "consumers first lifecycle focus assertion; script did not await current save focus restoration before selecting test focus"
+    },
+    {
+      "command": "EGO_TASK_SPACE=4 EGO_KEEP_SPACE=1 node scripts/verify-browser.mjs --suite upload-settings --only consumers",
+      "stage": "first targeted retry",
+      "exitCode": 1,
+      "report": "browser-consumers-mobile-failed.json",
+      "passedLifecycle": ["desktop late PATCH", "desktop confirmation GET"],
+      "failure": "mobile category option text selector matched zero; actual role=option/data-key nodes verified"
+    },
+    {
+      "command": "EGO_TASK_SPACE=4 EGO_KEEP_SPACE=1 node scripts/verify-browser.mjs --suite upload-settings --only consumers",
+      "stage": "final targeted retry",
+      "exitCode": 0,
+      "report": "browser-consumers-final.json",
+      "layouts": 20,
+      "checks": 2,
+      "lifecycleScenariosPassed": 4
+    },
+    {
+      "command": "pnpm exec prettier e2e/upload-settings-lifecycle.mjs --check",
+      "stage": "after final test correction",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm exec eslint e2e/upload-settings-lifecycle.mjs --max-warnings=0",
+      "stage": "after final test correction",
+      "exitCode": 0
     }
   ],
   "browser": {
-    "status": "not-run",
-    "reason": "TaskSpace 1 has finished and is absent; user decision on a new task space is pending"
+    "status": "affected scenarios passed after targeted retries",
+    "spaceId": 4,
+    "authorization": "User explicitly requested a new Ego space",
+    "firstRun": "failed; representative/behavior/recovery completed",
+    "finalConsumers": "passed; four lifecycle scenarios and existing consumers",
+    "runtimeErrors": [],
+    "taskSpaceFinished": true,
+    "singleFullRunPassed": false
   },
   "manualPreview": {
     "origin": "http://ariso-upload-200-50879.localhost:50879",
@@ -91,7 +131,6 @@
     "maintainability": "no required P1/P2"
   },
   "limitations": [
-    "New real browser regression not run",
     "Original default full browser storage CORS failure unresolved",
     "No remote CI reports",
     "No release/container/deployment checks run"
