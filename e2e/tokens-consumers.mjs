@@ -5,6 +5,7 @@ import { createTokensPage } from './tokens-page.mjs';
 export async function verifyTokensConsumers(page, config, report) {
   const ui = createTokensPage(page, config, report);
   const categories = [
+    ['/settings/general', '基本设置'],
     ['/settings/processing', '图片处理'],
     ['/settings/account', '账号与安全'],
     ['/settings/api', '上传 API'],

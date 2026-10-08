@@ -48,8 +48,13 @@ const navigation = [
     icon: <HardDrive />,
   },
   {
-    href: '/settings/processing',
-    activePaths: ['/settings/account', '/settings/api', '/settings/email'],
+    href: '/settings/general',
+    activePaths: [
+      '/settings/processing',
+      '/settings/account',
+      '/settings/api',
+      '/settings/email',
+    ],
     label: '站点设置',
     icon: <SlidersHorizontal />,
   },

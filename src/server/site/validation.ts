@@ -52,3 +52,16 @@ export const siteSettingsInputSchema = z.object({
 });
 
 export type SiteSettingsInput = z.output<typeof siteSettingsInputSchema>;
+
+export const siteSettingsPatchSchema = z
+  .strictObject({
+    name: z.string().trim().min(1, '请输入站点名称').optional(),
+    description: z.string().optional(),
+    publicUrl: publicUrlSchema.optional(),
+    timeZone: timeZoneSchema.optional(),
+  })
+  .refine((input) => Object.keys(input).length > 0, {
+    message: '请提供至少一个站点信息字段',
+  });
+
+export type SiteSettingsPatch = z.output<typeof siteSettingsPatchSchema>;

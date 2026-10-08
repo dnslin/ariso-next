@@ -133,7 +133,9 @@ export async function verifyProcessingSessionRecovery(
     ),
   );
   await page.waitForSelector('[data-testid="upload-composition"]');
-  await page.click('.shell-navigation a[href="/settings/processing"]');
+  await page.click('.shell-navigation a[href="/settings/general"]');
+  await page.waitForURL(`${config.origin}/settings/general`);
+  await page.click('loc=role:tab[name="图片处理"]');
   await page.waitForURL(`${config.origin}/settings/processing`);
   await page.waitForSelector(`${testId('editor')}[data-state="ready"]`);
   await fill('quality', 66);
