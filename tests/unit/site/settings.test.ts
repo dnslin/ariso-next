@@ -2,10 +2,41 @@ import { describe, expect, it } from 'vitest';
 import {
   publicUrlSchema,
   siteSettingsInputSchema,
+  siteSettingsPatchSchema,
   timeZoneSchema,
 } from '../../../src/server/site/validation.ts';
 import { buildSiteUrl } from '../../../src/server/site/urls.ts';
 import { formatSiteInstant } from '../../../src/server/site/time.ts';
+
+describe('site 站点信息 PATCH 边界', () => {
+  it.each([
+    [{ name: '  我的站点  ' }, { name: '我的站点' }],
+    [{ description: '' }, { description: '' }],
+    [
+      { publicUrl: 'HTTPS://IMG.Example.COM:443/' },
+      { publicUrl: 'https://img.example.com' },
+    ],
+    [{ timeZone: 'US/Eastern' }, { timeZone: 'America/New_York' }],
+  ])('只接受并规范化实际提供的字段 %j', (input, output) => {
+    expect(siteSettingsPatchSchema.parse(input)).toEqual(output);
+  });
+
+  it.each([
+    {},
+    { name: ' ' },
+    { name: null },
+    { description: null },
+    { timeZone: '+08:00' },
+    { publicUrl: 'https://example.com/path' },
+    { name: '保存', defaultStorageId: null },
+    { quality: 82 },
+    { theme: 'dark' },
+    { logoKey: '/tmp/logo.png' },
+    { updatedAt: '2026-01-01T00:00:00Z' },
+  ])('拒绝无效、空或其他模块字段 %j', (input) => {
+    expect(siteSettingsPatchSchema.safeParse(input).success).toBe(false);
+  });
+});
 
 describe('site 地址与时区契约', () => {
   it.each([

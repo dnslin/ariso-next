@@ -1,7 +1,7 @@
 import { eq } from 'drizzle-orm';
 import type { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
 import { siteSettings } from './schema.ts';
-import type { SiteSettingsInput } from './validation.ts';
+import type { SiteSettingsInput, SiteSettingsPatch } from './validation.ts';
 
 type SiteDatabase = BetterSQLite3Database;
 export type SiteTransaction = Parameters<
@@ -43,13 +43,12 @@ export function initializeSiteSettings(
 /** 仅写本模块字段；地址更新的 CORS 失效由入口在同一事务内组合。 */
 export function updateSiteSettings(
   tx: SiteTransaction,
-  input: SiteSettingsInput,
+  input: SiteSettingsPatch,
 ) {
   const settings = tx
     .update(siteSettings)
     .set({
-      publicUrl: input.publicUrl,
-      timeZone: input.timeZone,
+      ...input,
       updatedAt: new Date(),
     })
     .where(eq(siteSettings.id, 1))
