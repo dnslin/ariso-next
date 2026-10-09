@@ -36,7 +36,11 @@
 
 单图统计区、异常逐张定位和排行返回属于该 DG 明确的表达缺口。已制作[独立可查看原型](../../../design-plans/issue179-review/index.html)，临时地址 `http://127.0.0.1:4179`；采用现有详情资料下方的紧凑累计/版本/周期表，异常复用图库，排行按真实ID进入管理记录。原型数字为合成样例，不是生产统计验证。
 
-原型提供有访问、零访问、加载、读取失败、旧数据、积压延迟、漏计和记录不存在，以及浅深色切换。[桌面](./prototype-desktop.png)、[手机统计](./prototype-mobile-statistics.png)、[手机异常](./prototype-mobile-failures.png)是原型真实浏览器截图，不是产品交付截图。初次手机检查发现弹层高度超过视口，已修正为工具栏下的明确可用高度并复核正文滚动与底栏。待用户批准局部交互；批准不替代最终产品人工验收。
+原型提供有访问、零访问、加载、读取失败、旧数据、积压延迟、漏计和记录不存在，以及浅深色切换。[桌面](./prototype-desktop.png)、[手机统计](./prototype-mobile-statistics.png)、[手机异常](./prototype-mobile-failures.png)是原型真实浏览器截图，不是产品交付截图。初次手机检查发现弹层高度超过视口，已修正为工具栏下的明确可用高度并复核正文滚动与底栏。第一版已被用户否决，按要求保持可查看，不再作为待实施方案。新版见下方；批准不替代最终产品人工验收。
+
+### 用户反馈后的第二版
+
+用户要求单图仅保留缩略图、改为图表展示、减少解释并使用HeroUI。已新增[第二版原型及完整证据](./prototype-v2/README.md)，预览 `http://127.0.0.1:4181/analytics`；旧4179保持。采用缩略图身份、版本横条、周期柱图、曲线与排行比例条，真实使用HeroUI控件和局部短动效。桌面/手机、状态、主题、短视口与独立代码/设计复审分别记录在新版证据。**第二版尚未获用户批准，没有实施新增产品交互或同步Figma。**
 
 ## 已执行检查与独立审查
 
@@ -92,4 +96,4 @@ BROWSER_REPORT_DIR=test-results/analytics-179-consumers-verified node scripts/ve
 
 独立人工预览 `http://ariso-179.localhost:4180` 使用忽略目录 `.data/analytics179-preview` 中的数据与凭证，已换入最新首读构建；真实登录、两条私有API、工作台、统计与占用读取200。凭证不提交代码、证据或PR。预览与原型继续运行，等待用户明确停止指令。
 
-后续先批准局部原型，再实施单图区/异常控件/来源返回并按能力同步Figma，补齐相应行为和设计验收，最后由用户人工验收。已提交并推送 `codex/issue-179-analytics-ui`，创建[草稿PR #273](https://github.com/dnslin/ariso-next/pull/273)。`gh pr view 273 --json url,state,isDraft,headRefName,headRefOid,baseRefName,statusCheckRollup,mergeStateStatus` 实际返回 OPEN、isDraft=true、base=main、mergeStateStatus=CLEAN、statusCheckRollup=[]；没有远端检查，不记CI通过，不等待不存在的工作流。`gh issue view 179 --json number,state` 确认Issue继续OPEN。未合并、发布、部署或清理，现有通过项不会记作整卡完成。
+后续先批准第二版局部原型，再实施单图区/异常控件/来源返回并按能力同步Figma，补齐相应行为和设计验收，最后由用户人工验收。已提交并推送 `codex/issue-179-analytics-ui`，创建[草稿PR #273](https://github.com/dnslin/ariso-next/pull/273)。`gh pr view 273 --json url,state,isDraft,headRefName,headRefOid,baseRefName,statusCheckRollup,mergeStateStatus` 实际返回 OPEN、isDraft=true、base=main、mergeStateStatus=CLEAN、statusCheckRollup=[]；没有远端检查，不记CI通过，不等待不存在的工作流。`gh issue view 179 --json number,state` 确认Issue继续OPEN。未合并、发布、部署或清理，现有通过项不会记作整卡完成。
