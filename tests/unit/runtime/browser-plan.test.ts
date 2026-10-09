@@ -6,6 +6,20 @@ function select(suite: string, only?: string) {
 }
 
 describe('focused browser execution plans', () => {
+  it('keeps the brand experiment isolated from unrelated phase and fixture arguments', () => {
+    expect(select('brand-experiment')).toEqual({ stages: [], config: {} });
+    expect(() => select('brand-experiment', 'representative')).toThrow(
+      '--only',
+    );
+    for (const field of ['storageConfig', 'previewConfig'])
+      expect(() =>
+        selectBrowserPlan({
+          suite: 'brand-experiment',
+          pageLabel: 'p1',
+          [field]: 'unused.json',
+        }),
+      ).toThrow();
+  });
   it('provides storage-cors as a complete focused stage on its primary page', () => {
     expect(select('storage-cors')).toEqual({
       stages: [['storage-cors', 'storageCors']],
@@ -46,6 +60,7 @@ describe('focused browser execution plans', () => {
     ['library-feedback', ['library-query']],
     ['account', ['account']],
     ['oauth', []],
+    ['brand-experiment', []],
     ['smtp', ['smtp']],
     ['tokens', ['tokens']],
     ['shell-navigation', ['shell-navigation']],

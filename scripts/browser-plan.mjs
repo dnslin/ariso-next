@@ -25,6 +25,7 @@ const suites = {
       ['smtp', 'smtp'],
     ],
   },
+  'brand-experiment': {},
   'sharing-experiment': {},
   'sharing-protocol': {},
   'sharing-public': {

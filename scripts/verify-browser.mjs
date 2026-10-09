@@ -18,6 +18,7 @@ import { runM2Restart } from './browser-m2.mjs';
 import { runIdentityManagement } from './browser-identity-management.mjs';
 import { runOAuthManagement } from './browser-oauth.mjs';
 import { createSharingRunner } from './browser-sharing.mjs';
+import { runBrandBrowser } from './browser-brand.mjs';
 import { startSmtpBrowserFixture } from '../e2e/smtp-fixture.mjs';
 
 assert.equal(process.versions.node.split('.')[0], '24', 'Use Node 24');
@@ -48,6 +49,9 @@ const output = resolve(
 await mkdir(output, { recursive: true });
 for (const name of [
   'browser.json',
+  'brand-experiment.json',
+  'brand-image.png',
+  'brand-download.svg',
   'shell-browser.json',
   'shell-navigation.json',
   'error-recovery.json',
@@ -279,6 +283,40 @@ const check = (name, operation, dependencies = []) => {
     dependencies,
   );
 };
+
+if (suite === 'brand-experiment') {
+  try {
+    const spaceId = Number(process.env.EGO_TASK_SPACE);
+    assert.ok(
+      Number.isInteger(spaceId) && spaceId > 0,
+      'Existing Ego space required',
+    );
+    report.taskSpaceId = spaceId;
+    await runBrandBrowser({
+      spaceId,
+      pageLabel,
+      output,
+      runBrowser,
+      signal: controller.signal,
+    });
+    report.status = 'passed';
+  } catch (error) {
+    report.error = redact(error.stack ?? String(error));
+    process.exitCode = 1;
+    console.error(report.error);
+  } finally {
+    await stop(browser);
+    report.finishedAt = new Date().toISOString();
+    await writeFile(
+      join(output, 'runner.json'),
+      `${redact(JSON.stringify(report, null, 2))}\n`,
+    );
+    process.removeListener('SIGINT', interrupt);
+    process.removeListener('SIGTERM', interrupt);
+    console.log(`Browser report: ${output}`);
+  }
+  process.exit(process.exitCode ?? 0);
+}
 
 if (
   [
@@ -731,6 +769,15 @@ try {
       );
       report.taskSpaceId = runtimeReport.taskSpaceId;
     }
+    await check('brand-experiment', () =>
+      runBrandBrowser({
+        spaceId: report.taskSpaceId,
+        pageLabel,
+        output,
+        runBrowser,
+        signal: controller.signal,
+      }),
+    );
     await stop(server);
     await stop(shellServer);
     for (const width of [1440, 390]) {

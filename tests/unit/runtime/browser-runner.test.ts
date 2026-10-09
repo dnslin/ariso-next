@@ -18,6 +18,7 @@ function parse(args: string[]) {
 describe('browser runner argument boundaries', () => {
   const combinations = [
     ['full'],
+    ['brand-experiment'],
     ['viewer'],
     ['viewer', 'representative'],
     ['viewer', 'behavior'],
