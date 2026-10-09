@@ -4,10 +4,12 @@ import { useEffect, useRef, useState } from 'react';
 import { Button } from '@heroui/react/button';
 import { Form } from '@heroui/react/form';
 import { Link } from '@heroui/react/link';
+import { Send } from 'lucide-react';
 import { accountInputSchema } from '../../server/identity/validation';
 import { IdentityField } from './identity-field';
 import { resetRequest } from './reset-request';
 import { RecoveryFrame, recoveryActionClass } from './recovery-frame';
+import { RecoveryLinkTip } from './recovery-link-tip';
 import {
   RecoveryStatus,
   recoveryTitles,
@@ -16,13 +18,11 @@ import {
 
 export function ForgotPasswordForm({
   smtpConfigured,
-  cli,
 }: {
   smtpConfigured: boolean;
-  cli: boolean;
 }) {
   const [state, setState] = useState<RecoveryState>(
-    cli ? 'cli' : smtpConfigured ? 'form' : 'unconfigured',
+    smtpConfigured ? 'form' : 'unconfigured',
   );
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
@@ -31,13 +31,14 @@ export function ForgotPasswordForm({
   const [remaining, setRemaining] = useState(0);
   const inFlight = useRef(false);
   const heading = useRef<HTMLHeadingElement>(null);
+  const sendIcon = useRef<HTMLSpanElement>(null);
   const initial = useRef(true);
   useEffect(() => {
     if (initial.current) {
       initial.current = false;
       return;
     }
-    heading.current?.focus();
+    if (state !== 'pending') heading.current?.focus();
   }, [state]);
   useEffect(() => {
     if (!retryAt) return;
@@ -57,6 +58,15 @@ export function ForgotPasswordForm({
       return;
     }
     inFlight.current = true;
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      sendIcon.current?.animate(
+        [
+          { transform: 'translate(0, 0)', opacity: 1 },
+          { transform: 'translate(18px, -18px)', opacity: 0 },
+        ],
+        { duration: 240, easing: 'cubic-bezier(0.23, 1, 0.32, 1)' },
+      );
+    }
     setState('pending');
     const result = await resetRequest('request-password-reset', {
       email: parsed.data,
@@ -84,18 +94,22 @@ export function ForgotPasswordForm({
     );
   }
 
+  const busy = state === 'pending';
   return (
     <RecoveryFrame
       state={state === 'form' && error ? 'email-error' : state}
       title={state === 'form' && error ? '检查邮箱地址' : recoveryTitles[state]}
       headingRef={heading}
+      headingTrailing={state === 'accepted' ? <RecoveryLinkTip /> : undefined}
     >
-      {state === 'form' ? (
+      {state === 'form' || busy ? (
         <>
-          <p>
-            {error
-              ? '请输入用于登录的邮箱。'
-              : '输入登录邮箱，接收密码重置邮件。'}
+          <p role={busy ? 'status' : undefined}>
+            {busy
+              ? '正在发送重置邮件，请稍候。'
+              : error
+                ? '请输入用于登录的邮箱。'
+                : '输入登录邮箱，接收密码重置邮件。'}
           </p>
           <Form
             validationBehavior="aria"
@@ -109,6 +123,7 @@ export function ForgotPasswordForm({
               name="email"
               label="邮箱"
               value={email}
+              isDisabled={busy}
               onChange={(value) => {
                 setEmail(value);
                 setError('');
@@ -122,13 +137,22 @@ export function ForgotPasswordForm({
             <Button
               data-testid="reset-submit"
               type="submit"
+              isDisabled={busy}
               className={
                 error
-                  ? recoveryActionClass
-                  : 'h-11 min-h-11 w-full rounded-lg text-sm font-normal min-[1200px]:h-9 min-[1200px]:min-h-9'
+                  ? `${recoveryActionClass} gap-2`
+                  : 'h-11 min-h-11 w-full gap-2 rounded-lg text-sm font-normal min-[1200px]:h-9 min-[1200px]:min-h-9'
               }
             >
-              发送重置邮件
+              <span
+                ref={sendIcon}
+                data-testid="reset-send-icon"
+                className="inline-flex size-[18px] shrink-0"
+                aria-hidden="true"
+              >
+                <Send className="size-[18px]" />
+              </span>
+              {busy ? '正在发送…' : '发送重置邮件'}
             </Button>
           </Form>
           <Link
@@ -142,15 +166,6 @@ export function ForgotPasswordForm({
           >
             {error ? '返回登录' : '想起密码了？返回登录'}
           </Link>
-          {!error ? (
-            <Link
-              href="/forgot-password?view=cli"
-              data-testid="reset-cli"
-              className={recoveryActionClass}
-            >
-              无法收邮件？查看终端恢复方法
-            </Link>
-          ) : null}
         </>
       ) : (
         <RecoveryStatus

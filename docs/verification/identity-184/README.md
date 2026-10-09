@@ -1,5 +1,7 @@
 # Issue #184 邮件找回与一次密码重置
 
+2026-10-09 后续人工反馈的获批返修已完成实现、Figma 同步、真实浏览器与独立代码/设计复审；新版产品人工验收待完成。**当前返修完成状态以[本轮证据](./feedback.md)为准**；下文首轮命令、截图与审计保留为历史，不代替新版验证或人工验收。
+
 2026-10-09，T-ID-07 / `IDENTITY-RESET`。本记录区分生产实现、本地检查、浏览器、设计审计和人工验收；不以其中一项替代另一项。关联 [Issue #184](https://github.com/dnslin/ariso-next/issues/184)、[任务卡](../../tasks/m3-m4-platform.md#t-id-07-邮件找回一次重置与恢复界面)、[SPEC-identity §8.2](../../specs/SPEC-identity.md#82-找回与重置)、[DG-RESET](../../tasks/evidence/DG-RESET/README.md)。执行和设计规则统一使用 [execution](../../tasks/execution.md) 与 [handoff](../../design/handoff.md)。
 
 ## 范围与实际行为
@@ -49,7 +51,7 @@ macOS，本机 Node 24.18.1、pnpm 11.19.0；ImageMagick、ExifTool、OpenSSL �
 
 集成首轮失败分类：旧 auth allowlist 尚将新交付恢复端点当作禁用路径，已更新为三对新增允许方法并保留全部错误方法 404 断言；部分 HTTP / shutdown 场景因实施者在全量检查过程中重新构建而暂时找不到 standalone 入口；其余是构建、启动、密钥预检的超时。检查安排造成的产物竞争由本次纠正，不能当作产品回归或静默忽略。最终构建稳定后，串行复查以下完整文件：`identity/auth.test.ts`、`identity/setup-lifecycle.test.ts`、`runtime/prestart.test.ts`、`runtime/secret-preflight.test.ts`、`runtime/shutdown.test.ts`、`runtime/build.test.ts`、`library/selection-http.test.ts`、`media/settings-http.test.ts`、`upload/settings-persistence-http.test.ts`、`storage/restart.test.ts`（共同前缀 `tests/integration/`），全部 53 项通过。首轮其他通过文件的相关产品输入未变，没有机械重跑。
 
-## UI 与设计证据
+## 首轮 UI 与设计证据（历史）
 
 沿用批准设计，无新增交互或视觉方案。设计原生 SMTP 未配置节点采用 DG 校正后的 `216:2363 / 216:2419`，不是 Issue 旧描述中的后台 SMTP 节点。主要节点：找回 `11:23 / 102:3100`；重置 `172:749 / 172:750`；CLI `217:2380 / 217:2321`；申请成功 `216:2335 / 216:2280`；重置成功 `172:755 / 172:756`；失效 `172:757 / 172:758`；未知 `172:759 / 172:760`；邮件失败 `216:2391 / 216:2447`；限流 `217:2352 / 217:2293`。实现前已读取各主节点和状态节点的实时设计信息及截图，核对公共背景、返回首页、品牌和卡片后再实现业务内容。
 
@@ -78,6 +80,6 @@ macOS，本机 Node 24.18.1、pnpm 11.19.0；ImageMagick、ExifTool、OpenSSL �
 
 - 桌面与手机从登录页进入找回，提交错误邮箱格式，检查输入保留、错误焦点与返回入口。
 - 使用独立预览账号申请邮件，在本机收件箱打开链接，先触发密码不一致，再重置成功并以新密码登录。
-- 再次打开已消费链接，确认失效状态；查看 CLI 指引、浅深主题与短屏键盘操作。
+- 再次打开已消费链接，确认失效状态；按[返修方案](./feedback.md)检查 Tips、发送反馈、浅深主题与短屏键盘操作。
 
 人工预览、收件箱及私有账号密码通过聊天提供，不提交凭证、配置文件、令牌或邮件正文。预览保持运行，直到用户明确要求停止或清理。本次不合并 PR、不关闭 Issue、不删除分支或工作区。最终提交候选文件已检查人工预览账号、密码与两个服务端私有密钥，无命中；49 张归档截图已由独立设计评审逐张查看，未含明文密码或 URL token。[PR #275](https://github.com/dnslin/ariso-next/pull/275) 已创建并推送，保持 OPEN / Draft，分支 `codex/issue-184-password-reset`。创建后实际回读为 MERGEABLE / CLEAN，`statusCheckRollup: []`；没有远端检查，不记作 CI 通过。实现提交为 `cd5e1d95`，后续仅补充本交付状态。

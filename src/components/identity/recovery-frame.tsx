@@ -16,30 +16,30 @@ export function RecoveryLogin({ primary = false }: { primary?: boolean }) {
   );
 }
 
-export function RecoveryCliLink({ primary = false }: { primary?: boolean }) {
-  return (
-    <Link
-      href="/forgot-password?view=cli"
-      data-testid="reset-cli"
-      className={`${recoveryActionClass} ${primary ? 'bg-accent text-accent-foreground' : 'text-foreground'}`}
-    >
-      查看终端恢复方法
-    </Link>
-  );
-}
-
 export function RecoveryFrame({
   state,
   title,
   children,
   headingRef,
+  headingTrailing,
 }: {
   state: string;
   title: string;
   children: ReactNode;
   headingRef?: Ref<HTMLHeadingElement>;
+  headingTrailing?: ReactNode;
 }) {
-  const form = state === 'form';
+  const form = state === 'form' || state === 'pending';
+  const heading = (
+    <h1
+      id="recovery-heading"
+      ref={headingRef}
+      tabIndex={-1}
+      className={`${form ? 'text-2xl' : 'text-[22px]'} min-w-0 font-medium`}
+    >
+      {title}
+    </h1>
+  );
   return (
     <div
       className={`grid min-h-dvh content-start justify-items-center px-4 pb-8 ${form ? 'pt-[150px] min-[768px]:pt-[330px]' : 'pt-[130px] min-[768px]:pt-[170px]'}`}
@@ -51,14 +51,14 @@ export function RecoveryFrame({
         aria-busy={state === 'pending'}
         className={`grid w-full min-w-0 gap-4 rounded-[20px] border border-dashed border-border bg-surface px-6 text-sm leading-[1.5] dark:border-solid min-[768px]:rounded-3xl ${form ? 'max-w-md py-6' : 'max-w-[480px] py-7 min-[768px]:px-8'}`}
       >
-        <h1
-          id="recovery-heading"
-          ref={headingRef}
-          tabIndex={-1}
-          className={`${form ? 'text-2xl' : 'text-[22px]'} font-medium`}
-        >
-          {title}
-        </h1>
+        {headingTrailing ? (
+          <div className="flex min-h-11 items-center justify-between gap-3">
+            {heading}
+            {headingTrailing}
+          </div>
+        ) : (
+          heading
+        )}
         {children}
       </section>
     </div>

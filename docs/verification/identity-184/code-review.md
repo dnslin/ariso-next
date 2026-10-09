@@ -88,3 +88,7 @@ Required / P2（已修复、静态复审与真实浏览器回归通过，关闭�
 - 子进程通过 await execa 和 10 秒 timeout 管理，凭据仅经 stdin；生产发送函数 finally 关闭 transport。两套 fixture close 负责控制端口、SMTP listener 与各自证书目录，外层 finally 删除合并 CA 和临时目录。没有记录真实密码、私钥或恢复凭据。
 
 默认 full 当时生成的是旧 CA，既有失败不能被源文件修复改写为通过。新 fixture 的完整 SMTP 浏览器复查仍以统一交付记录为准；本次静读不替代该运行结果。
+
+## 获批人工反馈返修复审（2026-10-09）
+
+独立评审者实际使用 code-review-and-quality 与 React 技能，重新检查公开 CLI 删除、RecoveryLinkTip、保留表单的 pending、单次 WAAPI 与媒体监听生命周期及完整 e2e 新差异。测试观察真实原生动画与 held 请求，finally 恢复观察器；默认 full 仍含全部新增能力，原 SMTP/一次消费/未知结果和离页迟到响应断言保留。最终只读核对本轮 password-reset all 与运行器 exit 0，无 error/cleanupError，未重复测试。结论：无遗留 Critical / Required；设计与人工验收单列，当前证据见[返修记录](./feedback.md)。

@@ -8,22 +8,14 @@ import { getServerRuntime } from '../../server/startup/server-start';
 
 export const metadata = { title: '找回密码 · Ariso', referrer: 'no-referrer' };
 
-export default async function ForgotPasswordPage({
-  searchParams,
-}: {
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
-}) {
+export default async function ForgotPasswordPage() {
   await connection();
   const runtime = getServerRuntime();
   if (!readSetupOwner(runtime.connection.db, runtime.setup.databasePath))
     redirect('/setup');
-  const query = await searchParams;
-  const cli = query.view === 'cli';
   return (
     <PublicShell layout="recovery">
       <ForgotPasswordForm
-        key={cli ? 'cli' : 'mail'}
-        cli={cli}
         smtpConfigured={!!readSmtpSettings(runtime.connection.db)}
       />
     </PublicShell>

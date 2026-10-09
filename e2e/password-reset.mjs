@@ -35,8 +35,30 @@ const sanitize = (value) =>
     String(value),
   );
 const selector = (name) => `[data-testid="reset-${name}"]`;
-const state = (name) =>
-  page.waitForSelector(`${selector('page')}[data-state="${name}"]`);
+async function noTerminalContent() {
+  assert.deepEqual(
+    await page.evaluate(() => ({
+      terminalText:
+        /终端|容器|docker\s+exec|dist\/cli|reset-password\.js/i.test(
+          document.body.innerText,
+        ),
+      terminalLinks: [...document.querySelectorAll('a')].some((node) =>
+        /view=cli|dist\/cli|reset-password\.js/i.test(
+          node.getAttribute('href') ?? '',
+        ),
+      ),
+      terminalCommand: !!document.querySelector(
+        '[data-testid="reset-cli"], pre, code',
+      ),
+    })),
+    { terminalText: false, terminalLinks: false, terminalCommand: false },
+    'Public recovery states expose no terminal instructions, links or commands',
+  );
+}
+async function state(name) {
+  await page.waitForSelector(`${selector('page')}[data-state="${name}"]`);
+  await noTerminalContent();
+}
 const open = async (path = '/forgot-password') => {
   await page.goto(`${config.origin}${path}`);
   await page.waitForSelector(path === '/login' ? '#email' : selector('page'));
@@ -70,6 +92,7 @@ async function latestMail(name = 'accepted') {
   return mail.url;
 }
 async function screenshot(name) {
+  await noTerminalContent();
   await page.waitForFunction(
     () =>
       document
@@ -151,10 +174,158 @@ async function representativeStates(name, desktop = 1440) {
   }
   await setTheme(page, 'light');
 }
+async function acceptedTips() {
+  for (const theme of ['light', 'dark']) {
+    await setTheme(page, theme);
+    for (const width of [1920, 360, 390, 430, 768]) {
+      await resizeViewport(page, width, width >= 1200 ? 960 : 844);
+      await page.mouse.move(1, 1);
+      const mobile = await page.evaluate(
+        () => matchMedia('(max-width: 639px)').matches,
+      );
+      if (mobile) await page.click(selector('link-tip'));
+      else await page.hover(selector('link-tip'));
+      await page.waitForSelector(selector('link-tip-content'));
+      const details = await page.evaluate((s) => {
+        const content = document.querySelector(s);
+        return {
+          role: content.getAttribute('role'),
+          text: content.textContent,
+        };
+      }, selector('link-tip-content'));
+      assert.match(details.text, /1\s*小时|一小时/);
+      assert.match(details.text, /一次|单次/);
+      assert.equal(details.role, mobile ? 'dialog' : 'tooltip');
+      await screenshot(`accepted-tips-${theme}-${width}`);
+      if (mobile) {
+        await page.click(selector('link-tip-close'));
+        await page.waitForSelector(selector('link-tip-content'), {
+          state: 'hidden',
+        });
+        await page.waitForFunction(
+          (s) => document.activeElement === document.querySelector(s),
+          selector('link-tip'),
+        );
+      } else {
+        await page.hover(selector('link-tip-content'));
+        assert.equal(
+          await page.evaluate(
+            (s) => !!document.querySelector(s)?.getClientRects().length,
+            selector('link-tip-content'),
+          ),
+          true,
+          'Desktop explanation remains readable when the pointer enters it',
+        );
+      }
+      await page.keyboard.press('Escape');
+      await page.waitForSelector(selector('link-tip-content'), {
+        state: 'hidden',
+      });
+      await page.mouse.move(1, 1);
+      await page.focus(selector('link-tip'));
+      await page.keyboard.press('Tab');
+      await page.keyboard.press('Shift+Tab');
+      if (mobile) await page.keyboard.press('Enter');
+      await page.waitForSelector(selector('link-tip-content'));
+      await page.keyboard.press('Escape');
+      await page.waitForSelector(selector('link-tip-content'), {
+        state: 'hidden',
+      });
+      await page.waitForFunction(
+        (s) => document.activeElement === document.querySelector(s),
+        selector('link-tip'),
+      );
+    }
+  }
+  await resizeViewport(page, 1920, 960);
+  await setTheme(page, 'light');
+  report.checks.push(
+    'Accepted link Tips: desktop hover/continuous reading/focus/Escape, mobile click/close/Escape/source focus, both themes and mobile 44px geometry.',
+  );
+}
+async function requestFormGeometry() {
+  return page.evaluate(() =>
+    [
+      '[data-testid="reset-page"]',
+      '#email',
+      '[data-testid="reset-submit"]',
+    ].map((s) => {
+      const rect = document.querySelector(s).getBoundingClientRect();
+      return { x: rect.x, y: rect.y, width: rect.width, height: rect.height };
+    }),
+  );
+}
+async function observeSendMotion(motion) {
+  await page.cdp('Emulation.setEmulatedMedia', {
+    features: [
+      { name: 'prefers-color-scheme', value: 'light' },
+      { name: 'prefers-reduced-motion', value: motion },
+    ],
+  });
+  await page.evaluate(() => {
+    const original = Element.prototype.animate;
+    const state = { original, calls: [] };
+    window.__resetSendMotion = state;
+    Element.prototype.animate = function (...args) {
+      const animation = original.apply(this, args);
+      if (this.matches('[data-testid="reset-send-icon"]')) {
+        const timing = animation.effect.getTiming();
+        const call = {
+          duration: timing.duration,
+          iterations: timing.iterations,
+          fill: timing.fill,
+          finished: false,
+        };
+        state.calls.push(call);
+        animation.finished.then(
+          () => {
+            call.finished = true;
+          },
+          () => {
+            call.cancelled = true;
+          },
+        );
+      }
+      return animation;
+    };
+  });
+  return {
+    async verify() {
+      if (motion === 'no-preference')
+        await page.waitForFunction(() =>
+          window.__resetSendMotion.calls.some((call) => call.finished),
+        );
+      assert.deepEqual(
+        await page.evaluate(() => window.__resetSendMotion.calls),
+        motion === 'reduce'
+          ? []
+          : [{ duration: 240, iterations: 1, fill: 'auto', finished: true }],
+        'Send animates once for 240ms, resets naturally, and respects reduced motion',
+      );
+      assert.equal(
+        await page.evaluate(() => {
+          const icon = document.querySelector(
+            '[data-testid="reset-send-icon"]',
+          );
+          return getComputedStyle(icon).transform;
+        }),
+        'none',
+        'The send icon returns to its original position while the request remains pending',
+      );
+    },
+    async dispose() {
+      await page.evaluate(() => {
+        Element.prototype.animate = window.__resetSendMotion.original;
+        delete window.__resetSendMotion;
+      });
+    },
+  };
+}
 async function submit({
   hold = false,
   lose = false,
   expected = 'accepted',
+  motion = 'reduce',
 } = {}) {
   const values = await page.evaluate(() => ({
     email: document.querySelector('#email')?.value,
@@ -165,6 +336,11 @@ async function submit({
   // real UI wait and explicitly retry only after the actual server window.
   for (let attempt = 1; attempt <= 3; attempt++) {
     const observed = await observePasswordReset(page, { hold, lose });
+    const form =
+      hold && values.email !== undefined
+        ? await requestFormGeometry()
+        : undefined;
+    const sendMotion = form ? await observeSendMotion(motion) : undefined;
     try {
       await activate('submit');
       const result = await observed.settled();
@@ -189,6 +365,39 @@ async function submit({
             true,
             'The actual reset request disables both password fields',
           );
+        else {
+          assert.deepEqual(
+            await page.evaluate(() => ({
+              value: document.querySelector('#email')?.value,
+              disabled: document.querySelector('#email')?.disabled,
+            })),
+            { value: values.email, disabled: true },
+            'Request pending keeps the original email field and disables it',
+          );
+          const pendingForm = await requestFormGeometry();
+          for (let i = 0; i < form.length; i++)
+            for (const key of ['x', 'y', 'width', 'height'])
+              assert.ok(
+                Math.abs(pendingForm[i][key] - form[i][key]) <= 0.5,
+                `Pending preserves form/email/button ${key}`,
+              );
+          assert.deepEqual(
+            await page.evaluate(() => {
+              const icon = document.querySelector(
+                '[data-testid="reset-send-icon"] svg',
+              );
+              const rect = icon?.getBoundingClientRect();
+              return {
+                send: icon?.classList.contains('lucide-send'),
+                width: rect?.width,
+                height: rect?.height,
+              };
+            }),
+            { send: true, width: 18, height: 18 },
+            'The pending submit keeps its approved 18px Send icon',
+          );
+          await sendMotion.verify();
+        }
         await page.keyboard.press('Enter');
         assert.equal(
           (await observed.observed()).requests.length,
@@ -199,6 +408,7 @@ async function submit({
           values.email === undefined ? 'reset-pending' : 'request-pending',
           values.email === undefined ? 1440 : 1920,
         );
+        if (sendMotion) await sendMotion.verify();
         await observed.release();
       }
       if (result.responses.at(-1).status === 429) {
@@ -238,7 +448,11 @@ async function submit({
       );
       return result.responses.at(-1);
     } finally {
-      await observed.dispose();
+      try {
+        if (sendMotion) await sendMotion.dispose();
+      } finally {
+        await observed.dispose();
+      }
     }
   }
 }
@@ -384,24 +598,16 @@ try {
     'Unconfigured anonymous page does not pretend to send mail',
   );
   if (phase('representative')) await matrix('unconfigured', 1920);
-  await activate('cli');
-  await state('cli');
-  assert.equal(
-    await page.evaluate(() =>
-      document.body.textContent.includes(
-        'docker exec -it ariso node dist/cli/reset-password.js',
-      ),
-    ),
-    true,
-    'CLI guide uses the shipped recovery command',
-  );
-  if (phase('representative')) await matrix('cli', 1920);
+  await open('/forgot-password?view=cli');
+  await state('unconfigured');
+  assert.equal(new URL(await page.url()).pathname, '/forgot-password');
   await open('/reset-password');
   await state('invalid');
   if (phase('representative')) await matrix('missing-token');
   await configure();
-  await open();
+  await open('/forgot-password?view=cli');
   await state('form');
+  assert.equal(new URL(await page.url()).pathname, '/forgot-password');
   assert.equal(
     await page.evaluate(() => document.querySelector('#email').value),
     '',
@@ -428,9 +634,13 @@ try {
   }
   if (phase('representative') || phase('interactions')) {
     await page.fill('#email', config.credentials.email);
-    const accepted = await submit({ hold: phase('interactions') });
+    const accepted = await submit({
+      hold: phase('interactions'),
+      motion: 'no-preference',
+    });
     assert.equal(accepted.status, 200);
     await representativeStates('accepted', 1920);
+    await acceptedTips();
     const acceptedText = await page.evaluate(
       () => document.querySelector('[data-testid="reset-page"]').textContent,
     );
@@ -530,7 +740,10 @@ try {
     if (phase('interactions')) {
       const before = (await messages()).accepted.length;
       await page.fill('#email', 'absent-owner@example.test');
-      assert.equal((await submit()).status, 200);
+      assert.equal(
+        (await submit({ hold: true, motion: 'reduce' })).status,
+        200,
+      );
       assert.equal(
         await page.evaluate(
           () =>
@@ -543,6 +756,9 @@ try {
         (await messages()).accepted.length,
         before,
         'Unknown email does not send recovery mail',
+      );
+      report.checks.push(
+        'Real held requests preserve form/email/button geometry and disabled email, prevent duplicate submission, retain 18px Send, animate once for 240ms and skip motion when reduced.',
       );
       await activate('reapply');
       await state('form');
@@ -634,8 +850,6 @@ try {
     await state('invalid');
     await activate('reapply');
     await state('form');
-    await activate('cli');
-    await state('cli');
     await apply();
     await land(await latestMail());
     const password = `Recovery-${randomBytes(20).toString('hex')}`;
@@ -657,10 +871,8 @@ try {
     );
     await activate('reapply');
     await state('form');
-    await activate('cli');
-    await state('cli');
     report.checks.push(
-      'Expired callback, actual SMTP 550 and DATA disconnect, consumed-token SQLite password-write failure, real request/reset lost responses, unknown result never retried, reapply→CLI recovery.',
+      'Expired callback, actual SMTP 550 and DATA disconnect, consumed-token SQLite password-write failure, real request/reset lost responses, unknown result never retried, reapply stays in email recovery.',
     );
   }
   report.status = 'passed';

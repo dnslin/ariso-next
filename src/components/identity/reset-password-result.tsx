@@ -41,11 +41,6 @@ export function ResetPasswordResult({
           重新申请链接
         </Link>
       ) : null}
-      {state === 'unknown' ? (
-        <p className="text-muted min-h-[30px] text-xs leading-[1.5]">
-          无法收到邮件时，可通过容器终端重置密码。
-        </p>
-      ) : null}
       <Link
         href="/login"
         data-testid="reset-login"
