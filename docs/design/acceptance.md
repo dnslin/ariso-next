@@ -26,6 +26,8 @@
 
 DES-01/02/03/04 已覆盖的状态不重复立项。DES-05/07 是跨模块规范，按实施页面逐项验收，不能用一个主题或导航样例关闭全站责任。
 
+2026-10-09，[DG-THEME / Issue #139](../tasks/evidence/DG-THEME/README.md)已将两端三偏好、六类R6代表、颜色映射、浅色错误文字对比及挂载前状态缺口交接到 [T-SITE-05](../tasks/m3-m4-experience.md#dg-theme-对-t-site-05-的核对结论)。本次仅完成设计适用文档核对；生产选择器、系统/刷新/跨标签、全部状态和图表/照片对比仍待真实验证，DES-05/RG-07保持开放，最终全站矩阵归T-QA-02。
+
 2026-10-09 [DG-RESET / Issue #133](../tasks/evidence/DG-RESET/README.md)已核对两端申请与六态重置，并将发送未知、消费中断阶段、CLI入口及真实验收范围交接至 [T-ID-07](../tasks/m3-m4-platform.md#dg-reset-对-t-id-07-的核对结论)。本次仅修正文档引用和设计适用责任，不交付找回/重置页面，不关闭DES-02、DES-05/07或播放器验收。
 
 2026-10-05 [DG-SHARING / Issue #134](../tasks/evidence/DG-SHARING/README.md)已将已有两端状态、规则、具体表达缺口及真实验收范围交接到T-SHR-02/03/04。该文档核对不关闭DES-03、DES-06-SHARING或RG-02/08；生产分享页面、连续撤权/返回、浅深色及真实交互仍由三个消费任务取得证据。
