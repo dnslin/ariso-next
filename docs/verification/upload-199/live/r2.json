@@ -1,0 +1,132 @@
+{
+  "service": "r2",
+  "node": "v24.18.1",
+  "startedAt": "2026-10-09T00:38:17.271Z",
+  "finishedAt": "2026-10-09T00:38:42.329Z",
+  "status": "passed",
+  "storageId": "ecbfca69-0d38-4910-887f-a0ad61003779",
+  "checks": [
+    {
+      "name": "real-s3-probe-and-enable",
+      "status": "passed",
+      "detail": {
+        "storageId": "ecbfca69-0d38-4910-887f-a0ad61003779",
+        "probeCleaned": true
+      }
+    },
+    {
+      "name": "unauthorized-generated-curl-creates-no-assets",
+      "detail": {
+        "status": 401,
+        "code": "UPLOAD_TOKEN_INVALID",
+        "stage": "authentication"
+      },
+      "status": "passed"
+    },
+    {
+      "name": "invalid-generated-curl-creates-no-assets",
+      "detail": {
+        "status": 400,
+        "code": "UPLOAD_INVALID_INPUT",
+        "stage": "preparing"
+      },
+      "status": "passed"
+    },
+    {
+      "name": "minimal-generated-curl-uses-current-default-public",
+      "detail": {
+        "imageId": "587b1520-deda-40e5-8f61-1122fa1a3541",
+        "storageId": "ecbfca69-0d38-4910-887f-a0ad61003779",
+        "visibility": "public",
+        "status": 201,
+        "jobId": "516c310d-dd1d-4c97-8548-b513948d37e1",
+        "versions": ["compressed", "original", "thumbnail"]
+      },
+      "status": "passed"
+    },
+    {
+      "name": "minimal-generated-curl-uses-current-default-private",
+      "detail": {
+        "imageId": "9af46b6e-13cc-435a-bb6b-68d101ba392b",
+        "storageId": "ecbfca69-0d38-4910-887f-a0ad61003779",
+        "visibility": "private",
+        "status": 201,
+        "jobId": "da9aadc3-03cf-4e7a-a901-0bdcb1587b71",
+        "versions": ["compressed", "original", "thumbnail"]
+      },
+      "status": "passed"
+    },
+    {
+      "name": "full-generated-curl-repeated-album-and-tag-fields-private",
+      "detail": {
+        "imageId": "a1ae47ab-9228-430c-ac51-38509ced971a",
+        "storageId": "ecbfca69-0d38-4910-887f-a0ad61003779",
+        "visibility": "private",
+        "status": 201,
+        "jobId": "10c7d4f0-daa8-4ac1-a407-8c68eb3d7548",
+        "versions": ["compressed", "original", "thumbnail"],
+        "albumCount": 2,
+        "tagCount": 2,
+        "matchedExistingTag": true
+      },
+      "status": "passed"
+    },
+    {
+      "name": "own-namespace-empty-after-cleanup",
+      "status": "passed",
+      "detail": []
+    }
+  ],
+  "keys": [
+    "images/587b1520-deda-40e5-8f61-1122fa1a3541/compressed/823f4db1-9bc4-474b-9703-7cbd5d7f7ce4",
+    "images/587b1520-deda-40e5-8f61-1122fa1a3541/thumbnail/a7df73c4-62ba-491f-ac16-b36537c11975",
+    "original/587b1520-deda-40e5-8f61-1122fa1a3541.png",
+    "images/9af46b6e-13cc-435a-bb6b-68d101ba392b/thumbnail/b85b2c02-0623-490f-81a8-33910d667f0f",
+    "original/9af46b6e-13cc-435a-bb6b-68d101ba392b.png",
+    "images/9af46b6e-13cc-435a-bb6b-68d101ba392b/compressed/74268b5e-a38b-4496-a28a-0fa99787e2b9",
+    "images/a1ae47ab-9228-430c-ac51-38509ced971a/compressed/f21a4add-a431-487a-adc2-623a9e0c034c",
+    "original/a1ae47ab-9228-430c-ac51-38509ced971a.png",
+    "images/a1ae47ab-9228-430c-ac51-38509ced971a/thumbnail/7d40773e-6a57-4daf-958f-61dbca79ef26"
+  ],
+  "cleanup": [
+    {
+      "key": "images/587b1520-deda-40e5-8f61-1122fa1a3541/compressed/823f4db1-9bc4-474b-9703-7cbd5d7f7ce4",
+      "result": "absent"
+    },
+    {
+      "key": "images/587b1520-deda-40e5-8f61-1122fa1a3541/thumbnail/a7df73c4-62ba-491f-ac16-b36537c11975",
+      "result": "absent"
+    },
+    {
+      "key": "original/587b1520-deda-40e5-8f61-1122fa1a3541.png",
+      "result": "absent"
+    },
+    {
+      "key": "images/9af46b6e-13cc-435a-bb6b-68d101ba392b/thumbnail/b85b2c02-0623-490f-81a8-33910d667f0f",
+      "result": "absent"
+    },
+    {
+      "key": "original/9af46b6e-13cc-435a-bb6b-68d101ba392b.png",
+      "result": "absent"
+    },
+    {
+      "key": "images/9af46b6e-13cc-435a-bb6b-68d101ba392b/compressed/74268b5e-a38b-4496-a28a-0fa99787e2b9",
+      "result": "absent"
+    },
+    {
+      "key": "images/a1ae47ab-9228-430c-ac51-38509ced971a/compressed/f21a4add-a431-487a-adc2-623a9e0c034c",
+      "result": "absent"
+    },
+    {
+      "key": "original/a1ae47ab-9228-430c-ac51-38509ced971a.png",
+      "result": "absent"
+    },
+    {
+      "key": "images/a1ae47ab-9228-430c-ac51-38509ced971a/thumbnail/7d40773e-6a57-4daf-958f-61dbca79ef26",
+      "result": "absent"
+    }
+  ],
+  "limits": [
+    "Generated curl examples, standalone HTTP and own namespace only; no AWS, browser, container or deployment."
+  ]
+}

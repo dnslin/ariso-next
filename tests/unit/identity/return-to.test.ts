@@ -100,3 +100,14 @@ it('returns to SMTP settings after session expiry without opening unimplemented 
   expect(loginDestination('/settings/email/unimplemented')).toBe('/admin');
   expect(loginDestination('https://evil.test/settings/email')).toBe('/admin');
 });
+
+it('returns to the delivered upload usage page after signing in', () => {
+  expect(loginDestination('/settings/api/usage')).toBe('/settings/api/usage');
+  expect(loginDestination('/settings/api/usage#parameters')).toBe(
+    '/settings/api/usage#parameters',
+  );
+  expect(loginDestination('/settings/api/usage/unimplemented')).toBe('/admin');
+  expect(loginDestination('https://evil.test/settings/api/usage')).toBe(
+    '/admin',
+  );
+});

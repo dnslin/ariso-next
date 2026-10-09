@@ -20,7 +20,9 @@
     "test:unit": "vitest run --project unit",
     "test:integration": "vitest run --project integration --project media-tools",
     "test:browser": "pnpm run build:shell && pnpm --dir tests/experiments/ui run build && node scripts/verify-browser.mjs",
-    "build:shell": "next build tests/experiments/shell --webpack"
+    "build:shell": "next build tests/experiments/shell --webpack",
+    "openapi:generate": "node scripts/generate-upload-openapi.ts",
+    "openapi:check": "node scripts/generate-upload-openapi.ts --check"
   },
   "dependencies": {
     "@air/react-drag-to-select": "5.0.11",

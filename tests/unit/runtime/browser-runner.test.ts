@@ -32,6 +32,10 @@ describe('browser runner argument boundaries', () => {
     ['upload', 'submissions'],
     ['upload-regression'],
     ['upload-regression', 'main'],
+    ['upload-usage'],
+    ['upload-usage', 'representative'],
+    ['upload-usage', 'interactions'],
+    ['upload-usage', 'recovery'],
     ['m2-mobile'],
     ['upload-s3', 'cleanup'],
     ['upload-s3'],
@@ -167,6 +171,7 @@ describe('browser runner argument boundaries', () => {
     'album-cover',
     'tags',
     'upload-input',
+    'upload-usage',
     'library-feedback',
     'storage-cors',
   ])(
@@ -207,7 +212,7 @@ describe('browser runner argument boundaries', () => {
     const result = parse(['--suite', suite, '--only', 'recovery']);
     expect(result.status).not.toBe(0);
     expect(result.stderr).toContain(
-      ['sharing-public', 'library-batch'].includes(suite)
+      ['sharing-public', 'library-batch', 'upload-usage'].includes(suite)
         ? 'Invalid EGO_PAGE_LABEL'
         : '--only requires an applicable targeted suite',
     );

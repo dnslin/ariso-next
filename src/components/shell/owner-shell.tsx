@@ -53,6 +53,7 @@ const navigation = [
       '/settings/processing',
       '/settings/account',
       '/settings/api',
+      '/settings/api/usage',
       '/settings/email',
     ],
     label: '站点设置',

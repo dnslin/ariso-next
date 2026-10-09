@@ -28,6 +28,7 @@ import {
   type TokenRecord,
 } from './token-request';
 import { useTokenAction } from './token-use-action';
+import { tokenReturnScrollKey } from './token-return-context';
 
 type Props = Omit<ComponentProps<typeof OwnerShell>, 'children' | 'footer'> & {
   timeZone: string;
@@ -52,6 +53,24 @@ export function TokensPage({ timeZone, ...shell }: Props) {
   const sessionLost =
     expired ||
     (query.error instanceof TokenRequestError && query.error.status === 401);
+  useEffect(() => {
+    if (loading || sessionLost) return;
+    const scrollTop = client.getQueryData<number>(tokenReturnScrollKey);
+    if (scrollTop === undefined) return;
+    const frame = requestAnimationFrame(() => {
+      const main = document.querySelector<HTMLElement>('.shell-content');
+      if (main) main.scrollTop = scrollTop;
+      const opener = Array.from(
+        document.querySelectorAll<HTMLElement>('[data-testid="api-usage"]'),
+      ).find((element) => element.getClientRects().length > 0);
+      opener?.focus({ preventScroll: true });
+      client.removeQueries({
+        queryKey: tokenReturnScrollKey,
+        exact: true,
+      });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [client, loading, sessionLost]);
   function refreshAndRestoreFocus() {
     pendingFocus.current = true;
     void query.refetch();

@@ -1,0 +1,32 @@
+{
+  "status": "failed",
+  "origin": "http://ariso-54343.localhost:54343",
+  "checks": [
+    {
+      "ownerBoundary": 307,
+      "returnTo": "/settings/api/usage"
+    },
+    {
+      "specification": {
+        "publicHttpStatus": 200,
+        "destination": "http://ariso-54343.localhost:54343/api/openapi.json",
+        "paths": ["/api/upload"],
+        "configuredServer": "http://uploadsuploadsuploadsuploadsuploadsuploadsuploads.imagesimagesimagesimagesimagesimagesimagesimages.assetsassetsassetsassetsassetsassetsassetsassets.example.test"
+      }
+    },
+    {
+      "actualPublicUrl": "http://uploadsuploadsuploadsuploadsuploadsuploadsuploads.imagesimagesimagesimagesimagesimagesimagesimages.assetsassetsassetsassetsassetsassetsassetsassets.example.test",
+      "actualLimitBytes": 24117248,
+      "generatedCommandExact": true
+    }
+  ],
+  "layouts": [],
+  "screenshots": ["upload-usage-failure.png"],
+  "requests": [],
+  "clipboard": [],
+  "limitations": [
+    "Disposable runner database only; mouse, keyboard and mobile viewport emulation do not prove physical touch or soft keyboard behavior."
+  ],
+  "error": "AssertionError [ERR_ASSERTION]: Documentation table cells retain the approved 13px text\n\n'14px' !== '13px'\n\n    at tables (file:////[eval2]:128:10)\n    at async file:////[eval2]:687:5",
+  "finishedAt": "2026-10-09T03:49:10.841Z"
+}
