@@ -1,0 +1,400 @@
+{
+  "status": "passed",
+  "taskSpaceId": 8,
+  "origin": "http://ariso-52613.localhost:52613",
+  "phase": "lifecycle",
+  "checks": [
+    "Enable/disable round trips update the actual target ID; real pending writes prohibit repeats; cancel returns focus; confirmed revocation removes the credential from the list."
+  ],
+  "layouts": [
+    {
+      "name": "disabling-light",
+      "businessWidth": 1440,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "处理中…",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "disabling-dark",
+      "businessWidth": 1440,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "处理中…",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "enabling-light",
+      "businessWidth": 1440,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "处理中…",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "enabling-dark",
+      "businessWidth": 1440,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "处理中…",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "revoke-confirm-light",
+      "businessWidth": 1440,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭 Token 操作",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "确认撤销",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "revoke-confirm-dark",
+      "businessWidth": 1440,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭 Token 操作",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "确认撤销",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "revoking-light",
+      "businessWidth": 1440,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "处理中…",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "revoking-dark",
+      "businessWidth": 1440,
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "处理中…",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "disabling-light",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "处理中…",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "disabling-dark",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "处理中…",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "enabling-light",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "处理中…",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "enabling-dark",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "处理中…",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "revoke-confirm-light",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭 Token 操作",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "确认撤销",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "revoke-confirm-dark",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭 Token 操作",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "确认撤销",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "revoking-light",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "处理中…",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "revoking-dark",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "处理中…",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    "tokens-1440-disabling-light.png",
+    "tokens-1440-disabling-dark.png",
+    "tokens-1440-enabling-light.png",
+    "tokens-1440-enabling-dark.png",
+    "tokens-1440-revoke-confirm-light.png",
+    "tokens-1440-revoke-confirm-dark.png",
+    "tokens-1440-revoking-light.png",
+    "tokens-1440-revoking-dark.png",
+    "tokens-390-disabling-light.png",
+    "tokens-390-disabling-dark.png",
+    "tokens-390-enabling-light.png",
+    "tokens-390-enabling-dark.png",
+    "tokens-390-revoke-confirm-light.png",
+    "tokens-390-revoke-confirm-dark.png",
+    "tokens-390-revoking-light.png",
+    "tokens-390-revoking-dark.png"
+  ],
+  "requests": [
+    {
+      "path": "/api/upload-tokens",
+      "method": "POST",
+      "width": 1440,
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/upload-tokens",
+      "method": "GET",
+      "width": 1440,
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/upload-tokens",
+      "method": "GET",
+      "width": 1440,
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/upload-tokens",
+      "method": "GET",
+      "width": 1440,
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/upload-tokens",
+      "method": "POST",
+      "width": 390,
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/upload-tokens",
+      "method": "GET",
+      "width": 390,
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/upload-tokens",
+      "method": "GET",
+      "width": 390,
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/upload-tokens",
+      "method": "GET",
+      "width": 390,
+      "attempt": 1,
+      "status": 200
+    }
+  ],
+  "business": [
+    {
+      "scenario": "reversible-enable-and-delete",
+      "width": 1440,
+      "id": "6eNra7vK3Alou2QAzSQd8rf1BNEWt0dl",
+      "status": "passed"
+    },
+    {
+      "scenario": "reversible-enable-and-delete",
+      "width": 390,
+      "id": "dE5Xqe2k05BWRHm9ASByFzVxx9XYkjp1",
+      "status": "passed"
+    }
+  ],
+  "clipboard": [],
+  "limitations": [
+    "Only the runner’s disposable production database is modified; the manual preview remains untouched.",
+    "Once-only secret screenshots cover the input with a temporary bullet overlay without changing its value or selection; the full value is asserted in memory and never emitted.",
+    "Actual Clipboard permission denial and native copy are exercised on the current macOS Ego Lite host.",
+    "Chromium viewport emulation does not constitute physical touch, soft keyboard or safe-area verification."
+  ],
+  "timeZone": "Asia/Shanghai",
+  "stage": "lifecycle",
+  "browserErrors": [],
+  "finishedAt": "2026-10-09T06:37:18.095Z"
+}

@@ -197,7 +197,7 @@ export async function verifySiteGeneralConsumers(page, config, tools, report) {
     await page.waitForSelector('main h1');
     await tools.open();
   }
-  await verifyOwnerShell(page, config);
+  await verifyOwnerShell(page, config, 'site-general-owner-shell');
   report.checks.push(
     'Empty/default-disabled storage summary uses real APIs without silently selecting another storage. Real long saved address and latest callback copy exactly to native Clipboard while page, scroll, selected text and keyboard focus stay in place; denial exposes complete manual text. Related rows navigate to implemented storage/processing pages.',
   );

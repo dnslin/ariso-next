@@ -1,0 +1,799 @@
+{
+  "status": "passed",
+  "taskSpaceId": 8,
+  "origin": "http://ariso-52791.localhost:52791",
+  "phase": "before",
+  "checks": [
+    "Native callback Clipboard write resolves with the complete URL; actual denied browser permission exposes full selectable readonly text in the same modal.",
+    "Closing unknown configuration discards its Secret draft while retaining only the unresolved-operation marker on the main section; failed real readback blocks reopening and repeat PATCH; successful main readback restores editing from actual values with an empty Secret.",
+    "Real encrypted persistence; blank Secret omission, explicit replacement and confirmed draft-only clearing; required fields; pending single submission; rejected-write input retention; lost successful Save and failed readback remain unknown until explicit reconciliation.",
+    "Changing only site.publicUrl updates callback readback in the next real request without an OAuth configuration restart.",
+    "Held real settings and binding reads show their independent loading states; lost real read responses expose errors and prevent stale editing/actions; the other section remains available; the owning Retry action recovers through a real read.",
+    "Anonymous GitHub login entry follows actual effective configuration (disabled). No external authorization is attempted with fixture credentials."
+  ],
+  "requests": [
+    {
+      "path": "/api/settings/github",
+      "method": "GET",
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/settings/github",
+      "method": "GET",
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/settings/github",
+      "method": "GET",
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/settings/github",
+      "method": "GET",
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/settings/github",
+      "method": "GET",
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/settings/github",
+      "method": "GET",
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/settings/github",
+      "method": "GET",
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/settings/github",
+      "method": "GET",
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/auth/sign-out",
+      "method": "POST",
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/settings/github",
+      "method": "GET",
+      "width": 1440,
+      "attempt": 1,
+      "status": 200
+    }
+  ],
+  "realGithubOAuth": "unverified",
+  "limitations": [
+    "Only the runner’s disposable production runtime/database are modified; the manual preview is untouched.",
+    "A seeded GitHub account proves UI binding state and production unlinking only. It is not evidence of real GitHub OAuth authorization, token exchange or GitHub login.",
+    "Held/lost delivery faults retain actual HTTP writes and reads; no successful server response is fabricated.",
+    "Callback publicUrl readback is verified here; external callback authorization and provider exchange remain separate verification."
+  ],
+  "stage": "saved-disabled",
+  "restartExpected": {
+    "enabled": false,
+    "clientId": "browser-oauth-final",
+    "hasSecret": true
+  },
+  "browserErrors": [],
+  "events": [
+    {
+      "type": "keydown",
+      "key": "Enter",
+      "time": 6922.600000023842,
+      "id": "react-aria2784818554-_r_g_",
+      "testId": "oauth-config-difference",
+      "slot": "accordion-trigger"
+    },
+    {
+      "type": "click",
+      "time": 6925,
+      "id": "react-aria2784818554-_r_g_",
+      "testId": "oauth-config-difference",
+      "slot": "accordion-trigger"
+    },
+    {
+      "type": "keyup",
+      "key": "Enter",
+      "time": 6925.5,
+      "id": "react-aria2784818554-_r_g_",
+      "testId": "oauth-config-difference",
+      "slot": "accordion-trigger"
+    },
+    {
+      "type": "focusin",
+      "time": 6989.600000023842,
+      "id": "react-aria2784818554-_r_d_",
+      "testId": "account-github-config",
+      "slot": "button"
+    },
+    {
+      "type": "keydown",
+      "key": "Enter",
+      "time": 7045.899999976158,
+      "id": "react-aria2784818554-_r_d_",
+      "testId": "account-github-config",
+      "slot": "button"
+    },
+    {
+      "type": "click",
+      "time": 7046.800000071526,
+      "id": "react-aria2784818554-_r_d_",
+      "testId": "account-github-config",
+      "slot": "button"
+    },
+    {
+      "type": "keyup",
+      "key": "Enter",
+      "time": 7047.100000023842,
+      "id": "react-aria2784818554-_r_d_",
+      "testId": "account-github-config",
+      "slot": "button"
+    },
+    {
+      "type": "focusin",
+      "time": 7052.800000071526,
+      "id": "react-aria2784818554-_r_7c_",
+      "testId": "oauth-page",
+      "slot": "modal-dialog",
+      "modal": "editing"
+    },
+    {
+      "type": "focusin",
+      "time": 7065.200000047684,
+      "id": "oauth-client-id",
+      "slot": "input",
+      "modal": "editing"
+    },
+    {
+      "type": "focusin",
+      "time": 7213.100000023842,
+      "id": "react-aria2784818554-_r_83_",
+      "testId": "oauth-save",
+      "slot": "button",
+      "modal": "editing"
+    },
+    {
+      "type": "keydown",
+      "key": "Tab",
+      "time": 7267.399999976158,
+      "id": "react-aria2784818554-_r_83_",
+      "testId": "oauth-save",
+      "slot": "button",
+      "modal": "editing"
+    },
+    {
+      "type": "focusin",
+      "time": 7268.800000071526,
+      "id": "react-aria2784818554-_r_85_",
+      "testId": "oauth-close",
+      "slot": "button",
+      "modal": "editing"
+    },
+    {
+      "type": "keyup",
+      "key": "Tab",
+      "time": 7270,
+      "id": "react-aria2784818554-_r_85_",
+      "testId": "oauth-close",
+      "slot": "button",
+      "modal": "editing"
+    },
+    {
+      "type": "keydown",
+      "time": 7324.100000023842,
+      "id": "react-aria2784818554-_r_85_",
+      "testId": "oauth-close",
+      "slot": "button",
+      "modal": "editing"
+    },
+    {
+      "type": "keydown",
+      "key": "Tab",
+      "time": 7324.5,
+      "id": "react-aria2784818554-_r_85_",
+      "testId": "oauth-close",
+      "slot": "button",
+      "modal": "editing"
+    },
+    {
+      "type": "focusin",
+      "time": 7325,
+      "id": "react-aria2784818554-_r_83_",
+      "testId": "oauth-save",
+      "slot": "button",
+      "modal": "editing"
+    },
+    {
+      "type": "keyup",
+      "key": "Tab",
+      "time": 7325.899999976158,
+      "id": "react-aria2784818554-_r_83_",
+      "testId": "oauth-save",
+      "slot": "button",
+      "modal": "editing"
+    },
+    {
+      "type": "keyup",
+      "time": 7326.300000071526,
+      "id": "react-aria2784818554-_r_83_",
+      "testId": "oauth-save",
+      "slot": "button",
+      "modal": "editing"
+    },
+    {
+      "type": "keydown",
+      "key": "Escape",
+      "time": 7385.100000023842,
+      "id": "react-aria2784818554-_r_83_",
+      "testId": "oauth-save",
+      "slot": "button",
+      "modal": "editing"
+    },
+    {
+      "type": "keyup",
+      "key": "Escape",
+      "time": 7391.600000023842,
+      "id": ""
+    },
+    {
+      "type": "focusin",
+      "time": 7398.399999976158,
+      "id": "react-aria2784818554-_r_d_",
+      "testId": "account-github-config",
+      "slot": "button"
+    },
+    {
+      "type": "focusin",
+      "time": 7543.100000023842,
+      "id": "react-aria2784818554-_r_g_",
+      "testId": "oauth-config-difference",
+      "slot": "accordion-trigger"
+    },
+    {
+      "type": "keydown",
+      "key": "Enter",
+      "time": 7597.5,
+      "id": "react-aria2784818554-_r_g_",
+      "testId": "oauth-config-difference",
+      "slot": "accordion-trigger"
+    },
+    {
+      "type": "click",
+      "time": 7600.700000047684,
+      "id": "react-aria2784818554-_r_g_",
+      "testId": "oauth-config-difference",
+      "slot": "accordion-trigger"
+    },
+    {
+      "type": "keyup",
+      "key": "Enter",
+      "time": 7601.300000071526,
+      "id": "react-aria2784818554-_r_g_",
+      "testId": "oauth-config-difference",
+      "slot": "accordion-trigger"
+    },
+    {
+      "type": "keydown",
+      "key": "Enter",
+      "time": 7754.5,
+      "id": "react-aria2784818554-_r_g_",
+      "testId": "oauth-config-difference",
+      "slot": "accordion-trigger"
+    },
+    {
+      "type": "click",
+      "time": 7756.800000071526,
+      "id": "react-aria2784818554-_r_g_",
+      "testId": "oauth-config-difference",
+      "slot": "accordion-trigger"
+    },
+    {
+      "type": "keyup",
+      "key": "Enter",
+      "time": 7757.300000071526,
+      "id": "react-aria2784818554-_r_g_",
+      "testId": "oauth-config-difference",
+      "slot": "accordion-trigger"
+    },
+    {
+      "type": "focusin",
+      "time": 7822.399999976158,
+      "id": "react-aria2784818554-_r_d_",
+      "testId": "account-github-config",
+      "slot": "button"
+    },
+    {
+      "type": "keydown",
+      "key": "Enter",
+      "time": 7879.700000047684,
+      "id": "react-aria2784818554-_r_d_",
+      "testId": "account-github-config",
+      "slot": "button"
+    },
+    {
+      "type": "click",
+      "time": 7881.100000023842,
+      "id": "react-aria2784818554-_r_d_",
+      "testId": "account-github-config",
+      "slot": "button"
+    },
+    {
+      "type": "keyup",
+      "key": "Enter",
+      "time": 7881.5,
+      "id": "react-aria2784818554-_r_d_",
+      "testId": "account-github-config",
+      "slot": "button"
+    },
+    {
+      "type": "focusin",
+      "time": 7888.300000071526,
+      "id": "react-aria2784818554-_r_87_",
+      "testId": "oauth-page",
+      "slot": "modal-dialog",
+      "modal": "editing"
+    },
+    {
+      "type": "focusin",
+      "time": 7898.600000023842,
+      "id": "oauth-client-id",
+      "slot": "input",
+      "modal": "editing"
+    },
+    {
+      "type": "focusin",
+      "time": 8049.100000023842,
+      "id": "react-aria2784818554-_r_8u_",
+      "testId": "oauth-save",
+      "slot": "button",
+      "modal": "editing"
+    },
+    {
+      "type": "keydown",
+      "key": "Tab",
+      "time": 8103.399999976158,
+      "id": "react-aria2784818554-_r_8u_",
+      "testId": "oauth-save",
+      "slot": "button",
+      "modal": "editing"
+    },
+    {
+      "type": "focusin",
+      "time": 8104.800000071526,
+      "id": "react-aria2784818554-_r_90_",
+      "testId": "oauth-close",
+      "slot": "button",
+      "modal": "editing"
+    },
+    {
+      "type": "keyup",
+      "key": "Tab",
+      "time": 8106,
+      "id": "react-aria2784818554-_r_90_",
+      "testId": "oauth-close",
+      "slot": "button",
+      "modal": "editing"
+    },
+    {
+      "type": "keydown",
+      "time": 8162.100000023842,
+      "id": "react-aria2784818554-_r_90_",
+      "testId": "oauth-close",
+      "slot": "button",
+      "modal": "editing"
+    },
+    {
+      "type": "keydown",
+      "key": "Tab",
+      "time": 8162.600000023842,
+      "id": "react-aria2784818554-_r_90_",
+      "testId": "oauth-close",
+      "slot": "button",
+      "modal": "editing"
+    },
+    {
+      "type": "focusin",
+      "time": 8163.399999976158,
+      "id": "react-aria2784818554-_r_8u_",
+      "testId": "oauth-save",
+      "slot": "button",
+      "modal": "editing"
+    },
+    {
+      "type": "keyup",
+      "key": "Tab",
+      "time": 8164.600000023842,
+      "id": "react-aria2784818554-_r_8u_",
+      "testId": "oauth-save",
+      "slot": "button",
+      "modal": "editing"
+    },
+    {
+      "type": "keyup",
+      "time": 8165.100000023842,
+      "id": "react-aria2784818554-_r_8u_",
+      "testId": "oauth-save",
+      "slot": "button",
+      "modal": "editing"
+    },
+    {
+      "type": "keydown",
+      "key": "Escape",
+      "time": 8224.5,
+      "id": "react-aria2784818554-_r_8u_",
+      "testId": "oauth-save",
+      "slot": "button",
+      "modal": "editing"
+    },
+    {
+      "type": "focusin",
+      "time": 8231.5,
+      "id": "react-aria2784818554-_r_d_",
+      "testId": "account-github-config",
+      "slot": "button"
+    },
+    {
+      "type": "keyup",
+      "key": "Escape",
+      "time": 8235.300000071526,
+      "id": "react-aria2784818554-_r_d_",
+      "testId": "account-github-config",
+      "slot": "button"
+    },
+    {
+      "type": "focusin",
+      "time": 8424.200000047684,
+      "id": "react-aria2784818554-_r_g_",
+      "testId": "oauth-config-difference",
+      "slot": "accordion-trigger"
+    },
+    {
+      "type": "keydown",
+      "key": "Enter",
+      "time": 8478.899999976158,
+      "id": "react-aria2784818554-_r_g_",
+      "testId": "oauth-config-difference",
+      "slot": "accordion-trigger"
+    },
+    {
+      "type": "click",
+      "time": 8482.300000071526,
+      "id": "react-aria2784818554-_r_g_",
+      "testId": "oauth-config-difference",
+      "slot": "accordion-trigger"
+    },
+    {
+      "type": "keyup",
+      "key": "Enter",
+      "time": 8483.700000047684,
+      "id": "react-aria2784818554-_r_g_",
+      "testId": "oauth-config-difference",
+      "slot": "accordion-trigger"
+    },
+    {
+      "type": "keydown",
+      "key": "Enter",
+      "time": 8636.399999976158,
+      "id": "react-aria2784818554-_r_g_",
+      "testId": "oauth-config-difference",
+      "slot": "accordion-trigger"
+    },
+    {
+      "type": "click",
+      "time": 8638.300000071526,
+      "id": "react-aria2784818554-_r_g_",
+      "testId": "oauth-config-difference",
+      "slot": "accordion-trigger"
+    },
+    {
+      "type": "keyup",
+      "key": "Enter",
+      "time": 8638.700000047684,
+      "id": "react-aria2784818554-_r_g_",
+      "testId": "oauth-config-difference",
+      "slot": "accordion-trigger"
+    },
+    {
+      "type": "focusin",
+      "time": 8703.300000071526,
+      "id": "react-aria2784818554-_r_d_",
+      "testId": "account-github-config",
+      "slot": "button"
+    },
+    {
+      "type": "keydown",
+      "key": "Enter",
+      "time": 8760.5,
+      "id": "react-aria2784818554-_r_d_",
+      "testId": "account-github-config",
+      "slot": "button"
+    },
+    {
+      "type": "click",
+      "time": 8761.899999976158,
+      "id": "react-aria2784818554-_r_d_",
+      "testId": "account-github-config",
+      "slot": "button"
+    },
+    {
+      "type": "keyup",
+      "key": "Enter",
+      "time": 8762.200000047684,
+      "id": "react-aria2784818554-_r_d_",
+      "testId": "account-github-config",
+      "slot": "button"
+    },
+    {
+      "type": "focusin",
+      "time": 8768.300000071526,
+      "id": "react-aria2784818554-_r_92_",
+      "testId": "oauth-page",
+      "slot": "modal-dialog",
+      "modal": "editing"
+    },
+    {
+      "type": "focusin",
+      "time": 8773.399999976158,
+      "id": "oauth-client-id",
+      "slot": "input",
+      "modal": "editing"
+    },
+    {
+      "type": "focusin",
+      "time": 8925.600000023842,
+      "id": "react-aria2784818554-_r_9p_",
+      "testId": "oauth-save",
+      "slot": "button",
+      "modal": "editing"
+    },
+    {
+      "type": "keydown",
+      "key": "Tab",
+      "time": 8979.700000047684,
+      "id": "react-aria2784818554-_r_9p_",
+      "testId": "oauth-save",
+      "slot": "button",
+      "modal": "editing"
+    },
+    {
+      "type": "focusin",
+      "time": 8981,
+      "id": "react-aria2784818554-_r_9r_",
+      "testId": "oauth-close",
+      "slot": "button",
+      "modal": "editing"
+    },
+    {
+      "type": "keyup",
+      "key": "Tab",
+      "time": 8983.300000071526,
+      "id": "react-aria2784818554-_r_9r_",
+      "testId": "oauth-close",
+      "slot": "button",
+      "modal": "editing"
+    },
+    {
+      "type": "keydown",
+      "time": 9037.700000047684,
+      "id": "react-aria2784818554-_r_9r_",
+      "testId": "oauth-close",
+      "slot": "button",
+      "modal": "editing"
+    },
+    {
+      "type": "keydown",
+      "key": "Tab",
+      "time": 9038.200000047684,
+      "id": "react-aria2784818554-_r_9r_",
+      "testId": "oauth-close",
+      "slot": "button",
+      "modal": "editing"
+    },
+    {
+      "type": "focusin",
+      "time": 9038.899999976158,
+      "id": "react-aria2784818554-_r_9p_",
+      "testId": "oauth-save",
+      "slot": "button",
+      "modal": "editing"
+    },
+    {
+      "type": "keyup",
+      "key": "Tab",
+      "time": 9040,
+      "id": "react-aria2784818554-_r_9p_",
+      "testId": "oauth-save",
+      "slot": "button",
+      "modal": "editing"
+    },
+    {
+      "type": "keyup",
+      "time": 9040.5,
+      "id": "react-aria2784818554-_r_9p_",
+      "testId": "oauth-save",
+      "slot": "button",
+      "modal": "editing"
+    },
+    {
+      "type": "keydown",
+      "key": "Escape",
+      "time": 9096.899999976158,
+      "id": "react-aria2784818554-_r_9p_",
+      "testId": "oauth-save",
+      "slot": "button",
+      "modal": "editing"
+    },
+    {
+      "type": "keyup",
+      "key": "Escape",
+      "time": 9103.600000023842,
+      "id": ""
+    },
+    {
+      "type": "focusin",
+      "time": 9106.700000047684,
+      "id": "react-aria2784818554-_r_d_",
+      "testId": "account-github-config",
+      "slot": "button"
+    },
+    {
+      "type": "keydown",
+      "key": "Enter",
+      "time": 9238.200000047684,
+      "id": "react-aria2784818554-_r_d_",
+      "testId": "account-github-config",
+      "slot": "button"
+    },
+    {
+      "type": "click",
+      "time": 9239.100000023842,
+      "id": "react-aria2784818554-_r_d_",
+      "testId": "account-github-config",
+      "slot": "button"
+    },
+    {
+      "type": "keyup",
+      "key": "Enter",
+      "time": 9240.5,
+      "id": "react-aria2784818554-_r_d_",
+      "testId": "account-github-config",
+      "slot": "button"
+    },
+    {
+      "type": "focusin",
+      "time": 9246,
+      "id": "react-aria2784818554-_r_9t_",
+      "testId": "oauth-page",
+      "slot": "modal-dialog",
+      "modal": "editing"
+    },
+    {
+      "type": "focusin",
+      "time": 9273.5,
+      "id": "oauth-client-id",
+      "slot": "input",
+      "modal": "editing"
+    },
+    {
+      "type": "focusin",
+      "time": 9305.700000047684,
+      "id": "react-aria2784818554-_r_ak_",
+      "testId": "oauth-save",
+      "slot": "button",
+      "modal": "editing"
+    },
+    {
+      "type": "keydown",
+      "key": "Escape",
+      "time": 9459.5,
+      "id": "react-aria2784818554-_r_ak_",
+      "testId": "oauth-save",
+      "slot": "button",
+      "modal": "editing"
+    },
+    {
+      "type": "keyup",
+      "key": "Escape",
+      "time": 9466.100000023842,
+      "id": ""
+    },
+    {
+      "type": "focusin",
+      "time": 9481.700000047684,
+      "id": "react-aria2784818554-_r_d_",
+      "testId": "account-github-config",
+      "slot": "button"
+    }
+  ],
+  "finishedAt": "2026-10-09T06:39:29.627Z",
+  "evidenceExcerpt": {
+    "rawReportPath": "test-results/browser-repair/oauth-fixed/oauth-all-before.json",
+    "omittedObservations": {
+      "layouts": {
+        "count": 142,
+        "viewportWidths": [1440, 360, 390, 430, 768],
+        "states": [
+          "unbound-disabled-light-rows",
+          "unbound-disabled-light",
+          "unbound-disabled-configuration-light-rows",
+          "unbound-disabled-configuration-light",
+          "unbound-disabled-configuration-short-light-rows",
+          "unbound-disabled-configuration-short-light",
+          "unbound-disabled-dark-rows",
+          "unbound-disabled-dark",
+          "unbound-disabled-configuration-dark-rows",
+          "unbound-disabled-configuration-dark",
+          "unbound-disabled-configuration-short-dark-rows",
+          "unbound-disabled-configuration-short-dark",
+          "callback-manual-light-rows",
+          "callback-manual-light",
+          "callback-manual-dark-rows",
+          "callback-manual-dark",
+          "required-configuration-rows",
+          "required-configuration",
+          "configuration-saving-light-rows",
+          "configuration-saving-light",
+          "configuration-saving-dark-rows",
+          "configuration-saving-dark",
+          "configuration-server-error-rows",
+          "configuration-server-error",
+          "configuration-unknown-rows",
+          "configuration-unknown",
+          "configuration-unknown-closed-light-rows",
+          "configuration-unknown-closed-light",
+          "configuration-unknown-closed-dark-rows",
+          "configuration-unknown-closed-dark",
+          "oauth-settings-loading-light-rows",
+          "oauth-settings-loading-light",
+          "oauth-settings-loading-dark-rows",
+          "oauth-settings-loading-dark",
+          "oauth-settings-read-error-light-rows",
+          "oauth-settings-read-error-light",
+          "oauth-settings-read-error-dark-rows",
+          "oauth-settings-read-error-dark",
+          "account-github-loading-light-rows",
+          "account-github-loading-light",
+          "account-github-loading-dark-rows",
+          "account-github-loading-dark",
+          "account-github-read-error-light-rows",
+          "account-github-read-error-light",
+          "account-github-read-error-dark-rows",
+          "account-github-read-error-dark",
+          "bound-saved-disabled-light-rows",
+          "bound-saved-disabled-light",
+          "bound-saved-disabled-configuration-difference-light-rows",
+          "bound-saved-disabled-configuration-difference-light",
+          "bound-saved-disabled-configuration-light-rows",
+          "bound-saved-disabled-configuration-light",
+          "bound-saved-disabled-configuration-short-light-rows",
+          "bound-saved-disabled-configuration-short-light",
+          "bound-saved-disabled-dark-rows",
+          "bound-saved-disabled-dark",
+          "bound-saved-disabled-configuration-difference-dark-rows",
+          "bound-saved-disabled-configuration-difference-dark",
+          "bound-saved-disabled-configuration-dark-rows",
+          "bound-saved-disabled-configuration-dark",
+          "bound-saved-disabled-configuration-short-dark-rows",
+          "bound-saved-disabled-configuration-short-dark"
+        ]
+      },
+      "screenshots": {
+        "count": 71
+      }
+    },
+    "note": "Only the declared observation arrays are omitted; all other original report fields are retained. The complete raw report remains in the local ignored test-results directory."
+  }
+}

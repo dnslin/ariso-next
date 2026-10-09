@@ -1,0 +1,11 @@
+{
+  "status": "failed",
+  "checks": [],
+  "layouts": [],
+  "limitations": [
+    "Ego Chromium device emulation is not physical touch, soft keyboard or safe-area hardware evidence.",
+    "Transport failures and timing holds are controlled browser-boundary faults; processing failure uses a disposable SQLite trigger."
+  ],
+  "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n429 !== 200\n\n    at file:////[eval2]:131:10",
+  "page": "[p1 \"ariso-53500.localhost:53500/api/health\" | space \"Ariso Issue 199 上传用法\"(8): 1 managed, 0 untracked — p1* \"ariso-53500.localhost:53500/api/health\"]\nroot\n  container\n    button [ref=641]\n      text \"Raw\"\n    button [ref=642]\n      text \"Parsed\"\n  container\n    text \"{\"\n    container\n      text \"\"\"\n      text \"status\"\n      text \"\"\"\n      text \": \"\n      container\n        text \"\"\"\n        text \"ok\"\n        text \"\"\"\n    text \"}\"\n"
+}

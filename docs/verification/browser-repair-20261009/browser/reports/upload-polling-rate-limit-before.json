@@ -1,0 +1,10 @@
+{
+  "status": "failed",
+  "checks": [],
+  "limitations": [
+    "Browser-boundary holds delay real responses without changing their payloads; no controller methods are called."
+  ],
+  "error": "Error: page.waitForSelector timed out after 10000ms: input[aria-label=\"选择图片文件\"]\n    at waitForSelectorInPage (file:////[eval1]:16159:11)\n    at async file:////[eval1]:16691:28",
+  "trace": null,
+  "page": "[p1 \"Ariso\" | space \"Ariso Issue 199 上传用法\"(8): 1 managed, 0 untracked — p1* \"Ariso\"]\nroot\n  container\n    anchor [ref=643, loc=href:/, url=http://ariso-53500.localhost:53500/]\n      svg_root\n      text \"返回首页\"\n    container \"登录\"\n      container\n        heading\n          text \"登录\"\n        paragraph\n          text \"轻装简从 · 欢迎回来\"\n      container [ref=644]\n        alert\n          text \"登录请求过于频繁，请等待服务允许后重试。（HTTP 429）\"\n      form\n        container\n          text \"邮箱\"\n          container\n            svg_root\n            textbox \"邮箱\" [ref=645, loc=css:input[name=\"email\"]]\n              text \"owner-390@example.test\"\n        container\n          text \"密码\"\n          container\n            svg_root\n            textbox \"密码\" [ref=646, loc=css:input[name=\"password\"]]\n            button \"显示密码\" [ref=647, loc=css:button[aria-label=\"显示密码\"]]\n              svg_root\n        button [ref=648]\n          text \"登录\"\n"
+}

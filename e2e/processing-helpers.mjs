@@ -113,7 +113,26 @@ export async function processingTools(page, config, report) {
       () => !document.querySelector('[data-testid="processing-save"]').disabled,
     );
   };
-  const fill = (name, value) => page.fill(field(name), String(value));
+  const fill = async (name, value) => {
+    if (typeof value !== 'number') return page.fill(field(name), String(value));
+    // NumberField consumes wheel input while focused. Replace through the
+    // keyboard without page.fill scrolling, retaining the caller's blur timing.
+    await page.focus(field(name));
+    await page.waitForFunction(
+      (selector) => document.activeElement === document.querySelector(selector),
+      field(name),
+    );
+    await page.keyboard.press('ControlOrMeta+A');
+    await page.keyboard.type(String(value));
+    assert.equal(
+      await page.evaluate(
+        (selector) => document.querySelector(selector).value,
+        field(name),
+      ),
+      String(value),
+      `${name} keyboard replacement reaches the requested input value`,
+    );
+  };
   const value = (name) =>
     page.evaluate(
       (selector) => document.querySelector(selector).value,

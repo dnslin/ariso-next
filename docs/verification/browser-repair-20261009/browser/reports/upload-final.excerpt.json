@@ -1,0 +1,163 @@
+{
+  "status": "passed",
+  "checks": [
+    "Real authenticated entry is signed out and verified anonymous before /upload; no preceding suite logout is required.",
+    "Before any fetch wrapper or CDP script injection, native browser fetch completes a real manual File upload to ready with persisted image ID; clearing retains the image.",
+    "Controlled clipboard NotAllowedError retains complete Markdown/HTML containing the real ID, focuses the manual text and selects it fully; real successful URL write is checked separately.",
+    "Result URL uses real image ID, authenticated delivery returns bytes, and a user click writes the real clipboard.",
+    "Native File selection is manual; remove and terminal completion release File/blob references; real upload reaches ready; detail return preserves result; clear retains persisted image.",
+    "Real empty, oversized sparse and unsupported files show distinct input reasons without creating queue items or retaining File references.",
+    "Real invalid image bytes fail server inspection without imageId or detail action.",
+    "Failed upload processing options directly confirm trash without opening detail; a lost real write response and failed read retain unknown state and hide preview, retry reconciles by reading without repeating the write; return preserves the same result ID, trashed_at is persisted and original object bytes remain intact.",
+    "Actual SQLite final ready transition failure retains imageId, failed job and already committed thumbnail, distinct from reception failure.",
+    "Lost real creation response is reconciled through original idempotent submission rather than an automatic second content upload.",
+    "Held real XHR dispatch exposes uploading: only the title icon pulses, reduced motion disables the pulse, and no success icon appears early.",
+    "Real content reaches 100% but held XHR acknowledgement remains saving; cancellation after server acceptance returns 409 and reconciles the same image instead of reporting cancellation.",
+    "Hard document navigation and reopening upload does not restore browser queue; previously accepted server image persists.",
+    "Hard document navigation from an accepted processing upload discards local queue; releasing the persisted scheduling fixture lets the real worker finish the same image after reopening.",
+    "Removing the default after file selection makes the real Start request fail without imageId; untouched default is resolved on the server at submission time.",
+    "Real missing default and disabled default with another enabled Local prevent manual start without silently choosing another target; explicitly disabling every enabled storage exposes no available storage. The independent Local fixture is deleted and only originally enabled IDs are restored; lost real settings response displays retry and recovers."
+  ],
+  "limitations": [
+    "Ego Chromium device emulation is not physical touch, soft keyboard or safe-area hardware evidence.",
+    "Transport failures and timing holds are controlled browser-boundary faults; processing failure uses a disposable SQLite trigger."
+  ],
+  "storageFixture": {
+    "id": "c3df8e04-81b4-4a4b-8c23-001bcd664deb",
+    "deleted": true
+  },
+  "storageAvailability": [
+    {
+      "stage": "disabled-default",
+      "database": {
+        "settings": [
+          {
+            "default_storage_id": "622dcbb8-6d50-4036-8d8f-28a08d8d4ed5"
+          }
+        ],
+        "storages": [
+          {
+            "id": "622dcbb8-6d50-4036-8d8f-28a08d8d4ed5",
+            "enabled": 0
+          },
+          {
+            "id": "c3df8e04-81b4-4a4b-8c23-001bcd664deb",
+            "enabled": 1
+          }
+        ]
+      },
+      "response": {
+        "status": 200,
+        "defaultStorageId": "622dcbb8-6d50-4036-8d8f-28a08d8d4ed5",
+        "storages": [
+          {
+            "id": "622dcbb8-6d50-4036-8d8f-28a08d8d4ed5",
+            "enabled": false
+          },
+          {
+            "id": "c3df8e04-81b4-4a4b-8c23-001bcd664deb",
+            "enabled": true
+          }
+        ]
+      },
+      "message": "默认存储缺失或已停用，请明确选择可用的存储。"
+    },
+    {
+      "stage": "all-disabled",
+      "database": {
+        "settings": [
+          {
+            "default_storage_id": "622dcbb8-6d50-4036-8d8f-28a08d8d4ed5"
+          }
+        ],
+        "storages": [
+          {
+            "id": "622dcbb8-6d50-4036-8d8f-28a08d8d4ed5",
+            "enabled": 0
+          },
+          {
+            "id": "c3df8e04-81b4-4a4b-8c23-001bcd664deb",
+            "enabled": 0
+          }
+        ]
+      },
+      "response": {
+        "status": 200,
+        "defaultStorageId": "622dcbb8-6d50-4036-8d8f-28a08d8d4ed5",
+        "storages": [
+          {
+            "id": "622dcbb8-6d50-4036-8d8f-28a08d8d4ed5",
+            "enabled": false
+          },
+          {
+            "id": "c3df8e04-81b4-4a4b-8c23-001bcd664deb",
+            "enabled": false
+          }
+        ]
+      },
+      "message": "暂无可用存储，请先配置并启用存储。"
+    },
+    {
+      "stage": "before-restoring-storage",
+      "database": {
+        "settings": [
+          {
+            "default_storage_id": "622dcbb8-6d50-4036-8d8f-28a08d8d4ed5"
+          }
+        ],
+        "storages": [
+          {
+            "id": "622dcbb8-6d50-4036-8d8f-28a08d8d4ed5",
+            "enabled": 0
+          },
+          {
+            "id": "c3df8e04-81b4-4a4b-8c23-001bcd664deb",
+            "enabled": 0
+          }
+        ]
+      },
+      "response": {
+        "status": 200,
+        "defaultStorageId": "622dcbb8-6d50-4036-8d8f-28a08d8d4ed5",
+        "storages": [
+          {
+            "id": "622dcbb8-6d50-4036-8d8f-28a08d8d4ed5",
+            "enabled": false
+          },
+          {
+            "id": "c3df8e04-81b4-4a4b-8c23-001bcd664deb",
+            "enabled": false
+          }
+        ]
+      },
+      "message": "暂无可用存储，请先配置并启用存储。"
+    }
+  ],
+  "evidenceExcerpt": {
+    "rawReportPath": "test-results/browser-repair/upload-final/upload.json",
+    "omittedObservations": {
+      "layouts": {
+        "count": 140,
+        "viewportWidths": [360, 390, 430, 768, 1440],
+        "themes": ["light", "dark"],
+        "states": [
+          "empty",
+          "queued",
+          "ready",
+          "upload-failed",
+          "processing-failed",
+          "unknown",
+          "cancelled",
+          "saving",
+          "processing",
+          "missing-default",
+          "disabled-default",
+          "disabled-storage",
+          "settings-loading",
+          "settings-error"
+        ]
+      }
+    },
+    "note": "Only the declared observation arrays are omitted; all other original report fields are retained. The complete raw report remains in the local ignored test-results directory."
+  }
+}

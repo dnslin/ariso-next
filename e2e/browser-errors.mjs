@@ -2,6 +2,12 @@ import assert from 'node:assert/strict';
 
 const binding = '__arisoReportError';
 
+export function isBrowserControlStop(error) {
+  return /user has taken control|space.*(?:inactive|unassigned)|browser control (?:unavailable|is required)/i.test(
+    String(error),
+  );
+}
+
 export async function installBrowserErrors(page) {
   await page.cdp('Runtime.enable');
   await page.cdp('Runtime.addBinding', { name: binding });

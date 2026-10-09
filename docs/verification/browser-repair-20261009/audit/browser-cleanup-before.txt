@@ -1,0 +1,39 @@
+Already up to date
+Done in 46ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/browser-regression-repair/ariso
+
+ ❯ |unit| tests/unit/scripts/browser-control.test.ts (18 tests | 4 failed | 14 skipped) 23ms
+   ❯ library outer cleanup boundary: remove-script (2)
+     × 清理失败必须更新原 passed 报告并传播原错误：user has taken control 14ms
+     × 清理失败必须更新原 passed 报告并传播原错误：ordinary browser failure 3ms
+   ❯ library outer cleanup boundary: restore-fetch (2)
+     × 清理失败必须更新原 passed 报告并传播原错误：user has taken control 2ms
+     × 清理失败必须更新原 passed 报告并传播原错误：ordinary browser failure 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/scripts/browser-control.test.ts > library outer cleanup boundary: remove-script > 清理失败必须更新原 passed 报告并传播原错误：user has taken control
+ FAIL  |unit| tests/unit/scripts/browser-control.test.ts > library outer cleanup boundary: remove-script > 清理失败必须更新原 passed 报告并传播原错误：ordinary browser failure
+ FAIL  |unit| tests/unit/scripts/browser-control.test.ts > library outer cleanup boundary: restore-fetch > 清理失败必须更新原 passed 报告并传播原错误：user has taken control
+ FAIL  |unit| tests/unit/scripts/browser-control.test.ts > library outer cleanup boundary: restore-fetch > 清理失败必须更新原 passed 报告并传播原错误：ordinary browser failure
+AssertionError: expected 'passed' to be 'failed' // Object.is equality
+
+Expected: "failed"
+Received: "passed"
+
+ ❯ tests/unit/scripts/browser-control.test.ts:196:31
+    194|           await readFile(join(output, 'library.json'), 'utf8'),
+    195|         );
+    196|         expect(report.status).toBe('failed');
+       |                               ^
+    197|         expect(report.error).toContain(message);
+    198|         expect(report.stoppedForUserControl).toBe(isBrowserControlStop…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed | 14 skipped (18)
+   Start at  15:05:15
+   Duration  162ms (transform 52%, tests 28%, import 17%, worker 3%)

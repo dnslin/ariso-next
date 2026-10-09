@@ -4,6 +4,9 @@ const { writeFile, readFile, mkdir } = await import('node:fs/promises');
 const { join } = await import('node:path');
 const { identitySql } = await import(config.identitySessionScript);
 const { selectCopyFormat } = await import(config.libraryDetailScript);
+const { isBrowserControlStop } = await import(
+  new URL('./browser-errors.mjs', config.libraryDetailScript).href
+);
 const { createUploadLayouts } = await import(
   new URL('./upload-layouts.mjs', config.libraryDetailScript).href
 );
@@ -103,6 +106,7 @@ async function imageId() {
   );
 }
 let transportScript;
+let failure;
 try {
   // Reproduce a preceding suite's authenticated state, then own this prerequisite.
   await page.goto(`${config.origin}/api/health`);
@@ -143,7 +147,7 @@ try {
   const { verifyOwnerShell } = await import(
     new URL('./owner-shell.mjs', config.libraryDetailScript).href
   );
-  await verifyOwnerShell(page, config);
+  await verifyOwnerShell(page, config, 'upload-owner-shell');
   // Exercise the production controller with the browser's native fetch before
   // installing any fault harness: a wrapper must not hide receiver errors.
   assert.equal(
@@ -808,21 +812,44 @@ try {
   });
   report.status = 'passed';
 } catch (error) {
+  failure = error;
   report.error = String(error.stack ?? error);
-  try {
-    report.page = await page.snapshot();
-  } catch (diagnostic) {
-    report.pageError = String(diagnostic);
+  report.stoppedForUserControl = isBrowserControlStop(error);
+  if (!report.stoppedForUserControl) {
+    try {
+      report.page = await page.snapshot();
+    } catch (diagnostic) {
+      report.pageError = String(diagnostic);
+      report.stoppedForUserControl = isBrowserControlStop(diagnostic);
+    }
   }
   throw error;
 } finally {
-  if (transportScript)
-    await page.cdp('Page.removeScriptToEvaluateOnNewDocument', {
-      identifier: transportScript.identifier,
-    });
-  await writeFile(
-    join(config.output, 'upload.json'),
-    `${JSON.stringify(report, null, 2)}\n`,
-  );
+  try {
+    if (transportScript) {
+      if (report.stoppedForUserControl)
+        report.pendingBrowserCleanup = {
+          scriptIdentifier: transportScript.identifier,
+        };
+      else
+        await page.cdp('Page.removeScriptToEvaluateOnNewDocument', {
+          identifier: transportScript.identifier,
+        });
+    }
+  } catch (error) {
+    report.status = 'failed';
+    report.cleanupError = String(error.stack ?? error);
+    report.error ??= report.cleanupError;
+    report.stoppedForUserControl = isBrowserControlStop(error);
+    report.pendingBrowserCleanup = {
+      scriptIdentifier: transportScript.identifier,
+    };
+    throw failure ?? error;
+  } finally {
+    await writeFile(
+      join(config.output, 'upload.json'),
+      `${JSON.stringify(report, null, 2)}\n`,
+    );
+  }
 }
 console.log(report);

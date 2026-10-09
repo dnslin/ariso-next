@@ -1,5 +1,8 @@
 import { verifyUIRefinement } from './ui-refinement.mjs';
-import { assertNoBrowserErrors } from './browser-errors.mjs';
+import {
+  assertNoBrowserErrors,
+  isBrowserControlStop,
+} from './browser-errors.mjs';
 
 export async function waitForOwnerRoute(page, config, path) {
   const url = new URL(path, config.origin);
@@ -14,11 +17,37 @@ export async function waitForOwnerRoute(page, config, path) {
   await page.waitForURL(url.href);
 }
 
+export async function cleanupOwnerSettings(page, report, settingsScript) {
+  const pending = {
+    scriptIdentifier: settingsScript.identifier,
+    settingsReleased: false,
+  };
+  report.pendingBrowserCleanup = pending;
+  if (report.stoppedForUserControl) return;
+  try {
+    await page.evaluate(() => {
+      window.__shellReleaseSettings?.();
+      delete window.__shellToggleReference;
+    });
+    pending.settingsReleased = true;
+    await page.cdp('Page.removeScriptToEvaluateOnNewDocument', {
+      identifier: settingsScript.identifier,
+    });
+    delete report.pendingBrowserCleanup;
+  } catch (error) {
+    report.cleanupError = String(error.stack ?? error);
+    report.stoppedForUserControl = isBrowserControlStop(error);
+    throw error;
+  }
+}
+
 // Call after owner login, before fault injection. Uses real application routes.
-export async function verifyOwnerShell(page, config) {
+export async function verifyOwnerShell(page, config, evidenceDirectory) {
   const { default: assert } = await import('node:assert/strict');
-  const { writeFile } = await import('node:fs/promises');
+  const { mkdir, writeFile } = await import('node:fs/promises');
   const { join } = await import('node:path');
+  config = { ...config, output: join(config.output, evidenceDirectory) };
+  await mkdir(config.output, { recursive: true });
   const report = {
     status: 'failed',
     checks: [],
@@ -200,6 +229,7 @@ export async function verifyOwnerShell(page, config) {
         await page.waitForSelector(navigationDialog);
       };
       for (const path of routes) {
+        report.stage = { width, path, action: 'navigation' };
         const position = await contentPosition();
         if (!baseline) baseline = position;
         sameContentPosition(position, baseline);
@@ -281,17 +311,17 @@ export async function verifyOwnerShell(page, config) {
           );
           await openNavigation();
         }
-        await page.evaluate(async () => {
-          await Promise.all(
-            document
-              .getAnimations()
-              .filter(
-                (animation) =>
-                  animation.effect?.getComputedTiming().iterations !== Infinity,
-              )
-              .map((animation) => animation.finished.catch(() => {})),
-          );
-        });
+        report.stage = { width, path, action: 'wait-running-animations' };
+        await page.waitForFunction(() =>
+          document
+            .getAnimations()
+            .every(
+              (animation) =>
+                animation.timeline !== document.timeline ||
+                animation.playState !== 'running' ||
+                animation.effect?.getTiming().iterations === Infinity,
+            ),
+        );
         await page.screenshot({
           path: join(
             config.output,
@@ -444,14 +474,12 @@ export async function verifyOwnerShell(page, config) {
       report.checks.push(
         'Collapse during a held real upload-settings response survives data arrival at 72px, retaining the same toggle DOM node and keyboard focus.',
       );
+    } catch (error) {
+      report.error = String(error.stack ?? error);
+      report.stoppedForUserControl = isBrowserControlStop(error);
+      throw error;
     } finally {
-      await page.evaluate(() => {
-        window.__shellReleaseSettings?.();
-        delete window.__shellToggleReference;
-      });
-      await page.cdp('Page.removeScriptToEvaluateOnNewDocument', {
-        identifier: settingsScript.identifier,
-      });
+      await cleanupOwnerSettings(page, report, settingsScript);
     }
     await page.focus(button('展开侧栏'));
     await page.keyboard.press('Enter');
@@ -529,11 +557,28 @@ export async function verifyOwnerShell(page, config) {
     report.status = 'passed';
     delete report.stage;
   } catch (error) {
-    report.error = String(error.stack ?? error);
-    report.failureSnapshot = await page.snapshot();
-    await page.screenshot({
-      path: join(config.output, 'owner-shell-failed.png'),
-    });
+    report.error ??= String(error.stack ?? error);
+    report.stoppedForUserControl = isBrowserControlStop(error);
+    if (!report.stoppedForUserControl) {
+      report.animations = await page.evaluate(() =>
+        document.getAnimations().map((animation) => ({
+          name: animation.animationName ?? animation.transitionProperty,
+          timeline: animation.timeline?.constructor.name,
+          playState: animation.playState,
+          currentTime: animation.currentTime,
+          timing: animation.effect?.getComputedTiming(),
+          target: {
+            tag: animation.effect?.target?.tagName,
+            slot: animation.effect?.target?.dataset.slot,
+            testId: animation.effect?.target?.dataset.testid,
+          },
+        })),
+      );
+      report.failureSnapshot = await page.snapshot();
+      await page.screenshot({
+        path: join(config.output, 'owner-shell-failed.png'),
+      });
+    }
     throw error;
   } finally {
     await writeFile(

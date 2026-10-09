@@ -1,0 +1,773 @@
+{
+  "status": "failed",
+  "taskSpaceId": 8,
+  "origin": "http://ariso-53500.localhost:53500",
+  "phase": "all",
+  "checks": [
+    {
+      "check": "Actual settings and empty preview use the shared owner shell in light/dark at 360/390/430/768/1440; text/image states preserve their values. Keyboard opens the preview and returns focus to its exact entry. Short 390×500 and 1440×600 keep the action footer reachable.",
+      "focus": {
+        "marker": "true",
+        "outline": "none",
+        "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(24, 26, 34) 0px 0px 0px 2px, rgb(130, 219, 211) 0px 0px 0px 4px, rgba(0, 0, 0, 0) 0px 0px 0px 0px"
+      },
+      "categories": {
+        "containerHeight": 52,
+        "optionHeight": 44,
+        "containerRadius": "16px",
+        "paintedListRadius": "16px",
+        "optionRadius": "12px"
+      },
+      "sliderPaint": {
+        "theme": "dark",
+        "rootHeight": 44,
+        "thumbWidth": 44,
+        "thumbHeight": 44,
+        "paintWidth": "20px",
+        "paintHeight": "20px",
+        "paintRadius": "1.67772e+07px",
+        "paintColor": "rgb(244, 241, 248)",
+        "foreground": "rgb(244, 241, 248)",
+        "trackColor": "rgb(37, 61, 64)",
+        "trackContrast": 10.319892365753418
+      },
+      "sliderKeyboard": {
+        "from": 3.5,
+        "key": "ArrowRight",
+        "to": 3.6
+      },
+      "watermarkSegments": [
+        {
+          "state": "watermark-position-margin",
+          "scrollTop": 1149,
+          "frame": {
+            "top": 64,
+            "bottom": 763
+          },
+          "fields": [
+            {
+              "name": "watermarkPosition",
+              "top": 79.78125,
+              "bottom": 282.78125
+            },
+            {
+              "name": "watermarkMargin",
+              "top": 302.78125,
+              "bottom": 400.8515625
+            }
+          ]
+        },
+        {
+          "state": "watermark-text-font",
+          "scrollTop": 1490,
+          "frame": {
+            "top": 64,
+            "bottom": 763
+          },
+          "fields": [
+            {
+              "name": "watermarkText",
+              "top": 79.8515625,
+              "bottom": 221.921875
+            },
+            {
+              "name": "watermarkFont",
+              "top": 233.921875,
+              "bottom": 304.4921875
+            }
+          ]
+        },
+        {
+          "state": "watermark-style-bottom",
+          "scrollTop": 1543,
+          "frame": {
+            "top": 64,
+            "bottom": 763
+          },
+          "fields": [
+            {
+              "name": "watermarkFontSize",
+              "top": 271.4921875,
+              "bottom": 394.0625
+            },
+            {
+              "name": "watermarkColor",
+              "top": 271.4921875,
+              "bottom": 394.0625
+            },
+            {
+              "name": "watermarkOpacity",
+              "top": 406.0625,
+              "bottom": 528.6328125
+            },
+            {
+              "name": "watermarkStrokeColor",
+              "top": 548.6328125,
+              "bottom": 619.203125
+            },
+            {
+              "name": "watermarkStrokeWidth",
+              "top": 548.6328125,
+              "bottom": 619.203125
+            }
+          ]
+        }
+      ],
+      "previewStructure": {
+        "title": "临时处理预览",
+        "backBeforeHeading": true,
+        "targetLabel": "预览目标",
+        "labelOutsideGroup": true,
+        "targets": [
+          {
+            "target": "original",
+            "width": 158
+          },
+          {
+            "target": "thumbnail",
+            "width": 158
+          },
+          {
+            "target": "compressed",
+            "width": 158
+          },
+          {
+            "target": "watermark",
+            "width": 158
+          }
+        ],
+        "emptyResultRegions": 0,
+        "emptyStatusHeadings": 0
+      }
+    },
+    {
+      "check": "Same-document client navigation retains the root cache owner while a separate Node client changes server settings from quality 82 to 68. The real entry GET 200 is held: the existing reading state has no cached editor or footer. Release initializes all 20 actual controls from the fresh server result, and explicit save sends those exact 20 fields without overwriting the new server value.",
+      "cacheOwnerEvidence": "Same document/window is observed below. RootLayout retains Providers, whose useState owns the QueryClient across client navigation; no private React/QueryClient introspection is used.",
+      "initialQuality": 82,
+      "relatedMediaReads": [
+        {
+          "path": "/api/settings/media",
+          "method": "GET",
+          "route": "/settings/general",
+          "phase": "loading",
+          "settled": true,
+          "status": 200,
+          "quality": 82
+        }
+      ],
+      "left": {
+        "sameDocument": true,
+        "sameWindow": true,
+        "sameTimeOrigin": true,
+        "path": "/settings/general",
+        "relatedMediaRead": {
+          "path": "/api/settings/media",
+          "method": "GET",
+          "route": "/settings/general",
+          "phase": "loading",
+          "settled": true,
+          "status": 200,
+          "quality": 82
+        }
+      },
+      "returned": {
+        "sameDocument": true,
+        "sameWindow": true,
+        "sameTimeOrigin": true,
+        "path": "/settings/processing"
+      },
+      "heldRead": {
+        "path": "/api/settings/media",
+        "method": "GET",
+        "status": 200,
+        "requestId": "interception-job-221.0"
+      },
+      "loading": {
+        "state": "loading",
+        "text": "站点设置\n\n管理站点、图片处理与账号偏好。\n\n基本设置\n图片处理\n账号与安全\n上传 API\n邮件服务\n正在读取处理设置\n\n请稍候，取得已保存设置后再编辑。",
+        "form": false,
+        "fields": 0,
+        "footer": false,
+        "save": false,
+        "preview": false
+      },
+      "displayed": {
+        "compressionEnabled": true,
+        "outputFormat": "WebP",
+        "quality": 68,
+        "maxEdge": 1700,
+        "jpegBackground": "#FFFFFF",
+        "watermarkMode": "text",
+        "watermarkAssetId": null,
+        "watermarkText": "R10 本次服务器设置",
+        "watermarkFont": "内置中文字体",
+        "watermarkFontSize": 3,
+        "watermarkColor": "#FFFFFF",
+        "watermarkStrokeColor": "#000000",
+        "watermarkStrokeWidth": 0,
+        "watermarkOpacity": 50,
+        "watermarkPosition": "bottom-right",
+        "watermarkMargin": 2,
+        "watermarkWidth": 20,
+        "defaultLinkVersion": "压缩图",
+        "defaultVisibility": "私有",
+        "concurrency": 1
+      },
+      "save": {
+        "path": "/api/settings/media",
+        "method": "PATCH",
+        "body": {
+          "compressionEnabled": true,
+          "outputFormat": "webp",
+          "quality": 68,
+          "maxEdge": 1700,
+          "jpegBackground": "#FFFFFF",
+          "watermarkMode": "text",
+          "watermarkAssetId": null,
+          "watermarkText": "R10 本次服务器设置",
+          "watermarkFont": "chinese",
+          "watermarkFontSize": 3,
+          "watermarkColor": "#FFFFFF",
+          "watermarkStrokeColor": "#000000",
+          "watermarkStrokeWidth": 0,
+          "watermarkOpacity": 50,
+          "watermarkPosition": "bottom-right",
+          "watermarkMargin": 2,
+          "watermarkWidth": 20,
+          "defaultLinkVersion": "compressed",
+          "defaultVisibility": "private",
+          "concurrency": 1
+        },
+        "status": 200,
+        "response": {
+          "id": 1,
+          "compressionEnabled": true,
+          "outputFormat": "webp",
+          "quality": 68,
+          "maxEdge": 1700,
+          "jpegBackground": "#FFFFFF",
+          "watermarkMode": "text",
+          "watermarkAssetId": null,
+          "watermarkText": "R10 本次服务器设置",
+          "watermarkFont": "chinese",
+          "watermarkFontSize": 3,
+          "watermarkColor": "#FFFFFF",
+          "watermarkStrokeColor": "#000000",
+          "watermarkStrokeWidth": 0,
+          "watermarkOpacity": 50,
+          "watermarkPosition": "bottom-right",
+          "watermarkMargin": 2,
+          "watermarkWidth": 20,
+          "defaultLinkVersion": "compressed",
+          "defaultVisibility": "private",
+          "concurrency": 1,
+          "updatedAt": "2026-10-09T06:53:38.175Z"
+        }
+      }
+    },
+    {
+      "check": "A second warm client re-entry after a separate real server change blocks the actual settings GET. It shows this entry read error with no cached form, preview or save footer, and makes no mutation. Only explicit retry performs the next real GET and initializes all 20 controls from server quality 64 while document/window identity remains unchanged.",
+      "failedReturn": {
+        "sameDocument": true,
+        "sameWindow": true,
+        "sameTimeOrigin": true,
+        "path": "/settings/processing"
+      },
+      "leftAgain": {
+        "sameDocument": true,
+        "sameWindow": true,
+        "sameTimeOrigin": true,
+        "path": "/settings/general",
+        "relatedMediaRead": {
+          "path": "/api/settings/media",
+          "method": "GET",
+          "route": "/settings/general",
+          "phase": "loading",
+          "settled": true,
+          "status": 200,
+          "quality": 68
+        }
+      },
+      "readFailure": {
+        "state": "error",
+        "text": "站点设置\n\n管理站点、图片处理与账号偏好。\n\n基本设置\n图片处理\n账号与安全\n上传 API\n邮件服务\n无法读取处理设置\n\nFailed to fetch\n\n重新读取设置",
+        "form": false,
+        "fields": 0,
+        "footer": false,
+        "save": false,
+        "preview": false
+      },
+      "retriedDisplay": {
+        "compressionEnabled": true,
+        "outputFormat": "WebP",
+        "quality": 64,
+        "maxEdge": 1700,
+        "jpegBackground": "#FFFFFF",
+        "watermarkMode": "text",
+        "watermarkAssetId": null,
+        "watermarkText": "R10 本次服务器设置",
+        "watermarkFont": "内置中文字体",
+        "watermarkFontSize": 3,
+        "watermarkColor": "#FFFFFF",
+        "watermarkStrokeColor": "#000000",
+        "watermarkStrokeWidth": 0,
+        "watermarkOpacity": 50,
+        "watermarkPosition": "bottom-right",
+        "watermarkMargin": 2,
+        "watermarkWidth": 20,
+        "defaultLinkVersion": "压缩图",
+        "defaultVisibility": "公开",
+        "concurrency": 1
+      }
+    },
+    {
+      "check": "Real GET fills the form; keyboard save persists quality, visibility and concurrency. Its live neutral Toast sits 100 px above the viewport bottom without intercepting save; real client navigation to Upload keeps that same notification and restores ordinary desktop/mobile offsets 28/24. Returning through the actual sidebar reads saved values without a success page.",
+      "saved": {
+        "quality": 76,
+        "defaultVisibility": "private",
+        "concurrency": 2
+      }
+    },
+    {
+      "check": "Out-of-range quality stays entered, receives its field error and keyboard focus, and sends no invalid PATCH."
+    },
+    {
+      "check": "Real HTTP 500 preserves input; a lost real successful PATCH is explicitly reconciled through GET without repeating the mutation.",
+      "requests": [
+        {
+          "path": "/api/settings/media",
+          "method": "PATCH",
+          "body": {
+            "compressionEnabled": true,
+            "outputFormat": "webp",
+            "quality": 73,
+            "maxEdge": 1700,
+            "jpegBackground": "#FFFFFF",
+            "watermarkMode": "off",
+            "watermarkAssetId": null,
+            "watermarkText": "R10 本次服务器设置",
+            "watermarkFont": "chinese",
+            "watermarkFontSize": 3,
+            "watermarkColor": "#FFFFFF",
+            "watermarkStrokeColor": "#000000",
+            "watermarkStrokeWidth": 0,
+            "watermarkOpacity": 50,
+            "watermarkPosition": "bottom-right",
+            "watermarkMargin": 2,
+            "watermarkWidth": 20,
+            "defaultLinkVersion": "compressed",
+            "defaultVisibility": "private",
+            "concurrency": 2
+          },
+          "status": 200,
+          "response": {
+            "id": 1,
+            "compressionEnabled": true,
+            "outputFormat": "webp",
+            "quality": 73,
+            "maxEdge": 1700,
+            "jpegBackground": "#FFFFFF",
+            "watermarkMode": "off",
+            "watermarkAssetId": null,
+            "watermarkText": "R10 本次服务器设置",
+            "watermarkFont": "chinese",
+            "watermarkFontSize": 3,
+            "watermarkColor": "#FFFFFF",
+            "watermarkStrokeColor": "#000000",
+            "watermarkStrokeWidth": 0,
+            "watermarkOpacity": 50,
+            "watermarkPosition": "bottom-right",
+            "watermarkMargin": 2,
+            "watermarkWidth": 20,
+            "defaultLinkVersion": "compressed",
+            "defaultVisibility": "private",
+            "concurrency": 2,
+            "updatedAt": "2026-10-09T06:53:44.285Z"
+          },
+          "responseLost": true
+        },
+        {
+          "path": "/api/settings/media",
+          "method": "GET",
+          "status": 200,
+          "response": {
+            "id": 1,
+            "compressionEnabled": true,
+            "outputFormat": "webp",
+            "quality": 73,
+            "maxEdge": 1700,
+            "jpegBackground": "#FFFFFF",
+            "watermarkMode": "off",
+            "watermarkAssetId": null,
+            "watermarkText": "R10 本次服务器设置",
+            "watermarkFont": "chinese",
+            "watermarkFontSize": 3,
+            "watermarkColor": "#FFFFFF",
+            "watermarkStrokeColor": "#000000",
+            "watermarkStrokeWidth": 0,
+            "watermarkOpacity": 50,
+            "watermarkPosition": "bottom-right",
+            "watermarkMargin": 2,
+            "watermarkWidth": 20,
+            "defaultLinkVersion": "compressed",
+            "defaultVisibility": "private",
+            "concurrency": 2,
+            "updatedAt": "2026-10-09T06:53:44.285Z"
+          }
+        },
+        {
+          "path": "/upload/settings",
+          "method": "GET",
+          "status": 200,
+          "response": {
+            "maxFileBytes": 52428800,
+            "batchSize": 20,
+            "queueLimit": 500,
+            "defaultVisibility": "private",
+            "defaultStorageId": "2a830484-5a96-4584-80da-f24c9076dd85",
+            "albums": [],
+            "tags": [],
+            "storages": [
+              {
+                "id": "2a830484-5a96-4584-80da-f24c9076dd85",
+                "name": "默认本地存储",
+                "enabled": true
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "check": "A real concurrent update makes reconciliation different; preserve keeps local input without saving it, and only the next explicit save submits again."
+    },
+    {
+      "check": "Disabling the default compressed version requires confirmation; Escape preserves compression, confirmation changes only the draft until explicit save."
+    },
+    {
+      "check": "Actual file upload creates an expiring asset without saving settings; explicit save adopts it; re-entry reads persisted ID, format and dimensions through the real owner metadata endpoint.",
+      "asset": {
+        "id": "e6901885-7fe9-44dd-9734-9988b0645997",
+        "mime": "image/png",
+        "width": 64,
+        "height": 48,
+        "byteSize": 423
+      }
+    },
+    {
+      "check": "Lost real saved-asset reads retain the persisted ID, including background focus reads. Only native retry activation releases the fault; its real GET restores saved metadata without uploading a replacement."
+    },
+    {
+      "check": "Actual invalid or oversized watermark upload is explicitly rejected and retains the previous adopted asset ID.",
+      "file": "processing-invalid-watermark.png",
+      "status": 422,
+      "retainedAssetId": "e6901885-7fe9-44dd-9734-9988b0645997"
+    },
+    {
+      "check": "Actual invalid or oversized watermark upload is explicitly rejected and retains the previous adopted asset ID.",
+      "file": "processing-large-watermark.png",
+      "status": 413,
+      "retainedAssetId": "e6901885-7fe9-44dd-9734-9988b0645997"
+    }
+  ],
+  "browserErrors": [],
+  "limitations": [
+    "Only the runner’s disposable production runtime and database are changed. The manual preview and its data are untouched.",
+    "Held or lost fetch responses are real server responses; successful rules, task IDs and results are never fabricated.",
+    "Cancellation tests verify actual DELETE settlement and recovery. The existing media-tools integration suite verifies encoder shutdown while work is active.",
+    "Physical touch, soft keyboard and nonzero device safe areas are outside the current acceptance scope."
+  ],
+  "ownerSessionReused": false,
+  "stage": "settings",
+  "settingsEntry": {
+    "cacheOwnerEvidence": "Same document/window is observed below. RootLayout retains Providers, whose useState owns the QueryClient across client navigation; no private React/QueryClient introspection is used.",
+    "initialQuality": 82,
+    "relatedMediaReads": [
+      {
+        "path": "/api/settings/media",
+        "method": "GET",
+        "route": "/settings/general",
+        "phase": "loading",
+        "settled": true,
+        "status": 200,
+        "quality": 68
+      }
+    ],
+    "left": {
+      "sameDocument": true,
+      "sameWindow": true,
+      "sameTimeOrigin": true,
+      "path": "/settings/general",
+      "relatedMediaRead": {
+        "path": "/api/settings/media",
+        "method": "GET",
+        "route": "/settings/general",
+        "phase": "loading",
+        "settled": true,
+        "status": 200,
+        "quality": 82
+      }
+    },
+    "returned": {
+      "sameDocument": true,
+      "sameWindow": true,
+      "sameTimeOrigin": true,
+      "path": "/settings/processing"
+    },
+    "heldRead": {
+      "path": "/api/settings/media",
+      "method": "GET",
+      "status": 200,
+      "requestId": "interception-job-221.0"
+    },
+    "loading": {
+      "state": "loading",
+      "text": "站点设置\n\n管理站点、图片处理与账号偏好。\n\n基本设置\n图片处理\n账号与安全\n上传 API\n邮件服务\n正在读取处理设置\n\n请稍候，取得已保存设置后再编辑。",
+      "form": false,
+      "fields": 0,
+      "footer": false,
+      "save": false,
+      "preview": false
+    },
+    "displayed": {
+      "compressionEnabled": true,
+      "outputFormat": "WebP",
+      "quality": 68,
+      "maxEdge": 1700,
+      "jpegBackground": "#FFFFFF",
+      "watermarkMode": "text",
+      "watermarkAssetId": null,
+      "watermarkText": "R10 本次服务器设置",
+      "watermarkFont": "内置中文字体",
+      "watermarkFontSize": 3,
+      "watermarkColor": "#FFFFFF",
+      "watermarkStrokeColor": "#000000",
+      "watermarkStrokeWidth": 0,
+      "watermarkOpacity": 50,
+      "watermarkPosition": "bottom-right",
+      "watermarkMargin": 2,
+      "watermarkWidth": 20,
+      "defaultLinkVersion": "压缩图",
+      "defaultVisibility": "私有",
+      "concurrency": 1
+    },
+    "save": {
+      "path": "/api/settings/media",
+      "method": "PATCH",
+      "body": {
+        "compressionEnabled": true,
+        "outputFormat": "webp",
+        "quality": 68,
+        "maxEdge": 1700,
+        "jpegBackground": "#FFFFFF",
+        "watermarkMode": "text",
+        "watermarkAssetId": null,
+        "watermarkText": "R10 本次服务器设置",
+        "watermarkFont": "chinese",
+        "watermarkFontSize": 3,
+        "watermarkColor": "#FFFFFF",
+        "watermarkStrokeColor": "#000000",
+        "watermarkStrokeWidth": 0,
+        "watermarkOpacity": 50,
+        "watermarkPosition": "bottom-right",
+        "watermarkMargin": 2,
+        "watermarkWidth": 20,
+        "defaultLinkVersion": "compressed",
+        "defaultVisibility": "private",
+        "concurrency": 1
+      },
+      "status": 200,
+      "response": {
+        "id": 1,
+        "compressionEnabled": true,
+        "outputFormat": "webp",
+        "quality": 68,
+        "maxEdge": 1700,
+        "jpegBackground": "#FFFFFF",
+        "watermarkMode": "text",
+        "watermarkAssetId": null,
+        "watermarkText": "R10 本次服务器设置",
+        "watermarkFont": "chinese",
+        "watermarkFontSize": 3,
+        "watermarkColor": "#FFFFFF",
+        "watermarkStrokeColor": "#000000",
+        "watermarkStrokeWidth": 0,
+        "watermarkOpacity": 50,
+        "watermarkPosition": "bottom-right",
+        "watermarkMargin": 2,
+        "watermarkWidth": 20,
+        "defaultLinkVersion": "compressed",
+        "defaultVisibility": "private",
+        "concurrency": 1,
+        "updatedAt": "2026-10-09T06:53:38.175Z"
+      }
+    },
+    "leftAgain": {
+      "sameDocument": true,
+      "sameWindow": true,
+      "sameTimeOrigin": true,
+      "path": "/settings/general",
+      "relatedMediaRead": {
+        "path": "/api/settings/media",
+        "method": "GET",
+        "route": "/settings/general",
+        "phase": "loading",
+        "settled": true,
+        "status": 200,
+        "quality": 68
+      }
+    },
+    "failedReturn": {
+      "sameDocument": true,
+      "sameWindow": true,
+      "sameTimeOrigin": true,
+      "path": "/settings/processing"
+    },
+    "readFailure": {
+      "state": "error",
+      "text": "站点设置\n\n管理站点、图片处理与账号偏好。\n\n基本设置\n图片处理\n账号与安全\n上传 API\n邮件服务\n无法读取处理设置\n\nFailed to fetch\n\n重新读取设置",
+      "form": false,
+      "fields": 0,
+      "footer": false,
+      "save": false,
+      "preview": false
+    },
+    "retriedDisplay": {
+      "compressionEnabled": true,
+      "outputFormat": "WebP",
+      "quality": 64,
+      "maxEdge": 1700,
+      "jpegBackground": "#FFFFFF",
+      "watermarkMode": "text",
+      "watermarkAssetId": null,
+      "watermarkText": "R10 本次服务器设置",
+      "watermarkFont": "内置中文字体",
+      "watermarkFontSize": 3,
+      "watermarkColor": "#FFFFFF",
+      "watermarkStrokeColor": "#000000",
+      "watermarkStrokeWidth": 0,
+      "watermarkOpacity": 50,
+      "watermarkPosition": "bottom-right",
+      "watermarkMargin": 2,
+      "watermarkWidth": 20,
+      "defaultLinkVersion": "压缩图",
+      "defaultVisibility": "公开",
+      "concurrency": 1
+    }
+  },
+  "toastLayouts": [
+    {
+      "path": "/settings/processing",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light",
+      "title": "处理设置已保存",
+      "bottomGap": 100,
+      "footerTop": 999,
+      "saveHit": true,
+      "sameNotification": true,
+      "screenshot": "processing-toast-saved-1440.png"
+    },
+    {
+      "path": "/upload",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light",
+      "title": "处理设置已保存",
+      "bottomGap": 28,
+      "saveHit": null,
+      "sameNotification": true
+    },
+    {
+      "path": "/upload",
+      "width": 390,
+      "height": 844,
+      "theme": "light",
+      "title": "处理设置已保存",
+      "bottomGap": 24,
+      "footerTop": 767,
+      "saveHit": null,
+      "sameNotification": true
+    },
+    {
+      "path": "/settings/processing",
+      "width": 390,
+      "height": 844,
+      "theme": "dark",
+      "title": "输入已保留，请点击保存",
+      "bottomGap": 100,
+      "footerTop": 763,
+      "saveHit": true,
+      "sameNotification": false
+    },
+    {
+      "path": "/settings/processing",
+      "width": 390,
+      "height": 844,
+      "theme": "dark",
+      "title": "已确认上次保存，当前输入已保留",
+      "bottomGap": 100,
+      "footerTop": 763,
+      "saveHit": true,
+      "sameNotification": false
+    }
+  ],
+  "assetReadRecovery": {
+    "released": true,
+    "activation": {
+      "event": "pointerdown",
+      "at": 1791528831866,
+      "trusted": true
+    },
+    "requests": [
+      {
+        "startedAt": 1791528830974,
+        "responseLost": true,
+        "status": 200,
+        "finishedAt": 1791528831210
+      },
+      {
+        "startedAt": 1791528831883,
+        "responseLost": false,
+        "status": 200,
+        "finishedAt": 1791528831925
+      }
+    ]
+  },
+  "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n'5167' !== '67'\n\n    at verifyProcessingSettings (file:///Users/dnslin/.codex/worktrees/browser-regression-repair/ariso/e2e/processing-settings.mjs:695:10)\n    at async file:////[eval2]:59:5",
+  "originalSettingsRestored": true,
+  "browserRequests": {
+    "requests": [
+      {
+        "path": "/api/media/watermark-assets",
+        "method": "POST",
+        "status": 413,
+        "response": {
+          "code": "MEDIA_WATERMARK_REQUEST",
+          "message": "水印素材必须非空且不超过 5 MiB",
+          "requestId": "21f77479-2c9c-4d68-a2da-18e5e0248aa6"
+        }
+      }
+    ],
+    "faultUsed": false,
+    "fault": null
+  },
+  "finishedAt": "2026-10-09T06:53:55.131Z",
+  "evidenceExcerpt": {
+    "rawReportPath": "test-results/browser-repair/full/processing.json",
+    "omittedObservations": {
+      "layouts": {
+        "count": 51,
+        "viewportWidths": [360, 390, 430, 768, 1440],
+        "viewportHeights": [844, 1080, 500, 600],
+        "themes": ["light", "dark"]
+      },
+      "toastTargetLayouts": {
+        "count": 18,
+        "viewportWidths": [390],
+        "themes": ["dark", "light"]
+      }
+    },
+    "note": "Only the declared observation arrays are omitted; all other original report fields are retained. The complete raw report remains in the local ignored test-results directory."
+  }
+}

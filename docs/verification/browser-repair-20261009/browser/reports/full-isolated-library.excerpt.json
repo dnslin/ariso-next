@@ -1,0 +1,42 @@
+{
+  "status": "passed",
+  "checks": [
+    "Local search draft: no URL, history or HTTP writes; one submit entry; Back/Forward restore applied input",
+    "Layout preserves query/cache/selection; same-query page history preserves explicit selection",
+    "Three-slide finite window, controlled image identity after rebuilding slides, zoom and keyboard pan, real desktop fullscreen enter/exit, Escape restores URL/scroll/selection/focus without list HTTP",
+    "Light/dark at 360/390/430/768/1440, 44px controls, short viewport; emulated missing Fullscreen API hides its button but retains viewport viewer and zoom",
+    "Pending hides stale actions; HTTP 503, empty and cached recovery; changed query clears selection"
+  ],
+  "environment": {
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "fullscreenEnabled": true
+  },
+  "pendingError": {
+    "status": 503,
+    "released": false
+  },
+  "errors": [],
+  "requests": [
+    "/library/data?q=&sort=asc&page=1",
+    "/library/data?q=%E6%B5%B7%E8%BE%B9&sort=asc&page=1",
+    "/library/data?q=%E6%B5%B7%E8%BE%B9&sort=asc&page=2",
+    "/library/data?q=error&sort=asc&page=1",
+    "/library/data?q=%E4%B8%8D%E5%AD%98%E5%9C%A8&sort=asc&page=1"
+  ],
+  "limitations": [
+    "HTTP fixture has 120 lightweight records, separate SQLite experiment supplies 100k scale evidence",
+    "Fullscreen unavailable is an explicit capability override, not real mobile Safari",
+    "No production library, cross-page neighbor API, permissions or physical-device acceptance"
+  ],
+  "evidenceExcerpt": {
+    "rawReportPath": "test-results/browser-repair/full/ui/library.json",
+    "omittedObservations": {
+      "layouts": {
+        "count": 10,
+        "viewportWidths": [360, 390, 430, 768, 1440],
+        "themes": ["light", "dark"]
+      }
+    },
+    "note": "Only the declared observation arrays are omitted; all other original report fields are retained. The complete raw report remains in the local ignored test-results directory."
+  }
+}

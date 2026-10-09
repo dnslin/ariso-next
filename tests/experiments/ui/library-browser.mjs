@@ -1,20 +1,187 @@
 import assert from 'node:assert/strict';
 import { writeFile } from 'node:fs/promises';
+import { isBrowserControlStop } from '../../../e2e/browser-errors.mjs';
+
+// Keep the real error response pending until its loading UI has been observed.
+function observeRequests() {
+  const original = window.fetch;
+  window.__libraryRequests = [];
+  let release;
+  const gate = new Promise((resolve) => {
+    release = resolve;
+  });
+  window.__libraryReleaseError = release;
+  window.__restoreLibraryFetch = () => {
+    release();
+    window.fetch = original;
+    delete window.__libraryReleaseError;
+    delete window.__libraryHoldError;
+    delete window.__libraryHeldError;
+    delete window.__restoreLibraryFetch;
+  };
+  window.fetch = async (...args) => {
+    const url = new URL(String(args[0]), location.href);
+    if (url.pathname === '/library/data')
+      window.__libraryRequests.push(String(args[0]));
+    const response = await original(...args);
+    if (
+      url.pathname === '/library/data' &&
+      url.searchParams.get('q') === 'error' &&
+      window.__libraryHoldError
+    ) {
+      const held = { status: response.status, released: false };
+      window.__libraryHeldError = held;
+      await gate;
+      held.released = true;
+    }
+    return response;
+  };
+}
+
+function libraryState(page) {
+  return page.evaluate(() => ({
+    url: location.search,
+    history: window.__libraryHistoryPushes,
+    scroll: scrollY,
+    selection: document.querySelector('#library-selection').textContent,
+    focus: document.activeElement.id,
+  }));
+}
+
+function libraryRequests(page) {
+  return page.evaluate(() => window.__libraryRequests.length);
+}
+
+export async function verifyLibraryHistory(page, report) {
+  try {
+    const initial = await libraryState(page);
+    const initialRequests = await libraryRequests(page);
+    await page.fill('#library-search', '海');
+    await page.keyboard.type('边');
+    assert.equal((await libraryState(page)).url, initial.url);
+    assert.equal((await libraryState(page)).history, initial.history);
+    assert.equal(await libraryRequests(page), initialRequests);
+    await page.keyboard.press('Enter');
+    await page.waitForFunction(
+      () => new URLSearchParams(location.search).get('q') === '海边',
+    );
+    await page.waitForFunction(
+      () =>
+        document.querySelector('#library-state').textContent ===
+        '共 60 张 · 第 1 页',
+    );
+    assert.equal((await libraryState(page)).history, initial.history + 1);
+    await page.evaluate(() => history.back());
+    await page.waitForFunction(
+      () =>
+        !new URLSearchParams(location.search).has('q') &&
+        document.querySelector('#library-search').value === '',
+    );
+    await page.evaluate(() => history.forward());
+    await page.waitForFunction(
+      () => document.querySelector('#library-search').value === '海边',
+    );
+  } catch (error) {
+    report.stoppedForUserControl = isBrowserControlStop(error);
+    throw error;
+  } finally {
+    if (!report.stoppedForUserControl)
+      await page.evaluate(() => window.__restoreLibraryHistory());
+  }
+  report.checks.push(
+    'Local search draft: no URL, history or HTTP writes; one submit entry; Back/Forward restore applied input',
+  );
+}
+
+export async function verifyLibraryErrorRecovery(page, report) {
+  await page.evaluate(() => {
+    window.__libraryHoldError = true;
+  });
+  try {
+    await page.fill('#library-search', 'error');
+    await page.keyboard.press('Enter');
+    await page.waitForFunction(() => !!window.__libraryHeldError);
+    assert.equal(
+      await page.evaluate(() => window.__libraryHeldError.status),
+      503,
+      'The pending query has received a real HTTP 503, not a fabricated response',
+    );
+    await page.waitForFunction(
+      () => document.querySelector('#library-state').textContent === '正在加载',
+    );
+    assert.equal(
+      await page.evaluate(
+        () => document.querySelectorAll('[id^="open-image"]').length,
+      ),
+      0,
+      'Old result cannot be operated during new query',
+    );
+    report.pendingError = await page.evaluate(() => window.__libraryHeldError);
+  } catch (error) {
+    report.stoppedForUserControl = isBrowserControlStop(error);
+    throw error;
+  } finally {
+    if (!report.stoppedForUserControl)
+      await page.evaluate(() => {
+        window.__libraryHoldError = false;
+        window.__libraryReleaseError();
+      });
+  }
+  await page.waitForFunction(() =>
+    document.querySelector('#library-state').textContent.includes('HTTP 503'),
+  );
+  await page.fill('#library-search', '不存在');
+  await page.keyboard.press('Enter');
+  await page.waitForFunction(
+    () =>
+      document.querySelector('#library-state').textContent ===
+      '共 0 张 · 第 1 页',
+  );
+  await page.fill('#library-search', '海边');
+  await page.keyboard.press('Enter');
+  await page.waitForSelector('#open-image-002');
+  assert.equal(
+    (await libraryState(page)).selection,
+    '已选 0',
+    'Changed query must not resurrect old selection',
+  );
+  report.checks.push(
+    'Pending hides stale actions; HTTP 503, empty and cached recovery; changed query clears selection',
+  );
+}
+
+export async function cleanupLibraryObserver(page, report, observer) {
+  let scriptRemoved = false;
+  try {
+    if (observer && report.stoppedForUserControl)
+      report.pendingBrowserCleanup = {
+        scriptIdentifier: observer.identifier,
+      };
+    if (observer && !report.stoppedForUserControl) {
+      await page.cdp('Page.removeScriptToEvaluateOnNewDocument', observer);
+      scriptRemoved = true;
+      await page.evaluate(() => window.__restoreLibraryFetch?.());
+    }
+  } catch (error) {
+    report.status = 'failed';
+    report.cleanupError = error.stack ?? String(error);
+    report.error ??= report.cleanupError;
+    report.stoppedForUserControl = isBrowserControlStop(error);
+    report.pendingBrowserCleanup = {
+      scriptIdentifier: observer.identifier,
+      scriptRemoved,
+      restoreFetch: true,
+    };
+    throw error;
+  }
+}
 
 export async function verifyLibrary(page, config) {
   const report = { status: 'failed', checks: [], layouts: [] };
-  const requests = () => page.evaluate(() => window.__libraryRequests.length);
-  const state = () =>
-    page.evaluate(() => ({
-      url: location.search,
-      history: window.__libraryHistoryPushes,
-      scroll: scrollY,
-      selection: document.querySelector('#library-selection').textContent,
-      focus: document.activeElement.id,
-    }));
+  let observer;
   try {
-    await page.cdp('Page.addScriptToEvaluateOnNewDocument', {
-      source: `window.__libraryRequests=[];const originalFetch=window.fetch;window.fetch=(...args)=>{if(String(args[0]).startsWith('/library/data?'))window.__libraryRequests.push(String(args[0]));return originalFetch(...args)};`,
+    observer = await page.cdp('Page.addScriptToEvaluateOnNewDocument', {
+      source: `(${observeRequests.toString()})();`,
     });
     await page.cdp('Emulation.setDeviceMetricsOverride', {
       width: 1440,
@@ -43,50 +210,17 @@ export async function verifyLibrary(page, config) {
         history.pushState = pushState;
       };
     });
-    try {
-      const initial = await state();
-      const initialRequests = await requests();
-      await page.fill('#library-search', '海');
-      await page.keyboard.type('边');
-      assert.equal((await state()).url, initial.url);
-      assert.equal((await state()).history, initial.history);
-      assert.equal(await requests(), initialRequests);
-      await page.keyboard.press('Enter');
-      await page.waitForFunction(
-        () => new URLSearchParams(location.search).get('q') === '海边',
-      );
-      await page.waitForFunction(
-        () =>
-          document.querySelector('#library-state').textContent ===
-          '共 60 张 · 第 1 页',
-      );
-      assert.equal((await state()).history, initial.history + 1);
-      await page.evaluate(() => history.back());
-      await page.waitForFunction(
-        () =>
-          !new URLSearchParams(location.search).has('q') &&
-          document.querySelector('#library-search').value === '',
-      );
-      await page.evaluate(() => history.forward());
-      await page.waitForFunction(
-        () => document.querySelector('#library-search').value === '海边',
-      );
-    } finally {
-      await page.evaluate(() => window.__restoreLibraryHistory());
-    }
-    report.checks.push(
-      'Local search draft: no URL, history or HTTP writes; one submit entry; Back/Forward restore applied input',
-    );
+    await verifyLibraryHistory(page, report);
 
     await page.click('#select-image-002');
-    const beforeLayout = await requests();
+    const beforeLayout = await libraryRequests(page);
     await page.click('#layout');
     await page.waitForSelector('[data-layout="rows"]');
-    assert.equal(await requests(), beforeLayout);
-    assert.equal((await state()).selection, '已选 1');
+    assert.equal(await libraryRequests(page), beforeLayout);
+    assert.equal((await libraryState(page)).selection, '已选 1');
     await page.click('#next-page');
     await page.waitForSelector('#open-image-042');
-    assert.equal((await state()).selection, '已选 1');
+    assert.equal((await libraryState(page)).selection, '已选 1');
     await page.evaluate(() => history.back());
     await page.waitForSelector('#select-image-002[aria-pressed="true"]');
     await page.click('#layout');
@@ -96,8 +230,8 @@ export async function verifyLibrary(page, config) {
     );
 
     await page.focus('#open-image-018');
-    const beforeViewer = await state();
-    const beforeViewerRequests = await requests();
+    const beforeViewer = await libraryState(page);
+    const beforeViewerRequests = await libraryRequests(page);
     await page.keyboard.press('Enter');
     await page.waitForSelector('.yarl__root');
     await page.waitForFunction(() =>
@@ -107,7 +241,7 @@ export async function verifyLibrary(page, config) {
     );
     console.log(await page.snapshot());
     assert.equal(
-      new URLSearchParams((await state()).url).get('image'),
+      new URLSearchParams((await libraryState(page)).url).get('image'),
       'image-018',
     );
     await page.click('loc=role:button[name="下一张"]');
@@ -116,7 +250,7 @@ export async function verifyLibrary(page, config) {
     );
     await page.click('#rebuild-slides');
     assert.equal(
-      new URLSearchParams((await state()).url).get('image'),
+      new URLSearchParams((await libraryState(page)).url).get('image'),
       'image-020',
     );
     assert.equal(
@@ -156,7 +290,7 @@ export async function verifyLibrary(page, config) {
       'Zoomed arrow key pans the image',
     );
     assert.equal(
-      new URLSearchParams((await state()).url).get('image'),
+      new URLSearchParams((await libraryState(page)).url).get('image'),
       'image-020',
     );
     assert.ok(
@@ -184,11 +318,11 @@ export async function verifyLibrary(page, config) {
     await page.waitForFunction(
       () => document.activeElement.id === 'open-image-018',
     );
-    const returned = await state();
+    const returned = await libraryState(page);
     assert.equal(returned.url, beforeViewer.url);
     assert.equal(returned.scroll, beforeViewer.scroll);
     assert.equal(returned.selection, beforeViewer.selection);
-    assert.equal(await requests(), beforeViewerRequests);
+    assert.equal(await libraryRequests(page), beforeViewerRequests);
     report.checks.push(
       'Three-slide finite window, controlled image identity after rebuilding slides, zoom and keyboard pan, real desktop fullscreen enter/exit, Escape restores URL/scroll/selection/focus without list HTTP',
     );
@@ -277,39 +411,7 @@ export async function verifyLibrary(page, config) {
       'Light/dark at 360/390/430/768/1440, 44px controls, short viewport; emulated missing Fullscreen API hides its button but retains viewport viewer and zoom',
     );
 
-    await page.fill('#library-search', 'error');
-    await page.keyboard.press('Enter');
-    await page.waitForFunction(
-      () => document.querySelector('#library-state').textContent === '正在加载',
-    );
-    assert.equal(
-      await page.evaluate(
-        () => document.querySelectorAll('[id^="open-image"]').length,
-      ),
-      0,
-      'Old result cannot be operated during new query',
-    );
-    await page.waitForFunction(() =>
-      document.querySelector('#library-state').textContent.includes('HTTP 503'),
-    );
-    await page.fill('#library-search', '不存在');
-    await page.keyboard.press('Enter');
-    await page.waitForFunction(
-      () =>
-        document.querySelector('#library-state').textContent ===
-        '共 0 张 · 第 1 页',
-    );
-    await page.fill('#library-search', '海边');
-    await page.keyboard.press('Enter');
-    await page.waitForSelector('#open-image-002');
-    assert.equal(
-      (await state()).selection,
-      '已选 0',
-      'Changed query must not resurrect old selection',
-    );
-    report.checks.push(
-      'Pending hides stale actions; HTTP 503, empty and cached recovery; changed query clears selection',
-    );
+    await verifyLibraryErrorRecovery(page, report);
     report.errors = await page.evaluate(() => window.__uiErrors);
     assert.deepEqual(report.errors, []);
     report.requests = await page.evaluate(() => window.__libraryRequests);
@@ -321,11 +423,16 @@ export async function verifyLibrary(page, config) {
     report.status = 'passed';
   } catch (error) {
     report.error = error.stack ?? String(error);
+    report.stoppedForUserControl = isBrowserControlStop(error);
     throw error;
   } finally {
-    await writeFile(
-      `${config.output}/library.json`,
-      `${JSON.stringify(report, null, 2)}\n`,
-    );
+    try {
+      await cleanupLibraryObserver(page, report, observer);
+    } finally {
+      await writeFile(
+        `${config.output}/library.json`,
+        `${JSON.stringify(report, null, 2)}\n`,
+      );
+    }
   }
 }

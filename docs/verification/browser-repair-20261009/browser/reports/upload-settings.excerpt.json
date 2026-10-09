@@ -1,0 +1,133 @@
+{
+  "status": "passed",
+  "origin": "http://ariso-53063.localhost:53063",
+  "phase": "recovery",
+  "checks": [
+    "A failed initial upload GET does not block a real site form PATCH or completed server refresh; the site value is independently read back and restored.",
+    "Real loading/409 and refused PATCH; controlled read/gateway failures; actual committed lost responses; exact one automatic GET, explicit read retry and different-value decisions preserve inputs"
+  ],
+  "browserErrors": [],
+  "limitations": [
+    "Only disposable runner data is changed; the manual preview remains independent.",
+    "Network/gateway faults are controlled browser-boundary faults; lost PATCH responses follow real commits.",
+    "Actual standalone restart persistence and old/new rules are verified by default integration tests.",
+    "Physical touch, soft keyboard and device safe areas are outside current emulation acceptance."
+  ],
+  "stage": "recovery",
+  "uploadOperation": {
+    "action": "evidence",
+    "state": "save-refused",
+    "width": 390,
+    "theme": "light",
+    "step": "complete"
+  },
+  "recoveryRequests": [
+    {
+      "scenario": "committed response lost, automatic confirmation",
+      "requests": [
+        {
+          "method": "PATCH",
+          "status": 200,
+          "responseLost": true
+        },
+        {
+          "method": "GET",
+          "status": 200
+        }
+      ]
+    },
+    {
+      "scenario": "automatic confirmation read failed",
+      "requests": [
+        {
+          "method": "PATCH",
+          "status": 200,
+          "responseLost": true
+        },
+        {
+          "method": "GET",
+          "controlledNetworkFailure": true
+        }
+      ]
+    },
+    {
+      "scenario": "explicit confirmation retry",
+      "requests": [
+        {
+          "method": "PATCH",
+          "status": 200,
+          "responseLost": true
+        },
+        {
+          "method": "GET",
+          "controlledNetworkFailure": true
+        },
+        {
+          "method": "GET",
+          "status": 200
+        }
+      ]
+    },
+    {
+      "scenario": "different saved value, useSaved=false",
+      "requests": [
+        {
+          "method": "PATCH",
+          "status": 200,
+          "responseLost": true
+        },
+        {
+          "method": "GET",
+          "status": 200
+        }
+      ]
+    },
+    {
+      "scenario": "different saved value, useSaved=true",
+      "requests": [
+        {
+          "method": "PATCH",
+          "status": 200,
+          "responseLost": true
+        },
+        {
+          "method": "GET",
+          "status": 200
+        }
+      ]
+    },
+    {
+      "scenario": "gateway failure followed by saved-value read",
+      "requests": [
+        {
+          "method": "PATCH"
+        },
+        {
+          "method": "GET",
+          "status": 200
+        }
+      ]
+    },
+    {
+      "scenario": "known HTTP 409 preserves draft without automatic read",
+      "requests": [
+        {
+          "method": "PATCH",
+          "status": 409
+        }
+      ]
+    }
+  ],
+  "evidenceExcerpt": {
+    "rawReportPath": "test-results/browser-repair/upload-settings-recovery/upload-settings.json",
+    "omittedObservations": {
+      "layouts": {
+        "count": 19,
+        "viewportWidths": [1440, 390],
+        "viewportHeights": [1080, 844],
+        "themes": ["light", "dark"]
+      }
+    },
+    "note": "Only the declared observation arrays are omitted; all other original report fields are retained. The complete raw report remains in the local ignored test-results directory."
+  }
+}

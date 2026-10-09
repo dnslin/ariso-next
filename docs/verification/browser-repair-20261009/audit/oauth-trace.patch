@@ -1,0 +1,38 @@
+diff --git a/e2e/oauth.mjs b/e2e/oauth.mjs
+index 69f32599..f7f70021 100644
+--- a/e2e/oauth.mjs
++++ b/e2e/oauth.mjs
+@@ -72,10 +72,20 @@ const report = {
+   ],
+ };
+ const ui = createOAuthPage(page, config, report);
+-let errorScript;
++let errorScript, traceScript;
+ let failure;
+ try {
+   errorScript = await installBrowserErrors(page);
++  traceScript = await page.cdp('Page.addScriptToEvaluateOnNewDocument', {
++    source: `window.__oauthEvents=[];
++      const trace=(event)=>{
++        const target=event.target;
++        window.__oauthEvents.push({type:event.type,key:['Enter','Escape','Tab'].includes(event.key)?event.key:undefined,time:performance.now(),id:target.id,testId:target.dataset?.testid,slot:target.dataset?.slot,modal:document.querySelector('[data-testid="oauth-page"]')?.dataset.state});
++        window.__oauthEvents=window.__oauthEvents.slice(-80);
++      };
++      for(const type of ['focusin','keydown','keyup','click'])document.addEventListener(type,trace,true);
++      window.__restoreOAuthEvents=()=>{for(const type of ['focusin','keydown','keyup','click'])document.removeEventListener(type,trace,true);delete window.__oauthEvents;delete window.__restoreOAuthEvents;};`,
++  });
+   await resizeViewport(page, config.width ?? 1440);
+   await accountSignIn(page, config, report, config.credentials, config.width);
+   await setTheme(page, 'light');
+@@ -178,6 +188,11 @@ try {
+     );
+   if (!report.stoppedForUserControl) await ui.screenshot('failure');
+ } finally {
++  if (traceScript && !report.stoppedForUserControl) {
++    report.events = await page.evaluate(() => window.__oauthEvents);
++    await page.cdp('Page.removeScriptToEvaluateOnNewDocument', traceScript);
++    await page.evaluate(() => window.__restoreOAuthEvents?.());
++  }
+   if (errorScript && !report.stoppedForUserControl)
+     await page.cdp('Page.removeScriptToEvaluateOnNewDocument', {
+       identifier: errorScript,

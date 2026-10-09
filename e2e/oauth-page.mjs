@@ -132,7 +132,8 @@ export function createOAuthPage(page, config, report) {
     );
   }
   async function open() {
-    // Dismiss existing neutral notifications using their real keyboard action.
+    // Dismiss notifications with their real pointer action: a pending opener
+    // focus restoration must not redirect Enter into the configuration button.
     // A mobile bottom toast may otherwise cover the next configuration button.
     while (
       await page.evaluate(
@@ -149,16 +150,20 @@ export function createOAuthPage(page, config, report) {
           )?.id,
       );
       assert.ok(title, 'The prior notification has a title identifier');
-      await page.focus(
+      await page.click(
         '[data-slot="toast"][data-frontmost="true"] [data-slot="toast-close"]',
       );
-      await page.keyboard.press('Enter');
       await page.waitForFunction((id) => !document.getElementById(id), title);
     }
     await page.waitForFunction(
       () => !document.querySelector('[data-slot="toast"]'),
     );
     await page.focus('[data-testid="account-github-config"]');
+    await page.waitForFunction(
+      () =>
+        document.activeElement ===
+        document.querySelector('[data-testid="account-github-config"]'),
+    );
     await page.keyboard.press('Enter');
     await page.waitForSelector(`${oauthDialog}[data-state="editing"]`);
   }

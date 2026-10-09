@@ -19,6 +19,19 @@ const run = promisify(execFile);
 
 async function assertWorkingAction(page, state, operation, target) {
   await page.waitForSelector(`${revokeDialog}[data-state="${state}"]`);
+  await page.waitForFunction(
+    (selector) =>
+      document
+        .querySelector(selector)
+        .closest('[data-slot="alert-dialog-backdrop"]')
+        .getAnimations({ subtree: true })
+        .every(
+          (animation) =>
+            animation.timeline !== document.timeline ||
+            animation.playState !== 'running',
+        ),
+    revokeDialog,
+  );
   const pending = await page.evaluate((selector) => {
     const root = document.querySelector(selector);
     const button = root.querySelector('[data-testid="api-revoke-confirm"]');
@@ -715,6 +728,7 @@ export async function verifyTokensLifecycle(page, config, report) {
         await ui.stateGeometry(enabled ? 'enabling' : 'disabling', width);
         await fault.release();
         await ui.rowState(id, state);
+        await page.waitForSelector(revokeDialog, { state: 'detached' });
       } finally {
         await fault.dispose();
       }
@@ -724,6 +738,8 @@ export async function verifyTokensLifecycle(page, config, report) {
         ).enabled,
         enabled,
       );
+      // Toasts use role=alertdialog too, and can cover the next row action.
+      await ui.dismissNotifications();
     }
     const snapshot = await ui.openRevoke(id);
     await ui.stateGeometry('revoke-confirm', width);

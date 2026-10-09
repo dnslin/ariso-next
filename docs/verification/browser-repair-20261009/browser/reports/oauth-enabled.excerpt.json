@@ -1,0 +1,231 @@
+{
+  "status": "passed",
+  "taskSpaceId": 8,
+  "origin": "http://ariso-52791.localhost:52791",
+  "phase": "enabled",
+  "checks": [
+    "Anonymous GitHub login entry follows actual effective configuration (enabled). No external authorization is attempted with fixture credentials.",
+    "Closing unsent unknown unlink preserves the main unresolved marker and blocks repeat DELETE through failed real readbacks; successful GET restores the actual bound state without reopening stale confirmation.",
+    "Closing committed unknown unlink preserves the main unresolved marker and blocks repeat DELETE through failed real readbacks; successful GET restores the actual unbound state without reopening stale confirmation.",
+    "Seeded UI-only GitHub relation renders username and survives process configuration changes; real failed DELETE retains it; unsent DELETE plus unavailable readback stays unknown; committed DELETE plus lost response reconciles to unbound; credential is preserved; production link generates fixed GitHub authorization/state without contacting external GitHub.",
+    "Second real process restart applies enablement and exposes the anonymous GitHub entry; UI-only seeded account is removed through the actual protected unlink endpoint."
+  ],
+  "requests": [
+    {
+      "path": "/api/settings/github",
+      "method": "GET",
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/auth/sign-out",
+      "method": "POST",
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/account/github",
+      "method": "GET",
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/account/github",
+      "method": "GET",
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/account/github",
+      "method": "GET",
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/account/github",
+      "method": "GET",
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/account/github",
+      "method": "GET",
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/account/github/link",
+      "method": "POST",
+      "attempt": 1,
+      "status": 200
+    }
+  ],
+  "realGithubOAuth": "unverified",
+  "limitations": [
+    "Only the runner’s disposable production runtime/database are modified; the manual preview is untouched.",
+    "A seeded GitHub account proves UI binding state and production unlinking only. It is not evidence of real GitHub OAuth authorization, token exchange or GitHub login.",
+    "Held/lost delivery faults retain actual HTTP writes and reads; no successful server response is fabricated.",
+    "Callback publicUrl readback is verified here; external callback authorization and provider exchange remain separate verification."
+  ],
+  "stage": "closed-unlink-unknown-committed",
+  "browserErrors": [],
+  "events": [
+    {
+      "type": "focusin",
+      "time": 277.5,
+      "id": "react-aria4766436666-_r_d_",
+      "testId": "account-github-unlink",
+      "slot": "button"
+    },
+    {
+      "type": "keydown",
+      "key": "Enter",
+      "time": 279.10000002384186,
+      "id": "react-aria4766436666-_r_d_",
+      "testId": "account-github-unlink",
+      "slot": "button"
+    },
+    {
+      "type": "click",
+      "time": 279.89999997615814,
+      "id": "react-aria4766436666-_r_d_",
+      "testId": "account-github-unlink",
+      "slot": "button"
+    },
+    {
+      "type": "keyup",
+      "key": "Enter",
+      "time": 280.10000002384186,
+      "id": "react-aria4766436666-_r_d_",
+      "testId": "account-github-unlink",
+      "slot": "button"
+    },
+    {
+      "type": "focusin",
+      "time": 283.7999999523163,
+      "id": "react-aria4766436666-_r_f_",
+      "testId": "github-unlink",
+      "slot": "modal-dialog"
+    },
+    {
+      "type": "focusin",
+      "time": 472.2999999523163,
+      "id": "react-aria4766436666-_r_o_",
+      "testId": "account-github-unlink-confirm",
+      "slot": "button"
+    },
+    {
+      "type": "click",
+      "time": 504.89999997615814,
+      "id": "react-aria4766436666-_r_o_",
+      "testId": "account-github-unlink-confirm",
+      "slot": "button"
+    },
+    {
+      "type": "focusin",
+      "time": 556.6000000238419,
+      "id": "react-aria4766436666-_r_o_",
+      "testId": "account-github-reload",
+      "slot": "button"
+    },
+    {
+      "type": "keydown",
+      "key": "Escape",
+      "time": 568.8999999761581,
+      "id": "react-aria4766436666-_r_o_",
+      "testId": "account-github-reload",
+      "slot": "button"
+    },
+    {
+      "type": "keyup",
+      "key": "Escape",
+      "time": 574.5,
+      "id": ""
+    },
+    {
+      "type": "focusin",
+      "time": 587.3999999761581,
+      "id": "react-aria4766436666-_r_s_",
+      "testId": "account-github-reload",
+      "slot": "button"
+    },
+    {
+      "type": "click",
+      "time": 798.5,
+      "id": "react-aria4766436666-_r_s_",
+      "testId": "account-github-reload",
+      "slot": "button"
+    },
+    {
+      "type": "focusin",
+      "time": 1388.7999999523163,
+      "id": "react-aria4766436666-_r_s_",
+      "testId": "account-github-reload",
+      "slot": "button"
+    },
+    {
+      "type": "click",
+      "time": 1423.5,
+      "id": "react-aria4766436666-_r_s_",
+      "testId": "account-github-reload",
+      "slot": "button"
+    },
+    {
+      "type": "focusin",
+      "time": 1503.6999999284744,
+      "id": "react-aria4766436666-_r_15_",
+      "testId": "account-github-link",
+      "slot": "button"
+    }
+  ],
+  "finishedAt": "2026-10-09T06:39:50.256Z",
+  "evidenceExcerpt": {
+    "rawReportPath": "test-results/browser-repair/oauth-fixed/oauth-all-enabled.json",
+    "omittedObservations": {
+      "layouts": {
+        "count": 82,
+        "viewportWidths": [1440, 360, 390, 430, 768],
+        "states": [
+          "bound-light-rows",
+          "bound-light",
+          "bound-dark-rows",
+          "bound-dark",
+          "unlink-confirmation-light-rows",
+          "unlink-confirmation-light",
+          "unlink-short-light-rows",
+          "unlink-short-light",
+          "unlink-confirmation-dark-rows",
+          "unlink-confirmation-dark",
+          "unlink-short-dark-rows",
+          "unlink-short-dark",
+          "unlink-real-server-error-rows",
+          "unlink-real-server-error",
+          "unlink-unknown-not-sent-rows",
+          "unlink-unknown-not-sent",
+          "unlink-unknown-closed-not-sent-light-rows",
+          "unlink-unknown-closed-not-sent-light",
+          "unlink-unknown-closed-not-sent-dark-rows",
+          "unlink-unknown-closed-not-sent-dark",
+          "unlink-pending-light-rows",
+          "unlink-pending-light",
+          "unlink-pending-dark-rows",
+          "unlink-pending-dark",
+          "unlink-unknown-committed-rows",
+          "unlink-unknown-committed",
+          "unlink-unknown-closed-committed-light-rows",
+          "unlink-unknown-closed-committed-light",
+          "unlink-unknown-closed-committed-dark-rows",
+          "unlink-unknown-closed-committed-dark",
+          "unbound-enabled-light-rows",
+          "unbound-enabled-light",
+          "unbound-enabled-dark-rows",
+          "unbound-enabled-dark"
+        ]
+      },
+      "screenshots": {
+        "count": 41
+      }
+    },
+    "note": "Only the declared observation arrays are omitted; all other original report fields are retained. The complete raw report remains in the local ignored test-results directory."
+  }
+}

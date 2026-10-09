@@ -17,6 +17,7 @@ import { selectBrowserPlan } from './browser-plan.mjs';
 import { runM2Restart } from './browser-m2.mjs';
 import { runIdentityManagement } from './browser-identity-management.mjs';
 import { runOAuthManagement } from './browser-oauth.mjs';
+import { runBusinessBrowserStage } from './browser-business.mjs';
 import { createSharingRunner } from './browser-sharing.mjs';
 import { runBrandBrowser } from './browser-brand.mjs';
 import { startSmtpBrowserFixture } from '../e2e/smtp-fixture.mjs';
@@ -749,9 +750,13 @@ try {
         report.oauth = 'passed';
     } else {
       for (const [script, result] of plan.stages) {
-        const passed = await check(script, () =>
-          runBrowser(`../e2e/${script}.mjs`, focusedConfig, `${script}.log`),
-        );
+        const passed = await runBusinessBrowserStage({
+          check,
+          runBrowser,
+          restart: restartProduction,
+          config: focusedConfig,
+          script,
+        });
         if (passed) report[result] = 'passed';
       }
     }
@@ -845,16 +850,15 @@ try {
         );
       }, [setupName, ownerName]);
       const business = (name, script, extra = {}) =>
-        check(
+        runBusinessBrowserStage({
+          check,
+          runBrowser,
+          restart: restartProduction,
+          config: { ...identityConfig, ...extra },
+          script,
           name,
-          () =>
-            runBrowser(
-              `../e2e/${script}.mjs`,
-              { ...identityConfig, ...extra },
-              `${name}.log`,
-            ),
-          [ownerName],
-        );
+          dependencies: [ownerName],
+        });
       if (width === 390) {
         await business('processing', 'processing');
         try {
