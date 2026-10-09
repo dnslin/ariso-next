@@ -8,7 +8,7 @@
 2. [x] 记录 owner-settings 清理首次报停时的脚本标识及释放进度。
 3. [x] 默认和 focused 共用实际业务分发，删除日常源码切片/VM 测试，补真实 CLI 连接验证。
 4. [x] 保存失败证据，完成受影响检查及两个独立角度复审。
-5. [ ] 记录最终检查并提交推送，核对现有草稿 PR 的实际状态。
+5. [x] 记录最终检查并提交推送，核对现有草稿 PR 的实际状态。
 
 原两份独立评审分别为[正确性](audit/followup-correctness.md)和[严格结构质量](audit/followup-structure.md)，共三项 Required/P2，无 Critical。最新结论为[正确性复审 Approve](audit/fix-correctness.md)及[独立结构复审 Approve](audit/fix-structure.md)，Required/Optional 均为0。结构复审者没有参与本轮实现；正确性复审者也未修改受审代码。
 
@@ -46,4 +46,4 @@
 
 人工预览 `http://127.0.0.1:3299/settings/api/usage` 与原型 `http://127.0.0.1:3199/` 保留，没有停止、重启或操作其浏览器页面。既有UI人工验收有效。凭证保留在忽略目录，不写代码、PR或日志。本轮未合并、关闭Issue、发布、部署、删除分支/worktree或清理预览。
 
-原始离线材料保留在 `test-results/pr271-dual-review/` 与 `test-results/pr271-fixes/`；公开归档仅为上述相关报告和输出；文本输出只规范化终端换行、行尾空白与多余末尾空行，原始输出不改写。最终提交、远端head与检查状态在推送后核对。
+原始离线材料保留在 `test-results/pr271-dual-review/` 与 `test-results/pr271-fixes/`；公开归档仅为上述相关报告和输出；文本输出只规范化终端换行、行尾空白与多余末尾空行，原始输出不改写。修复提交 `e63294e7b0e337cbe32ac64c3518e4bf63546b88` 已推送；`gh pr view 271 --json url,state,isDraft,headRefOid,baseRefOid,mergeable,statusCheckRollup` 实际返回相同远端head、OPEN / isDraft=true / MERGEABLE，base为e4d90c2b，statusCheckRollup=[]。PR标题和正文已更新为最终修复范围。没有远端检查，不记为CI通过，也不等待不存在的工作流。最后的证据状态更新独立提交，不改变上述已复审代码。
