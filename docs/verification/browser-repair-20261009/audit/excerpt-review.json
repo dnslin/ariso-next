@@ -1,0 +1,226 @@
+{
+  "status": "passed",
+  "excerpts": 15,
+  "results": [
+    {
+      "file": "full-isolated-library.excerpt.json",
+      "rawReportPath": "test-results/browser-repair/full/ui/library.json",
+      "status": "passed",
+      "checks": 5,
+      "omissions": [
+        {
+          "field": "layouts",
+          "count": 10
+        }
+      ]
+    },
+    {
+      "file": "full-site-owner-shell.excerpt.json",
+      "rawReportPath": "test-results/browser-repair/full/site-general-owner-shell/owner-shell.json",
+      "status": "passed",
+      "checks": 9,
+      "omissions": [
+        {
+          "field": "pages",
+          "count": 33
+        },
+        {
+          "field": "collapsed",
+          "count": 11
+        }
+      ]
+    },
+    {
+      "file": "isolated-library.excerpt.json",
+      "rawReportPath": "test-results/browser-repair/isolated-ui/library.json",
+      "status": "passed",
+      "checks": 5,
+      "omissions": [
+        {
+          "field": "layouts",
+          "count": 10
+        }
+      ]
+    },
+    {
+      "file": "oauth-after.excerpt.json",
+      "rawReportPath": "test-results/browser-repair/oauth-fixed/oauth-all-after.json",
+      "status": "passed",
+      "checks": 2,
+      "omissions": [
+        {
+          "field": "layouts",
+          "count": 20
+        },
+        {
+          "field": "screenshots",
+          "count": 10
+        }
+      ]
+    },
+    {
+      "file": "oauth-before-fix.excerpt.json",
+      "rawReportPath": "test-results/browser-repair/oauth-trace/oauth-all-before.json",
+      "status": "failed",
+      "checks": 1,
+      "omissions": [
+        {
+          "field": "layouts",
+          "count": 62
+        },
+        {
+          "field": "screenshots",
+          "count": 32
+        }
+      ]
+    },
+    {
+      "file": "oauth-before.excerpt.json",
+      "rawReportPath": "test-results/browser-repair/oauth-fixed/oauth-all-before.json",
+      "status": "passed",
+      "checks": 6,
+      "omissions": [
+        {
+          "field": "layouts",
+          "count": 142
+        },
+        {
+          "field": "screenshots",
+          "count": 71
+        }
+      ]
+    },
+    {
+      "file": "oauth-enabled.excerpt.json",
+      "rawReportPath": "test-results/browser-repair/oauth-fixed/oauth-all-enabled.json",
+      "status": "passed",
+      "checks": 5,
+      "omissions": [
+        {
+          "field": "layouts",
+          "count": 82
+        },
+        {
+          "field": "screenshots",
+          "count": 41
+        }
+      ]
+    },
+    {
+      "file": "processing-before-fix.excerpt.json",
+      "rawReportPath": "test-results/browser-repair/full/processing.json",
+      "status": "failed",
+      "checks": 12,
+      "omissions": [
+        {
+          "field": "layouts",
+          "count": 51
+        },
+        {
+          "field": "toastTargetLayouts",
+          "count": 18
+        }
+      ]
+    },
+    {
+      "file": "processing-final-processing.excerpt.json",
+      "rawReportPath": "test-results/browser-repair/processing-final/processing.json",
+      "status": "passed",
+      "checks": 44,
+      "omissions": [
+        {
+          "field": "layouts",
+          "count": 100
+        },
+        {
+          "field": "toastTargetLayouts",
+          "count": 37
+        }
+      ]
+    },
+    {
+      "file": "tokens-consumers.excerpt.json",
+      "rawReportPath": "test-results/browser-repair/tokens-consumers/tokens.json",
+      "status": "passed",
+      "checks": 1,
+      "omissions": [
+        {
+          "field": "layouts",
+          "count": 20
+        },
+        {
+          "field": "screenshots",
+          "count": 22
+        }
+      ]
+    },
+    {
+      "file": "upload-final-owner-shell.excerpt.json",
+      "rawReportPath": "test-results/browser-repair/upload-final/upload-owner-shell/owner-shell.json",
+      "status": "passed",
+      "checks": 9,
+      "omissions": [
+        {
+          "field": "pages",
+          "count": 33
+        },
+        {
+          "field": "collapsed",
+          "count": 11
+        }
+      ]
+    },
+    {
+      "file": "upload-final.excerpt.json",
+      "rawReportPath": "test-results/browser-repair/upload-final/upload.json",
+      "status": "passed",
+      "checks": 16,
+      "omissions": [
+        {
+          "field": "layouts",
+          "count": 140
+        }
+      ]
+    },
+    {
+      "file": "upload-owner-shell.excerpt.json",
+      "rawReportPath": "test-results/browser-repair/upload-regression/upload-owner-shell/owner-shell.json",
+      "status": "passed",
+      "checks": 9,
+      "omissions": [
+        {
+          "field": "pages",
+          "count": 33
+        },
+        {
+          "field": "collapsed",
+          "count": 11
+        }
+      ]
+    },
+    {
+      "file": "upload-settings.excerpt.json",
+      "rawReportPath": "test-results/browser-repair/upload-settings-recovery/upload-settings.json",
+      "status": "passed",
+      "checks": 2,
+      "omissions": [
+        {
+          "field": "layouts",
+          "count": 19
+        }
+      ]
+    },
+    {
+      "file": "upload.excerpt.json",
+      "rawReportPath": "test-results/browser-repair/upload-regression/upload.json",
+      "status": "passed",
+      "checks": 16,
+      "omissions": [
+        {
+          "field": "layouts",
+          "count": 140
+        }
+      ]
+    }
+  ]
+}

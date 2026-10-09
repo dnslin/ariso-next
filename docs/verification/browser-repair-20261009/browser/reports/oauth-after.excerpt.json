@@ -1,0 +1,177 @@
+{
+  "status": "passed",
+  "taskSpaceId": 8,
+  "origin": "http://ariso-52791.localhost:52791",
+  "phase": "after",
+  "checks": [
+    "Anonymous GitHub login entry follows actual effective configuration (disabled). No external authorization is attempted with fixture credentials.",
+    "First real process restart applies disabled saved configuration and retains the binding; explicit UI re-enable saves while effective remains disabled until the next restart."
+  ],
+  "requests": [
+    {
+      "path": "/api/settings/github",
+      "method": "GET",
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/account/github",
+      "method": "GET",
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/auth/sign-out",
+      "method": "POST",
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/settings/github",
+      "method": "GET",
+      "attempt": 1,
+      "status": 200
+    }
+  ],
+  "realGithubOAuth": "unverified",
+  "limitations": [
+    "Only the runner’s disposable production runtime/database are modified; the manual preview is untouched.",
+    "A seeded GitHub account proves UI binding state and production unlinking only. It is not evidence of real GitHub OAuth authorization, token exchange or GitHub login.",
+    "Held/lost delivery faults retain actual HTTP writes and reads; no successful server response is fabricated.",
+    "Callback publicUrl readback is verified here; external callback authorization and provider exchange remain separate verification."
+  ],
+  "stage": "disabled-effective",
+  "browserErrors": [],
+  "events": [
+    {
+      "type": "focusin",
+      "time": 1361.8999999761581,
+      "id": "react-aria5046876113-_r_b_",
+      "testId": "account-github-config",
+      "slot": "button"
+    },
+    {
+      "type": "keydown",
+      "key": "Enter",
+      "time": 1363.8999999761581,
+      "id": "react-aria5046876113-_r_b_",
+      "testId": "account-github-config",
+      "slot": "button"
+    },
+    {
+      "type": "click",
+      "time": 1364.7000000476837,
+      "id": "react-aria5046876113-_r_b_",
+      "testId": "account-github-config",
+      "slot": "button"
+    },
+    {
+      "type": "keyup",
+      "key": "Enter",
+      "time": 1365,
+      "id": "react-aria5046876113-_r_b_",
+      "testId": "account-github-config",
+      "slot": "button"
+    },
+    {
+      "type": "focusin",
+      "time": 1372.6000000238419,
+      "id": "react-aria5046876113-_r_f_",
+      "testId": "oauth-page",
+      "slot": "modal-dialog",
+      "modal": "editing"
+    },
+    {
+      "type": "focusin",
+      "time": 1378,
+      "id": "oauth-client-id",
+      "slot": "input",
+      "modal": "editing"
+    },
+    {
+      "type": "focusin",
+      "time": 1546.8999999761581,
+      "id": "oauth-client-secret",
+      "slot": "input",
+      "modal": "editing"
+    },
+    {
+      "type": "keydown",
+      "time": 1549.3000000715256,
+      "id": "oauth-client-secret",
+      "slot": "input",
+      "modal": "editing"
+    },
+    {
+      "type": "keyup",
+      "time": 1549.8999999761581,
+      "id": "oauth-client-secret",
+      "slot": "input",
+      "modal": "editing"
+    },
+    {
+      "type": "focusin",
+      "time": 1763.1000000238419,
+      "id": "react-aria5046876113-_r_f_",
+      "testId": "oauth-page",
+      "slot": "modal-dialog",
+      "modal": "editing"
+    },
+    {
+      "type": "click",
+      "time": 1795.3000000715256,
+      "id": "",
+      "slot": "switch-content",
+      "modal": "editing"
+    },
+    {
+      "type": "focusin",
+      "time": 1796.3000000715256,
+      "id": "",
+      "modal": "editing"
+    },
+    {
+      "type": "focusin",
+      "time": 1972.5,
+      "id": "react-aria5046876113-_r_16_",
+      "testId": "oauth-save",
+      "slot": "button",
+      "modal": "editing"
+    },
+    {
+      "type": "click",
+      "time": 2005,
+      "id": "react-aria5046876113-_r_16_",
+      "testId": "oauth-save",
+      "slot": "button",
+      "modal": "editing"
+    },
+    {
+      "type": "focusin",
+      "time": 2084.3000000715256,
+      "id": "react-aria5046876113-_r_b_",
+      "testId": "account-github-config",
+      "slot": "button"
+    }
+  ],
+  "finishedAt": "2026-10-09T06:39:34.278Z",
+  "evidenceExcerpt": {
+    "rawReportPath": "test-results/browser-repair/oauth-fixed/oauth-all-after.json",
+    "omittedObservations": {
+      "layouts": {
+        "count": 20,
+        "viewportWidths": [1440, 360, 390, 430, 768],
+        "states": [
+          "bound-effective-disabled-light-rows",
+          "bound-effective-disabled-light",
+          "bound-effective-disabled-dark-rows",
+          "bound-effective-disabled-dark"
+        ]
+      },
+      "screenshots": {
+        "count": 10
+      }
+    },
+    "note": "Only the declared observation arrays are omitted; all other original report fields are retained. The complete raw report remains in the local ignored test-results directory."
+  }
+}

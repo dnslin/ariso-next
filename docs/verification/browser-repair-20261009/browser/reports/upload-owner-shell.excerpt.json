@@ -1,0 +1,494 @@
+{
+  "status": "passed",
+  "checks": [
+    "Collapsed sidebar Tab reaches the unavailable overview and exposes its reason in a real tooltip; hover exposes the library label; Escape leaves collapse state unchanged.",
+    "Collapse during a held real upload-settings response survives data arrival at 72px, retaining the same toggle DOM node and keyboard focus.",
+    "At 390×400 the phone navigation scroll reaches the final settings entry while account access remains visible and functional.",
+    "Idle upload cloud moves continuously without hover; reduced motion disables the animation.",
+    "All real owner routes remove the workspace breadcrumb, paint the footer to workspace edges with responsive inner padding, and preserve keyboard focus without a pointer-triggered trash heading ring.",
+    "All implemented owner routes share the ten design menu entries; the eight implemented entries are links, and overview/analytics explain that they are not yet available.",
+    "Computed navigation text decoration is none, including hover; heading origins match across every implemented owner route at desktop, phone and tablet widths.",
+    "Desktop keyboard collapse changes sidebar 232 → 72; icons, accessible names and disabled reasons remain; navigation and real reload preserve collapsed preference, and expanded preference survives reload.",
+    "Account Escape restores visible account trigger; phone/tablet menu Escape restores menu trigger; navigation clicks close the menu."
+  ],
+  "limitations": [
+    "Chromium viewport emulation does not constitute physical-device verification."
+  ],
+  "refinement": [
+    {
+      "width": 390,
+      "path": "/upload",
+      "upload": {
+        "sectionWidth": 358,
+        "availableWidth": 358,
+        "compositionWidth": 358,
+        "gap": 12,
+        "picker": {
+          "width": 358,
+          "height": 228,
+          "top": 176,
+          "bottom": 404,
+          "padding": [24, 24, 24, 24],
+          "gap": 16,
+          "icon": {
+            "width": 32,
+            "height": 32.00001525878906,
+            "top": 200.97251892089844,
+            "left": 179,
+            "bottom": 232.9725341796875
+          },
+          "iconSize": ["32px", "32px"],
+          "headingSize": "20px",
+          "buttons": [
+            {
+              "name": "选择图片",
+              "width": 148,
+              "height": 48,
+              "top": 295,
+              "left": 41,
+              "bottom": 343
+            },
+            {
+              "name": "选择文件夹",
+              "width": 148,
+              "height": 48,
+              "top": 295,
+              "left": 201,
+              "bottom": 343
+            }
+          ],
+          "limit": {
+            "width": 174.984375,
+            "height": 20,
+            "top": 359,
+            "left": 107.5,
+            "bottom": 379
+          }
+        },
+        "settings": {
+          "width": 358,
+          "height": 470,
+          "top": 416
+        }
+      }
+    },
+    {
+      "width": 390,
+      "path": "/upload",
+      "workspaceLeft": 0,
+      "workspaceRight": 390,
+      "footerLeft": 0,
+      "footerRight": 390,
+      "paddingLeft": 16,
+      "paddingRight": 16,
+      "hasBreadcrumb": false,
+      "hasWorkspaceLabel": false,
+      "titleFocused": false
+    },
+    {
+      "width": 390,
+      "path": "/library",
+      "workspaceLeft": 0,
+      "workspaceRight": 390,
+      "footerLeft": 0,
+      "footerRight": 390,
+      "paddingLeft": 16,
+      "paddingRight": 16,
+      "hasBreadcrumb": false,
+      "hasWorkspaceLabel": false,
+      "titleFocused": false
+    },
+    {
+      "width": 390,
+      "path": "/trash",
+      "workspaceLeft": 0,
+      "workspaceRight": 390,
+      "footerLeft": 0,
+      "footerRight": 390,
+      "paddingLeft": 16,
+      "paddingRight": 16,
+      "hasBreadcrumb": false,
+      "hasWorkspaceLabel": false,
+      "titleFocused": false
+    },
+    {
+      "width": 390,
+      "path": "/albums",
+      "workspaceLeft": 0,
+      "workspaceRight": 390,
+      "footerLeft": 0,
+      "footerRight": 390,
+      "paddingLeft": 16,
+      "paddingRight": 16,
+      "hasBreadcrumb": false,
+      "hasWorkspaceLabel": false,
+      "titleFocused": false
+    },
+    {
+      "width": 768,
+      "path": "/upload",
+      "upload": {
+        "sectionWidth": 736,
+        "availableWidth": 736,
+        "compositionWidth": 736,
+        "gap": 24,
+        "picker": {
+          "width": 352,
+          "height": 228,
+          "top": 183,
+          "bottom": 411,
+          "padding": [24, 24, 24, 24],
+          "gap": 16,
+          "icon": {
+            "width": 32,
+            "height": 32,
+            "top": 207.94561767578125,
+            "left": 176,
+            "bottom": 239.94561767578125
+          },
+          "iconSize": ["32px", "32px"],
+          "headingSize": "20px",
+          "buttons": [
+            {
+              "name": "选择图片",
+              "width": 145,
+              "height": 48,
+              "top": 302,
+              "left": 41,
+              "bottom": 350
+            },
+            {
+              "name": "选择文件夹",
+              "width": 145,
+              "height": 48,
+              "top": 302,
+              "left": 198,
+              "bottom": 350
+            }
+          ],
+          "limit": {
+            "width": 174.984375,
+            "height": 20,
+            "top": 366,
+            "left": 104.5,
+            "bottom": 386
+          }
+        },
+        "settings": {
+          "width": 360,
+          "height": 478,
+          "top": 183
+        }
+      }
+    },
+    {
+      "width": 768,
+      "path": "/upload",
+      "workspaceLeft": 0,
+      "workspaceRight": 768,
+      "footerLeft": 0,
+      "footerRight": 768,
+      "paddingLeft": 16,
+      "paddingRight": 16,
+      "hasBreadcrumb": false,
+      "hasWorkspaceLabel": false,
+      "titleFocused": false
+    },
+    {
+      "width": 768,
+      "path": "/library",
+      "workspaceLeft": 0,
+      "workspaceRight": 768,
+      "footerLeft": 0,
+      "footerRight": 768,
+      "paddingLeft": 16,
+      "paddingRight": 16,
+      "hasBreadcrumb": false,
+      "hasWorkspaceLabel": false,
+      "titleFocused": false
+    },
+    {
+      "width": 768,
+      "path": "/trash",
+      "workspaceLeft": 0,
+      "workspaceRight": 768,
+      "footerLeft": 0,
+      "footerRight": 768,
+      "paddingLeft": 16,
+      "paddingRight": 16,
+      "hasBreadcrumb": false,
+      "hasWorkspaceLabel": false,
+      "titleFocused": false
+    },
+    {
+      "width": 768,
+      "path": "/albums",
+      "workspaceLeft": 0,
+      "workspaceRight": 768,
+      "footerLeft": 0,
+      "footerRight": 768,
+      "paddingLeft": 16,
+      "paddingRight": 16,
+      "hasBreadcrumb": false,
+      "hasWorkspaceLabel": false,
+      "titleFocused": false
+    },
+    {
+      "width": 1440,
+      "path": "/upload",
+      "upload": {
+        "sectionWidth": 1144,
+        "availableWidth": 1144,
+        "compositionWidth": 1144,
+        "gap": 24,
+        "picker": {
+          "width": 760,
+          "height": 360,
+          "top": 123,
+          "bottom": 483,
+          "padding": [24, 24, 24, 24],
+          "gap": 0,
+          "icon": {
+            "width": 64,
+            "height": 64,
+            "top": 171.97784423828125,
+            "left": 612,
+            "bottom": 235.97784423828125
+          },
+          "iconSize": ["64px", "64px"],
+          "headingSize": "28px",
+          "buttons": [
+            {
+              "name": "选择图片",
+              "width": 160,
+              "height": 48,
+              "top": 350,
+              "left": 478,
+              "bottom": 398
+            },
+            {
+              "name": "选择文件夹",
+              "width": 160,
+              "height": 48,
+              "top": 350,
+              "left": 650,
+              "bottom": 398
+            }
+          ],
+          "limit": {
+            "width": 189.5625,
+            "height": 20,
+            "top": 414,
+            "left": 549.21875,
+            "bottom": 434
+          }
+        },
+        "settings": {
+          "width": 360,
+          "height": 478,
+          "top": 123
+        }
+      }
+    },
+    {
+      "width": 1440,
+      "path": "/upload",
+      "workspaceLeft": 232,
+      "workspaceRight": 1440,
+      "footerLeft": 232,
+      "footerRight": 1440,
+      "paddingLeft": 32,
+      "paddingRight": 32,
+      "hasBreadcrumb": false,
+      "hasWorkspaceLabel": false,
+      "titleFocused": false
+    },
+    {
+      "width": 1440,
+      "path": "/library",
+      "workspaceLeft": 232,
+      "workspaceRight": 1440,
+      "footerLeft": 232,
+      "footerRight": 1440,
+      "paddingLeft": 32,
+      "paddingRight": 32,
+      "hasBreadcrumb": false,
+      "hasWorkspaceLabel": false,
+      "titleFocused": false
+    },
+    {
+      "width": 1440,
+      "path": "/trash",
+      "workspaceLeft": 232,
+      "workspaceRight": 1440,
+      "footerLeft": 232,
+      "footerRight": 1440,
+      "paddingLeft": 32,
+      "paddingRight": 32,
+      "hasBreadcrumb": false,
+      "hasWorkspaceLabel": false,
+      "titleFocused": false
+    },
+    {
+      "width": 1440,
+      "path": "/albums",
+      "workspaceLeft": 232,
+      "workspaceRight": 1440,
+      "footerLeft": 232,
+      "footerRight": 1440,
+      "paddingLeft": 32,
+      "paddingRight": 32,
+      "hasBreadcrumb": false,
+      "hasWorkspaceLabel": false,
+      "titleFocused": false
+    },
+    {
+      "width": 1920,
+      "path": "/upload",
+      "upload": {
+        "sectionWidth": 1624,
+        "availableWidth": 1624,
+        "compositionWidth": 1280,
+        "gap": 24,
+        "picker": {
+          "width": 896,
+          "height": 360,
+          "top": 123,
+          "bottom": 483,
+          "padding": [24, 24, 24, 24],
+          "gap": 0,
+          "icon": {
+            "width": 64,
+            "height": 64,
+            "top": 171.97251892089844,
+            "left": 680,
+            "bottom": 235.97251892089844
+          },
+          "iconSize": ["64px", "64px"],
+          "headingSize": "28px",
+          "buttons": [
+            {
+              "name": "选择图片",
+              "width": 160,
+              "height": 48,
+              "top": 350,
+              "left": 546,
+              "bottom": 398
+            },
+            {
+              "name": "选择文件夹",
+              "width": 160,
+              "height": 48,
+              "top": 350,
+              "left": 718,
+              "bottom": 398
+            }
+          ],
+          "limit": {
+            "width": 189.5625,
+            "height": 20,
+            "top": 414,
+            "left": 617.21875,
+            "bottom": 434
+          }
+        },
+        "settings": {
+          "width": 360,
+          "height": 478,
+          "top": 123
+        }
+      }
+    },
+    {
+      "width": 1920,
+      "path": "/upload",
+      "workspaceLeft": 232,
+      "workspaceRight": 1920,
+      "footerLeft": 232,
+      "footerRight": 1920,
+      "paddingLeft": 32,
+      "paddingRight": 32,
+      "hasBreadcrumb": false,
+      "hasWorkspaceLabel": false,
+      "titleFocused": false
+    },
+    {
+      "width": 1920,
+      "path": "/library",
+      "workspaceLeft": 232,
+      "workspaceRight": 1920,
+      "footerLeft": 232,
+      "footerRight": 1920,
+      "paddingLeft": 32,
+      "paddingRight": 32,
+      "hasBreadcrumb": false,
+      "hasWorkspaceLabel": false,
+      "titleFocused": false
+    },
+    {
+      "width": 1920,
+      "path": "/trash",
+      "workspaceLeft": 232,
+      "workspaceRight": 1920,
+      "footerLeft": 232,
+      "footerRight": 1920,
+      "paddingLeft": 32,
+      "paddingRight": 32,
+      "hasBreadcrumb": false,
+      "hasWorkspaceLabel": false,
+      "titleFocused": false
+    },
+    {
+      "width": 1920,
+      "path": "/albums",
+      "workspaceLeft": 232,
+      "workspaceRight": 1920,
+      "footerLeft": 232,
+      "footerRight": 1920,
+      "paddingLeft": 32,
+      "paddingRight": 32,
+      "hasBreadcrumb": false,
+      "hasWorkspaceLabel": false,
+      "titleFocused": false
+    }
+  ],
+  "evidenceExcerpt": {
+    "rawReportPath": "test-results/browser-repair/upload-regression/upload-owner-shell/owner-shell.json",
+    "omittedObservations": {
+      "pages": {
+        "count": 33,
+        "viewportWidths": [1440, 390, 768],
+        "paths": [
+          "/upload",
+          "/library",
+          "/trash",
+          "/albums",
+          "/tags",
+          "/shares",
+          "/settings/storage",
+          "/settings/processing",
+          "/settings/account",
+          "/settings/api",
+          "/settings/general"
+        ]
+      },
+      "collapsed": {
+        "count": 11,
+        "paths": [
+          "/upload",
+          "/library",
+          "/trash",
+          "/albums",
+          "/tags",
+          "/shares",
+          "/settings/storage",
+          "/settings/processing",
+          "/settings/account",
+          "/settings/api",
+          "/settings/general"
+        ]
+      }
+    },
+    "note": "Only the declared observation arrays are omitted; all other original report fields are retained. The complete raw report remains in the local ignored test-results directory."
+  }
+}

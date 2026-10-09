@@ -1,0 +1,47 @@
+{
+  "status": "passed",
+  "taskSpaceId": 8,
+  "origin": "http://ariso-52983.localhost:52983",
+  "phase": "consumers",
+  "checks": [
+    "Every implemented SettingsCategories consumer (general/processing/account/API/email) has the same order, labels, icons and correct selection on desktop/mobile in both themes."
+  ],
+  "requests": [],
+  "business": [],
+  "clipboard": [],
+  "limitations": [
+    "Only the runner’s disposable production database is modified; the manual preview remains untouched.",
+    "Once-only secret screenshots cover the input with a temporary bullet overlay without changing its value or selection; the full value is asserted in memory and never emitted.",
+    "Actual Clipboard permission denial and native copy are exercised on the current macOS Ego Lite host.",
+    "Chromium viewport emulation does not constitute physical touch, soft keyboard or safe-area verification."
+  ],
+  "timeZone": "Asia/Shanghai",
+  "stage": "consumers",
+  "browserErrors": [],
+  "finishedAt": "2026-10-09T06:40:39.396Z",
+  "evidenceExcerpt": {
+    "rawReportPath": "test-results/browser-repair/tokens-consumers/tokens.json",
+    "omittedObservations": {
+      "layouts": {
+        "count": 20,
+        "viewportWidths": [1440, 390],
+        "states": [
+          "consumer-general-light",
+          "consumer-processing-light",
+          "consumer-account-light",
+          "consumer-api-light",
+          "consumer-email-light",
+          "consumer-general-dark",
+          "consumer-processing-dark",
+          "consumer-account-dark",
+          "consumer-api-dark",
+          "consumer-email-dark"
+        ]
+      },
+      "screenshots": {
+        "count": 22
+      }
+    },
+    "note": "Only the declared observation arrays are omitted; all other original report fields are retained. The complete raw report remains in the local ignored test-results directory."
+  }
+}

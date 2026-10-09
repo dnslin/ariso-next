@@ -128,7 +128,7 @@ OAuth runner 时间为 `2026-10-09T06:38:56.808Z` 至 `06:39:50.465Z`；设置�
 
 评审者只读最终 [默认 runner](browser/reports/full-runner.json)，核对其与 `test-results/browser-repair/full/runner.json` 内容一致。该次使用 Node v24.18.1，从 `2026-10-09T06:46:10.063Z` 到 `07:30:48.633Z`，实际 **70 passed / 3 failed / 0 blocked**，整体 status=failed。失败仅为 processing、upload、upload-polling，具体业务失败已在前文单独记录；不将通过阶段数量记作完整流程通过。
 
-Token 1440/390、OAuth 两宽度的 before/restart/after/enable-restart/enabled、upload-settings、site-general 与 isolated-ui 均明确 passed。已核对 [完整流程的实验图库](browser/reports/full-isolated-library.json)、[实验 UI runner](browser/reports/full-isolated-ui-runner.json) 和 [site-general 公共外壳](browser/reports/full-site-owner-shell.json) 与其本地源报告内容一致。图库报告 passed、5 checks，`pendingError={status:503,released:false}`，没有 pendingBrowserCleanup、cleanupError 或停止标记；正常清理路径已实际执行。公共外壳由默认站点消费者验证通过，33 pages、9 checks；默认 upload main 在认证前置失败，没有到达其 owner-shell 或上传断言。上传 main 只具有早期定向 PASS，此时修复认证前置后的完整上传结果尚待核对，最终结果见下方收尾复审。未操作浏览器的评审者只读这些报告。
+Token 1440/390、OAuth 两宽度的 before/restart/after/enable-restart/enabled、upload-settings、site-general 与 isolated-ui 均明确 passed。在发布摘录生成之前，已核对原样归档的实验图库、实验 UI runner 和 site-general 公共外壳与其本地源报告内容一致。现在公开的对应入口是 [实验图库摘录](browser/reports/full-isolated-library.excerpt.json)、[完整实验 UI runner](browser/reports/full-isolated-ui-runner.json) 和 [site-general 公共外壳摘录](browser/reports/full-site-owner-shell.excerpt.json)；摘录的省略范围另见末尾复核。图库报告 passed、5 checks，`pendingError={status:503,released:false}`，没有 pendingBrowserCleanup、cleanupError 或停止标记；正常清理路径已实际执行。公共外壳由默认站点消费者验证通过，33 pages、9 checks；默认 upload main 在认证前置失败，没有到达其 owner-shell 或上传断言。上传 main 只具有早期定向 PASS，此时修复认证前置后的完整上传结果尚待核对，最终结果见下方收尾复审。未操作浏览器的评审者只读这些报告。
 
 源码消费有明确区别：本次原有六项修复在对应阶段运行前已实施；最终控制权 guard / 清理 catch 在 full 后段加载实验图库模块前已加入，末段 `07:30:38.667Z` 至 `07:30:48.376Z` 的 isolated-ui 正常路径通过。控制异常仍由先前实际函数/片段注入验证，正常浏览器 PASS 不能代替异常边界测试。processing helper 在原 processing 失败后修改；上传 runner 在原 upload / polling 失败后修改，而 runner 进程已启动，故此次默认结果没有验证这两处新修复。后续完整 processing 及 upload-regression（包含 polling）的真实定向结果已分别核对，见下文；不能将定向结果追认成该次默认全量整体通过。
 
@@ -136,7 +136,7 @@ Token 1440/390、OAuth 两宽度的 before/restart/after/enable-restart/enabled�
 
 ## 后修 processing 完整复验核对
 
-独立只读 [processing 最终 runner](browser/reports/processing-final-runner.json) 与 [完整 processing 报告](browser/reports/processing-final-processing.json)，两份均与 `test-results/browser-repair/processing-final/` 的源报告内容一致。该次 Node v24.18.1，`2026-10-09T07:32:12.876Z` 至 `07:34:57.295Z`；runner status=passed，processing 和 shell-navigation 两个 stage 均 passed。processing 报告 passed、44 checks / 100 layouts、`originalSettingsRestored=true`、`browserErrors=[]`。
+发布摘录生成之前，独立核对 processing 原样归档与 `test-results/browser-repair/processing-final/` 的两份源报告内容一致。现在公开的是 [完整 processing 最终 runner](browser/reports/processing-final-runner.json) 与 [processing 行为摘录](browser/reports/processing-final-processing.excerpt.json)，不把后者当作完整几何观察报告。该次 Node v24.18.1，`2026-10-09T07:32:12.876Z` 至 `07:34:57.295Z`；runner status=passed，processing 和 shell-navigation 两个 stage 均 passed。processing 报告 passed、44 checks / 100 layouts、`originalSettingsRestored=true`、`browserErrors=[]`。
 
 核对业务 check 记录，原越界 quality 输入/无 PATCH/错误焦点、透明度文字图片共享、无效 `#AB` blur 保留与小数保存读回、预览与真实会话过期/未知提交恢复均实际执行。此证据补足 processing helper 所有既有消费者的最终源码验证，不以新增即时 input.value 断言替代保存与恢复测试。公共导航也已完成，不只依据先生成的 processing.json 判断整个 suite 成功。
 
@@ -144,7 +144,7 @@ README 对默认上传停在认证前置和公共外壳由站点消费者验证�
 
 ## 后修 upload-regression 完整复验与最终限制
 
-独立只读 [最终上传 runner](browser/reports/upload-final-runner.json)、[上传](browser/reports/upload-final.json)、[轮询](browser/reports/upload-polling-final.json) 与 [上传公共外壳](browser/reports/upload-final-owner-shell.json)，四份均与 `test-results/browser-repair/upload-final/` 的源报告内容一致。Node v24.18.1，`2026-10-09T07:35:24.249Z` 至 `07:37:23.610Z`，runner status=passed；upload-runtime、upload、upload-polling-runtime、upload-polling 四个 stage 全部 passed。上传为 16 checks / 140 layouts，轮询 4 checks；上传公共外壳 9 checks、33 pages / 11 collapsed，均 passed，没有清理失败或待清理资源字段。
+发布摘录生成之前，独立核对上传原样归档与 `test-results/browser-repair/upload-final/` 的四份源报告内容一致。现在公开的是 [完整最终上传 runner](browser/reports/upload-final-runner.json)、[上传行为摘录](browser/reports/upload-final.excerpt.json)、[完整轮询报告](browser/reports/upload-polling-final.json) 与 [上传公共外壳摘录](browser/reports/upload-final-owner-shell.excerpt.json)。Node v24.18.1，`2026-10-09T07:35:24.249Z` 至 `07:37:23.610Z`，runner status=passed；upload-runtime、upload、upload-polling-runtime、upload-polling 四个 stage 全部 passed。上传为 16 checks / 140 layouts，轮询 4 checks；上传公共外壳 9 checks、33 pages / 11 collapsed，均 passed，没有清理失败或待清理资源字段。
 
 轮询报告真实记录旧读仍被持有时只发起一次读取、传输进度 6814/6814，以及放行后第二次读取完成；取消并清空后新增文件的独立一组也恢复轮询。运行前置各自的真实服务重启通过，而不是只依靠离线 stage 测试判断认证前置完成。此次补足默认 upload 因 429 未到达的外壳与上传业务验证，原 429 失败报告保留。
 
@@ -187,3 +187,13 @@ PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH node docs/verification/
 | 提取实际外壳等待 predicate，在隔离 VM 中改变动画清单：有限运行、暂停/无限运行、新加入有限运行、清空。      | PASS；有限运行阻塞，暂停/无限运行不阻塞，清单变化会重新读取。该实验不代替真实浏览器动画。 |
 
 没有因此削弱断言或增加延时。用户已交回 TaskSpace 8，由实现者串行运行真实浏览器；评审者没有操作浏览器，也未重复全仓检查。#199 已通过的人工 UI 验收属于其已有产品界面，不代替这轮测试修复的验证。
+
+## 发布摘录的独立数据复核
+
+为避免大批几何观察淹没实现 diff，实现者将 15 份大报告公开为明确命名的 `*.excerpt.json`。先前提到的原样归档与源报告内容一致，核对发生在生成摘录之前；当前摘录不与完整原报告字节相等，也不替代原始截图或逐项几何观察。
+
+评审者逐份读取摘录的 `evidenceExcerpt.rawReportPath`，确认 15 份完整原文件仍实际存在于 worktree 忽略的 `test-results/browser-repair/`，没有删除。只允许省略声明的 layouts/pages/collapsed/screenshots/toastTargetLayouts 数组；每个省略字段必须在原报告中为数组，其条目数与直接条目的 width/height/theme/path/name 唯一清单均重新计算并精确相等。没有把嵌套观察推断成直接视口元数据。
+
+去除摘录元数据及明确声明的省略数组后，15 份报告的所有其余字段与原报告深度相等。因此 status、checks、error、requests、清理、恢复、限制，以及原有 events/refinement 等未声明省略内容均保留；失败没有变成通过，行为 check 未裁剪。省略字段仅是发布证据体积整理，产品、实现、测试和原始验证结果没有变化。
+
+实际数据复核命令：`PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH node docs/verification/browser-repair-20261009/audit/excerpt-review.mjs`，退出 0，15/15 PASS。可查看 [复核脚本](audit/excerpt-review.mjs) 与 [逐份结果](audit/excerpt-review.json)。这是只读报告数据核对，没有重跑任何应用测试、浏览器或已通过检查。此前功能修复与代码质量结论保持，默认 70/3 和最终完整默认未重跑的限制不变。
