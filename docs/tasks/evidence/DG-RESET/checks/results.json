@@ -42,6 +42,12 @@
       "reason": "Added review and final record files after the full format check"
     }
   ],
+  "finalRecordCheck": {
+    "command": "pnpm exec prettier docs/tasks/evidence/DG-RESET/README.md docs/tasks/evidence/DG-RESET/checks/results.json --check",
+    "exitCode": 0,
+    "log": "format-final.txt",
+    "reason": "Record the created draft PR and the actual empty remote check list"
+  },
   "notRun": [
     "lint",
     "typecheck",

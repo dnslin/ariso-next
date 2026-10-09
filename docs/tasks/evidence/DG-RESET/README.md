@@ -2,7 +2,7 @@
 
 日期：2026-10-09（Asia/Shanghai）。基线：`origin/main 2ba0a60e71b5fff773229b62f2c6380fe3435f9b`。本次仅修改消费任务、必要设计索引和本目录证据，没有业务、依赖、数据库、验证运行器或Figma写入。
 
-结论与唯一状态/责任表维护于 [T-ID-07 的DG-RESET结论](../../m3-m4-platform.md#dg-reset-对-t-id-07-的核对结论)。本记录保存依据、实际读取和检查，不另建视觉或执行规则。PR创建后由PR关联本记录；本DG不合并、不关闭Issue。
+结论与唯一状态/责任表维护于 [T-ID-07 的DG-RESET结论](../../m3-m4-platform.md#dg-reset-对-t-id-07-的核对结论)。本记录保存依据、实际读取和检查，不另建视觉或执行规则。交付PR：[草稿 #267](https://github.com/dnslin/ariso-next/pull/267)；本DG不合并、不关闭Issue。
 
 ## 依据与依赖
 
@@ -71,4 +71,4 @@
 | 用户人工验收                         | 本次无产品UI变化，不提供虚假预览/账号；T-ID-07实施后按统一约定验收 |
 | DES / RG、Issue完成状态              | 保持开放；本DG不会关闭生产流程或后续验收责任                       |
 
-PR在本次授权下创建草稿，CI结果以远端回读为准。没有远端检查不能写为CI通过；不创建Release、发布镜像或部署。
+已提交并推送 `codex/issue-133-reset-design`，创建 [草稿PR #267](https://github.com/dnslin/ariso-next/pull/267)。2026-10-09运行 `gh pr view 267 --json number,url,state,isDraft,headRefName,headRefOid,baseRefName,mergeStateStatus,statusCheckRollup` 回读：OPEN、isDraft=true、base=main、mergeStateStatus=CLEAN、statusCheckRollup=[]。没有远端检查，不记作CI通过，也不等待不存在的工作流。Issue #133仍OPEN；未合并、未关闭、未发布/部署，分支与worktree保留。最终head以PR当前状态为准。
