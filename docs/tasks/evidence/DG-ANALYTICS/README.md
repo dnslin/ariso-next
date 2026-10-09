@@ -66,4 +66,10 @@
 
 ## 交付状态
 
-文档实施、Figma只读核对、适用本地检查与两项独立终审均已完成，接下来提交、推送并创建关联#129的PR；远端交付状态据实际回读补记。本次无新产品UI，未来#179人工验收不属于本DG完成条件。本PR可正式待评审，不将DES/RG或产品验收标完成。未获合并/关闭/清理授权，本次不合并、不关闭Issue、不发布部署、不删除分支或worktree。
+文档实施、Figma只读核对、适用本地检查与两项独立终审均已完成。实现记录已提交为 `e9d6bc13`，`git push --set-upstream origin codex/issue-129-analytics-design`成功；使用`gh pr create --repo dnslin/ariso-next --base main --head codex/issue-129-analytics-design --body-file /tmp/issue129-pr-body.md`（含标题参数）创建 [PR #268](https://github.com/dnslin/ariso-next/pull/268)，已附加本聊天，正文为Refs #129。
+
+首次[PR实际回读](./pr.json)为OPEN、isDraft=false、base=main、MERGEABLE/CLEAN、statusCheckRollup为空。`gh pr checks 268 --repo dnslin/ariso-next`退出1并[报告没有检查](./checks/remote-checks.txt)，`gh run list --repo dnslin/ariso-next --branch codex/issue-129-analytics-design --json …`返回[空数组](./runs.json)。没有远端CI不记作通过，也不等待不存在的工作流；实际读取ci/images工作流仅Release流程触发，本次未发布Release。
+
+交付状态补录后只运行本目录定向Prettier、链接/节点核验与git diff检查，结果见[最终格式](./checks/final-format.txt)与[链接证据](./checks/links-nodes.txt)，未重复输入未变的任务检查或应用检查。随后补录提交推送；pr.json保留首次回读对应的实现头，不把它伪装成后续补录提交。
+
+本次无新产品UI，未来#179人工验收不属于本DG完成条件。本PR正式待评审，不将DES/RG或产品验收标完成。Issue #129实际回读仍OPEN；分支与管理型worktree保留。本次未合并、关闭Issue、发布、部署或删除任务资源。
