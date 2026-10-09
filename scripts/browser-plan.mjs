@@ -23,6 +23,7 @@ const suites = {
       ['upload-usage', 'upload-usage'],
       ['sharing-management', 'sharing-management'],
       ['site-general', 'site-general'],
+      ['password-reset', 'password-reset'],
       ['smtp', 'smtp'],
     ],
   },
@@ -49,6 +50,11 @@ const suites = {
   },
   account: { stages: [['account', 'account']] },
   oauth: {},
+  'password-reset': {
+    only: ['representative', 'interactions', 'recovery'],
+    stages: [['password-reset', 'passwordReset']],
+    config: (only) => ({ passwordResetPhase: only }),
+  },
   smtp: {
     only: ['representative', 'interactions', 'recovery'],
     stages: [['smtp', 'smtp']],

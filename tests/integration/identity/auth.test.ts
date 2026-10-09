@@ -379,7 +379,7 @@ describe('initialized production auth', () => {
     expect(await bearerSession.json()).toBeNull();
   }, 30000);
 
-  it('only the five delivered path/method pairs are reachable and all forbidden mutations leave data unchanged', async () => {
+  it('only delivered path/method pairs are reachable and all forbidden mutations leave data unchanged', async () => {
     const before = connection.db.select().from(user).all();
     for (const path of [
       'sign-up/email',
@@ -387,8 +387,6 @@ describe('initialized production auth', () => {
       'unlink-account',
       'update-user',
       'change-password',
-      'request-password-reset',
-      'reset-password',
       'delete-user',
       'list-sessions',
       'revoke-sessions',
@@ -413,6 +411,9 @@ describe('initialized production auth', () => {
       ['sign-out', 'POST'],
       ['sign-in/social', 'POST'],
       ['callback/github', 'GET'],
+      ['request-password-reset', 'POST'],
+      ['reset-password', 'POST'],
+      ['reset-password/test-token', 'GET'],
     ]) {
       for (const method of [
         'GET',

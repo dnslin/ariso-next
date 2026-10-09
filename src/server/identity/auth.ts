@@ -8,6 +8,13 @@ import { createRuntimeLogger } from '../runtime/logger.ts';
 import * as schema from './schema.ts';
 import { readSetupOwner } from './setup.ts';
 import { githubProfileSchema } from './validation.ts';
+import { createSecretCrypto } from '../runtime/crypto.ts';
+import {
+  readSmtpConfig,
+  readSmtpSettings,
+  sendSmtpMail,
+  SmtpSendError,
+} from './mail.ts';
 
 type Runtime = Pick<
   ReturnType<typeof getServerRuntime>,
@@ -20,6 +27,8 @@ type LoginCredential = Pick<
 
 function createAuth(runtime: Runtime, origin: string) {
   const logger = createRuntimeLogger('identity.auth', runtime.config.logLevel);
+  // Better Auth catches delivery rejects; carry the real outcome to this request's after hook.
+  const resetDeliveryFailures = new WeakMap<Request, APIError>();
   return betterAuth({
     baseURL: origin,
     basePath: '/api/auth',
@@ -58,7 +67,53 @@ function createAuth(runtime: Runtime, origin: string) {
       };
       return adapter;
     },
-    emailAndPassword: { enabled: true, disableSignUp: true },
+    emailAndPassword: {
+      enabled: true,
+      disableSignUp: true,
+      resetPasswordTokenExpiresIn: 3600,
+      revokeSessionsOnPasswordReset: true,
+      async sendResetPassword({ user, url }, request) {
+        if (!request) throw new Error('密码找回需要 HTTP Request');
+        try {
+          const config = readSmtpConfig(
+            runtime.connection.db,
+            createSecretCrypto(runtime.config.encryptionKey),
+          );
+          if (!config) throw new Error('邮件服务配置在申请过程中被移除');
+          await sendSmtpMail(config, {
+            to: user.email,
+            subject: 'Ariso 密码重置',
+            text: `你申请了 Ariso 密码重置。\n请在一小时内打开以下链接设置新密码，链接仅可使用一次：\n${url}\n如果不是你发起的申请，请忽略此邮件。`,
+          });
+        } catch (error) {
+          const unknown =
+            error instanceof SmtpSendError &&
+            error.diagnostic.delivery === 'unknown';
+          logger.error(
+            error instanceof SmtpSendError
+              ? { smtp: error.diagnostic }
+              : { err: error },
+            'Password reset email failed',
+          );
+          resetDeliveryFailures.set(
+            request,
+            new APIError(
+              error instanceof SmtpSendError && error.status === 504
+                ? 'GATEWAY_TIMEOUT'
+                : 'BAD_GATEWAY',
+              {
+                code: unknown
+                  ? 'RESET_EMAIL_DELIVERY_UNKNOWN'
+                  : 'RESET_EMAIL_DELIVERY_FAILED',
+                message: unknown
+                  ? '邮件发送结果未知，请先检查邮箱，再重新申请或使用 CLI'
+                  : '邮件发送失败，请重新申请或使用 CLI',
+              },
+            ),
+          );
+        }
+      },
+    },
     user: {
       validateUserInfo({ source }, ctx) {
         if (source.oauth?.providerId !== 'github') return;
@@ -167,6 +222,25 @@ function createAuth(runtime: Runtime, origin: string) {
     },
     hooks: {
       before: createAuthMiddleware(async (ctx) => {
+        if (ctx.path === '/request-password-reset') {
+          if (!ctx.request)
+            throw new APIError('BAD_REQUEST', {
+              code: 'RESET_REQUEST_REQUIRED',
+              message: '请通过密码找回页面申请',
+            });
+          if (!readSmtpSettings(runtime.connection.db))
+            throw new APIError('SERVICE_UNAVAILABLE', {
+              code: 'SMTP_NOT_CONFIGURED',
+              message: '邮件找回暂不可用，请使用容器 CLI 重置密码',
+            });
+          if (ctx.body && typeof ctx.body === 'object') {
+            ctx.body.redirectTo = '/reset-password';
+            if (typeof ctx.body.email === 'string')
+              ctx.body.email = ctx.body.email.trim().toLowerCase();
+          }
+        }
+        if (ctx.path === '/reset-password/:token' && ctx.query)
+          ctx.query.callbackURL = '/reset-password';
         if (ctx.path === '/sign-in/social' && ctx.body?.provider !== 'github')
           throw new APIError('BAD_REQUEST', {
             code: 'PROVIDER_NOT_FOUND',
@@ -208,6 +282,11 @@ function createAuth(runtime: Runtime, origin: string) {
         }
       }),
       after: createAuthMiddleware(async (ctx) => {
+        if (ctx.path === '/request-password-reset' && ctx.request) {
+          const error = resetDeliveryFailures.get(ctx.request);
+          resetDeliveryFailures.delete(ctx.request);
+          if (error) throw error;
+        }
         if (ctx.path !== '/sign-in/email' || !ctx.context.newSession) return;
         const created = ctx.context.newSession.session;
         const original = (
@@ -317,11 +396,19 @@ export async function handleAuthRequest(request: Request) {
     '/api/auth/get-session': 'GET',
     '/api/auth/sign-in/social': 'POST',
     '/api/auth/callback/github': 'GET',
+    '/api/auth/request-password-reset': 'POST',
+    '/api/auth/reset-password': 'POST',
   };
   const pathname = new URL(request.url).pathname;
   if (
-    !Object.hasOwn(allowed, pathname) ||
-    allowed[pathname as keyof typeof allowed] !== request.method
+    !(
+      Object.hasOwn(allowed, pathname) &&
+      allowed[pathname as keyof typeof allowed] === request.method
+    ) &&
+    !(
+      request.method === 'GET' &&
+      /^\/api\/auth\/reset-password\/[^/]+$/.test(pathname)
+    )
   ) {
     return Response.json(
       { code: 'NOT_FOUND', message: '认证接口不存在' },
@@ -342,5 +429,7 @@ export async function handleAuthRequest(request: Request) {
     if (remaining) throw new Error('退出失败：数据库中的会话尚未撤销');
   }
   response.headers.set('Cache-Control', 'no-store');
+  if (pathname.startsWith('/api/auth/reset-password'))
+    response.headers.set('Referrer-Policy', 'no-referrer');
   return response;
 }
