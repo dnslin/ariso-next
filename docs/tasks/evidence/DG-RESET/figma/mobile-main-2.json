@@ -1,0 +1,418 @@
+[
+  {
+    "id": "172:750",
+    "name": "M · 密码重置 · 填写新密码",
+    "width": 390,
+    "height": 844,
+    "modes": {},
+    "texts": [
+      {
+        "id": "173:753",
+        "text": "Ariso"
+      },
+      {
+        "id": "173:754",
+        "text": "找回你的图片空间"
+      },
+      {
+        "id": "174:765",
+        "text": "设置新密码"
+      },
+      {
+        "id": "174:766",
+        "text": "为你的账号设置一个新密码。"
+      },
+      {
+        "id": "174:769",
+        "text": "新密码"
+      },
+      {
+        "id": "I174:770;3:28",
+        "text": "••••••••"
+      },
+      {
+        "id": "174:773",
+        "text": "确认新密码"
+      },
+      {
+        "id": "I174:774;3:28",
+        "text": "••••••••"
+      },
+      {
+        "id": "174:776",
+        "text": "8–128 个字符，首尾空格也会计入密码。"
+      },
+      {
+        "id": "I174:777;3:22",
+        "text": "重置密码"
+      },
+      {
+        "id": "I174:779;3:24",
+        "text": "返回登录"
+      },
+      {
+        "id": "174:781",
+        "text": "重置后需要重新登录，不会自动进入后台。"
+      },
+      {
+        "id": "I193:2020;3:30",
+        "text": "← 返回首页"
+      }
+    ],
+    "reactions": [
+      {
+        "id": "174:777",
+        "name": "主要操作",
+        "reactions": [
+          {
+            "trigger": {
+              "type": "ON_CLICK"
+            },
+            "action": {
+              "type": "NODE",
+              "destinationId": "172:754",
+              "navigation": "NAVIGATE",
+              "transition": null,
+              "resetVideoPosition": false,
+              "resetScrollPosition": true
+            }
+          }
+        ]
+      },
+      {
+        "id": "174:779",
+        "name": "返回登录",
+        "reactions": [
+          {
+            "trigger": {
+              "type": "ON_CLICK"
+            },
+            "action": {
+              "type": "NODE",
+              "destinationId": "102:3020",
+              "navigation": "NAVIGATE",
+              "transition": null,
+              "resetVideoPosition": false,
+              "resetScrollPosition": true
+            }
+          }
+        ]
+      },
+      {
+        "id": "193:2020",
+        "name": "公共导航 / 返回首页",
+        "reactions": [
+          {
+            "trigger": {
+              "type": "ON_CLICK"
+            },
+            "action": {
+              "type": "NODE",
+              "destinationId": "102:3000",
+              "navigation": "NAVIGATE",
+              "transition": null,
+              "resetVideoPosition": false,
+              "resetScrollPosition": true
+            }
+          }
+        ]
+      }
+    ],
+    "shell": [
+      {
+        "id": "193:2017",
+        "name": "公共页面柔光背景",
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+      },
+      {
+        "id": "173:752",
+        "name": "品牌",
+        "x": 24,
+        "y": 76,
+        "width": 342,
+        "height": 94
+      },
+      {
+        "id": "173:755",
+        "name": "重置卡片",
+        "x": 24,
+        "y": 198,
+        "width": 342,
+        "height": 560
+      },
+      {
+        "id": "193:2020",
+        "name": "公共导航 / 返回首页",
+        "x": 16,
+        "y": 16,
+        "width": 112,
+        "height": 44
+      }
+    ]
+  },
+  {
+    "id": "172:752",
+    "name": "M · 密码重置 · 校验不通过",
+    "width": 390,
+    "height": 844,
+    "modes": {},
+    "texts": [
+      {
+        "id": "173:761",
+        "text": "Ariso"
+      },
+      {
+        "id": "173:762",
+        "text": "找回你的图片空间"
+      },
+      {
+        "id": "174:799",
+        "text": "请检查两次输入"
+      },
+      {
+        "id": "174:800",
+        "text": "两次输入的密码不一致，请修改后重试。"
+      },
+      {
+        "id": "174:803",
+        "text": "新密码"
+      },
+      {
+        "id": "I174:804;3:28",
+        "text": "••••••••"
+      },
+      {
+        "id": "174:807",
+        "text": "确认新密码"
+      },
+      {
+        "id": "I174:808;3:28",
+        "text": "••••••••"
+      },
+      {
+        "id": "174:810",
+        "text": "请与上方的新密码保持一致。"
+      },
+      {
+        "id": "174:811",
+        "text": "8–128 个字符，首尾空格也会计入密码。"
+      },
+      {
+        "id": "I174:812;3:22",
+        "text": "重置密码"
+      },
+      {
+        "id": "I174:814;3:24",
+        "text": "返回登录"
+      },
+      {
+        "id": "I193:2026;3:30",
+        "text": "← 返回首页"
+      }
+    ],
+    "reactions": [
+      {
+        "id": "174:812",
+        "name": "主要操作",
+        "reactions": [
+          {
+            "trigger": {
+              "type": "ON_CLICK"
+            },
+            "action": {
+              "type": "NODE",
+              "destinationId": "172:754",
+              "navigation": "NAVIGATE",
+              "transition": null,
+              "resetVideoPosition": false,
+              "resetScrollPosition": true
+            }
+          }
+        ]
+      },
+      {
+        "id": "174:814",
+        "name": "返回登录",
+        "reactions": [
+          {
+            "trigger": {
+              "type": "ON_CLICK"
+            },
+            "action": {
+              "type": "NODE",
+              "destinationId": "102:3020",
+              "navigation": "NAVIGATE",
+              "transition": null,
+              "resetVideoPosition": false,
+              "resetScrollPosition": true
+            }
+          }
+        ]
+      },
+      {
+        "id": "193:2026",
+        "name": "公共导航 / 返回首页",
+        "reactions": [
+          {
+            "trigger": {
+              "type": "ON_CLICK"
+            },
+            "action": {
+              "type": "NODE",
+              "destinationId": "102:3000",
+              "navigation": "NAVIGATE",
+              "transition": null,
+              "resetVideoPosition": false,
+              "resetScrollPosition": true
+            }
+          }
+        ]
+      }
+    ],
+    "shell": [
+      {
+        "id": "193:2023",
+        "name": "公共页面柔光背景",
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+      },
+      {
+        "id": "173:760",
+        "name": "品牌",
+        "x": 24,
+        "y": 76,
+        "width": 342,
+        "height": 94
+      },
+      {
+        "id": "173:763",
+        "name": "重置卡片",
+        "x": 24,
+        "y": 198,
+        "width": 342,
+        "height": 550
+      },
+      {
+        "id": "193:2026",
+        "name": "公共导航 / 返回首页",
+        "x": 16,
+        "y": 16,
+        "width": 112,
+        "height": 44
+      }
+    ]
+  },
+  {
+    "id": "172:754",
+    "name": "M · 密码重置 · 正在提交",
+    "width": 390,
+    "height": 844,
+    "modes": {},
+    "texts": [
+      {
+        "id": "173:769",
+        "text": "Ariso"
+      },
+      {
+        "id": "173:770",
+        "text": "找回你的图片空间"
+      },
+      {
+        "id": "174:830",
+        "text": "正在重置密码"
+      },
+      {
+        "id": "174:831",
+        "text": "请稍候，正在保存你的新密码。"
+      },
+      {
+        "id": "174:834",
+        "text": "新密码"
+      },
+      {
+        "id": "I174:835;3:28",
+        "text": "••••••••"
+      },
+      {
+        "id": "174:838",
+        "text": "确认新密码"
+      },
+      {
+        "id": "I174:839;3:28",
+        "text": "••••••••"
+      },
+      {
+        "id": "174:841",
+        "text": "8–128 个字符，首尾空格也会计入密码。"
+      },
+      {
+        "id": "I174:842;3:26",
+        "text": "正在重置…"
+      },
+      {
+        "id": "I193:2032;3:30",
+        "text": "← 返回首页"
+      }
+    ],
+    "reactions": [
+      {
+        "id": "193:2032",
+        "name": "公共导航 / 返回首页",
+        "reactions": [
+          {
+            "trigger": {
+              "type": "ON_CLICK"
+            },
+            "action": {
+              "type": "NODE",
+              "destinationId": "102:3000",
+              "navigation": "NAVIGATE",
+              "transition": null,
+              "resetVideoPosition": false,
+              "resetScrollPosition": true
+            }
+          }
+        ]
+      }
+    ],
+    "shell": [
+      {
+        "id": "193:2029",
+        "name": "公共页面柔光背景",
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+      },
+      {
+        "id": "173:768",
+        "name": "品牌",
+        "x": 24,
+        "y": 76,
+        "width": 342,
+        "height": 94
+      },
+      {
+        "id": "173:771",
+        "name": "重置卡片",
+        "x": 24,
+        "y": 198,
+        "width": 342,
+        "height": 446
+      },
+      {
+        "id": "193:2032",
+        "name": "公共导航 / 返回首页",
+        "x": 16,
+        "y": 16,
+        "width": 112,
+        "height": 44
+      }
+    ]
+  }
+]

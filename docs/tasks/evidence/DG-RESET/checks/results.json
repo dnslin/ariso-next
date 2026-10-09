@@ -1,0 +1,65 @@
+{
+  "date": "2026-10-09",
+  "timeZone": "Asia/Shanghai",
+  "environment": {
+    "os": "macOS 26.6.2",
+    "architecture": "arm64",
+    "node": "24.18.1",
+    "pnpm": "11.19.0"
+  },
+  "base": "2ba0a60e71b5fff773229b62f2c6380fe3435f9b",
+  "checks": [
+    {
+      "command": "pnpm install --frozen-lockfile",
+      "exitCode": 0,
+      "log": "install.txt"
+    },
+    { "command": "pnpm run format:check", "exitCode": 0, "log": "format.txt" },
+    {
+      "command": "node docs/tasks/check.mjs",
+      "exitCode": 0,
+      "log": "tasks.txt",
+      "tasks": 120,
+      "requirements": 298
+    },
+    {
+      "command": "node docs/tasks/check.mjs --self-test",
+      "exitCode": 0,
+      "log": "tasks-self-test.txt",
+      "rejectionCases": 5
+    },
+    {
+      "command": "node /tmp/ariso-133-doc-check.mjs",
+      "exitCode": 0,
+      "log": "links-nodes.txt",
+      "scope": "Modified Markdown links/anchors; evidence JSON; cited Figma node/target coverage; 34 module frames; 16 public backgrounds per device; 12 PNG dimensions"
+    },
+    { "command": "git diff --check", "exitCode": 0 },
+    {
+      "command": "pnpm exec prettier docs/tasks/evidence/DG-RESET/README.md docs/tasks/evidence/DG-RESET/review.md docs/tasks/evidence/DG-RESET/design-review.md docs/tasks/evidence/DG-RESET/checks/results.json docs/tasks/evidence/DG-RESET/figma/navigation-targets.json --check",
+      "exitCode": 0,
+      "log": "format-final.txt",
+      "reason": "Added review and final record files after the full format check"
+    }
+  ],
+  "finalRecordCheck": {
+    "command": "pnpm exec prettier docs/tasks/evidence/DG-RESET/README.md docs/tasks/evidence/DG-RESET/checks/results.json --check",
+    "exitCode": 0,
+    "log": "format-final.txt",
+    "reason": "Record the created draft PR and the actual empty remote check list"
+  },
+  "notRun": [
+    "lint",
+    "typecheck",
+    "test:unit",
+    "build",
+    "test:integration",
+    "test:browser",
+    "Release/container"
+  ],
+  "notRunReason": "Documentation only, no application/build/runtime input changes. Static Figma evidence does not validate production recovery or UI runtime.",
+  "reviews": {
+    "contractAndDocumentation": "No Critical/Required findings",
+    "designApplicability": "No Critical/Required findings; production page comparison unavailable"
+  }
+}

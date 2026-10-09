@@ -621,12 +621,63 @@
 - 规格与预计文件：SPEC-identity §8.2、ID-07/10/11、DES-02；认证回调、`src/app/forgot-password/`、`src/app/reset-password/`、身份测试。
 - 直接前置：`T-ID-06`、`T-ID-09`、`DG-RESET`
 - 验收条件：存在/不存在邮箱均通用反馈，SMTP未配置明确不可用并展示CLI。链接一小时/一次使用，过期/并发重复拒绝；成功撤销全部会话并去登录，不自动登录。消费后数据库/哈希/撤会话失败按实际结果说明，能重申请或CLI恢复，不假设整个库流程事务回滚。邮件等待真实发送结果；重置URL不入日志/第三方资源请求。
-- 验证方法：运行 `pnpm run test:unit`、`pnpm run test:integration`、`pnpm run test:browser`，记录真实请求、持久数据和两端交互证据。 `tests/integration/identity/password-reset.test.ts` 冻结时钟/并发/消费后故障与真实收件链接，检查全部旧会话；浏览器直接从邮件打开、短视口滚动、失效再申请。
-- 界面：`/forgot-password`、`/reset-password`，匿名可达；库verification和发送结果驱动。申请 桌面 [11:23](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=11-23)、手机 [102:3100](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-3100)；重置 桌面 [172:749](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=172-749)、手机 [172:750](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=172-750)；CLI说明 桌面 [217:2380](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=217-2380)、手机 [217:2321](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=217-2321)；未配置 桌面 [217:2475](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=217-2475)、手机 [217:2768](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=217-2768)。HeroUI：TextField/Input、Button、Link、Alert、Spinner；采用公共双柔光/返回首页和返回登录，短屏保持滚动，不自制密码字段。失效/消费后结果状态通过DG-RESET核对适用现有节点，不以定时跳转代替请求。
+- 验证方法：运行 `pnpm run test:unit`、`pnpm run test:integration`、`pnpm run test:browser`，记录真实请求、持久数据和两端交互证据。已有 `tests/integration/identity/reset-password.test.ts` 仅验证库实验；本卡须补生产认证与页面调用链的冻结时钟/并发/消费后故障和真实收件链接验证，检查全部旧会话。浏览器直接从邮件打开、短视口滚动、失效再申请；新增恢复场景接入默认全量入口，不能以实验代替生产验收。
+- 界面：`/forgot-password`、`/reset-password`，匿名可达；库verification和发送结果驱动。申请 桌面 [11:23](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=11-23)、手机 [102:3100](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-3100)；重置 桌面 [172:749](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=172-749)、手机 [172:750](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=172-750)；CLI说明 桌面 [217:2380](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=217-2380)、手机 [217:2321](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=217-2321)；匿名找回未配置 桌面 [216:2363](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=216-2363)、手机 [216:2419](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=216-2419)。HeroUI：TextField/Input、Button、Link、Alert、Spinner；采用公共双柔光/返回首页和返回登录，短屏保持滚动，不自制密码字段。失效/消费后结果及邮件申请状态见下方DG-RESET核对，不以定时跳转代替请求。
 - 需求：`R-6.3-01`、`R-6.3-02`、`A-26.1-09`、`A-26.1-10`、`R-22.1-01`、`R-22.4-01`
 - 实施步骤：
   - [ ] 1. 找回申请及真实邮件落地：错误和限流可验证。
   - [ ] 2. 一次令牌重置及恢复界面：过期/重复/并发使用和会话失效。
+
+#### DG-RESET 对 T-ID-07 的核对结论
+
+2026-10-09 / [Issue #133](https://github.com/dnslin/ariso-next/issues/133)：本DG无直接前置，唯一直接消费卡为本卡。原生关系回读显示T-ID-06（#182）与T-ID-09（#183）已关闭，本卡仍由开放的DG-RESET阻塞；本次不关闭Issue或改变依赖。需求编号与 `IDENTITY-RESET` 边界保持不变。实时Figma节点、12张浅色代表截图、源码盘点、命令和独立审计见 [统一证据](./evidence/DG-RESET/README.md)。
+
+**可复用状态与真实验收范围**
+
+下表两端节点均在03模块实时回读。找回桌面为1920×960，重置桌面为1440×960，手机为390×844。完整输入、错误、禁用、焦点与两主题仍按 [设计交付规范](../design/handoff.md)及 [前端共用验收](./execution.md#前端共用验收)执行；不因节点存在标为已验收。
+
+| 状态                     | 桌面 / 手机节点                                      | 复用与本卡真实行为验收                                                                                                                                                |
+| ------------------------ | ---------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 申请初态、邮箱空 / 已填  | 11:23 / 102:3100；12:47 / 102:3154；12:67 / 102:3174 | TextField/Input、外Label、Button、Link；邮箱示例不是所有者数据，不回显真实所有者邮箱。空状态指空字段，无邮件列表空态。                                                |
+| 邮箱格式错误             | 217:2411 / 217:2443                                  | FieldError复用同一字段布局，保留其他输入；预填与点击连线不代表真实输入或校验。                                                                                        |
+| 正在申请                 | 216:2308 / 216:2253                                  | Spinner与禁用主操作；等待真实发送结果，不用1.2秒定时跳转，返回不声称服务器操作已取消。                                                                                |
+| 通用申请反馈、未收邮件   | 216:2335 / 216:2280                                  | 匹配与不存在邮箱用相同通用响应；可返回登录、重新申请或查看CLI。SMTP接受不代表最终收件；真实收件链接另验。                                                             |
+| SMTP未配置               | 216:2363 / 216:2419                                  | 明确邮件找回不可用，提供CLI与返回登录；不是后台SMTP页217:2475 / 217:2768，不允许匿名配置SMTP。                                                                        |
+| 发送失败 / 限流          | 216:2391 / 216:2447；217:2352 / 217:2293             | 错误及重试条件来自实际请求；不吞失败、不把等待计时当成功。限流按服务器允许时间恢复，CLI可用。发送结果未知见下方缺口。                                                 |
+| 容器终端恢复说明         | 217:2380 / 217:2321                                  | 命令为 `docker exec -it ariso node dist/cli/reset-password.js`，容器名按部署替换；隐藏输入两次，撤全部旧会话与未使用链接。复用Link/Button，命令换行不改变其完整内容。 |
+| 邮件直接落地、新密码输入 | 172:749 / 172:750                                    | 匿名打开重置页，实际令牌驱动；新密码8–128字符，不trim，确认一致。无“模拟邮件”按钮，不要求先登录。                                                                     |
+| 密码校验错误             | 172:751 / 172:752                                    | TextField/Input、FieldError承接必填/长度/不一致；不消耗令牌，保留可纠正输入，真实服务端仍校验。                                                                       |
+| 正在重置                 | 172:753 / 172:754                                    | 禁止重复提交，Spinner；成功取决于密码写入及全部会话撤销，不采用画板等待连线。                                                                                         |
+| 重置成功                 | 172:755 / 172:756                                    | 沿用既有获批状态，前往登录，不自动登录；所有旧Cookie失效由生产请求验证，不能仅检查成功文案。                                                                          |
+| 链接无效 / 过期 / 已用   | 172:757 / 172:758                                    | 共用“链接无法使用”，可重新申请并返回登录；缺token、邮件回调INVALID_TOKEN、刷新/重放和同token并发均验，不泄露token。                                                   |
+| 重置未完成 / 结果未知    | 172:759 / 172:760                                    | 可复用“密码可能已更新”与重新申请/返回登录；不能承诺旧密码、旧会话或令牌仍有效。消费阶段与恢复说明缺口见下表。                                                         |
+
+旧反馈浮层3:119 / 102:3257仍存在，只提供“知道了”关闭，不独自覆盖未收邮件和CLI恢复路径；完整承接状态为216:2335 / 216:2280。不据此另造结果路由或重画获批代表图。
+
+**实际调用边界**
+
+生产 `src/server/identity/auth.ts` 尚未配置发送重置回调、1小时有效期和成功撤全部会话；HTTP允许清单未开放申请、邮件回调和重置入口，`src/app/forgot-password/`、`reset-password/` 尚不存在，登录表单没有找回入口。这些均归本卡；库verification、SMTP或实验存在不等于生产流程可用。公开地址由site当前publicUrl提供；固定回跳、token不进日志/第三方资源请求按 [SPEC-identity §8.2](../specs/SPEC-identity.md#82-找回与重置)验收。
+
+生产SMTP已实现 `readSmtpConfig`、`sendSmtpMail`，发送等待Nodemailer并关闭transport；生产CLI与standalone已交付，分别见 [#182](../verification/smtp-182/README.md)和 [#183](../verification/identity-183/README.md)。这些证据不替代本卡邮件与网页验收。Better Auth 1.7.5等待回调时仍会捕获发送异常并返回申请200；实验 `reset-fixture.ts` 和 `reset-password.test.ts` 已取得负面证据及按真实Request传递错误的实验结果，本卡必须落实生产请求错误边界，不能仅加await就宣称发送成功。
+
+邮件原生重置先原子消费verification，再哈希/写密码/撤会话；已有 [EV-IDENTITY-04](./evidence/EV-IDENTITY-04/README.md)仅证明库实验。消费失败时令牌可能仍在；消费后哈希或密码写失败时令牌已耗但旧密码/会话仍在；密码写入后撤会话失败时新密码已生效且旧会话可能仍有效。页面明确失败，重新申请或CLI恢复，不宣称事务回滚或全部设备已退出。同token并发只允许一次消费；CLI删除未使用令牌不能取消已消费的在途邮件重置，晚写可能覆盖CLI新密码并撤销之后新建会话。本卡必须承接该真实并发边界，不能由CLI短事务推导整个邮件流程原子。
+
+**具体表达缺口与负责人**
+
+| 缺口                                  | 来源与影响                                                                                  | 负责人及处理边界                                                                                                              |
+| ------------------------------------- | ------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| 邮件投递/申请响应未知                 | 216:2391 / 216:2447只表达失败；DATA后断连或响应丢失可能已发出，自动重试可能重复邮件。       | T-ID-07：按真实结果保留失败/未知，提示先检查邮箱再由用户重新申请，提供CLI；复用既有反馈结构。需要改变既定交互时先给原型获批。 |
+| 消费中断的阶段和撤会话失败            | 172:759 / 172:760只有“密码可能已更新”，不能完整证明密码与会话结果，也没有重置结果回读协议。 | T-ID-07：补真实阶段故障及响应丢失证据；未知时不报告旧密码未变/会话已撤，不新增假设性结果接口。                                |
+| 中断态CLI只写说明                     | 172:759 / 172:760文字提到CLI，但无直达217:2380 / 217:2321的连线；要经重新申请页才能到达。   | T-ID-07：保证现有重新申请→CLI路径可用；若增加直接入口，先给可查看原型、获批后实施并按权限同步Figma。                          |
+| 360/430/768、短视口及深色无本模块实证 | 本次只有基准浅色图；手机CLI长命令换行、重置字段及操作需在短屏滚动，不能以844px静态图证明。  | T-ID-07：按DES-05/07与共用验收取得真实截图、键盘/焦点、主题、点击目标和滚动证据；不提前复制所有画板。                         |
+
+公共部分复用 `PublicShell`、品牌来源和主题提供方；本卡不得复制侧栏或匿名暴露所有者菜单。业务组合复用HeroUI TextField/Input、Label、Description、FieldError、Button、Link、Spinner，必要错误用Alert，普通说明用简洁文字。没有通用控件自制的理由；本DG不创建组件或改变公共外壳。
+
+**验证承接与完成边界**
+
+默认 `test:integration` → Vitest integration项目 → `tests/integration/**/*.test.ts` 已包含上述库实验及生产CLI测试；默认 `test:browser` → `scripts/verify-browser.mjs` 与 `browser-plan.mjs` 尚无生产forgot/reset场景。本卡新增真实恢复检查必须进入默认full流程，并核对suite/only组合，按场景限定参数。两端覆盖真实邮件打开、通用反馈、未配置、发送失败/限流/未知、字段校验、提交中、成功、失效再申请、消费中断与CLI路径；生产HTTP/持久数据另覆盖到期边界、重放、多进程并发、旧Cookie和URL泄漏。
+
+本DG完成文档适用核对，不交付生产代码，不关闭DES-02、DES-05/07或播放器/真实网页责任。后续UI代码、本地检查、真实浏览器、独立设计对照和用户人工验收分别记录；本轮没有运行产品预览或生成验收账号。
 
 ### T-ID-08 上传 Token 生命周期与一次明文界面
 
