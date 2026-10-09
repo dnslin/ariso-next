@@ -4,11 +4,19 @@
 
 ## 依据、范围与环境
 
-从 [文档导航](../../README.md) 读取能力地图、PRD 第19章、[analytics 规格](../../specs/SPEC-analytics.md)、[任务卡与 DG-ANALYTICS 消费结论](../../tasks/m3-m4-experience.md#t-ana-05-工作台统计图表与详情统计联动)、[设计交接](../../design/handoff.md)及[执行约定](../../tasks/execution.md)。保留 R-19.1-01、R-19.2-03、R-19.3-01/02 和模块职责。访问计数、保留和对象责任协议沿既有实现，本次接入界面及所需异常定位查询，不改冻结 PRD。
+从 [文档导航](../../README.md) 读取能力地图、PRD 第19章、[analytics 规格](../../specs/SPEC-analytics.md)、[任务卡与 DG-ANALYTICS 消费结论](../../tasks/m3-m4-experience.md#t-ana-05-工作台统计图表与详情统计联动)、[设计交接](../../design/handoff.md)及[执行约定](../../tasks/execution.md)。保留 R-19.1-01、R-19.2-03、R-19.3-01/02 和模块职责。访问计数、保留和对象责任协议沿既有实现，本次接入界面及所需异常定位查询；下方2026-10-09删除排行修订按用户明确授权更新冲突PRD条目。
 
 [Issue 与评论快照](./issue.json)、[原生 blocked by](./blocked-by.json)及[blocking](./blocking.json)于本轮回读。#169/#171/#178/#57/#129 均 closed；无下游 blocking 项。已有真实 overview、usage 和单图 API；原工作台与统计导航仍占位。单图接口仅有累计三版本和三个周期合计，不虚构单图逐日或周期版本字段。
 
 原项目 `/Volumes/data/project/ariso` 干净，另有其他任务 worktree。更新远端后从 `origin/main`（`4db067f2`）创建管理型独立工作区 `/Users/dnslin/.codex/worktrees/issue-179-analytics-ui/ariso` 和 `codex/issue-179-analytics-ui`，原目录及其他任务保留。环境为 macOS、Node24.18.1、pnpm11.19.0、现有 Ego Lite；不下载浏览器，不发布 Release、镜像或部署。
+
+## 2026-10-09 最新用户修订
+
+用户明确永久删除图片不参加热门排行，并授权更新冲突文档。真实查询现于LIMIT10前按现存media身份排除，其余项目补足前十；全站累计、趋势及版本计数保留，回收/私有/停用仍可排行。需求编号保留，PRD §19.4、SPEC、handoff、任务卡与coverage已同步。本轮实际失败证据、31项集成、121项定向单元/运行计划、真实浏览器返修、十万规模及限制见[删除排行证据](./deleted-ranking.md)，前端呈现/默认浏览器调用链同步，用户批准优先于旧删除占位设计。
+
+原型圆角/hover、折线及删除数值入口更新见[局部反馈与新截图](./prototype-v2/feedback/README.md)。新增UI仍仅独立原型，未同步Figma、未获整版实施批准；真实产品本轮修正删除排行规则，并修复验证中发现的刷新提示推动周期按钮、造成点击落空的问题。以下既有实施和截图保留当时结果，删除占位相关旧结论由本节替代。
+
+本轮收口：冻结安装、最终全量format:check/lint/typecheck/build、31项受影响集成、121项定向单元/运行计划及十万规模通过。真实Ego behavior与consumers在最终构建上退出0，临时数据均清理，错误数组为空；默认full尚未实际运行。初次behavior失败已取证并修复刷新布局位移，没有削弱断言或键盘替代鼠标。独立代码审查和受影响设计复核通过（原型与真实产品范围分别记录）；新增交互仍待整版方案批准、Figma同步及产品实施，最终人工验收未完成。PR #273继续为草稿，未合并/关闭Issue/发布/部署/清理工作区；此前gh回读无远端检查，不记为CI通过。格式与文档依赖的最终结果见删除排行证据。
 
 ## 实施记录
 

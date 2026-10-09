@@ -5,10 +5,9 @@ import { trendSample } from './sample';
 import {
   Area,
   AreaChart,
-  Bar,
-  BarChart,
+  Line,
+  LineChart,
   CartesianGrid,
-  Cell,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -94,38 +93,54 @@ export function PeriodChart({
   values: number[];
 }) {
   return (
-    <div className="period-chart">
+    <div
+      className="period-chart"
+      role="img"
+      aria-label={windows
+        .map((w, i) => `${w.name}${zero ? 0 : values[i]}次`)
+        .join('，')}
+    >
       <ResponsiveContainer width="100%" height="100%" minWidth={0}>
-        <BarChart
+        <LineChart
           data={windows.map((w, i) => ({ ...w, count: zero ? 0 : values[i] }))}
           accessibilityLayer
-          margin={{ top: 30, right: 8, bottom: 0, left: 0 }}
+          margin={{ top: 30, right: 28, bottom: 0, left: 0 }}
         >
           <CartesianGrid
             vertical={false}
             stroke="var(--chart-grid)"
             strokeDasharray="3 5"
           />
-          <XAxis dataKey="name" {...axis} dy={8} />
-          <YAxis {...axis} width={45} allowDecimals={false} />
-          <Tooltip
-            content={ChartTip}
-            cursor={{ fill: 'var(--default)', opacity: 0.5 }}
-            isAnimationActive={false}
+          <XAxis
+            dataKey="name"
+            {...axis}
+            dy={8}
+            padding={{ left: 24, right: 12 }}
           />
-          <Bar
+          <YAxis
+            {...axis}
+            width={45}
+            allowDecimals={false}
+            domain={[0, 'auto']}
+          />
+          <Tooltip content={ChartTip} isAnimationActive={false} />
+          <Line
+            type="linear"
             dataKey="count"
             name="访问量"
-            radius={[6, 6, 0, 0]}
-            maxBarSize={62}
+            stroke="var(--chart-2)"
+            strokeWidth={2.5}
+            dot={{ r: 4, fill: 'var(--surface)', strokeWidth: 2 }}
+            activeDot={{ r: 5 }}
             isAnimationActive={false}
-            label={{ position: 'top', fill: 'var(--foreground)', fontSize: 13 }}
-          >
-            {windows.map((w, i) => (
-              <Cell key={w.name} fill={`var(--chart-${i + 1})`} />
-            ))}
-          </Bar>
-        </BarChart>
+            label={{
+              position: 'top',
+              fill: 'var(--foreground)',
+              fontSize: 13,
+              offset: 12,
+            }}
+          />
+        </LineChart>
       </ResponsiveContainer>
     </div>
   );

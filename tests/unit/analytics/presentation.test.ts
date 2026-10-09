@@ -77,17 +77,6 @@ describe('analytics presentation from real report fields', () => {
     const data = overview({
       cumulative: { original: 980, compressed: 20, watermark: 0, total: 1000 },
       versions: { original: 12, compressed: 0, watermark: 0, total: 12 },
-      popular: [
-        {
-          imageId: 'deleted-history',
-          shortId: 'deleted-',
-          state: 'deleted',
-          count: 12,
-          displayName: null,
-          managementUrl: null,
-          thumbnailUrl: null,
-        },
-      ],
     });
     const metrics = html(AnalyticsMetrics, { data });
     expect(metrics).toContain('1,000');
@@ -98,10 +87,55 @@ describe('analytics presentation from real report fields', () => {
     expect(trend).toContain('12');
     expect(trend).not.toContain('暂无访问');
     const popular = html(AnalyticsPopular, { data });
-    expect(popular).toContain('已删除图片');
-    expect(popular).toContain('12');
+    expect(popular).toContain('本周期暂无热门图片');
+    expect(popular).not.toContain('已删除图片');
     expect(popular).not.toContain('href=');
-    expect(popular).not.toContain('deleted-history?');
+    expect(popular).not.toContain('data-image-id=');
+  });
+  it('renders retained recycled, private and unavailable-thumbnail entries with their real management links', () => {
+    const data = overview({
+      popular: [
+        {
+          imageId: 'recycled-history',
+          shortId: 'recycled',
+          state: 'recycled',
+          count: 12,
+          displayName: null,
+          managementUrl: '/trash?image=recycled-history',
+          thumbnailUrl: null,
+        },
+        {
+          imageId: 'private-history',
+          shortId: 'private-',
+          state: 'normal',
+          count: 11,
+          displayName: '已转私有的图片',
+          managementUrl: '/library?image=private-history',
+          thumbnailUrl: '/api/library/images/private-history/thumbnail',
+        },
+        {
+          imageId: 'disabled-storage-history',
+          shortId: 'disabled',
+          state: 'normal',
+          count: 10,
+          displayName: '停用存储图片',
+          managementUrl: '/library?image=disabled-storage-history',
+          thumbnailUrl: null,
+        },
+      ],
+    });
+    const popular = html(AnalyticsPopular, { data });
+    expect(popular).toContain('已回收图片 · recycled');
+    expect(popular).toContain('查看回收站记录');
+    expect(popular).toContain('href="/trash?image=recycled-history"');
+    expect(popular).toContain('已转私有的图片');
+    expect(popular).toContain('href="/library?image=private-history"');
+    expect(popular).toContain('停用存储图片');
+    expect(popular).toContain('href="/library?image=disabled-storage-history"');
+    expect(popular).toContain('无可读缩略图，历史访问保留');
+    expect(popular).toContain('12 次');
+    expect(popular).toContain('11 次');
+    expect(popular).toContain('10 次');
   });
   it('separates a real empty period from a current empty library and never invents popular rows', () => {
     const empty = overview();

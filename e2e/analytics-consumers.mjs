@@ -19,7 +19,11 @@ export async function analyticsConsumers(page, config, tools, fixture, report) {
       }),
     ),
   );
-  assert.equal(links.find(({ id }) => id === fixture.ids[2]).href, null);
+  assert.equal(
+    links.some(({ id }) => id === fixture.ids[2]),
+    false,
+    'Permanently deleted images do not appear in popular rankings',
+  );
   for (const [id, path] of [
     [fixture.ids[0], '/library'],
     [fixture.ids[1], '/trash'],
@@ -38,6 +42,6 @@ export async function analyticsConsumers(page, config, tools, fixture, report) {
     await tools.open();
   }
   report.checks.push(
-    'Every implemented owner route passes the shared shell consumer checks, including dashboard and analytics. Workbench enters actual access statistics by keyboard. Normal/recycled historical ranking entries navigate to their actual library/trash URLs with the exact image ID; permanently deleted history exposes no navigation or content.',
+    'Every implemented owner route passes the shared shell consumer checks, including dashboard and analytics. Workbench enters actual access statistics by keyboard. Normal/recycled historical ranking entries navigate to their actual library/trash URLs with the exact image ID; permanently deleted images are absent from popular rankings.',
   );
 }

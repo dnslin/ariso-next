@@ -22,11 +22,9 @@ export function AnalyticsPopular({ data }: { data: AnalyticsOverview }) {
         <ol className="grid gap-3">
           {data.popular.map((item) => {
             const name =
-              item.state === 'deleted'
-                ? `已删除图片 · ${item.shortId}`
-                : item.state === 'recycled'
-                  ? `已回收图片 · ${item.shortId}`
-                  : item.displayName!;
+              item.state === 'recycled'
+                ? `已回收图片 · ${item.shortId}`
+                : item.displayName!;
             const content = (
               <>
                 <span
@@ -38,8 +36,6 @@ export function AnalyticsPopular({ data }: { data: AnalyticsOverview }) {
                       key={item.thumbnailUrl}
                       src={item.thumbnailUrl}
                     />
-                  ) : item.state === 'deleted' ? (
-                    '已删'
                   ) : item.state === 'recycled' ? (
                     '回收'
                   ) : (
@@ -51,13 +47,11 @@ export function AnalyticsPopular({ data }: { data: AnalyticsOverview }) {
                     {name}
                   </span>
                   <span className="text-xs text-muted">
-                    {item.state === 'deleted'
-                      ? '历史记录'
-                      : item.state === 'recycled'
-                        ? '查看回收站记录'
-                        : item.thumbnailUrl
-                          ? '正常图库'
-                          : '无可读缩略图，历史访问保留'}{' '}
+                    {item.state === 'recycled'
+                      ? '查看回收站记录'
+                      : item.thumbnailUrl
+                        ? '正常图库'
+                        : '无可读缩略图，历史访问保留'}{' '}
                     · {number(item.count)} 次
                   </span>
                 </span>
@@ -69,16 +63,12 @@ export function AnalyticsPopular({ data }: { data: AnalyticsOverview }) {
                 data-image-id={item.imageId}
                 data-image-state={item.state}
               >
-                {item.managementUrl ? (
-                  <Link
-                    href={item.managementUrl}
-                    className="flex min-h-12 w-full gap-3 rounded-lg text-foreground"
-                  >
-                    {content}
-                  </Link>
-                ) : (
-                  <div className="flex min-h-12 gap-3">{content}</div>
-                )}
+                <Link
+                  href={item.managementUrl}
+                  className="flex min-h-12 w-full gap-3 rounded-lg text-foreground"
+                >
+                  {content}
+                </Link>
               </li>
             );
           })}

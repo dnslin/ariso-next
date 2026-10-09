@@ -1,0 +1,119 @@
+{
+  "status": "failed",
+  "taskSpaceId": 2,
+  "origin": "http://ariso-63883.localhost:63883",
+  "phase": "behavior",
+  "checks": [],
+  "layouts": [],
+  "browserErrors": [],
+  "limitations": [
+    "Only disposable runner records, objects and one private Token upload are used; the manual preview is independent.",
+    "HTTP/network/health faults and visibility/timer controls are explicit page-boundary injections; normal analytics responses come from the real production server and are reconciled with SQLite.",
+    "Viewport and keyboard emulation do not prove physical touch or software keyboard behavior. Human design acceptance remains separate."
+  ],
+  "stage": "behavior",
+  "behaviorStep": "period-30-result",
+  "error": "Error: page.waitForFunction timed out after 10000ms on page p2; last URL was \"http://ariso-63883.localhost:63883/analytics?days=7\"; last title was \"Ariso\".\n    at waitForFunctionTimeoutError (file:////[eval1]:19235:12)\n    at file:////[eval1]:18564:19\n    at async file:////[eval1]:16691:28",
+  "stoppedForUserControl": false,
+  "failureState": {
+    "url": "http://ariso-63883.localhost:63883/analytics?days=7",
+    "readyState": "complete",
+    "overviewPresent": true,
+    "versionsTitle": "版本访问量 · 最近 7 天",
+    "radios": [
+      {
+        "text": "7 天",
+        "checked": "true",
+        "selected": "true",
+        "disabled": false,
+        "focused": false,
+        "rect": {
+          "x": 264,
+          "y": 396,
+          "width": 104,
+          "height": 44
+        },
+        "centerHitIsButton": true,
+        "centerHitTag": "BUTTON",
+        "centerHitMarkup": "<button data-slot=\"toggle-button\" class=\"toggle-button toggle-button--md toggle-button--default h-11 min-w-0 flex-1 rounded-lg border border-border bg-surface px-4 text-sm text-foreground data-[selected=true]:border-accent data-[selected=true]:bg-accent data-[selected=true]:text-accent-foreground min-[1200px]:w-[104px] min-[1200px]:flex-none\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" role=\"radio\" aria-checked=\"true\" data-selected=\"true\">7 天</button>"
+      },
+      {
+        "text": "30 天",
+        "checked": "false",
+        "selected": null,
+        "disabled": false,
+        "focused": true,
+        "rect": {
+          "x": 380,
+          "y": 396,
+          "width": 104,
+          "height": 44
+        },
+        "centerHitIsButton": true,
+        "centerHitTag": "BUTTON",
+        "centerHitMarkup": "<button data-slot=\"toggle-button\" class=\"toggle-button toggle-button--md toggle-button--default h-11 min-w-0 flex-1 rounded-lg border border-border bg-surface px-4 text-sm text-foreground data-[selected=true]:border-accent data-[selected=true]:bg-accent data-[selected=true]:text-accent-foreground min-[1200px]:w-[104px] min-[1200px]:flex-none\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" role=\"radio\" aria-checked=\"false\" data-focused=\"true\" data-hovered=\"true\">30 天</button>"
+      },
+      {
+        "text": "90 天",
+        "checked": "false",
+        "selected": null,
+        "disabled": false,
+        "focused": false,
+        "rect": {
+          "x": 496,
+          "y": 396,
+          "width": 104,
+          "height": 44
+        },
+        "centerHitIsButton": true,
+        "centerHitTag": "BUTTON",
+        "centerHitMarkup": "<button data-slot=\"toggle-button\" class=\"toggle-button toggle-button--md toggle-button--default h-11 min-w-0 flex-1 rounded-lg border border-border bg-surface px-4 text-sm text-foreground data-[selected=true]:border-accent data-[selected=true]:bg-accent data-[selected=true]:text-accent-foreground min-[1200px]:w-[104px] min-[1200px]:flex-none\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" role=\"radio\" aria-checked=\"false\">90 天</button>"
+      }
+    ],
+    "analyticsRequests": [
+      {
+        "path": "/api/analytics/overview?days=7",
+        "startTime": 60.5,
+        "duration": 16.799999952316284
+      },
+      {
+        "path": "/api/analytics/usage",
+        "startTime": 60.799999952316284,
+        "duration": 17.799999952316284
+      },
+      {
+        "path": "/api/analytics/overview?days=7",
+        "startTime": 1191.6999999284744,
+        "duration": 17.100000023841858
+      },
+      {
+        "path": "/api/analytics/usage",
+        "startTime": 1192.2999999523163,
+        "duration": 17.5
+      },
+      {
+        "path": "/api/analytics/overview?days=7",
+        "startTime": 1260.3999999761581,
+        "duration": 15.699999928474426
+      },
+      {
+        "path": "/api/analytics/usage",
+        "startTime": 1260.5999999046326,
+        "duration": 17.5
+      },
+      {
+        "path": "/api/analytics/overview?days=7",
+        "startTime": 2189.399999976158,
+        "duration": 19.199999928474426
+      },
+      {
+        "path": "/api/analytics/usage",
+        "startTime": 2189.899999976158,
+        "duration": 20.899999976158142
+      }
+    ]
+  },
+  "failureSnapshot": "[p2 \"Ariso\" | space \"Ariso Issue 179\"(2): 1 managed, 1 untracked — p2* \"Ariso\"]\nroot\n  container\n    container \"后台侧栏\"\n      container\n        anchor \"Ariso 首页\" [ref=159, url=http://ariso-63883.localhost:63883/]\n          text \"Ariso\"\n        button \"收起侧栏\" [ref=160, loc=css:button[aria-label=\"收起侧栏\"]]\n          svg_root\n      container \"后台导航\"\n        anchor \"总览\" [ref=161, loc=css:a[aria-label=\"总览\"], url=http://ariso-63883.localhost:63883/dashboard]\n          svg_root\n          text \"总览\"\n        anchor \"上传\" [ref=162, loc=css:a[aria-label=\"上传\"], url=http://ariso-63883.localhost:63883/upload]\n          svg_root\n          text \"上传\"\n        anchor \"图库\" [ref=163, loc=css:a[aria-label=\"图库\"], url=http://ariso-63883.localhost:63883/library]\n          svg_root\n          text \"图库\"\n        anchor \"相册\" [ref=164, loc=css:a[aria-label=\"相册\"], url=http://ariso-63883.localhost:63883/albums]\n          svg_root\n          text \"相册\"\n        anchor \"标签\" [ref=165, loc=css:a[aria-label=\"标签\"], url=http://ariso-63883.localhost:63883/tags]\n          svg_root\n          text \"标签\"\n        anchor \"分享管理\" [ref=166, loc=css:a[aria-label=\"分享管理\"], url=http://ariso-63883.localhost:63883/shares]\n          svg_root\n          text \"分享管理\"\n        anchor \"回收站\" [ref=167, loc=css:a[aria-label=\"回收站\"], url=http://ariso-63883.localhost:63883/trash]\n          svg_root\n          text \"回收站\"\n        paragraph\n          text \"管理\"\n        anchor \"访问统计\" [ref=168, loc=css:a[aria-label=\"访问统计\"], url=http://ariso-63883.localhost:63883/analytics]\n          svg_root\n          text \"访问统计\"\n        anchor \"存储管理\" [ref=169, loc=css:a[aria-label=\"存储管理\"], url=http://ariso-63883.localhost:63883/settings/storage]\n          svg_root\n          text \"存储管理\"\n        anchor \"站点设置\" [ref=170, loc=css:a[aria-label=\"站点设置\"], url=http://ariso-63883.localhost:63883/settings/general]\n          svg_root\n          text \"站点设置\"\n      button \"账号菜单\" [ref=171, loc=css:button[aria-label=\"账号菜单\"]]\n        text \"O\"\n        container\n          text \"Owner\"\n          text \"站点所有者\"\n    container\n      container [ref=172]\n        container\n          heading\n            text \"访问统计\"\n          paragraph\n            text \"公开图片访问与当前对象占用。\"\n        container \"访问统计\"\n          container\n            container\n              paragraph\n                text \"Asia/Shanghai\"\n                text \"· 更新于\"\n                text \"2026/10/09 22:31\"\n                text \"。今日截至本次统计更新。\"\n              paragraph\n                text \"本进程尚无已提交的访问批次\"\n                text \"。\"\n            button \"刷新访问统计\" [ref=173, loc=css:button[aria-label=\"刷新访问统计\"]]\n              svg_root\n          container\n            container\n              paragraph\n                text \"图片数量\"\n              paragraph\n                text \"11\"\n              paragraph\n                text \"回收站 1 张\"\n            container\n              paragraph\n                text \"相册数量\"\n              paragraph\n                text \"0\"\n              paragraph\n                text \"包含空相册\"\n            container\n              paragraph\n                text \"今日访问\"\n              paragraph\n                text \"78\"\n              paragraph\n                text \"截至本次统计更新\"\n            container\n              paragraph\n                text \"累计访问\"\n              paragraph\n                text \"468\"\n              paragraph\n                text \"历史累计访问\"\n          radiogroup \"统计周期\"\n            radiobutton [ref=174]\n              text \"7\"\n              text \"天\"\n            radiobutton [ref=175]\n              text \"30\"\n              text \"天\"\n            radiobutton [ref=176]\n              text \"90\"\n              text \"天\"\n          container\n            heading\n              text \"公开访问趋势\"\n            paragraph\n              text \"2026-10-03\"\n              text \"—\"\n              text \"2026-10-09\"\n              text \"·\"\n              text \"78\"\n              text \"次\"\n            application \"10/03 10/04 10/05 10/06 10/07 10/08 10/09 0 20 40 60 80\" [ref=177]\n              text \"10/03\"\n              text \"10/04\"\n              text \"10/05\"\n              text \"10/06\"\n              text \"10/07\"\n              text \"10/08\"\n              text \"10/09\"\n              text \"0\"\n              text \"20\"\n              text \"40\"\n              text \"60\"\n              text \"80\"\n            paragraph\n              text \"单位：次 · 今日未结束 · 使用左右方向键或点击图表读取数值。\"\n            anchor [ref=178, loc=href:/analytics?days=7&view=daily, url=http://ariso-63883.localhost:63883/analytics?days=7&view=daily]\n              text \"查看每日数值\"\n          container\n            heading\n              text \"版本访问量 · 最近 7 天\"\n            unordered_list\n              container\n                list_item\n                  text \"原图\"\n                list_item\n                  text \"78\"\n                  text \"次\"\n              container\n                list_item\n                  text \"压缩图\"\n                list_item\n                  text \"0\"\n                  text \"次\"\n              container\n                list_item\n                  text \"水印图\"\n                list_item\n                  text \"0\"\n                  text \"次\"\n      container\n        anchor [ref=179, loc=href:/analytics?days=7&view=scope&scope=overview, url=http://ariso-63883.localhost:63883/analytics?days=7&view=scope&scope=overview]\n          text \"统计口径\"\n        anchor [ref=180, url=http://ariso-63883.localhost:63883/analytics?days=7&view=usage]\n          text \"当前存储占用\"\n",
+  "fixtureRestored": true,
+  "finishedAt": "2026-10-09T14:31:26.015Z"
+}

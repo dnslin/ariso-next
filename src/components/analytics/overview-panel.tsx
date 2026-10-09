@@ -58,7 +58,7 @@ export function AnalyticsOverviewPanel({
           data-testid="analytics-overview"
           aria-label="访问统计"
         >
-          <div className="flex items-start justify-between gap-3">
+          <div className="relative flex items-start justify-between gap-3">
             <AnalyticsMetadata data={overview.data} />
             <Button
               isIconOnly
@@ -70,16 +70,16 @@ export function AnalyticsOverviewPanel({
             >
               <RefreshCw size={18} aria-hidden />
             </Button>
+            {overview.isFetching ? (
+              <p
+                role="status"
+                className="absolute inset-x-0 top-full mt-0.5 text-[12px] leading-4 text-muted"
+                data-testid="overview-refreshing"
+              >
+                正在刷新，保留上次统计数字。
+              </p>
+            ) : null}
           </div>
-          {overview.isFetching ? (
-            <p
-              role="status"
-              className="text-[13px] text-muted"
-              data-testid="overview-refreshing"
-            >
-              正在刷新，保留上次统计数字。
-            </p>
-          ) : null}
           {!dailyView ? <AnalyticsMetrics data={overview.data} /> : null}
           <AnalyticsPeriods days={days} onChange={onDays} />
           {dailyView ? (

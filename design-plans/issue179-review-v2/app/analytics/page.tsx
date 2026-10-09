@@ -13,7 +13,6 @@ import { ToggleButton } from '@heroui/react/toggle-button';
 import { ToggleButtonGroup } from '@heroui/react/toggle-button-group';
 import { Popover } from '@heroui/react/popover';
 import { Tooltip } from '@heroui/react/tooltip';
-import { Accordion } from '@heroui/react/accordion';
 import { Spinner } from '@heroui/react/spinner';
 import {
   ArrowLeft,
@@ -63,7 +62,7 @@ const names = [
   '已回收图片 · c92b',
   '树影',
   '暮色',
-  '已删除图片 · a81f',
+  '山间小路',
 ];
 
 const stateNames = {
@@ -223,7 +222,6 @@ export default function Prototype() {
   const zero = state === 'zero';
   const imageName = selected === null ? '' : names[selected];
   const sample = imageSample(selected ?? 0);
-  const totals = sample.versions;
   const periodIndex = days === 7 ? 0 : days === 30 ? 1 : 2;
   const reset = () => setState('ready');
   const theme = () => {
@@ -348,14 +346,13 @@ export default function Prototype() {
                     key={name}
                     variant="ghost"
                     className="rank-row"
-                    isDisabled={i === 9}
                     onPress={() => open(i)}
                     aria-label={`查看${name}统计`}
                   >
                     <span className="rank-index">
                       {String(i + 1).padStart(2, '0')}
                     </span>
-                    {i >= 6 && (i === 6 || i === 9) ? (
+                    {i === 6 ? (
                       <span className="thumb thumb-small unavailable-thumb">
                         <Trash2 size={18} />
                       </span>
@@ -376,11 +373,7 @@ export default function Prototype() {
                       {imageSample(i).periods[periodIndex].toLocaleString()}
                       <small>次</small>
                     </strong>
-                    {i === 9 ? (
-                      <span className="rank-arrow" />
-                    ) : (
-                      <ArrowUpRight className="rank-arrow" size={16} />
-                    )}
+                    <ArrowUpRight className="rank-arrow" size={16} />
                   </Button>
                 ))}
               </div>
@@ -583,44 +576,12 @@ export default function Prototype() {
                         title="近期访问"
                       >
                         <InfoTip label="周期范围">
-                          三个周期都包含今日，各自统计最近7、30、90天。周期相互包含，不能相加。
+                          近7天：10/03–10/09；近30天：09/10–10/09；近90天：07/12–10/09。均包含今日，相互包含，不能相加。
                         </InfoTip>
                       </SectionTitle>
                       <PeriodChart zero={zero} values={sample.periods} />
                       {zero ? <p className="zero-note">暂无公开访问</p> : null}
                     </section>
-                    <Accordion className="numbers" variant="surface">
-                      <Accordion.Item id="numbers">
-                        <Accordion.Heading>
-                          <Accordion.Trigger>
-                            查看数值与范围
-                            <Accordion.Indicator />
-                          </Accordion.Trigger>
-                        </Accordion.Heading>
-                        <Accordion.Panel>
-                          <Accordion.Body>
-                            <dl>
-                              {[
-                                '近7天 · 10/03–10/09',
-                                '近30天 · 09/10–10/09',
-                                '近90天 · 07/12–10/09',
-                              ].map((label, i) => (
-                                <div key={label}>
-                                  <dt>{label}</dt>
-                                  <dd>{zero ? 0 : sample.periods[i]} 次</dd>
-                                </div>
-                              ))}
-                              {['原图', '压缩图', '水印图'].map((label, i) => (
-                                <div key={label}>
-                                  <dt>累计 · {label}</dt>
-                                  <dd>{zero ? 0 : totals[i]} 次</dd>
-                                </div>
-                              ))}
-                            </dl>
-                          </Accordion.Body>
-                        </Accordion.Panel>
-                      </Accordion.Item>
-                    </Accordion>
                   </>
                 )}
               </Modal.Body>

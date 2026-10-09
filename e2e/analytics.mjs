@@ -109,6 +109,52 @@ try {
   report.stoppedForUserControl ||= isBrowserControlStop(error);
   if (!report.stoppedForUserControl) {
     try {
+      report.failureState = await page.evaluate(() => ({
+        url: location.href,
+        readyState: document.readyState,
+        overviewPresent: !!document.querySelector(
+          '[data-testid="analytics-overview"]',
+        ),
+        versionsTitle: document.querySelector(
+          '[data-testid="analytics-versions"] h2',
+        )?.textContent,
+        radios: [
+          ...document.querySelectorAll(
+            '[role="radiogroup"][aria-label="统计周期"] button[role="radio"]',
+          ),
+        ].map((button) => {
+          const rect = button.getBoundingClientRect();
+          const hit = document.elementFromPoint(
+            rect.x + rect.width / 2,
+            rect.y + rect.height / 2,
+          );
+          return {
+            text: button.textContent,
+            checked: button.getAttribute('aria-checked'),
+            selected: button.getAttribute('data-selected'),
+            disabled: button.disabled,
+            focused: document.activeElement === button,
+            rect: {
+              x: rect.x,
+              y: rect.y,
+              width: rect.width,
+              height: rect.height,
+            },
+            centerHitIsButton: hit === button,
+            centerHitTag: hit?.tagName,
+          };
+        }),
+        analyticsRequests: performance
+          .getEntriesByType('resource')
+          .filter(({ name }) =>
+            new URL(name).pathname.startsWith('/api/analytics/'),
+          )
+          .map(({ name, startTime, duration }) => ({
+            path: new URL(name).pathname + new URL(name).search,
+            startTime,
+            duration,
+          })),
+      }));
       report.failureSnapshot = await page.snapshot();
       await page.screenshot({
         path: join(config.output, 'analytics-failure.png'),

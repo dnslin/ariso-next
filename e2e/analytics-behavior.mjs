@@ -5,9 +5,12 @@ import { resizeViewport } from './browser-geometry.mjs';
 const periodControl = (days) =>
   `loc=css:[role="radiogroup"][aria-label="统计周期"] button[role="radio"] >> nth=${[7, 30, 90].indexOf(days)}`;
 
-async function period(page, days) {
+async function period(page, days, report) {
+  report.behaviorStep = `period-${days}-focus`;
   await page.focus(periodControl(days));
+  report.behaviorStep = `period-${days}-keyboard-space`;
   await page.keyboard.press('Space');
+  report.behaviorStep = `period-${days}-result`;
   await page.waitForFunction(
     (days) =>
       new URLSearchParams(location.search).get('days') === String(days) &&
@@ -16,9 +19,11 @@ async function period(page, days) {
   );
 }
 
-async function pointerPeriod(page, days) {
+async function pointerPeriod(page, days, report) {
   const selector = `[role="radiogroup"][aria-label="统计周期"] button[role="radio"]:nth-child(${[7, 30, 90].indexOf(days) + 1})`;
+  report.behaviorStep = `period-${days}-hover`;
   await page.hover(selector);
+  report.behaviorStep = `period-${days}-hit-test`;
   await page.waitForFunction((selector) => {
     const button = document.querySelector(selector);
     const rect = button.getBoundingClientRect();
@@ -33,6 +38,7 @@ async function pointerPeriod(page, days) {
     const rect = document.querySelector(selector).getBoundingClientRect();
     return { x: rect.x + rect.width / 2, y: rect.y + rect.height / 2 };
   }, selector);
+  report.behaviorStep = `period-${days}-pointer-click`;
   await page.mouse.click(center.x, center.y, { label: `选择 ${days} 天统计` });
 }
 
@@ -102,6 +108,141 @@ async function assertScopeLayout(page, width) {
   assert.ok(
     layout.footerBottom <= layout.viewportHeight - 15,
     'Primary return action remains visible in short viewports',
+  );
+}
+
+async function refreshDuringPointerPress(page, tools, report) {
+  for (const width of [360, 390, 1440]) {
+    report.behaviorStep = `refresh-during-pointer-${width}`;
+    await tools.open();
+    await resizeViewport(page, width);
+    await tools.evidence('refresh-normal', width, 'light');
+    const boundary = await analyticsBoundary(page, {
+      path: '/api/analytics/overview',
+      hold: true,
+      days: 7,
+    });
+    const selector =
+      '[aria-label="统计周期"] button[role="radio"]:nth-child(2)';
+    let pressed = false;
+    try {
+      await page.hover(selector);
+      const before = await page.evaluate((selector) => {
+        const rect = document.querySelector(selector).getBoundingClientRect();
+        return { x: rect.x, y: rect.y, width: rect.width, height: rect.height };
+      }, selector);
+      await page.mouse.move(
+        before.x + before.width / 2,
+        before.y + before.height / 2,
+      );
+      await page.mouse.down({ button: 'left', clickCount: 1 });
+      pressed = true;
+      // Explicitly trigger the real production refresh while the native press
+      // is in progress; only the overview response delivery is held.
+      await page.evaluate(() =>
+        document.querySelector('button[aria-label="刷新访问统计"]').click(),
+      );
+      await page.waitForFunction(
+        () =>
+          window.__analytics179.requests.some(({ held }) => held) &&
+          !!document.querySelector('[data-testid="overview-refreshing"]'),
+      );
+      const during = await page.evaluate((selector) => {
+        const button = document.querySelector(selector).getBoundingClientRect();
+        const status = document.querySelector(
+          '[data-testid="overview-refreshing"]',
+        );
+        const rect = status.getBoundingClientRect();
+        const metadata = status.parentElement.getBoundingClientRect();
+        const metrics = document
+          .querySelector('[data-testid="analytics-metrics"]')
+          .getBoundingClientRect();
+        return {
+          button: {
+            x: button.x,
+            y: button.y,
+            width: button.width,
+            height: button.height,
+          },
+          status: { top: rect.top, bottom: rect.bottom, height: rect.height },
+          metadataBottom: metadata.bottom,
+          metricsTop: metrics.top,
+          lastFlushedVisible: !!document.querySelector(
+            '[data-testid="analytics-last-flushed"]',
+          ),
+        };
+      }, selector);
+      assert.deepEqual(
+        during.button,
+        before,
+        'Refresh feedback cannot move a period button during a native press',
+      );
+      assert.equal(
+        during.status.height,
+        16,
+        'Refresh feedback stays on one line on desktop and phone',
+      );
+      assert.ok(during.status.top >= during.metadataBottom);
+      assert.ok(
+        during.status.bottom <= during.metricsTop,
+        'Refresh feedback does not overlap current metrics',
+      );
+      assert.equal(during.lastFlushedVisible, true);
+      await tools.evidence('refresh-inflight', width, 'light');
+      await page.mouse.up({ button: 'left', clickCount: 1 });
+      pressed = false;
+      await page.waitForFunction(
+        () =>
+          new URLSearchParams(location.search).get('days') === '30' &&
+          document
+            .querySelector('[data-testid="analytics-versions"] h2')
+            ?.textContent.includes('30 天'),
+      );
+      assert.equal(
+        await page.evaluate(
+          (selector) =>
+            document.querySelector(selector).getAttribute('aria-checked'),
+          selector,
+        ),
+        'true',
+      );
+      assert.equal(
+        await page.evaluate(
+          () =>
+            !!document.querySelector('[aria-label="统计周期"] [data-pressed]'),
+        ),
+        false,
+      );
+      const actual = await tools.request('/api/analytics/overview?days=30');
+      const rendered = await page.evaluate(() =>
+        [
+          ...document.querySelectorAll('[data-testid="analytics-versions"] dd'),
+        ].map((node) => node.textContent.trim()),
+      );
+      assert.deepEqual(
+        rendered,
+        [
+          actual.versions.original,
+          actual.versions.compressed,
+          actual.versions.watermark,
+        ].map((value) => `${number(value)} 次`),
+      );
+      (report.refreshPointer ??= []).push({
+        width,
+        before,
+        during,
+        requests: await boundary.read(),
+      });
+    } finally {
+      try {
+        if (pressed) await page.mouse.up({ button: 'left', clickCount: 1 });
+      } finally {
+        await boundary.dispose();
+      }
+    }
+  }
+  report.checks.push(
+    'A delayed real refresh between native pointerdown/up preserves period geometry at 360/390/1440, leaves last-flush metadata visible, fits feedback on one line without metrics overlap, and the same pointer release selects and loads the actual 30-day report.',
   );
 }
 
@@ -223,26 +364,82 @@ export async function analyticsRepresentative(
 }
 
 export async function analyticsBehavior(page, config, tools, fixture, report) {
+  await refreshDuringPointerPress(page, tools, report);
+  report.behaviorStep = 'initial-overview';
   await tools.open();
   const observations = [];
   const fixed = await tools.request('/api/analytics/overview?days=7');
   const usageBefore = await tools.request('/api/analytics/usage');
+  const [history] = await tools.sql(
+    `SELECT sum(original_count+compressed_count+watermark_count) total,
+      sum(CASE WHEN image_id='${fixture.ids[2]}' THEN original_count+compressed_count+watermark_count ELSE 0 END) deleted_total
+      FROM analytics_image_totals`,
+  );
+  assert.ok(history.deleted_total > 0);
+  assert.equal(
+    fixed.cumulative.total,
+    history.total,
+    'Cumulative accesses retain permanently deleted image history',
+  );
   for (const days of [7, 30, 90]) {
-    if (days === 7) await period(page, days);
+    if (days === 7) await period(page, days, report);
     else {
-      await pointerPeriod(page, days);
+      await pointerPeriod(page, days, report);
+      report.behaviorStep = `period-${days}-result`;
       await page.waitForFunction(
         (days) =>
           new URLSearchParams(location.search).get('days') === String(days) &&
           !!document.querySelector('[data-testid="analytics-overview"]'),
         days,
       );
+      assert.equal(
+        await page.evaluate(
+          (days) =>
+            [...document.querySelectorAll('[aria-label="统计周期"] button')]
+              .find((button) => button.textContent.trim() === `${days} 天`)
+              .getAttribute('aria-checked'),
+          days,
+        ),
+        'true',
+      );
+      assert.equal(
+        await page.evaluate(
+          () =>
+            !!document.querySelector('[aria-label="统计周期"] [data-pressed]'),
+        ),
+        false,
+        'Native pointer operation leaves no period button pressed',
+      );
     }
+    report.behaviorStep = `period-${days}-reconciliation`;
     const actual = await tools.request(`/api/analytics/overview?days=${days}`);
     const [persisted] = await tools.sql(
       `SELECT coalesce(sum(count),0) total FROM analytics_daily WHERE date BETWEEN '${actual.range.startDate}' AND '${actual.range.endDate}'`,
     );
     assert.equal(actual.versions.total, persisted.total);
+    const [periodHistory] = await tools.sql(
+      `SELECT sum(count) total,
+        sum(CASE WHEN image_id='${fixture.ids[2]}' THEN count ELSE 0 END) deleted_total
+        FROM analytics_image_daily WHERE date BETWEEN '${actual.range.startDate}' AND '${actual.range.endDate}'`,
+    );
+    assert.ok(periodHistory.deleted_total > 0);
+    assert.equal(
+      actual.versions.total,
+      periodHistory.total,
+      'Period totals and trend retain permanently deleted image history',
+    );
+    const ranked = await tools.sql(
+      `SELECT daily.image_id imageId,sum(daily.count) count
+        FROM analytics_image_daily daily JOIN media_images image ON image.id=daily.image_id
+        WHERE daily.date BETWEEN '${actual.range.startDate}' AND '${actual.range.endDate}'
+        GROUP BY daily.image_id HAVING sum(daily.count)>0
+        ORDER BY count DESC,daily.image_id ASC LIMIT 10`,
+    );
+    assert.deepEqual(
+      actual.popular.map(({ imageId, count }) => ({ imageId, count })),
+      ranked,
+      'Top ten contain only existing media entities, ordered by actual retained visits',
+    );
     const rendered = await page.evaluate(() => ({
       metrics: [
         ...document.querySelector('[data-testid="analytics-metrics"]').children,
@@ -290,20 +487,27 @@ export async function analyticsBehavior(page, config, tools, fixture, report) {
       actual.popular.map(({ imageId }) => imageId),
     );
     assert.equal(rendered.popular.length, 10);
-    const removed = rendered.popular.find(({ id }) => id === fixture.ids[2]);
-    assert.ok(removed.text.includes('已删除图片'));
-    assert.equal(removed.href, null);
-    assert.equal(removed.image, null);
+    assert.equal(
+      rendered.popular.some(({ id }) => id === fixture.ids[2]),
+      false,
+      'Permanently deleted image is absent, rather than rendered as a placeholder',
+    );
+    assert.ok(
+      rendered.popular.some(({ id }) => id === fixture.ids[10]),
+      'The next eligible image fills the tenth place after deletion exclusion',
+    );
     const recycled = rendered.popular.find(({ id }) => id === fixture.ids[1]);
     assert.equal(recycled.href, `/trash?image=${fixture.ids[1]}`);
     assert.equal(recycled.image, null);
     const disabled = rendered.popular.find(({ id }) => id === fixture.ids[3]);
     assert.equal(disabled.image, null);
+    assert.equal(disabled.href, `/library?image=${fixture.ids[3]}`);
     assert.ok(
       rendered.popular
         .find(({ id }) => id === fixture.ids[0])
         .text.includes('摄影素材与公开访问历史'.repeat(12)),
     );
+    report.behaviorStep = `period-${days}-daily-values`;
     await page.focus('loc=role:link[name="查看每日数值"]');
     await page.keyboard.press('Enter');
     await page.waitForSelector('[data-testid="analytics-daily"]');
@@ -334,8 +538,10 @@ export async function analyticsBehavior(page, config, tools, fixture, report) {
       popular: rendered.popular,
       daily,
     });
+    report.behaviorStep = `period-${days}-return-overview`;
     await tools.open(`/analytics?days=${days}`);
   }
+  report.behaviorStep = 'storage-usage';
   const usageAfter = await tools.request('/api/analytics/usage');
   assert.deepEqual(
     usageAfter.storages,
@@ -379,9 +585,10 @@ export async function analyticsBehavior(page, config, tools, fixture, report) {
     ),
   );
   report.checks.push(
-    '7/30/90 URL, trend/versions/popular and keyboard-accessible complete daily rows agree with actual SQLite. Today/cumulative/current usage stay fixed. Top ten preserve full names and deleted/recycled/disabled-content boundaries. Four disjoint usage groups and unknown objects never imply a complete total.',
+    '7/30/90 URL, trend/versions/popular and keyboard-accessible complete daily rows agree with actual SQLite. Today/cumulative/current usage stay fixed. Permanently deleted images are excluded before the ten-item limit, with the next image filling their place; their accesses remain in cumulative totals and daily trends. Recycled/private/disabled-storage history and full names remain. Four disjoint usage groups and unknown objects never imply a complete total.',
   );
 
+  report.behaviorStep = 'period-race';
   await tools.open('/analytics?days=7');
   const boundary = await analyticsBoundary(page, {
     path: '/api/analytics/overview',
@@ -429,6 +636,7 @@ export async function analyticsBehavior(page, config, tools, fixture, report) {
     await boundary.dispose();
   }
 
+  report.behaviorStep = 'keyboard-chart';
   await tools.open();
   await resizeViewport(page, 1440);
   const chart = '[data-testid="analytics-chart"] [role="application"]';
@@ -457,6 +665,7 @@ export async function analyticsBehavior(page, config, tools, fixture, report) {
     ['usage', '占用说明', '存储占用如何计算', '四类对象互斥计数'],
   ]) {
     for (const width of [390, 1440]) {
+      report.behaviorStep = `${view}-scope-${width}`;
       await tools.open(
         `/analytics?days=30${view === 'usage' ? '&view=usage' : ''}`,
       );
