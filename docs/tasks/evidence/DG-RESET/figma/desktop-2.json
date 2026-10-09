@@ -1,0 +1,1180 @@
+[
+  {
+    "id": "3:119",
+    "name": "重置邮件 · 提交反馈",
+    "width": 448,
+    "height": 191,
+    "modes": {},
+    "texts": [
+      {
+        "id": "3:120",
+        "text": "请检查邮箱"
+      },
+      {
+        "id": "3:121",
+        "text": "如果该邮箱与账号匹配，你将收到重置邮件。请检查收件箱和垃圾邮件；也可重新申请或使用容器终端恢复。"
+      },
+      {
+        "id": "I3:122;3:22",
+        "text": "知道了"
+      }
+    ],
+    "reactions": [
+      {
+        "id": "3:122",
+        "name": "Button/Primary",
+        "reactions": [
+          {
+            "action": {
+              "type": "CLOSE"
+            },
+            "actions": [
+              {
+                "type": "CLOSE"
+              }
+            ],
+            "trigger": {
+              "type": "ON_CLICK"
+            }
+          }
+        ]
+      }
+    ],
+    "shell": [
+      {
+        "id": "3:120",
+        "name": "请检查邮箱",
+        "type": "TEXT",
+        "x": 24,
+        "y": 24,
+        "width": 110,
+        "height": 33
+      },
+      {
+        "id": "3:121",
+        "name": "如果该邮箱与账号匹配，你将收到重置邮件。请检查收件箱和垃圾邮件；也可重新申请或使用容器终端恢复。",
+        "type": "TEXT",
+        "x": 24,
+        "y": 73,
+        "width": 400,
+        "height": 42
+      },
+      {
+        "id": "3:122",
+        "name": "Button/Primary",
+        "type": "INSTANCE",
+        "x": 24,
+        "y": 131,
+        "width": 400,
+        "height": 36
+      }
+    ]
+  },
+  {
+    "id": "216:2308",
+    "name": "D / 邮件找回 / 正在申请重置邮件",
+    "width": 1920,
+    "height": 960,
+    "modes": {},
+    "texts": [
+      {
+        "id": "216:2328",
+        "text": "正在申请重置邮件"
+      },
+      {
+        "id": "216:2329",
+        "text": "正在提交请求，请稍候。"
+      },
+      {
+        "id": "I216:2330;3:26",
+        "text": "提交中…"
+      },
+      {
+        "id": "I216:2332;3:30",
+        "text": "返回登录"
+      },
+      {
+        "id": "I216:2323;3:30",
+        "text": "← 返回首页"
+      }
+    ],
+    "reactions": [
+      {
+        "id": "216:2332",
+        "name": "恢复次操作",
+        "reactions": [
+          {
+            "action": {
+              "type": "NODE",
+              "destinationId": "2:11",
+              "navigation": "NAVIGATE",
+              "transition": null,
+              "resetVideoPosition": false,
+              "resetScrollPosition": true
+            },
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "2:11",
+                "navigation": "NAVIGATE",
+                "transition": null,
+                "resetVideoPosition": false,
+                "resetScrollPosition": true
+              }
+            ],
+            "trigger": {
+              "type": "ON_CLICK"
+            }
+          }
+        ]
+      },
+      {
+        "id": "216:2323",
+        "name": "公共导航 / 返回首页",
+        "reactions": [
+          {
+            "action": {
+              "type": "NODE",
+              "destinationId": "2:10",
+              "navigation": "NAVIGATE",
+              "transition": null,
+              "resetVideoPosition": false,
+              "resetScrollPosition": true
+            },
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "2:10",
+                "navigation": "NAVIGATE",
+                "transition": null,
+                "resetVideoPosition": false,
+                "resetScrollPosition": true
+              }
+            ],
+            "trigger": {
+              "type": "ON_CLICK"
+            }
+          }
+        ]
+      }
+    ],
+    "shell": [
+      {
+        "id": "216:2309",
+        "name": "公共页面柔光背景",
+        "type": "INSTANCE",
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 960
+      },
+      {
+        "id": "216:2310",
+        "name": "点阵底纹",
+        "type": "FRAME",
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 960
+      },
+      {
+        "id": "216:2312",
+        "name": "找回密码卡片",
+        "type": "FRAME",
+        "x": 720,
+        "y": 170,
+        "width": 480,
+        "height": 254
+      },
+      {
+        "id": "216:2323",
+        "name": "公共导航 / 返回首页",
+        "type": "INSTANCE",
+        "x": 20,
+        "y": 14,
+        "width": 112,
+        "height": 44
+      }
+    ]
+  },
+  {
+    "id": "216:2335",
+    "name": "D / 邮件找回 / 请检查邮箱",
+    "width": 1920,
+    "height": 960,
+    "modes": {},
+    "texts": [
+      {
+        "id": "216:2355",
+        "text": "请检查邮箱"
+      },
+      {
+        "id": "216:2356",
+        "text": "如果该邮箱与账号匹配，你将收到密码重置邮件。\n请检查收件箱和垃圾邮件。"
+      },
+      {
+        "id": "216:2357",
+        "text": "重置链接 1 小时内有效，且只能使用一次。未收到时可重新申请，或使用容器终端恢复。"
+      },
+      {
+        "id": "I216:2358;3:22",
+        "text": "返回登录"
+      },
+      {
+        "id": "I216:2360;3:30",
+        "text": "重新申请"
+      },
+      {
+        "id": "I221:1122;3:30",
+        "text": "无法收邮件？查看终端恢复方法"
+      },
+      {
+        "id": "I216:2350;3:30",
+        "text": "← 返回首页"
+      }
+    ],
+    "reactions": [
+      {
+        "id": "216:2358",
+        "name": "恢复主操作",
+        "reactions": [
+          {
+            "action": {
+              "type": "NODE",
+              "destinationId": "2:11",
+              "navigation": "NAVIGATE",
+              "transition": null,
+              "resetVideoPosition": false,
+              "resetScrollPosition": true
+            },
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "2:11",
+                "navigation": "NAVIGATE",
+                "transition": null,
+                "resetVideoPosition": false,
+                "resetScrollPosition": true
+              }
+            ],
+            "trigger": {
+              "type": "ON_CLICK"
+            }
+          }
+        ]
+      },
+      {
+        "id": "216:2360",
+        "name": "恢复次操作",
+        "reactions": [
+          {
+            "action": {
+              "type": "NODE",
+              "destinationId": "11:23",
+              "navigation": "NAVIGATE",
+              "transition": null,
+              "resetVideoPosition": false,
+              "resetScrollPosition": true
+            },
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "11:23",
+                "navigation": "NAVIGATE",
+                "transition": null,
+                "resetVideoPosition": false,
+                "resetScrollPosition": true
+              }
+            ],
+            "trigger": {
+              "type": "ON_CLICK"
+            }
+          }
+        ]
+      },
+      {
+        "id": "221:1122",
+        "name": "终端恢复入口",
+        "reactions": [
+          {
+            "action": {
+              "type": "NODE",
+              "destinationId": "217:2380",
+              "navigation": "NAVIGATE",
+              "transition": null,
+              "resetVideoPosition": false,
+              "resetScrollPosition": true
+            },
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "217:2380",
+                "navigation": "NAVIGATE",
+                "transition": null,
+                "resetVideoPosition": false,
+                "resetScrollPosition": true
+              }
+            ],
+            "trigger": {
+              "type": "ON_CLICK"
+            }
+          }
+        ]
+      },
+      {
+        "id": "216:2350",
+        "name": "公共导航 / 返回首页",
+        "reactions": [
+          {
+            "action": {
+              "type": "NODE",
+              "destinationId": "2:10",
+              "navigation": "NAVIGATE",
+              "transition": null,
+              "resetVideoPosition": false,
+              "resetScrollPosition": true
+            },
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "2:10",
+                "navigation": "NAVIGATE",
+                "transition": null,
+                "resetVideoPosition": false,
+                "resetScrollPosition": true
+              }
+            ],
+            "trigger": {
+              "type": "ON_CLICK"
+            }
+          }
+        ]
+      }
+    ],
+    "shell": [
+      {
+        "id": "216:2336",
+        "name": "公共页面柔光背景",
+        "type": "INSTANCE",
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 960
+      },
+      {
+        "id": "216:2337",
+        "name": "点阵底纹",
+        "type": "FRAME",
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 960
+      },
+      {
+        "id": "216:2339",
+        "name": "找回密码卡片",
+        "type": "FRAME",
+        "x": 720,
+        "y": 170,
+        "width": 480,
+        "height": 395
+      },
+      {
+        "id": "216:2350",
+        "name": "公共导航 / 返回首页",
+        "type": "INSTANCE",
+        "x": 20,
+        "y": 14,
+        "width": 112,
+        "height": 44
+      }
+    ]
+  },
+  {
+    "id": "216:2363",
+    "name": "D / 邮件找回 / 邮件找回暂不可用",
+    "width": 1920,
+    "height": 960,
+    "modes": {},
+    "texts": [
+      {
+        "id": "216:2383",
+        "text": "邮件找回暂不可用"
+      },
+      {
+        "id": "216:2384",
+        "text": "站点尚未配置邮件服务，暂时无法发送重置邮件。"
+      },
+      {
+        "id": "216:2385",
+        "text": "若你可以访问部署服务器，可在容器终端设置新密码。本地密码登录仍可使用。"
+      },
+      {
+        "id": "I216:2386;3:22",
+        "text": "查看终端恢复方法"
+      },
+      {
+        "id": "I216:2388;3:30",
+        "text": "返回登录"
+      },
+      {
+        "id": "I216:2378;3:30",
+        "text": "← 返回首页"
+      }
+    ],
+    "reactions": [
+      {
+        "id": "216:2386",
+        "name": "恢复主操作",
+        "reactions": [
+          {
+            "action": {
+              "type": "NODE",
+              "destinationId": "217:2380",
+              "navigation": "NAVIGATE",
+              "transition": null,
+              "resetVideoPosition": false,
+              "resetScrollPosition": true
+            },
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "217:2380",
+                "navigation": "NAVIGATE",
+                "transition": null,
+                "resetVideoPosition": false,
+                "resetScrollPosition": true
+              }
+            ],
+            "trigger": {
+              "type": "ON_CLICK"
+            }
+          }
+        ]
+      },
+      {
+        "id": "216:2388",
+        "name": "恢复次操作",
+        "reactions": [
+          {
+            "action": {
+              "type": "NODE",
+              "destinationId": "2:11",
+              "navigation": "NAVIGATE",
+              "transition": null,
+              "resetVideoPosition": false,
+              "resetScrollPosition": true
+            },
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "2:11",
+                "navigation": "NAVIGATE",
+                "transition": null,
+                "resetVideoPosition": false,
+                "resetScrollPosition": true
+              }
+            ],
+            "trigger": {
+              "type": "ON_CLICK"
+            }
+          }
+        ]
+      },
+      {
+        "id": "216:2378",
+        "name": "公共导航 / 返回首页",
+        "reactions": [
+          {
+            "action": {
+              "type": "NODE",
+              "destinationId": "2:10",
+              "navigation": "NAVIGATE",
+              "transition": null,
+              "resetVideoPosition": false,
+              "resetScrollPosition": true
+            },
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "2:10",
+                "navigation": "NAVIGATE",
+                "transition": null,
+                "resetVideoPosition": false,
+                "resetScrollPosition": true
+              }
+            ],
+            "trigger": {
+              "type": "ON_CLICK"
+            }
+          }
+        ]
+      }
+    ],
+    "shell": [
+      {
+        "id": "216:2364",
+        "name": "公共页面柔光背景",
+        "type": "INSTANCE",
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 960
+      },
+      {
+        "id": "216:2365",
+        "name": "点阵底纹",
+        "type": "FRAME",
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 960
+      },
+      {
+        "id": "216:2367",
+        "name": "找回密码卡片",
+        "type": "FRAME",
+        "x": 720,
+        "y": 170,
+        "width": 480,
+        "height": 310
+      },
+      {
+        "id": "216:2378",
+        "name": "公共导航 / 返回首页",
+        "type": "INSTANCE",
+        "x": 20,
+        "y": 14,
+        "width": 112,
+        "height": 44
+      }
+    ]
+  },
+  {
+    "id": "216:2391",
+    "name": "D / 邮件找回 / 邮件发送失败",
+    "width": 1920,
+    "height": 960,
+    "modes": {},
+    "texts": [
+      {
+        "id": "216:2411",
+        "text": "邮件发送失败"
+      },
+      {
+        "id": "216:2412",
+        "text": "暂时无法发送重置邮件，请稍后重试。"
+      },
+      {
+        "id": "216:2413",
+        "text": "也可以通过容器终端恢复密码。"
+      },
+      {
+        "id": "I216:2414;3:22",
+        "text": "重新尝试"
+      },
+      {
+        "id": "I216:2416;3:30",
+        "text": "查看终端恢复方法"
+      },
+      {
+        "id": "I216:2406;3:30",
+        "text": "← 返回首页"
+      }
+    ],
+    "reactions": [
+      {
+        "id": "216:2414",
+        "name": "恢复主操作",
+        "reactions": [
+          {
+            "action": {
+              "type": "NODE",
+              "destinationId": "216:2308",
+              "navigation": "NAVIGATE",
+              "transition": null,
+              "resetVideoPosition": false,
+              "resetScrollPosition": true
+            },
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "216:2308",
+                "navigation": "NAVIGATE",
+                "transition": null,
+                "resetVideoPosition": false,
+                "resetScrollPosition": true
+              }
+            ],
+            "trigger": {
+              "type": "ON_CLICK"
+            }
+          }
+        ]
+      },
+      {
+        "id": "216:2416",
+        "name": "恢复次操作",
+        "reactions": [
+          {
+            "action": {
+              "type": "NODE",
+              "destinationId": "217:2380",
+              "navigation": "NAVIGATE",
+              "transition": null,
+              "resetVideoPosition": false,
+              "resetScrollPosition": true
+            },
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "217:2380",
+                "navigation": "NAVIGATE",
+                "transition": null,
+                "resetVideoPosition": false,
+                "resetScrollPosition": true
+              }
+            ],
+            "trigger": {
+              "type": "ON_CLICK"
+            }
+          }
+        ]
+      },
+      {
+        "id": "216:2406",
+        "name": "公共导航 / 返回首页",
+        "reactions": [
+          {
+            "action": {
+              "type": "NODE",
+              "destinationId": "2:10",
+              "navigation": "NAVIGATE",
+              "transition": null,
+              "resetVideoPosition": false,
+              "resetScrollPosition": true
+            },
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "2:10",
+                "navigation": "NAVIGATE",
+                "transition": null,
+                "resetVideoPosition": false,
+                "resetScrollPosition": true
+              }
+            ],
+            "trigger": {
+              "type": "ON_CLICK"
+            }
+          }
+        ]
+      }
+    ],
+    "shell": [
+      {
+        "id": "216:2392",
+        "name": "公共页面柔光背景",
+        "type": "INSTANCE",
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 960
+      },
+      {
+        "id": "216:2393",
+        "name": "点阵底纹",
+        "type": "FRAME",
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 960
+      },
+      {
+        "id": "216:2395",
+        "name": "找回密码卡片",
+        "type": "FRAME",
+        "x": 720,
+        "y": 170,
+        "width": 480,
+        "height": 290
+      },
+      {
+        "id": "216:2406",
+        "name": "公共导航 / 返回首页",
+        "type": "INSTANCE",
+        "x": 20,
+        "y": 14,
+        "width": 112,
+        "height": 44
+      }
+    ]
+  },
+  {
+    "id": "217:2352",
+    "name": "D / 邮件找回 / 请稍后再试",
+    "width": 1920,
+    "height": 960,
+    "modes": {},
+    "texts": [
+      {
+        "id": "217:2372",
+        "text": "请稍后再试"
+      },
+      {
+        "id": "217:2373",
+        "text": "申请次数过于频繁，请稍后重新申请。"
+      },
+      {
+        "id": "217:2374",
+        "text": "如急需恢复，可使用容器终端。"
+      },
+      {
+        "id": "I217:2375;3:26",
+        "text": "稍后重试"
+      },
+      {
+        "id": "I217:2377;3:30",
+        "text": "查看终端恢复方法"
+      },
+      {
+        "id": "I217:2367;3:30",
+        "text": "← 返回首页"
+      }
+    ],
+    "reactions": [
+      {
+        "id": "217:2377",
+        "name": "恢复次操作",
+        "reactions": [
+          {
+            "action": {
+              "type": "NODE",
+              "destinationId": "217:2380",
+              "navigation": "NAVIGATE",
+              "transition": null,
+              "resetVideoPosition": false,
+              "resetScrollPosition": true
+            },
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "217:2380",
+                "navigation": "NAVIGATE",
+                "transition": null,
+                "resetVideoPosition": false,
+                "resetScrollPosition": true
+              }
+            ],
+            "trigger": {
+              "type": "ON_CLICK"
+            }
+          }
+        ]
+      },
+      {
+        "id": "217:2367",
+        "name": "公共导航 / 返回首页",
+        "reactions": [
+          {
+            "action": {
+              "type": "NODE",
+              "destinationId": "2:10",
+              "navigation": "NAVIGATE",
+              "transition": null,
+              "resetVideoPosition": false,
+              "resetScrollPosition": true
+            },
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "2:10",
+                "navigation": "NAVIGATE",
+                "transition": null,
+                "resetVideoPosition": false,
+                "resetScrollPosition": true
+              }
+            ],
+            "trigger": {
+              "type": "ON_CLICK"
+            }
+          }
+        ]
+      }
+    ],
+    "shell": [
+      {
+        "id": "217:2353",
+        "name": "公共页面柔光背景",
+        "type": "INSTANCE",
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 960
+      },
+      {
+        "id": "217:2354",
+        "name": "点阵底纹",
+        "type": "FRAME",
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 960
+      },
+      {
+        "id": "217:2356",
+        "name": "找回密码卡片",
+        "type": "FRAME",
+        "x": 720,
+        "y": 170,
+        "width": 480,
+        "height": 290
+      },
+      {
+        "id": "217:2367",
+        "name": "公共导航 / 返回首页",
+        "type": "INSTANCE",
+        "x": 20,
+        "y": 14,
+        "width": 112,
+        "height": 44
+      }
+    ]
+  },
+  {
+    "id": "217:2380",
+    "name": "D / 邮件找回 / 通过容器终端恢复",
+    "width": 1920,
+    "height": 960,
+    "modes": {},
+    "texts": [
+      {
+        "id": "217:2400",
+        "text": "通过容器终端恢复"
+      },
+      {
+        "id": "217:2401",
+        "text": "需要能够访问 Ariso 的部署服务器。"
+      },
+      {
+        "id": "217:2402",
+        "text": "在服务器终端运行下方命令；容器名不是 ariso 时，请替换为实际名称。"
+      },
+      {
+        "id": "217:2404",
+        "text": "docker exec -it ariso node dist/cli/reset-password.js"
+      },
+      {
+        "id": "217:2405",
+        "text": "按提示输入两次新密码，输入过程不显示密码。\n成功后使用新密码登录，所有设备的旧会话和未使用的重置链接都会失效。"
+      },
+      {
+        "id": "I217:2406;3:22",
+        "text": "返回登录"
+      },
+      {
+        "id": "I217:2408;3:30",
+        "text": "返回邮件找回"
+      },
+      {
+        "id": "I217:2395;3:30",
+        "text": "← 返回首页"
+      }
+    ],
+    "reactions": [
+      {
+        "id": "217:2406",
+        "name": "恢复主操作",
+        "reactions": [
+          {
+            "action": {
+              "type": "NODE",
+              "destinationId": "2:11",
+              "navigation": "NAVIGATE",
+              "transition": null,
+              "resetVideoPosition": false,
+              "resetScrollPosition": true
+            },
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "2:11",
+                "navigation": "NAVIGATE",
+                "transition": null,
+                "resetVideoPosition": false,
+                "resetScrollPosition": true
+              }
+            ],
+            "trigger": {
+              "type": "ON_CLICK"
+            }
+          }
+        ]
+      },
+      {
+        "id": "217:2408",
+        "name": "恢复次操作",
+        "reactions": [
+          {
+            "action": {
+              "type": "NODE",
+              "destinationId": "11:23",
+              "navigation": "NAVIGATE",
+              "transition": null,
+              "resetVideoPosition": false,
+              "resetScrollPosition": true
+            },
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "11:23",
+                "navigation": "NAVIGATE",
+                "transition": null,
+                "resetVideoPosition": false,
+                "resetScrollPosition": true
+              }
+            ],
+            "trigger": {
+              "type": "ON_CLICK"
+            }
+          }
+        ]
+      },
+      {
+        "id": "217:2395",
+        "name": "公共导航 / 返回首页",
+        "reactions": [
+          {
+            "action": {
+              "type": "NODE",
+              "destinationId": "2:10",
+              "navigation": "NAVIGATE",
+              "transition": null,
+              "resetVideoPosition": false,
+              "resetScrollPosition": true
+            },
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "2:10",
+                "navigation": "NAVIGATE",
+                "transition": null,
+                "resetVideoPosition": false,
+                "resetScrollPosition": true
+              }
+            ],
+            "trigger": {
+              "type": "ON_CLICK"
+            }
+          }
+        ]
+      }
+    ],
+    "shell": [
+      {
+        "id": "217:2381",
+        "name": "公共页面柔光背景",
+        "type": "INSTANCE",
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 960
+      },
+      {
+        "id": "217:2382",
+        "name": "点阵底纹",
+        "type": "FRAME",
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 960
+      },
+      {
+        "id": "217:2384",
+        "name": "找回密码卡片",
+        "type": "FRAME",
+        "x": 720,
+        "y": 170,
+        "width": 480,
+        "height": 426
+      },
+      {
+        "id": "217:2395",
+        "name": "公共导航 / 返回首页",
+        "type": "INSTANCE",
+        "x": 20,
+        "y": 14,
+        "width": 112,
+        "height": 44
+      }
+    ]
+  },
+  {
+    "id": "217:2411",
+    "name": "D / 邮件找回 / 检查邮箱地址",
+    "width": 1920,
+    "height": 960,
+    "modes": {},
+    "texts": [
+      {
+        "id": "217:2431",
+        "text": "检查邮箱地址"
+      },
+      {
+        "id": "217:2432",
+        "text": "请输入用于登录的邮箱。"
+      },
+      {
+        "id": "217:2434",
+        "text": "邮箱"
+      },
+      {
+        "id": "I217:2435;3:28",
+        "text": "owner@"
+      },
+      {
+        "id": "217:2437",
+        "text": "请输入有效的邮箱地址"
+      },
+      {
+        "id": "I217:2438;3:22",
+        "text": "发送重置邮件"
+      },
+      {
+        "id": "I217:2440;3:30",
+        "text": "返回登录"
+      },
+      {
+        "id": "I217:2426;3:30",
+        "text": "← 返回首页"
+      }
+    ],
+    "reactions": [
+      {
+        "id": "217:2438",
+        "name": "恢复主操作",
+        "reactions": [
+          {
+            "action": {
+              "type": "NODE",
+              "destinationId": "216:2308",
+              "navigation": "NAVIGATE",
+              "transition": null,
+              "resetVideoPosition": false,
+              "resetScrollPosition": true
+            },
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "216:2308",
+                "navigation": "NAVIGATE",
+                "transition": null,
+                "resetVideoPosition": false,
+                "resetScrollPosition": true
+              }
+            ],
+            "trigger": {
+              "type": "ON_CLICK"
+            }
+          }
+        ]
+      },
+      {
+        "id": "217:2440",
+        "name": "恢复次操作",
+        "reactions": [
+          {
+            "action": {
+              "type": "NODE",
+              "destinationId": "2:11",
+              "navigation": "NAVIGATE",
+              "transition": null,
+              "resetVideoPosition": false,
+              "resetScrollPosition": true
+            },
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "2:11",
+                "navigation": "NAVIGATE",
+                "transition": null,
+                "resetVideoPosition": false,
+                "resetScrollPosition": true
+              }
+            ],
+            "trigger": {
+              "type": "ON_CLICK"
+            }
+          }
+        ]
+      },
+      {
+        "id": "217:2426",
+        "name": "公共导航 / 返回首页",
+        "reactions": [
+          {
+            "action": {
+              "type": "NODE",
+              "destinationId": "2:10",
+              "navigation": "NAVIGATE",
+              "transition": null,
+              "resetVideoPosition": false,
+              "resetScrollPosition": true
+            },
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": "2:10",
+                "navigation": "NAVIGATE",
+                "transition": null,
+                "resetVideoPosition": false,
+                "resetScrollPosition": true
+              }
+            ],
+            "trigger": {
+              "type": "ON_CLICK"
+            }
+          }
+        ]
+      }
+    ],
+    "shell": [
+      {
+        "id": "217:2412",
+        "name": "公共页面柔光背景",
+        "type": "INSTANCE",
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 960
+      },
+      {
+        "id": "217:2413",
+        "name": "点阵底纹",
+        "type": "FRAME",
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 960
+      },
+      {
+        "id": "217:2415",
+        "name": "找回密码卡片",
+        "type": "FRAME",
+        "x": 720,
+        "y": 170,
+        "width": 480,
+        "height": 369
+      },
+      {
+        "id": "217:2426",
+        "name": "公共导航 / 返回首页",
+        "type": "INSTANCE",
+        "x": 20,
+        "y": 14,
+        "width": 112,
+        "height": 44
+      }
+    ]
+  }
+]

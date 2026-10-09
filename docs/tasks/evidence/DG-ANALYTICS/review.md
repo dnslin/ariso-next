@@ -26,3 +26,9 @@ OwnerShell 的 /admin 和 /analytics 仍禁用，/admin 鉴权后跳上传；无
 格式、任务结构和链接检查由实施者执行并保存原始结果；本审查未重复执行。纯文档没有新增程序条件或行为测试，因此条件变异实验不适用。浏览器 full 计划当前没有 analytics 阶段，现有 analytics 集成测试被默认 integration include 收集；文档要求 #179 接入默认流程，未修改 suite/only 分派。#169 的 1727/1728 完整集成失败仍明确保留，没有被定向复验或审查结论改写。
 
 五轴审查结果：正确性与模块边界一致；表达能区分现状、设计样例和计划；复用统一交接/执行规范，没有新建规则；证据不含测试账号、密码或存储凭据；没有业务性能或资源生命周期变化。无范围外修复建议。
+
+## PR #268 并发 main 集成复审
+
+2026-10-09，按 `code-review-and-quality` 复核合入 `origin/main`（`72f23ba5`）后的暂存内容。结论：**Approve**，无 Critical / Required。唯一人工冲突位于 `docs/design/README.md`，解决结果同时保留 DG-ANALYTICS 与 DG-RESET 索引，其他既有索引文案保留，仅表格对齐变化。
+
+实际双向读取 `git diff --cached HEAD` 与 `git diff --cached origin/main`：相对任务 HEAD 仅接入 main 的 DG-RESET 文档、证据及其索引；相对 main 仅保留本任务 DG-ANALYTICS 文档、证据及其索引。DG-RESET 的平台消费卡及全部证据相对 main 无差异，DG-ANALYTICS 的消费卡及既有证据相对任务 HEAD 无差异。acceptance 和 gates 自动合并后，两组记录和开放验收责任均完整保留，无遗漏、覆盖或产品范围扩大。没有重读 Figma、重复已通过检查或运行应用测试；本次复审只追加本段记录。
