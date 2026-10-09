@@ -189,6 +189,7 @@ try {
         ['/settings/processing', '/settings/general', 'processing-settings'],
         ['/settings/account', '/settings/general', 'account-settings'],
         ['/settings/api', '/settings/general', 'api-settings'],
+        ['/settings/api/usage', '/settings/general', 'upload-usage'],
         ['/settings/email', '/settings/general', 'smtp-settings'],
         [
           `/settings/storage/${storage.id}`,

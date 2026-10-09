@@ -471,24 +471,25 @@ export async function captureTokensLayouts(page, config, report) {
       );
       await ui.geometry(`time-info-${theme}-${width}`, width);
       await page.keyboard.press('Escape');
-      await page.focus('loc=role:button[name="上传用法（尚未开放）"]');
+      await page.focus('[data-testid="api-usage"]');
       await page.keyboard.press('Enter');
-      await page.waitForFunction(() =>
-        document.body.textContent.includes('上传用法尚未开放'),
+      await page.waitForURL(`${config.origin}/settings/api/usage`);
+      await page.waitForSelector(
+        '[data-testid="upload-usage-page"][data-state="ready"]',
       );
-      await ui.geometry(`usage-info-${theme}-${width}`, width);
-      await page.keyboard.press('Escape');
-      assert.equal(
-        await page.evaluate(() =>
-          document.activeElement?.getAttribute('aria-label'),
-        ),
-        '上传用法（尚未开放）',
-        'Closing usage help returns focus to its visible icon',
+      await ui.geometry(`usage-page-${theme}-${width}`, width);
+      await page.click('[data-testid="upload-usage-back"]');
+      await page.waitForURL(`${config.origin}/settings/api`);
+      await page.waitForSelector(
+        '[data-testid="api-page"][data-state="ready"]',
+      );
+      await page.waitForFunction(
+        () => document.activeElement?.dataset.testid === 'api-usage',
       );
       assert.deepEqual(
         await ui.sourceState(),
         pageState,
-        'Help retains the source page and scroll',
+        'Returning from upload usage retains the Token route, scroll and source focus',
       );
       const snapshot = await ui.openCreate();
       await ui.geometry(`create-${theme}-${width}`, width);

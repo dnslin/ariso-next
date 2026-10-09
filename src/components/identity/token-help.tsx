@@ -4,7 +4,10 @@ import { useState } from 'react';
 import { Button } from '@heroui/react/button';
 import { Popover } from '@heroui/react/popover';
 import { Tooltip } from '@heroui/react/tooltip';
+import { Link } from '@heroui/react/link';
+import { useQueryClient } from '@tanstack/react-query';
 import { BookOpen, Info } from 'lucide-react';
+import { rememberTokenReturnScroll } from './token-return-context';
 
 export function TokenTimeInfo({ timeZone }: { timeZone: string }) {
   const [open, setOpen] = useState(false);
@@ -55,30 +58,21 @@ export function TokenTimeInfo({ timeZone }: { timeZone: string }) {
 }
 
 export function TokenUsageInfo() {
+  const client = useQueryClient();
   return (
-    <Popover>
-      <Button
-        data-testid="api-usage"
-        aria-label="上传用法（尚未开放）"
-        isIconOnly
-        variant="ghost"
-        className="size-11 min-w-11 rounded-lg p-0 text-muted"
-      >
-        <BookOpen className="size-[18px]" aria-hidden />
-      </Button>
-      <Popover.Content
-        placement="bottom end"
-        className="max-w-72 rounded-xl border border-border bg-surface p-4"
-      >
-        <Popover.Dialog className="grid gap-2 text-sm text-foreground">
-          <Popover.Heading className="font-medium">
-            上传用法尚未开放
-          </Popover.Heading>
-          <p className="text-xs leading-relaxed text-muted">
-            公共上传接口交付后，这里将进入独立用法页面，提供上传命令和错误说明。
-          </p>
-        </Popover.Dialog>
-      </Popover.Content>
-    </Popover>
+    <Link
+      href="/settings/api/usage"
+      data-testid="api-usage"
+      aria-label="上传用法"
+      className="flex size-11 min-w-11 items-center justify-center rounded-lg p-0 text-muted"
+      onPress={() => {
+        rememberTokenReturnScroll(
+          client,
+          document.querySelector<HTMLElement>('.shell-content')?.scrollTop ?? 0,
+        );
+      }}
+    >
+      <BookOpen className="size-[18px]" aria-hidden />
+    </Link>
   );
 }

@@ -1,0 +1,533 @@
+{
+  "status": "passed",
+  "phase": "recovery",
+  "origin": "http://ariso-61381.localhost:61381",
+  "checks": [
+    {
+      "ownerBoundary": 307,
+      "returnTo": "/settings/api/usage"
+    },
+    {
+      "specification": {
+        "publicHttpStatus": 200,
+        "destination": "http://ariso-61381.localhost:61381/api/openapi.json",
+        "paths": ["/api/upload"],
+        "configuredServer": "http://uploadsuploadsuploadsuploadsuploadsuploadsuploads.imagesimagesimagesimagesimagesimagesimagesimages.assetsassetsassetsassetsassetsassetsassetsassets.example.test"
+      }
+    },
+    {
+      "actualPublicUrl": "http://uploadsuploadsuploadsuploadsuploadsuploadsuploads.imagesimagesimagesimagesimagesimagesimagesimages.assetsassetsassetsassetsassetsassetsassetsassets.example.test",
+      "actualLimitBytes": 24117248,
+      "generatedCommandExact": true
+    },
+    {
+      "readFault": "pending",
+      "actualHttpStatus": 200,
+      "explicitRecovery": true
+    },
+    {
+      "readFault": "lost-response",
+      "actualHttpStatus": 200,
+      "explicitRecovery": true
+    },
+    {
+      "expiredSession": {
+        "actualSettingsHttpStatus": 401,
+        "commandRemoved": true,
+        "reloginReturnTo": "/settings/api/usage",
+        "restoredActualCommand": true
+      }
+    }
+  ],
+  "layouts": [
+    {
+      "name": "loading",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回 Token 列表",
+          "width": 121.765625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传注意事项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看 OpenAPI 3.0 规范",
+          "width": 161.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "请求参数",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "响应与异常",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "read-error",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回 Token 列表",
+          "width": 121.765625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传注意事项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新加载",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看 OpenAPI 3.0 规范",
+          "width": 161.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "请求参数",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "响应与异常",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "session-expired-light-1440",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "分享管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "返回 Token 列表",
+          "width": 121.765625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传注意事项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新登录",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看 OpenAPI 3.0 规范",
+          "width": 161.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "请求参数",
+          "width": 840,
+          "height": 52,
+          "navigation": false
+        },
+        {
+          "name": "响应与异常",
+          "width": 840,
+          "height": 52,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "session-expired-light-390",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回 Token 列表",
+          "width": 121.765625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传注意事项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新登录",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看 OpenAPI 3.0 规范",
+          "width": 161.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "请求参数",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "响应与异常",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "session-expired-dark-1440",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "分享管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "返回 Token 列表",
+          "width": 121.765625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传注意事项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新登录",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看 OpenAPI 3.0 规范",
+          "width": 161.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "请求参数",
+          "width": 840,
+          "height": 52,
+          "navigation": false
+        },
+        {
+          "name": "响应与异常",
+          "width": 840,
+          "height": 52,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "session-expired-dark-390",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回 Token 列表",
+          "width": 121.765625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传注意事项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新登录",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看 OpenAPI 3.0 规范",
+          "width": 161.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "请求参数",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "响应与异常",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    "upload-usage-loading.png",
+    "upload-usage-read-error.png",
+    "upload-usage-session-expired-light-1440.png",
+    "upload-usage-session-expired-light-390.png",
+    "upload-usage-session-expired-dark-1440.png",
+    "upload-usage-session-expired-dark-390.png"
+  ],
+  "requests": [],
+  "clipboard": [],
+  "limitations": [
+    "Disposable runner database only; mouse, keyboard and mobile viewport emulation do not prove physical touch or soft keyboard behavior."
+  ],
+  "browserErrors": [],
+  "finishedAt": "2026-10-09T04:15:59.604Z"
+}

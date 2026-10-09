@@ -24,6 +24,7 @@ export function loginDestination(value: string | string[] | undefined) {
       '/shares',
       '/settings/account',
       '/settings/api',
+      '/settings/api/usage',
       '/settings/email',
     ].includes(url.pathname) ||
       /^\/(?:albums|shares)\/[^/]+$/.test(url.pathname))

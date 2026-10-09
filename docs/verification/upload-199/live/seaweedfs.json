@@ -1,0 +1,132 @@
+{
+  "service": "seaweedfs",
+  "node": "v24.18.1",
+  "startedAt": "2026-10-09T00:38:04.194Z",
+  "finishedAt": "2026-10-09T00:38:17.270Z",
+  "status": "passed",
+  "storageId": "56c15efb-5a6e-495d-9ae4-32715ba99bd5",
+  "checks": [
+    {
+      "name": "real-s3-probe-and-enable",
+      "status": "passed",
+      "detail": {
+        "storageId": "56c15efb-5a6e-495d-9ae4-32715ba99bd5",
+        "probeCleaned": true
+      }
+    },
+    {
+      "name": "unauthorized-generated-curl-creates-no-assets",
+      "detail": {
+        "status": 401,
+        "code": "UPLOAD_TOKEN_INVALID",
+        "stage": "authentication"
+      },
+      "status": "passed"
+    },
+    {
+      "name": "invalid-generated-curl-creates-no-assets",
+      "detail": {
+        "status": 400,
+        "code": "UPLOAD_INVALID_INPUT",
+        "stage": "preparing"
+      },
+      "status": "passed"
+    },
+    {
+      "name": "minimal-generated-curl-uses-current-default-public",
+      "detail": {
+        "imageId": "73504e4b-a287-4329-95b4-4f8013288bad",
+        "storageId": "56c15efb-5a6e-495d-9ae4-32715ba99bd5",
+        "visibility": "public",
+        "status": 201,
+        "jobId": "a561dab1-6bf8-4990-92ab-cd9fe2aa2db0",
+        "versions": ["compressed", "original", "thumbnail"]
+      },
+      "status": "passed"
+    },
+    {
+      "name": "minimal-generated-curl-uses-current-default-private",
+      "detail": {
+        "imageId": "31b435af-b37e-464b-9033-757dfa29ad43",
+        "storageId": "56c15efb-5a6e-495d-9ae4-32715ba99bd5",
+        "visibility": "private",
+        "status": 201,
+        "jobId": "d5ba7851-525f-42e5-801c-b48773c1d922",
+        "versions": ["compressed", "original", "thumbnail"]
+      },
+      "status": "passed"
+    },
+    {
+      "name": "full-generated-curl-repeated-album-and-tag-fields-private",
+      "detail": {
+        "imageId": "71f56075-d076-41c9-8464-2d557db57665",
+        "storageId": "56c15efb-5a6e-495d-9ae4-32715ba99bd5",
+        "visibility": "private",
+        "status": 201,
+        "jobId": "e1b22e7f-61ac-4ec5-bcf4-fbddc84618d7",
+        "versions": ["compressed", "original", "thumbnail"],
+        "albumCount": 2,
+        "tagCount": 2,
+        "matchedExistingTag": true
+      },
+      "status": "passed"
+    },
+    {
+      "name": "own-namespace-empty-after-cleanup",
+      "status": "passed",
+      "detail": []
+    }
+  ],
+  "keys": [
+    "images/73504e4b-a287-4329-95b4-4f8013288bad/compressed/00403e0c-2e34-4df8-be27-3ec7246893bd",
+    "images/73504e4b-a287-4329-95b4-4f8013288bad/thumbnail/7f919a85-9828-4bce-aeba-b2cb5a2ee37f",
+    "original/73504e4b-a287-4329-95b4-4f8013288bad.png",
+    "images/31b435af-b37e-464b-9033-757dfa29ad43/thumbnail/eb036cc1-64c0-45e3-9245-428f3cd88739",
+    "original/31b435af-b37e-464b-9033-757dfa29ad43.png",
+    "images/31b435af-b37e-464b-9033-757dfa29ad43/compressed/adf66b34-9abb-4b55-8874-a3d44c4dd933",
+    "images/71f56075-d076-41c9-8464-2d557db57665/compressed/2ffb257a-a5c8-4f13-a23c-93aebd1bbef3",
+    "images/71f56075-d076-41c9-8464-2d557db57665/thumbnail/83bf3473-3980-4de0-9895-d14b5c859750",
+    "original/71f56075-d076-41c9-8464-2d557db57665.png"
+  ],
+  "cleanup": [
+    {
+      "key": "images/73504e4b-a287-4329-95b4-4f8013288bad/compressed/00403e0c-2e34-4df8-be27-3ec7246893bd",
+      "result": "absent"
+    },
+    {
+      "key": "images/73504e4b-a287-4329-95b4-4f8013288bad/thumbnail/7f919a85-9828-4bce-aeba-b2cb5a2ee37f",
+      "result": "absent"
+    },
+    {
+      "key": "original/73504e4b-a287-4329-95b4-4f8013288bad.png",
+      "result": "absent"
+    },
+    {
+      "key": "images/31b435af-b37e-464b-9033-757dfa29ad43/thumbnail/eb036cc1-64c0-45e3-9245-428f3cd88739",
+      "result": "absent"
+    },
+    {
+      "key": "original/31b435af-b37e-464b-9033-757dfa29ad43.png",
+      "result": "absent"
+    },
+    {
+      "key": "images/31b435af-b37e-464b-9033-757dfa29ad43/compressed/adf66b34-9abb-4b55-8874-a3d44c4dd933",
+      "result": "absent"
+    },
+    {
+      "key": "images/71f56075-d076-41c9-8464-2d557db57665/compressed/2ffb257a-a5c8-4f13-a23c-93aebd1bbef3",
+      "result": "absent"
+    },
+    {
+      "key": "images/71f56075-d076-41c9-8464-2d557db57665/thumbnail/83bf3473-3980-4de0-9895-d14b5c859750",
+      "result": "absent"
+    },
+    {
+      "key": "original/71f56075-d076-41c9-8464-2d557db57665.png",
+      "result": "absent"
+    }
+  ],
+  "limits": [
+    "Generated curl examples, standalone HTTP and own namespace only; no AWS, browser, container or deployment."
+  ]
+}
