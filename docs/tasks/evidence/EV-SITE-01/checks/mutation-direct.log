@@ -1,0 +1,27 @@
+
+ RUN  v5.0.0 /private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-brand-review-mutation-cadhaxhs
+
+ ❯ tests/integration/site/brand-parser.test.ts (59 tests | 1 failed | 58 skipped) 96ms
+   ❯ EV-SITE-01 content-based brand parser (33)
+     × accepts logo source.png by real content without changing bytes 95ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/integration/site/brand-parser.test.ts > EV-SITE-01 content-based brand parser > accepts logo source.png by real content without changing bytes
+Error: Unsupported logo format: PNG
+ ❯ validateBrandFile tests/experiments/site-branding/lab.ts:50:9
+     48|     if (allowed.includes(facts.format))
+     49|       throw Object.assign(
+     50|         new Error(`Unsupported ${kind} format: ${facts.format}`),
+       |         ^
+     51|         {
+     52|           code: 'SITE_ASSET_TYPE_UNSUPPORTED',
+ ❯ tests/integration/site/brand-parser.test.ts:159:14
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 58 skipped (59)
+   Start at  09:15:22
+   Duration  405ms (transform 36%, import 32%, tests 31%, worker 1%)

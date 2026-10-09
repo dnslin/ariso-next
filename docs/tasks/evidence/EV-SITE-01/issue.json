@@ -1,0 +1,8 @@
+{
+  "body": "任务 ID：`EV-SITE-01`\n\n- 任务组：工程前置\n- 里程碑：按消费任务提前执行\n- 规格：[site §6](https://github.com/dnslin/ariso-next/blob/main/docs/specs/SPEC-site.md)\n- 直接前置：无\n- 范围：复用依赖后固定必要图片/XML解析器；品牌允许格式/静态SVG、5MiB流式边界与HTTP显示。\n- 验收条件：扩展名/MIME不可信，动态/损坏/超限拒绝；SVG只图片显示不变同源可执行文档；替换失败原引用仍可用。\n- 验证方法：许可明确的PNG/JPEG/WebP/ICO/SVG、脚本/动画/损坏/5MiB边界请求；记录解析库版本与真实响应。\n- 预计文件：验证夹具、所属模块测试或独立实验目录及 `docs/tasks/evidence/EV-SITE-01/` 报告；不预建业务模块。\n- 界面：无产品界面交付；浏览器实验只用于验证实际库/协议，不关闭 DES/RG 或业务界面任务。\n\n## 执行与依赖\n\n直接前置：无。同时建立 GitHub 原生阻塞关系；全部前置交付后才能开始依赖它的工作。\n\n按 [执行约定](https://github.com/dnslin/ariso-next/blob/main/docs/tasks/execution.md) 和 [设计交付规范](https://github.com/dnslin/ariso-next/blob/main/docs/design/handoff.md) 执行。纯文档按适用检查；业务改动先构建再集成，界面同时验证桌面/手机和设计。双架构在 Release 阶段验证，日常任务不因未发布而阻塞。真实存储矩阵为 AWS S3、R2、SeaweedFS；EV-STORAGE-01 的 AWS 豁免不自动扩展到后续验收。\n\n交付时填写 PR、实际命令、环境、结果与证据。任务创建不代表实现或验证完成。",
+  "comments": [],
+  "number": 149,
+  "state": "OPEN",
+  "title": "[EV-SITE-01] 品牌文件解析验证",
+  "url": "https://github.com/dnslin/ariso-next/issues/149"
+}

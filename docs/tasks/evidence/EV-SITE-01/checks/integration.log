@@ -1,0 +1,66 @@
+Already up to date
+Done in 85ms using pnpm v11.19.0
+$ vitest run --project integration --project media-tools --maxWorkers=4
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-149-brand-parser/ariso
+
+{"level":"error","time":"2026-10-09T01:10:52.833Z","module":"identity.auth","details":[{"type":"APIError","message":"API Key has expired","stack":"APIError: API Key has expired","status":"UNAUTHORIZED","body":{"type":"Object","message":"API Key has expired","code":"KEY_EXPIRED"},"headers":{},"statusCode":401,"name":"APIError"}],"msg":"Failed to validate API key:"}
+{"level":"error","time":"2026-10-09T01:10:54.129Z","module":"identity.auth","details":[{"type":"APIError","message":"API Key is disabled","stack":"APIError: API Key is disabled","status":"UNAUTHORIZED","body":{"type":"Object","message":"API Key is disabled","code":"KEY_DISABLED"},"headers":{},"statusCode":401,"name":"APIError"}],"msg":"Failed to validate API key:"}
+{"level":"error","time":"2026-10-09T01:10:54.146Z","module":"identity.auth","details":[{"type":"APIError","message":"Invalid API key.","stack":"APIError: Invalid API key.","status":"UNAUTHORIZED","body":{"type":"Object","message":"Invalid API key.","code":"INVALID_API_KEY"},"headers":{},"statusCode":401,"name":"APIError"}],"msg":"Failed to validate API key:"}
+{"level":"error","time":"2026-10-09T01:10:55.917Z","module":"identity.auth","details":[{"type":"APIError","message":"Invalid API key.","stack":"APIError: Invalid API key.","status":"UNAUTHORIZED","body":{"type":"Object","message":"Invalid API key.","code":"INVALID_API_KEY"},"headers":{},"statusCode":401,"name":"APIError"}],"msg":"Failed to validate API key:"}
+{"level":"error","time":"2026-10-09T01:11:10.189Z","module":"identity.auth","details":[{"type":"APIError","message":"API Key not found","stack":"APIError: API Key not found","status":"UNAUTHORIZED","body":{"type":"Object","message":"API Key not found","code":"KEY_NOT_FOUND"},"headers":{},"statusCode":401,"name":"APIError"}],"msg":"Failed to validate API key:"}
+{"level":"error","time":"2026-10-09T01:11:10.208Z","module":"identity.auth","details":[{"type":"APIError","message":"API Key has expired","stack":"APIError: API Key has expired","status":"UNAUTHORIZED","body":{"type":"Object","message":"API Key has expired","code":"KEY_EXPIRED"},"headers":{},"statusCode":401,"name":"APIError"}],"msg":"Failed to validate API key:"}
+{"time":"2026-10-09T01:12:56.637Z","level":"info","module":"identity.setup","event":"setup-code","code":"[redacted]","msg":"请使用初始化码完成 setup"}
+{"level":"info","time":"2026-10-09T01:12:56.708Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+ ❯ |integration| tests/integration/runtime/health.test.ts (4 tests | 1 failed) 16197ms
+   × stall-body：实际 HTTP 故障可诊断或及时取消，并清理子进程 10008ms
+{"time":"2026-10-09T01:12:57.334Z","level":"info","module":"identity.setup","event":"setup-code","code":"[redacted]","msg":"请使用初始化码完成 setup"}
+{"level":"error","time":"2026-10-09T01:12:57.341Z","module":"identity.setup","err":{"type":"Error","message":"controlled hash failure","stack":"Error: controlled hash failure\n    at /Users/dnslin/.codex/worktrees/issue-149-brand-parser/ariso/tests/integration/identity/setup-lifecycle.test.ts:122:40\n    at file:///Users/dnslin/.codex/worktrees/issue-149-brand-parser/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:1628:35\n    at file:///Users/dnslin/.codex/worktrees/issue-149-brand-parser/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:2783:26\n    at file:///Users/dnslin/.codex/worktrees/issue-149-brand-parser/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3319:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/dnslin/.codex/worktrees/issue-149-brand-parser/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3314:10)\n    at file:///Users/dnslin/.codex/worktrees/issue-149-brand-parser/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3299:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/dnslin/.codex/worktrees/issue-149-brand-parser/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3257:10)\n    at file:///Users/dnslin/.codex/worktrees/issue-149-brand-parser/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3876:64"},"databasePath":"/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-setup-lifecycle-IzpYV6/data/ariso.db","msg":"Initialization request failed"}
+{"level":"info","time":"2026-10-09T01:12:57.346Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+{"time":"2026-10-09T01:12:58.075Z","level":"info","module":"identity.setup","event":"setup-code","code":"[redacted]","msg":"请使用初始化码完成 setup"}
+{"level":"info","time":"2026-10-09T01:12:58.134Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/runtime/health.test.ts > stall-body：实际 HTTP 故障可诊断或及时取消，并清理子进程
+Error: node:internal/modules/esm/resolve:271
+    throw new ERR_MODULE_NOT_FOUND(
+          ^
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/Users/dnslin/.codex/worktrees/issue-149-brand-parser/ariso/node_modules/.pnpm/@better-auth+core@1.7.5_@better-auth+utils@0.4.2_@better-fetch+fetch@1.3.2_better-call@_aeeaf3b82675b7015ca28463c6d3c0b3/node_modules/@better-auth/core/dist/social-providers/apple.mjs' imported from /Users/dnslin/.codex/worktrees/issue-149-brand-parser/ariso/node_modules/.pnpm/@better-auth+core@1.7.5_@better-auth+utils@0.4.2_@better-fetch+fetch@1.3.2_better-call@_aeeaf3b82675b7015ca28463c6d3c0b3/node_modules/@better-auth/core/dist/social-providers/index.mjs
+    at finalizeResolution (node:internal/modules/esm/resolve:271:11)
+    at moduleResolve (node:internal/modules/esm/resolve:865:10)
+    at defaultResolve (node:internal/modules/esm/resolve:992:11)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:701:20)
+    at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:721:38)
+    at ModuleLoader.resolveSync (node:internal/modules/esm/loader:759:56)
+    at #resolve (node:internal/modules/esm/loader:683:17)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:35)
+    at ModuleJob.syncLink (node:internal/modules/esm/module_job:163:33)
+    at ModuleJob.link (node:internal/modules/esm/module_job:253:17) {
+  code: 'ERR_MODULE_NOT_FOUND',
+  url: 'file:///Users/dnslin/.codex/worktrees/issue-149-brand-parser/ariso/node_modules/.pnpm/@better-auth+core@1.7.5_@better-auth+utils@0.4.2_@better-fetch+fetch@1.3.2_better-call@_aeeaf3b82675b7015ca28463c6d3c0b3/node_modules/@better-auth/core/dist/social-providers/apple.mjs'
+}
+
+Node.js v24.18.1
+
+ ❯ tests/integration/runtime/health.test.ts:211:10
+    209|           { timeout: 10000 },
+    210|         )
+    211|         .toBe(200);
+       |          ^
+    212|       const acknowledged = once(child, 'message', {
+    213|         signal: AbortSignal.timeout(5000),
+
+Caused by: Error: Matcher did not succeed in time.
+ ❯ tests/integration/runtime/health.test.ts:199:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 184 passed (185)
+      Tests  1 failed | 1822 passed (1823)
+   Start at  09:10:35
+   Duration  304.73s (tests 95%, import 5%)
+
+[ELIFECYCLE] Command failed with exit code 1.
