@@ -1,0 +1,19 @@
+2026-10-09 Independent agent brand_review, code-review-and-quality.
+Verdict: approve code; no unresolved Required finding.
+Tests reviewed before implementation; Issue, SPEC-site 6/7, task card,
+module boundaries and default integration/browser call paths inspected.
+Required lifecycle defect reproduced independently and fixed:
+close cancels all active handlers and waits before directory removal;
+a suspended commit cannot publish after shutdown.
+Required stale browser evidence defect fixed:
+new JSON/screenshot/download products use the existing startup cleanup list.
+Real chunked HTTP 413, retained prior bytes and request-directory cleanup
+covered. SVG uses image decoding and attachment download, with sandbox/nosniff.
+Mutation in isolated copy: inverted format-admission condition fails the PNG
+acceptance test; restoring it passes 1/1. Logs saved separately.
+No production branding route/module, authentication or database completion claimed.
+Document conclusions reviewed as accurate; broader failed checks retained.
+Final evidence re-review: accurate; no new Required finding.
+Full browser 21 passed / 9 failed / 3 blocked, interrupted with later stages
+unexecuted; late effects recorded without unsupported brand causality.
+Final focused brand runner 09:38:42-09:38:47 passed; draft remains required.

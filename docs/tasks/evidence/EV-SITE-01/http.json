@@ -1,0 +1,1138 @@
+[
+  {
+    "case": "unsupported logo multiple.ico",
+    "status": 415,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "code": "SITE_ASSET_TYPE_UNSUPPORTED"
+    }
+  },
+  {
+    "case": "unsupported favicon static.jpg",
+    "status": 415,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "code": "SITE_ASSET_TYPE_UNSUPPORTED"
+    }
+  },
+  {
+    "case": "unsupported favicon static.webp",
+    "status": 415,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "code": "SITE_ASSET_TYPE_UNSUPPORTED"
+    }
+  },
+  {
+    "case": "unsupported logo static.gif",
+    "status": 415,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "code": "SITE_ASSET_TYPE_UNSUPPORTED"
+    }
+  },
+  {
+    "case": "unsupported favicon static.gif",
+    "status": 415,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "code": "SITE_ASSET_TYPE_UNSUPPORTED"
+    }
+  },
+  {
+    "case": "damaged source.png",
+    "status": 400,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "code": "SITE_ASSET_INVALID"
+    }
+  },
+  {
+    "case": "damaged static.jpg",
+    "status": 400,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "code": "SITE_ASSET_INVALID"
+    }
+  },
+  {
+    "case": "damaged static.webp",
+    "status": 400,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "code": "SITE_ASSET_INVALID"
+    }
+  },
+  {
+    "case": "damaged multiple.ico",
+    "status": 400,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "code": "SITE_ASSET_INVALID"
+    }
+  },
+  {
+    "case": "SVG external loopback canary",
+    "status": 400,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "code": "SITE_ASSET_INVALID"
+    }
+  },
+  {
+    "case": "accept logo source.png",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "url": "/branding/92bcfc43-8759-4ce3-be76-0abb6637a40e.png",
+      "mime": "image/png",
+      "format": "PNG",
+      "bytes": 420
+    }
+  },
+  {
+    "case": "read logo source.png",
+    "status": 200,
+    "headers": {
+      "content-type": "image/png",
+      "content-disposition": "inline; filename=\"92bcfc43-8759-4ce3-be76-0abb6637a40e.png\"",
+      "csp": null,
+      "nosniff": "nosniff"
+    },
+    "body": {
+      "byteLength": 420
+    }
+  },
+  {
+    "case": "accept logo static.jpg",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "url": "/branding/c931aee2-19c8-473e-8d0a-f6abc401f6ea.jpg",
+      "mime": "image/jpeg",
+      "format": "JPEG",
+      "bytes": 373
+    }
+  },
+  {
+    "case": "read logo static.jpg",
+    "status": 200,
+    "headers": {
+      "content-type": "image/jpeg",
+      "content-disposition": "inline; filename=\"c931aee2-19c8-473e-8d0a-f6abc401f6ea.jpg\"",
+      "csp": null,
+      "nosniff": "nosniff"
+    },
+    "body": {
+      "byteLength": 373
+    }
+  },
+  {
+    "case": "accept logo static.webp",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "url": "/branding/cef7e19c-238e-4c01-80ac-39a751d5399e.webp",
+      "mime": "image/webp",
+      "format": "WEBP",
+      "bytes": 144
+    }
+  },
+  {
+    "case": "read logo static.webp",
+    "status": 200,
+    "headers": {
+      "content-type": "image/webp",
+      "content-disposition": "inline; filename=\"cef7e19c-238e-4c01-80ac-39a751d5399e.webp\"",
+      "csp": null,
+      "nosniff": "nosniff"
+    },
+    "body": {
+      "byteLength": 144
+    }
+  },
+  {
+    "case": "accept logo static.svg",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "url": "/branding/977131cd-043a-4a2e-8828-8e3e6c56facd.svg",
+      "mime": "image/svg+xml",
+      "format": "SVG",
+      "bytes": 224
+    }
+  },
+  {
+    "case": "read logo static.svg",
+    "status": 200,
+    "headers": {
+      "content-type": "image/svg+xml",
+      "content-disposition": "attachment; filename=\"977131cd-043a-4a2e-8828-8e3e6c56facd.svg\"",
+      "csp": "sandbox; default-src 'none'",
+      "nosniff": "nosniff"
+    },
+    "body": {
+      "byteLength": 224
+    }
+  },
+  {
+    "case": "accept favicon source.png",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "url": "/branding/66caed60-fe21-49b9-9471-65b3ea3ddd73.png",
+      "mime": "image/png",
+      "format": "PNG",
+      "bytes": 420
+    }
+  },
+  {
+    "case": "read favicon source.png",
+    "status": 200,
+    "headers": {
+      "content-type": "image/png",
+      "content-disposition": "inline; filename=\"66caed60-fe21-49b9-9471-65b3ea3ddd73.png\"",
+      "csp": null,
+      "nosniff": "nosniff"
+    },
+    "body": {
+      "byteLength": 420
+    }
+  },
+  {
+    "case": "accept favicon multiple.ico",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "url": "/branding/ed293f5e-e807-489f-8467-241d2aa654d5.ico",
+      "mime": "image/x-icon",
+      "format": "ICO",
+      "bytes": 22382
+    }
+  },
+  {
+    "case": "read favicon multiple.ico",
+    "status": 200,
+    "headers": {
+      "content-type": "image/x-icon",
+      "content-disposition": "inline; filename=\"ed293f5e-e807-489f-8467-241d2aa654d5.ico\"",
+      "csp": null,
+      "nosniff": "nosniff"
+    },
+    "body": {
+      "byteLength": 22382
+    }
+  },
+  {
+    "case": "accept favicon static.svg",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "url": "/branding/f8b5999a-34c2-410b-a2e6-eb5aca30de9e.svg",
+      "mime": "image/svg+xml",
+      "format": "SVG",
+      "bytes": 224
+    }
+  },
+  {
+    "case": "read favicon static.svg",
+    "status": 200,
+    "headers": {
+      "content-type": "image/svg+xml",
+      "content-disposition": "attachment; filename=\"f8b5999a-34c2-410b-a2e6-eb5aca30de9e.svg\"",
+      "csp": "sandbox; default-src 'none'",
+      "nosniff": "nosniff"
+    },
+    "body": {
+      "byteLength": 224
+    }
+  },
+  {
+    "case": "logo 5MiB -1",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "url": "/branding/e0fcd6e9-7381-425c-81ab-6741233e2181.svg",
+      "mime": "image/svg+xml",
+      "format": "SVG",
+      "bytes": 5242879
+    }
+  },
+  {
+    "case": "logo 5MiB +0",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "url": "/branding/69694b7f-e1ea-478a-9166-07451531a74b.svg",
+      "mime": "image/svg+xml",
+      "format": "SVG",
+      "bytes": 5242880
+    }
+  },
+  {
+    "case": "logo 5MiB +1",
+    "status": 413,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "code": "SITE_ASSET_TOO_LARGE"
+    }
+  },
+  {
+    "case": "old logo after oversized",
+    "status": 200,
+    "headers": {
+      "content-type": "image/svg+xml",
+      "content-disposition": "attachment; filename=\"69694b7f-e1ea-478a-9166-07451531a74b.svg\"",
+      "csp": "sandbox; default-src 'none'",
+      "nosniff": "nosniff"
+    },
+    "body": {
+      "byteLength": 5242880
+    }
+  },
+  {
+    "case": "favicon 5MiB -1",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "url": "/branding/8b14f7ef-abbd-46ea-872d-2b18e6a00a32.svg",
+      "mime": "image/svg+xml",
+      "format": "SVG",
+      "bytes": 5242879
+    }
+  },
+  {
+    "case": "favicon 5MiB +0",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "url": "/branding/0caf7132-48e1-49c5-a7b6-8ae7095d343e.svg",
+      "mime": "image/svg+xml",
+      "format": "SVG",
+      "bytes": 5242880
+    }
+  },
+  {
+    "case": "favicon 5MiB +1",
+    "status": 413,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "code": "SITE_ASSET_TOO_LARGE"
+    }
+  },
+  {
+    "case": "old favicon after oversized",
+    "status": 200,
+    "headers": {
+      "content-type": "image/svg+xml",
+      "content-disposition": "attachment; filename=\"0caf7132-48e1-49c5-a7b6-8ae7095d343e.svg\"",
+      "csp": "sandbox; default-src 'none'",
+      "nosniff": "nosniff"
+    },
+    "body": {
+      "byteLength": 5242880
+    }
+  },
+  {
+    "case": "chunked overflow seed",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "url": "/branding/3c9d31a8-513f-4760-977c-9f9ec860bb71.png",
+      "mime": "image/png",
+      "format": "PNG",
+      "bytes": 420
+    }
+  },
+  {
+    "case": "chunked oversized upload",
+    "status": 413,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "code": "SITE_ASSET_TOO_LARGE"
+    }
+  },
+  {
+    "case": "previous logo after chunked overflow",
+    "status": 200,
+    "headers": {
+      "content-type": "image/png",
+      "content-disposition": "inline; filename=\"3c9d31a8-513f-4760-977c-9f9ec860bb71.png\"",
+      "csp": null,
+      "nosniff": "nosniff"
+    },
+    "body": {
+      "byteLength": 420
+    }
+  },
+  {
+    "case": "seed previous logo",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "url": "/branding/ba47ecaa-89ac-44c6-903a-cca4f70fe0d2.png",
+      "mime": "image/png",
+      "format": "PNG",
+      "bytes": 420
+    }
+  },
+  {
+    "case": "unsupported ICO logo",
+    "status": 415,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "code": "SITE_ASSET_TYPE_UNSUPPORTED"
+    }
+  },
+  {
+    "case": "previous logo after unsupported ICO logo",
+    "status": 200,
+    "headers": {
+      "content-type": "image/png",
+      "content-disposition": "inline; filename=\"ba47ecaa-89ac-44c6-903a-cca4f70fe0d2.png\"",
+      "csp": null,
+      "nosniff": "nosniff"
+    },
+    "body": {
+      "byteLength": 420
+    }
+  },
+  {
+    "case": "corrupt PNG",
+    "status": 400,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "code": "SITE_ASSET_INVALID"
+    }
+  },
+  {
+    "case": "previous logo after corrupt PNG",
+    "status": 200,
+    "headers": {
+      "content-type": "image/png",
+      "content-disposition": "inline; filename=\"ba47ecaa-89ac-44c6-903a-cca4f70fe0d2.png\"",
+      "csp": null,
+      "nosniff": "nosniff"
+    },
+    "body": {
+      "byteLength": 420
+    }
+  },
+  {
+    "case": "non-image bytes",
+    "status": 400,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "code": "SITE_ASSET_INVALID"
+    }
+  },
+  {
+    "case": "previous logo after non-image bytes",
+    "status": 200,
+    "headers": {
+      "content-type": "image/png",
+      "content-disposition": "inline; filename=\"ba47ecaa-89ac-44c6-903a-cca4f70fe0d2.png\"",
+      "csp": null,
+      "nosniff": "nosniff"
+    },
+    "body": {
+      "byteLength": 420
+    }
+  },
+  {
+    "case": "SVG script",
+    "status": 400,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "code": "SITE_ASSET_INVALID"
+    }
+  },
+  {
+    "case": "previous logo after SVG script",
+    "status": 200,
+    "headers": {
+      "content-type": "image/png",
+      "content-disposition": "inline; filename=\"ba47ecaa-89ac-44c6-903a-cca4f70fe0d2.png\"",
+      "csp": null,
+      "nosniff": "nosniff"
+    },
+    "body": {
+      "byteLength": 420
+    }
+  },
+  {
+    "case": "SVG event",
+    "status": 400,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "code": "SITE_ASSET_INVALID"
+    }
+  },
+  {
+    "case": "previous logo after SVG event",
+    "status": 200,
+    "headers": {
+      "content-type": "image/png",
+      "content-disposition": "inline; filename=\"ba47ecaa-89ac-44c6-903a-cca4f70fe0d2.png\"",
+      "csp": null,
+      "nosniff": "nosniff"
+    },
+    "body": {
+      "byteLength": 420
+    }
+  },
+  {
+    "case": "SVG SMIL animate",
+    "status": 400,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "code": "SITE_ASSET_INVALID"
+    }
+  },
+  {
+    "case": "previous logo after SVG SMIL animate",
+    "status": 200,
+    "headers": {
+      "content-type": "image/png",
+      "content-disposition": "inline; filename=\"ba47ecaa-89ac-44c6-903a-cca4f70fe0d2.png\"",
+      "csp": null,
+      "nosniff": "nosniff"
+    },
+    "body": {
+      "byteLength": 420
+    }
+  },
+  {
+    "case": "SVG SMIL set",
+    "status": 400,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "code": "SITE_ASSET_INVALID"
+    }
+  },
+  {
+    "case": "previous logo after SVG SMIL set",
+    "status": 200,
+    "headers": {
+      "content-type": "image/png",
+      "content-disposition": "inline; filename=\"ba47ecaa-89ac-44c6-903a-cca4f70fe0d2.png\"",
+      "csp": null,
+      "nosniff": "nosniff"
+    },
+    "body": {
+      "byteLength": 420
+    }
+  },
+  {
+    "case": "SVG CSS keyframes",
+    "status": 400,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "code": "SITE_ASSET_INVALID"
+    }
+  },
+  {
+    "case": "previous logo after SVG CSS keyframes",
+    "status": 200,
+    "headers": {
+      "content-type": "image/png",
+      "content-disposition": "inline; filename=\"ba47ecaa-89ac-44c6-903a-cca4f70fe0d2.png\"",
+      "csp": null,
+      "nosniff": "nosniff"
+    },
+    "body": {
+      "byteLength": 420
+    }
+  },
+  {
+    "case": "SVG CSS animation",
+    "status": 400,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "code": "SITE_ASSET_INVALID"
+    }
+  },
+  {
+    "case": "previous logo after SVG CSS animation",
+    "status": 200,
+    "headers": {
+      "content-type": "image/png",
+      "content-disposition": "inline; filename=\"ba47ecaa-89ac-44c6-903a-cca4f70fe0d2.png\"",
+      "csp": null,
+      "nosniff": "nosniff"
+    },
+    "body": {
+      "byteLength": 420
+    }
+  },
+  {
+    "case": "SVG CSS transition",
+    "status": 400,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "code": "SITE_ASSET_INVALID"
+    }
+  },
+  {
+    "case": "previous logo after SVG CSS transition",
+    "status": 200,
+    "headers": {
+      "content-type": "image/png",
+      "content-disposition": "inline; filename=\"ba47ecaa-89ac-44c6-903a-cca4f70fe0d2.png\"",
+      "csp": null,
+      "nosniff": "nosniff"
+    },
+    "body": {
+      "byteLength": 420
+    }
+  },
+  {
+    "case": "SVG external https image",
+    "status": 400,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "code": "SITE_ASSET_INVALID"
+    }
+  },
+  {
+    "case": "previous logo after SVG external https image",
+    "status": 200,
+    "headers": {
+      "content-type": "image/png",
+      "content-disposition": "inline; filename=\"ba47ecaa-89ac-44c6-903a-cca4f70fe0d2.png\"",
+      "csp": null,
+      "nosniff": "nosniff"
+    },
+    "body": {
+      "byteLength": 420
+    }
+  },
+  {
+    "case": "SVG external file image",
+    "status": 400,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "code": "SITE_ASSET_INVALID"
+    }
+  },
+  {
+    "case": "previous logo after SVG external file image",
+    "status": 200,
+    "headers": {
+      "content-type": "image/png",
+      "content-disposition": "inline; filename=\"ba47ecaa-89ac-44c6-903a-cca4f70fe0d2.png\"",
+      "csp": null,
+      "nosniff": "nosniff"
+    },
+    "body": {
+      "byteLength": 420
+    }
+  },
+  {
+    "case": "SVG external CSS resource",
+    "status": 400,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "code": "SITE_ASSET_INVALID"
+    }
+  },
+  {
+    "case": "previous logo after SVG external CSS resource",
+    "status": 200,
+    "headers": {
+      "content-type": "image/png",
+      "content-disposition": "inline; filename=\"ba47ecaa-89ac-44c6-903a-cca4f70fe0d2.png\"",
+      "csp": null,
+      "nosniff": "nosniff"
+    },
+    "body": {
+      "byteLength": 420
+    }
+  },
+  {
+    "case": "SVG malformed XML",
+    "status": 400,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "code": "SITE_ASSET_INVALID"
+    }
+  },
+  {
+    "case": "previous logo after SVG malformed XML",
+    "status": 200,
+    "headers": {
+      "content-type": "image/png",
+      "content-disposition": "inline; filename=\"ba47ecaa-89ac-44c6-903a-cca4f70fe0d2.png\"",
+      "csp": null,
+      "nosniff": "nosniff"
+    },
+    "body": {
+      "byteLength": 420
+    }
+  },
+  {
+    "case": "first logo",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "url": "/branding/5cecc689-f9a1-4fe5-afc1-b3458d8f8760.png",
+      "mime": "image/png",
+      "format": "PNG",
+      "bytes": 420
+    }
+  },
+  {
+    "case": "independent favicon",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "url": "/branding/64e5584b-845a-4524-8d98-5f93fce07481.png",
+      "mime": "image/png",
+      "format": "PNG",
+      "bytes": 420
+    }
+  },
+  {
+    "case": "replace logo",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "url": "/branding/a2a730ef-45dc-4ed9-9e2e-f3acf4c476ac.svg",
+      "mime": "image/svg+xml",
+      "format": "SVG",
+      "bytes": 224
+    }
+  },
+  {
+    "case": "old logo after successful replacement",
+    "status": 404,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "code": "NOT_FOUND"
+    }
+  },
+  {
+    "case": "new logo after successful replacement",
+    "status": 200,
+    "headers": {
+      "content-type": "image/svg+xml",
+      "content-disposition": "attachment; filename=\"a2a730ef-45dc-4ed9-9e2e-f3acf4c476ac.svg\"",
+      "csp": "sandbox; default-src 'none'",
+      "nosniff": "nosniff"
+    },
+    "body": {
+      "byteLength": 224
+    }
+  },
+  {
+    "case": "favicon unaffected by logo replacement",
+    "status": 200,
+    "headers": {
+      "content-type": "image/png",
+      "content-disposition": "inline; filename=\"64e5584b-845a-4524-8d98-5f93fce07481.png\"",
+      "csp": null,
+      "nosniff": "nosniff"
+    },
+    "body": {
+      "byteLength": 420
+    }
+  },
+  {
+    "case": "beforeWrite seed",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "url": "/branding/a1d1428b-c004-4966-9589-8b5815826413.png",
+      "mime": "image/png",
+      "format": "PNG",
+      "bytes": 420
+    }
+  },
+  {
+    "case": "beforeWrite injected failure",
+    "status": 500,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "code": "SITE_ASSET_IO_FAILED"
+    }
+  },
+  {
+    "case": "beforeWrite previous asset remains readable",
+    "status": 200,
+    "headers": {
+      "content-type": "image/png",
+      "content-disposition": "inline; filename=\"a1d1428b-c004-4966-9589-8b5815826413.png\"",
+      "csp": null,
+      "nosniff": "nosniff"
+    },
+    "body": {
+      "byteLength": 420
+    }
+  },
+  {
+    "case": "beforeCommit seed",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "url": "/branding/e4188976-9f61-4ea0-a22c-a5b50dc45038.png",
+      "mime": "image/png",
+      "format": "PNG",
+      "bytes": 420
+    }
+  },
+  {
+    "case": "beforeCommit injected failure",
+    "status": 500,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "code": "SITE_ASSET_IO_FAILED"
+    }
+  },
+  {
+    "case": "beforeCommit previous asset remains readable",
+    "status": 200,
+    "headers": {
+      "content-type": "image/png",
+      "content-disposition": "inline; filename=\"e4188976-9f61-4ea0-a22c-a5b50dc45038.png\"",
+      "csp": null,
+      "nosniff": "nosniff"
+    },
+    "body": {
+      "byteLength": 420
+    }
+  },
+  {
+    "case": "shutdown previous logo seed",
+    "status": 200,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "url": "/branding/97777f61-6425-41b7-9106-e5e12bcb1a05.png",
+      "mime": "image/png",
+      "format": "PNG",
+      "bytes": 420
+    }
+  },
+  {
+    "case": "not multipart",
+    "status": 400,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "code": "SITE_ASSET_INVALID"
+    }
+  },
+  {
+    "case": "malformed multipart",
+    "status": 400,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "code": "SITE_ASSET_INVALID"
+    }
+  },
+  {
+    "case": "missing file",
+    "status": 400,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "code": "SITE_ASSET_INVALID"
+    }
+  },
+  {
+    "case": "repeated file",
+    "status": 400,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "code": "SITE_ASSET_INVALID"
+    }
+  },
+  {
+    "case": "extra field",
+    "status": 400,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "code": "SITE_ASSET_INVALID"
+    }
+  },
+  {
+    "case": "empty file",
+    "status": 400,
+    "headers": {
+      "content-type": "application/json",
+      "content-disposition": null,
+      "csp": null,
+      "nosniff": null
+    },
+    "body": {
+      "code": "SITE_ASSET_INVALID"
+    }
+  }
+]
