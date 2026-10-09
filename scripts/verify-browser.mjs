@@ -77,6 +77,8 @@ for (const name of [
   'upload-settings.json',
   'upload-settings-failure.png',
   'upload-input.json',
+  'upload-usage.json',
+  'upload-usage-failure.png',
   'upload-s3.json',
   'copy-dropdown.json',
   'storage-cors.json',

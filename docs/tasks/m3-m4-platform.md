@@ -461,16 +461,18 @@
 - 直接前置：`T-UP-05`、`T-UI-01`、`DG-API`
 - 验收条件：只公布公共上传接口；multipart重复字段数组、全部HTTP错误、可空ID/actualVersion、默认值与站点限制区别清楚；超时先核对和重发可能重复通过Tips可查看（2026-10-09所有者明确调整）。示例地址来自当前site，Token仅调用方自行提供，不写入仓库/共享日志；不承诺PicGo专用配置。生成结果与运行时Schema一致，新增生成检查接入已有质量命令。
 - 验证方法：在对应模块新增单元与集成测试，运行 `pnpm run test:unit`、`pnpm run test:integration`。 任务新增OpenAPI生成/一致性测试并通过 `pnpm run test:unit`；对本地/S3执行用法页最小与完整curl及错误示例；`pnpm run test:browser` 验证折叠、复制失败、长地址与手机阅读。
-- 界面：`/settings/api`进入上传用法详情，`GET /api/openapi.json`提供无秘密规范；详情为计划中的所有者子页`/settings/api/usage`，不另增公开业务API。桌面 [248:2137](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=248-2137)、手机 [248:4061](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=248-4061)；复制失败复用 桌面 [249:1465](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=249-1465)、手机 [249:3588](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=249-3588)。HeroUI：Accordion、Button、Link、Alert、TextArea、Table、Tooltip/Popover，代码块仅作可选文本展示，无需自制编辑器；手机默认最小示例、参数/结果分折叠，超时与重发注意事项采用标题旁Tips（2026-10-09所有者明确调整），回Token列表恢复上下文。
+- 界面：`/settings/api`进入上传用法详情，`GET /api/openapi.json`提供无秘密规范；详情为已实现的所有者子页`/settings/api/usage`，不另增公开业务API。桌面 [248:2137](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=248-2137)、手机 [248:4061](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=248-4061)；复制失败 桌面 [984:33230](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=984-33230)、手机 [984:33960](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=984-33960)；Tips 桌面 [984:33083](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=984-33083)、手机 [984:33890](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=984-33890)。HeroUI：Accordion、Button、Link、TextArea、Table、Tooltip/Popover，代码块仅作可选文本展示，无需自制编辑器；手机默认最小示例、参数/结果分折叠，超时与重发注意事项采用标题旁Tips（2026-10-09所有者明确调整），回Token列表恢复上下文。
 - 需求：`R-8.4-08`、`R-23.4-01`、`A-26.3-08`
 - 实施步骤：
   - [x] 1. 共享 schema 生成规范并验证错误/数组/可空字段一致。
-  - [ ] 2. 用法页真实 curl 与复制：当前站点地址、超时说明和手机阅读。
-- 当前实施：[Issue #199 记录](../verification/upload-199/README.md)。公开规范与共享curl已实现，Local/R2/SeaweedFS真实示例验证；产品用法页新增交互原型待批准，Figma同步、生产浏览器、设计还原与人工验收未完成，PR保持草稿。
+  - [x] 2. 用法页真实 curl 与复制：当前站点地址、超时说明和手机阅读。
+- 当前实施：[Issue #199 记录](../verification/upload-199/README.md)。公开规范、共享curl、用法页和Token入口已实现，Local/R2/SeaweedFS真实示例验证；用户已批准表格、复制图标与Tips原型，对应Figma已同步。用法页完整定向浏览器、独立质量与生产设计评审通过；默认浏览器整体失败及未验证项以该记录为准。人工验收未完成，PR保持草稿，整卡/DES不自动关闭。
 
 #### DG-API 对 T-UP-06 的核对结论（2026-10-05）
 
 本卡消费 `UI-API / DES-06-API`；保留本卡需求编号及 upload 的契约生成职责。与 Token 管理的 identity 边界不变。实际回读及截图见 [DG-API 证据](./evidence/DG-API/README.md)。
+
+2026-10-09 实施补充：以下保留2026-10-05核对时的计划与前置历史。T-UP-05现已交付；本次原型获用户批准并同步Figma，公开规范与所有者详情已实现。当前能力、实际验证和剩余验收以 [Issue #199实施记录](../verification/upload-199/README.md) 为准，不能沿用下文历史缺口判断现状。
 
 - **可复用设计：** 用法详情 `248:2137/248:4061` 保留公共外壳、返回 Token 列表、标题、最小 curl、替换提示及两个折叠区，不恢复旧的重复设置标题、分类器或外层大卡。请求参数展开 `259:1405/259:3304`、结果展开 `259:1518/259:3340` 可作为动态内容容器；手机保持同一层级并纵向滚动。入口仍为 `/settings/api`，详情采用所有者子页 `/settings/api/usage`，由本卡实现，不新增公共业务 API。公开规范仅为计划中的 `GET /api/openapi.json`，不能把当前原型链接当成已实现路由。
 - **控件与公共复用：** 复用 `OwnerShell/AdminShell`、品牌与账号区、主题和共享通知；详情使用明确返回操作。HeroUI Accordion 承载两个折叠区，Button/Link 承载复制和规范入口，TextArea 承载必要的完整手动文本，代码块只是可选文本展示，不引入 Swagger UI 或编辑器。Token 复制失败 `249:1465/249:3588` 仅提供完整可选文本和失败语义，不能连同“关闭后 Token 不可找回”的正文直接搬到用法页。成功复制保留页面、展开状态、滚动与焦点，使用简短中性通知或按钮反馈；普通替换/超时说明用必要的简洁文字。

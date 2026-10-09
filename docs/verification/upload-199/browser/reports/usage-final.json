@@ -1,0 +1,2130 @@
+{
+  "status": "passed",
+  "origin": "http://ariso-60602.localhost:60602",
+  "checks": [
+    {
+      "ownerBoundary": 307,
+      "returnTo": "/settings/api/usage"
+    },
+    {
+      "specification": {
+        "publicHttpStatus": 200,
+        "destination": "http://ariso-60602.localhost:60602/api/openapi.json",
+        "paths": ["/api/upload"],
+        "configuredServer": "http://uploadsuploadsuploadsuploadsuploadsuploadsuploads.imagesimagesimagesimagesimagesimagesimagesimages.assetsassetsassetsassetsassetsassetsassetsassets.example.test"
+      }
+    },
+    {
+      "actualPublicUrl": "http://uploadsuploadsuploadsuploadsuploadsuploadsuploads.imagesimagesimagesimagesimagesimagesimagesimages.assetsassetsassetsassetsassetsassetsassetsassets.example.test",
+      "actualLimitBytes": 24117248,
+      "generatedCommandExact": true
+    },
+    {
+      "tables": {
+        "请求参数表": [
+          "file是—恰好一个图片文件，不支持 URL。大小受当前站点上限限制。",
+          "storageId否当前默认存储存储 ID。空串无效；没有默认存储时需要显式提供。",
+          "albumId否不加入相册重复同名字段传多个 ID，自动去重；不使用逗号串或 albumId[]。",
+          "tag否不添加标签重复同名字段传多个名称，匹配或创建；逗号属于名称。每个名称 1–50 个 Unicode 码点，不含换行或控制字符。",
+          "visibility否提交时默认可见性public 或 private。私有链接需要所有者 Cookie，上传 Token 不能读取。"
+        ],
+        "响应字段表": [
+          "imageIdstring / null图片 ID。尚未创建时为 null；接收后的错误保留真实 ID。",
+          "statusstring本次请求的结果状态。成功为 ready；未创建为 not_created，错误也可为 pending、processing、ready、failed 或 unavailable。",
+          "currentImageStatusstring，可选仅在当前图片状态与本次结果不同等情况出现。",
+          "urlstring，成功时默认版本链接；私有图片需要所有者 Cookie。",
+          "actualVersionstring / null，成功时默认链接实际采用的版本：original、compressed、thumbnail、watermark，或 null。",
+          "defaultResolutionobject，成功时available 表示默认版本是否可用；不可用时 code 为 VERSION_UNAVAILABLE，否则为 null。",
+          "versionsobject，成功时只列已保存的版本；每项包含 url 与 mime，不返回尚未生成的版本。",
+          "processing.statusstring，成功时本次处理成功，值为 succeeded。",
+          "processing.versionsobject，成功时各版本的 status 与可空 reason；状态为 succeeded、not_applicable、disabled 或 not_generated。",
+          "processing.warningsarray，成功时处理警告列表，每项包含 code、stage、message。",
+          "errorobject，错误时错误 code、发生阶段 stage 和可读信息 message。",
+          "requestIdstring请求诊断 ID，成功与错误均返回。"
+        ],
+        "HTTP 状态表": [
+          "201本次处理完成返回真实保存版本。actualVersion 为 null 不改变成功结果。",
+          "400输入无效未知字段、重复单值字段、缺失/额外/空文件，或截断/取消的接收流。",
+          "401认证失败Token 缺失、无效、停用或过期。",
+          "408接收超时120 秒无进度，或超过 1800 秒接收预算。",
+          "409状态冲突存储/目标冲突，或已接收图片、任务不可用。",
+          "413文件过大超过接收开始时固定的当前上限。",
+          "415格式不支持不是支持的图片，或无法识别内容。",
+          "422处理失败保留真实图片 ID、原图和已保存版本。",
+          "500内部错误数据库、接收/发布等未分类故障。",
+          "502存储依赖故障对象存储服务请求失败。",
+          "503处理不可用处理工具不可用，或服务正在停止。",
+          "504等待/依赖超时等待本次任务超过 900 秒，或存储/工具超时。等待任务结果超时不会取消已接收任务。",
+          "507空间不足暂存、存储或处理所需磁盘空间不足。"
+        ]
+      }
+    },
+    "Open Tips closes across 390→768, 768→390 and 390→1440; hidden triggers leave no portal overlay.",
+    {
+      "mobileTableKeyboardScroll": {
+        "before": {
+          "left": 0,
+          "width": 356,
+          "scrollWidth": 566,
+          "firstColumnLeft": 17
+        },
+        "after": {
+          "left": 40,
+          "firstColumnLeft": 17
+        }
+      }
+    },
+    {
+      "mobileTableKeyboardScroll": {
+        "before": {
+          "left": 0,
+          "width": 356,
+          "scrollWidth": 566,
+          "firstColumnLeft": 17
+        },
+        "after": {
+          "left": 10,
+          "firstColumnLeft": 17
+        }
+      }
+    },
+    "Real Token entry navigation and explicit return preserve source route, content/window scroll and source focus.",
+    {
+      "readFault": "pending",
+      "actualHttpStatus": 200,
+      "explicitRecovery": true
+    },
+    {
+      "readFault": "lost-response",
+      "actualHttpStatus": 200,
+      "explicitRecovery": true
+    }
+  ],
+  "layouts": [
+    {
+      "name": "light-1440-minimal",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "分享管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "返回 Token 列表",
+          "width": 121.765625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传注意事项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "最小示例",
+          "width": 86,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "完整示例",
+          "width": 86,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "复制命令",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看 OpenAPI 3.0 规范",
+          "width": 161.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "请求参数",
+          "width": 840,
+          "height": 52,
+          "navigation": false
+        },
+        {
+          "name": "响应与异常",
+          "width": 840,
+          "height": 52,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "light-1440-full",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "分享管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "返回 Token 列表",
+          "width": 121.765625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传注意事项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "最小示例",
+          "width": 86,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "完整示例",
+          "width": 86,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "复制命令",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看 OpenAPI 3.0 规范",
+          "width": 161.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "请求参数",
+          "width": 840,
+          "height": 52,
+          "navigation": false
+        },
+        {
+          "name": "响应与异常",
+          "width": 840,
+          "height": 52,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "light-360-minimal",
+      "width": 360,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回 Token 列表",
+          "width": 121.765625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传注意事项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "最小示例",
+          "width": 86,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "完整示例",
+          "width": 86,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "复制命令",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看 OpenAPI 3.0 规范",
+          "width": 161.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "请求参数",
+          "width": 328,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "响应与异常",
+          "width": 328,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "light-360-full",
+      "width": 360,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回 Token 列表",
+          "width": 121.765625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传注意事项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "最小示例",
+          "width": 86,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "完整示例",
+          "width": 86,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "复制命令",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看 OpenAPI 3.0 规范",
+          "width": 161.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "请求参数",
+          "width": 328,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "响应与异常",
+          "width": 328,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "light-390-minimal",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回 Token 列表",
+          "width": 121.765625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传注意事项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "最小示例",
+          "width": 86,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "完整示例",
+          "width": 86,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "复制命令",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看 OpenAPI 3.0 规范",
+          "width": 161.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "请求参数",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "响应与异常",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "light-390-full",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回 Token 列表",
+          "width": 121.765625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传注意事项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "最小示例",
+          "width": 86,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "完整示例",
+          "width": 86,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "复制命令",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看 OpenAPI 3.0 规范",
+          "width": 161.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "请求参数",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "响应与异常",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "light-430-minimal",
+      "width": 430,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回 Token 列表",
+          "width": 121.765625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传注意事项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "最小示例",
+          "width": 86,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "完整示例",
+          "width": 86,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "复制命令",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看 OpenAPI 3.0 规范",
+          "width": 161.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "请求参数",
+          "width": 398,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "响应与异常",
+          "width": 398,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "light-430-full",
+      "width": 430,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回 Token 列表",
+          "width": 121.765625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传注意事项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "最小示例",
+          "width": 86,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "完整示例",
+          "width": 86,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "复制命令",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看 OpenAPI 3.0 规范",
+          "width": 161.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "请求参数",
+          "width": 398,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "响应与异常",
+          "width": 398,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "light-768-minimal",
+      "width": 768,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回 Token 列表",
+          "width": 121.765625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传注意事项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "最小示例",
+          "width": 86,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "完整示例",
+          "width": 86,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "复制命令",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看 OpenAPI 3.0 规范",
+          "width": 161.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "请求参数",
+          "width": 736,
+          "height": 52,
+          "navigation": false
+        },
+        {
+          "name": "响应与异常",
+          "width": 736,
+          "height": 52,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "light-768-full",
+      "width": 768,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回 Token 列表",
+          "width": 121.765625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传注意事项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "最小示例",
+          "width": 86,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "完整示例",
+          "width": 86,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "复制命令",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看 OpenAPI 3.0 规范",
+          "width": 161.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "请求参数",
+          "width": 736,
+          "height": 52,
+          "navigation": false
+        },
+        {
+          "name": "响应与异常",
+          "width": 736,
+          "height": 52,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "light-390-short",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回 Token 列表",
+          "width": 121.765625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传注意事项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "最小示例",
+          "width": 86,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "完整示例",
+          "width": 86,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "复制命令",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看 OpenAPI 3.0 规范",
+          "width": 161.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "请求参数",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "响应与异常",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "dark-1440-minimal",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "分享管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "返回 Token 列表",
+          "width": 121.765625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传注意事项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "最小示例",
+          "width": 86,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "完整示例",
+          "width": 86,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "复制命令",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看 OpenAPI 3.0 规范",
+          "width": 161.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "请求参数",
+          "width": 840,
+          "height": 52,
+          "navigation": false
+        },
+        {
+          "name": "响应与异常",
+          "width": 840,
+          "height": 52,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "dark-1440-full",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "分享管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "返回 Token 列表",
+          "width": 121.765625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传注意事项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "最小示例",
+          "width": 86,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "完整示例",
+          "width": 86,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "复制命令",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看 OpenAPI 3.0 规范",
+          "width": 161.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "请求参数",
+          "width": 840,
+          "height": 52,
+          "navigation": false
+        },
+        {
+          "name": "响应与异常",
+          "width": 840,
+          "height": 52,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "dark-360-minimal",
+      "width": 360,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回 Token 列表",
+          "width": 121.765625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传注意事项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "最小示例",
+          "width": 86,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "完整示例",
+          "width": 86,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "复制命令",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看 OpenAPI 3.0 规范",
+          "width": 161.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "请求参数",
+          "width": 328,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "响应与异常",
+          "width": 328,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "dark-360-full",
+      "width": 360,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回 Token 列表",
+          "width": 121.765625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传注意事项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "最小示例",
+          "width": 86,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "完整示例",
+          "width": 86,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "复制命令",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看 OpenAPI 3.0 规范",
+          "width": 161.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "请求参数",
+          "width": 328,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "响应与异常",
+          "width": 328,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "dark-390-minimal",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回 Token 列表",
+          "width": 121.765625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传注意事项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "最小示例",
+          "width": 86,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "完整示例",
+          "width": 86,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "复制命令",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看 OpenAPI 3.0 规范",
+          "width": 161.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "请求参数",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "响应与异常",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "dark-390-full",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回 Token 列表",
+          "width": 121.765625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传注意事项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "最小示例",
+          "width": 86,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "完整示例",
+          "width": 86,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "复制命令",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看 OpenAPI 3.0 规范",
+          "width": 161.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "请求参数",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "响应与异常",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "dark-430-minimal",
+      "width": 430,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回 Token 列表",
+          "width": 121.765625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传注意事项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "最小示例",
+          "width": 86,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "完整示例",
+          "width": 86,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "复制命令",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看 OpenAPI 3.0 规范",
+          "width": 161.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "请求参数",
+          "width": 398,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "响应与异常",
+          "width": 398,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "dark-430-full",
+      "width": 430,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回 Token 列表",
+          "width": 121.765625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传注意事项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "最小示例",
+          "width": 86,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "完整示例",
+          "width": 86,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "复制命令",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看 OpenAPI 3.0 规范",
+          "width": 161.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "请求参数",
+          "width": 398,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "响应与异常",
+          "width": 398,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "dark-768-minimal",
+      "width": 768,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回 Token 列表",
+          "width": 121.765625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传注意事项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "最小示例",
+          "width": 86,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "完整示例",
+          "width": 86,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "复制命令",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看 OpenAPI 3.0 规范",
+          "width": 161.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "请求参数",
+          "width": 736,
+          "height": 52,
+          "navigation": false
+        },
+        {
+          "name": "响应与异常",
+          "width": 736,
+          "height": 52,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "dark-768-full",
+      "width": 768,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回 Token 列表",
+          "width": 121.765625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传注意事项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "最小示例",
+          "width": 86,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "完整示例",
+          "width": 86,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "复制命令",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看 OpenAPI 3.0 规范",
+          "width": 161.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "请求参数",
+          "width": 736,
+          "height": 52,
+          "navigation": false
+        },
+        {
+          "name": "响应与异常",
+          "width": 736,
+          "height": 52,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "dark-390-short",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回 Token 列表",
+          "width": 121.765625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传注意事项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "最小示例",
+          "width": 86,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "完整示例",
+          "width": 86,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "复制命令",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看 OpenAPI 3.0 规范",
+          "width": 161.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "请求参数",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "响应与异常",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "loading",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回 Token 列表",
+          "width": 121.765625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传注意事项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看 OpenAPI 3.0 规范",
+          "width": 161.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "请求参数",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "响应与异常",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "read-error",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回 Token 列表",
+          "width": 121.765625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "上传注意事项",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新加载",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看 OpenAPI 3.0 规范",
+          "width": 161.6640625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "请求参数",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "响应与异常",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    "upload-usage-light-1440-minimal.png",
+    "upload-usage-light-1440-full.png",
+    "upload-usage-tips-light-1440.png",
+    "upload-usage-light-360-minimal.png",
+    "upload-usage-light-360-full.png",
+    "upload-usage-tips-light-360.png",
+    "upload-usage-light-390-minimal.png",
+    "upload-usage-light-390-full.png",
+    "upload-usage-tips-light-390.png",
+    "upload-usage-light-430-minimal.png",
+    "upload-usage-light-430-full.png",
+    "upload-usage-tips-light-430.png",
+    "upload-usage-light-768-minimal.png",
+    "upload-usage-light-768-full.png",
+    "upload-usage-tips-light-768.png",
+    "upload-usage-light-390-short.png",
+    "upload-usage-dark-1440-minimal.png",
+    "upload-usage-dark-1440-full.png",
+    "upload-usage-tips-dark-1440.png",
+    "upload-usage-dark-360-minimal.png",
+    "upload-usage-dark-360-full.png",
+    "upload-usage-tips-dark-360.png",
+    "upload-usage-dark-390-minimal.png",
+    "upload-usage-dark-390-full.png",
+    "upload-usage-tips-dark-390.png",
+    "upload-usage-dark-430-minimal.png",
+    "upload-usage-dark-430-full.png",
+    "upload-usage-tips-dark-430.png",
+    "upload-usage-dark-768-minimal.png",
+    "upload-usage-dark-768-full.png",
+    "upload-usage-tips-dark-768.png",
+    "upload-usage-dark-390-short.png",
+    "upload-usage-copy-denied-full.png",
+    "upload-usage-copy-recovered-manual-selection.png",
+    "upload-usage-loading.png",
+    "upload-usage-read-error.png"
+  ],
+  "requests": [],
+  "clipboard": [
+    {
+      "example": "minimal",
+      "nativeExact": true,
+      "preservedContext": true
+    },
+    {
+      "example": "full",
+      "nativeExact": true,
+      "preservedContext": true
+    },
+    {
+      "example": "full",
+      "permissionDenied": true,
+      "manualComplete": true,
+      "keyboardSelectable": true,
+      "recoveredNativeCopyPreservesSelection": true
+    }
+  ],
+  "limitations": [
+    "Disposable runner database only; mouse, keyboard and mobile viewport emulation do not prove physical touch or soft keyboard behavior."
+  ],
+  "browserErrors": [],
+  "finishedAt": "2026-10-09T04:11:10.570Z"
+}

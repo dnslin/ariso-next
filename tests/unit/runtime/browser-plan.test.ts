@@ -56,6 +56,7 @@ describe('focused browser execution plans', () => {
     ['tags', ['tags']],
     ['upload-settings', ['upload-settings']],
     ['upload-input', ['upload-input']],
+    ['upload-usage', ['upload-usage']],
     ['viewer', ['library-viewer-run']],
     ['upload', ['upload-submissions', 'upload-relations']],
     ['upload-regression', ['upload', 'upload-polling']],
@@ -112,6 +113,9 @@ describe('focused browser execution plans', () => {
     ['tokens', 'create-recovery', ['tokens']],
     ['tokens', 'action-recovery', ['tokens']],
     ['tokens', 'consumers', ['tokens']],
+    ['upload-usage', 'representative', ['upload-usage']],
+    ['upload-usage', 'interactions', ['upload-usage']],
+    ['upload-usage', 'recovery', ['upload-usage']],
   ] as const)(
     'selects the actual scenes for %s / %s',
     (suite, only, scripts) => {
@@ -235,6 +239,7 @@ describe('focused browser execution plans', () => {
         ['upload-input', 'upload-input'],
         ['upload-submissions', 'upload-submissions'],
         ['upload-relations', 'upload-relations'],
+        ['upload-usage', 'upload-usage'],
         ['sharing-management', 'sharing-management'],
         ['site-general', 'site-general'],
         ['smtp', 'smtp'],
@@ -256,5 +261,22 @@ describe('focused browser execution plans', () => {
           [option]: '/fixture',
         }),
       ).toThrow();
+  });
+  it('limits upload usage phases to their own suite and keeps full execution complete', () => {
+    expect(select('upload-usage', 'recovery')).toEqual({
+      stages: [['upload-usage', 'uploadUsage']],
+      config: { uploadUsagePhase: 'recovery' },
+    });
+    expect(select('full').stages).toContainEqual([
+      'upload-usage',
+      'upload-usage',
+    ]);
+    expect(select('full').config).not.toHaveProperty('uploadUsagePhase');
+    for (const suite of ['upload', 'tokens', 'processing', 'upload-settings'])
+      expect(select(suite).config).not.toHaveProperty('uploadUsagePhase');
+    expect(() => select('upload-usage', 'consumers')).toThrow('--only');
+    expect(() =>
+      selectBrowserPlan({ suite: 'upload-usage', pageLabel: 'p2' }),
+    ).toThrow('EGO_PAGE_LABEL=p1');
   });
 });

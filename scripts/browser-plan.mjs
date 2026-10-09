@@ -20,6 +20,7 @@ const suites = {
       ['upload-input', 'upload-input'],
       ['upload-submissions', 'upload-submissions'],
       ['upload-relations', 'upload-relations'],
+      ['upload-usage', 'upload-usage'],
       ['sharing-management', 'sharing-management'],
       ['site-general', 'site-general'],
       ['smtp', 'smtp'],
@@ -87,6 +88,12 @@ const suites = {
   'upload-input': {
     primaryPage: true,
     stages: [['upload-input', 'uploadInput']],
+  },
+  'upload-usage': {
+    primaryPage: true,
+    only: ['representative', 'interactions', 'recovery'],
+    stages: [['upload-usage', 'uploadUsage']],
+    config: (only) => ({ uploadUsagePhase: only }),
   },
   viewer: {
     only: [
