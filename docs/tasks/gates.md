@@ -456,6 +456,8 @@ DG 是现有 DES/RG 中“实施前核对”的子交付，不取代或关闭原
 
 ### DG-ANALYTICS 单图/排行导航设计适用核对
 
+- 核对记录：[Issue #129](./evidence/DG-ANALYTICS/README.md)，可复用状态、实际契约、具体缺口与真实验收责任见 [T-ANA-05 消费结论](./m3-m4-experience.md#dg-analytics-对-t-ana-05-的核对结论)；不关闭 DES-06-ANALYTICS/RG-02/07。
+
 - 任务组：设计前置
 - 里程碑：关联界面实施前
 - 直接前置：无

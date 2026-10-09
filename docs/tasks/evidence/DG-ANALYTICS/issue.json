@@ -1,0 +1,8 @@
+{
+  "body": "任务 ID：`DG-ANALYTICS`\n\n- 任务组：设计前置\n- 里程碑：关联界面实施前\n- 直接前置：无\n- 范围：DES-06-ANALYTICS；核对单图/排行导航、图表等价数值、空/失败/不完整与刷新。具体桌面/手机/状态节点由消费任务的“界面”字段列出，节点来源为 [设计交接](https://github.com/dnslin/ariso-next/blob/main/docs/design/handoff.md) 与 [验收清单](https://github.com/dnslin/ariso-next/blob/main/docs/design/acceptance.md)。\n- 验收条件：逐个消费任务列清可复用状态/规则与真实行为验收范围；确有表达缺口标明具体状态及负责人，不重画已交付代表图、不重审产品选择。\n- 验证方法：对照任务字段、两端节点索引及SPEC的输入/错误契约做文档走查；核对手机/桌面、浅深色、加载/空/错误/禁用的适用规则。结论记录到消费任务，未完成真实交互继续开放DES/RG。\n- 预计文件：消费任务定义和必要的设计索引补充；无业务代码。\n- 界面：无新产品界面；这是消费任务已有具体Figma/HeroUI映射的适用范围核对，真实验收不能由本任务代替。\n\n## 执行与依赖\n\n直接前置：无。同时建立 GitHub 原生阻塞关系；全部前置交付后才能开始依赖它的工作。\n\n按 [执行约定](https://github.com/dnslin/ariso-next/blob/main/docs/tasks/execution.md) 和 [设计交付规范](https://github.com/dnslin/ariso-next/blob/main/docs/design/handoff.md) 执行。纯文档按适用检查；业务改动先构建再集成，界面同时验证桌面/手机和设计。双架构在 Release 阶段验证，日常任务不因未发布而阻塞。真实存储矩阵为 AWS S3、R2、SeaweedFS；EV-STORAGE-01 的 AWS 豁免不自动扩展到后续验收。\n\n交付时填写 PR、实际命令、环境、结果与证据。任务创建不代表实现或验证完成。",
+  "comments": [],
+  "number": 129,
+  "state": "OPEN",
+  "title": "[DG-ANALYTICS] 单图/排行导航设计适用核对",
+  "url": "https://github.com/dnslin/ariso-next/issues/129"
+}
