@@ -47,3 +47,15 @@
 人工预览 `http://127.0.0.1:3299/settings/api/usage` 与原型 `http://127.0.0.1:3199/` 保留，没有停止、重启或操作其浏览器页面。既有UI人工验收有效。凭证保留在忽略目录，不写代码、PR或日志。本轮未合并、关闭Issue、发布、部署、删除分支/worktree或清理预览。
 
 原始离线材料保留在 `test-results/pr271-dual-review/` 与 `test-results/pr271-fixes/`；公开归档仅为上述相关报告和输出；文本输出只规范化终端换行、行尾空白与多余末尾空行，原始输出不改写。修复提交 `e63294e7b0e337cbe32ac64c3518e4bf63546b88` 已推送；`gh pr view 271 --json url,state,isDraft,headRefOid,baseRefOid,mergeable,statusCheckRollup` 实际返回相同远端head、OPEN / isDraft=true / MERGEABLE，base为e4d90c2b，statusCheckRollup=[]。PR标题和正文已更新为最终修复范围。没有远端检查，不记为CI通过，也不等待不存在的工作流。最后的证据状态更新独立提交，不改变上述已复审代码。
+
+## 用户授权合并与整合检查（2026-10-09）
+
+用户随后明确要求“合并pr 清理并更新本地分支 关闭issue”，按当前证据合并 #269/#271 并关闭 #199；此指令结束此前因浏览器未重跑而保留草稿的交付阶段，不把未验证项改记为通过。
+
+#269 已合并为 main `108233ce4efbab1bb822fce36a0935d024b16ad9`。修复分支从 `ecdf3c60` 合入该 main，整合提交 `a638eb1f653390a2964429c42d141fd61846223e` 无冲突；`scripts/verify-browser.mjs` 相比修复head只增加用法页两个报告清理项，其他已实现能力保留。
+
+Node24.18.1 / pnpm11.19.0，执行 `pnpm exec vitest run --project unit tests/unit/runtime/browser-business-cli.test.ts tests/unit/runtime/browser-plan.test.ts tests/unit/runtime/browser-runner.test.ts`，退出0，3文件312项通过，69.55秒；[输出](audit/merge-unit.txt)。真实CLI离线测试随当前完整plan覆盖上传用法页，但仍不替代浏览器业务验证。其余已通过且输入未变的检查未机械重复。
+
+独立整合复审 [Approve，必须修复项0](audit/merge-review.md)，确认用法页完整/定向入口、共享分发和两个上传独立重启均保留。只静态读取整合差异，无重复检查或浏览器操作。当前没有远端CI检查。最后补修的真实浏览器及最终默认全量仍未重跑。
+
+本任务3199/3299预览进程已按最新清理授权停止，进程和监听均已消失。管理型worktree归档前保存两个忽略的 `test-results/`，包括原始报告、截图、原型和私有预览数据，目标为主工作区 `test-results/closeout-199-20261009/`（目录0700，私有凭证0600），不提交秘密。随后只归档本任务两worktree、删除本任务两分支、快进本地main；实际远端合并、Issue关闭与资源清理结果记录在该目录 `closeout.json`，其他任务不清理。

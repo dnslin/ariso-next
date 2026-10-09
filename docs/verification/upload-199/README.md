@@ -1,6 +1,6 @@
 # T-UP-06 / Issue #199 实施记录
 
-2026-10-09（Asia/Shanghai）。关联 [Issue #199](https://github.com/dnslin/ariso-next/issues/199) 与 [草稿 PR #269](https://github.com/dnslin/ariso-next/pull/269)。依据 [任务卡](../../tasks/m3-m4-platform.md#t-up-06-openapicurl-示例与上传用法页)、[SPEC-upload §10](../../specs/SPEC-upload.md#10-通用上传-api)、[设计交接](../../design/handoff.md)及[执行约定](../../tasks/execution.md)。保留 R-8.4-08、R-23.4-01、A-26.3-08 和 upload/identity 模块边界，没有改写冻结 PRD。
+2026-10-09（Asia/Shanghai）。关联 [Issue #199](https://github.com/dnslin/ariso-next/issues/199) 与 [PR #269](https://github.com/dnslin/ariso-next/pull/269)。依据 [任务卡](../../tasks/m3-m4-platform.md#t-up-06-openapicurl-示例与上传用法页)、[SPEC-upload §10](../../specs/SPEC-upload.md#10-通用上传-api)、[设计交接](../../design/handoff.md)及[执行约定](../../tasks/execution.md)。保留 R-8.4-08、R-23.4-01、A-26.3-08 和 upload/identity 模块边界，没有改写冻结 PRD。
 
 公开规范、共享 curl、所有者用法页和 Token 入口已实现。用户明确批准表格、复制图标、删减副标题与 Tips 原型后实施，并已实际同步 Figma。独立质量评审通过；完整浏览器流程保留失败，最终用法页定向检查与独立生产设计评审通过，结果分别见下。**2026-10-09 用户明确确认本次 UI 人工验收通过；默认完整浏览器仍有失败/阻塞，PR 保持草稿。**
 
@@ -106,3 +106,11 @@ macOS26.6.2 / Darwin arm64，Node24.18.1、pnpm11.19.0；所有项目检查前�
 当前默认入口覆盖跨模块的73阶段，本轮耗时约61分钟。它继续执行尚未修正的旧场景，因此后续业务任务会再次触及这些问题。已确认旧分类断言未纳入“邮件服务”；部分等待依赖短暂加载、弹窗退出或全部有限动画结束。焦点未落入输入框、OAuth隐藏/inert状态的精确根因尚未确定，不能一律标为测试误报。真实实现偏差也会失败，本次14px表格偏差已修为13px并在完整用法页定向检查中通过。
 
 这些跨模块问题在本Issue仅定位和记录，没有统一修复，所以整套检查还没有稳定通过。下一步应集中复现并修正过期断言、等待与状态清理问题，同时区分真实产品缺陷；不能靠增加全局超时、自动重试或删除断言把记录变成通过。本次只更新人工验收与事实说明，不修改范围外产品/测试，不重跑未变化的应用检查。
+
+## 用户授权收尾（2026-10-09）
+
+用户明确要求“合并pr 清理并更新本地分支 关闭issue”。#269 已按精确 head `1b6bda1955a6e556a562845c7e4c418a5bd565b8` 合并，main 合并提交为 `108233ce4efbab1bb822fce36a0935d024b16ad9`。上述草稿、预览保留与未关闭状态属于此前交付记录，本次按新指令推进 #271 合并、#199 关闭及任务资源清理。
+
+回归修复及合并整合检查统一见[修复证据](../browser-repair-20261009/review-fixes.md)。本次授权不将历史失败或未执行项改记为通过：最后补修的真实浏览器及最终默认全量仍未重跑；无远端 CI 检查。UI 人工验收及既有功能、设计审查结果保留。
+
+清理前将两工作区忽略目录中的原始验证材料、原型与私有预览数据保存至本机 `test-results/closeout-199-20261009/`，不提交凭证；仅停止本任务3199/3299预览，归档两管理型worktree并删除本任务分支，其他任务资源保留。实际远端最终状态与本地清理结果记录在该目录 `closeout.json`。
