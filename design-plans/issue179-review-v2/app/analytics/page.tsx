@@ -4,6 +4,7 @@ import { useState, type ReactNode } from 'react';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { imageSample, rankingCounts } from './sample';
+import { RollingNumber } from './rolling-number';
 import { Button } from '@heroui/react/button';
 import { Card } from '@heroui/react/card';
 import { Modal } from '@heroui/react/modal';
@@ -220,6 +221,7 @@ export default function Prototype() {
   const [failure, setFailure] = useState('initial');
   const [repaired, setRepaired] = useState<number[]>([]);
   const zero = state === 'zero';
+  const hasStatistics = !['loading', 'error', 'missing'].includes(state);
   const imageName = selected === null ? '' : names[selected];
   const sample = imageSample(selected ?? 0);
   const periodIndex = days === 7 ? 0 : days === 30 ? 1 : 2;
@@ -485,6 +487,23 @@ export default function Prototype() {
                     </span>
                   </div>
                 </div>
+                {hasStatistics ? (
+                  <div className="header-total">
+                    <div className="header-total-label">
+                      <span className="quiet">
+                        <Eye size={15} />
+                        累计访问
+                      </span>
+                      <InfoTip label="累计访问口径">
+                        累计包含原图、压缩图和水印图的公开内容请求，缩略图与所有者访问不计数。
+                      </InfoTip>
+                    </div>
+                    <strong>
+                      <RollingNumber value={zero ? 0 : sample.cumulative} />
+                      <small>次</small>
+                    </strong>
+                  </div>
+                ) : null}
                 <div className="dialog-actions">
                   <CloseButton
                     aria-label="关闭图片统计"
@@ -548,21 +567,6 @@ export default function Prototype() {
                         ) : null}
                       </div>
                     ) : null}
-                    <div className="image-total">
-                      <div>
-                        <span className="quiet">
-                          <Eye size={15} />
-                          累计访问
-                        </span>
-                        <strong>
-                          {zero ? '0' : sample.cumulative.toLocaleString()}
-                          <small>次</small>
-                        </strong>
-                      </div>
-                      <InfoTip>
-                        累计包含原图、压缩图和水印图的公开内容请求，缩略图与所有者访问不计数。
-                      </InfoTip>
-                    </div>
                     <section className="version-section">
                       <SectionTitle
                         icon={<BarChart3 size={18} />}
