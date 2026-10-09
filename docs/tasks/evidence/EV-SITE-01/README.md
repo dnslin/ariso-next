@@ -77,4 +77,4 @@ Issue [#149](https://github.com/dnslin/ariso-next/issues/149)。2026-10-09，基
 
 并发 main 已合入 #267/#268 的设计文档。已读取与本次交叠的 `gates.md` 及全部变化路径，并将实现提交重放到 `6a1585a4a86c9f91aef68004c94fa75f01defda7`；双方证据保留，没有应用或验证运行器输入变化，不重跑已通过的业务检查。
 
-代码完成、本地全量检查、浏览器默认检查、独立评审与 PR 状态分别记录。交付保留草稿 PR；远端状态在创建后核对。未执行合并、关闭 Issue、发布、部署或删除工作区。
+代码完成、本地全量检查、浏览器默认检查、独立评审与 PR 状态分别记录。已创建 [草稿 PR #270](https://github.com/dnslin/ariso-next/pull/270) 并推送 `codex/issue-149-brand-parser`。`gh pr view 270` 实测 `OPEN`、`isDraft: true`、`MERGEABLE`、`statusCheckRollup: []`，没有远端检查，不记作 CI 通过。[创建后快照](./pull-request.json) 的 head 为证据追加前提交；最终推送另核对本地与远端一致。Issue #149 保持 OPEN。未执行合并、关闭 Issue、发布、部署或删除工作区。
