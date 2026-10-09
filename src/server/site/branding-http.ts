@@ -1,4 +1,3 @@
-import { createMediaResources } from '../media/resources.ts';
 import { createRuntimeLogger } from '../runtime/logger.ts';
 import { getServerRuntime } from '../startup/server-start.ts';
 import {
@@ -16,7 +15,7 @@ export function writeBrandingResponse(request: Request, kind: string) {
         code: 'NOT_FOUND',
         status: 404,
       });
-    const branding = getServerRuntime().branding;
+    const { branding, mediaResources } = getServerRuntime();
     if (request.method === 'DELETE') {
       await branding.remove(kind, request.signal);
       return { url: null, mime: null };
@@ -29,7 +28,7 @@ export function writeBrandingResponse(request: Request, kind: string) {
             path,
             signal,
             maxBytes: BRAND_MAX_BYTES,
-            resources: createMediaResources(),
+            resources: mediaResources,
           });
         } catch (cause) {
           if (cause instanceof MultipartReceiveError && cause.status < 500) {

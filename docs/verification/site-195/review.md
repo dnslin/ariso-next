@@ -30,7 +30,7 @@
 
 未重复实现者已完成的全量单元、类型和构建检查。全量集成、真实 Ego 与修复后定向证据由主报告记录；本报告不预先声明这些检查通过。
 
-## 当前结论
+## 首轮审计结论
 
 独立代码审计通过，没有未解决必修项。唯一 P2 已取得修复前失败及修复后独立定向通过证据。该结论不替代全量检查：主流程仍需如实保留默认集成已出现的启动测试失败、定向未复现和后续浏览器结果，不能记为全量一次通过。无产品布局、管理控件或 Figma 修改，设计审计不适用；T-SITE-04 页面联动与人工 UI 验收不在本次范围。
 
@@ -72,3 +72,33 @@
 | sharing-management | album-entry-and-create-current-record 阶段，`e2e/sharing-management.mjs:1327` 等待裸 `/albums/issue191-new`，实际已到 `/albums/issue191-new?page=1`。                                                                                                               | 已找到既有 `use-library-query.ts:144-150` 按 pages 偏好补 page=1 的 URL 规范化，与精确 URL 等待不一致。metadata 不写查询参数。没有做 A/B，仍保留原失败。                              |
 | album-cover        | owner session and fixtures 阶段期望裸 `/library`，实际 `/library?page=1`，尚未进入封面验证。                                                                                                                                                                        | 与上项相同的既有分页初始化路径；没有证据指向品牌引用或 metadata。封面后续检查保持未执行。                                                                                             |
 | site-general       | recovery 阶段期望裸 `/library`，实际 `/library?page=1`。此前真实地址更新、独立 upload PATCH、held/lost 响应与显式 read-back 已记录通过。                                                                                                                            | 本次失败不是新增 logoUrl/faviconUrl 的精确响应键断言，也没有新增字段消费异常证据；实际为既有分页初始化与精确 URL 等待差异。后续未执行能力不记为通过。                                 |
+
+## PR #274 双角度评审与修复复审
+
+2026-10-09，用户指定两个 agent 分别使用 `code-review-and-quality` 与 `thermo-nuclear-code-quality-review`，对已推送的 `8946a929` 继续独立评审。本轮发现两项 Required P2 和一项有效的 Optional 测试覆盖建议。用户随后授权先规划、修复两项问题并采纳有效建议。以下是当前结论，前文保留首轮历史。
+
+### Required P2：启动清理遗漏中断的工具进程，已修复
+
+`startMediaTool` 使用独立进程组，父进程突然退出后不能依靠父进程内的超时/取消来回收。旧版品牌 `ready` 直接删除自有工作目录，导致工具仍运行但标记已被删。行为 agent 的新回归真实执行 `replace → inspectImageFile → startMediaTool`，只以阻塞 ExifTool 代身控制中断时机，SIGKILL 父进程后再启动品牌服务。旧实现断言失败：工具仍存活。另一用例模拟工具回收失败，旧实现错误删除目录。见[修复前两项失败](./checks/fix-core-red.log)。
+
+最终只在清理自有工作目录前 `await terminateMediaTools(path)`，复用媒体模块已有回收方法。成功后删除目录；失败进入原有 catch，保留目录及原错误/路径，下一次启动重试。没有新增进程管理器、锁或状态机。两项回归同时确认旧素材、数据库引用及其他目录保留。加上多图 JPEG 用例，定向 **3/3 通过**，品牌服务全文件 **37/37 通过**，见[定向](./checks/fix-core-green.log)、[全文件](./checks/fix-core-full.log)。
+
+### Required P2：品牌写入绕过同盘预留，已修复
+
+旧 HTTP 适配器每次创建 `createMediaResources()`，看不到媒体运行时已受理上传的剩余字节。结构 agent 在产品修改前加入回归，使用真实 multipart、文件写入器和资源分配算法，只模拟可用空间及外围 runtime/认证组合。可用 300 MiB、低水位 256 MiB、已预留 40 MiB 时，旧版仍接受完整 5 MiB 品牌上传，测试失败。见[失败](./checks/fix-resources-red.log)。
+
+最终启动返回已有的 `mediaResources`，品牌适配器直接传给接收器，与上传、队列和水印共用实例。修复后空间不足时拒绝品牌写入，最多写入 4 MiB，原上传的 40 MiB 预留仍可使用，品牌自己的预留释放，**1/1 通过**，见[结果](./checks/fix-resources-green.log)。测试中断言的 `507 / UPLOAD_INSUFFICIENT_SPACE` 是接收器错误；该测试绕过 `siteSettingsResponse`，不能当作真实 HTTP 状态。真实 HTTP 外层仍沿用站点既有 `500 / SITE_INTERNAL_ERROR` 与原错误日志，没有改变接口契约。
+
+### Optional：非动画多图 JPEG 覆盖，已采纳
+
+仅把 `animated || (format !== 'ICO' && pageCount !== 1)` 的 `||` 改成 `&&` 时，原 34 项未检出回归。新增 `multiple.mpo` 由现有 `twoImageMpo` 构造器及 CC0 `static.jpg` 生成，来源记录在[夹具说明](../../../tests/fixtures/media-formats/README.md)。与生产接收一致，输入写成无扩展名的 `source`；真实工具确认 `JPEG / animated=false / pageCount=2`。新用例要求 400 拒绝，并验证旧引用与字节不变。未修改产品允许格式。
+
+在独立临时副本运行该项：原版 **1/1 通过** → 条件改错后 **失败** → 恢复 **1/1 通过**。见[原版](./checks/fix-core-mpo-original.log)、[变异](./checks/fix-core-mpo-mutated.log)、[恢复](./checks/fix-core-mpo-restored.log)。实际定向命令为 `node node_modules/vitest/vitest.mjs run --project media-tools tests/integration/site/branding.test.ts --maxWorkers=1 -t '无扩展名的非动画双图'`，使用 Node 24 完整路径，从同一隔离副本执行三次。未变异共享工作区。日志 skipped 为名称过滤，默认流程没有跳过新测试。
+
+### 交叉复审结论
+
+两个 agent 各自只读评审对方的修复，未重复已通过检查。行为评审确认共享预留实际经过 `reserveWrite → consumeWrite → releaseWrite`，认证、取消、上限及提交次序保持原边界；新单元测试被默认 `tests/unit/**/*.test.ts` 收录。结构评审确认工具终止成功才删目录、失败保留诊断及重试依据，复用规范方法，没有不必要复杂度。
+
+结构评审另提出一项非阻塞建议：新增进程启动等待采用既有 `recovery-tools.test.ts` 的 `{ timeout: 3000, interval: 10 }`。已仅调整本次新增等待，断言不变；该项定向 **1/1 通过**，ESLint、Prettier 与 diff 检查通过，见[定向日志](./checks/fix-core-startup-test.log)。没有实际一秒等待超时证据；822ms 是早先整项测试耗时，不能当作等待耗时或失败依据。结构 agent 已核对最终小 diff 与日志，建议关闭。
+
+**当前代码审计通过，无未解决 Required 或 Optional 项。** 本轮统一构建、类型、受影响测试和真实 Ego 的结果见[主报告本轮记录](./README.md#pr-274-评审修复验证)。代码审计通过不替代此前默认全量集成/浏览器的失败记录，PR 保留草稿；本次没有 UI 设计变更。

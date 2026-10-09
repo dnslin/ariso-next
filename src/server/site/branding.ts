@@ -16,7 +16,7 @@ import { ZodError } from 'zod';
 import { analyzeMediaError } from '../media/errors.ts';
 import { inspectImageFile } from '../media/file-formats.ts';
 import { startSvgPreview } from '../media/svg.ts';
-import { startMediaTool } from '../media/tools.ts';
+import { startMediaTool, terminateMediaTools } from '../media/tools.ts';
 import { siteSettings } from './schema.ts';
 import { readSiteSettings, requireSiteSettings } from './settings.ts';
 
@@ -139,6 +139,7 @@ export function createBrandingService(context: Context) {
       const path = join(brandingRoot, entry.name);
       if (ownedWorkspace.test(entry.name) && entry.isDirectory()) {
         try {
+          await terminateMediaTools(path);
           await rm(path, { recursive: true, force: true });
         } catch (err) {
           logger.warn(

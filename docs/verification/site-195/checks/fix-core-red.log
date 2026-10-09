@@ -1,0 +1,37 @@
+RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-195-branding/ariso
+
+ ❯ |media-tools| tests/integration/site/branding.test.ts (37 tests | 2 failed | 34 skipped) 1124ms
+   ❯ 品牌文件真实 SQLite 和磁盘生命周期 (37)
+     × 校验工具启动后父进程突然退出，重启先回收工具再清理工作目录 822ms
+     × 中断工具回收失败时保留目录和路径诊断，下次启动重试 79ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |media-tools| tests/integration/site/branding.test.ts > 品牌文件真实 SQLite 和磁盘生命周期 > 校验工具启动后父进程突然退出，重启先回收工具再清理工作目录
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/integration/site/branding.test.ts:378:35
+    376|       });
+    377|       await service.ready;
+    378|       expect(await toolRunning()).toBe(false);
+       |                                   ^
+    379|       expect((await files()).sort()).toEqual(
+    380|         [first.key, '.site-branding-other'].sort(),
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  |media-tools| tests/integration/site/branding.test.ts > 品牌文件真实 SQLite 和磁盘生命周期 > 中断工具回收失败时保留目录和路径诊断，下次启动重试
+Error: ENOENT: no such file or directory, open '/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-branding-yXrq8X/assets/branding/.site-branding-22222222-2222-2222-2222-222222222222/source'
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 1 passed | 34 skipped (37)
+   Start at  22:27:01
+   Duration  1.51s (tests 78%, import 18%, transform 4%)

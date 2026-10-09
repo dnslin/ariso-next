@@ -124,6 +124,7 @@ function initializeServerRuntime() {
       connection,
       setup,
       github,
+      mediaResources,
       mediaQueue,
       uploads,
       storageProbes,

@@ -1,9 +1,13 @@
 import * as fs from 'node:fs/promises';
-import { spawnSync } from 'node:child_process';
+import { spawn, spawnSync } from 'node:child_process';
+import { once } from 'node:events';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { Logger } from 'pino';
+import { execa } from 'execa';
+import { inspectImageFile } from '../../../src/server/media/file-formats.ts';
+import * as mediaTools from '../../../src/server/media/tools.ts';
 import { openRuntimeDatabase } from '../../../src/server/runtime/db.ts';
 import { migrateRuntimeDatabase } from '../../../src/server/runtime/migrations.ts';
 import {
@@ -105,6 +109,24 @@ describe('品牌文件真实 SQLite 和磁盘生命周期', () => {
       status: 400,
     });
     expect(await files()).toEqual([]);
+  });
+
+  it('拒绝无扩展名的非动画双图 JPEG，并保留旧引用及字节', async () => {
+    const first = await upload();
+    const previous = await service.read(first.key);
+    await expect(
+      service.replace('logo', async (path, signal) => {
+        await fs.copyFile(join(fixtures, 'multiple.mpo'), path);
+        expect(await inspectImageFile(path, root, signal)).toMatchObject({
+          format: 'JPEG',
+          animated: false,
+          pageCount: 2,
+        });
+      }),
+    ).rejects.toMatchObject({ code: 'SITE_ASSET_INVALID', status: 400 });
+    expect(requireSiteSettings(connection.db).logoKey).toBe(first.key);
+    expect(await service.read(first.key)).toEqual(previous);
+    expect(await files()).toEqual([first.key]);
   });
 
   it.each([
@@ -281,6 +303,143 @@ describe('品牌文件真实 SQLite 和磁盘生命周期', () => {
     );
     expect(await service.read(orphan)).toBeNull();
     expect(await service.read('../ariso.db')).toBeNull();
+  });
+
+  it('校验工具启动后父进程突然退出，重启先回收工具再清理工作目录', async () => {
+    const first = await upload();
+    const previous = await service.read(first.key);
+    await service.close();
+    const foreign = join(root, '.site-branding-other');
+    await fs.mkdir(foreign);
+    await fs.writeFile(join(foreign, 'keep'), 'another owner');
+    const bin = join(directory, 'bin');
+    await fs.mkdir(bin);
+    const pidPath = join(directory, 'test-tool.pid');
+    // Only the blocking tool is a stand-in; production starts its real detached
+    // process group through replace → inspectImageFile → startMediaTool.
+    await fs.writeFile(
+      join(bin, 'exiftool'),
+      `#!${process.execPath}\nimport { writeFileSync } from 'node:fs';\nwriteFileSync(${JSON.stringify(pidPath)}, String(process.pid));\nsetInterval(() => {}, 1000);\n`,
+      { mode: 0o755 },
+    );
+    const script = `
+      import { openRuntimeDatabase } from ${JSON.stringify(new URL('../../../src/server/runtime/db.ts', import.meta.url).href)};
+      import { createBrandingService } from ${JSON.stringify(new URL('../../../src/server/site/branding.ts', import.meta.url).href)};
+      import { copyFile } from 'node:fs/promises';
+      const connection = openRuntimeDatabase(process.argv[1]);
+      const service = createBrandingService({db: connection.db, brandingRoot: process.argv[2], logger: {warn: console.warn}});
+      await service.replace('logo', path => copyFile(process.argv[3], path));
+    `;
+    const child = spawn(
+      process.execPath,
+      [
+        '--input-type=module',
+        '-e',
+        script,
+        join(directory, 'ariso.db'),
+        root,
+        join(fixtures, 'static.jpg'),
+      ],
+      {
+        env: { ...process.env, PATH: `${bin}:${process.env.PATH}` },
+        stdio: 'ignore',
+      },
+    );
+    const closed = once(child, 'close');
+    let toolPid: number | undefined;
+    const toolRunning = async () => {
+      const { stdout } = await execa(
+        'ps',
+        ['-p', String(toolPid), '-o', 'stat='],
+        {
+          reject: false,
+        },
+      );
+      return stdout.trim() !== '' && !stdout.trim().startsWith('Z');
+    };
+    try {
+      await vi.waitFor(
+        async () => {
+          toolPid = Number(await fs.readFile(pidPath, 'utf8'));
+          expect(await toolRunning()).toBe(true);
+        },
+        { timeout: 3000, interval: 10 },
+      );
+      const workspaces = (await files()).filter((name) =>
+        /^\.site-branding-[0-9a-f-]{36}$/.test(name),
+      );
+      expect(workspaces).toHaveLength(1);
+      child.kill('SIGKILL');
+      expect((await closed)[1]).toBe('SIGKILL');
+      expect(await toolRunning()).toBe(true);
+      service = createBrandingService({
+        db: connection.db,
+        brandingRoot: root,
+        logger,
+      });
+      await service.ready;
+      expect(await toolRunning()).toBe(false);
+      expect((await files()).sort()).toEqual(
+        [first.key, '.site-branding-other'].sort(),
+      );
+      expect(requireSiteSettings(connection.db).logoKey).toBe(first.key);
+      expect(await service.read(first.key)).toEqual(previous);
+      expect(await fs.readFile(join(foreign, 'keep'), 'utf8')).toBe(
+        'another owner',
+      );
+    } finally {
+      if (child.exitCode === null && child.signalCode === null)
+        child.kill('SIGKILL');
+      await closed;
+      toolPid ??= await fs
+        .readFile(pidPath, 'utf8')
+        .then(Number, () => undefined);
+      if (toolPid) {
+        try {
+          process.kill(-toolPid, 'SIGKILL');
+        } catch (error) {
+          if ((error as NodeJS.ErrnoException).code !== 'ESRCH') throw error;
+        }
+      }
+    }
+  });
+
+  it('中断工具回收失败时保留目录和路径诊断，下次启动重试', async () => {
+    const first = await upload();
+    await service.close();
+    const workspace = join(
+      root,
+      '.site-branding-22222222-2222-2222-2222-222222222222',
+    );
+    await fs.mkdir(workspace);
+    await fs.writeFile(join(workspace, 'source'), 'partial');
+    const failure = new Error('Cannot inspect media tool processes');
+    const terminate = vi
+      .spyOn(mediaTools, 'terminateMediaTools')
+      .mockRejectedValueOnce(failure);
+    service = createBrandingService({
+      db: connection.db,
+      brandingRoot: root,
+      logger,
+    });
+    await service.ready;
+    expect(await fs.readFile(join(workspace, 'source'), 'utf8')).toBe(
+      'partial',
+    );
+    expect(logger.warn).toHaveBeenCalledWith(
+      { err: failure, path: workspace },
+      expect.any(String),
+    );
+    expect(await service.read(first.key)).toBeTruthy();
+    await service.close();
+    terminate.mockRestore();
+    service = createBrandingService({
+      db: connection.db,
+      brandingRoot: root,
+      logger,
+    });
+    await service.ready;
+    expect(await files()).toEqual([first.key]);
   });
 
   it.each(['receive', 'commit'])(
