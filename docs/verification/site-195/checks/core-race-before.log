@@ -1,0 +1,38 @@
+Already up to date
+Done in 48ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-195-branding/ariso
+
+ ❯ |media-tools| tests/integration/site/branding.test.ts (34 tests | 2 failed | 31 skipped) 525ms
+   ❯ 品牌文件真实 SQLite 和磁盘生命周期 (34)
+     × 读取旧素材期间 replace 已删除文件时返回未找到，不报告当前文件缺失 221ms
+     × 读取旧素材期间 remove 已删除文件时返回未找到，不报告当前文件缺失 119ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |media-tools| tests/integration/site/branding.test.ts > 品牌文件真实 SQLite 和磁盘生命周期 > 读取旧素材期间 replace 已删除文件时返回未找到，不报告当前文件缺失
+ FAIL  |media-tools| tests/integration/site/branding.test.ts > 品牌文件真实 SQLite 和磁盘生命周期 > 读取旧素材期间 remove 已删除文件时返回未找到，不报告当前文件缺失
+AssertionError: promise rejected "Error: 当前品牌文件缺失: /var/folders/vn/m5rx_gkd… { …(3) }" instead of resolving
+ ❯ tests/integration/site/branding.test.ts:391:26
+    389|     else await service.remove('logo');
+    390|     release();
+    391|     await expect(oldRead).resolves.toBeNull();
+       |                          ^
+    392|   });
+    393|
+
+Caused by: Error: 当前品牌文件缺失: /var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-branding-S8zaIK/assets/branding/site-logo-794ea3cb-45cb-414c-8fc5-3f140b2c5a1e.png
+ ❯ src/server/site/branding.ts:262:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: 'SITE_ASSET_MISSING', status: 500, path: '/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-branding-S8zaIK/assets/branding/site-logo-794ea3cb-45cb-414c-8fc5-3f140b2c5a1e.png' }
+Caused by: Error: ENOENT: no such file or directory, open '/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-branding-S8zaIK/assets/branding/site-logo-794ea3cb-45cb-414c-8fc5-3f140b2c5a1e.png'
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { errno: -2, code: 'ENOENT', syscall: 'open', path: '/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-branding-S8zaIK/assets/branding/site-logo-794ea3cb-45cb-414c-8fc5-3f140b2c5a1e.png' }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 1 passed | 31 skipped (34)
+   Start at  18:56:45
+   Duration  1.05s (tests 55%, import 35%, transform 10%)

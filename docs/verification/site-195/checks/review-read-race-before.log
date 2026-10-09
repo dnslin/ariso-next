@@ -1,0 +1,33 @@
+
+ RUN  v5.0.0 /private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-195-review-y1l1a46i
+
+ ❯ |media-tools| tests/integration/site/branding.test.ts (33 tests | 1 failed | 32 skipped) 232ms
+   × review: replacement racing an old asset read returns a stale URL response 231ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |media-tools| tests/integration/site/branding.test.ts > review: replacement racing an old asset read returns a stale URL response
+AssertionError: promise rejected "Error: 当前品牌文件缺失: /var/folders/vn/m5rx_gkd… { …(3) }" instead of resolving
+ ❯ tests/integration/site/branding.test.ts:434:24
+    432|   await upload('logo', 'static.jpg');
+    433|   release();
+    434|   await expect(reading).resolves.toBeNull();
+       |                        ^
+    435| });
+    436|
+
+Caused by: Error: 当前品牌文件缺失: /var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-branding-0rUxOU/assets/branding/site-logo-0f059bea-2446-4e61-9a62-c67e959e726b.png
+ ❯ src/server/site/branding.ts:262:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: 'SITE_ASSET_MISSING', status: 500, path: '/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-branding-0rUxOU/assets/branding/site-logo-0f059bea-2446-4e61-9a62-c67e959e726b.png' }
+Caused by: Error: ENOENT: no such file or directory, open '/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-branding-0rUxOU/assets/branding/site-logo-0f059bea-2446-4e61-9a62-c67e959e726b.png'
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { errno: -2, code: 'ENOENT', syscall: 'open', path: '/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-branding-0rUxOU/assets/branding/site-logo-0f059bea-2446-4e61-9a62-c67e959e726b.png' }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 32 skipped (33)
+   Start at  18:53:53
+   Duration  715ms (import 47%, tests 37%, transform 16%, worker 1%)

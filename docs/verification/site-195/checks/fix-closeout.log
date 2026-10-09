@@ -1,0 +1,11 @@
+2026-10-09 PR #274 review repair closeout; Node 24.18.1 / pnpm 11.19.0.
+Initial local link scan: failed because this closeout log had not yet been created.
+Created this log before repeating only the affected link/credential scan.
+node docs/tasks/check.mjs
+PASS: 120 tasks, 298 requirements, no missing IDs or cycles.
+node docs/tasks/check.mjs --self-test
+Self-test: 5 rejection cases passed.
+pnpm exec prettier docs/verification/site-195/README.md docs/verification/site-195/review.md docs/verification/site-195/browser/fixes/*.json src/server/site/branding-http.ts src/server/startup/server-start.ts tests/unit/site/branding-resources.test.ts --check
+All matched files use Prettier code style! (exit 0)
+git diff --check: passed (exit 0)
+Local documentation file targets: 84; setup-code/credential field scan passed.

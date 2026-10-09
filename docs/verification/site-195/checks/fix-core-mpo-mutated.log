@@ -1,0 +1,36 @@
+RUN  v5.0.0 /private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-pr274-behavior-pW9lAn
+
+ ❯ |media-tools| tests/integration/site/branding.test.ts (37 tests | 1 failed | 36 skipped) 200ms
+   ❯ 品牌文件真实 SQLite 和磁盘生命周期 (37)
+     × 拒绝无扩展名的非动画双图 JPEG，并保留旧引用及字节 200ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |media-tools| tests/integration/site/branding.test.ts > 品牌文件真实 SQLite 和磁盘生命周期 > 拒绝无扩展名的非动画双图 JPEG，并保留旧引用及字节
+AssertionError: promise resolved "{ …(2) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "key": "site-logo-24fddcb1-d236-4d5c-884f-ae21f13d8292.jpg",
++   "mime": "image/jpeg",
+  }
+
+ ❯ tests/integration/site/branding.test.ts:126:6
+    124|         });
+    125|       }),
+    126|     ).rejects.toMatchObject({ code: 'SITE_ASSET_INVALID', status: 400 …
+       |      ^
+    127|     expect(requireSiteSettings(connection.db).logoKey).toBe(first.key);
+    128|     expect(await service.read(first.key)).toEqual(previous);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 36 skipped (37)
+   Start at  22:28:03
+   Duration  530ms (import 46%, tests 42%, transform 11%)

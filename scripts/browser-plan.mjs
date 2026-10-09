@@ -27,6 +27,7 @@ const suites = {
     ],
   },
   'brand-experiment': {},
+  branding: {},
   'sharing-experiment': {},
   'sharing-protocol': {},
   'sharing-public': {

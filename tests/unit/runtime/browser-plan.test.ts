@@ -20,6 +20,23 @@ describe('focused browser execution plans', () => {
         }),
       ).toThrow();
   });
+  it('keeps production branding independent of unrelated phase and fixture options', () => {
+    expect(select('branding')).toEqual({ stages: [], config: {} });
+    expect(selectBrowserPlan({ suite: 'branding', pageLabel: 'p2' })).toEqual({
+      stages: [],
+      config: {},
+    });
+    expect(() => select('branding', 'representative')).toThrow('--only');
+    for (const field of ['storageConfig', 'previewConfig'])
+      expect(() =>
+        selectBrowserPlan({
+          suite: 'branding',
+          pageLabel: 'p1',
+          [field]: 'unused.json',
+        }),
+      ).toThrow();
+  });
+
   it('provides storage-cors as a complete focused stage on its primary page', () => {
     expect(select('storage-cors')).toEqual({
       stages: [['storage-cors', 'storageCors']],
@@ -61,6 +78,7 @@ describe('focused browser execution plans', () => {
     ['account', ['account']],
     ['oauth', []],
     ['brand-experiment', []],
+    ['branding', []],
     ['smtp', ['smtp']],
     ['tokens', ['tokens']],
     ['shell-navigation', ['shell-navigation']],

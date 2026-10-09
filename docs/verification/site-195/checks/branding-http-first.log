@@ -1,0 +1,34 @@
+Already up to date
+Done in 50ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-195-branding/ariso
+
+ ❯ |media-tools| tests/integration/site/branding-http.test.ts (12 tests | 1 failed) 55419ms
+   × 匿名读取只服务当前引用，缺失当前文件返回明确 500 并保留路径诊断 2292ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |media-tools| tests/integration/site/branding-http.test.ts > 匿名读取只服务当前引用，缺失当前文件返回明确 500 并保留路径诊断
+AssertionError: /branding/: expected 308 to be 404 // Object.is equality
+
+- Expected
++ Received
+
+- 404
++ 308
+
+ ❯ tests/integration/site/branding-http.test.ts:490:48
+    488|     '/branding/',
+    489|   ]) {
+    490|     expect((await request(path)).status, path).toBe(404);
+       |                                                ^
+    491|   }
+    492|   const path = join(brandingDir, basename(asset.url));
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 11 passed (12)
+   Start at  18:51:36
+   Duration  56.00s (tests 99%, import 1%)

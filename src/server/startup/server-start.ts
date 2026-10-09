@@ -20,6 +20,7 @@ import { startStorageMaintenance } from '../storage/maintenance.ts';
 import { readStorageReferences } from './storage-references.ts';
 import type { ReadStorageReferences } from '../storage/references.ts';
 import { releaseStorageHistory } from '../upload/usage.ts';
+import { createBrandingService } from '../site/branding.ts';
 
 type ServerRuntime = ReturnType<typeof initializeServerRuntime>;
 
@@ -50,6 +51,17 @@ function initializeServerRuntime() {
       );
     }
     const mediaResources = createMediaResources();
+    const branding = createBrandingService({
+      db: connection.db,
+      brandingRoot: resolve(config.dataDir, 'assets', 'branding'),
+      logger: createRuntimeLogger('site.branding', config.logLevel),
+    });
+    void branding.ready.catch((err) => {
+      createRuntimeLogger('site.branding', config.logLevel).error(
+        { err },
+        'Brand startup cleanup failed',
+      );
+    });
     const secretCrypto = createSecretCrypto(config.encryptionKey);
     const mediaQueue = startMediaQueue({
       db: connection.db,
@@ -112,6 +124,7 @@ function initializeServerRuntime() {
       connection,
       setup,
       github,
+      mediaResources,
       mediaQueue,
       uploads,
       storageProbes,
@@ -120,6 +133,7 @@ function initializeServerRuntime() {
       watermarks,
       analytics,
       sharing,
+      branding,
       get stopping() {
         return stopping !== undefined;
       },
@@ -131,6 +145,7 @@ function initializeServerRuntime() {
           .finally(() => mediaQueue.stop())
           .finally(() => watermarks.stop())
           .finally(() => storageProbes.stop())
+          .finally(() => branding.close())
           .finally(() => {
             try {
               if (!analytics.stop()) {

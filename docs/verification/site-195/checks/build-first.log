@@ -1,0 +1,33 @@
+Already up to date
+Done in 36ms using pnpm v11.19.0
+$ pnpm run build:runtime && next build && node scripts/package-standalone.mjs
+$ tsc --project tsconfig.runtime.json
+▲ Next.js 16.3.5 (Turbopack)
+✓ Running next.config.ts took 73ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 11.2s
+  Running TypeScript ...
+tests/integration/site/branding.test.ts(47,5): error TS2322: Type '{ warn: Mock<Procedure | Constructable>; }' is not assignable to type 'Pick<Logger, "warn">'.
+  Types of property 'warn' are incompatible.
+    Type 'Mock<Procedure | Constructable>' is not assignable to type 'LogFn'.
+      Type 'MockInstance<Procedure | Constructable> & (new (...args: any[]) => any) & {}' is not assignable to type 'LogFn'.
+        Type 'MockInstance<Procedure | Constructable> & (new (...args: any[]) => any) & {}' provides no match for the signature '<TMsg extends string = string>(msg: TMsg, ...args: ParseLogFnArgs<TMsg, []>): void'.
+tests/integration/site/branding.test.ts(237,7): error TS2322: Type '{ warn: Mock<Procedure | Constructable>; }' is not assignable to type 'Pick<Logger, "warn">'.
+  Types of property 'warn' are incompatible.
+    Type 'Mock<Procedure | Constructable>' is not assignable to type 'LogFn'.
+      Type 'MockInstance<Procedure | Constructable> & (new (...args: any[]) => any) & {}' is not assignable to type 'LogFn'.
+        Type 'MockInstance<Procedure | Constructable> & (new (...args: any[]) => any) & {}' provides no match for the signature '<TMsg extends string = string>(msg: TMsg, ...args: ParseLogFnArgs<TMsg, []>): void'.
+tests/integration/site/branding.test.ts(264,7): error TS2322: Type '{ warn: Mock<Procedure | Constructable>; }' is not assignable to type 'Pick<Logger, "warn">'.
+  Types of property 'warn' are incompatible.
+    Type 'Mock<Procedure | Constructable>' is not assignable to type 'LogFn'.
+      Type 'MockInstance<Procedure | Constructable> & (new (...args: any[]) => any) & {}' is not assignable to type 'LogFn'.
+        Type 'MockInstance<Procedure | Constructable> & (new (...args: any[]) => any) & {}' provides no match for the signature '<TMsg extends string = string>(msg: TMsg, ...args: ParseLogFnArgs<TMsg, []>): void'.
+tests/integration/site/branding.test.ts(314,7): error TS2322: Type '{ warn: Mock<Procedure | Constructable>; }' is not assignable to type 'Pick<Logger, "warn">'.
+  Types of property 'warn' are incompatible.
+    Type 'Mock<Procedure | Constructable>' is not assignable to type 'LogFn'.
+      Type 'MockInstance<Procedure | Constructable> & (new (...args: any[]) => any) & {}' is not assignable to type 'LogFn'.
+        Type 'MockInstance<Procedure | Constructable> & (new (...args: any[]) => any) & {}' provides no match for the signature '<TMsg extends string = string>(msg: TMsg, ...args: ParseLogFnArgs<TMsg, []>): void'.
+Failed to type check.
+
+[ELIFECYCLE] Command failed with exit code 1.
