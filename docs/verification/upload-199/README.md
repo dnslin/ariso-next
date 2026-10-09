@@ -42,6 +42,14 @@ Local 默认集成和 R2/SeaweedFS 手动入口共用 `usage-examples.ts`，执�
 
 审批来源是用户本次“新增或改变既定交互先原型获批”指令，以及任务卡 DG-API 对 T-UP-06 的具体表达缺口。最小/完整切换、复制触发器、用法专属复制失败、完整响应与配置读取失败组合尚待批准；不把原型审查当成批准。没有Figma写入、产品UI或人工验收完成声明。
 
+### 表格原型调整（所有者反馈，2026-10-09）
+
+按所有者“参数和响应那里用表格组件”反馈，将参数改为名称/必填/省略时/说明表，响应改为字段/类型与出现条件/含义表，另列13种HTTP状态。字段内容对照当前public-contract和HTTP错误映射；400限定重复单值字段，504将继续处理限定为等待任务结果超时。当前HeroUI3.2.6已提供Table、Table.ScrollContainer、Table.Content等，实际读取已安装类型及存储列表消费实现；后续产品复用该组件，无新依赖。当前HTML仅表达待批准布局，没有冒充HeroUI产品实现。
+
+本次实际使用同一Ego TaskSpace8复核360/390/430/768/1440：页面宽度均等于视口，表格在自身容器内滚动。手机固定第一列，说明列按剩余空间换行；桌面业务宽度保持840px。滚动容器可聚焦，实际ArrowRight改变scrollLeft；End没有横向移动，不当成通过。表头与行标题分别使用scope=col/row。未复跑输入未变的后端检查；定向Prettier与git diff检查通过。
+
+证据：[桌面展开](./prototype/tables-desktop.png)、[桌面完整展开](./prototype/tables-desktop-full.png)、[手机参数](./prototype/tables-mobile.png)、[手机横向阅读](./prototype/tables-mobile-scrolled.png)、[手机响应](./prototype/response-table-mobile.png)、[手机HTTP状态](./prototype/http-table-mobile.png)、[手机响应深色](./prototype/response-table-mobile-dark.png)。首张横向滚动截图出现纯白，已等待渲染后替换有效截图；不保留为通过证据。独立设计复审通过本次表格原型，用户整体原型批准、生产UI和Figma同步仍未完成。
+
 ## 环境与实际检查
 
 macOS26.6.2 / Darwin arm64；Node24.18.1、pnpm11.19.0。所有项目检查PATH前置 `/Users/dnslin/.nvm/versions/node/v24.18.1/bin`，使用现有ImageMagick7/ExifTool/OpenSSL与系统Python。应用技能为using-agent-skills、incremental-implementation、git-workflow-and-versioning、frontend-ui-engineering、vercel-react-best-practices、figma-use、figma-design-to-code及ego-browser；独立质量审查使用code-review-and-quality，curl测试实施者使用test-driven-development。没有新增重复执行/设计规则。

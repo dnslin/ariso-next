@@ -461,7 +461,7 @@
 - 直接前置：`T-UP-05`、`T-UI-01`、`DG-API`
 - 验收条件：只公布公共上传接口；multipart重复字段数组、全部HTTP错误、可空ID/actualVersion、默认值与站点限制区别清楚；超时先核对和重发可能重复常驻。示例地址来自当前site，Token仅调用方自行提供，不写入仓库/共享日志；不承诺PicGo专用配置。生成结果与运行时Schema一致，新增生成检查接入已有质量命令。
 - 验证方法：在对应模块新增单元与集成测试，运行 `pnpm run test:unit`、`pnpm run test:integration`。 任务新增OpenAPI生成/一致性测试并通过 `pnpm run test:unit`；对本地/S3执行用法页最小与完整curl及错误示例；`pnpm run test:browser` 验证折叠、复制失败、长地址与手机阅读。
-- 界面：`/settings/api`进入上传用法详情，`GET /api/openapi.json`提供无秘密规范；详情为计划中的所有者子页`/settings/api/usage`，不另增公开业务API。桌面 [248:2137](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=248-2137)、手机 [248:4061](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=248-4061)；复制失败复用 桌面 [249:1465](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=249-1465)、手机 [249:3588](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=249-3588)。HeroUI：Accordion、Button、Link、Alert、TextArea，代码块仅作可选文本展示，无需自制编辑器；手机默认最小示例、参数/结果分折叠，超时提醒常驻，回Token列表恢复上下文。
+- 界面：`/settings/api`进入上传用法详情，`GET /api/openapi.json`提供无秘密规范；详情为计划中的所有者子页`/settings/api/usage`，不另增公开业务API。桌面 [248:2137](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=248-2137)、手机 [248:4061](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=248-4061)；复制失败复用 桌面 [249:1465](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=249-1465)、手机 [249:3588](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=249-3588)。HeroUI：Accordion、Button、Link、Alert、TextArea、Table，代码块仅作可选文本展示，无需自制编辑器；手机默认最小示例、参数/结果分折叠，超时提醒常驻，回Token列表恢复上下文。
 - 需求：`R-8.4-08`、`R-23.4-01`、`A-26.3-08`
 - 实施步骤：
   - [x] 1. 共享 schema 生成规范并验证错误/数组/可空字段一致。

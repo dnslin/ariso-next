@@ -262,6 +262,139 @@
     body.dark nav .current {
       background: #494222;
     }
+    .table-wrap {
+      max-width: 100%;
+      overflow-x: auto;
+      border: 1px solid #bae8e8;
+      border-radius: 10px;
+      overscroll-behavior-x: contain;
+    }
+    .table-wrap:focus-visible {
+      outline: 2px solid #607d85;
+      outline-offset: 3px;
+    }
+    table {
+      width: 100%;
+      min-width: 640px;
+      border-collapse: separate;
+      border-spacing: 0;
+      text-align: left;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    th,
+    td {
+      padding: 12px;
+      vertical-align: top;
+      border-bottom: 1px solid #bae8e8;
+    }
+    thead th {
+      background: #f7fafa;
+      font-size: 12px;
+      font-weight: 500;
+      color: #5b6072;
+    }
+    tbody th {
+      font-weight: 400;
+    }
+    tbody tr:last-child > * {
+      border-bottom: 0;
+    }
+    th:first-child {
+      width: 145px;
+      position: sticky;
+      left: 0;
+      background: #fffffe;
+      z-index: 1;
+    }
+    thead th:first-child {
+      background: #f7fafa;
+    }
+    code {
+      font:
+        12px/1.6 ui-monospace,
+        monospace;
+      overflow-wrap: anywhere;
+    }
+    .subheading {
+      font-size: 14px;
+      font-weight: 500;
+      margin: 4px 0 0;
+    }
+    .scroll-tip {
+      display: none;
+    }
+    body.dark .table-wrap {
+      border-color: #3d5257;
+    }
+    body.dark td,
+    body.dark th {
+      border-color: #3d5257;
+    }
+    body.dark thead th,
+    body.dark thead th:first-child {
+      background: #222c32;
+      color: #b8b9c9;
+    }
+    body.dark tbody th:first-child {
+      background: #181a22;
+    }
+    @media (max-width: 767px) {
+      .scroll-tip {
+        display: block;
+        color: #5b6072;
+        font-size: 12px;
+      }
+      table {
+        min-width: 640px;
+      }
+      th,
+      td {
+        padding: 10px;
+      }
+      th:first-child {
+        width: 130px;
+      }
+      body.dark .scroll-tip {
+        color: #b8b9c9;
+      }
+    }
+    table {
+      table-layout: fixed;
+    }
+    .table-wrap[aria-label='请求参数表'] th:nth-child(2) {
+      width: 60px;
+      white-space: nowrap;
+    }
+    .table-wrap[aria-label='请求参数表'] th:nth-child(3) {
+      width: 150px;
+    }
+    .table-wrap[aria-label='响应字段表'] th:first-child {
+      width: 180px;
+    }
+    .table-wrap[aria-label='响应字段表'] th:nth-child(2) {
+      width: 150px;
+    }
+    .table-wrap[aria-label='HTTP 状态表'] th:first-child {
+      width: 100px;
+    }
+    .table-wrap[aria-label='HTTP 状态表'] th:nth-child(2) {
+      width: 160px;
+    }
+    @media (max-width: 767px) {
+      .table-wrap[aria-label='请求参数表'] table {
+        min-width: calc(100% + 210px);
+      }
+      .table-wrap[aria-label='响应字段表'] table {
+        min-width: calc(100% + 150px);
+      }
+      .table-wrap[aria-label='响应字段表'] th:first-child {
+        width: 160px;
+      }
+      .table-wrap[aria-label='HTTP 状态表'] table {
+        min-width: calc(100% + 160px);
+      }
+    }
   </style>
   <body>
     <aside>
@@ -342,46 +475,269 @@
           style="width: fit-content; text-decoration: underline"
           >查看 OpenAPI 3.0 规范 ↗</a
         >
-        <details>
+        <details id="params">
           <summary>请求参数</summary>
           <div class="content">
-            <dl>
-              <dt>file</dt>
-              <dd>必需，一个图片文件，不能传 URL。</dd>
-              <dt>storageId</dt>
-              <dd>省略使用当前默认存储；空串不会使用默认。</dd>
-              <dt>albumId</dt>
-              <dd>
-                多个相册使用重复同名字段，ID 去重；不使用逗号串或 albumId[]。
-              </dd>
-              <dt>tag</dt>
-              <dd>多个标签使用重复同名字段；逗号属于名称。</dd>
-              <dt>visibility</dt>
-              <dd>public / private；省略采用提交时默认可见性。</dd>
-            </dl>
+            <p class="scroll-tip">左右滑动查看完整表格。</p>
+            <div
+              class="table-wrap"
+              tabindex="0"
+              role="region"
+              aria-label="请求参数表"
+            >
+              <table aria-label="请求参数表">
+                <thead>
+                  <tr>
+                    <th scope="col">参数</th>
+                    <th scope="col">必填</th>
+                    <th scope="col">省略时</th>
+                    <th scope="col">说明</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row"><code>file</code></th>
+                    <td>是</td>
+                    <td>—</td>
+                    <td>
+                      恰好一个图片文件，不支持 URL。大小受当前站点上限限制。
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><code>storageId</code></th>
+                    <td>否</td>
+                    <td>当前默认存储</td>
+                    <td>存储 ID。空串无效；没有默认存储时需要显式提供。</td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><code>albumId</code></th>
+                    <td>否</td>
+                    <td>不加入相册</td>
+                    <td>
+                      重复同名字段传多个 ID，自动去重；不使用逗号串或
+                      albumId[]。
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><code>tag</code></th>
+                    <td>否</td>
+                    <td>不添加标签</td>
+                    <td>
+                      重复同名字段传多个名称，匹配或创建；逗号属于名称。每个名称
+                      1–50 个 Unicode 码点，不含换行或控制字符。
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><code>visibility</code></th>
+                    <td>否</td>
+                    <td>提交时默认可见性</td>
+                    <td>
+                      public 或 private。私有链接需要所有者 Cookie，上传 Token
+                      不能读取。
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </details>
-        <details>
-          <summary>结果与异常</summary>
+        <details id="response">
+          <summary>响应与异常</summary>
           <div class="content">
             <p>
               只有本次处理完成且图片 ready 才返回 201。私有图片链接需要所有者
               Cookie。
             </p>
-            <p>
-              400 输入 · 401 Token · 409 状态冲突 · 413 文件超限 · 415 格式 ·
-              422 处理失败 · 502 存储依赖 · 504 等待超时 · 507 空间不足。
-            </p>
-            <pre>
-{ "imageId": "image-id", "status": "ready",
-  "actualVersion": null,
-  "defaultResolution": { "available": false, "code": "VERSION_UNAVAILABLE" } }</pre>
-            <p class="small">
-              仅为响应字段说明；完整规范列出真实保存版本、处理结果及
-              requestId。未创建图片时 imageId 为 null、status 为
-              not_created。处理失败保留真实 ID；status
-              是当次结果，currentImageStatus 表示后续改变后的当前状态。
-            </p>
+            <h2 class="subheading">响应字段</h2>
+            <p class="scroll-tip">左右滑动查看完整表格。</p>
+            <div
+              class="table-wrap"
+              tabindex="0"
+              role="region"
+              aria-label="响应字段表"
+            >
+              <table aria-label="响应字段表">
+                <thead>
+                  <tr>
+                    <th scope="col">字段</th>
+                    <th scope="col">类型 / 出现条件</th>
+                    <th scope="col">含义</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row"><code>imageId</code></th>
+                    <td>string / null</td>
+                    <td>
+                      图片 ID。尚未创建时为 null；接收后的错误保留真实 ID。
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><code>status</code></th>
+                    <td>string</td>
+                    <td>
+                      本次请求的结果状态。成功为 ready；未创建为
+                      not_created，错误也可为 pending、processing、ready、failed
+                      或 unavailable。
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><code>currentImageStatus</code></th>
+                    <td>string，可选</td>
+                    <td>仅在当前图片状态与本次结果不同等情况出现。</td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><code>url</code></th>
+                    <td>string，成功时</td>
+                    <td>默认版本链接；私有图片需要所有者 Cookie。</td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><code>actualVersion</code></th>
+                    <td>string / null，成功时</td>
+                    <td>
+                      默认链接实际采用的版本：original、compressed、thumbnail、watermark，或
+                      null。
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><code>defaultResolution</code></th>
+                    <td>object，成功时</td>
+                    <td>
+                      available 表示默认版本是否可用；不可用时 code 为
+                      VERSION_UNAVAILABLE，否则为 null。
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><code>versions</code></th>
+                    <td>object，成功时</td>
+                    <td>
+                      只列已保存的版本；每项包含 url 与
+                      mime，不返回尚未生成的版本。
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><code>processing.status</code></th>
+                    <td>string，成功时</td>
+                    <td>本次处理成功，值为 succeeded。</td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><code>processing.versions</code></th>
+                    <td>object，成功时</td>
+                    <td>
+                      各版本的 status 与可空 reason；状态为
+                      succeeded、not_applicable、disabled 或 not_generated。
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><code>processing.warnings</code></th>
+                    <td>array，成功时</td>
+                    <td>处理警告列表，每项包含 code、stage、message。</td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><code>error</code></th>
+                    <td>object，错误时</td>
+                    <td>错误 code、发生阶段 stage 和可读信息 message。</td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><code>requestId</code></th>
+                    <td>string</td>
+                    <td>请求诊断 ID，成功与错误均返回。</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <h2 class="subheading">HTTP 状态</h2>
+            <p class="scroll-tip">左右滑动查看完整表格。</p>
+            <div
+              class="table-wrap"
+              tabindex="0"
+              role="region"
+              aria-label="HTTP 状态表"
+            >
+              <table aria-label="HTTP 状态表">
+                <thead>
+                  <tr>
+                    <th scope="col">状态码</th>
+                    <th scope="col">结果</th>
+                    <th scope="col">说明</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row"><code>201</code></th>
+                    <td>本次处理完成</td>
+                    <td>
+                      返回真实保存版本。actualVersion 为 null 不改变成功结果。
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><code>400</code></th>
+                    <td>输入无效</td>
+                    <td>
+                      未知字段、重复单值字段、缺失/额外/空文件，或截断/取消的接收流。
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><code>401</code></th>
+                    <td>认证失败</td>
+                    <td>Token 缺失、无效、停用或过期。</td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><code>408</code></th>
+                    <td>接收超时</td>
+                    <td>120 秒无进度，或超过 1800 秒接收预算。</td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><code>409</code></th>
+                    <td>状态冲突</td>
+                    <td>存储/目标冲突，或已接收图片、任务不可用。</td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><code>413</code></th>
+                    <td>文件过大</td>
+                    <td>超过接收开始时固定的当前上限。</td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><code>415</code></th>
+                    <td>格式不支持</td>
+                    <td>不是支持的图片，或无法识别内容。</td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><code>422</code></th>
+                    <td>处理失败</td>
+                    <td>保留真实图片 ID、原图和已保存版本。</td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><code>500</code></th>
+                    <td>内部错误</td>
+                    <td>数据库、接收/发布等未分类故障。</td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><code>502</code></th>
+                    <td>存储依赖故障</td>
+                    <td>对象存储服务请求失败。</td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><code>503</code></th>
+                    <td>处理不可用</td>
+                    <td>处理工具不可用，或服务正在停止。</td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><code>504</code></th>
+                    <td>等待/依赖超时</td>
+                    <td>
+                      等待本次任务超过 900
+                      秒，或存储/工具超时。等待任务结果超时不会取消已接收任务。
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><code>507</code></th>
+                    <td>空间不足</td>
+                    <td>暂存、存储或处理所需磁盘空间不足。</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </details>
         <p style="font-size: 13px">
