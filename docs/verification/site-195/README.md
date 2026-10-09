@@ -2,6 +2,8 @@
 
 Issue [#195](https://github.com/dnslin/ariso-next/issues/195)。2026-10-09，从最新 `origin/main` 的 `4db067f288a0c9859fe791eea57ac2f36365cef9` 创建管理型独立 worktree 和分支 `codex/issue-195-branding`，原工作区未修改。范围按 [任务卡](../../tasks/m3-m4-experience.md#t-site-03-品牌素材存取静态校验与清理)、[site §6/7](../../specs/SPEC-site.md#6-品牌素材与主题)，检查按 [execution](../../tasks/execution.md#适用检查)。[Issue 正文及评论](./issue.json)、[原生前置](./blocked-by.json)、[原生后置](./blocking.json)为实际 gh 读取；#47/#53/#149 均 CLOSED，直接后置 #196 OPEN。
 
+代码提交 `b335c8dd7adfb9cb43f4fcf209db74df8cc25074` 已推送；[PR #274](https://github.com/dnslin/ariso-next/pull/274) 为 OPEN / 草稿，创建后实际 gh 读取为 MERGEABLE / CLEAN，`statusCheckRollup: []`。没有远端检查记录，不记作 CI 通过；日常 PR 按统一执行约定在本地验证。本次未合并、未关闭 Issue、未发布或部署，分支与 worktree 保留。
+
 ## 实施结果与边界
 
 - `src/server/site/branding.ts` 复用 EV-SITE-01 的 ExifTool/ImageMagick/XML/CSS/resvg 解析结论，Logo 接受 PNG/JPEG/WebP/静态 SVG，Favicon 接受 PNG/ICO/静态 SVG，保留确认 MIME。未新增依赖。上传使用既有 `receiveMultipart` 和文件写入器，在接收中限制每份 5 MiB，客户端文件名和 MIME 不决定格式。
@@ -42,13 +44,23 @@ pnpm exec vitest run --project media-tools tests/integration/site/branding-http.
 pnpm exec vitest run --project integration tests/integration/runtime/build.test.ts tests/integration/runtime/secret-preflight.test.ts tests/integration/identity/auth.test.ts tests/integration/identity/reset-password-cli.test.ts tests/integration/identity/setup-lifecycle.test.ts --maxWorkers=1 -t '无密钥和数据库|空生产数据库|wrong key|invalid ciphertext|production constraints|running standalone Web|prestart prepares'
 ```
 
-`pnpm run format:check` 只报告四份新增证据 JSON 未格式化，修正后对受影响证据执行 `pnpm exec prettier … --check` 通过；产品文件无格式失败。默认浏览器最终结果仍在收集。
+`pnpm run format:check` 只报告四份新增证据 JSON 未格式化，修正后对受影响证据执行 `pnpm exec prettier … --check` 通过；产品文件无格式失败。最终新增报告另执行格式、文档结构、链接和差异检查，见[收尾记录](./checks/closeout.log)。
+
+## 默认浏览器最终结果与最终构建复验
+
+冻结安装 UI 夹具后，实际恢复命令为 `pnpm --dir tests/experiments/ui run build`，然后 `EGO_TASK_SPACE=3 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/browser-195-full node scripts/verify-browser.mjs`，没有传 suite，执行默认 full。2026-10-09 10:55:30–12:38:38 UTC，**50 阶段通过、21 失败、6 阻塞**，进程退出码 1。branding 与最终 isolated-ui 阶段通过。这里是运行器阶段数，包含启动/重启/夹具清理，不能当作业务测试数量或全站验收。
+
+实际失败阶段：`m2-1440-after`、`interaction-polish-1440`、`workspace-continuity-1440`、`oauth-1440-before`、`processing`、`storage-admin`、`storage-cors`、`library`、`library-batch`、`library-reprocess`、`library-copy`、`album-cover`、`upload-input`、`upload-relations`、`upload-usage`、`sharing-management`、`site-general`、`smtp`、`oauth-390-before`、`account-390`、`sharing-viewer`。两端各自的 `oauth-*-after`、`oauth-*-enable-restart`、`oauth-*-enabled` 六阶段被前置失败阻塞，后续能力保持未验证。失败场景内部尚未执行的步骤同样不能记作通过。
+
+[默认运行器完整状态](./browser/full/runner.json)、[失败摘要](./browser/full/failure-summary.json)、[完整输出](./checks/browser-full.log)、[脱敏服务日志](./checks/browser-full-server.log)、[隔离 UI 结果](./browser/full/ui-runner.json)保留实际记录。失败摘要只提取状态、错误和阶段定位；未改写的完整报告及截图保留在本 worktree 的 `test-results/browser-195-full`，不将大量重复图片/布局数据写入 PR。独立只读排查见[审计补充](./review.md)：三个精确地址等待与既有 `?page=1` 初始化不一致；部分失败发生在焦点/弹层或文件选择阶段；M2 恢复后媒体进程检测超时。手机账号场景实际收到认证限流响应，SMTP 等待测试确认弹窗超时，分享查看器等待函数超时。未做修改前后 A/B，不将“源码未修改”当作所有失败无关的证明，也不修改范围外模块来改写结果。
+
+默认浏览器启动后才完成审计 P2 的读取交错修复，生产主夹具在修复前已复制，因此未将该整轮包装成最终源码全绿。最终构建后实际追加 `EGO_TASK_SPACE=3 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/branding-195-reviewed node scripts/verify-browser.mjs --suite branding`，**通过**：五格式/七用途、真实图片解码、SVG 普通链接下载保留原文档、运行时 favicon metadata、拒绝替换保留旧素材及幂等删除。使用同一 space/p1 与独立临时数据库，没有并行操作 Ego 或改动用户预览数据。见[最终 runner](./browser/reviewed/runner.json)、[逐项报告](./browser/reviewed/branding.json)、[协议截图](./browser/reviewed/branding-image.png)、[输出](./checks/browser-branding-reviewed.log)、[服务日志](./checks/browser-branding-reviewed-server.log)。
 
 ## 独立审计与完成状态
 
 [独立代码审计](./review.md)通过，无未解决必修项。审计发现旧文件读取与正常替换/删除交错时误报 500 的 P2，取得失败证据后修复，并独立复审通过。格式条件变异后测试确实失败，恢复后通过。review 中分别保留默认调用链、资源生命周期、模块边界与测试有效性结论，不重复实现者已通过的检查。
 
-本次代码已实现；本地全量检查和默认浏览器状态以最终结果表为准。没有品牌管理 UI 修改，设计对照及 UI 人工验收不适用，不能声称 T-SITE-04 或 SITE-08 的全页面视觉联动完成。任务卡实施步骤暂不勾选，PR 保留草稿。Release 镜像、双架构与容器未执行，按统一发布流程承接，不创建 Release。
+本次代码已实现并推送；类型、静态、构建、单元及品牌 46 项集成通过，最终品牌浏览器通过。默认全量集成与浏览器已执行但未通过，原始失败和阻塞状态保留，不能由定向通过替代。没有品牌管理 UI 修改，设计对照及 UI 人工验收不适用，不能声称 T-SITE-04 或 SITE-08 的全页面视觉联动完成。任务卡实施步骤暂不勾选，PR 保留草稿。Release 镜像、双架构与容器未执行，按统一发布流程承接，不创建 Release。
 
 ## 执行记录与限制
 
