@@ -92,4 +92,4 @@ BROWSER_REPORT_DIR=test-results/analytics-179-consumers-verified node scripts/ve
 
 独立人工预览 `http://ariso-179.localhost:4180` 使用忽略目录 `.data/analytics179-preview` 中的数据与凭证，已换入最新首读构建；真实登录、两条私有API、工作台、统计与占用读取200。凭证不提交代码、证据或PR。预览与原型继续运行，等待用户明确停止指令。
 
-后续先批准局部原型，再实施单图区/异常控件/来源返回并按能力同步Figma，补齐相应行为和设计验收，最后由用户人工验收。当前变更将提交草稿PR，Issue继续开放，未合并、发布、部署或清理。现有通过项不会记作整卡完成。
+后续先批准局部原型，再实施单图区/异常控件/来源返回并按能力同步Figma，补齐相应行为和设计验收，最后由用户人工验收。已提交并推送 `codex/issue-179-analytics-ui`，创建[草稿PR #273](https://github.com/dnslin/ariso-next/pull/273)。`gh pr view 273 --json url,state,isDraft,headRefName,headRefOid,baseRefName,statusCheckRollup,mergeStateStatus` 实际返回 OPEN、isDraft=true、base=main、mergeStateStatus=CLEAN、statusCheckRollup=[]；没有远端检查，不记CI通过，不等待不存在的工作流。`gh issue view 179 --json number,state` 确认Issue继续OPEN。未合并、发布、部署或清理，现有通过项不会记作整卡完成。
