@@ -1,0 +1,507 @@
+{
+  "openapi": "3.0.4",
+  "info": {
+    "title": "Ariso 上传 API",
+    "version": "1.0.0",
+    "description": "单文件同步上传契约。GET /api/openapi.json 提供本站当前地址的规范；/settings/api 提供用法及 Token 管理。此规范不公开内部 Web 管理接口。"
+  },
+  "servers": [
+    {
+      "url": "/",
+      "description": "相对当前服务地址；静态生成的契约未绑定站点。"
+    }
+  ],
+  "paths": {
+    "/api/upload": {
+      "post": {
+        "operationId": "uploadImage",
+        "summary": "上传一张图片并等待本次处理结果",
+        "description": "只使用 Authorization: Bearer <token>，在读取文件体前认证；Cookie 不能代替。Token 可上传到所有者图库，中途到期或撤销不取消已接纳请求。\n\n每次请求必需且恰好一个 file，字段顺序任意。storageId 省略才采用默认存储；空串无效。visibility 省略采用正式提交时的默认可见性。\n\nalbumId 和 tag 用重复同名字段；相册 ID 去重，不接受名称、逗号串或 albumId[]。标签按名称匹配/创建，逗号属于名称；标签含 1–50 个 Unicode 码点，不含换行或控制字符。拒绝未知字段和重复 storageId/visibility。\n\n文件大小使用接收开始时的站点当前上限。初始默认 50 MiB，可由所有者调整；该默认值不是本站当前上限，规范不把它写成 file 的固定 maxLength。普通字段总字节数不超过 256 KiB。\n\n只有本次媒体任务完成才返回 201，status 表示本次结果；currentImageStatus 仅在当前图片状态不同或已接收后不可用时出现。只列已保存版本。actualVersion 可为 null，此时 defaultResolution.available=false 且 code=VERSION_UNAVAILABLE，固定版本链接仍可用。\n\n私有图片也正常返回 201，但图片链接需要所有者 Cookie；上传 Bearer Token 不授权查看私有图片。\n\n交接后最多等待 900 秒（含排队）。代理与客户端超时应覆盖接收及等待。等待超时或断连不终止已接收后的处理任务；结果不确定时到所有者图库核对。\n\n不提供幂等键或公开状态轮询。每个 POST 都是一次新上传，相同文件也可生成新 imageId；不要盲目自动重发，以免重复。",
+        "security": [{ "uploadToken": [] }],
+        "x-wait-timeout-ms": 900000,
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": { "$ref": "#/components/schemas/PublicUploadInput" },
+              "encoding": {
+                "albumId": {
+                  "contentType": "text/plain",
+                  "style": "form",
+                  "explode": true
+                },
+                "tag": {
+                  "contentType": "text/plain",
+                  "style": "form",
+                  "explode": true
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "本次上传处理完成；可空 actualVersion 不改变 ready 的成功结果。",
+            "headers": {
+              "Cache-Control": {
+                "description": "结果禁止共享缓存。",
+                "schema": { "type": "string", "enum": ["no-store"] }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PublicUploadSuccess" }
+              }
+            }
+          },
+          "400": {
+            "description": "输入无效、未知或重复单值字段、额外/缺失/空文件、截断或取消的接收流。 尚未创建资产时 imageId=null、status=not_created；已接收后的错误保留 imageId。error 包含 code、stage、message，requestId 用于诊断。",
+            "headers": {
+              "Cache-Control": {
+                "description": "结果禁止共享缓存。",
+                "schema": { "type": "string", "enum": ["no-store"] }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PublicUploadError" }
+              }
+            }
+          },
+          "401": {
+            "description": "Bearer Token 缺失、无效、已停用或已过期；Cookie 不能代替 Token。 尚未创建资产时 imageId=null、status=not_created；已接收后的错误保留 imageId。error 包含 code、stage、message，requestId 用于诊断。",
+            "headers": {
+              "Cache-Control": {
+                "description": "结果禁止共享缓存。",
+                "schema": { "type": "string", "enum": ["no-store"] }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PublicUploadError" }
+              }
+            }
+          },
+          "408": {
+            "description": "接收超时：120 秒无进度，或超过 1800 秒接收预算。 尚未创建资产时 imageId=null、status=not_created；已接收后的错误保留 imageId。error 包含 code、stage、message，requestId 用于诊断。",
+            "headers": {
+              "Cache-Control": {
+                "description": "结果禁止共享缓存。",
+                "schema": { "type": "string", "enum": ["no-store"] }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PublicUploadError" }
+              }
+            }
+          },
+          "409": {
+            "description": "存储/目标状态冲突，或已接收图片已回收、删除/任务不可用（IMAGE_UNAVAILABLE，保留原 imageId）。 尚未创建资产时 imageId=null、status=not_created；已接收后的错误保留 imageId。error 包含 code、stage、message，requestId 用于诊断。",
+            "headers": {
+              "Cache-Control": {
+                "description": "结果禁止共享缓存。",
+                "schema": { "type": "string", "enum": ["no-store"] }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PublicUploadError" }
+              }
+            }
+          },
+          "413": {
+            "description": "文件超过接收开始时固定的站点当前大小上限。 尚未创建资产时 imageId=null、status=not_created；已接收后的错误保留 imageId。error 包含 code、stage、message，requestId 用于诊断。",
+            "headers": {
+              "Cache-Control": {
+                "description": "结果禁止共享缓存。",
+                "schema": { "type": "string", "enum": ["no-store"] }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PublicUploadError" }
+              }
+            }
+          },
+          "415": {
+            "description": "不是支持的图片，或无法识别图片内容。 尚未创建资产时 imageId=null、status=not_created；已接收后的错误保留 imageId。error 包含 code、stage、message，requestId 用于诊断。",
+            "headers": {
+              "Cache-Control": {
+                "description": "结果禁止共享缓存。",
+                "schema": { "type": "string", "enum": ["no-store"] }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PublicUploadError" }
+              }
+            }
+          },
+          "422": {
+            "description": "已接收后的图片处理失败；保留真实 imageId、原图和已保存版本。 尚未创建资产时 imageId=null、status=not_created；已接收后的错误保留 imageId。error 包含 code、stage、message，requestId 用于诊断。",
+            "headers": {
+              "Cache-Control": {
+                "description": "结果禁止共享缓存。",
+                "schema": { "type": "string", "enum": ["no-store"] }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PublicUploadError" }
+              }
+            }
+          },
+          "500": {
+            "description": "上传内部错误、数据库错误或接收/发布的未分类故障。 尚未创建资产时 imageId=null、status=not_created；已接收后的错误保留 imageId。error 包含 code、stage、message，requestId 用于诊断。",
+            "headers": {
+              "Cache-Control": {
+                "description": "结果禁止共享缓存。",
+                "schema": { "type": "string", "enum": ["no-store"] }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PublicUploadError" }
+              }
+            }
+          },
+          "502": {
+            "description": "对象存储依赖故障。 尚未创建资产时 imageId=null、status=not_created；已接收后的错误保留 imageId。error 包含 code、stage、message，requestId 用于诊断。",
+            "headers": {
+              "Cache-Control": {
+                "description": "结果禁止共享缓存。",
+                "schema": { "type": "string", "enum": ["no-store"] }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PublicUploadError" }
+              }
+            }
+          },
+          "503": {
+            "description": "图片处理工具不可用，或服务正在停止。 尚未创建资产时 imageId=null、status=not_created；已接收后的错误保留 imageId。error 包含 code、stage、message，requestId 用于诊断。",
+            "headers": {
+              "Cache-Control": {
+                "description": "结果禁止共享缓存。",
+                "schema": { "type": "string", "enum": ["no-store"] }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PublicUploadError" }
+              }
+            }
+          },
+          "504": {
+            "description": "存储/工具超时，或等待本次媒体任务超过 900 秒（UPLOAD_WAIT_TIMEOUT）；等待超时包含真实 imageId 和当时状态，处理任务仍会继续。 尚未创建资产时 imageId=null、status=not_created；已接收后的错误保留 imageId。error 包含 code、stage、message，requestId 用于诊断。",
+            "headers": {
+              "Cache-Control": {
+                "description": "结果禁止共享缓存。",
+                "schema": { "type": "string", "enum": ["no-store"] }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PublicUploadError" }
+              }
+            }
+          },
+          "507": {
+            "description": "暂存、存储或处理所需磁盘空间不足。 尚未创建资产时 imageId=null、status=not_created；已接收后的错误保留 imageId。error 包含 code、stage、message，requestId 用于诊断。",
+            "headers": {
+              "Cache-Control": {
+                "description": "结果禁止共享缓存。",
+                "schema": { "type": "string", "enum": ["no-store"] }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PublicUploadError" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "uploadToken": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "所有者在 /settings/api 创建的上传 Token；仅授权上传，不授权管理接口或私有图片读取。"
+      }
+    },
+    "schemas": {
+      "PublicUploadInput": {
+        "type": "object",
+        "properties": {
+          "storageId": { "type": "string", "minLength": 1, "maxLength": 255 },
+          "albumId": {
+            "default": [],
+            "description": "Repeat albumId for multiple album IDs; IDs are deduplicated.",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255,
+              "pattern": "^[^,]+$"
+            }
+          },
+          "tag": {
+            "default": [],
+            "description": "Repeat tag for multiple tag names.",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "A tag name of 1–50 Unicode code points; commas are part of the name."
+            }
+          },
+          "visibility": { "type": "string", "enum": ["public", "private"] },
+          "file": {
+            "type": "string",
+            "format": "binary",
+            "description": "Exactly one image file; URL input is not accepted."
+          }
+        },
+        "required": ["file"],
+        "additionalProperties": false
+      },
+      "PublicUploadSuccess": {
+        "type": "object",
+        "properties": {
+          "imageId": { "type": "string", "minLength": 1, "maxLength": 255 },
+          "status": { "type": "string", "enum": ["ready"] },
+          "currentImageStatus": {
+            "type": "string",
+            "enum": ["pending", "processing", "ready", "failed"]
+          },
+          "url": { "type": "string", "format": "uri" },
+          "actualVersion": {
+            "nullable": true,
+            "type": "string",
+            "enum": ["original", "compressed", "thumbnail", "watermark", null]
+          },
+          "defaultResolution": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "available": { "type": "boolean", "enum": [true] },
+                  "code": { "type": "string", "nullable": true, "enum": [null] }
+                },
+                "required": ["available", "code"],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "available": { "type": "boolean", "enum": [false] },
+                  "code": { "type": "string", "enum": ["VERSION_UNAVAILABLE"] }
+                },
+                "required": ["available", "code"],
+                "additionalProperties": false
+              }
+            ]
+          },
+          "versions": {
+            "type": "object",
+            "properties": {
+              "original": {
+                "type": "object",
+                "properties": {
+                  "url": { "type": "string", "format": "uri" },
+                  "mime": { "type": "string", "minLength": 1 }
+                },
+                "required": ["url", "mime"],
+                "additionalProperties": false
+              },
+              "compressed": {
+                "type": "object",
+                "properties": {
+                  "url": { "type": "string", "format": "uri" },
+                  "mime": { "type": "string", "minLength": 1 }
+                },
+                "required": ["url", "mime"],
+                "additionalProperties": false
+              },
+              "thumbnail": {
+                "type": "object",
+                "properties": {
+                  "url": { "type": "string", "format": "uri" },
+                  "mime": { "type": "string", "minLength": 1 }
+                },
+                "required": ["url", "mime"],
+                "additionalProperties": false
+              },
+              "watermark": {
+                "type": "object",
+                "properties": {
+                  "url": { "type": "string", "format": "uri" },
+                  "mime": { "type": "string", "minLength": 1 }
+                },
+                "required": ["url", "mime"],
+                "additionalProperties": false
+              }
+            },
+            "additionalProperties": false
+          },
+          "processing": {
+            "type": "object",
+            "properties": {
+              "status": { "type": "string", "enum": ["succeeded"] },
+              "versions": {
+                "type": "object",
+                "properties": {
+                  "original": {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string",
+                        "enum": [
+                          "succeeded",
+                          "not_applicable",
+                          "disabled",
+                          "not_generated"
+                        ]
+                      },
+                      "reason": { "nullable": true, "type": "string" }
+                    },
+                    "required": ["status", "reason"],
+                    "additionalProperties": false
+                  },
+                  "compressed": {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string",
+                        "enum": [
+                          "succeeded",
+                          "not_applicable",
+                          "disabled",
+                          "not_generated"
+                        ]
+                      },
+                      "reason": { "nullable": true, "type": "string" }
+                    },
+                    "required": ["status", "reason"],
+                    "additionalProperties": false
+                  },
+                  "thumbnail": {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string",
+                        "enum": [
+                          "succeeded",
+                          "not_applicable",
+                          "disabled",
+                          "not_generated"
+                        ]
+                      },
+                      "reason": { "nullable": true, "type": "string" }
+                    },
+                    "required": ["status", "reason"],
+                    "additionalProperties": false
+                  },
+                  "watermark": {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string",
+                        "enum": [
+                          "succeeded",
+                          "not_applicable",
+                          "disabled",
+                          "not_generated"
+                        ]
+                      },
+                      "reason": { "nullable": true, "type": "string" }
+                    },
+                    "required": ["status", "reason"],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "original",
+                  "compressed",
+                  "thumbnail",
+                  "watermark"
+                ],
+                "additionalProperties": false
+              },
+              "warnings": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "code": { "type": "string", "minLength": 1 },
+                    "stage": { "type": "string", "minLength": 1 },
+                    "message": { "type": "string", "minLength": 1 }
+                  },
+                  "required": ["code", "stage", "message"],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": ["status", "versions", "warnings"],
+            "additionalProperties": false
+          },
+          "requestId": { "type": "string", "minLength": 1, "maxLength": 255 }
+        },
+        "required": [
+          "imageId",
+          "status",
+          "url",
+          "actualVersion",
+          "defaultResolution",
+          "versions",
+          "processing",
+          "requestId"
+        ],
+        "additionalProperties": false
+      },
+      "PublicUploadError": {
+        "type": "object",
+        "properties": {
+          "imageId": {
+            "nullable": true,
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "not_created",
+              "pending",
+              "processing",
+              "ready",
+              "failed",
+              "unavailable"
+            ]
+          },
+          "currentImageStatus": {
+            "type": "string",
+            "enum": ["pending", "processing", "ready", "failed"]
+          },
+          "error": {
+            "type": "object",
+            "properties": {
+              "code": { "type": "string", "minLength": 1 },
+              "stage": { "type": "string", "minLength": 1 },
+              "message": { "type": "string", "minLength": 1 }
+            },
+            "required": ["code", "stage", "message"],
+            "additionalProperties": false
+          },
+          "requestId": { "type": "string", "minLength": 1, "maxLength": 255 }
+        },
+        "required": ["imageId", "status", "error", "requestId"],
+        "additionalProperties": false
+      }
+    }
+  }
+}

@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="zh-CN">
+  <meta charset="utf-8" /><meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  /><title>Ariso · 上传用法交互原型</title
+  ><style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      background: #fffffe;
+      color: #272343;
+      font:
+        14px/1.5 system-ui,
+        -apple-system,
+        'PingFang SC',
+        sans-serif;
+    }
+    aside {
+      width: 232px;
+      position: fixed;
+      inset: 0 auto 0 0;
+      border-right: 1px solid #bae8e8;
+      padding: 28px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .brand {
+      font: italic 48px/1.5 cursive;
+    }
+    .desc {
+      font-size: 12px;
+    }
+    nav {
+      display: grid;
+      gap: 8px;
+    }
+    nav div {
+      height: 40px;
+      padding: 10px 12px;
+      border-radius: 12px;
+    }
+    nav .current {
+      background: #fff7c2;
+    }
+    .user {
+      margin-top: auto;
+    }
+    header {
+      display: none;
+    }
+    main {
+      margin-left: 232px;
+      padding: 28px 32px;
+      max-width: 904px;
+    }
+    section {
+      display: grid;
+      gap: 16px;
+    }
+    h1 {
+      font-size: 32px;
+      font-weight: 500;
+      margin: 18px 0 0;
+    }
+    p {
+      margin: 0;
+      color: #2d334a;
+    }
+    button,
+    a {
+      font: inherit;
+      color: inherit;
+    }
+    button {
+      cursor: pointer;
+      background: #fff;
+      border: 1px solid #bae8e8;
+      border-radius: 8px;
+      min-height: 44px;
+      padding: 0 14px;
+    }
+    a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      text-decoration: none;
+    }
+    .back {
+      margin-bottom: 0;
+    }
+    .intro {
+      display: grid;
+      gap: 6px;
+      margin-bottom: 20px;
+    }
+    .sample {
+      background: #e3f6f5;
+      border-radius: 12px;
+      padding: 16px;
+      display: grid;
+      gap: 12px;
+    }
+    .tools {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .choices {
+      display: flex;
+      gap: 8px;
+    }
+    .selected {
+      background: #ffd807;
+      border-color: transparent;
+    }
+    pre {
+      margin: 0;
+      font:
+        13px/1.6 ui-monospace,
+        monospace;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      user-select: text;
+    }
+    .small {
+      font-size: 12px;
+    }
+    details {
+      border-bottom: 1px solid #bae8e8;
+    }
+    summary {
+      cursor: pointer;
+      min-height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    summary:after {
+      content: '＋';
+    }
+    details[open] summary:after {
+      content: '−';
+    }
+    .content {
+      padding: 0 0 16px;
+      display: grid;
+      gap: 12px;
+    }
+    dl {
+      display: grid;
+      grid-template-columns: 90px 1fr;
+      gap: 12px;
+      margin: 0;
+    }
+    dd {
+      margin: 0;
+    }
+    textarea {
+      width: 100%;
+      min-height: 180px;
+      padding: 12px;
+      border: 1px solid #ff858a;
+      border-radius: 8px;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      font: 12px/1.6 monospace;
+      color: inherit;
+      background: #fff;
+    }
+    .error {
+      color: #c53c50;
+      font-size: 13px;
+    }
+    .demo {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 28px;
+      padding-top: 16px;
+      border-top: 1px dashed #bae8e8;
+    }
+    .demo button {
+      font-size: 12px;
+    }
+    .notice {
+      font-size: 12px;
+      margin-bottom: 18px;
+    }
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 12px 18px;
+      border: 1px solid #bae8e8;
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: 0 3px 15px #27234318;
+    }
+    button:focus-visible,
+    a:focus-visible,
+    summary:focus-visible {
+      outline: 2px solid #607d85;
+      outline-offset: 3px;
+    }
+    [hidden] {
+      display: none !important;
+    }
+    @media (max-width: 1199px) {
+      aside {
+        display: none;
+      }
+      header {
+        display: flex;
+        height: 64px;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 16px;
+      }
+      header .brand {
+        font-size: 36px;
+      }
+      main {
+        margin: 0;
+        padding: 24px 16px;
+        max-width: 872px;
+      }
+      h1 {
+        font-size: 26px;
+      }
+      .tools {
+        gap: 12px;
+      }
+      pre {
+        font-size: 12px;
+      }
+    }
+    body.dark {
+      background: #181a22;
+      color: #f4f1f8;
+    }
+    body.dark p {
+      color: #b8b9c9;
+    }
+    body.dark .sample {
+      background: #253d40;
+    }
+    body.dark button,
+    body.dark textarea,
+    body.dark .toast {
+      background: #22252f;
+      color: #f4f1f8;
+    }
+    body.dark .selected {
+      background: #ffd807;
+      color: #272343;
+    }
+    body.dark nav .current {
+      background: #494222;
+    }
+  </style>
+  <body>
+    <aside>
+      <div class="brand">Ariso</div>
+      <div class="desc">图片，自在收纳。</div>
+      <nav>
+        <div>▦　总览</div>
+        <div>↑　上传</div>
+        <div>▧　图库</div>
+        <div>▱　相册</div>
+        <div>◇　标签</div>
+        <div>↗　分享管理</div>
+        <div>♲　回收站</div>
+        <small>管理</small>
+        <div>▥　访问统计</div>
+        <div>▰　存储管理</div>
+        <div class="current">☷　站点设置</div>
+      </nav>
+      <div class="user">D　dnslin<br /><small>　　站点所有者</small></div>
+    </aside>
+    <header>
+      <div class="brand">Ariso</div>
+      <button aria-label="菜单">☰</button>
+    </header>
+    <main>
+      <div class="notice">交互原型 · 示例数据，不会执行上传</div>
+      <a class="back" href="#" onclick="event.preventDefault()"
+        >‹ 返回 Token 列表</a
+      >
+      <div class="intro">
+        <h1>上传 API 用法</h1>
+        <p>用 Token 从脚本上传图片。</p>
+      </div>
+      <section>
+        <div id="loaded">
+          <div class="sample">
+            <div class="tools">
+              <div class="choices">
+                <button
+                  id="minimal"
+                  class="selected"
+                  aria-pressed="true"
+                  onclick="choose(false)"
+                >
+                  最小示例</button
+                ><button id="full" aria-pressed="false" onclick="choose(true)">
+                  完整示例
+                </button>
+              </div>
+              <button id="copy" onclick="copyText()">复制命令</button>
+            </div>
+            <pre id="command"></pre>
+          </div>
+          <p class="small" style="margin-top: 12px">
+            在本机设置
+            ARISO_UPLOAD_TOKEN，替换图片路径；完整示例还需替换存储和相册 ID。
+          </p>
+          <div id="failure" hidden>
+            <p class="error" role="alert" style="margin: 12px 0">
+              复制失败，请选中下方完整命令手动复制。
+            </p>
+            <textarea id="manual" readonly aria-label="完整上传命令"></textarea>
+          </div>
+        </div>
+        <div id="loaderror" hidden>
+          <p role="alert">暂时无法读取站点地址和上传限制。请重试。</p>
+          <button onclick="failLoad(false)" style="margin-top: 12px">
+            重新加载
+          </button>
+        </div>
+        <p class="small" id="limit">
+          当前站点单文件上限：50 MiB。规范默认值为 50
+          MiB，站点可调整；接口每次只接收一个文件。
+        </p>
+        <a
+          href="#"
+          onclick="event.preventDefault()"
+          style="width: fit-content; text-decoration: underline"
+          >查看 OpenAPI 3.0 规范 ↗</a
+        >
+        <details>
+          <summary>请求参数</summary>
+          <div class="content">
+            <dl>
+              <dt>file</dt>
+              <dd>必需，一个图片文件，不能传 URL。</dd>
+              <dt>storageId</dt>
+              <dd>省略使用当前默认存储；空串不会使用默认。</dd>
+              <dt>albumId</dt>
+              <dd>
+                多个相册使用重复同名字段，ID 去重；不使用逗号串或 albumId[]。
+              </dd>
+              <dt>tag</dt>
+              <dd>多个标签使用重复同名字段；逗号属于名称。</dd>
+              <dt>visibility</dt>
+              <dd>public / private；省略采用提交时默认可见性。</dd>
+            </dl>
+          </div>
+        </details>
+        <details>
+          <summary>结果与异常</summary>
+          <div class="content">
+            <p>
+              只有本次处理完成且图片 ready 才返回 201。私有图片链接需要所有者
+              Cookie。
+            </p>
+            <p>
+              400 输入 · 401 Token · 409 状态冲突 · 413 文件超限 · 415 格式 ·
+              422 处理失败 · 502 存储依赖 · 504 等待超时 · 507 空间不足。
+            </p>
+            <pre>
+{ "imageId": "image-id", "status": "ready",
+  "actualVersion": null,
+  "defaultResolution": { "available": false, "code": "VERSION_UNAVAILABLE" } }</pre>
+            <p class="small">
+              仅为响应字段说明；完整规范列出真实保存版本、处理结果及
+              requestId。未创建图片时 imageId 为 null、status 为
+              not_created。处理失败保留真实 ID；status
+              是当次结果，currentImageStatus 表示后续改变后的当前状态。
+            </p>
+          </div>
+        </details>
+        <p style="font-size: 13px">
+          超时或断线先到图库核对。等待超时不会取消处理；重复 POST
+          可能产生新图片。此接口没有公开轮询或幂等键。
+        </p>
+      </section>
+      <div class="demo">
+        <button
+          onclick="
+            copyFail = !copyFail;
+            this.textContent = copyFail ? '复制模拟：失败' : '复制模拟：成功';
+          "
+        >
+          复制模拟：成功</button
+        ><button onclick="failLoad(true)">查看读取失败</button
+        ><button onclick="document.body.classList.toggle('dark')">
+          切换浅 / 深色</button
+        ><button
+          onclick="
+            long = !long;
+            choose(full);
+          "
+        >
+          长地址
+        </button>
+      </div>
+    </main>
+    <div class="toast" id="toast" hidden role="status">已复制</div>
+    <script>
+      let full = false,
+        copyFail = false,
+        long = false;
+      const command = document.getElementById('command');
+      function choose(value) {
+        full = value;
+        document
+          .getElementById('minimal')
+          .setAttribute('aria-pressed', String(!full));
+        document
+          .getElementById('full')
+          .setAttribute('aria-pressed', String(full));
+        document.getElementById('minimal').classList.toggle('selected', !full);
+        document.getElementById('full').classList.toggle('selected', full);
+        const url = long
+          ? 'https://very-long-public-image-site-address.for-reading-and-wrapping.example.test/api/upload'
+          : 'https://images.example/api/upload';
+        command.textContent =
+          'curl --request POST ' +
+          "'" +
+          url +
+          "'" +
+          ' \\\n  --header "Authorization: Bearer ${ARISO_UPLOAD_TOKEN}" \\\n' +
+          (full
+            ? "  --form 'storageId=storage-id' \\\n  --form 'albumId=album-id-1' \\\n  --form 'albumId=album-id-2' \\\n  --form 'tag=Go' \\\n  --form 'tag=旅行' \\\n  --form 'visibility=private' \\\n"
+            : '') +
+          "  --form 'file=@./photo.jpg'";
+        document.getElementById('failure').hidden = true;
+      }
+      function copyText() {
+        if (copyFail) {
+          document.getElementById('manual').value = command.textContent;
+          document.getElementById('failure').hidden = false;
+        } else {
+          document.getElementById('failure').hidden = true;
+          document.getElementById('toast').hidden = false;
+          setTimeout(
+            () => (document.getElementById('toast').hidden = true),
+            1800,
+          );
+        }
+      }
+      function failLoad(v) {
+        document.getElementById('loaded').hidden = v;
+        document.getElementById('limit').hidden = v;
+        document.getElementById('loaderror').hidden = !v;
+      }
+      choose(false);
+    </script>
+  </body>
+</html>

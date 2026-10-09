@@ -464,8 +464,9 @@
 - 界面：`/settings/api`进入上传用法详情，`GET /api/openapi.json`提供无秘密规范；详情为计划中的所有者子页`/settings/api/usage`，不另增公开业务API。桌面 [248:2137](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=248-2137)、手机 [248:4061](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=248-4061)；复制失败复用 桌面 [249:1465](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=249-1465)、手机 [249:3588](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=249-3588)。HeroUI：Accordion、Button、Link、Alert、TextArea，代码块仅作可选文本展示，无需自制编辑器；手机默认最小示例、参数/结果分折叠，超时提醒常驻，回Token列表恢复上下文。
 - 需求：`R-8.4-08`、`R-23.4-01`、`A-26.3-08`
 - 实施步骤：
-  - [ ] 1. 共享 schema 生成规范并验证错误/数组/可空字段一致。
+  - [x] 1. 共享 schema 生成规范并验证错误/数组/可空字段一致。
   - [ ] 2. 用法页真实 curl 与复制：当前站点地址、超时说明和手机阅读。
+- 当前实施：[Issue #199 记录](../verification/upload-199/README.md)。公开规范与共享curl已实现，Local/R2/SeaweedFS真实示例验证；产品用法页新增交互原型待批准，Figma同步、生产浏览器、设计还原与人工验收未完成，PR保持草稿。
 
 #### DG-API 对 T-UP-06 的核对结论（2026-10-05）
 
