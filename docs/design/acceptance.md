@@ -75,3 +75,5 @@ R1–R6 是历史交付批次标识，不是当前分区名，业务画板已归
 Figma 播放器此前停在登录页，未完成逐项点击与滚动验证；本次整理没有改变该结论。若后续补做播放器检查，只记录实际通过的路径。真实业务验收仍由开发后的页面、接口和工程测试完成。
 
 2026-10-08，[DG-SITE适用核对](../tasks/evidence/DG-SITE/README.md)已将可复用状态、表达缺口和真实验收责任写入T-SITE-02/04与T-UP-08；DES-06-SITE、RG-03/08仍开放，文档核对不替代产品交互验收。
+
+2026-10-09，[DG-ANALYTICS适用核对](../tasks/evidence/DG-ANALYTICS/README.md)已将两端统计状态、单图布局、全部排行/异常入口、图表等价值和刷新责任写入 [T-ANA-05](../tasks/m3-m4-experience.md#dg-analytics-对-t-ana-05-的核对结论)；DES-06-ANALYTICS、RG-02/07继续开放。本次无产品UI交付或真实页面人工验收。

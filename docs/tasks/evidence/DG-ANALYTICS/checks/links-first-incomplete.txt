@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/tmp/verify-issue129.py", line 29, in <module>
+    assert resolved.exists(), f"Missing link: {path}: {target}"
+           ~~~~~~~~~~~~~~~^^
+AssertionError: Missing link: /Users/dnslin/.codex/worktrees/issue-129-analytics-design/ariso/docs/tasks/evidence/DG-ANALYTICS/README.md: ./review.md
