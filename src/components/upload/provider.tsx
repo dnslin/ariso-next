@@ -50,6 +50,33 @@ function useUploadLifetime() {
   const [started, setStarted] = useState(false);
   const [controller, setController] = useState<UploadController | null>(null);
   const ownedController = useRef<UploadController | null>(null);
+  const publishLimits = useCallback(
+    (
+      value: Pick<UploadSettings, 'maxFileBytes' | 'batchSize' | 'queueLimit'>,
+    ) => {
+      // Cancel an older GET before publishing confirmed limits to the live owner.
+      void client.cancelQueries({ queryKey: ['upload-settings'] });
+      client.setQueryData<UploadSettings>(['upload-settings'], (current) =>
+        current
+          ? {
+              ...current,
+              maxFileBytes: value.maxFileBytes,
+              batchSize: value.batchSize,
+              queueLimit: value.queueLimit,
+            }
+          : undefined,
+      );
+      ownedController.current?.updateLimits({
+        maxFileBytes: value.maxFileBytes,
+        queueLimit: value.queueLimit,
+      });
+    },
+    [client],
+  );
+  const refreshSettings = useCallback(
+    () => client.invalidateQueries({ queryKey: ['upload-settings'] }),
+    [client],
+  );
   const sessionExpiryHandler = useRef<(() => void) | null>(null);
   const registerSessionExpiry = useCallback((handler: () => void) => {
     sessionExpiryHandler.current = handler;
@@ -197,6 +224,8 @@ function useUploadLifetime() {
     expire,
     reset,
     registerSessionExpiry,
+    publishLimits,
+    refreshSettings,
   };
 }
 
@@ -205,7 +234,7 @@ const UploadContext = createContext<ReturnType<
 > | null>(null);
 const ResetUploadContext = createContext<Pick<
   ReturnType<typeof useUploadLifetime>,
-  'reset' | 'registerSessionExpiry'
+  'reset' | 'registerSessionExpiry' | 'publishLimits' | 'refreshSettings'
 > | null>(null);
 
 /** One browser-document upload lifetime, shared across owner routes; never persisted. */
@@ -215,8 +244,15 @@ export function UploadProvider({ children }: { children: ReactNode }) {
     () => ({
       reset: upload.reset,
       registerSessionExpiry: upload.registerSessionExpiry,
+      publishLimits: upload.publishLimits,
+      refreshSettings: upload.refreshSettings,
     }),
-    [upload.reset, upload.registerSessionExpiry],
+    [
+      upload.reset,
+      upload.registerSessionExpiry,
+      upload.publishLimits,
+      upload.refreshSettings,
+    ],
   );
   return (
     <ResetUploadContext value={lifecycle}>
@@ -233,6 +269,17 @@ export function useResetUpload() {
   const lifecycle = useContext(ResetUploadContext);
   if (!lifecycle) throw new Error('UploadProvider is missing');
   return lifecycle.reset;
+}
+
+/** Confirmed limits belong to the upload lifetime, without subscribing to its queue. */
+export function useUploadLimitsSync() {
+  const lifecycle = useContext(ResetUploadContext);
+  if (!lifecycle) throw new Error('UploadProvider is missing');
+  const { publishLimits, refreshSettings } = lifecycle;
+  return useMemo(
+    () => ({ publishLimits, refreshSettings }),
+    [publishLimits, refreshSettings],
+  );
 }
 
 /** The current owner page can retain its form when background uploads lose the session. */

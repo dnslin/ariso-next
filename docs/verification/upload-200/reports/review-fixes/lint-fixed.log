@@ -1,0 +1,54 @@
+Already up to date
+Done in 63ms using pnpm v11.19.0
+
+/Users/dnslin/.codex/worktrees/issue-200-review-fixes/ariso/tests/unit/upload/limits-lifetime.test.ts
+  93:3  error  Error: This value cannot be modified
+
+Modifying a variable defined outside a component or hook is not allowed. Consider using an effect.
+
+/Users/dnslin/.codex/worktrees/issue-200-review-fixes/ariso/tests/unit/upload/limits-lifetime.test.ts:93:3
+  91 |
+  92 | function UploadLimitsHarness(initial: SavedUploadLimits) {
+> 93 |   runtime.cells = [];
+     |   ^^^^^^^ value cannot be modified
+  94 |   runtime.cursor = 0;
+  95 |   runtime.initial = initial;
+  96 |   useUploadLimits(); // The actual first successful read initializes retained state                         react-hooks/immutability
+  94:3  error  Error: This value cannot be modified
+
+Modifying a variable defined outside a component or hook is not allowed. Consider using an effect.
+
+/Users/dnslin/.codex/worktrees/issue-200-review-fixes/ariso/tests/unit/upload/limits-lifetime.test.ts:94:3
+  92 | function UploadLimitsHarness(initial: SavedUploadLimits) {
+  93 |   runtime.cells = [];
+> 94 |   runtime.cursor = 0;
+     |   ^^^^^^^ value cannot be modified
+  95 |   runtime.initial = initial;
+  96 |   useUploadLimits(); // The actual first successful read initializes retained state.
+  97 |   runtime.cursor = 0;  react-hooks/immutability
+  95:3  error  Error: This value cannot be modified
+
+Modifying a variable defined outside a component or hook is not allowed. Consider using an effect.
+
+/Users/dnslin/.codex/worktrees/issue-200-review-fixes/ariso/tests/unit/upload/limits-lifetime.test.ts:95:3
+  93 |   runtime.cells = [];
+  94 |   runtime.cursor = 0;
+> 95 |   runtime.initial = initial;
+     |   ^^^^^^^ value cannot be modified
+  96 |   useUploadLimits(); // The actual first successful read initializes retained state.
+  97 |   runtime.cursor = 0;
+  98 |   return useUploadLimits();                                 react-hooks/immutability
+  97:3  error  Error: This value cannot be modified
+
+Modifying a variable defined outside a component or hook is not allowed. Consider using an effect.
+
+/Users/dnslin/.codex/worktrees/issue-200-review-fixes/ariso/tests/unit/upload/limits-lifetime.test.ts:97:3
+   95 |   runtime.initial = initial;
+   96 |   useUploadLimits(); // The actual first successful read initializes retained state.
+>  97 |   runtime.cursor = 0;
+      |   ^^^^^^^ value cannot be modified
+   98 |   return useUploadLimits();
+   99 | }
+  100 |                                                                    react-hooks/immutability
+
+✖ 4 problems (4 errors, 0 warnings)

@@ -52,6 +52,11 @@ vi.mock('react', async (original) => {
         },
       ];
     },
+    useRef: (initial: unknown) => {
+      if (!runtime.rendering) return actual.useRef(initial);
+      const index = runtime.cursor++;
+      return (runtime.cells[index] ??= { current: initial });
+    },
     useCallback: (callback: unknown, deps: unknown[]) => {
       if (!runtime.rendering)
         return actual.useCallback(
@@ -83,6 +88,7 @@ vi.mock('react', async (original) => {
   };
 });
 vi.mock('@tanstack/react-query', () => ({
+  useQueryClient: () => ({ setQueryData: vi.fn(), invalidateQueries: vi.fn() }),
   useQuery: ({
     queryKey,
     enabled,
@@ -122,32 +128,35 @@ vi.mock('../../../src/components/site/use-site-settings', () => ({
     };
   },
 }));
-vi.mock('../../../src/components/upload-limits/use-upload-limits', () => ({
-  useUploadLimits: (initial: SavedUploadLimits | null) => {
-    if (initial && !runtime.uploadSaved) {
-      runtime.uploadSaved = initial;
-      runtime.uploadEditor(initial);
-    }
+vi.mock(
+  '../../../src/components/upload-limits/use-upload-limits',
+  async (original) => {
+    const actual =
+      await original<
+        typeof import('../../../src/components/upload-limits/use-upload-limits')
+      >();
     return {
-      saved: runtime.uploadSaved,
-      input: runtime.uploadSaved ?? {
-        maxFileMiB: Number.NaN,
-        batchSize: Number.NaN,
-        queueLimit: Number.NaN,
+      useUploadLimits: (sessionLost: boolean) => {
+        const upload = actual.useUploadLimits(sessionLost);
+        if (upload.saved && !runtime.uploadSaved) {
+          runtime.uploadSaved = upload.saved;
+          runtime.uploadEditor(upload.saved);
+        }
+        runtime.expireUpload.mockImplementation(upload.expire);
+        return { ...upload, expire: runtime.expireUpload };
       },
-      busy: false,
-      unknown: false,
-      different: false,
-      expired: runtime.uploadExpired,
-      errors: {},
-      message: '',
-      expire: runtime.expireUpload,
-      change: vi.fn(),
-      save: vi.fn(),
-      reconcile: vi.fn(),
-      chooseSaved: vi.fn(),
     };
   },
+);
+vi.mock('../../../src/components/upload/provider', () => ({
+  useResetUpload: () => vi.fn(),
+  useUploadLimitsSync: () => ({
+    publishLimits: vi.fn(),
+    refreshSettings: vi.fn(),
+  }),
+}));
+vi.mock('@heroui/react/toast', () => ({
+  toast: Object.assign(vi.fn(), { close: vi.fn() }),
 }));
 vi.mock('../../../src/components/site/site-navigation', () => ({
   useSiteNavigation: () => ({ navigate: vi.fn() }),

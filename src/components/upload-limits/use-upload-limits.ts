@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from '@heroui/react/toast';
 import {
   uploadSettingsFieldErrors,
@@ -9,8 +9,7 @@ import {
   type UploadSettingsFieldError,
   type UploadSettingsInput,
 } from '../../shared/upload-settings';
-import { useResetUpload, useUploadQueue } from '../upload/provider';
-import type { UploadSettings } from '../upload/settings';
+import { useResetUpload, useUploadLimitsSync } from '../upload/provider';
 import {
   uploadLimitsRequest,
   UploadLimitsRequestError,
@@ -18,34 +17,47 @@ import {
 } from './api';
 import { uploadLimitsInput, uploadLimitsMatch } from './model';
 
-export function useUploadLimits(initial: SavedUploadLimits | null) {
-  const [input, setInput] = useState<UploadSettingsInput>(() =>
-    initial
-      ? uploadLimitsInput(initial)
-      : {
-          maxFileMiB: Number.NaN,
-          batchSize: Number.NaN,
-          queueLimit: Number.NaN,
-        },
-  );
-  const [saved, setSaved] = useState(initial);
+type Phase = 'ready' | 'saving' | 'checking' | 'unknown' | 'different';
+
+export function useUploadLimits(sessionLostElsewhere = false) {
+  const [input, setInput] = useState<UploadSettingsInput>({
+    maxFileMiB: Number.NaN,
+    batchSize: Number.NaN,
+    queueLimit: Number.NaN,
+  });
+  const [saved, setSaved] = useState<SavedUploadLimits | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [message, setMessage] = useState('');
-  const [busy, setBusy] = useState(false);
-  const [unknown, setUnknown] = useState(false);
-  const [different, setDifferent] = useState(false);
+  const [phase, setPhase] = useState<Phase>('ready');
   const [expired, setExpired] = useState(false);
   const pending = useRef<UploadSettingsInput | null>(null);
   const inFlight = useRef(false);
   const noticeId = useRef<string | null>(null);
   const active = useRef(true);
   const client = useQueryClient();
-  const upload = useUploadQueue();
+  const upload = useUploadLimitsSync();
   const resetUpload = useResetUpload();
-  if (!saved && initial && !expired) {
-    setSaved(initial);
-    setInput(uploadLimitsInput(initial));
+  const query = useQuery({
+    queryKey: ['upload-limits'],
+    queryFn: ({ signal }) => uploadLimitsRequest({ signal }),
+    retry: false,
+    enabled: saved === null && !expired && !sessionLostElsewhere,
+    networkMode: 'always',
+    refetchOnWindowFocus: false,
+  });
+  const sessionLost =
+    expired ||
+    sessionLostElsewhere ||
+    (query.error instanceof UploadLimitsRequestError &&
+      query.error.status === 401);
+  if (!saved && !sessionLost && query.isFetchedAfterMount && query.isSuccess) {
+    setSaved(query.data);
+    setInput(uploadLimitsInput(query.data));
   }
+  const busy = !expired && (phase === 'saving' || phase === 'checking');
+  const unknown =
+    phase === 'checking' || phase === 'unknown' || phase === 'different';
+  const different = phase === 'different';
   useEffect(() => {
     active.current = true;
     return () => {
@@ -57,7 +69,6 @@ export function useUploadLimits(initial: SavedUploadLimits | null) {
     active.current = false;
     resetUpload();
     setExpired(true);
-    setBusy(false);
     setMessage('会话已失效，当前输入仍保留。请重新登录后继续操作。');
   }, [resetUpload]);
 
@@ -98,24 +109,7 @@ export function useUploadLimits(initial: SavedUploadLimits | null) {
   function acceptSaved(value: SavedUploadLimits) {
     setSaved(value);
     client.setQueryData(['upload-limits'], value);
-    // Use the provider's own cache. Cancel an older read before publishing actual limits.
-    void upload.client.cancelQueries({ queryKey: ['upload-settings'] });
-    upload.client.setQueryData<UploadSettings>(
-      ['upload-settings'],
-      (current) =>
-        current
-          ? {
-              ...current,
-              maxFileBytes: value.maxFileBytes,
-              batchSize: value.batchSize,
-              queueLimit: value.queueLimit,
-            }
-          : undefined,
-    );
-    upload.controller?.updateLimits({
-      maxFileBytes: value.maxFileBytes,
-      queueLimit: value.queueLimit,
-    });
+    upload.publishLimits(value);
   }
   async function readBack() {
     try {
@@ -124,19 +118,19 @@ export function useUploadLimits(initial: SavedUploadLimits | null) {
       acceptSaved(value);
       if (pending.current && uploadLimitsMatch(pending.current, value)) {
         pending.current = null;
-        setUnknown(false);
-        setDifferent(false);
+        setPhase('ready');
         setMessage('');
         notice('已确认上传限制保存，当前输入已保留');
         return true;
       } else {
-        setDifferent(true);
+        setPhase('different');
         setMessage(
           '已保存值与本次提交不同。当前输入仍保留，请决定使用哪一份。',
         );
       }
     } catch (error) {
       if (!active.current) return false;
+      setPhase('unknown');
       setMessage(
         `核对失败，输入已保留。请重新核对当前设置。${error instanceof Error ? error.message : String(error)}`,
       );
@@ -158,10 +152,9 @@ export function useUploadLimits(initial: SavedUploadLimits | null) {
     const opener = document.activeElement as HTMLElement | null;
     let confirmed = false;
     inFlight.current = true;
-    setBusy(true);
+    setPhase('saving');
     setErrors({});
     setMessage('');
-    setDifferent(false);
     pending.current = uploadLimitsInput(parsed.data);
     try {
       const value = await uploadLimitsRequest({
@@ -172,17 +165,19 @@ export function useUploadLimits(initial: SavedUploadLimits | null) {
       if (!active.current) return;
       acceptSaved(value);
       pending.current = null;
+      setPhase('ready');
       notice('上传限制已保存');
       confirmed = true;
     } catch (error) {
       if (!active.current) return;
       if (error instanceof UploadLimitsRequestError && error.status < 500) {
         pending.current = null;
+        setPhase('ready');
         applyErrors(error.fields);
         setMessage(`${error.message}，输入已保留。`);
         if (error.status === 401) expire();
       } else {
-        setUnknown(true);
+        setPhase('checking');
         setMessage('保存结果尚未确认，正在读取当前设置…');
         // One read resolves an uncertain write; this path never repeats PATCH.
         confirmed = await readBack();
@@ -197,7 +192,7 @@ export function useUploadLimits(initial: SavedUploadLimits | null) {
     const opener = document.activeElement as HTMLElement | null;
     let confirmed = false;
     inFlight.current = true;
-    setBusy(true);
+    setPhase('checking');
     try {
       confirmed = await readBack();
     } finally {
@@ -210,10 +205,9 @@ export function useUploadLimits(initial: SavedUploadLimits | null) {
       // A detached write may have committed. Read current limits instead of
       // publishing its obsolete response into a newer editor or live queue.
       void client.invalidateQueries({ queryKey: ['upload-limits'] });
-      void upload.client.invalidateQueries({ queryKey: ['upload-settings'] });
+      void upload.refreshSettings();
       return;
     }
-    setBusy(false);
     if (confirmed) restoreControlFocus(opener);
   }
   function restoreControlFocus(opener: HTMLElement | null) {
@@ -238,8 +232,7 @@ export function useUploadLimits(initial: SavedUploadLimits | null) {
       setErrors({});
     }
     pending.current = null;
-    setUnknown(false);
-    setDifferent(false);
+    setPhase('ready');
     setMessage('');
     notice(useSaved ? '已使用服务器保存的设置' : '输入已保留，请点击保存');
     restoreControlFocus(opener);
@@ -253,6 +246,8 @@ export function useUploadLimits(initial: SavedUploadLimits | null) {
     unknown,
     different,
     expired,
+    sessionLost,
+    query,
     expire,
     change,
     save,
