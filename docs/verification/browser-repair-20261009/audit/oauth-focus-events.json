@@ -1,0 +1,73 @@
+{
+  "source": "test-results/browser-repair/oauth-trace/oauth-all-before.json",
+  "status": "failed",
+  "stage": "closed-configuration-unknown",
+  "error": "ElementResolutionError: page.focus timed out after 3000ms: Selector [data-testid=\"account-github-config\"] matched 1 elements, but none can receive input; element is hidden or inert\n    at #retryElementAction (file:////[eval1]:18884:27)\n    at async file:////[eval1]:18968:29\n    at async file:////[eval1]:16691:28",
+  "events": [
+    {
+      "type": "focusin",
+      "time": 15744.800000071526,
+      "id": "react-aria9795953135-_r_k4_",
+      "testId": "oauth-settings-reload",
+      "slot": "button"
+    },
+    {
+      "type": "click",
+      "time": 15747.399999976158,
+      "id": "react-aria9795953135-_r_k4_",
+      "testId": "oauth-settings-reload",
+      "slot": "button"
+    },
+    {
+      "type": "focusin",
+      "time": 15812.800000071526,
+      "id": "react-aria9795953135-_r_kb_",
+      "slot": "toast-close"
+    },
+    {
+      "type": "focusin",
+      "time": 15819.700000047684,
+      "id": "react-aria9795953135-_r_kd_",
+      "testId": "account-github-config",
+      "slot": "button"
+    },
+    {
+      "type": "keydown",
+      "key": "Enter",
+      "time": 15866.100000023842,
+      "id": "react-aria9795953135-_r_kd_",
+      "testId": "account-github-config",
+      "slot": "button"
+    },
+    {
+      "type": "click",
+      "time": 15868.300000071526,
+      "id": "react-aria9795953135-_r_kd_",
+      "testId": "account-github-config",
+      "slot": "button"
+    },
+    {
+      "type": "keyup",
+      "key": "Enter",
+      "time": 15868.600000023842,
+      "id": "react-aria9795953135-_r_kd_",
+      "testId": "account-github-config",
+      "slot": "button"
+    },
+    {
+      "type": "focusin",
+      "time": 15874.100000023842,
+      "id": "react-aria9795953135-_r_kk_",
+      "testId": "oauth-page",
+      "slot": "modal-dialog",
+      "modal": "editing"
+    },
+    {
+      "type": "focusin",
+      "time": 15903.899999976158,
+      "id": "oauth-client-id",
+      "slot": "input",
+      "modal": "editing"
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "status": "failed",
+  "taskSpaceId": 8,
+  "origin": "http://ariso-52386.localhost:52386",
+  "phase": "lifecycle",
+  "checks": [],
+  "layouts": [],
+  "screenshots": ["tokens-all-failure.png"],
+  "requests": [
+    {
+      "path": "/api/upload-tokens",
+      "method": "POST",
+      "width": 1440,
+      "attempt": 1,
+      "status": 200
+    }
+  ],
+  "business": [],
+  "clipboard": [],
+  "limitations": [
+    "Only the runner’s disposable production database is modified; the manual preview remains untouched.",
+    "Once-only secret screenshots cover the input with a temporary bullet overlay without changing its value or selection; the full value is asserted in memory and never emitted.",
+    "Actual Clipboard permission denial and native copy are exercised on the current macOS Ego Lite host.",
+    "Chromium viewport emulation does not constitute physical touch, soft keyboard or safe-area verification."
+  ],
+  "timeZone": "Asia/Shanghai",
+  "stage": "lifecycle",
+  "error": "AssertionError [ERR_ASSERTION]: Every working action uses its approved short modal with one actual disabled outline control\n+ actual - expected\n... Skipped lines\n\n  {\n    body: '正在停用 启停撤销-1440…',\n    buttons: 1,\n    cancel: false,\n    fields: 0,\n...\n      disabled: true,\n+     height: 48.5467529296875,\n-     height: 48,\n      text: '处理中…'\n    },\n    title: '正在停用'\n  }\n\n    at assertWorkingAction (file:///Users/dnslin/.codex/worktrees/browser-regression-repair/ariso/e2e/tokens-behavior.mjs:45:10)\n    at async verifyTokensLifecycle (file:///Users/dnslin/.codex/worktrees/browser-regression-repair/ariso/e2e/tokens-behavior.mjs:699:9)\n    at async file:////[eval2]:80:5",
+  "finishedAt": "2026-10-09T06:34:51.273Z"
+}

@@ -200,6 +200,12 @@ export async function uploadSettingsTools(page, config, report) {
       // those wheel events while focused, so enter its value through the real
       // keyboard and commit with Tab before checking the submitted value.
       await page.focus(limitsField(name));
+      report.uploadOperation.step = 'wait-visible-input-focus';
+      await page.waitForFunction(
+        (selector) =>
+          document.activeElement === document.querySelector(selector),
+        limitsField(name),
+      );
       report.uploadOperation.step = 'replace-with-keyboard';
       await page.keyboard.press('ControlOrMeta+A');
       await page.keyboard.type(String(value));

@@ -1,0 +1,64 @@
+Already up to date
+Done in 50ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/browser-regression-repair/ariso
+
+ ❯ |unit| tests/unit/scripts/browser-control.test.ts (14 tests | 4 failed) 22ms
+   ❯ library history cleanup boundary (2)
+     × 真实内部 try/finally 保留停止边界：user has taken control 3ms
+     × 真实内部 try/finally 保留停止边界：ordinary browser failure 1ms
+   ❯ library pending-error cleanup boundary (2)
+     × 真实内部 try/finally 保留停止边界：user has taken control 1ms
+     × 真实内部 try/finally 保留停止边界：ordinary browser failure 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/scripts/browser-control.test.ts > library history cleanup boundary > 真实内部 try/finally 保留停止边界：user has taken control
+ FAIL  |unit| tests/unit/scripts/browser-control.test.ts > library pending-error cleanup boundary > 真实内部 try/finally 保留停止边界：user has taken control
+AssertionError: expected ReferenceError: isBrowserControlStop is n… to be Error: user has taken control // Object.is equality
+
+- Expected
++ Received
+
+- Error {
+-   "message": "user has taken control",
+- }
++ [ReferenceError: isBrowserControlStop is not defined]
+
+ ❯ tests/unit/scripts/browser-control.test.ts:132:27
+    130|         },
+    131|       );
+    132|       await expect(result).rejects.toBe(error);
+       |                           ^
+    133|       expect(evaluate).toHaveBeenCalledTimes(cleanup ? 1 : 0);
+    134|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  |unit| tests/unit/scripts/browser-control.test.ts > library history cleanup boundary > 真实内部 try/finally 保留停止边界：ordinary browser failure
+ FAIL  |unit| tests/unit/scripts/browser-control.test.ts > library pending-error cleanup boundary > 真实内部 try/finally 保留停止边界：ordinary browser failure
+AssertionError: expected ReferenceError: isBrowserControlStop is n… to be Error: ordinary browser failure // Object.is equality
+
+- Expected
++ Received
+
+- Error {
+-   "message": "ordinary browser failure",
+- }
++ [ReferenceError: isBrowserControlStop is not defined]
+
+ ❯ tests/unit/scripts/browser-control.test.ts:132:27
+    130|         },
+    131|       );
+    132|       await expect(result).rejects.toBe(error);
+       |                           ^
+    133|       expect(evaluate).toHaveBeenCalledTimes(cleanup ? 1 : 0);
+    134|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed | 10 passed (14)
+   Start at  14:54:14
+   Duration  158ms (transform 53%, tests 28%, import 18%, worker 2%)

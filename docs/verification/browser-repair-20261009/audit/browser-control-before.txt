@@ -1,0 +1,50 @@
+Already up to date
+Done in 47ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/browser-regression-repair/ariso
+
+ ❯ |unit| tests/unit/scripts/browser-control.test.ts (10 tests | 8 failed) 18ms
+   ❯ library browser control boundary (5)
+     × 停止后只写离线报告并传播原错误：user has taken control 6ms
+     × 停止后只写离线报告并传播原错误：space 8 is inactive 1ms
+     × 停止后只写离线报告并传播原错误：space 8 is unassigned 1ms
+     × 停止后只写离线报告并传播原错误：Browser control unavailable 1ms
+   ❯ owner browser control boundary (5)
+     × 停止后只写离线报告并传播原错误：user has taken control 2ms
+     × 停止后只写离线报告并传播原错误：space 8 is inactive 1ms
+     × 停止后只写离线报告并传播原错误：space 8 is unassigned 2ms
+     × 停止后只写离线报告并传播原错误：Browser control unavailable 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/scripts/browser-control.test.ts > library browser control boundary > 停止后只写离线报告并传播原错误：user has taken control
+ FAIL  |unit| tests/unit/scripts/browser-control.test.ts > library browser control boundary > 停止后只写离线报告并传播原错误：space 8 is inactive
+ FAIL  |unit| tests/unit/scripts/browser-control.test.ts > library browser control boundary > 停止后只写离线报告并传播原错误：space 8 is unassigned
+ FAIL  |unit| tests/unit/scripts/browser-control.test.ts > library browser control boundary > 停止后只写离线报告并传播原错误：Browser control unavailable
+ FAIL  |unit| tests/unit/scripts/browser-control.test.ts > owner browser control boundary > 停止后只写离线报告并传播原错误：user has taken control
+ FAIL  |unit| tests/unit/scripts/browser-control.test.ts > owner browser control boundary > 停止后只写离线报告并传播原错误：space 8 is inactive
+ FAIL  |unit| tests/unit/scripts/browser-control.test.ts > owner browser control boundary > 停止后只写离线报告并传播原错误：space 8 is unassigned
+ FAIL  |unit| tests/unit/scripts/browser-control.test.ts > owner browser control boundary > 停止后只写离线报告并传播原错误：Browser control unavailable
+AssertionError: expected undefined to be true // Object.is equality
+
+- Expected:
+true
+
++ Received:
+undefined
+
+ ❯ tests/unit/scripts/browser-control.test.ts:48:42
+     46|   ])('停止后只写离线报告并传播原错误：%s', async (message) => {
+     47|     const { page, report } = await failAtBrowserBoundary(scenario, new…
+     48|     expect(report.stoppedForUserControl).toBe(true);
+       |                                          ^
+     49|     expect(page.evaluate).not.toHaveBeenCalled();
+     50|     expect(page.snapshot).not.toHaveBeenCalled();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  8 failed | 2 passed (10)
+   Start at  14:51:08
+   Duration  176ms (transform 54%, tests 24%, import 17%, worker 4%)

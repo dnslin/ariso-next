@@ -130,6 +130,11 @@ async function verifyClosedSettingsUnknown(page, config, report, ui, secret) {
     () =>
       !document.querySelector('[data-testid="account-github-config"]').disabled,
   );
+  await page.waitForFunction(
+    () =>
+      document.activeElement ===
+      document.querySelector('[data-testid="account-github-config"]'),
+  );
   await ui.open();
   await page.waitForSelector(`${oauthDialog}[data-state="editing"]`);
   assert.deepEqual(

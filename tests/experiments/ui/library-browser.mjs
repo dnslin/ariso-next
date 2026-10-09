@@ -1,8 +1,47 @@
 import assert from 'node:assert/strict';
 import { writeFile } from 'node:fs/promises';
+import { isBrowserControlStop } from '../../../e2e/browser-errors.mjs';
+
+// Keep the real error response pending until its loading UI has been observed.
+function observeRequests() {
+  const original = window.fetch;
+  window.__libraryRequests = [];
+  let release;
+  const gate = new Promise((resolve) => {
+    release = resolve;
+  });
+  window.__libraryReleaseError = release;
+  window.__restoreLibraryFetch = () => {
+    release();
+    window.fetch = original;
+    delete window.__libraryReleaseError;
+    delete window.__libraryHoldError;
+    delete window.__libraryHeldError;
+    delete window.__restoreLibraryFetch;
+  };
+  window.fetch = async (...args) => {
+    const url = new URL(String(args[0]), location.href);
+    if (url.pathname === '/library/data')
+      window.__libraryRequests.push(String(args[0]));
+    const response = await original(...args);
+    if (
+      url.pathname === '/library/data' &&
+      url.searchParams.get('q') === 'error' &&
+      window.__libraryHoldError
+    ) {
+      const held = { status: response.status, released: false };
+      window.__libraryHeldError = held;
+      await gate;
+      held.released = true;
+    }
+    return response;
+  };
+}
 
 export async function verifyLibrary(page, config) {
   const report = { status: 'failed', checks: [], layouts: [] };
+  let observer;
+  let scriptRemoved = false;
   const requests = () => page.evaluate(() => window.__libraryRequests.length);
   const state = () =>
     page.evaluate(() => ({
@@ -13,8 +52,8 @@ export async function verifyLibrary(page, config) {
       focus: document.activeElement.id,
     }));
   try {
-    await page.cdp('Page.addScriptToEvaluateOnNewDocument', {
-      source: `window.__libraryRequests=[];const originalFetch=window.fetch;window.fetch=(...args)=>{if(String(args[0]).startsWith('/library/data?'))window.__libraryRequests.push(String(args[0]));return originalFetch(...args)};`,
+    observer = await page.cdp('Page.addScriptToEvaluateOnNewDocument', {
+      source: `(${observeRequests.toString()})();`,
     });
     await page.cdp('Emulation.setDeviceMetricsOverride', {
       width: 1440,
@@ -71,8 +110,12 @@ export async function verifyLibrary(page, config) {
       await page.waitForFunction(
         () => document.querySelector('#library-search').value === '海边',
       );
+    } catch (error) {
+      report.stoppedForUserControl = isBrowserControlStop(error);
+      throw error;
     } finally {
-      await page.evaluate(() => window.__restoreLibraryHistory());
+      if (!report.stoppedForUserControl)
+        await page.evaluate(() => window.__restoreLibraryHistory());
     }
     report.checks.push(
       'Local search draft: no URL, history or HTTP writes; one submit entry; Back/Forward restore applied input',
@@ -277,18 +320,42 @@ export async function verifyLibrary(page, config) {
       'Light/dark at 360/390/430/768/1440, 44px controls, short viewport; emulated missing Fullscreen API hides its button but retains viewport viewer and zoom',
     );
 
-    await page.fill('#library-search', 'error');
-    await page.keyboard.press('Enter');
-    await page.waitForFunction(
-      () => document.querySelector('#library-state').textContent === '正在加载',
-    );
-    assert.equal(
-      await page.evaluate(
-        () => document.querySelectorAll('[id^="open-image"]').length,
-      ),
-      0,
-      'Old result cannot be operated during new query',
-    );
+    await page.evaluate(() => {
+      window.__libraryHoldError = true;
+    });
+    try {
+      await page.fill('#library-search', 'error');
+      await page.keyboard.press('Enter');
+      await page.waitForFunction(() => !!window.__libraryHeldError);
+      assert.equal(
+        await page.evaluate(() => window.__libraryHeldError.status),
+        503,
+        'The pending query has received a real HTTP 503, not a fabricated response',
+      );
+      await page.waitForFunction(
+        () =>
+          document.querySelector('#library-state').textContent === '正在加载',
+      );
+      assert.equal(
+        await page.evaluate(
+          () => document.querySelectorAll('[id^="open-image"]').length,
+        ),
+        0,
+        'Old result cannot be operated during new query',
+      );
+      report.pendingError = await page.evaluate(
+        () => window.__libraryHeldError,
+      );
+    } catch (error) {
+      report.stoppedForUserControl = isBrowserControlStop(error);
+      throw error;
+    } finally {
+      if (!report.stoppedForUserControl)
+        await page.evaluate(() => {
+          window.__libraryHoldError = false;
+          window.__libraryReleaseError();
+        });
+    }
     await page.waitForFunction(() =>
       document.querySelector('#library-state').textContent.includes('HTTP 503'),
     );
@@ -321,11 +388,35 @@ export async function verifyLibrary(page, config) {
     report.status = 'passed';
   } catch (error) {
     report.error = error.stack ?? String(error);
+    report.stoppedForUserControl = isBrowserControlStop(error);
     throw error;
   } finally {
-    await writeFile(
-      `${config.output}/library.json`,
-      `${JSON.stringify(report, null, 2)}\n`,
-    );
+    try {
+      if (observer && report.stoppedForUserControl)
+        report.pendingBrowserCleanup = {
+          scriptIdentifier: observer.identifier,
+        };
+      if (observer && !report.stoppedForUserControl) {
+        await page.cdp('Page.removeScriptToEvaluateOnNewDocument', observer);
+        scriptRemoved = true;
+        await page.evaluate(() => window.__restoreLibraryFetch?.());
+      }
+    } catch (error) {
+      report.status = 'failed';
+      report.cleanupError = error.stack ?? String(error);
+      report.error ??= report.cleanupError;
+      report.stoppedForUserControl = isBrowserControlStop(error);
+      report.pendingBrowserCleanup = {
+        scriptIdentifier: observer.identifier,
+        scriptRemoved,
+        restoreFetch: true,
+      };
+      throw error;
+    } finally {
+      await writeFile(
+        `${config.output}/library.json`,
+        `${JSON.stringify(report, null, 2)}\n`,
+      );
+    }
   }
 }

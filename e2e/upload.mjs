@@ -143,7 +143,7 @@ try {
   const { verifyOwnerShell } = await import(
     new URL('./owner-shell.mjs', config.libraryDetailScript).href
   );
-  await verifyOwnerShell(page, config);
+  await verifyOwnerShell(page, config, 'upload-owner-shell');
   // Exercise the production controller with the browser's native fetch before
   // installing any fault harness: a wrapper must not hide receiver errors.
   assert.equal(

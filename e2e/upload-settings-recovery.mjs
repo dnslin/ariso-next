@@ -169,6 +169,17 @@ export async function uploadSettingsRecovery(page, tools, report) {
     () =>
       !document.querySelector('[data-testid="upload-limits-save"]').disabled,
   );
+  // A confirmed save restores its opener on the next frame. Finish that
+  // interaction before choosing the next input for keyboard replacement.
+  report.uploadOperation = {
+    action: 'save',
+    step: 'wait-restored-save-focus',
+  };
+  await page.waitForFunction(
+    () =>
+      document.activeElement ===
+      document.querySelector('[data-testid="upload-limits-save"]'),
+  );
 
   await tools.monitor({ lost: true });
   await tools.fill({ maxFileMiB: 58 });
