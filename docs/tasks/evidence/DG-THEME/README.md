@@ -74,4 +74,8 @@ Ariso的primary映射HeroUI accent，Ariso的accent映射边框，二者名称�
 
 ## 交付状态
 
-纯文档实施、适用本地检查、独立文档/设计适用评审已完成；产品代码、真实浏览器、产品设计对照及用户人工验收不在本DG交付范围，继续由#197取得证据。待本轮提交、推送并创建关联#139的PR后记录远端状态。本轮未合并、未关闭Issue、未发布/部署、未删除分支或worktree。没有产品预览进程需要停止。
+纯文档实施、适用本地检查、独立文档/设计适用评审已完成；产品代码、真实浏览器、产品设计对照及用户人工验收不在本DG交付范围，继续由#197取得证据。已提交 `8cf0c218`（`docs(theme): record DG-THEME design applicability for issue 139`），执行 `git push --set-upstream origin codex/issue-139-theme-design`，并用 `gh pr create --repo dnslin/ariso-next --base main --head codex/issue-139-theme-design --title ... --body-file /tmp/codex-issue139-pr.md` 创建 [PR #272](https://github.com/dnslin/ariso-next/pull/272)，Refs #139，已附加到本聊天。文档自身的适用检查与必要独立审计全部完成，PR为正式待评审；消费任务尚未执行的产品UI/人工验收不冒充本DG已验证，也不要求本纯文档PR保持草稿。
+
+实际运行 `gh pr view 272 --repo dnslin/ariso-next --json number,url,state,isDraft,headRefName,baseRefName,mergeable,statusCheckRollup,headRefOid`：OPEN、isDraft=false、base=main、head=codex/issue-139-theme-design、MERGEABLE、远端head与本地提交一致。`gh pr checks 272 --repo dnslin/ariso-next` 退出1，输出 `no checks reported`，statusCheckRollup为空；这是没有远端检查，不是CI通过。实际读取 `.github/workflows/ci.yml` 仅workflow_call、`images.yml` 仅release.published，未触发Release或等待不存在的PR工作流。
+
+远端状态补写仅涉及本证据，定向运行 `pnpm exec prettier --check docs/tasks/evidence/DG-THEME/README.md docs/tasks/evidence/DG-THEME/links.json`、上述一次性链接/设计资料走查及 `git diff --check`，再提交推送交付记录，不重复已通过且输入未变的应用/全仓检查。本轮未合并、未关闭Issue、未发布/部署、未删除分支或worktree。没有产品预览进程需要停止，管理型worktree与分支保留。
