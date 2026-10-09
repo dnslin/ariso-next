@@ -51,6 +51,7 @@ const parsers = {
   storageId: parseAsString,
   visibility: parseAsString,
   status: parseAsString,
+  failure: parseAsString,
   sort: parseAsString,
   pageSize: parseAsString,
   page: parseAsString,

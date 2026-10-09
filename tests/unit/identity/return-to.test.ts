@@ -1,6 +1,13 @@
 import { expect, it } from 'vitest';
 import { loginDestination } from '../../../src/components/identity/return-to';
 
+it.each(['/dashboard?days=30', '/analytics?days=90&view=daily'])(
+  'returns to the delivered analytics page %s',
+  (destination) => {
+    expect(loginDestination(destination)).toBe(destination);
+  },
+);
+
 it.each([
   undefined,
   ['/admin'],

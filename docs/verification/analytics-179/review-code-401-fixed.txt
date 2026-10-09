@@ -1,0 +1,15 @@
+Independent focused re-review of the previously failing observer lifecycle.
+Command: pnpm exec vitest run --project unit tests/unit/analytics/read-analytics.test.ts -t "ending a session disables every observer"
+Already up to date
+Done in 140ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-179-analytics-ui/ariso
+
+
+ Test Files  1 passed (1)
+      Tests  1 passed | 13 skipped (14)
+   Start at  19:03:34
+   Duration  675ms (import 44%, transform 38%, tests 16%, worker 1%)
+
+
+Exit code: 0

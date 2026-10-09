@@ -1,0 +1,736 @@
+<!doctype html>
+<html lang="zh-CN">
+  <meta charset="utf-8" /><meta
+    name="viewport"
+    content="width=device-width,initial-scale=1"
+  />
+  <title>Issue 179 · 局部交互原型</title>
+  <style>
+    @font-face {
+      font-family: Noto;
+      src: url('./noto-sans-sc.woff2');
+    }
+    @font-face {
+      font-family: Caveat;
+      src: url('./caveat.woff2');
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font:
+        14px/1.6 Noto,
+        sans-serif;
+      --bg: #fffffe;
+      --fg: #272343;
+      --muted: #41445b;
+      --border: #bae8e8;
+      --soft: #e3f6f5;
+      --primary: #ffd807;
+      --surface: #fffffe;
+    }
+    body.dark {
+      --bg: #181a22;
+      --fg: #f4f1f8;
+      --muted: #b8b9c9;
+      --border: #607d85;
+      --soft: #253d40;
+      --surface: #22252f;
+    }
+    button,
+    select,
+    a {
+      font: inherit;
+      color: inherit;
+    }
+    button,
+    select {
+      min-height: 44px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface);
+      padding: 8px 14px;
+      cursor: pointer;
+    }
+    button:focus-visible,
+    select:focus-visible,
+    a:focus-visible,
+    summary:focus-visible {
+      outline: 2px solid #287e79;
+      outline-offset: 3px;
+    }
+    button.primary,
+    button[aria-pressed='true'] {
+      background: var(--primary);
+      color: #272343;
+      border-color: var(--primary);
+    }
+    a {
+      color: inherit;
+      text-underline-offset: 4px;
+    }
+    h1,
+    h2,
+    h3,
+    p {
+      margin: 0;
+    }
+    h1 {
+      font-size: 28px;
+      font-weight: 600;
+    }
+    h2 {
+      font-size: 20px;
+      font-weight: 500;
+    }
+    h3 {
+      font-size: 16px;
+      font-weight: 500;
+    }
+    .muted {
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .tools {
+      position: relative;
+      z-index: 20;
+      padding: 12px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      background: var(--surface);
+    }
+    .tools label {
+      font-size: 12px;
+    }
+    .tools strong {
+      margin-right: auto;
+    }
+    .shell {
+      display: grid;
+      grid-template-columns: 232px minmax(0, 1fr);
+      min-height: calc(100dvh - 70px);
+    }
+    aside {
+      border-right: 1px solid var(--border);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    aside .brand {
+      font: 48px Caveat;
+    }
+    aside span {
+      padding: 10px 12px;
+    }
+    aside .current {
+      border-radius: 12px;
+      background: var(--soft);
+    }
+    main {
+      padding: 32px;
+      min-width: 0;
+      padding-bottom: 112px;
+    }
+    .stack {
+      display: grid;
+      gap: 20px;
+    }
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: var(--surface);
+      padding: 20px 24px;
+    }
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    .metric {
+      padding: 20px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+    }
+    .metric b {
+      display: block;
+      font-size: 32px;
+      font-weight: 400;
+      margin: 8px 0;
+    }
+    .rank {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-height: 72px;
+      border-bottom: 1px solid var(--border);
+      padding: 10px 0;
+    }
+    .rank:last-child {
+      border: 0;
+    }
+    .thumb {
+      width: 48px;
+      height: 48px;
+      flex-shrink: 0;
+      border-radius: 8px;
+      background: var(--soft);
+      display: grid;
+      place-items: center;
+      font-size: 12px;
+    }
+    .rank .name {
+      flex: 1;
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+    .rank a {
+      display: block;
+      min-height: 44px;
+      padding-top: 8px;
+    }
+    .rank .count {
+      flex-shrink: 0;
+      font-variant-numeric: tabular-nums;
+    }
+    .footer {
+      position: fixed;
+      z-index: 5;
+      bottom: 0;
+      left: 264px;
+      right: 32px;
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      padding: 16px 0;
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+    }
+    .footer button {
+      height: 48px;
+      min-width: 200px;
+    }
+    .pill {
+      border: 1px solid var(--border);
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+    }
+    .dialog-mask {
+      position: fixed;
+      inset: 70px 0 0;
+      background: #27234333;
+      z-index: 10;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+    .dialog {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      width: min(1040px, 100%);
+      max-height: calc(100dvh - 120px);
+      display: flex;
+      flex-direction: column;
+      padding: 20px 24px;
+    }
+    .dialog-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 12px;
+    }
+    .dialog-body {
+      overflow-y: auto;
+      min-height: 0;
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 24px;
+      padding: 8px 0 20px;
+    }
+    .preview {
+      background: var(--soft);
+      height: 340px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      margin-top: 12px;
+    }
+    .preview img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+    .detail-info {
+      display: grid;
+      gap: 12px;
+      align-content: start;
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+    .detail-title {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .detail-title h2 {
+      flex: 1;
+      font-size: 22px;
+    }
+    .stats {
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+    }
+    .stats .total {
+      font-size: 26px;
+      font-variant-numeric: tabular-nums;
+    }
+    .versions {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      padding: 10px 0 12px;
+    }
+    .versions b {
+      display: block;
+      font-weight: 500;
+    }
+    .periods {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .periods td,
+    .periods th {
+      text-align: left;
+      padding: 8px 0;
+      border-top: 1px solid var(--border);
+      font-weight: 400;
+    }
+    .periods td:last-child,
+    .periods th:last-child {
+      text-align: right;
+    }
+    .periods small {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+    }
+    .dialog-foot {
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+    }
+    .dialog-foot button {
+      min-width: 140px;
+      height: 48px;
+    }
+    .tip {
+      position: relative;
+    }
+    .tip summary {
+      cursor: pointer;
+      list-style: none;
+      min-width: 44px;
+      min-height: 44px;
+      display: grid;
+      place-items: center;
+      font-size: 13px;
+    }
+    .tip[open] .tip-content {
+      position: absolute;
+      z-index: 20;
+      right: 0;
+      top: 44px;
+      width: min(300px, calc(100vw - 48px));
+      padding: 16px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      border-radius: 12px;
+      box-shadow: 0 4px 20px #0002;
+      font-size: 13px;
+    }
+    .notice {
+      padding: 12px 0;
+      font-size: 13px;
+    }
+    .notice.error {
+      color: #b63745;
+    }
+    .notice button {
+      margin-top: 8px;
+    }
+    .mobile-brand {
+      display: none;
+    }
+    .choices {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .grid-images {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    .image-card {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 12px;
+    }
+    .image-card .thumb {
+      width: 100%;
+      height: 160px;
+      margin-bottom: 10px;
+    }
+    .back {
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+    }
+    .hidden {
+      display: none !important;
+    }
+    @media (max-width: 1199px) {
+      .shell {
+        display: block;
+      }
+      aside {
+        display: none;
+      }
+      .mobile-brand {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 16px;
+        border-bottom: 1px solid var(--border);
+      }
+      .mobile-brand b {
+        font: 36px Caveat;
+      }
+      main {
+        padding: 24px 16px 112px;
+      }
+      .footer {
+        left: 16px;
+        right: 16px;
+      }
+      .dialog-body {
+        grid-template-columns: 1fr;
+      }
+      .dialog {
+        max-height: calc(100dvh - 110px);
+        width: min(650px, 100%);
+      }
+      .grid-images {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+    @media (max-width: 600px) {
+      .tools {
+        padding: 8px;
+        gap: 6px;
+      }
+      .tools strong {
+        font-size: 12px;
+        width: 100%;
+      }
+      .tools button,
+      .tools select {
+        padding: 6px 8px;
+        font-size: 12px;
+      }
+      .metrics {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .card {
+        padding: 16px;
+      }
+      .footer {
+        gap: 12px;
+      }
+      .footer button {
+        min-width: 0;
+        flex: 1;
+      }
+      .dialog-mask {
+        inset: 110px 0 0;
+        padding: 0;
+      }
+      .dialog {
+        border: 0;
+        border-radius: 0;
+        height: 100%;
+        max-height: 100%;
+        padding: 16px;
+      }
+      .dialog-body {
+        gap: 16px;
+      }
+      .dialog-foot {
+        gap: 8px;
+      }
+      .dialog-foot button {
+        min-width: 0;
+        flex: 1;
+        padding: 8px;
+        font-size: 13px;
+      }
+      .preview {
+        height: 240px;
+      }
+      .grid-images {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .image-card .thumb {
+        height: 140px;
+      }
+    }
+    .dialog-mask {
+      top: var(--tools-height, 70px);
+    }
+    @media (max-width: 600px) {
+      .dialog {
+        height: calc(100dvh - var(--tools-height, 135px));
+        max-height: calc(100dvh - var(--tools-height, 135px));
+      }
+    }
+  </style>
+  <div class="tools">
+    <strong>#179 局部方案 · 示例数据</strong
+    ><button onclick="view('detail')" id="nav-detail" aria-pressed="true">
+      单图统计</button
+    ><button onclick="view('ranking')" id="nav-ranking">排行与返回</button
+    ><button onclick="view('failures')" id="nav-failures">处理异常</button
+    ><label
+      >状态
+      <select id="state" onchange="renderStats()">
+        <option value="ready">有访问</option>
+        <option value="zero">零访问</option>
+        <option value="loading">首次加载</option>
+        <option value="error">读取失败</option>
+        <option value="stale">旧数据</option>
+        <option value="delay">积压延迟</option>
+        <option value="incomplete">已发生漏计</option>
+        <option value="missing">记录不存在</option>
+      </select></label
+    ><button onclick="document.body.classList.toggle('dark')">浅 / 深色</button>
+  </div>
+  <div class="mobile-brand">
+    <b>Ariso</b
+    ><button
+      aria-label="菜单"
+      onclick="alert('原型仅演示本次局部；产品复用已有全屏菜单。')"
+    >
+      ☰
+    </button>
+  </div>
+  <div class="shell">
+    <aside>
+      <div class="brand">Ariso</div>
+      <p class="muted">图片，自在收纳。</p>
+      <span>总览</span><span>上传</span><span>图库</span><span>相册</span
+      ><span>标签</span><span>分享管理</span><span>回收站</span
+      ><span class="current">访问统计</span><span>存储管理</span
+      ><span>站点设置</span>
+    </aside>
+    <main id="main"></main>
+  </div>
+  <div id="modal" class="dialog-mask">
+    <section class="dialog" role="dialog" aria-label="图片详情">
+      <header class="dialog-head">
+        <h2>图片详情</h2>
+        <button onclick="view('ranking')" aria-label="关闭图片详情">✕</button>
+      </header>
+      <div class="dialog-body">
+        <div>
+          <div class="choices">
+            <button class="primary">原图</button
+            ><button onclick="selectVersion(this)">压缩图</button
+            ><button onclick="selectVersion(this)">缩略图</button
+            ><button onclick="selectVersion(this)">水印图</button>
+          </div>
+          <div class="preview"><img src="sample.png" alt="原型样本图片" /></div>
+          <p class="muted">当前查看：原图 · JPEG · 2.4 MiB</p>
+        </div>
+        <div class="detail-info">
+          <div class="detail-title">
+            <h2 id="image-name">林间晨光</h2>
+            <button
+              aria-label="版本信息"
+              onclick="alert('产品沿用现有版本页面。')"
+            >
+              ▤</button
+            ><button
+              aria-label="查看大图"
+              onclick="alert('产品沿用现有大图查看器。')"
+            >
+              ⛶
+            </button>
+          </div>
+          <span class="pill" style="width: fit-content">公开</span>
+          <p>图片已就绪</p>
+          <p>
+            640 × 480 px · 原图 JPEG · 2.4 MiB<br />本地存储 · 2026/10/08 10:24
+          </p>
+          <p>相册：日常记录<br />标签：旅行、灵感</p>
+          <p class="muted">图片 ID：6bf74919-1533-468f-9a61-002c3e7e836d</p>
+          <section class="stats">
+            <div class="section-head">
+              <h3>公开访问统计</h3>
+              <details class="tip">
+                <summary aria-label="查看统计说明">ⓘ 说明</summary>
+                <div class="tip-content">
+                  仅统计公开图片的有效内容请求。所有者查看不计数；S3
+                  成功签发跳转计入，不代表完整下载。统计近似，异常退出可能损失少量未写入访问。每日明细保留365天，累计保留。旧时区日期不重算。
+                </div>
+              </details>
+            </div>
+            <div id="stats-content"></div>
+          </section>
+        </div>
+      </div>
+      <footer class="dialog-foot">
+        <button
+          class="primary"
+          onclick="alert('沿用现有复制弹窗；成功保留上下文。')"
+        >
+          复制链接</button
+        ><button onclick="alert('沿用现有下载。')">下载原图</button
+        ><button onclick="alert('沿用现有回收确认。')">移入回收站</button>
+      </footer>
+    </section>
+  </div>
+  <script>
+    let current = 'detail';
+    let from = 'ranking';
+    let failure = 'initial';
+    new ResizeObserver(([e]) =>
+      document.documentElement.style.setProperty(
+        '--tools-height',
+        e.target.getBoundingClientRect().height + 'px',
+      ),
+    ).observe(document.querySelector('.tools'));
+    const names = [
+      '林间晨光',
+      '沿海公路的清晨与远处的灯塔——一张用于核对完整长名称阅读的旅行照片',
+      '远山',
+      '已回收图片 · c92b',
+      '已删除图片 · a81f',
+      '城市一角',
+      '雨后的街道',
+      '周末餐桌',
+      '树影',
+      '暮色',
+    ];
+    function renderStats() {
+      let s = document.querySelector('#state').value;
+      let box = document.querySelector('#stats-content');
+      if (s === 'loading') {
+        box.innerHTML =
+          '<p class="notice" role="status">正在读取这张图片的统计…</p>';
+        return;
+      }
+      if (s === 'error' || s === 'missing') {
+        box.innerHTML = `<div class="notice error" role="alert">${s === 'missing' ? '统计记录已不存在，请刷新图片详情核对。' : '统计暂时无法读取。图片资料与操作仍可使用。'}<br><button onclick="document.querySelector(\'#state\').value=\'ready\';renderStats()">${s === 'missing' ? '刷新详情' : '重试统计'}</button></div>`;
+        return;
+      }
+      let zero = s === 'zero';
+      box.innerHTML = `${s === 'stale' ? '<p class="notice error" role="alert">刷新失败 · 以下为上次数据。<br><button onclick="document.querySelector(\'#state\').value=\'ready\';renderStats()">重试统计</button></p>' : ''}${s === 'delay' ? '<p class="notice">统计更新延迟 · 新访问仍在等待写入。</p>' : ''}${s === 'incomplete' ? '<p class="notice error">统计数据不完整 · 本次运行曾发生漏计，刷新后仍保留此提示。</p>' : ''}<p>累计访问 <span class="total">${zero ? '0' : '1,286'}</span></p><div class="versions"><span class="muted">原图<b>${zero ? '0' : '860'} 次</b></span><span class="muted">压缩图<b>${zero ? '0' : '326'} 次</b></span><span class="muted">水印图<b>${zero ? '0' : '100'} 次</b></span></div><table class="periods"><thead><tr><th>周期 · 含今日</th><th>访问次数</th></tr></thead><tbody>${[7, 30, 90].map((n, i) => `<tr><td>最近 ${n} 天<small>2026/${i === 0 ? '10/03' : i === 1 ? '09/10' : '07/12'}—10/09</small></td><td>${zero ? '0' : [486, 972, 1286][i]}</td></tr>`).join('')}</tbody></table>${zero ? '<p class="notice">这张图片尚无已保存的公开访问。</p>' : ''}<p class="muted" style="margin-top:10px">Asia/Shanghai · 查询于 2026/10/09 18:20<br>最近写入 ${zero ? '尚无成功批次' : '18:19:55'} · 今日截至统计更新</p>`;
+    }
+    function view(v) {
+      current = v;
+      document
+        .querySelectorAll('.tools button[id]')
+        .forEach((b) => b.setAttribute('aria-pressed', b.id === 'nav-' + v));
+      document
+        .querySelector('#modal')
+        .classList.toggle('hidden', v !== 'detail');
+      document
+        .querySelector('#state')
+        .closest('label')
+        .classList.toggle('hidden', v !== 'detail');
+      let main = document.querySelector('#main');
+      if (v === 'failures') {
+        from = 'failures';
+        main.innerHTML = `<div class="stack"><a href="#" class="back" onclick="view('ranking');return false">← 返回工作台</a><h1>当前处理异常</h1><p class="muted">初次处理失败和重处理失败分别查看，使用图库现有筛选与详情。</p><div class="choices"><button aria-pressed="${failure === 'initial'}" onclick="failure='initial';view('failures')">初次处理失败 · 2</button><button aria-pressed="${failure === 'reprocess'}" onclick="failure='reprocess';view('failures')">重新处理失败 · 1</button></div><p>${failure === 'initial' ? '初次处理未完成，打开图片详情查看失败阶段并重试。' : '重处理失败，已保存版本仍可使用。打开图片详情后沿用现有重处理流程。'}</p><div class="grid-images">${names
+          .slice(0, failure === 'initial' ? 2 : 1)
+          .map(
+            (n) =>
+              `<article class="image-card"><div class="thumb">${failure === 'initial' ? '处理失败' : '已保存版本'}</div><a href="#" onclick="openImage('${n}');return false">${n}</a><p class="muted">${failure === 'initial' ? '初次处理失败' : '最近重处理失败'}</p></article>`,
+          )
+          .join(
+            '',
+          )}</div><button style="width:fit-content" onclick="view('ranking')">返回工作台</button></div>`;
+        return;
+      }
+      from = 'ranking';
+      main.innerHTML = `<div class="stack"><h1>访问统计</h1><p>公开图片访问与当前对象占用。</p><p class="muted">Asia/Shanghai · 查询于 2026/10/09 18:20 · 最近写入18:19:55 · 今日截至统计更新</p><div class="metrics">${[
+        '图片数量|90|回收站 10 张',
+        '相册数量|24|包含空相册',
+        '今日访问|326|截至统计更新',
+        '累计访问|48,620|历史累计访问',
+      ]
+        .map((x) => {
+          let [a, b, c] = x.split('|');
+          return `<div class="metric"><span>${a}</span><b>${b}</b><span class="muted">${c}</span></div>`;
+        })
+        .join(
+          '',
+        )}</div><section class="card"><h2>热门图片 · 最近 7 天</h2><p class="muted">按访问量排列，最多10张；完整名称直接换行。</p>${names.map((n, i) => `<div class="rank"><div class="thumb">${i === 3 ? '回收' : i === 4 ? '已删' : i === 5 ? '停用' : i + 1}</div><div class="name">${i === 4 ? n : `<a href="#" onclick="openImage('${n}');return false">${n}</a>`}<p class="muted">${i === 3 ? '查看指定回收站记录' : i === 4 ? '历史记录 · 无内容或打开入口' : i === 5 ? '存储已停用 · 可查看管理详情' : '打开图片详情'}</p></div><span class="count">${486 - i * 42} 次</span></div>`).join('')}</section><section class="card"><h2>当前处理异常</h2><p>初次处理失败 2 张 · 重新处理失败 1 张</p><p class="muted">重新处理失败的图片仍可使用已保存版本。</p><button style="margin-top:12px" onclick="view('failures')">查看异常图片</button></section></div><footer class="footer"><button onclick="alert('沿用现有统计口径入口。')">统计口径</button><button class="primary" onclick="alert('沿用两端已有当前存储组成页面。')">当前存储占用</button></footer>`;
+    }
+    function openImage(n) {
+      document.querySelector('#image-name').textContent = n;
+      document.querySelector('#modal').classList.remove('hidden');
+      document
+        .querySelector('#state')
+        .closest('label')
+        .classList.remove('hidden');
+      document
+        .querySelectorAll('.tools button[id]')
+        .forEach((b) => b.setAttribute('aria-pressed', b.id === 'nav-detail'));
+      renderStats();
+    }
+    function selectVersion(b) {
+      b.parentElement
+        .querySelectorAll('button')
+        .forEach((x) => x.classList.remove('primary'));
+      b.classList.add('primary');
+    }
+    const originalView = view;
+    view = function (v) {
+      originalView(v);
+      if (v === 'failures') {
+        document.querySelector('main h1').textContent = '图库';
+        document.querySelector('main p.muted').textContent =
+          '当前处理异常 · 复用现有图库，只增加明确的初次 / 重处理失败条件。';
+      }
+      document.querySelector('.dialog-head button').onclick = () => view(from);
+    };
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        document
+          .querySelectorAll('details[open]')
+          .forEach((x) => (x.open = false));
+        document.querySelector('#modal').classList.add('hidden');
+      }
+    });
+    view('detail');
+    renderStats();
+  </script>
+</html>

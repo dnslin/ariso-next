@@ -16,6 +16,7 @@ export type LibraryQueryPatch = {
   storageId?: string | null;
   visibility?: LibraryFilters['visibility'];
   status?: LibraryFilters['status'];
+  failure?: LibraryFilters['failure'];
   sort?: 'uploaded_desc' | 'uploaded_asc' | 'size_desc' | 'size_asc' | null;
   pageSize?: 20 | 40 | 80;
 };
@@ -69,6 +70,7 @@ export function libraryRequestParams(
     'storageId',
     'visibility',
     'status',
+    'failure',
     'deletionStatus',
   ] as const) {
     const value = filters[key];

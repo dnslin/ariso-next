@@ -101,6 +101,8 @@ for (const name of [
   'site-general-failure.png',
   'processing.json',
   'processing-failure.png',
+  'analytics.json',
+  'analytics-failure.png',
   'account.json',
   'account-all-failure.png',
   'account-1440-failure.png',

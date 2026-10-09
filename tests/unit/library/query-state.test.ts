@@ -22,6 +22,18 @@ describe('applied library URL', () => {
     expect(parse(value).filters.tagIds).toEqual(['a', 'b']);
     expect(parse(value).page).toBe(3);
   });
+  it('preserves failure scope in requests, neighbors and query identity', () => {
+    const initial = parse('failure=initial');
+    const reprocess = parse('failure=reprocess');
+    for (const current of [initial, reprocess]) {
+      expect(
+        parseLibraryQuery(libraryRequestParams(current.filters, {})).filters,
+      ).toEqual(current.filters);
+    }
+    expect(libraryListKey(initial.filters, 'more', 1)).not.toEqual(
+      libraryListKey(reprocess.filters, 'more', 1),
+    );
+  });
   it('keeps image identity out of the list key', () => {
     const first = parse('image=one&q=photo');
     const second = parse('image=two&q=photo');
@@ -80,7 +92,7 @@ describe('applied library URL', () => {
   });
   it('serializes all filters to the existing HTTP contract', () => {
     const value =
-      'q=photo&albumId=a&tagId=x&tagId=y&uploadedFrom=2026-01-01T00:00:00Z&uploadedBefore=2026-02-01T00:00:00Z&format=png&storageId=s&visibility=private&status=failed&sort=size_asc&pageSize=80';
+      'q=photo&albumId=a&tagId=x&tagId=y&uploadedFrom=2026-01-01T00:00:00Z&uploadedBefore=2026-02-01T00:00:00Z&format=png&storageId=s&visibility=private&status=failed&failure=initial&sort=size_asc&pageSize=80';
     const result = parse(value);
     const request = libraryRequestParams(result.filters, { page: 12 });
     expect(parseLibraryQuery(request)).toEqual({

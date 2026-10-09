@@ -66,6 +66,7 @@ describe('focused browser execution plans', () => {
     ['shell-navigation', ['shell-navigation']],
     ['sharing-management', ['sharing-management']],
     ['site-general', ['site-general']],
+    ['analytics', ['analytics']],
     ['albums', ['albums']],
     ['album-cover', ['album-cover']],
     ['tags', ['tags']],
@@ -121,6 +122,9 @@ describe('focused browser execution plans', () => {
     ['site-general', 'behavior', ['site-general']],
     ['site-general', 'recovery', ['site-general']],
     ['site-general', 'consumers', ['site-general']],
+    ...['representative', 'behavior', 'recovery', 'consumers'].map(
+      (phase) => ['analytics', phase, ['analytics']] as const,
+    ),
     ['tokens', 'representative', ['tokens']],
     ['tokens', 'behavior', ['tokens']],
     ['tokens', 'lifecycle', ['tokens']],
@@ -143,6 +147,9 @@ describe('focused browser execution plans', () => {
   it.each([
     ['upload-settings', 'recovery', { uploadSettingsPhase: 'recovery' }],
     ['site-general', 'recovery', { siteGeneralPhase: 'recovery' }],
+    ...['representative', 'behavior', 'recovery', 'consumers'].map(
+      (phase) => ['analytics', phase, { analyticsPhase: phase }] as const,
+    ),
     ['library', 'recovery', { libraryPhase: 'recovery' }],
     ['smtp', 'representative', { smtpPhase: 'representative' }],
     ['smtp', 'interactions', { smtpPhase: 'interactions' }],
@@ -208,6 +215,32 @@ describe('focused browser execution plans', () => {
     }
   });
 
+  it('keeps analytics phases on its own scene and runs all phases by default on an independently selected page', () => {
+    expect(selectBrowserPlan({ suite: 'analytics', pageLabel: 'p2' })).toEqual({
+      stages: [['analytics', 'analytics']],
+      config: { analyticsPhase: undefined },
+    });
+    expect(select('full').config).not.toHaveProperty('analyticsPhase');
+    for (const suite of [
+      'site-general',
+      'processing',
+      'upload-settings',
+      'viewer',
+      'smtp',
+    ])
+      expect(select(suite).config).not.toHaveProperty('analyticsPhase');
+    for (const only of ['live', 'settings', 'race', 'interactions'])
+      expect(() => select('analytics', only)).toThrow('--only');
+    for (const field of ['storageConfig', 'previewConfig'])
+      expect(() =>
+        selectBrowserPlan({
+          suite: 'analytics',
+          pageLabel: 'p2',
+          [field]: 'unused.json',
+        }),
+      ).toThrow();
+  });
+
   it('keeps consumer navigation and representative viewer behavior explicit', () => {
     expect(select('sharing-management').config).toEqual({
       sharingManagementPhase: undefined,
@@ -257,6 +290,7 @@ describe('focused browser execution plans', () => {
         ['upload-usage', 'upload-usage'],
         ['sharing-management', 'sharing-management'],
         ['site-general', 'site-general'],
+        ['analytics', 'analytics'],
         ['smtp', 'smtp'],
       ],
       config: {},

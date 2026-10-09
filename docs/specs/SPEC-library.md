@@ -45,10 +45,13 @@ library 负责查询参数、分页/加载更多、界面偏好、选择范围�
 | `format`                          | media 已识别的原文件格式枚举，不按扩展名、压缩结果或下载格式筛选；具体格式键见下表                                                                |
 | `storageId`                       | 真实存储 ID，含停用存储；不因为停用从筛选项消失                                                                                                   |
 | `visibility`                      | public/private；省略全部                                                                                                                          |
+| `failure`                         | initial/reprocess；当前未解决的处理异常，仅正常图库和相册；与其他筛选取交集，具体口径见下文                                                       |
 | `status`                          | pending/processing/ready/failed；只匹配图片 processing_status，不把重处理任务失败或存储停用当图片 failed                                          |
 | `sort`                            | 图库 uploaded_desc（默认）/uploaded_asc/size_desc/size_asc；size 为原文件字节数，不取总占用或派生大小                                             |
 | `pageSize`                        | 20/40/80，默认 40；写 URL 以便复制查询时一致                                                                                                      |
 | `page`                            | 分页模式正整数，默认 1；加载更多不使用它                                                                                                          |
+
+`failure=initial` 匹配当前 processing_status 为 failed；`failure=reprocess` 匹配 ready 且最新 process 任务为 failed。最新任务按 createdAt、rowid 降序，忽略 metadata 任务；后续 process 任务成功、运行中或取消后不再属于旧失败范围。两者沿正常范围排除回收与删除，回收站拒绝此参数。工作台异常入口使用该真实筛选和图片 ID，不将历史失败任务累计成当前异常。
 
 格式筛选按以下原文件家族统一，不新增派生格式索引；卡片仍可显示更具体的动画/页数信息：
 

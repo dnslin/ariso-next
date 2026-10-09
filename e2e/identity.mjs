@@ -243,7 +243,7 @@ async function loginAndLogout() {
   await page.fill('#password', config.credentials.password);
   await page.focus('loc=role:button[name="登录"]');
   await page.keyboard.press('Enter');
-  await page.waitForURL(`${config.origin}/upload`);
+  await page.waitForURL(`${config.origin}/dashboard`);
   await openIdentityAccountMenu(page);
   assert.equal(
     JSON.parse((await page.fetch('/api/auth/get-session')).body).user.email,

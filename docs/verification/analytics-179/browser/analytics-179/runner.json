@@ -1,0 +1,20 @@
+{
+  "startedAt": "2026-10-09T11:12:07.299Z",
+  "platform": "darwin",
+  "arch": "arm64",
+  "node": "v24.18.1",
+  "status": "failed",
+  "suite": "analytics",
+  "pageLabel": "p2",
+  "origin": "http://ariso-63977.localhost:63977",
+  "taskSpaceId": 2,
+  "stages": {
+    "analytics": {
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (analytics.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-179-analytics-ui/ariso/scripts/verify-browser.mjs:238:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-179-analytics-ui/ariso/scripts/browser-stages.mjs:17:5)\n    at async file:///Users/dnslin/.codex/worktrees/issue-179-analytics-ui/ariso/scripts/verify-browser.mjs:755:24"
+    }
+  },
+  "error": "AssertionError [ERR_ASSERTION]: Focused browser stages failed\n    at file:///Users/dnslin/.codex/worktrees/issue-179-analytics-ui/ariso/scripts/verify-browser.mjs:765:12",
+  "finishedAt": "2026-10-09T11:12:54.471Z",
+  "temporaryDirectoryRemoved": true
+}
