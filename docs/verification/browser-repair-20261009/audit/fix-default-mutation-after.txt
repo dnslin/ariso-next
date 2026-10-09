@@ -1,0 +1,54 @@
+Already up to date
+Done in 84ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/browser-regression-repair/ariso
+
+ ❯ |unit| tests/unit/runtime/browser-business-cli.test.ts (6 tests | 1 failed) 360ms
+   ❯ actual business CLI connections without external services (6)
+     × executes the default plan through the real default entry loop 80ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/runtime/browser-business-cli.test.ts > actual business CLI connections without external services > executes the default plan through the real default entry loop
+AssertionError: expected [] to deeply equal [ 'library-batch.mjs', …(17) ]
+
+- Expected
++ Received
+
+- [
+-   "library-batch.mjs",
+-   "library-batch-reprocess.mjs",
+-   "library-copy.mjs",
+-   "trash-query-batch.mjs",
+-   "trash-cleanup.mjs",
+-   "shell-navigation.mjs",
+-   "albums.mjs",
+-   "album-cover.mjs",
+-   "tags.mjs",
+-   "upload-settings.mjs",
+-   "upload.mjs",
+-   "upload-polling.mjs",
+-   "upload-input.mjs",
+-   "upload-submissions.mjs",
+-   "upload-relations.mjs",
+-   "sharing-management.mjs",
+-   "site-general.mjs",
+-   "smtp.mjs",
+- ]
++ []
+
+ ❯ tests/unit/runtime/browser-business-cli.test.ts:78:73
+     76|       ([script]: string[]) => `${script}.mjs`,
+     77|     );
+     78|     expect(scripts.filter((script) => plannedScripts.includes(script))…
+       |                                                                         ^
+     79|       plannedScripts,
+     80|     );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 passed (6)
+   Start at  17:22:35
+   Duration  459ms (tests 92%, transform 5%, import 2%, worker 1%)

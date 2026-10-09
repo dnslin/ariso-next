@@ -17,7 +17,7 @@ import { selectBrowserPlan } from './browser-plan.mjs';
 import { runM2Restart } from './browser-m2.mjs';
 import { runIdentityManagement } from './browser-identity-management.mjs';
 import { runOAuthManagement } from './browser-oauth.mjs';
-import { runUploadBrowserStage } from './browser-upload.mjs';
+import { runBusinessBrowserStage } from './browser-business.mjs';
 import { createSharingRunner } from './browser-sharing.mjs';
 import { runBrandBrowser } from './browser-brand.mjs';
 import { startSmtpBrowserFixture } from '../e2e/smtp-fixture.mjs';
@@ -748,22 +748,13 @@ try {
         report.oauth = 'passed';
     } else {
       for (const [script, result] of plan.stages) {
-        const passed =
-          script === 'upload' || script === 'upload-polling'
-            ? await runUploadBrowserStage({
-                check,
-                runBrowser,
-                restart: restartProduction,
-                config: focusedConfig,
-                script,
-              })
-            : await check(script, () =>
-                runBrowser(
-                  `../e2e/${script}.mjs`,
-                  focusedConfig,
-                  `${script}.log`,
-                ),
-              );
+        const passed = await runBusinessBrowserStage({
+          check,
+          runBrowser,
+          restart: restartProduction,
+          config: focusedConfig,
+          script,
+        });
         if (passed) report[result] = 'passed';
       }
     }
@@ -857,25 +848,15 @@ try {
         );
       }, [setupName, ownerName]);
       const business = (name, script, extra = {}) =>
-        script === 'upload' || script === 'upload-polling'
-          ? runUploadBrowserStage({
-              check,
-              runBrowser,
-              restart: restartProduction,
-              config: { ...identityConfig, ...extra },
-              script,
-              dependencies: [ownerName],
-            })
-          : check(
-              name,
-              () =>
-                runBrowser(
-                  `../e2e/${script}.mjs`,
-                  { ...identityConfig, ...extra },
-                  `${name}.log`,
-                ),
-              [ownerName],
-            );
+        runBusinessBrowserStage({
+          check,
+          runBrowser,
+          restart: restartProduction,
+          config: { ...identityConfig, ...extra },
+          script,
+          name,
+          dependencies: [ownerName],
+        });
       if (width === 390) {
         await business('processing', 'processing');
         try {

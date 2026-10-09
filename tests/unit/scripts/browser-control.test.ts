@@ -1,11 +1,18 @@
-import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
+import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { runInNewContext } from 'node:vm';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { verifyOwnerShell } from '../../../e2e/owner-shell.mjs';
+import {
+  cleanupOwnerSettings,
+  verifyOwnerShell,
+} from '../../../e2e/owner-shell.mjs';
 import { isBrowserControlStop } from '../../../e2e/browser-errors.mjs';
-import { verifyLibrary } from '../../experiments/ui/library-browser.mjs';
+import {
+  cleanupLibraryObserver,
+  verifyLibrary,
+  verifyLibraryHistory,
+  verifyLibraryErrorRecovery,
+} from '../../experiments/ui/library-browser.mjs';
 
 const directories: string[] = [];
 afterEach(async () => {
@@ -96,76 +103,41 @@ describe.each(['library', 'owner'] as const)(
   },
 );
 
-describe.each(['history', 'pending-error'] as const)(
-  'library %s cleanup boundary',
-  (boundary) => {
-    it.each([
-      ['user has taken control', false],
-      ['ordinary browser failure', true],
-    ] as const)(
-      '真实内部 try/finally 保留停止边界：%s',
-      async (message, cleanup) => {
-        const source = await readFile(
-          new URL('../../experiments/ui/library-browser.mjs', import.meta.url),
-          'utf8',
-        );
-        const anchor =
-          boundary === 'history'
-            ? '    try {\n      const initial = await state();'
-            : "    try {\n      await page.fill('#library-search', 'error');";
-        const start = source.indexOf(anchor);
-        const end = source.indexOf(
-          boundary === 'history'
-            ? '\n    report.checks.push('
-            : '\n    await page.waitForFunction(',
-          boundary === 'history'
-            ? start
-            : source.indexOf('    } finally {', start),
-        );
-        expect(start).toBeGreaterThanOrEqual(0);
-        expect(end).toBeGreaterThan(start);
-        const error = new Error(message);
-        const evaluate = vi.fn(async () => {});
-        const result = runInNewContext(
-          `(async () => { ${source.slice(start, end)} })()`,
-          {
-            state: async () => {
-              throw error;
-            },
-            page: {
-              fill: async () => {
-                throw error;
-              },
-              evaluate,
-            },
-            report: { status: 'failed' },
-            isBrowserControlStop,
-          },
-        );
-        await expect(result).rejects.toBe(error);
-        expect(evaluate).toHaveBeenCalledTimes(cleanup ? 1 : 0);
-      },
-    );
-  },
-);
+describe.each([
+  ['history', verifyLibraryHistory],
+  ['pending-error', verifyLibraryErrorRecovery],
+] as const)('library %s cleanup boundary', (boundary, verify) => {
+  it.each(['user has taken control', 'ordinary browser failure'])(
+    'retains the real responsibility boundary: %s',
+    async (message) => {
+      const error = new Error(message);
+      const report: Record<string, unknown> = { status: 'failed' };
+      const page = {
+        evaluate: vi.fn(async () => {
+          if (boundary === 'history' && page.evaluate.mock.calls.length === 1)
+            throw error;
+        }),
+        fill: vi.fn(async () => {
+          throw error;
+        }),
+      };
+      await expect(verify(page, report)).rejects.toBe(error);
+      expect(report.stoppedForUserControl).toBe(isBrowserControlStop(error));
+      expect(page.evaluate).toHaveBeenCalledTimes(
+        isBrowserControlStop(error) ? 1 : 2,
+      );
+    },
+  );
+});
 
 describe.each(['remove-script', 'restore-fetch'] as const)(
-  'library outer cleanup boundary: %s',
+  'library observer cleanup boundary: %s',
   (boundary) => {
     it.each(['user has taken control', 'ordinary browser failure'])(
-      '清理失败必须更新原 passed 报告并传播原错误：%s',
+      'cleanup failure makes the report failed: %s',
       async (message) => {
-        const source = await readFile(
-          new URL('../../experiments/ui/library-browser.mjs', import.meta.url),
-          'utf8',
-        );
-        const start = source.lastIndexOf('\n  } finally {');
-        const end = source.lastIndexOf('\n}');
-        expect(start).toBeGreaterThanOrEqual(0);
-        expect(end).toBeGreaterThan(start);
-        const output = await mkdtemp(join(tmpdir(), 'ariso-browser-cleanup-'));
-        directories.push(output);
         const error = new Error(message);
+        const report: Record<string, unknown> = { status: 'passed' };
         const page = {
           cdp: vi.fn(async () => {
             if (boundary === 'remove-script') throw error;
@@ -174,25 +146,12 @@ describe.each(['remove-script', 'restore-fetch'] as const)(
             throw error;
           }),
         };
-        const result = runInNewContext(
-          `(async () => { try {} ${source.slice(start + 5, end)} })()`,
-          {
-            page,
-            config: { output },
-            report: { status: 'passed' },
-            observer: { identifier: 'observer' },
-            scriptRemoved: false,
-            isBrowserControlStop,
-            writeFile,
-          },
-        );
-        await expect(result).rejects.toBe(error);
+        await expect(
+          cleanupLibraryObserver(page, report, { identifier: 'observer' }),
+        ).rejects.toBe(error);
         expect(page.cdp).toHaveBeenCalledOnce();
         expect(page.evaluate).toHaveBeenCalledTimes(
           boundary === 'remove-script' ? 0 : 1,
-        );
-        const report = JSON.parse(
-          await readFile(join(output, 'library.json'), 'utf8'),
         );
         expect(report.status).toBe('failed');
         expect(report.error).toContain(message);
@@ -207,3 +166,65 @@ describe.each(['remove-script', 'restore-fetch'] as const)(
     );
   },
 );
+
+describe('owner settings cleanup boundary', () => {
+  it.each(['release-settings', 'remove-script'] as const)(
+    'records the installed script when %s first loses control',
+    async (boundary) => {
+      const error = new Error('user has taken control');
+      const report: Record<string, unknown> = {
+        status: 'failed',
+        error: 'original scene error',
+      };
+      const page = {
+        evaluate: vi.fn(async () => {
+          if (boundary === 'release-settings') throw error;
+        }),
+        cdp: vi.fn(async () => {
+          throw error;
+        }),
+      };
+      await expect(
+        cleanupOwnerSettings(page, report, { identifier: 'settings' }),
+      ).rejects.toBe(error);
+      expect(page.evaluate).toHaveBeenCalledOnce();
+      expect(page.cdp).toHaveBeenCalledTimes(
+        boundary === 'remove-script' ? 1 : 0,
+      );
+      expect(report.error).toBe('original scene error');
+      expect(report.cleanupError).toContain(error.message);
+      expect(report.stoppedForUserControl).toBe(true);
+      expect(report.pendingBrowserCleanup).toEqual({
+        scriptIdentifier: 'settings',
+        settingsReleased: boundary === 'remove-script',
+      });
+    },
+  );
+
+  it('only records pending cleanup if control was already lost', async () => {
+    const report: Record<string, unknown> = { stoppedForUserControl: true };
+    const page = { evaluate: vi.fn(), cdp: vi.fn() };
+    await cleanupOwnerSettings(page, report, { identifier: 'settings' });
+    expect(page.evaluate).not.toHaveBeenCalled();
+    expect(page.cdp).not.toHaveBeenCalled();
+    expect(report.pendingBrowserCleanup).toEqual({
+      scriptIdentifier: 'settings',
+      settingsReleased: false,
+    });
+  });
+
+  it('clears pending state after successful release and script removal', async () => {
+    const report: Record<string, unknown> = {};
+    const page = {
+      evaluate: vi.fn(async () => {}),
+      cdp: vi.fn(async () => {}),
+    };
+    await cleanupOwnerSettings(page, report, { identifier: 'settings' });
+    expect(page.evaluate).toHaveBeenCalledOnce();
+    expect(page.cdp).toHaveBeenCalledWith(
+      'Page.removeScriptToEvaluateOnNewDocument',
+      { identifier: 'settings' },
+    );
+    expect(report).not.toHaveProperty('pendingBrowserCleanup');
+  });
+});

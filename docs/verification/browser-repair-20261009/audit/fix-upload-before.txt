@@ -1,0 +1,60 @@
+Already up to date
+Done in 40ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/browser-regression-repair/ariso
+
+ ❯ |unit| tests/unit/scripts/upload-control.test.ts (3 tests | 2 failed) 112ms
+   ❯ actual upload entry control boundary (3)
+     × stops every browser call after owner loses control 40ms
+     × stops every browser call after transport loses control 35ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/scripts/upload-control.test.ts > actual upload entry control boundary > stops every browser call after owner loses control
+AssertionError: expected [ 'snapshot' ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "snapshot",
++ ]
+
+ ❯ tests/unit/scripts/upload-control.test.ts:27:30
+     25|     const result = await execute(boundary, 'user has taken control');
+     26|     expect(result.originalError).toBe(true);
+     27|     expect(result.afterStop).toEqual([]);
+       |                              ^
+     28|     expect(result.report.status).toBe('failed');
+     29|     expect(result.report.stoppedForUserControl).toBe(true);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  |unit| tests/unit/scripts/upload-control.test.ts > actual upload entry control boundary > stops every browser call after transport loses control
+AssertionError: expected [ 'snapshot', 'cdp' ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "snapshot",
++   "cdp",
++ ]
+
+ ❯ tests/unit/scripts/upload-control.test.ts:27:30
+     25|     const result = await execute(boundary, 'user has taken control');
+     26|     expect(result.originalError).toBe(true);
+     27|     expect(result.afterStop).toEqual([]);
+       |                              ^
+     28|     expect(result.report.status).toBe('failed');
+     29|     expect(result.report.stoppedForUserControl).toBe(true);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 1 passed (3)
+   Start at  17:18:58
+   Duration  195ms (tests 86%, transform 8%, import 4%, worker 1%)
