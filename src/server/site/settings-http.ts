@@ -7,12 +7,15 @@ import { invalidateS3Cors } from '../storage/cors.ts';
 import type { SiteSettings } from './schema.ts';
 import { requireSiteSettings, updateSiteSettings } from './settings.ts';
 import { siteSettingsPatchSchema } from './validation.ts';
+import { brandingUrl } from './urls.ts';
 
 type SiteDatabase = ReturnType<typeof getServerRuntime>['connection']['db'];
 
 export type SiteSettingsResponse = Omit<SiteSettings, 'updatedAt'> & {
   updatedAt: string;
   githubCallbackUrl: string;
+  logoUrl: string | null;
+  faviconUrl: string | null;
 };
 
 export type SiteSettingsPatchResponse = SiteSettingsResponse & {
@@ -25,6 +28,8 @@ function serializeSiteSettings(settings: SiteSettings): SiteSettingsResponse {
     ...settings,
     updatedAt: settings.updatedAt.toISOString(),
     githubCallbackUrl: buildGithubCallbackUrl(settings),
+    logoUrl: brandingUrl(settings.logoKey),
+    faviconUrl: brandingUrl(settings.faviconKey),
   };
 }
 
