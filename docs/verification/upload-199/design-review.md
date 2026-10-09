@@ -11,3 +11,7 @@
 ## 所有者反馈后的表格复审
 
 实际复核最新tables-desktop、tables-mobile、tables-mobile-scrolled、response-table-mobile、http-table-mobile与tables-desktop-full截图及HTML。首轮指出横向截图纯白、400重复字段和504继续处理的文案歧义，实施者均已修正。复审结论：未发现阻塞原型审阅的问题；桌面840px、手机自身横向滚动与固定首列、说明完整换行及scope=col/row语义成立。仅批准审查范围，不代替用户原型批准、生产UI验证或人工验收。
+
+## 图标、删减正文与Tips复审
+
+按所有者最新指令复核icons-desktop/mobile、tips-desktop/mobile及HTML：复制按钮44×44、名称保留，副标题删除，标题旁Tips两端完整可读。首轮要求核对hover跨空隙，实施者取得失败证据并加入200ms离开延迟；最终复审确认重新进入清理计时器，Escape/外部点击仍即时关闭，没有新增状态或关闭问题。本轮原型问题已解决，可提交用户审阅，不替代生产UI、Figma或人工验收。

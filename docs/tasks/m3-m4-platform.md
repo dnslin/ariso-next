@@ -459,9 +459,9 @@
 - 范围：用共享Zod schema可重复生成OpenAPI 3.0上传契约，提供公开规范和所有者用法页，运行真实curl示例。
 - 规格与预计文件：SPEC-upload §10.3、UP-22、DES-06-API；`src/app/api/openapi.json/route.ts`、生成脚本/契约测试、上传用法组件与浏览器测试。
 - 直接前置：`T-UP-05`、`T-UI-01`、`DG-API`
-- 验收条件：只公布公共上传接口；multipart重复字段数组、全部HTTP错误、可空ID/actualVersion、默认值与站点限制区别清楚；超时先核对和重发可能重复常驻。示例地址来自当前site，Token仅调用方自行提供，不写入仓库/共享日志；不承诺PicGo专用配置。生成结果与运行时Schema一致，新增生成检查接入已有质量命令。
+- 验收条件：只公布公共上传接口；multipart重复字段数组、全部HTTP错误、可空ID/actualVersion、默认值与站点限制区别清楚；超时先核对和重发可能重复通过Tips可查看（2026-10-09所有者明确调整）。示例地址来自当前site，Token仅调用方自行提供，不写入仓库/共享日志；不承诺PicGo专用配置。生成结果与运行时Schema一致，新增生成检查接入已有质量命令。
 - 验证方法：在对应模块新增单元与集成测试，运行 `pnpm run test:unit`、`pnpm run test:integration`。 任务新增OpenAPI生成/一致性测试并通过 `pnpm run test:unit`；对本地/S3执行用法页最小与完整curl及错误示例；`pnpm run test:browser` 验证折叠、复制失败、长地址与手机阅读。
-- 界面：`/settings/api`进入上传用法详情，`GET /api/openapi.json`提供无秘密规范；详情为计划中的所有者子页`/settings/api/usage`，不另增公开业务API。桌面 [248:2137](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=248-2137)、手机 [248:4061](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=248-4061)；复制失败复用 桌面 [249:1465](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=249-1465)、手机 [249:3588](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=249-3588)。HeroUI：Accordion、Button、Link、Alert、TextArea、Table，代码块仅作可选文本展示，无需自制编辑器；手机默认最小示例、参数/结果分折叠，超时提醒常驻，回Token列表恢复上下文。
+- 界面：`/settings/api`进入上传用法详情，`GET /api/openapi.json`提供无秘密规范；详情为计划中的所有者子页`/settings/api/usage`，不另增公开业务API。桌面 [248:2137](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=248-2137)、手机 [248:4061](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=248-4061)；复制失败复用 桌面 [249:1465](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=249-1465)、手机 [249:3588](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=249-3588)。HeroUI：Accordion、Button、Link、Alert、TextArea、Table、Tooltip/Popover，代码块仅作可选文本展示，无需自制编辑器；手机默认最小示例、参数/结果分折叠，超时与重发注意事项采用标题旁Tips（2026-10-09所有者明确调整），回Token列表恢复上下文。
 - 需求：`R-8.4-08`、`R-23.4-01`、`A-26.3-08`
 - 实施步骤：
   - [x] 1. 共享 schema 生成规范并验证错误/数组/可空字段一致。
@@ -474,7 +474,7 @@
 
 - **可复用设计：** 用法详情 `248:2137/248:4061` 保留公共外壳、返回 Token 列表、标题、最小 curl、替换提示及两个折叠区，不恢复旧的重复设置标题、分类器或外层大卡。请求参数展开 `259:1405/259:3304`、结果展开 `259:1518/259:3340` 可作为动态内容容器；手机保持同一层级并纵向滚动。入口仍为 `/settings/api`，详情采用所有者子页 `/settings/api/usage`，由本卡实现，不新增公共业务 API。公开规范仅为计划中的 `GET /api/openapi.json`，不能把当前原型链接当成已实现路由。
 - **控件与公共复用：** 复用 `OwnerShell/AdminShell`、品牌与账号区、主题和共享通知；详情使用明确返回操作。HeroUI Accordion 承载两个折叠区，Button/Link 承载复制和规范入口，TextArea 承载必要的完整手动文本，代码块只是可选文本展示，不引入 Swagger UI 或编辑器。Token 复制失败 `249:1465/249:3588` 仅提供完整可选文本和失败语义，不能连同“关闭后 Token 不可找回”的正文直接搬到用法页。成功复制保留页面、展开状态、滚动与焦点，使用简短中性通知或按钮反馈；普通替换/超时说明用必要的简洁文字。
-- **内容契约：** 原型仅给参数与 201/401/超时/权限摘要，不代表完整 OpenAPI。按 SPEC-upload §10 展示最小与完整 curl、重复同名 `albumId/tag`、省略与空值区别、站点当前限制与规范默认值；结果区覆盖全部实际 HTTP 状态、`imageId/actualVersion` 可空、`not_created/failed`、当次结果与 `currentImageStatus`、实际版本、私有链接及默认版本不可用。超时/断线先由所有者到图库核对，重复 POST 可能产生新 ID 的提醒在折叠区外常驻；不增加调用方状态轮询、请求幂等键或 Token 查库权限。地址来自当前 site，Token 使用调用方占位值，不从已创建 Token 中找回或预填，不写入共享日志。
+- **内容契约：** 原型仅给参数与 201/401/超时/权限摘要，不代表完整 OpenAPI。按 SPEC-upload §10 展示最小与完整 curl、重复同名 `albumId/tag`、省略与空值区别、站点当前限制与规范默认值；结果区覆盖全部实际 HTTP 状态、`imageId/actualVersion` 可空、`not_created/failed`、当次结果与 `currentImageStatus`、实际版本、私有链接及默认版本不可用。超时/断线先由所有者到图库核对，重复 POST 可能产生新 ID 的提醒按2026-10-09所有者最新指令改为标题旁Tips，桌面悬停/聚焦、手机点击可读；不增加调用方状态轮询、请求幂等键或 Token 查库权限。地址来自当前 site，Token 使用调用方占位值，不从已创建 Token 中找回或预填，不写入共享日志。
 - **真实验收：** 共享 Zod Schema 的生成/一致性场景接入 `test:unit` 默认包含路径；用本地及当前必需 S3 服务运行最小/完整 curl 和错误请求，逐项核对 HTTP、数据库与实际版本。浏览器检查两端折叠/返回上下文、规范链接、复制真实文本、拒绝复制后的手动文本、长地址、全部展开与短视口。360/390/430/768 及桌面、浅深色、键盘/焦点/44px点击目标按共用验收执行；读取当前配置的加载/错误不得伪造示例地址或把未知上限写成零，加载/禁用与失败恢复复用现有容器。用法正文没有自身写入或上传成功结果页，不新增此类成功/空结果态。新增场景必须接入 `scripts/verify-browser.mjs` 的默认 `full` 流程，不能只有定向模式。
 - **表达缺口与负责人：** `248:2137/248:4061` 及展开状态没有最小/完整示例切换、复制触发器、用法专属复制失败、完整响应示例和当前配置读取失败的组合。由 **T-UP-06 / P2-DESIGN** 沿既有详情与折叠容器补齐两端交接；新增控件/状态编排先提供可查看原型并获用户批准，再写该部分产品 UI。有内容容器不等于这些交互已经获批，不重画已有代表。当前缺少 T-UP-05 的真实公共上传契约，不能先编造生成结果；DES-06-API 与该卡真实浏览器、设计对照、人工验收继续开放。
 

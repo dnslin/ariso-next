@@ -50,6 +50,14 @@ Local 默认集成和 R2/SeaweedFS 手动入口共用 `usage-examples.ts`，执�
 
 证据：[桌面展开](./prototype/tables-desktop.png)、[桌面完整展开](./prototype/tables-desktop-full.png)、[手机参数](./prototype/tables-mobile.png)、[手机横向阅读](./prototype/tables-mobile-scrolled.png)、[手机响应](./prototype/response-table-mobile.png)、[手机HTTP状态](./prototype/http-table-mobile.png)、[手机响应深色](./prototype/response-table-mobile-dark.png)。首张横向滚动截图出现纯白，已等待渲染后替换有效截图；不保留为通过证据。独立设计复审通过本次表格原型，用户整体原型批准、生产UI和Figma同步仍未完成。
 
+### 图标与Tips调整（所有者明确指令，2026-10-09）
+
+复制命令改为44×44图标按钮，保留aria-label/title“复制命令”；删除“用Token从脚本上传图片。”副标题。原常驻的超时、断线核对与重复上传说明改为标题旁Info图标Tips，内容保持完整。此最新指令覆盖任务卡/DG-API原常驻表达，已更新该消费任务；没有笼统删除公共规范。原型两图标节点来自已安装lucide-react1.47.0的Copy/Info（ISC），不自行绘制。实际读取HeroUI3.2.6 Tooltip/Popover类型，后续生产组件按设备交互复用。
+
+同一Ego TaskSpace8实际验证：桌面hover打开、移开关闭，键盘聚焦打开、Escape关闭且焦点留在触发器；手机点击打开、再次点击关闭、外部点击关闭。360/390/430/768提示左右边界均在视口内，页面无横向溢出；1440桌面正文840px。图标复制模拟反馈保持滚动0与最小示例选择，不代替真实剪贴板检查。独立评审提出悬停从图标移向正文的空隙问题，实际复现gapClosesTooltip=true；加入200ms离开延迟后，移入正文保持可见、离开正文关闭通过。初次尝试点击被Tips覆盖的完整示例按钮遭浏览器拒绝，不记为外部点击通过；改点实际外部标题后验证关闭。手机深色实际截图见下，产品短视口/真实剪贴板等验收仍待实施。
+
+证据：[桌面图标](./prototype/icons-desktop.png)、[手机图标](./prototype/icons-mobile.png)、[桌面Tips](./prototype/tips-desktop.png)、[手机Tips](./prototype/tips-mobile.png)、[手机深色Tips](./prototype/tips-mobile-dark.png)。本次仅改原型及相关任务记录，未修改产品UI/后端契约；定向格式、任务定义及diff检查结果随本次记录收齐，输入未变的后端检查不重复执行。整体原型批准与Figma同步仍待取得。
+
 ## 环境与实际检查
 
 macOS26.6.2 / Darwin arm64；Node24.18.1、pnpm11.19.0。所有项目检查PATH前置 `/Users/dnslin/.nvm/versions/node/v24.18.1/bin`，使用现有ImageMagick7/ExifTool/OpenSSL与系统Python。应用技能为using-agent-skills、incremental-implementation、git-workflow-and-versioning、frontend-ui-engineering、vercel-react-best-practices、figma-use、figma-design-to-code及ego-browser；独立质量审查使用code-review-and-quality，curl测试实施者使用test-driven-development。没有新增重复执行/设计规则。
