@@ -36,4 +36,4 @@
 
 上传的三个诊断没有产品修改：[Tips](browser-results/upload-diagnostics/usage-focus.json)显示 Escape 后浮层已隐藏，焦点即时及后续 12 帧都在原按钮；[手机关系选择](browser-results/upload-diagnostics/relation-enter.json)显示 390×400 下实际展开，焦点在搜索标签输入；[原生图片输入](browser-results/upload-diagnostics/native-image.json)收到真实 change、`sample.png`，队列为 queued。这三次独立复查未复现原故障，不能回写历史全量为通过。原生目录枚举 cancel 未在这三个诊断中验证，不应声称文件夹已通过。
 
-功能证据补审与真实截图设计评审分别记录；设计结果以[统一证据](README.md)所链接的独立设计结论为准。本轮人工验收仍未完成，原 #184 密码恢复 UI 的验收不能代替本次账号、SMTP 与退出修复。
+功能证据补审与真实截图设计评审分别记录；设计结果以[统一证据](README.md)所链接的独立设计结论为准。本次补审时人工验收尚未完成；所有者随后于 2026-10-10 明确确认本轮人工验收通过，最新状态见统一证据。原 #184 的验收与本次验收分别记录。
