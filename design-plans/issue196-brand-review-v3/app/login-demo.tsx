@@ -58,7 +58,7 @@ export function LoginDemo() {
         />
         <Button
           variant="ghost"
-          className="min-h-11 w-full justify-end px-0 text-sm font-normal min-[768px]:hidden"
+          className="min-h-11 w-fit justify-self-end px-3 text-sm font-normal min-[768px]:hidden"
           onPress={demonstrate}
         >
           忘记密码
@@ -69,7 +69,7 @@ export function LoginDemo() {
       </Form>
       <Button
         variant="ghost"
-        className="hidden min-h-11 w-full justify-center px-0 text-sm font-normal min-[768px]:flex min-[1200px]:min-h-9"
+        className="hidden min-h-11 w-fit justify-self-center px-3 text-sm font-normal min-[768px]:flex min-[1200px]:min-h-9"
         onPress={demonstrate}
       >
         忘记密码

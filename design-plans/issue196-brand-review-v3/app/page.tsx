@@ -259,13 +259,7 @@ export default function Prototype() {
       <>
         <div className="[&_.public-content]:block! [&_.public-content]:p-0!">
           <PublicShell>
-            <div className="grid min-h-dvh w-full grid-rows-[minmax(max-content,1fr)_auto_minmax(0,1fr)] justify-items-center gap-6 px-4 py-8">
-              <div className="grid w-full max-w-md self-end justify-items-center gap-3 text-center">
-                <Mark asset={saved.Logo} missing={scenario === 'missing'} />
-                <h2 className="max-w-full text-2xl font-medium wrap-anywhere">
-                  {name}
-                </h2>
-              </div>
+            <div className="grid min-h-dvh w-full place-items-center px-4 py-20">
               <LoginDemo />
             </div>
           </PublicShell>
