@@ -44,3 +44,27 @@
 ## 预览与 PR
 
 人工验收沿用原独立预览地址和账号，凭证仅在聊天提供，不提交。只读核对当前 credential 哈希与私有测试密码匹配，没有新增会话或修改密码。浏览器 all 完成后恢复原生视口/主题模拟，打开新版持久预览，调用一次 finish 保留 p1 并交还用户。部署副本更新后保持运行，直到所有者明确要求停止或清理。本轮继续更新 [草稿 PR #275](https://github.com/dnslin/ariso-next/pull/275)，不合并、不关闭 Issue、不发布或清理工作区。当前分支 `codex/issue-184-password-reset`，原提交 `9baf6d78`。本轮开始已更新远端：前置 #182/#183/#133 均 closed，Issue #184 OPEN、无评论及 blocking；main 后续含品牌与设计交接并发提交，PR 实际回读 MERGEABLE / CLEAN，未擅自合并 main。本轮交付继续使用该草稿 PR；提交与远端状态可由 PR 实时记录核对。没有远端 PR 检查，不记作 CI 通过。
+
+## 正文自然折行修正（2026-10-10）
+
+用户指出“请检查邮箱”反馈第一行右侧仍有空间、第二句却从下一行开始，并明确要求实施。来源是 Figma 四个正文 Text 的真实换行与产品 accepted 段落中的 `<br />`，不是通用布局或宽度限制。产品只删除该标签，将原文连续排列；文案、字号、卡片、Tips、操作、请求及数据契约不改。Figma 同步及逐项设计对照见[本轮记录](./accepted-wrap/README.md)。本轮继续使用原隔离工作区、分支和草稿 PR #275，未修改原工作区、冻结 PRD 或公共组件。
+
+修改前在旧 standalone 上运行新增浏览器断言，实际申请成功后以 `no forced line break: 1 !== 0` 失败。1920px 浅色段落右边界1167、第一句末字右边界1061，剩余106px；第二句首字仍比前字低21px。删除标签并完成新构建后，相同入口通过。公开文字和真实 Range 几何的红绿结果见[归档 JSON](./accepted-wrap/layout-results.json)，[修改前实拍](./accepted-wrap/before-forced-break.png)。
+
+| 实际命令                                                                                                                                                                                         | 结果                                                                                      |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------- |
+| `pnpm install --frozen-lockfile`                                                                                                                                                                 | 通过；Node 24.18.1 / pnpm 11.19.0，锁文件未变                                             |
+| `pnpm run lint`、`pnpm run typecheck`                                                                                                                                                            | 均 exit 0                                                                                 |
+| `pnpm run build`                                                                                                                                                                                 | exit 0，standalone 生成；沿用既有可选依赖追踪警告，未隐藏或记作无警告                     |
+| `EGO_TASK_SPACE=1 EGO_PAGE_LABEL=p1 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/identity-184/natural-wrap/red node scripts/verify-browser.mjs --suite password-reset --only representative` | exit 1，旧构建按新增正文断言预期失败，清理完成                                            |
+| 同命令将报告目录改为 `test-results/identity-184/natural-wrap/green`                                                                                                                              | exit 0，representative passed、运行器 passed、3组行为检查、74次截图记录，无错误或清理失败 |
+
+新的排版回归先等待字体就绪，通过 DOM Range 读取两句交界的“。”和“请”实际位置及完整文字行边界。14个样本覆盖1920/360/390/430/768宽度和浅深色，验证有空间即在原行续排、无横向溢出；390宽第一句恰好占满一行时仍自然另起一行。正文无额外空格、未删减内容，不强求所有视口排成一行。原有 Tips 指针/连续阅读/键盘/Escape、手机关闭回焦及44px目标、短屏滚动、真实 TLS 收件/原生回调/一次使用/旧会话撤销流程也由该 representative 入口实际执行。
+
+新增断言接入原 `e2e/password-reset.mjs` 的 accepted 共用分支和 Tips 响应式循环，默认 full、representative 和 interactions 均执行；没有新 suite、共享参数或运行器改动。产品仅文字排版变化，本轮定向重跑受影响 representative；服务端、单元/集成及 interactions/recovery 输入未变，不机械重复上一轮已通过的 all，也不把本轮定向通过称为全量通过。
+
+独立代码评审实际检查最终差异、红绿 JSON 与运行器结果，通过，无遗留 Critical / Required；未重复测试或在检查期间注入 mutation。设计评审使用实际 Figma 与真实页面截图另行给结论，见本轮设计记录。原有手机 Tips 打开滚动原因、公共浅色错误对比、首轮 full/SMTP 未完成项及外部邮箱最终收件边界沿前记录保留。
+
+预览更新到 `standalone-natural-wrap` 独立副本，保留原数据库、账号和端口。实际3个公开页面HTTP200、真实TLS捕获、原生302及重置页和邮箱打开通过；未消费该预览重置链接。浏览器只用原TaskSpace 1/p1、运行器独立测试数据；完成后恢复原生视口和主题模拟，回到原持久找回页面，调用一次 finish 保留p1并交还用户。预览保持运行。代码、本地检查和浏览器验证已完成；新版产品人工验收仍待完成，原型批准与本次实施指令不代替验收。未合并、关闭Issue、发布、部署或清理。
+
+原始日志位于 `test-results/identity-184/natural-wrap/`。最终 `pnpm run format:check` exit 0，`node docs/tasks/check.mjs` 通过（120任务/298需求），`git diff --check` 通过；新增证据相对链接、PNG签名与独立预览私密值扫描均通过。没有远端 PR 检查，不记作 CI 通过。

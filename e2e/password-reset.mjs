@@ -27,6 +27,7 @@ const report = {
   layouts: [],
   requests: [],
   rateLimits: [],
+  acceptedTextLayouts: [],
 };
 const privateValues = [config.credentials.password];
 const sanitize = (value) =>
@@ -169,17 +170,96 @@ async function representativeStates(name, desktop = 1440) {
     await resizeViewport(page, width, width === desktop ? 960 : 844);
     for (const theme of ['light', 'dark']) {
       await setTheme(page, theme);
+      if (name === 'accepted')
+        await acceptedParagraphLayout(`${theme}-${width}`);
       await screenshot(`${name}-${theme}-${width}`);
     }
   }
   await setTheme(page, 'light');
 }
+async function acceptedParagraphLayout(label) {
+  const layout = await page.evaluate(async () => {
+    await document.fonts.ready;
+    const paragraphs = document.querySelectorAll(
+      '[data-testid="reset-page"][data-state="accepted"] p[role="status"]',
+    );
+    if (paragraphs.length !== 1)
+      throw new Error('Accepted recovery must have one status paragraph');
+    const paragraph = paragraphs[0];
+    const rect = (range) => {
+      const box = range.getBoundingClientRect();
+      return {
+        left: box.left,
+        right: box.right,
+        top: box.top,
+        width: box.width,
+      };
+    };
+    const character = (offset) => {
+      const walker = document.createTreeWalker(paragraph, NodeFilter.SHOW_TEXT);
+      for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+        if (offset >= node.length) {
+          offset -= node.length;
+          continue;
+        }
+        const range = document.createRange();
+        range.setStart(node, offset);
+        range.setEnd(node, offset + 1);
+        return rect(range);
+      }
+      throw new Error('Accepted sentence junction is missing');
+    };
+    const junction = '如果该邮箱与账号匹配，你将收到密码重置邮件。'.length;
+    const range = document.createRange();
+    range.selectNodeContents(paragraph);
+    const bounds = paragraph.getBoundingClientRect();
+    return {
+      text: paragraph.textContent,
+      hardBreaks: paragraph.querySelectorAll('br').length,
+      bounds: { left: bounds.left, right: bounds.right },
+      lines: [...range.getClientRects()]
+        .filter((line) => line.width > 0)
+        .map((line) => ({ left: line.left, right: line.right })),
+      previous: character(junction - 1),
+      next: character(junction),
+    };
+  });
+  report.acceptedTextLayouts.push({ label, ...layout });
+  assert.equal(
+    layout.text,
+    '如果该邮箱与账号匹配，你将收到密码重置邮件。请检查收件箱和垃圾邮件。',
+    `${label}: both accepted sentences stay in one paragraph`,
+  );
+  assert.equal(layout.hardBreaks, 0, `${label}: no forced line break`);
+  assert.ok(layout.lines.length > 0);
+  for (const line of layout.lines)
+    assert.ok(
+      line.left >= layout.bounds.left - 1 &&
+        line.right <= layout.bounds.right + 1,
+      `${label}: each rendered text line stays inside the paragraph`,
+    );
+  const canContinue =
+    layout.bounds.right - layout.previous.right >= layout.next.width - 0.5;
+  if (canContinue)
+    assert.ok(
+      Math.abs(layout.previous.top - layout.next.top) <= 1 &&
+        layout.next.left >= layout.previous.right - 1,
+      `${label}: 请 uses the remaining line space after the first sentence`,
+    );
+  return canContinue;
+}
 async function acceptedTips() {
   for (const theme of ['light', 'dark']) {
     await setTheme(page, theme);
+    let continuousJunctions = 0;
     for (const width of [1920, 360, 390, 430, 768]) {
       await resizeViewport(page, width, width >= 1200 ? 960 : 844);
       await page.mouse.move(1, 1);
+      await page.waitForSelector(selector('link-tip-content'), {
+        state: 'hidden',
+      });
+      if (await acceptedParagraphLayout(`tips-closed-${theme}-${width}`))
+        continuousJunctions++;
       const mobile = await page.evaluate(
         () => matchMedia('(max-width: 639px)').matches,
       );
@@ -236,11 +316,18 @@ async function acceptedTips() {
         selector('link-tip'),
       );
     }
+    assert.ok(
+      continuousJunctions > 0,
+      `${theme}: at least one viewport proves the second sentence continues on the existing line`,
+    );
   }
   await resizeViewport(page, 1920, 960);
   await setTheme(page, 'light');
   report.checks.push(
     'Accepted link Tips: desktop hover/continuous reading/focus/Escape, mobile click/close/Escape/source focus, both themes and mobile 44px geometry.',
+  );
+  report.checks.push(
+    'Accepted sentences share one naturally wrapping paragraph; real character ranges prove 请 uses available line space and every rendered line stays within bounds at 1920/360/390/430/768 in both themes.',
   );
 }
 async function requestFormGeometry() {

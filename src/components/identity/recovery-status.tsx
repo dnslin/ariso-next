@@ -42,9 +42,7 @@ export function RecoveryStatus({
     return (
       <>
         <p role="status">
-          如果该邮箱与账号匹配，你将收到密码重置邮件。
-          <br />
-          请检查收件箱和垃圾邮件。
+          如果该邮箱与账号匹配，你将收到密码重置邮件。请检查收件箱和垃圾邮件。
         </p>
         <RecoveryLogin primary />
         <Button
