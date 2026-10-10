@@ -1,0 +1,303 @@
+const imgLucideSend = "https://www.figma.com/api/mcp/asset/f4fe7666-a2cf-4da2-8ff9-1cf3e50753be.svg";
+const imgSelectIndicator = "https://www.figma.com/api/mcp/asset/5bc89c21-508e-44e8-86f4-e7cefa39acfe.svg";
+const imgLucideSettings = "https://www.figma.com/api/mcp/asset/2a64b716-7e21-46f6-8435-c0d93f15f620.svg";
+const imgLucideMail = "https://www.figma.com/api/mcp/asset/dbd469c6-2960-4292-85f5-c462bf9bffd4.svg";
+const imgLucideEraser = "https://www.figma.com/api/mcp/asset/7e7d51b7-fbfb-44b1-85b9-11b7f598a77e.svg";
+const imgLucideInfo = "https://www.figma.com/api/mcp/asset/bc82ca54-fa6e-4e44-b317-9baaca715358.svg";
+const imgLucideServer = "https://www.figma.com/api/mcp/asset/c2ecd338-d09b-4541-86a4-ba7fba33b20f.svg";
+const imgLucideHash = "https://www.figma.com/api/mcp/asset/9a1e9796-0df1-4db0-ae83-961b59b976ed.svg";
+const imgLucideShieldCheck = "https://www.figma.com/api/mcp/asset/870f59e2-b488-45a7-8f86-462d2acce6ea.svg";
+const imgLucideUserRound = "https://www.figma.com/api/mcp/asset/0a6be8c6-62cd-400d-b1d9-9eacbe3301b9.svg";
+const imgLucideBadge = "https://www.figma.com/api/mcp/asset/ae131595-cd84-45f6-a692-46ef09987c28.svg";
+const imgLucideMail1 = "https://www.figma.com/api/mcp/asset/4b048849-19ed-4380-bd38-71b6e7fcf8e6.svg";
+const imgLucideKeyRound = "https://www.figma.com/api/mcp/asset/6e9cea36-f0ff-4a18-a3ee-661b81d52c49.svg";
+const imgLucideSave = "https://www.figma.com/api/mcp/asset/9e25cdcf-74fa-47c7-b47f-69fc14d4457b.svg";
+const imgLucideMenu = "https://www.figma.com/api/mcp/asset/1a4c91e6-8855-4326-9b4e-2efa1fc677c7.svg";
+
+type SmtpActionSendProps = {
+  className?: string;
+  label?: string;
+};
+
+function SmtpActionSend({ className, label = "发送测试邮件" }: SmtpActionSendProps) {
+  return (
+    <div className={className || "bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex gap-[8px] h-[48px] items-center justify-center relative rounded-[12px] w-[192px]"} data-node-id="911:16167" data-name="SMTP / Action / Send">
+      <div className="relative shrink-0 size-[16px]" data-node-id="911:16169" data-name="Lucide / send">
+        <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgLucideSend} />
+      </div>
+      <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="911:16168">
+        {label}
+      </p>
+    </div>
+  );
+}
+
+type MobileSettingsSelectorProps = {
+  className?: string;
+  label?: string;
+};
+
+function MobileSettingsSelector({ className, label = "基本设置" }: MobileSettingsSelectorProps) {
+  return (
+    <div className={className || "bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex h-[48px] items-center justify-between px-[14px] relative rounded-[8px] w-[358px]"} data-node-id="113:1498" data-name="Mobile / SettingsSelector">
+      <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[16px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="113:1495">
+        {label}
+      </p>
+      <div className="relative shrink-0 size-[16px]" data-node-id="113:1496" data-name="Select / Indicator">
+        <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgSelectIndicator} />
+      </div>
+    </div>
+  );
+}
+
+export default function M() {
+  return (
+    <div className="bg-[var(--background,#fffffe)] relative size-full" data-node-id="99:786" data-name="M · 站点设置 · 邮件服务">
+      <div className="absolute bg-[var(--background,#fffffe)] content-stretch flex h-[64px] items-center justify-between left-0 overflow-clip px-[16px] top-0 w-[390px]" data-node-id="114:1504" data-name="Mobile / Header">
+        <p className="[word-break:break-word] font-['Caveat:Regular'] font-normal leading-[1.5] relative shrink-0 text-[36px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="I114:1504;112:1495">
+          Ariso
+        </p>
+        <button className="content-stretch cursor-pointer flex h-[44px] items-center justify-center overflow-clip relative rounded-[22px] shrink-0 w-[64px]" data-node-id="I114:1504;112:1496" data-name="Mobile / 打开菜单" />
+      </div>
+      <div className="absolute inset-[88px_16px_96px_16px] overflow-x-clip overflow-y-auto" data-node-id="307:3868" data-name="页面内容滚动区">
+        <div className="absolute content-stretch flex flex-col gap-[20px] items-start left-0 pb-[40px] right-0 top-0" data-node-id="99:868" data-name="Main">
+          <div className="content-stretch flex h-[76px] items-start justify-between relative shrink-0 w-[358px]" data-node-id="99:871" data-name="页面标题">
+            <div className="content-stretch flex flex-col gap-[6px] items-start relative shrink-0 w-[210px]" data-node-id="99:872" data-name="欢迎">
+              <div className="content-stretch flex gap-[8px] items-center overflow-clip relative shrink-0" data-node-id="912:31826" data-name="图标标签 / 站点设置">
+                <div className="relative shrink-0 size-[24px]" data-node-id="912:31827" data-name="Lucide / settings">
+                  <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgLucideSettings} />
+                </div>
+                <p className="[word-break:break-word] font-['Noto_Sans_SC:Medium'] font-medium leading-[1.5] relative shrink-0 text-[30px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="99:873">
+                  站点设置
+                </p>
+              </div>
+              <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="99:874">
+                管理站点、图片处理与账号偏好。
+              </p>
+            </div>
+          </div>
+          <div className="h-[80px] relative shrink-0 w-full" data-node-id="958:16797" data-name="公共设置分类">
+            <div className="absolute content-stretch flex flex-col gap-[4px] items-start left-0 overflow-clip top-0 w-[358px]" data-node-id="912:31876" data-name="设置分类选择">
+              <p className="[word-break:break-word] font-['Noto_Sans_SC:Medium'] font-medium leading-[1.5] relative shrink-0 text-[13px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="912:31877">
+                设置分类
+              </p>
+              <MobileSettingsSelector className="bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch cursor-pointer flex h-[44px] items-center justify-between px-[14px] relative rounded-[8px] shrink-0 w-[358px]" label="邮件服务" />
+            </div>
+          </div>
+          <div className="bg-[var(--surface,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex flex-col gap-[20px] items-start px-[16px] py-[20px] relative rounded-[20px] shrink-0 w-[358px]" data-node-id="99:881" data-name="设置内容">
+            <div className="content-stretch flex flex-col gap-[12px] items-start overflow-clip relative shrink-0 w-[326px]" data-node-id="912:31830" data-name="SMTP 标题与操作">
+              <div className="content-stretch flex flex-col gap-[12px] items-start overflow-clip relative shrink-0" data-node-id="912:31831" data-name="SMTP 标题与保存摘要">
+                <div className="content-stretch flex gap-[8px] items-center overflow-clip relative shrink-0" data-node-id="912:31832" data-name="图标标签 / SMTP 邮件服务">
+                  <div className="relative shrink-0 size-[20px]" data-node-id="912:31833" data-name="Lucide / mail">
+                    <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgLucideMail} />
+                  </div>
+                  <p className="[word-break:break-word] font-['Noto_Sans_SC:Medium'] font-medium leading-[1.5] relative shrink-0 text-[18px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="99:882">
+                    SMTP 邮件服务
+                  </p>
+                </div>
+                <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[13px] text-[color:var(--muted-foreground,#2d334a)] whitespace-nowrap" data-node-id="215:2257">
+                  已保存配置 · 下次发送即生效
+                </p>
+              </div>
+              <div className="content-stretch cursor-pointer flex gap-[8px] h-[44px] items-center justify-end overflow-clip relative shrink-0 w-full" data-node-id="230:2481" data-name="SMTP凭据清除说明">
+                <button className="bg-[var(--secondary,#e3f6f5)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex gap-[8px] h-[44px] items-center justify-center relative rounded-[8px] shrink-0 w-[166px]" data-node-id="215:2258" data-name="清除SMTP凭据">
+                  <div className="relative shrink-0 size-[16px]" data-node-id="I215:2258;911:16180" data-name="Lucide / eraser">
+                    <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgLucideEraser} />
+                  </div>
+                  <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--foreground,#272343)] text-left whitespace-nowrap" data-node-id="I215:2258;911:16179">
+                    清除用户名和密码
+                  </p>
+                </button>
+                <button className="content-stretch flex gap-[8px] items-center justify-center px-[12px] relative rounded-[12px] shrink-0 size-[44px]" data-node-id="236:2478" data-name="SMTP 清除用途提示">
+                  <div className="relative shrink-0 size-[20px]" data-node-id="I236:2478;911:16185" data-name="Lucide / info">
+                    <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgLucideInfo} />
+                  </div>
+                </button>
+              </div>
+            </div>
+            <div className="content-stretch flex flex-col gap-[12px] items-start relative shrink-0 w-[326px]" data-node-id="99:883" data-name="服务器连接">
+              <a className="content-stretch cursor-pointer flex flex-col gap-[8px] items-start relative shrink-0 w-[326px]" data-node-id="99:884" data-name="SMTP 主机">
+                <div className="content-stretch flex gap-[8px] items-center overflow-clip relative shrink-0" data-node-id="912:31845" data-name="图标标签 / SMTP 主机">
+                  <div className="relative shrink-0 size-[16px]" data-node-id="912:31846" data-name="Lucide / server">
+                    <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgLucideServer} />
+                  </div>
+                  <p className="[word-break:break-word] font-['Noto_Sans_SC:Medium'] font-medium leading-[1.5] relative shrink-0 text-[13px] text-[color:var(--foreground,#272343)] text-left whitespace-nowrap" data-node-id="99:885">
+                    SMTP 主机
+                  </p>
+                </div>
+                <div className="bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex h-[44px] items-center justify-between overflow-clip px-[14px] relative rounded-[12px] shrink-0 w-[326px]" data-node-id="99:886" data-name="Input / SMTP 主机">
+                  <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[16px] text-[color:var(--foreground,#272343)] text-left whitespace-nowrap" data-node-id="99:887">
+                    smtp.example.com
+                  </p>
+                </div>
+              </a>
+              <div className="content-stretch flex gap-[12px] items-start overflow-clip relative shrink-0 w-[326px]" data-node-id="136:1746" data-name="端口与连接安全">
+                <div className="content-stretch flex flex-col gap-[8px] items-start relative shrink-0 w-[96px]" data-node-id="99:888" data-name="端口">
+                  <div className="content-stretch flex gap-[8px] items-center overflow-clip relative shrink-0" data-node-id="912:31851" data-name="图标标签 / 端口">
+                    <div className="relative shrink-0 size-[16px]" data-node-id="912:31852" data-name="Lucide / hash">
+                      <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgLucideHash} />
+                    </div>
+                    <p className="[word-break:break-word] font-['Noto_Sans_SC:Medium'] font-medium leading-[1.5] relative shrink-0 text-[13px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="99:889">
+                      端口
+                    </p>
+                  </div>
+                  <div className="bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex h-[44px] items-center justify-between overflow-clip px-[14px] relative rounded-[12px] shrink-0 w-[96px]" data-node-id="99:890" data-name="Input / 端口">
+                    <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[16px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="99:891">
+                      587
+                    </p>
+                  </div>
+                </div>
+                <button className="content-stretch cursor-pointer flex flex-col gap-[8px] items-start relative shrink-0 w-[218px]" data-node-id="99:893" data-name="连接安全">
+                  <div className="content-stretch flex gap-[8px] items-center overflow-clip relative shrink-0" data-node-id="912:31857" data-name="图标标签 / 连接安全">
+                    <div className="relative shrink-0 size-[16px]" data-node-id="912:31858" data-name="Lucide / shield-check">
+                      <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgLucideShieldCheck} />
+                    </div>
+                    <p className="[word-break:break-word] font-['Noto_Sans_SC:Medium'] font-medium leading-[1.5] relative shrink-0 text-[13px] text-[color:var(--foreground,#272343)] text-left whitespace-nowrap" data-node-id="99:894">
+                      连接安全
+                    </p>
+                  </div>
+                  <div className="bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex h-[44px] items-center justify-between overflow-clip px-[14px] relative rounded-[12px] shrink-0 w-[218px]" data-node-id="99:895" data-name="Input / 连接安全">
+                    <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[16px] text-[color:var(--foreground,#272343)] text-left whitespace-nowrap" data-node-id="99:896">
+                      STARTTLS
+                    </p>
+                    <div className="relative shrink-0 size-[16px]" data-node-id="99:897" data-name="Select / Indicator">
+                      <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgSelectIndicator} />
+                    </div>
+                  </div>
+                </button>
+              </div>
+            </div>
+            <div className="content-stretch flex flex-col items-start relative shrink-0 w-[326px]" data-node-id="99:892" data-name="传输与账户">
+              <div className="content-stretch flex flex-col gap-[8px] items-start relative shrink-0 w-[326px]" data-node-id="99:899" data-name="SMTP 用户名">
+                <div className="content-stretch flex gap-[8px] items-center overflow-clip relative shrink-0" data-node-id="912:31861" data-name="图标标签 / SMTP 用户名">
+                  <div className="relative shrink-0 size-[16px]" data-node-id="912:31862" data-name="Lucide / user-round">
+                    <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgLucideUserRound} />
+                  </div>
+                  <p className="[word-break:break-word] font-['Noto_Sans_SC:Medium'] font-medium leading-[1.5] relative shrink-0 text-[13px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="99:900">
+                    SMTP 用户名
+                  </p>
+                </div>
+                <div className="bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex h-[44px] items-center justify-between overflow-clip px-[14px] relative rounded-[12px] shrink-0 w-[326px]" data-node-id="99:901" data-name="Input / SMTP 用户名">
+                  <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[16px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="99:902">
+                    noreply@example.com
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="content-stretch flex flex-col gap-[12px] items-start relative shrink-0 w-[326px]" data-node-id="99:903" data-name="发件人信息">
+              <div className="content-stretch flex flex-col gap-[8px] items-start relative shrink-0 w-[326px]" data-node-id="99:904" data-name="发件人名称">
+                <div className="content-stretch flex gap-[8px] items-center overflow-clip relative shrink-0" data-node-id="912:31865" data-name="图标标签 / 发件人名称">
+                  <div className="relative shrink-0 size-[16px]" data-node-id="912:31866" data-name="Lucide / badge">
+                    <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgLucideBadge} />
+                  </div>
+                  <p className="[word-break:break-word] font-['Noto_Sans_SC:Medium'] font-medium leading-[1.5] relative shrink-0 text-[13px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="99:905">
+                    发件人名称
+                  </p>
+                </div>
+                <div className="bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex h-[44px] items-center justify-between overflow-clip px-[14px] relative rounded-[12px] shrink-0 w-[326px]" data-node-id="99:906" data-name="Input / 发件人名称">
+                  <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[16px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="99:907">
+                    Ariso
+                  </p>
+                </div>
+              </div>
+              <div className="content-stretch flex flex-col gap-[8px] items-start relative shrink-0 w-[326px]" data-node-id="99:908" data-name="发件人邮箱">
+                <div className="content-stretch flex gap-[8px] items-center overflow-clip relative shrink-0" data-node-id="912:31868" data-name="图标标签 / 发件人邮箱">
+                  <div className="relative shrink-0 size-[16px]" data-node-id="912:31869" data-name="Lucide / mail">
+                    <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgLucideMail1} />
+                  </div>
+                  <p className="[word-break:break-word] font-['Noto_Sans_SC:Medium'] font-medium leading-[1.5] relative shrink-0 text-[13px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="99:909">
+                    发件人邮箱
+                  </p>
+                </div>
+                <div className="bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex h-[44px] items-center justify-between overflow-clip px-[14px] relative rounded-[12px] shrink-0 w-[326px]" data-node-id="99:910" data-name="Input / 发件人邮箱">
+                  <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[16px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="99:911">
+                    noreply@example.com
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="content-stretch flex flex-col gap-[8px] items-start relative shrink-0 w-[326px]" data-node-id="99:912" data-name="凭据">
+              <div className="content-stretch flex flex-col gap-[8px] items-start relative shrink-0 w-[326px]" data-node-id="99:913" data-name="SMTP 密码">
+                <div className="content-stretch flex gap-[8px] items-center overflow-clip relative shrink-0" data-node-id="912:31872" data-name="图标标签 / SMTP 密码">
+                  <div className="relative shrink-0 size-[16px]" data-node-id="912:31873" data-name="Lucide / key-round">
+                    <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgLucideKeyRound} />
+                  </div>
+                  <p className="[word-break:break-word] font-['Noto_Sans_SC:Medium'] font-medium leading-[1.5] relative shrink-0 text-[13px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="99:914">
+                    SMTP 密码
+                  </p>
+                </div>
+                <div className="bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex h-[44px] items-center justify-between overflow-clip px-[14px] relative rounded-[12px] shrink-0 w-[326px]" data-node-id="99:915" data-name="Input / SMTP 密码">
+                  <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[16px] text-[color:var(--foreground,#272343)] whitespace-nowrap" data-node-id="99:916">
+                    已设置 · 留空保留当前密码
+                  </p>
+                </div>
+              </div>
+              <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] min-w-full relative shrink-0 text-[13px] text-[color:var(--muted-foreground,#2d334a)] w-[min-content]" data-node-id="99:917">
+                测试仅使用已保存配置，收件人为当前所有者。
+              </p>
+            </div>
+            <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] min-w-full relative shrink-0 text-[13px] text-[color:var(--muted-foreground,#2d334a)] w-[min-content]" data-node-id="215:2260">
+              编辑后请先保存，再发送测试邮件。保存无需重启，也不会自动发送邮件。
+            </p>
+          </div>
+        </div>
+      </div>
+      <div className="absolute bg-[var(--surface,#fffffe)] border-[var(--accent,#bae8e8)] border-solid border-t bottom-0 content-stretch flex flex-col h-[81px] items-start left-0 overflow-clip pb-[20px] pt-[13px] px-[16px] right-0" data-node-id="307:3867" data-name="固定页脚 / 页面操作">
+        <div className="content-stretch cursor-pointer flex gap-[12px] h-[48px] items-center justify-end relative shrink-0 w-full" data-node-id="99:918" data-name="页面操作">
+          <SmtpActionSend className="bg-[var(--background,#fffffe)] border border-[var(--accent,#bae8e8)] border-solid content-stretch flex gap-[8px] h-[48px] items-center justify-center relative rounded-[12px] shrink-0 w-[173px]" />
+          <button className="bg-[var(--primary,#ffd807)] content-stretch flex gap-[8px] h-[48px] items-center justify-center relative rounded-[12px] shrink-0 w-[173px]" data-node-id="99:920" data-name="SMTP / Action / Save">
+            <div className="relative shrink-0 size-[16px]" data-node-id="I99:920;911:16174" data-name="Lucide / save">
+              <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgLucideSave} />
+            </div>
+            <p className="[word-break:break-word] font-['Noto_Sans_SC:Regular'] font-normal leading-[1.5] relative shrink-0 text-[14px] text-[color:var(--primary-foreground,#272343)] text-left whitespace-nowrap" data-node-id="I99:920;911:16173">
+              保存邮件设置
+            </p>
+          </button>
+        </div>
+      </div>
+      <div className="absolute left-[341px] size-[22px] top-[21px]" data-node-id="912:31878" data-name="Lucide / menu">
+        <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgLucideMenu} />
+      </div>
+    </div>
+  );
+}
+SUPER CRITICAL: The generated React+Tailwind code MUST be converted to match the target project's technology stack and styling system.
+1. Analyze the target codebase to identify: technology stack, styling approach, component patterns, and design tokens
+2. Convert React syntax to the target framework/library
+3. Transform all Tailwind classes to the target styling system while preserving exact visual design
+4. Follow the project's existing patterns and conventions
+DO NOT install any Tailwind as a dependency unless the user instructs you to do so.
+
+Node ids have been added to the code as data attributes, e.g. `data-node-id="1:2"`.
+Component descriptions: The following components have usage descriptions or documentation links defined in Figma. These descriptions provide important context about the intended usage, best practices, and any constraints for each component. Follow these guidelines when implementing or using these components.
+
+## Mobile / Header
+**Node ID:** 112:1498
+
+手机后台64px固定页眉；Caveat品牌及44px高菜单按钮，宽度跟随屏幕。
+
+## Mobile / SettingsSelector
+**Node ID:** 113:1498
+
+手机设置分类入口；当前分类文字可替换，右侧箭头独立对齐。
+
+## SMTP / Action / Clear
+**Node ID:** 911:16178
+
+Issue #182 SMTP approved feedback1; reuses Button/Outline (3:23), Lucide eraser from installed 1.47.0 source.
+
+## SMTP / Action / Info
+**Node ID:** 911:16183
+
+Issue #182 SMTP approved feedback1; reuses Link (3:29), Lucide info from installed 1.47.0 source.
+
+## SMTP / Action / Send
+**Node ID:** 911:16167
+
+Issue #182 SMTP approved feedback1; reuses Button/Outline (3:23), Lucide send from installed 1.47.0 source.
+
+## SMTP / Action / Save
+**Node ID:** 911:16172
+
+Issue #182 SMTP approved feedback1; reuses Button/Primary (3:21), Lucide save from installed 1.47.0 source.
+Images and SVGs will be stored as constants, e.g. const image = 'https://www.figma.com/api/mcp/asset/550e8400-e29b-41d4-a716-446655440000.png'. These constants will be used in the code as the source for the image, ex: <img src={image} />. Image assets are stored on a remote server for 7 days and can be fetched using the provided URLs until they expire.

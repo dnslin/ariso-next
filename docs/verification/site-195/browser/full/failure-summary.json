@@ -1,0 +1,337 @@
+{
+  "note": "Failure state/error/location extracted without rewriting original reports. Full originals remain in this worktree test-results/browser-195-full; default stdout and runner are archived separately.",
+  "failures": [
+    {
+      "stage": "m2-1440-after",
+      "status": "failed",
+      "runnerError": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (m2-1440-after.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/verify-browser.mjs:244:12)\n    at async file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/browser-m2.mjs:38:5\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/browser-stages.mjs:17:5)\n    at async runM2Restart (file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/browser-m2.mjs:32:3)\n    at async file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/verify-browser.mjs:929:7",
+      "originalReport": "test-results/browser-195-full/m2-1440.json",
+      "failureContext": {
+        "status": "failed",
+        "width": 1440,
+        "height": 1080,
+        "theme": "light",
+        "error": "Error: page.waitForFunction timed out after 30000ms on page p1; last URL was \"http://ariso-64362.localhost:64362/upload\"; last title was \"Ariso\".\n    at waitForFunctionTimeoutError (file:////[eval1]:19235:12)\n    at file:////[eval1]:18564:19\n    at async file:////[eval1]:16691:28"
+      }
+    },
+    {
+      "stage": "interaction-polish-1440",
+      "status": "failed",
+      "runnerError": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (interaction-polish-1440.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/verify-browser.mjs:244:12)\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/browser-stages.mjs:17:5)\n    at async file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/verify-browser.mjs:936:7",
+      "originalReport": "test-results/browser-195-full/interaction-polish-1440.json",
+      "failureContext": {
+        "status": "failed",
+        "width": 1920,
+        "height": 1080,
+        "error": "Error: page.waitForFunction timed out after 60000ms on page p1; last URL was \"http://ariso-64362.localhost:64362/upload\"; last title was \"Ariso\".\n    at waitForFunctionTimeoutError (file:////[eval1]:19235:12)\n    at file:////[eval1]:18564:19\n    at async file:////[eval1]:16691:28"
+      }
+    },
+    {
+      "stage": "workspace-continuity-1440",
+      "status": "failed",
+      "runnerError": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (workspace-continuity-1440.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/verify-browser.mjs:244:12)\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/browser-stages.mjs:17:5)\n    at async file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/verify-browser.mjs:937:7",
+      "originalReport": "test-results/browser-195-full/workspace-continuity-1440.json",
+      "detail": "No separate archived JSON; original stage output is preserved in checks/browser-full.log."
+    },
+    {
+      "stage": "oauth-1440-before",
+      "status": "failed",
+      "runnerError": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (oauth-1440-before.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/verify-browser.mjs:244:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/browser-stages.mjs:17:5)\n    at async runOAuthManagement (file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/browser-oauth.mjs:21:18)\n    at async runIdentityManagement (file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/browser-identity-management.mjs:22:23)\n    at async file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/verify-browser.mjs:938:26",
+      "originalReport": "test-results/browser-195-full/oauth-1440-before.json",
+      "failureContext": {
+        "status": "failed",
+        "phase": "before",
+        "stage": "closed-configuration-unknown",
+        "origin": "http://ariso-64362.localhost:64362",
+        "error": "Error: page.waitForFunction timed out after 10000ms on page p1; last URL was \"http://ariso-64362.localhost:64362/settings/account\"; last title was \"Ariso\".\n    at waitForFunctionTimeoutError (file:////[eval1]:19235:12)\n    at file:////[eval1]:18564:19\n    at async file:////[eval1]:16691:28",
+        "finishedAt": "2026-10-09T11:07:37.714Z",
+        "limitations": [
+          "Only the runner’s disposable production runtime/database are modified; the manual preview is untouched.",
+          "A seeded GitHub account proves UI binding state and production unlinking only. It is not evidence of real GitHub OAuth authorization, token exchange or GitHub login.",
+          "Held/lost delivery faults retain actual HTTP writes and reads; no successful server response is fabricated.",
+          "Callback publicUrl readback is verified here; external callback authorization and provider exchange remain separate verification."
+        ]
+      }
+    },
+    {
+      "stage": "processing",
+      "status": "failed",
+      "runnerError": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (processing.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/verify-browser.mjs:244:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/browser-stages.mjs:17:5)\n    at async file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/verify-browser.mjs:881:9",
+      "originalReport": "test-results/browser-195-full/processing.json",
+      "failureContext": {
+        "status": "failed",
+        "phase": "all",
+        "stage": "settings",
+        "origin": "http://ariso-64362.localhost:64362",
+        "error": "ElementResolutionError: page.click timed out after 3000ms: page.click failed: element is not connected\n    at #retryElementAction (file:////[eval1]:18884:27)\n    at async file:////[eval1]:18968:29\n    at async file:////[eval1]:16691:28",
+        "finishedAt": "2026-10-09T11:13:05.285Z",
+        "limitations": [
+          "Only the runner’s disposable production runtime and database are changed. The manual preview and its data are untouched.",
+          "Held or lost fetch responses are real server responses; successful rules, task IDs and results are never fabricated.",
+          "Cancellation tests verify actual DELETE settlement and recovery. The existing media-tools integration suite verifies encoder shutdown while work is active.",
+          "Physical touch, soft keyboard and nonzero device safe areas are outside the current acceptance scope."
+        ]
+      }
+    },
+    {
+      "stage": "storage-admin",
+      "status": "failed",
+      "runnerError": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (storage-admin.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/verify-browser.mjs:244:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/verify-browser.mjs:887:15\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/browser-stages.mjs:17:5)\n    at async file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/verify-browser.mjs:883:11",
+      "originalReport": "test-results/browser-195-full/storage-admin.json",
+      "failureContext": {
+        "status": "failed",
+        "error": "Error: page.waitForSelector timed out after 10000ms: [role=\"alert\"]\n    at waitForSelectorInPage (file:////[eval1]:16159:11)\n    at async file:////[eval1]:16691:28",
+        "limitations": [
+          "HTTP S3 fault fixture exercises actual network operations but does not certify R2/SeaweedFS compatibility.",
+          "Physical touch, soft keyboard and nonzero safe area are outside the current acceptance scope."
+        ]
+      }
+    },
+    {
+      "stage": "storage-cors",
+      "status": "failed",
+      "runnerError": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (storage-cors.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/verify-browser.mjs:244:12)\n    at async file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/verify-browser.mjs:899:15\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/browser-stages.mjs:17:5)\n    at async file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/verify-browser.mjs:895:11",
+      "originalReport": "test-results/browser-195-full/storage-cors.json",
+      "failureContext": {
+        "status": "failed",
+        "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ '((a,b,c,d,e,f,g,h)=>{let i=document.documentElement,j=[\"light\",\"dark\"];function k(b){var c;(Array.isArray(a)?a:[a]).forEach(a=>{let c=\"class\"===a,d=c&&f?e.map(a=>f[a]||a):e;c?(i.classList.remove(...d),i.classList.add(f&&f[b]?f[b]:b)):i.setAttribute(a,b)}),c=b,h&&j.includes(c)&&(i.style.colorScheme=c)}if(d)k(d);else try{let a=localStorage.getItem(b)||c,d=g&&\"system\"===a?window.matchMedia(\"(prefers-color-scheme: dark)\").matches?\"dark\":\"light\":a;k(d)}catch(a){}})(\"class\",\"theme\",\"system\",null,[\"light\",\"dark\"],null,true,true)跳到主要内容Ariso总览尚未开放上传图库相册标签分享管理回收站管理访问统计尚未开放存储管理站点设置OOwner站点所有者Ariso← 返回存储管理浏览器直传设置Issue 158 local-http-fixture · S3 · 配置来源检测通过到对象存储控制台配置 CORS。Ariso 不会自动修改 Bucket 设置；CORS 与 Bucket 私有性是两件事。允许来源http://ariso-64362.localhost:64362 · 只填写当前站点来源只填写当前站点来源允许方法PUT / GET / HEAD · 不要把 OPTIONS 填为 AllowedMethods不要把 OPTIONS 填为 AllowedMethods请求头content-type · 与本次签名探测一致与本次签名探测一致检测方式当前浏览器发送样本 · 服务器核验内容并清理服务器核验内容并清理查看 CORS 示例重新检测(self.__next_f=self.__next_f||[]).push([0])self.__next_f.push([1,\"1:\\\\\"$Sreact.fragment\\\\\"\\\\n2:I[397319,[\\\\\"/_next/static/chunks/1d2sxd-qzyk1-.js\\\\\",\\\\\"/_next/static/chunks/1yeru4g61h1lw.js\\\\\",\\\\\"/_next/static/chunks/3diffwp8_wz0p.js\\\\\",\\\\\"/_next/static/chunks/01gyouqfv07fo.js\\\\\",\\\\\"/_next/static/chunks/0my56_sas1rv4.js\\\\\",\\\\\"/_next/static/chunks/1cbhml6uyufb4.js\\\\\"],\\\\\"Providers\\\\\"]\\\\n3:I[793580,[\\\\\"/_next/static/chunks/1d2sxd-qzyk1-.js\\\\\",\\\\\"/_next/static/chunks/1yeru4g61h1lw.js\\\\\",\\\\\"/_next/static/chunks/3diffwp8_wz0p.js\\\\\",\\\\\"/_next/static/chunks/01gyouqfv07fo.js\\\\\",\\\\\"/_next/static/chunks/0my56_sas1rv4.js\\\\\",\\\\\"/_next/static/chunks/1cbhml6uyufb4.js\\\\\"],\\\\\"default\\\\\"]\\\\n4:I[758298,[\\\\\"/_next/static/chunks/1d2sxd-qzyk1-.js\\\\\",\\\\\"/_next/static/chunks/1yeru4g61h1lw.js\\\\\",\\\\\"/_next/static/chunks/3diffwp8_wz0p.js\\\\\",\\\\\"/_next/static/chunks/01gyouqfv07fo.js\\\\\",\\\\\"/_next/static/chunks/0my56_sas1rv4.js\\\\\",\\\\\"/_next/static/chunks/1cbhml6uyufb4.js\\\\\",\\\\\"/_next/static/chunks/1cw9p5g99ilmj.js\\\\\"],\\\\\"default\\\\\"]\\\\n5:I[792828,[\\\\\"/_next/static/chunks/1d2sxd-qzyk1-.js\\\\\",\\\\\"/_next/static/chunks/1yeru4g61h1lw.js\\\\\",\\\\\"/_next/static/chunks/3diffwp8_wz0p.js\\\\\",\\\\\"/_next/static/chunks/01gyouqfv07fo.js\\\\\",\\\\\"/_next/static/chunks/0my56_sas1rv4.js\\\\\",\\\\\"/_next/static/chunks/1cbhml6uyufb4.js\\\\\"],\\\\\"default\\\\\"]\\\\n6:I[711225,[\\\\\"/_next/static/chunks/1d2sxd-qzyk1-.js\\\\\",\\\\\"/_next/static/chunks/1yeru4g61h1lw.js\\\\\",\\\\\"/_next/static/chunks/3diffwp8_wz0p.js\\\\\",\\\\\"/_next/static/chunks/01gyouqfv07fo.js\\\\\",\\\\\"/_next/static/chunks/0my56_sas1rv4.js\\\\\",\\\\\"/_next/static/chunks/1cbhml6uyufb4.js\\\\\",\\\\\"/_next/static/chunks/0uia683lsc7vl.js\\\\\"],\\\\\"LinkRoot\\\\\"]\\\\n7:I[920337,[\\\\\"/_next/static/chunks/1d2sxd-qzyk1-.js\\\\\",\\\\\"/_next/static/chunks/1yeru4g61h1lw.js\\\\\",\\\\\"/_next/static/chunks/3diffwp8_wz0p.js\\\\\",\\\\\"/_next/static/chunks/01gyouqfv07fo.js\\\\\",\\\\\"/_next/static/chunks/0my56_sas1rv4.js\\\\\",\\\\\"/_next/static/chunks/1cbhml6uyufb4.js\\\\\",\\\\\"/_next/static/chunks/0uia683lsc7vl.js\\\\\"],\\\\\"default\\\\\"]\\\\n9:I[356718,[\\\\\"/_next/static/chunks/1d2sxd-qzyk1-.js\\\\\",\\\\\"/_next/static/chunks/1yeru4g61h1lw.js\\\\\",\\\\\"/_next/static/chunks/3diffwp8_wz0p.js\\\\\",\\\\\"/_next/static/chunks/01gyouqfv07fo.js\\\\\",\\\\\"/_next/static/chunks/0my56_sas1rv4.js\\\\\",\\\\\"/_next/static/chunks/1cbhml6uyufb4.js\\\\\"],\\\\\"OutletBoundary\\\\\"]\\\\na:\\\\\"$Sreact.suspense\\\\\"\\\\nd:I[356718,[\\\\\"/_next/static/chunks/1d2sxd-qzyk1-.js\\\\\",\\\\\"/_next/static/chunks/1yeru4g61h1lw.js\\\\\",\\\\\"/_next/static/chunks/3diffwp8_wz0p.js\\\\\",\\\\\"/_next/static/chunks/01gyouqfv07fo.js\\\\\",\\\\\"/_next/static/chunks/0my56_sas1rv4.js\\\\\",\\\\\"/_next/static/chunks/1cbhml6uyufb4.js\\\\\"],\\\\\"ViewportBoundary\\\\\"]\\\\nf:I[356718,[\\\\\"/_next/static/chunks/1d2sxd-qzyk1-.js\\\\\",\\\\\"/_next/static/chunks/1yeru4g61h1lw.js\\\\\",\\\\\"/_next/static/chunks/3diffwp8_wz0p.js\\\\\",\\\\\"/_next/static/chunks/01gyouqfv07fo.js\\\\\",\\\\\"/_next/static/chunks/0my56_sas1rv4.js\\\\\",\\\\\"/_next/static/chunks/1cbhml6uyufb4.js\\\\\"],\\\\\"MetadataBoundary\\\\\"]\\\\n11:I[698145,[\\\\\"/_next/static/chunks/1d2sxd-qzyk1-.js\\\\\",\\\\\"/_next/static/chunks/1yeru4g61h1lw.js\\\\\",\\\\\"/_next/static/chunks/3diffwp8_wz0p.js\\\\\",\\\\\"/_next/static/chunks/01gyouqfv07fo.js\\\\\",\\\\\"/_next/static/chunks/0my56_sas1rv4.js\\\\\",\\\\\"/_next/static/chunks/1cbhml6uyufb4.js\\\\\"],\\\\\"default\\\\\",1]\\\\n:HL[\\\\\"/_next/static/chunks/3wqzogj-urqss.css\\\\\",\\\\\"style\\\\\"]\\\\nc:X\\\\n0:{\\\\\"P\\\\\":null,\\\\\"c\\\\\":[\\\\\"\\\\\",\\\\\"settings\\\\\",\\\\\"storage\\\\\",\\\\\"36a8b5fe-9382-489c-bdc2-df0257a47417\\\\\",\\\\\"cors\\\\\"],\\\\\"q\\\\\":\\\\\"\\\\\",\\\\\"i\\\\\":false,\\\\\"f\\\\\":[[[\\\\\"\\\\\",{\\\\\"children\\\\\":[\\\\\"settings\\\\\",{\\\\\"children\\\\\":[\\\\\"storage\\\\\",{\\\\\"children\\\\\":[[\\\\\"id\\\\\",\\\\\"36a8b5fe-9382-489c-bdc2-df0257a47417\\\\\",\\\\\"d\\\\\",[\\\\\"new\\\\\"]],{\\\\\"children\\\\\":[\\\\\"cors\\\\\",{\\\\\"children\\\\\":[\\\\\"__PAGE__\\\\\",{},\\\\\"$undefined\\\\\",\\\\\"$undefined\\\\\",4096]},\\\\\"$undefined\\\\\",\\\\\"$undefined\\\\\",4096]},\\\\\"$undefined\\\\\",\\\\\"$undefined\\\\\",4096]},\\\\\"$undefined\\\\\",\\\\\"$undefined\\\\\",4096]},\\\\\"$undefined\\\\\",\\\\\"$undefined\\\\\",4096]},\\\\\"$undefined\\\\\",\\\\\"$undefined\\\\\",4112],[[\\\\\"$\\\\\",\\\\\"$1\\\\\",\\\\\"c\\\\\",{\\\\\"children\\\\\":[[[\\\\\"$\\\\\",\\\\\"link\\\\\",\\\\\"0\\\\\",{\\\\\"rel\\\\\":\\\\\"stylesheet\\\\\",\\\\\"href\\\\\":\\\\\"/_next/static/chunks/3wqzogj-urqss.css\\\\\",\\\\\"precedence\\\\\":\\\\\"next\\\\\",\\\\\"crossOrigin\\\\\":\\\\\"$undefined\\\\\",\\\\\"nonce\\\\\":\\\\\"$undefined\\\\\"}],[\\\\\"$\\\\\",\\\\\"script\\\\\",\\\\\"script-0\\\\\",{\\\\\"src\\\\\":\\\\\"/_next/static/chunks/1d2sxd-qzyk1-.js\\\\\",\\\\\"async\\\\\":true,\\\\\"nonce\\\\\":\\\\\"$undefined\\\\\"}],[\\\\\"$\\\\\",\\\\\"script\\\\\",\\\\\"script-1\\\\\",{\\\\\"src\\\\\":\\\\\"/_next/static/chunks/1yeru4g61h1lw.js\\\\\",\\\\\"async\\\\\":true,\\\\\"nonce\\\\\":\\\\\"$undefined\\\\\"}],[\\\\\"$\\\\\",\\\\\"script\\\\\",\\\\\"script-2\\\\\",{\\\\\"src\\\\\":\\\\\"/_next/static/chunks/3diffwp8_wz0p.js\\\\\",\\\\\"async\\\\\":true,\\\\\"nonce\\\\\":\\\\\"$undefined\\\\\"}],[\\\\\"$\\\\\",\\\\\"script\\\\\",\\\\\"script-3\\\\\",{\\\\\"src\\\\\":\\\\\"/_next/static/chunks/01gyouqfv07fo.js\\\\\",\\\\\"async\\\\\":true,\\\\\"nonce\\\\\":\\\\\"$undefined\\\\\"}],[\\\\\"$\\\\\",\\\\\"script\\\\\",\\\\\"script-4\\\\\",{\\\\\"src\\\\\":\\\\\"/_next/static/chunks/0my56_sas1rv4.js\\\\\",\\\\\"async\\\\\":true,\\\\\"nonce\\\\\":\\\\\"$undefined\\\\\"}],[\\\\\"$\\\\\",\\\\\"script\\\\\",\\\\\"script-5\\\\\",{\\\\\"src\\\\\":\\\\\"/_next/static/chunks/1cbhml6uyufb4.js\\\\\",\\\\\"async\\\\\":true,\\\\\"nonce\\\\\":\\\\\"$undefined\\\\\"}]],[\\\\\"$\\\\\",\\\\\"html\\\\\",null,{\\\\\"lang\\\\\":\\\\\"zh-CN\\\\\",\\\\\"suppressHydrationWarning\\\\\":true,\\\\\"children\\\\\":[\\\\\"$\\\\\",\\\\\"body\\\\\",null,{\\\\\"children\\\\\":[\\\\\"$\\\\\",\\\\\"$L2\\\\\",null,{\\\\\"children\\\\\":[\\\\\"$\\\\\",\\\\\"$L3\\\\\",null,{\\\\\"parallelRouterKey\\\\\":\\\\\"children\\\\\",\\\\\"error\\\\\":\\\\\"$4\\\\\",\\\\\"errorStyles\\\\\":[],\\\\\"errorScripts\\\\\":[[\\\\\"$\\\\\",\\\\\"script\\\\\",\\\\\"script-0\\\\\",{\\\\\"src\\\\\":\\\\\"/_next/static/chunks/1cw9p5g99ilmj.js\\\\\",\\\\\"async\\\\\":true,\\\\\"nonce\\\\\":\\\\\"$undefined\\\\\"}]],\\\\\"template\\\\\":[\\\\\"$\\\\\",\\\\\"$L5\\\\\",null,{}],\\\\\"templateStyles\\\\\":\\\\\"$undefined\\\\\",\\\\\"templateScripts\\\\\":\\\\\"$undefined\\\\\",\\\\\"notFound\\\\\":[[\\\\\"$\\\\\",\\\\\"div\\\\\",null,{\\\\\"className\\\\\":\\\\\"public-shell\\\\\",\\\\\"children\\\\\":[[\\\\\"$\\\\\",\\\\\"div\\\\\",null,{\\\\\"className\\\\\":\\\\\"public-decoration\\\\\",\\\\\"aria-hidden\\\\\":\\\\\"true\\\\\"}],[\\\\\"$\\\\\",\\\\\"header\\\\\",null,{\\\\\"className\\\\\":\\\\\"public-header\\\\\",\\\\\"children\\\\\":[\\\\\"$\\\\\",\\\\\"$L6\\\\\",null,{\\\\\"href\\\\\":\\\\\"/\\\\\",\\\\\"className\\\\\":\\\\\"gap-1 text-sm\\\\\",\\\\\"children\\\\\":[[\\\\\"$\\\\\",\\\\\"$L7\\\\\",null,{\\\\\"ref\\\\\":\\\\\"$undefined\\\\\",\\\\\"icon\\\\\":{\\\\\"name\\\\\":\\\\\"arrow-left\\\\\",\\\\\"size\\\\\":24,\\\\\"node\\\\\":[[\\\\\"path\\\\\",{\\\\\"d\\\\\":\\\\\"m12 19-7-7 7-7\\\\\",\\\\\"key\\\\\":\\\\\"1l729n\\\\\"}],[\\\\\"path\\\\\",{\\\\\"d\\\\\":\\\\\"M19 12H5\\\\\",\\\\\"key\\\\\":\\\\\"x3x0zl\\\\\"}]]},\\\\\"className\\\\\":\\\\\"size-4\\\\\",\\\\\"aria-hidden\\\\\":\\\\\"true\\\\\"}],\\\\\"返回首页\\\\\"]}]}],[\\\\\"$\\\\\",\\\\\"main\\\\\",null,{\\\\\"id\\\\\":\\\\\"main-content\\\\\",\\\\\"className\\\\\":\\\\\"public-content\\\\\",\\\\\"children\\\\\":[\\\\\"$\\\\\",\\\\\"section\\\\\",null,{\\\\\"className\\\\\":\\\\\"public-message\\\\\",\\\\\"children\\\\\":[[\\\\\"$\\\\\",\\\\\"h1\\\\\",null,{\\\\\"children\\\\\":\\\\\"页面不存在\\\\\"}],[\\\\\"$\\\\\",\\\\\"p\\\\\",null,{\\\\\"children\\\\\":\\\\\"此地址尚未开放，或页面已移除。\\\\\"}]]}]}]]}],[]],\\\\\"forbidden\\\\\":\\\\\"$undefined\\\\\",\\\\\"unauthorized\\\\\":\\\\\"$undefined\\\\\"}]}]}]}]]}],{\\\\\"children\\\\\":[[\\\\\"$\\\\\",\\\\\"$1\\\\\",\\\\\"c\\\\\",{\\\\\"children\\\\\":[null,[\\\\\"$\\\\\",\\\\\"$L3\\\\\",null,{\\\\\"parallelRouterKey\\\\\":\\\\\"children\\\\\",\\\\\"error\\\\\":\\\\\"$undefined\\\\\",\\\\\"errorStyles\\\\\":\\\\\"$undefined\\\\\",\\\\\"errorScripts\\\\\":\\\\\"$undefined\\\\\",\\\\\"template\\\\\":[\\\\\"$\\\\\",\\\\\"$L5\\\\\",null,{}],\\\\\"templateStyles\\\\\":\\\\\"$undefined\\\\\",\\\\\"templateScripts\\\\\":\\\\\"$undefined\\\\\",\\\\\"notFound\\\\\":\\\\\"$undefined\\\\\",\\\\\"forbidden\\\\\":\\\\\"$undefined\\\\\",\\\\\"unauthorized\\\\\":\\\\\"$undefined\\\\\"}]]}],{\\\\\"children\\\\\":[[\\\\\"$\\\\\",\\\\\"$1\\\\\",\\\\\"c\\\\\",{\\\\\"children\\\\\":[null,[\\\\\"$\\\\\",\\\\\"$L3\\\\\",null,{\\\\\"parallelRouterKey\\\\\":\\\\\"children\\\\\",\\\\\"error\\\\\":\\\\\"$undefined\\\\\",\\\\\"errorStyles\\\\\":\\\\\"$undefined\\\\\",\\\\\"errorScripts\\\\\":\\\\\"$undefined\\\\\",\\\\\"template\\\\\":[\\\\\"$\\\\\",\\\\\"$L5\\\\\",null,{}],\\\\\"templateStyles\\\\\":\\\\\"$undefined\\\\\",\\\\\"templateScripts\\\\\":\\\\\"$undefined\\\\\",\\\\\"notFound\\\\\":\\\\\"$undefined\\\\\",\\\\\"forbidden\\\\\":\\\\\"$undefined\\\\\",\\\\\"unauthorized\\\\\":\\\\\"$undefined\\\\\"}]]}],{\\\\\"children\\\\\":[[\\\\\"$\\\\\",\\\\\"$1\\\\\",\\\\\"c\\\\\",{\\\\\"children\\\\\":[null,[\\\\\"$\\\\\",\\\\\"$L3\\\\\",null,{\\\\\"parallelRouterKey\\\\\":\\\\\"children\\\\\",\\\\\"error\\\\\":\\\\\"$undefined\\\\\",\\\\\"errorStyles\\\\\":\\\\\"$undefined\\\\\",\\\\\"errorScripts\\\\\":\\\\\"$undefined\\\\\",\\\\\"template\\\\\":[\\\\\"$\\\\\",\\\\\"$L5\\\\\",null,{}],\\\\\"templateStyles\\\\\":\\\\\"$undefined\\\\\",\\\\\"templateScripts\\\\\":\\\\\"$undefined\\\\\",\\\\\"notFound\\\\\":\\\\\"$undefined\\\\\",\\\\\"forbidden\\\\\":\\\\\"$undefined\\\\\",\\\\\"unauthorized\\\\\":\\\\\"$undefined\\\\\"}]]}],{\\\\\"children\\\\\":[[\\\\\"$\\\\\",\\\\\"$1\\\\\",\\\\\"c\\\\\",{\\\\\"children\\\\\":[null,[\\\\\"$\\\\\",\\\\\"$L3\\\\\",null,{\\\\\"parallelRouterKey\\\\\":\\\\\"children\\\\\",\\\\\"error\\\\\":\\\\\"$undefined\\\\\",\\\\\"errorStyles\\\\\":\\\\\"$undefined\\\\\",\\\\\"errorScripts\\\\\":\\\\\"$undefined\\\\\",\\\\\"template\\\\\":[\\\\\"$\\\\\",\\\\\"$L5\\\\\",null,{}],\\\\\"templateStyles\\\\\":\\\\\"$undefined\\\\\",\\\\\"templateScripts\\\\\":\\\\\"$undefined\\\\\",\\\\\"notFound\\\\\":\\\\\"$undefined\\\\\",\\\\\"forbidden\\\\\":\\\\\"$undefined\\\\\",\\\\\"unauthorized\\\\\":\\\\\"$undefined\\\\\"}]]}],{\\\\\"children\\\\\":[[\\\\\"$\\\\\",\\\\\"$1\\\\\",\\\\\"c\\\\\",{\\\\\"children\\\\\":[\\\\\"$L8\\\\\",[[\\\\\"$\\\\\",\\\\\"script\\\\\",\\\\\"script-0\\\\\",{\\\\\"src\\\\\":\\\\\"/_next/static/chunks/41i1v41bn8idc.js\\\\\",\\\\\"async\\\\\":true,\\\\\"nonce\\\\\":\\\\\"$undefined\\\\\"}],[\\\\\"$\\\\\",\\\\\"script\\\\\",\\\\\"script-1\\\\\",{\\\\\"src\\\\\":\\\\\"/_next/static/chunks/0p4uou9gsit55.js\\\\\",\\\\\"async\\\\\":true,\\\\\"nonce\\\\\":\\\\\"$undefined\\\\\"}],[\\\\\"$\\\\\",\\\\\"script\\\\\",\\\\\"script-2\\\\\",{\\\\\"src\\\\\":\\\\\"/_next/static/chunks/0jkv7ivp3d-xw.js\\\\\",\\\\\"async\\\\\":true,\\\\\"nonce\\\\\":\\\\\"$undefined\\\\\"}],[\\\\\"$\\\\\",\\\\\"script\\\\\",\\\\\"script-3\\\\\",{\\\\\"src\\\\\":\\\\\"/_next/static/chunks/02xvf_8g3slov.js\\\\\",\\\\\"async\\\\\":true,\\\\\"nonce\\\\\":\\\\\"$undefined\\\\\"}],[\\\\\"$\\\\\",\\\\\"script\\\\\",\\\\\"script-4\\\\\",{\\\\\"src\\\\\":\\\\\"/_next/static/chunks/041ruxv2e52m0.js\\\\\",\\\\\"async\\\\\":true,\\\\\"nonce\\\\\":\\\\\"$undefined\\\\\"}]],[\\\\\"$\\\\\",\\\\\"$L9\\\\\",null,{\\\\\"children\\\\\":[\\\\\"$\\\\\",\\\\\"$a\\\\\",null,{\\\\\"name\\\\\":\\\\\"Next.MetadataOutlet\\\\\",\\\\\"children\\\\\":\\\\\"$@b\\\\\"}]}]]}],{},null,false,null]},null,false,\\\\\"$c\\\\\"]},null,false,\\\\\"$c\\\\\"]},null,false,\\\\\"$c\\\\\"]},null,false,\\\\\"$c\\\\\"]},null,false,null],[\\\\\"$\\\\\",\\\\\"$1\\\\\",\\\\\"h\\\\\",{\\\\\"children\\\\\":[null,[\\\\\"$\\\\\",\\\\\"$Ld\\\\\",null,{\\\\\"children\\\\\":\\\\\"$Le\\\\\"}],[\\\\\"$\\\\\",\\\\\"div\\\\\",null,{\\\\\"hidden\\\\\":true,\\\\\"children\\\\\":[\\\\\"$\\\\\",\\\\\"$Lf\\\\\",null,{\\\\\"children\\\\\":[\\\\\"$\\\\\",\\\\\"$a\\\\\",null,{\\\\\"name\\\\\":\\\\\"Next.Metadata\\\\\",\\\\\"children\\\\\":\\\\\"$L10\\\\\"}]}]}],null]}],false]],\\\\\"m\\\\\":\\\\\"$undefined\\\\\",\\\\\"G\\\\\":[\\\\\"$11\\\\\",[[\\\\\"$\\\\\",\\\\\"link\\\\\",\\\\\"0\\\\\",{\\\\\"rel\\\\\":\\\\\"stylesheet\\\\\",\\\\\"href\\\\\":\\\\\"/_next/static/chunks/3wqzogj-urqss.css\\\\\",\\\\\"precedence\\\\\":\\\\\"next\\\\\",\\\\\"crossOrigin\\\\\":\\\\\"$undefined\\\\\",\\\\\"nonce\\\\\":\\\\\"$undefined\\\\\"}]]],'... 1171 more characters\n- '查看 CORS 示例'\n\n    at verifyCorsDialogs (file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/e2e/storage-cors-layout.mjs:308:10)\n    at async verifyCorsUiFailures (file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/e2e/storage-cors-ui.mjs:204:3)\n    at async file:////[eval2]:200:7"
+      }
+    },
+    {
+      "stage": "library",
+      "status": "failed",
+      "runnerError": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (library.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/verify-browser.mjs:244:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/browser-stages.mjs:17:5)\n    at async file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/verify-browser.mjs:914:9",
+      "originalReport": "test-results/browser-195-full/library.json",
+      "failureContext": {
+        "status": "failed",
+        "error": "Error: page.waitForSelector timed out after 10000ms: #email\n    at waitForSelectorInPage (file:////[eval1]:16159:11)\n    at async file:////[eval1]:16691:28",
+        "limitations": [
+          "Ego Chromium only; shortened viewport is not a physical soft keyboard or notched device test."
+        ]
+      }
+    },
+    {
+      "stage": "library-batch",
+      "status": "failed",
+      "runnerError": "AbortError: The operation was aborted\n    at AbortSignal.abortListener (node:events:1025:14)\n    at [nodejs.internal.kHybridDispatch] (node:internal/event_target:843:20)\n    at AbortSignal.dispatchEvent (node:internal/event_target:776:26)\n    at runAbort (node:internal/abort_controller:547:10)\n    at abortSignal (node:internal/abort_controller:524:5)\n    at Timeout._onTimeout (node:internal/abort_controller:208:7)\n    at listOnTimeout (node:internal/timers:605:17)\n    at process.processTimers (node:internal/timers:541:7)",
+      "originalReport": "test-results/browser-195-full/library-batch.json",
+      "failureContext": {
+        "status": "failed",
+        "phase": "full",
+        "activeCheck": "trash-restore-preserves-surviving-data",
+        "origin": "http://ariso-64362.localhost:64362",
+        "error": "Error: Cannot find context with specified id\n    at handleMessage (file:////[eval1]:8940:27)\n    at file:////[eval1]:8099:47\n    at guardNativeCallback (file:////[eval1]:8087:9)\n    at dispatchCdpMessage (file:////[eval1]:8099:5)",
+        "limitations": [
+          "Ego Chromium responsive/keyboard checks; physical devices and Release containers are outside this local task."
+        ]
+      }
+    },
+    {
+      "stage": "library-reprocess",
+      "status": "failed",
+      "runnerError": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (library-reprocess.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/verify-browser.mjs:244:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/browser-stages.mjs:17:5)\n    at async file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/verify-browser.mjs:927:51",
+      "originalReport": "test-results/browser-195-full/library-reprocess.json",
+      "failureContext": {
+        "status": "failed",
+        "origin": "http://ariso-64362.localhost:64362",
+        "error": "Error: page.waitForFunction timed out after 30000ms on page p1; last URL was \"http://ariso-64362.localhost:64362/library?q=issue186-&pageSize=20\"; last title was \"Ariso\".\n    at waitForFunctionTimeoutError (file:////[eval1]:19235:12)\n    at file:////[eval1]:18564:19\n    at async file:////[eval1]:16691:28",
+        "limitations": [
+          "Real worker evidence uses disposable local storage and installed ImageMagick/ExifTool. Controlled persisted queued/running/failure snapshots are explicitly rendering evidence.",
+          "Design acceptance is recorded separately by an independent reviewer; browser assertions and screenshot count are not design acceptance.",
+          "Physical mobile, nonzero safe area, release images and containers are outside local verification."
+        ]
+      }
+    },
+    {
+      "stage": "library-copy",
+      "status": "failed",
+      "runnerError": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (library-copy.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/verify-browser.mjs:244:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/browser-stages.mjs:17:5)\n    at async file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/verify-browser.mjs:927:51",
+      "originalReport": "test-results/browser-195-full/library-copy.json",
+      "failureContext": {
+        "status": "failed",
+        "phase": "full",
+        "stage": "upload-layout-consumer",
+        "origin": "http://ariso-64362.localhost:64362",
+        "error": "Error: page.waitForSelector timed out after 10000ms: [data-testid=\"upload-item\"]\n    at waitForSelectorInPage (file:////[eval1]:16159:11)\n    at async file:////[eval1]:16691:28",
+        "finishedAt": "2026-10-09T11:46:48.969Z",
+        "limitations": [
+          "Real Ego Chromium and macOS pasteboard; physical phones, software keyboards and Release containers were not exercised.",
+          "HTTP failure is injected at the browser transport boundary after a real server response; 401 revokes only the disposable database sessions; permission denial uses Chromium native permission enforcement."
+        ]
+      }
+    },
+    {
+      "stage": "album-cover",
+      "status": "failed",
+      "runnerError": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (album-cover.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/verify-browser.mjs:244:12)\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/browser-stages.mjs:17:5)\n    at async file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/verify-browser.mjs:927:51",
+      "originalReport": "test-results/browser-195-full/album-cover.json",
+      "failureContext": {
+        "status": "failed",
+        "stage": "owner session and fixtures",
+        "error": "Error: page.waitForURL timed out after 10000ms: expected \"http://ariso-64362.localhost:64362/library\"; last URL was \"http://ariso-64362.localhost:64362/library?page=1\"\n    at waitForURLInPage (file:////[eval1]:16205:11)\n    at async file:////[eval1]:16691:28"
+      }
+    },
+    {
+      "stage": "upload-input",
+      "status": "failed",
+      "runnerError": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (upload-input.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/verify-browser.mjs:244:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/browser-stages.mjs:17:5)\n    at async file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/verify-browser.mjs:927:51",
+      "originalReport": "test-results/browser-195-full/upload-input.json",
+      "failureContext": {
+        "status": "failed",
+        "error": "AssertionError [ERR_ASSERTION]: Native directory enumeration was cancelled by the browser; folder selection remains unverified\n\ntrue !== false\n\n    at directory (file:////[eval2]:195:12)\n    at async file:////[eval2]:474:3",
+        "limitations": [
+          "Ego Chromium emulation does not verify physical touch, soft keyboards or device safe areas.",
+          "Directory permission/read failures and delayed reads are controlled browser entry-boundary faults, not real operating-system permission failures.",
+          "Supported-format input tests prove candidate acceptance and safe local preview; actual format verification remains server-side.",
+          "GC checks track native input Files and the exact queued Files passed to object-URL creation. Formats without a local preview, including HEIC/SVG, have native input and URL checks but no direct queued-wrapper GC evidence."
+        ]
+      }
+    },
+    {
+      "stage": "upload-relations",
+      "status": "failed",
+      "runnerError": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (upload-relations.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/verify-browser.mjs:244:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/browser-stages.mjs:17:5)\n    at async file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/verify-browser.mjs:927:51",
+      "originalReport": "test-results/browser-195-full/upload-relations.json",
+      "failureContext": {
+        "status": "failed",
+        "step": {
+          "name": "position keyboard selector before Enter",
+          "kind": "tags",
+          "top": 171.5,
+          "bottom": 215.5,
+          "left": 33,
+          "right": 357,
+          "width": 390,
+          "height": 400
+        },
+        "error": "Error: page.waitForFunction timed out after 10000ms on page p1; last URL was \"http://ariso-64362.localhost:64362/upload\"; last title was \"Ariso\".\n    at waitForFunctionTimeoutError (file:////[eval1]:19235:12)\n    at file:////[eval1]:18564:19\n    at async file:////[eval1]:16691:28"
+      }
+    },
+    {
+      "stage": "upload-usage",
+      "status": "failed",
+      "runnerError": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (upload-usage.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/verify-browser.mjs:244:12)\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/browser-stages.mjs:17:5)\n    at async file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/verify-browser.mjs:927:51",
+      "originalReport": "test-results/browser-195-full/upload-usage.json",
+      "failureContext": {
+        "status": "failed",
+        "origin": "http://ariso-64362.localhost:64362",
+        "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\nnull !== '上传注意事项'\n\n    at verifyTips (file:////[eval2]:288:10)\n    at async file:////[eval2]:751:9",
+        "finishedAt": "2026-10-09T12:12:19.307Z",
+        "limitations": [
+          "Disposable runner database only; mouse, keyboard and mobile viewport emulation do not prove physical touch or soft keyboard behavior."
+        ]
+      }
+    },
+    {
+      "stage": "sharing-management",
+      "status": "failed",
+      "runnerError": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (sharing-management.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/verify-browser.mjs:244:12)\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/browser-stages.mjs:17:5)\n    at async file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/verify-browser.mjs:927:51",
+      "originalReport": "test-results/browser-195-full/sharing-management.json",
+      "failureContext": {
+        "status": "failed",
+        "phase": "full",
+        "stage": "album-entry-and-create-current-record",
+        "origin": "http://ariso-64362.localhost:64362",
+        "error": "Error: page.waitForURL timed out after 10000ms: expected \"http://ariso-64362.localhost:64362/albums/issue191-new\"; last URL was \"http://ariso-64362.localhost:64362/albums/issue191-new?page=1\"\n    at waitForURLInPage (file:////[eval1]:16205:11)\n    at async file:////[eval1]:16691:28",
+        "finishedAt": "2026-10-09T12:13:58.025Z",
+        "limitations": [
+          "Production owner UI and disposable SQLite data; browser transport faults are explicit injections after real commits where specified.",
+          "Anonymous gallery rendering belongs to T-SHR-03; physical phones and Release containers were not exercised."
+        ]
+      }
+    },
+    {
+      "stage": "site-general",
+      "status": "failed",
+      "runnerError": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (site-general.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/verify-browser.mjs:244:12)\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/browser-stages.mjs:17:5)\n    at async file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/verify-browser.mjs:927:51",
+      "originalReport": "test-results/browser-195-full/site-general.json",
+      "failureContext": {
+        "status": "failed",
+        "phase": "all",
+        "stage": "recovery",
+        "origin": "http://ariso-64362.localhost:64362",
+        "error": "Error: page.waitForURL timed out after 10000ms: expected \"http://ariso-64362.localhost:64362/library\"; last URL was \"http://ariso-64362.localhost:64362/library?page=1\"\n    at waitForURLInPage (file:////[eval1]:16205:11)\n    at async file:////[eval1]:16691:28",
+        "finishedAt": "2026-10-09T12:16:45.928Z",
+        "limitations": [
+          "Only the runner disposable production database and independently initialized owner are used; user preview data is untouched.",
+          "Transport injections preserve real successful server responses and commits; unsent requests and Clipboard denials are explicit injected failures.",
+          "Viewport emulation does not verify physical phones, touch keyboards or Release containers; human acceptance remains separate.",
+          "Complete metadata/brand material consumption and sharing/analytics timezone interpretation belong to their own tasks."
+        ]
+      }
+    },
+    {
+      "stage": "smtp",
+      "status": "failed",
+      "runnerError": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (smtp.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/verify-browser.mjs:244:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/browser-stages.mjs:17:5)\n    at async file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/verify-browser.mjs:927:51",
+      "originalReport": "test-results/browser-195-full/smtp.json",
+      "failureContext": {
+        "status": "failed",
+        "phase": "all",
+        "stage": "save-and-secrets",
+        "error": "Error: page.waitForSelector timed out after 10000ms: [data-testid=\"smtp-dialog-test-confirm\"]\n    at waitForSelectorInPage (file:////[eval1]:16159:11)\n    at async file:////[eval1]:16691:28",
+        "finishedAt": "2026-10-09T12:18:13.691Z",
+        "limitations": [
+          "Local TLS/STARTTLS fixture receives real mail; an external provider and final delivery to a real mailbox remain separate acceptance.",
+          "Lost HTTP responses are deliberate transport faults after real requests, not fabricated server results.",
+          "Chromium viewport emulation does not verify physical touch, keyboard or safe areas."
+        ]
+      }
+    },
+    {
+      "stage": "oauth-390-before",
+      "status": "failed",
+      "runnerError": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (oauth-390-before.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/verify-browser.mjs:244:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/browser-stages.mjs:17:5)\n    at async runOAuthManagement (file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/browser-oauth.mjs:21:18)\n    at async runIdentityManagement (file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/browser-identity-management.mjs:22:23)\n    at async file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/verify-browser.mjs:938:26",
+      "originalReport": "test-results/browser-195-full/oauth-390-before.json",
+      "failureContext": {
+        "status": "failed",
+        "phase": "before",
+        "stage": "closed-configuration-unknown",
+        "origin": "http://ariso-64362.localhost:64362",
+        "error": "Error: page.waitForFunction timed out after 10000ms on page p1; last URL was \"http://ariso-64362.localhost:64362/settings/account\"; last title was \"Ariso\".\n    at waitForFunctionTimeoutError (file:////[eval1]:19235:12)\n    at file:////[eval1]:18564:19\n    at async file:////[eval1]:16691:28",
+        "finishedAt": "2026-10-09T12:25:54.003Z",
+        "limitations": [
+          "Only the runner’s disposable production runtime/database are modified; the manual preview is untouched.",
+          "A seeded GitHub account proves UI binding state and production unlinking only. It is not evidence of real GitHub OAuth authorization, token exchange or GitHub login.",
+          "Held/lost delivery faults retain actual HTTP writes and reads; no successful server response is fabricated.",
+          "Callback publicUrl readback is verified here; external callback authorization and provider exchange remain separate verification."
+        ]
+      }
+    },
+    {
+      "stage": "account-390",
+      "status": "failed",
+      "runnerError": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (account-390.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/verify-browser.mjs:244:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/browser-stages.mjs:17:5)\n    at async runIdentityManagement (file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/browser-identity-management.mjs:30:25)\n    at async file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/verify-browser.mjs:938:26",
+      "originalReport": "test-results/browser-195-full/account-390.json",
+      "failureContext": {
+        "status": "failed",
+        "stage": "password-390",
+        "origin": "http://ariso-64362.localhost:64362",
+        "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ {\n+   message: 'Too many requests. Please try again later.'\n+ }\n- null\n\n    at verifyPasswordChanges (file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/e2e/account-password.mjs:264:12)\n    at async file:////[eval2]:94:19",
+        "finishedAt": "2026-10-09T12:27:32.414Z",
+        "limitations": [
+          "Only the runner’s disposable production runtime/database are modified; the manual preview is untouched.",
+          "Held/lost responses come from real writes. Transport injection does not invent successful server results.",
+          "Chromium viewport emulation does not constitute physical touch, soft keyboard or safe-area verification.",
+          "Separate HTTP Cookie sessions verify revocation; they do not constitute two browser contexts.",
+          "The current Ego capability probe can create an empty BrowserContext but rejects Target.createTarget; two navigable browser contexts remain unverified."
+        ]
+      }
+    },
+    {
+      "stage": "sharing-viewer",
+      "status": "failed",
+      "runnerError": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (sharing-viewer.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/verify-browser.mjs:244:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async runSharingPublic (file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/browser-sharing.mjs:90:7)\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/browser-stages.mjs:17:5)\n    at async file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/scripts/verify-browser.mjs:972:5",
+      "originalReport": "test-results/browser-195-full/sharing-viewer.json",
+      "failureContext": {
+        "status": "failed",
+        "phase": "full",
+        "stage": "viewer-interactions",
+        "error": "Error: page.waitForFunction timed out after 10000ms on page p1; last URL was \"http://sharing-50027.localhost:50027/s/[redacted]\"; last title was \"摄影手记 · 相册分享\".\n    at waitForFunctionTimeoutError (file:////[eval1]:19235:12)\n    at file:////[eval1]:18564:19\n    at async file:////[eval1]:16691:28",
+        "limitations": [
+          "Physical phones, software keyboards, nonzero safe area and Release containers are outside this browser run."
+        ]
+      }
+    }
+  ]
+}

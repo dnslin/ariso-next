@@ -628,10 +628,10 @@
 - 界面：`/forgot-password`、`/reset-password`，匿名可达；库verification和发送结果驱动。申请 桌面 [11:23](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=11-23)、手机 [102:3100](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-3100)；重置 桌面 [172:749](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=172-749)、手机 [172:750](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=172-750)；匿名找回未配置 桌面 [216:2363](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=216-2363)、手机 [216:2419](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=216-2419)。HeroUI：TextField/Input、Button、Link、Tooltip/Popover、Spinner；申请中保留表单、禁用字段与主操作，18px Lucide Send 图标播放一次240ms发送反馈；减少动态效果时静止，结果由真实请求驱动。通用申请反馈的有效期/单次使用说明收进标题旁44px Tips。采用公共双柔光/返回首页和返回登录，短屏保持滚动，不自制密码字段。失效/消费后结果及邮件申请状态见下方DG-RESET核对，不以定时跳转代替请求。
 - 需求：`R-6.3-01`、`R-6.3-02`、`A-26.1-09`、`A-26.1-10`、`R-22.1-01`、`R-22.4-01`
 - 实施步骤：
-  - [ ] 1. 找回申请及真实邮件落地：错误和限流可验证。
-  - [ ] 2. 一次令牌重置及恢复界面：过期/重复/并发使用和会话失效。
+  - [x] 1. 找回申请及真实邮件落地：错误和限流可验证。
+  - [x] 2. 一次令牌重置及恢复界面：过期/重复/并发使用和会话失效。
 
-- 实施记录：[Issue #184 生产实现、功能与设计审计和实际验证](../verification/identity-184/README.md)。已接入原生申请/一次消费、真实 SMTP 结果与匿名界面；完成状态、未验证项和草稿 PR 以该记录为准。UI 人工验收未完成前保留验收步骤，不以代码审计或截图替代。
+- 实施记录：[Issue #184 生产实现、功能与设计审计和实际验证](../verification/identity-184/README.md)。已接入原生申请/一次消费、真实 SMTP 结果与匿名界面；完成状态、未验证项和草稿 PR 以该记录为准。2026-10-10 所有者已确认 UI 人工验收并授权 #275/#276 合并与清理；交汇验证与保留的历史未验证项见同一记录，不以合并替代检查通过。
 
 #### DG-RESET 对 T-ID-07 的核对结论
 

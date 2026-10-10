@@ -48,6 +48,8 @@ async function run(args: string[]) {
     dataDirectory?: string;
     passwordResetPhase?: string;
     hasPasswordResetFixture?: boolean;
+    spaceId?: number;
+    pageLabel?: string;
   }[] = (await readFile(traceFile, 'utf8'))
     .trim()
     .split('\n')
@@ -79,6 +81,10 @@ describe('actual business CLI connections without external services', () => {
     const plannedScripts = plan.stages.map(
       ([script]: string[]) => `${script}.mjs`,
     );
+    expect(events.filter((event) => event.kind === 'branding')).toEqual([
+      { kind: 'branding', spaceId: 8, pageLabel: 'p1' },
+    ]);
+    expect(report.stages.branding.status).toBe('passed');
     expect(scripts.filter((script) => plannedScripts.includes(script))).toEqual(
       plannedScripts,
     );
@@ -104,6 +110,13 @@ describe('actual business CLI connections without external services', () => {
         (name) => name.startsWith('upload') && name.endsWith('-runtime'),
       ),
     ).toEqual(['upload-runtime', 'upload-polling-runtime']);
+  });
+
+  it('executes focused branding without starting generic fixtures', async () => {
+    const { events, report } = await run(['--suite', 'branding']);
+    expect(events).toEqual([{ kind: 'branding', spaceId: 8, pageLabel: 'p1' }]);
+    expect(report.suite).toBe('branding');
+    expect(report.stages).toBeUndefined();
   });
 
   it.each([

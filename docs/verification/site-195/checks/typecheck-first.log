@@ -1,0 +1,16 @@
+Already up to date
+Done in 200ms using pnpm v11.19.0
+$ next typegen && tsc --noEmit --project tsconfig.json && tsc --noEmit --project tsconfig.runtime.json
+Generating route types...
+✓ Types generated successfully
+src/server/site/branding-http.ts(55,31): error TS18047: 'asset' is possibly 'null'.
+src/server/site/branding-http.ts(55,49): error TS18047: 'asset' is possibly 'null'.
+tests/unit/site/settings-editor.test.ts(90,7): error TS2322: Type '{ id: number; name: string; description: string; publicUrl: string; timeZone: string; logoKey: null; logoMime: null; faviconKey: null; faviconMime: null; updatedAt: string; githubCallbackUrl: string; }' is not assignable to type 'SiteSettingsResponse'.
+  Type '{ id: number; name: string; description: string; publicUrl: string; timeZone: string; logoKey: null; logoMime: null; faviconKey: null; faviconMime: null; updatedAt: string; githubCallbackUrl: string; }' is missing the following properties from type '{ updatedAt: string; githubCallbackUrl: string; logoUrl: string | null; faviconUrl: string | null; }': logoUrl, faviconUrl
+tests/unit/site/settings-expired.test.ts(58,7): error TS2322: Type '{ id: number; name: string; description: string; publicUrl: string; timeZone: string; logoKey: null; logoMime: null; faviconKey: null; faviconMime: null; updatedAt: string; githubCallbackUrl: string; }' is not assignable to type 'SiteSettingsResponse'.
+  Type '{ id: number; name: string; description: string; publicUrl: string; timeZone: string; logoKey: null; logoMime: null; faviconKey: null; faviconMime: null; updatedAt: string; githubCallbackUrl: string; }' is missing the following properties from type '{ updatedAt: string; githubCallbackUrl: string; logoUrl: string | null; faviconUrl: string | null; }': logoUrl, faviconUrl
+tests/unit/site/settings-initial-load.test.ts(181,7): error TS2322: Type '{ id: number; name: string; description: string; publicUrl: string; timeZone: string; logoKey: null; logoMime: null; faviconKey: null; faviconMime: null; updatedAt: string; githubCallbackUrl: string; }' is not assignable to type 'SiteSettingsResponse'.
+  Type '{ id: number; name: string; description: string; publicUrl: string; timeZone: string; logoKey: null; logoMime: null; faviconKey: null; faviconMime: null; updatedAt: string; githubCallbackUrl: string; }' is missing the following properties from type '{ updatedAt: string; githubCallbackUrl: string; logoUrl: string | null; faviconUrl: string | null; }': logoUrl, faviconUrl
+tests/unit/site/settings-model.test.ts(7,7): error TS2322: Type '{ id: number; name: string; description: string; publicUrl: string; timeZone: string; logoKey: null; logoMime: null; faviconKey: null; faviconMime: null; updatedAt: string; githubCallbackUrl: string; }' is not assignable to type 'SiteSettingsResponse'.
+  Type '{ id: number; name: string; description: string; publicUrl: string; timeZone: string; logoKey: null; logoMime: null; faviconKey: null; faviconMime: null; updatedAt: string; githubCallbackUrl: string; }' is missing the following properties from type '{ updatedAt: string; githubCallbackUrl: string; logoUrl: string | null; faviconUrl: string | null; }': logoUrl, faviconUrl
+[ELIFECYCLE] Command failed with exit code 2.

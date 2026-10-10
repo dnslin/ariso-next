@@ -10,6 +10,7 @@
 | [DG-SMTP 适用核对](../tasks/evidence/DG-SMTP/README.md)           | 保存/测试独立、秘密与Tips的两端状态、具体缺口和T-ID-06责任；不代替真实发送及界面验收  |
 | [DG-ANALYTICS 适用核对](../tasks/evidence/DG-ANALYTICS/README.md) | 工作台/统计两端状态、单图/排行/异常导航缺口与T-ANA-05责任；不代替真实界面验收         |
 | [DG-RESET 适用核对](../tasks/evidence/DG-RESET/README.md)         | 邮件落地、失效/消费中断与CLI恢复的两端状态及T-ID-07责任；不代替生产恢复和真实界面验收 |
+| [DG-THEME 适用核对](../tasks/evidence/DG-THEME/README.md)         | 三偏好、六类浅深代表、语义映射及错误对比缺口交接T-SITE-05；不代替全站主题验收         |
 | [历史设计记录](../archive/preparation-2026-09/design/README.md)   | 早期稿、逐批节点表、原始检查记录；用于追溯，不作为当前进度                            |
 
 原型表达视觉和预设交互，不能证明业务已实现。功能范围以 [PRD](../product/Ariso-PRD-v1.1.md) 与 [业务规格](../product/CAPABILITY-MAP.md) 为准；旧稿中的演示数据、旧布局和“下一批”不覆盖当前规则。

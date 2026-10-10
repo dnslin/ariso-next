@@ -20,6 +20,23 @@ describe('focused browser execution plans', () => {
         }),
       ).toThrow();
   });
+  it('keeps production branding independent of unrelated phase and fixture options', () => {
+    expect(select('branding')).toEqual({ stages: [], config: {} });
+    expect(selectBrowserPlan({ suite: 'branding', pageLabel: 'p2' })).toEqual({
+      stages: [],
+      config: {},
+    });
+    expect(() => select('branding', 'representative')).toThrow('--only');
+    for (const field of ['storageConfig', 'previewConfig'])
+      expect(() =>
+        selectBrowserPlan({
+          suite: 'branding',
+          pageLabel: 'p1',
+          [field]: 'unused.json',
+        }),
+      ).toThrow();
+  });
+
   it('provides storage-cors as a complete focused stage on its primary page', () => {
     expect(select('storage-cors')).toEqual({
       stages: [['storage-cors', 'storageCors']],
@@ -61,6 +78,7 @@ describe('focused browser execution plans', () => {
     ['account', ['account']],
     ['oauth', []],
     ['brand-experiment', []],
+    ['branding', []],
     ['smtp', ['smtp']],
     ['password-reset', ['password-reset']],
     ['tokens', ['tokens']],
@@ -117,6 +135,7 @@ describe('focused browser execution plans', () => {
     ['password-reset', 'representative', ['password-reset']],
     ['password-reset', 'interactions', ['password-reset']],
     ['password-reset', 'recovery', ['password-reset']],
+    ['smtp', 'focus', ['smtp']],
 
     ['sharing-management', 'representative', ['sharing-management']],
     ['sharing-management', 'behavior', ['sharing-management']],
@@ -158,6 +177,7 @@ describe('focused browser execution plans', () => {
     ],
     ['password-reset', 'interactions', { passwordResetPhase: 'interactions' }],
     ['password-reset', 'recovery', { passwordResetPhase: 'recovery' }],
+    ['smtp', 'focus', { smtpPhase: 'focus' }],
     ['tokens', 'recovery', { tokensPhase: 'recovery' }],
     ['tokens', 'lifecycle', { tokensPhase: 'lifecycle' }],
     ['tokens', 'create-recovery', { tokensPhase: 'create-recovery' }],

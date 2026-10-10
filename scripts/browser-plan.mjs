@@ -28,6 +28,7 @@ const suites = {
     ],
   },
   'brand-experiment': {},
+  branding: {},
   'sharing-experiment': {},
   'sharing-protocol': {},
   'sharing-public': {
@@ -56,7 +57,7 @@ const suites = {
     config: (only) => ({ passwordResetPhase: only }),
   },
   smtp: {
-    only: ['representative', 'interactions', 'recovery'],
+    only: ['representative', 'interactions', 'recovery', 'focus'],
     stages: [['smtp', 'smtp']],
     config: (only) => ({ smtpPhase: only }),
   },

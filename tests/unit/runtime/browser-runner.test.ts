@@ -19,6 +19,7 @@ describe('browser runner argument boundaries', () => {
   const combinations = [
     ['full'],
     ['brand-experiment'],
+    ['branding'],
     ['viewer'],
     ['viewer', 'representative'],
     ['viewer', 'behavior'],
@@ -248,6 +249,31 @@ describe('browser runner argument boundaries', () => {
     expect(result.stderr).toContain(error);
   });
 
+  it.each([
+    [
+      '--only',
+      'representative',
+      '--only requires an applicable targeted suite',
+    ],
+    [
+      '--storage-config',
+      'unused.json',
+      '--storage-config applies only to storage-admin live',
+    ],
+    [
+      '--preview-config',
+      'unused.json',
+      '--preview-config applies only to storage-admin feedback',
+    ],
+  ])(
+    'rejects unrelated production branding parameter %s',
+    (option, value, error) => {
+      const result = parse(['--suite', 'branding', option, value]);
+      expect(result.status).not.toBe(0);
+      expect(result.stderr).toContain(error);
+    },
+  );
+
   it.each(['representative', 'behavior', 'race', 'recovery'])(
     'limits sharing-public phase %s to its own suite',
     (only) => {
@@ -349,7 +375,12 @@ describe('browser runner argument boundaries', () => {
     );
   });
 
-  it.each(['sharing-experiment', 'sharing-protocol', 'sharing-public'])(
+  it.each([
+    'sharing-experiment',
+    'sharing-protocol',
+    'sharing-public',
+    'branding',
+  ])(
     'requires an existing space for %s without starting unrelated production fixtures',
     (suite) => {
       const output = mkdtempSync(join(tmpdir(), 'sharing-runner-'));

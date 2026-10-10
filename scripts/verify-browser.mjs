@@ -20,6 +20,7 @@ import { runOAuthManagement } from './browser-oauth.mjs';
 import { runBusinessBrowserStage } from './browser-business.mjs';
 import { createSharingRunner } from './browser-sharing.mjs';
 import { runBrandBrowser } from './browser-brand.mjs';
+import { runBrandingBrowser } from './browser-branding.mjs';
 import { startSmtpBrowserFixture } from '../e2e/smtp-fixture.mjs';
 import { startPasswordResetBrowserFixture } from '../e2e/password-reset-fixture.mjs';
 
@@ -54,6 +55,10 @@ for (const name of [
   'brand-experiment.json',
   'brand-image.png',
   'brand-download.svg',
+  'branding.json',
+  'branding-image.png',
+  'branding-download.svg',
+  'branding-server.log',
   'shell-browser.json',
   'shell-navigation.json',
   'error-recovery.json',
@@ -211,6 +216,9 @@ const interrupt = () =>
 process.once('SIGINT', interrupt);
 process.once('SIGTERM', interrupt);
 async function runBrowser(script, browserConfig, logName) {
+  if (browserConfig.setupCode) secrets.push(browserConfig.setupCode);
+  if (browserConfig.credentials?.password)
+    secrets.push(browserConfig.credentials.password);
   const source = await readFile(new URL(script, import.meta.url), 'utf8');
   controller.signal.throwIfAborted();
   browser = spawn('ego-browser', ['nodejs'], {
@@ -291,7 +299,7 @@ const check = (name, operation, dependencies = []) => {
   );
 };
 
-if (suite === 'brand-experiment') {
+if (suite === 'brand-experiment' || suite === 'branding') {
   try {
     const spaceId = Number(process.env.EGO_TASK_SPACE);
     assert.ok(
@@ -299,7 +307,8 @@ if (suite === 'brand-experiment') {
       'Existing Ego space required',
     );
     report.taskSpaceId = spaceId;
-    await runBrandBrowser({
+    const run = suite === 'branding' ? runBrandingBrowser : runBrandBrowser;
+    await run({
       spaceId,
       pageLabel,
       output,
@@ -798,6 +807,15 @@ try {
     }
     await check('brand-experiment', () =>
       runBrandBrowser({
+        spaceId: report.taskSpaceId,
+        pageLabel,
+        output,
+        runBrowser,
+        signal: controller.signal,
+      }),
+    );
+    await check('branding', () =>
+      runBrandingBrowser({
         spaceId: report.taskSpaceId,
         pageLabel,
         output,

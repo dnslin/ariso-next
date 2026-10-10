@@ -82,11 +82,7 @@ export function useOwnerSession(returnTo: string, onExpire?: () => void) {
         body: '{}',
       });
       if (!response.ok) throw new Error(`退出失败（HTTP ${response.status}）`);
-      const session = await fetch('/api/auth/get-session', {
-        cache: 'no-store',
-      });
-      if (!session.ok || (await session.json()) !== null)
-        throw new Error('尚未确认会话已退出');
+      // The protected sign-out handler confirms revocation before returning 200.
       resetUpload();
       window.location.replace(destination);
     } catch (error) {
