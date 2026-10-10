@@ -241,6 +241,44 @@ it.each([false, true])(
   },
 );
 
+it('restores configuration focus after readback commits its replacement action', async () => {
+  const focus = vi.fn();
+  let actionCommitted = false;
+  vi.stubGlobal('document', {
+    querySelector: vi.fn(() => (actionCommitted ? { focus } : null)),
+  });
+  const frames: FrameRequestCallback[] = [];
+  vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
+    frames.push(callback);
+    return frames.length;
+  });
+  const settings = query({ effective: { enabled: false } });
+  const result = deferred<{ isError: boolean }>();
+  settings.value.refetch.mockImplementation(() => result.promise);
+  const account = {
+    settings: settings.value,
+    binding: query(null).value,
+  } as unknown as ReturnType<typeof useGithubAccount>;
+  const page = mount(() => useGithubAccountView(account));
+  page.render().settingsUncertain();
+  const checking = page.render().checkSettings();
+  settings.value.isFetching = true;
+  page.render();
+  result.resolve({ isError: false });
+  await checking;
+  // A successful refetch promise may precede the observer's committed view.
+  for (const frame of frames.splice(0)) frame(0);
+  expect(focus).not.toHaveBeenCalled();
+  expect(page.render().settingsReady).toBe(false);
+  settings.value.isFetching = false;
+  actionCommitted = true;
+  expect(page.render().settingsReady).toBe(true);
+  for (const frame of frames.splice(0)) frame(0);
+  expect(focus).toHaveBeenCalledExactlyOnceWith({ preventScroll: true });
+  page.render();
+  expect(focus).toHaveBeenCalledTimes(1);
+});
+
 it('closes only its previous copy notification before a denied retry exposes manual copying', async () => {
   const writeText = vi
     .fn()

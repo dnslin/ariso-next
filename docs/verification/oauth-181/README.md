@@ -1,5 +1,7 @@
 # Issue #181 GitHub 配置、主动绑定与登录
 
+2026-10-10，默认浏览器失败后的独立返修修正配置核对回焦与成功退出重复读取，统一证据见[本轮记录](../browser-product-regressions/README.md)。定向单元、退出 HTTP 契约和独立代码审计已完成；本轮真实浏览器、真实页面设计对照及人工验收保持未完成，不改写下方历史结果。
+
 本记录对应 [T-ID-05](../../tasks/m3-m4-platform.md#t-id-05-github-配置主动绑定与登录)、SPEC-identity §7 和 ID-08/09/14/15。实施及验收边界遵守[任务执行与验证约定](../../tasks/execution.md)和[设计交付规范](../../design/handoff.md)。
 
 ## 范围与当前状态

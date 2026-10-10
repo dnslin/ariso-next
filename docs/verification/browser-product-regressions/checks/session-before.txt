@@ -1,0 +1,53 @@
+Already up to date
+Done in 31ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/browser-product-regressions/ariso
+
+ ❯ |unit| tests/unit/identity/session-controls.test.ts (3 tests | 3 failed) 13ms
+   × completes a server-confirmed logout without a second rate-limited session read 11ms
+   × retains the page after a failed logout and permits an explicit retry 1ms
+   × does not let a background null session override a pending explicit logout 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/identity/session-controls.test.ts > completes a server-confirmed logout without a second rate-limited session read
+AssertionError: expected "vi.fn()" to be called 1 times, but got 0 times
+ ❯ tests/unit/identity/session-controls.test.ts:92:24
+     90|   const destination = '/login?reason=signed-out&returnTo=%2Fsettings%2…
+     91|   await render().signOut(destination);
+     92|   expect(upload.reset).toHaveBeenCalledTimes(1);
+       |                        ^
+     93|   expect(replace).toHaveBeenCalledExactlyOnceWith(destination);
+     94|   expect(fetcher).toHaveBeenCalledTimes(1);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  |unit| tests/unit/identity/session-controls.test.ts > retains the page after a failed logout and permits an explicit retry
+AssertionError: expected "vi.fn()" to be called 1 times, but got 0 times
+ ❯ tests/unit/identity/session-controls.test.ts:109:24
+    107|   expect(replace).not.toHaveBeenCalled();
+    108|   await render().signOut();
+    109|   expect(upload.reset).toHaveBeenCalledTimes(1);
+       |                        ^
+    110|   expect(replace).toHaveBeenCalledExactlyOnceWith('/login?reason=signe…
+    111|   expect(fetcher).toHaveBeenCalledTimes(2);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  |unit| tests/unit/identity/session-controls.test.ts > does not let a background null session override a pending explicit logout
+AssertionError: expected "vi.fn()" to be called 1 times, but got 0 times
+ ❯ tests/unit/identity/session-controls.test.ts:136:24
+    134|   logout.resolve(Response.json({ success: true }));
+    135|   await signingOut;
+    136|   expect(upload.reset).toHaveBeenCalledTimes(1);
+       |                        ^
+    137|   expect(replace).toHaveBeenCalledExactlyOnceWith('/login?reason=signe…
+    138|   expect(fetcher).toHaveBeenCalledTimes(2);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed (3)
+   Start at  09:01:41
+   Duration  95ms (transform 47%, tests 28%, import 22%, worker 3%)

@@ -1,0 +1,19 @@
+Command: pnpm exec vitest run --project unit tests/unit/identity/github-navigation-restore.test.ts -t 'restores configuration focus after readback commits'
+Node: 24.18.1; pnpm: 11.19.0
+Captured from actual tool output, 2026-10-10 08:58:27 local runner time.
+
+FAIL |unit| tests/unit/identity/github-navigation-restore.test.ts > restores configuration focus after readback commits its replacement action
+AssertionError: expected "vi.fn()" to be called once with arguments: [ { preventScroll: true } ]
+Number of calls: 0
+At tests/unit/identity/github-navigation-restore.test.ts:277:17
+
+Test Files 1 failed (1)
+Tests 1 failed | 15 skipped (16)
+Duration 747ms
+
+The selected regression retained hook state and represented the supported ordering:
+1. refetch succeeds while the subscribed render still reports isFetching=true;
+2. requestAnimationFrame runs before the replacement configuration action commits;
+3. the observer render commits isFetching=false and the enabled action;
+4. the original implementation never restores focus after that commit.
+This controlled hook test is not proof that the earlier full browser failure used precisely this timing.

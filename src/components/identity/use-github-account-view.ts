@@ -29,6 +29,7 @@ export function useGithubAccountView(
   const settingsUnknown = settingsResult === 'unknown';
   const parameters = useSearchParams();
   const notified = useRef(false);
+  const pendingSettingsFocus = useRef(false);
   const settingsLoading = !settings.isFetchedAfterMount || settings.isFetching;
   const bindingLoading = !binding.isFetchedAfterMount || binding.isFetching;
   const settingsReady =
@@ -43,6 +44,14 @@ export function useGithubAccountView(
     !!settings.data?.effective.enabled &&
     bindingReady &&
     !bound;
+
+  useEffect(() => {
+    if (!pendingSettingsFocus.current || !settingsReady) return;
+    pendingSettingsFocus.current = false;
+    document
+      .querySelector<HTMLElement>('[data-testid="account-github-config"]')
+      ?.focus({ preventScroll: true });
+  }, [settingsReady, settingsResult]);
 
   useEffect(() => {
     if (
@@ -91,13 +100,9 @@ export function useGithubAccountView(
     if (settings.isFetching) return;
     const current = await settings.refetch();
     if (current.isError) return;
+    pendingSettingsFocus.current = true;
     setSettingsResult('verified');
     notify('已核对当前配置');
-    requestAnimationFrame(() =>
-      document
-        .querySelector<HTMLElement>('[data-testid="account-github-config"]')
-        ?.focus({ preventScroll: true }),
-    );
   }
   async function checkBinding() {
     if (binding.isFetching) return;

@@ -1,0 +1,20 @@
+Captured command output before the product fix, 2026-10-10 08:59:54:
+pnpm exec vitest run --project unit tests/unit/identity/smtp-focus.test.ts
+Node 24.18.1 / pnpm 11.19.0
+
+RUN v5.0.0 /Users/dnslin/.codex/worktrees/browser-product-regressions/ariso
+tests/unit/identity/smtp-focus.test.ts (2 tests | 1 failed)
+FAIL does not let an old save-completion frame steal the next test action focus
+AssertionError: expected { disabled: false, …(1) } to be { disabled: false, …(1) } // Object.is equality
+Compared values have no visual difference.
+tests/unit/identity/smtp-focus.test.ts:163:34
+expect(page.dom.activeElement).toBe(page.test);
+Test Files 1 failed (1)
+Tests 1 failed | 1 passed (2)
+Duration 167ms
+
+This output was preserved from the execution tool result after the run. The
+initial two-test harness had no element IDs in its assertion display. The wrong
+object was the SMTP heading fallback; the deferred completion frame replaced
+the subsequently focused test action. This is a modeled commit/frame unit
+regression, not real-browser evidence.

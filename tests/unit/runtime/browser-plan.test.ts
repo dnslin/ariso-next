@@ -131,6 +131,7 @@ describe('focused browser execution plans', () => {
     ['smtp', 'representative', ['smtp']],
     ['smtp', 'interactions', ['smtp']],
     ['smtp', 'recovery', ['smtp']],
+    ['smtp', 'focus', ['smtp']],
 
     ['sharing-management', 'representative', ['sharing-management']],
     ['sharing-management', 'behavior', ['sharing-management']],
@@ -165,6 +166,7 @@ describe('focused browser execution plans', () => {
     ['smtp', 'representative', { smtpPhase: 'representative' }],
     ['smtp', 'interactions', { smtpPhase: 'interactions' }],
     ['smtp', 'recovery', { smtpPhase: 'recovery' }],
+    ['smtp', 'focus', { smtpPhase: 'focus' }],
     ['tokens', 'recovery', { tokensPhase: 'recovery' }],
     ['tokens', 'lifecycle', { tokensPhase: 'lifecycle' }],
     ['tokens', 'create-recovery', { tokensPhase: 'create-recovery' }],

@@ -51,7 +51,7 @@ const suites = {
   account: { stages: [['account', 'account']] },
   oauth: {},
   smtp: {
-    only: ['representative', 'interactions', 'recovery'],
+    only: ['representative', 'interactions', 'recovery', 'focus'],
     stages: [['smtp', 'smtp']],
     config: (only) => ({ smtpPhase: only }),
   },
