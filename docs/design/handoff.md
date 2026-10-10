@@ -48,11 +48,12 @@
 | secondary          | oklch(0.959 0.02 193.005)  | #253D40 |
 | accent             | oklch(0.899 0.047 196.339) | #607D85 |
 | destructive        | oklch(0.6 0.2 25)          | #FF858A |
+| error-foreground   | oklch(0.58 0.2 25)         | #FF858A |
 | surface            | 当前 Figma Light 变量      | #22252F |
 | primary-foreground | 当前 Figma Light 变量      | #272343 |
 | focus-ring         | 当前 Figma Light 变量      | #82DBD3 |
 
-Ariso 变量集合为 `VariableCollectionId:2:2`，Light 为 `2:0`，Dark 为 `264:0`，现有11个颜色变量；2026-10-04同步产品已有 `--ariso-current` 为 `navigation-current`，浅色#FFF7C2、深色#494222，不改变既定导航颜色。Figma 默认 Light 是画布设置；产品默认跟随系统。界面偏好只属于当前浏览器 origin，支持浅色、深色和跟随系统，不写站点数据库，也不随站点信息保存提交。照片不反色，深色主按钮继续使用深色 `primary-foreground`，卡片和弹窗使用 `surface`。
+Ariso 变量集合为 `VariableCollectionId:2:2`，Light 为 `2:0`，Dark 为 `264:0`；2026-10-04同步产品已有 `--ariso-current` 为 `navigation-current`，浅色#FFF7C2、深色#494222，不改变既定导航颜色。2026-10-10 用户审阅局部原型后批准仅加深浅色错误正文，新增 `error-foreground`（`--ariso-error-text`）并同步错误正文节点 `266:1574/266:3471`；保留12px字号、布局、错误边框、操作按钮和深色颜色。[批准及回读证据](../verification/theme-197/README.md)统一维护。Figma 默认 Light 是画布设置；产品默认跟随系统。界面偏好只属于当前浏览器 origin，支持浅色、深色和跟随系统，不写站点数据库，也不随站点信息保存提交。照片不反色，深色主按钮继续使用深色 `primary-foreground`，卡片和弹窗使用 `surface`。
 
 ## 公共界面复用与占位退出
 

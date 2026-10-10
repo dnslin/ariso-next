@@ -696,6 +696,8 @@ Issue #194 已按用户批准的第二版紧凑关联行实施真实基本设置
 
 #### DG-THEME 对 T-SITE-05 的核对结论
 
+2026-10-10，#197 已按最新 main 实施生产主题入口与浏览器三偏好，#57/#139 原生前置均已回读为 CLOSED。局部浅色错误正文原型已获用户批准并同步两端 Figma；[实施、验证与独立评审](../verification/theme-197/README.md)分别记录实际状态。最终浏览器证据、设计评审及人工验收按该记录收齐，不由代码完成替代；DES-05/RG-07与T-QA-02保持开放。以下2026-10-09结论保留为实施前依据。
+
 2026-10-09，Issue #139 的纯文档核对；[统一证据](./evidence/DG-THEME/README.md)保留实时设计、源码及库类型依据。需求仍为 `R-21.3-01`，不改写 PRD 或 site 数据契约。GitHub 原生依赖核对：#139 无前置，仅阻塞本任务 #197；另一前置 #57/T-UI-01 已关闭。#139 本轮尚未合并/关闭，不能将本条当作 #197 已解锁或已完成。
 
 - **实际基础与复用边界**：`src/app/layout.tsx` → `src/components/shell/providers.tsx` 已有统一 `ThemeProvider attribute="class" defaultTheme="system" enableSystem`，`globals.css` 已接 HeroUI 浅深颜色；`related-settings.tsx` 的“界面主题”仍是“后续独立设置”，生产 `src` 尚无 `useTheme/setTheme` 入口。复用 OwnerShell、PublicShell、SettingsCategories/RelatedSetting 与 HeroUI Modal、RadioGroup、Button/CloseButton；Select 用于既有手机设置分类，不为三模式增加层层选择。当前安装 next-themes 0.4.6、HeroUI 3.2.6，其文档/类型已有选择、挂载后确定值、系统监听、跨标签同步和弹窗组合能力，不新增主题状态框架或媒体查询监听器。

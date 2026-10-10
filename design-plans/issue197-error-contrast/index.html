@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="zh-CN">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>浅色错误文字对比修正 · Issue 197</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      padding: 32px 16px;
+      background: #fffffe;
+      color: #272343;
+      font:
+        14px/1.6 'Noto Sans SC',
+        sans-serif;
+    }
+    main {
+      max-width: 900px;
+      margin: auto;
+    }
+    h1 {
+      font-size: 24px;
+      margin: 0 0 12px;
+    }
+    p {
+      margin: 8px 0 24px;
+      color: #2d334a;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    section {
+      border: 1px solid #bae8e8;
+      border-radius: 16px;
+      padding: 24px;
+    }
+    h2 {
+      font-size: 18px;
+      margin: 0 0 24px;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+    }
+    input {
+      width: 100%;
+      height: 48px;
+      border: 1px solid oklch(0.6 0.2 25);
+      border-radius: 8px;
+      padding: 12px;
+      background: #fffffe;
+      color: #272343;
+      font: inherit;
+    }
+    .error {
+      font-size: 12px;
+      margin-top: 8px;
+      color: oklch(0.6 0.2 25);
+    }
+    .proposed .error {
+      color: oklch(0.58 0.2 25);
+    }
+    button {
+      margin-top: 24px;
+      min-height: 44px;
+      border: 0;
+      border-radius: 8px;
+      padding: 0 20px;
+      background: #ffd807;
+      color: #272343;
+      font: inherit;
+    }
+    .ratio {
+      font-size: 13px;
+      margin: 24px 0 0;
+    }
+    .dark {
+      background: #22252f;
+      color: #f4f1f8;
+    }
+    .dark input {
+      background: #22252f;
+      color: #f4f1f8;
+      border-color: #ff858a;
+    }
+    .dark .error {
+      color: #ff858a;
+    }
+    @media (max-width: 640px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+      section {
+        padding: 24px;
+      }
+      h1 {
+        font-size: 20px;
+      }
+    }
+  </style>
+  <main>
+    <h1>浅色错误文字：只加深文字，保留错误边框</h1>
+    <p>
+      推荐把浅色错误正文从 OKLCH 0.60 调为
+      0.58。字号、间距、布局与错误边框保持原设计，深色继续使用现有
+      #FF858A。此页仅为局部视觉原型。
+    </p>
+    <div class="grid">
+      <section>
+        <h2>现有设计</h2>
+        <label for="before">站点公开地址</label
+        ><input
+          id="before"
+          value="images.example.com"
+          aria-invalid="true"
+          aria-describedby="before-error"
+        />
+        <div class="error" id="before-error">请输入完整的 HTTP(S) 根地址</div>
+        <div class="ratio">12px 错误文字 · 对比约 4.36:1</div>
+        <button type="button">保存站点信息</button>
+      </section>
+      <section class="proposed">
+        <h2>推荐修正</h2>
+        <label for="after">站点公开地址</label
+        ><input
+          id="after"
+          value="images.example.com"
+          aria-invalid="true"
+          aria-describedby="after-error"
+        />
+        <div class="error" id="after-error">请输入完整的 HTTP(S) 根地址</div>
+        <div class="ratio">12px 错误文字 · 目标对比 ≥4.5:1</div>
+        <button type="button">保存站点信息</button>
+      </section>
+      <section class="dark">
+        <h2>深色沿用</h2>
+        <label for="dark">站点公开地址</label
+        ><input
+          id="dark"
+          value="images.example.com"
+          aria-invalid="true"
+          aria-describedby="dark-error"
+        />
+        <div class="error" id="dark-error">请输入完整的 HTTP(S) 根地址</div>
+        <div class="ratio">深色错误文字和边框不变</div>
+      </section>
+    </div>
+  </main>
+</html>

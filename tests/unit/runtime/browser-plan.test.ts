@@ -6,6 +6,31 @@ function select(suite: string, only?: string) {
 }
 
 describe('focused browser execution plans', () => {
+  it('runs the real theme suite in full and scopes phase options to theme', () => {
+    expect(select('full').stages).toContainEqual(['theme', 'theme']);
+    expect(select('theme')).toEqual({
+      stages: [['theme', 'theme']],
+      config: { themePhase: undefined },
+    });
+    for (const phase of ['representative', 'behavior', 'consumers'])
+      expect(select('theme', phase)).toEqual({
+        stages: [['theme', 'theme']],
+        config: { themePhase: phase },
+      });
+    expect(select('full').config).not.toHaveProperty('themePhase');
+    for (const suite of ['site-general', 'analytics', 'smtp', 'account'])
+      expect(select(suite).config).not.toHaveProperty('themePhase');
+    expect(() => select('theme', 'recovery')).toThrow('--only');
+    for (const field of ['storageConfig', 'previewConfig'])
+      expect(() =>
+        selectBrowserPlan({
+          suite: 'theme',
+          pageLabel: 'p2',
+          [field]: 'unused.json',
+        }),
+      ).toThrow();
+  });
+
   it('keeps the brand experiment isolated from unrelated phase and fixture arguments', () => {
     expect(select('brand-experiment')).toEqual({ stages: [], config: {} });
     expect(() => select('brand-experiment', 'representative')).toThrow(
@@ -124,6 +149,7 @@ describe('focused browser execution plans', () => {
     ['shell-navigation', ['shell-navigation']],
     ['sharing-management', ['sharing-management']],
     ['site-general', ['site-general']],
+    ['theme', ['theme']],
     ['analytics', ['analytics']],
     ['albums', ['albums']],
     ['album-cover', ['album-cover']],
@@ -392,6 +418,7 @@ describe('focused browser execution plans', () => {
         ['sharing-management', 'sharing-management'],
         ['site-general', 'site-general'],
         ['analytics', 'analytics'],
+        ['theme', 'theme'],
 
         ['password-reset', 'password-reset'],
         ['smtp', 'smtp'],

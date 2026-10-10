@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { Link } from '@heroui/react/link';
 import { ArrowLeft } from 'lucide-react';
+import { ThemeSelector } from '../site/theme-selector';
 
 export function PublicShell({
   children,
@@ -14,6 +15,9 @@ export function PublicShell({
   return (
     <div className="public-shell">
       <div className="public-decoration" aria-hidden="true" />
+      <div className="absolute top-4 right-4 z-10">
+        <ThemeSelector />
+      </div>
       {!home ? (
         <header className="public-header">
           <Link href="/" className="gap-1 text-sm">

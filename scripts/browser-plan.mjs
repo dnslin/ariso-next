@@ -24,6 +24,7 @@ const suites = {
       ['sharing-management', 'sharing-management'],
       ['site-general', 'site-general'],
       ['analytics', 'analytics'],
+      ['theme', 'theme'],
 
       ['password-reset', 'password-reset'],
       ['smtp', 'smtp'],
@@ -62,6 +63,11 @@ const suites = {
     ],
     stages: [['analytics', 'analytics']],
     config: (only) => ({ analyticsPhase: only }),
+  },
+  theme: {
+    only: ['representative', 'behavior', 'consumers'],
+    stages: [['theme', 'theme']],
+    config: (only) => ({ themePhase: only }),
   },
   account: { stages: [['account', 'account']] },
   'identity-session': {
