@@ -30,7 +30,7 @@ export function AnalyticsCard({
   children,
   testId,
 }: {
-  title: string;
+  title: ReactNode;
   children: ReactNode;
   testId?: string;
 }) {

@@ -230,8 +230,14 @@ describe('analytics presentation from real report fields', () => {
     };
     const pending = html(UsageContent, { data, timeZone: 'Asia/Shanghai' });
     expect(pending).toContain('已停用');
-    expect(pending).toContain('另有 3 个对象待核对');
-    expect(pending).toContain('总占用尚未确认，不绘完整比例');
+    expect(pending).toContain('3 个对象待核对');
+    expect(pending).toContain('总量待确认');
+    expect(pending).toContain('chip--warning');
+    expect(pending).toContain('chip--default');
+    expect(pending).toContain('bg-foreground/8 text-muted');
+    expect(pending).not.toContain('总占用尚未确认，不绘完整比例');
+    expect(pending).not.toContain('停用不会清零');
+    expect(pending).not.toContain('受理永久删除后仍占空间');
     expect(pending).not.toContain('data-testid="usage-composition"');
     expect(pending).toContain('尚无完整的最后确认时间');
     const confirmed = html(UsageContent, {
@@ -250,4 +256,57 @@ describe('analytics presentation from real report fields', () => {
     expect(confirmed).toContain('data-testid="usage-composition"');
     expect(confirmed).toContain('512 B');
   });
+  it.each([true, false])(
+    'keeps composition completeness independent of enabled=%s',
+    (enabled) => {
+      const storage: AnalyticsUsage['storages'][number] = {
+        id: 'composition-storage',
+        name: '真实存储',
+        type: 'local',
+        enabled,
+        knownBytes: 1024,
+        groups: { original: 512, derived: 256, recycle: 256, pending: 0 },
+        unconfirmedObjects: 0,
+        confirmationStatus: 'confirmed',
+        confirmedAt: '2026-10-09T03:20:00.000Z',
+      };
+      const render = (item: typeof storage) =>
+        html(UsageContent, {
+          data: {
+            generatedAt: '2026-10-09T04:30:00.000Z',
+            scope: 'registered-objects',
+            storages: [item],
+          },
+          timeZone: 'Asia/Shanghai',
+        });
+      const confirmed = render(storage);
+      expect(confirmed).toContain('data-slot="chip"');
+      expect(confirmed).toContain(enabled ? 'chip--success' : 'chip--default');
+      expect(confirmed).toContain(enabled ? '已启用' : '已停用');
+      expect(confirmed).toContain('usage-composition');
+      expect(confirmed).toContain('已登记 1 KiB');
+      expect(confirmed).toContain('最后确认 2026/10/09 11:20');
+      expect(confirmed).not.toContain('待核对');
+      expect(confirmed).not.toContain('四类互斥，合计');
+      const unknown = render({
+        ...storage,
+        unconfirmedObjects: 2,
+        confirmationStatus: 'unconfirmed',
+      });
+      expect(unknown).toContain('总量待确认');
+      expect(unknown).toContain('2 个对象待核对');
+      expect(unknown).toContain('512 B');
+      expect(unknown).not.toContain('usage-composition');
+      const zero = render({
+        ...storage,
+        knownBytes: 0,
+        groups: { original: 0, derived: 0, recycle: 0, pending: 0 },
+        confirmedAt: null,
+      });
+      expect(zero).toContain('已登记 0 B');
+      expect(zero).not.toContain('usage-composition');
+      expect(zero).not.toContain('待核对');
+      expect(zero).toContain('尚无完整的最后确认时间');
+    },
+  );
 });

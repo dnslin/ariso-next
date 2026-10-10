@@ -144,15 +144,15 @@ export function AnalyticsScreen(props: {
         ) : null}
         <div className="grid gap-5">
           <h1>{title}</h1>
-          <p className="text-[13px]">
-            {usageView
-              ? '查看各存储中 Ariso 图片对象的当前占用。'
-              : dailyView
+          {!usageView ? (
+            <p className="text-[13px]">
+              {dailyView
                 ? '访问量是内容请求计数，不代表独立访客人数。'
                 : props.dashboard
                   ? '每一张图片，都有自己的位置。'
                   : '公开图片访问与当前对象占用。'}
-          </p>
+            </p>
+          ) : null}
         </div>
         {!validDays || !validView ? (
           <div role="alert" className="grid gap-3">

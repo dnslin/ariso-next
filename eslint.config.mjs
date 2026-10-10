@@ -9,6 +9,8 @@ export default defineConfig([
     '.next/**',
     'design-plans/issue179-review-v2/.next/**',
     'design-plans/issue179-review-v2/next-env.d.ts',
+    'design-plans/issue179-usage-review/.next/**',
+    'design-plans/issue179-usage-review/next-env.d.ts',
     'design-plans/issue191-review/.next/**',
     'design-plans/issue191-review/next-env.d.ts',
     'design-plans/issue200-review/.next/**',

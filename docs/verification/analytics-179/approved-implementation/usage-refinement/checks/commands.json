@@ -1,0 +1,73 @@
+{
+  "environment": {
+    "node": "24.18.1",
+    "pnpm": "11.19.0"
+  },
+  "commands": [
+    {
+      "command": "pnpm install --frozen-lockfile",
+      "sessionId": 98455,
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm exec vitest run --project unit tests/unit/analytics/presentation.test.ts",
+      "phase": "RED",
+      "result": "3 failed, 6 passed",
+      "note": "shell ended with tail; child result is in red.txt"
+    },
+    {
+      "command": "pnpm exec vitest run --project unit tests/unit/analytics/presentation.test.ts",
+      "phase": "GREEN",
+      "result": "9 passed"
+    },
+    {
+      "command": "pnpm exec vitest run --project unit tests/unit/analytics tests/unit/runtime/browser-plan.test.ts tests/unit/runtime/browser-business-cli.test.ts",
+      "sessionId": 79808,
+      "exitCode": 0,
+      "result": "209 passed"
+    },
+    {
+      "command": "pnpm run lint",
+      "sessionId": 73842,
+      "exitCode": 1,
+      "result": "two anonymous prototype config export warnings"
+    },
+    {
+      "command": "pnpm run lint",
+      "sessionId": 36355,
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm run typecheck",
+      "sessionId": 58415,
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm run build",
+      "sessionId": 98389,
+      "exitCode": 0,
+      "buildId": "Hn8-wzoibe5gmMI5ZnWmF-",
+      "note": "package-standalone logs NFT warning Error objects via console.warn, then copies files; actual exec completion exitCode=0. Full diagnostic output retained."
+    },
+    {
+      "command": "node --check e2e/analytics-behavior.mjs",
+      "exitCode": 0
+    },
+    {
+      "command": "node docs/tasks/check.mjs",
+      "exitCode": 0,
+      "result": "120 tasks, 298 requirements"
+    },
+    {
+      "command": "HTTP GET /login on refreshed 4180 product preview",
+      "httpStatus": 200,
+      "listenerPid": 18799,
+      "note": "not browser verification"
+    },
+    {
+      "command": "pnpm run format:check",
+      "sessionId": 45004,
+      "exitCode": 0
+    }
+  ]
+}

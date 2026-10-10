@@ -41,18 +41,21 @@ export function AnalyticsScopeDialog({
                 onPress={onClose}
               />
             </Modal.Header>
-            <Modal.Body className="grid min-h-0 overflow-y-auto gap-4 p-0 text-sm leading-normal">
+            <Modal.Body
+              className={`${usage ? 'm-0' : ''} grid min-h-0 overflow-y-auto gap-4 p-0 text-sm leading-normal`}
+            >
               {usage ? (
                 <>
                   <p>
                     四类对象互斥计数：正常原图、正常派生、回收站、处理中／待清理。
+                    有对象待核对时，总占用尚未确认，不显示完整比例。
                   </p>
                   <p className="text-[13px] text-muted">
                     按 Ariso 对象记录展示，不是 Bucket
                     容量或整机磁盘占用。包含已登记候选、旧对象、上传临时及探测对象；不含数据库、日志和宿主机中转文件。
                   </p>
                   <p className="text-[13px] text-muted">
-                    停用不清零，清理成功后才减少；外部手工删改可能尚未反映。
+                    停用不清零。永久删除受理后仍可能占用空间，成功清理对象后才减少；外部手工删改可能尚未反映。
                   </p>
                 </>
               ) : (
@@ -71,7 +74,7 @@ export function AnalyticsScopeDialog({
                 </>
               )}
             </Modal.Body>
-            <Modal.Footer className="p-0">
+            <Modal.Footer className={usage ? 'mt-0 p-0' : 'p-0'}>
               <Button
                 variant="primary"
                 className="h-12 w-full rounded-lg"

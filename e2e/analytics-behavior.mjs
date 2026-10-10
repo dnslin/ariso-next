@@ -590,6 +590,41 @@ export async function analyticsBehavior(page, config, tools, fixture, report) {
         .textContent.includes('已停用'),
     ),
   );
+  const usagePresentation = await page.evaluate(() => ({
+    cards: [...document.querySelectorAll('[data-storage-id]')].map((node) => ({
+      id: node.dataset.storageId,
+      state: node.parentElement.querySelector('h2 [data-slot="chip"]')
+        ?.textContent,
+      stateClass: node.parentElement.querySelector('h2 [data-slot="chip"]')
+        ?.className,
+      pending: node.querySelector('[data-slot="chip"]')?.textContent ?? null,
+      completeBar: !!node.querySelector('[data-testid="usage-composition"]'),
+    })),
+    summary: document.querySelector('[data-testid="usage-total"]').textContent,
+    text: document.querySelector('[data-testid="analytics-page"]').textContent,
+  }));
+  for (const item of usageAfter.storages) {
+    const card = usagePresentation.cards.find(({ id }) => id === item.id);
+    assert.equal(card.state, item.enabled ? '已启用' : '已停用');
+    assert.ok(
+      card.stateClass.includes(
+        item.enabled ? 'chip--success' : 'chip--default',
+      ),
+    );
+    assert.equal(card.pending !== null, item.unconfirmedObjects > 0);
+    assert.equal(
+      card.completeBar,
+      item.confirmationStatus === 'confirmed' && item.knownBytes > 0,
+    );
+  }
+  assert.ok(usagePresentation.summary.includes('总量待确认'));
+  for (const removed of [
+    '查看各存储中 Ariso 图片对象的当前占用',
+    '四类互斥，合计为当前已确认占用',
+    '停用不会清零',
+    '受理永久删除后仍占空间',
+  ])
+    assert.ok(!usagePresentation.text.includes(removed));
   report.checks.push(
     '7/30/90 URL, trend/versions/popular and keyboard-accessible complete daily rows agree with actual SQLite. Today/cumulative/current usage stay fixed. Permanently deleted images are excluded before the ten-item limit, with the next image filling their place; their accesses remain in cumulative totals and daily trends. Recycled/private/disabled-storage history and full names remain. Four disjoint usage groups and unknown objects never imply a complete total.',
   );
@@ -691,6 +726,20 @@ export async function analyticsBehavior(page, config, tools, fixture, report) {
           { dialog, explanation },
         ),
       );
+      if (view === 'usage') {
+        const text = await page.evaluate(
+          (selector) => document.querySelector(selector).textContent,
+          dialog,
+        );
+        for (const rule of [
+          '总占用尚未确认，不显示完整比例',
+          '停用不清零',
+          '成功清理对象后才减少',
+          '已登记候选、旧对象、上传临时及探测对象',
+        ]) {
+          assert.ok(text.includes(rule), `Usage scope retains ${rule}`);
+        }
+      }
       for (let index = 0; index < 4; index++) {
         await page.keyboard.press('Tab');
         assert.ok(

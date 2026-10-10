@@ -1,5 +1,7 @@
 'use client';
 
+import { Chip } from '@heroui/react/chip';
+import { Check, Clock3, Pause } from 'lucide-react';
 import type { AnalyticsUsage } from './read-analytics';
 import {
   AnalyticsCard,
@@ -77,28 +79,65 @@ export function UsageContent({
   );
   return (
     <div className="grid gap-5" data-testid="analytics-usage">
-      <p className="text-[13px] text-muted" data-testid="usage-total">
-        已登记 {bytes(total)}
-        {unknown
-          ? `，另有 ${number(unknown)} 个对象待核对，总占用尚未确认。`
-          : '。'}{' '}
-        更新于 {timestamp(data.generatedAt, timeZone)}。
-      </p>
+      <div
+        className="flex flex-wrap items-center gap-x-4 gap-y-2"
+        data-testid="usage-total"
+      >
+        <p className="text-lg font-medium">已登记 {bytes(total)}</p>
+        {unknown ? (
+          <Chip color="warning" variant="soft" size="sm">
+            <Clock3 size={12} aria-hidden />
+            <Chip.Label>总量待确认 · {number(unknown)} 个对象待核对</Chip.Label>
+          </Chip>
+        ) : null}
+        <p className="flex items-center gap-1.5 text-xs text-muted">
+          <Clock3 size={14} className="shrink-0" aria-hidden />
+          更新于 {timestamp(data.generatedAt, timeZone)}
+        </p>
+      </div>
       {data.storages.length === 0 ? (
         <p className="py-8 text-sm">暂无存储配置。</p>
       ) : (
         data.storages.map((storage) => (
           <AnalyticsCard
             key={storage.id}
-            title={`${storage.name} · ${storage.enabled ? '已启用' : '已停用'}`}
+            title={
+              <span className="flex flex-wrap items-center gap-x-3 gap-y-2">
+                <span className="min-w-0 break-words">{storage.name}</span>
+                <Chip
+                  color={storage.enabled ? 'success' : 'default'}
+                  variant="soft"
+                  size="sm"
+                  className={
+                    storage.enabled ? '' : 'bg-foreground/8 text-muted'
+                  }
+                >
+                  {storage.enabled ? (
+                    <Check size={12} aria-hidden />
+                  ) : (
+                    <Pause size={12} aria-hidden />
+                  )}
+                  <Chip.Label>
+                    {storage.enabled ? '已启用' : '已停用'}
+                  </Chip.Label>
+                </Chip>
+              </span>
+            }
           >
             <div data-storage-id={storage.id} className="grid gap-3">
-              <p className="text-lg font-medium leading-[22px]">
-                已登记 {bytes(storage.knownBytes)}
-                {storage.unconfirmedObjects
-                  ? ` · 另有 ${number(storage.unconfirmedObjects)} 个对象待核对`
-                  : ''}
-              </p>
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+                <p className="text-lg font-medium leading-[22px]">
+                  已登记 {bytes(storage.knownBytes)}
+                </p>
+                {storage.unconfirmedObjects ? (
+                  <Chip color="warning" variant="soft" size="sm">
+                    <Clock3 size={12} aria-hidden />
+                    <Chip.Label>
+                      {number(storage.unconfirmedObjects)} 个对象待核对
+                    </Chip.Label>
+                  </Chip>
+                ) : null}
+              </div>
               {storage.confirmationStatus === 'confirmed' &&
               storage.knownBytes > 0 ? (
                 <div
@@ -131,22 +170,16 @@ export function UsageContent({
                   </div>
                 ))}
               </dl>
-              <p className="text-xs text-muted">
-                {storage.unconfirmedObjects
-                  ? '总占用尚未确认，不绘完整比例。'
-                  : '四类互斥，合计为当前已确认占用。'}
-              </p>
-              <p className="text-xs text-muted">
+              <p className="flex items-center gap-1.5 text-xs text-muted">
+                <Clock3 size={14} className="shrink-0" aria-hidden />
                 {storage.confirmedAt
                   ? `最后确认 ${timestamp(storage.confirmedAt, timeZone)}`
                   : '尚无完整的最后确认时间'}
-                ；停用不会清零。
               </p>
             </div>
           </AnalyticsCard>
         ))
       )}
-      <p className="text-sm">受理永久删除后仍占空间，成功删除对象后才减少。</p>
     </div>
   );
 }
