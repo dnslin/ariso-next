@@ -48,11 +48,14 @@
 | secondary          | oklch(0.959 0.02 193.005)  | #253D40 |
 | accent             | oklch(0.899 0.047 196.339) | #607D85 |
 | destructive        | oklch(0.6 0.2 25)          | #FF858A |
+| error-foreground   | oklch(0.58 0.2 25)         | #FF858A |
 | surface            | 当前 Figma Light 变量      | #22252F |
 | primary-foreground | 当前 Figma Light 变量      | #272343 |
 | focus-ring         | 当前 Figma Light 变量      | #82DBD3 |
 
-Ariso 变量集合为 `VariableCollectionId:2:2`，Light 为 `2:0`，Dark 为 `264:0`，现有11个颜色变量；2026-10-04同步产品已有 `--ariso-current` 为 `navigation-current`，浅色#FFF7C2、深色#494222，不改变既定导航颜色。Figma 默认 Light 是画布设置；产品默认跟随系统。界面偏好只属于当前浏览器 origin，支持浅色、深色和跟随系统，不写站点数据库，也不随站点信息保存提交。照片不反色，深色主按钮继续使用深色 `primary-foreground`，卡片和弹窗使用 `surface`。
+Ariso 变量集合为 `VariableCollectionId:2:2`，Light 为 `2:0`，Dark 为 `264:0`；2026-10-04同步产品已有 `--ariso-current` 为 `navigation-current`，浅色#FFF7C2、深色#494222，不改变既定导航颜色。2026-10-10 用户审阅局部原型后批准仅加深浅色错误正文，新增 `error-foreground`（`--ariso-error-text`）并同步错误正文节点 `266:1574/266:3471`；保留12px字号、布局、错误边框、操作按钮和深色颜色。[批准及回读证据](../verification/theme-197/README.md)统一维护。Figma 默认 Light 是画布设置；产品默认跟随系统。界面偏好只属于当前浏览器 origin，支持浅色、深色和跟随系统，不写站点数据库，也不随站点信息保存提交。照片不反色，深色主按钮继续使用深色 `primary-foreground`，卡片和弹窗使用 `surface`。
+
+2026-10-10 所有者审阅右上角局部原型后批准：主题入口仅在后台公共外壳显示，桌面为60px独立顶行右侧，正文起点随之下移；手机在页眉菜单左侧，间隔8px。使用一个纯图标按亮色（Sun）→暗色（Moon）→自动（Monitor）循环，44px点击区、20px Lucide图标，Tooltip与可访问名称说明当前和下一模式。账号区、前台和基本设置不再提供重复入口或外观弹窗。挂载前保留控件尺寸并禁用，避免猜测浏览器偏好。批准、Figma同步及真实页面对照统一见 [Issue #197证据](../verification/theme-197/README.md)。
 
 ## 公共界面复用与占位退出
 

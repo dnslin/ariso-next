@@ -172,7 +172,6 @@ export function RelatedSettings({ onExpire }: { onExpire: () => void }) {
             </div>
           ) : null}
         </div>
-        <RelatedSetting label="界面主题" value="后续独立设置" />
       </div>
     </Card>
   );

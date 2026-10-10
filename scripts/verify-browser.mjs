@@ -103,6 +103,7 @@ for (const name of [
   'storage-admin-feedback-failure.png',
   'storage-admin-regressions.json',
   'storage-admin-regressions-failure.png',
+  'theme.json',
   'site-general.json',
   'site-general-failure.png',
   'processing.json',

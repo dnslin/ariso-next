@@ -1,0 +1,19 @@
+{
+  "status": "failed",
+  "taskSpaceId": 6,
+  "origin": "http://ariso-62408.localhost:62408",
+  "phase": "all",
+  "checks": [
+    "default system, real UI three preferences, live system changes and explicit preference precedence",
+    "server-rendered preference row is disabled and does not show a guessed selected preference"
+  ],
+  "layouts": [],
+  "browserErrors": [],
+  "limitations": [
+    "Uses the runner disposable production database and owner. Viewport emulation, runtime behavior and screenshots do not replace independent design review or final human acceptance."
+  ],
+  "stage": "behavior",
+  "error": "ElementResolutionError: page.click timed out after 3000ms: page.click failed: element is not visible in the viewport\n    at #retryElementAction (file:////[eval1]:18884:27)\n    at async file:////[eval1]:18968:29\n    at async file:////[eval1]:16691:28",
+  "fixtureRestored": true,
+  "finishedAt": "2026-10-10T09:03:33.014Z"
+}

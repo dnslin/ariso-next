@@ -47,6 +47,7 @@ async function run(args: string[]) {
     script?: string;
     dataDirectory?: string;
     passwordResetPhase?: string;
+    themePhase?: string;
     hasPasswordResetFixture?: boolean;
     spaceId?: number;
     pageLabel?: string;
@@ -103,6 +104,9 @@ describe('actual business CLI connections without external services', () => {
         .filter((event) => event.kind === 'browser')
         .every((event) => event.passwordResetPhase === undefined),
     ).toBe(true);
+    expect(
+      events.find((event) => event.script === 'theme.mjs')?.themePhase,
+    ).toBeUndefined();
     expectUploadRuntime(events, 'upload');
     expectUploadRuntime(events, 'upload-polling');
     expect(scripts).not.toContain('identity-session-scene.mjs');
@@ -144,6 +148,10 @@ describe('actual business CLI connections without external services', () => {
     ['password-reset', 'interactions', []],
     ['password-reset', 'recovery', []],
     ['smtp', undefined, []],
+    ['theme', undefined, []],
+    ['theme', 'representative', []],
+    ['theme', 'behavior', []],
+    ['theme', 'consumers', []],
   ] as const)(
     'executes focused %s/%s through the real CLI',
     async (suite, only, isolated) => {
@@ -155,6 +163,7 @@ describe('actual business CLI connections without external services', () => {
       const plan = selectBrowserPlan({ suite, only, pageLabel: 'p1' });
       for (const event of events.filter((item) => item.kind === 'browser')) {
         expect(event.hasPasswordResetFixture).toBe(suite === 'password-reset');
+        expect(event.themePhase).toBe(suite === 'theme' ? only : undefined);
         expect(event.passwordResetPhase).toBe(
           suite === 'password-reset' ? only : undefined,
         );

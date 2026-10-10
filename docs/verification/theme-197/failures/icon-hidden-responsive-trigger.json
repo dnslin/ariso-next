@@ -1,0 +1,25 @@
+{
+  "status": "failed",
+  "taskSpaceId": 6,
+  "origin": "http://ariso-60409.localhost:60409",
+  "phase": "all",
+  "checks": [
+    "default system, real UI three preferences, live system changes and explicit preference precedence",
+    "server-rendered header icon placeholders are disabled and do not guess a selected preference",
+    "theme changes preserve both independent unsaved forms, current route, scroll and trigger focus"
+  ],
+  "layouts": [],
+  "browserErrors": [],
+  "limitations": [
+    "Uses the runner disposable production database and owner. Viewport emulation, runtime behavior and screenshots do not replace independent design review or final human acceptance."
+  ],
+  "stage": "behavior",
+  "uploadOperation": {
+    "action": "fill",
+    "field": "queueLimit",
+    "value": "500",
+    "step": "complete"
+  },
+  "error": "Error: page.waitForSelector timed out after 10000ms: [data-testid=\"theme-trigger\"]\n    at waitForSelectorInPage (file:////[eval1]:16159:11)\n    at async file:////[eval1]:16691:28",
+  "finishedAt": "2026-10-10T14:46:01.445Z"
+}

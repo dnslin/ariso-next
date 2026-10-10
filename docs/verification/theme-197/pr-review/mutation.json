@@ -1,0 +1,20 @@
+{
+  "node": "v24.18.1",
+  "scope": "runner --only acceptance only; no product behavior mutation",
+  "command": [
+    "/Users/dnslin/.nvm/versions/node/v24.18.1/bin/node",
+    "/Users/dnslin/.codex/worktrees/issue-197-theme/ariso/node_modules/vitest/vitest.mjs",
+    "run",
+    "--project",
+    "unit",
+    "tests/unit/runtime/browser-plan.test.ts"
+  ],
+  "directory": "/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-pr278-review-mutation-6xsqqb5w",
+  "baselineExit": 0,
+  "mutantExit": 1,
+  "mutation": {
+    "before": "only === undefined || definition.only?.includes(only)",
+    "after": "only === undefined && definition.only?.includes(only)"
+  },
+  "restoredBytesEqual": true
+}
