@@ -35,33 +35,41 @@ macOS arm64，Node v24.18.1，pnpm 11.19.0；已有 ImageMagick 7、ExifTool、O
 | `pnpm run build`                                                          | 最终构建通过。保留现有非主机平台可选原生包的 trace 警告，不计作构建失败或镜像验证。                                                                                                                                                                                               |
 | `pnpm run test:integration --maxWorkers=4`                                | 首轮176文件通过、15文件失败；原因是实施者在运行期间重建共享产物目录，导致入口/模块暂时缺失。构建稳定后只重跑受影响15文件，全部通过（102项）。没有削弱断言或增加跳过。                                                                                                             |
 | `pnpm --dir tests/experiments/ui install --frozen-lockfile` / `typecheck` | 通过。build由默认浏览器命令执行。                                                                                                                                                                                                                                                 |
-| `pnpm run format:check` / `node docs/tasks/check.mjs`                     | 初轮完整格式检查通过；最终29个受影响文本Prettier检查通过。最终文档检查通过：120任务、298需求，无缺失ID或循环。                                                                                                                                                                    |
+| `pnpm run format:check` / `node docs/tasks/check.mjs`                     | 初轮完整格式检查通过；首次提交29个受影响文本Prettier检查通过；恢复补修后13个受影响文本Prettier检查通过。最终文档检查通过：120任务、298需求，无缺失ID或循环。                                                                                                                      |
 | `node scripts/verify-browser.mjs --suite theme`                           | 首轮[隐藏输入定位失败](./failures/hidden-number-input.json)；第二轮[数字控件聚焦时自动滚动触发增减](./failures/focused-number-wheel.json)。复用已有可见控件操作，保存草稿基准前离开数字控件，并由真实键盘打开主题后，第三轮全阶段通过：9项行为结论、153个布局记录、无浏览器错误。 |
 | `pnpm run test:browser`                                                   | 退出1；31阶段通过、9阶段失败（含图库复制的用户接管停止）。未跑完默认全量，theme阶段未执行；不能记作整轮通过。见[原始运行器报告](./full-runner.json)和[失败摘要](./full-failures.json)。                                                                                           |
+| `node scripts/verify-browser.mjs --suite theme --only representative`     | 恢复后首轮捕获outlineStyle=none；修正后33布局通过。独立输出目录 `resumed-representative-fixed`，原失败保留。                                                                                                                                                                      |
+| `node scripts/verify-browser.mjs --suite theme --only consumers`          | 首轮最后一项测量受按压动画影响；独立初始化修正后128布局通过。输出目录 `resumed-consumers-fixed`，原失败保留。                                                                                                                                                                     |
 
 ## 设计对照与评审
 
 主题弹窗基础节点为桌面 [472:4538](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=472-4538)、手机 [472:9570](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=472-9570)，深色设置整页 [472:4254](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=472-4254)/[472:9458](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=472-9458)。R4提供三偏好勾选，R6提供图库、图表和分享的配色代表。所有设计已实际读取信息和截图，后续当前交接覆盖旧面包屑与旧业务布局。
 
-独立[代码审计](./code-review.md)已通过，修正全表快照过大及错误颜色影响操作文字两项发现。独立[设计评审](./design-review.md)发现设置行焦点外框被父卡片裁边，已有[失败截图](./failures/clipped-theme-focus.png)；仅在本次设置触发器内收2px描边并完成重建及代码静态复审。新增真实键盘焦点和完整错误/图表可见区域断言，但接管停止前未执行，最终截图及设计复核仍未完成。
+独立[代码审计](./code-review.md)已通过，修正全表快照过大及错误颜色影响操作文字两项发现。独立[设计评审](./design-review.md)发现设置行焦点外框被父卡片裁边，已有[失败截图](./failures/clipped-theme-focus.png)。初次补修只内收2px，恢复补验后实际发现HeroUI的 `outline-none` 仍覆盖实线样式，保留[失败报告](./failures/theme-focus-style-none.json)及[现场截图](./failures/theme-focus-style-none.png)。最终仅在本次设置触发器增加 `data-[focus-visible=true]:outline-solid`，保留既定2px宽度、语义颜色和内收距离；重建、定向检查及独立静态复审通过。
 
 第三轮定向通过的[原始报告](./browser-before-focus-fix/theme.json)及[153张截图](./browser-before-focus-fix/)属于焦点补修前输入，不能证明最新焦点修复已通过。该报告逐项记录视口、主题、溢出及点击目标；设计评审按同视口核对整页、公共区域、业务布局和控件，具体差异处理见评审表。当前照片组件只有图片上的选择控件，名称位于图片下方，没有照片叠字；该项记为不适用，未虚构叠字状态。
 
+用户明确回复“继续浏览器验证”后，使用 `takeOverTaskSpace(6)` 恢复原空间，只重跑受影响的代表布局及消费者阶段。代表布局[最新报告](./browser-representative/theme.json)与[33张截图](./browser-representative/)通过：两端两主题的真实键盘焦点为2px solid、offset=-2px，四边完整可见；360/430/768、390×480、键盘三选项、焦点包含及Escape回焦通过，无浏览器错误。
+
+消费者首轮在最后匿名登录页暗色390px量得按钮43.967px，保留[失败报告](./failures/theme-consumers-animation.json)。同一页动画结束后实际44px、transform为单位矩阵；HeroUI按压缩放的250ms过渡仍在进行，而独立消费者入口没有继承代表阶段的减少动画设置。仅在消费者每主题循环复用既有 `emulateSystem` 初始化，不改产品动画、不加固定等待、不放宽44px断言。定向重跑[最新报告](./browser-consumers/theme.json)及[128张截图](./browser-consumers/)通过，夹具恢复、无浏览器错误、无site PATCH；实际照片、非零图表及每日等价数值、可见字段错误和禁用上传均通过。布局输入变化之外的主题行为不重复执行，仍引用第三轮真实结果。
+
+最新代表与消费者共161个布局记录。独立设计评审者实际查看两端两主题的四张焦点补图及八张错误/图表补图，按既读Figma和当前交接复核，三项视觉待补已完成，本次范围无剩余阻塞设计差异。设计结论通过，人工验收与T-QA-02全站状态矩阵仍开放。
+
 ## 默认完整入口的失败与停止边界
 
-完整入口于09:17:31Z开始，10:08:32Z退出1。品牌登录断言仍要求 `/upload`，实际进入 `/dashboard`；Token会话失效、OAuth未知解绑、处理设置、存储管理和批量重处理存在等待/定位失败。图库长流程和批量流程分别触及现有600秒运行上限。上述实现和业务脚本没有本次修改，未发现与主题改动的直接关系；未在原main单独复现，不能称为已证明的历史缺陷。范围外问题仅记录，未放宽断言或改超时。
+完整入口于2026-10-10 17:17:31开始，18:08:32退出1（UTC+8）。品牌登录断言仍要求 `/upload`，实际进入 `/dashboard`；Token会话失效、OAuth未知解绑、处理设置、存储管理和批量重处理存在等待/定位失败。图库长流程和批量流程分别触及现有600秒运行上限。上述实现和业务脚本没有本次修改，未发现与主题改动的直接关系；未在原main单独复现，不能称为已证明的历史缺陷。范围外问题仅记录，未放宽断言或改超时。
 
-图库复制收到“用户已接管TaskSpace”的硬停止。既有运行器的recover分支随后尝试读取失败现场，再被同一暂停拒绝并终止；该范围外运行器行为问题如实保留。主实施者获知后未再操作浏览器、重试或创建新空间。依据 `ego-browser` 技能的“Stop when the user takes control … Do not retry or route around the stop.”，恢复必须由用户明确回复“继续浏览器验证”，然后接回同一个TaskSpace 6。该技能位于本机 `/Users/dnslin/.agents/skills/ego-browser/SKILL.md`，不是仓库文件。
+图库复制收到“用户已接管TaskSpace”的硬停止。既有运行器的recover分支随后尝试读取失败现场，再被同一暂停拒绝并终止；该范围外运行器行为问题如实保留。主实施者获知后停止浏览器，直到用户明确回复“继续浏览器验证”才恢复同一TaskSpace 6，未创建新空间绕过。停止依据为 `ego-browser` 技能的“Stop when the user takes control … Do not retry or route around the stop.”；该技能位于本机 `/Users/dnslin/.agents/skills/ego-browser/SKILL.md`，不是仓库文件。
 
-theme及图库复制后的其余阶段均未在本轮默认入口执行。最新焦点描边、可见错误正文和手机完整图表待补验，最终设计复核及人工验收未完成；不由代码审计或旧截图代替。独立产品预览保持运行。
+theme及图库复制后的其余阶段均未在原默认入口执行，原全量未重跑，不能用后续定向通过替代。恢复后的主题代表/消费者补验和设计复核已完成；人工验收未完成。独立产品预览保持运行。
 
 ## 人工验收与完成状态
 
-产品独立预览为 `http://127.0.0.1:61498`，使用本任务独立数据目录与测试账号。凭证仅在本地忽略文件及私密对话提供，不提交代码、PR或公开日志。预览保持运行直到用户明确要求停止或清理。
+产品独立预览为 `http://127.0.0.1:61498`，已更新为最新实线焦点构建，保留本任务独立数据目录与测试账号。账号已实际登录成功，浏览器停在 `/settings/general`；Ego任务成功finish一次，仅保留必要p1预览页。凭证仅在本地忽略文件及私密对话提供，不提交代码、PR或公开日志。预览保持运行直到用户明确要求停止或清理。
 
 验收基本设置的界面主题、公共页面右上外观入口；切换浅/深/系统，检查勾选、操作系统切换、刷新、跨页及同origin跨标签；编辑未保存表单后切换，检查草稿、位置与焦点。桌面1440×1080、手机390×844代表设计，补360/430/768与390×480短视口。照片、图表、错误及禁用状态以最终浏览器报告说明实际覆盖。
 
-当前：产品代码完成；本地基础检查通过；焦点补修前主题定向浏览器通过；最新补验因接管未执行；最终设计复核及人工验收未完成。PR保持草稿。DES-05/RG-07及T-QA-02未关闭。日常PR不创建Release、发布镜像或部署；远端检查在创建PR后实际回读，不把无检查写成CI通过。
+当前：产品代码完成；本地基础检查通过；主题原行为验证及最新代表/消费者补验通过；独立代码审计和本次范围设计复核通过；人工验收未完成。默认全量失败及未执行项仍保留，PR保持草稿。DES-05/RG-07及T-QA-02未关闭。日常PR不创建Release、发布镜像或部署；远端检查按实际回读记录，不把无检查写成CI通过。
 
 ## 分支与远端状态
 

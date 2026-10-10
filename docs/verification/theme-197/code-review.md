@@ -57,14 +57,36 @@ Token 调用链为 `verifyTokensSessionExpiry` → SQL 过期会话 → focus �
 
 未发现两项超时与 #197 修改的直接关系，按当前授权范围不改身份业务或旧验证流程。未另行在原 main 上复现，不能称为已证明的历史缺陷；OAuth 阶段包含多个等待，现有通用超时堆栈也不足以确定唯一卡点。本判断仅说明任务范围，不撤销失败，也不替代后续诊断。
 
+## 恢复浏览器后的焦点样式定向复审
+
+用户随后明确授权恢复 TaskSpace 6，实施者仅补验代表布局与消费者，没有重新运行原默认全量。本审计继续保持只读、未操作浏览器。
+
+已读取 [焦点样式失败报告](./failures/theme-focus-style-none.json)：representative 在桌面浅色的严格描边断言失败，实际宽度为 2px、offset=-2px，但 outlineStyle 为 none。这是本次主题入口的确定缺陷；此前静态内收修正不足以覆盖 HeroUI 按钮样式，不能用旧 attempt-3 通过记录消除该失败。
+
+复核安装版本 `button.css`：`.button` 包含 outline-none，聚焦状态又应用 status-focused；现有全局基础层的描边样式因此不足以确保 solid。最小修正仅在设置主题触发器新增 `data-[focus-visible=true]:outline-solid`，以 Tailwind 状态工具类覆盖该样式。该类只在该入口可见焦点状态生效，保留原 -2px 内收、2px 宽度、语义颜色及布局，未改变公共组件或其他按钮。测试仍通过真实键盘取得可见焦点并严格要求 2px solid/-2px，未删除或放宽导致失败的断言。
+
+本次单类修正静态复审通过，无新增范围或职责问题；修正后的浏览器与设计结果仍由后续实际证据确认。
+
+## 代表通过与消费者定向初始化复审
+
+已读取 [代表布局补验报告](./browser-representative/theme.json)：`status=passed`，33 个布局记录，浏览器错误为空。补修后的 2px solid/-2px 强断言实际通过；这是实施者执行证据的复核，不记作审计者重跑。
+
+已读取 [消费者动画失败报告](./failures/theme-consumers-animation.json)：独立 consumers 模式已取得 127 个布局记录，照片/图表/错误/禁用内容结论已完成且浏览器错误为空，但最后匿名登录页 390px 深色入口瞬时高度为 43.96786px，严格 44px 断言失败。该报告仍为失败，不因接近阈值改记通过。
+
+根代理在同页稳定状态取得实际高度 44px、min-height 44px、单位 transform，且减少动态效果未启用。只读核对安装版本 `button.css` 的按压 scale(0.97) 与 transform 250ms 过渡，以及现有共用 `browser-geometry.setTheme` 的 reduce 初始化，支持本次定向消费者缺少独立初始化的原因：默认完整主题阶段先执行 representative，消费者原先继承其 reduce 状态，`--only consumers` 则没有该前置。
+
+最新修改仅在消费者页面矩阵与匿名登录的每个 light/dark 循环开头调用已有 `emulateSystem(page, resolved)`，独立设置系统主题及减少动态效果，然后仍通过真实选择器选择偏好。两处调用不依赖先跑 representative，没有改动产品按压动画、固定等待、像素阈值、几何筛选或失败断言。该定向初始化静态复审通过。
+
+已读取修正后的 [消费者补验报告](./browser-consumers/theme.json) 及 [运行器报告](./browser-consumers/runner.json)：两者均为 `status=passed`，128 个布局记录、3 条结论，`browserErrors=[]`、`fixtureRestored=true`。真实照片、非零图表与等价表、分享、错误正文、禁用状态及两端消费者矩阵通过；44px 强断言保留。该结果仅属于 `theme --only consumers` 定向补验，不替代原默认全量结果或人工验收。
+
 ## 执行边界与完成状态
 
 本审计只执行文件、类型、安装库源码和 diff 的只读检查。未运行应用测试、构建或浏览器；未进行代码突变实验，因为本次明确授权范围为只读审计。没有把作者结果冒充审计者自行通过的检查。
 
-最终离线核对 `test-results/theme-197/full/runner.json`：默认全量退出 1，branding、tokens、OAuth、processing、storage-admin、library、library-batch、library-reprocess 均保留失败；library-copy 遇用户接管 TaskSpace 6 停止，后续 theme 阶段尚未实际执行。未发现与本次主题修改直接关系的判断仅为范围判断，未在 main 建立基线重现，不能将这些结果改记为历史失败或通过。
+最终离线核对 `test-results/theme-197/full/runner.json`：默认全量退出 1，31 项通过、9 项失败，branding、tokens、OAuth、processing、storage-admin、library、library-batch、library-reprocess 均保留失败；library-copy 遇用户接管 TaskSpace 6 停止，后续 theme 阶段尚未实际执行。未发现与本次主题修改直接关系的判断仅为范围判断，未在 main 建立基线重现，不能将这些结果改记为历史失败或通过。
 
 同时核对 `scripts/browser-stages.mjs`、运行器 recover 分支及 `library-copy-failure-state.log`：既有 recover 在用户接管后仍尝试读取失败现场，随后因同一暂停状态被拒绝并终止。这是本次修改之外的运行器行为问题，未修改该分支，也不以恢复现场失败作为绕过接管的理由。用户接管后本审计只进行离线文档更新，未操作或重试浏览器。
 
-最终状态：产品代码和测试设计静态审查通过；attempt-3 的旧主题通过证据保留。设置行焦点内收补修、最新完整可见区域与焦点断言只有静态复审通过，尚未重跑。不能称默认流程正常跑完、theme 已在默认实际执行，或最新产品已完成浏览器/设计复验。
+最终状态：产品代码和测试设计静态审查通过；attempt-3 的旧主题通过证据保留。恢复后 representative 的 outlineStyle=none 缺陷经单类修复，33 布局定向补验已通过。consumers 独立执行的动画初始化失败已保留，最新测试初始化修正经静态复审及 128 布局定向补验通过。原默认全量未重新执行，不能称默认流程正常跑完或 theme 已在默认入口实际执行成功。人工验收未完成，浏览器补验也不能替代独立设计结论。
 
-实际命令结果统一见本目录实施记录；真实页面设计结论见 [设计评审](./design-review.md)。未完成检查、设计复验与人工验收继续作为草稿 PR 的限制，不能仅凭本报告转为正式待评审。最终全站矩阵仍归 `T-QA-02`，Release 容器验证仍按现行执行时机处理。
+实际命令结果统一见本目录实施记录；本次范围独立设计结论见 [设计评审](./design-review.md)。原默认全量失败/未执行项及人工验收未完成继续作为草稿 PR 的限制，不能仅凭本报告转为正式待评审。最终全站矩阵仍归 `T-QA-02`，Release 容器验证仍按现行执行时机处理。

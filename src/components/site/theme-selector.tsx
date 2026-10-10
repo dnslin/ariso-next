@@ -36,7 +36,7 @@ export function ThemeSelector({ settings = false }: { settings?: boolean }) {
         isDisabled={!mounted}
         className={
           settings
-            ? 'min-h-16 w-full justify-start rounded-none px-4 py-3 text-left -outline-offset-2 sm:min-h-14 min-[1200px]:px-6'
+            ? 'min-h-16 w-full justify-start rounded-none px-4 py-3 text-left -outline-offset-2 data-[focus-visible=true]:outline-solid sm:min-h-14 min-[1200px]:px-6'
             : 'h-11 min-w-36 rounded-lg border-border bg-surface px-4 text-sm font-normal text-foreground'
         }
       >

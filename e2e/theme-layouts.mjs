@@ -178,6 +178,7 @@ export async function verifyThemeConsumers(page, config, report, fixture) {
     await page.goto(`${config.origin}/`);
     await page.waitForSelector(publicTrigger);
     for (const resolved of ['light', 'dark']) {
+      await emulateSystem(page, resolved);
       await openTheme(page, publicTrigger);
       await chooseTheme(page, resolved, resolved);
       await closeTheme(page, publicTrigger);
@@ -239,6 +240,7 @@ export async function verifyThemeConsumers(page, config, report, fixture) {
     await page.waitForSelector('#email');
     await page.snapshot();
     for (const resolved of ['light', 'dark']) {
+      await emulateSystem(page, resolved);
       await openTheme(page, publicTrigger);
       await chooseTheme(page, resolved, resolved);
       await closeTheme(page, publicTrigger);
