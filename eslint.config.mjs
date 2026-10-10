@@ -7,6 +7,8 @@ export default defineConfig([
   ...nextTs,
   globalIgnores([
     '.next/**',
+    'design-plans/issue196-brand-review/.next/**',
+    'design-plans/issue196-brand-review/next-env.d.ts',
     'design-plans/issue179-review-v2/.next/**',
     'design-plans/issue179-review-v2/next-env.d.ts',
     'design-plans/issue179-usage-review/.next/**',
