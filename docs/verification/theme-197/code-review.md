@@ -101,6 +101,24 @@ Token 调用链为 `verifyTokensSessionExpiry` → SQL 过期会话 → focus �
 
 本轮发现并完成默认前置顺序补修的静态复审：原 `full` 计划在 `upload-relations` 后才执行 theme；前者创建快速标签与同名重建标签，结束时未清理 tags，新增零标签断言因此不满足前置。最新计划把 theme 紧接在 tags 之后，复用该场景已有的标签清理边界，早于后续上传关系场景创建标签；不跳过断言、不删除前序业务数据、不新增参数。计划测试同时要求 theme 紧接 tags 且早于 upload-relations，并更新完整默认序列，其余 suite/only 和业务场景调用保持原入口。实施者已报告取得顺序断言的真实失败证据；审计者只读核对 `/tmp/ariso-theme-197-navigation-unit.log`，计划/CLI/阶段/运行器 4 文件 379 项实际通过，未自行运行检查或默认全量。
 
+后续类型检查发现新增 map 回调解构参数缺少类型，仅补 `[string, string]` 参数类型，无执行行为变化；只读核对 `/tmp/ariso-theme-197-navigation-typecheck-2.log` 与 `/tmp/ariso-theme-197-plan-final.log`，类型补检及受影响计划140项实际通过。
+
 首轮新增导航报告 `test-results/theme-197/navigation-fixed/theme.json` 保留失败：16 个零标签过渡及已完成桌面场景没有外壳空白、公共入口或右上新建误现，随后手机等待标签行超时。只读核对 `TagsList`，同一测试 ID 同时用于桌面 TR 和手机 LI，桌面表格在手机隐藏；单个选择器等待会先命中隐藏 TR。最新两处等待遍历该实际标签 ID 的全部节点，并要求至少一个通过 `checkVisibility`（包含 opacity/visibility 检查）。它仍要求真实标签行可见，支持既有响应式 DOM，没有改产品、放宽导航断言或固定延时。该测试定位补修静态复审通过。
 
 已只读核对最终 [导航与主题行为报告](./navigation/theme.json) 和 [定向运行器报告](./navigation/runner.json)（执行原件为 `test-results/theme-197/navigation-fixed-2/`）：两者 `status=passed`，标准入口为 `theme --only behavior`。真实前置标签数为 0，减少动态效果为 no-preference；1440/390 两端两主题共 28 组过渡（16 组零标签、12 组有标签/搜索/失败重试），每组都有实际帧与变更记录，后台外壳持续可见，没有公共外壳或外观入口、零标签/加载/失败时没有右上新建误现。16 条逐字符记录均保留完整值与焦点，清空查询、Tab 离开及真实 GET 响应丢失后的重试均完成；`browserErrors=[]`，独立标签仅按自身 ID 离线清理。报告保留 12 张状态截图供独立设计复核。本次产品、测试及顺序补修独立静态审查通过，受影响行为定向补验通过；原默认全量未重跑，既有失败/未执行项及人工验收未完成的限制仍保留，不能将本次结果写为默认全量通过。
+
+## 获批右上主题图标：独立静态复审
+
+用户批准后台右上角原型后，复审 `theme-selector.tsx`、`related-settings.tsx`、`admin-shell.tsx`、`public-shell.tsx` 和 `globals.css`。当前以后台唯一可见的三态图标替代旧弹窗与基本设置关联行，公共页面不再提供入口；此前弹窗/公共入口的运行结果保留为旧版本证据，不能证明本轮交互已完成验证。
+
+产品静态复审未发现阻塞问题：SSR 使用 false 快照，只输出禁用且无图标/偏好属性的占位按钮；挂载后使用 `theme` 而非 `resolvedTheme` 选择 Sun/Moon/Monitor，点击亮→暗→自动循环，复用单一 next-themes Provider。没有新增监听器、存储副本、路由动作或表单提交。桌面与手机各挂载一个响应式实例，父容器按同一 1200px 断点隐藏，后台只有一个可见入口；PublicShell 与 RelatedSettings 引用已移除。样式中的 44px 按钮、上下各 8px 顶行内边距和 24px 正文内边距组成桌面 60px 顶行/84px 正文起点，手机按钮组 gap-2 对应 8px。新焦点沿安装 HeroUI 的 2px box-shadow ring，不沿用旧设置行的 outline 修正。
+
+只读复审 `theme-helpers/behavior/layouts/content/navigation.mjs` 的适配：旧弹窗、单选组及其失效断言删除；服务端两个响应位置严格要求 unknown/disabled/noSVG/no-data-theme。真实循环每次核对偏好、图标、可访问名称、localStorage 与解析主题，键盘循环核对来源焦点。草稿测试从 system 实际按键切换 light，保留两个独立表单、路由及滚动断言；第二标签真实切换后核对图库选中状态和原滚动。公共路由要求零入口，跨标签双向同步、独立系统解析及真实照片/图表/错误/禁用内容断言保留。焦点断言改读实际 box-shadow 的 2px 外环并核对视口及祖先裁剪。默认 `theme.mjs` 仍无条件包含 behavior、representative、consumers，未增加定向旁路；首次错误后的离线清理边界不变。
+
+已只读核对 [本轮产品几何记录](./icon-ui/geometry.json)：1440×1080 与390×844、亮/暗四状态均只有一个可见入口，实际按钮44×44、图标20×20，无横向溢出；桌面入口位于 y=8，正文标题 y=84，手机入口 x=278/y=10。实施者已查看相应四图对照原型，本审计未代替其截图或设计结论。
+
+已只读核对 [本轮主题三阶段报告](./icon-browser/theme.json) 与 [运行器报告](./icon-browser/runner.json)：标准 `--suite theme` 入口的 behavior、representative、consumers 全部实际通过，163 个布局记录、28 组导航过渡、16 条逐字符搜索记录、8 项对比和4组照片状态，`browserErrors=[]`、`fixtureRestored=true`，独立导航标签离线按自身 ID 清理。SSR 未猜偏好、实际循环、双表单草稿/滚动/路由/焦点、跨标签同步、公共零入口及旧内容断言保留并通过。首轮重载等待误选隐藏响应式入口的 [失败报告](./failures/icon-hidden-responsive-trigger.json) 保留；定位修正复用当前视口入口，不改产品或弱化断言。
+
+已只读核对 [真实产品边界补验](./icon-ui/boundaries.json)：主区实际滚动676px后入口仍 y=8，公共顶行60px；72px收起侧栏时入口与可见焦点保留；1199/1200px各只有正确位置的一个可见入口且无横向溢出；390×480短视口按钮44px、菜单左侧间距8px且焦点可见；打开菜单时外部主题入口处于 inert 范围，账号区没有重复入口，关闭后焦点回菜单，前台入口为0。此前提出的本轮产品集成证据缺口已补齐。
+
+当前代码及测试独立静态审查通过，未发现未解决的本次范围代码问题；本轮主题三阶段和产品边界实际补验通过。上述执行由实施者完成，本审计只复核持久化结果，未运行测试、构建或浏览器。原默认全量未重跑，31项通过/9项失败及未执行项仍保留，不能写为默认全量或远端CI通过；独立设计结论见设计评审，最终人工验收仍未完成，PR继续保留草稿限制。

@@ -3,12 +3,7 @@ import { randomUUID } from 'node:crypto';
 import { join } from 'node:path';
 import { identitySql } from './identity-session.mjs';
 import { resizeViewport } from './browser-geometry.mjs';
-import {
-  settingsTrigger,
-  openTheme,
-  chooseTheme,
-  closeTheme,
-} from './theme-helpers.mjs';
+import { chooseTheme } from './theme-helpers.mjs';
 
 const search = 'input[aria-label="搜索标签名称"]';
 
@@ -44,7 +39,7 @@ async function beginTrace(page) {
         admin: visible(document.querySelector('.admin-shell')),
         public: visible(document.querySelector('.public-shell')),
         publicEntry: visible(
-          document.querySelector('[data-testid="theme-public-trigger"]'),
+          document.querySelector('.public-shell [data-testid="theme-trigger"]'),
         ),
         headerCreate: [...(header?.querySelectorAll('button') ?? [])].some(
           (button) =>
@@ -177,9 +172,7 @@ async function emptyNavigation(page, config, report) {
         '[data-testid="site-general"][data-state="ready"]',
       );
       await page.snapshot();
-      await openTheme(page, settingsTrigger, true);
-      await chooseTheme(page, theme, theme);
-      await closeTheme(page);
+      await chooseTheme(page, theme, theme, true);
       for (const [visit, path] of [
         ['enter', '/tags'],
         ['return', '/settings/general'],
@@ -281,10 +274,10 @@ export async function verifyThemeNavigation(page, config, report) {
       await resizeViewport(page, width);
       for (const theme of ['light', 'dark']) {
         await page.goto(`${config.origin}/settings/general`);
-        await page.waitForSelector(settingsTrigger);
-        await openTheme(page, settingsTrigger, true);
-        await chooseTheme(page, theme, theme);
-        await closeTheme(page);
+        await page.waitForSelector(
+          '[data-testid="site-general"][data-state="ready"]',
+        );
+        await chooseTheme(page, theme, theme, true);
         await beginTrace(page);
         await clickNavigation(page, width, '/tags');
         await page.waitForFunction(

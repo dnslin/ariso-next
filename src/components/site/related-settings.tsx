@@ -6,7 +6,6 @@ import { Button } from '@heroui/react/button';
 import { Card } from '@heroui/react/card';
 import { Link } from '@heroui/react/link';
 import { ChevronRight } from 'lucide-react';
-import { ThemeSelector } from './theme-selector';
 import {
   storageRequest,
   storageSettingsUrl,
@@ -173,7 +172,6 @@ export function RelatedSettings({ onExpire }: { onExpire: () => void }) {
             </div>
           ) : null}
         </div>
-        <ThemeSelector settings />
       </div>
     </Card>
   );

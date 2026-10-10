@@ -2,6 +2,8 @@
 
 2026-10-10；任务 `T-SITE-05`，需求 `R-21.3-01`。本记录统一维护实际实施、验证及审计证据。代码完成、本地检查、浏览器验证、设计评审和用户人工验收分别记录。
 
+最新人工反馈要求改为唯一后台主题图标，前台不显示；随后明确“改放后台右上角，先调整原型”。用户已审阅[右上角原型及证据](../../../design-plans/issue197-icon-review/README.md)，明确批准“右上角方案，实施并同步 Figma”。本轮产品已移除前台/基本设置重复入口并接入后台公共顶栏，主题三阶段、边界补验及Figma写入/回读已完成；独立评审和人工验收分别记录。下文原弹窗实现及其历史检查不能视为本轮图标交互已完成；最新结果另记于末尾。
+
 ## 范围与依据
 
 GitHub #197 无评论，原生 blocked by 为 #57/T-UI-01、#139/DG-THEME，本轮回读均 CLOSED；blocking 为空。基线 `origin/main=9ab5be05`，隔离 worktree 的分支为 `codex/issue-197-theme`。
@@ -94,8 +96,42 @@ node docs/tasks/check.mjs
 
 验收基本设置的界面主题、公共页面右上外观入口；从侧栏反复切换基本设置与标签页，观察整页和右上操作；切换浅/深/系统，检查勾选、操作系统切换、刷新、跨页及同origin跨标签；编辑未保存表单后切换，检查草稿、位置与焦点。桌面1440×1080、手机390×844代表设计，补360/430/768与390×480短视口。照片、图表、错误及禁用状态以最终浏览器报告说明实际覆盖。
 
-当前：产品代码完成；本地基础检查通过；主题原行为验证及最新代表/消费者补验通过；独立代码审计和本次范围设计复核通过；人工验收未完成。默认全量失败及未执行项仍保留，PR保持草稿。DES-05/RG-07及T-QA-02未关闭。日常PR不创建Release、发布镜像或部署；远端检查按实际回读记录，不把无检查写成CI通过。
+截至此前提交：产品代码完成；本地基础检查通过；主题原行为验证及最新代表/消费者补验通过；独立代码审计和本次范围设计复核通过；人工验收未完成。默认全量失败及未执行项仍保留，PR保持草稿。DES-05/RG-07及T-QA-02未关闭。日常PR不创建Release、发布镜像或部署；远端检查按实际回读记录，不把无检查写成CI通过。
 
 ## 分支与远端状态
 
 已提交并推送 `codex/issue-197-theme`，创建 [PR #278](https://github.com/dnslin/ariso-next/pull/278)。`gh pr view 278` 实际回读为 OPEN、isDraft=true、mergeStateStatus=CLEAN；`statusCheckRollup=[]`，`gh pr checks 278` 返回 no checks reported。远端没有已触发检查，不记作CI通过，不等待不存在的工作流。Issue #197保持开放。原工作区和其他任务未改动；任务worktree及独立预览保留。
+
+## 人工反馈修订：后台右上三态图标
+
+用户审阅账号旁版本后要求“改放后台右上角，先调整原型”，随后明确批准“右上角方案，实施并同步 Figma”。[获批原型](../../../design-plans/issue197-icon-review/README.md)保留原始截图与检查，不替代下述真实产品结果。
+
+产品由公共 `AdminShell` 统一呈现：桌面新增60px顶行、正文顶部内边距24px，标题起点y84；手机在已有页眉将主题图标放在Menu左边、间隔8px。按钮44×44、Lucide图标20×20，仅显示当前偏好的Sun/Moon/Monitor，点击亮→暗→自动循环；Tooltip和可访问名称说明当前及下一项。响应式两实例只显示一个，侧栏账号、PublicShell及基本设置关联行均无重复入口，旧外观弹窗已删除。根Provider、localStorage、系统/跨标签同步继续由next-themes负责，不新增监听器、API、数据库或依赖。服务端只输出固定尺寸禁用占位，不猜图标或选择。
+
+### 本轮实际检查
+
+环境仍为macOS arm64、Node24.18.1、pnpm11.19.0。`pnpm install --frozen-lockfile`、`pnpm run lint`、`pnpm run typecheck`、`pnpm run build`实际通过；构建仍有可选非当前平台原生包的追踪警告，退出0且Standalone包装完成。`pnpm run test:unit`158文件2026项通过。`pnpm exec vitest run --project integration tests/integration/shell/home.test.ts tests/integration/site/settings-http.test.ts`2文件9项通过。服务端业务、数据库和依赖未改变，不机械重跑此前已通过的其他集成组。
+
+5个主题浏览器模块已删除旧弹窗/Radio辅助及失效断言，保留三态、SSR、系统、刷新/跨页/跨标签、两独立表单草稿、图库选择/滚动、真实图表/照片/错误/禁用与全部原消费路由。新控件检查唯一可见、44px、三态图标和真实HeroUI 2px焦点环及裁剪。`pnpm exec vitest run --project unit tests/unit/runtime/browser-plan.test.ts`140项通过，默认full仍接入theme且无条件执行behavior/representative/consumers，定向只缩短重跑范围；本次没有改公共运行器或其他suite参数。
+
+首轮命令 `EGO_TASK_SPACE=6 EGO_PAGE_LABEL=p2 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/theme-197/icon-all node scripts/verify-browser.mjs --suite theme` 退出1：行为已通过三态/SSR/草稿，刷新后宽泛选择器命中隐藏手机节点而超时。改为按实际1200px断点等待可见入口，保留严格行为断言。[原失败](./failures/icon-hidden-responsive-trigger.json)独立保留，修正后结果如下；没有重试写接口或操作用户预览数据。
+
+真实产品工作台截图：[桌面亮色](./icon-ui/desktop-light.png)、[桌面暗色](./icon-ui/desktop-dark.png)、[手机亮色](./icon-ui/mobile-light.png)、[手机暗色](./icon-ui/mobile-dark.png)。实施者实际逐张查看并对照获批原型公共布局，位置/尺寸一致；[实际几何](./icon-ui/geometry.json)为desktop x1364/y8、title y84，mobile x278/y10、title y88，4状态均44×44/20×20、仅一个可见入口、无横向溢出。业务数量/更新时间来自真实预览数据，未拿原型样例冒充响应。
+
+独立代码评审已读取产品5文件与测试5模块，并回读本轮三阶段/边界证据，结论通过、无未解决问题；[审计记录](./code-review.md#获批右上主题图标独立静态复审)按实际证据持续补充。独立设计评审实际读取Figma及六张产品截图，结论通过、无本轮阻塞差异，见[本轮设计结论](./design-review.md#获批调整后台右上角循环图标)。
+
+修正后命令 `EGO_TASK_SPACE=6 EGO_PAGE_LABEL=p2 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/theme-197/icon-fixed node scripts/verify-browser.mjs --suite theme` 实际退出0，[theme报告](./icon-browser/theme.json)与[runner报告](./icon-browser/runner.json)均passed：behavior、representative、consumers全部执行，9项行为结论、163布局，28段导航过程、16次逐字输入，8条真实对比记录及4组照片记录，`browserErrors=[]`，自有夹具离线恢复。报告同目录保留全部本轮真实截图。此为theme三阶段通过，原默认全量31通过/9失败或停止及后续未执行的限制不变。
+
+[真实产品边界记录](./icon-ui/boundaries.json)补充验证1440×600主区实际滚动676px后图标仍y8、顶行60px；72px收起侧栏的自动图标与键盘焦点完整。1199/1200断点各只有正确位置的一个可见入口；390×480主题与菜单间隔8px、焦点未裁切；打开手机导航后外部图标inert，菜单账号无重复入口，关闭回焦Menu。前台入口实际为0。首次断点测量紧接CDP改尺寸，得到瞬时overflow；当场读取页面无超界元素，补充等待浏览器布局帧后严格无溢出检查通过，没有修改产品或放松断言。实际[收起侧栏截图](./icon-ui/collapsed-auto-focus.png)、[短视口焦点截图](./icon-ui/mobile-short-auto-focus.png)已逐张查看。
+
+### 本轮 Figma 同步
+
+已实际写入文件 `74sT9Hrf8G4czcWeTkET5b`：三状态控件[1065:19460](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1065-19460)、桌面顶栏[1065:19461](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1065-19461)、手机页眉[1066:35730](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1066-35730)及[获批规范1065:19467](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1065-19467)。接入工作台451:3748/451:8551、桌面统计446:8063、深色设置472:4254/472:9458，旧主题弹窗及R4状态标记废弃，14处旧前台入口隐藏。原手机Header112:1498及397份历史实例没有整体修改，不声称全文件同步。
+
+[精确写入清单](./figma/icon-sync.json)与[回读属性](./figma/icon-readback.json)保留全部相关ID。实施者实际查看回读[桌面工作台](./figma/icon-desktop-workbench.png)、[手机工作台](./figma/icon-mobile-workbench.png)、[深色手机设置](./figma/icon-mobile-dark-settings.png)和[规范](./figma/icon-spec.png)，新公共入口位置、纯图标及正文起点与批准原型一致。既有业务样例数值、彩色静态说明等按当前handoff及已实现能力处理，不为主题入口回退旧业务布局。
+
+[Figma同步范围与八张回读图](./figma/icon-sync.md)详列节点；三状态组件与规范已表达循环，但未另接Figma播放器反应连线。
+
+本轮代码完成、本地检查通过、主题浏览器验证完成、独立代码与设计评审完成。最终产品人工验收仍未完成，保持草稿PR；默认全量未重跑。独立预览 `http://127.0.0.1:61498/dashboard` 保留同一测试账号与数据，原型61500也保留。人工验收建议：桌面/手机点击右上图标循环三态，验证自动随系统；侧栏切换标签页、设置页与滚动后入口稳定；确认前台、账号和基本设置无重复入口。凭证仅在私密对话和本地忽略文件提供。
+
+最终文档检查 `node docs/tasks/check.mjs` 通过（120任务、298需求）；`pnpm run format:check` 全仓通过，`git diff --check`通过。最初定向格式整理误匹配PNG并提示无解析器，PNG未改变；文本/JSON已格式化且后续全仓格式检查通过。源码与测试未再修改，不重复已通过的构建、类型及浏览器阶段。

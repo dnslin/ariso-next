@@ -5,14 +5,12 @@ import { uploadSettingsTools } from './upload-settings-helpers.mjs';
 import { installBrowserErrors, readBrowserErrors } from './browser-errors.mjs';
 import { verifyThemeNavigation } from './theme-navigation.mjs';
 import {
-  settingsTrigger,
-  publicTrigger,
-  radio,
+  visibleThemeTrigger,
+  expectPreference,
+  cycleTheme,
   emulateSystem,
   expectTheme,
-  openTheme,
   chooseTheme,
-  closeTheme,
 } from './theme-helpers.mjs';
 
 export async function verifyThemeBehavior(task, page, config, report) {
@@ -35,24 +33,16 @@ export async function verifyThemeBehavior(task, page, config, report) {
   );
   await expectTheme(page, 'dark');
   await page.snapshot();
-  await openTheme(page, settingsTrigger, true);
-  assert.equal(
-    await page.evaluate(
-      (selector) => document.querySelector(selector).checked,
-      radio('system'),
-    ),
-    true,
-    'First use selects system even while its resolved appearance is dark',
-  );
+  await expectPreference(page, 'system');
   await emulateSystem(page, 'light');
   await expectTheme(page, 'light');
-  assert.equal(
-    await page.evaluate(
-      (selector) => document.querySelector(selector).checked,
-      radio('system'),
-    ),
-    true,
-  );
+  await expectPreference(page, 'system');
+  for (const next of ['light', 'dark', 'system', 'light'])
+    assert.equal(
+      await cycleTheme(page, true),
+      next,
+      'Real button cycles light → dark → system → light',
+    );
   for (const mode of ['light', 'dark']) {
     await chooseTheme(page, mode, mode);
     await emulateSystem(page, mode === 'light' ? 'dark' : 'light');
@@ -61,7 +51,6 @@ export async function verifyThemeBehavior(task, page, config, report) {
   await chooseTheme(page, 'system', 'light');
   await emulateSystem(page, 'dark');
   await expectTheme(page, 'dark', 'system');
-  await closeTheme(page);
   report.checks.push(
     'default system, real UI three preferences, live system changes and explicit preference precedence',
   );
@@ -70,22 +59,35 @@ export async function verifyThemeBehavior(task, page, config, report) {
   assert.equal(html.status, 200);
   const serverTrigger = await page.evaluate((html) => {
     const root = new DOMParser().parseFromString(html, 'text/html');
-    const button = root.querySelector('[data-testid="theme-settings-trigger"]');
-    return {
-      exists: !!button,
-      disabled: button?.hasAttribute('disabled'),
-      text: button?.textContent.trim(),
-    };
+    return [...root.querySelectorAll('[data-testid="theme-trigger"]')].map(
+      (button) => ({
+        disabled: button.hasAttribute('disabled'),
+        label: button.getAttribute('aria-label'),
+        preference: button.getAttribute('data-theme'),
+        text: button.textContent.trim(),
+        icon: !!button.querySelector('svg'),
+      }),
+    );
   }, html.body);
-  assert.equal(serverTrigger.exists, true);
   assert.equal(
-    serverTrigger.disabled,
-    true,
-    'Server render cannot choose an unknown browser preference',
+    serverTrigger.length,
+    2,
+    'Server renders the two responsive header locations',
   );
-  assert.ok(serverTrigger.text.includes('正在读取浏览器偏好…'));
+  for (const trigger of serverTrigger)
+    assert.deepEqual(
+      trigger,
+      {
+        disabled: true,
+        label: '正在读取浏览器偏好',
+        preference: null,
+        text: '',
+        icon: false,
+      },
+      'Server render disables the icon placeholder without guessing a preference',
+    );
   report.checks.push(
-    'server-rendered preference row is disabled and does not show a guessed selected preference',
+    'server-rendered header icon placeholders are disabled and do not guess a selected preference',
   );
 
   await page.fill('#site-name', 'Issue 197 未保存站点草稿');
@@ -94,10 +96,11 @@ export async function verifyThemeBehavior(task, page, config, report) {
   // The NumberField helper commits with Tab, which focuses the next numeric
   // field. Move focus directly to the real action before Ego can wheel it into
   // view; React Aria intentionally treats a focused number field's wheel as input.
-  await page.focus(settingsTrigger);
+  const trigger = await visibleThemeTrigger(page);
+  await page.focus(trigger);
   await page.waitForFunction(
     (selector) => document.activeElement === document.querySelector(selector),
-    settingsTrigger,
+    trigger,
   );
   assert.deepEqual(await upload.inputs(), {
     ...uploadInputs,
@@ -111,15 +114,12 @@ export async function verifyThemeBehavior(task, page, config, report) {
       ),
     ].map((node) => node.value),
   }));
-  // Focus has already revealed the action. Opening with Enter now consumes no
-  // wheel input and leaves the strong draft/scroll assertions unchanged.
+  // Keyboard activation of the fixed header consumes no wheel input.
   const scroll = await page.evaluate(() => ({
     main: document.querySelector('main').scrollTop,
     window: scrollY,
   }));
-  await openTheme(page, settingsTrigger, true);
-  await chooseTheme(page, 'light', 'light');
-  await closeTheme(page);
+  await chooseTheme(page, 'light', 'light', true);
   const preserved = await page.evaluate(() => ({
     name: document.querySelector('#site-name').value,
     upload: [
@@ -152,10 +152,17 @@ export async function verifyThemeBehavior(task, page, config, report) {
   await page.fill('#site-name', original[0].name);
   await upload.fill(uploadInputs);
   await page.reload();
-  await page.waitForSelector(settingsTrigger);
+  await page.waitForSelector(await visibleThemeTrigger(page));
   await expectTheme(page, 'light', 'light');
   await page.goto(`${config.origin}/`);
-  await page.waitForSelector(publicTrigger);
+  await page.waitForSelector('.public-shell');
+  assert.equal(
+    await page.evaluate(
+      () => document.querySelectorAll('[data-testid="theme-trigger"]').length,
+    ),
+    0,
+    'Public pages expose no theme control',
+  );
   await expectTheme(page, 'light', 'light');
   report.checks.push(
     'explicit preference survives real reload and navigation from admin to public page',
@@ -164,19 +171,19 @@ export async function verifyThemeBehavior(task, page, config, report) {
   const other = await task.newPage();
   await installBrowserErrors(other);
   await other.goto(`${config.origin}/forgot-password`);
-  await other.waitForSelector(publicTrigger);
+  await other.waitForSelector('.public-shell');
   await emulateSystem(other, 'light');
   await expectTheme(other, 'light', 'light');
   await page.snapshot();
-  await openTheme(page, publicTrigger);
+  await page.goto(`${config.origin}/library`);
+  await page.waitForSelector('[data-testid="library-list"]');
   await chooseTheme(page, 'dark', 'dark');
   await expectTheme(other, 'dark', 'dark');
-  await closeTheme(page, publicTrigger);
+  await other.goto(`${config.origin}/library`);
+  await other.waitForSelector('[data-testid="library-list"]');
   await other.snapshot();
-  await openTheme(other, publicTrigger);
   await chooseTheme(other, 'system', 'light');
   await expectTheme(page, 'dark', 'system');
-  await closeTheme(other, publicTrigger);
   await emulateSystem(other, 'dark');
   await expectTheme(other, 'dark', 'system');
   const errors = await readBrowserErrors(other);

@@ -6,10 +6,72 @@ import {
   assertGeometry,
 } from './browser-geometry.mjs';
 
-export const settingsTrigger = '[data-testid="theme-settings-trigger"]';
-export const publicTrigger = '[data-testid="theme-public-trigger"]';
-export const dialog = '[role="dialog"][aria-label="外观"]';
-export const radio = (mode) => `${dialog} input[type="radio"][value="${mode}"]`;
+export const themeTriggers = '[data-testid="theme-trigger"]';
+const modes = ['light', 'dark', 'system'];
+const labels = { light: '亮色', dark: '暗色', system: '自动' };
+const icons = { light: 'sun', dark: 'moon', system: 'monitor' };
+
+export async function visibleThemeTrigger(page) {
+  const desktop = await page.evaluate(() => innerWidth >= 1200);
+  return `${desktop ? '.shell-toolbar' : '.shell-mobile-header'} ${themeTriggers}`;
+}
+
+export async function expectThemeEntries(page, admin) {
+  const entries = await page.evaluate(() =>
+    [...document.querySelectorAll('[data-testid="theme-trigger"]')].map(
+      (button) => {
+        const rect = button.getBoundingClientRect();
+        const style = getComputedStyle(button);
+        return {
+          visible:
+            rect.width > 0 &&
+            rect.height > 0 &&
+            style.visibility !== 'hidden' &&
+            !button.closest('[inert]'),
+          width: rect.width,
+          height: rect.height,
+        };
+      },
+    ),
+  );
+  assert.equal(
+    entries.length,
+    admin ? 2 : 0,
+    'Theme controls belong only to the responsive admin headers',
+  );
+  const visible = entries.filter((entry) => entry.visible);
+  assert.equal(
+    visible.length,
+    admin ? 1 : 0,
+    'Only one responsive theme control is visible',
+  );
+  for (const entry of visible)
+    assert.ok(
+      entry.width >= 44 && entry.height >= 44,
+      'Header icon has a 44px click target',
+    );
+}
+
+export async function expectPreference(page, mode) {
+  const selector = await visibleThemeTrigger(page);
+  await page.waitForFunction(
+    ({ selector, mode }) =>
+      document.querySelector(selector)?.dataset.theme === mode,
+    { selector, mode },
+  );
+  const state = await page.evaluate((selector) => {
+    const button = document.querySelector(selector);
+    return {
+      label: button.getAttribute('aria-label'),
+      icon: button.querySelector('svg')?.getAttribute('class'),
+      text: button.textContent.trim(),
+    };
+  }, selector);
+  const next = modes[(modes.indexOf(mode) + 1) % modes.length];
+  assert.equal(state.label, `外观：${labels[mode]}；点击切换为${labels[next]}`);
+  assert.ok(state.icon?.split(' ').includes(`lucide-${icons[mode]}`));
+  assert.equal(state.text, '', 'Theme control contains only its state icon');
+}
 
 export async function emulateSystem(page, system) {
   await page.cdp('Emulation.setEmulatedMedia', {
@@ -44,59 +106,60 @@ export async function expectTheme(page, resolved, preference) {
   assert.equal(state.colorScheme, resolved);
 }
 
-export async function openTheme(
-  page,
-  trigger = settingsTrigger,
-  keyboard = false,
-) {
-  await page.waitForFunction((trigger) => {
-    const node = document.querySelector(trigger);
-    return node && !node.disabled;
-  }, trigger);
+export async function cycleTheme(page, keyboard = false) {
+  const selector = await visibleThemeTrigger(page);
+  await page.waitForFunction((selector) => {
+    const node = document.querySelector(selector);
+    return node && !node.disabled && node.dataset.theme;
+  }, selector);
+  const current = await page.evaluate(
+    (selector) => document.querySelector(selector).dataset.theme,
+    selector,
+  );
+  assert.ok(modes.includes(current));
+  const next = modes[(modes.indexOf(current) + 1) % modes.length];
   if (keyboard) {
-    await page.focus(trigger);
+    await page.focus(selector);
     await page.keyboard.press('Enter');
-  } else await page.click(trigger);
-  await page.waitForSelector(dialog);
-  const group = await page.evaluate((dialog) => {
-    const node = document.querySelector(`${dialog} [role="radiogroup"]`);
-    const label =
-      node.getAttribute('aria-label') ||
-      document.getElementById(node.getAttribute('aria-labelledby'))
-        ?.textContent;
-    return {
-      label: label?.trim(),
-      count: node.querySelectorAll('input[type="radio"]').length,
-    };
-  }, dialog);
-  assert.deepEqual(group, { label: '界面主题', count: 3 });
+  } else await page.click(selector);
+  await expectPreference(page, next);
+  const resolved =
+    next === 'system'
+      ? await page.evaluate(() =>
+          matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light',
+        )
+      : next;
+  await expectTheme(page, resolved, next);
+  if (keyboard)
+    assert.equal(
+      await page.evaluate(
+        (selector) =>
+          document.activeElement === document.querySelector(selector),
+        selector,
+      ),
+      true,
+      'Keyboard theme change retains trigger focus',
+    );
+  return next;
 }
 
-export async function chooseTheme(page, mode, resolved) {
-  await page.click(`${dialog} [data-testid="theme-option-${mode}"] label`);
+export async function chooseTheme(page, mode, resolved, keyboard = false) {
+  assert.ok(modes.includes(mode));
+  const selector = await visibleThemeTrigger(page);
   await page.waitForFunction(
-    (selector) => document.querySelector(selector)?.checked === true,
-    radio(mode),
+    (selector) => !!document.querySelector(selector)?.dataset.theme,
+    selector,
   );
-  assert.equal(
-    await page.evaluate(
-      (dialog) =>
-        document.querySelectorAll(`${dialog} input[type="radio"]:checked`)
-          .length,
-      dialog,
-    ),
-    1,
+  const current = await page.evaluate(
+    (selector) => document.querySelector(selector).dataset.theme,
+    selector,
   );
+  const clicks =
+    (modes.indexOf(mode) - modes.indexOf(current) + modes.length) %
+    modes.length;
+  for (let index = 0; index < clicks; index++) await cycleTheme(page, keyboard);
+  await expectPreference(page, mode);
   await expectTheme(page, resolved, mode);
-}
-
-export async function closeTheme(page, trigger = settingsTrigger) {
-  await page.keyboard.press('Escape');
-  await page.waitForSelector(dialog, { state: 'hidden' });
-  await page.waitForFunction(
-    (trigger) => document.activeElement === document.querySelector(trigger),
-    trigger,
-  );
 }
 
 export async function themeEvidence(

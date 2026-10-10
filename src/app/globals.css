@@ -313,6 +313,14 @@ input {
 .shell-mobile-header {
   display: none;
 }
+.shell-toolbar {
+  display: none;
+  flex: none;
+  min-height: 60px;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 8px 32px;
+}
 .shell-workspace {
   flex: 1;
   min-height: 0;
@@ -354,6 +362,12 @@ input {
 @media (width >= 1200px) {
   .admin-shell {
     flex-direction: row;
+  }
+  .shell-toolbar {
+    display: flex;
+  }
+  .shell-content {
+    padding-top: 24px;
   }
   .shell-navigation {
     width: 232px;

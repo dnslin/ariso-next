@@ -2,12 +2,9 @@ import assert from 'node:assert/strict';
 import { resizeViewport } from './browser-geometry.mjs';
 import { installBrowserErrors, readBrowserErrors } from './browser-errors.mjs';
 import {
-  settingsTrigger,
-  publicTrigger,
-  openTheme,
   chooseTheme,
-  closeTheme,
   expectTheme,
+  emulateSystem,
   readContrast,
   themeEvidence,
 } from './theme-helpers.mjs';
@@ -50,15 +47,15 @@ export async function verifyThemeContent(task, page, config, fixture, report) {
   const photos = (report.photos ??= []);
   const peer = await task.newPage();
   await installBrowserErrors(peer);
-  await peer.goto(`${config.origin}/`);
-  await peer.waitForSelector(publicTrigger);
+  await peer.goto(`${config.origin}/library`);
+  await peer.waitForSelector('[data-testid="library-list"]');
   for (const width of [1440, 390]) {
     await resizeViewport(page, width);
     for (const resolved of ['light', 'dark']) {
+      await emulateSystem(page, resolved);
+      await emulateSystem(peer, resolved);
       await peer.snapshot();
-      await openTheme(peer, publicTrigger);
       await chooseTheme(peer, resolved, resolved);
-      await closeTheme(peer, publicTrigger);
       await page.goto(`${config.origin}/library`);
       await page.waitForFunction(
         (ids) =>
@@ -124,7 +121,6 @@ export async function verifyThemeContent(task, page, config, fixture, report) {
       const scroll = await page.evaluate(
         () => document.querySelector('main').scrollTop,
       );
-      await openTheme(peer, publicTrigger);
       await chooseTheme(
         peer,
         resolved === 'light' ? 'dark' : 'light',
@@ -132,7 +128,6 @@ export async function verifyThemeContent(task, page, config, fixture, report) {
       );
       await expectTheme(page, resolved === 'light' ? 'dark' : 'light');
       await chooseTheme(peer, resolved, resolved);
-      await closeTheme(peer, publicTrigger);
       await expectTheme(page, resolved, resolved);
       assert.equal(
         await page.evaluate(
@@ -269,9 +264,12 @@ export async function verifyThemeContent(task, page, config, fixture, report) {
       assert.ok(error.ratio >= 4.5, `Small error text contrast ${error.ratio}`);
       contrasts.push({ width, resolved, ...error });
       await page.snapshot();
-      await openTheme(page, settingsTrigger);
+      await chooseTheme(
+        page,
+        resolved === 'light' ? 'dark' : 'light',
+        resolved === 'light' ? 'dark' : 'light',
+      );
       await chooseTheme(page, resolved, resolved);
-      await closeTheme(page);
       assert.equal(
         await page.evaluate(
           (selector) => document.querySelector(selector).textContent.trim(),

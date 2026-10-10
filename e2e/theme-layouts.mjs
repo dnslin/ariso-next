@@ -1,15 +1,13 @@
 import assert from 'node:assert/strict';
 import { resizeViewport } from './browser-geometry.mjs';
 import {
-  settingsTrigger,
-  publicTrigger,
-  dialog,
-  radio,
+  visibleThemeTrigger,
+  expectThemeEntries,
+  expectPreference,
+  cycleTheme,
   emulateSystem,
   expectTheme,
-  openTheme,
   chooseTheme,
-  closeTheme,
   themeEvidence,
 } from './theme-helpers.mjs';
 
@@ -23,124 +21,109 @@ export async function verifyThemeLayouts(page, config, report) {
     await page.snapshot();
     for (const resolved of ['light', 'dark']) {
       await emulateSystem(page, resolved);
-      await openTheme(page);
       await chooseTheme(page, resolved, resolved);
-      const targets = await page.evaluate(
-        (dialog) =>
-          [...document.querySelectorAll(`${dialog} input[type="radio"]`)].map(
-            (node) => {
-              const target = node.closest('label') ?? node;
-              const rect = target.getBoundingClientRect();
-              return { width: rect.width, height: rect.height };
-            },
-          ),
-        dialog,
-      );
-      for (const target of targets)
-        assert.ok(
-          target.width >= 44 && target.height >= 44,
-          'Each complete preference row is at least a 44px click target',
-        );
+      await expectThemeEntries(page, true);
+      await themeEvidence(page, config, report, 'settings', width, resolved);
+      await chooseTheme(page, 'system', resolved);
       await themeEvidence(
         page,
         config,
         report,
-        'settings-dialog',
+        'settings-system',
         width,
         resolved,
       );
-      await closeTheme(page);
-      await themeEvidence(page, config, report, 'settings', width, resolved);
-      if (width === 1440 || width === 390) {
-        await page.keyboard.press('Shift+Tab');
-        await page.keyboard.press('Tab');
-        await page.waitForFunction(
-          (selector) =>
-            document.querySelector(selector).matches(':focus-visible'),
-          settingsTrigger,
+      await chooseTheme(page, resolved, resolved, true);
+      const selector = await visibleThemeTrigger(page);
+      await page.focus(selector);
+      await page.keyboard.press('Shift+Tab');
+      await page.keyboard.press('Tab');
+      await page.waitForFunction(
+        (selector) =>
+          document.querySelector(selector).matches(':focus-visible'),
+        selector,
+      );
+      const focus = await page.evaluate((selector) => {
+        const button = document.querySelector(selector);
+        const style = getComputedStyle(button);
+        const rect = button.getBoundingClientRect();
+        const offset = Number.parseFloat(
+          style.getPropertyValue('--tw-ring-offset-width'),
         );
-        const focus = await page.evaluate((selector) => {
-          const style = getComputedStyle(document.querySelector(selector));
-          return {
-            width: style.outlineWidth,
-            style: style.outlineStyle,
-            offset: style.outlineOffset,
-          };
-        }, settingsTrigger);
-        assert.deepEqual(focus, {
-          width: '2px',
-          style: 'solid',
-          offset: '-2px',
-        });
-        await themeEvidence(
-          page,
-          config,
-          report,
-          'settings-focused',
-          width,
-          resolved,
-        );
-      }
+        const spread = offset + 2;
+        let clipped =
+          rect.top < spread ||
+          rect.left < spread ||
+          rect.bottom + spread > innerHeight ||
+          rect.right + spread > innerWidth;
+        for (
+          let parent = button.parentElement;
+          parent;
+          parent = parent.parentElement
+        ) {
+          const ancestorStyle = getComputedStyle(parent);
+          const bounds = parent.getBoundingClientRect();
+          if (ancestorStyle.overflowX !== 'visible')
+            clipped ||=
+              rect.left - spread < bounds.left ||
+              rect.right + spread > bounds.right;
+          if (ancestorStyle.overflowY !== 'visible')
+            clipped ||=
+              rect.top - spread < bounds.top ||
+              rect.bottom + spread > bounds.bottom;
+        }
+        return { shadow: style.boxShadow, offset, clipped };
+      }, selector);
+      assert.ok(
+        focus.shadow.includes(`0px 0px 0px ${focus.offset + 2}px`),
+        'HeroUI renders its real 2px focus ring outside the ring offset',
+      );
+      assert.equal(
+        focus.clipped,
+        false,
+        'Header focus ring is visible within the viewport and ancestor clipping regions',
+      );
+      await themeEvidence(
+        page,
+        config,
+        report,
+        'settings-focused',
+        width,
+        resolved,
+      );
     }
   }
   await resizeViewport(page, 390, 480);
-  await openTheme(page, settingsTrigger, true);
-  await page.focus(radio('light'));
-  await page.keyboard.press('ArrowDown');
-  await page.waitForFunction(
-    (selector) => document.querySelector(selector).checked === true,
-    radio('dark'),
-  );
-  await expectTheme(page, 'dark', 'dark');
-  await page.keyboard.press('ArrowDown');
-  await page.waitForFunction(
-    (selector) => document.querySelector(selector).checked === true,
-    radio('system'),
-  );
-  await expectTheme(page, 'dark', 'system');
-  for (let index = 0; index < 5; index++) {
-    await page.keyboard.press('Tab');
-    assert.equal(
-      await page.evaluate(
-        (dialog) =>
-          document.querySelector(dialog).contains(document.activeElement),
-        dialog,
-      ),
-      true,
-      'Keyboard focus remains in the appearance dialog',
-    );
+  await chooseTheme(page, 'light', 'light', true);
+  for (const mode of ['dark', 'system', 'light']) {
+    assert.equal(await cycleTheme(page, true), mode);
+    await expectThemeEntries(page, true);
   }
   await themeEvidence(
     page,
     config,
     report,
-    'short-dialog-keyboard',
+    'short-header-keyboard',
     390,
-    'dark',
+    'light',
     480,
   );
-  await closeTheme(page);
   report.checks.push(
-    'desktop/mobile/360/430/768 light and dark, 44px preference rows, short viewport, keyboard radio selection, focus containment and Escape restoration',
+    'desktop/mobile/360/430/768 three icon states, one visible 44px header target, keyboard cycle with retained focus and short viewport',
   );
 
   for (const width of [1440, 390]) {
     await resizeViewport(page, width);
-    await page.goto(`${config.origin}/forgot-password`);
-    await page.waitForSelector(publicTrigger);
-    await page.snapshot();
     for (const resolved of ['light', 'dark']) {
-      await openTheme(page, publicTrigger, true);
-      await chooseTheme(page, resolved, resolved);
-      await themeEvidence(
-        page,
-        config,
-        report,
-        'public-dialog',
-        width,
-        resolved,
+      await page.goto(`${config.origin}/settings/general`);
+      await page.waitForSelector(
+        '[data-testid="site-general"][data-state="ready"]',
       );
-      await closeTheme(page, publicTrigger);
+      await chooseTheme(page, resolved, resolved);
+      await page.goto(`${config.origin}/forgot-password`);
+      await page.waitForSelector('.public-shell');
+      await expectTheme(page, resolved, resolved);
+      await expectThemeEntries(page, false);
       await themeEvidence(page, config, report, 'public', width, resolved);
     }
   }
@@ -175,13 +158,11 @@ export async function verifyThemeConsumers(page, config, report, fixture) {
   ];
   for (const width of [1440, 390]) {
     await resizeViewport(page, width);
-    await page.goto(`${config.origin}/`);
-    await page.waitForSelector(publicTrigger);
     for (const resolved of ['light', 'dark']) {
       await emulateSystem(page, resolved);
-      await openTheme(page, publicTrigger);
+      await page.goto(`${config.origin}/library`);
+      await page.waitForSelector('[data-testid="library-list"]');
       await chooseTheme(page, resolved, resolved);
-      await closeTheme(page, publicTrigger);
       for (const route of routes) {
         await page.goto(`${config.origin}${route}`);
         await page.waitForSelector('main');
@@ -190,9 +171,6 @@ export async function verifyThemeConsumers(page, config, report, fixture) {
         const structure = await page.evaluate(() => ({
           public: !!document.querySelector('.public-shell'),
           admin: !!document.querySelector('.admin-shell'),
-          publicTrigger: document.querySelectorAll(
-            '[data-testid="theme-public-trigger"]',
-          ).length,
           filteredImages: [...document.querySelectorAll('img')]
             .filter((image) => getComputedStyle(image).filter !== 'none')
             .map((image) => image.getAttribute('alt')),
@@ -202,12 +180,8 @@ export async function verifyThemeConsumers(page, config, report, fixture) {
           true,
           `${route} uses a shared shell`,
         );
-        if (structure.public)
-          assert.equal(
-            structure.publicTrigger,
-            1,
-            `${route} reuses one public appearance entry`,
-          );
+        await expectThemeEntries(page, structure.admin);
+        if (structure.admin) await expectPreference(page, resolved);
         assert.deepEqual(
           structure.filteredImages,
           [],
@@ -222,12 +196,19 @@ export async function verifyThemeConsumers(page, config, report, fixture) {
           resolved,
         );
       }
-      await page.goto(`${config.origin}/`);
-      await page.waitForSelector(publicTrigger);
     }
   }
   // Public login redirects an authenticated owner. End the isolated test session
   // with the real sign-out endpoint before checking the actual anonymous page.
+  await page.goto(`${config.origin}/library`);
+  await page.waitForSelector('[data-testid="library-list"]');
+  await chooseTheme(
+    page,
+    'system',
+    await page.evaluate(() =>
+      matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light',
+    ),
+  );
   const signOut = await page.fetch('/api/auth/sign-out', {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
@@ -241,9 +222,8 @@ export async function verifyThemeConsumers(page, config, report, fixture) {
     await page.snapshot();
     for (const resolved of ['light', 'dark']) {
       await emulateSystem(page, resolved);
-      await openTheme(page, publicTrigger);
-      await chooseTheme(page, resolved, resolved);
-      await closeTheme(page, publicTrigger);
+      await expectTheme(page, resolved, 'system');
+      await expectThemeEntries(page, false);
       await themeEvidence(
         page,
         config,
