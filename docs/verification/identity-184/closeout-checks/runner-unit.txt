@@ -1,0 +1,47 @@
+Already up to date
+Done in 50ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-184-password-reset/ariso
+
+ ❯ |unit| tests/unit/runtime/browser-business-cli.test.ts (11 tests | 1 failed) 144149ms
+   ❯ actual business CLI connections without external services (11)
+     × executes the default plan through the real default entry loop 143419ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/runtime/browser-business-cli.test.ts > actual business CLI connections without external services > executes the default plan through the real default entry loop
+AssertionError: expected Error: spawnSync /Users/dnslin/.nvm/versi… { …(5) } to be undefined
+
+- Expected:
+undefined
+
++ Received:
+Error {
+  "message": "spawnSync /Users/dnslin/.nvm/versions/node/v24.18.1/bin/node ETIMEDOUT",
+  "errno": -60,
+  "code": "ETIMEDOUT",
+  "syscall": "spawnSync /Users/dnslin/.nvm/versions/node/v24.18.1/bin/node",
+  "path": "/Users/dnslin/.nvm/versions/node/v24.18.1/bin/node",
+  "spawnargs": [
+    "--import",
+    "/Users/dnslin/.codex/worktrees/issue-184-password-reset/ariso/tests/unit/runtime/fixtures/browser-cli.mjs",
+    "/Users/dnslin/.codex/worktrees/issue-184-password-reset/ariso/scripts/verify-browser.mjs",
+  ],
+}
+
+ ❯ run tests/unit/runtime/browser-business-cli.test.ts:39:39
+     37|     },
+     38|   );
+     39|   expect(result.error, result.stderr).toBeUndefined();
+       |                                       ^
+     40|   expect(result.status, result.stderr).toBe(0);
+     41|   const report = JSON.parse(
+ ❯ tests/unit/runtime/browser-business-cli.test.ts:74:39
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 2 passed (3)
+      Tests  1 failed | 335 passed (336)
+   Start at  10:34:42
+   Duration  144.33s (tests 100%)

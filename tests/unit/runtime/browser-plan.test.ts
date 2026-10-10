@@ -118,6 +118,7 @@ describe('focused browser execution plans', () => {
     ['brand-experiment', []],
     ['branding', []],
     ['smtp', ['smtp']],
+    ['password-reset', ['password-reset']],
     ['tokens', ['tokens']],
     ['shell-navigation', ['shell-navigation']],
     ['sharing-management', ['sharing-management']],
@@ -171,6 +172,9 @@ describe('focused browser execution plans', () => {
     ['smtp', 'representative', ['smtp']],
     ['smtp', 'interactions', ['smtp']],
     ['smtp', 'recovery', ['smtp']],
+    ['password-reset', 'representative', ['password-reset']],
+    ['password-reset', 'interactions', ['password-reset']],
+    ['password-reset', 'recovery', ['password-reset']],
     ['smtp', 'focus', ['smtp']],
 
     ['sharing-management', 'representative', ['sharing-management']],
@@ -213,6 +217,13 @@ describe('focused browser execution plans', () => {
     ['smtp', 'representative', { smtpPhase: 'representative' }],
     ['smtp', 'interactions', { smtpPhase: 'interactions' }],
     ['smtp', 'recovery', { smtpPhase: 'recovery' }],
+    [
+      'password-reset',
+      'representative',
+      { passwordResetPhase: 'representative' },
+    ],
+    ['password-reset', 'interactions', { passwordResetPhase: 'interactions' }],
+    ['password-reset', 'recovery', { passwordResetPhase: 'recovery' }],
     ['smtp', 'focus', { smtpPhase: 'focus' }],
     ['tokens', 'recovery', { tokensPhase: 'recovery' }],
     ['tokens', 'lifecycle', { tokensPhase: 'lifecycle' }],
@@ -370,10 +381,40 @@ describe('focused browser execution plans', () => {
         ['sharing-management', 'sharing-management'],
         ['site-general', 'site-general'],
         ['analytics', 'analytics'],
+
+        ['password-reset', 'password-reset'],
         ['smtp', 'smtp'],
       ],
       config: {},
     });
+  });
+
+  it('keeps reset phases scoped while default full actually schedules recovery before SMTP', () => {
+    expect(select('password-reset').config).toEqual({
+      passwordResetPhase: undefined,
+    });
+    expect(select('full').stages).toContainEqual([
+      'password-reset',
+      'password-reset',
+    ]);
+    expect(select('full').config).not.toHaveProperty('passwordResetPhase');
+    expect(() => select('password-reset', 'consumers')).toThrow('--only');
+    for (const suite of [
+      'smtp',
+      'account',
+      'tokens',
+      'site-general',
+      'processing',
+    ])
+      expect(select(suite).config).not.toHaveProperty('passwordResetPhase');
+    for (const field of ['storageConfig', 'previewConfig'])
+      expect(() =>
+        selectBrowserPlan({
+          suite: 'password-reset',
+          pageLabel: 'p1',
+          [field]: 'unused.json',
+        }),
+      ).toThrow();
   });
 
   it('rejects SMTP phases on other suites and unrelated scene options on SMTP', () => {

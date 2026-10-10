@@ -22,6 +22,7 @@ import { createSharingRunner } from './browser-sharing.mjs';
 import { runBrandBrowser } from './browser-brand.mjs';
 import { runBrandingBrowser } from './browser-branding.mjs';
 import { startSmtpBrowserFixture } from '../e2e/smtp-fixture.mjs';
+import { startPasswordResetBrowserFixture } from '../e2e/password-reset-fixture.mjs';
 
 assert.equal(process.versions.node.split('.')[0], '24', 'Use Node 24');
 const { values } = parseArgs({
@@ -133,6 +134,8 @@ for (const name of [
 
   'sharing-management.json',
   'sharing-management-failure.png',
+  'password-reset.json',
+  'password-reset-failure.png',
   'smtp.json',
   'smtp-failure.png',
   'm2-1440.json',
@@ -167,6 +170,7 @@ let shellServer;
 let corsFixture;
 let deliveryFixture;
 let smtpFixture;
+let passwordResetFixture;
 const uploadFixtures = [];
 let shellLogs = '';
 let logs = '';
@@ -448,8 +452,21 @@ try {
   };
   if (suite === 'full' || suite === 'smtp') {
     smtpFixture = await startSmtpBrowserFixture(temporary);
-    productionEnv.NODE_EXTRA_CA_CERTS = smtpFixture.caPath;
     secrets.push(smtpFixture.browserInput.password);
+  }
+  if (suite === 'full' || suite === 'password-reset')
+    passwordResetFixture = await startPasswordResetBrowserFixture(temporary);
+  const smtpCertificates = [smtpFixture, passwordResetFixture].filter(Boolean);
+  if (smtpCertificates.length) {
+    productionEnv.NODE_EXTRA_CA_CERTS = join(temporary, 'browser-smtp-ca.pem');
+    await writeFile(
+      productionEnv.NODE_EXTRA_CA_CERTS,
+      (
+        await Promise.all(
+          smtpCertificates.map((fixture) => readFile(fixture.caPath, 'utf8')),
+        )
+      ).join('\n'),
+    );
   }
   if (suite === 'storage-admin' && only === 'live') {
     for (const name of [
@@ -608,6 +625,9 @@ try {
     keepSpace: true,
     pageLabel,
     ...(smtpFixture ? { smtpFixture: smtpFixture.browserInput } : {}),
+    ...(passwordResetFixture
+      ? { passwordResetFixture: passwordResetFixture.browserInput }
+      : {}),
   };
   if (config.spaceId !== undefined)
     assert.ok(
@@ -1022,6 +1042,7 @@ try {
     corsFixture?.close(),
     deliveryFixture?.close(),
     smtpFixture?.close(),
+    passwordResetFixture?.close(),
     sharing.stop(),
     ...uploadFixtures.map((endpoint) => endpoint.close()),
   ]);

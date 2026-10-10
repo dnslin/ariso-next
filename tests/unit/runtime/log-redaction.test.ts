@@ -2,6 +2,15 @@ import { describe, expect, it } from 'vitest';
 import { redactUrlCredentials } from '../../../src/server/runtime/log-redaction';
 
 describe('known URL credentials', () => {
+  it('隐藏原生邮件回调路径中的令牌并保留端点与回跳参数', () => {
+    expect(
+      redactUrlCredentials(
+        'GET https://ariso.test/api/auth/reset-password/secret%2Fvalue?callbackURL=%2Freset-password',
+      ),
+    ).toBe(
+      'GET https://ariso.test/api/auth/reset-password/[Redacted]?callbackURL=%2Freset-password',
+    );
+  });
   it.each([
     'token',
     'resetToken',

@@ -42,9 +42,15 @@ async function run(args: string[]) {
     await readFile(join(output, 'runner.json'), 'utf8'),
   );
   expect(report.status).toBe('passed');
-  const events: { kind: string; script?: string; dataDirectory?: string }[] = (
-    await readFile(traceFile, 'utf8')
-  )
+  const events: {
+    kind: string;
+    script?: string;
+    dataDirectory?: string;
+    passwordResetPhase?: string;
+    hasPasswordResetFixture?: boolean;
+    spaceId?: number;
+    pageLabel?: string;
+  }[] = (await readFile(traceFile, 'utf8'))
     .trim()
     .split('\n')
     .map((line) => JSON.parse(line));
@@ -75,6 +81,10 @@ describe('actual business CLI connections without external services', () => {
     const plannedScripts = plan.stages.map(
       ([script]: string[]) => `${script}.mjs`,
     );
+    expect(events.filter((event) => event.kind === 'branding')).toEqual([
+      { kind: 'branding', spaceId: 8, pageLabel: 'p1' },
+    ]);
+    expect(report.stages.branding.status).toBe('passed');
     expect(scripts.filter((script) => plannedScripts.includes(script))).toEqual(
       plannedScripts,
     );
@@ -83,10 +93,18 @@ describe('actual business CLI connections without external services', () => {
       expect(report.stages[name].status).toBe('passed');
       expect(files).toContain(`${name}.log`);
     }
+    expect(
+      events.find((event) => event.script === 'password-reset.mjs'),
+    ).toMatchObject({
+      hasPasswordResetFixture: true,
+    });
+    expect(
+      events
+        .filter((event) => event.kind === 'browser')
+        .every((event) => event.passwordResetPhase === undefined),
+    ).toBe(true);
     expectUploadRuntime(events, 'upload');
     expectUploadRuntime(events, 'upload-polling');
-    expect(report.stages.branding.status).toBe('passed');
-    expect(events.filter((event) => event.kind === 'branding')).toHaveLength(1);
     expect(scripts).not.toContain('identity-session-scene.mjs');
     expect(scripts.filter((script) => script === 'library.mjs')).toHaveLength(
       1,
@@ -104,6 +122,13 @@ describe('actual business CLI connections without external services', () => {
     ).toEqual(['upload-runtime', 'upload-polling-runtime']);
   });
 
+  it('executes focused branding without starting generic fixtures', async () => {
+    const { events, report } = await run(['--suite', 'branding']);
+    expect(events).toEqual([{ kind: 'branding', spaceId: 8, pageLabel: 'p1' }]);
+    expect(report.suite).toBe('branding');
+    expect(report.stages).toBeUndefined();
+  });
+
   it.each([
     ['upload-regression', undefined, ['upload', 'upload-polling']],
     ['upload-regression', 'main', ['upload']],
@@ -113,6 +138,12 @@ describe('actual business CLI connections without external services', () => {
     ['identity-session', undefined, []],
     ['workspace-continuity', undefined, []],
     ['library', 'consumers', []],
+
+    ['password-reset', undefined, []],
+    ['password-reset', 'representative', []],
+    ['password-reset', 'interactions', []],
+    ['password-reset', 'recovery', []],
+    ['smtp', undefined, []],
   ] as const)(
     'executes focused %s/%s through the real CLI',
     async (suite, only, isolated) => {
@@ -122,6 +153,12 @@ describe('actual business CLI connections without external services', () => {
         ...(only ? ['--only', only] : []),
       ]);
       const plan = selectBrowserPlan({ suite, only, pageLabel: 'p1' });
+      for (const event of events.filter((item) => item.kind === 'browser')) {
+        expect(event.hasPasswordResetFixture).toBe(suite === 'password-reset');
+        expect(event.passwordResetPhase).toBe(
+          suite === 'password-reset' ? only : undefined,
+        );
+      }
       expect(
         events
           .filter((event) => event.kind === 'browser')

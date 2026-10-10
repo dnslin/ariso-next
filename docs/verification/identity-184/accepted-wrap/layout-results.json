@@ -1,0 +1,499 @@
+{
+  "environment": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "node": "v24.18.1",
+    "pnpm": "11.19.0",
+    "taskSpaceId": 1
+  },
+  "red": {
+    "status": "failed",
+    "phase": "representative",
+    "error": "AssertionError [ERR_ASSERTION]: light-1920: no forced line break\n\n1 !== 0\n\n    at acceptedParagraphLayout (file:////[eval2]:234:10)\n    at async representativeStates (file:////[eval2]:175:9)\n    at async file:////[eval2]:730:5",
+    "acceptedTextLayouts": [
+      {
+        "label": "light-1920",
+        "text": "如果该邮箱与账号匹配，你将收到密码重置邮件。请检查收件箱和垃圾邮件。",
+        "hardBreaks": 1,
+        "bounds": {
+          "left": 753,
+          "right": 1167
+        },
+        "lines": [
+          {
+            "left": 753,
+            "right": 1061
+          },
+          {
+            "left": 753,
+            "right": 921
+          }
+        ],
+        "previous": {
+          "left": 1047,
+          "right": 1061,
+          "top": 259,
+          "width": 14
+        },
+        "next": {
+          "left": 753,
+          "right": 767,
+          "top": 280,
+          "width": 14
+        }
+      }
+    ]
+  },
+  "green": {
+    "status": "passed",
+    "phase": "representative",
+    "checks": [
+      "Accepted link Tips: desktop hover/continuous reading/focus/Escape, mobile click/close/Escape/source focus, both themes and mobile 44px geometry.",
+      "Accepted sentences share one naturally wrapping paragraph; real character ranges prove 请 uses available line space and every rendered line stays within bounds at 1920/360/390/430/768 in both themes.",
+      "Login entry, anonymous real receipt, current publicUrl, native callback, validation, success, every old session, no auto-login, one-use replay and reapply."
+    ],
+    "screenshots": 74,
+    "runnerStatus": "passed",
+    "stages": {
+      "password-reset": {
+        "status": "passed"
+      }
+    },
+    "acceptedTextLayouts": [
+      {
+        "label": "light-1920",
+        "text": "如果该邮箱与账号匹配，你将收到密码重置邮件。请检查收件箱和垃圾邮件。",
+        "hardBreaks": 0,
+        "bounds": {
+          "left": 753,
+          "right": 1167
+        },
+        "lines": [
+          {
+            "left": 753,
+            "right": 1159
+          },
+          {
+            "left": 753,
+            "right": 823
+          }
+        ],
+        "previous": {
+          "left": 1047,
+          "right": 1061,
+          "top": 259,
+          "width": 14
+        },
+        "next": {
+          "left": 1061,
+          "right": 1075,
+          "top": 259,
+          "width": 14
+        }
+      },
+      {
+        "label": "dark-1920",
+        "text": "如果该邮箱与账号匹配，你将收到密码重置邮件。请检查收件箱和垃圾邮件。",
+        "hardBreaks": 0,
+        "bounds": {
+          "left": 753,
+          "right": 1167
+        },
+        "lines": [
+          {
+            "left": 753,
+            "right": 1159
+          },
+          {
+            "left": 753,
+            "right": 823
+          }
+        ],
+        "previous": {
+          "left": 1047,
+          "right": 1061,
+          "top": 259,
+          "width": 14
+        },
+        "next": {
+          "left": 1061,
+          "right": 1075,
+          "top": 259,
+          "width": 14
+        }
+      },
+      {
+        "label": "light-390",
+        "text": "如果该邮箱与账号匹配，你将收到密码重置邮件。请检查收件箱和垃圾邮件。",
+        "hardBreaks": 0,
+        "bounds": {
+          "left": 41,
+          "right": 349
+        },
+        "lines": [
+          {
+            "left": 41,
+            "right": 349
+          },
+          {
+            "left": 41,
+            "right": 209
+          }
+        ],
+        "previous": {
+          "left": 335,
+          "right": 349,
+          "top": 219,
+          "width": 14
+        },
+        "next": {
+          "left": 41,
+          "right": 55,
+          "top": 240,
+          "width": 14
+        }
+      },
+      {
+        "label": "dark-390",
+        "text": "如果该邮箱与账号匹配，你将收到密码重置邮件。请检查收件箱和垃圾邮件。",
+        "hardBreaks": 0,
+        "bounds": {
+          "left": 41,
+          "right": 349
+        },
+        "lines": [
+          {
+            "left": 41,
+            "right": 349
+          },
+          {
+            "left": 41,
+            "right": 209
+          }
+        ],
+        "previous": {
+          "left": 335,
+          "right": 349,
+          "top": 219,
+          "width": 14
+        },
+        "next": {
+          "left": 41,
+          "right": 55,
+          "top": 240,
+          "width": 14
+        }
+      },
+      {
+        "label": "tips-closed-light-1920",
+        "text": "如果该邮箱与账号匹配，你将收到密码重置邮件。请检查收件箱和垃圾邮件。",
+        "hardBreaks": 0,
+        "bounds": {
+          "left": 753,
+          "right": 1167
+        },
+        "lines": [
+          {
+            "left": 753,
+            "right": 1159
+          },
+          {
+            "left": 753,
+            "right": 823
+          }
+        ],
+        "previous": {
+          "left": 1047,
+          "right": 1061,
+          "top": 259,
+          "width": 14
+        },
+        "next": {
+          "left": 1061,
+          "right": 1075,
+          "top": 259,
+          "width": 14
+        }
+      },
+      {
+        "label": "tips-closed-light-360",
+        "text": "如果该邮箱与账号匹配，你将收到密码重置邮件。请检查收件箱和垃圾邮件。",
+        "hardBreaks": 0,
+        "bounds": {
+          "left": 41,
+          "right": 319
+        },
+        "lines": [
+          {
+            "left": 41,
+            "right": 307
+          },
+          {
+            "left": 41,
+            "right": 251
+          }
+        ],
+        "previous": {
+          "left": 69,
+          "right": 83,
+          "top": 240,
+          "width": 14
+        },
+        "next": {
+          "left": 83,
+          "right": 97,
+          "top": 240,
+          "width": 14
+        }
+      },
+      {
+        "label": "tips-closed-light-390",
+        "text": "如果该邮箱与账号匹配，你将收到密码重置邮件。请检查收件箱和垃圾邮件。",
+        "hardBreaks": 0,
+        "bounds": {
+          "left": 41,
+          "right": 349
+        },
+        "lines": [
+          {
+            "left": 41,
+            "right": 349
+          },
+          {
+            "left": 41,
+            "right": 209
+          }
+        ],
+        "previous": {
+          "left": 335,
+          "right": 349,
+          "top": 219,
+          "width": 14
+        },
+        "next": {
+          "left": 41,
+          "right": 55,
+          "top": 240,
+          "width": 14
+        }
+      },
+      {
+        "label": "tips-closed-light-430",
+        "text": "如果该邮箱与账号匹配，你将收到密码重置邮件。请检查收件箱和垃圾邮件。",
+        "hardBreaks": 0,
+        "bounds": {
+          "left": 41,
+          "right": 389
+        },
+        "lines": [
+          {
+            "left": 41,
+            "right": 377
+          },
+          {
+            "left": 41,
+            "right": 181
+          }
+        ],
+        "previous": {
+          "left": 335,
+          "right": 349,
+          "top": 219,
+          "width": 14
+        },
+        "next": {
+          "left": 349,
+          "right": 363,
+          "top": 219,
+          "width": 14
+        }
+      },
+      {
+        "label": "tips-closed-light-768",
+        "text": "如果该邮箱与账号匹配，你将收到密码重置邮件。请检查收件箱和垃圾邮件。",
+        "hardBreaks": 0,
+        "bounds": {
+          "left": 177,
+          "right": 591
+        },
+        "lines": [
+          {
+            "left": 177,
+            "right": 583
+          },
+          {
+            "left": 177,
+            "right": 247
+          }
+        ],
+        "previous": {
+          "left": 471,
+          "right": 485,
+          "top": 259,
+          "width": 14
+        },
+        "next": {
+          "left": 485,
+          "right": 499,
+          "top": 259,
+          "width": 14
+        }
+      },
+      {
+        "label": "tips-closed-dark-1920",
+        "text": "如果该邮箱与账号匹配，你将收到密码重置邮件。请检查收件箱和垃圾邮件。",
+        "hardBreaks": 0,
+        "bounds": {
+          "left": 753,
+          "right": 1167
+        },
+        "lines": [
+          {
+            "left": 753,
+            "right": 1159
+          },
+          {
+            "left": 753,
+            "right": 823
+          }
+        ],
+        "previous": {
+          "left": 1047,
+          "right": 1061,
+          "top": 259,
+          "width": 14
+        },
+        "next": {
+          "left": 1061,
+          "right": 1075,
+          "top": 259,
+          "width": 14
+        }
+      },
+      {
+        "label": "tips-closed-dark-360",
+        "text": "如果该邮箱与账号匹配，你将收到密码重置邮件。请检查收件箱和垃圾邮件。",
+        "hardBreaks": 0,
+        "bounds": {
+          "left": 41,
+          "right": 319
+        },
+        "lines": [
+          {
+            "left": 41,
+            "right": 307
+          },
+          {
+            "left": 41,
+            "right": 251
+          }
+        ],
+        "previous": {
+          "left": 69,
+          "right": 83,
+          "top": 240,
+          "width": 14
+        },
+        "next": {
+          "left": 83,
+          "right": 97,
+          "top": 240,
+          "width": 14
+        }
+      },
+      {
+        "label": "tips-closed-dark-390",
+        "text": "如果该邮箱与账号匹配，你将收到密码重置邮件。请检查收件箱和垃圾邮件。",
+        "hardBreaks": 0,
+        "bounds": {
+          "left": 41,
+          "right": 349
+        },
+        "lines": [
+          {
+            "left": 41,
+            "right": 349
+          },
+          {
+            "left": 41,
+            "right": 209
+          }
+        ],
+        "previous": {
+          "left": 335,
+          "right": 349,
+          "top": 219,
+          "width": 14
+        },
+        "next": {
+          "left": 41,
+          "right": 55,
+          "top": 240,
+          "width": 14
+        }
+      },
+      {
+        "label": "tips-closed-dark-430",
+        "text": "如果该邮箱与账号匹配，你将收到密码重置邮件。请检查收件箱和垃圾邮件。",
+        "hardBreaks": 0,
+        "bounds": {
+          "left": 41,
+          "right": 389
+        },
+        "lines": [
+          {
+            "left": 41,
+            "right": 377
+          },
+          {
+            "left": 41,
+            "right": 181
+          }
+        ],
+        "previous": {
+          "left": 335,
+          "right": 349,
+          "top": 219,
+          "width": 14
+        },
+        "next": {
+          "left": 349,
+          "right": 363,
+          "top": 219,
+          "width": 14
+        }
+      },
+      {
+        "label": "tips-closed-dark-768",
+        "text": "如果该邮箱与账号匹配，你将收到密码重置邮件。请检查收件箱和垃圾邮件。",
+        "hardBreaks": 0,
+        "bounds": {
+          "left": 177,
+          "right": 591
+        },
+        "lines": [
+          {
+            "left": 177,
+            "right": 583
+          },
+          {
+            "left": 177,
+            "right": 247
+          }
+        ],
+        "previous": {
+          "left": 471,
+          "right": 485,
+          "top": 259,
+          "width": 14
+        },
+        "next": {
+          "left": 485,
+          "right": 499,
+          "top": 259,
+          "width": 14
+        }
+      }
+    ]
+  }
+}

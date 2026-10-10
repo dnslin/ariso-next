@@ -24,6 +24,8 @@ const suites = {
       ['sharing-management', 'sharing-management'],
       ['site-general', 'site-general'],
       ['analytics', 'analytics'],
+
+      ['password-reset', 'password-reset'],
       ['smtp', 'smtp'],
     ],
   },
@@ -65,6 +67,11 @@ const suites = {
     config: () => ({ width: 1440 }),
   },
   oauth: {},
+  'password-reset': {
+    only: ['representative', 'interactions', 'recovery'],
+    stages: [['password-reset', 'passwordReset']],
+    config: (only) => ({ passwordResetPhase: only }),
+  },
   smtp: {
     only: ['representative', 'interactions', 'recovery', 'focus'],
     stages: [['smtp', 'smtp']],

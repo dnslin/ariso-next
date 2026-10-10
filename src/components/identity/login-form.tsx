@@ -248,6 +248,13 @@ export function LoginForm({
             layout="login"
             placeholder="请输入密码"
           />
+          <Link
+            href="/forgot-password"
+            data-testid="login-forgot-mobile"
+            className="min-h-11 w-full justify-end text-sm font-normal min-[768px]:hidden"
+          >
+            忘记密码
+          </Link>
           <Button
             className="h-11 min-h-11 w-full rounded-lg text-sm font-normal min-[1200px]:h-9 min-[1200px]:min-h-9"
             type="submit"
@@ -258,6 +265,15 @@ export function LoginForm({
           </Button>
         </Form>
       )}
+      {initialized && !setupRequired ? (
+        <Link
+          href="/forgot-password"
+          data-testid="login-forgot-desktop"
+          className="hidden min-h-11 w-full justify-center text-sm font-normal min-[768px]:flex min-[1200px]:min-h-9"
+        >
+          忘记密码
+        </Link>
+      ) : null}
       {initialized && !setupRequired && githubEnabled ? (
         <div className="grid gap-3">
           <div className="flex items-center gap-3 text-xs text-foreground">
