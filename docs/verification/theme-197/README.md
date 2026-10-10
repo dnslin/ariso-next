@@ -35,7 +35,7 @@ macOS arm64，Node v24.18.1，pnpm 11.19.0；已有 ImageMagick 7、ExifTool、O
 | `pnpm run build`                                                          | 最终构建通过。保留现有非主机平台可选原生包的 trace 警告，不计作构建失败或镜像验证。                                                                                                                                                                                               |
 | `pnpm run test:integration --maxWorkers=4`                                | 首轮176文件通过、15文件失败；原因是实施者在运行期间重建共享产物目录，导致入口/模块暂时缺失。构建稳定后只重跑受影响15文件，全部通过（102项）。没有削弱断言或增加跳过。                                                                                                             |
 | `pnpm --dir tests/experiments/ui install --frozen-lockfile` / `typecheck` | 通过。build由默认浏览器命令执行。                                                                                                                                                                                                                                                 |
-| `pnpm run format:check` / `node docs/tasks/check.mjs`                     | 初轮完整格式检查通过；最终受影响文本再执行Prettier检查。最终文档检查通过：120任务、298需求，无缺失ID或循环。                                                                                                                                                                      |
+| `pnpm run format:check` / `node docs/tasks/check.mjs`                     | 初轮完整格式检查通过；最终29个受影响文本Prettier检查通过。最终文档检查通过：120任务、298需求，无缺失ID或循环。                                                                                                                                                                    |
 | `node scripts/verify-browser.mjs --suite theme`                           | 首轮[隐藏输入定位失败](./failures/hidden-number-input.json)；第二轮[数字控件聚焦时自动滚动触发增减](./failures/focused-number-wheel.json)。复用已有可见控件操作，保存草稿基准前离开数字控件，并由真实键盘打开主题后，第三轮全阶段通过：9项行为结论、153个布局记录、无浏览器错误。 |
 | `pnpm run test:browser`                                                   | 退出1；31阶段通过、9阶段失败（含图库复制的用户接管停止）。未跑完默认全量，theme阶段未执行；不能记作整轮通过。见[原始运行器报告](./full-runner.json)和[失败摘要](./full-failures.json)。                                                                                           |
 
@@ -45,7 +45,7 @@ macOS arm64，Node v24.18.1，pnpm 11.19.0；已有 ImageMagick 7、ExifTool、O
 
 独立[代码审计](./code-review.md)已通过，修正全表快照过大及错误颜色影响操作文字两项发现。独立[设计评审](./design-review.md)发现设置行焦点外框被父卡片裁边，已有[失败截图](./failures/clipped-theme-focus.png)；仅在本次设置触发器内收2px描边并完成重建及代码静态复审。新增真实键盘焦点和完整错误/图表可见区域断言，但接管停止前未执行，最终截图及设计复核仍未完成。
 
-第三轮定向通过的[原始报告及153张截图](./browser-before-focus-fix/theme.json)属于焦点补修前输入，不能证明最新焦点修复已通过。该报告逐项记录视口、主题、溢出及点击目标；设计评审按同视口核对整页、公共区域、业务布局和控件，具体差异处理见评审表。当前照片组件只有图片上的选择控件，名称位于图片下方，没有照片叠字；该项记为不适用，未虚构叠字状态。
+第三轮定向通过的[原始报告](./browser-before-focus-fix/theme.json)及[153张截图](./browser-before-focus-fix/)属于焦点补修前输入，不能证明最新焦点修复已通过。该报告逐项记录视口、主题、溢出及点击目标；设计评审按同视口核对整页、公共区域、业务布局和控件，具体差异处理见评审表。当前照片组件只有图片上的选择控件，名称位于图片下方，没有照片叠字；该项记为不适用，未虚构叠字状态。
 
 ## 默认完整入口的失败与停止边界
 
@@ -62,3 +62,7 @@ theme及图库复制后的其余阶段均未在本轮默认入口执行。最新
 验收基本设置的界面主题、公共页面右上外观入口；切换浅/深/系统，检查勾选、操作系统切换、刷新、跨页及同origin跨标签；编辑未保存表单后切换，检查草稿、位置与焦点。桌面1440×1080、手机390×844代表设计，补360/430/768与390×480短视口。照片、图表、错误及禁用状态以最终浏览器报告说明实际覆盖。
 
 当前：产品代码完成；本地基础检查通过；焦点补修前主题定向浏览器通过；最新补验因接管未执行；最终设计复核及人工验收未完成。PR保持草稿。DES-05/RG-07及T-QA-02未关闭。日常PR不创建Release、发布镜像或部署；远端检查在创建PR后实际回读，不把无检查写成CI通过。
+
+## 分支与远端状态
+
+已提交并推送 `codex/issue-197-theme`，创建 [PR #278](https://github.com/dnslin/ariso-next/pull/278)。`gh pr view 278` 实际回读为 OPEN、isDraft=true、mergeStateStatus=CLEAN；`statusCheckRollup=[]`，`gh pr checks 278` 返回 no checks reported。远端没有已触发检查，不记作CI通过，不等待不存在的工作流。Issue #197保持开放。原工作区和其他任务未改动；任务worktree及独立预览保留。
