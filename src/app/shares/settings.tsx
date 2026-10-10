@@ -49,6 +49,7 @@ type SettingsProps = {
   timeZone: string;
   fromAlbum: boolean;
   name: string;
+  logoUrl?: string | null;
   description: string;
   email: string;
   ownerName: string;

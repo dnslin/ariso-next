@@ -29,6 +29,7 @@ import {
 
 export function AlbumsScreen(props: {
   name: string;
+  logoUrl?: string | null;
   description: string;
   email: string;
   ownerName: string;

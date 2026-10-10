@@ -1,0 +1,26 @@
+Already up to date
+Done in 36ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-196-brand-settings/ariso
+
+ ✓ |media-tools| tests/integration/upload/api.test.ts > returns actual HTTP 504 after the production wait budget without failing or cancelling the accepted job 1936ms
+ ✓ |media-tools| tests/integration/upload/api.test.ts > rejects missing, Cookie, invalid, expired, disabled and revoked credentials before reading any body bytes 1282ms
+ ✓ |media-tools| tests/integration/upload/api.test.ts > authenticates more than ten requests with one fixed upload:create Token without default rate limiting 1948ms
+ ✓ |media-tools| tests/integration/upload/api.test.ts > returns 201 only with the completed persisted job, actual saved version links and original bytes 1589ms
+ ✓ |media-tools| tests/integration/upload/api.test.ts > parses file-first and arbitrary field order, deduplicates album IDs and matches or creates whole tag names 1835ms
+ ✓ |media-tools| tests/integration/upload/api.test.ts > rejects unknown fields, duplicate single fields, invalid selections and a second file without creating assets or tags 1606ms
+ ✓ |media-tools| tests/integration/upload/api.test.ts > rejects truncated multipart, missing files, field byte limits and configured file size limits, then removes all temporary files 1457ms
+ ✓ |media-tools| tests/integration/upload/api.test.ts > a Token revoked after admission does not cancel the accepted request but rejects its next POST 1954ms
+ ✓ |media-tools| tests/integration/upload/api.test.ts > a default changed after submission to a missing watermark keeps ready/201 with unavailable default and working saved links 1671ms
+ ✓ |media-tools| tests/integration/upload/api.test.ts > retains tags after valid preparation and unsupported-image failure, but returns no image ID or asset 1339ms
+ ✓ |media-tools| tests/integration/upload/api.test.ts > returns a real failed image and failed step while retaining original and earlier saved versions 1623ms
+ ✓ |media-tools| tests/integration/upload/api.test.ts > a repeated POST creates a new image; its upload Token cannot manage Tokens, use Web uploads or read private content 2586ms
+ ✓ |media-tools| tests/integration/upload/api.test.ts > returns only saved versions when compression is disabled and resolves the default link from current settings 1703ms
+ ✓ |media-tools| tests/integration/upload/api.test.ts > a real curl multipart caller receives completed 201 and links to the exact uploaded bytes 2070ms
+ ✓ |media-tools| tests/integration/upload/api.test.ts > a real proxy disconnect after acceptance loses the client response while the persisted processing job completes 1766ms
+
+ Test Files  1 passed (1)
+      Tests  15 passed (15)
+   Start at  21:06:24
+   Duration  26.79s (tests 99%, import 1%)
+

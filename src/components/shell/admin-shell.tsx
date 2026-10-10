@@ -15,6 +15,7 @@ import { Link } from '@heroui/react/link';
 import { Modal } from '@heroui/react/modal';
 import { Tooltip } from '@heroui/react/tooltip';
 import { ChevronsLeft, ChevronsRight, Menu, X } from 'lucide-react';
+import { SiteLogo } from '../site/logo';
 import { ThemeSelector } from '../site/theme-selector';
 
 export type ShellNavigationItem = {
@@ -30,6 +31,7 @@ export type ShellNavigationItem = {
 export function AdminShell({
   name,
   description,
+  logoUrl,
   navigation,
   user,
   children,
@@ -38,6 +40,7 @@ export function AdminShell({
 }: {
   name: string;
   description?: string;
+  logoUrl?: string | null;
   navigation: readonly ShellNavigationItem[];
   user: ReactNode;
   children: ReactNode;
@@ -49,6 +52,11 @@ export function AdminShell({
   const [collapsed, setCollapsed] = useState(initialSidebarCollapsed);
   const navigationId = useId();
   const mainRef = useRef<HTMLElement>(null);
+  const brand = logoUrl ? (
+    <SiteLogo url={logoUrl} name={name} className="h-12 w-24" />
+  ) : (
+    name
+  );
   const current = navigation
     .filter(
       ({ href, unavailable, activePaths }) =>
@@ -122,7 +130,7 @@ export function AdminShell({
             className="shell-brand block min-w-0 truncate"
             aria-label={`${name} 首页`}
           >
-            {name}
+            {brand}
           </Link>
           <Tooltip>
             <Button
@@ -159,7 +167,7 @@ export function AdminShell({
       </aside>
       <header className="shell-mobile-header">
         <Link href="/" className="shell-brand" aria-label={`${name} 首页`}>
-          {name}
+          {brand}
         </Link>
         <div className="flex shrink-0 items-center gap-2">
           <ThemeSelector />
@@ -177,7 +185,7 @@ export function AdminShell({
                 <Modal.Dialog aria-label="导航菜单" className="shell-menu">
                   <Modal.Header className="shell-menu-header">
                     <Modal.Heading className="shell-brand">
-                      {name}
+                      {brand}
                     </Modal.Heading>
                     <Button
                       slot="close"

@@ -47,6 +47,7 @@ async function run(args: string[]) {
     script?: string;
     dataDirectory?: string;
     passwordResetPhase?: string;
+    siteBrandingPhase?: string;
     themePhase?: string;
     hasPasswordResetFixture?: boolean;
     spaceId?: number;
@@ -104,6 +105,11 @@ describe('actual business CLI connections without external services', () => {
         .filter((event) => event.kind === 'browser')
         .every((event) => event.passwordResetPhase === undefined),
     ).toBe(true);
+    expect(scripts).toContain('site-branding-restart.mjs');
+    expect(report.stages['site-branding-restart'].status).toBe('passed');
+    expect(events.every((event) => event.siteBrandingPhase === undefined)).toBe(
+      true,
+    );
     expect(
       events.find((event) => event.script === 'theme.mjs')?.themePhase,
     ).toBeUndefined();
@@ -125,6 +131,36 @@ describe('actual business CLI connections without external services', () => {
       ),
     ).toEqual(['upload-runtime', 'upload-polling-runtime']);
   });
+
+  it.each([undefined, 'representative', 'behavior', 'recovery', 'consumers'])(
+    'runs the actual branding UI CLI with scoped phase %s and persistence only where required',
+    async (only) => {
+      const { events, report } = await run([
+        '--suite',
+        'site-branding',
+        ...(only ? ['--only', only] : []),
+      ]);
+      const restart = only === undefined || only === 'consumers';
+      const browser = events.filter((event) => event.kind === 'browser');
+      expect(browser.map((event) => event.script)).toEqual([
+        'site-branding.mjs',
+        ...(restart ? ['site-branding-restart.mjs'] : []),
+      ]);
+      expect(browser.every((event) => event.siteBrandingPhase === only)).toBe(
+        true,
+      );
+      expect(
+        browser.every((event) => event.passwordResetPhase === undefined),
+      ).toBe(true);
+      expect(events.filter((event) => event.kind === 'runtime')).toHaveLength(
+        restart ? 2 : 1,
+      );
+      expect(report.stages['site-branding'].status).toBe('passed');
+      if (restart)
+        expect(report.stages['site-branding-restart'].status).toBe('passed');
+      else expect(report.stages['site-branding-restart']).toBeUndefined();
+    },
+  );
 
   it('executes focused branding without starting generic fixtures', async () => {
     const { events, report } = await run(['--suite', 'branding']);

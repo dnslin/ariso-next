@@ -1,0 +1,230 @@
+{
+  "capturedAt": "2026-10-10T13:40:48.318Z",
+  "scope": "Final failed and blocked stage coverage for the default full runner; later focused reruns are recorded separately and do not overwrite this result.",
+  "reports": [
+    {
+      "source": "test-results/issue196-full/branding.log",
+      "status": "failed",
+      "stage": "branding",
+      "error": "Error: page.waitForURL timed out after 10000ms: expected \"http://branding-55130.localhost:55130/upload\"; last URL was \"http://branding-55130.localhost:55130/dashboard\"\n    at waitForURLInPage (file:////[eval1]:16205:11)\n    at async file:////[eval1]:16691:28\n\nego's nodejs process exited with code 1.",
+      "checksCompleted": null,
+      "layoutsCompleted": null,
+      "reportNote": "branding.json is written only after all protocol assertions pass; no completion report was produced by this failed stage."
+    },
+    {
+      "source": "test-results/issue196-full/identity-1440-setup.json",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Login card design offset: 223 instead of 230\n    at close (file:////[eval2]:139:16)\n    at layouts (file:////[eval2]:155:9)\n    at async file:////[eval2]:680:5",
+      "checksCompleted": 3,
+      "layoutsCompleted": 17
+    },
+    {
+      "source": "test-results/issue196-full/processing.json",
+      "status": "failed",
+      "stage": "settings",
+      "error": "ElementResolutionError: page.click timed out after 3000ms: page.click failed: element is not connected\n    at #retryElementAction (file:////[eval1]:18884:27)\n    at async file:////[eval1]:18968:29\n    at async file:////[eval1]:16691:28",
+      "checksCompleted": 9,
+      "layoutsCompleted": 45,
+      "originalSettingsRestored": true
+    },
+    {
+      "source": "test-results/issue196-full/storage-admin.json",
+      "status": "failed",
+      "error": "Error: page.waitForSelector timed out after 10000ms: [role=\"alert\"]\n    at waitForSelectorInPage (file:////[eval1]:16159:11)\n    at async file:////[eval1]:16691:28",
+      "checksCompleted": 1,
+      "layoutsCompleted": 34
+    },
+    {
+      "source": "test-results/issue196-full/library.json",
+      "status": "failed",
+      "error": "CdpRequestTimeoutError: CDP request timed out: Page.captureScreenshot\n    at Timeout._onTimeout (file:////[eval1]:8174:20)\n    at listOnTimeout (node:internal/timers:605:17)\n    at process.processTimers (node:internal/timers:541:7)",
+      "checksCompleted": 39,
+      "layoutsCompleted": 200
+    },
+    {
+      "source": "test-results/issue196-full/library-viewer.json",
+      "status": "failed",
+      "stage": "versions:issue185-apng:animation",
+      "error": "CdpRequestTimeoutError: CDP request timed out: Page.captureScreenshot\n    at Timeout._onTimeout (file:////[eval1]:8174:20)\n    at listOnTimeout (node:internal/timers:605:17)\n    at process.processTimers (node:internal/timers:541:7)",
+      "checksCompleted": 2,
+      "layoutsCompleted": 12
+    },
+    {
+      "source": "test-results/issue196-full/library-batch.json",
+      "status": "failed",
+      "activeCheck": "trash-restore-preserves-surviving-data",
+      "error": "Error: Cannot find context with specified id\n    at handleMessage (file:////[eval1]:8940:27)\n    at file:////[eval1]:8099:47\n    at guardNativeCallback (file:////[eval1]:8087:9)\n    at dispatchCdpMessage (file:////[eval1]:8099:5)",
+      "checksCompleted": 15,
+      "layoutsCompleted": 134
+    },
+    {
+      "source": "test-results/issue196-full/library-reprocess.json",
+      "status": "failed",
+      "error": "Error: page.waitForFunction timed out after 30000ms on page p1; last URL was \"http://ariso-54975.localhost:54975/library?q=issue186-&pageSize=20\"; last title was \"Ariso\".\n    at waitForFunctionTimeoutError (file:////[eval1]:19235:12)\n    at file:////[eval1]:18564:19\n    at async file:////[eval1]:16691:28",
+      "checksCompleted": 9,
+      "layoutsCompleted": 56
+    },
+    {
+      "source": "test-results/issue196-full/library-copy.json",
+      "status": "failed",
+      "stage": "upload-layout-consumer",
+      "phase": "full",
+      "error": "Error: page.waitForSelector timed out after 10000ms: [data-testid=\"upload-item\"]\n    at waitForSelectorInPage (file:////[eval1]:16159:11)\n    at async file:////[eval1]:16691:28",
+      "checksCompleted": 7,
+      "layoutsCompleted": 79
+    },
+    {
+      "source": "test-results/issue196-full/album-cover.json",
+      "status": "failed",
+      "stage": "owner session and fixtures",
+      "error": "Error: page.waitForURL timed out after 10000ms: expected \"http://ariso-54975.localhost:54975/library\"; last URL was \"http://ariso-54975.localhost:54975/library?page=1\"\n    at waitForURLInPage (file:////[eval1]:16205:11)\n    at async file:////[eval1]:16691:28",
+      "checksCompleted": 0,
+      "layoutsCompleted": 0
+    },
+    {
+      "source": "test-results/issue196-full/upload-settings.json",
+      "status": "failed",
+      "stage": "representative",
+      "phase": "all",
+      "error": "Error: page.waitForFunction timed out after 10000ms on page p1; last URL was \"http://ariso-54975.localhost:54975/settings/general\"; last title was \"Ariso\".\n    at waitForFunctionTimeoutError (file:////[eval1]:19235:12)\n    at file:////[eval1]:18564:19\n    at async file:////[eval1]:16691:28",
+      "checksCompleted": 0,
+      "layoutsCompleted": 11
+    },
+    {
+      "source": "test-results/issue196-full/upload-input.json",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Native directory enumeration was cancelled by the browser; folder selection remains unverified\n\ntrue !== false\n\n    at directory (file:////[eval2]:195:12)\n    at async file:////[eval2]:474:3",
+      "checksCompleted": 1,
+      "layoutsCompleted": 36
+    },
+    {
+      "source": "test-results/issue196-full/upload-relations.json",
+      "status": "failed",
+      "error": "Error: page.waitForFunction timed out after 10000ms on page p1; last URL was \"http://ariso-54975.localhost:54975/upload\"; last title was \"Ariso\".\n    at waitForFunctionTimeoutError (file:////[eval1]:19235:12)\n    at file:////[eval1]:18564:19\n    at async file:////[eval1]:16691:28",
+      "checksCompleted": 7,
+      "layoutsCompleted": 32
+    },
+    {
+      "source": "test-results/issue196-full/upload-usage.json",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\nnull !== '上传注意事项'\n\n    at verifyTips (file:////[eval2]:288:10)\n    at async file:////[eval2]:751:9",
+      "checksCompleted": 5,
+      "layoutsCompleted": 4
+    },
+    {
+      "source": "test-results/issue196-full/sharing-management.json",
+      "status": "failed",
+      "stage": "album-entry-and-create-current-record",
+      "phase": "full",
+      "error": "Error: page.waitForURL timed out after 10000ms: expected \"http://ariso-54975.localhost:54975/albums/issue191-new\"; last URL was \"http://ariso-54975.localhost:54975/albums/issue191-new?page=1\"\n    at waitForURLInPage (file:////[eval1]:16205:11)\n    at async file:////[eval1]:16691:28",
+      "checksCompleted": 10,
+      "layoutsCompleted": 74
+    },
+    {
+      "source": "test-results/issue196-full/site-general.json",
+      "status": "failed",
+      "stage": "recovery",
+      "phase": "all",
+      "error": "Error: page.waitForURL timed out after 10000ms: expected \"http://ariso-54975.localhost:54975/library\"; last URL was \"http://ariso-54975.localhost:54975/library?page=1\"\n    at waitForURLInPage (file:////[eval1]:16205:11)\n    at async file:////[eval1]:16691:28",
+      "originalSiteRestored": true,
+      "checksCompleted": 11,
+      "layoutsCompleted": 66
+    },
+    {
+      "source": "test-results/issue196-full/site-branding.json",
+      "status": "failed",
+      "stage": "representative",
+      "phase": "all",
+      "error": "AssertionError [ERR_ASSERTION]: Keyboard focus remains on a real control\n\nfalse !== true\n\n    at verifyBrandingLayouts (file:///Users/dnslin/.codex/worktrees/issue-196-brand-settings/ariso/e2e/site-branding-layouts.mjs:26:10)\n    at async file:////[eval2]:91:5",
+      "originalSiteRestored": true,
+      "checksCompleted": 0,
+      "layoutsCompleted": 15
+    },
+    {
+      "source": "test-results/issue196-full/analytics.json",
+      "status": "failed",
+      "stage": "recovery",
+      "phase": "all",
+      "error": "Error: page.waitForURL timed out after 10000ms: expected \"http://ariso-54975.localhost:54975/library\"; last URL was \"http://ariso-54975.localhost:54975/library?page=1\"\n    at waitForURLInPage (file:////[eval1]:16205:11)\n    at async file:////[eval1]:16691:28",
+      "fixtureRestored": true,
+      "checksCompleted": 8,
+      "layoutsCompleted": 77
+    },
+    {
+      "source": "test-results/issue196-full/smtp.json",
+      "status": "failed",
+      "stage": "save-and-secrets",
+      "phase": "all",
+      "error": "Error: page.waitForFunction timed out after 10000ms on page p1; last URL was \"http://ariso-54975.localhost:54975/settings/email\"; last title was \"Ariso\".\n    at waitForFunctionTimeoutError (file:////[eval1]:19235:12)\n    at file:////[eval1]:18564:19\n    at async file:////[eval1]:16691:28",
+      "checksCompleted": 4,
+      "layoutsCompleted": 62
+    },
+    {
+      "source": "test-results/issue196-full/account-390.json",
+      "status": "failed",
+      "stage": "password-390",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ {\n+   message: 'Too many requests. Please try again later.'\n+ }\n- null\n\n    at verifyPasswordChanges (file:///Users/dnslin/.codex/worktrees/issue-196-brand-settings/ariso/e2e/account-password.mjs:264:12)\n    at async file:////[eval2]:94:19",
+      "checksCompleted": 7,
+      "layoutsCompleted": 59
+    },
+    {
+      "source": "test-results/issue196-full/sharing-viewer.json",
+      "status": "failed",
+      "stage": "viewer-races",
+      "phase": "full",
+      "error": "ElementResolutionError: page.click timed out after 3000ms: Selector [data-testid=\"share-viewer-next\"] matched 0 elements\n    at #retryElementAction (file:////[eval1]:18884:27)\n    at async file:////[eval1]:18968:29\n    at async file:////[eval1]:16691:28",
+      "checksCompleted": 73,
+      "layoutsCompleted": 54
+    }
+  ],
+  "runner": {
+    "source": "full-runner.json",
+    "status": "failed",
+    "exitCode": 1,
+    "startedAt": "2026-10-10T12:55:55.532Z",
+    "finishedAt": "2026-10-10T14:55:52.888Z",
+    "stages": {
+      "total": 81,
+      "passed": 59,
+      "failed": 20,
+      "blocked": 2,
+      "executed": 79
+    },
+    "temporaryDirectoryRemoved": true,
+    "cleanupErrorsReported": false
+  },
+  "failedStages": [
+    "branding",
+    "identity-1440-setup",
+    "processing",
+    "storage-admin",
+    "library",
+    "library-batch",
+    "library-reprocess",
+    "library-copy",
+    "album-cover",
+    "upload-settings",
+    "upload-input",
+    "upload-relations",
+    "upload-usage",
+    "sharing-management",
+    "site-general",
+    "site-branding",
+    "analytics",
+    "smtp",
+    "account-390",
+    "sharing-viewer"
+  ],
+  "blockedStages": [
+    {
+      "name": "identity-1440-restart",
+      "status": "blocked",
+      "blockedBy": ["identity-1440-setup"]
+    },
+    {
+      "name": "site-branding-restart",
+      "status": "blocked",
+      "blockedBy": ["site-branding"]
+    }
+  ]
+}

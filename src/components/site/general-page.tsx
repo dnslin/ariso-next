@@ -105,6 +105,7 @@ export function GeneralPage(shell: ShellProps) {
       {...shell}
       name={settings.saved?.name ?? shell.name}
       description={settings.saved?.description ?? shell.description}
+      logoUrl={settings.saved ? settings.saved.logoUrl : shell.logoUrl}
       onSessionExpire={expire}
       returnTo="/settings/general"
       footer={

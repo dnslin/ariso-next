@@ -1,0 +1,16 @@
+Tool-output capture of summary and failure details; command was not redirected when executed.
+Cwd: /var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/issue196-review-mutation-omc34yrl
+Command: PATH=Node24 pnpm exec vitest run --project unit tests/unit/site/branding-editor.test.ts
+Mutation: read-back delete URL === null changed to !== null, only in isolated source copy.
+ RUN  v5.0.0
+FAIL: reconcile成功后下一次操作只关闭本编辑器的上一条通知，避免遮挡确认操作
+Expected [["brand-success-id"]], received []. tests/unit/site/branding-editor.test.ts:161
+FAIL: 删除未知读回null：无引用才完成，有引用需显式再次移除
+Expected operation null, received {kind:"logo",file:null,previewUrl:null}. tests/unit/site/branding-editor.test.ts:267
+FAIL: 删除未知读回/branding/current.svg：无引用才完成，有引用需显式再次移除
+Expected phase:"different",locked:true, received phase:"selected",locked:false. tests/unit/site/branding-editor.test.ts:269
+ Test Files  1 failed (1)
+      Tests  3 failed | 10 passed (13)
+   Start at  00:03:25
+   Duration  135ms (transform 47%, tests 30%, import 20%, worker 2%)
+Exit code: 1

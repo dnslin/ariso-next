@@ -58,12 +58,14 @@ import { ArrowLeft } from 'lucide-react';
 export function TrashScreen({
   name,
   description,
+  logoUrl,
   email,
   ownerName,
   initialSidebarCollapsed,
 }: {
   name: string;
   description: string;
+  logoUrl?: string | null;
   email: string;
   ownerName: string;
   initialSidebarCollapsed: boolean;
@@ -307,6 +309,7 @@ export function TrashScreen({
     <OwnerShell
       name={name}
       description={description}
+      logoUrl={logoUrl}
       email={email}
       ownerName={ownerName}
       initialSidebarCollapsed={initialSidebarCollapsed}

@@ -26,6 +26,7 @@ const suites = {
       ['upload-usage', 'upload-usage'],
       ['sharing-management', 'sharing-management'],
       ['site-general', 'site-general'],
+      ['site-branding', 'site-branding'],
       ['analytics', 'analytics'],
       ['password-reset', 'password-reset'],
       ['smtp', 'smtp'],
@@ -52,6 +53,11 @@ const suites = {
     only: ['representative', 'behavior', 'recovery', 'consumers'],
     stages: [['site-general', 'siteGeneral']],
     config: (only) => ({ siteGeneralPhase: only }),
+  },
+  'site-branding': {
+    only: ['representative', 'behavior', 'recovery', 'consumers'],
+    stages: [['site-branding', 'siteBranding']],
+    config: (only) => ({ siteBrandingPhase: only }),
   },
   analytics: {
     only: [

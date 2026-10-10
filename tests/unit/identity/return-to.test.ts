@@ -118,3 +118,18 @@ it('returns to the delivered upload usage page after signing in', () => {
     '/admin',
   );
 });
+
+it('returns to delivered branding settings after reauthentication', () => {
+  expect(loginDestination('/settings/general/branding')).toBe(
+    '/settings/general/branding',
+  );
+  expect(loginDestination('/settings/general/branding#main-content')).toBe(
+    '/settings/general/branding#main-content',
+  );
+  expect(loginDestination('/settings/general/branding/unimplemented')).toBe(
+    '/admin',
+  );
+  expect(loginDestination('https://evil.test/settings/general/branding')).toBe(
+    '/admin',
+  );
+});

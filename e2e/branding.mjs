@@ -14,7 +14,7 @@ const setup = await page.fetch('/api/setup', {
   }),
 });
 assert.equal(setup.status, 200, 'Real setup must succeed');
-await page.goto(`${config.origin}/login`);
+await page.goto(`${config.origin}/login?returnTo=%2Fupload`);
 await page.waitForSelector('#email');
 await page.fill('#email', config.credentials.email);
 await page.fill('#password', config.credentials.password);

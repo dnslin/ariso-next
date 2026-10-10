@@ -3,7 +3,9 @@ import { connection } from 'next/server';
 import { cache } from 'react';
 import { Link } from '@heroui/react/link';
 import { PublicShell } from '../components/shell/public-shell';
+import { SiteLogo } from '../components/site/logo';
 import { readSiteSettings } from '../server/site/settings';
+import { brandingUrl } from '../server/site/urls';
 import { getServerRuntime } from '../server/startup/server-start';
 
 const readBrand = cache(async () => {
@@ -24,9 +26,19 @@ export default async function HomePage() {
   return (
     <PublicShell home>
       <div className="home-brand">
-        <h1 className="brand-wordmark" id="home-heading">
-          {settings?.name ?? 'Ariso'}
-        </h1>
+        {settings?.logoKey ? (
+          <h1 id="home-heading" className="w-full">
+            <SiteLogo
+              url={brandingUrl(settings.logoKey)!}
+              name={settings.name}
+              className="h-48 w-full"
+            />
+          </h1>
+        ) : (
+          <h1 className="brand-wordmark" id="home-heading">
+            {settings?.name ?? 'Ariso'}
+          </h1>
+        )}
         <div className="brand-underline" aria-hidden="true" />
         <p className="home-description">
           {settings?.description ?? '轻装简从'}

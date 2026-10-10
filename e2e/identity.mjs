@@ -117,6 +117,7 @@ async function layouts(name) {
             left: rect.left,
             top: rect.top + scrollY,
             width: rect.width,
+            height: rect.height,
             radius: getComputedStyle(card).borderRadius,
           },
           group: { top: group.top + scrollY, height: group.height },
@@ -153,8 +154,8 @@ async function layouts(name) {
         );
         close(
           geometry.card.top,
-          width < 768 ? 150 : width < 1200 ? 210 : 230,
-          'Login card design offset',
+          Math.max(80, (844 - geometry.card.height) / 2),
+          'Approved login card centered vertically with short viewport padding',
         );
         for (const field of geometry.fields)
           close(

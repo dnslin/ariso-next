@@ -122,7 +122,11 @@ export function RelatedSettings({ onExpire }: { onExpire: () => void }) {
         </p>
       </div>
       <div className="divide-y divide-border border-t border-border">
-        <RelatedSetting label="Logo 与 Favicon" value="尚未开放" />
+        <RelatedSetting
+          label="Logo 与 Favicon"
+          value="独立更新"
+          href="/settings/general/branding"
+        />
         <div>
           <RelatedSetting
             label="默认存储"

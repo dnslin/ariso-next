@@ -1,0 +1,28 @@
+Already up to date
+Done in 36ms using pnpm v11.19.0
+$ eslint . --max-warnings=0
+
+/Users/dnslin/.codex/worktrees/issue-196-brand-settings/ariso/src/components/site/branding-preview.tsx
+  23:5  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/dnslin/.codex/worktrees/issue-196-brand-settings/ariso/src/components/site/branding-preview.tsx:23:5
+  21 |   useEffect(() => {
+  22 |     const value = URL.createObjectURL(file);
+> 23 |     setUrl(value);
+     |     ^^^^^^ Avoid calling setState() directly within an effect
+  24 |     return () => URL.revokeObjectURL(value);
+  25 |   }, [file]);
+  26 |   return (  react-hooks/set-state-in-effect
+
+/Users/dnslin/.codex/worktrees/issue-196-brand-settings/ariso/tests/unit/site/branding-editor.test.ts
+  4:10  warning  'SiteRequestError' is defined but never used  @typescript-eslint/no-unused-vars
+
+✖ 2 problems (1 error, 1 warning)
+
+[ELIFECYCLE] Command failed with exit code 1.

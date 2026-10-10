@@ -3,6 +3,7 @@ import { StorageEditor } from '../../../../components/storage/storage-editor';
 import { resolve } from 'node:path';
 import { requirePageOwner } from '../../../../server/identity/owner-page';
 import { requireSiteSettings } from '../../../../server/site/settings';
+import { brandingUrl } from '../../../../server/site/urls';
 import { getServerRuntime } from '../../../../server/startup/server-start';
 
 export default async function StorageEditorPage({
@@ -23,6 +24,7 @@ export default async function StorageEditorPage({
       storageRoot={resolve(getServerRuntime().config.dataDir, 'storage')}
       initialSaved={(await searchParams).saved === '1'}
       name={settings.name}
+      logoUrl={brandingUrl(settings.logoKey)}
       description={settings.description}
       email={owner.email}
       ownerName={owner.name}

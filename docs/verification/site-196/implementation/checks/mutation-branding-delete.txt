@@ -1,0 +1,71 @@
+Node: v24.18.1
+Command: pnpm exec vitest run --project unit tests/unit/site/branding-editor.test.ts -t 删除未知读回
+Mutation: DELETE reconciliation url === null -> url !== null
+Expected result: existing deletion behavior tests fail
+
+Already up to date
+Done in 33ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-196-brand-settings/ariso
+
+ ❯ |unit| tests/unit/site/branding-editor.test.ts (11 tests | 2 failed | 9 skipped) 15ms
+   × 删除未知读回null：无引用才完成，有引用需显式再次移除 13ms
+   × 删除未知读回/branding/current.svg：无引用才完成，有引用需显式再次移除 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/site/branding-editor.test.ts > 删除未知读回null：无引用才完成，有引用需显式再次移除
+AssertionError: expected { kind: 'logo', file: null, …(1) } to be null
+
+- Expected:
+null
+
++ Received:
+{
+  "file": null,
+  "kind": "logo",
+  "previewUrl": null,
+}
+
+ ❯ tests/unit/site/branding-editor.test.ts:238:58
+    236|     );
+    237|     await harness.render().reconcile();
+    238|     if (url === null) expect(harness.render().operation).toBeNull();
+       |                                                          ^
+    239|     else {
+    240|       expect(harness.render()).toMatchObject({
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  |unit| tests/unit/site/branding-editor.test.ts > 删除未知读回/branding/current.svg：无引用才完成，有引用需显式再次移除
+AssertionError: expected { …(15) } to match object { phase: 'different', locked: true }
+(19 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "locked": true,
+-   "phase": "different",
++   "locked": false,
++   "phase": "selected",
+  }
+
+ ❯ tests/unit/site/branding-editor.test.ts:240:32
+    238|     if (url === null) expect(harness.render().operation).toBeNull();
+    239|     else {
+    240|       expect(harness.render()).toMatchObject({
+       |                                ^
+    241|         phase: 'different',
+    242|         locked: true,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 9 skipped (11)
+   Start at  21:57:48
+   Duration  125ms (transform 49%, import 25%, tests 24%, worker 2%)
+
+
+Exit code: 1

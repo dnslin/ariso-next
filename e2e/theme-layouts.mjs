@@ -146,6 +146,7 @@ export async function verifyThemeConsumers(page, config, report, fixture) {
     '/settings/storage',
     '/settings/storage/new',
     '/settings/general',
+    '/settings/general/branding',
     '/settings/processing',
     '/settings/account',
     '/settings/api',

@@ -62,6 +62,7 @@ import { LibraryReadError, useLibraryQuery } from './use-library-query';
 
 export function LibraryScreen(props: {
   name: string;
+  logoUrl?: string | null;
   description: string;
   email: string;
   ownerName: string;

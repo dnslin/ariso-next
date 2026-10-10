@@ -1,0 +1,24 @@
+{
+  "startedAt": "2026-10-10T15:30:36.900Z",
+  "platform": "darwin",
+  "arch": "arm64",
+  "node": "v24.18.1",
+  "status": "failed",
+  "suite": "site-branding",
+  "pageLabel": "p1",
+  "origin": "http://ariso-52684.localhost:52684",
+  "taskSpaceId": 5,
+  "stages": {
+    "site-branding": {
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (site-branding.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/issue-196-brand-settings/ariso/scripts/verify-browser.mjs:255:12)\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-196-brand-settings/ariso/scripts/browser-stages.mjs:17:5)\n    at async runBusinessBrowserStage (file:///Users/dnslin/.codex/worktrees/issue-196-brand-settings/ariso/scripts/browser-business.mjs:22:18)\n    at async file:///Users/dnslin/.codex/worktrees/issue-196-brand-settings/ariso/scripts/verify-browser.mjs:789:24"
+    },
+    "site-branding-restart": {
+      "status": "blocked",
+      "blockedBy": ["site-branding"]
+    }
+  },
+  "error": "AssertionError [ERR_ASSERTION]: Focused browser stages failed\n    at file:///Users/dnslin/.codex/worktrees/issue-196-brand-settings/ariso/scripts/verify-browser.mjs:799:12",
+  "finishedAt": "2026-10-10T15:31:20.586Z",
+  "temporaryDirectoryRemoved": true
+}

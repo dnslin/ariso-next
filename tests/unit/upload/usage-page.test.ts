@@ -33,25 +33,32 @@ it('authorizes the owner before reading site or runtime data', async () => {
   expect(mocks.site).not.toHaveBeenCalled();
 });
 
-it('only serializes public shell identity; current upload settings are read by the page', async () => {
-  mocks.owner.mockResolvedValueOnce({
-    email: 'owner@example.test',
-    name: 'Owner',
-    id: 'owner-id',
-  });
-  mocks.site.mockReturnValueOnce({
-    name: 'Ariso Test',
-    description: 'Test images',
-    publicUrl: 'https://images.example.test',
-    timeZone: 'Asia/Shanghai',
-    privateExtra: 'not-for-client',
-  });
-  const page = await Page();
-  expect(page.props).toEqual({
-    name: 'Ariso Test',
-    description: 'Test images',
-    email: 'owner@example.test',
-    ownerName: 'Owner',
-    initialSidebarCollapsed: true,
-  });
-});
+it.each([null, 'logo-version.png'])(
+  'only serializes public shell identity and branding URL; logoKey=%s',
+  async (logoKey) => {
+    mocks.owner.mockResolvedValueOnce({
+      email: 'owner@example.test',
+      name: 'Owner',
+      id: 'owner-id',
+    });
+    mocks.site.mockReturnValueOnce({
+      name: 'Ariso Test',
+      description: 'Test images',
+      logoKey,
+      logoMime: logoKey ? 'image/png' : null,
+      faviconKey: 'favicon-version.ico',
+      publicUrl: 'https://images.example.test',
+      timeZone: 'Asia/Shanghai',
+      privateExtra: 'not-for-client',
+    });
+    const page = await Page();
+    expect(page.props).toEqual({
+      name: 'Ariso Test',
+      description: 'Test images',
+      logoUrl: logoKey === null ? null : `/branding/${logoKey}`,
+      email: 'owner@example.test',
+      ownerName: 'Owner',
+      initialSidebarCollapsed: true,
+    });
+  },
+);

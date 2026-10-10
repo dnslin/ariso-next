@@ -6,6 +6,7 @@ import { Button } from '@heroui/react/button';
 import { Form } from '@heroui/react/form';
 import { Link } from '@heroui/react/link';
 import { Spinner } from '@heroui/react/spinner';
+import LogoGithub from '@gravity-ui/icons/LogoGithub';
 import { signInGithub } from './github-request';
 import { accountInputSchema } from '../../server/identity/validation';
 import { IdentityField } from './identity-field';
@@ -251,7 +252,7 @@ export function LoginForm({
           <Link
             href="/forgot-password"
             data-testid="login-forgot-mobile"
-            className="min-h-11 w-full justify-end text-sm font-normal min-[768px]:hidden"
+            className="min-h-11 w-fit justify-self-end px-3 text-sm font-normal min-[768px]:hidden"
           >
             忘记密码
           </Link>
@@ -269,7 +270,7 @@ export function LoginForm({
         <Link
           href="/forgot-password"
           data-testid="login-forgot-desktop"
-          className="hidden min-h-11 w-full justify-center text-sm font-normal min-[768px]:flex min-[1200px]:min-h-9"
+          className="hidden min-h-11 w-fit justify-self-center px-3 text-sm font-normal min-[768px]:flex min-[1200px]:min-h-9"
         >
           忘记密码
         </Link>
@@ -288,7 +289,11 @@ export function LoginForm({
             isDisabled={busy || githubBusy}
             onPress={() => void githubLogin()}
           >
-            {githubBusy ? <Spinner size="sm" /> : null}
+            {githubBusy ? (
+              <Spinner size="sm" />
+            ) : (
+              <LogoGithub aria-hidden className="size-4 shrink-0" />
+            )}
             {githubBusy ? '正在前往 GitHub…' : '使用 GitHub 登录'}
           </Button>
         </div>

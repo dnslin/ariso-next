@@ -1,0 +1,363 @@
+{
+  "status": "passed",
+  "taskSpaceId": 5,
+  "origin": "http://ariso-49377.localhost:49377",
+  "phase": "behavior",
+  "checks": [
+    "Real UI logo/source.png persists independently through reload",
+    "Real UI logo/static.jpg persists independently through reload",
+    "Real UI logo/static.webp persists independently through reload",
+    "Real UI logo/static.svg persists independently through reload",
+    "Real UI favicon/source.png persists independently through reload",
+    "Real UI favicon/multiple.ico persists independently through reload",
+    "Real UI favicon/static.svg persists independently through reload",
+    "Replace/cancel/success revoke Blob previews and restore focus to the corresponding choose button; unsupported GIF/JPEG and >5 MiB are rejected by the real service, delete cancellation preserves and confirmed delete removes each independent asset."
+  ],
+  "layouts": [
+    {
+      "name": "delete-logo",
+      "theme": "light",
+      "screenshot": "site-branding-delete-logo-light-390.png",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 70,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "确认移除",
+          "width": 96,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "delete-logo",
+      "theme": "dark",
+      "screenshot": "site-branding-delete-logo-dark-390.png",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 70,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "确认移除",
+          "width": 96,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "delete-logo",
+      "theme": "light",
+      "screenshot": "site-branding-delete-logo-light-768.png",
+      "width": 768,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 70,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "确认移除",
+          "width": 96,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "delete-logo",
+      "theme": "dark",
+      "screenshot": "site-branding-delete-logo-dark-768.png",
+      "width": 768,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 70,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "确认移除",
+          "width": 96,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "delete-logo",
+      "theme": "light",
+      "screenshot": "site-branding-delete-logo-light-1440.png",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 70,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "确认移除",
+          "width": 96,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "delete-logo",
+      "theme": "dark",
+      "screenshot": "site-branding-delete-logo-dark-1440.png",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 70,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "确认移除",
+          "width": 96,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "delete-favicon",
+      "theme": "light",
+      "screenshot": "site-branding-delete-favicon-light-390.png",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 70,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "确认移除",
+          "width": 96,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "delete-favicon",
+      "theme": "dark",
+      "screenshot": "site-branding-delete-favicon-dark-390.png",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 70,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "确认移除",
+          "width": 96,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "delete-favicon",
+      "theme": "light",
+      "screenshot": "site-branding-delete-favicon-light-768.png",
+      "width": 768,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 70,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "确认移除",
+          "width": 96,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "delete-favicon",
+      "theme": "dark",
+      "screenshot": "site-branding-delete-favicon-dark-768.png",
+      "width": 768,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 70,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "确认移除",
+          "width": 96,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "delete-favicon",
+      "theme": "light",
+      "screenshot": "site-branding-delete-favicon-light-1440.png",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 70,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "确认移除",
+          "width": 96,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "delete-favicon",
+      "theme": "dark",
+      "screenshot": "site-branding-delete-favicon-dark-1440.png",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 70,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "确认移除",
+          "width": 96,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Only the runner disposable production app, owner and database are changed; user acceptance preview data is untouched.",
+    "Failures are explicit page transport injections or real production validation/session failures; successful writes reach the real service.",
+    "Browser geometry and screenshots do not substitute design comparison or human acceptance; Release/container/device tests are separate."
+  ],
+  "stage": "behavior",
+  "browserErrors": [],
+  "originalSiteRestored": true,
+  "finishedAt": "2026-10-10T15:14:53.294Z"
+}

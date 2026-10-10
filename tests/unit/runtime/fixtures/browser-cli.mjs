@@ -40,6 +40,7 @@ export function spawn(command, args, options = {}) {
       script,
       dataDirectory: config.dataDirectory,
       passwordResetPhase: config.passwordResetPhase,
+      siteBrandingPhase: config.siteBrandingPhase,
       themePhase: config.themePhase,
       hasPasswordResetFixture: !!config.passwordResetFixture,
     });

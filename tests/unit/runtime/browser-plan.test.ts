@@ -156,6 +156,7 @@ describe('focused browser execution plans', () => {
     ['shell-navigation', ['shell-navigation']],
     ['sharing-management', ['sharing-management']],
     ['site-general', ['site-general']],
+    ['site-branding', ['site-branding']],
     ['theme', ['theme']],
     ['analytics', ['analytics']],
     ['albums', ['albums']],
@@ -312,6 +313,43 @@ describe('focused browser execution plans', () => {
     },
   );
 
+  it('executes all branding UI phases by default and scopes focused phases to branding', () => {
+    expect(select('full').stages).toContainEqual([
+      'site-branding',
+      'site-branding',
+    ]);
+    expect(select('site-branding')).toEqual({
+      stages: [['site-branding', 'siteBranding']],
+      config: { siteBrandingPhase: undefined },
+    });
+    for (const phase of ['representative', 'behavior', 'recovery', 'consumers'])
+      expect(select('site-branding', phase)).toEqual({
+        stages: [['site-branding', 'siteBranding']],
+        config: { siteBrandingPhase: phase },
+      });
+    for (const suite of [
+      'full',
+      'branding',
+      'site-general',
+      'analytics',
+      'processing',
+    ])
+      expect(select(suite).config).not.toHaveProperty('siteBrandingPhase');
+    for (const phase of ['settings', 'detail', 'lifecycle'])
+      expect(() => select('site-branding', phase)).toThrow('--only');
+    for (const option of ['storageConfig', 'previewConfig'])
+      expect(() =>
+        selectBrowserPlan({
+          suite: 'site-branding',
+          pageLabel: 'p2',
+          [option]: 'unused.json',
+        }),
+      ).toThrow();
+    expect(
+      selectBrowserPlan({ suite: 'site-branding', pageLabel: 'p2' }).stages,
+    ).toEqual([['site-branding', 'siteBranding']]);
+  });
+
   it('keeps site phases out of other scenes and preserves all site phases in full', () => {
     expect(select('site-general').config).toEqual({
       siteGeneralPhase: undefined,
@@ -425,6 +463,7 @@ describe('focused browser execution plans', () => {
         ['upload-usage', 'upload-usage'],
         ['sharing-management', 'sharing-management'],
         ['site-general', 'site-general'],
+        ['site-branding', 'site-branding'],
         ['analytics', 'analytics'],
 
         ['password-reset', 'password-reset'],

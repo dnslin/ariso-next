@@ -24,9 +24,15 @@ export function PublicShell({
       ) : null}
       <main
         id="main-content"
-        className={`public-content${layout ? ` public-content--${layout}` : ''}${layout === 'share' || layout === 'recovery' ? ' block! p-0! place-items-stretch!' : ''}`}
+        className={`public-content${layout ? ` public-content--${layout}` : ''}${layout === 'share' || layout === 'recovery' || layout === 'login' ? ' block! p-0! place-items-stretch!' : ''}`}
       >
-        {children}
+        {layout === 'login' ? (
+          <div className="grid min-h-dvh w-full place-items-center px-4 py-20">
+            {children}
+          </div>
+        ) : (
+          children
+        )}
       </main>
     </div>
   );
