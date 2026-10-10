@@ -1,0 +1,48 @@
+Already up to date
+Done in 61ms using pnpm v11.19.0
+$ vitest run --project unit
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-196-brand-settings/ariso
+
+ ❯ |unit| tests/unit/upload/usage-page.test.ts (2 tests | 1 failed) 9ms
+   × only serializes public shell identity; current upload settings are read by the page 6ms
+{"level":"error","time":"2026-10-10T12:53:34.182Z","module":"storage.http","err":{"type":"Error","message":"remote operation failed","stack":"Error: remote operation failed\n    at /Users/dnslin/.codex/worktrees/issue-196-brand-settings/ariso/tests/unit/storage/probe-http.test.ts:21:27\n    at Module.storageResponse (/Users/dnslin/.codex/worktrees/issue-196-brand-settings/ariso/src/server/storage/http.ts:24:13)\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at /Users/dnslin/.codex/worktrees/issue-196-brand-settings/ariso/tests/unit/storage/probe-http.test.ts:16:20","code":"STORAGE_OPERATION_FAILED"},"path":"/api/storages/id/probes/probe/retry-cleanup","msg":"Remote storage operation failed"}
+{"level":"error","time":"2026-10-10T12:53:34.202Z","module":"storage.http","err":{"type":"Error","message":"remote operation failed","stack":"Error: remote operation failed\n    at /Users/dnslin/.codex/worktrees/issue-196-brand-settings/ariso/tests/unit/storage/probe-http.test.ts:21:27\n    at Module.storageResponse (/Users/dnslin/.codex/worktrees/issue-196-brand-settings/ariso/src/server/storage/http.ts:24:13)\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at /Users/dnslin/.codex/worktrees/issue-196-brand-settings/ariso/tests/unit/storage/probe-http.test.ts:16:20","code":"STORAGE_TIMEOUT"},"path":"/api/storages/id/probes/probe/retry-cleanup","msg":"Remote storage operation failed"}
+{"level":"error","time":"2026-10-10T12:53:34.205Z","module":"storage.http","err":{"type":"Error","message":"namespace scan failed","stack":"Error: namespace scan failed\n    at /Users/dnslin/.codex/worktrees/issue-196-brand-settings/ariso/tests/unit/storage/probe-http.test.ts:36:27\n    at Module.storageResponse (/Users/dnslin/.codex/worktrees/issue-196-brand-settings/ariso/src/server/storage/http.ts:24:13)\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at /Users/dnslin/.codex/worktrees/issue-196-brand-settings/ariso/tests/unit/storage/probe-http.test.ts:33:20","code":"STORAGE_SCAN_FAILED","status":502},"path":"/api/storages/id","msg":"Remote storage operation failed"}
+{"level":"error","time":"2026-10-10T12:53:34.206Z","module":"storage.http","err":{"type":"Error","message":"namespace scan failed","stack":"Error: namespace scan failed\n    at /Users/dnslin/.codex/worktrees/issue-196-brand-settings/ariso/tests/unit/storage/probe-http.test.ts:36:27\n    at Module.storageResponse (/Users/dnslin/.codex/worktrees/issue-196-brand-settings/ariso/src/server/storage/http.ts:24:13)\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at /Users/dnslin/.codex/worktrees/issue-196-brand-settings/ariso/tests/unit/storage/probe-http.test.ts:33:20","code":"STORAGE_SCAN_FAILED","status":504},"path":"/api/storages/id","msg":"Remote storage operation failed"}
+{"level":"error","time":"2026-10-10T12:53:34.210Z","module":"storage.http","err":{"type":"Error","message":"namespace scan failed","stack":"Error: namespace scan failed\n    at /Users/dnslin/.codex/worktrees/issue-196-brand-settings/ariso/tests/unit/storage/probe-http.test.ts:36:27\n    at Module.storageResponse (/Users/dnslin/.codex/worktrees/issue-196-brand-settings/ariso/src/server/storage/http.ts:24:13)\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at /Users/dnslin/.codex/worktrees/issue-196-brand-settings/ariso/tests/unit/storage/probe-http.test.ts:33:20","code":"STORAGE_SCAN_FAILED","status":500},"path":"/api/storages/id","msg":"Storage request failed"}
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/upload/usage-page.test.ts > only serializes public shell identity; current upload settings are read by the page
+AssertionError: expected { name: 'Ariso Test', …(5) } to deeply equal { name: 'Ariso Test', …(4) }
+
+- Expected
++ Received
+
+  {
+    "description": "Test images",
+    "email": "owner@example.test",
+    "initialSidebarCollapsed": true,
++   "logoUrl": "/branding/undefined",
+    "name": "Ariso Test",
+    "ownerName": "Owner",
+  }
+
+ ❯ tests/unit/upload/usage-page.test.ts:50:22
+     48|       logoMime: logoKey ? 'image/png' : null,
+     49|       faviconKey: 'favicon-version.ico',
+     50|       publicUrl: 'https://images.example.test',
+       |                      ^
+     51|       timeZone: 'Asia/Shanghai',
+     52|       privateExtra: 'not-for-client',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 159 passed (160)
+      Tests  1 failed | 2033 passed (2034)
+   Start at  20:53:24
+   Duration  115.71s (tests 72%, import 21%, transform 6%)
+
+[ELIFECYCLE] Command failed with exit code 1.

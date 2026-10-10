@@ -1,58 +1,56 @@
 # T-SITE-04 品牌设置及跨页联动
 
-2026-10-10（Asia/Shanghai）；[Issue #196](https://github.com/dnslin/ariso-next/issues/196)。当前阶段：**第三版已按最新反馈移除登录品牌区、收紧忘记密码悬停区域，整体原型尚未批准，产品实现未开始**。本轮不关闭 Issue、不合并、不发布、不部署。
+2026-10-10（Asia/Shanghai）；[Issue #196](https://github.com/dnslin/ariso-next/issues/196)，草稿 [PR #277](https://github.com/dnslin/ariso-next/pull/277)。用户已答复“OK，就按照这个去实施”，批准4216最终原型。产品实现已完成，默认全量结果已归档，受影响定向复验及独立代码、设计评审已完成，品牌默认组合及真实重启已通过，最终UI人工验收未完成。本轮不合并、不关闭Issue、不发布、不部署。
 
-## 依据与前置
+## 依据、前置与范围
 
-从 [文档导航](../../README.md) 读取 [site 规格](../../specs/SPEC-site.md) §1/3/6/7/9/10、[任务卡和 DG-SITE 结论](../../tasks/m3-m4-experience.md#t-site-04-品牌设置及登录分享跨页联动)、[设计交付规范](../../design/handoff.md) 与[执行约定](../../tasks/execution.md)。保留 `R-21.2-01/02`、`U-SITE-01/02/03` 和 `SITE-BRAND` 边界，没有改写冻结 PRD。
+从[文档导航](../../README.md)读取[site规格](../../specs/SPEC-site.md) §1/3/6/7/9/10、[任务卡与DG-SITE](../../tasks/m3-m4-experience.md#t-site-04-品牌设置及登录分享跨页联动)、[设计交付规范](../../design/handoff.md)和[执行约定](../../tasks/execution.md)。保留 R-21.2-01/02、U-SITE-01/02/03 与 SITE-BRAND 边界，未改写冻结PRD。
 
-实际用 `gh issue view 196 --json number,title,body,state,comments,url` 及 `gh api repos/dnslin/ariso-next/issues/196/dependencies/{blocked_by,blocking}` 读取正文、评论和原生关系。Issue OPEN、无评论；#195/#192/#57/#135 均 CLOSED，没有 blocking 项。快照见 [Issue](./issue.json)、[前置](./blocked-by.json)和[后置](./blocking.json)。历史 DG-SITE 中 #195 未完成的描述是当时状态，不作为当前阻塞。
+实际通过gh读取正文、评论与原生blocked_by/blocking：#196 OPEN、无评论，#195/#192/#57/#135均CLOSED、blocking为空；本轮实施前再次核对。初次快照见[Issue](./issue.json)、[前置](./blocked-by.json)和[后置](./blocking.json)。DG-SITE历史前置描述保留当时结论。
 
-最新 `origin/main` 基点为 `9ab5be055e9790d1b243935e259d5af87cccd610`。原目录 `/Volumes/data/project/ariso` 无未提交改动，存在其他任务 worktree。本任务通过 app 创建独立目录 `/Users/dnslin/.codex/worktrees/issue-196-brand-settings/ariso`，分支 `codex/issue-196-brand-settings`。
+从 origin/main 的 9ab5be055e9790d1b243935e259d5af87cccd610 创建独立worktree及 codex/issue-196-brand-settings 分支，原项目目录保留；实施时再次fetch未发现新的main提交。
 
-## 真实实现与本次边界
+#195已有素材服务、PUT/DELETE/匿名读取、格式/5MiB校验、版本URL、引用与清理，以及按请求生成的元信息。本次复用这些能力，只实现独立品牌管理UI及真实消费路由；不重写存储、身份、迁移、图片上传或主题设置。
 
-#195 已交付 `src/server/site/branding.ts`、素材 PUT/DELETE/匿名读取、内容格式校验、5 MiB、引用提交及清理。`src/app/layout.tsx` 已按请求读取标题、描述和版本 Favicon URL。本任务不重复实现素材存取、认证、迁移或上传框架。
+## 最终行为
 
-目前品牌管理入口仍为“尚未开放”。首页、匿名分享已有名称描述消费，未显示自定义 Logo；登录没有品牌区，后台外壳也未消费 Logo。本次最终应接入独立素材管理、共享品牌显示与真实消费者，并保持文本保存和素材操作独立。当前仅增加 `design-plans/issue196-brand-review`、第二版 `design-plans/issue196-brand-review-v2`、登录居中第三版 `design-plans/issue196-brand-review-v3` 和其隔离配置，没有修改产品 `src/`、测试运行器或业务测试。
+- 基本设置进入 /settings/general/branding，Logo/Favicon分别选择、预览、保存、替换、删除；不会额外提交站点文本。使用紧凑HeroUI面板及既有OwnerShell、账号区、导航和底栏。
+- 取消、成功和采用服务器结果释放当前Blob；明确拒绝保留同一File与预览、保留旧引用。网络/5xx结果未知时先由用户触发GET核对，不自动重复写入；PUT核对不把新URL当作所选文件成功。DELETE仍有引用时明确再次确认才写入。
+- 成功使用中性Toast并回焦对应选择按钮。会话失效保留当前选择，弹窗内可重新登录。已配置但不可读的素材明确报错，只有null引用使用内置标识。
+- 当前管理页成功后刷新实际品牌配置；首页、全部已实现后台消费路由、匿名分享正常/门禁/错误屏幕复用真实Logo。根标题、description、版本Favicon继续复用既有实现。
+- 按最新批准，登录仅居中卡片，不展示额外Logo、名称或品牌描述；GitHub启用时按钮带真实库图标，忘记密码使用紧凑交互区域。登录认证行为不变。
 
-设计缺口来自[任务卡](../../tasks/m3-m4-experience.md#dg-site-对-t-site-04-的核对结论)：初次读取、所选文件失败保留、素材上传/删除结果未知、登录品牌位置及缺失状态。按用户本轮第 4 节，先提供[第三版可查看原型](http://127.0.0.1:4216/)（[旧版](http://127.0.0.1:4196/)保留），取得批准后才修改对应产品代码。首页与分享继续沿现有真实布局，仅补品牌消费，不另作重排提案。
+公共品牌仅传播所需公开字段，操作状态仅保存当前kind、同一File及预览URL，没有克隆完整图片对象。新增 Gravity UI icons 2.22.0 只用于已批准GitHub标识，沿 handoff 图标来源；其余复用现有依赖。
 
-## 原型、检查与评审
+## 证据入口与验收
 
-原型使用 HeroUI 3.2.6、Next 16.3.5、React 19.3.0、Tailwind 4.3.3 与既有 Lucide；第一版没有新增依赖。第二版按用户要求加入GitHub图标，仅独立原型包增加 `@gravity-ui/icons@2.22.0`。`using-agent-skills` 选择最少适用流程，`frontend-ui-engineering` 指导响应式、表单、焦点，`vercel-react-best-practices` 指导局部状态与资源清理，`figma-design-to-code` 读取实际设计，`ego-browser` 使用现有 Ego Lite。分支与提交遵守 `git-workflow-and-versioning`，独立代码评审使用 `code-review-and-quality`。
+最终命令、结果、失败修复及浏览器证据见[产品实施记录](./implementation/README.md)，独立功能审查见[代码评审](./implementation/code-review.md)，Figma实际同步见[同步记录](./implementation/figma-sync.md)，真实页面对照见[独立设计评审](./implementation/design-review.md)。检查、浏览器、设计和人工验收分别记录，不互相代替。
 
-原型不连接产品 API、不创建账号、不读取用户预览数据；无需账号密码。演示操作只改变内存状态，真实上传、重启持久化、浏览器实际 Favicon、注入与缓存行为尚未验证。原型演示栏不进入产品。
+本轮设计主节点：[品牌桌面468:11915](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=468-11915)、[品牌手机468:12216](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=468-12216)、[登录桌面2:11](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=2-11)、[登录手机102:3020](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-3020)。关键状态节点及截图见同步记录。
 
-设计信息、两端实际截图、逐项差异、执行命令与独立评审统一记录在[最新登录反馈修订](./login-centering/feedback/README.md)。[登录居中第三版](./login-centering/README.md)、[第二版返修](./revision-v2/README.md)与[第一版记录](./prototype/README.md)保留历史结论。Figma 本轮只读，未同步。用户批准后具备写入能力时，再同步对应节点并复核。
+人工验收预览：[独立产品预览](http://ariso-196.localhost:4316/settings/general/branding)。独立账号与密码存于本机忽略目录 test-results/site-196-acceptance/credentials.txt，不提交到代码或PR。该服务使用独立数据目录，与自动化及其他预览数据隔离；保持可用直到用户明确要求停止。需人工核对两端品牌行、文件选择/预览/取消/保存/替换/删除、即时反馈与登录卡片布局，以及首页/后台/匿名分享联动。
 
-## 后续验证调用链
+| 项目                    | 当前状态                                                                      |
+| ----------------------- | ----------------------------------------------------------------------------- |
+| 前置、范围及原型批准    | 完成，最新4216方案已批准                                                      |
+| 产品代码                | 完成                                                                          |
+| 本地适用检查            | 受影响检查通过；整仓失败如实保留，见实施证据                                  |
+| 真实浏览器              | 品牌默认组合18项/118布局及真实重启通过；整仓原全量59通过/20失败/2阻断，见证据 |
+| 独立代码评审            | 本次发现均已修复并增量复审，回归见报告                                        |
+| Figma同步与独立设计评审 | 本次相关同步及设计评审完成；范围见报告                                        |
+| 最终UI人工验收          | 待用户验收                                                                    |
+| PR                      | OPEN、Draft；未合并                                                           |
 
-已只读核对：`test:integration` 同时执行 `integration` 与 `media-tools`，现有 branding 服务及 HTTP 测试属于后者。`test:browser` 默认 `full` 已调用 `runBrandingBrowser()`，但该套件只覆盖协议和解码，不能替代管理 UI。业务入口为 `scripts/browser-plan.mjs` → `scripts/verify-browser.mjs` → 独立所有者夹具 → `e2e/` 场景。
+日常PR无远端Actions检查不记为CI通过；Release镜像与双架构验证按既有发布流程，本轮未发布或部署。
 
-产品实施后将新增 `site-branding` 业务场景接入 `full.stages`，更新运行器参数归属与默认入口测试。两素材的选择/预览/取消/提交/替换/删除/失败/结果核对、Blob 清理、文本独立，以及当前管理页、首页、登录、匿名列表/门禁/错误屏幕和浏览器元信息均需真实验证。PUT 响应丢失后，GET 仅能确认服务器当前素材；新 URL 不能单独证明本文件成功。原型提供采用服务器或保留文件继续上传的明确选择，不自动重复写入。
+## 原型历史
 
-## 交付状态
-
-| 项目                                   | 当前状态                             |
-| -------------------------------------- | ------------------------------------ |
-| 前置、实现和设计盘点                   | 已完成                               |
-| 独立原型                               | 第三版原位返修，检查与评审见最新记录 |
-| 原型批准                               | 待用户决定                           |
-| 产品代码完成                           | 未开始                               |
-| 产品适用检查、真实浏览器、产品设计评审 | 未执行                               |
-| 最终 UI 人工验收                       | 未开始                               |
-| Figma 同步                             | 未执行                               |
-| PR                                     | 本轮保留草稿，不具备合并条件         |
-
-Release 镜像与双架构验证按现有发布流程，不为本任务建立 Release 或部署。
-
-## 提交与远端状态
-
-第一版原型与证据已提交并推送到 `codex/issue-196-brand-settings`，PR为 [#277](https://github.com/dnslin/ariso-next/pull/277)。第一版初次提交 `f4567cdd06446860094f5bdbfdcbc20e0ec7735d`、此前记录提交 `7cba32692c0083254b3c585357b53eb4dbd73467`；第二版返修在同一分支增量提交。实际PR状态、远端head与检查在本轮推送后核对。当前保持OPEN、Draft、base为main。没有远端检查时不记作CI通过，不等待不存在的日常PR工作流。
+[最终反馈记录](./login-centering/feedback/README.md)、[第三版居中](./login-centering/README.md)、[第二版](./revision-v2/README.md)、[第一版](./prototype/README.md)保留当时未获批准的结论。4196、4206、4216均保留；原型演示栏不进入产品。产品批准是其后本轮用户明确回复，不倒改历史记录。
 
 用户对第一版已答复“需要调整，保留当前原型”，并指出GitHub图标、登录多余描述、设置粗糙空白三项问题。第二版已据此实际返修、浏览器检查并独立评审，详情见[本轮证据](./revision-v2/README.md)。新版 `127.0.0.1:4206` 与旧版 `127.0.0.1:4196` 均保留，第二版后来同样被要求调整，未获批准；按用户第4节停在设计决定，不继续修改依赖该方案的产品代码。最终产品验收所需独立账号与真实数据将在实施后准备。
 
 用户随后要求登录卡片本身接近页面中心。第二版同样保留，第三版4216只返修登录布局；本轮失败证据、实际位置、短视口和独立复核见[登录居中记录](./login-centering/README.md)。第二版“需要调整”不视为整体批准，产品实现仍等待方案批准。
 
 用户又在4216指出“忘记密码”悬停区域过大，并选中上方Logo与名称要求“去掉两个”。本轮按此明确指令移除两个登录展示元素，保持站点数据与其他预览不变；同一4216原位更新，不新增第四版。实际验证与差异处理见[最新反馈记录](./login-centering/feedback/README.md)。历史4196/4206继续保留，第三版返修前状态由提交 `4b2e95ca` 和既有截图保留；本轮指令不视为整体方案批准。
+
+随后用户明确回复“OK，就按照这个去实施”，本轮按4216最终状态开始产品实施；上面的等待批准描述仅为历史记录。

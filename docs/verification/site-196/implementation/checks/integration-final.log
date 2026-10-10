@@ -1,0 +1,38 @@
+Already up to date
+Done in 35ms using pnpm v11.19.0
+$ vitest run --project integration --project media-tools --maxWorkers=4
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-196-brand-settings/ariso
+
+{"level":"error","time":"2026-10-10T13:00:01.486Z","module":"identity.auth","details":[{"type":"APIError","message":"API Key has expired","stack":"APIError: API Key has expired","status":"UNAUTHORIZED","body":{"type":"Object","message":"API Key has expired","code":"KEY_EXPIRED"},"headers":{},"statusCode":401,"name":"APIError"}],"msg":"Failed to validate API key:"}
+{"level":"error","time":"2026-10-10T13:00:01.903Z","module":"identity.auth","details":[{"type":"APIError","message":"API Key is disabled","stack":"APIError: API Key is disabled","status":"UNAUTHORIZED","body":{"type":"Object","message":"API Key is disabled","code":"KEY_DISABLED"},"headers":{},"statusCode":401,"name":"APIError"}],"msg":"Failed to validate API key:"}
+{"level":"error","time":"2026-10-10T13:00:01.915Z","module":"identity.auth","details":[{"type":"APIError","message":"Invalid API key.","stack":"APIError: Invalid API key.","status":"UNAUTHORIZED","body":{"type":"Object","message":"Invalid API key.","code":"INVALID_API_KEY"},"headers":{},"statusCode":401,"name":"APIError"}],"msg":"Failed to validate API key:"}
+{"level":"error","time":"2026-10-10T13:00:03.349Z","module":"identity.auth","details":[{"type":"APIError","message":"Invalid API key.","stack":"APIError: Invalid API key.","status":"UNAUTHORIZED","body":{"type":"Object","message":"Invalid API key.","code":"INVALID_API_KEY"},"headers":{},"statusCode":401,"name":"APIError"}],"msg":"Failed to validate API key:"}
+{"level":"error","time":"2026-10-10T13:00:17.079Z","module":"identity.auth","details":[{"type":"APIError","message":"API Key not found","stack":"APIError: API Key not found","status":"UNAUTHORIZED","body":{"type":"Object","message":"API Key not found","code":"KEY_NOT_FOUND"},"headers":{},"statusCode":401,"name":"APIError"}],"msg":"Failed to validate API key:"}
+{"level":"error","time":"2026-10-10T13:00:17.101Z","module":"identity.auth","details":[{"type":"APIError","message":"API Key has expired","stack":"APIError: API Key has expired","status":"UNAUTHORIZED","body":{"type":"Object","message":"API Key has expired","code":"KEY_EXPIRED"},"headers":{},"statusCode":401,"name":"APIError"}],"msg":"Failed to validate API key:"}
+{"time":"2026-10-10T13:02:10.624Z","level":"info","module":"identity.setup","event":"setup-code","code":"[redacted]","msg":"请使用初始化码完成 setup"}
+{"level":"info","time":"2026-10-10T13:02:10.694Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+{"time":"2026-10-10T13:02:11.117Z","level":"info","module":"identity.setup","event":"setup-code","code":"[redacted]","msg":"请使用初始化码完成 setup"}
+{"level":"error","time":"2026-10-10T13:02:11.124Z","module":"identity.setup","err":{"type":"Error","message":"controlled hash failure","stack":"Error: controlled hash failure\n    at /Users/dnslin/.codex/worktrees/issue-196-brand-settings/ariso/tests/integration/identity/setup-lifecycle.test.ts:122:40\n    at file:///Users/dnslin/.codex/worktrees/issue-196-brand-settings/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:1628:35\n    at file:///Users/dnslin/.codex/worktrees/issue-196-brand-settings/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:2783:26\n    at file:///Users/dnslin/.codex/worktrees/issue-196-brand-settings/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3319:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/dnslin/.codex/worktrees/issue-196-brand-settings/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3314:10)\n    at file:///Users/dnslin/.codex/worktrees/issue-196-brand-settings/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3299:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/dnslin/.codex/worktrees/issue-196-brand-settings/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3257:10)\n    at file:///Users/dnslin/.codex/worktrees/issue-196-brand-settings/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3876:64"},"databasePath":"/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-setup-lifecycle-5agFla/data/ariso.db","msg":"Initialization request failed"}
+{"level":"info","time":"2026-10-10T13:02:11.128Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+{"time":"2026-10-10T13:02:11.532Z","level":"info","module":"identity.setup","event":"setup-code","code":"[redacted]","msg":"请使用初始化码完成 setup"}
+{"level":"info","time":"2026-10-10T13:02:11.592Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+ ❯ |media-tools| tests/integration/upload/api.test.ts (15 tests | 1 failed) 55698ms
+   × rejects truncated multipart, missing files, field byte limits and configured file size limits, then removes all temporary files 8089ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |media-tools| tests/integration/upload/api.test.ts > rejects truncated multipart, missing files, field byte limits and configured file size limits, then removes all temporary files
+TypeError: fetch failed
+Caused by: Error: read ECONNRESET
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { errno: -54, code: 'ECONNRESET', syscall: 'read' }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 190 passed (191)
+      Tests  1 failed | 1895 passed (1896)
+   Start at  20:59:47
+   Duration  371.32s (tests 95%, import 4%)
+
+[ELIFECYCLE] Command failed with exit code 1.

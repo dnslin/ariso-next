@@ -63,6 +63,7 @@ export async function verifySiteGeneralLayouts(page, tools, report) {
   }
   assert.ok(structure.related.includes('/settings/storage'));
   assert.ok(structure.related.includes('/settings/processing'));
+  assert.ok(structure.related.includes('/settings/general/branding'));
   for (const text of ['Logo 与 Favicon', '上传限制', '界面主题'])
     assert.ok(structure.placeholders.includes(text));
   report.structure = structure;

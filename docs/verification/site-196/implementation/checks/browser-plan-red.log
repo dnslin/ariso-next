@@ -1,0 +1,122 @@
+Already up to date
+Done in 39ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-196-brand-settings/ariso
+
+ ❯ |unit| tests/unit/runtime/browser-plan.test.ts (139 tests | 1 failed) 21ms
+   ❯ focused browser execution plans (139)
+     × executes all branding UI phases by default and scopes focused phases to branding 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > executes all branding UI phases by default and scopes focused phases to branding
+AssertionError: expected [ [ 'library-batch', …(1) ], …(20) ] to deep equally contain [ 'site-branding', 'site-branding' ]
+
+- Expected
++ Received
+
+  [
+-   "site-branding",
+-   "site-branding",
++   [
++     "library-batch",
++     "library-batch",
++   ],
++   [
++     "library-batch-reprocess",
++     "library-reprocess",
++   ],
++   [
++     "library-copy",
++     "library-copy",
++   ],
++   [
++     "trash-query-batch",
++     "trash-query-batch",
++   ],
++   [
++     "trash-cleanup",
++     "trash-cleanup",
++   ],
++   [
++     "shell-navigation",
++     "shell-navigation",
++   ],
++   [
++     "albums",
++     "albums",
++   ],
++   [
++     "album-cover",
++     "album-cover",
++   ],
++   [
++     "tags",
++     "tags",
++   ],
++   [
++     "upload-settings",
++     "upload-settings",
++   ],
++   [
++     "upload",
++     "upload",
++   ],
++   [
++     "upload-polling",
++     "upload-polling",
++   ],
++   [
++     "upload-input",
++     "upload-input",
++   ],
++   [
++     "upload-submissions",
++     "upload-submissions",
++   ],
++   [
++     "upload-relations",
++     "upload-relations",
++   ],
++   [
++     "upload-usage",
++     "upload-usage",
++   ],
++   [
++     "sharing-management",
++     "sharing-management",
++   ],
++   [
++     "site-general",
++     "site-general",
++   ],
++   [
++     "analytics",
++     "analytics",
++   ],
++   [
++     "password-reset",
++     "password-reset",
++   ],
++   [
++     "smtp",
++     "smtp",
++   ],
+  ]
+
+ ❯ tests/unit/runtime/browser-plan.test.ts:283:35
+    281|
+    282|   it('executes all branding UI phases by default and scopes focused ph…
+    283|     expect(select('full').stages).toContainEqual(['site-branding', 'si…
+       |                                   ^
+    284|     expect(select('site-branding')).toEqual({
+    285|       stages: [['site-branding', 'siteBranding']],
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 138 passed (139)
+   Start at  20:44:12
+   Duration  136ms (transform 42%, tests 39%, import 16%, worker 4%)
+

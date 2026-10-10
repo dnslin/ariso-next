@@ -1,0 +1,41 @@
+Already up to date
+Done in 35ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-196-brand-settings/ariso
+
+ ✓ |integration| tests/integration/identity/reset-password-cli.test.ts > shipped standalone CLI resets without Web, SMTP, secrets or repository dependencies 1227ms
+ ✓ |integration| tests/integration/identity/reset-password-cli.test.ts > a running standalone Web process rejects both old cookies on the next request after CLI reset 2349ms
+ ✓ |integration| tests/integration/runtime/secret-preflight.test.ts > 空生产数据库接受不同合法密钥，生产产物不包含测试表、组合或密钥校验记录 3786ms
+ ✓ |integration| tests/integration/identity/reset-password-cli.test.ts > CLI session deletion failure rolls back password, sessions and unused resets 1663ms
+ ✓ |integration| tests/integration/identity/reset-password-cli.test.ts > CLI verification deletion failure rolls back password, sessions and unused resets 1292ms
+ ✓ |integration| tests/integration/identity/reset-password-cli.test.ts > CLI SIGINT during first input leaves rows intact and restores the terminal 556ms
+ ✓ |integration| tests/integration/identity/reset-password-cli.test.ts > CLI SIGTERM during first input leaves rows intact and restores the terminal 552ms
+ ✓ |integration| tests/integration/runtime/secret-preflight.test.ts > wrong key 阻止入口启动 Web，保留已提交迁移与密文，修复后继续且不重放迁移 4120ms
+ ✓ |integration| tests/integration/identity/reset-password-cli.test.ts > CLI Ctrl-C during first input leaves rows intact and restores the terminal 569ms
+ ✓ |integration| tests/integration/identity/reset-password-cli.test.ts > CLI EOF during first input leaves rows intact and restores the terminal 563ms
+ ✓ |integration| tests/integration/identity/reset-password-cli.test.ts > CLI SIGINT during confirmation input leaves rows intact and restores the terminal 589ms
+ ✓ |integration| tests/integration/identity/reset-password-cli.test.ts > CLI SIGTERM during confirmation input leaves rows intact and restores the terminal 714ms
+ ✓ |integration| tests/integration/identity/reset-password-cli.test.ts > CLI Ctrl-C during confirmation input leaves rows intact and restores the terminal 618ms
+ ✓ |integration| tests/integration/identity/reset-password-cli.test.ts > CLI EOF during confirmation input leaves rows intact and restores the terminal 600ms
+ ✓ |integration| tests/integration/identity/reset-password-cli.test.ts > a competing SQLite writer cannot make CLI commit after cancellation 647ms
+ ✓ |integration| tests/integration/runtime/secret-preflight.test.ts > invalid ciphertext 阻止入口启动 Web，保留已提交迁移与密文，修复后继续且不重放迁移 4104ms
+ ✓ |integration| tests/integration/identity/reset-password-cli.test.ts > CLI rejects confirmation mismatch without writes or password disclosure 610ms
+ ✓ |integration| tests/integration/identity/reset-password-cli.test.ts > CLI validates a 7-character password at the 8–128 boundary 501ms
+ ✓ |integration| tests/integration/identity/reset-password-cli.test.ts > CLI validates a 8-character password at the 8–128 boundary 589ms
+ ✓ |integration| tests/integration/identity/reset-password-cli.test.ts > CLI validates a 128-character password at the 8–128 boundary 598ms
+ ✓ |integration| tests/integration/identity/reset-password-cli.test.ts > CLI validates a 129-character password at the 8–128 boundary 502ms
+ ✓ |integration| tests/integration/identity/reset-password-cli.test.ts > CLI refuses a missing database without creating or migrating it 506ms
+ ✓ |integration| tests/integration/identity/reset-password-cli.test.ts > CLI refuses a empty database without creating or migrating it 474ms
+ ✓ |integration| tests/integration/runtime/secret-preflight.test.ts > tampered ciphertext 阻止入口启动 Web，保留已提交迁移与密文，修复后继续且不重放迁移 3737ms
+ ✓ |integration| tests/integration/identity/reset-password-cli.test.ts > CLI rejects arguments before reading input, without printing their values 542ms
+ ✓ |integration| tests/integration/identity/reset-password-cli.test.ts > CLI refuses an uninitialized database without migration, owner or initialization code 495ms
+ ✓ |integration| tests/integration/identity/reset-password-cli.test.ts > CLI uses the standard terminal editor for hidden Unicode password input 576ms
+ ✓ |integration| tests/integration/identity/reset-password-cli.test.ts > CLI hashes outside the writer transaction and an abort during hashing prevents every write 101ms
+ ✓ |integration| tests/integration/identity/reset-password-cli.test.ts > CLI commits after Web has verified its old password, so Web cannot overwrite the recovery 801ms
+ ✓ |integration| tests/integration/identity/reset-password-cli.test.ts > Web commits while CLI is collecting input, then CLI becomes the final password and revokes every session 808ms
+
+ Test Files  2 passed (2)
+      Tests  30 passed (30)
+   Start at  20:55:46
+   Duration  22.23s (tests 98%, import 1%, transform 1%)
+

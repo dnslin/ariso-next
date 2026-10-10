@@ -20,6 +20,7 @@ import { UploadSubmissionSummaries } from './submission-summary';
 
 type ScreenProps = {
   name: string;
+  logoUrl?: string | null;
   description: string;
   email: string;
   ownerName: string;

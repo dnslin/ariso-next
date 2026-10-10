@@ -10,7 +10,7 @@
 
 ## 1. 目标与边界
 
-所有者在初始化和基本设置中维护站点公开地址与 IANA 时区。名称、描述、Logo 和 Favicon 出现在登录、浏览器标题、匿名相册分享及基础元信息中。浅色、深色、跟随系统是浏览器偏好，默认跟随系统。
+所有者在初始化和基本设置中维护站点公开地址与 IANA 时区。名称、描述、Logo 和 Favicon 按各页面用途用于首页、后台、匿名分享与基础元信息；登录按下方最新确认只消费浏览器标题和元信息。浅色、深色、跟随系统是浏览器偏好，默认跟随系统。
 
 site 提供配置读取、校验、持久化、链接生成和时间展示能力。不拥有所有者、会话、存储配置、图片、上传限制或处理设置。基本设置页按字段所属模块组合调用；site 不建立通用键值设置表。
 
@@ -111,6 +111,8 @@ OAuth Client ID/Secret 的“保存后重启生效”仍归 identity；站点新
 
 名称去掉首尾空白后不能为空；描述可以为空。两者作为文本渲染，不接受自定义 HTML/CSS/页脚或品牌色配置。默认名称和标识用于尚未设置素材的正常状态，不掩盖丢失文件或数据库错误。
 
+2026-10-10，用户批准 #196 最终原型：登录仅保留居中登录卡片，不在卡片上方展示Logo、站点名称或品牌描述；启用的GitHub登录带库图标，忘记密码使用紧凑操作区域。站点名称/描述/Favicon仍用于登录文档的标题和元信息，其他页面品牌消费不变。[批准、Figma与实施证据](../verification/site-196/README.md)。
+
 Logo 和 Favicon 由所有者上传，文件名由 site 生成，数据库保存相对文件名和检测后的 MIME。客户端不能提交服务器路径。公开读取仅服务当前配置引用的素材；品牌素材不进入图库、不生成图片 ID、不计入图片访问次数。
 
 文件更新采用短步骤：先在 branding 内写入新文件，再提交数据库引用，最后删除失去引用的旧文件。写入或提交失败时旧配置继续有效；提交后旧文件删除失败保留日志，并在下一次 site 启动清理中重试。清理只处理 site 自己生成且未被当前配置引用的品牌文件，不清空整个 assets 或 tmp。文件 I/O 不放入 SQLite 同步事务。
@@ -189,15 +191,15 @@ const settings = requireSiteSettings(connection.db);
 
 ## 9. Figma 对应与未满足的前置
 
-| 功能         | 桌面                                                                                      | 手机                                                                                      | 当前限制                                                   |
-| ------------ | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
-| 基本设置     | [30:1601](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=30-1601)            | [102:1389](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-1389)          | 原位修订保存范围；续篇各 37 态，真实输入与配置连续性待验证 |
-| 站点设置续篇 | [13 · 站点基础设置](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=209-2274) | [13 · 站点基础设置](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=209-2282) | 地址／时区、品牌与上传限制、主题；详见专项记录             |
-| 首页品牌     | [2:10](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=2-10)                  | [102:3000](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-3000)          | 预设品牌尚需接入真实配置                                   |
-| 登录品牌     | [2:11](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=2-11)                  | [102:3020](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-3020)          | 认证由 identity 接入，品牌联动需真实验收                   |
-| 初始化       | [184:764](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=184-764)            | [184:1774](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=184-1774)          | 已有初始化状态；真实事务与中断由 identity 验收             |
-| 匿名分享品牌 | [433:3610](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=433-3610)          | [433:8265](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=433-8265)          | 已有访客页面；自定义品牌联动未验证                         |
-| 设置深色对照 | [472:4254](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=472-4254)          | [472:9458](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=472-9458)          | 仅本批基本设置；其他页面与尺寸仍需回归                     |
+| 功能             | 桌面                                                                                      | 手机                                                                                      | 当前限制                                                   |
+| ---------------- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| 基本设置         | [30:1601](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=30-1601)            | [102:1389](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-1389)          | 原位修订保存范围；续篇各 37 态，真实输入与配置连续性待验证 |
+| 站点设置续篇     | [13 · 站点基础设置](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=209-2274) | [13 · 站点基础设置](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=209-2282) | 地址／时区、品牌与上传限制、主题；详见专项记录             |
+| 首页品牌         | [2:10](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=2-10)                  | [102:3000](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-3000)          | 预设品牌尚需接入真实配置                                   |
+| 登录布局与元信息 | [2:11](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=2-11)                  | [102:3020](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-3020)          | 认证由 identity 接入，品牌联动需真实验收                   |
+| 初始化           | [184:764](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=184-764)            | [184:1774](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=184-1774)          | 已有初始化状态；真实事务与中断由 identity 验收             |
+| 匿名分享品牌     | [433:3610](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=433-3610)          | [433:8265](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=433-8265)          | 已有访客页面；自定义品牌联动未验证                         |
+| 设置深色对照     | [472:4254](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=472-4254)          | [472:9458](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=472-9458)          | 仅本批基本设置；其他页面与尺寸仍需回归                     |
 
 详细状态与设计任务 ID 统一维护在[设计索引](../design/README.md)。页面采用现有断点、中文文案、触控范围、焦点与减少动态效果约定，不为 site 另建视觉体系。
 
@@ -212,7 +214,7 @@ const settings = requireSiteSettings(connection.db);
 | SITE-05 | origin 改变使全部 S3 CORS 失效并提示重测/OAuth 回调更新；失败整体回滚；图片身份不变；新链接改用新地址 | 接入 storage、identity、delivery 后的真实集成测试 |
 | SITE-06 | 修改时区不重写 UTC 记录，界面和下游日期语义一致                                                       | site 测试及 sharing/analytics 集成                |
 | SITE-07 | 所有者能保存，匿名写入失败；字段错误和服务器失败明确可见                                              | HTTP 与桌面/手机浏览器                            |
-| SITE-08 | 名称、描述、Logo/Favicon 在登录、标题、分享与元信息生效；保存失败保留旧配置                           | 真实素材/文件/HTTP/浏览器；含已确认格式与大小边界 |
+| SITE-08 | 名称、描述、Logo/Favicon 按首页/后台/分享用途及登录标题/元信息生效；保存失败保留旧配置                | 真实素材/文件/HTTP/浏览器；含已确认格式与大小边界 |
 | SITE-09 | 素材更换或移除不累积 site 自有孤立文件；中断后可恢复；其他模块文件不受影响                            | 各中断点的磁盘测试                                |
 | SITE-10 | 浅/深/系统模式刷新后保留；系统切换只影响 system；SQLite 无主题偏好                                    | 实际浏览器与数据库检查                            |
 | SITE-11 | 无部署密钥与数据库仍可构建；启动后才读取真实配置；保存后新页面无旧缓存                                | 保留 runtime 隔离构建测试并增加配置读取回归       |

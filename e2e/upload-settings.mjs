@@ -61,6 +61,7 @@ try {
         await tools.evidence('normal-short', 390, 'dark', 560);
         await page.focus(limitsField('queueLimit'));
         for (const selector of [
+          'main a[href="/settings/general/branding"]',
           'main a[href="/settings/storage"]',
           'main a[href="/settings/processing"]',
           '#site-save',

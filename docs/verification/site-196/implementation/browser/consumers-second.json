@@ -1,0 +1,399 @@
+{
+  "status": "failed",
+  "taskSpaceId": 5,
+  "origin": "http://ariso-51730.localhost:51730",
+  "phase": "consumers",
+  "checks": [
+    "All 22 implemented owner-shell entries decode the real custom Logo and retain current navigation, latest site name and description at 390/1440; mobile menu and desktop collapsed/expanded branding are exercised.",
+    "Actual anonymous password-gated and invalid sharing pages decode the current custom Logo and site description at 390/1440; the independent share password is cleared afterwards."
+  ],
+  "layouts": [
+    {
+      "name": "home",
+      "width": 390,
+      "theme": "light",
+      "screenshot": "site-branding-home-first-390.png"
+    },
+    {
+      "name": "login",
+      "width": 390,
+      "theme": "light",
+      "screenshot": "site-branding-login-first-390.png"
+    },
+    {
+      "name": "share",
+      "width": 390,
+      "theme": "light",
+      "screenshot": "site-branding-share-first-390.png"
+    },
+    {
+      "name": "home",
+      "width": 1440,
+      "theme": "light",
+      "screenshot": "site-branding-home-first-1440.png"
+    },
+    {
+      "name": "login",
+      "width": 1440,
+      "theme": "light",
+      "screenshot": "site-branding-login-first-1440.png"
+    },
+    {
+      "name": "share",
+      "width": 1440,
+      "theme": "light",
+      "screenshot": "site-branding-share-first-1440.png"
+    },
+    {
+      "name": "shell-brand",
+      "width": 1440,
+      "theme": "light",
+      "screenshot": "site-branding-shell-expanded-1440.png"
+    },
+    {
+      "name": "shell-brand-collapsed",
+      "width": 1440,
+      "theme": "light",
+      "screenshot": "site-branding-shell-collapsed-1440.png"
+    },
+    {
+      "name": "shell-brand",
+      "width": 390,
+      "theme": "light",
+      "screenshot": "site-branding-shell-menu-390.png"
+    },
+    {
+      "name": "password-gate",
+      "width": 390,
+      "theme": "light",
+      "screenshot": "site-branding-password-gate-390.png"
+    },
+    {
+      "name": "missing-share",
+      "width": 390,
+      "theme": "light",
+      "screenshot": "site-branding-missing-share-390.png"
+    },
+    {
+      "name": "password-gate",
+      "width": 1440,
+      "theme": "light",
+      "screenshot": "site-branding-password-gate-1440.png"
+    },
+    {
+      "name": "missing-share",
+      "width": 1440,
+      "theme": "light",
+      "screenshot": "site-branding-missing-share-1440.png"
+    }
+  ],
+  "limitations": [
+    "Only the runner disposable production app, owner and database are changed; user acceptance preview data is untouched.",
+    "Failures are explicit page transport injections or real production validation/session failures; successful writes reach the real service.",
+    "Browser geometry and screenshots do not substitute design comparison or human acceptance; Release/container/device tests are separate."
+  ],
+  "stage": "consumers",
+  "fixtureAlbumId": "issue196-brand-consumer",
+  "consumers": [
+    {
+      "path": "/",
+      "title": "品牌一 <b>纯文本</b>",
+      "description": "独立描述一 <b>纯文本</b>",
+      "logos": [
+        {
+          "src": "/branding/site-logo-31a6263e-754c-4df2-a36c-5ebbb1c486aa.png",
+          "decoded": true
+        }
+      ],
+      "injected": false
+    },
+    {
+      "path": "/login",
+      "title": "品牌一 <b>纯文本</b>",
+      "description": "独立描述一 <b>纯文本</b>",
+      "logos": [],
+      "injected": false
+    },
+    {
+      "path": "/s/m90talbX68SxmoOqTiP6HmWJbBPob9TnN8Xun-tgE4w",
+      "title": "品牌一 <b>纯文本</b> · 相册分享",
+      "description": "查看分享的公开图片。",
+      "logos": [
+        {
+          "src": "/branding/site-logo-31a6263e-754c-4df2-a36c-5ebbb1c486aa.png",
+          "decoded": true
+        }
+      ],
+      "injected": false
+    }
+  ],
+  "shellConsumers": [
+    {
+      "path": "/upload",
+      "current": "/upload",
+      "width": 1440,
+      "logoUrl": "/branding/site-logo-31a6263e-754c-4df2-a36c-5ebbb1c486aa.png"
+    },
+    {
+      "path": "/library?page=1",
+      "current": "/library",
+      "width": 1440,
+      "logoUrl": "/branding/site-logo-31a6263e-754c-4df2-a36c-5ebbb1c486aa.png"
+    },
+    {
+      "path": "/albums",
+      "current": "/albums",
+      "width": 1440,
+      "logoUrl": "/branding/site-logo-31a6263e-754c-4df2-a36c-5ebbb1c486aa.png"
+    },
+    {
+      "path": "/albums/issue196-brand-consumer?page=1",
+      "current": "/albums",
+      "width": 1440,
+      "logoUrl": "/branding/site-logo-31a6263e-754c-4df2-a36c-5ebbb1c486aa.png"
+    },
+    {
+      "path": "/trash",
+      "current": "/trash",
+      "width": 1440,
+      "logoUrl": "/branding/site-logo-31a6263e-754c-4df2-a36c-5ebbb1c486aa.png"
+    },
+    {
+      "path": "/tags",
+      "current": "/tags",
+      "width": 1440,
+      "logoUrl": "/branding/site-logo-31a6263e-754c-4df2-a36c-5ebbb1c486aa.png"
+    },
+    {
+      "path": "/shares",
+      "current": "/shares",
+      "width": 1440,
+      "logoUrl": "/branding/site-logo-31a6263e-754c-4df2-a36c-5ebbb1c486aa.png"
+    },
+    {
+      "path": "/shares/issue196-brand-consumer",
+      "current": "/shares",
+      "width": 1440,
+      "logoUrl": "/branding/site-logo-31a6263e-754c-4df2-a36c-5ebbb1c486aa.png"
+    },
+    {
+      "path": "/admin",
+      "current": "/dashboard",
+      "width": 1440,
+      "logoUrl": "/branding/site-logo-31a6263e-754c-4df2-a36c-5ebbb1c486aa.png"
+    },
+    {
+      "path": "/dashboard",
+      "current": "/dashboard",
+      "width": 1440,
+      "logoUrl": "/branding/site-logo-31a6263e-754c-4df2-a36c-5ebbb1c486aa.png"
+    },
+    {
+      "path": "/analytics",
+      "current": "/analytics",
+      "width": 1440,
+      "logoUrl": "/branding/site-logo-31a6263e-754c-4df2-a36c-5ebbb1c486aa.png"
+    },
+    {
+      "path": "/settings/storage",
+      "current": "/settings/storage",
+      "width": 1440,
+      "logoUrl": "/branding/site-logo-31a6263e-754c-4df2-a36c-5ebbb1c486aa.png"
+    },
+    {
+      "path": "/settings/storage/new",
+      "current": "/settings/storage",
+      "width": 1440,
+      "logoUrl": "/branding/site-logo-31a6263e-754c-4df2-a36c-5ebbb1c486aa.png"
+    },
+    {
+      "path": "/settings/general",
+      "current": "/settings/general",
+      "width": 1440,
+      "logoUrl": "/branding/site-logo-31a6263e-754c-4df2-a36c-5ebbb1c486aa.png"
+    },
+    {
+      "path": "/settings/general/branding",
+      "current": "/settings/general",
+      "width": 1440,
+      "logoUrl": "/branding/site-logo-31a6263e-754c-4df2-a36c-5ebbb1c486aa.png"
+    },
+    {
+      "path": "/settings/processing",
+      "current": "/settings/general",
+      "width": 1440,
+      "logoUrl": "/branding/site-logo-31a6263e-754c-4df2-a36c-5ebbb1c486aa.png"
+    },
+    {
+      "path": "/settings/account",
+      "current": "/settings/general",
+      "width": 1440,
+      "logoUrl": "/branding/site-logo-31a6263e-754c-4df2-a36c-5ebbb1c486aa.png"
+    },
+    {
+      "path": "/settings/api",
+      "current": "/settings/general",
+      "width": 1440,
+      "logoUrl": "/branding/site-logo-31a6263e-754c-4df2-a36c-5ebbb1c486aa.png"
+    },
+    {
+      "path": "/settings/api/usage",
+      "current": "/settings/general",
+      "width": 1440,
+      "logoUrl": "/branding/site-logo-31a6263e-754c-4df2-a36c-5ebbb1c486aa.png"
+    },
+    {
+      "path": "/settings/email",
+      "current": "/settings/general",
+      "width": 1440,
+      "logoUrl": "/branding/site-logo-31a6263e-754c-4df2-a36c-5ebbb1c486aa.png"
+    },
+    {
+      "path": "/settings/storage/9c6f73ac-15b5-4e9a-ae51-d3b3d8eb52f0",
+      "current": "/settings/storage",
+      "width": 1440,
+      "logoUrl": "/branding/site-logo-31a6263e-754c-4df2-a36c-5ebbb1c486aa.png"
+    },
+    {
+      "path": "/settings/storage/a111539c-b4d3-4042-a07d-a796d526a2cd/cors",
+      "current": "/settings/storage",
+      "width": 1440,
+      "logoUrl": "/branding/site-logo-31a6263e-754c-4df2-a36c-5ebbb1c486aa.png"
+    },
+    {
+      "path": "/upload",
+      "current": "/upload",
+      "width": 390,
+      "logoUrl": "/branding/site-logo-31a6263e-754c-4df2-a36c-5ebbb1c486aa.png"
+    },
+    {
+      "path": "/library?page=1",
+      "current": "/library",
+      "width": 390,
+      "logoUrl": "/branding/site-logo-31a6263e-754c-4df2-a36c-5ebbb1c486aa.png"
+    },
+    {
+      "path": "/albums",
+      "current": "/albums",
+      "width": 390,
+      "logoUrl": "/branding/site-logo-31a6263e-754c-4df2-a36c-5ebbb1c486aa.png"
+    },
+    {
+      "path": "/albums/issue196-brand-consumer?page=1",
+      "current": "/albums",
+      "width": 390,
+      "logoUrl": "/branding/site-logo-31a6263e-754c-4df2-a36c-5ebbb1c486aa.png"
+    },
+    {
+      "path": "/trash",
+      "current": "/trash",
+      "width": 390,
+      "logoUrl": "/branding/site-logo-31a6263e-754c-4df2-a36c-5ebbb1c486aa.png"
+    },
+    {
+      "path": "/tags",
+      "current": "/tags",
+      "width": 390,
+      "logoUrl": "/branding/site-logo-31a6263e-754c-4df2-a36c-5ebbb1c486aa.png"
+    },
+    {
+      "path": "/shares",
+      "current": "/shares",
+      "width": 390,
+      "logoUrl": "/branding/site-logo-31a6263e-754c-4df2-a36c-5ebbb1c486aa.png"
+    },
+    {
+      "path": "/shares/issue196-brand-consumer",
+      "current": "/shares",
+      "width": 390,
+      "logoUrl": "/branding/site-logo-31a6263e-754c-4df2-a36c-5ebbb1c486aa.png"
+    },
+    {
+      "path": "/admin",
+      "current": "/dashboard",
+      "width": 390,
+      "logoUrl": "/branding/site-logo-31a6263e-754c-4df2-a36c-5ebbb1c486aa.png"
+    },
+    {
+      "path": "/dashboard",
+      "current": "/dashboard",
+      "width": 390,
+      "logoUrl": "/branding/site-logo-31a6263e-754c-4df2-a36c-5ebbb1c486aa.png"
+    },
+    {
+      "path": "/analytics",
+      "current": "/analytics",
+      "width": 390,
+      "logoUrl": "/branding/site-logo-31a6263e-754c-4df2-a36c-5ebbb1c486aa.png"
+    },
+    {
+      "path": "/settings/storage",
+      "current": "/settings/storage",
+      "width": 390,
+      "logoUrl": "/branding/site-logo-31a6263e-754c-4df2-a36c-5ebbb1c486aa.png"
+    },
+    {
+      "path": "/settings/storage/new",
+      "current": "/settings/storage",
+      "width": 390,
+      "logoUrl": "/branding/site-logo-31a6263e-754c-4df2-a36c-5ebbb1c486aa.png"
+    },
+    {
+      "path": "/settings/general",
+      "current": "/settings/general",
+      "width": 390,
+      "logoUrl": "/branding/site-logo-31a6263e-754c-4df2-a36c-5ebbb1c486aa.png"
+    },
+    {
+      "path": "/settings/general/branding",
+      "current": "/settings/general",
+      "width": 390,
+      "logoUrl": "/branding/site-logo-31a6263e-754c-4df2-a36c-5ebbb1c486aa.png"
+    },
+    {
+      "path": "/settings/processing",
+      "current": "/settings/general",
+      "width": 390,
+      "logoUrl": "/branding/site-logo-31a6263e-754c-4df2-a36c-5ebbb1c486aa.png"
+    },
+    {
+      "path": "/settings/account",
+      "current": "/settings/general",
+      "width": 390,
+      "logoUrl": "/branding/site-logo-31a6263e-754c-4df2-a36c-5ebbb1c486aa.png"
+    },
+    {
+      "path": "/settings/api",
+      "current": "/settings/general",
+      "width": 390,
+      "logoUrl": "/branding/site-logo-31a6263e-754c-4df2-a36c-5ebbb1c486aa.png"
+    },
+    {
+      "path": "/settings/api/usage",
+      "current": "/settings/general",
+      "width": 390,
+      "logoUrl": "/branding/site-logo-31a6263e-754c-4df2-a36c-5ebbb1c486aa.png"
+    },
+    {
+      "path": "/settings/email",
+      "current": "/settings/general",
+      "width": 390,
+      "logoUrl": "/branding/site-logo-31a6263e-754c-4df2-a36c-5ebbb1c486aa.png"
+    },
+    {
+      "path": "/settings/storage/9c6f73ac-15b5-4e9a-ae51-d3b3d8eb52f0",
+      "current": "/settings/storage",
+      "width": 390,
+      "logoUrl": "/branding/site-logo-31a6263e-754c-4df2-a36c-5ebbb1c486aa.png"
+    },
+    {
+      "path": "/settings/storage/a111539c-b4d3-4042-a07d-a796d526a2cd/cors",
+      "current": "/settings/storage",
+      "width": 390,
+      "logoUrl": "/branding/site-logo-31a6263e-754c-4df2-a36c-5ebbb1c486aa.png"
+    }
+  ],
+  "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\nundefined !== ''\n\n    at assertBrandConsumers (file:///Users/dnslin/.codex/worktrees/issue-196-brand-settings/ariso/e2e/site-branding-consumers.mjs:55:16)\n    at async verifyBrandingConsumers (file:///Users/dnslin/.codex/worktrees/issue-196-brand-settings/ariso/e2e/site-branding-consumers.mjs:396:5)\n    at async file:////[eval2]:91:5",
+  "originalSiteRestored": true,
+  "finishedAt": "2026-10-10T15:24:55.699Z"
+}

@@ -19,6 +19,7 @@ import { SharesList, type SharePage } from './list';
 
 export function SharesScreen(props: {
   name: string;
+  logoUrl?: string | null;
   description: string;
   email: string;
   ownerName: string;

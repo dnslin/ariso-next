@@ -22,6 +22,7 @@ import { tagRequest, TagRequestError, type TagPage } from './api';
 
 export function TagsScreen(props: {
   name: string;
+  logoUrl?: string | null;
   description: string;
   email: string;
   ownerName: string;

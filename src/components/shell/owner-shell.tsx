@@ -62,6 +62,7 @@ const navigation = [
 export function OwnerShell({
   name,
   description,
+  logoUrl,
   email,
   ownerName,
   children,
@@ -72,6 +73,7 @@ export function OwnerShell({
 }: {
   name: string;
   description: string;
+  logoUrl?: string | null;
   email: string;
   ownerName: string;
   children: ReactNode;
@@ -87,6 +89,7 @@ export function OwnerShell({
       <AdminShell
         name={name}
         description={description}
+        logoUrl={logoUrl}
         navigation={navigation}
         initialSidebarCollapsed={initialSidebarCollapsed}
         user={

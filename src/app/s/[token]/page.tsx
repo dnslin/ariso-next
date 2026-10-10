@@ -9,12 +9,17 @@ import { shareGrantCookie } from '../../../server/sharing/authorization';
 import { readPublicSharePage } from '../../../server/sharing/public-query';
 import type { PublicSharePage } from '../../../server/sharing/public-types';
 import { readSiteSettings } from '../../../server/site/settings';
+import { brandingUrl } from '../../../server/site/urls';
 import { getServerRuntime } from '../../../server/startup/server-start';
 
 const readBrand = cache(async () => {
   await connection();
   const site = readSiteSettings(getServerRuntime().connection.db);
-  return { name: site?.name ?? 'Ariso', description: site?.description ?? '' };
+  return {
+    name: site?.name ?? 'Ariso',
+    description: site?.description ?? '',
+    logoUrl: site ? brandingUrl(site.logoKey) : null,
+  };
 });
 
 export async function generateMetadata(): Promise<Metadata> {
