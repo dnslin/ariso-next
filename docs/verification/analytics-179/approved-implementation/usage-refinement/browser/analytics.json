@@ -1,0 +1,6403 @@
+{
+  "status": "passed",
+  "taskSpaceId": 2,
+  "origin": "http://ariso-59035.localhost:59035",
+  "phase": "behavior",
+  "checks": [
+    "A delayed real refresh between native pointerdown/up preserves period geometry at 360/390/1440, leaves last-flush metadata visible, fits feedback on one line without metrics overlap, and the same pointer release selects and loads the actual 30-day report.",
+    "7/30/90 URL, trend/versions/popular and keyboard-accessible complete daily rows agree with actual SQLite. Today/cumulative/current usage stay fixed. Permanently deleted images are excluded before the ten-item limit, with the next image filling their place; their accesses remain in cumulative totals and daily trends. Recycled/private/disabled-storage history and full names remain. Four disjoint usage groups and unknown objects never imply a complete total.",
+    "Delayed 30-day response is aborted and cannot replace the latest 90-day report. Recharts arrow-key value includes exact date/count, with a complete equivalent daily table.",
+    "Approved access/storage explanations stay usable in short desktop and phone viewports, trap keyboard focus, and Escape restores their source focus and content scroll."
+  ],
+  "layouts": [
+    {
+      "name": "refresh-normal",
+      "theme": "light",
+      "height": 844,
+      "screenshot": "analytics-refresh-normal-light-360.png",
+      "width": 360,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "刷新访问统计",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "7 天",
+          "width": 101.328125,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "30 天",
+          "width": 101.34375,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "90 天",
+          "width": 101.328125,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看每日数值",
+          "width": 294,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 长名称 摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史.png统计，12次访问",
+          "width": 294,
+          "height": 229,
+          "navigation": false
+        },
+        {
+          "name": "查看已回收图片 · ecb95b19统计，11次访问",
+          "width": 294,
+          "height": 69,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 3.png统计，9次访问",
+          "width": 294,
+          "height": 69,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 4.png统计，8次访问",
+          "width": 294,
+          "height": 69,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 5.png统计，7次访问",
+          "width": 294,
+          "height": 69,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 6.png统计，6次访问",
+          "width": 294,
+          "height": 69,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 7.png统计，5次访问",
+          "width": 294,
+          "height": 69,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 8.png统计，4次访问",
+          "width": 294,
+          "height": 69,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 9.png统计，3次访问",
+          "width": 294,
+          "height": 69,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 10.png统计，2次访问",
+          "width": 294,
+          "height": 69,
+          "navigation": false
+        },
+        {
+          "name": "查看各存储组成",
+          "width": 294,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看初次失败图片",
+          "width": 294,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看重处理失败图片",
+          "width": 294,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "统计口径",
+          "width": 159,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "当前存储占用",
+          "width": 157,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "refresh-inflight",
+      "theme": "light",
+      "height": 844,
+      "screenshot": "analytics-refresh-inflight-light-360.png",
+      "width": 360,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "刷新访问统计",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "7 天",
+          "width": 101.328125,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "30 天",
+          "width": 101.34375,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "90 天",
+          "width": 101.328125,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看每日数值",
+          "width": 294,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 长名称 摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史.png统计，12次访问",
+          "width": 294,
+          "height": 229,
+          "navigation": false
+        },
+        {
+          "name": "查看已回收图片 · ecb95b19统计，11次访问",
+          "width": 294,
+          "height": 69,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 3.png统计，9次访问",
+          "width": 294,
+          "height": 69,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 4.png统计，8次访问",
+          "width": 294,
+          "height": 69,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 5.png统计，7次访问",
+          "width": 294,
+          "height": 69,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 6.png统计，6次访问",
+          "width": 294,
+          "height": 69,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 7.png统计，5次访问",
+          "width": 294,
+          "height": 69,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 8.png统计，4次访问",
+          "width": 294,
+          "height": 69,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 9.png统计，3次访问",
+          "width": 294,
+          "height": 69,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 10.png统计，2次访问",
+          "width": 294,
+          "height": 69,
+          "navigation": false
+        },
+        {
+          "name": "查看各存储组成",
+          "width": 294,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看初次失败图片",
+          "width": 294,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看重处理失败图片",
+          "width": 294,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "统计口径",
+          "width": 159,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "当前存储占用",
+          "width": 157,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "refresh-normal",
+      "theme": "light",
+      "height": 844,
+      "screenshot": "analytics-refresh-normal-light-390.png",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "刷新访问统计",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "7 天",
+          "width": 111.328125,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "30 天",
+          "width": 111.34375,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "90 天",
+          "width": 111.328125,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看每日数值",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 长名称 摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史.png统计，12次访问",
+          "width": 324,
+          "height": 197,
+          "navigation": false
+        },
+        {
+          "name": "查看已回收图片 · ecb95b19统计，11次访问",
+          "width": 324,
+          "height": 69,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 3.png统计，9次访问",
+          "width": 324,
+          "height": 69,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 4.png统计，8次访问",
+          "width": 324,
+          "height": 69,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 5.png统计，7次访问",
+          "width": 324,
+          "height": 69,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 6.png统计，6次访问",
+          "width": 324,
+          "height": 69,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 7.png统计，5次访问",
+          "width": 324,
+          "height": 69,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 8.png统计，4次访问",
+          "width": 324,
+          "height": 69,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 9.png统计，3次访问",
+          "width": 324,
+          "height": 69,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 10.png统计，2次访问",
+          "width": 324,
+          "height": 69,
+          "navigation": false
+        },
+        {
+          "name": "查看各存储组成",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看初次失败图片",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看重处理失败图片",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "统计口径",
+          "width": 174,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "当前存储占用",
+          "width": 172,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "refresh-inflight",
+      "theme": "light",
+      "height": 844,
+      "screenshot": "analytics-refresh-inflight-light-390.png",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "刷新访问统计",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "7 天",
+          "width": 111.328125,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "30 天",
+          "width": 111.34375,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "90 天",
+          "width": 111.328125,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看每日数值",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 长名称 摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史.png统计，12次访问",
+          "width": 324,
+          "height": 197,
+          "navigation": false
+        },
+        {
+          "name": "查看已回收图片 · ecb95b19统计，11次访问",
+          "width": 324,
+          "height": 69,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 3.png统计，9次访问",
+          "width": 324,
+          "height": 69,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 4.png统计，8次访问",
+          "width": 324,
+          "height": 69,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 5.png统计，7次访问",
+          "width": 324,
+          "height": 69,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 6.png统计，6次访问",
+          "width": 324,
+          "height": 69,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 7.png统计，5次访问",
+          "width": 324,
+          "height": 69,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 8.png统计，4次访问",
+          "width": 324,
+          "height": 69,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 9.png统计，3次访问",
+          "width": 324,
+          "height": 69,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 10.png统计，2次访问",
+          "width": 324,
+          "height": 69,
+          "navigation": false
+        },
+        {
+          "name": "查看各存储组成",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看初次失败图片",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看重处理失败图片",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "统计口径",
+          "width": 174,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "当前存储占用",
+          "width": 172,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "refresh-normal",
+      "theme": "light",
+      "height": 1080,
+      "screenshot": "analytics-refresh-normal-light-1440.png",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "总览",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "分享管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "访问统计",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "刷新访问统计",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "7 天",
+          "width": 104,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "30 天",
+          "width": 104,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "90 天",
+          "width": 104,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看每日数值",
+          "width": 1094,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 长名称 摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史.png统计，12次访问",
+          "width": 1094,
+          "height": 104.984375,
+          "navigation": false
+        },
+        {
+          "name": "查看已回收图片 · ecb95b19统计，11次访问",
+          "width": 1094,
+          "height": 84,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 3.png统计，9次访问",
+          "width": 1094,
+          "height": 84,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 4.png统计，8次访问",
+          "width": 1094,
+          "height": 84,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 5.png统计，7次访问",
+          "width": 1094,
+          "height": 84,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 6.png统计，6次访问",
+          "width": 1094,
+          "height": 84,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 7.png统计，5次访问",
+          "width": 1094,
+          "height": 84,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 8.png统计，4次访问",
+          "width": 1094,
+          "height": 84,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 9.png统计，3次访问",
+          "width": 1094,
+          "height": 84,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 10.png统计，2次访问",
+          "width": 1094,
+          "height": 84,
+          "navigation": false
+        },
+        {
+          "name": "查看各存储组成",
+          "width": 1094,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看初次失败图片",
+          "width": 541,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看重处理失败图片",
+          "width": 541,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "统计口径",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "当前存储占用",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "refresh-inflight",
+      "theme": "light",
+      "height": 1080,
+      "screenshot": "analytics-refresh-inflight-light-1440.png",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "总览",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "分享管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "访问统计",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "刷新访问统计",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "7 天",
+          "width": 104,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "30 天",
+          "width": 104,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "90 天",
+          "width": 104,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看每日数值",
+          "width": 1094,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 长名称 摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史.png统计，12次访问",
+          "width": 1094,
+          "height": 104.984375,
+          "navigation": false
+        },
+        {
+          "name": "查看已回收图片 · ecb95b19统计，11次访问",
+          "width": 1094,
+          "height": 84,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 3.png统计，9次访问",
+          "width": 1094,
+          "height": 84,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 4.png统计，8次访问",
+          "width": 1094,
+          "height": 84,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 5.png统计，7次访问",
+          "width": 1094,
+          "height": 84,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 6.png统计，6次访问",
+          "width": 1094,
+          "height": 84,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 7.png统计，5次访问",
+          "width": 1094,
+          "height": 84,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 8.png统计，4次访问",
+          "width": 1094,
+          "height": 84,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 9.png统计，3次访问",
+          "width": 1094,
+          "height": 84,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 10.png统计，2次访问",
+          "width": 1094,
+          "height": 84,
+          "navigation": false
+        },
+        {
+          "name": "查看各存储组成",
+          "width": 1094,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看初次失败图片",
+          "width": 541,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看重处理失败图片",
+          "width": 541,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "统计口径",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "当前存储占用",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "usage-refinement",
+      "theme": "light",
+      "height": 844,
+      "screenshot": "analytics-usage-refinement-light-360.png",
+      "width": 360,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "← 返回访问统计",
+          "width": 101.15625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "占用说明",
+          "width": 158,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "返回统计",
+          "width": 158,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "usage-refinement",
+      "theme": "light",
+      "height": 844,
+      "screenshot": "analytics-usage-refinement-light-390.png",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "← 返回访问统计",
+          "width": 101.15625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "占用说明",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "返回统计",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "usage-refinement-bottom",
+      "theme": "light",
+      "height": 844,
+      "screenshot": "analytics-usage-refinement-bottom-light-390.png",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "← 返回访问统计",
+          "width": 101.15625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "占用说明",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "返回统计",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "usage-refinement",
+      "theme": "light",
+      "height": 844,
+      "screenshot": "analytics-usage-refinement-light-430.png",
+      "width": 430,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "← 返回访问统计",
+          "width": 101.15625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "占用说明",
+          "width": 193,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "返回统计",
+          "width": 193,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "usage-refinement",
+      "theme": "light",
+      "height": 844,
+      "screenshot": "analytics-usage-refinement-light-768.png",
+      "width": 768,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "← 返回访问统计",
+          "width": 101.15625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "占用说明",
+          "width": 362,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "返回统计",
+          "width": 362,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "usage-refinement",
+      "theme": "light",
+      "height": 1080,
+      "screenshot": "analytics-usage-refinement-light-1440.png",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "总览",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "分享管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "访问统计",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "← 返回访问统计",
+          "width": 101.15625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "占用说明",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "返回统计",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "usage-refinement-bottom",
+      "theme": "light",
+      "height": 1080,
+      "screenshot": "analytics-usage-refinement-bottom-light-1440.png",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "总览",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "分享管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "访问统计",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "← 返回访问统计",
+          "width": 101.15625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "占用说明",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "返回统计",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "usage-refinement-short",
+      "theme": "light",
+      "height": 400,
+      "screenshot": "analytics-usage-refinement-short-light-390x400.png",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "← 返回访问统计",
+          "width": 101.15625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "占用说明",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "返回统计",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "usage-refinement-short",
+      "theme": "light",
+      "height": 400,
+      "screenshot": "analytics-usage-refinement-short-light-1440x400.png",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "总览",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "分享管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "访问统计",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "← 返回访问统计",
+          "width": 101.15625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "占用说明",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "返回统计",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "usage-refinement",
+      "theme": "dark",
+      "height": 844,
+      "screenshot": "analytics-usage-refinement-dark-360.png",
+      "width": 360,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "← 返回访问统计",
+          "width": 101.15625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "占用说明",
+          "width": 158,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "返回统计",
+          "width": 158,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "usage-refinement",
+      "theme": "dark",
+      "height": 844,
+      "screenshot": "analytics-usage-refinement-dark-390.png",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "← 返回访问统计",
+          "width": 101.15625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "占用说明",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "返回统计",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "usage-refinement-bottom",
+      "theme": "dark",
+      "height": 844,
+      "screenshot": "analytics-usage-refinement-bottom-dark-390.png",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "← 返回访问统计",
+          "width": 101.15625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "占用说明",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "返回统计",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "usage-refinement",
+      "theme": "dark",
+      "height": 844,
+      "screenshot": "analytics-usage-refinement-dark-430.png",
+      "width": 430,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "← 返回访问统计",
+          "width": 101.15625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "占用说明",
+          "width": 193,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "返回统计",
+          "width": 193,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "usage-refinement",
+      "theme": "dark",
+      "height": 844,
+      "screenshot": "analytics-usage-refinement-dark-768.png",
+      "width": 768,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "← 返回访问统计",
+          "width": 101.15625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "占用说明",
+          "width": 362,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "返回统计",
+          "width": 362,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "usage-refinement",
+      "theme": "dark",
+      "height": 1080,
+      "screenshot": "analytics-usage-refinement-dark-1440.png",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "总览",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "分享管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "访问统计",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "← 返回访问统计",
+          "width": 101.15625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "占用说明",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "返回统计",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "usage-refinement-bottom",
+      "theme": "dark",
+      "height": 1080,
+      "screenshot": "analytics-usage-refinement-bottom-dark-1440.png",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "总览",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "分享管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "访问统计",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "← 返回访问统计",
+          "width": 101.15625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "占用说明",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "返回统计",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "usage-refinement-short",
+      "theme": "dark",
+      "height": 400,
+      "screenshot": "analytics-usage-refinement-short-dark-390x400.png",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "← 返回访问统计",
+          "width": 101.15625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "占用说明",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "返回统计",
+          "width": 173,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "usage-refinement-short",
+      "theme": "dark",
+      "height": 400,
+      "screenshot": "analytics-usage-refinement-short-dark-1440x400.png",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "总览",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "分享管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "访问统计",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "← 返回访问统计",
+          "width": 101.15625,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "占用说明",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "返回统计",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "keyboard-chart-value",
+      "theme": "dark",
+      "height": 1080,
+      "screenshot": "analytics-keyboard-chart-value-dark-1440.png",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "总览",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "分享管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "访问统计",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "刷新访问统计",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "7 天",
+          "width": 104,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "30 天",
+          "width": 104,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "90 天",
+          "width": 104,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看每日数值",
+          "width": 1094,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 长名称 摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史.png统计，12次访问",
+          "width": 1094,
+          "height": 104.984375,
+          "navigation": false
+        },
+        {
+          "name": "查看已回收图片 · ecb95b19统计，11次访问",
+          "width": 1094,
+          "height": 84,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 3.png统计，9次访问",
+          "width": 1094,
+          "height": 84,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 4.png统计，8次访问",
+          "width": 1094,
+          "height": 84,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 5.png统计，7次访问",
+          "width": 1094,
+          "height": 84,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 6.png统计，6次访问",
+          "width": 1094,
+          "height": 84,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 7.png统计，5次访问",
+          "width": 1094,
+          "height": 84,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 8.png统计，4次访问",
+          "width": 1094,
+          "height": 84,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 9.png统计，3次访问",
+          "width": 1094,
+          "height": 84,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 10.png统计，2次访问",
+          "width": 1094,
+          "height": 84,
+          "navigation": false
+        },
+        {
+          "name": "查看各存储组成",
+          "width": 1094,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看初次失败图片",
+          "width": 541,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看重处理失败图片",
+          "width": 541,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "统计口径",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "当前存储占用",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "overview-scope-short",
+      "theme": "dark",
+      "height": 400,
+      "screenshot": "analytics-overview-scope-short-dark-390x400.png",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭统计说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回访问统计",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "overview-scope-short",
+      "theme": "dark",
+      "height": 400,
+      "screenshot": "analytics-overview-scope-short-dark-1440x400.png",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭统计说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回访问统计",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "usage-scope-short",
+      "theme": "dark",
+      "height": 400,
+      "screenshot": "analytics-usage-scope-short-dark-390x400.png",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭统计说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回当前占用",
+          "width": 308,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "usage-scope-short",
+      "theme": "dark",
+      "height": 400,
+      "screenshot": "analytics-usage-scope-short-dark-1440x400.png",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭统计说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回当前占用",
+          "width": 430,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    }
+  ],
+  "browserErrors": [],
+  "limitations": [
+    "Only disposable runner records, objects and one private Token upload are used; the manual preview is independent.",
+    "HTTP/network/health faults and visibility/timer controls are explicit page-boundary injections; normal analytics responses come from the real production server and are reconciled with SQLite.",
+    "Viewport and keyboard emulation do not prove physical touch or software keyboard behavior. Human design acceptance remains separate."
+  ],
+  "stage": "behavior",
+  "behaviorStep": "usage-scope-1440",
+  "evidenceStep": "usage-scope-short:page-chart",
+  "refreshPointer": [
+    {
+      "width": 360,
+      "before": {
+        "x": 129.328125,
+        "y": 564,
+        "width": 101.34375,
+        "height": 44
+      },
+      "during": {
+        "button": {
+          "x": 129.328125,
+          "y": 564,
+          "width": 101.34375,
+          "height": 44
+        },
+        "status": {
+          "top": 258,
+          "bottom": 274,
+          "height": 16
+        },
+        "metadataBottom": 256,
+        "metricsTop": 276,
+        "lastFlushedVisible": true
+      },
+      "requests": [
+        {
+          "path": "/api/analytics/overview",
+          "days": "7",
+          "startedAt": 1791610871225,
+          "aborted": true,
+          "status": 200,
+          "response": {
+            "generatedAt": "2026-10-10T05:41:11.230Z",
+            "timezone": "Asia/Shanghai",
+            "lastFlushedAt": null,
+            "health": {
+              "accepted": 0,
+              "flushed": 0,
+              "dropped": 0,
+              "incomplete": false,
+              "pendingKeys": 0,
+              "pendingEvents": 0,
+              "lastFlushedAt": null,
+              "lastError": null,
+              "nextRetryAt": 0,
+              "status": "idle"
+            },
+            "approximate": true,
+            "counts": {
+              "normalImages": 11,
+              "recycledImages": 1,
+              "initialProcessingFailures": 1,
+              "reprocessFailures": 1,
+              "albums": 0
+            },
+            "range": {
+              "days": 7,
+              "startDate": "2026-10-04",
+              "endDate": "2026-10-10"
+            },
+            "containsOldTimezone": false,
+            "today": 78,
+            "cumulative": {
+              "original": 468,
+              "compressed": 0,
+              "watermark": 0,
+              "total": 468
+            },
+            "versions": {
+              "original": 78,
+              "compressed": 0,
+              "watermark": 0,
+              "total": 78
+            },
+            "trend": [
+              {
+                "date": "2026-10-04",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-10-05",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-10-06",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-10-07",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-10-08",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-10-09",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-10-10",
+                "count": 78,
+                "isTodayPartial": true
+              }
+            ],
+            "popular": [
+              {
+                "imageId": "656cec8a-67d0-443e-ae61-036ee6b99e1c",
+                "count": 12,
+                "state": "normal",
+                "displayName": "Issue 179 长名称 摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史.png",
+                "shortId": "656cec8a",
+                "managementUrl": "/library?image=656cec8a-67d0-443e-ae61-036ee6b99e1c",
+                "thumbnailUrl": "/i/656cec8a-67d0-443e-ae61-036ee6b99e1c?type=thumbnail"
+              },
+              {
+                "imageId": "ecb95b19-d2d8-4a37-8361-bfe2e79fe063",
+                "count": 11,
+                "state": "recycled",
+                "displayName": null,
+                "shortId": "ecb95b19",
+                "managementUrl": "/trash?image=ecb95b19-d2d8-4a37-8361-bfe2e79fe063",
+                "thumbnailUrl": null
+              },
+              {
+                "imageId": "6dff22a7-66fe-4aa0-9479-0c52ecc1bf73",
+                "count": 9,
+                "state": "normal",
+                "displayName": "Issue 179 图片 3.png",
+                "shortId": "6dff22a7",
+                "managementUrl": "/library?image=6dff22a7-66fe-4aa0-9479-0c52ecc1bf73",
+                "thumbnailUrl": null
+              },
+              {
+                "imageId": "574e515e-c8d9-4597-a6f7-f5b0a04d9bc5",
+                "count": 8,
+                "state": "normal",
+                "displayName": "Issue 179 图片 4.png",
+                "shortId": "574e515e",
+                "managementUrl": "/library?image=574e515e-c8d9-4597-a6f7-f5b0a04d9bc5",
+                "thumbnailUrl": "/i/574e515e-c8d9-4597-a6f7-f5b0a04d9bc5?type=thumbnail"
+              },
+              {
+                "imageId": "fcc4869c-b854-41e7-a223-b5bd911e7bf7",
+                "count": 7,
+                "state": "normal",
+                "displayName": "Issue 179 图片 5.png",
+                "shortId": "fcc4869c",
+                "managementUrl": "/library?image=fcc4869c-b854-41e7-a223-b5bd911e7bf7",
+                "thumbnailUrl": "/i/fcc4869c-b854-41e7-a223-b5bd911e7bf7?type=thumbnail"
+              },
+              {
+                "imageId": "04b6e948-e046-4e11-9846-a6de3b83a2ac",
+                "count": 6,
+                "state": "normal",
+                "displayName": "Issue 179 图片 6.png",
+                "shortId": "04b6e948",
+                "managementUrl": "/library?image=04b6e948-e046-4e11-9846-a6de3b83a2ac",
+                "thumbnailUrl": "/i/04b6e948-e046-4e11-9846-a6de3b83a2ac?type=thumbnail"
+              },
+              {
+                "imageId": "8baee6cb-619c-41f1-ab0e-8272933c343c",
+                "count": 5,
+                "state": "normal",
+                "displayName": "Issue 179 图片 7.png",
+                "shortId": "8baee6cb",
+                "managementUrl": "/library?image=8baee6cb-619c-41f1-ab0e-8272933c343c",
+                "thumbnailUrl": "/i/8baee6cb-619c-41f1-ab0e-8272933c343c?type=thumbnail"
+              },
+              {
+                "imageId": "29ca338a-ec73-4fbf-a9d2-75a6baeb5a5f",
+                "count": 4,
+                "state": "normal",
+                "displayName": "Issue 179 图片 8.png",
+                "shortId": "29ca338a",
+                "managementUrl": "/library?image=29ca338a-ec73-4fbf-a9d2-75a6baeb5a5f",
+                "thumbnailUrl": "/i/29ca338a-ec73-4fbf-a9d2-75a6baeb5a5f?type=thumbnail"
+              },
+              {
+                "imageId": "0d566567-33d0-4e65-8dc0-c64b7b530fc6",
+                "count": 3,
+                "state": "normal",
+                "displayName": "Issue 179 图片 9.png",
+                "shortId": "0d566567",
+                "managementUrl": "/library?image=0d566567-33d0-4e65-8dc0-c64b7b530fc6",
+                "thumbnailUrl": "/i/0d566567-33d0-4e65-8dc0-c64b7b530fc6?type=thumbnail"
+              },
+              {
+                "imageId": "498e4889-ad34-466c-9496-4fe92452b0d4",
+                "count": 2,
+                "state": "normal",
+                "displayName": "Issue 179 图片 10.png",
+                "shortId": "498e4889",
+                "managementUrl": "/library?image=498e4889-ad34-466c-9496-4fe92452b0d4",
+                "thumbnailUrl": "/i/498e4889-ad34-466c-9496-4fe92452b0d4?type=thumbnail"
+              }
+            ]
+          },
+          "held": true
+        },
+        {
+          "path": "/api/analytics/usage",
+          "days": null,
+          "startedAt": 1791610871225,
+          "aborted": false,
+          "status": 200,
+          "response": {
+            "generatedAt": "2026-10-10T05:41:11.232Z",
+            "scope": "registered-objects",
+            "storages": [
+              {
+                "id": "1827964f-45b4-4ea4-9603-757ac683f61b",
+                "name": "Issue 179 独立对象存储",
+                "type": "local",
+                "enabled": true,
+                "knownBytes": 141369,
+                "unconfirmedObjects": 1,
+                "groups": {
+                  "recycle": 13262,
+                  "original": 66310,
+                  "derived": 60261,
+                  "pending": 1536
+                },
+                "confirmationStatus": "unconfirmed",
+                "confirmedAt": "2026-10-10T05:41:08.872Z"
+              },
+              {
+                "id": "3a8437f9-9ffc-4364-8888-544bd4cbad79",
+                "name": "默认本地存储",
+                "type": "local",
+                "enabled": true,
+                "knownBytes": 0,
+                "unconfirmedObjects": 0,
+                "groups": {
+                  "recycle": 0,
+                  "original": 0,
+                  "derived": 0,
+                  "pending": 0
+                },
+                "confirmationStatus": "confirmed",
+                "confirmedAt": null
+              },
+              {
+                "id": "6b5155e3-cec5-43a4-a1a3-41eb94f46040",
+                "name": "Issue 179 已停用存储",
+                "type": "local",
+                "enabled": false,
+                "knownBytes": 13262,
+                "unconfirmedObjects": 0,
+                "groups": {
+                  "recycle": 0,
+                  "original": 6631,
+                  "derived": 6631,
+                  "pending": 0
+                },
+                "confirmationStatus": "confirmed",
+                "confirmedAt": "2026-10-10T05:41:09.439Z"
+              }
+            ]
+          },
+          "finishedAt": 1791610871238
+        },
+        {
+          "path": "/api/analytics/usage",
+          "days": null,
+          "startedAt": 1791610871282,
+          "aborted": false,
+          "status": 200,
+          "response": {
+            "generatedAt": "2026-10-10T05:41:11.288Z",
+            "scope": "registered-objects",
+            "storages": [
+              {
+                "id": "1827964f-45b4-4ea4-9603-757ac683f61b",
+                "name": "Issue 179 独立对象存储",
+                "type": "local",
+                "enabled": true,
+                "knownBytes": 141369,
+                "unconfirmedObjects": 1,
+                "groups": {
+                  "recycle": 13262,
+                  "original": 66310,
+                  "derived": 60261,
+                  "pending": 1536
+                },
+                "confirmationStatus": "unconfirmed",
+                "confirmedAt": "2026-10-10T05:41:08.872Z"
+              },
+              {
+                "id": "3a8437f9-9ffc-4364-8888-544bd4cbad79",
+                "name": "默认本地存储",
+                "type": "local",
+                "enabled": true,
+                "knownBytes": 0,
+                "unconfirmedObjects": 0,
+                "groups": {
+                  "recycle": 0,
+                  "original": 0,
+                  "derived": 0,
+                  "pending": 0
+                },
+                "confirmationStatus": "confirmed",
+                "confirmedAt": null
+              },
+              {
+                "id": "6b5155e3-cec5-43a4-a1a3-41eb94f46040",
+                "name": "Issue 179 已停用存储",
+                "type": "local",
+                "enabled": false,
+                "knownBytes": 13262,
+                "unconfirmedObjects": 0,
+                "groups": {
+                  "recycle": 0,
+                  "original": 6631,
+                  "derived": 6631,
+                  "pending": 0
+                },
+                "confirmationStatus": "confirmed",
+                "confirmedAt": "2026-10-10T05:41:09.439Z"
+              }
+            ]
+          },
+          "finishedAt": 1791610871301
+        },
+        {
+          "path": "/api/analytics/overview",
+          "days": "30",
+          "startedAt": 1791610871477,
+          "aborted": false,
+          "status": 200,
+          "response": {
+            "generatedAt": "2026-10-10T05:41:11.484Z",
+            "timezone": "Asia/Shanghai",
+            "lastFlushedAt": null,
+            "health": {
+              "accepted": 0,
+              "flushed": 0,
+              "dropped": 0,
+              "incomplete": false,
+              "pendingKeys": 0,
+              "pendingEvents": 0,
+              "lastFlushedAt": null,
+              "lastError": null,
+              "nextRetryAt": 0,
+              "status": "idle"
+            },
+            "approximate": true,
+            "counts": {
+              "normalImages": 11,
+              "recycledImages": 1,
+              "initialProcessingFailures": 1,
+              "reprocessFailures": 1,
+              "albums": 0
+            },
+            "range": {
+              "days": 30,
+              "startDate": "2026-09-11",
+              "endDate": "2026-10-10"
+            },
+            "containsOldTimezone": true,
+            "today": 78,
+            "cumulative": {
+              "original": 468,
+              "compressed": 0,
+              "watermark": 0,
+              "total": 468
+            },
+            "versions": {
+              "original": 234,
+              "compressed": 0,
+              "watermark": 0,
+              "total": 234
+            },
+            "trend": [
+              {
+                "date": "2026-09-11",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-12",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-13",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-14",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-15",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-16",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-17",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-18",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-19",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-20",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-21",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-22",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-23",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-24",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-25",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-26",
+                "count": 156,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-27",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-28",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-29",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-30",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-10-01",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-10-02",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-10-03",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-10-04",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-10-05",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-10-06",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-10-07",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-10-08",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-10-09",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-10-10",
+                "count": 78,
+                "isTodayPartial": true
+              }
+            ],
+            "popular": [
+              {
+                "imageId": "656cec8a-67d0-443e-ae61-036ee6b99e1c",
+                "count": 36,
+                "state": "normal",
+                "displayName": "Issue 179 长名称 摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史.png",
+                "shortId": "656cec8a",
+                "managementUrl": "/library?image=656cec8a-67d0-443e-ae61-036ee6b99e1c",
+                "thumbnailUrl": "/i/656cec8a-67d0-443e-ae61-036ee6b99e1c?type=thumbnail"
+              },
+              {
+                "imageId": "ecb95b19-d2d8-4a37-8361-bfe2e79fe063",
+                "count": 33,
+                "state": "recycled",
+                "displayName": null,
+                "shortId": "ecb95b19",
+                "managementUrl": "/trash?image=ecb95b19-d2d8-4a37-8361-bfe2e79fe063",
+                "thumbnailUrl": null
+              },
+              {
+                "imageId": "6dff22a7-66fe-4aa0-9479-0c52ecc1bf73",
+                "count": 27,
+                "state": "normal",
+                "displayName": "Issue 179 图片 3.png",
+                "shortId": "6dff22a7",
+                "managementUrl": "/library?image=6dff22a7-66fe-4aa0-9479-0c52ecc1bf73",
+                "thumbnailUrl": null
+              },
+              {
+                "imageId": "574e515e-c8d9-4597-a6f7-f5b0a04d9bc5",
+                "count": 24,
+                "state": "normal",
+                "displayName": "Issue 179 图片 4.png",
+                "shortId": "574e515e",
+                "managementUrl": "/library?image=574e515e-c8d9-4597-a6f7-f5b0a04d9bc5",
+                "thumbnailUrl": "/i/574e515e-c8d9-4597-a6f7-f5b0a04d9bc5?type=thumbnail"
+              },
+              {
+                "imageId": "fcc4869c-b854-41e7-a223-b5bd911e7bf7",
+                "count": 21,
+                "state": "normal",
+                "displayName": "Issue 179 图片 5.png",
+                "shortId": "fcc4869c",
+                "managementUrl": "/library?image=fcc4869c-b854-41e7-a223-b5bd911e7bf7",
+                "thumbnailUrl": "/i/fcc4869c-b854-41e7-a223-b5bd911e7bf7?type=thumbnail"
+              },
+              {
+                "imageId": "04b6e948-e046-4e11-9846-a6de3b83a2ac",
+                "count": 18,
+                "state": "normal",
+                "displayName": "Issue 179 图片 6.png",
+                "shortId": "04b6e948",
+                "managementUrl": "/library?image=04b6e948-e046-4e11-9846-a6de3b83a2ac",
+                "thumbnailUrl": "/i/04b6e948-e046-4e11-9846-a6de3b83a2ac?type=thumbnail"
+              },
+              {
+                "imageId": "8baee6cb-619c-41f1-ab0e-8272933c343c",
+                "count": 15,
+                "state": "normal",
+                "displayName": "Issue 179 图片 7.png",
+                "shortId": "8baee6cb",
+                "managementUrl": "/library?image=8baee6cb-619c-41f1-ab0e-8272933c343c",
+                "thumbnailUrl": "/i/8baee6cb-619c-41f1-ab0e-8272933c343c?type=thumbnail"
+              },
+              {
+                "imageId": "29ca338a-ec73-4fbf-a9d2-75a6baeb5a5f",
+                "count": 12,
+                "state": "normal",
+                "displayName": "Issue 179 图片 8.png",
+                "shortId": "29ca338a",
+                "managementUrl": "/library?image=29ca338a-ec73-4fbf-a9d2-75a6baeb5a5f",
+                "thumbnailUrl": "/i/29ca338a-ec73-4fbf-a9d2-75a6baeb5a5f?type=thumbnail"
+              },
+              {
+                "imageId": "0d566567-33d0-4e65-8dc0-c64b7b530fc6",
+                "count": 9,
+                "state": "normal",
+                "displayName": "Issue 179 图片 9.png",
+                "shortId": "0d566567",
+                "managementUrl": "/library?image=0d566567-33d0-4e65-8dc0-c64b7b530fc6",
+                "thumbnailUrl": "/i/0d566567-33d0-4e65-8dc0-c64b7b530fc6?type=thumbnail"
+              },
+              {
+                "imageId": "498e4889-ad34-466c-9496-4fe92452b0d4",
+                "count": 6,
+                "state": "normal",
+                "displayName": "Issue 179 图片 10.png",
+                "shortId": "498e4889",
+                "managementUrl": "/library?image=498e4889-ad34-466c-9496-4fe92452b0d4",
+                "thumbnailUrl": "/i/498e4889-ad34-466c-9496-4fe92452b0d4?type=thumbnail"
+              }
+            ]
+          },
+          "finishedAt": 1791610871489
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "before": {
+        "x": 139.328125,
+        "y": 564,
+        "width": 111.34375,
+        "height": 44
+      },
+      "during": {
+        "button": {
+          "x": 139.328125,
+          "y": 564,
+          "width": 111.34375,
+          "height": 44
+        },
+        "status": {
+          "top": 258,
+          "bottom": 274,
+          "height": 16
+        },
+        "metadataBottom": 256,
+        "metricsTop": 276,
+        "lastFlushedVisible": true
+      },
+      "requests": [
+        {
+          "path": "/api/analytics/overview",
+          "days": "7",
+          "startedAt": 1791610872903,
+          "aborted": true,
+          "status": 200,
+          "response": {
+            "generatedAt": "2026-10-10T05:41:12.910Z",
+            "timezone": "Asia/Shanghai",
+            "lastFlushedAt": null,
+            "health": {
+              "accepted": 0,
+              "flushed": 0,
+              "dropped": 0,
+              "incomplete": false,
+              "pendingKeys": 0,
+              "pendingEvents": 0,
+              "lastFlushedAt": null,
+              "lastError": null,
+              "nextRetryAt": 0,
+              "status": "idle"
+            },
+            "approximate": true,
+            "counts": {
+              "normalImages": 11,
+              "recycledImages": 1,
+              "initialProcessingFailures": 1,
+              "reprocessFailures": 1,
+              "albums": 0
+            },
+            "range": {
+              "days": 7,
+              "startDate": "2026-10-04",
+              "endDate": "2026-10-10"
+            },
+            "containsOldTimezone": false,
+            "today": 78,
+            "cumulative": {
+              "original": 468,
+              "compressed": 0,
+              "watermark": 0,
+              "total": 468
+            },
+            "versions": {
+              "original": 78,
+              "compressed": 0,
+              "watermark": 0,
+              "total": 78
+            },
+            "trend": [
+              {
+                "date": "2026-10-04",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-10-05",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-10-06",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-10-07",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-10-08",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-10-09",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-10-10",
+                "count": 78,
+                "isTodayPartial": true
+              }
+            ],
+            "popular": [
+              {
+                "imageId": "656cec8a-67d0-443e-ae61-036ee6b99e1c",
+                "count": 12,
+                "state": "normal",
+                "displayName": "Issue 179 长名称 摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史.png",
+                "shortId": "656cec8a",
+                "managementUrl": "/library?image=656cec8a-67d0-443e-ae61-036ee6b99e1c",
+                "thumbnailUrl": "/i/656cec8a-67d0-443e-ae61-036ee6b99e1c?type=thumbnail"
+              },
+              {
+                "imageId": "ecb95b19-d2d8-4a37-8361-bfe2e79fe063",
+                "count": 11,
+                "state": "recycled",
+                "displayName": null,
+                "shortId": "ecb95b19",
+                "managementUrl": "/trash?image=ecb95b19-d2d8-4a37-8361-bfe2e79fe063",
+                "thumbnailUrl": null
+              },
+              {
+                "imageId": "6dff22a7-66fe-4aa0-9479-0c52ecc1bf73",
+                "count": 9,
+                "state": "normal",
+                "displayName": "Issue 179 图片 3.png",
+                "shortId": "6dff22a7",
+                "managementUrl": "/library?image=6dff22a7-66fe-4aa0-9479-0c52ecc1bf73",
+                "thumbnailUrl": null
+              },
+              {
+                "imageId": "574e515e-c8d9-4597-a6f7-f5b0a04d9bc5",
+                "count": 8,
+                "state": "normal",
+                "displayName": "Issue 179 图片 4.png",
+                "shortId": "574e515e",
+                "managementUrl": "/library?image=574e515e-c8d9-4597-a6f7-f5b0a04d9bc5",
+                "thumbnailUrl": "/i/574e515e-c8d9-4597-a6f7-f5b0a04d9bc5?type=thumbnail"
+              },
+              {
+                "imageId": "fcc4869c-b854-41e7-a223-b5bd911e7bf7",
+                "count": 7,
+                "state": "normal",
+                "displayName": "Issue 179 图片 5.png",
+                "shortId": "fcc4869c",
+                "managementUrl": "/library?image=fcc4869c-b854-41e7-a223-b5bd911e7bf7",
+                "thumbnailUrl": "/i/fcc4869c-b854-41e7-a223-b5bd911e7bf7?type=thumbnail"
+              },
+              {
+                "imageId": "04b6e948-e046-4e11-9846-a6de3b83a2ac",
+                "count": 6,
+                "state": "normal",
+                "displayName": "Issue 179 图片 6.png",
+                "shortId": "04b6e948",
+                "managementUrl": "/library?image=04b6e948-e046-4e11-9846-a6de3b83a2ac",
+                "thumbnailUrl": "/i/04b6e948-e046-4e11-9846-a6de3b83a2ac?type=thumbnail"
+              },
+              {
+                "imageId": "8baee6cb-619c-41f1-ab0e-8272933c343c",
+                "count": 5,
+                "state": "normal",
+                "displayName": "Issue 179 图片 7.png",
+                "shortId": "8baee6cb",
+                "managementUrl": "/library?image=8baee6cb-619c-41f1-ab0e-8272933c343c",
+                "thumbnailUrl": "/i/8baee6cb-619c-41f1-ab0e-8272933c343c?type=thumbnail"
+              },
+              {
+                "imageId": "29ca338a-ec73-4fbf-a9d2-75a6baeb5a5f",
+                "count": 4,
+                "state": "normal",
+                "displayName": "Issue 179 图片 8.png",
+                "shortId": "29ca338a",
+                "managementUrl": "/library?image=29ca338a-ec73-4fbf-a9d2-75a6baeb5a5f",
+                "thumbnailUrl": "/i/29ca338a-ec73-4fbf-a9d2-75a6baeb5a5f?type=thumbnail"
+              },
+              {
+                "imageId": "0d566567-33d0-4e65-8dc0-c64b7b530fc6",
+                "count": 3,
+                "state": "normal",
+                "displayName": "Issue 179 图片 9.png",
+                "shortId": "0d566567",
+                "managementUrl": "/library?image=0d566567-33d0-4e65-8dc0-c64b7b530fc6",
+                "thumbnailUrl": "/i/0d566567-33d0-4e65-8dc0-c64b7b530fc6?type=thumbnail"
+              },
+              {
+                "imageId": "498e4889-ad34-466c-9496-4fe92452b0d4",
+                "count": 2,
+                "state": "normal",
+                "displayName": "Issue 179 图片 10.png",
+                "shortId": "498e4889",
+                "managementUrl": "/library?image=498e4889-ad34-466c-9496-4fe92452b0d4",
+                "thumbnailUrl": "/i/498e4889-ad34-466c-9496-4fe92452b0d4?type=thumbnail"
+              }
+            ]
+          },
+          "held": true
+        },
+        {
+          "path": "/api/analytics/usage",
+          "days": null,
+          "startedAt": 1791610872903,
+          "aborted": false,
+          "status": 200,
+          "response": {
+            "generatedAt": "2026-10-10T05:41:12.911Z",
+            "scope": "registered-objects",
+            "storages": [
+              {
+                "id": "1827964f-45b4-4ea4-9603-757ac683f61b",
+                "name": "Issue 179 独立对象存储",
+                "type": "local",
+                "enabled": true,
+                "knownBytes": 141369,
+                "unconfirmedObjects": 1,
+                "groups": {
+                  "recycle": 13262,
+                  "original": 66310,
+                  "derived": 60261,
+                  "pending": 1536
+                },
+                "confirmationStatus": "unconfirmed",
+                "confirmedAt": "2026-10-10T05:41:08.872Z"
+              },
+              {
+                "id": "3a8437f9-9ffc-4364-8888-544bd4cbad79",
+                "name": "默认本地存储",
+                "type": "local",
+                "enabled": true,
+                "knownBytes": 0,
+                "unconfirmedObjects": 0,
+                "groups": {
+                  "recycle": 0,
+                  "original": 0,
+                  "derived": 0,
+                  "pending": 0
+                },
+                "confirmationStatus": "confirmed",
+                "confirmedAt": null
+              },
+              {
+                "id": "6b5155e3-cec5-43a4-a1a3-41eb94f46040",
+                "name": "Issue 179 已停用存储",
+                "type": "local",
+                "enabled": false,
+                "knownBytes": 13262,
+                "unconfirmedObjects": 0,
+                "groups": {
+                  "recycle": 0,
+                  "original": 6631,
+                  "derived": 6631,
+                  "pending": 0
+                },
+                "confirmationStatus": "confirmed",
+                "confirmedAt": "2026-10-10T05:41:09.439Z"
+              }
+            ]
+          },
+          "finishedAt": 1791610872917
+        },
+        {
+          "path": "/api/analytics/usage",
+          "days": null,
+          "startedAt": 1791610872963,
+          "aborted": false,
+          "status": 200,
+          "response": {
+            "generatedAt": "2026-10-10T05:41:12.970Z",
+            "scope": "registered-objects",
+            "storages": [
+              {
+                "id": "1827964f-45b4-4ea4-9603-757ac683f61b",
+                "name": "Issue 179 独立对象存储",
+                "type": "local",
+                "enabled": true,
+                "knownBytes": 141369,
+                "unconfirmedObjects": 1,
+                "groups": {
+                  "recycle": 13262,
+                  "original": 66310,
+                  "derived": 60261,
+                  "pending": 1536
+                },
+                "confirmationStatus": "unconfirmed",
+                "confirmedAt": "2026-10-10T05:41:08.872Z"
+              },
+              {
+                "id": "3a8437f9-9ffc-4364-8888-544bd4cbad79",
+                "name": "默认本地存储",
+                "type": "local",
+                "enabled": true,
+                "knownBytes": 0,
+                "unconfirmedObjects": 0,
+                "groups": {
+                  "recycle": 0,
+                  "original": 0,
+                  "derived": 0,
+                  "pending": 0
+                },
+                "confirmationStatus": "confirmed",
+                "confirmedAt": null
+              },
+              {
+                "id": "6b5155e3-cec5-43a4-a1a3-41eb94f46040",
+                "name": "Issue 179 已停用存储",
+                "type": "local",
+                "enabled": false,
+                "knownBytes": 13262,
+                "unconfirmedObjects": 0,
+                "groups": {
+                  "recycle": 0,
+                  "original": 6631,
+                  "derived": 6631,
+                  "pending": 0
+                },
+                "confirmationStatus": "confirmed",
+                "confirmedAt": "2026-10-10T05:41:09.439Z"
+              }
+            ]
+          },
+          "finishedAt": 1791610872982
+        },
+        {
+          "path": "/api/analytics/overview",
+          "days": "30",
+          "startedAt": 1791610874137,
+          "aborted": false,
+          "status": 200,
+          "response": {
+            "generatedAt": "2026-10-10T05:41:14.147Z",
+            "timezone": "Asia/Shanghai",
+            "lastFlushedAt": null,
+            "health": {
+              "accepted": 0,
+              "flushed": 0,
+              "dropped": 0,
+              "incomplete": false,
+              "pendingKeys": 0,
+              "pendingEvents": 0,
+              "lastFlushedAt": null,
+              "lastError": null,
+              "nextRetryAt": 0,
+              "status": "idle"
+            },
+            "approximate": true,
+            "counts": {
+              "normalImages": 11,
+              "recycledImages": 1,
+              "initialProcessingFailures": 1,
+              "reprocessFailures": 1,
+              "albums": 0
+            },
+            "range": {
+              "days": 30,
+              "startDate": "2026-09-11",
+              "endDate": "2026-10-10"
+            },
+            "containsOldTimezone": true,
+            "today": 78,
+            "cumulative": {
+              "original": 468,
+              "compressed": 0,
+              "watermark": 0,
+              "total": 468
+            },
+            "versions": {
+              "original": 234,
+              "compressed": 0,
+              "watermark": 0,
+              "total": 234
+            },
+            "trend": [
+              {
+                "date": "2026-09-11",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-12",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-13",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-14",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-15",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-16",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-17",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-18",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-19",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-20",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-21",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-22",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-23",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-24",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-25",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-26",
+                "count": 156,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-27",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-28",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-29",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-30",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-10-01",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-10-02",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-10-03",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-10-04",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-10-05",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-10-06",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-10-07",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-10-08",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-10-09",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-10-10",
+                "count": 78,
+                "isTodayPartial": true
+              }
+            ],
+            "popular": [
+              {
+                "imageId": "656cec8a-67d0-443e-ae61-036ee6b99e1c",
+                "count": 36,
+                "state": "normal",
+                "displayName": "Issue 179 长名称 摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史.png",
+                "shortId": "656cec8a",
+                "managementUrl": "/library?image=656cec8a-67d0-443e-ae61-036ee6b99e1c",
+                "thumbnailUrl": "/i/656cec8a-67d0-443e-ae61-036ee6b99e1c?type=thumbnail"
+              },
+              {
+                "imageId": "ecb95b19-d2d8-4a37-8361-bfe2e79fe063",
+                "count": 33,
+                "state": "recycled",
+                "displayName": null,
+                "shortId": "ecb95b19",
+                "managementUrl": "/trash?image=ecb95b19-d2d8-4a37-8361-bfe2e79fe063",
+                "thumbnailUrl": null
+              },
+              {
+                "imageId": "6dff22a7-66fe-4aa0-9479-0c52ecc1bf73",
+                "count": 27,
+                "state": "normal",
+                "displayName": "Issue 179 图片 3.png",
+                "shortId": "6dff22a7",
+                "managementUrl": "/library?image=6dff22a7-66fe-4aa0-9479-0c52ecc1bf73",
+                "thumbnailUrl": null
+              },
+              {
+                "imageId": "574e515e-c8d9-4597-a6f7-f5b0a04d9bc5",
+                "count": 24,
+                "state": "normal",
+                "displayName": "Issue 179 图片 4.png",
+                "shortId": "574e515e",
+                "managementUrl": "/library?image=574e515e-c8d9-4597-a6f7-f5b0a04d9bc5",
+                "thumbnailUrl": "/i/574e515e-c8d9-4597-a6f7-f5b0a04d9bc5?type=thumbnail"
+              },
+              {
+                "imageId": "fcc4869c-b854-41e7-a223-b5bd911e7bf7",
+                "count": 21,
+                "state": "normal",
+                "displayName": "Issue 179 图片 5.png",
+                "shortId": "fcc4869c",
+                "managementUrl": "/library?image=fcc4869c-b854-41e7-a223-b5bd911e7bf7",
+                "thumbnailUrl": "/i/fcc4869c-b854-41e7-a223-b5bd911e7bf7?type=thumbnail"
+              },
+              {
+                "imageId": "04b6e948-e046-4e11-9846-a6de3b83a2ac",
+                "count": 18,
+                "state": "normal",
+                "displayName": "Issue 179 图片 6.png",
+                "shortId": "04b6e948",
+                "managementUrl": "/library?image=04b6e948-e046-4e11-9846-a6de3b83a2ac",
+                "thumbnailUrl": "/i/04b6e948-e046-4e11-9846-a6de3b83a2ac?type=thumbnail"
+              },
+              {
+                "imageId": "8baee6cb-619c-41f1-ab0e-8272933c343c",
+                "count": 15,
+                "state": "normal",
+                "displayName": "Issue 179 图片 7.png",
+                "shortId": "8baee6cb",
+                "managementUrl": "/library?image=8baee6cb-619c-41f1-ab0e-8272933c343c",
+                "thumbnailUrl": "/i/8baee6cb-619c-41f1-ab0e-8272933c343c?type=thumbnail"
+              },
+              {
+                "imageId": "29ca338a-ec73-4fbf-a9d2-75a6baeb5a5f",
+                "count": 12,
+                "state": "normal",
+                "displayName": "Issue 179 图片 8.png",
+                "shortId": "29ca338a",
+                "managementUrl": "/library?image=29ca338a-ec73-4fbf-a9d2-75a6baeb5a5f",
+                "thumbnailUrl": "/i/29ca338a-ec73-4fbf-a9d2-75a6baeb5a5f?type=thumbnail"
+              },
+              {
+                "imageId": "0d566567-33d0-4e65-8dc0-c64b7b530fc6",
+                "count": 9,
+                "state": "normal",
+                "displayName": "Issue 179 图片 9.png",
+                "shortId": "0d566567",
+                "managementUrl": "/library?image=0d566567-33d0-4e65-8dc0-c64b7b530fc6",
+                "thumbnailUrl": "/i/0d566567-33d0-4e65-8dc0-c64b7b530fc6?type=thumbnail"
+              },
+              {
+                "imageId": "498e4889-ad34-466c-9496-4fe92452b0d4",
+                "count": 6,
+                "state": "normal",
+                "displayName": "Issue 179 图片 10.png",
+                "shortId": "498e4889",
+                "managementUrl": "/library?image=498e4889-ad34-466c-9496-4fe92452b0d4",
+                "thumbnailUrl": "/i/498e4889-ad34-466c-9496-4fe92452b0d4?type=thumbnail"
+              }
+            ]
+          },
+          "finishedAt": 1791610874151
+        }
+      ]
+    },
+    {
+      "width": 1440,
+      "before": {
+        "x": 380,
+        "y": 356.5,
+        "width": 104,
+        "height": 44
+      },
+      "during": {
+        "button": {
+          "x": 380,
+          "y": 356.5,
+          "width": 104,
+          "height": 44
+        },
+        "status": {
+          "top": 178.5,
+          "bottom": 194.5,
+          "height": 16
+        },
+        "metadataBottom": 176.5,
+        "metricsTop": 196.5,
+        "lastFlushedVisible": true
+      },
+      "requests": [
+        {
+          "path": "/api/analytics/overview",
+          "days": "7",
+          "startedAt": 1791610875605,
+          "aborted": true,
+          "status": 200,
+          "response": {
+            "generatedAt": "2026-10-10T05:41:15.620Z",
+            "timezone": "Asia/Shanghai",
+            "lastFlushedAt": null,
+            "health": {
+              "accepted": 0,
+              "flushed": 0,
+              "dropped": 0,
+              "incomplete": false,
+              "pendingKeys": 0,
+              "pendingEvents": 0,
+              "lastFlushedAt": null,
+              "lastError": null,
+              "nextRetryAt": 0,
+              "status": "idle"
+            },
+            "approximate": true,
+            "counts": {
+              "normalImages": 11,
+              "recycledImages": 1,
+              "initialProcessingFailures": 1,
+              "reprocessFailures": 1,
+              "albums": 0
+            },
+            "range": {
+              "days": 7,
+              "startDate": "2026-10-04",
+              "endDate": "2026-10-10"
+            },
+            "containsOldTimezone": false,
+            "today": 78,
+            "cumulative": {
+              "original": 468,
+              "compressed": 0,
+              "watermark": 0,
+              "total": 468
+            },
+            "versions": {
+              "original": 78,
+              "compressed": 0,
+              "watermark": 0,
+              "total": 78
+            },
+            "trend": [
+              {
+                "date": "2026-10-04",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-10-05",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-10-06",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-10-07",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-10-08",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-10-09",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-10-10",
+                "count": 78,
+                "isTodayPartial": true
+              }
+            ],
+            "popular": [
+              {
+                "imageId": "656cec8a-67d0-443e-ae61-036ee6b99e1c",
+                "count": 12,
+                "state": "normal",
+                "displayName": "Issue 179 长名称 摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史.png",
+                "shortId": "656cec8a",
+                "managementUrl": "/library?image=656cec8a-67d0-443e-ae61-036ee6b99e1c",
+                "thumbnailUrl": "/i/656cec8a-67d0-443e-ae61-036ee6b99e1c?type=thumbnail"
+              },
+              {
+                "imageId": "ecb95b19-d2d8-4a37-8361-bfe2e79fe063",
+                "count": 11,
+                "state": "recycled",
+                "displayName": null,
+                "shortId": "ecb95b19",
+                "managementUrl": "/trash?image=ecb95b19-d2d8-4a37-8361-bfe2e79fe063",
+                "thumbnailUrl": null
+              },
+              {
+                "imageId": "6dff22a7-66fe-4aa0-9479-0c52ecc1bf73",
+                "count": 9,
+                "state": "normal",
+                "displayName": "Issue 179 图片 3.png",
+                "shortId": "6dff22a7",
+                "managementUrl": "/library?image=6dff22a7-66fe-4aa0-9479-0c52ecc1bf73",
+                "thumbnailUrl": null
+              },
+              {
+                "imageId": "574e515e-c8d9-4597-a6f7-f5b0a04d9bc5",
+                "count": 8,
+                "state": "normal",
+                "displayName": "Issue 179 图片 4.png",
+                "shortId": "574e515e",
+                "managementUrl": "/library?image=574e515e-c8d9-4597-a6f7-f5b0a04d9bc5",
+                "thumbnailUrl": "/i/574e515e-c8d9-4597-a6f7-f5b0a04d9bc5?type=thumbnail"
+              },
+              {
+                "imageId": "fcc4869c-b854-41e7-a223-b5bd911e7bf7",
+                "count": 7,
+                "state": "normal",
+                "displayName": "Issue 179 图片 5.png",
+                "shortId": "fcc4869c",
+                "managementUrl": "/library?image=fcc4869c-b854-41e7-a223-b5bd911e7bf7",
+                "thumbnailUrl": "/i/fcc4869c-b854-41e7-a223-b5bd911e7bf7?type=thumbnail"
+              },
+              {
+                "imageId": "04b6e948-e046-4e11-9846-a6de3b83a2ac",
+                "count": 6,
+                "state": "normal",
+                "displayName": "Issue 179 图片 6.png",
+                "shortId": "04b6e948",
+                "managementUrl": "/library?image=04b6e948-e046-4e11-9846-a6de3b83a2ac",
+                "thumbnailUrl": "/i/04b6e948-e046-4e11-9846-a6de3b83a2ac?type=thumbnail"
+              },
+              {
+                "imageId": "8baee6cb-619c-41f1-ab0e-8272933c343c",
+                "count": 5,
+                "state": "normal",
+                "displayName": "Issue 179 图片 7.png",
+                "shortId": "8baee6cb",
+                "managementUrl": "/library?image=8baee6cb-619c-41f1-ab0e-8272933c343c",
+                "thumbnailUrl": "/i/8baee6cb-619c-41f1-ab0e-8272933c343c?type=thumbnail"
+              },
+              {
+                "imageId": "29ca338a-ec73-4fbf-a9d2-75a6baeb5a5f",
+                "count": 4,
+                "state": "normal",
+                "displayName": "Issue 179 图片 8.png",
+                "shortId": "29ca338a",
+                "managementUrl": "/library?image=29ca338a-ec73-4fbf-a9d2-75a6baeb5a5f",
+                "thumbnailUrl": "/i/29ca338a-ec73-4fbf-a9d2-75a6baeb5a5f?type=thumbnail"
+              },
+              {
+                "imageId": "0d566567-33d0-4e65-8dc0-c64b7b530fc6",
+                "count": 3,
+                "state": "normal",
+                "displayName": "Issue 179 图片 9.png",
+                "shortId": "0d566567",
+                "managementUrl": "/library?image=0d566567-33d0-4e65-8dc0-c64b7b530fc6",
+                "thumbnailUrl": "/i/0d566567-33d0-4e65-8dc0-c64b7b530fc6?type=thumbnail"
+              },
+              {
+                "imageId": "498e4889-ad34-466c-9496-4fe92452b0d4",
+                "count": 2,
+                "state": "normal",
+                "displayName": "Issue 179 图片 10.png",
+                "shortId": "498e4889",
+                "managementUrl": "/library?image=498e4889-ad34-466c-9496-4fe92452b0d4",
+                "thumbnailUrl": "/i/498e4889-ad34-466c-9496-4fe92452b0d4?type=thumbnail"
+              }
+            ]
+          },
+          "held": true
+        },
+        {
+          "path": "/api/analytics/usage",
+          "days": null,
+          "startedAt": 1791610875605,
+          "aborted": false,
+          "status": 200,
+          "response": {
+            "generatedAt": "2026-10-10T05:41:15.628Z",
+            "scope": "registered-objects",
+            "storages": [
+              {
+                "id": "1827964f-45b4-4ea4-9603-757ac683f61b",
+                "name": "Issue 179 独立对象存储",
+                "type": "local",
+                "enabled": true,
+                "knownBytes": 141369,
+                "unconfirmedObjects": 1,
+                "groups": {
+                  "recycle": 13262,
+                  "original": 66310,
+                  "derived": 60261,
+                  "pending": 1536
+                },
+                "confirmationStatus": "unconfirmed",
+                "confirmedAt": "2026-10-10T05:41:08.872Z"
+              },
+              {
+                "id": "3a8437f9-9ffc-4364-8888-544bd4cbad79",
+                "name": "默认本地存储",
+                "type": "local",
+                "enabled": true,
+                "knownBytes": 0,
+                "unconfirmedObjects": 0,
+                "groups": {
+                  "recycle": 0,
+                  "original": 0,
+                  "derived": 0,
+                  "pending": 0
+                },
+                "confirmationStatus": "confirmed",
+                "confirmedAt": null
+              },
+              {
+                "id": "6b5155e3-cec5-43a4-a1a3-41eb94f46040",
+                "name": "Issue 179 已停用存储",
+                "type": "local",
+                "enabled": false,
+                "knownBytes": 13262,
+                "unconfirmedObjects": 0,
+                "groups": {
+                  "recycle": 0,
+                  "original": 6631,
+                  "derived": 6631,
+                  "pending": 0
+                },
+                "confirmationStatus": "confirmed",
+                "confirmedAt": "2026-10-10T05:41:09.439Z"
+              }
+            ]
+          },
+          "finishedAt": 1791610875631
+        },
+        {
+          "path": "/api/analytics/usage",
+          "days": null,
+          "startedAt": 1791610875662,
+          "aborted": false,
+          "status": 200,
+          "response": {
+            "generatedAt": "2026-10-10T05:41:15.670Z",
+            "scope": "registered-objects",
+            "storages": [
+              {
+                "id": "1827964f-45b4-4ea4-9603-757ac683f61b",
+                "name": "Issue 179 独立对象存储",
+                "type": "local",
+                "enabled": true,
+                "knownBytes": 141369,
+                "unconfirmedObjects": 1,
+                "groups": {
+                  "recycle": 13262,
+                  "original": 66310,
+                  "derived": 60261,
+                  "pending": 1536
+                },
+                "confirmationStatus": "unconfirmed",
+                "confirmedAt": "2026-10-10T05:41:08.872Z"
+              },
+              {
+                "id": "3a8437f9-9ffc-4364-8888-544bd4cbad79",
+                "name": "默认本地存储",
+                "type": "local",
+                "enabled": true,
+                "knownBytes": 0,
+                "unconfirmedObjects": 0,
+                "groups": {
+                  "recycle": 0,
+                  "original": 0,
+                  "derived": 0,
+                  "pending": 0
+                },
+                "confirmationStatus": "confirmed",
+                "confirmedAt": null
+              },
+              {
+                "id": "6b5155e3-cec5-43a4-a1a3-41eb94f46040",
+                "name": "Issue 179 已停用存储",
+                "type": "local",
+                "enabled": false,
+                "knownBytes": 13262,
+                "unconfirmedObjects": 0,
+                "groups": {
+                  "recycle": 0,
+                  "original": 6631,
+                  "derived": 6631,
+                  "pending": 0
+                },
+                "confirmationStatus": "confirmed",
+                "confirmedAt": "2026-10-10T05:41:09.439Z"
+              }
+            ]
+          },
+          "finishedAt": 1791610875681
+        },
+        {
+          "path": "/api/analytics/overview",
+          "days": "30",
+          "startedAt": 1791610876863,
+          "aborted": false,
+          "status": 200,
+          "response": {
+            "generatedAt": "2026-10-10T05:41:16.874Z",
+            "timezone": "Asia/Shanghai",
+            "lastFlushedAt": null,
+            "health": {
+              "accepted": 0,
+              "flushed": 0,
+              "dropped": 0,
+              "incomplete": false,
+              "pendingKeys": 0,
+              "pendingEvents": 0,
+              "lastFlushedAt": null,
+              "lastError": null,
+              "nextRetryAt": 0,
+              "status": "idle"
+            },
+            "approximate": true,
+            "counts": {
+              "normalImages": 11,
+              "recycledImages": 1,
+              "initialProcessingFailures": 1,
+              "reprocessFailures": 1,
+              "albums": 0
+            },
+            "range": {
+              "days": 30,
+              "startDate": "2026-09-11",
+              "endDate": "2026-10-10"
+            },
+            "containsOldTimezone": true,
+            "today": 78,
+            "cumulative": {
+              "original": 468,
+              "compressed": 0,
+              "watermark": 0,
+              "total": 468
+            },
+            "versions": {
+              "original": 234,
+              "compressed": 0,
+              "watermark": 0,
+              "total": 234
+            },
+            "trend": [
+              {
+                "date": "2026-09-11",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-12",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-13",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-14",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-15",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-16",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-17",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-18",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-19",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-20",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-21",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-22",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-23",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-24",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-25",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-26",
+                "count": 156,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-27",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-28",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-29",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-09-30",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-10-01",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-10-02",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-10-03",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-10-04",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-10-05",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-10-06",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-10-07",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-10-08",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-10-09",
+                "count": 0,
+                "isTodayPartial": false
+              },
+              {
+                "date": "2026-10-10",
+                "count": 78,
+                "isTodayPartial": true
+              }
+            ],
+            "popular": [
+              {
+                "imageId": "656cec8a-67d0-443e-ae61-036ee6b99e1c",
+                "count": 36,
+                "state": "normal",
+                "displayName": "Issue 179 长名称 摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史.png",
+                "shortId": "656cec8a",
+                "managementUrl": "/library?image=656cec8a-67d0-443e-ae61-036ee6b99e1c",
+                "thumbnailUrl": "/i/656cec8a-67d0-443e-ae61-036ee6b99e1c?type=thumbnail"
+              },
+              {
+                "imageId": "ecb95b19-d2d8-4a37-8361-bfe2e79fe063",
+                "count": 33,
+                "state": "recycled",
+                "displayName": null,
+                "shortId": "ecb95b19",
+                "managementUrl": "/trash?image=ecb95b19-d2d8-4a37-8361-bfe2e79fe063",
+                "thumbnailUrl": null
+              },
+              {
+                "imageId": "6dff22a7-66fe-4aa0-9479-0c52ecc1bf73",
+                "count": 27,
+                "state": "normal",
+                "displayName": "Issue 179 图片 3.png",
+                "shortId": "6dff22a7",
+                "managementUrl": "/library?image=6dff22a7-66fe-4aa0-9479-0c52ecc1bf73",
+                "thumbnailUrl": null
+              },
+              {
+                "imageId": "574e515e-c8d9-4597-a6f7-f5b0a04d9bc5",
+                "count": 24,
+                "state": "normal",
+                "displayName": "Issue 179 图片 4.png",
+                "shortId": "574e515e",
+                "managementUrl": "/library?image=574e515e-c8d9-4597-a6f7-f5b0a04d9bc5",
+                "thumbnailUrl": "/i/574e515e-c8d9-4597-a6f7-f5b0a04d9bc5?type=thumbnail"
+              },
+              {
+                "imageId": "fcc4869c-b854-41e7-a223-b5bd911e7bf7",
+                "count": 21,
+                "state": "normal",
+                "displayName": "Issue 179 图片 5.png",
+                "shortId": "fcc4869c",
+                "managementUrl": "/library?image=fcc4869c-b854-41e7-a223-b5bd911e7bf7",
+                "thumbnailUrl": "/i/fcc4869c-b854-41e7-a223-b5bd911e7bf7?type=thumbnail"
+              },
+              {
+                "imageId": "04b6e948-e046-4e11-9846-a6de3b83a2ac",
+                "count": 18,
+                "state": "normal",
+                "displayName": "Issue 179 图片 6.png",
+                "shortId": "04b6e948",
+                "managementUrl": "/library?image=04b6e948-e046-4e11-9846-a6de3b83a2ac",
+                "thumbnailUrl": "/i/04b6e948-e046-4e11-9846-a6de3b83a2ac?type=thumbnail"
+              },
+              {
+                "imageId": "8baee6cb-619c-41f1-ab0e-8272933c343c",
+                "count": 15,
+                "state": "normal",
+                "displayName": "Issue 179 图片 7.png",
+                "shortId": "8baee6cb",
+                "managementUrl": "/library?image=8baee6cb-619c-41f1-ab0e-8272933c343c",
+                "thumbnailUrl": "/i/8baee6cb-619c-41f1-ab0e-8272933c343c?type=thumbnail"
+              },
+              {
+                "imageId": "29ca338a-ec73-4fbf-a9d2-75a6baeb5a5f",
+                "count": 12,
+                "state": "normal",
+                "displayName": "Issue 179 图片 8.png",
+                "shortId": "29ca338a",
+                "managementUrl": "/library?image=29ca338a-ec73-4fbf-a9d2-75a6baeb5a5f",
+                "thumbnailUrl": "/i/29ca338a-ec73-4fbf-a9d2-75a6baeb5a5f?type=thumbnail"
+              },
+              {
+                "imageId": "0d566567-33d0-4e65-8dc0-c64b7b530fc6",
+                "count": 9,
+                "state": "normal",
+                "displayName": "Issue 179 图片 9.png",
+                "shortId": "0d566567",
+                "managementUrl": "/library?image=0d566567-33d0-4e65-8dc0-c64b7b530fc6",
+                "thumbnailUrl": "/i/0d566567-33d0-4e65-8dc0-c64b7b530fc6?type=thumbnail"
+              },
+              {
+                "imageId": "498e4889-ad34-466c-9496-4fe92452b0d4",
+                "count": 6,
+                "state": "normal",
+                "displayName": "Issue 179 图片 10.png",
+                "shortId": "498e4889",
+                "managementUrl": "/library?image=498e4889-ad34-466c-9496-4fe92452b0d4",
+                "thumbnailUrl": "/i/498e4889-ad34-466c-9496-4fe92452b0d4?type=thumbnail"
+              }
+            ]
+          },
+          "finishedAt": 1791610876878
+        }
+      ]
+    }
+  ],
+  "reconciledPeriods": [
+    {
+      "days": 7,
+      "range": {
+        "days": 7,
+        "startDate": "2026-10-04",
+        "endDate": "2026-10-10"
+      },
+      "total": 78,
+      "popular": [
+        {
+          "id": "656cec8a-67d0-443e-ae61-036ee6b99e1c",
+          "state": "normal",
+          "text": "01Issue 179 长名称 摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史.png正常图库12次次",
+          "entry": "查看Issue 179 长名称 摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史.png统计，12次访问",
+          "image": "http://ariso-59035.localhost:59035/i/656cec8a-67d0-443e-ae61-036ee6b99e1c?type=thumbnail"
+        },
+        {
+          "id": "ecb95b19-d2d8-4a37-8361-bfe2e79fe063",
+          "state": "recycled",
+          "text": "02回收已回收图片 · ecb95b19查看回收站记录11次次",
+          "entry": "查看已回收图片 · ecb95b19统计，11次访问",
+          "image": null
+        },
+        {
+          "id": "6dff22a7-66fe-4aa0-9479-0c52ecc1bf73",
+          "state": "normal",
+          "text": "03Issue 179 图片 3.png无可读缩略图，历史访问保留9次次",
+          "entry": "查看Issue 179 图片 3.png统计，9次访问",
+          "image": null
+        },
+        {
+          "id": "574e515e-c8d9-4597-a6f7-f5b0a04d9bc5",
+          "state": "normal",
+          "text": "04Issue 179 图片 4.png正常图库8次次",
+          "entry": "查看Issue 179 图片 4.png统计，8次访问",
+          "image": "http://ariso-59035.localhost:59035/i/574e515e-c8d9-4597-a6f7-f5b0a04d9bc5?type=thumbnail"
+        },
+        {
+          "id": "fcc4869c-b854-41e7-a223-b5bd911e7bf7",
+          "state": "normal",
+          "text": "05Issue 179 图片 5.png正常图库7次次",
+          "entry": "查看Issue 179 图片 5.png统计，7次访问",
+          "image": "http://ariso-59035.localhost:59035/i/fcc4869c-b854-41e7-a223-b5bd911e7bf7?type=thumbnail"
+        },
+        {
+          "id": "04b6e948-e046-4e11-9846-a6de3b83a2ac",
+          "state": "normal",
+          "text": "06Issue 179 图片 6.png正常图库6次次",
+          "entry": "查看Issue 179 图片 6.png统计，6次访问",
+          "image": "http://ariso-59035.localhost:59035/i/04b6e948-e046-4e11-9846-a6de3b83a2ac?type=thumbnail"
+        },
+        {
+          "id": "8baee6cb-619c-41f1-ab0e-8272933c343c",
+          "state": "normal",
+          "text": "07Issue 179 图片 7.png正常图库5次次",
+          "entry": "查看Issue 179 图片 7.png统计，5次访问",
+          "image": "http://ariso-59035.localhost:59035/i/8baee6cb-619c-41f1-ab0e-8272933c343c?type=thumbnail"
+        },
+        {
+          "id": "29ca338a-ec73-4fbf-a9d2-75a6baeb5a5f",
+          "state": "normal",
+          "text": "08Issue 179 图片 8.png正常图库4次次",
+          "entry": "查看Issue 179 图片 8.png统计，4次访问",
+          "image": "http://ariso-59035.localhost:59035/i/29ca338a-ec73-4fbf-a9d2-75a6baeb5a5f?type=thumbnail"
+        },
+        {
+          "id": "0d566567-33d0-4e65-8dc0-c64b7b530fc6",
+          "state": "normal",
+          "text": "09Issue 179 图片 9.png正常图库3次次",
+          "entry": "查看Issue 179 图片 9.png统计，3次访问",
+          "image": "http://ariso-59035.localhost:59035/i/0d566567-33d0-4e65-8dc0-c64b7b530fc6?type=thumbnail"
+        },
+        {
+          "id": "498e4889-ad34-466c-9496-4fe92452b0d4",
+          "state": "normal",
+          "text": "10Issue 179 图片 10.png正常图库2次次",
+          "entry": "查看Issue 179 图片 10.png统计，2次访问",
+          "image": "http://ariso-59035.localhost:59035/i/498e4889-ad34-466c-9496-4fe92452b0d4?type=thumbnail"
+        }
+      ],
+      "daily": [
+        {
+          "date": "2026-10-04",
+          "count": 0
+        },
+        {
+          "date": "2026-10-05",
+          "count": 0
+        },
+        {
+          "date": "2026-10-06",
+          "count": 0
+        },
+        {
+          "date": "2026-10-07",
+          "count": 0
+        },
+        {
+          "date": "2026-10-08",
+          "count": 0
+        },
+        {
+          "date": "2026-10-09",
+          "count": 0
+        },
+        {
+          "date": "2026-10-10",
+          "count": 78
+        }
+      ]
+    },
+    {
+      "days": 30,
+      "range": {
+        "days": 30,
+        "startDate": "2026-09-11",
+        "endDate": "2026-10-10"
+      },
+      "total": 234,
+      "popular": [
+        {
+          "id": "656cec8a-67d0-443e-ae61-036ee6b99e1c",
+          "state": "normal",
+          "text": "01Issue 179 长名称 摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史.png正常图库36次次",
+          "entry": "查看Issue 179 长名称 摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史.png统计，36次访问",
+          "image": "http://ariso-59035.localhost:59035/i/656cec8a-67d0-443e-ae61-036ee6b99e1c?type=thumbnail"
+        },
+        {
+          "id": "ecb95b19-d2d8-4a37-8361-bfe2e79fe063",
+          "state": "recycled",
+          "text": "02回收已回收图片 · ecb95b19查看回收站记录33次次",
+          "entry": "查看已回收图片 · ecb95b19统计，33次访问",
+          "image": null
+        },
+        {
+          "id": "6dff22a7-66fe-4aa0-9479-0c52ecc1bf73",
+          "state": "normal",
+          "text": "03Issue 179 图片 3.png无可读缩略图，历史访问保留27次次",
+          "entry": "查看Issue 179 图片 3.png统计，27次访问",
+          "image": null
+        },
+        {
+          "id": "574e515e-c8d9-4597-a6f7-f5b0a04d9bc5",
+          "state": "normal",
+          "text": "04Issue 179 图片 4.png正常图库24次次",
+          "entry": "查看Issue 179 图片 4.png统计，24次访问",
+          "image": "http://ariso-59035.localhost:59035/i/574e515e-c8d9-4597-a6f7-f5b0a04d9bc5?type=thumbnail"
+        },
+        {
+          "id": "fcc4869c-b854-41e7-a223-b5bd911e7bf7",
+          "state": "normal",
+          "text": "05Issue 179 图片 5.png正常图库21次次",
+          "entry": "查看Issue 179 图片 5.png统计，21次访问",
+          "image": "http://ariso-59035.localhost:59035/i/fcc4869c-b854-41e7-a223-b5bd911e7bf7?type=thumbnail"
+        },
+        {
+          "id": "04b6e948-e046-4e11-9846-a6de3b83a2ac",
+          "state": "normal",
+          "text": "06Issue 179 图片 6.png正常图库18次次",
+          "entry": "查看Issue 179 图片 6.png统计，18次访问",
+          "image": "http://ariso-59035.localhost:59035/i/04b6e948-e046-4e11-9846-a6de3b83a2ac?type=thumbnail"
+        },
+        {
+          "id": "8baee6cb-619c-41f1-ab0e-8272933c343c",
+          "state": "normal",
+          "text": "07Issue 179 图片 7.png正常图库15次次",
+          "entry": "查看Issue 179 图片 7.png统计，15次访问",
+          "image": "http://ariso-59035.localhost:59035/i/8baee6cb-619c-41f1-ab0e-8272933c343c?type=thumbnail"
+        },
+        {
+          "id": "29ca338a-ec73-4fbf-a9d2-75a6baeb5a5f",
+          "state": "normal",
+          "text": "08Issue 179 图片 8.png正常图库12次次",
+          "entry": "查看Issue 179 图片 8.png统计，12次访问",
+          "image": "http://ariso-59035.localhost:59035/i/29ca338a-ec73-4fbf-a9d2-75a6baeb5a5f?type=thumbnail"
+        },
+        {
+          "id": "0d566567-33d0-4e65-8dc0-c64b7b530fc6",
+          "state": "normal",
+          "text": "09Issue 179 图片 9.png正常图库9次次",
+          "entry": "查看Issue 179 图片 9.png统计，9次访问",
+          "image": "http://ariso-59035.localhost:59035/i/0d566567-33d0-4e65-8dc0-c64b7b530fc6?type=thumbnail"
+        },
+        {
+          "id": "498e4889-ad34-466c-9496-4fe92452b0d4",
+          "state": "normal",
+          "text": "10Issue 179 图片 10.png正常图库6次次",
+          "entry": "查看Issue 179 图片 10.png统计，6次访问",
+          "image": "http://ariso-59035.localhost:59035/i/498e4889-ad34-466c-9496-4fe92452b0d4?type=thumbnail"
+        }
+      ],
+      "daily": [
+        {
+          "date": "2026-09-11",
+          "count": 0
+        },
+        {
+          "date": "2026-09-12",
+          "count": 0
+        },
+        {
+          "date": "2026-09-13",
+          "count": 0
+        },
+        {
+          "date": "2026-09-14",
+          "count": 0
+        },
+        {
+          "date": "2026-09-15",
+          "count": 0
+        },
+        {
+          "date": "2026-09-16",
+          "count": 0
+        },
+        {
+          "date": "2026-09-17",
+          "count": 0
+        },
+        {
+          "date": "2026-09-18",
+          "count": 0
+        },
+        {
+          "date": "2026-09-19",
+          "count": 0
+        },
+        {
+          "date": "2026-09-20",
+          "count": 0
+        },
+        {
+          "date": "2026-09-21",
+          "count": 0
+        },
+        {
+          "date": "2026-09-22",
+          "count": 0
+        },
+        {
+          "date": "2026-09-23",
+          "count": 0
+        },
+        {
+          "date": "2026-09-24",
+          "count": 0
+        },
+        {
+          "date": "2026-09-25",
+          "count": 0
+        },
+        {
+          "date": "2026-09-26",
+          "count": 156
+        },
+        {
+          "date": "2026-09-27",
+          "count": 0
+        },
+        {
+          "date": "2026-09-28",
+          "count": 0
+        },
+        {
+          "date": "2026-09-29",
+          "count": 0
+        },
+        {
+          "date": "2026-09-30",
+          "count": 0
+        },
+        {
+          "date": "2026-10-01",
+          "count": 0
+        },
+        {
+          "date": "2026-10-02",
+          "count": 0
+        },
+        {
+          "date": "2026-10-03",
+          "count": 0
+        },
+        {
+          "date": "2026-10-04",
+          "count": 0
+        },
+        {
+          "date": "2026-10-05",
+          "count": 0
+        },
+        {
+          "date": "2026-10-06",
+          "count": 0
+        },
+        {
+          "date": "2026-10-07",
+          "count": 0
+        },
+        {
+          "date": "2026-10-08",
+          "count": 0
+        },
+        {
+          "date": "2026-10-09",
+          "count": 0
+        },
+        {
+          "date": "2026-10-10",
+          "count": 78
+        }
+      ]
+    },
+    {
+      "days": 90,
+      "range": {
+        "days": 90,
+        "startDate": "2026-07-13",
+        "endDate": "2026-10-10"
+      },
+      "total": 468,
+      "popular": [
+        {
+          "id": "656cec8a-67d0-443e-ae61-036ee6b99e1c",
+          "state": "normal",
+          "text": "01Issue 179 长名称 摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史.png正常图库72次次",
+          "entry": "查看Issue 179 长名称 摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史.png统计，72次访问",
+          "image": "http://ariso-59035.localhost:59035/i/656cec8a-67d0-443e-ae61-036ee6b99e1c?type=thumbnail"
+        },
+        {
+          "id": "ecb95b19-d2d8-4a37-8361-bfe2e79fe063",
+          "state": "recycled",
+          "text": "02回收已回收图片 · ecb95b19查看回收站记录66次次",
+          "entry": "查看已回收图片 · ecb95b19统计，66次访问",
+          "image": null
+        },
+        {
+          "id": "6dff22a7-66fe-4aa0-9479-0c52ecc1bf73",
+          "state": "normal",
+          "text": "03Issue 179 图片 3.png无可读缩略图，历史访问保留54次次",
+          "entry": "查看Issue 179 图片 3.png统计，54次访问",
+          "image": null
+        },
+        {
+          "id": "574e515e-c8d9-4597-a6f7-f5b0a04d9bc5",
+          "state": "normal",
+          "text": "04Issue 179 图片 4.png正常图库48次次",
+          "entry": "查看Issue 179 图片 4.png统计，48次访问",
+          "image": "http://ariso-59035.localhost:59035/i/574e515e-c8d9-4597-a6f7-f5b0a04d9bc5?type=thumbnail"
+        },
+        {
+          "id": "fcc4869c-b854-41e7-a223-b5bd911e7bf7",
+          "state": "normal",
+          "text": "05Issue 179 图片 5.png正常图库42次次",
+          "entry": "查看Issue 179 图片 5.png统计，42次访问",
+          "image": "http://ariso-59035.localhost:59035/i/fcc4869c-b854-41e7-a223-b5bd911e7bf7?type=thumbnail"
+        },
+        {
+          "id": "04b6e948-e046-4e11-9846-a6de3b83a2ac",
+          "state": "normal",
+          "text": "06Issue 179 图片 6.png正常图库36次次",
+          "entry": "查看Issue 179 图片 6.png统计，36次访问",
+          "image": "http://ariso-59035.localhost:59035/i/04b6e948-e046-4e11-9846-a6de3b83a2ac?type=thumbnail"
+        },
+        {
+          "id": "8baee6cb-619c-41f1-ab0e-8272933c343c",
+          "state": "normal",
+          "text": "07Issue 179 图片 7.png正常图库30次次",
+          "entry": "查看Issue 179 图片 7.png统计，30次访问",
+          "image": "http://ariso-59035.localhost:59035/i/8baee6cb-619c-41f1-ab0e-8272933c343c?type=thumbnail"
+        },
+        {
+          "id": "29ca338a-ec73-4fbf-a9d2-75a6baeb5a5f",
+          "state": "normal",
+          "text": "08Issue 179 图片 8.png正常图库24次次",
+          "entry": "查看Issue 179 图片 8.png统计，24次访问",
+          "image": "http://ariso-59035.localhost:59035/i/29ca338a-ec73-4fbf-a9d2-75a6baeb5a5f?type=thumbnail"
+        },
+        {
+          "id": "0d566567-33d0-4e65-8dc0-c64b7b530fc6",
+          "state": "normal",
+          "text": "09Issue 179 图片 9.png正常图库18次次",
+          "entry": "查看Issue 179 图片 9.png统计，18次访问",
+          "image": "http://ariso-59035.localhost:59035/i/0d566567-33d0-4e65-8dc0-c64b7b530fc6?type=thumbnail"
+        },
+        {
+          "id": "498e4889-ad34-466c-9496-4fe92452b0d4",
+          "state": "normal",
+          "text": "10Issue 179 图片 10.png正常图库12次次",
+          "entry": "查看Issue 179 图片 10.png统计，12次访问",
+          "image": "http://ariso-59035.localhost:59035/i/498e4889-ad34-466c-9496-4fe92452b0d4?type=thumbnail"
+        }
+      ],
+      "daily": [
+        {
+          "date": "2026-07-13",
+          "count": 0
+        },
+        {
+          "date": "2026-07-14",
+          "count": 0
+        },
+        {
+          "date": "2026-07-15",
+          "count": 0
+        },
+        {
+          "date": "2026-07-16",
+          "count": 0
+        },
+        {
+          "date": "2026-07-17",
+          "count": 0
+        },
+        {
+          "date": "2026-07-18",
+          "count": 0
+        },
+        {
+          "date": "2026-07-19",
+          "count": 0
+        },
+        {
+          "date": "2026-07-20",
+          "count": 0
+        },
+        {
+          "date": "2026-07-21",
+          "count": 0
+        },
+        {
+          "date": "2026-07-22",
+          "count": 0
+        },
+        {
+          "date": "2026-07-23",
+          "count": 0
+        },
+        {
+          "date": "2026-07-24",
+          "count": 0
+        },
+        {
+          "date": "2026-07-25",
+          "count": 0
+        },
+        {
+          "date": "2026-07-26",
+          "count": 0
+        },
+        {
+          "date": "2026-07-27",
+          "count": 0
+        },
+        {
+          "date": "2026-07-28",
+          "count": 0
+        },
+        {
+          "date": "2026-07-29",
+          "count": 0
+        },
+        {
+          "date": "2026-07-30",
+          "count": 0
+        },
+        {
+          "date": "2026-07-31",
+          "count": 0
+        },
+        {
+          "date": "2026-08-01",
+          "count": 0
+        },
+        {
+          "date": "2026-08-02",
+          "count": 0
+        },
+        {
+          "date": "2026-08-03",
+          "count": 0
+        },
+        {
+          "date": "2026-08-04",
+          "count": 0
+        },
+        {
+          "date": "2026-08-05",
+          "count": 0
+        },
+        {
+          "date": "2026-08-06",
+          "count": 0
+        },
+        {
+          "date": "2026-08-07",
+          "count": 0
+        },
+        {
+          "date": "2026-08-08",
+          "count": 0
+        },
+        {
+          "date": "2026-08-09",
+          "count": 0
+        },
+        {
+          "date": "2026-08-10",
+          "count": 0
+        },
+        {
+          "date": "2026-08-11",
+          "count": 0
+        },
+        {
+          "date": "2026-08-12",
+          "count": 234
+        },
+        {
+          "date": "2026-08-13",
+          "count": 0
+        },
+        {
+          "date": "2026-08-14",
+          "count": 0
+        },
+        {
+          "date": "2026-08-15",
+          "count": 0
+        },
+        {
+          "date": "2026-08-16",
+          "count": 0
+        },
+        {
+          "date": "2026-08-17",
+          "count": 0
+        },
+        {
+          "date": "2026-08-18",
+          "count": 0
+        },
+        {
+          "date": "2026-08-19",
+          "count": 0
+        },
+        {
+          "date": "2026-08-20",
+          "count": 0
+        },
+        {
+          "date": "2026-08-21",
+          "count": 0
+        },
+        {
+          "date": "2026-08-22",
+          "count": 0
+        },
+        {
+          "date": "2026-08-23",
+          "count": 0
+        },
+        {
+          "date": "2026-08-24",
+          "count": 0
+        },
+        {
+          "date": "2026-08-25",
+          "count": 0
+        },
+        {
+          "date": "2026-08-26",
+          "count": 0
+        },
+        {
+          "date": "2026-08-27",
+          "count": 0
+        },
+        {
+          "date": "2026-08-28",
+          "count": 0
+        },
+        {
+          "date": "2026-08-29",
+          "count": 0
+        },
+        {
+          "date": "2026-08-30",
+          "count": 0
+        },
+        {
+          "date": "2026-08-31",
+          "count": 0
+        },
+        {
+          "date": "2026-09-01",
+          "count": 0
+        },
+        {
+          "date": "2026-09-02",
+          "count": 0
+        },
+        {
+          "date": "2026-09-03",
+          "count": 0
+        },
+        {
+          "date": "2026-09-04",
+          "count": 0
+        },
+        {
+          "date": "2026-09-05",
+          "count": 0
+        },
+        {
+          "date": "2026-09-06",
+          "count": 0
+        },
+        {
+          "date": "2026-09-07",
+          "count": 0
+        },
+        {
+          "date": "2026-09-08",
+          "count": 0
+        },
+        {
+          "date": "2026-09-09",
+          "count": 0
+        },
+        {
+          "date": "2026-09-10",
+          "count": 0
+        },
+        {
+          "date": "2026-09-11",
+          "count": 0
+        },
+        {
+          "date": "2026-09-12",
+          "count": 0
+        },
+        {
+          "date": "2026-09-13",
+          "count": 0
+        },
+        {
+          "date": "2026-09-14",
+          "count": 0
+        },
+        {
+          "date": "2026-09-15",
+          "count": 0
+        },
+        {
+          "date": "2026-09-16",
+          "count": 0
+        },
+        {
+          "date": "2026-09-17",
+          "count": 0
+        },
+        {
+          "date": "2026-09-18",
+          "count": 0
+        },
+        {
+          "date": "2026-09-19",
+          "count": 0
+        },
+        {
+          "date": "2026-09-20",
+          "count": 0
+        },
+        {
+          "date": "2026-09-21",
+          "count": 0
+        },
+        {
+          "date": "2026-09-22",
+          "count": 0
+        },
+        {
+          "date": "2026-09-23",
+          "count": 0
+        },
+        {
+          "date": "2026-09-24",
+          "count": 0
+        },
+        {
+          "date": "2026-09-25",
+          "count": 0
+        },
+        {
+          "date": "2026-09-26",
+          "count": 156
+        },
+        {
+          "date": "2026-09-27",
+          "count": 0
+        },
+        {
+          "date": "2026-09-28",
+          "count": 0
+        },
+        {
+          "date": "2026-09-29",
+          "count": 0
+        },
+        {
+          "date": "2026-09-30",
+          "count": 0
+        },
+        {
+          "date": "2026-10-01",
+          "count": 0
+        },
+        {
+          "date": "2026-10-02",
+          "count": 0
+        },
+        {
+          "date": "2026-10-03",
+          "count": 0
+        },
+        {
+          "date": "2026-10-04",
+          "count": 0
+        },
+        {
+          "date": "2026-10-05",
+          "count": 0
+        },
+        {
+          "date": "2026-10-06",
+          "count": 0
+        },
+        {
+          "date": "2026-10-07",
+          "count": 0
+        },
+        {
+          "date": "2026-10-08",
+          "count": 0
+        },
+        {
+          "date": "2026-10-09",
+          "count": 0
+        },
+        {
+          "date": "2026-10-10",
+          "count": 78
+        }
+      ]
+    }
+  ],
+  "usageLayouts": [
+    {
+      "width": 360,
+      "theme": "light",
+      "rows": [52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52],
+      "cards": ["20px", "20px", "20px"],
+      "states": [
+        {
+          "text": "已启用",
+          "background": "oklab(0.732897 -0.168919 0.09438 / 0.15)",
+          "color": "oklab(0.537748 -0.0889513 0.0302689)",
+          "interactive": false
+        },
+        {
+          "text": "已启用",
+          "background": "oklab(0.732897 -0.168919 0.09438 / 0.15)",
+          "color": "oklab(0.537748 -0.0889513 0.0302689)",
+          "interactive": false
+        },
+        {
+          "text": "已停用",
+          "background": "oklab(0.277549 0.0176723 -0.0552125 / 0.08)",
+          "color": "rgb(65, 68, 91)",
+          "interactive": false
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "rows": [52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52],
+      "cards": ["20px", "20px", "20px"],
+      "states": [
+        {
+          "text": "已启用",
+          "background": "oklab(0.732897 -0.168919 0.09438 / 0.15)",
+          "color": "oklab(0.537748 -0.0889513 0.0302689)",
+          "interactive": false
+        },
+        {
+          "text": "已启用",
+          "background": "oklab(0.732897 -0.168919 0.09438 / 0.15)",
+          "color": "oklab(0.537748 -0.0889513 0.0302689)",
+          "interactive": false
+        },
+        {
+          "text": "已停用",
+          "background": "oklab(0.277549 0.0176723 -0.0552125 / 0.08)",
+          "color": "rgb(65, 68, 91)",
+          "interactive": false
+        }
+      ]
+    },
+    {
+      "width": 430,
+      "theme": "light",
+      "rows": [52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52],
+      "cards": ["20px", "20px", "20px"],
+      "states": [
+        {
+          "text": "已启用",
+          "background": "oklab(0.732897 -0.168919 0.09438 / 0.15)",
+          "color": "oklab(0.537748 -0.0889513 0.0302689)",
+          "interactive": false
+        },
+        {
+          "text": "已启用",
+          "background": "oklab(0.732897 -0.168919 0.09438 / 0.15)",
+          "color": "oklab(0.537748 -0.0889513 0.0302689)",
+          "interactive": false
+        },
+        {
+          "text": "已停用",
+          "background": "oklab(0.277549 0.0176723 -0.0552125 / 0.08)",
+          "color": "rgb(65, 68, 91)",
+          "interactive": false
+        }
+      ]
+    },
+    {
+      "width": 768,
+      "theme": "light",
+      "rows": [52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52],
+      "cards": ["20px", "20px", "20px"],
+      "states": [
+        {
+          "text": "已启用",
+          "background": "oklab(0.732897 -0.168919 0.09438 / 0.15)",
+          "color": "oklab(0.537748 -0.0889513 0.0302689)",
+          "interactive": false
+        },
+        {
+          "text": "已启用",
+          "background": "oklab(0.732897 -0.168919 0.09438 / 0.15)",
+          "color": "oklab(0.537748 -0.0889513 0.0302689)",
+          "interactive": false
+        },
+        {
+          "text": "已停用",
+          "background": "oklab(0.277549 0.0176723 -0.0552125 / 0.08)",
+          "color": "rgb(65, 68, 91)",
+          "interactive": false
+        }
+      ]
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "rows": [52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52],
+      "cards": ["20px", "20px", "20px"],
+      "states": [
+        {
+          "text": "已启用",
+          "background": "oklab(0.732897 -0.168919 0.09438 / 0.15)",
+          "color": "oklab(0.537748 -0.0889513 0.0302689)",
+          "interactive": false
+        },
+        {
+          "text": "已启用",
+          "background": "oklab(0.732897 -0.168919 0.09438 / 0.15)",
+          "color": "oklab(0.537748 -0.0889513 0.0302689)",
+          "interactive": false
+        },
+        {
+          "text": "已停用",
+          "background": "oklab(0.277549 0.0176723 -0.0552125 / 0.08)",
+          "color": "rgb(65, 68, 91)",
+          "interactive": false
+        }
+      ]
+    },
+    {
+      "width": 360,
+      "theme": "dark",
+      "rows": [52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52],
+      "cards": ["20px", "20px", "20px"],
+      "states": [
+        {
+          "text": "已启用",
+          "background": "oklab(0.732897 -0.168919 0.09438 / 0.12)",
+          "color": "oklab(0.7955 -0.12129 0.0664678)",
+          "interactive": false
+        },
+        {
+          "text": "已启用",
+          "background": "oklab(0.732897 -0.168919 0.09438 / 0.12)",
+          "color": "oklab(0.7955 -0.12129 0.0664678)",
+          "interactive": false
+        },
+        {
+          "text": "已停用",
+          "background": "oklab(0.962441 0.00571898 -0.00796473 / 0.08)",
+          "color": "rgb(184, 185, 201)",
+          "interactive": false
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "rows": [52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52],
+      "cards": ["20px", "20px", "20px"],
+      "states": [
+        {
+          "text": "已启用",
+          "background": "oklab(0.732897 -0.168919 0.09438 / 0.12)",
+          "color": "oklab(0.7955 -0.12129 0.0664678)",
+          "interactive": false
+        },
+        {
+          "text": "已启用",
+          "background": "oklab(0.732897 -0.168919 0.09438 / 0.12)",
+          "color": "oklab(0.7955 -0.12129 0.0664678)",
+          "interactive": false
+        },
+        {
+          "text": "已停用",
+          "background": "oklab(0.962441 0.00571898 -0.00796473 / 0.08)",
+          "color": "rgb(184, 185, 201)",
+          "interactive": false
+        }
+      ]
+    },
+    {
+      "width": 430,
+      "theme": "dark",
+      "rows": [52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52],
+      "cards": ["20px", "20px", "20px"],
+      "states": [
+        {
+          "text": "已启用",
+          "background": "oklab(0.732897 -0.168919 0.09438 / 0.12)",
+          "color": "oklab(0.7955 -0.12129 0.0664678)",
+          "interactive": false
+        },
+        {
+          "text": "已启用",
+          "background": "oklab(0.732897 -0.168919 0.09438 / 0.12)",
+          "color": "oklab(0.7955 -0.12129 0.0664678)",
+          "interactive": false
+        },
+        {
+          "text": "已停用",
+          "background": "oklab(0.962441 0.00571898 -0.00796473 / 0.08)",
+          "color": "rgb(184, 185, 201)",
+          "interactive": false
+        }
+      ]
+    },
+    {
+      "width": 768,
+      "theme": "dark",
+      "rows": [52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52],
+      "cards": ["20px", "20px", "20px"],
+      "states": [
+        {
+          "text": "已启用",
+          "background": "oklab(0.732897 -0.168919 0.09438 / 0.12)",
+          "color": "oklab(0.7955 -0.12129 0.0664678)",
+          "interactive": false
+        },
+        {
+          "text": "已启用",
+          "background": "oklab(0.732897 -0.168919 0.09438 / 0.12)",
+          "color": "oklab(0.7955 -0.12129 0.0664678)",
+          "interactive": false
+        },
+        {
+          "text": "已停用",
+          "background": "oklab(0.962441 0.00571898 -0.00796473 / 0.08)",
+          "color": "rgb(184, 185, 201)",
+          "interactive": false
+        }
+      ]
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "rows": [52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52],
+      "cards": ["20px", "20px", "20px"],
+      "states": [
+        {
+          "text": "已启用",
+          "background": "oklab(0.732897 -0.168919 0.09438 / 0.12)",
+          "color": "oklab(0.7955 -0.12129 0.0664678)",
+          "interactive": false
+        },
+        {
+          "text": "已启用",
+          "background": "oklab(0.732897 -0.168919 0.09438 / 0.12)",
+          "color": "oklab(0.7955 -0.12129 0.0664678)",
+          "interactive": false
+        },
+        {
+          "text": "已停用",
+          "background": "oklab(0.962441 0.00571898 -0.00796473 / 0.08)",
+          "color": "rgb(184, 185, 201)",
+          "interactive": false
+        }
+      ]
+    }
+  ],
+  "periodRace": [
+    {
+      "path": "/api/analytics/overview",
+      "days": "30",
+      "startedAt": 1791610894364,
+      "aborted": true,
+      "status": 200,
+      "response": {
+        "generatedAt": "2026-10-10T05:41:34.377Z",
+        "timezone": "Asia/Shanghai",
+        "lastFlushedAt": null,
+        "health": {
+          "accepted": 0,
+          "flushed": 0,
+          "dropped": 0,
+          "incomplete": false,
+          "pendingKeys": 0,
+          "pendingEvents": 0,
+          "lastFlushedAt": null,
+          "lastError": null,
+          "nextRetryAt": 0,
+          "status": "idle"
+        },
+        "approximate": true,
+        "counts": {
+          "normalImages": 11,
+          "recycledImages": 1,
+          "initialProcessingFailures": 1,
+          "reprocessFailures": 1,
+          "albums": 0
+        },
+        "range": {
+          "days": 30,
+          "startDate": "2026-09-11",
+          "endDate": "2026-10-10"
+        },
+        "containsOldTimezone": true,
+        "today": 78,
+        "cumulative": {
+          "original": 468,
+          "compressed": 0,
+          "watermark": 0,
+          "total": 468
+        },
+        "versions": {
+          "original": 234,
+          "compressed": 0,
+          "watermark": 0,
+          "total": 234
+        },
+        "trend": [
+          {
+            "date": "2026-09-11",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-09-12",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-09-13",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-09-14",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-09-15",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-09-16",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-09-17",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-09-18",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-09-19",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-09-20",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-09-21",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-09-22",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-09-23",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-09-24",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-09-25",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-09-26",
+            "count": 156,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-09-27",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-09-28",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-09-29",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-09-30",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-10-01",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-10-02",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-10-03",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-10-04",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-10-05",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-10-06",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-10-07",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-10-08",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-10-09",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-10-10",
+            "count": 78,
+            "isTodayPartial": true
+          }
+        ],
+        "popular": [
+          {
+            "imageId": "656cec8a-67d0-443e-ae61-036ee6b99e1c",
+            "count": 36,
+            "state": "normal",
+            "displayName": "Issue 179 长名称 摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史.png",
+            "shortId": "656cec8a",
+            "managementUrl": "/library?image=656cec8a-67d0-443e-ae61-036ee6b99e1c",
+            "thumbnailUrl": "/i/656cec8a-67d0-443e-ae61-036ee6b99e1c?type=thumbnail"
+          },
+          {
+            "imageId": "ecb95b19-d2d8-4a37-8361-bfe2e79fe063",
+            "count": 33,
+            "state": "recycled",
+            "displayName": null,
+            "shortId": "ecb95b19",
+            "managementUrl": "/trash?image=ecb95b19-d2d8-4a37-8361-bfe2e79fe063",
+            "thumbnailUrl": null
+          },
+          {
+            "imageId": "6dff22a7-66fe-4aa0-9479-0c52ecc1bf73",
+            "count": 27,
+            "state": "normal",
+            "displayName": "Issue 179 图片 3.png",
+            "shortId": "6dff22a7",
+            "managementUrl": "/library?image=6dff22a7-66fe-4aa0-9479-0c52ecc1bf73",
+            "thumbnailUrl": null
+          },
+          {
+            "imageId": "574e515e-c8d9-4597-a6f7-f5b0a04d9bc5",
+            "count": 24,
+            "state": "normal",
+            "displayName": "Issue 179 图片 4.png",
+            "shortId": "574e515e",
+            "managementUrl": "/library?image=574e515e-c8d9-4597-a6f7-f5b0a04d9bc5",
+            "thumbnailUrl": "/i/574e515e-c8d9-4597-a6f7-f5b0a04d9bc5?type=thumbnail"
+          },
+          {
+            "imageId": "fcc4869c-b854-41e7-a223-b5bd911e7bf7",
+            "count": 21,
+            "state": "normal",
+            "displayName": "Issue 179 图片 5.png",
+            "shortId": "fcc4869c",
+            "managementUrl": "/library?image=fcc4869c-b854-41e7-a223-b5bd911e7bf7",
+            "thumbnailUrl": "/i/fcc4869c-b854-41e7-a223-b5bd911e7bf7?type=thumbnail"
+          },
+          {
+            "imageId": "04b6e948-e046-4e11-9846-a6de3b83a2ac",
+            "count": 18,
+            "state": "normal",
+            "displayName": "Issue 179 图片 6.png",
+            "shortId": "04b6e948",
+            "managementUrl": "/library?image=04b6e948-e046-4e11-9846-a6de3b83a2ac",
+            "thumbnailUrl": "/i/04b6e948-e046-4e11-9846-a6de3b83a2ac?type=thumbnail"
+          },
+          {
+            "imageId": "8baee6cb-619c-41f1-ab0e-8272933c343c",
+            "count": 15,
+            "state": "normal",
+            "displayName": "Issue 179 图片 7.png",
+            "shortId": "8baee6cb",
+            "managementUrl": "/library?image=8baee6cb-619c-41f1-ab0e-8272933c343c",
+            "thumbnailUrl": "/i/8baee6cb-619c-41f1-ab0e-8272933c343c?type=thumbnail"
+          },
+          {
+            "imageId": "29ca338a-ec73-4fbf-a9d2-75a6baeb5a5f",
+            "count": 12,
+            "state": "normal",
+            "displayName": "Issue 179 图片 8.png",
+            "shortId": "29ca338a",
+            "managementUrl": "/library?image=29ca338a-ec73-4fbf-a9d2-75a6baeb5a5f",
+            "thumbnailUrl": "/i/29ca338a-ec73-4fbf-a9d2-75a6baeb5a5f?type=thumbnail"
+          },
+          {
+            "imageId": "0d566567-33d0-4e65-8dc0-c64b7b530fc6",
+            "count": 9,
+            "state": "normal",
+            "displayName": "Issue 179 图片 9.png",
+            "shortId": "0d566567",
+            "managementUrl": "/library?image=0d566567-33d0-4e65-8dc0-c64b7b530fc6",
+            "thumbnailUrl": "/i/0d566567-33d0-4e65-8dc0-c64b7b530fc6?type=thumbnail"
+          },
+          {
+            "imageId": "498e4889-ad34-466c-9496-4fe92452b0d4",
+            "count": 6,
+            "state": "normal",
+            "displayName": "Issue 179 图片 10.png",
+            "shortId": "498e4889",
+            "managementUrl": "/library?image=498e4889-ad34-466c-9496-4fe92452b0d4",
+            "thumbnailUrl": "/i/498e4889-ad34-466c-9496-4fe92452b0d4?type=thumbnail"
+          }
+        ]
+      },
+      "held": true,
+      "released": true,
+      "finishedAt": 1791610894706
+    },
+    {
+      "path": "/api/analytics/overview",
+      "days": "90",
+      "startedAt": 1791610894600,
+      "aborted": false,
+      "status": 200,
+      "response": {
+        "generatedAt": "2026-10-10T05:41:34.608Z",
+        "timezone": "Asia/Shanghai",
+        "lastFlushedAt": null,
+        "health": {
+          "accepted": 0,
+          "flushed": 0,
+          "dropped": 0,
+          "incomplete": false,
+          "pendingKeys": 0,
+          "pendingEvents": 0,
+          "lastFlushedAt": null,
+          "lastError": null,
+          "nextRetryAt": 0,
+          "status": "idle"
+        },
+        "approximate": true,
+        "counts": {
+          "normalImages": 11,
+          "recycledImages": 1,
+          "initialProcessingFailures": 1,
+          "reprocessFailures": 1,
+          "albums": 0
+        },
+        "range": {
+          "days": 90,
+          "startDate": "2026-07-13",
+          "endDate": "2026-10-10"
+        },
+        "containsOldTimezone": true,
+        "today": 78,
+        "cumulative": {
+          "original": 468,
+          "compressed": 0,
+          "watermark": 0,
+          "total": 468
+        },
+        "versions": {
+          "original": 468,
+          "compressed": 0,
+          "watermark": 0,
+          "total": 468
+        },
+        "trend": [
+          {
+            "date": "2026-07-13",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-07-14",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-07-15",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-07-16",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-07-17",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-07-18",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-07-19",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-07-20",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-07-21",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-07-22",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-07-23",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-07-24",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-07-25",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-07-26",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-07-27",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-07-28",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-07-29",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-07-30",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-07-31",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-08-01",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-08-02",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-08-03",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-08-04",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-08-05",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-08-06",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-08-07",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-08-08",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-08-09",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-08-10",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-08-11",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-08-12",
+            "count": 234,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-08-13",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-08-14",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-08-15",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-08-16",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-08-17",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-08-18",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-08-19",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-08-20",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-08-21",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-08-22",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-08-23",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-08-24",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-08-25",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-08-26",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-08-27",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-08-28",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-08-29",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-08-30",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-08-31",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-09-01",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-09-02",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-09-03",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-09-04",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-09-05",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-09-06",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-09-07",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-09-08",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-09-09",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-09-10",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-09-11",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-09-12",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-09-13",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-09-14",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-09-15",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-09-16",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-09-17",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-09-18",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-09-19",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-09-20",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-09-21",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-09-22",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-09-23",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-09-24",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-09-25",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-09-26",
+            "count": 156,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-09-27",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-09-28",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-09-29",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-09-30",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-10-01",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-10-02",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-10-03",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-10-04",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-10-05",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-10-06",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-10-07",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-10-08",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-10-09",
+            "count": 0,
+            "isTodayPartial": false
+          },
+          {
+            "date": "2026-10-10",
+            "count": 78,
+            "isTodayPartial": true
+          }
+        ],
+        "popular": [
+          {
+            "imageId": "656cec8a-67d0-443e-ae61-036ee6b99e1c",
+            "count": 72,
+            "state": "normal",
+            "displayName": "Issue 179 长名称 摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史.png",
+            "shortId": "656cec8a",
+            "managementUrl": "/library?image=656cec8a-67d0-443e-ae61-036ee6b99e1c",
+            "thumbnailUrl": "/i/656cec8a-67d0-443e-ae61-036ee6b99e1c?type=thumbnail"
+          },
+          {
+            "imageId": "ecb95b19-d2d8-4a37-8361-bfe2e79fe063",
+            "count": 66,
+            "state": "recycled",
+            "displayName": null,
+            "shortId": "ecb95b19",
+            "managementUrl": "/trash?image=ecb95b19-d2d8-4a37-8361-bfe2e79fe063",
+            "thumbnailUrl": null
+          },
+          {
+            "imageId": "6dff22a7-66fe-4aa0-9479-0c52ecc1bf73",
+            "count": 54,
+            "state": "normal",
+            "displayName": "Issue 179 图片 3.png",
+            "shortId": "6dff22a7",
+            "managementUrl": "/library?image=6dff22a7-66fe-4aa0-9479-0c52ecc1bf73",
+            "thumbnailUrl": null
+          },
+          {
+            "imageId": "574e515e-c8d9-4597-a6f7-f5b0a04d9bc5",
+            "count": 48,
+            "state": "normal",
+            "displayName": "Issue 179 图片 4.png",
+            "shortId": "574e515e",
+            "managementUrl": "/library?image=574e515e-c8d9-4597-a6f7-f5b0a04d9bc5",
+            "thumbnailUrl": "/i/574e515e-c8d9-4597-a6f7-f5b0a04d9bc5?type=thumbnail"
+          },
+          {
+            "imageId": "fcc4869c-b854-41e7-a223-b5bd911e7bf7",
+            "count": 42,
+            "state": "normal",
+            "displayName": "Issue 179 图片 5.png",
+            "shortId": "fcc4869c",
+            "managementUrl": "/library?image=fcc4869c-b854-41e7-a223-b5bd911e7bf7",
+            "thumbnailUrl": "/i/fcc4869c-b854-41e7-a223-b5bd911e7bf7?type=thumbnail"
+          },
+          {
+            "imageId": "04b6e948-e046-4e11-9846-a6de3b83a2ac",
+            "count": 36,
+            "state": "normal",
+            "displayName": "Issue 179 图片 6.png",
+            "shortId": "04b6e948",
+            "managementUrl": "/library?image=04b6e948-e046-4e11-9846-a6de3b83a2ac",
+            "thumbnailUrl": "/i/04b6e948-e046-4e11-9846-a6de3b83a2ac?type=thumbnail"
+          },
+          {
+            "imageId": "8baee6cb-619c-41f1-ab0e-8272933c343c",
+            "count": 30,
+            "state": "normal",
+            "displayName": "Issue 179 图片 7.png",
+            "shortId": "8baee6cb",
+            "managementUrl": "/library?image=8baee6cb-619c-41f1-ab0e-8272933c343c",
+            "thumbnailUrl": "/i/8baee6cb-619c-41f1-ab0e-8272933c343c?type=thumbnail"
+          },
+          {
+            "imageId": "29ca338a-ec73-4fbf-a9d2-75a6baeb5a5f",
+            "count": 24,
+            "state": "normal",
+            "displayName": "Issue 179 图片 8.png",
+            "shortId": "29ca338a",
+            "managementUrl": "/library?image=29ca338a-ec73-4fbf-a9d2-75a6baeb5a5f",
+            "thumbnailUrl": "/i/29ca338a-ec73-4fbf-a9d2-75a6baeb5a5f?type=thumbnail"
+          },
+          {
+            "imageId": "0d566567-33d0-4e65-8dc0-c64b7b530fc6",
+            "count": 18,
+            "state": "normal",
+            "displayName": "Issue 179 图片 9.png",
+            "shortId": "0d566567",
+            "managementUrl": "/library?image=0d566567-33d0-4e65-8dc0-c64b7b530fc6",
+            "thumbnailUrl": "/i/0d566567-33d0-4e65-8dc0-c64b7b530fc6?type=thumbnail"
+          },
+          {
+            "imageId": "498e4889-ad34-466c-9496-4fe92452b0d4",
+            "count": 12,
+            "state": "normal",
+            "displayName": "Issue 179 图片 10.png",
+            "shortId": "498e4889",
+            "managementUrl": "/library?image=498e4889-ad34-466c-9496-4fe92452b0d4",
+            "thumbnailUrl": "/i/498e4889-ad34-466c-9496-4fe92452b0d4?type=thumbnail"
+          }
+        ]
+      },
+      "finishedAt": 1791610894610
+    }
+  ],
+  "fixtureRestored": true,
+  "finishedAt": "2026-10-10T05:41:49.198Z"
+}

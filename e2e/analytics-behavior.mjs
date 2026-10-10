@@ -625,6 +625,53 @@ export async function analyticsBehavior(page, config, tools, fixture, report) {
     '受理永久删除后仍占空间',
   ])
     assert.ok(!usagePresentation.text.includes(removed));
+  for (const theme of ['light', 'dark']) {
+    for (const width of [360, 390, 430, 768, 1440]) {
+      report.behaviorStep = `usage-layout-${width}-${theme}`;
+      await page.evaluate(() => {
+        document.querySelector('.shell-content').scrollTop = 0;
+      });
+      await tools.evidence('usage-refinement', width, theme);
+      const layout = await page.evaluate(() => ({
+        rows: [...document.querySelectorAll('[data-storage-id] dl > div')].map(
+          (node) => node.getBoundingClientRect().height,
+        ),
+        cards: [...document.querySelectorAll('[data-storage-id]')].map(
+          (node) => getComputedStyle(node.parentElement).borderRadius,
+        ),
+        states: [...document.querySelectorAll('h2 [data-slot="chip"]')].map(
+          (node) => ({
+            text: node.textContent,
+            background: getComputedStyle(node).backgroundColor,
+            color: getComputedStyle(node).color,
+            interactive: node.matches('button,a,[tabindex]'),
+          }),
+        ),
+      }));
+      assert.ok(layout.rows.every((height) => height >= 52));
+      assert.ok(layout.cards.every((radius) => radius === '20px'));
+      assert.ok(layout.states.every(({ interactive }) => !interactive));
+      assert.notEqual(
+        layout.states.find(({ text }) => text === '已启用').background,
+        layout.states.find(({ text }) => text === '已停用').background,
+      );
+      report.usageLayouts ??= [];
+      report.usageLayouts.push({ width, theme, ...layout });
+      if ([390, 1440].includes(width)) {
+        await page.hover('[data-storage-id] >> nth=-1');
+        await page.mouse.move(width / 2, 300);
+        await page.mouse.wheel(0, 1200, { label: '查看占用卡片末尾' });
+        await page.waitForFunction(() => {
+          const main = document.querySelector('.shell-content');
+          return main.scrollTop + main.clientHeight >= main.scrollHeight - 1;
+        });
+        await tools.evidence('usage-refinement-bottom', width, theme);
+      }
+    }
+    for (const width of [390, 1440]) {
+      await tools.evidence('usage-refinement-short', width, theme, 400);
+    }
+  }
   report.checks.push(
     '7/30/90 URL, trend/versions/popular and keyboard-accessible complete daily rows agree with actual SQLite. Today/cumulative/current usage stay fixed. Permanently deleted images are excluded before the ten-item limit, with the next image filling their place; their accesses remain in cumulative totals and daily trends. Recycled/private/disabled-storage history and full names remain. Four disjoint usage groups and unknown objects never imply a complete total.',
   );

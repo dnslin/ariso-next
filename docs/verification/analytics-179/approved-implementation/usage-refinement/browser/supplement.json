@@ -1,0 +1,105 @@
+{
+  "status": "passed",
+  "origin": "http://ariso-179.localhost:4180",
+  "readOnly": true,
+  "layouts": [
+    {
+      "width": 358,
+      "theme": "light",
+      "filename": "usage-scope-normal-light-390.png",
+      "radius": "12px",
+      "closeWidth": 44,
+      "closeHeight": 44,
+      "bodyScroll": 193
+    },
+    {
+      "width": 480,
+      "theme": "light",
+      "filename": "usage-scope-normal-light-1440.png",
+      "radius": "12px",
+      "closeWidth": 44,
+      "closeHeight": 44,
+      "bodyScroll": 152
+    },
+    {
+      "width": 358,
+      "theme": "dark",
+      "filename": "usage-scope-normal-dark-390.png",
+      "radius": "12px",
+      "closeWidth": 44,
+      "closeHeight": 44,
+      "bodyScroll": 193
+    },
+    {
+      "width": 480,
+      "theme": "dark",
+      "filename": "usage-scope-normal-dark-1440.png",
+      "radius": "12px",
+      "closeWidth": 44,
+      "closeHeight": 44,
+      "bodyScroll": 152
+    }
+  ],
+  "checks": [
+    "390/light: source Enter opens, 44px close pointer and return Enter close and restore source focus",
+    "390/light: 400px body reaches end and return remains visible",
+    "1440/light: source Enter opens, 44px close pointer and return Enter close and restore source focus",
+    "1440/light: 400px body reaches end and return remains visible",
+    "390/dark: source Enter opens, 44px close pointer and return Enter close and restore source focus",
+    "390/dark: 400px body reaches end and return remains visible",
+    "1440/dark: source Enter opens, 44px close pointer and return Enter close and restore source focus",
+    "1440/dark: 400px body reaches end and return remains visible"
+  ],
+  "hover": [
+    {
+      "width": 390,
+      "theme": "light",
+      "before": {
+        "background": "rgb(227, 246, 245)",
+        "transform": "matrix(1, 0, 0, 1, 0, 0)"
+      },
+      "hover": {
+        "background": "oklab(0.931631 -0.017965 -0.00651268)",
+        "transform": "matrix(1, 0, 0, 1, 0, 0)"
+      }
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "before": {
+        "background": "rgb(227, 246, 245)",
+        "transform": "matrix(1, 0, 0, 1, 0, 0)"
+      },
+      "hover": {
+        "background": "oklab(0.931631 -0.017965 -0.00651268)",
+        "transform": "matrix(1, 0, 0, 1, 0, 0)"
+      }
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "before": {
+        "background": "rgb(37, 61, 64)",
+        "transform": "matrix(1, 0, 0, 1, 0, 0)"
+      },
+      "hover": {
+        "background": "oklab(0.366471 -0.0258879 -0.0129526)",
+        "transform": "matrix(1, 0, 0, 1, 0, 0)"
+      }
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "before": {
+        "background": "rgb(37, 61, 64)",
+        "transform": "matrix(1, 0, 0, 1, 0, 0)"
+      },
+      "hover": {
+        "background": "oklab(0.366471 -0.0258879 -0.0129526)",
+        "transform": "matrix(1, 0, 0, 1, 0, 0)"
+      }
+    }
+  ],
+  "themeRestored": true,
+  "finishedAt": "2026-10-10T05:40:33.459Z"
+}

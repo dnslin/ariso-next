@@ -30,16 +30,28 @@
 
 文档检查`node docs/tasks/check.mjs`实际退出0，120任务/298需求；全量`pnpm run format:check`退出0，[输出](./checks/format.txt)；首次暂存diff检查发现归档日志的终端回车/尾随空格及末尾空行；仅规范化日志空白，不删除诊断内容，随后`git diff --cached --check`退出0。本轮UI展示未改变服务端；此前集成结果与截断上传ECONNRESET边界继续见上级记录，不机械重复完整集成或未变化套件，不记本轮全量通过。
 
-## 浏览器与设计边界
+## 恢复后的浏览器验证与独立评审
 
-先前恢复Ego时实际返回任务已结束/未分配的硬停止；按本机`/Users/dnslin/.agents/skills/ego-browser/SKILL.md`“Stop when the user takes control or the space is inactive or unassigned. Do not retry or route around the stop.”停止。用户本轮批准实施未另行明确恢复浏览器，因此未claim/retry、未换空间/浏览器。恢复所需明确指令为“继续浏览器检查”，之后沿TaskSpace2按返回指示claim，使用隔离测试数据。
+此前Ego返回任务已结束/未分配时按技能停止，该阶段未执行项如实保留。用户随后明确指示“继续浏览器检查”，本轮实际claim同一TaskSpace2并成功恢复，采用新增p2运行隔离检查，保留用户原p1页面。完成后`task.finish({keep:['p1']})`实际成功，测试页关闭；预览服务继续运行。
 
-本轮尚无新产品截图：1440桌面、360/390/430/768手机/平板、浅深色、390/1440×400短视口、说明弹窗键盘/焦点/返回和hover均保持未验证。此前输入的截图与通过记录不能代替此次复验；真实页面独立设计复审与人工验收未完成，PR保持草稿。
+环境仍为Node24.18.1、pnpm11.19.0、现有Ego Lite。实际执行：
 
-独立[代码评审](./review-code.md)Approve，无未关闭必修项；构建退出状态及NFT诊断路径已由评审者复核。Figma已就地更新六个占用/说明节点；独立设计复核发现说明文案及关闭按钮误复用单图样式，修正设计来源后回读，不扩大产品修改。最终节点与截图见[同步记录](./figma/README.md)，[独立设计审查](./review-design.md)结论为Figma/源代码侧通过，无剩余同步阻断项。真实产品截图仍缺，不能以Figma截图替代。
+```sh
+EGO_TASK_SPACE=2 EGO_PAGE_LABEL=p2 BROWSER_REPORT_DIR=test-results/analytics-179-usage-refinement-final node scripts/verify-browser.mjs --suite analytics --only behavior
+```
+
+最终退出0，[运行器报告](./browser/runner.json)和[行为报告](./browser/analytics.json)均passed：29个布局，browserErrors=[]，fixtureRestored=true，temporaryDirectoryRemoved=true。实际临时服务59035使用独立账号、数据库和对象，未修改人工预览数据。新增矩阵在默认behavior调用链内，覆盖360/390/430/768/1440五宽度×浅深色、两端末尾及400px短视口；实测12行均52px、三卡圆角20px、启停Chip非交互且背景不同。保留真实API对照、完整/未知/零占用、刷新、键盘图表和说明焦点断言。[日志](./browser/analytics.log)及29张真实PNG同目录。
+
+[首轮](./browser/first-pass/runner.json)也通过；代码审查发现按前两标签比较颜色依赖排序，已改为按“已启用/已停用”查找，最终轮真实排序为启用/启用/停用仍通过。该改动提高新增断言有效性，未修改产品输入、运行器分发或旧断言。
+
+另在4180人工预览仅只读补查390×844与1440×1080、浅深色说明弹窗；[实际脚本](./browser/supplement.mjs)、[报告](./browser/supplement.json)与12张PNG保留。四组正常高度布局、八条操作检查通过：Enter打开、44px关闭按钮点击、返回按钮Enter、源焦点恢复、400px高正文滚至末端且返回可见；hover背景和transform实际记录。报告layouts.width为弹窗宽358/480，视口由文件名390/1440标识。成功路径恢复原主题，themeRestored=true；不将只读补查写作新增默认用例或独立控制台错误检查。
+
+本轮仅增加浏览器测试与证据，产品代码未变化，沿用上节实际单元、类型和构建结果，不机械重复。受影响E2E静态检查、格式、文档链接与暂存差异检查另见[收口检查](./checks/browser-closeout.json)。上述定向通过不覆盖历史全量集成1项截断上传失败或默认浏览器14项失败，不能改写为全量全绿。
+
+独立[产品代码审查](./review-code.md)及[浏览器测试审查](./review-browser-code.md)Approve，无本轮未关闭必修项。Figma六节点此前已同步、回读及修正说明文案/关闭按钮，见[同步记录](./figma/README.md)。本轮[真实页面独立设计对照](./review-browser-design.md)使用同视口截图复核整页公共区域、业务卡片、标签、组成条与弹窗；最终结论见该报告。方案批准与最终人工验收分开，PR保持草稿。
 
 ## 人工预览
 
-[当前存储占用](http://ariso-179.localhost:4180/analytics?days=7&view=usage)，同一独立账号/密码仅私有对话提供。已用本轮standalone更新并重启，登录页HTTP200；数据未重置，未跑自动化种子。该HTTP结果不证明客户端展示/布局。4181旧原型、4182局部原型及4180产品继续保留。
+[当前存储占用](http://ariso-179.localhost:4180/analytics?days=7&view=usage)，同一独立账号/密码仅私有对话提供。已用本轮standalone更新并重启，登录页HTTP200；数据未重置，未跑自动化种子。浏览器展示与布局结果见上节隔离检查及只读补查。4181旧原型、4182局部原型及4180产品继续保留。
 
 检查启停标签、待核对标签与组成条差别、四类占用、占用说明的打开/关闭和手机换行。提交前最终扫描私有预览账号/密码两字段，43个暂存文件0命中；凭证不进入提交或PR。最终人工验收未完成。分支codex/issue-179-analytics-ui，现有草稿PR273；不合并、关闭Issue、发布、部署或清理。
