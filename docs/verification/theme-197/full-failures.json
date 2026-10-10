@@ -1,0 +1,56 @@
+{
+  "startedAt": "2026-10-10T09:17:31.296Z",
+  "finishedAt": "2026-10-10T10:08:32.837Z",
+  "stageCounts": {
+    "passed": 31,
+    "failed": 9
+  },
+  "branding": {
+    "status": "failed",
+    "detail": "Login returned /dashboard while unchanged e2e/branding.mjs expects /upload."
+  },
+  "reports": {
+    "tokens-1440": {
+      "status": "failed",
+      "stage": "session-expiry",
+      "error": "Error: page.waitForFunction timed out after 10000ms on page p1; last URL was \"http://ariso-51729.localhost:51729/settings/api\"; last title was \"Ariso\".\n    at waitForFunctionTimeoutError (file:////[eval1]:19235:12)\n    at file:////[eval1]:18564:19\n    at async file:////[eval1]:16691:28"
+    },
+    "oauth-1440-enabled": {
+      "status": "failed",
+      "stage": "closed-unlink-unknown-not-sent",
+      "error": "Error: page.waitForFunction timed out after 10000ms on page p1; last URL was \"http://ariso-51729.localhost:51729/settings/account\"; last title was \"Ariso\".\n    at waitForFunctionTimeoutError (file:////[eval1]:19235:12)\n    at file:////[eval1]:18564:19\n    at async file:////[eval1]:16691:28"
+    },
+    "processing": {
+      "status": "failed",
+      "stage": "settings",
+      "error": "ElementResolutionError: page.click timed out after 3000ms: page.click failed: element is not connected\n    at #retryElementAction (file:////[eval1]:18884:27)\n    at async file:////[eval1]:18968:29\n    at async file:////[eval1]:16691:28"
+    },
+    "storage-admin": {
+      "status": "failed",
+      "stage": null,
+      "error": "Error: page.waitForSelector timed out after 10000ms: [role=\"alert\"]\n    at waitForSelectorInPage (file:////[eval1]:16159:11)\n    at async file:////[eval1]:16691:28"
+    },
+    "library": {
+      "status": "failed",
+      "stage": null,
+      "error": "Error: Inspected target navigated or closed\n    at handleMessage (file:////[eval1]:8940:27)\n    at file:////[eval1]:8099:47\n    at guardNativeCallback (file:////[eval1]:8087:9)\n    at dispatchCdpMessage (file:////[eval1]:8099:5)"
+    },
+    "library-batch": {
+      "status": "failed",
+      "stage": null,
+      "error": "Error: Inspected target navigated or closed\n    at handleMessage (file:////[eval1]:8940:27)\n    at file:////[eval1]:8099:47\n    at guardNativeCallback (file:////[eval1]:8087:9)\n    at dispatchCdpMessage (file:////[eval1]:8099:5)"
+    },
+    "library-reprocess": {
+      "status": "failed",
+      "stage": null,
+      "error": "Error: page.waitForFunction timed out after 30000ms on page p1; last URL was \"http://ariso-51729.localhost:51729/library?q=issue186-&pageSize=20\"; last title was \"Ariso\".\n    at waitForFunctionTimeoutError (file:////[eval1]:19235:12)\n    at file:////[eval1]:18564:19\n    at async file:////[eval1]:16691:28"
+    },
+    "library-copy": {
+      "status": "failed",
+      "stage": "cross-page-native-copy",
+      "error": "Error: The user has taken control of this task space, so browser commands are paused.\nThis is a hard stop, not an obstacle to route around — do not retry and do not take control back on your own.\nWait until the user explicitly asks you to continue, then take control back and resume:\n  const task = await takeOverTaskSpace(spaceId)\n\nOffer the user choices like \"Continue\" or \"Finish task\" if your harness supports it; otherwise tell them: \"You now control this task space. Reply 'continue' when ready and I will resume.\"\n    at buildEgoError (file:////[eval1]:445:19)\n    at stopForUserControl (file:////[eval1]:8904:28)\n    at probeUserControlReason (file:////[eval1]:8882:13)"
+    }
+  },
+  "themeStage": "not executed before user-control stop",
+  "existingRunnerRecovery": "Attempted browser-failure-state after library-copy user-control failure; same user-control pause rejected it. No further browser commands issued by implementation agent."
+}

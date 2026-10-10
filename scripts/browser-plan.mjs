@@ -14,6 +14,9 @@ const suites = {
       ['albums', 'albums'],
       ['album-cover', 'album-cover'],
       ['tags', 'tags'],
+      // Tags cleanup leaves the empty state needed by theme navigation checks.
+      // Later upload scenarios create their own real tags.
+      ['theme', 'theme'],
       ['upload-settings', 'upload-settings'],
       ['upload', 'upload'],
       ['upload-polling', 'upload-polling'],
@@ -25,7 +28,6 @@ const suites = {
       ['site-general', 'site-general'],
       ['site-branding', 'site-branding'],
       ['analytics', 'analytics'],
-
       ['password-reset', 'password-reset'],
       ['smtp', 'smtp'],
     ],
@@ -68,6 +70,11 @@ const suites = {
     ],
     stages: [['analytics', 'analytics']],
     config: (only) => ({ analyticsPhase: only }),
+  },
+  theme: {
+    only: ['representative', 'behavior', 'consumers'],
+    stages: [['theme', 'theme']],
+    config: (only) => ({ themePhase: only }),
   },
   account: { stages: [['account', 'account']] },
   'identity-session': {

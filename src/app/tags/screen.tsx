@@ -202,7 +202,7 @@ export function TagsScreen(props: {
               {error ? '暂时无法读取标签列表。' : '图片数量不含回收站。'}
             </p>
           </div>
-          {!empty && !error ? (
+          {data && !empty && !error ? (
             <Button
               className="h-11 w-36 shrink-0 gap-1 rounded-lg font-normal xl:h-9"
               onPress={() => openAction({ kind: 'create' })}

@@ -691,12 +691,14 @@ Issue #194 已按用户批准的第二版紧凑关联行实施真实基本设置
 - 直接前置：`T-UI-01`、`DG-THEME`
 - 验收条件：默认system；light/dark/system只存浏览器，SQLite无主题字段。显式主题不被系统切换覆盖，刷新/跨标签页符合库行为；挂载前不产生选择器水合错误，照片不反色。所有已实现界面与后续界面按同一语义颜色接入，最终全站矩阵归T-QA-02。
 - 验证方法：真实浏览器切系统颜色、三偏好、刷新/跨页/跨标签、服务端首屏及DB检查；覆盖图表/错误禁用/照片叠字与360/430/768px代表，记录必要HeroUI样式差异。
-- 界面：站点通用主题入口与 /settings/general；next-themes localStorage，无站点PATCH。桌面[472:4538](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=472-4538)、手机[472:9570](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=472-9570)、桌面状态[472:4254](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=472-4254)、手机状态[472:9458](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=472-9458)。HeroUI：[RadioGroup](https://heroui.com/en/docs/react/components/radio-group)、[Select](https://heroui.com/en/docs/react/components/select)、[Button](https://heroui.com/en/docs/react/components/button)。深色图库/手机代表 [530:14568](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=530-14568) / [530:14911](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=530-14911)；DG-THEME核对DES-05/RG-07，不凭设置页一图关闭全站深色；响应式及错误/空/加载/禁用、键盘、触摸均按本文公共要求。
+- 界面：用户于2026-10-10审阅局部原型后批准仅保留后台右上角三态图标：桌面60px顶行，手机Menu左侧8px；账号、前台和基本设置不显示重复入口。next-themes localStorage，无站点PATCH。公共图标三态[1065:19460](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1065-19460)、桌面顶栏[1065:19461](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1065-19461)、手机页眉[1066:35730](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1066-35730)、获批规范[1065:19467](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1065-19467)。工作台[451:3748](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=451-3748)/[451:8551](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=451-8551)及深色设置[472:4254](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=472-4254)/[472:9458](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=472-9458)为本轮已同步代表；旧主题弹窗472:4538/9570已标记废弃，不能作为当前交互依据。HeroUI：[Button](https://heroui.com/en/docs/react/components/button)、[Tooltip](https://heroui.com/en/docs/react/components/tooltip)。深色图库/手机代表530:14568/14911仍只借配色；DG-THEME核对DES-05/RG-07，不凭单页关闭全站深色；响应式、状态及人工验收见[统一证据](../verification/theme-197/README.md)。
 - 实施步骤：
-  - [ ] 1. 复核现有 next-themes 并补设置入口：三模式只存浏览器。
-  - [ ] 2. 跨页/标签/系统切换回归：无水合错误，照片不反色。
+  - [x] 1. 复核现有 next-themes 并补后台图标入口：三模式只存浏览器。
+  - [x] 2. 跨页/标签/系统切换回归：无水合错误，照片不反色。
 
 #### DG-THEME 对 T-SITE-05 的核对结论
+
+2026-10-10，#197 已按最新 main 实施生产主题入口与浏览器三偏好，#57/#139 原生前置均已回读为 CLOSED。局部浅色错误正文原型已获用户批准并同步两端 Figma；[实施、验证与独立评审](../verification/theme-197/README.md)分别记录实际状态。主题真实行为及恢复后的代表/消费者补验通过，独立代码和本次范围设计评审通过；用户随后明确人工验收通过并要求双角度代码评审，结果继续维护在统一证据。原默认全量失败/停止记录保留；DES-05/RG-07与T-QA-02保持开放。以下2026-10-09结论保留为实施前依据。
 
 2026-10-09，Issue #139 的纯文档核对；[统一证据](./evidence/DG-THEME/README.md)保留实时设计、源码及库类型依据。需求仍为 `R-21.3-01`，不改写 PRD 或 site 数据契约。GitHub 原生依赖核对：#139 无前置，仅阻塞本任务 #197；另一前置 #57/T-UI-01 已关闭。#139 本轮尚未合并/关闭，不能将本条当作 #197 已解锁或已完成。
 

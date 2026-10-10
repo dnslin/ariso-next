@@ -17,7 +17,7 @@
 .light {
   --background: #fffffe;
   --foreground: #272343;
-  --muted: #41445b;
+  --muted: oklch(0.326 0.042 272.656);
   --accent: #ffd807;
   --accent-foreground: #272343;
   --surface: #fffffe;
@@ -25,8 +25,9 @@
   --default: #e3f6f5;
   --default-foreground: #272343;
   --border: #bae8e8;
-  --focus: #287e79;
+  --focus: #386176;
   --danger: oklch(0.6 0.2 25);
+  --ariso-error-text: oklch(0.58 0.2 25);
   --field-background: #fffffe;
   --field-foreground: #272343;
   --field-border: #bae8e8;
@@ -48,6 +49,7 @@
   --border: #607d85;
   --focus: #82dbd3;
   --danger: #ff858a;
+  --ariso-error-text: #ff858a;
   --field-background: #22252f;
   --field-foreground: #f4f1f8;
   --field-border: #607d85;
@@ -63,6 +65,10 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans);
   line-height: 1.5;
+}
+.text-danger:not(button):not(a),
+.field-error {
+  color: var(--ariso-error-text);
 }
 p {
   overflow-wrap: anywhere;
@@ -307,6 +313,14 @@ input {
 .shell-mobile-header {
   display: none;
 }
+.shell-toolbar {
+  display: none;
+  flex: none;
+  min-height: 60px;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 8px 32px;
+}
 .shell-workspace {
   flex: 1;
   min-height: 0;
@@ -348,6 +362,12 @@ input {
 @media (width >= 1200px) {
   .admin-shell {
     flex-direction: row;
+  }
+  .shell-toolbar {
+    display: flex;
+  }
+  .shell-content {
+    padding-top: 24px;
   }
   .shell-navigation {
     width: 232px;

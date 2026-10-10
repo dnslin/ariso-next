@@ -16,6 +16,7 @@ import { Modal } from '@heroui/react/modal';
 import { Tooltip } from '@heroui/react/tooltip';
 import { ChevronsLeft, ChevronsRight, Menu, X } from 'lucide-react';
 import { SiteLogo } from '../site/logo';
+import { ThemeSelector } from '../site/theme-selector';
 
 export type ShellNavigationItem = {
   href: string;
@@ -168,45 +169,55 @@ export function AdminShell({
         <Link href="/" className="shell-brand" aria-label={`${name} 首页`}>
           {brand}
         </Link>
-        <Modal isOpen={open} onOpenChange={setOpen}>
-          <Button
-            isIconOnly
-            variant="ghost"
-            aria-label="菜单"
-            className="size-11 shrink-0 rounded-lg p-0 [--button-bg-hover:transparent]"
-          >
-            <Menu size={20} aria-hidden />
-          </Button>
-          <Modal.Backdrop>
-            <Modal.Container size="full">
-              <Modal.Dialog aria-label="导航菜单" className="shell-menu">
-                <Modal.Header className="shell-menu-header">
-                  <Modal.Heading className="shell-brand">{brand}</Modal.Heading>
-                  <Button
-                    slot="close"
-                    isIconOnly
-                    variant="ghost"
-                    aria-label="关闭"
-                    className="size-11 shrink-0 rounded-lg p-0 [--button-bg-hover:transparent]"
-                  >
-                    <X size={20} aria-hidden />
-                  </Button>
-                </Modal.Header>
-                {description ? (
-                  <p className="shell-description">{description}</p>
-                ) : null}
-                <Modal.Body className="shell-menu-body">
-                  <nav ref={menuRef} aria-label="后台导航">
-                    {links(() => setOpen(false))}
-                  </nav>
-                </Modal.Body>
-                <Modal.Footer className="shell-menu-user">{user}</Modal.Footer>
-              </Modal.Dialog>
-            </Modal.Container>
-          </Modal.Backdrop>
-        </Modal>
+        <div className="flex shrink-0 items-center gap-2">
+          <ThemeSelector />
+          <Modal isOpen={open} onOpenChange={setOpen}>
+            <Button
+              isIconOnly
+              variant="ghost"
+              aria-label="菜单"
+              className="size-11 shrink-0 rounded-lg p-0 [--button-bg-hover:transparent]"
+            >
+              <Menu size={20} aria-hidden />
+            </Button>
+            <Modal.Backdrop>
+              <Modal.Container size="full">
+                <Modal.Dialog aria-label="导航菜单" className="shell-menu">
+                  <Modal.Header className="shell-menu-header">
+                    <Modal.Heading className="shell-brand">
+                      {brand}
+                    </Modal.Heading>
+                    <Button
+                      slot="close"
+                      isIconOnly
+                      variant="ghost"
+                      aria-label="关闭"
+                      className="size-11 shrink-0 rounded-lg p-0 [--button-bg-hover:transparent]"
+                    >
+                      <X size={20} aria-hidden />
+                    </Button>
+                  </Modal.Header>
+                  {description ? (
+                    <p className="shell-description">{description}</p>
+                  ) : null}
+                  <Modal.Body className="shell-menu-body">
+                    <nav ref={menuRef} aria-label="后台导航">
+                      {links(() => setOpen(false))}
+                    </nav>
+                  </Modal.Body>
+                  <Modal.Footer className="shell-menu-user">
+                    {user}
+                  </Modal.Footer>
+                </Modal.Dialog>
+              </Modal.Container>
+            </Modal.Backdrop>
+          </Modal>
+        </div>
       </header>
       <div className="shell-workspace">
+        <header className="shell-toolbar">
+          <ThemeSelector />
+        </header>
         <main
           ref={mainRef}
           id="main-content"

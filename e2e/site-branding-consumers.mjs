@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { identitySql } from './identity-session.mjs';
+import { expectThemeEntries, chooseTheme } from './theme-helpers.mjs';
 import { control } from './site-branding-helpers.mjs';
 import { resizeViewport, setTheme } from './browser-geometry.mjs';
 
@@ -120,6 +121,7 @@ async function verifyOwnerShellBranding(page, config, tools, expected, report) {
         await page.waitForURL(
           `${config.origin}${path === '/admin' ? '/dashboard' : path}`,
         );
+        await expectThemeEntries(page, true);
         if (width === 390) {
           await page.waitForFunction((url) => {
             const logo = document.querySelector(
@@ -178,6 +180,44 @@ async function verifyOwnerShellBranding(page, config, tools, expected, report) {
           logoUrl: expected.logoUrl,
         });
         if (path === '/upload') {
+          if (width === 390) {
+            await page.click('button[aria-label="关闭"]');
+            await page.waitForSelector(
+              '[role="dialog"][aria-label="导航菜单"]',
+              {
+                state: 'hidden',
+              },
+            );
+          }
+          await chooseTheme(page, 'dark', 'dark', true);
+          await page.waitForFunction(
+            ({ width, url }) => {
+              const logo = document.querySelector(
+                `${width === 390 ? '.shell-mobile-header' : '.shell-navigation'} [data-testid="site-logo"] img`,
+              );
+              return (
+                logo?.getAttribute('src') === url &&
+                logo.complete &&
+                logo.naturalWidth > 0
+              );
+            },
+            { width, url: expected.logoUrl },
+          );
+          const combined = `site-branding-theme-dark-${width}.png`;
+          await page.screenshot({ path: join(config.output, combined) });
+          report.layouts.push({
+            name: 'brand-theme-combined',
+            width,
+            theme: 'dark',
+            screenshot: combined,
+          });
+          await chooseTheme(page, 'light', 'light', true);
+          if (width === 390) {
+            await page.click('button[aria-label="菜单"]');
+            await page.waitForSelector(
+              '[role="dialog"][aria-label="导航菜单"]',
+            );
+          }
           const screenshot = `site-branding-shell-${width === 390 ? 'menu' : 'expanded'}-${width}.png`;
           await page.screenshot({ path: join(config.output, screenshot) });
           report.layouts.push({

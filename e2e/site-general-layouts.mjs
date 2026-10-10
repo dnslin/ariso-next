@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { field } from './site-general-helpers.mjs';
+import { expectThemeEntries } from './theme-helpers.mjs';
 import { resizeViewport } from './browser-geometry.mjs';
 
 export async function verifySiteGeneralLayouts(page, tools, report) {
@@ -64,8 +65,10 @@ export async function verifySiteGeneralLayouts(page, tools, report) {
   assert.ok(structure.related.includes('/settings/storage'));
   assert.ok(structure.related.includes('/settings/processing'));
   assert.ok(structure.related.includes('/settings/general/branding'));
-  for (const text of ['Logo 与 Favicon', '上传限制', '界面主题'])
+  for (const text of ['Logo 与 Favicon', '上传限制'])
     assert.ok(structure.placeholders.includes(text));
+  assert.equal(structure.placeholders.includes('界面主题'), false);
+  await expectThemeEntries(page, true);
   report.structure = structure;
   await page.focus(field('name'));
   await page.keyboard.press('Tab');
@@ -104,7 +107,7 @@ export async function verifySiteGeneralLayouts(page, tools, report) {
     const visible =
       bounds.top >= main.top &&
       bounds.bottom <= bottom &&
-      rows.length === 4 &&
+      rows.length === 3 &&
       rows.every(
         ({ bounds }) => bounds.top >= main.top && bounds.bottom <= bottom,
       );
@@ -140,8 +143,8 @@ export async function verifySiteGeneralLayouts(page, tools, report) {
     const detail = await page.evaluate(relatedFrame);
     assert.equal(
       detail.rows.length,
-      4,
-      'All four real related settings rows are visible',
+      3,
+      'All three real related settings rows are visible',
     );
     assert.ok(
       detail.save.top >= detail.footer.top &&
@@ -150,6 +153,7 @@ export async function verifySiteGeneralLayouts(page, tools, report) {
     );
     await tools.evidence('related-settings', width, 'light');
     report.layouts.at(-1).relatedSettings = detail;
+    await expectThemeEntries(page, true);
   }
   report.checks.push(
     'Desktop/mobile/light/dark/short viewport have no horizontal overflow and all actual targets meet the shared size boundary; four external labels, public shell, real related entries and sequential keyboard fields are verified.',
