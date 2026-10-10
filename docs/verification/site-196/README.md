@@ -46,3 +46,9 @@
 | PR                                     | 本轮保留草稿，不具备合并条件 |
 
 Release 镜像与双架构验证按现有发布流程，不为本任务建立 Release 或部署。
+
+## 提交与远端状态
+
+原型与证据已提交并推送到 `codex/issue-196-brand-settings`，初次提交 `f4567cdd06446860094f5bdbfdcbc20e0ec7735d`，PR为 [#277](https://github.com/dnslin/ariso-next/pull/277)。使用 `gh pr view 277 --json number,url,state,isDraft,headRefName,headRefOid,baseRefName,statusCheckRollup,mergeStateStatus` 核对：OPEN、Draft、base为main、远端head与初次提交一致、`statusCheckRollup=[]`。没有远端检查，不记作CI通过，不等待不存在的日常PR工作流。后续仅补写本段状态记录。
+
+预览仍监听 `127.0.0.1:4196`，没有停止或清理工作区/分支。审批请求已发出，尚未获得答复；按任务卡与用户第4节停在设计决定，不继续修改依赖该方案的产品代码。原型无需账号密码，打开页面或刷新只重置内存演示。最终产品验收所需独立账号与真实数据将在实施后准备，当前没有伪造凭证或真实持久化结论。
