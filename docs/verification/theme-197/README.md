@@ -63,11 +63,36 @@ macOS arm64，Node v24.18.1，pnpm 11.19.0；已有 ImageMagick 7、ExifTool、O
 
 theme及图库复制后的其余阶段均未在原默认入口执行，原全量未重跑，不能用后续定向通过替代。恢复后的主题代表/消费者补验和设计复核已完成；人工验收未完成。独立产品预览保持运行。
 
+## 人工反馈：切换标签页闪烁
+
+用户反馈从侧栏切换标签页时闪烁，右上操作短暂出现后消失。实际从任务独立预览的基本设置通过侧栏进入标签页，取得 [失败过程](./navigation/before-trace.json) 与 [加载截图](./navigation/empty-pending-before.png)：后台外壳约312ms不存在，之后右上“新建标签”在真实零标签响应前短暂显示。公共外壳与公共外观入口始终未出现。对过程执行后台外壳持续可见的断言实际退出1，先保留失败再修复。
+
+仅移除 `TagsPage` 包住整屏且没有 fallback 的 Suspense，并让标题区新建操作等待真实列表数据。保留既有加载、空态、错误、搜索、底栏和非空列表创建行为。未改变设计方案、接口或公共组件。原搜索控件在查询切换时保留挂载，避免逐字输入丢焦点。依据为标签列表桌面 [30:661](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=30-661)、手机 [101:1295](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=101-1295) 与空态 [418:3319](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=418-3319)/[418:7985](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=418-7985)，实际读取截图并按当前交接覆盖旧公共布局。
+
+新增回归由 `theme-behavior.mjs` 无条件调用，完整 theme 默认包含该场景。默认 full 中 theme 调整为紧接 tags 清理之后、早于会创建标签的上传场景；其余阶段和 suite/only 保持原入口。调整前新顺序断言实际失败，调整后运行器计划、CLI、阶段和运行器4文件379项通过。默认全量没有重跑，此项仅证明调用与参数组合检查通过。
+
+定向命令为 `EGO_TASK_SPACE=6 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/theme-197/navigation-fixed-2 node scripts/verify-browser.mjs --suite theme --only behavior`，环境仍为Node24.18.1、pnpm11.19.0。首轮手机定位命中隐藏桌面TR超时，保留 [失败报告](./navigation/visible-row-locator-failure.json)；两处等待改为要求同一真实标签ID至少有一个实际可见节点，不改产品、不放宽断言。最新 [主题报告](./navigation/theme.json) 与 [运行器报告](./navigation/runner.json) 均通过：1440×1080与390×844、浅/深、正常动画下共28段导航/搜索过程外壳持续可见，待加载/失败/零标签不误现右上创建操作，主题不跳变，16次逐字符输入保留值和焦点；清空、Tab、真实GET丢失与重新加载均通过。夹具只离线按自身标签ID删除，`browserErrors=[]`。12张真实截图及逐项独立设计结论见 [设计评审](./design-review.md#人工反馈切换标签页闪烁)。
+
+本次受影响检查的实际命令（仓库根目录，结果如下）：
+
+```sh
+pnpm exec eslint src/app/tags/page.tsx src/app/tags/screen.tsx --max-warnings=0
+pnpm exec eslint e2e/theme-behavior.mjs e2e/theme-navigation.mjs --max-warnings=0
+pnpm exec eslint scripts/browser-plan.mjs tests/unit/runtime/browser-plan.test.ts e2e/theme-navigation.mjs --max-warnings=0
+pnpm exec vitest run --project unit tests/unit/runtime/browser-plan.test.ts tests/unit/runtime/browser-business-cli.test.ts tests/unit/runtime/browser-stages.test.ts tests/unit/runtime/browser-runner.test.ts
+pnpm exec vitest run --project unit tests/unit/runtime/browser-plan.test.ts
+pnpm run typecheck
+pnpm run build
+node docs/tasks/check.mjs
+```
+
+受影响产品与脚本静态检查通过；`pnpm run build` 通过并刷新独立预览。补入计划断言后类型检查发现回调参数缺类型，补充二元组类型后再次 `pnpm run typecheck` 通过，计划测试140项定向复验通过；没有产品输入再变化，不重复构建或已通过的浏览器阶段。独立代码复审通过。此次补修保留原默认全量限制，人工验收仍未完成。
+
 ## 人工验收与完成状态
 
-产品独立预览为 `http://127.0.0.1:61498`，已更新为最新实线焦点构建，保留本任务独立数据目录与测试账号。账号已实际登录成功，浏览器停在 `/settings/general`；Ego任务成功finish一次，仅保留必要p1预览页。凭证仅在本地忽略文件及私密对话提供，不提交代码、PR或公开日志。预览保持运行直到用户明确要求停止或清理。
+产品独立预览为 `http://127.0.0.1:61498`，已更新为包含标签导航修复的最新构建，保留本任务独立数据目录与测试账号。账号已实际登录成功，浏览器停在 `/settings/general`；Ego任务成功finish一次，仅保留必要p1预览页。凭证仅在本地忽略文件及私密对话提供，不提交代码、PR或公开日志。预览保持运行直到用户明确要求停止或清理。
 
-验收基本设置的界面主题、公共页面右上外观入口；切换浅/深/系统，检查勾选、操作系统切换、刷新、跨页及同origin跨标签；编辑未保存表单后切换，检查草稿、位置与焦点。桌面1440×1080、手机390×844代表设计，补360/430/768与390×480短视口。照片、图表、错误及禁用状态以最终浏览器报告说明实际覆盖。
+验收基本设置的界面主题、公共页面右上外观入口；从侧栏反复切换基本设置与标签页，观察整页和右上操作；切换浅/深/系统，检查勾选、操作系统切换、刷新、跨页及同origin跨标签；编辑未保存表单后切换，检查草稿、位置与焦点。桌面1440×1080、手机390×844代表设计，补360/430/768与390×480短视口。照片、图表、错误及禁用状态以最终浏览器报告说明实际覆盖。
 
 当前：产品代码完成；本地基础检查通过；主题原行为验证及最新代表/消费者补验通过；独立代码审计和本次范围设计复核通过；人工验收未完成。默认全量失败及未执行项仍保留，PR保持草稿。DES-05/RG-07及T-QA-02未关闭。日常PR不创建Release、发布镜像或部署；远端检查按实际回读记录，不把无检查写成CI通过。
 

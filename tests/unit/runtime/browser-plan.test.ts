@@ -8,6 +8,13 @@ function select(suite: string, only?: string) {
 describe('focused browser execution plans', () => {
   it('runs the real theme suite in full and scopes phase options to theme', () => {
     expect(select('full').stages).toContainEqual(['theme', 'theme']);
+    const stages = select('full').stages.map(
+      ([name]: [string, string]) => name,
+    );
+    expect(stages.indexOf('theme')).toBe(stages.indexOf('tags') + 1);
+    expect(stages.indexOf('theme')).toBeLessThan(
+      stages.indexOf('upload-relations'),
+    );
     expect(select('theme')).toEqual({
       stages: [['theme', 'theme']],
       config: { themePhase: undefined },
@@ -408,6 +415,7 @@ describe('focused browser execution plans', () => {
         ['albums', 'albums'],
         ['album-cover', 'album-cover'],
         ['tags', 'tags'],
+        ['theme', 'theme'],
         ['upload-settings', 'upload-settings'],
         ['upload', 'upload'],
         ['upload-polling', 'upload-polling'],
@@ -418,7 +426,6 @@ describe('focused browser execution plans', () => {
         ['sharing-management', 'sharing-management'],
         ['site-general', 'site-general'],
         ['analytics', 'analytics'],
-        ['theme', 'theme'],
 
         ['password-reset', 'password-reset'],
         ['smtp', 'smtp'],

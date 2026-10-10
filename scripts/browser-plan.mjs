@@ -14,6 +14,9 @@ const suites = {
       ['albums', 'albums'],
       ['album-cover', 'album-cover'],
       ['tags', 'tags'],
+      // Tags cleanup leaves the empty state needed by theme navigation checks.
+      // Later upload scenarios create their own real tags.
+      ['theme', 'theme'],
       ['upload-settings', 'upload-settings'],
       ['upload', 'upload'],
       ['upload-polling', 'upload-polling'],
@@ -24,8 +27,6 @@ const suites = {
       ['sharing-management', 'sharing-management'],
       ['site-general', 'site-general'],
       ['analytics', 'analytics'],
-      ['theme', 'theme'],
-
       ['password-reset', 'password-reset'],
       ['smtp', 'smtp'],
     ],

@@ -42,3 +42,24 @@
 本次 Issue #197 设计复核完成。按整页结构、公共区域、业务布局及控件细节逐层对照后，未发现尚未修复的本次范围阻塞设计差异。关闭常驻填色、设置入口焦点、可见错误正文和手机完整图表证据均已按实际页面处理并复核，结论没有用静态代码或旧截图代替。
 
 用户人工验收尚未完成，不能用本报告、代码审计或浏览器报告代替。T-QA-02 全站业务状态矩阵未关闭；消费者矩阵不覆盖所有无关业务状态，初始化夹具重定向 `/setup`，空安装沿既有 runtime suite 单独覆盖。Figma 播放器及发布容器未由本评审验证。
+
+## 人工反馈：切换标签页闪烁
+
+用户后续报告从侧栏切换标签页闪烁。实施者实际复现后台外壳短暂隐藏，以及右上“新建标签”先出现后被真实空态中央创建替换；此前主题代表状态的设计结论不等于本次切页过程已验证。复现中 `public/publicEntry` 始终为 false，隐藏的是 `admin-shell`，不涉及 PublicShell 或公共外观入口。
+
+本评审独立只读获取并查看 Figma 列表 `30:661/101:1295`、空态 `418:3319/418:7985` 的设计信息与截图，并回读最新 handoff。旧图中的工作空间面包屑、手机文字菜单及空态返回入口、彩色说明、固定创建栏，分别按现行一级页标题、Lucide Menu 图标和共用居中空态规则处理。手机标签行沿 #176 已批准修订，名称独占一行，图片数量与创建日期横向并列。本轮没有新增视觉方案，也不修改 Figma。
+
+实际查看的最终截图如下，共 12 张；按相同视口先核整页和后台共享区域，再核业务控件。
+
+| 视口/主题      | 读取中                                                                | 真实空态                                                          | 真实列表                                                       |
+| -------------- | --------------------------------------------------------------------- | ----------------------------------------------------------------- | -------------------------------------------------------------- |
+| 1440×1080 浅色 | [pending](./navigation/theme-navigation-empty-pending-light-1440.png) | [empty](./navigation/theme-navigation-empty-ready-light-1440.png) | [list](./navigation/theme-navigation-populated-light-1440.png) |
+| 1440×1080 深色 | [pending](./navigation/theme-navigation-empty-pending-dark-1440.png)  | [empty](./navigation/theme-navigation-empty-ready-dark-1440.png)  | [list](./navigation/theme-navigation-populated-dark-1440.png)  |
+| 390×844 浅色   | [pending](./navigation/theme-navigation-empty-pending-light-390.png)  | [empty](./navigation/theme-navigation-empty-ready-light-390.png)  | [list](./navigation/theme-navigation-populated-light-390.png)  |
+| 390×844 深色   | [pending](./navigation/theme-navigation-empty-pending-dark-390.png)   | [empty](./navigation/theme-navigation-empty-ready-dark-390.png)   | [list](./navigation/theme-navigation-populated-dark-390.png)   |
+
+设计结论：本次闪烁修复复核通过，未发现剩余的本轮阻塞设计差异。桌面三态均保留 232px 侧栏、品牌、标签当前项及底部账号；手机保留 64px 品牌与 Menu 图标顶栏。正文沿桌面 32px、手机 16px 内距及统一标题起点。浅深色在后台外壳与业务表面之间保持一致，没有插入公共页面入口。加载显示原搜索、读取状态和固定底栏“数量待确认”，不展示右上创建按钮；真实空态仅在居中图标、标题与说明下提供创建；真实列表在标题右侧提供创建，保留搜索、列表及底栏。手机名称自然换行，图片数和日期并列，行操作及创建按钮位置符合当前 handoff。旧图中的底部空态创建栏未被恢复。
+
+过程证据结论单独来自实施者 [最终定向报告](./navigation/theme.json) 的 `navigation`，本评审未操作浏览器或重复检查。报告 `status=passed`、`browserErrors=[]`，初始真实标签数为 0，`reducedMotion=no-preference`；28 条空态/非空过程记录覆盖进入、返回、重入、重复进入、搜索清除失焦、错误及真实重试。在记录的帧与 DOM 变化中 `admin=true`、`public=false`、`publicEntry=false` 持续成立；加载、错误及真实空态的 `headerCreate=false`，真实非空数据到位后才为 true。两端浅深四组搜索均逐字记录“主→主题→主题导→主题导航”，16 次记录均 `focused=true`。测试自建标签随后离线删除。该证据支持本次切页和错误入口闪现已修复，不将静态截图当作完整过程证据。
+
+用户本轮人工复验仍未完成。此次定向通过不改写前述默认 full 的失败/停止状态，也不关闭 T-QA-02 全站状态矩阵。

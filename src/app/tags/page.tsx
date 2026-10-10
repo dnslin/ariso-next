@@ -1,4 +1,3 @@
-import { Suspense } from 'react';
 import { readSidebarCollapsed } from '../../components/shell/sidebar-preference';
 import { requirePageOwner } from '../../server/identity/owner-page';
 import { requireSiteSettings } from '../../server/site/settings';
@@ -23,15 +22,13 @@ export default async function TagsPage({
   const owner = await requirePageOwner(`/tags${query.size ? `?${query}` : ''}`);
   const settings = requireSiteSettings(getServerRuntime().connection.db);
   return (
-    <Suspense>
-      <TagsScreen
-        name={settings.name}
-        description={settings.description}
-        email={owner.email}
-        ownerName={owner.name}
-        timeZone={settings.timeZone}
-        initialSidebarCollapsed={await readSidebarCollapsed()}
-      />
-    </Suspense>
+    <TagsScreen
+      name={settings.name}
+      description={settings.description}
+      email={owner.email}
+      ownerName={owner.name}
+      timeZone={settings.timeZone}
+      initialSidebarCollapsed={await readSidebarCollapsed()}
+    />
   );
 }

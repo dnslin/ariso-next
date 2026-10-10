@@ -3,6 +3,7 @@ import { identitySql } from './identity-session.mjs';
 import { resizeViewport } from './browser-geometry.mjs';
 import { uploadSettingsTools } from './upload-settings-helpers.mjs';
 import { installBrowserErrors, readBrowserErrors } from './browser-errors.mjs';
+import { verifyThemeNavigation } from './theme-navigation.mjs';
 import {
   settingsTrigger,
   publicTrigger,
@@ -194,4 +195,5 @@ export async function verifyThemeBehavior(task, page, config, report) {
     original,
     'Theme interactions do not mutate site settings or their timestamp',
   );
+  await verifyThemeNavigation(page, config, report);
 }

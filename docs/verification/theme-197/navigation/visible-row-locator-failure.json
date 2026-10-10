@@ -1,0 +1,1089 @@
+{
+  "status": "failed",
+  "taskSpaceId": 6,
+  "origin": "http://ariso-55462.localhost:55462",
+  "phase": "behavior",
+  "checks": [
+    "default system, real UI three preferences, live system changes and explicit preference precedence",
+    "server-rendered preference row is disabled and does not show a guessed selected preference",
+    "theme changes preserve both independent unsaved forms, current route, scroll and trigger focus",
+    "explicit preference survives real reload and navigation from admin to public page",
+    "two real tabs synchronize preferences both ways while system resolves independently in each tab"
+  ],
+  "layouts": [],
+  "browserErrors": [],
+  "limitations": [
+    "Uses the runner disposable production database and owner. Viewport emulation, runtime behavior and screenshots do not replace independent design review or final human acceptance."
+  ],
+  "stage": "behavior",
+  "uploadOperation": {
+    "action": "fill",
+    "field": "queueLimit",
+    "value": "500",
+    "step": "complete"
+  },
+  "navigation": {
+    "precondition": {
+      "origin": "http://ariso-55462.localhost:55462",
+      "initialTagCount": 0,
+      "requiresZeroTags": true,
+      "reducedMotion": "no-preference"
+    },
+    "transitions": [
+      {
+        "width": 1440,
+        "theme": "light",
+        "visit": "enter",
+        "path": "/tags",
+        "fixture": "empty",
+        "states": [
+          {
+            "at": 2620.5,
+            "source": "start",
+            "path": "/settings/general",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": false,
+            "pending": false,
+            "error": false,
+            "theme": "light"
+          },
+          {
+            "at": 2808.8000000715256,
+            "source": "mutation",
+            "path": "/tags",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": false,
+            "pending": true,
+            "error": false,
+            "theme": "light"
+          },
+          {
+            "at": 3882.399999976158,
+            "source": "mutation",
+            "path": "/tags",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": false,
+            "pending": false,
+            "error": false,
+            "theme": "light"
+          }
+        ],
+        "frames": 16,
+        "mutations": 11
+      },
+      {
+        "width": 1440,
+        "theme": "light",
+        "visit": "return",
+        "path": "/settings/general",
+        "fixture": "empty",
+        "states": [
+          {
+            "at": 3985.7000000476837,
+            "source": "start",
+            "path": "/tags",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": false,
+            "pending": false,
+            "error": false,
+            "theme": "light"
+          },
+          {
+            "at": 4092.899999976158,
+            "source": "mutation",
+            "path": "/settings/general",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": false,
+            "pending": false,
+            "error": false,
+            "theme": "light"
+          }
+        ],
+        "frames": 12,
+        "mutations": 10
+      },
+      {
+        "width": 1440,
+        "theme": "light",
+        "visit": "reenter",
+        "path": "/tags",
+        "fixture": "empty",
+        "states": [
+          {
+            "at": 6219.700000047684,
+            "source": "start",
+            "path": "/settings/general",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": false,
+            "pending": false,
+            "error": false,
+            "theme": "light"
+          },
+          {
+            "at": 7294.399999976158,
+            "source": "mutation",
+            "path": "/tags",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": false,
+            "pending": true,
+            "error": false,
+            "theme": "light"
+          },
+          {
+            "at": 7312.800000071526,
+            "source": "mutation",
+            "path": "/tags",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": false,
+            "pending": false,
+            "error": false,
+            "theme": "light"
+          }
+        ],
+        "frames": 3,
+        "mutations": 8
+      },
+      {
+        "width": 1440,
+        "theme": "light",
+        "visit": "repeat",
+        "path": "/tags",
+        "fixture": "empty",
+        "states": [
+          {
+            "at": 8235.200000047684,
+            "source": "start",
+            "path": "/tags",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": false,
+            "pending": false,
+            "error": false,
+            "theme": "light"
+          }
+        ],
+        "frames": 3,
+        "mutations": 5
+      },
+      {
+        "width": 1440,
+        "theme": "dark",
+        "visit": "enter",
+        "path": "/tags",
+        "fixture": "empty",
+        "states": [
+          {
+            "at": 2749.2000000476837,
+            "source": "start",
+            "path": "/settings/general",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": false,
+            "pending": false,
+            "error": false,
+            "theme": "dark"
+          },
+          {
+            "at": 2953.3000000715256,
+            "source": "mutation",
+            "path": "/tags",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": false,
+            "pending": true,
+            "error": false,
+            "theme": "dark"
+          },
+          {
+            "at": 3894.600000023842,
+            "source": "mutation",
+            "path": "/tags",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": false,
+            "pending": false,
+            "error": false,
+            "theme": "dark"
+          }
+        ],
+        "frames": 12,
+        "mutations": 11
+      },
+      {
+        "width": 1440,
+        "theme": "dark",
+        "visit": "return",
+        "path": "/settings/general",
+        "fixture": "empty",
+        "states": [
+          {
+            "at": 3992.899999976158,
+            "source": "start",
+            "path": "/tags",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": false,
+            "pending": false,
+            "error": false,
+            "theme": "dark"
+          },
+          {
+            "at": 4071.100000023842,
+            "source": "mutation",
+            "path": "/settings/general",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": false,
+            "pending": false,
+            "error": false,
+            "theme": "dark"
+          }
+        ],
+        "frames": 9,
+        "mutations": 10
+      },
+      {
+        "width": 1440,
+        "theme": "dark",
+        "visit": "reenter",
+        "path": "/tags",
+        "fixture": "empty",
+        "states": [
+          {
+            "at": 5136.5,
+            "source": "start",
+            "path": "/settings/general",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": false,
+            "pending": false,
+            "error": false,
+            "theme": "dark"
+          },
+          {
+            "at": 6244.700000047684,
+            "source": "mutation",
+            "path": "/tags",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": false,
+            "pending": true,
+            "error": false,
+            "theme": "dark"
+          },
+          {
+            "at": 6261.5,
+            "source": "mutation",
+            "path": "/tags",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": false,
+            "pending": false,
+            "error": false,
+            "theme": "dark"
+          }
+        ],
+        "frames": 3,
+        "mutations": 8
+      },
+      {
+        "width": 1440,
+        "theme": "dark",
+        "visit": "repeat",
+        "path": "/tags",
+        "fixture": "empty",
+        "states": [
+          {
+            "at": 7179.399999976158,
+            "source": "start",
+            "path": "/tags",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": false,
+            "pending": false,
+            "error": false,
+            "theme": "dark"
+          }
+        ],
+        "frames": 3,
+        "mutations": 5
+      },
+      {
+        "width": 390,
+        "theme": "light",
+        "visit": "enter",
+        "path": "/tags",
+        "fixture": "empty",
+        "states": [
+          {
+            "at": 1770.6000000238419,
+            "source": "start",
+            "path": "/settings/general",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": false,
+            "pending": false,
+            "error": false,
+            "theme": "light"
+          },
+          {
+            "at": 3177.7000000476837,
+            "source": "mutation",
+            "path": "/tags",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": false,
+            "pending": true,
+            "error": false,
+            "theme": "light"
+          },
+          {
+            "at": 3242.100000023842,
+            "source": "mutation",
+            "path": "/tags",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": false,
+            "pending": false,
+            "error": false,
+            "theme": "light"
+          }
+        ],
+        "frames": 21,
+        "mutations": 19
+      },
+      {
+        "width": 390,
+        "theme": "light",
+        "visit": "return",
+        "path": "/settings/general",
+        "fixture": "empty",
+        "states": [
+          {
+            "at": 3332.399999976158,
+            "source": "start",
+            "path": "/tags",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": false,
+            "pending": false,
+            "error": false,
+            "theme": "light"
+          },
+          {
+            "at": 3607.5,
+            "source": "mutation",
+            "path": "/settings/general",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": false,
+            "pending": false,
+            "error": false,
+            "theme": "light"
+          }
+        ],
+        "frames": 16,
+        "mutations": 19
+      },
+      {
+        "width": 390,
+        "theme": "light",
+        "visit": "reenter",
+        "path": "/tags",
+        "fixture": "empty",
+        "states": [
+          {
+            "at": 5724,
+            "source": "start",
+            "path": "/settings/general",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": false,
+            "pending": false,
+            "error": false,
+            "theme": "light"
+          },
+          {
+            "at": 8014.899999976158,
+            "source": "mutation",
+            "path": "/tags",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": false,
+            "pending": true,
+            "error": false,
+            "theme": "light"
+          },
+          {
+            "at": 8028.299999952316,
+            "source": "mutation",
+            "path": "/tags",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": false,
+            "pending": false,
+            "error": false,
+            "theme": "light"
+          }
+        ],
+        "frames": 14,
+        "mutations": 16
+      },
+      {
+        "width": 390,
+        "theme": "light",
+        "visit": "repeat",
+        "path": "/tags",
+        "fixture": "empty",
+        "states": [
+          {
+            "at": 9071.799999952316,
+            "source": "start",
+            "path": "/tags",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": false,
+            "pending": false,
+            "error": false,
+            "theme": "light"
+          }
+        ],
+        "frames": 19,
+        "mutations": 15
+      },
+      {
+        "width": 390,
+        "theme": "dark",
+        "visit": "enter",
+        "path": "/tags",
+        "fixture": "empty",
+        "states": [
+          {
+            "at": 2725.0999999046326,
+            "source": "start",
+            "path": "/settings/general",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": false,
+            "pending": false,
+            "error": false,
+            "theme": "dark"
+          },
+          {
+            "at": 3950.1999999284744,
+            "source": "mutation",
+            "path": "/tags",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": false,
+            "pending": true,
+            "error": false,
+            "theme": "dark"
+          },
+          {
+            "at": 4893.899999976158,
+            "source": "mutation",
+            "path": "/tags",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": false,
+            "pending": false,
+            "error": false,
+            "theme": "dark"
+          }
+        ],
+        "frames": 15,
+        "mutations": 17
+      },
+      {
+        "width": 390,
+        "theme": "dark",
+        "visit": "return",
+        "path": "/settings/general",
+        "fixture": "empty",
+        "states": [
+          {
+            "at": 4976.199999928474,
+            "source": "start",
+            "path": "/tags",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": false,
+            "pending": false,
+            "error": false,
+            "theme": "dark"
+          },
+          {
+            "at": 5346.799999952316,
+            "source": "mutation",
+            "path": "/settings/general",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": false,
+            "pending": false,
+            "error": false,
+            "theme": "dark"
+          }
+        ],
+        "frames": 12,
+        "mutations": 17
+      },
+      {
+        "width": 390,
+        "theme": "dark",
+        "visit": "reenter",
+        "path": "/tags",
+        "fixture": "empty",
+        "states": [
+          {
+            "at": 6261.5,
+            "source": "start",
+            "path": "/settings/general",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": false,
+            "pending": false,
+            "error": false,
+            "theme": "dark"
+          },
+          {
+            "at": 8499.899999976158,
+            "source": "mutation",
+            "path": "/tags",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": false,
+            "pending": true,
+            "error": false,
+            "theme": "dark"
+          },
+          {
+            "at": 8520,
+            "source": "mutation",
+            "path": "/tags",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": false,
+            "pending": false,
+            "error": false,
+            "theme": "dark"
+          }
+        ],
+        "frames": 13,
+        "mutations": 16
+      },
+      {
+        "width": 390,
+        "theme": "dark",
+        "visit": "repeat",
+        "path": "/tags",
+        "fixture": "empty",
+        "states": [
+          {
+            "at": 10569,
+            "source": "start",
+            "path": "/tags",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": false,
+            "pending": false,
+            "error": false,
+            "theme": "dark"
+          }
+        ],
+        "frames": 18,
+        "mutations": 16
+      },
+      {
+        "width": 1440,
+        "theme": "light",
+        "visit": "enter",
+        "path": "/tags",
+        "fixture": "populated",
+        "states": [
+          {
+            "at": 2637.4000000953674,
+            "source": "start",
+            "path": "/settings/general",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": false,
+            "pending": false,
+            "error": false,
+            "theme": "light"
+          },
+          {
+            "at": 2787.7000000476837,
+            "source": "mutation",
+            "path": "/tags",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": false,
+            "pending": true,
+            "error": false,
+            "theme": "light"
+          },
+          {
+            "at": 2838.5,
+            "source": "mutation",
+            "path": "/tags",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": true,
+            "pending": false,
+            "error": false,
+            "theme": "light"
+          }
+        ],
+        "frames": 14,
+        "mutations": 11
+      },
+      {
+        "width": 1440,
+        "theme": "light",
+        "visit": "search-clear-blur",
+        "path": "/tags",
+        "fixture": "populated",
+        "states": [
+          {
+            "at": 4046.2000000476837,
+            "source": "start",
+            "path": "/tags",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": true,
+            "pending": false,
+            "error": false,
+            "theme": "light"
+          },
+          {
+            "at": 4068,
+            "source": "mutation",
+            "path": "/tags",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": false,
+            "pending": true,
+            "error": false,
+            "theme": "light"
+          },
+          {
+            "at": 4149.5,
+            "source": "mutation",
+            "path": "/tags",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": true,
+            "pending": false,
+            "error": false,
+            "theme": "light"
+          }
+        ],
+        "frames": 8,
+        "mutations": 15
+      },
+      {
+        "width": 1440,
+        "theme": "light",
+        "visit": "error-real-retry",
+        "path": "/tags",
+        "fixture": "populated",
+        "states": [
+          {
+            "at": 5323.700000047684,
+            "source": "start",
+            "path": "/settings/general",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": false,
+            "pending": false,
+            "error": false,
+            "theme": "light"
+          },
+          {
+            "at": 6373,
+            "source": "mutation",
+            "path": "/tags",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": false,
+            "pending": true,
+            "error": false,
+            "theme": "light"
+          },
+          {
+            "at": 6391.400000095367,
+            "source": "mutation",
+            "path": "/tags",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": false,
+            "pending": false,
+            "error": true,
+            "theme": "light"
+          },
+          {
+            "at": 7377.800000071526,
+            "source": "mutation",
+            "path": "/tags",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": false,
+            "pending": true,
+            "error": false,
+            "theme": "light"
+          },
+          {
+            "at": 7389.800000071526,
+            "source": "mutation",
+            "path": "/tags",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": true,
+            "pending": false,
+            "error": false,
+            "theme": "light"
+          }
+        ],
+        "frames": 5,
+        "mutations": 14
+      },
+      {
+        "width": 1440,
+        "theme": "dark",
+        "visit": "enter",
+        "path": "/tags",
+        "fixture": "populated",
+        "states": [
+          {
+            "at": 1745.2000000476837,
+            "source": "start",
+            "path": "/settings/general",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": false,
+            "pending": false,
+            "error": false,
+            "theme": "dark"
+          },
+          {
+            "at": 1936,
+            "source": "mutation",
+            "path": "/tags",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": false,
+            "pending": true,
+            "error": false,
+            "theme": "dark"
+          },
+          {
+            "at": 1970.5,
+            "source": "mutation",
+            "path": "/tags",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": true,
+            "pending": false,
+            "error": false,
+            "theme": "dark"
+          }
+        ],
+        "frames": 8,
+        "mutations": 11
+      },
+      {
+        "width": 1440,
+        "theme": "dark",
+        "visit": "search-clear-blur",
+        "path": "/tags",
+        "fixture": "populated",
+        "states": [
+          {
+            "at": 2953.5,
+            "source": "start",
+            "path": "/tags",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": true,
+            "pending": false,
+            "error": false,
+            "theme": "dark"
+          },
+          {
+            "at": 2982.5,
+            "source": "mutation",
+            "path": "/tags",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": false,
+            "pending": true,
+            "error": false,
+            "theme": "dark"
+          },
+          {
+            "at": 3068.600000023842,
+            "source": "mutation",
+            "path": "/tags",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": true,
+            "pending": false,
+            "error": false,
+            "theme": "dark"
+          }
+        ],
+        "frames": 9,
+        "mutations": 15
+      },
+      {
+        "width": 1440,
+        "theme": "dark",
+        "visit": "error-real-retry",
+        "path": "/tags",
+        "fixture": "populated",
+        "states": [
+          {
+            "at": 4318.600000023842,
+            "source": "start",
+            "path": "/settings/general",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": false,
+            "pending": false,
+            "error": false,
+            "theme": "dark"
+          },
+          {
+            "at": 5335.200000047684,
+            "source": "mutation",
+            "path": "/tags",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": false,
+            "pending": true,
+            "error": false,
+            "theme": "dark"
+          },
+          {
+            "at": 5353.899999976158,
+            "source": "mutation",
+            "path": "/tags",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": false,
+            "pending": false,
+            "error": true,
+            "theme": "dark"
+          },
+          {
+            "at": 6440,
+            "source": "mutation",
+            "path": "/tags",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": false,
+            "pending": true,
+            "error": false,
+            "theme": "dark"
+          },
+          {
+            "at": 6462.700000047684,
+            "source": "mutation",
+            "path": "/tags",
+            "admin": true,
+            "public": false,
+            "publicEntry": false,
+            "headerCreate": true,
+            "pending": false,
+            "error": false,
+            "theme": "dark"
+          }
+        ],
+        "frames": 10,
+        "mutations": 15
+      }
+    ],
+    "search": [
+      {
+        "width": 1440,
+        "theme": "light",
+        "value": "主",
+        "focused": true
+      },
+      {
+        "width": 1440,
+        "theme": "light",
+        "value": "主题",
+        "focused": true
+      },
+      {
+        "width": 1440,
+        "theme": "light",
+        "value": "主题导",
+        "focused": true
+      },
+      {
+        "width": 1440,
+        "theme": "light",
+        "value": "主题导航",
+        "focused": true
+      },
+      {
+        "width": 1440,
+        "theme": "dark",
+        "value": "主",
+        "focused": true
+      },
+      {
+        "width": 1440,
+        "theme": "dark",
+        "value": "主题",
+        "focused": true
+      },
+      {
+        "width": 1440,
+        "theme": "dark",
+        "value": "主题导",
+        "focused": true
+      },
+      {
+        "width": 1440,
+        "theme": "dark",
+        "value": "主题导航",
+        "focused": true
+      }
+    ],
+    "screenshots": [
+      {
+        "state": "empty-pending",
+        "width": 1440,
+        "theme": "light",
+        "path": "/Users/dnslin/.codex/worktrees/issue-197-theme/ariso/test-results/theme-197/navigation-fixed/theme-navigation-empty-pending-light-1440.png"
+      },
+      {
+        "state": "empty-ready",
+        "width": 1440,
+        "theme": "light",
+        "path": "/Users/dnslin/.codex/worktrees/issue-197-theme/ariso/test-results/theme-197/navigation-fixed/theme-navigation-empty-ready-light-1440.png"
+      },
+      {
+        "state": "empty-pending",
+        "width": 1440,
+        "theme": "dark",
+        "path": "/Users/dnslin/.codex/worktrees/issue-197-theme/ariso/test-results/theme-197/navigation-fixed/theme-navigation-empty-pending-dark-1440.png"
+      },
+      {
+        "state": "empty-ready",
+        "width": 1440,
+        "theme": "dark",
+        "path": "/Users/dnslin/.codex/worktrees/issue-197-theme/ariso/test-results/theme-197/navigation-fixed/theme-navigation-empty-ready-dark-1440.png"
+      },
+      {
+        "state": "empty-pending",
+        "width": 390,
+        "theme": "light",
+        "path": "/Users/dnslin/.codex/worktrees/issue-197-theme/ariso/test-results/theme-197/navigation-fixed/theme-navigation-empty-pending-light-390.png"
+      },
+      {
+        "state": "empty-ready",
+        "width": 390,
+        "theme": "light",
+        "path": "/Users/dnslin/.codex/worktrees/issue-197-theme/ariso/test-results/theme-197/navigation-fixed/theme-navigation-empty-ready-light-390.png"
+      },
+      {
+        "state": "empty-pending",
+        "width": 390,
+        "theme": "dark",
+        "path": "/Users/dnslin/.codex/worktrees/issue-197-theme/ariso/test-results/theme-197/navigation-fixed/theme-navigation-empty-pending-dark-390.png"
+      },
+      {
+        "state": "empty-ready",
+        "width": 390,
+        "theme": "dark",
+        "path": "/Users/dnslin/.codex/worktrees/issue-197-theme/ariso/test-results/theme-197/navigation-fixed/theme-navigation-empty-ready-dark-390.png"
+      },
+      {
+        "state": "populated",
+        "width": 1440,
+        "theme": "light",
+        "path": "/Users/dnslin/.codex/worktrees/issue-197-theme/ariso/test-results/theme-197/navigation-fixed/theme-navigation-populated-light-1440.png"
+      },
+      {
+        "state": "populated",
+        "width": 1440,
+        "theme": "dark",
+        "path": "/Users/dnslin/.codex/worktrees/issue-197-theme/ariso/test-results/theme-197/navigation-fixed/theme-navigation-populated-dark-1440.png"
+      }
+    ],
+    "fixtureTagId": "a406b263-1840-4f25-9388-2e83980ff07e",
+    "cleanup": "Offline deleted own fixture tag"
+  },
+  "error": "Error: page.waitForSelector timed out after 10000ms: [data-testid=\"tag-a406b263-1840-4f25-9388-2e83980ff07e\"]\n    at waitForSelectorInPage (file:////[eval1]:16159:11)\n    at async file:////[eval1]:16691:28",
+  "finishedAt": "2026-10-10T12:59:31.089Z"
+}
