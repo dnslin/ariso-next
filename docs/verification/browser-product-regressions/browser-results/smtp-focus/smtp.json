@@ -1,0 +1,63 @@
+{
+  "status": "passed",
+  "taskSpaceId": 4,
+  "phase": "focus",
+  "checks": [
+    "A real save completes before further editing; delayed completion frames preserve the next keyboard action and the dirty-test confirmation.",
+    "A real save completes before further editing; delayed completion frames preserve the next keyboard action and the dirty-test confirmation."
+  ],
+  "layouts": [],
+  "screenshots": ["smtp-save-focus-1440.png", "smtp-save-focus-390.png"],
+  "requests": [
+    {
+      "path": "/api/settings/smtp",
+      "method": "GET",
+      "width": 390,
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/settings/smtp",
+      "method": "PATCH",
+      "width": 390,
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/settings/smtp",
+      "method": "PATCH",
+      "width": 390,
+      "attempt": 1,
+      "status": 200
+    }
+  ],
+  "diagnostics": [],
+  "limitations": [
+    "Local TLS/STARTTLS fixture receives real mail; an external provider and final delivery to a real mailbox remain separate acceptance.",
+    "Lost HTTP responses are deliberate transport faults after real requests, not fabricated server results.",
+    "Chromium viewport emulation does not verify physical touch, keyboard or safe areas."
+  ],
+  "stage": "save-focus",
+  "focusTransitions": [
+    {
+      "name": "save-then-edit-and-test",
+      "source": "smtp-test",
+      "afterCompletionFrames": {
+        "width": 1440,
+        "testId": "smtp-test",
+        "id": "react-aria-_R_d5bsnpfdb_"
+      }
+    },
+    {
+      "name": "save-then-edit-and-test",
+      "source": "smtp-test",
+      "afterCompletionFrames": {
+        "width": 390,
+        "testId": "smtp-test",
+        "id": "react-aria-_R_d5bsnpfdb_"
+      }
+    }
+  ],
+  "browserErrors": [],
+  "finishedAt": "2026-10-10T01:09:42.830Z"
+}

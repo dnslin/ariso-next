@@ -1,0 +1,24 @@
+Captured final focused command output, 2026-10-10 09:02:11:
+pnpm exec vitest run --project unit tests/unit/identity/smtp-focus.test.ts
+Node 24.18.1 / pnpm 11.19.0
+
+RUN v5.0.0 /Users/dnslin/.codex/worktrees/browser-product-regressions/ariso
+Test Files 1 passed (1)
+Tests 4 passed (4)
+Duration 165ms
+
+The two directly affected additional cases cover cancelling dirty-test
+confirmation while retaining input, and return focus after sending changes from
+busy to idle. No SMTP protocol or unrelated module tests were run.
+
+Actual static checks passed:
+pnpm exec prettier --write e2e/smtp.mjs e2e/smtp-focus.mjs tests/unit/identity/smtp-focus.test.ts
+pnpm exec eslint src/components/identity/use-smtp-page.ts e2e/smtp.mjs e2e/smtp-focus.mjs tests/unit/identity/smtp-focus.test.ts --max-warnings=0
+pnpm exec prettier --write tests/unit/identity/smtp-focus.test.ts
+pnpm exec eslint tests/unit/identity/smtp-focus.test.ts --max-warnings=0
+git diff --check
+
+An earlier initial test-harness lint failure called a hook directly from a class
+method. It was corrected by passing the component callback to the harness render
+method, matching the existing harness pattern. The final relevant lint passed.
+Real-browser execution was not performed by this agent.

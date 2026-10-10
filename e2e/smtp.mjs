@@ -19,6 +19,7 @@ const [
   { smtpTransport },
   { verifyUnknownSmtp },
   { verifySmtpLifecycle },
+  { verifySmtpSaveFocus },
   { resizeViewport, setTheme },
   { installBrowserErrors, readBrowserErrors },
 ] = await Promise.all([
@@ -27,6 +28,7 @@ const [
   import(smtpModule('transport')),
   import(smtpModule('recovery')),
   import(smtpModule('lifecycle')),
+  import(smtpModule('focus')),
   import(new URL('./browser-geometry.mjs', config.identitySessionScript).href),
   import(config.errorsScript),
 ]);
@@ -206,6 +208,19 @@ try {
       0,
       'Reading, help and cancelled dialogs send no mail',
     );
+  }
+  if (
+    !config.smtpPhase ||
+    config.smtpPhase === 'interactions' ||
+    config.smtpPhase === 'focus'
+  ) {
+    report.stage = 'save-focus';
+    for (const width of [1440, 390]) {
+      await resizeViewport(page, width);
+      await setTheme(page, 'light');
+      await seeded(fixture.targets.tls);
+      await verifySmtpSaveFocus(page, ui, report);
+    }
   }
   if (!config.smtpPhase || config.smtpPhase === 'interactions') {
     report.stage = 'save-and-secrets';
