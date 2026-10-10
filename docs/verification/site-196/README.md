@@ -1,6 +1,6 @@
 # T-SITE-04 品牌设置及跨页联动
 
-2026-10-10（Asia/Shanghai）；[Issue #196](https://github.com/dnslin/ariso-next/issues/196)，草稿 [PR #277](https://github.com/dnslin/ariso-next/pull/277)。用户已答复“OK，就按照这个去实施”，批准4216最终原型。产品实现已完成，默认全量结果已归档，受影响定向复验及独立代码、设计评审已完成，品牌默认组合及真实重启已通过，最终UI人工验收未完成。本轮不合并、不关闭Issue、不发布、不部署。
+2026-10-10（Asia/Shanghai）；[Issue #196](https://github.com/dnslin/ariso-next/issues/196)，草稿 [PR #277](https://github.com/dnslin/ariso-next/pull/277)。用户已答复“OK，就按照这个去实施”，批准4216最终原型。产品实现已完成，默认全量结果已归档，受影响定向复验及独立代码、设计评审已完成，品牌默认组合及真实重启已通过，用户于2026-10-11明确确认“人工验收通过”。本轮不合并、不关闭Issue、不发布、不部署。
 
 ## 依据、前置与范围
 
@@ -24,11 +24,11 @@
 
 ## 证据入口与验收
 
-最终命令、结果、失败修复及浏览器证据见[产品实施记录](./implementation/README.md)，独立功能审查见[代码评审](./implementation/code-review.md)，Figma实际同步见[同步记录](./implementation/figma-sync.md)，真实页面对照见[独立设计评审](./implementation/design-review.md)。检查、浏览器、设计和人工验收分别记录，不互相代替。
+最终命令、结果、失败修复及浏览器证据见[产品实施记录](./implementation/README.md)，独立功能审查见[代码评审](./implementation/code-review.md)，Figma实际同步见[同步记录](./implementation/figma-sync.md)，真实页面对照见[独立设计评审](./implementation/design-review.md)。2026-10-11人工验收后，两个新agent分别完成[五轴及严格结构评审](./implementation/review-2026-10-11.md)，均Approve、无必改项。检查、浏览器、设计和人工验收分别记录，不互相代替。
 
 本轮设计主节点：[品牌桌面468:11915](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=468-11915)、[品牌手机468:12216](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=468-12216)、[登录桌面2:11](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=2-11)、[登录手机102:3020](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-3020)。关键状态节点及截图见同步记录。
 
-人工验收预览：[独立产品预览](http://ariso-196.localhost:4316/settings/general/branding)。独立账号与密码存于本机忽略目录 test-results/site-196-acceptance/credentials.txt，不提交到代码或PR。该服务使用独立数据目录，与自动化及其他预览数据隔离；保持可用直到用户明确要求停止。需人工核对两端品牌行、文件选择/预览/取消/保存/替换/删除、即时反馈与登录卡片布局，以及首页/后台/匿名分享联动。
+人工验收预览：[独立产品预览](http://ariso-196.localhost:4316/settings/general/branding)。独立账号与密码存于本机忽略目录 test-results/site-196-acceptance/credentials.txt，不提交到代码或PR。该服务使用独立数据目录，与自动化及其他预览数据隔离；保持可用直到用户明确要求停止。原人工验收范围为两端品牌行、文件选择/预览/取消/保存/替换/删除、即时反馈与登录卡片布局，以及首页/后台/匿名分享联动；用户已于2026-10-11明确确认“人工验收通过”。此前报告保留当时待验收的历史状态。
 
 | 项目                    | 当前状态                                                                      |
 | ----------------------- | ----------------------------------------------------------------------------- |
@@ -38,7 +38,7 @@
 | 真实浏览器              | 品牌默认组合18项/118布局及真实重启通过；整仓原全量59通过/20失败/2阻断，见证据 |
 | 独立代码评审            | 本次发现均已修复并增量复审，回归见报告                                        |
 | Figma同步与独立设计评审 | 本次相关同步及设计评审完成；范围见报告                                        |
-| 最终UI人工验收          | 待用户验收                                                                    |
+| 最终UI人工验收          | 2026-10-11用户明确验收通过                                                    |
 | PR                      | OPEN、Draft；未合并                                                           |
 
 日常PR无远端Actions检查不记为CI通过；Release镜像与双架构验证按既有发布流程，本轮未发布或部署。
