@@ -23,7 +23,7 @@ const parsers = {
   image: parseAsString,
 };
 
-export function useTrashQuery(client: QueryClient) {
+export function useTrashQuery(client: QueryClient, enabled = true) {
   const params = useSearchParams();
   const [, setParams] = useQueryStates(parsers, {
     history: 'push',
@@ -46,7 +46,7 @@ export function useTrashQuery(client: QueryClient) {
   const list = useQuery(
     {
       queryKey: ['trash', filters, page],
-      enabled: !!filters,
+      enabled: enabled && !!filters,
       queryFn: ({ signal }) => readLibraryResult(filters!, { page }, signal),
       retry: false,
       networkMode: 'always',
@@ -58,7 +58,8 @@ export function useTrashQuery(client: QueryClient) {
   );
   const expired =
     list.error instanceof LibraryReadError && list.error.status === 401;
-  const data = filters && !expired && !list.isError ? list.data : undefined;
+  const data =
+    enabled && filters && !expired && !list.isError ? list.data : undefined;
   const items: TrashItem[] = useMemo(
     () =>
       data?.items.map((item) => ({

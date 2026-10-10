@@ -403,6 +403,11 @@ describe('owner-only list HTTP', () => {
           { code: 'LIBRARY_INVALID_QUERY' },
         ],
         ['?scope=trash&format=png', 400, { code: 'LIBRARY_INVALID_QUERY' }],
+        [
+          '?scope=trash&failure=reprocess',
+          400,
+          { code: 'LIBRARY_INVALID_QUERY' },
+        ],
       ] as const) {
         const result = await fetch(
           `${origin}/api/images${path.startsWith('?') ? '' : '/'}${path}`,
@@ -415,6 +420,64 @@ describe('owner-only list HTTP', () => {
         expect(result.headers.get('cache-control')).toBe('no-store');
         expect(await result.json()).toMatchObject(body);
       }
+      const initialFailures = await fetch(
+        `${origin}/api/images?failure=initial`,
+        { headers: { cookie } },
+      );
+      expect(initialFailures.status).toBe(200);
+      expect(await initialFailures.json()).toMatchObject({
+        total: 1,
+        items: [{ id: 'http-private-failed' }],
+      });
+      const reprocessId = 'http-ready-reprocess-failed';
+      const accepted = live.db.transaction((tx) =>
+        acceptOriginal(tx, {
+          imageId: reprocessId,
+          storageId: storage.id,
+          key: 'private-key/reprocess',
+          originalName: 'reprocess.png',
+          visibility: 'private',
+          format: 'PNG',
+          mime: 'image/png',
+          byteSize: 42,
+          snapshot: createProcessingSnapshot(tx),
+          expectedVersions: ['thumbnail'],
+        }),
+      );
+      live.db
+        .update(mediaImages)
+        .set({ processingStatus: 'ready' })
+        .where(eq(mediaImages.id, reprocessId))
+        .run();
+      live.db
+        .update(mediaJobs)
+        .set({ status: 'failed' })
+        .where(eq(mediaJobs.id, accepted.jobId))
+        .run();
+      const reprocessFailures = await fetch(
+        `${origin}/api/images?failure=reprocess`,
+        { headers: { cookie } },
+      );
+      expect(reprocessFailures.status).toBe(200);
+      expect(reprocessFailures.headers.get('cache-control')).toBe('no-store');
+      expect(await reprocessFailures.json()).toMatchObject({
+        total: 1,
+        items: [{ id: reprocessId, processingStatus: 'ready' }],
+      });
+      live.db
+        .update(mediaJobs)
+        .set({ status: 'succeeded' })
+        .where(eq(mediaJobs.id, accepted.jobId))
+        .run();
+      const resolvedFailures = await fetch(
+        `${origin}/api/images?failure=reprocess`,
+        { headers: { cookie } },
+      );
+      expect(resolvedFailures.status).toBe(200);
+      expect(await resolvedFailures.json()).toMatchObject({
+        total: 0,
+        items: [],
+      });
       const poll = (body: string, requestOrigin = origin) =>
         fetch(`${origin}/api/images/status`, {
           method: 'POST',

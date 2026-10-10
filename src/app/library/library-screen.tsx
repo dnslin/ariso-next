@@ -12,7 +12,12 @@ import { QueryClient } from '@tanstack/react-query';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { Alert } from '@heroui/react/alert';
 import { Button } from '@heroui/react/button';
-import { Images } from 'lucide-react';
+import { ArrowLeft, CircleAlert, Images, RefreshCw } from 'lucide-react';
+import { Link } from '@heroui/react/link';
+import { ToggleButton } from '@heroui/react/toggle-button';
+import { ToggleButtonGroup } from '@heroui/react/toggle-button-group';
+import { ImageStatisticsDialog } from '../../components/analytics/image-statistics';
+import { analyticsReturnUrl } from '../../components/analytics/navigation';
 import { OwnerShell } from '../../components/shell/owner-shell';
 import { useResetUpload } from '../../components/upload/provider';
 import type { LibraryDetail as Detail } from '../../server/library/detail-types';
@@ -76,12 +81,18 @@ export function LibraryScreen(props: {
   const params = useSearchParams();
   const returnTo = `${pathname}${params.size ? `?${params}` : ''}`;
   const [client] = useState(() => new QueryClient());
-  const query = useLibraryQuery(client, { albumId: props.albumId });
+  const [sessionEnded, setSessionEnded] = useState(false);
+  const query = useLibraryQuery(
+    client,
+    { albumId: props.albumId },
+    !sessionEnded,
+  );
   const detailQuery = useDetailQuery(
     client,
     detail.imageId,
     returnTo,
     props.albumId,
+    !sessionEnded,
   );
   const reprocess = useDetailReprocess(detail.imageId, detailQuery, {
     onReturn: detail.returnToDetail,
@@ -89,6 +100,32 @@ export function LibraryScreen(props: {
     onVersions: () => detail.openView('versions'),
     onOpen: () => detail.openView('reprocess'),
   });
+  const [statisticsId, setStatisticsId] = useState<string | null>(null);
+  const statisticsScroll = useRef(0);
+  if (statisticsId && statisticsId !== detail.imageId) setStatisticsId(null);
+  const analyticsSource = analyticsReturnUrl(params.get('analyticsReturn'));
+  const closeDetail = () => {
+    if (analyticsSource) window.location.assign(analyticsSource);
+    else detail.close();
+  };
+  function openStatistics() {
+    statisticsScroll.current =
+      document.querySelector<HTMLElement>('[data-testid="detail-body"]')
+        ?.scrollTop ?? 0;
+    setStatisticsId(detail.imageId);
+  }
+  function closeStatistics() {
+    setStatisticsId(null);
+    requestAnimationFrame(() => {
+      const body = document.querySelector<HTMLElement>(
+        '[data-testid="detail-body"]',
+      );
+      if (body) body.scrollTop = statisticsScroll.current;
+      document
+        .querySelector<HTMLElement>('[data-testid="detail-statistics-entry"]')
+        ?.focus({ preventScroll: true });
+    });
+  }
   const preview = params.get('preview');
   const selectedPreview =
     preview &&
@@ -131,13 +168,15 @@ export function LibraryScreen(props: {
   const moreRef = useRef<HTMLButtonElement>(null);
   const endRef = useRef<HTMLParagraphElement>(null);
   useEffect(() => () => client.clear(), [client]);
-  const expireSession = useCallback(() => {
+  const expireSession = useCallback(() => setSessionEnded(true), []);
+  useEffect(() => {
+    if (!sessionEnded) return;
     resetUpload();
     client.clear();
     window.location.replace(
       `/login?reason=expired&returnTo=${encodeURIComponent(returnTo)}`,
     );
-  }, [resetUpload, client, returnTo]);
+  }, [resetUpload, client, returnTo, sessionEnded]);
   const batchOptions = {
     selection,
     query: query.filters
@@ -173,7 +212,11 @@ export function LibraryScreen(props: {
     (batchReprocess.visible && batchReprocess.workspace?.phase === 'result');
   const reconciliation = useSelectionReconciliation({
     // Copy is read-only and freezes its own selection; it need not pause reconciliation.
-    enabled: !batch.pending && !batchReprocess.pending && !batchUnresolved,
+    enabled:
+      !sessionEnded &&
+      !batch.pending &&
+      !batchReprocess.pending &&
+      !batchUnresolved,
     selection,
     identity: selectionIdentity,
     filters: query.filters,
@@ -181,9 +224,7 @@ export function LibraryScreen(props: {
     onSessionExpired: expireSession,
     onInvalid: query.onSelectionInvalid,
   });
-  useEffect(() => {
-    if (query.expired) expireSession();
-  }, [query.expired, expireSession]);
+  if (query.expired && !sessionEnded) setSessionEnded(true);
   async function onTrashed(record: Detail) {
     setNotice(
       `已将 ${record.displayName} 移入回收站。文件仍占用空间，不会自动清理。`,
@@ -212,11 +253,13 @@ export function LibraryScreen(props: {
       query.filters.storageId ||
       query.filters.visibility ||
       query.filters.status ||
+      query.filters.failure ||
       (!props.albumId && query.filters.albumId)
     );
   const invalid =
     query.queryError ||
     (query.error instanceof LibraryReadError && query.error.status === 400);
+  if (sessionEnded) return null;
   return (
     <OwnerShell
       {...props}
@@ -272,6 +315,45 @@ export function LibraryScreen(props: {
               <p className="text-sm">保存每一刻，也让每一次查找更轻松。</p>
             </div>
           )}
+          {analyticsSource ? (
+            <Link
+              href={analyticsSource}
+              className="inline-flex min-h-11 w-fit items-center gap-2 text-sm text-muted"
+            >
+              <ArrowLeft size={16} aria-hidden />
+              返回访问统计
+            </Link>
+          ) : null}
+          {query.filters?.failure ? (
+            <ToggleButtonGroup
+              aria-label="处理异常类型"
+              selectionMode="single"
+              disallowEmptySelection
+              selectedKeys={new Set([query.filters.failure])}
+              onSelectionChange={(keys) => {
+                const failure = [...keys][0];
+                if (failure === 'initial' || failure === 'reprocess')
+                  void query.applyQuery({ failure, status: null });
+              }}
+              className="w-full gap-2"
+              data-testid="library-failure-types"
+            >
+              <ToggleButton
+                id="initial"
+                className="min-h-11 flex-1 gap-2 rounded-lg active:transform-none data-[pressed=true]:transform-none"
+              >
+                <CircleAlert size={16} aria-hidden />
+                初次处理
+              </ToggleButton>
+              <ToggleButton
+                id="reprocess"
+                className="min-h-11 flex-1 gap-2 rounded-lg active:transform-none data-[pressed=true]:transform-none"
+              >
+                <RefreshCw size={16} aria-hidden />
+                重新处理
+              </ToggleButton>
+            </ToggleButtonGroup>
+          ) : null}
           <div className="grid min-w-0 gap-2">
             <LibraryToolbar
               query={{
@@ -502,7 +584,7 @@ export function LibraryScreen(props: {
         <DetailVersions
           detail={detailQuery.data}
           selected={selectedPreview ?? initialPreview(detailQuery.data)}
-          onClose={detail.close}
+          onClose={closeDetail}
         />
       ) : null}
       {detail.view && detailQuery.isPending ? (
@@ -550,7 +632,8 @@ export function LibraryScreen(props: {
           key={detail.imageId}
           imageId={detail.imageId}
           query={detailQuery}
-          hidden={!!detail.view}
+          hidden={!!detail.view || statisticsId === detail.imageId}
+          onStatistics={openStatistics}
           onVersions={(selected) => detail.openView('versions', selected)}
           initialSelected={selectedPreview}
           albumId={props.albumId}
@@ -558,9 +641,29 @@ export function LibraryScreen(props: {
             detail.hasListContext ? (query.filters ?? undefined) : undefined
           }
           client={client}
-          onClose={detail.close}
+          onClose={closeDetail}
           onTrashed={onTrashed}
           dialogRef={detail.dialogRef}
+        />
+      ) : null}
+      {statisticsId && detailQuery.data && !detailQuery.expired ? (
+        <ImageStatisticsDialog
+          key={statisticsId}
+          imageId={statisticsId}
+          client={client}
+          identity={{
+            displayName: detailQuery.data.displayName,
+            format: detailQuery.data.format,
+            visibility: detailQuery.data.visibility,
+            recycled:
+              !!detailQuery.data.trashedAt || !!detailQuery.data.deletionStatus,
+            thumbnailUrl:
+              detailQuery.data.versions.find(
+                (version) => version.kind === 'thumbnail',
+              )?.previewPath ?? null,
+          }}
+          onClose={closeStatistics}
+          onSessionExpired={expireSession}
         />
       ) : null}
       <BatchReprocessContent batch={batchReprocess} />

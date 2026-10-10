@@ -1,0 +1,100 @@
+{
+  "repairBase": "5846b1324c9e5f2b1737c593543fc4b5e79944ec",
+  "node": "v24.18.1",
+  "pnpm": "11.19.0",
+  "unit": {
+    "files": 4,
+    "passed": 197
+  },
+  "browser": {
+    "layouts": 30,
+    "newEmptyLayouts": 24,
+    "failureCategories": ["initial", "reprocess"],
+    "cleared": true,
+    "browserErrors": [],
+    "fixtureRestored": true,
+    "temporaryDirectoryRemoved": true,
+    "focusVisibleVisual": "not verified by programmatic-focus screenshots"
+  },
+  "humanAcceptance": "prior product 87bba340 explicitly accepted; new empty-filter edge not manually accepted",
+  "checks": [
+    {
+      "command": "pnpm install --frozen-lockfile",
+      "exitCode": 0,
+      "output": "checks/install.txt"
+    },
+    {
+      "command": "node --check e2e/analytics-consumers.mjs",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm run lint",
+      "exitCode": 0,
+      "output": "checks/lint.txt"
+    },
+    {
+      "command": "pnpm exec vitest run --project unit tests/unit/library/query-state.test.ts tests/unit/library/query-hook.test.ts tests/unit/runtime/browser-plan.test.ts tests/unit/runtime/browser-business-cli.test.ts",
+      "exitCode": 0,
+      "output": "checks/unit.txt"
+    },
+    {
+      "command": "pnpm run typecheck",
+      "exitCode": 0,
+      "output": "checks/type.txt"
+    },
+    {
+      "command": "pnpm run build",
+      "exitCode": 0,
+      "output": "checks/build.txt"
+    },
+    {
+      "command": "EGO_TASK_SPACE=2 EGO_PAGE_LABEL=p1 BROWSER_REPORT_DIR=test-results/analytics-179-empty-red node scripts/verify-browser.mjs --suite analytics --only consumers",
+      "exitCode": 1,
+      "output": "browser/red/runner.json"
+    },
+    {
+      "command": "EGO_TASK_SPACE=2 EGO_PAGE_LABEL=p1 BROWSER_REPORT_DIR=test-results/analytics-179-empty-green node scripts/verify-browser.mjs --suite analytics --only consumers",
+      "exitCode": 0,
+      "output": "browser/green/runner.json"
+    },
+    {
+      "command": "pnpm run format:check",
+      "exitCode": 0,
+      "output": "checks/format.txt"
+    },
+    {
+      "command": "node docs/tasks/check.mjs",
+      "exitCode": 0,
+      "output": "checks/docs.txt"
+    },
+    {
+      "command": "git diff --check",
+      "exitCode": 0
+    }
+  ],
+  "preview": {
+    "origin": "http://ariso-179.localhost:4180",
+    "loginHttpStatus": 200,
+    "dataReset": false
+  },
+  "remoteChecks": "none reported; not CI passed",
+  "verdict": {
+    "correctness": "Approve",
+    "structure": "Approve",
+    "design": "passed; focus-visible visual limitation recorded",
+    "openRequiredP2": 0
+  },
+  "localLinkTargetsChecked": 169,
+  "credentialScan": {
+    "privateFields": 2,
+    "matches": 0
+  },
+  "remoteBase": "f4c0fecd046c301bfd4dddd97549a367ab046093",
+  "stagedDiffCheck": 0,
+  "closingFormat": {
+    "scope": "checks.json updated after the full format pass",
+    "firstExitCode": 1,
+    "repair": "prettier --write checks.json",
+    "finalOutput": "checks/format-final-json.txt"
+  }
+}

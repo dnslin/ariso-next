@@ -60,18 +60,20 @@ export async function verifyOwnerShell(page, config, evidenceDirectory) {
   const navigationDialog = '[role="dialog"][aria-label="导航菜单"]';
   const accountDialog = '[role="dialog"][aria-label="当前账号"]';
   const expected = [
-    { label: '总览', href: null },
+    { label: '总览', href: '/dashboard' },
     { label: '上传', href: '/upload' },
     { label: '图库', href: '/library' },
     { label: '相册', href: '/albums' },
     { label: '标签', href: '/tags' },
     { label: '分享管理', href: '/shares' },
     { label: '回收站', href: '/trash' },
-    { label: '访问统计', href: null },
+    { label: '访问统计', href: '/analytics' },
     { label: '存储管理', href: '/settings/storage' },
     { label: '站点设置', href: '/settings/general' },
   ];
   const routes = [
+    '/dashboard',
+    '/analytics',
     '/upload',
     '/library',
     '/trash',
@@ -82,6 +84,8 @@ export async function verifyOwnerShell(page, config, evidenceDirectory) {
     '/settings/processing',
     '/settings/account',
     '/settings/api',
+    '/settings/api/usage',
+    '/settings/email',
     '/settings/general',
   ];
   const button = (name) => `loc=role:button[name="${name}"]`;
@@ -184,19 +188,30 @@ export async function verifyOwnerShell(page, config, evidenceDirectory) {
       );
     }
   }
-  async function contentPosition() {
-    await page.waitForSelector('main h1');
-    return page.evaluate(() => {
-      const node = document.querySelector('main h1');
+  async function contentPosition(path) {
+    // The approved usage page starts with a return link above its heading.
+    const source =
+      path === '/settings/api/usage'
+        ? 'main [data-testid="upload-usage-back"]'
+        : 'main h1';
+    await page.waitForSelector(source);
+    return page.evaluate((source) => {
+      const node = document.querySelector(source);
       const rect = node.getBoundingClientRect();
-      return { x: rect.x, y: rect.y, width: rect.width, height: rect.height };
-    });
+      return {
+        source,
+        x: rect.x,
+        y: rect.y,
+        width: rect.width,
+        height: rect.height,
+      };
+    }, source);
   }
   function sameContentPosition(actual, expected) {
     for (const key of ['x', 'y'])
       assert.ok(
         Math.abs(actual[key] - expected[key]) <= 1,
-        `Shared heading origin ${key}: ${actual[key]} versus ${expected[key]}`,
+        `Shared content origin ${key}: ${actual[key]} versus ${expected[key]}`,
       );
   }
   async function sidebarWidth(width) {
@@ -218,8 +233,9 @@ export async function verifyOwnerShell(page, config, evidenceDirectory) {
         mobile: width < 768,
       });
       await page.waitForFunction((value) => innerWidth === value, width);
-      await page.goto(`${config.origin}/upload`);
-      await page.waitForSelector('input[type="file"]', { state: 'attached' });
+      await page.goto(`${config.origin}${routes[0]}`);
+      await waitForOwnerRoute(page, config, routes[0]);
+      await page.waitForSelector('main h1');
       const scope = width >= 1200 ? '.shell-navigation' : navigationDialog;
       if (width >= 1200) await sidebarWidth(232);
       let baseline;
@@ -230,7 +246,7 @@ export async function verifyOwnerShell(page, config, evidenceDirectory) {
       };
       for (const path of routes) {
         report.stage = { width, path, action: 'navigation' };
-        const position = await contentPosition();
+        const position = await contentPosition(path);
         if (!baseline) baseline = position;
         sameContentPosition(position, baseline);
         await page.focus('.skip-link');
@@ -352,14 +368,12 @@ export async function verifyOwnerShell(page, config, evidenceDirectory) {
         await page.focus(button('展开侧栏'));
         await page.keyboard.press('Tab');
         await page.waitForFunction(
-          () =>
-            document.activeElement?.getAttribute('aria-label') ===
-            '总览，尚未开放',
+          () => document.activeElement?.getAttribute('aria-label') === '总览',
         );
         report.stage = 'collapsed overview tooltip';
         await page.waitForFunction(() =>
-          [...document.querySelectorAll('[role="tooltip"]')].some((node) =>
-            node.textContent.includes('总览，尚未开放'),
+          [...document.querySelectorAll('[role="tooltip"]')].some(
+            (node) => node.textContent.trim() === '总览',
           ),
         );
         await page.keyboard.press('Escape');
@@ -378,18 +392,18 @@ export async function verifyOwnerShell(page, config, evidenceDirectory) {
         await page.keyboard.press('Escape');
         await sidebarWidth(72);
         report.checks.push(
-          'Collapsed sidebar Tab reaches the unavailable overview and exposes its reason in a real tooltip; hover exposes the library label; Escape leaves collapse state unchanged.',
+          'Collapsed sidebar Tab reaches the overview link and exposes its label in a real tooltip; hover exposes the library label; Escape leaves collapse state unchanged.',
         );
         let compactBaseline;
         for (const path of routes) {
-          if (path !== '/upload') {
+          if (path !== routes[0]) {
             await page.goto(`${config.origin}${path}`);
             await waitForOwnerRoute(page, config, path);
           }
           await sidebarWidth(72);
           const actual = await readNavigation('.shell-navigation');
           verifyNavigation(actual, path, true);
-          const position = await contentPosition();
+          const position = await contentPosition(path);
           if (!compactBaseline) compactBaseline = position;
           sameContentPosition(position, compactBaseline);
           await page.screenshot({
@@ -549,8 +563,8 @@ export async function verifyOwnerShell(page, config, evidenceDirectory) {
     await verifyUIRefinement({ page, config, report });
     await assertNoBrowserErrors(page);
     report.checks.push(
-      'All implemented owner routes share the ten design menu entries; the eight implemented entries are links, and overview/analytics explain that they are not yet available.',
-      'Computed navigation text decoration is none, including hover; heading origins match across every implemented owner route at desktop, phone and tablet widths.',
+      'All implemented owner routes share the ten design menu entries as active links, including the dashboard and analytics pages.',
+      'Computed navigation text decoration is none, including hover; content origins match across every implemented owner route at desktop, phone and tablet widths.',
       'Desktop keyboard collapse changes sidebar 232 → 72; icons, accessible names and disabled reasons remain; navigation and real reload preserve collapsed preference, and expanded preference survives reload.',
       'Account Escape restores visible account trigger; phone/tablet menu Escape restores menu trigger; navigation clicks close the menu.',
     );

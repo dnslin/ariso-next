@@ -18,7 +18,7 @@ import { Skeleton } from '@heroui/react/skeleton';
 import { Toolbar } from '@heroui/react/toolbar';
 import { Tooltip } from '@heroui/react/tooltip';
 import { toast } from '@heroui/react/toast';
-import { Expand, Layers } from 'lucide-react';
+import { BarChart3, Expand, Layers } from 'lucide-react';
 import type { LibraryDetail as Detail } from '../../server/library/detail-types';
 import type { LibraryFilters } from '../../server/library/query-schema';
 import type { VersionKind } from '../../server/media/schema';
@@ -52,6 +52,7 @@ function DetailContent({
   mutationPending,
   onVersions,
   onView,
+  onStatistics,
 }: {
   detail: Detail;
   onCopy: () => void;
@@ -64,6 +65,7 @@ function DetailContent({
   mutationPending: boolean;
   onVersions: () => void;
   onView: () => void;
+  onStatistics?: () => void;
 }) {
   const [viewerTooltipOpen, setViewerTooltipOpen] = useState(false);
   useEffect(() => {
@@ -158,6 +160,21 @@ function DetailContent({
                   </Button>
                   <Tooltip.Content>版本信息</Tooltip.Content>
                 </Tooltip>
+                {onStatistics ? (
+                  <Tooltip>
+                    <Button
+                      data-testid="detail-statistics-entry"
+                      aria-label="图片访问统计"
+                      isIconOnly
+                      variant="ghost"
+                      className="size-11 shrink-0 rounded-lg text-muted hover:text-foreground"
+                      onPress={onStatistics}
+                    >
+                      <BarChart3 aria-hidden size={20} />
+                    </Button>
+                    <Tooltip.Content>访问统计</Tooltip.Content>
+                  </Tooltip>
+                ) : null}
                 <Tooltip
                   isOpen={viewerTooltipOpen}
                   onOpenChange={setViewerTooltipOpen}
@@ -331,8 +348,10 @@ export function LibraryDetail({
   onVersions,
   initialSelected,
   viewerFilters,
+  onStatistics,
 }: {
   initialSelected?: string;
+  onStatistics?: () => void;
   viewerFilters?: LibraryFilters;
   query: ReturnType<typeof useDetailQuery>;
   hidden?: boolean;
@@ -501,6 +520,7 @@ export function LibraryDetail({
               detail={query.data}
               selected={selected ?? initialPreview(query.data)}
               onSelect={setSelected}
+              onStatistics={onStatistics}
               onVersions={() =>
                 onVersions(selected ?? initialPreview(query.data))
               }

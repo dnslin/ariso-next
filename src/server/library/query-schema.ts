@@ -50,6 +50,7 @@ export const libraryQuerySchema = z
     storageId: id.optional(),
     visibility: z.enum(['public', 'private']).optional(),
     status: z.enum(['pending', 'processing', 'ready', 'failed']).optional(),
+    failure: z.enum(['initial', 'reprocess']).optional(),
     deletionStatus: z.enum(['none', 'deleting', 'cleanup_failed']).optional(),
     sort: z
       .enum(['uploaded_desc', 'uploaded_asc', 'size_desc', 'size_asc'])
@@ -85,6 +86,8 @@ export const libraryQuerySchema = z
       reject('该范围使用固定顺序');
     if (value.scope !== 'trash' && value.deletionStatus !== undefined)
       reject('删除状态仅用于回收站');
+    if (value.scope === 'trash' && value.failure !== undefined)
+      reject('当前处理异常仅用于正常图库或相册');
     if (
       value.scope === 'trash' &&
       (value.albumId !== undefined ||
@@ -108,6 +111,7 @@ export const libraryQuerySchema = z
       storageId: value.storageId ?? null,
       visibility: value.visibility ?? null,
       status: value.status ?? null,
+      failure: value.failure ?? null,
       deletionStatus: value.deletionStatus ?? null,
       sort:
         value.scope === 'album'

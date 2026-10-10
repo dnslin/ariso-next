@@ -336,7 +336,7 @@ describe('persisted analytics reports', () => {
     ]);
   });
 
-  it('returns only the top ten nonzero images with stable ID ordering on ties and no album multiplication', () => {
+  it('excludes permanently removed images before taking the top ten, with stable ties and no album multiplication', () => {
     const imageIds = Array.from(
       { length: 12 },
       (_, index) =>
@@ -346,6 +346,8 @@ describe('persisted analytics reports', () => {
       fixture.image(imageId);
       access(imageId, '2026-10-08', 5);
     }
+    const deleted = randomUUID();
+    access(deleted, '2026-10-08', 1000);
     const unvisited = fixture.image();
     fixture.db.transaction((tx) => {
       for (const name of ['first', 'second', 'third']) {
@@ -356,15 +358,19 @@ describe('persisted analytics reports', () => {
       }
       createAlbum(tx, { name: 'empty' });
     });
+    for (const days of [7, 30, 90] as const)
+      expect(overview(days).popular.map((row) => row.imageId)).toEqual(
+        imageIds.slice(0, 10),
+      );
     const report = overview();
-    expect(report.popular.map((row) => row.imageId)).toEqual(
-      imageIds.slice(0, 10),
-    );
     expect(report.popular.map((row) => row.count)).toEqual(Array(10).fill(5));
     expect(report.popular.some((row) => row.imageId === unvisited)).toBe(false);
     expect(report.counts).toEqual(readCounts(fixture.db).counts);
     expect(report.counts).toMatchObject({ normalImages: 13, albums: 4 });
-    expect(report.versions.total).toBe(60);
+    expect(report.versions.total).toBe(1060);
+    expect(report.today).toBe(1060);
+    expect(report.cumulative.total).toBe(1060);
+    expect(report.trend.at(-1)?.count).toBe(1060);
     access(imageIds[11], '2026-10-08', 1);
     expect(overview().popular.map((row) => row.imageId)).toEqual([
       imageIds[11],
@@ -449,6 +455,14 @@ describe('persisted analytics reports', () => {
     );
     trashImage(fixture.db, imageId);
     requestPermanentDelete(fixture.db, imageId);
+    expect(overview().popular).toMatchObject([
+      {
+        imageId,
+        count: 500,
+        state: 'recycled',
+        managementUrl: `/trash?image=${imageId}`,
+      },
+    ]);
     await cleanupPermanentDeletes(
       {
         db: fixture.db,
@@ -471,16 +485,17 @@ describe('persisted analytics reports', () => {
     expect(report.trend.find((row) => row.date === '2026-10-07')?.count).toBe(
       500,
     );
-    expect(report.popular).toEqual([
-      {
-        imageId,
-        count: 501,
-        state: 'deleted',
-        displayName: null,
-        shortId: imageId.slice(0, 8),
-        managementUrl: null,
-        thumbnailUrl: null,
-      },
+    for (const days of [7, 30, 90] as const)
+      expect(overview(days).popular).toEqual([]);
+    expect(
+      fixture.db.$client
+        .prepare(
+          'SELECT date, count FROM analytics_image_daily WHERE image_id = ? ORDER BY date',
+        )
+        .all(imageId),
+    ).toEqual([
+      { date: '2026-10-07', count: 500 },
+      { date: '2026-10-08', count: 1 },
     ]);
     expect(JSON.stringify(report.popular)).not.toContain('sample');
     expect(() => imageStats(imageId)).toThrow(

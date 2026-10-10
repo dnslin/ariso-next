@@ -1,0 +1,29 @@
+{
+  "phase": "selection",
+  "status": "passed",
+  "checks": [
+    "HeroUI checkbox click and keyboard Space select without opening details; layout and detail return preserve selection without adding a gallery row.",
+    "Select-all covers all 80 loaded IDs with fewer mounted cards; appending the final 13 records leaves the explicit selection at 80.",
+    "Current-page select/deselect and Back preserve other-page IDs; the paged selected list renders 20 rows and removes an actual second-page entry.",
+    "Within one browser task, a large drag shrunk below the 5px movement threshold and immediately released removes only new drag hits, retaining the pre-drag current-page image and all 39 other-page IDs.",
+    "Search, sort and loading-mode changes each independently clear the previous explicit selection.",
+    "A manually checked image survives a real plain mouse drag; consecutive plain/Shift drags add intersecting cards, and Escape restores the pre-drag selection after adding a new fifth card; no detail opens or gallery shifts.",
+    "Two different mousemove events followed by Escape in the same browser task leave no queued rAF capable of overwriting the restored selection after two frames.",
+    "Light/dark desktop, mobile and short-viewport selection panels keep 44px touch checkboxes, visible controls, bounded width/height and Escape focus restoration.",
+    "Clearing all selections and removing the selected list’s final item both return focus to the existing search input."
+  ],
+  "combinations": [],
+  "screenshots": [
+    "library-selection-cross-page-counts.png",
+    "library-selection-light-1440x1080.png",
+    "library-selection-touch-light-390x844.png",
+    "library-selection-light-390x844.png",
+    "library-selection-touch-light-390x560.png",
+    "library-selection-light-390x560.png",
+    "library-selection-dark-1440x1080.png",
+    "library-selection-touch-dark-390x844.png",
+    "library-selection-dark-390x844.png",
+    "library-selection-touch-dark-390x560.png",
+    "library-selection-dark-390x560.png"
+  ]
+}

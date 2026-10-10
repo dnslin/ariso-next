@@ -1,0 +1,66 @@
+Already up to date
+Done in 38ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-179-analytics-ui/ariso
+
+ ❯ |unit| tests/unit/analytics/presentation.test.ts (9 tests | 3 failed) 29ms
+   ❯ analytics presentation from real report fields (9)
+     × keeps known bytes, unknown objects and disabled storage separate instead of drawing a complete proportion 4ms
+     × keeps composition completeness independent of enabled=true 2ms
+     × keeps composition completeness independent of enabled=false 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/analytics/presentation.test.ts > analytics presentation from real report fields > keeps known bytes, unknown objects and disabled storage separate instead of drawing a complete proportion
+AssertionError: expected '<div class="grid gap-5" data-testid="…' to contain '总量待确认'
+
+Expected: "总量待确认"
+Received: "<div class="grid gap-5" data-testid="analytics-usage"><p class="text-[13px] text-muted" data-testid="usage-total">已登记 1 KiB，另有 3 个对象待核对，总占用尚未确认。 更新于 2026/10/09 12:30。</p><div class="card card--default min-w-0 gap-3 rounded-[20px] border border-border bg-surface px-4 py-5 shadow-none min-[1200px]:px-6" data-slot="card"><h2 class="text-lg font-medium leading-[22px]">存储归档 · 已停用</h2><div data-storage-id="storage" class="grid gap-3"><p class="text-lg font-medium leading-[22px]">已登记 1 KiB · 另有 3 个对象待核对</p><dl><div class="flex min-h-[52px] items-center justify-between gap-3 text-sm"><dt>正常原图</dt><dd class="tabular-nums">512 B</dd></div><div class="flex min-h-[52px] items-center justify-between gap-3 text-sm"><dt>正常派生</dt><dd class="tabular-nums">512 B</dd></div><div class="flex min-h-[52px] items-center justify-between gap-3 text-sm"><dt>回收站</dt><dd class="tabular-nums">0 B</dd></div><div class="flex min-h-[52px] items-center justify-between gap-3 text-sm"><dt>处理中／待清理</dt><dd class="tabular-nums">0 B</dd></div></dl><p class="text-xs text-muted">总占用尚未确认，不绘完整比例。</p><p class="text-xs text-muted">尚无完整的最后确认时间；停用不会清零。</p></div></div><p class="text-sm">受理永久删除后仍占空间，成功删除对象后才减少。</p></div>"
+
+ ❯ tests/unit/analytics/presentation.test.ts:234:21
+    232|     expect(pending).toContain('已停用');
+    233|     expect(pending).toContain('3 个对象待核对');
+    234|     expect(pending).toContain('总量待确认');
+       |                     ^
+    235|     expect(pending).toContain('chip--warning');
+    236|     expect(pending).toContain('chip--default');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  |unit| tests/unit/analytics/presentation.test.ts > analytics presentation from real report fields > keeps composition completeness independent of enabled=true
+AssertionError: expected '<div class="grid gap-5" data-testid="…' to contain 'data-slot="chip"'
+
+Expected: "data-slot="chip""
+Received: "<div class="grid gap-5" data-testid="analytics-usage"><p class="text-[13px] text-muted" data-testid="usage-total">已登记 1 KiB。 更新于 2026/10/09 12:30。</p><div class="card card--default min-w-0 gap-3 rounded-[20px] border border-border bg-surface px-4 py-5 shadow-none min-[1200px]:px-6" data-slot="card"><h2 class="text-lg font-medium leading-[22px]">真实存储 · 已启用</h2><div data-storage-id="composition-storage" class="grid gap-3"><p class="text-lg font-medium leading-[22px]">已登记 1 KiB</p><div class="flex h-3 gap-0.5 overflow-hidden" role="img" aria-label="已确认对象占用组成；具体字节数见下方" data-testid="usage-composition"><span class="h-3 bg-accent" style="flex:512"></span><span class="h-3 bg-border" style="flex:256"></span><span class="h-3 bg-default" style="flex:256"></span></div><dl><div class="flex min-h-[52px] items-center justify-between gap-3 text-sm"><dt>正常原图</dt><dd class="tabular-nums">512 B</dd></div><div class="flex min-h-[52px] items-center justify-between gap-3 text-sm"><dt>正常派生</dt><dd class="tabular-nums">256 B</dd></div><div class="flex min-h-[52px] items-center justify-between gap-3 text-sm"><dt>回收站</dt><dd class="tabular-nums">256 B</dd></div><div class="flex min-h-[52px] items-center justify-between gap-3 text-sm"><dt>处理中／待清理</dt><dd class="tabular-nums">0 B</dd></div></dl><p class="text-xs text-muted">四类互斥，合计为当前已确认占用。</p><p class="text-xs text-muted">最后确认 2026/10/09 11:20；停用不会清零。</p></div></div><p class="text-sm">受理永久删除后仍占空间，成功删除对象后才减少。</p></div>"
+
+ ❯ tests/unit/analytics/presentation.test.ts:271:23
+    269|     });
+    270|     const confirmed = render(storage);
+    271|     expect(confirmed).toContain('data-slot="chip"');
+       |                       ^
+    272|     expect(confirmed).toContain(enabled ? 'chip--success' : 'chip--def…
+    273|     expect(confirmed).toContain(enabled ? '已启用' : '已停用');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  |unit| tests/unit/analytics/presentation.test.ts > analytics presentation from real report fields > keeps composition completeness independent of enabled=false
+AssertionError: expected '<div class="grid gap-5" data-testid="…' to contain 'data-slot="chip"'
+
+Expected: "data-slot="chip""
+Received: "<div class="grid gap-5" data-testid="analytics-usage"><p class="text-[13px] text-muted" data-testid="usage-total">已登记 1 KiB。 更新于 2026/10/09 12:30。</p><div class="card card--default min-w-0 gap-3 rounded-[20px] border border-border bg-surface px-4 py-5 shadow-none min-[1200px]:px-6" data-slot="card"><h2 class="text-lg font-medium leading-[22px]">真实存储 · 已停用</h2><div data-storage-id="composition-storage" class="grid gap-3"><p class="text-lg font-medium leading-[22px]">已登记 1 KiB</p><div class="flex h-3 gap-0.5 overflow-hidden" role="img" aria-label="已确认对象占用组成；具体字节数见下方" data-testid="usage-composition"><span class="h-3 bg-accent" style="flex:512"></span><span class="h-3 bg-border" style="flex:256"></span><span class="h-3 bg-default" style="flex:256"></span></div><dl><div class="flex min-h-[52px] items-center justify-between gap-3 text-sm"><dt>正常原图</dt><dd class="tabular-nums">512 B</dd></div><div class="flex min-h-[52px] items-center justify-between gap-3 text-sm"><dt>正常派生</dt><dd class="tabular-nums">256 B</dd></div><div class="flex min-h-[52px] items-center justify-between gap-3 text-sm"><dt>回收站</dt><dd class="tabular-nums">256 B</dd></div><div class="flex min-h-[52px] items-center justify-between gap-3 text-sm"><dt>处理中／待清理</dt><dd class="tabular-nums">0 B</dd></div></dl><p class="text-xs text-muted">四类互斥，合计为当前已确认占用。</p><p class="text-xs text-muted">最后确认 2026/10/09 11:20；停用不会清零。</p></div></div><p class="text-sm">受理永久删除后仍占空间，成功删除对象后才减少。</p></div>"
+
+ ❯ tests/unit/analytics/presentation.test.ts:271:23
+    269|     });
+    270|     const confirmed = render(storage);
+    271|     expect(confirmed).toContain('data-slot="chip"');
+       |                       ^
+    272|     expect(confirmed).toContain(enabled ? 'chip--success' : 'chip--def…
+    273|     expect(confirmed).toContain(enabled ? '已启用' : '已停用');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 6 passed (9)
+   Start at  12:32:24
+   Duration  428ms (import 75%, transform 16%, tests 8%, worker 1%)

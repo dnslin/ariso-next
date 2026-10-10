@@ -1,0 +1,30 @@
+@import '../../../src/app/globals.css';
+@source './**/*.tsx';
+
+.prototype-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.preview-account {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+}
+.preview-account > span {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--default);
+}
+.preview-account small {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+}

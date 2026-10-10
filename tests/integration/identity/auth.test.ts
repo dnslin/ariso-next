@@ -190,6 +190,25 @@ describe('initialized production auth', () => {
     expect(await revoked.text()).toContain('login-heading');
   });
 
+  it.each(['/dashboard', '/analytics?days=30'])(
+    'protects analytics owner page %s and preserves the login destination',
+    async (path) => {
+      const anonymous = await fetch(`${origin}${path}`, { redirect: 'manual' });
+      expect(anonymous.status).toBe(307);
+      expect(anonymous.headers.get('location')).toBe(
+        `/login?returnTo=${encodeURIComponent(path)}`,
+      );
+      const cookie = cookies(await login());
+      const owner = await fetch(`${origin}${path}`, {
+        headers: { cookie },
+        redirect: 'manual',
+      });
+      expect(owner.status).toBe(200);
+      expect(owner.headers.get('cache-control')).toContain('no-store');
+      expect(await owner.text()).toContain(email);
+    },
+  );
+
   it('protects the real admin page independently of navigation, including expired and revoked Cookie replay', async () => {
     const page = (headers: Record<string, string> = {}) =>
       fetch(`${origin}/admin`, { headers, redirect: 'manual' });
@@ -212,7 +231,7 @@ describe('initialized production auth', () => {
     const cookie = cookies(await login());
     const allowed = await page({ cookie });
     expect(allowed.status).toBe(307);
-    expect(allowed.headers.get('location')).toBe('/upload');
+    expect(allowed.headers.get('location')).toBe('/dashboard');
     expect(allowed.headers.get('cache-control')).toContain('no-store');
     const upload = await fetch(`${origin}/upload`, {
       headers: { cookie },

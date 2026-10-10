@@ -1,0 +1,108 @@
+{
+  "status": "failed",
+  "width": 1440,
+  "phase": "restart",
+  "checks": [
+    "Real process restart retains initialized owner; old setup code rejected over HTTP; /setup redirects to /login"
+  ],
+  "layouts": [],
+  "health": [
+    {
+      "status": 200,
+      "cacheControl": "no-store",
+      "body": {
+        "status": "ok"
+      }
+    }
+  ],
+  "settings": {
+    "site_settings": [
+      {
+        "id": 1,
+        "public_url": "http://ariso-65425.localhost:65425",
+        "time_zone": "UTC",
+        "name": "Ariso",
+        "description": "",
+        "logo_key": null,
+        "logo_mime": null,
+        "favicon_key": null,
+        "favicon_mime": null,
+        "updated_at": 1791594305756
+      }
+    ],
+    "media_settings": [
+      {
+        "id": 1,
+        "compression_enabled": 1,
+        "output_format": "webp",
+        "quality": 82,
+        "max_edge": null,
+        "jpeg_background": "#FFFFFF",
+        "watermark_mode": "off",
+        "default_link_version": "compressed",
+        "default_visibility": "public",
+        "concurrency": 1,
+        "updated_at": 1791594305756,
+        "watermark_asset_id": null,
+        "watermark_text": "",
+        "watermark_font": "chinese",
+        "watermark_font_size": 3,
+        "watermark_color": "#FFFFFF",
+        "watermark_stroke_color": "#000000",
+        "watermark_stroke_width": 0,
+        "watermark_opacity": 50,
+        "watermark_position": "bottom-right",
+        "watermark_margin": 2,
+        "watermark_width": 20
+      }
+    ],
+    "storage_settings": [
+      {
+        "id": 1,
+        "default_storage_id": "a17c33f1-b15f-4a96-a010-2063cd48061a"
+      }
+    ],
+    "storage_configs": [
+      {
+        "id": "a17c33f1-b15f-4a96-a010-2063cd48061a",
+        "name": "默认本地存储",
+        "type": "local",
+        "enabled": 1,
+        "created_at": 1791594284751,
+        "updated_at": 1791594284751,
+        "local_path": "default",
+        "endpoint": null,
+        "region": null,
+        "bucket": null,
+        "path_prefix": null,
+        "force_path_style": null,
+        "access_key_encrypted": null,
+        "secret_key_encrypted": null,
+        "config_revision": 1,
+        "connection_status": "untested",
+        "connection_revision": null,
+        "connection_tested_at": null,
+        "cors_status": "untested",
+        "cors_revision": null,
+        "cors_origin": null,
+        "cors_tested_at": null,
+        "connection_report": null,
+        "cors_report": null
+      }
+    ]
+  },
+  "activeCheck": "session",
+  "sessionChecks": [
+    {
+      "check": "Real HTTP 429 feedback disables login until the retry header window expires",
+      "retrySeconds": 10
+    }
+  ],
+  "error": "Error: page.waitForURL timed out after 10000ms: expected \"http://ariso-65425.localhost:65425/upload\"; last URL was \"http://ariso-65425.localhost:65425/dashboard\"\n    at waitForURLInPage (file:////[eval1]:16205:11)\n    at async file:////[eval1]:16691:28",
+  "page": {
+    "pathname": "/dashboard",
+    "heading": "工作台",
+    "activeTag": "BODY",
+    "activeId": ""
+  }
+}

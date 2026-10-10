@@ -1,0 +1,76 @@
+Already up to date
+Done in 37ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-179-analytics-ui/ariso
+
+ ❯ |integration| tests/integration/analytics/reports.test.ts (15 tests | 2 failed | 13 skipped) 72ms
+   ❯ persisted analytics reports (15)
+     × excludes permanently removed images before taking the top ten, with stable ties and no album multiplication 49ms
+     × keeps historical counts after real permanent cleanup, drops all old content information and does not transfer counts to a same-name upload 22ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/analytics/reports.test.ts > persisted analytics reports > excludes permanently removed images before taking the top ten, with stable ties and no album multiplication
+AssertionError: expected [ …(10) ] to deeply equal [ …(10) ]
+
+- Expected
++ Received
+
+  [
++   "54a1af89-0225-416d-aa82-fa94861695bb",
+    "00000000-0000-4000-8000-000000000000",
+    "00000000-0000-4000-8000-000000000001",
+    "00000000-0000-4000-8000-000000000002",
+    "00000000-0000-4000-8000-000000000003",
+    "00000000-0000-4000-8000-000000000004",
+    "00000000-0000-4000-8000-000000000005",
+    "00000000-0000-4000-8000-000000000006",
+    "00000000-0000-4000-8000-000000000007",
+    "00000000-0000-4000-8000-000000000008",
+-   "00000000-0000-4000-8000-000000000009",
+  ]
+
+ ❯ tests/integration/analytics/reports.test.ts:362:64
+    360|     });
+    361|     for (const days of [7, 30, 90] as const)
+    362|       expect(overview(days).popular.map((row) => row.imageId)).toEqual(
+       |                                                                ^
+    363|         imageIds.slice(0, 10),
+    364|       );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  |integration| tests/integration/analytics/reports.test.ts > persisted analytics reports > keeps historical counts after real permanent cleanup, drops all old content information and does not transfer counts to a same-name upload
+AssertionError: expected [ { …(7) } ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   {
++     "count": 501,
++     "displayName": null,
++     "imageId": "b18f0aaf-636d-4f6a-a797-9ccc222e3ea5",
++     "managementUrl": null,
++     "shortId": "b18f0aaf",
++     "state": "deleted",
++     "thumbnailUrl": null,
++   },
++ ]
+
+ ❯ tests/integration/analytics/reports.test.ts:484:38
+    482|     );
+    483|     for (const days of [7, 30, 90] as const)
+    484|       expect(overview(days).popular).toEqual([]);
+       |                                      ^
+    485|     expect(
+    486|       fixture.db.$client.prepare('SELECT date, count FROM analytics_im…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 13 skipped (15)
+   Start at  22:15:33
+   Duration  593ms (import 62%, transform 24%, tests 14%)

@@ -1,5 +1,6 @@
 import { and, asc, eq, sql } from 'drizzle-orm';
 import type { MediaTransaction } from './images.ts';
+import { mediaProcessingFailure } from './failures.ts';
 import { mediaImages, mediaJobs } from './schema.ts';
 
 export type MediaUsageGroup = 'recycle' | 'original' | 'derived' | 'pending';
@@ -35,8 +36,8 @@ export function readMediaCounts(tx: MediaTransaction) {
       storageId: mediaImages.storageId,
       normalImages: sql<number>`count(case when ${normal} then 1 end)`,
       recycledImages: sql<number>`count(case when not (${normal}) then 1 end)`,
-      initialProcessingFailures: sql<number>`count(case when ${normal} and ${mediaImages.processingStatus} = 'failed' then 1 end)`,
-      reprocessFailures: sql<number>`count(case when ${normal} and ${mediaImages.processingStatus} = 'ready' and ${latestProcessJobs.status} = 'failed' then 1 end)`,
+      initialProcessingFailures: sql<number>`count(case when ${normal} and ${mediaProcessingFailure('initial')} then 1 end)`,
+      reprocessFailures: sql<number>`count(case when ${normal} and ${mediaProcessingFailure('reprocess', sql`${latestProcessJobs.status}`)} then 1 end)`,
     })
     .from(mediaImages)
     .leftJoin(

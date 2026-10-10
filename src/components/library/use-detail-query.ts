@@ -13,6 +13,7 @@ export function useDetailQuery(
   imageId: string | null,
   returnTo: string,
   albumId?: string,
+  enabled = true,
 ) {
   const resetUpload = useResetUpload();
   const [pendingImageId, setPendingImageId] = useState<string | null>(null);
@@ -37,7 +38,11 @@ export function useDetailQuery(
     {
       ...detailQueryOptions(imageId, albumId),
       enabled:
-        !!imageId && !mutationPending && !unavailable && !observationPaused,
+        enabled &&
+        !!imageId &&
+        !mutationPending &&
+        !unavailable &&
+        !observationPaused,
       staleTime: 0,
       refetchOnWindowFocus: true,
     },
@@ -64,6 +69,7 @@ export function useDetailQuery(
     detail: query.data,
     refetch: query.refetch,
     enabled:
+      enabled &&
       !!imageId &&
       !!query.data &&
       hasActiveDetailTask(query.data) &&
@@ -78,13 +84,13 @@ export function useDetailQuery(
       (error) => error instanceof DetailReadError && error.status === 401,
     );
   useEffect(() => {
-    if (!expired) return;
+    if (!expired || !enabled) return;
     resetUpload();
     client.clear();
     window.location.replace(
       `/login?reason=expired&returnTo=${encodeURIComponent(returnTo)}`,
     );
-  }, [client, expired, resetUpload, returnTo]);
+  }, [client, enabled, expired, resetUpload, returnTo]);
   useEffect(
     () => () => {
       if (!imageId) return;

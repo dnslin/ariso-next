@@ -16,6 +16,8 @@ export function loginDestination(value: string | string[] | undefined) {
   return url.origin === 'https://ariso.invalid' &&
     ([
       '/admin',
+      '/dashboard',
+      '/analytics',
       '/upload',
       '/library',
       '/trash',

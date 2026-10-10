@@ -1,0 +1,35 @@
+{
+  "reviewHead": "87bba340c856624b9e017e061305d1ebd35d2c32",
+  "productChanged": false,
+  "humanAcceptance": "passed by explicit user statement",
+  "verdict": "request changes",
+  "openRequiredP2": 1,
+  "checks": [
+    {
+      "command": "pnpm exec prettier --write docs/verification/analytics-179/approved-implementation/README.md docs/verification/analytics-179/approved-implementation/usage-refinement/README.md docs/verification/analytics-179/pr-review-20261010",
+      "exitCode": 0,
+      "output": "format-write.txt"
+    },
+    {
+      "command": "pnpm exec prettier --check docs/verification/analytics-179/approved-implementation/README.md docs/verification/analytics-179/approved-implementation/usage-refinement/README.md docs/verification/analytics-179/pr-review-20261010",
+      "exitCode": 0,
+      "output": "format-check.txt"
+    },
+    {
+      "command": "node docs/tasks/check.mjs",
+      "exitCode": 0,
+      "output": "docs.txt"
+    },
+    {
+      "command": "git diff --quiet -- src",
+      "exitCode": 0,
+      "output": "product-unchanged.txt"
+    }
+  ],
+  "localLinkTargetsChecked": 130,
+  "stagedDiffCheck": 0,
+  "credentialScan": {
+    "privateFields": 2,
+    "matches": 0
+  }
+}

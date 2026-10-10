@@ -18,6 +18,8 @@ import {
   mediaObjects,
   mediaVersions,
 } from '../../../src/server/media/schema.ts';
+import { readMediaCounts } from '../../../src/server/media/usage.ts';
+import { readLibrarySelection } from '../../../src/server/library/selection.ts';
 import { createProcessingSnapshot } from '../../../src/server/media/settings.ts';
 import {
   albumImages,
@@ -75,6 +77,137 @@ afterEach(() => {
 });
 
 describe('production library queries', () => {
+  it('locates current initial and latest reprocess failures with the same IDs as media counts', () => {
+    seed('initial', { processingStatus: 'failed' });
+    seed('reprocess-a');
+    seed('reprocess-b', { storageId: 'storage-3' });
+    seed('resolved');
+    seed('active');
+    seed('cancelled');
+    seed('metadata-only');
+    seed('no-job');
+    seed('pending', { processingStatus: 'pending' });
+    seed('recycled', { trashedAt: new Date(2000) });
+    seed('deleting', { deletionStatus: 'deleting' });
+    const snapshot = connection.db.transaction(createProcessingSnapshot);
+    const job = (
+      imageId: string,
+      status: (typeof mediaJobs.$inferInsert)['status'],
+      kind: 'process' | 'metadata' = 'process',
+      createdAt = 2000,
+    ) => {
+      connection.db
+        .insert(mediaJobs)
+        .values({
+          id: `${imageId}-${kind}-${status}-${createdAt}`,
+          imageId,
+          kind,
+          status,
+          scope: 'thumbnail',
+          snapshot,
+          expectedVersions: ['thumbnail'],
+          createdAt: new Date(createdAt),
+          updatedAt: new Date(createdAt),
+        })
+        .run();
+    };
+    for (const id of [
+      'initial',
+      'reprocess-a',
+      'reprocess-b',
+      'resolved',
+      'active',
+      'cancelled',
+      'pending',
+      'recycled',
+      'deleting',
+    ])
+      job(id, 'failed');
+    // Newer metadata does not resolve the latest image-processing failure.
+    job('reprocess-a', 'succeeded', 'metadata', 3000);
+    job('metadata-only', 'failed', 'metadata', 3000);
+    // Same-time later insertion wins rather than job ID sorting.
+    job('resolved', 'succeeded');
+    job('active', 'running');
+    job('cancelled', 'cancelled');
+    expect(ids('failure=initial')).toEqual(['initial']);
+    expect(ids('failure=reprocess')).toEqual(['reprocess-a', 'reprocess-b']);
+    expect(ids('failure=reprocess&status=failed')).toEqual([]);
+    expect(ids('failure=reprocess&storageId=storage-3')).toEqual([
+      'reprocess-b',
+    ]);
+    for (const [failure, field] of [
+      ['initial', 'initialProcessingFailures'],
+      ['reprocess', 'reprocessFailures'],
+    ] as const) {
+      const counts = connection.db.transaction(readMediaCounts);
+      expect(read(`failure=${failure}`).total).toBe(
+        counts.reduce((sum, row) => sum + row[field], 0),
+      );
+    }
+    album('reprocess-b');
+    expect(ids('scope=album&albumId=album-0&failure=reprocess')).toEqual([
+      'reprocess-b',
+    ]);
+    expect(
+      readLibraryNeighbors(
+        connection.db,
+        'reprocess-a',
+        query('failure=reprocess'),
+      ),
+    ).toMatchObject({
+      previous: null,
+      next: { id: 'reprocess-b' },
+    });
+    expect(
+      readLibrarySelection(connection.db, {
+        ids: ['initial', 'reprocess-a', 'resolved'],
+        query: 'failure=reprocess',
+      }).items.map((item) => item.id),
+    ).toEqual(['reprocess-a']);
+    job('reprocess-a', 'succeeded', 'process', 4000);
+    expect(ids('failure=reprocess')).toEqual(['reprocess-b']);
+    expect(() =>
+      readLibraryNeighbors(
+        connection.db,
+        'reprocess-a',
+        query('failure=reprocess'),
+      ),
+    ).toThrow(
+      expect.objectContaining({ code: 'LIBRARY_OUTSIDE_QUERY', status: 409 }),
+    );
+    expect(
+      readLibrarySelection(connection.db, {
+        ids: ['reprocess-a'],
+        query: 'failure=reprocess',
+      }).items,
+    ).toEqual([]);
+  });
+
+  it('paginates failure queries without leaking resolved images or accepting a cursor for another failure', () => {
+    for (let index = 0; index < 23; index++)
+      seed(`failed-${String(index).padStart(2, '0')}`, {
+        processingStatus: 'failed',
+      });
+    seed('ready');
+    const first = read('failure=initial&pageSize=20');
+    expect(first).toMatchObject({ total: 23, hasMore: true });
+    const params = new URLSearchParams({
+      failure: 'initial',
+      pageSize: '20',
+      cursor: first.nextCursor!,
+    });
+    const second = readLibraryPage(connection.db, parseLibraryQuery(params));
+    expect(second.items.map((item) => item.id)).toEqual([
+      'failed-20',
+      'failed-21',
+      'failed-22',
+    ]);
+    expect(second.hasMore).toBe(false);
+    params.set('failure', 'reprocess');
+    expect(() => parseLibraryQuery(params)).toThrow(LibraryQueryError);
+  });
+
   it('intersects filter categories, unions tags and names, and never duplicates rows or totals', () => {
     seed('match-both', {
       displayName: 'Travel portrait',

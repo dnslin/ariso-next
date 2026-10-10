@@ -1,0 +1,43 @@
+Mutation: failures.ts ready -> pending (controlled mutation; restored after run)
+Command: pnpm exec vitest run --project integration tests/integration/library/query.test.ts -t "locates current initial and latest reprocess failures"
+Already up to date
+Done in 54ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-179-analytics-ui/ariso
+
+ ❯ |integration| tests/integration/library/query.test.ts (34 tests | 1 failed | 33 skipped) 63ms
+   ❯ production library queries (29)
+     × locates current initial and latest reprocess failures with the same IDs as media counts 62ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/library/query.test.ts > production library queries > locates current initial and latest reprocess failures with the same IDs as media counts
+AssertionError: expected [ 'pending' ] to deeply equal [ 'reprocess-a', 'reprocess-b' ]
+
+- Expected
++ Received
+
+  [
+-   "reprocess-a",
+-   "reprocess-b",
++   "pending",
+  ]
+
+ ❯ tests/integration/library/query.test.ts:134:38
+    132|     job('cancelled', 'cancelled');
+    133|     expect(ids('failure=initial')).toEqual(['initial']);
+    134|     expect(ids('failure=reprocess')).toEqual(['reprocess-a', 'reproces…
+       |                                      ^
+    135|     expect(ids('failure=reprocess&status=failed')).toEqual([]);
+    136|     expect(ids('failure=reprocess&storageId=storage-3')).toEqual([
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 33 skipped (34)
+   Start at  18:53:57
+   Duration  938ms (import 58%, transform 33%, tests 8%)
+
+
+Exit code: 1

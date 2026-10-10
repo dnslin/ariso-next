@@ -1,0 +1,46 @@
+Already up to date
+Done in 39ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-179-analytics-ui/ariso
+
+ ❯ |integration| tests/integration/analytics/reports.test.ts (15 tests | 1 failed | 14 skipped) 51ms
+   ❯ persisted analytics reports (15)
+     × excludes permanently removed images before taking the top ten, with stable ties and no album multiplication 50ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/analytics/reports.test.ts > persisted analytics reports > excludes permanently removed images before taking the top ten, with stable ties and no album multiplication
+AssertionError: expected [] to deeply equal [ …(10) ]
+
+- Expected
++ Received
+
+- [
+-   "00000000-0000-4000-8000-000000000000",
+-   "00000000-0000-4000-8000-000000000001",
+-   "00000000-0000-4000-8000-000000000002",
+-   "00000000-0000-4000-8000-000000000003",
+-   "00000000-0000-4000-8000-000000000004",
+-   "00000000-0000-4000-8000-000000000005",
+-   "00000000-0000-4000-8000-000000000006",
+-   "00000000-0000-4000-8000-000000000007",
+-   "00000000-0000-4000-8000-000000000008",
+-   "00000000-0000-4000-8000-000000000009",
+- ]
++ []
+
+ ❯ tests/integration/analytics/reports.test.ts:362:64
+    360|     });
+    361|     for (const days of [7, 30, 90] as const)
+    362|       expect(overview(days).popular.map((row) => row.imageId)).toEqual(
+       |                                                                ^
+    363|         imageIds.slice(0, 10),
+    364|       );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 14 skipped (15)
+   Start at  13:51:35
+   Duration  676ms (import 60%, transform 31%, tests 8%)

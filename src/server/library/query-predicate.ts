@@ -15,6 +15,7 @@ import {
 } from 'drizzle-orm';
 import type { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
 import { albums, albumImages, tags, imageTags } from '../collections/schema.ts';
+import { mediaProcessingFailure } from '../media/failures.ts';
 import { mediaImages } from '../media/schema.ts';
 import { storageConfigs } from '../storage/schema.ts';
 import {
@@ -128,6 +129,7 @@ export function libraryPredicate(
     conditions.push(eq(mediaImages.visibility, filters.visibility));
   if (filters.status)
     conditions.push(eq(mediaImages.processingStatus, filters.status));
+  if (filters.failure) conditions.push(mediaProcessingFailure(filters.failure));
   if (filters.deletionStatus)
     conditions.push(
       filters.deletionStatus === 'none'

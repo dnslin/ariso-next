@@ -48,7 +48,7 @@ function metadata(db: BetterSQLite3Database, options: ReadOptions, now: Date) {
 }
 
 /** Date-covering reads avoid the measured history-wide primary-key skip scan.
- * Only ten historical IDs join current media; album relations cannot multiply counts. */
+ * Check current existence per grouped ID before taking ten, then join their metadata. */
 function readPopular(
   db: BetterSQLite3Database,
   range: ReturnType<typeof reportRange>,
@@ -56,7 +56,7 @@ function readPopular(
   const rows = db.all<{
     imageId: string;
     count: number;
-    state: 'normal' | 'recycled' | 'deleted';
+    state: 'normal' | 'recycled';
     displayName: string | null;
     hasThumbnail: number;
   }>(sql`with ranked as (
@@ -64,25 +64,23 @@ function readPopular(
     indexed by analytics_image_daily_date_image_count_idx
     where date between ${range.startDate} and ${range.endDate}
     group by image_id having sum(count) > 0
+      and exists(select 1 from media_images existing
+        where existing.id = analytics_image_daily.image_id)
     order by count desc, image_id asc limit 10
   ) select r.image_id imageId, r.count,
-    case when m.id is null then 'deleted'
-      when m.trashed_at is not null or m.deletion_status is not null then 'recycled'
+    case when m.trashed_at is not null or m.deletion_status is not null then 'recycled'
       else 'normal' end state,
     case when m.trashed_at is null and m.deletion_status is null then m.display_name end displayName,
     case when m.trashed_at is null and m.deletion_status is null and s.enabled = 1
       and exists(select 1 from media_versions v where v.image_id = m.id and v.kind = 'thumbnail')
       then 1 else 0 end hasThumbnail
-    from ranked r left join media_images m on m.id = r.image_id
+    from ranked r join media_images m on m.id = r.image_id
     left join storage_configs s on s.id = m.storage_id
     order by r.count desc, r.image_id asc`);
   return rows.map(({ hasThumbnail, ...row }) => ({
     ...row,
     shortId: row.imageId.slice(0, 8),
-    managementUrl:
-      row.state === 'deleted'
-        ? null
-        : `/${row.state === 'recycled' ? 'trash' : 'library'}?image=${encodeURIComponent(row.imageId)}`,
+    managementUrl: `/${row.state === 'recycled' ? 'trash' : 'library'}?image=${encodeURIComponent(row.imageId)}`,
     thumbnailUrl: hasThumbnail
       ? `/i/${encodeURIComponent(row.imageId)}?type=thumbnail`
       : null,

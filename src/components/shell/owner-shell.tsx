@@ -24,10 +24,9 @@ import {
 // 菜单顺序来自 Figma；只开放已交付页面，未来模块不提供虚假链接。
 const navigation = [
   {
-    href: '/admin',
+    href: '/dashboard',
     label: '总览',
     icon: <LayoutDashboard />,
-    unavailable: true,
   },
   { href: '/upload', label: '上传', icon: <CloudUpload /> },
   { href: '/library', label: '图库', icon: <Images /> },
@@ -39,7 +38,6 @@ const navigation = [
     href: '/analytics',
     label: '访问统计',
     icon: <ChartNoAxesCombined />,
-    unavailable: true,
     section: '管理',
   },
   {

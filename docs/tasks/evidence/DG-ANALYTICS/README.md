@@ -1,5 +1,7 @@
 # DG-ANALYTICS 单图/排行导航设计适用核对
 
+> 2026-10-09用户修订：永久删除图片不再参与热门排行，选取前十之前排除；全站历史累计、趋势和版本计数保留。以下2026-10-08核对及原Figma截图保持历史证据，删除占位不再作为本次实施目标；新原型与执行证据见 [Issue #179](../../../verification/analytics-179/README.md)。尚未同步此修订至Figma。
+
 关联 [Issue #129](https://github.com/dnslin/ariso-next/issues/129)，唯一消费任务 [T-ANA-05 / #179](https://github.com/dnslin/ariso-next/issues/179)。日期：2026-10-09。本次仅修改消费任务、设计索引和本目录证据，无业务代码、依赖、SPEC、冻结 PRD 或 Figma 写入。
 
 ## 范围、前置与依据

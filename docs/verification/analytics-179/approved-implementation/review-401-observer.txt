@@ -1,0 +1,14 @@
+{
+  "node": "v24.18.1",
+  "original": {
+    "disableFirst": false,
+    "fetchesAfterClearAndNextRender": 2,
+    "cacheEntries": 1
+  },
+  "fixed": {
+    "disableFirst": true,
+    "fetchesAfterClearAndNextRender": 1,
+    "cacheEntries": 1
+  },
+  "conclusion": "clear alone restarts the still-enabled list observer at the next options publication; disabling first prevents the new fetch"
+}

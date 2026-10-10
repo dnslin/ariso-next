@@ -21,6 +21,7 @@ it('normalizes equivalent queries before binding cursors', () => {
     ['q', 'Other'],
     ['sort', 'size_desc'],
     ['pageSize', '80'],
+    ['failure', 'reprocess'],
     ['scope', 'album'],
     ['albumId', 'different'],
   ]) {
@@ -47,6 +48,10 @@ it.each([
   'scope=album',
   'scope=album&albumId=a&sort=uploaded_desc',
   'deletionStatus=none',
+  'failure=historical',
+  'failure=initial&failure=reprocess',
+  'scope=trash&failure=initial',
+  'scope=trash&failure=reprocess',
   'scope=trash&tagId=a',
   'scope=trash&visibility=private',
   'scope=trash&uploadedFrom=2026-01-01T00:00:00Z',
@@ -101,3 +106,13 @@ describe('site calendar boundaries', () => {
     ).toThrow();
   });
 });
+
+it.each(['initial', 'reprocess'] as const)(
+  'accepts current %s failure queries in normal and album scopes',
+  (failure) => {
+    expect(parse(`failure=${failure}`).filters.failure).toBe(failure);
+    expect(
+      parse(`scope=album&albumId=album&failure=${failure}`).filters.failure,
+    ).toBe(failure);
+  },
+);

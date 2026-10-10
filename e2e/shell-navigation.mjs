@@ -13,14 +13,14 @@ const menu = 'button[aria-label="菜单"]';
 const close = 'button[aria-label="关闭"]';
 const dialog = '[role="dialog"][aria-label="导航菜单"]';
 const navigation = [
-  '总览，尚未开放',
+  '总览',
   '上传',
   '图库',
   '相册',
   '标签',
   '分享管理',
   '回收站',
-  '访问统计，尚未开放',
+  '访问统计',
   '存储管理',
   '站点设置',
 ];
@@ -182,7 +182,9 @@ try {
         ['/tags', '/tags', 'tags'],
         ['/shares', '/shares', 'shares-list'],
         [`/shares/${albumId}`, '/shares', 'share-settings'],
-        ['/admin', '/upload', 'admin-entry'],
+        ['/admin', '/dashboard', 'admin-entry'],
+        ['/dashboard', '/dashboard', 'dashboard'],
+        ['/analytics', '/analytics', 'analytics'],
         ['/settings/storage', '/settings/storage', 'storage-list'],
         ['/settings/storage/new', '/settings/storage', 'storage-new'],
         ['/settings/general', '/settings/general', 'general-settings'],
@@ -206,7 +208,7 @@ try {
         await page.waitForSelector('.shell-content');
         await page.waitForFunction(
           (path) => location.pathname === path,
-          path === '/admin' ? '/upload' : path,
+          path === '/admin' ? '/dashboard' : path,
         );
         if (name === 'storage-cors') {
           await page.waitForSelector(

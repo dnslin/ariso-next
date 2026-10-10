@@ -23,6 +23,8 @@ const suites = {
       ['upload-usage', 'upload-usage'],
       ['sharing-management', 'sharing-management'],
       ['site-general', 'site-general'],
+      ['analytics', 'analytics'],
+
       ['password-reset', 'password-reset'],
       ['smtp', 'smtp'],
     ],
@@ -49,7 +51,28 @@ const suites = {
     stages: [['site-general', 'siteGeneral']],
     config: (only) => ({ siteGeneralPhase: only }),
   },
+  analytics: {
+    only: [
+      'representative',
+      'behavior',
+      'recovery',
+      'consumers',
+      'detail',
+      'shell',
+    ],
+    stages: [['analytics', 'analytics']],
+    config: (only) => ({ analyticsPhase: only }),
+  },
   account: { stages: [['account', 'account']] },
+  'identity-session': {
+    stages: [['identity-session-scene', 'identitySession']],
+    config: () => ({ width: 1440 }),
+  },
+  'workspace-continuity': {
+    primaryPage: true,
+    stages: [['workspace-continuity', 'workspaceContinuity']],
+    config: () => ({ width: 1440 }),
+  },
   oauth: {},
   'password-reset': {
     only: ['representative', 'interactions', 'recovery'],
@@ -75,7 +98,7 @@ const suites = {
     config: (only) => ({ tokensPhase: only }),
   },
   library: {
-    only: ['recovery'],
+    only: ['recovery', 'consumers'],
     stages: [['library', 'library']],
     config: (only) => ({ libraryPhase: only }),
   },

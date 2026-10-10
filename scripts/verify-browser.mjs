@@ -107,6 +107,8 @@ for (const name of [
   'site-general-failure.png',
   'processing.json',
   'processing-failure.png',
+  'analytics.json',
+  'analytics-failure.png',
   'account.json',
   'account-all-failure.png',
   'account-1440-failure.png',
@@ -141,6 +143,7 @@ for (const name of [
   'interaction-polish-1440.json',
   'interaction-polish-390.json',
   'workspace-continuity-1440.json',
+  'identity-session-1440.json',
   'workspace-continuity-390.json',
   ...[1440, 390].flatMap((width) =>
     ['setup', 'restart'].map((phase) => `identity-${width}-${phase}.json`),

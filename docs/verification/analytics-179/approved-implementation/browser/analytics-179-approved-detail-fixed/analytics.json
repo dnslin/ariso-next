@@ -1,0 +1,263 @@
+{
+  "status": "failed",
+  "taskSpaceId": 2,
+  "origin": "http://ariso-62632.localhost:62632",
+  "phase": "detail",
+  "checks": [],
+  "layouts": [
+    {
+      "name": "image-normal",
+      "theme": "light",
+      "height": 1080,
+      "screenshot": "analytics-image-normal-light-1440.png",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "累计访问口径",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "关闭图片统计",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "周期范围",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看记录",
+          "width": 64,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "统计说明",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    }
+  ],
+  "browserErrors": [],
+  "limitations": [
+    "Only disposable runner records, objects and one private Token upload are used; the manual preview is independent.",
+    "HTTP/network/health faults and visibility/timer controls are explicit page-boundary injections; normal analytics responses come from the real production server and are reconciled with SQLite.",
+    "Viewport and keyboard emulation do not prove physical touch or software keyboard behavior. Human design acceptance remains separate."
+  ],
+  "stage": "detail",
+  "imageStatistics": {
+    "injections": [],
+    "reconciled": [
+      {
+        "imageId": "1912aeff-a3aa-4705-9b6b-ab8e854c2c99",
+        "cumulative": {
+          "original": 72,
+          "compressed": 0,
+          "watermark": 0,
+          "total": 72
+        },
+        "periods": [
+          {
+            "days": 7,
+            "startDate": "2026-10-04",
+            "endDate": "2026-10-10",
+            "total": 12,
+            "containsOldTimezone": false
+          },
+          {
+            "days": 30,
+            "startDate": "2026-09-11",
+            "endDate": "2026-10-10",
+            "total": 36,
+            "containsOldTimezone": true
+          },
+          {
+            "days": 90,
+            "startDate": "2026-07-13",
+            "endDate": "2026-10-10",
+            "total": 72,
+            "containsOldTimezone": true
+          }
+        ]
+      },
+      {
+        "imageId": "55a8f77f-ca7d-4b96-9c76-3617ae7ffcbf",
+        "cumulative": {
+          "original": 66,
+          "compressed": 0,
+          "watermark": 0,
+          "total": 66
+        },
+        "periods": [
+          {
+            "days": 7,
+            "startDate": "2026-10-04",
+            "endDate": "2026-10-10",
+            "total": 11,
+            "containsOldTimezone": false
+          },
+          {
+            "days": 30,
+            "startDate": "2026-09-11",
+            "endDate": "2026-10-10",
+            "total": 33,
+            "containsOldTimezone": true
+          },
+          {
+            "days": 90,
+            "startDate": "2026-07-13",
+            "endDate": "2026-10-10",
+            "total": 66,
+            "containsOldTimezone": true
+          }
+        ]
+      },
+      {
+        "imageId": "6b43f3cc-707b-4ebc-8566-cc9dd0cf29a3",
+        "cumulative": {
+          "original": 54,
+          "compressed": 0,
+          "watermark": 0,
+          "total": 54
+        },
+        "periods": [
+          {
+            "days": 7,
+            "startDate": "2026-10-04",
+            "endDate": "2026-10-10",
+            "total": 9,
+            "containsOldTimezone": false
+          },
+          {
+            "days": 30,
+            "startDate": "2026-09-11",
+            "endDate": "2026-10-10",
+            "total": 27,
+            "containsOldTimezone": true
+          },
+          {
+            "days": 90,
+            "startDate": "2026-07-13",
+            "endDate": "2026-10-10",
+            "total": 54,
+            "containsOldTimezone": true
+          }
+        ]
+      },
+      {
+        "imageId": "34ba0332-82af-4a82-b789-675d9919f13c",
+        "cumulative": {
+          "original": 0,
+          "compressed": 0,
+          "watermark": 0,
+          "total": 0
+        },
+        "periods": [
+          {
+            "days": 7,
+            "startDate": "2026-10-04",
+            "endDate": "2026-10-10",
+            "total": 0,
+            "containsOldTimezone": false
+          },
+          {
+            "days": 30,
+            "startDate": "2026-09-11",
+            "endDate": "2026-10-10",
+            "total": 0,
+            "containsOldTimezone": false
+          },
+          {
+            "days": 90,
+            "startDate": "2026-07-13",
+            "endDate": "2026-10-10",
+            "total": 0,
+            "containsOldTimezone": false
+          }
+        ]
+      }
+    ]
+  },
+  "detailStep": "real-reconciliation",
+  "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ []\n- [\n-   '近7天',\n-   '近30天',\n-   '近90天'\n- ]\n\n    at capture (file:///Users/dnslin/.codex/worktrees/issue-179-analytics-ui/ariso/e2e/analytics-image-statistics.mjs:109:14)\n    at async analyticsImageStatistics (file:///Users/dnslin/.codex/worktrees/issue-179-analytics-ui/ariso/e2e/analytics-image-statistics.mjs:205:40)\n    at async file:////[eval2]:106:5",
+  "stoppedForUserControl": false,
+  "failureState": {
+    "url": "http://ariso-62632.localhost:62632/analytics?days=30",
+    "readyState": "complete",
+    "overviewPresent": true,
+    "versionsTitle": "版本访问量 · 最近 30 天",
+    "radios": [
+      {
+        "text": "7 天",
+        "checked": "false",
+        "selected": null,
+        "disabled": false,
+        "focused": false,
+        "rect": {
+          "x": 264,
+          "y": -377,
+          "width": 104,
+          "height": 44
+        },
+        "centerHitIsButton": false
+      },
+      {
+        "text": "30 天",
+        "checked": "true",
+        "selected": "true",
+        "disabled": false,
+        "focused": false,
+        "rect": {
+          "x": 380,
+          "y": -377,
+          "width": 104,
+          "height": 44
+        },
+        "centerHitIsButton": false
+      },
+      {
+        "text": "90 天",
+        "checked": "false",
+        "selected": null,
+        "disabled": false,
+        "focused": false,
+        "rect": {
+          "x": 496,
+          "y": -377,
+          "width": 104,
+          "height": 44
+        },
+        "centerHitIsButton": false
+      }
+    ],
+    "analyticsRequests": [
+      {
+        "path": "/api/analytics/overview?days=30",
+        "startTime": 76.79999995231628,
+        "duration": 16.800000071525574
+      },
+      {
+        "path": "/api/analytics/usage",
+        "startTime": 77,
+        "duration": 18.399999976158142
+      },
+      {
+        "path": "/api/analytics/images/1912aeff-a3aa-4705-9b6b-ab8e854c2c99",
+        "startTime": 277.10000002384186,
+        "duration": 4.399999976158142
+      }
+    ]
+  },
+  "failureSnapshot": "[p1 \"Ariso\" | space \"Ariso Issue 179\"(2): 1 managed, 0 untracked — p1* \"Ariso\"]\nroot\n  container \"后台侧栏\"\n    anchor \"Ariso 首页\" [ref=46, url=http://ariso-62632.localhost:62632/]\n      text \"Ariso\"\n    button \"收起侧栏\" [ref=47, loc=css:button[aria-label=\"收起侧栏\"]]\n      svg_root\n    container \"后台导航\"\n      anchor \"总览\" [ref=48, loc=css:a[aria-label=\"总览\"], url=http://ariso-62632.localhost:62632/dashboard]\n        svg_root\n        text \"总览\"\n      anchor \"上传\" [ref=49, loc=css:a[aria-label=\"上传\"], url=http://ariso-62632.localhost:62632/upload]\n        svg_root\n        text \"上传\"\n      anchor \"图库\" [ref=50, loc=css:a[aria-label=\"图库\"], url=http://ariso-62632.localhost:62632/library]\n        svg_root\n        text \"图库\"\n      anchor \"相册\" [ref=51, loc=css:a[aria-label=\"相册\"], url=http://ariso-62632.localhost:62632/albums]\n        svg_root\n        text \"相册\"\n      anchor \"标签\" [ref=52, loc=css:a[aria-label=\"标签\"], url=http://ariso-62632.localhost:62632/tags]\n        svg_root\n        text \"标签\"\n      anchor \"分享管理\" [ref=53, loc=css:a[aria-label=\"分享管理\"], url=http://ariso-62632.localhost:62632/shares]\n        svg_root\n        text \"分享管理\"\n      anchor \"回收站\" [ref=54, loc=css:a[aria-label=\"回收站\"], url=http://ariso-62632.localhost:62632/trash]\n        svg_root\n        text \"回收站\"\n      paragraph\n        text \"管理\"\n      anchor \"访问统计\" [ref=55, loc=css:a[aria-label=\"访问统计\"], url=http://ariso-62632.localhost:62632/analytics]\n        svg_root\n        text \"访问统计\"\n      anchor \"存储管理\" [ref=56, loc=css:a[aria-label=\"存储管理\"], url=http://ariso-62632.localhost:62632/settings/storage]\n        svg_root\n        text \"存储管理\"\n      anchor \"站点设置\" [ref=57, loc=css:a[aria-label=\"站点设置\"], url=http://ariso-62632.localhost:62632/settings/general]\n        svg_root\n        text \"站点设置\"\n    button \"账号菜单\" [ref=58, loc=css:button[aria-label=\"账号菜单\"]]\n      text \"O\"\n      text \"Owner\"\n      text \"站点所有者\"\n  container \"访问统计\"\n    anchor [ref=59, loc=href:/analytics?days=30&view=daily, url=http://ariso-62632.localhost:62632/analytics?days=30&view=daily]\n      text \"查看每日数值\"\n    heading\n      text \"版本访问量 · 最近 30 天\"\n    unordered_list\n      list_item\n        text \"原图\"\n      list_item\n        text \"234\"\n        text \"次\"\n      list_item\n        text \"压缩图\"\n      list_item\n        text \"0\"\n        text \"次\"\n      list_item\n        text \"水印图\"\n      list_item\n        text \"0\"\n        text \"次\"\n    paragraph\n      text \"合计\"\n      text \"234\"\n      text \"次，与同周期趋势一致。\"\n    heading\n      text \"热门图片 · 最近 30 天\"\n    paragraph\n      text \"按访问量排列，最多 10 张；不补入零访问图片。\"\n    ordered_list\n      list_item\n        button \"查看Issue 179 长名称 摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素...\" [ref=60]\n          text \"01\"\n          image\n          text \"Issue 179 长名称 摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与...\"\n          text \"正常图库\"\n          text \"·\"\n          text \"36\"\n          text \"次\"\n          svg_root\n      list_item\n        button \"查看已回收图片 · 55a8f77f统计\" [ref=61, loc=css:button[aria-label=\"查看已回收图片 · 55a8f77f统计\"]]\n          text \"02\"\n          text \"回收\"\n          text \"已回收图片 · 55a8f77f\"\n          text \"查看回收站记录\"\n          text \"·\"\n          text \"33\"\n          text \"次\"\n          svg_root\n      list_item\n        button \"查看Issue 179 图片 3.png统计\" [ref=62, loc=css:button[aria-label=\"查看Issue 179 图片 3.png统计\"]]\n          text \"03\"\n          svg_root\n          text \"Issue 179 图片 3.png\"\n          text \"无可读缩略图，历史访问保留\"\n          text \"·\"\n          text \"27\"\n          text \"次\"\n          svg_root\n      list_item\n        button \"查看Issue 179 图片 4.png统计\" [ref=63, loc=css:button[aria-label=\"查看Issue 179 图片 4.png统计\"]]\n          text \"04\"\n          image\n          text \"Issue 179 图片 4.png\"\n          text \"正常图库\"\n          text \"·\"\n          text \"24\"\n          text \"次\"\n          svg_root\n      list_item\n        button \"查看Issue 179 图片 5.png统计\" [ref=64, loc=css:button[aria-label=\"查看Issue 179 图片 5.png统计\"]]\n          text \"05\"\n          image\n          text \"Issue 179 图片 5.png\"\n          text \"正常图库\"\n          text \"·\"\n          text \"21\"\n          text \"次\"\n          svg_root\n      list_item\n        button \"查看Issue 179 图片 6.png统计\" [ref=65, loc=css:button[aria-label=\"查看Issue 179 图片 6.png统计\"]]\n          text \"06\"\n          image\n          text \"Issue 179 图片 6.png\"\n          text \"正常图库\"\n          text \"·\"\n          text \"18\"\n          text \"次\"\n          svg_root\n      list_item\n        button \"查看Issue 179 图片 7.png统计\" [ref=66, loc=css:button[aria-label=\"查看Issue 179 图片 7.png统计\"]]\n          text \"07\"\n          image\n          text \"Issue 179 图片 7.png\"\n          text \"正常图库\"\n          text \"·\"\n          text \"15\"\n          text \"次\"\n          svg_root\n  container\n    anchor [ref=67, loc=href:/analytics?days=30&view=scope&scope=overview, url=http://ariso-62632.localhost:62632/analytics?days=30&view=scope&scope=overview]\n      text \"统计口径\"\n    anchor [ref=68, url=http://ariso-62632.localhost:62632/analytics?days=30&view=usage]\n      text \"当前存储占用\"\n  dialog \"图片访问统计\" [ref=69, loc=role:dialog[name=\"图片访问统计\"]]\n    container\n      container\n        image\n        container\n          paragraph\n            text \"图片访问统计\"\n          heading [ref=70]\n            text \"Issue 179 长名称 摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与...\"\n      container\n        container\n          container\n            svg_root\n            text \"累计访问\"\n          button \"累计访问口径\" [ref=71, loc=css:button[aria-label=\"累计访问口径\"]]\n            svg_root\n        container\n          image \"72\"\n            container\n              text \"6\"\n              text \"7\"\n              text \"8\"\n            container\n              text \"1\"\n              text \"2\"\n              text \"3\"\n          text \"次\"\n      button \"关闭图片统计\" [ref=72, loc=css:button[aria-label=\"关闭图片统计\"]]\n        svg_root\n    container\n      container\n        heading\n          svg_root\n          text \"访问版本\"\n        unordered_list\n          container\n            list_item\n              text \"原图\"\n            list_item\n            list_item\n              text \"72\"\n              text \"次\"\n          container\n            list_item\n              text \"压缩图\"\n            list_item\n            list_item\n              text \"0\"\n              text \"次\"\n          container\n            list_item\n              text \"水印图\"\n            list_item\n            list_item\n              text \"0\"\n              text \"次\"\n      container\n        container\n          heading\n            svg_root\n            text \"近期访问\"\n          button \"周期范围\" [ref=73, loc=css:button[aria-label=\"周期范围\"]]\n            svg_root\n        group \"近7天 12次，近30天 36次，近90天 72次\"\n          application \"近7天 近30天 近90天 0 20 40 60 80 12 36 72\" [ref=74]\n            text \"近7天\"\n            text \"近30天\"\n            text \"近90天\"\n            text \"0\"\n            text \"20\"\n            text \"40\"\n            text \"60\"\n            text \"80\"\n            text \"12\"\n            text \"36\"\n            text \"72\"\n        paragraph\n          text \"含按旧时区归档的数据；历史日期不按新时区重算。\"\n    container\n      container\n        svg_root\n        text \"更新于 2026/10/10 08:52\"\n        container\n          text \"·\"\n          text \"Asia/Shanghai\"\n      container\n        anchor [ref=75, url=http://ariso-62632.localhost:62632/library?image=1912aeff-a3aa-4705-9b6b-ab8e854c2c99&analyticsReturn=%2Fanalytics%3Fdays%3D30]\n          text \"查看记录\"\n        button \"统计说明\" [ref=76, loc=css:button[aria-label=\"统计说明\"]]\n          svg_root\n",
+  "fixtureRestored": true,
+  "finishedAt": "2026-10-10T00:52:37.784Z"
+}

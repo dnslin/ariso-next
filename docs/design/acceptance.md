@@ -84,4 +84,6 @@ Figma 播放器此前停在登录页，未完成逐项点击与滚动验证；�
 
 2026-10-09，[DG-ANALYTICS适用核对](../tasks/evidence/DG-ANALYTICS/README.md)已将两端统计状态、单图布局、全部排行/异常入口、图表等价值和刷新责任写入 [T-ANA-05](../tasks/m3-m4-experience.md#dg-analytics-对-t-ana-05-的核对结论)；DES-06-ANALYTICS、RG-02/07继续开放。本次无产品UI交付或真实页面人工验收。
 
+2026-10-10，用户明确批准 #179 当前原型并要求实施及同步 Figma。[获批统计补充](../verification/analytics-179/approved-figma/README.md)已写入同一设计文件，单图、排行和异常筛选的设计缺口按本轮方案处理；[产品实施及实际验证](../verification/analytics-179/approved-implementation/README.md)分别记录代码、浏览器、独立评审和人工验收状态。方案批准与设计同步不替代最终产品人工验收，DES-06-ANALYTICS、RG-02/07继续开放。
+
 2026-10-09，#184 后续人工反馈已批准公开终端内容退役、申请说明 Tips 与保留表单的发送反馈。获批方案、新版 Figma、真实浏览器和独立评审统一见[返修记录](../verification/identity-184/feedback.md)；2026-10-10 所有者已明确确认新版产品 UI 人工验收通过，包含后续正文自然折行修正。未执行的 full/SMTP 检查及其他模块责任不由该确认替代。

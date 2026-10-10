@@ -1,0 +1,39 @@
+{
+  "scope": "Read-only DOM observations and native wheel events on the same failed temporary page after its server stopped; no product changes.",
+  "hoverThenWheel": {
+    "event": {
+      "tag": "DIV",
+      "slot": "modal-backdrop",
+      "deltaY": 100,
+      "x": 0,
+      "y": 0,
+      "scrollTop": 301,
+      "prevented": false
+    },
+    "after": {
+      "scrollTop": 301,
+      "clientHeight": 153,
+      "scrollHeight": 511
+    }
+  },
+  "explicitMoveThenWheel": {
+    "events": [
+      {
+        "x": 195,
+        "y": 245,
+        "insideBody": true
+      },
+      {
+        "x": 195,
+        "y": 245,
+        "insideBody": true
+      }
+    ],
+    "after": {
+      "scrollTop": 358,
+      "clientHeight": 153,
+      "scrollHeight": 511,
+      "reachedEnd": true
+    }
+  }
+}

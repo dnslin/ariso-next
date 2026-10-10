@@ -1,0 +1,3403 @@
+{
+  "status": "failed",
+  "taskSpaceId": 2,
+  "origin": "http://ariso-65425.localhost:65425",
+  "checks": [
+    "Responsive/light/dark page and both modals; keyboard opening, focus trap, password visibility, Escape return focus and 390×400 error scrolling.",
+    "Held real account reads expose loading; lost real read responses expose an explicit retry without stale editing; real expired-session account retry returns 401, shows the session notice and preserves the account destination through credential login.",
+    "Real invalid current password leaves email unchanged and preserves fields; normalized email commits once, closes to neutral Toast and preserves the current session; old email login fails.",
+    "Lost response after real email commit triggers a real account reread; while held it cannot resubmit, and the same modal reports only the actual current email before returning with focus and scrolling intact.",
+    "Unsent email plus failed reread stays unknown without a submit action; explicit real reread verifies the unchanged current email and returns to the same account page.",
+    "Two real password HTTP requests race: the other writer commits and the UI receives 409, clears only the current password, preserves both proposed fields, focuses the associated error and succeeds only after an explicit retry with the actual current password.",
+    "Confirmation mismatch and real invalid old password preserve all entered fields; real password commits once, closes to Toast, current session survives, the independent real Cookie session is revoked and old password login fails."
+  ],
+  "layouts": [
+    {
+      "name": "page-light-360",
+      "businessWidth": 360,
+      "width": 360,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "账号与安全",
+          "width": 328,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改邮箱",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改密码",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "绑定 GitHub",
+          "width": 109.25,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "登录配置",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "email-light-360",
+      "businessWidth": 360,
+      "width": 360,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭账号编辑",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "email",
+          "width": 286,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 248,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "currentPassword",
+          "width": 286,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 200,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示当前密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "保存邮箱",
+          "width": 286,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 286,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "password-light-360",
+      "businessWidth": 360,
+      "width": 360,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭账号编辑",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "currentPassword",
+          "width": 286,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 200,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示当前密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "newPassword",
+          "width": 286,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 200,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示新密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "confirmPassword",
+          "width": 286,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 200,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示确认新密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "保存密码",
+          "width": 286,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 286,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "page-light-390",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "账号与安全",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改邮箱",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改密码",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "绑定 GitHub",
+          "width": 109.25,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "登录配置",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "email-light-390",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭账号编辑",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "email",
+          "width": 316,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 278,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "currentPassword",
+          "width": 316,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 230,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示当前密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "保存邮箱",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "password-light-390",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭账号编辑",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "currentPassword",
+          "width": 316,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 230,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示当前密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "newPassword",
+          "width": 316,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 230,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示新密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "confirmPassword",
+          "width": 316,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 230,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示确认新密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "保存密码",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "page-light-430",
+      "businessWidth": 430,
+      "width": 430,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "账号与安全",
+          "width": 398,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改邮箱",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改密码",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "绑定 GitHub",
+          "width": 109.25,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "登录配置",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "email-light-430",
+      "businessWidth": 430,
+      "width": 430,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭账号编辑",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "email",
+          "width": 356,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 318,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "currentPassword",
+          "width": 356,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 270,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示当前密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "保存邮箱",
+          "width": 356,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 356,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "password-light-430",
+      "businessWidth": 430,
+      "width": 430,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭账号编辑",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "currentPassword",
+          "width": 356,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 270,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示当前密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "newPassword",
+          "width": 356,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 270,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示新密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "confirmPassword",
+          "width": 356,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 270,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示确认新密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "保存密码",
+          "width": 356,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 356,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "page-light-768",
+      "businessWidth": 768,
+      "width": 768,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "账号与安全",
+          "width": 736,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改邮箱",
+          "width": 96,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改密码",
+          "width": 96,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "绑定 GitHub",
+          "width": 109.25,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "登录配置",
+          "width": 96,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "email-light-768",
+      "businessWidth": 768,
+      "width": 768,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭账号编辑",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "email",
+          "width": 462,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 424,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "currentPassword",
+          "width": 462,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 376,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示当前密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "保存邮箱",
+          "width": 462,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 462,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "password-light-768",
+      "businessWidth": 768,
+      "width": 768,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭账号编辑",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "currentPassword",
+          "width": 462,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 376,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示当前密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "newPassword",
+          "width": 462,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 376,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示新密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "confirmPassword",
+          "width": 462,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 376,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示确认新密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "保存密码",
+          "width": 462,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 462,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "password-error-short-light",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭账号编辑",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "currentPassword",
+          "width": 316,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 230,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示当前密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "newPassword",
+          "width": 316,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 230,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示新密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "confirmPassword",
+          "width": 316,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 230,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示确认新密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "保存密码",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "page-dark-360",
+      "businessWidth": 360,
+      "width": 360,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "账号与安全",
+          "width": 328,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改邮箱",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改密码",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "绑定 GitHub",
+          "width": 109.25,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "登录配置",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "email-dark-360",
+      "businessWidth": 360,
+      "width": 360,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭账号编辑",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "email",
+          "width": 286,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 248,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "currentPassword",
+          "width": 286,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 200,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示当前密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "保存邮箱",
+          "width": 286,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 286,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "password-dark-360",
+      "businessWidth": 360,
+      "width": 360,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭账号编辑",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "currentPassword",
+          "width": 286,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 200,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示当前密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "newPassword",
+          "width": 286,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 200,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示新密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "confirmPassword",
+          "width": 286,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 200,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示确认新密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "保存密码",
+          "width": 286,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 286,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "page-dark-390",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "账号与安全",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改邮箱",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改密码",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "绑定 GitHub",
+          "width": 109.25,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "登录配置",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "email-dark-390",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭账号编辑",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "email",
+          "width": 316,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 278,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "currentPassword",
+          "width": 316,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 230,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示当前密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "保存邮箱",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "password-dark-390",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭账号编辑",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "currentPassword",
+          "width": 316,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 230,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示当前密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "newPassword",
+          "width": 316,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 230,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示新密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "confirmPassword",
+          "width": 316,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 230,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示确认新密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "保存密码",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "page-dark-430",
+      "businessWidth": 430,
+      "width": 430,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "账号与安全",
+          "width": 398,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改邮箱",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改密码",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "绑定 GitHub",
+          "width": 109.25,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "登录配置",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "email-dark-430",
+      "businessWidth": 430,
+      "width": 430,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭账号编辑",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "email",
+          "width": 356,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 318,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "currentPassword",
+          "width": 356,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 270,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示当前密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "保存邮箱",
+          "width": 356,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 356,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "password-dark-430",
+      "businessWidth": 430,
+      "width": 430,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭账号编辑",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "currentPassword",
+          "width": 356,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 270,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示当前密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "newPassword",
+          "width": 356,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 270,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示新密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "confirmPassword",
+          "width": 356,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 270,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示确认新密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "保存密码",
+          "width": 356,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 356,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "page-dark-768",
+      "businessWidth": 768,
+      "width": 768,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "账号与安全",
+          "width": 736,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改邮箱",
+          "width": 96,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改密码",
+          "width": 96,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "绑定 GitHub",
+          "width": 109.25,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "登录配置",
+          "width": 96,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "email-dark-768",
+      "businessWidth": 768,
+      "width": 768,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭账号编辑",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "email",
+          "width": 462,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 424,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "currentPassword",
+          "width": 462,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 376,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示当前密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "保存邮箱",
+          "width": 462,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 462,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "password-dark-768",
+      "businessWidth": 768,
+      "width": 768,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭账号编辑",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "currentPassword",
+          "width": 462,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 376,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示当前密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "newPassword",
+          "width": 462,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 376,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示新密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "confirmPassword",
+          "width": 462,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 376,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示确认新密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "保存密码",
+          "width": 462,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 462,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "password-error-short-dark",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭账号编辑",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "currentPassword",
+          "width": 316,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 230,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示当前密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "newPassword",
+          "width": 316,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 230,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示新密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "confirmPassword",
+          "width": 316,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 230,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示确认新密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "保存密码",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "loading-light-390",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "账号与安全",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "read-error-light-390",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "账号与安全",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新读取",
+          "width": 110,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "loading-dark-390",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "账号与安全",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "read-error-dark-390",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "账号与安全",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新读取",
+          "width": 110,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "before-session-expiry",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "账号与安全",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新读取",
+          "width": 110,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "session-expired-light",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "账号与安全",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新登录",
+          "width": 114,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "session-expired-dark",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "账号与安全",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新登录",
+          "width": 114,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "email-current-password-error-light",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭账号编辑",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "email",
+          "width": 316,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 278,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "currentPassword",
+          "width": 316,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 230,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示当前密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "保存邮箱",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "email-current-password-error-dark",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭账号编辑",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "email",
+          "width": 316,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 278,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "currentPassword",
+          "width": 316,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 230,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示当前密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "保存邮箱",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "email-pending-light",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭账号编辑",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "email",
+          "width": 316,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 278,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "currentPassword",
+          "width": 316,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 230,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示当前密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "正在保存…",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "email-pending-dark",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭账号编辑",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "email",
+          "width": 316,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 278,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "currentPassword",
+          "width": 316,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 230,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示当前密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "正在保存…",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "email-success-light",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "账号与安全",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改邮箱",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改密码",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "绑定 GitHub",
+          "width": 109.25,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "登录配置",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "关闭通知",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "email-success-dark",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "账号与安全",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改邮箱",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改密码",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "绑定 GitHub",
+          "width": 109.25,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "登录配置",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "关闭通知",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "email-reconciling-light",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭账号编辑",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "正在核对…",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "返回账号与安全",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "email-reconciling-dark",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭账号编辑",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "正在核对…",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "返回账号与安全",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "email-reconciled-light",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭账号编辑",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回账号与安全",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "email-reconciled-dark",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭账号编辑",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回账号与安全",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "email-reconcile-error-light",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭账号编辑",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新核对邮箱",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "返回账号与安全",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "email-reconcile-error-dark",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭账号编辑",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新核对邮箱",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "返回账号与安全",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "email-reconciled-unchanged-light",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭账号编辑",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回账号与安全",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "email-reconciled-unchanged-dark",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭账号编辑",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "返回账号与安全",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "password-conflict-light",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭账号编辑",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "currentPassword",
+          "width": 316,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 230,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示当前密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "newPassword",
+          "width": 316,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 230,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示新密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "confirmPassword",
+          "width": 316,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 230,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示确认新密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "保存密码",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "password-conflict-dark",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭账号编辑",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "currentPassword",
+          "width": 316,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 230,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示当前密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "newPassword",
+          "width": 316,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 230,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示新密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "confirmPassword",
+          "width": 316,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 230,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示确认新密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "保存密码",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "password-current-password-error-light",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭账号编辑",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "currentPassword",
+          "width": 316,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 230,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示当前密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "newPassword",
+          "width": 316,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 230,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示新密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "confirmPassword",
+          "width": 316,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 230,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示确认新密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "保存密码",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "password-current-password-error-dark",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭账号编辑",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "currentPassword",
+          "width": 316,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 230,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示当前密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "newPassword",
+          "width": 316,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 230,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示新密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "confirmPassword",
+          "width": 316,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 230,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示确认新密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "保存密码",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "password-pending-light",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭账号编辑",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "currentPassword",
+          "width": 316,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 230,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示当前密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "newPassword",
+          "width": 316,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 230,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示新密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "confirmPassword",
+          "width": 316,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 230,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示确认新密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "正在保存…",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "password-pending-dark",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭账号编辑",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "currentPassword",
+          "width": 316,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 230,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示当前密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "newPassword",
+          "width": 316,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 230,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示新密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "confirmPassword",
+          "width": 316,
+          "height": 48,
+          "target": "HeroUI InputGroup",
+          "inputWidth": 230,
+          "inputHeight": 46,
+          "navigation": false
+        },
+        {
+          "name": "显示确认新密码",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "正在保存…",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "取消",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "password-success-light",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "账号与安全",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改邮箱",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改密码",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "绑定 GitHub",
+          "width": 109.25,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "登录配置",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "关闭通知",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "password-success-dark",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "账号与安全",
+          "width": 358,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改邮箱",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改密码",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "绑定 GitHub",
+          "width": 109.25,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "登录配置",
+          "width": 90,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "关闭通知",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "password-unknown-light",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭账号编辑",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "前往登录核对",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "返回账号与安全",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "password-unknown-dark",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭账号编辑",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "前往登录核对",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "返回账号与安全",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "password-check-logout-error-light",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭账号编辑",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "前往登录核对",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "返回账号与安全",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "password-check-logout-error-dark",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭账号编辑",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "前往登录核对",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "返回账号与安全",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "password-check-logout-pending-light",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭账号编辑",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "正在退出…",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "返回账号与安全",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "password-check-logout-pending-dark",
+      "businessWidth": 390,
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "关闭账号编辑",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "正在退出…",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "返回账号与安全",
+          "width": 316,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    "account-360-page-light-360.png",
+    "account-360-email-light-360.png",
+    "account-360-password-light-360.png",
+    "account-390-page-light-390.png",
+    "account-390-email-light-390.png",
+    "account-390-password-light-390.png",
+    "account-430-page-light-430.png",
+    "account-430-email-light-430.png",
+    "account-430-password-light-430.png",
+    "account-768-page-light-768.png",
+    "account-768-email-light-768.png",
+    "account-768-password-light-768.png",
+    "account-390-password-error-short-light.png",
+    "account-360-page-dark-360.png",
+    "account-360-email-dark-360.png",
+    "account-360-password-dark-360.png",
+    "account-390-page-dark-390.png",
+    "account-390-email-dark-390.png",
+    "account-390-password-dark-390.png",
+    "account-430-page-dark-430.png",
+    "account-430-email-dark-430.png",
+    "account-430-password-dark-430.png",
+    "account-768-page-dark-768.png",
+    "account-768-email-dark-768.png",
+    "account-768-password-dark-768.png",
+    "account-390-password-error-short-dark.png",
+    "account-390-loading-light-390.png",
+    "account-390-read-error-light-390.png",
+    "account-390-loading-dark-390.png",
+    "account-390-read-error-dark-390.png",
+    "account-390-before-session-expiry.png",
+    "account-390-session-expired-light.png",
+    "account-390-session-expired-dark.png",
+    "account-390-email-current-password-error-light.png",
+    "account-390-email-current-password-error-dark.png",
+    "account-390-email-pending-light.png",
+    "account-390-email-pending-dark.png",
+    "account-390-email-success-light.png",
+    "account-390-email-success-dark.png",
+    "account-390-email-reconciling-light.png",
+    "account-390-email-reconciling-dark.png",
+    "account-390-email-reconciled-light.png",
+    "account-390-email-reconciled-dark.png",
+    "account-390-email-reconcile-error-light.png",
+    "account-390-email-reconcile-error-dark.png",
+    "account-390-email-reconciled-unchanged-light.png",
+    "account-390-email-reconciled-unchanged-dark.png",
+    "account-390-password-conflict-light.png",
+    "account-390-password-conflict-dark.png",
+    "account-390-password-current-password-error-light.png",
+    "account-390-password-current-password-error-dark.png",
+    "account-390-password-pending-light.png",
+    "account-390-password-pending-dark.png",
+    "account-390-password-success-light.png",
+    "account-390-password-success-dark.png",
+    "account-390-password-unknown-light.png",
+    "account-390-password-unknown-dark.png",
+    "account-390-password-check-logout-error-light.png",
+    "account-390-password-check-logout-error-dark.png",
+    "account-390-password-check-logout-pending-light.png",
+    "account-390-password-check-logout-pending-dark.png",
+    "account-390-failure.png"
+  ],
+  "requests": [
+    {
+      "path": "/api/account",
+      "method": "GET",
+      "width": 390,
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/account",
+      "method": "GET",
+      "width": 390,
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/account",
+      "method": "GET",
+      "width": 390,
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/account",
+      "method": "GET",
+      "width": 390,
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/account/email",
+      "method": "PATCH",
+      "width": 390,
+      "status": 200,
+      "heldRealResponse": true
+    },
+    {
+      "path": "/api/auth/get-session",
+      "method": "GET",
+      "width": 390,
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/account",
+      "method": "GET",
+      "width": 390,
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/auth/sign-in/email",
+      "method": "POST",
+      "width": 390,
+      "attempt": 1,
+      "status": 401,
+      "code": "INVALID_EMAIL_OR_PASSWORD"
+    },
+    {
+      "path": "/api/auth/get-session",
+      "method": "GET",
+      "width": 390,
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/account",
+      "method": "GET",
+      "width": 390,
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/account/password",
+      "method": "POST",
+      "attempt": 1,
+      "width": 390,
+      "status": 409,
+      "concurrentWriterStatus": 200,
+      "concurrentWriterCode": "ACCOUNT_PASSWORD_UPDATED",
+      "code": "ACCOUNT_PASSWORD_CHANGED"
+    },
+    {
+      "path": "/api/auth/get-session",
+      "method": "GET",
+      "width": 390,
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/auth/sign-in/email",
+      "method": "POST",
+      "source": "independent-cookie",
+      "width": 390,
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/account/password",
+      "method": "POST",
+      "width": 390,
+      "status": 200,
+      "heldRealResponse": true
+    },
+    {
+      "path": "/api/auth/get-session",
+      "method": "GET",
+      "width": 390,
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/auth/sign-in/email",
+      "method": "POST",
+      "width": 390,
+      "attempt": 1,
+      "status": 401,
+      "code": "INVALID_EMAIL_OR_PASSWORD"
+    },
+    {
+      "path": "/api/auth/get-session",
+      "method": "GET",
+      "width": 390,
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/auth/get-session",
+      "method": "GET",
+      "width": 390,
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/auth/sign-out",
+      "method": "POST",
+      "width": 390,
+      "status": 200,
+      "backgroundSession": null,
+      "heldRealResponse": true
+    }
+  ],
+  "business": [],
+  "secondBrowserContext": "unverified",
+  "limitations": [
+    "Only the runner’s disposable production runtime/database are modified; the manual preview is untouched.",
+    "Held/lost responses come from real writes. Transport injection does not invent successful server results.",
+    "Chromium viewport emulation does not constitute physical touch, soft keyboard or safe-area verification.",
+    "Separate HTTP Cookie sessions verify revocation; they do not constitute two browser contexts.",
+    "The current Ego capability probe can create an empty BrowserContext but rejects Target.createTarget; two navigable browser contexts remain unverified."
+  ],
+  "stage": "password-390",
+  "busySpinnerColors": [
+    {
+      "name": "email-pending",
+      "theme": "light",
+      "width": 390,
+      "button": "正在保存…",
+      "disabled": true,
+      "color": "rgb(39, 35, 67)",
+      "foreground": "rgb(39, 35, 67)",
+      "background": "rgb(255, 216, 7)"
+    },
+    {
+      "name": "email-pending",
+      "theme": "dark",
+      "width": 390,
+      "button": "正在保存…",
+      "disabled": true,
+      "color": "rgb(39, 35, 67)",
+      "foreground": "rgb(39, 35, 67)",
+      "background": "rgb(255, 216, 7)"
+    },
+    {
+      "name": "email-reconciling",
+      "theme": "light",
+      "width": 390,
+      "button": "正在核对…",
+      "disabled": true,
+      "color": "rgb(39, 35, 67)",
+      "foreground": "rgb(39, 35, 67)",
+      "background": "rgb(255, 216, 7)"
+    },
+    {
+      "name": "email-reconciling",
+      "theme": "dark",
+      "width": 390,
+      "button": "正在核对…",
+      "disabled": true,
+      "color": "rgb(39, 35, 67)",
+      "foreground": "rgb(39, 35, 67)",
+      "background": "rgb(255, 216, 7)"
+    },
+    {
+      "name": "password-pending",
+      "theme": "light",
+      "width": 390,
+      "button": "正在保存…",
+      "disabled": true,
+      "color": "rgb(39, 35, 67)",
+      "foreground": "rgb(39, 35, 67)",
+      "background": "rgb(255, 216, 7)"
+    },
+    {
+      "name": "password-pending",
+      "theme": "dark",
+      "width": 390,
+      "button": "正在保存…",
+      "disabled": true,
+      "color": "rgb(39, 35, 67)",
+      "foreground": "rgb(39, 35, 67)",
+      "background": "rgb(255, 216, 7)"
+    },
+    {
+      "name": "password-check-logout-pending",
+      "theme": "light",
+      "width": 390,
+      "button": "正在退出…",
+      "disabled": true,
+      "color": "rgb(39, 35, 67)",
+      "foreground": "rgb(39, 35, 67)",
+      "background": "rgb(255, 216, 7)"
+    },
+    {
+      "name": "password-check-logout-pending",
+      "theme": "dark",
+      "width": 390,
+      "button": "正在退出…",
+      "disabled": true,
+      "color": "rgb(39, 35, 67)",
+      "foreground": "rgb(39, 35, 67)",
+      "background": "rgb(255, 216, 7)"
+    }
+  ],
+  "error": "Error: page.waitForSelector timed out after 10000ms: #password\n    at waitForSelectorInPage (file:////[eval1]:16159:11)\n    at async file:////[eval1]:16691:28",
+  "finishedAt": "2026-10-10T02:39:10.487Z"
+}

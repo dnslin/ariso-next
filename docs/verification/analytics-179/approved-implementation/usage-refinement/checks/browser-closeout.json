@@ -1,0 +1,43 @@
+{
+  "scope": "本轮仅E2E矩阵和证据变化；产品输入未变，不重复单元/类型/构建",
+  "environment": {
+    "node": "24.18.1",
+    "pnpm": "11.19.0"
+  },
+  "checks": [
+    {
+      "command": "pnpm exec prettier --check e2e/analytics-behavior.mjs docs/verification/analytics-179/approved-implementation/README.md docs/verification/analytics-179/approved-implementation/usage-refinement",
+      "exitCode": 0,
+      "output": "browser-format.txt"
+    },
+    {
+      "command": "node docs/tasks/check.mjs",
+      "exitCode": 0,
+      "output": "browser-docs.txt"
+    },
+    {
+      "command": "pnpm exec eslint e2e/analytics-behavior.mjs",
+      "exitCode": 0,
+      "output": "browser-lint.txt"
+    },
+    {
+      "command": "git diff --cached --check",
+      "exitCode": 0
+    }
+  ],
+  "localLinkTargetsChecked": 78,
+  "browser": {
+    "final": "../browser/runner.json",
+    "layouts": 29,
+    "supplementLayouts": 4,
+    "supplementChecks": 8,
+    "fixtureRestored": true,
+    "temporaryDirectoryRemoved": true,
+    "originalUserTabRetained": true
+  },
+  "evidenceAssembly": "首次报告整理把pnpm常规提示误当诊断，已修正仅整理逻辑；实际格式、文档、ESLint均退出0，不重复已通过检查。",
+  "credentialScan": {
+    "privateFields": 2,
+    "matches": 0
+  }
+}

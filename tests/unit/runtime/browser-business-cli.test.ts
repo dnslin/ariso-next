@@ -105,6 +105,16 @@ describe('actual business CLI connections without external services', () => {
     ).toBe(true);
     expectUploadRuntime(events, 'upload');
     expectUploadRuntime(events, 'upload-polling');
+    expect(scripts).not.toContain('identity-session-scene.mjs');
+    expect(scripts.filter((script) => script === 'library.mjs')).toHaveLength(
+      1,
+    );
+    expect(scripts.filter((script) => script === 'identity.mjs')).toHaveLength(
+      4,
+    );
+    expect(
+      scripts.filter((script) => script === 'workspace-continuity.mjs'),
+    ).toHaveLength(2);
     expect(
       Object.keys(report.stages).filter(
         (name) => name.startsWith('upload') && name.endsWith('-runtime'),
@@ -125,6 +135,10 @@ describe('actual business CLI connections without external services', () => {
     ['upload-settings', undefined, []],
     ['upload-input', undefined, []],
     ['upload', undefined, []],
+    ['identity-session', undefined, []],
+    ['workspace-continuity', undefined, []],
+    ['library', 'consumers', []],
+
     ['password-reset', undefined, []],
     ['password-reset', 'representative', []],
     ['password-reset', 'interactions', []],

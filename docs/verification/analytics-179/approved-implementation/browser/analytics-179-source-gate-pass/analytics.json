@@ -1,0 +1,918 @@
+{
+  "status": "passed",
+  "taskSpaceId": 2,
+  "origin": "http://ariso-51320.localhost:51320",
+  "phase": "consumers",
+  "checks": [
+    "Ranking opens real single-image statistics; library/trash management preserves exact IDs and 30-day source, then restores ranking scroll and focus. Both detail consumers return focus after statistics. Failure toggles use actual initial/reprocess lists. Deleted images are absent."
+  ],
+  "layouts": [
+    {
+      "name": "popular-end",
+      "theme": "light",
+      "height": 1080,
+      "screenshot": "analytics-popular-end-light-1440.png",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "总览",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "分享管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "访问统计",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "刷新访问统计",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "7 天",
+          "width": 104,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "30 天",
+          "width": 104,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "90 天",
+          "width": 104,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看每日数值",
+          "width": 1094,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 长名称 摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史.png统计，36次访问",
+          "width": 1094,
+          "height": 104.984375,
+          "navigation": false
+        },
+        {
+          "name": "查看已回收图片 · 76493b20统计，33次访问",
+          "width": 1094,
+          "height": 84,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 3.png统计，27次访问",
+          "width": 1094,
+          "height": 84,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 4.png统计，24次访问",
+          "width": 1094,
+          "height": 84,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 5.png统计，21次访问",
+          "width": 1094,
+          "height": 84,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 6.png统计，18次访问",
+          "width": 1094,
+          "height": 84,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 7.png统计，15次访问",
+          "width": 1094,
+          "height": 84,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 8.png统计，12次访问",
+          "width": 1094,
+          "height": 84,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 9.png统计，9次访问",
+          "width": 1094,
+          "height": 84,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 10.png统计，6次访问",
+          "width": 1094,
+          "height": 84,
+          "navigation": false
+        },
+        {
+          "name": "查看各存储组成",
+          "width": 1094,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看初次失败图片",
+          "width": 541,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看重处理失败图片",
+          "width": 541,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "统计口径",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "当前存储占用",
+          "width": 200,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "popular-end",
+      "theme": "light",
+      "height": 844,
+      "screenshot": "analytics-popular-end-light-390.png",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "刷新访问统计",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "7 天",
+          "width": 111.328125,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "30 天",
+          "width": 111.3359375,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "90 天",
+          "width": 111.3359375,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看每日数值",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 长名称 摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史摄影素材与公开访问历史.png统计，36次访问",
+          "width": 324,
+          "height": 197,
+          "navigation": false
+        },
+        {
+          "name": "查看已回收图片 · 76493b20统计，33次访问",
+          "width": 324,
+          "height": 69,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 3.png统计，27次访问",
+          "width": 324,
+          "height": 69,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 4.png统计，24次访问",
+          "width": 324,
+          "height": 69,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 5.png统计，21次访问",
+          "width": 324,
+          "height": 69,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 6.png统计，18次访问",
+          "width": 324,
+          "height": 69,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 7.png统计，15次访问",
+          "width": 324,
+          "height": 69,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 8.png统计，12次访问",
+          "width": 324,
+          "height": 69,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 9.png统计，9次访问",
+          "width": 324,
+          "height": 69,
+          "navigation": false
+        },
+        {
+          "name": "查看Issue 179 图片 10.png统计，6次访问",
+          "width": 324,
+          "height": 69,
+          "navigation": false
+        },
+        {
+          "name": "查看各存储组成",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看初次失败图片",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "查看重处理失败图片",
+          "width": 324,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "统计口径",
+          "width": 174,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "当前存储占用",
+          "width": 172,
+          "height": 48,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "failure-initial",
+      "theme": "light",
+      "height": 844,
+      "screenshot": "analytics-failure-initial-light-390.png",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "初次处理",
+          "width": 175,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新处理",
+          "width": 175,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "搜索图片名称",
+          "width": 356,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "图片排序",
+          "width": 101.578125,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "网格",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "瀑布流",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "刷新图库",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "添加条件",
+          "width": 102,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看图片：Issue 179 图片 10.png",
+          "width": 171,
+          "height": 230,
+          "navigation": false
+        },
+        {
+          "name": "图片加载方式",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "每批图片数",
+          "width": 120,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "failure-initial",
+      "theme": "dark",
+      "height": 1080,
+      "screenshot": "analytics-failure-initial-dark-1440.png",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "总览",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "分享管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "访问统计",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "初次处理",
+          "width": 568,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新处理",
+          "width": 568,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "搜索图片名称",
+          "width": 278,
+          "height": 36,
+          "navigation": false
+        },
+        {
+          "name": "图片排序",
+          "width": 99.1328125,
+          "height": 36,
+          "navigation": false
+        },
+        {
+          "name": "网格",
+          "width": 36,
+          "height": 36,
+          "navigation": false
+        },
+        {
+          "name": "瀑布流",
+          "width": 36,
+          "height": 36,
+          "navigation": false
+        },
+        {
+          "name": "刷新图库",
+          "width": 36,
+          "height": 36,
+          "navigation": false
+        },
+        {
+          "name": "添加条件",
+          "width": 102,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看图片：Issue 179 图片 10.png",
+          "width": 269,
+          "height": 292,
+          "navigation": false
+        },
+        {
+          "name": "图片加载方式",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "每批图片数",
+          "width": 120,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "failure-reprocess",
+      "theme": "light",
+      "height": 844,
+      "screenshot": "analytics-failure-reprocess-light-390.png",
+      "width": 390,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 63,
+          "height": 54,
+          "navigation": false
+        },
+        {
+          "name": "菜单",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "初次处理",
+          "width": 175,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新处理",
+          "width": 175,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "搜索图片名称",
+          "width": 356,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "图片排序",
+          "width": 101.578125,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "网格",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "瀑布流",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "刷新图库",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "添加条件",
+          "width": 102,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看图片：Issue 179 图片 9.png",
+          "width": 171,
+          "height": 230,
+          "navigation": false
+        },
+        {
+          "name": "图片加载方式",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "每批图片数",
+          "width": 120,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "failure-reprocess",
+      "theme": "dark",
+      "height": 1080,
+      "screenshot": "analytics-failure-reprocess-dark-1440.png",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "总览",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "分享管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "访问统计",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "初次处理",
+          "width": 568,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "重新处理",
+          "width": 568,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "搜索图片名称",
+          "width": 278,
+          "height": 36,
+          "navigation": false
+        },
+        {
+          "name": "图片排序",
+          "width": 99.1328125,
+          "height": 36,
+          "navigation": false
+        },
+        {
+          "name": "网格",
+          "width": 36,
+          "height": 36,
+          "navigation": false
+        },
+        {
+          "name": "瀑布流",
+          "width": 36,
+          "height": 36,
+          "navigation": false
+        },
+        {
+          "name": "刷新图库",
+          "width": 36,
+          "height": 36,
+          "navigation": false
+        },
+        {
+          "name": "添加条件",
+          "width": 102,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "查看图片：Issue 179 图片 9.png",
+          "width": 269,
+          "height": 292,
+          "navigation": false
+        },
+        {
+          "name": "图片加载方式",
+          "width": 112,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "每批图片数",
+          "width": 120,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    }
+  ],
+  "browserErrors": [],
+  "limitations": [
+    "Only disposable runner records, objects and one private Token upload are used; the manual preview is independent.",
+    "HTTP/network/health faults and visibility/timer controls are explicit page-boundary injections; normal analytics responses come from the real production server and are reconciled with SQLite.",
+    "Viewport and keyboard emulation do not prove physical touch or software keyboard behavior. Human design acceptance remains separate."
+  ],
+  "stage": "consumers",
+  "consumerStep": "failure-lists",
+  "evidenceStep": "failure-reprocess:page-chart",
+  "returnSnapshots": [
+    {
+      "path": "/library",
+      "activation": "pointer",
+      "saved": {
+        "source": "/analytics?days=30",
+        "imageId": "e13cc15e-cfe5-49fb-862d-b201d3c90b30",
+        "scrollTop": 1000
+      }
+    },
+    {
+      "path": "/trash",
+      "activation": "keyboard",
+      "saved": {
+        "source": "/analytics?days=30",
+        "imageId": "76493b20-d3d7-4f28-8bb7-4058f89304c2",
+        "scrollTop": 1095.5
+      }
+    }
+  ],
+  "fixtureRestored": true,
+  "finishedAt": "2026-10-10T03:37:48.992Z"
+}
