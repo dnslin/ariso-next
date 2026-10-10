@@ -1,0 +1,22 @@
+{
+  "url": "http://repair276-preview.localhost:50249/login?reason=signed-out",
+  "limit": {
+    "reads": 100,
+    "status": 429,
+    "retryAfter": "10"
+  },
+  "requests": [
+    {
+      "path": "/api/auth/get-session",
+      "method": "GET",
+      "status": 429
+    },
+    {
+      "path": "/api/auth/sign-out",
+      "method": "POST",
+      "status": 200
+    }
+  ],
+  "status": "passed",
+  "observerCorrection": "The initial observation command exited 1 because it required the entire response list to contain only POST. The same captured trace records GET429 before POST200, no later GET response, and the signed-out login destination. Response order does not establish GET initiation time; this is a read-only correction, not a rerun or an exit-0 claim for the original command."
+}
