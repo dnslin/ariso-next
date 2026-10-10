@@ -35,7 +35,13 @@ export function spawn(command, args, options = {}) {
     const configLine = source.slice(0, source.indexOf('\n'));
     const config = JSON.parse(configLine.slice('const config = '.length, -1));
     const script = source.split('\n')[1].slice('// CLI scene: '.length);
-    trace({ kind: 'browser', script, dataDirectory: config.dataDirectory });
+    trace({
+      kind: 'browser',
+      script,
+      dataDirectory: config.dataDirectory,
+      passwordResetPhase: config.passwordResetPhase,
+      hasPasswordResetFixture: !!config.passwordResetFixture,
+    });
     setImmediate(() => close(child));
   };
   if (command === 'sh') {
@@ -79,8 +85,10 @@ export function createServer() {
 }
 
 export async function readFile(path, encoding) {
-  const source = await files.readFile(path, encoding);
   const pathname = path instanceof URL ? fileURLToPath(path) : path;
+  if (pathname === '/fixture-ca' || pathname === '/fixture-reset-ca')
+    return 'CLI fixture SMTP certificate';
+  const source = await files.readFile(path, encoding);
   return pathname.includes('/e2e/')
     ? `// CLI scene: ${pathname.split('/').at(-1)}\n${source}`
     : source;
@@ -96,6 +104,11 @@ export const startSmtpBrowserFixture = async () => ({
   browserInput: { password: 'fixture' },
   close: async () => {},
 });
+export const startPasswordResetBrowserFixture = async () => ({
+  caPath: '/fixture-reset-ca',
+  browserInput: { targets: {}, control: 'http://fixture-reset' },
+  close: async () => {},
+});
 export const launchProtocolDelivery = async () => ({
   browserInput: { credentials: { password: 'fixture' } },
   close: async () => {},
@@ -104,6 +117,9 @@ export const startUploadEndpoint = async () => {
   throw new Error('Unexpected S3 fixture');
 };
 export const runBrandBrowser = async () => {};
+export const runBrandingBrowser = async ({ spaceId, pageLabel }) => {
+  trace({ kind: 'branding', spaceId, pageLabel });
+};
 export const createSharingRunner = () =>
   Object.fromEntries(
     ['runViewer', 'runPublic', 'runProtocol', 'runExperiment', 'stop'].map(
@@ -117,9 +133,11 @@ const substitutes = new Map([
   ['node:fs/promises', ['cp', 'readFile']],
   ['../e2e/storage-cors-fixture.mjs', ['startCorsFixture']],
   ['../e2e/smtp-fixture.mjs', ['startSmtpBrowserFixture']],
+  ['../e2e/password-reset-fixture.mjs', ['startPasswordResetBrowserFixture']],
   ['../tests/integration/upload/s3-endpoint.ts', ['startUploadEndpoint']],
   ['../tests/integration/delivery/s3-fixture.ts', ['launchProtocolDelivery']],
   ['./browser-brand.mjs', ['runBrandBrowser']],
+  ['./browser-branding.mjs', ['runBrandingBrowser']],
   ['./browser-sharing.mjs', ['createSharingRunner']],
 ]);
 registerHooks({

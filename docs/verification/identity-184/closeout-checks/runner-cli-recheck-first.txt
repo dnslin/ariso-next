@@ -1,0 +1,35 @@
+Already up to date
+Done in 32ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-184-password-reset/ariso
+
+ ❯ |unit| tests/unit/runtime/browser-business-cli.test.ts (12 tests | 1 failed | 10 skipped) 98ms
+   ❯ actual business CLI connections without external services (12)
+     × executes focused branding without starting generic fixtures 34ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/runtime/browser-business-cli.test.ts > actual business CLI connections without external services > executes focused branding without starting generic fixtures
+AssertionError: expected undefined to deeply equal {}
+
+- Expected:
+{}
+
++ Received:
+undefined
+
+ ❯ tests/unit/runtime/browser-business-cli.test.ts:119:27
+    117|     expect(events).toEqual([{ kind: 'branding', spaceId: 8, pageLabel:…
+    118|     expect(report.suite).toBe('branding');
+    119|     expect(report.stages).toEqual({});
+       |                           ^
+    120|   });
+    121|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed | 10 skipped (12)
+   Start at  10:37:59
+   Duration  176ms (tests 81%, transform 13%, import 5%, worker 1%)

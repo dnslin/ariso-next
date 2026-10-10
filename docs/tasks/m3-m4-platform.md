@@ -610,7 +610,7 @@
 - 直接前置：`T-ID-01`、`T-ID-02`、`EV-IDENTITY-04`
 - 验收条件：不依赖Web/SMTP、不迁移或创建用户；哈希在事务外，短事务改唯一credential并撤销全部会话/未用重置凭据；确认、取消、异常无半写入并恢复终端/关连接。密码不进参数/环境/日志；Web运行时CLI成功后旧会话下一请求失效；未初始化说明setup并非零退出。
 - 验证方法：在对应模块新增单元与集成测试，运行 `pnpm run test:unit`、`pnpm run test:integration`。 新增 `tests/integration/identity/reset-password-cli.test.ts` 与PTY中断验证；生产amd64/arm64容器执行 `docker exec -it ariso node dist/cli/reset-password.js`，随后真实登录检查新旧密码及会话。
-- 界面：无网页界面：交付容器终端交互；恢复说明在T-ID-07，输出只含结果及下一步，不输出密码。
+- 界面：无网页界面：交付容器终端交互；恢复说明仅在部署文档，公开页面不展示终端入口或命令；输出只含结果及下一步，不输出密码。
 - 需求：`R-6.3-02`、`A-26.1-10`、`R-24.1-01`
 - 实施步骤：
   - [ ] 1. 独立 CLI 重置：真实持久库、密码输入和会话撤销。
@@ -620,18 +620,22 @@
 
 - 任务组：`IDENTITY-RESET`
 - 里程碑：M4
-- 范围：接入库requestPasswordReset/resetPassword、当前publicUrl邮件地址、一次凭据消费和匿名找回/重置页面；提供真实CLI恢复指引。
+- 范围：接入库requestPasswordReset/resetPassword、当前publicUrl邮件地址、一次凭据消费和匿名找回/重置页面；终端恢复说明仅在部署文档维护。
 - 规格与预计文件：SPEC-identity §8.2、ID-07/10/11、DES-02；认证回调、`src/app/forgot-password/`、`src/app/reset-password/`、身份测试。
 - 直接前置：`T-ID-06`、`T-ID-09`、`DG-RESET`
-- 验收条件：存在/不存在邮箱均通用反馈，SMTP未配置明确不可用并展示CLI。链接一小时/一次使用，过期/并发重复拒绝；成功撤销全部会话并去登录，不自动登录。消费后数据库/哈希/撤会话失败按实际结果说明，能重申请或CLI恢复，不假设整个库流程事务回滚。邮件等待真实发送结果；重置URL不入日志/第三方资源请求。
+- 验收条件：存在/不存在邮箱均通用反馈，SMTP未配置明确不可用并提供返回登录，公开恢复状态不展示终端入口、命令或提示。链接一小时/一次使用，过期/并发重复拒绝；成功撤销全部会话并去登录，不自动登录。消费后数据库/哈希/撤会话失败按实际结果说明，公开页面可重新申请，服务器管理员另按部署文档恢复，不假设整个库流程事务回滚。邮件等待真实发送结果；重置URL不入日志/第三方资源请求。
 - 验证方法：运行 `pnpm run test:unit`、`pnpm run test:integration`、`pnpm run test:browser`，记录真实请求、持久数据和两端交互证据。已有 `tests/integration/identity/reset-password.test.ts` 仅验证库实验；本卡须补生产认证与页面调用链的冻结时钟/并发/消费后故障和真实收件链接验证，检查全部旧会话。浏览器直接从邮件打开、短视口滚动、失效再申请；新增恢复场景接入默认全量入口，不能以实验代替生产验收。
-- 界面：`/forgot-password`、`/reset-password`，匿名可达；库verification和发送结果驱动。申请 桌面 [11:23](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=11-23)、手机 [102:3100](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-3100)；重置 桌面 [172:749](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=172-749)、手机 [172:750](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=172-750)；CLI说明 桌面 [217:2380](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=217-2380)、手机 [217:2321](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=217-2321)；匿名找回未配置 桌面 [216:2363](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=216-2363)、手机 [216:2419](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=216-2419)。HeroUI：TextField/Input、Button、Link、Alert、Spinner；采用公共双柔光/返回首页和返回登录，短屏保持滚动，不自制密码字段。失效/消费后结果及邮件申请状态见下方DG-RESET核对，不以定时跳转代替请求。
+- 界面：`/forgot-password`、`/reset-password`，匿名可达；库verification和发送结果驱动。申请 桌面 [11:23](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=11-23)、手机 [102:3100](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-3100)；重置 桌面 [172:749](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=172-749)、手机 [172:750](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=172-750)；匿名找回未配置 桌面 [216:2363](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=216-2363)、手机 [216:2419](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=216-2419)。HeroUI：TextField/Input、Button、Link、Tooltip/Popover、Spinner；申请中保留表单、禁用字段与主操作，18px Lucide Send 图标播放一次240ms发送反馈；减少动态效果时静止，结果由真实请求驱动。通用申请反馈的有效期/单次使用说明收进标题旁44px Tips。采用公共双柔光/返回首页和返回登录，短屏保持滚动，不自制密码字段。失效/消费后结果及邮件申请状态见下方DG-RESET核对，不以定时跳转代替请求。
 - 需求：`R-6.3-01`、`R-6.3-02`、`A-26.1-09`、`A-26.1-10`、`R-22.1-01`、`R-22.4-01`
 - 实施步骤：
-  - [ ] 1. 找回申请及真实邮件落地：错误和限流可验证。
-  - [ ] 2. 一次令牌重置及恢复界面：过期/重复/并发使用和会话失效。
+  - [x] 1. 找回申请及真实邮件落地：错误和限流可验证。
+  - [x] 2. 一次令牌重置及恢复界面：过期/重复/并发使用和会话失效。
+
+- 实施记录：[Issue #184 生产实现、功能与设计审计和实际验证](../verification/identity-184/README.md)。已接入原生申请/一次消费、真实 SMTP 结果与匿名界面；完成状态、未验证项和草稿 PR 以该记录为准。2026-10-10 所有者已确认 UI 人工验收并授权 #275/#276 合并与清理；交汇验证与保留的历史未验证项见同一记录，不以合并替代检查通过。
 
 #### DG-RESET 对 T-ID-07 的核对结论
+
+以下为 DG-RESET 当时的设计与实现盘点，保留历史依据。2026-10-09 后续人工反馈及新版原型已获批准：公开页面删除全部 CLI 内容；未配置邮件仅说明不可用并返回登录；申请中保留禁用表单与一次纸飞机动画，申请反馈小字改为 Tips。该修订优先于下表的 CLI/Spinner 呈现，当前实现、Figma 同步和验证以 [#184 返修证据](../verification/identity-184/feedback.md)为准。冻结 PRD 和需求编号不改写。
 
 2026-10-09 / [Issue #133](https://github.com/dnslin/ariso-next/issues/133)：本DG无直接前置，唯一直接消费卡为本卡。原生关系回读显示T-ID-06（#182）与T-ID-09（#183）已关闭，本卡仍由开放的DG-RESET阻塞；本次不关闭Issue或改变依赖。需求编号与 `IDENTITY-RESET` 边界保持不变。实时Figma节点、12张浅色代表截图、源码盘点、命令和独立审计见 [统一证据](./evidence/DG-RESET/README.md)。
 

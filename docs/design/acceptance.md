@@ -30,6 +30,8 @@ DES-01/02/03/04 已覆盖的状态不重复立项。DES-05/07 是跨模块规范
 
 2026-10-09 [DG-RESET / Issue #133](../tasks/evidence/DG-RESET/README.md)已核对两端申请与六态重置，并将发送未知、消费中断阶段、CLI入口及真实验收范围交接至 [T-ID-07](../tasks/m3-m4-platform.md#dg-reset-对-t-id-07-的核对结论)。本次仅修正文档引用和设计适用责任，不交付找回/重置页面，不关闭DES-02、DES-05/07或播放器验收。
 
+2026-10-09 [T-ID-07 / Issue #184](../verification/identity-184/README.md)已接入生产邮件恢复与匿名页面。实际功能、同视口设计对照、独立审计及人工验收分别记录；2026-10-10 所有者已确认当前新版 UI 人工验收通过。此结论仅覆盖 #184 页面，不整体关闭 DES-02、DES-05/07 或其他模块的播放器验收；既有未完成验证仍见统一证据。
+
 2026-10-05 [DG-SHARING / Issue #134](../tasks/evidence/DG-SHARING/README.md)已将已有两端状态、规则、具体表达缺口及真实验收范围交接到T-SHR-02/03/04。该文档核对不关闭DES-03、DES-06-SHARING或RG-02/08；生产分享页面、连续撤权/返回、浅深色及真实交互仍由三个消费任务取得证据。
 
 ## DES-06 业务责任
@@ -81,3 +83,5 @@ Figma 播放器此前停在登录页，未完成逐项点击与滚动验证；�
 2026-10-08，[DG-SITE适用核对](../tasks/evidence/DG-SITE/README.md)已将可复用状态、表达缺口和真实验收责任写入T-SITE-02/04与T-UP-08；DES-06-SITE、RG-03/08仍开放，文档核对不替代产品交互验收。
 
 2026-10-09，[DG-ANALYTICS适用核对](../tasks/evidence/DG-ANALYTICS/README.md)已将两端统计状态、单图布局、全部排行/异常入口、图表等价值和刷新责任写入 [T-ANA-05](../tasks/m3-m4-experience.md#dg-analytics-对-t-ana-05-的核对结论)；DES-06-ANALYTICS、RG-02/07继续开放。本次无产品UI交付或真实页面人工验收。
+
+2026-10-09，#184 后续人工反馈已批准公开终端内容退役、申请说明 Tips 与保留表单的发送反馈。获批方案、新版 Figma、真实浏览器和独立评审统一见[返修记录](../verification/identity-184/feedback.md)；2026-10-10 所有者已明确确认新版产品 UI 人工验收通过，包含后续正文自然折行修正。未执行的 full/SMTP 检查及其他模块责任不由该确认替代。

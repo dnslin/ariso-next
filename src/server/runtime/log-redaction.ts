@@ -61,6 +61,7 @@ const sensitiveQueryParameters = new Set([
 /** 分享能力路径与显式查询凭据脱敏，保留端点、普通参数及其编码。 */
 export function redactUrlCredentials(text: string): string {
   return text
+    .replace(/(\/api\/auth\/reset-password\/)[^/\s?#"'<>]+/g, '$1[Redacted]')
     .replace(/(\/s\/)[^/\s?#"'<>]+/g, '$1[Redacted]')
     .replace(
       /([?&])([^\s?&#="'<>]+)=([^\s&#"'<>]*)/g,

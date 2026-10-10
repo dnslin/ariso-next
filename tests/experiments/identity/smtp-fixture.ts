@@ -1,4 +1,5 @@
 import { execFileSync } from 'node:child_process';
+import { randomUUID } from 'node:crypto';
 import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import type { Socket } from 'node:net';
 import { tmpdir } from 'node:os';
@@ -25,7 +26,7 @@ export function createSmtpCertificates() {
       '-out',
       'ca.pem',
       '-subj',
-      '/CN=Ariso SMTP experiment CA',
+      `/CN=Ariso SMTP experiment CA ${randomUUID()}`,
     ]);
     openssl([
       'req',
