@@ -1,0 +1,620 @@
+
+ RUN  v5.0.0 /private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-pr278-review-mutation-6xsqqb5w
+
+ ❯ |unit| tests/unit/runtime/browser-plan.test.ts (140 tests | 135 failed) 22ms
+   ❯ focused browser execution plans (140)
+     × runs the real theme suite in full and scopes phase options to theme 4ms
+     × keeps the brand experiment isolated from unrelated phase and fixture arguments 0ms
+     × keeps production branding independent of unrelated phase and fixture options 0ms
+     × provides storage-cors as a complete focused stage on its primary page 0ms
+     × selects the complete 1440px identity-session regression without unrelated phases 0ms
+     × selects the complete 1440px workspace-continuity regression without unrelated phases 0ms
+     × keeps the existing workspace primary-page boundary while identity can use the selected page 3ms
+     × rejects unrelated storageConfig in storage-cors 0ms
+     × rejects unrelated previewConfig in storage-cors 0ms
+     × keeps all default scenes and their order for library 1ms
+     × keeps all default scenes and their order for library-feedback 0ms
+     × keeps all default scenes and their order for account 0ms
+     × keeps all default scenes and their order for identity-session 0ms
+     × keeps all default scenes and their order for workspace-continuity 0ms
+     × keeps all default scenes and their order for oauth 0ms
+     × keeps all default scenes and their order for brand-experiment 0ms
+     × keeps all default scenes and their order for branding 0ms
+     × keeps all default scenes and their order for smtp 0ms
+     × keeps all default scenes and their order for password-reset 0ms
+     × keeps all default scenes and their order for tokens 0ms
+     × keeps all default scenes and their order for shell-navigation 0ms
+     × keeps all default scenes and their order for sharing-management 0ms
+     × keeps all default scenes and their order for site-general 0ms
+     × keeps all default scenes and their order for theme 0ms
+     × keeps all default scenes and their order for analytics 0ms
+     × keeps all default scenes and their order for albums 0ms
+     × keeps all default scenes and their order for album-cover 0ms
+     × keeps all default scenes and their order for tags 0ms
+     × keeps all default scenes and their order for upload-settings 0ms
+     × keeps all default scenes and their order for upload-input 0ms
+     × keeps all default scenes and their order for upload-usage 0ms
+     × keeps all default scenes and their order for viewer 0ms
+     × keeps all default scenes and their order for upload 0ms
+     × keeps all default scenes and their order for upload-regression 0ms
+     × keeps all default scenes and their order for upload-s3 0ms
+     × keeps all default scenes and their order for copy-dropdown 0ms
+     × keeps all default scenes and their order for library-batch 0ms
+     × keeps all default scenes and their order for library-reprocess 0ms
+     × keeps all default scenes and their order for library-copy 0ms
+     × keeps all default scenes and their order for storage-admin 0ms
+     × keeps all default scenes and their order for storage-cors 0ms
+     × keeps all default scenes and their order for processing 0ms
+     × keeps all default scenes and their order for trash 0ms
+     × selects the actual scenes for upload-settings / representative 0ms
+     × selects the actual scenes for upload-settings / behavior 0ms
+     × selects the actual scenes for upload-settings / recovery 0ms
+     × selects the actual scenes for upload-settings / consumers 0ms
+     × selects the actual scenes for upload / relations 0ms
+     × selects the actual scenes for upload / submissions 0ms
+     × selects the actual scenes for upload-regression / main 0ms
+     × selects the actual scenes for storage-admin / live 0ms
+     × selects the actual scenes for storage-admin / dialogs 0ms
+     × selects the actual scenes for storage-admin / feedback 0ms
+     × selects the actual scenes for storage-admin / regressions 0ms
+     × selects the actual scenes for processing / consumers 0ms
+     × selects the actual scenes for processing / settings 0ms
+     × selects the actual scenes for trash / cleanup 0ms
+     × selects the actual scenes for trash / approved-results 0ms
+     × selects the actual scenes for library / recovery 0ms
+     × selects the actual scenes for library / consumers 1ms
+     × selects the actual scenes for library-batch / recovery 0ms
+     × selects the actual scenes for smtp / representative 0ms
+     × selects the actual scenes for smtp / interactions 0ms
+     × selects the actual scenes for smtp / recovery 0ms
+     × selects the actual scenes for password-reset / representative 0ms
+     × selects the actual scenes for password-reset / interactions 0ms
+     × selects the actual scenes for password-reset / recovery 0ms
+     × selects the actual scenes for smtp / focus 0ms
+     × selects the actual scenes for sharing-management / representative 0ms
+     × selects the actual scenes for sharing-management / behavior 0ms
+     × selects the actual scenes for sharing-management / recovery 0ms
+     × selects the actual scenes for site-general / representative 0ms
+     × selects the actual scenes for site-general / behavior 0ms
+     × selects the actual scenes for site-general / recovery 0ms
+     × selects the actual scenes for site-general / consumers 0ms
+     × selects the actual scenes for analytics / representative 0ms
+     × selects the actual scenes for analytics / behavior 0ms
+     × selects the actual scenes for analytics / recovery 0ms
+     × selects the actual scenes for analytics / consumers 0ms
+     × selects the actual scenes for analytics / detail 0ms
+     × selects the actual scenes for analytics / shell 0ms
+     × selects the actual scenes for tokens / representative 0ms
+     × selects the actual scenes for tokens / behavior 0ms
+     × selects the actual scenes for tokens / lifecycle 0ms
+     × selects the actual scenes for tokens / recovery 0ms
+     × selects the actual scenes for tokens / create-recovery 0ms
+     × selects the actual scenes for tokens / action-recovery 0ms
+     × selects the actual scenes for tokens / consumers 0ms
+     × selects the actual scenes for upload-usage / representative 0ms
+     × selects the actual scenes for upload-usage / interactions 0ms
+     × selects the actual scenes for upload-usage / recovery 0ms
+     × passes only the owning scene fields for upload-settings / recovery 0ms
+     × passes only the owning scene fields for site-general / recovery 0ms
+     × passes only the owning scene fields for analytics / representative 0ms
+     × passes only the owning scene fields for analytics / behavior 0ms
+     × passes only the owning scene fields for analytics / recovery 0ms
+     × passes only the owning scene fields for analytics / consumers 0ms
+     × passes only the owning scene fields for analytics / detail 0ms
+     × passes only the owning scene fields for analytics / shell 0ms
+     × passes only the owning scene fields for library / recovery 0ms
+     × passes only the owning scene fields for library / consumers 0ms
+     × passes only the owning scene fields for smtp / representative 0ms
+     × passes only the owning scene fields for smtp / interactions 0ms
+     × passes only the owning scene fields for smtp / recovery 0ms
+     × passes only the owning scene fields for password-reset / representative 0ms
+     × passes only the owning scene fields for password-reset / interactions 0ms
+     × passes only the owning scene fields for password-reset / recovery 0ms
+     × passes only the owning scene fields for smtp / focus 0ms
+     × passes only the owning scene fields for tokens / recovery 1ms
+     × passes only the owning scene fields for tokens / lifecycle 0ms
+     × passes only the owning scene fields for tokens / create-recovery 0ms
+     × passes only the owning scene fields for tokens / action-recovery 0ms
+     × passes only the owning scene fields for sharing-public / representative 0ms
+     × passes only the owning scene fields for sharing-public / behavior 0ms
+     × passes only the owning scene fields for sharing-public / race 0ms
+     × passes only the owning scene fields for sharing-public / recovery 0ms
+     × passes only the owning scene fields for sharing-viewer / representative 0ms
+     × passes only the owning scene fields for sharing-viewer / interactions 0ms
+     × passes only the owning scene fields for sharing-viewer / revocation 0ms
+     × passes only the owning scene fields for sharing-viewer / race 0ms
+     × passes only the owning scene fields for viewer / recovery 0ms
+     × passes only the owning scene fields for processing / recovery 0ms
+     × passes only the owning scene fields for library-copy / revision 0ms
+     × passes only the owning scene fields for library-batch / cache 0ms
+     × passes only the owning scene fields for library-batch / recovery 0ms
+     × passes only the owning scene fields for trash / approved-results 0ms
+     × passes only the owning scene fields for upload-s3 / cleanup 0ms
+     × passes only the owning scene fields for sharing-management / recovery 0ms
+     × keeps site phases out of other scenes and preserves all site phases in full 0ms
+     × runs the existing library consumer in its own phase while the default library remains complete 0ms
+     × keeps analytics phases on its own scene and runs all phases by default on an independently selected page 0ms
+     × keeps consumer navigation and representative viewer behavior explicit 0ms
+     × includes every existing business stage and all sharing scenes in the default full flow 0ms
+     × keeps reset phases scoped while default full actually schedules recovery before SMTP 0ms
+     × limits upload usage phases to their own suite and keeps full execution complete 0ms
+
+ Test Files  1 failed (1)
+      Tests  135 failed | 5 passed (140)
+   Start at  23:12:59
+   Duration  290ms (tests 43%, transform 38%, import 15%, worker 4%)
+
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 135 ⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > runs the real theme suite in full and scopes phase options to theme
+AssertionError: --only requires an applicable targeted suite
+
+simple
+
+ ❯ selectBrowserPlan scripts/browser-plan.mjs:278:10
+    276|   const definition = Object.hasOwn(suites, suite) ? suites[suite] : un…
+    277|   assert.ok(definition, 'Unknown browser suite');
+    278|   assert.ok(
+       |          ^
+    279|     only === undefined && definition.only?.includes(only),
+    280|     '--only requires an applicable targeted suite',
+ ❯ select tests/unit/runtime/browser-plan.test.ts:5:10
+ ❯ tests/unit/runtime/browser-plan.test.ts:10:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/135]⎯
+
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > keeps the brand experiment isolated from unrelated phase and fixture arguments
+AssertionError: --only requires an applicable targeted suite
+
+simple
+
+ ❯ selectBrowserPlan scripts/browser-plan.mjs:278:10
+    276|   const definition = Object.hasOwn(suites, suite) ? suites[suite] : un…
+    277|   assert.ok(definition, 'Unknown browser suite');
+    278|   assert.ok(
+       |          ^
+    279|     only === undefined && definition.only?.includes(only),
+    280|     '--only requires an applicable targeted suite',
+ ❯ select tests/unit/runtime/browser-plan.test.ts:5:10
+ ❯ tests/unit/runtime/browser-plan.test.ts:42:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/135]⎯
+
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > keeps production branding independent of unrelated phase and fixture options
+AssertionError: --only requires an applicable targeted suite
+
+simple
+
+ ❯ selectBrowserPlan scripts/browser-plan.mjs:278:10
+    276|   const definition = Object.hasOwn(suites, suite) ? suites[suite] : un…
+    277|   assert.ok(definition, 'Unknown browser suite');
+    278|   assert.ok(
+       |          ^
+    279|     only === undefined && definition.only?.includes(only),
+    280|     '--only requires an applicable targeted suite',
+ ❯ select tests/unit/runtime/browser-plan.test.ts:5:10
+ ❯ tests/unit/runtime/browser-plan.test.ts:56:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/135]⎯
+
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > provides storage-cors as a complete focused stage on its primary page
+AssertionError: --only requires an applicable targeted suite
+
+simple
+
+ ❯ selectBrowserPlan scripts/browser-plan.mjs:278:10
+    276|   const definition = Object.hasOwn(suites, suite) ? suites[suite] : un…
+    277|   assert.ok(definition, 'Unknown browser suite');
+    278|   assert.ok(
+       |          ^
+    279|     only === undefined && definition.only?.includes(only),
+    280|     '--only requires an applicable targeted suite',
+ ❯ select tests/unit/runtime/browser-plan.test.ts:5:10
+ ❯ tests/unit/runtime/browser-plan.test.ts:73:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/135]⎯
+
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > selects the complete 1440px identity-session regression without unrelated phases
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > selects the complete 1440px workspace-continuity regression without unrelated phases
+AssertionError: --only requires an applicable targeted suite
+
+simple
+
+ ❯ selectBrowserPlan scripts/browser-plan.mjs:278:10
+    276|   const definition = Object.hasOwn(suites, suite) ? suites[suite] : un…
+    277|   assert.ok(definition, 'Unknown browser suite');
+    278|   assert.ok(
+       |          ^
+    279|     only === undefined && definition.only?.includes(only),
+    280|     '--only requires an applicable targeted suite',
+ ❯ select tests/unit/runtime/browser-plan.test.ts:5:10
+ ❯ tests/unit/runtime/browser-plan.test.ts:88:14
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/135]⎯
+
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > keeps the existing workspace primary-page boundary while identity can use the selected page
+AssertionError: expected [Function] to throw error including 'EGO_PAGE_LABEL=p1' but got '--only requires an applicable targete…'
+
+Expected: "EGO_PAGE_LABEL=p1"
+Received: "--only requires an applicable targeted suite"
+
+ ❯ tests/unit/runtime/browser-plan.test.ts:113:7
+    111|     expect(() =>
+    112|       selectBrowserPlan({ suite: 'workspace-continuity', pageLabel: 'p…
+    113|     ).toThrow('EGO_PAGE_LABEL=p1');
+       |       ^
+    114|     expect(
+    115|       selectBrowserPlan({ suite: 'identity-session', pageLabel: 'p2' }…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/135]⎯
+
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > rejects unrelated storageConfig in storage-cors
+AssertionError: expected [Function] to throw error including '--storage-config applies only to stor…' but got '--only requires an applicable targete…'
+
+Expected: "--storage-config applies only to storage-admin live"
+Received: "--only requires an applicable targeted suite"
+
+ ❯ tests/unit/runtime/browser-plan.test.ts:141:7
+    139|         [field]: 'unused.json',
+    140|       }),
+    141|     ).toThrow(message);
+       |       ^
+    142|   });
+    143|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/135]⎯
+
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > rejects unrelated previewConfig in storage-cors
+AssertionError: expected [Function] to throw error including '--preview-config applies only to stor…' but got '--only requires an applicable targete…'
+
+Expected: "--preview-config applies only to storage-admin feedback"
+Received: "--only requires an applicable targeted suite"
+
+ ❯ tests/unit/runtime/browser-plan.test.ts:141:7
+    139|         [field]: 'unused.json',
+    140|       }),
+    141|     ).toThrow(message);
+       |       ^
+    142|   });
+    143|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/135]⎯
+
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > keeps all default scenes and their order for library
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > keeps all default scenes and their order for smtp
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > keeps all default scenes and their order for password-reset
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > keeps all default scenes and their order for tokens
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > keeps all default scenes and their order for sharing-management
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > keeps all default scenes and their order for site-general
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > keeps all default scenes and their order for theme
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > keeps all default scenes and their order for analytics
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > keeps all default scenes and their order for upload-settings
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > keeps all default scenes and their order for upload-usage
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > keeps all default scenes and their order for viewer
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > keeps all default scenes and their order for upload
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > keeps all default scenes and their order for upload-regression
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > keeps all default scenes and their order for upload-s3
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > keeps all default scenes and their order for library-batch
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > keeps all default scenes and their order for library-copy
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > keeps all default scenes and their order for storage-admin
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > keeps all default scenes and their order for processing
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > keeps all default scenes and their order for trash
+AssertionError: --only requires an applicable targeted suite
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ selectBrowserPlan scripts/browser-plan.mjs:278:10
+    276|   const definition = Object.hasOwn(suites, suite) ? suites[suite] : un…
+    277|   assert.ok(definition, 'Unknown browser suite');
+    278|   assert.ok(
+       |          ^
+    279|     only === undefined && definition.only?.includes(only),
+    280|     '--only requires an applicable targeted suite',
+ ❯ select tests/unit/runtime/browser-plan.test.ts:5:10
+ ❯ tests/unit/runtime/browser-plan.test.ts:182:14
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/135]⎯
+
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > keeps all default scenes and their order for library-feedback
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > keeps all default scenes and their order for account
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > keeps all default scenes and their order for identity-session
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > keeps all default scenes and their order for workspace-continuity
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > keeps all default scenes and their order for oauth
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > keeps all default scenes and their order for brand-experiment
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > keeps all default scenes and their order for branding
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > keeps all default scenes and their order for shell-navigation
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > keeps all default scenes and their order for albums
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > keeps all default scenes and their order for album-cover
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > keeps all default scenes and their order for tags
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > keeps all default scenes and their order for upload-input
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > keeps all default scenes and their order for copy-dropdown
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > keeps all default scenes and their order for library-reprocess
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > keeps all default scenes and their order for storage-cors
+AssertionError: --only requires an applicable targeted suite
+
+simple
+
+ ❯ selectBrowserPlan scripts/browser-plan.mjs:278:10
+    276|   const definition = Object.hasOwn(suites, suite) ? suites[suite] : un…
+    277|   assert.ok(definition, 'Unknown browser suite');
+    278|   assert.ok(
+       |          ^
+    279|     only === undefined && definition.only?.includes(only),
+    280|     '--only requires an applicable targeted suite',
+ ❯ select tests/unit/runtime/browser-plan.test.ts:5:10
+ ❯ tests/unit/runtime/browser-plan.test.ts:182:14
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/135]⎯
+
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > selects the actual scenes for upload-settings / representative
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > selects the actual scenes for upload-settings / behavior
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > selects the actual scenes for upload-settings / recovery
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > selects the actual scenes for upload-settings / consumers
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > selects the actual scenes for upload / relations
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > selects the actual scenes for upload / submissions
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > selects the actual scenes for upload-regression / main
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > selects the actual scenes for storage-admin / live
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > selects the actual scenes for storage-admin / dialogs
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > selects the actual scenes for storage-admin / feedback
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > selects the actual scenes for storage-admin / regressions
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > selects the actual scenes for processing / consumers
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > selects the actual scenes for processing / settings
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > selects the actual scenes for trash / cleanup
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > selects the actual scenes for trash / approved-results
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > selects the actual scenes for library / recovery
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > selects the actual scenes for library / consumers
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > selects the actual scenes for library-batch / recovery
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > selects the actual scenes for smtp / representative
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > selects the actual scenes for smtp / interactions
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > selects the actual scenes for smtp / recovery
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > selects the actual scenes for password-reset / representative
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > selects the actual scenes for password-reset / interactions
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > selects the actual scenes for password-reset / recovery
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > selects the actual scenes for smtp / focus
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > selects the actual scenes for sharing-management / representative
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > selects the actual scenes for sharing-management / behavior
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > selects the actual scenes for sharing-management / recovery
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > selects the actual scenes for site-general / representative
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > selects the actual scenes for site-general / behavior
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > selects the actual scenes for site-general / recovery
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > selects the actual scenes for site-general / consumers
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > selects the actual scenes for analytics / representative
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > selects the actual scenes for analytics / behavior
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > selects the actual scenes for analytics / recovery
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > selects the actual scenes for analytics / consumers
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > selects the actual scenes for analytics / detail
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > selects the actual scenes for analytics / shell
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > selects the actual scenes for tokens / representative
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > selects the actual scenes for tokens / behavior
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > selects the actual scenes for tokens / lifecycle
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > selects the actual scenes for tokens / recovery
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > selects the actual scenes for tokens / create-recovery
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > selects the actual scenes for tokens / action-recovery
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > selects the actual scenes for tokens / consumers
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > selects the actual scenes for upload-usage / representative
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > selects the actual scenes for upload-usage / interactions
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > selects the actual scenes for upload-usage / recovery
+AssertionError: --only requires an applicable targeted suite
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ selectBrowserPlan scripts/browser-plan.mjs:278:10
+    276|   const definition = Object.hasOwn(suites, suite) ? suites[suite] : un…
+    277|   assert.ok(definition, 'Unknown browser suite');
+    278|   assert.ok(
+       |          ^
+    279|     only === undefined && definition.only?.includes(only),
+    280|     '--only requires an applicable targeted suite',
+ ❯ select tests/unit/runtime/browser-plan.test.ts:5:10
+ ❯ tests/unit/runtime/browser-plan.test.ts:243:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/135]⎯
+
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > passes only the owning scene fields for upload-settings / recovery
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > passes only the owning scene fields for site-general / recovery
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > passes only the owning scene fields for analytics / representative
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > passes only the owning scene fields for analytics / behavior
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > passes only the owning scene fields for analytics / recovery
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > passes only the owning scene fields for analytics / consumers
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > passes only the owning scene fields for analytics / detail
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > passes only the owning scene fields for analytics / shell
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > passes only the owning scene fields for library / recovery
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > passes only the owning scene fields for library / consumers
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > passes only the owning scene fields for smtp / representative
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > passes only the owning scene fields for smtp / interactions
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > passes only the owning scene fields for smtp / recovery
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > passes only the owning scene fields for password-reset / representative
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > passes only the owning scene fields for password-reset / interactions
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > passes only the owning scene fields for password-reset / recovery
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > passes only the owning scene fields for smtp / focus
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > passes only the owning scene fields for tokens / recovery
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > passes only the owning scene fields for tokens / lifecycle
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > passes only the owning scene fields for tokens / create-recovery
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > passes only the owning scene fields for tokens / action-recovery
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > passes only the owning scene fields for sharing-public / representative
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > passes only the owning scene fields for sharing-public / behavior
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > passes only the owning scene fields for sharing-public / race
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > passes only the owning scene fields for sharing-public / recovery
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > passes only the owning scene fields for sharing-viewer / representative
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > passes only the owning scene fields for sharing-viewer / interactions
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > passes only the owning scene fields for sharing-viewer / revocation
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > passes only the owning scene fields for sharing-viewer / race
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > passes only the owning scene fields for viewer / recovery
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > passes only the owning scene fields for processing / recovery
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > passes only the owning scene fields for library-copy / revision
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > passes only the owning scene fields for library-batch / cache
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > passes only the owning scene fields for library-batch / recovery
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > passes only the owning scene fields for trash / approved-results
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > passes only the owning scene fields for upload-s3 / cleanup
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > passes only the owning scene fields for sharing-management / recovery
+AssertionError: --only requires an applicable targeted suite
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ selectBrowserPlan scripts/browser-plan.mjs:278:10
+    276|   const definition = Object.hasOwn(suites, suite) ? suites[suite] : un…
+    277|   assert.ok(definition, 'Unknown browser suite');
+    278|   assert.ok(
+       |          ^
+    279|     only === undefined && definition.only?.includes(only),
+    280|     '--only requires an applicable targeted suite',
+ ❯ select tests/unit/runtime/browser-plan.test.ts:5:10
+ ❯ tests/unit/runtime/browser-plan.test.ts:311:14
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/135]⎯
+
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > keeps site phases out of other scenes and preserves all site phases in full
+AssertionError: --only requires an applicable targeted suite
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ selectBrowserPlan scripts/browser-plan.mjs:278:10
+    276|   const definition = Object.hasOwn(suites, suite) ? suites[suite] : un…
+    277|   assert.ok(definition, 'Unknown browser suite');
+    278|   assert.ok(
+       |          ^
+    279|     only === undefined && definition.only?.includes(only),
+    280|     '--only requires an applicable targeted suite',
+ ❯ select tests/unit/runtime/browser-plan.test.ts:5:10
+ ❯ tests/unit/runtime/browser-plan.test.ts:316:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/135]⎯
+
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > runs the existing library consumer in its own phase while the default library remains complete
+AssertionError: --only requires an applicable targeted suite
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ selectBrowserPlan scripts/browser-plan.mjs:278:10
+    276|   const definition = Object.hasOwn(suites, suite) ? suites[suite] : un…
+    277|   assert.ok(definition, 'Unknown browser suite');
+    278|   assert.ok(
+       |          ^
+    279|     only === undefined && definition.only?.includes(only),
+    280|     '--only requires an applicable targeted suite',
+ ❯ select tests/unit/runtime/browser-plan.test.ts:5:10
+ ❯ tests/unit/runtime/browser-plan.test.ts:334:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/135]⎯
+
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > keeps analytics phases on its own scene and runs all phases by default on an independently selected page
+AssertionError: --only requires an applicable targeted suite
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ selectBrowserPlan scripts/browser-plan.mjs:278:10
+    276|   const definition = Object.hasOwn(suites, suite) ? suites[suite] : un…
+    277|   assert.ok(definition, 'Unknown browser suite');
+    278|   assert.ok(
+       |          ^
+    279|     only === undefined && definition.only?.includes(only),
+    280|     '--only requires an applicable targeted suite',
+ ❯ tests/unit/runtime/browser-plan.test.ts:353:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/135]⎯
+
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > keeps consumer navigation and representative viewer behavior explicit
+AssertionError: --only requires an applicable targeted suite
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ selectBrowserPlan scripts/browser-plan.mjs:278:10
+    276|   const definition = Object.hasOwn(suites, suite) ? suites[suite] : un…
+    277|   assert.ok(definition, 'Unknown browser suite');
+    278|   assert.ok(
+       |          ^
+    279|     only === undefined && definition.only?.includes(only),
+    280|     '--only requires an applicable targeted suite',
+ ❯ select tests/unit/runtime/browser-plan.test.ts:5:10
+ ❯ tests/unit/runtime/browser-plan.test.ts:379:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/135]⎯
+
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > includes every existing business stage and all sharing scenes in the default full flow
+AssertionError: --only requires an applicable targeted suite
+
+simple
+
+ ❯ selectBrowserPlan scripts/browser-plan.mjs:278:10
+    276|   const definition = Object.hasOwn(suites, suite) ? suites[suite] : un…
+    277|   assert.ok(definition, 'Unknown browser suite');
+    278|   assert.ok(
+       |          ^
+    279|     only === undefined && definition.only?.includes(only),
+    280|     '--only requires an applicable targeted suite',
+ ❯ select tests/unit/runtime/browser-plan.test.ts:5:10
+ ❯ tests/unit/runtime/browser-plan.test.ts:407:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/135]⎯
+
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > keeps reset phases scoped while default full actually schedules recovery before SMTP
+AssertionError: --only requires an applicable targeted suite
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ selectBrowserPlan scripts/browser-plan.mjs:278:10
+    276|   const definition = Object.hasOwn(suites, suite) ? suites[suite] : un…
+    277|   assert.ok(definition, 'Unknown browser suite');
+    278|   assert.ok(
+       |          ^
+    279|     only === undefined && definition.only?.includes(only),
+    280|     '--only requires an applicable targeted suite',
+ ❯ select tests/unit/runtime/browser-plan.test.ts:5:10
+ ❯ tests/unit/runtime/browser-plan.test.ts:438:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/135]⎯
+
+ FAIL  |unit| tests/unit/runtime/browser-plan.test.ts > focused browser execution plans > limits upload usage phases to their own suite and keeps full execution complete
+AssertionError: --only requires an applicable targeted suite
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ selectBrowserPlan scripts/browser-plan.mjs:278:10
+    276|   const definition = Object.hasOwn(suites, suite) ? suites[suite] : un…
+    277|   assert.ok(definition, 'Unknown browser suite');
+    278|   assert.ok(
+       |          ^
+    279|     only === undefined && definition.only?.includes(only),
+    280|     '--only requires an applicable targeted suite',
+ ❯ select tests/unit/runtime/browser-plan.test.ts:5:10
+ ❯ tests/unit/runtime/browser-plan.test.ts:480:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[19/135]⎯
+

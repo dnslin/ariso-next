@@ -33,6 +33,8 @@ Sun / Moon / Monitor对应亮色、暗色、自动；点击按此顺序循环，
 
 原型直接导入产品AdminShell、HeroUI Button/Tooltip、Lucide图标、next-themes及Recharts。独立浏览器构建仅为AdminShell的usePathname提供固定/dashboard，业务导航为演示，不接产品接口。Tailwind使用原全局样式编译，无新增依赖、产品监听器或主题状态实现。
 
+人工验收后的独立结构评审发现：产品AdminShell已包含获批入口，原型仍保留自建ThemeIcon与额外fixed/sticky顶行，重新构建会重复。现已删除这套重复实现，原型直接使用AdminShell内的主题入口和定位。隔离SSR对旧源码严格检查得到4个响应式入口，期望2的断言失败；修正后只有2个公共入口、无旧入口，检查通过。修正源已向独立输出目录构建成功；当前61500继续保留批准时构建，历史截图未覆盖，产品源码未改变。详细命令和两角度评审见[本轮记录](../../docs/verification/theme-197/README.md#人工验收通过后的双角度评审)。
+
 ## 历史账号旁方案检查（已被右上角方案取代）
 
 Node24.18.1、pnpm11.19.0；`node design-plans/issue197-icon-review/build.mjs`实际成功，静态服务61500响应200。原型三个源码文件定向ESLint与Prettier通过，文档检查通过（120任务、298需求）。首次ESLint指出前台返回链接使用原生a，已改为项目HeroUI Link后重验通过。使用原Ego TaskSpace6，产品p1保留，原型p2；最终已handOff供用户审查，未绕过接管或创建新空间。
