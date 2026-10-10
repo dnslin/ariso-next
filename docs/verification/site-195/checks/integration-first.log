@@ -1,0 +1,222 @@
+Already up to date
+Done in 62ms using pnpm v11.19.0
+$ vitest run --project integration --project media-tools --maxWorkers=4
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-195-branding/ariso
+
+{"level":"error","time":"2026-10-09T10:52:02.774Z","module":"identity.auth","details":[{"type":"APIError","message":"API Key has expired","stack":"APIError: API Key has expired","status":"UNAUTHORIZED","body":{"type":"Object","message":"API Key has expired","code":"KEY_EXPIRED"},"headers":{},"statusCode":401,"name":"APIError"}],"msg":"Failed to validate API key:"}
+{"level":"error","time":"2026-10-09T10:52:03.736Z","module":"identity.auth","details":[{"type":"APIError","message":"API Key is disabled","stack":"APIError: API Key is disabled","status":"UNAUTHORIZED","body":{"type":"Object","message":"API Key is disabled","code":"KEY_DISABLED"},"headers":{},"statusCode":401,"name":"APIError"}],"msg":"Failed to validate API key:"}
+{"level":"error","time":"2026-10-09T10:52:03.756Z","module":"identity.auth","details":[{"type":"APIError","message":"Invalid API key.","stack":"APIError: Invalid API key.","status":"UNAUTHORIZED","body":{"type":"Object","message":"Invalid API key.","code":"INVALID_API_KEY"},"headers":{},"statusCode":401,"name":"APIError"}],"msg":"Failed to validate API key:"}
+{"level":"error","time":"2026-10-09T10:52:05.966Z","module":"identity.auth","details":[{"type":"APIError","message":"Invalid API key.","stack":"APIError: Invalid API key.","status":"UNAUTHORIZED","body":{"type":"Object","message":"Invalid API key.","code":"INVALID_API_KEY"},"headers":{},"statusCode":401,"name":"APIError"}],"msg":"Failed to validate API key:"}
+{"level":"error","time":"2026-10-09T10:52:24.432Z","module":"identity.auth","details":[{"type":"APIError","message":"API Key not found","stack":"APIError: API Key not found","status":"UNAUTHORIZED","body":{"type":"Object","message":"API Key not found","code":"KEY_NOT_FOUND"},"headers":{},"statusCode":401,"name":"APIError"}],"msg":"Failed to validate API key:"}
+{"level":"error","time":"2026-10-09T10:52:24.466Z","module":"identity.auth","details":[{"type":"APIError","message":"API Key has expired","stack":"APIError: API Key has expired","status":"UNAUTHORIZED","body":{"type":"Object","message":"API Key has expired","code":"KEY_EXPIRED"},"headers":{},"statusCode":401,"name":"APIError"}],"msg":"Failed to validate API key:"}
+ ❯ |integration| tests/integration/runtime/secret-preflight.test.ts (4 tests | 1 failed) 26503ms
+   × tampered ciphertext 阻止入口启动 Web，保留已提交迁移与密文，修复后继续且不重放迁移 8579ms
+{"time":"2026-10-09T10:55:23.866Z","level":"info","module":"identity.setup","event":"setup-code","code":"[redacted]","msg":"请使用初始化码完成 setup"}
+{"level":"info","time":"2026-10-09T10:55:23.972Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+{"time":"2026-10-09T10:55:24.952Z","level":"info","module":"identity.setup","event":"setup-code","code":"[redacted]","msg":"请使用初始化码完成 setup"}
+{"level":"error","time":"2026-10-09T10:55:24.966Z","module":"identity.setup","err":{"type":"Error","message":"controlled hash failure","stack":"Error: controlled hash failure\n    at /Users/dnslin/.codex/worktrees/issue-195-branding/ariso/tests/integration/identity/setup-lifecycle.test.ts:122:40\n    at file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:1628:35\n    at file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:2783:26\n    at file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3319:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3314:10)\n    at file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3299:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3257:10)\n    at file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3876:64"},"databasePath":"/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-setup-lifecycle-gpwnCo/data/ariso.db","msg":"Initialization request failed"}
+{"level":"info","time":"2026-10-09T10:55:24.973Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+{"time":"2026-10-09T10:55:25.599Z","level":"info","module":"identity.setup","event":"setup-code","code":"[redacted]","msg":"请使用初始化码完成 setup"}
+{"level":"info","time":"2026-10-09T10:55:25.681Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+ ❯ |integration| tests/integration/identity/setup-lifecycle.test.ts (11 tests | 1 failed) 34444ms
+   ❯ setup process lifecycle (2)
+     × prestart prepares storage without issuing a code; real module reloads share one startup code 6763ms
+ ❯ |media-tools| tests/integration/upload/api.test.ts (15 tests | 11 failed) 12285ms
+   × parses file-first and arbitrary field order, deduplicates album IDs and matches or creates whole tag names 2391ms
+   × rejects unknown fields, duplicate single fields, invalid selections and a second file without creating assets or tags 36ms
+   × rejects truncated multipart, missing files, field byte limits and configured file size limits, then removes all temporary files 35ms
+   × a Token revoked after admission does not cancel the accepted request but rejects its next POST 34ms
+   × a default changed after submission to a missing watermark keeps ready/201 with unavailable default and working saved links 36ms
+   × retains tags after valid preparation and unsupported-image failure, but returns no image ID or asset 32ms
+   × returns a real failed image and failed step while retaining original and earlier saved versions 34ms
+   × a repeated POST creates a new image; its upload Token cannot manage Tokens, use Web uploads or read private content 32ms
+   × returns only saved versions when compression is disabled and resolves the default link from current settings 33ms
+   × a real curl multipart caller receives completed 201 and links to the exact uploaded bytes 35ms
+   × a real proxy disconnect after acceptance loses the client response while the persisted processing job completes 33ms
+ ❯ |media-tools| tests/integration/site/branding.test.ts (34 tests | 2 failed) 9599ms
+   ❯ 品牌文件真实 SQLite 和磁盘生命周期 (34)
+     × 读取旧素材期间 replace 已删除文件时返回未找到，不报告当前文件缺失 244ms
+     × 读取旧素材期间 remove 已删除文件时返回未找到，不报告当前文件缺失 107ms
+ ❯ |media-tools| tests/integration/media/preview-http.test.ts (6 tests | 6 skipped) 15094ms
+ ❯ |media-tools| tests/integration/media/reprocess-http.test.ts (8 tests | 2 failed) 45382ms
+   × requires the owner Cookie and saved Origin and creates no job for denied requests 15052ms
+   × rejects malformed JSON, unsupported scopes and client processing parameters 15360ms
+ ❯ |media-tools| tests/integration/media/metadata-http.test.ts (6 tests | 1 failed) 25984ms
+   × requires the owner Cookie and saved origin before accepting a metadata reread 15021ms
+ ❯ |media-tools| tests/integration/site/branding-http.test.ts (12 tests | 3 failed) 78075ms
+   × 品牌写入只接受所有者 Cookie 和站点来源，认证在 multipart 解析前完成 15077ms
+   × 按真实内容接受允许格式，匿名读取返回原始字节及确认后的 MIME，SVG 使用图片隔离头 15015ms
+   × 损坏、动态、外部引用及用途不支持的格式返回明确错误并保留旧素材 15007ms
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |media-tools| tests/integration/media/preview-http.test.ts [ tests/integration/media/preview-http.test.ts ]
+AssertionError: sh: /Users/dnslin/.codex/worktrees/issue-195-branding/ariso/.next/standalone/entrypoint.sh: No such file or directory
+: expected 127 to be null
+
+- Expected:
+null
+
++ Received:
+127
+
+ ❯ vi.waitFor.timeout tests/integration/media/preview-http.test.ts:73:54
+     71|   await vi.waitFor(
+     72|     async () => {
+     73|       expect(server!.child.exitCode, server!.logs()).toBeNull();
+       |                                                      ^
+     74|       expect((await request('/api/health')).status).toBe(200);
+     75|     },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/22]⎯
+
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 21 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/identity/setup-lifecycle.test.ts > setup process lifecycle > prestart prepares storage without issuing a code; real module reloads share one startup code
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/integration/identity/setup-lifecycle.test.ts:79:3
+     77|     expect(child('imports')).toBe('');
+     78|   });
+     79|   it('prestart prepares storage without issuing a code; real module re…
+       |   ^
+     80|     expect(child('prestart')).not.toContain('setup-code');
+     81|     const first = child('reload')
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/22]⎯
+
+ FAIL  |integration| tests/integration/runtime/secret-preflight.test.ts > tampered ciphertext 阻止入口启动 Web，保留已提交迁移与密文，修复后继续且不重放迁移
+TimeoutError: The operation was aborted due to timeout
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/22]⎯
+
+ FAIL  |media-tools| tests/integration/media/metadata-http.test.ts > requires the owner Cookie and saved origin before accepting a metadata reread
+Error: sh: /Users/dnslin/.codex/worktrees/issue-195-branding/ariso/.next/standalone/entrypoint.sh: No such file or directory
+
+ ❯ vi.waitFor.timeout tests/integration/media/metadata-http.test.ts:42:49
+     40|   await vi.waitFor(
+     41|     async () => {
+     42|       if (server.child.exitCode !== null) throw new Error(server.logs(…
+       |                                                 ^
+     43|       const response = await fetch(
+     44|         `http://127.0.0.1:${server.port}/api/health`,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/22]⎯
+
+ FAIL  |media-tools| tests/integration/media/reprocess-http.test.ts > requires the owner Cookie and saved Origin and creates no job for denied requests
+ FAIL  |media-tools| tests/integration/media/reprocess-http.test.ts > rejects malformed JSON, unsupported scopes and client processing parameters
+Error: sh: /Users/dnslin/.codex/worktrees/issue-195-branding/ariso/.next/standalone/entrypoint.sh: No such file or directory
+
+ ❯ vi.waitFor.timeout tests/integration/media/reprocess-http.test.ts:41:49
+     39|   await vi.waitFor(
+     40|     async () => {
+     41|       if (server.child.exitCode !== null) throw new Error(server.logs(…
+       |                                                 ^
+     42|       expect(
+     43|         (
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/22]⎯
+
+ FAIL  |media-tools| tests/integration/site/branding-http.test.ts > 品牌写入只接受所有者 Cookie 和站点来源，认证在 multipart 解析前完成
+ FAIL  |media-tools| tests/integration/site/branding-http.test.ts > 按真实内容接受允许格式，匿名读取返回原始字节及确认后的 MIME，SVG 使用图片隔离头
+ FAIL  |media-tools| tests/integration/site/branding-http.test.ts > 损坏、动态、外部引用及用途不支持的格式返回明确错误并保留旧素材
+AssertionError: sh: /Users/dnslin/.codex/worktrees/issue-195-branding/ariso/.next/standalone/entrypoint.sh: No such file or directory
+: expected 127 to be null
+
+- Expected:
+null
+
++ Received:
+127
+
+ ❯ vi.waitFor.timeout tests/integration/site/branding-http.test.ts:77:54
+     75|   await vi.waitFor(
+     76|     async () => {
+     77|       expect(server!.child.exitCode, server!.logs()).toBeNull();
+       |                                                      ^
+     78|       expect((await request('/api/health')).status).toBe(200);
+     79|     },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/22]⎯
+
+ FAIL  |media-tools| tests/integration/site/branding.test.ts > 品牌文件真实 SQLite 和磁盘生命周期 > 读取旧素材期间 replace 已删除文件时返回未找到，不报告当前文件缺失
+ FAIL  |media-tools| tests/integration/site/branding.test.ts > 品牌文件真实 SQLite 和磁盘生命周期 > 读取旧素材期间 remove 已删除文件时返回未找到，不报告当前文件缺失
+AssertionError: promise rejected "Error: 当前品牌文件缺失: /var/folders/vn/m5rx_gkd… { …(3) }" instead of resolving
+ ❯ tests/integration/site/branding.test.ts:405:28
+    403|       else await service.remove('logo');
+    404|       release();
+    405|       await expect(oldRead).resolves.toBeNull();
+       |                            ^
+    406|     },
+    407|   );
+
+Caused by: Error: 当前品牌文件缺失: /var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-branding-JKXri2/assets/branding/site-logo-2a8ae005-3b02-4a5d-b788-78a4d76907c8.png
+ ❯ src/server/site/branding.ts:262:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: 'SITE_ASSET_MISSING', status: 500, path: '/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-branding-JKXri2/assets/branding/site-logo-2a8ae005-3b02-4a5d-b788-78a4d76907c8.png' }
+Caused by: Error: ENOENT: no such file or directory, open '/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-branding-JKXri2/assets/branding/site-logo-2a8ae005-3b02-4a5d-b788-78a4d76907c8.png'
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { errno: -2, code: 'ENOENT', syscall: 'open', path: '/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-branding-JKXri2/assets/branding/site-logo-2a8ae005-3b02-4a5d-b788-78a4d76907c8.png' }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/22]⎯
+
+ FAIL  |media-tools| tests/integration/upload/api.test.ts > parses file-first and arbitrary field order, deduplicates album IDs and matches or creates whole tag names
+AssertionError: {"imageId":"e4e6deb3-2c5d-40e9-9ced-a2e718199ac8","status":"failed","error":{"stage":"compressed","code":"STORAGE_OPERATION_FAILED","message":"Storage write failed: 26e29ed2-9912-4668-b1d1-9c4e62e8c89f, /private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-public-upload-80XiwF/data/storage/default/ariso/26e29ed2-9912-4668-b1d1-9c4e62e8c89f/images/e4e6deb3-2c5d-40e9-9ced-a2e718199ac8/compressed/82d715f8-8cd6-40a7-97e2-24431e112b8c.partial"},"requestId":"90830ffd-c535-48e6-9ad4-76904acbe052"}: expected 502 to be 201 // Object.is equality
+
+- Expected
++ Received
+
+- 201
++ 502
+
+ ❯ tests/integration/upload/api.test.ts:300:58
+    298|     body.append(name, value);
+    299|   const response = await fixture.upload(key, body);
+    300|   expect(response.status, await response.clone().text()).toBe(201);
+       |                                                          ^
+    301|   const result = await response.json();
+    302|   expect(db.select().from(mediaImages).get()!.visibility).toBe('privat…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/22]⎯
+
+ FAIL  |media-tools| tests/integration/upload/api.test.ts > rejects unknown fields, duplicate single fields, invalid selections and a second file without creating assets or tags
+ FAIL  |media-tools| tests/integration/upload/api.test.ts > rejects truncated multipart, missing files, field byte limits and configured file size limits, then removes all temporary files
+ FAIL  |media-tools| tests/integration/upload/api.test.ts > a Token revoked after admission does not cancel the accepted request but rejects its next POST
+ FAIL  |media-tools| tests/integration/upload/api.test.ts > a default changed after submission to a missing watermark keeps ready/201 with unavailable default and working saved links
+ FAIL  |media-tools| tests/integration/upload/api.test.ts > retains tags after valid preparation and unsupported-image failure, but returns no image ID or asset
+ FAIL  |media-tools| tests/integration/upload/api.test.ts > returns a real failed image and failed step while retaining original and earlier saved versions
+ FAIL  |media-tools| tests/integration/upload/api.test.ts > a repeated POST creates a new image; its upload Token cannot manage Tokens, use Web uploads or read private content
+ FAIL  |media-tools| tests/integration/upload/api.test.ts > returns only saved versions when compression is disabled and resolves the default link from current settings
+ FAIL  |media-tools| tests/integration/upload/api.test.ts > a real curl multipart caller receives completed 201 and links to the exact uploaded bytes
+ FAIL  |media-tools| tests/integration/upload/api.test.ts > a real proxy disconnect after acceptance loses the client response while the persisted processing job completes
+AssertionError: sh: /Users/dnslin/.codex/worktrees/issue-195-branding/ariso/.next/standalone/entrypoint.sh: No such file or directory
+
+
+127 !== null
+
+
+- Expected:
+null
+
++ Received:
+127
+
+ ❯ publicUploadFixture tests/integration/upload/api-fixture.ts:76:14
+     74|     const deadline = Date.now() + 15000;
+     75|     for (;;) {
+     76|       assert.equal(server.child.exitCode, null, server.logs());
+       |              ^
+     77|       try {
+     78|         if ((await request('/api/health')).status === 200) break;
+ ❯ tests/integration/upload/api.test.ts:79:13
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/22]⎯
+
+
+ Test Files  8 failed | 181 passed (189)
+      Tests  21 failed | 1845 passed | 6 skipped (1872)
+   Start at  18:51:40
+   Duration  458.71s (tests 94%, import 5%)
+
+[ELIFECYCLE] Command failed with exit code 1.

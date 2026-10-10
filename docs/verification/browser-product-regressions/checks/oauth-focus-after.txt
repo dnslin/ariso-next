@@ -1,0 +1,14 @@
+Command: pnpm exec vitest run --project unit tests/unit/identity/github-navigation-restore.test.ts
+Node: 24.18.1; pnpm: 11.19.0
+Captured from actual tool output, 2026-10-10 08:59:05 local runner time.
+
+Test Files 1 passed (1)
+Tests 16 passed (16)
+Duration 280ms
+
+Scoped checks also executed and passed:
+pnpm exec prettier src/components/identity/use-github-account-view.ts tests/unit/identity/github-navigation-restore.test.ts --check
+pnpm exec eslint src/components/identity/use-github-account-view.ts tests/unit/identity/github-navigation-restore.test.ts --max-warnings=0
+git diff --check
+
+Real browser verification remains pending.

@@ -1,6 +1,13 @@
 'use client';
 
-import { createElement, useCallback, useEffect, useRef, useState } from 'react';
+import {
+  createElement,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
 import { toast } from '@heroui/react/toast';
 import { CircleCheck } from 'lucide-react';
 import { smtpSettingsInputSchema } from '../../server/identity/validation';
@@ -98,6 +105,19 @@ export function useSmtpPage() {
   const epoch = useRef(0);
   const inFlight = useRef(false);
   const readAbort = useRef<AbortController | null>(null);
+  const focusTarget = useRef<string | null>(null);
+
+  useLayoutEffect(() => {
+    if (operation !== 'idle' || !focusTarget.current) return;
+    const testId = focusTarget.current;
+    focusTarget.current = null;
+    const target = document.querySelector<HTMLElement>(
+      `[data-testid="${testId}"]:not(:disabled)`,
+    );
+    (target ?? document.getElementById('smtp-heading'))?.focus({
+      preventScroll: true,
+    });
+  });
 
   const expire = useCallback(() => {
     epoch.current++;
@@ -183,14 +203,7 @@ export function useSmtpPage() {
     restoreFocus(target);
   }
   function restoreFocus(testId: string) {
-    requestAnimationFrame(() => {
-      const target = document.querySelector<HTMLElement>(
-        `[data-testid="${testId}"]:not(:disabled)`,
-      );
-      (target ?? document.getElementById('smtp-heading'))?.focus({
-        preventScroll: true,
-      });
-    });
+    focusTarget.current = testId;
   }
   function openClear() {
     if (

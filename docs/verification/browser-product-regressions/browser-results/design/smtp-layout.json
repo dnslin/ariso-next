@@ -1,0 +1,43 @@
+{
+  "screenshots": [
+    "smtp-main-light-1440.png",
+    "smtp-main-dark-390.png",
+    "smtp-confirm-dark-390.png",
+    "smtp-confirm-dark-short.png"
+  ],
+  "layouts": [],
+  "checks": [
+    {
+      "shortViewport": [390, 400],
+      "theme": "dark",
+      "targets": [
+        {
+          "label": "关闭",
+          "width": 44,
+          "height": 44,
+          "top": 102,
+          "bottom": 146,
+          "reachable": true
+        },
+        {
+          "label": "取消",
+          "width": 148,
+          "height": 44,
+          "top": 254,
+          "bottom": 298,
+          "reachable": true
+        },
+        {
+          "label": "测试已保存配置",
+          "width": 148,
+          "height": 44,
+          "top": 254,
+          "bottom": 298,
+          "reachable": true
+        }
+      ],
+      "cancelFocus": "smtp-test",
+      "draftPreserved": true
+    }
+  ]
+}

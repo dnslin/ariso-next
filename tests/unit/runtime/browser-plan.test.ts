@@ -20,6 +20,23 @@ describe('focused browser execution plans', () => {
         }),
       ).toThrow();
   });
+  it('keeps production branding independent of unrelated phase and fixture options', () => {
+    expect(select('branding')).toEqual({ stages: [], config: {} });
+    expect(selectBrowserPlan({ suite: 'branding', pageLabel: 'p2' })).toEqual({
+      stages: [],
+      config: {},
+    });
+    expect(() => select('branding', 'representative')).toThrow('--only');
+    for (const field of ['storageConfig', 'previewConfig'])
+      expect(() =>
+        selectBrowserPlan({
+          suite: 'branding',
+          pageLabel: 'p1',
+          [field]: 'unused.json',
+        }),
+      ).toThrow();
+  });
+
   it('provides storage-cors as a complete focused stage on its primary page', () => {
     expect(select('storage-cors')).toEqual({
       stages: [['storage-cors', 'storageCors']],
@@ -99,6 +116,7 @@ describe('focused browser execution plans', () => {
     ['workspace-continuity', ['workspace-continuity']],
     ['oauth', []],
     ['brand-experiment', []],
+    ['branding', []],
     ['smtp', ['smtp']],
     ['tokens', ['tokens']],
     ['shell-navigation', ['shell-navigation']],
@@ -153,6 +171,7 @@ describe('focused browser execution plans', () => {
     ['smtp', 'representative', ['smtp']],
     ['smtp', 'interactions', ['smtp']],
     ['smtp', 'recovery', ['smtp']],
+    ['smtp', 'focus', ['smtp']],
 
     ['sharing-management', 'representative', ['sharing-management']],
     ['sharing-management', 'behavior', ['sharing-management']],
@@ -194,6 +213,7 @@ describe('focused browser execution plans', () => {
     ['smtp', 'representative', { smtpPhase: 'representative' }],
     ['smtp', 'interactions', { smtpPhase: 'interactions' }],
     ['smtp', 'recovery', { smtpPhase: 'recovery' }],
+    ['smtp', 'focus', { smtpPhase: 'focus' }],
     ['tokens', 'recovery', { tokensPhase: 'recovery' }],
     ['tokens', 'lifecycle', { tokensPhase: 'lifecycle' }],
     ['tokens', 'create-recovery', { tokensPhase: 'create-recovery' }],

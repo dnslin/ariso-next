@@ -1,0 +1,107 @@
+Already up to date
+Done in 66ms using pnpm v11.19.0
+$ vitest run --project integration --project media-tools --maxWorkers=4
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-195-branding/ariso
+
+{"time":"2026-10-09T11:01:13.063Z","level":"info","module":"identity.setup","event":"setup-code","code":"[redacted]","msg":"请使用初始化码完成 setup"}
+{"level":"info","time":"2026-10-09T11:01:13.193Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+{"time":"2026-10-09T11:01:14.723Z","level":"info","module":"identity.setup","event":"setup-code","code":"[redacted]","msg":"请使用初始化码完成 setup"}
+{"level":"error","time":"2026-10-09T11:01:14.741Z","module":"identity.setup","err":{"type":"Error","message":"controlled hash failure","stack":"Error: controlled hash failure\n    at /Users/dnslin/.codex/worktrees/issue-195-branding/ariso/tests/integration/identity/setup-lifecycle.test.ts:122:40\n    at file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:1628:35\n    at file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:2783:26\n    at file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3319:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3314:10)\n    at file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3299:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3257:10)\n    at file:///Users/dnslin/.codex/worktrees/issue-195-branding/ariso/node_modules/.pnpm/vitest@5.0.0_@types+node@24.13.4_vite@8.3.0_@types+node@24.13.4_esbuild@0.28.2_jiti@2.7.0_tsx@4.23.13_/node_modules/vitest/dist/chunks/run.CQOUYP-x.js:3876:64"},"databasePath":"/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-setup-lifecycle-AsRvSX/data/ariso.db","msg":"Initialization request failed"}
+{"level":"info","time":"2026-10-09T11:01:14.747Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+{"time":"2026-10-09T11:01:15.966Z","level":"info","module":"identity.setup","event":"setup-code","code":"[redacted]","msg":"请使用初始化码完成 setup"}
+{"level":"info","time":"2026-10-09T11:01:16.038Z","module":"runtime.shutdown","msg":"Upload and media queues stopped, analytics flushed, database closed"}
+ ❯ |integration| tests/integration/runtime/secret-preflight.test.ts (4 tests | 3 failed) 28670ms
+   × 空生产数据库接受不同合法密钥，生产产物不包含测试表、组合或密钥校验记录 4171ms
+   × wrong key 阻止入口启动 Web，保留已提交迁移与密文，修复后继续且不重放迁移 4295ms
+   × invalid ciphertext 阻止入口启动 Web，保留已提交迁移与密文，修复后继续且不重放迁移 3981ms
+ ❯ |integration| tests/integration/identity/setup-lifecycle.test.ts (11 tests | 1 failed) 38677ms
+   ❯ setup process lifecycle (2)
+     × prestart prepares storage without issuing a code; real module reloads share one startup code 5349ms
+ ❯ |integration| tests/integration/runtime/build.test.ts (1 test | 1 failed) 240049ms
+   × 无密钥和数据库时在独立目录完成生产构建，不写数据或输出初始化码 240047ms
+{"level":"error","time":"2026-10-09T11:05:36.209Z","module":"identity.auth","details":[{"type":"APIError","message":"API Key has expired","stack":"APIError: API Key has expired","status":"UNAUTHORIZED","body":{"type":"Object","message":"API Key has expired","code":"KEY_EXPIRED"},"headers":{},"statusCode":401,"name":"APIError"}],"msg":"Failed to validate API key:"}
+{"level":"error","time":"2026-10-09T11:05:36.901Z","module":"identity.auth","details":[{"type":"APIError","message":"API Key is disabled","stack":"APIError: API Key is disabled","status":"UNAUTHORIZED","body":{"type":"Object","message":"API Key is disabled","code":"KEY_DISABLED"},"headers":{},"statusCode":401,"name":"APIError"}],"msg":"Failed to validate API key:"}
+{"level":"error","time":"2026-10-09T11:05:36.921Z","module":"identity.auth","details":[{"type":"APIError","message":"Invalid API key.","stack":"APIError: Invalid API key.","status":"UNAUTHORIZED","body":{"type":"Object","message":"Invalid API key.","code":"INVALID_API_KEY"},"headers":{},"statusCode":401,"name":"APIError"}],"msg":"Failed to validate API key:"}
+ ❯ |integration| tests/integration/identity/auth.test.ts (18 tests | 1 failed) 118291ms
+   ❯ initialized production auth (17)
+     × production constraints reject invalid owners and duplicate providers; incomplete identity is explicit 10903ms
+{"level":"error","time":"2026-10-09T11:05:38.429Z","module":"identity.auth","details":[{"type":"APIError","message":"Invalid API key.","stack":"APIError: Invalid API key.","status":"UNAUTHORIZED","body":{"type":"Object","message":"Invalid API key.","code":"INVALID_API_KEY"},"headers":{},"statusCode":401,"name":"APIError"}],"msg":"Failed to validate API key:"}
+{"level":"error","time":"2026-10-09T11:05:58.536Z","module":"identity.auth","details":[{"type":"APIError","message":"API Key not found","stack":"APIError: API Key not found","status":"UNAUTHORIZED","body":{"type":"Object","message":"API Key not found","code":"KEY_NOT_FOUND"},"headers":{},"statusCode":401,"name":"APIError"}],"msg":"Failed to validate API key:"}
+{"level":"error","time":"2026-10-09T11:05:58.557Z","module":"identity.auth","details":[{"type":"APIError","message":"API Key has expired","stack":"APIError: API Key has expired","status":"UNAUTHORIZED","body":{"type":"Object","message":"API Key has expired","code":"KEY_EXPIRED"},"headers":{},"statusCode":401,"name":"APIError"}],"msg":"Failed to validate API key:"}
+ ❯ |integration| tests/integration/identity/reset-password-cli.test.ts (26 tests | 1 failed) 30897ms
+   × a running standalone Web process rejects both old cookies on the next request after CLI reset 2833ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/runtime/build.test.ts > 无密钥和数据库时在独立目录完成生产构建，不写数据或输出初始化码
+Error: Test timed out in 240000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/integration/runtime/build.test.ts:8:1
+      6| import { expect, it } from 'vitest';
+      7|
+      8| it('无密钥和数据库时在独立目录完成生产构建，不写数据或输出初始化码', async () => {
+       | ^
+      9|   const directory = await mkdtemp(join(tmpdir(), 'ariso-build-'));
+     10|   const app = join(directory, 'app');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/7]⎯
+
+ FAIL  |integration| tests/integration/runtime/secret-preflight.test.ts > 空生产数据库接受不同合法密钥，生产产物不包含测试表、组合或密钥校验记录
+ FAIL  |integration| tests/integration/runtime/secret-preflight.test.ts > wrong key 阻止入口启动 Web，保留已提交迁移与密文，修复后继续且不重放迁移
+ FAIL  |integration| tests/integration/runtime/secret-preflight.test.ts > invalid ciphertext 阻止入口启动 Web，保留已提交迁移与密文，修复后继续且不重放迁移
+TimeoutError: The operation was aborted due to timeout
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/7]⎯
+
+ FAIL  |integration| tests/integration/identity/auth.test.ts > initialized production auth > production constraints reject invalid owners and duplicate providers; incomplete identity is explicit
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/integration/identity/auth.test.ts:247:3
+    245|   });
+    246|
+    247|   it('production constraints reject invalid owners and duplicate provi…
+       |   ^
+    248|     for (const value of ['NULL', '0', '2']) {
+    249|       expect(() =>
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/7]⎯
+
+ FAIL  |integration| tests/integration/identity/reset-password-cli.test.ts > a running standalone Web process rejects both old cookies on the next request after CLI reset
+AssertionError: expected 1 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 1
+
+ ❯ tests/integration/identity/reset-password-cli.test.ts:294:49
+    292|       ).toHaveProperty('user.id', ownerId);
+    293|     expect(connection.db.select().from(session).all()).toHaveLength(2);
+    294|     expect((await enterPassword(run)).exitCode).toBe(0);
+       |                                                 ^
+    295|     for (const cookie of cookies)
+    296|       expect(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/7]⎯
+
+ FAIL  |integration| tests/integration/identity/setup-lifecycle.test.ts > setup process lifecycle > prestart prepares storage without issuing a code; real module reloads share one startup code
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/integration/identity/setup-lifecycle.test.ts:79:3
+     77|     expect(child('imports')).toBe('');
+     78|   });
+     79|   it('prestart prepares storage without issuing a code; real module re…
+       |   ^
+     80|     expect(child('prestart')).not.toContain('setup-code');
+     81|     const first = child('reload')
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/7]⎯
+
+
+ Test Files  5 failed | 184 passed (189)
+      Tests  7 failed | 1865 passed (1872)
+   Start at  19:01:02
+   Duration  659.64s (tests 92%, import 8%)
+
+[ELIFECYCLE] Command failed with exit code 1.

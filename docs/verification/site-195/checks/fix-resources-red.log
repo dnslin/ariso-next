@@ -1,0 +1,38 @@
+Already up to date
+Done in 35ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-195-branding/ariso
+
+ ❯ |unit| tests/unit/site/branding-resources.test.ts (1 test | 1 failed) 32ms
+   × 品牌 multipart 接收保留同盘已受理上传的剩余写入空间 31ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/site/branding-resources.test.ts > 品牌 multipart 接收保留同盘已受理上传的剩余写入空间
+AssertionError: promise resolved "{ …(2) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "mime": "image/png",
++   "url": "/branding/site-logo-test.png",
+  }
+
+ ❯ tests/unit/site/branding-resources.test.ts:59:57
+     57|     });
+     58|
+     59|     await expect(writeBrandingResponse(request, 'logo')).rejects.toMat…
+       |                                                         ^
+     60|       code: 'UPLOAD_INSUFFICIENT_SPACE',
+     61|       status: 507,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  22:26:26
+   Duration  405ms (import 73%, transform 18%, tests 9%, worker 1%)

@@ -1,0 +1,8 @@
+{
+  "body": "任务 ID：`T-SITE-03`\n\n- 任务组：`SITE-BRAND`\n- 里程碑：M4\n- 需求：`R-21.2-01`、`R-21.2-02`、`U-SITE-01`、`U-SITE-02`、`U-SITE-03`\n- 范围：[site 规格](https://github.com/dnslin/ariso-next/blob/main/docs/specs/SPEC-site.md) §6/7；src/server/site/branding、品牌PUT/DELETE与/branding文件读取，名称描述更新及运行时metadata。\n- 直接前置：`T-SITE-01`、`T-ID-01`、`EV-SITE-01`\n- 验收条件：Logo PNG/JPEG/WebP/静态SVG，Favicon PNG/ICO/静态SVG，按内容识别并在读取中限5MiB；SVG不内联执行。新文件→DB引用→旧文件删除，失败旧配置可用，启动重试自有孤立文件；缺文件明确错误。素材不进图库计数，当前引用匿名读、版本URL换新，无自定义HTML/CSS；无部署DB/密钥可构建。\n- 验证方法：真实允许/拒绝格式、损坏/脚本/动画SVG、5MiB±1与流式超限；各写入/提交/删除中断点和重启、其他模块文件不受影响；MIME/附件行为与metadata不在构建读库。\n- 界面：无管理界面：素材与品牌服务/HTTP；页面联动和用户操作在T-SITE-04。\n- 实施步骤：\n  - [ ] 1. 品牌文件校验与替换：真实格式/5MiB，新写失败旧配置可用。\n  - [ ] 2. 匿名读取/metadata与旧文件清理：重启、缓存、无数据库构建。\n\n## 执行与依赖\n\n直接前置：#47、#53、#149。同时建立 GitHub 原生阻塞关系；全部前置交付后才能开始依赖它的工作。\n\n按 [执行约定](https://github.com/dnslin/ariso-next/blob/main/docs/tasks/execution.md) 和 [设计交付规范](https://github.com/dnslin/ariso-next/blob/main/docs/design/handoff.md) 执行。纯文档按适用检查；业务改动先构建再集成，界面同时验证桌面/手机和设计。双架构在 Release 阶段验证，日常任务不因未发布而阻塞。真实存储矩阵为 AWS S3、R2、SeaweedFS；EV-STORAGE-01 的 AWS 豁免不自动扩展到后续验收。\n\n交付时填写 PR、实际命令、环境、结果与证据。任务创建不代表实现或验证完成。",
+  "comments": [],
+  "number": 195,
+  "state": "OPEN",
+  "title": "[T-SITE-03] 品牌素材存取、静态校验与清理",
+  "url": "https://github.com/dnslin/ariso-next/issues/195"
+}

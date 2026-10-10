@@ -1,0 +1,666 @@
+{
+  "page": "97:748",
+  "nodes": [
+    {
+      "id": "529:11294",
+      "name": "11 · M / R4 / 外观 · 跟随系统选中",
+      "width": 358,
+      "height": 338,
+      "modes": {
+        "VariableCollectionId:2:2": "2:0"
+      },
+      "texts": [
+        "外观",
+        "×",
+        "当前选择：跟随系统 · 仅当前浏览器",
+        "浅色",
+        "深色",
+        "跟随系统  ✓",
+        "跟随系统时，随操作系统的浅／深色变化。"
+      ],
+      "links": [
+        {
+          "id": "529:11297",
+          "name": "外观 / 关闭",
+          "reactions": [
+            {
+              "action": {
+                "type": "CLOSE"
+              },
+              "actions": [
+                {
+                  "type": "CLOSE"
+                }
+              ],
+              "trigger": {
+                "type": "ON_CLICK"
+              }
+            }
+          ]
+        },
+        {
+          "id": "529:11299",
+          "name": "外观 / light",
+          "reactions": [
+            {
+              "action": {
+                "type": "NODE",
+                "destinationId": "529:11238",
+                "navigation": "NAVIGATE",
+                "transition": null,
+                "resetVideoPosition": false,
+                "resetScrollPosition": false
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "529:11238",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false,
+                  "resetScrollPosition": false
+                }
+              ],
+              "trigger": {
+                "type": "ON_CLICK"
+              }
+            }
+          ]
+        },
+        {
+          "id": "529:11300",
+          "name": "外观 / dark",
+          "reactions": [
+            {
+              "action": {
+                "type": "NODE",
+                "destinationId": "529:11307",
+                "navigation": "NAVIGATE",
+                "transition": null,
+                "resetVideoPosition": false,
+                "resetScrollPosition": false
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "529:11307",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false,
+                  "resetScrollPosition": false
+                }
+              ],
+              "trigger": {
+                "type": "ON_CLICK"
+              }
+            }
+          ]
+        },
+        {
+          "id": "529:11301",
+          "name": "外观 / system",
+          "reactions": [
+            {
+              "action": {
+                "type": "NODE",
+                "destinationId": "528:11680",
+                "navigation": "NAVIGATE",
+                "transition": null,
+                "resetVideoPosition": false,
+                "resetScrollPosition": false
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "528:11680",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false,
+                  "resetScrollPosition": false
+                }
+              ],
+              "trigger": {
+                "type": "ON_CLICK"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "529:11363",
+      "name": "13 · M / R4 / 外观 · 深色选中",
+      "width": 358,
+      "height": 338,
+      "modes": {
+        "VariableCollectionId:2:2": "264:0"
+      },
+      "texts": [
+        "外观",
+        "×",
+        "当前选择：深色 · 仅当前浏览器",
+        "浅色",
+        "深色  ✓",
+        "跟随系统",
+        "跟随系统时，随操作系统的浅／深色变化。"
+      ],
+      "links": [
+        {
+          "id": "529:11366",
+          "name": "外观 / 关闭",
+          "reactions": [
+            {
+              "action": {
+                "type": "CLOSE"
+              },
+              "actions": [
+                {
+                  "type": "CLOSE"
+                }
+              ],
+              "trigger": {
+                "type": "ON_CLICK"
+              }
+            }
+          ]
+        },
+        {
+          "id": "529:11368",
+          "name": "外观 / light",
+          "reactions": [
+            {
+              "action": {
+                "type": "NODE",
+                "destinationId": "529:11238",
+                "navigation": "NAVIGATE",
+                "transition": null,
+                "resetVideoPosition": false,
+                "resetScrollPosition": false
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "529:11238",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false,
+                  "resetScrollPosition": false
+                }
+              ],
+              "trigger": {
+                "type": "ON_CLICK"
+              }
+            }
+          ]
+        },
+        {
+          "id": "529:11369",
+          "name": "外观 / dark",
+          "reactions": [
+            {
+              "action": {
+                "type": "NODE",
+                "destinationId": "529:11307",
+                "navigation": "NAVIGATE",
+                "transition": null,
+                "resetVideoPosition": false,
+                "resetScrollPosition": false
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "529:11307",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false,
+                  "resetScrollPosition": false
+                }
+              ],
+              "trigger": {
+                "type": "ON_CLICK"
+              }
+            }
+          ]
+        },
+        {
+          "id": "529:11370",
+          "name": "外观 / system",
+          "reactions": [
+            {
+              "action": {
+                "type": "NODE",
+                "destinationId": "528:11680",
+                "navigation": "NAVIGATE",
+                "transition": null,
+                "resetVideoPosition": false,
+                "resetScrollPosition": false
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "528:11680",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false,
+                  "resetScrollPosition": false
+                }
+              ],
+              "trigger": {
+                "type": "ON_CLICK"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "529:11498",
+      "name": "22 · M / R4 / 外观 · 浅色选中",
+      "width": 358,
+      "height": 338,
+      "modes": {
+        "VariableCollectionId:2:2": "2:0"
+      },
+      "texts": [
+        "外观",
+        "×",
+        "当前选择：浅色 · 仅当前浏览器",
+        "浅色  ✓",
+        "深色",
+        "跟随系统",
+        "跟随系统时，随操作系统的浅／深色变化。"
+      ],
+      "links": [
+        {
+          "id": "529:11501",
+          "name": "外观 / 关闭",
+          "reactions": [
+            {
+              "action": {
+                "type": "CLOSE"
+              },
+              "actions": [
+                {
+                  "type": "CLOSE"
+                }
+              ],
+              "trigger": {
+                "type": "ON_CLICK"
+              }
+            }
+          ]
+        },
+        {
+          "id": "529:11503",
+          "name": "外观 / light",
+          "reactions": [
+            {
+              "action": {
+                "type": "NODE",
+                "destinationId": "529:11238",
+                "navigation": "NAVIGATE",
+                "transition": null,
+                "resetVideoPosition": false,
+                "resetScrollPosition": false
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "529:11238",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false,
+                  "resetScrollPosition": false
+                }
+              ],
+              "trigger": {
+                "type": "ON_CLICK"
+              }
+            }
+          ]
+        },
+        {
+          "id": "529:11504",
+          "name": "外观 / dark",
+          "reactions": [
+            {
+              "action": {
+                "type": "NODE",
+                "destinationId": "529:11307",
+                "navigation": "NAVIGATE",
+                "transition": null,
+                "resetVideoPosition": false,
+                "resetScrollPosition": false
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "529:11307",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false,
+                  "resetScrollPosition": false
+                }
+              ],
+              "trigger": {
+                "type": "ON_CLICK"
+              }
+            }
+          ]
+        },
+        {
+          "id": "529:11505",
+          "name": "外观 / system",
+          "reactions": [
+            {
+              "action": {
+                "type": "NODE",
+                "destinationId": "528:11680",
+                "navigation": "NAVIGATE",
+                "transition": null,
+                "resetVideoPosition": false,
+                "resetScrollPosition": false
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "528:11680",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false,
+                  "resetScrollPosition": false
+                }
+              ],
+              "trigger": {
+                "type": "ON_CLICK"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "266:3492",
+      "name": "M / 主题与交互 / 审阅入口",
+      "width": 390,
+      "height": 675,
+      "modes": {},
+      "texts": [
+        "主题与交互 · 审阅",
+        "从登录页右上角切换外观。系统变化使用两个固定样例对照；此入口不属于产品页面。",
+        "浅色登录",
+        "深色登录",
+        "系统当前浅色",
+        "系统当前深色",
+        "深色图库",
+        "深色邮件表单",
+        "深色字段错误",
+        "浅色焦点规范",
+        "深色焦点规范"
+      ],
+      "links": [
+        {
+          "id": "266:3495",
+          "name": "审阅 / 浅色登录",
+          "reactions": [
+            {
+              "action": {
+                "type": "NODE",
+                "destinationId": "265:3559",
+                "navigation": "NAVIGATE",
+                "transition": null,
+                "resetVideoPosition": false,
+                "resetScrollPosition": true
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "265:3559",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false,
+                  "resetScrollPosition": true
+                }
+              ],
+              "trigger": {
+                "type": "ON_CLICK"
+              }
+            }
+          ]
+        },
+        {
+          "id": "266:3498",
+          "name": "审阅 / 深色登录",
+          "reactions": [
+            {
+              "action": {
+                "type": "NODE",
+                "destinationId": "265:3599",
+                "navigation": "NAVIGATE",
+                "transition": null,
+                "resetVideoPosition": false,
+                "resetScrollPosition": true
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "265:3599",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false,
+                  "resetScrollPosition": true
+                }
+              ],
+              "trigger": {
+                "type": "ON_CLICK"
+              }
+            }
+          ]
+        },
+        {
+          "id": "266:3501",
+          "name": "审阅 / 系统当前浅色",
+          "reactions": [
+            {
+              "action": {
+                "type": "NODE",
+                "destinationId": "265:3639",
+                "navigation": "NAVIGATE",
+                "transition": null,
+                "resetVideoPosition": false,
+                "resetScrollPosition": true
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "265:3639",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false,
+                  "resetScrollPosition": true
+                }
+              ],
+              "trigger": {
+                "type": "ON_CLICK"
+              }
+            }
+          ]
+        },
+        {
+          "id": "266:3504",
+          "name": "审阅 / 系统当前深色",
+          "reactions": [
+            {
+              "action": {
+                "type": "NODE",
+                "destinationId": "265:3679",
+                "navigation": "NAVIGATE",
+                "transition": null,
+                "resetVideoPosition": false,
+                "resetScrollPosition": true
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "265:3679",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false,
+                  "resetScrollPosition": true
+                }
+              ],
+              "trigger": {
+                "type": "ON_CLICK"
+              }
+            }
+          ]
+        },
+        {
+          "id": "266:3507",
+          "name": "审阅 / 深色图库",
+          "reactions": [
+            {
+              "action": {
+                "type": "NODE",
+                "destinationId": "265:3719",
+                "navigation": "NAVIGATE",
+                "transition": null,
+                "resetVideoPosition": false,
+                "resetScrollPosition": true
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "265:3719",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false,
+                  "resetScrollPosition": true
+                }
+              ],
+              "trigger": {
+                "type": "ON_CLICK"
+              }
+            }
+          ]
+        },
+        {
+          "id": "266:3510",
+          "name": "审阅 / 深色邮件表单",
+          "reactions": [
+            {
+              "action": {
+                "type": "NODE",
+                "destinationId": "265:3791",
+                "navigation": "NAVIGATE",
+                "transition": null,
+                "resetVideoPosition": false,
+                "resetScrollPosition": true
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "265:3791",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false,
+                  "resetScrollPosition": true
+                }
+              ],
+              "trigger": {
+                "type": "ON_CLICK"
+              }
+            }
+          ]
+        },
+        {
+          "id": "266:3513",
+          "name": "审阅 / 深色字段错误",
+          "reactions": [
+            {
+              "action": {
+                "type": "NODE",
+                "destinationId": "265:3875",
+                "navigation": "NAVIGATE",
+                "transition": null,
+                "resetVideoPosition": false,
+                "resetScrollPosition": true
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "265:3875",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false,
+                  "resetScrollPosition": true
+                }
+              ],
+              "trigger": {
+                "type": "ON_CLICK"
+              }
+            }
+          ]
+        },
+        {
+          "id": "266:3516",
+          "name": "审阅 / 浅色焦点规范",
+          "reactions": [
+            {
+              "action": {
+                "type": "NODE",
+                "destinationId": "266:3458",
+                "navigation": "NAVIGATE",
+                "transition": null,
+                "resetVideoPosition": false,
+                "resetScrollPosition": true
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "266:3458",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false,
+                  "resetScrollPosition": true
+                }
+              ],
+              "trigger": {
+                "type": "ON_CLICK"
+              }
+            }
+          ]
+        },
+        {
+          "id": "266:3519",
+          "name": "审阅 / 深色焦点规范",
+          "reactions": [
+            {
+              "action": {
+                "type": "NODE",
+                "destinationId": "266:3475",
+                "navigation": "NAVIGATE",
+                "transition": null,
+                "resetVideoPosition": false,
+                "resetScrollPosition": true
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "266:3475",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false,
+                  "resetScrollPosition": true
+                }
+              ],
+              "trigger": {
+                "type": "ON_CLICK"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
