@@ -1,0 +1,18 @@
+AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+
+  {
++   buttons: [],
++   heading: '图库还没有图片',
++   text: '上传第一张图片，开始整理你的图库。'
+-   buttons: [
+-     '清除筛选'
+-   ],
+-   heading: '没有找到匹配图片',
+-   text: '请修改或清除筛选条件。'
+  }
+
+    at analyticsConsumers (file:///Users/dnslin/.codex/worktrees/issue-179-analytics-ui/ariso/e2e/analytics-consumers.mjs:215:14)
+    at async file:////[eval2]:113:5
+
+ego's nodejs process exited with code 1.

@@ -253,6 +253,7 @@ export function LibraryScreen(props: {
       query.filters.storageId ||
       query.filters.visibility ||
       query.filters.status ||
+      query.filters.failure ||
       (!props.albumId && query.filters.albumId)
     );
   const invalid =

@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { resizeViewport } from './browser-geometry.mjs';
+import { quote } from './analytics-fixture.mjs';
 
 export async function analyticsConsumers(page, config, tools, fixture, report) {
   report.consumerStep = 'popular-end';
@@ -185,4 +186,74 @@ export async function analyticsConsumers(page, config, tools, fixture, report) {
   report.checks.push(
     'Ranking opens real single-image statistics; library/trash management preserves exact IDs and 30-day source, then restores ranking scroll and focus. Both detail consumers return focus after statistics. Failure toggles use actual initial/reprocess lists. Deleted images are absent.',
   );
+  const failureIds = [fixture.ids[9], fixture.ids[10]].map(quote).join(',');
+  await tools.sql(
+    `UPDATE media_images SET trashed_at=${Date.now()} WHERE id IN (${failureIds})`,
+  );
+  try {
+    const normal = await tools.request('/api/images?scope=normal');
+    assert.ok(normal.total > 0, 'The library still contains normal images');
+    for (const failure of ['initial', 'reprocess']) {
+      report.consumerStep = `failure-empty:${failure}`;
+      const response = await tools.request(
+        `/api/images?scope=normal&failure=${failure}`,
+      );
+      assert.equal(response.total, 0);
+      assert.deepEqual(response.items, []);
+      await page.goto(`${config.origin}/library?failure=${failure}`);
+      await page.waitForSelector('[data-testid="library-empty"]');
+      const empty = await page.evaluate(() => {
+        const root = document.querySelector('[data-testid="library-empty"]');
+        return {
+          heading: root.querySelector('h2').textContent,
+          text: root.querySelector('p').textContent,
+          buttons: [...root.querySelectorAll('button')].map(
+            (button) => button.textContent,
+          ),
+        };
+      });
+      assert.deepEqual(empty, {
+        heading: '没有找到匹配图片',
+        text: '请修改或清除筛选条件。',
+        buttons: ['清除筛选'],
+      });
+      for (const theme of ['light', 'dark'])
+        for (const width of [360, 390, 430, 768, 1440])
+          await tools.evidence(`failure-empty-${failure}`, width, theme);
+      for (const width of [390, 1440]) {
+        await resizeViewport(page, width, 400);
+        await page.focus('loc=role:button[name="清除筛选"]');
+        await tools.evidence(
+          `failure-empty-short-${failure}`,
+          width,
+          'dark',
+          400,
+        );
+      }
+      await page.keyboard.press('Enter');
+      await page.waitForFunction(
+        () => !new URLSearchParams(location.search).has('failure'),
+      );
+      await page.waitForSelector(
+        `[data-testid="library-card"][data-image-id="${normal.items[0].id}"]`,
+      );
+      await page.waitForSelector('[data-testid="library-empty"]', {
+        state: 'hidden',
+      });
+      (report.emptyFailureFilters ??= []).push({
+        failure,
+        filteredTotal: response.total,
+        normalTotal: normal.total,
+        empty,
+        cleared: true,
+      });
+    }
+    report.checks.push(
+      'With normal images still present, both initial/reprocess filters with zero matches show the existing filtered empty state. Clear filters works with the keyboard from a short viewport and restores real image cards.',
+    );
+  } finally {
+    await tools.sql(
+      `UPDATE media_images SET trashed_at=NULL WHERE id IN (${failureIds})`,
+    );
+  }
 }
