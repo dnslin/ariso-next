@@ -49,11 +49,20 @@ const suites = {
     config: (only) => ({ siteGeneralPhase: only }),
   },
   analytics: {
-    only: ['representative', 'behavior', 'recovery', 'consumers'],
+    only: ['representative', 'behavior', 'recovery', 'consumers', 'detail'],
     stages: [['analytics', 'analytics']],
     config: (only) => ({ analyticsPhase: only }),
   },
   account: { stages: [['account', 'account']] },
+  'identity-session': {
+    stages: [['identity-session-scene', 'identitySession']],
+    config: () => ({ width: 1440 }),
+  },
+  'workspace-continuity': {
+    primaryPage: true,
+    stages: [['workspace-continuity', 'workspaceContinuity']],
+    config: () => ({ width: 1440 }),
+  },
   oauth: {},
   smtp: {
     only: ['representative', 'interactions', 'recovery'],
@@ -74,7 +83,7 @@ const suites = {
     config: (only) => ({ tokensPhase: only }),
   },
   library: {
-    only: ['recovery'],
+    only: ['recovery', 'consumers'],
     stages: [['library', 'library']],
     config: (only) => ({ libraryPhase: only }),
   },

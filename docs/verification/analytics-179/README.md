@@ -2,6 +2,10 @@
 
 关联 [Issue #179](https://github.com/dnslin/ariso-next/issues/179)。本记录区分代码、本地检查、真实浏览器、设计审查与人工验收。当前为实施中记录，不代表上述项目已全部完成。
 
+## 2026-10-10 获批实施
+
+用户已明确批准最新头部累计与图表方案用于产品实施，并要求同步Figma。本轮产品接入、实际检查、设计同步与独立评审的当前结果统一见[获批实施记录](./approved-implementation/README.md)。本节替代下文历史记录中“原型待批准”的当前状态；最终产品人工验收仍单独记录，PR继续为草稿。
+
 ## 依据、范围与环境
 
 从 [文档导航](../../README.md) 读取能力地图、PRD 第19章、[analytics 规格](../../specs/SPEC-analytics.md)、[任务卡与 DG-ANALYTICS 消费结论](../../tasks/m3-m4-experience.md#t-ana-05-工作台统计图表与详情统计联动)、[设计交接](../../design/handoff.md)及[执行约定](../../tasks/execution.md)。保留 R-19.1-01、R-19.2-03、R-19.3-01/02 和模块职责。访问计数、保留和对象责任协议沿既有实现，本次接入界面及所需异常定位查询；下方2026-10-09删除排行修订按用户明确授权更新冲突PRD条目。
@@ -102,8 +106,10 @@ BROWSER_REPORT_DIR=test-results/analytics-179-consumers-verified node scripts/ve
 
 ## 当前状态
 
-代码部分完成，局部原型待批准。当前已实施范围的代码/数据审查通过，本地静态、类型、构建及相关定向补检通过；首次失败和重跑边界如上保留。产品浏览器四个分阶段通过，包含全部公共消费路由；独立设计已有主屏、状态及三项修复复核通过；最终人工验收未完成。
+2026-10-10用户明确批准当前原型实施并同步Figma，已完成单图统计、头部累计与数字滚动、排行来源往返和异常分类控件。新增可编辑设计及截图见[获批Figma同步](./approved-figma/README.md)，实际代码、命令、浏览器、审查与限制以[本轮统一实施证据](./approved-implementation/README.md)为准；上文保留旧轮次的执行事实，不再作为待批准状态。
 
-独立人工预览 `http://ariso-179.localhost:4180` 使用忽略目录 `.data/analytics179-preview` 中的数据与凭证，已换入最新首读构建；真实登录、两条私有API、工作台、统计与占用读取200。凭证不提交代码、证据或PR。预览与原型继续运行，等待用户明确停止指令。
+本轮单图生产浏览器场景已通过真实数据、状态、键盘、动效、关闭取消及两详情消费者真实401检查。其他最终检查、独立设计结论和默认全量结果在上述实施证据分别记录。最终产品人工验收未完成，任务步骤和DES-06-ANALYTICS、RG-02/07继续开放。
 
-后续先批准第二版局部原型，再实施单图区/异常控件/来源返回并按能力同步Figma，补齐相应行为和设计验收，最后由用户人工验收。已提交并推送 `codex/issue-179-analytics-ui`，创建[草稿PR #273](https://github.com/dnslin/ariso-next/pull/273)。`gh pr view 273 --json url,state,isDraft,headRefName,headRefOid,baseRefName,statusCheckRollup,mergeStateStatus` 实际返回 OPEN、isDraft=true、base=main、mergeStateStatus=CLEAN、statusCheckRollup=[]；没有远端检查，不记CI通过，不等待不存在的工作流。`gh issue view 179 --json number,state` 确认Issue继续OPEN。未合并、发布、部署或清理，现有通过项不会记作整卡完成。
+独立人工预览 `http://ariso-179.localhost:4180` 使用忽略目录 `.data/analytics179-preview` 中的数据与凭证，保持可用；原型4181也保留。凭证仅在私有目录和用户对话提供，不提交证据或PR。预览与原型等待用户明确停止指令。
+
+继续使用分支 `codex/issue-179-analytics-ui` 和[草稿PR #273](https://github.com/dnslin/ariso-next/pull/273)。未合并、关闭Issue、发布、部署或清理。PR最新远端状态与检查以本轮实施证据最后实际查询为准，没有远端检查不记作CI通过。

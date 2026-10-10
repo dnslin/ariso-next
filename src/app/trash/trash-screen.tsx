@@ -36,6 +36,8 @@ import { useLibrarySelection } from '../library/use-library-selection';
 import { useSelectionReconciliation } from '../library/use-selection-reconciliation';
 import { useTrashQuery } from './use-trash-query';
 import { OwnerShell } from '../../components/shell/owner-shell';
+import { ImageStatisticsDialog } from '../../components/analytics/image-statistics';
+import { analyticsReturnUrl } from '../../components/analytics/navigation';
 import { useResetUpload } from '../../components/upload/provider';
 import { TrashAction } from '../../components/library/trash-actions';
 import {
@@ -69,8 +71,12 @@ export function TrashScreen({
   const resetUpload = useResetUpload();
   const params = useSearchParams();
   const imageId = params.get('image');
+  const analyticsSource = analyticsReturnUrl(params.get('analyticsReturn'));
   const [client] = useState(() => new QueryClient());
+  const [sessionEnded, setSessionEnded] = useState(false);
   const [mutationPending, setMutationPending] = useState(false);
+  const [statisticsId, setStatisticsId] = useState<string | null>(null);
+  if (statisticsId && statisticsId !== imageId) setStatisticsId(null);
   const [selectionMode, setSelectionMode] = useState(false);
   const onMutationPending = useCallback(
     (pending: boolean) => {
@@ -90,13 +96,17 @@ export function TrashScreen({
   } | null>(null);
   const triggerId = useRef<string | null>(null);
   const previousImageId = useRef(imageId);
-  const list = useTrashQuery(client);
+  const list = useTrashQuery(client, !sessionEnded);
   const { page, setPage, query: trashQuery, filters: trashFilters } = list;
   const detail = useQuery(
     {
       queryKey: ['trash-detail', imageId],
       queryFn: ({ signal }) => readDetail(imageId!, signal),
-      enabled: !!imageId && unavailable?.id !== imageId && !mutationPending,
+      enabled:
+        !sessionEnded &&
+        !!imageId &&
+        unavailable?.id !== imageId &&
+        !mutationPending,
       retry: false,
       networkMode: 'always',
       refetchOnWindowFocus: false,
@@ -133,14 +143,16 @@ export function TrashScreen({
   )
     setContextMenu(null);
   const clearSelection = selection.clear;
-  const expireSession = useCallback(() => {
+  const expireSession = useCallback(() => setSessionEnded(true), []);
+  useEffect(() => {
+    if (!sessionEnded) return;
     clearSelection();
     resetUpload();
     client.clear();
     window.location.replace(
       `/login?reason=expired&returnTo=${encodeURIComponent(window.location.pathname + window.location.search)}`,
     );
-  }, [client, resetUpload, clearSelection]);
+  }, [client, resetUpload, clearSelection, sessionEnded]);
   const batch = useLibraryBatch({
     selection,
     query: trashQuery,
@@ -161,6 +173,7 @@ export function TrashScreen({
     filters: trashFilters,
     dataUpdatedAt: list.dataUpdatedAt,
     enabled:
+      !sessionEnded &&
       !!trashFilters &&
       !batch.pending &&
       !batch.unresolved &&
@@ -183,9 +196,7 @@ export function TrashScreen({
     reconciliation.pending ||
     !!reconciliation.error;
   useEffect(() => () => client.clear(), [client]);
-  useEffect(() => {
-    if (expired) expireSession();
-  }, [expired, expireSession]);
+  if (expired && !sessionEnded) setSessionEnded(true);
   useEffect(() => {
     const returningFromRecord = previousImageId.current !== null && !imageId;
     previousImageId.current = imageId;
@@ -206,6 +217,10 @@ export function TrashScreen({
     window.history.pushState(null, '', url);
   }
   function closeRecord() {
+    if (analyticsSource) {
+      window.location.assign(analyticsSource);
+      return;
+    }
     const url = new URL(window.location.href);
     url.searchParams.delete('image');
     window.history.replaceState(null, '', url);
@@ -287,6 +302,7 @@ export function TrashScreen({
   const pages = data
     ? Math.max(1, Math.ceil(data.total / (trashFilters?.pageSize ?? 40)))
     : null;
+  if (sessionEnded) return null;
   return (
     <OwnerShell
       name={name}
@@ -379,6 +395,33 @@ export function TrashScreen({
         )
       }
     >
+      {statisticsId && record && !expired ? (
+        <ImageStatisticsDialog
+          key={statisticsId}
+          imageId={statisticsId}
+          client={client}
+          identity={{
+            displayName: record.displayName,
+            format: record.format,
+            visibility: record.visibility,
+            recycled: !!record.trashedAt || !!record.deletionStatus,
+            thumbnailUrl:
+              record.versions.find((version) => version.kind === 'thumbnail')
+                ?.previewPath ?? null,
+          }}
+          onClose={() => {
+            setStatisticsId(null);
+            requestAnimationFrame(() =>
+              document
+                .querySelector<HTMLElement>(
+                  '[data-testid="trash-statistics-entry"]',
+                )
+                ?.focus({ preventScroll: true }),
+            );
+          }}
+          onSessionExpired={expireSession}
+        />
+      ) : null}
       {permanentBatch.visible ? (
         <TrashBatchWorkspaceContent batch={permanentBatch} />
       ) : batch.visible ? (
@@ -406,7 +449,11 @@ export function TrashScreen({
             </p>
           ) : null}
           {record && !(cleanup.visible && !cleanup.confirmation) ? (
-            <TrashRecord record={record} onBack={closeRecord} />
+            <TrashRecord
+              record={record}
+              onBack={closeRecord}
+              onStatistics={() => setStatisticsId(record.id)}
+            />
           ) : null}
           <CleanupContent cleanup={cleanup} onBack={leaveCleanup} />
         </>

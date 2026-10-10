@@ -306,7 +306,7 @@ export async function analyticsRecovery(page, config, tools, fixture, report) {
     await page.waitForSelector('[data-testid="analytics-old-timezone"]');
     await tools.evidence('old-timezone', 390, 'light');
     report.checks.push(
-      'Real SQLite zero-access rows produce a zero trend and no invented popular items. Explicit empty-counts rendering stays separate from read failure. Waiting/backlog/incomplete response fixtures expose distinct states; repaired backlog cannot erase the persistent incomplete flag. A real UTC historical segment retains its old-timezone explanation.',
+      'Real SQLite zero-access rows produce a zero trend and no invented popular items. Explicit empty-counts rendering stays separate from read failure. Waiting/backlog/incomplete response fixtures expose distinct states; repaired backlog cannot erase the persistent incomplete flag. A real different-timezone historical segment retains its old-timezone explanation.',
     );
 
     boundary = await analyticsBoundary(page, {}, true);

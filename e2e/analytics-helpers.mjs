@@ -42,9 +42,36 @@ export function analyticsTools(page, config, report) {
     );
   }
   async function evidence(name, width = 390, theme = 'light', height) {
+    report.evidenceStep = `${name}:resize`;
     await resizeViewport(page, width, height);
     await setTheme(page, theme);
+    report.evidenceStep = `${name}:fonts`;
     await page.waitForFunction(() => document.fonts.status === 'loaded');
+    report.evidenceStep = `${name}:modal-viewport`;
+    await page.waitForFunction(() => {
+      const dialog = document.querySelector(
+        '[data-testid="image-statistics-dialog"]',
+      );
+      const viewport = dialog
+        ? Number.parseFloat(
+            getComputedStyle(dialog).getPropertyValue(
+              '--visual-viewport-height',
+            ),
+          )
+        : innerHeight;
+      return (
+        !document.querySelector('[data-testid="image-statistics-dialog"]') ||
+        Math.abs(viewport - innerHeight) <= 1
+      );
+    });
+    // Wait for the resized compositor frame before capturing CSS-pixel images.
+    await page.evaluate(
+      () =>
+        new Promise((resolve) =>
+          requestAnimationFrame(() => requestAnimationFrame(resolve)),
+        ),
+    );
+    report.evidenceStep = `${name}:page-chart`;
     await page.waitForFunction(() =>
       [...document.querySelectorAll('[data-testid="analytics-chart"]')].every(
         (chart) => {

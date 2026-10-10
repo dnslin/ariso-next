@@ -8,6 +8,8 @@ import { OwnerShell } from '../shell/owner-shell';
 import { useResetUpload } from '../upload/provider';
 import { AnalyticsReadError, type ReportDays } from './read-analytics';
 import { useAnalyticsOverview, useAnalyticsUsage } from './use-analytics-query';
+import { ImageStatisticsDialog } from './image-statistics';
+import { analyticsReturnKey, managementFromAnalytics } from './navigation';
 import { AnalyticsScopeDialog } from './scope-dialog';
 import { AnalyticsLink } from './presentation';
 import { AnalyticsLoading, AnalyticsReadFailure } from './query-state';
@@ -25,6 +27,7 @@ export function AnalyticsScreen(props: {
 }) {
   const [client] = useState(() => new QueryClient());
   const [sessionEnded, setSessionEnded] = useState(false);
+  const [statisticsId, setStatisticsId] = useState<string | null>(null);
   const params = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
@@ -68,6 +71,32 @@ export function AnalyticsScreen(props: {
     if (scope) next.set('scope', scope);
     return `${pathname}?${next}`;
   };
+  const popularImage = overview.data?.popular.find(
+    (item) => item.imageId === statisticsId,
+  );
+  const source = `${pathname}?days=${days}`;
+  useEffect(() => {
+    if (!overview.data) return;
+    const stored = sessionStorage.getItem(analyticsReturnKey);
+    if (!stored) return;
+    const saved = JSON.parse(stored) as {
+      source: string;
+      imageId: string;
+      scrollTop: number;
+    };
+    if (saved.source !== source) return;
+    sessionStorage.removeItem(analyticsReturnKey);
+    const frame = requestAnimationFrame(() => {
+      const main = document.getElementById('main-content');
+      if (main) main.scrollTop = saved.scrollTop;
+      document
+        .querySelector<HTMLElement>(
+          `[data-testid="analytics-popular"] li[data-image-id="${CSS.escape(saved.imageId)}"] button`,
+        )
+        ?.focus({ preventScroll: true });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [overview.data, source]);
   const title = usageView
     ? '当前存储占用'
     : dailyView
@@ -177,12 +206,50 @@ export function AnalyticsScreen(props: {
             dailyView={dailyView}
             timeZone={props.timeZone}
             url={url}
+            onStatistics={setStatisticsId}
             onDays={(next) =>
               router.push(url(backgroundView, next), { scroll: false })
             }
           />
         )}
       </div>
+      {statisticsId && !expired ? (
+        <ImageStatisticsDialog
+          key={statisticsId}
+          imageId={statisticsId}
+          client={client}
+          identity={
+            popularImage
+              ? {
+                  displayName:
+                    popularImage.state === 'recycled'
+                      ? `已回收图片 · ${popularImage.shortId}`
+                      : (popularImage.displayName ?? undefined),
+                  recycled: popularImage.state === 'recycled',
+                  thumbnailUrl: popularImage.thumbnailUrl,
+                }
+              : undefined
+          }
+          onClose={() => setStatisticsId(null)}
+          onSessionExpired={expire}
+          managementUrl={
+            popularImage
+              ? managementFromAnalytics(popularImage.managementUrl, source)
+              : undefined
+          }
+          onManage={() =>
+            sessionStorage.setItem(
+              analyticsReturnKey,
+              JSON.stringify({
+                source,
+                imageId: statisticsId,
+                scrollTop:
+                  document.getElementById('main-content')?.scrollTop ?? 0,
+              }),
+            )
+          }
+        />
+      ) : null}
       <AnalyticsScopeDialog
         open={view === 'scope' && validView}
         usage={usageView}

@@ -86,7 +86,7 @@ describe('analytics presentation from real report fields', () => {
     });
     expect(trend).toContain('12');
     expect(trend).not.toContain('暂无访问');
-    const popular = html(AnalyticsPopular, { data });
+    const popular = html(AnalyticsPopular, { data, onStatistics: () => {} });
     expect(popular).toContain('本周期暂无热门图片');
     expect(popular).not.toContain('已删除图片');
     expect(popular).not.toContain('href=');
@@ -124,18 +124,24 @@ describe('analytics presentation from real report fields', () => {
         },
       ],
     });
-    const popular = html(AnalyticsPopular, { data });
+    const popular = html(AnalyticsPopular, { data, onStatistics: () => {} });
     expect(popular).toContain('已回收图片 · recycled');
     expect(popular).toContain('查看回收站记录');
-    expect(popular).toContain('href="/trash?image=recycled-history"');
+    expect(popular).toContain(
+      'aria-label="查看已回收图片 · recycled统计，12次访问"',
+    );
     expect(popular).toContain('已转私有的图片');
-    expect(popular).toContain('href="/library?image=private-history"');
+    expect(popular).toContain('aria-label="查看已转私有的图片统计，11次访问"');
     expect(popular).toContain('停用存储图片');
-    expect(popular).toContain('href="/library?image=disabled-storage-history"');
+    expect(popular).toContain('aria-label="查看停用存储图片统计，10次访问"');
     expect(popular).toContain('无可读缩略图，历史访问保留');
-    expect(popular).toContain('12 次');
-    expect(popular).toContain('11 次');
-    expect(popular).toContain('10 次');
+    expect(
+      [
+        ...popular.matchAll(
+          /data-testid="analytics-popular-count"[^>]*>([\d,]+)/g,
+        ),
+      ].map((match) => match[1]),
+    ).toEqual(['12', '11', '10']);
   });
   it('separates a real empty period from a current empty library and never invents popular rows', () => {
     const empty = overview();
@@ -149,12 +155,12 @@ describe('analytics presentation from real report fields', () => {
         dailyUrl: '/analytics?view=daily',
       }),
     ).toContain('本周期暂无公开图片访问');
-    expect(html(AnalyticsPopular, { data: existing })).toContain(
-      '本周期暂无热门图片',
-    );
-    expect(html(AnalyticsPopular, { data: existing })).not.toContain(
-      'data-image-id=',
-    );
+    expect(
+      html(AnalyticsPopular, { data: existing, onStatistics: () => {} }),
+    ).toContain('本周期暂无热门图片');
+    expect(
+      html(AnalyticsPopular, { data: existing, onStatistics: () => {} }),
+    ).not.toContain('data-image-id=');
     expect(html(AnalyticsVersions, { data: existing })).toContain('合计 0 次');
   });
   it('does not call an idle process with no committed batch a failure and distinguishes query time from flush time', () => {

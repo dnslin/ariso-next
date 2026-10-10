@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@heroui/react/button';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, BarChart3 } from 'lucide-react';
 import { Alert } from '@heroui/react/alert';
 import {
   initialPreview,
@@ -17,9 +17,11 @@ import {
 export function TrashRecord({
   record,
   onBack,
+  onStatistics,
 }: {
   record: LibraryDetail;
   onBack: () => void;
+  onStatistics: () => void;
 }) {
   const preview = record.versions.find(
     (version) => version.kind === initialPreview(record),
@@ -69,6 +71,16 @@ export function TrashRecord({
       >
         回收记录
       </h1>
+      <Button
+        variant="ghost"
+        aria-label="图片访问统计"
+        data-testid="trash-statistics-entry"
+        className="min-h-11 w-fit gap-2 rounded-lg"
+        onPress={onStatistics}
+      >
+        <BarChart3 size={18} aria-hidden />
+        访问统计
+      </Button>
       <p>
         {record.displayName} · {record.trashedAt ? '已回收' : '已恢复'}
       </p>

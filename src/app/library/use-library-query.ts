@@ -113,6 +113,7 @@ const cacheOptions = {
 export function useLibraryQuery(
   client: QueryClient,
   { albumId }: { albumId?: string } = {},
+  activeSession = true,
 ) {
   const params = useSearchParams();
   const [, setParams] = useQueryStates(parsers, {
@@ -157,6 +158,7 @@ export function useLibraryQuery(
   const loadingMode: LibraryLoadingMode = hasPage ? 'pages' : 'more';
   const queryKey = libraryListKey(filters, loadingMode, page);
   const enabled =
+    activeSession &&
     preferences !== null &&
     filters !== null &&
     !(initializing && !hasPage && preferredLoadingMode === 'pages');

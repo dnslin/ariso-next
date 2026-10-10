@@ -2,6 +2,7 @@
 
 import dynamic from 'next/dynamic';
 import { Skeleton } from '@heroui/react/skeleton';
+import { CircleAlert, RefreshCw } from 'lucide-react';
 import { Table } from '@heroui/react/table';
 import type { AnalyticsOverview } from './read-analytics';
 import {
@@ -62,7 +63,19 @@ export function AnalyticsVersions({ data }: { data: AnalyticsOverview }) {
             key={key}
             className="flex min-h-[52px] items-center justify-between gap-3 text-sm"
           >
-            <dt>{label}</dt>
+            <dt className="w-14 shrink-0">{label}</dt>
+            <span
+              className="mx-3 h-2 min-w-0 flex-1 overflow-hidden rounded-full bg-[var(--analytics-grid)]"
+              aria-hidden
+            >
+              <span
+                className="block h-full origin-left rounded-full"
+                style={{
+                  background: `var(--analytics-${key})`,
+                  transform: `scaleX(${data.versions[key] / Math.max(1, data.versions.original, data.versions.compressed, data.versions.watermark)})`,
+                }}
+              />
+            </span>
             <dd className="tabular-nums">{number(data.versions[key])} 次</dd>
           </div>
         ))}
@@ -78,7 +91,8 @@ export function AnalyticsFailures({ data }: { data: AnalyticsOverview }) {
     <AnalyticsCard title="当前处理异常" testId="analytics-failures">
       <div className="grid gap-3 sm:grid-cols-2">
         <div className="grid gap-3">
-          <p className="text-sm">
+          <p className="flex items-center gap-2 text-sm">
+            <CircleAlert size={17} aria-hidden />
             初次处理失败 {number(data.counts.initialProcessingFailures)} 张
           </p>
           <AnalyticsLink href="/library?failure=initial">
@@ -86,7 +100,8 @@ export function AnalyticsFailures({ data }: { data: AnalyticsOverview }) {
           </AnalyticsLink>
         </div>
         <div className="grid gap-3">
-          <p className="text-sm">
+          <p className="flex items-center gap-2 text-sm">
+            <RefreshCw size={17} aria-hidden />
             重新处理失败 {number(data.counts.reprocessFailures)} 张
           </p>
           <AnalyticsLink href="/library?failure=reprocess">

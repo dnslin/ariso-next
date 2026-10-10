@@ -24,6 +24,7 @@ export async function analyticsFixture(config, tools) {
     storageRoots: [],
     snapshot: {},
     uploaded: null,
+    seedAccess,
   };
   for (const table of accessTables)
     fixture.snapshot[table] = await tools.sql(`SELECT * FROM ${table}`);
@@ -178,9 +179,11 @@ export async function analyticsFixture(config, tools) {
     );
     await fixture.seedAccess();
   };
-  fixture.seedAccess = async () => {
+  async function seedAccess() {
     await fixture.clearAccess();
     const overview = await tools.request('/api/analytics/overview?days=7');
+    const historicalTimezone =
+      overview.timezone === 'UTC' ? 'Asia/Tokyo' : 'UTC';
     const dates = [0, 14, 59].map((offset) => {
       const value = new Date(`${overview.range.endDate}T00:00:00Z`);
       value.setUTCDate(value.getUTCDate() - offset);
@@ -190,7 +193,7 @@ export async function analyticsFixture(config, tools) {
     for (const [index, id] of fixture.ids.entries())
       for (const [period, date] of dates.entries())
         values.push(
-          `(${quote(id)},${quote(date)},${quote(period === 1 ? 'UTC' : overview.timezone)},${(12 - index) * (period + 1)})`,
+          `(${quote(id)},${quote(date)},${quote(period === 1 ? historicalTimezone : overview.timezone)},${(12 - index) * (period + 1)})`,
         );
     await tools.sql(
       `INSERT INTO analytics_image_daily (image_id,date,timezone,count) VALUES ${values.join(',')}`,
@@ -201,6 +204,6 @@ export async function analyticsFixture(config, tools) {
     await tools.sql(
       'INSERT INTO analytics_image_totals (image_id,original_count) SELECT image_id,sum(count) FROM analytics_image_daily GROUP BY image_id',
     );
-  };
+  }
   return fixture;
 }

@@ -541,14 +541,14 @@ T-COL-04 沿用 OwnerShell 和 T-LIB-04 查询/布局实现，手机封面图片
 - 需求：`R-19.1-01`、`R-19.2-03`、`R-19.3-01`、`R-19.3-02`
 - 范围：[analytics 规格](../specs/SPEC-analytics.md) §8/10；src/app/dashboard/、analytics/ 与图片详情统计区。接真实周期/空间/排行/异常入口和等价数值表。
 - 直接前置：`T-ANA-04`、`T-LIB-06`、`T-LIB-11`、`T-UI-01`、`DG-ANALYTICS`
-- 验收条件：URL days切周期只接最新请求；可见10秒刷新/隐藏停/恢复立即查，不叠加请求。空库/无访问/读取失败/旧数据/延迟/漏计/空间待核对分开。正常/回收/删除排行目标正确，单图统计真实关联；长名、全10项、图表键盘触摸可读，今日标截至更新，S3计数非完整下载。
+- 验收条件：URL days切周期只接最新请求；可见10秒刷新/隐藏停/恢复立即查，不叠加请求。空库/无访问/读取失败/旧数据/延迟/漏计/空间待核对分开。正常/回收排行目标正确，永久删除不参与排行，单图统计真实关联；长名、全10项、图表键盘触摸可读，今日标截至更新，S3计数非完整下载。
 - 验证方法：浏览器可控时间与迟到响应/注销清缓存、图表文本对账、排行与失败图真实定位、手机触摸读数、10秒轮询可见性；故障注入核对旧值提示和未知组成。
 - 界面：所有者 /dashboard、/analytics?days=7、图片详情统计区；T-ANA-03/04 API与管理详情。桌面[446:8063](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=446-8063)、手机[446:8030](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=446-8030)、桌面状态[451:17337](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=451-17337)、手机状态[451:17648](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=451-17648)。HeroUI：[Card](https://heroui.com/en/docs/react/components/card)、[Tabs](https://heroui.com/en/docs/react/components/tabs)、[Table](https://heroui.com/en/docs/react/components/table)、[Alert](https://heroui.com/en/docs/react/components/alert)、[Tooltip](https://heroui.com/en/docs/react/components/tooltip)。HeroUI无业务折线/组成图，使用PRD选定Recharts并核对固定版本/键盘能力，保留Table等价结果；DG-ANALYTICS核对单图区及全部排行入口，手机堆叠图表保持固定底部操作；响应式及错误/空/加载/禁用、键盘、触摸均按本文公共要求。
 - 实施步骤：
   - [ ] 1. 工作台真实总览与异常状态：不用示例数字。
   - [ ] 2. 统计趋势/排行/单图联动：真实筛选、导航及两端图表。
 
-- 实施中记录：[Issue #179](../verification/analytics-179/README.md)。已有设计范围的工作台、统计、每日等价表与当前占用已接真实数据；单图统计、异常定位控件及排行来源返回等待局部原型批准。代码审查、本地检查、产品浏览器、设计评审与人工验收分别记录，步骤继续保持未完成，不以 DG 关闭或分阶段通过代替整卡验收。
+- 实施中记录：[Issue #179](../verification/analytics-179/README.md)。已有设计范围的工作台、统计、每日等价表与当前占用已接真实数据；2026-10-10用户明确批准局部原型实施及Figma同步，单图统计、异常定位控件及排行来源返回的最新结果见[获批实施记录](../verification/analytics-179/approved-implementation/README.md)。代码审查、本地检查、产品浏览器、设计评审与人工验收分别记录，步骤继续保持未完成，不以 DG 关闭或分阶段通过代替整卡验收。
 
 #### DG-ANALYTICS 对 T-ANA-05 的核对结论
 
@@ -583,7 +583,7 @@ T-COL-04 沿用 OwnerShell 和 T-LIB-04 查询/布局实现，手机封面图片
 | 正常/私有图片                | popular.managementUrl 为 `/library?image=<imageId>`；thumbnailUrl 仅在现存缩略图且存储启用时有值。内容失败不删除历史数字；打开真实详情，返回保持来源 days、滚动与焦点。                                                       |
 | 存储停用 / 无可读缩略图      | 管理详情仍可打开，内容用可用性占位；不能用排行读取绕过 delivery。                                                                                                                                                             |
 | 回收 / 删除中 / 清理失败记录 | managementUrl 为 `/trash?image=<imageId>`，排行名称与缩略图为 null；用通用名称和短 ID 定位指定记录，不只进入列表。记录页独立遵守现有所有者管理预览权限。                                                                      |
-| 永久删除历史                 | state=deleted，displayName、managementUrl、thumbnailUrl 均 null；只显示历史数值、通用“已删除图片”与 shortId，无打开或文件入口。详情查询404不补成零统计。                                                                      |
+| 永久删除历史                 | 按用户2026-10-09明确指令，在LIMIT10前排除无现存media实体的图片，不显示排行占位；全站累计与趋势保留历史。详情查询404不补成零统计。                                                                                             |
 | 当前处理异常                 | counts 只有 initialProcessingFailures/reprocessFailures，没有图片ID列表。现有 `status=failed` 仅筛首次处理状态，不能覆盖 ready 图最新重处理失败；逐张定位/重试由本卡在 library/media 现有职责内补齐，不能发明未实现筛选参数。 |
 
 **具体表达缺口与负责人。** 下列均归 T-ANA-05 / #179；本 DG 不决定新视觉方案，不重画已交付代表图。新增或改变交互先提供两端可查看原型、获批后实施并按权限同步 Figma。

@@ -11,6 +11,9 @@ const { analyticsRepresentative, analyticsBehavior } = await import(
 );
 const { analyticsRecovery } = await import(sibling('analytics-recovery'));
 const { analyticsConsumers } = await import(sibling('analytics-consumers'));
+const { analyticsImageStatistics } = await import(
+  sibling('analytics-image-statistics')
+);
 const { signInToLibrary } = await import(sibling('library-login'));
 const { installBrowserErrors, readBrowserErrors, isBrowserControlStop } =
   await import(config.errorsScript);
@@ -19,7 +22,9 @@ const managedPage = task.page(config.pageLabel ?? 'p1');
 const phase = config.analyticsPhase;
 assert.ok(
   phase === undefined ||
-    ['representative', 'behavior', 'recovery', 'consumers'].includes(phase),
+    ['representative', 'behavior', 'recovery', 'consumers', 'detail'].includes(
+      phase,
+    ),
   'Unknown analytics phase',
 );
 const report = {
@@ -86,6 +91,10 @@ try {
     ],
     ['behavior', () => analyticsBehavior(page, config, tools, fixture, report)],
     ['recovery', () => analyticsRecovery(page, config, tools, fixture, report)],
+    [
+      'detail',
+      () => analyticsImageStatistics(page, config, tools, fixture, report),
+    ],
     [
       'consumers',
       () => analyticsConsumers(page, config, tools, fixture, report),

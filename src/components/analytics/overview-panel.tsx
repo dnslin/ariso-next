@@ -31,6 +31,7 @@ export function AnalyticsOverviewPanel({
   timeZone,
   url,
   onDays,
+  onStatistics,
 }: {
   overview: ReturnType<typeof useAnalyticsOverview>;
   usage: ReturnType<typeof useAnalyticsUsage>;
@@ -39,6 +40,7 @@ export function AnalyticsOverviewPanel({
   timeZone: string;
   url: (view: string) => string;
   onDays: (days: ReportDays) => void;
+  onStatistics: (imageId: string) => void;
 }) {
   return (
     <>
@@ -88,7 +90,10 @@ export function AnalyticsOverviewPanel({
             <>
               <AnalyticsTrend data={overview.data} dailyUrl={url('daily')} />
               <AnalyticsVersions data={overview.data} />
-              <AnalyticsPopular data={overview.data} />
+              <AnalyticsPopular
+                data={overview.data}
+                onStatistics={onStatistics}
+              />
             </>
           )}
         </section>

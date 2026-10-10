@@ -30,6 +30,42 @@ describe('focused browser execution plans', () => {
     ).toThrow('Browser suite storage-cors requires EGO_PAGE_LABEL=p1');
   });
 
+  it.each([
+    ['identity-session', 'identity-session-scene', 'identitySession'],
+    ['workspace-continuity', 'workspace-continuity', 'workspaceContinuity'],
+  ])(
+    'selects the complete 1440px %s regression without unrelated phases',
+    (suite, script, result) => {
+      expect(select(suite)).toEqual({
+        stages: [[script, result]],
+        config: { width: 1440 },
+      });
+      for (const phase of [
+        'representative',
+        'behavior',
+        'recovery',
+        'consumers',
+        'detail',
+      ])
+        expect(() => select(suite, phase)).toThrow('--only');
+      for (const field of ['storageConfig', 'previewConfig'])
+        expect(() =>
+          selectBrowserPlan({ suite, pageLabel: 'p1', [field]: 'unused.json' }),
+        ).toThrow();
+      expect(select(suite).config).not.toHaveProperty('analyticsPhase');
+      expect(select('full').stages).not.toContainEqual([script, result]);
+    },
+  );
+
+  it('keeps the existing workspace primary-page boundary while identity can use the selected page', () => {
+    expect(() =>
+      selectBrowserPlan({ suite: 'workspace-continuity', pageLabel: 'p2' }),
+    ).toThrow('EGO_PAGE_LABEL=p1');
+    expect(
+      selectBrowserPlan({ suite: 'identity-session', pageLabel: 'p2' }).config,
+    ).toEqual({ width: 1440 });
+  });
+
   it.each(['representative', 'cleanup', 'recovery', 'live'])(
     'rejects partial or unrelated phase %s in storage-cors',
     (only) => {
@@ -59,6 +95,8 @@ describe('focused browser execution plans', () => {
     ['library', ['library']],
     ['library-feedback', ['library-query']],
     ['account', ['account']],
+    ['identity-session', ['identity-session-scene']],
+    ['workspace-continuity', ['workspace-continuity']],
     ['oauth', []],
     ['brand-experiment', []],
     ['smtp', ['smtp']],
@@ -110,6 +148,7 @@ describe('focused browser execution plans', () => {
     ['trash', 'cleanup', ['trash-cleanup']],
     ['trash', 'approved-results', ['trash-query-batch']],
     ['library', 'recovery', ['library']],
+    ['library', 'consumers', ['library']],
     ['library-batch', 'recovery', ['library-batch']],
     ['smtp', 'representative', ['smtp']],
     ['smtp', 'interactions', ['smtp']],
@@ -122,7 +161,7 @@ describe('focused browser execution plans', () => {
     ['site-general', 'behavior', ['site-general']],
     ['site-general', 'recovery', ['site-general']],
     ['site-general', 'consumers', ['site-general']],
-    ...['representative', 'behavior', 'recovery', 'consumers'].map(
+    ...['representative', 'behavior', 'recovery', 'consumers', 'detail'].map(
       (phase) => ['analytics', phase, ['analytics']] as const,
     ),
     ['tokens', 'representative', ['tokens']],
@@ -147,10 +186,11 @@ describe('focused browser execution plans', () => {
   it.each([
     ['upload-settings', 'recovery', { uploadSettingsPhase: 'recovery' }],
     ['site-general', 'recovery', { siteGeneralPhase: 'recovery' }],
-    ...['representative', 'behavior', 'recovery', 'consumers'].map(
+    ...['representative', 'behavior', 'recovery', 'consumers', 'detail'].map(
       (phase) => ['analytics', phase, { analyticsPhase: phase }] as const,
     ),
     ['library', 'recovery', { libraryPhase: 'recovery' }],
+    ['library', 'consumers', { libraryPhase: 'consumers' }],
     ['smtp', 'representative', { smtpPhase: 'representative' }],
     ['smtp', 'interactions', { smtpPhase: 'interactions' }],
     ['smtp', 'recovery', { smtpPhase: 'recovery' }],
@@ -213,6 +253,25 @@ describe('focused browser execution plans', () => {
         '--only requires an applicable targeted suite',
       );
     }
+  });
+
+  it('runs the existing library consumer in its own phase while the default library remains complete', () => {
+    expect(select('library', 'consumers')).toEqual({
+      stages: [['library', 'library']],
+      config: { libraryPhase: 'consumers' },
+    });
+    expect(select('library').config).toEqual({ libraryPhase: undefined });
+    expect(select('full').config).not.toHaveProperty('libraryPhase');
+    for (const suite of [
+      'analytics',
+      'identity-session',
+      'workspace-continuity',
+    ])
+      expect(select(suite).config).not.toHaveProperty('libraryPhase');
+    expect(select('library', 'consumers').config).not.toHaveProperty(
+      'analyticsPhase',
+    );
+    expect(() => select('library', 'detail')).toThrow('--only');
   });
 
   it('keeps analytics phases on its own scene and runs all phases by default on an independently selected page', () => {

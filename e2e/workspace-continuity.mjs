@@ -20,10 +20,13 @@ const traceKey = `ariso-workspace-e2e-${width}`;
 let instrumentation;
 
 async function login() {
+  const returnTo = new URL(await page.url()).searchParams.get('returnTo');
   await page.waitForSelector('input[name="email"]');
   await page.fill('input[name="email"]', config.credentials.email);
   await page.fill('input[name="password"]', config.credentials.password);
   await page.click(button('登录'));
+  await page.waitForURL(`${config.origin}${returnTo ?? '/dashboard'}`);
+  if (returnTo === null) await navigate('上传', '/upload');
   await page.waitForSelector('input[aria-label="选择图片文件"]', {
     state: 'attached',
   });

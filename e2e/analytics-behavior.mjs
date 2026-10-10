@@ -459,7 +459,7 @@ export async function analyticsBehavior(page, config, tools, fixture, report) {
         id: node.dataset.imageId,
         state: node.dataset.imageState,
         text: node.textContent,
-        href: node.querySelector('a')?.getAttribute('href') ?? null,
+        entry: node.querySelector('button')?.getAttribute('aria-label') ?? null,
         image: node.querySelector('img')?.getAttribute('src') ?? null,
       })),
     }));
@@ -486,6 +486,14 @@ export async function analyticsBehavior(page, config, tools, fixture, report) {
       rendered.popular.map(({ id }) => id),
       actual.popular.map(({ imageId }) => imageId),
     );
+    assert.deepEqual(
+      rendered.popular.map(({ entry }) => entry),
+      actual.popular.map(
+        (item) =>
+          `查看${item.state === 'recycled' ? `已回收图片 · ${item.shortId}` : item.displayName}统计，${number(item.count)}次访问`,
+      ),
+      'Every ranking action exposes its real image identity and visit count',
+    );
     assert.equal(rendered.popular.length, 10);
     assert.equal(
       rendered.popular.some(({ id }) => id === fixture.ids[2]),
@@ -497,11 +505,9 @@ export async function analyticsBehavior(page, config, tools, fixture, report) {
       'The next eligible image fills the tenth place after deletion exclusion',
     );
     const recycled = rendered.popular.find(({ id }) => id === fixture.ids[1]);
-    assert.equal(recycled.href, `/trash?image=${fixture.ids[1]}`);
     assert.equal(recycled.image, null);
     const disabled = rendered.popular.find(({ id }) => id === fixture.ids[3]);
     assert.equal(disabled.image, null);
-    assert.equal(disabled.href, `/library?image=${fixture.ids[3]}`);
     assert.ok(
       rendered.popular
         .find(({ id }) => id === fixture.ids[0])

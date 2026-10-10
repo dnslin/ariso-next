@@ -9,7 +9,9 @@ const { seedLibraryDetail, verifyLibraryDetail } = await import(
 const { verifyLibraryTrash } = await import(
   new URL('./library-trash.mjs', config.libraryDetailScript).href
 );
-const { verifyLibraryDetail171 } = await import(config.libraryDetail171Script);
+const { verifyLibraryDetail171, verifyDetail171Consumers } = await import(
+  config.libraryDetail171Script
+);
 const { verifyLibraryViewer } = await import(config.libraryViewerScript);
 const task = await taskSpace(config.spaceId);
 const page = task.page(config.pageLabel ?? 'p1');
@@ -196,7 +198,7 @@ async function layouts(state) {
     }
   }
 }
-try {
+libraryVerification: try {
   await page.goto(`${config.origin}/login`);
   await page.waitForSelector('#email');
   assert.equal((await page.fetch('/api/images')).status, 401);
@@ -227,10 +229,18 @@ try {
   }
   await page.waitForURL(`${config.origin}/library`);
   await page.waitForSelector('[data-testid="library-empty"]');
-  if (config.libraryPhase !== 'recovery') await layouts('empty');
+  if (config.libraryPhase !== 'recovery' && config.libraryPhase !== 'consumers')
+    await layouts('empty');
   report.checks.push(
     'Anonymous API refuses access; protected library returns to real login; successful login preserves /library; real empty SQLite renders empty state.',
   );
+  if (config.libraryPhase === 'consumers') {
+    await verifyDetail171Consumers({ page, config, sql, report });
+    report.status = 'passed';
+    // Only this focused phase stops here; the existing finally still records
+    // the report. Default/recovery preparation and checks continue unchanged.
+    break libraryVerification;
+  }
   const [storage] = await sql(
     'SELECT id, local_path FROM storage_configs LIMIT 1',
   );
