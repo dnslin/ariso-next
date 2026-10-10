@@ -1,0 +1,153 @@
+{
+  "startedAt": "2026-10-10T02:49:11.458Z",
+  "scope": "protocol experiment",
+  "status": "passed",
+  "taskSpaceId": 2,
+  "pageLabel": "p1",
+  "origin": "http://127.0.0.1:62803",
+  "checks": [
+    "Real HttpOnly/Lax/host-only/path-scoped 24-hour Cookies; concurrent albums retain grants and private/trashed entries stay absent.",
+    "Two same-origin tabs unlock one album concurrently; each real issued grant remains valid.",
+    "A different host remains anonymous in the same profile; this is host isolation, not a second browser context.",
+    "Browser Cookie paths keep the owner route anonymous; a real owner Cookie still needs the sharing password. Explicitly forwarding grant Cookies and real private delivery are covered by separate HTTP tests.",
+    "Actual visible document polls every five seconds in 80/80/1 batches, never overlaps a held cycle, stops when hidden and checks immediately when restored; newly private or trashed members disappear.",
+    "A real hide/show transition starts a fresh check immediately while the cancelled decoded old refresh is still unresolved; its late return is ignored.",
+    "Nine fully decoded real items/neighbors/refresh responses are delivered after abort and rejected by generation after access invalidation, server name hiding or an explicit experimental batch switch."
+  ],
+  "lateResponses": [
+    {
+      "kind": "items",
+      "change": "authorization-cleared",
+      "realResponseDecodedBeforeDelay": true,
+      "deliveredAfterAbort": true,
+      "ignored": true,
+      "oldDataNotRestored": true,
+      "explicitProbeBatchSwitch": false
+    },
+    {
+      "kind": "items",
+      "change": "names-hidden",
+      "realResponseDecodedBeforeDelay": true,
+      "deliveredAfterAbort": true,
+      "ignored": true,
+      "oldDataNotRestored": true,
+      "explicitProbeBatchSwitch": false
+    },
+    {
+      "kind": "items",
+      "change": "batch-changed",
+      "realResponseDecodedBeforeDelay": true,
+      "deliveredAfterAbort": true,
+      "ignored": true,
+      "oldDataNotRestored": true,
+      "explicitProbeBatchSwitch": true
+    },
+    {
+      "kind": "neighbors",
+      "change": "authorization-cleared",
+      "realResponseDecodedBeforeDelay": true,
+      "deliveredAfterAbort": true,
+      "ignored": true,
+      "oldDataNotRestored": true,
+      "explicitProbeBatchSwitch": false
+    },
+    {
+      "kind": "neighbors",
+      "change": "names-hidden",
+      "realResponseDecodedBeforeDelay": true,
+      "deliveredAfterAbort": true,
+      "ignored": true,
+      "oldDataNotRestored": true,
+      "explicitProbeBatchSwitch": false
+    },
+    {
+      "kind": "neighbors",
+      "change": "batch-changed",
+      "realResponseDecodedBeforeDelay": true,
+      "deliveredAfterAbort": true,
+      "ignored": true,
+      "oldDataNotRestored": true,
+      "explicitProbeBatchSwitch": true
+    },
+    {
+      "kind": "refresh",
+      "change": "authorization-cleared",
+      "realResponseDecodedBeforeDelay": true,
+      "deliveredAfterAbort": true,
+      "ignored": true,
+      "oldDataNotRestored": true,
+      "explicitProbeBatchSwitch": false
+    },
+    {
+      "kind": "refresh",
+      "change": "names-hidden",
+      "realResponseDecodedBeforeDelay": true,
+      "deliveredAfterAbort": true,
+      "ignored": true,
+      "oldDataNotRestored": true,
+      "explicitProbeBatchSwitch": false
+    },
+    {
+      "kind": "refresh",
+      "change": "batch-changed",
+      "realResponseDecodedBeforeDelay": true,
+      "deliveredAfterAbort": true,
+      "ignored": true,
+      "oldDataNotRestored": true,
+      "explicitProbeBatchSwitch": true
+    }
+  ],
+  "visibilityEvents": [
+    {
+      "reason": "polling-stops-when-hidden",
+      "visibility": "hidden"
+    },
+    {
+      "reason": "pending-refresh-immediate-restoration",
+      "visibility": "hidden"
+    }
+  ],
+  "twoBrowserContexts": "unverified",
+  "limitations": [
+    "Different hosts isolate cookies in one Ego profile; they are not two browser contexts.",
+    "Ego Target.createTarget is unavailable; no separate browser context is claimed.",
+    "The page is a protocol probe, not a delivered sharing UI or Figma acceptance.",
+    "Control gates and the client batch switch are explicit experiment operations."
+  ],
+  "cookies": [
+    {
+      "share": "a",
+      "pathMatchesCurrentToken": true,
+      "noDomainAttribute": true,
+      "domain": "127.0.0.1",
+      "httpOnly": true,
+      "sameSite": "Lax",
+      "secure": false,
+      "lifetimeSeconds": 86400
+    },
+    {
+      "share": "b",
+      "pathMatchesCurrentToken": true,
+      "noDomainAttribute": true,
+      "domain": "127.0.0.1",
+      "httpOnly": true,
+      "sameSite": "Lax",
+      "secure": false,
+      "lifetimeSeconds": 86400
+    }
+  ],
+  "polling": {
+    "firstPollMs": 4951,
+    "resumedMs": 100,
+    "firstBatches": [80, 80, 1],
+    "noOverlap": true,
+    "actualVisibilityChange": true,
+    "changedMembersRemoved": 2
+  },
+  "environment": {
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "visibility": "visible"
+  },
+  "visibilityObserverRemoved": true,
+  "finishedAt": "2026-10-10T02:49:40.581Z"
+}

@@ -104,6 +104,7 @@ export const startUploadEndpoint = async () => {
   throw new Error('Unexpected S3 fixture');
 };
 export const runBrandBrowser = async () => {};
+export const runBrandingBrowser = async () => trace({ kind: 'branding' });
 export const createSharingRunner = () =>
   Object.fromEntries(
     ['runViewer', 'runPublic', 'runProtocol', 'runExperiment', 'stop'].map(
@@ -120,6 +121,7 @@ const substitutes = new Map([
   ['../tests/integration/upload/s3-endpoint.ts', ['startUploadEndpoint']],
   ['../tests/integration/delivery/s3-fixture.ts', ['launchProtocolDelivery']],
   ['./browser-brand.mjs', ['runBrandBrowser']],
+  ['./browser-branding.mjs', ['runBrandingBrowser']],
   ['./browser-sharing.mjs', ['createSharingRunner']],
 ]);
 registerHooks({

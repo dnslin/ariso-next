@@ -4,6 +4,20 @@ import { verifyOwnerShell } from './owner-shell.mjs';
 
 export async function analyticsConsumers(page, config, tools, fixture, report) {
   await verifyOwnerShell(page, config, 'analytics-owner-shell');
+  await tools.open('/analytics?days=30');
+  const lastRank = '[data-testid="analytics-popular"] li:nth-child(10) button';
+  for (const width of [1440, 390]) {
+    await resizeViewport(page, width);
+    await page.focus(lastRank);
+    await page.waitForFunction((selector) => {
+      const row = document.querySelector(selector).getBoundingClientRect();
+      const main = document
+        .getElementById('main-content')
+        .getBoundingClientRect();
+      return row.top >= main.top && row.bottom <= main.bottom;
+    }, lastRank);
+    await tools.evidence('popular-end', width, 'light');
+  }
   await resizeViewport(page, 1440);
   await tools.open('/dashboard?days=7');
   await page.focus('a[href="/analytics?days=7"]');
@@ -59,7 +73,13 @@ export async function analyticsConsumers(page, config, tools, fixture, report) {
     let detailScroll;
     if (path === '/library') {
       await page.focus(`[data-testid="${entry}"]`);
-      await page.hover('[data-testid="detail-body"]');
+      const center = await page.evaluate(() => {
+        const rect = document
+          .querySelector('[data-testid="detail-body"]')
+          .getBoundingClientRect();
+        return { x: rect.x + rect.width / 2, y: rect.y + rect.height / 2 };
+      });
+      await page.mouse.move(center.x, center.y);
       await page.mouse.wheel(0, 24, { label: '保留详情阅读位置' });
       await page.waitForFunction(
         () =>

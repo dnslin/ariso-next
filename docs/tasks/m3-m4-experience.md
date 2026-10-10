@@ -556,7 +556,7 @@ T-COL-04 沿用 OwnerShell 和 T-LIB-04 查询/布局实现，手机封面图片
 
 **实际输入与复用边界。** 三个所有者 API 已实现；`overview` 返回 counts、range、today、cumulative、versions、trend、popular 及统计元信息；`usage` 独立返回 scope、storages、knownBytes、groups、unconfirmedObjects、confirmationStatus、confirmedAt；单图返回累计三版本及 total、三个 periods 合计和元信息，没有单图逐日趋势或周期三版本拆分。详情入口组合 analytics 与 library，不能把统计塞进 library 提供方或从全站排行反推单图数字。字段以 [queries.ts](../../src/server/analytics/queries.ts)、[usage.ts](../../src/server/analytics/usage.ts) 为准。
 
-当前没有 /dashboard 或 /analytics 页面；OwnerShell 的总览 /admin 与统计入口仍禁用，/admin 登录后跳上传。图库与回收站已消费 `image` 参数，但 LibraryDetail 与详情 UI 均未接统计。T-ANA-05 接通对应真实页面时更新统一导航与占位退出，并按 [公共界面规则](../design/handoff.md#公共界面复用与占位退出)检查已实现消费路由。复用 OwnerShell / AdminShell、品牌/账号/主题、现有详情与底栏；通用 Card、Tabs、Table、Alert、Tooltip/Popover、Button/Link、Skeleton/Spinner 沿现有 HeroUI 3.2.6，不复制公共外壳。Recharts 是 PRD 已选图表库，当前 package.json/锁文件未安装；消费任务须先核对官方文档与实际固定版本能力，不能声称图表已经接入。
+2026-10-09核对时没有 /dashboard 或 /analytics 页面；OwnerShell 的总览 /admin 与统计入口仍禁用，/admin 登录后跳上传。图库与回收站已消费 `image` 参数，但 LibraryDetail 与详情 UI 当时均未接统计。T-ANA-05 接通对应真实页面时更新统一导航与占位退出，并按 [公共界面规则](../design/handoff.md#公共界面复用与占位退出)检查已实现消费路由。复用 OwnerShell / AdminShell、品牌/账号/主题、现有详情与底栏；通用 Card、Tabs、Table、Alert、Tooltip/Popover、Button/Link、Skeleton/Spinner 沿现有 HeroUI 3.2.6，不复制公共外壳。Recharts 是 PRD 已选图表库，当时 package.json/锁文件未安装；消费任务须先核对官方文档与实际固定版本能力。上述为DG核对快照，本轮已接入页面、统计入口及Recharts，实际完成与未验收状态见上方#179实施记录。
 
 **可复用两端状态。** 下表节点已实际只读回查，完整文案、动作与尺寸见 [状态证据](./evidence/DG-ANALYTICS/figma/states.json)，可点击索引沿 [既有状态表](../archive/preparation-2026-09/design/analytics-flow-2026-09-19.md#阅读顺序与节点)。这些均为固定设计样例，真实数据、请求和焦点由本卡验收。
 

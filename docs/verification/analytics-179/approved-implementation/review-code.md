@@ -109,3 +109,59 @@ Optional，已改善：整行按钮原有aria-label仅包含图片身份与“�
 seedAccess使用真实hoisted async函数并在初始fixture对象中绑定，之后仍读取同一闭包对象的clearAccess、ids与uploaded，没有cast、占位方法或展开快照。新增内存SQLite测试调用实际fixture与SQL，UTC/AsiaShanghai两环境都连续seed两次，断言7天78/old0、30天234/old1、累计468不重复累积，finally关闭db。该测试能直接捕获原UTC前提错误及recovery重置/再seed异常。
 
 实施agent实际取得UTC旧实现RED、修后2/2GREEN，并完成局部格式/ESLint/语法/diff检查；该次工具输出无独立日志文件。审查者只读核验源码和默认失败报告，未重复检查。修后真实默认/定向运行仍需其最终实录，不能由fixture单测代替。
+
+## 并发主线同步后的合并复审
+
+只读复审同步提交 `2c0e1d90`，其父为本任务 `2f76d146` 与 `origin/main a8ee2a26`，原分叉为 `4db067f`。对比合并结果与两侧父提交，核对六个重叠文件及主线 `session-controls.tsx`；没有发现丢失双方能力或新增必修项。本次同步分支不等于合并PR。
+
+- `docs/design/README.md` 唯一表格冲突保留 #179 获批统计补充和 DG-THEME 两行。acceptance 保留主线 DES-05/RG-07 开放及 DG-THEME 交接，同时保留本任务方案批准、Figma同步与产品人工验收的独立边界。任务卡保留主线品牌服务证据/品牌管理UI边界和主题交接全文，也保留本任务 T-ANA-05 实施、永久删除排行排除及获批实施证据；没有以合并覆盖需求编号或完成状态。
+- 主线 `branding` 独立suite、`runBrandingBrowser` import、结果清理项和默认full完整调用均保留；品牌实验仍独立调用。branding定向分支仍传递同一停止信号并执行原finally、输出报告；没有误归入 analytics 或只留定向入口。主线新增凭证/setupCode日志脱敏也保留。SMTP `focus` 仍仅属于 smtpPhase，计划和单测均保留。
+- 本任务 analytics 的 representative/behavior/recovery/consumers/detail 五种定向模式和默认full analytics stage均保留。默认不发布analyticsPhase，因此由 analytics.mjs执行完整场景。identity-session和workspace-continuity仍是原场景的定向适配，没有加入full的额外重复stage；full原身份两宽度/重启、workspace两宽度调用保持。library consumers仍只属于libraryPhase；full原library只调用一次，原recovery路径和共享前置/清理未改。
+- `browser-plan.test.ts` 同时保留主线branding隔离与SMTP focus测试、本任务完整full预期及detail/consumer/identity/workspace参数归属测试。没有删除原用例或降低断言来解决冲突。
+- `src/components/identity/session-controls.tsx` 与当前origin/main没有差异。成功POST `/api/auth/sign-out` 直接重置上传并跳登录的主线实现完整保留，没有恢复额外GET核对；失败仍显示错误、解除inFlight/busy且留页。
+
+本审查只读源码与Git差异，未重复执行测试或浏览器。主代理正在运行合并后受影响单元/type/build，其结果另记。当前仍进行的默认浏览器使用同步前复制的构建：即使其旧基线场景通过，也不能当作 `2c0e1d90` 新增branding、SMTP focus或退出实现的运行证据；本任务受影响定向运行须与其实际构建基线一起记录。既有定向单图通过、方案/Figma批准和独立设计结论也不替代最新默认full或最终产品人工验收。
+
+## 合并后CLI夹具适配复审
+
+只读复审 `tests/unit/runtime/fixtures/browser-cli.mjs` 与 `browser-business-cli.test.ts` 两文件增量，无必修项。主线新增的品牌运行器会实际启动临时Next服务，旧CLI夹具只替代品牌实验；这与夹具替代process.kill的既有边界冲突。最小修复为已有substitutes映射增加 `./browser-branding.mjs → runBrandingBrowser`，其唯一操作记录branding trace。resolve仍精确限定父模块为真实verify-browser URL，生产runner和品牌实现未修改，未扩大全局模块替代。
+
+真实CLI默认测试额外要求 `report.stages.branding.status === passed` 且branding trace恰好一次。原计划阶段顺序、每阶段报告/log、上传独立runtime、身份4次、workspace2次、library1次以及full不调用定向身份适配等断言完整保留。该测试核对默认入口接线，不声称运行品牌真实业务；真实品牌浏览器由主线独立场景负责。
+
+实施者报告合并后受影响46文件中45文件/856项通过，剩余default CLI因遗漏上述替代而ETIMEDOUT，原失败保留；仅重跑改动后的9项CLI文件，其结果待实际输出。本审查未执行测试，也未将未重跑的856项或模拟品牌trace写成真实浏览器证据。
+
+## 原生滚轮命中与排行末端补充复审
+
+只读复审 `analytics-image-statistics.mjs`、`analytics-consumers.mjs` 两文件增量，无必修项。短视口末端失败后，实施者诊断原hover后wheel坐标为(0,0)，事件命中modal-backdrop而非正文；显式移动到实际正文矩形中心再滚轮，原页top358+client153=scroll511能到末端。这属于测试输入命中错误，产品未修改，原失败保留。
+
+单图场景现在读取真实Modal.Body矩形与原scrollTop，以stop-aware mouse.move定位，再发原生wheel。原 `scrollTop+clientHeight >= scrollHeight-1` 末端断言和真实截图保留，额外落盘before/after；没有设置scrollTop或增加等待阈值绕过失败。图库consumer同样只把hover替换为真实详情正文中心定位，24px原生滚轮、非零位置要求、Enter打开、关闭后精确滚动/焦点比较保持。排行既有显式mouse.move没有重写。
+
+consumer新增1440与390第十行键盘focus，要求该整行top/bottom位于实际main滚动视窗，再保存popular-end浅色截图。该补充核对最后一行的可达性与视觉证据，不冒充深色末端验收。后续真实dashboard导航和原两consumer/异常筛选均保留。新增操作都通过同一受控page，未增加监听器、计时器、请求注入或清理资源；原finally及用户接管停止边界不变。
+
+已独立读取 `/tmp/ariso179-merge-cli-green.log`：Vitest5于10:47:13实际完成1文件9项passed，483ms，确认上节CLI适配已通过。身份/workspace/library consumers通过及analytics前三阶段通过为主代理最新报告，待归档实录核验；修后detail与尚未运行consumers继续未记为通过。审查者没有重复运行检查或浏览器。
+
+## HeroUI hover单位矩阵断言复审
+
+只读复审最后hover断言增量，无必修项。实际安装的 `@heroui/styles/dist/components/button.css` 第15行使用transform-gpu，因此未发生位移/缩放/旋转时浏览器仍可返回单位matrix。仅接受字符串none会把等价的无形变实现错误判成视觉变形。
+
+修后仍记录原始computed transform，另要求 `transform === none || new DOMMatrix(transform).isIdentity` 为true。DOMMatrix检查完整矩阵，实际平移、缩放、旋转等非单位变换仍失败，没有改成只忽略transform或放宽幅度阈值。hover真实data-hovered、前景色等于弹窗前景色和透明背景要求保持；pressed原transform:none断言保持。产品样式、资源和停止清理路径没有变化。
+
+独立读取 `test-results/analytics-179-approved-detail-last/analytics.json`：该轮status=failed，失败为matrix与none字面比较，browserErrors=[]且fixtureRestored=true；已执行short-body-end与360 narrow采集不代表整场景通过。修后仅重跑detail和此前未执行consumers的计划合理，实际结果待归档。本审查没有重跑检查或浏览器。
+
+## 单图最新最终实录核验
+
+独立只读核验 [detail-final-pass业务报告](./browser/analytics-179-approved-detail-final-pass/analytics.json) 与 [runner](./browser/analytics-179-approved-detail-final-pass/runner.json)：Node v24.18.1，suite=analytics/only=detail，runner和analytics阶段passed，temporaryDirectoryRemoved=true；业务status=passed、fixtureRestored=true、browserErrors=[]。未重复执行。
+
+新增末端检查实际从scrollTop235滚至292，clientHeight153、scrollHeight445，精确到正文末端；390×400末端与360窄屏图均落盘。累计Info和关闭hover两者raw transform为单位matrix，transformIsIdentity=true，前景rgb(39,35,67)、透明背景；pressed仍为none/透明。19次布局采集包含正常浅深/手机/桌面、短视口末端、360、hover及原状态，不能以数量代替独立设计对照。
+
+原SQL/API四ID累计72/66/54/0与7/30/90分别12/36/72、11/33/66、9/27/54、0/0/0仍完整执行。原生transitionend elapsed0.28、reduce=true；真实挂起200有held/aborted/released三标记。图库/回收站真实401各只有start→response两事件，无401后的protected start，原ID returnTo保留。之前末端和hover字面失败保持历史failed，不覆盖为通过。当前仅确认最新detail完成，消费者和全量结论待相应实录，人工验收仍独立。
+
+## 新主线 #184 合并前交汇预审
+
+只读审查 `a8ee2a26..origin/main f4c0fecd` 的浏览器计划/运行器、CLI替身与测试以及identity/auth、login-form、PublicShell变化，无新增必修项；此时尚未实际合并，不能当作合并结果确认。
+
+主线新增password-reset三阶段，full在SMTP前调度；它不含本任务尚未合并的analytics和3个定向适配，合并时须同时保留两侧stage和phase归属。verify-browser新reset夹具只在full/reset启用，真实双SMTP CA合并、config传递和finally关闭均需保留。main新增branding替身与本任务同一遗漏修复重叠，应保留main较完整spaceId/pageLabel trace和focusedbranding断言；本任务identity4/workspace2/library1及禁用定向身份重复stage断言仍需保留。main新passwordResetPhase/hasFixture隔离断言与本任务聚合断言不矛盾。
+
+identity/auth新增WeakMap仅传递同一密码申请HTTP请求的邮件失败，before/after限定reset路径；原sign-in credential race复核、sign-out服务端撤销确认、get-session行为未改。允许路径只新增明确reset方法，未放开其他身份修改。login-form仅增加两端忘记密码入口，原登录提交、returnTo与dashboard默认行为未改变。PublicShell只为新recovery布局增加分支，login/setup/share现有分支保持。next headers仅两条恢复页，不影响统计/管理路由。未把新main整项密码恢复重新当成本Issue实现范围。
+
+合并后的最小检查建议：browser-plan与browser-business-cli两个重叠单元文件、typecheck/build；认证交汇采用主线已有定向auth/password-reset契约（路径/方法、退出、凭据重置、跨Origin和链接重建）即可，无需机械重跑已通过全部analytics数据单元。新auth/login输入下，identity-session与workspace-continuity两个定向浏览器可核对本任务默认落点/returnTo交汇。若实际合并保持analytics产品及其调用未变，最新detail无需仅因主线文档/恢复能力增加而重复；若发生实际调用改变，再定向重跑受影响场景。新的合并结果和实际验证另待主代理提供，当前旧构建结果继续明确基线。

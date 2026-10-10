@@ -253,12 +253,32 @@ export async function analyticsImageStatistics(
       );
     }
     await capture('keyboard-focus-short', 390, 'dark', 400);
-    await page.hover(body);
+    const bodyPosition = await page.evaluate((selector) => {
+      const node = document.querySelector(selector);
+      const rect = node.getBoundingClientRect();
+      return {
+        x: rect.x + rect.width / 2,
+        y: rect.y + rect.height / 2,
+        scrollTop: node.scrollTop,
+      };
+    }, body);
+    await page.mouse.move(bodyPosition.x, bodyPosition.y);
     await page.mouse.wheel(0, 1000, { label: '查看短视口图表末端' });
     await page.waitForFunction((selector) => {
       const node = document.querySelector(selector);
       return node.scrollTop + node.clientHeight >= node.scrollHeight - 1;
     }, body);
+    detail.shortBodyScroll = {
+      before: bodyPosition,
+      after: await page.evaluate((selector) => {
+        const node = document.querySelector(selector);
+        return {
+          scrollTop: node.scrollTop,
+          clientHeight: node.clientHeight,
+          scrollHeight: node.scrollHeight,
+        };
+      }, body),
+    };
     await capture('short-body-end', 390, 'dark', 400);
     await capture('narrow', 360, 'light');
     await resizeViewport(page, 1440);
@@ -290,10 +310,12 @@ export async function analyticsImageStatistics(
           color: css.color,
           background: css.backgroundColor,
           transform: css.transform,
+          transformIsIdentity:
+            css.transform === 'none' || new DOMMatrix(css.transform).isIdentity,
         };
       }, label);
       assert.equal(appearance.background, 'rgba(0, 0, 0, 0)');
-      assert.equal(appearance.transform, 'none');
+      assert.equal(appearance.transformIsIdentity, true);
       detail.hoverAppearance.push(appearance);
     }
     await capture('hover-close', 1440, 'light');

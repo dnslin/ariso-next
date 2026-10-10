@@ -1,0 +1,180 @@
+{
+  "status": "running",
+  "width": 1440,
+  "height": 1000,
+  "checks": [
+    "Native sidebar links and real browser history retain queued IDs, live Blob bytes, private visibility and the same document.",
+    "Real XHR acceptance survives leaving Upload; automatic submission reads complete on Library, with the original queue/image identity and exactly one submission.",
+    "Hard reload still warns for unsent work and starts a fresh document with no persisted queue."
+  ],
+  "background": {
+    "network": {
+      "submissions": [
+        {
+          "id": "2c9b1057-62c1-4b8b-8558-d36a7dcd90b3",
+          "storageId": "a17c33f1-b15f-4a96-a010-2063cd48061a",
+          "visibility": "private",
+          "maxFileBytes": 52428800,
+          "batchSize": 20,
+          "albumIds": [],
+          "tagIds": [],
+          "sessions": [
+            {
+              "id": "5216ffb1-3a14-40d5-8a26-38abbae0e48b",
+              "queueItemId": "3275ecb8-6acf-43a9-a361-d58ee6acb261",
+              "groupIndex": 0,
+              "originalName": "sample.jpg",
+              "declaredSize": 638,
+              "state": "queued",
+              "imageId": null,
+              "jobId": null,
+              "byteSize": null,
+              "errorCode": null,
+              "error": null,
+              "cleanupStatus": "none",
+              "route": null,
+              "routeReason": null,
+              "image": null,
+              "job": null
+            }
+          ]
+        }
+      ],
+      "reads": [
+        {
+          "pathname": "/library",
+          "body": {
+            "id": "2c9b1057-62c1-4b8b-8558-d36a7dcd90b3",
+            "storageId": "a17c33f1-b15f-4a96-a010-2063cd48061a",
+            "visibility": "private",
+            "maxFileBytes": 52428800,
+            "batchSize": 20,
+            "albumIds": [],
+            "tagIds": [],
+            "sessions": [
+              {
+                "id": "5216ffb1-3a14-40d5-8a26-38abbae0e48b",
+                "queueItemId": "3275ecb8-6acf-43a9-a361-d58ee6acb261",
+                "groupIndex": 0,
+                "originalName": "sample.jpg",
+                "declaredSize": 638,
+                "state": "accepted",
+                "imageId": "cf82b584-7e44-4ec1-944a-c5e40f0acb38",
+                "jobId": "75ecd807-7dc8-4c9f-acfc-4d8abd563f38",
+                "byteSize": 638,
+                "errorCode": null,
+                "error": null,
+                "cleanupStatus": "none",
+                "route": "local",
+                "routeReason": null,
+                "image": {
+                  "id": "cf82b584-7e44-4ec1-944a-c5e40f0acb38",
+                  "storageId": "a17c33f1-b15f-4a96-a010-2063cd48061a",
+                  "originalName": "sample.jpg",
+                  "displayName": "sample",
+                  "visibility": "private",
+                  "format": "JPEG",
+                  "mime": "image/jpeg",
+                  "width": 64,
+                  "height": 48,
+                  "byteSize": 638,
+                  "animated": false,
+                  "pageCount": 1,
+                  "classification": "static",
+                  "processingStatus": "ready",
+                  "trashedAt": null,
+                  "deletionStatus": null,
+                  "createdAt": "2026-10-10T01:07:46.913Z",
+                  "updatedAt": "2026-10-10T01:07:47.168Z"
+                },
+                "job": {
+                  "id": "75ecd807-7dc8-4c9f-acfc-4d8abd563f38",
+                  "imageId": "cf82b584-7e44-4ec1-944a-c5e40f0acb38",
+                  "kind": "process",
+                  "scope": "all",
+                  "snapshot": {
+                    "compressionEnabled": true,
+                    "outputFormat": "webp",
+                    "quality": 82,
+                    "maxEdge": null,
+                    "jpegBackground": "#FFFFFF",
+                    "watermarkMode": "off",
+                    "watermarkText": "",
+                    "watermarkFont": "chinese",
+                    "watermarkFontSize": 3,
+                    "watermarkColor": "#FFFFFF",
+                    "watermarkStrokeColor": "#000000",
+                    "watermarkStrokeWidth": 0,
+                    "watermarkOpacity": 50,
+                    "watermarkPosition": "bottom-right",
+                    "watermarkMargin": 2,
+                    "watermarkWidth": 20,
+                    "watermarkAsset": null,
+                    "defaultVisibility": "public"
+                  },
+                  "expectedVersions": ["compressed", "thumbnail"],
+                  "status": "succeeded",
+                  "error": null,
+                  "step": "complete",
+                  "metadataWarning": null,
+                  "retryCount": 0,
+                  "recoveryCount": 0,
+                  "nextAttemptAt": null,
+                  "startedAt": "2026-10-10T01:07:46.925Z",
+                  "finishedAt": "2026-10-10T01:07:47.168Z",
+                  "createdAt": "2026-10-10T01:07:46.913Z",
+                  "updatedAt": "2026-10-10T01:07:47.168Z"
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "heldReadPaths": ["/upload"]
+    },
+    "returned": {
+      "document": "e1e61e37-1367-4d72-ac87-063c0e9cf13a",
+      "rows": [
+        {
+          "id": "3275ecb8-6acf-43a9-a361-d58ee6acb261",
+          "image": "cf82b584-7e44-4ec1-944a-c5e40f0acb38"
+        }
+      ]
+    },
+    "persisted": [
+      {
+        "queue_item_id": "3275ecb8-6acf-43a9-a361-d58ee6acb261",
+        "image_id": "cf82b584-7e44-4ec1-944a-c5e40f0acb38",
+        "state": "accepted"
+      }
+    ]
+  },
+  "hardRefresh": {
+    "document": "5e757049-419b-4707-85c2-89e126de273f",
+    "trace": {
+      "revoked": [
+        "blob:http://ariso-65425.localhost:65425/9426fef1-a96a-4fcb-9024-933a15c25051"
+      ],
+      "unloads": [
+        {
+          "prevented": true,
+          "document": "e1e61e37-1367-4d72-ac87-063c0e9cf13a"
+        }
+      ]
+    }
+  },
+  "logout": {
+    "revoked": [
+      "blob:http://ariso-65425.localhost:65425/9426fef1-a96a-4fcb-9024-933a15c25051",
+      "blob:http://ariso-65425.localhost:65425/9e93e6e1-d2ff-4419-a66e-173d33431f50"
+    ],
+    "unloads": [
+      {
+        "prevented": true,
+        "document": "e1e61e37-1367-4d72-ac87-063c0e9cf13a"
+      }
+    ]
+  },
+  "error": "Error: page.waitForSelector timed out after 10000ms: input[aria-label=\"选择图片文件\"]\n    at waitForSelectorInPage (file:////[eval1]:16159:11)\n    at async file:////[eval1]:16691:28",
+  "page": "[p1 \"Ariso\" | space \"Ariso Issue 179\"(2): 1 managed, 0 untracked — p1* \"Ariso\"]\nroot\n  container\n    container \"后台侧栏\"\n      container\n        anchor \"Ariso 首页\" [ref=254, url=http://ariso-65425.localhost:65425/]\n          text \"Ariso\"\n        button \"收起侧栏\" [ref=255, loc=css:button[aria-label=\"收起侧栏\"]]\n          svg_root\n      container \"后台导航\"\n        anchor \"总览\" [ref=256, loc=css:a[aria-label=\"总览\"], url=http://ariso-65425.localhost:65425/dashboard]\n          svg_root\n          text \"总览\"\n        anchor \"上传\" [ref=257, loc=css:a[aria-label=\"上传\"], url=http://ariso-65425.localhost:65425/upload]\n          svg_root\n          text \"上传\"\n        anchor \"图库\" [ref=258, loc=css:a[aria-label=\"图库\"], url=http://ariso-65425.localhost:65425/library]\n          svg_root\n          text \"图库\"\n        anchor \"相册\" [ref=259, loc=css:a[aria-label=\"相册\"], url=http://ariso-65425.localhost:65425/albums]\n          svg_root\n          text \"相册\"\n        anchor \"标签\" [ref=260, loc=css:a[aria-label=\"标签\"], url=http://ariso-65425.localhost:65425/tags]\n          svg_root\n          text \"标签\"\n        anchor \"分享管理\" [ref=261, loc=css:a[aria-label=\"分享管理\"], url=http://ariso-65425.localhost:65425/shares]\n          svg_root\n          text \"分享管理\"\n        anchor \"回收站\" [ref=262, loc=css:a[aria-label=\"回收站\"], url=http://ariso-65425.localhost:65425/trash]\n          svg_root\n          text \"回收站\"\n        paragraph\n          text \"管理\"\n        anchor \"访问统计\" [ref=263, loc=css:a[aria-label=\"访问统计\"], url=http://ariso-65425.localhost:65425/analytics]\n          svg_root\n          text \"访问统计\"\n        anchor \"存储管理\" [ref=264, loc=css:a[aria-label=\"存储管理\"], url=http://ariso-65425.localhost:65425/settings/storage]\n          svg_root\n          text \"存储管理\"\n        anchor \"站点设置\" [ref=265, loc=css:a[aria-label=\"站点设置\"], url=http://ariso-65425.localhost:65425/settings/general]\n          svg_root\n          text \"站点设置\"\n      button \"账号菜单\" [ref=266, loc=css:button[aria-label=\"账号菜单\"]]\n        text \"O\"\n        container\n          text \"Owner\"\n          text \"站点所有者\"\n    container\n      container [ref=267]\n        container\n          heading\n            text \"工作台\"\n          paragraph\n            text \"每一张图片，都有自己的位置。\"\n        container \"访问统计\"\n          container\n            container\n              paragraph\n                text \"UTC\"\n                text \"· 更新于\"\n                text \"2026/10/10 01:07\"\n                text \"。今日截至本次统计更新。\"\n              paragraph\n                text \"本进程尚无已提交的访问批次\"\n                text \"。\"\n            button \"刷新访问统计\" [ref=268, loc=css:button[aria-label=\"刷新访问统计\"]]\n              svg_root\n          container\n            container\n              paragraph\n                text \"图片数量\"\n              paragraph\n                text \"10\"\n              paragraph\n                text \"回收站 0 张\"\n            container\n              paragraph\n                text \"相册数量\"\n              paragraph\n                text \"0\"\n              paragraph\n                text \"包含空相册\"\n            container\n              paragraph\n                text \"今日访问\"\n              paragraph\n                text \"4\"\n              paragraph\n                text \"截至本次统计更新\"\n            container\n              paragraph\n                text \"累计访问\"\n              paragraph\n                text \"4\"\n              paragraph\n                text \"历史累计访问\"\n          radiogroup \"统计周期\"\n            radiobutton [ref=269]\n              text \"7\"\n              text \"天\"\n            radiobutton [ref=270]\n              text \"30\"\n              text \"天\"\n            radiobutton [ref=271]\n              text \"90\"\n              text \"天\"\n          container\n            heading\n              text \"公开访问趋势\"\n            paragraph\n              text \"2026-10-04\"\n              text \"—\"\n              text \"2026-10-10\"\n              text \"·\"\n              text \"4\"\n              text \"次\"\n            application \"10/04 10/05 10/06 10/07 10/08 10/09 10/10 0 1 2 3 4\" [ref=272]\n              text \"10/04\"\n              text \"10/05\"\n              text \"10/06\"\n              text \"10/07\"\n              text \"10/08\"\n              text \"10/09\"\n              text \"10/10\"\n              text \"0\"\n              text \"1\"\n              text \"2\"\n              text \"3\"\n              text \"4\"\n            paragraph\n              text \"单位：次 · 今日未结束 · 使用左右方向键或点击图表读取数值。\"\n            anchor [ref=273, loc=href:/dashboard?days=7&view=daily, url=http://ariso-65425.localhost:65425/dashboard?days=7&view=daily]\n              text \"查看每日数值\"\n          container\n            heading\n              text \"版本访问量 · 最近 7 天\"\n            unordered_list\n              container\n                list_item\n                  text \"原图\"\n                list_item\n                  text \"4\"\n                  text \"次\"\n      container\n        anchor [ref=274, url=http://ariso-65425.localhost:65425/upload]\n          text \"上传图片\"\n        anchor [ref=275, loc=href:/analytics?days=7, url=http://ariso-65425.localhost:65425/analytics?days=7]\n          text \"查看访问统计\"\n"
+}

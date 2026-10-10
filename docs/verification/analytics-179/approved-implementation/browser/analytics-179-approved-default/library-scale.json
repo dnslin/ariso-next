@@ -1,0 +1,525 @@
+{
+  "phase": "scale",
+  "status": "passed",
+  "checks": [
+    "2400 explicitly selected loaded IDs keep at most 85 mounted cards and 20 selected-list rows; the actual 201st selection can be removed; clearing restores search focus without a new list request.",
+    "2,400 real SQLite images load in 30 exact 80-item requests; sampled virtual DOM stays bounded; post-GC heap growth is recorded without an invented limit; Tab/Shift+Tab cross the virtual-window boundary in item order."
+  ],
+  "combinations": [],
+  "screenshots": [
+    "library-query-scale-2400.png",
+    "library-selection-2400-360.png",
+    "library-selection-2400-1440.png"
+  ],
+  "scale": {
+    "status": "passed",
+    "records": 2400,
+    "pageSize": 80,
+    "samples": [
+      {
+        "batch": 1,
+        "loaded": 80,
+        "cardNodes": 21,
+        "totalDomNodes": 815,
+        "galleryHeight": 5820,
+        "mainWidth": 1208,
+        "mainScrollWidth": 1208,
+        "scrollTop": 0,
+        "scrollHeight": 6148,
+        "focusedId": null,
+        "requestCount": 1,
+        "responseBytes": 49073,
+        "heapUsedBytes": 18320552,
+        "heapTotalBytes": 18874368
+      },
+      {
+        "batch": 5,
+        "loaded": 400,
+        "cardNodes": 38,
+        "totalDomNodes": 1274,
+        "galleryHeight": 29180,
+        "mainWidth": 1208,
+        "mainScrollWidth": 1208,
+        "scrollTop": 22665,
+        "scrollHeight": 29508,
+        "focusedId": null,
+        "requestCount": 5,
+        "responseBytes": 245365,
+        "heapUsedBytes": 21480600,
+        "heapTotalBytes": 23330816
+      },
+      {
+        "batch": 10,
+        "loaded": 800,
+        "cardNodes": 38,
+        "totalDomNodes": 1274,
+        "galleryHeight": 58380,
+        "mainWidth": 1208,
+        "mainScrollWidth": 1208,
+        "scrollTop": 51865,
+        "scrollHeight": 58708,
+        "focusedId": null,
+        "requestCount": 10,
+        "responseBytes": 490730,
+        "heapUsedBytes": 22915552,
+        "heapTotalBytes": 24641536
+      },
+      {
+        "batch": 15,
+        "loaded": 1200,
+        "cardNodes": 38,
+        "totalDomNodes": 1274,
+        "galleryHeight": 87580,
+        "mainWidth": 1208,
+        "mainScrollWidth": 1208,
+        "scrollTop": 81065,
+        "scrollHeight": 87908,
+        "focusedId": null,
+        "requestCount": 15,
+        "responseBytes": 736095,
+        "heapUsedBytes": 24361052,
+        "heapTotalBytes": 26214400
+      },
+      {
+        "batch": 20,
+        "loaded": 1600,
+        "cardNodes": 38,
+        "totalDomNodes": 1274,
+        "galleryHeight": 116780,
+        "mainWidth": 1208,
+        "mainScrollWidth": 1208,
+        "scrollTop": 110265,
+        "scrollHeight": 117108,
+        "focusedId": null,
+        "requestCount": 20,
+        "responseBytes": 981460,
+        "heapUsedBytes": 25749752,
+        "heapTotalBytes": 27000832
+      },
+      {
+        "batch": 25,
+        "loaded": 2000,
+        "cardNodes": 38,
+        "totalDomNodes": 1274,
+        "galleryHeight": 145980,
+        "mainWidth": 1208,
+        "mainScrollWidth": 1208,
+        "scrollTop": 139465,
+        "scrollHeight": 146308,
+        "focusedId": null,
+        "requestCount": 25,
+        "responseBytes": 1226825,
+        "heapUsedBytes": 27080316,
+        "heapTotalBytes": 28573696
+      },
+      {
+        "batch": 30,
+        "loaded": 2400,
+        "cardNodes": 38,
+        "totalDomNodes": 1274,
+        "galleryHeight": 175180,
+        "mainWidth": 1208,
+        "mainScrollWidth": 1208,
+        "scrollTop": 168665,
+        "scrollHeight": 175492,
+        "focusedId": null,
+        "requestCount": 30,
+        "responseBytes": 1471735,
+        "heapUsedBytes": 28515840,
+        "heapTotalBytes": 30932992
+      }
+    ],
+    "keyboard": [
+      {
+        "direction": "Tab checkbox/detail",
+        "id": "library173-scale-0020"
+      },
+      {
+        "direction": "Tab checkbox/detail",
+        "id": "library173-scale-0021"
+      },
+      {
+        "direction": "Tab checkbox/detail",
+        "id": "library173-scale-0022"
+      },
+      {
+        "direction": "Shift+Tab",
+        "id": "library173-scale-0021"
+      },
+      {
+        "direction": "Shift+Tab",
+        "id": "library173-scale-0020"
+      },
+      {
+        "direction": "Shift+Tab",
+        "id": "library173-scale-0019"
+      }
+    ],
+    "limitations": [
+      "Heap measurements describe this Ego Chromium process after explicit GC, with no image bytes or thumbnail elements in this fixture.",
+      "No universal heap threshold is assumed. Growth includes retained lightweight image records, query pages, layout positions and small request-observation records.",
+      "The DOM bound is checked for this fixed 1440×1080 viewport; it is not a maximum for arbitrary viewport sizes."
+    ],
+    "requests": [
+      {
+        "url": "http://ariso-65425.localhost:65425/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-0000",
+        "lastId": "library173-scale-0079",
+        "ordered": true,
+        "bytes": 49073
+      },
+      {
+        "url": "http://ariso-65425.localhost:65425/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImZhaWx1cmVcIjpudWxsLFwiZGVsZXRpb25TdGF0dXNcIjpudWxsLFwic29ydFwiOlwidXBsb2FkZWRfZGVzY1wiLFwicGFnZVNpemVcIjo4MH0iLCJ2YWx1ZSI6MTgwMDk5OTk5OTkyMSwiaWQiOiJsaWJyYXJ5MTczLXNjYWxlLTAwNzkifQ",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-0080",
+        "lastId": "library173-scale-0159",
+        "ordered": true,
+        "bytes": 49073
+      },
+      {
+        "url": "http://ariso-65425.localhost:65425/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImZhaWx1cmVcIjpudWxsLFwiZGVsZXRpb25TdGF0dXNcIjpudWxsLFwic29ydFwiOlwidXBsb2FkZWRfZGVzY1wiLFwicGFnZVNpemVcIjo4MH0iLCJ2YWx1ZSI6MTgwMDk5OTk5OTg0MSwiaWQiOiJsaWJyYXJ5MTczLXNjYWxlLTAxNTkifQ",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-0160",
+        "lastId": "library173-scale-0239",
+        "ordered": true,
+        "bytes": 49073
+      },
+      {
+        "url": "http://ariso-65425.localhost:65425/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImZhaWx1cmVcIjpudWxsLFwiZGVsZXRpb25TdGF0dXNcIjpudWxsLFwic29ydFwiOlwidXBsb2FkZWRfZGVzY1wiLFwicGFnZVNpemVcIjo4MH0iLCJ2YWx1ZSI6MTgwMDk5OTk5OTc2MSwiaWQiOiJsaWJyYXJ5MTczLXNjYWxlLTAyMzkifQ",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-0240",
+        "lastId": "library173-scale-0319",
+        "ordered": true,
+        "bytes": 49073
+      },
+      {
+        "url": "http://ariso-65425.localhost:65425/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImZhaWx1cmVcIjpudWxsLFwiZGVsZXRpb25TdGF0dXNcIjpudWxsLFwic29ydFwiOlwidXBsb2FkZWRfZGVzY1wiLFwicGFnZVNpemVcIjo4MH0iLCJ2YWx1ZSI6MTgwMDk5OTk5OTY4MSwiaWQiOiJsaWJyYXJ5MTczLXNjYWxlLTAzMTkifQ",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-0320",
+        "lastId": "library173-scale-0399",
+        "ordered": true,
+        "bytes": 49073
+      },
+      {
+        "url": "http://ariso-65425.localhost:65425/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImZhaWx1cmVcIjpudWxsLFwiZGVsZXRpb25TdGF0dXNcIjpudWxsLFwic29ydFwiOlwidXBsb2FkZWRfZGVzY1wiLFwicGFnZVNpemVcIjo4MH0iLCJ2YWx1ZSI6MTgwMDk5OTk5OTYwMSwiaWQiOiJsaWJyYXJ5MTczLXNjYWxlLTAzOTkifQ",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-0400",
+        "lastId": "library173-scale-0479",
+        "ordered": true,
+        "bytes": 49073
+      },
+      {
+        "url": "http://ariso-65425.localhost:65425/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImZhaWx1cmVcIjpudWxsLFwiZGVsZXRpb25TdGF0dXNcIjpudWxsLFwic29ydFwiOlwidXBsb2FkZWRfZGVzY1wiLFwicGFnZVNpemVcIjo4MH0iLCJ2YWx1ZSI6MTgwMDk5OTk5OTUyMSwiaWQiOiJsaWJyYXJ5MTczLXNjYWxlLTA0NzkifQ",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-0480",
+        "lastId": "library173-scale-0559",
+        "ordered": true,
+        "bytes": 49073
+      },
+      {
+        "url": "http://ariso-65425.localhost:65425/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImZhaWx1cmVcIjpudWxsLFwiZGVsZXRpb25TdGF0dXNcIjpudWxsLFwic29ydFwiOlwidXBsb2FkZWRfZGVzY1wiLFwicGFnZVNpemVcIjo4MH0iLCJ2YWx1ZSI6MTgwMDk5OTk5OTQ0MSwiaWQiOiJsaWJyYXJ5MTczLXNjYWxlLTA1NTkifQ",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-0560",
+        "lastId": "library173-scale-0639",
+        "ordered": true,
+        "bytes": 49073
+      },
+      {
+        "url": "http://ariso-65425.localhost:65425/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImZhaWx1cmVcIjpudWxsLFwiZGVsZXRpb25TdGF0dXNcIjpudWxsLFwic29ydFwiOlwidXBsb2FkZWRfZGVzY1wiLFwicGFnZVNpemVcIjo4MH0iLCJ2YWx1ZSI6MTgwMDk5OTk5OTM2MSwiaWQiOiJsaWJyYXJ5MTczLXNjYWxlLTA2MzkifQ",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-0640",
+        "lastId": "library173-scale-0719",
+        "ordered": true,
+        "bytes": 49073
+      },
+      {
+        "url": "http://ariso-65425.localhost:65425/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImZhaWx1cmVcIjpudWxsLFwiZGVsZXRpb25TdGF0dXNcIjpudWxsLFwic29ydFwiOlwidXBsb2FkZWRfZGVzY1wiLFwicGFnZVNpemVcIjo4MH0iLCJ2YWx1ZSI6MTgwMDk5OTk5OTI4MSwiaWQiOiJsaWJyYXJ5MTczLXNjYWxlLTA3MTkifQ",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-0720",
+        "lastId": "library173-scale-0799",
+        "ordered": true,
+        "bytes": 49073
+      },
+      {
+        "url": "http://ariso-65425.localhost:65425/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImZhaWx1cmVcIjpudWxsLFwiZGVsZXRpb25TdGF0dXNcIjpudWxsLFwic29ydFwiOlwidXBsb2FkZWRfZGVzY1wiLFwicGFnZVNpemVcIjo4MH0iLCJ2YWx1ZSI6MTgwMDk5OTk5OTIwMSwiaWQiOiJsaWJyYXJ5MTczLXNjYWxlLTA3OTkifQ",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-0800",
+        "lastId": "library173-scale-0879",
+        "ordered": true,
+        "bytes": 49073
+      },
+      {
+        "url": "http://ariso-65425.localhost:65425/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImZhaWx1cmVcIjpudWxsLFwiZGVsZXRpb25TdGF0dXNcIjpudWxsLFwic29ydFwiOlwidXBsb2FkZWRfZGVzY1wiLFwicGFnZVNpemVcIjo4MH0iLCJ2YWx1ZSI6MTgwMDk5OTk5OTEyMSwiaWQiOiJsaWJyYXJ5MTczLXNjYWxlLTA4NzkifQ",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-0880",
+        "lastId": "library173-scale-0959",
+        "ordered": true,
+        "bytes": 49073
+      },
+      {
+        "url": "http://ariso-65425.localhost:65425/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImZhaWx1cmVcIjpudWxsLFwiZGVsZXRpb25TdGF0dXNcIjpudWxsLFwic29ydFwiOlwidXBsb2FkZWRfZGVzY1wiLFwicGFnZVNpemVcIjo4MH0iLCJ2YWx1ZSI6MTgwMDk5OTk5OTA0MSwiaWQiOiJsaWJyYXJ5MTczLXNjYWxlLTA5NTkifQ",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-0960",
+        "lastId": "library173-scale-1039",
+        "ordered": true,
+        "bytes": 49073
+      },
+      {
+        "url": "http://ariso-65425.localhost:65425/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImZhaWx1cmVcIjpudWxsLFwiZGVsZXRpb25TdGF0dXNcIjpudWxsLFwic29ydFwiOlwidXBsb2FkZWRfZGVzY1wiLFwicGFnZVNpemVcIjo4MH0iLCJ2YWx1ZSI6MTgwMDk5OTk5ODk2MSwiaWQiOiJsaWJyYXJ5MTczLXNjYWxlLTEwMzkifQ",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-1040",
+        "lastId": "library173-scale-1119",
+        "ordered": true,
+        "bytes": 49073
+      },
+      {
+        "url": "http://ariso-65425.localhost:65425/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImZhaWx1cmVcIjpudWxsLFwiZGVsZXRpb25TdGF0dXNcIjpudWxsLFwic29ydFwiOlwidXBsb2FkZWRfZGVzY1wiLFwicGFnZVNpemVcIjo4MH0iLCJ2YWx1ZSI6MTgwMDk5OTk5ODg4MSwiaWQiOiJsaWJyYXJ5MTczLXNjYWxlLTExMTkifQ",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-1120",
+        "lastId": "library173-scale-1199",
+        "ordered": true,
+        "bytes": 49073
+      },
+      {
+        "url": "http://ariso-65425.localhost:65425/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImZhaWx1cmVcIjpudWxsLFwiZGVsZXRpb25TdGF0dXNcIjpudWxsLFwic29ydFwiOlwidXBsb2FkZWRfZGVzY1wiLFwicGFnZVNpemVcIjo4MH0iLCJ2YWx1ZSI6MTgwMDk5OTk5ODgwMSwiaWQiOiJsaWJyYXJ5MTczLXNjYWxlLTExOTkifQ",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-1200",
+        "lastId": "library173-scale-1279",
+        "ordered": true,
+        "bytes": 49073
+      },
+      {
+        "url": "http://ariso-65425.localhost:65425/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImZhaWx1cmVcIjpudWxsLFwiZGVsZXRpb25TdGF0dXNcIjpudWxsLFwic29ydFwiOlwidXBsb2FkZWRfZGVzY1wiLFwicGFnZVNpemVcIjo4MH0iLCJ2YWx1ZSI6MTgwMDk5OTk5ODcyMSwiaWQiOiJsaWJyYXJ5MTczLXNjYWxlLTEyNzkifQ",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-1280",
+        "lastId": "library173-scale-1359",
+        "ordered": true,
+        "bytes": 49073
+      },
+      {
+        "url": "http://ariso-65425.localhost:65425/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImZhaWx1cmVcIjpudWxsLFwiZGVsZXRpb25TdGF0dXNcIjpudWxsLFwic29ydFwiOlwidXBsb2FkZWRfZGVzY1wiLFwicGFnZVNpemVcIjo4MH0iLCJ2YWx1ZSI6MTgwMDk5OTk5ODY0MSwiaWQiOiJsaWJyYXJ5MTczLXNjYWxlLTEzNTkifQ",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-1360",
+        "lastId": "library173-scale-1439",
+        "ordered": true,
+        "bytes": 49073
+      },
+      {
+        "url": "http://ariso-65425.localhost:65425/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImZhaWx1cmVcIjpudWxsLFwiZGVsZXRpb25TdGF0dXNcIjpudWxsLFwic29ydFwiOlwidXBsb2FkZWRfZGVzY1wiLFwicGFnZVNpemVcIjo4MH0iLCJ2YWx1ZSI6MTgwMDk5OTk5ODU2MSwiaWQiOiJsaWJyYXJ5MTczLXNjYWxlLTE0MzkifQ",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-1440",
+        "lastId": "library173-scale-1519",
+        "ordered": true,
+        "bytes": 49073
+      },
+      {
+        "url": "http://ariso-65425.localhost:65425/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImZhaWx1cmVcIjpudWxsLFwiZGVsZXRpb25TdGF0dXNcIjpudWxsLFwic29ydFwiOlwidXBsb2FkZWRfZGVzY1wiLFwicGFnZVNpemVcIjo4MH0iLCJ2YWx1ZSI6MTgwMDk5OTk5ODQ4MSwiaWQiOiJsaWJyYXJ5MTczLXNjYWxlLTE1MTkifQ",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-1520",
+        "lastId": "library173-scale-1599",
+        "ordered": true,
+        "bytes": 49073
+      },
+      {
+        "url": "http://ariso-65425.localhost:65425/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImZhaWx1cmVcIjpudWxsLFwiZGVsZXRpb25TdGF0dXNcIjpudWxsLFwic29ydFwiOlwidXBsb2FkZWRfZGVzY1wiLFwicGFnZVNpemVcIjo4MH0iLCJ2YWx1ZSI6MTgwMDk5OTk5ODQwMSwiaWQiOiJsaWJyYXJ5MTczLXNjYWxlLTE1OTkifQ",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-1600",
+        "lastId": "library173-scale-1679",
+        "ordered": true,
+        "bytes": 49073
+      },
+      {
+        "url": "http://ariso-65425.localhost:65425/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImZhaWx1cmVcIjpudWxsLFwiZGVsZXRpb25TdGF0dXNcIjpudWxsLFwic29ydFwiOlwidXBsb2FkZWRfZGVzY1wiLFwicGFnZVNpemVcIjo4MH0iLCJ2YWx1ZSI6MTgwMDk5OTk5ODMyMSwiaWQiOiJsaWJyYXJ5MTczLXNjYWxlLTE2NzkifQ",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-1680",
+        "lastId": "library173-scale-1759",
+        "ordered": true,
+        "bytes": 49073
+      },
+      {
+        "url": "http://ariso-65425.localhost:65425/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImZhaWx1cmVcIjpudWxsLFwiZGVsZXRpb25TdGF0dXNcIjpudWxsLFwic29ydFwiOlwidXBsb2FkZWRfZGVzY1wiLFwicGFnZVNpemVcIjo4MH0iLCJ2YWx1ZSI6MTgwMDk5OTk5ODI0MSwiaWQiOiJsaWJyYXJ5MTczLXNjYWxlLTE3NTkifQ",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-1760",
+        "lastId": "library173-scale-1839",
+        "ordered": true,
+        "bytes": 49073
+      },
+      {
+        "url": "http://ariso-65425.localhost:65425/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImZhaWx1cmVcIjpudWxsLFwiZGVsZXRpb25TdGF0dXNcIjpudWxsLFwic29ydFwiOlwidXBsb2FkZWRfZGVzY1wiLFwicGFnZVNpemVcIjo4MH0iLCJ2YWx1ZSI6MTgwMDk5OTk5ODE2MSwiaWQiOiJsaWJyYXJ5MTczLXNjYWxlLTE4MzkifQ",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-1840",
+        "lastId": "library173-scale-1919",
+        "ordered": true,
+        "bytes": 49073
+      },
+      {
+        "url": "http://ariso-65425.localhost:65425/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImZhaWx1cmVcIjpudWxsLFwiZGVsZXRpb25TdGF0dXNcIjpudWxsLFwic29ydFwiOlwidXBsb2FkZWRfZGVzY1wiLFwicGFnZVNpemVcIjo4MH0iLCJ2YWx1ZSI6MTgwMDk5OTk5ODA4MSwiaWQiOiJsaWJyYXJ5MTczLXNjYWxlLTE5MTkifQ",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-1920",
+        "lastId": "library173-scale-1999",
+        "ordered": true,
+        "bytes": 49073
+      },
+      {
+        "url": "http://ariso-65425.localhost:65425/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImZhaWx1cmVcIjpudWxsLFwiZGVsZXRpb25TdGF0dXNcIjpudWxsLFwic29ydFwiOlwidXBsb2FkZWRfZGVzY1wiLFwicGFnZVNpemVcIjo4MH0iLCJ2YWx1ZSI6MTgwMDk5OTk5ODAwMSwiaWQiOiJsaWJyYXJ5MTczLXNjYWxlLTE5OTkifQ",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-2000",
+        "lastId": "library173-scale-2079",
+        "ordered": true,
+        "bytes": 49073
+      },
+      {
+        "url": "http://ariso-65425.localhost:65425/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImZhaWx1cmVcIjpudWxsLFwiZGVsZXRpb25TdGF0dXNcIjpudWxsLFwic29ydFwiOlwidXBsb2FkZWRfZGVzY1wiLFwicGFnZVNpemVcIjo4MH0iLCJ2YWx1ZSI6MTgwMDk5OTk5NzkyMSwiaWQiOiJsaWJyYXJ5MTczLXNjYWxlLTIwNzkifQ",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-2080",
+        "lastId": "library173-scale-2159",
+        "ordered": true,
+        "bytes": 49073
+      },
+      {
+        "url": "http://ariso-65425.localhost:65425/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImZhaWx1cmVcIjpudWxsLFwiZGVsZXRpb25TdGF0dXNcIjpudWxsLFwic29ydFwiOlwidXBsb2FkZWRfZGVzY1wiLFwicGFnZVNpemVcIjo4MH0iLCJ2YWx1ZSI6MTgwMDk5OTk5Nzg0MSwiaWQiOiJsaWJyYXJ5MTczLXNjYWxlLTIxNTkifQ",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-2160",
+        "lastId": "library173-scale-2239",
+        "ordered": true,
+        "bytes": 49073
+      },
+      {
+        "url": "http://ariso-65425.localhost:65425/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImZhaWx1cmVcIjpudWxsLFwiZGVsZXRpb25TdGF0dXNcIjpudWxsLFwic29ydFwiOlwidXBsb2FkZWRfZGVzY1wiLFwicGFnZVNpemVcIjo4MH0iLCJ2YWx1ZSI6MTgwMDk5OTk5Nzc2MSwiaWQiOiJsaWJyYXJ5MTczLXNjYWxlLTIyMzkifQ",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-2240",
+        "lastId": "library173-scale-2319",
+        "ordered": true,
+        "bytes": 49073
+      },
+      {
+        "url": "http://ariso-65425.localhost:65425/api/images?scope=normal&pageSize=80&q=issue173-scale-&sort=uploaded_desc&cursor=eyJxdWVyeSI6IntcInNjb3BlXCI6XCJub3JtYWxcIixcInFcIjpcImlzc3VlMTczLXNjYWxlLVwiLFwiYWxidW1JZFwiOm51bGwsXCJ0YWdJZHNcIjpbXSxcInVwbG9hZGVkRnJvbVwiOm51bGwsXCJ1cGxvYWRlZEJlZm9yZVwiOm51bGwsXCJmb3JtYXRcIjpudWxsLFwic3RvcmFnZUlkXCI6bnVsbCxcInZpc2liaWxpdHlcIjpudWxsLFwic3RhdHVzXCI6bnVsbCxcImZhaWx1cmVcIjpudWxsLFwiZGVsZXRpb25TdGF0dXNcIjpudWxsLFwic29ydFwiOlwidXBsb2FkZWRfZGVzY1wiLFwicGFnZVNpemVcIjo4MH0iLCJ2YWx1ZSI6MTgwMDk5OTk5NzY4MSwiaWQiOiJsaWJyYXJ5MTczLXNjYWxlLTIzMTkifQ",
+        "status": 200,
+        "requestedSize": 80,
+        "count": 80,
+        "total": 2400,
+        "firstId": "library173-scale-2320",
+        "lastId": "library173-scale-2399",
+        "ordered": true,
+        "bytes": 48618
+      }
+    ],
+    "heapGrowthBytes": 10195288,
+    "heapGrowthBytesPerAdditionalImage": 4394.520689655173,
+    "domNodeGrowth": 459,
+    "loadedCache": {
+      "pages": 30,
+      "lightweightRecords": 2400,
+      "thumbnails": 0
+    },
+    "focusRing": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(40, 126, 121) 0px 0px 0px 2px, rgba(0, 0, 0, 0) 0px 0px 0px 0px"
+  },
+  "largeSelection": {
+    "status": "passed",
+    "selected": 2400,
+    "afterRemoval": 2399,
+    "removedOrdinal": 201,
+    "removed": {
+      "id": "library173-scale-0200",
+      "name": "issue173-scale-0200.png"
+    },
+    "cardNodes": 21,
+    "selectedListRows": 20,
+    "requestsBefore": {
+      "scale": 30,
+      "query": null
+    },
+    "requestsAfter": {
+      "scale": 30,
+      "query": null
+    }
+  }
+}

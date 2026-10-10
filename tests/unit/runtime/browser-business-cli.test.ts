@@ -85,6 +85,8 @@ describe('actual business CLI connections without external services', () => {
     }
     expectUploadRuntime(events, 'upload');
     expectUploadRuntime(events, 'upload-polling');
+    expect(report.stages.branding.status).toBe('passed');
+    expect(events.filter((event) => event.kind === 'branding')).toHaveLength(1);
     expect(scripts).not.toContain('identity-session-scene.mjs');
     expect(scripts.filter((script) => script === 'library.mjs')).toHaveLength(
       1,

@@ -1,0 +1,626 @@
+{
+  "status": "passed",
+  "taskSpaceId": 2,
+  "origin": "http://ariso-65425.localhost:65425",
+  "phase": "after",
+  "checks": [
+    "Anonymous GitHub login entry follows actual effective configuration (disabled). No external authorization is attempted with fixture credentials.",
+    "First real process restart applies disabled saved configuration and retains the binding; explicit UI re-enable saves while effective remains disabled until the next restart."
+  ],
+  "layouts": [
+    {
+      "name": "bound-effective-disabled-light-rows",
+      "width": 1440,
+      "contentWidth": 960,
+      "headings": [
+        {
+          "text": "所有者账号",
+          "icon": true
+        },
+        {
+          "text": "GitHub 登录",
+          "icon": true
+        }
+      ],
+      "rows": [
+        {
+          "label": "登录邮箱",
+          "icon": true,
+          "labelRect": {
+            "x": 285,
+            "y": 277.25,
+            "width": 136,
+            "height": 19.5,
+            "bottom": 296.75,
+            "right": 421
+          },
+          "value": {
+            "x": 441,
+            "y": 277,
+            "width": 646,
+            "height": 20,
+            "bottom": 297,
+            "right": 1087
+          },
+          "content": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "bottom": 0,
+            "right": 0
+          },
+          "buttons": [
+            {
+              "x": 1107,
+              "y": 265,
+              "width": 96,
+              "height": 44,
+              "bottom": 309,
+              "right": 1203
+            }
+          ]
+        },
+        {
+          "label": "登录密码",
+          "icon": true,
+          "labelRect": {
+            "x": 285,
+            "y": 354.25,
+            "width": 136,
+            "height": 19.5,
+            "bottom": 373.75,
+            "right": 421
+          },
+          "value": {
+            "x": 441,
+            "y": 354,
+            "width": 646,
+            "height": 20,
+            "bottom": 374,
+            "right": 1087
+          },
+          "content": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "bottom": 0,
+            "right": 0
+          },
+          "buttons": [
+            {
+              "x": 1107,
+              "y": 342,
+              "width": 96,
+              "height": 44,
+              "bottom": 386,
+              "right": 1203
+            }
+          ]
+        },
+        {
+          "label": "GitHub 账号",
+          "icon": true,
+          "labelRect": {
+            "x": 285,
+            "y": 504.25,
+            "width": 136,
+            "height": 19.5,
+            "bottom": 523.75,
+            "right": 421
+          },
+          "value": {
+            "x": 441,
+            "y": 492.25,
+            "width": 646,
+            "height": 43.5,
+            "bottom": 535.75,
+            "right": 1087
+          },
+          "content": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "bottom": 0,
+            "right": 0
+          },
+          "buttons": [
+            {
+              "x": 1107,
+              "y": 492,
+              "width": 96,
+              "height": 44,
+              "bottom": 536,
+              "right": 1203
+            }
+          ]
+        },
+        {
+          "label": "站点登录配置",
+          "icon": true,
+          "labelRect": {
+            "x": 285,
+            "y": 581.25,
+            "width": 136,
+            "height": 19.5,
+            "bottom": 600.75,
+            "right": 421
+          },
+          "value": {
+            "x": 441,
+            "y": 581,
+            "width": 646,
+            "height": 20,
+            "bottom": 601,
+            "right": 1087
+          },
+          "content": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "bottom": 0,
+            "right": 0
+          },
+          "buttons": [
+            {
+              "x": 1107,
+              "y": 569,
+              "width": 96,
+              "height": 44,
+              "bottom": 613,
+              "right": 1203
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "bound-effective-disabled-light",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "总览",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "分享管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "访问统计",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "修改邮箱",
+          "width": 96,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改密码",
+          "width": 96,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "解绑账号",
+          "width": 96,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "登录配置",
+          "width": 96,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    },
+    {
+      "name": "bound-effective-disabled-dark-rows",
+      "width": 1440,
+      "contentWidth": 960,
+      "headings": [
+        {
+          "text": "所有者账号",
+          "icon": true
+        },
+        {
+          "text": "GitHub 登录",
+          "icon": true
+        }
+      ],
+      "rows": [
+        {
+          "label": "登录邮箱",
+          "icon": true,
+          "labelRect": {
+            "x": 285,
+            "y": 277.25,
+            "width": 136,
+            "height": 19.5,
+            "bottom": 296.75,
+            "right": 421
+          },
+          "value": {
+            "x": 441,
+            "y": 277,
+            "width": 646,
+            "height": 20,
+            "bottom": 297,
+            "right": 1087
+          },
+          "content": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "bottom": 0,
+            "right": 0
+          },
+          "buttons": [
+            {
+              "x": 1107,
+              "y": 265,
+              "width": 96,
+              "height": 44,
+              "bottom": 309,
+              "right": 1203
+            }
+          ]
+        },
+        {
+          "label": "登录密码",
+          "icon": true,
+          "labelRect": {
+            "x": 285,
+            "y": 354.25,
+            "width": 136,
+            "height": 19.5,
+            "bottom": 373.75,
+            "right": 421
+          },
+          "value": {
+            "x": 441,
+            "y": 354,
+            "width": 646,
+            "height": 20,
+            "bottom": 374,
+            "right": 1087
+          },
+          "content": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "bottom": 0,
+            "right": 0
+          },
+          "buttons": [
+            {
+              "x": 1107,
+              "y": 342,
+              "width": 96,
+              "height": 44,
+              "bottom": 386,
+              "right": 1203
+            }
+          ]
+        },
+        {
+          "label": "GitHub 账号",
+          "icon": true,
+          "labelRect": {
+            "x": 285,
+            "y": 504.25,
+            "width": 136,
+            "height": 19.5,
+            "bottom": 523.75,
+            "right": 421
+          },
+          "value": {
+            "x": 441,
+            "y": 492.25,
+            "width": 646,
+            "height": 43.5,
+            "bottom": 535.75,
+            "right": 1087
+          },
+          "content": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "bottom": 0,
+            "right": 0
+          },
+          "buttons": [
+            {
+              "x": 1107,
+              "y": 492,
+              "width": 96,
+              "height": 44,
+              "bottom": 536,
+              "right": 1203
+            }
+          ]
+        },
+        {
+          "label": "站点登录配置",
+          "icon": true,
+          "labelRect": {
+            "x": 285,
+            "y": 581.25,
+            "width": 136,
+            "height": 19.5,
+            "bottom": 600.75,
+            "right": 421
+          },
+          "value": {
+            "x": 441,
+            "y": 581,
+            "width": 646,
+            "height": 20,
+            "bottom": 601,
+            "right": 1087
+          },
+          "content": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "bottom": 0,
+            "right": 0
+          },
+          "buttons": [
+            {
+              "x": 1107,
+              "y": 569,
+              "width": 96,
+              "height": 44,
+              "bottom": 613,
+              "right": 1203
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "bound-effective-disabled-dark",
+      "width": 1440,
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "name": "跳到主要内容",
+          "width": 120,
+          "height": 48,
+          "navigation": false
+        },
+        {
+          "name": "Ariso 首页",
+          "width": 84,
+          "height": 72,
+          "navigation": false
+        },
+        {
+          "name": "收起侧栏",
+          "width": 44,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "总览",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "上传",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "图库",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "相册",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "标签",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "分享管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "回收站",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "访问统计",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "存储管理",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "站点设置",
+          "width": 191,
+          "height": 40,
+          "navigation": true
+        },
+        {
+          "name": "账号菜单",
+          "width": 191,
+          "height": 56,
+          "navigation": false
+        },
+        {
+          "name": "修改邮箱",
+          "width": 96,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "修改密码",
+          "width": 96,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "解绑账号",
+          "width": 96,
+          "height": 44,
+          "navigation": false
+        },
+        {
+          "name": "登录配置",
+          "width": 96,
+          "height": 44,
+          "navigation": false
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    "oauth-1440-after-bound-effective-disabled-light-1440.png",
+    "oauth-1440-after-bound-effective-disabled-dark-1440.png"
+  ],
+  "requests": [
+    {
+      "path": "/api/settings/github",
+      "method": "GET",
+      "width": 1440,
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/account/github",
+      "method": "GET",
+      "width": 1440,
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/auth/sign-out",
+      "method": "POST",
+      "width": 1440,
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "path": "/api/settings/github",
+      "method": "GET",
+      "width": 1440,
+      "attempt": 1,
+      "status": 200
+    }
+  ],
+  "realGithubOAuth": "unverified",
+  "limitations": [
+    "Only the runner’s disposable production runtime/database are modified; the manual preview is untouched.",
+    "A seeded GitHub account proves UI binding state and production unlinking only. It is not evidence of real GitHub OAuth authorization, token exchange or GitHub login.",
+    "Held/lost delivery faults retain actual HTTP writes and reads; no successful server response is fabricated.",
+    "Callback publicUrl readback is verified here; external callback authorization and provider exchange remain separate verification."
+  ],
+  "stage": "disabled-effective",
+  "browserErrors": [],
+  "finishedAt": "2026-10-10T01:11:57.134Z"
+}

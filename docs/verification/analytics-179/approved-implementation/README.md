@@ -116,3 +116,69 @@ BROWSER_REPORT_DIR=test-results/analytics-179-approved-detail-complete node scri
 中间构建曾因新增测试暴露TS2339：JavaScript在初始对象之后动态赋值的`seedAccess`未进入返回类型推断，记录于`/tmp/ariso179-ranking-final-build.log`。现将同一真实函数声明为局部async函数，并直接放入初始fixture对象。原对象身份、闭包及可变`uploaded`保持一致，没有返回展开副本、类型强制转换或假占位函数。修正后再执行上述最终typecheck/build并实际通过；单元GREEN不代替类型检查。
 
 最终构建仍有Next.js nft依赖追踪解析诊断，包括跨平台可选原生依赖以及`@opentelemetry/api`，命令退出0。该结果仅证明本机构建完成，不表示其他平台镜像或Release验证通过。本节不记录尚在执行的最终浏览器结论；默认full与后续受影响复跑仍需分别保留实际结果。
+
+## 并发主线同步
+
+本轮默认full开始后，远端main已推进到`a8ee2a26`（PR #276）。先保存本轮实施为`2f76d146`，再同步主线，合并提交为`2c0e1d9`；没有合并本任务PR或关闭Issue。唯一冲突为设计索引表，保留主线DG-THEME与本轮#179获批设计入口；其余重叠文档、运行器及计划测试沿双方能力合并。主线新增branding完整/定向与smtp focus保留，本任务analytics detail/full及受影响定向入口保留，独立审查另记。
+
+旧基线默认full的`account-390`在退出核对后等待`#password`超时。实际截图“尚未确认会话已退出”对应旧`session-controls`在成功POST后再次GET失败/非null的分支；主线PR #276已删除这次冗余读取，保留服务端确认成功后清队列与目的地跳转。本轮不重复实现，保留主线修正。现有证据不能确定本次额外GET的具体响应，也不能把PR #276的单点退出检查当成完整手机账号场景通过。
+
+主线对上传输入、关联和Tips仅做最小诊断，未修复或证明旧完整流程通过，详见[主线回归证据](../../browser-product-regressions/README.md)。本轮旧基线的这些失败继续保留，不以主线的单点成功覆盖。默认full使用已复制的旧生产构建和当时运行器；同步后受影响单元、类型、构建与定向浏览器另行记录，不声称重新执行了新主线全量。
+
+checks目录的命令输出仅统一行尾并去除终端行尾空白，保留实际结果和诊断正文。
+
+合并后的受影响单元命令为 `pnpm exec vitest run --project unit tests/unit/analytics tests/unit/library tests/unit/runtime/browser-plan.test.ts tests/unit/runtime/browser-business-cli.test.ts tests/unit/runtime/browser-runner.test.ts tests/unit/identity/session-controls.test.ts`。实际46文件857项，先取得45文件通过、856项通过/1项失败：[原始结果](./checks/merge-affected-unit-red.txt)。失败来自本轮CLI测试夹具未替代主线新增的`runBrandingBrowser`外部服务，意外启动临时Next应用后，模拟的`process.kill`不能结束真实进程，`spawnSync`超时等待。核对临时进程PID、cwd与62088端口后，仅停止该应用，使原失败正常报告；不涉及人工预览或Ego控制。
+
+夹具现仅对真实verify-browser父模块补充品牌外部作用替代，测试继续执行真实默认计划与循环；新增断言要求branding阶段passed且调用恰好一次，保留全部原断言。只复跑输入受影响的 `pnpm exec vitest run --project unit tests/unit/runtime/browser-business-cli.test.ts`，实际[9/9通过](./checks/merge-cli-green.txt)。其余已通过文件输入未变，不机械重复。产品及默认运行器没有为了单测修改品牌能力。
+
+主线同步及夹具修正后的 `pnpm run typecheck`、`pnpm run build`、`pnpm run lint`实际退出0，类型与构建输出见[合并后类型](./checks/merge-typecheck.txt)、[合并后构建](./checks/merge-build.txt)。独立代码复审已核对双方运行入口、主线退出语义及夹具边界，无新的必修项。上述检查不代表已重新运行新主线的完整集成或浏览器全量。
+
+## 默认full最终结果
+
+本次默认全量于2026-10-10 01:03:59.080至02:50:17.961 UTC执行，实际退出1。最终[runner报告](./browser/analytics-179-approved-default/runner.json)记录77阶段：63通过、14失败，`temporaryDirectoryRemoved=true`。报告使用前述旧基线及已复制构建；后续主线同步和定向复跑不能改写这次全量结果。
+
+归档前已从独立预览的忽略配置读取密码，在内存中扫描全部候选文件；未命中，未输出凭证。归档仅含原目录根下60份JSON及12张`*-failure.png`，另含`ui/runner.json`和`ui/browser.json`，共74文件、9,939,875字节，存于[默认全量证据目录](./browser/analytics-179-approved-default/)。没有复制原始日志或其余大批截图；原报告内容保持不变，个别场景自身状态仍为running时以最终runner失败状态为准。
+
+本次入口/时区测试遗漏共4项，已修正且局部检查通过，浏览器受影响复跑结果另记：
+
+| 失败阶段                    | 实际错误与本次处理                                                                                                                                                                                                                       |
+| --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `identity-1440-restart`     | 等待/upload，实际/dashboard；同步本Issue新增默认落点，保留显式目的地断言。见[原报告](./browser/analytics-179-approved-default/identity-1440-restart.json)。                                                                              |
+| `workspace-continuity-1440` | 注销重登录后等待选择图片input超时；先核对returnTo或/dashboard，再经真实导航继续原上传队列与Blob检查。见[原报告](./browser/analytics-179-approved-default/workspace-continuity-1440.json)。                                               |
+| `library`                   | 公共导航旧预期总览/访问统计href为null，实际/dashboard、/analytics；仅更新这两项预期，完整消费者检查保留。见[原报告](./browser/analytics-179-approved-default/library.json)。                                                             |
+| `analytics`                 | recovery等待`analytics-old-timezone`超时；当前及种子历史时区同为UTC，真实响应正确没有旧时区提示。已修独立种子，未弱化页面断言；当次未继续执行后继detail/consumers。见[原报告](./browser/analytics-179-approved-default/analytics.json)。 |
+
+其余10项属于本次实施范围外，保留失败及未验证部分，不猜测根因或修改无关产品：
+
+| 失败阶段           | 实际错误与证据边界                                                                                                                                                                                                         |
+| ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `processing`       | settings阶段点击超时，element is not connected；激活与恢复未证实。见[报告](./browser/analytics-179-approved-default/processing.json)。                                                                                     |
+| `storage-admin`    | 等待`[role="alert"]`超时，未确定告警时序原因。见[报告](./browser/analytics-179-approved-default/storage-admin.json)。                                                                                                      |
+| `library-batch`    | “完整添加标签点击目标可见”断言false；保留手机深色菜单失败，不等同已确认产品根因。见[报告](./browser/analytics-179-approved-default/library-batch.json)。                                                                   |
+| `library-copy`     | upload-layout-consumer等待`upload-item`超时；原生选择后的完整队列序列仍未验证。见[报告](./browser/analytics-179-approved-default/library-copy.json)。                                                                      |
+| `upload-input`     | 原生目录枚举返回cancelled，文件夹选择保持未验证；没有合成成功输入。见[报告](./browser/analytics-179-approved-default/upload-input.json)。                                                                                  |
+| `upload-relations` | /upload的waitForFunction超时，未确定原因；主线单次Enter诊断不代替本完整序列。见[报告](./browser/analytics-179-approved-default/upload-relations.json)。                                                                    |
+| `upload-usage`     | Tips关闭后焦点实际null，期望“上传注意事项”；主线单点12帧成功不覆盖此次失败。见[报告](./browser/analytics-179-approved-default/upload-usage.json)。                                                                         |
+| `smtp`             | save-and-secrets等待`smtp-dialog-test-confirm`超时；此次具体原因未知，不将其猜作主线焦点修复的同一原因。见[报告](./browser/analytics-179-approved-default/smtp.json)。                                                     |
+| `account-390`      | password-check-logout-pending后等待`#password`超时；截图“尚未确认会话已退出”对应旧成功POST后的额外GET分支。主线修正已同步，完整手机场景尚未据此复验。见[报告](./browser/analytics-179-approved-default/account-390.json)。 |
+| `sharing-viewer`   | viewer-races点击`share-viewer-next`时匹配0元素；原因未知，不猜测修改分享产品。见[报告](./browser/analytics-179-approved-default/sharing-viewer.json)。                                                                     |
+
+上述14项均计为失败。范围内4项修复、其余单点诊断、主线已修代码、此前单图定向通过和人工设计验收，都不代替本次默认全量通过；最终受影响复跑按独立报告追加。
+
+## 合并后定向复验与滚轮取证
+
+共同环境为Node24.18.1、pnpm11.19.0、原Ego TaskSpace2/p1，`EGO_KEEP_SPACE=1`，使用独立临时数据库；保留并补齐本地NO_PROXY。`--suite identity-session`、`--suite workspace-continuity`、`--suite library --only consumers`实际退出0，三个runner均passed且temporaryDirectoryRemoved=true。对应[身份实录](./browser/analytics-179-approved-identity-final/identity-session-1440.json)、[上传连续性](./browser/analytics-179-approved-workspace-final/workspace-continuity-1440.json)、[图库消费](./browser/analytics-179-approved-library-final/library.json)及同目录runner保留完整原断言。
+
+随后执行 `--suite analytics`，代表布局、行为与recovery已完成，修正后的UTC历史标记通过；detail新增“短视口滚到正文末端”超时，尚未进入consumers。该次[报告](./browser/analytics-179-approved-analytics-final/analytics.json)仍failed、fixtureRestored=true、browserErrors=[]，不改写为全部通过。
+
+失败后在同一页面实际捕获原生wheel：`page.hover(body)`之后，wheel仍落在(0,0)的modal-backdrop，正文未滚动；显式`page.mouse.move`到正文中心(195,245)之后，wheel事件均落在正文内，实际scrollTop358+clientHeight153=scrollHeight511，达到末端，见[诊断数值](./checks/wheel-target-diagnostic.json)。此诊断发生在临时服务停止后，错误卡增加正文高度，不能将其511高度误写为原失败时445高度；两次均来自实际DOM和原生事件。
+
+产品不改。测试改为读取真实正文rect、显式移动指针、再滚动，保留原必须到达末端的断言并保存before/after；图库详情的24px滚轮同样显式定位，原非零滚动恢复和焦点断言保留。消费者另补两端第10行整行位于main视窗及真实截图，不能用首屏被底栏遮住的第10行代替列表末端证据。两文件格式、ESLint、语法检查通过，独立复审无必修项。只复跑受影响detail及尚未执行consumers，前三阶段输入未变，不重复执行。
+
+## 补充断言修正
+
+上述显式指针修正后，`--suite analytics --only detail` 的真实390×400正文达到末端（scrollTop292 + clientHeight153 = scrollHeight445），360px单图也完成截图；随后hover断言失败，详见[保留的失败报告](./browser/analytics-179-approved-detail-last/analytics.json)。实际背景透明、颜色正确，transform为`matrix(1, 0, 0, 1, 0, 0)`而不是字面`none`。已读取安装的HeroUI `button.css:15`，库默认使用transform-gpu；单位矩阵代表无任何位移、缩放或旋转。
+
+只将hover几何断言改为`none`或`DOMMatrix.isIdentity`，继续保存raw transform；颜色必须等于正文前景、背景必须透明，按压必须transform:none的原断言均保留。产品代码及样式未改。独立代码复审通过，ESLint和Prettier通过；不把保留的失败报告改成通过，修后结果另记。两张真实[360px单图](./product/analytics-image-narrow-light-360.png)、[短正文末端](./product/analytics-image-short-body-end-dark-390x400.png)已获独立设计对照通过。
+
+修后 `BROWSER_REPORT_DIR=test-results/analytics-179-approved-detail-final-pass node scripts/verify-browser.mjs --suite analytics --only detail` 实际退出0，[runner](./browser/analytics-179-approved-detail-final-pass/runner.json)与[详细报告](./browser/analytics-179-approved-detail-final-pass/analytics.json)均passed，19个布局/状态记录，browserErrors=[]、fixtureRestored=true、temporaryDirectoryRemoved=true。正文实际292+153=445；两个hover均透明、前景色正确、单位矩阵，两个pressed均透明且none；原生0.28s过渡、reduce、关闭abort、迟到响应、真实404、两详情401后终止读取全部原断言通过。最新截图覆盖本目录product，独立设计已实际查看hover-close；不把静态PNG当动画执行证据。
