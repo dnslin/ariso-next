@@ -52,7 +52,14 @@ const suites = {
     config: (only) => ({ siteGeneralPhase: only }),
   },
   analytics: {
-    only: ['representative', 'behavior', 'recovery', 'consumers', 'detail'],
+    only: [
+      'representative',
+      'behavior',
+      'recovery',
+      'consumers',
+      'detail',
+      'shell',
+    ],
     stages: [['analytics', 'analytics']],
     config: (only) => ({ analyticsPhase: only }),
   },

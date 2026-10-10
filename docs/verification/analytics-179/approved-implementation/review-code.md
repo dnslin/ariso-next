@@ -4,9 +4,9 @@
 
 ## 当前结论
 
-代码审查未发现尚未修复的本轮必修问题。审查中发现的一项 P2 查询生命周期问题已由实现者修复，复审的参数传递链完整。新增浏览器场景和最终运行证据仍在收口；本结论不代替测试执行、独立设计对照或最终人工验收。待最终测试 diff 与实录补齐后追加验证结论。
+**最终代码结论：Approve，无未关闭Critical/Required。单图完整场景、最新消费者以及新main身份/连续性定向均已实际通过。默认full历史失败不写成全量通过，account390完整等未执行范围保持未验证，最终产品人工验收仍独立待完成。**
 
-**实录更新：单图统计完整场景已通过，代码结论 Approve。** 已核验下文归档报告及runner；消费者与默认浏览器全量仍在执行，本结论不提前记为通过。最终UI人工验收仍独立待完成。
+**最终根因纠正：返回快照已成功保存，却被仍打开单图统计的来源页overview更新误恢复并消费。并非HeroUI onPress未保存。** 实际source-audit保留来源页set→68ms后同页remove链；最终保留原onPress，使用已有statisticsId门禁并在实际恢复后消费，取消/目标缺失保留。历史onClick归因与中间通过仅保留为诊断过程，不能覆盖该最终结论。详见文末最终门禁和消费者实录。
 
 ## 发现与修复复审
 
@@ -165,3 +165,87 @@ consumer新增1440与390第十行键盘focus，要求该整行top/bottom位于�
 identity/auth新增WeakMap仅传递同一密码申请HTTP请求的邮件失败，before/after限定reset路径；原sign-in credential race复核、sign-out服务端撤销确认、get-session行为未改。允许路径只新增明确reset方法，未放开其他身份修改。login-form仅增加两端忘记密码入口，原登录提交、returnTo与dashboard默认行为未改变。PublicShell只为新recovery布局增加分支，login/setup/share现有分支保持。next headers仅两条恢复页，不影响统计/管理路由。未把新main整项密码恢复重新当成本Issue实现范围。
 
 合并后的最小检查建议：browser-plan与browser-business-cli两个重叠单元文件、typecheck/build；认证交汇采用主线已有定向auth/password-reset契约（路径/方法、退出、凭据重置、跨Origin和链接重建）即可，无需机械重跑已通过全部analytics数据单元。新auth/login输入下，identity-session与workspace-continuity两个定向浏览器可核对本任务默认落点/returnTo交汇。若实际合并保持analytics产品及其调用未变，最新detail无需仅因主线文档/恢复能力增加而重复；若发生实际调用改变，再定向重跑受影响场景。新的合并结果和实际验证另待主代理提供，当前旧构建结果继续明确基线。
+
+## #184 实际同步结果终审
+
+只读核对实际同步提交 `871a110d`（本任务父 `4c8d6f5e`、主线 `f4c0fecd`）的五处冲突解决及自动合并结果，结论Approve，无新增Critical/Required。acceptance完整保留#184已人工通过和#179仅方案批准、最终产品验收待定的两种状态，没有相互替代。
+
+默认计划精确保留analytics→password-reset→smtp顺序，各自一次。analytics五phase、身份和workspace定向适配、library consumers，以及reset三phase各归所属suite；完整入口未新增重复identity适配。verify-browser与main相比仅增加本任务analytics/identity报告清理项，main新双CA/邮件恢复夹具/关闭、branding完整与定向、SMTP focus均无丢失。CLI夹具与main完全一致，保留更强branding(spaceId,pageLabel)trace；删除本任务两个重复branding断言后，main的完整事件精确数组仍同时检查一次调用和正确参数，且保留原stage passed。full中的身份4次/workspace2次/library1次、定向身份不重复、reset夹具/phase隔离及focusedbranding检查完整保留。
+
+auth/login/PublicShell与main无差异；与本任务父提交相比analytics产品、图库/回收组合和统计路由无新增变化。无需仅因本次恢复页合入而机械重复已通过detail，但认证交汇与合并运行器须按最新基线验证。
+
+已独立读取 `/tmp/ariso179-reset-merge-unit.log`：实际Vitest5在11:17:50完成两个runtime文件151/151passed，1.06s。此结果确认最新合并的计划/CLI测试，通过模拟外部作用验证入口接线，不等同真实恢复邮件或浏览器全部通过。type/build/定向auth7与身份/workspace最新浏览器尚在执行，结果另待核验；当前批准是代码与冲突解决结论，最终人工验收和远端CI仍单独记录。本审查未重跑测试或浏览器。
+
+## 最终消费者失败后的恢复时序诊断（未修复结论）
+
+独立读取 `test-results/analytics-179-approved-consumers-last/analytics.json`：status=failed、stage=consumers；末行1440/390采集及OwnerShell先行完成，但返回 `/analytics?days=30` 后waitForFunction超时。overview存在、真实30天已选中、browserErrors=[]、fixtureRestored=true。没有把前序截图或detail通过当成consumer通过。
+
+**P2，恢复快照提前消费可造成恢复丢失。** `screen.tsx:88` 在requestAnimationFrame前removeItem，而effect依赖overview.data/source并在cleanup取消frame。若数据更新/来源改变或卸载发生在该frame前，cleanup会取消恢复，但快照已经删除，后续effect无法重试；即使frame运行时main/排行按钮还缺失，也已无条件消费。最小修正建议：在实际frame确认目标main/按钮并完成scroll+focus后再消费，取消时保留快照；保留已有一次frame及cleanup，不引入定时重试框架。回归应受控取消首次frame后重新进入effect，确认仍有快照并恢复，保留实际consumer非零精确滚动与焦点断言。
+
+上述代码路径是可见时序缺陷，但当前失败JSON仅记录初始overview响应和10秒轮询，不能证明本次实际发生的是overview.data更新取消frame。仍需读取失败现场storage/activeElement并追踪schedule/cancel/run，区分未保存快照、取消、目标不存在或后续焦点覆盖；不能仅凭怀疑改产品或增加延时掩盖失败。本审查未操作浏览器、未改实现或运行检查，已即时报告主代理，等待根因实录与修复复审。
+
+## 公共外壳独立阶段与诊断复审
+
+只读核对将verifyOwnerShell从consumer提升至analytics.mjs独立shell阶段、browser-plan及归属测试。默认all仍按representative→behavior→recovery→detail→shell→consumers执行，公共外壳和业务消费者各一次；only consumers只跑业务链，only shell只跑公共外壳，不删除默认完整覆盖。shell只接受analyticsPhase，其他suite尤其身份/workspace仍拒绝该phase。原stop-aware page、错误采集和fixture finally恢复不变。
+
+consumerStep只记录正在执行的业务节点；失败采集新增快照source/imageId/scroll、activeTestId/tag和临时return trace，没有记录password/cookie/token。只在未停止时读取现场，用户接管后的清理仍按既有离线路径。现场stored=null、BODY与top0能证明没有恢复，仍不能证明remove/rAF取消路径实际发生；产品根因诊断继续保持开放。
+
+**P2，证据表述需同步拆分：** consumer末尾checks仍宣称全部owner路由公共外壳通过，而新only consumers已经不执行verifyOwnerShell。应把该成功说明移到shell执行成功后，或删除consumer中的这句并使用shell自身报告，避免定向结果虚报未执行范围；无需修改功能断言或公共运行器。已即时报告主代理，待修后只读复核。单元检查由主代理执行，审查者未重复运行。
+
+## 返回失败根因收敛与最小修复方案复核
+
+独立读取 `test-results/analytics-179-return-traced/analytics.json`：ranking-return:/library超时；savedReturn在已进入library时即null，返回页removed=[]、focus=[]，BODY/top0，fixtureRestored=true、browserErrors=[]。因此本次实际失败是导航链上快照没有保存，不能归因为之前指出的frame取消缺陷；该时序缺陷仍是同一恢复路径的独立问题，须分别记录修复证据。
+
+实际读取安装HeroUI Link源码/类型：它直接透传React Aria Components Link props；react-aria useLink明确接收onClick，返回的link onClick先调用pressProps.onClick再handleLinkClick。采用受支持onClick同步保存快照，保留href和原生导航，不新增拦截/手工跳转或事件兼容层，符合库现有能力与最小模块边界。计划中的frame内找main和按钮、完成滚动/焦点后再remove也在当前恢复路径范围，取消仍保留快照，不引入重试层。
+
+必要行为回归：真实pointer和Enter分别激活“查看记录”，在管理页直接断言已保存source/imageId/原非零scroll，然后返回核对精确焦点/滚动与快照已消费；原断言不能改成只检查URL或0位置。临时storage/rAF/focus全局追踪已完成诊断，应从最终脚本删除，保留失败实录、阶段字段与业务快照断言即可。此时修复尚未落地，不写为代码/浏览器通过。
+
+上一节证据表述P2已关闭：实际consumer checks已删除owner路由通过声明，默认shell仍单独执行，定向consumer不会虚报外壳覆盖。审查者没有执行浏览器或修改实现。
+
+## 返回快照最终实现与测试复审
+
+只读复核最终navigation/screen/image-statistics、navigation单测及consumer/runner/plan增量，结论Approve，无新增Critical/Required。导航前保存改为现有HeroUI支持的onClick，href和原生链接语义保留。恢复逻辑移入同模块具名restoreAnalyticsReturn以便直接验证，screen effect直接返回其cleanup；仅保存当前source/imageId/scroll，未复制图片或引入状态框架。
+
+**P2恢复快照提前消费已在代码中关闭。** frame仅在真实main与原排行按钮均存在时滚动并focus(preventScroll)，随后remove快照；effect取消只cancel帧，不删除快照。没有添加重试/延时/监听器。单测在frame前检查未消费，验证恢复后的640与focus、取消后保持0且下一次恢复成功、其他周期不消费、目标不存在不消费。原先提前remove实现会使取消和消费检查失败，实施者已取得实际RED2/5再GREEN5/5，新增第6项尚待实际输出；审查者未重复执行。该测试直接检验可见恢复行为与资源生命周期，不要求为纯函数抽象增加额外框架。
+
+真实consumer分别使用pointer到library、Enter到trash，在管理页面直接deepEqual最小快照为准确source/id/原非零scrollTop；保留原URL、imageId、非零详情滚动/关闭焦点、返回排行精确焦点/滚动与真实异常筛选结果。原全局storage/rAF/focus追踪及注入清理代码已经完全删除，失败实录仍保留。consumerStep与失败snapshot/activeTag/mainScroll仅保留必要诊断，没有敏感凭据。shell独立默认链各一次及定向隔离保持，先前虚报owner成功语句已删。
+
+本结论确认代码与测试设计修复，不提前宣布真实consumer通过。实施者报告最新type/build/定向ESLint退出0；实际consumer-final及新main身份/workspace仍运行中，待实录归档核验。人工验收与默认full历史失败继续独立记录。
+
+## 返回恢复仍偶发失败：收回充分修复结论
+
+独立读取两轮新失败：return-final已记录pointer/library与keyboard/trash的非零快照1000/1095.5并走完原精确回焦滚动，随后在failure-lists旧button角色选择器失败；consumers-complete却在manage:/library直接精确快照断言失败（期望scroll938，实际null）。两轮均fixtureRestored=true、browserErrors=[]，因此onClick只确认是受支持事件接口，不能称为已充分或稳定解决返回问题。上一节代码批准不再作为最终功能收口，真实consumer仍失败。
+
+当前effect仅依赖overview.data/source，无statisticsId判断。可行竞争是：本页单图弹窗仍打开，onManage保存返回快照；导航提交前overview更新使effect再次执行，误把刚保存的快照当作返回快照，在来源页恢复并消费；进入管理页便读不到。将statisticsId非null时禁止恢复并加入effect依赖，可同时取消弹窗打开前的待执行恢复帧，是直接利用页面已有状态的最小边界，不需额外快照标记或状态机。
+
+这只是源码支持的具体因果假设，尚未宣称本轮根因。临时跨导航audit必须证实同来源URL上的set→remove、当时modal=true及remove堆栈到restore，才能归因；若无该链，继续检查真实保存/导航时序。最终应删除临时Storage补丁，保留原失败、精确pointer/Enter快照与滚动/焦点断言，并补导航提交前实际overview刷新竞争的回归。原frame取消后保留快照修复依然独立成立，但不能替代本次竞争修复。
+
+本审查仅只读报告与源码，未执行浏览器、未改实现。等待实际审计链后再复审产品增量与最终证据。
+
+## 来源页误消费根因确认与最终门禁复审
+
+独立只读核验 [source-audit失败报告](./browser/analytics-179-source-audit/analytics.json)：set发生于来源/analytics?days=30、modal=true、t3308.2，保存准确imageId/scroll1000；68.3ms后同来源URL、modal=true、同值发生remove，堆栈落在恢复函数移除处；随后管理页快照null。fixtureRestored=true、browserErrors=[]。这明确证明保存成功后被来源页误消费，撤回之前“保存handler缺失/未保存”的归因；onClick不是必要修复，最终已撤回，HeroUI原onPress保留。
+
+最终代码复审Approve，无新增Critical/Required。restoreAnalyticsReturn只接当前source和页面已有statisticsOpen布尔值，首行打开时返回；screen传statisticsId!==null且将statisticsId纳入effect依赖。因此弹窗打开时overview更新不恢复刚保存快照，打开动作也会cleanup先前帧。此前实际完成后remove、取消保留、目标缺失保留的修复保持。不新建标记、会话数据结构、监听器或重试层，新增函数仍属于既有navigation模块。
+
+独立读取 `/tmp/ariso179-source-gate-red.log`：11:33:17旧实现新场景实际1失败/6通过，打开统计时错误滚动640而非0；`source-gate-green.log` 11:33:59实际7/7passed。新断言同时要求无focus、原快照保留，原取消/消费/目标不存在/周期边界保持。该真实RED/GREEN证明新增条件有针对性，不靠降低原断言通过；审查者未重复执行。
+
+最终consumer仍以pointer/library、Enter/trash精确检查最小快照，再核对原非零精确焦点/滚动、URL及异常真实结果。初次处理控件选择器修正为实际radio角色，未改产品或筛选断言。临时Storage审计、全局trace、addScript注入已从最终consumer/runner移除，仅保留报告阶段与必要失败状态。当前代码问题关闭；最终真实consumer与新main身份/连续性实录未提供，功能执行结论继续待核验，不以7项单测替代。
+
+## 最终消费者实录核验
+
+独立只读核验 `test-results/analytics-179-source-gate-pass/{runner,analytics}.json`，未重新执行。Node v24.18.1，suite=analytics/only=consumers，runner和analytics阶段passed、temporaryDirectoryRemoved=true；业务status=passed、stage=consumers、consumerStep=failure-lists、fixtureRestored=true、browserErrors=[]。
+
+pointer到library保存的准确source=/analytics?days=30、真实imageId和scroll1000，Enter到trash保存同周期、另一真实imageId和scroll1095.5。两条路径均执行后续真实管理详情/统计开关、原精确焦点和非零滚动返回断言；初次/重新处理radio真实点击、URL与API精确记录对账也完整通过。6组采集为1440/390排行末端浅色、两类异常390浅色/1440深色。没有声称本only执行公共owner-shell；该完整公共覆盖保留在默认shell阶段与前次实际实录。
+
+此前消费者失败、trace和source-audit都保留原failed，没有以最终报告覆盖。最新lint/type/build退出0与门禁GREEN7由实施者实际执行；审查者独立读过门禁RED/GREEN，本轮没有重跑。该消费者报告待主代理归档为稳定证据；新main身份/连续性仍执行中，不能提前通过，人工验收和远端CI仍分别记录。
+
+## 新主线身份与工作区连续性最终实录
+
+独立读取最新 `test-results/analytics-179-final-identity`、`analytics-179-final-workspace` 的runner与业务JSON。两runner均Node v24.18.1、suite分别identity-session/workspace-continuity，实际阶段与总status=passed，temporaryDirectoryRemoved=true；两业务status=passed，均1440px。稳定归档：[身份报告](./browser/analytics-179-final-identity/identity-session-1440.json) / [runner](./browser/analytics-179-final-identity/runner.json)、[连续性报告](./browser/analytics-179-final-workspace/workspace-continuity-1440.json) / [runner](./browser/analytics-179-final-workspace/runner.json)。审查者未重新执行。
+
+身份实录browserErrors=[]：真实429/10秒窗口、首页已登录默认进入后台、已有local returnTo与外部目的地拒绝、实际session续期Cookie推进、dashboard会话过期、SQLite退出失败留页及后台检查不覆盖成功重试均通过。登录异常明确标注边界注入，包含不同错误响应、session核对失败以及延迟React提交后重复反馈聚焦；不称所有异常均来自真实服务故障。
+
+连续性实录确认原生侧栏与浏览器历史保持队列ID/Blob/private/同document；真实上传接受后在library后台读回完成，原queue/image身份保留且submission仅一次。硬刷新确有beforeunload警告和新document/空队列；真实注销、过期撤销Blob与清队列通过。独立上传结果401读自真实/api/images路径，sessionChecksHeld=3，beforeUnload=[false]，证明未被独立session检查先触发掩盖。
+
+最新消费者稳定归档也已存在：[业务](./browser/analytics-179-source-gate-pass/analytics.json) / [runner](./browser/analytics-179-source-gate-pass/runner.json)。当前最终代码结论Approve，无未关闭本轮必修项；最终单图、消费者、身份与连续性的实录已核验。两项定向不替代account390完整或默认full；默认历史失败、原集成上传偶发失败与其精确复跑、设计对照、人工验收和远端CI均沿统一证据分别保留。主代理报告最新串行链退出0，本审查不重复执行或扩充通过范围。

@@ -1,6 +1,6 @@
 # T-ANA-05 工作台、统计图表与详情统计联动
 
-关联 [Issue #179](https://github.com/dnslin/ariso-next/issues/179)。本记录区分代码、本地检查、真实浏览器、设计审查与人工验收。当前为实施中记录，不代表上述项目已全部完成。
+关联 [Issue #179](https://github.com/dnslin/ariso-next/issues/179)。当前交付以[获批实施记录](./approved-implementation/README.md)为准；本页其余章节保留各阶段当时的结果，不代表最终状态。代码、本地检查、真实浏览器、设计审查与人工验收分别记录。
 
 ## 2026-10-10 获批实施
 

@@ -1,0 +1,35 @@
+Already up to date
+Done in 39ms using pnpm v11.19.0
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/issue-179-analytics-ui/ariso
+
+ ❯ |unit| tests/unit/analytics/navigation.test.ts (7 tests | 1 failed) 7ms
+   × leaves a newly saved navigation snapshot untouched while source statistics are still open 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/analytics/navigation.test.ts > leaves a newly saved navigation snapshot untouched while source statistics are still open
+AssertionError: expected 640 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 640
+
+ ❯ tests/unit/analytics/navigation.test.ts:148:30
+    146|  const page=returnPage();
+    147|  restoreAnalyticsReturn('/analytics?days=30', true); page.flush();
+    148|  expect(page.main.scrollTop).toBe(0);expect(page.origin.focus).not.toH…
+       |                              ^
+    149|  expect(page.stored.has(analyticsReturnKey)).toBe(true);
+    150| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 6 passed (7)
+   Start at  11:33:17
+   Duration  139ms (import 51%, transform 37%, tests 9%, worker 3%)
+

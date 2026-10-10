@@ -1,9 +1,8 @@
 import assert from 'node:assert/strict';
 import { resizeViewport } from './browser-geometry.mjs';
-import { verifyOwnerShell } from './owner-shell.mjs';
 
 export async function analyticsConsumers(page, config, tools, fixture, report) {
-  await verifyOwnerShell(page, config, 'analytics-owner-shell');
+  report.consumerStep = 'popular-end';
   await tools.open('/analytics?days=30');
   const lastRank = '[data-testid="analytics-popular"] li:nth-child(10) button';
   for (const width of [1440, 390]) {
@@ -39,6 +38,7 @@ export async function analyticsConsumers(page, config, tools, fixture, report) {
     [fixture.ids[0], '/library', 'detail-statistics-entry', '关闭图片详情'],
     [fixture.ids[1], '/trash', 'trash-statistics-entry', '返回回收站列表'],
   ]) {
+    report.consumerStep = `rank-open:${path}`;
     await tools.open('/analytics?days=30');
     const selector = `[data-testid="analytics-popular"] li[data-image-id="${id}"] button`;
     await page.hover(selector);
@@ -59,7 +59,12 @@ export async function analyticsConsumers(page, config, tools, fixture, report) {
       ),
       id,
     );
-    await page.click('loc=role:link[name="查看记录"]');
+    report.consumerStep = `manage:${path}`;
+    if (path === '/library') await page.click('loc=role:link[name="查看记录"]');
+    else {
+      await page.focus('loc=role:link[name="查看记录"]');
+      await page.keyboard.press('Enter');
+    }
     await page.waitForFunction(
       ({ id, path }) =>
         location.pathname === path &&
@@ -70,6 +75,19 @@ export async function analyticsConsumers(page, config, tools, fixture, report) {
     const url = new URL(await page.url());
     assert.equal(url.searchParams.get('image'), id);
     assert.equal(url.searchParams.get('analyticsReturn'), '/analytics?days=30');
+    const saved = await page.evaluate(() =>
+      JSON.parse(sessionStorage.getItem('ariso-analytics-return')),
+    );
+    assert.deepEqual(
+      saved,
+      { source: '/analytics?days=30', imageId: id, scrollTop: before },
+      'Management navigation saves only the exact return ID, period and nonzero reading position',
+    );
+    (report.returnSnapshots ??= []).push({
+      path,
+      activation: path === '/library' ? 'pointer' : 'keyboard',
+      saved,
+    });
     let detailScroll;
     if (path === '/library') {
       await page.focus(`[data-testid="${entry}"]`);
@@ -99,6 +117,7 @@ export async function analyticsConsumers(page, config, tools, fixture, report) {
       ),
       id,
     );
+    report.consumerStep = `statistics-close:${path}`;
     await page.keyboard.press('Escape');
     await page.waitForSelector('[data-testid="image-statistics-dialog"]', {
       state: 'hidden',
@@ -115,6 +134,7 @@ export async function analyticsConsumers(page, config, tools, fixture, report) {
         detailScroll,
         'Statistics close restores the nonzero detail reading position',
       );
+    report.consumerStep = `ranking-return:${path}`;
     await page.click(`loc=role:button[name="${close}"]`);
     await page.waitForURL(`${config.origin}/analytics?days=30`);
     await page.waitForSelector('[data-testid="analytics-overview"]');
@@ -130,6 +150,7 @@ export async function analyticsConsumers(page, config, tools, fixture, report) {
       'Management return restores the actual ranking scroll',
     );
   }
+  report.consumerStep = 'failure-lists';
   await tools.open();
   await page.click('loc=role:link[name="查看初次失败图片"]');
   await page.waitForSelector('[data-testid="library-failure-types"]');
@@ -137,7 +158,7 @@ export async function analyticsConsumers(page, config, tools, fixture, report) {
     ['initial', fixture.ids[10], '初次处理'],
     ['reprocess', fixture.ids[9], '重新处理'],
   ]) {
-    await page.click(`loc=role:button[name="${label}"]`);
+    await page.click(`loc=role:radio[name="${label}"]`);
     await page.waitForFunction(
       (failure) =>
         new URLSearchParams(location.search).get('failure') === failure,
@@ -162,6 +183,6 @@ export async function analyticsConsumers(page, config, tools, fixture, report) {
     await tools.evidence(`failure-${failure}`, 1440, 'dark');
   }
   report.checks.push(
-    'All implemented owner routes pass shared shell checks. Ranking opens real single-image statistics; library/trash management preserves exact IDs and 30-day source, then restores ranking scroll and focus. Both detail consumers return focus after statistics. Failure toggles use actual initial/reprocess lists. Deleted images are absent.',
+    'Ranking opens real single-image statistics; library/trash management preserves exact IDs and 30-day source, then restores ranking scroll and focus. Both detail consumers return focus after statistics. Failure toggles use actual initial/reprocess lists. Deleted images are absent.',
   );
 }

@@ -13,3 +13,29 @@ export function managementFromAnalytics(managementUrl: string, source: string) {
 }
 
 export const analyticsReturnKey = 'ariso-analytics-return';
+
+export function restoreAnalyticsReturn(
+  source: string,
+  statisticsOpen: boolean,
+) {
+  if (statisticsOpen) return;
+  const stored = sessionStorage.getItem(analyticsReturnKey);
+  if (!stored) return;
+  const saved = JSON.parse(stored) as {
+    source: string;
+    imageId: string;
+    scrollTop: number;
+  };
+  if (saved.source !== source) return;
+  const frame = requestAnimationFrame(() => {
+    const main = document.getElementById('main-content');
+    const origin = document.querySelector<HTMLElement>(
+      `[data-testid="analytics-popular"] li[data-image-id="${CSS.escape(saved.imageId)}"] button`,
+    );
+    if (!main || !origin) return;
+    main.scrollTop = saved.scrollTop;
+    origin.focus({ preventScroll: true });
+    sessionStorage.removeItem(analyticsReturnKey);
+  });
+  return () => cancelAnimationFrame(frame);
+}

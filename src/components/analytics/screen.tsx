@@ -9,7 +9,11 @@ import { useResetUpload } from '../upload/provider';
 import { AnalyticsReadError, type ReportDays } from './read-analytics';
 import { useAnalyticsOverview, useAnalyticsUsage } from './use-analytics-query';
 import { ImageStatisticsDialog } from './image-statistics';
-import { analyticsReturnKey, managementFromAnalytics } from './navigation';
+import {
+  analyticsReturnKey,
+  managementFromAnalytics,
+  restoreAnalyticsReturn,
+} from './navigation';
 import { AnalyticsScopeDialog } from './scope-dialog';
 import { AnalyticsLink } from './presentation';
 import { AnalyticsLoading, AnalyticsReadFailure } from './query-state';
@@ -77,26 +81,8 @@ export function AnalyticsScreen(props: {
   const source = `${pathname}?days=${days}`;
   useEffect(() => {
     if (!overview.data) return;
-    const stored = sessionStorage.getItem(analyticsReturnKey);
-    if (!stored) return;
-    const saved = JSON.parse(stored) as {
-      source: string;
-      imageId: string;
-      scrollTop: number;
-    };
-    if (saved.source !== source) return;
-    sessionStorage.removeItem(analyticsReturnKey);
-    const frame = requestAnimationFrame(() => {
-      const main = document.getElementById('main-content');
-      if (main) main.scrollTop = saved.scrollTop;
-      document
-        .querySelector<HTMLElement>(
-          `[data-testid="analytics-popular"] li[data-image-id="${CSS.escape(saved.imageId)}"] button`,
-        )
-        ?.focus({ preventScroll: true });
-    });
-    return () => cancelAnimationFrame(frame);
-  }, [overview.data, source]);
+    return restoreAnalyticsReturn(source, statisticsId !== null);
+  }, [overview.data, source, statisticsId]);
   const title = usageView
     ? '当前存储占用'
     : dailyView

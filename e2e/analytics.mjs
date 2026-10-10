@@ -10,6 +10,7 @@ const { analyticsRepresentative, analyticsBehavior } = await import(
   sibling('analytics-behavior')
 );
 const { analyticsRecovery } = await import(sibling('analytics-recovery'));
+const { verifyOwnerShell } = await import(sibling('owner-shell'));
 const { analyticsConsumers } = await import(sibling('analytics-consumers'));
 const { analyticsImageStatistics } = await import(
   sibling('analytics-image-statistics')
@@ -22,9 +23,14 @@ const managedPage = task.page(config.pageLabel ?? 'p1');
 const phase = config.analyticsPhase;
 assert.ok(
   phase === undefined ||
-    ['representative', 'behavior', 'recovery', 'consumers', 'detail'].includes(
-      phase,
-    ),
+    [
+      'representative',
+      'behavior',
+      'recovery',
+      'consumers',
+      'detail',
+      'shell',
+    ].includes(phase),
   'Unknown analytics phase',
 );
 const report = {
@@ -95,6 +101,7 @@ try {
       'detail',
       () => analyticsImageStatistics(page, config, tools, fixture, report),
     ],
+    ['shell', () => verifyOwnerShell(page, config, 'analytics-owner-shell')],
     [
       'consumers',
       () => analyticsConsumers(page, config, tools, fixture, report),
@@ -121,6 +128,10 @@ try {
       report.failureState = await page.evaluate(() => ({
         url: location.href,
         readyState: document.readyState,
+        returnSnapshot: sessionStorage.getItem('ariso-analytics-return'),
+        activeTestId: document.activeElement?.getAttribute('data-testid'),
+        activeTag: document.activeElement?.tagName,
+        mainScroll: document.getElementById('main-content')?.scrollTop,
         overviewPresent: !!document.querySelector(
           '[data-testid="analytics-overview"]',
         ),

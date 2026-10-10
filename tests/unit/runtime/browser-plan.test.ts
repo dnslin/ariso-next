@@ -63,6 +63,7 @@ describe('focused browser execution plans', () => {
         'recovery',
         'consumers',
         'detail',
+        'shell',
       ])
         expect(() => select(suite, phase)).toThrow('--only');
       for (const field of ['storageConfig', 'previewConfig'])
@@ -184,9 +185,14 @@ describe('focused browser execution plans', () => {
     ['site-general', 'behavior', ['site-general']],
     ['site-general', 'recovery', ['site-general']],
     ['site-general', 'consumers', ['site-general']],
-    ...['representative', 'behavior', 'recovery', 'consumers', 'detail'].map(
-      (phase) => ['analytics', phase, ['analytics']] as const,
-    ),
+    ...[
+      'representative',
+      'behavior',
+      'recovery',
+      'consumers',
+      'detail',
+      'shell',
+    ].map((phase) => ['analytics', phase, ['analytics']] as const),
     ['tokens', 'representative', ['tokens']],
     ['tokens', 'behavior', ['tokens']],
     ['tokens', 'lifecycle', ['tokens']],
@@ -209,9 +215,14 @@ describe('focused browser execution plans', () => {
   it.each([
     ['upload-settings', 'recovery', { uploadSettingsPhase: 'recovery' }],
     ['site-general', 'recovery', { siteGeneralPhase: 'recovery' }],
-    ...['representative', 'behavior', 'recovery', 'consumers', 'detail'].map(
-      (phase) => ['analytics', phase, { analyticsPhase: phase }] as const,
-    ),
+    ...[
+      'representative',
+      'behavior',
+      'recovery',
+      'consumers',
+      'detail',
+      'shell',
+    ].map((phase) => ['analytics', phase, { analyticsPhase: phase }] as const),
     ['library', 'recovery', { libraryPhase: 'recovery' }],
     ['library', 'consumers', { libraryPhase: 'consumers' }],
     ['smtp', 'representative', { smtpPhase: 'representative' }],

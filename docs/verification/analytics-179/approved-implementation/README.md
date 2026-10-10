@@ -2,6 +2,20 @@
 
 用户在查看第二版及头部累计返修后明确指示“按照这个去实施和 更新figma”。本轮据此实施新增产品交互并同步设计，替代旧记录中“尚待原型批准”的当前状态；历史记录保留当时结果。**方案批准不代表最终产品人工验收完成。**
 
+## 当前交付状态
+
+| 项目                | 实际状态                                                                                                                                                                                                                                  |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 代码                | 已实施；同步主线至f4c0fecd，来源返回误消费已取得失败证据并修复。                                                                                                                                                                          |
+| 本地检查            | 全量单元及后续受影响单元通过，最终lint/typecheck/build通过。全量集成曾有1项截断上传ECONNRESET，保留原断言定向通过，不记全量全绿。                                                                                                         |
+| 真实浏览器          | 本次代表/行为/recovery、单图detail、公共外壳15路由、最终consumers及新主线身份/上传连续性分别通过；对应报告见下文。默认full历史63项通过、14项失败，其诊断及未验证边界保留，不被定向通过替代。                                              |
+| Figma与独立设计评审 | [34个可编辑设计视图](../approved-figma/README.md)已同步并回读；[真实产品对照](./review-design.md)未发现获批新增范围的剩余视觉阻断。手机排行密度较示例略紧，沿用图库空结果/提交状态本轮未新增产品截图；静态动画注记不是Figma动画播放验证。 |
+| 独立功能与代码评审  | [Approve](./review-code.md)，无未关闭的本轮必修项。统计401查询终止与来源返回快照生命周期均已修复并复审。                                                                                                                                  |
+| 人工验收            | 最终产品待用户验收。独立预览持续保留，凭证只在私有对话提供。                                                                                                                                                                              |
+| PR与远端检查        | [PR #273](https://github.com/dnslin/ariso-next/pull/273)保持草稿；当前gh回读没有远端检查，不记CI通过。未合并、关闭Issue、发布、部署或清理工作区。                                                                                         |
+
+以下记录保留过程中的失败及当时结论，最终结果以本表和各节后续实录为准。
+
 ## 实施范围
 
 - 复用真实单图统计 API、现有 TanStack Query 读取与 Recharts，图片统计弹窗只显示缩略图身份。累计在桌面头部右侧、关闭左方，手机第二行；数字逐位 transform 过渡280ms，减少动态效果直接最终值，辅助名称始终是完整最终数值。累计、三版本与7/30/90合计来自真实接口，不虚构单图逐日数据。
@@ -182,3 +196,59 @@ checks目录的命令输出仅统一行尾并去除终端行尾空白，保留�
 只将hover几何断言改为`none`或`DOMMatrix.isIdentity`，继续保存raw transform；颜色必须等于正文前景、背景必须透明，按压必须transform:none的原断言均保留。产品代码及样式未改。独立代码复审通过，ESLint和Prettier通过；不把保留的失败报告改成通过，修后结果另记。两张真实[360px单图](./product/analytics-image-narrow-light-360.png)、[短正文末端](./product/analytics-image-short-body-end-dark-390x400.png)已获独立设计对照通过。
 
 修后 `BROWSER_REPORT_DIR=test-results/analytics-179-approved-detail-final-pass node scripts/verify-browser.mjs --suite analytics --only detail` 实际退出0，[runner](./browser/analytics-179-approved-detail-final-pass/runner.json)与[详细报告](./browser/analytics-179-approved-detail-final-pass/analytics.json)均passed，19个布局/状态记录，browserErrors=[]、fixtureRestored=true、temporaryDirectoryRemoved=true。正文实际292+153=445；两个hover均透明、前景色正确、单位矩阵，两个pressed均透明且none；原生0.28s过渡、reduce、关闭abort、迟到响应、真实404、两详情401后终止读取全部原断言通过。最新截图覆盖本目录product，独立设计已实际查看hover-close；不把静态PNG当动画执行证据。
+
+## 再次同步主线后的检查
+
+远端main随后推进到`f4c0fecd`（PR #275），本任务以`871a110d`合并同步。没有合并本任务PR、关闭Issue或将旧默认full结果改为通过。此次同步后的实际检查如下：
+
+| 检查                 | 实际结果与证据                                                                                                                                                           |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 受影响定向单元       | 2文件151项通过，见[单元输出](./checks/reset-merge-unit.txt)。                                                                                                            |
+| `pnpm run typecheck` | 实际退出0，见[类型检查输出](./checks/reset-merge-typecheck.txt)。                                                                                                        |
+| `pnpm run build`     | 实际退出0；保留nft依赖追踪诊断，见[构建输出](./checks/reset-merge-build.txt)。不代表其他平台镜像验证。                                                                   |
+| 认证定向检查         | 2文件7项通过、29项未选中，见[认证输出](./checks/reset-merge-auth.txt)。Vitest汇总用skipped表示筛选未选中的29项，不是执行后跳过失败或新增产品跳过逻辑，不能记为36项通过。 |
+| 公共外壳阶段计划单元 | 1文件138项通过，见[计划输出](./checks/shell-phase-unit.txt)。                                                                                                            |
+
+上述5份日志归档前均经独立预览凭证内存扫描，未命中、未输出凭证；仅统一行尾并去除行尾空白，保留实际检查结果和构建诊断。此处只记录同步与离线检查，不补写新consumers结果，也不表示新main完整集成或默认浏览器全量已重跑通过。
+
+## 统计来源返回的失败追踪
+
+保留两轮失败的原始runner、analytics报告及失败截图：[return-diagnostic](./browser/analytics-179-return-diagnostic/analytics.json)、[其runner](./browser/analytics-179-return-diagnostic/runner.json)、[失败截图](./browser/analytics-179-return-diagnostic/analytics-failure.png)；[return-traced](./browser/analytics-179-return-traced/analytics.json)、[其runner](./browser/analytics-179-return-traced/runner.json)、[失败截图](./browser/analytics-179-return-traced/analytics-failure.png)。两轮均为consumers返回30天统计后等待条件超时，保持failed，不复制原始日志。归档前在内存扫描预览凭证，未命中；JSON语义与原件一致，截图保持原字节。
+
+traced在/library读取的`savedReturn`已经为null，`consumerTrace.removed=[]`、`consumerTrace.focus=[]`。这些记录不能证明取消动画帧导致本次返回恢复失败；不能把尚未证实的猜测写作根因。后续source-audit已证明管理详情处理函数确实保存了快照，因此此前“处理函数未执行或未保存”的推断撤回。真实根因为来源页effect提前消费快照，详见下方；此处不记录尚未结束的修后浏览器结果。
+
+此前`analytics-179-approved-consumers-last`已完成公共外壳15条已实现路由检查，其`analytics-owner-shell/owner-shell.json`为passed；1440和390两端第10项热门排行的整行末端截图及几何断言也已完成，随后来源返回失败，所以整个consumers仍为failed。为避免重复已通过的公共路由检查，现将`verifyOwnerShell`提升为analytics独立`shell`阶段：默认all仍各执行一次，`--only consumers`只执行消费者场景，不声称执行了shell。阶段计划单元已实际138项通过，见[计划输出](./checks/shell-phase-unit.txt)；该计划检查不代替新shell或consumers的真实浏览器结果。
+
+## 来源恢复时机的实证修正
+
+[source-audit原报告](./browser/analytics-179-source-audit/analytics.json)的`returnAudit`记录同一`/analytics?days=30`来源、统计弹窗仍打开（`modal=true`）时，3308.2ms由`onManage`保存快照，3376.5ms即被移除。处理函数已经执行；问题发生在离开来源页前，恢复effect把刚保存的来源快照当作待恢复内容提前消费。该证据不支持处理函数缺失或取消动画帧导致本次失败。中间将Link改为onClick仅为实验，不构成最终修复；最终保留HeroUI的onPress。
+
+最终恢复入口显式接收`statisticsOpen`：统计弹窗仍打开时不恢复或消费来源快照；关闭后才允许恢复，且在实际设置滚动、恢复来源焦点后再移除快照。独立审查发现的过早消费隐患同时修正，没有以更换输入事件掩盖来源effect的时序问题。
+
+实际定向命令 `pnpm exec vitest run --project unit tests/unit/analytics/navigation.test.ts` 先取得[RED：1失败、6通过](./checks/source-gate-red.txt)：弹窗仍打开时滚动实际被改为640，期望保持0，来源快照应保留。修正后同文件[GREEN：7/7通过](./checks/source-gate-green.txt)。随后主任务完整检查链实际退出0：[`pnpm run lint`](./checks/source-gate-lint.txt)、[`pnpm run typecheck`](./checks/source-gate-typecheck.txt)、[`pnpm run build`](./checks/source-gate-build.txt)均通过；构建nft追踪诊断原样保留，不冒充其他平台验证。
+
+上述5份本地日志在归档前经预览凭证内存扫描，未命中、未输出凭证，仅统一行尾及去除行尾空白；source-audit沿用已有归档，未重复复制。此修正完成后再执行下述最终consumers验证，此前失败报告保持原样。
+
+## 最终来源消费者验证
+
+`BROWSER_REPORT_DIR=test-results/analytics-179-source-gate-pass node scripts/verify-browser.mjs --suite analytics --only consumers` 实际退出0，[runner](./browser/analytics-179-source-gate-pass/runner.json)与[详细报告](./browser/analytics-179-source-gate-pass/analytics.json)均passed，browserErrors=[]、fixtureRestored=true、temporaryDirectoryRemoved=true。[本地运行输出](./checks/source-gate-browser.txt)保留实际6个布局记录：两端排行末端2个、初次/重处理异常两端4个。本次定向不包含独立shell阶段，不宣称重新执行公共15路由。
+
+真实排行打开对应单图统计，进入图库/回收管理详情保留指定ID和30天来源，关闭后恢复排行滚动及焦点；图库和回收详情内的统计关闭后恢复原详情焦点。初次/重处理异常选择与真实列表核对，永久删除图片不进入排行；这些原断言均通过，未改写前述失败追踪为通过。
+
+本轮8份报告/截图归档至[最终来源消费者目录](./browser/analytics-179-source-gate-pass/)，没有复制原始应用日志。新增产品图为[初次失败手机浅色](./product/analytics-failure-initial-light-390.png)、[初次失败桌面深色](./product/analytics-failure-initial-dark-1440.png)、[重处理失败手机浅色](./product/analytics-failure-reprocess-light-390.png)、[重处理失败桌面深色](./product/analytics-failure-reprocess-dark-1440.png)；排行末端此前已在product，不重复复制。所有候选文件和本地输出经预览凭证内存扫描未命中，JSON语义读回一致，截图字节保持原样。该定向结果不代替新main默认全量或尚未结束的其他验证。
+
+## 新主线身份与工作区定向结果
+
+新主线同步后的两组受影响桌面定向串行检查链实际退出0，均使用1440px视口。`--suite identity-session`的[runner](./browser/analytics-179-final-identity/runner.json)和[场景报告](./browser/analytics-179-final-identity/identity-session-1440.json)均passed、temporaryDirectoryRemoved=true；`--suite workspace-continuity`的[runner](./browser/analytics-179-final-workspace/runner.json)和[场景报告](./browser/analytics-179-final-workspace/workspace-continuity-1440.json)均passed、temporaryDirectoryRemoved=true。
+
+身份定向复用原真实会话和登录故障场景：实际429及等待窗口、已有会话的本地returnTo和拒绝外部目的地、聚焦续期Cookie、失效后提示、SQLite退出删除失败后保留当前会话，以及显式重试成功的退出流程均通过。HTML/异常JSON、网络和未确认登录等状态仍明确为浏览器边界故障注入，不写作真实服务器故障。
+
+工作区定向保留全部原队列断言：真实侧栏和浏览器History导航保持队列ID、活Blob字节、私有设置和同一文档；真实XHR受理后离开上传页，后台读取在图库完成且只产生一次submission。硬刷新对未发送工作保留提醒，新文档不持久化旧队列；真实退出/会话失效以及独立上传结果401均清队列、释放Blob，401跳转不触发beforeunload，且单独会话核对响应仍被受控挂起。
+
+归档前全部JSON/PNG经预览凭证内存扫描未命中，不输出凭证；[身份目录](./browser/analytics-179-final-identity/)保留2份JSON，[工作区目录](./browser/analytics-179-final-workspace/)保留2份JSON及4张PNG，未复制任何原始日志。JSON语义及文件字节读回与原件一致。这两组桌面定向通过不代表完整手机account场景通过，也不覆盖旧默认full的14项失败或表示新main默认全量全绿。
+
+## 最终交付检查
+
+收口全量格式检查首次发现3份新增归档JSON格式不符，按项目Prettier格式化后复验通过；JSON语义保持一致，PNG保持原字节。[首次输出](./checks/closeout-format-first.txt)和[最终全量通过](./checks/closeout-format-final.txt)分别保留。`node docs/tasks/check.mjs`实际通过120任务、298需求，无缺失编号或循环，[输出](./checks/closeout-docs-final.txt)；`git diff --check`退出0，[输出](./checks/closeout-diff-final.txt)。187个本轮证据页本地链接目标存在。最终新增/修改候选文件内存扫描未发现独立预览邮箱或密码，凭证未进入代码、证据或PR。
+
+人工预览已用最终standalone构建重启，登录页实际HTTP200，同一Ego页面已打开真实单图统计供继续验收，预览数据未重置。原型4181与产品4180继续保留；用户最终验收未完成，PR维持草稿。
