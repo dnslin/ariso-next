@@ -108,6 +108,46 @@ it('blocks pending actions without making the operation trigger unfocusable', ()
   for (const item of items) expect(item).toContain('aria-disabled="true"');
 });
 
+it.each([
+  ['normal', ['复制链接', '添加到相册', '添加标签', '更多图片操作']],
+  ['trash', ['恢复所选', '永久删除所选', '更多图片操作']],
+] as const)('keeps pending %s shortcuts focusable', (scope, labels) => {
+  const html = renderToStaticMarkup(
+    createElement(LibrarySelectionMenu, {
+      selection,
+      scope,
+      loadingMode: 'pages',
+      disabled: false,
+      pending: true,
+      onOpen: vi.fn(),
+      onBatch: vi.fn(),
+      onPermanentDelete: vi.fn(),
+    }),
+  );
+  for (const label of labels) {
+    const button = html.match(
+      new RegExp(`<button[^>]*aria-label="${label}"[^>]*>`),
+    )?.[0];
+    expect(button).toContain('aria-disabled="true"');
+    expect(button).toContain('data-pending="true"');
+    expect(button).not.toMatch(/\sdisabled(?:=|\s|>)/);
+  }
+});
+
+it('keeps genuinely unavailable shortcuts disabled', () => {
+  const html = renderToStaticMarkup(
+    createElement(LibrarySelectionMenu, {
+      selection,
+      loadingMode: 'pages',
+      disabled: true,
+      onOpen: vi.fn(),
+      onBatch: vi.fn(),
+    }),
+  );
+  const button = html.match(/<button[^>]*aria-label="添加标签"[^>]*>/)?.[0];
+  expect(button).toMatch(/\sdisabled(?:=|\s|>)/);
+});
+
 it('separates selection management and shortcut icons from the business menu', () => {
   const html = renderToStaticMarkup(
     createElement(LibrarySelectionMenu, {

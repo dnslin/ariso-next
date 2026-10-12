@@ -77,6 +77,16 @@ export async function submitTagsWithToast(context, type, count, sourceUrl) {
         ...document.querySelectorAll('[data-target-id] input'),
       ].every((node) => node.disabled),
       targetCount: document.querySelectorAll('[data-target-id] input').length,
+      source: (() => {
+        const source = document.querySelector(
+          '[data-testid="library-selection"] button[aria-label="添加标签"]',
+        );
+        return {
+          disabled: source.disabled,
+          pending: source.getAttribute('data-pending'),
+          ariaDisabled: source.getAttribute('aria-disabled'),
+        };
+      })(),
     }));
     assert.equal(pending.view, 'choose');
     assert.equal(pending.busy, 'true');
@@ -84,6 +94,11 @@ export async function submitTagsWithToast(context, type, count, sourceUrl) {
     assert.equal(pending.searchDisabled, true);
     assert.ok(pending.targetCount > 0);
     assert.equal(pending.targetDisabled, true);
+    assert.deepEqual(pending.source, {
+      disabled: false,
+      pending: 'true',
+      ariaDisabled: 'true',
+    });
     await page.evaluate(() => window.__batchRelease());
     await done();
     const feedback = await tagCompletion(context, type, count, 0, sourceUrl);
@@ -214,7 +229,8 @@ export async function verifyTagFailures(context, type) {
 }
 
 export async function verifyTagUnknown(context, type) {
-  const { page, report, submit, monitor, traffic, done } = context;
+  const { page, report, submit, monitor, traffic, done, layouts, resize } =
+    context;
   const { ids, sourceUrl } = await prepareTagCommand(context, type);
   report.activeCheck = `${type}-lost-response-and-read-only-check`;
   await monitor('lose');
@@ -244,21 +260,103 @@ export async function verifyTagUnknown(context, type) {
     ),
     2,
   );
+  await page.evaluate(() => {
+    window.__batchFault = 'check-lose';
+  });
+  await page.click('[data-testid="batch-check"]');
+  await page.waitForFunction(
+    () =>
+      document.querySelector('[data-testid="batch-check"]')?.textContent ===
+        '再次核对' &&
+      document.querySelector('[data-testid="batch-check"]')?.disabled === false,
+  );
+  await resize(1440);
+  for (const dismiss of ['close', 'footer', 'escape', 'backdrop']) {
+    report.tagUnknownStep = `${type}-${dismiss}-ready`;
+    await page.focus('button[aria-label="关闭批量操作"]');
+    await page.waitForFunction(() => {
+      const drawer = document.querySelector('[data-slot="drawer-dialog"]');
+      const backdrop = drawer?.closest('[data-slot="drawer-backdrop"]');
+      return (
+        drawer?.contains(document.activeElement) &&
+        backdrop &&
+        !backdrop.hasAttribute('data-entering') &&
+        !backdrop.hasAttribute('data-exiting')
+      );
+    });
+    report.tagUnknownStep = `${type}-${dismiss}-dismiss`;
+    if (dismiss === 'close')
+      await page.click('button[aria-label="关闭批量操作"]');
+    else if (dismiss === 'footer')
+      await page.click('[data-testid="batch-return"]');
+    else if (dismiss === 'escape') await page.keyboard.press('Escape');
+    else {
+      const point = await page.evaluate(() => {
+        const bounds = document
+          .querySelector('[data-slot="drawer-dialog"]')
+          .getBoundingClientRect();
+        return { x: bounds.left / 2, y: bounds.top + 40 };
+      });
+      await page.mouse.click(point.x, point.y, {
+        label: 'close unknown tag drawer',
+      });
+    }
+    await page.waitForSelector('[data-testid="library-batch"]', {
+      state: 'hidden',
+    });
+    await page.waitForFunction(
+      () => !document.querySelector('[data-slot="drawer-backdrop"]'),
+    );
+    report.tagUnknownStep = `${type}-${dismiss}-reopen`;
+    assert.equal(await page.url(), sourceUrl);
+    await page.focus('[data-testid="library-toolbar"] input');
+    await page.keyboard.press('Tab');
+    assert.equal(
+      await page.evaluate(
+        () => !!document.activeElement?.closest('[role="dialog"]'),
+      ),
+      false,
+      `${dismiss}: closing the drawer releases the background focus trap`,
+    );
+    await page.click('loc=role:button[name="查看待核对结果"]');
+    await page.waitForSelector('[data-testid="batch-check"]');
+    await assertRetainedTagDraft(page, type);
+    assert.deepEqual(
+      await page.evaluate(() => ({
+        check: document.querySelector('[data-testid="batch-check"]')
+          ?.textContent,
+        unknown: document.querySelectorAll('[data-result-status="unknown"]')
+          .length,
+        submit: !!document.querySelector('[data-testid="batch-submit"]'),
+      })),
+      { check: '再次核对', unknown: 2, submit: false },
+    );
+    assert.equal(
+      (await traffic()).length,
+      2,
+      'Hide/reopen sends no batch request',
+    );
+  }
+  report.tagUnknownStep = `${type}-layouts`;
+  await layouts(`${type}-unknown-reopened`);
+  report.tagUnknownStep = `${type}-final-check`;
   await page.click('[data-testid="batch-check"]');
   await done();
   const checked = await traffic();
   assert.deepEqual(
     checked.map((entry) => entry.request.mode),
-    ['apply', 'check'],
+    ['apply', 'check', 'check'],
   );
   assert.deepEqual(checked[1].request.ids, ids);
+  assert.deepEqual(checked[2].request.ids, ids);
   assert.ok(
-    checked[1].response.results.every(
+    checked[2].response.results.every(
       (result) => result.status === 'unchanged',
     ),
   );
   await tagCompletion(context, type, 0, 2, sourceUrl);
+  report.tagUnknownStep = `${type}-complete`;
   report.checks.push(
-    `${type}: a lost successful real response preserves two unknown results; explicit read-only check confirms the same IDs without repeating the mutation, then returns with two confirmed unchanged items and restored focus.`,
+    `${type}: lost apply/check responses preserve the frozen result and chooser draft; X, footer, Escape and backdrop each release the modal and reopen without replaying a write. Explicit read-only recheck confirms the same IDs, returns with truthful unchanged counts and restores focus.`,
   );
 }

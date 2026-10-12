@@ -124,18 +124,21 @@ export function useLibraryBatch({
   const inFlight = useRef(false);
   const controller = useRef<AbortController | null>(null);
   const source = useRef<HTMLElement | null>(null);
-  const focusCleanup = useRef<(() => void) | null>(null);
+  const focusFrame = useRef<number | null>(null);
+  function cancelFocus() {
+    if (focusFrame.current !== null) cancelAnimationFrame(focusFrame.current);
+    focusFrame.current = null;
+  }
   useEffect(
     () => () => {
       controller.current?.abort();
-      focusCleanup.current?.();
+      cancelFocus();
     },
     [],
   );
   function open(action: BatchAction, element: HTMLElement) {
     if (inFlight.current) return;
-    focusCleanup.current?.();
-    focusCleanup.current = null;
+    cancelFocus();
     source.current = element;
     setTargetReady(false);
     setShowFailures(false);
@@ -181,28 +184,13 @@ export function useLibraryBatch({
     setVisible(true);
   }
   function focusSource() {
-    focusCleanup.current?.();
-    const frame = requestAnimationFrame(() => {
-      focusCleanup.current = null;
+    cancelFocus();
+    focusFrame.current = requestAnimationFrame(() => {
+      focusFrame.current = null;
       const target = source.current;
-      if (target?.isConnected) {
-        if (!target.matches(':disabled')) {
-          target.focus({ preventScroll: true });
-          return;
-        }
-        // Selection reconciliation can keep the source disabled after the batch ends.
-        const observer = new MutationObserver(() => {
-          if (target.isConnected && target.matches(':disabled')) return;
-          observer.disconnect();
-          focusCleanup.current = null;
-          if (target.isConnected) target.focus({ preventScroll: true });
-        });
-        observer.observe(target, {
-          attributes: true,
-          attributeFilter: ['disabled'],
-        });
-        focusCleanup.current = () => observer.disconnect();
-      } else
+      if (target?.isConnected && !target.matches(':disabled'))
+        target.focus({ preventScroll: true });
+      else
         (
           document.querySelector<HTMLElement>(
             '[data-testid="library-toolbar"] input',
@@ -210,7 +198,6 @@ export function useLibraryBatch({
           document.querySelector<HTMLElement>('#trash-title, #library-title')
         )?.focus({ preventScroll: true });
     });
-    focusCleanup.current = () => cancelAnimationFrame(frame);
   }
   function close() {
     if (inFlight.current) return;

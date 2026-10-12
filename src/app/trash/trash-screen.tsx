@@ -201,14 +201,14 @@ export function TrashScreen({
         });
     },
   });
-  const selectionDisabled =
+  const selectionPending =
     list.isFetching ||
     batch.pending ||
-    batch.unresolved ||
     permanentBatch.pending ||
-    permanentBatch.unresolved ||
-    reconciliation.pending ||
-    !!reconciliation.error;
+    reconciliation.pending;
+  const selectionUnavailable =
+    batch.unresolved || permanentBatch.unresolved || !!reconciliation.error;
+  const selectionDisabled = selectionPending || selectionUnavailable;
   useEffect(() => () => client.clear(), [client]);
   if (expired && !sessionEnded) setSessionEnded(true);
   useEffect(() => {
@@ -538,7 +538,8 @@ export function TrashScreen({
                 scope="trash"
                 selection={selection}
                 loadingMode="pages"
-                disabled={selectionDisabled}
+                disabled={selectionUnavailable}
+                pending={selectionPending}
                 contextMenu={contextMenu}
                 onContextMenuClose={() => setContextMenu(null)}
                 onOpen={(id) => openRecord(id)}

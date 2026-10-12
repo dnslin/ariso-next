@@ -216,6 +216,7 @@ describe('focused browser execution plans', () => {
     ['processing', 'settings', ['processing']],
     ['trash', 'cleanup', ['trash-cleanup']],
     ['trash', 'approved-results', ['trash-query-batch']],
+    ['trash', 'shortcut-focus', ['trash-query-batch']],
     ['library', 'recovery', ['library']],
     ['library', 'consumers', ['library']],
     ['library-batch', 'recovery', ['library-batch']],

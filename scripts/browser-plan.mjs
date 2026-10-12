@@ -264,6 +264,7 @@ const suites = {
       'approved-query',
       'approved-progress',
       'review-fixes',
+      'shortcut-focus',
     ],
     stages: (only) => {
       if (only === 'cleanup') return [['trash-cleanup', 'trashCleanup']];

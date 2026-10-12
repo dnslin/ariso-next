@@ -237,7 +237,8 @@ export function LibrarySelectionMenu({
                 <ActionIconButton
                   key={action}
                   label={label}
-                  isDisabled={blocked || !actions.includes(action)}
+                  isDisabled={disabled || !actions.includes(action)}
+                  isPending={pending}
                   onPress={(event) => {
                     if (event.target instanceof HTMLElement)
                       onBatch(action, event.target);
@@ -253,7 +254,8 @@ export function LibrarySelectionMenu({
           <ActionIconButton
             label="永久删除所选"
             className="text-danger"
-            isDisabled={blocked || allDeleting}
+            isDisabled={disabled || allDeleting}
+            isPending={pending}
             onPress={(event) => {
               if (event.target instanceof HTMLElement)
                 onPermanentDelete(event.target);

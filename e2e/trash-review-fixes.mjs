@@ -43,11 +43,104 @@ async function observeCleanupRequests(page, id) {
 
 export async function restoreReviewTraffic(page) {
   await page.evaluate(() => {
+    window.__reviewRestoreRelease?.();
+    delete window.__reviewRestoreRelease;
     if (window.__reviewOriginalFetch) {
       window.fetch = window.__reviewOriginalFetch;
       delete window.__reviewOriginalFetch;
     }
   });
+}
+
+export async function verifyTrashShortcutFocus(context) {
+  const { page, report, resize, select, action, loaded, selected } = context;
+  report.activeCheck = 'shortcut-pending-focus';
+  await resize(1440);
+  await select(0);
+  await action('恢复所选', 1);
+  await page.click('[data-testid="batch-return"]');
+  await page.waitForFunction(
+    () =>
+      !document.querySelector('[data-testid="library-batch"]') &&
+      document.activeElement?.getAttribute('aria-label') === '恢复所选',
+  );
+  await action('恢复所选', 1);
+  await page.evaluate(() => {
+    const original = window.fetch;
+    window.__reviewOriginalFetch = original;
+    window.__reviewRestoreRequests = [];
+    window.fetch = async (...args) => {
+      if (
+        new URL(String(args[0]), location.href).pathname !== '/api/images/batch'
+      )
+        return original(...args);
+      window.__reviewRestoreRequests.push(JSON.parse(args[1].body));
+      const response = await original(...args);
+      await new Promise((resolve) => {
+        window.__reviewRestoreRelease = resolve;
+      });
+      return response;
+    };
+  });
+  await page.click('[data-testid="batch-submit"]');
+  await page.waitForFunction(
+    () => typeof window.__reviewRestoreRelease === 'function',
+  );
+  const pending = await page.evaluate(() =>
+    ['管理选择，已选 1 张', '恢复所选', '永久删除所选', '更多图片操作'].map(
+      (label) => {
+        const button = document.querySelector(
+          `[data-testid="library-selection"] button[aria-label="${label}"]`,
+        );
+        button.click();
+        return {
+          label,
+          disabled: button.disabled,
+          pending: button.getAttribute('data-pending'),
+          ariaDisabled: button.getAttribute('aria-disabled'),
+        };
+      },
+    ),
+  );
+  assert.ok(
+    pending.every(
+      (item) =>
+        !item.disabled &&
+        item.pending === 'true' &&
+        item.ariaDisabled === 'true',
+    ),
+  );
+  assert.equal(
+    await page.evaluate(() => window.__reviewRestoreRequests.length),
+    1,
+    'Pending shortcut clicks cannot start another request',
+  );
+  await page.keyboard.press('Escape');
+  assert.equal(
+    await page.evaluate(
+      () => !!document.querySelector('[data-testid="library-batch"]'),
+    ),
+    true,
+    'Pending restore confirmation cannot be dismissed',
+  );
+  await page.evaluate(() => window.__reviewRestoreRelease());
+  await page.waitForFunction(
+    () =>
+      !document.querySelector('[data-testid="library-batch"]') &&
+      [...document.querySelectorAll('[data-slot="toast-title"]')].some(
+        (node) => node.textContent === '图片已恢复',
+      ),
+  );
+  await selected(0);
+  await loaded(80);
+  await page.waitForFunction(
+    () =>
+      document.activeElement?.getAttribute('aria-label') === '搜索回收图片名称',
+  );
+  report.checks.push(
+    '恢复取消后回到原快捷按钮；真实恢复请求等待期间全部工具栏按钮保持可聚焦且拦截重复点击，Escape不退出；成功清除选择后回到搜索框。',
+  );
+  report.shortcutPending = pending;
 }
 
 async function makeOriginalFail(fixture) {

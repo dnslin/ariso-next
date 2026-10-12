@@ -408,45 +408,12 @@ it('keeps failed recycle items selected in a recoverable result without a succes
   expect(toast.success).not.toHaveBeenCalled();
 });
 
-function watchFocusSource() {
-  let disabled = true;
-  const source = {
-    isConnected: true,
+function focusSource(disabled = false, connected = true) {
+  return {
+    isConnected: connected,
     matches: vi.fn(() => disabled),
     focus: vi.fn(),
   } as unknown as HTMLElement;
-  const observers: {
-    deliver: () => void;
-    observe: ReturnType<typeof vi.fn>;
-    disconnect: ReturnType<typeof vi.fn>;
-  }[] = [];
-  vi.stubGlobal(
-    'MutationObserver',
-    class {
-      observe = vi.fn();
-      disconnect = vi.fn(() => {
-        this.connected = false;
-      });
-      connected = true;
-      constructor(callback: () => void) {
-        observers.push({
-          observe: this.observe,
-          disconnect: this.disconnect,
-          deliver: () => {
-            if (this.connected) callback();
-          },
-        });
-      }
-    },
-  );
-  return {
-    source,
-    observers,
-    enable() {
-      disabled = false;
-      observers.forEach((observer) => observer.deliver());
-    },
-  };
 }
 
 function mountLibraryBatch() {
@@ -463,9 +430,9 @@ function mountLibraryBatch() {
 }
 
 it.each([false, true])(
-  'restores the source only after selection reconciliation enables it following tag success (retried=%s)',
+  'restores a focusable source following tag success (retried=%s)',
   async (retry) => {
-    const focus = watchFocusSource();
+    const source = focusSource();
     let requests = 0;
     vi.stubGlobal(
       'fetch',
@@ -483,7 +450,7 @@ it.each([false, true])(
       ),
     );
     const get = mountLibraryBatch();
-    get().open('add-tags', focus.source);
+    get().open('add-tags', source);
     await flush();
     get().choose({ type: 'add-tags', tagIds: ['tag'] });
     await flush();
@@ -500,48 +467,59 @@ it.each([false, true])(
       workspace: null,
     });
     expect(toast.success).toHaveBeenCalledOnce();
-    expect(focus.source.focus).not.toHaveBeenCalled();
-    expect(focus.observers).toHaveLength(1);
-    expect(focus.observers[0].observe).toHaveBeenCalledWith(focus.source, {
-      attributes: true,
-      attributeFilter: ['disabled'],
+    expect(source.focus).toHaveBeenCalledExactlyOnceWith({
+      preventScroll: true,
     });
-    focus.enable();
-    expect(focus.source.focus).toHaveBeenCalledWith({ preventScroll: true });
-    expect(focus.observers[0].disconnect).toHaveBeenCalledOnce();
-    focus.enable();
-    expect(focus.source.focus).toHaveBeenCalledOnce();
+  },
+);
+
+it.each([
+  [true, true],
+  [false, false],
+])(
+  'focuses the toolbar when the source is unavailable (disabled=%s, connected=%s)',
+  async (disabled, connected) => {
+    const source = focusSource(disabled, connected);
+    const search = { focus: vi.fn() };
+    vi.stubGlobal('document', { querySelector: () => search });
+    const get = mountLibraryBatch();
+    get().open('add-tags', source);
+    await flush();
+    get().close();
+    await flush();
+    expect(source.focus).not.toHaveBeenCalled();
+    expect(search.focus).toHaveBeenCalledExactlyOnceWith({
+      preventScroll: true,
+    });
   },
 );
 
 it.each(['unmount', 'open'] as const)(
-  'cleans up a disabled source focus wait on %s without focusing it later',
+  'cancels a scheduled source focus frame on %s',
   async (action) => {
-    const focus = watchFocusSource();
+    const source = focusSource();
     const get = mountLibraryBatch();
-    get().open('add-tags', focus.source);
+    get().open('add-tags', source);
     await flush();
     get().close();
-    await flush();
-    expect(focus.observers).toHaveLength(1);
     if (action === 'unmount') hooks.unmount();
-    else get().open('add-tags', { isConnected: false } as HTMLElement);
-    expect(focus.observers[0].disconnect).toHaveBeenCalledOnce();
-    focus.enable();
-    expect(focus.source.focus).not.toHaveBeenCalled();
+    else get().open('add-tags', focusSource());
+    await flush();
+    expect(source.focus).not.toHaveBeenCalled();
   },
 );
-
-it('cancels a scheduled source focus frame on unmount', async () => {
-  const focus = watchFocusSource();
+it('falls back to the page title when neither source nor search is available', async () => {
+  const title = { focus: vi.fn() };
+  vi.stubGlobal('document', {
+    querySelector: (selector: string) =>
+      selector.includes('input') ? null : title,
+  });
   const get = mountLibraryBatch();
-  get().open('add-tags', focus.source);
+  get().open('add-tags', focusSource(false, false));
   await flush();
   get().close();
-  hooks.unmount();
   await flush();
-  expect(focus.observers).toHaveLength(0);
-  expect(focus.source.focus).not.toHaveBeenCalled();
+  expect(title.focus).toHaveBeenCalledExactlyOnceWith({ preventScroll: true });
 });
 function accepted(
   request: {
