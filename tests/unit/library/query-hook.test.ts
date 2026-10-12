@@ -1,4 +1,4 @@
-import { createElement } from 'react';
+import { createElement, useState } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { QueryClient, type InfiniteData } from '@tanstack/react-query';
 import { afterEach, expect, it, vi } from 'vitest';
@@ -7,6 +7,8 @@ import {
   parseLibraryLocation,
 } from '../../../src/app/library/query-state';
 import { useLibraryQuery } from '../../../src/app/library/use-library-query';
+import { useLibrarySelection } from '../../../src/app/library/use-library-selection';
+import { selectionBatchActions } from '../../../src/app/library/library-actions';
 import type {
   LibraryItem,
   LibraryPage,
@@ -507,6 +509,148 @@ it('batch visibility updates cached loaded cards while leaving valid failed card
   expect(fetcher).not.toHaveBeenCalled();
   client.clear();
 });
+
+it.each(['all', 'drag', 'reselect'] as const)(
+  'keeps the remove-albums action after adding an album and selecting by %s',
+  async (method) => {
+    const filters = parseLibraryLocation(new URLSearchParams()).filters;
+    const client = new QueryClient();
+    const key = libraryListKey(filters, 'more', 1);
+    client.setQueryData(key, {
+      pages: [page(['a'], 'after-a', 2), page(['b'], 'after-b', 2)],
+      pageParams: [null, 'after-a'],
+    });
+    const before = mount(client).items;
+    const updated = { ...item('a'), hasAlbums: true };
+    const fetcher = vi
+      .fn()
+      .mockResolvedValue(Response.json({ items: [updated], missingIds: [] }));
+    vi.stubGlobal('fetch', fetcher);
+
+    await mount(client).onBatchCompleted(
+      [{ id: 'a', status: 'changed', inQuery: true, message: '已添加' }],
+      { type: 'add-albums', albumIds: ['album-one'] },
+    );
+
+    const refreshed = mount(client).items;
+    function Probe() {
+      const [step, setStep] = useState(0);
+      const selection = useLibrarySelection(
+        'query',
+        step < 2 ? before : refreshed,
+      );
+      if (step === 0) selection.toggle(before[0]);
+      else if (step === 1)
+        selection.reconcile(new Map(selection.selected), [updated]);
+      else if (step === 2) {
+        expect(selection.selected.get('a')?.hasAlbums).toBe(true);
+        if (method === 'all') selection.selectCurrent();
+        else if (method === 'drag') selection.selectIds(['a', 'b']);
+        else selection.clear();
+      } else if (step === 3 && method === 'reselect')
+        selection.toggle(refreshed[0]);
+      else {
+        expect(selection.selected.get('a')?.hasAlbums).toBe(true);
+        expect(
+          selectionBatchActions([...selection.selected.values()], false),
+        ).toContain('remove-albums');
+      }
+      if (step < (method === 'reselect' ? 4 : 3)) setStep(step + 1);
+      return null;
+    }
+    renderToStaticMarkup(createElement(Probe));
+    expect(fetcher).toHaveBeenCalledWith(
+      '/api/images/status',
+      expect.objectContaining({ body: '{"ids":["a"]}' }),
+    );
+    const current = client.getQueryData<InfiniteData<LibraryPage>>(key)!;
+    expect(current.pages.map((page) => page.total)).toEqual([2, 2]);
+    expect(current.pages.map((page) => page.nextCursor)).toEqual([
+      'after-a',
+      'after-b',
+    ]);
+    expect(current.pageParams).toEqual([null, 'after-a']);
+    client.clear();
+  },
+);
+
+it('reads actual remaining album membership after removal, including failed and unknown items', async () => {
+  const filters = parseLibraryLocation(new URLSearchParams()).filters;
+  const client = new QueryClient();
+  const key = libraryListKey(filters, 'more', 1);
+  const cached = page(
+    ['remaining', 'empty', 'failed', 'unknown'],
+    'after-last',
+    4,
+  );
+  cached.items = cached.items.map((item) => ({ ...item, hasAlbums: true }));
+  client.setQueryData(key, { pages: [cached], pageParams: [null] });
+  const statuses = [
+    { ...item('remaining'), hasAlbums: true },
+    item('empty'),
+    { ...item('failed'), hasAlbums: true },
+    item('unknown'),
+  ];
+  vi.stubGlobal(
+    'fetch',
+    vi
+      .fn()
+      .mockResolvedValue(Response.json({ items: statuses, missingIds: [] })),
+  );
+  await mount(client).onBatchCompleted(
+    [
+      { id: 'remaining', status: 'changed', inQuery: true, message: '已移除' },
+      { id: 'empty', status: 'changed', inQuery: true, message: '已移除' },
+      { id: 'failed', status: 'failed', inQuery: true, message: '保存失败' },
+      { id: 'unknown', status: 'unknown', inQuery: true, message: '待核对' },
+    ],
+    { type: 'remove-albums', albumIds: ['album-one'] },
+  );
+  const refreshed = mount(client).items;
+  expect(refreshed.map((item) => [item.id, item.hasAlbums])).toEqual([
+    ['remaining', true],
+    ['empty', false],
+    ['failed', true],
+    ['unknown', false],
+  ]);
+  expect(selectionBatchActions([refreshed[0]], false)).toContain(
+    'remove-albums',
+  );
+  expect(selectionBatchActions([refreshed[1]], false)).not.toContain(
+    'remove-albums',
+  );
+  const current = client.getQueryData<InfiniteData<LibraryPage>>(key)!;
+  expect(current.pages[0].nextCursor).toBe('after-last');
+  expect(current.pages[0].total).toBe(4);
+  client.clear();
+});
+
+it.each([401, 503])(
+  'album membership status HTTP %s propagates without guessing cached membership',
+  async (status) => {
+    const filters = parseLibraryLocation(new URLSearchParams()).filters;
+    const client = new QueryClient();
+    const key = libraryListKey(filters, 'more', 1);
+    const cached = { pages: [page(['a'], 'after-a')], pageParams: [null] };
+    client.setQueryData(key, cached);
+    vi.stubGlobal(
+      'fetch',
+      vi
+        .fn()
+        .mockResolvedValue(
+          Response.json({ message: '无法读取图片状态' }, { status }),
+        ),
+    );
+    await expect(
+      mount(client).onBatchCompleted(
+        [{ id: 'a', status: 'changed', inQuery: true, message: '已添加' }],
+        { type: 'add-albums', albumIds: ['album-one'] },
+      ),
+    ).rejects.toMatchObject({ status });
+    expect(client.getQueryData(key)).toEqual(cached);
+    client.clear();
+  },
+);
 
 it('rechecking an already removed item does not decrement loaded totals again', async () => {
   context.search = 'tagId=a&pageSize=20';
