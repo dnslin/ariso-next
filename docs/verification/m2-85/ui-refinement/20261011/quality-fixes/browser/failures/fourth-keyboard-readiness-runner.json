@@ -1,0 +1,21 @@
+{
+  "startedAt": "2026-10-12T03:13:39.367Z",
+  "platform": "darwin",
+  "arch": "arm64",
+  "node": "v24.18.1",
+  "status": "failed",
+  "suite": "library-batch",
+  "only": "review-fixes",
+  "pageLabel": "p1",
+  "origin": "http://ariso-58988.localhost:58988",
+  "taskSpaceId": 11,
+  "stages": {
+    "library-batch": {
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (library-batch.log)\n\n1 !== 0\n\n    at runBrowser (file:///Volumes/data/project/ariso/scripts/verify-browser.mjs:259:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async runBrowserStage (file:///Volumes/data/project/ariso/scripts/browser-stages.mjs:17:5)\n    at async runBusinessBrowserStage (file:///Volumes/data/project/ariso/scripts/browser-business.mjs:22:18)\n    at async file:///Volumes/data/project/ariso/scripts/verify-browser.mjs:793:24"
+    }
+  },
+  "error": "AssertionError [ERR_ASSERTION]: Focused browser stages failed\n    at file:///Volumes/data/project/ariso/scripts/verify-browser.mjs:803:12",
+  "finishedAt": "2026-10-12T03:14:24.644Z",
+  "temporaryDirectoryRemoved": true
+}
