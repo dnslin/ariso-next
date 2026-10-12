@@ -138,12 +138,22 @@ jobs:
               --source-root /source --storage-root /storage \
               --target-root /storage/disk --low-space-root /storage/low \
               --report /evidence/report.json --require-complete
+      - name: Prepare curl for external upload caller tests
+        env:
+          ARCH: ${{ matrix.arch }}
+        run: |
+          docker build --tag "ariso:media-tests-$ARCH" --file - . <<DOCKERFILE
+          FROM ariso:ci-$ARCH
+          USER root
+          RUN apt-get update && apt-get install --yes --no-install-recommends curl && rm -rf /var/lib/apt/lists/*
+          USER node
+          DOCKERFILE
       - name: Verify persistent media processing with actual image tools
         env:
-          IMAGE: ariso:ci-${{ matrix.arch }}
+          IMAGE: ariso:media-tests-${{ matrix.arch }}
         run: |
           docker run --rm --network none --read-only \
-            --user "$(id -u):$(id -g)" --tmpfs /tmp:rw,size=512m \
+            --user "$(id -u):$(id -g)" --tmpfs /tmp:rw,exec,size=512m \
             --mount "type=bind,src=$GITHUB_WORKSPACE,dst=/workspace" \
             --workdir /workspace --entrypoint node \
             "$IMAGE" node_modules/vitest/vitest.mjs run --project media-tools \

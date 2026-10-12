@@ -128,7 +128,8 @@ export async function publicUploadResponse(request: Request) {
     const result = publicUploadFailure(error, requestId, stage, imageId);
     return Response.json(result.body, {
       status: result.status,
-      headers,
+      headers:
+        stage === 'receiving' ? { ...headers, Connection: 'close' } : headers,
     });
   }
 }
