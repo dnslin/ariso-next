@@ -257,6 +257,28 @@ try {
   await sql('DELETE FROM albums');
   await list();
   await page.waitForSelector('[data-testid="albums-empty"]');
+  const emptyActions = await page.evaluate(() => ({
+    create: [...document.querySelectorAll('button')].filter(
+      (node) => node.textContent.trim() === '新建相册',
+    ).length,
+    emptyButtons: document.querySelectorAll(
+      '[data-testid="albums-empty"] button',
+    ).length,
+    emptyText: document
+      .querySelector('[data-testid="albums-empty"]')
+      .textContent.trim(),
+  }));
+  assert.equal(
+    emptyActions.create,
+    1,
+    'Empty albums retain one toolbar creation action',
+  );
+  assert.equal(
+    emptyActions.emptyButtons,
+    0,
+    'Empty albums do not duplicate creation',
+  );
+  assert.equal(emptyActions.emptyText, '暂无相册');
   await layouts('empty');
   report.stage = 'create validation';
   await openCreate();
@@ -392,8 +414,8 @@ try {
   );
 
   report.stage = 'delete';
-  await page.click(button('更多'));
-  await page.click(button('删除相册…'));
+  await page.click(button('更多相册操作'));
+  await page.click('loc=role:menuitem[name="删除相册"]');
   await page.waitForSelector('loc=role:dialog[name="删除这本相册？"]');
   await layouts('delete-confirm', [390, 1440]);
   await page.keyboard.press('Escape');
@@ -401,8 +423,8 @@ try {
     (await sql(`SELECT count(*) AS n FROM albums WHERE id='${first}'`))[0].n,
     1,
   );
-  await page.click(button('更多'));
-  await page.click(button('删除相册…'));
+  await page.click(button('更多相册操作'));
+  await page.click('loc=role:menuitem[name="删除相册"]');
   await intercept('DELETE', 'reject', `/${first}`);
   await page.click(button('删除相册'));
   await page.waitForFunction(() =>

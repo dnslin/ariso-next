@@ -75,9 +75,9 @@ export async function siteGeneralTools(page, config, report) {
     const held = await siteFault(page, { mode: 'write-hold' });
     try {
       if (keyboard) {
-        await page.focus(button('保存站点信息'));
+        await page.focus(button('保存站点'));
         await page.keyboard.press('Enter');
-      } else await page.click(button('保存站点信息'));
+      } else await page.click(button('保存站点'));
       await held.wait('releaseWrite');
       assert.equal((await held.observed()).requests[0].status, 200);
       await state('saving');

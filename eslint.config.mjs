@@ -38,6 +38,7 @@ export default defineConfig([
     'out/**',
     'build/**',
     'dist/**',
+    'design-plans/main-ui-review-20261011/interaction-review-v2/dist/**',
     'coverage/**',
     'playwright-report/**',
     'test-results/**',

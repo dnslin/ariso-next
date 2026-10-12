@@ -47,14 +47,14 @@ export async function ensureCorsOverview(page) {
   });
   const overview = await page.evaluate(() =>
     [...document.querySelectorAll('button')].some(
-      (button) => button.textContent.trim() === '查看 CORS 示例',
+      (button) => button.textContent.trim() === 'CORS 示例',
     ),
   );
   if (overview) return;
   await page.click(button('查看清理状态'));
   await page.waitForSelector('[role="dialog"]');
   await page.click(button('返回直传设置'));
-  await page.waitForSelector(button('查看 CORS 示例'));
+  await page.waitForSelector(button('CORS 示例'));
 }
 async function resize(page, width, height = width >= 1200 ? 1080 : 844) {
   await page.cdp('Emulation.setDeviceMetricsOverride', {
@@ -253,7 +253,7 @@ export async function verifyCorsDialogs(page, config, id, report) {
     report,
     [1440, 390],
   );
-  await page.focus(button('查看 CORS 示例'));
+  await page.focus(button('CORS 示例'));
   await page.keyboard.press('Enter');
   await page.waitForSelector('loc=role:dialog[name="CORS 配置示例"]');
   const example = await page.evaluate(() =>
@@ -307,7 +307,7 @@ export async function verifyCorsDialogs(page, config, id, report) {
   });
   assert.equal(
     await page.evaluate(() => document.activeElement?.textContent.trim()),
-    '查看 CORS 示例',
+    'CORS 示例',
   );
 
   const proxy = await clipboardDeniedProxy(config.origin);
@@ -315,7 +315,7 @@ export async function verifyCorsDialogs(page, config, id, report) {
     await resize(page, 390);
     await page.goto(`${proxy.origin}/settings/storage/${id}/cors`);
     await ensureCorsOverview(page);
-    await page.click(button('查看 CORS 示例'));
+    await page.click(button('CORS 示例'));
     await page.waitForSelector('loc=role:dialog[name="CORS 配置示例"]');
     await page.click(button('复制 CORS 示例'));
     await page.waitForFunction(() =>

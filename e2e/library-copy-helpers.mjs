@@ -20,9 +20,7 @@ export function createCopyHelpers(context) {
   const batch = createBatchHelpers(context);
   async function open(count) {
     await batch.selected(count);
-    await page.click(batch.button(`操作已选 ${count} 张图片`));
-    await page.waitForSelector('loc=role:menuitem[name="复制链接"]');
-    await page.click('loc=role:menuitem[name="复制链接"]');
+    await page.click(batch.button('复制链接'));
     await page.waitForSelector(copyDialog);
   }
   async function choose(index) {

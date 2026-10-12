@@ -23,7 +23,7 @@ export async function verifyVisibilitySuccess(context) {
   report.visibilitySuccess = [];
   const ids = [batchImageId(80), batchImageId(81)];
   for (const visibility of ['public', 'private']) {
-    report.activeCheck = `${visibility}-changed-unchanged-toast`;
+    report.activeCheck = `${visibility}-only-needs-change-toast`;
     const inverse = visibility === 'public' ? 'private' : 'public';
     await sql(
       `UPDATE media_images SET visibility='${visibility}' WHERE id='${ids[0]}'`,
@@ -69,19 +69,19 @@ export async function verifyVisibilitySuccess(context) {
     }));
     assert.equal(pending.dialog, true);
     assert.equal(pending.disabled, true);
-    assert.ok(pending.text.includes('正在设置'));
+    assert.ok(pending.text.includes('正在保存'));
     await page.evaluate(() => window.__batchRelease());
     await done();
     const transitions = await readVisibilitySubmit();
-    await expectResults({ changed: 1, unchanged: 1 });
+    await expectResults({ changed: 1 });
     const sent = await traffic();
     assert.equal(sent.length, 1);
-    assert.deepEqual(sent[0].request.ids, ids);
+    assert.deepEqual(sent[0].request.ids, [ids[1]]);
     assert.deepEqual(sent[0].request.command, {
       type: 'visibility',
       visibility,
     });
-    const toast = await visibilityToast(visibility, 1, 1, sourceUrl);
+    const toast = await visibilityToast(visibility, 1, 0, sourceUrl, 2);
     assert.deepEqual(
       await sql(
         `SELECT id,visibility FROM media_images WHERE id IN ('${ids.join("','")}') ORDER BY id`,
@@ -103,7 +103,7 @@ export async function verifyVisibilitySuccess(context) {
       );
   }
   report.checks.push(
-    'Real public/private writes report one changed and one unchanged item in the native success Toast, clear actual selection, retain the exact original library page or album route, and render readable 44px feedback in desktop/mobile light/dark themes.',
+    'Real public/private writes send only the image needing change, report one changed item, retain both matching selections and the exact original library page or album route, and render readable 44px feedback in desktop/mobile light/dark themes.',
   );
 }
 
@@ -302,7 +302,7 @@ export async function verifyVisibilityFailures(context) {
       finalVisibility,
       ids.map((id) => ({ id, visibility })),
     );
-    const toast = await visibilityToast(visibility, 2, 0, sourceUrl);
+    const toast = await visibilityToast(visibility, 2, 0, sourceUrl, 3);
     await toastLayouts(`${visibility}-retry-success-toast`, toast);
     report.visibilityFailures.push({
       visibility,
@@ -320,7 +320,7 @@ export async function verifyVisibilityFailures(context) {
     });
   }
   report.checks.push(
-    'Actual public/private UPDATE failures return one committed image and two retained failures across pages; viewing the dedicated retained page performs no request and shows an actual failed sample, one current-page/one other-page failure and actual causes; explicit retry sends only failed IDs, persists all three target visibility values, returns to the exact original page with a native two-changed success Toast and clears the real selection.',
+    'Actual public/private UPDATE failures return one committed image and two retained failures across pages; viewing the dedicated retained page performs no request and shows an actual failed sample, one current-page/one other-page failure and actual causes; explicit retry sends only failed IDs, persists all three target visibility values, returns to the exact original page with a native two-changed success Toast and retains all three matching selections.',
   );
 }
 
@@ -465,6 +465,7 @@ export async function verifyVisibilityRecovery(context) {
     1,
     0,
     continuedSourceUrl,
+    201,
   );
   report.continuedView = continuedView;
   await toastLayouts('public-continued-toast', continuedView);
@@ -474,7 +475,7 @@ export async function verifyVisibilityRecovery(context) {
     explicitlyContinued: sent[3].request.ids,
     modes: sent.map((entry) => entry.request.mode),
   };
-  await selected(0);
+  await selected(201);
   await pickFirstTwo('设为私有');
   const privateSourceUrl = await page.url();
   await layouts('private-confirm', [390, 1440]);

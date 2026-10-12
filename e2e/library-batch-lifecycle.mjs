@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { activateLibraryAction } from './library-action-controls.mjs';
 import {
   batchImageId,
   batchImageName,
@@ -48,7 +49,7 @@ export async function verifyBatchLifecycle(context) {
     await resize(width);
     for (const theme of ['light', 'dark']) {
       await setTheme(theme);
-      await page.click('loc=role:button[name="操作已选 1 张图片"]');
+      await page.click('loc=role:button[name="更多图片操作"]');
       await page.waitForSelector('[role="menu"][aria-label="已选图片操作"]');
       const items = await page.evaluate(() =>
         [...document.querySelectorAll('[role="menuitem"]')].map((item) =>
@@ -116,7 +117,9 @@ export async function verifyBatchLifecycle(context) {
     await page.waitForSelector(
       `[data-testid="trash-record-${batchImageId((number - 1) * 40)}"]`,
     );
-    await page.click('label:has(input[aria-label="全选当前页回收记录"])');
+    if (number === 1)
+      await page.click('label:has(input[aria-label="全选当前页回收记录"])');
+    else await activateLibraryAction(page, '全选当前页', (number - 1) * 40);
     await page.waitForFunction(
       (count) =>
         document
@@ -124,6 +127,7 @@ export async function verifyBatchLifecycle(context) {
           ?.textContent.includes(`共选 ${count} 张`),
       number * 40,
     );
+    if (number > 1) await page.keyboard.press('Escape');
     await page.click('loc=role:button[name="下一页"]');
   }
   await page.waitForSelector(

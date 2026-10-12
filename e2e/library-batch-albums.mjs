@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { openSelectionManager } from './library-action-controls.mjs';
 import {
   batchImageId,
   batchImageName,
@@ -39,7 +40,9 @@ export async function verifyAlbumMixedResults(context) {
   await page.waitForFunction(() => typeof window.__batchRelease === 'function');
   assert.equal(
     await page.evaluate(() =>
-      document.querySelector('#batch-title').textContent.includes('操作完成'),
+      document
+        .querySelector('[data-testid="library-batch"]')
+        .textContent.includes('操作完成'),
     ),
     false,
     'Held actual response cannot show a completed title',
@@ -50,7 +53,7 @@ export async function verifyAlbumMixedResults(context) {
   await layouts('mixed-results');
   await sql('DROP TRIGGER issue177_batch_failure');
   await returnToLibrary();
-  await selected(1);
+  await selected(4);
 }
 
 export async function verifyAlbumCrossPageRetry(context) {
@@ -188,37 +191,28 @@ export async function verifyAlbumCrossPageRetry(context) {
     'Retry writes only the valid failed selection',
   );
   assert.equal(sent.at(-1).response.results[0].status, 'changed');
+  await page.waitForSelector('[data-testid="library-batch"]', {
+    state: 'hidden',
+  });
+  await selected(201);
   const retryView = await page.evaluate(() => ({
-    ids: [...document.querySelectorAll('[data-batch-result-id]')].map(
-      (node) => node.dataset.batchResultId,
-    ),
-    summary: document
-      .querySelector('[data-testid="library-batch"] [role="status"]')
-      ?.textContent.replace(/\s+/g, ' ')
-      .trim(),
-    changedRows: document.querySelectorAll(
-      '[data-batch-result-id][data-result-status="changed"]',
-    ).length,
-    failedRows: document.querySelectorAll(
-      '[data-batch-result-id][data-result-status="failed"]',
-    ).length,
+    title: document.querySelector(
+      '[data-slot="toast"][data-frontmost="true"] [data-slot="toast-title"]',
+    )?.textContent,
+    summary: document.querySelector(
+      '[data-slot="toast"][data-frontmost="true"] [data-slot="toast-description"]',
+    )?.textContent,
   }));
-  assert.deepEqual(
-    retryView.ids,
-    [failed.id],
-    'Successful retry renders only its one explicit ID',
-  );
+  assert.equal(retryView.title, '添加到相册完成');
   assert.equal(
     retryView.summary,
-    '本次重试1张 · 1已修改 · 0无需修改 · 0失败',
-    'Retry summary describes only this attempt',
+    '1张已修改 · 0张无需修改',
+    'Retry feedback describes only its one explicit ID',
   );
-  assert.equal(retryView.changedRows, 1);
-  assert.equal(retryView.failedRows, 0);
   report.retryView = retryView;
   for (const width of [390, 1440]) {
     await resize(width);
-    await page.hover(`[data-batch-result-id="${failed.id}"]`);
+    await page.hover('[data-slot="toast"][data-frontmost="true"]');
     await shot('valid-failure-after-retry', width, 'dark');
   }
   assert.equal(
@@ -230,7 +224,7 @@ export async function verifyAlbumCrossPageRetry(context) {
     402,
   );
   await returnToLibrary();
-  await selected(0);
+  await selected(201);
   report.checks.push(
     '201 cross-page explicit IDs split into 200+1; real multi-target transaction returns 199 changed, one unchanged and one failed; the failed image has neither relation, remains selected across pages, and retry submits only its ID.',
   );
@@ -241,6 +235,7 @@ export async function verifyAlbumRemoval(context) {
     page,
     sql,
     report,
+    selected,
     submit,
     target,
     done,
@@ -267,6 +262,7 @@ export async function verifyAlbumRemoval(context) {
     [],
   );
   await returnToLibrary();
+  await selected(2);
 }
 
 export async function verifyCurrentAlbumRemoval(context) {
@@ -284,6 +280,7 @@ export async function verifyCurrentAlbumRemoval(context) {
     done,
     returnToLibrary,
     monitor,
+    traffic,
     expectResults,
   } = context;
   await sql(
@@ -303,18 +300,19 @@ export async function verifyCurrentAlbumRemoval(context) {
   await action('从相册移除', 1);
   assert.equal(
     await page.evaluate(
-      (id) =>
-        document.querySelector(`[data-target-id="${id}"] input`)?.checked ??
-        document.querySelector(`[data-target-id="${id}"]`)?.checked,
-      batchAlbumIds[0],
+      () => document.querySelectorAll('[data-target-id]').length,
     ),
-    true,
-    'Album remove defaults to the current album',
+    0,
+    'Album removal has no other target choices',
   );
   await monitor();
   await page.click(submit);
   await done();
   const albumRemoval = await expectResults({ changed: 1 });
+  assert.deepEqual((await traffic())[0].request.command, {
+    type: 'remove-albums',
+    albumIds: [batchAlbumIds[0]],
+  });
   assert.equal(albumRemoval[0].inQuery, false);
   await returnToLibrary();
   await selected(0);
@@ -337,7 +335,6 @@ export async function verifyDeletedAlbumTarget(context) {
     sql,
     report,
     submit,
-    button,
     selected,
     target,
     done,
@@ -368,8 +365,7 @@ export async function verifyDeletedAlbumTarget(context) {
   );
   await returnToLibrary();
   await selected(2);
-  await page.click(button('操作已选 2 张图片'));
-  await page.click('loc=role:menuitem[name="查看已选清单"]');
+  await openSelectionManager(page, 2);
   await page.waitForSelector('[data-testid="library-selected-panel"]');
   assert.equal(
     await page.evaluate(

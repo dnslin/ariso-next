@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { join } from 'node:path';
+import { activateLibraryAction } from './library-action-controls.mjs';
 
 const button = (name) => `loc=role:button[name="${name}"]`;
 const cardSelector = '[data-testid="library-card"]';
@@ -41,12 +42,12 @@ export async function verifyLibrarySelection({ page, config, report }) {
         '[data-testid="library-selection"]',
       );
       const label = selection
-        ?.querySelector('button[aria-label^="操作已选"]')
+        ?.querySelector('button[aria-label^="管理选择，已选"]')
         ?.getAttribute('aria-label');
       const main = document.querySelector('main');
       const gallery = document.querySelector('[data-testid="library-gallery"]');
       return {
-        count: Number(label?.match(/操作已选 (\d+) 张图片/)?.[1] ?? 0),
+        count: Number(label?.match(/管理选择，已选 (\d+) 张/)?.[1] ?? 0),
         status: selection?.querySelector('[role="status"]')?.textContent ?? '',
         ids: [
           ...document.querySelectorAll(
@@ -63,11 +64,11 @@ export async function verifyLibrarySelection({ page, config, report }) {
   async function selected(count) {
     await page.waitForFunction((count) => {
       const trigger = document.querySelector(
-        '[data-testid="library-selection"] button[aria-label^="操作已选"]',
+        '[data-testid="library-selection"] button[aria-label^="管理选择，已选"]',
       );
       return count === 0
         ? !document.querySelector('[data-testid="library-selection"]')
-        : trigger?.getAttribute('aria-label') === `操作已选 ${count} 张图片`;
+        : trigger?.getAttribute('aria-label') === `管理选择，已选 ${count} 张`;
     }, count);
   }
   async function select(label, option) {
@@ -81,14 +82,25 @@ export async function verifyLibrarySelection({ page, config, report }) {
   async function action(name) {
     const count = (await state()).count;
     assert.ok(count > 0, `${name} needs an explicit selection`);
-    await page.click(button(`操作已选 ${count} 张图片`));
+    await activateLibraryAction(page, name, count);
     if (count === 41 && name === '查看已选清单') {
       const filename = 'library-selection-cross-page-counts.png';
       await page.screenshot({ path: join(config.output, filename) });
       report.screenshots.push(filename);
     }
-    await page.click(`loc=role:menuitem[name="${name}"]`);
     await settle();
+    if (
+      /^(全选|取消.*选择)/.test(name) &&
+      (await page.evaluate(
+        () =>
+          !!document.querySelector('[data-testid="library-selected-panel"]'),
+      ))
+    ) {
+      await page.keyboard.press('Escape');
+      await page.waitForSelector('[data-testid="library-selected-panel"]', {
+        state: 'hidden',
+      });
+    }
   }
   async function firstName() {
     return page.evaluate(() =>
@@ -358,7 +370,7 @@ export async function verifyLibrarySelection({ page, config, report }) {
     await page.click(button(`移除选择：${fixtureName(20)}`));
     await selected(40);
     assert.match((await state()).status, /当前页 1 张，其他页 39 张/);
-    await page.click(button('关闭已选清单'));
+    await page.keyboard.press('Escape');
     await page.waitForFunction(
       () => !document.querySelector('[data-testid="library-selected-panel"]'),
     );
@@ -581,7 +593,7 @@ export async function verifyLibrarySelection({ page, config, report }) {
           await page.evaluate(() =>
             document.activeElement?.getAttribute('aria-label'),
           ),
-          '操作已选 4 张图片',
+          '管理选择，已选 4 张',
         );
       }
     }
@@ -650,12 +662,17 @@ export async function verifyLargeLibrarySelection({
       return expected === 0
         ? !menu
         : menu
-            ?.querySelector('button[aria-label^="操作已选"]')
-            ?.getAttribute('aria-label') === `操作已选 ${expected} 张图片`;
+            ?.querySelector('button[aria-label^="管理选择，已选"]')
+            ?.getAttribute('aria-label') === `管理选择，已选 ${expected} 张`;
     }, expected);
   async function action(expected, name) {
-    await page.click(button(`操作已选 ${expected} 张图片`));
-    await page.click(`loc=role:menuitem[name="${name}"]`);
+    await activateLibraryAction(page, name, expected);
+    if (/^(全选|取消.*选择)/.test(name)) {
+      await page.keyboard.press('Escape');
+      await page.waitForSelector('[data-testid="library-selected-panel"]', {
+        state: 'hidden',
+      });
+    }
   }
   await page.evaluate(() => document.querySelector('main').scrollTo(0, 0));
   await page.evaluate(
@@ -802,7 +819,7 @@ export async function verifyLargeLibrarySelection({
   );
   assert.ok(afterRemoval.cardNodes <= 85);
   assert.equal(afterRemoval.selectedRows, Math.min(20, count - 201));
-  await page.click(button('关闭已选清单'));
+  await page.keyboard.press('Escape');
   await page.waitForFunction(
     () => !document.querySelector('[data-testid="library-selected-panel"]'),
   );

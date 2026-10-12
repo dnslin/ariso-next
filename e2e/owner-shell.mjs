@@ -65,10 +65,10 @@ export async function verifyOwnerShell(page, config, evidenceDirectory) {
     { label: '图库', href: '/library' },
     { label: '相册', href: '/albums' },
     { label: '标签', href: '/tags' },
-    { label: '分享管理', href: '/shares' },
+    { label: '分享', href: '/shares' },
     { label: '回收站', href: '/trash' },
     { label: '访问统计', href: '/analytics' },
-    { label: '存储管理', href: '/settings/storage' },
+    { label: '存储', href: '/settings/storage' },
     { label: '站点设置', href: '/settings/general' },
   ];
   const routes = [

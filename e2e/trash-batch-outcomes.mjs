@@ -130,10 +130,10 @@ export async function verifyBatchOutcomes(context) {
   assert.equal(
     await page.evaluate(() =>
       document
-        .querySelector('[aria-label^="操作已选"]')
+        .querySelector('[aria-label^="管理选择，已选"]')
         ?.getAttribute('aria-label'),
     ),
-    '操作已选 1 张图片',
+    '管理选择，已选 1 张',
   );
   await sql('DROP TRIGGER issue178_cleanup_failure');
   await page.click(button('查看本次清理结果'));

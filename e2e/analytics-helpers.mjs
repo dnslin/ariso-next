@@ -38,7 +38,9 @@ export function analyticsTools(page, config, report) {
     await page.waitForSelector(
       path.includes('view=usage')
         ? '[data-testid="analytics-usage"]'
-        : '[data-testid="analytics-overview"]',
+        : path.startsWith('/dashboard') && !path.includes('view=daily')
+          ? '[data-testid="dashboard-metrics"]'
+          : '[data-testid="analytics-overview"]',
     );
   }
   async function evidence(name, width = 390, theme = 'light', height) {

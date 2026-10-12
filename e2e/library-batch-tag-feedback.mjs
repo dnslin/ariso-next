@@ -7,6 +7,7 @@ export async function tagCompletion(
   changed,
   unchanged,
   sourceUrl,
+  selectionCount = changed + unchanged,
 ) {
   const { page, selected, report } = context;
   const title = type === 'add-tags' ? '添加标签完成' : '移除标签完成';
@@ -27,11 +28,12 @@ export async function tagCompletion(
     },
     { title, description },
   );
-  await selected(0);
+  await selected(selectionCount);
   assert.equal(await page.url(), sourceUrl);
   report.tagCompletionStep = 'source-focus';
-  await page.waitForFunction(() =>
-    document.activeElement?.matches('[data-testid="library-toolbar"] input'),
+  await page.waitForFunction(
+    (label) => document.activeElement?.getAttribute('aria-label') === label,
+    type === 'add-tags' ? '添加标签' : '更多图片操作',
   );
   report.tagCompletionStep = 'complete';
   return { title, description, sourceUrl };
@@ -43,7 +45,7 @@ export async function submitTagsWithToast(context, type, count, sourceUrl) {
     window.__tagSubmitTransitions = [];
     window.__tagSubmitObserver = new MutationObserver(() => {
       const workspace = document.querySelector('[data-testid="library-batch"]');
-      if (workspace && workspace.dataset.batchView !== 'tag-choose')
+      if (workspace && workspace.dataset.batchPhase !== 'choose')
         window.__tagSubmitTransitions.push(
           workspace.querySelector('h1')?.textContent,
         );
@@ -52,7 +54,7 @@ export async function submitTagsWithToast(context, type, count, sourceUrl) {
       childList: true,
       subtree: true,
       attributes: true,
-      attributeFilter: ['data-batch-view'],
+      attributeFilter: ['data-batch-phase'],
     });
   });
   try {
@@ -63,9 +65,9 @@ export async function submitTagsWithToast(context, type, count, sourceUrl) {
     );
     const pending = await page.evaluate(() => ({
       view: document.querySelector('[data-testid="library-batch"]')?.dataset
-        .batchView,
+        .batchPhase,
       busy: document
-        .querySelector('[data-testid="library-batch"]')
+        .querySelector('[data-testid="library-batch"] [aria-busy]')
         ?.getAttribute('aria-busy'),
       submitDisabled: document.querySelector('[data-testid="batch-submit"]')
         ?.disabled,
@@ -76,7 +78,7 @@ export async function submitTagsWithToast(context, type, count, sourceUrl) {
       ].every((node) => node.disabled),
       targetCount: document.querySelectorAll('[data-target-id] input').length,
     }));
-    assert.equal(pending.view, 'tag-choose');
+    assert.equal(pending.view, 'choose');
     assert.equal(pending.busy, 'true');
     assert.equal(pending.submitDisabled, true);
     assert.equal(pending.searchDisabled, true);
@@ -111,7 +113,39 @@ async function prepareTagCommand(context, type) {
   for (const index of [0, 1]) await choose(index);
   await action(type === 'add-tags' ? '添加标签' : '移除标签', 2);
   await target(batchTagIds[0]);
+  await page.fill('input[aria-label="搜索目标标签"]', 'Issue 177 标签');
+  await page.waitForSelector(`[data-target-id="${batchTagIds[0]}"]`);
+  if (type === 'add-tags')
+    await page.fill(
+      '[data-testid="batch-create-tag"] input',
+      '失败时保留的新标签草稿',
+    );
   return { ids, sourceUrl };
+}
+
+async function assertRetainedTagDraft(page, type) {
+  assert.equal(
+    await page.evaluate(
+      () => document.querySelector('input[aria-label="搜索目标标签"]').value,
+    ),
+    'Issue 177 标签',
+  );
+  assert.equal(
+    await page.evaluate(
+      (id) => document.querySelector(`[data-target-id="${id}"] input`).checked,
+      batchTagIds[0],
+    ),
+    true,
+  );
+  if (type === 'add-tags')
+    assert.equal(
+      await page.evaluate(
+        () =>
+          document.querySelector('[data-testid="batch-create-tag"] input')
+            .value,
+      ),
+      '失败时保留的新标签草稿',
+    );
 }
 
 async function assertNoTagToast(page) {
@@ -147,9 +181,9 @@ export async function verifyTagFailures(context, type) {
       ),
       true,
     );
+    await assertRetainedTagDraft(page, type);
     await assertNoTagToast(page);
     await sql('DROP TRIGGER issue177_tag_failure');
-    await page.click('[data-testid="batch-retained"]');
     await page.waitForSelector('[data-testid="batch-retry"]');
     assert.equal(
       (await traffic()).length,
@@ -163,7 +197,7 @@ export async function verifyTagFailures(context, type) {
     assert.deepEqual(sent[1].request.ids, [ids[1]]);
     assert.deepEqual(sent[1].request.command, sent[0].request.command);
     assert.equal(sent[1].response.results[0].status, 'changed');
-    await tagCompletion(context, type, 1, 0, sourceUrl);
+    await tagCompletion(context, type, 1, 0, sourceUrl, 2);
     const joins = await sql(
       `SELECT image_id FROM image_tags WHERE tag_id='${batchTagIds[0]}' ORDER BY image_id`,
     );
@@ -189,9 +223,10 @@ export async function verifyTagUnknown(context, type) {
   await page.waitForFunction(
     () =>
       document
-        .querySelector('[data-testid="library-batch"]')
+        .querySelector('[data-testid="library-batch"] [aria-busy]')
         ?.getAttribute('aria-busy') === 'false',
   );
+  await assertRetainedTagDraft(page, type);
   await assertNoTagToast(page);
   const lost = await traffic();
   assert.equal(

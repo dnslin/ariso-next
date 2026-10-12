@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { join } from 'node:path';
 import { batchImageName } from './library-batch-fixture.mjs';
 import { verifyToastTextLayout } from './toast-layout.mjs';
+import { activateLibraryAction } from './library-action-controls.mjs';
 
 export function createBatchHelpers({ page, config, report }) {
   const button = (name) => `loc=role:button[name="${name}"]`;
@@ -33,10 +34,10 @@ export function createBatchHelpers({ page, config, report }) {
   async function selected(count) {
     await page.waitForFunction((count) => {
       const trigger = document.querySelector(
-        '[data-testid="library-selection"] button[aria-label^="操作已选"]',
+        '[data-testid="library-selection"] button[aria-label^="管理选择"]',
       );
       return count
-        ? trigger?.getAttribute('aria-label') === `操作已选 ${count} 张图片`
+        ? trigger?.getAttribute('aria-label') === `管理选择，已选 ${count} 张`
         : !document.querySelector('[data-testid="library-selection"]');
     }, count);
   }
@@ -47,35 +48,7 @@ export function createBatchHelpers({ page, config, report }) {
   }
   async function action(name, count) {
     await selected(count);
-    await page.click(button(`操作已选 ${count} 张图片`));
-    await page.waitForSelector('[role="menu"][aria-label="已选图片操作"]');
-    const actions = await page.evaluate(() =>
-      [...document.querySelectorAll('[role="menuitem"]')]
-        .filter((node) => node.getAttribute('aria-disabled') !== 'true')
-        .map((node) => node.textContent.trim()),
-    );
-    const index = actions.indexOf(name);
-    assert.ok(index >= 0, `The actual menu exposes an enabled ${name} action`);
-    for (let step = 0; step <= index; step++)
-      await page.keyboard.press(step === 0 ? 'Home' : 'ArrowDown');
-    await page.waitForFunction(
-      (name) =>
-        document.activeElement
-          ?.closest('[role="menuitem"]')
-          ?.textContent.trim() === name,
-      name,
-    );
-    const visible = await page.evaluate(() => {
-      const item = document.activeElement
-        .closest('[role="menuitem"]')
-        .getBoundingClientRect();
-      const popup = document
-        .querySelector('[data-slot="dropdown-popover"]')
-        .getBoundingClientRect();
-      return item.top >= popup.top && item.bottom <= popup.bottom;
-    });
-    assert.equal(visible, true, `The complete ${name} click target is visible`);
-    await page.click(`loc=role:menuitem[name="${name}"]`);
+    await activateLibraryAction(page, name, count);
     if (!['全选当前页', '全选已加载', '清空全部选择'].includes(name))
       await page.waitForSelector(batch);
     await settle();
@@ -99,7 +72,7 @@ export function createBatchHelpers({ page, config, report }) {
       );
     }
     await page.waitForSelector(`[data-target-id="${id}"]`);
-    await page.click(`label:has(input[aria-label$=" · ${id}"])`);
+    await page.click(`[data-target-id="${id}"] label`);
     await settle();
     assert.equal(
       await page.evaluate(
@@ -118,6 +91,9 @@ export function createBatchHelpers({ page, config, report }) {
   async function done() {
     await page.waitForFunction(() => {
       const workspace = document.querySelector('[data-testid="library-batch"]');
+      const busy = document.querySelector(
+        '[data-testid="library-batch"][aria-busy], [data-testid="library-batch"] [aria-busy]',
+      );
       const result =
         document.querySelector(
           '[data-testid="batch-results"],[data-testid="batch-summary"]',
@@ -132,13 +108,17 @@ export function createBatchHelpers({ page, config, report }) {
                 '批量设为私有完成',
                 '添加标签完成',
                 '移除标签完成',
+                '添加到相册完成',
+                '从相册移除完成',
+                '图片已移入回收站',
+                '图片已恢复',
               ].includes(node.textContent),
           )
         );
       return (
         !!result &&
-        (workspace?.getAttribute('aria-busy') === 'false' ||
-          (workspace?.getAttribute('aria-busy') === null &&
+        (busy?.getAttribute('aria-busy') === 'false' ||
+          (!busy &&
             document.querySelector('[data-testid="batch-done"]')?.disabled ===
               false))
       );
@@ -151,7 +131,7 @@ export function createBatchHelpers({ page, config, report }) {
         () => !!document.querySelector('[data-testid="library-batch"]'),
       ))
     ) {
-      await selected(0);
+      await settle();
       return;
     }
     const returning = await page.evaluate(
@@ -373,7 +353,10 @@ export function createBatchHelpers({ page, config, report }) {
           await page.evaluate(
             () =>
               document.querySelector('[data-testid="library-batch"]')?.dataset
-                .batchView === 'tag-choose',
+                .batchPhase === 'choose' &&
+              document
+                .querySelector('[data-testid="library-batch"]')
+                ?.dataset.batchAction?.endsWith('tags'),
           )
         )
           layout.tags = await tagGeometry();
@@ -457,12 +440,10 @@ export function createBatchHelpers({ page, config, report }) {
 
   async function tagGeometry() {
     const geometry = await page.evaluate(() => {
-      const workspace = document.querySelector(
-        '[data-batch-view="tag-choose"]',
-      );
+      const workspace = document.querySelector('[data-batch-phase="choose"]');
       const grid = workspace.querySelector('[data-testid="batch-target-grid"]');
-      const footer = document.querySelector('[data-testid="batch-tag-footer"]');
-      const cancel = footer.querySelector('[data-testid="batch-cancel"]');
+      const footer = workspace.querySelector('[data-slot="drawer-footer"]');
+      const cancel = footer.querySelector('[data-testid="batch-return"]');
       const submit = footer.querySelector('[data-testid="batch-submit"]');
       const rect = (node) => node.getBoundingClientRect().toJSON();
       return {
@@ -470,7 +451,10 @@ export function createBatchHelpers({ page, config, report }) {
         height: innerHeight,
         workspace: rect(workspace),
         footer: rect(footer),
-        summary: footer.querySelector('p').textContent,
+        summary: workspace.querySelector('[role="status"]').textContent,
+        selectedTags: rect(
+          footer.querySelector('[data-testid="batch-tag-count"]'),
+        ),
         cancel: rect(cancel),
         submit: rect(submit),
         buttonGroup: rect(submit.parentElement),
@@ -504,25 +488,22 @@ export function createBatchHelpers({ page, config, report }) {
         }),
       };
     });
-    assert.ok(geometry.workspace.width <= 960);
     assert.equal(
-      geometry.columns,
-      geometry.width >= 1024 ? 3 : geometry.width >= 640 ? 2 : 1,
+      geometry.workspace.width,
+      geometry.width < 640 ? geometry.width : 420,
     );
-    assert.equal(geometry.cancel.width, 112);
-    assert.equal(geometry.cancel.height, 48);
-    assert.equal(geometry.submit.height, 48);
-    if (geometry.width >= 640) assert.equal(geometry.submit.width, 180);
-    else
-      assert.ok(
-        Math.abs(
-          geometry.submit.width +
-            geometry.cancel.width +
-            12 -
-            geometry.buttonGroup.width,
-        ) < 1,
-        'Mobile submit uses the space after the 112px cancel target',
-      );
+    assert.equal(geometry.columns, 1);
+    assert.ok(geometry.cancel.width >= 44);
+    assert.ok(geometry.cancel.height >= 44);
+    assert.ok(geometry.submit.height >= 44);
+    assert.ok(geometry.submit.width >= 44);
+    assert.ok(geometry.submit.left >= geometry.cancel.right);
+    assert.ok(
+      geometry.selectedTags.left >= geometry.footer.left &&
+        geometry.selectedTags.left <= geometry.footer.left + 24 &&
+        geometry.selectedTags.right <= geometry.cancel.left,
+      'Selected tag count stays at the footer left before both actions',
+    );
     assert.ok(
       geometry.cancel.top >= 0 &&
         geometry.submit.top >= 0 &&
@@ -530,15 +511,15 @@ export function createBatchHelpers({ page, config, report }) {
         geometry.submit.bottom <= geometry.height,
       'Both tag footer actions remain reachable',
     );
-    for (const image of geometry.context) {
-      assert.equal(image.width, 48);
-      assert.equal(image.height, 48);
-      assert.equal(image.decorative, true);
-    }
+    assert.equal(
+      geometry.context.length,
+      0,
+      'Tag targets do not repeat selected-image context',
+    );
     for (const card of geometry.cards) {
-      assert.ok(card.rect.height >= 64);
+      assert.ok(card.rect.height >= 44);
       assert.equal(card.nameFont, '14px');
-      assert.ok(card.text.includes(card.id));
+      assert.ok(!card.text.includes(card.id));
       assert.ok(!card.text.includes('创建于'));
       for (const rect of card.fragments)
         assert.ok(
@@ -615,7 +596,13 @@ export function createBatchHelpers({ page, config, report }) {
       theme,
     );
   }
-  async function visibilityToast(visibility, changed, unchanged, sourceUrl) {
+  async function visibilityToast(
+    visibility,
+    changed,
+    unchanged,
+    sourceUrl,
+    selectionCount = changed + unchanged,
+  ) {
     const title = `批量设为${visibility === 'public' ? '公开' : '私有'}完成`;
     const description = `${changed}张已修改 · ${unchanged}张无需修改`;
     await page.waitForFunction(
@@ -639,7 +626,7 @@ export function createBatchHelpers({ page, config, report }) {
       sourceUrl,
       'Completed visibility work returns to the exact original route and page',
     );
-    await selected(0);
+    await selected(selectionCount);
     return { title, description, sourceUrl };
   }
   async function toastLayouts(state, expected, widths = [390, 1440]) {

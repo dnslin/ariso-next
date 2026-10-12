@@ -20,18 +20,16 @@ async function verifyTagTargetReads(context, count) {
     );
     const state = await page.evaluate(() => ({
       disabled: document.querySelector('[data-testid="batch-submit"]').disabled,
-      count: [...document.querySelectorAll('[role="status"]')].find((node) =>
-        /已选\s*2\s*个标签/.test(node.textContent),
-      )?.textContent,
-      footer: document.querySelector('[data-testid="batch-tag-footer"] p')
-        .textContent,
+      images: document.querySelector('[data-testid="batch-tag-image-count"]')
+        ?.textContent,
+      tags: document.querySelector('[data-testid="batch-tag-count"]')
+        ?.textContent,
     }));
     assert.equal(state.disabled, disabled);
-    assert.ok(state.count, 'Target reads retain both explicit tag selections');
-    assert.match(
-      state.footer,
-      new RegExp(`${count}\\s*张图片\\s*×\\s*2\\s*个标签`),
-    );
+    assert.ok(state.images, 'Target reads retain the selected image count');
+    assert.ok(state.tags, 'Target reads retain both explicit tag selections');
+    assert.match(state.images, new RegExp(`${count}\\s*张图片`));
+    assert.match(state.tags, /2\s*个标签/);
   };
   await page.evaluate(() => {
     const original = window.fetch;
@@ -216,22 +214,17 @@ export async function verifyTagRetryAfterAlbumError(context) {
     };
   }, albumPath);
   await action('从相册移除', 1);
-  await page.waitForSelector(
-    '[role="alert"]:has-text("actual collection read response lost")',
-  );
   const albumReads = await page.evaluate(() => window.__collectionReadRequests);
-  assert.ok(
-    albumReads.some(
-      (entry) =>
-        entry.path === albumPath && entry.status === 200 && entry.discarded,
-    ),
-    'The current-album cache error comes from its discarded successful real GET',
+  assert.deepEqual(
+    albumReads,
+    [],
+    'Current-album removal needs no collection target read',
   );
   assert.equal(
     await page.evaluate(
       () => document.querySelector('[data-testid="batch-submit"]').disabled,
     ),
-    true,
+    false,
   );
   await returnToLibrary();
   await selected(1);
@@ -241,9 +234,8 @@ export async function verifyTagRetryAfterAlbumError(context) {
   assert.equal(
     await page.evaluate(
       () =>
-        document.querySelectorAll(
-          '[data-batch-view="tag-choose"] [role="alert"]',
-        ).length,
+        document.querySelectorAll('[data-batch-phase="choose"] [role="alert"]')
+          .length,
     ),
     0,
     'The current-album cached error never appears as a tag-target error',
@@ -328,7 +320,7 @@ export async function verifyTagRetryAfterAlbumError(context) {
     [],
     'Target reads, retry and cancellation never submit a batch mutation',
   );
-  await page.click('[data-testid="batch-cancel"]');
+  await page.click('[data-testid="batch-return"]');
   await page.waitForFunction(
     () => !document.querySelector('[data-testid="library-batch"]'),
   );
@@ -337,7 +329,7 @@ export async function verifyTagRetryAfterAlbumError(context) {
   await action('清空全部选择', 1);
   await selected(0);
   report.checks.push(
-    'On a real album route, a discarded successful current-album GET creates its query-cache error. Closing removal and opening tags hides the unrelated album error and identity; discarding a real tag GET and explicitly retrying fetches only tags, preserves both chosen IDs and sends no batch mutation.',
+    'On a real album route, current-album removal needs no target GET. Closing removal and opening tags never injects the album identity; discarding a real tag GET and explicitly retrying fetches only tags, preserves both chosen IDs and sends no batch mutation.',
   );
 }
 
@@ -381,7 +373,7 @@ export async function verifyTagTargets(context, indices = [0, 1, 2, 3]) {
   const sourceUrl = await page.url();
   for (const index of indices) await choose(index);
   await action('添加标签', indices.length);
-  await page.waitForSelector('[data-batch-view="tag-choose"]');
+  await page.waitForSelector('[data-batch-phase="choose"]');
   assert.equal(
     await page.evaluate(
       () => document.querySelector('[data-testid="batch-submit"]').disabled,
@@ -399,10 +391,9 @@ export async function verifyTagTargets(context, indices = [0, 1, 2, 3]) {
   await layouts('add-tags', [390, 430, 768, 1440]);
   assert.equal(
     await page.evaluate(
-      () =>
-        document.querySelectorAll('[data-batch-view="tag-choose"] img').length,
+      () => document.querySelectorAll('[data-batch-phase="choose"] img').length,
     ),
-    Math.min(ids.length, 3),
+    0,
   );
   for (const width of [360, 390]) {
     await resize(width, 600);
@@ -410,30 +401,23 @@ export async function verifyTagTargets(context, indices = [0, 1, 2, 3]) {
     report.layouts.push({ state: 'tag-short', theme: 'dark', ...geometry });
     await shot('tag-short', width, 'dark');
   }
-  await page.click(button('标签操作说明'));
-  await page.waitForSelector('[data-testid="batch-tag-tips"]');
-  assert.ok(
-    await page.evaluate(() =>
-      document
-        .querySelector('[data-testid="batch-tag-tips"]')
-        .textContent.includes('任一标签失效'),
+  assert.equal(
+    await page.evaluate(
+      () => !!document.querySelector('[data-testid="batch-tag-tips"]'),
     ),
+    false,
+    'Target selection does not duplicate a separate explanatory panel',
   );
-  await shot('tag-help', 390, 'dark');
+  await monitor();
   await page.keyboard.press('Escape');
-  await page.waitForSelector('[data-testid="batch-tag-tips"]', {
+  await page.waitForSelector('[data-testid="library-batch"]', {
     state: 'hidden',
   });
   assert.equal(
     await page.evaluate(() =>
       document.activeElement?.getAttribute('aria-label'),
     ),
-    '标签操作说明',
-  );
-  await monitor();
-  await page.click('[data-testid="batch-cancel"]');
-  await page.waitForFunction(
-    () => !document.querySelector('[data-testid="library-batch"]'),
+    '添加标签',
   );
   await selected(indices.length);
   assert.equal(
@@ -504,10 +488,42 @@ export async function verifyTagTargets(context, indices = [0, 1, 2, 3]) {
       true,
     );
   }
-  await page.click(button('新建标签'));
-  await page.waitForSelector('[data-testid="upload-create-tag"]');
+  const beforeDuplicate = await sql('SELECT count(*) AS n FROM tags');
   await page.fill(
-    '[data-testid="upload-create-tag"] input',
+    '[data-testid="batch-create-tag"] input',
+    ' issue 177 标签 a ',
+  );
+  await page.click(button('创建标签'));
+  await page.waitForSelector(
+    '[data-testid="batch-create-tag"] [data-slot="field-error"]:has-text("已有同名标签")',
+  );
+  assert.deepEqual(
+    await sql('SELECT count(*) AS n FROM tags'),
+    beforeDuplicate,
+    'A normalized duplicate keeps the existing tag record',
+  );
+  assert.equal(
+    await page.evaluate(
+      () =>
+        document.querySelector('[data-testid="batch-create-tag"] input').value,
+    ),
+    ' issue 177 标签 a ',
+  );
+  await page.click(button('选择现有标签：Issue 177 标签 A'));
+  await page.waitForFunction(
+    () =>
+      document.querySelector('[data-testid="batch-create-tag"] input').value ===
+      '',
+  );
+  assert.match(
+    await page.evaluate(
+      () =>
+        document.querySelector('[data-testid="batch-tag-count"]').textContent,
+    ),
+    /2\s*个标签/,
+  );
+  await page.fill(
+    '[data-testid="batch-create-tag"] input',
     'Issue 177 快建标签',
   );
   await resize(390);
@@ -516,7 +532,9 @@ export async function verifyTagTargets(context, indices = [0, 1, 2, 3]) {
   await shot('quick-create', 1440, 'dark');
   await page.click(button('创建标签'));
   await page.waitForFunction(
-    () => !document.querySelector('[data-testid="upload-create-tag"]'),
+    () =>
+      document.querySelector('[data-testid="batch-create-tag"] input').value ===
+      '',
   );
   const [createdTag] = await sql(
     "SELECT id FROM tags WHERE display_name='Issue 177 快建标签'",
@@ -534,10 +552,17 @@ export async function verifyTagTargets(context, indices = [0, 1, 2, 3]) {
   assert.match(
     await page.evaluate(
       () =>
-        document.querySelector('[data-testid="batch-tag-footer"] p')
+        document.querySelector('[data-testid="batch-tag-count"]').textContent,
+    ),
+    /3\s*个标签/,
+  );
+  assert.match(
+    await page.evaluate(
+      () =>
+        document.querySelector('[data-testid="batch-tag-image-count"]')
           .textContent,
     ),
-    new RegExp(`${ids.length}\\s*张图片\\s*×\\s*3\\s*个标签`),
+    new RegExp(`${ids.length}\\s*张图片`),
   );
   const addFeedback = await submitTagsWithToast(
     context,
@@ -606,7 +631,7 @@ export async function verifyTagTargets(context, indices = [0, 1, 2, 3]) {
     removeFeedback,
   };
   report.checks.push(
-    'The approved compact tag chooser renders three/two/one readable columns with 64px cards and 48px context images, 48px natural footer actions, long names/IDs, 360/390×600 scrolling and real Escape/Space focus. Real target search and paging preserve explicit choices; quick creation persists and selects a real tag; add/remove submit the exact three target IDs and persist then remove every image relationship.',
+    'The approved tag Drawer renders one readable list, 44px footer actions and long names without visible UUIDs, with 360/390×600 scrolling and real Escape/Space focus. Real target search and paging preserve explicit choices; normalized duplicates are rejected; quick creation persists and selects a real tag; add/remove submit the exact three target IDs and persist then remove every image relationship.',
   );
 }
 
@@ -618,6 +643,6 @@ export async function verifyTagTargetStates(context) {
   await target(batchTagIds[0]);
   await target(batchTagIds[1]);
   await verifyTagTargetReads(context, 4);
-  await page.click('[data-testid="batch-cancel"]');
+  await page.click('[data-testid="batch-return"]');
   await selected(4);
 }

@@ -6,7 +6,14 @@ import {
 } from './analytics-helpers.mjs';
 import { signInToLibrary } from './library-login.mjs';
 
-async function retryWithKeyboard(page, boundary, label, path, report) {
+async function retryWithKeyboard(
+  page,
+  boundary,
+  label,
+  path,
+  report,
+  accessibleLabel = label,
+) {
   const requestCount = (await boundary.read()).length;
   await page.evaluate((label) => {
     const button = [...document.querySelectorAll('button')].find(
@@ -26,7 +33,7 @@ async function retryWithKeyboard(page, boundary, label, path, report) {
         { once: true },
       );
   }, label);
-  await page.focus(button(label));
+  await page.focus(button(accessibleLabel));
   await boundary.configure({});
   await page.keyboard.press('Space');
   try {
@@ -72,12 +79,12 @@ export async function analyticsRecovery(page, config, tools, fixture, report) {
   try {
     let boundary = await analyticsBoundary(page, { hold: true }, true);
     try {
-      await page.goto(`${config.origin}/analytics?days=7`);
+      await page.goto(`${config.origin}/dashboard?days=7`);
       await page.waitForSelector('[data-testid="overview-loading"]');
       await page.waitForSelector('[data-testid="usage-loading"]');
       assert.equal(
         await page.evaluate(
-          () => !!document.querySelector('[data-testid="analytics-metrics"]'),
+          () => !!document.querySelector('[data-testid="dashboard-metrics"]'),
         ),
         false,
         'No fabricated zeros while the first read is pending',
@@ -89,7 +96,14 @@ export async function analyticsRecovery(page, config, tools, fixture, report) {
             .length === 2,
       );
       await boundary.release();
-      await page.waitForSelector('[data-testid="analytics-overview"]');
+      await page.waitForSelector('[data-testid="dashboard-metrics"]');
+      await page.waitForSelector('[data-testid="analytics-usage-summary"]');
+      await page.waitForSelector('[data-testid="overview-loading"]', {
+        state: 'hidden',
+      });
+      await page.waitForSelector('[data-testid="usage-loading"]', {
+        state: 'hidden',
+      });
     } finally {
       await boundary.dispose();
     }
@@ -101,18 +115,18 @@ export async function analyticsRecovery(page, config, tools, fixture, report) {
         'analytics-usage-summary',
         '重试访问统计',
       ],
-      ['usage', '/api/analytics/usage', 'analytics-overview', '重试存储占用'],
+      ['usage', '/api/analytics/usage', 'dashboard-metrics', '重试存储占用'],
     ]) {
       boundary = await analyticsBoundary(page, { path, status: 500 }, true);
       try {
-        await page.goto(`${config.origin}/analytics?days=7`);
+        await page.goto(`${config.origin}/dashboard?days=7`);
         await page.waitForSelector(`[data-testid="${scope}-error"]`);
         await page.waitForSelector(`[data-testid="${ready}"]`);
         if (scope === 'overview')
           assert.equal(
             await page.evaluate(
               () =>
-                !!document.querySelector('[data-testid="analytics-metrics"]'),
+                !!document.querySelector('[data-testid="dashboard-metrics"]'),
             ),
             false,
           );
@@ -121,7 +135,7 @@ export async function analyticsRecovery(page, config, tools, fixture, report) {
         await page.waitForSelector(`[data-testid="${scope}-error"]`, {
           state: 'hidden',
         });
-        await page.waitForSelector('[data-testid="analytics-overview"]');
+        await page.waitForSelector('[data-testid="dashboard-metrics"]');
       } finally {
         await boundary.dispose();
       }
@@ -141,22 +155,24 @@ export async function analyticsRecovery(page, config, tools, fixture, report) {
       await page.focus(button('刷新访问统计'));
       await page.keyboard.press('Space');
       await page.waitForSelector('[data-testid="overview-stale"]');
-      assert.deepEqual(
-        await page.evaluate(() => ({
-          metrics: document.querySelector('[data-testid="analytics-metrics"]')
-            .textContent,
-          metadata: document.querySelector('[data-testid="analytics-metadata"]')
-            .textContent,
-        })),
-        before,
+      const retained = await page.evaluate(() => ({
+        metrics: document.querySelector('[data-testid="analytics-metrics"]')
+          .textContent,
+        status: document.querySelector('[data-testid="overview-stale"]')
+          .textContent,
+      }));
+      assert.equal(retained.metrics, before.metrics);
+      assert.ok(
+        retained.status.includes(before.metadata.match(/更新于 (\d+:\d+)/)[1]),
       );
       await tools.evidence('refresh-failed-old-data', 1440, 'light');
       await retryWithKeyboard(
         page,
         boundary,
-        '重试访问统计',
+        '重试',
         '/api/analytics/overview',
         report,
+        '重试 7 天访问统计',
       );
       await page.waitForSelector('[data-testid="overview-stale"]', {
         state: 'hidden',
@@ -164,8 +180,98 @@ export async function analyticsRecovery(page, config, tools, fixture, report) {
     } finally {
       await boundary.dispose();
     }
+    await tools.open('/analytics?days=7');
+    boundary = await analyticsBoundary(page, {
+      path: '/api/analytics/overview',
+      days: 30,
+      status: 500,
+    });
+    try {
+      await page.waitForSelector('[data-testid="analytics-chart"]');
+      await page.evaluate(() => {
+        window.__analytics179.continuity = {
+          overview: document.querySelector(
+            '[data-testid="analytics-overview"]',
+          ),
+          chart: document.querySelector('[data-testid="analytics-chart"]'),
+          periods: document.querySelector('[aria-label="统计周期"]'),
+          metrics: document.querySelector('[data-testid="analytics-metrics"]')
+            .textContent,
+        };
+      });
+      await page.focus(
+        'loc=css:[aria-label="统计周期"] button[role="radio"] >> nth=1',
+      );
+      await page.keyboard.press('Space');
+      await page.waitForSelector('[data-testid="overview-stale"]');
+      assert.deepEqual(
+        await page.evaluate(() => {
+          const before = window.__analytics179.continuity;
+          const current = document.querySelector(
+            '[data-testid="analytics-overview"]',
+          );
+          return {
+            overview: before.overview === current,
+            chart:
+              before.chart ===
+              document.querySelector('[data-testid="analytics-chart"]'),
+            periods:
+              before.periods ===
+              document.querySelector('[aria-label="统计周期"]'),
+            metrics:
+              before.metrics ===
+              document.querySelector('[data-testid="analytics-metrics"]')
+                .textContent,
+            requested: current.dataset.requestedDays,
+            displayed: current.dataset.displayedDays,
+            status: document
+              .querySelector('[data-testid="overview-stale"]')
+              .textContent.includes('30 天更新失败，当前显示 7 天'),
+          };
+        }),
+        {
+          overview: true,
+          chart: true,
+          periods: true,
+          metrics: true,
+          requested: '30',
+          displayed: '7',
+          status: true,
+        },
+      );
+      await tools.evidence('new-period-failed-old-data', 390, 'dark');
+      await retryWithKeyboard(
+        page,
+        boundary,
+        '重试',
+        '/api/analytics/overview',
+        report,
+        '重试 30 天访问统计',
+      );
+      await page.waitForFunction(
+        () =>
+          document.querySelector('[data-testid="analytics-overview"]')?.dataset
+            .displayedDays === '30',
+      );
+      const retried = (await boundary.read()).filter(
+        (request) => request.days === '30',
+      );
+      assert.ok(retried.some((request) => request.injectedStatus === 500));
+      assert.ok(retried.some((request) => request.status === 200));
+      assert.equal(
+        await page.evaluate(
+          () =>
+            window.__analytics179.continuity.chart ===
+            document.querySelector('[data-testid="analytics-chart"]'),
+        ),
+        true,
+      );
+      report.periodFailure = retried;
+    } finally {
+      await boundary.dispose();
+    }
     report.checks.push(
-      'Initial overview/usage loading and independent read failures never fabricate zeros. Same-period refresh failure preserves old numbers and the original update label; explicit retry restores actual data.',
+      'Initial overview/usage loading and independent read failures never fabricate zeros. Same-period and new-period failures retain the real old report and update time, including overview/chart/control nodes. A 30-day failure explicitly identifies displayed 7-day data and trusted keyboard retry requests 30 days before updating the same chart.',
     );
 
     for (const query of ['days=10', 'days=7&days=30', 'days=7&view=unknown']) {

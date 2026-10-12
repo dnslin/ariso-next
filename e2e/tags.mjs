@@ -98,9 +98,69 @@ async function fillName(name) {
   await page.fill(await nameField(), name);
 }
 async function rowAction(id, name) {
-  const selector = `[data-testid="tag-${id}"] button:has-text("${name}")`;
+  const selector = `[data-testid="tag-${id}"] button[aria-label^="${name === '编辑' ? '重命名标签' : '删除标签'} "]`;
   await page.click(selector);
   await page.waitForSelector(tagDialogSelector);
+}
+async function nameHelp() {
+  const previousStage = report.stage;
+  const label = '标签名称说明';
+  const tip = `[role="dialog"][aria-label="${label}"]`;
+  const normal = await page.evaluate((selector) => {
+    const dialog = document.querySelector(selector);
+    return {
+      labels: [...dialog.querySelectorAll('label')].map((node) =>
+        node.textContent.trim(),
+      ),
+      messages: dialog.querySelectorAll('.bg-default').length,
+    };
+  }, tagDialogSelector);
+  assert.deepEqual(normal.labels, ['名称']);
+  assert.equal(
+    normal.messages,
+    0,
+    'Normal tag rules do not occupy a message block',
+  );
+  // Modal focus restoration runs after mount. Wait for its input autofocus
+  // before moving focus to the help trigger with a real keyboard action.
+  report.stage = 'tag name help initial focus';
+  await page.waitForFunction(
+    (selector) => document.activeElement === document.querySelector(selector),
+    await nameField(),
+  );
+  report.stage = 'tag name help trigger focus';
+  await page.focus(button(label));
+  await page.waitForFunction(
+    (label) => document.activeElement?.getAttribute('aria-label') === label,
+    label,
+  );
+  report.stage = 'tag name help open';
+  await page.keyboard.press('Enter');
+  await page.waitForSelector(tip);
+  const rule = await page.evaluate(
+    (selector) => document.querySelector(selector).textContent,
+    tip,
+  );
+  assert.match(rule, /改名保留图片关联；不能重名或合并/);
+  report.stage = 'tag name help close';
+  await page.keyboard.press('Escape');
+  await page.waitForSelector(tip, { state: 'hidden' });
+  report.stage = 'tag name help restore focus';
+  await page.waitForFunction(
+    (label) => document.activeElement?.getAttribute('aria-label') === label,
+    label,
+  );
+  // Returning focus may show the trigger's keyboard tooltip. Continue to the
+  // next form control before resizing so the layout check starts without it.
+  report.stage = 'tag name help return to input';
+  await page.keyboard.press('Tab');
+  await page.waitForFunction(
+    (selector) => document.activeElement === document.querySelector(selector),
+    await nameField(),
+  );
+  await page.waitForSelector('[role="tooltip"]', { state: 'hidden' });
+  report.nameHelp = 'passed';
+  report.stage = previousStage;
 }
 async function dismiss() {
   // Resizing can move focus out of the responsive overlay. Restore a visible
@@ -121,9 +181,11 @@ async function returned() {
   );
 }
 async function layouts(state, widths = [390, 1440]) {
+  const previousStage = report.stage;
   for (const theme of ['light', 'dark']) {
     await setTheme(page, theme);
     for (const width of widths) {
+      report.stage = `layout ${state}/${theme}/${width}`;
       await resizeViewport(page, width);
       const toastPoint = await page.evaluate(() => {
         const front = document.querySelector(
@@ -226,6 +288,7 @@ async function layouts(state, widths = [390, 1440]) {
       }
     }
   }
+  report.stage = previousStage;
 }
 // Successful operations use real APIs and SQLite. Only response delivery is
 // altered for loading, definite rejection and post-commit network loss.
@@ -314,6 +377,30 @@ try {
         (row) => row.getClientRects().length,
       ).length === 9,
   );
+  assert.equal(
+    await page.evaluate(() =>
+      document.querySelector('main').textContent.includes('图片数量不含回收站'),
+    ),
+    false,
+    'The tag count policy is not repeated in the page heading',
+  );
+  await page.click(button('标签数量说明'));
+  await page.waitForSelector('[role="dialog"][aria-label="标签数量说明"]');
+  assert.match(
+    await page.evaluate(
+      () =>
+        document.querySelector('[role="dialog"][aria-label="标签数量说明"]')
+          .textContent,
+    ),
+    /图片数量不含回收站/,
+  );
+  await page.keyboard.press('Escape');
+  await page.waitForSelector('[role="dialog"][aria-label="标签数量说明"]', {
+    state: 'hidden',
+  });
+  await page.waitForFunction(
+    () => document.activeElement?.getAttribute('aria-label') === '标签数量说明',
+  );
   const initial = await api();
   assert.equal(initial.status, 200);
   assert.deepEqual(
@@ -342,10 +429,10 @@ try {
         document.querySelector('[role="dialog"] h2')?.textContent.trim() ===
           '新建标签' &&
         [...document.querySelectorAll('[role="dialog"] form button')].some(
-          (node) => node.textContent.trim() === '创建标签',
+          (node) => node.textContent.trim() === '创建',
         ),
     );
-    await page.click(button('创建标签'));
+    await page.click(button('创建'));
     await page.waitForFunction(
       (heading) =>
         document.querySelector('[role="dialog"] h2')?.textContent.trim() ===
@@ -361,7 +448,7 @@ try {
   }
   await fillName('📷'.repeat(50));
   await intercept('POST', 'hold');
-  await page.click(button('创建标签'));
+  await page.click(button('创建'));
   await page.waitForFunction(() => typeof window.__tagRelease === 'function');
   await page.waitForFunction(
     (dialogSelector) =>
@@ -388,7 +475,7 @@ try {
   report.stage = 'unicode reuse';
   await openCreate();
   await fillName('go');
-  await page.click(button('创建标签'));
+  await page.click(button('创建'));
   await page.waitForSelector(button('返回标签列表'));
   assert.ok((await readTagDialog(page)).includes('Go'));
   await layouts('reuse');
@@ -406,7 +493,7 @@ try {
   await openCreate();
   await fillName('GO');
   await intercept('POST', 'lost');
-  await page.click(button('创建标签'));
+  await page.click(button('创建'));
   await page.waitForSelector(button('返回标签列表'));
   assert.ok((await readTagDialog(page)).includes('Go'));
   await assertSingleWrite();
@@ -444,9 +531,10 @@ try {
   report.stage = 'conflict and rename';
   await list();
   await rowAction('issue176-tag-1', '编辑');
+  await nameHelp();
   await layouts('edit');
   await fillName('GO');
-  await page.click(button('保存更改'));
+  await page.click(button('保存'));
   await waitTagDialogText(page, '已被使用');
   assert.equal(
     await page.evaluate(
@@ -468,7 +556,7 @@ try {
   await rowAction('issue176-tag-1', '编辑');
   await fillName('远行二');
   await intercept('PATCH', 'reject', '/issue176-tag-1');
-  await page.click(button('保存更改'));
+  await page.click(button('保存'));
   await waitTagDialogText(page, '未能保存');
   await layouts('edit-error');
   await restore();
@@ -481,7 +569,7 @@ try {
   await restore();
   await rowAction('issue176-tag-1', '编辑');
   await fillName('远行');
-  await page.click(button('保存更改'));
+  await page.click(button('保存'));
   await waitTagSuccess(page, '重命名为 远行，');
   assert.equal(
     (await sql("SELECT display_name FROM tags WHERE id='issue176-tag-1'"))[0]
@@ -498,7 +586,7 @@ try {
   );
   await rowAction('issue176-tag-0', '编辑');
   await fillName('GO');
-  await page.click(button('保存更改'));
+  await page.click(button('保存'));
   await page.waitForSelector(button('返回标签列表'));
   await layouts('same-key-unchanged');
   await returned();
@@ -549,7 +637,7 @@ try {
   await openCreate();
   await fillName('明确失败输入');
   await intercept('POST', 'reject');
-  await page.click(button('创建标签'));
+  await page.click(button('创建'));
   await waitTagDialogText(page, '未能创建');
   assert.equal(
     await page.evaluate(
@@ -565,7 +653,7 @@ try {
   await openCreate();
   await fillName('结果待核对');
   await intercept('POST', 'lost', '', true);
-  await page.click(button('创建标签'));
+  await page.click(button('创建'));
   await waitTagDialogText(page, '待核对');
   await layouts('unknown');
   await page.focus(`${tagDialogSelector} button[aria-label="关闭"]`);
@@ -636,7 +724,7 @@ try {
   );
   await rowAction('issue176-tag-1', '删除');
   await intercept('DELETE', 'reject', '/issue176-tag-1');
-  await page.click(button('删除标签'));
+  await page.click(button('删除'));
   await waitTagDialogText(page, '未能删除');
   await page.waitForSelector(button('重试删除'));
   await layouts('delete-error');
@@ -644,7 +732,7 @@ try {
   await dismiss();
   await rowAction('issue176-tag-1', '删除');
   await intercept('DELETE', 'hold-lost', '/issue176-tag-1');
-  await page.click(button('删除标签'));
+  await page.click(button('删除'));
   await page.waitForFunction(() => typeof window.__tagRelease === 'function');
   await page.keyboard.press('Enter');
   await assertSingleWrite();
@@ -687,7 +775,7 @@ try {
   await list();
   await rowAction('issue176-tag-0', '删除');
   await layouts('empty-tag-delete');
-  await page.click(button('删除标签'));
+  await page.click(button('删除'));
   await waitTagSuccess(page, '已删除');
   await sql(
     "UPDATE media_images SET trashed_at=NULL WHERE id='issue176-image-172'",
@@ -712,7 +800,7 @@ try {
   const replacement = await api('', 'POST', { name: '已经消失的标签' });
   assert.notEqual(replacement.data.tag.id, vanished.data.tag.id);
   await fillName('不能绑定同名新标签');
-  await page.click(button('保存更改'));
+  await page.click(button('保存'));
   await waitTagDialogText(page, '已不存在');
   await layouts('target-missing');
   assert.equal(
@@ -882,7 +970,7 @@ try {
     await page.keyboard.press('Enter');
     await page.waitForSelector(`${tagDialogSelector} input`);
     await fillName('短视口可编辑名称');
-    await page.focus(button('创建标签'));
+    await page.focus(button('创建'));
     const focused = await page.evaluate(() => {
       const rect = document.activeElement.getBoundingClientRect();
       return {
@@ -892,7 +980,7 @@ try {
         height: innerHeight,
       };
     });
-    assert.equal(focused.text, '创建标签');
+    assert.equal(focused.text, '创建');
     assert.ok(
       focused.top >= 0 && focused.bottom <= focused.height,
       'Short viewport keeps focused submission visible',
@@ -919,6 +1007,37 @@ try {
   delete report.stage;
 } catch (error) {
   report.error = String(error.stack ?? error);
+  report.failureDocument = await page.evaluate(() => {
+    const describe = (node) => {
+      if (!(node instanceof Element)) return null;
+      return {
+        tag: node.tagName,
+        id: node.id,
+        role: node.getAttribute('role'),
+        label: node.getAttribute('aria-label'),
+        expanded: node.getAttribute('aria-expanded'),
+        rect: node.getBoundingClientRect().toJSON(),
+      };
+    };
+    return {
+      viewport: {
+        width: innerWidth,
+        height: innerHeight,
+        clientWidth: document.documentElement.clientWidth,
+        scrollWidth: document.documentElement.scrollWidth,
+        visualWidth: visualViewport?.width,
+        visualHeight: visualViewport?.height,
+        visualScale: visualViewport?.scale,
+      },
+      focused: describe(document.activeElement),
+      help: describe(
+        document.querySelector('button[aria-label="标签名称说明"]'),
+      ),
+      overlays: [
+        ...document.querySelectorAll('[role="dialog"],[role="tooltip"]'),
+      ].map(describe),
+    };
+  });
   report.failureSnapshot = await page.snapshot();
   await shot('failure');
   throw error;

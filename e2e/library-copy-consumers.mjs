@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { join } from 'node:path';
 import { cp, mkdir, rm } from 'node:fs/promises';
 import { resizeViewport, setTheme } from './browser-geometry.mjs';
+import { openSelectionManager } from './library-action-controls.mjs';
 
 /** Exercise affected shared consumers using only the runner's disposable fixture. */
 export async function verifyCopyConsumers({ page, config, report, sql, h }) {
@@ -85,7 +86,7 @@ export async function verifyCopyConsumers({ page, config, report, sql, h }) {
       assert.ok(items.includes('恢复所选'));
       assert.ok(items.includes('永久删除所选'));
       assert.ok(items.includes('查看图片'));
-      assert.ok(items.includes('查看已选清单'));
+      assert.ok(!items.includes('查看已选清单'));
       assert.ok(items.every((name) => !/复制|重新处理|移入回收站/.test(name)));
       await page.screenshot({
         path: join(config.output, `copy-consumer-trash-${theme}-${width}.png`),
@@ -103,6 +104,20 @@ export async function verifyCopyConsumers({ page, config, report, sql, h }) {
         (selector) =>
           document.activeElement === document.querySelector(selector),
         record,
+      );
+      await openSelectionManager(page, 1);
+      assert.equal(
+        await page.evaluate(
+          () => document.querySelectorAll('[data-selected-image-id]').length,
+        ),
+        1,
+        'The separate selection manager exposes the actual trash selection',
+      );
+      await page.keyboard.press('Escape');
+      await page.waitForFunction(
+        () =>
+          document.activeElement?.getAttribute('aria-label') ===
+          '管理选择，已选 1 张',
       );
       report.layouts.push({
         state: 'trash-context',

@@ -227,8 +227,8 @@ export async function verifyGeneralSettingsMerge(page, config, site, report) {
         site: 1,
         upload: 1,
         actions: [
-          { form: 'site-settings-form', text: '保存站点信息' },
-          { form: 'upload-limits-form', text: '保存上传限制' },
+          { form: 'site-settings-form', text: '保存站点' },
+          { form: 'upload-limits-form', text: '保存限制' },
         ],
         nested: false,
       });
