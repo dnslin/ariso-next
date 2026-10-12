@@ -1,13 +1,17 @@
-name: Release checks
+name: PR checks
 
 on:
-  workflow_call:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
 
 permissions:
   contents: read
 
 concurrency:
   group: ci-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   checks:
@@ -20,24 +24,48 @@ jobs:
           node-version: '24'
       - uses: pnpm/action-setup@v6
       - run: pnpm install --frozen-lockfile
-      - run: pnpm --dir tests/experiments/ui install --frozen-lockfile
-      - run: pnpm --dir tests/experiments/ui run typecheck
-      - run: pnpm --dir tests/experiments/ui run build
       - run: pnpm run lint
       - run: pnpm run format:check
+      - run: node docs/tasks/check.mjs
+      - run: pnpm run openapi:check
       - run: pnpm run typecheck
       - run: pnpm run build
       - run: pnpm run test:unit --reporter=default --reporter=junit --outputFile=test-results/unit.xml
       - run: pnpm run build:shell
-      # Release media-tools tests run inside both production images in images.yml.
       - run: pnpm exec vitest run --project integration --maxWorkers=2 --reporter=default --reporter=junit --outputFile=test-results/integration.xml
-      # RUNTIME-22/23: record ego-browser E2E separately; do not install Chromium.
-      # images.yml builds and checks the release on AMD64 and ARM64.
+      # Browser acceptance remains a separate local Ego run.
       - name: Preserve test reports
         if: always()
         uses: actions/upload-artifact@v7
         with:
           name: runtime-tests
           path: test-results/*.xml
+          if-no-files-found: warn
+          retention-days: 14
+
+  media-tools:
+    name: Media tools
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+      - uses: pnpm/action-setup@v6
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run build
+      - name: Verify production build context
+        run: bash scripts/verify-build-context.sh
+      - name: Build media test runtime
+        run: docker build --tag ariso:pr .
+      - name: Run real media tools tests
+        run: bash scripts/verify-media-tools.sh ariso:pr
+      - name: Preserve media evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: media-tools
+          path: test-results/media-process.xml
           if-no-files-found: warn
           retention-days: 14

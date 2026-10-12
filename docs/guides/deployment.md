@@ -1,18 +1,18 @@
 # Docker 部署
 
-正式部署运行一个 Docker 容器，持久化目录挂载到 `/data`。目前页面只提供工程状态，不能初始化账号或上传图片。实际验证状态见 [runtime 验证记录](../archive/runtime/runtime-verification.md)。本次开发没有发布镜像或操作已有部署。
+正式部署运行一个 Docker 容器，持久化目录挂载到 `/data`。首次启动通过 Web 初始化唯一所有者，随后可登录和上传图片。
 
 ## 镜像与配置
 
 目标平台为 `linux/amd64` 和 `linux/arm64`。镜像使用 Node 24、Debian trixie、SQLite 原生驱动、ImageMagick 7、ExifTool 和 Noto 字体。镜像在构建时安装依赖，启动不联网安装。
 
-仓库目前没有由本批工作发布的镜像。已有 Docker 和 Compose v2 的机器可以从已评审代码自行构建：
+正式镜像与离线镜像包见 [GitHub Releases](https://github.com/dnslin/ariso-next/releases)。已有 Docker 和 Compose v2 的机器也可以从已评审代码自行构建：
 
 ```sh
 docker build --tag ariso:runtime .
 ```
 
-该命令构建当前 Docker 平台。不要把 macOS 的依赖目录复制进镜像。日常开发使用[本地适用检查](../tasks/execution.md#适用检查)。这条 Docker 命令用于需要容器演练的机器，不是每个 PR 的必跑项。
+该命令构建当前 Docker 平台。不要把 macOS 的依赖目录复制进镜像。日常开发使用[本地适用检查](../tasks/execution.md#适用检查)。PR Actions 在 AMD64 构建真实媒体测试环境；发布前可在独立 Docker 机器按下方相同入口预检。
 
 先按 [README](../../README.md#本地开发) 生成两个独立密钥并填写 `.env.local`。Compose 显式读取它，仅注入密钥及日志级别。它固定容器内 `HOST=0.0.0.0`、`PORT=3000`、`DATA_DIR=/data`，不会把文件中的本机 `DATA_DIR` 用作容器路径。
 
@@ -65,7 +65,7 @@ CLI 只撤销尚未消费的邮件重置凭据。已经消费令牌并正在执�
 
 ## 正式部署目录
 
-将已验证镜像标记为自己的固定版本，例如 `ariso:reviewed-runtime`，或者在将来正式发布后使用确切的 GHCR 版本或摘要。不要把以下本地标签当成已发布版本：
+将已验证镜像标记为自己的固定版本，例如 `ariso:reviewed-runtime`，或使用正式 Release 对应的确切 GHCR 版本。以下示例使用本地构建标签：
 
 ```sh
 docker image tag ariso:runtime ariso:reviewed-runtime
@@ -110,40 +110,48 @@ docker compose --env-file .env.local up --detach --no-build --wait
 curl --fail --silent --show-error http://127.0.0.1:3000/api/health
 ```
 
-远程镜像须先 `docker pull` 确切版本。当前没有要求拉取尚未发布的镜像。升级、备份与失败恢复必须按 [升级说明](./upgrading.md) 操作。
+远程镜像须先 `docker pull` 确切版本。升级、备份与失败恢复必须按 [升级说明](./upgrading.md) 操作。
+
+## 检查与发布
+
+| 流程                 | 触发          | 内容                                                                         |
+| -------------------- | ------------- | ---------------------------------------------------------------------------- |
+| PR checks            | PR、main 推送 | 格式、lint、类型、文档/OpenAPI、构建、单元、普通集成、AMD64 真实媒体工具测试 |
+| Release images       | 手动指定版本  | AMD64/ARM64 镜像构建与下方必要运行验证；通过后推送 GHCR 和上传镜像包         |
+| Extended experiments | 手动          | 完整格式/元数据矩阵、受限存储和资源恢复、Unicode/SQLite 竞争、实验 UI        |
 
 ## 发布验证
 
-`.github/workflows/images.yml` 仅响应 GitHub Release 的 `published` 事件。普通 PR、main 推送、单独推送 tag 均不触发；工作流没有手动运行入口。创建或编辑 Release 草稿也不会构建。触发语义见 [GitHub 官方文档](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#release)。
+发布与本地预检共用 `scripts/verify-release-image.mjs`。它检查生产镜像中的运行时和文件、真实图片转换与字体，以及实际 Compose 安装闭环：初始化、登录、上传和交付、容器重建后图库与文件保留、停止、迁移、备份恢复和终端密码恢复。使用随机项目名、临时数据和临时密钥，不连接已有部署。
 
-发布时在原生 AMD64、ARM64 runner 分别构建、实际运行并验证生产镜像，同时调用 `ci.yml` 完成发布前的格式、lint、类型、单元、应用构建和普通集成检查。真实图片工具测试在两个生产镜像内运行。所有检查通过后，发布任务消费同轮已验证镜像并推送 GHCR，再组合双架构 manifest；不会重新构建待发布镜像。
-
-版本名沿用工作流中的 SemVer 校验（允许 `v` 前缀）。发布失败时不绕过检查推送镜像；修复后针对正确版本重新发布验证。日常 PR 的本地测试不能替代这次实际镜像验收，但不需要提前为每次提交执行它。本次流程调整不创建 tag、Release 或操作部署。
-
-## 独立容器演练
-
-下面的命令从源码仓库运行，需要 Node 24、冻结安装后的依赖、Linux Docker 和 Compose 2.24.4 或更新版本（测试覆盖文件使用 `!override`）。可以在有 Docker 的独立机器按需执行；Actions 仅在上述 Release 发布流程中执行，无需本机安装 Docker 才能开发。
+先在独立 Linux Docker 环境执行，需要 Node 24、冻结安装后的依赖、Python 3（`/usr/bin/python3`，用于终端恢复检查）、Docker 和 Compose 2.24.4 或更新版本（覆盖文件使用 `!override`）：
 
 ```sh
-docker build --tag ariso:runtime .
-node scripts/verify-container.mjs --image ariso:runtime --output-dir /tmp/ariso-container-report
-docker run --rm --entrypoint node ariso:runtime scripts/verify-image.mjs
+pnpm install --frozen-lockfile
+docker build --tag ariso:preflight .
+node scripts/verify-release-image.mjs --image ariso:preflight --platform linux/amd64 --output-dir /tmp/ariso-release-report
 ```
 
-容器验证使用随机 Compose 项目名、临时挂载、临时密钥和自动分配端口，执行启动、停止、重启、数据库及文件持久化、失败迁移、升级和恢复，不读取 `.env.local` 或 `.data`，结束时清理自己创建的容器和临时目录。预期退出 0；报告路径通过 `--output-dir` 指定，包含 `report.json` 与启动、升级、失败迁移、过新数据库和恢复的 JSON 日志。图片验证执行真实格式转换、解码与字形检查，预期退出 0。迁移失败场景使用 Linux host 网络直接探测 TCP 监听，避免 Docker 端口代理影响结果；其余场景使用隔离 Compose 网络。指定架构可增加 `--platform linux/amd64` 或 `--platform linux/arm64`，但镜像和 Docker 执行环境必须支持对应平台。
+在 ARM64 机器将 platform 改为 `linux/arm64`。本机验证只证明已运行的架构；发布工作流在两种原生架构分别取得证据。发布使用同轮已通过验证的镜像，不在推送前重新构建。
 
-命令列表是复现步骤，不能替代运行证据。最终执行平台、结果、Actions 链接和任何未执行项均记录在 [runtime 验证记录](../archive/runtime/runtime-verification.md)。
+真实媒体工具修改还须提前执行与 PR 相同的完整测试：
 
-## 排错
+```sh
+pnpm run build
+bash scripts/verify-build-context.sh
+bash scripts/verify-media-tools.sh ariso:preflight
+```
 
-| 现象                   | 检查与处理                                                                                               |
-| ---------------------- | -------------------------------------------------------------------------------------------------------- |
-| 启动后退出、端口未监听 | `docker compose --env-file .env.local logs ariso` 查看 `phase`、数据库路径和底层错误；先解决启动检查失败 |
-| 缺失或格式错误的密钥   | 认证密钥至少 32 个字符；加密密钥为 64 位十六进制；填写正确原密钥后重新启动                               |
-| 数据目录不可写         | 检查挂载位置和 UID 1000 写权限；不要改用空目录绕过旧数据                                                 |
-| `SCHEMA_TOO_NEW`       | 当前镜像早于数据库；恢复升级前完整备份后再启动旧镜像                                                     |
-| 迁移 SQL 失败          | 保留日志和原数据库，修复对应版本迁移；失败不能通过删库或清空迁移记录解决                                 |
-| 健康接口 503           | 检查日志中的数据库错误；健康检查不会自动修复数据库或重启进程                                             |
-| 无法解密已有配置       | 找回保存该数据时的加密密钥，不生成替代密钥、不清空原字段                                                 |
+Linux 上使用能访问 Docker 的普通用户运行媒体测试；源码和依赖必须在该 Linux 环境安装构建，不能复制 macOS 的 `node_modules` 或 `.next`。媒体入口只向测试派生镜像安装 curl，以当前用户运行全部 `media-tools` 用例，并保留 `test-results/media-process.xml`。测试 worker 使用一半 CPU，为原生工具和生产子进程保留资源；媒体检查与安装闭环按顺序运行。
 
-当前业务秘密的读取器还未接入，空业务数据库不会验证密钥是否与某次旧部署相同。S3/SMTP/OAuth 密文和业务任务恢复须由后续模块验收。
+本地适用检查、Docker 预检和 PR 检查通过并合入 main 后，在 Actions 的 Release images 手动入口指定版本（例如 `v1.0.5`），或执行：
+
+```sh
+gh workflow run images.yml --ref main -f version=v1.0.5
+```
+
+版本使用 `v` 前缀的 SemVer。普通 PR/main 推送、单独推送 tag、创建 Release 草稿均不会发布镜像。全部架构验证通过后，推送 `ghcr.io/dnslin/ariso-next:<版本>`，组合双架构 manifest；再创建草稿、上传各架构 `.tar.gz` 镜像包及 `SHA256SUMS`，最后公布正式 Release。发布失败可在同一候选提交和版本上重跑；已公布的版本不得覆盖。
+
+GHCR 新包默认可能为私有；匿名拉取需要在包设置中公开可见性，或配置有读取包权限的登录凭证。也可下载该正式 Release 的对应架构镜像包，按 `SHA256SUMS` 校验后 `docker load`，再标记为 Compose 使用的版本。
+
+失败时先保留日志、在同一候选提交上修复和预检，不以逐个创建正式版本调试。完整资源/格式实验有独立手动入口，实验失败与必要发布验证的结果分别记录；未执行不等于通过。

@@ -1,0 +1,168 @@
+name: Extended experiments
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: experiments-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  experiments:
+    name: Experiments ${{ matrix.arch }}
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: amd64
+            runner: ubuntu-24.04
+          - arch: arm64
+            runner: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+      - uses: pnpm/action-setup@v6
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run build:runtime
+      - name: Build experiment runtime
+        run: docker build --tag ariso:ci-${{ matrix.arch }} .
+      - name: Verify collections Unicode and SQLite contention on native architecture
+        run: node tests/experiments/collections/run.ts --report test-results/collections.json
+      - name: Preserve collections evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: collections-verification-${{ matrix.arch }}
+          path: test-results/collections.json
+          if-no-files-found: error
+          retention-days: 14
+      - name: Verify local storage streams on real limited mounts
+        env:
+          IMAGE: ariso:ci-${{ matrix.arch }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/storage-verification"
+          chmod 777 "$RUNNER_TEMP/storage-verification"
+          docker run --rm --network none --read-only --entrypoint node \
+            --tmpfs /source:rw,size=128m,uid=1000,gid=1000 \
+            --tmpfs /storage:rw,size=32m,uid=1000,gid=1000 \
+            --tmpfs /storage/disk:rw,size=32m,uid=1000,gid=1000 \
+            --tmpfs /storage/low:rw,size=32m,uid=1000,gid=1000 \
+            --mount "type=bind,src=$GITHUB_WORKSPACE/tests/experiments/storage-local,dst=/experiment,readonly" \
+            --mount "type=bind,src=$RUNNER_TEMP/storage-verification,dst=/evidence" \
+            "$IMAGE" /experiment/run.ts \
+              --source-root /source --storage-root /storage \
+              --target-root /storage/disk --low-space-root /storage/low \
+              --report /evidence/report.json --require-complete
+      - name: Verify complete media format and metadata samples
+        env:
+          IMAGE: ariso:ci-${{ matrix.arch }}
+        run: |
+          docker run --rm --network none --read-only \
+            --user "$(id -u):$(id -g)" --tmpfs /tmp:rw,size=512m \
+            --mount "type=bind,src=$GITHUB_WORKSPACE,dst=/workspace" \
+            --workdir /workspace --entrypoint node \
+            "$IMAGE" tests/experiments/media-formats/run.mjs \
+              --output-dir test-results/media-formats
+      - name: Preserve complete media format evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: media-formats-${{ matrix.arch }}
+          path: test-results/media-formats
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Verify media recovery resources on a real limited volume
+        env:
+          IMAGE: ariso:ci-${{ matrix.arch }}
+        run: |
+          docker run --rm --network none --read-only \
+            --user "$(id -u):$(id -g)" \
+            --tmpfs /tmp:rw,size=512m,mode=1777 \
+            --tmpfs /media-volume:rw,size=384m,mode=1777 \
+            --mount "type=bind,src=$GITHUB_WORKSPACE,dst=/workspace" \
+            --workdir /workspace --entrypoint node \
+            "$IMAGE" tests/experiments/media-recovery/resources.ts /media-volume
+      - name: Preserve media recovery resource evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: media-recovery-resources-${{ matrix.arch }}
+          path: test-results/media-64/low-space.json
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Preserve local storage evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: storage-verification-${{ matrix.arch }}
+          path: ${{ runner.temp }}/storage-verification
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Verify production local storage on real limited mounts
+        env:
+          IMAGE: ariso:ci-${{ matrix.arch }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/production-storage-verification"
+          chmod 777 "$RUNNER_TEMP/production-storage-verification"
+          docker run --rm --network none --read-only --entrypoint node \
+            --tmpfs /source:rw,size=128m,uid=1000,gid=1000 \
+            --tmpfs /storage:rw,size=32m,uid=1000,gid=1000 \
+            --tmpfs /storage/disk:rw,size=32m,uid=1000,gid=1000 \
+            --tmpfs /storage/low:rw,size=32m,uid=1000,gid=1000 \
+            --mount "type=bind,src=$GITHUB_WORKSPACE/tests/verification/storage-local,dst=/verification-storage,readonly" \
+            --mount "type=bind,src=$RUNNER_TEMP/production-storage-verification,dst=/evidence" \
+            "$IMAGE" /verification-storage/run.mjs \
+              --implementation /app/dist/server/storage/local.js \
+              --source-root /source --storage-root /storage \
+              --target-root /storage/disk --low-space-root /storage/low \
+              --report /evidence/report.json --require-complete
+      - name: Preserve production local storage evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: production-storage-verification-${{ matrix.arch }}
+          path: ${{ runner.temp }}/production-storage-verification
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Verify media behavior and resources on a real limited volume
+        env:
+          IMAGE: ariso:ci-${{ matrix.arch }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/media-verification"
+          chmod 777 "$RUNNER_TEMP/media-verification"
+          docker run --rm --network none --read-only --entrypoint node \
+            --tmpfs /source:rw,size=128m,uid=1000,gid=1000 \
+            --tmpfs /media-low:rw,size=384m,uid=1000,gid=1000 \
+            --tmpfs /tmp:rw,size=32m,uid=1000,gid=1000 \
+            --mount "type=bind,src=$GITHUB_WORKSPACE/tests/experiments/media-basic,dst=/app/verification-media,readonly" \
+            --mount "type=bind,src=$RUNNER_TEMP/media-verification,dst=/evidence" \
+            "$IMAGE" /app/verification-media/run.mjs \
+              --source-root /source --low-space-root /media-low --report /evidence/report.json
+      - name: Preserve media resource evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: media-verification-${{ matrix.arch }}
+          path: ${{ runner.temp }}/media-verification
+          if-no-files-found: warn
+          retention-days: 14
+
+  ui-experiment:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+      - uses: pnpm/action-setup@v6
+      - run: pnpm --dir tests/experiments/ui install --frozen-lockfile
+      - run: pnpm --dir tests/experiments/ui run typecheck
+      - run: pnpm --dir tests/experiments/ui run build
