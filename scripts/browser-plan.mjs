@@ -124,7 +124,7 @@ const suites = {
   'shell-navigation': { stages: [['shell-navigation', 'shellNavigation']] },
   albums: { primaryPage: true, stages: [['albums', 'albums']] },
   'collection-shortcuts': {
-    only: ['upload', 'picker', 'menus'],
+    only: ['upload', 'picker', 'menus', 'regressions'],
     stages: [['collection-shortcuts', 'collectionShortcuts']],
     config: (only) => ({ shortcutPhase: only }),
   },

@@ -1,0 +1,724 @@
+{
+  "status": "failed",
+  "checks": [
+    "Explicit membership reads disable existing images; two selected images survive distinct searches and page 1 → page 2.",
+    "A rejected real command preserves both selected IDs, the search and the current page; the album remains unchanged.",
+    "After a real join commits but its response is lost, the picker only reads back once, creates no duplicate join, closes in the same album, restores focus and refreshes its real count/automatic-cover identity."
+  ],
+  "screenshots": [
+    "album-image-picker-empty-album.png",
+    "album-image-picker-cross-page-selected.png",
+    "album-image-picker-failure-preserved.png",
+    "album-image-picker-saved-album.png",
+    "album-image-picker-failed.png"
+  ],
+  "stage": "partial success survives a failed album detail refresh",
+  "layouts": [
+    {
+      "theme": "light",
+      "width": 320,
+      "height": 844,
+      "scrollWidth": 320,
+      "modal": {
+        "left": 16,
+        "right": 304,
+        "top": 208.125,
+        "bottom": 635.875
+      },
+      "footer": {
+        "top": 497.875,
+        "bottom": 634.875
+      },
+      "feedback": null,
+      "selectedCountLeft": 36,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "height": 844,
+      "scrollWidth": 360,
+      "modal": {
+        "left": 16,
+        "right": 344,
+        "top": 172.625,
+        "bottom": 671.375
+      },
+      "footer": {
+        "top": 477.375,
+        "bottom": 670.375
+      },
+      "feedback": null,
+      "selectedCountLeft": 37,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "modal": {
+        "left": 16,
+        "right": 374,
+        "top": 195,
+        "bottom": 649
+      },
+      "footer": {
+        "top": 511,
+        "bottom": 648
+      },
+      "feedback": null,
+      "selectedCountLeft": 37,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "light",
+      "width": 390,
+      "height": 480,
+      "scrollWidth": 390,
+      "modal": {
+        "left": 16,
+        "right": 374,
+        "top": 16,
+        "bottom": 464
+      },
+      "footer": {
+        "top": 326,
+        "bottom": 463
+      },
+      "feedback": null,
+      "selectedCountLeft": 37,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "light",
+      "width": 430,
+      "height": 844,
+      "scrollWidth": 430,
+      "modal": {
+        "left": 16,
+        "right": 414,
+        "top": 187.5,
+        "bottom": 656.5
+      },
+      "footer": {
+        "top": 518.5,
+        "bottom": 655.5
+      },
+      "feedback": null,
+      "selectedCountLeft": 37,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "light",
+      "width": 768,
+      "height": 844,
+      "scrollWidth": 768,
+      "modal": {
+        "left": 16,
+        "right": 752,
+        "top": 124.125,
+        "bottom": 719.875
+      },
+      "footer": {
+        "top": 581.875,
+        "bottom": 718.875
+      },
+      "feedback": null,
+      "selectedCountLeft": 37,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "height": 900,
+      "scrollWidth": 1440,
+      "modal": {
+        "left": 320,
+        "right": 1120,
+        "top": 212.3125,
+        "bottom": 687.6875
+      },
+      "footer": {
+        "top": 549.6875,
+        "bottom": 686.6875
+      },
+      "feedback": null,
+      "selectedCountLeft": 341,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "height": 480,
+      "scrollWidth": 1440,
+      "modal": {
+        "left": 320,
+        "right": 1120,
+        "top": 16,
+        "bottom": 464
+      },
+      "footer": {
+        "top": 326,
+        "bottom": 463
+      },
+      "feedback": null,
+      "selectedCountLeft": 341,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "dark",
+      "width": 320,
+      "height": 844,
+      "scrollWidth": 320,
+      "modal": {
+        "left": 16,
+        "right": 304,
+        "top": 208.125,
+        "bottom": 635.875
+      },
+      "footer": {
+        "top": 497.875,
+        "bottom": 634.875
+      },
+      "feedback": null,
+      "selectedCountLeft": 36,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "dark",
+      "width": 360,
+      "height": 844,
+      "scrollWidth": 360,
+      "modal": {
+        "left": 16,
+        "right": 344,
+        "top": 172.625,
+        "bottom": 671.375
+      },
+      "footer": {
+        "top": 477.375,
+        "bottom": 670.375
+      },
+      "feedback": null,
+      "selectedCountLeft": 37,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "modal": {
+        "left": 16,
+        "right": 374,
+        "top": 195,
+        "bottom": 649
+      },
+      "footer": {
+        "top": 511,
+        "bottom": 648
+      },
+      "feedback": null,
+      "selectedCountLeft": 37,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "dark",
+      "width": 390,
+      "height": 480,
+      "scrollWidth": 390,
+      "modal": {
+        "left": 16,
+        "right": 374,
+        "top": 16,
+        "bottom": 464
+      },
+      "footer": {
+        "top": 326,
+        "bottom": 463
+      },
+      "feedback": null,
+      "selectedCountLeft": 37,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "dark",
+      "width": 430,
+      "height": 844,
+      "scrollWidth": 430,
+      "modal": {
+        "left": 16,
+        "right": 414,
+        "top": 187.5,
+        "bottom": 656.5
+      },
+      "footer": {
+        "top": 518.5,
+        "bottom": 655.5
+      },
+      "feedback": null,
+      "selectedCountLeft": 37,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "dark",
+      "width": 768,
+      "height": 844,
+      "scrollWidth": 768,
+      "modal": {
+        "left": 16,
+        "right": 752,
+        "top": 124.125,
+        "bottom": 719.875
+      },
+      "footer": {
+        "top": 581.875,
+        "bottom": 718.875
+      },
+      "feedback": null,
+      "selectedCountLeft": 37,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "dark",
+      "width": 1440,
+      "height": 900,
+      "scrollWidth": 1440,
+      "modal": {
+        "left": 320,
+        "right": 1120,
+        "top": 212.3125,
+        "bottom": 687.6875
+      },
+      "footer": {
+        "top": 549.6875,
+        "bottom": 686.6875
+      },
+      "feedback": null,
+      "selectedCountLeft": 341,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "dark",
+      "width": 1440,
+      "height": 480,
+      "scrollWidth": 1440,
+      "modal": {
+        "left": 320,
+        "right": 1120,
+        "top": 16,
+        "bottom": 464
+      },
+      "footer": {
+        "top": 326,
+        "bottom": 463
+      },
+      "feedback": null,
+      "selectedCountLeft": 341,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "light",
+      "width": 320,
+      "height": 844,
+      "scrollWidth": 320,
+      "modal": {
+        "left": 16,
+        "right": 304,
+        "top": 180.125,
+        "bottom": 663.875
+      },
+      "footer": {
+        "top": 525.875,
+        "bottom": 662.875
+      },
+      "feedback": {
+        "top": 469.875,
+        "bottom": 525.875,
+        "height": 56
+      },
+      "selectedCountLeft": 36,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "height": 844,
+      "scrollWidth": 360,
+      "modal": {
+        "left": 16,
+        "right": 344,
+        "top": 154.625,
+        "bottom": 689.375
+      },
+      "footer": {
+        "top": 495.375,
+        "bottom": 688.375
+      },
+      "feedback": {
+        "top": 459.375,
+        "bottom": 495.375,
+        "height": 36
+      },
+      "selectedCountLeft": 37,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "modal": {
+        "left": 16,
+        "right": 374,
+        "top": 177,
+        "bottom": 667
+      },
+      "footer": {
+        "top": 529,
+        "bottom": 666
+      },
+      "feedback": {
+        "top": 493,
+        "bottom": 529,
+        "height": 36
+      },
+      "selectedCountLeft": 37,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "light",
+      "width": 390,
+      "height": 480,
+      "scrollWidth": 390,
+      "modal": {
+        "left": 16,
+        "right": 374,
+        "top": 16,
+        "bottom": 464
+      },
+      "footer": {
+        "top": 326,
+        "bottom": 463
+      },
+      "feedback": {
+        "top": 290,
+        "bottom": 326,
+        "height": 36
+      },
+      "selectedCountLeft": 37,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "light",
+      "width": 430,
+      "height": 844,
+      "scrollWidth": 430,
+      "modal": {
+        "left": 16,
+        "right": 414,
+        "top": 169.5,
+        "bottom": 674.5
+      },
+      "footer": {
+        "top": 536.5,
+        "bottom": 673.5
+      },
+      "feedback": {
+        "top": 500.5,
+        "bottom": 536.5,
+        "height": 36
+      },
+      "selectedCountLeft": 37,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "light",
+      "width": 768,
+      "height": 844,
+      "scrollWidth": 768,
+      "modal": {
+        "left": 16,
+        "right": 752,
+        "top": 106.125,
+        "bottom": 737.875
+      },
+      "footer": {
+        "top": 599.875,
+        "bottom": 736.875
+      },
+      "feedback": {
+        "top": 563.875,
+        "bottom": 599.875,
+        "height": 36
+      },
+      "selectedCountLeft": 37,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "height": 900,
+      "scrollWidth": 1440,
+      "modal": {
+        "left": 320,
+        "right": 1120,
+        "top": 194.3125,
+        "bottom": 705.6875
+      },
+      "footer": {
+        "top": 567.6875,
+        "bottom": 704.6875
+      },
+      "feedback": {
+        "top": 531.6875,
+        "bottom": 567.6875,
+        "height": 36
+      },
+      "selectedCountLeft": 341,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "height": 480,
+      "scrollWidth": 1440,
+      "modal": {
+        "left": 320,
+        "right": 1120,
+        "top": 16,
+        "bottom": 464
+      },
+      "footer": {
+        "top": 326,
+        "bottom": 463
+      },
+      "feedback": {
+        "top": 290,
+        "bottom": 326,
+        "height": 36
+      },
+      "selectedCountLeft": 341,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "dark",
+      "width": 320,
+      "height": 844,
+      "scrollWidth": 320,
+      "modal": {
+        "left": 16,
+        "right": 304,
+        "top": 180.125,
+        "bottom": 663.875
+      },
+      "footer": {
+        "top": 525.875,
+        "bottom": 662.875
+      },
+      "feedback": {
+        "top": 469.875,
+        "bottom": 525.875,
+        "height": 56
+      },
+      "selectedCountLeft": 36,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "dark",
+      "width": 360,
+      "height": 844,
+      "scrollWidth": 360,
+      "modal": {
+        "left": 16,
+        "right": 344,
+        "top": 154.625,
+        "bottom": 689.375
+      },
+      "footer": {
+        "top": 495.375,
+        "bottom": 688.375
+      },
+      "feedback": {
+        "top": 459.375,
+        "bottom": 495.375,
+        "height": 36
+      },
+      "selectedCountLeft": 37,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "modal": {
+        "left": 16,
+        "right": 374,
+        "top": 177,
+        "bottom": 667
+      },
+      "footer": {
+        "top": 529,
+        "bottom": 666
+      },
+      "feedback": {
+        "top": 493,
+        "bottom": 529,
+        "height": 36
+      },
+      "selectedCountLeft": 37,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "dark",
+      "width": 390,
+      "height": 480,
+      "scrollWidth": 390,
+      "modal": {
+        "left": 16,
+        "right": 374,
+        "top": 16,
+        "bottom": 464
+      },
+      "footer": {
+        "top": 326,
+        "bottom": 463
+      },
+      "feedback": {
+        "top": 290,
+        "bottom": 326,
+        "height": 36
+      },
+      "selectedCountLeft": 37,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "dark",
+      "width": 430,
+      "height": 844,
+      "scrollWidth": 430,
+      "modal": {
+        "left": 16,
+        "right": 414,
+        "top": 169.5,
+        "bottom": 674.5
+      },
+      "footer": {
+        "top": 536.5,
+        "bottom": 673.5
+      },
+      "feedback": {
+        "top": 500.5,
+        "bottom": 536.5,
+        "height": 36
+      },
+      "selectedCountLeft": 37,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "dark",
+      "width": 768,
+      "height": 844,
+      "scrollWidth": 768,
+      "modal": {
+        "left": 16,
+        "right": 752,
+        "top": 106.125,
+        "bottom": 737.875
+      },
+      "footer": {
+        "top": 599.875,
+        "bottom": 736.875
+      },
+      "feedback": {
+        "top": 563.875,
+        "bottom": 599.875,
+        "height": 36
+      },
+      "selectedCountLeft": 37,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "dark",
+      "width": 1440,
+      "height": 900,
+      "scrollWidth": 1440,
+      "modal": {
+        "left": 320,
+        "right": 1120,
+        "top": 194.3125,
+        "bottom": 705.6875
+      },
+      "footer": {
+        "top": 567.6875,
+        "bottom": 704.6875
+      },
+      "feedback": {
+        "top": 531.6875,
+        "bottom": 567.6875,
+        "height": 36
+      },
+      "selectedCountLeft": 341,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "dark",
+      "width": 1440,
+      "height": 480,
+      "scrollWidth": 1440,
+      "modal": {
+        "left": 320,
+        "right": 1120,
+        "top": 16,
+        "bottom": 464
+      },
+      "footer": {
+        "top": 326,
+        "bottom": 463
+      },
+      "feedback": {
+        "top": 290,
+        "bottom": 326,
+        "height": 36
+      },
+      "selectedCountLeft": 341,
+      "small": [],
+      "clipped": []
+    }
+  ],
+  "error": "ElementResolutionError: page.click timed out after 3000ms: Selector [data-testid=\"album-image-picker\"] [data-testid=\"album-image-add\"] matched 1 elements, but none can receive input; <span id=\"react-aria133756249-_r_k1_\"> intercepts pointer events\n    at #retryElementAction (file:////[eval1]:18884:27)\n    at async file:////[eval1]:18968:29\n    at async file:////[eval1]:16691:28",
+  "failureSnapshot": "[p1 \"Ariso\" | space \"PR 279 regression verification\"(10): 1 managed, 0 untracked — p1* \"Ariso\"]\nroot\n  container \"后台侧栏\"\n    anchor \"Ariso 首页\" [ref=66, url=http://ariso-59145.localhost:59145/]\n      text \"Ariso\"\n    button \"收起侧栏\" [ref=67, loc=css:button[aria-label=\"收起侧栏\"]]\n      svg_root\n    container \"后台导航\"\n      anchor \"总览\" [ref=68, loc=css:a[aria-label=\"总览\"], url=http://ariso-59145.localhost:59145/dashboard]\n        svg_root\n        text \"总览\"\n      anchor \"上传\" [ref=69, loc=css:a[aria-label=\"上传\"], url=http://ariso-59145.localhost:59145/upload]\n        svg_root\n        text \"上传\"\n      anchor \"图库\" [ref=70, loc=css:a[aria-label=\"图库\"], url=http://ariso-59145.localhost:59145/library]\n        svg_root\n        text \"图库\"\n      anchor \"相册\" [ref=71, loc=css:a[aria-label=\"相册\"], url=http://ariso-59145.localhost:59145/albums]\n        svg_root\n        text \"相册\"\n      anchor \"标签\" [ref=72, loc=css:a[aria-label=\"标签\"], url=http://ariso-59145.localhost:59145/tags]\n        svg_root\n        text \"标签\"\n      anchor \"分享\" [ref=73, loc=css:a[aria-label=\"分享\"], url=http://ariso-59145.localhost:59145/shares]\n        svg_root\n        text \"分享\"\n      anchor \"回收站\" [ref=74, loc=css:a[aria-label=\"回收站\"], url=http://ariso-59145.localhost:59145/trash]\n        svg_root\n        text \"回收站\"\n      paragraph\n        text \"管理\"\n      anchor \"访问统计\" [ref=75, loc=css:a[aria-label=\"访问统计\"], url=http://ariso-59145.localhost:59145/analytics]\n        svg_root\n        text \"访问统计\"\n      anchor \"存储\" [ref=76, loc=css:a[aria-label=\"存储\"], url=http://ariso-59145.localhost:59145/settings/storage]\n        svg_root\n        text \"存储\"\n      anchor \"站点设置\" [ref=77, loc=css:a[aria-label=\"站点设置\"], url=http://ariso-59145.localhost:59145/settings/general]\n        svg_root\n        text \"站点设置\"\n    button \"账号菜单\" [ref=78, loc=css:button[aria-label=\"账号菜单\"]]\n      text \"O\"\n      text \"Owner\"\n      text \"站点所有者\"\n  button \"外观：自动；点击切换为亮色\" [ref=79]\n    svg_root\n  container \"快捷选图验证相册\"\n    heading\n      text \"快捷选图验证相册\"\n    anchor \"返回相册列表\" [ref=80, loc=css:a[aria-label=\"返回相册列表\"], url=http://ariso-59145.localhost:59145/albums]\n      svg_root\n      text \"返回\"\n    paragraph\n      text \"3\"\n      text \"张图片 ·\"\n      text \"1\"\n      text \"张公开\"\n    svg_root\n    searchbox \"搜索图片名称\" [ref=81, loc=css:input[placeholder=\"搜索图片名称…\"]]\n      text \"搜索图片名称…\"\n    paragraph\n      text \"加入时间 ↓\"\n    radiobutton \"网格\" [ref=82, loc=css:button[aria-label=\"网格\"]]\n      svg_root\n    radiobutton \"瀑布流\" [ref=83, loc=css:button[aria-label=\"瀑布流\"]]\n      svg_root\n    button \"刷新图库\" [ref=84, loc=css:button[aria-label=\"刷新图库\"]]\n      svg_root\n    button \"编辑相册\" [ref=85, loc=css:button[aria-label=\"编辑相册\"]]\n      svg_root\n    button \"设置封面\" [ref=86, loc=css:button[aria-label=\"设置封面\"]]\n      svg_root\n    button \"分享设置\" [ref=87, loc=css:button[aria-label=\"分享设置\"]]\n      svg_root\n    button \"更多相册操作\" [ref=88, loc=css:button[aria-label=\"更多相册操作\"]]\n      svg_root\n    button [ref=89]\n      svg_root\n      text \"添加图片\"\n      svg_root\n    button [ref=90]\n      svg_root\n      text \"添加条件\"\n    text \"相册\"\n    text \"快捷选图验证相册\"\n    button \"快捷选图验证相册 相册\" [ref=91]\n      svg_root\n    button [ref=92]\n      text \"自动封面\"\n      text \"·\"\n      text \"封面加载失败\"\n    svg_root\n    button \"查看图片：shortcut-picker-4a3e8e77-041\" [ref=93, loc=css:button[aria-label=\"查看图片：shortcut-picker-4a3e8e77-041\"]]\n    svg_root\n    paragraph\n      text \"暂无缩略图\"\n    paragraph\n      text \"shortcut-picker-4a3e8e77-041\"\n    svg_root\n    text \"私有\"\n    text \"0.0\"\n    text \"MiB ·\"\n    text \"已就绪\"\n    svg_root\n    button \"查看图片：shortcut-picker-4a3e8e77-001\" [ref=94, loc=css:button[aria-label=\"查看图片：shortcut-picker-4a3e8e77-001\"]]\n    svg_root\n    paragraph\n      text \"暂无缩略图\"\n    paragraph\n      text \"shortcut-picker-4a3e8e77-001\"\n    svg_root\n    text \"公开\"\n    text \"0.0\"\n    text \"MiB ·\"\n    text \"已就绪\"\n    svg_root\n    button \"查看图片：shortcut-picker-4a3e8e77-000\" [ref=95, loc=css:button[aria-label=\"查看图片：shortcut-picker-4a3e8e77-000\"]]\n    svg_root\n    paragraph\n      text \"暂无缩略图\"\n    paragraph\n      text \"shortcut-picker-4a3e8e77-000\"\n    svg_root\n    text \"私有\"\n    text \"0.0\"\n    text \"MiB ·\"\n    text \"已就绪\"\n  container\n    status\n      text \"3 张图片 · 本页 3 张\"\n    button \"图片加载方式 分页 分页\" [ref=96]\n      text \"分页\"\n      svg_root\n    button \"每批图片数 40 张 / 批 40 张 / 批\" [ref=97]\n      text \"40 张 / 批\"\n      svg_root\n    navigation \"图库分页\"\n      unordered_list\n        list_item\n          button [ref=98]\n            text \"上一页\"\n        list_item\n          text \"1\"\n          text \"/\"\n          text \"1\"\n        list_item\n          button [ref=99]\n            text \"下一页\"\n  region \"操作通知\"\n    alertdialog \"已加入相册：2 张\" [ref=100, loc=role:alertdialog[name=\"已加入相册：2 张\"]]\n      svg_root\n      alert\n        text \"已加入相册：2 张\"\n      button \"关闭通知\" [ref=101, loc=css:button[aria-label=\"关闭通知\"]]\n        svg_root\n  dialog \"从图库选择\" [ref=102, loc=role:dialog[name=\"从图库选择\"]]\n    container\n      container\n        heading\n          text \"从图库选择\"\n        paragraph\n          text \"快捷选图验证相册\"\n      button \"关闭选图\" [ref=103, loc=css:button[aria-label=\"关闭选图\"]]\n        svg_root\n    container\n      svg_root\n      textbox \"搜索图库图片\" [ref=104, loc=css:input[placeholder=\"搜索图片名称\"]]\n        text \"shortcut-picker-4a3e8e77-\"\n    container [ref=105]\n      container \"图库选图列表\"\n        container\n          button \"已添加图片：shortcut-picker-4a3e8e77-000\" [ref=106, loc=css:button[aria-label=\"已添加图片：shortcut-picker-4a3e8e77-000\"]]\n            svg_root \"暂无可读缩略图\"\n            text \"暂无缩略图\"\n            text \"shortcut-picker-4a3e8e77-000\"\n          svg_root\n          text \"已添加\"\n        container\n          button \"已添加图片：shortcut-picker-4a3e8e77-001\" [ref=107, loc=css:button[aria-label=\"已添加图片：shortcut-picker-4a3e8e77-001\"]]\n            svg_root \"暂无可读缩略图\"\n            text \"暂无缩略图\"\n            text \"shortcut-picker-4a3e8e77-001\"\n          svg_root\n          text \"已添加\"\n        container\n          button \"取消选择图片：shortcut-picker-4a3e8e77-002\" [ref=108, loc=css:button[aria-label=\"取消选择图片：shortcut-picker-4a3e8e77-002\"]]\n            container\n              svg_root \"暂无可读缩略图\"\n              text \"暂无缩略图\"\n            text \"shortcut-picker-4a3e8e77-002\"\n          svg_root\n        container\n          button \"取消选择图片：shortcut-picker-4a3e8e77-003\" [ref=109, loc=css:button[aria-label=\"取消选择图片：shortcut-picker-4a3e8e77-003\"]]\n            container\n              svg_root \"暂无可读缩略图\"\n              text \"暂无缩略图\"\n            text \"shortcut-picker-4a3e8e77-003\"\n          svg_root\n        container\n          button \"选择图片：shortcut-picker-4a3e8e77-004\" [ref=110, loc=css:button[aria-label=\"选择图片：shortcut-picker-4a3e8e77-004\"]]\n            container\n              svg_root \"暂无可读缩略图\"\n              text \"暂无缩略图\"\n            text \"shortcut-picker-4a3e8e77-004\"\n          svg_root\n        container\n          button \"选择图片：shortcut-picker-4a3e8e77-005\" [ref=111, loc=css:button[aria-label=\"选择图片：shortcut-picker-4a3e8e77-005\"]]\n            container\n              svg_root \"暂无可读缩略图\"\n              text \"暂无缩略图\"\n            text \"shortcut-picker-4a3e8e77-005\"\n          svg_root\n        container\n          button \"选择图片：shortcut-picker-4a3e8e77-006\" [ref=112, loc=css:button[aria-label=\"选择图片：shortcut-picker-4a3e8e77-006\"]]\n            container\n              svg_root \"暂无可读缩略图\"\n              text \"暂无缩略图\"\n            text \"shortcut-picker-4a3e8e77-006\"\n          svg_root\n        container\n          button \"选择图片：shortcut-picker-4a3e8e77-007\" [ref=113, loc=css:button[aria-label=\"选择图片：shortcut-picker-4a3e8e77-007\"]]\n            container\n              svg_root \"暂无可读缩略图\"\n              text \"暂无缩略图\"\n            text \"shortcut-picker-4a3e8e77-007\"\n          svg_root\n        container\n          button \"选择图片：shortcut-picker-4a3e8e77-008\" [ref=114, loc=css:button[aria-label=\"选择图片：shortcut-picker-4a3e8e77-008\"]]\n            container\n              svg_root \"暂无可读缩略图\"\n              text \"暂无缩略图\"\n            text \"shortcut-picker-4a3e8e77-008\"\n          svg_root\n        container\n          button \"选择图片：shortcut-picker-4a3e8e77-009\" [ref=115, loc=css:button[aria-label=\"选择图片：shortcut-picker-4a3e8e77-009\"]]\n            container\n              svg_root \"暂无可读缩略图\"\n              text \"暂无缩略图\"\n            text \"shortcut-picker-4a3e8e77-009\"\n          svg_root\n        container\n          button \"选择图片：shortcut-picker-4a3e8e77-010\" [ref=116, loc=css:button[aria-label=\"选择图片：shortcut-picker-4a3e8e77-010\"]]\n            container\n              svg_root \"暂无可读缩略图\"\n              text \"暂无缩略图\"\n            text \"shortcut-picker-4a3e8e77-010\"\n          svg_root\n        container\n          button \"选择图片：shortcut-picker-4a3e8e77-011\" [ref=117, loc=css:button[aria-label=\"选择图片：shortcut-picker-4a3e8e77-011\"]]\n            container\n              svg_root \"暂无可读缩略图\"\n              text \"暂无缩略图\"\n            text \"shortcut-picker-4a3e8e77-011\"\n          svg_root\n        container\n          button \"选择图片：shortcut-picker-4a3e8e77-012\" [ref=118, loc=css:button[aria-label=\"选择图片：shortcut-picker-4a3e8e77-012\"]]\n          svg_root\n        container\n          button \"选择图片：shortcut-picker-4a3e8e77-013\" [ref=119, loc=css:button[aria-label=\"选择图片：shortcut-picker-4a3e8e77-013\"]]\n          svg_root\n        container\n          button \"选择图片：shortcut-picker-4a3e8e77-014\" [ref=120, loc=css:button[aria-label=\"选择图片：shortcut-picker-4a3e8e77-014\"]]\n          svg_root\n        container\n          button \"选择图片：shortcut-picker-4a3e8e77-015\" [ref=121, loc=css:button[aria-label=\"选择图片：shortcut-picker-4a3e8e77-015\"]]\n          svg_root\n    container\n      navigation \"选图分页\"\n        unordered_list\n          list_item\n            button [ref=122]\n              text \"上一页\"\n          list_item\n            text \"1\"\n            text \"/\"\n            text \"2\"\n          list_item\n            button [ref=123]\n              text \"下一页\"\n      container\n        container\n          status\n            text \"已选\"\n            text \"2\"\n            text \"张\"\n          button \"清空选图\" [ref=124, loc=css:button[aria-label=\"清空选图\"]]\n            svg_root\n        button [ref=125]\n          text \"取消\"\n        button [ref=126]\n          svg_root\n          text \"添加 2 张\"\n"
+}

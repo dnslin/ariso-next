@@ -177,7 +177,10 @@ try {
     deviceScaleFactor: 1,
     mobile: false,
   });
-  if (config.shortcutPhase !== 'picker') {
+  if (
+    config.shortcutPhase !== 'picker' &&
+    config.shortcutPhase !== 'regressions'
+  ) {
     report.stage = 'full-page drafts and real upload';
     await page.goto(`${config.origin}/upload`);
     await page.waitForSelector('input[aria-label="选择图片文件"]', {
@@ -580,6 +583,17 @@ try {
       output: config.output,
       sql,
     });
+  if (!config.shortcutPhase || config.shortcutPhase === 'regressions') {
+    const { runCollectionReviewRegressions } = await import(
+      new URL('./collection-review-regressions.mjs', config.libraryDetailScript)
+        .href
+    );
+    report.regressions = await runCollectionReviewRegressions(page, {
+      origin: config.origin,
+      output: config.output,
+      source,
+    });
+  }
   report.status = 'passed';
   delete report.stage;
 } catch (error) {

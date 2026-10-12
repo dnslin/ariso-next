@@ -15,7 +15,7 @@ describe('focused browser execution plans', () => {
       stages: [['collection-shortcuts', 'collectionShortcuts']],
       config: { shortcutPhase: undefined },
     });
-    for (const phase of ['upload', 'picker', 'menus'])
+    for (const phase of ['upload', 'picker', 'menus', 'regressions'])
       expect(select('collection-shortcuts', phase).config.shortcutPhase).toBe(
         phase,
       );

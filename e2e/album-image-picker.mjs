@@ -24,6 +24,14 @@ export async function runAlbumImagePicker(page, config) {
       { url, init },
     );
   async function open() {
+    if (
+      await page.evaluate(() =>
+        Boolean(document.querySelector('[data-slot="toast"]')),
+      )
+    ) {
+      await page.click(button('关闭通知'));
+      await page.waitForSelector('[data-slot="toast"]', { state: 'hidden' });
+    }
     await page.click(button('添加图片'));
     await page.click('loc=role:menuitem[name="从图库选择"]');
     await page.waitForSelector(modal);
