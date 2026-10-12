@@ -16,6 +16,7 @@ import {
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { AlbumsScreen } from '../../../src/app/albums/screen';
 import { AlbumImagePicker } from '../../../src/app/albums/image-picker';
+import { AlbumDialog } from '../../../src/app/albums/dialog';
 import { useAlbumImagePicker } from '../../../src/app/albums/use-image-picker';
 import type { Album, AlbumPage } from '../../../src/app/albums/api';
 import type { LibraryItem } from '../../../src/server/library/types';
@@ -29,6 +30,7 @@ type Cell = {
 type Lifetime = { cells: Cell[]; effects: (() => void)[]; cursor: number };
 const runtime = vi.hoisted(() => ({ active: null as Lifetime | null }));
 const navigation = vi.hoisted(() => ({ push: vi.fn() }));
+const session = vi.hoisted(() => ({ resetUpload: vi.fn() }));
 vi.mock('react', async (original) => {
   const actual = await original<typeof import('react')>();
   const cell = () => {
@@ -92,7 +94,7 @@ vi.mock('@tanstack/react-query', async (original) => ({
 }));
 vi.mock('next/navigation', () => ({ useRouter: () => navigation }));
 vi.mock('../../../src/components/upload/provider', () => ({
-  useResetUpload: () => vi.fn(),
+  useResetUpload: () => session.resetUpload,
 }));
 vi.mock('../../../src/components/shell/owner-shell', () => ({
   OwnerShell: ({ children }: { children: React.ReactNode }) =>
@@ -180,8 +182,22 @@ function pickerElement(tree: ReturnType<typeof AlbumsScreen>) {
     (child: React.ReactElement) => child?.type === AlbumImagePicker,
   ) as React.ReactElement<Parameters<typeof AlbumImagePicker>[0]>;
 }
+function elements(node: ReactNode): ReactElement<Record<string, unknown>>[] {
+  return Children.toArray(node).flatMap((child) =>
+    isValidElement<Record<string, unknown>>(child)
+      ? [child, ...elements(child.props.children as ReactNode)]
+      : [],
+  );
+}
+function refreshError(tree: ReturnType<typeof AlbumsScreen>) {
+  const workspace = tree.props.renderWorkspace(null, null);
+  return elements(workspace.props.afterToolbar).find(
+    (element) => element.props['data-testid'] === 'albums-error',
+  );
+}
 beforeEach(() => {
   navigation.push.mockReset();
+  session.resetUpload.mockReset();
   vi.stubGlobal('window', new EventTarget());
   vi.stubGlobal('requestAnimationFrame', (callback: () => void) => callback());
 });
@@ -198,13 +214,6 @@ it('keeps Return beside the title and album actions in the query toolbar, preser
   render();
   await vi.waitFor(() => expect(pickerElement(render())).toBeDefined());
   const workspace = render().props.renderWorkspace(null, null);
-  function elements(node: ReactNode): ReactElement<Record<string, unknown>>[] {
-    return Children.toArray(node).flatMap((child) =>
-      isValidElement<Record<string, unknown>>(child)
-        ? [child, ...elements(child.props.children as ReactNode)]
-        : [],
-    );
-  }
   const header = elements(workspace.props.header);
   expect(renderToStaticMarkup(workspace.props.header)).not.toContain('相册 #');
   const titleRow = header.find((element) =>
@@ -407,5 +416,132 @@ it('retains the existing error page for a first detail read without cached data'
     const tree = render();
     expect(pickerElement(tree)).toBeUndefined();
     expect(renderToStaticMarkup(tree)).toContain('首次读取失败');
+  });
+});
+
+it('shows a failed cached-detail refresh beside retained content and retries without replacing the workspace', async () => {
+  let status: 'initial' | 'failed' | 'retry' = 'initial';
+  let finishRetry!: (response: Response) => void;
+  const fetcher = vi.fn(async () => {
+    if (status === 'failed')
+      return Response.json({ message: '详情回读失败' }, { status: 500 });
+    if (status === 'retry')
+      return new Promise<Response>((resolve) => {
+        finishRetry = resolve;
+      });
+    return Response.json({ album });
+  });
+  vi.stubGlobal('fetch', fetcher);
+  const render = lifetime(() => AlbumsScreen({ ...props, albumId: album.id }));
+  render();
+  await vi.waitFor(() => expect(pickerElement(render())).toBeDefined());
+  const original = render();
+  status = 'failed';
+  original.props.renderWorkspace(null, null).props.onRefresh();
+  await vi.waitFor(() => {
+    const current = render();
+    const error = refreshError(current);
+    expect(error, 'A cached album must surface a failed refresh').toBeDefined();
+    expect(renderToStaticMarkup(error)).toContain('详情回读失败');
+    expect(renderToStaticMarkup(error)).toContain('相册刷新失败');
+    expect(current.type).toBe(original.type);
+    expect(pickerElement(current)?.props.album).toEqual(album);
+    expect(
+      renderToStaticMarkup(
+        current.props.renderWorkspace(null, null).props.header,
+      ),
+    ).toContain('0 张图片');
+  });
+
+  const retry = elements(refreshError(render())).find(
+    (element) => typeof element.props.onPress === 'function',
+  )!;
+  status = 'retry';
+  (retry.props.onPress as () => void)();
+  await vi.waitFor(() => expect(fetcher).toHaveBeenCalledTimes(3));
+  const duringRetry = render();
+  expect(duringRetry.type).toBe(original.type);
+  expect(pickerElement(duringRetry)?.props.album).toEqual(album);
+  const pendingRetry = elements(refreshError(duringRetry)).find(
+    (element) => typeof element.props.onPress === 'function',
+  )!;
+  expect(pendingRetry.props.isDisabled).toBe(true);
+  expect(renderToStaticMarkup(refreshError(duringRetry))).toContain(
+    '详情回读失败',
+  );
+
+  finishRetry(Response.json({ album: { ...album, imageCount: 1 } }));
+  await vi.waitFor(() => {
+    const current = render();
+    expect(refreshError(current)).toBeUndefined();
+    expect(pickerElement(current)?.props.album.imageCount).toBe(1);
+    expect(current.type).toBe(original.type);
+  });
+});
+
+it('replaces a cached album with the missing state after a 404 refresh and removes its old actions', async () => {
+  let missing = false;
+  vi.stubGlobal(
+    'fetch',
+    vi.fn(async () =>
+      missing
+        ? Response.json({ message: '相册不存在' }, { status: 404 })
+        : Response.json({ album }),
+    ),
+  );
+  const render = lifetime(() => AlbumsScreen({ ...props, albumId: album.id }));
+  render();
+  await vi.waitFor(() => expect(pickerElement(render())).toBeDefined());
+  const workspace = render().props.renderWorkspace(null, null);
+  const edit = elements(workspace.props.toolbarActions).find(
+    (element) => element.props.label === '编辑相册',
+  )!;
+  vi.stubGlobal('document', { activeElement: null });
+  (edit.props.onPress as () => void)();
+  vi.stubGlobal('document', undefined);
+  missing = true;
+  workspace.props.onRefresh();
+  await vi.waitFor(() => {
+    const current = render();
+    expect(pickerElement(current)).toBeUndefined();
+    expect('renderWorkspace' in current.props).toBe(false);
+    expect(
+      elements(current.props.children).find(
+        (element) => element.type === AlbumDialog,
+      ),
+    ).toBeUndefined();
+    const html = renderToStaticMarkup(current);
+    expect(html).toContain('相册已不存在');
+    expect(html).not.toContain('编辑相册');
+    expect(html).not.toContain('添加图片');
+  });
+});
+
+it('expires the session and stops exposing cached album actions after a 401 refresh', async () => {
+  let expired = false;
+  const replace = vi.fn();
+  Object.assign(window, {
+    location: { pathname: '/albums/album', search: '?page=2', replace },
+  });
+  vi.stubGlobal(
+    'fetch',
+    vi.fn(async () =>
+      expired
+        ? Response.json({ message: '会话已失效' }, { status: 401 })
+        : Response.json({ album }),
+    ),
+  );
+  const render = lifetime(() => AlbumsScreen({ ...props, albumId: album.id }));
+  render();
+  await vi.waitFor(() => expect(pickerElement(render())).toBeDefined());
+  expired = true;
+  render().props.renderWorkspace(null, null).props.onRefresh();
+  await vi.waitFor(() => {
+    const current = render();
+    expect(pickerElement(current)).toBeUndefined();
+    expect(replace).toHaveBeenCalledWith(
+      '/login?reason=expired&returnTo=%2Falbums%2Falbum%3Fpage%3D2',
+    );
+    expect(session.resetUpload).toHaveBeenCalled();
   });
 });

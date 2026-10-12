@@ -165,27 +165,49 @@ export function AlbumsScreen(props: {
     );
   }, [expired, resetUpload, client]);
   const data = !list.isError ? list.data : undefined;
-  const album = detail.data?.album;
+  const missing = error instanceof AlbumRequestError && error.status === 404;
+  const album = !expired && !missing ? detail.data?.album : undefined;
   const pages = data ? Math.max(1, Math.ceil(data.total / pageSize)) : 1;
-  const albumDialog = action ? (
-    <AlbumDialog
-      action={action}
-      isOpen={dialogOpen}
-      onClose={closeAction}
-      onExpire={expire}
-      onCheckList={async () => {
-        const result = await list.refetch();
-        if (result.error) throw result.error;
-      }}
-      onComplete={(saved) => {
-        closeAction();
-        if (saved) {
-          client.setQueryData(['album', saved.id], { album: saved });
-          if (action?.kind === 'create') router.push(`/albums/${saved.id}`);
-        } else if (props.albumId) router.push('/albums');
-        void client.invalidateQueries({ queryKey: ['albums'] });
-      }}
-    />
+  const albumDialog =
+    action && !expired && !missing ? (
+      <AlbumDialog
+        action={action}
+        isOpen={dialogOpen}
+        onClose={closeAction}
+        onExpire={expire}
+        onCheckList={async () => {
+          const result = await list.refetch();
+          if (result.error) throw result.error;
+        }}
+        onComplete={(saved) => {
+          closeAction();
+          if (saved) {
+            client.setQueryData(['album', saved.id], { album: saved });
+            if (action?.kind === 'create') router.push(`/albums/${saved.id}`);
+          } else if (props.albumId) router.push('/albums');
+          void client.invalidateQueries({ queryKey: ['albums'] });
+        }}
+      />
+    ) : null;
+  const readError = error ? (
+    <Alert status="danger" role="alert" data-testid="albums-error">
+      <Alert.Content>
+        <Alert.Title>
+          {missing ? '相册已不存在' : album ? '相册刷新失败' : '相册读取失败'}
+        </Alert.Title>
+        <Alert.Description>{error.message}</Alert.Description>
+        <Button
+          variant="outline"
+          className="mt-3 min-h-11 font-normal"
+          isDisabled={props.albumId ? detail.isFetching : list.isFetching}
+          onPress={() => {
+            void (props.albumId ? detail.refetch() : list.refetch());
+          }}
+        >
+          重试加载
+        </Button>
+      </Alert.Content>
+    </Alert>
   ) : null;
   if (props.albumId && album)
     return (
@@ -210,6 +232,7 @@ export function AlbumsScreen(props: {
             }}
             afterToolbar={
               <>
+                {readError}
                 <AlbumCoverSummary
                   key={JSON.stringify(album.cover)}
                   album={album}
@@ -569,27 +592,7 @@ export function AlbumsScreen(props: {
             正在读取相册…
           </p>
         ) : null}
-        {error ? (
-          <Alert status="danger" data-testid="albums-error">
-            <Alert.Content>
-              <Alert.Title>
-                {error instanceof AlbumRequestError && error.status === 404
-                  ? '相册已不存在'
-                  : '相册读取失败'}
-              </Alert.Title>
-              <Alert.Description>{error.message}</Alert.Description>
-              <Button
-                variant="outline"
-                className="mt-3 min-h-11 font-normal"
-                onPress={() => {
-                  void (props.albumId ? detail.refetch() : list.refetch());
-                }}
-              >
-                重试加载
-              </Button>
-            </Alert.Content>
-          </Alert>
-        ) : null}
+        {readError}
       </section>
       {albumDialog}
     </OwnerShell>
