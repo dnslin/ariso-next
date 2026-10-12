@@ -1,12 +1,6 @@
 'use client';
 
-import {
-  useEffect,
-  useRef,
-  useState,
-  type ComponentProps,
-  type MouseEvent,
-} from 'react';
+import { useEffect, useRef, useState, type ComponentProps } from 'react';
 import { useRouter } from 'next/navigation';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Alert } from '@heroui/react/alert';
@@ -34,6 +28,10 @@ import { StorageReferenceView } from './storage-reference-view';
 import { StorageDeleteDialog } from './storage-delete-dialog';
 import { StorageTip } from './storage-tip';
 import { StorageMaintenanceView } from './storage-maintenance-view';
+import {
+  StorageLeaveConfirmation,
+  useStorageLeaveConfirmation,
+} from './storage-leave-confirmation';
 import {
   reconcileStorageSave,
   finishStorageDefault,
@@ -200,10 +198,6 @@ function StorageEditorReady({
     initialSaved && initial.storage?.type === 's3',
   );
   const [r2Confirmation, setR2Confirmation] = useState(false);
-  const [pendingDestination, setPendingDestination] = useState<string | null>(
-    null,
-  );
-  const returnOpener = useRef<HTMLElement | null>(null);
   const startingInput = useRef(input);
   const testOpener = useRef<HTMLButtonElement>(null);
   const inFlight = useRef(false);
@@ -241,38 +235,9 @@ function StorageEditorReady({
     (defaultChoice !== undefined &&
       defaultChoice !==
         Boolean(effective && effective.id === settings.defaultStorageId));
-  function requestNavigation(
-    href: string,
-    opener = document.activeElement as HTMLElement,
-  ) {
-    if (busy) return;
-    if (dirty || unknown) {
-      returnOpener.current = opener;
-      setPendingDestination(href);
-    } else router.push(href);
-  }
+  const navigation = useStorageLeaveConfirmation({ dirty, unknown, busy });
   function returnToList() {
-    requestNavigation('/settings/storage');
-  }
-  function navigateFromReference(event: MouseEvent<Element>, href: string) {
-    if (
-      event.defaultPrevented ||
-      event.button !== 0 ||
-      event.metaKey ||
-      event.ctrlKey ||
-      event.shiftKey ||
-      event.altKey ||
-      (event.currentTarget.getAttribute('target') &&
-        event.currentTarget.getAttribute('target') !== '_self')
-    )
-      return;
-    if (!dirty && !unknown && !busy) return;
-    event.preventDefault();
-    requestNavigation(href, event.currentTarget as HTMLElement);
-  }
-  function continueEditing() {
-    setPendingDestination(null);
-    requestAnimationFrame(() => returnOpener.current?.focus());
+    navigation.navigate('/settings/storage');
   }
 
   async function invalidateConsumers() {
@@ -634,58 +599,7 @@ function StorageEditorReady({
       </Button>
     </>
   );
-  const leaveDialog = (
-    <AlertDialog.Backdrop
-      isOpen={pendingDestination !== null}
-      isKeyboardDismissDisabled={busy}
-      onOpenChange={(open) => {
-        if (!open && !busy) continueEditing();
-      }}
-    >
-      <AlertDialog.Container
-        placement="center"
-        className="w-[calc(100%_-_32px)]! max-w-[480px] flex-none p-0!"
-      >
-        <AlertDialog.Dialog
-          aria-label="放弃未保存的修改？"
-          className="w-full max-w-none max-h-[calc(100dvh_-_32px)] gap-4 overflow-y-auto rounded-xl border border-border bg-surface p-6"
-        >
-          <AlertDialog.Header className="p-0">
-            <AlertDialog.Heading className="text-xl font-medium leading-normal">
-              放弃未保存的修改？
-            </AlertDialog.Heading>
-          </AlertDialog.Header>
-          <AlertDialog.Body className="m-0! p-0 text-sm leading-normal">
-            <p>
-              {unknown
-                ? '本次保存结果尚未确认。离开后请核对已保存配置。'
-                : '当前修改尚未保存。'}
-            </p>
-          </AlertDialog.Body>
-          <AlertDialog.Footer className="mt-0! flex-col gap-4 p-0">
-            <Button
-              className="h-12 w-full rounded-lg text-sm font-normal"
-              isDisabled={busy}
-              onPress={continueEditing}
-            >
-              继续编辑
-            </Button>
-            <Button
-              variant="outline"
-              className="h-12 w-full rounded-lg text-sm font-normal"
-              isDisabled={busy}
-              onPress={() => {
-                if (pendingDestination !== null)
-                  router.push(pendingDestination);
-              }}
-            >
-              放弃修改
-            </Button>
-          </AlertDialog.Footer>
-        </AlertDialog.Dialog>
-      </AlertDialog.Container>
-    </AlertDialog.Backdrop>
-  );
+  const leaveDialog = <StorageLeaveConfirmation navigation={navigation} />;
   if (maintenanceView && detail)
     return (
       <StorageMaintenanceView
@@ -716,7 +630,7 @@ function StorageEditorReady({
             setReferenceView(false);
             setMaintenanceView('cleanup');
           }}
-          onNavigate={navigateFromReference}
+          onNavigate={navigation.navigateFromReference}
         />
         {leaveDialog}
       </>

@@ -765,6 +765,251 @@ try {
       await evidence('recovered-default-corrected', 390, 'dark');
     }
   });
+  await scenario('dirty-and-unknown-navigation', async () => {
+    const previousDefault = (await settings()).defaultStorageId;
+    const target = await local(`regression-navigation-${Date.now()}`);
+    const imageId = `${target.id}-navigation`;
+    const path = `/api/storages/${target.id}`;
+    const editorPath = `/settings/storage/${target.id}`;
+    const button = (name) => `loc=role:button[name="${name}"]`;
+    const dialog = '[role="alertdialog"][aria-label="放弃未保存的修改？"]';
+    const editorReturn = '[data-testid="storage-editor"] header button';
+    const imageLink =
+      '[data-testid="storage-reference-view"] a[href="/library"]';
+    async function continueEditing(opener) {
+      await page.click(button('继续编辑'));
+      await page.waitForSelector(dialog, { state: 'hidden' });
+      await page.waitForFunction(
+        (selector) =>
+          document.activeElement === document.querySelector(selector),
+        opener,
+      );
+      assert.equal(new URL(await page.url()).pathname, editorPath);
+    }
+    async function discard(destination) {
+      await page.click(button('放弃修改'));
+      await page.waitForURL(`${config.origin}${destination}`);
+      assert.equal(await page.url(), `${config.origin}${destination}`);
+    }
+    const formValues = () =>
+      page.evaluate(() =>
+        [...document.querySelectorAll('#storage-form input')].map((input) => ({
+          name: input.name,
+          type: input.type,
+          value: input.value,
+          checked: input.checked,
+        })),
+      );
+    async function navigationEvidence(state, widths = [390, 1440]) {
+      for (const theme of ['light', 'dark'])
+        for (const width of widths) await evidence(state, width, theme);
+      await resizeViewport(page, 1440);
+      await setTheme(page, 'light');
+    }
+    try {
+      await identitySql(
+        config,
+        `INSERT INTO media_images (id,storage_id,original_name,display_name,visibility,format,mime,byte_size,processing_status,created_at,updated_at) VALUES ('${imageId}','${target.id}','navigation.png','navigation','private','png','image/png',0,'ready',${Date.now()},${Date.now()})`,
+      );
+      await setDefault(target.id);
+      await resizeViewport(page, 1440);
+      await open(target.id);
+      await waitEditor(target.id);
+      await monitor();
+      await page.fill(field('name'), `${target.name}-return-draft`);
+      await page.click(editorReturn);
+      await page.waitForSelector(dialog);
+      await navigationEvidence('dirty-leave-confirmation');
+      await continueEditing(editorReturn);
+      const retainedReturn = await page.evaluate(
+        () => document.querySelector('input[name="name"]').value,
+      );
+      check(
+        'Dirty return keeps the draft and restores the Return trigger focus',
+        () => {
+          assert.equal(retainedReturn, `${target.name}-return-draft`);
+        },
+      );
+      await page.click(editorReturn);
+      await page.waitForSelector(dialog);
+      await discard('/settings/storage');
+      await page.waitForSelector('[data-testid="storage-list"]');
+      const returnResult = {
+        url: await page.url(),
+        saved: await request(path),
+        requests: await page.evaluate(
+          () => window.__storageRegression.requests,
+        ),
+      };
+      check(
+        'Discarding the return draft reaches the list without saving',
+        () => {
+          assert.equal(returnResult.url, `${config.origin}/settings/storage`);
+          assert.equal(returnResult.saved.name, target.name);
+          assert.ok(
+            returnResult.requests.every((item) => item.method === 'GET'),
+          );
+        },
+      );
+
+      await open(target.id);
+      await waitEditor(target.id);
+      await monitor();
+      await page.fill(field('name'), `${target.name}-reference-draft`);
+      await page.click('[data-testid="storage-open-cleanup"]');
+      await page.waitForSelector('[data-testid="storage-reference-view"]');
+      await page.click(imageLink);
+      await page.waitForSelector(dialog);
+      await continueEditing(imageLink);
+      await page.click(button('返回'));
+      await page.waitForSelector('[data-testid="storage-editor"]');
+      const retainedReference = await page.evaluate(
+        () => document.querySelector('input[name="name"]').value,
+      );
+      check(
+        'Dirty reference navigation preserves the draft and original link focus',
+        () => {
+          assert.equal(retainedReference, `${target.name}-reference-draft`);
+        },
+      );
+      await page.click('[data-testid="storage-open-cleanup"]');
+      await page.waitForSelector('[data-testid="storage-reference-view"]');
+      await page.click(imageLink);
+      await page.waitForSelector(dialog);
+      await discard('/library');
+      await page.waitForSelector('[data-testid="library-list"]');
+      const referenceResult = {
+        url: await page.url(),
+        saved: await request(path),
+        requests: await page.evaluate(
+          () => window.__storageRegression.requests,
+        ),
+      };
+      check(
+        'Discarding the reference draft reaches the exact library without saving',
+        () => {
+          assert.equal(referenceResult.url, `${config.origin}/library`);
+          assert.equal(referenceResult.saved.name, target.name);
+          assert.ok(
+            referenceResult.requests.every((item) => item.method === 'GET'),
+          );
+        },
+      );
+
+      await open(target.id);
+      await waitEditor(target.id);
+      const before = await formValues();
+      await monitor({ path, method: 'PATCH' });
+      await page.evaluate((path) => {
+        const original = window.fetch;
+        window.__storageNavigationOriginalFetch = original;
+        window.fetch = (...args) => {
+          if (
+            new URL(String(args[0]), location.href).pathname === path &&
+            (args[1]?.method ?? 'GET') === 'GET' &&
+            window.__storageRegression.faultUsed
+          ) {
+            window.__storageRegression.requests.push({
+              path,
+              method: 'GET',
+              status: 503,
+              blockedReadback: true,
+            });
+            return Promise.resolve(
+              Response.json(
+                { message: 'Verification: readback unavailable' },
+                { status: 503 },
+              ),
+            );
+          }
+          return original(...args);
+        };
+      }, path);
+      await page.click('[data-testid="storage-open-default"]');
+      await page.waitForSelector('[data-testid="storage-default-view"]');
+      await page.click(button('停用存储'));
+      await page.waitForSelector('[data-testid="storage-editor"]');
+      await page.waitForSelector(button('核对保存结果'));
+      await page.waitForFunction(() => {
+        const save = document.querySelector('[data-testid="storage-save"]');
+        return save?.disabled && save.textContent.trim() === '保存';
+      });
+      const after = await formValues();
+      const saved = await request(path);
+      const browser = await page.evaluate(() => window.__storageRegression);
+      current.result = { target, before, after, saved };
+      check(
+        'One real disable PATCH commits before its response is lost and readback fails',
+        () => {
+          const patches = browser.requests.filter(
+            (item) => item.path === path && item.method === 'PATCH',
+          );
+          assert.equal(patches.length, 1);
+          assert.deepEqual(patches[0].body, { enabled: false });
+          assert.equal(patches[0].status, 200);
+          assert.equal(patches[0].responseLost, true);
+          assert.ok(browser.requests.some((item) => item.blockedReadback));
+          assert.equal(saved.enabled, false);
+          assert.deepEqual(after, before);
+        },
+      );
+      await page.click(editorReturn);
+      await page.waitForSelector(dialog);
+      assert.ok(
+        await page.evaluate(
+          (dialog) =>
+            document
+              .querySelector(dialog)
+              .textContent.includes('本次保存结果尚未确认'),
+          dialog,
+        ),
+      );
+      await navigationEvidence(
+        'unknown-leave-confirmation',
+        [360, 390, 430, 768, 1440],
+      );
+      await continueEditing(editorReturn);
+      await page.click('[data-testid="storage-open-cleanup"]');
+      await page.waitForSelector('[data-testid="storage-reference-view"]');
+      await page.click(imageLink);
+      await page.waitForSelector(dialog);
+      assert.ok(
+        await page.evaluate(
+          (dialog) =>
+            document
+              .querySelector(dialog)
+              .textContent.includes('本次保存结果尚未确认'),
+          dialog,
+        ),
+      );
+      await continueEditing(imageLink);
+      await page.click(imageLink);
+      await page.waitForSelector(dialog);
+      await discard('/library');
+      await page.waitForSelector('[data-testid="library-list"]');
+      const unknownDestination = await page.url();
+      check(
+        'Unknown save with an unchanged form confirms both exits and discards to the exact library',
+        () => {
+          assert.equal(saved.name, target.name);
+          assert.equal(unknownDestination, `${config.origin}/library`);
+        },
+      );
+    } finally {
+      await page.evaluate(() => {
+        if (window.__storageNavigationOriginalFetch) {
+          window.fetch = window.__storageNavigationOriginalFetch;
+          delete window.__storageNavigationOriginalFetch;
+        }
+      });
+      await setDefault(previousDefault);
+      await identitySql(
+        config,
+        `DELETE FROM media_images WHERE id='${imageId}'`,
+      );
+      await cleanup(target.id);
+    }
+  });
   report.status = report.checks.every((item) => item.status === 'passed')
     ? 'passed'
     : 'failed';

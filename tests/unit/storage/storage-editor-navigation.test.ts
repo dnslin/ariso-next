@@ -11,10 +11,12 @@ import { StorageEditor } from '../../../src/components/storage/storage-editor';
 import { StorageForm } from '../../../src/components/storage/storage-form';
 import { StorageReferenceView } from '../../../src/components/storage/storage-reference-view';
 import { StorageConnectionResult } from '../../../src/components/storage/storage-connection-result';
+import { StorageLeaveConfirmation } from '../../../src/components/storage/storage-leave-confirmation';
 import type { StorageDetail } from '../../../src/components/storage/storage-api';
 
 const hooks = vi.hoisted(() => ({ cells: [] as unknown[], cursor: 0 }));
 const requests = vi.hoisted(() => ({ push: vi.fn(), storage: vi.fn() }));
+const returnFocus = vi.fn();
 vi.mock('react', async (original) => ({
   ...(await original<typeof import('react')>()),
   useState: (initial: unknown) => {
@@ -91,7 +93,17 @@ const storage: StorageDetail = {
 function elements(node: ReactNode): ReactElement<Record<string, unknown>>[] {
   return Children.toArray(node).flatMap((child) => {
     if (!isValidElement<Record<string, unknown>>(child)) return [];
-    return [child, ...elements(child.props.children as ReactNode)];
+    return [
+      child,
+      ...elements(
+        child.type === StorageLeaveConfirmation
+          ? StorageLeaveConfirmation(
+              child.props as ComponentProps<typeof StorageLeaveConfirmation>,
+            )
+          : (child.props.children as ReactNode),
+      ),
+      ...elements(child.props.footer as ReactNode),
+    ];
   });
 }
 function render() {
@@ -112,13 +124,15 @@ function form(tree: ReactNode) {
   return elements(tree).find((element) => element.type === StorageForm)!
     .props as ComponentProps<typeof StorageForm>;
 }
-function press(tree: ReactNode, label: string) {
-  const button = elements(tree).find(
+function button(tree: ReactNode, label: string) {
+  return elements(tree).find(
     (element) =>
       Children.toArray(element.props.children as ReactNode).includes(label) &&
       typeof element.props.onPress === 'function',
   )!;
-  (button.props.onPress as () => void)();
+}
+function press(tree: ReactNode, label: string) {
+  (button(tree, label).props.onPress as () => void)();
 }
 function references(tree: ReactNode) {
   const button = elements(tree).find(
@@ -166,13 +180,45 @@ beforeEach(() => {
   hooks.cells = [];
   requests.push.mockReset();
   requests.storage.mockReset();
-  vi.stubGlobal('document', { activeElement: { focus: vi.fn() } });
+  returnFocus.mockReset();
+  vi.stubGlobal('document', { activeElement: { focus: returnFocus } });
   vi.stubGlobal('requestAnimationFrame', (callback: () => void) => {
     callback();
     return 0;
   });
 });
 afterEach(() => vi.unstubAllGlobals());
+
+it.each(['返回', '取消'])(
+  'returns directly to the storage list through %s when the draft is unchanged',
+  (label) => {
+    press(render(), label);
+    expect(requests.push).toHaveBeenCalledExactlyOnceWith('/settings/storage');
+    expect(dialog(render()).props.isOpen).toBe(false);
+    expect(requests.storage).not.toHaveBeenCalled();
+  },
+);
+
+it.each(['返回', '取消'])(
+  'confirms a dirty editor exit through %s and restores the opener when continuing',
+  (label) => {
+    const current = form(render());
+    current.onChange({ ...current.value, name: '未保存名称' });
+    press(render(), label);
+    expect(dialog(render()).props.isOpen).toBe(true);
+    expect(requests.push).not.toHaveBeenCalled();
+
+    press(render(), '继续编辑');
+    expect(dialog(render()).props.isOpen).toBe(false);
+    expect(returnFocus).toHaveBeenCalledOnce();
+    expect(form(render()).value.name).toBe('未保存名称');
+
+    press(render(), label);
+    press(render(), '放弃修改');
+    expect(requests.push).toHaveBeenCalledExactlyOnceWith('/settings/storage');
+    expect(requests.storage).not.toHaveBeenCalled();
+  },
+);
 
 it('keeps the S3 draft when returning from its connection result', () => {
   const current = form(render());
@@ -234,6 +280,7 @@ it('preserves clean links and modified or new-tab clicks without intercepting th
     { shiftKey: true },
     { altKey: true },
     { button: 1 },
+    { button: 2 },
     { defaultPrevented: true },
     { currentTarget: { getAttribute: () => '_blank', focus: vi.fn() } },
   ])
@@ -244,7 +291,7 @@ it('preserves clean links and modified or new-tab clicks without intercepting th
   expect(requests.push).not.toHaveBeenCalled();
 });
 
-it('blocks reference exits while saving and confirms an unknown result even after the draft is restored', async () => {
+it('keeps an open leave confirmation and blocks editor exits while saving', async () => {
   let reject!: (reason: Error) => void;
   requests.storage.mockImplementationOnce(
     () =>
@@ -253,32 +300,68 @@ it('blocks reference exits while saving and confirms an unknown result even afte
       }),
   );
   requests.storage.mockRejectedValue(new Error('readback unavailable'));
-  let tree = render();
-  const current = form(tree);
+  const current = form(render());
   current.onChange({ ...current.value, name: '未保存名称' });
+  press(render(), '返回');
   form(render()).onSubmit();
-  tree = references(render());
-  expect(clickReference(tree, '/upload').preventDefault).toHaveBeenCalledOnce();
-  expect(dialog(render()).props.isOpen).toBe(false);
+  const tree = render();
+  expect(dialog(tree).props.isKeyboardDismissDisabled).toBe(true);
+  expect(button(tree, '继续编辑').props.isDisabled).toBe(true);
+  expect(button(tree, '放弃修改').props.isDisabled).toBe(true);
+  (dialog(tree).props.onOpenChange as (open: boolean) => void)(false);
+  press(tree, '返回');
+  press(tree, '取消');
+  expect(dialog(render()).props.isOpen).toBe(true);
+  expect(returnFocus).not.toHaveBeenCalled();
+  expect(requests.push).not.toHaveBeenCalled();
   reject(new Error('save response unavailable'));
   for (let i = 0; i < 5; i++) await Promise.resolve();
-  const view = elements(render()).find(
-    (element) => element.type === StorageReferenceView,
-  )!;
-  (view.props.onReturn as () => void)();
-  const failedForm = form(render());
-  failedForm.onChange({ ...failedForm.value, name: storage.name });
-  tree = references(render());
-  clickReference(tree, '/upload');
-  tree = render();
-  expect(dialog(tree).props.isOpen).toBe(true);
-  expect(
-    elements(tree).some(
-      (element) =>
-        element.props.children ===
-        '本次保存结果尚未确认。离开后请核对已保存配置。',
-    ),
-  ).toBe(true);
-  press(tree, '放弃修改');
-  expect(requests.push).toHaveBeenCalledExactlyOnceWith('/upload');
 });
+
+it.each(['reference', 'return'])(
+  'blocks reference exits while saving and confirms an unknown %s exit even after restoring the draft',
+  async (exit) => {
+    let reject!: (reason: Error) => void;
+    requests.storage.mockImplementationOnce(
+      () =>
+        new Promise((_, fail) => {
+          reject = fail;
+        }),
+    );
+    requests.storage.mockRejectedValue(new Error('readback unavailable'));
+    let tree = render();
+    const current = form(tree);
+    current.onChange({ ...current.value, name: '未保存名称' });
+    form(render()).onSubmit();
+    tree = references(render());
+    expect(
+      clickReference(tree, '/upload').preventDefault,
+    ).toHaveBeenCalledOnce();
+    expect(dialog(render()).props.isOpen).toBe(false);
+    reject(new Error('save response unavailable'));
+    for (let i = 0; i < 5; i++) await Promise.resolve();
+    const view = elements(render()).find(
+      (element) => element.type === StorageReferenceView,
+    )!;
+    (view.props.onReturn as () => void)();
+    const failedForm = form(render());
+    failedForm.onChange({ ...failedForm.value, name: storage.name });
+    if (exit === 'reference') {
+      tree = references(render());
+      clickReference(tree, '/upload');
+    } else press(render(), '返回');
+    tree = render();
+    expect(dialog(tree).props.isOpen).toBe(true);
+    expect(
+      elements(tree).some(
+        (element) =>
+          element.props.children ===
+          '本次保存结果尚未确认。离开后请核对已保存配置。',
+      ),
+    ).toBe(true);
+    press(tree, '放弃修改');
+    expect(requests.push).toHaveBeenCalledExactlyOnceWith(
+      exit === 'reference' ? '/upload' : '/settings/storage',
+    );
+  },
+);
