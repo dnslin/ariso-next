@@ -47,7 +47,7 @@ jobs:
       - name: Verify media contracts on native architecture
         run: pnpm exec vitest run --project integration tests/integration/media
       - name: Verify identity protocol on native architecture
-        run: pnpm exec vitest run --project integration tests/integration/identity --reporter=default --reporter=junit --outputFile=test-results/identity.xml
+        run: pnpm exec vitest run --project integration tests/integration/identity --maxWorkers=2 --reporter=default --reporter=junit --outputFile=test-results/identity.xml
       - name: Preserve identity protocol evidence
         if: always()
         uses: actions/upload-artifact@v7
