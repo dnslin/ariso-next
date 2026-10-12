@@ -64,6 +64,13 @@ export function AnalyticsScopeDialog({
                     访问量统计公开图片的有效内容请求，不代表独立访客或完整下载人数。
                   </p>
                   <p className="text-[13px] text-muted">
+                    7/30/90
+                    天均包含今天。今日访问截至本次更新，今天尚未结束。趋势、热门和版本分布共用周期，今日与累计不随周期改变。
+                  </p>
+                  <p className="text-[13px] text-muted">
+                    趋势可用左右方向键或点击读取数值，完整日期和访问量也可在每日数值中查看。
+                  </p>
+                  <p className="text-[13px] text-muted">
                     不计所有者、私有图片、缩略图、预览、HEAD、304 和拒绝请求。S3
                     以成功签发计数，后续远端失败无法撤回。
                   </p>

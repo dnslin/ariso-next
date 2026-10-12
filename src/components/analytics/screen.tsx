@@ -4,6 +4,9 @@ import { useCallback, useEffect, useState } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { QueryClient } from '@tanstack/react-query';
 import { Link } from '@heroui/react/link';
+import { Button, buttonVariants } from '@heroui/react/button';
+import { Tooltip } from '@heroui/react/tooltip';
+import { ArrowLeft, HardDrive, Info, RefreshCw, Upload } from 'lucide-react';
 import { OwnerShell } from '../shell/owner-shell';
 import { useResetUpload } from '../upload/provider';
 import { AnalyticsReadError, type ReportDays } from './read-analytics';
@@ -19,6 +22,8 @@ import { AnalyticsLink } from './presentation';
 import { AnalyticsLoading, AnalyticsReadFailure } from './query-state';
 import { AnalyticsOverviewPanel } from './overview-panel';
 import { UsageContent } from './usage-content';
+import { DashboardPanel } from './dashboard-panel';
+import { ImageStatisticsTip } from './image-statistics-content';
 
 export function AnalyticsScreen(props: {
   name: string;
@@ -79,7 +84,8 @@ export function AnalyticsScreen(props: {
   const popularImage = overview.data?.popular.find(
     (item) => item.imageId === statisticsId,
   );
-  const source = `${pathname}?days=${days}`;
+  const displayedDays = overview.data?.range.days ?? days;
+  const source = `${pathname}?days=${displayedDays}`;
   useEffect(() => {
     if (!overview.data) return;
     return restoreAnalyticsReturn(source, statisticsId !== null);
@@ -87,37 +93,24 @@ export function AnalyticsScreen(props: {
   const title = usageView
     ? '当前存储占用'
     : dailyView
-      ? `每日访问明细 · ${days} 天`
+      ? `每日访问明细 · ${displayedDays} 天`
       : props.dashboard
-        ? '工作台'
+        ? '总览'
         : '访问统计';
-  const footer = usageView ? (
+  const footer = usageView ? undefined : props.dashboard && !dailyView ? (
     <>
-      <AnalyticsLink href={url('scope', days, 'usage')} footer>
-        占用说明
-      </AnalyticsLink>
-      <AnalyticsLink href={url('overview')} footer>
-        返回统计
-      </AnalyticsLink>
-    </>
-  ) : props.dashboard && !dailyView ? (
-    <>
-      <AnalyticsLink href="/upload" footer>
-        上传图片
-      </AnalyticsLink>
       <AnalyticsLink href={`/analytics?days=${days}`} footer>
         查看访问统计
+      </AnalyticsLink>
+      <AnalyticsLink href={url('usage')} footer>
+        <HardDrive size={17} aria-hidden />
+        占用明细
       </AnalyticsLink>
     </>
   ) : (
     <>
-      <AnalyticsLink
-        href={url('scope', days, dailyView ? 'daily' : 'overview')}
-        footer
-      >
-        统计口径
-      </AnalyticsLink>
-      <AnalyticsLink href={url('usage')} primary footer>
+      <AnalyticsLink href={url('usage')} footer>
+        <HardDrive size={17} aria-hidden />
         当前存储占用
       </AnalyticsLink>
     </>
@@ -133,27 +126,96 @@ export function AnalyticsScreen(props: {
         data-testid="analytics-page"
         data-page={props.dashboard ? 'dashboard' : 'analytics'}
         data-view={view}
-        className="grid min-w-0 gap-5 pb-4"
+        className="grid min-w-0 gap-6 pb-4"
       >
         {usageView || dailyView ? (
           <Link
             href={url('overview')}
             className="inline-flex min-h-11 w-fit items-center gap-2 text-sm text-muted"
           >
-            ← 返回{props.dashboard ? '工作台' : '访问统计'}
+            <ArrowLeft size={17} aria-hidden />
+            返回
           </Link>
         ) : null}
-        <div className="grid gap-5">
-          <h1>{title}</h1>
-          {!usageView ? (
-            <p className="text-[13px]">
-              {dailyView
-                ? '访问量是内容请求计数，不代表独立访客人数。'
-                : props.dashboard
-                  ? '每一张图片，都有自己的位置。'
-                  : '公开图片访问与当前对象占用。'}
-            </p>
-          ) : null}
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div className="flex min-w-0 items-center gap-1">
+            <h1>{title}</h1>
+            {props.dashboard && !usageView && !dailyView ? (
+              <ImageStatisticsTip label="资源与占用说明">
+                <p>图片数量不含回收站，相册数量包含空相册。</p>
+                <p>
+                  已登记占用按 Ariso
+                  对象记录计算，不是整机磁盘容量。有对象待核对时，总占用尚未确认。
+                </p>
+                <p>重新处理失败的图片仍可使用已保存版本。</p>
+              </ImageStatisticsTip>
+            ) : (
+              <Tooltip>
+                <Link
+                  href={url(
+                    'scope',
+                    days,
+                    usageView ? 'usage' : dailyView ? 'daily' : 'overview',
+                  )}
+                  aria-label={usageView ? '占用说明' : '统计口径'}
+                  className={buttonVariants({
+                    variant: 'ghost',
+                    isIconOnly: true,
+                    className: 'size-11 shrink-0 rounded-lg text-muted',
+                  })}
+                >
+                  <Info size={18} aria-hidden />
+                </Link>
+                <Tooltip.Content>
+                  {usageView ? '占用说明' : '统计口径'}
+                </Tooltip.Content>
+              </Tooltip>
+            )}
+          </div>
+          <div className="flex items-center gap-2">
+            <Tooltip>
+              <Button
+                isIconOnly
+                variant="ghost"
+                aria-label={
+                  usageView
+                    ? '刷新存储占用'
+                    : props.dashboard && !dailyView
+                      ? '刷新总览'
+                      : '刷新访问统计'
+                }
+                className="size-11 shrink-0 rounded-lg"
+                isPending={
+                  usageView
+                    ? usage.isFetching
+                    : overview.isFetching ||
+                      (props.dashboard && usage.isFetching)
+                }
+                onPress={() => {
+                  if (usageView) void usage.refetch();
+                  else {
+                    void overview.refetch();
+                    if (props.dashboard) void usage.refetch();
+                  }
+                }}
+              >
+                <RefreshCw size={18} aria-hidden />
+              </Button>
+              <Tooltip.Content>刷新</Tooltip.Content>
+            </Tooltip>
+            {props.dashboard && !usageView && !dailyView ? (
+              <Link
+                href="/upload"
+                className={buttonVariants({
+                  variant: 'primary',
+                  className: 'h-12 gap-2 rounded-lg px-4 text-sm',
+                })}
+              >
+                <Upload size={18} aria-hidden />
+                上传
+              </Link>
+            ) : null}
+          </div>
         </div>
         {!validDays || !validView ? (
           <div role="alert" className="grid gap-3">
@@ -185,10 +247,15 @@ export function AnalyticsScreen(props: {
               <AnalyticsLoading scope="usage" />
             ) : null}
           </>
+        ) : props.dashboard && !dailyView ? (
+          <DashboardPanel
+            overview={overview}
+            usage={usage}
+            timeZone={props.timeZone}
+          />
         ) : (
           <AnalyticsOverviewPanel
             overview={overview}
-            usage={usage}
             days={days}
             dailyView={dailyView}
             timeZone={props.timeZone}

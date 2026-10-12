@@ -1,4 +1,7 @@
 import { describe, expect, it } from 'vitest';
+import { jsx } from 'react/jsx-runtime';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { StorageForm } from '../../../src/components/storage/storage-form';
 import type { StorageSummary } from '../../../src/components/storage/storage-api';
 import {
   storageFormInitial,
@@ -111,5 +114,77 @@ describe('storage form requests', () => {
     const disabled = { ...saved, enabled: false };
     const value = { ...storageFormInitial(disabled), enabled: true };
     expect(storageFormPayload(value, disabled)).toEqual({ enabled: true });
+  });
+});
+
+describe('storage form presentation', () => {
+  const local: StorageSummary = {
+    ...saved,
+    type: 'local',
+    localPath: 'archive/blog',
+  };
+  function render(
+    storage: StorageSummary | undefined,
+    locked = false,
+    busy = false,
+  ) {
+    return renderToStaticMarkup(
+      jsx(StorageForm, {
+        storage,
+        value: { ...storageFormInitial(storage), isDefault: false },
+        storageRoot: '/actual/data/storage',
+        locked,
+        busy,
+        errors: {},
+        onChange: () => {},
+        onSubmit: () => {},
+      }),
+    );
+  }
+
+  it('shows one complete selectable local directory with a copy action in both editable and locked states', () => {
+    for (const locked of [false, true]) {
+      const html = render(local, locked);
+      expect(html.match(/\/actual\/data\/storage/g)).toHaveLength(1);
+      expect(html).toContain('/actual/data/storage/archive/blog');
+      expect(html).toContain('aria-label="复制实际目录"');
+      expect(html).toContain('aria-label="相对路径说明"');
+      expect(html).not.toContain('填写存储根目录下的相对路径');
+      expect(html).not.toContain('如使用其他硬盘');
+    }
+  });
+
+  it('keeps the name editable and the referenced location read-only while retaining enabled and default controls', () => {
+    const html = render(local, true);
+    const inputs = html.match(/<input\b[^>]*>/g) ?? [];
+    expect(inputs.find((input) => input.includes('name="name"'))).not.toContain(
+      'readOnly',
+    );
+    expect(
+      inputs.find((input) => input.includes('name="localPath"')),
+    ).toContain('readOnly');
+    expect(html).toContain('仍有引用，存储位置与类型不可修改');
+    expect(html).toContain('aria-label="启用此存储"');
+    expect(html).toContain('aria-label="设为默认存储"');
+    expect(html).not.toContain('storage-type-s3');
+  });
+
+  it('retains credential masking and the direct reason why an untested S3 storage cannot be enabled', () => {
+    const untested = {
+      ...saved,
+      enabled: false,
+      connectionStatus: 'untested' as const,
+      connectionRevision: null,
+    };
+    const html = render(untested);
+    const inputs = html.match(/<input\b[^>]*>/g) ?? [];
+    for (const name of ['accessKey', 'secretKey']) {
+      const input = inputs.find((entry) => entry.includes(`name="${name}"`));
+      expect(input).toContain('type="password"');
+      expect(input).toContain('value=""');
+    }
+    expect(html).toContain('先保存配置，通过连接测试后可启用');
+    expect(html).not.toContain('/actual/data/storage');
+    expect(html).toContain('aria-label="连接测试说明"');
   });
 });

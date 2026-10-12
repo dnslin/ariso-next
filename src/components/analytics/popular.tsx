@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { ArrowUpRight, Images } from 'lucide-react';
 import { Button } from '@heroui/react/button';
 import type { AnalyticsOverview } from './read-analytics';
-import { AnalyticsCard, number } from './presentation';
+import { AnalyticsSection, number } from './presentation';
 
 export function AnalyticsPopular({
   data,
@@ -15,13 +15,10 @@ export function AnalyticsPopular({
   onStatistics: (imageId: string) => void;
 }) {
   return (
-    <AnalyticsCard
+    <AnalyticsSection
       title={`热门图片 · 最近 ${data.range.days} 天`}
       testId="analytics-popular"
     >
-      <p className="text-xs text-muted">
-        按访问量排列，最多 10 张；不补入零访问图片。
-      </p>
       {data.popular.length === 0 ? (
         <p className="py-6 text-sm text-muted">本周期暂无热门图片。</p>
       ) : (
@@ -114,7 +111,7 @@ export function AnalyticsPopular({
           })}
         </ol>
       )}
-    </AnalyticsCard>
+    </AnalyticsSection>
   );
 }
 

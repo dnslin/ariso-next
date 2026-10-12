@@ -149,7 +149,7 @@ it.each(['ready', 'saving'] as const)(
     );
     expect(save).not.toBeNull();
     expect(save![0]).toMatch(/\bdisabled=/);
-    expect(save![1]).toContain('保存站点信息');
+    expect(save![1]).toContain('保存站点');
     expect(save![1]).not.toContain('正在保存');
     const uploadInputs = inputs
       .filter((input) => !input.includes('type="hidden"'))
@@ -164,7 +164,7 @@ it.each(['ready', 'saving'] as const)(
     );
     expect(uploadSave).not.toBeNull();
     expect(uploadSave![0]).toMatch(/\bdisabled=/);
-    expect(uploadSave![1]).toContain('保存上传限制');
+    expect(uploadSave![1]).toContain('保存限制');
     expect(uploadSave![1]).not.toContain('正在保存');
   },
 );
@@ -184,4 +184,36 @@ it('四字段标签关联真实输入ID，保留既有selector供错误聚焦与
       ),
     );
   }
+});
+
+it('same-level site and upload sections have icons, normal Tips, and independent short save actions', () => {
+  state.settings.expired = false;
+  state.settings.locked = false;
+  state.upload.sessionLost = false;
+  const html = renderToStaticMarkup(
+    createElement(GeneralPage, {
+      name: saved.name,
+      description: saved.description,
+      email: 'owner@example.test',
+      ownerName: 'Owner',
+    }),
+  );
+  expect(html).toMatch(/<h2\b[^>]*><svg\b[^>]*lucide-globe/);
+  expect(html).toMatch(/<h2\b[^>]*><svg\b[^>]*lucide-upload/);
+  for (const label of [
+    '站点信息',
+    '上传限制',
+    '单文件上限（MiB）',
+    '每批文件数量',
+    '队列上限',
+  ])
+    expect(html).toContain(`aria-label="${label}说明"`);
+  expect(html).not.toContain('仅影响新提交');
+  expect(html).not.toContain('填写正整数');
+  expect(html).toMatch(
+    /<button\b(?=[^>]*form="site-settings-form")[^>]*>[\s\S]*?保存站点<\/button>/,
+  );
+  expect(html).toMatch(
+    /<button\b(?=[^>]*form="upload-limits-form")[^>]*>[\s\S]*?保存限制<\/button>/,
+  );
 });

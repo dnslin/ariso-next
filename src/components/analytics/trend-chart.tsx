@@ -17,7 +17,10 @@ export default function TrendChart({
   trend: AnalyticsOverview['trend'];
 }) {
   return (
-    <div className="h-[180px] min-w-0 text-xs" data-testid="analytics-chart">
+    <div
+      className="h-[220px] min-w-0 text-xs sm:h-[252px]"
+      data-testid="analytics-chart"
+    >
       <ResponsiveContainer width="100%" height="100%" minWidth={0}>
         <LineChart
           data={trend}
@@ -57,7 +60,7 @@ export default function TrendChart({
             }
           />
           <Line
-            type="linear"
+            type="monotone"
             dataKey="count"
             name="访问量"
             stroke="var(--foreground)"

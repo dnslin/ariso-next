@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState, type ComponentProps } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Button } from '@heroui/react/button';
 import { Card } from '@heroui/react/card';
+import { Save } from 'lucide-react';
 import { OwnerShell } from '../shell/owner-shell';
 import {
   SettingsCategories,
@@ -26,6 +27,7 @@ import { useUploadLimits } from '../upload-limits/use-upload-limits';
 import { uploadLimitsMatch } from '../upload-limits/model';
 import { UploadLimitsForm } from '../upload-limits/form';
 import { UploadLimitsReadState } from '../upload-limits/read-state';
+import { StorageTip } from '../storage/storage-tip';
 
 type ShellProps = Omit<
   ComponentProps<typeof OwnerShell>,
@@ -117,9 +119,10 @@ export function GeneralPage(shell: ShellProps) {
             className={saveClass}
             isDisabled={settings.locked || sessionLost}
           >
+            <Save size={17} aria-hidden />
             {settings.phase === 'saving' && !sessionLost
               ? '正在保存…'
-              : '保存站点信息'}
+              : '保存站点'}
           </Button>
           <Button
             data-testid="upload-limits-save"
@@ -130,21 +133,25 @@ export function GeneralPage(shell: ShellProps) {
               !upload.saved || upload.busy || upload.unknown || sessionLost
             }
           >
-            {upload.busy && !sessionLost ? '正在保存…' : '保存上传限制'}
+            <Save size={17} aria-hidden />
+            {upload.busy && !sessionLost ? '正在保存…' : '保存限制'}
           </Button>
         </>
       }
     >
       <section data-testid="site-general" data-state={phase} className="pb-10">
-        <SettingsHeading />
+        <SettingsHeading
+          help={
+            <StorageTip label="基本设置保存">
+              站点信息和上传限制分别保存；其他设置由所属模块管理。
+            </StorageTip>
+          }
+        />
         <SettingsCategories
           items={settingsCategories}
           onNavigate={navigation.navigate}
         >
           <div className="grid min-w-0 gap-5">
-            <p className="text-[13px] leading-5 text-muted">
-              站点信息和上传限制分别保存；其他设置由所属模块管理。
-            </p>
             {settings.saved ? (
               <>
                 {sessionLost ? (

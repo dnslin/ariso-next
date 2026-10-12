@@ -80,3 +80,18 @@ it('只有普通模块读取失败不使站点编辑器过期，图片模块401�
   runtime.effect!();
   expect(runtime.expire).toHaveBeenCalledOnce();
 });
+
+it('related settings uses the same heading icon treatment and keeps secondary ownership in Tips', () => {
+  const html = renderToStaticMarkup(RelatedSettingsHarness());
+  expect(html).toMatch(/<h2\b[^>]*><svg\b[^>]*lucide-sliders-horizontal/);
+  expect(html).toContain('aria-label="关联设置说明"');
+  expect(html).not.toContain('分别管理，不随站点');
+  for (const icon of ['palette', 'hard-drive', 'image'])
+    expect(html).toContain(`lucide-${icon}`);
+  for (const target of [
+    '/settings/general/branding',
+    '/settings/storage',
+    '/settings/processing',
+  ])
+    expect(html).toContain(`href="${target}"`);
+});

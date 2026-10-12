@@ -1,13 +1,17 @@
 'use client';
 
-import { Card } from '@heroui/react/card';
+import { useState, type ReactNode } from 'react';
 import { TextField } from '@heroui/react/textfield';
 import { InputGroup } from '@heroui/react/input-group';
 import {
   Folder,
+  CheckCheck,
+  Cloud,
+  Copy,
   Globe,
   HardDrive,
   KeyRound,
+  LockKeyhole,
   MapPin,
   Power,
   Tag,
@@ -17,8 +21,8 @@ import { Label } from '@heroui/react/label';
 import { FieldError } from '@heroui/react/field-error';
 import { Switch } from '@heroui/react/switch';
 import { Button } from '@heroui/react/button';
-import { Select } from '@heroui/react/select';
-import { ListBox } from '@heroui/react/list-box';
+import { Tooltip } from '@heroui/react/tooltip';
+import { toast } from '@heroui/react/toast';
 import type { StorageSummary } from './storage-api';
 import {
   storageFormConfigChanged,
@@ -45,7 +49,8 @@ export function StorageForm({
   onSubmit: () => void;
 }) {
   const s3 = value.type === 's3';
-  const lockedLocal = locked && !s3;
+  const [copyError, setCopyError] = useState(false);
+  const actualDirectory = `${storageRoot}${value.localPath ? `/${value.localPath}` : ''}`;
   const configChanged = storageFormConfigChanged(value, storage);
   const canEnable =
     !s3 ||
@@ -69,7 +74,7 @@ export function StorageForm({
     label: string,
     placeholder?: string,
     readOnly = false,
-    tip?: string,
+    tip?: ReactNode,
   ) => (
     <TextField
       name={name}
@@ -79,11 +84,11 @@ export function StorageForm({
       isReadOnly={readOnly}
       isInvalid={Boolean(errors[name])}
       validationBehavior="aria"
-      className={`min-w-0 ${lockedLocal ? 'gap-1.5' : 'gap-2'}`}
+      className="min-w-0 gap-2"
     >
       <div className="flex items-center justify-between gap-2">
         <Label
-          className={`${lockedLocal ? 'text-sm' : 'text-[13px]'} font-normal ${readOnly && !lockedLocal ? 'text-muted' : ''}`}
+          className={`text-sm font-normal ${readOnly ? 'text-muted' : ''}`}
         >
           {label}
           {readOnly ? ' · 只读' : ''}
@@ -91,7 +96,7 @@ export function StorageForm({
         {tip ? <StorageTip label={label}>{tip}</StorageTip> : null}
       </div>
       <InputGroup
-        className={`h-11 w-full border border-border shadow-none ${lockedLocal ? 'rounded-lg min-[1200px]:h-10 min-[1200px]:min-h-10' : 'rounded-xl'} ${readOnly ? 'bg-default/80' : 'bg-background'}`}
+        className={`h-12 w-full rounded-lg border border-border shadow-none ${readOnly ? 'bg-default/80' : 'bg-background'}`}
       >
         <InputGroup.Prefix className="border-0 pl-3 pr-2 text-muted">
           {name === 'name' ? (
@@ -129,8 +134,22 @@ export function StorageForm({
     label: string,
     disabled = false,
   ) => (
-    <div className="flex min-w-0 items-center justify-between gap-4 min-[1200px]:flex-col min-[1200px]:items-start min-[1200px]:gap-2">
-      <span className="text-[13px]">{label}</span>
+    <div className="flex min-h-20 min-w-0 items-center justify-between gap-4 border-b border-border py-3">
+      <div className="flex items-center gap-3">
+        {name === 'enabled' ? (
+          <Power size={18} aria-hidden />
+        ) : name === 'isDefault' ? (
+          <CheckCheck size={18} aria-hidden />
+        ) : (
+          <Globe size={18} aria-hidden />
+        )}
+        <span className="text-sm">{label}</span>
+        {name === 'enabled' ? (
+          <StorageTip label="启用状态">
+            停用后，访问与新上传不可用；默认选择保留，已有记录、删除与维护清理仍可管理。
+          </StorageTip>
+        ) : null}
+      </div>
       <Switch
         aria-label={label}
         isSelected={
@@ -141,9 +160,6 @@ export function StorageForm({
         className="[--switch-control-bg:var(--border)] [--switch-control-bg-checked:var(--accent)] [--switch-control-bg-checked-hover:var(--accent)]"
       >
         <Switch.Content className="min-h-11 gap-3">
-          <Switch.Control className="h-6 w-11">
-            <Switch.Thumb className="size-5 bg-white" />
-          </Switch.Control>
           <Label className="text-[13px] font-normal">
             {name === 'enabled' && s3 && configChanged
               ? '已关闭'
@@ -151,102 +167,18 @@ export function StorageForm({
                 ? '已开启'
                 : '已关闭'}
           </Label>
+          <Switch.Control className="h-6 w-11">
+            <Switch.Thumb className="size-5 bg-white" />
+          </Switch.Control>
         </Switch.Content>
       </Switch>
     </div>
   );
-  if (lockedLocal)
-    return (
-      <form
-        id="storage-form"
-        data-testid="storage-form"
-        className="grid w-full max-w-190 gap-4"
-        onSubmit={(event) => {
-          event.preventDefault();
-          onSubmit();
-        }}
-      >
-        {field(
-          'name',
-          '存储名称',
-          undefined,
-          false,
-          '修改名称不会移动已有文件。',
-        )}
-        <TextField value="本地存储" isReadOnly className="gap-1.5">
-          <div className="flex items-center justify-between gap-2">
-            <Label className="text-sm font-normal">存储类型 · 只读</Label>
-            <StorageTip label="存储类型">
-              此存储已有引用，不能切换类型。使用 S3 时请新建存储。
-            </StorageTip>
-          </div>
-          <InputGroup className="h-11 w-full rounded-lg border border-border bg-default/80 shadow-none min-[1200px]:h-10 min-[1200px]:min-h-10">
-            <InputGroup.Prefix className="border-0 pl-3 pr-2 text-muted">
-              <HardDrive className="size-4" aria-hidden="true" />
-            </InputGroup.Prefix>
-            <InputGroup.Input className="h-full min-w-0 py-0 pl-0 pr-3 text-base font-normal text-muted min-[1200px]:text-sm" />
-          </InputGroup>
-        </TextField>
-        {field(
-          'localPath',
-          '相对路径',
-          undefined,
-          true,
-          '此位置仍被图片、上传或清理任务使用。更换目录请新建存储，已有文件不会移动。',
-        )}
-        <div className="grid gap-1.5">
-          <div className="flex items-center justify-between gap-2">
-            <Label id="storage-enabled-label" className="text-sm font-normal">
-              启用状态
-            </Label>
-            <StorageTip label="启用状态">
-              停用后，访问与新上传不可用；默认选择保留，已有记录、删除与维护清理仍可管理。
-            </StorageTip>
-          </div>
-          <Select
-            aria-labelledby="storage-enabled-label"
-            name="enabled"
-            value={value.enabled ? 'enabled' : 'disabled'}
-            isDisabled={busy}
-            onChange={(next) =>
-              onChange({ ...value, enabled: next === 'enabled' })
-            }
-          >
-            <Select.Trigger className="h-11 w-full gap-2 rounded-lg border border-border bg-background px-3 text-base font-normal shadow-none min-[1200px]:h-10 min-[1200px]:text-sm">
-              <Power
-                className="size-4 shrink-0 text-muted"
-                aria-hidden="true"
-              />
-              <Select.Value className="flex-1 text-left" />
-              <Select.Indicator />
-            </Select.Trigger>
-            <Select.Popover>
-              <ListBox>
-                {[
-                  { id: 'enabled', name: '已启用' },
-                  { id: 'disabled', name: '已停用' },
-                ].map((state) => (
-                  <ListBox.Item
-                    id={state.id}
-                    key={state.id}
-                    textValue={state.name}
-                    className="min-h-11"
-                  >
-                    {state.name}
-                    <ListBox.ItemIndicator />
-                  </ListBox.Item>
-                ))}
-              </ListBox>
-            </Select.Popover>
-          </Select>
-        </div>
-      </form>
-    );
   return (
     <form
       id="storage-form"
       data-testid="storage-form"
-      className="grid gap-5 min-[1200px]:gap-6"
+      className="grid w-full max-w-240 gap-6"
       onSubmit={(event) => {
         event.preventDefault();
         onSubmit();
@@ -280,65 +212,125 @@ export function StorageForm({
                 })
               }
             >
+              {type === 'local' ? (
+                <HardDrive size={16} aria-hidden />
+              ) : (
+                <Cloud size={16} aria-hidden />
+              )}
               {label}
             </Button>
           ))}
         </div>
       ) : null}
-      <Card className="gap-5 rounded-[20px] border border-border bg-surface px-4 py-5 shadow-none min-[1200px]:gap-6 min-[1200px]:p-6">
-        <h2 className="text-lg font-medium">{s3 ? '连接信息' : '存储位置'}</h2>
-        <div
-          className={`grid gap-5 min-[1200px]:gap-6 ${s3 ? 'min-[1200px]:grid-cols-2' : ''}`}
-        >
-          {field('name', '存储名称', '请输入存储名称')}
+      <section className="grid gap-5">
+        <div className="flex items-center gap-2">
+          <h2 className="text-lg font-medium">
+            {s3 ? '连接信息' : '存储位置'}
+          </h2>
+          {s3 ? (
+            <StorageTip label="连接测试">
+              连接测试只使用已保存配置，检查写入、鉴权读取、匿名访问拒绝和删除。
+            </StorageTip>
+          ) : null}
+        </div>
+        <div className="grid gap-5">
+          {field(
+            'name',
+            '存储名称',
+            '请输入存储名称',
+            false,
+            '修改名称不会移动已有文件。',
+          )}
           {s3 ? (
             <>
               {field('endpoint', 'Endpoint', 'https://s3.example.com', locked)}
-              {field('region', 'Region', 'auto', locked)}
-              {field('bucket', 'Bucket', '请输入 Bucket 名称', locked)}
-              {field(
-                'accessKey',
-                'Access Key ID',
-                storage?.hasAccessKey
-                  ? '已设置 · 留空保留'
-                  : '请输入 Access Key ID',
-              )}
-              {field(
-                'secretKey',
-                'Secret Access Key',
-                storage?.hasSecretKey
-                  ? '已设置 · 留空保留'
-                  : '请输入 Secret Access Key',
-              )}
+              <div className="grid gap-5 min-[768px]:grid-cols-2">
+                {field('region', 'Region', 'auto', locked)}
+                {field('bucket', 'Bucket', '请输入 Bucket 名称', locked)}
+              </div>
+              <div className="grid gap-5 min-[768px]:grid-cols-2">
+                {field(
+                  'accessKey',
+                  'Access Key ID',
+                  storage?.hasAccessKey
+                    ? '已设置 · 留空保留'
+                    : '请输入 Access Key ID',
+                )}
+                {field(
+                  'secretKey',
+                  'Secret Access Key',
+                  storage?.hasSecretKey
+                    ? '已设置 · 留空保留'
+                    : '请输入 Secret Access Key',
+                )}
+              </div>
             </>
           ) : (
-            field('localPath', '相对路径', 'default 或 archive/blog', locked)
+            field(
+              'localPath',
+              '相对路径',
+              'default 或 archive/blog',
+              locked,
+              <>
+                <p>
+                  填写存储根目录下的相对路径，例如 default 或 archive/blog。
+                </p>
+                <p>使用其他硬盘时，将目录挂载到存储根目录下。</p>
+              </>,
+            )
           )}
         </div>
         {s3 ? (
           <>
             <hr className="border-border" />
             <h2 className="text-lg font-medium">访问方式</h2>
-            <div className="grid gap-5 min-[1200px]:grid-cols-2 min-[1200px]:gap-6">
+            <div className="grid gap-5">
               {field('pathPrefix', 'Path Prefix', '可留空', locked)}
               {toggle('forcePathStyle', 'Path Style', locked)}
             </div>
-            <p className="text-[13px] leading-normal text-muted">
-              连接测试将检查写入、鉴权读取、匿名访问拒绝和删除。
-            </p>
           </>
         ) : (
           <>
-            <p className="text-[13px] leading-normal text-muted break-all">
-              实际目录：{storageRoot}
-              {value.localPath ? `/${value.localPath}` : ''}
-            </p>
-            <p className="text-[13px] leading-normal">
-              填写 {storageRoot} 下的相对路径，例如 default 或 archive/blog。
-            </p>
+            <div className="grid gap-2">
+              <span className="text-sm text-muted">实际目录</span>
+              <div className="flex items-start gap-3">
+                <code
+                  data-testid="storage-actual-directory"
+                  className="min-w-0 flex-1 select-text break-all text-sm leading-6"
+                >
+                  {actualDirectory}
+                </code>
+                <Tooltip>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    isIconOnly
+                    aria-label="复制实际目录"
+                    className="size-11 min-w-11 shrink-0 rounded-lg"
+                    onPress={async () => {
+                      setCopyError(false);
+                      try {
+                        await navigator.clipboard.writeText(actualDirectory);
+                        toast.success('目录已复制');
+                      } catch {
+                        setCopyError(true);
+                      }
+                    }}
+                  >
+                    <Copy size={16} aria-hidden />
+                  </Button>
+                  <Tooltip.Content>复制实际目录</Tooltip.Content>
+                </Tooltip>
+              </div>
+              {copyError ? (
+                <p role="alert" className="text-sm text-danger">
+                  无法自动复制，请选中上方目录文本。
+                </p>
+              ) : null}
+            </div>
           </>
         )}
-        <div className="grid gap-3 min-[1200px]:flex min-[1200px]:gap-12">
+        <div className="grid border-t border-border">
           {toggle('enabled', '启用此存储', !canEnable && !storage?.enabled)}
           {!s3
             ? toggle(
@@ -351,21 +343,17 @@ export function StorageForm({
         {s3 && !canEnable ? (
           <p className="text-[13px] leading-normal text-muted">
             {storage && configChanged
-              ? '位置或凭据修改后将停用此存储，并使连接与直传检测失效；默认指针保留。保存后请重新测试，再手动启用。'
-              : '先保存配置为停用状态，连接测试通过后再手动启用。'}
+              ? '本次保存将停用存储，并使连接与直传检测失效。保存后请重新测试并启用。'
+              : '先保存配置，通过连接测试后可启用。'}
           </p>
         ) : null}
         {locked ? (
-          <p className="text-[13px] leading-normal text-muted">
-            有图片、上传或清理引用：位置与类型不可改。更换位置请新建配置；名称
-            {s3 ? '、凭据' : ''}和启停仍可修改。
-          </p>
-        ) : !s3 ? (
-          <p className="text-[13px] leading-normal text-muted">
-            如使用其他硬盘，请先将目录挂载到 {storageRoot} 下。
+          <p className="flex items-start gap-2 text-sm leading-normal text-muted">
+            <LockKeyhole size={16} className="mt-0.5 shrink-0" aria-hidden />
+            仍有引用，存储位置与类型不可修改。
           </p>
         ) : null}
-      </Card>
+      </section>
     </form>
   );
 }

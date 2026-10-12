@@ -9,6 +9,7 @@ import { Input } from '@heroui/react/input';
 import { Label } from '@heroui/react/label';
 import { FieldError } from '@heroui/react/field-error';
 import { Link } from '@heroui/react/link';
+import { Globe } from 'lucide-react';
 import { siteFieldLabels } from './model';
 import { SiteFeedback } from './site-feedback';
 import { SavedAddresses } from './saved-addresses';
@@ -30,7 +31,10 @@ export function SiteForm({
   return (
     <Card className={siteCardClass}>
       <div className="flex items-center justify-between gap-3">
-        <h2 className="text-lg font-medium">站点信息</h2>
+        <h2 className="flex items-center gap-2 text-lg font-medium">
+          <Globe className="size-5" aria-hidden />
+          站点信息
+        </h2>
         <StorageTip label="站点信息">
           名称和描述按普通文本显示。时区只改变时间展示，不改写历史 UTC 时间。
         </StorageTip>

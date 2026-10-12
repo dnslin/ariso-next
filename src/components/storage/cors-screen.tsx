@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Alert } from '@heroui/react/alert';
 import { Button } from '@heroui/react/button';
 import { Spinner } from '@heroui/react/spinner';
+import { ArrowLeft } from 'lucide-react';
 import { OwnerShell } from '../shell/owner-shell';
 import { CorsDialog, type CorsDialogKind } from './cors-dialog';
 import { CorsReportRows, CorsRows } from './cors-report';
@@ -81,7 +82,7 @@ export function CorsScreen({
             ? '返回直传设置'
             : result
               ? '查看清理状态'
-              : '查看 CORS 示例'}
+              : 'CORS 示例'}
         </Button>
         {result && running ? (
           <Button className={actionClass} onPress={() => void refresh()}>
@@ -101,7 +102,7 @@ export function CorsScreen({
             isDisabled={disabled}
             onPress={begin}
           >
-            {state.status === 'untested' ? '开始直传检测' : '重新检测'}
+            {state.status === 'untested' ? '开始检测' : '重新检测'}
           </Button>
         )}
       </>
@@ -121,9 +122,11 @@ export function CorsScreen({
       >
         <Link
           href="/settings/storage"
-          className="-my-[13px] flex min-h-11 w-fit items-center text-sm leading-[18px] text-muted"
+          aria-label="返回存储"
+          className="-my-[13px] flex min-h-11 w-fit items-center gap-2 text-sm leading-[18px] text-muted"
         >
-          ← 返回存储管理
+          <ArrowLeft size={18} aria-hidden />
+          返回
         </Link>
         <h1 className="text-[28px] font-medium leading-normal min-[1200px]:text-[30px]">
           {title}

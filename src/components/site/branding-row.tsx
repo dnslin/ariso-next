@@ -3,9 +3,11 @@
 import { useState } from 'react';
 import { Button } from '@heroui/react/button';
 import { Chip } from '@heroui/react/chip';
+import { ButtonGroup } from '@heroui/react/button-group';
 import { Trash2, Upload } from 'lucide-react';
 import { BrandingMark } from './branding-mark';
 import { brandLabels, type BrandKind } from './branding-api';
+import { ActionIconButton, actionGroupClass } from '../library/action-button';
 
 export function BrandingRow({
   kind,
@@ -41,9 +43,6 @@ export function BrandingRow({
             </Chip.Label>
           </Chip>
         </div>
-        <p className="text-sm">
-          {kind === 'logo' ? '站点标识' : '浏览器标签图标'}
-        </p>
         <p className="text-xs leading-5 text-muted">
           {kind === 'logo'
             ? 'PNG / JPEG / WebP / 静态 SVG'
@@ -58,30 +57,45 @@ export function BrandingRow({
           </p>
         ) : null}
       </div>
-      <div className="col-span-2 flex justify-end gap-2 min-[768px]:col-span-1 min-[768px]:flex-col">
-        <Button
-          aria-label={`选择 ${label} 文件`}
-          data-testid={`branding-${kind}-choose`}
-          className="min-h-11 min-w-28 rounded-lg px-4 text-sm"
-          isDisabled={disabled}
-          onPress={onSelect}
-        >
-          <Upload aria-hidden className="size-4" />
-          {url ? '替换文件' : '选择文件'}
-        </Button>
+      <div className="col-span-2 flex justify-end min-[768px]:col-span-1">
         {url ? (
+          <ButtonGroup
+            aria-label={`${label} 操作`}
+            className={actionGroupClass}
+          >
+            <ActionIconButton
+              label={`替换 ${label}`}
+              data-testid={`branding-${kind}-choose`}
+              variant="outline"
+              isDisabled={disabled}
+              onPress={onSelect}
+            >
+              <Upload size={18} aria-hidden />
+            </ActionIconButton>
+            <ActionIconButton
+              label={`移除 ${label}`}
+              data-testid={`branding-${kind}-delete`}
+              variant="outline"
+              className="hover:text-danger focus-visible:text-danger"
+              isDisabled={disabled}
+              onPress={onRemove}
+            >
+              <ButtonGroup.Separator />
+              <Trash2 size={18} aria-hidden />
+            </ActionIconButton>
+          </ButtonGroup>
+        ) : (
           <Button
-            aria-label={`移除 ${label}`}
-            data-testid={`branding-${kind}-delete`}
-            variant="ghost"
+            aria-label={`选择 ${label} 文件`}
+            data-testid={`branding-${kind}-choose`}
             className="min-h-11 min-w-28 rounded-lg px-4 text-sm"
             isDisabled={disabled}
-            onPress={onRemove}
+            onPress={onSelect}
           >
-            <Trash2 aria-hidden className="size-4" />
-            移除
+            <Upload aria-hidden className="size-4" />
+            选择文件
           </Button>
-        ) : null}
+        )}
       </div>
     </div>
   );

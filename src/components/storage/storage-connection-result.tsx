@@ -4,7 +4,7 @@ import type { ComponentProps } from 'react';
 import { Alert } from '@heroui/react/alert';
 import { AlertDialog } from '@heroui/react/alert-dialog';
 import { Button } from '@heroui/react/button';
-import { Link } from '@heroui/react/link';
+import { ArrowLeft } from 'lucide-react';
 import { OwnerShell } from '../shell/owner-shell';
 import type { ConnectionReport } from '../../server/storage/probe-types';
 import type { StorageSummary } from './storage-api';
@@ -285,15 +285,19 @@ export function StorageConnectionResult({
           </div>
         ) : (
           <div data-testid="storage-connection-report" className="grid gap-5">
-            <Link
-              href="/settings/storage"
-              className="-my-[13px] flex min-h-11 w-fit items-center text-xs leading-normal text-muted no-underline"
-            >
-              ← 返回存储管理
-            </Link>
-            <h1 className="text-[28px] font-medium leading-normal min-[1200px]:text-[30px]">
-              {title}
-            </h1>
+            <header className="flex flex-wrap items-center justify-between gap-3">
+              <h1 className="text-[28px] font-medium leading-normal min-[1200px]:text-[30px]">
+                {title}
+              </h1>
+              <Button
+                variant="ghost"
+                className="h-11 rounded-lg px-3 text-sm font-normal"
+                onPress={onReturn}
+              >
+                <ArrowLeft size={18} aria-hidden />
+                返回
+              </Button>
+            </header>
             <p className="min-h-[22px] text-[13px] leading-normal">
               {storage.name} · S3 ·{' '}
               {storage.enabled ? '已启用' : valid ? '仍为停用' : '已停用'}

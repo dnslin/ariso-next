@@ -2,11 +2,12 @@
 
 import dynamic from 'next/dynamic';
 import { Skeleton } from '@heroui/react/skeleton';
-import { CircleAlert, RefreshCw } from 'lucide-react';
+import { ArrowRight, CheckCircle2, CircleAlert, RefreshCw } from 'lucide-react';
+import { Link } from '@heroui/react/link';
 import { Table } from '@heroui/react/table';
 import type { AnalyticsOverview } from './read-analytics';
 import {
-  AnalyticsCard,
+  AnalyticsSection,
   AnalyticsLink,
   number,
   tableClass,
@@ -14,7 +15,9 @@ import {
 
 const TrendChart = dynamic(() => import('./trend-chart'), {
   ssr: false,
-  loading: () => <Skeleton className="h-[180px] w-full rounded-lg" />,
+  loading: () => (
+    <Skeleton className="h-[220px] w-full rounded-lg sm:h-[252px]" />
+  ),
 });
 
 export function AnalyticsTrend({
@@ -25,10 +28,13 @@ export function AnalyticsTrend({
   dailyUrl: string;
 }) {
   return (
-    <AnalyticsCard title="公开访问趋势" testId="analytics-trend">
-      <p className="text-sm">
-        {data.range.startDate}—{data.range.endDate} ·{' '}
-        {number(data.versions.total)} 次
+    <AnalyticsSection title="访问趋势" testId="analytics-trend">
+      <p className="flex flex-wrap items-center justify-between gap-2 text-xs text-muted">
+        <span>
+          {data.range.startDate}—{data.range.endDate} ·{' '}
+          {number(data.versions.total)} 次
+        </span>
+        <span>访问量（次）</span>
       </p>
       {data.versions.total === 0 ? (
         <p className="text-sm text-muted">
@@ -38,17 +44,14 @@ export function AnalyticsTrend({
         </p>
       ) : null}
       <TrendChart trend={data.trend} />
-      <p className="text-xs text-muted">
-        单位：次 · 今日未结束 · 使用左右方向键或点击图表读取数值。
-      </p>
       <AnalyticsLink href={dailyUrl}>查看每日数值</AnalyticsLink>
-    </AnalyticsCard>
+    </AnalyticsSection>
   );
 }
 export function AnalyticsVersions({ data }: { data: AnalyticsOverview }) {
   return (
-    <AnalyticsCard
-      title={`版本访问量 · 最近 ${data.range.days} 天`}
+    <AnalyticsSection
+      title={`版本分布 · 最近 ${data.range.days} 天`}
       testId="analytics-versions"
     >
       <dl>
@@ -80,44 +83,58 @@ export function AnalyticsVersions({ data }: { data: AnalyticsOverview }) {
           </div>
         ))}
       </dl>
-      <p className="text-xs text-muted">
-        合计 {number(data.versions.total)} 次，与同周期趋势一致。
-      </p>
-    </AnalyticsCard>
+    </AnalyticsSection>
   );
 }
 export function AnalyticsFailures({ data }: { data: AnalyticsOverview }) {
+  const failures = [
+    {
+      label: '初次处理失败',
+      count: data.counts.initialProcessingFailures,
+      href: '/library?failure=initial',
+      action: '查看初次失败图片',
+      icon: <CircleAlert size={19} className="text-danger" aria-hidden />,
+    },
+    {
+      label: '重新处理失败',
+      count: data.counts.reprocessFailures,
+      href: '/library?failure=reprocess',
+      action: '查看重处理失败图片',
+      icon: <RefreshCw size={19} className="text-warning" aria-hidden />,
+    },
+  ].filter((item) => item.count > 0);
   return (
-    <AnalyticsCard title="当前处理异常" testId="analytics-failures">
-      <div className="grid gap-3 sm:grid-cols-2">
-        <div className="grid gap-3">
-          <p className="flex items-center gap-2 text-sm">
-            <CircleAlert size={17} aria-hidden />
-            初次处理失败 {number(data.counts.initialProcessingFailures)} 张
-          </p>
-          <AnalyticsLink href="/library?failure=initial">
-            查看初次失败图片
-          </AnalyticsLink>
+    <AnalyticsSection title="待处理" testId="analytics-failures">
+      {failures.length ? (
+        <div className="grid">
+          {failures.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              aria-label={item.action}
+              className="flex min-h-16 items-center gap-3 rounded-lg border-b border-border px-2 py-3 text-sm text-foreground hover:bg-default focus-visible:outline-2 focus-visible:outline-focus"
+            >
+              {item.icon}
+              <span className="min-w-0 flex-1">{item.label}</span>
+              <span className="shrink-0 tabular-nums">
+                {number(item.count)} 张
+              </span>
+              <ArrowRight size={17} aria-hidden />
+            </Link>
+          ))}
         </div>
-        <div className="grid gap-3">
-          <p className="flex items-center gap-2 text-sm">
-            <RefreshCw size={17} aria-hidden />
-            重新处理失败 {number(data.counts.reprocessFailures)} 张
-          </p>
-          <AnalyticsLink href="/library?failure=reprocess">
-            查看重处理失败图片
-          </AnalyticsLink>
-        </div>
-      </div>
-      <p className="text-xs text-muted">
-        重新处理失败的图片仍可使用已保存版本。
-      </p>
-    </AnalyticsCard>
+      ) : (
+        <p className="flex min-h-20 items-center gap-3 border-b border-border text-sm">
+          <CheckCircle2 size={21} className="text-success" aria-hidden />
+          没有待处理事项
+        </p>
+      )}
+    </AnalyticsSection>
   );
 }
 export function AnalyticsDaily({ data }: { data: AnalyticsOverview }) {
   return (
-    <AnalyticsCard
+    <AnalyticsSection
       title={`${data.range.startDate}—${data.range.endDate} · ${data.timezone}`}
       testId="analytics-daily"
     >
@@ -160,6 +177,6 @@ export function AnalyticsDaily({ data }: { data: AnalyticsOverview }) {
       <p className="text-sm">
         合计 {number(data.versions.total)} 次；今日截至本次统计更新。
       </p>
-    </AnalyticsCard>
+    </AnalyticsSection>
   );
 }

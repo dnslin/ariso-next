@@ -1,7 +1,7 @@
 /** Only analytics pages can be a management-detail return destination. */
 export function analyticsReturnUrl(value: string | null) {
   if (!value) return null;
-  const match = /^(\/analytics|\/dashboard)\?days=(7|30|90)$/.exec(value);
+  const match = /^\/analytics\?days=(7|30|90)$/.exec(value);
   return match ? value : null;
 }
 

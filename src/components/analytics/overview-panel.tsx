@@ -1,31 +1,21 @@
 'use client';
 
+import type { ReportDays } from './read-analytics';
 import { Button } from '@heroui/react/button';
 import { RefreshCw } from 'lucide-react';
-import type { ReportDays } from './read-analytics';
-import type {
-  useAnalyticsOverview,
-  useAnalyticsUsage,
-} from './use-analytics-query';
-import {
-  AnalyticsLoading,
-  AnalyticsReadFailure,
-  UsageUnavailable,
-} from './query-state';
+import type { useAnalyticsOverview } from './use-analytics-query';
+import { AnalyticsLoading, AnalyticsReadFailure } from './query-state';
 import { AnalyticsPeriods } from './period-controls';
 import { AnalyticsMetadata, AnalyticsMetrics } from './overview-summary';
 import {
   AnalyticsTrend,
   AnalyticsVersions,
-  AnalyticsFailures,
   AnalyticsDaily,
 } from './overview-content';
 import { AnalyticsPopular } from './popular';
-import { UsageSummary } from './usage-content';
 
 export function AnalyticsOverviewPanel({
   overview,
-  usage,
   days,
   dailyView,
   timeZone,
@@ -33,108 +23,115 @@ export function AnalyticsOverviewPanel({
   onDays,
   onStatistics,
 }: {
-  overview: ReturnType<typeof useAnalyticsOverview>;
-  usage: ReturnType<typeof useAnalyticsUsage>;
+  overview: Pick<
+    ReturnType<typeof useAnalyticsOverview>,
+    'data' | 'error' | 'isFetching' | 'refetch'
+  >;
   days: ReportDays;
   dailyView: boolean;
   timeZone: string;
-  url: (view: string) => string;
+  url: (view: string, days?: ReportDays) => string;
   onDays: (days: ReportDays) => void;
   onStatistics: (imageId: string) => void;
 }) {
+  const displayed = overview.data;
+  const changed = displayed && displayed.range.days !== days;
+  const updated = displayed
+    ? new Intl.DateTimeFormat('zh-CN', {
+        timeZone: displayed.timezone,
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+      }).format(new Date(displayed.generatedAt))
+    : '';
   return (
     <>
-      {overview.error ? (
+      <div className="grid gap-2" data-testid="analytics-period-controls">
+        <AnalyticsPeriods days={days} onChange={onDays} />
+        {displayed ? (
+          <AnalyticsMetadata
+            data={displayed}
+            status={
+              overview.isFetching ? (
+                <p
+                  role="status"
+                  className="text-xs leading-4 text-muted"
+                  data-testid="overview-refreshing"
+                >
+                  {changed
+                    ? `正在读取 ${days} 天，暂示 ${displayed.range.days} 天（${updated}）`
+                    : `正在刷新，保留 ${updated} 的统计`}
+                </p>
+              ) : overview.error ? (
+                <>
+                  <p
+                    role="alert"
+                    className="min-w-0 flex-1 text-xs leading-5 text-danger"
+                    data-testid="overview-stale"
+                  >
+                    {changed
+                      ? `${days} 天更新失败，当前显示 ${displayed.range.days} 天（${updated}）`
+                      : `刷新失败，保留 ${updated} 的统计`}
+                    <span className="block">{overview.error.message}</span>
+                  </p>
+                  <Button
+                    variant="outline"
+                    className="h-11 shrink-0 gap-2 rounded-lg px-3"
+                    aria-label={`重试 ${days} 天访问统计`}
+                    onPress={() => void overview.refetch()}
+                  >
+                    <RefreshCw size={17} aria-hidden />
+                    重试
+                  </Button>
+                </>
+              ) : undefined
+            }
+          />
+        ) : (
+          <div className="min-h-11" />
+        )}
+      </div>
+      {overview.error && !displayed ? (
         <AnalyticsReadFailure
           scope="overview"
           error={overview.error}
-          old={overview.data?.generatedAt}
           fetching={overview.isFetching}
-          timeZone={overview.data?.timezone ?? timeZone}
+          timeZone={timeZone}
           retry={() => void overview.refetch()}
         />
       ) : null}
-      {overview.data ? (
+      {displayed ? (
         <section
-          className="grid gap-5"
+          className="grid gap-6"
           data-testid="analytics-overview"
+          data-requested-days={days}
+          data-displayed-days={displayed.range.days}
           aria-label="访问统计"
+          aria-busy={overview.isFetching}
         >
-          <div className="relative flex items-start justify-between gap-3">
-            <AnalyticsMetadata data={overview.data} />
-            <Button
-              isIconOnly
-              variant="ghost"
-              aria-label="刷新访问统计"
-              className="size-11 shrink-0 rounded-lg"
-              isPending={overview.isFetching}
-              onPress={() => void overview.refetch()}
-            >
-              <RefreshCw size={18} aria-hidden />
-            </Button>
-            {overview.isFetching ? (
-              <p
-                role="status"
-                className="absolute inset-x-0 top-full mt-0.5 text-[12px] leading-4 text-muted"
-                data-testid="overview-refreshing"
-              >
-                正在刷新，保留上次统计数字。
-              </p>
-            ) : null}
-          </div>
-          {!dailyView ? <AnalyticsMetrics data={overview.data} /> : null}
-          <AnalyticsPeriods days={days} onChange={onDays} />
+          {!dailyView ? <AnalyticsMetrics data={displayed} /> : null}
           {dailyView ? (
-            <AnalyticsDaily data={overview.data} />
+            <AnalyticsDaily data={displayed} />
           ) : (
             <>
-              <AnalyticsTrend data={overview.data} dailyUrl={url('daily')} />
-              <AnalyticsVersions data={overview.data} />
-              <AnalyticsPopular
-                data={overview.data}
-                onStatistics={onStatistics}
+              <AnalyticsTrend
+                data={displayed}
+                dailyUrl={url('daily', displayed.range.days)}
               />
+              <div className="grid min-w-0 gap-8 min-[1000px]:grid-cols-[0.8fr_1.2fr]">
+                <AnalyticsVersions data={displayed} />
+                <AnalyticsPopular
+                  data={displayed}
+                  onStatistics={onStatistics}
+                />
+              </div>
             </>
           )}
         </section>
       ) : !overview.error ? (
-        <>
-          <AnalyticsPeriods days={days} onChange={onDays} />
-          <AnalyticsLoading scope="overview" />
-        </>
+        <AnalyticsLoading scope="overview" />
       ) : null}
-      {!dailyView ? (
-        <>
-          {usage.error ? (
-            usage.data ? (
-              <AnalyticsReadFailure
-                scope="usage"
-                error={usage.error}
-                old={usage.data.generatedAt}
-                fetching={usage.isFetching}
-                timeZone={timeZone}
-                retry={() => void usage.refetch()}
-              />
-            ) : (
-              <UsageUnavailable
-                error={usage.error}
-                fetching={usage.isFetching}
-                retry={() => void usage.refetch()}
-              />
-            )
-          ) : null}
-          {usage.data ? (
-            <UsageSummary data={usage.data} usageUrl={url('usage')} />
-          ) : !usage.error ? (
-            <AnalyticsLoading scope="usage" />
-          ) : null}
-          {overview.data ? <AnalyticsFailures data={overview.data} /> : null}
-        </>
-      ) : null}
-      <p className="text-xs text-muted">
-        访问统计为近似值，异常退出可能丢失尚未保存的少量访问；S3
-        成功签发不代表完整下载。
-      </p>
+      <p className="text-xs text-muted">访问次数为近似值</p>
     </>
   );
 }

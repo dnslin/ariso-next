@@ -1,5 +1,4 @@
 import type { ReactNode } from 'react';
-import { Card } from '@heroui/react/card';
 import { Link } from '@heroui/react/link';
 import { buttonVariants } from '@heroui/react/button';
 
@@ -25,7 +24,7 @@ export function timestamp(value: string, timeZone: string) {
     hour12: false,
   }).format(new Date(value));
 }
-export function AnalyticsCard({
+export function AnalyticsSection({
   title,
   children,
   testId,
@@ -35,13 +34,10 @@ export function AnalyticsCard({
   testId?: string;
 }) {
   return (
-    <Card
-      data-testid={testId}
-      className="min-w-0 gap-3 rounded-[20px] border border-border bg-surface px-4 py-5 shadow-none min-[1200px]:px-6"
-    >
-      <h2 className="text-lg font-medium leading-[22px]">{title}</h2>
+    <section data-testid={testId} className="grid min-w-0 gap-4 pt-2">
+      <h2 className="text-lg font-semibold leading-normal">{title}</h2>
       {children}
-    </Card>
+    </section>
   );
 }
 export function AnalyticsLink({

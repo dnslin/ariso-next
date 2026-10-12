@@ -4,14 +4,21 @@ import { useEffect, useState, type ComponentProps } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Alert } from '@heroui/react/alert';
 import { Button } from '@heroui/react/button';
-import { Card } from '@heroui/react/card';
+import { Chip } from '@heroui/react/chip';
 import { Link } from '@heroui/react/link';
 import { ListBox } from '@heroui/react/list-box';
 import { Pagination } from '@heroui/react/pagination';
 import { Select } from '@heroui/react/select';
 import { Skeleton } from '@heroui/react/skeleton';
-import { Table } from '@heroui/react/table';
-import { ChevronLeft, ChevronRight, Plus } from 'lucide-react';
+import {
+  ArrowRight,
+  ChevronLeft,
+  ChevronRight,
+  Cloud,
+  HardDrive,
+  Plus,
+  Settings2,
+} from 'lucide-react';
 import { OwnerShell } from '../shell/owner-shell';
 import { StorageUnavailableView } from './storage-unavailable-view';
 import { useResetUpload } from '../upload/provider';
@@ -75,16 +82,41 @@ export function StorageList(
   const page = Math.min(pageNumber, pageCount);
   const visible = rows?.slice((page - 1) * pageSize, page * pageSize) ?? [];
   const defaultId = settings.data?.defaultStorageId;
-  const status = (row: StorageSummary) =>
-    row.id === defaultId && !row.enabled
-      ? '默认存储已停用'
-      : `${row.id === defaultId ? '默认 · ' : ''}${row.enabled ? '已启用' : '已停用'}`;
+  const status = (row: StorageSummary) => (
+    <>
+      <Chip
+        size="sm"
+        color={
+          row.id === defaultId && !row.enabled
+            ? 'warning'
+            : row.enabled
+              ? 'success'
+              : 'default'
+        }
+        className="rounded-md"
+      >
+        <Chip.Label>
+          {row.id === defaultId && !row.enabled
+            ? '默认存储已停用'
+            : row.enabled
+              ? '已启用'
+              : '已停用'}
+        </Chip.Label>
+      </Chip>
+      {row.id === defaultId && row.enabled ? (
+        <Chip size="sm" className="rounded-md">
+          <Chip.Label>默认</Chip.Label>
+        </Chip>
+      ) : null}
+    </>
+  );
   const configure = (row: StorageSummary) => (
     <Link
       href={`/settings/storage/${encodeURIComponent(row.id)}`}
-      className="flex h-11 w-18 items-center justify-center rounded-xl border border-border text-sm no-underline min-[1200px]:w-22"
+      className="flex h-12 items-center justify-center gap-2 rounded-lg border border-border px-4 text-sm no-underline"
       aria-label={`配置 ${row.name}`}
     >
+      <Settings2 size={16} aria-hidden />
       配置
     </Link>
   );
@@ -183,17 +215,12 @@ export function StorageList(
         }
         className="grid gap-5 pb-10 min-[1200px]:gap-6"
       >
-        <div className="flex flex-col items-start justify-between gap-3 min-[1200px]:min-h-[76px] min-[1200px]:flex-row">
-          <div className="grid gap-1.5">
-            <h1 className="text-[30px] font-medium leading-normal">存储管理</h1>
-            <p className="text-sm leading-normal">
-              连接本地与 S3 存储，清楚掌握每一处空间。
-            </p>
-          </div>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h1 className="text-[30px] font-medium leading-normal">存储</h1>
           <Link
             href="/settings/storage/new"
             data-testid="storage-create"
-            className="flex h-11 w-36 items-center justify-center gap-1 rounded-lg bg-accent text-sm text-accent-foreground no-underline"
+            className="flex h-12 items-center justify-center gap-2 rounded-lg bg-accent px-4 text-sm text-accent-foreground no-underline"
           >
             <Plus size={16} aria-hidden />
             添加存储
@@ -222,81 +249,42 @@ export function StorageList(
             </Alert.Content>
           </Alert>
         ) : (
-          <>
-            <Card className="gap-0 rounded-[20px] border border-border bg-background px-4 py-5 shadow-none min-[1200px]:p-6">
-              <h2 className="text-lg font-medium leading-normal">
-                存储管理 · {count} 项
-              </h2>
-              <Table
-                variant="secondary"
-                className="hidden rounded-none border-0 bg-transparent shadow-none min-[1200px]:block [&_[data-slot=table-header]]:bg-transparent [&_[data-slot=table-column]]:rounded-none [&_[data-slot=table-column]]:bg-transparent [&_[data-slot=table-column]]:after:hidden [&_[data-slot=table-cell]]:rounded-none [&_[data-slot=table-cell]]:border-b [&_[data-slot=table-cell]]:border-border! [&_[data-slot=table-cell]]:bg-transparent [&_[data-slot=table-row]]:bg-transparent"
+          <section aria-label="存储配置" className="grid">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <span className="text-sm text-muted">{count} 项存储</span>
+              <Link
+                href="/analytics?view=usage"
+                className="flex min-h-11 items-center gap-2 rounded-lg px-3 text-sm no-underline"
               >
-                <Table.Content
-                  aria-label="存储配置"
-                  className="w-full table-fixed"
-                >
-                  <Table.Header>
-                    <Table.Column
-                      isRowHeader
-                      className="h-[52px] w-[36%] bg-transparent px-0 text-xs font-normal"
-                    >
-                      存储位置
-                    </Table.Column>
-                    <Table.Column className="w-[24%] bg-transparent px-0 text-xs font-normal">
-                      类型与占用
-                    </Table.Column>
-                    <Table.Column className="w-[18%] bg-transparent px-0 text-xs font-normal">
-                      状态
-                    </Table.Column>
-                    <Table.Column className="w-[22%] bg-transparent px-0 text-xs font-normal">
-                      操作
-                    </Table.Column>
-                  </Table.Header>
-                  <Table.Body>
-                    {visible.map((row) => (
-                      <Table.Row
-                        key={row.id}
-                        id={row.id}
-                        className="h-20 border-b border-border"
-                      >
-                        <Table.Cell className="px-0 pr-4 text-sm [overflow-wrap:anywhere]">
-                          {row.name}
-                        </Table.Cell>
-                        <Table.Cell className="px-0 pr-4 text-[13px] [overflow-wrap:anywhere]">
-                          {usageLabel(row)}
-                        </Table.Cell>
-                        <Table.Cell className="px-0 text-[13px] text-muted">
-                          {status(row)}
-                        </Table.Cell>
-                        <Table.Cell className="px-0">
-                          {configure(row)}
-                        </Table.Cell>
-                      </Table.Row>
-                    ))}
-                  </Table.Body>
-                </Table.Content>
-              </Table>
-              <div className="min-[1200px]:hidden">
-                {visible.map((row) => (
-                  <article
-                    key={row.id}
-                    data-storage-id={row.id}
-                    className="flex items-center gap-3 border-b border-border py-4"
-                  >
-                    <div className="grid min-w-0 flex-1 gap-1 leading-normal [overflow-wrap:anywhere]">
-                      <h3 className="text-sm">{row.name}</h3>
-                      <p className="text-[13px]">{usageLabel(row)}</p>
-                      <p className="text-[13px] text-muted">{status(row)}</p>
-                    </div>
-                    {configure(row)}
-                  </article>
-                ))}
-              </div>
-            </Card>
-            <p className="text-[13px] leading-normal">
-              停用后文件仍保留，访问与上传不可用；存在图片、任务或清理引用时不能删除存储。
-            </p>
-          </>
+                <HardDrive size={16} aria-hidden />
+                存储占用
+                <ArrowRight size={16} aria-hidden />
+              </Link>
+            </div>
+            {visible.map((row) => (
+              <article
+                key={row.id}
+                data-storage-id={row.id}
+                className="grid grid-cols-[24px_minmax(0,1fr)] items-start gap-x-3 gap-y-4 border-b border-border py-5 min-[768px]:grid-cols-[24px_minmax(0,1fr)_auto] min-[768px]:items-center"
+              >
+                {row.type === 'local' ? (
+                  <HardDrive size={20} className="mt-1" aria-hidden />
+                ) : (
+                  <Cloud size={20} className="mt-1" aria-hidden />
+                )}
+                <div className="grid min-w-0 gap-2 [overflow-wrap:anywhere]">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <h2 className="text-base font-medium">{row.name}</h2>
+                    {status(row)}
+                  </div>
+                  <p className="text-sm text-muted">{usageLabel(row)}</p>
+                </div>
+                <div className="col-start-2 justify-self-start min-[768px]:col-start-auto min-[768px]:justify-self-end">
+                  {configure(row)}
+                </div>
+              </article>
+            ))}
+          </section>
         )}
       </section>
     </OwnerShell>

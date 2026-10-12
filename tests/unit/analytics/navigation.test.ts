@@ -31,17 +31,19 @@ describe('analytics management return context', () => {
     }
   });
   it('only returns to a real analytics route with an accepted period', () => {
-    for (const path of ['/analytics', '/dashboard'])
-      for (const days of [7, 30, 90])
-        expect(analyticsReturnUrl(`${path}?days=${days}`)).toBe(
-          `${path}?days=${days}`,
-        );
+    for (const days of [7, 30, 90])
+      expect(analyticsReturnUrl(`/analytics?days=${days}`)).toBe(
+        `/analytics?days=${days}`,
+      );
     for (const target of [
       null,
       '',
       'https://example.com',
       '//example.com',
       '/library?days=7',
+      '/dashboard?days=7',
+      '/dashboard?days=30',
+      '/dashboard?days=90',
       '/analytics?days=1',
       '/analytics?days=7&days=30',
       '/analytics?days=7#x',
