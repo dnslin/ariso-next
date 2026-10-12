@@ -1,0 +1,25 @@
+const changedText=[];
+const updateText=async(t,value)=>{for(const seg of t.getStyledTextSegments(['fontName']))await figma.loadFontAsync(seg.fontName);const old=t.characters;t.characters=value;mutated.push(t.id);changedText.push({id:t.id,from:old,to:value});};
+const copyMap={'分享管理':'分享','存储管理':'存储','保存展示':'保存','预览分享':'预览','保存密码':'保存','保存有效期':'保存','当前设置已保存':'已保存','展示设置尚未保存':'未保存','保存更改':'保存','创建标签':'创建','返回标签列表':'返回','保存处理设置':'保存','预览处理效果':'预览','保存邮件设置':'保存','保存站点信息':'保存站点','保存上传限制':'保存限制','保存配置':'保存','开始直传检测':'开始检测','查看 CORS 示例':'CORS 示例'};
+for(const id of ['30:661','30:849','431:3753','30:1601','470:10085','468:11915','34:338','34:710','30:1413','58:669','77:757','346:4712','346:4865','196:2000','196:2005']){
+ const n=await figma.getNodeByIdAsync(id);if(!n)continue;
+ for(const t of n.findAllWithCriteria({types:['TEXT']})){const next=copyMap[t.characters];if(next)await updateText(t,next);}
+}
+for(const id of ['761:8064','761:8235']){const n=await figma.getNodeByIdAsync(id);for(const t of n.findAllWithCriteria({types:['TEXT']})){if(copyMap[t.characters])await updateText(t,copyMap[t.characters]);}}
+for(const id of ['761:7945','761:8116']){
+ const n=await figma.getNodeByIdAsync(id);const note=n.findOne(c=>c.name==='Address.Note');note.visible=false;mutated.push(note.id);
+ const header=n.children.find(c=>c.name==='Card.Header');if(!header.children.some(c=>c.name.startsWith('Tips /'))){const title=header.children.find(c=>c.name==='Card.Title');title.resize(title.width-52,title.height);const h=tip(header,'分享地址');header.insertChild(2,h);mutated.push(header.id,title.id);}
+}
+for(const id of ['971:32760','971:32789']){
+ const n=await figma.getNodeByIdAsync(id);const title=n.children.find(c=>c.type==='TEXT');n.layoutMode='HORIZONTAL';n.itemSpacing=8;n.counterAxisAlignItems='CENTER';n.primaryAxisSizingMode='AUTO';
+ for(const d of n.children.filter(c=>c.type==='TEXT'&&c!==title)){d.visible=false;mutated.push(d.id);}
+ const i=ico(n,id==='971:32760'?'Globe':'SlidersHorizontal',20);n.insertChild(0,i);title.layoutSizingHorizontal='FILL';if(!n.children.some(c=>c.name.startsWith('Tips /')))tip(n,title.characters);mutated.push(n.id,title.id);
+}
+for(const id of ['971:32757','I971:32784;889:15315','1052:19303']){
+ const n=await figma.getNodeByIdAsync(id);if(n){n.visible=false;mutated.push(n.id);}
+}
+const tagTitle=await figma.getNodeByIdAsync('30:747');tagTitle.layoutMode='HORIZONTAL';tagTitle.counterAxisAlignItems='CENTER';tagTitle.itemSpacing=8;tagTitle.resize(112,44);if(!tagTitle.children.some(n=>n.name.startsWith('Tips /')))tip(tagTitle,'标签');
+for(const id of ['431:4114','776:22828']){const n=await figma.getNodeByIdAsync(id);if(n){removed.push(...allIds(n));n.remove();}}
+const compare=[{node:'1132:56314',state:'ordinary-toggle-pending',oldStateRetained:true,confirmation:false},{node:'1132:57788',state:'ordinary-toggle-error',oldStateRetained:true,confirmation:false},{node:'1132:59262',state:'ordinary-toggle-disabled',toast:true}];
+const compress=ids=>{const m={};for(const id of [...new Set(ids)]){const match=id.match(/^(.*:)(\d+)$/);if(!match){(m.literal??=[]).push(id);continue;}(m[match[1]]??=[]).push(Number(match[2]));}for(const [prefix,values]of Object.entries(m)){if(prefix==='literal')continue;values.sort((a,b)=>a-b);const ranges=[];let a=values[0],b=a;for(const v of values.slice(1)){if(v===b+1)b=v;else{ranges.push(a===b?''+a:a+'-'+b);a=b=v;}}ranges.push(a===b?''+a:a+'-'+b);m[prefix]=ranges.join(',');}return m;};
+return {changedText,compare,createdNodeIdsCompressed:compress(created),mutatedNodeIdsCompressed:compress(mutated),removedNodeIdsCompressed:compress(removed),preserved:['expired-enable','rotate-address-confirm','clear-password-confirm','permanent-delete-confirm','all-original-page-footers'],idEncoding:'Prefix plus inclusive comma-separated ranges.'};

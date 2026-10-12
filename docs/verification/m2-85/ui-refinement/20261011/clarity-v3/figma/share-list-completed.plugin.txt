@@ -1,0 +1,20 @@
+await figma.setCurrentPageAsync(await figma.getNodeByIdAsync('0:1'));figma.skipInvisibleInstanceChildren=false;
+const buttonComponent=await figma.getNodeByIdAsync('1095:19676');
+const settingsIcon=await figma.getNodeByIdAsync('1132:40467'),helpIcon=await figma.getNodeByIdAsync('1146:46034');
+for(const t of buttonComponent.findAllWithCriteria({types:['TEXT']}))for(const s of t.getStyledTextSegments(['fontName']))await figma.loadFontAsync(s.fontName);
+const vars=await figma.variables.getLocalVariablesAsync();
+const bound=name=>{const v=vars.find(v=>v.name===name);return figma.variables.setBoundVariableForPaint({type:'SOLID',color:v.valuesByMode['2:0'],opacity:1},'color',v);};
+const makeIconButton=(parent,component,name)=>{const b=buttonComponent.createInstance();parent.appendChild(b);b.name=name;b.resize(44,44);b.cornerRadius=8;b.paddingLeft=b.paddingRight=0;b.primaryAxisAlignItems='CENTER';b.counterAxisAlignItems='CENTER';b.fills=[];b.strokes=[bound('accent')];const props={};for(const[k,v]of Object.entries(b.componentProperties)){if(v.type==='TEXT')props[k]='';else if(v.type==='BOOLEAN')props[k]=k.startsWith('Show icon');else if(v.type==='INSTANCE_SWAP')props[k]=component.id;}b.setProperties(props);for(const t of b.findAllWithCriteria({types:['TEXT']}))t.visible=false;for(const v of b.findAllWithCriteria({types:['VECTOR']})){if(v.strokes.length)v.strokes=[bound('foreground')];}return b;};
+const out=[];
+for(const [screenId,headingId,noteId,footerId,mobile]of [['30:849','30:935','33:239','307:3889',false],['101:1463','101:1549','101:1625','307:3839',true]]){
+ const screen=await figma.getNodeByIdAsync(screenId),shareHeading=await figma.getNodeByIdAsync(headingId),note=await figma.getNodeByIdAsync(noteId),footer=await figma.getNodeByIdAsync(footerId);
+ const footerBefore={id:footer.id,x:footer.x,y:footer.y,width:footer.width,height:footer.height,children:footer.children.map(c=>c.id)};
+ const changes=[];
+ const texts=screen.findAllWithCriteria({types:['TEXT']}).filter(t=>t.characters==='管理'&&t.parent.type==='INSTANCE');
+ for(const t of texts){const old=t.parent,parent=old.parent,index=parent.children.indexOf(old),oldId=old.id,parentBefore={width:parent.width,height:parent.height,x:parent.x,y:parent.y};const b=makeIconButton(parent,settingsIcon,'Button / 分享设置 / Settings2 / tooltip');parent.insertChild(index,b);old.remove();changes.push({oldId,newId:b.id,parentId:parent.id,parentBefore,parentAfter:{width:parent.width,height:parent.height,x:parent.x,y:parent.y}});}
+ note.visible=false;
+ const title=shareHeading.children.find(c=>c.type==='TEXT');await figma.loadFontAsync(title.fontName);shareHeading.layoutMode='HORIZONTAL';shareHeading.itemSpacing=8;shareHeading.counterAxisAlignItems='CENTER';shareHeading.resize(mobile?280:112,45);
+ const help=makeIconButton(shareHeading,helpIcon,'Tips / '+note.characters+' / hover+focus+click');help.strokes=[];
+ out.push({screenId,rows:changes,rule:{noteId,visible:note.visible,text:note.characters,tipId:help.id,headingId},footerBefore,footerAfter:{id:footer.id,x:footer.x,y:footer.y,width:footer.width,height:footer.height,children:footer.children.map(c=>c.id)}});
+}
+return {success:true,sourceComponent:buttonComponent.id,iconIds:[settingsIcon.id,helpIcon.id],changes:out,scope:'Only original share-list row actions and rule Tips; original row containers, list and pagination preserved.'};

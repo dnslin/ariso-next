@@ -1,0 +1,71 @@
+# Clarity V3 Figma Sync
+
+## 结论与边界
+
+本次修改在既有 Figma 文件 `74sT9Hrf8G4czcWeTkET5b` 完成，没有新建文件。原主节点只做下表列出的局部同步。补充区有 64 个可编辑静态示意帧，不作为产品整页像素还原或 Figma Player 验收依据。
+
+[补充区入口](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1132-40444)
+
+产品行为与真实浏览器验收以同级 `../browser/` 的记录为准。本目录仅证明 Figma 修改、结构回读和截图导出。
+
+## 原主节点局部同步
+
+| 原节点                                                                                                                                                                                    | 已同步内容                                                                      | 保留内容                                       |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ---------------------------------------------- |
+| [桌面标签 30:661](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=30-661)                                                                                                     | 九行编辑/删除改中性图标组；标题增加 CircleHelp                                  | 原列表卡片、标题、九行结构和分页底栏           |
+| [手机标签 101:1295](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=101-1295)                                                                                                 | 九行图标组；标题增加 CircleHelp                                                 | 原列表与底栏                                   |
+| [桌面标签改名 418:3973](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=418-3973) / [手机 418:8165](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=418-8165)     | 简短标题、名称输入、CircleHelp、取消/保存                                       | 原重名和失败状态另行保留                       |
+| [桌面分享设置 431:3753](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=431-3753) / [手机 431:8415](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=431-8415)     | 保存/已保存/预览短词；地址正常说明隐藏并改 CircleHelp；普通启停确认移除         | 清空密码、地址轮换、过期状态                   |
+| [桌面基本设置 470:10085](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=470-10085) / [手机 470:10377](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=470-10377) | 站点信息 Globe、关联设置 SlidersHorizontal；普通说明隐藏；保存站点/保存限制短词 | 既有独立表单、保存按钮及其原图标               |
+| [品牌设置 468:11915](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=468-11915)                                                                                               | 普通页说明隐藏                                                                  | 原未配置文件选择路径；已配置图标组在补充区示意 |
+| 分享列表 30:849 / 101:1463                                                                                                                                                                | 分享短词；各八行管理按钮改 Settings2；规则移至标题旁 CircleHelp                 | 原八行表格、行容器和完整分页                   |
+| 当前普通消费者                                                                                                                                                                            | 图片处理、邮件服务、存储、CORS、GitHub 当前普通节点的精确按钮短词               | 未全局替换历史状态或相同文字的其他含义         |
+
+原主节点修改明细见 `primary-local.json`、`mobile-local.json`、`tag-dialog-local.json`、`mobile-dialog-local.json`、`final-local.json`。这些记录不是所有历史消费者均完成同步的声明。
+
+已删除普通分享确认节点：`431:4114`、`776:22828`、`431:8618`、`776:29922`。
+回读仍存在：清空密码 `431:4030`、轮换 `431:4153`、过期 `431:4090 / 776:22569`、标签重名 `418:3988`、标签失败 `418:4029`。永久删除流程未修改。
+
+## 最终两张代表图
+
+根据 `../browser/manual/share-light-1440.png` 与 `settings-light-1440.png` 做了最后局部布局校正。两帧均为 1440 × 900。已导出并实际查看 PNG；回读见 `representatives-final.json`。
+
+| 代表帧                                                                                                | 校正与限制                                                                                                                                                        | 导出                                                     |
+| ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
+| [分享正常桌面 1132:43200](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1132-43200)     | 地址 y180/h137；访问与展示 y342/h295、h313；轮换 y679/h82；CircleHelp、Monitor、Owner O；保存无新增图标；预览保留禁用外观。URL 为示例值，不是实际可访问分享链接。 | [share-desktop-light.png](share-desktop-light.png)       |
+| [基本设置正常桌面 1132:44670](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1132-44670) | 五分类含邮件服务；标题设置图标；分区 CircleHelp 位于行末；公开地址/时区无新增 Tips；双保存恢复 Save 图标，200 × 48；站点卡 y237/h334，上传卡 y591。               | [settings-desktop-light.png](settings-desktop-light.png) |
+
+两帧仅校正已指出的布局与本轮控件，未声明其余静态样例数据、全部字体几何和滚动下方内容与运行产品逐像素一致。
+
+## 静态状态示意索引
+
+除上面两张代表帧外，补充区其余 62 帧的名称带有“静态示意”。这些帧用于表达组件、状态和当前数据保留原则。没有新增可运行业务行为，也未验证 Figma Player 交互。桌面 1440 × 900，手机 390 × 844，每组覆盖明暗两主题。
+
+| 状态组                          | 代表节点                                          | 本地截图                                                                                                                                                  |
+| ------------------------------- | ------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 标签原表格与图标组              | 1132:40500 / 1132:41252                           | [桌面](tags-desktop-light.png)、[手机](tags-mobile-light.png)                                                                                             |
+| 标签改名 Tips                   | 1132:42602                                        | [手机 Tips](tag-tip-mobile-light.png)                                                                                                                     |
+| 标签重名/失败                   | 1132:52528 / 1132:53978                           | 结构与创建 ID 见批次回读                                                                                                                                  |
+| 分享普通/提交中/失败/停用 toast | 1132:44060 / 1132:57176 / 1132:57788 / 1132:60472 | [手机普通](share-mobile-light.png)、[提交中](share-pending-mobile-dark.png)、[失败](share-error-desktop-dark.png)、[停用](share-disabled-mobile-dark.png) |
+| 设置手机                        | 1132:45985                                        | [手机暗色](settings-mobile-dark.png)                                                                                                                      |
+| 品牌已配置图标组/未配置文件选择 | 1132:47175                                        | [手机暗色](branding-mobile-dark.png)                                                                                                                      |
+| 回收 hover / focus-selection    | 1132:47710 / 1132:61518                           | [桌面暗色 hover](trash-desktop-dark.png)、[手机选择](trash-focus-mobile-light.png)                                                                        |
+| 统计保留旧结果 loading / error  | 1132:49812 / 1132:52245                           | [桌面读取中](analytics-loading-desktop-light.png)、[手机失败](analytics-error-mobile-dark.png)                                                            |
+
+回收 hover 回读为前景色 5% 透明度，不改变选中状态。统计示意保留“最近 7 天”旧结果，同时说明请求 30 天。它们表达批准行为，不构成真实统计数据验收。图表可编辑；照片为独立内容图片，不是整页截图贴图。
+
+`final-screenshots.json` 为最后一组 12 张截图索引；分享/设置桌面两图在此后被 `representatives-final.json` 中的最终导出覆盖。其他 PNG 中的较早导出保留过程证据，不覆盖这两张最终图。
+
+## 复用、验证与未完项
+
+- 复用原侧栏、公共头部、固定底栏、按钮组件、既有变量和 Lucide 图标。仅对缺少的 Lucide 图标增加可编辑矢量资源。
+- 新补充区没有整页位图。`final-readback.json` 与 `representatives-final.json` 包含尺寸、文本、图标引用、图片填充和状态回读。
+- 标签默认删除按钮为中性色；危险色只用于 hover/focus 的批准表现。普通启停用 toast，轮换与永久删除仍保留必要流程。
+- **分享列表补项已完成：** 原桌面/手机各八个“管理”按钮已替换 Settings2，规则正文隐藏并改标题旁 CircleHelp；桌面行操作容器保持 88 × 40，手机保持 80 × 44。两端分页尺寸、坐标及子节点 ID 前后相同。成功结果和最终回读见 `share-list-completed.json`。早前 `share-list-local.json` / `share-list-mobile-local.json` 仅为已解决错误的过程记录，不代表当前结果。
+- **未声明：** 所有历史 Figma 页面整页还原、所有消费者全局短词替换、所有手机/暗色示意与本轮真实产品布局完全相同、Figma Player 可运行原型验收。
+
+## 文件与格式检查
+
+分享列表局部最终导出：[桌面八行列表](shares-list-desktop-local.png)、[桌面标题 Tips](shares-title-desktop-local.png)、[手机原列表及分页](shares-list-mobile-local.png)。已实际查看三图；未新建屏幕帧。原历史公共区未重画。
+
+`*.plugin.txt` 是执行脚本原文，不按 Markdown/JSON 格式化。`batch-*.json` 等保存工具实际返回；失败结果也原样保留语义。最终执行本目录 Markdown/JSON 的 Prettier 格式化与检查，结果向主任务回报。

@@ -1,0 +1,214 @@
+// Figma Plugin API construction archive; not a standalone JavaScript module.
+// Executed through use_figma. ICONS and REQUEST are supplied by the runner.
+const created = [];
+const mutated = [];
+const removed = [];
+const page = await figma.getNodeByIdAsync('0:1');
+await figma.setCurrentPageAsync(page);
+figma.skipInvisibleInstanceChildren=false;
+const variables = await figma.variables.getLocalVariablesAsync();
+const collection = await figma.variables.getVariableCollectionByIdAsync('VariableCollectionId:2:2');
+const fonts = new Map();
+for (const id of ['1096:19885', '1096:20288', '1095:19668', '1095:19676']) {
+  const n = await figma.getNodeByIdAsync(id);
+  for (const t of n.findAllWithCriteria({types:['TEXT']})) {
+    for (const s of t.getStyledTextSegments(['fontName'])) fonts.set(JSON.stringify(s.fontName), s.fontName);
+  }
+}
+for (const style of ['Regular', 'Medium', 'Bold']) fonts.set(style, {family:'Noto Sans SC',style});
+for (const font of fonts.values()) await figma.loadFontAsync(font);
+const variable = name => variables.find(v => v.name === name);
+const paint = (name,consumer) => {const v=variable(name);const c=consumer?v.resolveForConsumer(consumer).value:v.valuesByMode['2:0'];return figma.variables.setBoundVariableForPaint({type:'SOLID',color:{r:c.r,g:c.g,b:c.b}}, 'color', v);};
+const mark = n => {created.push(n.id);return n;};
+const clear = n => {for(const c of [...n.children]){removed.push(c.id);c.remove();}};
+const fill = (n, name) => {n.fills=[paint(name)];};
+const frame = (parent, name, direction='VERTICAL', gap=0, width) => {
+  const n=mark(figma.createAutoLayout(direction));n.name=name;n.fills=[];n.itemSpacing=gap;n.resize(width||1,1);
+  if(parent)parent.appendChild(n);
+  if(width){n.resize(width,1);n.layoutSizingHorizontal='FIXED';}else if(parent?.layoutMode&&parent.layoutMode!=='NONE')n.layoutSizingHorizontal='FILL';
+  n.layoutSizingVertical='HUG';return n;
+};
+const text = (parent, value, size=14, color='foreground', width, medium=false) => {
+  const n=mark(figma.createText());parent.appendChild(n);n.name=value;n.fontName={family:'Noto Sans SC',style:medium||size>=18?'Medium':'Regular'};
+  n.fontSize=size;n.lineHeight={unit:'PERCENT',value:150};n.letterSpacing={unit:'PIXELS',value:0};n.characters=value;n.fills=[paint(color)];
+  if(size===14){const s=(awaitedStyles||[]).find(x=>x.name==='Body/中文');if(s)n.textStyleId=s.id;}
+  if(width){n.textAutoResize='HEIGHT';n.resize(width,n.height);n.layoutSizingHorizontal='FIXED';}
+  else n.textAutoResize='WIDTH_AND_HEIGHT';
+  return n;
+};
+const awaitedStyles=await figma.getLocalTextStylesAsync();
+const iconIds={Copy:'759:7955',LockKeyhole:'759:7964',RefreshCw:'759:7998',Check:'759:8001',ChevronDown:'759:8004',X:'759:8017',Images:'763:8063',Search:'787:13535',ArrowLeft:'1018:16887',CloudUpload:'1095:19624',HardDrive:'1095:19630',Plus:'1095:19634',FolderInput:'1095:19639',FolderMinus:'1095:19643',Globe:'1095:19648',Trash2:'1095:19655',Tag:'1095:19659',Tags:'1095:19664',Folder:'1095:19667',Grid2X2:'759:7987',Eye:'759:7976'};
+const iconComponents={};
+for(const [name,id] of Object.entries(iconIds))iconComponents[name]=await figma.getNodeByIdAsync(id);
+for(const name of Object.keys(ICONS)){
+  const c=page.findOne(n=>n.type==='COMPONENT'&&n.name===`InteractionV2 / Icon / ${name}`);
+  if(c)iconComponents[name]=c;
+}
+const primary=await figma.getNodeByIdAsync('1095:19668');
+const outline=await figma.getNodeByIdAsync('1095:19676');
+const icon = (parent,name,size=18,color='foreground') => {
+  if(!iconComponents[name])throw new Error('Missing icon '+name);
+  const n=mark(iconComponents[name].createInstance());parent.appendChild(n);n.name='Lucide / '+name;n.resize(size,size);
+  for(const v of n.findAll(()=>true)){if('strokes'in v&&Array.isArray(v.strokes)&&v.strokes.length)v.strokes=[paint(color,v)];if('fills'in v&&Array.isArray(v.fills)&&v.fills.length)v.fills=[paint(color,v)];}
+  return n;
+};
+const button = (parent,label,ico,strong=false,width=44) => {
+  const n=mark((strong?primary:outline).createInstance());parent.appendChild(n);n.name='Button / '+(label||ico);
+  n.resize(width,44);n.cornerRadius=8;n.paddingLeft=n.paddingRight=label?12:0;n.itemSpacing=8;n.counterAxisAlignItems='CENTER';n.primaryAxisAlignItems='CENTER';
+  if(!strong)fill(n,'secondary');n.strokes=[];
+  const t=n.findAllWithCriteria({types:['TEXT']})[0];t.visible=Boolean(label);if(label)t.characters=label;
+  const icons=n.children.filter(x=>x.type==='INSTANCE');
+  if(ico){icons[0].swapComponent(iconComponents[ico]);icons[0].visible=true;icons[0].resize(18,18);}else icons[0].visible=false;
+  if(icons[1])icons[1].visible=label==='添加图片';
+  return n;
+};
+const group = (parent, names, selected=-1) => {
+  const g=frame(parent,'ButtonGroup / '+names.join(' / '),'HORIZONTAL',0);g.layoutSizingHorizontal='HUG';g.cornerRadius=8;fill(g,'secondary');
+  names.forEach((name,i)=>{const b=button(g,'',name,i===selected,44);b.cornerRadius=0;if(i===0)b.topLeftRadius=b.bottomLeftRadius=8;if(i===names.length-1)b.topRightRadius=b.bottomRightRadius=8;
+    if(i){b.strokes=[paint('accent')];b.strokeWeight=1;b.strokeTopWeight=b.strokeBottomWeight=b.strokeRightWeight=0;b.strokeLeftWeight=1;}
+  });return g;
+};
+const input = (parent,label,ico='Search',width=280,error=false) => {
+  const n=frame(parent,'Input / '+label,'HORIZONTAL',10,width);n.resize(width,44);n.layoutSizingVertical='FIXED';n.paddingLeft=n.paddingRight=12;n.counterAxisAlignItems='CENTER';n.cornerRadius=8;n.strokes=[paint(error?'destructive':'accent')];fill(n,'background');
+  if(ico)icon(n,ico,17);text(n,label,14,'muted-foreground',Math.max(20,width-(ico?58:24)));return n;
+};
+const divider = parent => {const n=mark(figma.createRectangle());parent.appendChild(n);n.name='Divider';n.resize(parent.width||358,1);fill(n,'accent');if(parent.layoutMode!=='NONE')n.layoutSizingHorizontal='FILL';return n;};
+const photoHashes=['19a49ccaa25bfe8947b9cd374882287a14af0ca3','49bdbaf0714d82c1793fd4e1325012ecb76fe5fc'];
+const image = (parent,w,h,index=0) => {const n=mark(figma.createRectangle());parent.appendChild(n);n.name='Photo / independent content image';n.resize(w,h);n.fills=[{type:'IMAGE',imageHash:photoHashes[index%2],scaleMode:'FILL'}];return n;};
+let assets=page.children.find(n=>n.name==='InteractionV2 / 可编辑组合');
+let section=page.children.find(n=>n.name==='2026-10-11 / 已批准操作减负 v2 / 当前实施依据');
+if(REQUEST.foundation){
+  if(!section){section=mark(figma.createSection());section.name='2026-10-11 / 已批准操作减负 v2 / 当前实施依据';section.x=Math.max(...page.children.filter(n=>n!==section).map(n=>n.x+n.width))+240;section.y=0;section.resizeWithoutConstraints(4300,17000);}
+  if(!assets){assets=frame(page,'InteractionV2 / 可编辑组合','VERTICAL',24,1600);assets.x=section.x+4500;assets.y=0;}
+  const colors={
+    'visibility/public-background':['#ECFDF5','#022C22'],
+    'visibility/public-foreground':['#065F46','#A7F3D0'],
+    'visibility/private-background':['#F5F3FF','#2E1065'],
+    'visibility/private-foreground':['#5B21B6','#DDD6FE'],
+  };
+  const rgba=hex=>({r:parseInt(hex.slice(1,3),16)/255,g:parseInt(hex.slice(3,5),16)/255,b:parseInt(hex.slice(5,7),16)/255,a:1});
+  for(const [name,values] of Object.entries(colors)){
+    let v=variable(name);if(!v){v=figma.variables.createVariable(name,collection,'COLOR');variables.push(v);created.push(v.id);}
+    v.scopes=['FRAME_FILL','SHAPE_FILL','TEXT_FILL','STROKE_COLOR'];v.setValueForMode('2:0',rgba(values[0]));v.setValueForMode('264:0',rgba(values[1]));
+    const css={'visibility/public-background':'emerald-50','visibility/public-foreground':'emerald-800','visibility/private-background':'violet-50','visibility/private-foreground':'violet-800'};
+    v.setVariableCodeSyntax('WEB',`var(--color-${css[name]})`);mutated.push(v.id);
+  }
+  for(const [name,svg] of Object.entries(ICONS)){
+    if(iconComponents[name])continue;
+    const n=mark(figma.createNodeFromSvg(svg));assets.appendChild(n);n.name='Lucide / '+name;
+    for(const v of n.findAll(()=>true)){if('strokes'in v&&v.strokes.length)v.strokes=[paint('foreground')];}
+    const c=mark(figma.createComponentFromNode(n));c.name=`InteractionV2 / Icon / ${name}`;c.description='Exact SVG data from the installed lucide-react package, rendered as editable vectors.';iconComponents[name]=c;
+  }
+  for(const state of ['public','private']){
+    if(assets.findOne(n=>n.type==='COMPONENT'&&n.name===`InteractionV2 / Visibility / ${state}`))continue;
+    const b=frame(assets,'Visibility / '+state,'HORIZONTAL',4);b.layoutSizingHorizontal='HUG';b.paddingLeft=b.paddingRight=6;b.paddingTop=b.paddingBottom=4;b.cornerRadius=6;fill(b,`visibility/${state}-background`);
+    icon(b,state==='public'?'Globe':'LockKeyhole',12,`visibility/${state}-foreground`);text(b,state==='public'?'公开':'私有',11,`visibility/${state}-foreground`);
+    const c=mark(figma.createComponentFromNode(b));c.name=`InteractionV2 / Visibility / ${state}`;c.description='Visibility uses an icon and text as well as semantic light/dark color. Never rely on color alone.';
+  }
+}
+if(!section||!assets)throw new Error('Foundation must be created before screens');
+const badges={};for(const state of ['public','private'])badges[state]=assets.findOne(n=>n.type==='COMPONENT'&&n.name===`InteractionV2 / Visibility / ${state}`);
+const titles={library:'图库',album:'林间日记',albums:'相册',upload:'上传',share:'分享设置',trash:'回收站'};
+const photoNames=['林间清晨.jpg','远山与湖.jpg','绿意深处.jpg','山间小路.jpg'];
+const card = (parent,w,index,selected=false,trash=false,deleting=false) => {
+  const n=frame(parent,'PhotoCard / '+photoNames[index%4],'VERTICAL',0,w);n.cornerRadius=8;n.clipsContent=true;n.strokes=[paint(selected?'primary':'accent')];n.strokeWeight=selected?2:1;fill(n,'surface');
+  if(deleting){const im=frame(n,'已受理删除 / 占位','VERTICAL',8,w);im.resize(w,w*0.75);im.layoutSizingVertical='FIXED';im.primaryAxisAlignItems='CENTER';im.counterAxisAlignItems='CENTER';fill(im,'secondary');icon(im,'Images',24);text(im,'删除中',14);}
+  else image(n,w,w*0.75,index);
+  const body=frame(n,'图片信息 / 保留底部内距','VERTICAL',6,w);body.paddingLeft=body.paddingRight=12;body.paddingTop=12;body.paddingBottom=16;
+  text(body,photoNames[index%4],14,'foreground',w-24);
+  const meta=frame(body,'状态与大小','HORIZONTAL',6);meta.counterAxisAlignItems='CENTER';
+  if(!trash){const b=mark(badges[index===0?'public':'private'].createInstance());meta.appendChild(b);}
+  text(meta,trash?(deleting?'请求已受理':'已回收'):(index===0?'3.8 MB':'5.2 MB'),11,'muted-foreground');
+  if(!trash&&w>200){const s=frame(meta,'相册数','HORIZONTAL',4);s.layoutSizingHorizontal='FILL';s.primaryAxisAlignItems='MAX';icon(s,'Folder',12);text(s,index===3?'0':'1',11);}
+  const check=frame(n,'Checkbox / 44px target','HORIZONTAL',0,44);check.layoutPositioning='ABSOLUTE';check.x=4;check.y=4;check.resize(44,44);check.layoutSizingVertical='FIXED';check.primaryAxisAlignItems='CENTER';check.counterAxisAlignItems='CENTER';
+  const sq=frame(check,'Checkbox','HORIZONTAL',0,18);sq.resize(18,18);sq.layoutSizingVertical='FIXED';sq.cornerRadius=5;sq.strokes=[paint('accent')];fill(sq,selected?'primary':'surface');if(selected)icon(sq,'Check',14);
+  return n;
+};
+const menu = (screen,mobile,items,name,x,y) => {
+  const m=frame(screen,'Dropdown / '+name,'VERTICAL',0,mobile?240:250);m.layoutPositioning='ABSOLUTE';m.x=Math.min(x||(mobile?16:920),screen.width-m.width-16);m.y=y||220;m.paddingTop=m.paddingBottom=6;m.cornerRadius=8;m.strokes=[paint('accent')];fill(m,'surface');
+  for(const [label,ico,danger] of items){const row=frame(m,label,'HORIZONTAL',12,m.width);row.resize(m.width,44);row.layoutSizingVertical='FIXED';row.counterAxisAlignItems='CENTER';row.paddingLeft=row.paddingRight=12;icon(row,ico,17,danger?'destructive':'foreground');text(row,label,14,danger?'destructive':'foreground');}
+  return m;
+};
+const modal = (screen,mobile,title,body,action,danger=false) => {
+  const overlay=frame(screen,'Modal.Backdrop','VERTICAL',0,screen.width);overlay.layoutPositioning='ABSOLUTE';overlay.x=overlay.y=0;overlay.resize(screen.width,screen.height);overlay.layoutSizingVertical='FIXED';overlay.fills=[{type:'SOLID',color:{r:0,g:0,b:0},opacity:0.28}];overlay.primaryAxisAlignItems='CENTER';overlay.counterAxisAlignItems='CENTER';
+  const box=frame(overlay,'Dialog / '+title,'VERTICAL',20,mobile?screen.width-32:480);box.paddingLeft=box.paddingRight=20;box.paddingTop=box.paddingBottom=20;box.cornerRadius=8;fill(box,'surface');
+  const h=frame(box,'Dialog.Header','HORIZONTAL',12);h.counterAxisAlignItems='CENTER';const t=text(h,title,18,'foreground',box.width-104);t.layoutSizingHorizontal='FILL';button(h,'','X');text(box,body,14,'foreground',box.width-40);
+  const footer=frame(box,'Dialog.Footer','HORIZONTAL',12);footer.primaryAxisAlignItems='MAX';button(footer,'取消',null,false,80);const a=button(footer,action,danger?'Trash2':'Check',true,140);if(danger)fill(a,'destructive');return box;
+};
+const toast = (screen,mobile,value) => {const n=frame(screen,'Toast / 中性完整成功','HORIZONTAL',12,mobile?screen.width-32:420);n.layoutPositioning='ABSOLUTE';n.x=screen.width-n.width-(mobile?16:28);n.y=screen.height-160;n.paddingLeft=n.paddingRight=16;n.paddingTop=n.paddingBottom=12;n.cornerRadius=12;fill(n,'surface');n.strokes=[paint('accent')];n.counterAxisAlignItems='CENTER';icon(n,'Check',18);const t=text(n,value,14,'foreground',n.width-104);t.layoutSizingHorizontal='FILL';button(n,'','X');return n;};
+const base = async(kind,mobile,dark,height) => {
+  const source=await figma.getNodeByIdAsync(mobile?'1096:20288':'1096:19885');
+  const root=mark(source.createInstance());section.appendChild(root);const s=mark(root.detachInstance());s.name='Screen';s.resize(mobile?390:1440,height||(mobile?844:900));s.setExplicitVariableModeForCollection(collection,dark?'264:0':'2:0');
+  const main=s.children.find(n=>n.name==='公共主区域');const body=main.children.find(n=>n.name==='业务内容滚动区');const footer=main.children.find(n=>n.name==='公共固定底栏');clear(body);clear(footer);
+  body.paddingLeft=body.paddingRight=mobile?16:32;body.paddingTop=24;body.paddingBottom=32;body.itemSpacing=24;body.layoutSizingVertical='FILL';body.clipsContent=true;body.overflowDirection='VERTICAL';
+  footer.resize(mobile?390:1208,80);footer.layoutSizingVertical='FIXED';footer.paddingLeft=footer.paddingRight=mobile?16:32;footer.counterAxisAlignItems='CENTER';footer.primaryAxisAlignItems='SPACE_BETWEEN';
+  if(!mobile){const sidebar=s.children[0];sidebar.resize(232,s.height);const active=kind==='album'?'相册':kind==='albums'?'相册':kind==='share'?'分享管理':titles[kind];for(const t of sidebar.findAllWithCriteria({types:['TEXT']})){if(['图库','相册','上传','分享管理','回收站'].includes(t.characters)&&t.parent.parent.type==='FRAME'){t.parent.parent.fills=t.characters===active?[paint('navigation-current')]:[];}}}
+  const header=frame(body,'标题行 / 返回与标题平行','HORIZONTAL',12);header.counterAxisAlignItems='CENTER';text(header,titles[kind],mobile?28:30,'foreground',(mobile?358:1144)-(kind==='album'||kind==='share'||kind==='upload'?100:0));
+  if(['album','share','upload'].includes(kind))button(header,'返回','ArrowLeft',false,88);
+  return {screen:s,body,footer,width:mobile?358:1144};
+};
+const drawSelection = (screen,mobile) => {
+  const pop=frame(screen,'Popover / 管理选择及已选清单','VERTICAL',12,mobile?358:380);pop.layoutPositioning='ABSOLUTE';pop.x=mobile?16:800;pop.y=mobile?280:225;pop.paddingTop=pop.paddingBottom=16;pop.paddingLeft=pop.paddingRight=16;pop.cornerRadius=8;fill(pop,'surface');pop.strokes=[paint('accent')];
+  const h=frame(pop,'已选数量与范围操作','HORIZONTAL',12);h.counterAxisAlignItems='CENTER';text(h,'已选 3 张',14);group(h,['CheckCheck','ListX','X']);text(pop,'已加载 2 张 · 其他页 1 张',12,'muted-foreground');
+  for(let i=0;i<3;i++){const r=frame(pop,'已选清单 / '+photoNames[i],'HORIZONTAL',12);r.counterAxisAlignItems='CENTER';image(r,44,44,i);const t=text(r,photoNames[i],14,'foreground',pop.width-144);t.layoutSizingHorizontal='FILL';button(r,'','X');}
+};
+const drawer = (screen,mobile,error) => {
+  if(!mobile){const shade=frame(screen,'Drawer.Backdrop','VERTICAL',0,screen.width);shade.layoutPositioning='ABSOLUTE';shade.x=shade.y=0;shade.resize(screen.width,screen.height);shade.fills=[{type:'SOLID',color:{r:0,g:0,b:0},opacity:0.18}];}
+  const width=mobile?screen.width:420;const d=frame(screen,'Drawer / 标签 / 右侧420px / 手机全屏','VERTICAL',0,width);d.layoutPositioning='ABSOLUTE';d.x=screen.width-width;d.y=0;d.resize(width,screen.height);d.layoutSizingVertical='FIXED';fill(d,'surface');
+  const h=frame(d,'Drawer.Header','VERTICAL',12,width);h.paddingLeft=h.paddingRight=20;h.paddingTop=h.paddingBottom=16;const top=frame(h,'标题与关闭','HORIZONTAL',12);text(top,'添加标签',18,'foreground',width-96);button(top,'','X');text(h,'已选 2 张图片',14);input(h,'搜索标签','Search',width-40);divider(d);
+  const list=frame(d,'Drawer.Body / 可独立滚动','VERTICAL',0,width);list.layoutSizingVertical='FILL';list.paddingLeft=list.paddingRight=20;list.clipsContent=true;list.overflowDirection='VERTICAL';
+  for(const [name,count]of[['旅行','2 张'],['风景','2 张'],['日常','1 张'],['fellow','0 张']]){const r=frame(list,name,'HORIZONTAL',12);r.resize(width-40,56);r.layoutSizingVertical='FIXED';r.counterAxisAlignItems='CENTER';icon(r,'Check',16);const t=text(r,name,14,'foreground',width-138);t.layoutSizingHorizontal='FILL';text(r,count,12,'muted-foreground');divider(list);}
+  if(error==='apply'){const e=frame(d,'应用失败 / 选择保留','VERTICAL',0,width);e.paddingLeft=e.paddingRight=20;e.paddingBottom=12;text(e,'添加失败，已保留选择。请重试。',14,'error-foreground',width-40);}
+  divider(d);const create=frame(d,'行内新建','VERTICAL',8,width);create.paddingLeft=create.paddingRight=20;create.paddingTop=create.paddingBottom=12;const r=frame(create,'名称与新建','HORIZONTAL',8);input(r,error==='duplicate'?' fellow ':'新标签名称',null,width-92,error==='duplicate');button(r,'','Plus');if(error==='duplicate')text(create,'已有同名标签，请直接勾选',14,'error-foreground',width-40);
+  divider(d);const f=frame(d,'Drawer.Footer / 固定确认','HORIZONTAL',12,width);f.paddingLeft=f.paddingRight=20;f.paddingTop=f.paddingBottom=16;f.counterAxisAlignItems='CENTER';const t=text(f,'已选 2 个',14,'foreground',width-220);t.layoutSizingHorizontal='FILL';button(f,'取消',null,false,64);button(f,error==='apply'?'重试':'添加','Check',true,80);
+};
+const screenRecords=[];
+for(const spec of REQUEST.screens||[]){
+  const {kind,state='normal',index}=spec;
+  for(const mobile of [false,true])for(const dark of [false,true]){
+    const name=`${mobile?'M':'D'} / ${String(index).padStart(2,'0')} / ${kind} / ${state} / ${dark?'Dark':'Light'}`;
+    const existing=section.children.find(n=>n.name===name);if(existing){screenRecords.push({id:existing.id,name,skipped:true});continue;}
+    const {screen:s,body,footer,width:w}=await base(kind,mobile,dark);s.name=name;s.x=(mobile?3040:0)+(dark?(mobile?470:1520):0);s.y=80+(index-1)*1000;
+    if(kind==='library'||kind==='album'||kind==='trash'){
+      const selected=['selection','context-public','context-private','context-no-album','context','confirm','delete','partial','drawer-duplicate','drawer-error'].includes(state);
+      if(kind==='album'){
+        text(body,'3 张图片 · 1 张公开',14,'muted-foreground');const ops=frame(body,'操作栏 / ButtonGroup 与添加图片','HORIZONTAL',12);ops.counterAxisAlignItems='CENTER';group(ops,['Pencil','Images','Link2','Ellipsis']);const spacer=frame(ops,'Spacer','HORIZONTAL',0);spacer.layoutSizingHorizontal='FILL';button(ops,'添加图片','Plus',true,136);
+      }
+      const controls=frame(body,'筛选工具栏','HORIZONTAL',12);controls.layoutWrap='WRAP';controls.counterAxisSpacing=12;controls.counterAxisAlignItems='CENTER';input(controls,'搜索图片名称','Search',mobile?w:384);button(controls,kind==='album'?'加入时间':'上传时间','ArrowDown',false,110);group(controls,['LayoutGrid','Grid2X2'],0);button(controls,'全部','ChevronDown',false,112);
+      const single=state.startsWith('context-');
+      if(selected){button(controls,single?'1':kind==='trash'||state.startsWith('drawer')?'2':'3','ListChecks',false,86);group(controls,kind==='trash'?['RotateCcw','Trash2','Ellipsis']:['Copy','FolderInput','Tag','Ellipsis']);}
+      const g=frame(body,'CollectionGallery / 内容与底栏留白','HORIZONTAL',mobile?12:20);g.layoutWrap='WRAP';g.counterAxisSpacing=24;const cw=mobile?173:271;for(let i=0;i<(kind==='album'?3:kind==='trash'?2:4);i++)card(g,cw,i,selected&&(single?i===(state==='context-public'?0:state==='context-private'?1:3):i<2),kind==='trash',state==='deleting'&&i===1);
+      text(footer,(kind==='trash'?'2 条记录':kind==='album'?'3 张图片':'4 张图片')+' · 已加载 '+(kind==='trash'?'2 条':kind==='album'?'3 张':'4 张'),12,'muted-foreground');button(footer,'40 张 / 批','ChevronDown',false,128);
+      if(state==='selection')drawSelection(s,mobile);
+      if(state==='add-menu')menu(s,mobile,[['上传新图片','CloudUpload'],['从图库选择','Images']],'添加图片 / 仅两项',mobile?134:1230,mobile?245:235);
+      if(state==='context-public'||state==='context-private'||state==='context-no-album'){
+        const items=[['查看图片','Eye'],['复制链接','Copy'],['添加到相册','FolderInput']];if(state!=='context-public')items.push(['设为公开','Globe']);if(state==='context-public')items.push(['设为私有','LockKeyhole']);if(state!=='context-no-album')items.push(['从相册移出','FolderMinus']);items.push(['移入回收站','Trash2',true]);menu(s,mobile,items,'状态感知右键',mobile?90:720,mobile?300:270);
+      }
+      if(state==='context'&&kind==='trash')menu(s,mobile,[['查看图片','Eye'],['恢复','RotateCcw'],['永久删除','Trash2',true]],'回收站右键',mobile?80:700,300);
+      if(state==='drawer-duplicate'||state==='drawer-error')drawer(s,mobile,state==='drawer-duplicate'?'duplicate':'apply');
+      if(state==='toast')toast(s,mobile,'已将 2 张图片移入回收站');
+      if(state==='partial')modal(s,mobile,'部分图片未完成','已回收 1 张；1 张失败，选择已保留。','重试失败项');
+      if(state==='delete')modal(s,mobile,'永久删除 2 张图片？','此操作不可恢复。仅清理所选记录的剩余对象。','永久删除',true);
+      if(state==='confirm')modal(s,mobile,'移入回收站？','将所选 3 张图片移入回收站。','移入回收站',true);
+    }else if(kind==='albums'){
+      const controls=frame(body,'搜索与新建','HORIZONTAL',12);controls.layoutWrap='WRAP';controls.counterAxisSpacing=12;input(controls,'搜索相册','Search',mobile?w:384);button(controls,'新建相册','Plus',true,132);
+      const g=frame(body,'AlbumCards / 支持右键与省略号','HORIZONTAL',20);g.layoutWrap='WRAP';g.counterAxisSpacing=24;
+      for(let i=0;i<3;i++){const cw=mobile?w:360;const c=frame(g,'AlbumCard / '+['林间日记','山与湖','待整理'][i],'VERTICAL',0,cw);c.cornerRadius=8;c.clipsContent=true;c.strokes=[paint('accent')];if(i<2)image(c,cw,180,i);else{const empty=frame(c,'空相册封面','VERTICAL',0,cw);empty.resize(cw,180);empty.layoutSizingVertical='FIXED';empty.primaryAxisAlignItems='CENTER';empty.counterAxisAlignItems='CENTER';fill(empty,'secondary');icon(empty,'Folder',32);}const info=frame(c,'相册信息','HORIZONTAL',12,cw);info.paddingLeft=info.paddingRight=16;info.paddingTop=info.paddingBottom=12;const col=frame(info,'名称及数量','VERTICAL',4,cw-88);text(col,['林间日记','山与湖','待整理'][i],18);text(col,i===2?'0 张图片':'3 张图片',12,'muted-foreground');button(info,'','Ellipsis');}
+      if(state==='context')menu(s,mobile,[['打开相册','Folder'],['编辑相册','Pencil'],['分享设置','Link2'],['删除相册','Trash2',true]],'相册右键',mobile?100:550,300);
+    }else if(kind==='upload'){
+      const cols=frame(body,'完整上传页 / 无Modal','HORIZONTAL',32);cols.layoutWrap='WRAP';cols.counterAxisSpacing=24;const left=frame(cols,'文件与上传队列','VERTICAL',20,mobile?w:832);const drop=frame(left,'选择区','VERTICAL',16,left.width);drop.resize(left.width,192);drop.layoutSizingVertical='FIXED';drop.primaryAxisAlignItems='CENTER';drop.counterAxisAlignItems='CENTER';drop.strokes=[paint('accent')];drop.dashPattern=[4,4];drop.cornerRadius=8;icon(drop,'CloudUpload',32);button(drop,'选择图片','Plus',false,136);
+      const file=frame(left,'待上传文件 / 草稿保留','HORIZONTAL',12,left.width);file.counterAxisAlignItems='CENTER';image(file,64,64);const info=frame(file,'文件信息','VERTICAL',4,left.width-120);text(info,'林间清晨.jpg',14);text(info,state==='error'?'上传失败':'等待上传',12,state==='error'?'error-foreground':'muted-foreground');button(file,'','X');
+      if(state==='error')text(left,'上传失败，文件和本次设置已保留。',14,'error-foreground',left.width);
+      const settings=frame(cols,'本次设置 / 预选来源相册','VERTICAL',16,mobile?w:280);for(const [label,value,ico]of[['存储','默认本地存储','HardDrive'],['可见性','私有','LockKeyhole'],['相册','林间日记','Folder']]){text(settings,label,14);input(settings,value,ico,settings.width);}
+      text(footer,'1 张图片 · 林间日记',12,'muted-foreground');button(footer,state==='error'?'重试上传':'开始上传','CloudUpload',true,mobile?128:144);
+    }else if(kind==='share'){
+      text(body,'林间日记 · 1 张公开图片',14,'muted-foreground');const form=frame(body,'首次创建直接编辑 / 进入不写入','VERTICAL',24,mobile?w:880);
+      const toggle=frame(form,'隐藏图片名称','HORIZONTAL',16,form.width);toggle.resize(form.width,80);toggle.layoutSizingVertical='FIXED';toggle.counterAxisAlignItems='CENTER';text(toggle,'隐藏图片名称',14,'foreground',form.width-80);const sw=frame(toggle,'Switch / 开启','HORIZONTAL',0,44);sw.resize(44,24);sw.layoutSizingVertical='FIXED';sw.cornerRadius=12;fill(sw,'accent');const thumb=mark(figma.createEllipse());sw.appendChild(thumb);thumb.resize(20,20);fill(thumb,'surface');thumb.layoutPositioning='ABSOLUTE';thumb.x=22;thumb.y=2;divider(form);
+      const fields=frame(form,'密码与有效期','HORIZONTAL',24,form.width);fields.layoutWrap='WRAP';fields.counterAxisSpacing=24;const fw=mobile?w:428;for(const [label,value,ico]of[['访问密码','不设置密码','LockKeyhole'],['到期时间','不设到期时间','CalendarClock']]){const f=frame(fields,label,'VERTICAL',8,fw);text(f,label,14);input(f,value,ico,fw);}
+      if(state==='error')text(form,'创建失败，输入已保留。请重试。',14,'error-foreground',form.width);
+      footer.primaryAxisAlignItems='MAX';button(footer,'创建并启用分享','Link2',true,184);
+    }
+    screenRecords.push({id:s.id,name,kind,state,mobile,dark,w:s.width,h:s.height});
+  }
+}
+return {sectionId:section.id,assetsId:assets.id,screens:screenRecords,createdNodeIds:created,mutatedNodeIds:mutated,removedNodeIds:removed};

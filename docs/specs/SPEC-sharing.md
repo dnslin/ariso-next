@@ -33,7 +33,7 @@ sharing 拥有分享记录、链接 Token、浏览器密码授权和匿名页面
 | `album_shares` | id、album_id（唯一，关联 albums，ON DELETE CASCADE）、token（唯一）、enabled、password_hash（可空）、expires_at（可空）、layout、show_name、auth_revision、created_at、updated_at |
 | `share_grants` | share_id、grant_secret_hash、auth_revision、verified_at、expires_at；主键为 share_id + grant_secret_hash，分享外键 ON DELETE CASCADE；过期时间索引用于清理                        |
 
-一个相册最多一行分享记录。重复创建返回现有记录，不重新生成链接或覆盖设置。首次明确“创建并启用”时，默认网格、隐藏图片名称、无密码、无期限；可在同一次提交填写密码和期限。没有创建过分享的相册不自动出现在匿名入口。
+一个相册最多一行分享记录。重复创建返回现有记录，不重新生成链接或覆盖设置。首次明确“创建并启用”时，默认网格、隐藏图片名称、无密码、无期限；可在同一次提交修改隐藏名称、填写密码和期限。首次创建页直接展示表单，底栏主按钮提交现有 POST；进入、修改和取消均不创建分享。没有创建过分享的相册不自动出现在匿名入口。
 
 Token 必须由服务端生成，并持久保存以便所有者以后重新复制地址；不能采用只显示一次的 API 密钥交互。原始密码不保存、不回显；管理响应只返回 hasPassword。每个分享的浏览器授权密钥只保存在对应路径的 HttpOnly Cookie，数据库存其 SHA-256 摘要；高熵随机密钥与用户设置的密码使用不同的存储方式。
 
