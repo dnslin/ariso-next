@@ -24,6 +24,9 @@ export type UploadItem = {
   previewUrl: string | null;
   state: UploadState;
   progress: number;
+  draftKey?: string;
+  canRetry?: boolean;
+  targetAlbumIds?: readonly string[];
   visibility?: 'public' | 'private';
   storageId?: string;
   submissionId?: string;

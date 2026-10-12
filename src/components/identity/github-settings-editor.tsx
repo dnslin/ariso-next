@@ -119,7 +119,7 @@ export function GithubSettingsEditor(props: GithubSettingsEditorProps) {
                       ) : (
                         <Check className="size-4" aria-hidden />
                       )}
-                      {editor.busy ? '正在保存…' : '保存配置'}
+                      {editor.busy ? '正在保存…' : '保存'}
                     </Button>
                   )}
                   <Button

@@ -42,14 +42,14 @@ export const settingsCategories = [
   },
 ];
 
-export function SettingsHeading() {
+export function SettingsHeading({ help }: { help?: ReactNode }) {
   return (
-    <div className="grid gap-1.5">
+    <div className="flex items-center gap-2">
       <h1 className="flex items-center gap-2.5 text-[30px] font-medium leading-normal">
         <Settings className="size-6 shrink-0" aria-hidden />
         站点设置
       </h1>
-      <p className="text-sm leading-normal">管理站点、图片处理与账号偏好。</p>
+      {help}
     </div>
   );
 }
@@ -75,13 +75,13 @@ export function SettingsCategories({
       keyboardActivation="manual"
     >
       <div className="settings-desktop">
-        <Tabs.ListContainer className="w-fit max-w-full rounded-2xl">
-          <Tabs.List aria-label="设置分类" className="rounded-2xl p-1">
+        <Tabs.ListContainer className="w-fit max-w-full rounded-lg">
+          <Tabs.List aria-label="设置分类" className="rounded-lg p-1">
             {items.map(({ href, label, icon }) => (
               <Tabs.Tab
                 key={href}
                 id={href}
-                className="h-11 w-auto shrink-0 gap-2 rounded-xl whitespace-nowrap data-[selected=true]:bg-accent data-[selected=true]:text-foreground"
+                className="h-11 w-auto shrink-0 gap-2 rounded-lg whitespace-nowrap data-[selected=true]:bg-accent data-[selected=true]:text-foreground"
               >
                 {icon}
                 {label}
@@ -98,18 +98,18 @@ export function SettingsCategories({
           }}
         >
           <Label>设置分类</Label>
-          <Select.Trigger className="min-h-11 rounded-xl border border-border bg-background px-3 shadow-none">
+          <Select.Trigger className="min-h-11 rounded-lg border border-border bg-background px-3 shadow-none">
             <Select.Value />
             <Select.Indicator />
           </Select.Trigger>
-          <Select.Popover>
+          <Select.Popover className="rounded-xl border border-border bg-surface">
             <ListBox>
               {items.map(({ href, label, icon }) => (
                 <ListBox.Item
                   key={href}
                   id={href}
                   textValue={label}
-                  className="min-h-11"
+                  className="min-h-11 rounded-lg"
                 >
                   <span className="flex items-center gap-2">
                     {icon}

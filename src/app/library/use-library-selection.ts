@@ -13,6 +13,9 @@ function selectedItem(
   return {
     id: item.id,
     displayName: item.displayName,
+    visibility: item.visibility,
+    hasAlbums: item.hasAlbums,
+    deletionStatus: item.deletionStatus ?? null,
     processingStatus: item.processingStatus ?? retained?.processingStatus,
     thumbnailUrl: item.thumbnailUrl,
     storage: { ...item.storage },
@@ -112,6 +115,23 @@ export function useLibrarySelection(
     },
     [identity],
   );
+  const clearFailure = useCallback(
+    (id: string) => {
+      setState((previous) => {
+        const item =
+          previous.identity === identity
+            ? previous.selected.get(id)
+            : undefined;
+        if (!item?.batchFailure) return previous;
+        const next = new Map(previous.selected);
+        const updated = { ...item };
+        delete updated.batchFailure;
+        next.set(id, updated);
+        return { identity, selected: next };
+      });
+    },
+    [identity],
+  );
   const clear = useCallback(() => {
     setState({ identity, selected: new Map() });
   }, [identity]);
@@ -175,6 +195,7 @@ export function useLibrarySelection(
     selectIds,
     remove,
     recordFailure,
+    clearFailure,
     clear,
     selectCurrent,
     deselectCurrent,

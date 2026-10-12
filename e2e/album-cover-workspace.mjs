@@ -105,7 +105,7 @@ export async function verifyAlbumCoverWorkspace({
     await page.click(button('取消'));
     await page.waitForSelector('[data-testid="album-cover-summary"]');
     await page.waitForFunction(
-      () => document.activeElement?.textContent.trim() === '设置封面',
+      () => document.activeElement?.getAttribute('aria-label') === '设置封面',
     );
   }
   try {

@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { execFileSync } from 'node:child_process';
+import { activateLibraryAction } from './library-action-controls.mjs';
 
 /** User-reported boundaries, measured with real thumbnails and native input. */
 export async function verifyLibraryFeedback({ page, config, sql, report }) {
@@ -153,7 +154,9 @@ export async function verifyLibraryFeedback({ page, config, sql, report }) {
     await page.mouse.click(points[2].x, points[2].y, { button: 'right' });
     await page.waitForSelector(menu);
     await count(1);
-    await page.click('loc=role:menuitem[name="清空全部选择"]');
+    await page.keyboard.press('Escape');
+    await page.waitForSelector(menu, { state: 'hidden' });
+    await activateLibraryAction(page, '清空全部选择', 1);
     await count(0);
     await page.hover(
       `${card}[data-image-id="${points[0].id}"] [data-library-open]`,

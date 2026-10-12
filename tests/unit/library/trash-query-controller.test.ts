@@ -86,6 +86,7 @@ const item = (id: string): LibraryItem => ({
   width: 100,
   height: 100,
   visibility: 'private',
+  hasAlbums: false,
   processingStatus: 'ready',
   createdAt: '2026-01-01T00:00:00Z',
   storage: { id: 's', name: 'Local', enabled: true },

@@ -5,10 +5,14 @@ import { Card } from '@heroui/react/card';
 import { Label } from '@heroui/react/label';
 import { ListBox } from '@heroui/react/list-box';
 import { Select } from '@heroui/react/select';
+import { Button } from '@heroui/react/button';
+import { Popover } from '@heroui/react/popover';
+import { Tooltip } from '@heroui/react/tooltip';
+import { CircleHelp } from 'lucide-react';
 import { AlbumDialog } from '../../app/albums/dialog';
 import { UploadCreateTag } from './create-tag';
 import { UploadRelations } from './relations';
-import { useUploadQueue } from './provider';
+import { useUploadDraft, useUploadQueue } from './provider';
 
 export interface UploadSettings {
   maxFileBytes: number;
@@ -28,6 +32,8 @@ export function UploadSettingsFields({
   disabled,
   onStorage,
   onVisibility,
+  albumId,
+  started,
 }: {
   settings: UploadSettings;
   storageId: string | null;
@@ -35,21 +41,16 @@ export function UploadSettingsFields({
   disabled: boolean;
   onStorage: (id: string) => void;
   onVisibility: (value: 'public' | 'private') => void;
+  albumId?: string;
+  started?: boolean;
 }) {
-  const {
-    client,
-    query,
-    controller,
-    chosenAlbums,
-    setAlbums,
-    chosenTags,
-    setTags,
-    expire,
-  } = useUploadQueue();
+  const { client, query, controller, expire } = useUploadQueue();
+  const { chosenAlbums, setAlbums, chosenTags, setTags } =
+    useUploadDraft(albumId);
   const [albumOpen, setAlbumOpen] = useState(false);
   const [albumMounted, setAlbumMounted] = useState(false);
   const [tagOpen, setTagOpen] = useState(false);
-  const started = controller?.hasStarted ?? false;
+  const hasStarted = started ?? controller?.hasStarted ?? false;
   const available = settings.storages.some((s) => s.enabled);
   const selected = settings.storages.find((s) => s.id === storageId);
   return (
@@ -57,9 +58,34 @@ export function UploadSettingsFields({
       data-testid="upload-settings"
       className="min-w-0 gap-4 rounded-[20px] border border-border bg-surface px-4 py-5 shadow-none md:min-h-90 md:p-6"
     >
-      <h2 className="text-lg font-medium">
-        {started ? '下一次上传设置' : '本次上传设置'}
-      </h2>
+      <div className="flex items-center gap-2">
+        <h2 className="text-lg font-medium">
+          {hasStarted ? '下一次上传设置' : '本次上传设置'}
+        </h2>
+        <Popover>
+          <Tooltip>
+            <Button
+              aria-label="上传设置说明"
+              isIconOnly
+              variant="ghost"
+              className="size-11 min-w-11 shrink-0 rounded-lg text-muted"
+            >
+              <CircleHelp size={18} aria-hidden />
+            </Button>
+            <Tooltip.Content>上传设置说明</Tooltip.Content>
+          </Tooltip>
+          <Popover.Content className="w-[min(340px,calc(100vw-32px))] rounded-xl border border-border bg-surface p-4">
+            <Popover.Dialog
+              aria-label="上传设置说明"
+              className="text-[13px] leading-5"
+            >
+              {hasStarted
+                ? '这里只影响下一次开始上传。已提交的批次沿用冻结设置。'
+                : '开始上传时固定本次设置。自动拆出的各批共用这些设置。'}
+            </Popover.Dialog>
+          </Popover.Content>
+        </Popover>
+      </div>
       <Select
         value={storageId}
         isDisabled={disabled || !available}
@@ -156,11 +182,6 @@ export function UploadSettingsFields({
         loading={query.isFetching}
         error={query.error?.message ?? null}
       />
-      <p className="text-sm text-muted">
-        {started
-          ? '这里只影响下一次开始上传。已提交的批次沿用冻结设置。'
-          : '开始上传时固定本次设置。自动拆出的各批共用这些设置。'}
-      </p>
       {albumMounted ? (
         <AlbumDialog
           action={{ kind: 'create' }}

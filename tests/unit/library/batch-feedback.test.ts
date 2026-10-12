@@ -17,10 +17,24 @@ const actions = [
   ],
   ['add-tags', { type: 'add-tags', tagIds: ['tag-one'] }, '添加标签完成'],
   ['remove-tags', { type: 'remove-tags', tagIds: ['tag-one'] }, '移除标签完成'],
+  [
+    'add-albums',
+    { type: 'add-albums', albumIds: ['album-one'] },
+    '添加到相册完成',
+  ],
+  [
+    'remove-albums',
+    { type: 'remove-albums', albumIds: ['album-one'] },
+    '从相册移除完成',
+  ],
+  ['trash', { type: 'trash' }, '图片已移入回收站'],
+  ['restore', { type: 'restore' }, '图片已恢复'],
 ] satisfies [string, BatchCommand, string][];
 const snapshotItem = (id: string): BatchSnapshotItem => ({
   id,
   displayName: `${id}.png`,
+  visibility: 'private',
+  hasAlbums: false,
   thumbnailUrl: `/i/${id}?type=thumbnail`,
   storage: { id: 'local', name: '本地', enabled: true },
   source: '第2页',
@@ -48,10 +62,16 @@ const complete = (
 // These tests verify feedback data only. Mounted workflow, refresh timing,
 // selection, focus and Toast assertions belong in e2e/library-batch.mjs.
 describe.each(actions)('%s success feedback', (_action, command, title) => {
+  const changedLabel =
+    command.type === 'trash'
+      ? '已回收'
+      : command.type === 'restore'
+        ? '已恢复'
+        : '已修改';
   it('uses the confirmed changed and unchanged counts', () => {
     expect(batchSuccessFeedback(complete(command))).toEqual({
       title,
-      description: '1张已修改 · 1张无需修改',
+      description: `1张${changedLabel} · 1张无需修改`,
     });
   });
 
@@ -60,7 +80,7 @@ describe.each(actions)('%s success feedback', (_action, command, title) => {
     workspace.results = results(['unchanged', 'unchanged']);
     expect(batchSuccessFeedback(workspace)).toEqual({
       title,
-      description: '0张已修改 · 2张无需修改',
+      description: `0张${changedLabel} · 2张无需修改`,
     });
   });
 
@@ -70,7 +90,7 @@ describe.each(actions)('%s success feedback', (_action, command, title) => {
     workspace.results = results(['unchanged', 'changed']);
     expect(batchSuccessFeedback(workspace)).toEqual({
       title,
-      description: '1张已修改 · 0张无需修改',
+      description: `1张${changedLabel} · 0张无需修改`,
     });
   });
 
@@ -83,7 +103,7 @@ describe.each(actions)('%s success feedback', (_action, command, title) => {
     ];
     expect(batchSuccessFeedback(workspace)).toEqual({
       title,
-      description: '1张已修改 · 0张无需修改',
+      description: `1张${changedLabel} · 0张无需修改`,
     });
   });
 
@@ -127,10 +147,7 @@ it('matches confirmed results to snapshot IDs regardless of response order', () 
 
 it.each([
   ['no command', null],
-  ['restore', { type: 'restore' }],
-  ['trash', { type: 'trash' }],
-  ['add-albums', { type: 'add-albums', albumIds: ['album-one'] }],
-  ['remove-albums', { type: 'remove-albums', albumIds: ['album-one'] }],
+  ['permanent delete', { type: 'delete-permanent' }],
 ] satisfies [string, BatchCommand | null][])(
   'returns no success feedback for %s',
   (_action, command) => {

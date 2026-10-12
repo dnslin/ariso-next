@@ -1,0 +1,17 @@
+const extraIcons=EXTRA_ICONS;
+for(const [name,svg]of Object.entries(extraIcons)){let c=assets.children.find(n=>n.type==='COMPONENT'&&n.name==='ClarityV3 / Lucide / '+name);if(!c){const raw=mark(figma.createNodeFromSvg(svg));assets.appendChild(raw);c=mark(figma.createComponentFromNode(raw));c.name='ClarityV3 / Lucide / '+name;}icons[name]=c;}
+const updatedScreens=[];
+for(const screen of section.children.filter(n=>n.type==='FRAME')){
+ const dark=screen.name.endsWith('Dark');const mode=dark?'264:0':'2:0';const fg=V('foreground').valuesByMode[mode];
+ const neutral=(n)=>{for(const v of n.findAllWithCriteria({types:['VECTOR']}))v.strokes=[{...paint('foreground'),color:{r:fg.r,g:fg.g,b:fg.b}}];};
+ for(const n of screen.findAll(c=>c.type==='INSTANCE'&&c.name.startsWith('Tips /'))){for(const [key,value]of Object.entries(n.componentProperties))if(value.type==='INSTANCE_SWAP')n.setProperties({[key]:icons.CircleHelp.id});neutral(n);mutated.push(n.id);}
+ for(const n of screen.findAll(c=>c.type==='INSTANCE'&&c.name.startsWith('Button / 保存'))){for(const [key,value]of Object.entries(n.componentProperties))if(value.type==='BOOLEAN'&&key.startsWith('Show icon'))n.setProperties({[key]:false});mutated.push(n.id);}
+ for(const n of screen.findAll(c=>c.type==='INSTANCE'&&c.name==='Button / 预览')){n.opacity=.5;n.name='Button / 预览 / disabled per current contract';mutated.push(n.id);}
+ for(const n of screen.findAll(c=>c.type==='FRAME'&&c.name==='Sun:margin')){clear(n);const i=mark(icons.Monitor.createInstance());n.appendChild(i);i.resize(20,20);neutral(i);n.name='Monitor:margin / system preference';mutated.push(n.id);}
+ for(const n of screen.findAll(c=>c.type==='FRAME'&&c.name==='UserRound:margin')){clear(n);n.primaryAxisAlignItems='CENTER';n.counterAxisAlignItems='CENTER';txt(n,'O',14,'foreground');n.name='Owner initial / O';mutated.push(n.id);}
+ for(const t of screen.findAllWithCriteria({types:['TEXT']})){if(t.characters==='搜索标签…'){t.characters='搜索标签名称';mutated.push(t.id);}}
+ updatedScreens.push(screen.id);
+}
+for(const id of ['1140:46010','1140:46027','1140:46042','1140:46063','1140:46074']){const n=await figma.getNodeByIdAsync(id);if(n&&n.type==='INSTANCE'){for(const [key,value]of Object.entries(n.componentProperties))if(value.type==='INSTANCE_SWAP')n.setProperties({[key]:icons.CircleHelp.id});mutated.push(n.id);}}
+const compress=ids=>{const m={};for(const id of [...new Set(ids)]){if(id.startsWith('I'))continue;const match=id.match(/^(.*:)(\d+)$/);if(!match){(m.literal??=[]).push(id);continue;}(m[match[1]]??=[]).push(Number(match[2]));}for(const [prefix,values]of Object.entries(m)){if(prefix==='literal')continue;values.sort((a,b)=>a-b);const ranges=[];let a=values[0],b=a;for(const v of values.slice(1)){if(v===b+1)b=v;else{ranges.push(a===b?''+a:a+'-'+b);a=b=v;}}ranges.push(a===b?''+a:a+'-'+b);m[prefix]=ranges.join(',');}return m;};
+return {updatedScreens,createdNodeIdsCompressed:compress(created),mutatedNodeIdsCompressed:compress(mutated),removedNodeIdsCompressed:compress(removed),corrections:['CircleHelp tips','no new Save icons','preview remains disabled','system theme Monitor','Owner initial O','search text preserved'],iconComponents:{CircleHelp:icons.CircleHelp.id,Monitor:icons.Monitor.id}};

@@ -19,7 +19,7 @@ export function reprocessHelpers({ page, config, report }) {
       await page.hover(button(`查看图片：${id}.png`));
       await page.click(`label:has(input[aria-label="选择图片：${id}.png"])`);
     }
-    await page.click(button(`操作已选 ${ids.length} 张图片`));
+    await page.click(button('更多图片操作'));
     await page.waitForSelector('[role="menu"][aria-label="已选图片操作"]');
     await page.click('loc=role:menuitem[name="重新处理"]');
     await page.waitForSelector('[data-testid="batch-reprocess-scope-all"]');

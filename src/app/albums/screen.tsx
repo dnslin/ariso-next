@@ -12,13 +12,37 @@ import { ListBox } from '@heroui/react/list-box';
 import { Pagination } from '@heroui/react/pagination';
 import { Spinner } from '@heroui/react/spinner';
 import { Alert } from '@heroui/react/alert';
-import { ArrowLeft, Folder, Plus, Search } from 'lucide-react';
+import { Dropdown } from '@heroui/react/dropdown';
+import { Toolbar } from '@heroui/react/toolbar';
+import { Tooltip } from '@heroui/react/tooltip';
+import { ButtonGroup } from '@heroui/react/button-group';
+import {
+  ArrowLeft,
+  ChevronDown,
+  Folder,
+  Images,
+  Plus,
+  Search,
+  CloudUpload,
+  Ellipsis,
+  ImageIcon,
+  Pencil,
+  Share2,
+  Trash2,
+} from 'lucide-react';
 import { LibraryScreen } from '../library/library-screen';
 import { OwnerShell } from '../../components/shell/owner-shell';
 import { useResetUpload } from '../../components/upload/provider';
+import { albumUploadHref } from '../../components/upload/context';
+import {
+  ActionIconButton,
+  actionGroupClass,
+} from '../../components/library/action-button';
 import { AlbumDialog, type AlbumAction } from './dialog';
 import { AlbumCoverPicker } from './cover-picker';
-import { AlbumCoverImage, AlbumCoverSummary } from './cover-preview';
+import { AlbumCoverSummary } from './cover-preview';
+import { AlbumCard } from './card';
+import { AlbumImagePicker } from './image-picker';
 import {
   albumRequest,
   AlbumRequestError,
@@ -46,7 +70,17 @@ export function AlbumsScreen(props: {
   const [action, setAction] = useState<AlbumAction | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [coverOpen, setCoverOpen] = useState(false);
+  const [pickerOpen, setPickerOpen] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
+  const addTrigger = useRef<HTMLButtonElement>(null);
+  function closePicker() {
+    setPickerOpen(false);
+    requestAnimationFrame(() =>
+      addTrigger.current?.focus({ preventScroll: true }),
+    );
+  }
   const coverTrigger = useRef<HTMLButtonElement>(null);
+  const moreTrigger = useRef<HTMLButtonElement>(null);
   const coverScroll = useRef(0);
   function openCover() {
     coverScroll.current = coverTrigger.current?.closest('main')?.scrollTop ?? 0;
@@ -63,8 +97,8 @@ export function AlbumsScreen(props: {
     });
   }
   const opener = useRef<HTMLElement | null>(null);
-  function openAction(next: AlbumAction) {
-    opener.current = document.activeElement as HTMLElement | null;
+  function openAction(next: AlbumAction, element?: HTMLElement | null) {
+    opener.current = element ?? (document.activeElement as HTMLElement | null);
     if (!action) setAction(next);
     setDialogOpen(true);
   }
@@ -99,6 +133,19 @@ export function AlbumsScreen(props: {
     },
     client,
   );
+  useEffect(() => {
+    const refresh = (event: Event) => {
+      const { albumIds } = (event as CustomEvent<{ albumIds: string[] }>)
+        .detail;
+      if (!props.albumId && albumIds.length)
+        void client.invalidateQueries({ queryKey: ['albums'] });
+      else if (props.albumId && albumIds.includes(props.albumId))
+        void client.invalidateQueries({ queryKey: ['album', props.albumId] });
+    };
+    window.addEventListener('ariso:upload-albums-changed', refresh);
+    return () =>
+      window.removeEventListener('ariso:upload-albums-changed', refresh);
+  }, [client, props.albumId]);
   const error = props.albumId ? detail.error : list.error;
   const expired = error instanceof AlbumRequestError && error.status === 401;
   useEffect(() => () => client.clear(), [client]);
@@ -118,27 +165,49 @@ export function AlbumsScreen(props: {
     );
   }, [expired, resetUpload, client]);
   const data = !list.isError ? list.data : undefined;
-  const album = !detail.isError ? detail.data?.album : undefined;
+  const missing = error instanceof AlbumRequestError && error.status === 404;
+  const album = !expired && !missing ? detail.data?.album : undefined;
   const pages = data ? Math.max(1, Math.ceil(data.total / pageSize)) : 1;
-  const albumDialog = action ? (
-    <AlbumDialog
-      action={action}
-      isOpen={dialogOpen}
-      onClose={closeAction}
-      onExpire={expire}
-      onCheckList={async () => {
-        const result = await list.refetch();
-        if (result.error) throw result.error;
-      }}
-      onComplete={(saved) => {
-        closeAction();
-        if (saved) {
-          client.setQueryData(['album', saved.id], { album: saved });
-          if (!props.albumId) router.push(`/albums/${saved.id}`);
-        } else router.push('/albums');
-        void client.invalidateQueries({ queryKey: ['albums'] });
-      }}
-    />
+  const albumDialog =
+    action && !expired && !missing ? (
+      <AlbumDialog
+        action={action}
+        isOpen={dialogOpen}
+        onClose={closeAction}
+        onExpire={expire}
+        onCheckList={async () => {
+          const result = await list.refetch();
+          if (result.error) throw result.error;
+        }}
+        onComplete={(saved) => {
+          closeAction();
+          if (saved) {
+            client.setQueryData(['album', saved.id], { album: saved });
+            if (action?.kind === 'create') router.push(`/albums/${saved.id}`);
+          } else if (props.albumId) router.push('/albums');
+          void client.invalidateQueries({ queryKey: ['albums'] });
+        }}
+      />
+    ) : null;
+  const readError = error ? (
+    <Alert status="danger" role="alert" data-testid="albums-error">
+      <Alert.Content>
+        <Alert.Title>
+          {missing ? '相册已不存在' : album ? '相册刷新失败' : '相册读取失败'}
+        </Alert.Title>
+        <Alert.Description>{error.message}</Alert.Description>
+        <Button
+          variant="outline"
+          className="mt-3 min-h-11 font-normal"
+          isDisabled={props.albumId ? detail.isFetching : list.isFetching}
+          onPress={() => {
+            void (props.albumId ? detail.refetch() : list.refetch());
+          }}
+        >
+          重试加载
+        </Button>
+      </Alert.Content>
+    </Alert>
   ) : null;
   if (props.albumId && album)
     return (
@@ -156,20 +225,24 @@ export function AlbumsScreen(props: {
           <LibraryScreen
             {...props}
             timeZone={props.timeZone!}
+            refreshKey={refreshKey}
             workspace={coverOpen ? { content, footer } : undefined}
             onRefresh={() => {
               void detail.refetch();
             }}
             afterToolbar={
-              <AlbumCoverSummary
-                key={JSON.stringify(album.cover)}
-                album={album}
-                onSetCover={openCover}
-                onRefresh={async () => {
-                  const result = await detail.refetch();
-                  if (result.error) throw result.error;
-                }}
-              />
+              <>
+                {readError}
+                <AlbumCoverSummary
+                  key={JSON.stringify(album.cover)}
+                  album={album}
+                  onSetCover={openCover}
+                  onRefresh={async () => {
+                    const result = await detail.refetch();
+                    if (result.error) throw result.error;
+                  }}
+                />
+              </>
             }
             onImageRemoved={() => {
               void client.invalidateQueries({
@@ -178,58 +251,155 @@ export function AlbumsScreen(props: {
             }}
             header={
               <>
-                <Link
-                  href="/albums"
-                  className="min-h-11 w-fit gap-2 px-3 text-sm font-normal"
-                >
-                  <ArrowLeft size={16} />
-                  返回相册列表
-                </Link>
-
-                <h1
-                  id="library-title"
-                  tabIndex={-1}
-                  className="text-[26px] font-medium leading-normal break-words md:text-[30px]"
-                >
-                  {album.name}
-                </h1>
+                <div className="flex min-w-0 items-center justify-between gap-3">
+                  <h1
+                    id="library-title"
+                    tabIndex={-1}
+                    className="min-w-0 max-w-full text-[26px] font-medium leading-normal [overflow-wrap:anywhere] md:text-[30px]"
+                  >
+                    {album.name}
+                  </h1>
+                  <Link
+                    href="/albums"
+                    aria-label="返回相册列表"
+                    className="min-h-11 shrink-0 gap-2 rounded-lg px-3 text-sm font-normal text-foreground no-underline"
+                  >
+                    <ArrowLeft size={18} aria-hidden />
+                    返回
+                  </Link>
+                </div>
                 <p className="text-sm text-muted">
-                  {album.imageCount} 张图片 · {album.publicImageCount} 张公开 ·
-                  相册 #{album.id.slice(0, 8)}
+                  {album.imageCount} 张图片 · {album.publicImageCount} 张公开
                 </p>
                 {album.description ? (
                   <p className="text-sm whitespace-pre-wrap [overflow-wrap:anywhere]">
                     {album.description}
                   </p>
                 ) : null}
-                <div className="grid w-full grid-cols-3 gap-2.5 md:max-w-130">
-                  <Button
-                    variant="outline"
-                    className="h-12 w-full min-w-0 rounded-lg px-2 font-normal"
+              </>
+            }
+            toolbarActions={
+              <Toolbar
+                aria-label="相册操作"
+                className="flex min-w-0 flex-wrap items-center justify-end gap-3"
+              >
+                <ButtonGroup className={actionGroupClass}>
+                  <ActionIconButton
+                    label="编辑相册"
                     onPress={() => openAction({ kind: 'edit', album })}
                   >
-                    编辑相册
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="h-12 w-full min-w-0 rounded-lg px-2 font-normal"
+                    <Pencil size={18} aria-hidden />
+                  </ActionIconButton>
+                  <ActionIconButton
+                    label="设置封面"
                     ref={coverTrigger}
                     onPress={openCover}
                   >
-                    设置封面
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="h-12 w-full min-w-0 rounded-lg px-2 font-normal"
-                    onPress={() => openAction({ kind: 'menu', album })}
+                    <ImageIcon size={18} aria-hidden />
+                  </ActionIconButton>
+                  <ActionIconButton
+                    label="分享设置"
+                    onPress={() =>
+                      router.push(
+                        `/shares/${encodeURIComponent(album.id)}?from=album`,
+                      )
+                    }
                   >
-                    更多
+                    <Share2 size={18} aria-hidden />
+                  </ActionIconButton>
+                  <Dropdown>
+                    <Tooltip>
+                      <Button
+                        ref={moreTrigger}
+                        aria-label="更多相册操作"
+                        isIconOnly
+                        variant="tertiary"
+                        className="size-11 min-w-11 rounded-lg"
+                      >
+                        <Ellipsis size={18} aria-hidden />
+                      </Button>
+                      <Tooltip.Content>更多相册操作</Tooltip.Content>
+                    </Tooltip>
+                    <Dropdown.Popover className="rounded-xl border border-border bg-surface p-1">
+                      <Dropdown.Menu
+                        aria-label="更多相册操作"
+                        onAction={() =>
+                          openAction(
+                            { kind: 'delete', album },
+                            moreTrigger.current,
+                          )
+                        }
+                      >
+                        <Dropdown.Item
+                          id="delete"
+                          textValue="删除相册"
+                          className="min-h-11 gap-2 rounded-lg text-danger"
+                        >
+                          <Trash2 size={17} aria-hidden />
+                          删除相册
+                        </Dropdown.Item>
+                      </Dropdown.Menu>
+                    </Dropdown.Popover>
+                  </Dropdown>
+                </ButtonGroup>
+                <Dropdown>
+                  <Button
+                    ref={addTrigger}
+                    className="h-12 shrink-0 gap-2 rounded-lg font-normal"
+                  >
+                    <Plus size={17} aria-hidden />
+                    添加图片
+                    <ChevronDown size={16} aria-hidden />
                   </Button>
-                </div>
-              </>
+                  <Dropdown.Popover className="min-w-44 rounded-lg border border-border bg-surface p-1 shadow-lg">
+                    <Dropdown.Menu
+                      aria-label="添加相册图片"
+                      onAction={(key) => {
+                        if (key === 'upload')
+                          router.push(
+                            albumUploadHref(
+                              album.id,
+                              window.location.pathname + window.location.search,
+                            ),
+                          );
+                        else setPickerOpen(true);
+                      }}
+                    >
+                      <Dropdown.Item
+                        id="upload"
+                        textValue="上传新图片"
+                        className="min-h-11 gap-2 rounded-md"
+                      >
+                        <CloudUpload size={17} aria-hidden />
+                        上传新图片
+                      </Dropdown.Item>
+                      <Dropdown.Item
+                        id="library"
+                        textValue="从图库选择"
+                        className="min-h-11 gap-2 rounded-md"
+                      >
+                        <Images size={17} aria-hidden />
+                        从图库选择
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown.Popover>
+                </Dropdown>
+              </Toolbar>
             }
           >
             {albumDialog}
+            <AlbumImagePicker
+              album={album}
+              isOpen={pickerOpen}
+              onClose={closePicker}
+              onExpire={expire}
+              onChanged={async () => {
+                setRefreshKey((value) => value + 1);
+                void client.invalidateQueries({ queryKey: ['albums'] });
+                const result = await detail.refetch();
+                if (result.error) throw result.error;
+              }}
+            />
           </LibraryScreen>
         )}
       />
@@ -312,17 +482,24 @@ export function AlbumsScreen(props: {
     >
       <section className="grid min-w-0 grid-cols-1 gap-4">
         {props.albumId ? (
-          <Link href="/albums" className="min-h-11 w-fit">
-            返回相册列表
-          </Link>
+          <div className="flex items-center justify-between gap-3">
+            <h1 className="text-[26px] font-medium leading-normal md:text-[30px]">
+              相册
+            </h1>
+            <Link
+              href="/albums"
+              aria-label="返回相册列表"
+              className="min-h-11 shrink-0 gap-2 rounded-lg px-3 text-sm font-normal text-foreground no-underline"
+            >
+              <ArrowLeft size={18} aria-hidden />
+              返回
+            </Link>
+          </div>
         ) : (
           <>
             <h1 className="text-[26px] font-medium leading-normal md:text-[30px]">
               相册
             </h1>
-            <p className="text-sm text-muted">
-              用相册整理图片，一张图片可以出现在多个相册。
-            </p>
             <div className="flex w-full gap-2 md:max-w-120 md:gap-4">
               <TextField
                 aria-label="搜索相册"
@@ -357,28 +534,22 @@ export function AlbumsScreen(props: {
                 className="grid grid-cols-1 gap-4 md:grid-cols-[repeat(auto-fill,minmax(300px,365px))]"
               >
                 {data.items.map((item) => (
-                  <Link
+                  <AlbumCard
                     key={item.id}
-                    href={`/albums/${item.id}`}
-                    data-testid={`album-${item.id}`}
-                    className="flex w-full min-w-0 flex-col items-stretch gap-3 rounded-[20px] border border-border bg-surface p-4 text-foreground no-underline"
-                  >
-                    <div
-                      data-testid={`album-cover-${item.id}`}
-                      className="flex aspect-[333/184] w-full items-center justify-center overflow-hidden rounded-xl bg-default"
-                    >
-                      <AlbumCoverImage
-                        key={JSON.stringify(item.cover)}
-                        cover={item.cover}
-                      />
-                    </div>
-                    <span className="text-base font-medium [overflow-wrap:anywhere]">
-                      {item.name}
-                    </span>
-                    <span className="text-xs font-normal text-muted">
-                      {item.imageCount} 张图片 · #{item.id.slice(0, 8)}
-                    </span>
-                  </Link>
+                    album={item}
+                    onOpen={() => router.push(`/albums/${item.id}`)}
+                    onEdit={(element) =>
+                      openAction({ kind: 'edit', album: item }, element)
+                    }
+                    onShare={() =>
+                      router.push(
+                        `/shares/${encodeURIComponent(item.id)}?from=album`,
+                      )
+                    }
+                    onDelete={(element) =>
+                      openAction({ kind: 'delete', album: item }, element)
+                    }
+                  />
                 ))}
               </div>
             ) : null}
@@ -389,15 +560,8 @@ export function AlbumsScreen(props: {
               >
                 <Folder size={36} aria-hidden />
                 <h2 className="text-xl">
-                  {q
-                    ? '没有找到相册'
-                    : data.total
-                      ? '本页已无相册'
-                      : '还没有相册'}
+                  {q ? '未找到相册' : data.total ? '本页已无相册' : '暂无相册'}
                 </h2>
-                <p className="text-sm text-muted">
-                  {q ? '请尝试其他名称。' : '创建一本相册，开始整理图片。'}
-                </p>
                 {page > 1 ? (
                   <Button
                     className="h-12 rounded-lg font-normal"
@@ -405,12 +569,13 @@ export function AlbumsScreen(props: {
                   >
                     返回第一页
                   </Button>
-                ) : !q ? (
+                ) : q ? (
                   <Button
                     className="h-12 rounded-lg font-normal"
-                    onPress={() => openAction({ kind: 'create' })}
+                    variant="outline"
+                    onPress={() => setQ('')}
                   >
-                    创建第一本相册
+                    清除搜索
                   </Button>
                 ) : null}
               </div>
@@ -427,27 +592,7 @@ export function AlbumsScreen(props: {
             正在读取相册…
           </p>
         ) : null}
-        {error ? (
-          <Alert status="danger" data-testid="albums-error">
-            <Alert.Content>
-              <Alert.Title>
-                {error instanceof AlbumRequestError && error.status === 404
-                  ? '相册已不存在'
-                  : '相册读取失败'}
-              </Alert.Title>
-              <Alert.Description>{error.message}</Alert.Description>
-              <Button
-                variant="outline"
-                className="mt-3 min-h-11 font-normal"
-                onPress={() => {
-                  void (props.albumId ? detail.refetch() : list.refetch());
-                }}
-              >
-                重试加载
-              </Button>
-            </Alert.Content>
-          </Alert>
-        ) : null}
+        {readError}
       </section>
       {albumDialog}
     </OwnerShell>

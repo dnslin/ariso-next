@@ -54,6 +54,7 @@ const {
   verifyTrashQueryRefresh,
   verifySingleCleanupCycles,
   verifyBatchCleanupCycles,
+  verifyTrashShortcutFocus,
   restoreReviewTraffic,
 } = await import(
   new URL('./trash-review-fixes.mjs', config.libraryDetailScript).href
@@ -78,6 +79,7 @@ const scenariosByPhase = {
     verifyEmptyInvalidQuery,
     verifyFilterConsumers,
     verifyApprovedProgress,
+    verifyTrashShortcutFocus,
     ...reviewFixes,
   ],
   representative: [verifyRepresentativeQuery],
@@ -92,6 +94,7 @@ const scenariosByPhase = {
   'approved-results': approvedResults,
   'approved-query': [verifyApprovedQueries],
   'review-fixes': reviewFixes,
+  'shortcut-focus': [verifyTrashShortcutFocus],
   'approved-progress': [verifyApprovedProgress],
 };
 report.phase = config.trashPhase ?? 'full';

@@ -135,16 +135,18 @@ export async function storageLayouts(
           token: getComputedStyle(document.documentElement)
             .getPropertyValue('--border')
             .trim(),
-          cells: [
-            ...document.querySelectorAll('[data-testid="storage-list"] td'),
-          ].map((cell) => getComputedStyle(cell).borderBottomColor),
+          rows: [
+            ...document.querySelectorAll(
+              '[data-testid="storage-list"] [data-storage-id]',
+            ),
+          ].map((row) => getComputedStyle(row).borderBottomColor),
         }));
-        assert.ok(border.cells.length > 0, 'Desktop list has real table cells');
+        assert.ok(border.rows.length > 0, 'Desktop list has real storage rows');
         const expected =
           theme === 'light' ? 'rgb(186, 232, 232)' : 'rgb(96, 125, 133)';
         assert.ok(
-          border.cells.every((color) => color === expected),
-          `${theme}: table separators use the design border token, got ${border.cells}`,
+          border.rows.every((color) => color === expected),
+          `${theme}: list separators use the design border token, got ${border.rows}`,
         );
         (report.listBorders ??= []).push({ theme, width, ...border });
       }

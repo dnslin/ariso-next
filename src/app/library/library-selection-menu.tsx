@@ -2,19 +2,45 @@
 
 import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import { Button } from '@heroui/react/button';
+import { ButtonGroup } from '@heroui/react/button-group';
+import { Tooltip } from '@heroui/react/tooltip';
 import { Dropdown } from '@heroui/react/dropdown';
 import { Popover } from '@heroui/react/popover';
 import { Pagination } from '@heroui/react/pagination';
-import { ChevronDown, ImageOff, X } from 'lucide-react';
 import {
-  batchLabels,
-  type BatchAction,
-} from '../../components/library/use-library-batch';
+  ChevronDown,
+  CheckCheck,
+  Copy,
+  FolderInput,
+  FolderMinus,
+  Globe,
+  Image as ImageIcon,
+  ImageOff,
+  LockKeyhole,
+  ListChecks,
+  ListX,
+  MoreHorizontal,
+  RefreshCw,
+  Tag,
+  Tags,
+  Trash2,
+  Undo2,
+  X,
+} from 'lucide-react';
+import { batchLabels } from '../../components/library/use-library-batch';
+import {
+  selectionBatchActions,
+  type SelectionBatchAction,
+} from './library-actions';
 import type { LibraryLoadingMode } from './query-state';
 import type {
   LibrarySelection,
   SelectedLibraryItem,
 } from './use-library-selection';
+import {
+  ActionIconButton,
+  actionGroupClass,
+} from '../../components/library/action-button';
 
 export interface LibraryContextMenu {
   x: number;
@@ -22,7 +48,18 @@ export interface LibraryContextMenu {
   target: HTMLElement;
 }
 
-type SelectionBatchAction = BatchAction | 'reprocess' | 'copy';
+const actionIcons = {
+  copy: Copy,
+  'add-albums': FolderInput,
+  'remove-albums': FolderMinus,
+  public: Globe,
+  private: LockKeyhole,
+  'add-tags': Tag,
+  'remove-tags': Tags,
+  reprocess: RefreshCw,
+  trash: Trash2,
+  restore: Undo2,
+};
 const buttonClass = 'h-11 rounded-lg px-2 font-normal xl:h-9 xl:px-3';
 
 function SelectedThumbnail({ item }: { item: SelectedLibraryItem }) {
@@ -49,6 +86,7 @@ export function LibrarySelectionMenu({
   selection,
   loadingMode,
   disabled,
+  pending = false,
   onOpen,
   contextMenu,
   onContextMenuClose,
@@ -59,6 +97,7 @@ export function LibrarySelectionMenu({
   selection: LibrarySelection;
   loadingMode: LibraryLoadingMode;
   disabled: boolean;
+  pending?: boolean;
   onOpen: (id: string, element: HTMLElement) => void;
   contextMenu?: LibraryContextMenu | null;
   onContextMenuClose?: () => void;
@@ -69,8 +108,10 @@ export function LibrarySelectionMenu({
   const [open, setOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const contextAnchor = useRef<HTMLSpanElement>(null);
+  const activatedContext = useRef<LibraryContextMenu | null>(null);
   const [page, setPage] = useState(1);
   const trigger = useRef<HTMLButtonElement>(null);
+  const menuTrigger = useRef<HTMLButtonElement>(null);
   const [boundary, setBoundary] = useState<HTMLElement | null>(null);
   const attachTrigger = useCallback((element: HTMLButtonElement | null) => {
     trigger.current = element;
@@ -79,20 +120,24 @@ export function LibrarySelectionMenu({
   const heading = useRef<HTMLHeadingElement>(null);
   const panelId = useId();
   const total = selection.selected.size;
+  const blocked = disabled || pending;
+  const allDeleting =
+    scope === 'trash' &&
+    [...selection.selected.values()].every(
+      (item) => item.deletionStatus === 'deleting',
+    );
   const actions: SelectionBatchAction[] =
     scope === 'trash'
-      ? ['restore']
-      : [
-          'add-albums',
-          'remove-albums',
-          'add-tags',
-          'remove-tags',
-          'public',
-          'private',
-          'reprocess',
-          'copy',
-          'trash',
-        ];
+      ? [...selection.selected.values()].some((item) => !item.deletionStatus)
+        ? ['restore']
+        : []
+      : selectionBatchActions([...selection.selected.values()], !!contextMenu);
+  const compact = !!contextMenu;
+  const shortcutActions: SelectionBatchAction[] =
+    scope === 'trash' ? ['restore'] : ['copy', 'add-albums', 'add-tags'];
+  const menuActions = compact
+    ? actions
+    : actions.filter((action) => !shortcutActions.includes(action));
   const pages = Math.max(1, Math.ceil(total / 20));
   const currentPage = Math.min(page, pages);
   if (page !== currentPage) setPage(currentPage);
@@ -109,9 +154,9 @@ export function LibrarySelectionMenu({
   if (!total) return null;
 
   function focusSearch() {
-    const search = trigger.current
-      ?.closest('[data-testid="library-toolbar"]')
-      ?.querySelector<HTMLInputElement>('input');
+    const search = boundary?.querySelector<HTMLInputElement>(
+      'input[type="search"]',
+    );
     requestAnimationFrame(() => search?.focus({ preventScroll: true }));
   }
   function openPanel() {
@@ -146,7 +191,7 @@ export function LibrarySelectionMenu({
 
   return (
     <div
-      className="relative inline-flex shrink-0"
+      className="relative inline-flex shrink-0 flex-wrap items-center gap-2"
       data-testid="library-selection"
     >
       <p role="status" className="sr-only">
@@ -161,149 +206,187 @@ export function LibrarySelectionMenu({
           style={{ left: contextMenu.x, top: contextMenu.y }}
         />
       ) : null}
-      <Dropdown
-        isOpen={!!contextMenu || menuOpen}
-        onOpenChange={(next) => {
-          setMenuOpen(next);
-          if (!next) onContextMenuClose?.();
-        }}
+      <Button
+        ref={attachTrigger}
+        variant="outline"
+        className="h-11 gap-2 rounded-lg px-3 font-normal"
+        isDisabled={disabled}
+        isPending={pending}
+        aria-label={`管理选择，已选 ${total} 张`}
+        aria-expanded={open}
+        aria-controls={panelId}
+        onPress={openPanel}
       >
-        <Button
-          ref={attachTrigger}
-          variant="outline"
-          className={
-            scope === 'trash'
-              ? 'h-12 w-26 shrink-0 rounded-lg px-2 text-sm font-normal md:w-40'
-              : buttonClass
-          }
-          isDisabled={disabled}
-          aria-label={`操作已选 ${total} 张图片`}
-        >
-          已选 {total} 张
-          <ChevronDown size={16} aria-hidden />
-        </Button>
-        <Dropdown.Popover
-          triggerRef={contextMenu ? contextAnchor : trigger}
-          boundaryElement={boundary ?? undefined}
-          placement="bottom start"
-          className="rounded-xl border border-border bg-background dark:bg-surface"
-        >
-          <p className="px-3 pt-2 pb-1 text-xs text-muted">
-            {currentLabel} {selection.currentCount} 张
-            {loadingMode === 'pages'
-              ? ` · 其他页 ${selection.otherCount} 张`
-              : ''}
-          </p>
-          <Dropdown.Menu
-            aria-label="已选图片操作"
-            disabledKeys={
-              disabled
-                ? [
-                    'view',
-                    'open',
-                    'select-current',
-                    'deselect-current',
-                    'clear',
-                  ]
-                : []
-            }
-            onAction={(key) => {
-              if (key === 'delete-permanent') {
-                const target = contextMenu?.target ?? trigger.current;
-                if (target) onPermanentDelete?.(target);
-              } else if (actions.includes(key as SelectionBatchAction)) {
-                const target = contextMenu?.target ?? trigger.current;
-                if (target) onBatch?.(key as SelectionBatchAction, target);
-              } else if (key === 'view') openPanel();
-              else if (key === 'open') {
-                const id = selection.selected.keys().next().value;
-                const target = contextMenu?.target ?? trigger.current;
-                if (id && target) onOpen(id, target);
-              } else if (key === 'select-current') selection.selectCurrent();
-              else if (key === 'deselect-current') {
-                if (!selection.otherCount) focusSearch();
-                selection.deselectCurrent();
-              } else if (key === 'clear') {
-                focusSearch();
-                selection.clear();
-              }
+        <ListChecks size={17} aria-hidden />
+        <span className="tabular-nums">{total}</span>
+        <ChevronDown size={14} aria-hidden />
+      </Button>
+      <ButtonGroup
+        aria-label={scope === 'trash' ? '回收站快捷操作' : '图片快捷操作'}
+        variant="tertiary"
+        className={actionGroupClass}
+      >
+        {onBatch
+          ? shortcutActions.map((action, index) => {
+              const Icon = actionIcons[action];
+              const label =
+                action === 'copy'
+                  ? '复制链接'
+                  : batchLabels[action as keyof typeof batchLabels];
+              return (
+                <ActionIconButton
+                  key={action}
+                  label={label}
+                  isDisabled={disabled || !actions.includes(action)}
+                  isPending={pending}
+                  onPress={(event) => {
+                    if (event.target instanceof HTMLElement)
+                      onBatch(action, event.target);
+                  }}
+                >
+                  {index ? <ButtonGroup.Separator /> : null}
+                  <Icon size={18} aria-hidden />
+                </ActionIconButton>
+              );
+            })
+          : null}
+        {scope === 'trash' && onPermanentDelete ? (
+          <ActionIconButton
+            label="永久删除所选"
+            className="text-danger"
+            isDisabled={disabled || allDeleting}
+            isPending={pending}
+            onPress={(event) => {
+              if (event.target instanceof HTMLElement)
+                onPermanentDelete(event.target);
             }}
           >
-            {onBatch
-              ? actions.map((action) => (
-                  <Dropdown.Item
-                    key={action}
-                    id={action}
-                    textValue={
-                      action === 'reprocess'
-                        ? '重新处理'
-                        : action === 'copy'
-                          ? '复制链接'
-                          : batchLabels[action]
-                    }
-                    isDisabled={disabled}
-                    className="min-h-11 xl:min-h-9"
-                  >
-                    {action === 'reprocess'
-                      ? '重新处理'
-                      : action === 'copy'
-                        ? '复制链接'
-                        : batchLabels[action]}
-                  </Dropdown.Item>
-                ))
-              : null}
-            {scope === 'trash' && onPermanentDelete ? (
-              <Dropdown.Item
-                id="delete-permanent"
-                textValue="永久删除所选"
-                isDisabled={disabled}
-                className="min-h-11"
-              >
-                永久删除所选
-              </Dropdown.Item>
+            <ButtonGroup.Separator />
+            <Trash2 size={18} aria-hidden />
+          </ActionIconButton>
+        ) : null}
+        <Dropdown
+          isOpen={!!contextMenu || menuOpen}
+          onOpenChange={(next) => {
+            setMenuOpen(next);
+            if (!next) {
+              const source = contextMenu?.target;
+              onContextMenuClose?.();
+              if (source && activatedContext.current !== contextMenu)
+                requestAnimationFrame(() =>
+                  source.focus({ preventScroll: true }),
+                );
+            }
+          }}
+        >
+          <Tooltip closeDelay={0}>
+            <Button
+              ref={menuTrigger}
+              variant="tertiary"
+              isIconOnly
+              className={`size-11 min-w-11 rounded-e-lg rounded-s-none p-0 ${scope === 'trash' && total > 1 ? 'hidden' : ''}`}
+              isDisabled={disabled}
+              isPending={pending}
+              aria-label="更多图片操作"
+            >
+              <ButtonGroup.Separator />
+              <MoreHorizontal size={18} aria-hidden />
+            </Button>
+            <Tooltip.Content>更多图片操作</Tooltip.Content>
+          </Tooltip>
+          <Dropdown.Popover
+            triggerRef={contextMenu ? contextAnchor : menuTrigger}
+            boundaryElement={boundary ?? undefined}
+            placement="bottom start"
+            className="flex flex-col overflow-hidden rounded-lg border border-border bg-background dark:bg-surface"
+          >
+            {!compact ? (
+              <p className="shrink-0 px-3 pt-2 pb-1 text-xs text-muted">
+                {currentLabel} {selection.currentCount} 张
+                {loadingMode === 'pages'
+                  ? ` · 其他页 ${selection.otherCount} 张`
+                  : ''}
+              </p>
             ) : null}
-            {total === 1 ? (
-              <Dropdown.Item
-                id="open"
-                textValue="查看图片"
-                className="min-h-11 xl:min-h-9"
-              >
-                查看图片
-              </Dropdown.Item>
-            ) : null}
-            <Dropdown.Item
-              id="view"
-              textValue="查看已选清单"
-              className="min-h-11 xl:min-h-9"
+            <Dropdown.Menu
+              aria-label="已选图片操作"
+              className="min-h-0 flex-1 overflow-y-auto overscroll-contain"
+              disabledKeys={blocked ? ['open'] : []}
+              onAction={(key) => {
+                activatedContext.current = contextMenu ?? null;
+                if (key === 'delete-permanent') {
+                  const target = contextMenu?.target ?? menuTrigger.current;
+                  if (target) onPermanentDelete?.(target);
+                } else if (actions.includes(key as SelectionBatchAction)) {
+                  const target = contextMenu?.target ?? menuTrigger.current;
+                  if (target) onBatch?.(key as SelectionBatchAction, target);
+                } else if (key === 'open') {
+                  const id = selection.selected.keys().next().value;
+                  const target = contextMenu?.target ?? trigger.current;
+                  if (id && target) onOpen(id, target);
+                }
+              }}
             >
-              查看已选清单
-            </Dropdown.Item>
-            <Dropdown.Item
-              id="select-current"
-              textValue={`全选${currentLabel}`}
-              isDisabled={selection.currentCount === selection.currentIds.size}
-              className="min-h-11 xl:min-h-9"
-            >
-              全选{currentLabel}
-            </Dropdown.Item>
-            <Dropdown.Item
-              id="deselect-current"
-              textValue={`取消${currentLabel}选择`}
-              isDisabled={selection.currentCount === 0}
-              className="min-h-11 xl:min-h-9"
-            >
-              取消{currentLabel}选择
-            </Dropdown.Item>
-            <Dropdown.Item
-              id="clear"
-              textValue="清空全部选择"
-              className="min-h-11 xl:min-h-9"
-            >
-              清空全部选择
-            </Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown.Popover>
-      </Dropdown>
+              {compact && total === 1 ? (
+                <Dropdown.Item
+                  id="open"
+                  textValue="查看图片"
+                  className="min-h-11 gap-3 rounded-lg xl:min-h-9"
+                >
+                  <ImageIcon size={16} aria-hidden />
+                  查看图片
+                </Dropdown.Item>
+              ) : null}
+              {onBatch
+                ? menuActions.map((action) => {
+                    const Icon = actionIcons[action];
+                    return (
+                      <Dropdown.Item
+                        key={action}
+                        id={action}
+                        textValue={
+                          action === 'reprocess'
+                            ? '重新处理'
+                            : action === 'copy'
+                              ? '复制链接'
+                              : batchLabels[action]
+                        }
+                        isDisabled={blocked}
+                        className={`min-h-11 gap-3 rounded-lg xl:min-h-9 ${action === 'trash' ? 'text-danger' : ''}`}
+                      >
+                        <Icon size={16} aria-hidden />
+                        {action === 'reprocess'
+                          ? '重新处理'
+                          : action === 'copy'
+                            ? '复制链接'
+                            : batchLabels[action]}
+                      </Dropdown.Item>
+                    );
+                  })
+                : null}
+              {compact && scope === 'trash' && onPermanentDelete ? (
+                <Dropdown.Item
+                  id="delete-permanent"
+                  textValue="永久删除所选"
+                  isDisabled={blocked || allDeleting}
+                  className="min-h-11"
+                >
+                  永久删除所选
+                </Dropdown.Item>
+              ) : null}
+              {!compact && total === 1 ? (
+                <Dropdown.Item
+                  id="open"
+                  textValue="查看图片"
+                  className="min-h-11 xl:min-h-9"
+                >
+                  查看图片
+                </Dropdown.Item>
+              ) : null}
+            </Dropdown.Menu>
+          </Dropdown.Popover>
+        </Dropdown>
+      </ButtonGroup>
       <Popover.Content
         isOpen={open}
         onOpenChange={setOpen}
@@ -311,7 +394,7 @@ export function LibrarySelectionMenu({
         boundaryElement={boundary ?? undefined}
         isNonModal
         placement="bottom end"
-        className="flex w-[min(380px,calc(100vw-32px))] max-w-none flex-col overflow-hidden rounded-xl border border-border bg-background p-3 shadow-lg dark:bg-surface"
+        className="flex w-[min(380px,calc(100vw-32px))] max-w-none flex-col overflow-hidden rounded-lg border border-border bg-background p-3 shadow-lg dark:bg-surface"
       >
         <section
           id={panelId}
@@ -326,7 +409,7 @@ export function LibrarySelectionMenu({
             }
           }}
         >
-          <div className="flex shrink-0 items-center justify-between gap-3">
+          <div className="flex shrink-0 flex-wrap items-center justify-between gap-2">
             <h2
               ref={heading}
               id={`${panelId}-title`}
@@ -335,16 +418,60 @@ export function LibrarySelectionMenu({
             >
               已选清单 · {total} 张
             </h2>
-            <Button
-              aria-label="关闭已选清单"
-              variant="ghost"
-              isIconOnly
-              className="size-11 min-w-0 rounded-lg xl:size-9"
-              onPress={close}
+            <ButtonGroup
+              aria-label="选择范围"
+              variant="tertiary"
+              className={actionGroupClass}
             >
-              <X size={16} aria-hidden />
-            </Button>
+              <ActionIconButton
+                label={`全选${currentLabel}`}
+                isDisabled={
+                  blocked ||
+                  selection.currentCount === selection.currentIds.size
+                }
+                onPress={() => {
+                  heading.current?.focus({ preventScroll: true });
+                  selection.selectCurrent();
+                }}
+              >
+                <CheckCheck size={17} aria-hidden />
+              </ActionIconButton>
+              <ActionIconButton
+                label={`取消${currentLabel}选择`}
+                isDisabled={blocked || !selection.currentCount}
+                onPress={() => {
+                  if (selection.otherCount)
+                    heading.current?.focus({ preventScroll: true });
+                  else {
+                    setOpen(false);
+                    focusSearch();
+                  }
+                  selection.deselectCurrent();
+                }}
+              >
+                <ButtonGroup.Separator />
+                <ListX size={17} aria-hidden />
+              </ActionIconButton>
+              <ActionIconButton
+                label="清空全部选择"
+                isDisabled={blocked}
+                onPress={() => {
+                  setOpen(false);
+                  focusSearch();
+                  selection.clear();
+                }}
+              >
+                <ButtonGroup.Separator />
+                <X size={17} aria-hidden />
+              </ActionIconButton>
+            </ButtonGroup>
           </div>
+          <p className="shrink-0 text-xs text-muted">
+            {currentLabel} {selection.currentCount} 张
+            {loadingMode === 'pages'
+              ? ` · 其他页 ${selection.otherCount} 张`
+              : ''}
+          </p>
           <ul
             className="min-h-0 max-h-72 flex-1 divide-y divide-border overflow-y-auto"
             aria-label="已选图片"
@@ -359,7 +486,7 @@ export function LibrarySelectionMenu({
                 <Button
                   variant="ghost"
                   className="h-auto min-h-11 min-w-0 flex-1 items-start rounded-lg px-1 py-1 text-left font-normal"
-                  isDisabled={disabled}
+                  isDisabled={blocked}
                   aria-label={`查看图片：${item.displayName}`}
                   onPress={(event) => {
                     if (event.target instanceof HTMLElement)
@@ -387,14 +514,13 @@ export function LibrarySelectionMenu({
                   isIconOnly
                   className="size-11 min-w-0 shrink-0 rounded-lg xl:size-9"
                   aria-label={`移除选择：${item.displayName}`}
-                  isDisabled={disabled}
+                  isDisabled={blocked}
                   onPress={() => {
-                    if (total === 1) focusSearch();
+                    if (total === 1) {
+                      setOpen(false);
+                      focusSearch();
+                    } else heading.current?.focus({ preventScroll: true });
                     selection.remove(item.id);
-                    if (total > 1)
-                      requestAnimationFrame(() =>
-                        heading.current?.focus({ preventScroll: true }),
-                      );
                   }}
                 >
                   <X size={16} aria-hidden />
@@ -408,7 +534,7 @@ export function LibrarySelectionMenu({
                 <Pagination.Item>
                   <Pagination.Previous
                     className={buttonClass}
-                    isDisabled={disabled || currentPage === 1}
+                    isDisabled={blocked || currentPage === 1}
                     onPress={() => setPage(currentPage - 1)}
                   >
                     上一页
@@ -422,7 +548,7 @@ export function LibrarySelectionMenu({
                 <Pagination.Item>
                   <Pagination.Next
                     className={buttonClass}
-                    isDisabled={disabled || currentPage === pages}
+                    isDisabled={blocked || currentPage === pages}
                     onPress={() => setPage(currentPage + 1)}
                   >
                     下一页

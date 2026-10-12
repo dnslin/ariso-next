@@ -107,12 +107,12 @@ export async function verifyBatchRefreshFeedback(context) {
         );
         assert.match(description, /2张已修改 · 0张无需修改/);
         assert.match(description, /列表刷新失败/);
-        await selected(0);
+        await selected(2);
         assert.equal(await page.url(), sourceUrl);
-        await page.waitForFunction(() =>
-          document.activeElement?.matches(
-            '[data-testid="library-toolbar"] input',
-          ),
+        await page.waitForFunction(
+          () =>
+            document.activeElement?.getAttribute('aria-label') ===
+            '更多图片操作',
         );
       }
       const read = await page.evaluate(() => window.__batchRefreshRead);

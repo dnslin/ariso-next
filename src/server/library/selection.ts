@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { buildImagePath, buildTrashPreviewPath } from '../delivery/links.ts';
 import { mediaImages, mediaObjects, mediaVersions } from '../media/schema.ts';
 import { storageConfigs } from '../storage/schema.ts';
+import { albumImages } from '../collections/schema.ts';
 import {
   assertLibraryReferences,
   libraryPredicate,
@@ -36,6 +37,13 @@ export function readLibrarySelection(
         displayName: mediaImages.displayName,
         byteSize: mediaImages.byteSize,
         processingStatus: mediaImages.processingStatus,
+        visibility: mediaImages.visibility,
+        hasAlbums: exists(
+          tx
+            .select({ imageId: albumImages.imageId })
+            .from(albumImages)
+            .where(eq(albumImages.imageId, mediaImages.id)),
+        ).mapWith(Boolean),
         deletionStatus: mediaImages.deletionStatus,
         storage: {
           id: storageConfigs.id,
@@ -73,6 +81,9 @@ export function readLibrarySelection(
           displayName: row.displayName,
           byteSize: row.byteSize,
           processingStatus: row.processingStatus,
+          deletionStatus: row.deletionStatus,
+          visibility: row.visibility,
+          hasAlbums: row.hasAlbums,
           storage: row.storage,
           thumbnailUrl:
             row.storage.enabled &&

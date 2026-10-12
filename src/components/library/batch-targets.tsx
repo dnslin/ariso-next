@@ -5,17 +5,20 @@ import { QueryClient, useQuery } from '@tanstack/react-query';
 import { Button } from '@heroui/react/button';
 import { Checkbox } from '@heroui/react/checkbox';
 import { Input } from '@heroui/react/input';
-import { Popover } from '@heroui/react/popover';
-import { Check, ImageOff, Info, Plus, Search } from 'lucide-react';
+import { Check, ImageOff, Search } from 'lucide-react';
 import {
   albumRequest,
   AlbumRequestError,
-  albumUrl,
   type AlbumPage,
-  type Album,
 } from '../../app/albums/api';
-import { tagRequest, TagRequestError, type TagPage } from '../../app/tags/api';
-import { UploadCreateTag } from '../upload/create-tag';
+import {
+  tagRequest,
+  TagRequestError,
+  type Tag,
+  type TagPage,
+} from '../../app/tags/api';
+import { TagTargetCreate } from './tag-target-create';
+import { useTagTargetCreate } from './use-tag-target-create';
 import type { LibraryBatch } from './use-library-batch';
 
 export function BatchThumbnail({
@@ -49,25 +52,18 @@ export function BatchThumbnail({
   );
 }
 
-export function BatchTargets({
+export function useBatchTargets({
   batch,
   client,
-  currentAlbumId,
-  timeZone,
 }: {
   batch: LibraryBatch;
   client: QueryClient;
-  currentAlbumId?: string;
-  timeZone?: string;
 }) {
   const workspace = batch.workspace!;
   const albums = workspace.action.endsWith('albums');
   const noun = albums ? '相册' : '标签';
-  const needsCurrentAlbum =
-    workspace.action === 'remove-albums' && !!currentAlbumId;
   const [q, setQ] = useState('');
   const [page, setPage] = useState(1);
-  const [creating, setCreating] = useState(false);
   const ids =
     workspace.command && 'albumIds' in workspace.command
       ? workspace.command.albumIds
@@ -77,6 +73,7 @@ export function BatchTargets({
   const list = useQuery<AlbumPage | TagPage>(
     {
       queryKey: ['batch-targets', albums, q, page],
+      enabled: batch.visible,
       queryFn: ({ signal }) => {
         const params = new URLSearchParams({
           q,
@@ -93,54 +90,49 @@ export function BatchTargets({
     },
     client,
   );
-  const current = useQuery(
-    {
-      queryKey: ['batch-current-album', currentAlbumId],
-      queryFn: ({ signal }) =>
-        albumRequest<{ album: Album }>(albumUrl(currentAlbumId!), { signal }),
-      enabled: needsCurrentAlbum,
-      retry: false,
-      refetchOnWindowFocus: false,
-      networkMode: 'always',
+  const create = useTagTargetCreate({
+    available:
+      list.data?.items.filter((item): item is Tag => 'displayName' in item) ??
+      [],
+    disabled: albums || batch.pending || workspace.phase !== 'choose',
+    onExpire: batch.onExpire,
+    onSelect: (tag) => {
+      choose([...new Set([...ids, tag.id])]);
+      setQ(tag.displayName);
+      setPage(1);
+      void client.invalidateQueries({ queryKey: ['batch-targets', false] });
     },
-    client,
-  );
-  const error = list.error ?? (needsCurrentAlbum ? current.error : null);
+  });
+  const locked =
+    batch.pending ||
+    workspace.phase !== 'choose' ||
+    create.pending ||
+    create.unknown;
   const { setTargetReady } = batch;
   useEffect(() => {
     setTargetReady(
       list.isSuccess &&
         !list.isFetching &&
-        !error &&
-        (!currentAlbumId ||
-          workspace.action !== 'remove-albums' ||
-          current.isSuccess),
+        !list.error &&
+        !create.pending &&
+        !create.unknown,
     );
   }, [
     list.isSuccess,
     list.isFetching,
-    error,
-    currentAlbumId,
-    workspace.action,
-    current.isSuccess,
+    list.error,
+    create.pending,
+    create.unknown,
     setTargetReady,
   ]);
   useEffect(() => {
     if (
-      (error instanceof AlbumRequestError ||
-        error instanceof TagRequestError) &&
-      error.status === 401
+      (list.error instanceof AlbumRequestError ||
+        list.error instanceof TagRequestError) &&
+      list.error.status === 401
     )
       batch.onExpire();
-  }, [error, batch]);
-  const targets = [...(list.data?.items ?? [])];
-  if (
-    needsCurrentAlbum &&
-    !q &&
-    current.data &&
-    !targets.some((target) => target.id === current.data!.album.id)
-  )
-    targets.unshift(current.data.album);
+  }, [list.error, batch]);
   function choose(next: string[]) {
     batch.choose(
       !next.length
@@ -156,283 +148,209 @@ export function BatchTargets({
             },
     );
   }
+  return {
+    workspace,
+    albums,
+    noun,
+    q,
+    setQ,
+    page,
+    setPage,
+    ids,
+    list,
+    create,
+    locked,
+    choose,
+    createDisabled: batch.pending || workspace.phase !== 'choose',
+  };
+}
+
+export function BatchTargets(props: {
+  batch: LibraryBatch;
+  client: QueryClient;
+}) {
+  const targets = useBatchTargets(props);
+  return <BatchTargetsContent targets={targets} />;
+}
+
+export function BatchTargetsContent({
+  targets,
+}: {
+  targets: ReturnType<typeof useBatchTargets>;
+}) {
+  const {
+    workspace,
+    albums,
+    noun,
+    q,
+    setQ,
+    page,
+    setPage,
+    ids,
+    list,
+    create,
+    locked,
+    choose,
+    createDisabled,
+  } = targets;
   return (
-    <>
+    <div
+      className={albums ? 'contents' : 'flex min-h-65 flex-1 flex-col gap-3'}
+    >
       {albums ? (
-        <>
-          <p className="text-sm text-muted">
-            本次已选{workspace.items.length}张 ·{' '}
-            {ids.length ? `已选${ids.length}个目标` : '尚未选择目标'}
-          </p>
-          <p>按相册ID区分同名目标</p>
-        </>
-      ) : (
-        <div className="flex min-w-0 items-center gap-3 border-b border-border pb-5">
-          <div className="flex shrink-0 -space-x-3" aria-hidden="true">
-            {workspace.items.slice(0, 3).map((item) => (
-              <span
-                key={item.id}
-                className="rounded-xl border-2 border-background"
-              >
-                <BatchThumbnail
-                  url={item.storage.enabled ? item.thumbnailUrl : null}
-                  size={48}
-                />
-              </span>
-            ))}
-          </div>
-          <div className="grid min-w-0 gap-1">
-            <p className="text-sm font-medium">
-              已选 {workspace.items.length} 张图片
-            </p>
-            <p className="text-xs text-muted">
-              当前页 {workspace.currentCount} 张 · 其他页{' '}
-              {workspace.items.length - workspace.currentCount} 张
-            </p>
-          </div>
-        </div>
-      )}
+        <p role="status" className="shrink-0 text-sm text-muted">
+          已选 {workspace.items.length} 张图片 · {ids.length} 个{noun}
+        </p>
+      ) : null}
       <div
         className={
           albums
-            ? 'flex min-w-0 gap-3'
-            : 'flex min-w-0 flex-wrap items-center gap-3 pt-1'
+            ? 'flex min-w-0 shrink-0 items-center gap-3'
+            : '-mx-5 flex min-w-0 shrink-0 items-center gap-3 border-b border-border px-5 pb-4'
         }
       >
-        <div
-          className={
-            albums ? 'min-w-0 flex-1' : 'relative min-w-0 flex-1 sm:max-w-100'
-          }
-        >
-          {!albums ? (
-            <Search
-              size={16}
-              aria-hidden
-              className="pointer-events-none absolute left-3 top-3.5 text-muted"
-            />
-          ) : null}
+        <div className="relative min-w-0 flex-1">
+          <Search
+            size={16}
+            aria-hidden
+            className="pointer-events-none absolute left-3 top-3.5 text-muted"
+          />
           <Input
             aria-label={`搜索目标${noun}`}
-            disabled={batch.pending}
+            disabled={locked}
             value={q}
             onChange={(event) => {
               setQ(event.target.value);
               setPage(1);
             }}
-            className={`h-11 w-full min-w-0 rounded-lg border border-border bg-background text-base md:text-sm ${albums ? '' : 'pl-10'}`}
+            className="h-11 w-full min-w-0 rounded-lg border border-border bg-background pl-10 text-base md:text-sm"
             placeholder={`搜索${noun}`}
           />
         </div>
-        {!albums && workspace.action === 'add-tags' ? (
-          <Button
-            variant="outline"
-            className="h-11 shrink-0 rounded-lg font-normal"
-            isDisabled={batch.pending}
-            onPress={() => setCreating(true)}
-          >
-            <Plus size={16} aria-hidden />
-            新建标签
-          </Button>
-        ) : null}
       </div>
-      {!albums ? (
-        <div className="flex min-h-8 items-center justify-between gap-3">
-          <h2 className="text-sm font-medium">选择标签</h2>
-          <p role="status" className="text-xs text-muted">
-            已选 {ids.length} 个标签
-          </p>
-        </div>
-      ) : null}
-      {list.isPending ? <p role="status">正在读取{noun}目标…</p> : null}
-      {error ? (
-        <div
-          role="alert"
-          className="grid gap-3 rounded-xl border border-border p-3"
-        >
-          <p>目标读取失败：{error.message}。已有目标选择已保留。</p>
-          <Button
-            variant="outline"
-            className="h-11 w-fit rounded-lg"
-            onPress={() => {
-              void list.refetch();
-              if (needsCurrentAlbum && current.error) void current.refetch();
-            }}
-          >
-            重试读取目标
-          </Button>
-        </div>
-      ) : null}
-      {list.isSuccess && !targets.length ? (
-        <p role="status">
-          {q ? '没有匹配目标，请修改搜索条件。' : `还没有${noun}目标。`}
-        </p>
-      ) : null}
       <div
-        data-testid="batch-target-grid"
         className={
-          albums ? 'grid gap-3' : 'grid gap-3 sm:grid-cols-2 lg:grid-cols-3'
+          albums
+            ? 'contents'
+            : 'min-h-14 flex-1 overflow-y-auto overscroll-contain'
         }
-        aria-label={`${noun}目标`}
       >
-        {targets.map((target) => (
-          <Checkbox
-            key={target.id}
-            data-target-id={target.id}
-            aria-label={`选择${noun}：${'name' in target ? target.name : target.displayName} · ${target.id}`}
-            isSelected={ids.includes(target.id)}
-            isDisabled={batch.pending}
-            onChange={(selected) =>
-              choose(
-                selected
-                  ? [...ids, target.id]
-                  : ids.filter((id) => id !== target.id),
-              )
-            }
-            className={`w-full max-w-none rounded-xl border border-border bg-background p-0 data-[selected=true]:bg-default ${albums ? '' : 'data-[selected=true]:border-accent dark:bg-surface'}`}
+        {list.isPending ? <p role="status">正在读取{noun}目标…</p> : null}
+        {list.error ? (
+          <div
+            role="alert"
+            className="grid gap-3 rounded-lg border border-border p-3"
           >
-            <Checkbox.Content
-              className={`flex w-full min-w-0 items-start gap-3 p-3 ${albums ? 'min-h-18' : 'min-h-16'}`}
+            <p className="text-sm">
+              目标读取失败：{list.error.message}。已有目标选择已保留。
+            </p>
+            <Button
+              variant="outline"
+              className="h-11 w-fit rounded-lg"
+              onPress={() => void list.refetch()}
             >
-              {'cover' in target ? (
-                <BatchThumbnail
-                  key={target.cover.thumbnailUrl}
-                  url={target.cover.thumbnailUrl}
-                  size={48}
-                />
-              ) : null}
-              <span className="flex min-w-0 flex-1 items-start gap-2">
+              重试读取目标
+            </Button>
+          </div>
+        ) : null}
+        {list.isSuccess && !list.data.items.length ? (
+          <p role="status" className="py-5 text-center text-sm text-muted">
+            {q ? '没有匹配目标，请修改搜索条件。' : `还没有${noun}目标。`}
+          </p>
+        ) : null}
+        <div
+          data-testid="batch-target-grid"
+          className={albums ? 'grid gap-2' : 'grid divide-y divide-border'}
+          aria-label={`${noun}目标`}
+        >
+          {list.data?.items.map((target) => (
+            <Checkbox
+              key={target.id}
+              data-target-id={target.id}
+              aria-label={`选择${noun}：${'name' in target ? `${target.name} · ${target.id}` : target.displayName}`}
+              isSelected={ids.includes(target.id)}
+              isDisabled={locked || !!list.error || list.isFetching}
+              onChange={(selected) =>
+                choose(
+                  selected
+                    ? [...ids, target.id]
+                    : ids.filter((id) => id !== target.id),
+                )
+              }
+              className={
+                albums
+                  ? 'w-full max-w-none rounded-lg border border-border bg-background p-0 data-[selected=true]:bg-default dark:bg-surface'
+                  : 'w-full max-w-none rounded-none p-0'
+              }
+            >
+              <Checkbox.Content
+                className={`flex w-full min-w-0 items-center gap-3 ${albums ? 'min-h-16 p-3' : 'min-h-14 py-3'}`}
+              >
                 <Checkbox.Control
-                  className={`mt-1 size-4 shrink-0 rounded-none border shadow-none before:bg-transparent! ${ids.includes(target.id) ? 'border-transparent! bg-transparent!' : 'border-foreground bg-background'}`}
+                  className={`size-4 shrink-0 border shadow-none ${ids.includes(target.id) ? 'border-transparent' : 'border-border bg-background'}`}
                 >
-                  <Checkbox.Indicator className="size-4 text-foreground">
-                    {({ isSelected }) =>
-                      isSelected ? <Check size={16} aria-hidden /> : null
-                    }
+                  <Checkbox.Indicator>
+                    <Check size={16} aria-hidden />
                   </Checkbox.Indicator>
                 </Checkbox.Control>
-                <span className="grid min-w-0 gap-0.5 [overflow-wrap:anywhere]">
-                  {albums ? (
-                    <>
-                      <span className="text-base font-normal">
-                        {'name' in target ? target.name : target.displayName} ·{' '}
-                        {target.id}
-                      </span>
-                      <span className="text-xs text-muted">
-                        {target.imageCount}张 · 创建于
-                        {new Date(target.createdAt).toLocaleDateString(
-                          'zh-CN',
-                          { timeZone },
-                        )}
-                      </span>
-                    </>
-                  ) : (
-                    <>
-                      <span className="text-sm font-medium">
-                        {'name' in target ? target.name : target.displayName}
-                      </span>
-                      <span className="flex flex-wrap gap-x-2 text-[11px] leading-normal text-muted">
-                        <span>{target.id}</span>
-                        <span>{target.imageCount} 张图片</span>
-                      </span>
-                    </>
-                  )}
+                {'cover' in target ? (
+                  <BatchThumbnail
+                    key={target.cover.thumbnailUrl}
+                    url={target.cover.thumbnailUrl}
+                    size={48}
+                  />
+                ) : null}
+                <span
+                  className={
+                    albums
+                      ? 'grid min-w-0 flex-1 gap-0.5 [overflow-wrap:anywhere]'
+                      : 'flex min-w-0 flex-1 items-center justify-between gap-3 [overflow-wrap:anywhere]'
+                  }
+                >
+                  <span className="text-sm font-medium">
+                    {'name' in target ? target.name : target.displayName}
+                  </span>
+                  <span className="shrink-0 text-xs text-muted">
+                    {albums ? `${target.id} · ` : ''}
+                    {target.imageCount} 张图片
+                  </span>
                 </span>
-              </span>
-            </Checkbox.Content>
-          </Checkbox>
-        ))}
-      </div>
-      {list.data && list.data.total > 20 ? (
-        <div className="flex items-center gap-3" aria-label="目标分页">
-          <Button
-            variant="outline"
-            className="h-11 rounded-lg"
-            isDisabled={batch.pending || page === 1 || list.isFetching}
-            onPress={() => setPage(page - 1)}
-          >
-            上一页目标
-          </Button>
-          <span className="text-xs">
-            {page}/{Math.ceil(list.data.total / 20)}
-          </span>
-          <Button
-            variant="outline"
-            className="h-11 rounded-lg"
-            isDisabled={
-              batch.pending || page * 20 >= list.data.total || list.isFetching
-            }
-            onPress={() => setPage(page + 1)}
-          >
-            下一页目标
-          </Button>
+              </Checkbox.Content>
+            </Checkbox>
+          ))}
         </div>
-      ) : null}
-      {albums ? (
-        <>
-          <p className="text-sm">
-            作用范围：{workspace.items.length}张图片 × {ids.length}个{noun}。
-          </p>
-          <p className="text-sm">
-            {workspace.action.startsWith('add')
-              ? '已有关系会显示“无需修改”。'
-              : '不存在的关系会显示“无需修改”。'}
-          </p>
-          <p className="text-xs text-muted">
-            每张图的多个目标一起保存。任一目标失效，该图整项失败；其他图片继续。
-          </p>
-        </>
-      ) : (
-        <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border pt-3">
-          <p className="text-xs text-muted">可多选，按标签 ID 区分同名标签。</p>
-          <Popover>
+        {list.data && list.data.total > 20 ? (
+          <div
+            className="flex items-center justify-between gap-3"
+            aria-label="目标分页"
+          >
             <Button
-              variant="ghost"
-              aria-label="标签操作说明"
-              className="h-11 gap-1.5 rounded-lg px-2 text-xs font-normal text-muted"
+              variant="outline"
+              className="h-11 rounded-lg"
+              isDisabled={locked || page === 1 || list.isFetching}
+              onPress={() => setPage(page - 1)}
             >
-              <Info size={15} aria-hidden />
-              操作说明
+              上一页目标
             </Button>
-            <Popover.Content
-              placement="top end"
-              className="max-w-[min(320px,calc(100vw-32px))] rounded-xl border border-border bg-surface p-4"
+            <span className="text-xs">
+              {page}/{Math.ceil(list.data.total / 20)}
+            </span>
+            <Button
+              variant="outline"
+              className="h-11 rounded-lg"
+              isDisabled={
+                locked || page * 20 >= list.data.total || list.isFetching
+              }
+              onPress={() => setPage(page + 1)}
             >
-              <Popover.Dialog
-                data-testid="batch-tag-tips"
-                className="grid gap-2 text-xs leading-relaxed"
-              >
-                <Popover.Heading className="text-sm font-medium">
-                  标签操作说明
-                </Popover.Heading>
-                <p>
-                  {workspace.action.startsWith('add')
-                    ? '已有标签关系无需修改。'
-                    : '不存在的标签关系无需修改。'}
-                </p>
-                <p>
-                  同一张图片的所选标签一起保存。任一标签失效，该图片整项失败；其他图片继续。
-                </p>
-              </Popover.Dialog>
-            </Popover.Content>
-          </Popover>
-        </div>
-      )}
-      {creating ? (
-        <UploadCreateTag
-          isOpen
-          onClose={() => setCreating(false)}
-          onExpire={batch.onExpire}
-          onComplete={(tag) => {
-            choose([...new Set([...ids, tag.id])]);
-            setCreating(false);
-            setQ('');
-            setPage(1);
-            void client.invalidateQueries({
-              queryKey: ['batch-targets', false],
-            });
-          }}
-        />
+              下一页目标
+            </Button>
+          </div>
+        ) : null}
+      </div>
+      {!albums && workspace.action === 'add-tags' ? (
+        <TagTargetCreate create={create} disabled={createDisabled} />
       ) : null}
-    </>
+    </div>
   );
 }

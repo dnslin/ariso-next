@@ -5,10 +5,19 @@ import { useRouter } from 'next/navigation';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Alert } from '@heroui/react/alert';
 import { Button } from '@heroui/react/button';
+import { Chip } from '@heroui/react/chip';
 import { Link } from '@heroui/react/link';
 import { Spinner } from '@heroui/react/spinner';
 import { AlertDialog } from '@heroui/react/alert-dialog';
-import { ListChecks, LockKeyhole, Settings2 } from 'lucide-react';
+import {
+  ArrowLeft,
+  CloudUpload,
+  Link2,
+  LockKeyhole,
+  Save,
+  Settings2,
+  ShieldCheck,
+} from 'lucide-react';
 import { OwnerShell } from '../shell/owner-shell';
 import { useResetUpload, useUploadQueue } from '../upload/provider';
 import type { UploadSettings } from '../upload/settings';
@@ -19,6 +28,10 @@ import { StorageReferenceView } from './storage-reference-view';
 import { StorageDeleteDialog } from './storage-delete-dialog';
 import { StorageTip } from './storage-tip';
 import { StorageMaintenanceView } from './storage-maintenance-view';
+import {
+  StorageLeaveConfirmation,
+  useStorageLeaveConfirmation,
+} from './storage-leave-confirmation';
 import {
   reconcileStorageSave,
   finishStorageDefault,
@@ -38,8 +51,7 @@ type ShellProps = Omit<
   ComponentProps<typeof OwnerShell>,
   'children' | 'footer'
 >;
-const actionClass =
-  'h-11 min-w-0 rounded-lg px-3 text-sm font-normal min-[1200px]:h-10';
+const actionClass = 'h-12 min-w-0 rounded-lg px-3 text-sm font-normal';
 
 export function StorageEditor({
   storageId,
@@ -100,12 +112,18 @@ export function StorageEditor({
   return (
     <OwnerShell {...shell}>
       <section className="grid gap-5 pb-10">
-        <h1 className="text-[30px] font-medium leading-normal">
-          {storageId ? '存储配置' : '添加存储'}
-        </h1>
-        <Link href="/settings/storage" className="text-sm">
-          返回存储管理
-        </Link>
+        <header className="flex flex-wrap items-center justify-between gap-3">
+          <h1 className="text-[30px] font-medium leading-normal">
+            {storageId ? '存储配置' : '添加存储'}
+          </h1>
+          <Link
+            href="/settings/storage"
+            className="flex min-h-11 items-center gap-2 rounded-lg px-3 text-sm no-underline"
+          >
+            <ArrowLeft size={18} aria-hidden />
+            返回
+          </Link>
+        </header>
         {query.isPending ? (
           <p role="status" className="flex items-center gap-2">
             <Spinner size="sm" />
@@ -180,6 +198,7 @@ function StorageEditorReady({
     initialSaved && initial.storage?.type === 's3',
   );
   const [r2Confirmation, setR2Confirmation] = useState(false);
+  const startingInput = useRef(input);
   const testOpener = useRef<HTMLButtonElement>(null);
   const inFlight = useRef(false);
   const pendingSave = useRef<PendingStorageSave | null>(null);
@@ -209,6 +228,17 @@ function StorageEditorReady({
       defaultChoice ??
       Boolean(effective && effective.id === settings.defaultStorageId),
   };
+  const dirty =
+    (storage
+      ? Object.keys(storageFormPayload(input, storage)).length > 0
+      : JSON.stringify(input) !== JSON.stringify(startingInput.current)) ||
+    (defaultChoice !== undefined &&
+      defaultChoice !==
+        Boolean(effective && effective.id === settings.defaultStorageId));
+  const navigation = useStorageLeaveConfirmation({ dirty, unknown, busy });
+  function returnToList() {
+    navigation.navigate('/settings/storage');
+  }
 
   async function invalidateConsumers() {
     await Promise.all([
@@ -374,9 +404,7 @@ function StorageEditorReady({
       pendingSave.current = null;
       setDefaultChoice(undefined);
       setSuccess(
-        s3 && !saved.enabled
-          ? '配置已保存，等待连接测试。保存不会自动启用；连接测试通过后，再手动启用此存储。'
-          : '配置已保存。',
+        s3 && !saved.enabled ? '配置已保存，等待连接测试。' : '配置已保存。',
       );
       await refresh();
       if (!initial.storage)
@@ -539,6 +567,7 @@ function StorageEditorReady({
             else void test();
           }}
         >
+          <ShieldCheck size={16} aria-hidden />
           {effective ? '测试连接' : '保存后测试'}
         </Button>
       ) : null}
@@ -550,7 +579,7 @@ function StorageEditorReady({
             : `${actionClass} ${s3 ? 'w-18 min-[1200px]:w-28' : 'w-28'}`
         }
         isDisabled={busy}
-        onPress={() => router.push('/settings/storage')}
+        onPress={returnToList}
       >
         {locked && !s3 ? '返回列表' : '取消'}
       </Button>
@@ -565,10 +594,12 @@ function StorageEditorReady({
         }
         isDisabled={busy || unknown || Boolean(refreshError)}
       >
-        {busy ? '正在保存' : initial.storage || s3 ? '保存配置' : '创建存储'}
+        <Save size={16} aria-hidden />
+        {busy ? '正在保存' : initial.storage || s3 ? '保存' : '创建存储'}
       </Button>
     </>
   );
+  const leaveDialog = <StorageLeaveConfirmation navigation={navigation} />;
   if (maintenanceView && detail)
     return (
       <StorageMaintenanceView
@@ -589,16 +620,20 @@ function StorageEditorReady({
     );
   if (referenceView && detail)
     return (
-      <StorageReferenceView
-        shell={shell}
-        storage={detail}
-        busy={busy}
-        onReturn={() => setReferenceView(false)}
-        onCleanup={() => {
-          setReferenceView(false);
-          setMaintenanceView('cleanup');
-        }}
-      />
+      <>
+        <StorageReferenceView
+          shell={shell}
+          storage={detail}
+          busy={busy}
+          onReturn={() => setReferenceView(false)}
+          onCleanup={() => {
+            setReferenceView(false);
+            setMaintenanceView('cleanup');
+          }}
+          onNavigate={navigation.navigateFromReference}
+        />
+        {leaveDialog}
+      </>
     );
   if (savedView && effective && !r2Confirmation)
     return (
@@ -637,37 +672,48 @@ function StorageEditorReady({
         data-testid="storage-editor"
         className="grid gap-5 pb-10 [overflow-wrap:anywhere] min-[1200px]:gap-6"
       >
-        <header className="grid gap-1.5">
-          <h1
-            className={
-              locked && !s3
-                ? 'text-2xl font-medium leading-normal min-[1200px]:text-[30px]'
-                : 'text-[30px] font-medium leading-normal'
-            }
-          >
+        <header className="flex flex-wrap items-center justify-between gap-3">
+          <h1 className="text-[30px] font-medium leading-normal">
             {!initial.storage
               ? '添加存储'
               : s3
                 ? 'S3 存储配置'
                 : '本地存储配置'}
           </h1>
-          <p className="text-sm leading-normal">
-            {s3
-              ? initial.storage
-                ? '配置连接信息与访问方式。'
-                : '填写连接信息，测试通过后可启用。'
-              : locked && references
-                ? `${effective?.name} · 被 ${references.counts.images ?? 0} 张图片和 ${references.counts.cleanupJobs ?? 0} 个清理任务引用`
-                : '管理本地目录、启用状态与默认存储。'}
-          </p>
-        </header>
-        {!(locked && !s3) ? (
-          <Link
-            href="/settings/storage"
-            className="flex h-11 w-45 items-center justify-center rounded-lg border border-border text-sm no-underline min-[1200px]:h-10"
+          <Button
+            variant="ghost"
+            className="h-11 rounded-lg px-3 text-sm font-normal"
+            isDisabled={busy}
+            onPress={returnToList}
           >
-            ‹ 返回存储管理
-          </Link>
+            <ArrowLeft size={18} aria-hidden />
+            返回
+          </Button>
+        </header>
+        {effective ? (
+          <div className="flex flex-wrap items-center gap-2">
+            <Chip
+              size="sm"
+              color={effective.enabled ? 'success' : 'default'}
+              className="rounded-md"
+            >
+              <Chip.Label>{effective.enabled ? '已启用' : '已停用'}</Chip.Label>
+            </Chip>
+            {effective.id === settings.defaultStorageId ? (
+              <Chip size="sm" className="rounded-md">
+                <Chip.Label>默认存储</Chip.Label>
+              </Chip>
+            ) : null}
+            {locked ? (
+              <Chip size="sm" color="warning" className="rounded-md">
+                <Chip.Label>
+                  {(references?.counts.images ?? 0) > 0
+                    ? `${references!.counts.images} 张图片引用`
+                    : '仍有引用'}
+                </Chip.Label>
+              </Chip>
+            ) : null}
+          </div>
         ) : null}
         {message ? (
           <Alert role="alert" status="danger">
@@ -713,10 +759,7 @@ function StorageEditorReady({
           </div>
         ) : null}
         {success ? (
-          <p
-            role="status"
-            className="rounded-xl bg-default p-4 text-sm leading-normal"
-          >
+          <p role="status" className="text-sm leading-normal">
             {success}
           </p>
         ) : null}
@@ -750,22 +793,21 @@ function StorageEditorReady({
           onSubmit={() => void save()}
         />
         {effective && s3 ? (
-          <>
+          <div className="flex flex-wrap items-center gap-3">
             <Button
               variant="outline"
               className="min-h-11 justify-self-start rounded-lg"
               onPress={() => setSavedView(true)}
             >
-              查看连接测试结果
+              <ShieldCheck size={16} aria-hidden />
+              连接测试结果
             </Button>
-            <p className="text-[13px] text-muted">
-              测试只使用已保存配置；尚未保存的输入不会参与检测。
-            </p>
             {connected ? (
               <Link
                 href={`/settings/storage/${encodeURIComponent(effective.id)}/cors`}
-                className="flex min-h-11 items-center rounded-lg border border-border px-4 text-sm no-underline justify-self-start"
+                className="flex min-h-11 items-center gap-2 rounded-lg border border-border px-4 text-sm no-underline justify-self-start"
               >
+                <CloudUpload size={16} aria-hidden />
                 浏览器直传设置
               </Link>
             ) : (
@@ -773,7 +815,7 @@ function StorageEditorReady({
                 连接测试通过后可检测浏览器直传。
               </p>
             )}
-          </>
+          </div>
         ) : null}
         {detail && locked ? (
           <div className="flex w-full max-w-190 items-center gap-2 text-[13px] text-muted">
@@ -804,7 +846,7 @@ function StorageEditorReady({
               data-testid="storage-open-cleanup"
               onPress={() => setReferenceView(true)}
             >
-              <ListChecks className="size-4 shrink-0" aria-hidden="true" />
+              <Link2 className="size-4 shrink-0" aria-hidden="true" />
               引用与清理
             </Button>
             <StorageDeleteDialog
@@ -834,6 +876,7 @@ function StorageEditorReady({
             />
           </div>
         ) : null}
+        {leaveDialog}
         {r2Confirmation ? (
           <AlertDialog.Backdrop
             isOpen

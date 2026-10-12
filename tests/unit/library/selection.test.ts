@@ -18,6 +18,7 @@ function item(id: string): LibraryItem {
     width: 640,
     height: 480,
     visibility: 'private',
+    hasAlbums: false,
     processingStatus: 'ready',
     createdAt: '2026-09-30T00:00:00Z',
     storage: { id: 'local', name: '本地存储', enabled: true },
@@ -68,6 +69,26 @@ function run(steps: Step[]) {
 const ids = (selection: LibrarySelection) => [...selection.selected.keys()];
 
 describe('explicit library selection', () => {
+  it('clears a resolved batch failure without dropping the selected item', () => {
+    run([
+      { items: [item('a')], act: (selection) => selection.selectCurrent() },
+      {
+        items: [item('a')],
+        act: (selection) => selection.recordFailure('a', '保存失败'),
+      },
+      {
+        items: [item('a')],
+        act: (selection) => selection.clearFailure('a'),
+      },
+      {
+        items: [item('a')],
+        check: (selection) => {
+          expect(ids(selection)).toEqual(['a']);
+          expect(selection.selected.get('a')?.batchFailure).toBeUndefined();
+        },
+      },
+    ]);
+  });
   it('retains the source page and updates presentation after server reconciliation', () => {
     let snapshot: Map<
       string,
@@ -267,6 +288,9 @@ describe('explicit library selection', () => {
           expect(Object.keys(selection.selected.get('240')!)).toEqual([
             'id',
             'displayName',
+            'visibility',
+            'hasAlbums',
+            'deletionStatus',
             'processingStatus',
             'thumbnailUrl',
             'storage',
@@ -343,6 +367,9 @@ describe('explicit library selection', () => {
           expect(selection.selected.get('a')).toEqual({
             id: 'a',
             displayName: '新名称',
+            deletionStatus: null,
+            visibility: 'private',
+            hasAlbums: false,
             processingStatus: 'ready',
             byteSize: 1024,
             thumbnailUrl: '/i/a?type=thumbnail',
@@ -423,7 +450,7 @@ describe('explicit library selection', () => {
     const html = renderToStaticMarkup(createElement(SelectedMenu));
     expect(html).toContain('共选 2 张：当前页 1 张，其他页 1 张');
     expect(html).toMatch(/<button[^>]*disabled/);
-    expect(html).toContain('aria-label="操作已选 2 张图片"');
+    expect(html).toContain('aria-label="管理选择，已选 2 张"');
     expect(html).not.toContain('<img');
   });
 });

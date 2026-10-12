@@ -23,6 +23,7 @@ const suites = {
       ['upload-input', 'upload-input'],
       ['upload-submissions', 'upload-submissions'],
       ['upload-relations', 'upload-relations'],
+      ['collection-shortcuts', 'collection-shortcuts'],
       ['upload-usage', 'upload-usage'],
       ['sharing-management', 'sharing-management'],
       ['site-general', 'site-general'],
@@ -122,6 +123,11 @@ const suites = {
   },
   'shell-navigation': { stages: [['shell-navigation', 'shellNavigation']] },
   albums: { primaryPage: true, stages: [['albums', 'albums']] },
+  'collection-shortcuts': {
+    only: ['upload', 'picker', 'menus', 'regressions'],
+    stages: [['collection-shortcuts', 'collectionShortcuts']],
+    config: (only) => ({ shortcutPhase: only }),
+  },
   'album-cover': { primaryPage: true, stages: [['album-cover', 'albumCover']] },
   tags: { primaryPage: true, stages: [['tags', 'tags']] },
   'upload-settings': {
@@ -258,6 +264,7 @@ const suites = {
       'approved-query',
       'approved-progress',
       'review-fixes',
+      'shortcut-focus',
     ],
     stages: (only) => {
       if (only === 'cleanup') return [['trash-cleanup', 'trashCleanup']];

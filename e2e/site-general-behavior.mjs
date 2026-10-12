@@ -44,6 +44,70 @@ export async function verifySiteGeneralBehavior(page, config, tools, report) {
     assert.ok(history.images.some((row) => row.id === historyId));
     assert.ok(history.objects.some((row) => row.image_id === historyId));
     await tools.open();
+    const headings = await page.evaluate(() =>
+      [...document.querySelectorAll('[data-testid="site-general"] h2')]
+        .filter((node) =>
+          ['站点信息', '上传限制', '关联设置'].includes(
+            node.textContent.trim(),
+          ),
+        )
+        .map((node) => ({
+          title: node.textContent.trim(),
+          icon: node.querySelector('svg')?.getAttribute('class') ?? null,
+        })),
+    );
+    assert.deepEqual(headings, [
+      { title: '站点信息', icon: 'lucide lucide-globe size-5' },
+      { title: '上传限制', icon: 'lucide lucide-upload size-5' },
+      { title: '关联设置', icon: 'lucide lucide-sliders-horizontal size-5' },
+    ]);
+    for (const label of [
+      '上传限制',
+      '单文件上限（MiB）',
+      '每批文件数量',
+      '队列上限',
+    ]) {
+      const name = `${label}说明`;
+      await page.click(button(name));
+      const tip = `[role="dialog"][aria-label="${name}"]`;
+      await page.waitForSelector(tip);
+      assert.ok(
+        await page.evaluate(
+          (selector) =>
+            document.querySelector(selector).textContent.trim().length > 5,
+          tip,
+        ),
+      );
+      await page.keyboard.press('Escape');
+      await page.waitForSelector(tip, { state: 'hidden' });
+      await page.waitForFunction(
+        (name) => document.activeElement?.getAttribute('aria-label') === name,
+        name,
+      );
+    }
+    await page.click(button('基本设置保存说明'));
+    await page.waitForSelector(
+      '[role="dialog"][aria-label="基本设置保存说明"]',
+    );
+    assert.match(
+      await page.evaluate(
+        () =>
+          document.querySelector(
+            '[role="dialog"][aria-label="基本设置保存说明"]',
+          ).textContent,
+      ),
+      /站点信息和上传限制分别保存/,
+    );
+    await page.keyboard.press('Escape');
+    await page.waitForSelector(
+      '[role="dialog"][aria-label="基本设置保存说明"]',
+      { state: 'hidden' },
+    );
+    await page.waitForFunction(
+      () =>
+        document.activeElement?.getAttribute('aria-label') ===
+        '基本设置保存说明',
+    );
     for (const [input, expected] of [
       [{ name: '  Issue 194 站点  ' }, { name: 'Issue 194 站点' }],
       [{ description: '' }, { description: '' }],
@@ -95,7 +159,7 @@ export async function verifySiteGeneralBehavior(page, config, tools, report) {
         );
       }
       const previous = await tools.read();
-      await page.click(button('保存站点信息'));
+      await page.click(button('保存站点'));
       await page.waitForFunction(
         (name) =>
           document

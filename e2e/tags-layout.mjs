@@ -50,6 +50,22 @@ export async function tagStyles(page, theme, width) {
             top: part.getBoundingClientRect().top,
           })),
         ),
+      actionGroups: [
+        ...document.querySelectorAll(
+          '[data-testid="tags-list"] [data-slot="button-group"]',
+        ),
+      ]
+        .filter(visible)
+        .map((group) =>
+          [...group.querySelectorAll('button')].map((button) => {
+            const rect = button.getBoundingClientRect();
+            return {
+              name: button.getAttribute('aria-label'),
+              width: rect.width,
+              height: rect.height,
+            };
+          }),
+        ),
       hint: visible(hint) ? getComputedStyle(hint).backgroundColor : null,
       notice: visible(notice) ? getComputedStyle(notice).backgroundColor : null,
       listError: visible(listError)
@@ -58,6 +74,10 @@ export async function tagStyles(page, theme, width) {
       dialogMessages: visible(dialog)
         ? [...dialog.querySelectorAll('.bg-default')].filter(visible).length
         : null,
+      dialogHasFeedback: dialog?.dataset.hasFeedback === 'true',
+      nameHelp: visible(
+        dialog?.querySelector('button[aria-label="标签名称说明"]'),
+      ),
       resultLink: visible(resultLink)
         ? getComputedStyle(resultLink).backgroundColor
         : null,
@@ -75,6 +95,16 @@ export async function tagStyles(page, theme, width) {
     };
   }, tagDialogSelector);
   if (!styles) return null;
+  for (const group of styles.actionGroups) {
+    assert.equal(group.length, 2, 'Tag row has only its two existing actions');
+    assert.match(group[0].name, /^重命名标签 /);
+    assert.match(group[1].name, /^删除标签 /);
+    for (const action of group)
+      assert.ok(
+        action.width >= 44 && action.height >= 44,
+        `${action.name}: icon action preserves its 44px target`,
+      );
+  }
   for (const [name, actual] of Object.entries({
     search: styles.searchIcon,
     name: styles.nameIcon,
@@ -100,9 +130,11 @@ export async function tagStyles(page, theme, width) {
   if (styles.dialogMessages !== null)
     assert.equal(
       styles.dialogMessages,
-      1,
-      'Tag dialogs render one explanatory surface, including validation FieldError',
+      styles.dialogHasFeedback ? 1 : 0,
+      'Normal rules use Tips; validation, actual outcomes and deletion retain one visible explanation',
     );
+  if (styles.dialogMessages === 0)
+    assert.equal(styles.nameHelp, true, 'Normal tag form exposes name Tips');
   for (const [name, actual] of Object.entries({
     search: styles.search,
     nameInput: styles.nameInput,

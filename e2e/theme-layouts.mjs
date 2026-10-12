@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { resizeViewport } from './browser-geometry.mjs';
+import { verifySelectAppearance } from './select-appearance.mjs';
 import {
   visibleThemeTrigger,
   expectThemeEntries,
@@ -183,6 +184,7 @@ export async function verifyThemeConsumers(page, config, report, fixture) {
         );
         await expectThemeEntries(page, structure.admin);
         if (structure.admin) await expectPreference(page, resolved);
+        if (structure.admin) await verifySelectAppearance(page, report, route);
         assert.deepEqual(
           structure.filteredImages,
           [],

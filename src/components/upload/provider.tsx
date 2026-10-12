@@ -9,6 +9,7 @@ import {
   useRef,
   useState,
   useSyncExternalStore,
+  type SetStateAction,
   type ReactNode,
 } from 'react';
 import { usePathname } from 'next/navigation';
@@ -18,6 +19,7 @@ import { DetailReadError } from '../library/read-detail';
 import { UploadController } from './controller';
 import type { UploadSettings } from './settings';
 import type { UploadItem, UploadRelation } from './types';
+import { uploadDraftKey, type UploadDraft } from './context';
 
 export const uploadTerminalStates = new Set<UploadItem['state']>([
   'ready',
@@ -85,21 +87,23 @@ function useUploadLifetime() {
         sessionExpiryHandler.current = null;
     };
   }, []);
-  const [chosenStorageId, setStorageId] = useState<string>();
-  const [chosenVisibility, setVisibility] =
-    useState<UploadSettings['defaultVisibility']>();
-  const [chosenAlbums, setAlbums] = useState<UploadRelation[]>([]);
-  const [chosenTags, setTags] = useState<UploadRelation[]>([]);
+  const [drafts, setDrafts] = useState<Record<string, UploadDraft>>({});
+  const updateDraft = useCallback(
+    (key: string, update: (current: UploadDraft) => UploadDraft) => {
+      setDrafts((drafts) => ({
+        ...drafts,
+        [key]: update(drafts[key] ?? {}),
+      }));
+    },
+    [],
+  );
   const reset = useCallback(() => {
     // Release synchronously before a login navigation can invoke beforeunload.
     ownedController.current?.destroy();
     ownedController.current = null;
     setController(null);
     setStarted(false);
-    setStorageId(undefined);
-    setVisibility(undefined);
-    setAlbums([]);
-    setTags([]);
+    setDrafts({});
     client.clear();
   }, [client]);
   useEffect(() => {
@@ -144,7 +148,17 @@ function useUploadLifetime() {
       maxFileBytes: initial.maxFileBytes,
       queueLimit: initial.queueLimit,
       onUnauthorized: expire,
-      onLibraryChanged: notifyLibraryChanged,
+      onLibraryChanged: (item) => {
+        notifyLibraryChanged();
+        window.dispatchEvent(
+          new CustomEvent('ariso:upload-albums-changed', {
+            detail: {
+              albumIds:
+                item.frozenSubmission?.albums.map((album) => album.id) ?? [],
+            },
+          }),
+        );
+      },
     });
     ownedController.current = instance;
     // eslint-disable-next-line react-hooks/set-state-in-effect -- Publish the external store owned by this effect, including StrictMode setup/cleanup.
@@ -197,7 +211,9 @@ function useUploadLifetime() {
       // Read live state: explicit session reset must stop warning immediately.
       if (
         !controller.snapshot.some(
-          (item) => !uploadTerminalStates.has(item.state) && !item.imageId,
+          (item) =>
+            (!uploadTerminalStates.has(item.state) || item.canRetry) &&
+            !item.imageId,
         )
       )
         return;
@@ -213,14 +229,8 @@ function useUploadLifetime() {
     settings,
     controller,
     items,
-    chosenStorageId,
-    setStorageId,
-    chosenVisibility,
-    setVisibility,
-    chosenAlbums,
-    setAlbums,
-    chosenTags,
-    setTags,
+    drafts,
+    updateDraft,
     expire,
     reset,
     registerSessionExpiry,
@@ -264,6 +274,42 @@ export function useUploadQueue() {
   const upload = useContext(UploadContext);
   if (!upload) throw new Error('UploadProvider is missing');
   return upload;
+}
+
+/** Settings are retained per entry; all entries still use one live upload queue. */
+export function useUploadDraft(albumId?: string) {
+  const { drafts, updateDraft, settings } = useUploadQueue();
+  const key = uploadDraftKey(albumId) ?? 'page';
+  const draft = drafts[key] ?? {};
+  const initialAlbum = settings?.albums.find((album) => album.id === albumId);
+  const chosenAlbums = draft.albums ?? (initialAlbum ? [initialAlbum] : []);
+  const chosenTags = draft.tags ?? [];
+  function relations(
+    field: 'albums' | 'tags',
+    value: SetStateAction<UploadRelation[]>,
+  ) {
+    updateDraft(key, (current) => ({
+      ...current,
+      [field]:
+        typeof value === 'function'
+          ? value(current[field] ?? (field === 'albums' ? chosenAlbums : []))
+          : value,
+    }));
+  }
+  return {
+    chosenStorageId: draft.storageId,
+    setStorageId: (storageId: string) =>
+      updateDraft(key, (current) => ({ ...current, storageId })),
+    chosenVisibility: draft.visibility,
+    setVisibility: (visibility: 'public' | 'private') =>
+      updateDraft(key, (current) => ({ ...current, visibility })),
+    chosenAlbums,
+    setAlbums: (value: SetStateAction<UploadRelation[]>) =>
+      relations('albums', value),
+    chosenTags,
+    setTags: (value: SetStateAction<UploadRelation[]>) =>
+      relations('tags', value),
+  };
 }
 export function useResetUpload() {
   const lifecycle = useContext(ResetUploadContext);

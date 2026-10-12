@@ -1,15 +1,10 @@
 'use client';
 
 import { Chip } from '@heroui/react/chip';
-import { Check, Clock3, Pause } from 'lucide-react';
+import { Check, Clock3, Cloud, HardDrive, Pause } from 'lucide-react';
+import { Link } from '@heroui/react/link';
 import type { AnalyticsUsage } from './read-analytics';
-import {
-  AnalyticsCard,
-  AnalyticsLink,
-  bytes,
-  number,
-  timestamp,
-} from './presentation';
+import { AnalyticsSection, bytes, number, timestamp } from './presentation';
 
 const groups = [
   ['original', '正常原图', 'bg-accent'],
@@ -17,49 +12,67 @@ const groups = [
   ['recycle', '回收站', 'bg-default'],
   ['pending', '处理中／待清理', 'bg-foreground'],
 ] as const;
-export function UsageSummary({
-  data,
-  usageUrl,
-}: {
-  data: AnalyticsUsage;
-  usageUrl: string;
-}) {
-  const total = data.storages.reduce(
-    (sum, storage) => sum + storage.knownBytes,
-    0,
-  );
+export function UsageSummary({ data }: { data: AnalyticsUsage }) {
   const unknown = data.storages.reduce(
     (sum, storage) => sum + storage.unconfirmedObjects,
     0,
   );
   return (
-    <AnalyticsCard
-      title={`当前存储占用 · 已登记 ${bytes(total)}`}
+    <AnalyticsSection
+      title={
+        <span className="flex flex-wrap items-center justify-between gap-3">
+          <span>存储</span>
+          <Link
+            href="/settings/storage"
+            className="inline-flex min-h-11 items-center gap-2 rounded-lg px-3 text-sm font-normal text-foreground hover:bg-default"
+          >
+            <HardDrive size={17} aria-hidden />
+            管理存储
+          </Link>
+        </span>
+      }
       testId="analytics-usage-summary"
     >
-      <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
-        {groups.map(([key, label]) => (
-          <p key={key}>
-            {label}{' '}
-            {bytes(
-              data.storages.reduce(
-                (sum, storage) => sum + storage.groups[key],
-                0,
-              ),
-            )}
-          </p>
-        ))}
-      </div>
+      {data.storages.length ? (
+        <div className="grid">
+          {data.storages.map((storage) => (
+            <div
+              key={storage.id}
+              className="flex min-h-20 items-center gap-3 border-b border-border py-3"
+            >
+              {storage.type === 'local' ? (
+                <HardDrive size={21} className="shrink-0" aria-hidden />
+              ) : (
+                <Cloud size={21} className="shrink-0" aria-hidden />
+              )}
+              <div className="min-w-0 flex-1">
+                <p className="text-sm wrap-anywhere">{storage.name}</p>
+                <Chip
+                  color={storage.enabled ? 'success' : 'default'}
+                  variant="soft"
+                  size="sm"
+                  className={`mt-1 ${storage.enabled ? '' : 'bg-foreground/8 text-muted'}`}
+                >
+                  <Chip.Label>
+                    {storage.enabled ? '已启用' : '已停用'}
+                  </Chip.Label>
+                </Chip>
+              </div>
+              <span className="shrink-0 text-sm tabular-nums">
+                {bytes(storage.knownBytes)}
+              </span>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p className="py-6 text-sm text-muted">暂无存储配置</p>
+      )}
       {unknown ? (
         <p className="text-sm">
           另有 {number(unknown)} 个对象待核对，总占用尚未确认。
         </p>
       ) : null}
-      <p className="text-xs text-muted">
-        基于 Ariso 对象记录；与访问周期无关。
-      </p>
-      <AnalyticsLink href={usageUrl}>查看各存储组成</AnalyticsLink>
-    </AnalyticsCard>
+    </AnalyticsSection>
   );
 }
 export function UsageContent({
@@ -99,7 +112,7 @@ export function UsageContent({
         <p className="py-8 text-sm">暂无存储配置。</p>
       ) : (
         data.storages.map((storage) => (
-          <AnalyticsCard
+          <AnalyticsSection
             key={storage.id}
             title={
               <span className="flex flex-wrap items-center gap-x-3 gap-y-2">
@@ -177,7 +190,7 @@ export function UsageContent({
                   : '尚无完整的最后确认时间'}
               </p>
             </div>
-          </AnalyticsCard>
+          </AnalyticsSection>
         ))
       )}
     </div>

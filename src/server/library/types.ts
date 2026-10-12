@@ -28,6 +28,7 @@ export interface LibraryItem {
   width: number | null;
   height: number | null;
   visibility: 'public' | 'private';
+  hasAlbums: boolean;
   processingStatus: 'pending' | 'processing' | 'ready' | 'failed';
   createdAt: string;
   storage: { id: string; name: string; enabled: boolean };

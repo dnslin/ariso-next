@@ -8,6 +8,8 @@ export async function analyticsConsumers(page, config, tools, fixture, report) {
   const lastRank = '[data-testid="analytics-popular"] li:nth-child(10) button';
   for (const width of [1440, 390]) {
     await resizeViewport(page, width);
+    // Refocusing an already focused row after resize does not scroll it again.
+    await page.focus('#main-content');
     await page.focus(lastRank);
     await page.waitForFunction((selector) => {
       const row = document.querySelector(selector).getBoundingClientRect();
@@ -152,7 +154,7 @@ export async function analyticsConsumers(page, config, tools, fixture, report) {
     );
   }
   report.consumerStep = 'failure-lists';
-  await tools.open();
+  await tools.open('/dashboard?days=7');
   await page.click('loc=role:link[name="查看初次失败图片"]');
   await page.waitForSelector('[data-testid="library-failure-types"]');
   for (const [failure, id, label] of [

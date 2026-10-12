@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
   useQuery,
   type QueryClient,
@@ -12,6 +12,8 @@ import {
   overviewQueryOptions,
   usageQueryOptions,
   imageStatsQueryOptions,
+  AnalyticsReadError,
+  type AnalyticsOverview,
   type ReportDays,
 } from './read-analytics';
 
@@ -38,7 +40,16 @@ export function useAnalyticsOverview(
   days: ReportDays,
   enabled = true,
 ) {
-  return useAnalyticsQuery(client, overviewQueryOptions(days, enabled));
+  const query = useAnalyticsQuery(client, overviewQueryOptions(days, enabled));
+  const [lastSuccess, setLastSuccess] = useState<AnalyticsOverview>();
+  const unavailable =
+    !enabled ||
+    (query.error instanceof AnalyticsReadError && query.error.status === 401);
+  // Query keys still own cancellation and retries. Retain the displayed report
+  // separately because placeholderData disappears after a new-period failure.
+  const data = unavailable ? undefined : (query.data ?? lastSuccess);
+  if (data !== lastSuccess) setLastSuccess(data);
+  return { ...query, data };
 }
 
 export function useAnalyticsUsage(client: QueryClient, enabled = true) {

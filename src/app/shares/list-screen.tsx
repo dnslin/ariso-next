@@ -13,6 +13,7 @@ import { Spinner } from '@heroui/react/spinner';
 import { Alert } from '@heroui/react/alert';
 import { Link as LinkIcon, Search } from 'lucide-react';
 import { OwnerShell } from '../../components/shell/owner-shell';
+import { StorageTip } from '../../components/storage/storage-tip';
 import { useResetUpload } from '../../components/upload/provider';
 import { shareRequest, ShareRequestError } from './api';
 import { SharesList, type SharePage } from './list';
@@ -144,12 +145,15 @@ export function SharesScreen(props: {
       }
     >
       <section data-testid="shares-screen" className="grid min-w-0 gap-4">
-        <h1 className="text-[26px] font-medium leading-normal md:text-[30px]">
-          分享管理
-        </h1>
-        <p className="text-sm text-muted">
-          分享相册中的公开图片，控制密码与有效期。
-        </p>
+        <div className="flex items-center gap-2">
+          <h1 className="text-[28px] font-medium leading-normal md:text-[30px]">
+            分享
+          </h1>
+          <StorageTip label="分享">
+            每个相册最多一个分享链接，只展示公开图片。时间按 {props.timeZone}{' '}
+            显示。
+          </StorageTip>
+        </div>
         <TextField
           aria-label="搜索分享相册"
           value={q}
@@ -189,9 +193,6 @@ export function SharesScreen(props: {
                   ? '本页已无分享'
                   : '还没有分享链接'}
             </h2>
-            <p className="text-sm text-muted">
-              {q ? '请尝试其他相册名称。' : '从相册的“更多”中创建分享。'}
-            </p>
             {page > 1 ? (
               <Button
                 className="h-12 rounded-lg font-normal"

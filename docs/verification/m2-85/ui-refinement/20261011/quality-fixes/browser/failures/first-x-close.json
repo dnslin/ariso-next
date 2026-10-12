@@ -1,0 +1,26 @@
+{
+  "evidenceKind": "failure-summary",
+  "fullLocalReport": "test-results/pr279-quality-fixes/library-batch/library-batch.json",
+  "status": "failed",
+  "phase": "review-fixes",
+  "taskSpaceId": 11,
+  "origin": "http://ariso-50802.localhost:50802",
+  "activeCheck": "add-tags-lost-response-and-read-only-check",
+  "tagCompletionStep": "complete",
+  "error": "Error: page.waitForSelector timed out after 10000ms: [data-testid=\"library-batch\"]\n    at waitForSelectorInPage (file:////[eval1]:16159:11)\n    at async file:////[eval1]:16691:28",
+  "failureFocus": {
+    "tag": "SECTION",
+    "label": null,
+    "testId": "library-batch",
+    "connected": true
+  },
+  "checks": [
+    "Batch visibility is current when returning to a previously cached page; loaded 60-image window retains its 58 surviving cards and continues after the unchanged original cursor of a removed anchor, without reloading page one.",
+    "The approved tag Drawer renders one readable list, 44px footer actions and long names without visible UUIDs, with 360/390×600 scrolling and real Escape/Space focus. Real target search and paging preserve explicit choices; normalized duplicates are rejected; quick creation persists and selects a real tag; add/remove submit the exact three target IDs and persist then remove every image relationship.",
+    "add-tags: actual per-image SQL failure retains its result and valid selection without success Toast; explicit retry sends only the failed ID, persists the requested relationship, returns to the original page and restores focus with truthful Toast counts.",
+    "remove-tags: actual per-image SQL failure retains its result and valid selection without success Toast; explicit retry sends only the failed ID, persists the requested relationship, returns to the original page and restores focus with truthful Toast counts."
+  ],
+  "limitations": [
+    "Ego Chromium responsive/keyboard checks; physical devices and Release containers are outside this local task."
+  ]
+}

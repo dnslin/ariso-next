@@ -23,6 +23,7 @@ const runtime = vi.hoisted(() => ({
   effects: [] as (() => void)[],
   dirty: false,
   pathname: '/upload',
+  albumId: undefined as string | undefined,
   observer: null as QueryObserver<UploadSettings> | null,
   unsubscribeQuery: null as (() => void) | null,
 }));
@@ -138,12 +139,14 @@ const settings: UploadSettings = {
   tags: [{ id: 'tag', displayName: 'Tag' }],
 };
 let queue: ReturnType<typeof provider.useUploadQueue>;
+let draft: ReturnType<typeof provider.useUploadDraft>;
 let sync: ReturnType<typeof provider.useUploadLimitsSync>;
 let lifecycleValue: unknown;
 let tree: ReturnType<typeof provider.UploadProvider>;
 
 function Consumer() {
   queue = provider.useUploadQueue();
+  draft = provider.useUploadDraft(runtime.albumId);
   sync = provider.useUploadLimitsSync();
   return null;
 }
@@ -176,16 +179,106 @@ beforeEach(() => {
   runtime.cells = [];
   runtime.effects = [];
   runtime.pathname = '/upload';
+  runtime.albumId = undefined;
   vi.stubGlobal('window', {
     addEventListener: vi.fn(),
     removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn(),
     location: { replace: vi.fn() },
   });
   vi.stubGlobal('document', { hidden: false });
+  vi.stubGlobal('requestAnimationFrame', (callback: () => void) => callback());
   vi.stubGlobal(
     'fetch',
     vi.fn<typeof fetch>(async () => Response.json(settings)),
   );
+});
+
+it('activates on the full upload page and retains separate album drafts across owner routes', async () => {
+  runtime.pathname = '/library';
+  render();
+  expect(fetch).not.toHaveBeenCalled();
+  runtime.pathname = '/upload';
+  await started();
+  const controller = queue.controller;
+  draft.setStorageId('other');
+  draft.setVisibility('public');
+  draft.setAlbums([{ id: 'other-album', name: 'Other album' }]);
+  draft.setTags([{ id: 'tag', name: 'Tag' }]);
+  controller!.add(smallFile());
+  render();
+  runtime.pathname = '/albums/album';
+  runtime.albumId = 'album';
+  render();
+  expect(draft.chosenStorageId).toBeUndefined();
+  expect(draft.chosenAlbums).toEqual([{ id: 'album', name: 'Album' }]);
+  expect(draft.chosenTags).toEqual([]);
+  draft.setVisibility('private');
+  draft.setAlbums([]);
+  controller!.add(smallFile(), 'album:album');
+  render();
+  runtime.pathname = '/upload';
+  runtime.albumId = undefined;
+  render();
+  expect(draft.chosenStorageId).toBe('other');
+  expect(draft.chosenVisibility).toBe('public');
+  expect(draft.chosenAlbums).toEqual([
+    { id: 'other-album', name: 'Other album' },
+  ]);
+  expect(draft.chosenTags).toEqual([{ id: 'tag', name: 'Tag' }]);
+  expect(queue.controller).toBe(controller);
+  expect(queue.items.map((item) => item.draftKey)).toEqual([
+    undefined,
+    'album:album',
+  ]);
+  runtime.albumId = 'album';
+  render();
+  expect(draft.chosenAlbums).toEqual([]);
+  expect(draft.chosenVisibility).toBe('private');
+  queue.reset();
+  render();
+  expect(queue.drafts).toEqual({});
+  expect(queue.controller).toBeNull();
+});
+
+it('notifies album consumers using confirmed relations for every full-page upload', async () => {
+  await started();
+  const controller = queue.controller!;
+  controller.add(smallFile());
+  const id = controller.snapshot[0].id;
+  vi.mocked(fetch).mockResolvedValueOnce(
+    Response.json({
+      id: 'submission',
+      storageId: 'local',
+      visibility: 'private',
+      batchSize: 20,
+      albumIds: ['album'],
+      tagIds: [],
+      sessions: [
+        {
+          id: 'session',
+          queueItemId: id,
+          groupIndex: 0,
+          state: 'accepted',
+          imageId: 'image',
+          jobId: 'job',
+          cleanupStatus: 'none',
+          job: { id: 'job', status: 'succeeded', error: null, step: null },
+        },
+      ],
+    }),
+  );
+  await controller.start('private', 'local', {
+    albumIds: ['album'],
+    tagIds: [],
+  });
+  const events = vi
+    .mocked(window.dispatchEvent)
+    .mock.calls.map(([event]) => event as CustomEvent);
+  expect(
+    events.find((event) => event.type === 'ariso:upload-albums-changed')
+      ?.detail,
+  ).toEqual({ albumIds: ['album'] });
 });
 afterEach(() => {
   runtime.unsubscribeQuery?.();

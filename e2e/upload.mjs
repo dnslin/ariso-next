@@ -188,6 +188,33 @@ try {
   });
   await trackReferences();
   await layouts('empty');
+  assert.equal(
+    await page.evaluate(
+      () =>
+        document.querySelector(
+          'section[aria-labelledby="upload-title"] > div > p',
+        ) !== null,
+    ),
+    false,
+    'The idle upload heading has no explanatory subtitle',
+  );
+  await page.click(button('上传设置说明'));
+  await page.waitForSelector('[role="dialog"][aria-label="上传设置说明"]');
+  assert.match(
+    await page.evaluate(
+      () =>
+        document.querySelector('[role="dialog"][aria-label="上传设置说明"]')
+          .textContent,
+    ),
+    /开始上传时固定本次设置/,
+  );
+  await page.keyboard.press('Escape');
+  await page.waitForSelector('[role="dialog"][aria-label="上传设置说明"]', {
+    state: 'hidden',
+  });
+  await page.waitForFunction(
+    () => document.activeElement?.getAttribute('aria-label') === '上传设置说明',
+  );
   await select();
   await page.click(button('移除'));
   await page.waitForFunction(

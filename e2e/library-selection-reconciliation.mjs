@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { join } from 'node:path';
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
+import { activateLibraryAction } from './library-action-controls.mjs';
 
 const button = (name) => `loc=role:button[name="${name}"]`;
 
@@ -52,11 +53,12 @@ export async function verifyLibrarySelectionReconciliation({
   async function selected(expected) {
     await page.waitForFunction((expected) => {
       const trigger = document.querySelector(
-        '[data-testid="library-selection"] button[aria-label^="操作已选"]',
+        '[data-testid="library-selection"] button[aria-label^="管理选择，已选"]',
       );
       return expected === 0
         ? !trigger
-        : trigger?.getAttribute('aria-label') === `操作已选 ${expected} 张图片`;
+        : trigger?.getAttribute('aria-label') ===
+            `管理选择，已选 ${expected} 张`;
     }, expected);
   }
   async function ready(expected) {
@@ -64,7 +66,7 @@ export async function verifyLibrarySelectionReconciliation({
     if (expected)
       await page.waitForFunction(() => {
         const trigger = document.querySelector(
-          '[data-testid="library-selection"] button[aria-label^="操作已选"]',
+          '[data-testid="library-selection"] button[aria-label^="管理选择，已选"]',
         );
         return trigger && !trigger.disabled;
       });
@@ -85,8 +87,20 @@ export async function verifyLibrarySelectionReconciliation({
   }
   async function action(expected, label) {
     await ready(expected);
-    await page.click(button(`操作已选 ${expected} 张图片`));
-    await page.click(`loc=role:menuitem[name="${label}"]`);
+    await activateLibraryAction(page, label, expected);
+    await settle();
+    if (
+      /^(全选|取消.*选择)/.test(label) &&
+      (await page.evaluate(
+        () =>
+          !!document.querySelector('[data-testid="library-selected-panel"]'),
+      ))
+    ) {
+      await page.keyboard.press('Escape');
+      await page.waitForSelector('[data-testid="library-selected-panel"]', {
+        state: 'hidden',
+      });
+    }
   }
   async function choose(index) {
     await page.hover(button(`查看图片：${name(index)}`));
@@ -98,7 +112,7 @@ export async function verifyLibrarySelectionReconciliation({
     await settle();
   }
   async function closePanel() {
-    await page.click(button('关闭已选清单'));
+    await page.keyboard.press('Escape');
     await page.waitForFunction(
       () => !document.querySelector('[data-testid="library-selected-panel"]'),
     );
@@ -707,7 +721,7 @@ export async function verifyLibrarySelectionReconciliation({
           await page.evaluate(() =>
             document.activeElement?.getAttribute('aria-label'),
           ),
-          '操作已选 235 张图片',
+          '管理选择，已选 235 张',
         );
       }
     }
@@ -833,7 +847,7 @@ export async function verifyLibrarySelectionReconciliation({
       await page.evaluate(
         () =>
           document.querySelector(
-            '[data-testid="library-selection"] button[aria-label^="操作已选"]',
+            '[data-testid="library-selection"] button[aria-label^="管理选择，已选"]',
           ).disabled,
       ),
       true,

@@ -1,25 +1,44 @@
 'use client';
 
+import type { ReactNode } from 'react';
 import { Card } from '@heroui/react/card';
+import { BarChart3, CalendarDays, Images } from 'lucide-react';
 import type { AnalyticsOverview } from './read-analytics';
+import { ImageStatisticsTip } from './image-statistics-content';
 import { number, timestamp } from './presentation';
 
-export function AnalyticsMetadata({ data }: { data: AnalyticsOverview }) {
+export function AnalyticsMetadata({
+  data,
+  status,
+}: {
+  data: AnalyticsOverview;
+  status?: ReactNode;
+}) {
+  const updated = new Intl.DateTimeFormat('zh-CN', {
+    timeZone: data.timezone,
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  }).format(new Date(data.generatedAt));
   return (
     <div
-      className="grid gap-2 text-[13px] text-muted"
+      className="grid gap-2 text-xs text-muted"
       data-testid="analytics-metadata"
     >
-      <p>
-        {data.timezone} · 更新于 {timestamp(data.generatedAt, data.timezone)}
-        。今日截至本次统计更新。
-      </p>
-      <p data-testid="analytics-last-flushed">
-        {data.lastFlushedAt
-          ? `最近写入于 ${timestamp(data.lastFlushedAt, data.timezone)}`
-          : '本进程尚无已提交的访问批次'}
-        。
-      </p>
+      <div className="flex min-h-11 items-center gap-1">
+        {status ?? <p>更新于 {updated}</p>}
+        <ImageStatisticsTip label="统计更新时间">
+          <p>
+            {timestamp(data.generatedAt, data.timezone)} · {data.timezone}
+          </p>
+          <p>今日访问截至本次统计更新，今天尚未结束。</p>
+          {data.lastFlushedAt ? (
+            <p data-testid="analytics-last-flushed">
+              最近写入于 {timestamp(data.lastFlushedAt, data.timezone)}。
+            </p>
+          ) : null}
+        </ImageStatisticsTip>
+      </div>
       {data.containsOldTimezone ? (
         <p data-testid="analytics-old-timezone">
           含按旧时区归档的数据；历史日期不按新时区重算。
@@ -47,33 +66,51 @@ export function AnalyticsMetadata({ data }: { data: AnalyticsOverview }) {
   );
 }
 export function AnalyticsMetrics({ data }: { data: AnalyticsOverview }) {
-  const metrics = [
-    [
-      '图片数量',
-      data.counts.normalImages,
-      `回收站 ${number(data.counts.recycledImages)} 张`,
-    ],
-    ['相册数量', data.counts.albums, '包含空相册'],
-    ['今日访问', data.today, '截至本次统计更新'],
-    ['累计访问', data.cumulative.total, '历史累计访问'],
-  ] as const;
   return (
     <div
-      className="grid grid-cols-2 gap-3 min-[1200px]:grid-cols-4"
+      className="grid grid-cols-3 gap-3 min-[1200px]:gap-4"
       data-testid="analytics-metrics"
     >
-      {metrics.map(([label, value, note]) => (
-        <Card
-          key={label}
-          className="min-h-32 min-w-0 gap-2 rounded-[20px] border border-border bg-surface px-3 py-4 shadow-none min-[1200px]:min-h-[140px] min-[1200px]:gap-2.5 min-[1200px]:px-[22px] min-[1200px]:py-5"
-        >
-          <p className="text-[13px]">{label}</p>
-          <p className="text-[28px] leading-[42px] tabular-nums wrap-anywhere min-[1200px]:text-[32px]">
-            {number(value)}
-          </p>
-          <p className="text-xs">{note}</p>
-        </Card>
-      ))}
+      <AnalyticsMetric
+        label={`最近 ${data.range.days} 天`}
+        value={number(data.versions.total)}
+        icon={<CalendarDays size={19} aria-hidden />}
+      />
+      <AnalyticsMetric
+        label="今日访问"
+        value={number(data.today)}
+        icon={<BarChart3 size={19} aria-hidden />}
+      />
+      <AnalyticsMetric
+        label="累计访问"
+        value={number(data.cumulative.total)}
+        icon={<Images size={19} aria-hidden />}
+      />
     </div>
+  );
+}
+
+export function AnalyticsMetric({
+  label,
+  value,
+  icon,
+  children,
+}: {
+  label: string;
+  value: string;
+  icon: ReactNode;
+  children?: ReactNode;
+}) {
+  return (
+    <Card className="grid min-h-28 min-w-0 content-start gap-3 rounded-lg border border-border bg-surface p-4 shadow-none max-[479px]:p-3 min-[1200px]:min-h-32 min-[1200px]:gap-4 min-[1200px]:p-5">
+      <p className="flex items-center justify-between gap-2 text-xs min-[480px]:text-sm">
+        <span className="min-w-0">{label}</span>
+        <span className="shrink-0 text-muted max-[479px]:hidden">{icon}</span>
+      </p>
+      <p className="text-xl font-semibold leading-tight tabular-nums wrap-anywhere min-[480px]:text-2xl min-[1200px]:text-[30px]">
+        {value}
+      </p>
+      {children}
+    </Card>
   );
 }

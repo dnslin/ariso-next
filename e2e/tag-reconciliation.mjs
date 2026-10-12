@@ -180,7 +180,7 @@ export async function verifyTagReconciliation({
         button(
           action === 'create'
             ? '新建标签'
-            : `${action === 'edit' ? '编辑' : '删除'}标签 ${name}`,
+            : `${action === 'edit' ? '重命名' : '删除'}标签 ${name}`,
         ),
       );
       await page.waitForSelector(tagDialogSelector);
@@ -188,9 +188,7 @@ export async function verifyTagReconciliation({
         await page.fill('#tag-name', action === 'create' ? name : savedName);
       await inject(action, delivery, verificationFails, id);
       await page.click(
-        button(
-          { create: '创建标签', edit: '保存更改', delete: '删除标签' }[action],
-        ),
+        button({ create: '创建', edit: '保存', delete: '删除' }[action]),
       );
       await page.waitForFunction((selector) => {
         const dialog = document.querySelector(selector);

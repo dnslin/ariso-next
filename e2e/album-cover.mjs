@@ -495,7 +495,7 @@ try {
   await page.waitForSelector('[data-testid="album-cover-summary"]');
   assert.equal(await page.url(), originalUrl);
   await page.waitForFunction(
-    () => document.activeElement?.textContent.trim() === '设置封面',
+    () => document.activeElement?.getAttribute('aria-label') === '设置封面',
   );
   assert.equal((await readAlbum()).cover.preferredCoverImageId, 'issue180-041');
   report.checks.push(

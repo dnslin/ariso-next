@@ -11,6 +11,7 @@ import { Label } from '@heroui/react/label';
 import { FieldError } from '@heroui/react/field-error';
 import { CloseButton } from '@heroui/react/close-button';
 import { Tag as TagIcon } from 'lucide-react';
+import { StorageTip } from '../../components/storage/storage-tip';
 import { tagNameSchema } from '../../server/collections/validation';
 import {
   tagRequest,
@@ -103,7 +104,7 @@ export function TagDialog({
         : action.kind === 'create'
           ? '首尾空格会自动去除；1–50 个字符，不允许换行。已有名称会直接使用原标签。'
           : action.kind === 'edit'
-            ? '名称改变后保留原标签和全部图片关系。不能与其他标签同名，不会自动合并。'
+            ? '改名保留图片关联；不能重名或合并。'
             : '立即移除所有关联，包括回收站图片。图片不会被删除。同名新建也不会恢复旧关系。';
 
   function close() {
@@ -315,7 +316,14 @@ export function TagDialog({
         isKeyboardDismissDisabled={pending}
       >
         <Dialog.Container placement="center" className="p-4">
-          <Dialog.Dialog className="max-h-[calc(var(--visual-viewport-height)-32px)] w-full max-w-120 gap-4 overflow-y-auto rounded-xl border border-border bg-surface p-6 shadow-[0_16px_48px_rgba(38,36,66,0.16)]">
+          <Dialog.Dialog
+            data-has-feedback={
+              !!fieldError ||
+              outcome.kind !== 'idle' ||
+              action.kind === 'delete'
+            }
+            className="max-h-[calc(var(--visual-viewport-height)-32px)] w-full max-w-120 gap-4 overflow-y-auto rounded-xl border border-border bg-surface p-6 shadow-[0_16px_48px_rgba(38,36,66,0.16)]"
+          >
             <Dialog.Header className="flex min-h-11 shrink-0 flex-row items-center justify-between gap-2">
               <Dialog.Heading className="text-xl font-medium leading-normal [overflow-wrap:anywhere]">
                 {title}
@@ -348,13 +356,18 @@ export function TagDialog({
                     validationBehavior="aria"
                     className="gap-4"
                   >
-                    <Label className="text-sm font-normal">
-                      {action.kind === 'edit'
-                        ? `名称 · 正在重命名「${tag!.displayName}」`
-                        : fieldError?.title === '标签名称过长'
+                    <div className="flex min-h-11 items-center justify-between gap-2">
+                      <Label className="text-sm font-normal">
+                        {fieldError?.title === '标签名称过长'
                           ? `名称 · ${[...name.trim().normalize('NFC')].length} / 50`
                           : '名称'}
-                    </Label>
+                      </Label>
+                      <StorageTip label="标签名称">
+                        {action.kind === 'create'
+                          ? '首尾空格会自动去除；1–50 个字符，不允许换行。已有名称会直接使用原标签。'
+                          : '改名保留图片关联；不能重名或合并。'}
+                      </StorageTip>
+                    </div>
                     <InputGroup className="h-12 w-full rounded-lg border border-border bg-field shadow-none">
                       <InputGroup.Prefix className="border-0 pl-3 pr-2 text-foreground">
                         <TagIcon size={16} aria-hidden />
@@ -385,7 +398,8 @@ export function TagDialog({
                             : '请核对当前标签后再操作。'}
                   </p>
                 )}
-                {!fieldError ? (
+                {!fieldError &&
+                !(outcome.kind === 'idle' && action.kind !== 'delete') ? (
                   <p
                     role={
                       outcome.kind !== 'idle' && !result ? 'alert' : undefined
@@ -401,10 +415,11 @@ export function TagDialog({
                   <>
                     <Button
                       variant="outline"
+                      aria-label="返回标签列表"
                       className="h-12 w-full rounded-lg font-normal"
                       onPress={close}
                     >
-                      返回标签列表
+                      返回
                     </Button>
                     {outcome.kind === 'reused' ? (
                       <Link
@@ -460,12 +475,12 @@ export function TagDialog({
                                 ? '重试保存'
                                 : '重试删除'
                             : action.kind === 'create'
-                              ? '创建标签'
+                              ? '创建'
                               : action.kind === 'delete'
-                                ? '删除标签'
+                                ? '删除'
                                 : outcome.kind === 'conflict'
                                   ? '修改名称'
-                                  : '保存更改'}
+                                  : '保存'}
                     </Button>
                   </>
                 )}

@@ -191,7 +191,7 @@ function ProcessingEditor({
           isDisabled={busy || assetBusy}
           onPress={openPreview}
         >
-          预览处理效果
+          预览
         </Button>
         <Button
           data-testid="processing-save"
@@ -200,7 +200,7 @@ function ProcessingEditor({
           className={footerActionClass}
           isDisabled={busy || assetBusy || settings.unknown}
         >
-          {settings.busy ? '正在保存…' : '保存处理设置'}
+          {settings.busy ? '正在保存…' : '保存'}
         </Button>
       </>
     ) : (

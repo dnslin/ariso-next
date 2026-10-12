@@ -3,7 +3,7 @@
 import { Button } from '@heroui/react/button';
 import { Card } from '@heroui/react/card';
 import { Alert } from '@heroui/react/alert';
-import { AnalyticsCard, timestamp } from './presentation';
+import { timestamp } from './presentation';
 
 export function AnalyticsLoading({ scope }: { scope: 'overview' | 'usage' }) {
   return (
@@ -69,28 +69,5 @@ export function AnalyticsReadFailure({
         </Button>
       </Alert.Content>
     </Alert>
-  );
-}
-export function UsageUnavailable({
-  error,
-  fetching,
-  retry,
-}: {
-  error: Error;
-  fetching: boolean;
-  retry: () => void;
-}) {
-  return (
-    <AnalyticsCard title="当前存储占用" testId="usage-error">
-      <p className="text-sm">{error.message}</p>
-      <Button
-        variant="outline"
-        className="h-11 rounded-lg"
-        onPress={retry}
-        isPending={fetching}
-      >
-        重试存储占用
-      </Button>
-    </AnalyticsCard>
   );
 }

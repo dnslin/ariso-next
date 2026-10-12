@@ -291,6 +291,10 @@ export function useLibraryQuery(
     if (!enabled) return;
     await client.resetQueries({ queryKey, exact: true });
   }
+  async function refreshCurrent() {
+    setRefreshAvailable(false);
+    if (enabled) await active.refetch();
+  }
   async function onBatchCompleted(
     results: BatchItemResult[],
     command: BatchCommand,
@@ -348,12 +352,16 @@ export function useLibraryQuery(
     });
     setRefreshAvailable(false);
     if (loadingMode === 'pages') await paged.refetch({ throwOnError: true });
-    else if (command.type === 'reprocess') {
+    else if (
+      command.type === 'reprocess' ||
+      command.type === 'add-albums' ||
+      command.type === 'remove-albums'
+    ) {
       const ids = items
         .filter((item) => byId.get(item.id)?.inQuery === true)
         .map((item) => item.id);
       const statuses = await client.fetchQuery({
-        queryKey: ['library', 'reprocess-status', ids],
+        queryKey: ['library', 'batch-status', ids],
         queryFn: async ({ signal }) => {
           const batches = [];
           for (let offset = 0; offset < ids.length; offset += 80)
@@ -490,6 +498,7 @@ export function useLibraryQuery(
         return infinite.fetchNextPage({ cancelRefetch: false });
     },
     refresh,
+    refreshCurrent,
     onBatchCompleted,
     refreshAvailable,
     onItemRemoved,

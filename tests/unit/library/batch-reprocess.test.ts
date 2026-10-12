@@ -60,6 +60,8 @@ function state(): BatchReprocess {
         {
           id: 'first',
           displayName: '首次失败.png',
+          visibility: 'private',
+          hasAlbums: false,
           processingStatus: 'failed',
           thumbnailUrl: null,
           storage: { id: 'local', name: '本地', enabled: true },

@@ -119,6 +119,7 @@ it('reads current processing/storage/deletion facts without image content and ex
       byteSize: 123,
       visibility: 'private',
       processingStatus: 'ready',
+      hasAlbums: false,
       trashedAt: new Date(1000).toISOString(),
       deletionStatus,
       storage: {

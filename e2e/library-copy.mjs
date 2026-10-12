@@ -223,9 +223,7 @@ try {
     state: 'hidden',
   });
   await page.waitForFunction(
-    () =>
-      document.activeElement?.getAttribute('aria-label') ===
-      '操作已选 201 张图片',
+    () => document.activeElement?.getAttribute('aria-label') === '复制链接',
   );
   await h.open(201);
   report.stage = 'cross-page-native-copy';
@@ -499,9 +497,7 @@ try {
   });
   await h.selected(201);
   await page.waitForFunction(
-    () =>
-      document.activeElement?.getAttribute('aria-label') ===
-      '操作已选 201 张图片',
+    () => document.activeElement?.getAttribute('aria-label') === '复制链接',
   );
   await page.cdp('Browser.setPermission', {
     permission: { name: 'clipboard-write' },
@@ -647,8 +643,7 @@ try {
           await h.selected(3);
           await page.waitForFunction(
             () =>
-              document.activeElement?.getAttribute('aria-label') ===
-              '操作已选 3 张图片',
+              document.activeElement?.getAttribute('aria-label') === '复制链接',
           );
           assert.deepEqual(
             await page.evaluate(() => ({

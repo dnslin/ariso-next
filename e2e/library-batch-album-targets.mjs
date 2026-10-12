@@ -38,7 +38,7 @@ export async function verifyShortBatchMenu(context) {
   await visit();
   for (const index of [0, 1, 2, 3]) await choose(index);
   await resize(390, 560);
-  await page.click(button('操作已选 4 张图片'));
+  await page.click(button('更多图片操作'));
   await page.waitForSelector('[role="menu"][aria-label="已选图片操作"]');
   await page.waitForFunction(() =>
     document
@@ -105,7 +105,7 @@ export async function verifyShortBatchMenu(context) {
   report.shortMenu.last = last;
   assert.equal(
     last.active,
-    '清空全部选择',
+    '移入回收站',
     'Keyboard End reaches the final menu action',
   );
   assert.ok(
@@ -229,7 +229,7 @@ export async function verifyAlbumTargetReads(context) {
     await page.evaluate(() =>
       document
         .querySelector('[data-testid="library-batch"]')
-        .textContent.includes('已选2个目标'),
+        .textContent.includes('2 个相册'),
     ),
     true,
     'A failed read preserves the explicit target selection',

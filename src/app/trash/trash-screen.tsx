@@ -12,7 +12,16 @@ import { Link } from '@heroui/react/link';
 import { Tooltip } from '@heroui/react/tooltip';
 import { Spinner } from '@heroui/react/spinner';
 import { SearchField } from '@heroui/react/search-field';
-import { RefreshCw, Trash2 } from 'lucide-react';
+import { Popover } from '@heroui/react/popover';
+import {
+  CircleHelp,
+  ListChecks,
+  MoreHorizontal,
+  RefreshCw,
+  Search,
+  Trash2,
+} from 'lucide-react';
+import { ActionIconButton } from '../../components/library/action-button';
 import {
   BatchWorkspaceContent,
   BatchWorkspaceFooter,
@@ -128,7 +137,10 @@ export function TrashScreen({
       data?.items.map((item) => ({
         id: item.id,
         displayName: item.displayName,
+        visibility: item.visibility,
+        hasAlbums: item.hasAlbums,
         byteSize: item.byteSize,
+        deletionStatus: item.deletionStatus,
         thumbnailUrl: item.thumbnailPath,
         storage: item.storage,
       })) ?? [],
@@ -189,14 +201,14 @@ export function TrashScreen({
         });
     },
   });
-  const selectionDisabled =
+  const selectionPending =
     list.isFetching ||
     batch.pending ||
-    batch.unresolved ||
     permanentBatch.pending ||
-    permanentBatch.unresolved ||
-    reconciliation.pending ||
-    !!reconciliation.error;
+    reconciliation.pending;
+  const selectionUnavailable =
+    batch.unresolved || permanentBatch.unresolved || !!reconciliation.error;
+  const selectionDisabled = selectionPending || selectionUnavailable;
   useEffect(() => () => client.clear(), [client]);
   if (expired && !sessionEnded) setSessionEnded(true);
   useEffect(() => {
@@ -304,6 +316,8 @@ export function TrashScreen({
   const pages = data
     ? Math.max(1, Math.ceil(data.total / (trashFilters?.pageSize ?? 40)))
     : null;
+  const batchContentVisible =
+    batch.visible && batch.workspace?.phase === 'result';
   if (sessionEnded) return null;
   return (
     <OwnerShell
@@ -317,7 +331,7 @@ export function TrashScreen({
       footer={
         permanentBatch.visible ? (
           <TrashBatchWorkspaceFooter batch={permanentBatch} />
-        ) : batch.visible ? (
+        ) : batchContentVisible ? (
           <BatchWorkspaceFooter batch={batch} />
         ) : imageId && cleanup.visible && !cleanup.confirmation ? (
           <CleanupFooter cleanup={cleanup} onBack={leaveCleanup} />
@@ -427,9 +441,7 @@ export function TrashScreen({
       ) : null}
       {permanentBatch.visible ? (
         <TrashBatchWorkspaceContent batch={permanentBatch} />
-      ) : batch.visible ? (
-        <BatchWorkspaceContent batch={batch} client={client} />
-      ) : imageId ? (
+      ) : batchContentVisible ? null : imageId ? (
         <>
           {!record ? (
             <Button
@@ -463,13 +475,36 @@ export function TrashScreen({
       ) : (
         <section className="grid min-w-0 gap-5">
           <div className="flex items-center justify-between gap-4">
-            <h1
-              id="trash-title"
-              tabIndex={-1}
-              className="text-[28px] font-medium leading-normal md:text-[30px]"
-            >
-              回收站
-            </h1>
+            <div className="flex items-center gap-2">
+              <h1
+                id="trash-title"
+                tabIndex={-1}
+                className="text-[28px] font-medium leading-normal md:text-[30px]"
+              >
+                回收站
+              </h1>
+              <Popover>
+                <Tooltip>
+                  <Button
+                    aria-label="回收站规则"
+                    isIconOnly
+                    variant="ghost"
+                    className="size-11 min-w-11 shrink-0 rounded-lg text-muted"
+                  >
+                    <CircleHelp size={18} aria-hidden />
+                  </Button>
+                  <Tooltip.Content>回收站规则</Tooltip.Content>
+                </Tooltip>
+                <Popover.Content className="w-[min(340px,calc(100vw-32px))] rounded-xl border border-border bg-surface p-4">
+                  <Popover.Dialog
+                    aria-label="回收站规则"
+                    className="text-[13px] leading-5"
+                  >
+                    回收的图片仍占用存储空间，不会自动清理。恢复后可在图库查看。永久删除无法撤销。
+                  </Popover.Dialog>
+                </Popover.Content>
+              </Popover>
+            </div>
             <Tooltip>
               <Button
                 isIconOnly
@@ -487,12 +522,11 @@ export function TrashScreen({
             </Tooltip>
           </div>
           <p className="text-[13px]">
-            {data ? `${data.total} 条记录 · ` : ''}
-            文件仍占用空间，不会自动清理。
+            {data ? `${data.total} 条记录` : '数量待确认'}
           </p>
           <div
             data-testid="library-toolbar"
-            className="flex min-w-0 items-center gap-3"
+            className="flex min-w-0 flex-wrap items-center gap-3"
           >
             <TrashSearch
               key={trashFilters?.q ?? ''}
@@ -504,7 +538,8 @@ export function TrashScreen({
                 scope="trash"
                 selection={selection}
                 loadingMode="pages"
-                disabled={selectionDisabled}
+                disabled={selectionUnavailable}
+                pending={selectionPending}
                 contextMenu={contextMenu}
                 onContextMenuClose={() => setContextMenu(null)}
                 onOpen={(id) => openRecord(id)}
@@ -518,14 +553,13 @@ export function TrashScreen({
                 }}
               />
             ) : (
-              <Button
-                variant="outline"
-                className="h-12 w-26 shrink-0 rounded-lg text-sm font-normal md:w-40"
+              <ActionIconButton
+                label={selectionMode ? '取消选择' : '选择记录'}
                 isDisabled={!currentItems.length || selectionDisabled}
                 onPress={() => setSelectionMode((value) => !value)}
               >
-                {selectionMode ? '取消选择' : '选择记录'}
-              </Button>
+                <ListChecks size={18} aria-hidden />
+              </ActionIconButton>
             )}
           </div>
           {trashFilters ? (
@@ -537,7 +571,7 @@ export function TrashScreen({
               onSessionExpired={expireSession}
             />
           ) : null}
-          {selectionMode || selection.selected.size ? (
+          {selectionMode && !selection.selected.size ? (
             <div
               data-testid="trash-selection"
               className="flex min-w-0 items-center justify-between gap-3"
@@ -674,7 +708,7 @@ export function TrashScreen({
                       data-selected={
                         selection.selected.has(item.id) || undefined
                       }
-                      className="flex min-w-0 items-start gap-2 md:items-center"
+                      className="flex min-w-0 items-start gap-2 rounded-lg data-[selected=true]:bg-accent/8 data-[selected=true]:ring-1 data-[selected=true]:ring-accent md:items-center"
                     >
                       {selectionMode || selection.selected.size ? (
                         <Checkbox
@@ -685,7 +719,10 @@ export function TrashScreen({
                             selection.toggle({
                               id: item.id,
                               displayName: item.displayName,
+                              visibility: item.visibility,
+                              hasAlbums: item.hasAlbums,
                               byteSize: item.byteSize,
+                              deletionStatus: item.deletionStatus,
                               thumbnailUrl: item.thumbnailPath,
                               storage: item.storage,
                             })
@@ -710,7 +747,7 @@ export function TrashScreen({
                           permanentBatch.pending ||
                           permanentBatch.unresolved
                         }
-                        className="grid h-auto min-h-26! min-w-0 flex-1 grid-cols-1 items-start justify-items-start whitespace-normal rounded-lg px-0 py-0 text-left text-sm font-normal leading-[22px] [overflow-wrap:anywhere] md:min-h-18! md:grid-cols-3 md:items-center md:gap-3 md:py-1 xl:grid-cols-[334px_minmax(0,1fr)_minmax(0,1fr)]"
+                        className="grid h-auto min-h-26! min-w-0 flex-1 grid-cols-1 items-start justify-items-start whitespace-normal rounded-lg px-0 py-0 text-left text-sm font-normal leading-[22px] [overflow-wrap:anywhere] [--button-bg-hover:color-mix(in_srgb,var(--foreground)_5%,transparent)] [--button-bg-pressed:color-mix(in_srgb,var(--foreground)_8%,transparent)] active:transform-none data-[pressed=true]:transform-none md:min-h-18! md:grid-cols-3 md:items-center md:gap-3 md:py-1 xl:grid-cols-[334px_minmax(0,1fr)_minmax(0,1fr)]"
                         onPress={() => openRecord(item.id)}
                       >
                         <span className="flex min-w-0 items-start gap-3 md:items-center">
@@ -757,6 +794,14 @@ export function TrashScreen({
                           {new Date(item.trashedAt).toLocaleString('zh-CN')}
                         </span>
                       </Button>
+                      <ActionIconButton
+                        label={`图片操作：${item.displayName}`}
+                        className="mt-3 md:mt-0"
+                        isDisabled={selectionDisabled}
+                        onPress={(event) => openContextMenu(event.target)}
+                      >
+                        <MoreHorizontal size={18} aria-hidden />
+                      </ActionIconButton>
                     </li>
                   ))}
                 </ul>
@@ -779,7 +824,6 @@ export function TrashScreen({
                     : '回收站为空'
                   : '本页已无记录'}
               </h2>
-              <p>回收的图片记录会显示在这里。</p>
               {page > 1 ? (
                 <Button className="min-h-11" onPress={() => setPage(1)}>
                   返回第一页
@@ -789,6 +833,7 @@ export function TrashScreen({
           ) : null}
         </section>
       )}
+      <BatchWorkspaceContent batch={batch} client={client} />
       {error ? (
         <Alert status="danger" className="my-4" data-testid="trash-error">
           <Alert.Content>
@@ -826,12 +871,15 @@ function TrashSearch({
       onChange={setValue}
       onSubmit={onSubmit}
       onClear={() => onSubmit('')}
-      className="w-full min-w-0"
+      className="w-full min-w-0 sm:w-70"
     >
       <SearchField.Group className="h-12 min-w-0 rounded-lg border border-border bg-background shadow-none">
+        <SearchField.SearchIcon className="text-muted">
+          <Search aria-hidden />
+        </SearchField.SearchIcon>
         <SearchField.Input
           placeholder="搜索文件名称"
-          className="h-12 pl-9 text-sm placeholder:text-foreground"
+          className="h-12 min-w-0 text-sm placeholder:text-foreground"
         />
         {value ? (
           <SearchField.ClearButton aria-label="清除搜索" className="size-12" />

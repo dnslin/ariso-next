@@ -26,6 +26,7 @@ const choice = (name) =>
   `button[data-slot="toggle-button"]:has-text("${name}")`;
 const mainId = 'issue191-main';
 const unsharedId = 'issue191-new';
+const createNameId = 'issue191-create-name';
 const fixtureDirectory = join(config.dataDirectory, 'storage', 'issue191');
 const phase = config.sharingManagementPhase;
 const representative = phase === undefined || phase === 'representative';
@@ -123,19 +124,21 @@ async function layouts(
       if (scrollButton && width < 768)
         await page.evaluate((name) => {
           const button = [...document.querySelectorAll('button')].find(
-            (node) => node.textContent.trim() === name,
+            (node) =>
+              (node.getAttribute('aria-label') ?? node.textContent.trim()) ===
+              name,
           );
-          (name === '保存展示'
+          (name === '保存访客展示'
             ? button.closest('[data-slot="card"]')
             : button
           ).scrollIntoView({ block: 'center' });
         }, scrollButton);
       const geometry = await readGeometry(page);
       assertGeometry(geometry, `${state}/${theme}/${width}`);
-      if (scrollButton === '保存展示') {
+      if (scrollButton === '保存访客展示') {
         const selectedChoice = await page.evaluate(() => {
           const card = [...document.querySelectorAll('button')]
-            .find((node) => node.textContent.trim() === '保存展示')
+            .find((node) => node.getAttribute('aria-label') === '保存访客展示')
             .closest('[data-slot="card"]');
           const selected = card.querySelector(
             '[data-slot="toggle-button"][aria-checked="true"]',
@@ -170,7 +173,7 @@ async function assertPasswordRow() {
     const group = input.closest('[data-slot="input-group"]');
     const icon = group.querySelector('button');
     const save = [...document.querySelectorAll('button')].find(
-      (node) => node.textContent.trim() === '保存密码',
+      (node) => node.getAttribute('aria-label') === '保存访问密码',
     );
     return {
       group: group.getBoundingClientRect().toJSON(),
@@ -315,7 +318,7 @@ async function assertDisplaySaved() {
   assert.deepEqual(
     await page.evaluate(() => {
       const save = [...document.querySelectorAll('button')].find(
-        (node) => node.textContent.trim() === '保存展示',
+        (node) => node.getAttribute('aria-label') === '保存访客展示',
       );
       return {
         disabled: save.disabled,
@@ -323,7 +326,7 @@ async function assertDisplaySaved() {
           .textContent,
       };
     }),
-    { disabled: true, status: '当前设置已保存' },
+    { disabled: true, status: '已保存' },
     'Unchanged visitor display stays saved independently of password or deadline drafts',
   );
 }
@@ -421,7 +424,8 @@ async function seed() {
   const now = Date.now();
   await sql(`INSERT INTO albums (id,name,description,created_at,updated_at) VALUES
     ('${mainId}','分享验证 山野之间','独立浏览器测试',${now},${now}),
-    ('${unsharedId}','分享验证 未创建','独立浏览器测试',${now},${now})`);
+    ('${unsharedId}','分享验证 未创建','独立浏览器测试',${now},${now}),
+    ('${createNameId}','分享验证 首次名称设置','独立浏览器测试',${now},${now})`);
   await sql(`INSERT INTO storage_configs (id,name,type,enabled,local_path,created_at,updated_at) VALUES
     ('issue191-storage','分享验证存储','local',1,'issue191',${now},${now})`);
   const png = await readFile(
@@ -471,7 +475,7 @@ async function settingsPresentation() {
               '[data-testid="share-settings"]',
             );
             const back = document.querySelector(
-              'button[aria-label="返回分享管理"]',
+              'button[aria-label="返回分享"]',
             );
             const chip = document.querySelector('main [data-slot="chip"]');
             const label = chip?.lastElementChild;
@@ -577,7 +581,7 @@ async function settingsPresentation() {
     );
   }
   await settings();
-  await page.focus(button('返回分享管理'));
+  await page.focus(button('返回分享'));
   await page.keyboard.press('Enter');
   await page.waitForURL(`${config.origin}/shares`);
   await page.goto(`${config.origin}${settingsPath()}?from=album`);
@@ -749,9 +753,7 @@ try {
         (await current()).url,
       );
       const state = await page.evaluate(() => {
-        const back = document.querySelector(
-          'button[aria-label="返回分享管理"]',
-        );
+        const back = document.querySelector('button[aria-label="返回分享"]');
         const rect = back.getBoundingClientRect();
         const hit = document.elementFromPoint(
           rect.left + rect.width / 2,
@@ -768,7 +770,7 @@ try {
       assert.ok(state.toastTitles.includes('分享地址已复制'));
       await shot(`copy-toast-${theme}-${width}`);
       report.copyNoticeReturn.push({ theme, width, ...state });
-      await page.click(button('返回分享管理'));
+      await page.click(button('返回分享'));
       await page.waitForURL(`${config.origin}/shares`);
       await settings();
     }
@@ -892,6 +894,98 @@ try {
       `UPDATE site_settings SET public_url='${savedSite.public_url.replaceAll("'", "''")}' WHERE id=1`,
     );
 
+    report.stage = 'ordinary-toggle-without-confirmation';
+    await settings();
+    const sharingSwitch =
+      '[data-slot="switch-content"]:has(input[aria-label="启用分享"])';
+    await intercept({ method: 'PATCH', mode: 'hold' });
+    await page.focus('input[aria-label="启用分享"]');
+    await page.keyboard.press('Space');
+    await page.waitForFunction(
+      () => typeof window.__sharingRelease === 'function',
+    );
+    assert.deepEqual(
+      await page.evaluate(() => {
+        const input = document.querySelector('input[aria-label="启用分享"]');
+        return {
+          checked: input.checked,
+          disabled: input.disabled,
+          dialog: !!document.querySelector('[data-testid="share-dialog"]'),
+        };
+      }),
+      { checked: true, disabled: true, dialog: false },
+    );
+    assert.deepEqual(
+      (await traffic())
+        .filter((entry) => entry.method === 'PATCH')
+        .map((entry) => entry.body),
+      [{ enabled: false }],
+    );
+    await layouts('toggle-pending', [390, 1440]);
+    await page.evaluate(() => window.__sharingRelease());
+    await toast('已停用');
+    await page.waitForFunction(
+      () => document.activeElement?.getAttribute('aria-label') === '启用分享',
+    );
+    assert.equal((await current()).enabled, false);
+    await restore();
+    await intercept({ method: 'PATCH' });
+    await page.click(sharingSwitch);
+    await toast('已启用');
+    assert.equal((await current()).enabled, true);
+    assert.deepEqual(
+      (await traffic())
+        .filter((entry) => entry.method === 'PATCH')
+        .map((entry) => entry.body),
+      [{ enabled: true }],
+    );
+    await restore();
+    await intercept({ method: 'PATCH', mode: 'reject' });
+    await page.focus('input[aria-label="启用分享"]');
+    await page.keyboard.press('Space');
+    await feedback('拒绝当前输入');
+    await page.waitForFunction(
+      () => document.activeElement?.getAttribute('aria-label') === '启用分享',
+    );
+    assert.equal(
+      await page.evaluate(
+        () => document.querySelector('input[aria-label="启用分享"]').checked,
+      ),
+      true,
+    );
+    assert.equal(
+      await page.evaluate(
+        () => !!document.querySelector('[data-testid="share-dialog"]'),
+      ),
+      false,
+    );
+    await layouts('toggle-failed', [390, 1440]);
+    await restore();
+    await intercept({ method: 'PATCH', mode: 'lost' });
+    await page.click(sharingSwitch);
+    await page.waitForFunction(
+      () =>
+        !document.querySelector('input[aria-label="启用分享"]').checked &&
+        !document.querySelector('input[aria-label="启用分享"]').disabled,
+    );
+    assert.deepEqual(
+      (await traffic()).map((entry) => entry.method),
+      ['PATCH', 'GET'],
+    );
+    assert.equal((await current()).enabled, false);
+    await restore();
+    await page.click(button('启用分享说明'));
+    await page.waitForSelector('[role="dialog"][aria-label="启用分享说明"]');
+    await page.keyboard.press('Escape');
+    await page.waitForFunction(
+      () =>
+        document.activeElement?.getAttribute('aria-label') === '启用分享说明',
+    );
+    await api(shareApi(), 'PATCH', { enabled: true });
+    report.checks.push(
+      'Ordinary toggle saves directly with no confirmation; pending retains confirmed state, known failure is inline, lost write reads back once without replay, and Tips is keyboard reachable.',
+    );
+
     report.stage = 'independent-display-and-password';
     await settings();
     await accordion('访问密码');
@@ -899,9 +993,9 @@ try {
     await assertDisplaySaved();
     await intercept({ method: 'PATCH' });
     await page.click(choice('瀑布流'));
-    await layouts('display-unsaved', [390, 1440], '保存展示');
+    await layouts('display-unsaved', [390, 1440], '保存访客展示');
     await assertPasswordRow();
-    await page.click(button('保存展示'));
+    await page.click(button('保存访客展示'));
     await toast('展示');
     assert.deepEqual(
       (await traffic())
@@ -922,7 +1016,7 @@ try {
     // the other field with the initial snapshot.
     await api(shareApi(), 'PATCH', { showName: true });
     await intercept({ method: 'PATCH', mode: 'hold' });
-    await page.click(button('保存密码'));
+    await page.click(button('保存访问密码'));
     await page.waitForFunction(
       () => typeof window.__sharingRelease === 'function',
     );
@@ -959,7 +1053,7 @@ try {
       '[data-slot="switch-content"]:has(input[aria-label="显示图片名称"])',
     );
     await intercept({ method: 'PATCH' }, peer);
-    await peer.click(button('保存展示'));
+    await peer.click(button('保存访客展示'));
     await toast('展示已保存', peer);
     assert.deepEqual(
       (await traffic(peer))
@@ -968,7 +1062,7 @@ try {
       [{ showName: false }],
     );
     await intercept({ method: 'PATCH' });
-    await page.click(button('保存展示'));
+    await page.click(button('保存访客展示'));
     await toast('展示已保存');
     assert.deepEqual(
       (await traffic())
@@ -1023,7 +1117,7 @@ try {
       'Confirmed password clear discards the replacement draft',
     );
     await restore();
-    await page.click(button('返回分享管理'));
+    await page.click(button('返回分享'));
     await page.waitForSelector('[data-testid="shares-screen"]');
     report.checks.push(
       'Password clear is a separate confirmed PATCH; cancel keeps protection, success clears only the password and retains the URL.',
@@ -1174,25 +1268,90 @@ try {
       'Disabled and expired sharing requires a deadline choice; selecting never expires restores the original URL in one PATCH without overwriting password/display.',
     );
 
+    report.stage = 'first-create-name-and-footer';
+    await settings(createNameId);
+    await intercept({ method: 'POST', path: shareApi(createNameId) });
+    const hiddenName =
+      '[data-slot="switch-content"]:has(input[aria-label="隐藏图片名称"])';
+    await page.click(hiddenName);
+    assert.equal(await current(createNameId), null);
+    assert.equal(
+      (await traffic()).filter((entry) => entry.method === 'POST').length,
+      0,
+      'Editing first-create name visibility does not create a share',
+    );
+    await page.click('button[form="share-create-form"]');
+    await page.waitForSelector('[data-testid="share-address"]');
+    await page.waitForFunction(
+      () => document.activeElement === document.querySelector('h1'),
+    );
+    assert.equal((await current(createNameId)).showName, true);
+    const creationWrites = (await traffic()).filter((entry) =>
+      ['POST', 'PATCH'].includes(entry.method),
+    );
+    assert.equal(creationWrites.length, 1);
+    assert.equal(creationWrites[0].method, 'POST');
+    assert.equal(creationWrites[0].body.showName, true);
+    await restore();
+    report.checks.push(
+      'First-create hidden-name switch stays local until the footer submit; one real POST saves showName and restores heading focus without an extra PATCH.',
+    );
+
     report.stage = 'album-entry-and-create-current-record';
     await page.goto(`${config.origin}/albums/${unsharedId}`);
-    await page.waitForSelector(button('更多'));
-    await page.click(button('更多'));
-    await page.waitForSelector('loc=role:link[name="分享设置"]');
-    await page.click('loc=role:link[name="分享设置"]');
+    await page.waitForSelector(button('分享设置'));
+    await page.click(button('分享设置'));
     await page.waitForURL(
       `${config.origin}${settingsPath(unsharedId)}?from=album`,
     );
     await page.waitForSelector('[data-testid="share-create"]');
-    await page.click(button('创建并启用分享'));
+    assert.equal(await current(unsharedId), null);
+    assert.equal(
+      await page.evaluate(
+        () => !!document.querySelector('[data-testid="share-dialog"]'),
+      ),
+      false,
+      'Entering an unshared album opens the real editable form without a creation dialog',
+    );
+    await intercept({ method: 'POST', path: shareApi(unsharedId) });
+    await page.fill('#share-password', '尚未提交的分享密码');
+    await page.click(button('返回相册'));
     await page.waitForSelector('[data-testid="share-dialog"]');
+    await page.click('[data-testid="share-dialog"] button:has-text("取消")');
+    await page.waitForSelector('[data-testid="share-dialog"]', {
+      state: 'hidden',
+    });
+    assert.equal(
+      await page.evaluate(
+        () => document.querySelector('#share-password').value,
+      ),
+      '尚未提交的分享密码',
+    );
+    assert.equal(
+      (await traffic()).filter((entry) => entry.method === 'POST').length,
+      0,
+    );
+    await page.click(button('返回相册'));
+    await page.waitForSelector('[data-testid="share-dialog"]');
+    await page.click(button('放弃修改并离开'));
+    await page.waitForURL(`${config.origin}/albums/${unsharedId}`);
+    assert.equal(
+      (await traffic()).filter((entry) => entry.method === 'POST').length,
+      0,
+    );
+    assert.equal(
+      await current(unsharedId),
+      null,
+      'Cancelling and discarding an unsaved first-create form never creates a share',
+    );
+    await restore();
+    await page.click(button('分享设置'));
+    await page.waitForSelector('[data-testid="share-create"]');
     await layouts('create', [390, 1440]);
     const tooLongPassword = 'x'.repeat(129);
     await intercept({ method: 'POST', path: shareApi(unsharedId) });
     await page.fill('#share-password', tooLongPassword);
-    await page.click(
-      '[data-testid="share-dialog"] button:has-text("创建并启用")',
-    );
+    await page.click('button[form="share-create-form"]');
     await feedback('密码需为 1–128 个字符');
     assert.equal(
       (await traffic()).filter((entry) => entry.method === 'POST').length,
@@ -1211,7 +1370,7 @@ try {
       const input = document.querySelector('#share-password');
       const error = [
         ...document.querySelectorAll(
-          '[data-testid="share-dialog"] [role="alert"],[data-testid="share-dialog"] [data-slot="field-error"]',
+          '[data-testid="share-create"] [role="alert"],[data-testid="share-create"] [data-slot="field-error"]',
         ),
       ].find((node) => node.textContent.includes('密码需为 1–128 个字符'));
       return {
@@ -1249,9 +1408,7 @@ try {
         showName: true,
       })
     ).share;
-    await page.click(
-      '[data-testid="share-dialog"] button:has-text("创建并启用")',
-    );
+    await page.click('button[form="share-create-form"]');
     await page.waitForSelector('[data-testid="share-address"]');
     await toast('已读取分享设置');
     const created = await current(unsharedId);
@@ -1340,7 +1497,7 @@ try {
     const tooLongPassword = 'x'.repeat(129);
     await page.fill('#share-password', tooLongPassword);
     await intercept({ method: 'PATCH' });
-    await page.click(button('保存密码'));
+    await page.click(button('保存访问密码'));
     await feedback('密码需为 1–128 个字符');
     assert.equal(
       (await traffic()).filter((entry) => entry.method === 'PATCH').length,
@@ -1392,7 +1549,7 @@ try {
       displayBefore.layout === 'grid' ? 'masonry' : 'grid';
     await page.click(choice(attemptedLayout === 'masonry' ? '瀑布流' : '网格'));
     await intercept({ method: 'PATCH', mode: 'reject' });
-    await page.click(button('保存展示'));
+    await page.click(button('保存访客展示'));
     await feedback('保存失败|拒绝当前输入');
     assert.equal((await current()).layout, displayBefore.layout);
     assert.equal(
@@ -1412,7 +1569,7 @@ try {
         .map((entry) => entry.body),
       [{ layout: attemptedLayout }],
     );
-    await layouts('display-failed', [390, 1440], '保存展示');
+    await layouts('display-failed', [390, 1440], '保存访客展示');
     await restore();
     report.checks.push(
       'Rejected display PATCH leaves the saved layout unchanged and retains the visible draft selection for explicit retry.',
@@ -1423,7 +1580,7 @@ try {
     await accordion('访问密码');
     await page.fill('#share-password', '失败时保留');
     await intercept({ method: 'PATCH', mode: 'reject' });
-    await page.click(button('保存密码'));
+    await page.click(button('保存访问密码'));
     await feedback('保存失败|拒绝当前输入');
     assert.equal(
       await page.evaluate(
@@ -1434,7 +1591,7 @@ try {
     await restore();
     report.stage = 'unknown-password-never-proves-value';
     await intercept({ method: 'PATCH', mode: 'lost', readMode: 'hold' });
-    await page.click(button('保存密码'));
+    await page.click(button('保存访问密码'));
     await page.waitForFunction(
       () => typeof window.__sharingReadRelease === 'function',
     );
@@ -1442,12 +1599,12 @@ try {
     const blockedWrites = await page.evaluate(() =>
       [...document.querySelectorAll('button')]
         .filter((node) =>
-          ['保存密码', '保存有效期', '保存展示', '重新生成'].includes(
-            node.textContent.trim(),
+          ['保存访问密码', '保存有效期', '保存访客展示', '重新生成'].includes(
+            node.getAttribute('aria-label') ?? node.textContent.trim(),
           ),
         )
         .map((node) => ({
-          name: node.textContent.trim(),
+          name: node.getAttribute('aria-label') ?? node.textContent.trim(),
           disabled: node.disabled,
         })),
     );
@@ -1522,7 +1679,7 @@ try {
     for (const key of ['token', 'expiresAt', 'layout', 'showName'])
       assert.equal(afterClear[key], beforeClear[key]);
     await restore();
-    await page.click(button('返回分享管理'));
+    await page.click(button('返回分享'));
     await page.waitForSelector('[data-testid="shares-screen"]');
     report.checks.push(
       'A real committed password clear with lost response uses one PATCH and GET only; confirmation clears the replacement draft and returns without a discard prompt, preserving all other settings.',
@@ -1743,7 +1900,7 @@ try {
     await accordion('访问密码');
     await page.fill('#share-password', '会话失效后不得提交');
     await sql('DELETE FROM session');
-    await page.click(button('保存密码'));
+    await page.click(button('保存访问密码'));
     await page.waitForSelector('#email');
     const expiredLogin = new URL(await page.url());
     assert.equal(expiredLogin.pathname, '/login');
@@ -1969,7 +2126,7 @@ try {
         `UPDATE site_settings SET public_url='${savedSite.public_url.replaceAll("'", "''")}',time_zone='${savedSite.time_zone.replaceAll("'", "''")}' WHERE id=1`,
       );
     await sql(
-      "DELETE FROM albums WHERE id IN ('issue191-main','issue191-new')",
+      "DELETE FROM albums WHERE id IN ('issue191-main','issue191-new','issue191-create-name')",
     );
     await sql("DELETE FROM media_versions WHERE image_id LIKE 'issue191-%'");
     await sql("DELETE FROM media_objects WHERE image_id LIKE 'issue191-%'");

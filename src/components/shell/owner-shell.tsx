@@ -32,7 +32,7 @@ const navigation = [
   { href: '/library', label: '图库', icon: <Images /> },
   { href: '/albums', label: '相册', icon: <Folder /> },
   { href: '/tags', label: '标签', icon: <Tags /> },
-  { href: '/shares', label: '分享管理', icon: <LinkIcon /> },
+  { href: '/shares', label: '分享', icon: <LinkIcon /> },
   { href: '/trash', label: '回收站', icon: <Trash2 /> },
   {
     href: '/analytics',
@@ -42,7 +42,7 @@ const navigation = [
   },
   {
     href: '/settings/storage',
-    label: '存储管理',
+    label: '存储',
     icon: <HardDrive />,
   },
   {

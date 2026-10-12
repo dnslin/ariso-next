@@ -33,6 +33,7 @@ import {
   ShieldCheck,
 } from 'lucide-react';
 import { OwnerShell } from '../../components/shell/owner-shell';
+import { StorageTip } from '../../components/storage/storage-tip';
 
 import { useResetUpload } from '../../components/upload/provider';
 import {
@@ -44,6 +45,7 @@ import {
 import { shareRequest, ShareRequestError, shareUrl, type Share } from './api';
 import { useSettings, type Action } from './use-settings';
 import { Choices, ExpiryControls, SettingSwitch } from './controls';
+import { ShareCreateForm } from './create-form';
 type SettingsProps = {
   albumId: string;
   timeZone: string;
@@ -164,7 +166,7 @@ function SettingsContent({
   returnTo: string;
 }) {
   const router = useRouter();
-  const returnLabel = props.fromAlbum ? '返回相册' : '返回分享管理';
+  const returnLabel = props.fromAlbum ? '返回相册' : '返回分享';
   const settings = useSettings(
     initialShare,
     props.albumId,
@@ -200,6 +202,7 @@ function SettingsContent({
     dialogRef,
     errors,
     busy,
+    enabledSaving,
     blocked,
     copyBlocked,
     canEndChecking,
@@ -215,6 +218,7 @@ function SettingsContent({
     savePassword,
     saveExpiry,
     saveDisplay,
+    setEnabled,
     readResult,
     endChecking,
     returnPage,
@@ -266,19 +270,31 @@ function SettingsContent({
       onSessionExpire={onExpire}
       returnTo={returnTo}
       footer={
-        <>
+        !share ? (
           <Button
-            className={buttonStyle}
-            isDisabled
-            aria-describedby="preview-note"
+            type="submit"
+            form="share-create-form"
+            className={`${buttonStyle} gap-2`}
+            isDisabled={blocked}
           >
-            <Eye size={16} aria-hidden />
-            预览分享
+            <LinkIcon size={16} aria-hidden />
+            {busy ? '正在提交…' : '创建并启用分享'}
           </Button>
-          <span id="preview-note" className="sr-only">
-            访客页面尚未开放
-          </span>
-        </>
+        ) : (
+          <>
+            <Button
+              className={buttonStyle}
+              isDisabled
+              aria-describedby="preview-note"
+            >
+              <Eye size={16} aria-hidden />
+              预览
+            </Button>
+            <span id="preview-note" className="sr-only">
+              访客页面尚未开放
+            </span>
+          </>
+        )
       }
     >
       <div
@@ -290,13 +306,18 @@ function SettingsContent({
         </h1>
         <Tooltip>
           <Button
-            isIconOnly
-            variant="outline"
+            isIconOnly={Boolean(share)}
+            variant={share ? 'outline' : 'secondary'}
             aria-label={returnLabel}
-            className="size-11 shrink-0 rounded-lg"
+            className={
+              share
+                ? 'size-11 shrink-0 rounded-lg'
+                : 'min-h-11 shrink-0 gap-2 rounded-lg px-3 text-sm'
+            }
             onPress={returnPage}
           >
             <ArrowLeft size={18} className="size-[18px]" aria-hidden />
+            {!share ? '返回' : null}
           </Button>
           <Tooltip.Content>{returnLabel}</Tooltip.Content>
         </Tooltip>
@@ -305,20 +326,10 @@ function SettingsContent({
         </p>
       </div>
       {!share ? (
-        <Card data-testid="share-create" className={cardStyle}>
-          <Card.Content className="grid gap-4 p-4 md:p-6">
-            <h2 className="text-base font-medium">尚未创建分享</h2>
-            <p className="text-sm text-muted">创建后可分享相册中的公开图片。</p>
-            <Button
-              className={`${buttonStyle} w-fit`}
-              isDisabled={blocked}
-              onPress={() => open('create')}
-            >
-              创建并启用分享
-            </Button>
-            {feedbackNode}
-          </Card.Content>
-        </Card>
+        <>
+          <ShareCreateForm settings={settings} timeZone={props.timeZone} />
+          {feedbackNode}
+        </>
       ) : (
         <div className="grid gap-4 md:gap-6">
           <Card className={cardStyle}>
@@ -328,6 +339,9 @@ function SettingsContent({
                 <Card.Title className="text-base font-medium">
                   分享地址
                 </Card.Title>
+                <StorageTip label="分享地址">
+                  相册中的公开图片会随内容变化自动更新。
+                </StorageTip>
               </div>
               <Chip variant="soft" className="bg-default text-foreground">
                 <span className="mr-1.5 inline-block size-1.5 rounded-full bg-current" />
@@ -368,9 +382,6 @@ function SettingsContent({
                   当前地址尚未确认，请先核对分享状态。
                 </p>
               ) : null}
-              <p className="text-xs leading-5 text-muted">
-                相册中的公开图片会随内容变化自动更新。
-              </p>
               {feedbackNode}
             </Card.Content>
           </Card>
@@ -398,7 +409,7 @@ function SettingsContent({
                         <span className="grid flex-1 gap-1 text-left">
                           <span className="font-medium">访问密码</span>
                           <span className="text-xs text-muted">
-                            {hasPassword ? '已设置' : '未设置，持链接即可访问'}
+                            {hasPassword ? '已设置' : '未设置'}
                           </span>
                         </span>
                         <Accordion.Indicator>
@@ -463,11 +474,13 @@ function SettingsContent({
                             {errors.password}
                           </FieldError>
                           <Button
+                            aria-label="保存访问密码"
+                            data-testid="share-save-password"
                             isDisabled={blocked}
                             className={`${buttonStyle} mt-1 w-fit shrink-0 min-[1200px]:col-start-2 min-[1200px]:row-start-2 min-[1200px]:mt-0 min-[1200px]:self-start`}
                             onPress={savePassword}
                           >
-                            保存密码
+                            保存
                           </Button>
                         </TextField>
                         <p className="text-xs leading-5 text-muted">
@@ -526,35 +539,48 @@ function SettingsContent({
                           error={errors.expiry}
                         />
                         <Button
+                          aria-label="保存有效期"
+                          data-testid="share-save-expiry"
                           isDisabled={blocked}
                           className={`${buttonStyle} w-fit`}
                           onPress={() => saveExpiry()}
                         >
-                          保存有效期
+                          保存
                         </Button>
                       </Accordion.Body>
                     </Accordion.Panel>
                   </Accordion.Item>
                 </Accordion>
               </Card.Content>
-              <Card.Footer className="border-t border-border px-4 py-3 md:px-6">
-                <SettingSwitch
-                  label="启用分享"
-                  selected={enabled && !expired}
-                  disabled={blocked}
-                  onChange={() =>
-                    open(
-                      !enabled || expired
-                        ? expired
-                          ? 'enable-expired'
-                          : 'enable'
-                        : 'disable',
-                      document.querySelector<HTMLInputElement>(
-                        'input[aria-label="启用分享"]',
-                      ),
-                    )
-                  }
-                />
+              <Card.Footer className="grid gap-2 border-t border-border px-4 py-3 md:px-6">
+                <div className="flex w-full items-center gap-2">
+                  <SettingSwitch
+                    label="启用分享"
+                    selected={enabled && !expired}
+                    disabled={blocked}
+                    onChange={(value) =>
+                      void setEnabled(
+                        value,
+                        document.querySelector<HTMLInputElement>(
+                          'input[aria-label="启用分享"]',
+                        ),
+                      )
+                    }
+                  />
+                  <StorageTip label="启用分享">
+                    停用后，当前地址无法访问，已解锁访客也会失效。
+                  </StorageTip>
+                </div>
+                {enabledSaving && !feedback ? (
+                  <p role="status" className="text-xs text-muted">
+                    正在保存…
+                  </p>
+                ) : null}
+                {errors.enabled ? (
+                  <p role="alert" className="text-sm text-danger">
+                    {errors.enabled}
+                  </p>
+                ) : null}
               </Card.Footer>
             </Card>
             <Card className={cardStyle}>
@@ -605,14 +631,16 @@ function SettingsContent({
               </Card.Content>
               <Card.Footer className="flex flex-wrap items-center justify-between gap-3 border-t border-border px-4 py-3 md:px-6">
                 <p className="text-xs text-muted">
-                  {dirty ? '有未保存的修改' : '当前设置已保存'}
+                  {dirty ? '未保存' : '已保存'}
                 </p>
                 <Button
+                  aria-label="保存访客展示"
+                  data-testid="share-save-display"
                   isDisabled={!dirty || blocked}
                   className={buttonStyle}
                   onPress={saveDisplay}
                 >
-                  保存展示
+                  保存
                 </Button>
               </Card.Footer>
             </Card>
@@ -625,11 +653,11 @@ function SettingsContent({
                   aria-hidden
                   className="mt-0.5 shrink-0 text-muted"
                 />
-                <div className="grid gap-1">
+                <div className="flex items-center gap-2">
                   <p className="text-sm font-medium">重新生成地址</p>
-                  <p className="text-xs leading-5 text-muted">
+                  <StorageTip label="重新生成地址">
                     旧地址与已解锁会话将立即失效。
-                  </p>
+                  </StorageTip>
                 </div>
               </div>
               <Button
@@ -692,38 +720,6 @@ function SettingsContent({
                       选中完整地址
                     </Button>
                   </>
-                ) : modal === 'create' ? (
-                  <>
-                    <p>只展示相册中的公开图片。已有分享会直接返回现有设置。</p>
-                    <TextField
-                      value={password}
-                      onChange={setPassword}
-                      isDisabled={busy}
-                      isInvalid={Boolean(errors.dialogPassword)}
-                      validationBehavior="aria"
-                    >
-                      <Label>访问密码（可选）</Label>
-                      <InputGroup
-                        fullWidth
-                        className={`min-h-12 rounded-lg border bg-transparent ${errors.dialogPassword ? 'border-danger' : 'border-border'}`}
-                      >
-                        <InputGroup.Input
-                          id="share-password"
-                          type="password"
-                          autoComplete="new-password"
-                          placeholder="留空表示无需密码"
-                        />
-                      </InputGroup>
-                      <FieldError>{errors.dialogPassword}</FieldError>
-                    </TextField>
-                    <ExpiryControls
-                      draft={expiry}
-                      onChange={setExpiry}
-                      timeZone={props.timeZone}
-                      disabled={busy}
-                      error={errors.dialogExpiry}
-                    />
-                  </>
                 ) : modal === 'enable-expired' ? (
                   <>
                     <p>分享已过期。选择新的有效期后启用。</p>
@@ -739,13 +735,9 @@ function SettingsContent({
                   <p>
                     {modal === 'discard'
                       ? '离开后，本页未保存的修改将丢弃。'
-                      : modal === 'disable'
-                        ? '停用后，当前地址无法访问，已解锁访客也会失效。'
-                        : modal === 'enable'
-                          ? '启用后，访客可以通过当前地址访问。'
-                          : modal === 'clear'
-                            ? '清除后，持有链接的访客无需密码即可访问。'
-                            : '重新生成后，旧地址与已解锁会话立即失效。访问密码、有效期和展示设置保持。'}
+                      : modal === 'clear'
+                        ? '清除后，持有链接的访客无需密码即可访问。'
+                        : '重新生成后，旧地址与已解锁会话立即失效。访问密码、有效期和展示设置保持。'}
                   </p>
                 )}
                 {errors.dialog ? (
@@ -770,19 +762,15 @@ function SettingsContent({
                   isDisabled={busy}
                   onPress={confirm}
                 >
-                  {modal === 'create'
-                    ? '创建并启用'
-                    : modal === 'discard'
-                      ? '放弃修改并离开'
-                      : modal === 'manual'
-                        ? '完成'
-                        : modal === 'enable' || modal === 'enable-expired'
-                          ? '启用分享'
-                          : modal === 'disable'
-                            ? '停用分享'
-                            : modal === 'clear'
-                              ? '清除密码'
-                              : '重新生成地址'}
+                  {modal === 'discard'
+                    ? '放弃修改并离开'
+                    : modal === 'manual'
+                      ? '完成'
+                      : modal === 'enable-expired'
+                        ? '启用分享'
+                        : modal === 'clear'
+                          ? '清除密码'
+                          : '重新生成地址'}
                 </Button>
               </Modal.Footer>
             </Modal.Dialog>
@@ -793,17 +781,13 @@ function SettingsContent({
   );
 }
 function modalTitle(action: Action | null) {
-  return action === 'create'
-    ? '创建分享'
-    : action === 'discard'
-      ? '放弃未保存修改'
-      : action === 'manual'
-        ? '手动复制地址'
-        : action === 'clear'
-          ? '清除访问密码'
-          : action === 'disable'
-            ? '停用分享'
-            : action === 'enable' || action === 'enable-expired'
-              ? '启用分享'
-              : '重新生成地址';
+  return action === 'discard'
+    ? '放弃未保存修改'
+    : action === 'manual'
+      ? '手动复制地址'
+      : action === 'clear'
+        ? '清除访问密码'
+        : action === 'enable-expired'
+          ? '启用分享'
+          : '重新生成地址';
 }

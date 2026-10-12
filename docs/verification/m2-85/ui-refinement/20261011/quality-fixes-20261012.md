@@ -1,0 +1,77 @@
+# PR #279 双 Agent 审计修复
+
+2026-10-12，用户授权修复两份审计确认的三个问题，补充回归测试，验证后提交并更新现有 PR。基线为 `e883b928594d8bb69a6c977cf980ffd95e5f5977`，继续使用 `codex/ui-review-refinement`。不包含合并、Issue 关闭、发布或现有预览清理。
+
+## 修改范围
+
+1. **标签抽屉未知结果可关闭**：关系写入或核对响应丢失后，允许通过 X、底部关闭、Escape 和遮罩收起抽屉。工作区保留待核对结果，重开保留搜索、页码、勾选目标、新建标签草稿及核对失败状态。隐藏时门户正常卸载，不再发起目标查询，不保留焦点锁。写入处理中以及新建标签处理中或结果未知时仍禁止关闭。X 显式调用已有 `batch.close`。
+2. **待处理与不可用分开**：图库、相册和回收站快捷操作使用 HeroUI `isPending` 表示请求处理中，保持原按钮可聚焦，交互由组件拦截；真实不可用条件继续使用 `isDisabled`。删除批量控制器中等待按钮恢复的 `MutationObserver`，只保留可取消的单帧焦点恢复。来源消失或原生禁用时，转到搜索框或页面标题。
+3. **存储离开确认独立**：将目的地址、来源焦点、普通/修饰键点击处理及确认 UI 提取到同目录 `storage-leave-confirmation.tsx`。编辑器从 1027 行降至 941 行。未保存或保存结果未知时仍确认；继续编辑保留输入并回到原入口；放弃后到达原目标。保存、连接测试、维护和默认存储的业务流程未迁移。
+
+没有 schema、新依赖、写入接口或公共外壳修改。两个 Agent 分别负责标签与存储边界，父 Agent 处理焦点；随后交叉只读复审，未发现此次修复的高置信功能回归。
+
+## 回归覆盖
+
+| 范围           | 修复前证据                                                            | 修复后验证内容                                                                                                   |
+| -------------- | --------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| 标签 Drawer    | 新增关闭断言 2 项失败；真实浏览器另发现 X 未调用关闭，补测后 1 项失败 | 关系 unknown 可收起/重开且保留草稿，真实 pending 与新建 unknown 仍锁定；普通关闭卸载工作区                       |
+| 快捷按钮与焦点 | 新增按钮 pending 断言 3 项失败                                        | 请求期间非原生 disabled，实际不可用仍 disabled；成功/重试回原按钮，失效来源回搜索/标题，重开或卸载取消待执行焦点 |
+| 存储提取       | 提取前扩展后的导航测试 12 项通过                                      | 提取后同一组测试通过，含正常返回、dirty/unknown、引用目标、修饰键和 busy 状态；不以重构制造行为差异              |
+| 浏览器计划     | 新增 `trash/shortcut-focus` 注册断言 1 项失败                         | 阶段接入现有运行器和默认回收站完整套件                                                                           |
+
+浏览器使用同一个 Ego TaskSpace 11 和运行器创建的隔离服务/数据库。没有访问或修改用户的 3001 预览数据。
+
+- 标签使用真实关系写入，再丢弃成功响应及一次只读核对响应。四种关闭方式均检查门户撤下、背景可聚焦、原 URL/草稿/待核对结果保留，且不重复请求。最终只读核对同一组 ID，成功反馈计数与焦点按实际结果断言。
+- 回收站使用真实恢复请求，暂缓返回响应。检查取消后回原按钮、等待中全部快捷按钮不接受重复操作、Escape 不退出；恢复完成清除选择后回搜索框。
+- 存储使用真实 Local 配置与引用。分别检查返回列表和引用导航的继续/放弃；另让真实停用 PATCH 成功后丢失响应并使读回失败，证明即便表单未变化，unknown 仍触发确认。测试结束恢复默认配置并清理自身记录。
+
+## 实际检查
+
+环境：macOS ARM64，Node 24.18.1、pnpm 11.19.0，系统 PATH 包含 `/usr/sbin:/sbin`。
+
+| 实际命令                                                                                                                                                                                                                                                             | 结果                                                                                                                                              |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm install --frozen-lockfile`                                                                                                                                                                                                                                     | 通过，锁文件未变                                                                                                                                  |
+| `pnpm run build`                                                                                                                                                                                                                                                     | 最终产品修改后通过，包含 runtime/standalone；保留可选平台 resvg/OpenTelemetry 依赖追踪警告                                                        |
+| `pnpm run lint` / `pnpm run typecheck`                                                                                                                                                                                                                               | 最终产品修改后通过；浏览器脚本后续增量另做 ESLint 和 `node --check`，通过                                                                         |
+| `pnpm run test:unit`                                                                                                                                                                                                                                                 | **179 文件、2263 项通过**，111.89 秒                                                                                                              |
+| `pnpm exec vitest run --project unit tests/unit/library/batch-controller.test.ts tests/unit/library/selection-menu.test.ts tests/unit/library/batch-tag-drawer.test.ts tests/unit/storage/storage-editor-navigation.test.ts tests/unit/runtime/browser-plan.test.ts` | 最终测试整理后 5 文件、201 项通过                                                                                                                 |
+| `pnpm run test:integration --maxWorkers=1`                                                                                                                                                                                                                           | **191 文件、1897 项全部通过**，976.91 秒；包含普通集成与真实媒体工具组                                                                            |
+| `EGO_TASK_SPACE=11 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/pr279-quality-fixes/library-batch-verified node scripts/verify-browser.mjs --suite library-batch --only review-fixes`                                                                            | **9 项检查、74 个布局组合、79 张截图通过**；包含正常提交、已知失败重试和添加/移除关系 unknown，两主题及 360/390/430/768/1440 宽度；浏览器错误为空 |
+| `EGO_TASK_SPACE=11 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/pr279-quality-fixes/trash-shortcut node scripts/verify-browser.mjs --suite trash --only shortcut-focus`                                                                                          | 真实取消、pending 拦截、成功回焦通过；浏览器错误为空                                                                                              |
+| `EGO_TASK_SPACE=11 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/pr279-quality-fixes/storage-regressions node scripts/verify-browser.mjs --suite storage-admin --only regressions`                                                                                | **8 场景、30 个断言、21 个布局通过**；包含新增 dirty/unknown 导航场景及原有恢复、默认意图、删除和上传缓存场景                                     |
+| `pnpm run format:check`                                                                                                                                                                                                                                              | 仅原两份未修改的历史 JSON 失败，路径见下文；本轮文本另做定向检查                                                                                  |
+| `node docs/tasks/check.mjs` / `node docs/tasks/check.mjs --self-test`                                                                                                                                                                                                | 120 任务、298 需求及 5 个拒绝样本通过                                                                                                             |
+| `git diff --check`                                                                                                                                                                                                                                                   | 通过                                                                                                                                              |
+
+最终浏览器原始结果：[图库批量](quality-fixes/browser/library-batch/library-batch.json)、[回收站](quality-fixes/browser/trash/trash-query-batch.json)、[存储](quality-fixes/browser/storage/storage-admin-regressions.json)。同目录 `runner.json` 记录隔离服务清理成功。归档 8 张实际检查的代表截图；其余截图保留于忽略的本地 `test-results/pr279-quality-fixes`。
+
+首次浏览器运行暴露 X 仅使用 `Drawer.CloseTrigger` 而没有实际关闭回调，已补回调和回归测试。[首次失败](quality-fixes/browser/failures/first-x-close.json)保留。此后两次快速重开立即发送 Escape，没有确保键盘事件来自 Drawer；一次等待已禁用按钮失焦后的 BODY 自动获得 Drawer 焦点，也未满足预期。对应[第二次](quality-fixes/browser/failures/second-keyboard-dismiss.json)、[第三次](quality-fixes/browser/failures/third-keyboard-dismiss.json)、[第四次](quality-fixes/browser/failures/fourth-keyboard-readiness.json)失败均保留。最终测试先将焦点放到可用的关闭按钮，等待弹层进入结束，再发送真实 Escape；不修改产品键盘规则、超时或关闭断言。最终从头完整复跑通过，不将早先分段结果拼接成一次通过。
+
+全仓格式仍失败于两份本轮未修改的历史文件：
+
+- `docs/verification/site-196/implementation/merge-theme/browser/site196-merge-site-general/site-general.json`
+- `docs/verification/site-196/implementation/merge-theme/browser/site196-merge-theme/theme.json`
+
+四次失败归档保留错误、当前步骤、焦点、已完成检查及原运行器结果，省去重复布局数据。完整失败报告保留在各摘录的 `fullLocalReport` 路径，未覆盖或删除。
+
+首次全量集成使用 4 workers，与修复 X 后的重建时间重叠，多个 HTTP 启动钩子超时。该次主动中断，退出 130，不计为完成。最终在稳定构建上从头串行运行，不修改测试超时、不跳过测试。原日志保留于本地 `/tmp/ariso-pr279-quality-integration.log`，其中包含临时初始化码，不提交原始敏感日志。
+
+最终串行全量集成全部通过，上一轮记录的上传 API 截断 multipart `fetch failed / ECONNRESET` 本次未复现。未修改该用例或上传服务端，不将一次复跑通过解释为已修复其历史不稳定性。历史报告保持原结果。
+
+本轮不运行默认全量浏览器、远端对象存储或发布容器。用户最终人工验收未完成，PR 继续草稿。定向通过不冒充完整产品验收，也不覆盖前一轮历史结果。
+
+## 设计范围
+
+继续使用已批准的 v2 标签抽屉、v3 紧凑操作组，以及图库/相册/回收站工具栏规则。沿用 Figma 文件 `74sT9Hrf8G4czcWeTkET5b`，标签桌面/手机 `1118:62128` / `1118:62672`、本地存储 `1081:19845` / `1081:21133`，以及[设计交付规范](../../../../design/handoff.md)。此次只修正已有交互状态与模块职责，没有新增正常态视觉、图标、布局或公共导航，不重画 Figma。旧 v2 的 unknown 关闭限制与 disabled 观察器描述作为历史保留，由本记录的已修正行为替代。
+
+先检查外壳、标题/返回、工具栏操作组和固定底栏，再检查此次改变的状态。标签仍为桌面 420px/手机全宽单列，顶部图片数、正文目标列表、底部行内创建和独立结果区未换位。unknown 只保留关闭与核对，不提供盲目重复提交；无可见标签 UUID。存储沿用原确认框尺寸、短说明及两项操作，继续/放弃均可达，未因提取增加层级。全矩阵见原始布局结果；以下代表图已实际查看，未发现横向溢出、文字遮挡或底栏覆盖内容。
+
+| 状态                   | 实际截图与对照结论                                                                                                                                                                                                                                                                                                                                                        |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 标签桌面浅/深色        | [浅色 1440](quality-fixes/browser/library-batch/library-batch-add-tags-unknown-reopened-light-1440.png)、[深色 1440](quality-fixes/browser/library-batch/library-batch-add-tags-unknown-reopened-dark-1440.png)：原外壳与 420px 抽屉保留，失败原因和两项底栏操作清晰                                                                                                      |
+| 标签手机浅/深色        | [浅色 360](quality-fixes/browser/library-batch/library-batch-remove-tags-unknown-reopened-light-360.png)、[深色 390](quality-fixes/browser/library-batch/library-batch-remove-tags-unknown-reopened-dark-390.png)：全宽单列和独立结果区，文字不遮挡，底栏操作至少 44px                                                                                                    |
+| 存储 dirty 桌面        | [浅色 1440](quality-fixes/browser/storage/storage-regression-dirty-leave-confirmation-light-1440.png)：原表单仍在，确认框居中，继续/放弃沿用既有布局                                                                                                                                                                                                                      |
+| 存储 unknown 桌面/手机 | [深色 1440](quality-fixes/browser/storage/storage-regression-unknown-leave-confirmation-dark-1440.png)、[浅色 360](quality-fixes/browser/storage/storage-regression-unknown-leave-confirmation-light-360.png)、[深色 390](quality-fixes/browser/storage/storage-regression-unknown-leave-confirmation-dark-390.png)：未知保存结果直接解释，手机正文自然换行，两按钮无遮挡 |
+
+物理设备、Release 容器和双架构镜像不属于本轮本地验证。没有声明 Figma Player 或所有历史页面逐像素验收通过。

@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { join } from 'node:path';
 import { batchImageId } from './library-batch-fixture.mjs';
+import { activateLibraryAction } from './library-action-controls.mjs';
 
 export const disabledStorageId = 'issue178-filter-storage';
 export const progressJobId = 'issue178-batch-progress-writer';
@@ -111,18 +112,17 @@ export function createTrashHelpers({ page, config, report }) {
       (count) =>
         count
           ? document
-              .querySelector('[aria-label^="操作已选"]')
-              ?.getAttribute('aria-label') === `操作已选 ${count} 张图片`
+              .querySelector('[aria-label^="管理选择，已选"]')
+              ?.getAttribute('aria-label') === `管理选择，已选 ${count} 张`
           : !document.querySelector('[data-testid="library-selection"]'),
       count,
     );
   }
   async function ensureSelection() {
     if (
-      !(await page.evaluate(
-        () =>
-          !!document.querySelector('input[aria-label="全选当前页回收记录"]'),
-      ))
+      await page.evaluate(
+        () => !!document.querySelector('button[aria-label="选择记录"]'),
+      )
     )
       await page.click(button('选择记录'));
   }
@@ -134,33 +134,34 @@ export function createTrashHelpers({ page, config, report }) {
   }
   async function action(name, count) {
     await selected(count);
-    await page.click(button(`操作已选 ${count} 张图片`));
-    await page.waitForSelector('[role="menu"][aria-label="已选图片操作"]');
     if (name === '永久删除所选') {
       await page.waitForFunction(
         () =>
           document
-            .querySelector('[role="menuitem"][data-key="delete-permanent"]')
+            .querySelector('button[aria-label="永久删除所选"]')
             ?.getBoundingClientRect().height >= 44,
       );
       const height = await page.evaluate(
         () =>
           document
-            .querySelector('[role="menuitem"][data-key="delete-permanent"]')
+            .querySelector('button[aria-label="永久删除所选"]')
             .getBoundingClientRect().height,
       );
       assert.ok(height >= 44, `permanent delete target ${height}`);
     }
-    await page.click(`loc=role:menuitem[name="${name}"]`);
+    await activateLibraryAction(page, name, count);
   }
   async function selectAll() {
     await ensureSelection();
     let count = 0;
     for (const [index, size] of [80, 80, 41].entries()) {
       await loaded(size);
-      await page.click('label:has(input[aria-label="全选当前页回收记录"])');
+      if (count) await activateLibraryAction(page, '全选当前页', count);
+      else
+        await page.click('label:has(input[aria-label="全选当前页回收记录"])');
       count += size;
       await selected(count);
+      if (index > 0) await page.keyboard.press('Escape');
       if (index < 2) await page.click(button('下一页'));
     }
   }

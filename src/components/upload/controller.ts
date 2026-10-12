@@ -32,6 +32,12 @@ class ResponseError extends Error {
 }
 type Entry = {
   item: UploadItem;
+  file?: File;
+  retrySettings?: {
+    visibility: 'public' | 'private';
+    storageId?: string;
+    selection: UploadSelection;
+  };
   transport?: UploadTransport;
   batch?: Batch;
   groupIndex?: number;
@@ -69,7 +75,7 @@ export class UploadController {
       request?: typeof fetch;
       createTransport?: CreateUploadTransport;
       onUnauthorized?: () => void;
-      onLibraryChanged?: () => void;
+      onLibraryChanged?: (item: UploadItem) => void;
     },
   ) {
     this.request = options.request ?? fetch.bind(globalThis);
@@ -103,13 +109,18 @@ export class UploadController {
     entry.item = { ...entry.item, ...patch };
     this.emit();
   }
-  private release(entry: Entry) {
+  private release(entry: Entry, retainForRetry = false) {
     entry.transport?.destroy();
     entry.transport = undefined;
+    if (retainForRetry && entry.file) {
+      this.update(entry, { canRetry: true });
+      return;
+    }
+    entry.file = undefined;
     if (entry.item.previewUrl) URL.revokeObjectURL(entry.item.previewUrl);
-    this.update(entry, { previewUrl: null });
+    this.update(entry, { previewUrl: null, canRetry: false });
   }
-  add(file: File): UploadInputFailure | null {
+  add(file: File, draftKey?: string): UploadInputFailure | null {
     if (this.destroyed) return { reason: 'closed', message: '上传页面已关闭' };
     let name: string;
     try {
@@ -142,7 +153,9 @@ export class UploadController {
         previewUrl: canPreviewUpload(file) ? URL.createObjectURL(file) : null,
         progress: 0,
         state: 'queued',
+        ...(draftKey ? { draftKey } : {}),
       },
+      file: draftKey ? file : undefined,
       transport,
       readVersion: 0,
       transferState: 'idle',
@@ -215,14 +228,14 @@ export class UploadController {
         const state = `${session.imageId}:${job?.status ?? 'queued'}`;
         if (entry.notifiedLibraryState !== state) {
           entry.notifiedLibraryState = state;
-          this.options.onLibraryChanged?.();
+          this.options.onLibraryChanged?.(entry.item);
         }
       }
     } else if (session.state === 'cancelled') {
       this.release(entry);
       this.update(entry, { state: 'cancelled' });
     } else if (session.state === 'failed' || session.state === 'expired') {
-      this.release(entry);
+      this.release(entry, true);
       this.update(entry, {
         state: 'upload-failed',
         error: session.error ?? '文件接收失败，请重新选择文件',
@@ -288,6 +301,7 @@ export class UploadController {
       )
         continue;
       entry.groupIndex = session.groupIndex;
+      if (entry.retrySettings) entry.retrySettings.storageId = result.storageId;
       this.update(entry, {
         submissionId: result.id,
         storageId: result.storageId,
@@ -306,9 +320,14 @@ export class UploadController {
     visibility: 'public' | 'private',
     storageId?: string,
     selection: UploadSelection = { albumIds: [], tagIds: [] },
+    queueIds?: readonly string[],
   ) {
+    const selected = queueIds ? new Set(queueIds) : null;
     const entries = [...this.entries.values()].filter(
-      (entry) => entry.item.state === 'queued' && !entry.batch,
+      (entry) =>
+        entry.item.state === 'queued' &&
+        !entry.batch &&
+        (!selected || selected.has(entry.item.id)),
     );
     if (!entries.length || this.destroyed) return;
     const batch: Batch = {
@@ -330,9 +349,15 @@ export class UploadController {
       }),
     };
     for (const entry of entries) {
+      entry.retrySettings = {
+        visibility,
+        storageId,
+        selection: structuredClone(selection),
+      };
       entry.batch = batch;
       this.update(entry, {
         state: 'submitting',
+        targetAlbumIds: [...selection.albumIds],
         visibility,
         storageId,
         error: undefined,
@@ -349,7 +374,7 @@ export class UploadController {
           error.status >= 400 &&
           error.status < 500
         ) {
-          this.release(entry);
+          this.release(entry, true);
           this.update(entry, { state: 'upload-failed', error: error.message });
         } else
           this.update(entry, {
@@ -519,7 +544,7 @@ export class UploadController {
               error.status >= 400 &&
               error.status < 500
             ) {
-              this.release(entry);
+              this.release(entry, true);
               this.update(entry, {
                 state: 'upload-failed',
                 error: error.message,
@@ -651,9 +676,49 @@ export class UploadController {
     const entry = this.entries.get(id);
     if (entry?.item.state === 'queued' && !entry.batch) this.clear(entry);
   }
-  clearCompleted() {
+  async retry(id: string) {
+    const entry = this.entries.get(id);
+    if (
+      !entry?.file ||
+      !entry.retrySettings ||
+      entry.item.state !== 'upload-failed' ||
+      (entry.item.cleanupStatus && entry.item.cleanupStatus !== 'none')
+    )
+      return;
+    const frozen = entry.retrySettings;
+    if (entry.batch)
+      entry.batch.entries = entry.batch.entries.filter(
+        (other) => other !== entry,
+      );
+    entry.batch = undefined;
+    entry.groupIndex = undefined;
+    entry.readVersion++;
+    entry.transferState = 'idle';
+    entry.transport = this.createTransport(entry.file, id);
+    this.update(entry, {
+      state: 'queued',
+      progress: 0,
+      canRetry: false,
+      error: undefined,
+      sessionId: undefined,
+      submissionId: undefined,
+      route: undefined,
+      routeReason: undefined,
+      cleanupStatus: undefined,
+      cleanupError: undefined,
+    });
+    await this.start(frozen.visibility, frozen.storageId, frozen.selection, [
+      id,
+    ]);
+  }
+  clearCompleted(ids?: readonly string[]) {
+    const selected = ids ? new Set(ids) : null;
     for (const entry of this.entries.values())
-      if (terminal.has(entry.item.state)) this.clear(entry);
+      if (
+        terminal.has(entry.item.state) &&
+        (!selected || selected.has(entry.item.id))
+      )
+        this.clear(entry);
   }
   private clear(entry: Entry) {
     this.release(entry);

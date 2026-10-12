@@ -6,7 +6,7 @@ import { Card } from '@heroui/react/card';
 import { Checkbox } from '@heroui/react/checkbox';
 import { Chip } from '@heroui/react/chip';
 import { Skeleton } from '@heroui/react/skeleton';
-import { ImageOff } from 'lucide-react';
+import { Globe, ImageOff, LockKeyhole } from 'lucide-react';
 import type { LibraryItem } from '../../server/library/types';
 import { hasCardDiagnostics } from './gallery-layout';
 
@@ -18,6 +18,7 @@ import {
 export function LibraryCard({
   item,
   onOpen,
+  openLabel = '查看图片',
   imageHeight,
   album = false,
   isDisabled = false,
@@ -31,6 +32,7 @@ export function LibraryCard({
   isSelected?: boolean;
   onToggle?: (item: LibraryItem) => void;
   onOpen?: (id: string, element: HTMLElement) => void;
+  openLabel?: string;
 }) {
   const [failed, setFailed] = useState(false);
   const [loaded, setLoaded] = useState(false);
@@ -68,7 +70,7 @@ export function LibraryCard({
         data-library-open
         isDisabled={isDisabled}
         className="absolute inset-0 z-10 h-full w-full rounded-2xl bg-transparent p-0 hover:bg-transparent"
-        aria-label={`查看图片：${item.displayName}`}
+        aria-label={`${openLabel}：${item.displayName}`}
         onPress={(event) => {
           if (event.target instanceof HTMLElement)
             onOpen?.(item.id, event.target);
@@ -103,9 +105,7 @@ export function LibraryCard({
           </div>
         )}
       </div>
-      <Card.Content
-        className={`grid min-w-0 content-start gap-1.5 px-2.5 pt-3 pb-3 text-xs leading-normal min-[1200px]:px-3.5 min-[1200px]:text-sm ${album ? 'min-[1200px]:pb-0' : ''}`}
-      >
+      <Card.Content className="grid min-w-0 content-start gap-1.5 px-2.5 pt-3 pb-4 text-xs leading-normal min-[1200px]:px-3.5 min-[1200px]:text-sm">
         <p className="truncate" title={item.displayName}>
           {item.displayName}
         </p>
@@ -113,8 +113,14 @@ export function LibraryCard({
           <Chip
             size="sm"
             variant="soft"
-            className="h-auto shrink-0 rounded-full bg-secondary px-1 py-0 text-[11px] leading-normal min-[1200px]:px-1.5 min-[1200px]:text-xs"
+            data-visibility={item.visibility}
+            className={`h-auto shrink-0 gap-1 rounded-full px-1.5 py-0.5 text-[11px] leading-normal min-[1200px]:text-xs ${item.visibility === 'public' ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-200' : 'bg-violet-100 text-violet-800 dark:bg-violet-950 dark:text-violet-200'}`}
           >
+            {item.visibility === 'private' ? (
+              <LockKeyhole size={11} aria-hidden />
+            ) : (
+              <Globe size={11} aria-hidden />
+            )}
             {item.visibility === 'private' ? '私有' : '公开'}
           </Chip>
           <span className="truncate">

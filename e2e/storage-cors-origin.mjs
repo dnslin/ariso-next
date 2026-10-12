@@ -44,7 +44,7 @@ export async function verifyLongCorsOrigin(page, config, storageId, report) {
     await page.waitForSelector(
       '[data-testid="storage-cors"][data-state="invalidated"]',
     );
-    await page.click('loc=role:button[name="查看 CORS 示例"]');
+    await page.click('loc=role:button[name="CORS 示例"]');
     await page.waitForSelector('textarea[aria-label="CORS 配置 JSON"]');
     await page.focus('textarea[aria-label="CORS 配置 JSON"]');
     await page.keyboard.press('ControlOrMeta+A');

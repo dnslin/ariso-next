@@ -96,26 +96,27 @@ async function measure(state) {
       input.externalLabel && input.labelFor === input.inputId,
       `${state}/${input.name}: external associated label`,
     );
-    assert.equal(
-      input.height,
-      geometry.width >= 1200 && state === 'local-referenced' ? 40 : 44,
-    );
+    assert.equal(input.height, 48);
     if (geometry.width < 1200) assert.equal(input.fontSize, '16px');
   }
   let actions;
   if (state === 'local-referenced') {
     assert.equal(fields.find((input) => input.name === 'name').readOnly, false);
-    for (const name of ['localPath', 'storageType'])
-      assert.equal(fields.find((input) => input.name === name).readOnly, true);
+    assert.equal(
+      fields.find((input) => input.name === 'localPath').readOnly,
+      true,
+    );
+    assert.equal(
+      fields.some((input) => input.name === 'storageType'),
+      false,
+    );
     actions = await page.evaluate(() => {
       const group = document.querySelector(
         '[data-testid="storage-editor-actions"]',
       );
-      const select = document.querySelector(
-        '#storage-form [data-slot="select-trigger"]',
+      const enabledSwitch = document.querySelector(
+        '#storage-form [role="switch"]',
       );
-      const power = select.querySelector('svg.lucide-power');
-      const value = select.querySelector('[data-slot="select-value"]');
       return {
         wrap: getComputedStyle(group).flexWrap,
         buttons: [...group.querySelectorAll('button')].map((node) => {
@@ -130,15 +131,18 @@ async function measure(state) {
             disabled: node.disabled,
           };
         }),
-        selectPrefix: !!document.querySelector(
-          '#storage-form [data-slot="select-trigger"] > svg.lucide-power',
+        enabledSwitch: !!enabledSwitch,
+        actualDirectories: document.querySelectorAll(
+          '[data-testid="storage-actual-directory"]',
+        ).length,
+        copyAction: !!document.querySelector(
+          'button[aria-label="复制实际目录"]',
         ),
-        selectGap:
-          value.getBoundingClientRect().left -
-          power.getBoundingClientRect().right,
         visibleGuideParagraphs: [
           ...document.querySelectorAll('#storage-form p'),
-        ].filter((node) => node.getClientRects().length).length,
+        ]
+          .filter((node) => node.getClientRects().length)
+          .map((node) => node.textContent.trim()),
         referenceEntrances: document.querySelectorAll(
           '[data-testid="storage-open-cleanup"]',
         ).length,
@@ -151,17 +155,14 @@ async function measure(state) {
     );
     assert.equal(actions.wrap, 'wrap');
     assert.equal(actions.referenceEntrances, 1);
-    assert.equal(
+    assert.deepEqual(
       actions.visibleGuideParagraphs,
-      0,
-      'Secondary explanations are available through tips',
+      ['仍有引用，存储位置与类型不可修改。'],
+      'Only the actual lock reason is persistent; normal rules remain in tips',
     );
-    assert.equal(actions.selectPrefix, true);
-    assert.equal(
-      actions.selectGap,
-      8,
-      'Enabled-state icon and value retain an 8px gap',
-    );
+    assert.equal(actions.enabledSwitch, true);
+    assert.equal(actions.actualDirectories, 1);
+    assert.equal(actions.copyAction, true);
     for (const action of actions.buttons) {
       assert.equal(action.radius, '8px');
       assert.ok(action.height >= 44 && action.width >= 44);
@@ -211,18 +212,18 @@ async function tip(label, mode, screenshotName) {
   if (label === '启用状态') {
     enabledState = await page.evaluate((name) => {
       const tip = document.querySelector(`button[aria-label="${name}"]`);
-      const select = document.querySelector(
-        '#storage-form [data-slot="select-trigger"]',
+      const enabledSwitch = document.querySelector(
+        '#storage-form [role="switch"]',
       );
       return {
         popup: tip.getAttribute('aria-haspopup'),
-        value: select.textContent.trim(),
+        value: enabledSwitch.getAttribute('aria-checked'),
       };
     }, name);
     assert.notEqual(
       enabledState.popup,
       'listbox',
-      'Enabled explanation is independent of Select trigger context',
+      'Enabled explanation is independent of the state control',
     );
   }
   if (mode === 'keyboard') {
@@ -236,8 +237,8 @@ async function tip(label, mode, screenshotName) {
   if (enabledState) {
     const after = await page.evaluate(() => ({
       value: document
-        .querySelector('#storage-form [data-slot="select-trigger"]')
-        .textContent.trim(),
+        .querySelector('#storage-form [role="switch"]')
+        .getAttribute('aria-checked'),
       optionsVisible: [...document.querySelectorAll('[role="listbox"]')].some(
         (node) => node.getClientRects().length,
       ),
@@ -245,7 +246,7 @@ async function tip(label, mode, screenshotName) {
     assert.equal(
       after.value,
       enabledState.value,
-      'Opening enabled-state help preserves the selected value',
+      'Opening enabled-state help preserves the switch value',
     );
     assert.equal(
       after.optionsVisible,
@@ -383,7 +384,51 @@ async function invalidCreate(type, name, value) {
       boxShadow: style.boxShadow,
     };
   }, name);
-  await page.click('[data-testid="storage-save"]');
+  await page.evaluate(() => {
+    window.__storageFeedbackHoldCreate = true;
+  });
+  try {
+    await page.click('[data-testid="storage-save"]');
+    await page.waitForFunction(
+      () => typeof window.__storageFeedbackReleaseCreate === 'function',
+    );
+    const pending = await page.evaluate(() => {
+      const back = document.querySelector(
+        '[data-testid="storage-editor"] > header button',
+      );
+      const cancel = [
+        ...document.querySelectorAll('.shell-footer button'),
+      ].find((node) => node.textContent.trim() === '取消');
+      back.click();
+      return {
+        backDisabled: back.disabled,
+        cancelDisabled: cancel?.disabled,
+        saveDisabled: document.querySelector('[data-testid="storage-save"]')
+          .disabled,
+        path: location.pathname,
+        dialog: !!document.querySelector(
+          '[role="alertdialog"][aria-label="放弃未保存的修改？"]',
+        ),
+      };
+    });
+    assert.deepEqual(
+      pending,
+      {
+        backDisabled: true,
+        cancelDisabled: true,
+        saveDisabled: true,
+        path: '/settings/storage/new',
+        dialog: false,
+      },
+      'Pending submission disables both return controls and cannot open a leave confirmation',
+    );
+  } finally {
+    await page.evaluate(() => {
+      window.__storageFeedbackReleaseCreate?.();
+      delete window.__storageFeedbackReleaseCreate;
+      delete window.__storageFeedbackHoldCreate;
+    });
+  }
   await page.waitForSelector(`${field(name)}[aria-invalid="true"]`);
   await page.waitForFunction(
     (name) => document.activeElement?.name === name,
@@ -530,6 +575,10 @@ try {
             'Feedback verification cannot modify existing preview storage or run remote operations',
           );
         }
+        if (window.__storageFeedbackHoldCreate)
+          await new Promise((resolve) => {
+            window.__storageFeedbackReleaseCreate = resolve;
+          });
         const response = await fetch(...args);
         const value = await response.clone().json();
         window.__storageFeedbackRequests.push({
@@ -551,25 +600,72 @@ try {
   await layouts('local-referenced');
   await resizeViewport(page, 1440);
   await setTheme(page, 'light');
+  await page.evaluate(() => {
+    window.__storageOriginalCopy = navigator.clipboard.writeText;
+    navigator.clipboard.writeText = async (value) => {
+      window.__storageCopiedDirectory = value;
+      throw new DOMException('Permission denied', 'NotAllowedError');
+    };
+  });
+  try {
+    await page.click('button[aria-label="复制实际目录"]');
+    await page.waitForFunction(() =>
+      document.body.textContent.includes('无法自动复制，请选中上方目录文本。'),
+    );
+    const directory = await page.evaluate(() => {
+      const paths = document.querySelectorAll(
+        '[data-testid="storage-actual-directory"]',
+      );
+      return {
+        count: paths.length,
+        value: paths[0].textContent,
+        copied: window.__storageCopiedDirectory,
+        selectable: getComputedStyle(paths[0]).userSelect,
+      };
+    });
+    assert.equal(directory.count, 1);
+    assert.equal(directory.value, directory.copied);
+    assert.equal(directory.selectable, 'text');
+    await page.evaluate(() => {
+      navigator.clipboard.writeText = async (value) => {
+        window.__storageCopiedDirectory = value;
+      };
+    });
+    await page.click('button[aria-label="复制实际目录"]');
+    await page.waitForFunction(() =>
+      document.body.textContent.includes('目录已复制'),
+    );
+    assert.equal(
+      await page.evaluate(() =>
+        document.body.textContent.includes(
+          '无法自动复制，请选中上方目录文本。',
+        ),
+      ),
+      false,
+    );
+    report.checks.push(
+      'The complete directory is shown once as selectable text; explicit clipboard denial preserves it with manual-copy feedback, and injected success clears the error. The system clipboard is not overwritten.',
+    );
+  } finally {
+    await page.evaluate(() => {
+      navigator.clipboard.writeText = window.__storageOriginalCopy;
+      delete window.__storageOriginalCopy;
+      delete window.__storageCopiedDirectory;
+    });
+  }
   await tooltip('存储名称', 'hover');
   await tooltip('相对路径', 'focus');
   await resizeViewport(page, 768);
   await page.click(
-    '#storage-form [data-slot="textfield"]:first-child [data-slot="input-group-prefix"]',
+    '#storage-form [data-slot="textfield"]:has(input[name="name"]) [data-slot="input-group-prefix"]',
   );
   assert.equal(
     await page.evaluate(() => document.activeElement?.name),
     'name',
-    'InputGroup prefix belongs to the actual 44px input target',
+    'InputGroup prefix belongs to the actual 48px input target',
   );
   await resizeViewport(page, 1440);
-  for (const name of [
-    '存储名称',
-    '存储类型',
-    '相对路径',
-    '启用状态',
-    '删除限制',
-  ])
+  for (const name of ['存储名称', '相对路径', '启用状态', '删除限制'])
     await tip(
       name,
       'keyboard',
@@ -602,7 +698,77 @@ try {
     );
   }
   report.checks.push(
-    'Editable name and read-only type/path fields retain associated labels and prefix icons; tips open with keyboard/click, close with Escape or outside click, and restore focus at desktop/mobile/short viewports.',
+    'Editable name and read-only path retain associated labels and prefix icons; tips open with keyboard/click, close with Escape or outside click, and restore focus at desktop/mobile/short viewports.',
+  );
+  const savedName = await page.evaluate(
+    () => document.querySelector('input[name="name"]').value,
+  );
+  await page.fill(field('name'), `${savedName} 未保存`);
+  await page.click(button('返回'));
+  await page.waitForSelector(
+    '[role="alertdialog"][aria-label="放弃未保存的修改？"]',
+  );
+  await page.click(button('继续编辑'));
+  assert.equal(
+    await page.evaluate(
+      () => document.querySelector('input[name="name"]').value,
+    ),
+    `${savedName} 未保存`,
+  );
+  await page.click(button('返回'));
+  await page.waitForSelector(
+    '[role="alertdialog"][aria-label="放弃未保存的修改？"]',
+  );
+  await page.click(button('放弃修改'));
+  await page.waitForSelector('[data-testid="storage-list"]');
+  assert.equal(
+    await page.evaluate(() => location.pathname),
+    '/settings/storage',
+  );
+  await open(`/settings/storage/${defaultStorage}`);
+  assert.equal(
+    await page.evaluate(
+      () => document.querySelector('input[name="name"]').value,
+    ),
+    savedName,
+  );
+  report.checks.push(
+    'Unsaved return can continue editing without losing the draft or discard to the storage list without submitting a mutation.',
+  );
+  await page.fill(field('name'), `${savedName} 引用页草稿`);
+  await page.click('[data-testid="storage-open-cleanup"]');
+  await page.waitForSelector('[data-testid="storage-reference-view"]');
+  const imageLink = '[data-testid="storage-reference-view"] a[href="/library"]';
+  await page.click(imageLink);
+  await page.waitForSelector(
+    '[role="alertdialog"][aria-label="放弃未保存的修改？"]',
+  );
+  await page.click(button('继续编辑'));
+  await page.waitForFunction(
+    (selector) => document.activeElement === document.querySelector(selector),
+    imageLink,
+  );
+  await page.click(button('返回'));
+  await page.waitForSelector('[data-testid="storage-editor"]');
+  assert.equal(
+    await page.evaluate(
+      () => document.querySelector('input[name="name"]').value,
+    ),
+    `${savedName} 引用页草稿`,
+  );
+  await page.click('[data-testid="storage-open-cleanup"]');
+  await page.waitForSelector('[data-testid="storage-reference-view"]');
+  await page.click(imageLink);
+  await page.waitForSelector(
+    '[role="alertdialog"][aria-label="放弃未保存的修改？"]',
+  );
+  await page.click(button('放弃修改'));
+  await page.waitForSelector('[data-testid="library-list"]');
+  assert.equal(await page.evaluate(() => location.pathname), '/library');
+  assert.equal((await read(`/api/storages/${defaultStorage}`)).name, savedName);
+  await open(`/settings/storage/${defaultStorage}`);
+  report.checks.push(
+    'Reference-page navigation asks before discarding a draft, restores the original link focus on continue, retains input when returning to the editor, and discards to the requested library without saving.',
   );
   await page.click('[data-testid="storage-open-cleanup"]');
   await page.waitForSelector('[data-testid="storage-reference-view"]');
@@ -613,7 +779,7 @@ try {
         .textContent.includes('图片与版本'),
     ),
   );
-  await page.click(button('查看清理状态'));
+  await page.click(button('查看清理'));
   await page.waitForSelector('[data-testid="storage-cleanup-view"]');
   report.checks.push(
     'Single reference-and-cleanup action reaches actual reference counts and the existing cleanup view without running maintenance.',

@@ -144,13 +144,21 @@ function renderMaintenance(
 it('keeps overlapping reference categories distinct rather than reporting a summed image total', () => {
   const html = renderReference();
   for (const text of [
+    '引用与清理',
+    '仍有引用',
     '2 张 / 3 个',
     '处理 5 项 / 删除清理 2 项',
-    '分类可能重叠',
     '本地活动写入 2 项',
-    '有效签名本身不单独阻塞',
+    '1 个探测对象清理失败',
+    'aria-label="引用说明"',
   ])
     expect(html).toContain(text);
+  expect(html.match(/<dt\b/g)).toHaveLength(4);
+  expect(html).not.toContain('包含正常、失败、处理中及回收站');
+  expect(html).not.toContain('有效签名本身不单独阻塞');
+  expect(html).not.toContain('分类可能重叠');
+  expect(html).not.toContain('<table');
+  expect(html).not.toContain('查看清理状态');
   expect(html).not.toContain('强制删除</');
 });
 
@@ -165,7 +173,6 @@ it('displays actual cleanup identity, key, complete remote error, retry date and
     'HTTP：403',
     'actual/error/path',
     '2026-10-04T01:00:00.000Z',
-    '存储停用时也可清理',
     '对象删除成功前不能解除引用或删除配置',
     '重试清理',
   ])
@@ -187,8 +194,15 @@ it('does not treat empty references as proof that scanning or configuration dele
     references: { counts: {}, activeWrites: 0 },
     probes: [],
   });
-  expect(html).toContain('当前没有存储引用');
-  expect(html).toContain('删除配置时仍由服务器检查受管对象和扫描结果');
+  expect(html).toContain('引用与清理');
+  expect(html).toContain('无引用');
+  expect(html).toContain('aria-label="引用说明"');
+  expect(html).toContain('查看清理');
+  expect(html).not.toContain('查看图片');
+  expect(html).not.toContain('查看上传');
+  expect(html).not.toContain('前往回收站');
+  expect(html).not.toContain('可以安全删除');
+  expect(html).not.toContain('引用为空不代表');
   expect(html).not.toContain('扫描完成');
 });
 
@@ -278,4 +292,43 @@ it('requires testing the current S3 revision before re-enabling a disabled defau
   expect(
     renderMaintenance({ ...passed, configRevision: 2 }, 'default'),
   ).toContain('返回配置并测试');
+});
+
+it('distinguishes a passed CORS test from availability while storage is disabled', () => {
+  const detail: StorageDetail = {
+    ...storage,
+    corsOrigin: 'https://photos.example.test',
+    corsReport: {
+      probeId: 'actual-cors-probe',
+      storageId: storage.id,
+      revision: storage.configRevision,
+      origin: 'https://photos.example.test',
+      passed: true,
+      stale: false,
+      cleanupPending: false,
+      stages: [],
+      testedAt: probe.createdAt,
+    },
+  };
+  const disabled = renderMaintenance(detail, 'default');
+  expect(disabled).toContain('>检测通过<');
+  expect(disabled).not.toContain('>可用<');
+  expect(disabled).toContain('默认存储已停用');
+  expect(disabled).toContain('当前配置尚未通过连接测试，不能重新启用');
+  expect(disabled).toContain(detail.corsOrigin);
+
+  const enabled = renderMaintenance({ ...detail, enabled: true }, 'default');
+  expect(enabled).toContain('>可用<');
+  for (const invalid of [
+    { passed: false },
+    { stale: true },
+    { cleanupPending: true },
+  ]) {
+    const html = renderMaintenance(
+      { ...detail, corsReport: { ...detail.corsReport!, ...invalid } },
+      'default',
+    );
+    expect(html).toContain('>不可用<');
+    expect(html).not.toContain('>检测通过<');
+  }
 });

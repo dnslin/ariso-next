@@ -119,6 +119,179 @@ async function untilTransfer(context: ReturnType<typeof setup>) {
 }
 
 describe('manual upload controller', () => {
+  it('submits only the chosen entry draft and retains other unsubmitted files', async () => {
+    const c = setup();
+    c.controller.add(c.file);
+    c.controller.add(c.file, 'quick:library');
+    c.controller.add(c.file, 'quick:album:a');
+    const id = c.controller.snapshot[1].id;
+    const result = accepted('succeeded');
+    result.sessions[0].queueItemId = id;
+    c.request.mockResolvedValueOnce(Response.json(result));
+    await c.controller.start('private', 'local', { albumIds: [], tagIds: [] }, [
+      id,
+    ]);
+    expect(
+      JSON.parse(c.request.mock.calls[0][1]!.body as string).files,
+    ).toHaveLength(1);
+    expect(c.controller.snapshot.map((item) => item.state)).toEqual([
+      'queued',
+      'ready',
+      'queued',
+    ]);
+    expect(c.controller.snapshot[1].canRetry).toBe(false);
+  });
+  it('retains a quick-upload failure for explicit retry with frozen settings and releases it on success', async () => {
+    const c = setup();
+    const revoke = vi.spyOn(URL, 'revokeObjectURL');
+    c.controller.add(c.file, 'quick:album:a');
+    const original = c.controller.snapshot[0];
+    c.respond({ message: 'Unavailable' }, 422);
+    await c.controller.start(
+      'public',
+      'local',
+      {
+        albumIds: ['a'],
+        tagIds: [],
+        labels: {
+          storageId: 'local',
+          storageName: 'Local',
+          albums: [{ id: 'a', name: 'A' }],
+          tags: [],
+        },
+      },
+      [original.id],
+    );
+    expect(c.controller.snapshot[0]).toMatchObject({
+      state: 'upload-failed',
+      canRetry: true,
+      previewUrl: original.previewUrl,
+    });
+    expect(revoke).not.toHaveBeenCalled();
+    const result = accepted('succeeded');
+    result.visibility = 'public';
+    result.albumIds = ['a'];
+    c.respond(result);
+    await c.controller.retry(original.id);
+    expect(c.request).toHaveBeenCalledTimes(2);
+    const first = JSON.parse(c.request.mock.calls[0][1]!.body as string);
+    const retry = JSON.parse(c.request.mock.calls[1][1]!.body as string);
+    expect(retry).toEqual({ ...first, requestId: retry.requestId });
+    expect(retry.requestId).not.toBe(first.requestId);
+    expect(c.controller.snapshot[0]).toMatchObject({
+      state: 'ready',
+      canRetry: false,
+      previewUrl: null,
+    });
+    expect(revoke).toHaveBeenCalledWith(original.previewUrl);
+  });
+  it('does not retry unconfirmed results or lose a failed session cleanup responsibility', async () => {
+    const c = setup();
+    c.controller.add(c.file, 'quick:library');
+    const id = c.controller.snapshot[0].id;
+    c.request.mockRejectedValueOnce(new TypeError('response lost'));
+    await c.controller.start('private');
+    await c.controller.retry(id);
+    expect(c.request).toHaveBeenCalledOnce();
+    c.respond(
+      submission({
+        state: 'failed',
+        cleanupStatus: 'failed',
+        error: 'cleanup',
+      }),
+    );
+    await c.controller.refresh(id);
+    expect(c.controller.snapshot[0]).toMatchObject({
+      state: 'upload-failed',
+      canRetry: true,
+      cleanupStatus: 'failed',
+    });
+    await c.controller.retry(id);
+    expect(c.request).toHaveBeenCalledTimes(2);
+    c.controller.clearCompleted([id]);
+    expect(c.controller.snapshot).toEqual([]);
+  });
+  it('retries a failed transfer in the confirmed storage after the site default changes', async () => {
+    const c = setup();
+    c.controller.add(c.file, 'upload:album:a');
+    const id = c.controller.snapshot[0].id;
+    c.respond({ ...submission(), storageId: 'storage-a' }, 201);
+    const started = c.controller.start('private', undefined, {
+      albumIds: ['a'],
+      tagIds: [],
+    });
+    await untilTransfer(c);
+    c.respond({
+      ...submission({ state: 'failed', error: 'Upload interrupted' }),
+      storageId: 'storage-a',
+    });
+    c.transfer.reject(new Error('Upload interrupted'));
+    await started;
+    expect(c.controller.snapshot[0]).toMatchObject({
+      state: 'upload-failed',
+      storageId: 'storage-a',
+      canRetry: true,
+    });
+
+    const defaultStorageId = 'storage-b';
+    c.request.mockImplementationOnce(async (_url, init) => {
+      const metadata = JSON.parse(init!.body as string);
+      const result = accepted('succeeded');
+      result.storageId = metadata.storageId ?? defaultStorageId;
+      result.sessions[0].queueItemId = id;
+      return Response.json(result, { status: 201 });
+    });
+    await c.controller.retry(id);
+    expect(
+      JSON.parse(c.request.mock.calls.at(-1)![1]!.body as string),
+    ).toMatchObject({ storageId: 'storage-a', albumIds: ['a'] });
+    expect(c.controller.snapshot[0]).toMatchObject({
+      state: 'ready',
+      storageId: 'storage-a',
+    });
+  });
+  it('freezes the resolved default storage when an unknown submission is confirmed by refresh', async () => {
+    const c = setup();
+    c.controller.add(c.file, 'upload:library');
+    const id = c.controller.snapshot[0].id;
+    c.request.mockRejectedValueOnce(new TypeError('response lost'));
+    await c.controller.start('private');
+    await c.controller.retry(id);
+    expect(c.request).toHaveBeenCalledOnce();
+    expect(c.controller.snapshot[0].state).toBe('unknown');
+
+    c.respond({
+      ...submission({ state: 'failed', error: 'File not received' }),
+      storageId: 'storage-a',
+    });
+    await c.controller.refresh(id);
+    expect(c.request.mock.calls[1][1]!.body).toBe(
+      c.request.mock.calls[0][1]!.body,
+    );
+    expect(c.controller.snapshot[0]).toMatchObject({
+      state: 'upload-failed',
+      storageId: 'storage-a',
+      canRetry: true,
+    });
+    expect(c.transport.upload).not.toHaveBeenCalled();
+
+    const defaultStorageId = 'storage-b';
+    c.request.mockImplementationOnce(async (_url, init) => {
+      const metadata = JSON.parse(init!.body as string);
+      const result = accepted('succeeded');
+      result.storageId = metadata.storageId ?? defaultStorageId;
+      result.sessions[0].queueItemId = id;
+      return Response.json(result, { status: 201 });
+    });
+    await c.controller.retry(id);
+    expect(
+      JSON.parse(c.request.mock.calls.at(-1)![1]!.body as string),
+    ).toMatchObject({ storageId: 'storage-a' });
+    expect(c.controller.snapshot[0]).toMatchObject({
+      state: 'ready',
+      storageId: 'storage-a',
+    });
+  });
   it('binds the default global fetch receiver for browser-native invocation', async () => {
     const receivers: unknown[] = [];
     let queueItemId = '';

@@ -2,8 +2,17 @@
 
 import { useEffect, useRef, useState, type ComponentProps } from 'react';
 import { Button } from '@heroui/react/button';
+import { Chip } from '@heroui/react/chip';
+import {
+  ArrowLeft,
+  Link2,
+  Power,
+  RefreshCw,
+  ScanLine,
+  ShieldCheck,
+} from 'lucide-react';
 import { OwnerShell } from '../shell/owner-shell';
-import { CorsRows } from './cors-report';
+import { StorageTip } from './storage-tip';
 import type { StorageDetail } from './storage-api';
 import { StorageDefaultActions } from './storage-default-actions';
 import type { StorageScanError } from '../../server/storage/schema';
@@ -75,7 +84,6 @@ export function StorageMaintenanceView({
       storage.hasSecretKey &&
       storage.connectionStatus === 'passed' &&
       storage.connectionRevision === storage.configRevision);
-  const typeName = storage.type === 'local' ? 'Local' : 'S3';
   const action =
     'h-12 flex-1 rounded-lg text-sm font-normal min-[1200px]:w-50 min-[1200px]:flex-none';
 
@@ -123,16 +131,37 @@ export function StorageMaintenanceView({
 
   const defaultTitle = isDefault
     ? storage.enabled
-      ? `${storage.name} · 默认存储`
+      ? '默认存储'
       : '默认存储已停用'
     : defaultStorageId === null
       ? '未设置默认存储'
       : '默认存储已变更';
-  const defaultDescription = isDefault
-    ? storage.enabled
-      ? `${typeName} · 已启用 · 默认`
-      : `${storage.name} · ${typeName} · 默认 · 已停用`
-    : `${storage.name} · ${typeName} · ${storage.enabled ? '已启用' : '已停用'}`;
+  const defaultRows = [
+    { label: '启用状态', value: storage.enabled ? '已启用' : '已停用' },
+    {
+      label: '默认选择',
+      value: isDefault ? storage.name : (defaultStorageId ?? '未设置'),
+    },
+    {
+      label: '连接',
+      value:
+        storage.type === 'local' ? '本地存储' : canEnable ? '已通过' : '未通过',
+    },
+    {
+      label: '浏览器直传',
+      value:
+        storage.type === 'local'
+          ? '不适用'
+          : storage.corsReport?.passed &&
+              !storage.corsReport.stale &&
+              !storage.corsReport.cleanupPending
+            ? storage.enabled
+              ? '可用'
+              : '检测通过'
+            : '不可用',
+      detail: storage.type === 's3' ? storage.corsOrigin : null,
+    },
+  ];
 
   return (
     <OwnerShell
@@ -147,6 +176,7 @@ export function StorageMaintenanceView({
                 isDisabled={disabled}
                 onPress={onReturn}
               >
+                <Link2 size={16} aria-hidden />
                 查看删除条件
               </Button>
               <Button
@@ -154,6 +184,7 @@ export function StorageMaintenanceView({
                 isDisabled={disabled}
                 onPress={canEnable ? onDisable : onReturn}
               >
+                <Power size={16} aria-hidden />
                 {canEnable ? '重新启用' : '返回配置并测试'}
               </Button>
             </>
@@ -178,6 +209,7 @@ export function StorageMaintenanceView({
                 isDisabled={disabled}
                 onPress={isDefault ? onDisable : onReturn}
               >
+                <Power size={16} aria-hidden />
                 {isDefault ? '停用存储' : '返回列表'}
               </Button>
             </>
@@ -186,32 +218,27 @@ export function StorageMaintenanceView({
           <>
             <Button
               variant="outline"
-              className={
-                retryFailed
-                  ? 'h-12 w-[90px] flex-none rounded-lg text-sm font-normal min-[1200px]:w-40'
-                  : action
-              }
+              className={action}
               isDisabled={disabled}
-              onPress={onReturn}
+              onPress={() => void run(onRefresh)}
             >
-              {retryFailed ? '返回' : '返回配置'}
+              <RefreshCw size={16} aria-hidden />
+              刷新状态
             </Button>
             <Button
-              className={
-                retryFailed
-                  ? 'h-12 flex-1 rounded-lg text-sm font-normal min-[1200px]:w-60 min-[1200px]:flex-none'
-                  : action
-              }
+              data-testid={cleanup.length ? 'storage-retry-cleanup' : undefined}
+              className={action}
               isDisabled={disabled}
               onPress={
-                retryFailed || cleanup.length === 0
-                  ? onReturn
-                  : () => void run(retryCleanup)
+                cleanup.length === 0 ? onReturn : () => void run(retryCleanup)
               }
             >
-              {retryFailed || cleanup.length === 0
-                ? '返回存储配置'
-                : '重试清理'}
+              {cleanup.length ? (
+                <RefreshCw size={16} aria-hidden />
+              ) : (
+                <ArrowLeft size={16} aria-hidden />
+              )}
+              {cleanup.length === 0 ? '返回' : '重试清理'}
             </Button>
           </>
         )
@@ -221,35 +248,55 @@ export function StorageMaintenanceView({
         data-testid={`storage-${view}-view`}
         className={`grid pb-10 [overflow-wrap:anywhere] ${view === 'cleanup' ? 'max-w-[760px] gap-4' : 'gap-5'}`}
       >
-        {view !== 'cleanup' || !retryFailed ? (
+        <header className="flex flex-wrap items-center justify-between gap-3">
+          <div className="flex min-w-0 items-center gap-2">
+            <h1 className="text-[28px] font-medium leading-normal min-[1200px]:text-[30px]">
+              {view === 'default' ? '默认存储设置' : '清理状态'}
+            </h1>
+            <StorageTip label={view === 'default' ? '默认存储' : '清理'}>
+              {view === 'default'
+                ? '默认选择只影响新上传。清空或停用默认后，不会自动选择其他存储。'
+                : '存储停用时也可清理。扫描只清理本存储命名空间中没有有效引用的受管对象，不删除图片、Bucket、挂载根目录或其他应用的文件。'}
+            </StorageTip>
+          </div>
           <Button
             variant="ghost"
-            className="-my-[13px] min-h-11 justify-self-start px-0 text-xs font-normal"
+            className="h-11 rounded-lg px-3 text-sm font-normal"
+            isDisabled={disabled}
             onPress={onReturn}
           >
-            ← 返回存储管理
+            <ArrowLeft size={18} aria-hidden />
+            返回
           </Button>
-        ) : null}
-        <h1
-          className={`font-medium leading-normal min-[1200px]:text-[30px] ${view === 'cleanup' && retryFailed ? 'text-2xl' : 'text-[28px]'}`}
-        >
-          {view === 'default'
-            ? defaultTitle
-            : cleanup.length
-              ? retryFailed
-                ? '测试对象仍未清理'
-                : '测试对象清理失败'
-              : storage.probes.length
-                ? '测试对象清理进行中'
-                : '测试对象已清理'}
-        </h1>
-        <p
-          className={view === 'cleanup' ? 'text-sm text-muted' : 'text-[13px]'}
-        >
-          {view === 'default'
-            ? defaultDescription
-            : `${storage.name} · ${cleanup.length ? (retryFailed ? '清理重试失败' : '待清理记录已保留') : storage.probes.length ? '等待运行中的探测结束' : '没有剩余探测清理引用'}`}
-        </p>
+        </header>
+        <div className="flex flex-wrap items-center gap-3">
+          <span className="text-sm">{storage.name}</span>
+          <Chip
+            size="sm"
+            color={
+              view === 'default'
+                ? storage.enabled
+                  ? 'success'
+                  : 'warning'
+                : cleanup.length || storage.scan?.status === 'failed'
+                  ? 'danger'
+                  : 'default'
+            }
+            className="rounded-md"
+          >
+            <Chip.Label>
+              {view === 'default'
+                ? defaultTitle
+                : cleanup.length
+                  ? retryFailed
+                    ? '清理重试失败'
+                    : '清理失败'
+                  : storage.probes.length
+                    ? '探测进行中'
+                    : '无待清理探测'}
+            </Chip.Label>
+          </Chip>
+        </div>
         {error ? (
           <p role="alert" className="text-sm leading-normal text-danger">
             {error}
@@ -257,21 +304,17 @@ export function StorageMaintenanceView({
         ) : null}
         {view === 'default' ? (
           <>
-            <p className="rounded-lg bg-default p-3 text-[13px] leading-normal">
-              {isDefault && !storage.enabled
-                ? `默认仍指向${storage.name}。新上传不能使用该默认，系统不会自动选择其他存储。已有图片的元数据和关系保留。`
-                : isDefault
-                  ? '默认选择只影响新上传。清空或停用默认后，不会自动选择其他存储。'
-                  : defaultStorageId === null
-                    ? '上传时请明确选择存储，或设置一个默认存储。系统不会自动选择。'
-                    : `当前默认存储 ID：${defaultStorageId}。当前页面存储不是默认存储。`}
-            </p>
+            {isDefault && !storage.enabled ? (
+              <p className="text-sm text-warning">
+                新上传不能使用该默认，请重新启用或明确选择其他存储。
+              </p>
+            ) : null}
             {isDefault && !storage.enabled && !canEnable ? (
               <p
                 role="status"
                 className="text-[13px] leading-normal text-muted"
               >
-                当前配置尚未通过连接测试，不能重新启用。请返回存储配置并测试；默认选择仍保留，也可以清空默认。
+                当前配置尚未通过连接测试，不能重新启用。
               </p>
             ) : null}
             {isDefault && !storage.enabled ? (
@@ -283,156 +326,75 @@ export function StorageMaintenanceView({
                 showDescription={false}
               />
             ) : null}
-            <CorsRows
-              rows={
-                isDefault && !storage.enabled
-                  ? [
-                      {
-                        label: '内容与新上传',
-                        value: '不可用',
-                        detail: '提示存储已停用',
-                      },
-                      {
-                        label: '记录与永久删除',
-                        value: '仍可管理',
-                        detail: '清理继续尝试',
-                      },
-                      {
-                        label: '重新启用',
-                        value: '恢复原 ID 和链接',
-                        detail:
-                          storage.type === 's3'
-                            ? '需当前配置连接测试通过'
-                            : '使用当前保存路径',
-                      },
-                    ]
-                  : isDefault
-                    ? [
-                        {
-                          label: '连接',
-                          value:
-                            storage.type === 'local'
-                              ? '本地路径'
-                              : storage.connectionReport?.passed &&
-                                  !storage.connectionReport.stale
-                                ? '已通过'
-                                : '未通过',
-                          detail: '当前保存配置',
-                        },
-                        {
-                          label: '浏览器直传',
-                          value:
-                            storage.type === 'local'
-                              ? '不适用'
-                              : storage.corsReport?.passed &&
-                                  !storage.corsReport.stale &&
-                                  !storage.corsReport.cleanupPending
-                                ? '可用'
-                                : '不可用',
-                          detail: storage.corsOrigin ?? '未保存来源',
-                        },
-                        {
-                          label: '默认选择',
-                          value: storage.name,
-                          detail: '新上传默认位置',
-                        },
-                      ]
-                    : [
-                        {
-                          label: storage.name,
-                          value: storage.enabled ? '已启用' : '已停用',
-                          detail: '仅展示当前存储；返回列表查看全部配置',
-                        },
-                        {
-                          label: '默认选择',
-                          value: defaultStorageId ?? '未设置',
-                          detail: '系统不会自动选择',
-                        },
-                      ]
-              }
-            />
+            <dl>
+              {defaultRows.map((row) => (
+                <div
+                  key={row.label}
+                  className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-4 border-b border-border py-5"
+                >
+                  <dt className="text-sm">{row.label}</dt>
+                  <dd className="grid gap-1 text-sm">
+                    {row.value}
+                    {row.detail ? (
+                      <span className="text-xs text-muted">{row.detail}</span>
+                    ) : null}
+                  </dd>
+                </div>
+              ))}
+            </dl>
           </>
         ) : (
           <>
-            {[
-              {
-                label: '剩余对象',
-                value: storage.probes.length
-                  ? storage.probes.map((probe) => probe.key).join('；')
-                  : '无',
-              },
-              {
-                label: '失败原因',
-                value: cleanup.length
-                  ? cleanup.map((probe) => probeError(probe.error)).join('；')
-                  : '没有待重试的探测清理失败',
-              },
-              {
-                label: '引用状态',
-                value: `保留 ${storage.probes.length} 个探测对象清理引用`,
-              },
-              {
-                label: '下一步',
-                value: cleanup.length
-                  ? '修正删除权限后手动重试'
-                  : storage.probes.length
-                    ? '等待探测结束后刷新状态'
-                    : '返回存储配置检查其他引用',
-              },
-            ].map((row) => (
-              <div
-                key={row.label}
-                className="grid gap-1.5 rounded-lg bg-default px-4 py-3"
-              >
-                <p className="text-xs text-muted">{row.label}</p>
-                <p className="text-sm leading-normal">{row.value}</p>
-              </div>
-            ))}
-            <p className="rounded-lg bg-default px-3.5 py-3 text-[13px] leading-normal text-muted">
-              {storage.connectionReport && !storage.connectionReport.passed
-                ? '连接测试仍为失败。'
-                : ''}
-              存储停用时也可清理；对象删除成功前不能解除引用或删除配置。
-            </p>
-            {cleanup.map((probe) => (
-              <p
-                key={probe.id}
-                className="text-[13px] leading-normal text-muted"
-              >
-                {probe.key} · 记录 ID：{probe.id} · 已尝试{' '}
-                {probe.cleanupAttempts} 次 ·{' '}
-                {probe.nextCleanupAt
-                  ? `下次自动重试：${probe.nextCleanupAt}`
-                  : '没有计划中的自动重试，请手动重试'}
-              </p>
-            ))}
-            <div className="flex flex-wrap gap-3">
-              <Button
-                variant="outline"
-                className="min-h-12 rounded-lg font-normal"
-                isDisabled={disabled}
-                onPress={() => void run(onRefresh)}
-              >
-                刷新状态
-              </Button>
-              {retryFailed ? (
-                <Button
-                  data-testid="storage-retry-cleanup"
-                  variant="outline"
-                  className="min-h-12 rounded-lg font-normal"
-                  isDisabled={disabled}
-                  onPress={() => void run(retryCleanup)}
-                >
-                  重试清理
-                </Button>
+            <section aria-label="测试对象清理" className="grid gap-3">
+              <h2 className="flex items-center gap-3 text-lg font-medium">
+                <ShieldCheck size={20} aria-hidden />
+                连接测试对象
+                <span className="text-sm font-normal text-muted">
+                  {storage.probes.length} 个
+                </span>
+              </h2>
+              {storage.probes.length ? (
+                storage.probes.map((probe) => (
+                  <article
+                    key={probe.id}
+                    className="grid gap-2 border-b border-border py-4 text-sm"
+                  >
+                    <code className="break-all">{probe.key}</code>
+                    {probe.state === 'cleanup' ? (
+                      <p role="alert" className="text-danger">
+                        {probeError(probe.error)}
+                      </p>
+                    ) : (
+                      <p>等待运行中的探测结束</p>
+                    )}
+                    <p className="text-xs text-muted">
+                      记录 ID：{probe.id} · 已尝试 {probe.cleanupAttempts} 次
+                      {probe.nextCleanupAt
+                        ? ` · 下次自动重试：${probe.nextCleanupAt}`
+                        : probe.state === 'cleanup'
+                          ? ' · 没有计划中的自动重试，请手动重试'
+                          : ''}
+                    </p>
+                  </article>
+                ))
+              ) : (
+                <p className="text-sm text-muted">无待清理测试对象</p>
+              )}
+              {cleanup.length ? (
+                <p className="text-sm text-danger">
+                  对象删除成功前不能解除引用或删除配置。
+                </p>
               ) : null}
-            </div>
+            </section>
             {
               <section
                 aria-label="受管孤儿对象扫描"
                 className="grid gap-3 border-t border-border pt-4 text-sm leading-normal"
               >
-                <h2 className="font-medium">受管孤儿对象扫描</h2>
+                <h2 className="flex items-center gap-3 text-lg font-medium">
+                  <ScanLine size={20} aria-hidden />
+                  受管孤儿对象扫描
+                </h2>
                 <p>
                   已知孤儿对象 {storage.orphans.objects.length} 个 ·{' '}
                   {storage.orphans.knownBytes} 字节
@@ -477,7 +439,8 @@ export function StorageMaintenanceView({
                   isDisabled={disabled || storage.scan?.status === 'running'}
                   onPress={() => void run(retryScan)}
                 >
-                  扫描并清理受管孤儿对象
+                  <ScanLine size={16} aria-hidden />
+                  扫描并清理
                 </Button>
               </section>
             }

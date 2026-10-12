@@ -6,6 +6,21 @@ function select(suite: string, only?: string) {
 }
 
 describe('focused browser execution plans', () => {
+  it('registers the approved collection shortcuts in full and focused runs', () => {
+    expect(select('full').stages).toContainEqual([
+      'collection-shortcuts',
+      'collection-shortcuts',
+    ]);
+    expect(select('collection-shortcuts')).toEqual({
+      stages: [['collection-shortcuts', 'collectionShortcuts']],
+      config: { shortcutPhase: undefined },
+    });
+    for (const phase of ['upload', 'picker', 'menus', 'regressions'])
+      expect(select('collection-shortcuts', phase).config.shortcutPhase).toBe(
+        phase,
+      );
+    expect(() => select('collection-shortcuts', 'unrelated')).toThrow('--only');
+  });
   it('runs the real theme suite in full and scopes phase options to theme', () => {
     expect(select('full').stages).toContainEqual(['theme', 'theme']);
     const stages = select('full').stages.map(
@@ -201,6 +216,7 @@ describe('focused browser execution plans', () => {
     ['processing', 'settings', ['processing']],
     ['trash', 'cleanup', ['trash-cleanup']],
     ['trash', 'approved-results', ['trash-query-batch']],
+    ['trash', 'shortcut-focus', ['trash-query-batch']],
     ['library', 'recovery', ['library']],
     ['library', 'consumers', ['library']],
     ['library-batch', 'recovery', ['library-batch']],
@@ -460,6 +476,7 @@ describe('focused browser execution plans', () => {
         ['upload-input', 'upload-input'],
         ['upload-submissions', 'upload-submissions'],
         ['upload-relations', 'upload-relations'],
+        ['collection-shortcuts', 'collection-shortcuts'],
         ['upload-usage', 'upload-usage'],
         ['sharing-management', 'sharing-management'],
         ['site-general', 'site-general'],

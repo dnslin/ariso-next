@@ -42,12 +42,52 @@ async function loadedCards(page, settle) {
   assert.fail('The real loaded gallery did not reach its scroll boundary');
 }
 
+async function chooseLoadedImage({ page, settle, choose }, index) {
+  const id = batchImageId(index);
+  await page.evaluate(() =>
+    document.querySelector('main').scrollTo({ top: 0, behavior: 'instant' }),
+  );
+  for (let step = 0; step < 100; step++) {
+    await settle();
+    const position = await page.evaluate((id) => {
+      const main = document.querySelector('main');
+      const card = document.querySelector(`[data-image-id="${id}"]`);
+      if (card) {
+        card.scrollIntoView({ block: 'center', behavior: 'instant' });
+        return 'mounted';
+      }
+      if (main.scrollTop + main.clientHeight >= main.scrollHeight - 1)
+        return 'end';
+      main.scrollBy({ top: main.clientHeight * 0.75, behavior: 'instant' });
+      return 'next';
+    }, id);
+    if (position === 'end') break;
+    if (position !== 'mounted') continue;
+    await page.waitForFunction((id) => {
+      const main = document.querySelector('main');
+      const card = document.querySelector(`[data-image-id="${id}"]`);
+      if (!main || !card) return false;
+      const viewport = main.getBoundingClientRect();
+      const rect = card.getBoundingClientRect();
+      return (
+        rect.width > 0 &&
+        rect.height > 0 &&
+        rect.top >= viewport.top &&
+        rect.bottom <= viewport.bottom
+      );
+    }, id);
+    await settle();
+    await choose(index);
+    return;
+  }
+  assert.fail(`The loaded virtual gallery did not mount ${id}`);
+}
+
 async function verifyConfirmedChunk(context) {
   const {
     page,
     sql,
     loaded,
-    choose,
     action,
     submit,
     monitor,
@@ -58,6 +98,10 @@ async function verifyConfirmedChunk(context) {
     report,
     settle,
   } = context;
+  await sql(
+    "UPDATE media_images SET visibility='private' WHERE id LIKE 'issue177-%'",
+  );
+  await context.visit();
   await page.click('loc=role:button[name*="图片加载方式"]');
   await page.click('loc=role:option[name="加载更多"]');
   await loaded(80);
@@ -65,7 +109,7 @@ async function verifyConfirmedChunk(context) {
     await page.click('[data-testid="library-load-more"]');
     await loaded(count);
   }
-  await choose(0);
+  await chooseLoadedImage(context, 0);
   await action('全选已加载', 1);
   await action('设为公开', 201);
   await monitor();
@@ -87,7 +131,7 @@ async function verifyConfirmedChunk(context) {
   await page.waitForSelector('[data-testid="batch-check"]');
   await page.click('[data-testid="batch-return"]');
   await loaded(201);
-  await selected(1);
+  await selected(201);
   const confirmed = await loadedCards(page, settle);
   assert.equal(confirmed.length, 201);
   assert.ok(
@@ -107,7 +151,7 @@ async function verifyConfirmedChunk(context) {
   await page.click(button('查看待核对结果'));
   await page.click('[data-testid="batch-check"]');
   await done();
-  await selected(0);
+  await selected(201);
   const requests = await traffic();
   assert.deepEqual(
     requests.map((entry) => ({
@@ -144,7 +188,6 @@ export async function verifyBatchCache(context) {
     config,
     report,
     loaded,
-    choose,
     action,
     selected,
     submit,
@@ -161,15 +204,15 @@ export async function verifyBatchCache(context) {
   await verifyConfirmedChunk(context);
   await page.goto(`${config.origin}/library?q=issue177-&pageSize=20&page=1`);
   await loaded(20);
-  await choose(1);
+  await chooseLoadedImage(context, 1);
   await page.click('nav[aria-label="图库分页"] button:has-text("下一页")');
   await loaded(20);
-  await choose(20);
+  await chooseLoadedImage(context, 20);
   await action('设为公开', 2);
   await monitor();
   await page.click(submit);
   await done();
-  await selected(0);
+  await selected(2);
   await page.click(
     '[data-slot="toast"][data-frontmost="true"] [data-slot="toast-close"]',
   );
@@ -184,6 +227,8 @@ export async function verifyBatchCache(context) {
     batchImageId(1),
   );
   await shot('cache-old-page-current-visibility', 1440, 'light');
+  await action('清空全部选择', 2);
+  await selected(0);
 
   // Use the existing loading-mode control; history and selections stay in the real app.
   await page.click('loc=role:button[name*="图片加载方式"]');
@@ -194,8 +239,8 @@ export async function verifyBatchCache(context) {
   await page.click('[data-testid="library-load-more"]');
   await loaded(60);
   const before = (await loadedCards(page, settle)).map((item) => item.id);
-  await choose(19);
-  await choose(59);
+  await chooseLoadedImage(context, 19);
+  await chooseLoadedImage(context, 59);
   await action('移入回收站', 2);
   await monitor();
   await page.evaluate(() => {

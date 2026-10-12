@@ -65,7 +65,7 @@ async function openCleanup(id) {
   await open(id);
   await page.click('[data-testid="storage-open-cleanup"]');
   await page.waitForSelector('[data-testid="storage-reference-view"]');
-  await page.click(button('查看清理状态'));
+  await page.click(button('查看清理'));
   await page.waitForSelector('[data-testid="storage-cleanup-view"]');
 }
 async function savedByName(name) {
@@ -698,7 +698,7 @@ try {
         await delay(50);
       }
     }
-    await page.click(button('扫描并清理受管孤儿对象'));
+    await page.click(button('扫描并清理'));
     if (recover) {
       await page.waitForFunction(
         () => window.__storageScanRequested,

@@ -17,10 +17,10 @@ export async function verifyDetail171Consumers({ page, config, sql, report }) {
     ['图库', '/library'],
     ['相册', '/albums'],
     ['标签', '/tags'],
-    ['分享管理', '/shares'],
+    ['分享', '/shares'],
     ['回收站', '/trash'],
     ['访问统计', '/analytics'],
-    ['存储管理', '/settings/storage'],
+    ['存储', '/settings/storage'],
     ['站点设置', '/settings/general'],
   ];
   let branding;
@@ -243,7 +243,7 @@ export async function verifyDetail171Consumers({ page, config, sql, report }) {
               .querySelector('[data-testid="library-selection"] button')
               .getAttribute('aria-label'),
           ),
-          '操作已选 1 张图片',
+          '管理选择，已选 1 张',
         );
       }
     }

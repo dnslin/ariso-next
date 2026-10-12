@@ -122,7 +122,7 @@ try {
     await page.evaluate(() =>
       document.activeElement?.getAttribute('aria-label'),
     ),
-    '操作已选 2 张图片',
+    '更多图片操作',
     'Dismissal returns focus to selection source',
   );
   report.checks.push(

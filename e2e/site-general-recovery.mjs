@@ -153,7 +153,7 @@ export async function verifySiteGeneralRecovery(page, config, tools, report) {
   const unchanged = await tools.values();
   fault = await siteFault(page, { mode: 'write-hold' });
   try {
-    await page.click(button('保存站点信息'));
+    await page.click(button('保存站点'));
     await fault.wait('releaseWrite');
     await tools.state('saving');
     await tools.enabled(false);
@@ -174,7 +174,7 @@ export async function verifySiteGeneralRecovery(page, config, tools, report) {
   const beforeUnknown = await tools.read();
   fault = await siteFault(page, { mode: 'lost', check: 'hold' });
   try {
-    await page.click(button('保存站点信息'));
+    await page.click(button('保存站点'));
     await fault.wait('releaseWrite');
     assert.equal(
       (await tools.read()).description,
@@ -240,7 +240,7 @@ export async function verifySiteGeneralRecovery(page, config, tools, report) {
   const retryDraft = await tools.values();
   fault = await siteFault(page, { mode: 'lost', check: 'error' });
   try {
-    await page.click(button('保存站点信息'));
+    await page.click(button('保存站点'));
     await fault.wait('releaseWrite');
     await fault.release('releaseWrite');
     await tools.state('unknown');
@@ -263,7 +263,7 @@ export async function verifySiteGeneralRecovery(page, config, tools, report) {
     const draft = await tools.values();
     fault = await siteFault(page, { mode: 'unsent', check: 'hold' });
     try {
-      await page.click(button('保存站点信息'));
+      await page.click(button('保存站点'));
       await tools.state('unknown');
       await page.click(button('核对已保存设置'));
       await fault.wait('releaseRead');
@@ -367,7 +367,7 @@ export async function verifySiteGeneralRecovery(page, config, tools, report) {
       };
     });
     try {
-      await page.click(button('保存站点信息'));
+      await page.click(button('保存站点'));
       await tools.state('session');
       report.expiredSave = await page.evaluate(
         () => window.__siteExpiredSave.requests,
@@ -399,7 +399,7 @@ export async function verifySiteGeneralRecovery(page, config, tools, report) {
       '当前输入已保留，请重新登录后核对服务器设置。',
     ),
   );
-  assert.equal(expiredFeedback.save, '保存站点信息');
+  assert.equal(expiredFeedback.save, '保存站点');
   assert.deepEqual(await snapshot(), savedBeforeExpiry);
   await pair(tools, 'session-expired');
   await page.goto(`${config.origin}/library`);

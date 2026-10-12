@@ -1,0 +1,1566 @@
+{
+  "date": "2026-10-11",
+  "fileKey": "74sT9Hrf8G4czcWeTkET5b",
+  "url": "https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b/Ariso?node-id=1095-19618",
+  "scope": "Approved shortcut upload, album image picker, context-sensitive collection actions",
+  "approvedPrototype": "design-plans/main-ui-review-20261011/prototype/quick-workflow.md",
+  "section": {
+    "id": "1081:19457",
+    "name": "2026-10-11 · 已批准后台精简 · 正常状态补充",
+    "type": "SECTION",
+    "width": 9400,
+    "height": 24652.75,
+    "x": 112364,
+    "y": 0
+  },
+  "workflow": {
+    "id": "1095:19618",
+    "name": "2026-10-11 / 快捷上传与相册工作流",
+    "type": "FRAME",
+    "width": 4040,
+    "height": 18900,
+    "x": 0,
+    "y": 5200
+  },
+  "assetsNodeId": "1095:19619",
+  "originalMainFrames": [
+    {
+      "pageId": "0:1",
+      "mainNodeId": "30:285",
+      "entryNodeId": "1097:20560",
+      "label": "上传",
+      "change": "Added upload entry to existing library header"
+    },
+    {
+      "pageId": "0:1",
+      "mainNodeId": "38:378",
+      "entryNodeId": "1097:20571",
+      "label": "添加图片",
+      "change": "Added a single image-entry dropdown; preserved edit, cover and more controls"
+    },
+    {
+      "pageId": "97:748",
+      "mainNodeId": "98:748",
+      "entryNodeId": "1098:37093",
+      "label": "上传",
+      "change": "Added upload entry to existing mobile library header"
+    },
+    {
+      "pageId": "97:748",
+      "mainNodeId": "102:4002",
+      "entryNodeId": "1098:37105",
+      "entryRowNodeId": "1098:37104",
+      "label": "添加图片",
+      "change": "Added single image-entry dropdown to mobile album title row; preserved original controls"
+    }
+  ],
+  "componentIds": {
+    "pages": {
+      "DLibrary": "1096:19885",
+      "DAlbum": "1096:20122",
+      "MLibrary": "1096:20288",
+      "MAlbum": "1096:20430"
+    },
+    "uploads": {
+      "Dcompact": "1097:19789",
+      "Dexpanded": "1097:19883",
+      "Dunavailable": "1097:19978",
+      "Dprogress": "1097:20054",
+      "Dfailed": "1097:20137",
+      "Mcompact": "1097:20209",
+      "Mexpanded": "1097:20304",
+      "Munavailable": "1097:20400",
+      "Mprogress": "1097:20476",
+      "Mfailed": "1097:20559",
+      "Dalbumcompact": "1101:21466",
+      "Malbumcompact": "1101:21534"
+    },
+    "pickers": {
+      "Dnormal": "1098:20149",
+      "Dexisting": "1098:20230",
+      "Derror": "1098:20305",
+      "Mnormal": "1098:20380",
+      "Mexisting": "1098:20462",
+      "Merror": "1098:20538"
+    },
+    "menus": {
+      "AlbumAdd": "1098:20553",
+      "PublicContext": "1098:20592",
+      "PrivateContext": "1098:20631",
+      "NoAlbumContext": "1098:20665",
+      "MixedToolbar": "1098:20721"
+    },
+    "remove": {
+      "D": "1098:20764",
+      "M": "1098:20807"
+    },
+    "buttons": {
+      "Primary": "1095:19668",
+      "Outline": "1095:19676"
+    },
+    "photos": {
+      "Desktop": "1095:19688",
+      "Mobile": "1095:19697",
+      "PickerDesktop": "1095:19706",
+      "PickerMobile": "1095:19715"
+    },
+    "icons": {
+      "Copy": "759:7955",
+      "LockKeyhole": "759:7964",
+      "RefreshCw": "759:7998",
+      "Check": "759:8001",
+      "ChevronDown": "759:8004",
+      "X": "759:8017",
+      "Images": "763:8063",
+      "Search": "787:13535",
+      "SlidersHorizontal": "836:13817",
+      "ArrowLeft": "1018:16887",
+      "CloudUpload": "1095:19624",
+      "HardDrive": "1095:19630",
+      "Plus": "1095:19634",
+      "FolderInput": "1095:19639",
+      "FolderMinus": "1095:19643",
+      "Globe": "1095:19648",
+      "Trash2": "1095:19655",
+      "Tag": "1095:19659",
+      "Tags": "1095:19664",
+      "Folder": "1095:19667"
+    },
+    "addedAlbumPages": {
+      "D": "1103:33945",
+      "M": "1103:34140"
+    },
+    "existingAlbumPages": {
+      "D": "1104:34469",
+      "M": "1104:34681"
+    }
+  },
+  "modes": {
+    "collectionId": "VariableCollectionId:2:2",
+    "light": "2:0",
+    "dark": "264:0"
+  },
+  "reuse": {
+    "buttonSources": ["3:21", "3:23"],
+    "inputSource": "3:27",
+    "textStyle": "S:5fb8eb67c8d30d5d042f572fe33cc9a59b1076ce,",
+    "fonts": ["Noto Sans SC", "Caveat"],
+    "codeConnect": "No applicable mapping found in scoped repository search",
+    "librarySearch": "No subscribed component library; scoped search found no matching spacing/radius variables or missing icons",
+    "newIcons": "Exact lucide-react SVG data; converted to native vector components"
+  },
+  "rows": [
+    {
+      "id": "1099:20414",
+      "name": "01 / 图库快捷上传",
+      "states": [
+        {
+          "id": "1099:20415",
+          "width": 1440,
+          "height": 900,
+          "mode": {
+            "VariableCollectionId:2:2": "2:0"
+          }
+        },
+        {
+          "id": "1099:20603",
+          "width": 1440,
+          "height": 900,
+          "mode": {
+            "VariableCollectionId:2:2": "264:0"
+          }
+        },
+        {
+          "id": "1099:20791",
+          "width": 390,
+          "height": 844,
+          "mode": {
+            "VariableCollectionId:2:2": "2:0"
+          }
+        },
+        {
+          "id": "1099:20871",
+          "width": 390,
+          "height": 844,
+          "mode": {
+            "VariableCollectionId:2:2": "264:0"
+          }
+        }
+      ]
+    },
+    {
+      "id": "1102:23776",
+      "name": "02 / 空相册添加入口",
+      "states": [
+        {
+          "id": "1102:23777",
+          "width": 1440,
+          "height": 900,
+          "mode": {
+            "VariableCollectionId:2:2": "2:0"
+          }
+        },
+        {
+          "id": "1102:23936",
+          "width": 1440,
+          "height": 900,
+          "mode": {
+            "VariableCollectionId:2:2": "264:0"
+          }
+        },
+        {
+          "id": "1102:24095",
+          "width": 390,
+          "height": 844,
+          "mode": {
+            "VariableCollectionId:2:2": "2:0"
+          }
+        },
+        {
+          "id": "1102:24145",
+          "width": 390,
+          "height": 844,
+          "mode": {
+            "VariableCollectionId:2:2": "264:0"
+          }
+        }
+      ]
+    },
+    {
+      "id": "1102:24195",
+      "name": "03 / 添加图片菜单",
+      "states": [
+        {
+          "id": "1102:24196",
+          "width": 1440,
+          "height": 900,
+          "mode": {
+            "VariableCollectionId:2:2": "2:0"
+          }
+        },
+        {
+          "id": "1102:24369",
+          "width": 1440,
+          "height": 900,
+          "mode": {
+            "VariableCollectionId:2:2": "264:0"
+          }
+        },
+        {
+          "id": "1102:24542",
+          "width": 390,
+          "height": 844,
+          "mode": {
+            "VariableCollectionId:2:2": "2:0"
+          }
+        },
+        {
+          "id": "1102:24606",
+          "width": 390,
+          "height": 844,
+          "mode": {
+            "VariableCollectionId:2:2": "264:0"
+          }
+        }
+      ]
+    },
+    {
+      "id": "1102:24670",
+      "name": "04 / 图库上传",
+      "states": [
+        {
+          "id": "1102:24671",
+          "width": 1440,
+          "height": 900,
+          "mode": {
+            "VariableCollectionId:2:2": "2:0"
+          }
+        },
+        {
+          "id": "1102:24960",
+          "width": 1440,
+          "height": 900,
+          "mode": {
+            "VariableCollectionId:2:2": "264:0"
+          }
+        },
+        {
+          "id": "1102:25249",
+          "width": 390,
+          "height": 844,
+          "mode": {
+            "VariableCollectionId:2:2": "2:0"
+          }
+        },
+        {
+          "id": "1102:25430",
+          "width": 390,
+          "height": 844,
+          "mode": {
+            "VariableCollectionId:2:2": "264:0"
+          }
+        }
+      ]
+    },
+    {
+      "id": "1102:25611",
+      "name": "05 / 相册上传自动归属",
+      "states": [
+        {
+          "id": "1102:25612",
+          "width": 1440,
+          "height": 900,
+          "mode": {
+            "VariableCollectionId:2:2": "2:0"
+          }
+        },
+        {
+          "id": "1102:25840",
+          "width": 1440,
+          "height": 900,
+          "mode": {
+            "VariableCollectionId:2:2": "264:0"
+          }
+        },
+        {
+          "id": "1102:26068",
+          "width": 390,
+          "height": 844,
+          "mode": {
+            "VariableCollectionId:2:2": "2:0"
+          }
+        },
+        {
+          "id": "1102:26187",
+          "width": 390,
+          "height": 844,
+          "mode": {
+            "VariableCollectionId:2:2": "264:0"
+          }
+        }
+      ]
+    },
+    {
+      "id": "1102:29782",
+      "name": "06 / 展开上传设置",
+      "states": [
+        {
+          "id": "1102:29783",
+          "width": 1440,
+          "height": 900,
+          "mode": {
+            "VariableCollectionId:2:2": "2:0"
+          }
+        },
+        {
+          "id": "1102:30094",
+          "width": 1440,
+          "height": 900,
+          "mode": {
+            "VariableCollectionId:2:2": "264:0"
+          }
+        },
+        {
+          "id": "1102:30405",
+          "width": 390,
+          "height": 844,
+          "mode": {
+            "VariableCollectionId:2:2": "2:0"
+          }
+        },
+        {
+          "id": "1102:30609",
+          "width": 390,
+          "height": 844,
+          "mode": {
+            "VariableCollectionId:2:2": "264:0"
+          }
+        }
+      ]
+    },
+    {
+      "id": "1102:30813",
+      "name": "07 / 默认存储不可用",
+      "states": [
+        {
+          "id": "1102:30814",
+          "width": 1440,
+          "height": 900,
+          "mode": {
+            "VariableCollectionId:2:2": "2:0"
+          }
+        },
+        {
+          "id": "1102:31126",
+          "width": 1440,
+          "height": 900,
+          "mode": {
+            "VariableCollectionId:2:2": "264:0"
+          }
+        },
+        {
+          "id": "1102:31438",
+          "width": 390,
+          "height": 844,
+          "mode": {
+            "VariableCollectionId:2:2": "2:0"
+          }
+        },
+        {
+          "id": "1102:31643",
+          "width": 390,
+          "height": 844,
+          "mode": {
+            "VariableCollectionId:2:2": "264:0"
+          }
+        }
+      ]
+    },
+    {
+      "id": "1102:31848",
+      "name": "08 / 相册上传进度",
+      "states": [
+        {
+          "id": "1102:31849",
+          "width": 1440,
+          "height": 900,
+          "mode": {
+            "VariableCollectionId:2:2": "2:0"
+          }
+        },
+        {
+          "id": "1102:32076",
+          "width": 1440,
+          "height": 900,
+          "mode": {
+            "VariableCollectionId:2:2": "264:0"
+          }
+        },
+        {
+          "id": "1102:32303",
+          "width": 390,
+          "height": 844,
+          "mode": {
+            "VariableCollectionId:2:2": "2:0"
+          }
+        },
+        {
+          "id": "1102:32421",
+          "width": 390,
+          "height": 844,
+          "mode": {
+            "VariableCollectionId:2:2": "264:0"
+          }
+        }
+      ]
+    },
+    {
+      "id": "1102:32539",
+      "name": "09 / 上传失败保留任务",
+      "states": [
+        {
+          "id": "1102:32540",
+          "width": 1440,
+          "height": 900,
+          "mode": {
+            "VariableCollectionId:2:2": "2:0"
+          }
+        },
+        {
+          "id": "1102:32774",
+          "width": 1440,
+          "height": 900,
+          "mode": {
+            "VariableCollectionId:2:2": "264:0"
+          }
+        },
+        {
+          "id": "1102:33008",
+          "width": 390,
+          "height": 844,
+          "mode": {
+            "VariableCollectionId:2:2": "2:0"
+          }
+        },
+        {
+          "id": "1102:33133",
+          "width": 390,
+          "height": 844,
+          "mode": {
+            "VariableCollectionId:2:2": "264:0"
+          }
+        }
+      ]
+    },
+    {
+      "id": "1102:33258",
+      "name": "10 / 上传后台继续",
+      "states": [
+        {
+          "id": "1102:33259",
+          "width": 1440,
+          "height": 900,
+          "mode": {
+            "VariableCollectionId:2:2": "2:0"
+          }
+        },
+        {
+          "id": "1102:33426",
+          "width": 1440,
+          "height": 900,
+          "mode": {
+            "VariableCollectionId:2:2": "264:0"
+          }
+        },
+        {
+          "id": "1102:33590",
+          "width": 390,
+          "height": 844,
+          "mode": {
+            "VariableCollectionId:2:2": "2:0"
+          }
+        },
+        {
+          "id": "1102:33648",
+          "width": 390,
+          "height": 844,
+          "mode": {
+            "VariableCollectionId:2:2": "264:0"
+          }
+        }
+      ]
+    },
+    {
+      "id": "1102:33703",
+      "name": "11 / 从图库选择",
+      "states": [
+        {
+          "id": "1102:33704",
+          "width": 1440,
+          "height": 900,
+          "mode": {
+            "VariableCollectionId:2:2": "2:0"
+          }
+        },
+        {
+          "id": "1102:33925",
+          "width": 1440,
+          "height": 900,
+          "mode": {
+            "VariableCollectionId:2:2": "264:0"
+          }
+        },
+        {
+          "id": "1102:34146",
+          "width": 390,
+          "height": 844,
+          "mode": {
+            "VariableCollectionId:2:2": "2:0"
+          }
+        },
+        {
+          "id": "1102:34259",
+          "width": 390,
+          "height": 844,
+          "mode": {
+            "VariableCollectionId:2:2": "264:0"
+          }
+        }
+      ]
+    },
+    {
+      "id": "1102:34372",
+      "name": "12 / 已有相册成员禁选",
+      "states": [
+        {
+          "id": "1102:34373",
+          "width": 1440,
+          "height": 900,
+          "mode": {
+            "VariableCollectionId:2:2": "2:0"
+          }
+        },
+        {
+          "id": "1102:34598",
+          "width": 1440,
+          "height": 900,
+          "mode": {
+            "VariableCollectionId:2:2": "264:0"
+          }
+        },
+        {
+          "id": "1102:34823",
+          "width": 390,
+          "height": 844,
+          "mode": {
+            "VariableCollectionId:2:2": "2:0"
+          }
+        },
+        {
+          "id": "1102:34940",
+          "width": 390,
+          "height": 844,
+          "mode": {
+            "VariableCollectionId:2:2": "264:0"
+          }
+        }
+      ]
+    },
+    {
+      "id": "1102:35057",
+      "name": "13 / 添加失败保留选择",
+      "states": [
+        {
+          "id": "1102:35058",
+          "width": 1440,
+          "height": 900,
+          "mode": {
+            "VariableCollectionId:2:2": "2:0"
+          }
+        },
+        {
+          "id": "1102:35281",
+          "width": 1440,
+          "height": 900,
+          "mode": {
+            "VariableCollectionId:2:2": "264:0"
+          }
+        },
+        {
+          "id": "1102:35504",
+          "width": 390,
+          "height": 844,
+          "mode": {
+            "VariableCollectionId:2:2": "2:0"
+          }
+        },
+        {
+          "id": "1102:35619",
+          "width": 390,
+          "height": 844,
+          "mode": {
+            "VariableCollectionId:2:2": "264:0"
+          }
+        }
+      ]
+    },
+    {
+      "id": "1102:39331",
+      "name": "14 / 混合选中快捷操作",
+      "states": [
+        {
+          "id": "1102:39332",
+          "width": 1440,
+          "height": 900,
+          "mode": {
+            "VariableCollectionId:2:2": "2:0"
+          }
+        },
+        {
+          "id": "1102:39624",
+          "width": 1440,
+          "height": 900,
+          "mode": {
+            "VariableCollectionId:2:2": "264:0"
+          }
+        },
+        {
+          "id": "1102:39916",
+          "width": 390,
+          "height": 844,
+          "mode": {
+            "VariableCollectionId:2:2": "2:0"
+          }
+        },
+        {
+          "id": "1102:40100",
+          "width": 390,
+          "height": 844,
+          "mode": {
+            "VariableCollectionId:2:2": "264:0"
+          }
+        }
+      ]
+    },
+    {
+      "id": "1102:40284",
+      "name": "15 / 公开图片右键",
+      "states": [
+        {
+          "id": "1102:40285",
+          "width": 1440,
+          "height": 900,
+          "mode": {
+            "VariableCollectionId:2:2": "2:0"
+          }
+        },
+        {
+          "id": "1102:40559",
+          "width": 1440,
+          "height": 900,
+          "mode": {
+            "VariableCollectionId:2:2": "264:0"
+          }
+        },
+        {
+          "id": "1102:40833",
+          "width": 390,
+          "height": 844,
+          "mode": {
+            "VariableCollectionId:2:2": "2:0"
+          }
+        },
+        {
+          "id": "1102:40999",
+          "width": 390,
+          "height": 844,
+          "mode": {
+            "VariableCollectionId:2:2": "264:0"
+          }
+        }
+      ]
+    },
+    {
+      "id": "1102:41165",
+      "name": "16 / 私有图片右键",
+      "states": [
+        {
+          "id": "1102:41166",
+          "width": 1440,
+          "height": 900,
+          "mode": {
+            "VariableCollectionId:2:2": "2:0"
+          }
+        },
+        {
+          "id": "1102:41440",
+          "width": 1440,
+          "height": 900,
+          "mode": {
+            "VariableCollectionId:2:2": "264:0"
+          }
+        },
+        {
+          "id": "1102:41714",
+          "width": 390,
+          "height": 844,
+          "mode": {
+            "VariableCollectionId:2:2": "2:0"
+          }
+        },
+        {
+          "id": "1102:41880",
+          "width": 390,
+          "height": 844,
+          "mode": {
+            "VariableCollectionId:2:2": "264:0"
+          }
+        }
+      ]
+    },
+    {
+      "id": "1102:42046",
+      "name": "17 / 无相册图片右键",
+      "states": [
+        {
+          "id": "1102:42047",
+          "width": 1440,
+          "height": 900,
+          "mode": {
+            "VariableCollectionId:2:2": "2:0"
+          }
+        },
+        {
+          "id": "1102:42316",
+          "width": 1440,
+          "height": 900,
+          "mode": {
+            "VariableCollectionId:2:2": "264:0"
+          }
+        },
+        {
+          "id": "1102:42585",
+          "width": 390,
+          "height": 844,
+          "mode": {
+            "VariableCollectionId:2:2": "2:0"
+          }
+        },
+        {
+          "id": "1102:42746",
+          "width": 390,
+          "height": 844,
+          "mode": {
+            "VariableCollectionId:2:2": "264:0"
+          }
+        }
+      ]
+    },
+    {
+      "id": "1102:42907",
+      "name": "18 / 明确移出目标与失败",
+      "states": [
+        {
+          "id": "1102:42908",
+          "width": 1440,
+          "height": 900,
+          "mode": {
+            "VariableCollectionId:2:2": "2:0"
+          }
+        },
+        {
+          "id": "1102:43180",
+          "width": 1440,
+          "height": 900,
+          "mode": {
+            "VariableCollectionId:2:2": "264:0"
+          }
+        },
+        {
+          "id": "1102:43452",
+          "width": 390,
+          "height": 844,
+          "mode": {
+            "VariableCollectionId:2:2": "2:0"
+          }
+        },
+        {
+          "id": "1102:43616",
+          "width": 390,
+          "height": 844,
+          "mode": {
+            "VariableCollectionId:2:2": "264:0"
+          }
+        }
+      ]
+    },
+    {
+      "id": "1103:34226",
+      "name": "19 / 添加完成停留相册",
+      "states": [
+        {
+          "id": "1103:34227",
+          "width": 1440,
+          "height": 900,
+          "mode": {
+            "VariableCollectionId:2:2": "2:0"
+          }
+        },
+        {
+          "id": "1103:34402",
+          "width": 1440,
+          "height": 900,
+          "mode": {
+            "VariableCollectionId:2:2": "264:0"
+          }
+        },
+        {
+          "id": "1103:34577",
+          "width": 390,
+          "height": 844,
+          "mode": {
+            "VariableCollectionId:2:2": "2:0"
+          }
+        },
+        {
+          "id": "1103:34643",
+          "width": 390,
+          "height": 844,
+          "mode": {
+            "VariableCollectionId:2:2": "264:0"
+          }
+        }
+      ]
+    }
+  ],
+  "validation": {
+    "counts": {
+      "stateFrames": 76,
+      "fonts": {
+        "Caveat / Regular": 76,
+        "Noto Sans SC / Bold": 38,
+        "Noto Sans SC / Medium": 590,
+        "Noto Sans SC / Regular": 1326
+      },
+      "types": {
+        "INSTANCE": 1560,
+        "FRAME": 4616,
+        "TEXT": 2030,
+        "VECTOR": 4872,
+        "RECTANGLE": 324
+      },
+      "imageHashes": {
+        "19a49ccaa25bfe8947b9cd374882287a14af0ca3": {
+          "count": 128,
+          "maxWidth": 273,
+          "maxHeight": 204.75,
+          "sampleNode": "I1099:20416;1096:19849;1095:19685"
+        },
+        "49bdbaf0714d82c1793fd4e1325012ecb76fe5fc": {
+          "count": 100,
+          "maxWidth": 273,
+          "maxHeight": 204.75,
+          "sampleNode": "I1099:20416;1096:19858;1095:19685"
+        }
+      }
+    },
+    "modalBoundsFailures": [],
+    "textOverflows": [],
+    "menuLabels": {
+      "QuickCollections / Menu / AlbumAdd": ["上传新图片", "从图库选择"],
+      "QuickCollections / Menu / PublicContext": [
+        "查看图片",
+        "复制链接",
+        "加入相册",
+        "设为私有",
+        "从相册移出",
+        "移入回收站"
+      ],
+      "QuickCollections / Menu / PrivateContext": [
+        "查看图片",
+        "复制链接",
+        "加入相册",
+        "设为公开",
+        "从相册移出",
+        "移入回收站"
+      ],
+      "QuickCollections / Menu / NoAlbumContext": [
+        "查看图片",
+        "复制链接",
+        "加入相册",
+        "设为公开",
+        "移入回收站"
+      ],
+      "QuickCollections / Menu / MixedToolbar": [
+        "复制链接",
+        "加入相册",
+        "设为公开",
+        "设为私有",
+        "从相册移出",
+        "添加标签",
+        "移除标签",
+        "重新处理",
+        "移入回收站"
+      ]
+    },
+    "originalMobileEntries": [
+      {
+        "id": "1098:37093",
+        "name": "Button / 上传",
+        "width": 80,
+        "height": 48,
+        "label": ["上传"],
+        "ancestors": [
+          {
+            "id": "98:833",
+            "name": "页面标题"
+          },
+          {
+            "id": "98:830",
+            "name": "Main"
+          },
+          {
+            "id": "98:748",
+            "name": "M · 图库"
+          },
+          {
+            "id": "209:2268",
+            "name": "07 · 图库与图片详情"
+          }
+        ],
+        "iconBindings": [
+          {
+            "id": "I1098:37093;1095:19670;1095:19621",
+            "boundVariables": [
+              {
+                "color": {
+                  "type": "VARIABLE_ALIAS",
+                  "id": "VariableID:264:1392"
+                }
+              }
+            ]
+          },
+          {
+            "id": "I1098:37093;1095:19670;1095:19622",
+            "boundVariables": [
+              {
+                "color": {
+                  "type": "VARIABLE_ALIAS",
+                  "id": "VariableID:264:1392"
+                }
+              }
+            ]
+          },
+          {
+            "id": "I1098:37093;1095:19670;1095:19623",
+            "boundVariables": [
+              {
+                "color": {
+                  "type": "VARIABLE_ALIAS",
+                  "id": "VariableID:264:1392"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "1098:37105",
+        "name": "Button / 添加图片",
+        "width": 142,
+        "height": 48,
+        "label": ["添加图片"],
+        "ancestors": [
+          {
+            "id": "1098:37104",
+            "name": "标题与添加图片入口"
+          },
+          {
+            "id": "277:3337",
+            "name": "Main"
+          },
+          {
+            "id": "307:3828",
+            "name": "页面内容滚动区"
+          },
+          {
+            "id": "102:4002",
+            "name": "相册 · 山野之间"
+          },
+          {
+            "id": "209:2269",
+            "name": "08 · 相册"
+          }
+        ],
+        "iconBindings": [
+          {
+            "id": "I1098:37105;1095:19670;1095:19632",
+            "boundVariables": [
+              {
+                "color": {
+                  "type": "VARIABLE_ALIAS",
+                  "id": "VariableID:264:1392"
+                }
+              }
+            ]
+          },
+          {
+            "id": "I1098:37105;1095:19670;1095:19633",
+            "boundVariables": [
+              {
+                "color": {
+                  "type": "VARIABLE_ALIAS",
+                  "id": "VariableID:264:1392"
+                }
+              }
+            ]
+          },
+          {
+            "id": "I1098:37105;1095:19674;759:8003",
+            "boundVariables": [
+              {
+                "color": {
+                  "type": "VARIABLE_ALIAS",
+                  "id": "VariableID:264:1392"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "editable": true,
+    "fullPageRasterCount": 0,
+    "screenshotPixelDimensionsCommand": "sips -g pixelWidth -g pixelHeight .data/main-ui-review-20261011/quick-workflow/figma-sync/*.png",
+    "screenshotDimensionsResult": "12 PNGs; desktop 1440x900, mobile 390x844",
+    "visualReview": "Representative library, empty album menu, compact/expanded upload, unavailable default storage, picker, existing members, failures, success, mixed toolbar and no-membership context menu rendered and inspected"
+  },
+  "screenshots": [
+    {
+      "surface": "library",
+      "nodeId": "1099:20415",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "theme": "light",
+      "path": "/Volumes/data/project/ariso/.data/main-ui-review-20261011/quick-workflow/figma-sync/library-desktop-light.png",
+      "scale": 1
+    },
+    {
+      "surface": "library",
+      "nodeId": "1099:20603",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "theme": "dark",
+      "path": "/Volumes/data/project/ariso/.data/main-ui-review-20261011/quick-workflow/figma-sync/library-desktop-dark.png",
+      "scale": 1
+    },
+    {
+      "surface": "library",
+      "nodeId": "1099:20791",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "theme": "light",
+      "path": "/Volumes/data/project/ariso/.data/main-ui-review-20261011/quick-workflow/figma-sync/library-mobile-light.png",
+      "scale": 1
+    },
+    {
+      "surface": "library",
+      "nodeId": "1099:20871",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "theme": "dark",
+      "path": "/Volumes/data/project/ariso/.data/main-ui-review-20261011/quick-workflow/figma-sync/library-mobile-dark.png",
+      "scale": 1
+    },
+    {
+      "surface": "upload",
+      "nodeId": "1102:24671",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "theme": "light",
+      "path": "/Volumes/data/project/ariso/.data/main-ui-review-20261011/quick-workflow/figma-sync/upload-desktop-light.png",
+      "scale": 1
+    },
+    {
+      "surface": "upload",
+      "nodeId": "1102:24960",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "theme": "dark",
+      "path": "/Volumes/data/project/ariso/.data/main-ui-review-20261011/quick-workflow/figma-sync/upload-desktop-dark.png",
+      "scale": 1
+    },
+    {
+      "surface": "upload",
+      "nodeId": "1102:25249",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "theme": "light",
+      "path": "/Volumes/data/project/ariso/.data/main-ui-review-20261011/quick-workflow/figma-sync/upload-mobile-light.png",
+      "scale": 1
+    },
+    {
+      "surface": "upload",
+      "nodeId": "1102:25430",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "theme": "dark",
+      "path": "/Volumes/data/project/ariso/.data/main-ui-review-20261011/quick-workflow/figma-sync/upload-mobile-dark.png",
+      "scale": 1
+    },
+    {
+      "surface": "picker",
+      "nodeId": "1102:33704",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "theme": "light",
+      "path": "/Volumes/data/project/ariso/.data/main-ui-review-20261011/quick-workflow/figma-sync/picker-desktop-light.png",
+      "scale": 1
+    },
+    {
+      "surface": "picker",
+      "nodeId": "1102:33925",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "theme": "dark",
+      "path": "/Volumes/data/project/ariso/.data/main-ui-review-20261011/quick-workflow/figma-sync/picker-desktop-dark.png",
+      "scale": 1
+    },
+    {
+      "surface": "picker",
+      "nodeId": "1102:34146",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "theme": "light",
+      "path": "/Volumes/data/project/ariso/.data/main-ui-review-20261011/quick-workflow/figma-sync/picker-mobile-light.png",
+      "scale": 1
+    },
+    {
+      "surface": "picker",
+      "nodeId": "1102:34259",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "theme": "dark",
+      "path": "/Volumes/data/project/ariso/.data/main-ui-review-20261011/quick-workflow/figma-sync/picker-mobile-dark.png",
+      "scale": 1
+    }
+  ],
+  "followUps": [
+    {
+      "date": "2026-10-11",
+      "id": "picker-submit-error-fixed-region",
+      "source": "src/app/albums/image-picker.tsx: album-image-submit-error outside Modal.Body and immediately before Modal.Footer",
+      "rowId": "1102:35057",
+      "scope": "Only row 13 failure states; 72 other frames and the 12 normal comparison PNGs are unchanged.",
+      "createdNodeIds": [],
+      "mutatedNodeIds": [
+        "1098:20305",
+        "1098:20247",
+        "1098:20282",
+        "1098:20285",
+        "1098:20538",
+        "1098:20479",
+        "1098:20515",
+        "1098:20518"
+      ],
+      "components": [
+        {
+          "id": "1098:20305",
+          "width": 800,
+          "height": 453.75,
+          "body": {
+            "id": "1098:20247",
+            "name": "Dialog.Body / 多选图库",
+            "x": 1,
+            "y": 142,
+            "width": 800,
+            "height": 191.75,
+            "layoutSizingVertical": "FIXED",
+            "overflowDirection": "VERTICAL",
+            "maxHeight": null,
+            "parentId": "1098:20305"
+          },
+          "error": {
+            "id": "1098:20282",
+            "name": "Dialog.Error / 固定于底栏上方",
+            "x": 1,
+            "y": 333.75,
+            "width": 800,
+            "height": 38,
+            "layoutSizingVertical": "FIXED",
+            "overflowDirection": "VERTICAL",
+            "maxHeight": 128,
+            "parentId": "1098:20305"
+          },
+          "footer": {
+            "id": "1098:20285",
+            "name": "Dialog.Footer / 固定操作",
+            "x": 1,
+            "y": 372.75,
+            "width": 800,
+            "height": 80,
+            "layoutSizingVertical": "FIXED",
+            "overflowDirection": "NONE",
+            "maxHeight": null,
+            "parentId": "1098:20305"
+          },
+          "errorText": [
+            {
+              "id": "1098:20283",
+              "text": "添加失败，已保留选择，请重试。",
+              "x": 20,
+              "y": 0,
+              "width": 760,
+              "height": 22
+            }
+          ]
+        },
+        {
+          "id": "1098:20538",
+          "width": 358,
+          "height": 596.5,
+          "body": {
+            "id": "1098:20479",
+            "name": "Dialog.Body / 多选图库",
+            "x": 1,
+            "y": 142,
+            "width": 358,
+            "height": 334.5,
+            "layoutSizingVertical": "FIXED",
+            "overflowDirection": "VERTICAL",
+            "maxHeight": null,
+            "parentId": "1098:20538"
+          },
+          "error": {
+            "id": "1098:20515",
+            "name": "Dialog.Error / 固定于底栏上方",
+            "x": 1,
+            "y": 476.5,
+            "width": 358,
+            "height": 38,
+            "layoutSizingVertical": "FIXED",
+            "overflowDirection": "VERTICAL",
+            "maxHeight": 128,
+            "parentId": "1098:20538"
+          },
+          "footer": {
+            "id": "1098:20518",
+            "name": "Dialog.Footer / 固定操作",
+            "x": 1,
+            "y": 515.5,
+            "width": 358,
+            "height": 80,
+            "layoutSizingVertical": "FIXED",
+            "overflowDirection": "NONE",
+            "maxHeight": null,
+            "parentId": "1098:20538"
+          },
+          "errorText": [
+            {
+              "id": "1098:20516",
+              "text": "添加失败，已保留选择，请重试。",
+              "x": 20,
+              "y": 0,
+              "width": 318,
+              "height": 22
+            }
+          ]
+        }
+      ],
+      "instances": [
+        {
+          "frameId": "1102:35058",
+          "modal": {
+            "id": "1102:35218",
+            "x": 320,
+            "y": 223.125,
+            "width": 800,
+            "height": 453.75,
+            "parentId": "1102:35217"
+          },
+          "body": {
+            "id": "I1102:35218;1098:20247",
+            "x": 321,
+            "y": 365.125,
+            "width": 800,
+            "height": 191.75,
+            "parentId": "1102:35218"
+          },
+          "error": {
+            "id": "I1102:35218;1098:20282",
+            "x": 321,
+            "y": 556.875,
+            "width": 800,
+            "height": 38,
+            "parentId": "1102:35218"
+          },
+          "footer": {
+            "id": "I1102:35218;1098:20285",
+            "x": 321,
+            "y": 595.875,
+            "width": 800,
+            "height": 80,
+            "parentId": "1102:35218"
+          },
+          "errorOutsideBody": true,
+          "errorAboveFooter": true,
+          "bodyScrollable": true,
+          "errorScrollable": true,
+          "errorMaxHeight": 128,
+          "footerFixed": true
+        },
+        {
+          "frameId": "1102:35281",
+          "modal": {
+            "id": "1102:35441",
+            "x": 320,
+            "y": 223.125,
+            "width": 800,
+            "height": 453.75,
+            "parentId": "1102:35440"
+          },
+          "body": {
+            "id": "I1102:35441;1098:20247",
+            "x": 321,
+            "y": 365.125,
+            "width": 800,
+            "height": 191.75,
+            "parentId": "1102:35441"
+          },
+          "error": {
+            "id": "I1102:35441;1098:20282",
+            "x": 321,
+            "y": 556.875,
+            "width": 800,
+            "height": 38,
+            "parentId": "1102:35441"
+          },
+          "footer": {
+            "id": "I1102:35441;1098:20285",
+            "x": 321,
+            "y": 595.875,
+            "width": 800,
+            "height": 80,
+            "parentId": "1102:35441"
+          },
+          "errorOutsideBody": true,
+          "errorAboveFooter": true,
+          "bodyScrollable": true,
+          "errorScrollable": true,
+          "errorMaxHeight": 128,
+          "footerFixed": true
+        },
+        {
+          "frameId": "1102:35504",
+          "modal": {
+            "id": "1102:35555",
+            "x": 16,
+            "y": 123.75,
+            "width": 358,
+            "height": 596.5,
+            "parentId": "1102:35554"
+          },
+          "body": {
+            "id": "I1102:35555;1098:20479",
+            "x": 17,
+            "y": 265.75,
+            "width": 358,
+            "height": 334.5,
+            "parentId": "1102:35555"
+          },
+          "error": {
+            "id": "I1102:35555;1098:20515",
+            "x": 17,
+            "y": 600.25,
+            "width": 358,
+            "height": 38,
+            "parentId": "1102:35555"
+          },
+          "footer": {
+            "id": "I1102:35555;1098:20518",
+            "x": 17,
+            "y": 639.25,
+            "width": 358,
+            "height": 80,
+            "parentId": "1102:35555"
+          },
+          "errorOutsideBody": true,
+          "errorAboveFooter": true,
+          "bodyScrollable": true,
+          "errorScrollable": true,
+          "errorMaxHeight": 128,
+          "footerFixed": true
+        },
+        {
+          "frameId": "1102:35619",
+          "modal": {
+            "id": "1102:35670",
+            "x": 16,
+            "y": 123.75,
+            "width": 358,
+            "height": 596.5,
+            "parentId": "1102:35669"
+          },
+          "body": {
+            "id": "I1102:35670;1098:20479",
+            "x": 17,
+            "y": 265.75,
+            "width": 358,
+            "height": 334.5,
+            "parentId": "1102:35670"
+          },
+          "error": {
+            "id": "I1102:35670;1098:20515",
+            "x": 17,
+            "y": 600.25,
+            "width": 358,
+            "height": 38,
+            "parentId": "1102:35670"
+          },
+          "footer": {
+            "id": "I1102:35670;1098:20518",
+            "x": 17,
+            "y": 639.25,
+            "width": 358,
+            "height": 80,
+            "parentId": "1102:35670"
+          },
+          "errorOutsideBody": true,
+          "errorAboveFooter": true,
+          "bodyScrollable": true,
+          "errorScrollable": true,
+          "errorMaxHeight": 128,
+          "footerFixed": true
+        }
+      ],
+      "screenshots": [
+        {
+          "nodeId": "1102:35058",
+          "theme": "light",
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "path": "/Volumes/data/project/ariso/.data/main-ui-review-20261011/quick-workflow/figma-sync/picker-error-desktop-light.png",
+          "scale": 1
+        },
+        {
+          "nodeId": "1102:35281",
+          "theme": "dark",
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "path": "/Volumes/data/project/ariso/.data/main-ui-review-20261011/quick-workflow/figma-sync/picker-error-desktop-dark.png",
+          "scale": 1
+        },
+        {
+          "nodeId": "1102:35504",
+          "theme": "light",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "path": "/Volumes/data/project/ariso/.data/main-ui-review-20261011/quick-workflow/figma-sync/picker-error-mobile-light.png",
+          "scale": 1
+        },
+        {
+          "nodeId": "1102:35619",
+          "theme": "dark",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "path": "/Volumes/data/project/ariso/.data/main-ui-review-20261011/quick-workflow/figma-sync/picker-error-mobile-dark.png",
+          "scale": 1
+        }
+      ],
+      "verification": {
+        "errorOutsideBody": true,
+        "errorAboveFooter": true,
+        "bodyIndependentVerticalScroll": true,
+        "errorIndependentVerticalScroll": true,
+        "errorMaxHeight": 128,
+        "footerFixedHeight": 80,
+        "unchangedOtherFrameCount": 72,
+        "changedOtherFrames": [],
+        "normalComparisonScreenshotCount": 12,
+        "normalComparisonScreenshotHashesUnchanged": true,
+        "screenshotDimensionsCheckedWith": "sips -g pixelWidth -g pixelHeight .data/main-ui-review-20261011/quick-workflow/figma-sync/picker-error-*.png",
+        "visuallyInspectedExports": 4,
+        "boundaries": "Scenegraph and exported-image checks only. No Figma player navigation, production code changes, or browser verification are claimed."
+      }
+    }
+  ],
+  "limitations": [
+    "Figma NAVIGATE rejected nested destination frames. No player interaction completion is claimed; hierarchy was preserved and the approved local prototype remains the interactive reference.",
+    "Production browser comparison and behavior verification are owned by the implementation task and are not established by Figma structural checks.",
+    "Example local/private defaults are design fixture values; production reads site defaults.",
+    "The failed-upload state intentionally shows a frozen destination album different from the currently viewed empty album.",
+    "Original main frames received entry updates only. Existing historical screens outside this approved workflow were not rebuilt."
+  ]
+}

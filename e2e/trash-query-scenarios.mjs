@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { disabledStorageId } from './trash-query-helpers.mjs';
+import { verifySearchToolbarLayouts } from './search-toolbar-layout.mjs';
 
 export async function verifyQueryLayouts(
   context,
@@ -7,6 +8,23 @@ export async function verifyQueryLayouts(
   count = 80,
 ) {
   const { page, report, resize, theme, loaded, screenshot } = context;
+  await page.click('loc=role:button[name="回收站规则"]');
+  await page.waitForSelector('[role="dialog"][aria-label="回收站规则"]');
+  assert.match(
+    await page.evaluate(
+      () =>
+        document.querySelector('[role="dialog"][aria-label="回收站规则"]')
+          .textContent,
+    ),
+    /仍占用存储空间，不会自动清理/,
+  );
+  await page.keyboard.press('Escape');
+  await page.waitForSelector('[role="dialog"][aria-label="回收站规则"]', {
+    state: 'hidden',
+  });
+  await page.waitForFunction(
+    () => document.activeElement?.getAttribute('aria-label') === '回收站规则',
+  );
   for (const width of widths)
     for (const mode of width === 1440 || width === 390
       ? ['light', 'dark']
@@ -25,6 +43,28 @@ export async function verifyQueryLayouts(
           searchHeight: document
             .querySelector('input[aria-label="搜索回收图片名称"]')
             ?.getBoundingClientRect().height,
+          searchIcon: (() => {
+            const icon = document.querySelector(
+              '[data-slot="search-field-search-icon"]',
+            );
+            const input = document.querySelector(
+              'input[aria-label="搜索回收图片名称"]',
+            );
+            const bounds = icon?.getBoundingClientRect();
+            return {
+              visible:
+                !!bounds &&
+                bounds.width > 0 &&
+                bounds.height > 0 &&
+                getComputedStyle(icon).visibility !== 'hidden' &&
+                icon.classList.contains('lucide-search'),
+              right: bounds?.right,
+              textStart: input
+                ? input.getBoundingClientRect().left +
+                  Number.parseFloat(getComputedStyle(input).paddingLeft)
+                : undefined,
+            };
+          })(),
           rows: [
             ...document.querySelectorAll(
               '[data-testid="trash-list"] > li > button',
@@ -41,12 +81,90 @@ export async function verifyQueryLayouts(
       });
       assert.equal(layout.overflow, false);
       assert.equal(layout.mainOverflow, false);
+      assert.equal(
+        layout.searchIcon.visible,
+        true,
+        'Trash search renders the visible Lucide search icon',
+      );
+      assert.ok(
+        layout.searchIcon.right + 8 <= layout.searchIcon.textStart + 1,
+        'Trash search keeps at least 8px between the icon and text, within 1px rounding tolerance',
+      );
       report.layouts.push({ ...layout, theme: mode });
       await screenshot('list', width, mode);
+      if (width === 1440) {
+        const selector =
+          '[data-testid="trash-list"] > li > button[data-trash-open] >> nth=0';
+        const readRow = () =>
+          page.evaluate(() => {
+            const row = document.querySelector('[data-trash-open]');
+            const style = getComputedStyle(row);
+            return {
+              bounds: row.getBoundingClientRect().toJSON(),
+              background: style.backgroundColor,
+              transform: style.transform,
+              hover: style.getPropertyValue('--button-bg-hover').trim(),
+              default: style.getPropertyValue('--default').trim(),
+            };
+          });
+        await page.mouse.move(10, 10);
+        const normal = await readRow();
+        await page.hover(selector);
+        await page.waitForFunction(
+          () =>
+            getComputedStyle(document.querySelector('[data-trash-open]'))
+              .backgroundColor !== 'rgba(0, 0, 0, 0)',
+        );
+        const hovered = await readRow();
+        assert.deepEqual(
+          hovered.bounds,
+          normal.bounds,
+          'Hover cannot resize or move a trash record',
+        );
+        assert.notEqual(
+          hovered.hover,
+          hovered.default,
+          'Record hover uses a local neutral token, not the global default',
+        );
+        assert.match(hovered.hover, /5%/);
+        await screenshot('row-hover', width, mode);
+        await page.focus(selector);
+        await page.keyboard.press('Tab');
+        await page.keyboard.press('Shift+Tab');
+        const focused = await page.evaluate(() => {
+          const row = document.querySelector('[data-trash-open]');
+          return {
+            active: document.activeElement === row,
+            visible: row.getAttribute('data-focus-visible'),
+            shadow: getComputedStyle(row).boxShadow,
+          };
+        });
+        assert.equal(focused.active, true);
+        assert.equal(focused.visible, 'true');
+        assert.notEqual(focused.shadow, 'none');
+        report.layouts.push({
+          state: 'row-hover-focus',
+          theme: mode,
+          normal,
+          hovered,
+          focused,
+        });
+      }
     }
 }
 export async function verifyRepresentativeQuery(context) {
-  const { sql, page, config, loaded, report } = context;
+  const {
+    sql,
+    page,
+    config,
+    loaded,
+    report,
+    select,
+    selected,
+    resize,
+    theme,
+    screenshot,
+  } = context;
   // Leave lazy trash previews before restoring their fixture records.
   await page.goto('about:blank');
   report.fixtureTransitions.push({
@@ -64,7 +182,52 @@ export async function verifyRepresentativeQuery(context) {
   });
   await page.goto(`${config.origin}/trash?pageSize=40&page=1`);
   await loaded(8);
+  report.layouts.push(
+    ...(await verifySearchToolbarLayouts(page, {
+      output: config.output,
+      name: 'trash-toolbar-idle',
+    })),
+  );
   await verifyQueryLayouts(context, [1440, 390], 8);
+  await select(0);
+  await selected(1);
+  report.layouts.push(
+    ...(await verifySearchToolbarLayouts(page, {
+      output: config.output,
+      name: 'trash-toolbar-selected',
+      selected: true,
+    })),
+  );
+  for (const width of [390, 1440]) {
+    await resize(width);
+    for (const mode of ['light', 'dark']) {
+      await theme(mode);
+      const selectedRow = await page.evaluate(() => {
+        const row = document.querySelector(
+          '[data-trash-image-id="issue177-000"]',
+        );
+        return {
+          selected: row.dataset.selected,
+          shadow: getComputedStyle(row).boxShadow,
+        };
+      });
+      assert.equal(selectedRow.selected, 'true');
+      assert.notEqual(
+        selectedRow.shadow,
+        'none',
+        'Selection has a persistent outline distinct from neutral hover',
+      );
+      await screenshot('row-selected', width, mode);
+      report.layouts.push({
+        state: 'row-selected',
+        width,
+        theme: mode,
+        ...selectedRow,
+      });
+    }
+  }
+  await select(0);
+  await selected(0);
 }
 export async function verifyEmptyInvalidQuery(context) {
   const { page, sql, report } = context;
@@ -289,9 +452,7 @@ export async function verifyCancelledConfirmation(context) {
     state: 'hidden',
   });
   await page.waitForFunction(
-    () =>
-      document.activeElement?.getAttribute('aria-label') ===
-      '操作已选 1 张图片',
+    () => document.activeElement?.getAttribute('aria-label') === '永久删除所选',
   );
   assert.deepEqual(
     await sql(

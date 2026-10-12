@@ -139,7 +139,7 @@ export function SmtpPage(shell: ShellProps) {
             ) : (
               <Save className="size-4" aria-hidden />
             )}
-            {editor.operation === 'saving' ? '保存中…' : '保存邮件设置'}
+            {editor.operation === 'saving' ? '保存中…' : '保存'}
           </Button>
         </>
       }

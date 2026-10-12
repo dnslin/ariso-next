@@ -47,6 +47,17 @@ export const batchLabels: Record<BatchAction, string> = {
   restore: '恢复所选',
 };
 
+export function batchSelectionItems(
+  action: BatchAction,
+  items: SelectedLibraryItem[],
+) {
+  return action === 'public' || action === 'private'
+    ? items.filter((item) => item.visibility !== action)
+    : action === 'restore'
+      ? items.filter((item) => !item.deletionStatus)
+      : items;
+}
+
 export function batchSuccessFeedback(
   workspace: Pick<
     BatchWorkspace,
@@ -57,7 +68,11 @@ export function batchSuccessFeedback(
     !workspace.command ||
     (workspace.command.type !== 'visibility' &&
       workspace.command.type !== 'add-tags' &&
-      workspace.command.type !== 'remove-tags') ||
+      workspace.command.type !== 'remove-tags' &&
+      workspace.command.type !== 'add-albums' &&
+      workspace.command.type !== 'remove-albums' &&
+      workspace.command.type !== 'trash' &&
+      workspace.command.type !== 'restore') ||
     !workspace.items.length ||
     workspace.unknownIds.length ||
     workspace.unsentIds.length
@@ -76,8 +91,12 @@ export function batchSuccessFeedback(
     title:
       workspace.command.type === 'visibility'
         ? `批量设为${workspace.command.visibility === 'public' ? '公开' : '私有'}完成`
-        : `${batchLabels[workspace.command.type]}完成`,
-    description: `${changed}张已修改 · ${unchanged}张无需修改`,
+        : workspace.command.type === 'trash'
+          ? '图片已移入回收站'
+          : workspace.command.type === 'restore'
+            ? '图片已恢复'
+            : `${batchLabels[workspace.command.type]}完成`,
+    description: `${changed}张${workspace.command.type === 'trash' ? '已回收' : workspace.command.type === 'restore' ? '已恢复' : '已修改'} · ${unchanged}张无需修改`,
   };
 }
 
@@ -105,9 +124,21 @@ export function useLibraryBatch({
   const inFlight = useRef(false);
   const controller = useRef<AbortController | null>(null);
   const source = useRef<HTMLElement | null>(null);
-  useEffect(() => () => controller.current?.abort(), []);
+  const focusFrame = useRef<number | null>(null);
+  function cancelFocus() {
+    if (focusFrame.current !== null) cancelAnimationFrame(focusFrame.current);
+    focusFrame.current = null;
+  }
+  useEffect(
+    () => () => {
+      controller.current?.abort();
+      cancelFocus();
+    },
+    [],
+  );
   function open(action: BatchAction, element: HTMLElement) {
     if (inFlight.current) return;
+    cancelFocus();
     source.current = element;
     setTargetReady(false);
     setShowFailures(false);
@@ -116,7 +147,9 @@ export function useLibraryBatch({
       return;
     }
     if (!selection.selected.size) return;
-    const items = [...selection.selected.values()].map((item) => ({
+    const items = batchSelectionItems(action, [
+      ...selection.selected.values(),
+    ]).map((item) => ({
       ...item,
       inCurrentPage: selection.currentIds.has(item.id),
       source: item.sourcePage
@@ -125,6 +158,7 @@ export function useLibraryBatch({
           ? '当前页'
           : '其他页',
     }));
+    if (!items.length) return;
     const command: BatchWorkspace['command'] =
       action === 'public' || action === 'private'
         ? { type: 'visibility', visibility: action }
@@ -136,7 +170,7 @@ export function useLibraryBatch({
     setWorkspace({
       action,
       items,
-      currentCount: selection.currentCount,
+      currentCount: items.filter((item) => item.inCurrentPage).length,
       query,
       command,
       results: [],
@@ -145,14 +179,17 @@ export function useLibraryBatch({
       message: '',
       checkFailed: false,
       retrying: false,
-      phase: command && action !== 'remove-albums' ? 'confirm' : 'choose',
+      phase: command ? 'confirm' : 'choose',
     });
     setVisible(true);
   }
   function focusSource() {
-    requestAnimationFrame(() => {
+    cancelFocus();
+    focusFrame.current = requestAnimationFrame(() => {
+      focusFrame.current = null;
       const target = source.current;
-      if (target?.isConnected) target.focus({ preventScroll: true });
+      if (target?.isConnected && !target.matches(':disabled'))
+        target.focus({ preventScroll: true });
       else
         (
           document.querySelector<HTMLElement>(
@@ -181,9 +218,11 @@ export function useLibraryBatch({
     const retrying = mode === 'apply' && workspace.phase === 'result';
     const keepSourcePhase =
       mode === 'apply' &&
-      ((command.type === 'visibility' && workspace.phase === 'confirm') ||
-        ((command.type === 'add-tags' || command.type === 'remove-tags') &&
-          workspace.phase === 'choose'));
+      (((command.type === 'visibility' ||
+        command.type === 'trash' ||
+        command.type === 'restore') &&
+        workspace.phase === 'confirm') ||
+        workspace.phase === 'choose');
     const items = retrying
       ? workspace.items.filter(
           (item) =>
@@ -231,9 +270,15 @@ export function useLibraryBatch({
               if (!result.inQuery) selection.remove(result.id);
               continue;
             }
-            if (result.status !== 'failed' || !result.inQuery)
+            if (
+              !result.inQuery ||
+              (result.status !== 'failed' &&
+                (command.type === 'trash' || command.type === 'restore'))
+            )
               selection.remove(result.id);
-            else selection.recordFailure(result.id, result.message);
+            else if (result.status === 'failed')
+              selection.recordFailure(result.id, result.message);
+            else selection.clearFailure(result.id);
           }
           const currentResults = [...resultsById.values()];
           setWorkspace((previous) => {

@@ -15,14 +15,7 @@ import {
 } from './model';
 
 export type Action =
-  | 'create'
-  | 'disable'
-  | 'enable'
-  | 'enable-expired'
-  | 'rotate'
-  | 'clear'
-  | 'manual'
-  | 'discard';
+  'enable-expired' | 'rotate' | 'clear' | 'manual' | 'discard';
 type Feedback = {
   title: string;
   detail?: string;
@@ -33,8 +26,9 @@ type ErrorTarget =
   | 'password'
   | 'expiry'
   | 'display'
+  | 'enabled'
+  | 'create'
   | 'dialog'
-  | 'dialogPassword'
   | 'dialogExpiry';
 
 export function useSettings(
@@ -64,6 +58,7 @@ export function useSettings(
     {},
   );
   const [busy, setBusy] = useState(false);
+  const [enabledSaving, setEnabledSaving] = useState(false);
   const [pending, setPending] = useState<PendingResult | null>(null);
   const [missing, setMissing] = useState(false);
   const [now, setNow] = useState(Date.now);
@@ -90,7 +85,11 @@ export function useSettings(
   const expiryDirty = Boolean(
     share && expiryChanged(expiry, share.expiresAt, timeZone),
   );
-  const dirty = displayDirty || expiryDirty || Boolean(password);
+  const dirty =
+    displayDirty ||
+    expiryDirty ||
+    Boolean(password) ||
+    (!share && (showName || expiryChanged(expiry, null, timeZone)));
 
   useEffect(() => {
     mounted.current = true;
@@ -272,6 +271,7 @@ export function useSettings(
       finishConfirmed(result.share, operation);
       setModalOpen(false);
       notice(operation.kind === 'create' ? '已读取分享设置' : message);
+      if (operation.kind === 'create') requestAnimationFrame(restoreFocus);
     } catch (error) {
       if (!mounted.current || controller.current.signal.aborted) return;
       if (terminalError(error)) return;
@@ -335,6 +335,61 @@ export function useSettings(
         'display',
       );
   }
+  async function setEnabled(value: boolean, source?: HTMLElement | null) {
+    if (!share || blocked || inFlight.current) return;
+    if (
+      value &&
+      share.expiresAt &&
+      new Date(share.expiresAt).getTime() <= Date.now()
+    ) {
+      open('enable-expired', source);
+      return;
+    }
+    if (value === share.enabled) return;
+    clearNotice();
+    setModal(null);
+    opener.current = source ?? (document.activeElement as HTMLElement);
+    const body = { enabled: value };
+    setEnabledSaving(true);
+    try {
+      await save(
+        body,
+        value ? '分享已启用' : '分享已停用',
+        { kind: 'patch', expected: body },
+        'enabled',
+      );
+    } finally {
+      if (mounted.current) {
+        setEnabledSaving(false);
+        requestAnimationFrame(restoreFocus);
+      }
+    }
+  }
+  async function create() {
+    if (share || blocked) return;
+    if (password && !passwordInputSchema.safeParse(password).success) {
+      setErrors({ password: '密码需为 1–128 个字符。' });
+      return;
+    }
+    let expiresAt: string | null;
+    try {
+      expiresAt = expiryPayload(expiry, timeZone);
+    } catch (error) {
+      setErrors({ expiry: (error as Error).message });
+      return;
+    }
+    await save(
+      {
+        ...(password ? { password: { action: 'set', value: password } } : {}),
+        expiresAt,
+        showName,
+      },
+      '已读取分享设置',
+      { kind: 'create' },
+      'create',
+      'POST',
+    );
+  }
   async function copy() {
     if (copyBlocked || (inFlight.current && modal === 'rotate')) return;
     try {
@@ -352,28 +407,7 @@ export function useSettings(
       return;
     }
     if (modal === 'enable-expired') return saveExpiry(true);
-    if (modal === 'create') {
-      if (password && !passwordInputSchema.safeParse(password).success) {
-        setErrors({ dialogPassword: '密码需为 1–128 个字符。' });
-        return;
-      }
-      try {
-        void save(
-          {
-            ...(password
-              ? { password: { action: 'set', value: password } }
-              : {}),
-            expiresAt: expiryPayload(expiry, timeZone),
-          },
-          '已读取分享设置',
-          { kind: 'create' },
-          'dialog',
-          'POST',
-        );
-      } catch (error) {
-        setErrors({ dialogExpiry: (error as Error).message });
-      }
-    } else if (modal === 'clear')
+    if (modal === 'clear')
       void save(
         { password: { action: 'clear' } },
         '访问密码已清除',
@@ -388,24 +422,6 @@ export function useSettings(
         'dialog',
         'POST',
       );
-    else if (modal === 'enable' || modal === 'disable') {
-      if (
-        modal === 'enable' &&
-        share?.expiresAt &&
-        new Date(share.expiresAt).getTime() <= Date.now()
-      ) {
-        setRestoreExpiry(expiryDraft(null, timeZone));
-        setModal('enable-expired');
-        return;
-      }
-      const body = { enabled: modal === 'enable' };
-      void save(
-        body,
-        body.enabled ? '分享已启用' : '分享已停用',
-        { kind: 'patch', expected: body },
-        'dialog',
-      );
-    }
   }
   function returnPage() {
     if (dirty) open('discard');
@@ -440,6 +456,7 @@ export function useSettings(
     dialogRef,
     errors,
     busy,
+    enabledSaving,
     blocked,
     copyBlocked,
     canEndChecking: pending?.kind !== 'rotate',
@@ -452,10 +469,12 @@ export function useSettings(
     open,
     close,
     confirm,
+    create,
     copy,
     savePassword,
     saveExpiry,
     saveDisplay,
+    setEnabled,
     readResult,
     endChecking,
     returnPage,

@@ -2,6 +2,8 @@
 
 import { Link } from '@heroui/react/link';
 import { Table } from '@heroui/react/table';
+import { Tooltip } from '@heroui/react/tooltip';
+import { Settings2 } from 'lucide-react';
 import type { listShares } from '../../server/sharing/configuration';
 import { AlbumCoverImage } from '../albums/cover-preview';
 
@@ -72,13 +74,16 @@ export function SharesList({
   }
   function action(item: ShareItem) {
     return (
-      <Link
-        href={`/shares/${encodeURIComponent(item.albumId)}`}
-        aria-label={`分享设置 ${item.albumName} #${item.albumId.slice(0, 8)}`}
-        className="h-11 w-20 min-w-0 justify-center rounded-xl border border-border bg-background px-3 text-sm font-normal text-foreground no-underline xl:h-10 xl:w-22"
-      >
-        设置
-      </Link>
+      <Tooltip>
+        <Link
+          href={`/shares/${encodeURIComponent(item.albumId)}`}
+          aria-label={`分享设置 ${item.albumName} #${item.albumId.slice(0, 8)}`}
+          className="size-11 shrink-0 justify-center rounded-lg text-foreground no-underline hover:bg-default"
+        >
+          <Settings2 size={18} aria-hidden />
+        </Link>
+        <Tooltip.Content>设置</Tooltip.Content>
+      </Tooltip>
     );
   }
   return (
@@ -86,9 +91,7 @@ export function SharesList({
       data-testid="shares-list"
       className="min-w-0 rounded-[20px] border border-border bg-surface px-4 py-5 xl:p-6"
     >
-      <h2 className="text-lg font-medium leading-normal">
-        分享管理 · {total} 项
-      </h2>
+      <h2 className="text-lg font-medium leading-normal">分享 · {total} 项</h2>
       <Table className="hidden rounded-none border-0 bg-transparent p-0 shadow-none md:block">
         <Table.Content
           aria-label="分享相册列表"
@@ -149,10 +152,6 @@ export function SharesList({
           </li>
         ))}
       </ul>
-      <p className="mt-4 text-[13px] text-muted [overflow-wrap:anywhere]">
-        每个相册最多一个分享链接，只展示相册中的公开图片。时间按 {timeZone}{' '}
-        显示。
-      </p>
     </div>
   );
 }

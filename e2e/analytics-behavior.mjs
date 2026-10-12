@@ -14,7 +14,8 @@ async function period(page, days, report) {
   await page.waitForFunction(
     (days) =>
       new URLSearchParams(location.search).get('days') === String(days) &&
-      !!document.querySelector('[data-testid="analytics-overview"]'),
+      document.querySelector('[data-testid="analytics-overview"]')?.dataset
+        .displayedDays === String(days),
     days,
   );
 }
@@ -42,7 +43,7 @@ async function pointerPeriod(page, days, report) {
   await page.mouse.click(center.x, center.y, { label: `选择 ${days} 天统计` });
 }
 
-async function assertPeriodLayout(page, width) {
+async function assertPeriodLayout(page) {
   const layout = await page.evaluate(() => {
     const group = document.querySelector('[aria-label="统计周期"]');
     const main = document.querySelector('[data-testid="analytics-metrics"]');
@@ -60,10 +61,8 @@ async function assertPeriodLayout(page, width) {
   assert.ok(Math.abs(layout.controls[0].left - layout.main.left) <= 1);
   for (const [index, control] of layout.controls.entries()) {
     assert.ok(
-      Math.abs(
-        control.width - (width >= 1200 ? 104 : (layout.group.width - 24) / 3),
-      ) <= 1,
-      'Desktop periods remain 104px and mobile periods share available space',
+      Math.abs(control.width - 80) <= 1,
+      'Periods retain the approved 80px width on desktop and phone',
     );
     if (index)
       assert.ok(
@@ -71,9 +70,9 @@ async function assertPeriodLayout(page, width) {
           control.left -
             layout.controls[index - 1].left -
             layout.controls[index - 1].width -
-            12,
+            8,
         ) <= 1,
-        'Period controls retain 12px gaps',
+        'Period controls retain 8px gaps',
       );
   }
 }
@@ -165,6 +164,7 @@ async function refreshDuringPointerPress(page, tools, report) {
             height: button.height,
           },
           status: { top: rect.top, bottom: rect.bottom, height: rect.height },
+          metadataTop: metadata.top,
           metadataBottom: metadata.bottom,
           metricsTop: metrics.top,
           lastFlushedVisible: !!document.querySelector(
@@ -182,12 +182,17 @@ async function refreshDuringPointerPress(page, tools, report) {
         16,
         'Refresh feedback stays on one line on desktop and phone',
       );
-      assert.ok(during.status.top >= during.metadataBottom);
+      assert.ok(during.status.top >= during.metadataTop);
+      assert.ok(during.status.bottom <= during.metadataBottom);
       assert.ok(
         during.status.bottom <= during.metricsTop,
         'Refresh feedback does not overlap current metrics',
       );
-      assert.equal(during.lastFlushedVisible, true);
+      assert.equal(
+        during.lastFlushedVisible,
+        false,
+        'Detailed flush metadata is available on demand',
+      );
       await tools.evidence('refresh-inflight', width, 'light');
       await page.mouse.up({ button: 'left', clickCount: 1 });
       pressed = false;
@@ -242,7 +247,7 @@ async function refreshDuringPointerPress(page, tools, report) {
     }
   }
   report.checks.push(
-    'A delayed real refresh between native pointerdown/up preserves period geometry at 360/390/1440, leaves last-flush metadata visible, fits feedback on one line without metrics overlap, and the same pointer release selects and loads the actual 30-day report.',
+    'A delayed real refresh between native pointerdown/up preserves period geometry at 360/390/1440, keeps detailed flush metadata behind its help entry, fits feedback on one line without metrics overlap, and the same pointer release selects and loads the actual 30-day report.',
   );
 }
 
@@ -255,6 +260,7 @@ export async function analyticsRepresentative(
 ) {
   for (const path of ['/analytics?days=7', '/dashboard?days=7']) {
     await tools.open(path);
+    const reportData = await tools.request('/api/analytics/overview?days=7');
     for (const theme of ['light', 'dark']) {
       for (const width of path.startsWith('/dashboard')
         ? [390, 1440]
@@ -264,14 +270,84 @@ export async function analyticsRepresentative(
           width,
           theme,
         );
-        await assertPeriodLayout(page, width);
+        if (path.startsWith('/dashboard')) {
+          const dashboard = await page.evaluate(() => ({
+            title: document.querySelector('main h1').textContent,
+            resources: document.querySelector(
+              '[data-testid="dashboard-metrics"]',
+            ).textContent,
+            counts: [
+              ...document.querySelector('[data-testid="dashboard-metrics"]')
+                .children,
+            ]
+              .slice(0, 3)
+              .map((metric) =>
+                metric.querySelectorAll('p')[1].textContent.trim(),
+              ),
+            duplicateReports: document.querySelectorAll(
+              '[aria-label="统计周期"],[data-testid="analytics-trend"],[data-testid="analytics-versions"],[data-testid="analytics-popular"]',
+            ).length,
+            uploadEntries: document.querySelectorAll(
+              'main a[href="/upload"],footer a[href="/upload"]',
+            ).length,
+          }));
+          assert.equal(dashboard.title, '总览');
+          assert.deepEqual(
+            dashboard.counts,
+            [
+              reportData.counts.normalImages,
+              reportData.counts.albums,
+              reportData.counts.recycledImages,
+            ].map(number),
+          );
+          assert.ok(
+            dashboard.resources.includes('图片') &&
+              dashboard.resources.includes('相册') &&
+              dashboard.resources.includes('回收站') &&
+              dashboard.resources.includes('已登记占用'),
+          );
+          assert.equal(dashboard.duplicateReports, 0);
+          assert.equal(dashboard.uploadEntries, 1);
+        } else await assertPeriodLayout(page);
       }
     }
   }
   await tools.open('/analytics?days=7');
+  const metadata = await tools.request('/api/analytics/overview?days=7');
+  await page.click('button[aria-label="统计更新时间"]');
+  await page.waitForSelector('[role="dialog"][aria-label="统计更新时间"]');
+  const metadataText = await page.evaluate(
+    () =>
+      document.querySelector('[role="dialog"][aria-label="统计更新时间"]')
+        .textContent,
+  );
+  assert.ok(metadataText.includes(metadata.timezone));
+  assert.ok(metadataText.includes('今日访问截至本次统计更新'));
+  assert.equal(
+    metadataText.includes('最近写入于'),
+    metadata.lastFlushedAt !== null,
+  );
+  assert.ok(!metadataText.includes('本进程尚无已提交的访问批次'));
+  await page.keyboard.press('Escape');
+  await page.waitForSelector('[role="dialog"][aria-label="统计更新时间"]', {
+    state: 'hidden',
+  });
+  await page.waitForFunction(() => {
+    const trigger = document.querySelector('button[aria-label="统计更新时间"]');
+    return (
+      document.activeElement === trigger &&
+      trigger.getAttribute('aria-expanded') === 'false'
+    );
+  });
+  assert.equal(
+    await page.evaluate(() =>
+      document.activeElement?.getAttribute('aria-label'),
+    ),
+    '统计更新时间',
+  );
   for (const width of [390, 1440]) {
     await resizeViewport(page, width);
-    for (const section of ['trend', 'versions', 'popular', 'usage-summary']) {
+    for (const section of ['trend', 'versions', 'popular']) {
       await page.hover(`[data-testid="analytics-${section}"] h2`);
       const delta = await page.evaluate(
         (section) =>
@@ -359,7 +435,7 @@ export async function analyticsRepresentative(
     });
   }
   report.checks.push(
-    'Actual seeded overview/dashboard/daily/usage at 360/390/430/768/1440, both themes, 390/1440×400, no document/main overflow and shared usable click-target minimums. Desktop periods align left at 104px/12px and mobile periods share width. Explanations match 480px desktop/358px phone with short-viewport body scrolling and visible return actions.',
+    'Actual seeded overview/dashboard/daily/usage at 360/390/430/768/1440, both themes, 390/1440×400, no document/main overflow and shared usable click-target minimums. Desktop and phone periods align left at 80px with 8px gaps. Explanations match 480px desktop/358px phone with short-viewport body scrolling and visible return actions.',
   );
 }
 
@@ -389,7 +465,8 @@ export async function analyticsBehavior(page, config, tools, fixture, report) {
       await page.waitForFunction(
         (days) =>
           new URLSearchParams(location.search).get('days') === String(days) &&
-          !!document.querySelector('[data-testid="analytics-overview"]'),
+          document.querySelector('[data-testid="analytics-overview"]')?.dataset
+            .displayedDays === String(days),
         days,
       );
       assert.equal(
@@ -465,12 +542,7 @@ export async function analyticsBehavior(page, config, tools, fixture, report) {
     }));
     assert.deepEqual(
       rendered.metrics,
-      [
-        actual.counts.normalImages,
-        actual.counts.albums,
-        fixed.today,
-        fixed.cumulative.total,
-      ].map(number),
+      [actual.versions.total, fixed.today, fixed.cumulative.total].map(number),
     );
     assert.ok(rendered.versionTitle.includes(`${days} 天`));
     assert.ok(rendered.popularTitle.includes(`${days} 天`));
@@ -649,7 +721,7 @@ export async function analyticsBehavior(page, config, tools, fixture, report) {
         ),
       }));
       assert.ok(layout.rows.every((height) => height >= 52));
-      assert.ok(layout.cards.every((radius) => radius === '20px'));
+      assert.ok(layout.cards.every((radius) => radius === '0px'));
       assert.ok(layout.states.every(({ interactive }) => !interactive));
       assert.notEqual(
         layout.states.find(({ text }) => text === '已启用').background,
@@ -684,6 +756,18 @@ export async function analyticsBehavior(page, config, tools, fixture, report) {
     days: 30,
   });
   try {
+    await page.waitForSelector('[data-testid="analytics-chart"]');
+    await page.evaluate(() => {
+      window.__analytics179.continuity = {
+        overview: document.querySelector('[data-testid="analytics-overview"]'),
+        periods: document.querySelector('[aria-label="统计周期"]'),
+        chart: document.querySelector('[data-testid="analytics-chart"]'),
+        range: document.querySelector('[data-testid="analytics-trend"] p')
+          .textContent,
+        metrics: document.querySelector('[data-testid="analytics-metrics"]')
+          .textContent,
+      };
+    });
     await page.focus(periodControl(30));
     await page.keyboard.press('Space');
     await page.waitForFunction(() =>
@@ -691,12 +775,52 @@ export async function analyticsBehavior(page, config, tools, fixture, report) {
         (request) => request.days === '30' && request.held,
       ),
     );
-    assert.equal(
-      await page.evaluate(
-        () => !!document.querySelector('[data-testid="analytics-overview"]'),
-      ),
-      false,
-      'Loading a different period does not relabel old numbers',
+    assert.deepEqual(
+      await page.evaluate(() => {
+        const before = window.__analytics179.continuity;
+        const current = document.querySelector(
+          '[data-testid="analytics-overview"]',
+        );
+        return {
+          overview: before.overview === current,
+          periods:
+            before.periods ===
+            document.querySelector('[aria-label="统计周期"]'),
+          chart:
+            before.chart ===
+            document.querySelector('[data-testid="analytics-chart"]'),
+          range:
+            before.range ===
+            document.querySelector('[data-testid="analytics-trend"] p')
+              .textContent,
+          metrics:
+            before.metrics ===
+            document.querySelector('[data-testid="analytics-metrics"]')
+              .textContent,
+          requested: current.dataset.requestedDays,
+          displayed: current.dataset.displayedDays,
+          busy: current.getAttribute('aria-busy'),
+          reading: document
+            .querySelector('[data-testid="overview-refreshing"]')
+            .textContent.includes('正在读取 30 天，暂示 7 天'),
+          daily: document
+            .querySelector('[data-testid="analytics-trend"] a')
+            .getAttribute('href'),
+        };
+      }),
+      {
+        overview: true,
+        periods: true,
+        chart: true,
+        range: true,
+        metrics: true,
+        requested: '30',
+        displayed: '7',
+        busy: 'true',
+        reading: true,
+        daily: '/analytics?days=7&view=daily',
+      },
+      'A different-period read retains exact report, control and chart nodes without relabelling old dates or daily navigation',
     );
     await page.focus(periodControl(90));
     await page.keyboard.press('Space');
@@ -707,6 +831,15 @@ export async function analyticsBehavior(page, config, tools, fixture, report) {
     );
     assert.ok(
       (await boundary.read()).find(({ days }) => days === '30').aborted,
+    );
+    assert.equal(
+      await page.evaluate(
+        () =>
+          window.__analytics179.continuity.chart ===
+          document.querySelector('[data-testid="analytics-chart"]'),
+      ),
+      true,
+      'A successful latest-period response updates the existing chart container',
     );
     await boundary.release();
     await page.waitForFunction(
@@ -802,7 +935,9 @@ export async function analyticsBehavior(page, config, tools, fixture, report) {
       await page.keyboard.press('Escape');
       await page.waitForSelector(dialog, { state: 'hidden' });
       await page.waitForFunction(
-        (source) => document.activeElement?.textContent.trim() === source,
+        (source) =>
+          document.activeElement?.matches('a[aria-label]') &&
+          document.activeElement.getAttribute('aria-label') === source,
         source,
       );
       assert.equal(

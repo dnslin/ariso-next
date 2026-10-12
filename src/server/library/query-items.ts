@@ -8,6 +8,7 @@ import {
   mediaVersions,
 } from '../media/schema.ts';
 import { storageConfigs } from '../storage/schema.ts';
+import { albumImages } from '../collections/schema.ts';
 import { readGeneratedMediaVersions } from '../media/objects.ts';
 import type { LibraryItem, LibraryJobSummary } from './types.ts';
 
@@ -20,6 +21,10 @@ export const libraryColumns = {
   width: mediaImages.width,
   height: mediaImages.height,
   visibility: mediaImages.visibility,
+  hasAlbums:
+    sql<boolean>`exists (select 1 from ${albumImages} where ${albumImages.imageId} = ${mediaImages.id})`.mapWith(
+      Boolean,
+    ),
   processingStatus: mediaImages.processingStatus,
   createdAt: mediaImages.createdAt,
   trashedAt: mediaImages.trashedAt,
@@ -170,6 +175,7 @@ export function readLibraryItems(
       width: row.width,
       height: row.height,
       visibility: row.visibility,
+      hasAlbums: row.hasAlbums,
       processingStatus: row.processingStatus,
       storage: row.storage,
       createdAt: row.createdAt.toISOString(),

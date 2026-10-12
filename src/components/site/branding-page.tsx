@@ -6,7 +6,7 @@ import { Button } from '@heroui/react/button';
 import { Card } from '@heroui/react/card';
 import { Link } from '@heroui/react/link';
 import { Skeleton } from '@heroui/react/skeleton';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Save } from 'lucide-react';
 import { OwnerShell } from '../shell/owner-shell';
 import {
   brandAccept,
@@ -86,9 +86,8 @@ export function BrandingPage(
               isDisabled={editor.locked}
               onPress={() => void editor.save()}
             >
-              {editor.phase === 'saving'
-                ? '正在上传…'
-                : `上传并替换 ${brandLabels[operation!.kind]}`}
+              <Save size={17} aria-hidden />
+              {editor.phase === 'saving' ? '正在上传…' : '保存'}
             </Button>
           </div>
         ) : undefined
@@ -109,22 +108,24 @@ export function BrandingPage(
         data-kind={operation?.kind}
         className="grid min-w-0 max-w-[960px] gap-4 pb-8"
       >
-        <Button
-          variant="ghost"
-          className="min-h-11 w-fit justify-start gap-1 px-0 text-xs"
-          isDisabled={editor.locked}
-          onPress={() => {
-            if (preview) editor.cancel();
-            else navigation.navigate('/settings/general');
-          }}
-        >
-          <ArrowLeft aria-hidden className="size-4" />
-          返回基本设置
-        </Button>
-        <h1 className="text-[28px] font-medium min-[1200px]:text-[30px]">
-          {preview ? '品牌展示预览' : 'Logo 与 Favicon'}
-        </h1>
-        <p className="text-[13px] text-muted">分别更新，选择文件后预览。</p>
+        <div className="flex items-center justify-between gap-3">
+          <h1 className="text-[28px] font-medium min-[1200px]:text-[30px]">
+            {preview ? '品牌预览' : 'Logo 与 Favicon'}
+          </h1>
+          <Button
+            aria-label={preview ? '取消品牌预览' : '返回基本设置'}
+            variant="ghost"
+            className="min-h-11 shrink-0 gap-2 rounded-lg px-3 text-sm"
+            isDisabled={editor.locked}
+            onPress={() => {
+              if (preview) editor.cancel();
+              else navigation.navigate('/settings/general');
+            }}
+          >
+            <ArrowLeft aria-hidden className="size-4" />
+            返回
+          </Button>
+        </div>
         {sessionLost ? (
           <Card className={siteCardClass} role="alert">
             <h2 className="text-lg font-medium">会话已失效</h2>
