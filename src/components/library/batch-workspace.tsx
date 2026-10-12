@@ -35,9 +35,10 @@ export function BatchWorkspaceContent({
   useEffect(() => {
     if (batch.visible) heading.current?.focus({ preventScroll: true });
   }, [batch.visible, workspace?.phase, batch.showFailures]);
-  if (!workspace || !batch.visible) return null;
+  if (!workspace) return null;
   if (workspace.action.endsWith('tags'))
     return <BatchTagDrawer batch={batch} client={client} />;
+  if (!batch.visible) return null;
   const label = batchLabels[workspace.action];
   const changed = workspace.results.filter(
     (result) => result.status === 'changed',

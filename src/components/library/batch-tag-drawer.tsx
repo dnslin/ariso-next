@@ -1,11 +1,10 @@
 'use client';
 
-import { useState } from 'react';
 import type { QueryClient } from '@tanstack/react-query';
 import { Button } from '@heroui/react/button';
 import { Drawer } from '@heroui/react/drawer';
 import { X } from 'lucide-react';
-import { BatchTargets } from './batch-targets';
+import { BatchTargetsContent, useBatchTargets } from './batch-targets';
 import { batchLabels, type LibraryBatch } from './use-library-batch';
 
 export function BatchTagDrawer({
@@ -15,10 +14,12 @@ export function BatchTagDrawer({
   batch: LibraryBatch;
   client: QueryClient;
 }) {
-  const [createBlocked, setCreateBlocked] = useState(false);
+  // The portal unmounts on close, so its target drafts live in this owner.
+  const targets = useBatchTargets({ batch, client });
+  const createBlocked = targets.create.pending || targets.create.unknown;
   const workspace = batch.workspace!;
   const label = batchLabels[workspace.action];
-  const dismissBlocked = batch.pending || createBlocked || batch.unresolved;
+  const dismissBlocked = batch.pending || createBlocked;
   const choosing = workspace.phase === 'choose';
   const tagCount =
     workspace.command && 'tagIds' in workspace.command
@@ -57,6 +58,7 @@ export function BatchTagDrawer({
             <Drawer.CloseTrigger
               aria-label="关闭批量操作"
               isDisabled={dismissBlocked}
+              onPress={batch.close}
               className="static size-11 min-h-11 min-w-11 shrink-0 rounded-lg bg-transparent p-0"
             >
               <X size={18} aria-hidden />
@@ -66,11 +68,7 @@ export function BatchTagDrawer({
             aria-busy={batch.pending}
             className="m-0 flex min-h-0 flex-col overflow-y-auto px-5 pt-0 pb-4 text-foreground"
           >
-            <BatchTargets
-              batch={batch}
-              client={client}
-              onCreateBlockedChange={setCreateBlocked}
-            />
+            <BatchTargetsContent targets={targets} />
           </Drawer.Body>
           {!choosing ? <TagBatchResults batch={batch} /> : null}
           <Drawer.Footer className="m-0 shrink-0 gap-2 border-t border-border px-5 py-4 pb-[max(16px,env(safe-area-inset-bottom))]">

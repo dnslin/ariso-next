@@ -52,14 +52,12 @@ export function BatchThumbnail({
   );
 }
 
-export function BatchTargets({
+export function useBatchTargets({
   batch,
   client,
-  onCreateBlockedChange,
 }: {
   batch: LibraryBatch;
   client: QueryClient;
-  onCreateBlockedChange?: (blocked: boolean) => void;
 }) {
   const workspace = batch.workspace!;
   const albums = workspace.action.endsWith('albums');
@@ -75,6 +73,7 @@ export function BatchTargets({
   const list = useQuery<AlbumPage | TagPage>(
     {
       queryKey: ['batch-targets', albums, q, page],
+      enabled: batch.visible,
       queryFn: ({ signal }) => {
         const params = new URLSearchParams({
           q,
@@ -127,9 +126,6 @@ export function BatchTargets({
     setTargetReady,
   ]);
   useEffect(() => {
-    onCreateBlockedChange?.(create.pending || create.unknown);
-  }, [create.pending, create.unknown, onCreateBlockedChange]);
-  useEffect(() => {
     if (
       (list.error instanceof AlbumRequestError ||
         list.error instanceof TagRequestError) &&
@@ -152,6 +148,51 @@ export function BatchTargets({
             },
     );
   }
+  return {
+    workspace,
+    albums,
+    noun,
+    q,
+    setQ,
+    page,
+    setPage,
+    ids,
+    list,
+    create,
+    locked,
+    choose,
+    createDisabled: batch.pending || workspace.phase !== 'choose',
+  };
+}
+
+export function BatchTargets(props: {
+  batch: LibraryBatch;
+  client: QueryClient;
+}) {
+  const targets = useBatchTargets(props);
+  return <BatchTargetsContent targets={targets} />;
+}
+
+export function BatchTargetsContent({
+  targets,
+}: {
+  targets: ReturnType<typeof useBatchTargets>;
+}) {
+  const {
+    workspace,
+    albums,
+    noun,
+    q,
+    setQ,
+    page,
+    setPage,
+    ids,
+    list,
+    create,
+    locked,
+    choose,
+    createDisabled,
+  } = targets;
   return (
     <div
       className={albums ? 'contents' : 'flex min-h-65 flex-1 flex-col gap-3'}
@@ -308,10 +349,7 @@ export function BatchTargets({
         ) : null}
       </div>
       {!albums && workspace.action === 'add-tags' ? (
-        <TagTargetCreate
-          create={create}
-          disabled={batch.pending || workspace.phase !== 'choose'}
-        />
+        <TagTargetCreate create={create} disabled={createDisabled} />
       ) : null}
     </div>
   );
