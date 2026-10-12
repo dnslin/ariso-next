@@ -301,6 +301,7 @@ export class UploadController {
       )
         continue;
       entry.groupIndex = session.groupIndex;
+      if (entry.retrySettings) entry.retrySettings.storageId = result.storageId;
       this.update(entry, {
         submissionId: result.id,
         storageId: result.storageId,
