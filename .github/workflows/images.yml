@@ -42,10 +42,10 @@ jobs:
           path: test-results/collections.json
           if-no-files-found: error
           retention-days: 14
-      - name: Verify media contracts on native architecture
-        run: pnpm exec vitest run --project integration tests/integration/media
       - name: Build standalone for production identity verification
         run: pnpm run build
+      - name: Verify media contracts on native architecture
+        run: pnpm exec vitest run --project integration tests/integration/media
       - name: Verify identity protocol on native architecture
         run: pnpm exec vitest run --project integration tests/integration/identity --reporter=default --reporter=junit --outputFile=test-results/identity.xml
       - name: Preserve identity protocol evidence
@@ -304,7 +304,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     permissions:
-      contents: read
+      contents: write
       packages: write
     steps:
       - uses: docker/setup-buildx-action@v4
@@ -334,3 +334,14 @@ jobs:
             "$IMAGE:$VERSION-amd64" "$IMAGE:$VERSION-arm64"
           docker buildx imagetools inspect "$IMAGE:$VERSION" >> "$GITHUB_STEP_SUMMARY"
           echo "Code revision: $REVISION" >> "$GITHUB_STEP_SUMMARY"
+      - name: Attach verified Docker images to the GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          VERSION: ${{ github.event.release.tag_name }}
+        run: |
+          for arch in amd64 arm64; do
+            gzip --stdout "images/ariso-linux-$arch/ariso.tar" > "ariso-$VERSION-linux-$arch.tar.gz"
+          done
+          sha256sum "ariso-$VERSION-linux-"*.tar.gz > SHA256SUMS
+          gh release upload "$VERSION" "ariso-$VERSION-linux-"*.tar.gz SHA256SUMS --clobber
