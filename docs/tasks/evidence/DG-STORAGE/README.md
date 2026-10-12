@@ -1,6 +1,6 @@
 # DG-STORAGE 设计适用核对证据
 
-日期：2026-09-30（Asia/Shanghai）；[Issue #137](https://github.com/dnslin/ariso-next/issues/137)。本任务仅交付字段组合设计适用核对，无业务代码、界面或 Figma 改动。可复用状态、真实验收范围、缺口和责任只维护在消费任务：[T-STO-05](../../m3-m4-platform.md#dg-storage-对-t-sto-05-的核对结论2026-09-30)、[T-STO-07](../../m3-m4-platform.md#dg-storage-对-t-sto-07-的核对结论2026-09-30)。
+日期：2026-09-30（Asia/Shanghai）；[Issue #137](https://github.com/dnslin/ariso-next/issues/137)。本任务仅交付字段组合设计适用核对，无业务代码、界面或 Figma 改动。可复用状态、真实验收范围、缺口和责任只维护在消费任务：[T-STO-05](../../../archive/m3-m4/platform.md#dg-storage-对-t-sto-05-的核对结论2026-09-30)、[T-STO-07](../../../archive/m3-m4/platform.md#dg-storage-对-t-sto-07-的核对结论2026-09-30)。
 
 ## 范围、前置与实际实现
 
@@ -42,15 +42,15 @@
 
 环境：Darwin arm64，Node 24.18.1、pnpm 11.19.0；命令在上述独立 worktree 执行，PATH 前置 `/Users/dnslin/.nvm/versions/node/v24.18.1/bin`。使用 using-agent-skills、documentation-and-adrs、git-workflow-and-versioning、figma-use；独立代码/文档审计使用 code-review-and-quality。
 
-| 实际命令                                                                                                                                                               | 结果                                                                                                                 |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| `pnpm install --frozen-lockfile`                                                                                                                                       | 通过，611 个包复用缓存，锁文件无变更。                                                                               |
-| `pnpm exec prettier --write docs/tasks/gates.md docs/tasks/m3-m4-platform.md docs/tasks/evidence/DG-STORAGE/README.md docs/tasks/evidence/DG-STORAGE/figma/nodes.json` | 通过，仅本次文件格式化。                                                                                             |
-| `pnpm run format:check`                                                                                                                                                | 全仓通过。                                                                                                           |
-| `node docs/tasks/check.mjs`                                                                                                                                            | 通过，120 个任务、298 项需求，无缺失 ID/循环，生成报告未过期。                                                       |
-| `node docs/tasks/check.mjs --self-test`                                                                                                                                | 5 个拒绝场景全部通过。                                                                                               |
-| `git diff --check`                                                                                                                                                     | 通过。                                                                                                               |
-| `python3` 标准库检查三份 Markdown 相对链接、新锚点、消费节点与 PNG 头尺寸                                                                                              | 148 个相对文件链接存在，2 个新锚点正确；74 个消费状态节点均在本次 118 节点记录中，16 张 PNG 与节点自然尺寸逐一相等。 |
+| 实际命令                                                                                                                                                                 | 结果                                                                                                                 |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------- |
+| `pnpm install --frozen-lockfile`                                                                                                                                         | 通过，611 个包复用缓存，锁文件无变更。                                                                               |
+| `pnpm exec prettier --write docs/tasks/gates.md docs/archive/m3-m4/platform.md docs/tasks/evidence/DG-STORAGE/README.md docs/tasks/evidence/DG-STORAGE/figma/nodes.json` | 通过，仅本次文件格式化。                                                                                             |
+| `pnpm run format:check`                                                                                                                                                  | 全仓通过。                                                                                                           |
+| `node docs/tasks/check.mjs`                                                                                                                                              | 通过，120 个任务、298 项需求，无缺失 ID/循环，生成报告未过期。                                                       |
+| `node docs/tasks/check.mjs --self-test`                                                                                                                                  | 5 个拒绝场景全部通过。                                                                                               |
+| `git diff --check`                                                                                                                                                       | 通过。                                                                                                               |
+| `python3` 标准库检查三份 Markdown 相对链接、新锚点、消费节点与 PNG 头尺寸                                                                                                | 148 个相对文件链接存在，2 个新锚点正确；74 个消费状态节点均在本次 118 节点记录中，16 张 PNG 与节点自然尺寸逐一相等。 |
 
 独立设计 agent 自行读取 Figma 节点并查看 10 张实际设计截图，另复审两个消费结论。已确认本地引用锁定及清理再次失败有代表设计；确认旧清理窗口、未知保存结果、R2 完整报告、CORS 复制/入口与删除后扫描边界均已明确交接。复审无剩余必须修改项。该结论仅为设计适用文档审查，不等于网页设计还原验收。
 

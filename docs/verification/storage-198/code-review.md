@@ -1,6 +1,6 @@
 # Issue #198 独立代码审计
 
-日期：2026-10-04（Asia/Shanghai）。评审者与实现者分离。按 `code-review-and-quality`、`vercel-react-best-practices`、项目 AGENTS.md、[设计交付规范](../../design/handoff.md)、[执行约定](../../tasks/execution.md) 和 [T-STO-07](../../tasks/m3-m4-platform.md#t-sto-07-完整存储管理两端界面) 检查工作区的已跟踪差异及新增业务、测试文件。设计审查单独见 [设计评审](design-review.md)，本记录不替代设计或用户人工验收。
+日期：2026-10-04（Asia/Shanghai）。评审者与实现者分离。按 `code-review-and-quality`、`vercel-react-best-practices`、项目 AGENTS.md、[设计交付规范](../../design/handoff.md)、[执行约定](../../tasks/execution.md) 和 [T-STO-07](../../archive/m3-m4/platform.md#t-sto-07-完整存储管理两端界面) 检查工作区的已跟踪差异及新增业务、测试文件。设计审查单独见 [设计评审](design-review.md)，本记录不替代设计或用户人工验收。
 
 ## 当前结论
 

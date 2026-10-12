@@ -1,6 +1,6 @@
 # DG-ALBUMS 设计适用核对证据
 
-日期：2026-09-28（Asia/Shanghai）；[Issue #128](https://github.com/dnslin/ariso-next/issues/128)。可复用状态、缺口及真实验收责任只维护在消费任务：[T-COL-02 核对](../../m3-m4-experience.md#dg-albums-对-t-col-02-的核对结论2026-09-28)、[T-COL-04 核对](../../m3-m4-experience.md#dg-albums-对-t-col-04-的核对结论2026-09-28)。
+日期：2026-09-28（Asia/Shanghai）；[Issue #128](https://github.com/dnslin/ariso-next/issues/128)。可复用状态、缺口及真实验收责任只维护在消费任务：[T-COL-02 核对](../../../archive/m3-m4/experience.md#dg-albums-对-t-col-02-的核对结论2026-09-28)、[T-COL-04 核对](../../../archive/m3-m4/experience.md#dg-albums-对-t-col-04-的核对结论2026-09-28)。
 
 ## 范围、前置与现状
 
@@ -40,15 +40,15 @@
 
 实际后续检查：
 
-| 实际命令／检查                                                                                                                                                         | 结果                                                                                |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `pnpm exec prettier --write docs/tasks/m3-m4-experience.md docs/tasks/gates.md docs/tasks/evidence/DG-ALBUMS/README.md docs/tasks/evidence/DG-ALBUMS/figma/nodes.json` | 通过，仅格式化本次文件。                                                            |
-| `pnpm exec prettier --check docs/tasks/gates.md docs/tasks/m3-m4-experience.md docs/tasks/evidence/DG-ALBUMS/README.md docs/tasks/evidence/DG-ALBUMS/figma/nodes.json` | 通过。                                                                              |
-| `pnpm run format:check`                                                                                                                                                | 失败：基线三份 JSON 格式不符，详见下段。                                            |
-| `node docs/tasks/check.mjs`                                                                                                                                            | 通过，120 任务、298 需求，无缺失 ID/循环，生成报告未过期。                          |
-| `node docs/tasks/check.mjs --self-test`                                                                                                                                | 通过，5 个拒绝场景。                                                                |
-| `git diff --check`                                                                                                                                                     | 通过。                                                                              |
-| Python 标准库检查三份 Markdown 的相对文件链接、新增消费锚点及新增 Figma 节点                                                                                           | 137 个文件链接存在，2 个新锚点有效，50 个新增链接节点均在本次实时读取的两端分区中。 |
+| 实际命令／检查                                                                                                                                                           | 结果                                                                                |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------- |
+| `pnpm exec prettier --write docs/archive/m3-m4/experience.md docs/tasks/gates.md docs/tasks/evidence/DG-ALBUMS/README.md docs/tasks/evidence/DG-ALBUMS/figma/nodes.json` | 通过，仅格式化本次文件。                                                            |
+| `pnpm exec prettier --check docs/tasks/gates.md docs/archive/m3-m4/experience.md docs/tasks/evidence/DG-ALBUMS/README.md docs/tasks/evidence/DG-ALBUMS/figma/nodes.json` | 通过。                                                                              |
+| `pnpm run format:check`                                                                                                                                                  | 失败：基线三份 JSON 格式不符，详见下段。                                            |
+| `node docs/tasks/check.mjs`                                                                                                                                              | 通过，120 任务、298 需求，无缺失 ID/循环，生成报告未过期。                          |
+| `node docs/tasks/check.mjs --self-test`                                                                                                                                  | 通过，5 个拒绝场景。                                                                |
+| `git diff --check`                                                                                                                                                       | 通过。                                                                              |
+| Python 标准库检查三份 Markdown 的相对文件链接、新增消费锚点及新增 Figma 节点                                                                                             | 137 个文件链接存在，2 个新锚点有效，50 个新增链接节点均在本次实时读取的两端分区中。 |
 
 全仓格式失败文件为 `docs/verification/m2-85/remove-explanations/preview-switch/{after,before,mobile}.json`。逐文件执行 `git show origin/main:<path>` 与工作区字节比较，三者完全一致；将 main 内容传给 `pnpm exec prettier --check --stdin-filepath <path>` 均返回 1，确认是已有问题。首次交付未修改范围外历史证据，也未跳过或削弱全仓检查。日志见[首次格式输出](./format-check.txt)；当时 PR 保持草稿，后续授权修正见下节。
 

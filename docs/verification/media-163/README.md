@@ -2,7 +2,7 @@
 
 ## 范围与前置
 
-本次从最新 `origin/main` 的 `4a3e964` 建立独立 worktree 与 `codex/issue-163-s3-delete`，保留原工作区及其他任务。实际回读 Issue 正文、评论和原生依赖：#154、#155、#162、#70、#142 均为 closed/completed；#164 为本任务的下游。需求编号及模块边界沿现有[任务卡](../../tasks/m3-m4-platform.md#t-med-14-s3-永久删除与远端在途写入结算)，不修改冻结 PRD。
+本次从最新 `origin/main` 的 `4a3e964` 建立独立 worktree 与 `codex/issue-163-s3-delete`，保留原工作区及其他任务。实际回读 Issue 正文、评论和原生依赖：#154、#155、#162、#70、#142 均为 closed/completed；#164 为本任务的下游。需求编号及模块边界沿现有[任务卡](../../archive/m3-m4/platform.md#t-med-14-s3-永久删除与远端在途写入结算)，不修改冻结 PRD。
 
 实施与验证遵守[执行约定](../../tasks/execution.md)和[设计交付规范](../../design/handoff.md)。使用 using-agent-skills 选择 incremental-implementation、git-workflow-and-versioning 和 code-review-and-quality。本任务只有后端变更，不改 React/Next.js 页面、公共组件或设计，Figma、响应式和人工 UI 设计验收不适用。
 

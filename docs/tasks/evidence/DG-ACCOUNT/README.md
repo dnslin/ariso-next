@@ -1,6 +1,6 @@
 # DG-ACCOUNT 账号字段设计适用核对证据
 
-日期：2026-10-05（Asia/Shanghai）；关联 [Issue #127](https://github.com/dnslin/ariso-next/issues/127)。本次只交付设计适用核对、消费任务说明和证据，无业务代码、产品界面或 Figma 写入。可复用状态、真实验收范围、表达缺口和负责人只维护在消费卡：[T-ID-04](../../m3-m4-platform.md#dg-account-对-t-id-04-的核对结论)、[T-ID-05](../../m3-m4-platform.md#dg-account-对-t-id-05-的核对结论)。
+日期：2026-10-05（Asia/Shanghai）；关联 [Issue #127](https://github.com/dnslin/ariso-next/issues/127)。本次只交付设计适用核对、消费任务说明和证据，无业务代码、产品界面或 Figma 写入。可复用状态、真实验收范围、表达缺口和负责人只维护在消费卡：[T-ID-04](../../../archive/m3-m4/platform.md#dg-account-对-t-id-04-的核对结论)、[T-ID-05](../../../archive/m3-m4/platform.md#dg-account-对-t-id-05-的核对结论)。
 
 ## 范围、前置与隔离
 

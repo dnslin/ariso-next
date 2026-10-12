@@ -1,6 +1,6 @@
 # T-COL-01 相册标签模型与上传关联事务
 
-日期：2026-09-23。关联 [Issue #66](https://github.com/dnslin/ariso-next/issues/66)，任务定义见 [T-COL-01](../../tasks/m3-m4-experience.md#t-col-01-相册标签模型与上传关联事务)。本轮交付内部同步数据库能力，保留 R-16.1-01/02、R-16.2-01、R-7.3-01/02、R-8.4-02 的原有模块归属；不代表整个 COLLECTIONS-BASE 或上传产品流程已完成。
+日期：2026-09-23。关联 [Issue #66](https://github.com/dnslin/ariso-next/issues/66)，任务定义见 [T-COL-01](../../archive/m3-m4/experience.md#t-col-01-相册标签模型与上传关联事务)。本轮交付内部同步数据库能力，保留 R-16.1-01/02、R-16.2-01、R-7.3-01/02、R-8.4-02 的原有模块归属；不代表整个 COLLECTIONS-BASE 或上传产品流程已完成。
 
 ## 前置与范围
 

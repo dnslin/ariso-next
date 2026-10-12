@@ -1,6 +1,6 @@
 # DG-TRASH 设计适用核对证据
 
-日期：2026-10-03（Asia/Shanghai）；关联 [Issue #140](https://github.com/dnslin/ariso-next/issues/140)。本项仅交付文档，无业务代码、产品UI、依赖、数据契约或Figma修改。可复用规则、具体表达缺口和真实验收责任只维护在[唯一消费任务 T-LIB-11](../../m3-m4-experience.md#dg-trash-对-t-lib-11-的核对结论2026-10-03)，本记录保存实际来源、检查和审计，不另建规则。
+日期：2026-10-03（Asia/Shanghai）；关联 [Issue #140](https://github.com/dnslin/ariso-next/issues/140)。本项仅交付文档，无业务代码、产品UI、依赖、数据契约或Figma修改。可复用规则、具体表达缺口和真实验收责任只维护在[唯一消费任务 T-LIB-11](../../../archive/m3-m4/experience.md#dg-trash-对-t-lib-11-的核对结论2026-10-03)，本记录保存实际来源、检查和审计，不另建规则。
 
 ## 范围与前置
 
@@ -55,14 +55,14 @@
 
 其余实际执行的适用检查：
 
-| 实际命令 / 检查                                                                                                                                                                                               | 结果                                                                            |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
-| `pnpm exec prettier --write docs/tasks/m3-m4-experience.md docs/tasks/gates.md docs/tasks/evidence/DG-TRASH/README.md docs/tasks/evidence/DG-TRASH/github.json docs/tasks/evidence/DG-TRASH/figma/nodes.json` | 通过，仅格式化本次文件。                                                        |
-| `pnpm run format:check`                                                                                                                                                                                       | 通过，全仓格式符合配置。                                                        |
-| `node docs/tasks/check.mjs`                                                                                                                                                                                   | 通过，120任务/298需求，无缺失ID/循环，映射和依赖报告未过期。                    |
-| `node docs/tasks/check.mjs --self-test`                                                                                                                                                                       | 通过，5项拒绝场景。                                                             |
-| `git diff --check`                                                                                                                                                                                            | 通过。                                                                          |
-| `python3` 标准库检查本次Markdown相对链接/标题锚点、JSON和PNG文件头/尺寸                                                                                                                                       | 通过，206个本地链接、45个标题锚点，2份JSON、66唯一节点、14张PNG与节点尺寸一致。 |
+| 实际命令 / 检查                                                                                                                                                                                                 | 结果                                                                            |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| `pnpm exec prettier --write docs/archive/m3-m4/experience.md docs/tasks/gates.md docs/tasks/evidence/DG-TRASH/README.md docs/tasks/evidence/DG-TRASH/github.json docs/tasks/evidence/DG-TRASH/figma/nodes.json` | 通过，仅格式化本次文件。                                                        |
+| `pnpm run format:check`                                                                                                                                                                                         | 通过，全仓格式符合配置。                                                        |
+| `node docs/tasks/check.mjs`                                                                                                                                                                                     | 通过，120任务/298需求，无缺失ID/循环，映射和依赖报告未过期。                    |
+| `node docs/tasks/check.mjs --self-test`                                                                                                                                                                         | 通过，5项拒绝场景。                                                             |
+| `git diff --check`                                                                                                                                                                                              | 通过。                                                                          |
+| `python3` 标准库检查本次Markdown相对链接/标题锚点、JSON和PNG文件头/尺寸                                                                                                                                         | 通过，206个本地链接、45个标题锚点，2份JSON、66唯一节点、14张PNG与节点尺寸一致。 |
 
 没有修改任务ID、需求或直接前置，自动生成的mapping/dependencies不变；没有应用/构建/工作流配置改动。应用lint/typecheck/单元/集成/build/browser均未执行，不计通过；图片与JSON只是设计资料证据，不是新增行为测试。
 
@@ -91,4 +91,4 @@ gh api repos/dnslin/ariso-next/commits/9b4200a/status --jq '{state,total_count}'
 
 PR回读为非草稿、CLEAN，statusCheckRollup为空；本分支Actions运行为空，check-runs与提交状态数量均0。聚合pending没有对应运行，不代表检查进行中或通过。工作流注册表另列Analytics experiment，其路径不在本次基线的工作流文件中，本PR未触发它；未为本次验证派发工作流或发布Release。
 
-审计收齐后仅补充本记录与隐藏父框的准确性说明，实际执行 `pnpm exec prettier --check docs/tasks/gates.md docs/tasks/m3-m4-experience.md docs/tasks/evidence/DG-TRASH`、`git diff --check`：通过。PR回读记录提交推送后再核对最终head和检查状态，不重跑无关业务检查。
+审计收齐后仅补充本记录与隐藏父框的准确性说明，实际执行 `pnpm exec prettier --check docs/tasks/gates.md docs/archive/m3-m4/experience.md docs/tasks/evidence/DG-TRASH`、`git diff --check`：通过。PR回读记录提交推送后再核对最终head和检查状态，不重跑无关业务检查。

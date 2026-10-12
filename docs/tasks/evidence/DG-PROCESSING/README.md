@@ -1,6 +1,6 @@
 # DG-PROCESSING 设计适用核对证据
 
-日期：2026-10-04（Asia/Shanghai）；[Issue #132](https://github.com/dnslin/ariso-next/issues/132)。本次交付开关范围、快照、真实预览与特殊格式的设计适用核对，无业务代码、新产品界面或 Figma 修改。规则、复用状态、具体缺口和负责人只维护在 [T-MED-12 消费结论](../../m3-m4-platform.md#dg-processing-对-t-med-12-的核对结论2026-10-04)，不新增另一套设计或执行规则。
+日期：2026-10-04（Asia/Shanghai）；[Issue #132](https://github.com/dnslin/ariso-next/issues/132)。本次交付开关范围、快照、真实预览与特殊格式的设计适用核对，无业务代码、新产品界面或 Figma 修改。规则、复用状态、具体缺口和负责人只维护在 [T-MED-12 消费结论](../../../archive/m3-m4/platform.md#dg-processing-对-t-med-12-的核对结论2026-10-04)，不新增另一套设计或执行规则。
 
 ## 范围与前置
 
@@ -47,12 +47,12 @@
 
 另外实际执行：
 
-| 实际命令                                                                                                                                                                 | 结果                                                                                        |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------- |
-| `pnpm exec prettier --write docs/tasks/gates.md docs/tasks/m3-m4-platform.md docs/tasks/evidence/DG-PROCESSING/README.md docs/tasks/evidence/DG-PROCESSING/figma/*.json` | 通过，仅格式化本次文档和节点记录。                                                          |
-| `pnpm run format:check`                                                                                                                                                  | 全仓通过。                                                                                  |
-| `git diff --check`                                                                                                                                                       | 通过。                                                                                      |
-| `python3` 标准库检查三个 Markdown 相对文件链接、新锚点、节点引用与 PNG 头尺寸                                                                                            | 208个相对文件链接存在；88个消费节点在166个记录节点中；34张PNG自然尺寸逐一相等，新锚点正确。 |
+| 实际命令                                                                                                                                                                   | 结果                                                                                        |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| `pnpm exec prettier --write docs/tasks/gates.md docs/archive/m3-m4/platform.md docs/tasks/evidence/DG-PROCESSING/README.md docs/tasks/evidence/DG-PROCESSING/figma/*.json` | 通过，仅格式化本次文档和节点记录。                                                          |
+| `pnpm run format:check`                                                                                                                                                    | 全仓通过。                                                                                  |
+| `git diff --check`                                                                                                                                                         | 通过。                                                                                      |
+| `python3` 标准库检查三个 Markdown 相对文件链接、新锚点、节点引用与 PNG 头尺寸                                                                                              | 208个相对文件链接存在；88个消费节点在166个记录节点中；34张PNG自然尺寸逐一相等，新锚点正确。 |
 
 独立代码/文档 agent 使用 code-review-and-quality 阅读 Issue、规格、提供方实现/测试及最终 diff。结论 Approve，Critical 0、Required 0、Optional 0。其独立执行文档依赖检查（120任务/298需求）、5项拒绝自测、diff检查和定向Prettier均通过，另核对相对文件链接与34张PNG尺寸。需求覆盖、边界行为、模块职责、素材/预览资源生命周期与既有测试断言和本次验证范围一致；本次没有运行时代码或测试行为变化。
 

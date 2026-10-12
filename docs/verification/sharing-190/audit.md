@@ -1,6 +1,6 @@
 # Issue #190 独立代码审计
 
-日期：2026-10-05。范围：[T-SHR-01](../../tasks/m3-m4-experience.md#t-shr-01-分享配置期限与密码授权协议) / [Issue #190](https://github.com/dnslin/ariso-next/issues/190)。基线为 `origin/main` 的 `d337f6f1`；评审独立于实现者，审查本工作区全部生产代码、迁移、新增行为测试、浏览器场景及默认入口。评审者只拥有本文件，没有修改产品代码、测试或运行器。
+日期：2026-10-05。范围：[T-SHR-01](../../archive/m3-m4/experience.md#t-shr-01-分享配置期限与密码授权协议) / [Issue #190](https://github.com/dnslin/ariso-next/issues/190)。基线为 `origin/main` 的 `d337f6f1`；评审独立于实现者，审查本工作区全部生产代码、迁移、新增行为测试、浏览器场景及默认入口。评审者只拥有本文件，没有修改产品代码、测试或运行器。
 
 ## 结论
 

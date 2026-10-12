@@ -1,6 +1,6 @@
 # DG-API 一次明文设计适用核对
 
-日期：2026-10-05（Asia/Shanghai）；[Issue #130](https://github.com/dnslin/ariso-next/issues/130)。本任务是设计前置文档核对，没有新增产品界面、业务代码或 Figma 写入。可复用状态、规则、真实验收及缺口负责人只在消费卡维护：[T-ID-08](../../m3-m4-platform.md#dg-api-对-t-id-08-的核对结论2026-10-05)、[T-UP-06](../../m3-m4-platform.md#dg-api-对-t-up-06-的核对结论2026-10-05)。执行与设计规则分别引用[统一执行约定](../../execution.md)和[设计交接](../../../design/handoff.md)，不改冻结 PRD。
+日期：2026-10-05（Asia/Shanghai）；[Issue #130](https://github.com/dnslin/ariso-next/issues/130)。本任务是设计前置文档核对，没有新增产品界面、业务代码或 Figma 写入。可复用状态、规则、真实验收及缺口负责人只在消费卡维护：[T-ID-08](../../../archive/m3-m4/platform.md#dg-api-对-t-id-08-的核对结论2026-10-05)、[T-UP-06](../../../archive/m3-m4/platform.md#dg-api-对-t-up-06-的核对结论2026-10-05)。执行与设计规则分别引用[统一执行约定](../../execution.md)和[设计交接](../../../design/handoff.md)，不改冻结 PRD。
 
 ## 范围、前置与实际现状
 
@@ -50,15 +50,15 @@
 
 环境：macOS26.6.2 / Darwin25.6.0 arm64，Node24.18.1、pnpm11.19.0；项目命令在上述独立 worktree 执行，PATH 前置 `/Users/dnslin/.nvm/versions/node/v24.18.1/bin`。实际读取应用 `using-agent-skills`、`frontend-ui-engineering`、`figma-use`；独立审计使用 `code-review-and-quality`，无 React/Next 代码修改。
 
-| 实际命令                                                                                                                          | 结果                                                                                                                                                  |
-| --------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `git fetch origin`、管理型 worktree 创建、`git switch -c codex/issue-130-api-design`                                              | 完成，从最新main隔离，保留原工作区。                                                                                                                  |
-| `node --version`、`pnpm --version`、`pnpm install --frozen-lockfile`                                                              | Node24.18.1 / pnpm11.19.0；冻结安装通过，616包复用缓存，锁文件无改动。                                                                                |
-| `pnpm exec prettier --write docs/tasks/gates.md docs/tasks/m3-m4-platform.md docs/tasks/evidence/DG-API`、`pnpm run format:check` | 通过；仅格式化本次文件，全仓格式检查退出0。                                                                                                           |
-| `node docs/tasks/check.mjs`、`node docs/tasks/check.mjs --self-test`                                                              | 通过；120项任务、298项需求，无缺失编号/依赖环，生成报告未过期；5项拒绝自检通过。                                                                      |
-| `python3 /tmp/verify-issue130.py`                                                                                                 | 首轮通过；补齐审计报告后再次通过，5个Markdown的222个本地链接、52个锚点有效，74个消费节点均在90节点记录中，24张PNG与自然尺寸一致，Issue/依赖摘要一致。 |
-| `pnpm exec prettier --check docs/tasks/evidence/DG-API`                                                                           | 补齐审计报告后定向检查通过；未重复输入不变的文档依赖与应用检查。                                                                                      |
-| `git diff --check`                                                                                                                | 通过；无空白错误。                                                                                                                                    |
+| 实际命令                                                                                                                            | 结果                                                                                                                                                  |
+| ----------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `git fetch origin`、管理型 worktree 创建、`git switch -c codex/issue-130-api-design`                                                | 完成，从最新main隔离，保留原工作区。                                                                                                                  |
+| `node --version`、`pnpm --version`、`pnpm install --frozen-lockfile`                                                                | Node24.18.1 / pnpm11.19.0；冻结安装通过，616包复用缓存，锁文件无改动。                                                                                |
+| `pnpm exec prettier --write docs/tasks/gates.md docs/archive/m3-m4/platform.md docs/tasks/evidence/DG-API`、`pnpm run format:check` | 通过；仅格式化本次文件，全仓格式检查退出0。                                                                                                           |
+| `node docs/tasks/check.mjs`、`node docs/tasks/check.mjs --self-test`                                                                | 通过；120项任务、298项需求，无缺失编号/依赖环，生成报告未过期；5项拒绝自检通过。                                                                      |
+| `python3 /tmp/verify-issue130.py`                                                                                                   | 首轮通过；补齐审计报告后再次通过，5个Markdown的222个本地链接、52个锚点有效，74个消费节点均在90节点记录中，24张PNG与自然尺寸一致，Issue/依赖摘要一致。 |
+| `pnpm exec prettier --check docs/tasks/evidence/DG-API`                                                                             | 补齐审计报告后定向检查通过；未重复输入不变的文档依赖与应用检查。                                                                                      |
+| `git diff --check`                                                                                                                  | 通过；无空白错误。                                                                                                                                    |
 
 按纯文档适用边界，应用lint/typecheck/build/unit/integration/browser、schema生成与Release镜像/容器不适用，未运行；没有空测试或弱化断言。检查文档及设计资料不替代生产能力验收。
 

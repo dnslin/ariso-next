@@ -1,6 +1,6 @@
 # Issue #165 邮箱与密码管理实施记录
 
-2026-10-05，任务 `T-ID-04 / IDENTITY-ACCOUNT`，需求 `R-6.2-01`、`A-26.1-05`、`R-22.1-01`、`R-22.4-01`。产品依据为[任务卡](../../tasks/m3-m4-platform.md#t-id-04-邮箱与密码管理)、[identity 规格 §6](../../specs/SPEC-identity.md#6-邮箱密码与本地-cli)、[设计交接](../../design/handoff.md)与[执行约定](../../tasks/execution.md)。未改写冻结 PRD，本记录不新增产品规则。
+2026-10-05，任务 `T-ID-04 / IDENTITY-ACCOUNT`，需求 `R-6.2-01`、`A-26.1-05`、`R-22.1-01`、`R-22.4-01`。产品依据为[任务卡](../../archive/m3-m4/platform.md#t-id-04-邮箱与密码管理)、[identity 规格 §6](../../specs/SPEC-identity.md#6-邮箱密码与本地-cli)、[设计交接](../../design/handoff.md)与[执行约定](../../tasks/execution.md)。未改写冻结 PRD，本记录不新增产品规则。
 
 ## PR #248 双角度评审修复计划（2026-10-05）
 

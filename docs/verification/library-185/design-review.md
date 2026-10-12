@@ -10,7 +10,7 @@
 
 ## 依据与范围
 
-遵守 [设计交付规范](../../design/handoff.md)、[前端共用验收](../../tasks/execution.md#前端共用验收)、[T-LIB-07 任务卡](../../tasks/m3-m4-experience.md#t-lib-07-大图查看同图选版与上下文恢复)及 [library §6](../../specs/SPEC-library.md#6-大图查看)。本次读取 `using-agent-skills` 和 `figma-design-to-code` 技能。
+遵守 [设计交付规范](../../design/handoff.md)、[前端共用验收](../../tasks/execution.md#前端共用验收)、[T-LIB-07 任务卡](../../archive/m3-m4/experience.md#t-lib-07-大图查看同图选版与上下文恢复)及 [library §6](../../specs/SPEC-library.md#6-大图查看)。本次读取 `using-agent-skills` 和 `figma-design-to-code` 技能。
 
 实际读取节点：
 

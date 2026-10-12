@@ -26,7 +26,7 @@
 
 ## 依据与方法
 
-- 已实际读取工作区 `AGENTS.md`、`docs/README.md`、完整[设计交付规范](../../design/handoff.md)、[执行约定](../../tasks/execution.md)、[SPEC-library §6](../../specs/SPEC-library.md#6-大图查看)、[T-LIB-07 与 DG 核对](../../tasks/m3-m4-experience.md#t-lib-07-大图查看同图选版与上下文恢复)。
+- 已实际读取工作区 `AGENTS.md`、`docs/README.md`、完整[设计交付规范](../../design/handoff.md)、[执行约定](../../tasks/execution.md)、[SPEC-library §6](../../specs/SPEC-library.md#6-大图查看)、[T-LIB-07 与 DG 核对](../../archive/m3-m4/experience.md#t-lib-07-大图查看同图选版与上下文恢复)。
 - 已读取并使用 `using-agent-skills`、`code-review-and-quality`、`vercel-react-best-practices`。先读新增模型／邻居单测和浏览器断言，再沿调用路径检查实现、现有接口、类型与相关集成测试。
 - 已核对本轮保存的 [Issue 与评论](./github.json)、[原生前置读取结果](./prerequisites.json) 和 [blocking 读取结果](./consumers.json)：#173、#171、#75、#131 均 closed；后续匿名大图 #193 为 open。本审计不重新审计已确认的产品选择，也不把匿名能力纳入本次完成范围。
 - 已读 YARL 3.32.2 的安装源码及类型，检查 Inline、Zoom、Fullscreen、ImageSlide、受控 index 和回调；已读 HeroUI 3.2.6／React Aria 的 ModalOverlay 类型与实际 portal 实现。新增依赖为已选实验方案的生产接入，MIT 许可；锁文件无新增普通传递依赖，只有 React 及可选类型 peer。

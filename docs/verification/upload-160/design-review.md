@@ -26,7 +26,7 @@ Issue #160 的完整设计验收仍未完成。`T-UP-03 / DG-UPLOAD` 已明确�
 
 ## 独立读取与实际对照方式
 
-已读取项目 `AGENTS.md`、[文档入口](../../README.md)、[设计交付规范](../../design/handoff.md)、[前端共用验收](../../tasks/execution.md#前端共用验收)、[T-UP-03 与 DG-UPLOAD](../../tasks/m3-m4-platform.md#t-up-03-完整批次快照取消与结果队列) 和 [DG-UPLOAD 原始证据](../../tasks/evidence/DG-UPLOAD/README.md)。技能按 `using-agent-skills` 选择，实际读取 `figma-use`、`figma-design-to-code` 和 `vercel-react-best-practices`。
+已读取项目 `AGENTS.md`、[文档入口](../../README.md)、[设计交付规范](../../design/handoff.md)、[前端共用验收](../../tasks/execution.md#前端共用验收)、[T-UP-03 与 DG-UPLOAD](../../archive/m3-m4/platform.md#t-up-03-完整批次快照取消与结果队列) 和 [DG-UPLOAD 原始证据](../../tasks/evidence/DG-UPLOAD/README.md)。技能按 `using-agent-skills` 选择，实际读取 `figma-use`、`figma-design-to-code` 和 `vercel-react-best-practices`。
 
 评审者自己调用 Figma `get_design_context`，读取下表 8 个节点的设计结构、样式与工具返回截图，并逐张查看。没有只接受实现者总结，没有修改 Figma。先按桌面 1440×1080、手机 390×844 核对整页和公共区域，再检查业务状态；360/430/768 及浅深色作为响应式与现行主题的补充检查。Figma 失败节点是独立弹窗画板，其自然尺寸 480×411 / 358×431，不把它当作整屏截图。
 

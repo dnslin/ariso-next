@@ -26,7 +26,7 @@
 - **资源名保留：** `scripts/verify-browser.mjs:89` 开始的 main 六个账号报告/失败截图清理条目全部存在。
 - **shell-navigation 自动合并：** 保留 main 的 account-settings 路由及说明；本分支 S3 导航真实 fixture 创建与已有导航修正也存在。相对 main 的差异只剩本分支 fixture 创建，相对本分支的差异为账号路由/说明。
 - **browser-runner 测试自动合并：** account 接受用例和三项无关参数拒绝用例保留；本分支四个 p1 专属页面边界用例也保留。browser-plan 另补 account 默认阶段与无外来配置断言。
-- **任务文档自动合并：** `docs/tasks/m3-m4-experience.md` 相对 main 仅保留 T-SHR-01 两项完成状态与 Issue #190 证据链接；main 的 DG-SHARING 三段设计核对原文保留。
+- **任务文档自动合并：** `docs/archive/m3-m4/experience.md` 相对 main 仅保留 T-SHR-01 两项完成状态与 Issue #190 证据链接；main 的 DG-SHARING 三段设计核对原文保留。
 
 ## 实际验证与限制
 

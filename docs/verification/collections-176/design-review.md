@@ -4,7 +4,7 @@
 
 ## 依据与实际读取
 
-读取项目 `AGENTS.md`、`docs/design/handoff.md`、`docs/tasks/execution.md`、`docs/tasks/m3-m4-experience.md` 的 DG-TAGS 核对结论、`tags-flow-2026-09-18.md`。使用 figma-design-to-code / figma-use 技能。
+读取项目 `AGENTS.md`、`docs/design/handoff.md`、`docs/tasks/execution.md`、`docs/archive/m3-m4/experience.md` 的 DG-TAGS 核对结论、`tags-flow-2026-09-18.md`。使用 figma-design-to-code / figma-use 技能。
 
 独立调用 `get_design_context`（含截图）及 `get_screenshot`，保存对应 `.md` 与 PNG 到本目录 `figma/`。主页面使用原尺寸 1440×1080 / 390×844。另通过只读 `use_figma` 核对手机主列表的节点坐标、尺寸和字体。没有修改 Figma。
 

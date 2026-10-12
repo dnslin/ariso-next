@@ -83,7 +83,7 @@
 
 ## 对主 agent 新增消费结论的独立复审
 
-实际读取了 `docs/tasks/m3-m4-platform.md` 两个新增 `#### DG-API` 子节、`docs/tasks/gates.md` 新增入口，以及 `docs/tasks/evidence/DG-API/figma/nodes.json` 和截图目录。两卡保持已有需求编号和模块边界，未把原型链接声称为已有路由，明确代码/真实浏览器/设计/人工验收继续开放。Card 与当前明确启停动作、HeroUI 公共组件、有限 ID 数组、完整 cURL/错误规范、默认 browser full 入口和精确表达缺口均有承接责任。静态适用核对没有阻塞性遗漏。
+实际读取了 `docs/archive/m3-m4/platform.md` 两个新增 `#### DG-API` 子节、`docs/tasks/gates.md` 新增入口，以及 `docs/tasks/evidence/DG-API/figma/nodes.json` 和截图目录。两卡保持已有需求编号和模块边界，未把原型链接声称为已有路由，明确代码/真实浏览器/设计/人工验收继续开放。Card 与当前明确启停动作、HeroUI 公共组件、有限 ID 数组、完整 cURL/错误规范、默认 browser full 入口和精确表达缺口均有承接责任。静态适用核对没有阻塞性遗漏。
 
 `/settings/api/usage` 可以作为此 DG 明确的所有者详情子路径。原任务卡明确由 DG-API 确认详情路径，既有两端原型已表达独立用法详情和返回列表，因此无需增加新的产品选择或保留未决。它仍为计划路由，不能在当前记录中声称产品入口已经存在。
 

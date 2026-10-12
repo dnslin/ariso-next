@@ -1,6 +1,6 @@
 # T-SHR-04 匿名大图与撤权联验
 
-Issue [#193](https://github.com/dnslin/ariso-next/issues/193)，需求 `R-16.3-01`、`R-17.2-01/02`、`R-17.3-01`、`R-17.4-02`、`A-26.10-03/05`。依据为 [sharing §7](../../specs/SPEC-sharing.md#7-列表大图与打开中的变化)、[任务卡](../../tasks/m3-m4-experience.md#t-shr-04-匿名大图与删除相册后失效联验)、[设计交接](../../design/handoff.md)和[执行约定](../../tasks/execution.md)。不修改冻结 PRD。
+Issue [#193](https://github.com/dnslin/ariso-next/issues/193)，需求 `R-16.3-01`、`R-17.2-01/02`、`R-17.3-01`、`R-17.4-02`、`A-26.10-03/05`。依据为 [sharing §7](../../specs/SPEC-sharing.md#7-列表大图与打开中的变化)、[任务卡](../../archive/m3-m4/experience.md#t-shr-04-匿名大图与删除相册后失效联验)、[设计交接](../../design/handoff.md)和[执行约定](../../tasks/execution.md)。不修改冻结 PRD。
 
 匿名功能范围为查看器、公开邻居查询和打开中成员/授权变化。前置 #192、#191、#185、#161、#134 在实施前已从 GitHub 原生依赖回读为 CLOSED。管理查看器、分享管理、相册删除和内容鉴权沿用实际生产能力；不新增下载、管理详情、版本菜单、幻灯片或生成文件。
 
@@ -99,7 +99,7 @@ pnpm exec vitest run --project integration --project media-tools --maxWorkers=1 
 
 独立评审者只读核对后确认：19项范围外失败继续按原结果披露，不自动成为 #193 的新增阻塞，不要求为了本 Issue 修好其他模块或重复全部已通过检查；没有发现本次必需自动场景缺口或遗留必修代码项。最后待确认的匿名大图人工验收已由用户明确通过，当前没有未完成的本 Issue 交付门槛，可以转为待评审。本轮仍遵守用户关于不直接操作状态的澄清，不合并、关闭 Issue 或清理预览。
 
-本轮仅整理现有证据、人工验收入口及用户确认，没有产品、测试、运行器或设计输入变化。收到人工验收确认后，Node24.18.1/pnpm11.19.0 下执行 `pnpm exec prettier --check docs/verification/sharing-193/README.md docs/verification/sharing-193/failure-followup/browser-evidence-review.md docs/verification/sharing-193/feedback-settings/README.md docs/tasks/m3-m4-experience.md`，退出0；`node docs/tasks/check.mjs` 退出0、120任务/298需求、无缺失编号或循环。见[验收更新格式日志](./failure-followup/readiness-accepted-format.log)和[文档日志](./failure-followup/readiness-accepted-docs.log)。首轮整理的[格式](./failure-followup/readiness-format.log)及[文档](./failure-followup/readiness-docs.log)结果分别保留；不重复已通过的应用静态、类型、构建、集成或浏览器检查。
+本轮仅整理现有证据、人工验收入口及用户确认，没有产品、测试、运行器或设计输入变化。收到人工验收确认后，Node24.18.1/pnpm11.19.0 下执行 `pnpm exec prettier --check docs/verification/sharing-193/README.md docs/verification/sharing-193/failure-followup/browser-evidence-review.md docs/verification/sharing-193/feedback-settings/README.md docs/archive/m3-m4/experience.md`，退出0；`node docs/tasks/check.mjs` 退出0、120任务/298需求、无缺失编号或循环。见[验收更新格式日志](./failure-followup/readiness-accepted-format.log)和[文档日志](./failure-followup/readiness-accepted-docs.log)。首轮整理的[格式](./failure-followup/readiness-format.log)及[文档](./failure-followup/readiness-docs.log)结果分别保留；不重复已通过的应用静态、类型、构建、集成或浏览器检查。
 
 ## 限制与人工验收
 

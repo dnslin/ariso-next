@@ -11,7 +11,7 @@
 - 使用 `git diff BASE...HEAD` 审查整个 PR，包含新 API、提供方逻辑、查询/轮询、导航、上传消费、版本和重处理页面、最终确认弹窗及新增测试。没有只审最后一轮确认弹窗，也没有沿用文档中的历史“未发现 P1/P2”。
 - 实际只读回读了 `gh pr view 227 --repo dnslin/ariso-next --json title,body,isDraft,headRefOid,baseRefName`；HEAD 与冻结值一致，仍为草稿。
 
-已读取仓库 `AGENTS.md`，以及 `/Users/dnslin/.agents/skills/using-agent-skills/SKILL.md`、`code-review-and-quality/SKILL.md`、`vercel-react-best-practices/SKILL.md`。按五轴审查。需求从 `docs/README.md` 进入，读取 `docs/specs/SPEC-library.md` 的详情、任务、下载、接口和验收规则，`docs/tasks/m3-m4-experience.md` 的 T-LIB-06 / DG 记录，以及 `docs/design/handoff.md`、`docs/tasks/execution.md`、`docs/verification/library-171/README.md`。
+已读取仓库 `AGENTS.md`，以及 `/Users/dnslin/.agents/skills/using-agent-skills/SKILL.md`、`code-review-and-quality/SKILL.md`、`vercel-react-best-practices/SKILL.md`。按五轴审查。需求从 `docs/README.md` 进入，读取 `docs/specs/SPEC-library.md` 的详情、任务、下载、接口和验收规则，`docs/archive/m3-m4/experience.md` 的 T-LIB-06 / DG 记录，以及 `docs/design/handoff.md`、`docs/tasks/execution.md`、`docs/verification/library-171/README.md`。
 
 PR 主动声明尚未实现完整元数据树/搜索/重读页面、名称/visibility/关系编辑界面。这些内容保持开放，本次不将它们作为 PR 新引入的缺陷。未重新评审已确认的上传/相册产品选择。全程未操作浏览器、Ego、CDP 或预览数据。
 

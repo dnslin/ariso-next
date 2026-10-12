@@ -12,7 +12,7 @@
 
 本轮后端静态审计及新增请求处理器复审未发现必须修复的功能、权限或事务问题。此结论只覆盖当前账号服务、API、输入契约、所有者会话调整、请求错误处理和新增测试，不代表整个 Issue 已批准。UI、真实浏览器验证、独立设计审计及人工验收仍待完成；完整变更须再审。
 
-审计依据为项目 `AGENTS.md`、[文档导航](../../README.md)、[执行约定](../../tasks/execution.md)、[T-ID-04 与 DG-ACCOUNT](../../tasks/m3-m4-platform.md#t-id-04-邮箱与密码管理)、[identity 规格 §5/6/10](../../specs/SPEC-identity.md)及 GitHub Issue #165。先阅读 `tests/integration/identity/account.test.ts`、输入校验和运行器单元测试，再逐条追踪服务、路由、认证实例、所有者入口、数据库约束、连接与日志。
+审计依据为项目 `AGENTS.md`、[文档导航](../../README.md)、[执行约定](../../tasks/execution.md)、[T-ID-04 与 DG-ACCOUNT](../../archive/m3-m4/platform.md#t-id-04-邮箱与密码管理)、[identity 规格 §5/6/10](../../specs/SPEC-identity.md)及 GitHub Issue #165。先阅读 `tests/integration/identity/account.test.ts`、输入校验和运行器单元测试，再逐条追踪服务、路由、认证实例、所有者入口、数据库约束、连接与日志。
 
 ## 核对结果
 

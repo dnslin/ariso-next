@@ -6,11 +6,11 @@
 
 代码审计通过：底层封面身份、所有者呈现和 HTTP 入口的定向验证通过，本次提出的两项 P2 均已修复并独立回查。共享搜索点击区和深色卡片遮挡的必要修复也已追加审阅。审阅范围没有未解决的代码阻塞项；短视口弹窗修复和完整封面专项真实回归已独立回读通过。最终 lint、类型、单元、顺序集成与生产构建日志已回读。整轮浏览器首轮失败证据保留；修后封面专项及最终完整 `pnpm run test:browser` 均通过，最终运行器与末尾 UI 报告已实际回读。这些结果不解除选择页身份位置批准与用户人工验收边界，不能据此宣布 Issue 全部完成。
 
-审计时任务定义保留了封面选择页相册身份上下文位置的设计前置，见 [T-COL-04 核对](../../tasks/m3-m4-experience.md#dg-albums-对-t-col-04-的核对结论2026-09-28)。后续用户于 2026-10-01 明确决定不添加选择页相册名称/短 ID，已在该任务及主记录更新；此项由用户决定解除，不是由代码审计代替批准。最终人工验收仍待用户确认。
+审计时任务定义保留了封面选择页相册身份上下文位置的设计前置，见 [T-COL-04 核对](../../archive/m3-m4/experience.md#dg-albums-对-t-col-04-的核对结论2026-09-28)。后续用户于 2026-10-01 明确决定不添加选择页相册名称/短 ID，已在该任务及主记录更新；此项由用户决定解除，不是由代码审计代替批准。最终人工验收仍待用户确认。
 
 ## 审阅依据与范围
 
-已读取项目 `AGENTS.md`、完整审计 skill、`vercel-react-best-practices` 与适用的资源保留/事件订阅规则、[文档入口](../../README.md)、[collections §5–8](../../specs/SPEC-collections.md#5-固定展示规则)、[T-COL-04](../../tasks/m3-m4-experience.md#t-col-04-固定相册内容与手动自动封面)、[设计交付规范](../../design/handoff.md)及[执行约定](../../tasks/execution.md)。先阅读新增和修改测试，再阅读实现与调用链。
+已读取项目 `AGENTS.md`、完整审计 skill、`vercel-react-best-practices` 与适用的资源保留/事件订阅规则、[文档入口](../../README.md)、[collections §5–8](../../specs/SPEC-collections.md#5-固定展示规则)、[T-COL-04](../../archive/m3-m4/experience.md#t-col-04-固定相册内容与手动自动封面)、[设计交付规范](../../design/handoff.md)及[执行约定](../../tasks/execution.md)。先阅读新增和修改测试，再阅读实现与调用链。
 
 检查包含 collections 封面解析与设置、相册列表计数、library 对封面的 thumbnail 组合、相册读写 HTTP 入口、设置界面/结果弹窗/异常预览、LibraryScreen 的两项组合参数及 `e2e/album-cover.mjs` 接入。同步检查既有成员移除、外键、Cookie/来源验证、library 查询状态和已存版本读取逻辑。
 

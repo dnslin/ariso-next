@@ -8,9 +8,9 @@
 
 原目录 main 干净但有其他任务 worktree；本轮 `git fetch origin` 后从最新 `origin/main`（`2ba0a60e`）创建管理型独立工作区与 `codex/issue-129-analytics-design`。原目录及其他任务保留。[Issue快照](./issue.json)无评论，[blocked by](./blocked-by.json)为空，[blocking](./blocking.json)仅#179；[消费快照](./consumer.json)无评论，其[原生前置](./consumer-blocked-by.json) #169/#171/#178/#57均closed，#129仍open。状态是本轮回读，不把任务创建或本DG核对当作业务完成。
 
-从 [docs/README](../../../README.md) 开始，读取 [能力地图](../../../product/CAPABILITY-MAP.md)、[PRD第19章](../../../product/Ariso-PRD-v1.1.md#19-访问统计与基础用量)、[覆盖表](../../coverage.md)、[计划](../../plan.md)、[任务卡](../../m3-m4-experience.md#t-ana-05-工作台统计图表与详情统计联动)、[SPEC-analytics §6–11](../../../specs/SPEC-analytics.md#6-报表周期与热门图片)、[设计交接](../../../design/handoff.md)、[DES-06-ANALYTICS/RG](../../../design/acceptance.md)、[执行约定](../../execution.md)及历史统计/R6索引。既有需求编号、模块边界、产品选择不变。
+从 [docs/README](../../../README.md) 开始，读取 [能力地图](../../../product/CAPABILITY-MAP.md)、[PRD第19章](../../../product/Ariso-PRD-v1.1.md#19-访问统计与基础用量)、[覆盖表](../../coverage.md)、[计划](../../plan.md)、[任务卡](../../../archive/m3-m4/experience.md#t-ana-05-工作台统计图表与详情统计联动)、[SPEC-analytics §6–11](../../../specs/SPEC-analytics.md#6-报表周期与热门图片)、[设计交接](../../../design/handoff.md)、[DES-06-ANALYTICS/RG](../../../design/acceptance.md)、[执行约定](../../execution.md)及历史统计/R6索引。既有需求编号、模块边界、产品选择不变。
 
-具体适用结论只在 [T-ANA-05消费结论](../../m3-m4-experience.md#dg-analytics-对-t-ana-05-的核对结论) 维护。已将可复用两端状态、全部排行/单图/异常入口、真实数据契约、表达缺口及验收责任逐项写入；缺口均归#179，不再新建产品选择或规则文档。
+具体适用结论只在 [T-ANA-05消费结论](../../../archive/m3-m4/experience.md#dg-analytics-对-t-ana-05-的核对结论) 维护。已将可复用两端状态、全部排行/单图/异常入口、真实数据契约、表达缺口及验收责任逐项写入；缺口均归#179，不再新建产品选择或规则文档。
 
 ## 实际实现与验证入口
 

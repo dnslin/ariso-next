@@ -2,11 +2,11 @@
 
 日期：2026-10-09（Asia/Shanghai）。基线：`origin/main 2ba0a60e71b5fff773229b62f2c6380fe3435f9b`。本次仅修改消费任务、必要设计索引和本目录证据，没有业务、依赖、数据库、验证运行器或Figma写入。
 
-结论与唯一状态/责任表维护于 [T-ID-07 的DG-RESET结论](../../m3-m4-platform.md#dg-reset-对-t-id-07-的核对结论)。本记录保存依据、实际读取和检查，不另建视觉或执行规则。交付PR：[草稿 #267](https://github.com/dnslin/ariso-next/pull/267)；本DG不合并、不关闭Issue。
+结论与唯一状态/责任表维护于 [T-ID-07 的DG-RESET结论](../../../archive/m3-m4/platform.md#dg-reset-对-t-id-07-的核对结论)。本记录保存依据、实际读取和检查，不另建视觉或执行规则。交付PR：[草稿 #267](https://github.com/dnslin/ariso-next/pull/267)；本DG不合并、不关闭Issue。
 
 ## 依据与依赖
 
-从 [文档导航](../../../README.md)读取 [能力地图](../../../product/CAPABILITY-MAP.md)、[计划](../../plan.md)、[M3/M4顺序](../../m3-m4-sequence.md)、[需求覆盖](../../coverage.md)、[SPEC-identity §6.3/8.2](../../../specs/SPEC-identity.md)、[设计交接](../../../design/handoff.md)、[验收清单](../../../design/acceptance.md)及 [执行约定](../../execution.md)。原始重置与邮件恢复节点见 [历史设计记录](../../../archive/preparation-2026-09/design/README.md#本轮已补des-02-密码重置)。
+从 [文档导航](../../../README.md)读取 [能力地图](../../../product/CAPABILITY-MAP.md)、[计划](../../plan.md)、[M3/M4顺序](../../../archive/m3-m4/sequence.md)、[需求覆盖](../../coverage.md)、[SPEC-identity §6.3/8.2](../../../specs/SPEC-identity.md)、[设计交接](../../../design/handoff.md)、[验收清单](../../../design/acceptance.md)及 [执行约定](../../execution.md)。原始重置与邮件恢复节点见 [历史设计记录](../../../archive/preparation-2026-09/design/README.md#本轮已补des-02-密码重置)。
 
 实际使用 `using-agent-skills`、`documentation-and-adrs`、`git-workflow-and-versioning`、`figma:figma-use` 与独立审计的 `code-review-and-quality`。没有UI/React实施，不需要UI实现技能或产品原型审批；不改变获批方案。
 

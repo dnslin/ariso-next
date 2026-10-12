@@ -1,6 +1,6 @@
 # DG-TAGS 设计适用核对证据
 
-日期：2026-10-01（Asia/Shanghai）；关联 [Issue #138](https://github.com/dnslin/ariso-next/issues/138)。本项仅交付文档，无业务代码、产品 UI、依赖或 Figma 修改。设计状态、真实行为范围及责任只维护在[唯一直接消费任务 T-COL-03](../../m3-m4-experience.md#dg-tags-对-t-col-03-的核对结论2026-10-01)，本记录保存来源和实际验证，不另建规则。
+日期：2026-10-01（Asia/Shanghai）；关联 [Issue #138](https://github.com/dnslin/ariso-next/issues/138)。本项仅交付文档，无业务代码、产品 UI、依赖或 Figma 修改。设计状态、真实行为范围及责任只维护在[唯一直接消费任务 T-COL-03](../../../archive/m3-m4/experience.md#dg-tags-对-t-col-03-的核对结论2026-10-01)，本记录保存来源和实际验证，不另建规则。
 
 ## 范围与前置
 
@@ -54,14 +54,14 @@
 
 本轮实际执行的其余检查：
 
-| 实际命令 / 检查                                                                                                                                                                                            | 结果                                                                            |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
-| `pnpm exec prettier --write docs/tasks/m3-m4-experience.md docs/tasks/gates.md docs/tasks/evidence/DG-TAGS/README.md docs/tasks/evidence/DG-TAGS/github.json docs/tasks/evidence/DG-TAGS/figma/nodes.json` | 通过，仅格式化本次文件                                                          |
-| `pnpm run format:check`                                                                                                                                                                                    | 通过，全仓匹配文件符合配置                                                      |
-| `node docs/tasks/check.mjs`                                                                                                                                                                                | 通过；120任务、298需求，无缺失ID/循环，映射和依赖报告未过期                     |
-| `node docs/tasks/check.mjs --self-test`                                                                                                                                                                    | 通过；5个拒绝场景                                                               |
-| `git diff --check`                                                                                                                                                                                         | 通过                                                                            |
-| `python3` 标准库检查 Markdown 相对链接/标题锚点、JSON、PNG签名及原图尺寸                                                                                                                                   | 195个本地链接、41个标题锚点通过；2份JSON可解析；64唯一节点，18PNG尺寸与节点一致 |
+| 实际命令 / 检查                                                                                                                                                                                              | 结果                                                                            |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------- |
+| `pnpm exec prettier --write docs/archive/m3-m4/experience.md docs/tasks/gates.md docs/tasks/evidence/DG-TAGS/README.md docs/tasks/evidence/DG-TAGS/github.json docs/tasks/evidence/DG-TAGS/figma/nodes.json` | 通过，仅格式化本次文件                                                          |
+| `pnpm run format:check`                                                                                                                                                                                      | 通过，全仓匹配文件符合配置                                                      |
+| `node docs/tasks/check.mjs`                                                                                                                                                                                  | 通过；120任务、298需求，无缺失ID/循环，映射和依赖报告未过期                     |
+| `node docs/tasks/check.mjs --self-test`                                                                                                                                                                      | 通过；5个拒绝场景                                                               |
+| `git diff --check`                                                                                                                                                                                           | 通过                                                                            |
+| `python3` 标准库检查 Markdown 相对链接/标题锚点、JSON、PNG签名及原图尺寸                                                                                                                                     | 195个本地链接、41个标题锚点通过；2份JSON可解析；64唯一节点，18PNG尺寸与节点一致 |
 
 没有修改任务ID、前置或需求字段，自动生成的 mapping/dependencies 不变；没有新增或修改构建、工作流配置，读取现有Release触发规则确认其不属于本次日常PR检查。未执行应用lint/typecheck/单元/集成/build/browser，不记通过。
 

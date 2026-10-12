@@ -12,7 +12,7 @@
 
 ## 独立读取的依据
 
-实际读取项目 AGENTS.md、`docs/README.md`、[设计交付规范](../../design/handoff.md)、[前端共用验收](../../tasks/execution.md#前端共用验收)、[T-UP-04与DG-UPLOAD](../../tasks/m3-m4-platform.md#t-up-04-s3-直传中转条件交接与最终清理)。使用 using-agent-skills、figma-design-to-code 和 figma-use 技能，分别调用 get_design_context 并实际查看返回截图。
+实际读取项目 AGENTS.md、`docs/README.md`、[设计交付规范](../../design/handoff.md)、[前端共用验收](../../tasks/execution.md#前端共用验收)、[T-UP-04与DG-UPLOAD](../../archive/m3-m4/platform.md#t-up-04-s3-直传中转条件交接与最终清理)。使用 using-agent-skills、figma-design-to-code 和 figma-use 技能，分别调用 get_design_context 并实际查看返回截图。
 
 | 用途             | 桌面节点                                                                         | 手机节点                                                                         | 设计画板/卡片宽度   |
 | ---------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | ------------------- |

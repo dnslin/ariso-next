@@ -1,6 +1,6 @@
 # Issue #187 独立代码审计
 
-日期：2026-10-04。评审者：独立 `code_audit` agent，未参与产品代码实现。使用 `code-review-and-quality`，按仓库 `AGENTS.md`、[执行约定](../../tasks/execution.md)、[设计交接](../../design/handoff.md)、[T-LIB-10](../../tasks/m3-m4-experience.md#t-lib-10-跨页批量复制与剪贴板降级)与 [library §8](../../specs/SPEC-library.md#8-批量复制与逐版本下载)检查。本记录是代码审计，不替代独立设计对照或用户人工验收。
+日期：2026-10-04。评审者：独立 `code_audit` agent，未参与产品代码实现。使用 `code-review-and-quality`，按仓库 `AGENTS.md`、[执行约定](../../tasks/execution.md)、[设计交接](../../design/handoff.md)、[T-LIB-10](../../archive/m3-m4/experience.md#t-lib-10-跨页批量复制与剪贴板降级)与 [library §8](../../specs/SPEC-library.md#8-批量复制与逐版本下载)检查。本记录是代码审计，不替代独立设计对照或用户人工验收。
 
 ## 当前状态（获批新流程修订后）
 

@@ -1,6 +1,6 @@
 # Issue #194 / T-SITE-02
 
-2026-10-08。用户已批准第二版紧凑关联行布局并明确要求实施。站点信息后端、基本设置产品页面及默认浏览器场景已接入；默认浏览器全量的实际失败保留。用户明确恢复后，站点四阶段生产浏览器、全部公共消费路由及 processing 设置往返已通过；独立代码与代表状态设计复审通过，人工验收未完成。[Issue](https://github.com/dnslin/ariso-next/issues/194)、[草稿 PR #262](https://github.com/dnslin/ariso-next/pull/262)、[任务卡](../../tasks/m3-m4-experience.md#t-site-02-站点地址时区与基础设置组合)、[独立评审](./review.md)。
+2026-10-08。用户已批准第二版紧凑关联行布局并明确要求实施。站点信息后端、基本设置产品页面及默认浏览器场景已接入；默认浏览器全量的实际失败保留。用户明确恢复后，站点四阶段生产浏览器、全部公共消费路由及 processing 设置往返已通过；独立代码与代表状态设计复审通过，人工验收未完成。[Issue](https://github.com/dnslin/ariso-next/issues/194)、[草稿 PR #262](https://github.com/dnslin/ariso-next/pull/262)、[任务卡](../../archive/m3-m4/experience.md#t-site-02-站点地址时区与基础设置组合)、[独立评审](./review.md)。
 
 此前后端切片及被否定的首版原型记录保留在 [历史证据](./history.md)。历史全量失败不改写为通过，原型图不代表产品验证。本文件维护当前结果。
 

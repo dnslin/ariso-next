@@ -2,7 +2,7 @@
 
 本轮在 `codex/issue-178-trash` 独立 worktree 实施，起点为最新 `origin/main` 的 `1ca3ae0`。原工作区及其他任务的 worktree 保留。已提交并推送，关联 [草稿 PR #240](https://github.com/dnslin/ariso-next/pull/240)。Issue 原生直接前置 #177、#79、#154、#140 均已完成，下游为 #179；评论为空。需求编号沿用 R-15.7-01、R-18.1-01、R-18.2-01/02、R-18.3-01/02/03、A-26.11-04/05/06/07。
 
-任务、需求、设计与验证规则分别消费 [任务卡](../../tasks/m3-m4-experience.md#t-lib-11-回收站完整查询批量删除与失败清理)、SPEC-library §7/9、[设计交接](../../design/handoff.md)、[执行约定](../../tasks/execution.md) 和 [DG-TRASH](../../tasks/evidence/DG-TRASH/README.md)。不改写冻结 PRD 或 Figma。
+任务、需求、设计与验证规则分别消费 [任务卡](../../archive/m3-m4/experience.md#t-lib-11-回收站完整查询批量删除与失败清理)、SPEC-library §7/9、[设计交接](../../design/handoff.md)、[执行约定](../../tasks/execution.md) 和 [DG-TRASH](../../tasks/evidence/DG-TRASH/README.md)。不改写冻结 PRD 或 Figma。
 
 ## 实际实现边界
 

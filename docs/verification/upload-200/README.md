@@ -1,6 +1,6 @@
 # Issue #200 上传限制实施记录
 
-2026-10-08（Asia/Shanghai）。[Issue #200](https://github.com/dnslin/ariso-next/issues/200)，任务 [T-UP-08](../../tasks/m3-m4-platform.md#t-up-08-上传限制独立设置界面)，需求 `R-7.2-01/02`。执行与完成条件遵守 [execution](../../tasks/execution.md)，设计遵守 [handoff](../../design/handoff.md)。
+2026-10-08（Asia/Shanghai）。[Issue #200](https://github.com/dnslin/ariso-next/issues/200)，任务 [T-UP-08](../../archive/m3-m4/platform.md#t-up-08-上传限制独立设置界面)，需求 `R-7.2-01/02`。执行与完成条件遵守 [execution](../../tasks/execution.md)，设计遵守 [handoff](../../design/handoff.md)。
 
 当前后续修复以文末[评审问题修复](#review-fixes)及[本轮证据索引](./reports/review-fixes/README.md)为准。原合入记录见[授权合并时的联合页面记录](#joint-merge-evidence)及[联合验证索引](./reports/merge/README.md)。站点四字段与上传三字段已共同实现在基本设置；以下原交付记录保留各轮实际结果，不倒改历史失败。
 

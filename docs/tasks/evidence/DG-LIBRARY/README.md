@@ -2,15 +2,15 @@
 
 日期：2026-09-30（Asia/Shanghai）；关联 [Issue #131](https://github.com/dnslin/ariso-next/issues/131)。本项是文档交付，无业务代码、UI 或 Figma 修改。可复用规则和真实验收范围只维护在消费任务，不在此复制：
 
-| 消费任务        | 核对结论                                                                             | 当次仍开放的其他直接前置（不含 #131） |
-| --------------- | ------------------------------------------------------------------------------------ | ------------------------------------- |
-| T-LIB-04 / #173 | [查询、布局与历史](../../m3-m4-experience.md#dg-library-t-lib-04-核对结论)           | 无                                    |
-| T-LIB-05 / #174 | [跨页显式选择](../../m3-m4-experience.md#dg-library-t-lib-05-核对结论)               | #173                                  |
-| T-LIB-06 / #171 | [详情、完整元数据与编辑](../../m3-m4-experience.md#dg-library-t-lib-06-核对结论)     | #153 T-MED-10                         |
-| T-LIB-07 / #185 | [大图及上下文恢复](../../m3-m4-experience.md#dg-library-t-lib-07-核对结论)           | #173、#171                            |
-| T-LIB-08 / #177 | [批量关系、可见性、回收恢复](../../m3-m4-experience.md#dg-library-t-lib-08-核对结论) | #174、#176 T-COL-03                   |
-| T-LIB-09 / #186 | [批量重处理](../../m3-m4-experience.md#dg-library-t-lib-09-核对结论)                 | #177、#153                            |
-| T-LIB-10 / #187 | [批量复制](../../m3-m4-experience.md#dg-library-t-lib-10-核对结论)                   | #174                                  |
+| 消费任务        | 核对结论                                                                                        | 当次仍开放的其他直接前置（不含 #131） |
+| --------------- | ----------------------------------------------------------------------------------------------- | ------------------------------------- |
+| T-LIB-04 / #173 | [查询、布局与历史](../../../archive/m3-m4/experience.md#dg-library-t-lib-04-核对结论)           | 无                                    |
+| T-LIB-05 / #174 | [跨页显式选择](../../../archive/m3-m4/experience.md#dg-library-t-lib-05-核对结论)               | #173                                  |
+| T-LIB-06 / #171 | [详情、完整元数据与编辑](../../../archive/m3-m4/experience.md#dg-library-t-lib-06-核对结论)     | #153 T-MED-10                         |
+| T-LIB-07 / #185 | [大图及上下文恢复](../../../archive/m3-m4/experience.md#dg-library-t-lib-07-核对结论)           | #173、#171                            |
+| T-LIB-08 / #177 | [批量关系、可见性、回收恢复](../../../archive/m3-m4/experience.md#dg-library-t-lib-08-核对结论) | #174、#176 T-COL-03                   |
+| T-LIB-09 / #186 | [批量重处理](../../../archive/m3-m4/experience.md#dg-library-t-lib-09-核对结论)                 | #177、#153                            |
+| T-LIB-10 / #187 | [批量复制](../../../archive/m3-m4/experience.md#dg-library-t-lib-10-核对结论)                   | #174                                  |
 
 ## 范围与前置
 
@@ -63,14 +63,14 @@
 
 实际完成的文档检查：
 
-| 实际命令／检查                                                                                                                                                                                                                                                           | 结果                                                                                        |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------- |
-| `pnpm exec prettier --write docs/tasks/m3-m4-experience.md docs/tasks/gates.md docs/tasks/evidence/DG-LIBRARY/README.md docs/tasks/evidence/DG-LIBRARY/github.json docs/tasks/evidence/DG-LIBRARY/figma/nodes.json docs/tasks/evidence/DG-LIBRARY/figma/supplement.json` | 通过，仅格式化本次文件                                                                      |
-| `pnpm run format:check`                                                                                                                                                                                                                                                  | 通过，全仓匹配文件格式符合配置                                                              |
-| `node docs/tasks/check.mjs`                                                                                                                                                                                                                                              | 通过；120 任务、298 需求，无缺失 ID 或循环，映射/依赖报告未过期                             |
-| `node docs/tasks/check.mjs --self-test`                                                                                                                                                                                                                                  | 通过；5 个拒绝场景                                                                          |
-| `git diff --check`                                                                                                                                                                                                                                                       | 通过                                                                                        |
-| `python3` 标准库一次性检查 Markdown 相对链接/标题锚点、JSON 节点及 PNG 文件头                                                                                                                                                                                            | 184 个本地链接、35 个锚点通过；30 个不重复消费节点、8 个补充节点与 16 张 PNG 存在且格式正确 |
+| 实际命令／检查                                                                                                                                                                                                                                                             | 结果                                                                                        |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| `pnpm exec prettier --write docs/archive/m3-m4/experience.md docs/tasks/gates.md docs/tasks/evidence/DG-LIBRARY/README.md docs/tasks/evidence/DG-LIBRARY/github.json docs/tasks/evidence/DG-LIBRARY/figma/nodes.json docs/tasks/evidence/DG-LIBRARY/figma/supplement.json` | 通过，仅格式化本次文件                                                                      |
+| `pnpm run format:check`                                                                                                                                                                                                                                                    | 通过，全仓匹配文件格式符合配置                                                              |
+| `node docs/tasks/check.mjs`                                                                                                                                                                                                                                                | 通过；120 任务、298 需求，无缺失 ID 或循环，映射/依赖报告未过期                             |
+| `node docs/tasks/check.mjs --self-test`                                                                                                                                                                                                                                    | 通过；5 个拒绝场景                                                                          |
+| `git diff --check`                                                                                                                                                                                                                                                         | 通过                                                                                        |
+| `python3` 标准库一次性检查 Markdown 相对链接/标题锚点、JSON 节点及 PNG 文件头                                                                                                                                                                                              | 184 个本地链接、35 个锚点通过；30 个不重复消费节点、8 个补充节点与 16 张 PNG 存在且格式正确 |
 
 纯文档适用格式、任务依赖/映射、链接及配置走查；未运行应用 lint/typecheck/单元/集成/build/browser，没有运行时或构建输入变化，不标记这些检查通过。未执行物理设备、AMD64/ARM64 镜像或容器验证；发布验证按既有 Release 流程，不为本 PR 触发发布。
 

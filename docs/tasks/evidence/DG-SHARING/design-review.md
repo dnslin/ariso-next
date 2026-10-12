@@ -12,7 +12,7 @@
 
 ## 实际依据和读取
 
-- 阅读项目 AGENTS.md、[设计交接](../../../design/handoff.md)、[设计验收](../../../design/acceptance.md)、[sharing 规格](../../../specs/SPEC-sharing.md)、[三个消费卡](../../m3-m4-experience.md#t-shr-02-分享管理与独立设置保存)及历史分享/R4/R6入口。
+- 阅读项目 AGENTS.md、[设计交接](../../../design/handoff.md)、[设计验收](../../../design/acceptance.md)、[sharing 规格](../../../specs/SPEC-sharing.md)、[三个消费卡](../../../archive/m3-m4/experience.md#t-shr-02-分享管理与独立设置保存)及历史分享/R4/R6入口。
 - 实际读取 `figma:figma-use` 技能及 Plugin API 索引、gotchas。Figma fileKey 为 `74sT9Hrf8G4czcWeTkET5b`。`use_figma` 返回页面 `0:1` 和 `97:748`；分别只读代表节点的尺寸、子区结构和文本，共 22 个不同根节点。每个页面读取只调用一次 `setCurrentPageAsync`，没有修改画布。
 - 本评审者另外实际调用 `get_screenshot` 获取 R4 `529:12262` / `529:12444`，并保存为下表原图。其余原图复用本任务实施者直接从 Figma 取得的截图，评审者实际打开查看；没有以索引文件名代替目视核对。
 - 完整根节点索引与文字证据见[目录](./figma/inventory.json)、[文字和尺寸](./figma/nodes.json)。完整索引是本任务采集证据，独立审计重点为以下代表及其适用边界。

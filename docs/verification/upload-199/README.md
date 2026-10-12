@@ -1,6 +1,6 @@
 # T-UP-06 / Issue #199 实施记录
 
-2026-10-09（Asia/Shanghai）。关联 [Issue #199](https://github.com/dnslin/ariso-next/issues/199) 与 [PR #269](https://github.com/dnslin/ariso-next/pull/269)。依据 [任务卡](../../tasks/m3-m4-platform.md#t-up-06-openapicurl-示例与上传用法页)、[SPEC-upload §10](../../specs/SPEC-upload.md#10-通用上传-api)、[设计交接](../../design/handoff.md)及[执行约定](../../tasks/execution.md)。保留 R-8.4-08、R-23.4-01、A-26.3-08 和 upload/identity 模块边界，没有改写冻结 PRD。
+2026-10-09（Asia/Shanghai）。关联 [Issue #199](https://github.com/dnslin/ariso-next/issues/199) 与 [PR #269](https://github.com/dnslin/ariso-next/pull/269)。依据 [任务卡](../../archive/m3-m4/platform.md#t-up-06-openapicurl-示例与上传用法页)、[SPEC-upload §10](../../specs/SPEC-upload.md#10-通用上传-api)、[设计交接](../../design/handoff.md)及[执行约定](../../tasks/execution.md)。保留 R-8.4-08、R-23.4-01、A-26.3-08 和 upload/identity 模块边界，没有改写冻结 PRD。
 
 公开规范、共享 curl、所有者用法页和 Token 入口已实现。用户明确批准表格、复制图标、删减副标题与 Tips 原型后实施，并已实际同步 Figma。独立质量评审通过；完整浏览器流程保留失败，最终用法页定向检查与独立生产设计评审通过，结果分别见下。**2026-10-09 用户明确确认本次 UI 人工验收通过；默认完整浏览器仍有失败/阻塞，PR 保持草稿。**
 

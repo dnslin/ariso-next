@@ -6,7 +6,7 @@
 
 ## 范围与方法
 
-依据 `AGENTS.md`、`code-review-and-quality/SKILL.md`、`docs/tasks/execution.md`、`docs/design/handoff.md`、`docs/specs/SPEC-sharing.md` 与 `docs/tasks/m3-m4-experience.md` 的 T-SHR-04，审阅匿名大图、公开邻居、撤权/删除联验及其测试调用路径。审计覆盖正确性、职责划分、简洁性、授权边界、请求及内存生命周期。
+依据 `AGENTS.md`、`code-review-and-quality/SKILL.md`、`docs/tasks/execution.md`、`docs/design/handoff.md`、`docs/specs/SPEC-sharing.md` 与 `docs/archive/m3-m4/experience.md` 的 T-SHR-04，审阅匿名大图、公开邻居、撤权/删除联验及其测试调用路径。审计覆盖正确性、职责划分、简洁性、授权边界、请求及内存生命周期。
 
 本审计独立于实现者；只读检查生产代码、测试及既有日志，没有执行测试、构建或浏览器操作，没有修改生产代码或测试。本文是本审计唯一写入。测试执行结果属于主任务的证据，不能视为审计者重新执行的结果。UI 对照和浏览器设计评审由另一个审计记录承接。
 

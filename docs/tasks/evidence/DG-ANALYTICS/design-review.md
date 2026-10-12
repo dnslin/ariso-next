@@ -17,7 +17,7 @@
 | 图片详情       | `36:312` / `102:3228`；[桌面弹层](./figma/36-312.png) / [手机](./figma/102-3228.png)                                                           |
 | 每日等价数值   | `451:18835`；[手机7天](./figma/451-18835.png)                                                                                                  |
 
-桌面整页为1440×1080，手机为390×844，窄屏代表为360×844；桌面详情是1040×624弹层。另读取 [handoff](../../../design/handoff.md)、[acceptance](../../../design/acceptance.md)、[执行约定](../../execution.md)、[analytics规格](../../../specs/SPEC-analytics.md)、[历史统计交接](../../../archive/preparation-2026-09/design/analytics-flow-2026-09-19.md)，终审核对 [T-ANA-05消费结论](../../m3-m4-experience.md#dg-analytics-对-t-ana-05-的核对结论) 与 [本次README](./README.md)。实现者的55节点全表见 [states.json](./figma/states.json)，本独立评审不把该全表冒充独立逐节点回读。
+桌面整页为1440×1080，手机为390×844，窄屏代表为360×844；桌面详情是1040×624弹层。另读取 [handoff](../../../design/handoff.md)、[acceptance](../../../design/acceptance.md)、[执行约定](../../execution.md)、[analytics规格](../../../specs/SPEC-analytics.md)、[历史统计交接](../../../archive/preparation-2026-09/design/analytics-flow-2026-09-19.md)，终审核对 [T-ANA-05消费结论](../../../archive/m3-m4/experience.md#dg-analytics-对-t-ana-05-的核对结论) 与 [本次README](./README.md)。实现者的55节点全表见 [states.json](./figma/states.json)，本独立评审不把该全表冒充独立逐节点回读。
 
 最初桌面原型导航完整对象返回超过工具20KiB限制；该次只读调用失败，按工具允许重试指示缩减返回为文字和目的地后成功。没有 Figma 画布写入。未运行播放器、浏览器或应用检查，未重复实现者本地验证。
 

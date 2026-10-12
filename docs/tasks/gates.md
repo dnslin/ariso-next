@@ -1,6 +1,6 @@
 # 工程与设计前置
 
-执行状态以 GitHub 及各任务链接的实际证据为准。本文件把 [计划开放项](./plan.md#3-尚未关闭的前置与验收) 落成直接前置；既有 UPLOAD-V01–03 保持编号。前置验证交付可复现的小实验、固定依赖组合与测量报告，不以它代替完整业务测试。本地检查与发布阶段的边界按[适用检查](./execution.md#适用检查)，不将发布阶段的平台检查作为日常开发阻塞项；当前阶段必需的真实服务环境缺失时仍保留 Blocked，不用测试替身声明外部服务通过。
+执行状态以 GitHub 及各任务链接的实际证据为准。M1–M4 开发已完成并归档，本文件保留共享前置的定义和证据供 M5 追溯；当前开放范围见[计划](./plan.md#3-尚未关闭的前置与验收)。既有 UPLOAD-V01–03 保持编号。前置验证交付可复现的小实验、固定依赖组合与测量报告，不以它代替完整业务测试。本地检查与发布阶段的边界按[适用检查](./execution.md#适用检查)，不将发布阶段的平台检查作为日常开发阻塞项；当前阶段必需的真实服务环境缺失时仍保留 Blocked，不用测试替身声明外部服务通过。
 
 `BASE-RUNTIME` 是唯一已交付基线引用：RUNTIME-01–26 及提交 7bba758，依据 [归档](../archive/runtime/README.md)。它仅解锁复用现有运行能力，不覆盖业务验收。其余任务状态按 [执行约定](./execution.md) 判断。
 
@@ -314,7 +314,7 @@ DG 是现有 DES/RG 中“实施前核对”的子交付，不取代或关闭原
 - 验证方法：对照任务字段、两端节点索引及SPEC的输入/错误契约做文档走查；核对手机/桌面、浅深色、加载/空/错误/禁用的适用规则。结论记录到消费任务，未完成真实交互继续开放DES/RG。
 - 预计文件：消费任务定义和必要的设计索引补充；无业务代码。
 - 界面：无新产品界面；这是消费任务已有具体Figma/HeroUI映射的适用范围核对，真实验收不能由本任务代替。
-- 核对证据：[2026-10-05 记录](./evidence/DG-ACCOUNT/README.md)。消费结论分别维护于 [T-ID-04](./m3-m4-platform.md#dg-account-对-t-id-04-的核对结论)与 [T-ID-05](./m3-m4-platform.md#dg-account-对-t-id-05-的核对结论)；识别并分配表达缺口，不代表账号/OAuth 已实现或 DES/RG 已验收。
+- 核对证据：[2026-10-05 记录](./evidence/DG-ACCOUNT/README.md)。消费结论分别维护于 [T-ID-04](../archive/m3-m4/platform.md#dg-account-对-t-id-04-的核对结论)与 [T-ID-05](../archive/m3-m4/platform.md#dg-account-对-t-id-05-的核对结论)；识别并分配表达缺口，不代表账号/OAuth 已实现或 DES/RG 已验收。
 
 ### DG-RESET 邮件落地设计适用核对
 
@@ -327,7 +327,7 @@ DG 是现有 DES/RG 中“实施前核对”的子交付，不取代或关闭原
 - 预计文件：消费任务定义和必要的设计索引补充；无业务代码。
 - 界面：无新产品界面；这是消费任务已有具体Figma/HeroUI映射的适用范围核对，真实验收不能由本任务代替。
 
-2026-10-09 已完成 [T-ID-07消费核对](./m3-m4-platform.md#dg-reset-对-t-id-07-的核对结论)：两端邮件申请、六态重置、CLI恢复、原生库消费/发送边界及真实验收范围已列出，并修正匿名未配置节点与实验测试路径。发送未知、消费中断阶段和CLI直达入口等具体缺口归T-ID-07；不重画获批代表图、不交付业务代码、不关闭DES-02或真实交互验收。实时Figma与独立审计见 [统一证据](./evidence/DG-RESET/README.md)。
+2026-10-09 已完成 [T-ID-07消费核对](../archive/m3-m4/platform.md#dg-reset-对-t-id-07-的核对结论)：两端邮件申请、六态重置、CLI恢复、原生库消费/发送边界及真实验收范围已列出，并修正匿名未配置节点与实验测试路径。发送未知、消费中断阶段和CLI直达入口等具体缺口归T-ID-07；不重画获批代表图、不交付业务代码、不关闭DES-02或真实交互验收。实时Figma与独立审计见 [统一证据](./evidence/DG-RESET/README.md)。
 
 ### DG-SMTP 保存/测试独立设计适用核对
 
@@ -340,7 +340,7 @@ DG 是现有 DES/RG 中“实施前核对”的子交付，不取代或关闭原
 - 预计文件：消费任务定义和必要的设计索引补充；无业务代码。
 - 界面：无新产品界面；这是消费任务已有具体Figma/HeroUI映射的适用范围核对，真实验收不能由本任务代替。
 
-2026-10-08 已完成 [T-ID-06消费核对](./m3-m4-platform.md#dg-smtp-对-t-id-06-的核对结论)：保存/测试独立、秘密保留/替换/显式清除、阶段错误与投递未知、Tips焦点及两主题/宽度适用范围已逐项列出。读取/保存未知、DATA后断连与旧确认布局的具体缺口归T-ID-06，不重画既有代表图。实时节点、截图、现状与检查/审计见 [统一证据](./evidence/DG-SMTP/README.md)；本DG不交付SMTP业务代码，不关闭DES-06-SMTP或真实交互验收。
+2026-10-08 已完成 [T-ID-06消费核对](../archive/m3-m4/platform.md#dg-smtp-对-t-id-06-的核对结论)：保存/测试独立、秘密保留/替换/显式清除、阶段错误与投递未知、Tips焦点及两主题/宽度适用范围已逐项列出。读取/保存未知、DATA后断连与旧确认布局的具体缺口归T-ID-06，不重画既有代表图。实时节点、截图、现状与检查/审计见 [统一证据](./evidence/DG-SMTP/README.md)；本DG不交付SMTP业务代码，不关闭DES-06-SMTP或真实交互验收。
 
 ### DG-API 一次明文设计适用核对
 
@@ -353,7 +353,7 @@ DG 是现有 DES/RG 中“实施前核对”的子交付，不取代或关闭原
 - 预计文件：消费任务定义和必要的设计索引补充；无业务代码。
 - 界面：无新产品界面；这是消费任务已有具体Figma/HeroUI映射的适用范围核对，真实验收不能由本任务代替。
 
-2026-10-05 核对结论已写入 [T-ID-08](./m3-m4-platform.md#dg-api-对-t-id-08-的核对结论2026-10-05) 与 [T-UP-06](./m3-m4-platform.md#dg-api-对-t-up-06-的核对结论2026-10-05)。两端代表状态可复用，未知结果核对组合与用法复制/完整内容的表达缺口由对应消费任务承接；本任务不补产品代码、不修改 Figma，不关闭 DES-06-API 或真实交互验收。实际节点、截图、现状与检查统一见 [DG-API 证据](./evidence/DG-API/README.md)。
+2026-10-05 核对结论已写入 [T-ID-08](../archive/m3-m4/platform.md#dg-api-对-t-id-08-的核对结论2026-10-05) 与 [T-UP-06](../archive/m3-m4/platform.md#dg-api-对-t-up-06-的核对结论2026-10-05)。两端代表状态可复用，未知结果核对组合与用法复制/完整内容的表达缺口由对应消费任务承接；本任务不补产品代码、不修改 Figma，不关闭 DES-06-API 或真实交互验收。实际节点、截图、现状与检查统一见 [DG-API 证据](./evidence/DG-API/README.md)。
 
 ### DG-UPLOAD 任意文件/批次/取消/交接及真实结果设计适用核对
 
@@ -366,7 +366,7 @@ DG 是现有 DES/RG 中“实施前核对”的子交付，不取代或关闭原
 - 预计文件：消费任务定义和必要的设计索引补充；无业务代码。
 - 界面：无新产品界面；这是消费任务已有具体Figma/HeroUI映射的适用范围核对，真实验收不能由本任务代替。
 
-实施核对：[T-UP-07 输入](./m3-m4-platform.md#dg-upload-对-t-up-07-的核对结论2026-09-30)、[T-UP-03 批次与结果](./m3-m4-platform.md#dg-upload-对-t-up-03-的核对结论2026-09-30)、[T-UP-04 S3 与清理](./m3-m4-platform.md#dg-upload-对-t-up-04-的核对结论2026-09-30)；[Issue #141 实际读取与验证](./evidence/DG-UPLOAD/README.md)。完整批次编辑和周期扫描交接的表达缺口已指定负责人；本 DG 不修改 Figma，不代替消费者真实交互、设计还原或用户人工验收，DES/RG 保持开放。
+实施核对：[T-UP-07 输入](../archive/m3-m4/platform.md#dg-upload-对-t-up-07-的核对结论2026-09-30)、[T-UP-03 批次与结果](../archive/m3-m4/platform.md#dg-upload-对-t-up-03-的核对结论2026-09-30)、[T-UP-04 S3 与清理](../archive/m3-m4/platform.md#dg-upload-对-t-up-04-的核对结论2026-09-30)；[Issue #141 实际读取与验证](./evidence/DG-UPLOAD/README.md)。完整批次编辑和周期扫描交接的表达缺口已指定负责人；本 DG 不修改 Figma，不代替消费者真实交互、设计还原或用户人工验收，DES/RG 保持开放。
 
 ### DG-LIBRARY 完整元数据树设计适用核对
 
@@ -379,7 +379,7 @@ DG 是现有 DES/RG 中“实施前核对”的子交付，不取代或关闭原
 - 预计文件：消费任务定义和必要的设计索引补充；无业务代码。
 - 界面：无新产品界面；这是消费任务已有具体Figma/HeroUI映射的适用范围核对，真实验收不能由本任务代替。
 
-实施核对：[七项消费任务结论](./m3-m4-experience.md#dg-library-t-lib-04-核对结论)；[Issue #131 实时节点、截图与验证记录](./evidence/DG-LIBRARY/README.md)。本次只交付设计适用核对；完整元数据树及单图 visibility 编辑的具体表达缺口由 T-LIB-06 承接，见该卡。已有元数据重读中/保留旧值失败状态可复用；不关闭 DES/RG，也不越过消费任务其他前置。
+实施核对：[七项消费任务结论](../archive/m3-m4/experience.md#dg-library-t-lib-04-核对结论)；[Issue #131 实时节点、截图与验证记录](./evidence/DG-LIBRARY/README.md)。本次只交付设计适用核对；完整元数据树及单图 visibility 编辑的具体表达缺口由 T-LIB-06 承接，见该卡。已有元数据重读中/保留旧值失败状态可复用；不关闭 DES/RG，也不越过消费任务其他前置。
 
 ### DG-ALBUMS 同名识别设计适用核对
 
@@ -391,7 +391,7 @@ DG 是现有 DES/RG 中“实施前核对”的子交付，不取代或关闭原
 - 验证方法：对照任务字段、两端节点索引及SPEC的输入/错误契约做文档走查；核对手机/桌面、浅深色、加载/空/错误/禁用的适用规则。结论记录到消费任务，未完成真实交互继续开放DES/RG。
 - 预计文件：消费任务定义和必要的设计索引补充；无业务代码。
 - 界面：无新产品界面；这是消费任务已有具体Figma/HeroUI映射的适用范围核对，真实验收不能由本任务代替。
-- 核对证据：[Issue #128 实际读取与验证](./evidence/DG-ALBUMS/README.md)；可复用状态、缺口及责任分别见 [T-COL-02](./m3-m4-experience.md#dg-albums-对-t-col-02-的核对结论2026-09-28)、[T-COL-04](./m3-m4-experience.md#dg-albums-对-t-col-04-的核对结论2026-09-28)。本项不关闭 DES-04 或消费者的真实界面验收。
+- 核对证据：[Issue #128 实际读取与验证](./evidence/DG-ALBUMS/README.md)；可复用状态、缺口及责任分别见 [T-COL-02](../archive/m3-m4/experience.md#dg-albums-对-t-col-02-的核对结论2026-09-28)、[T-COL-04](../archive/m3-m4/experience.md#dg-albums-对-t-col-04-的核对结论2026-09-28)。本项不关闭 DES-04 或消费者的真实界面验收。
 
 ### DG-TAGS Unicode名称设计适用核对
 
@@ -403,7 +403,7 @@ DG 是现有 DES/RG 中“实施前核对”的子交付，不取代或关闭原
 - 验证方法：对照任务字段、两端节点索引及SPEC的输入/错误契约做文档走查；核对手机/桌面、浅深色、加载/空/错误/禁用的适用规则。结论记录到消费任务，未完成真实交互继续开放DES/RG。
 - 预计文件：消费任务定义和必要的设计索引补充；无业务代码。
 - 界面：无新产品界面；这是消费任务已有具体Figma/HeroUI映射的适用范围核对，真实验收不能由本任务代替。
-- 核对证据：[Issue #138 实际读取与验证](./evidence/DG-TAGS/README.md)；唯一直接消费任务 [T-COL-03 核对结论](./m3-m4-experience.md#dg-tags-对-t-col-03-的核对结论2026-10-01) 已列明两端可复用状态、Unicode/搜索/关系的真实验收及责任。本项不关闭 DES-06-TAGS、相关 DES/RG 或消费者真实界面与人工验收。
+- 核对证据：[Issue #138 实际读取与验证](./evidence/DG-TAGS/README.md)；唯一直接消费任务 [T-COL-03 核对结论](../archive/m3-m4/experience.md#dg-tags-对-t-col-03-的核对结论2026-10-01) 已列明两端可复用状态、Unicode/搜索/关系的真实验收及责任。本项不关闭 DES-06-TAGS、相关 DES/RG 或消费者真实界面与人工验收。
 
 ### DG-TRASH 记录占位设计适用核对
 
@@ -415,7 +415,7 @@ DG 是现有 DES/RG 中“实施前核对”的子交付，不取代或关闭原
 - 验证方法：对照任务字段、两端节点索引及SPEC的输入/错误契约做文档走查；核对手机/桌面、浅深色、加载/空/错误/禁用的适用规则。结论记录到消费任务，未完成真实交互继续开放DES/RG。
 - 预计文件：消费任务定义和必要的设计索引补充；无业务代码。
 - 界面：无新产品界面；这是消费任务已有具体Figma/HeroUI映射的适用范围核对，真实验收不能由本任务代替。
-- 核对证据：[Issue #140 实际读取与验证](./evidence/DG-TRASH/README.md)；唯一直接消费任务的[适用结论与缺口责任](./m3-m4-experience.md#dg-trash-对-t-lib-11-的核对结论2026-10-03)已区分已有能力、可复用状态与未完成真实验收。本项不关闭 DES-06-TRASH 或关联 DES/RG，也不代替 #178 的真实页面及人工验收。
+- 核对证据：[Issue #140 实际读取与验证](./evidence/DG-TRASH/README.md)；唯一直接消费任务的[适用结论与缺口责任](../archive/m3-m4/experience.md#dg-trash-对-t-lib-11-的核对结论2026-10-03)已区分已有能力、可复用状态与未完成真实验收。本项不关闭 DES-06-TRASH 或关联 DES/RG，也不代替 #178 的真实页面及人工验收。
 
 ### DG-STORAGE 字段组合设计适用核对
 
@@ -428,7 +428,7 @@ DG 是现有 DES/RG 中“实施前核对”的子交付，不取代或关闭原
 - 预计文件：消费任务定义和必要的设计索引补充；无业务代码。
 - 界面：无新产品界面；这是消费任务已有具体Figma/HeroUI映射的适用范围核对，真实验收不能由本任务代替。
 
-核对记录（2026-09-30）：[T-STO-05 消费结论](./m3-m4-platform.md#dg-storage-对-t-sto-05-的核对结论2026-09-30)、[T-STO-07 消费结论](./m3-m4-platform.md#dg-storage-对-t-sto-07-的核对结论2026-09-30)及[实际读取与验证证据](./evidence/DG-STORAGE/README.md)。仅交付设计适用核对；真实交互与 DES/RG 保持开放，未实现前置仍按原生依赖处理。
+核对记录（2026-09-30）：[T-STO-05 消费结论](../archive/m3-m4/platform.md#dg-storage-对-t-sto-05-的核对结论2026-09-30)、[T-STO-07 消费结论](../archive/m3-m4/platform.md#dg-storage-对-t-sto-07-的核对结论2026-09-30)及[实际读取与验证证据](./evidence/DG-STORAGE/README.md)。仅交付设计适用核对；真实交互与 DES/RG 保持开放，未实现前置仍按原生依赖处理。
 
 ### DG-PROCESSING 开关范围/快照设计适用核对
 
@@ -441,7 +441,7 @@ DG 是现有 DES/RG 中“实施前核对”的子交付，不取代或关闭原
 - 预计文件：消费任务定义和必要的设计索引补充；无业务代码。
 - 界面：无新产品界面；这是消费任务已有具体Figma/HeroUI映射的适用范围核对，真实验收不能由本任务代替。
 
-核对记录（2026-10-04）：[T-MED-12 消费结论](./m3-m4-platform.md#dg-processing-对-t-med-12-的核对结论2026-10-04)及[实际 Figma 读取、契约走查与审计证据](./evidence/DG-PROCESSING/README.md)。仅交付设计适用核对；默认字段、真实测试图选择与未知结果等具体缺口已交接 T-MED-12/P2-DESIGN。无业务代码或新界面，DES-06-MEDIA、RG-05/06 与真实交互继续开放。
+核对记录（2026-10-04）：[T-MED-12 消费结论](../archive/m3-m4/platform.md#dg-processing-对-t-med-12-的核对结论2026-10-04)及[实际 Figma 读取、契约走查与审计证据](./evidence/DG-PROCESSING/README.md)。仅交付设计适用核对；默认字段、真实测试图选择与未知结果等具体缺口已交接 T-MED-12/P2-DESIGN。无业务代码或新界面，DES-06-MEDIA、RG-05/06 与真实交互继续开放。
 
 ### DG-SHARING 解锁前隐私设计适用核对
 
@@ -453,11 +453,11 @@ DG 是现有 DES/RG 中“实施前核对”的子交付，不取代或关闭原
 - 验证方法：对照任务字段、两端节点索引及SPEC的输入/错误契约做文档走查；核对手机/桌面、浅深色、加载/空/错误/禁用的适用规则。结论记录到消费任务，未完成真实交互继续开放DES/RG。
 - 预计文件：消费任务定义和必要的设计索引补充；无业务代码。
 - 界面：无新产品界面；这是消费任务已有具体Figma/HeroUI映射的适用范围核对，真实验收不能由本任务代替。
-- 核对证据：[Issue #134 实际节点、截图、契约走查与独立评审](./evidence/DG-SHARING/README.md)。消费结论分别见 [T-SHR-02](./m3-m4-experience.md#dg-sharing-对-t-shr-02-的核对结论)、[T-SHR-03](./m3-m4-experience.md#dg-sharing-对-t-shr-03-的核对结论)、[T-SHR-04](./m3-m4-experience.md#dg-sharing-对-t-shr-04-的核对结论)。只交付设计适用核对，具体表达缺口交所属消费任务；不关闭 DES-03、DES-06-SHARING、RG-02/08 或真实界面验收。
+- 核对证据：[Issue #134 实际节点、截图、契约走查与独立评审](./evidence/DG-SHARING/README.md)。消费结论分别见 [T-SHR-02](../archive/m3-m4/experience.md#dg-sharing-对-t-shr-02-的核对结论)、[T-SHR-03](../archive/m3-m4/experience.md#dg-sharing-对-t-shr-03-的核对结论)、[T-SHR-04](../archive/m3-m4/experience.md#dg-sharing-对-t-shr-04-的核对结论)。只交付设计适用核对，具体表达缺口交所属消费任务；不关闭 DES-03、DES-06-SHARING、RG-02/08 或真实界面验收。
 
 ### DG-ANALYTICS 单图/排行导航设计适用核对
 
-- 核对记录：[Issue #129](./evidence/DG-ANALYTICS/README.md)，可复用状态、实际契约、具体缺口与真实验收责任见 [T-ANA-05 消费结论](./m3-m4-experience.md#dg-analytics-对-t-ana-05-的核对结论)；不关闭 DES-06-ANALYTICS/RG-02/07。
+- 核对记录：[Issue #129](./evidence/DG-ANALYTICS/README.md)，可复用状态、实际契约、具体缺口与真实验收责任见 [T-ANA-05 消费结论](../archive/m3-m4/experience.md#dg-analytics-对-t-ana-05-的核对结论)；不关闭 DES-06-ANALYTICS/RG-02/07。
 
 - 任务组：设计前置
 - 里程碑：关联界面实施前
@@ -479,7 +479,7 @@ DG 是现有 DES/RG 中“实施前核对”的子交付，不取代或关闭原
 - 预计文件：消费任务定义和必要的设计索引补充；无业务代码。
 - 界面：无新产品界面；这是消费任务已有具体Figma/HeroUI映射的适用范围核对，真实验收不能由本任务代替。
 
-- 本次核对：2026-10-08，#135的三项直接消费者已分别记录 [T-SITE-02](./m3-m4-experience.md#dg-site-对-t-site-02-的核对结论)、[T-SITE-04](./m3-m4-experience.md#dg-site-对-t-site-04-的核对结论)、[T-UP-08](./m3-m4-platform.md#dg-site-对-t-up-08-的核对结论) 的可复用状态、真实验收范围和具体缺口责任；设计回读、适用检查与独立审计见 [DG-SITE证据](./evidence/DG-SITE/README.md)。无业务代码或新界面，DES-06-SITE/RG-03/08不由此关闭。
+- 本次核对：2026-10-08，#135的三项直接消费者已分别记录 [T-SITE-02](../archive/m3-m4/experience.md#dg-site-对-t-site-02-的核对结论)、[T-SITE-04](../archive/m3-m4/experience.md#dg-site-对-t-site-04-的核对结论)、[T-UP-08](../archive/m3-m4/platform.md#dg-site-对-t-up-08-的核对结论) 的可复用状态、真实验收范围和具体缺口责任；设计回读、适用检查与独立审计见 [DG-SITE证据](./evidence/DG-SITE/README.md)。无业务代码或新界面，DES-06-SITE/RG-03/08不由此关闭。
 
 ### DG-THEME 语义颜色设计适用核对
 
@@ -492,7 +492,7 @@ DG 是现有 DES/RG 中“实施前核对”的子交付，不取代或关闭原
 - 预计文件：消费任务定义和必要的设计索引补充；无业务代码。
 - 界面：无新产品界面；这是消费任务已有具体Figma/HeroUI映射的适用范围核对，真实验收不能由本任务代替。
 
-- 本次核对：2026-10-09，唯一直接消费任务 [T-SITE-05 / #197](./m3-m4-experience.md#dg-theme-对-t-site-05-的核对结论) 已列明两端三偏好状态、六类 R6 代表、语义颜色映射、具体缺口及真实验收责任。实时 Figma 回读、截图、对比计算与独立审计见 [DG-THEME 证据](./evidence/DG-THEME/README.md)。本任务无业务代码，不关闭 DES-05/RG-07，也不把现有 ThemeProvider 当作主题选择功能完成。
+- 本次核对：2026-10-09，唯一直接消费任务 [T-SITE-05 / #197](../archive/m3-m4/experience.md#dg-theme-对-t-site-05-的核对结论) 已列明两端三偏好状态、六类 R6 代表、语义颜色映射、具体缺口及真实验收责任。实时 Figma 回读、截图、对比计算与独立审计见 [DG-THEME 证据](./evidence/DG-THEME/README.md)。本任务无业务代码，不关闭 DES-05/RG-07，也不把现有 ThemeProvider 当作主题选择功能完成。
 
 ### DG-LIBRARY-BASE M2基础完整元数据树设计适用核对
 

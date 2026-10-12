@@ -1,6 +1,6 @@
 # DG-SITE 独立保存设计适用核对
 
-日期：2026-10-08（Asia/Shanghai）；[Issue #135](https://github.com/dnslin/ariso-next/issues/135)。本次只有设计适用文档、只读 Figma 资料和审计记录，无业务代码、新产品界面或 Figma 写入。可复用规则、具体缺口与真实验收责任只维护在三个消费卡：[T-SITE-02](../../m3-m4-experience.md#dg-site-对-t-site-02-的核对结论)、[T-SITE-04](../../m3-m4-experience.md#dg-site-对-t-site-04-的核对结论)、[T-UP-08](../../m3-m4-platform.md#dg-site-对-t-up-08-的核对结论)。统一执行 [检查约定](../../execution.md#适用检查) 和 [设计交接](../../../design/handoff.md)，DES-06-SITE、RG-03/08 的真实行为验收仍开放。
+日期：2026-10-08（Asia/Shanghai）；[Issue #135](https://github.com/dnslin/ariso-next/issues/135)。本次只有设计适用文档、只读 Figma 资料和审计记录，无业务代码、新产品界面或 Figma 写入。可复用规则、具体缺口与真实验收责任只维护在三个消费卡：[T-SITE-02](../../../archive/m3-m4/experience.md#dg-site-对-t-site-02-的核对结论)、[T-SITE-04](../../../archive/m3-m4/experience.md#dg-site-对-t-site-04-的核对结论)、[T-UP-08](../../../archive/m3-m4/platform.md#dg-site-对-t-up-08-的核对结论)。统一执行 [检查约定](../../execution.md#适用检查) 和 [设计交接](../../../design/handoff.md)，DES-06-SITE、RG-03/08 的真实行为验收仍开放。
 
 ## 范围、前置和当前实现
 
@@ -46,14 +46,14 @@
 
 Darwin arm64，项目Node24.18.1、pnpm11.19.0。第一次冻结安装由终端默认Node26.10.0执行；发现后显式前置Node24路径，重新安装核对，项目验证均使用Node24。没有全局改运行时或代理配置，锁文件无变化。
 
-| 实际命令                                                                                                                                                                                    | 环境与结果                                                                                     |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| `git fetch origin`、管理型worktree创建、`git switch -c codex/issue-135-site-design`                                                                                                         | 从最新main创建隔离分支，原目录无修改。                                                         |
-| `node --version`、`pnpm --version`、`pnpm install --frozen-lockfile`                                                                                                                        | 显式Node24.18.1/pnpm11.19.0下冻结安装退出0，锁文件无变化。第一次Node26安装不作为规定环境验证。 |
-| `pnpm exec prettier --write docs/tasks/gates.md docs/tasks/m3-m4-experience.md docs/tasks/m3-m4-platform.md docs/design/acceptance.md docs/tasks/evidence/DG-SITE`；`pnpm run format:check` | 本次资料格式化后全仓格式检查退出0。后续审计/交付记录变化仅定向复查。                           |
-| `node docs/tasks/check.mjs`                                                                                                                                                                 | 退出0：120任务、298需求，无缺失编号/依赖环；生成报告无变化。                                   |
-| `node docs/tasks/check.mjs --self-test`                                                                                                                                                     | 退出0：5组拒绝样本通过。                                                                       |
-| `git diff --check`                                                                                                                                                                          | 退出0，无空白错误。                                                                            |
+| 实际命令                                                                                                                                                                                        | 环境与结果                                                                                     |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| `git fetch origin`、管理型worktree创建、`git switch -c codex/issue-135-site-design`                                                                                                             | 从最新main创建隔离分支，原目录无修改。                                                         |
+| `node --version`、`pnpm --version`、`pnpm install --frozen-lockfile`                                                                                                                            | 显式Node24.18.1/pnpm11.19.0下冻结安装退出0，锁文件无变化。第一次Node26安装不作为规定环境验证。 |
+| `pnpm exec prettier --write docs/tasks/gates.md docs/archive/m3-m4/experience.md docs/archive/m3-m4/platform.md docs/design/acceptance.md docs/tasks/evidence/DG-SITE`；`pnpm run format:check` | 本次资料格式化后全仓格式检查退出0。后续审计/交付记录变化仅定向复查。                           |
+| `node docs/tasks/check.mjs`                                                                                                                                                                     | 退出0：120任务、298需求，无缺失编号/依赖环；生成报告无变化。                                   |
+| `node docs/tasks/check.mjs --self-test`                                                                                                                                                         | 退出0：5组拒绝样本通过。                                                                       |
+| `git diff --check`                                                                                                                                                                              | 退出0，无空白错误。                                                                            |
 
 Python3本地链接/锚点与资料走查退出0：7个Markdown、401个本地链接/锚点、25份PNG尺寸与全部设计JSON均有效，见 [links.json](./links.json)。纯文档按执行约定不运行lint/typecheck/unit/build/integration/browser、db:generate或Release镜像/容器验证；没有应用/构建输入变化、没有新增行为测试需求。响应式、键盘、焦点、短视口、真实文件/OAuth/CORS/Clipboard、产品设计对照和人工验收均未由本DG执行，由消费任务分别完成。
 

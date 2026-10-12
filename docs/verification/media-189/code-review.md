@@ -32,7 +32,7 @@
 ### R2：清空最长边数值未实现规定的 `null` 语义
 
 - 原发现：`ProcessingNumber` 把空数值统一转为 `NaN`，`settings-form.tsx` 对 `maxEdge` 原样接收。清空已开启的最长边数值再保存会产生数字错误；只有显式关闭开关才得到 `null`。
-- 依据：[DG-PROCESSING 对 T-MED-12 的设置主体结论](../../tasks/m3-m4-platform.md#dg-processing-对-t-med-12-的核对结论2026-10-04)规定“空最长边按 `maxEdge=null` 保存”。
+- 依据：[DG-PROCESSING 对 T-MED-12 的设置主体结论](../../archive/m3-m4/platform.md#dg-processing-对-t-med-12-的核对结论2026-10-04)规定“空最长边按 `maxEdge=null` 保存”。
 - 推荐修复：在最长边字段的拥有者处理空值为 `null`，必填质量／并发／水印数值继续保持空值错误。不能为了这一个可选字段改变通用数字字段的空值策略。补实际清空、保存和重新读取检查。
 - 源码复审：已复读 `settings-form.tsx` 的 `maxEdge` 回调，它只将该可选字段的 `NaN` 转为 `null`；其他数字字段没有改动。新增浏览器场景用真实控件清空、检查开关关闭和实际 PATCH 的 `maxEdge: null`。源码修正符合边界。
 - 最终功能复审：已读取 `test-results/browser-189-final-full/processing.json`（`phase=all`、`status=passed`），真实清空最长边后开关关闭，显式保存 `null` 并重新读取；必填数字仍保留验证。R2 已关闭。

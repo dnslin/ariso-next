@@ -1,6 +1,6 @@
 # T-ANA-04 周期趋势、历史排行与单图统计
 
-日期：2026-10-08。Issue：[ #169](https://github.com/dnslin/ariso-next/issues/169)。任务定义见[任务卡](../../tasks/m3-m4-experience.md#t-ana-04-周期趋势历史排行与单图统计)，产品口径见[analytics §5/6/8](../../specs/SPEC-analytics.md)，检查边界沿用[执行约定](../../tasks/execution.md)。
+日期：2026-10-08。Issue：[ #169](https://github.com/dnslin/ariso-next/issues/169)。任务定义见[任务卡](../../archive/m3-m4/experience.md#t-ana-04-周期趋势历史排行与单图统计)，产品口径见[analytics §5/6/8](../../specs/SPEC-analytics.md)，检查边界沿用[执行约定](../../tasks/execution.md)。
 
 ## 实施范围
 

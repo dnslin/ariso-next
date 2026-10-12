@@ -1,6 +1,6 @@
 # DG-SHARING 解锁前隐私设计适用核对
 
-日期：2026-10-05（Asia/Shanghai）；关联 [Issue #134](https://github.com/dnslin/ariso-next/issues/134)。本次交付仅为设计适用文档、消费任务结论和证据，不包含业务代码、新产品界面或Figma写入。状态映射、真实行为验收与具体缺口只维护在消费卡：[T-SHR-02](../../m3-m4-experience.md#dg-sharing-对-t-shr-02-的核对结论)、[T-SHR-03](../../m3-m4-experience.md#dg-sharing-对-t-shr-03-的核对结论)、[T-SHR-04](../../m3-m4-experience.md#dg-sharing-对-t-shr-04-的核对结论)。
+日期：2026-10-05（Asia/Shanghai）；关联 [Issue #134](https://github.com/dnslin/ariso-next/issues/134)。本次交付仅为设计适用文档、消费任务结论和证据，不包含业务代码、新产品界面或Figma写入。状态映射、真实行为验收与具体缺口只维护在消费卡：[T-SHR-02](../../../archive/m3-m4/experience.md#dg-sharing-对-t-shr-02-的核对结论)、[T-SHR-03](../../../archive/m3-m4/experience.md#dg-sharing-对-t-shr-03-的核对结论)、[T-SHR-04](../../../archive/m3-m4/experience.md#dg-sharing-对-t-shr-04-的核对结论)。
 
 ## 范围、前置与现状
 

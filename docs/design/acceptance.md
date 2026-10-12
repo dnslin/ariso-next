@@ -26,11 +26,11 @@
 
 DES-01/02/03/04 已覆盖的状态不重复立项。DES-05/07 是跨模块规范，按实施页面逐项验收，不能用一个主题或导航样例关闭全站责任。
 
-2026-10-09，[DG-THEME / Issue #139](../tasks/evidence/DG-THEME/README.md)已将两端三偏好、六类R6代表、颜色映射、浅色错误文字对比及挂载前状态缺口交接到 [T-SITE-05](../tasks/m3-m4-experience.md#dg-theme-对-t-site-05-的核对结论)。本次仅完成设计适用文档核对；生产选择器、系统/刷新/跨标签、全部状态和图表/照片对比仍待真实验证，DES-05/RG-07保持开放，最终全站矩阵归T-QA-02。
+2026-10-09，[DG-THEME / Issue #139](../tasks/evidence/DG-THEME/README.md)已将两端三偏好、六类R6代表、颜色映射、浅色错误文字对比及挂载前状态缺口交接到 [T-SITE-05](../archive/m3-m4/experience.md#dg-theme-对-t-site-05-的核对结论)。本次仅完成设计适用文档核对；生产选择器、系统/刷新/跨标签、全部状态和图表/照片对比仍待真实验证，DES-05/RG-07保持开放，最终全站矩阵归T-QA-02。
 
 2026-10-10，[T-SITE-05 / Issue #197](../verification/theme-197/README.md)接通生产主题入口；用户批准局部错误正文修正并已同步 Figma。代码、本地检查、主题真实行为及代表/消费者补验、独立代码与本次范围设计评审均按该记录完成；原默认浏览器全量失败/停止记录保留，人工验收未完成。此次代表页面不关闭 DES-05/RG-07 的全站责任，最终矩阵仍归 T-QA-02。
 
-2026-10-09 [DG-RESET / Issue #133](../tasks/evidence/DG-RESET/README.md)已核对两端申请与六态重置，并将发送未知、消费中断阶段、CLI入口及真实验收范围交接至 [T-ID-07](../tasks/m3-m4-platform.md#dg-reset-对-t-id-07-的核对结论)。本次仅修正文档引用和设计适用责任，不交付找回/重置页面，不关闭DES-02、DES-05/07或播放器验收。
+2026-10-09 [DG-RESET / Issue #133](../tasks/evidence/DG-RESET/README.md)已核对两端申请与六态重置，并将发送未知、消费中断阶段、CLI入口及真实验收范围交接至 [T-ID-07](../archive/m3-m4/platform.md#dg-reset-对-t-id-07-的核对结论)。本次仅修正文档引用和设计适用责任，不交付找回/重置页面，不关闭DES-02、DES-05/07或播放器验收。
 
 2026-10-09 [T-ID-07 / Issue #184](../verification/identity-184/README.md)已接入生产邮件恢复与匿名页面。实际功能、同视口设计对照、独立审计及人工验收分别记录；2026-10-10 所有者已确认当前新版 UI 人工验收通过。此结论仅覆盖 #184 页面，不整体关闭 DES-02、DES-05/07 或其他模块的播放器验收；既有未完成验证仍见统一证据。
 
@@ -84,7 +84,7 @@ Figma 播放器此前停在登录页，未完成逐项点击与滚动验证；�
 
 2026-10-08，[DG-SITE适用核对](../tasks/evidence/DG-SITE/README.md)已将可复用状态、表达缺口和真实验收责任写入T-SITE-02/04与T-UP-08；DES-06-SITE、RG-03/08仍开放，文档核对不替代产品交互验收。
 
-2026-10-09，[DG-ANALYTICS适用核对](../tasks/evidence/DG-ANALYTICS/README.md)已将两端统计状态、单图布局、全部排行/异常入口、图表等价值和刷新责任写入 [T-ANA-05](../tasks/m3-m4-experience.md#dg-analytics-对-t-ana-05-的核对结论)；DES-06-ANALYTICS、RG-02/07继续开放。本次无产品UI交付或真实页面人工验收。
+2026-10-09，[DG-ANALYTICS适用核对](../tasks/evidence/DG-ANALYTICS/README.md)已将两端统计状态、单图布局、全部排行/异常入口、图表等价值和刷新责任写入 [T-ANA-05](../archive/m3-m4/experience.md#dg-analytics-对-t-ana-05-的核对结论)；DES-06-ANALYTICS、RG-02/07继续开放。本次无产品UI交付或真实页面人工验收。
 
 2026-10-10，用户明确批准 #179 当前原型并要求实施及同步 Figma。[获批统计补充](../verification/analytics-179/approved-figma/README.md)已写入同一设计文件，单图、排行和异常筛选的设计缺口按本轮方案处理；[产品实施及实际验证](../verification/analytics-179/approved-implementation/README.md)分别记录代码、浏览器、独立评审和人工验收状态。方案批准与设计同步不替代最终产品人工验收，DES-06-ANALYTICS、RG-02/07继续开放。
 

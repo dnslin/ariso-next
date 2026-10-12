@@ -6,9 +6,9 @@
 
 2026-10-08 从最新 `origin/main`（`502b5d76`）创建管理型独立worktree，分支 `codex/issue-136-smtp-design`；原main和其他任务工作区保留。原生 [blocked by](./blocked-by.json) 为空，[blocking](./blocking.json) 仅 #182；[消费任务前置](./consumer-blocked-by.json) 中 #60、#57、#146 已关闭，#136仍开放。Issue #136和#182均无评论；状态来自本轮gh回读。
 
-读取从 [文档导航](../../../README.md) 开始，依据 [SPEC-identity §3/8.1/10–12](../../../specs/SPEC-identity.md)、[消费卡](../../m3-m4-platform.md#t-id-06-smtp-配置真实发送与诊断)、[设计交接](../../../design/handoff.md)、[DES-06-SMTP / RG-07](../../../design/acceptance.md)、[执行约定](../../execution.md)及[历史SMTP/Tips修订](../../../archive/preparation-2026-09/design/README.md#本轮已补邮件恢复与-des-06-smtp2026-09-17)。不另建视觉或执行规则。需求编号沿 `R-21.4-01/02`、`R-24.2-02/03`、`A-26.1-09` 保留；密码重置邮件与CLI归T-ID-07/T-ID-09。
+读取从 [文档导航](../../../README.md) 开始，依据 [SPEC-identity §3/8.1/10–12](../../../specs/SPEC-identity.md)、[消费卡](../../../archive/m3-m4/platform.md#t-id-06-smtp-配置真实发送与诊断)、[设计交接](../../../design/handoff.md)、[DES-06-SMTP / RG-07](../../../design/acceptance.md)、[执行约定](../../execution.md)及[历史SMTP/Tips修订](../../../archive/preparation-2026-09/design/README.md#本轮已补邮件恢复与-des-06-smtp2026-09-17)。不另建视觉或执行规则。需求编号沿 `R-21.4-01/02`、`R-24.2-02/03`、`A-26.1-09` 保留；密码重置邮件与CLI归T-ID-07/T-ID-09。
 
-本次完成两端可复用状态、规则、真实行为验收范围与具体缺口责任；详细结论只在 [T-ID-06消费核对](../../m3-m4-platform.md#dg-smtp-对-t-id-06-的核对结论) 维护。保存不测试、测试已保存配置、秘密省略/替换/显式清除和Tips按既有确认规则实施；本DG不重审产品选择或重画已交付代表图。
+本次完成两端可复用状态、规则、真实行为验收范围与具体缺口责任；详细结论只在 [T-ID-06消费核对](../../../archive/m3-m4/platform.md#dg-smtp-对-t-id-06-的核对结论) 维护。保存不测试、测试已保存配置、秘密省略/替换/显式清除和Tips按既有确认规则实施；本DG不重审产品选择或重画已交付代表图。
 
 ## 实际能力与验证调用链
 

@@ -8,8 +8,8 @@ const files = [
   'gates.md',
   '../archive/m1-m2/tasks.md',
   '../archive/m1-m2/acceptance.md',
-  'm3-m4-platform.md',
-  'm3-m4-experience.md',
+  '../archive/m3-m4/platform.md',
+  '../archive/m3-m4/experience.md',
   'acceptance-tasks.md',
 ];
 const ids = (text) => [...text.matchAll(/`([^`]+)`/g)].map((m) => m[1]);

@@ -1,6 +1,6 @@
 # T-SHR-01 分享配置、期限与密码授权协议
 
-关联 [Issue #190](https://github.com/dnslin/ariso-next/issues/190)。范围沿用 [任务卡](../../tasks/m3-m4-experience.md#t-shr-01-分享配置期限与密码授权协议)、[sharing §3–5/8](../../specs/SPEC-sharing.md)、[统一执行约定](../../tasks/execution.md)。没有修改冻结 PRD。
+关联 [Issue #190](https://github.com/dnslin/ariso-next/issues/190)。范围沿用 [任务卡](../../archive/m3-m4/experience.md#t-shr-01-分享配置期限与密码授权协议)、[sharing §3–5/8](../../specs/SPEC-sharing.md)、[统一执行约定](../../tasks/execution.md)。没有修改冻结 PRD。
 
 ## 范围与现状
 

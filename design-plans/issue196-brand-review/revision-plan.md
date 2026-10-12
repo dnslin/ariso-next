@@ -4,7 +4,7 @@ Written against: `7cba32692c0083254b3c585357b53eb4dbd73467`。2026-10-10。执�
 
 ## 设计语言与本轮选择
 
-本轮使用 `improve-ui` 及其 `references/plan-template.md`，按用户已经选定的三项返修形成可执行计划。项目依据仍为 `docs/design/handoff.md`、`docs/tasks/execution.md` 和 `docs/tasks/m3-m4-experience.md` 的 DG-SITE 对 T-SITE-04 结论，不新增一套交付规则。
+本轮使用 `improve-ui` 及其 `references/plan-template.md`，按用户已经选定的三项返修形成可执行计划。项目依据仍为 `docs/design/handoff.md`、`docs/tasks/execution.md` 和 `docs/archive/m3-m4/experience.md` 的 DG-SITE 对 T-SITE-04 结论，不新增一套交付规则。
 
 用户明确反馈：**GitHub 按钮补图标；登录品牌区删除描述；品牌设置布局粗糙、空白太多，可以使用 HeroUI 和本地设计技能。** 本计划据此推荐业务区限宽与单面板紧凑排列，并制作第二版可查看原型。第二版整体设计及此前的缺口交互仍需要用户查看批准，不能记作产品实施或最终人工验收。
 

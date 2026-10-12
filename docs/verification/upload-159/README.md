@@ -1,6 +1,6 @@
 # Issue #159：上传文件输入
 
-任务：T-UP-07；需求编号与职责沿用 [任务卡](../../tasks/m3-m4-platform.md#t-up-07-目录拖拽粘贴与独立文件身份) 和 [upload §3](../../specs/SPEC-upload.md#3-设置限制与文件输入)。日期：2026-10-01。
+任务：T-UP-07；需求编号与职责沿用 [任务卡](../../archive/m3-m4/platform.md#t-up-07-目录拖拽粘贴与独立文件身份) 和 [upload §3](../../specs/SPEC-upload.md#3-设置限制与文件输入)。日期：2026-10-01。
 
 ## 范围与前置
 

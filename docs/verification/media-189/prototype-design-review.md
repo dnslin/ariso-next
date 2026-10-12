@@ -4,7 +4,7 @@
 
 ## 评审范围与依据
 
-独立设计评审者读取了项目 `AGENTS.md`、[文档导航](../../README.md)、[设计交付规范](../../design/handoff.md)、[任务执行与验证约定](../../tasks/execution.md#前端共用验收)、[T-MED-12 与 DG-PROCESSING 消费结论](../../tasks/m3-m4-platform.md#t-med-12-处理设置水印和真实预览界面)、[DG-PROCESSING 证据](../../tasks/evidence/DG-PROCESSING/README.md)，并走查现有设置、素材和预览的输入校验、HTTP 响应与资源生命周期。使用 `using-agent-skills` 选择适用技能，实际应用 `figma-design-to-code` 取得设计信息及截图。
+独立设计评审者读取了项目 `AGENTS.md`、[文档导航](../../README.md)、[设计交付规范](../../design/handoff.md)、[任务执行与验证约定](../../tasks/execution.md#前端共用验收)、[T-MED-12 与 DG-PROCESSING 消费结论](../../archive/m3-m4/platform.md#t-med-12-处理设置水印和真实预览界面)、[DG-PROCESSING 证据](../../tasks/evidence/DG-PROCESSING/README.md)，并走查现有设置、素材和预览的输入校验、HTTP 响应与资源生命周期。使用 `using-agent-skills` 选择适用技能，实际应用 `figma-design-to-code` 取得设计信息及截图。
 
 评审只读原型的 `index.html`、`surface.html`、`surface.css`、`surface.js`，并查看主 agent 使用现有 Ego Lite 取得的截图。评审者没有操作浏览器、重跑实现者的检查、修改产品代码或写入 Figma。原型中的数据、产物和反馈均为演示，不连接真实后端。
 

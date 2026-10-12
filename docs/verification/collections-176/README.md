@@ -1,6 +1,6 @@
 # Issue #176 标签管理实施与验证
 
-2026-10-02；T-COL-03 / UI-TAGS；保留 R-16.2-01、R-16.3-02。本记录承接现有 [任务定义与 DG-TAGS](../../tasks/m3-m4-experience.md#t-col-03-标签创建重命名删除与图库入口)，统一按 [执行约定](../../tasks/execution.md) 与 [设计交接](../../design/handoff.md) 验证。
+2026-10-02；T-COL-03 / UI-TAGS；保留 R-16.2-01、R-16.3-02。本记录承接现有 [任务定义与 DG-TAGS](../../archive/m3-m4/experience.md#t-col-03-标签创建重命名删除与图库入口)，统一按 [执行约定](../../tasks/execution.md) 与 [设计交接](../../design/handoff.md) 验证。
 
 ## 2026-10-02 所有者合并与关闭指令
 

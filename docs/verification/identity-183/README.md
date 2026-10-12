@@ -1,6 +1,6 @@
 # Issue #183 独立容器 CLI 密码恢复
 
-关联 [Issue #183 / T-ID-09](https://github.com/dnslin/ariso-next/issues/183)，依据 [identity §6.3 / ID-16](../../specs/SPEC-identity.md#63-cli-重置)、[任务卡](../../tasks/m3-m4-platform.md#t-id-09-独立容器-cli-密码恢复)、[执行约定](../../tasks/execution.md)及 [EV-IDENTITY-04](../../tasks/evidence/EV-IDENTITY-04/README.md)。需求保留 `R-6.3-02`、`A-26.1-10`、`R-24.1-01`。
+关联 [Issue #183 / T-ID-09](https://github.com/dnslin/ariso-next/issues/183)，依据 [identity §6.3 / ID-16](../../specs/SPEC-identity.md#63-cli-重置)、[任务卡](../../archive/m3-m4/platform.md#t-id-09-独立容器-cli-密码恢复)、[执行约定](../../tasks/execution.md)及 [EV-IDENTITY-04](../../tasks/evidence/EV-IDENTITY-04/README.md)。需求保留 `R-6.3-02`、`A-26.1-10`、`R-24.1-01`。
 
 2026-10-08，使用 gh 实际读取 Issue 与评论（无评论）和原生依赖。blocked by #53、#54、#146 均已关闭；blocking #184 仍开放。本地 main 无改动，从最新 `origin/main`（`502b5d76`）创建管理型 worktree `/Users/dnslin/.codex/worktrees/issue-183-password-cli/ariso`，分支 `codex/issue-183-password-cli`。保留原目录及其他工作区。
 

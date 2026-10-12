@@ -1,6 +1,6 @@
 # T-MED-06 全格式分类与派生处理
 
-关联 [Issue #150](https://github.com/dnslin/ariso-next/issues/150)，依据 [任务定义](../../tasks/m3-m4-platform.md#t-med-06-全格式分类与派生处理)、[SPEC-media §6/10/13](../../specs/SPEC-media.md) 和[执行约定](../../tasks/execution.md)。
+关联 [Issue #150](https://github.com/dnslin/ariso-next/issues/150)，依据 [任务定义](../../archive/m3-m4/platform.md#t-med-06-全格式分类与派生处理)、[SPEC-media §6/10/13](../../specs/SPEC-media.md) 和[执行约定](../../tasks/execution.md)。
 
 2026-09-29 使用 `gh issue view 150 --json number,title,body,state,comments,url` 及 GitHub 原生 `dependencies/blocked_by`、`dependencies/blocking` 核对：评论为空，#63、#64、#147 均 CLOSED。下游 #151、#161、#170、#172 保持 OPEN。从已 fetch 的 `origin/main`（`279a84f`）创建独立 worktree 与 `codex/media-formats-150`，保留原目录未提交文档。
 

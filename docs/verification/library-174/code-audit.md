@@ -3,7 +3,7 @@
 - 日期：2026-10-01（Asia/Shanghai）。
 - 审计对象：`codex/issue-174-selection` 工作区相对 `origin/main` 的图库选择实现、服务端读取接口、单元/集成测试及浏览器专项。
 - 方法：实际读取 `AGENTS.md`、`using-agent-skills`、`code-review-and-quality`、`vercel-react-best-practices`；先检查测试，再检查生产实现和调用路径。没有以实施者总结代替代码检查。
-- 需求依据：[T-LIB-05](../../tasks/m3-m4-experience.md#t-lib-05-跨页显式选择与已选清单)、[library §7](../../specs/SPEC-library.md#7-选择与批量操作)、[设计交付规范](../../design/handoff.md)、[执行约定](../../tasks/execution.md)。
+- 需求依据：[T-LIB-05](../../archive/m3-m4/experience.md#t-lib-05-跨页显式选择与已选清单)、[library §7](../../specs/SPEC-library.md#7-选择与批量操作)、[设计交付规范](../../design/handoff.md)、[执行约定](../../tasks/execution.md)。
 
 ## 当前结论
 

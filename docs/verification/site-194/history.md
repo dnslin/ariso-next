@@ -1,6 +1,6 @@
 # Issue #194 / T-SITE-02
 
-2026-10-08。本轮实施站点信息 GET/PATCH 的后端切片，并提供 DG-SITE 缺口的两端独立原型。**Issue 尚未完成；产品 UI 等待用户批准补充交互方案。** [任务卡](../../tasks/m3-m4-experience.md#t-site-02-站点地址时区与基础设置组合)、[Issue](https://github.com/dnslin/ariso-next/issues/194)、[独立评审](./review.md)。
+2026-10-08。本轮实施站点信息 GET/PATCH 的后端切片，并提供 DG-SITE 缺口的两端独立原型。**Issue 尚未完成；产品 UI 等待用户批准补充交互方案。** [任务卡](../../archive/m3-m4/experience.md#t-site-02-站点地址时区与基础设置组合)、[Issue](https://github.com/dnslin/ariso-next/issues/194)、[独立评审](./review.md)。
 
 ## 范围与依据
 

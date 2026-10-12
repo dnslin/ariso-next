@@ -1,7 +1,7 @@
 # T-SITE-03 品牌素材服务与 HTTP
 
 最新进展见[PR #274 评审修复验证](#pr-274-评审修复验证)。此前验证结果与限制保留为原始记录。
-Issue [#195](https://github.com/dnslin/ariso-next/issues/195)。2026-10-09，从最新 `origin/main` 的 `4db067f288a0c9859fe791eea57ac2f36365cef9` 创建管理型独立 worktree 和分支 `codex/issue-195-branding`，原工作区未修改。范围按 [任务卡](../../tasks/m3-m4-experience.md#t-site-03-品牌素材存取静态校验与清理)、[site §6/7](../../specs/SPEC-site.md#6-品牌素材与主题)，检查按 [execution](../../tasks/execution.md#适用检查)。[Issue 正文及评论](./issue.json)、[原生前置](./blocked-by.json)、[原生后置](./blocking.json)为实际 gh 读取；#47/#53/#149 均 CLOSED，直接后置 #196 OPEN。
+Issue [#195](https://github.com/dnslin/ariso-next/issues/195)。2026-10-09，从最新 `origin/main` 的 `4db067f288a0c9859fe791eea57ac2f36365cef9` 创建管理型独立 worktree 和分支 `codex/issue-195-branding`，原工作区未修改。范围按 [任务卡](../../archive/m3-m4/experience.md#t-site-03-品牌素材存取静态校验与清理)、[site §6/7](../../specs/SPEC-site.md#6-品牌素材与主题)，检查按 [execution](../../tasks/execution.md#适用检查)。[Issue 正文及评论](./issue.json)、[原生前置](./blocked-by.json)、[原生后置](./blocking.json)为实际 gh 读取；#47/#53/#149 均 CLOSED，直接后置 #196 OPEN。
 
 代码提交 `b335c8dd7adfb9cb43f4fcf209db74df8cc25074` 已推送；[PR #274](https://github.com/dnslin/ariso-next/pull/274) 为 OPEN / 草稿，创建后实际 gh 读取为 MERGEABLE / CLEAN，`statusCheckRollup: []`。没有远端检查记录，不记作 CI 通过；日常 PR 按统一执行约定在本地验证。本次未合并、未关闭 Issue、未发布或部署，分支与 worktree 保留。
 

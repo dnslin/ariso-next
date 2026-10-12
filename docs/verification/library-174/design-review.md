@@ -4,7 +4,7 @@
 
 ## 依据与实际读取
 
-实际读取项目 `AGENTS.md`、`using-agent-skills`、`figma-use`、`figma-design-to-code`、`ego-browser`，以及[设计交付规范](../../design/handoff.md)、[任务执行约定](../../tasks/execution.md)、[T-LIB-05](../../tasks/m3-m4-experience.md#t-lib-05-跨页显式选择与已选清单)和 DG-LIBRARY 核对记录。
+实际读取项目 `AGENTS.md`、`using-agent-skills`、`figma-use`、`figma-design-to-code`、`ego-browser`，以及[设计交付规范](../../design/handoff.md)、[任务执行约定](../../tasks/execution.md)、[T-LIB-05](../../archive/m3-m4/experience.md#t-lib-05-跨页显式选择与已选清单)和 DG-LIBRARY 核对记录。
 
 通过 Figma `get_design_context` 实际读取下列四个节点的设计信息和返回截图，`skillNames=figma-design-to-code`；再用 `get_screenshot` 取得原尺寸参考图并实际查看。
 
