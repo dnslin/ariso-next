@@ -18,17 +18,16 @@ import type {
 vi.mock('next/navigation', () => ({ useRouter: () => ({ push: vi.fn() }) }));
 // Portals have no server markup. Keep the real exported result component visible
 // while leaving its buttons and their disabled behavior to HeroUI.
-vi.mock('@heroui/react/modal', () => {
+vi.mock('@heroui/react/modal', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@heroui/react/modal')>();
   const pass = ({ children }: { children: ReactNode }) => children;
   return {
     Modal: Object.assign(pass, {
       Backdrop: pass,
       Container: pass,
-      Dialog: ({ children, ...props }: { children: ReactNode }) =>
-        createElement('div', { ...props, role: 'dialog' }, children),
+      Dialog: actual.Modal.Dialog,
       Header: pass,
-      Heading: ({ children }: { children: ReactNode }) =>
-        createElement('h2', null, children),
+      Heading: actual.Modal.Heading,
       Body: pass,
       Footer: pass,
     }),
@@ -38,6 +37,8 @@ vi.mock('@heroui/react/modal', () => {
 const item = (id: string): BatchSnapshotItem => ({
   id,
   displayName: `${id}.png`,
+  visibility: 'private',
+  hasAlbums: false,
   thumbnailUrl: `/i/${id}?type=thumbnail`,
   storage: { id: 'local', name: '测试存储', enabled: true },
   source: '第2页',
@@ -85,6 +86,56 @@ function state(overrides: Partial<LibraryBatch> = {}): LibraryBatch {
 }
 const render = (batch: LibraryBatch) =>
   renderToStaticMarkup(createElement(BatchSummary, { batch }));
+
+it.each(['trash', 'restore'] as const)(
+  'does not render a second success screen for confirmed %s work',
+  (action) => {
+    const batch = state();
+    batch.workspace!.action = action;
+    batch.workspace!.command = { type: action };
+    expect(render(batch)).toBe('');
+  },
+);
+
+it.each([false, true])(
+  'exposes the pending state on the real batch confirmation dialog (pending=%s)',
+  (pending) => {
+    const batch = state({ pending });
+    batch.workspace!.phase = 'confirm';
+    const html = renderToStaticMarkup(
+      createElement(BatchWorkspaceContent, {
+        batch,
+        client: new QueryClient(),
+      }),
+    );
+    const dialog = html.match(
+      /<section[^>]*data-testid="library-batch"[^>]*>/,
+    )?.[0];
+    expect(dialog).toContain('role="dialog"');
+    expect(dialog).toContain(`aria-busy="${pending}"`);
+    const cancel = html.match(
+      /<button[^>]*data-testid="batch-return"[^>]*>/,
+    )?.[0];
+    const cancelClasses = cancel?.match(/class="([^"]*)"/)?.[1].split(' ');
+    expect(cancelClasses).toContain('w-24');
+    expect(cancelClasses).toContain('shrink-0');
+    expect(cancelClasses).toContain('h-12');
+    const close = html.match(
+      /<button[^>]*aria-label="关闭批量操作"[^>]*>/,
+    )?.[0];
+    expect(close).toContain('bg-transparent');
+    const submit = html.match(
+      /<button[^>]*data-testid="batch-submit"[^>]*>[\s\S]*?<\/button>/,
+    )?.[0];
+    if (pending) {
+      expect(submit).toContain('disabled');
+      expect(submit).toContain('正在保存…');
+    } else {
+      expect(submit).not.toContain('disabled');
+      expect(submit).toContain('确认设为公开');
+    }
+  },
+);
 
 it('keeps an enabled continue action after checking 200 successful items with one item still unsubmitted', () => {
   const batch = state();

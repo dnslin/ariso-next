@@ -6,6 +6,7 @@ export interface TrashItem {
   byteSize: number;
   format: string;
   visibility: 'public' | 'private';
+  hasAlbums: boolean;
   processingStatus: 'pending' | 'processing' | 'ready' | 'failed';
   trashedAt: string;
   deletionStatus: 'deleting' | 'cleanup_failed' | null;

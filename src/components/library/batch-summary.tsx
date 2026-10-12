@@ -1,20 +1,17 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { useRouter } from 'next/navigation';
 import { Button } from '@heroui/react/button';
 import { Card } from '@heroui/react/card';
-import { Modal } from '@heroui/react/modal';
 import { ArrowLeft } from 'lucide-react';
 import { BatchThumbnail } from './batch-targets';
 import { bytesLabel } from './detail-labels';
-import type { LibraryBatch } from './use-library-batch';
+import { batchSuccessFeedback, type LibraryBatch } from './use-library-batch';
 
 const footerButton =
   'h-12 min-h-12 min-w-0 flex-1 rounded-lg font-normal md:w-50 md:flex-none';
 
 export function BatchSummary({ batch }: { batch: LibraryBatch }) {
-  const router = useRouter();
   const title = useRef<HTMLHeadingElement>(null);
   const failuresTitle = useRef<HTMLHeadingElement>(null);
   const workspace = batch.workspace;
@@ -48,12 +45,12 @@ export function BatchSummary({ batch }: { batch: LibraryBatch }) {
       ).length
     : 0;
   const returnLabel = restoring ? '返回回收站' : batch.returnLabel;
-  const allRecycled =
-    recycling &&
+  if (
+    (recycling || restoring) &&
     !batch.pending &&
-    !workspace.unsentIds.length &&
-    !failures.length &&
-    workspace.results.length === workspace.items.length;
+    batchSuccessFeedback(workspace)
+  )
+    return null;
   if (changingVisibility && batch.showFailures && !batch.pending) {
     const retained = failures.filter((result) =>
       batch.failedIds.includes(result.id),
@@ -158,55 +155,6 @@ export function BatchSummary({ batch }: { batch: LibraryBatch }) {
       </section>
     );
   }
-  if (allRecycled)
-    return (
-      <Modal
-        isOpen
-        onOpenChange={(open) => {
-          if (!open) batch.close();
-        }}
-      >
-        <Modal.Backdrop>
-          <Modal.Container placement="center" className="p-4">
-            <Modal.Dialog
-              data-testid="library-batch"
-              aria-busy={batch.pending}
-              className="max-h-[calc(var(--visual-viewport-height)-32px)] w-full max-w-120 gap-4 overflow-y-auto rounded-xl border border-border bg-background p-6 dark:bg-surface"
-            >
-              <Modal.Header className="p-0">
-                <Modal.Heading className="text-xl font-medium">
-                  图片已移入回收站
-                </Modal.Heading>
-              </Modal.Header>
-              <Modal.Body className="m-0 grid gap-4 p-0">
-                <p className="text-sm">
-                  {changed}张已回收 · {unchanged}张无需修改。内容链接已关闭。
-                </p>
-                <p className="rounded-lg bg-default p-3 text-[13px] leading-normal">
-                  已完成的项目已移出选择。你可以在回收站恢复图片；文件仍占用空间，不会自动清理。
-                </p>
-              </Modal.Body>
-              <Modal.Footer className="m-0 grid w-full grid-cols-1 justify-stretch gap-4 p-0">
-                <Button
-                  data-testid="batch-done"
-                  variant="outline"
-                  className="h-12 w-full rounded-lg font-normal"
-                  onPress={batch.close}
-                >
-                  {returnLabel}
-                </Button>
-                <Button
-                  className="h-12 w-full rounded-lg font-normal"
-                  onPress={() => router.push('/trash')}
-                >
-                  前往回收站
-                </Button>
-              </Modal.Footer>
-            </Modal.Dialog>
-          </Modal.Container>
-        </Modal.Backdrop>
-      </Modal>
-    );
   const heading = batch.pending
     ? '正在执行批量操作…'
     : workspace.unsentIds.length
@@ -337,7 +285,11 @@ export function BatchSummary({ batch }: { batch: LibraryBatch }) {
         </div>
       ) : null}
       <div className="rounded-lg bg-default p-3 text-[13px] leading-normal">
-        <p>已成功和无需修改的项目已移出选择。</p>
+        <p>
+          {changingVisibility
+            ? '仍匹配当前列表的图片保留选择。'
+            : '已成功和无需修改的项目已移出选择。'}
+        </p>
         <p>
           仍属当前查询的{batch.failedIds.length}
           张失败项保留选择，包含其他页；已删除或离开查询的失败项只保留结果说明。

@@ -20,7 +20,10 @@ type InputDialog = {
 };
 
 /** Own only the active page's input scan. The shared queue owns accepted files. */
-export function useUploadInput(controller: UploadController | null) {
+export function useUploadInput(
+  controller: UploadController | null,
+  draftKey?: string,
+) {
   const files = useRef<HTMLInputElement>(null);
   const directory = useRef<HTMLInputElement>(null);
   const operation = useRef<AbortController | null>(null);
@@ -48,13 +51,17 @@ export function useUploadInput(controller: UploadController | null) {
       operation.current = abort;
       origin.current = document.activeElement as HTMLElement | null;
       if (scanning) setDialog({ state: 'scanning' });
-      const report = await scanUploadInput(source, controller, {
-        signal: abort.signal,
-        onProgress: (report) => {
-          if (operation.current === abort && scanning)
-            setDialog({ state: 'scanning', report });
+      const report = await scanUploadInput(
+        source,
+        { add: (file) => controller.add(file, draftKey) },
+        {
+          signal: abort.signal,
+          onProgress: (report) => {
+            if (operation.current === abort && scanning)
+              setDialog({ state: 'scanning', report });
+          },
         },
-      });
+      );
       if (operation.current !== abort) return;
       operation.current = null;
       if (scanning || Object.values(report.rejected).some((count) => count))
@@ -63,7 +70,7 @@ export function useUploadInput(controller: UploadController | null) {
           report,
         });
     },
-    [controller],
+    [controller, draftKey],
   );
   useEffect(() => {
     if (!controller) return;
@@ -87,7 +94,7 @@ export function useUploadInput(controller: UploadController | null) {
       operation.current?.abort();
       operation.current = null;
     };
-  }, [controller, ingest]);
+  }, [controller, ingest, draftKey]);
   function chooseFiles() {
     close();
     files.current?.click();

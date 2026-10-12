@@ -13,6 +13,7 @@ const item: LibraryItem = {
   width: 640,
   height: 480,
   visibility: 'private',
+  hasAlbums: false,
   processingStatus: 'processing',
   createdAt: '2026-09-25T00:00:00Z',
   storage: { id: 'local', name: '本地存储', enabled: true },
@@ -85,6 +86,14 @@ it('offers one named full-card action while retaining readable image diagnostics
   expect(html).toContain('处理中');
 });
 
+it('names the full-card action according to the album picker action', () => {
+  const html = renderToStaticMarkup(
+    jsx(LibraryCard, { item, openLabel: '选择图片' }),
+  );
+  expect(html).toContain('aria-label="选择图片：旅行"');
+  expect(html).not.toContain('aria-label="查看图片：旅行"');
+});
+
 it('keeps ready cards compact while retaining abnormal format and storage diagnostics', () => {
   const ready = { ...item, processingStatus: 'ready' as const };
   const html = renderToStaticMarkup(jsx(LibraryCard, { item: ready }));
@@ -128,4 +137,22 @@ it('exposes a named selected checkbox independently of the detail button', () =>
   expect(html).toMatch(/<input[^>]*type="checkbox"[^>]*checked=""/);
   expect(html).toContain('aria-label="查看图片：旅行"');
   expect(html).not.toMatch(/<button\b[^>]*>(?:(?!<\/button>)[\s\S])*<button\b/);
+});
+
+it('distinguishes public and private badges with color, text and icons', () => {
+  const privateHtml = renderToStaticMarkup(jsx(LibraryCard, { item }));
+  const publicHtml = renderToStaticMarkup(
+    jsx(LibraryCard, { item: { ...item, visibility: 'public' } }),
+  );
+  expect(privateHtml).toContain('data-visibility="private"');
+  expect(privateHtml).toContain('bg-violet-100');
+  expect(privateHtml).toContain('lucide-lock-keyhole');
+  expect(publicHtml).toContain('data-visibility="public"');
+  expect(publicHtml).toContain('bg-emerald-100');
+  expect(publicHtml).toContain('lucide-globe');
+  expect(
+    renderToStaticMarkup(jsx(LibraryCard, { item, album: true })),
+  ).not.toContain('min-[1200px]:pb-0');
+  expect(privateHtml).toContain('pb-4');
+  expect(publicHtml).toContain('pb-4');
 });

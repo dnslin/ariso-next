@@ -291,6 +291,10 @@ export function useLibraryQuery(
     if (!enabled) return;
     await client.resetQueries({ queryKey, exact: true });
   }
+  async function refreshCurrent() {
+    setRefreshAvailable(false);
+    if (enabled) await active.refetch();
+  }
   async function onBatchCompleted(
     results: BatchItemResult[],
     command: BatchCommand,
@@ -490,6 +494,7 @@ export function useLibraryQuery(
         return infinite.fetchNextPage({ cancelRefetch: false });
     },
     refresh,
+    refreshCurrent,
     onBatchCompleted,
     refreshAvailable,
     onItemRemoved,

@@ -42,9 +42,7 @@ export function layoutGallery(
           ? 190
           : 130;
     const height =
-      imageHeight +
-      (album ? (desktop ? 57 : 64.5) : desktop ? 82 : 80) +
-      cardDiagnosticLines(item) * 22;
+      imageHeight + (desktop ? 82 : 80) + cardDiagnosticLines(item) * 22;
     return { imageHeight, height };
   });
   return positionGalleryCards(cards, layout, metrics);

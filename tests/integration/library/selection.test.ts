@@ -10,6 +10,8 @@ import {
   tags,
 } from '../../../src/server/collections/schema.ts';
 import { readLibrarySelection } from '../../../src/server/library/selection.ts';
+import { readLibraryPage } from '../../../src/server/library/queries.ts';
+import { parseLibraryQuery } from '../../../src/server/library/query-schema.ts';
 import {
   mediaImages,
   mediaObjects,
@@ -151,6 +153,55 @@ it('refreshes the processing status of explicit cross-page selections', () => {
   expect(read(['failed']).items[0].processingStatus).toBe('ready');
 });
 
+it('reads current visibility and album membership for both cards and retained selections', () => {
+  seed('member', { visibility: 'public' });
+  seed('unassigned');
+  connection.db
+    .insert(albumImages)
+    .values({
+      albumId: 'album-0',
+      imageId: 'member',
+      joinedAt: new Date(1000),
+    })
+    .run();
+  const summary = (
+    items: { id: string; visibility: string; hasAlbums?: boolean }[],
+  ) =>
+    items.map(({ id, visibility, hasAlbums }) => ({
+      id,
+      visibility,
+      hasAlbums,
+    }));
+  expect(summary(read(['member', 'unassigned']).items)).toEqual([
+    { id: 'member', visibility: 'public', hasAlbums: true },
+    { id: 'unassigned', visibility: 'private', hasAlbums: false },
+  ]);
+  expect(
+    summary(
+      readLibraryPage(
+        connection.db,
+        parseLibraryQuery(new URLSearchParams('sort=uploaded_asc')),
+      ).items,
+    ),
+  ).toEqual([
+    { id: 'member', visibility: 'public', hasAlbums: true },
+    { id: 'unassigned', visibility: 'private', hasAlbums: false },
+  ]);
+  connection.db
+    .delete(albumImages)
+    .where(eq(albumImages.imageId, 'member'))
+    .run();
+  connection.db
+    .update(mediaImages)
+    .set({ visibility: 'private' })
+    .where(eq(mediaImages.id, 'member'))
+    .run();
+  expect(read(['member']).items[0]).toMatchObject({
+    visibility: 'private',
+    hasAlbums: false,
+  });
+});
+
 it('drops recycled, deleting, removed and changed records while disabled storage remains valid', () => {
   for (const id of [
     'normal',
@@ -190,6 +241,9 @@ it('drops recycled, deleting, removed and changed records while disabled storage
   expect(result.items[0]).toEqual({
     id: 'disabled',
     displayName: 'disabled',
+    deletionStatus: null,
+    visibility: 'private',
+    hasAlbums: false,
     byteSize: 100,
     storage: { id: 'storage-3', name: 'Storage 3', enabled: false },
     processingStatus: 'ready',
@@ -233,11 +287,14 @@ it('returns a thumbnail URL only for a saved thumbnail on enabled storage, witho
   ).toEqual(['/i/thumbnail?type=thumbnail', null]);
   expect(Object.keys(read(['thumbnail']).items[0]).sort()).toEqual([
     'byteSize',
+    'deletionStatus',
     'displayName',
+    'hasAlbums',
     'id',
     'processingStatus',
     'storage',
     'thumbnailUrl',
+    'visibility',
   ]);
   connection.db
     .update(mediaObjects)
@@ -403,6 +460,12 @@ it('includes current trash selections with owner preview paths, retaining unavai
     ['preview', '/api/trash/preview/preview?type=thumbnail'],
     ['deleting', null],
     ['failed-cleanup', null],
+    ['disabled', null],
+  ]);
+  expect(result.items.map((item) => [item.id, item.deletionStatus])).toEqual([
+    ['preview', null],
+    ['deleting', 'deleting'],
+    ['failed-cleanup', 'cleanup_failed'],
     ['disabled', null],
   ]);
 });

@@ -407,6 +407,16 @@ export const UploadQueueItem = memo(function UploadQueueItem({
               移除
             </Button>
           ) : null}
+          {item.state === 'upload-failed' && item.canRetry ? (
+            <Button
+              variant="outline"
+              className="h-11 w-full rounded-lg text-sm font-normal"
+              isDisabled={!!item.cleanupStatus && item.cleanupStatus !== 'none'}
+              onPress={() => void controller.retry(item.id)}
+            >
+              重试上传
+            </Button>
+          ) : null}
           {canCancel ? (
             <AlertDialog isOpen={confirm} onOpenChange={setConfirm}>
               <Button
@@ -498,7 +508,9 @@ export const UploadQueueItem = memo(function UploadQueueItem({
       ) : null}
       {item.state === 'upload-failed' ? (
         <p className="text-sm">
-          未创建图片。本地文件已释放，再次上传请重新选择。
+          {item.canRetry
+            ? '未创建图片。文件保留，可按本次设置重试上传。'
+            : '未创建图片。本地文件已释放，再次上传请重新选择。'}
         </p>
       ) : null}
       {(item.imageId || ['cancelled', 'upload-failed'].includes(item.state)) &&

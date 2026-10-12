@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { Button } from '@heroui/react/button';
-import { Link } from '@heroui/react/link';
 import { Modal } from '@heroui/react/modal';
 import { TextField } from '@heroui/react/textfield';
 import { Input } from '@heroui/react/input';
@@ -15,7 +14,7 @@ import { albumInputSchema } from '../../server/collections/validation';
 import { albumRequest, AlbumRequestError, albumUrl, type Album } from './api';
 
 export type AlbumAction =
-  { kind: 'create' } | { kind: 'edit' | 'menu' | 'delete'; album: Album };
+  { kind: 'create' } | { kind: 'edit' | 'delete'; album: Album };
 
 type AlbumOutcome =
   | { kind: 'idle' }
@@ -39,7 +38,7 @@ export function AlbumDialog({
   onCheckList: () => Promise<void>;
 }) {
   const album = 'album' in action ? action.album : null;
-  const [mode, setMode] = useState(action.kind);
+  const mode = action.kind;
   const [name, setName] = useState(album?.name ?? '');
   const [description, setDescription] = useState(album?.description ?? '');
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -73,9 +72,7 @@ export function AlbumDialog({
             ? '新建相册'
             : mode === 'edit'
               ? '编辑相册'
-              : mode === 'menu'
-                ? '相册操作'
-                : '删除这本相册？');
+              : '删除这本相册？');
 
   async function verify() {
     if (mode === 'create') {
@@ -314,39 +311,12 @@ export function AlbumDialog({
           {album!.name} · #{album!.id.slice(0, 8)}
           {mode === 'delete' ? ` · ${album!.imageCount} 张图片` : ''}
         </p>
-        {mode === 'menu' ? (
-          <>
-            <Link
-              href={`/shares/${encodeURIComponent(album!.id)}?from=album`}
-              className="h-12 w-full justify-center rounded-lg border border-border bg-background text-sm font-normal text-foreground no-underline"
-            >
-              分享设置
-            </Link>
-            <Button
-              variant="outline"
-              isDisabled
-              className="h-12 w-full rounded-lg font-normal"
-            >
-              管理图片 · 尚未开放
-            </Button>
-            <Button
-              variant="outline"
-              className="h-12 w-full rounded-lg font-normal"
-              onPress={() => setMode('delete')}
-            >
-              删除相册…
-            </Button>
-          </>
-        ) : (
-          <>
-            <p className="rounded-lg border border-danger px-3 py-2.5 text-[13px] text-danger">
-              相册删除后无法恢复，也不会进入回收站。
-            </p>
-            <p>
-              图库图片和文件会保留。此相册的分享链接与访问授权会失效。独立的公开图片链接仍按图片状态访问。
-            </p>
-          </>
-        )}
+        <p className="rounded-lg border border-danger px-3 py-2.5 text-[13px] text-danger">
+          相册删除后无法恢复，也不会进入回收站。
+        </p>
+        <p>
+          图库图片和文件会保留。此相册的分享链接与访问授权会失效。独立的公开图片链接仍按图片状态访问。
+        </p>
       </>
     );
   return (
@@ -400,97 +370,95 @@ export function AlbumDialog({
                   <p role="alert">{outcome.message}</p>
                 ) : null}
               </Modal.Body>
-              {mode !== 'menu' || succeeded ? (
-                <Modal.Footer className="mt-0 grid grid-cols-2 gap-2.5">
-                  {succeeded ? (
+              <Modal.Footer className="mt-0 grid grid-cols-2 gap-2.5">
+                {succeeded ? (
+                  <Button
+                    className="col-span-2 h-12 w-full rounded-lg font-normal"
+                    onPress={close}
+                  >
+                    {mode === 'delete' ? '返回相册列表' : '返回相册'}
+                  </Button>
+                ) : outcome.kind === 'unknown' ? (
+                  <>
                     <Button
-                      className="col-span-2 h-12 w-full rounded-lg font-normal"
+                      variant="outline"
+                      className="h-12 w-full rounded-lg font-normal"
+                      isDisabled={pending}
                       onPress={close}
                     >
-                      {mode === 'delete' ? '返回相册列表' : '返回相册'}
+                      返回核对
                     </Button>
-                  ) : outcome.kind === 'unknown' ? (
-                    <>
+                    <Button
+                      className="h-12 w-full rounded-lg font-normal"
+                      isDisabled={pending}
+                      onPress={() => {
+                        void check();
+                      }}
+                    >
+                      重新核对
+                    </Button>
+                    {mode === 'create' ? (
                       <Button
                         variant="outline"
-                        className="h-12 w-full rounded-lg font-normal"
+                        className="col-span-2 h-12 w-full rounded-lg font-normal"
                         isDisabled={pending}
-                        onPress={close}
+                        onPress={() => onClose()}
                       >
-                        返回核对
+                        结束本次操作
                       </Button>
-                      <Button
-                        className="h-12 w-full rounded-lg font-normal"
-                        isDisabled={pending}
-                        onPress={() => {
-                          void check();
-                        }}
-                      >
-                        重新核对
-                      </Button>
-                      {mode === 'create' ? (
-                        <Button
-                          variant="outline"
-                          className="col-span-2 h-12 w-full rounded-lg font-normal"
-                          isDisabled={pending}
-                          onPress={() => onClose()}
-                        >
-                          结束本次操作
-                        </Button>
-                      ) : null}
-                    </>
-                  ) : outcome.kind === 'missing' ? (
+                    ) : null}
+                  </>
+                ) : outcome.kind === 'missing' ? (
+                  <Button
+                    className="col-span-2 h-12 w-full rounded-lg font-normal"
+                    onPress={() => onClose()}
+                  >
+                    关闭
+                  </Button>
+                ) : outcome.kind === 'failed' ? (
+                  <Button
+                    type={mode === 'delete' ? 'button' : 'submit'}
+                    className="col-span-2 h-12 w-full rounded-lg font-normal"
+                    isDisabled={pending}
+                    onPress={
+                      mode === 'delete'
+                        ? () => setOutcome({ kind: 'idle' })
+                        : undefined
+                    }
+                  >
+                    {pending
+                      ? '正在提交…'
+                      : mode === 'delete'
+                        ? '重新确认删除'
+                        : '重试保存'}
+                  </Button>
+                ) : (
+                  <>
                     <Button
-                      className="col-span-2 h-12 w-full rounded-lg font-normal"
-                      onPress={() => onClose()}
-                    >
-                      关闭
-                    </Button>
-                  ) : outcome.kind === 'failed' ? (
-                    <Button
-                      type={mode === 'delete' ? 'button' : 'submit'}
-                      className="col-span-2 h-12 w-full rounded-lg font-normal"
+                      variant="outline"
+                      className="h-12 w-full rounded-lg font-normal"
                       isDisabled={pending}
-                      onPress={
-                        mode === 'delete'
-                          ? () => setOutcome({ kind: 'idle' })
-                          : undefined
-                      }
+                      onPress={close}
+                    >
+                      取消
+                    </Button>
+                    <Button
+                      type="submit"
+                      variant={mode === 'delete' ? 'outline' : 'primary'}
+                      className={`h-12 w-full rounded-lg font-normal ${mode === 'delete' ? 'border-danger text-danger' : ''}`}
+                      isDisabled={pending}
                     >
                       {pending
                         ? '正在提交…'
-                        : mode === 'delete'
-                          ? '重新确认删除'
-                          : '重试保存'}
+                        : mode === 'create'
+                          ? '创建'
+                          : mode === 'delete'
+                            ? '删除相册'
+                            : '保存'}
                     </Button>
-                  ) : (
-                    <>
-                      <Button
-                        variant="outline"
-                        className="h-12 w-full rounded-lg font-normal"
-                        isDisabled={pending}
-                        onPress={close}
-                      >
-                        取消
-                      </Button>
-                      <Button
-                        type="submit"
-                        variant={mode === 'delete' ? 'outline' : 'primary'}
-                        className={`h-12 w-full rounded-lg font-normal ${mode === 'delete' ? 'border-danger text-danger' : ''}`}
-                        isDisabled={pending}
-                      >
-                        {pending
-                          ? '正在提交…'
-                          : mode === 'create'
-                            ? '创建'
-                            : mode === 'delete'
-                              ? '删除相册'
-                              : '保存'}
-                      </Button>
-                    </>
-                  )}
-                </Modal.Footer>
-              ) : null}
+                  </>
+                )}
+              </Modal.Footer>
             </form>
           </Modal.Dialog>
         </Modal.Container>

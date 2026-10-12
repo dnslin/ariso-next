@@ -9,7 +9,7 @@ import { Pagination } from '@heroui/react/pagination';
 import { ToggleButtonGroup } from '@heroui/react/toggle-button-group';
 import { ToggleButton } from '@heroui/react/toggle-button';
 import { Tooltip } from '@heroui/react/tooltip';
-import { LayoutDashboard, LayoutGrid, RefreshCw } from 'lucide-react';
+import { LayoutDashboard, LayoutGrid, RefreshCw, Search } from 'lucide-react';
 import type { useLibraryQuery } from './use-library-query';
 
 type Query = ReturnType<typeof useLibraryQuery>;
@@ -23,21 +23,23 @@ const sortOptions = [
 export function LibraryToolbar({
   query,
   selectionMenu,
+  actions,
   album = false,
 }: {
   query: Query;
   selectionMenu?: ReactNode;
+  actions?: ReactNode;
   album?: boolean;
 }) {
   return (
     <div
       data-testid="library-toolbar"
-      className="grid gap-2 xl:flex xl:items-center xl:gap-3"
+      className="flex min-w-0 flex-wrap items-center gap-2 xl:gap-3"
     >
-      <div className="flex min-w-0 gap-2 xl:gap-3">
+      <div className="w-full min-w-0 sm:w-70">
         <LibrarySearch key={query.filters?.q ?? ''} query={query} />
       </div>
-      <div className="flex min-w-0 items-center gap-1 xl:gap-3">
+      <div className="flex min-w-0 flex-wrap items-center gap-2 xl:gap-3">
         {!album ? (
           <LibrarySelect
             label="图片排序"
@@ -113,6 +115,9 @@ export function LibraryToolbar({
           </Tooltip>
         )}
       </div>
+      {actions ? (
+        <div className="ml-auto max-w-full shrink-0">{actions}</div>
+      ) : null}
     </div>
   );
 }
@@ -129,9 +134,10 @@ function LibrarySearch({ query }: { query: Query }) {
       onClear={() => {
         void query.applyQuery({ q: null });
       }}
-      className="min-w-0 flex-1 xl:w-70"
+      className="w-full min-w-0"
     >
       <SearchField.Group className="h-11 min-w-0 overflow-visible rounded-lg border border-border bg-background shadow-none xl:h-9">
+        <Search size={16} aria-hidden className="ml-3 shrink-0 text-muted" />
         <SearchField.Input
           placeholder="搜索图片名称…"
           className="h-11 min-w-0 text-base xl:h-9 xl:text-sm"

@@ -13,6 +13,7 @@ const image: LibraryItem = {
   width: 640,
   height: 480,
   visibility: 'public',
+  hasAlbums: false,
   processingStatus: 'ready',
   createdAt: '2026-09-30T00:00:00Z',
   storage: { id: 'local', name: '本地存储', enabled: true },
@@ -62,8 +63,8 @@ describe('gallery layout', () => {
   );
 
   it.each([
-    [390, 358, 194.5],
-    [1440, 1144, 247],
+    [390, 358, 210],
+    [1440, 1144, 272],
   ])('uses album card geometry at %i', (viewport, width, height) => {
     const result = layoutGallery(images(8), 'grid', width, viewport, true);
     expect(result.slots[0].height).toBe(height);

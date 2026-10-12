@@ -79,6 +79,8 @@ vi.mock('react', () => hooks);
 vi.mock('@heroui/react/toast', () => ({ toast: { success: vi.fn() } }));
 import { useBatchReprocess } from '../../../src/components/library/use-batch-reprocess';
 import { useTrashBatch } from '../../../src/components/library/use-trash-batch';
+import { useLibraryBatch } from '../../../src/components/library/use-library-batch';
+import { toast } from '@heroui/react/toast';
 
 function selection(ids = ['image']): LibrarySelection {
   const selected = new Map(
@@ -87,6 +89,8 @@ function selection(ids = ['image']): LibrarySelection {
       {
         id,
         displayName: id,
+        visibility: 'private',
+        hasAlbums: false,
         processingStatus: 'ready',
         thumbnailUrl: null,
         storage: { id: 'local', name: '本地', enabled: true },
@@ -102,6 +106,7 @@ function selection(ids = ['image']): LibrarySelection {
       selected.delete(id);
     },
     recordFailure: vi.fn(),
+    clearFailure: vi.fn(),
     clear: () => selected.clear(),
     reconcile: vi.fn(),
     toggle: vi.fn(),
@@ -133,8 +138,12 @@ function response(status: 'running' | 'succeeded', taskId: string) {
   });
 }
 beforeEach(() => {
+  vi.mocked(toast.success).mockClear();
   vi.useFakeTimers();
-  vi.stubGlobal('requestAnimationFrame', (fn: () => void) => fn());
+  vi.stubGlobal('requestAnimationFrame', (fn: () => void) => setTimeout(fn, 0));
+  vi.stubGlobal('cancelAnimationFrame', (id: ReturnType<typeof setTimeout>) =>
+    clearTimeout(id),
+  );
   vi.stubGlobal('document', { querySelector: () => null });
   vi.stubGlobal('window', { dispatchEvent: vi.fn() });
 });
@@ -211,6 +220,329 @@ function mountBatch(selected: LibrarySelection) {
   return () => batch;
 }
 const flush = () => vi.advanceTimersByTimeAsync(10);
+
+it('freezes only the images that need a visibility change and retains valid selection after success', async () => {
+  const selected = selection(['already-public', 'needs-change']);
+  selected.selected.set('already-public', {
+    ...selected.selected.get('already-public')!,
+    visibility: 'public',
+  });
+  const requests: { ids: string[]; command: unknown }[] = [];
+  vi.stubGlobal(
+    'fetch',
+    vi.fn(async (_url, init) => {
+      const body = JSON.parse(init.body);
+      requests.push(body);
+      return Response.json({
+        results: body.ids.map((id: string) => ({
+          id,
+          status: 'changed',
+          message: '已公开',
+          inQuery: true,
+        })),
+      });
+    }),
+  );
+  let batch!: ReturnType<typeof useLibraryBatch>;
+  hooks.mount(() => {
+    batch = useLibraryBatch({
+      selection: selected,
+      query: 'scope=normal',
+      onExpire: vi.fn(),
+      onRefresh: async () => {},
+    });
+  });
+  batch.open('public', { isConnected: false } as HTMLElement);
+  await flush();
+  expect(batch.workspace?.items.map((item) => item.id)).toEqual([
+    'needs-change',
+  ]);
+  expect(batch.workspace?.currentCount).toBe(1);
+  batch.submit();
+  await flush();
+  expect(requests).toEqual([
+    {
+      ids: ['needs-change'],
+      query: 'scope=normal',
+      command: { type: 'visibility', visibility: 'public' },
+      mode: 'apply',
+    },
+  ]);
+  expect([...selected.selected.keys()]).toEqual([
+    'already-public',
+    'needs-change',
+  ]);
+  expect(batch.visible).toBe(false);
+  expect(selected.clearFailure).toHaveBeenCalledWith('needs-change');
+});
+
+it('limits album-context removal to the current album and retains failed or unknown items', async () => {
+  const selected = selection(['removed', 'failed', 'unknown']);
+  vi.stubGlobal(
+    'fetch',
+    vi.fn(async () =>
+      Response.json({
+        results: [
+          {
+            id: 'removed',
+            status: 'changed',
+            inQuery: false,
+            message: '已移出',
+          },
+          {
+            id: 'failed',
+            status: 'failed',
+            inQuery: true,
+            message: '保存失败',
+          },
+          {
+            id: 'unknown',
+            status: 'unknown',
+            inQuery: true,
+            message: '待核对',
+          },
+        ],
+      }),
+    ),
+  );
+  let batch!: ReturnType<typeof useLibraryBatch>;
+  hooks.mount(() => {
+    batch = useLibraryBatch({
+      selection: selected,
+      query: 'scope=album&albumId=current',
+      currentAlbumId: 'current',
+      onExpire: vi.fn(),
+      onRefresh: async () => {},
+    });
+  });
+  batch.open('remove-albums', { isConnected: false } as HTMLElement);
+  await flush();
+  expect(batch.workspace).toMatchObject({
+    phase: 'confirm',
+    command: { type: 'remove-albums', albumIds: ['current'] },
+  });
+  batch.submit();
+  await flush();
+  expect([...selected.selected.keys()]).toEqual(['failed', 'unknown']);
+  expect(selected.recordFailure).toHaveBeenCalledWith('failed', '保存失败');
+  expect(batch.workspace?.unknownIds).toEqual(['unknown']);
+  expect(batch.unresolved).toBe(true);
+  expect(batch.visible).toBe(true);
+});
+
+it.each(['trash', 'restore'] as const)(
+  'closes completed %s with Toast after refreshing instead of showing a result workspace',
+  async (action) => {
+    const selected = selection(['one']);
+    const refresh = vi.fn(async () => {});
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async () =>
+        Response.json({
+          results: [
+            { id: 'one', status: 'changed', inQuery: false, message: '完成' },
+          ],
+        }),
+      ),
+    );
+    let batch!: ReturnType<typeof useLibraryBatch>;
+    hooks.mount(() => {
+      batch = useLibraryBatch({
+        selection: selected,
+        query: '',
+        onExpire: vi.fn(),
+        onRefresh: refresh,
+      });
+    });
+    batch.open(action, { isConnected: false } as HTMLElement);
+    await flush();
+    expect(batch.workspace?.phase).toBe('confirm');
+    batch.submit();
+    await flush();
+    expect(refresh).toHaveBeenCalledOnce();
+    expect(batch.visible).toBe(false);
+    expect(batch.workspace).toBeNull();
+    expect(selected.selected.size).toBe(0);
+    expect(toast.success).toHaveBeenCalledWith(
+      action === 'trash' ? '图片已移入回收站' : '图片已恢复',
+      {
+        description:
+          action === 'trash'
+            ? '1张已回收 · 0张无需修改'
+            : '1张已恢复 · 0张无需修改',
+      },
+    );
+  },
+);
+
+it('keeps failed recycle items selected in a recoverable result without a success Toast', async () => {
+  const selected = selection(['done', 'failed']);
+  vi.stubGlobal(
+    'fetch',
+    vi.fn(async () =>
+      Response.json({
+        results: [
+          { id: 'done', status: 'changed', inQuery: false, message: '完成' },
+          { id: 'failed', status: 'failed', inQuery: true, message: '失败' },
+        ],
+      }),
+    ),
+  );
+  let batch!: ReturnType<typeof useLibraryBatch>;
+  hooks.mount(() => {
+    batch = useLibraryBatch({
+      selection: selected,
+      query: '',
+      onExpire: vi.fn(),
+      onRefresh: async () => {},
+    });
+  });
+  batch.open('trash', { isConnected: false } as HTMLElement);
+  await flush();
+  batch.submit();
+  await flush();
+  expect(batch.visible).toBe(true);
+  expect(batch.workspace?.phase).toBe('result');
+  expect([...selected.selected.keys()]).toEqual(['failed']);
+  expect(batch.failedIds).toEqual(['failed']);
+  expect(toast.success).not.toHaveBeenCalled();
+});
+
+function watchFocusSource() {
+  let disabled = true;
+  const source = {
+    isConnected: true,
+    matches: vi.fn(() => disabled),
+    focus: vi.fn(),
+  } as unknown as HTMLElement;
+  const observers: {
+    deliver: () => void;
+    observe: ReturnType<typeof vi.fn>;
+    disconnect: ReturnType<typeof vi.fn>;
+  }[] = [];
+  vi.stubGlobal(
+    'MutationObserver',
+    class {
+      observe = vi.fn();
+      disconnect = vi.fn(() => {
+        this.connected = false;
+      });
+      connected = true;
+      constructor(callback: () => void) {
+        observers.push({
+          observe: this.observe,
+          disconnect: this.disconnect,
+          deliver: () => {
+            if (this.connected) callback();
+          },
+        });
+      }
+    },
+  );
+  return {
+    source,
+    observers,
+    enable() {
+      disabled = false;
+      observers.forEach((observer) => observer.deliver());
+    },
+  };
+}
+
+function mountLibraryBatch() {
+  let batch!: ReturnType<typeof useLibraryBatch>;
+  hooks.mount(() => {
+    batch = useLibraryBatch({
+      selection: selection(),
+      query: 'scope=normal',
+      onExpire: vi.fn(),
+      onRefresh: async () => {},
+    });
+  });
+  return () => batch;
+}
+
+it.each([false, true])(
+  'restores the source only after selection reconciliation enables it following tag success (retried=%s)',
+  async (retry) => {
+    const focus = watchFocusSource();
+    let requests = 0;
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async () =>
+        Response.json({
+          results: [
+            {
+              id: 'image',
+              status: retry && requests++ === 0 ? 'failed' : 'changed',
+              inQuery: true,
+              message: '标签结果',
+            },
+          ],
+        }),
+      ),
+    );
+    const get = mountLibraryBatch();
+    get().open('add-tags', focus.source);
+    await flush();
+    get().choose({ type: 'add-tags', tagIds: ['tag'] });
+    await flush();
+    get().submit();
+    await flush();
+    if (retry) {
+      expect(get().failedIds).toEqual(['image']);
+      get().retry();
+      await flush();
+    }
+    expect(get()).toMatchObject({
+      visible: false,
+      pending: false,
+      workspace: null,
+    });
+    expect(toast.success).toHaveBeenCalledOnce();
+    expect(focus.source.focus).not.toHaveBeenCalled();
+    expect(focus.observers).toHaveLength(1);
+    expect(focus.observers[0].observe).toHaveBeenCalledWith(focus.source, {
+      attributes: true,
+      attributeFilter: ['disabled'],
+    });
+    focus.enable();
+    expect(focus.source.focus).toHaveBeenCalledWith({ preventScroll: true });
+    expect(focus.observers[0].disconnect).toHaveBeenCalledOnce();
+    focus.enable();
+    expect(focus.source.focus).toHaveBeenCalledOnce();
+  },
+);
+
+it.each(['unmount', 'open'] as const)(
+  'cleans up a disabled source focus wait on %s without focusing it later',
+  async (action) => {
+    const focus = watchFocusSource();
+    const get = mountLibraryBatch();
+    get().open('add-tags', focus.source);
+    await flush();
+    get().close();
+    await flush();
+    expect(focus.observers).toHaveLength(1);
+    if (action === 'unmount') hooks.unmount();
+    else get().open('add-tags', { isConnected: false } as HTMLElement);
+    expect(focus.observers[0].disconnect).toHaveBeenCalledOnce();
+    focus.enable();
+    expect(focus.source.focus).not.toHaveBeenCalled();
+  },
+);
+
+it('cancels a scheduled source focus frame on unmount', async () => {
+  const focus = watchFocusSource();
+  const get = mountLibraryBatch();
+  get().open('add-tags', focus.source);
+  await flush();
+  get().close();
+  hooks.unmount();
+  await flush();
+  expect(focus.observers).toHaveLength(0);
+  expect(focus.source.focus).not.toHaveBeenCalled();
+});
 function accepted(
   request: {
     ids: string[];

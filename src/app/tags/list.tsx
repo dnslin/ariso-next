@@ -1,8 +1,13 @@
 'use client';
 
-import { Button } from '@heroui/react/button';
+import { ButtonGroup } from '@heroui/react/button-group';
 import { Link } from '@heroui/react/link';
 import { Table } from '@heroui/react/table';
+import { Pencil, Trash2 } from 'lucide-react';
+import {
+  ActionIconButton,
+  actionGroupClass,
+} from '../../components/library/action-button';
 import type { Tag } from './api';
 import type { TagAction } from './dialog';
 
@@ -43,26 +48,29 @@ export function TagsList({
   }
   function actions(item: Tag) {
     return (
-      <div className="flex shrink-0 gap-1 md:gap-2">
-        <Button
+      <ButtonGroup
+        aria-label={`标签 ${item.displayName} 操作`}
+        className={actionGroupClass}
+      >
+        <ActionIconButton
           variant="outline"
-          aria-label={`编辑标签 ${item.displayName}`}
+          label={`重命名标签 ${item.displayName}`}
           isDisabled={disabled}
-          className="h-11 w-17 min-w-0 rounded-xl px-2 text-sm font-normal xl:h-10 xl:w-22"
           onPress={() => onAction({ kind: 'edit', tag: item })}
         >
-          编辑
-        </Button>
-        <Button
+          <Pencil size={18} aria-hidden />
+        </ActionIconButton>
+        <ActionIconButton
           variant="outline"
-          aria-label={`删除标签 ${item.displayName}`}
+          label={`删除标签 ${item.displayName}`}
           isDisabled={disabled}
-          className="h-11 w-17 min-w-0 rounded-xl px-2 text-sm font-normal xl:h-10 xl:w-22"
+          className="hover:text-danger focus-visible:text-danger"
           onPress={() => onAction({ kind: 'delete', tag: item })}
         >
-          删除
-        </Button>
-      </div>
+          <ButtonGroup.Separator />
+          <Trash2 size={18} aria-hidden />
+        </ActionIconButton>
+      </ButtonGroup>
     );
   }
   return (

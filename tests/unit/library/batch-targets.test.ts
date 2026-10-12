@@ -48,6 +48,8 @@ function batch(
         {
           id: 'image',
           displayName: '实际已选图片.png',
+          visibility: 'private',
+          hasAlbums: true,
           thumbnailUrl: '/i/image?type=thumbnail',
           storage: { id: 'local', name: '本地', enabled: true },
           source: '第1页',
@@ -105,7 +107,6 @@ const render = (state: LibraryBatch, cache: QueryClient) =>
     createElement(BatchTargets, {
       batch: state,
       client: cache,
-      currentAlbumId: album.id,
     }),
   );
 const targetIds = (html: string) =>
@@ -145,22 +146,37 @@ it.each(['add-tags', 'remove-tags'] as const)(
   },
 );
 
-it('keeps the actual current album selectable for removal even when absent from the target page', () => {
+it('does not inject a cached current album into explicit library removal targets', () => {
   const cache = client();
   cache.setQueryData(['batch-current-album', album.id], { album });
   const html = render(batch('remove-albums'), cache);
-  expect(targetIds(html)).toEqual([album.id]);
-  expect(html).toContain('之前读取的相册');
+  expect(targetIds(html)).toEqual([]);
+  expect(html).not.toContain('之前读取的相册');
 });
 
-it('uses one focusable Button as the tag tips trigger without duplicating its DOM ID', () => {
+it('keeps compact tag names and counts readable without exposing target identifiers', () => {
   const html = render(batch('add-tags'), client());
-  const button = html.match(/<button[^>]*aria-label="标签操作说明"[^>]*>/)?.[0];
-  expect(button).toBeDefined();
-  const id = button?.match(/\bid="([^"]+)"/)?.[1];
-  expect(id).toBeDefined();
-  expect(html.split(`id="${id}"`)).toHaveLength(2);
-  expect(html).not.toMatch(
-    /<div[^>]*role="button"[^>]*>\s*<button[^>]*aria-label="标签操作说明"/,
-  );
+  expect(html).not.toContain('已选 1 张图片 · 1 个标签');
+  expect(html).toContain('搜索目标标签');
+  expect(html).toContain('选择标签：tag-one');
+  expect(html).not.toContain('选择标签：tag-one · tag-one');
+  expect(html).not.toContain('tag-one · 1 张图片');
+  expect(html).toContain('1 张图片');
+  expect(html).toContain('新标签名称');
+  expect(html).not.toContain('upload-create-tag');
+  expect(html).not.toContain('每张图');
+  expect(html).not.toContain('标签操作说明');
+});
+
+it('gives unselected target controls an explicit border independently of borderless field tokens', () => {
+  const html = render(batch('add-tags'), client());
+  const unchecked = html.split('data-target-id="tag-two"')[1];
+  const control = unchecked.match(
+    /<span[^>]*data-slot="checkbox-control"[^>]*>/,
+  )?.[0];
+  expect(control).toBeDefined();
+  expect(control).toContain('size-4');
+  expect(control).toMatch(/\sborder\s/);
+  expect(control).toContain('border-border');
+  expect(control).toContain('bg-background');
 });

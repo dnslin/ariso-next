@@ -61,6 +61,7 @@ const item = (id: string): LibraryItem => ({
   width: 100,
   height: 100,
   visibility: 'private',
+  hasAlbums: false,
   processingStatus: 'ready',
   createdAt: '2026-01-01T00:00:00Z',
   storage: { id: 's', name: 'Local', enabled: true },
@@ -93,6 +94,52 @@ afterEach(() => {
   vi.unstubAllGlobals();
   context.search = '';
   context.mode = 'more';
+});
+
+it('refreshes every currently loaded batch without clearing the current window or changing query state', async () => {
+  context.search = 'q=photo&pageSize=20';
+  const filters = parseLibraryLocation(
+    new URLSearchParams(context.search),
+  ).filters;
+  const key = libraryListKey(filters, 'more', 1);
+  const client = new QueryClient();
+  client.setQueryData<InfiniteData<LibraryPage>>(key, {
+    pages: [page(['a', 'b'], 'cursor-b'), page(['c', 'd'], 'cursor-d')],
+    pageParams: [null, 'cursor-b'],
+  });
+  let release!: () => void;
+  const requests: string[] = [];
+  vi.stubGlobal(
+    'fetch',
+    vi.fn(async (url: string) => {
+      requests.push(url);
+      if (requests.length === 1) {
+        await new Promise<void>((resolve) => {
+          release = resolve;
+        });
+        return Response.json(page(['new', 'a'], 'cursor-a', 101));
+      }
+      return Response.json(page(['b', 'c'], 'cursor-c', 101));
+    }),
+  );
+  const pending = mount(client).refreshCurrent();
+  expect(
+    client
+      .getQueryData<InfiniteData<LibraryPage>>(key)
+      ?.pages.flatMap((entry) => entry.items.map((item) => item.id)),
+  ).toEqual(['a', 'b', 'c', 'd']);
+  release();
+  await pending;
+  const refreshed = client.getQueryData<InfiniteData<LibraryPage>>(key)!;
+  expect(
+    refreshed.pages.flatMap((entry) => entry.items.map((item) => item.id)),
+  ).toEqual(['new', 'a', 'b', 'c']);
+  expect(requests).toHaveLength(2);
+  expect(
+    new URL(requests[1], 'http://localhost').searchParams.get('cursor'),
+  ).toBe('cursor-a');
+  expect(context.search).toBe('q=photo&pageSize=20');
+  client.clear();
 });
 
 it.each([1, 3])(

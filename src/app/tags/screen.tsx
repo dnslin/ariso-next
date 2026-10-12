@@ -12,7 +12,9 @@ import { ListBox } from '@heroui/react/list-box';
 import { Pagination } from '@heroui/react/pagination';
 import { Spinner } from '@heroui/react/spinner';
 import { Alert } from '@heroui/react/alert';
-import { Plus, Search, Tags } from 'lucide-react';
+import { Popover } from '@heroui/react/popover';
+import { Tooltip } from '@heroui/react/tooltip';
+import { CircleHelp, Plus, Search, Tags } from 'lucide-react';
 import { OwnerShell } from '../../components/shell/owner-shell';
 import { useResetUpload } from '../../components/upload/provider';
 import { parseTagQuery } from '../../server/collections/tag-query';
@@ -189,18 +191,41 @@ export function TagsScreen(props: {
         className="grid min-w-0 gap-5 xl:gap-6"
         aria-labelledby="tags-title"
       >
-        <div className="flex min-h-19 items-start justify-between gap-3">
+        <div className="flex items-start justify-between gap-3">
           <div className="grid gap-1.5">
-            <h1
-              id="tags-title"
-              tabIndex={-1}
-              className={`${error ? 'text-[28px]' : 'text-[30px]'} font-medium leading-normal`}
-            >
-              {error ? '标签加载失败' : '标签'}
-            </h1>
-            <p className={error ? 'text-[13px]' : 'text-sm'}>
-              {error ? '暂时无法读取标签列表。' : '图片数量不含回收站。'}
-            </p>
+            <div className="flex items-center gap-2">
+              <h1
+                id="tags-title"
+                tabIndex={-1}
+                className={`${error ? 'text-[28px]' : 'text-[30px]'} font-medium leading-normal`}
+              >
+                {error ? '标签加载失败' : '标签'}
+              </h1>
+              <Popover>
+                <Tooltip>
+                  <Button
+                    aria-label="标签数量说明"
+                    isIconOnly
+                    variant="ghost"
+                    className="size-11 min-w-11 shrink-0 rounded-lg text-muted"
+                  >
+                    <CircleHelp size={18} aria-hidden />
+                  </Button>
+                  <Tooltip.Content>标签数量说明</Tooltip.Content>
+                </Tooltip>
+                <Popover.Content className="w-[min(340px,calc(100vw-32px))] rounded-xl border border-border bg-surface p-4">
+                  <Popover.Dialog
+                    aria-label="标签数量说明"
+                    className="text-[13px] leading-5"
+                  >
+                    图片数量不含回收站。
+                  </Popover.Dialog>
+                </Popover.Content>
+              </Popover>
+            </div>
+            {error ? (
+              <p className="text-[13px]">暂时无法读取标签列表。</p>
+            ) : null}
           </div>
           {data && !empty && !error ? (
             <Button
@@ -277,15 +302,11 @@ export function TagsScreen(props: {
           >
             <Tags size={36} aria-hidden />
             <h2 className="text-xl font-medium">
-              {q ? '没有找到标签' : data.total ? '本页已无标签' : '还没有标签'}
+              {q ? '没有找到标签' : data.total ? '本页已无标签' : '暂无标签'}
             </h2>
-            <p className="text-sm">
-              {q
-                ? '请尝试其他名称。'
-                : data.total
-                  ? '标签数量已变化，请返回有效页。'
-                  : '为图片建立第一个标签。'}
-            </p>
+            {data.total && !q ? (
+              <p className="text-sm">标签数量已变化，请返回有效页。</p>
+            ) : null}
             {q ? (
               <Button
                 className="h-12 w-full rounded-lg font-normal md:w-50"

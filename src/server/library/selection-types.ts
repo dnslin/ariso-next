@@ -5,7 +5,11 @@ export type SelectedLibraryItem = {
   processingStatus?: LibraryItem['processingStatus'];
   batchFailure?: string;
   byteSize?: number;
-} & Pick<LibraryItem, 'id' | 'displayName' | 'thumbnailUrl' | 'storage'>;
+  deletionStatus?: LibraryItem['deletionStatus'];
+} & Pick<
+  LibraryItem,
+  'id' | 'displayName' | 'thumbnailUrl' | 'storage' | 'visibility' | 'hasAlbums'
+>;
 
 export interface LibrarySelectionRequest {
   ids: string[];

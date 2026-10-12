@@ -70,11 +70,13 @@ export function LibraryScreen(props: {
   timeZone: string;
   albumId?: string;
   header?: ReactNode;
+  toolbarActions?: ReactNode;
   children?: ReactNode;
   afterToolbar?: ReactNode;
   workspace?: { content: ReactNode; footer: ReactNode };
   onRefresh?: () => void;
   onImageRemoved?: () => void;
+  refreshKey?: number;
 }) {
   const resetUpload = useResetUpload();
   const detail = useDetailNavigation();
@@ -88,6 +90,26 @@ export function LibraryScreen(props: {
     { albumId: props.albumId },
     !sessionEnded,
   );
+  const lastRefreshKey = useRef(props.refreshKey);
+  const refreshFromAlbum = useEffectEvent(() => {
+    void query.refreshCurrent();
+  });
+  useEffect(() => {
+    if (lastRefreshKey.current === props.refreshKey) return;
+    lastRefreshKey.current = props.refreshKey;
+    refreshFromAlbum();
+  }, [props.refreshKey]);
+  const refreshFromUpload = useEffectEvent((event: Event) => {
+    const { albumIds } = (event as CustomEvent<{ albumIds: string[] }>).detail;
+    if (!props.albumId || albumIds.includes(props.albumId))
+      void query.refreshCurrent();
+  });
+  useEffect(() => {
+    const changed = (event: Event) => refreshFromUpload(event);
+    window.addEventListener('ariso:upload-albums-changed', changed);
+    return () =>
+      window.removeEventListener('ariso:upload-albums-changed', changed);
+  }, []);
   const detailQuery = useDetailQuery(
     client,
     detail.imageId,
@@ -156,7 +178,6 @@ export function LibraryScreen(props: {
     )
       removeMissingSource(detail.imageId);
   }, [detail.imageId, detailQuery.unavailable, detailQuery.error]);
-  const [notice, setNotice] = useState('');
   const [contextMenu, setContextMenu] = useState<
     (LibraryContextMenu & { identity: string }) | null
   >(null);
@@ -209,7 +230,9 @@ export function LibraryScreen(props: {
   const batchPending = batch.pending || batchReprocess.pending || copy.pending;
   const batchUnresolved = batch.unresolved || batchReprocess.unresolved;
   const batchContentVisible =
-    (batch.visible && batch.workspace?.phase !== 'confirm') ||
+    (batch.visible &&
+      batch.workspace?.phase === 'result' &&
+      !batch.workspace.action.endsWith('tags')) ||
     (batchReprocess.visible && batchReprocess.workspace?.phase === 'result');
   const reconciliation = useSelectionReconciliation({
     // Copy is read-only and freezes its own selection; it need not pause reconciliation.
@@ -227,9 +250,6 @@ export function LibraryScreen(props: {
   });
   if (query.expired && !sessionEnded) setSessionEnded(true);
   async function onTrashed(record: Detail) {
-    setNotice(
-      `已将 ${record.displayName} 移入回收站。文件仍占用空间，不会自动清理。`,
-    );
     selection.remove(record.id);
     detail.close();
     await query.onItemRemoved(record.id);
@@ -269,7 +289,9 @@ export function LibraryScreen(props: {
         batchReprocess.visible &&
         batchReprocess.workspace?.phase === 'result' ? (
           <BatchReprocessFooter batch={batchReprocess} />
-        ) : batch.visible && batch.workspace?.phase !== 'confirm' ? (
+        ) : batch.visible &&
+          batch.workspace?.phase === 'result' &&
+          !batch.workspace.action.endsWith('tags') ? (
           <BatchWorkspaceFooter batch={batch} />
         ) : detail.view === 'reprocess' ? (
           reprocess.footerActions ? (
@@ -296,16 +318,15 @@ export function LibraryScreen(props: {
         }
       >
         <section
-          className="grid min-w-0 gap-5 xl:gap-6"
+          className="grid min-w-0 gap-5 pb-6 xl:gap-6"
           aria-labelledby="library-title"
           data-testid="library-list"
           data-loaded-count={query.items.length}
           data-layout={query.layout}
           data-loading-mode={query.loadingMode}
         >
-          {notice ? <p role="status">{notice}</p> : null}
           {props.header ?? (
-            <div className="grid min-h-19 gap-1.5">
+            <div className="flex min-w-0 items-center justify-between gap-3">
               <h1
                 id="library-title"
                 tabIndex={-1}
@@ -313,7 +334,6 @@ export function LibraryScreen(props: {
               >
                 图库
               </h1>
-              <p className="text-sm">保存每一刻，也让每一次查找更轻松。</p>
             </div>
           )}
           {analyticsSource ? (
@@ -365,6 +385,7 @@ export function LibraryScreen(props: {
                 },
               }}
               album={!!props.albumId}
+              actions={props.toolbarActions}
               selectionMenu={
                 selection.selected.size ? (
                   <LibrarySelectionMenu
@@ -373,12 +394,8 @@ export function LibraryScreen(props: {
                     contextMenu={contextMenu}
                     onContextMenuClose={() => setContextMenu(null)}
                     loadingMode={query.loadingMode}
-                    disabled={
-                      !query.canOperate ||
-                      reconciliation.pending ||
-                      batchUnresolved ||
-                      batchPending
-                    }
+                    disabled={!query.canOperate || batchUnresolved}
+                    pending={reconciliation.pending || batchPending}
                     onOpen={detail.open}
                     onBatch={(action, element) => {
                       if (action === 'reprocess') batchReprocess.open(element);
@@ -500,15 +517,13 @@ export function LibraryScreen(props: {
                           ? '相册还没有图片'
                           : '图库还没有图片'}
                   </h2>
-                  <p className="text-sm">
-                    {query.total
-                      ? '图片数量已变化，请返回有效页。'
-                      : filtered
-                        ? '请修改或清除筛选条件。'
-                        : props.albumId
-                          ? '添加图片后，会按加入时间从新到旧显示。'
-                          : '上传第一张图片，开始整理你的图库。'}
-                  </p>
+                  {query.total || filtered ? (
+                    <p className="text-sm">
+                      {query.total
+                        ? '图片数量已变化，请返回有效页。'
+                        : '请修改或清除筛选条件。'}
+                    </p>
+                  ) : null}
                   {query.page > 1 ? (
                     <Button
                       className="min-h-11 rounded-lg"
@@ -673,7 +688,6 @@ export function LibraryScreen(props: {
         batch={batch}
         client={client}
         currentAlbumId={props.albumId}
-        timeZone={props.timeZone}
       />
       {props.workspace?.content}
     </OwnerShell>
