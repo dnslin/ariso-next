@@ -13,7 +13,11 @@
 
 ## 适用检查
 
-2026-09-22 所有者调整执行策略：日常开发、PR 和 main 推送统一在本地执行适用检查，不自动运行 GitHub Actions，也不以每个 PR 的双架构镜像结果作为完成条件。只有发布 GitHub Release（`release.published`）才执行发布检查、AMD64/ARM64 镜像构建、实际容器验证和镜像发布；单独推送 tag 不触发，未保留手动运行入口。
+2026-10-12 所有者调整执行策略：日常检查由 `.github/workflows/ci.yml` 在 PR 和 main 推送时执行，包括格式、静态分析、类型、文档/API 契约、构建、单元、普通集成及 AMD64 真实媒体工具测试。真实媒体测试使用 `scripts/verify-media-tools.sh`，在与生产相同的 Debian 镜像上执行；curl 只存在于测试派生镜像。
+
+发布工作流通过手动入口指定版本，执行双架构镜像构建与必要运行验证，再发布同轮已验证镜像。镜像推送和镜像包上传成功后才公布 GitHub Release。不在发布阶段重复整套日常检查。完整格式矩阵、受限磁盘/资源实验、Unicode/SQLite 竞争实验和实验 UI 构建移至 `.github/workflows/experiments.yml` 的手动入口，不作为每次 PR 或发布的前置。
+
+首次发布或修改 Docker/启动/打包/发布验证时，先在独立 Docker 环境执行与 Actions 相同的 `scripts/verify-release-image.mjs` 并收齐证据，再统一发布。不以连续创建正式版本作为调试入口；真实媒体工具相关修改还须先执行同一 `verify-media-tools.sh`。
 
 下列命令从仓库根目录、Node 24 和项目锁定 pnpm 运行。真实图片测试要求 PATH 中已有 ImageMagick 7（`magick`）和 ExifTool（`exiftool`）；不要求本机 Docker，不下载浏览器。命令清单是执行约定，不代表某次任务已通过。
 
@@ -27,13 +31,13 @@
 | 单元/集成      | `pnpm run test:unit`、`pnpm run test:integration`（普通集成与真实工具两组均执行）；可先 `pnpm exec vitest run --project integration tests/integration/<module>/<case>.test.ts` 聚焦运行 |
 | 构建           | `pnpm run build`；保留无部署密钥/无数据库构建回归                                                                                                                                       |
 | 浏览器         | `pnpm run test:browser`；各界面任务新增场景并接入 `scripts/verify-browser.mjs`，不能只跑旧 `e2e/runtime.mjs` 就称业务通过                                                               |
-| 镜像发布验证   | GitHub Release 发布时按 `.github/workflows/images.yml` 执行，AMD64/ARM64 分别保留报告；日常本地交付不要求此项                                                                           |
+| 镜像发布验证   | PR 的 AMD64 真实工具测试与 Release 的双架构运行验证分开；入口及本地预检见[部署说明](../guides/deployment.md#发布验证)                                                                   |
 
 先完成 `pnpm run build` 再运行集成测试。资源紧张时可以用 `pnpm run test:integration --maxWorkers=4` 限制并行数量，不修改测试超时、断言或跳过测试。涉及 `tests/experiments/ui` 或其依赖时，在本地执行该目录的冻结安装、typecheck 和 build；Ego 运行器通过 `test:browser` 自行构建外壳夹具。
 
-同一轮实现、审计修复与本地验证记录收齐后统一推送，PR 写明实际环境、命令、结果及未执行项，无需等待不存在的远端 PR 检查。纯文档或工作流配置改动执行格式、文档依赖和配置检查；没有业务或构建输入变更时，不机械重跑应用构建与全部浏览器流程。当前 main 未配置必需检查；后续保护规则不得要求已取消的 PR Actions 检查。
+同一轮实现、审计修复与本地验证记录收齐后统一推送，PR 写明实际环境、命令、结果及未执行项，并确认 PR Actions 通过。纯文档或工作流配置改动先执行格式、文档依赖和配置检查；涉及共用验证脚本时实际执行对应入口。当前 main 未配置必需检查，不将“尚未配置”视为检查通过。
 
-本地验证证明当前机器上的行为，不等于另一种 CPU 架构、Linux 受限挂载或最终镜像已经验证。这些差异在发布阶段取得真实证据，保留双架构产品目标；不能把未运行的发布验证标为通过，也不因日常未运行它而阻塞功能 PR。任务卡中的容器或双架构要求也按这一执行时机处理：前置实验先交付本地可执行部分及待发布验证清单，不因尚未运行双架构而阻塞后续开发；缺少本地应验证的功能或格式样本仍未通过。正式发布仍须全部发布检查通过后才推送镜像，流程见[部署说明](../guides/deployment.md#发布验证)。历史报告保留当时的实际结果，不继续作为每日执行门槛。
+本地验证证明当前机器上的行为，不等于另一种 CPU 架构已经验证。保留 AMD64/ARM64 产品目标；正式发布在原生 runner 分别运行必要镜像验证，通过后才推送镜像，流程见[部署说明](../guides/deployment.md#发布验证)。耗时实验改为独立执行，不删除测试，也不把未运行的实验记为通过。历史报告保留当时的实际结果，不继续作为每日执行门槛。
 
 每2–3项相关任务完成后运行本切片真实流程及适用检查，M1/M2切片与M5全量关卡见 [验收任务](./acceptance-tasks.md)。真实服务环境缺失就记录阻塞；模拟接口可以证明单元行为，不能证明S3/OAuth/SMTP或用户完整流程可用。规模测量写明CPU/内存/磁盘/数据分布及冷暖查询，SPEC中的起始参数不冒充实测阈值。
 

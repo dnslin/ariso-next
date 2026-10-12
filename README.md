@@ -1,10 +1,10 @@
 # Ariso
 
-单用户、自托管图床。当前交付的是运行基础：工程状态页、SQLite 持久化、启动迁移与配置检查、健康接口、结构化日志和图片工具验证。账号初始化、登录、上传、存储配置和水印业务尚未开放。
+单用户、自托管图床，支持所有者初始化与登录、图片上传与管理、存储配置和水印。通过 Docker Compose 部署，SQLite、图片及站点资源统一持久化。
 
-文档从[文档导航](./docs/README.md)进入；下一阶段见[全栈开发计划](./docs/tasks/plan.md)。
+文档从[文档导航](./docs/README.md)进入；阶段计划与验收范围见[全栈开发计划](./docs/tasks/plan.md)。
 
-实际检查结果与限制见 [runtime 验证记录](./docs/archive/runtime/runtime-verification.md)。[PRD](./docs/product/Ariso-PRD-v1.1.md) 描述目标产品，不代表全部能力已经实现。
+各模块的检查结果与限制从文档导航进入。早期运行基础证据保留在 [runtime 验证记录](./docs/archive/runtime/runtime-verification.md)。[PRD](./docs/product/Ariso-PRD-v1.1.md) 描述目标产品，不代表全部验收已经完成。
 
 ## 本地开发
 
@@ -27,7 +27,7 @@ node -e "console.log(require('node:crypto').randomBytes(32).toString('hex'))"
 pnpm run dev
 ```
 
-开发入口先编译启动程序，再读取 `.env.local` 完成数据目录、SQLite、迁移和配置检查，随后在 `http://127.0.0.1:3000` 启动 Next。页面显示“运行基础建设中”；`/api/health` 应返回 HTTP 200、`Cache-Control: no-store` 和 `{"status":"ok"}`。Ctrl+C 停止服务。
+开发入口先编译启动程序，再读取 `.env.local` 完成数据目录、SQLite、迁移和配置检查，随后在 `http://127.0.0.1:3000` 启动 Next。首次启动通过 Web 初始化所有者；`/api/health` 应返回 HTTP 200、`Cache-Control: no-store` 和 `{"status":"ok"}`。Ctrl+C 停止服务。
 
 Linux 从源码安装原生依赖时需要 Python 和 C/C++ 构建工具；不要跨操作系统或架构复制 `node_modules`。图片工具完整环境由 Docker 镜像提供。本机环境差异和历史命令见 [历史开发记录](./docs/archive/runtime/development.md)。
 
@@ -59,7 +59,7 @@ pnpm run test:integration
 pnpm run test:browser
 ```
 
-浏览器检查复用 Ego Lite，运行前按 [Ego 冒烟说明](./e2e/runtime.md) 准备环境。测试自行创建生产服务、临时数据和临时密钥并清理，不连接已有部署。日常 PR 和 main 推送不运行 Actions；本地执行范围与发布验证边界统一见[任务执行约定](./docs/tasks/execution.md#适用检查)。
+浏览器检查复用 Ego Lite，运行前按 [Ego 冒烟说明](./e2e/runtime.md) 准备环境。测试自行创建生产服务、临时数据和临时密钥并清理，不连接已有部署。日常 PR 和 main 推送执行日常 Actions 检查；发布仅执行必要镜像验证，耗时实验单独手动执行。具体范围与本地预检统一见[任务执行约定](./docs/tasks/execution.md#适用检查)。
 
 `test:integration` 在本地同时执行普通集成和真实工具测试，包含实际 ImageMagick/ExifTool 转换，不需要 Docker。请先完成生产构建；资源紧张时可使用 `pnpm run test:integration --maxWorkers=4`。浏览器检查通过 `test:browser` 复用现有 Ego Lite。
 

@@ -12,6 +12,7 @@ import { tmpdir } from 'node:os';
 import { createConnection, createServer } from 'node:net';
 import { join, resolve } from 'node:path';
 import { setTimeout as delay } from 'node:timers/promises';
+import { fileURLToPath } from 'node:url';
 import { parseArgs } from 'node:util';
 import { startTerminal } from './terminal.ts';
 import { execa } from 'execa';
@@ -49,6 +50,23 @@ export function containerEnvironment(environment) {
   for (const key of ['BETTER_AUTH_SECRET', 'ARISO_ENCRYPTION_KEY', 'LOG_LEVEL'])
     delete isolated[key];
   return isolated;
+}
+
+export async function assertPersistedImage(origin, cookie, imageId, bytes) {
+  const library = await fetch(`${origin}/api/images`, {
+    headers: { cookie },
+    signal: AbortSignal.timeout(15000),
+  });
+  assert.equal(library.status, 200, 'owner can read the persisted library');
+  const page = await library.json();
+  assert.equal(page.total, 1, 'one uploaded image remains in the library');
+  assert.equal(page.items[0]?.id, imageId, 'uploaded image identity persists');
+  assert.equal(page.items[0]?.processingStatus, 'ready');
+  const original = await fetch(`${origin}/i/${imageId}?type=original`, {
+    signal: AbortSignal.timeout(15000),
+  });
+  assert.equal(original.status, 200, 'original image is deliverable');
+  assert.deepEqual(Buffer.from(await original.arrayBuffer()), bytes);
 }
 
 export async function assertPortClosed(port) {
@@ -401,6 +419,23 @@ async function main() {
       type: 'local',
       enabled: 1,
       local_path: 'default',
+      endpoint: null,
+      region: null,
+      bucket: null,
+      path_prefix: null,
+      force_path_style: null,
+      access_key_encrypted: null,
+      secret_key_encrypted: null,
+      config_revision: 1,
+      connection_status: 'untested',
+      connection_revision: null,
+      connection_report: null,
+      connection_tested_at: null,
+      cors_status: 'untested',
+      cors_report: null,
+      cors_revision: null,
+      cors_origin: null,
+      cors_tested_at: null,
       created_at: defaultStorage.created_at,
       updated_at: defaultStorage.updated_at,
     });
@@ -415,15 +450,22 @@ async function main() {
       email: 'container-owner@example.test',
       password: randomBytes(24).toString('base64url'),
     };
+    let requestIp = 0;
     const post = (path, body, headers = {}) =>
       fetch(`${origin}${path}`, {
         method: 'POST',
-        headers: { 'content-type': 'application/json', origin, ...headers },
+        headers: {
+          'content-type': 'application/json',
+          // Independent verification requests must not share the login rate bucket.
+          'x-forwarded-for': `192.0.2.${++requestIp}`,
+          origin,
+          ...headers,
+        },
         body: JSON.stringify(body),
         redirect: 'manual',
         signal: AbortSignal.timeout(15000),
       });
-    async function loginAndLogout() {
+    async function loginAndLogout(verify) {
       const login = await post('/api/auth/sign-in/email', credentials);
       assert.equal(login.status, 200);
       const cookie = login.headers
@@ -442,6 +484,7 @@ async function main() {
       const authenticated = await session();
       assert.equal(authenticated.status, 200);
       assert.equal((await authenticated.json()).user.email, credentials.email);
+      await verify?.(cookie);
       const logout = await post('/api/auth/sign-out', {}, { cookie });
       assert.equal(logout.status, 200);
       assert.equal(logout.headers.get('cache-control'), 'no-store');
@@ -534,6 +577,17 @@ async function main() {
       max_edge: null,
       jpeg_background: '#FFFFFF',
       watermark_mode: 'off',
+      watermark_asset_id: null,
+      watermark_text: '',
+      watermark_font: 'chinese',
+      watermark_font_size: 3,
+      watermark_color: '#FFFFFF',
+      watermark_stroke_color: '#000000',
+      watermark_stroke_width: 0,
+      watermark_opacity: 50,
+      watermark_position: 'bottom-right',
+      watermark_margin: 2,
+      watermark_width: 20,
       default_link_version: 'compressed',
       default_visibility: 'public',
       concurrency: 1,
@@ -546,12 +600,49 @@ async function main() {
     check(
       'concurrent setup commits one owner and the initial site/media settings without a session',
     );
-    // M1 verifies the default directory's persisted bytes; uploads belong to M2.
-    const probe = randomBytes(256);
-    await exec(
-      `require('fs').writeFileSync('/data/storage/default/m1-persistence.bin', Buffer.from('${probe.toString('base64')}', 'base64'));console.log('null')`,
+    const imageBytes = await readFile(
+      fileURLToPath(
+        new URL('../tests/fixtures/runtime/images/sample.png', import.meta.url),
+      ),
     );
-    await loginAndLogout();
+    let uploadedImage;
+    await loginAndLogout(async (cookie) => {
+      const created = await post(
+        '/api/upload-tokens',
+        { name: 'Container verification' },
+        { cookie },
+      );
+      assert.equal(created.status, 200);
+      const { key } = await created.json();
+      assert.equal(typeof key, 'string');
+      const form = new FormData();
+      form.append(
+        'file',
+        new Blob([imageBytes], { type: 'image/png' }),
+        'sample.png',
+      );
+      const response = await fetch(`${origin}/api/upload`, {
+        method: 'POST',
+        headers: { authorization: `Bearer ${key}` },
+        body: form,
+        signal: AbortSignal.timeout(60000),
+      });
+      assert.equal(response.status, 201, await response.clone().text());
+      const result = await response.json();
+      assert.equal(result.status, 'ready');
+      assert.equal(result.processing.status, 'succeeded');
+      assert.equal(typeof result.imageId, 'string');
+      uploadedImage = result.imageId;
+      await assertPersistedImage(origin, cookie, uploadedImage, imageBytes);
+    });
+    report.media = {
+      imageId: uploadedImage,
+      byteLength: imageBytes.byteLength,
+      processingStatus: 'succeeded',
+    };
+    check(
+      'real image upload completes its media job and delivers the original bytes through HTTP',
+    );
     check('production login and logout revoke the cookie before restart');
     const recoveryCookies = [];
     for (let index = 0; index < 2; index++) {
@@ -618,13 +709,10 @@ async function main() {
 
     const beforeRestart = setupCodes(await logs('setup-completed')).length;
     assert.equal(beforeRestart, 1);
-    await compose(['restart', 'ariso']);
+    await start();
     origin = `http://127.0.0.1:${(await inspect()).NetworkSettings.Ports['3000/tcp'][0].HostPort}`;
     await waitHealthy();
-    assert.equal(
-      setupCodes(await logs('setup-restarted')).length,
-      beforeRestart,
-    );
+    assert.equal(setupCodes(await logs('setup-restarted')).length, 0);
     const repeated = await post('/api/setup', {
       ...payload,
       email: 'second-owner@example.test',
@@ -638,18 +726,12 @@ async function main() {
     const afterRestart = await initialConfiguration();
     assert.deepEqual(afterRestart, afterSetup);
     report.identity.afterRestart = afterRestart;
-    assert.deepEqual(
-      await readFile(join(data, 'storage/default/m1-persistence.bin')),
-      probe,
+    await loginAndLogout((cookie) =>
+      assertPersistedImage(origin, cookie, uploadedImage, imageBytes),
     );
-    report.identity.storageProbe = {
-      path: '/data/storage/default/m1-persistence.bin',
-      byteLength: probe.byteLength,
-    };
-    await loginAndLogout();
     await waitHealthy();
     check(
-      'restart preserves configuration and default storage bytes, emits no setup code, rejects a second owner and supports fresh login/logout with healthy service',
+      'container recreation preserves configuration, library image and original bytes, emits no setup code and supports fresh login/logout',
     );
     await stop();
     // 保留镜像的真实迁移，再追加测试迁移；不能以空生产 journal 为前提。

@@ -539,25 +539,37 @@ it('renders percent expressions, readable file paths, backslashes and newlines a
   });
   // ImageMagick's label:@file reader consumes file content literally, independently
   // of the production escape function used for inline label: arguments.
+  // Debian blocks indirect reads; allow only this reference file in this command.
+  const referenceConfig = join(directory, 'reference-config');
+  const referencePolicy = join(referenceConfig, 'ImageMagick');
+  await mkdir(referencePolicy, { recursive: true });
+  await writeFile(
+    join(referencePolicy, 'policy.xml'),
+    `<policymap><policy domain="path" rights="read" pattern="@${textFile}"/></policymap>`,
+  );
   const expectedPath = join(directory, 'literal-reference.png');
-  await execa('magick', [
-    '-background',
-    'none',
-    '-density',
-    '72',
-    '-font',
-    watermarkFonts.latin,
-    '-pointsize',
-    '24',
-    '-fill',
-    '#123456',
-    '-stroke',
-    '#000000',
-    '-strokewidth',
-    '0',
-    `label:@${textFile}`,
-    expectedPath,
-  ]);
+  await execa(
+    'magick',
+    [
+      '-background',
+      'none',
+      '-density',
+      '72',
+      '-font',
+      watermarkFonts.latin,
+      '-pointsize',
+      '24',
+      '-fill',
+      '#123456',
+      '-stroke',
+      '#000000',
+      '-strokewidth',
+      '0',
+      `label:@${textFile}`,
+      expectedPath,
+    ],
+    { env: { XDG_CONFIG_HOME: referenceConfig } },
+  );
   const actualPath = join(runtime.temporaryRoot, 'watermark-overlay.png');
   const decode = async (path: string) =>
     (

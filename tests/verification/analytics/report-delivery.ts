@@ -45,29 +45,32 @@ export async function verifyReportDelivery(target: DeliveryTarget) {
     const root = join(app.directory, 'data', 'storage');
     const plan = planLocalWrite('uploads');
     await writeObject(root, storage, plan, Readable.from(remote.bytes));
-    db.transaction((tx) => {
-      const asset = acceptOriginal(tx, {
-        imageId: localId,
-        storageId: storage.id,
-        key: plan.key,
-        originalName: 'local.png',
-        visibility: 'public',
-        format: 'PNG',
-        mime: 'image/png',
-        byteSize: remote.bytes.length,
-        classification: 'static',
-        snapshot: createProcessingSnapshot(tx),
-        expectedVersions: [],
-      });
-      tx.update(mediaJobs)
-        .set({ status: 'succeeded' })
-        .where(eq(mediaJobs.id, asset.jobId))
-        .run();
-      tx.update(mediaImages)
-        .set({ processingStatus: 'ready' })
-        .where(eq(mediaImages.id, localId))
-        .run();
-    });
+    db.transaction(
+      (tx) => {
+        const asset = acceptOriginal(tx, {
+          imageId: localId,
+          storageId: storage.id,
+          key: plan.key,
+          originalName: 'local.png',
+          visibility: 'public',
+          format: 'PNG',
+          mime: 'image/png',
+          byteSize: remote.bytes.length,
+          classification: 'static',
+          snapshot: createProcessingSnapshot(tx),
+          expectedVersions: [],
+        });
+        tx.update(mediaJobs)
+          .set({ status: 'succeeded' })
+          .where(eq(mediaJobs.id, asset.jobId))
+          .run();
+        tx.update(mediaImages)
+          .set({ processingStatus: 'ready' })
+          .where(eq(mediaImages.id, localId))
+          .run();
+      },
+      { behavior: 'immediate' },
+    );
     for (const kind of ['compressed', 'watermark', 'thumbnail'] as const) {
       const id = randomUUID();
       const derived = planLocalWrite('derived');

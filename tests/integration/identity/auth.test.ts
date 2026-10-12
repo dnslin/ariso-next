@@ -1,8 +1,9 @@
-import { execFileSync } from 'node:child_process';
+import { execFile } from 'node:child_process';
 import { randomBytes } from 'node:crypto';
 import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
+import { promisify } from 'node:util';
 import { eq } from 'drizzle-orm';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { openRuntimeDatabase } from '../../../src/server/runtime/db.ts';
@@ -18,6 +19,7 @@ let connection: ReturnType<typeof openRuntimeDatabase>;
 let env: Record<string, string>;
 let origin: string;
 const day = 86400000;
+const execFileAsync = promisify(execFile);
 let requestIp = 0;
 const cookies = (response: Response) =>
   response.headers
@@ -68,7 +70,7 @@ async function ready() {
     { timeout: 15000 },
   );
 }
-function owner(
+async function owner(
   cookie = '',
   method = 'GET',
   requestOrigin = origin,
@@ -76,18 +78,20 @@ function owner(
   query = '',
 ) {
   return JSON.parse(
-    execFileSync(
-      process.execPath,
-      [
-        resolve('tests/integration/identity/auth-process.ts'),
-        JSON.stringify({
-          url: `${origin}/admin${query}`,
-          method,
-          headers: { cookie, origin: requestOrigin, ...headers },
-        }),
-      ],
-      { env: { ...process.env, ...env }, encoding: 'utf8', timeout: 10000 },
-    )
+    (
+      await execFileAsync(
+        process.execPath,
+        [
+          resolve('tests/integration/identity/auth-process.ts'),
+          JSON.stringify({
+            url: `${origin}/admin${query}`,
+            method,
+            headers: { cookie, origin: requestOrigin, ...headers },
+          }),
+        ],
+        { env: { ...process.env, ...env }, encoding: 'utf8', timeout: 10000 },
+      )
+    ).stdout
       .trim()
       .split('\n')
       .find((line) => line.startsWith('AUTH_RESULT '))!
@@ -124,7 +128,7 @@ it('uninitialized production auth requests return setup-required without creatin
     expect(await response.json()).toMatchObject({ code: 'SETUP_REQUIRED' });
     expect(response.headers.get('cache-control')).toBe('no-store');
   }
-  expect(owner()).toEqual({ status: 401, code: 'UNAUTHORIZED' });
+  expect(await owner()).toEqual({ status: 401, code: 'UNAUTHORIZED' });
   expect(connection.db.select().from(user).all()).toEqual([]);
 });
 
@@ -285,13 +289,19 @@ describe('initialized production auth', () => {
     const settings = connection.db.select().from(siteSettings).get()!;
     connection.db.delete(siteSettings).run();
     try {
-      expect(owner()).toEqual({ status: 500, code: 'IDENTITY_INCOMPLETE' });
+      expect(await owner()).toEqual({
+        status: 500,
+        code: 'IDENTITY_INCOMPLETE',
+      });
     } finally {
       connection.db.insert(siteSettings).values(settings).run();
     }
     connection.db.delete(account).run();
     try {
-      expect(owner()).toEqual({ status: 500, code: 'IDENTITY_INCOMPLETE' });
+      expect(await owner()).toEqual({
+        status: 500,
+        code: 'IDENTITY_INCOMPLETE',
+      });
     } finally {
       connection.db.insert(account).values(credential).run();
     }
@@ -317,17 +327,20 @@ describe('initialized production auth', () => {
     expect(response.headers.get('cache-control')).toBe('no-store');
     const cookie = cookies(response);
     expect((await (await getSession(cookie)).json()).user.email).toBe(email);
-    expect(owner(cookie).user.email).toBe(email);
-    expect(owner(cookie, 'POST').user.email).toBe(email);
-    expect(owner(cookie, 'POST', 'https://foreign.example')).toEqual({
+    expect((await owner(cookie)).user.email).toBe(email);
+    expect((await owner(cookie, 'POST')).user.email).toBe(email);
+    expect(await owner(cookie, 'POST', 'https://foreign.example')).toEqual({
       status: 403,
       code: 'INVALID_ORIGIN',
     });
-    expect(owner(cookie, 'POST', '')).toEqual({
+    expect(await owner(cookie, 'POST', '')).toEqual({
       status: 403,
       code: 'INVALID_ORIGIN',
     });
-    expect(owner('invalid')).toEqual({ status: 401, code: 'UNAUTHORIZED' });
+    expect(await owner('invalid')).toEqual({
+      status: 401,
+      code: 'UNAUTHORIZED',
+    });
     const invalid = await post('sign-in/email', {
       email,
       password: 'wrong-password',
@@ -368,22 +381,22 @@ describe('initialized production auth', () => {
     const signed = cookies(response);
     const { token, user: loggedInUser } = await response.json();
     expect(token).toEqual(expect.any(String));
-    expect(owner(signed).user.id).toBe(loggedInUser.id);
+    expect((await owner(signed)).user.id).toBe(loggedInUser.id);
     const unauthorized = { status: 401, code: 'UNAUTHORIZED' };
     expect(
-      owner('', 'GET', origin, { authorization: `Bearer ${token}` }),
+      await owner('', 'GET', origin, { authorization: `Bearer ${token}` }),
     ).toEqual(unauthorized);
-    expect(owner(`ariso.share_token=${encodeURIComponent(token)}`)).toEqual(
-      unauthorized,
-    );
     expect(
-      owner('', 'GET', origin, {
+      await owner(`ariso.share_token=${encodeURIComponent(token)}`),
+    ).toEqual(unauthorized);
+    expect(
+      await owner('', 'GET', origin, {
         'x-user-id': loggedInUser.id,
         userId: loggedInUser.id,
       }),
     ).toEqual(unauthorized);
     expect(
-      owner(
+      await owner(
         '',
         'GET',
         origin,
@@ -499,7 +512,7 @@ describe('initialized production auth', () => {
     expect(logout.status).toBe(200);
     expect(logout.headers.getSetCookie().join(';')).toContain('Max-Age=0');
     expect(await (await getSession(first)).json()).toBeNull();
-    expect(owner(first)).toEqual({ status: 401, code: 'UNAUTHORIZED' });
+    expect(await owner(first)).toEqual({ status: 401, code: 'UNAUTHORIZED' });
     const other = await (await getSession(second)).json();
     expect(other.user.email).toBe(email);
     connection.db
@@ -508,7 +521,7 @@ describe('initialized production auth', () => {
       .where(eq(session.id, other.session.id))
       .run();
     expect(await (await getSession(second)).json()).toBeNull();
-    expect(owner(second)).toEqual({ status: 401, code: 'UNAUTHORIZED' });
+    expect(await owner(second)).toEqual({ status: 401, code: 'UNAUTHORIZED' });
   }, 30000);
 
   it.each(['read', 'delete'])(
@@ -583,7 +596,7 @@ describe('initialized production auth', () => {
       });
       expect(externalCallback.status).toBe(403);
       expect((await (await getSession(cookie)).json()).user.email).toBe(email);
-      expect(owner(cookie, 'POST').user.email).toBe(email);
+      expect((await owner(cookie, 'POST')).user.email).toBe(email);
       expect((await post('sign-out', {}, { cookie })).status).toBe(200);
     }
   }, 30000);
@@ -626,7 +639,7 @@ describe('initialized production auth', () => {
     await ready();
     expect(server.child.pid).not.toBe(pid);
     expect(await (await getSession(cookie)).json()).toBeNull();
-    expect(owner(cookie)).toEqual({ status: 401, code: 'UNAUTHORIZED' });
+    expect(await owner(cookie)).toEqual({ status: 401, code: 'UNAUTHORIZED' });
     expect(snapshot()).toEqual(before);
     const fresh = cookies(await login());
     expect((await (await getSession(fresh)).json()).user.email).toBe(email);

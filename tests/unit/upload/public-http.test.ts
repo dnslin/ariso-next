@@ -24,6 +24,7 @@ it('returns 401 before looking at the multipart body or registering a receipt', 
   Object.defineProperty(request, 'body', { get: read });
   const result = await publicUploadResponse(request);
   expect(result.status).toBe(401);
+  expect(result.headers.get('connection')).toBeNull();
   expect(await result.json()).toMatchObject({
     imageId: null,
     status: 'not_created',

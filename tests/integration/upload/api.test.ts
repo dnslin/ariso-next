@@ -37,6 +37,8 @@ const clockCase =
 async function errorResult(response: Response, status: number, stage?: string) {
   expect(response.status, await response.clone().text()).toBe(status);
   expect(response.headers.get('cache-control')).toBe('no-store');
+  if (stage === 'receiving')
+    expect(response.headers.get('connection')).toBe('close');
   const result = await response.json();
   expect(result).toMatchObject({
     imageId: null,
@@ -124,6 +126,7 @@ it(
       expect(completed.error).toBeNull();
       const response = completed.response!;
       expect(response.status, await response.clone().text()).toBe(504);
+      expect(response.headers.get('connection')).not.toBe('close');
       expect(await response.json()).toMatchObject({
         imageId,
         status: 'pending',
@@ -238,6 +241,7 @@ it('authenticates more than ten requests with one fixed upload:create Token with
 it('returns 201 only with the completed persisted job, actual saved version links and original bytes', async () => {
   const response = await fixture.upload(key);
   expect(response.status, await response.clone().text()).toBe(201);
+  expect(response.headers.get('connection')).not.toBe('close');
   expect(response.headers.get('cache-control')).toBe('no-store');
   expect(response.headers.getSetCookie()).toEqual([]);
   const result = await response.json();

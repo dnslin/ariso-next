@@ -1,91 +1,48 @@
 name: Release images
 
 on:
-  release:
-    types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version, e.g. v1.0.5'
+        required: true
+        type: string
 
 permissions:
   contents: read
 
 concurrency:
-  group: images-${{ github.event_name }}-${{ github.ref }}
+  group: images-${{ inputs.version }}
 
 jobs:
   build:
     name: Build and verify ${{ matrix.arch }}
     runs-on: ${{ matrix.runner }}
-    timeout-minutes: 30
+    timeout-minutes: 20
     strategy:
       fail-fast: false
       matrix:
         include:
           - arch: amd64
-            node-arch: x64
             runner: ubuntu-24.04
           - arch: arm64
-            node-arch: arm64
             runner: ubuntu-24.04-arm
     steps:
+      - name: Validate release version
+        env:
+          VERSION: ${{ inputs.version }}
+          SOURCE_REF: ${{ github.ref }}
+        run: |
+          test "$SOURCE_REF" = refs/heads/main
+          [[ "$VERSION" =~ ^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(-[0-9A-Za-z.-]+)?$ ]]
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
         with:
           node-version: '24'
       - uses: pnpm/action-setup@v6
       - run: pnpm install --frozen-lockfile
-      - name: Verify collections Unicode and SQLite contention on native architecture
-        run: node tests/experiments/collections/run.ts --report test-results/collections.json
-      - name: Preserve collections evidence
-        if: always()
-        uses: actions/upload-artifact@v7
-        with:
-          name: collections-verification-${{ matrix.arch }}
-          path: test-results/collections.json
-          if-no-files-found: error
-          retention-days: 14
-      - name: Verify media contracts on native architecture
-        run: pnpm exec vitest run --project integration tests/integration/media
-      - name: Build standalone for production identity verification
-        run: pnpm run build
-      - name: Verify identity protocol on native architecture
-        run: pnpm exec vitest run --project integration tests/integration/identity --reporter=default --reporter=junit --outputFile=test-results/identity.xml
-      - name: Preserve identity protocol evidence
-        if: always()
-        uses: actions/upload-artifact@v7
-        with:
-          name: identity-verification-${{ matrix.arch }}
-          path: test-results/identity.xml
-          if-no-files-found: error
-          retention-days: 14
-      - name: Verify Next delivery protocol on native architecture
-        run: pnpm exec vitest run --project integration tests/integration/delivery --reporter=default --reporter=junit --outputFile=test-results/delivery.xml
-      - name: Preserve delivery protocol evidence
-        if: always()
-        uses: actions/upload-artifact@v7
-        with:
-          name: delivery-verification-${{ matrix.arch }}
-          path: |
-            test-results/delivery.xml
-            test-results/delivery/server.log
-          if-no-files-found: error
-          retention-days: 14
       - uses: docker/setup-buildx-action@v4
-      - name: Verify build context exclusions
-        run: |
-          context_dir=$(mktemp -d)
-          trap 'rm -rf "$context_dir" .env.context-check .data/context-check src/.env.context-check src/context-check.sqlite src/context-check.key' EXIT
-          mkdir -p .data
-          touch .env.context-check .data/context-check src/.env.context-check src/context-check.sqlite src/context-check.key
-          docker build --file - --output "type=local,dest=$context_dir" . <<'DOCKERFILE'
-          FROM scratch
-          COPY . /
-          DOCKERFILE
-          for path in .env.context-check .data src/.env.context-check src/context-check.sqlite src/context-check.key .git .github docs node_modules .next dist tests/integration; do
-            test ! -e "$context_dir/$path"
-          done
-          for path in package.json pnpm-lock.yaml src/app/page.tsx drizzle/meta/_journal.json scripts/package-standalone.mjs scripts/verify-image.mjs docker/entrypoint.sh tests/fixtures/runtime/images/sample.jpg tests/fixtures/runtime/images/sample.png; do
-            test -s "$context_dir/$path"
-          done
-      - name: Build image
+      - name: Build production image
         uses: docker/build-push-action@v7
         with:
           context: .
@@ -95,193 +52,18 @@ jobs:
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
             org.opencontainers.image.revision=${{ github.sha }}
           tags: ariso:ci-${{ matrix.arch }}
-      - name: Verify runtime baseline and packaged files offline
-        env:
-          IMAGE: ariso:ci-${{ matrix.arch }}
-        run: |
-          docker run --rm --network none --read-only --entrypoint sh "$IMAGE" -eu -c '
-            . /etc/os-release
-            test "$VERSION_CODENAME" = trixie
-            node --version
-            node -e "require(\"node:assert/strict\").equal(process.versions.node.split(\".\")[0], \"24\")"
-            for package in ca-certificates procps imagemagick-7.q16 libmagickcore-7.q16-10-extra libheif-plugin-aomenc libimage-exiftool-perl fonts-noto-cjk fonts-noto-core; do
-              dpkg-query --show "$package"
-            done
-            magick -version
-            exiftool -ver
-            test -s /usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc
-            test -s /usr/share/fonts/truetype/noto/NotoSans-Regular.ttf
-            for path in server.js entrypoint.sh dist/cli/prestart.js dist/cli/reset-password.js dist/cli/logging.js drizzle/meta/_journal.json public/runtime.svg verification/fixtures/sample.jpg verification/fixtures/sample.png; do
-              test -s "$path"
-            done
-            node -e "const assert = require(\"node:assert/strict\"); const Database = require(\"better-sqlite3\"); const db = new Database(\":memory:\"); assert.equal(db.prepare(\"SELECT 1 AS ok\").get().ok, 1); db.close(); console.log(\"SQLite native query passed\");"
-            test "$(magick identify -format "%m %wx%h" verification/fixtures/sample.jpg)" = "JPEG 64x48"
-            test "$(magick identify -format "%m %wx%h" verification/fixtures/sample.png)" = "PNG 64x48"
-            for path in src tests .env.local .data node_modules/typescript node_modules/drizzle-kit node_modules/vitest; do
-              test ! -e "$path"
-            done
-          '
-      - name: Verify local storage streams on real limited mounts
-        env:
-          IMAGE: ariso:ci-${{ matrix.arch }}
-        run: |
-          mkdir -p "$RUNNER_TEMP/storage-verification"
-          chmod 777 "$RUNNER_TEMP/storage-verification"
-          docker run --rm --network none --read-only --entrypoint node \
-            --tmpfs /source:rw,size=128m,uid=1000,gid=1000 \
-            --tmpfs /storage:rw,size=32m,uid=1000,gid=1000 \
-            --tmpfs /storage/disk:rw,size=32m,uid=1000,gid=1000 \
-            --tmpfs /storage/low:rw,size=32m,uid=1000,gid=1000 \
-            --mount "type=bind,src=$GITHUB_WORKSPACE/tests/experiments/storage-local,dst=/experiment,readonly" \
-            --mount "type=bind,src=$RUNNER_TEMP/storage-verification,dst=/evidence" \
-            "$IMAGE" /experiment/run.ts \
-              --source-root /source --storage-root /storage \
-              --target-root /storage/disk --low-space-root /storage/low \
-              --report /evidence/report.json --require-complete
-      - name: Verify persistent media processing with actual image tools
-        env:
-          IMAGE: ariso:ci-${{ matrix.arch }}
-        run: |
-          docker run --rm --network none --read-only \
-            --user "$(id -u):$(id -g)" --tmpfs /tmp:rw,size=512m \
-            --mount "type=bind,src=$GITHUB_WORKSPACE,dst=/workspace" \
-            --workdir /workspace --entrypoint node \
-            "$IMAGE" node_modules/vitest/vitest.mjs run --project media-tools \
-              --reporter=default --reporter=junit --outputFile=test-results/media-process.xml
-      - name: Verify complete media format and metadata samples
-        env:
-          IMAGE: ariso:ci-${{ matrix.arch }}
-        run: |
-          docker run --rm --network none --read-only \
-            --user "$(id -u):$(id -g)" --tmpfs /tmp:rw,size=512m \
-            --mount "type=bind,src=$GITHUB_WORKSPACE,dst=/workspace" \
-            --workdir /workspace --entrypoint node \
-            "$IMAGE" tests/experiments/media-formats/run.mjs \
-              --output-dir test-results/media-formats
-      - name: Preserve complete media format evidence
-        if: always()
-        uses: actions/upload-artifact@v7
-        with:
-          name: media-formats-${{ matrix.arch }}
-          path: test-results/media-formats
-          if-no-files-found: warn
-          retention-days: 14
-      - name: Verify media recovery resources on a real limited volume
-        env:
-          IMAGE: ariso:ci-${{ matrix.arch }}
-        run: |
-          docker run --rm --network none --read-only \
-            --user "$(id -u):$(id -g)" \
-            --tmpfs /tmp:rw,size=512m,mode=1777 \
-            --tmpfs /media-volume:rw,size=384m,mode=1777 \
-            --mount "type=bind,src=$GITHUB_WORKSPACE,dst=/workspace" \
-            --workdir /workspace --entrypoint node \
-            "$IMAGE" tests/experiments/media-recovery/resources.ts /media-volume
-      - name: Preserve media recovery resource evidence
-        if: always()
-        uses: actions/upload-artifact@v7
-        with:
-          name: media-recovery-resources-${{ matrix.arch }}
-          path: test-results/media-64/low-space.json
-          if-no-files-found: warn
-          retention-days: 14
-      - name: Preserve persistent media processing evidence
-        if: always()
-        uses: actions/upload-artifact@v7
-        with:
-          name: media-process-${{ matrix.arch }}
-          path: test-results/media-process.xml
-          if-no-files-found: warn
-          retention-days: 14
-      - name: Preserve local storage evidence
-        if: always()
-        uses: actions/upload-artifact@v7
-        with:
-          name: storage-verification-${{ matrix.arch }}
-          path: ${{ runner.temp }}/storage-verification
-          if-no-files-found: warn
-          retention-days: 14
-      - name: Verify production local storage on real limited mounts
-        env:
-          IMAGE: ariso:ci-${{ matrix.arch }}
-        run: |
-          mkdir -p "$RUNNER_TEMP/production-storage-verification"
-          chmod 777 "$RUNNER_TEMP/production-storage-verification"
-          docker run --rm --network none --read-only --entrypoint node \
-            --tmpfs /source:rw,size=128m,uid=1000,gid=1000 \
-            --tmpfs /storage:rw,size=32m,uid=1000,gid=1000 \
-            --tmpfs /storage/disk:rw,size=32m,uid=1000,gid=1000 \
-            --tmpfs /storage/low:rw,size=32m,uid=1000,gid=1000 \
-            --mount "type=bind,src=$GITHUB_WORKSPACE/tests/verification/storage-local,dst=/verification-storage,readonly" \
-            --mount "type=bind,src=$RUNNER_TEMP/production-storage-verification,dst=/evidence" \
-            "$IMAGE" /verification-storage/run.mjs \
-              --implementation /app/dist/server/storage/local.js \
-              --source-root /source --storage-root /storage \
-              --target-root /storage/disk --low-space-root /storage/low \
-              --report /evidence/report.json --require-complete
-      - name: Preserve production local storage evidence
-        if: always()
-        uses: actions/upload-artifact@v7
-        with:
-          name: production-storage-verification-${{ matrix.arch }}
-          path: ${{ runner.temp }}/production-storage-verification
-          if-no-files-found: warn
-          retention-days: 14
-      - name: Verify media behavior and resources on a real limited volume
-        env:
-          IMAGE: ariso:ci-${{ matrix.arch }}
-        run: |
-          mkdir -p "$RUNNER_TEMP/media-verification"
-          chmod 777 "$RUNNER_TEMP/media-verification"
-          docker run --rm --network none --read-only --entrypoint node \
-            --tmpfs /source:rw,size=128m,uid=1000,gid=1000 \
-            --tmpfs /media-low:rw,size=384m,uid=1000,gid=1000 \
-            --tmpfs /tmp:rw,size=32m,uid=1000,gid=1000 \
-            --mount "type=bind,src=$GITHUB_WORKSPACE/tests/experiments/media-basic,dst=/app/verification-media,readonly" \
-            --mount "type=bind,src=$RUNNER_TEMP/media-verification,dst=/evidence" \
-            "$IMAGE" /app/verification-media/run.mjs \
-              --source-root /source --low-space-root /media-low --report /evidence/report.json
-      - name: Preserve media resource evidence
-        if: always()
-        uses: actions/upload-artifact@v7
-        with:
-          name: media-verification-${{ matrix.arch }}
-          path: ${{ runner.temp }}/media-verification
-          if-no-files-found: warn
-          retention-days: 14
-      - name: Verify actual image conversions and glyphs offline
-        env:
-          IMAGE: ariso:ci-${{ matrix.arch }}
-        run: |
-          mkdir -p "$RUNNER_TEMP/image-verification"
-          chmod 777 "$RUNNER_TEMP/image-verification"
-          docker run --rm --network none --read-only --tmpfs /tmp \
-            --workdir /tmp --entrypoint sh \
-            --mount "type=bind,src=$RUNNER_TEMP/image-verification,dst=/verification-output" \
-            "$IMAGE" -eu -c '
-              node /app/scripts/verify-image.mjs
-              test -z "$(find /tmp -maxdepth 1 -name "ariso-verify-image-*")"
-              node /app/scripts/verify-image.mjs --output-dir /verification-output
-              test -z "$(find /tmp -maxdepth 1 -name "ariso-verify-image-*")"
-            '
-      - uses: actions/upload-artifact@v7
-        with:
-          name: image-verification-${{ matrix.arch }}
-          path: ${{ runner.temp }}/image-verification
-          if-no-files-found: error
-          retention-days: 7
-      - name: Verify lifecycle, migrations, backup and recovery
+      - name: Verify release image
         run: >-
-          node scripts/verify-container.mjs
+          node scripts/verify-release-image.mjs
           --image ariso:ci-${{ matrix.arch }}
           --platform linux/${{ matrix.arch }}
-          --output-dir "${{ runner.temp }}/container-verification"
-      - name: Preserve container evidence
+          --output-dir "${{ runner.temp }}/release-verification"
+      - name: Preserve release evidence
         if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: container-verification-${{ matrix.arch }}
-          path: ${{ runner.temp }}/container-verification
+          name: release-verification-${{ matrix.arch }}
+          path: ${{ runner.temp }}/release-verification
           if-no-files-found: warn
           retention-days: 14
       - name: Export verified image
@@ -295,16 +77,12 @@ jobs:
           if-no-files-found: error
           retention-days: 7
 
-  release-checks:
-    uses: ./.github/workflows/ci.yml
-
   publish:
-    # This workflow is triggered only by a published GitHub Release.
-    needs: [build, release-checks]
+    needs: [build]
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     permissions:
-      contents: read
+      contents: write
       packages: write
     steps:
       - uses: docker/setup-buildx-action@v4
@@ -317,13 +95,26 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Publish the tested images and combine their manifests
+      - name: Publish verified images and release
         env:
-          VERSION: ${{ github.event.release.tag_name }}
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          VERSION: ${{ inputs.version }}
           REVISION: ${{ github.sha }}
           IMAGE: ghcr.io/dnslin/ariso-next
         run: |
-          [[ "$VERSION" =~ ^v?(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(-[0-9A-Za-z.-]+)?$ ]]
+          existing=$(gh api --paginate "repos/$GH_REPO/releases" --jq '.[] | select(.tag_name == env.VERSION) | .draft')
+          if [ -n "$existing" ]; then
+            if [ "$existing" != true ]; then
+              echo "Release $VERSION is already published" >&2
+              exit 1
+            fi
+            test "$(gh release view "$VERSION" --json targetCommitish --jq .targetCommitish)" = "$REVISION"
+          fi
+          tag=$(gh api "repos/$GH_REPO/git/matching-refs/tags/$VERSION" --jq '.[] | select(.ref == ("refs/tags/" + env.VERSION)) | .ref')
+          if [ -n "$tag" ]; then
+            test "$(gh api "repos/$GH_REPO/commits/refs/tags/$VERSION" --jq .sha)" = "$REVISION"
+          fi
           for arch in amd64 arm64; do
             docker load --input "images/ariso-linux-$arch/ariso.tar"
             test "$(docker image inspect "ariso:ci-$arch" --format '{{ index .Config.Labels "org.opencontainers.image.revision" }}')" = "$REVISION"
@@ -334,3 +125,12 @@ jobs:
             "$IMAGE:$VERSION-amd64" "$IMAGE:$VERSION-arm64"
           docker buildx imagetools inspect "$IMAGE:$VERSION" >> "$GITHUB_STEP_SUMMARY"
           echo "Code revision: $REVISION" >> "$GITHUB_STEP_SUMMARY"
+          for arch in amd64 arm64; do
+            gzip --stdout "images/ariso-linux-$arch/ariso.tar" > "ariso-$VERSION-linux-$arch.tar.gz"
+          done
+          sha256sum "ariso-$VERSION-linux-"*.tar.gz > SHA256SUMS
+          if [ -z "$existing" ]; then
+            gh release create "$VERSION" --target "$REVISION" --title "Ariso $VERSION" --draft --generate-notes
+          fi
+          gh release upload "$VERSION" "ariso-$VERSION-linux-"*.tar.gz SHA256SUMS --clobber
+          gh release edit "$VERSION" --draft=false --latest

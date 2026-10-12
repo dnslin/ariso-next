@@ -49,7 +49,7 @@ const state = globalThis as typeof globalThis & {
   arisoServerRuntime?: ReturnType<typeof startServer>;
 };
 const input = {
-  host: 'localhost',
+  host: '127.0.0.1',
   port: 465,
   mode: 'tls' as const,
   username: 'smtp-owner',

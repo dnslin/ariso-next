@@ -506,10 +506,14 @@ it('匿名读取只服务当前引用，缺失当前文件返回明确 500 并�
   expect(missing.status).toBe(500);
   expect(missing.headers.get('cache-control')).toBe('no-store');
   expect(await missing.json()).toMatchObject({ code: 'SITE_ASSET_MISSING' });
-  expect(server!.logs()).toContain(path);
   expect(connection!.db.select().from(siteSettings).get()?.logoKey).toBe(
     basename(asset.url),
   );
+  // HTTP and child stdio are separate channels; close waits for captured pipes to drain.
+  const completed = server!;
+  await stop(completed.child, completed.closed);
+  server = undefined;
+  expect(completed.logs()).toContain(path);
 });
 
 it('站点名称、描述与图标在新请求中即时更新，删除图标后移除自定义图标', async () => {
