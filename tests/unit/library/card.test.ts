@@ -2,6 +2,7 @@ import { jsx } from 'react/jsx-runtime';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { expect, it } from 'vitest';
 import { LibraryCard } from '../../../src/app/library/library-card';
+import { LibraryLoading } from '../../../src/app/library/library-loading';
 import type { LibraryItem } from '../../../src/server/library/types';
 
 const item: LibraryItem = {
@@ -32,6 +33,22 @@ const item: LibraryItem = {
   trashedAt: null,
   deletionStatus: null,
 };
+
+it('loads real thumbnails in the card surface without adding skeleton tiles', () => {
+  const html = renderToStaticMarkup(
+    jsx(LibraryCard, {
+      item: { ...item, thumbnailUrl: '/i/image?type=thumbnail' },
+    }),
+  );
+  expect(html).toContain('<img');
+  expect(html).toContain('alt="旅行"');
+  expect(html).not.toContain('skeleton');
+  const loading = renderToStaticMarkup(jsx(LibraryLoading, {}));
+  expect(loading).toContain('正在加载图片');
+  expect(loading).toContain('role="status"');
+  expect(loading).not.toContain('skeleton');
+  expect(loading).not.toContain('grid-cols');
+});
 it.each([
   ['identify', '识别图片'],
   ['original', '保存原图'],

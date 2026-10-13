@@ -1,7 +1,9 @@
 'use client';
 
+import { ComponentEntrance } from '../../components/component-entrance';
+
 import { useCallback, useEffect, useState } from 'react';
-import { QueryClient, useQuery } from '@tanstack/react-query';
+import { keepPreviousData, QueryClient, useQuery } from '@tanstack/react-query';
 import { Button } from '@heroui/react/button';
 import { Link } from '@heroui/react/link';
 import { TextField } from '@heroui/react/textfield';
@@ -9,7 +11,6 @@ import { InputGroup } from '@heroui/react/input-group';
 import { Select } from '@heroui/react/select';
 import { ListBox } from '@heroui/react/list-box';
 import { Pagination } from '@heroui/react/pagination';
-import { Spinner } from '@heroui/react/spinner';
 import { Alert } from '@heroui/react/alert';
 import { Link as LinkIcon, Search } from 'lucide-react';
 import { OwnerShell } from '../../components/shell/owner-shell';
@@ -47,6 +48,7 @@ export function SharesScreen(props: {
           `/api/shares?${new URLSearchParams({ q, page: String(page), pageSize: String(pageSize) })}`,
           { signal },
         ),
+      placeholderData: keepPreviousData,
       retry: false,
       networkMode: 'always',
     },
@@ -145,7 +147,7 @@ export function SharesScreen(props: {
       }
     >
       <section data-testid="shares-screen" className="grid min-w-0 gap-4">
-        <div className="flex items-center gap-2">
+        <ComponentEntrance as="header" className="flex items-center gap-2">
           <h1 className="text-[28px] font-medium leading-normal md:text-[30px]">
             分享
           </h1>
@@ -153,35 +155,41 @@ export function SharesScreen(props: {
             每个相册最多一个分享链接，只展示公开图片。时间按 {props.timeZone}{' '}
             显示。
           </StorageTip>
-        </div>
-        <TextField
-          aria-label="搜索分享相册"
-          value={q}
-          onChange={(value) => {
-            setQ(value);
-            setPage(1);
-          }}
+        </ComponentEntrance>
+        <ComponentEntrance
+          delay={0.055}
           className="w-full min-w-0 md:max-w-120"
         >
-          <InputGroup className="h-11 w-full min-w-0 rounded-lg border border-border bg-background shadow-none">
-            <InputGroup.Prefix className="border-0 pr-2 text-muted">
-              <Search size={16} aria-hidden />
-            </InputGroup.Prefix>
-            <InputGroup.Input
-              placeholder="搜索分享相册…"
-              className="h-11 min-w-0 py-0 text-base md:text-sm"
-            />
-          </InputGroup>
-        </TextField>
+          <TextField
+            aria-label="搜索分享相册"
+            value={q}
+            onChange={(value) => {
+              setQ(value);
+              setPage(1);
+            }}
+            className="w-full min-w-0 md:max-w-120"
+          >
+            <InputGroup className="h-11 w-full min-w-0 rounded-lg border border-border bg-background shadow-none">
+              <InputGroup.Prefix className="border-0 pr-2 text-muted">
+                <Search size={16} aria-hidden />
+              </InputGroup.Prefix>
+              <InputGroup.Input
+                placeholder="搜索分享相册…"
+                className="h-11 min-w-0 py-0 text-base md:text-sm"
+              />
+            </InputGroup>
+          </TextField>
+        </ComponentEntrance>
         {data?.items.length ? (
           <SharesList
             items={data.items}
             total={data.total}
             timeZone={props.timeZone}
+            disabled={list.isFetching}
           />
         ) : null}
         {data?.items.length === 0 ? (
-          <div
+          <ComponentEntrance
             data-testid="shares-empty"
             className="grid min-h-80 content-center justify-items-center gap-4 text-center"
           >
@@ -208,7 +216,7 @@ export function SharesScreen(props: {
                 前往相册
               </Link>
             ) : null}
-          </div>
+          </ComponentEntrance>
         ) : null}
         {list.isPending ? (
           <p
@@ -216,7 +224,6 @@ export function SharesScreen(props: {
             data-testid="shares-loading"
             className="flex items-center gap-2 py-8"
           >
-            <Spinner size="sm" />
             正在读取分享…
           </p>
         ) : null}

@@ -1,5 +1,6 @@
 'use client';
 
+import { ComponentEntrance } from '../component-entrance';
 import type { ComponentProps } from 'react';
 import { Button } from '@heroui/react/button';
 import { Link } from '@heroui/react/link';
@@ -60,9 +61,12 @@ export function StorageUnavailableView({
         {empty ? (
           <div className="flex min-h-[calc(100dvh-160px)] flex-col items-center justify-center gap-5 text-center">
             <HardDrive size={48} aria-hidden className="text-muted" />
-            <h1 className="text-[28px] font-medium leading-normal min-[1200px]:text-[30px]">
+            <ComponentEntrance
+              as="h1"
+              className="text-[28px] font-medium leading-normal min-[1200px]:text-[30px]"
+            >
               还没有存储
-            </h1>
+            </ComponentEntrance>
             <p className="text-[13px] leading-normal">所有存储配置均已删除</p>
             <p className="max-w-120 rounded-lg bg-default p-3 text-[13px] leading-normal">
               没有可用存储，请先创建存储。系统不会在重启后重新创建已删除的默认配置。
@@ -92,9 +96,12 @@ export function StorageUnavailableView({
             >
               ← 返回存储管理
             </Button>
-            <h1 className="text-[28px] font-medium leading-normal min-[1200px]:text-[30px]">
+            <ComponentEntrance
+              as="h1"
+              className="text-[28px] font-medium leading-normal min-[1200px]:text-[30px]"
+            >
               所有存储均已停用
-            </h1>
+            </ComponentEntrance>
             <p className="min-h-[22px] text-[13px] leading-normal">
               没有可用存储，请先启用或创建存储
             </p>

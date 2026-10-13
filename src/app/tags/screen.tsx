@@ -1,8 +1,10 @@
 'use client';
 
+import { ComponentEntrance } from '../../components/component-entrance';
+
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { QueryClient, useQuery } from '@tanstack/react-query';
+import { keepPreviousData, QueryClient, useQuery } from '@tanstack/react-query';
 import { Button } from '@heroui/react/button';
 import { TextField } from '@heroui/react/textfield';
 import { InputGroup } from '@heroui/react/input-group';
@@ -10,7 +12,6 @@ import { toast } from '@heroui/react/toast';
 import { Select } from '@heroui/react/select';
 import { ListBox } from '@heroui/react/list-box';
 import { Pagination } from '@heroui/react/pagination';
-import { Spinner } from '@heroui/react/spinner';
 import { Alert } from '@heroui/react/alert';
 import { Popover } from '@heroui/react/popover';
 import { Tooltip } from '@heroui/react/tooltip';
@@ -63,6 +64,7 @@ export function TagsScreen(props: {
           { signal },
         ),
       enabled: !!query,
+      placeholderData: keepPreviousData,
       retry: false,
       networkMode: 'always',
     },
@@ -191,7 +193,10 @@ export function TagsScreen(props: {
         className="grid min-w-0 gap-5 xl:gap-6"
         aria-labelledby="tags-title"
       >
-        <div className="flex items-start justify-between gap-3">
+        <ComponentEntrance
+          as="header"
+          className="flex items-start justify-between gap-3"
+        >
           <div className="grid gap-1.5">
             <div className="flex items-center gap-2">
               <h1
@@ -236,7 +241,7 @@ export function TagsScreen(props: {
               新建标签
             </Button>
           ) : null}
-        </div>
+        </ComponentEntrance>
         {notice ? (
           <p
             data-testid="tags-notice"
@@ -247,22 +252,24 @@ export function TagsScreen(props: {
           </p>
         ) : null}
         {!empty && !error ? (
-          <TextField
-            aria-label="搜索标签名称"
-            value={params.get('q') ?? ''}
-            onChange={(value) => apply({ q: value, page: 1 })}
-          >
-            <InputGroup className="h-12 w-full rounded-lg border border-border bg-field shadow-none">
-              <InputGroup.Prefix className="border-0 pl-3 pr-2 text-foreground">
-                <Search size={16} aria-hidden />
-              </InputGroup.Prefix>
-              <InputGroup.Input
-                placeholder="搜索标签名称"
-                className="h-full min-w-0 py-0 pl-0 pr-3 text-sm font-normal"
-                style={{ fontSize: 14 }}
-              />
-            </InputGroup>
-          </TextField>
+          <ComponentEntrance delay={0.055}>
+            <TextField
+              aria-label="搜索标签名称"
+              value={params.get('q') ?? ''}
+              onChange={(value) => apply({ q: value, page: 1 })}
+            >
+              <InputGroup className="h-12 w-full rounded-lg border border-border bg-field shadow-none">
+                <InputGroup.Prefix className="border-0 pl-3 pr-2 text-foreground">
+                  <Search size={16} aria-hidden />
+                </InputGroup.Prefix>
+                <InputGroup.Input
+                  placeholder="搜索标签名称"
+                  className="h-full min-w-0 py-0 pl-0 pr-3 text-sm font-normal"
+                  style={{ fontSize: 14 }}
+                />
+              </InputGroup>
+            </TextField>
+          </ComponentEntrance>
         ) : null}
         {list.isPending && query ? (
           <p
@@ -270,7 +277,6 @@ export function TagsScreen(props: {
             data-testid="tags-loading"
             className="flex items-center gap-2 py-8"
           >
-            <Spinner size="sm" />
             正在读取标签…
           </p>
         ) : null}
@@ -296,7 +302,7 @@ export function TagsScreen(props: {
           />
         ) : null}
         {data?.items.length === 0 ? (
-          <div
+          <ComponentEntrance
             data-testid="tags-empty"
             className="grid min-h-60 content-center justify-items-center gap-4 text-center md:min-h-80"
           >
@@ -331,7 +337,7 @@ export function TagsScreen(props: {
                 返回第一页
               </Button>
             ) : null}
-          </div>
+          </ComponentEntrance>
         ) : null}
       </section>
       {action ? (

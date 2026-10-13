@@ -1,5 +1,7 @@
 'use client';
 
+import { ComponentEntrance } from '../../components/component-entrance';
+
 import { ButtonGroup } from '@heroui/react/button-group';
 import { Link } from '@heroui/react/link';
 import { Table } from '@heroui/react/table';
@@ -74,8 +76,10 @@ export function TagsList({
     );
   }
   return (
-    <div
+    <ComponentEntrance
+      delay={0.11}
       data-testid="tags-list"
+      aria-busy={disabled}
       className="rounded-[20px] border border-border bg-surface px-4 py-5 xl:p-6"
     >
       <h2 className="text-lg font-medium leading-normal">标签 · {total} 项</h2>
@@ -101,7 +105,7 @@ export function TagsList({
               操作
             </Table.Column>
           </Table.Header>
-          <Table.Body items={items}>
+          <Table.Body items={items} dependencies={[disabled]}>
             {(item) => (
               <Table.Row
                 id={item.id}
@@ -149,6 +153,6 @@ export function TagsList({
           </li>
         ))}
       </ul>
-    </div>
+    </ComponentEntrance>
   );
 }

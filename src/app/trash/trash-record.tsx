@@ -1,5 +1,7 @@
 'use client';
 
+import { ComponentEntrance } from '../../components/component-entrance';
+
 import { Button } from '@heroui/react/button';
 import { ArrowLeft, BarChart3 } from 'lucide-react';
 import { Alert } from '@heroui/react/alert';
@@ -55,60 +57,69 @@ export function TrashRecord({
       data-testid="trash-detail"
       className="grid min-w-0 max-w-300 gap-5 [overflow-wrap:anywhere]"
     >
-      <Button
-        variant="outline"
-        className="min-h-11 justify-self-start rounded-lg px-3 text-sm"
-        aria-label="返回回收站列表"
-        onPress={onBack}
-      >
-        <ArrowLeft size={16} aria-hidden />
-        返回
-      </Button>
-      <h1
+      <ComponentEntrance className="w-fit">
+        <Button
+          variant="outline"
+          className="min-h-11 justify-self-start rounded-lg px-3 text-sm"
+          aria-label="返回回收站列表"
+          onPress={onBack}
+        >
+          <ArrowLeft size={16} aria-hidden />
+          返回
+        </Button>
+      </ComponentEntrance>
+      <ComponentEntrance
+        as="h1"
         id="trash-record-title"
         tabIndex={-1}
         className="text-[28px] font-medium md:text-[30px]"
       >
         回收记录
-      </h1>
-      <Button
-        variant="ghost"
-        aria-label="图片访问统计"
-        data-testid="trash-statistics-entry"
-        className="min-h-11 w-fit gap-2 rounded-lg"
-        onPress={onStatistics}
-      >
-        <BarChart3 size={18} aria-hidden />
-        访问统计
-      </Button>
+      </ComponentEntrance>
+      <ComponentEntrance delay={0.055} className="w-fit">
+        <Button
+          variant="ghost"
+          aria-label="图片访问统计"
+          data-testid="trash-statistics-entry"
+          className="min-h-11 w-fit gap-2 rounded-lg"
+          onPress={onStatistics}
+        >
+          <BarChart3 size={18} aria-hidden />
+          访问统计
+        </Button>
+      </ComponentEntrance>
       <p>
         {record.displayName} · {record.trashedAt ? '已回收' : '已恢复'}
       </p>
       <div className="grid min-w-0 items-start gap-6 md:grid-cols-[minmax(0,4fr)_minmax(0,3fr)]">
         {preview ? (
-          <PreviewImage
-            key={`${record.id}:${preview.previewPath}`}
-            version={preview}
-            name={record.displayName}
-            width={record.width}
-            height={record.height}
-          />
+          <ComponentEntrance delay={0.11} className="min-w-0">
+            <PreviewImage
+              key={`${record.id}:${preview.previewPath}`}
+              version={preview}
+              name={record.displayName}
+              width={record.width}
+              height={record.height}
+            />
+          </ComponentEntrance>
         ) : null}
-        <dl className="min-w-0 py-2">
-          {rows.map(([label, value, note]) => (
-            <div
-              key={label}
-              className="min-h-18 pb-4 text-sm md:flex md:items-start md:gap-2 md:py-5"
-            >
-              <dt className="shrink-0">{label}</dt>
-              <dd className="min-w-0">
-                <span>{value}</span>
-                <span aria-hidden>{' · '}</span>
-                <span>{note}</span>
-              </dd>
-            </div>
-          ))}
-        </dl>
+        <ComponentEntrance delay={0.165} className="min-w-0">
+          <dl className="min-w-0 py-2">
+            {rows.map(([label, value, note]) => (
+              <div
+                key={label}
+                className="min-h-18 pb-4 text-sm md:flex md:items-start md:gap-2 md:py-5"
+              >
+                <dt className="shrink-0">{label}</dt>
+                <dd className="min-w-0">
+                  <span>{value}</span>
+                  <span aria-hidden>{' · '}</span>
+                  <span>{note}</span>
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </ComponentEntrance>
       </div>
       {!record.storage.enabled ? (
         <Alert status="warning">

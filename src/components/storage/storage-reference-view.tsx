@@ -1,5 +1,6 @@
 'use client';
 
+import { ComponentEntrance } from '../component-entrance';
 import type { ComponentProps, MouseEvent } from 'react';
 import { Button } from '@heroui/react/button';
 import { Chip } from '@heroui/react/chip';
@@ -79,7 +80,10 @@ export function StorageReferenceView({
         data-testid="storage-reference-view"
         className="grid gap-5 pb-10 [overflow-wrap:anywhere]"
       >
-        <header className="flex flex-wrap items-center justify-between gap-3">
+        <ComponentEntrance
+          as="header"
+          className="flex flex-wrap items-center justify-between gap-3"
+        >
           <div className="flex min-w-0 items-center gap-2">
             <h1 className="text-[28px] font-medium leading-normal min-[1200px]:text-[30px]">
               引用与清理
@@ -101,7 +105,7 @@ export function StorageReferenceView({
             <ArrowLeft size={18} aria-hidden />
             返回
           </Button>
-        </header>
+        </ComponentEntrance>
         <div className="flex flex-wrap items-center gap-3">
           <span className="text-sm">{storage.name}</span>
           <Chip
@@ -113,8 +117,9 @@ export function StorageReferenceView({
           </Chip>
         </div>
         <dl data-testid="storage-reference-counts">
-          {rows.map(({ icon: Icon, ...row }) => (
-            <div
+          {rows.map(({ icon: Icon, ...row }, index) => (
+            <ComponentEntrance
+              delay={Math.min(index + 1, 3) * 0.055}
               key={row.label}
               className="grid grid-cols-[24px_minmax(0,1fr)] items-start gap-x-3 gap-y-3 border-b border-border py-5 min-[768px]:grid-cols-[24px_minmax(0,1fr)_auto] min-[768px]:items-center"
             >
@@ -152,7 +157,7 @@ export function StorageReferenceView({
                   </Button>
                 )
               ) : null}
-            </div>
+            </ComponentEntrance>
           ))}
         </dl>
       </section>

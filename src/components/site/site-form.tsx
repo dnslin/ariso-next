@@ -1,5 +1,6 @@
 'use client';
 
+import { ComponentEntrance } from '../component-entrance';
 import { useState } from 'react';
 import { Button } from '@heroui/react/button';
 import { Card } from '@heroui/react/card';
@@ -29,28 +30,30 @@ export function SiteForm({
 }) {
   const [expanded, setExpanded] = useState(false);
   return (
-    <Card className={siteCardClass}>
-      <div className="flex items-center justify-between gap-3">
-        <h2 className="flex items-center gap-2 text-lg font-medium">
-          <Globe className="size-5" aria-hidden />
-          站点信息
-        </h2>
-        <StorageTip label="站点信息">
-          名称和描述按普通文本显示。时区只改变时间展示，不改写历史 UTC 时间。
-        </StorageTip>
-      </div>
-      <SiteFeedback settings={settings} />
-      <Form
-        id="site-settings-form"
-        validationBehavior="aria"
-        className="grid min-w-0 gap-4 min-[1200px]:grid-cols-2 min-[1200px]:gap-5"
-        onSubmit={(event) => {
-          event.preventDefault();
-          void settings.save();
-        }}
-      >
-        {(Object.keys(siteFieldLabels) as (keyof typeof siteFieldLabels)[]).map(
-          (field) => (
+    <ComponentEntrance delay={0.055} className="min-w-0">
+      <Card className={siteCardClass}>
+        <div className="flex items-center justify-between gap-3">
+          <h2 className="flex items-center gap-2 text-lg font-medium">
+            <Globe className="size-5" aria-hidden />
+            站点信息
+          </h2>
+          <StorageTip label="站点信息">
+            名称和描述按普通文本显示。时区只改变时间展示，不改写历史 UTC 时间。
+          </StorageTip>
+        </div>
+        <SiteFeedback settings={settings} />
+        <Form
+          id="site-settings-form"
+          validationBehavior="aria"
+          className="grid min-w-0 gap-4 min-[1200px]:grid-cols-2 min-[1200px]:gap-5"
+          onSubmit={(event) => {
+            event.preventDefault();
+            void settings.save();
+          }}
+        >
+          {(
+            Object.keys(siteFieldLabels) as (keyof typeof siteFieldLabels)[]
+          ).map((field) => (
             <TextField
               key={field}
               id={`site-${field}`}
@@ -71,65 +74,66 @@ export function SiteForm({
               />
               <FieldError>{settings.errors[field]}</FieldError>
             </TextField>
-          ),
-        )}
-      </Form>
-      <Button
-        type="button"
-        variant="ghost"
-        className="min-h-11 w-fit rounded-lg px-0 text-sm"
-        aria-expanded={expanded}
-        aria-controls="site-complete-address"
-        onPress={() => setExpanded(!expanded)}
-      >
-        {expanded ? '收起完整地址' : '查看完整地址'}
-      </Button>
-      {expanded ? (
-        <div id="site-complete-address" className="grid min-w-0 gap-3">
-          <p
-            className="select-text text-sm wrap-anywhere"
-            aria-label="完整输入地址"
-          >
-            {settings.input.publicUrl}
-          </p>
-          {!settings.originNotice ? (
-            <SavedAddresses saved={settings.saved} />
-          ) : null}
-        </div>
-      ) : null}
-      {settings.originNotice ? (
-        <div className="grid min-w-0 gap-3 border-t border-border pt-4">
-          <h3 className="font-medium">公开地址已更新</h3>
-          <SavedAddresses saved={settings.saved} />
-          <p className="text-sm leading-6">
-            请更新 GitHub OAuth 回调。全部 S3
-            浏览器直传检测结果已失效，需要重新检测。旧域名和反向代理由你维护。若当前地址无法继续保存，请打开新地址并重新登录；图片
-            ID 与路径保持不变。
-          </p>
-          <div className="flex flex-wrap gap-3">
-            <Link
-              href="/settings/storage"
-              className="flex min-h-11 items-center rounded-lg border border-border bg-background px-4 text-sm text-foreground no-underline"
-            >
-              检查浏览器直传
-            </Link>
-            <Link
-              href="/settings/account"
-              className="flex min-h-11 items-center rounded-lg border border-border bg-background px-4 text-sm text-foreground no-underline"
-            >
-              账号与安全
-            </Link>
-          </div>
-        </div>
-      ) : null}
-      {settings.timeZoneNotice ? (
-        <p
-          role="status"
-          className="border-t border-border pt-4 text-sm leading-6"
+          ))}
+        </Form>
+        <Button
+          type="button"
+          variant="ghost"
+          className="min-h-11 w-fit rounded-lg px-0 text-sm"
+          aria-expanded={expanded}
+          aria-controls="site-complete-address"
+          onPress={() => setExpanded(!expanded)}
         >
-          站点时区已更新。后续时间按新时区显示，历史记录的 UTC 时间点保持不变。
-        </p>
-      ) : null}
-    </Card>
+          {expanded ? '收起完整地址' : '查看完整地址'}
+        </Button>
+        {expanded ? (
+          <div id="site-complete-address" className="grid min-w-0 gap-3">
+            <p
+              className="select-text text-sm wrap-anywhere"
+              aria-label="完整输入地址"
+            >
+              {settings.input.publicUrl}
+            </p>
+            {!settings.originNotice ? (
+              <SavedAddresses saved={settings.saved} />
+            ) : null}
+          </div>
+        ) : null}
+        {settings.originNotice ? (
+          <div className="grid min-w-0 gap-3 border-t border-border pt-4">
+            <h3 className="font-medium">公开地址已更新</h3>
+            <SavedAddresses saved={settings.saved} />
+            <p className="text-sm leading-6">
+              请更新 GitHub OAuth 回调。全部 S3
+              浏览器直传检测结果已失效，需要重新检测。旧域名和反向代理由你维护。若当前地址无法继续保存，请打开新地址并重新登录；图片
+              ID 与路径保持不变。
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <Link
+                href="/settings/storage"
+                className="flex min-h-11 items-center rounded-lg border border-border bg-background px-4 text-sm text-foreground no-underline"
+              >
+                检查浏览器直传
+              </Link>
+              <Link
+                href="/settings/account"
+                className="flex min-h-11 items-center rounded-lg border border-border bg-background px-4 text-sm text-foreground no-underline"
+              >
+                账号与安全
+              </Link>
+            </div>
+          </div>
+        ) : null}
+        {settings.timeZoneNotice ? (
+          <p
+            role="status"
+            className="border-t border-border pt-4 text-sm leading-6"
+          >
+            站点时区已更新。后续时间按新时区显示，历史记录的 UTC
+            时间点保持不变。
+          </p>
+        ) : null}
+      </Card>
+    </ComponentEntrance>
   );
 }

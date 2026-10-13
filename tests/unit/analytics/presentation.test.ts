@@ -80,6 +80,8 @@ describe('analytics presentation from real report fields', () => {
       expect(loading).toContain(height);
       expect(loaded).toContain(height);
     }
+    expect(loading).not.toContain('skeleton');
+    expect(loading).toContain('正在读取趋势图');
   });
   it('announces the first read without displaying a zero result', () => {
     for (const scope of ['overview', 'usage'] as const) {
@@ -92,6 +94,8 @@ describe('analytics presentation from real report fields', () => {
       );
       expect(reading).not.toContain('暂无访问');
       expect(reading).not.toContain('0 次');
+      expect(reading).not.toContain('skeleton');
+      expect(reading).not.toContain('data-slot="card"');
     }
   });
   it('keeps retained history visible when the current image library is empty', () => {

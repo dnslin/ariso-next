@@ -13,6 +13,7 @@ import {
   AnalyticsDaily,
 } from './overview-content';
 import { AnalyticsPopular } from './popular';
+import { ComponentEntrance } from '../component-entrance';
 
 export function AnalyticsOverviewPanel({
   overview,
@@ -46,7 +47,11 @@ export function AnalyticsOverviewPanel({
     : '';
   return (
     <>
-      <div className="grid gap-2" data-testid="analytics-period-controls">
+      <ComponentEntrance
+        className="grid gap-2"
+        data-testid="analytics-period-controls"
+        delay={0.055}
+      >
         <AnalyticsPeriods days={days} onChange={onDays} />
         {displayed ? (
           <AnalyticsMetadata
@@ -90,7 +95,7 @@ export function AnalyticsOverviewPanel({
         ) : (
           <div className="min-h-11" />
         )}
-      </div>
+      </ComponentEntrance>
       {overview.error && !displayed ? (
         <AnalyticsReadFailure
           scope="overview"

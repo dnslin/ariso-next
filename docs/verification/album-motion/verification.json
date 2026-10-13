@@ -1,0 +1,359 @@
+{
+  "status": "passed",
+  "date": "2026-10-12",
+  "behavior": "Cards have a clearly visible fade-in and slight entry travel; a separate layout layer handles reflow. Filtered cards and outgoing routes are removed directly, without fade-out or native route transitions. Reduced motion removes travel.",
+  "command": "EGO_TASK_SPACE=16 PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH node scripts/verify-browser.mjs --suite album-motion",
+  "environment": "Production standalone server and disposable SQLite DB owned by the existing browser runner; Ego TaskSpace 16/p1, Chromium viewport emulation.",
+  "fixtures": "Three unique real albums created with the production API; unfiltered GET remapped to their unique real search prefix; selected GET responses held at browser transport for pending-search checks; fixture IDs deleted afterward.",
+  "entryAcceptance": {
+    "opacityRange": [0.1, 0.9],
+    "minimumObservedDurationMs": 250,
+    "minimumObservedFrames": 8
+  },
+  "visibleEntryWindows": [
+    {
+      "label": "enter 1440",
+      "id": "f02c877b-14e6-43af-9750-183470d09467",
+      "frameCount": 20,
+      "durationMs": 317.2999999523163
+    },
+    {
+      "label": "enter 1440",
+      "id": "58d6e8d8-89e1-4c4f-8657-9f6ff10f145f",
+      "frameCount": 21,
+      "durationMs": 333.80000019073486
+    },
+    {
+      "label": "enter 1440",
+      "id": "d9d4dc1f-dbfd-4437-b4d9-d9447774e3b7",
+      "frameCount": 20,
+      "durationMs": 316.7999999523163
+    },
+    {
+      "label": "browser return 1440",
+      "id": "f02c877b-14e6-43af-9750-183470d09467",
+      "frameCount": 20,
+      "durationMs": 317.40000009536743
+    },
+    {
+      "label": "browser return 1440",
+      "id": "58d6e8d8-89e1-4c4f-8657-9f6ff10f145f",
+      "frameCount": 20,
+      "durationMs": 317.2999999523163
+    },
+    {
+      "label": "browser return 1440",
+      "id": "d9d4dc1f-dbfd-4437-b4d9-d9447774e3b7",
+      "frameCount": 20,
+      "durationMs": 315.09999990463257
+    },
+    {
+      "label": "enter 390",
+      "id": "f02c877b-14e6-43af-9750-183470d09467",
+      "frameCount": 20,
+      "durationMs": 317.10000014305115
+    },
+    {
+      "label": "enter 390",
+      "id": "58d6e8d8-89e1-4c4f-8657-9f6ff10f145f",
+      "frameCount": 20,
+      "durationMs": 317.10000014305115
+    },
+    {
+      "label": "enter 390",
+      "id": "d9d4dc1f-dbfd-4437-b4d9-d9447774e3b7",
+      "frameCount": 21,
+      "durationMs": 333.7000000476837
+    },
+    {
+      "label": "browser return 390",
+      "id": "f02c877b-14e6-43af-9750-183470d09467",
+      "frameCount": 21,
+      "durationMs": 332.7999999523163
+    },
+    {
+      "label": "browser return 390",
+      "id": "58d6e8d8-89e1-4c4f-8657-9f6ff10f145f",
+      "frameCount": 20,
+      "durationMs": 317.2000000476837
+    },
+    {
+      "label": "browser return 390",
+      "id": "d9d4dc1f-dbfd-4437-b4d9-d9447774e3b7",
+      "frameCount": 20,
+      "durationMs": 317
+    }
+  ],
+  "checks": [
+    "Real card fade-in and plain loading text at 1440px",
+    "Pending data stays visible; removal has no fade; retained cards keep opacity and move smoothly at 1440px",
+    "Zero results and rapid filter restore have no fade-out or duplicate cards at 1440px",
+    "Real overflow click, pointer context menu coordinates, Shift+F10, edit dialog and focus restoration at 1440px",
+    "Browser return keeps component fade-in without native snapshots at 1440px",
+    "Direct route removal and continuous navigation have no native animation at 1440px",
+    "Reduced motion disables layout travel and keeps removal immediate at 1440px",
+    "Real card fade-in and plain loading text at 390px",
+    "Pending data stays visible; removal has no fade; retained cards keep opacity and move smoothly at 390px",
+    "Zero results and rapid filter restore have no fade-out or duplicate cards at 390px",
+    "Real overflow click, pointer context menu coordinates, Shift+F10, edit dialog and focus restoration at 390px",
+    "Browser return keeps component fade-in without native snapshots at 390px",
+    "Direct route removal and continuous navigation have no native animation at 390px",
+    "Reduced motion disables layout travel and keeps removal immediate at 390px",
+    "Reduced motion hard reload hydrates without browser errors"
+  ],
+  "browserErrors": [],
+  "traces": [
+    {
+      "label": "enter 1440",
+      "frames": 41,
+      "intermediateOpacityCardIds": [
+        "58d6e8d8-89e1-4c4f-8657-9f6ff10f145f",
+        "d9d4dc1f-dbfd-4437-b4d9-d9447774e3b7",
+        "f02c877b-14e6-43af-9750-183470d09467"
+      ],
+      "observedCardOpacityRange": [0, 1],
+      "entryTravelObserved": true,
+      "layoutTravelObserved": false,
+      "nativeSnapshotAnimationObserved": false,
+      "albumSkeletonObserved": false,
+      "horizontalOverflowObserved": false
+    },
+    {
+      "label": "filter and reflow 1440",
+      "frames": 29,
+      "intermediateOpacityCardIds": [],
+      "observedCardOpacityRange": [1, 1],
+      "entryTravelObserved": false,
+      "layoutTravelObserved": true,
+      "nativeSnapshotAnimationObserved": false,
+      "albumSkeletonObserved": false,
+      "horizontalOverflowObserved": false
+    },
+    {
+      "label": "zero filter 1440",
+      "frames": 11,
+      "intermediateOpacityCardIds": [],
+      "observedCardOpacityRange": [1, 1],
+      "entryTravelObserved": false,
+      "layoutTravelObserved": false,
+      "nativeSnapshotAnimationObserved": false,
+      "albumSkeletonObserved": false,
+      "horizontalOverflowObserved": false
+    },
+    {
+      "label": "rapid filter 1440",
+      "frames": 18,
+      "intermediateOpacityCardIds": [],
+      "observedCardOpacityRange": [1, 1],
+      "entryTravelObserved": false,
+      "layoutTravelObserved": false,
+      "nativeSnapshotAnimationObserved": false,
+      "albumSkeletonObserved": false,
+      "horizontalOverflowObserved": false
+    },
+    {
+      "label": "direct navigation 1440",
+      "frames": 8,
+      "intermediateOpacityCardIds": [],
+      "observedCardOpacityRange": [1, 1],
+      "entryTravelObserved": false,
+      "layoutTravelObserved": false,
+      "nativeSnapshotAnimationObserved": false,
+      "albumSkeletonObserved": false,
+      "horizontalOverflowObserved": false
+    },
+    {
+      "label": "browser return 1440",
+      "frames": 40,
+      "intermediateOpacityCardIds": [
+        "58d6e8d8-89e1-4c4f-8657-9f6ff10f145f",
+        "d9d4dc1f-dbfd-4437-b4d9-d9447774e3b7",
+        "f02c877b-14e6-43af-9750-183470d09467"
+      ],
+      "observedCardOpacityRange": [0, 1],
+      "entryTravelObserved": true,
+      "layoutTravelObserved": false,
+      "nativeSnapshotAnimationObserved": false,
+      "albumSkeletonObserved": false,
+      "horizontalOverflowObserved": false
+    },
+    {
+      "label": "continuous navigation 1440",
+      "frames": 15,
+      "intermediateOpacityCardIds": [],
+      "observedCardOpacityRange": [1, 1],
+      "entryTravelObserved": false,
+      "layoutTravelObserved": false,
+      "nativeSnapshotAnimationObserved": false,
+      "albumSkeletonObserved": false,
+      "horizontalOverflowObserved": false
+    },
+    {
+      "label": "reduced enter 1440",
+      "frames": 22,
+      "intermediateOpacityCardIds": [
+        "58d6e8d8-89e1-4c4f-8657-9f6ff10f145f",
+        "d9d4dc1f-dbfd-4437-b4d9-d9447774e3b7",
+        "f02c877b-14e6-43af-9750-183470d09467"
+      ],
+      "observedCardOpacityRange": [0, 1],
+      "entryTravelObserved": false,
+      "layoutTravelObserved": false,
+      "nativeSnapshotAnimationObserved": false,
+      "albumSkeletonObserved": false,
+      "horizontalOverflowObserved": false
+    },
+    {
+      "label": "reduced filter 1440",
+      "frames": 10,
+      "intermediateOpacityCardIds": [],
+      "observedCardOpacityRange": [1, 1],
+      "entryTravelObserved": false,
+      "layoutTravelObserved": false,
+      "nativeSnapshotAnimationObserved": false,
+      "albumSkeletonObserved": false,
+      "horizontalOverflowObserved": false
+    },
+    {
+      "label": "reduced zero 1440",
+      "frames": 10,
+      "intermediateOpacityCardIds": [],
+      "observedCardOpacityRange": [1, 1],
+      "entryTravelObserved": false,
+      "layoutTravelObserved": false,
+      "nativeSnapshotAnimationObserved": false,
+      "albumSkeletonObserved": false,
+      "horizontalOverflowObserved": false
+    },
+    {
+      "label": "enter 390",
+      "frames": 40,
+      "intermediateOpacityCardIds": [
+        "58d6e8d8-89e1-4c4f-8657-9f6ff10f145f",
+        "d9d4dc1f-dbfd-4437-b4d9-d9447774e3b7",
+        "f02c877b-14e6-43af-9750-183470d09467"
+      ],
+      "observedCardOpacityRange": [0, 1],
+      "entryTravelObserved": true,
+      "layoutTravelObserved": false,
+      "nativeSnapshotAnimationObserved": false,
+      "albumSkeletonObserved": false,
+      "horizontalOverflowObserved": false
+    },
+    {
+      "label": "filter and reflow 390",
+      "frames": 29,
+      "intermediateOpacityCardIds": [],
+      "observedCardOpacityRange": [1, 1],
+      "entryTravelObserved": false,
+      "layoutTravelObserved": true,
+      "nativeSnapshotAnimationObserved": false,
+      "albumSkeletonObserved": false,
+      "horizontalOverflowObserved": false
+    },
+    {
+      "label": "zero filter 390",
+      "frames": 10,
+      "intermediateOpacityCardIds": [],
+      "observedCardOpacityRange": [1, 1],
+      "entryTravelObserved": false,
+      "layoutTravelObserved": false,
+      "nativeSnapshotAnimationObserved": false,
+      "albumSkeletonObserved": false,
+      "horizontalOverflowObserved": false
+    },
+    {
+      "label": "rapid filter 390",
+      "frames": 18,
+      "intermediateOpacityCardIds": [],
+      "observedCardOpacityRange": [1, 1],
+      "entryTravelObserved": false,
+      "layoutTravelObserved": false,
+      "nativeSnapshotAnimationObserved": false,
+      "albumSkeletonObserved": false,
+      "horizontalOverflowObserved": false
+    },
+    {
+      "label": "direct navigation 390",
+      "frames": 17,
+      "intermediateOpacityCardIds": [],
+      "observedCardOpacityRange": [1, 1],
+      "entryTravelObserved": false,
+      "layoutTravelObserved": false,
+      "nativeSnapshotAnimationObserved": false,
+      "albumSkeletonObserved": false,
+      "horizontalOverflowObserved": false
+    },
+    {
+      "label": "browser return 390",
+      "frames": 40,
+      "intermediateOpacityCardIds": [
+        "58d6e8d8-89e1-4c4f-8657-9f6ff10f145f",
+        "d9d4dc1f-dbfd-4437-b4d9-d9447774e3b7",
+        "f02c877b-14e6-43af-9750-183470d09467"
+      ],
+      "observedCardOpacityRange": [0, 1],
+      "entryTravelObserved": true,
+      "layoutTravelObserved": false,
+      "nativeSnapshotAnimationObserved": false,
+      "albumSkeletonObserved": false,
+      "horizontalOverflowObserved": false
+    },
+    {
+      "label": "continuous navigation 390",
+      "frames": 32,
+      "intermediateOpacityCardIds": [],
+      "observedCardOpacityRange": [1, 1],
+      "entryTravelObserved": false,
+      "layoutTravelObserved": false,
+      "nativeSnapshotAnimationObserved": false,
+      "albumSkeletonObserved": false,
+      "horizontalOverflowObserved": false
+    },
+    {
+      "label": "reduced enter 390",
+      "frames": 29,
+      "intermediateOpacityCardIds": [
+        "58d6e8d8-89e1-4c4f-8657-9f6ff10f145f",
+        "d9d4dc1f-dbfd-4437-b4d9-d9447774e3b7",
+        "f02c877b-14e6-43af-9750-183470d09467"
+      ],
+      "observedCardOpacityRange": [0, 1],
+      "entryTravelObserved": false,
+      "layoutTravelObserved": false,
+      "nativeSnapshotAnimationObserved": false,
+      "albumSkeletonObserved": false,
+      "horizontalOverflowObserved": false
+    },
+    {
+      "label": "reduced filter 390",
+      "frames": 10,
+      "intermediateOpacityCardIds": [],
+      "observedCardOpacityRange": [1, 1],
+      "entryTravelObserved": false,
+      "layoutTravelObserved": false,
+      "nativeSnapshotAnimationObserved": false,
+      "albumSkeletonObserved": false,
+      "horizontalOverflowObserved": false
+    },
+    {
+      "label": "reduced zero 390",
+      "frames": 10,
+      "intermediateOpacityCardIds": [],
+      "observedCardOpacityRange": [1, 1],
+      "entryTravelObserved": false,
+      "layoutTravelObserved": false,
+      "nativeSnapshotAnimationObserved": false,
+      "albumSkeletonObserved": false,
+      "horizontalOverflowObserved": false
+    }
+  ],
+  "rawReport": "test-results/browser-album-motion/album-motion.json",
+  "screenshots": ["album-motion-1440.png", "album-motion-390.png"],
+  "verificationNotes": [
+    "The first run reached Escape before the right-click menu held focus. The test now uses documented mouse.click and waits for actual menu focus; pointer coordinates, Escape and focus-restoration assertions remain unchanged. The rerun passed."
+  ],
+  "limitations": [
+    "Chromium viewport emulation is not physical-device verification."
+  ]
+}

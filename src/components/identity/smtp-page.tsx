@@ -1,5 +1,6 @@
 'use client';
 
+import { ComponentEntrance } from '../component-entrance';
 import type { ComponentProps } from 'react';
 import { Button } from '@heroui/react/button';
 import { Card } from '@heroui/react/card';
@@ -150,16 +151,17 @@ export function SmtpPage(shell: ShellProps) {
         data-operation={editor.operation}
         className="pb-10 [overflow-anchor:none]"
       >
-        <SettingsHeading />
+        <ComponentEntrance>
+          <SettingsHeading />
+        </ComponentEntrance>
         <SettingsCategories items={settingsCategories}>
           {editor.load === 'loading' ? (
             <Card
-              className={cardClass + ' min-h-72'}
+              className={cardClass}
               role="status"
               aria-label="正在读取邮件设置"
             >
               <h2 className="flex items-center gap-2 text-lg font-medium">
-                <Spinner size="sm" />
                 正在读取邮件设置
               </h2>
               <p className="text-sm text-muted">
@@ -198,66 +200,68 @@ export function SmtpPage(shell: ShellProps) {
               )}
             </Card>
           ) : (
-            <Card className={cardClass}>
-              <header className="flex items-start justify-between gap-4 max-sm:flex-col max-sm:gap-3">
-                <div className="grid gap-3">
-                  <h2
-                    id="smtp-heading"
-                    tabIndex={-1}
-                    className="flex items-center gap-2 text-lg font-medium"
-                  >
-                    <Mail className="size-5 shrink-0" aria-hidden />
-                    SMTP 邮件服务
-                  </h2>
-                  <p className="text-[13px] leading-normal text-muted">
-                    {editor.saved
-                      ? '已保存配置 · 下次发送即生效'
-                      : '尚未配置 · 请先保存，再发送测试邮件'}
-                  </p>
-                </div>
-                {editor.saved &&
-                (editor.saved.username || editor.saved.hasPassword) ? (
-                  <div className="flex shrink-0 items-center gap-2 max-sm:self-end">
-                    <Button
-                      data-testid="smtp-clear"
-                      variant="secondary"
-                      isDisabled={editor.locked}
-                      onPress={editor.openClear}
-                      className="h-11 gap-2 rounded-lg border border-border text-foreground"
+            <ComponentEntrance delay={0.055}>
+              <Card className={cardClass}>
+                <header className="flex items-start justify-between gap-4 max-sm:flex-col max-sm:gap-3">
+                  <div className="grid gap-3">
+                    <h2
+                      id="smtp-heading"
+                      tabIndex={-1}
+                      className="flex items-center gap-2 text-lg font-medium"
                     >
-                      <Eraser className="size-4" aria-hidden />
-                      清除用户名和密码
-                    </Button>
-                    <SmtpTip
-                      key={editor.locked ? 'disabled' : 'available'}
-                      disabled={editor.locked}
-                    />
+                      <Mail className="size-5 shrink-0" aria-hidden />
+                      SMTP 邮件服务
+                    </h2>
+                    <p className="text-[13px] leading-normal text-muted">
+                      {editor.saved
+                        ? '已保存配置 · 下次发送即生效'
+                        : '尚未配置 · 请先保存，再发送测试邮件'}
+                    </p>
                   </div>
-                ) : null}
-              </header>
-              <PendingSettings editor={editor} />
-              <Form
-                className="grid gap-6"
-                validationBehavior="aria"
-                onSubmit={(event) => {
-                  event.preventDefault();
-                  void editor.save();
-                }}
-              >
-                <SmtpFields editor={editor} />
-                {editor.message && !editor.pending ? (
-                  <p
-                    role="alert"
-                    className="text-sm leading-normal text-danger"
-                  >
-                    {editor.message}
+                  {editor.saved &&
+                  (editor.saved.username || editor.saved.hasPassword) ? (
+                    <div className="flex shrink-0 items-center gap-2 max-sm:self-end">
+                      <Button
+                        data-testid="smtp-clear"
+                        variant="secondary"
+                        isDisabled={editor.locked}
+                        onPress={editor.openClear}
+                        className="h-11 gap-2 rounded-lg border border-border text-foreground"
+                      >
+                        <Eraser className="size-4" aria-hidden />
+                        清除用户名和密码
+                      </Button>
+                      <SmtpTip
+                        key={editor.locked ? 'disabled' : 'available'}
+                        disabled={editor.locked}
+                      />
+                    </div>
+                  ) : null}
+                </header>
+                <PendingSettings editor={editor} />
+                <Form
+                  className="grid gap-6"
+                  validationBehavior="aria"
+                  onSubmit={(event) => {
+                    event.preventDefault();
+                    void editor.save();
+                  }}
+                >
+                  <SmtpFields editor={editor} />
+                  {editor.message && !editor.pending ? (
+                    <p
+                      role="alert"
+                      className="text-sm leading-normal text-danger"
+                    >
+                      {editor.message}
+                    </p>
+                  ) : null}
+                  <p className="text-[13px] leading-normal text-muted">
+                    编辑后请先保存，再发送测试邮件。保存无需重启，也不会自动发送邮件。
                   </p>
-                ) : null}
-                <p className="text-[13px] leading-normal text-muted">
-                  编辑后请先保存，再发送测试邮件。保存无需重启，也不会自动发送邮件。
-                </p>
-              </Form>
-            </Card>
+                </Form>
+              </Card>
+            </ComponentEntrance>
           )}
         </SettingsCategories>
       </section>

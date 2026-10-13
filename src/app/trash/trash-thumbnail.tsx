@@ -1,13 +1,28 @@
 'use client';
 
-import { useState } from 'react';
-import { Skeleton } from '@heroui/react/skeleton';
+import { useState, type RefObject } from 'react';
+import { useAnimate } from 'motion/react';
+import {
+  componentEntryTransition,
+  useReducedMotion,
+} from '../../components/motion';
 import { ImageOff } from 'lucide-react';
 import type { TrashItem } from '../../server/library/trash-types';
 
-export function TrashThumbnail({ item }: { item: TrashItem }) {
-  const [failed, setFailed] = useState(false);
-  const [loaded, setLoaded] = useState(false);
+export function TrashThumbnail({
+  item,
+  readRevision,
+  seen,
+}: {
+  item: TrashItem;
+  readRevision: number;
+  seen: RefObject<Set<string>>;
+}) {
+  const [failedAt, setFailedAt] = useState<number | null>(null);
+  const failed =
+    failedAt !== null && (readRevision === 0 || failedAt === readRevision);
+  const [scope, animate] = useAnimate<HTMLImageElement>();
+  const reduce = useReducedMotion();
   const reason = !item.storage.enabled
     ? '存储已停用'
     : item.deletionStatus
@@ -19,20 +34,29 @@ export function TrashThumbnail({ item }: { item: TrashItem }) {
         : '暂无缩略图';
   return item.thumbnailPath && !failed ? (
     <span className="relative size-14 shrink-0 overflow-hidden rounded-lg md:size-16">
-      {!loaded ? (
-        <Skeleton aria-hidden className="absolute inset-0 size-full" />
-      ) : null}
       {/* The authenticated management route receives the owner cookie directly. */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
+        ref={scope}
         data-testid="trash-thumbnail"
         src={item.thumbnailPath}
         alt=""
         loading="lazy"
         decoding="async"
         className="size-14 shrink-0 rounded-lg object-contain md:size-16"
-        onLoad={() => setLoaded(true)}
-        onError={() => setFailed(true)}
+        onLoad={() => {
+          setFailedAt(null);
+          const url = item.thumbnailPath!;
+          if (seen.current.has(url)) return;
+          seen.current.add(url);
+          if (scope.current)
+            void animate(
+              scope.current,
+              { opacity: [0, 1] },
+              componentEntryTransition(reduce).opacity,
+            );
+        }}
+        onError={() => setFailedAt(readRevision)}
       />
     </span>
   ) : (

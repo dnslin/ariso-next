@@ -3,7 +3,11 @@
 import { useLayoutEffect, useMemo, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { parseAsString, useQueryStates } from 'nuqs';
-import { useQuery, type QueryClient } from '@tanstack/react-query';
+import {
+  keepPreviousData,
+  useQuery,
+  type QueryClient,
+} from '@tanstack/react-query';
 import { libraryRequestParams } from '../library/query-state';
 import {
   LibraryReadError,
@@ -46,6 +50,7 @@ export function useTrashQuery(client: QueryClient, enabled = true) {
   const list = useQuery(
     {
       queryKey: ['trash', filters, page],
+      placeholderData: keepPreviousData,
       enabled: enabled && !!filters,
       queryFn: ({ signal }) => readLibraryResult(filters!, { page }, signal),
       retry: false,
@@ -71,7 +76,7 @@ export function useTrashQuery(client: QueryClient, enabled = true) {
   );
   const identity = JSON.stringify(['trash', filters, page]);
   const scrollPositions = useRef(new Map<string, number>());
-  const scrollReady = !!data && !params.has('image');
+  const scrollReady = !!data && !list.isPlaceholderData && !params.has('image');
   useLayoutEffect(() => {
     if (!scrollReady) return;
     const container = document.querySelector<HTMLElement>('.shell-content');

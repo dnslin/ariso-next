@@ -4,8 +4,9 @@ import {
   type ReactElement,
   type ReactNode,
 } from 'react';
-import { beforeEach, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { AlbumCard } from '../../../src/app/albums/card';
+import { AlbumCoverImage } from '../../../src/app/albums/cover-preview';
 import type { Album } from '../../../src/app/albums/api';
 
 const hooks = vi.hoisted(() => ({ cells: [] as unknown[], cursor: 0 }));
@@ -26,6 +27,7 @@ vi.mock('react', async (original) => ({
     return (hooks.cells[index] ??= { current: initial });
   },
 }));
+vi.mock('react-dom', () => ({ createPortal: (node: ReactNode) => node }));
 const album = {
   id: 'album',
   name: '旅行',
@@ -50,6 +52,7 @@ function elements(node: ReactNode): ReactElement<Record<string, unknown>>[] {
   );
 }
 beforeEach(() => {
+  vi.stubGlobal('document', { body: {} });
   hooks.cells = [];
   vi.clearAllMocks();
 });
@@ -115,3 +118,29 @@ it('opens the same menu at the mouse position and from Shift+F10', () => {
       .isOpen,
   ).toBe(true);
 });
+
+it('keeps the cover identity when its name changes and replaces it when its image changes', () => {
+  const cover = {
+    ...album.cover,
+    imageId: 'cover-image',
+    status: 'ready' as const,
+    thumbnailUrl: '/api/images/cover-image/thumbnail',
+    displayName: 'before.png',
+  };
+  function image(nextCover: Album['cover']) {
+    hooks.cursor = 0;
+    return elements(
+      AlbumCard({ album: { ...album, cover: nextCover }, ...actions }),
+    ).find((element) => element.type === AlbumCoverImage)!;
+  }
+  const initial = image(cover);
+  const renamed = image({ ...cover, displayName: 'after.png' });
+  expect(renamed.type).toBe(initial.type);
+  expect(renamed.key).toBe(initial.key);
+  expect(renamed.props.cover).toMatchObject({ displayName: 'after.png' });
+  expect(
+    image({ ...cover, thumbnailUrl: '/api/images/other/thumbnail' }).key,
+  ).not.toBe(initial.key);
+});
+
+afterEach(() => vi.unstubAllGlobals());

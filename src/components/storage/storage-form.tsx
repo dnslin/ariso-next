@@ -1,5 +1,6 @@
 'use client';
 
+import { ComponentEntrance } from '../component-entrance';
 import { useState, type ReactNode } from 'react';
 import { TextField } from '@heroui/react/textfield';
 import { InputGroup } from '@heroui/react/input-group';
@@ -222,7 +223,7 @@ export function StorageForm({
           ))}
         </div>
       ) : null}
-      <section className="grid gap-5">
+      <ComponentEntrance as="section" delay={0.055} className="grid gap-5">
         <div className="flex items-center gap-2">
           <h2 className="text-lg font-medium">
             {s3 ? '连接信息' : '存储位置'}
@@ -353,7 +354,7 @@ export function StorageForm({
             仍有引用，存储位置与类型不可修改。
           </p>
         ) : null}
-      </section>
+      </ComponentEntrance>
     </form>
   );
 }

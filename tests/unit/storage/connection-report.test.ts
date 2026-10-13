@@ -1,10 +1,16 @@
 import { jsx } from 'react/jsx-runtime';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { expect, it, vi } from 'vitest';
-import type { ReactNode } from 'react';
+import {
+  Children,
+  isValidElement,
+  type ReactElement,
+  type ReactNode,
+} from 'react';
 import type { StorageSummary } from '../../../src/components/storage/storage-api';
 import { StorageConnectionResult } from '../../../src/components/storage/storage-connection-result';
-import { ConnectionReportRows } from '../../../src/components/storage/connection-report';
+import { connectionReportRows } from '../../../src/components/storage/connection-report';
+import { CorsRows } from '../../../src/components/storage/cors-report';
 import type { ConnectionReport } from '../../../src/server/storage/probe-types';
 
 function report(overrides: Partial<ConnectionReport> = {}): ConnectionReport {
@@ -58,7 +64,9 @@ const storage = {
   corsStatus: 'untested',
 } as StorageSummary;
 function rows(value: ConnectionReport) {
-  return renderToStaticMarkup(jsx(ConnectionReportRows, { report: value }));
+  return renderToStaticMarkup(
+    jsx(CorsRows, { rows: connectionReportRows(value) }),
+  );
 }
 function result(value: ConnectionReport) {
   return renderToStaticMarkup(
@@ -170,4 +178,126 @@ it('does not describe a failed or unconfirmed anonymous read as passing', () => 
   });
   expect(rows(unknown)).toContain('Service timeout');
   expect(rows(unknown)).not.toContain('对象服务拒绝匿名访问');
+});
+
+it('keeps the report card at the same React position as the pending tail finishes', () => {
+  function elements(node: ReactNode): ReactElement<Record<string, unknown>>[] {
+    return Children.toArray(node).flatMap((child) => {
+      if (!isValidElement<Record<string, unknown>>(child)) return [];
+      return [child, ...elements(child.props.children as ReactNode)];
+    });
+  }
+  function card(value: ConnectionReport, busy: boolean) {
+    const tree = StorageConnectionResult({
+      shell: {
+        name: 'Ariso',
+        description: '',
+        email: 'owner@example.test',
+        ownerName: 'Owner',
+      },
+      storage,
+      report: value,
+      busy,
+      onReturn: vi.fn(),
+      onTest: vi.fn(),
+      onEnable: vi.fn(),
+    });
+    const parent = elements(tree).find(
+      (element) => element.props['data-testid'] === 'storage-connection-report',
+    )!;
+    const siblings = Children.toArray(parent.props.children as ReactNode);
+    const index = siblings.findIndex(
+      (child) => isValidElement(child) && child.type === CorsRows,
+    );
+    expect(index).toBeGreaterThanOrEqual(0);
+    const element = siblings[index] as ReactElement;
+    return {
+      parent: parent.type,
+      index,
+      type: element.type,
+      key: element.key,
+      html: renderToStaticMarkup(element),
+    };
+  }
+  const prefix = [
+    { stage: 'configuration', status: 'passed' },
+    { stage: 'write', status: 'passed' },
+    { stage: 'read', status: 'passed' },
+  ] as const;
+  const pending = card(
+    report({
+      stages: [
+        ...prefix,
+        { stage: 'anonymous', status: 'pending' },
+        { stage: 'delete', status: 'pending' },
+      ],
+    }),
+    true,
+  );
+  expect(pending.html).toContain('匿名读取 / 清理');
+
+  const tailFinished = card(
+    report({
+      stages: [
+        ...prefix,
+        { stage: 'anonymous', status: 'passed' },
+        { stage: 'delete', status: 'pending' },
+      ],
+    }),
+    true,
+  );
+  expect(tailFinished.html).not.toContain('匿名读取 / 清理');
+  expect(tailFinished.html).toContain('对象服务拒绝匿名访问');
+
+  const passed = card(
+    report({
+      passed: true,
+      stages: [
+        ...prefix,
+        { stage: 'anonymous', status: 'passed' },
+        { stage: 'delete', status: 'passed' },
+      ],
+    }),
+    false,
+  );
+  expect(passed.html).not.toContain('Bucket 支持范围');
+  expect(passed.html).toContain('已删除');
+
+  const cleanupFailed = card(
+    report({
+      cleanupPending: true,
+      stages: [
+        ...prefix,
+        { stage: 'anonymous', status: 'passed' },
+        {
+          stage: 'delete',
+          status: 'failed',
+          error: {
+            message: 'Delete denied',
+            serviceCode: 'AccessDenied',
+            httpStatusCode: 403,
+            requestId: 'cleanup-request',
+          },
+        },
+      ],
+    }),
+    false,
+  );
+  for (const text of [
+    'Delete denied',
+    'AccessDenied',
+    '403',
+    'cleanup-request',
+    '清理责任',
+  ])
+    expect(cleanupFailed.html).toContain(text);
+
+  for (const current of [tailFinished, passed, cleanupFailed]) {
+    expect(current).toMatchObject({
+      parent: pending.parent,
+      index: pending.index,
+      type: pending.type,
+      key: pending.key,
+    });
+  }
 });

@@ -1,6 +1,5 @@
 'use client';
 
-import { Spinner } from '@heroui/react/spinner';
 import type { useGithubAccount } from './use-github-account';
 
 type Account = ReturnType<typeof useGithubAccount>;
@@ -46,7 +45,6 @@ export function GithubSettingsStatus({
         </>
       ) : loading ? (
         <p role="status" className="flex items-center gap-2 text-sm text-muted">
-          <Spinner size="sm" />
           正在读取登录配置…
         </p>
       ) : query.isError ? (
@@ -105,7 +103,6 @@ export function GithubBindingStatus({
   if (loading)
     return (
       <p role="status" className="flex items-center gap-2 text-sm text-muted">
-        <Spinner size="sm" />
         正在读取绑定状态…
       </p>
     );

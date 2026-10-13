@@ -1,5 +1,7 @@
 'use client';
 
+import { ComponentEntrance } from '../../components/component-entrance';
+
 import { FieldError } from '@heroui/react/field-error';
 import { InputGroup } from '@heroui/react/input-group';
 import { Label } from '@heroui/react/label';
@@ -16,7 +18,9 @@ export function ShareCreateForm({
   timeZone: string;
 }) {
   return (
-    <form
+    <ComponentEntrance
+      as="form"
+      delay={0.055}
       id="share-create-form"
       data-testid="share-create"
       className="grid max-w-160 gap-5"
@@ -70,6 +74,6 @@ export function ShareCreateForm({
           {settings.errors.create}
         </p>
       ) : null}
-    </form>
+    </ComponentEntrance>
   );
 }

@@ -5,6 +5,8 @@ const suites = {
   full: {
     primaryPage: true,
     stages: [
+      ['admin-motion', 'admin-motion'],
+      ['library-motion', 'library-motion'],
       ['library-batch', 'library-batch'],
       ['library-batch-reprocess', 'library-reprocess'],
       ['library-copy', 'library-copy'],
@@ -12,6 +14,7 @@ const suites = {
       ['trash-cleanup', 'trash-cleanup'],
       ['shell-navigation', 'shell-navigation'],
       ['albums', 'albums'],
+      ['album-motion', 'album-motion'],
       ['album-cover', 'album-cover'],
       ['tags', 'tags'],
       // Tags cleanup leaves the empty state needed by theme navigation checks.
@@ -121,8 +124,13 @@ const suites = {
     stages: [['library-query', 'libraryFeedback']],
     config: () => ({ libraryQueryPhase: 'feedback' }),
   },
+  'library-motion': { stages: [['library-motion', 'libraryMotion']] },
+  'admin-motion': { stages: [['admin-motion', 'adminMotion']] },
   'shell-navigation': { stages: [['shell-navigation', 'shellNavigation']] },
   albums: { primaryPage: true, stages: [['albums', 'albums']] },
+  'album-motion': {
+    stages: [['album-motion', 'albumMotion']],
+  },
   'collection-shortcuts': {
     only: ['upload', 'picker', 'menus', 'regressions'],
     stages: [['collection-shortcuts', 'collectionShortcuts']],

@@ -1,7 +1,6 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { Skeleton } from '@heroui/react/skeleton';
 import { ArrowRight, CheckCircle2, CircleAlert, RefreshCw } from 'lucide-react';
 import { Link } from '@heroui/react/link';
 import { Table } from '@heroui/react/table';
@@ -16,7 +15,12 @@ import {
 const TrendChart = dynamic(() => import('./trend-chart'), {
   ssr: false,
   loading: () => (
-    <Skeleton className="h-[220px] w-full rounded-lg sm:h-[252px]" />
+    <p
+      role="status"
+      className="grid h-[220px] place-items-center text-sm text-muted sm:h-[252px]"
+    >
+      正在读取趋势图…
+    </p>
   ),
 });
 

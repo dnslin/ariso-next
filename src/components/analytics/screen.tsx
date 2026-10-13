@@ -24,6 +24,7 @@ import { AnalyticsOverviewPanel } from './overview-panel';
 import { UsageContent } from './usage-content';
 import { DashboardPanel } from './dashboard-panel';
 import { ImageStatisticsTip } from './image-statistics-content';
+import { ComponentEntrance } from '../component-entrance';
 
 export function AnalyticsScreen(props: {
   name: string;
@@ -138,7 +139,7 @@ export function AnalyticsScreen(props: {
           </Link>
         ) : null}
         <div className="flex flex-wrap items-start justify-between gap-3">
-          <div className="flex min-w-0 items-center gap-1">
+          <ComponentEntrance className="flex min-w-0 items-center gap-1">
             <h1>{title}</h1>
             {props.dashboard && !usageView && !dailyView ? (
               <ImageStatisticsTip label="资源与占用说明">
@@ -171,8 +172,8 @@ export function AnalyticsScreen(props: {
                 </Tooltip.Content>
               </Tooltip>
             )}
-          </div>
-          <div className="flex items-center gap-2">
+          </ComponentEntrance>
+          <ComponentEntrance className="flex items-center gap-2" delay={0.055}>
             <Tooltip>
               <Button
                 isIconOnly
@@ -215,7 +216,7 @@ export function AnalyticsScreen(props: {
                 上传
               </Link>
             ) : null}
-          </div>
+          </ComponentEntrance>
         </div>
         {!validDays || !validView ? (
           <div role="alert" className="grid gap-3">

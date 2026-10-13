@@ -5,7 +5,6 @@ import { Button } from '@heroui/react/button';
 import { Card } from '@heroui/react/card';
 import { Checkbox } from '@heroui/react/checkbox';
 import { Chip } from '@heroui/react/chip';
-import { Skeleton } from '@heroui/react/skeleton';
 import { Globe, ImageOff, LockKeyhole } from 'lucide-react';
 import type { LibraryItem } from '../../server/library/types';
 import { hasCardDiagnostics } from './gallery-layout';
@@ -34,8 +33,8 @@ export function LibraryCard({
   onOpen?: (id: string, element: HTMLElement) => void;
   openLabel?: string;
 }) {
-  const [failed, setFailed] = useState(false);
-  const [loaded, setLoaded] = useState(false);
+  const [failedUrl, setFailedUrl] = useState<string | null>(null);
+  const failed = !!item.thumbnailUrl && failedUrl === item.thumbnailUrl;
   const placeholder = !item.storage.enabled
     ? '存储已停用'
     : failed
@@ -82,20 +81,17 @@ export function LibraryCard({
       >
         {item.storage.enabled && item.thumbnailUrl && !failed ? (
           <>
-            {!loaded ? (
-              <Skeleton aria-hidden className="absolute inset-0 size-full" />
-            ) : null}
             {/* 直接请求 delivery，保留所有者 Cookie 和访问控制。 */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
+              key={item.thumbnailUrl}
               src={item.thumbnailUrl}
               alt={item.displayName}
               loading="lazy"
               decoding="async"
               draggable={false}
               className="h-full w-full object-cover"
-              onLoad={() => setLoaded(true)}
-              onError={() => setFailed(true)}
+              onError={() => setFailedUrl(item.thumbnailUrl)}
             />
           </>
         ) : (

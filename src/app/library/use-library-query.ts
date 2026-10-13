@@ -12,6 +12,7 @@ import { useSearchParams } from 'next/navigation';
 import { parseAsNativeArrayOf, parseAsString, useQueryStates } from 'nuqs';
 import {
   hashKey,
+  keepPreviousData,
   useInfiniteQuery,
   useQuery,
   type QueryClient,
@@ -166,6 +167,7 @@ export function useLibraryQuery(
     {
       ...cacheOptions,
       queryKey: libraryListKey(filters, 'pages', page),
+      placeholderData: keepPreviousData,
       enabled: enabled && loadingMode === 'pages',
       queryFn: ({ signal }) => readLibraryResult(filters!, { page }, signal),
     },
@@ -175,6 +177,7 @@ export function useLibraryQuery(
     {
       ...cacheOptions,
       queryKey: libraryListKey(filters, 'more', 1),
+      placeholderData: keepPreviousData,
       enabled: enabled && loadingMode === 'more',
       queryFn: ({ pageParam, signal }) =>
         readLibraryResult(filters!, { cursor: pageParam }, signal),
@@ -212,7 +215,7 @@ export function useLibraryQuery(
   // History restores cached pages and their scroll without replaying cursor requests.
   const scrollPositions = useRef(new Map<string, number>());
   const identity = JSON.stringify(queryKey);
-  const scrollReady = enabled && !active.isPending;
+  const scrollReady = enabled && !active.isPending && !active.isPlaceholderData;
   useLayoutEffect(() => {
     if (!scrollReady) return;
     const container = document.querySelector<HTMLElement>('.shell-content');
@@ -289,7 +292,13 @@ export function useLibraryQuery(
   async function refresh() {
     setRefreshAvailable(false);
     if (!enabled) return;
-    await client.resetQueries({ queryKey, exact: true });
+    if (loadingMode === 'more') {
+      // Refresh starts from the first batch, keeping its real cards visible.
+      client.setQueryData<InfiniteData<LibraryPage>>(queryKey, (data) =>
+        data ? { pages: data.pages.slice(0, 1), pageParams: [null] } : data,
+      );
+    }
+    await active.refetch();
   }
   async function refreshCurrent() {
     setRefreshAvailable(false);

@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useId, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Button } from '@heroui/react/button';
 import { ButtonGroup } from '@heroui/react/button-group';
 import { Tooltip } from '@heroui/react/tooltip';
@@ -198,14 +199,17 @@ export function LibrarySelectionMenu({
         共选 {total} 张：{currentLabel} {selection.currentCount} 张
         {loadingMode === 'pages' ? `，其他页 ${selection.otherCount} 张` : ''}
       </p>
-      {contextMenu ? (
-        <span
-          ref={contextAnchor}
-          aria-hidden
-          className="pointer-events-none fixed size-px"
-          style={{ left: contextMenu.x, top: contextMenu.y }}
-        />
-      ) : null}
+      {contextMenu
+        ? createPortal(
+            <span
+              ref={contextAnchor}
+              aria-hidden
+              className="pointer-events-none fixed size-px"
+              style={{ left: contextMenu.x, top: contextMenu.y }}
+            />,
+            document.body,
+          )
+        : null}
       <Button
         ref={attachTrigger}
         variant="outline"
@@ -310,6 +314,7 @@ export function LibrarySelectionMenu({
             ) : null}
             <Dropdown.Menu
               aria-label="已选图片操作"
+              autoFocus={contextMenu ? 'first' : undefined}
               className="min-h-0 flex-1 overflow-y-auto overscroll-contain"
               disabledKeys={blocked ? ['open'] : []}
               onAction={(key) => {

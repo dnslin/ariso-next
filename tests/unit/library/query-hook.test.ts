@@ -98,6 +98,71 @@ afterEach(() => {
   context.mode = 'more';
 });
 
+it('refreshes from the first cursor without replacing real cards with an empty loading state', async () => {
+  context.search = 'q=photo&pageSize=20';
+  const filters = parseLibraryLocation(
+    new URLSearchParams(context.search),
+  ).filters;
+  const key = libraryListKey(filters, 'more', 1);
+  const client = new QueryClient();
+  client.setQueryData<InfiniteData<LibraryPage>>(key, {
+    pages: [page(['a', 'b'], 'old-cursor'), page(['c', 'd'], 'bad-cursor')],
+    pageParams: [null, 'old-cursor'],
+  });
+  let release!: () => void;
+  const fetcher = vi.fn(async (url: string) => {
+    expect(new URL(url, 'http://localhost').searchParams.has('cursor')).toBe(
+      false,
+    );
+    await new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    return Response.json(page(['new', 'a'], 'fresh-cursor'));
+  });
+  vi.stubGlobal('fetch', fetcher);
+  const pending = mount(client).refresh();
+  expect(
+    client
+      .getQueryData<InfiniteData<LibraryPage>>(key)
+      ?.pages[0].items.map((item) => item.id),
+  ).toEqual(['a', 'b']);
+  expect(fetcher).toHaveBeenCalledOnce();
+  release();
+  await pending;
+  const refreshed = client.getQueryData<InfiniteData<LibraryPage>>(key)!;
+  expect(refreshed.pages).toHaveLength(1);
+  expect(refreshed.pages[0].items.map((item) => item.id)).toEqual(['new', 'a']);
+  expect(refreshed.pages[0].nextCursor).toBe('fresh-cursor');
+  expect(refreshed.pageParams).toEqual([null]);
+  client.clear();
+});
+
+it('keeps the current page visible when a manual refresh fails', async () => {
+  context.mode = 'pages';
+  context.search = 'page=2&pageSize=20';
+  const filters = parseLibraryLocation(
+    new URLSearchParams(context.search),
+  ).filters;
+  const key = libraryListKey(filters, 'pages', 2);
+  const client = new QueryClient();
+  const original = page(['a', 'b'], null);
+  client.setQueryData(key, original);
+  vi.stubGlobal(
+    'fetch',
+    vi
+      .fn()
+      .mockResolvedValue(
+        Response.json({ message: '读取失败' }, { status: 500 }),
+      ),
+  );
+  await mount(client).refresh();
+  const result = mount(client);
+  expect(result.items.map((item) => item.id)).toEqual(['a', 'b']);
+  expect(result.error?.message).toBe('读取失败');
+  expect(result.page).toBe(2);
+  client.clear();
+});
+
 it('refreshes every currently loaded batch without clearing the current window or changing query state', async () => {
   context.search = 'q=photo&pageSize=20';
   const filters = parseLibraryLocation(

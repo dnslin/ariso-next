@@ -4,7 +4,6 @@ import type {
   ConnectionReport,
   ProbeStageResult,
 } from '../../server/storage/probe-types';
-import { CorsRows } from './cors-report';
 
 const stages = [
   ['configuration', 'Bucket 支持范围'],
@@ -78,18 +77,11 @@ export function connectionStageRow(
   };
 }
 
-export function ConnectionReportRows({
-  report,
+export function connectionReportRows(
+  report: ConnectionReport,
   includeConfiguration = true,
-}: {
-  report: ConnectionReport;
-  includeConfiguration?: boolean;
-}) {
-  return (
-    <CorsRows
-      rows={stages
-        .filter(([name]) => includeConfiguration || name !== 'configuration')
-        .map(([name, label]) => connectionStageRow(report, name, label))}
-    />
-  );
+) {
+  return stages
+    .filter(([name]) => includeConfiguration || name !== 'configuration')
+    .map(([name, label]) => connectionStageRow(report, name, label));
 }

@@ -4,7 +4,11 @@ import { useState } from 'react';
 import { Button } from '@heroui/react/button';
 import { Modal } from '@heroui/react/modal';
 import { CloseButton } from '@heroui/react/close-button';
-import { Skeleton } from '@heroui/react/skeleton';
+import { useAnimate } from 'motion/react';
+import {
+  componentEntryTransition,
+  useReducedMotion,
+} from '../../components/motion';
 import type { Album } from './api';
 
 const titles = {
@@ -24,12 +28,10 @@ export function AlbumCoverImage({
   onError?: () => void;
 }) {
   const [failed, setFailed] = useState(false);
-  const [loaded, setLoaded] = useState(false);
+  const [scope, animate] = useAnimate<HTMLDivElement>();
+  const reduce = useReducedMotion();
   return cover.thumbnailUrl && !failed ? (
-    <div className="relative size-full">
-      {!loaded ? (
-        <Skeleton aria-hidden className="absolute inset-0 size-full" />
-      ) : null}
+    <div ref={scope} className="relative size-full">
       {/* 使用已有 thumbnail delivery，保持实际权限和读取错误。 */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
@@ -37,7 +39,13 @@ export function AlbumCoverImage({
         alt={cover.displayName ?? ''}
         className="size-full object-cover"
         loading="lazy"
-        onLoad={() => setLoaded(true)}
+        onLoad={(event) => {
+          animate(
+            event.currentTarget,
+            { opacity: [0, 1] },
+            componentEntryTransition(reduce).opacity,
+          );
+        }}
         onError={() => {
           setFailed(true);
           onError?.();

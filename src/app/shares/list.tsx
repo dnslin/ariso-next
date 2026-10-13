@@ -1,5 +1,7 @@
 'use client';
 
+import { ComponentEntrance } from '../../components/component-entrance';
+
 import { Link } from '@heroui/react/link';
 import { Table } from '@heroui/react/table';
 import { Tooltip } from '@heroui/react/tooltip';
@@ -14,10 +16,12 @@ export function SharesList({
   items,
   total,
   timeZone,
+  disabled = false,
 }: {
   items: ShareItem[];
   total: number;
   timeZone: string;
+  disabled?: boolean;
 }) {
   const deadline = new Intl.DateTimeFormat('zh-CN', {
     timeZone,
@@ -77,6 +81,7 @@ export function SharesList({
       <Tooltip>
         <Link
           href={`/shares/${encodeURIComponent(item.albumId)}`}
+          isDisabled={disabled}
           aria-label={`分享设置 ${item.albumName} #${item.albumId.slice(0, 8)}`}
           className="size-11 shrink-0 justify-center rounded-lg text-foreground no-underline hover:bg-default"
         >
@@ -87,8 +92,10 @@ export function SharesList({
     );
   }
   return (
-    <div
+    <ComponentEntrance
+      delay={0.11}
       data-testid="shares-list"
+      aria-busy={disabled}
       className="min-w-0 rounded-[20px] border border-border bg-surface px-4 py-5 xl:p-6"
     >
       <h2 className="text-lg font-medium leading-normal">分享 · {total} 项</h2>
@@ -114,7 +121,7 @@ export function SharesList({
               操作
             </Table.Column>
           </Table.Header>
-          <Table.Body items={items}>
+          <Table.Body items={items} dependencies={[disabled]}>
             {(item) => (
               <Table.Row
                 id={item.id}
@@ -152,6 +159,6 @@ export function SharesList({
           </li>
         ))}
       </ul>
-    </div>
+    </ComponentEntrance>
   );
 }

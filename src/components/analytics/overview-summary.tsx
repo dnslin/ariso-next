@@ -6,6 +6,7 @@ import { BarChart3, CalendarDays, Images } from 'lucide-react';
 import type { AnalyticsOverview } from './read-analytics';
 import { ImageStatisticsTip } from './image-statistics-content';
 import { number, timestamp } from './presentation';
+import { ComponentEntrance } from '../component-entrance';
 
 export function AnalyticsMetadata({
   data,
@@ -72,16 +73,19 @@ export function AnalyticsMetrics({ data }: { data: AnalyticsOverview }) {
       data-testid="analytics-metrics"
     >
       <AnalyticsMetric
+        delay={0.055}
         label={`最近 ${data.range.days} 天`}
         value={number(data.versions.total)}
         icon={<CalendarDays size={19} aria-hidden />}
       />
       <AnalyticsMetric
+        delay={0.11}
         label="今日访问"
         value={number(data.today)}
         icon={<BarChart3 size={19} aria-hidden />}
       />
       <AnalyticsMetric
+        delay={0.165}
         label="累计访问"
         value={number(data.cumulative.total)}
         icon={<Images size={19} aria-hidden />}
@@ -95,22 +99,26 @@ export function AnalyticsMetric({
   value,
   icon,
   children,
+  delay = 0.055,
 }: {
   label: string;
   value: string;
   icon: ReactNode;
   children?: ReactNode;
+  delay?: number;
 }) {
   return (
-    <Card className="grid min-h-28 min-w-0 content-start gap-3 rounded-lg border border-border bg-surface p-4 shadow-none max-[479px]:p-3 min-[1200px]:min-h-32 min-[1200px]:gap-4 min-[1200px]:p-5">
-      <p className="flex items-center justify-between gap-2 text-xs min-[480px]:text-sm">
-        <span className="min-w-0">{label}</span>
-        <span className="shrink-0 text-muted max-[479px]:hidden">{icon}</span>
-      </p>
-      <p className="text-xl font-semibold leading-tight tabular-nums wrap-anywhere min-[480px]:text-2xl min-[1200px]:text-[30px]">
-        {value}
-      </p>
-      {children}
-    </Card>
+    <ComponentEntrance delay={delay} className="min-w-0 h-full">
+      <Card className="grid h-full min-h-28 min-w-0 content-start gap-3 rounded-lg border border-border bg-surface p-4 shadow-none max-[479px]:p-3 min-[1200px]:min-h-32 min-[1200px]:gap-4 min-[1200px]:p-5">
+        <p className="flex items-center justify-between gap-2 text-xs min-[480px]:text-sm">
+          <span className="min-w-0">{label}</span>
+          <span className="shrink-0 text-muted max-[479px]:hidden">{icon}</span>
+        </p>
+        <p className="text-xl font-semibold leading-tight tabular-nums wrap-anywhere min-[480px]:text-2xl min-[1200px]:text-[30px]">
+          {value}
+        </p>
+        {children}
+      </Card>
+    </ComponentEntrance>
   );
 }

@@ -53,7 +53,9 @@ const ids = async () => {
       [...document.querySelectorAll('[data-testid="library-card"]')].map(
         (node) => ({
           id: node.dataset.imageId,
-          position: Number(node.parentElement.getAttribute('aria-posinset')),
+          position: Number(
+            node.closest('[role="listitem"]').getAttribute('aria-posinset'),
+          ),
         }),
       ),
     ))

@@ -7,7 +7,6 @@ import { Alert } from '@heroui/react/alert';
 import { Button } from '@heroui/react/button';
 import { Chip } from '@heroui/react/chip';
 import { Link } from '@heroui/react/link';
-import { Spinner } from '@heroui/react/spinner';
 import { AlertDialog } from '@heroui/react/alert-dialog';
 import {
   ArrowLeft,
@@ -126,7 +125,6 @@ export function StorageEditor({
         </header>
         {query.isPending ? (
           <p role="status" className="flex items-center gap-2">
-            <Spinner size="sm" />
             正在读取存储配置
           </p>
         ) : (

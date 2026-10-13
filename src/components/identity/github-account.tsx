@@ -1,5 +1,6 @@
 'use client';
 
+import { ComponentEntrance } from '../component-entrance';
 import { Button } from '@heroui/react/button';
 import { Card } from '@heroui/react/card';
 import { Spinner } from '@heroui/react/spinner';
@@ -142,53 +143,57 @@ export function GithubAccount({
       aria-labelledby="account-github-heading"
       className="grid min-w-0 gap-3"
     >
-      <h2
-        id="account-github-heading"
-        tabIndex={-1}
-        className="flex items-center gap-2 text-lg font-medium"
-      >
-        <LogIn className="size-5 shrink-0" aria-hidden />
-        GitHub 登录
-      </h2>
-      <Card className={accountSurfaceClass}>
-        <AccountSettingRow
-          label="GitHub 账号"
-          icon={<Link2 className="size-4 shrink-0" aria-hidden />}
-          action={bindingAction}
+      <ComponentEntrance delay={0.11}>
+        <h2
+          id="account-github-heading"
+          tabIndex={-1}
+          className="flex items-center gap-2 text-lg font-medium"
         >
-          <GithubBindingStatus
-            query={view.binding}
-            unknown={view.unlinkUnknown}
-            disabledHint={disabledHint}
-          />
-          {account.linkError || view.callbackFailed ? (
-            <p
-              role="alert"
-              className="mt-1 text-[13px] leading-normal text-danger"
-            >
-              {account.linkError || 'GitHub 绑定未完成，请检查授权后重试。'}
-            </p>
+          <LogIn className="size-5 shrink-0" aria-hidden />
+          GitHub 登录
+        </h2>
+      </ComponentEntrance>
+      <ComponentEntrance delay={0.165}>
+        <Card className={accountSurfaceClass}>
+          <AccountSettingRow
+            label="GitHub 账号"
+            icon={<Link2 className="size-4 shrink-0" aria-hidden />}
+            action={bindingAction}
+          >
+            <GithubBindingStatus
+              query={view.binding}
+              unknown={view.unlinkUnknown}
+              disabledHint={disabledHint}
+            />
+            {account.linkError || view.callbackFailed ? (
+              <p
+                role="alert"
+                className="mt-1 text-[13px] leading-normal text-danger"
+              >
+                {account.linkError || 'GitHub 绑定未完成，请检查授权后重试。'}
+              </p>
+            ) : null}
+          </AccountSettingRow>
+          <AccountSettingRow
+            label="站点登录配置"
+            icon={<Settings2 className="size-4 shrink-0" aria-hidden />}
+            action={settingsAction}
+          >
+            <GithubSettingsStatus
+              query={view.settings}
+              unknown={view.settingsUnknown}
+            />
+            {view.settingsResult === 'verified' ? (
+              <p className="mt-1 text-[13px] leading-normal text-muted">
+                已核对当前配置，无法确认这次密钥修改结果。
+              </p>
+            ) : null}
+          </AccountSettingRow>
+          {view.settingsReady && settings?.pendingRestart ? (
+            <GithubPendingSummary settings={settings} />
           ) : null}
-        </AccountSettingRow>
-        <AccountSettingRow
-          label="站点登录配置"
-          icon={<Settings2 className="size-4 shrink-0" aria-hidden />}
-          action={settingsAction}
-        >
-          <GithubSettingsStatus
-            query={view.settings}
-            unknown={view.settingsUnknown}
-          />
-          {view.settingsResult === 'verified' ? (
-            <p className="mt-1 text-[13px] leading-normal text-muted">
-              已核对当前配置，无法确认这次密钥修改结果。
-            </p>
-          ) : null}
-        </AccountSettingRow>
-        {view.settingsReady && settings?.pendingRestart ? (
-          <GithubPendingSummary settings={settings} />
-        ) : null}
-      </Card>
+        </Card>
+      </ComponentEntrance>
       {view.editorOpen && settings ? (
         <GithubSettingsEditor
           settings={settings}

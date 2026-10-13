@@ -34,21 +34,25 @@ export function DashboardResources({
       data-testid="dashboard-metrics"
     >
       <AnalyticsMetric
+        delay={0.055}
         label="图片"
         value={number(data.counts.normalImages)}
         icon={<Images size={19} aria-hidden />}
       />
       <AnalyticsMetric
+        delay={0.11}
         label="相册"
         value={number(data.counts.albums)}
         icon={<Folder size={19} aria-hidden />}
       />
       <AnalyticsMetric
+        delay={0.165}
         label="回收站"
         value={number(data.counts.recycledImages)}
         icon={<Trash2 size={19} aria-hidden />}
       />
       <AnalyticsMetric
+        delay={0.165}
         label="已登记占用"
         value={knownBytes === undefined ? '未读取' : bytes(knownBytes)}
         icon={<HardDrive size={19} aria-hidden />}

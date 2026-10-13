@@ -7,7 +7,6 @@ import { Alert } from '@heroui/react/alert';
 import { Button } from '@heroui/react/button';
 import { CloseButton } from '@heroui/react/close-button';
 import { Chip } from '@heroui/react/chip';
-import { Skeleton } from '@heroui/react/skeleton';
 import { Modal } from '@heroui/react/modal';
 import { Card } from '@heroui/react/card';
 import { ProgressBar } from '@heroui/react/progress-bar';
@@ -16,6 +15,8 @@ import { bytesLabel, stepLabels } from '../library/detail-labels';
 import { useResetUpload } from './provider';
 import { UploadResult, useUploadResult } from './result';
 import { UploadTransferDetails } from './transfer-details';
+import { useAnimate } from 'motion/react';
+import { componentEntryTransition, useReducedMotion } from '../motion';
 import { TrashAction } from '../library/trash-actions';
 import type { UploadItem, UploadState } from './types';
 import type { UploadController } from './controller';
@@ -37,17 +38,24 @@ export const uploadLabels: Record<UploadState, string> = {
 
 function UploadPreview({ url, name }: { url: string | null; name: string }) {
   const [failed, setFailed] = useState(false);
-  const [loaded, setLoaded] = useState(false);
+  const [scope, animate] = useAnimate<HTMLSpanElement>();
+  const reduce = useReducedMotion();
   return url && !failed ? (
-    <span className="relative size-14 shrink-0 overflow-hidden rounded-lg xl:size-16">
-      {!loaded ? (
-        <Skeleton aria-hidden className="absolute inset-0 size-full" />
-      ) : null}
+    <span
+      ref={scope}
+      className="relative size-14 shrink-0 overflow-hidden rounded-lg xl:size-16"
+    >
       {/* eslint-disable-next-line @next/next/no-img-element -- Local Blob and authenticated URLs bypass the optimizer. */}
       <img
         src={url}
         alt=""
-        onLoad={() => setLoaded(true)}
+        onLoad={(event) => {
+          animate(
+            event.currentTarget,
+            { opacity: [0, 1] },
+            componentEntryTransition(reduce).opacity,
+          );
+        }}
         onError={() => setFailed(true)}
         className="size-14 rounded-lg object-cover xl:size-16"
       />
