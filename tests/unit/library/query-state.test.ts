@@ -14,6 +14,17 @@ const parse = (value: string, albumId?: string) =>
   parseLibraryLocation(new URLSearchParams(value), albumId);
 
 describe('applied library URL', () => {
+  it('keeps approved collection and storage return context out of library filters', () => {
+    expect(parse('page=2&returnTo=%2Falbums%3Fq%3Dtravel', 'album')).toEqual(
+      parse('page=2', 'album'),
+    );
+    expect(
+      parse(
+        'storageId=archive&storageReturn=%2Fsettings%2Fstorage%2Farchive%3Fview%3Dreferences',
+      ),
+    ).toEqual(parse('storageId=archive'));
+    expect(() => parse('returnTo=%2Falbums')).toThrow();
+  });
   it('shares normalization with HTTP and keeps repeated tags as IDs', () => {
     const value = 'q=%20Photo%20&tagId=b&tagId=a&tagId=b&pageSize=20&page=3';
     expect(parse(value).filters).toEqual(

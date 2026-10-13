@@ -56,12 +56,14 @@ export function StorageEditor({
   storageId,
   storageRoot,
   initialSaved = false,
+  initialReferenceView = false,
   initialType = 'local',
   ...shell
 }: ShellProps & {
   storageId?: string;
   storageRoot: string;
   initialSaved?: boolean;
+  initialReferenceView?: boolean;
   initialType?: 'local' | 's3';
 }) {
   const query = useQuery({
@@ -101,6 +103,7 @@ export function StorageEditor({
         {...shell}
         storageRoot={storageRoot}
         initialSaved={initialSaved}
+        initialReferenceView={initialReferenceView}
         initialType={initialType}
         initial={query.data}
         detail={query.data.storage}
@@ -150,6 +153,7 @@ export function StorageEditor({
 function StorageEditorReady({
   storageRoot,
   initialSaved,
+  initialReferenceView,
   initialType,
   initial,
   detail,
@@ -159,6 +163,7 @@ function StorageEditorReady({
 }: ShellProps & {
   storageRoot: string;
   initialSaved: boolean;
+  initialReferenceView: boolean;
   initialType: 'local' | 's3';
   initial: { storage?: StorageDetail; settings: StorageSettings };
   detail?: StorageDetail;
@@ -188,7 +193,7 @@ function StorageEditorReady({
   const [busy, setBusy] = useState(false);
   const [testing, setTesting] = useState(false);
   const [unknown, setUnknown] = useState(false);
-  const [referenceView, setReferenceView] = useState(false);
+  const [referenceView, setReferenceView] = useState(initialReferenceView);
   const [maintenanceView, setMaintenanceView] = useState<
     'cleanup' | 'default' | null
   >(null);

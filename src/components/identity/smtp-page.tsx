@@ -17,6 +17,7 @@ import {
   Send,
 } from 'lucide-react';
 import { OwnerShell } from '../shell/owner-shell';
+import { SiteLeaveDialog } from '../site/site-navigation';
 import {
   SettingsCategories,
   SettingsHeading,
@@ -154,7 +155,10 @@ export function SmtpPage(shell: ShellProps) {
         <ComponentEntrance>
           <SettingsHeading />
         </ComponentEntrance>
-        <SettingsCategories items={settingsCategories}>
+        <SettingsCategories
+          items={settingsCategories}
+          onNavigate={editor.navigation.navigate}
+        >
           {editor.load === 'loading' ? (
             <Card
               className={cardClass}
@@ -266,6 +270,7 @@ export function SmtpPage(shell: ShellProps) {
         </SettingsCategories>
       </section>
       <SmtpDialog editor={editor} />
+      <SiteLeaveDialog navigation={editor.navigation} pending={false} />
     </OwnerShell>
   );
 }

@@ -8,6 +8,7 @@ import { storageUpdateInputSchema } from '../../../../server/storage/validation.
 import { getServerRuntime } from '../../../../server/startup/server-start.ts';
 import { readStorageScan } from '../../../../server/storage/scans.ts';
 import { readStorageOrphanUsage } from '../../../../server/storage/maintenance.ts';
+import { readStorageTaskReferences } from '../../../../server/startup/storage-references.ts';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -17,14 +18,17 @@ export function GET(request: Request, context: Context) {
   return storageResponse(request, async (db) => {
     const { id } = await context.params;
     const readReferences = getServerRuntime().storageReferences;
-    const { counts, activeWrites } = readReferences(db, id);
-    return {
-      ...readStorage(db, id),
-      probes: listStorageProbes(db, id),
-      references: { counts, activeWrites },
-      scan: readStorageScan(db, id),
-      orphans: readStorageOrphanUsage({ db, readReferences }, id),
-    };
+    return db.transaction((tx) => {
+      const { counts, activeWrites } = readReferences(tx, id);
+      return {
+        ...readStorage(tx, id),
+        probes: listStorageProbes(tx, id),
+        references: { counts, activeWrites },
+        taskReferences: readStorageTaskReferences(tx, id),
+        scan: readStorageScan(tx, id),
+        orphans: readStorageOrphanUsage({ db: tx, readReferences }, id),
+      };
+    });
   });
 }
 export function PATCH(request: Request, context: Context) {

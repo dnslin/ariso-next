@@ -32,7 +32,9 @@ export function parseLibraryLocation(
       key === 'image' ||
       key === 'detailView' ||
       key === 'preview' ||
-      key === 'analyticsReturn'
+      key === 'analyticsReturn' ||
+      key === 'storageReturn' ||
+      (fixedAlbumId && key === 'returnTo')
     )
       continue;
     const values = params.getAll(key);

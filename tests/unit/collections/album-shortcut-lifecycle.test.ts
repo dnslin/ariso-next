@@ -29,7 +29,8 @@ type Cell = {
 };
 type Lifetime = { cells: Cell[]; effects: (() => void)[]; cursor: number };
 const runtime = vi.hoisted(() => ({ active: null as Lifetime | null }));
-const navigation = vi.hoisted(() => ({ push: vi.fn() }));
+const navigation = vi.hoisted(() => ({ push: vi.fn(), search: '' }));
+const navigationCache = new QueryClient();
 const session = vi.hoisted(() => ({ resetUpload: vi.fn() }));
 vi.mock('react', async (original) => {
   const actual = await original<typeof import('react')>();
@@ -75,6 +76,7 @@ vi.mock('react', async (original) => {
 });
 vi.mock('@tanstack/react-query', async (original) => ({
   ...(await original<typeof import('@tanstack/react-query')>()),
+  useQueryClient: () => navigationCache,
   useQuery: (options: QueryObserverOptions, client: QueryClient) => {
     const scope = runtime.active!;
     const cell = (scope.cells[scope.cursor++] ??= {});
@@ -92,7 +94,10 @@ vi.mock('@tanstack/react-query', async (original) => ({
     return observer.getCurrentResult();
   },
 }));
-vi.mock('next/navigation', () => ({ useRouter: () => navigation }));
+vi.mock('next/navigation', () => ({
+  useRouter: () => navigation,
+  useSearchParams: () => new URLSearchParams(navigation.search),
+}));
 
 vi.mock('../../../src/components/upload/provider', () => ({
   useResetUpload: () => session.resetUpload,
@@ -198,9 +203,18 @@ function refreshError(tree: ReturnType<typeof AlbumsScreen>) {
 }
 beforeEach(() => {
   navigation.push.mockReset();
+  navigation.search = '';
+  navigationCache.clear();
   session.resetUpload.mockReset();
   vi.stubGlobal('window', new EventTarget());
+  const updateSearch = (_state: unknown, _unused: string, url: string) => {
+    navigation.search = new URL(url, 'http://ariso.test').search;
+  };
+  Object.assign(window, {
+    history: { pushState: updateSearch, replaceState: updateSearch },
+  });
   vi.stubGlobal('requestAnimationFrame', (callback: () => void) => callback());
+  vi.stubGlobal('cancelAnimationFrame', vi.fn());
 });
 
 it('keeps Return beside the title and album actions in the query toolbar, preserving full-page Upload context', async () => {
@@ -353,6 +367,56 @@ it('keeps real album cards while a search is pending and replaces them with the 
     expect(html).toContain('未找到相册');
     expect(html).not.toContain('0 张图片');
   });
+});
+
+it('reads the list context from its URL and carries that exact source into album and share navigation', async () => {
+  navigation.search = '?q=旅行&page=2&pageSize=20';
+  const fetcher = vi.fn(async (url: string) => {
+    expect(url).toBe('/api/albums?q=%E6%97%85%E8%A1%8C&page=2&pageSize=20');
+    return Response.json({ items: [album], total: 41, page: 2, pageSize: 20 });
+  });
+  vi.stubGlobal('fetch', fetcher);
+  const main = Object.assign(new EventTarget(), {
+    scrollTop: 340,
+    scrollTo: vi.fn(),
+    querySelectorAll: () => [],
+    querySelector: () => null,
+  });
+  const opener = {
+    dataset: { collectionReturnFocus: 'album-menu-album' },
+  } as unknown as HTMLElement;
+  vi.stubGlobal('document', {
+    getElementById: () => main,
+    activeElement: opener,
+  });
+  const render = lifetime(() => AlbumsScreen(props));
+  render();
+  await vi.waitFor(() =>
+    expect(
+      elements(render()).find(
+        (element) => typeof element.props.onShare === 'function',
+      ),
+    ).toBeDefined(),
+  );
+  expect(fetcher).toHaveBeenCalled();
+  const source = '/albums?q=%E6%97%85%E8%A1%8C&page=2&pageSize=20';
+  const card = elements(render()).find(
+    (element) => typeof element.props.onShare === 'function',
+  )!;
+  expect(
+    new URL(card.props.href as string, 'http://ariso.test').searchParams.get(
+      'returnTo',
+    ),
+  ).toBe(source);
+  (card.props.onShare as (element: HTMLElement) => void)(opener);
+  const share = new URL(navigation.push.mock.calls[0][0], 'http://ariso.test');
+  expect(share.pathname).toBe('/shares/album');
+  expect(share.searchParams.get('returnTo')).toBe(source);
+  const returned = lifetime(() => AlbumsScreen(props));
+  const search = elements(returned()).find(
+    (element) => element.props['aria-label'] === '搜索相册',
+  )!;
+  expect(search.props.value).toBe('旅行');
 });
 
 it('keeps the picker and failed selection after a partial join and failed detail refresh', async () => {

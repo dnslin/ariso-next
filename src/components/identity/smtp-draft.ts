@@ -25,7 +25,10 @@ export function smtpDraftInput(draft: SmtpDraft): SmtpInput {
     ...(draft.password ? { password: draft.password } : {}),
   };
 }
-export function smtpDraftMatches(draft: SmtpDraft, saved: SmtpSettings | null) {
+export function smtpDraftMatches(
+  draft: SmtpDraft,
+  saved: Omit<SmtpDraft, 'password'> | null,
+) {
   if (!saved) return false;
   const input = smtpDraftInput(draft);
   return (
@@ -33,5 +36,5 @@ export function smtpDraftMatches(draft: SmtpDraft, saved: SmtpSettings | null) {
   ).every((key) => input[key] === saved[key]);
 }
 export function smtpDraftChanged(draft: SmtpDraft, saved: SmtpSettings | null) {
-  return !!draft.password || !smtpDraftMatches(draft, saved);
+  return !!draft.password || !smtpDraftMatches(draft, saved ?? smtpDraft(null));
 }

@@ -18,6 +18,7 @@ import { ToggleButton } from '@heroui/react/toggle-button';
 import { ToggleButtonGroup } from '@heroui/react/toggle-button-group';
 import { ImageStatisticsDialog } from '../../components/analytics/image-statistics';
 import { analyticsReturnUrl } from '../../components/analytics/navigation';
+import { storageReferenceReturn } from '../../components/storage/reference-navigation';
 import { OwnerShell } from '../../components/shell/owner-shell';
 import { useResetUpload } from '../../components/upload/provider';
 import type { LibraryDetail as Detail } from '../../server/library/detail-types';
@@ -77,6 +78,7 @@ export function LibraryScreen(props: {
   workspace?: { content: ReactNode; footer: ReactNode };
   onRefresh?: () => void;
   onImageRemoved?: () => void;
+  onListReady?: () => void;
   refreshKey?: number;
 }) {
   const resetUpload = useResetUpload();
@@ -91,6 +93,16 @@ export function LibraryScreen(props: {
     { albumId: props.albumId },
     !sessionEnded,
   );
+  const { onListReady } = props;
+  useEffect(() => {
+    if (!query.isPending && !query.isFetching && !query.error) onListReady?.();
+  }, [
+    query.isPending,
+    query.isFetching,
+    query.error,
+    query.dataUpdatedAt,
+    onListReady,
+  ]);
   const lastRefreshKey = useRef(props.refreshKey);
   const refreshFromAlbum = useEffectEvent(() => {
     void query.refreshCurrent();
@@ -128,6 +140,7 @@ export function LibraryScreen(props: {
   const statisticsScroll = useRef(0);
   if (statisticsId && statisticsId !== detail.imageId) setStatisticsId(null);
   const analyticsSource = analyticsReturnUrl(params.get('analyticsReturn'));
+  const storageSource = storageReferenceReturn(params.get('storageReturn'));
   const closeDetail = () => {
     if (analyticsSource) window.location.assign(analyticsSource);
     else detail.close();
@@ -335,6 +348,15 @@ export function LibraryScreen(props: {
               >
                 图库
               </h1>
+              {storageSource ? (
+                <Link
+                  href={storageSource}
+                  className="inline-flex min-h-11 shrink-0 items-center gap-2 rounded-lg px-3 text-sm no-underline"
+                >
+                  <ArrowLeft size={18} aria-hidden />
+                  返回
+                </Link>
+              ) : null}
             </ComponentEntrance>
           )}
           {analyticsSource ? (

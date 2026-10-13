@@ -48,6 +48,7 @@ import { useTrashQuery } from './use-trash-query';
 import { OwnerShell } from '../../components/shell/owner-shell';
 import { ImageStatisticsDialog } from '../../components/analytics/image-statistics';
 import { analyticsReturnUrl } from '../../components/analytics/navigation';
+import { storageReferenceReturn } from '../../components/storage/reference-navigation';
 import { useResetUpload } from '../../components/upload/provider';
 import { TrashAction } from '../../components/library/trash-actions';
 import {
@@ -84,6 +85,7 @@ export function TrashScreen({
   const params = useSearchParams();
   const imageId = params.get('image');
   const analyticsSource = analyticsReturnUrl(params.get('analyticsReturn'));
+  const storageSource = storageReferenceReturn(params.get('storageReturn'));
   const [client] = useState(() => new QueryClient());
   const [sessionEnded, setSessionEnded] = useState(false);
   const [mutationPending, setMutationPending] = useState(false);
@@ -472,6 +474,15 @@ export function TrashScreen({
         </>
       ) : (
         <section className="grid min-w-0 gap-5">
+          {storageSource ? (
+            <Link
+              href={storageSource}
+              className="inline-flex min-h-11 w-fit items-center gap-2 rounded-lg px-3 text-sm no-underline"
+            >
+              <ArrowLeft size={18} aria-hidden />
+              返回引用与清理
+            </Link>
+          ) : null}
           <ComponentEntrance
             as="header"
             className="flex items-center justify-between gap-4"

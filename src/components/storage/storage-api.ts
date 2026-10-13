@@ -5,6 +5,7 @@ import type {
 import type { listStorageProbes } from '../../server/storage/probes';
 import type { readStorageScan } from '../../server/storage/scans';
 import type { readStorageOrphanUsage } from '../../server/storage/maintenance';
+import type { readStorageTaskReferences } from '../../server/startup/storage-references';
 
 type JsonValue<T> = T extends Date
   ? string
@@ -19,6 +20,7 @@ export type StorageSummary = JsonValue<ReturnType<typeof readStorage>> & {
 };
 export type StorageSettings = JsonValue<ReturnType<typeof readStorageSettings>>;
 export type StorageDetail = StorageSummary & {
+  taskReferences: JsonValue<ReturnType<typeof readStorageTaskReferences>>;
   probes: JsonValue<ReturnType<typeof listStorageProbes>>;
   references: { counts: Record<string, number>; activeWrites: number };
   scan: JsonValue<ReturnType<typeof readStorageScan>>;

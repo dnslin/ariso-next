@@ -4,25 +4,31 @@ import { requireSiteSettings } from '../../../server/site/settings';
 import { brandingUrl } from '../../../server/site/urls';
 import { getServerRuntime } from '../../../server/startup/server-start';
 import { SettingsScreen } from '../settings';
+import {
+  readCollectionReturn,
+  shareSettingsHref,
+} from '../../albums/collection-navigation';
 
 export default async function ShareSettingsPage({
   params,
   searchParams,
 }: {
   params: Promise<{ albumId: string }>;
-  searchParams: Promise<{ from?: string }>;
+  searchParams: Promise<{ returnTo?: string }>;
 }) {
   const { albumId } = await params;
-  const fromAlbum = (await searchParams).from === 'album';
-  const owner = await requirePageOwner(
-    `/shares/${encodeURIComponent(albumId)}${fromAlbum ? '?from=album' : ''}`,
+  const returnHref = readCollectionReturn(
+    (await searchParams).returnTo,
+    albumId,
+    '/shares',
   );
+  const owner = await requirePageOwner(shareSettingsHref(albumId, returnHref));
   const settings = requireSiteSettings(getServerRuntime().connection.db);
   return (
     <SettingsScreen
       key={albumId}
       albumId={albumId}
-      fromAlbum={fromAlbum}
+      returnHref={returnHref}
       timeZone={settings.timeZone}
       name={settings.name}
       logoUrl={brandingUrl(settings.logoKey)}

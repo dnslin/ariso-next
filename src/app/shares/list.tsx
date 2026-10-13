@@ -8,6 +8,7 @@ import { Tooltip } from '@heroui/react/tooltip';
 import { Settings2 } from 'lucide-react';
 import type { listShares } from '../../server/sharing/configuration';
 import { AlbumCoverImage } from '../albums/cover-preview';
+import { shareSettingsHref } from '../albums/collection-navigation';
 
 export type SharePage = ReturnType<typeof listShares>;
 type ShareItem = SharePage['items'][number];
@@ -17,11 +18,15 @@ export function SharesList({
   total,
   timeZone,
   disabled = false,
+  returnTo = '/shares',
+  onNavigate,
 }: {
   items: ShareItem[];
   total: number;
   timeZone: string;
   disabled?: boolean;
+  returnTo?: string;
+  onNavigate?: (opener: HTMLElement) => void;
 }) {
   const deadline = new Intl.DateTimeFormat('zh-CN', {
     timeZone,
@@ -76,11 +81,14 @@ export function SharesList({
       </p>
     );
   }
-  function action(item: ShareItem) {
+  function action(item: ShareItem, surface: 'desktop' | 'mobile') {
     return (
       <Tooltip>
         <Link
-          href={`/shares/${encodeURIComponent(item.albumId)}`}
+          href={shareSettingsHref(item.albumId, returnTo)}
+          id={`share-settings-${item.albumId}-${surface}`}
+          data-collection-return-focus={`share-settings-${item.albumId}`}
+          onClick={(event) => onNavigate?.(event.currentTarget as HTMLElement)}
           isDisabled={disabled}
           aria-label={`分享设置 ${item.albumName} #${item.albumId.slice(0, 8)}`}
           className="size-11 shrink-0 justify-center rounded-lg text-foreground no-underline hover:bg-default"
@@ -121,7 +129,10 @@ export function SharesList({
               操作
             </Table.Column>
           </Table.Header>
-          <Table.Body items={items} dependencies={[disabled]}>
+          <Table.Body
+            items={items}
+            dependencies={[disabled, returnTo, onNavigate]}
+          >
             {(item) => (
               <Table.Row
                 id={item.id}
@@ -135,7 +146,9 @@ export function SharesList({
                   {access(item)}
                 </Table.Cell>
                 <Table.Cell className="border-0 p-0">{state(item)}</Table.Cell>
-                <Table.Cell className="border-0 p-0">{action(item)}</Table.Cell>
+                <Table.Cell className="border-0 p-0">
+                  {action(item, 'desktop')}
+                </Table.Cell>
               </Table.Row>
             )}
           </Table.Body>
@@ -154,7 +167,7 @@ export function SharesList({
             </div>
             <div className="grid w-20 shrink-0 justify-items-center gap-2">
               {state(item)}
-              {action(item)}
+              {action(item, 'mobile')}
             </div>
           </li>
         ))}

@@ -54,6 +54,20 @@ function mount(client: QueryClient) {
   renderToStaticMarkup(createElement(Probe));
   return result;
 }
+
+it('clears library filters without removing the storage reference return destination', () => {
+  const source = '/settings/storage/archive?view=references';
+  context.search = `storageId=archive&storageReturn=${encodeURIComponent(source)}`;
+  const pushState = vi.fn();
+  vi.stubGlobal('window', {
+    location: { href: `http://ariso.test/library?${context.search}` },
+    history: { pushState },
+  });
+  mount(new QueryClient()).resetQuery();
+  const url = pushState.mock.calls[0][2] as URL;
+  expect(url.searchParams.has('storageId')).toBe(false);
+  expect(url.searchParams.get('storageReturn')).toBe(source);
+});
 const item = (id: string): LibraryItem => ({
   id,
   displayName: id,

@@ -34,6 +34,7 @@ const suites = {
       ['analytics', 'analytics'],
       ['password-reset', 'password-reset'],
       ['smtp', 'smtp'],
+      ['uiux-p1', 'uiux-p1'],
     ],
   },
   'brand-experiment': {},
@@ -128,6 +129,7 @@ const suites = {
   'admin-motion': { stages: [['admin-motion', 'adminMotion']] },
   'shell-navigation': { stages: [['shell-navigation', 'shellNavigation']] },
   albums: { primaryPage: true, stages: [['albums', 'albums']] },
+  'uiux-p1': { primaryPage: true, stages: [['uiux-p1', 'uiuxP1']] },
   'album-motion': {
     stages: [['album-motion', 'albumMotion']],
   },

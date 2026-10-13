@@ -6,6 +6,13 @@ function select(suite: string, only?: string) {
 }
 
 describe('focused browser execution plans', () => {
+  it('runs the approved P1 workflows in full and focused product verification', () => {
+    expect(select('full').stages).toContainEqual(['uiux-p1', 'uiux-p1']);
+    expect(select('uiux-p1')).toEqual({
+      stages: [['uiux-p1', 'uiuxP1']],
+      config: {},
+    });
+  });
   it('runs shared admin component motion in full and focused production flows', () => {
     expect(select('full').stages).toContainEqual([
       'admin-motion',
@@ -521,6 +528,7 @@ describe('focused browser execution plans', () => {
 
         ['password-reset', 'password-reset'],
         ['smtp', 'smtp'],
+        ['uiux-p1', 'uiux-p1'],
       ],
       config: {},
     });

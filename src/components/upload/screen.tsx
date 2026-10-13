@@ -23,6 +23,7 @@ import { uploadContextItems, uploadDraftKey } from './context';
 import { UploadQueueItem } from './item';
 import { useUploadInput, UploadInputDialog } from './input-controls';
 import { UploadSubmissionSummaries } from './submission-summary';
+import { UploadDraftSummary } from './draft-summary';
 import { ComponentEntrance } from '../component-entrance';
 
 type ScreenProps = {
@@ -61,6 +62,7 @@ export function UploadScreen(props: ScreenProps) {
   const detailQuery = useDetailQuery(client, detailId, '/upload');
   const input = useUploadInput(controller, uploadDraftKey(props.albumId));
   const trigger = useRef<HTMLElement | null>(null);
+  const settingsRef = useRef<HTMLDivElement | null>(null);
   const openDetail = useCallback(
     (id: string, element: HTMLElement) => {
       trigger.current = element;
@@ -77,6 +79,7 @@ export function UploadScreen(props: ScreenProps) {
     items.length > 0 && items.every((item) => item.state === 'saving');
   const uploading = items.some((item) => item.state === 'uploading');
   const readyCount = items.filter((item) => item.state === 'ready').length;
+  const hasStarted = items.some((item) => item.state !== 'queued');
   const dialogRef = useCallback((node: HTMLElement | null) => {
     if (!node)
       requestAnimationFrame(() =>
@@ -267,6 +270,16 @@ export function UploadScreen(props: ScreenProps) {
             {...input.zoneProps}
             className={`grid min-w-0 gap-3 rounded-[20px] ${input.dragging ? 'outline-2 outline-offset-2 outline-focus' : ''}`}
           >
+            {items.length ? (
+              <UploadDraftSummary
+                storage={settings.storages.find((s) => s.id === storageId)}
+                visibility={visibility}
+                albumCount={chosenAlbums.length}
+                tagCount={chosenTags.length}
+                started={hasStarted}
+                settingsRef={settingsRef}
+              />
+            ) : null}
             <UploadSubmissionSummaries items={items} />
             {items.length ? (
               <Card
@@ -365,16 +378,23 @@ export function UploadScreen(props: ScreenProps) {
             ) : null}
           </div>
           <ComponentEntrance delay={0.11} className="min-w-0">
-            <UploadSettingsFields
-              albumId={props.albumId}
-              started={items.some((item) => item.state !== 'queued')}
-              settings={settings}
-              storageId={storageId}
-              visibility={visibility}
-              disabled={false}
-              onStorage={setStorageId}
-              onVisibility={setVisibility}
-            />
+            <div
+              ref={settingsRef}
+              id="upload-settings-fields"
+              tabIndex={-1}
+              className="min-w-0 scroll-mt-6 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
+            >
+              <UploadSettingsFields
+                albumId={props.albumId}
+                started={hasStarted}
+                settings={settings}
+                storageId={storageId}
+                visibility={visibility}
+                disabled={false}
+                onStorage={setStorageId}
+                onVisibility={setVisibility}
+              />
+            </div>
           </ComponentEntrance>
         </div>
       </section>

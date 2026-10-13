@@ -12,15 +12,19 @@ import type { Album } from './api';
 
 export function AlbumCard({
   album,
+  href,
+  onNavigate,
   onOpen,
   onEdit,
   onShare,
   onDelete,
 }: {
   album: Album;
-  onOpen: () => void;
+  href?: string;
+  onNavigate?: (opener: HTMLElement) => void;
+  onOpen: (opener: HTMLElement | null) => void;
   onEdit: (opener: HTMLElement | null) => void;
-  onShare: () => void;
+  onShare: (opener: HTMLElement | null) => void;
   onDelete: (opener: HTMLElement | null) => void;
 }) {
   const [open, setOpen] = useState(false);
@@ -59,7 +63,9 @@ export function AlbumCard({
       }}
     >
       <Link
-        href={`/albums/${album.id}`}
+        href={href ?? `/albums/${album.id}`}
+        data-collection-return-focus={`album-open-${album.id}`}
+        onClick={(event) => onNavigate?.(event.currentTarget as HTMLElement)}
         data-testid={`album-${album.id}`}
         className="flex w-full min-w-0 flex-col items-stretch gap-3 rounded-[20px] p-4 text-foreground no-underline"
       >
@@ -109,6 +115,7 @@ export function AlbumCard({
         <Tooltip>
           <Button
             ref={trigger}
+            data-collection-return-focus={`album-menu-${album.id}`}
             aria-label={`相册操作：${album.name}`}
             isIconOnly
             variant="ghost"
@@ -127,10 +134,11 @@ export function AlbumCard({
             aria-label="相册操作"
             onAction={(key) => {
               activated.current = true;
-              if (key === 'open') onOpen();
+              if (key === 'open') onOpen(source.current ?? trigger.current);
               else if (key === 'edit')
                 onEdit(source.current ?? trigger.current);
-              else if (key === 'share') onShare();
+              else if (key === 'share')
+                onShare(source.current ?? trigger.current);
               else if (key === 'delete')
                 onDelete(source.current ?? trigger.current);
             }}

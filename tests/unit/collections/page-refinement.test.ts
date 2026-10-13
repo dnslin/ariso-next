@@ -1,6 +1,7 @@
 import { createElement, type ReactNode } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { beforeEach, expect, it, vi } from 'vitest';
+import { QueryClient } from '@tanstack/react-query';
 import { AlbumsScreen } from '../../../src/app/albums/screen';
 import { TagsScreen } from '../../../src/app/tags/screen';
 import { SharesScreen } from '../../../src/app/shares/list-screen';
@@ -15,6 +16,7 @@ const runtime = vi.hoisted(() => ({
   items: [] as { id: string; state: string; draftKey?: string }[],
   albums: [] as { id: string; name: string }[],
 }));
+const navigationCache = new QueryClient();
 vi.mock('next/navigation', () => ({
   useRouter: () => ({ push: vi.fn() }),
   useSearchParams: () => new URLSearchParams(),
@@ -22,6 +24,7 @@ vi.mock('next/navigation', () => ({
 }));
 vi.mock('@tanstack/react-query', async (original) => ({
   ...(await original<typeof import('@tanstack/react-query')>()),
+  useQueryClient: () => navigationCache,
   useQuery: () => ({
     data: { items: [], total: runtime.total },
     error: runtime.error,

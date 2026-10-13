@@ -18,6 +18,10 @@ import { StorageTip } from '../../components/storage/storage-tip';
 import { useResetUpload } from '../../components/upload/provider';
 import { shareRequest, ShareRequestError } from './api';
 import { SharesList, type SharePage } from './list';
+import {
+  useCollectionQuery,
+  useCollectionReturn,
+} from '../albums/use-collection-navigation';
 
 export function SharesScreen(props: {
   name: string;
@@ -30,9 +34,8 @@ export function SharesScreen(props: {
 }) {
   const resetUpload = useResetUpload();
   const [client] = useState(() => new QueryClient());
-  const [q, setQ] = useState('');
-  const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(40);
+  const query = useCollectionQuery('/shares');
+  const { q, page, pageSize } = query;
   const expire = useCallback(() => {
     resetUpload();
     client.clear();
@@ -49,6 +52,7 @@ export function SharesScreen(props: {
           { signal },
         ),
       placeholderData: keepPreviousData,
+      enabled: !query.error,
       retry: false,
       networkMode: 'always',
     },
@@ -59,20 +63,28 @@ export function SharesScreen(props: {
     if (list.error instanceof ShareRequestError && list.error.status === 401)
       expire();
   }, [list.error, expire]);
-  const data = !list.isError ? list.data : undefined;
+  const error = query.error ?? list.error;
+  const data = !error ? list.data : undefined;
+  const rememberReturn = useCollectionReturn(
+    query.href,
+    !list.isPending && !list.isPlaceholderData && !error,
+  );
   const pages = data ? Math.max(1, Math.ceil(data.total / pageSize)) : 1;
   return (
     <OwnerShell
       {...props}
       onSessionExpire={expire}
       footer={
-        list.isError ? (
+        error ? (
           <Button
             className="h-12 w-full rounded-lg font-normal md:w-50"
             isDisabled={list.isFetching}
-            onPress={() => void list.refetch()}
+            onPress={() => {
+              if (query.error) query.change({ q: '', page: 1, pageSize: 40 });
+              else void list.refetch();
+            }}
           >
-            重新加载
+            {query.error ? '重置查询' : '重新加载'}
           </Button>
         ) : (
           <div className="grid w-full gap-2 md:grid-cols-[1fr_auto] md:items-center">
@@ -89,8 +101,7 @@ export function SharesScreen(props: {
                 value={String(pageSize)}
                 onChange={(value) => {
                   if (value) {
-                    setPageSize(Number(value));
-                    setPage(1);
+                    query.change({ pageSize: Number(value) });
                   }
                 }}
                 className="w-28 shrink-0"
@@ -120,7 +131,7 @@ export function SharesScreen(props: {
                     <Pagination.Previous
                       className="h-11 w-full min-w-0 rounded-lg border border-border px-3 font-normal"
                       isDisabled={page <= 1 || list.isFetching}
-                      onPress={() => setPage(page - 1)}
+                      onPress={() => query.change({ page: page - 1 })}
                     >
                       上一页
                     </Pagination.Previous>
@@ -134,7 +145,7 @@ export function SharesScreen(props: {
                     <Pagination.Next
                       className="h-11 w-full min-w-0 rounded-lg border border-border px-3 font-normal"
                       isDisabled={!data || page >= pages || list.isFetching}
-                      onPress={() => setPage(page + 1)}
+                      onPress={() => query.change({ page: page + 1 })}
                     >
                       下一页
                     </Pagination.Next>
@@ -164,8 +175,7 @@ export function SharesScreen(props: {
             aria-label="搜索分享相册"
             value={q}
             onChange={(value) => {
-              setQ(value);
-              setPage(1);
+              query.change({ q: value });
             }}
             className="w-full min-w-0 md:max-w-120"
           >
@@ -174,6 +184,7 @@ export function SharesScreen(props: {
                 <Search size={16} aria-hidden />
               </InputGroup.Prefix>
               <InputGroup.Input
+                data-collection-return-fallback
                 placeholder="搜索分享相册…"
                 className="h-11 min-w-0 py-0 text-base md:text-sm"
               />
@@ -186,6 +197,8 @@ export function SharesScreen(props: {
             total={data.total}
             timeZone={props.timeZone}
             disabled={list.isFetching}
+            returnTo={query.href}
+            onNavigate={rememberReturn}
           />
         ) : null}
         {data?.items.length === 0 ? (
@@ -204,7 +217,7 @@ export function SharesScreen(props: {
             {page > 1 ? (
               <Button
                 className="h-12 rounded-lg font-normal"
-                onPress={() => setPage(1)}
+                onPress={() => query.change({ page: 1 })}
               >
                 返回第一页
               </Button>
@@ -218,7 +231,7 @@ export function SharesScreen(props: {
             ) : null}
           </ComponentEntrance>
         ) : null}
-        {list.isPending ? (
+        {list.isPending && !query.error ? (
           <p
             role="status"
             data-testid="shares-loading"
@@ -227,11 +240,11 @@ export function SharesScreen(props: {
             正在读取分享…
           </p>
         ) : null}
-        {list.error ? (
+        {error ? (
           <Alert status="danger" data-testid="shares-error">
             <Alert.Content>
               <Alert.Title>分享列表加载失败</Alert.Title>
-              <Alert.Description>{list.error.message}</Alert.Description>
+              <Alert.Description>{error.message}</Alert.Description>
             </Alert.Content>
           </Alert>
         ) : null}

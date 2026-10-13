@@ -13,6 +13,7 @@ export function parseTrashLocation(params: URLSearchParams) {
   const query = new URLSearchParams(params);
   query.delete('image');
   query.delete('analyticsReturn');
+  query.delete('storageReturn');
   if (
     query.getAll('scope').length > 1 ||
     (query.has('scope') && query.get('scope') !== 'trash')

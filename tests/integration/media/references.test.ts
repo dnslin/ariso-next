@@ -2,7 +2,10 @@ import { randomUUID } from 'node:crypto';
 import { eq } from 'drizzle-orm';
 import { afterEach, beforeEach, expect, it } from 'vitest';
 import { acceptOriginal } from '../../../src/server/media/images.ts';
-import { getStorageReferences } from '../../../src/server/media/references.ts';
+import {
+  getStorageReferences,
+  readMediaTaskReferences,
+} from '../../../src/server/media/references.ts';
 import {
   mediaCleanupJobs,
   mediaImages,
@@ -20,6 +23,67 @@ beforeEach(() => {
 afterEach(() => fixture.close());
 const references = (storageId = fixture.storage.id) =>
   fixture.db.transaction((tx) => getStorageReferences(tx, storageId));
+
+it('links active reprocessing on ready images and cleanup to their actual storage objects', () => {
+  const ready = fixture.image();
+  const trash = fixture.image();
+  fixture.db
+    .update(mediaImages)
+    .set({ displayName: '已发布照片', processingStatus: 'ready' })
+    .where(eq(mediaImages.id, ready))
+    .run();
+  fixture.db
+    .update(mediaJobs)
+    .set({ status: 'running' })
+    .where(eq(mediaJobs.imageId, ready))
+    .run();
+  fixture.db
+    .update(mediaImages)
+    .set({
+      displayName: '回收照片',
+      trashedAt: new Date(1),
+      deletionStatus: 'cleanup_failed',
+    })
+    .where(eq(mediaImages.id, trash))
+    .run();
+  fixture.db
+    .update(mediaJobs)
+    .set({ status: 'succeeded' })
+    .where(eq(mediaJobs.imageId, trash))
+    .run();
+  fixture.db
+    .insert(mediaCleanupJobs)
+    .values({
+      id: 'failed-cleanup',
+      imageId: trash,
+      status: 'failed',
+      createdAt: new Date(2),
+      updatedAt: new Date(2),
+    })
+    .run();
+  const result = readMediaTaskReferences(fixture.db, fixture.storage.id);
+  expect(result.jobs).toMatchObject([
+    {
+      imageId: ready,
+      displayName: '已发布照片',
+      status: 'running',
+      processingStatus: 'ready',
+    },
+  ]);
+  expect(result.cleanupJobs).toMatchObject([
+    {
+      id: 'failed-cleanup',
+      imageId: trash,
+      displayName: '回收照片',
+      status: 'failed',
+      trashedAt: new Date(1),
+    },
+  ]);
+  expect(readMediaTaskReferences(fixture.db, 'another-storage')).toEqual({
+    jobs: [],
+    cleanupJobs: [],
+  });
+});
 
 it('retains every asset state, version, undeleted object and unfinished task on disabled storage', () => {
   const { db, storage } = fixture;

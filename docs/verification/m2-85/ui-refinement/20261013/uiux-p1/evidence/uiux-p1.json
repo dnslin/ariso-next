@@ -1,0 +1,6831 @@
+{
+  "status": "passed",
+  "checks": [
+    {
+      "name": "F01-uncommitted-number-history-back-beforeunload",
+      "width": 1440
+    },
+    {
+      "name": "F01-refocused-raw-value-restored-without-blur",
+      "width": 1440
+    },
+    {
+      "name": "F01-processing-confirm-discard-save-focus",
+      "width": 1440,
+      "beforeQuality": 82,
+      "editedQuality": 73
+    },
+    {
+      "name": "F01-smtp-confirm-discard-save-focus",
+      "width": 1440,
+      "beforeHost": "",
+      "editedHost": "smtp.uiux-p1.example.test"
+    },
+    {
+      "name": "F01-uncommitted-number-history-back-beforeunload",
+      "width": 390
+    },
+    {
+      "name": "F01-refocused-raw-value-restored-without-blur",
+      "width": 390
+    },
+    {
+      "name": "F01-processing-confirm-discard-save-focus",
+      "width": 390,
+      "beforeQuality": 73,
+      "editedQuality": 74
+    },
+    {
+      "name": "F01-smtp-confirm-discard-save-focus",
+      "width": 390,
+      "beforeHost": "smtp.uiux-p1.example.test",
+      "editedHost": "smtp.uiux-p1-next.example.test"
+    },
+    "Native 1/12/20-file append, a long Chinese filename, 360/390/430/768/1440 in both themes, mobile summary before the queue, 44px Modify target and unchanged desktop 360px settings column.",
+    "Modify scrolls to and focuses the original settings selector; actual visibility, album and tag changes immediately update the unsubmitted summary.",
+    "One actual POST is held after server commit; changing the next draft while pending leaves all 20 native Local uploads, ready images, persisted relations and frozen summary at the original submitted settings. A later tag removal updates only the next draft.",
+    "album-image-1440: image details and versions close back to the exact image card without cross-page focus takeover",
+    "albums-1440: saved share settings return through the exact album detail to its searched page, scroll and focus",
+    "albums-1440: browser Back restores the same list context",
+    "albums-1440: card share settings return directly to the source list",
+    "shares-1440: page Return and browser Back preserve the search, page size, page, scroll and visible source focus",
+    "album-image-390: image details and versions close back to the exact image card without cross-page focus takeover",
+    "albums-390: saved share settings return through the exact album detail to its searched page, scroll and focus",
+    "albums-390: browser Back restores the same list context",
+    "albums-390: card share settings return directly to the source list",
+    "shares-390: page Return and browser Back preserve the search, page size, page, scroll and visible source focus",
+    "storage-object-and-task-navigation-1440",
+    "storage-object-and-task-navigation-390"
+  ],
+  "workflows": {
+    "settings": {
+      "checks": [
+        {
+          "name": "F01-uncommitted-number-history-back-beforeunload",
+          "width": 1440
+        },
+        {
+          "name": "F01-refocused-raw-value-restored-without-blur",
+          "width": 1440
+        },
+        {
+          "name": "F01-processing-confirm-discard-save-focus",
+          "width": 1440,
+          "beforeQuality": 82,
+          "editedQuality": 73
+        },
+        {
+          "name": "F01-smtp-confirm-discard-save-focus",
+          "width": 1440,
+          "beforeHost": "",
+          "editedHost": "smtp.uiux-p1.example.test"
+        },
+        {
+          "name": "F01-uncommitted-number-history-back-beforeunload",
+          "width": 390
+        },
+        {
+          "name": "F01-refocused-raw-value-restored-without-blur",
+          "width": 390
+        },
+        {
+          "name": "F01-processing-confirm-discard-save-focus",
+          "width": 390,
+          "beforeQuality": 73,
+          "editedQuality": 74
+        },
+        {
+          "name": "F01-smtp-confirm-discard-save-focus",
+          "width": 390,
+          "beforeHost": "smtp.uiux-p1.example.test",
+          "editedHost": "smtp.uiux-p1-next.example.test"
+        }
+      ],
+      "screenshots": [
+        "uiux-p1-settings-raw-back-1440.png",
+        "uiux-p1-settings-leave-1440.png",
+        "uiux-p1-settings-smtp-leave-1440.png",
+        "uiux-p1-settings-smtp-saved-1440.png",
+        "uiux-p1-settings-raw-back-390.png",
+        "uiux-p1-settings-leave-390.png",
+        "uiux-p1-settings-smtp-leave-390.png",
+        "uiux-p1-settings-smtp-saved-390.png"
+      ],
+      "smtpInitiallyUnconfigured": true
+    },
+    "upload": {
+      "checks": [
+        "Native 1/12/20-file append, a long Chinese filename, 360/390/430/768/1440 in both themes, mobile summary before the queue, 44px Modify target and unchanged desktop 360px settings column.",
+        "Modify scrolls to and focuses the original settings selector; actual visibility, album and tag changes immediately update the unsubmitted summary.",
+        "One actual POST is held after server commit; changing the next draft while pending leaves all 20 native Local uploads, ready images, persisted relations and frozen summary at the original submitted settings. A later tag removal updates only the next draft."
+      ],
+      "layouts": [
+        {
+          "name": "queued",
+          "count": 1,
+          "width": 360,
+          "theme": "light",
+          "screenshot": "uiux-p1-upload-queued-1-light-360.png",
+          "overflow": false,
+          "mainOverflow": false,
+          "targets": [
+            {
+              "name": "跳到主要内容",
+              "width": 120,
+              "height": 48,
+              "navigation": false
+            },
+            {
+              "name": "Ariso 首页",
+              "width": 63,
+              "height": 54,
+              "navigation": false
+            },
+            {
+              "name": "外观：亮色；点击切换为暗色",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "菜单",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "修改上传设置",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择文件夹",
+              "width": 328,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "上传设置说明",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "默认本地存储",
+              "width": 294,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "公开",
+              "width": 294,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择相册",
+              "width": 294,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择标签",
+              "width": 294,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "继续添加",
+              "width": 159,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "开始上传",
+              "width": 157,
+              "height": 44,
+              "navigation": false
+            }
+          ],
+          "summary": {
+            "top": 150,
+            "bottom": 244,
+            "left": 16,
+            "right": 344,
+            "width": 328,
+            "height": 94
+          },
+          "edit": {
+            "top": 163,
+            "bottom": 207,
+            "left": 283,
+            "right": 327,
+            "width": 44,
+            "height": 44
+          },
+          "queue": {
+            "top": 256,
+            "bottom": 461,
+            "left": 16,
+            "right": 344,
+            "width": 328,
+            "height": 205
+          },
+          "settings": {
+            "top": 541,
+            "bottom": 971,
+            "left": 16,
+            "right": 344,
+            "width": 328,
+            "height": 430
+          },
+          "footer": {
+            "top": 767,
+            "bottom": 844,
+            "left": 0,
+            "right": 360,
+            "width": 360,
+            "height": 77
+          },
+          "visible": true,
+          "text": "本次设置默认本地存储 · 公开0 个相册 · 0 个标签修改",
+          "names": [
+            "秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片.png"
+          ]
+        },
+        {
+          "name": "queued",
+          "count": 1,
+          "width": 390,
+          "theme": "light",
+          "screenshot": "uiux-p1-upload-queued-1-light-390.png",
+          "overflow": false,
+          "mainOverflow": false,
+          "targets": [
+            {
+              "name": "跳到主要内容",
+              "width": 120,
+              "height": 48,
+              "navigation": false
+            },
+            {
+              "name": "Ariso 首页",
+              "width": 63,
+              "height": 54,
+              "navigation": false
+            },
+            {
+              "name": "外观：亮色；点击切换为暗色",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "菜单",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "修改上传设置",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择文件夹",
+              "width": 358,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "上传设置说明",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "默认本地存储",
+              "width": 324,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "公开",
+              "width": 324,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择相册",
+              "width": 324,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择标签",
+              "width": 324,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "继续添加",
+              "width": 174,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "开始上传",
+              "width": 172,
+              "height": 44,
+              "navigation": false
+            }
+          ],
+          "summary": {
+            "top": 150,
+            "bottom": 244,
+            "left": 16,
+            "right": 374,
+            "width": 358,
+            "height": 94
+          },
+          "edit": {
+            "top": 163,
+            "bottom": 207,
+            "left": 313,
+            "right": 357,
+            "width": 44,
+            "height": 44
+          },
+          "queue": {
+            "top": 256,
+            "bottom": 440,
+            "left": 16,
+            "right": 374,
+            "width": 358,
+            "height": 184
+          },
+          "settings": {
+            "top": 520,
+            "bottom": 950,
+            "left": 16,
+            "right": 374,
+            "width": 358,
+            "height": 430
+          },
+          "footer": {
+            "top": 767,
+            "bottom": 844,
+            "left": 0,
+            "right": 390,
+            "width": 390,
+            "height": 77
+          },
+          "visible": true,
+          "text": "本次设置默认本地存储 · 公开0 个相册 · 0 个标签修改",
+          "names": [
+            "秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片.png"
+          ]
+        },
+        {
+          "name": "queued",
+          "count": 1,
+          "width": 430,
+          "theme": "light",
+          "screenshot": "uiux-p1-upload-queued-1-light-430.png",
+          "overflow": false,
+          "mainOverflow": false,
+          "targets": [
+            {
+              "name": "跳到主要内容",
+              "width": 120,
+              "height": 48,
+              "navigation": false
+            },
+            {
+              "name": "Ariso 首页",
+              "width": 63,
+              "height": 54,
+              "navigation": false
+            },
+            {
+              "name": "外观：亮色；点击切换为暗色",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "菜单",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "修改上传设置",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择文件夹",
+              "width": 398,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "上传设置说明",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "默认本地存储",
+              "width": 364,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "公开",
+              "width": 364,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择相册",
+              "width": 364,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择标签",
+              "width": 364,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "继续添加",
+              "width": 194,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "开始上传",
+              "width": 192,
+              "height": 44,
+              "navigation": false
+            }
+          ],
+          "summary": {
+            "top": 150,
+            "bottom": 244,
+            "left": 16,
+            "right": 414,
+            "width": 398,
+            "height": 94
+          },
+          "edit": {
+            "top": 163,
+            "bottom": 207,
+            "left": 353,
+            "right": 397,
+            "width": 44,
+            "height": 44
+          },
+          "queue": {
+            "top": 256,
+            "bottom": 419,
+            "left": 16,
+            "right": 414,
+            "width": 398,
+            "height": 163
+          },
+          "settings": {
+            "top": 499,
+            "bottom": 929,
+            "left": 16,
+            "right": 414,
+            "width": 398,
+            "height": 430
+          },
+          "footer": {
+            "top": 767,
+            "bottom": 844,
+            "left": 0,
+            "right": 430,
+            "width": 430,
+            "height": 77
+          },
+          "visible": true,
+          "text": "本次设置默认本地存储 · 公开0 个相册 · 0 个标签修改",
+          "names": [
+            "秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片.png"
+          ]
+        },
+        {
+          "name": "queued",
+          "count": 1,
+          "width": 768,
+          "theme": "light",
+          "screenshot": "uiux-p1-upload-queued-1-light-768.png",
+          "overflow": false,
+          "mainOverflow": false,
+          "targets": [
+            {
+              "name": "跳到主要内容",
+              "width": 120,
+              "height": 48,
+              "navigation": false
+            },
+            {
+              "name": "Ariso 首页",
+              "width": 63,
+              "height": 54,
+              "navigation": false
+            },
+            {
+              "name": "外观：亮色；点击切换为暗色",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "菜单",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择文件夹",
+              "width": 104,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "继续添加",
+              "width": 120,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "上传设置说明",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "默认本地存储",
+              "width": 310,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "公开",
+              "width": 310,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择相册",
+              "width": 310,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择标签",
+              "width": 310,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "开始上传",
+              "width": 200,
+              "height": 48,
+              "navigation": false
+            }
+          ],
+          "summary": {
+            "top": 0,
+            "bottom": 0,
+            "left": 0,
+            "right": 0,
+            "width": 0,
+            "height": 0
+          },
+          "edit": {
+            "top": 0,
+            "bottom": 0,
+            "left": 0,
+            "right": 0,
+            "width": 0,
+            "height": 0
+          },
+          "queue": {
+            "top": 157,
+            "bottom": 478,
+            "left": 16,
+            "right": 368,
+            "width": 352,
+            "height": 321
+          },
+          "settings": {
+            "top": 157,
+            "bottom": 595,
+            "left": 392,
+            "right": 752,
+            "width": 360,
+            "height": 438
+          },
+          "footer": {
+            "top": 763,
+            "bottom": 844,
+            "left": 0,
+            "right": 768,
+            "width": 768,
+            "height": 81
+          },
+          "visible": false,
+          "text": "本次设置默认本地存储 · 公开0 个相册 · 0 个标签修改",
+          "names": [
+            "秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片.png"
+          ]
+        },
+        {
+          "name": "queued",
+          "count": 1,
+          "width": 1440,
+          "theme": "light",
+          "screenshot": "uiux-p1-upload-queued-1-light-1440.png",
+          "overflow": false,
+          "mainOverflow": false,
+          "targets": [
+            {
+              "name": "跳到主要内容",
+              "width": 120,
+              "height": 48,
+              "navigation": false
+            },
+            {
+              "name": "Ariso 首页",
+              "width": 84,
+              "height": 72,
+              "navigation": false
+            },
+            {
+              "name": "收起侧栏",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "总览",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "上传",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "图库",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "相册",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "标签",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "分享",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "回收站",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "访问统计",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "存储",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "站点设置",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "账号菜单",
+              "width": 191,
+              "height": 56,
+              "navigation": false
+            },
+            {
+              "name": "外观：亮色；点击切换为暗色",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择文件夹",
+              "width": 104,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "继续添加",
+              "width": 120,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "上传设置说明",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "默认本地存储",
+              "width": 310,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "公开",
+              "width": 310,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择相册",
+              "width": 310,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择标签",
+              "width": 310,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "开始上传",
+              "width": 200,
+              "height": 48,
+              "navigation": false
+            }
+          ],
+          "summary": {
+            "top": 0,
+            "bottom": 0,
+            "left": 0,
+            "right": 0,
+            "width": 0,
+            "height": 0
+          },
+          "edit": {
+            "top": 0,
+            "bottom": 0,
+            "left": 0,
+            "right": 0,
+            "width": 0,
+            "height": 0
+          },
+          "queue": {
+            "top": 153,
+            "bottom": 384,
+            "left": 264,
+            "right": 1024,
+            "width": 760,
+            "height": 231
+          },
+          "settings": {
+            "top": 153,
+            "bottom": 591,
+            "left": 1048,
+            "right": 1408,
+            "width": 360,
+            "height": 438
+          },
+          "footer": {
+            "top": 999,
+            "bottom": 1080,
+            "left": 232,
+            "right": 1440,
+            "width": 1208,
+            "height": 81
+          },
+          "visible": false,
+          "text": "本次设置默认本地存储 · 公开0 个相册 · 0 个标签修改",
+          "names": [
+            "秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片.png"
+          ]
+        },
+        {
+          "name": "queued",
+          "count": 1,
+          "width": 360,
+          "theme": "dark",
+          "screenshot": "uiux-p1-upload-queued-1-dark-360.png",
+          "overflow": false,
+          "mainOverflow": false,
+          "targets": [
+            {
+              "name": "跳到主要内容",
+              "width": 120,
+              "height": 48,
+              "navigation": false
+            },
+            {
+              "name": "Ariso 首页",
+              "width": 63,
+              "height": 54,
+              "navigation": false
+            },
+            {
+              "name": "外观：暗色；点击切换为自动",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "菜单",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "修改上传设置",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择文件夹",
+              "width": 328,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "上传设置说明",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "默认本地存储",
+              "width": 294,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "公开",
+              "width": 294,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择相册",
+              "width": 294,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择标签",
+              "width": 294,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "继续添加",
+              "width": 159,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "开始上传",
+              "width": 157,
+              "height": 44,
+              "navigation": false
+            }
+          ],
+          "summary": {
+            "top": 150,
+            "bottom": 244,
+            "left": 16,
+            "right": 344,
+            "width": 328,
+            "height": 94
+          },
+          "edit": {
+            "top": 163,
+            "bottom": 207,
+            "left": 283,
+            "right": 327,
+            "width": 44,
+            "height": 44
+          },
+          "queue": {
+            "top": 256,
+            "bottom": 461,
+            "left": 16,
+            "right": 344,
+            "width": 328,
+            "height": 205
+          },
+          "settings": {
+            "top": 541,
+            "bottom": 971,
+            "left": 16,
+            "right": 344,
+            "width": 328,
+            "height": 430
+          },
+          "footer": {
+            "top": 767,
+            "bottom": 844,
+            "left": 0,
+            "right": 360,
+            "width": 360,
+            "height": 77
+          },
+          "visible": true,
+          "text": "本次设置默认本地存储 · 公开0 个相册 · 0 个标签修改",
+          "names": [
+            "秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片.png"
+          ]
+        },
+        {
+          "name": "queued",
+          "count": 1,
+          "width": 390,
+          "theme": "dark",
+          "screenshot": "uiux-p1-upload-queued-1-dark-390.png",
+          "overflow": false,
+          "mainOverflow": false,
+          "targets": [
+            {
+              "name": "跳到主要内容",
+              "width": 120,
+              "height": 48,
+              "navigation": false
+            },
+            {
+              "name": "Ariso 首页",
+              "width": 63,
+              "height": 54,
+              "navigation": false
+            },
+            {
+              "name": "外观：暗色；点击切换为自动",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "菜单",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "修改上传设置",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择文件夹",
+              "width": 358,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "上传设置说明",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "默认本地存储",
+              "width": 324,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "公开",
+              "width": 324,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择相册",
+              "width": 324,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择标签",
+              "width": 324,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "继续添加",
+              "width": 174,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "开始上传",
+              "width": 172,
+              "height": 44,
+              "navigation": false
+            }
+          ],
+          "summary": {
+            "top": 150,
+            "bottom": 244,
+            "left": 16,
+            "right": 374,
+            "width": 358,
+            "height": 94
+          },
+          "edit": {
+            "top": 163,
+            "bottom": 207,
+            "left": 313,
+            "right": 357,
+            "width": 44,
+            "height": 44
+          },
+          "queue": {
+            "top": 256,
+            "bottom": 440,
+            "left": 16,
+            "right": 374,
+            "width": 358,
+            "height": 184
+          },
+          "settings": {
+            "top": 520,
+            "bottom": 950,
+            "left": 16,
+            "right": 374,
+            "width": 358,
+            "height": 430
+          },
+          "footer": {
+            "top": 767,
+            "bottom": 844,
+            "left": 0,
+            "right": 390,
+            "width": 390,
+            "height": 77
+          },
+          "visible": true,
+          "text": "本次设置默认本地存储 · 公开0 个相册 · 0 个标签修改",
+          "names": [
+            "秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片.png"
+          ]
+        },
+        {
+          "name": "queued",
+          "count": 1,
+          "width": 430,
+          "theme": "dark",
+          "screenshot": "uiux-p1-upload-queued-1-dark-430.png",
+          "overflow": false,
+          "mainOverflow": false,
+          "targets": [
+            {
+              "name": "跳到主要内容",
+              "width": 120,
+              "height": 48,
+              "navigation": false
+            },
+            {
+              "name": "Ariso 首页",
+              "width": 63,
+              "height": 54,
+              "navigation": false
+            },
+            {
+              "name": "外观：暗色；点击切换为自动",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "菜单",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "修改上传设置",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择文件夹",
+              "width": 398,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "上传设置说明",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "默认本地存储",
+              "width": 364,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "公开",
+              "width": 364,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择相册",
+              "width": 364,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择标签",
+              "width": 364,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "继续添加",
+              "width": 194,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "开始上传",
+              "width": 192,
+              "height": 44,
+              "navigation": false
+            }
+          ],
+          "summary": {
+            "top": 150,
+            "bottom": 244,
+            "left": 16,
+            "right": 414,
+            "width": 398,
+            "height": 94
+          },
+          "edit": {
+            "top": 163,
+            "bottom": 207,
+            "left": 353,
+            "right": 397,
+            "width": 44,
+            "height": 44
+          },
+          "queue": {
+            "top": 256,
+            "bottom": 419,
+            "left": 16,
+            "right": 414,
+            "width": 398,
+            "height": 163
+          },
+          "settings": {
+            "top": 499,
+            "bottom": 929,
+            "left": 16,
+            "right": 414,
+            "width": 398,
+            "height": 430
+          },
+          "footer": {
+            "top": 767,
+            "bottom": 844,
+            "left": 0,
+            "right": 430,
+            "width": 430,
+            "height": 77
+          },
+          "visible": true,
+          "text": "本次设置默认本地存储 · 公开0 个相册 · 0 个标签修改",
+          "names": [
+            "秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片.png"
+          ]
+        },
+        {
+          "name": "queued",
+          "count": 1,
+          "width": 768,
+          "theme": "dark",
+          "screenshot": "uiux-p1-upload-queued-1-dark-768.png",
+          "overflow": false,
+          "mainOverflow": false,
+          "targets": [
+            {
+              "name": "跳到主要内容",
+              "width": 120,
+              "height": 48,
+              "navigation": false
+            },
+            {
+              "name": "Ariso 首页",
+              "width": 63,
+              "height": 54,
+              "navigation": false
+            },
+            {
+              "name": "外观：暗色；点击切换为自动",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "菜单",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择文件夹",
+              "width": 104,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "继续添加",
+              "width": 120,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "上传设置说明",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "默认本地存储",
+              "width": 310,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "公开",
+              "width": 310,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择相册",
+              "width": 310,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择标签",
+              "width": 310,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "开始上传",
+              "width": 200,
+              "height": 48,
+              "navigation": false
+            }
+          ],
+          "summary": {
+            "top": 0,
+            "bottom": 0,
+            "left": 0,
+            "right": 0,
+            "width": 0,
+            "height": 0
+          },
+          "edit": {
+            "top": 0,
+            "bottom": 0,
+            "left": 0,
+            "right": 0,
+            "width": 0,
+            "height": 0
+          },
+          "queue": {
+            "top": 157,
+            "bottom": 478,
+            "left": 16,
+            "right": 368,
+            "width": 352,
+            "height": 321
+          },
+          "settings": {
+            "top": 157,
+            "bottom": 595,
+            "left": 392,
+            "right": 752,
+            "width": 360,
+            "height": 438
+          },
+          "footer": {
+            "top": 763,
+            "bottom": 844,
+            "left": 0,
+            "right": 768,
+            "width": 768,
+            "height": 81
+          },
+          "visible": false,
+          "text": "本次设置默认本地存储 · 公开0 个相册 · 0 个标签修改",
+          "names": [
+            "秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片.png"
+          ]
+        },
+        {
+          "name": "queued",
+          "count": 1,
+          "width": 1440,
+          "theme": "dark",
+          "screenshot": "uiux-p1-upload-queued-1-dark-1440.png",
+          "overflow": false,
+          "mainOverflow": false,
+          "targets": [
+            {
+              "name": "跳到主要内容",
+              "width": 120,
+              "height": 48,
+              "navigation": false
+            },
+            {
+              "name": "Ariso 首页",
+              "width": 84,
+              "height": 72,
+              "navigation": false
+            },
+            {
+              "name": "收起侧栏",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "总览",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "上传",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "图库",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "相册",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "标签",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "分享",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "回收站",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "访问统计",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "存储",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "站点设置",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "账号菜单",
+              "width": 191,
+              "height": 56,
+              "navigation": false
+            },
+            {
+              "name": "外观：暗色；点击切换为自动",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择文件夹",
+              "width": 104,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "继续添加",
+              "width": 120,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "上传设置说明",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "默认本地存储",
+              "width": 310,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "公开",
+              "width": 310,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择相册",
+              "width": 310,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择标签",
+              "width": 310,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "开始上传",
+              "width": 200,
+              "height": 48,
+              "navigation": false
+            }
+          ],
+          "summary": {
+            "top": 0,
+            "bottom": 0,
+            "left": 0,
+            "right": 0,
+            "width": 0,
+            "height": 0
+          },
+          "edit": {
+            "top": 0,
+            "bottom": 0,
+            "left": 0,
+            "right": 0,
+            "width": 0,
+            "height": 0
+          },
+          "queue": {
+            "top": 153,
+            "bottom": 384,
+            "left": 264,
+            "right": 1024,
+            "width": 760,
+            "height": 231
+          },
+          "settings": {
+            "top": 153,
+            "bottom": 591,
+            "left": 1048,
+            "right": 1408,
+            "width": 360,
+            "height": 438
+          },
+          "footer": {
+            "top": 999,
+            "bottom": 1080,
+            "left": 232,
+            "right": 1440,
+            "width": 1208,
+            "height": 81
+          },
+          "visible": false,
+          "text": "本次设置默认本地存储 · 公开0 个相册 · 0 个标签修改",
+          "names": [
+            "秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片.png"
+          ]
+        },
+        {
+          "name": "queued",
+          "count": 12,
+          "width": 360,
+          "theme": "light",
+          "screenshot": "uiux-p1-upload-queued-12-light-360.png",
+          "overflow": false,
+          "mainOverflow": false,
+          "targets": [
+            {
+              "name": "跳到主要内容",
+              "width": 120,
+              "height": 48,
+              "navigation": false
+            },
+            {
+              "name": "Ariso 首页",
+              "width": 63,
+              "height": 54,
+              "navigation": false
+            },
+            {
+              "name": "外观：亮色；点击切换为暗色",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "菜单",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "修改上传设置",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择文件夹",
+              "width": 328,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "上传设置说明",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "默认本地存储",
+              "width": 294,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "公开",
+              "width": 294,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择相册",
+              "width": 294,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择标签",
+              "width": 294,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "继续添加",
+              "width": 159,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "开始上传",
+              "width": 157,
+              "height": 44,
+              "navigation": false
+            }
+          ],
+          "summary": {
+            "top": 150,
+            "bottom": 244,
+            "left": 16,
+            "right": 344,
+            "width": 328,
+            "height": 94
+          },
+          "edit": {
+            "top": 163,
+            "bottom": 207,
+            "left": 283,
+            "right": 327,
+            "width": 44,
+            "height": 44
+          },
+          "queue": {
+            "top": 256,
+            "bottom": 1594,
+            "left": 16,
+            "right": 344,
+            "width": 328,
+            "height": 1338
+          },
+          "settings": {
+            "top": 1674,
+            "bottom": 2104,
+            "left": 16,
+            "right": 344,
+            "width": 328,
+            "height": 430
+          },
+          "footer": {
+            "top": 767,
+            "bottom": 844,
+            "left": 0,
+            "right": 360,
+            "width": 360,
+            "height": 77
+          },
+          "visible": true,
+          "text": "本次设置默认本地存储 · 公开0 个相册 · 0 个标签修改",
+          "names": [
+            "秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片.png",
+            "山野旅行-02.png",
+            "山野旅行-03.png",
+            "山野旅行-04.png",
+            "山野旅行-05.png",
+            "山野旅行-06.png",
+            "山野旅行-07.png",
+            "山野旅行-08.png",
+            "山野旅行-09.png",
+            "山野旅行-10.png",
+            "山野旅行-11.png",
+            "山野旅行-12.png"
+          ]
+        },
+        {
+          "name": "queued",
+          "count": 12,
+          "width": 390,
+          "theme": "light",
+          "screenshot": "uiux-p1-upload-queued-12-light-390.png",
+          "overflow": false,
+          "mainOverflow": false,
+          "targets": [
+            {
+              "name": "跳到主要内容",
+              "width": 120,
+              "height": 48,
+              "navigation": false
+            },
+            {
+              "name": "Ariso 首页",
+              "width": 63,
+              "height": 54,
+              "navigation": false
+            },
+            {
+              "name": "外观：亮色；点击切换为暗色",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "菜单",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "修改上传设置",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择文件夹",
+              "width": 358,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "上传设置说明",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "默认本地存储",
+              "width": 324,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "公开",
+              "width": 324,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择相册",
+              "width": 324,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择标签",
+              "width": 324,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "继续添加",
+              "width": 174,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "开始上传",
+              "width": 172,
+              "height": 44,
+              "navigation": false
+            }
+          ],
+          "summary": {
+            "top": 150,
+            "bottom": 244,
+            "left": 16,
+            "right": 374,
+            "width": 358,
+            "height": 94
+          },
+          "edit": {
+            "top": 163,
+            "bottom": 207,
+            "left": 313,
+            "right": 357,
+            "width": 44,
+            "height": 44
+          },
+          "queue": {
+            "top": 256,
+            "bottom": 1573,
+            "left": 16,
+            "right": 374,
+            "width": 358,
+            "height": 1317
+          },
+          "settings": {
+            "top": 1653,
+            "bottom": 2083,
+            "left": 16,
+            "right": 374,
+            "width": 358,
+            "height": 430
+          },
+          "footer": {
+            "top": 767,
+            "bottom": 844,
+            "left": 0,
+            "right": 390,
+            "width": 390,
+            "height": 77
+          },
+          "visible": true,
+          "text": "本次设置默认本地存储 · 公开0 个相册 · 0 个标签修改",
+          "names": [
+            "秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片.png",
+            "山野旅行-02.png",
+            "山野旅行-03.png",
+            "山野旅行-04.png",
+            "山野旅行-05.png",
+            "山野旅行-06.png",
+            "山野旅行-07.png",
+            "山野旅行-08.png",
+            "山野旅行-09.png",
+            "山野旅行-10.png",
+            "山野旅行-11.png",
+            "山野旅行-12.png"
+          ]
+        },
+        {
+          "name": "queued",
+          "count": 12,
+          "width": 430,
+          "theme": "light",
+          "screenshot": "uiux-p1-upload-queued-12-light-430.png",
+          "overflow": false,
+          "mainOverflow": false,
+          "targets": [
+            {
+              "name": "跳到主要内容",
+              "width": 120,
+              "height": 48,
+              "navigation": false
+            },
+            {
+              "name": "Ariso 首页",
+              "width": 63,
+              "height": 54,
+              "navigation": false
+            },
+            {
+              "name": "外观：亮色；点击切换为暗色",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "菜单",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "修改上传设置",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择文件夹",
+              "width": 398,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "上传设置说明",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "默认本地存储",
+              "width": 364,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "公开",
+              "width": 364,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择相册",
+              "width": 364,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择标签",
+              "width": 364,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "继续添加",
+              "width": 194,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "开始上传",
+              "width": 192,
+              "height": 44,
+              "navigation": false
+            }
+          ],
+          "summary": {
+            "top": 150,
+            "bottom": 244,
+            "left": 16,
+            "right": 414,
+            "width": 398,
+            "height": 94
+          },
+          "edit": {
+            "top": 163,
+            "bottom": 207,
+            "left": 353,
+            "right": 397,
+            "width": 44,
+            "height": 44
+          },
+          "queue": {
+            "top": 256,
+            "bottom": 1552,
+            "left": 16,
+            "right": 414,
+            "width": 398,
+            "height": 1296
+          },
+          "settings": {
+            "top": 1632,
+            "bottom": 2062,
+            "left": 16,
+            "right": 414,
+            "width": 398,
+            "height": 430
+          },
+          "footer": {
+            "top": 767,
+            "bottom": 844,
+            "left": 0,
+            "right": 430,
+            "width": 430,
+            "height": 77
+          },
+          "visible": true,
+          "text": "本次设置默认本地存储 · 公开0 个相册 · 0 个标签修改",
+          "names": [
+            "秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片.png",
+            "山野旅行-02.png",
+            "山野旅行-03.png",
+            "山野旅行-04.png",
+            "山野旅行-05.png",
+            "山野旅行-06.png",
+            "山野旅行-07.png",
+            "山野旅行-08.png",
+            "山野旅行-09.png",
+            "山野旅行-10.png",
+            "山野旅行-11.png",
+            "山野旅行-12.png"
+          ]
+        },
+        {
+          "name": "queued",
+          "count": 12,
+          "width": 768,
+          "theme": "light",
+          "screenshot": "uiux-p1-upload-queued-12-light-768.png",
+          "overflow": false,
+          "mainOverflow": false,
+          "targets": [
+            {
+              "name": "跳到主要内容",
+              "width": 120,
+              "height": 48,
+              "navigation": false
+            },
+            {
+              "name": "Ariso 首页",
+              "width": 63,
+              "height": 54,
+              "navigation": false
+            },
+            {
+              "name": "外观：亮色；点击切换为暗色",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "菜单",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择文件夹",
+              "width": 104,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "继续添加",
+              "width": 120,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "上传设置说明",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "默认本地存储",
+              "width": 310,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "公开",
+              "width": 310,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择相册",
+              "width": 310,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择标签",
+              "width": 310,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "开始上传",
+              "width": 200,
+              "height": 48,
+              "navigation": false
+            }
+          ],
+          "summary": {
+            "top": 0,
+            "bottom": 0,
+            "left": 0,
+            "right": 0,
+            "width": 0,
+            "height": 0
+          },
+          "edit": {
+            "top": 0,
+            "bottom": 0,
+            "left": 0,
+            "right": 0,
+            "width": 0,
+            "height": 0
+          },
+          "queue": {
+            "top": 157,
+            "bottom": 1710,
+            "left": 16,
+            "right": 368,
+            "width": 352,
+            "height": 1553
+          },
+          "settings": {
+            "top": 157,
+            "bottom": 595,
+            "left": 392,
+            "right": 752,
+            "width": 360,
+            "height": 438
+          },
+          "footer": {
+            "top": 763,
+            "bottom": 844,
+            "left": 0,
+            "right": 768,
+            "width": 768,
+            "height": 81
+          },
+          "visible": false,
+          "text": "本次设置默认本地存储 · 公开0 个相册 · 0 个标签修改",
+          "names": [
+            "秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片.png",
+            "山野旅行-02.png",
+            "山野旅行-03.png",
+            "山野旅行-04.png",
+            "山野旅行-05.png",
+            "山野旅行-06.png",
+            "山野旅行-07.png",
+            "山野旅行-08.png",
+            "山野旅行-09.png",
+            "山野旅行-10.png",
+            "山野旅行-11.png",
+            "山野旅行-12.png"
+          ]
+        },
+        {
+          "name": "queued",
+          "count": 12,
+          "width": 1440,
+          "theme": "light",
+          "screenshot": "uiux-p1-upload-queued-12-light-1440.png",
+          "overflow": false,
+          "mainOverflow": false,
+          "targets": [
+            {
+              "name": "跳到主要内容",
+              "width": 120,
+              "height": 48,
+              "navigation": false
+            },
+            {
+              "name": "Ariso 首页",
+              "width": 84,
+              "height": 72,
+              "navigation": false
+            },
+            {
+              "name": "收起侧栏",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "总览",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "上传",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "图库",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "相册",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "标签",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "分享",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "回收站",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "访问统计",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "存储",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "站点设置",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "账号菜单",
+              "width": 191,
+              "height": 56,
+              "navigation": false
+            },
+            {
+              "name": "外观：亮色；点击切换为暗色",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择文件夹",
+              "width": 104,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "继续添加",
+              "width": 120,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "上传设置说明",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "默认本地存储",
+              "width": 310,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "公开",
+              "width": 310,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择相册",
+              "width": 310,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择标签",
+              "width": 310,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "开始上传",
+              "width": 200,
+              "height": 48,
+              "navigation": false
+            }
+          ],
+          "summary": {
+            "top": 0,
+            "bottom": 0,
+            "left": 0,
+            "right": 0,
+            "width": 0,
+            "height": 0
+          },
+          "edit": {
+            "top": 0,
+            "bottom": 0,
+            "left": 0,
+            "right": 0,
+            "width": 0,
+            "height": 0
+          },
+          "queue": {
+            "top": 153,
+            "bottom": 1616,
+            "left": 264,
+            "right": 1024,
+            "width": 760,
+            "height": 1463
+          },
+          "settings": {
+            "top": 153,
+            "bottom": 591,
+            "left": 1048,
+            "right": 1408,
+            "width": 360,
+            "height": 438
+          },
+          "footer": {
+            "top": 999,
+            "bottom": 1080,
+            "left": 232,
+            "right": 1440,
+            "width": 1208,
+            "height": 81
+          },
+          "visible": false,
+          "text": "本次设置默认本地存储 · 公开0 个相册 · 0 个标签修改",
+          "names": [
+            "秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片.png",
+            "山野旅行-02.png",
+            "山野旅行-03.png",
+            "山野旅行-04.png",
+            "山野旅行-05.png",
+            "山野旅行-06.png",
+            "山野旅行-07.png",
+            "山野旅行-08.png",
+            "山野旅行-09.png",
+            "山野旅行-10.png",
+            "山野旅行-11.png",
+            "山野旅行-12.png"
+          ]
+        },
+        {
+          "name": "queued",
+          "count": 12,
+          "width": 360,
+          "theme": "dark",
+          "screenshot": "uiux-p1-upload-queued-12-dark-360.png",
+          "overflow": false,
+          "mainOverflow": false,
+          "targets": [
+            {
+              "name": "跳到主要内容",
+              "width": 120,
+              "height": 48,
+              "navigation": false
+            },
+            {
+              "name": "Ariso 首页",
+              "width": 63,
+              "height": 54,
+              "navigation": false
+            },
+            {
+              "name": "外观：暗色；点击切换为自动",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "菜单",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "修改上传设置",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择文件夹",
+              "width": 328,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "上传设置说明",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "默认本地存储",
+              "width": 294,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "公开",
+              "width": 294,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择相册",
+              "width": 294,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择标签",
+              "width": 294,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "继续添加",
+              "width": 159,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "开始上传",
+              "width": 157,
+              "height": 44,
+              "navigation": false
+            }
+          ],
+          "summary": {
+            "top": 150,
+            "bottom": 244,
+            "left": 16,
+            "right": 344,
+            "width": 328,
+            "height": 94
+          },
+          "edit": {
+            "top": 163,
+            "bottom": 207,
+            "left": 283,
+            "right": 327,
+            "width": 44,
+            "height": 44
+          },
+          "queue": {
+            "top": 256,
+            "bottom": 1594,
+            "left": 16,
+            "right": 344,
+            "width": 328,
+            "height": 1338
+          },
+          "settings": {
+            "top": 1674,
+            "bottom": 2104,
+            "left": 16,
+            "right": 344,
+            "width": 328,
+            "height": 430
+          },
+          "footer": {
+            "top": 767,
+            "bottom": 844,
+            "left": 0,
+            "right": 360,
+            "width": 360,
+            "height": 77
+          },
+          "visible": true,
+          "text": "本次设置默认本地存储 · 公开0 个相册 · 0 个标签修改",
+          "names": [
+            "秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片.png",
+            "山野旅行-02.png",
+            "山野旅行-03.png",
+            "山野旅行-04.png",
+            "山野旅行-05.png",
+            "山野旅行-06.png",
+            "山野旅行-07.png",
+            "山野旅行-08.png",
+            "山野旅行-09.png",
+            "山野旅行-10.png",
+            "山野旅行-11.png",
+            "山野旅行-12.png"
+          ]
+        },
+        {
+          "name": "queued",
+          "count": 12,
+          "width": 390,
+          "theme": "dark",
+          "screenshot": "uiux-p1-upload-queued-12-dark-390.png",
+          "overflow": false,
+          "mainOverflow": false,
+          "targets": [
+            {
+              "name": "跳到主要内容",
+              "width": 120,
+              "height": 48,
+              "navigation": false
+            },
+            {
+              "name": "Ariso 首页",
+              "width": 63,
+              "height": 54,
+              "navigation": false
+            },
+            {
+              "name": "外观：暗色；点击切换为自动",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "菜单",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "修改上传设置",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择文件夹",
+              "width": 358,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "上传设置说明",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "默认本地存储",
+              "width": 324,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "公开",
+              "width": 324,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择相册",
+              "width": 324,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择标签",
+              "width": 324,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "继续添加",
+              "width": 174,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "开始上传",
+              "width": 172,
+              "height": 44,
+              "navigation": false
+            }
+          ],
+          "summary": {
+            "top": 150,
+            "bottom": 244,
+            "left": 16,
+            "right": 374,
+            "width": 358,
+            "height": 94
+          },
+          "edit": {
+            "top": 163,
+            "bottom": 207,
+            "left": 313,
+            "right": 357,
+            "width": 44,
+            "height": 44
+          },
+          "queue": {
+            "top": 256,
+            "bottom": 1573,
+            "left": 16,
+            "right": 374,
+            "width": 358,
+            "height": 1317
+          },
+          "settings": {
+            "top": 1653,
+            "bottom": 2083,
+            "left": 16,
+            "right": 374,
+            "width": 358,
+            "height": 430
+          },
+          "footer": {
+            "top": 767,
+            "bottom": 844,
+            "left": 0,
+            "right": 390,
+            "width": 390,
+            "height": 77
+          },
+          "visible": true,
+          "text": "本次设置默认本地存储 · 公开0 个相册 · 0 个标签修改",
+          "names": [
+            "秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片.png",
+            "山野旅行-02.png",
+            "山野旅行-03.png",
+            "山野旅行-04.png",
+            "山野旅行-05.png",
+            "山野旅行-06.png",
+            "山野旅行-07.png",
+            "山野旅行-08.png",
+            "山野旅行-09.png",
+            "山野旅行-10.png",
+            "山野旅行-11.png",
+            "山野旅行-12.png"
+          ]
+        },
+        {
+          "name": "queued",
+          "count": 12,
+          "width": 430,
+          "theme": "dark",
+          "screenshot": "uiux-p1-upload-queued-12-dark-430.png",
+          "overflow": false,
+          "mainOverflow": false,
+          "targets": [
+            {
+              "name": "跳到主要内容",
+              "width": 120,
+              "height": 48,
+              "navigation": false
+            },
+            {
+              "name": "Ariso 首页",
+              "width": 63,
+              "height": 54,
+              "navigation": false
+            },
+            {
+              "name": "外观：暗色；点击切换为自动",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "菜单",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "修改上传设置",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择文件夹",
+              "width": 398,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "上传设置说明",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "默认本地存储",
+              "width": 364,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "公开",
+              "width": 364,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择相册",
+              "width": 364,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择标签",
+              "width": 364,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "继续添加",
+              "width": 194,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "开始上传",
+              "width": 192,
+              "height": 44,
+              "navigation": false
+            }
+          ],
+          "summary": {
+            "top": 150,
+            "bottom": 244,
+            "left": 16,
+            "right": 414,
+            "width": 398,
+            "height": 94
+          },
+          "edit": {
+            "top": 163,
+            "bottom": 207,
+            "left": 353,
+            "right": 397,
+            "width": 44,
+            "height": 44
+          },
+          "queue": {
+            "top": 256,
+            "bottom": 1552,
+            "left": 16,
+            "right": 414,
+            "width": 398,
+            "height": 1296
+          },
+          "settings": {
+            "top": 1632,
+            "bottom": 2062,
+            "left": 16,
+            "right": 414,
+            "width": 398,
+            "height": 430
+          },
+          "footer": {
+            "top": 767,
+            "bottom": 844,
+            "left": 0,
+            "right": 430,
+            "width": 430,
+            "height": 77
+          },
+          "visible": true,
+          "text": "本次设置默认本地存储 · 公开0 个相册 · 0 个标签修改",
+          "names": [
+            "秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片.png",
+            "山野旅行-02.png",
+            "山野旅行-03.png",
+            "山野旅行-04.png",
+            "山野旅行-05.png",
+            "山野旅行-06.png",
+            "山野旅行-07.png",
+            "山野旅行-08.png",
+            "山野旅行-09.png",
+            "山野旅行-10.png",
+            "山野旅行-11.png",
+            "山野旅行-12.png"
+          ]
+        },
+        {
+          "name": "queued",
+          "count": 12,
+          "width": 768,
+          "theme": "dark",
+          "screenshot": "uiux-p1-upload-queued-12-dark-768.png",
+          "overflow": false,
+          "mainOverflow": false,
+          "targets": [
+            {
+              "name": "跳到主要内容",
+              "width": 120,
+              "height": 48,
+              "navigation": false
+            },
+            {
+              "name": "Ariso 首页",
+              "width": 63,
+              "height": 54,
+              "navigation": false
+            },
+            {
+              "name": "外观：暗色；点击切换为自动",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "菜单",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择文件夹",
+              "width": 104,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "继续添加",
+              "width": 120,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "上传设置说明",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "默认本地存储",
+              "width": 310,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "公开",
+              "width": 310,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择相册",
+              "width": 310,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择标签",
+              "width": 310,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "开始上传",
+              "width": 200,
+              "height": 48,
+              "navigation": false
+            }
+          ],
+          "summary": {
+            "top": 0,
+            "bottom": 0,
+            "left": 0,
+            "right": 0,
+            "width": 0,
+            "height": 0
+          },
+          "edit": {
+            "top": 0,
+            "bottom": 0,
+            "left": 0,
+            "right": 0,
+            "width": 0,
+            "height": 0
+          },
+          "queue": {
+            "top": 157,
+            "bottom": 1710,
+            "left": 16,
+            "right": 368,
+            "width": 352,
+            "height": 1553
+          },
+          "settings": {
+            "top": 157,
+            "bottom": 595,
+            "left": 392,
+            "right": 752,
+            "width": 360,
+            "height": 438
+          },
+          "footer": {
+            "top": 763,
+            "bottom": 844,
+            "left": 0,
+            "right": 768,
+            "width": 768,
+            "height": 81
+          },
+          "visible": false,
+          "text": "本次设置默认本地存储 · 公开0 个相册 · 0 个标签修改",
+          "names": [
+            "秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片.png",
+            "山野旅行-02.png",
+            "山野旅行-03.png",
+            "山野旅行-04.png",
+            "山野旅行-05.png",
+            "山野旅行-06.png",
+            "山野旅行-07.png",
+            "山野旅行-08.png",
+            "山野旅行-09.png",
+            "山野旅行-10.png",
+            "山野旅行-11.png",
+            "山野旅行-12.png"
+          ]
+        },
+        {
+          "name": "queued",
+          "count": 12,
+          "width": 1440,
+          "theme": "dark",
+          "screenshot": "uiux-p1-upload-queued-12-dark-1440.png",
+          "overflow": false,
+          "mainOverflow": false,
+          "targets": [
+            {
+              "name": "跳到主要内容",
+              "width": 120,
+              "height": 48,
+              "navigation": false
+            },
+            {
+              "name": "Ariso 首页",
+              "width": 84,
+              "height": 72,
+              "navigation": false
+            },
+            {
+              "name": "收起侧栏",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "总览",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "上传",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "图库",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "相册",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "标签",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "分享",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "回收站",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "访问统计",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "存储",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "站点设置",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "账号菜单",
+              "width": 191,
+              "height": 56,
+              "navigation": false
+            },
+            {
+              "name": "外观：暗色；点击切换为自动",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择文件夹",
+              "width": 104,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "继续添加",
+              "width": 120,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "上传设置说明",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "默认本地存储",
+              "width": 310,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "公开",
+              "width": 310,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择相册",
+              "width": 310,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择标签",
+              "width": 310,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "开始上传",
+              "width": 200,
+              "height": 48,
+              "navigation": false
+            }
+          ],
+          "summary": {
+            "top": 0,
+            "bottom": 0,
+            "left": 0,
+            "right": 0,
+            "width": 0,
+            "height": 0
+          },
+          "edit": {
+            "top": 0,
+            "bottom": 0,
+            "left": 0,
+            "right": 0,
+            "width": 0,
+            "height": 0
+          },
+          "queue": {
+            "top": 153,
+            "bottom": 1616,
+            "left": 264,
+            "right": 1024,
+            "width": 760,
+            "height": 1463
+          },
+          "settings": {
+            "top": 153,
+            "bottom": 591,
+            "left": 1048,
+            "right": 1408,
+            "width": 360,
+            "height": 438
+          },
+          "footer": {
+            "top": 999,
+            "bottom": 1080,
+            "left": 232,
+            "right": 1440,
+            "width": 1208,
+            "height": 81
+          },
+          "visible": false,
+          "text": "本次设置默认本地存储 · 公开0 个相册 · 0 个标签修改",
+          "names": [
+            "秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片.png",
+            "山野旅行-02.png",
+            "山野旅行-03.png",
+            "山野旅行-04.png",
+            "山野旅行-05.png",
+            "山野旅行-06.png",
+            "山野旅行-07.png",
+            "山野旅行-08.png",
+            "山野旅行-09.png",
+            "山野旅行-10.png",
+            "山野旅行-11.png",
+            "山野旅行-12.png"
+          ]
+        },
+        {
+          "name": "queued",
+          "count": 20,
+          "width": 360,
+          "theme": "light",
+          "screenshot": "uiux-p1-upload-queued-20-light-360.png",
+          "overflow": false,
+          "mainOverflow": false,
+          "targets": [
+            {
+              "name": "跳到主要内容",
+              "width": 120,
+              "height": 48,
+              "navigation": false
+            },
+            {
+              "name": "Ariso 首页",
+              "width": 63,
+              "height": 54,
+              "navigation": false
+            },
+            {
+              "name": "外观：亮色；点击切换为暗色",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "菜单",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "修改上传设置",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择文件夹",
+              "width": 328,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "上传设置说明",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "默认本地存储",
+              "width": 294,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "公开",
+              "width": 294,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择相册",
+              "width": 294,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择标签",
+              "width": 294,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "继续添加",
+              "width": 159,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "开始上传",
+              "width": 157,
+              "height": 44,
+              "navigation": false
+            }
+          ],
+          "summary": {
+            "top": 150,
+            "bottom": 244,
+            "left": 16,
+            "right": 344,
+            "width": 328,
+            "height": 94
+          },
+          "edit": {
+            "top": 163,
+            "bottom": 207,
+            "left": 283,
+            "right": 327,
+            "width": 44,
+            "height": 44
+          },
+          "queue": {
+            "top": 256,
+            "bottom": 2418,
+            "left": 16,
+            "right": 344,
+            "width": 328,
+            "height": 2162
+          },
+          "settings": {
+            "top": 2498,
+            "bottom": 2928,
+            "left": 16,
+            "right": 344,
+            "width": 328,
+            "height": 430
+          },
+          "footer": {
+            "top": 767,
+            "bottom": 844,
+            "left": 0,
+            "right": 360,
+            "width": 360,
+            "height": 77
+          },
+          "visible": true,
+          "text": "本次设置默认本地存储 · 公开0 个相册 · 0 个标签修改",
+          "names": [
+            "秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片.png",
+            "山野旅行-02.png",
+            "山野旅行-03.png",
+            "山野旅行-04.png",
+            "山野旅行-05.png",
+            "山野旅行-06.png",
+            "山野旅行-07.png",
+            "山野旅行-08.png",
+            "山野旅行-09.png",
+            "山野旅行-10.png",
+            "山野旅行-11.png",
+            "山野旅行-12.png",
+            "山野旅行-13.png",
+            "山野旅行-14.png",
+            "山野旅行-15.png",
+            "山野旅行-16.png",
+            "山野旅行-17.png",
+            "山野旅行-18.png",
+            "山野旅行-19.png",
+            "山野旅行-20.png"
+          ]
+        },
+        {
+          "name": "queued",
+          "count": 20,
+          "width": 390,
+          "theme": "light",
+          "screenshot": "uiux-p1-upload-queued-20-light-390.png",
+          "overflow": false,
+          "mainOverflow": false,
+          "targets": [
+            {
+              "name": "跳到主要内容",
+              "width": 120,
+              "height": 48,
+              "navigation": false
+            },
+            {
+              "name": "Ariso 首页",
+              "width": 63,
+              "height": 54,
+              "navigation": false
+            },
+            {
+              "name": "外观：亮色；点击切换为暗色",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "菜单",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "修改上传设置",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择文件夹",
+              "width": 358,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "上传设置说明",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "默认本地存储",
+              "width": 324,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "公开",
+              "width": 324,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择相册",
+              "width": 324,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择标签",
+              "width": 324,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "继续添加",
+              "width": 174,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "开始上传",
+              "width": 172,
+              "height": 44,
+              "navigation": false
+            }
+          ],
+          "summary": {
+            "top": 150,
+            "bottom": 244,
+            "left": 16,
+            "right": 374,
+            "width": 358,
+            "height": 94
+          },
+          "edit": {
+            "top": 163,
+            "bottom": 207,
+            "left": 313,
+            "right": 357,
+            "width": 44,
+            "height": 44
+          },
+          "queue": {
+            "top": 256,
+            "bottom": 2397,
+            "left": 16,
+            "right": 374,
+            "width": 358,
+            "height": 2141
+          },
+          "settings": {
+            "top": 2477,
+            "bottom": 2907,
+            "left": 16,
+            "right": 374,
+            "width": 358,
+            "height": 430
+          },
+          "footer": {
+            "top": 767,
+            "bottom": 844,
+            "left": 0,
+            "right": 390,
+            "width": 390,
+            "height": 77
+          },
+          "visible": true,
+          "text": "本次设置默认本地存储 · 公开0 个相册 · 0 个标签修改",
+          "names": [
+            "秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片.png",
+            "山野旅行-02.png",
+            "山野旅行-03.png",
+            "山野旅行-04.png",
+            "山野旅行-05.png",
+            "山野旅行-06.png",
+            "山野旅行-07.png",
+            "山野旅行-08.png",
+            "山野旅行-09.png",
+            "山野旅行-10.png",
+            "山野旅行-11.png",
+            "山野旅行-12.png",
+            "山野旅行-13.png",
+            "山野旅行-14.png",
+            "山野旅行-15.png",
+            "山野旅行-16.png",
+            "山野旅行-17.png",
+            "山野旅行-18.png",
+            "山野旅行-19.png",
+            "山野旅行-20.png"
+          ]
+        },
+        {
+          "name": "queued",
+          "count": 20,
+          "width": 430,
+          "theme": "light",
+          "screenshot": "uiux-p1-upload-queued-20-light-430.png",
+          "overflow": false,
+          "mainOverflow": false,
+          "targets": [
+            {
+              "name": "跳到主要内容",
+              "width": 120,
+              "height": 48,
+              "navigation": false
+            },
+            {
+              "name": "Ariso 首页",
+              "width": 63,
+              "height": 54,
+              "navigation": false
+            },
+            {
+              "name": "外观：亮色；点击切换为暗色",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "菜单",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "修改上传设置",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择文件夹",
+              "width": 398,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "上传设置说明",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "默认本地存储",
+              "width": 364,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "公开",
+              "width": 364,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择相册",
+              "width": 364,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择标签",
+              "width": 364,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "继续添加",
+              "width": 194,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "开始上传",
+              "width": 192,
+              "height": 44,
+              "navigation": false
+            }
+          ],
+          "summary": {
+            "top": 150,
+            "bottom": 244,
+            "left": 16,
+            "right": 414,
+            "width": 398,
+            "height": 94
+          },
+          "edit": {
+            "top": 163,
+            "bottom": 207,
+            "left": 353,
+            "right": 397,
+            "width": 44,
+            "height": 44
+          },
+          "queue": {
+            "top": 256,
+            "bottom": 2376,
+            "left": 16,
+            "right": 414,
+            "width": 398,
+            "height": 2120
+          },
+          "settings": {
+            "top": 2456,
+            "bottom": 2886,
+            "left": 16,
+            "right": 414,
+            "width": 398,
+            "height": 430
+          },
+          "footer": {
+            "top": 767,
+            "bottom": 844,
+            "left": 0,
+            "right": 430,
+            "width": 430,
+            "height": 77
+          },
+          "visible": true,
+          "text": "本次设置默认本地存储 · 公开0 个相册 · 0 个标签修改",
+          "names": [
+            "秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片.png",
+            "山野旅行-02.png",
+            "山野旅行-03.png",
+            "山野旅行-04.png",
+            "山野旅行-05.png",
+            "山野旅行-06.png",
+            "山野旅行-07.png",
+            "山野旅行-08.png",
+            "山野旅行-09.png",
+            "山野旅行-10.png",
+            "山野旅行-11.png",
+            "山野旅行-12.png",
+            "山野旅行-13.png",
+            "山野旅行-14.png",
+            "山野旅行-15.png",
+            "山野旅行-16.png",
+            "山野旅行-17.png",
+            "山野旅行-18.png",
+            "山野旅行-19.png",
+            "山野旅行-20.png"
+          ]
+        },
+        {
+          "name": "queued",
+          "count": 20,
+          "width": 768,
+          "theme": "light",
+          "screenshot": "uiux-p1-upload-queued-20-light-768.png",
+          "overflow": false,
+          "mainOverflow": false,
+          "targets": [
+            {
+              "name": "跳到主要内容",
+              "width": 120,
+              "height": 48,
+              "navigation": false
+            },
+            {
+              "name": "Ariso 首页",
+              "width": 63,
+              "height": 54,
+              "navigation": false
+            },
+            {
+              "name": "外观：亮色；点击切换为暗色",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "菜单",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择文件夹",
+              "width": 104,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "继续添加",
+              "width": 120,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "上传设置说明",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "默认本地存储",
+              "width": 310,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "公开",
+              "width": 310,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择相册",
+              "width": 310,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择标签",
+              "width": 310,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "开始上传",
+              "width": 200,
+              "height": 48,
+              "navigation": false
+            }
+          ],
+          "summary": {
+            "top": 0,
+            "bottom": 0,
+            "left": 0,
+            "right": 0,
+            "width": 0,
+            "height": 0
+          },
+          "edit": {
+            "top": 0,
+            "bottom": 0,
+            "left": 0,
+            "right": 0,
+            "width": 0,
+            "height": 0
+          },
+          "queue": {
+            "top": 157,
+            "bottom": 2606,
+            "left": 16,
+            "right": 368,
+            "width": 352,
+            "height": 2449
+          },
+          "settings": {
+            "top": 157,
+            "bottom": 595,
+            "left": 392,
+            "right": 752,
+            "width": 360,
+            "height": 438
+          },
+          "footer": {
+            "top": 763,
+            "bottom": 844,
+            "left": 0,
+            "right": 768,
+            "width": 768,
+            "height": 81
+          },
+          "visible": false,
+          "text": "本次设置默认本地存储 · 公开0 个相册 · 0 个标签修改",
+          "names": [
+            "秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片.png",
+            "山野旅行-02.png",
+            "山野旅行-03.png",
+            "山野旅行-04.png",
+            "山野旅行-05.png",
+            "山野旅行-06.png",
+            "山野旅行-07.png",
+            "山野旅行-08.png",
+            "山野旅行-09.png",
+            "山野旅行-10.png",
+            "山野旅行-11.png",
+            "山野旅行-12.png",
+            "山野旅行-13.png",
+            "山野旅行-14.png",
+            "山野旅行-15.png",
+            "山野旅行-16.png",
+            "山野旅行-17.png",
+            "山野旅行-18.png",
+            "山野旅行-19.png",
+            "山野旅行-20.png"
+          ]
+        },
+        {
+          "name": "queued",
+          "count": 20,
+          "width": 1440,
+          "theme": "light",
+          "screenshot": "uiux-p1-upload-queued-20-light-1440.png",
+          "overflow": false,
+          "mainOverflow": false,
+          "targets": [
+            {
+              "name": "跳到主要内容",
+              "width": 120,
+              "height": 48,
+              "navigation": false
+            },
+            {
+              "name": "Ariso 首页",
+              "width": 84,
+              "height": 72,
+              "navigation": false
+            },
+            {
+              "name": "收起侧栏",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "总览",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "上传",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "图库",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "相册",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "标签",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "分享",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "回收站",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "访问统计",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "存储",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "站点设置",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "账号菜单",
+              "width": 191,
+              "height": 56,
+              "navigation": false
+            },
+            {
+              "name": "外观：亮色；点击切换为暗色",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择文件夹",
+              "width": 104,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "继续添加",
+              "width": 120,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "上传设置说明",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "默认本地存储",
+              "width": 310,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "公开",
+              "width": 310,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择相册",
+              "width": 310,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择标签",
+              "width": 310,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "开始上传",
+              "width": 200,
+              "height": 48,
+              "navigation": false
+            }
+          ],
+          "summary": {
+            "top": 0,
+            "bottom": 0,
+            "left": 0,
+            "right": 0,
+            "width": 0,
+            "height": 0
+          },
+          "edit": {
+            "top": 0,
+            "bottom": 0,
+            "left": 0,
+            "right": 0,
+            "width": 0,
+            "height": 0
+          },
+          "queue": {
+            "top": 153,
+            "bottom": 2512,
+            "left": 264,
+            "right": 1024,
+            "width": 760,
+            "height": 2359
+          },
+          "settings": {
+            "top": 153,
+            "bottom": 591,
+            "left": 1048,
+            "right": 1408,
+            "width": 360,
+            "height": 438
+          },
+          "footer": {
+            "top": 999,
+            "bottom": 1080,
+            "left": 232,
+            "right": 1440,
+            "width": 1208,
+            "height": 81
+          },
+          "visible": false,
+          "text": "本次设置默认本地存储 · 公开0 个相册 · 0 个标签修改",
+          "names": [
+            "秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片.png",
+            "山野旅行-02.png",
+            "山野旅行-03.png",
+            "山野旅行-04.png",
+            "山野旅行-05.png",
+            "山野旅行-06.png",
+            "山野旅行-07.png",
+            "山野旅行-08.png",
+            "山野旅行-09.png",
+            "山野旅行-10.png",
+            "山野旅行-11.png",
+            "山野旅行-12.png",
+            "山野旅行-13.png",
+            "山野旅行-14.png",
+            "山野旅行-15.png",
+            "山野旅行-16.png",
+            "山野旅行-17.png",
+            "山野旅行-18.png",
+            "山野旅行-19.png",
+            "山野旅行-20.png"
+          ]
+        },
+        {
+          "name": "queued",
+          "count": 20,
+          "width": 360,
+          "theme": "dark",
+          "screenshot": "uiux-p1-upload-queued-20-dark-360.png",
+          "overflow": false,
+          "mainOverflow": false,
+          "targets": [
+            {
+              "name": "跳到主要内容",
+              "width": 120,
+              "height": 48,
+              "navigation": false
+            },
+            {
+              "name": "Ariso 首页",
+              "width": 63,
+              "height": 54,
+              "navigation": false
+            },
+            {
+              "name": "外观：暗色；点击切换为自动",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "菜单",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "修改上传设置",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择文件夹",
+              "width": 328,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "上传设置说明",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "默认本地存储",
+              "width": 294,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "公开",
+              "width": 294,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择相册",
+              "width": 294,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择标签",
+              "width": 294,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "继续添加",
+              "width": 159,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "开始上传",
+              "width": 157,
+              "height": 44,
+              "navigation": false
+            }
+          ],
+          "summary": {
+            "top": 150,
+            "bottom": 244,
+            "left": 16,
+            "right": 344,
+            "width": 328,
+            "height": 94
+          },
+          "edit": {
+            "top": 163,
+            "bottom": 207,
+            "left": 283,
+            "right": 327,
+            "width": 44,
+            "height": 44
+          },
+          "queue": {
+            "top": 256,
+            "bottom": 2418,
+            "left": 16,
+            "right": 344,
+            "width": 328,
+            "height": 2162
+          },
+          "settings": {
+            "top": 2498,
+            "bottom": 2928,
+            "left": 16,
+            "right": 344,
+            "width": 328,
+            "height": 430
+          },
+          "footer": {
+            "top": 767,
+            "bottom": 844,
+            "left": 0,
+            "right": 360,
+            "width": 360,
+            "height": 77
+          },
+          "visible": true,
+          "text": "本次设置默认本地存储 · 公开0 个相册 · 0 个标签修改",
+          "names": [
+            "秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片.png",
+            "山野旅行-02.png",
+            "山野旅行-03.png",
+            "山野旅行-04.png",
+            "山野旅行-05.png",
+            "山野旅行-06.png",
+            "山野旅行-07.png",
+            "山野旅行-08.png",
+            "山野旅行-09.png",
+            "山野旅行-10.png",
+            "山野旅行-11.png",
+            "山野旅行-12.png",
+            "山野旅行-13.png",
+            "山野旅行-14.png",
+            "山野旅行-15.png",
+            "山野旅行-16.png",
+            "山野旅行-17.png",
+            "山野旅行-18.png",
+            "山野旅行-19.png",
+            "山野旅行-20.png"
+          ]
+        },
+        {
+          "name": "queued",
+          "count": 20,
+          "width": 390,
+          "theme": "dark",
+          "screenshot": "uiux-p1-upload-queued-20-dark-390.png",
+          "overflow": false,
+          "mainOverflow": false,
+          "targets": [
+            {
+              "name": "跳到主要内容",
+              "width": 120,
+              "height": 48,
+              "navigation": false
+            },
+            {
+              "name": "Ariso 首页",
+              "width": 63,
+              "height": 54,
+              "navigation": false
+            },
+            {
+              "name": "外观：暗色；点击切换为自动",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "菜单",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "修改上传设置",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择文件夹",
+              "width": 358,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "上传设置说明",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "默认本地存储",
+              "width": 324,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "公开",
+              "width": 324,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择相册",
+              "width": 324,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择标签",
+              "width": 324,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "继续添加",
+              "width": 174,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "开始上传",
+              "width": 172,
+              "height": 44,
+              "navigation": false
+            }
+          ],
+          "summary": {
+            "top": 150,
+            "bottom": 244,
+            "left": 16,
+            "right": 374,
+            "width": 358,
+            "height": 94
+          },
+          "edit": {
+            "top": 163,
+            "bottom": 207,
+            "left": 313,
+            "right": 357,
+            "width": 44,
+            "height": 44
+          },
+          "queue": {
+            "top": 256,
+            "bottom": 2397,
+            "left": 16,
+            "right": 374,
+            "width": 358,
+            "height": 2141
+          },
+          "settings": {
+            "top": 2477,
+            "bottom": 2907,
+            "left": 16,
+            "right": 374,
+            "width": 358,
+            "height": 430
+          },
+          "footer": {
+            "top": 767,
+            "bottom": 844,
+            "left": 0,
+            "right": 390,
+            "width": 390,
+            "height": 77
+          },
+          "visible": true,
+          "text": "本次设置默认本地存储 · 公开0 个相册 · 0 个标签修改",
+          "names": [
+            "秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片.png",
+            "山野旅行-02.png",
+            "山野旅行-03.png",
+            "山野旅行-04.png",
+            "山野旅行-05.png",
+            "山野旅行-06.png",
+            "山野旅行-07.png",
+            "山野旅行-08.png",
+            "山野旅行-09.png",
+            "山野旅行-10.png",
+            "山野旅行-11.png",
+            "山野旅行-12.png",
+            "山野旅行-13.png",
+            "山野旅行-14.png",
+            "山野旅行-15.png",
+            "山野旅行-16.png",
+            "山野旅行-17.png",
+            "山野旅行-18.png",
+            "山野旅行-19.png",
+            "山野旅行-20.png"
+          ]
+        },
+        {
+          "name": "queued",
+          "count": 20,
+          "width": 430,
+          "theme": "dark",
+          "screenshot": "uiux-p1-upload-queued-20-dark-430.png",
+          "overflow": false,
+          "mainOverflow": false,
+          "targets": [
+            {
+              "name": "跳到主要内容",
+              "width": 120,
+              "height": 48,
+              "navigation": false
+            },
+            {
+              "name": "Ariso 首页",
+              "width": 63,
+              "height": 54,
+              "navigation": false
+            },
+            {
+              "name": "外观：暗色；点击切换为自动",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "菜单",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "修改上传设置",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择文件夹",
+              "width": 398,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "上传设置说明",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "默认本地存储",
+              "width": 364,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "公开",
+              "width": 364,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择相册",
+              "width": 364,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择标签",
+              "width": 364,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "继续添加",
+              "width": 194,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "开始上传",
+              "width": 192,
+              "height": 44,
+              "navigation": false
+            }
+          ],
+          "summary": {
+            "top": 150,
+            "bottom": 244,
+            "left": 16,
+            "right": 414,
+            "width": 398,
+            "height": 94
+          },
+          "edit": {
+            "top": 163,
+            "bottom": 207,
+            "left": 353,
+            "right": 397,
+            "width": 44,
+            "height": 44
+          },
+          "queue": {
+            "top": 256,
+            "bottom": 2376,
+            "left": 16,
+            "right": 414,
+            "width": 398,
+            "height": 2120
+          },
+          "settings": {
+            "top": 2456,
+            "bottom": 2886,
+            "left": 16,
+            "right": 414,
+            "width": 398,
+            "height": 430
+          },
+          "footer": {
+            "top": 767,
+            "bottom": 844,
+            "left": 0,
+            "right": 430,
+            "width": 430,
+            "height": 77
+          },
+          "visible": true,
+          "text": "本次设置默认本地存储 · 公开0 个相册 · 0 个标签修改",
+          "names": [
+            "秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片.png",
+            "山野旅行-02.png",
+            "山野旅行-03.png",
+            "山野旅行-04.png",
+            "山野旅行-05.png",
+            "山野旅行-06.png",
+            "山野旅行-07.png",
+            "山野旅行-08.png",
+            "山野旅行-09.png",
+            "山野旅行-10.png",
+            "山野旅行-11.png",
+            "山野旅行-12.png",
+            "山野旅行-13.png",
+            "山野旅行-14.png",
+            "山野旅行-15.png",
+            "山野旅行-16.png",
+            "山野旅行-17.png",
+            "山野旅行-18.png",
+            "山野旅行-19.png",
+            "山野旅行-20.png"
+          ]
+        },
+        {
+          "name": "queued",
+          "count": 20,
+          "width": 768,
+          "theme": "dark",
+          "screenshot": "uiux-p1-upload-queued-20-dark-768.png",
+          "overflow": false,
+          "mainOverflow": false,
+          "targets": [
+            {
+              "name": "跳到主要内容",
+              "width": 120,
+              "height": 48,
+              "navigation": false
+            },
+            {
+              "name": "Ariso 首页",
+              "width": 63,
+              "height": 54,
+              "navigation": false
+            },
+            {
+              "name": "外观：暗色；点击切换为自动",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "菜单",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择文件夹",
+              "width": 104,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "继续添加",
+              "width": 120,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 88,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "上传设置说明",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "默认本地存储",
+              "width": 310,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "公开",
+              "width": 310,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择相册",
+              "width": 310,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择标签",
+              "width": 310,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "开始上传",
+              "width": 200,
+              "height": 48,
+              "navigation": false
+            }
+          ],
+          "summary": {
+            "top": 0,
+            "bottom": 0,
+            "left": 0,
+            "right": 0,
+            "width": 0,
+            "height": 0
+          },
+          "edit": {
+            "top": 0,
+            "bottom": 0,
+            "left": 0,
+            "right": 0,
+            "width": 0,
+            "height": 0
+          },
+          "queue": {
+            "top": 157,
+            "bottom": 2606,
+            "left": 16,
+            "right": 368,
+            "width": 352,
+            "height": 2449
+          },
+          "settings": {
+            "top": 157,
+            "bottom": 595,
+            "left": 392,
+            "right": 752,
+            "width": 360,
+            "height": 438
+          },
+          "footer": {
+            "top": 763,
+            "bottom": 844,
+            "left": 0,
+            "right": 768,
+            "width": 768,
+            "height": 81
+          },
+          "visible": false,
+          "text": "本次设置默认本地存储 · 公开0 个相册 · 0 个标签修改",
+          "names": [
+            "秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片.png",
+            "山野旅行-02.png",
+            "山野旅行-03.png",
+            "山野旅行-04.png",
+            "山野旅行-05.png",
+            "山野旅行-06.png",
+            "山野旅行-07.png",
+            "山野旅行-08.png",
+            "山野旅行-09.png",
+            "山野旅行-10.png",
+            "山野旅行-11.png",
+            "山野旅行-12.png",
+            "山野旅行-13.png",
+            "山野旅行-14.png",
+            "山野旅行-15.png",
+            "山野旅行-16.png",
+            "山野旅行-17.png",
+            "山野旅行-18.png",
+            "山野旅行-19.png",
+            "山野旅行-20.png"
+          ]
+        },
+        {
+          "name": "queued",
+          "count": 20,
+          "width": 1440,
+          "theme": "dark",
+          "screenshot": "uiux-p1-upload-queued-20-dark-1440.png",
+          "overflow": false,
+          "mainOverflow": false,
+          "targets": [
+            {
+              "name": "跳到主要内容",
+              "width": 120,
+              "height": 48,
+              "navigation": false
+            },
+            {
+              "name": "Ariso 首页",
+              "width": 84,
+              "height": 72,
+              "navigation": false
+            },
+            {
+              "name": "收起侧栏",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "总览",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "上传",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "图库",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "相册",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "标签",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "分享",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "回收站",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "访问统计",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "存储",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "站点设置",
+              "width": 191,
+              "height": 40,
+              "navigation": true
+            },
+            {
+              "name": "账号菜单",
+              "width": 191,
+              "height": 56,
+              "navigation": false
+            },
+            {
+              "name": "外观：暗色；点击切换为自动",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择文件夹",
+              "width": 104,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "继续添加",
+              "width": 120,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "移除",
+              "width": 140,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "上传设置说明",
+              "width": 44,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "默认本地存储",
+              "width": 310,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "公开",
+              "width": 310,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择相册",
+              "width": 310,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "选择标签",
+              "width": 310,
+              "height": 44,
+              "navigation": false
+            },
+            {
+              "name": "开始上传",
+              "width": 200,
+              "height": 48,
+              "navigation": false
+            }
+          ],
+          "summary": {
+            "top": 0,
+            "bottom": 0,
+            "left": 0,
+            "right": 0,
+            "width": 0,
+            "height": 0
+          },
+          "edit": {
+            "top": 0,
+            "bottom": 0,
+            "left": 0,
+            "right": 0,
+            "width": 0,
+            "height": 0
+          },
+          "queue": {
+            "top": 153,
+            "bottom": 2512,
+            "left": 264,
+            "right": 1024,
+            "width": 760,
+            "height": 2359
+          },
+          "settings": {
+            "top": 153,
+            "bottom": 591,
+            "left": 1048,
+            "right": 1408,
+            "width": 360,
+            "height": 438
+          },
+          "footer": {
+            "top": 999,
+            "bottom": 1080,
+            "left": 232,
+            "right": 1440,
+            "width": 1208,
+            "height": 81
+          },
+          "visible": false,
+          "text": "本次设置默认本地存储 · 公开0 个相册 · 0 个标签修改",
+          "names": [
+            "秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片秋日山野旅行照片.png",
+            "山野旅行-02.png",
+            "山野旅行-03.png",
+            "山野旅行-04.png",
+            "山野旅行-05.png",
+            "山野旅行-06.png",
+            "山野旅行-07.png",
+            "山野旅行-08.png",
+            "山野旅行-09.png",
+            "山野旅行-10.png",
+            "山野旅行-11.png",
+            "山野旅行-12.png",
+            "山野旅行-13.png",
+            "山野旅行-14.png",
+            "山野旅行-15.png",
+            "山野旅行-16.png",
+            "山野旅行-17.png",
+            "山野旅行-18.png",
+            "山野旅行-19.png",
+            "山野旅行-20.png"
+          ]
+        }
+      ],
+      "imageIds": [
+        "6de231d2-b88c-45dd-bff1-10e0201d1834",
+        "5a567a73-a02e-4586-98e6-20ce719719e4",
+        "3a485287-68bd-4b1b-be8a-79fff3273f57",
+        "b5bca9f8-afe4-4ff0-ab26-c70c6f0dc1c9",
+        "0c8c0dac-17fd-4a38-adf2-8cf6bee47e53",
+        "92dd97a4-ee50-400e-b896-833bd680e548",
+        "8c3c2501-1245-4db0-bd19-79758e5711af",
+        "655e9485-aa18-4d5a-8f51-fda9684923e3",
+        "aabd8d00-b86c-4bed-9edf-d25a9050dc00",
+        "4b761f39-e1ab-465c-aa21-8d63b2f71207",
+        "c1ff7c18-f5f1-45a2-aa19-ea4d294b73a8",
+        "5b06fb94-6922-4b6d-b3a9-5c9855abbe27",
+        "1ce1bbe3-9af8-4e50-a024-71b222ea02ba",
+        "1dea2303-02d7-45dd-9546-6006a3e10f04",
+        "f56ef4c1-add1-4bf1-8f3d-948bff8c55bc",
+        "c1ebf930-07ae-4f2d-ba67-1115bb645e4e",
+        "3474245c-6f53-4de8-a194-cde176e2a6f4",
+        "6ddf771c-154d-46ad-a6bb-b998893ce01c",
+        "dc629312-dde6-4ad1-9a14-fad4c8407e2b",
+        "71322f8c-2035-4896-82b6-f416f7dba30f"
+      ],
+      "submissionId": "9830d6af-7382-47fe-a61c-af2a807f2101",
+      "limitations": [
+        "Chromium viewport emulation; physical touch, keyboard and safe areas are not exercised.",
+        "One real metadata response is held to check the pending boundary; native Local transfers and media processing still run normally.",
+        "Persisted fixture images remain in the disposable runner database for its normal teardown; S3 is not exercised."
+      ]
+    },
+    "return": {
+      "checks": [
+        "album-image-1440: image details and versions close back to the exact image card without cross-page focus takeover",
+        "albums-1440: saved share settings return through the exact album detail to its searched page, scroll and focus",
+        "albums-1440: browser Back restores the same list context",
+        "albums-1440: card share settings return directly to the source list",
+        "shares-1440: page Return and browser Back preserve the search, page size, page, scroll and visible source focus",
+        "album-image-390: image details and versions close back to the exact image card without cross-page focus takeover",
+        "albums-390: saved share settings return through the exact album detail to its searched page, scroll and focus",
+        "albums-390: browser Back restores the same list context",
+        "albums-390: card share settings return directly to the source list",
+        "shares-390: page Return and browser Back preserve the search, page size, page, scroll and visible source focus"
+      ],
+      "layouts": [
+        {
+          "width": 1440,
+          "albumReturn": {
+            "href": "/albums?q=%E6%97%85%E8%A1%8C%E5%9B%9E%E8%AE%BF+d4cb1834&page=2&pageSize=20",
+            "top": 550,
+            "focus": "album-open-e7d5a900-d577-4577-9f51-6e87ecc569e4"
+          },
+          "shareReturn": {
+            "href": "/shares?q=%E6%97%85%E8%A1%8C%E5%9B%9E%E8%AE%BF+d4cb1834&page=2&pageSize=20",
+            "top": 0,
+            "focus": "share-settings-670ea9b6-20ee-4115-b679-e534bc82e410"
+          },
+          "duplicateIds": []
+        },
+        {
+          "width": 390,
+          "albumReturn": {
+            "href": "/albums?q=%E6%97%85%E8%A1%8C%E5%9B%9E%E8%AE%BF+d4cb1834&page=2&pageSize=20",
+            "top": 550,
+            "focus": "album-open-d298f4a7-352b-4454-a348-0fe8537bcafb"
+          },
+          "shareReturn": {
+            "href": "/shares?q=%E6%97%85%E8%A1%8C%E5%9B%9E%E8%AE%BF+d4cb1834&page=2&pageSize=20",
+            "top": 0,
+            "focus": "share-settings-670ea9b6-20ee-4115-b679-e534bc82e410"
+          },
+          "duplicateIds": []
+        }
+      ],
+      "createdAlbums": 43
+    },
+    "storage": {
+      "checks": [
+        "storage-object-and-task-navigation-1440",
+        "storage-object-and-task-navigation-390"
+      ],
+      "storageId": "be28061c-749d-4e43-89b7-4adc65eef6aa"
+    }
+  },
+  "browserErrors": []
+}

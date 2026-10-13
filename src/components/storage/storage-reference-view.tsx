@@ -16,6 +16,8 @@ import {
 import { OwnerShell } from '../shell/owner-shell';
 import { StorageTip } from './storage-tip';
 import type { StorageDetail } from './storage-api';
+import { storageReferenceDestination } from './reference-navigation';
+import { StorageReferenceTasks } from './storage-reference-tasks';
 
 export function StorageReferenceView({
   shell,
@@ -42,10 +44,10 @@ export function StorageReferenceView({
     {
       icon: Images,
       label: '图片与版本',
-      value: `${counts.images ?? 0} 张 / ${counts.versions ?? 0} 个`,
+      value: `${counts.libraryImages ?? 0} 张图库图片 · ${counts.trashImages ?? 0} 张回收图片 · ${counts.versions ?? 0} 个版本`,
       active: (counts.images ?? 0) + (counts.versions ?? 0) > 0,
-      href: '/library',
-      action: '查看图片',
+      href: storageReferenceDestination(storage.id, false),
+      action: '查看图库',
     },
     {
       icon: Upload,
@@ -61,8 +63,7 @@ export function StorageReferenceView({
       label: '处理与删除任务',
       value: `处理 ${counts.jobs ?? 0} 项 / 删除清理 ${counts.cleanupJobs ?? 0} 项`,
       active: (counts.jobs ?? 0) + (counts.cleanupJobs ?? 0) > 0,
-      href: '/trash',
-      action: '前往回收站',
+      action: 'tasks',
     },
     {
       icon: ScanLine,
@@ -136,15 +137,42 @@ export function StorageReferenceView({
                 ) : null}
               </div>
               {row.active ? (
-                row.href ? (
-                  <Link
-                    href={row.href}
-                    onClick={(event) => onNavigate?.(event, row.href!)}
-                    className="col-start-2 flex min-h-11 items-center gap-2 justify-self-start rounded-lg px-3 text-sm no-underline min-[768px]:col-start-auto"
-                  >
-                    {row.action}
-                    <ArrowRight size={16} aria-hidden />
-                  </Link>
+                row.action === 'tasks' ? (
+                  <dd className="col-start-2 min-w-0 min-[768px]:col-span-2">
+                    <StorageReferenceTasks
+                      storage={storage}
+                      busy={busy}
+                      onNavigate={onNavigate}
+                    />
+                  </dd>
+                ) : row.href ? (
+                  <dd className="col-start-2 flex flex-wrap items-center gap-2 justify-self-start min-[768px]:col-start-auto">
+                    <Link
+                      href={row.href}
+                      isDisabled={busy}
+                      onClick={(event) => onNavigate?.(event, row.href!)}
+                      className="col-start-2 flex min-h-11 items-center gap-2 justify-self-start rounded-lg px-3 text-sm no-underline min-[768px]:col-start-auto"
+                    >
+                      {row.action}
+                      <ArrowRight size={16} aria-hidden />
+                    </Link>
+                    {Icon === Images ? (
+                      <Link
+                        href={storageReferenceDestination(storage.id, true)}
+                        isDisabled={busy}
+                        onClick={(event) =>
+                          onNavigate?.(
+                            event,
+                            storageReferenceDestination(storage.id, true),
+                          )
+                        }
+                        className="flex min-h-11 items-center gap-2 rounded-lg px-3 text-sm no-underline"
+                      >
+                        查看回收记录
+                        <ArrowRight size={16} aria-hidden />
+                      </Link>
+                    ) : null}
+                  </dd>
                 ) : (
                   <Button
                     variant="ghost"

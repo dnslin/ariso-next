@@ -48,10 +48,11 @@ import { shareRequest, ShareRequestError, shareUrl, type Share } from './api';
 import { useSettings, type Action } from './use-settings';
 import { Choices, ExpiryControls, SettingSwitch } from './controls';
 import { ShareCreateForm } from './create-form';
+import { shareSettingsHref } from '../albums/collection-navigation';
 type SettingsProps = {
   albumId: string;
   timeZone: string;
-  fromAlbum: boolean;
+  returnHref?: string;
   name: string;
   logoUrl?: string | null;
   description: string;
@@ -66,7 +67,10 @@ export function SettingsScreen(props: SettingsProps) {
   const [client] = useState(() => new QueryClient());
   const [expiredSession, setExpiredSession] = useState(false);
   const resetUpload = useResetUpload();
-  const returnTo = `/shares/${encodeURIComponent(props.albumId)}${props.fromAlbum ? '?from=album' : ''}`;
+  const returnTo = shareSettingsHref(
+    props.albumId,
+    props.returnHref ?? '/shares',
+  );
   const onExpire = useCallback(() => {
     setExpiredSession(true);
     resetUpload();
@@ -167,18 +171,18 @@ function SettingsContent({
   returnTo: string;
 }) {
   const router = useRouter();
-  const returnLabel = props.fromAlbum ? '返回相册' : '返回分享';
+  const returnHref = props.returnHref ?? '/shares';
+  const returnLabel = returnHref.startsWith('/shares')
+    ? '返回分享'
+    : returnHref.startsWith('/albums/')
+      ? '返回相册'
+      : '返回相册列表';
   const settings = useSettings(
     initialShare,
     props.albumId,
     props.timeZone,
     onExpire,
-    () =>
-      router.push(
-        props.fromAlbum
-          ? `/albums/${encodeURIComponent(props.albumId)}`
-          : '/shares',
-      ),
+    () => router.push(returnHref),
   );
   const {
     share,

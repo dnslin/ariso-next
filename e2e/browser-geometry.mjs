@@ -92,8 +92,11 @@ export function assertGeometry(geometry, label) {
   assert.equal(geometry.mainOverflow, false, `${label} main overflow`);
   for (const target of geometry.targets)
     assert.ok(
-      target.width >= (geometry.width < 1200 ? 44 : 24) &&
-        target.height >= (geometry.width < 1200 ? 44 : 24),
+      // Rect subtraction at a distant scroll offset can report 43.99994 for
+      // a CSS 44px control. Compare at Chromium's 1/64 CSS-pixel precision.
+      Math.round(target.width * 64) / 64 >= (geometry.width < 1200 ? 44 : 24) &&
+        Math.round(target.height * 64) / 64 >=
+          (geometry.width < 1200 ? 44 : 24),
       `${label}: ${target.name} has a usable target (${target.width}×${target.height})`,
     );
 }

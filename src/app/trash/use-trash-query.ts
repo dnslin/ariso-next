@@ -1,5 +1,7 @@
 'use client';
 
+import { storageReferenceReturn } from '../../components/storage/reference-navigation';
+
 import { useLayoutEffect, useMemo, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { parseAsString, useQueryStates } from 'nuqs';
@@ -126,7 +128,11 @@ export function useTrashQuery(client: QueryClient, enabled = true) {
   }
   function resetQuery() {
     const url = new URL(window.location.href);
+    const source = storageReferenceReturn(
+      url.searchParams.get('storageReturn'),
+    );
     url.search = '?page=1&pageSize=40';
+    if (source) url.searchParams.set('storageReturn', source);
     window.history.pushState(null, '', url);
   }
   return {

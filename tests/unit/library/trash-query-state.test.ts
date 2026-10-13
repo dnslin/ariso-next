@@ -4,6 +4,15 @@ import { libraryRequestParams } from '../../../src/app/library/query-state';
 import { parseLibraryQuery } from '../../../src/server/library/query-schema';
 
 describe('trash URL query', () => {
+  it('keeps the storage return destination out of the applied filters', () => {
+    expect(
+      parseTrashLocation(
+        new URLSearchParams(
+          'storageId=archive&storageReturn=%2Fsettings%2Fstorage%2Farchive%3Fview%3Dreferences&image=two',
+        ),
+      ),
+    ).toEqual(parseTrashLocation(new URLSearchParams('storageId=archive')));
+  });
   it('normalizes the complete trash query with the HTTP schema', () => {
     const parsed = parseTrashLocation(
       new URLSearchParams(
