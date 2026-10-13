@@ -1,0 +1,7907 @@
+{
+  "status": "passed",
+  "checks": [
+    "Only selected images expose the toolbar action menu; public/no-album selection hides redundant public/remove actions. Right-click contains only five common actions and Escape restores card focus.",
+    "Manage selection contains thumbnails and selection commands; select-current keeps it open, Escape returns focus, and clear removes the selection without a business menu.",
+    "Private-only selection hides private; mixed selection exposes both choices. The confirmed public mutation sends only the one private ID, retains both matching selections and refreshes menu eligibility from real metadata.",
+    "Library removal requires an explicitly chosen target and leaves the other album intact. Album-context removal has no target list, freezes only the current album, removes its out-of-query selection and never deletes the image.",
+    "Real two-image trash and restore each require one confirmation, update the database, clear resolved selection and finish with a toast, without a success dialog."
+  ],
+  "layouts": [
+    {
+      "name": "library-toolbar-idle",
+      "theme": "light",
+      "width": 360,
+      "scrollWidth": 360,
+      "bar": {
+        "left": 16,
+        "right": 344,
+        "width": 328,
+        "cy": 201
+      },
+      "search": {
+        "left": 16,
+        "right": 344,
+        "width": 328,
+        "cy": 175
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 344,
+        "width": 328,
+        "cy": 175
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 291,
+        "width": 230,
+        "cy": 175
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 175
+      },
+      "selectRecord": null,
+      "albumActions": null,
+      "actions": [
+        {
+          "left": 16,
+          "right": 117.578125,
+          "width": 101.578125,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 125.578125,
+          "right": 169.578125,
+          "width": 44,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 177.578125,
+          "right": 221.578125,
+          "width": 44,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 229.578125,
+          "right": 273.578125,
+          "width": 44,
+          "cy": 227,
+          "albumAction": false
+        }
+      ]
+    },
+    {
+      "name": "library-toolbar-idle",
+      "theme": "light",
+      "width": 390,
+      "scrollWidth": 390,
+      "bar": {
+        "left": 16,
+        "right": 374,
+        "width": 358,
+        "cy": 201
+      },
+      "search": {
+        "left": 16,
+        "right": 374,
+        "width": 358,
+        "cy": 175
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 374,
+        "width": 358,
+        "cy": 175
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 321,
+        "width": 260,
+        "cy": 175
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 175
+      },
+      "selectRecord": null,
+      "albumActions": null,
+      "actions": [
+        {
+          "left": 16,
+          "right": 117.578125,
+          "width": 101.578125,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 125.578125,
+          "right": 169.578125,
+          "width": 44,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 177.578125,
+          "right": 221.578125,
+          "width": 44,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 229.578125,
+          "right": 273.578125,
+          "width": 44,
+          "cy": 227,
+          "albumAction": false
+        }
+      ]
+    },
+    {
+      "name": "library-toolbar-idle",
+      "theme": "light",
+      "width": 430,
+      "scrollWidth": 430,
+      "bar": {
+        "left": 16,
+        "right": 414,
+        "width": 398,
+        "cy": 201
+      },
+      "search": {
+        "left": 16,
+        "right": 414,
+        "width": 398,
+        "cy": 175
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 414,
+        "width": 398,
+        "cy": 175
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 361,
+        "width": 300,
+        "cy": 175
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 175
+      },
+      "selectRecord": null,
+      "albumActions": null,
+      "actions": [
+        {
+          "left": 16,
+          "right": 117.578125,
+          "width": 101.578125,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 125.578125,
+          "right": 169.578125,
+          "width": 44,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 177.578125,
+          "right": 221.578125,
+          "width": 44,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 229.578125,
+          "right": 273.578125,
+          "width": 44,
+          "cy": 227,
+          "albumAction": false
+        }
+      ]
+    },
+    {
+      "name": "library-toolbar-idle",
+      "theme": "light",
+      "width": 640,
+      "scrollWidth": 640,
+      "bar": {
+        "left": 16,
+        "right": 624,
+        "width": 608,
+        "cy": 175
+      },
+      "search": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 175
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 175
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 243,
+        "width": 182,
+        "cy": 175
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 175
+      },
+      "selectRecord": null,
+      "albumActions": null,
+      "actions": [
+        {
+          "left": 304,
+          "right": 395.1328125,
+          "width": 91.1328125,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 403.1328125,
+          "right": 447.1328125,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 455.1328125,
+          "right": 499.1328125,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 507.1328125,
+          "right": 551.1328125,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        }
+      ]
+    },
+    {
+      "name": "library-toolbar-idle",
+      "theme": "light",
+      "width": 768,
+      "scrollWidth": 768,
+      "bar": {
+        "left": 16,
+        "right": 752,
+        "width": 736,
+        "cy": 175
+      },
+      "search": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 175
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 175
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 243,
+        "width": 182,
+        "cy": 175
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 175
+      },
+      "selectRecord": null,
+      "albumActions": null,
+      "actions": [
+        {
+          "left": 304,
+          "right": 395.1328125,
+          "width": 91.1328125,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 403.1328125,
+          "right": 447.1328125,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 455.1328125,
+          "right": 499.1328125,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 507.1328125,
+          "right": 551.1328125,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        }
+      ]
+    },
+    {
+      "name": "library-toolbar-idle",
+      "theme": "light",
+      "width": 1024,
+      "scrollWidth": 1024,
+      "bar": {
+        "left": 16,
+        "right": 1008,
+        "width": 992,
+        "cy": 175
+      },
+      "search": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 175
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 175
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 243,
+        "width": 182,
+        "cy": 175
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 175
+      },
+      "selectRecord": null,
+      "albumActions": null,
+      "actions": [
+        {
+          "left": 304,
+          "right": 395.1328125,
+          "width": 91.1328125,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 403.1328125,
+          "right": 447.1328125,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 455.1328125,
+          "right": 499.1328125,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 507.1328125,
+          "right": 551.1328125,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        }
+      ]
+    },
+    {
+      "name": "library-toolbar-idle",
+      "theme": "light",
+      "width": 1130,
+      "scrollWidth": 1130,
+      "bar": {
+        "left": 16,
+        "right": 1114,
+        "width": 1098,
+        "cy": 175
+      },
+      "search": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 175
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 175
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 243,
+        "width": 182,
+        "cy": 175
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 175
+      },
+      "selectRecord": null,
+      "albumActions": null,
+      "actions": [
+        {
+          "left": 304,
+          "right": 395.1328125,
+          "width": 91.1328125,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 403.1328125,
+          "right": 447.1328125,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 455.1328125,
+          "right": 499.1328125,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 507.1328125,
+          "right": 551.1328125,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        }
+      ]
+    },
+    {
+      "name": "library-toolbar-idle",
+      "theme": "light",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "bar": {
+        "left": 264,
+        "right": 1248,
+        "width": 984,
+        "cy": 175
+      },
+      "search": {
+        "left": 264,
+        "right": 544,
+        "width": 280,
+        "cy": 175
+      },
+      "searchGroup": {
+        "left": 264,
+        "right": 544,
+        "width": 280,
+        "cy": 175
+      },
+      "searchInput": {
+        "left": 309,
+        "right": 491,
+        "width": 182,
+        "cy": 175
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 265,
+        "right": 309,
+        "width": 44,
+        "cy": 175
+      },
+      "selectRecord": null,
+      "albumActions": null,
+      "actions": [
+        {
+          "left": 556,
+          "right": 655.1328125,
+          "width": 99.1328125,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 667.1328125,
+          "right": 703.1328125,
+          "width": 36,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 707.1328125,
+          "right": 743.1328125,
+          "width": 36,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 755.1328125,
+          "right": 791.1328125,
+          "width": 36,
+          "cy": 175,
+          "albumAction": false
+        }
+      ]
+    },
+    {
+      "name": "library-toolbar-idle",
+      "theme": "light",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "bar": {
+        "left": 264,
+        "right": 1408,
+        "width": 1144,
+        "cy": 175
+      },
+      "search": {
+        "left": 264,
+        "right": 544,
+        "width": 280,
+        "cy": 175
+      },
+      "searchGroup": {
+        "left": 264,
+        "right": 544,
+        "width": 280,
+        "cy": 175
+      },
+      "searchInput": {
+        "left": 309,
+        "right": 491,
+        "width": 182,
+        "cy": 175
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 265,
+        "right": 309,
+        "width": 44,
+        "cy": 175
+      },
+      "selectRecord": null,
+      "albumActions": null,
+      "actions": [
+        {
+          "left": 556,
+          "right": 655.1328125,
+          "width": 99.1328125,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 667.1328125,
+          "right": 703.1328125,
+          "width": 36,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 707.1328125,
+          "right": 743.1328125,
+          "width": 36,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 755.1328125,
+          "right": 791.1328125,
+          "width": 36,
+          "cy": 175,
+          "albumAction": false
+        }
+      ]
+    },
+    {
+      "name": "library-toolbar-idle",
+      "theme": "dark",
+      "width": 360,
+      "scrollWidth": 360,
+      "bar": {
+        "left": 16,
+        "right": 344,
+        "width": 328,
+        "cy": 201
+      },
+      "search": {
+        "left": 16,
+        "right": 344,
+        "width": 328,
+        "cy": 175
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 344,
+        "width": 328,
+        "cy": 175
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 291,
+        "width": 230,
+        "cy": 175
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 175
+      },
+      "selectRecord": null,
+      "albumActions": null,
+      "actions": [
+        {
+          "left": 16,
+          "right": 117.578125,
+          "width": 101.578125,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 125.578125,
+          "right": 169.578125,
+          "width": 44,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 177.578125,
+          "right": 221.578125,
+          "width": 44,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 229.578125,
+          "right": 273.578125,
+          "width": 44,
+          "cy": 227,
+          "albumAction": false
+        }
+      ]
+    },
+    {
+      "name": "library-toolbar-idle",
+      "theme": "dark",
+      "width": 390,
+      "scrollWidth": 390,
+      "bar": {
+        "left": 16,
+        "right": 374,
+        "width": 358,
+        "cy": 201
+      },
+      "search": {
+        "left": 16,
+        "right": 374,
+        "width": 358,
+        "cy": 175
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 374,
+        "width": 358,
+        "cy": 175
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 321,
+        "width": 260,
+        "cy": 175
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 175
+      },
+      "selectRecord": null,
+      "albumActions": null,
+      "actions": [
+        {
+          "left": 16,
+          "right": 117.578125,
+          "width": 101.578125,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 125.578125,
+          "right": 169.578125,
+          "width": 44,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 177.578125,
+          "right": 221.578125,
+          "width": 44,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 229.578125,
+          "right": 273.578125,
+          "width": 44,
+          "cy": 227,
+          "albumAction": false
+        }
+      ]
+    },
+    {
+      "name": "library-toolbar-idle",
+      "theme": "dark",
+      "width": 430,
+      "scrollWidth": 430,
+      "bar": {
+        "left": 16,
+        "right": 414,
+        "width": 398,
+        "cy": 201
+      },
+      "search": {
+        "left": 16,
+        "right": 414,
+        "width": 398,
+        "cy": 175
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 414,
+        "width": 398,
+        "cy": 175
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 361,
+        "width": 300,
+        "cy": 175
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 175
+      },
+      "selectRecord": null,
+      "albumActions": null,
+      "actions": [
+        {
+          "left": 16,
+          "right": 117.578125,
+          "width": 101.578125,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 125.578125,
+          "right": 169.578125,
+          "width": 44,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 177.578125,
+          "right": 221.578125,
+          "width": 44,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 229.578125,
+          "right": 273.578125,
+          "width": 44,
+          "cy": 227,
+          "albumAction": false
+        }
+      ]
+    },
+    {
+      "name": "library-toolbar-idle",
+      "theme": "dark",
+      "width": 640,
+      "scrollWidth": 640,
+      "bar": {
+        "left": 16,
+        "right": 624,
+        "width": 608,
+        "cy": 175
+      },
+      "search": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 175
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 175
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 243,
+        "width": 182,
+        "cy": 175
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 175
+      },
+      "selectRecord": null,
+      "albumActions": null,
+      "actions": [
+        {
+          "left": 304,
+          "right": 395.1328125,
+          "width": 91.1328125,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 403.1328125,
+          "right": 447.1328125,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 455.1328125,
+          "right": 499.1328125,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 507.1328125,
+          "right": 551.1328125,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        }
+      ]
+    },
+    {
+      "name": "library-toolbar-idle",
+      "theme": "dark",
+      "width": 768,
+      "scrollWidth": 768,
+      "bar": {
+        "left": 16,
+        "right": 752,
+        "width": 736,
+        "cy": 175
+      },
+      "search": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 175
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 175
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 243,
+        "width": 182,
+        "cy": 175
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 175
+      },
+      "selectRecord": null,
+      "albumActions": null,
+      "actions": [
+        {
+          "left": 304,
+          "right": 395.1328125,
+          "width": 91.1328125,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 403.1328125,
+          "right": 447.1328125,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 455.1328125,
+          "right": 499.1328125,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 507.1328125,
+          "right": 551.1328125,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        }
+      ]
+    },
+    {
+      "name": "library-toolbar-idle",
+      "theme": "dark",
+      "width": 1024,
+      "scrollWidth": 1024,
+      "bar": {
+        "left": 16,
+        "right": 1008,
+        "width": 992,
+        "cy": 175
+      },
+      "search": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 175
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 175
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 243,
+        "width": 182,
+        "cy": 175
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 175
+      },
+      "selectRecord": null,
+      "albumActions": null,
+      "actions": [
+        {
+          "left": 304,
+          "right": 395.1328125,
+          "width": 91.1328125,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 403.1328125,
+          "right": 447.1328125,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 455.1328125,
+          "right": 499.1328125,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 507.1328125,
+          "right": 551.1328125,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        }
+      ]
+    },
+    {
+      "name": "library-toolbar-idle",
+      "theme": "dark",
+      "width": 1130,
+      "scrollWidth": 1130,
+      "bar": {
+        "left": 16,
+        "right": 1114,
+        "width": 1098,
+        "cy": 175
+      },
+      "search": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 175
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 175
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 243,
+        "width": 182,
+        "cy": 175
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 175
+      },
+      "selectRecord": null,
+      "albumActions": null,
+      "actions": [
+        {
+          "left": 304,
+          "right": 395.1328125,
+          "width": 91.1328125,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 403.1328125,
+          "right": 447.1328125,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 455.1328125,
+          "right": 499.1328125,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 507.1328125,
+          "right": 551.1328125,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        }
+      ]
+    },
+    {
+      "name": "library-toolbar-idle",
+      "theme": "dark",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "bar": {
+        "left": 264,
+        "right": 1248,
+        "width": 984,
+        "cy": 175
+      },
+      "search": {
+        "left": 264,
+        "right": 544,
+        "width": 280,
+        "cy": 175
+      },
+      "searchGroup": {
+        "left": 264,
+        "right": 544,
+        "width": 280,
+        "cy": 175
+      },
+      "searchInput": {
+        "left": 309,
+        "right": 491,
+        "width": 182,
+        "cy": 175
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 265,
+        "right": 309,
+        "width": 44,
+        "cy": 175
+      },
+      "selectRecord": null,
+      "albumActions": null,
+      "actions": [
+        {
+          "left": 556,
+          "right": 655.1328125,
+          "width": 99.1328125,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 667.1328125,
+          "right": 703.1328125,
+          "width": 36,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 707.1328125,
+          "right": 743.1328125,
+          "width": 36,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 755.1328125,
+          "right": 791.1328125,
+          "width": 36,
+          "cy": 175,
+          "albumAction": false
+        }
+      ]
+    },
+    {
+      "name": "library-toolbar-idle",
+      "theme": "dark",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "bar": {
+        "left": 264,
+        "right": 1408,
+        "width": 1144,
+        "cy": 175
+      },
+      "search": {
+        "left": 264,
+        "right": 544,
+        "width": 280,
+        "cy": 175
+      },
+      "searchGroup": {
+        "left": 264,
+        "right": 544,
+        "width": 280,
+        "cy": 175
+      },
+      "searchInput": {
+        "left": 309,
+        "right": 491,
+        "width": 182,
+        "cy": 175
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 265,
+        "right": 309,
+        "width": 44,
+        "cy": 175
+      },
+      "selectRecord": null,
+      "albumActions": null,
+      "actions": [
+        {
+          "left": 556,
+          "right": 655.1328125,
+          "width": 99.1328125,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 667.1328125,
+          "right": 703.1328125,
+          "width": 36,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 707.1328125,
+          "right": 743.1328125,
+          "width": 36,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 755.1328125,
+          "right": 791.1328125,
+          "width": 36,
+          "cy": 175,
+          "albumAction": false
+        }
+      ]
+    },
+    {
+      "name": "library-toolbar-selected",
+      "theme": "light",
+      "width": 360,
+      "scrollWidth": 360,
+      "bar": {
+        "left": 16,
+        "right": 344,
+        "width": 328,
+        "cy": 227
+      },
+      "search": {
+        "left": 16,
+        "right": 344,
+        "width": 328,
+        "cy": 175
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 344,
+        "width": 328,
+        "cy": 175
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 291,
+        "width": 230,
+        "cy": 175
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 175
+      },
+      "selectRecord": null,
+      "albumActions": null,
+      "actions": [
+        {
+          "left": 16,
+          "right": 117.578125,
+          "width": 101.578125,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 125.578125,
+          "right": 169.578125,
+          "width": 44,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 177.578125,
+          "right": 221.578125,
+          "width": 44,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 16,
+          "right": 97.78125,
+          "width": 81.78125,
+          "cy": 279,
+          "albumAction": false
+        },
+        {
+          "left": 105.78125,
+          "right": 149.78125,
+          "width": 44,
+          "cy": 279,
+          "albumAction": false
+        },
+        {
+          "left": 149.78125,
+          "right": 193.78125,
+          "width": 44,
+          "cy": 279,
+          "albumAction": false
+        },
+        {
+          "left": 193.78125,
+          "right": 237.78125,
+          "width": 44,
+          "cy": 279,
+          "albumAction": false
+        },
+        {
+          "left": 237.78125,
+          "right": 281.78125,
+          "width": 44,
+          "cy": 279,
+          "albumAction": false
+        }
+      ]
+    },
+    {
+      "name": "library-toolbar-selected",
+      "theme": "light",
+      "width": 390,
+      "scrollWidth": 390,
+      "bar": {
+        "left": 16,
+        "right": 374,
+        "width": 358,
+        "cy": 227
+      },
+      "search": {
+        "left": 16,
+        "right": 374,
+        "width": 358,
+        "cy": 175
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 374,
+        "width": 358,
+        "cy": 175
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 321,
+        "width": 260,
+        "cy": 175
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 175
+      },
+      "selectRecord": null,
+      "albumActions": null,
+      "actions": [
+        {
+          "left": 16,
+          "right": 117.578125,
+          "width": 101.578125,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 125.578125,
+          "right": 169.578125,
+          "width": 44,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 177.578125,
+          "right": 221.578125,
+          "width": 44,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 16,
+          "right": 97.78125,
+          "width": 81.78125,
+          "cy": 279,
+          "albumAction": false
+        },
+        {
+          "left": 105.78125,
+          "right": 149.78125,
+          "width": 44,
+          "cy": 279,
+          "albumAction": false
+        },
+        {
+          "left": 149.78125,
+          "right": 193.78125,
+          "width": 44,
+          "cy": 279,
+          "albumAction": false
+        },
+        {
+          "left": 193.78125,
+          "right": 237.78125,
+          "width": 44,
+          "cy": 279,
+          "albumAction": false
+        },
+        {
+          "left": 237.78125,
+          "right": 281.78125,
+          "width": 44,
+          "cy": 279,
+          "albumAction": false
+        }
+      ]
+    },
+    {
+      "name": "library-toolbar-selected",
+      "theme": "light",
+      "width": 430,
+      "scrollWidth": 430,
+      "bar": {
+        "left": 16,
+        "right": 414,
+        "width": 398,
+        "cy": 227
+      },
+      "search": {
+        "left": 16,
+        "right": 414,
+        "width": 398,
+        "cy": 175
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 414,
+        "width": 398,
+        "cy": 175
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 361,
+        "width": 300,
+        "cy": 175
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 175
+      },
+      "selectRecord": null,
+      "albumActions": null,
+      "actions": [
+        {
+          "left": 16,
+          "right": 117.578125,
+          "width": 101.578125,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 125.578125,
+          "right": 169.578125,
+          "width": 44,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 177.578125,
+          "right": 221.578125,
+          "width": 44,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 16,
+          "right": 97.78125,
+          "width": 81.78125,
+          "cy": 279,
+          "albumAction": false
+        },
+        {
+          "left": 105.78125,
+          "right": 149.78125,
+          "width": 44,
+          "cy": 279,
+          "albumAction": false
+        },
+        {
+          "left": 149.78125,
+          "right": 193.78125,
+          "width": 44,
+          "cy": 279,
+          "albumAction": false
+        },
+        {
+          "left": 193.78125,
+          "right": 237.78125,
+          "width": 44,
+          "cy": 279,
+          "albumAction": false
+        },
+        {
+          "left": 237.78125,
+          "right": 281.78125,
+          "width": 44,
+          "cy": 279,
+          "albumAction": false
+        }
+      ]
+    },
+    {
+      "name": "library-toolbar-selected",
+      "theme": "light",
+      "width": 640,
+      "scrollWidth": 640,
+      "bar": {
+        "left": 16,
+        "right": 624,
+        "width": 608,
+        "cy": 201
+      },
+      "search": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 175
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 175
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 243,
+        "width": 182,
+        "cy": 175
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 175
+      },
+      "selectRecord": null,
+      "albumActions": null,
+      "actions": [
+        {
+          "left": 16,
+          "right": 107.1328125,
+          "width": 91.1328125,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 115.1328125,
+          "right": 159.1328125,
+          "width": 44,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 167.1328125,
+          "right": 211.1328125,
+          "width": 44,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 219.1328125,
+          "right": 292.9140625,
+          "width": 73.78125,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 300.9140625,
+          "right": 344.9140625,
+          "width": 44,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 344.9140625,
+          "right": 388.9140625,
+          "width": 44,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 388.9140625,
+          "right": 432.9140625,
+          "width": 44,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 432.9140625,
+          "right": 476.9140625,
+          "width": 44,
+          "cy": 227,
+          "albumAction": false
+        }
+      ]
+    },
+    {
+      "name": "library-toolbar-selected",
+      "theme": "light",
+      "width": 768,
+      "scrollWidth": 768,
+      "bar": {
+        "left": 16,
+        "right": 752,
+        "width": 736,
+        "cy": 201
+      },
+      "search": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 175
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 175
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 243,
+        "width": 182,
+        "cy": 175
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 175
+      },
+      "selectRecord": null,
+      "albumActions": null,
+      "actions": [
+        {
+          "left": 16,
+          "right": 107.1328125,
+          "width": 91.1328125,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 115.1328125,
+          "right": 159.1328125,
+          "width": 44,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 167.1328125,
+          "right": 211.1328125,
+          "width": 44,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 219.1328125,
+          "right": 292.9140625,
+          "width": 73.78125,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 300.9140625,
+          "right": 344.9140625,
+          "width": 44,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 344.9140625,
+          "right": 388.9140625,
+          "width": 44,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 388.9140625,
+          "right": 432.9140625,
+          "width": 44,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 432.9140625,
+          "right": 476.9140625,
+          "width": 44,
+          "cy": 227,
+          "albumAction": false
+        }
+      ]
+    },
+    {
+      "name": "library-toolbar-selected",
+      "theme": "light",
+      "width": 1024,
+      "scrollWidth": 1024,
+      "bar": {
+        "left": 16,
+        "right": 1008,
+        "width": 992,
+        "cy": 175
+      },
+      "search": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 175
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 175
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 243,
+        "width": 182,
+        "cy": 175
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 175
+      },
+      "selectRecord": null,
+      "albumActions": null,
+      "actions": [
+        {
+          "left": 304,
+          "right": 395.1328125,
+          "width": 91.1328125,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 403.1328125,
+          "right": 447.1328125,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 455.1328125,
+          "right": 499.1328125,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 507.1328125,
+          "right": 580.9140625,
+          "width": 73.78125,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 588.9140625,
+          "right": 632.9140625,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 632.9140625,
+          "right": 676.9140625,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 676.9140625,
+          "right": 720.9140625,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 720.9140625,
+          "right": 764.9140625,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        }
+      ]
+    },
+    {
+      "name": "library-toolbar-selected",
+      "theme": "light",
+      "width": 1130,
+      "scrollWidth": 1130,
+      "bar": {
+        "left": 16,
+        "right": 1114,
+        "width": 1098,
+        "cy": 175
+      },
+      "search": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 175
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 175
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 243,
+        "width": 182,
+        "cy": 175
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 175
+      },
+      "selectRecord": null,
+      "albumActions": null,
+      "actions": [
+        {
+          "left": 304,
+          "right": 395.1328125,
+          "width": 91.1328125,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 403.1328125,
+          "right": 447.1328125,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 455.1328125,
+          "right": 499.1328125,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 507.1328125,
+          "right": 580.9140625,
+          "width": 73.78125,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 588.9140625,
+          "right": 632.9140625,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 632.9140625,
+          "right": 676.9140625,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 676.9140625,
+          "right": 720.9140625,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 720.9140625,
+          "right": 764.9140625,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        }
+      ]
+    },
+    {
+      "name": "library-toolbar-selected",
+      "theme": "light",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "bar": {
+        "left": 264,
+        "right": 1248,
+        "width": 984,
+        "cy": 175
+      },
+      "search": {
+        "left": 264,
+        "right": 544,
+        "width": 280,
+        "cy": 175
+      },
+      "searchGroup": {
+        "left": 264,
+        "right": 544,
+        "width": 280,
+        "cy": 175
+      },
+      "searchInput": {
+        "left": 309,
+        "right": 491,
+        "width": 182,
+        "cy": 175
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 265,
+        "right": 309,
+        "width": 44,
+        "cy": 175
+      },
+      "selectRecord": null,
+      "albumActions": null,
+      "actions": [
+        {
+          "left": 556,
+          "right": 655.1328125,
+          "width": 99.1328125,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 667.1328125,
+          "right": 703.1328125,
+          "width": 36,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 707.1328125,
+          "right": 743.1328125,
+          "width": 36,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 755.1328125,
+          "right": 828.9140625,
+          "width": 73.78125,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 836.9140625,
+          "right": 880.9140625,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 880.9140625,
+          "right": 924.9140625,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 924.9140625,
+          "right": 968.9140625,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 968.9140625,
+          "right": 1012.9140625,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        }
+      ]
+    },
+    {
+      "name": "library-toolbar-selected",
+      "theme": "light",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "bar": {
+        "left": 264,
+        "right": 1408,
+        "width": 1144,
+        "cy": 175
+      },
+      "search": {
+        "left": 264,
+        "right": 544,
+        "width": 280,
+        "cy": 175
+      },
+      "searchGroup": {
+        "left": 264,
+        "right": 544,
+        "width": 280,
+        "cy": 175
+      },
+      "searchInput": {
+        "left": 309,
+        "right": 491,
+        "width": 182,
+        "cy": 175
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 265,
+        "right": 309,
+        "width": 44,
+        "cy": 175
+      },
+      "selectRecord": null,
+      "albumActions": null,
+      "actions": [
+        {
+          "left": 556,
+          "right": 655.1328125,
+          "width": 99.1328125,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 667.1328125,
+          "right": 703.1328125,
+          "width": 36,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 707.1328125,
+          "right": 743.1328125,
+          "width": 36,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 755.1328125,
+          "right": 828.9140625,
+          "width": 73.78125,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 836.9140625,
+          "right": 880.9140625,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 880.9140625,
+          "right": 924.9140625,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 924.9140625,
+          "right": 968.9140625,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 968.9140625,
+          "right": 1012.9140625,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        }
+      ]
+    },
+    {
+      "name": "library-toolbar-selected",
+      "theme": "dark",
+      "width": 360,
+      "scrollWidth": 360,
+      "bar": {
+        "left": 16,
+        "right": 344,
+        "width": 328,
+        "cy": 227
+      },
+      "search": {
+        "left": 16,
+        "right": 344,
+        "width": 328,
+        "cy": 175
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 344,
+        "width": 328,
+        "cy": 175
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 291,
+        "width": 230,
+        "cy": 175
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 175
+      },
+      "selectRecord": null,
+      "albumActions": null,
+      "actions": [
+        {
+          "left": 16,
+          "right": 117.578125,
+          "width": 101.578125,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 125.578125,
+          "right": 169.578125,
+          "width": 44,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 177.578125,
+          "right": 221.578125,
+          "width": 44,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 16,
+          "right": 97.78125,
+          "width": 81.78125,
+          "cy": 279,
+          "albumAction": false
+        },
+        {
+          "left": 105.78125,
+          "right": 149.78125,
+          "width": 44,
+          "cy": 279,
+          "albumAction": false
+        },
+        {
+          "left": 149.78125,
+          "right": 193.78125,
+          "width": 44,
+          "cy": 279,
+          "albumAction": false
+        },
+        {
+          "left": 193.78125,
+          "right": 237.78125,
+          "width": 44,
+          "cy": 279,
+          "albumAction": false
+        },
+        {
+          "left": 237.78125,
+          "right": 281.78125,
+          "width": 44,
+          "cy": 279,
+          "albumAction": false
+        }
+      ]
+    },
+    {
+      "name": "library-toolbar-selected",
+      "theme": "dark",
+      "width": 390,
+      "scrollWidth": 390,
+      "bar": {
+        "left": 16,
+        "right": 374,
+        "width": 358,
+        "cy": 227
+      },
+      "search": {
+        "left": 16,
+        "right": 374,
+        "width": 358,
+        "cy": 175
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 374,
+        "width": 358,
+        "cy": 175
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 321,
+        "width": 260,
+        "cy": 175
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 175
+      },
+      "selectRecord": null,
+      "albumActions": null,
+      "actions": [
+        {
+          "left": 16,
+          "right": 117.578125,
+          "width": 101.578125,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 125.578125,
+          "right": 169.578125,
+          "width": 44,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 177.578125,
+          "right": 221.578125,
+          "width": 44,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 16,
+          "right": 97.78125,
+          "width": 81.78125,
+          "cy": 279,
+          "albumAction": false
+        },
+        {
+          "left": 105.78125,
+          "right": 149.78125,
+          "width": 44,
+          "cy": 279,
+          "albumAction": false
+        },
+        {
+          "left": 149.78125,
+          "right": 193.78125,
+          "width": 44,
+          "cy": 279,
+          "albumAction": false
+        },
+        {
+          "left": 193.78125,
+          "right": 237.78125,
+          "width": 44,
+          "cy": 279,
+          "albumAction": false
+        },
+        {
+          "left": 237.78125,
+          "right": 281.78125,
+          "width": 44,
+          "cy": 279,
+          "albumAction": false
+        }
+      ]
+    },
+    {
+      "name": "library-toolbar-selected",
+      "theme": "dark",
+      "width": 430,
+      "scrollWidth": 430,
+      "bar": {
+        "left": 16,
+        "right": 414,
+        "width": 398,
+        "cy": 227
+      },
+      "search": {
+        "left": 16,
+        "right": 414,
+        "width": 398,
+        "cy": 175
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 414,
+        "width": 398,
+        "cy": 175
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 361,
+        "width": 300,
+        "cy": 175
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 175
+      },
+      "selectRecord": null,
+      "albumActions": null,
+      "actions": [
+        {
+          "left": 16,
+          "right": 117.578125,
+          "width": 101.578125,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 125.578125,
+          "right": 169.578125,
+          "width": 44,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 177.578125,
+          "right": 221.578125,
+          "width": 44,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 16,
+          "right": 97.78125,
+          "width": 81.78125,
+          "cy": 279,
+          "albumAction": false
+        },
+        {
+          "left": 105.78125,
+          "right": 149.78125,
+          "width": 44,
+          "cy": 279,
+          "albumAction": false
+        },
+        {
+          "left": 149.78125,
+          "right": 193.78125,
+          "width": 44,
+          "cy": 279,
+          "albumAction": false
+        },
+        {
+          "left": 193.78125,
+          "right": 237.78125,
+          "width": 44,
+          "cy": 279,
+          "albumAction": false
+        },
+        {
+          "left": 237.78125,
+          "right": 281.78125,
+          "width": 44,
+          "cy": 279,
+          "albumAction": false
+        }
+      ]
+    },
+    {
+      "name": "library-toolbar-selected",
+      "theme": "dark",
+      "width": 640,
+      "scrollWidth": 640,
+      "bar": {
+        "left": 16,
+        "right": 624,
+        "width": 608,
+        "cy": 201
+      },
+      "search": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 175
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 175
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 243,
+        "width": 182,
+        "cy": 175
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 175
+      },
+      "selectRecord": null,
+      "albumActions": null,
+      "actions": [
+        {
+          "left": 16,
+          "right": 107.1328125,
+          "width": 91.1328125,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 115.1328125,
+          "right": 159.1328125,
+          "width": 44,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 167.1328125,
+          "right": 211.1328125,
+          "width": 44,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 219.1328125,
+          "right": 292.9140625,
+          "width": 73.78125,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 300.9140625,
+          "right": 344.9140625,
+          "width": 44,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 344.9140625,
+          "right": 388.9140625,
+          "width": 44,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 388.9140625,
+          "right": 432.9140625,
+          "width": 44,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 432.9140625,
+          "right": 476.9140625,
+          "width": 44,
+          "cy": 227,
+          "albumAction": false
+        }
+      ]
+    },
+    {
+      "name": "library-toolbar-selected",
+      "theme": "dark",
+      "width": 768,
+      "scrollWidth": 768,
+      "bar": {
+        "left": 16,
+        "right": 752,
+        "width": 736,
+        "cy": 201
+      },
+      "search": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 175
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 175
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 243,
+        "width": 182,
+        "cy": 175
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 175
+      },
+      "selectRecord": null,
+      "albumActions": null,
+      "actions": [
+        {
+          "left": 16,
+          "right": 107.1328125,
+          "width": 91.1328125,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 115.1328125,
+          "right": 159.1328125,
+          "width": 44,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 167.1328125,
+          "right": 211.1328125,
+          "width": 44,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 219.1328125,
+          "right": 292.9140625,
+          "width": 73.78125,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 300.9140625,
+          "right": 344.9140625,
+          "width": 44,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 344.9140625,
+          "right": 388.9140625,
+          "width": 44,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 388.9140625,
+          "right": 432.9140625,
+          "width": 44,
+          "cy": 227,
+          "albumAction": false
+        },
+        {
+          "left": 432.9140625,
+          "right": 476.9140625,
+          "width": 44,
+          "cy": 227,
+          "albumAction": false
+        }
+      ]
+    },
+    {
+      "name": "library-toolbar-selected",
+      "theme": "dark",
+      "width": 1024,
+      "scrollWidth": 1024,
+      "bar": {
+        "left": 16,
+        "right": 1008,
+        "width": 992,
+        "cy": 175
+      },
+      "search": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 175
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 175
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 243,
+        "width": 182,
+        "cy": 175
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 175
+      },
+      "selectRecord": null,
+      "albumActions": null,
+      "actions": [
+        {
+          "left": 304,
+          "right": 395.1328125,
+          "width": 91.1328125,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 403.1328125,
+          "right": 447.1328125,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 455.1328125,
+          "right": 499.1328125,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 507.1328125,
+          "right": 580.9140625,
+          "width": 73.78125,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 588.9140625,
+          "right": 632.9140625,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 632.9140625,
+          "right": 676.9140625,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 676.9140625,
+          "right": 720.9140625,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 720.9140625,
+          "right": 764.9140625,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        }
+      ]
+    },
+    {
+      "name": "library-toolbar-selected",
+      "theme": "dark",
+      "width": 1130,
+      "scrollWidth": 1130,
+      "bar": {
+        "left": 16,
+        "right": 1114,
+        "width": 1098,
+        "cy": 175
+      },
+      "search": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 175
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 175
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 243,
+        "width": 182,
+        "cy": 175
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 175
+      },
+      "selectRecord": null,
+      "albumActions": null,
+      "actions": [
+        {
+          "left": 304,
+          "right": 395.1328125,
+          "width": 91.1328125,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 403.1328125,
+          "right": 447.1328125,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 455.1328125,
+          "right": 499.1328125,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 507.1328125,
+          "right": 580.9140625,
+          "width": 73.78125,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 588.9140625,
+          "right": 632.9140625,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 632.9140625,
+          "right": 676.9140625,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 676.9140625,
+          "right": 720.9140625,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 720.9140625,
+          "right": 764.9140625,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        }
+      ]
+    },
+    {
+      "name": "library-toolbar-selected",
+      "theme": "dark",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "bar": {
+        "left": 264,
+        "right": 1248,
+        "width": 984,
+        "cy": 175
+      },
+      "search": {
+        "left": 264,
+        "right": 544,
+        "width": 280,
+        "cy": 175
+      },
+      "searchGroup": {
+        "left": 264,
+        "right": 544,
+        "width": 280,
+        "cy": 175
+      },
+      "searchInput": {
+        "left": 309,
+        "right": 491,
+        "width": 182,
+        "cy": 175
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 265,
+        "right": 309,
+        "width": 44,
+        "cy": 175
+      },
+      "selectRecord": null,
+      "albumActions": null,
+      "actions": [
+        {
+          "left": 556,
+          "right": 655.1328125,
+          "width": 99.1328125,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 667.1328125,
+          "right": 703.1328125,
+          "width": 36,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 707.1328125,
+          "right": 743.1328125,
+          "width": 36,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 755.1328125,
+          "right": 828.9140625,
+          "width": 73.78125,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 836.9140625,
+          "right": 880.9140625,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 880.9140625,
+          "right": 924.9140625,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 924.9140625,
+          "right": 968.9140625,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 968.9140625,
+          "right": 1012.9140625,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        }
+      ]
+    },
+    {
+      "name": "library-toolbar-selected",
+      "theme": "dark",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "bar": {
+        "left": 264,
+        "right": 1408,
+        "width": 1144,
+        "cy": 175
+      },
+      "search": {
+        "left": 264,
+        "right": 544,
+        "width": 280,
+        "cy": 175
+      },
+      "searchGroup": {
+        "left": 264,
+        "right": 544,
+        "width": 280,
+        "cy": 175
+      },
+      "searchInput": {
+        "left": 309,
+        "right": 491,
+        "width": 182,
+        "cy": 175
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 265,
+        "right": 309,
+        "width": 44,
+        "cy": 175
+      },
+      "selectRecord": null,
+      "albumActions": null,
+      "actions": [
+        {
+          "left": 556,
+          "right": 655.1328125,
+          "width": 99.1328125,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 667.1328125,
+          "right": 703.1328125,
+          "width": 36,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 707.1328125,
+          "right": 743.1328125,
+          "width": 36,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 755.1328125,
+          "right": 828.9140625,
+          "width": 73.78125,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 836.9140625,
+          "right": 880.9140625,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 880.9140625,
+          "right": 924.9140625,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 924.9140625,
+          "right": 968.9140625,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        },
+        {
+          "left": 968.9140625,
+          "right": 1012.9140625,
+          "width": 44,
+          "cy": 175,
+          "albumAction": false
+        }
+      ]
+    },
+    {
+      "name": "library-actions",
+      "theme": "light",
+      "width": 390,
+      "scrollWidth": 390,
+      "bounds": {
+        "left": 215,
+        "right": 378.4375,
+        "top": 309,
+        "bottom": 579
+      },
+      "small": []
+    },
+    {
+      "name": "library-actions",
+      "theme": "light",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "bounds": {
+        "left": 968.9140625,
+        "right": 1188.9140625,
+        "top": 205,
+        "bottom": 435
+      },
+      "small": []
+    },
+    {
+      "name": "library-actions",
+      "theme": "dark",
+      "width": 390,
+      "scrollWidth": 390,
+      "bounds": {
+        "left": 215,
+        "right": 378.4375,
+        "top": 309,
+        "bottom": 579
+      },
+      "small": []
+    },
+    {
+      "name": "library-actions",
+      "theme": "dark",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "bounds": {
+        "left": 968.9140625,
+        "right": 1188.9140625,
+        "top": 205,
+        "bottom": 435
+      },
+      "small": []
+    },
+    {
+      "theme": "light",
+      "width": 320,
+      "height": 844,
+      "scrollWidth": 320,
+      "modal": {
+        "left": 16,
+        "right": 304,
+        "top": 313,
+        "bottom": 531
+      },
+      "footer": {
+        "top": 462,
+        "bottom": 510
+      },
+      "add": null,
+      "feedback": null,
+      "selectedCountLeft": null,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "height": 844,
+      "scrollWidth": 360,
+      "modal": {
+        "left": 16,
+        "right": 344,
+        "top": 313,
+        "bottom": 531
+      },
+      "footer": {
+        "top": 462,
+        "bottom": 510
+      },
+      "add": null,
+      "feedback": null,
+      "selectedCountLeft": null,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "modal": {
+        "left": 16,
+        "right": 374,
+        "top": 313,
+        "bottom": 531
+      },
+      "footer": {
+        "top": 462,
+        "bottom": 510
+      },
+      "add": null,
+      "feedback": null,
+      "selectedCountLeft": null,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "light",
+      "width": 390,
+      "height": 480,
+      "scrollWidth": 390,
+      "modal": {
+        "left": 16,
+        "right": 374,
+        "top": 131,
+        "bottom": 349
+      },
+      "footer": {
+        "top": 280,
+        "bottom": 328
+      },
+      "add": null,
+      "feedback": null,
+      "selectedCountLeft": null,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "light",
+      "width": 430,
+      "height": 844,
+      "scrollWidth": 430,
+      "modal": {
+        "left": 16,
+        "right": 414,
+        "top": 313,
+        "bottom": 531
+      },
+      "footer": {
+        "top": 462,
+        "bottom": 510
+      },
+      "add": null,
+      "feedback": null,
+      "selectedCountLeft": null,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "light",
+      "width": 768,
+      "height": 844,
+      "scrollWidth": 768,
+      "modal": {
+        "left": 144,
+        "right": 624,
+        "top": 313,
+        "bottom": 531
+      },
+      "footer": {
+        "top": 462,
+        "bottom": 510
+      },
+      "add": null,
+      "feedback": null,
+      "selectedCountLeft": null,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "height": 900,
+      "scrollWidth": 1440,
+      "modal": {
+        "left": 480,
+        "right": 960,
+        "top": 341,
+        "bottom": 559
+      },
+      "footer": {
+        "top": 490,
+        "bottom": 538
+      },
+      "add": null,
+      "feedback": null,
+      "selectedCountLeft": null,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "height": 480,
+      "scrollWidth": 1440,
+      "modal": {
+        "left": 480,
+        "right": 960,
+        "top": 131,
+        "bottom": 349
+      },
+      "footer": {
+        "top": 280,
+        "bottom": 328
+      },
+      "add": null,
+      "feedback": null,
+      "selectedCountLeft": null,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "dark",
+      "width": 320,
+      "height": 844,
+      "scrollWidth": 320,
+      "modal": {
+        "left": 16,
+        "right": 304,
+        "top": 313,
+        "bottom": 531
+      },
+      "footer": {
+        "top": 462,
+        "bottom": 510
+      },
+      "add": null,
+      "feedback": null,
+      "selectedCountLeft": null,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "dark",
+      "width": 360,
+      "height": 844,
+      "scrollWidth": 360,
+      "modal": {
+        "left": 16,
+        "right": 344,
+        "top": 313,
+        "bottom": 531
+      },
+      "footer": {
+        "top": 462,
+        "bottom": 510
+      },
+      "add": null,
+      "feedback": null,
+      "selectedCountLeft": null,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "modal": {
+        "left": 16,
+        "right": 374,
+        "top": 313,
+        "bottom": 531
+      },
+      "footer": {
+        "top": 462,
+        "bottom": 510
+      },
+      "add": null,
+      "feedback": null,
+      "selectedCountLeft": null,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "dark",
+      "width": 390,
+      "height": 480,
+      "scrollWidth": 390,
+      "modal": {
+        "left": 16,
+        "right": 374,
+        "top": 131,
+        "bottom": 349
+      },
+      "footer": {
+        "top": 280,
+        "bottom": 328
+      },
+      "add": null,
+      "feedback": null,
+      "selectedCountLeft": null,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "dark",
+      "width": 430,
+      "height": 844,
+      "scrollWidth": 430,
+      "modal": {
+        "left": 16,
+        "right": 414,
+        "top": 313,
+        "bottom": 531
+      },
+      "footer": {
+        "top": 462,
+        "bottom": 510
+      },
+      "add": null,
+      "feedback": null,
+      "selectedCountLeft": null,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "dark",
+      "width": 768,
+      "height": 844,
+      "scrollWidth": 768,
+      "modal": {
+        "left": 144,
+        "right": 624,
+        "top": 313,
+        "bottom": 531
+      },
+      "footer": {
+        "top": 462,
+        "bottom": 510
+      },
+      "add": null,
+      "feedback": null,
+      "selectedCountLeft": null,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "dark",
+      "width": 1440,
+      "height": 900,
+      "scrollWidth": 1440,
+      "modal": {
+        "left": 480,
+        "right": 960,
+        "top": 341,
+        "bottom": 559
+      },
+      "footer": {
+        "top": 490,
+        "bottom": 538
+      },
+      "add": null,
+      "feedback": null,
+      "selectedCountLeft": null,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "dark",
+      "width": 1440,
+      "height": 480,
+      "scrollWidth": 1440,
+      "modal": {
+        "left": 480,
+        "right": 960,
+        "top": 131,
+        "bottom": 349
+      },
+      "footer": {
+        "top": 280,
+        "bottom": 328
+      },
+      "add": null,
+      "feedback": null,
+      "selectedCountLeft": null,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "light",
+      "width": 320,
+      "height": 844,
+      "scrollWidth": 320,
+      "modal": {
+        "left": 16,
+        "right": 304,
+        "top": 237,
+        "bottom": 607
+      },
+      "footer": {
+        "top": 538,
+        "bottom": 586
+      },
+      "add": null,
+      "feedback": null,
+      "selectedCountLeft": null,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "height": 844,
+      "scrollWidth": 360,
+      "modal": {
+        "left": 16,
+        "right": 344,
+        "top": 245,
+        "bottom": 599
+      },
+      "footer": {
+        "top": 530,
+        "bottom": 578
+      },
+      "add": null,
+      "feedback": null,
+      "selectedCountLeft": null,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "modal": {
+        "left": 16,
+        "right": 374,
+        "top": 245,
+        "bottom": 599
+      },
+      "footer": {
+        "top": 530,
+        "bottom": 578
+      },
+      "add": null,
+      "feedback": null,
+      "selectedCountLeft": null,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "light",
+      "width": 390,
+      "height": 480,
+      "scrollWidth": 390,
+      "modal": {
+        "left": 16,
+        "right": 374,
+        "top": 63,
+        "bottom": 417
+      },
+      "footer": {
+        "top": 348,
+        "bottom": 396
+      },
+      "add": null,
+      "feedback": null,
+      "selectedCountLeft": null,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "light",
+      "width": 430,
+      "height": 844,
+      "scrollWidth": 430,
+      "modal": {
+        "left": 16,
+        "right": 414,
+        "top": 255,
+        "bottom": 589
+      },
+      "footer": {
+        "top": 520,
+        "bottom": 568
+      },
+      "add": null,
+      "feedback": null,
+      "selectedCountLeft": null,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "light",
+      "width": 768,
+      "height": 844,
+      "scrollWidth": 768,
+      "modal": {
+        "left": 64,
+        "right": 704,
+        "top": 258,
+        "bottom": 586
+      },
+      "footer": {
+        "top": 517,
+        "bottom": 565
+      },
+      "add": null,
+      "feedback": null,
+      "selectedCountLeft": null,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "height": 900,
+      "scrollWidth": 1440,
+      "modal": {
+        "left": 400,
+        "right": 1040,
+        "top": 286,
+        "bottom": 614
+      },
+      "footer": {
+        "top": 545,
+        "bottom": 593
+      },
+      "add": null,
+      "feedback": null,
+      "selectedCountLeft": null,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "height": 480,
+      "scrollWidth": 1440,
+      "modal": {
+        "left": 400,
+        "right": 1040,
+        "top": 76,
+        "bottom": 404
+      },
+      "footer": {
+        "top": 335,
+        "bottom": 383
+      },
+      "add": null,
+      "feedback": null,
+      "selectedCountLeft": null,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "dark",
+      "width": 320,
+      "height": 844,
+      "scrollWidth": 320,
+      "modal": {
+        "left": 16,
+        "right": 304,
+        "top": 237,
+        "bottom": 607
+      },
+      "footer": {
+        "top": 538,
+        "bottom": 586
+      },
+      "add": null,
+      "feedback": null,
+      "selectedCountLeft": null,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "dark",
+      "width": 360,
+      "height": 844,
+      "scrollWidth": 360,
+      "modal": {
+        "left": 16,
+        "right": 344,
+        "top": 245,
+        "bottom": 599
+      },
+      "footer": {
+        "top": 530,
+        "bottom": 578
+      },
+      "add": null,
+      "feedback": null,
+      "selectedCountLeft": null,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "modal": {
+        "left": 16,
+        "right": 374,
+        "top": 245,
+        "bottom": 599
+      },
+      "footer": {
+        "top": 530,
+        "bottom": 578
+      },
+      "add": null,
+      "feedback": null,
+      "selectedCountLeft": null,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "dark",
+      "width": 390,
+      "height": 480,
+      "scrollWidth": 390,
+      "modal": {
+        "left": 16,
+        "right": 374,
+        "top": 63,
+        "bottom": 417
+      },
+      "footer": {
+        "top": 348,
+        "bottom": 396
+      },
+      "add": null,
+      "feedback": null,
+      "selectedCountLeft": null,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "dark",
+      "width": 430,
+      "height": 844,
+      "scrollWidth": 430,
+      "modal": {
+        "left": 16,
+        "right": 414,
+        "top": 255,
+        "bottom": 589
+      },
+      "footer": {
+        "top": 520,
+        "bottom": 568
+      },
+      "add": null,
+      "feedback": null,
+      "selectedCountLeft": null,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "dark",
+      "width": 768,
+      "height": 844,
+      "scrollWidth": 768,
+      "modal": {
+        "left": 64,
+        "right": 704,
+        "top": 258,
+        "bottom": 586
+      },
+      "footer": {
+        "top": 517,
+        "bottom": 565
+      },
+      "add": null,
+      "feedback": null,
+      "selectedCountLeft": null,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "dark",
+      "width": 1440,
+      "height": 900,
+      "scrollWidth": 1440,
+      "modal": {
+        "left": 400,
+        "right": 1040,
+        "top": 286,
+        "bottom": 614
+      },
+      "footer": {
+        "top": 545,
+        "bottom": 593
+      },
+      "add": null,
+      "feedback": null,
+      "selectedCountLeft": null,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "theme": "dark",
+      "width": 1440,
+      "height": 480,
+      "scrollWidth": 1440,
+      "modal": {
+        "left": 400,
+        "right": 1040,
+        "top": 76,
+        "bottom": 404
+      },
+      "footer": {
+        "top": 335,
+        "bottom": 383
+      },
+      "add": null,
+      "feedback": null,
+      "selectedCountLeft": null,
+      "small": [],
+      "clipped": []
+    },
+    {
+      "name": "album-toolbar-idle",
+      "theme": "light",
+      "width": 360,
+      "scrollWidth": 360,
+      "bar": {
+        "left": 16,
+        "right": 344,
+        "width": 328,
+        "cy": 302
+      },
+      "search": {
+        "left": 16,
+        "right": 344,
+        "width": 328,
+        "cy": 248
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 344,
+        "width": 328,
+        "cy": 248
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 291,
+        "width": 230,
+        "cy": 248
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 248
+      },
+      "selectRecord": null,
+      "albumActions": {
+        "left": 20,
+        "right": 344,
+        "width": 324,
+        "cy": 354
+      },
+      "actions": [
+        {
+          "left": 86.6875,
+          "right": 130.6875,
+          "width": 44,
+          "cy": 300,
+          "albumAction": false
+        },
+        {
+          "left": 138.6875,
+          "right": 182.6875,
+          "width": 44,
+          "cy": 300,
+          "albumAction": false
+        },
+        {
+          "left": 190.6875,
+          "right": 234.6875,
+          "width": 44,
+          "cy": 300,
+          "albumAction": false
+        },
+        {
+          "left": 20,
+          "right": 64,
+          "width": 44,
+          "cy": 354,
+          "albumAction": true
+        },
+        {
+          "left": 64,
+          "right": 108,
+          "width": 44,
+          "cy": 354,
+          "albumAction": true
+        },
+        {
+          "left": 108,
+          "right": 152,
+          "width": 44,
+          "cy": 354,
+          "albumAction": true
+        },
+        {
+          "left": 152,
+          "right": 196,
+          "width": 44,
+          "cy": 354,
+          "albumAction": true
+        },
+        {
+          "left": 208,
+          "right": 344,
+          "width": 136,
+          "cy": 354,
+          "albumAction": true
+        }
+      ]
+    },
+    {
+      "name": "album-toolbar-idle",
+      "theme": "light",
+      "width": 390,
+      "scrollWidth": 390,
+      "bar": {
+        "left": 16,
+        "right": 374,
+        "width": 358,
+        "cy": 302
+      },
+      "search": {
+        "left": 16,
+        "right": 374,
+        "width": 358,
+        "cy": 248
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 374,
+        "width": 358,
+        "cy": 248
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 321,
+        "width": 260,
+        "cy": 248
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 248
+      },
+      "selectRecord": null,
+      "albumActions": {
+        "left": 50,
+        "right": 374,
+        "width": 324,
+        "cy": 354
+      },
+      "actions": [
+        {
+          "left": 86.6875,
+          "right": 130.6875,
+          "width": 44,
+          "cy": 300,
+          "albumAction": false
+        },
+        {
+          "left": 138.6875,
+          "right": 182.6875,
+          "width": 44,
+          "cy": 300,
+          "albumAction": false
+        },
+        {
+          "left": 190.6875,
+          "right": 234.6875,
+          "width": 44,
+          "cy": 300,
+          "albumAction": false
+        },
+        {
+          "left": 50,
+          "right": 94,
+          "width": 44,
+          "cy": 354,
+          "albumAction": true
+        },
+        {
+          "left": 94,
+          "right": 138,
+          "width": 44,
+          "cy": 354,
+          "albumAction": true
+        },
+        {
+          "left": 138,
+          "right": 182,
+          "width": 44,
+          "cy": 354,
+          "albumAction": true
+        },
+        {
+          "left": 182,
+          "right": 226,
+          "width": 44,
+          "cy": 354,
+          "albumAction": true
+        },
+        {
+          "left": 238,
+          "right": 374,
+          "width": 136,
+          "cy": 354,
+          "albumAction": true
+        }
+      ]
+    },
+    {
+      "name": "album-toolbar-idle",
+      "theme": "light",
+      "width": 430,
+      "scrollWidth": 430,
+      "bar": {
+        "left": 16,
+        "right": 414,
+        "width": 398,
+        "cy": 302
+      },
+      "search": {
+        "left": 16,
+        "right": 414,
+        "width": 398,
+        "cy": 248
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 414,
+        "width": 398,
+        "cy": 248
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 361,
+        "width": 300,
+        "cy": 248
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 248
+      },
+      "selectRecord": null,
+      "albumActions": {
+        "left": 90,
+        "right": 414,
+        "width": 324,
+        "cy": 354
+      },
+      "actions": [
+        {
+          "left": 86.6875,
+          "right": 130.6875,
+          "width": 44,
+          "cy": 300,
+          "albumAction": false
+        },
+        {
+          "left": 138.6875,
+          "right": 182.6875,
+          "width": 44,
+          "cy": 300,
+          "albumAction": false
+        },
+        {
+          "left": 190.6875,
+          "right": 234.6875,
+          "width": 44,
+          "cy": 300,
+          "albumAction": false
+        },
+        {
+          "left": 90,
+          "right": 134,
+          "width": 44,
+          "cy": 354,
+          "albumAction": true
+        },
+        {
+          "left": 134,
+          "right": 178,
+          "width": 44,
+          "cy": 354,
+          "albumAction": true
+        },
+        {
+          "left": 178,
+          "right": 222,
+          "width": 44,
+          "cy": 354,
+          "albumAction": true
+        },
+        {
+          "left": 222,
+          "right": 266,
+          "width": 44,
+          "cy": 354,
+          "albumAction": true
+        },
+        {
+          "left": 278,
+          "right": 414,
+          "width": 136,
+          "cy": 354,
+          "albumAction": true
+        }
+      ]
+    },
+    {
+      "name": "album-toolbar-idle",
+      "theme": "light",
+      "width": 640,
+      "scrollWidth": 640,
+      "bar": {
+        "left": 16,
+        "right": 624,
+        "width": 608,
+        "cy": 242
+      },
+      "search": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 214
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 214
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 243,
+        "width": 182,
+        "cy": 214
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 214
+      },
+      "selectRecord": null,
+      "albumActions": {
+        "left": 308,
+        "right": 624,
+        "width": 316,
+        "cy": 268
+      },
+      "actions": [
+        {
+          "left": 374.6875,
+          "right": 418.6875,
+          "width": 44,
+          "cy": 214,
+          "albumAction": false
+        },
+        {
+          "left": 426.6875,
+          "right": 470.6875,
+          "width": 44,
+          "cy": 214,
+          "albumAction": false
+        },
+        {
+          "left": 478.6875,
+          "right": 522.6875,
+          "width": 44,
+          "cy": 214,
+          "albumAction": false
+        },
+        {
+          "left": 308,
+          "right": 352,
+          "width": 44,
+          "cy": 268,
+          "albumAction": true
+        },
+        {
+          "left": 352,
+          "right": 396,
+          "width": 44,
+          "cy": 268,
+          "albumAction": true
+        },
+        {
+          "left": 396,
+          "right": 440,
+          "width": 44,
+          "cy": 268,
+          "albumAction": true
+        },
+        {
+          "left": 440,
+          "right": 484,
+          "width": 44,
+          "cy": 268,
+          "albumAction": true
+        },
+        {
+          "left": 496,
+          "right": 624,
+          "width": 128,
+          "cy": 268,
+          "albumAction": true
+        }
+      ]
+    },
+    {
+      "name": "album-toolbar-idle",
+      "theme": "light",
+      "width": 768,
+      "scrollWidth": 768,
+      "bar": {
+        "left": 16,
+        "right": 752,
+        "width": 736,
+        "cy": 243
+      },
+      "search": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 215
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 215
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 243,
+        "width": 182,
+        "cy": 215
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 215
+      },
+      "selectRecord": null,
+      "albumActions": {
+        "left": 436,
+        "right": 752,
+        "width": 316,
+        "cy": 269
+      },
+      "actions": [
+        {
+          "left": 374.6875,
+          "right": 418.6875,
+          "width": 44,
+          "cy": 215,
+          "albumAction": false
+        },
+        {
+          "left": 426.6875,
+          "right": 470.6875,
+          "width": 44,
+          "cy": 215,
+          "albumAction": false
+        },
+        {
+          "left": 478.6875,
+          "right": 522.6875,
+          "width": 44,
+          "cy": 215,
+          "albumAction": false
+        },
+        {
+          "left": 436,
+          "right": 480,
+          "width": 44,
+          "cy": 269,
+          "albumAction": true
+        },
+        {
+          "left": 480,
+          "right": 524,
+          "width": 44,
+          "cy": 269,
+          "albumAction": true
+        },
+        {
+          "left": 524,
+          "right": 568,
+          "width": 44,
+          "cy": 269,
+          "albumAction": true
+        },
+        {
+          "left": 568,
+          "right": 612,
+          "width": 44,
+          "cy": 269,
+          "albumAction": true
+        },
+        {
+          "left": 624,
+          "right": 752,
+          "width": 128,
+          "cy": 269,
+          "albumAction": true
+        }
+      ]
+    },
+    {
+      "name": "album-toolbar-idle",
+      "theme": "light",
+      "width": 1024,
+      "scrollWidth": 1024,
+      "bar": {
+        "left": 16,
+        "right": 1008,
+        "width": 992,
+        "cy": 217
+      },
+      "search": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 217
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 217
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 243,
+        "width": 182,
+        "cy": 217
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 217
+      },
+      "selectRecord": null,
+      "albumActions": {
+        "left": 692,
+        "right": 1008,
+        "width": 316,
+        "cy": 217
+      },
+      "actions": [
+        {
+          "left": 374.6875,
+          "right": 418.6875,
+          "width": 44,
+          "cy": 217,
+          "albumAction": false
+        },
+        {
+          "left": 426.6875,
+          "right": 470.6875,
+          "width": 44,
+          "cy": 217,
+          "albumAction": false
+        },
+        {
+          "left": 478.6875,
+          "right": 522.6875,
+          "width": 44,
+          "cy": 217,
+          "albumAction": false
+        },
+        {
+          "left": 692,
+          "right": 736,
+          "width": 44,
+          "cy": 217,
+          "albumAction": true
+        },
+        {
+          "left": 736,
+          "right": 780,
+          "width": 44,
+          "cy": 217,
+          "albumAction": true
+        },
+        {
+          "left": 780,
+          "right": 824,
+          "width": 44,
+          "cy": 217,
+          "albumAction": true
+        },
+        {
+          "left": 824,
+          "right": 868,
+          "width": 44,
+          "cy": 217,
+          "albumAction": true
+        },
+        {
+          "left": 880,
+          "right": 1008,
+          "width": 128,
+          "cy": 217,
+          "albumAction": true
+        }
+      ]
+    },
+    {
+      "name": "album-toolbar-idle",
+      "theme": "light",
+      "width": 1130,
+      "scrollWidth": 1130,
+      "bar": {
+        "left": 16,
+        "right": 1114,
+        "width": 1098,
+        "cy": 217
+      },
+      "search": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 217
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 217
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 243,
+        "width": 182,
+        "cy": 217
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 217
+      },
+      "selectRecord": null,
+      "albumActions": {
+        "left": 798,
+        "right": 1114,
+        "width": 316,
+        "cy": 217
+      },
+      "actions": [
+        {
+          "left": 374.6875,
+          "right": 418.6875,
+          "width": 44,
+          "cy": 217,
+          "albumAction": false
+        },
+        {
+          "left": 426.6875,
+          "right": 470.6875,
+          "width": 44,
+          "cy": 217,
+          "albumAction": false
+        },
+        {
+          "left": 478.6875,
+          "right": 522.6875,
+          "width": 44,
+          "cy": 217,
+          "albumAction": false
+        },
+        {
+          "left": 798,
+          "right": 842,
+          "width": 44,
+          "cy": 217,
+          "albumAction": true
+        },
+        {
+          "left": 842,
+          "right": 886,
+          "width": 44,
+          "cy": 217,
+          "albumAction": true
+        },
+        {
+          "left": 886,
+          "right": 930,
+          "width": 44,
+          "cy": 217,
+          "albumAction": true
+        },
+        {
+          "left": 930,
+          "right": 974,
+          "width": 44,
+          "cy": 217,
+          "albumAction": true
+        },
+        {
+          "left": 986,
+          "right": 1114,
+          "width": 128,
+          "cy": 217,
+          "albumAction": true
+        }
+      ]
+    },
+    {
+      "name": "album-toolbar-idle",
+      "theme": "light",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "bar": {
+        "left": 264,
+        "right": 1248,
+        "width": 984,
+        "cy": 221
+      },
+      "search": {
+        "left": 264,
+        "right": 544,
+        "width": 280,
+        "cy": 221
+      },
+      "searchGroup": {
+        "left": 264,
+        "right": 544,
+        "width": 280,
+        "cy": 221
+      },
+      "searchInput": {
+        "left": 309,
+        "right": 491,
+        "width": 182,
+        "cy": 221
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 265,
+        "right": 309,
+        "width": 44,
+        "cy": 221
+      },
+      "selectRecord": null,
+      "albumActions": {
+        "left": 932,
+        "right": 1248,
+        "width": 316,
+        "cy": 221
+      },
+      "actions": [
+        {
+          "left": 630.6875,
+          "right": 666.6875,
+          "width": 36,
+          "cy": 221,
+          "albumAction": false
+        },
+        {
+          "left": 670.6875,
+          "right": 706.6875,
+          "width": 36,
+          "cy": 221,
+          "albumAction": false
+        },
+        {
+          "left": 718.6875,
+          "right": 754.6875,
+          "width": 36,
+          "cy": 221,
+          "albumAction": false
+        },
+        {
+          "left": 932,
+          "right": 976,
+          "width": 44,
+          "cy": 221,
+          "albumAction": true
+        },
+        {
+          "left": 976,
+          "right": 1020,
+          "width": 44,
+          "cy": 221,
+          "albumAction": true
+        },
+        {
+          "left": 1020,
+          "right": 1064,
+          "width": 44,
+          "cy": 221,
+          "albumAction": true
+        },
+        {
+          "left": 1064,
+          "right": 1108,
+          "width": 44,
+          "cy": 221,
+          "albumAction": true
+        },
+        {
+          "left": 1120,
+          "right": 1248,
+          "width": 128,
+          "cy": 221,
+          "albumAction": true
+        }
+      ]
+    },
+    {
+      "name": "album-toolbar-idle",
+      "theme": "light",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "bar": {
+        "left": 264,
+        "right": 1408,
+        "width": 1144,
+        "cy": 221
+      },
+      "search": {
+        "left": 264,
+        "right": 544,
+        "width": 280,
+        "cy": 221
+      },
+      "searchGroup": {
+        "left": 264,
+        "right": 544,
+        "width": 280,
+        "cy": 221
+      },
+      "searchInput": {
+        "left": 309,
+        "right": 491,
+        "width": 182,
+        "cy": 221
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 265,
+        "right": 309,
+        "width": 44,
+        "cy": 221
+      },
+      "selectRecord": null,
+      "albumActions": {
+        "left": 1092,
+        "right": 1408,
+        "width": 316,
+        "cy": 221
+      },
+      "actions": [
+        {
+          "left": 630.6875,
+          "right": 666.6875,
+          "width": 36,
+          "cy": 221,
+          "albumAction": false
+        },
+        {
+          "left": 670.6875,
+          "right": 706.6875,
+          "width": 36,
+          "cy": 221,
+          "albumAction": false
+        },
+        {
+          "left": 718.6875,
+          "right": 754.6875,
+          "width": 36,
+          "cy": 221,
+          "albumAction": false
+        },
+        {
+          "left": 1092,
+          "right": 1136,
+          "width": 44,
+          "cy": 221,
+          "albumAction": true
+        },
+        {
+          "left": 1136,
+          "right": 1180,
+          "width": 44,
+          "cy": 221,
+          "albumAction": true
+        },
+        {
+          "left": 1180,
+          "right": 1224,
+          "width": 44,
+          "cy": 221,
+          "albumAction": true
+        },
+        {
+          "left": 1224,
+          "right": 1268,
+          "width": 44,
+          "cy": 221,
+          "albumAction": true
+        },
+        {
+          "left": 1280,
+          "right": 1408,
+          "width": 128,
+          "cy": 221,
+          "albumAction": true
+        }
+      ]
+    },
+    {
+      "name": "album-toolbar-idle",
+      "theme": "dark",
+      "width": 360,
+      "scrollWidth": 360,
+      "bar": {
+        "left": 16,
+        "right": 344,
+        "width": 328,
+        "cy": 302
+      },
+      "search": {
+        "left": 16,
+        "right": 344,
+        "width": 328,
+        "cy": 248
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 344,
+        "width": 328,
+        "cy": 248
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 291,
+        "width": 230,
+        "cy": 248
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 248
+      },
+      "selectRecord": null,
+      "albumActions": {
+        "left": 20,
+        "right": 344,
+        "width": 324,
+        "cy": 354
+      },
+      "actions": [
+        {
+          "left": 86.6875,
+          "right": 130.6875,
+          "width": 44,
+          "cy": 300,
+          "albumAction": false
+        },
+        {
+          "left": 138.6875,
+          "right": 182.6875,
+          "width": 44,
+          "cy": 300,
+          "albumAction": false
+        },
+        {
+          "left": 190.6875,
+          "right": 234.6875,
+          "width": 44,
+          "cy": 300,
+          "albumAction": false
+        },
+        {
+          "left": 20,
+          "right": 64,
+          "width": 44,
+          "cy": 354,
+          "albumAction": true
+        },
+        {
+          "left": 64,
+          "right": 108,
+          "width": 44,
+          "cy": 354,
+          "albumAction": true
+        },
+        {
+          "left": 108,
+          "right": 152,
+          "width": 44,
+          "cy": 354,
+          "albumAction": true
+        },
+        {
+          "left": 152,
+          "right": 196,
+          "width": 44,
+          "cy": 354,
+          "albumAction": true
+        },
+        {
+          "left": 208,
+          "right": 344,
+          "width": 136,
+          "cy": 354,
+          "albumAction": true
+        }
+      ]
+    },
+    {
+      "name": "album-toolbar-idle",
+      "theme": "dark",
+      "width": 390,
+      "scrollWidth": 390,
+      "bar": {
+        "left": 16,
+        "right": 374,
+        "width": 358,
+        "cy": 302
+      },
+      "search": {
+        "left": 16,
+        "right": 374,
+        "width": 358,
+        "cy": 248
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 374,
+        "width": 358,
+        "cy": 248
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 321,
+        "width": 260,
+        "cy": 248
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 248
+      },
+      "selectRecord": null,
+      "albumActions": {
+        "left": 50,
+        "right": 374,
+        "width": 324,
+        "cy": 354
+      },
+      "actions": [
+        {
+          "left": 86.6875,
+          "right": 130.6875,
+          "width": 44,
+          "cy": 300,
+          "albumAction": false
+        },
+        {
+          "left": 138.6875,
+          "right": 182.6875,
+          "width": 44,
+          "cy": 300,
+          "albumAction": false
+        },
+        {
+          "left": 190.6875,
+          "right": 234.6875,
+          "width": 44,
+          "cy": 300,
+          "albumAction": false
+        },
+        {
+          "left": 50,
+          "right": 94,
+          "width": 44,
+          "cy": 354,
+          "albumAction": true
+        },
+        {
+          "left": 94,
+          "right": 138,
+          "width": 44,
+          "cy": 354,
+          "albumAction": true
+        },
+        {
+          "left": 138,
+          "right": 182,
+          "width": 44,
+          "cy": 354,
+          "albumAction": true
+        },
+        {
+          "left": 182,
+          "right": 226,
+          "width": 44,
+          "cy": 354,
+          "albumAction": true
+        },
+        {
+          "left": 238,
+          "right": 374,
+          "width": 136,
+          "cy": 354,
+          "albumAction": true
+        }
+      ]
+    },
+    {
+      "name": "album-toolbar-idle",
+      "theme": "dark",
+      "width": 430,
+      "scrollWidth": 430,
+      "bar": {
+        "left": 16,
+        "right": 414,
+        "width": 398,
+        "cy": 302
+      },
+      "search": {
+        "left": 16,
+        "right": 414,
+        "width": 398,
+        "cy": 248
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 414,
+        "width": 398,
+        "cy": 248
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 361,
+        "width": 300,
+        "cy": 248
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 248
+      },
+      "selectRecord": null,
+      "albumActions": {
+        "left": 90,
+        "right": 414,
+        "width": 324,
+        "cy": 354
+      },
+      "actions": [
+        {
+          "left": 86.6875,
+          "right": 130.6875,
+          "width": 44,
+          "cy": 300,
+          "albumAction": false
+        },
+        {
+          "left": 138.6875,
+          "right": 182.6875,
+          "width": 44,
+          "cy": 300,
+          "albumAction": false
+        },
+        {
+          "left": 190.6875,
+          "right": 234.6875,
+          "width": 44,
+          "cy": 300,
+          "albumAction": false
+        },
+        {
+          "left": 90,
+          "right": 134,
+          "width": 44,
+          "cy": 354,
+          "albumAction": true
+        },
+        {
+          "left": 134,
+          "right": 178,
+          "width": 44,
+          "cy": 354,
+          "albumAction": true
+        },
+        {
+          "left": 178,
+          "right": 222,
+          "width": 44,
+          "cy": 354,
+          "albumAction": true
+        },
+        {
+          "left": 222,
+          "right": 266,
+          "width": 44,
+          "cy": 354,
+          "albumAction": true
+        },
+        {
+          "left": 278,
+          "right": 414,
+          "width": 136,
+          "cy": 354,
+          "albumAction": true
+        }
+      ]
+    },
+    {
+      "name": "album-toolbar-idle",
+      "theme": "dark",
+      "width": 640,
+      "scrollWidth": 640,
+      "bar": {
+        "left": 16,
+        "right": 624,
+        "width": 608,
+        "cy": 242
+      },
+      "search": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 214
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 214
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 243,
+        "width": 182,
+        "cy": 214
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 214
+      },
+      "selectRecord": null,
+      "albumActions": {
+        "left": 308,
+        "right": 624,
+        "width": 316,
+        "cy": 268
+      },
+      "actions": [
+        {
+          "left": 374.6875,
+          "right": 418.6875,
+          "width": 44,
+          "cy": 214,
+          "albumAction": false
+        },
+        {
+          "left": 426.6875,
+          "right": 470.6875,
+          "width": 44,
+          "cy": 214,
+          "albumAction": false
+        },
+        {
+          "left": 478.6875,
+          "right": 522.6875,
+          "width": 44,
+          "cy": 214,
+          "albumAction": false
+        },
+        {
+          "left": 308,
+          "right": 352,
+          "width": 44,
+          "cy": 268,
+          "albumAction": true
+        },
+        {
+          "left": 352,
+          "right": 396,
+          "width": 44,
+          "cy": 268,
+          "albumAction": true
+        },
+        {
+          "left": 396,
+          "right": 440,
+          "width": 44,
+          "cy": 268,
+          "albumAction": true
+        },
+        {
+          "left": 440,
+          "right": 484,
+          "width": 44,
+          "cy": 268,
+          "albumAction": true
+        },
+        {
+          "left": 496,
+          "right": 624,
+          "width": 128,
+          "cy": 268,
+          "albumAction": true
+        }
+      ]
+    },
+    {
+      "name": "album-toolbar-idle",
+      "theme": "dark",
+      "width": 768,
+      "scrollWidth": 768,
+      "bar": {
+        "left": 16,
+        "right": 752,
+        "width": 736,
+        "cy": 243
+      },
+      "search": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 215
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 215
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 243,
+        "width": 182,
+        "cy": 215
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 215
+      },
+      "selectRecord": null,
+      "albumActions": {
+        "left": 436,
+        "right": 752,
+        "width": 316,
+        "cy": 269
+      },
+      "actions": [
+        {
+          "left": 374.6875,
+          "right": 418.6875,
+          "width": 44,
+          "cy": 215,
+          "albumAction": false
+        },
+        {
+          "left": 426.6875,
+          "right": 470.6875,
+          "width": 44,
+          "cy": 215,
+          "albumAction": false
+        },
+        {
+          "left": 478.6875,
+          "right": 522.6875,
+          "width": 44,
+          "cy": 215,
+          "albumAction": false
+        },
+        {
+          "left": 436,
+          "right": 480,
+          "width": 44,
+          "cy": 269,
+          "albumAction": true
+        },
+        {
+          "left": 480,
+          "right": 524,
+          "width": 44,
+          "cy": 269,
+          "albumAction": true
+        },
+        {
+          "left": 524,
+          "right": 568,
+          "width": 44,
+          "cy": 269,
+          "albumAction": true
+        },
+        {
+          "left": 568,
+          "right": 612,
+          "width": 44,
+          "cy": 269,
+          "albumAction": true
+        },
+        {
+          "left": 624,
+          "right": 752,
+          "width": 128,
+          "cy": 269,
+          "albumAction": true
+        }
+      ]
+    },
+    {
+      "name": "album-toolbar-idle",
+      "theme": "dark",
+      "width": 1024,
+      "scrollWidth": 1024,
+      "bar": {
+        "left": 16,
+        "right": 1008,
+        "width": 992,
+        "cy": 217
+      },
+      "search": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 217
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 217
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 243,
+        "width": 182,
+        "cy": 217
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 217
+      },
+      "selectRecord": null,
+      "albumActions": {
+        "left": 692,
+        "right": 1008,
+        "width": 316,
+        "cy": 217
+      },
+      "actions": [
+        {
+          "left": 374.6875,
+          "right": 418.6875,
+          "width": 44,
+          "cy": 217,
+          "albumAction": false
+        },
+        {
+          "left": 426.6875,
+          "right": 470.6875,
+          "width": 44,
+          "cy": 217,
+          "albumAction": false
+        },
+        {
+          "left": 478.6875,
+          "right": 522.6875,
+          "width": 44,
+          "cy": 217,
+          "albumAction": false
+        },
+        {
+          "left": 692,
+          "right": 736,
+          "width": 44,
+          "cy": 217,
+          "albumAction": true
+        },
+        {
+          "left": 736,
+          "right": 780,
+          "width": 44,
+          "cy": 217,
+          "albumAction": true
+        },
+        {
+          "left": 780,
+          "right": 824,
+          "width": 44,
+          "cy": 217,
+          "albumAction": true
+        },
+        {
+          "left": 824,
+          "right": 868,
+          "width": 44,
+          "cy": 217,
+          "albumAction": true
+        },
+        {
+          "left": 880,
+          "right": 1008,
+          "width": 128,
+          "cy": 217,
+          "albumAction": true
+        }
+      ]
+    },
+    {
+      "name": "album-toolbar-idle",
+      "theme": "dark",
+      "width": 1130,
+      "scrollWidth": 1130,
+      "bar": {
+        "left": 16,
+        "right": 1114,
+        "width": 1098,
+        "cy": 217
+      },
+      "search": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 217
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 217
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 243,
+        "width": 182,
+        "cy": 217
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 217
+      },
+      "selectRecord": null,
+      "albumActions": {
+        "left": 798,
+        "right": 1114,
+        "width": 316,
+        "cy": 217
+      },
+      "actions": [
+        {
+          "left": 374.6875,
+          "right": 418.6875,
+          "width": 44,
+          "cy": 217,
+          "albumAction": false
+        },
+        {
+          "left": 426.6875,
+          "right": 470.6875,
+          "width": 44,
+          "cy": 217,
+          "albumAction": false
+        },
+        {
+          "left": 478.6875,
+          "right": 522.6875,
+          "width": 44,
+          "cy": 217,
+          "albumAction": false
+        },
+        {
+          "left": 798,
+          "right": 842,
+          "width": 44,
+          "cy": 217,
+          "albumAction": true
+        },
+        {
+          "left": 842,
+          "right": 886,
+          "width": 44,
+          "cy": 217,
+          "albumAction": true
+        },
+        {
+          "left": 886,
+          "right": 930,
+          "width": 44,
+          "cy": 217,
+          "albumAction": true
+        },
+        {
+          "left": 930,
+          "right": 974,
+          "width": 44,
+          "cy": 217,
+          "albumAction": true
+        },
+        {
+          "left": 986,
+          "right": 1114,
+          "width": 128,
+          "cy": 217,
+          "albumAction": true
+        }
+      ]
+    },
+    {
+      "name": "album-toolbar-idle",
+      "theme": "dark",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "bar": {
+        "left": 264,
+        "right": 1248,
+        "width": 984,
+        "cy": 221
+      },
+      "search": {
+        "left": 264,
+        "right": 544,
+        "width": 280,
+        "cy": 221
+      },
+      "searchGroup": {
+        "left": 264,
+        "right": 544,
+        "width": 280,
+        "cy": 221
+      },
+      "searchInput": {
+        "left": 309,
+        "right": 491,
+        "width": 182,
+        "cy": 221
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 265,
+        "right": 309,
+        "width": 44,
+        "cy": 221
+      },
+      "selectRecord": null,
+      "albumActions": {
+        "left": 932,
+        "right": 1248,
+        "width": 316,
+        "cy": 221
+      },
+      "actions": [
+        {
+          "left": 630.6875,
+          "right": 666.6875,
+          "width": 36,
+          "cy": 221,
+          "albumAction": false
+        },
+        {
+          "left": 670.6875,
+          "right": 706.6875,
+          "width": 36,
+          "cy": 221,
+          "albumAction": false
+        },
+        {
+          "left": 718.6875,
+          "right": 754.6875,
+          "width": 36,
+          "cy": 221,
+          "albumAction": false
+        },
+        {
+          "left": 932,
+          "right": 976,
+          "width": 44,
+          "cy": 221,
+          "albumAction": true
+        },
+        {
+          "left": 976,
+          "right": 1020,
+          "width": 44,
+          "cy": 221,
+          "albumAction": true
+        },
+        {
+          "left": 1020,
+          "right": 1064,
+          "width": 44,
+          "cy": 221,
+          "albumAction": true
+        },
+        {
+          "left": 1064,
+          "right": 1108,
+          "width": 44,
+          "cy": 221,
+          "albumAction": true
+        },
+        {
+          "left": 1120,
+          "right": 1248,
+          "width": 128,
+          "cy": 221,
+          "albumAction": true
+        }
+      ]
+    },
+    {
+      "name": "album-toolbar-idle",
+      "theme": "dark",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "bar": {
+        "left": 264,
+        "right": 1408,
+        "width": 1144,
+        "cy": 221
+      },
+      "search": {
+        "left": 264,
+        "right": 544,
+        "width": 280,
+        "cy": 221
+      },
+      "searchGroup": {
+        "left": 264,
+        "right": 544,
+        "width": 280,
+        "cy": 221
+      },
+      "searchInput": {
+        "left": 309,
+        "right": 491,
+        "width": 182,
+        "cy": 221
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 265,
+        "right": 309,
+        "width": 44,
+        "cy": 221
+      },
+      "selectRecord": null,
+      "albumActions": {
+        "left": 1092,
+        "right": 1408,
+        "width": 316,
+        "cy": 221
+      },
+      "actions": [
+        {
+          "left": 630.6875,
+          "right": 666.6875,
+          "width": 36,
+          "cy": 221,
+          "albumAction": false
+        },
+        {
+          "left": 670.6875,
+          "right": 706.6875,
+          "width": 36,
+          "cy": 221,
+          "albumAction": false
+        },
+        {
+          "left": 718.6875,
+          "right": 754.6875,
+          "width": 36,
+          "cy": 221,
+          "albumAction": false
+        },
+        {
+          "left": 1092,
+          "right": 1136,
+          "width": 44,
+          "cy": 221,
+          "albumAction": true
+        },
+        {
+          "left": 1136,
+          "right": 1180,
+          "width": 44,
+          "cy": 221,
+          "albumAction": true
+        },
+        {
+          "left": 1180,
+          "right": 1224,
+          "width": 44,
+          "cy": 221,
+          "albumAction": true
+        },
+        {
+          "left": 1224,
+          "right": 1268,
+          "width": 44,
+          "cy": 221,
+          "albumAction": true
+        },
+        {
+          "left": 1280,
+          "right": 1408,
+          "width": 128,
+          "cy": 221,
+          "albumAction": true
+        }
+      ]
+    },
+    {
+      "name": "album-toolbar-selected",
+      "theme": "light",
+      "width": 360,
+      "scrollWidth": 360,
+      "bar": {
+        "left": 16,
+        "right": 344,
+        "width": 328,
+        "cy": 328
+      },
+      "search": {
+        "left": 16,
+        "right": 344,
+        "width": 328,
+        "cy": 248
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 344,
+        "width": 328,
+        "cy": 248
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 291,
+        "width": 230,
+        "cy": 248
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 248
+      },
+      "selectRecord": null,
+      "albumActions": {
+        "left": 20,
+        "right": 344,
+        "width": 324,
+        "cy": 406
+      },
+      "actions": [
+        {
+          "left": 86.6875,
+          "right": 130.6875,
+          "width": 44,
+          "cy": 300,
+          "albumAction": false
+        },
+        {
+          "left": 138.6875,
+          "right": 182.6875,
+          "width": 44,
+          "cy": 300,
+          "albumAction": false
+        },
+        {
+          "left": 16,
+          "right": 97.78125,
+          "width": 81.78125,
+          "cy": 352,
+          "albumAction": false
+        },
+        {
+          "left": 105.78125,
+          "right": 149.78125,
+          "width": 44,
+          "cy": 352,
+          "albumAction": false
+        },
+        {
+          "left": 149.78125,
+          "right": 193.78125,
+          "width": 44,
+          "cy": 352,
+          "albumAction": false
+        },
+        {
+          "left": 193.78125,
+          "right": 237.78125,
+          "width": 44,
+          "cy": 352,
+          "albumAction": false
+        },
+        {
+          "left": 237.78125,
+          "right": 281.78125,
+          "width": 44,
+          "cy": 352,
+          "albumAction": false
+        },
+        {
+          "left": 20,
+          "right": 64,
+          "width": 44,
+          "cy": 406,
+          "albumAction": true
+        },
+        {
+          "left": 64,
+          "right": 108,
+          "width": 44,
+          "cy": 406,
+          "albumAction": true
+        },
+        {
+          "left": 108,
+          "right": 152,
+          "width": 44,
+          "cy": 406,
+          "albumAction": true
+        },
+        {
+          "left": 152,
+          "right": 196,
+          "width": 44,
+          "cy": 406,
+          "albumAction": true
+        },
+        {
+          "left": 208,
+          "right": 344,
+          "width": 136,
+          "cy": 406,
+          "albumAction": true
+        }
+      ]
+    },
+    {
+      "name": "album-toolbar-selected",
+      "theme": "light",
+      "width": 390,
+      "scrollWidth": 390,
+      "bar": {
+        "left": 16,
+        "right": 374,
+        "width": 358,
+        "cy": 328
+      },
+      "search": {
+        "left": 16,
+        "right": 374,
+        "width": 358,
+        "cy": 248
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 374,
+        "width": 358,
+        "cy": 248
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 321,
+        "width": 260,
+        "cy": 248
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 248
+      },
+      "selectRecord": null,
+      "albumActions": {
+        "left": 50,
+        "right": 374,
+        "width": 324,
+        "cy": 406
+      },
+      "actions": [
+        {
+          "left": 86.6875,
+          "right": 130.6875,
+          "width": 44,
+          "cy": 300,
+          "albumAction": false
+        },
+        {
+          "left": 138.6875,
+          "right": 182.6875,
+          "width": 44,
+          "cy": 300,
+          "albumAction": false
+        },
+        {
+          "left": 16,
+          "right": 97.78125,
+          "width": 81.78125,
+          "cy": 352,
+          "albumAction": false
+        },
+        {
+          "left": 105.78125,
+          "right": 149.78125,
+          "width": 44,
+          "cy": 352,
+          "albumAction": false
+        },
+        {
+          "left": 149.78125,
+          "right": 193.78125,
+          "width": 44,
+          "cy": 352,
+          "albumAction": false
+        },
+        {
+          "left": 193.78125,
+          "right": 237.78125,
+          "width": 44,
+          "cy": 352,
+          "albumAction": false
+        },
+        {
+          "left": 237.78125,
+          "right": 281.78125,
+          "width": 44,
+          "cy": 352,
+          "albumAction": false
+        },
+        {
+          "left": 50,
+          "right": 94,
+          "width": 44,
+          "cy": 406,
+          "albumAction": true
+        },
+        {
+          "left": 94,
+          "right": 138,
+          "width": 44,
+          "cy": 406,
+          "albumAction": true
+        },
+        {
+          "left": 138,
+          "right": 182,
+          "width": 44,
+          "cy": 406,
+          "albumAction": true
+        },
+        {
+          "left": 182,
+          "right": 226,
+          "width": 44,
+          "cy": 406,
+          "albumAction": true
+        },
+        {
+          "left": 238,
+          "right": 374,
+          "width": 136,
+          "cy": 406,
+          "albumAction": true
+        }
+      ]
+    },
+    {
+      "name": "album-toolbar-selected",
+      "theme": "light",
+      "width": 430,
+      "scrollWidth": 430,
+      "bar": {
+        "left": 16,
+        "right": 414,
+        "width": 398,
+        "cy": 328
+      },
+      "search": {
+        "left": 16,
+        "right": 414,
+        "width": 398,
+        "cy": 248
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 414,
+        "width": 398,
+        "cy": 248
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 361,
+        "width": 300,
+        "cy": 248
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 248
+      },
+      "selectRecord": null,
+      "albumActions": {
+        "left": 90,
+        "right": 414,
+        "width": 324,
+        "cy": 406
+      },
+      "actions": [
+        {
+          "left": 86.6875,
+          "right": 130.6875,
+          "width": 44,
+          "cy": 300,
+          "albumAction": false
+        },
+        {
+          "left": 138.6875,
+          "right": 182.6875,
+          "width": 44,
+          "cy": 300,
+          "albumAction": false
+        },
+        {
+          "left": 16,
+          "right": 97.78125,
+          "width": 81.78125,
+          "cy": 352,
+          "albumAction": false
+        },
+        {
+          "left": 105.78125,
+          "right": 149.78125,
+          "width": 44,
+          "cy": 352,
+          "albumAction": false
+        },
+        {
+          "left": 149.78125,
+          "right": 193.78125,
+          "width": 44,
+          "cy": 352,
+          "albumAction": false
+        },
+        {
+          "left": 193.78125,
+          "right": 237.78125,
+          "width": 44,
+          "cy": 352,
+          "albumAction": false
+        },
+        {
+          "left": 237.78125,
+          "right": 281.78125,
+          "width": 44,
+          "cy": 352,
+          "albumAction": false
+        },
+        {
+          "left": 90,
+          "right": 134,
+          "width": 44,
+          "cy": 406,
+          "albumAction": true
+        },
+        {
+          "left": 134,
+          "right": 178,
+          "width": 44,
+          "cy": 406,
+          "albumAction": true
+        },
+        {
+          "left": 178,
+          "right": 222,
+          "width": 44,
+          "cy": 406,
+          "albumAction": true
+        },
+        {
+          "left": 222,
+          "right": 266,
+          "width": 44,
+          "cy": 406,
+          "albumAction": true
+        },
+        {
+          "left": 278,
+          "right": 414,
+          "width": 136,
+          "cy": 406,
+          "albumAction": true
+        }
+      ]
+    },
+    {
+      "name": "album-toolbar-selected",
+      "theme": "light",
+      "width": 640,
+      "scrollWidth": 640,
+      "bar": {
+        "left": 16,
+        "right": 624,
+        "width": 608,
+        "cy": 268
+      },
+      "search": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 214
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 214
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 243,
+        "width": 182,
+        "cy": 214
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 214
+      },
+      "selectRecord": null,
+      "albumActions": {
+        "left": 308,
+        "right": 624,
+        "width": 316,
+        "cy": 320
+      },
+      "actions": [
+        {
+          "left": 86.6875,
+          "right": 130.6875,
+          "width": 44,
+          "cy": 266,
+          "albumAction": false
+        },
+        {
+          "left": 138.6875,
+          "right": 182.6875,
+          "width": 44,
+          "cy": 266,
+          "albumAction": false
+        },
+        {
+          "left": 190.6875,
+          "right": 264.46875,
+          "width": 73.78125,
+          "cy": 266,
+          "albumAction": false
+        },
+        {
+          "left": 272.46875,
+          "right": 316.46875,
+          "width": 44,
+          "cy": 266,
+          "albumAction": false
+        },
+        {
+          "left": 316.46875,
+          "right": 360.46875,
+          "width": 44,
+          "cy": 266,
+          "albumAction": false
+        },
+        {
+          "left": 360.46875,
+          "right": 404.46875,
+          "width": 44,
+          "cy": 266,
+          "albumAction": false
+        },
+        {
+          "left": 404.46875,
+          "right": 448.46875,
+          "width": 44,
+          "cy": 266,
+          "albumAction": false
+        },
+        {
+          "left": 308,
+          "right": 352,
+          "width": 44,
+          "cy": 320,
+          "albumAction": true
+        },
+        {
+          "left": 352,
+          "right": 396,
+          "width": 44,
+          "cy": 320,
+          "albumAction": true
+        },
+        {
+          "left": 396,
+          "right": 440,
+          "width": 44,
+          "cy": 320,
+          "albumAction": true
+        },
+        {
+          "left": 440,
+          "right": 484,
+          "width": 44,
+          "cy": 320,
+          "albumAction": true
+        },
+        {
+          "left": 496,
+          "right": 624,
+          "width": 128,
+          "cy": 320,
+          "albumAction": true
+        }
+      ]
+    },
+    {
+      "name": "album-toolbar-selected",
+      "theme": "light",
+      "width": 768,
+      "scrollWidth": 768,
+      "bar": {
+        "left": 16,
+        "right": 752,
+        "width": 736,
+        "cy": 243
+      },
+      "search": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 215
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 215
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 243,
+        "width": 182,
+        "cy": 215
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 215
+      },
+      "selectRecord": null,
+      "albumActions": {
+        "left": 436,
+        "right": 752,
+        "width": 316,
+        "cy": 269
+      },
+      "actions": [
+        {
+          "left": 374.6875,
+          "right": 418.6875,
+          "width": 44,
+          "cy": 215,
+          "albumAction": false
+        },
+        {
+          "left": 426.6875,
+          "right": 470.6875,
+          "width": 44,
+          "cy": 215,
+          "albumAction": false
+        },
+        {
+          "left": 478.6875,
+          "right": 552.46875,
+          "width": 73.78125,
+          "cy": 215,
+          "albumAction": false
+        },
+        {
+          "left": 560.46875,
+          "right": 604.46875,
+          "width": 44,
+          "cy": 215,
+          "albumAction": false
+        },
+        {
+          "left": 604.46875,
+          "right": 648.46875,
+          "width": 44,
+          "cy": 215,
+          "albumAction": false
+        },
+        {
+          "left": 648.46875,
+          "right": 692.46875,
+          "width": 44,
+          "cy": 215,
+          "albumAction": false
+        },
+        {
+          "left": 692.46875,
+          "right": 736.46875,
+          "width": 44,
+          "cy": 215,
+          "albumAction": false
+        },
+        {
+          "left": 436,
+          "right": 480,
+          "width": 44,
+          "cy": 269,
+          "albumAction": true
+        },
+        {
+          "left": 480,
+          "right": 524,
+          "width": 44,
+          "cy": 269,
+          "albumAction": true
+        },
+        {
+          "left": 524,
+          "right": 568,
+          "width": 44,
+          "cy": 269,
+          "albumAction": true
+        },
+        {
+          "left": 568,
+          "right": 612,
+          "width": 44,
+          "cy": 269,
+          "albumAction": true
+        },
+        {
+          "left": 624,
+          "right": 752,
+          "width": 128,
+          "cy": 269,
+          "albumAction": true
+        }
+      ]
+    },
+    {
+      "name": "album-toolbar-selected",
+      "theme": "light",
+      "width": 1024,
+      "scrollWidth": 1024,
+      "bar": {
+        "left": 16,
+        "right": 1008,
+        "width": 992,
+        "cy": 243
+      },
+      "search": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 215
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 215
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 243,
+        "width": 182,
+        "cy": 215
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 215
+      },
+      "selectRecord": null,
+      "albumActions": {
+        "left": 692,
+        "right": 1008,
+        "width": 316,
+        "cy": 269
+      },
+      "actions": [
+        {
+          "left": 374.6875,
+          "right": 418.6875,
+          "width": 44,
+          "cy": 215,
+          "albumAction": false
+        },
+        {
+          "left": 426.6875,
+          "right": 470.6875,
+          "width": 44,
+          "cy": 215,
+          "albumAction": false
+        },
+        {
+          "left": 478.6875,
+          "right": 552.46875,
+          "width": 73.78125,
+          "cy": 215,
+          "albumAction": false
+        },
+        {
+          "left": 560.46875,
+          "right": 604.46875,
+          "width": 44,
+          "cy": 215,
+          "albumAction": false
+        },
+        {
+          "left": 604.46875,
+          "right": 648.46875,
+          "width": 44,
+          "cy": 215,
+          "albumAction": false
+        },
+        {
+          "left": 648.46875,
+          "right": 692.46875,
+          "width": 44,
+          "cy": 215,
+          "albumAction": false
+        },
+        {
+          "left": 692.46875,
+          "right": 736.46875,
+          "width": 44,
+          "cy": 215,
+          "albumAction": false
+        },
+        {
+          "left": 692,
+          "right": 736,
+          "width": 44,
+          "cy": 269,
+          "albumAction": true
+        },
+        {
+          "left": 736,
+          "right": 780,
+          "width": 44,
+          "cy": 269,
+          "albumAction": true
+        },
+        {
+          "left": 780,
+          "right": 824,
+          "width": 44,
+          "cy": 269,
+          "albumAction": true
+        },
+        {
+          "left": 824,
+          "right": 868,
+          "width": 44,
+          "cy": 269,
+          "albumAction": true
+        },
+        {
+          "left": 880,
+          "right": 1008,
+          "width": 128,
+          "cy": 269,
+          "albumAction": true
+        }
+      ]
+    },
+    {
+      "name": "album-toolbar-selected",
+      "theme": "light",
+      "width": 1130,
+      "scrollWidth": 1130,
+      "bar": {
+        "left": 16,
+        "right": 1114,
+        "width": 1098,
+        "cy": 217
+      },
+      "search": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 217
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 217
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 243,
+        "width": 182,
+        "cy": 217
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 217
+      },
+      "selectRecord": null,
+      "albumActions": {
+        "left": 798,
+        "right": 1114,
+        "width": 316,
+        "cy": 217
+      },
+      "actions": [
+        {
+          "left": 374.6875,
+          "right": 418.6875,
+          "width": 44,
+          "cy": 217,
+          "albumAction": false
+        },
+        {
+          "left": 426.6875,
+          "right": 470.6875,
+          "width": 44,
+          "cy": 217,
+          "albumAction": false
+        },
+        {
+          "left": 478.6875,
+          "right": 552.46875,
+          "width": 73.78125,
+          "cy": 217,
+          "albumAction": false
+        },
+        {
+          "left": 560.46875,
+          "right": 604.46875,
+          "width": 44,
+          "cy": 217,
+          "albumAction": false
+        },
+        {
+          "left": 604.46875,
+          "right": 648.46875,
+          "width": 44,
+          "cy": 217,
+          "albumAction": false
+        },
+        {
+          "left": 648.46875,
+          "right": 692.46875,
+          "width": 44,
+          "cy": 217,
+          "albumAction": false
+        },
+        {
+          "left": 692.46875,
+          "right": 736.46875,
+          "width": 44,
+          "cy": 217,
+          "albumAction": false
+        },
+        {
+          "left": 798,
+          "right": 842,
+          "width": 44,
+          "cy": 217,
+          "albumAction": true
+        },
+        {
+          "left": 842,
+          "right": 886,
+          "width": 44,
+          "cy": 217,
+          "albumAction": true
+        },
+        {
+          "left": 886,
+          "right": 930,
+          "width": 44,
+          "cy": 217,
+          "albumAction": true
+        },
+        {
+          "left": 930,
+          "right": 974,
+          "width": 44,
+          "cy": 217,
+          "albumAction": true
+        },
+        {
+          "left": 986,
+          "right": 1114,
+          "width": 128,
+          "cy": 217,
+          "albumAction": true
+        }
+      ]
+    },
+    {
+      "name": "album-toolbar-selected",
+      "theme": "light",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "bar": {
+        "left": 264,
+        "right": 1248,
+        "width": 984,
+        "cy": 249
+      },
+      "search": {
+        "left": 264,
+        "right": 544,
+        "width": 280,
+        "cy": 219
+      },
+      "searchGroup": {
+        "left": 264,
+        "right": 544,
+        "width": 280,
+        "cy": 219
+      },
+      "searchInput": {
+        "left": 309,
+        "right": 491,
+        "width": 182,
+        "cy": 219
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 265,
+        "right": 309,
+        "width": 44,
+        "cy": 219
+      },
+      "selectRecord": null,
+      "albumActions": {
+        "left": 932,
+        "right": 1248,
+        "width": 316,
+        "cy": 277
+      },
+      "actions": [
+        {
+          "left": 630.6875,
+          "right": 666.6875,
+          "width": 36,
+          "cy": 219,
+          "albumAction": false
+        },
+        {
+          "left": 670.6875,
+          "right": 706.6875,
+          "width": 36,
+          "cy": 219,
+          "albumAction": false
+        },
+        {
+          "left": 718.6875,
+          "right": 792.46875,
+          "width": 73.78125,
+          "cy": 219,
+          "albumAction": false
+        },
+        {
+          "left": 800.46875,
+          "right": 844.46875,
+          "width": 44,
+          "cy": 219,
+          "albumAction": false
+        },
+        {
+          "left": 844.46875,
+          "right": 888.46875,
+          "width": 44,
+          "cy": 219,
+          "albumAction": false
+        },
+        {
+          "left": 888.46875,
+          "right": 932.46875,
+          "width": 44,
+          "cy": 219,
+          "albumAction": false
+        },
+        {
+          "left": 932.46875,
+          "right": 976.46875,
+          "width": 44,
+          "cy": 219,
+          "albumAction": false
+        },
+        {
+          "left": 932,
+          "right": 976,
+          "width": 44,
+          "cy": 277,
+          "albumAction": true
+        },
+        {
+          "left": 976,
+          "right": 1020,
+          "width": 44,
+          "cy": 277,
+          "albumAction": true
+        },
+        {
+          "left": 1020,
+          "right": 1064,
+          "width": 44,
+          "cy": 277,
+          "albumAction": true
+        },
+        {
+          "left": 1064,
+          "right": 1108,
+          "width": 44,
+          "cy": 277,
+          "albumAction": true
+        },
+        {
+          "left": 1120,
+          "right": 1248,
+          "width": 128,
+          "cy": 277,
+          "albumAction": true
+        }
+      ]
+    },
+    {
+      "name": "album-toolbar-selected",
+      "theme": "light",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "bar": {
+        "left": 264,
+        "right": 1408,
+        "width": 1144,
+        "cy": 221
+      },
+      "search": {
+        "left": 264,
+        "right": 544,
+        "width": 280,
+        "cy": 221
+      },
+      "searchGroup": {
+        "left": 264,
+        "right": 544,
+        "width": 280,
+        "cy": 221
+      },
+      "searchInput": {
+        "left": 309,
+        "right": 491,
+        "width": 182,
+        "cy": 221
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 265,
+        "right": 309,
+        "width": 44,
+        "cy": 221
+      },
+      "selectRecord": null,
+      "albumActions": {
+        "left": 1092,
+        "right": 1408,
+        "width": 316,
+        "cy": 221
+      },
+      "actions": [
+        {
+          "left": 630.6875,
+          "right": 666.6875,
+          "width": 36,
+          "cy": 221,
+          "albumAction": false
+        },
+        {
+          "left": 670.6875,
+          "right": 706.6875,
+          "width": 36,
+          "cy": 221,
+          "albumAction": false
+        },
+        {
+          "left": 718.6875,
+          "right": 792.46875,
+          "width": 73.78125,
+          "cy": 221,
+          "albumAction": false
+        },
+        {
+          "left": 800.46875,
+          "right": 844.46875,
+          "width": 44,
+          "cy": 221,
+          "albumAction": false
+        },
+        {
+          "left": 844.46875,
+          "right": 888.46875,
+          "width": 44,
+          "cy": 221,
+          "albumAction": false
+        },
+        {
+          "left": 888.46875,
+          "right": 932.46875,
+          "width": 44,
+          "cy": 221,
+          "albumAction": false
+        },
+        {
+          "left": 932.46875,
+          "right": 976.46875,
+          "width": 44,
+          "cy": 221,
+          "albumAction": false
+        },
+        {
+          "left": 1092,
+          "right": 1136,
+          "width": 44,
+          "cy": 221,
+          "albumAction": true
+        },
+        {
+          "left": 1136,
+          "right": 1180,
+          "width": 44,
+          "cy": 221,
+          "albumAction": true
+        },
+        {
+          "left": 1180,
+          "right": 1224,
+          "width": 44,
+          "cy": 221,
+          "albumAction": true
+        },
+        {
+          "left": 1224,
+          "right": 1268,
+          "width": 44,
+          "cy": 221,
+          "albumAction": true
+        },
+        {
+          "left": 1280,
+          "right": 1408,
+          "width": 128,
+          "cy": 221,
+          "albumAction": true
+        }
+      ]
+    },
+    {
+      "name": "album-toolbar-selected",
+      "theme": "dark",
+      "width": 360,
+      "scrollWidth": 360,
+      "bar": {
+        "left": 16,
+        "right": 344,
+        "width": 328,
+        "cy": 328
+      },
+      "search": {
+        "left": 16,
+        "right": 344,
+        "width": 328,
+        "cy": 248
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 344,
+        "width": 328,
+        "cy": 248
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 291,
+        "width": 230,
+        "cy": 248
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 248
+      },
+      "selectRecord": null,
+      "albumActions": {
+        "left": 20,
+        "right": 344,
+        "width": 324,
+        "cy": 406
+      },
+      "actions": [
+        {
+          "left": 86.6875,
+          "right": 130.6875,
+          "width": 44,
+          "cy": 300,
+          "albumAction": false
+        },
+        {
+          "left": 138.6875,
+          "right": 182.6875,
+          "width": 44,
+          "cy": 300,
+          "albumAction": false
+        },
+        {
+          "left": 16,
+          "right": 97.78125,
+          "width": 81.78125,
+          "cy": 352,
+          "albumAction": false
+        },
+        {
+          "left": 105.78125,
+          "right": 149.78125,
+          "width": 44,
+          "cy": 352,
+          "albumAction": false
+        },
+        {
+          "left": 149.78125,
+          "right": 193.78125,
+          "width": 44,
+          "cy": 352,
+          "albumAction": false
+        },
+        {
+          "left": 193.78125,
+          "right": 237.78125,
+          "width": 44,
+          "cy": 352,
+          "albumAction": false
+        },
+        {
+          "left": 237.78125,
+          "right": 281.78125,
+          "width": 44,
+          "cy": 352,
+          "albumAction": false
+        },
+        {
+          "left": 20,
+          "right": 64,
+          "width": 44,
+          "cy": 406,
+          "albumAction": true
+        },
+        {
+          "left": 64,
+          "right": 108,
+          "width": 44,
+          "cy": 406,
+          "albumAction": true
+        },
+        {
+          "left": 108,
+          "right": 152,
+          "width": 44,
+          "cy": 406,
+          "albumAction": true
+        },
+        {
+          "left": 152,
+          "right": 196,
+          "width": 44,
+          "cy": 406,
+          "albumAction": true
+        },
+        {
+          "left": 208,
+          "right": 344,
+          "width": 136,
+          "cy": 406,
+          "albumAction": true
+        }
+      ]
+    },
+    {
+      "name": "album-toolbar-selected",
+      "theme": "dark",
+      "width": 390,
+      "scrollWidth": 390,
+      "bar": {
+        "left": 16,
+        "right": 374,
+        "width": 358,
+        "cy": 328
+      },
+      "search": {
+        "left": 16,
+        "right": 374,
+        "width": 358,
+        "cy": 248
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 374,
+        "width": 358,
+        "cy": 248
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 321,
+        "width": 260,
+        "cy": 248
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 248
+      },
+      "selectRecord": null,
+      "albumActions": {
+        "left": 50,
+        "right": 374,
+        "width": 324,
+        "cy": 406
+      },
+      "actions": [
+        {
+          "left": 86.6875,
+          "right": 130.6875,
+          "width": 44,
+          "cy": 300,
+          "albumAction": false
+        },
+        {
+          "left": 138.6875,
+          "right": 182.6875,
+          "width": 44,
+          "cy": 300,
+          "albumAction": false
+        },
+        {
+          "left": 16,
+          "right": 97.78125,
+          "width": 81.78125,
+          "cy": 352,
+          "albumAction": false
+        },
+        {
+          "left": 105.78125,
+          "right": 149.78125,
+          "width": 44,
+          "cy": 352,
+          "albumAction": false
+        },
+        {
+          "left": 149.78125,
+          "right": 193.78125,
+          "width": 44,
+          "cy": 352,
+          "albumAction": false
+        },
+        {
+          "left": 193.78125,
+          "right": 237.78125,
+          "width": 44,
+          "cy": 352,
+          "albumAction": false
+        },
+        {
+          "left": 237.78125,
+          "right": 281.78125,
+          "width": 44,
+          "cy": 352,
+          "albumAction": false
+        },
+        {
+          "left": 50,
+          "right": 94,
+          "width": 44,
+          "cy": 406,
+          "albumAction": true
+        },
+        {
+          "left": 94,
+          "right": 138,
+          "width": 44,
+          "cy": 406,
+          "albumAction": true
+        },
+        {
+          "left": 138,
+          "right": 182,
+          "width": 44,
+          "cy": 406,
+          "albumAction": true
+        },
+        {
+          "left": 182,
+          "right": 226,
+          "width": 44,
+          "cy": 406,
+          "albumAction": true
+        },
+        {
+          "left": 238,
+          "right": 374,
+          "width": 136,
+          "cy": 406,
+          "albumAction": true
+        }
+      ]
+    },
+    {
+      "name": "album-toolbar-selected",
+      "theme": "dark",
+      "width": 430,
+      "scrollWidth": 430,
+      "bar": {
+        "left": 16,
+        "right": 414,
+        "width": 398,
+        "cy": 328
+      },
+      "search": {
+        "left": 16,
+        "right": 414,
+        "width": 398,
+        "cy": 248
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 414,
+        "width": 398,
+        "cy": 248
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 361,
+        "width": 300,
+        "cy": 248
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 248
+      },
+      "selectRecord": null,
+      "albumActions": {
+        "left": 90,
+        "right": 414,
+        "width": 324,
+        "cy": 406
+      },
+      "actions": [
+        {
+          "left": 86.6875,
+          "right": 130.6875,
+          "width": 44,
+          "cy": 300,
+          "albumAction": false
+        },
+        {
+          "left": 138.6875,
+          "right": 182.6875,
+          "width": 44,
+          "cy": 300,
+          "albumAction": false
+        },
+        {
+          "left": 16,
+          "right": 97.78125,
+          "width": 81.78125,
+          "cy": 352,
+          "albumAction": false
+        },
+        {
+          "left": 105.78125,
+          "right": 149.78125,
+          "width": 44,
+          "cy": 352,
+          "albumAction": false
+        },
+        {
+          "left": 149.78125,
+          "right": 193.78125,
+          "width": 44,
+          "cy": 352,
+          "albumAction": false
+        },
+        {
+          "left": 193.78125,
+          "right": 237.78125,
+          "width": 44,
+          "cy": 352,
+          "albumAction": false
+        },
+        {
+          "left": 237.78125,
+          "right": 281.78125,
+          "width": 44,
+          "cy": 352,
+          "albumAction": false
+        },
+        {
+          "left": 90,
+          "right": 134,
+          "width": 44,
+          "cy": 406,
+          "albumAction": true
+        },
+        {
+          "left": 134,
+          "right": 178,
+          "width": 44,
+          "cy": 406,
+          "albumAction": true
+        },
+        {
+          "left": 178,
+          "right": 222,
+          "width": 44,
+          "cy": 406,
+          "albumAction": true
+        },
+        {
+          "left": 222,
+          "right": 266,
+          "width": 44,
+          "cy": 406,
+          "albumAction": true
+        },
+        {
+          "left": 278,
+          "right": 414,
+          "width": 136,
+          "cy": 406,
+          "albumAction": true
+        }
+      ]
+    },
+    {
+      "name": "album-toolbar-selected",
+      "theme": "dark",
+      "width": 640,
+      "scrollWidth": 640,
+      "bar": {
+        "left": 16,
+        "right": 624,
+        "width": 608,
+        "cy": 268
+      },
+      "search": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 214
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 214
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 243,
+        "width": 182,
+        "cy": 214
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 214
+      },
+      "selectRecord": null,
+      "albumActions": {
+        "left": 308,
+        "right": 624,
+        "width": 316,
+        "cy": 320
+      },
+      "actions": [
+        {
+          "left": 86.6875,
+          "right": 130.6875,
+          "width": 44,
+          "cy": 266,
+          "albumAction": false
+        },
+        {
+          "left": 138.6875,
+          "right": 182.6875,
+          "width": 44,
+          "cy": 266,
+          "albumAction": false
+        },
+        {
+          "left": 190.6875,
+          "right": 264.46875,
+          "width": 73.78125,
+          "cy": 266,
+          "albumAction": false
+        },
+        {
+          "left": 272.46875,
+          "right": 316.46875,
+          "width": 44,
+          "cy": 266,
+          "albumAction": false
+        },
+        {
+          "left": 316.46875,
+          "right": 360.46875,
+          "width": 44,
+          "cy": 266,
+          "albumAction": false
+        },
+        {
+          "left": 360.46875,
+          "right": 404.46875,
+          "width": 44,
+          "cy": 266,
+          "albumAction": false
+        },
+        {
+          "left": 404.46875,
+          "right": 448.46875,
+          "width": 44,
+          "cy": 266,
+          "albumAction": false
+        },
+        {
+          "left": 308,
+          "right": 352,
+          "width": 44,
+          "cy": 320,
+          "albumAction": true
+        },
+        {
+          "left": 352,
+          "right": 396,
+          "width": 44,
+          "cy": 320,
+          "albumAction": true
+        },
+        {
+          "left": 396,
+          "right": 440,
+          "width": 44,
+          "cy": 320,
+          "albumAction": true
+        },
+        {
+          "left": 440,
+          "right": 484,
+          "width": 44,
+          "cy": 320,
+          "albumAction": true
+        },
+        {
+          "left": 496,
+          "right": 624,
+          "width": 128,
+          "cy": 320,
+          "albumAction": true
+        }
+      ]
+    },
+    {
+      "name": "album-toolbar-selected",
+      "theme": "dark",
+      "width": 768,
+      "scrollWidth": 768,
+      "bar": {
+        "left": 16,
+        "right": 752,
+        "width": 736,
+        "cy": 243
+      },
+      "search": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 215
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 215
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 243,
+        "width": 182,
+        "cy": 215
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 215
+      },
+      "selectRecord": null,
+      "albumActions": {
+        "left": 436,
+        "right": 752,
+        "width": 316,
+        "cy": 269
+      },
+      "actions": [
+        {
+          "left": 374.6875,
+          "right": 418.6875,
+          "width": 44,
+          "cy": 215,
+          "albumAction": false
+        },
+        {
+          "left": 426.6875,
+          "right": 470.6875,
+          "width": 44,
+          "cy": 215,
+          "albumAction": false
+        },
+        {
+          "left": 478.6875,
+          "right": 552.46875,
+          "width": 73.78125,
+          "cy": 215,
+          "albumAction": false
+        },
+        {
+          "left": 560.46875,
+          "right": 604.46875,
+          "width": 44,
+          "cy": 215,
+          "albumAction": false
+        },
+        {
+          "left": 604.46875,
+          "right": 648.46875,
+          "width": 44,
+          "cy": 215,
+          "albumAction": false
+        },
+        {
+          "left": 648.46875,
+          "right": 692.46875,
+          "width": 44,
+          "cy": 215,
+          "albumAction": false
+        },
+        {
+          "left": 692.46875,
+          "right": 736.46875,
+          "width": 44,
+          "cy": 215,
+          "albumAction": false
+        },
+        {
+          "left": 436,
+          "right": 480,
+          "width": 44,
+          "cy": 269,
+          "albumAction": true
+        },
+        {
+          "left": 480,
+          "right": 524,
+          "width": 44,
+          "cy": 269,
+          "albumAction": true
+        },
+        {
+          "left": 524,
+          "right": 568,
+          "width": 44,
+          "cy": 269,
+          "albumAction": true
+        },
+        {
+          "left": 568,
+          "right": 612,
+          "width": 44,
+          "cy": 269,
+          "albumAction": true
+        },
+        {
+          "left": 624,
+          "right": 752,
+          "width": 128,
+          "cy": 269,
+          "albumAction": true
+        }
+      ]
+    },
+    {
+      "name": "album-toolbar-selected",
+      "theme": "dark",
+      "width": 1024,
+      "scrollWidth": 1024,
+      "bar": {
+        "left": 16,
+        "right": 1008,
+        "width": 992,
+        "cy": 243
+      },
+      "search": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 215
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 215
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 243,
+        "width": 182,
+        "cy": 215
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 215
+      },
+      "selectRecord": null,
+      "albumActions": {
+        "left": 692,
+        "right": 1008,
+        "width": 316,
+        "cy": 269
+      },
+      "actions": [
+        {
+          "left": 374.6875,
+          "right": 418.6875,
+          "width": 44,
+          "cy": 215,
+          "albumAction": false
+        },
+        {
+          "left": 426.6875,
+          "right": 470.6875,
+          "width": 44,
+          "cy": 215,
+          "albumAction": false
+        },
+        {
+          "left": 478.6875,
+          "right": 552.46875,
+          "width": 73.78125,
+          "cy": 215,
+          "albumAction": false
+        },
+        {
+          "left": 560.46875,
+          "right": 604.46875,
+          "width": 44,
+          "cy": 215,
+          "albumAction": false
+        },
+        {
+          "left": 604.46875,
+          "right": 648.46875,
+          "width": 44,
+          "cy": 215,
+          "albumAction": false
+        },
+        {
+          "left": 648.46875,
+          "right": 692.46875,
+          "width": 44,
+          "cy": 215,
+          "albumAction": false
+        },
+        {
+          "left": 692.46875,
+          "right": 736.46875,
+          "width": 44,
+          "cy": 215,
+          "albumAction": false
+        },
+        {
+          "left": 692,
+          "right": 736,
+          "width": 44,
+          "cy": 269,
+          "albumAction": true
+        },
+        {
+          "left": 736,
+          "right": 780,
+          "width": 44,
+          "cy": 269,
+          "albumAction": true
+        },
+        {
+          "left": 780,
+          "right": 824,
+          "width": 44,
+          "cy": 269,
+          "albumAction": true
+        },
+        {
+          "left": 824,
+          "right": 868,
+          "width": 44,
+          "cy": 269,
+          "albumAction": true
+        },
+        {
+          "left": 880,
+          "right": 1008,
+          "width": 128,
+          "cy": 269,
+          "albumAction": true
+        }
+      ]
+    },
+    {
+      "name": "album-toolbar-selected",
+      "theme": "dark",
+      "width": 1130,
+      "scrollWidth": 1130,
+      "bar": {
+        "left": 16,
+        "right": 1114,
+        "width": 1098,
+        "cy": 217
+      },
+      "search": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 217
+      },
+      "searchGroup": {
+        "left": 16,
+        "right": 296,
+        "width": 280,
+        "cy": 217
+      },
+      "searchInput": {
+        "left": 61,
+        "right": 243,
+        "width": 182,
+        "cy": 217
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 17,
+        "right": 61,
+        "width": 44,
+        "cy": 217
+      },
+      "selectRecord": null,
+      "albumActions": {
+        "left": 798,
+        "right": 1114,
+        "width": 316,
+        "cy": 217
+      },
+      "actions": [
+        {
+          "left": 374.6875,
+          "right": 418.6875,
+          "width": 44,
+          "cy": 217,
+          "albumAction": false
+        },
+        {
+          "left": 426.6875,
+          "right": 470.6875,
+          "width": 44,
+          "cy": 217,
+          "albumAction": false
+        },
+        {
+          "left": 478.6875,
+          "right": 552.46875,
+          "width": 73.78125,
+          "cy": 217,
+          "albumAction": false
+        },
+        {
+          "left": 560.46875,
+          "right": 604.46875,
+          "width": 44,
+          "cy": 217,
+          "albumAction": false
+        },
+        {
+          "left": 604.46875,
+          "right": 648.46875,
+          "width": 44,
+          "cy": 217,
+          "albumAction": false
+        },
+        {
+          "left": 648.46875,
+          "right": 692.46875,
+          "width": 44,
+          "cy": 217,
+          "albumAction": false
+        },
+        {
+          "left": 692.46875,
+          "right": 736.46875,
+          "width": 44,
+          "cy": 217,
+          "albumAction": false
+        },
+        {
+          "left": 798,
+          "right": 842,
+          "width": 44,
+          "cy": 217,
+          "albumAction": true
+        },
+        {
+          "left": 842,
+          "right": 886,
+          "width": 44,
+          "cy": 217,
+          "albumAction": true
+        },
+        {
+          "left": 886,
+          "right": 930,
+          "width": 44,
+          "cy": 217,
+          "albumAction": true
+        },
+        {
+          "left": 930,
+          "right": 974,
+          "width": 44,
+          "cy": 217,
+          "albumAction": true
+        },
+        {
+          "left": 986,
+          "right": 1114,
+          "width": 128,
+          "cy": 217,
+          "albumAction": true
+        }
+      ]
+    },
+    {
+      "name": "album-toolbar-selected",
+      "theme": "dark",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "bar": {
+        "left": 264,
+        "right": 1248,
+        "width": 984,
+        "cy": 249
+      },
+      "search": {
+        "left": 264,
+        "right": 544,
+        "width": 280,
+        "cy": 219
+      },
+      "searchGroup": {
+        "left": 264,
+        "right": 544,
+        "width": 280,
+        "cy": 219
+      },
+      "searchInput": {
+        "left": 309,
+        "right": 491,
+        "width": 182,
+        "cy": 219
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 265,
+        "right": 309,
+        "width": 44,
+        "cy": 219
+      },
+      "selectRecord": null,
+      "albumActions": {
+        "left": 932,
+        "right": 1248,
+        "width": 316,
+        "cy": 277
+      },
+      "actions": [
+        {
+          "left": 630.6875,
+          "right": 666.6875,
+          "width": 36,
+          "cy": 219,
+          "albumAction": false
+        },
+        {
+          "left": 670.6875,
+          "right": 706.6875,
+          "width": 36,
+          "cy": 219,
+          "albumAction": false
+        },
+        {
+          "left": 718.6875,
+          "right": 792.46875,
+          "width": 73.78125,
+          "cy": 219,
+          "albumAction": false
+        },
+        {
+          "left": 800.46875,
+          "right": 844.46875,
+          "width": 44,
+          "cy": 219,
+          "albumAction": false
+        },
+        {
+          "left": 844.46875,
+          "right": 888.46875,
+          "width": 44,
+          "cy": 219,
+          "albumAction": false
+        },
+        {
+          "left": 888.46875,
+          "right": 932.46875,
+          "width": 44,
+          "cy": 219,
+          "albumAction": false
+        },
+        {
+          "left": 932.46875,
+          "right": 976.46875,
+          "width": 44,
+          "cy": 219,
+          "albumAction": false
+        },
+        {
+          "left": 932,
+          "right": 976,
+          "width": 44,
+          "cy": 277,
+          "albumAction": true
+        },
+        {
+          "left": 976,
+          "right": 1020,
+          "width": 44,
+          "cy": 277,
+          "albumAction": true
+        },
+        {
+          "left": 1020,
+          "right": 1064,
+          "width": 44,
+          "cy": 277,
+          "albumAction": true
+        },
+        {
+          "left": 1064,
+          "right": 1108,
+          "width": 44,
+          "cy": 277,
+          "albumAction": true
+        },
+        {
+          "left": 1120,
+          "right": 1248,
+          "width": 128,
+          "cy": 277,
+          "albumAction": true
+        }
+      ]
+    },
+    {
+      "name": "album-toolbar-selected",
+      "theme": "dark",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "bar": {
+        "left": 264,
+        "right": 1408,
+        "width": 1144,
+        "cy": 221
+      },
+      "search": {
+        "left": 264,
+        "right": 544,
+        "width": 280,
+        "cy": 221
+      },
+      "searchGroup": {
+        "left": 264,
+        "right": 544,
+        "width": 280,
+        "cy": 221
+      },
+      "searchInput": {
+        "left": 309,
+        "right": 491,
+        "width": 182,
+        "cy": 221
+      },
+      "submitInsideField": true,
+      "searchSubmit": {
+        "left": 265,
+        "right": 309,
+        "width": 44,
+        "cy": 221
+      },
+      "selectRecord": null,
+      "albumActions": {
+        "left": 1092,
+        "right": 1408,
+        "width": 316,
+        "cy": 221
+      },
+      "actions": [
+        {
+          "left": 630.6875,
+          "right": 666.6875,
+          "width": 36,
+          "cy": 221,
+          "albumAction": false
+        },
+        {
+          "left": 670.6875,
+          "right": 706.6875,
+          "width": 36,
+          "cy": 221,
+          "albumAction": false
+        },
+        {
+          "left": 718.6875,
+          "right": 792.46875,
+          "width": 73.78125,
+          "cy": 221,
+          "albumAction": false
+        },
+        {
+          "left": 800.46875,
+          "right": 844.46875,
+          "width": 44,
+          "cy": 221,
+          "albumAction": false
+        },
+        {
+          "left": 844.46875,
+          "right": 888.46875,
+          "width": 44,
+          "cy": 221,
+          "albumAction": false
+        },
+        {
+          "left": 888.46875,
+          "right": 932.46875,
+          "width": 44,
+          "cy": 221,
+          "albumAction": false
+        },
+        {
+          "left": 932.46875,
+          "right": 976.46875,
+          "width": 44,
+          "cy": 221,
+          "albumAction": false
+        },
+        {
+          "left": 1092,
+          "right": 1136,
+          "width": 44,
+          "cy": 221,
+          "albumAction": true
+        },
+        {
+          "left": 1136,
+          "right": 1180,
+          "width": 44,
+          "cy": 221,
+          "albumAction": true
+        },
+        {
+          "left": 1180,
+          "right": 1224,
+          "width": 44,
+          "cy": 221,
+          "albumAction": true
+        },
+        {
+          "left": 1224,
+          "right": 1268,
+          "width": 44,
+          "cy": 221,
+          "albumAction": true
+        },
+        {
+          "left": 1280,
+          "right": 1408,
+          "width": 128,
+          "cy": 221,
+          "albumAction": true
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    "library-actions-light-390.png",
+    "library-actions-light-1440.png",
+    "library-actions-dark-390.png",
+    "library-actions-dark-1440.png",
+    "library-context-compact.png"
+  ]
+}

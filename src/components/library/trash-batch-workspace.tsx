@@ -9,9 +9,6 @@ import { ArrowLeft } from 'lucide-react';
 import type { TrashBatch } from './use-trash-batch';
 import { TrashBatchResults } from './trash-batch-results';
 
-const footerButton =
-  'h-12 min-h-12 min-w-0 flex-1 rounded-lg px-2 font-normal md:w-50 md:flex-none';
-
 export function TrashBatchWorkspaceContent({ batch }: { batch: TrashBatch }) {
   const title = useRef<HTMLHeadingElement>(null);
   const workspace = batch.workspace;
@@ -39,15 +36,12 @@ export function TrashBatchWorkspaceContent({ batch }: { batch: TrashBatch }) {
                   永久删除已选{workspace.items.length}张图片？
                 </AlertDialog.Heading>
               </AlertDialog.Header>
-              <AlertDialog.Body className="m-0 grid gap-4 p-0">
+              <AlertDialog.Body className="m-0 grid gap-2 p-0">
                 <p className="text-sm leading-normal">
-                  共选{workspace.items.length}张：当前页{workspace.currentCount}
-                  张，其他页{workspace.items.length - workspace.currentCount}
-                  张。
-                </p>
-                <p className="rounded-lg bg-default p-3 text-[13px] leading-normal">
-                  任务受理后不可恢复。仅处理本次选定的{workspace.items.length}
-                  张图片，逐项返回结果；不会清空全部筛选结果。
+                  删除后无法恢复。
+                  {workspace.items.length > workspace.currentCount
+                    ? `所选图片包含其他页的${workspace.items.length - workspace.currentCount}张。`
+                    : ''}
                 </p>
               </AlertDialog.Body>
               <AlertDialog.Footer className="m-0 grid w-full grid-cols-1 gap-4 p-0">
@@ -64,7 +58,7 @@ export function TrashBatchWorkspaceContent({ batch }: { batch: TrashBatch }) {
                   className="h-12 w-full rounded-lg font-normal"
                   onPress={batch.submit}
                 >
-                  确认永久删除
+                  删除
                 </Button>
               </AlertDialog.Footer>
             </AlertDialog.Dialog>
@@ -103,12 +97,13 @@ export function TrashBatchWorkspaceContent({ batch }: { batch: TrashBatch }) {
     >
       <header>
         <Button
+          data-testid="trash-batch-done"
           variant="ghost"
           className="-ml-2 mb-3 h-11 w-fit gap-1 rounded-lg bg-transparent px-2 text-xs font-normal text-muted hover:bg-transparent"
           onPress={batch.close}
         >
           <ArrowLeft size={14} aria-hidden />
-          返回回收站
+          返回
         </Button>
         <h1
           ref={title}
@@ -196,22 +191,5 @@ export function TrashBatchWorkspaceContent({ batch }: { batch: TrashBatch }) {
       ) : null}
       <TrashBatchResults key={workspace.items[0]?.id} batch={batch} />
     </section>
-  );
-}
-
-export function TrashBatchWorkspaceFooter({ batch }: { batch: TrashBatch }) {
-  if (!batch.workspace || !batch.visible || batch.workspace.phase === 'confirm')
-    return null;
-  return (
-    <div className="flex w-full gap-3 md:justify-end">
-      <Button
-        data-testid="trash-batch-done"
-        variant="outline"
-        className={footerButton}
-        onPress={batch.close}
-      >
-        返回回收站
-      </Button>
-    </div>
   );
 }

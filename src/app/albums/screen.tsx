@@ -15,6 +15,7 @@ import { Dropdown } from '@heroui/react/dropdown';
 import { Toolbar } from '@heroui/react/toolbar';
 import { Tooltip } from '@heroui/react/tooltip';
 import { ButtonGroup } from '@heroui/react/button-group';
+import { toast } from '@heroui/react/toast';
 import {
   ArrowLeft,
   ChevronDown,
@@ -206,6 +207,13 @@ export function AlbumsScreen(props: {
           if (result.error) throw result.error;
         }}
         onComplete={(saved) => {
+          if (action?.kind === 'edit')
+            toast('相册已保存', { variant: 'default' });
+          else if (action?.kind === 'delete')
+            toast('相册已删除', {
+              description: '图片仍在图库。',
+              variant: 'default',
+            });
           closeAction();
           if (saved) {
             client.setQueryData(['album', saved.id], { album: saved });

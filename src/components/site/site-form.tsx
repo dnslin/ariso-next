@@ -1,15 +1,18 @@
 'use client';
 
 import { ComponentEntrance } from '../component-entrance';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Button } from '@heroui/react/button';
 import { Card } from '@heroui/react/card';
+import { ComboBox } from '@heroui/react/combo-box';
+import { Description } from '@heroui/react/description';
 import { Form } from '@heroui/react/form';
 import { TextField } from '@heroui/react/textfield';
 import { Input } from '@heroui/react/input';
 import { Label } from '@heroui/react/label';
 import { FieldError } from '@heroui/react/field-error';
 import { Link } from '@heroui/react/link';
+import { ListBox } from '@heroui/react/list-box';
 import { Globe } from 'lucide-react';
 import { siteFieldLabels } from './model';
 import { SiteFeedback } from './site-feedback';
@@ -29,6 +32,28 @@ export function SiteForm({
   };
 }) {
   const [expanded, setExpanded] = useState(false);
+  const [zoneDraft, setZoneDraft] = useState({
+    query: settings.input.timeZone,
+    selected: settings.input.timeZone,
+  });
+  const zones = useMemo(
+    () =>
+      [
+        ...new Set([
+          'UTC',
+          ...Intl.supportedValuesOf('timeZone'),
+          settings.saved.timeZone,
+        ]),
+      ].sort(),
+    [settings.saved.timeZone],
+  );
+  const zoneQuery =
+    settings.input.timeZone && settings.input.timeZone !== zoneDraft.selected
+      ? settings.input.timeZone
+      : zoneDraft.query;
+  const zoneItems = zones
+    .filter((zone) => zone.toLowerCase().includes(zoneQuery.toLowerCase()))
+    .map((id) => ({ id }));
   return (
     <ComponentEntrance delay={0.055} className="min-w-0">
       <Card className={siteCardClass}>
@@ -51,30 +76,92 @@ export function SiteForm({
             void settings.save();
           }}
         >
-          {(
-            Object.keys(siteFieldLabels) as (keyof typeof siteFieldLabels)[]
-          ).map((field) => (
-            <TextField
-              key={field}
-              id={`site-${field}`}
-              name={field}
-              value={settings.input[field]}
-              onChange={(value) => settings.change(field, value)}
-              isDisabled={settings.locked}
-              isInvalid={Boolean(settings.errors[field])}
-              validationBehavior="aria"
-              className="min-w-0 gap-2"
-            >
-              <Label className="text-sm font-medium">
-                {siteFieldLabels[field]}
-              </Label>
+          {(Object.keys(siteFieldLabels) as (keyof typeof siteFieldLabels)[])
+            .filter((field) => field !== 'timeZone')
+            .map((field) => (
+              <TextField
+                key={field}
+                id={`site-${field}`}
+                name={field}
+                value={settings.input[field]}
+                onChange={(value) => settings.change(field, value)}
+                isDisabled={settings.locked}
+                isInvalid={Boolean(settings.errors[field])}
+                validationBehavior="aria"
+                className="min-w-0 gap-2"
+              >
+                <Label className="text-sm font-medium">
+                  {siteFieldLabels[field]}
+                </Label>
+                <Input
+                  spellCheck={false}
+                  className={`h-12 min-w-0 rounded-lg border bg-background px-3.5 text-sm shadow-none ${settings.errors[field] ? 'border-danger' : 'border-border'}`}
+                />
+                <FieldError>{settings.errors[field]}</FieldError>
+              </TextField>
+            ))}
+          <ComboBox
+            className="min-w-0 gap-2"
+            items={zoneItems}
+            inputValue={zoneQuery}
+            onInputChange={(value) => {
+              setZoneDraft({
+                query: value,
+                selected: value === settings.input.timeZone ? value : '',
+              });
+              if (value !== settings.input.timeZone) {
+                settings.change('timeZone', '');
+              }
+            }}
+            value={settings.input.timeZone || null}
+            onChange={(value) => {
+              if (value === null) {
+                settings.change('timeZone', '');
+                setZoneDraft((current) => ({ ...current, selected: '' }));
+                return;
+              }
+              const zone = String(value);
+              settings.change('timeZone', zone);
+              setZoneDraft({ query: zone, selected: zone });
+            }}
+            isDisabled={settings.locked}
+            isInvalid={Boolean(settings.errors.timeZone)}
+            validationBehavior="aria"
+            allowsCustomValue
+            allowsEmptyCollection
+            menuTrigger="input"
+          >
+            <Label htmlFor="site-timeZone" className="text-sm font-medium">
+              站点时区
+            </Label>
+            <ComboBox.InputGroup className="w-full">
               <Input
-                spellCheck={false}
-                className={`h-12 min-w-0 rounded-lg border bg-background px-3.5 text-sm shadow-none ${settings.errors[field] ? 'border-danger' : 'border-border'}`}
+                id="site-timeZone"
+                name="timeZone"
+                className={`h-12 min-h-12 w-full rounded-lg border bg-background shadow-none ${settings.errors.timeZone ? 'border-danger' : 'border-border'}`}
               />
-              <FieldError>{settings.errors[field]}</FieldError>
-            </TextField>
-          ))}
+              <ComboBox.Trigger
+                aria-label="选择时区"
+                className="min-h-11 min-w-11 shrink-0"
+              />
+            </ComboBox.InputGroup>
+            <Description className="text-sm">
+              搜索并选择有效时区；当前保存值不会因浏览器推荐而改变。
+            </Description>
+            <FieldError>{settings.errors.timeZone}</FieldError>
+            <ComboBox.Popover isNonModal>
+              <ListBox<{ id: string }>
+                renderEmptyState={() => '没有匹配的时区'}
+              >
+                {(item) => (
+                  <ListBox.Item id={item.id} textValue={item.id}>
+                    {item.id}
+                    <ListBox.ItemIndicator />
+                  </ListBox.Item>
+                )}
+              </ListBox>
+            </ComboBox.Popover>
+          </ComboBox>
         </Form>
         <Button
           type="button"

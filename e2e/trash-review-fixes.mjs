@@ -259,22 +259,17 @@ export async function verifySingleCleanupCycles(context) {
   assert.equal(thirdResponse.status, 202);
   assert.equal(thirdResponse.task.cycle, 3);
   await page.waitForFunction(
-    () =>
-      document
-        .querySelector('[data-testid="cleanup-modal"]')
-        ?.textContent.includes('永久删除完成'),
-    undefined,
+    (id) =>
+      location.pathname === '/trash' &&
+      !new URL(location.href).searchParams.has('image') &&
+      !!document.querySelector('[data-testid="trash-list"]') &&
+      !document.querySelector('[data-testid="cleanup-modal"]') &&
+      !document.querySelector(`[data-testid="trash-record-${id}"]`) &&
+      document.body.textContent.includes('图片已永久删除'),
+    id,
     { timeout: 30000 },
   );
   const third = await waitCleanup(peer, id, 'succeeded', 3);
-  assert.equal(
-    await page.evaluate(() =>
-      document
-        .querySelector('[data-testid="cleanup-modal"]')
-        .textContent.includes('操作结果待核对'),
-    ),
-    false,
-  );
   assert.equal(
     (
       await sql(`SELECT count(*) AS count FROM media_images WHERE id='${id}'`)
@@ -285,7 +280,7 @@ export async function verifySingleCleanupCycles(context) {
   await screenshot('review-single-cycle-three', 390, 'dark');
   report.reviewSingleCycles = { first, second, accepted: thirdResponse, third };
   report.checks.push(
-    '单图页面保留失败周期1，另一真实窗口重试并实际失败周期2；修复Local文件后本页202明确受理周期3，自动完成且不误报未知。',
+    '单图页面保留失败周期1，另一真实窗口重试并实际失败周期2；修复Local文件后本页202明确受理周期3，自动返回回收站并显示Toast，无需再点返回。',
   );
 }
 

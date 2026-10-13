@@ -20,7 +20,7 @@ import {
   ProcessingRequestError,
   type SavedProcessingSettings,
 } from './api';
-import { fieldLabels, footerActionClass } from './model';
+import { fieldLabels, footerActionClass, formatProcessingValue } from './model';
 import { ProcessingForm } from './settings-form';
 import { useProcessingSettings } from './use-processing-settings';
 import { usePreview } from './use-preview';
@@ -313,10 +313,16 @@ function ProcessingEditor({
                                 {fieldLabels[field]}
                               </th>
                               <td className="border-t border-border p-2 wrap-anywhere">
-                                {String(settings.saved[field] ?? '空')}
+                                {formatProcessingValue(
+                                  field,
+                                  settings.saved[field],
+                                )}
                               </td>
                               <td className="border-t border-border p-2 wrap-anywhere">
-                                {String(settings.input[field] ?? '空')}
+                                {formatProcessingValue(
+                                  field,
+                                  settings.input[field],
+                                )}
                               </td>
                             </tr>
                           ))}

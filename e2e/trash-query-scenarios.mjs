@@ -44,25 +44,24 @@ export async function verifyQueryLayouts(
             .querySelector('input[aria-label="搜索回收图片名称"]')
             ?.getBoundingClientRect().height,
           searchIcon: (() => {
-            const icon = document.querySelector(
-              '[data-slot="search-field-search-icon"]',
+            const button = document.querySelector(
+              'button[aria-label="搜索回收图片"]',
             );
-            const input = document.querySelector(
-              'input[aria-label="搜索回收图片名称"]',
-            );
+            const icon = button?.querySelector('.lucide-search');
+            const field = document.querySelector('[data-slot="search-field"]');
             const bounds = icon?.getBoundingClientRect();
             return {
               visible:
                 !!bounds &&
                 bounds.width > 0 &&
                 bounds.height > 0 &&
-                getComputedStyle(icon).visibility !== 'hidden' &&
-                icon.classList.contains('lucide-search'),
-              right: bounds?.right,
-              textStart: input
-                ? input.getBoundingClientRect().left +
-                  Number.parseFloat(getComputedStyle(input).paddingLeft)
-                : undefined,
+                getComputedStyle(icon).visibility !== 'hidden',
+              buttonLeft: button?.getBoundingClientRect().left,
+              buttonRight: button?.getBoundingClientRect().right,
+              buttonWidth: button?.getBoundingClientRect().width,
+              fieldLeft: field?.getBoundingClientRect().left,
+              fieldRight: field?.getBoundingClientRect().right,
+              insideField: field?.contains(button),
             };
           })(),
           rows: [
@@ -84,12 +83,15 @@ export async function verifyQueryLayouts(
       assert.equal(
         layout.searchIcon.visible,
         true,
-        'Trash search renders the visible Lucide search icon',
+        'Trash search renders the visible Lucide submit icon',
       );
       assert.ok(
-        layout.searchIcon.right + 8 <= layout.searchIcon.textStart + 1,
-        'Trash search keeps at least 8px between the icon and text, within 1px rounding tolerance',
+        layout.searchIcon.insideField &&
+          layout.searchIcon.buttonLeft >= layout.searchIcon.fieldLeft - 1 &&
+          layout.searchIcon.buttonRight <= layout.searchIcon.fieldRight + 1,
+        'Trash search action stays inside the text field',
       );
+      assert.ok(layout.searchIcon.buttonWidth >= 44);
       report.layouts.push({ ...layout, theme: mode });
       await screenshot('list', width, mode);
       if (width === 1440) {
@@ -414,11 +416,21 @@ export async function verifyApprovedQueries(context) {
   await select(80);
   await selected(2);
   await page.fill('input[aria-label="搜索回收图片名称"]', 'no-match-178');
-  await page.keyboard.press('Enter');
+  assert.notEqual(
+    new URL(await page.url()).searchParams.get('q'),
+    'no-match-178',
+    'Typing alone does not submit the trash search',
+  );
+  await page.click(button('搜索回收图片'));
   await page.waitForSelector('[data-testid="trash-empty"]');
   await selected(0);
   assert.equal(new URL(await page.url()).searchParams.get('page'), '1');
   await screenshot('filtered-empty', 390, 'light');
+  await page.click(button('清除搜索'));
+  await loaded(80);
+  await page.fill('input[aria-label="搜索回收图片名称"]', 'no-match-178');
+  await page.keyboard.press('Enter');
+  await page.waitForSelector('[data-testid="trash-empty"]');
   await page.click(button('清除搜索'));
   await loaded(80);
 }
@@ -461,6 +473,6 @@ export async function verifyCancelledConfirmation(context) {
     [],
   );
   report.checks.push(
-    '批量确认明确显示真实选择数及不清空筛选结果，Escape取消未受理任何任务',
+    '批量确认留在原回收站列表，仅显示真实选择数与不可恢复提示；Escape取消未受理任何任务',
   );
 }

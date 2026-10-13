@@ -153,30 +153,35 @@ export function TrashBatchRowDetails({
         </p>
       )}
       {task ? (
-        <dl className="grid gap-2">
-          <div className="grid grid-cols-[60px_minmax(0,1fr)] gap-2">
-            <dt className="text-muted">任务</dt>
-            <dd>{task.jobId}</dd>
-          </div>
-          <div className="grid grid-cols-[60px_minmax(0,1fr)] gap-2">
-            <dt className="text-muted">周期</dt>
-            <dd>{task.cycle}</dd>
-          </div>
-          {task.deletedPurposes?.length ? (
-            <div className="grid grid-cols-[60px_minmax(0,1fr)] gap-2">
-              <dt className="text-muted">已清理</dt>
-              <dd>
-                {task.deletedPurposes
-                  .map((purpose) =>
-                    purpose === 'temporary'
-                      ? '候选文件'
-                      : versionLabels[purpose],
-                  )
-                  .join('、')}
-              </dd>
+        <details className="min-w-0 text-muted">
+          <summary className="flex min-h-11 w-fit cursor-pointer items-center rounded-lg pr-3 text-[13px] text-foreground">
+            任务详情
+          </summary>
+          <dl className="grid min-w-0 gap-2 pb-2">
+            <div className="grid min-w-0 grid-cols-[44px_minmax(0,1fr)] gap-2">
+              <dt>任务</dt>
+              <dd className="min-w-0 [overflow-wrap:anywhere]">{task.jobId}</dd>
             </div>
-          ) : null}
-        </dl>
+            <div className="grid min-w-0 grid-cols-[44px_minmax(0,1fr)] gap-2">
+              <dt>周期</dt>
+              <dd>{task.cycle}</dd>
+            </div>
+            {task.deletedPurposes?.length ? (
+              <div className="grid min-w-0 grid-cols-[44px_minmax(0,1fr)] gap-2">
+                <dt>已清理</dt>
+                <dd>
+                  {task.deletedPurposes
+                    .map((purpose) =>
+                      purpose === 'temporary'
+                        ? '候选文件'
+                        : versionLabels[purpose],
+                    )
+                    .join('、')}
+                </dd>
+              </div>
+            ) : null}
+          </dl>
+        </details>
       ) : null}
       {task?.remaining.length ? (
         <div className="grid gap-3" data-testid="trash-batch-item-objects">

@@ -1,0 +1,1146 @@
+{
+  "status": "passed",
+  "taskSpaceId": 29,
+  "checks": [
+    "另一真实窗口恢复A；本页搜索A→B→A主动重新查询得到空结果，后退恢复B，清空查询显示实际200条。",
+    "单图页面保留失败周期1，另一真实窗口重试并实际失败周期2；修复Local文件后本页202明确受理周期3，自动返回回收站并显示Toast，无需再点返回。",
+    "批量结果真实周期1失败，本页重试周期2等待写入并返回暂停轮询；另一窗口修复并完成周期3，重开结果只读当前任务，展示周期3成功且无自动重复写入。"
+  ],
+  "layouts": [
+    {
+      "state": "review-query-reapplied-empty",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-filter",
+          "height": 48
+        },
+        {
+          "testId": "trash-filter",
+          "height": 48
+        },
+        {
+          "testId": "trash-filter",
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "review-query-history-clear",
+      "width": 390,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-filter",
+          "height": 48
+        },
+        {
+          "testId": "trash-filter",
+          "height": 48
+        },
+        {
+          "testId": "trash-filter",
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "review-single-cycle-three",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-filter",
+          "height": 48
+        },
+        {
+          "testId": "trash-filter",
+          "height": 48
+        },
+        {
+          "testId": "trash-filter",
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "review-single-cycle-three",
+      "width": 390,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-filter",
+          "height": 48
+        },
+        {
+          "testId": "trash-filter",
+          "height": 48
+        },
+        {
+          "testId": "trash-filter",
+          "height": 48
+        }
+      ]
+    },
+    {
+      "state": "review-batch-current-cycle",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": []
+    },
+    {
+      "state": "review-batch-current-cycle",
+      "width": 390,
+      "theme": "dark",
+      "overflow": false,
+      "mainOverflow": false,
+      "targets": [
+        {
+          "testId": "trash-batch-item-trigger",
+          "height": 80
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "file": "trash-review-query-reapplied-empty-light-1440.png",
+      "state": "review-query-reapplied-empty",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light"
+    },
+    {
+      "file": "trash-review-query-history-clear-dark-390.png",
+      "state": "review-query-history-clear",
+      "width": 390,
+      "height": 844,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-review-single-cycle-three-light-1440.png",
+      "state": "review-single-cycle-three",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light"
+    },
+    {
+      "file": "trash-review-single-cycle-three-dark-390.png",
+      "state": "review-single-cycle-three",
+      "width": 390,
+      "height": 844,
+      "theme": "dark"
+    },
+    {
+      "file": "trash-review-batch-current-cycle-light-1440.png",
+      "state": "review-batch-current-cycle",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light"
+    },
+    {
+      "file": "trash-review-batch-current-cycle-dark-390.png",
+      "state": "review-batch-current-cycle",
+      "width": 390,
+      "height": 844,
+      "theme": "dark"
+    }
+  ],
+  "browserChecks": [
+    {
+      "scenario": "review-query-cache",
+      "page": "main",
+      "boundary": "scenario-completed",
+      "at": 1791895563982,
+      "url": "http://ariso-63626.localhost:63626/trash?pageSize=80&page=1",
+      "previews": [
+        {
+          "path": "/api/trash/issue177-000/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895561846.5999,
+          "duration": 48.5
+        },
+        {
+          "path": "/api/trash/issue177-001/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895561846.7,
+          "duration": 49
+        },
+        {
+          "path": "/api/trash/issue177-002/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895561846.7,
+          "duration": 49.60000014305115
+        },
+        {
+          "path": "/api/trash/issue177-003/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895561846.7,
+          "duration": 49.90000009536743
+        },
+        {
+          "path": "/api/trash/issue177-004/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895561846.7,
+          "duration": 50.200000047683716
+        },
+        {
+          "path": "/api/trash/issue177-005/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895561846.7,
+          "duration": 50.60000014305115
+        },
+        {
+          "path": "/api/trash/issue177-007/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895561846.7,
+          "duration": 80.90000009536743
+        },
+        {
+          "path": "/api/trash/issue177-006/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895561846.7,
+          "duration": 81.20000004768372
+        },
+        {
+          "path": "/api/trash/issue177-009/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895561846.7998,
+          "duration": 72.29999995231628
+        },
+        {
+          "path": "/api/trash/issue177-008/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895561846.7998,
+          "duration": 79.5
+        },
+        {
+          "path": "/api/trash/issue177-010/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895561846.7998,
+          "duration": 83.29999995231628
+        },
+        {
+          "path": "/api/trash/issue177-011/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895561846.7998,
+          "duration": 84
+        },
+        {
+          "path": "/api/trash/issue177-012/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895561846.7998,
+          "duration": 125.70000004768372
+        },
+        {
+          "path": "/api/trash/issue177-013/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895561846.7998,
+          "duration": 127.5
+        },
+        {
+          "path": "/api/trash/issue177-014/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895561846.7998,
+          "duration": 128
+        },
+        {
+          "path": "/api/trash/issue177-015/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895561846.7998,
+          "duration": 128.70000004768372
+        },
+        {
+          "path": "/api/trash/issue177-016/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895561846.7998,
+          "duration": 134.29999995231628
+        },
+        {
+          "path": "/api/trash/issue177-017/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895561846.9,
+          "duration": 134.40000009536743
+        },
+        {
+          "path": "/api/trash/issue177-018/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895561846.9,
+          "duration": 153.90000009536743
+        },
+        {
+          "path": "/api/trash/issue177-019/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895561847,
+          "duration": 155
+        },
+        {
+          "path": "/api/trash/issue177-020/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895561847,
+          "duration": 155.5
+        },
+        {
+          "path": "/api/trash/issue177-021/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895561847,
+          "duration": 159.79999995231628
+        },
+        {
+          "path": "/api/trash/issue177-022/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895561847,
+          "duration": 163.59999990463257
+        },
+        {
+          "path": "/api/trash/issue177-023/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895561847,
+          "duration": 164
+        },
+        {
+          "path": "/api/trash/issue177-024/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895561847,
+          "duration": 175.19999980926514
+        },
+        {
+          "path": "/api/trash/issue177-025/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895561847,
+          "duration": 175.59999990463257
+        },
+        {
+          "path": "/api/trash/issue177-026/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895561847.0999,
+          "duration": 175.79999995231628
+        },
+        {
+          "path": "/api/trash/issue177-001/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895563142.9,
+          "duration": 33.40000009536743
+        },
+        {
+          "path": "/api/trash/issue177-002/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895563320.5999,
+          "duration": 29.40000009536743
+        },
+        {
+          "path": "/api/trash/issue177-003/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895563320.7,
+          "duration": 29.40000009536743
+        },
+        {
+          "path": "/api/trash/issue177-004/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895563320.7,
+          "duration": 30.90000009536743
+        },
+        {
+          "path": "/api/trash/issue177-005/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895563320.7,
+          "duration": 31.100000143051147
+        },
+        {
+          "path": "/api/trash/issue177-006/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895563320.7,
+          "duration": 31.600000143051147
+        },
+        {
+          "path": "/api/trash/issue177-007/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895563320.7,
+          "duration": 32
+        },
+        {
+          "path": "/api/trash/issue177-008/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895563320.7,
+          "duration": 54.200000047683716
+        },
+        {
+          "path": "/api/trash/issue177-009/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895563320.7,
+          "duration": 54.30000019073486
+        },
+        {
+          "path": "/api/trash/issue177-010/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895563320.7,
+          "duration": 61.60000014305115
+        },
+        {
+          "path": "/api/trash/issue177-011/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895563320.7,
+          "duration": 61.700000047683716
+        },
+        {
+          "path": "/api/trash/issue177-012/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895563320.7,
+          "duration": 70.30000019073486
+        },
+        {
+          "path": "/api/trash/issue177-013/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895563320.7,
+          "duration": 70.40000009536743
+        },
+        {
+          "path": "/api/trash/issue177-014/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895563320.7,
+          "duration": 90.80000019073486
+        },
+        {
+          "path": "/api/trash/issue177-015/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895563320.7,
+          "duration": 93.40000009536743
+        },
+        {
+          "path": "/api/trash/issue177-016/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895563320.7998,
+          "duration": 93.39999985694885
+        },
+        {
+          "path": "/api/trash/issue177-017/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895563320.7998,
+          "duration": 96.39999985694885
+        },
+        {
+          "path": "/api/trash/issue177-018/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895563320.7998,
+          "duration": 102.59999990463257
+        },
+        {
+          "path": "/api/trash/issue177-019/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895563320.7998,
+          "duration": 102.59999990463257
+        },
+        {
+          "path": "/api/trash/issue177-020/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895563320.7998,
+          "duration": 120.59999990463257
+        },
+        {
+          "path": "/api/trash/issue177-021/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895563320.7998,
+          "duration": 120.70000004768372
+        },
+        {
+          "path": "/api/trash/issue177-022/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895563320.7998,
+          "duration": 123.29999995231628
+        },
+        {
+          "path": "/api/trash/issue177-023/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895563320.7998,
+          "duration": 128
+        },
+        {
+          "path": "/api/trash/issue177-024/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895563320.9,
+          "duration": 132.79999995231628
+        },
+        {
+          "path": "/api/trash/issue177-025/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895563320.9,
+          "duration": 133.60000014305115
+        },
+        {
+          "path": "/api/trash/issue177-026/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895563320.9,
+          "duration": 140.29999995231628
+        },
+        {
+          "path": "/api/trash/issue177-027/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895563320.9,
+          "duration": 140.40000009536743
+        }
+      ]
+    },
+    {
+      "scenario": "review-query-cache",
+      "page": "peer",
+      "boundary": "scenario-completed",
+      "at": 1791895563990,
+      "url": "http://ariso-63626.localhost:63626/trash",
+      "previews": []
+    },
+    {
+      "scenario": "review-single-cleanup-cycles",
+      "page": "main",
+      "boundary": "scenario-completed",
+      "at": 1791895570230,
+      "url": "http://ariso-63626.localhost:63626/trash",
+      "previews": [
+        {
+          "path": "/api/trash/issue177-000/preview?type=original",
+          "status": 200,
+          "startedAt": 1791895565793.2998,
+          "duration": 6.599999904632568
+        },
+        {
+          "path": "/api/trash/issue177-001/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895569216.4,
+          "duration": 40
+        },
+        {
+          "path": "/api/trash/issue177-002/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895569216.4,
+          "duration": 44.299999952316284
+        },
+        {
+          "path": "/api/trash/issue177-003/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895569216.4,
+          "duration": 44.40000009536743
+        },
+        {
+          "path": "/api/trash/issue177-004/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895569216.4,
+          "duration": 46.799999952316284
+        },
+        {
+          "path": "/api/trash/issue177-005/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895569216.4,
+          "duration": 47.200000047683716
+        },
+        {
+          "path": "/api/trash/issue177-006/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895569216.5,
+          "duration": 47.89999985694885
+        },
+        {
+          "path": "/api/trash/issue177-007/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895569216.5,
+          "duration": 75.5
+        },
+        {
+          "path": "/api/trash/issue177-009/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895569216.5,
+          "duration": 76
+        },
+        {
+          "path": "/api/trash/issue177-008/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895569216.5,
+          "duration": 75.59999990463257
+        },
+        {
+          "path": "/api/trash/issue177-010/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895569216.5,
+          "duration": 76.29999995231628
+        },
+        {
+          "path": "/api/trash/issue177-012/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895569216.5,
+          "duration": 81.89999985694885
+        },
+        {
+          "path": "/api/trash/issue177-011/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895569216.5,
+          "duration": 81.79999995231628
+        },
+        {
+          "path": "/api/trash/issue177-013/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895569216.5999,
+          "duration": 87.90000009536743
+        },
+        {
+          "path": "/api/trash/issue177-014/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895569216.5999,
+          "duration": 89
+        },
+        {
+          "path": "/api/trash/issue177-015/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895569371.2998,
+          "duration": 26.799999952316284
+        },
+        {
+          "path": "/api/trash/issue177-016/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895569371.4,
+          "duration": 26.799999952316284
+        },
+        {
+          "path": "/api/trash/issue177-017/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895569371.4,
+          "duration": 27.799999952316284
+        },
+        {
+          "path": "/api/trash/issue177-018/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895569371.4,
+          "duration": 27.90000009536743
+        },
+        {
+          "path": "/api/trash/issue177-019/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895569371.4,
+          "duration": 29.600000143051147
+        },
+        {
+          "path": "/api/trash/issue177-020/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895569371.4,
+          "duration": 34.200000047683716
+        },
+        {
+          "path": "/api/trash/issue177-021/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895569371.4,
+          "duration": 47
+        },
+        {
+          "path": "/api/trash/issue177-022/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895569371.5,
+          "duration": 52.69999980926514
+        },
+        {
+          "path": "/api/trash/issue177-023/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895569371.5,
+          "duration": 52.5
+        },
+        {
+          "path": "/api/trash/issue177-024/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895569371.5,
+          "duration": 52.89999985694885
+        },
+        {
+          "path": "/api/trash/issue177-025/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895569371.5,
+          "duration": 54.39999985694885
+        },
+        {
+          "path": "/api/trash/issue177-026/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895569371.5,
+          "duration": 57
+        },
+        {
+          "path": "/api/trash/issue177-027/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895569371.5,
+          "duration": 60
+        }
+      ]
+    },
+    {
+      "scenario": "review-single-cleanup-cycles",
+      "page": "peer",
+      "boundary": "scenario-completed",
+      "at": 1791895570238,
+      "url": "http://ariso-63626.localhost:63626/settings/processing",
+      "previews": []
+    },
+    {
+      "scenario": "review-batch-cleanup-cycles",
+      "page": "main",
+      "boundary": "scenario-completed",
+      "at": 1791895577418,
+      "url": "http://ariso-63626.localhost:63626/trash?q=issue177-&pageSize=80&page=1",
+      "previews": [
+        {
+          "path": "/api/trash/issue177-001/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895571566,
+          "duration": 24.5
+        },
+        {
+          "path": "/api/trash/issue177-002/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895571566,
+          "duration": 24.600000143051147
+        },
+        {
+          "path": "/api/trash/issue177-003/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895571566.1,
+          "duration": 26
+        },
+        {
+          "path": "/api/trash/issue177-004/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895571566.1,
+          "duration": 27.899999856948853
+        },
+        {
+          "path": "/api/trash/issue177-005/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895571566.1,
+          "duration": 29
+        },
+        {
+          "path": "/api/trash/issue177-006/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895571566.1,
+          "duration": 29.199999809265137
+        },
+        {
+          "path": "/api/trash/issue177-007/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895571566.1,
+          "duration": 57.89999985694885
+        },
+        {
+          "path": "/api/trash/issue177-008/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895571566.1,
+          "duration": 58
+        },
+        {
+          "path": "/api/trash/issue177-009/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895571566.2,
+          "duration": 60.200000047683716
+        },
+        {
+          "path": "/api/trash/issue177-010/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895571566.2,
+          "duration": 63.59999990463257
+        },
+        {
+          "path": "/api/trash/issue177-011/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895571566.3,
+          "duration": 63.700000047683716
+        },
+        {
+          "path": "/api/trash/issue177-012/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895571566.3,
+          "duration": 64.10000014305115
+        },
+        {
+          "path": "/api/trash/issue177-000/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895571566.3,
+          "duration": 68.90000009536743
+        },
+        {
+          "path": "/api/trash/issue177-013/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895571566.3,
+          "duration": 69
+        },
+        {
+          "path": "/api/trash/issue177-014/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895571684.4,
+          "duration": 23.59999990463257
+        },
+        {
+          "path": "/api/trash/issue177-015/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895571684.4,
+          "duration": 23.899999856948853
+        },
+        {
+          "path": "/api/trash/issue177-016/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895571684.4,
+          "duration": 24.299999952316284
+        },
+        {
+          "path": "/api/trash/issue177-017/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895571684.4,
+          "duration": 25.399999856948853
+        },
+        {
+          "path": "/api/trash/issue177-018/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895571684.5,
+          "duration": 25.700000047683716
+        },
+        {
+          "path": "/api/trash/issue177-019/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895571684.5,
+          "duration": 26
+        },
+        {
+          "path": "/api/trash/issue177-020/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895571684.5,
+          "duration": 52.90000009536743
+        },
+        {
+          "path": "/api/trash/issue177-021/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895571684.6,
+          "duration": 53
+        },
+        {
+          "path": "/api/trash/issue177-022/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895571684.6,
+          "duration": 53.39999985694885
+        },
+        {
+          "path": "/api/trash/issue177-023/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895571684.6,
+          "duration": 53.5
+        },
+        {
+          "path": "/api/trash/issue177-024/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895571684.6,
+          "duration": 53.69999980926514
+        },
+        {
+          "path": "/api/trash/issue177-025/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895571684.6,
+          "duration": 54.19999980926514
+        },
+        {
+          "path": "/api/trash/issue177-026/preview?type=thumbnail",
+          "status": 200,
+          "startedAt": 1791895571684.6,
+          "duration": 65.5
+        }
+      ]
+    },
+    {
+      "scenario": "review-batch-cleanup-cycles",
+      "page": "peer",
+      "boundary": "scenario-completed",
+      "at": 1791895577432,
+      "url": "http://ariso-63626.localhost:63626/settings/processing",
+      "previews": []
+    },
+    {
+      "scenario": "review-batch-cleanup-cycles",
+      "page": "main",
+      "boundary": "all-fixtures-cleaned",
+      "at": 1791895578261,
+      "url": "http://ariso-63626.localhost:63626/settings/processing",
+      "previews": []
+    },
+    {
+      "scenario": "review-batch-cleanup-cycles",
+      "page": "peer",
+      "boundary": "all-fixtures-cleaned",
+      "at": 1791895578268,
+      "url": "http://ariso-63626.localhost:63626/settings/processing",
+      "previews": []
+    }
+  ],
+  "fixtureTransitions": [
+    {
+      "scenario": "review-query-cache",
+      "event": "cleanup-started-after-leaving-pages",
+      "at": 1791895564542
+    },
+    {
+      "scenario": "review-query-cache",
+      "event": "cleanup-completed",
+      "at": 1791895565068
+    },
+    {
+      "scenario": "review-single-cleanup-cycles",
+      "event": "cleanup-started-after-leaving-pages",
+      "at": 1791895570639
+    },
+    {
+      "scenario": "review-single-cleanup-cycles",
+      "event": "cleanup-completed",
+      "at": 1791895571082
+    },
+    {
+      "scenario": "review-batch-cleanup-cycles",
+      "event": "cleanup-started-after-leaving-pages",
+      "at": 1791895577854
+    },
+    {
+      "scenario": "review-batch-cleanup-cycles",
+      "event": "cleanup-completed",
+      "at": 1791895578257
+    }
+  ],
+  "phase": "review-fixes",
+  "activeCheck": "review-batch-cleanup-cycles",
+  "reviewQueryRefresh": {
+    "restore": {
+      "results": [
+        {
+          "id": "issue177-000",
+          "status": "changed",
+          "message": "操作已完成",
+          "inQuery": false
+        }
+      ]
+    },
+    "reappliedTotal": 0,
+    "historyQuery": "issue177-001",
+    "clearedTotal": 200,
+    "origin": "http://ariso-63626.localhost:63626"
+  },
+  "errors": [],
+  "peerErrors": [],
+  "reviewSingleCycles": {
+    "first": {
+      "jobId": "2cac774a-36bb-4a2c-bb7f-99946d874d07",
+      "imageId": "issue177-000",
+      "status": "failed",
+      "waitingForWrites": false,
+      "cycle": 1,
+      "error": "MEDIA_CLEANUP_FAILED: 部分对象未能清理，请核对剩余清单",
+      "finishedAt": "2026-10-13T12:46:07.004Z",
+      "totalObjects": 2,
+      "deletedObjects": 1,
+      "deletedPurposes": ["thumbnail"],
+      "remaining": [
+        {
+          "objectId": "issue177-000-original",
+          "key": "issue177-batch/issue177-000-original.png",
+          "purpose": "original",
+          "status": "cleanup_failed",
+          "byteSize": 6631,
+          "attempts": 1,
+          "nextAttemptAt": null,
+          "error": "STORAGE_OPERATION_FAILED: Storage inspect failed: a2696867-9282-4a72-b949-3cef5b6f08ce, /private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-browser-e4hbvx/data/storage/default/ariso/a2696867-9282-4a72-b949-3cef5b6f08ce/issue177-batch/issue177-000-original.png"
+        }
+      ]
+    },
+    "second": {
+      "jobId": "2cac774a-36bb-4a2c-bb7f-99946d874d07",
+      "imageId": "issue177-000",
+      "status": "failed",
+      "waitingForWrites": false,
+      "cycle": 2,
+      "error": "MEDIA_CLEANUP_FAILED: 部分对象未能清理，请核对剩余清单",
+      "finishedAt": "2026-10-13T12:46:08.030Z",
+      "totalObjects": 2,
+      "deletedObjects": 1,
+      "deletedPurposes": ["thumbnail"],
+      "remaining": [
+        {
+          "objectId": "issue177-000-original",
+          "key": "issue177-batch/issue177-000-original.png",
+          "purpose": "original",
+          "status": "cleanup_failed",
+          "byteSize": 6631,
+          "attempts": 1,
+          "nextAttemptAt": null,
+          "error": "STORAGE_OPERATION_FAILED: Storage inspect failed: a2696867-9282-4a72-b949-3cef5b6f08ce, /private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-browser-e4hbvx/data/storage/default/ariso/a2696867-9282-4a72-b949-3cef5b6f08ce/issue177-batch/issue177-000-original.png"
+        }
+      ]
+    },
+    "accepted": {
+      "path": "/api/images/issue177-000/cleanup/retry",
+      "method": "POST",
+      "status": 202,
+      "task": {
+        "jobId": "2cac774a-36bb-4a2c-bb7f-99946d874d07",
+        "imageId": "issue177-000",
+        "status": "queued",
+        "waitingForWrites": false,
+        "cycle": 3,
+        "error": null,
+        "finishedAt": null,
+        "totalObjects": 2,
+        "deletedObjects": 1,
+        "deletedPurposes": ["thumbnail"],
+        "remaining": [
+          {
+            "objectId": "issue177-000-original",
+            "key": "issue177-batch/issue177-000-original.png",
+            "purpose": "original",
+            "status": "cleanup_pending",
+            "byteSize": 6631,
+            "attempts": 0,
+            "nextAttemptAt": null,
+            "error": null
+          }
+        ]
+      }
+    },
+    "third": {
+      "jobId": "2cac774a-36bb-4a2c-bb7f-99946d874d07",
+      "imageId": "issue177-000",
+      "status": "succeeded",
+      "waitingForWrites": false,
+      "cycle": 3,
+      "error": null,
+      "finishedAt": "2026-10-13T12:46:09.073Z",
+      "totalObjects": null,
+      "deletedObjects": null,
+      "deletedPurposes": null,
+      "remaining": []
+    }
+  },
+  "reviewBatchCycles": {
+    "first": {
+      "jobId": "0563e7d6-688c-4604-badb-adf6a620e51f",
+      "imageId": "issue177-000",
+      "status": "failed",
+      "waitingForWrites": false,
+      "cycle": 1,
+      "error": "MEDIA_CLEANUP_FAILED: 部分对象未能清理，请核对剩余清单",
+      "finishedAt": "2026-10-13T12:46:13.223Z",
+      "totalObjects": 2,
+      "deletedObjects": 1,
+      "deletedPurposes": ["thumbnail"],
+      "remaining": [
+        {
+          "objectId": "issue177-000-original",
+          "key": "issue177-batch/issue177-000-original.png",
+          "purpose": "original",
+          "status": "cleanup_failed",
+          "byteSize": 6631,
+          "attempts": 1,
+          "nextAttemptAt": null,
+          "error": "STORAGE_OPERATION_FAILED: Storage inspect failed: a2696867-9282-4a72-b949-3cef5b6f08ce, /private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-browser-e4hbvx/data/storage/default/ariso/a2696867-9282-4a72-b949-3cef5b6f08ce/issue177-batch/issue177-000-original.png"
+        }
+      ]
+    },
+    "accepted": {
+      "id": "issue177-000",
+      "status": "accepted",
+      "message": "清理任务已受理，全部对象清完后才会移除记录",
+      "inQuery": true,
+      "taskId": "0563e7d6-688c-4604-badb-adf6a620e51f",
+      "cleanup": {
+        "jobId": "0563e7d6-688c-4604-badb-adf6a620e51f",
+        "imageId": "issue177-000",
+        "status": "queued",
+        "waitingForWrites": true,
+        "cycle": 2,
+        "error": null,
+        "finishedAt": null,
+        "totalObjects": 2,
+        "deletedObjects": 1,
+        "deletedPurposes": ["thumbnail"],
+        "remaining": [
+          {
+            "objectId": "issue177-000-original",
+            "key": "issue177-batch/issue177-000-original.png",
+            "purpose": "original",
+            "status": "cleanup_pending",
+            "byteSize": 6631,
+            "attempts": 0,
+            "nextAttemptAt": null,
+            "error": null
+          }
+        ]
+      }
+    },
+    "second": {
+      "jobId": "0563e7d6-688c-4604-badb-adf6a620e51f",
+      "imageId": "issue177-000",
+      "status": "failed",
+      "waitingForWrites": false,
+      "cycle": 2,
+      "error": "MEDIA_CLEANUP_FAILED: 部分对象未能清理，请核对剩余清单",
+      "finishedAt": "2026-10-13T12:46:14.268Z",
+      "totalObjects": 2,
+      "deletedObjects": 1,
+      "deletedPurposes": ["thumbnail"],
+      "remaining": [
+        {
+          "objectId": "issue177-000-original",
+          "key": "issue177-batch/issue177-000-original.png",
+          "purpose": "original",
+          "status": "cleanup_failed",
+          "byteSize": 6631,
+          "attempts": 1,
+          "nextAttemptAt": null,
+          "error": "STORAGE_OPERATION_FAILED: Storage inspect failed: a2696867-9282-4a72-b949-3cef5b6f08ce, /private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-browser-e4hbvx/data/storage/default/ariso/a2696867-9282-4a72-b949-3cef5b6f08ce/issue177-batch/issue177-000-original.png"
+        }
+      ]
+    },
+    "third": {
+      "jobId": "0563e7d6-688c-4604-badb-adf6a620e51f",
+      "imageId": "issue177-000",
+      "status": "succeeded",
+      "waitingForWrites": false,
+      "cycle": 3,
+      "error": null,
+      "finishedAt": "2026-10-13T12:46:15.275Z",
+      "totalObjects": null,
+      "deletedObjects": null,
+      "deletedPurposes": null,
+      "remaining": []
+    },
+    "requests": [
+      {
+        "ids": ["issue177-000"],
+        "query": "scope=trash&pageSize=80&q=issue177-",
+        "command": {
+          "type": "retry-cleanup",
+          "attempts": {
+            "issue177-000": {
+              "taskId": "0563e7d6-688c-4604-badb-adf6a620e51f",
+              "cycle": 1
+            }
+          }
+        },
+        "mode": "apply"
+      },
+      {
+        "ids": ["issue177-000"],
+        "query": "scope=trash&pageSize=80&q=issue177-",
+        "command": {
+          "type": "delete-permanent"
+        },
+        "mode": "check"
+      }
+    ]
+  },
+  "restoredTheme": null
+}

@@ -36,7 +36,7 @@ export function LibraryToolbar({
       data-testid="library-toolbar"
       className="flex min-w-0 flex-wrap items-center gap-2 xl:gap-3"
     >
-      <div className="w-full min-w-0 sm:w-70">
+      <div className="flex w-full min-w-0 items-center gap-2 sm:w-70">
         <LibrarySearch key={query.filters?.q ?? ''} query={query} />
       </div>
       <div className="flex min-w-0 flex-wrap items-center gap-2 xl:gap-3">
@@ -134,18 +134,29 @@ function LibrarySearch({ query }: { query: Query }) {
       onClear={() => {
         void query.applyQuery({ q: null });
       }}
-      className="w-full min-w-0"
+      className="min-w-0 flex-1"
     >
-      <SearchField.Group className="h-11 min-w-0 overflow-visible rounded-lg border border-border bg-background shadow-none xl:h-9">
-        <Search size={16} aria-hidden className="ml-3 shrink-0 text-muted" />
+      <SearchField.Group className="h-11 min-w-0 rounded-lg border border-border bg-background shadow-none">
+        <Button
+          type="button"
+          slot={null}
+          isIconOnly
+          variant="ghost"
+          aria-label="搜索图库图片"
+          className="size-11 shrink-0 rounded-lg text-muted"
+          onPress={() => void query.applyQuery({ q: value })}
+        >
+          <Search size={16} aria-hidden />
+        </Button>
         <SearchField.Input
           placeholder="搜索图片名称…"
-          className="h-11 min-w-0 text-base xl:h-9 xl:text-sm"
+          enterKeyHint="search"
+          className="h-11 min-w-0 text-base xl:text-sm"
         />
         {value ? (
           <SearchField.ClearButton
             aria-label="清除搜索"
-            className="size-11 shrink-0 xl:size-8"
+            className="size-11 shrink-0"
           />
         ) : null}
       </SearchField.Group>

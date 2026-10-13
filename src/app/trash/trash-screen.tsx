@@ -33,10 +33,7 @@ import {
 } from '../../components/library/cleanup-workspace';
 import { useCleanup } from '../../components/library/use-cleanup';
 import { useTrashBatch } from '../../components/library/use-trash-batch';
-import {
-  TrashBatchWorkspaceContent,
-  TrashBatchWorkspaceFooter,
-} from '../../components/library/trash-batch-workspace';
+import { TrashBatchWorkspaceContent } from '../../components/library/trash-batch-workspace';
 import { useLibraryBatch } from '../../components/library/use-library-batch';
 import {
   LibrarySelectionMenu,
@@ -235,7 +232,7 @@ export function TrashScreen({
     url.searchParams.set('image', id);
     window.history.pushState(null, '', url);
   }
-  function closeRecord() {
+  const closeRecord = useCallback(() => {
     if (analyticsSource) {
       window.location.assign(analyticsSource);
       return;
@@ -243,7 +240,7 @@ export function TrashScreen({
     const url = new URL(window.location.href);
     url.searchParams.delete('image');
     window.history.replaceState(null, '', url);
-  }
+  }, [analyticsSource]);
   function restored(record: LibraryDetail) {
     selection.remove(record.id);
     setResult(record);
@@ -294,6 +291,35 @@ export function TrashScreen({
     onRefresh: () =>
       client.invalidateQueries({ queryKey: ['trash'] }, { throwOnError: true }),
   });
+  const notifiedCleanup = useRef<string | null>(null);
+  useEffect(() => {
+    const task = cleanup.task;
+    if (
+      !cleanup.visible ||
+      cleanup.pending ||
+      cleanup.unknown ||
+      task?.status !== 'succeeded'
+    )
+      return;
+    const key = `${task.jobId}:${task.cycle}`;
+    if (notifiedCleanup.current === key) return;
+    notifiedCleanup.current = key;
+    selection.remove(task.imageId);
+    client.setQueriesData<LibraryPage>({ queryKey: ['trash'] }, (current) =>
+      current
+        ? {
+            ...current,
+            items: current.items.filter((item) => item.id !== task.imageId),
+            total: Math.max(0, current.total - 1),
+          }
+        : current,
+    );
+    toast.success('图片已永久删除', {
+      description: cleanup.record?.displayName,
+    });
+    cleanup.close();
+    closeRecord();
+  }, [cleanup, client, selection, closeRecord]);
   useEffect(() => {
     const task = cleanup.task;
     if (!task || task.status === 'succeeded') return;
@@ -323,6 +349,8 @@ export function TrashScreen({
     : null;
   const batchContentVisible =
     batch.visible && batch.workspace?.phase === 'result';
+  const permanentResultVisible =
+    permanentBatch.visible && permanentBatch.workspace?.phase === 'result';
   if (sessionEnded) return null;
   return (
     <OwnerShell
@@ -334,9 +362,7 @@ export function TrashScreen({
       initialSidebarCollapsed={initialSidebarCollapsed}
       returnTo={`/trash${params.toString() ? `?${params.toString()}` : ''}`}
       footer={
-        permanentBatch.visible ? (
-          <TrashBatchWorkspaceFooter batch={permanentBatch} />
-        ) : batchContentVisible ? (
+        permanentResultVisible ? null : batchContentVisible ? (
           <BatchWorkspaceFooter batch={batch} />
         ) : imageId && cleanup.visible && !cleanup.confirmation ? (
           <CleanupFooter cleanup={cleanup} onBack={leaveCleanup} />
@@ -444,7 +470,7 @@ export function TrashScreen({
           onSessionExpired={expireSession}
         />
       ) : null}
-      {permanentBatch.visible ? (
+      {permanentResultVisible ? (
         <TrashBatchWorkspaceContent batch={permanentBatch} />
       ) : batchContentVisible ? null : imageId ? (
         <>
@@ -654,6 +680,22 @@ export function TrashScreen({
               </Alert.Content>
             </Alert>
           ) : null}
+          {cleanup.refreshError && !imageId ? (
+            <Alert status="warning">
+              <Alert.Content>
+                <Alert.Description>
+                  回收站刷新失败：{cleanup.refreshError}
+                </Alert.Description>
+                <Button
+                  variant="outline"
+                  className="mt-3 min-h-11"
+                  onPress={cleanup.retryRefresh}
+                >
+                  重新刷新回收站
+                </Button>
+              </Alert.Content>
+            </Alert>
+          ) : null}
           {result && !result.storage.enabled ? (
             <Alert
               data-testid="trash-result"
@@ -847,6 +889,10 @@ export function TrashScreen({
           ) : null}
         </section>
       )}
+      {permanentBatch.visible &&
+      permanentBatch.workspace?.phase === 'confirm' ? (
+        <TrashBatchWorkspaceContent batch={permanentBatch} />
+      ) : null}
       <BatchWorkspaceContent batch={batch} client={client} />
       {error ? (
         <Alert status="danger" className="my-4" data-testid="trash-error">
@@ -879,26 +925,40 @@ function TrashSearch({
 }) {
   const [value, setValue] = useState(initialValue);
   return (
-    <SearchField
-      aria-label="搜索回收图片名称"
-      value={value}
-      onChange={setValue}
-      onSubmit={onSubmit}
-      onClear={() => onSubmit('')}
-      className="w-full min-w-0 sm:w-70"
-    >
-      <SearchField.Group className="h-12 min-w-0 rounded-lg border border-border bg-background shadow-none">
-        <SearchField.SearchIcon className="text-muted">
-          <Search aria-hidden />
-        </SearchField.SearchIcon>
-        <SearchField.Input
-          placeholder="搜索文件名称"
-          className="h-12 min-w-0 text-sm placeholder:text-foreground"
-        />
-        {value ? (
-          <SearchField.ClearButton aria-label="清除搜索" className="size-12" />
-        ) : null}
-      </SearchField.Group>
-    </SearchField>
+    <div className="flex min-w-[220px] flex-1 items-center sm:flex-none">
+      <SearchField
+        aria-label="搜索回收图片名称"
+        value={value}
+        onChange={setValue}
+        onSubmit={onSubmit}
+        onClear={() => onSubmit('')}
+        className="min-w-0 flex-1 sm:w-70"
+      >
+        <SearchField.Group className="h-12 min-w-0 rounded-lg border border-border bg-background shadow-none">
+          <Button
+            type="button"
+            slot={null}
+            isIconOnly
+            variant="ghost"
+            aria-label="搜索回收图片"
+            className="size-11 shrink-0 rounded-lg text-muted"
+            onPress={() => onSubmit(value)}
+          >
+            <Search size={18} aria-hidden />
+          </Button>
+          <SearchField.Input
+            placeholder="搜索文件名称"
+            enterKeyHint="search"
+            className="h-12 min-w-0 text-sm placeholder:text-foreground"
+          />
+          {value ? (
+            <SearchField.ClearButton
+              aria-label="清除搜索"
+              className="size-12"
+            />
+          ) : null}
+        </SearchField.Group>
+      </SearchField>
+    </div>
   );
 }

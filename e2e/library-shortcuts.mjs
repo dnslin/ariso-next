@@ -264,6 +264,23 @@ export async function runLibraryShortcuts(page, { origin, output, sql }) {
     }
     await visit();
     await selected(0);
+    await page.fill('input[aria-label="搜索图片名称"]', 'no-match-173');
+    assert.equal(
+      new URL(await page.url()).searchParams.get('q'),
+      prefix,
+      'Typing alone does not submit the library search',
+    );
+    await page.click(button('搜索图库图片'));
+    await page.waitForSelector('[data-testid="library-empty"]');
+    await page.fill('input[aria-label="搜索图片名称"]', prefix);
+    await page.click(button('搜索图库图片'));
+    await loaded(2);
+    await page.fill('input[aria-label="搜索图片名称"]', 'no-match-173');
+    await page.keyboard.press('Enter');
+    await page.waitForSelector('[data-testid="library-empty"]');
+    await page.fill('input[aria-label="搜索图片名称"]', prefix);
+    await page.keyboard.press('Enter');
+    await loaded(2);
     report.layouts.push(
       ...(await verifySearchToolbarLayouts(page, {
         output,

@@ -188,6 +188,14 @@ export function useAlbumImagePicker({
     },
     setPage,
     toggle,
+    remove: (id: string) => {
+      if (pending || unknownIds.length) return;
+      setSelected((previous) => {
+        const next = new Map(previous);
+        next.delete(id);
+        return next;
+      });
+    },
     clear: () => {
       if (!pending && !unknownIds.length) {
         setSelected(new Map());

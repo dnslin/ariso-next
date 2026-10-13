@@ -57,13 +57,15 @@ export function TrashBatchResults({ batch }: { batch: TrashBatch }) {
               <Accordion.Trigger
                 data-testid="trash-batch-item-trigger"
                 data-image-id={row.id}
-                className="min-h-20! min-w-0 gap-2 bg-transparent px-3 py-4 text-sm font-normal max-[420px]:gap-1.5 max-[420px]:px-2.5 max-[420px]:py-3.5"
+                className="min-h-20! min-w-0 gap-3 bg-transparent px-3 py-4 text-sm font-normal max-[420px]:gap-2 max-[420px]:px-2.5"
               >
                 <TrashBatchFileIcon row={row} item={items.get(row.id)!} />
-                <span className="min-w-0 flex-1 text-left [overflow-wrap:anywhere]">
-                  {items.get(row.id)!.displayName}
+                <span className="grid min-w-0 flex-1 gap-2 text-left">
+                  <span className="[overflow-wrap:anywhere]">
+                    {items.get(row.id)!.displayName}
+                  </span>
+                  <TrashBatchRowStatus row={row} />
                 </span>
-                <TrashBatchRowStatus row={row} />
                 <Accordion.Indicator>
                   <ChevronDown size={16} aria-hidden />
                 </Accordion.Indicator>
@@ -83,10 +85,10 @@ export function TrashBatchResults({ batch }: { batch: TrashBatch }) {
       >
         <Table.Content aria-label="逐图清理结果" className="w-full table-fixed">
           <Table.Header>
-            <Table.Column isRowHeader className="w-[32%] font-normal">
+            <Table.Column isRowHeader className="w-[38%] font-normal">
               文件
             </Table.Column>
-            <Table.Column className="w-[20%] font-normal">结果</Table.Column>
+            <Table.Column className="w-[16%] font-normal">结果</Table.Column>
             <Table.Column className="font-normal">详情与操作</Table.Column>
           </Table.Header>
           <Table.Body>
@@ -97,7 +99,7 @@ export function TrashBatchResults({ batch }: { batch: TrashBatch }) {
                 data-image-id={row.id}
                 data-state={row.result?.cleanup?.status ?? row.state}
               >
-                <Table.Cell className="whitespace-normal px-3 py-4 align-top">
+                <Table.Cell className="whitespace-normal px-4 py-5 align-top">
                   <span className="flex min-w-0 items-center gap-3 [overflow-wrap:anywhere]">
                     <TrashBatchFileIcon row={row} item={items.get(row.id)!} />
                     <span className="min-w-0">
@@ -105,10 +107,10 @@ export function TrashBatchResults({ batch }: { batch: TrashBatch }) {
                     </span>
                   </span>
                 </Table.Cell>
-                <Table.Cell className="px-3 py-4 align-top">
+                <Table.Cell className="px-4 py-5 align-top">
                   <TrashBatchRowStatus row={row} />
                 </Table.Cell>
-                <Table.Cell className="whitespace-normal px-3 py-4 align-top">
+                <Table.Cell className="whitespace-normal px-4 py-5 align-top">
                   <TrashBatchRowDetails row={row} batch={batch} />
                 </Table.Cell>
               </Table.Row>

@@ -68,8 +68,17 @@ export async function siteGeneralTools(page, config, report) {
     );
   }
   async function fill(value) {
-    for (const [name, input] of Object.entries(value))
+    for (const [name, input] of Object.entries(value)) {
       await page.fill(field(name), input);
+      if (
+        name === 'timeZone' &&
+        (input === 'UTC' || Intl.supportedValuesOf('timeZone').includes(input))
+      ) {
+        await page.press(field(name), 'ArrowDown');
+        await page.press(field(name), 'Enter');
+        assert.equal((await values()).timeZone, input);
+      }
+    }
   }
   async function save(keyboard = false) {
     const held = await siteFault(page, { mode: 'write-hold' });

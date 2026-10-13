@@ -117,7 +117,7 @@ it('keeps submit feedback outside the scrolling image list and above the footer'
     /<div role="alert" data-testid="album-image-submit-error"[^>]*>/,
   )?.[0];
   expect(feedback).toContain('shrink-0');
-  expect(feedback).toContain('max-h-32');
+  expect(feedback).toContain('max-h-[min(8rem,14dvh)]');
   expect(feedback).toContain('overflow-y-auto');
   expect(html.indexOf('相册刷新失败')).toBeLessThan(
     html.indexOf('data-testid="album-image-add"'),

@@ -393,6 +393,22 @@ export async function verifyProcessingSettings(page, config, tools, report) {
   await page.waitForSelector(testId('settings-preserve'));
   assert.equal(await value('quality'), '71');
   assert.equal((await settings()).quality, 68);
+  const qualityDifference = await page.evaluate(() => {
+    const row = [
+      ...document.querySelectorAll(
+        '[data-testid="processing-editor"] table tbody tr',
+      ),
+    ].find((item) => item.querySelector('th')?.textContent === '质量');
+    return [...(row?.querySelectorAll('td') ?? [])].map((cell) =>
+      cell.textContent.trim(),
+    );
+  });
+  assert.deepEqual(
+    qualityDifference,
+    ['68 / 100', '71 / 100'],
+    'The reconciliation table uses the visible quality unit',
+  );
+  await evidence('save-different', 1440);
   await evidence('save-different', 390);
   await page.click(testId('settings-preserve'));
   assert.equal(await value('quality'), '71');

@@ -19,7 +19,7 @@ export function ResetPasswordResult({
           ? '密码已更新'
           : state === 'invalid'
             ? '链接无法使用'
-            : '重置未完成'}
+            : '重置结果待确认'}
       </h1>
       <p
         className="text-muted min-h-[30px] text-sm leading-[1.5]"
@@ -29,7 +29,7 @@ export function ResetPasswordResult({
           ? '请使用新密码重新登录。所有已登录设备均已退出。'
           : state === 'invalid'
             ? '链接可能已过期、已使用或无效。请重新申请一封重置邮件。'
-            : '本次重置未完成，密码可能已更新，旧会话也可能仍有效。请重新申请链接，再设置一次密码。'}
+            : '未收到明确结果，密码可能已更新。请重新申请链接，再设置一次密码。'}
         {detail ? `（${detail}）` : ''}
       </p>
       {state !== 'success' ? (

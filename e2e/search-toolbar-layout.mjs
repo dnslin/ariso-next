@@ -25,6 +25,14 @@ export async function verifySearchToolbarLayouts(
       const result = await page.evaluate(() => {
         const bar = document.querySelector('[data-testid="library-toolbar"]');
         const search = bar.querySelector('[data-slot="search-field"]');
+        const searchSubmit = bar.querySelector(
+          'button[aria-label="搜索图库图片"], button[aria-label="搜索回收图片"]',
+        );
+        const searchGroup = search?.querySelector(
+          '[data-slot="search-field-group"]',
+        );
+        const searchInput = search?.querySelector('input');
+        const selectRecord = bar.querySelector('button[aria-label="选择记录"]');
         const albumActions = bar.querySelector(
           '[role="toolbar"][aria-label="相册操作"]',
         );
@@ -42,9 +50,14 @@ export async function verifySearchToolbarLayouts(
           scrollWidth: document.documentElement.scrollWidth,
           bar: bounds(bar),
           search: bounds(search),
+          searchGroup: searchGroup ? bounds(searchGroup) : null,
+          searchInput: searchInput ? bounds(searchInput) : null,
+          submitInsideField: search?.contains(searchSubmit),
+          searchSubmit: searchSubmit ? bounds(searchSubmit) : null,
+          selectRecord: selectRecord ? bounds(selectRecord) : null,
           albumActions: albumActions ? bounds(albumActions) : null,
           actions: [...bar.querySelectorAll('button')]
-            .filter((node) => !search.contains(node))
+            .filter((node) => !search.contains(node) && node !== searchSubmit)
             .map((node) => ({
               ...bounds(node),
               albumAction: !!albumActions?.contains(node),
@@ -53,11 +66,39 @@ export async function verifySearchToolbarLayouts(
       });
       const label = `${name}/${theme}/${width}`;
       assert.ok(result.scrollWidth <= width, `${label}: no page overflow`);
+      assert.ok(result.searchSubmit, `${label}: search has a submit button`);
       assert.ok(
-        Math.abs(result.search.width - (width < 640 ? result.bar.width : 280)) <
-          1,
-        `${label}: full-width mobile search and bounded desktop search`,
+        result.submitInsideField,
+        `${label}: search action is inside the field`,
       );
+      assert.ok(
+        result.searchSubmit.width >= 44,
+        `${label}: search submit has a usable target`,
+      );
+      assert.ok(
+        Math.abs(result.search.cy - result.searchSubmit.cy) < 1,
+        `${label}: input and submit button share a row`,
+      );
+      assert.ok(
+        result.searchSubmit.left >= result.searchGroup.left - 1 &&
+          result.searchSubmit.right <= result.searchGroup.right + 1,
+        `${label}: submit button stays within the field border`,
+      );
+      assert.ok(
+        result.search.width >= (width < 640 ? 160 : 190),
+        `${label}: search input remains usable`,
+      );
+      assert.ok(
+        result.searchInput.width >= 100,
+        `${label}: search text keeps a usable width`,
+      );
+      if (name === 'trash-toolbar-idle' && width <= 430) {
+        assert.ok(result.selectRecord, `${label}: selection entry is visible`);
+        assert.ok(
+          Math.abs(result.search.cy - result.selectRecord.cy) < 1,
+          `${label}: mobile search and selection share a row`,
+        );
+      }
       assert.ok(result.actions.length > 0, `${label}: actions remain present`);
       if (result.albumActions)
         assert.ok(

@@ -105,6 +105,18 @@ async function waitCleanup(id, status) {
     { timeout: 30000 },
   );
 }
+async function waitReturnedAfterCleanup(id) {
+  await page.waitForFunction(
+    (id) =>
+      location.pathname === '/trash' &&
+      !new URL(location.href).searchParams.has('image') &&
+      !!document.querySelector('[data-testid="trash-list"]') &&
+      !document.querySelector('[data-testid="cleanup-modal"]') &&
+      !document.querySelector(`[data-testid="trash-record-${id}"]`) &&
+      document.body.textContent.includes('图片已永久删除'),
+    id,
+  );
+}
 async function installLostResponse(id) {
   await page.evaluate((id) => {
     const original = window.fetch;
@@ -283,11 +295,7 @@ try {
   await rm(originalPath, { recursive: true });
   await writeFile(originalPath, original);
   await page.click('[data-testid="cleanup-check"]');
-  await page.waitForFunction(() =>
-    document
-      .querySelector('[data-testid="cleanup-modal"]')
-      ?.textContent.includes('永久删除完成'),
-  );
+  await waitReturnedAfterCleanup(failedId);
   const succeeded = JSON.parse(
     (await page.fetch(`/api/images/${failedId}/cleanup`)).body,
   );
@@ -303,12 +311,8 @@ try {
     0,
   );
   await layouts('succeeded');
-  await page.click('[data-testid="cleanup-submit"]');
-  await page.waitForFunction(
-    () => !new URL(location.href).searchParams.has('image'),
-  );
   report.checks.push(
-    'After replacing the failing directory with its original real file, the next explicit retry opens cycle 3 and actual Local cleanup completes; the image disappears only after the persisted succeeded task, whose read endpoint remains available.',
+    'After replacing the failing directory with its original real file, the next explicit retry opens cycle 3 and actual Local cleanup completes; the image disappears after the persisted succeeded task and returns to the trash list with a toast, without another click.',
   );
 
   report.activeCheck = 'queue-continues-after-leaving-page';
@@ -469,18 +473,10 @@ try {
   await sql(
     `UPDATE media_objects SET next_cleanup_at=NULL WHERE image_id='${runningId}'`,
   );
+  await waitReturnedAfterCleanup(runningId);
   await waitCleanup(runningId, 'succeeded');
-  await page.waitForFunction(() =>
-    document
-      .querySelector('[data-testid="cleanup-modal"]')
-      ?.textContent.includes('永久删除完成'),
-  );
-  await page.click('[data-testid="cleanup-submit"]');
-  await page.waitForFunction(
-    () => !new URL(location.href).searchParams.has('image'),
-  );
   report.checks.push(
-    'A real cleanup_pending object with a future next_cleanup_at keeps the production task running after the writer fixture ends. Actual counts are 1/2 with one retained object; making it due lets the real worker complete. The scheduled-time fixture does not simulate remote DELETE latency.',
+    'A real cleanup_pending object with a future next_cleanup_at keeps the production task running after the writer fixture ends. Actual counts are 1/2 with one retained object; making it due lets the real worker complete and return to the trash list with a toast. The scheduled-time fixture does not simulate remote DELETE latency.',
   );
   report.activeCheck = 'disabled-storage-two-step-confirmation';
   const stoppedId = fixture.ids[2];

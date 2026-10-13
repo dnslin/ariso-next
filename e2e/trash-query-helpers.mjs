@@ -247,12 +247,22 @@ export function createTrashHelpers({ page, config, report }) {
         (count) =>
           document
             .querySelector('[data-testid="trash-batch-confirm"]')
-            .textContent.includes(
-              `仅处理本次选定的${count}张图片，逐项返回结果；不会清空全部筛选结果`,
-            ),
+            .textContent.includes(`永久删除已选${count}张图片？`),
         count,
       ),
     );
+    assert.ok(
+      await page.evaluate(
+        () =>
+          document
+            .querySelector('[data-testid="trash-batch-confirm"]')
+            .textContent.includes('删除后无法恢复。') &&
+          !!document.querySelector('[data-testid="trash-list"]') &&
+          !!document.querySelector('[data-testid="trash-count"]'),
+      ),
+      'The confirmation keeps the trash list and its footer in place',
+    );
+    assert.equal(new URL(await page.url()).pathname, '/trash');
     await screenshot('batch-confirm', 1440, 'light');
     await screenshot('batch-confirm', 390, 'dark');
   }

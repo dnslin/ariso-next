@@ -18,11 +18,21 @@ export async function verifyResultPresentation(context, total) {
     permanentExplanation: document
       .querySelector('[data-testid="trash-batch"]')
       .textContent.includes('任务受理后不可恢复。仅处理本次选定'),
+    returnButtons: [
+      ...document.querySelectorAll('[data-testid="trash-batch-done"]'),
+    ].map((button) => button.textContent.trim()),
+    taskDetailsCollapsed: [
+      ...document.querySelectorAll(
+        '[data-testid="trash-batch-table"] [data-testid="trash-batch-item-details"] details',
+      ),
+    ].every((details) => !details.open),
   }));
   assert.equal(desktop.rows, Math.min(20, total));
   assert.equal(desktop.accordionHidden, true);
   assert.equal(desktop.duplicateSummary, false);
   assert.equal(desktop.permanentExplanation, false);
+  assert.deepEqual(desktop.returnButtons, ['返回']);
+  assert.equal(desktop.taskDetailsCollapsed, true);
   await screenshot('approved-results-table', 1440, 'light');
   await screenshot('approved-results-table', 1440, 'dark');
   await resize(390);
