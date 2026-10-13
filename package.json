@@ -19,6 +19,7 @@
     "typecheck": "next typegen && tsc --noEmit --project tsconfig.json && tsc --noEmit --project tsconfig.runtime.json",
     "test:unit": "vitest run --project unit",
     "test:integration": "vitest run --project integration --project media-tools",
+    "test:experiments": "vitest run --project experiments",
     "test:browser": "pnpm run build:shell && pnpm --dir tests/experiments/ui run build && node scripts/verify-browser.mjs",
     "build:shell": "next build tests/experiments/shell --webpack",
     "openapi:generate": "node scripts/generate-upload-openapi.ts",
