@@ -13,6 +13,9 @@ const { signInToLibrary } = await import(
 const { resizeViewport } = await import(
   new URL('./browser-geometry.mjs', config.identitySessionScript).href
 );
+const { installReadControl } = await import(
+  new URL('./read-control.mjs', config.identitySessionScript).href
+);
 const { installBrowserErrors, readBrowserErrors, isBrowserControlStop } =
   await import(config.errorsScript);
 const page = (await taskSpace(config.spaceId)).page(config.pageLabel ?? 'p1');
@@ -281,11 +284,11 @@ async function refreshCover(width) {
   await page.waitForSelector('loc=role:button[name="返回相册"]');
   await observe();
   await page.evaluate(() => {
-    window.__albumMotionRead.holdNext = true;
+    window.__motionReadControl.pause(['/api/albums']);
   });
   await page.click('loc=role:button[name="返回相册"]');
-  await page.waitForFunction(() => window.__albumMotionRead.held);
-  await page.evaluate(() => window.__albumMotionRead.release());
+  await page.waitForFunction(() => window.__motionReadControl.held);
+  await page.evaluate(() => window.__motionReadControl.release());
   await cardsSettled(3);
   const samples = await collect(`cover metadata refresh ${width}`);
   assertNoFade(samples, 'Album refresh retains real card opacity');
@@ -330,54 +333,6 @@ async function backToAlbums(width) {
   report.checks.push(
     `Browser return keeps component fade-in without native snapshots at ${width}px`,
   );
-}
-
-async function installReadControl() {
-  await page.evaluate((prefix) => {
-    const original = window.fetch;
-    let release;
-    let first = true;
-    window.__albumMotionRead = {
-      held: false,
-      holdNext: false,
-      release() {
-        release?.();
-        window.__albumMotionRead.held = false;
-      },
-      restore() {
-        release?.();
-        window.fetch = original;
-      },
-    };
-    window.fetch = async (...args) => {
-      const input = args[0];
-      const url = new URL(
-        typeof input === 'string'
-          ? input
-          : input instanceof URL
-            ? input.href
-            : input.url,
-        location.href,
-      );
-      if (
-        url.pathname !== '/api/albums' ||
-        (args[1]?.method ?? 'GET') !== 'GET'
-      )
-        return original(...args);
-      // Isolate the fixture using the real production search endpoint.
-      if (!url.searchParams.get('q')) url.searchParams.set('q', prefix);
-      const response = await original(url.href, args[1]);
-      if (first || window.__albumMotionRead.holdNext) {
-        first = false;
-        window.__albumMotionRead.holdNext = false;
-        await new Promise((resolve) => {
-          release = resolve;
-          window.__albumMotionRead.held = true;
-        });
-      }
-      return response;
-    };
-  }, prefix);
 }
 
 async function menus(width) {
@@ -514,15 +469,18 @@ try {
     });
     await page.goto(`${config.origin}/library`);
     await page.waitForSelector('[data-testid="library-list"]');
-    await installReadControl();
+    await page.evaluate(installReadControl, { path: '/api/albums', q: prefix });
+    await page.evaluate(() =>
+      window.__motionReadControl.pause(['/api/albums']),
+    );
     await navigate('/albums');
     await page.waitForFunction(
       () =>
-        window.__albumMotionRead.held &&
+        window.__motionReadControl.held &&
         !!document.querySelector('[data-testid="albums-loading"]'),
     );
     await observe();
-    await page.evaluate(() => window.__albumMotionRead.release());
+    await page.evaluate(() => window.__motionReadControl.release());
     await cardsSettled(3);
     await coverSettled();
     const enter = await collect(`enter ${width}`);
@@ -563,10 +521,10 @@ try {
     const kept = before.filter((card) => card.id !== removed);
     await observe();
     await page.evaluate(() => {
-      window.__albumMotionRead.holdNext = true;
+      window.__motionReadControl.pause(['/api/albums']);
     });
     await page.fill(search, `${prefix} 保留`);
-    await page.waitForFunction(() => window.__albumMotionRead.held);
+    await page.waitForFunction(() => window.__motionReadControl.held);
     assert.deepEqual(
       await page.evaluate(() => ({
         count: document.querySelectorAll('[data-testid="album-card"]').length,
@@ -577,7 +535,7 @@ try {
       { count: 3, busy: 'true' },
       'Pending searches retain the real previous cards',
     );
-    await page.evaluate(() => window.__albumMotionRead.release());
+    await page.evaluate(() => window.__motionReadControl.release());
     await cardsSettled(2);
     const reflow = await collect(`filter and reflow ${width}`);
     assertCoverStable(reflow, `filter and reflow ${width}`);
@@ -663,12 +621,12 @@ try {
     await cardsSettled(3);
     await observe();
     await page.evaluate(() => {
-      window.__albumMotionRead.holdNext = true;
+      window.__motionReadControl.pause(['/api/albums']);
     });
     await page.fill(search, `${prefix} 快速不存在`);
-    await page.waitForFunction(() => window.__albumMotionRead.held);
+    await page.waitForFunction(() => window.__motionReadControl.held);
     await page.fill(search, '');
-    await page.evaluate(() => window.__albumMotionRead.release());
+    await page.evaluate(() => window.__motionReadControl.release());
     await cardsSettled(3);
     const rapid = await collect(`rapid filter ${width}`);
     assertNoFade(
@@ -738,8 +696,8 @@ try {
     assertNoTravel(reducedZero);
     assertNoFade(reducedZero, 'Reduced motion has no card fade-out');
     await page.evaluate(() => {
-      window.__albumMotionRead.restore();
-      delete window.__albumMotionRead;
+      window.__motionReadControl.restore();
+      delete window.__motionReadControl;
     });
     assert.deepEqual(await readBrowserErrors(page), []);
     report.checks.push(
@@ -770,9 +728,9 @@ try {
 } finally {
   if (!failure || !isBrowserControlStop(failure)) {
     await page.evaluate(() => {
-      window.__albumMotionRead?.restore();
+      window.__motionReadControl?.restore();
       window.__albumMotionObservation?.stop();
-      delete window.__albumMotionRead;
+      delete window.__motionReadControl;
       delete window.__albumMotionObservation;
       delete window.__albumMotionCover;
     });

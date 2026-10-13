@@ -10,6 +10,10 @@ const { seedLibraryBatch, cleanLibraryBatch, batchImageId } = await import(
 );
 const { signInToLibrary } = await import(sibling('library-login'));
 const { resizeViewport } = await import(sibling('browser-geometry'));
+const { installReadControl } = await import(sibling('read-control'));
+const { verifyReducedMotionReload } = await import(
+  sibling('component-entry-reduced')
+);
 const { installBrowserErrors, readBrowserErrors, isBrowserControlStop } =
   await import(config.errorsScript);
 const page = (await taskSpace(config.spaceId)).page(config.pageLabel ?? 'p1');
@@ -159,48 +163,6 @@ async function navigate(scene) {
     await page.click(`${nav} a[href="${scene.path}"]`);
   }
   await page.waitForFunction((path) => location.pathname === path, scene.path);
-}
-
-async function installReadControl() {
-  await page.evaluate(() => {
-    const original = window.fetch;
-    const releases = [];
-    window.__adminMotionRead = {
-      paths: [],
-      held: 0,
-      release() {
-        releases.splice(0).forEach((resolve) => resolve());
-        this.held = 0;
-        this.paths = [];
-      },
-      restore() {
-        this.release();
-        window.fetch = original;
-      },
-    };
-    window.fetch = async (...args) => {
-      const input = args[0];
-      const url = new URL(
-        typeof input === 'string'
-          ? input
-          : input instanceof URL
-            ? input.href
-            : input.url,
-        location.href,
-      );
-      const response = await original(...args);
-      if (
-        (args[1]?.method ?? 'GET') === 'GET' &&
-        window.__adminMotionRead.paths.includes(url.pathname)
-      ) {
-        await new Promise((resolve) => {
-          releases.push(resolve);
-          window.__adminMotionRead.held++;
-        });
-      }
-      return response;
-    };
-  });
 }
 
 async function observe(scene) {
@@ -508,7 +470,7 @@ async function pendingRead(scene, width) {
   }, scene);
   await observe(scene);
   await page.evaluate((paths) => {
-    window.__adminMotionRead.paths = paths;
+    window.__motionReadControl.pause(paths);
   }, scene.reads);
   if (scene.refresh) await page.click(button(scene.refresh));
   else {
@@ -516,7 +478,7 @@ async function pendingRead(scene, width) {
     if (['/tags', '/trash'].includes(scene.path))
       await page.press(scene.filter, 'Enter');
   }
-  await page.waitForFunction(() => window.__adminMotionRead.held > 0);
+  await page.waitForFunction(() => window.__motionReadControl.held > 0);
   await frames();
   assert.deepEqual(
     await page.evaluate(() => ({
@@ -538,7 +500,7 @@ async function pendingRead(scene, width) {
       'Old row actions are disabled while showing placeholder results',
     );
   }
-  await page.evaluate(() => window.__adminMotionRead.release());
+  await page.evaluate(() => window.__motionReadControl.release());
   if (['/trash', '/tags', '/shares'].includes(scene.path))
     await page.waitForFunction(
       (selector) =>
@@ -815,7 +777,7 @@ try {
   await page.goto(`${config.origin}/library`);
   await page.waitForSelector('[data-testid="library-list"]');
   await ready({ path: '/library', targets: { heading: '#library-title' } });
-  await installReadControl();
+  await page.evaluate(installReadControl);
   for (const width of [1440, 390]) {
     await resizeViewport(page, width);
     for (const reduced of [false, true]) {
@@ -868,6 +830,10 @@ try {
         }
       }
       if (!reduced) await nestedPages(width);
+      else {
+        await verifyReducedMotionReload(page, config.origin, report);
+        await page.evaluate(installReadControl);
+      }
     }
   }
   report.browserErrors = await readBrowserErrors(page);
@@ -888,9 +854,9 @@ try {
   try {
     if (!failure || !isBrowserControlStop(failure)) {
       await page.evaluate(() => {
-        window.__adminMotionRead?.restore();
+        window.__motionReadControl?.restore();
         window.__adminMotionObservation?.stop();
-        delete window.__adminMotionRead;
+        delete window.__motionReadControl;
         delete window.__adminMotionObservation;
         delete window.__adminMotionRetained;
         delete window.__adminMotionQueue;

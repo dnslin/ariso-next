@@ -1,6 +1,6 @@
 /* global taskSpace, config */
 const assert = (await import('node:assert/strict')).default;
-const { writeFile } = await import('node:fs/promises');
+const { rename, writeFile } = await import('node:fs/promises');
 const { join } = await import('node:path');
 const { identitySql } = await import(config.identitySessionScript);
 const { seedLibraryBatch, cleanLibraryBatch, batchImageId } = await import(
@@ -11,6 +11,9 @@ const { signInToLibrary } = await import(
 );
 const { resizeViewport } = await import(
   new URL('./browser-geometry.mjs', config.libraryDetailScript).href
+);
+const { installReadControl } = await import(
+  new URL('./read-control.mjs', config.identitySessionScript).href
 );
 const { installBrowserErrors, readBrowserErrors, isBrowserControlStop } =
   await import(config.errorsScript);
@@ -37,54 +40,6 @@ async function navigate(path) {
     await page.waitForSelector(nav);
   }
   await page.click(`${nav} a[href="${path}"]`);
-}
-
-async function installReadControl() {
-  await page.evaluate(() => {
-    const original = window.fetch;
-    let release;
-    window.__libraryMotionRead = {
-      held: false,
-      holdNext: true,
-      requests: 0,
-      release() {
-        release?.();
-        this.held = false;
-      },
-      restore() {
-        release?.();
-        window.fetch = original;
-      },
-    };
-    window.fetch = async (...args) => {
-      const input = args[0];
-      const url = new URL(
-        typeof input === 'string'
-          ? input
-          : input instanceof URL
-            ? input.href
-            : input.url,
-        location.href,
-      );
-      if (
-        url.pathname !== '/api/images' ||
-        (args[1]?.method ?? 'GET') !== 'GET'
-      )
-        return original(...args);
-      // Read real production records, isolating this suite's own fixture.
-      if (!url.searchParams.get('q')) url.searchParams.set('q', 'issue177-');
-      window.__libraryMotionRead.requests++;
-      const response = await original(url.href, args[1]);
-      if (window.__libraryMotionRead.holdNext) {
-        window.__libraryMotionRead.holdNext = false;
-        await new Promise((resolve) => {
-          release = resolve;
-          window.__libraryMotionRead.held = true;
-        });
-      }
-      return response;
-    };
-  });
 }
 
 async function observe() {
@@ -303,7 +258,7 @@ function assertImagesStable(samples, ids, label) {
 }
 
 async function heldCards(expected) {
-  await page.waitForFunction(() => window.__libraryMotionRead.held);
+  await page.waitForFunction(() => window.__motionReadControl.held);
   await frames(150);
   assert.deepEqual(
     await page.evaluate(
@@ -323,12 +278,115 @@ async function heldCards(expected) {
     { ids: expected, busy: 'true', opaque: true },
     'Pending reads retain the actual old cards at full opacity',
   );
-  await page.evaluate(() => window.__libraryMotionRead.release());
+  await page.evaluate(() => window.__motionReadControl.release());
 }
 
 async function filter(value) {
   await page.fill(search, value);
   await page.press(search, 'Enter');
+}
+
+async function retryThumbnail(width) {
+  const id = batchImageId(0);
+  const selector = `[data-image-id="${id}"]`;
+  const healthyIds = (await rememberImages()).filter(
+    (imageId) => imageId !== id,
+  );
+  assert.deepEqual(
+    await readBrowserErrors(page),
+    [],
+    'No errors before the deliberate thumbnail failure',
+  );
+  const url = await page.evaluate((selector) => {
+    const card = document.querySelector(selector);
+    window.__libraryRetryCard = card;
+    return card.querySelector('img').currentSrc;
+  }, selector);
+  const file = join(fixture.directory, `${id}-thumbnail.png`);
+  const unavailable = `${file}.unavailable`;
+  let missing = false;
+  await observe();
+  await page.cdp('Network.setCacheDisabled', { cacheDisabled: true });
+  try {
+    await rename(file, unavailable);
+    missing = true;
+    await page.evaluate((selector) => {
+      const image = document.querySelector(`${selector} img`);
+      image.src = image.currentSrc;
+    }, selector);
+    await page.waitForFunction((selector) => {
+      const card = document.querySelector(selector);
+      return (
+        !card.querySelector('img') &&
+        card.textContent.includes('缩略图读取失败')
+      );
+    }, selector);
+    const expectedErrors = await readBrowserErrors(page);
+    assert.equal(
+      expectedErrors.length,
+      1,
+      'Exactly one deliberate image resource error',
+    );
+    assert.equal(expectedErrors[0].kind, 'error');
+    assert.equal(expectedErrors[0].message, `Resource failed: ${url}`);
+    (report.expectedThumbnailFailures ??= []).push({
+      width,
+      errors: expectedErrors,
+    });
+    await rename(unavailable, file);
+    missing = false;
+
+    await page.evaluate(() =>
+      window.__motionReadControl.pause(['/api/images']),
+    );
+    await page.click('loc=role:button[name="刷新图库"]');
+    await page.waitForFunction(() => window.__motionReadControl.held);
+    await frames(150);
+    assert.ok(
+      await page.evaluate((selector) => {
+        const card = document.querySelector(selector);
+        return (
+          card === window.__libraryRetryCard &&
+          !card.querySelector('img') &&
+          card.textContent.includes('缩略图读取失败')
+        );
+      }, selector),
+      'A pending list refresh keeps the failed state and original card',
+    );
+    await page.evaluate(() => window.__motionReadControl.release());
+    await ready(40);
+    await page.waitForFunction(
+      ({ selector, url }) => {
+        const card = document.querySelector(selector);
+        const image = card.querySelector('img');
+        return (
+          card === window.__libraryRetryCard &&
+          image?.complete &&
+          image.naturalWidth > 0 &&
+          image.currentSrc === url &&
+          Number(getComputedStyle(image).opacity) > 0.999
+        );
+      },
+      { selector, url },
+    );
+    const samples = await collect(`thumbnail recovery ${width}`);
+    assertImagesStable(samples, healthyIds, `thumbnail recovery ${width}`);
+    assertOpaque(
+      samples,
+      [id, ...healthyIds],
+      'Thumbnail retry does not replay any card entrance',
+    );
+    report.checks.push(
+      `A failed thumbnail recovers after a successful same-URL refresh while healthy images stay unchanged at ${width}px`,
+    );
+  } finally {
+    if (missing) await rename(unavailable, file);
+    await page.cdp('Network.setCacheDisabled', { cacheDisabled: false });
+    await page.evaluate(() => {
+      window.__motionReadControl.release();
+      delete window.__libraryRetryCard;
+    });
+  }
 }
 
 async function menus(width) {
@@ -441,12 +499,18 @@ try {
     );
     await page.goto(`${config.origin}/upload`);
     await page.waitForSelector('.shell-content');
-    await installReadControl();
+    await page.evaluate(installReadControl, {
+      path: '/api/images',
+      q: 'issue177-',
+    });
+    await page.evaluate(() =>
+      window.__motionReadControl.pause(['/api/images']),
+    );
     await observe();
     await navigate('/library');
     await page.waitForFunction(
       () =>
-        window.__libraryMotionRead.held &&
+        window.__motionReadControl.held &&
         !!document.querySelector('[data-testid="library-loading"]'),
     );
     assert.equal(
@@ -456,7 +520,7 @@ try {
       0,
     );
     await frames(100);
-    await page.evaluate(() => window.__libraryMotionRead.release());
+    await page.evaluate(() => window.__motionReadControl.release());
     await ready(40);
     const entry = await collect(`entry ${width}`);
     assertEntry(entry, `entry ${width}`);
@@ -500,7 +564,7 @@ try {
     const filterImages = await rememberImages();
     await observe();
     await page.evaluate(() => {
-      window.__libraryMotionRead.holdNext = true;
+      window.__motionReadControl.pause(['/api/images']);
     });
     await filter('issue177-motion-keep-');
     await heldCards(before.map((c) => c.id));
@@ -553,7 +617,7 @@ try {
       ),
     );
     await page.evaluate(() => {
-      window.__libraryMotionRead.holdNext = true;
+      window.__motionReadControl.pause(['/api/images']);
     });
     await page.click('loc=role:button[name="刷新图库"]');
     await heldCards(refreshIds);
@@ -568,6 +632,8 @@ try {
     report.checks.push(
       `Refresh retains the real first batch while awaiting its response at ${width}px`,
     );
+    report.stage = `thumbnail recovery ${width}`;
+    await retryThumbnail(width);
 
     report.stage = `empty entry ${width}`;
     await observe();
@@ -665,8 +731,8 @@ try {
     report.stage = `layout and menus ${width}`;
     const layoutImages = await rememberImages();
     await observe();
-    const requests = await page.evaluate(
-      () => window.__libraryMotionRead.requests,
+    const requests = await page.evaluate(() =>
+      window.__motionReadControl.count('/api/images'),
     );
     await page.click('loc=role:radio[name="瀑布流"]');
     await page.waitForFunction(
@@ -683,7 +749,9 @@ try {
     );
     assertImagesStable(layout, layoutImages, `layout ${width}`);
     assert.equal(
-      await page.evaluate(() => window.__libraryMotionRead.requests),
+      await page.evaluate(() =>
+        window.__motionReadControl.count('/api/images'),
+      ),
       requests,
       'Layout switch does not reread the collection',
     );
@@ -731,7 +799,7 @@ try {
     report.checks.push(
       `Reduced motion keeps a short fade-in with no card movement at ${width}px`,
     );
-    await page.evaluate(() => window.__libraryMotionRead.restore());
+    await page.evaluate(() => window.__motionReadControl.restore());
   }
   report.browserErrors = await readBrowserErrors(page);
   assert.deepEqual(
@@ -751,9 +819,9 @@ try {
   if (!failure || !isBrowserControlStop(failure)) {
     await page.evaluate(
       ({ key, value }) => {
-        window.__libraryMotionRead?.restore();
+        window.__motionReadControl?.restore();
         window.__libraryMotionObservation?.stop();
-        delete window.__libraryMotionRead;
+        delete window.__motionReadControl;
         delete window.__libraryMotionObservation;
         delete window.__libraryMotionImages;
         if (value === null) localStorage.removeItem(key);
