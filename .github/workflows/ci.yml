@@ -29,17 +29,46 @@ jobs:
       - run: node docs/tasks/check.mjs
       - run: pnpm run openapi:check
       - run: pnpm run typecheck
-      - run: pnpm run build
-      - run: pnpm run test:unit --reporter=default --reporter=junit --outputFile=test-results/unit.xml
-      - run: pnpm run build:shell
-      - run: pnpm exec vitest run --project integration --maxWorkers=2 --reporter=default --reporter=junit --outputFile=test-results/integration.xml
-      # Browser acceptance remains a separate local Ego run.
+      # Browser acceptance and browser tooling tests run locally.
+      - name: Run unit tests without browser tooling
+        run: pnpm run test:unit --reporter=default --reporter=junit --outputFile=test-results/unit.xml
+      - name: Preserve unit test reports
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: unit-tests
+          path: test-results/unit.xml
+          if-no-files-found: warn
+          retention-days: 14
+
+  runtime:
+    name: Production integration
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+      - uses: pnpm/action-setup@v6
+      - run: pnpm install --frozen-lockfile
+      - name: Build without deployment state
+        shell: bash
+        run: |
+          build_dir="$(mktemp -d)"
+          env -u BETTER_AUTH_SECRET -u ARISO_ENCRYPTION_KEY \
+            NODE_ENV=production DATA_DIR="$build_dir/data" \
+            pnpm run build 2>&1 | tee "$build_dir/build.log"
+          test ! -e "$build_dir/data"
+          ! grep -Eiq '初始化码|(setup|initialization)[ _-]*code' "$build_dir/build.log"
+      - name: Run production integration tests
+        run: pnpm exec vitest run --project integration --maxWorkers=2 --reporter=default --reporter=junit --outputFile=test-results/integration.xml
       - name: Preserve test reports
         if: always()
         uses: actions/upload-artifact@v7
         with:
           name: runtime-tests
-          path: test-results/*.xml
+          path: test-results/integration.xml
           if-no-files-found: warn
           retention-days: 14
 
