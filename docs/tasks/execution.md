@@ -15,6 +15,8 @@
 
 2026-10-12 所有者调整执行策略：日常检查由 `.github/workflows/ci.yml` 在 PR 和 main 推送时执行，包括格式、静态分析、类型、文档/API 契约、构建、单元、普通集成及 AMD64 真实媒体工具测试。真实媒体测试使用 `scripts/verify-media-tools.sh`，在与生产相同的 Debian 镜像上执行；curl 只存在于测试派生镜像。
 
+2026-10-13 所有者调整浏览器检查范围：GitHub Actions 不执行浏览器验收、浏览器运行器和浏览器工具自身的测试，也不构建浏览器专用外壳。工作流在单元、普通集成入口排除这些工具测试，本地 `pnpm run test:unit`、`pnpm run test:integration` 和 `pnpm run test:browser` 保留原有范围。无需浏览器的产品逻辑、HTTP、数据库及 SMTP 测试继续在 Actions 执行。
+
 发布工作流通过手动入口指定版本，执行双架构镜像构建与必要运行验证，再发布同轮已验证镜像。镜像推送和镜像包上传成功后才公布 GitHub Release。不在发布阶段重复整套日常检查。完整格式矩阵、受限磁盘/资源实验、Unicode/SQLite 竞争实验和实验 UI 构建移至 `.github/workflows/experiments.yml` 的手动入口，不作为每次 PR 或发布的前置。
 
 首次发布或修改 Docker/启动/打包/发布验证时，先在独立 Docker 环境执行与 Actions 相同的 `scripts/verify-release-image.mjs` 并收齐证据，再统一发布。不以连续创建正式版本作为调试入口；真实媒体工具相关修改还须先执行同一 `verify-media-tools.sh`。

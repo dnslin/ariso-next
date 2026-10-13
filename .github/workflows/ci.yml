@@ -30,10 +30,11 @@ jobs:
       - run: pnpm run openapi:check
       - run: pnpm run typecheck
       - run: pnpm run build
-      - run: pnpm run test:unit --reporter=default --reporter=junit --outputFile=test-results/unit.xml
-      - run: pnpm run build:shell
-      - run: pnpm exec vitest run --project integration --maxWorkers=2 --reporter=default --reporter=junit --outputFile=test-results/integration.xml
-      # Browser acceptance remains a separate local Ego run.
+      # Browser acceptance and browser tooling tests run locally.
+      - name: Run unit tests without browser tooling
+        run: pnpm run test:unit --reporter=default --reporter=junit --outputFile=test-results/unit.xml
+      - name: Run integration tests without browser tooling
+        run: pnpm exec vitest run --project integration --maxWorkers=2 --reporter=default --reporter=junit --outputFile=test-results/integration.xml
       - name: Preserve test reports
         if: always()
         uses: actions/upload-artifact@v7

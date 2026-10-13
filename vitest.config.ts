@@ -1,5 +1,20 @@
 import { defineConfig } from 'vitest/config';
 
+// Browser acceptance and its tooling run locally, outside GitHub Actions.
+const browserToolingTests =
+  process.env.GITHUB_ACTIONS === 'true'
+    ? [
+        'tests/unit/runtime/browser-*.test.ts',
+        'tests/unit/runtime/analytics-fixture.test.ts',
+        'tests/unit/runtime/oauth-transport.test.ts',
+        'tests/unit/runtime/sharing-browser-errors.test.ts',
+        'tests/unit/scripts/{browser-control,browser-errors,upload-control}.test.ts',
+        'tests/integration/identity/browser-runner.test.ts',
+        'tests/integration/runtime/ui-browser-runner.test.ts',
+        'tests/integration/storage/browser-evidence.test.ts',
+      ]
+    : [];
+
 export default defineConfig({
   test: {
     projects: [
@@ -8,6 +23,7 @@ export default defineConfig({
           name: 'unit',
           environment: 'node',
           include: ['tests/unit/**/*.test.ts'],
+          exclude: browserToolingTests,
         },
       },
       {
@@ -16,6 +32,7 @@ export default defineConfig({
           environment: 'node',
           include: ['tests/integration/**/*.test.ts'],
           exclude: [
+            ...browserToolingTests,
             'tests/integration/delivery/formats.test.ts',
             'tests/integration/delivery/reprocess.test.ts',
             'tests/integration/media/metadata.test.ts',
