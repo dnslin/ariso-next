@@ -16,6 +16,7 @@ import {
 
 export function LibraryCard({
   item,
+  readRevision,
   onOpen,
   openLabel = '查看图片',
   imageHeight,
@@ -25,6 +26,7 @@ export function LibraryCard({
   onToggle,
 }: {
   item: LibraryItem;
+  readRevision: number;
   imageHeight?: number;
   album?: boolean;
   isDisabled?: boolean;
@@ -33,8 +35,13 @@ export function LibraryCard({
   onOpen?: (id: string, element: HTMLElement) => void;
   openLabel?: string;
 }) {
-  const [failedUrl, setFailedUrl] = useState<string | null>(null);
-  const failed = !!item.thumbnailUrl && failedUrl === item.thumbnailUrl;
+  const [failure, setFailure] = useState<{
+    url: string;
+    readRevision: number;
+  } | null>(null);
+  const failed =
+    failure?.url === item.thumbnailUrl &&
+    (readRevision === 0 || failure.readRevision === readRevision);
   const placeholder = !item.storage.enabled
     ? '存储已停用'
     : failed
@@ -91,7 +98,10 @@ export function LibraryCard({
               decoding="async"
               draggable={false}
               className="h-full w-full object-cover"
-              onError={() => setFailedUrl(item.thumbnailUrl)}
+              onLoad={() => setFailure(null)}
+              onError={() =>
+                setFailure({ url: item.thumbnailUrl!, readRevision })
+              }
             />
           </>
         ) : (

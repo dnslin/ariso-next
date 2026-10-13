@@ -105,10 +105,14 @@ it('refreshes from the first cursor without replacing real cards with an empty l
   ).filters;
   const key = libraryListKey(filters, 'more', 1);
   const client = new QueryClient();
-  client.setQueryData<InfiniteData<LibraryPage>>(key, {
-    pages: [page(['a', 'b'], 'old-cursor'), page(['c', 'd'], 'bad-cursor')],
-    pageParams: [null, 'old-cursor'],
-  });
+  client.setQueryData<InfiniteData<LibraryPage>>(
+    key,
+    {
+      pages: [page(['a', 'b'], 'old-cursor'), page(['c', 'd'], 'bad-cursor')],
+      pageParams: [null, 'old-cursor'],
+    },
+    { updatedAt: 123 },
+  );
   let release!: () => void;
   const fetcher = vi.fn(async (url: string) => {
     expect(new URL(url, 'http://localhost').searchParams.has('cursor')).toBe(
@@ -126,6 +130,7 @@ it('refreshes from the first cursor without replacing real cards with an empty l
       .getQueryData<InfiniteData<LibraryPage>>(key)
       ?.pages[0].items.map((item) => item.id),
   ).toEqual(['a', 'b']);
+  expect(mount(client).dataUpdatedAt).toBe(123);
   expect(fetcher).toHaveBeenCalledOnce();
   release();
   await pending;
@@ -134,6 +139,35 @@ it('refreshes from the first cursor without replacing real cards with an empty l
   expect(refreshed.pages[0].items.map((item) => item.id)).toEqual(['new', 'a']);
   expect(refreshed.pages[0].nextCursor).toBe('fresh-cursor');
   expect(refreshed.pageParams).toEqual([null]);
+  expect(mount(client).dataUpdatedAt).not.toBe(123);
+  client.clear();
+});
+
+it('does not advance the thumbnail read revision when a more-mode refresh fails', async () => {
+  const filters = parseLibraryLocation(new URLSearchParams()).filters;
+  const key = libraryListKey(filters, 'more', 1);
+  const client = new QueryClient();
+  client.setQueryData<InfiniteData<LibraryPage>>(
+    key,
+    {
+      pages: [page(['a'], null)],
+      pageParams: [null],
+    },
+    { updatedAt: 123 },
+  );
+  vi.stubGlobal(
+    'fetch',
+    vi
+      .fn()
+      .mockResolvedValue(
+        Response.json({ message: '读取失败' }, { status: 500 }),
+      ),
+  );
+  await mount(client).refresh();
+  const result = mount(client);
+  expect(result.items.map((item) => item.id)).toEqual(['a']);
+  expect(result.error?.message).toBe('读取失败');
+  expect(result.dataUpdatedAt).toBe(123);
   client.clear();
 });
 

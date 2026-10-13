@@ -549,6 +549,7 @@ export function LibraryScreen(props: {
               {query.items.length ? (
                 <LibraryGallery
                   items={query.items}
+                  readRevision={query.dataUpdatedAt}
                   layout={query.layout}
                   album={!!props.albumId}
                   disabled={

@@ -294,8 +294,12 @@ export function useLibraryQuery(
     if (!enabled) return;
     if (loadingMode === 'more') {
       // Refresh starts from the first batch, keeping its real cards visible.
-      client.setQueryData<InfiniteData<LibraryPage>>(queryKey, (data) =>
-        data ? { pages: data.pages.slice(0, 1), pageParams: [null] } : data,
+      const dataUpdatedAt = client.getQueryState(queryKey)?.dataUpdatedAt;
+      client.setQueryData<InfiniteData<LibraryPage>>(
+        queryKey,
+        (data) =>
+          data ? { pages: data.pages.slice(0, 1), pageParams: [null] } : data,
+        { updatedAt: dataUpdatedAt },
       );
     }
     await active.refetch();

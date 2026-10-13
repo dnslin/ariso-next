@@ -18,6 +18,7 @@ import type { LibraryContextMenu } from './library-selection-menu';
 
 export function LibraryGallery({
   items,
+  readRevision,
   layout,
   album = false,
   disabled,
@@ -26,6 +27,7 @@ export function LibraryGallery({
   onContextMenu,
 }: {
   items: LibraryItem[];
+  readRevision: number;
   layout: GalleryLayout;
   album?: boolean;
   disabled: boolean;
@@ -156,6 +158,7 @@ export function LibraryGallery({
                 >
                   <LibraryCard
                     item={item}
+                    readRevision={readRevision}
                     album={album}
                     imageHeight={slot.imageHeight}
                     isDisabled={disabled}

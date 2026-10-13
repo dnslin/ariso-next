@@ -13,6 +13,9 @@ export function componentEntryTransition(reduce: boolean, delay = 0) {
 }
 
 const reducedQuery = '(prefers-reduced-motion: reduce)';
+export function getReducedMotion() {
+  return window.matchMedia(reducedQuery).matches;
+}
 function subscribeReducedMotion(onChange: () => void) {
   const media = window.matchMedia(reducedQuery);
   media.addEventListener('change', onChange);
@@ -21,7 +24,7 @@ function subscribeReducedMotion(onChange: () => void) {
 export function useReducedMotion() {
   return useSyncExternalStore(
     subscribeReducedMotion,
-    () => window.matchMedia(reducedQuery).matches,
+    getReducedMotion,
     () => false,
   );
 }
