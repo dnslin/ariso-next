@@ -17,13 +17,15 @@
 
 2026-10-13 所有者调整浏览器检查范围：GitHub Actions 不执行浏览器验收、浏览器运行器和浏览器工具自身的测试，也不构建浏览器专用外壳。工作流在单元、普通集成入口排除这些工具测试，本地 `pnpm run test:unit`、`pnpm run test:integration` 和 `pnpm run test:browser` 保留原有范围。无需浏览器的产品逻辑、HTTP、数据库及 SMTP 测试继续在 Actions 执行。
 
+同日所有者要求继续精简耗时集成：旧身份、API Key、统计、图库查询、Unicode、分享、媒体进程、存储及迟到 PUT 原型的测试改由 `pnpm run test:experiments` 显式执行，不再由默认单元与集成重复验证，不参与日常 PR。生产回归借用实验目录中的夹具不等于旧原型测试，不按目录名批量排除。静态/单元检查与生产构建/集成在独立 Actions 任务并行执行，普通集成仍限制两个工作进程。无部署密钥、无数据库、无初始化副作用的要求合入该任务的一次构建，产物结构与实际启动继续由生产 standalone 集成验证，不再复制整个仓库与依赖做第二次构建。
+
 发布工作流通过手动入口指定版本，执行双架构镜像构建与必要运行验证，再发布同轮已验证镜像。镜像推送和镜像包上传成功后才公布 GitHub Release。不在发布阶段重复整套日常检查。完整格式矩阵、受限磁盘/资源实验、Unicode/SQLite 竞争实验和实验 UI 构建移至 `.github/workflows/experiments.yml` 的手动入口，不作为每次 PR 或发布的前置。
 
 首次发布或修改 Docker/启动/打包/发布验证时，先在独立 Docker 环境执行与 Actions 相同的 `scripts/verify-release-image.mjs` 并收齐证据，再统一发布。不以连续创建正式版本作为调试入口；真实媒体工具相关修改还须先执行同一 `verify-media-tools.sh`。
 
 下列命令从仓库根目录、Node 24 和项目锁定 pnpm 运行。真实图片测试要求 PATH 中已有 ImageMagick 7（`magick`）和 ExifTool（`exiftool`）；不要求本机 Docker，不下载浏览器。命令清单是执行约定，不代表某次任务已通过。
 
-邮件与 CLI 的 [EV-IDENTITY-04 实验](./evidence/EV-IDENTITY-04/README.md)由默认集成入口执行，另外要求 PATH 中已有 `openssl`，以及 `/usr/bin/python3` 可用（系统 PTY 验证）。测试生成临时证书和隔离数据库，不需要外部 SMTP 凭证；真实收件通过报告中的独立手动入口另行验证。
+邮件与 CLI 的生产集成要求 PATH 中已有 `openssl`，以及 `/usr/bin/python3` 可用（系统 PTY 验证）。测试生成临时证书和隔离数据库，不需要外部 SMTP 凭证。[EV-IDENTITY-04 历史实验](./evidence/EV-IDENTITY-04/README.md)改由 `pnpm run test:experiments` 按需执行；真实收件通过报告中的独立手动入口另行验证。
 
 | 检查           | 命令与执行条件                                                                                                                                                                          |
 | -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -31,6 +33,7 @@
 | 迁移           | schema 变化运行 `pnpm run db:generate` 并审查SQL；部署仍用已提交向前迁移                                                                                                                |
 | 格式/静态/类型 | `pnpm run format:check`、`pnpm run lint`、`pnpm run typecheck`                                                                                                                          |
 | 单元/集成      | `pnpm run test:unit`、`pnpm run test:integration`（普通集成与真实工具两组均执行）；可先 `pnpm exec vitest run --project integration tests/integration/<module>/<case>.test.ts` 聚焦运行 |
+| 历史实验       | `pnpm run test:experiments`；仅修改对应实验或有具体调查需要时执行，不作为日常 PR 或发布前置                                                                                             |
 | 构建           | `pnpm run build`；保留无部署密钥/无数据库构建回归                                                                                                                                       |
 | 浏览器         | `pnpm run test:browser`；各界面任务新增场景并接入 `scripts/verify-browser.mjs`，不能只跑旧 `e2e/runtime.mjs` 就称业务通过                                                               |
 | 镜像发布验证   | PR 的 AMD64 真实工具测试与 Release 的双架构运行验证分开；入口及本地预检见[部署说明](../guides/deployment.md#发布验证)                                                                   |
