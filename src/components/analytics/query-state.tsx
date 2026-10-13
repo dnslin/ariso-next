@@ -1,14 +1,13 @@
 'use client';
 
 import { Button } from '@heroui/react/button';
-import { Card } from '@heroui/react/card';
 import { Alert } from '@heroui/react/alert';
 import { timestamp } from './presentation';
 
 export function AnalyticsLoading({ scope }: { scope: 'overview' | 'usage' }) {
   return (
-    <Card
-      className="min-w-0 gap-3 rounded-[20px] border border-border bg-surface px-4 py-5 shadow-none min-[1200px]:px-6"
+    <div
+      className="grid min-w-0 gap-3 py-5"
       aria-busy="true"
       role="status"
       data-testid={`${scope}-loading`}
@@ -21,7 +20,7 @@ export function AnalyticsLoading({ scope }: { scope: 'overview' | 'usage' }) {
           ? '正在读取当前数量与已保存统计，请稍候。'
           : '正在读取当前存储占用，请稍候。'}
       </p>
-    </Card>
+    </div>
   );
 }
 export function AnalyticsReadFailure({

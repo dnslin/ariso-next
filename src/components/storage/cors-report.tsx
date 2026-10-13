@@ -1,5 +1,6 @@
 'use client';
 
+import { ComponentEntrance } from '../component-entrance';
 import type { ReactNode } from 'react';
 import { Card } from '@heroui/react/card';
 import { Spinner } from '@heroui/react/spinner';
@@ -14,25 +15,27 @@ export function CorsRows({
   rows: { label: string; value: ReactNode; detail: ReactNode }[];
 }) {
   return (
-    <Card className="gap-3 rounded-2xl border border-border bg-surface px-3 py-4 shadow-none min-[1200px]:px-5">
-      <dl className="grid gap-3 text-sm leading-normal">
-        {rows.map((row) => (
-          <div
-            key={row.label}
-            className="grid min-h-18 content-start gap-y-0 min-[1200px]:content-center min-[1200px]:grid-cols-3 min-[1200px]:items-center min-[1200px]:gap-4"
-          >
-            <dt>{row.label}</dt>
-            <dd className="min-w-0 [overflow-wrap:anywhere]">
-              {row.value}
-              <span className="min-[1200px]:hidden"> · {row.detail}</span>
-            </dd>
-            <dd className="hidden min-w-0 [overflow-wrap:anywhere] min-[1200px]:block">
-              {row.detail}
-            </dd>
-          </div>
-        ))}
-      </dl>
-    </Card>
+    <ComponentEntrance delay={0.055} className="min-w-0">
+      <Card className="gap-3 rounded-2xl border border-border bg-surface px-3 py-4 shadow-none min-[1200px]:px-5">
+        <dl className="grid gap-3 text-sm leading-normal">
+          {rows.map((row) => (
+            <div
+              key={row.label}
+              className="grid min-h-18 content-start gap-y-0 min-[1200px]:content-center min-[1200px]:grid-cols-3 min-[1200px]:items-center min-[1200px]:gap-4"
+            >
+              <dt>{row.label}</dt>
+              <dd className="min-w-0 [overflow-wrap:anywhere]">
+                {row.value}
+                <span className="min-[1200px]:hidden"> · {row.detail}</span>
+              </dd>
+              <dd className="hidden min-w-0 [overflow-wrap:anywhere] min-[1200px]:block">
+                {row.detail}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </Card>
+    </ComponentEntrance>
   );
 }
 

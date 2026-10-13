@@ -93,6 +93,7 @@ vi.mock('@tanstack/react-query', async (original) => ({
   },
 }));
 vi.mock('next/navigation', () => ({ useRouter: () => navigation }));
+
 vi.mock('../../../src/components/upload/provider', () => ({
   useResetUpload: () => session.resetUpload,
 }));
@@ -318,6 +319,40 @@ it('refreshes an open album detail only when the confirmed upload targets that a
     }),
   );
   await vi.waitFor(() => expect(fetcher).toHaveBeenCalledTimes(reads + 1));
+});
+
+it('keeps real album cards while a search is pending and replaces them with the confirmed result', async () => {
+  let finishSearch!: (response: Response) => void;
+  vi.stubGlobal('fetch', async (url: string) => {
+    if (new URL(url, 'http://ariso.test').searchParams.get('q'))
+      return new Promise<Response>((resolve) => {
+        finishSearch = resolve;
+      });
+    return Response.json({ items: [album], total: 1, page: 1, pageSize: 40 });
+  });
+  const render = lifetime(() => AlbumsScreen(props));
+  render();
+  await vi.waitFor(() =>
+    expect(renderToStaticMarkup(render())).toContain('0 张图片'),
+  );
+  const search = elements(render()).find(
+    (element) => element.props['aria-label'] === '搜索相册',
+  )!;
+  (search.props.onChange as (value: string) => void)('不存在');
+  const pending = render();
+  expect(renderToStaticMarkup(pending)).toContain('0 张图片');
+  expect(
+    elements(pending).find(
+      (element) => element.props['data-testid'] === 'albums-list',
+    )?.props['aria-busy'],
+  ).toBe(true);
+  expect(renderToStaticMarkup(pending)).not.toContain('正在读取相册');
+  finishSearch(Response.json({ items: [], total: 0, page: 1, pageSize: 40 }));
+  await vi.waitFor(() => {
+    const html = renderToStaticMarkup(render());
+    expect(html).toContain('未找到相册');
+    expect(html).not.toContain('0 张图片');
+  });
 });
 
 it('keeps the picker and failed selection after a partial join and failed detail refresh', async () => {

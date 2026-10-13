@@ -1,5 +1,7 @@
 'use client';
 
+import { ComponentEntrance } from '../../components/component-entrance';
+
 import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { QueryClient, useQuery } from '@tanstack/react-query';
@@ -133,7 +135,6 @@ export function SettingsScreen(props: SettingsProps) {
         </div>
       ) : (
         <p role="status" className="flex gap-3">
-          <Spinner size="sm" />
           正在读取分享设置…
         </p>
       )}
@@ -304,26 +305,32 @@ function SettingsContent({
         <h1 ref={headingRef} tabIndex={-1}>
           分享设置
         </h1>
-        <Tooltip>
-          <Button
-            isIconOnly={Boolean(share)}
-            variant={share ? 'outline' : 'secondary'}
-            aria-label={returnLabel}
-            className={
-              share
-                ? 'size-11 shrink-0 rounded-lg'
-                : 'min-h-11 shrink-0 gap-2 rounded-lg px-3 text-sm'
-            }
-            onPress={returnPage}
-          >
-            <ArrowLeft size={18} className="size-[18px]" aria-hidden />
-            {!share ? '返回' : null}
-          </Button>
-          <Tooltip.Content>{returnLabel}</Tooltip.Content>
-        </Tooltip>
-        <p className="col-span-2 text-sm text-muted [overflow-wrap:anywhere]">
+        <ComponentEntrance className="justify-self-end">
+          <Tooltip>
+            <Button
+              isIconOnly={Boolean(share)}
+              variant={share ? 'outline' : 'secondary'}
+              aria-label={returnLabel}
+              className={
+                share
+                  ? 'size-11 shrink-0 rounded-lg'
+                  : 'min-h-11 shrink-0 gap-2 rounded-lg px-3 text-sm'
+              }
+              onPress={returnPage}
+            >
+              <ArrowLeft size={18} className="size-[18px]" aria-hidden />
+              {!share ? '返回' : null}
+            </Button>
+            <Tooltip.Content>{returnLabel}</Tooltip.Content>
+          </Tooltip>
+        </ComponentEntrance>
+        <ComponentEntrance
+          as="p"
+          delay={0.055}
+          className="col-span-2 text-sm text-muted [overflow-wrap:anywhere]"
+        >
           {album.name} · {album.publicImageCount} 张公开图片
-        </p>
+        </ComponentEntrance>
       </div>
       {!share ? (
         <>
@@ -332,344 +339,352 @@ function SettingsContent({
         </>
       ) : (
         <div className="grid gap-4 md:gap-6">
-          <Card className={cardStyle}>
-            <Card.Header className="flex flex-row flex-wrap items-center justify-between gap-3 p-4 pb-2 md:px-6 md:pt-5">
-              <div className="flex items-center gap-2">
-                <LinkIcon size={20} aria-hidden />
-                <Card.Title className="text-base font-medium">
-                  分享地址
-                </Card.Title>
-                <StorageTip label="分享地址">
-                  相册中的公开图片会随内容变化自动更新。
-                </StorageTip>
-              </div>
-              <Chip variant="soft" className="bg-default text-foreground">
-                <span className="mr-1.5 inline-block size-1.5 rounded-full bg-current" />
-                <span
-                  className={enabled && expired ? 'text-danger' : undefined}
-                >
-                  {!enabled ? '已停用' : expired ? '已过期' : '分享中'}
-                </span>
-              </Chip>
-            </Card.Header>
-            <Card.Content className="px-4 pb-4 md:px-6 md:pb-5">
-              <div className="flex min-w-0 items-start gap-3">
-                <p
-                  data-testid="share-address"
-                  className="min-w-0 select-text py-2.5 text-sm leading-6 [overflow-wrap:anywhere]"
-                >
-                  {address}
-                </p>
-                <Tooltip>
-                  <Button
-                    isIconOnly
-                    variant="ghost"
-                    aria-label="复制分享地址"
-                    isDisabled={copyBlocked}
-                    aria-describedby={
-                      copyBlocked ? 'share-copy-note' : undefined
-                    }
-                    className="size-11 shrink-0 rounded-lg"
-                    onPress={() => void copy()}
-                  >
-                    <Copy size={18} aria-hidden />
-                  </Button>
-                  <Tooltip.Content>复制分享地址</Tooltip.Content>
-                </Tooltip>
-              </div>
-              {copyBlocked ? (
-                <p id="share-copy-note" className="text-xs text-muted">
-                  当前地址尚未确认，请先核对分享状态。
-                </p>
-              ) : null}
-              {feedbackNode}
-            </Card.Content>
-          </Card>
-          <div className="grid items-start gap-4 md:grid-cols-2 md:gap-6">
+          <ComponentEntrance delay={0.055}>
             <Card className={cardStyle}>
-              <Card.Header className="flex flex-row items-center gap-2 p-4 pb-2 md:p-6 md:pb-2">
-                <ShieldCheck size={20} aria-hidden />
-                <Card.Title className="text-base font-medium">
-                  访问设置
-                </Card.Title>
+              <Card.Header className="flex flex-row flex-wrap items-center justify-between gap-3 p-4 pb-2 md:px-6 md:pt-5">
+                <div className="flex items-center gap-2">
+                  <LinkIcon size={20} aria-hidden />
+                  <Card.Title className="text-base font-medium">
+                    分享地址
+                  </Card.Title>
+                  <StorageTip label="分享地址">
+                    相册中的公开图片会随内容变化自动更新。
+                  </StorageTip>
+                </div>
+                <Chip variant="soft" className="bg-default text-foreground">
+                  <span className="mr-1.5 inline-block size-1.5 rounded-full bg-current" />
+                  <span
+                    className={enabled && expired ? 'text-danger' : undefined}
+                  >
+                    {!enabled ? '已停用' : expired ? '已过期' : '分享中'}
+                  </span>
+                </Chip>
               </Card.Header>
-              <Card.Content className="px-4 pb-2 md:px-6">
-                <Accordion aria-label="访问设置" isDisabled={blocked}>
-                  <Accordion.Item id="password">
-                    <Accordion.Heading>
-                      <Accordion.Trigger
-                        aria-label="访问密码"
-                        className="min-h-20 gap-3 py-4 text-sm font-normal"
-                      >
-                        <LockKeyhole
-                          size={18}
-                          className="shrink-0 text-muted"
-                          aria-hidden
-                        />
-                        <span className="grid flex-1 gap-1 text-left">
-                          <span className="font-medium">访问密码</span>
-                          <span className="text-xs text-muted">
-                            {hasPassword ? '已设置' : '未设置'}
-                          </span>
-                        </span>
-                        <Accordion.Indicator>
-                          <ChevronDown size={16} aria-hidden />
-                        </Accordion.Indicator>
-                      </Accordion.Trigger>
-                    </Accordion.Heading>
-                    <Accordion.Panel>
-                      <Accordion.Body className="grid gap-3 pb-4">
-                        <TextField
-                          className="min-w-0 min-[1200px]:grid min-[1200px]:grid-cols-[minmax(0,1fr)_auto] min-[1200px]:gap-x-3"
-                          value={password}
-                          onChange={setPassword}
-                          isDisabled={blocked}
-                          isInvalid={Boolean(errors.password)}
-                          validationBehavior="aria"
+              <Card.Content className="px-4 pb-4 md:px-6 md:pb-5">
+                <div className="flex min-w-0 items-start gap-3">
+                  <p
+                    data-testid="share-address"
+                    className="min-w-0 select-text py-2.5 text-sm leading-6 [overflow-wrap:anywhere]"
+                  >
+                    {address}
+                  </p>
+                  <Tooltip>
+                    <Button
+                      isIconOnly
+                      variant="ghost"
+                      aria-label="复制分享地址"
+                      isDisabled={copyBlocked}
+                      aria-describedby={
+                        copyBlocked ? 'share-copy-note' : undefined
+                      }
+                      className="size-11 shrink-0 rounded-lg"
+                      onPress={() => void copy()}
+                    >
+                      <Copy size={18} aria-hidden />
+                    </Button>
+                    <Tooltip.Content>复制分享地址</Tooltip.Content>
+                  </Tooltip>
+                </div>
+                {copyBlocked ? (
+                  <p id="share-copy-note" className="text-xs text-muted">
+                    当前地址尚未确认，请先核对分享状态。
+                  </p>
+                ) : null}
+                {feedbackNode}
+              </Card.Content>
+            </Card>
+          </ComponentEntrance>
+          <div className="grid items-start gap-4 md:grid-cols-2 md:gap-6">
+            <ComponentEntrance delay={0.055}>
+              <Card className={cardStyle}>
+                <Card.Header className="flex flex-row items-center gap-2 p-4 pb-2 md:p-6 md:pb-2">
+                  <ShieldCheck size={20} aria-hidden />
+                  <Card.Title className="text-base font-medium">
+                    访问设置
+                  </Card.Title>
+                </Card.Header>
+                <Card.Content className="px-4 pb-2 md:px-6">
+                  <Accordion aria-label="访问设置" isDisabled={blocked}>
+                    <Accordion.Item id="password">
+                      <Accordion.Heading>
+                        <Accordion.Trigger
+                          aria-label="访问密码"
+                          className="min-h-20 gap-3 py-4 text-sm font-normal"
                         >
-                          <Label className="text-sm min-[1200px]:col-span-2">
-                            {hasPassword ? '新密码' : '设置密码'}
-                          </Label>
-                          <InputGroup
-                            fullWidth
-                            className={`h-12 min-h-12 rounded-lg border bg-transparent shadow-none ${errors.password ? 'border-danger' : 'border-border'}`}
-                          >
-                            <InputGroup.Input
-                              id="share-password"
-                              type={passwordVisible ? 'text' : 'password'}
-                              autoComplete="new-password"
-                              autoCapitalize="none"
-                              spellCheck={false}
-                              placeholder="输入 1–128 个字符"
-                              className="h-full min-w-0 py-0 text-sm"
-                            />
-                            <InputGroup.Suffix className="border-0 px-0.5">
-                              <Tooltip>
-                                <Button
-                                  isIconOnly
-                                  isDisabled={blocked}
-                                  variant="ghost"
-                                  aria-label={
-                                    passwordVisible ? '隐藏密码' : '显示密码'
-                                  }
-                                  aria-pressed={passwordVisible}
-                                  className="size-11 min-w-11 rounded-lg"
-                                  onPress={() =>
-                                    setPasswordVisible(!passwordVisible)
-                                  }
-                                >
-                                  {passwordVisible ? (
-                                    <EyeOff size={16} aria-hidden />
-                                  ) : (
-                                    <Eye size={16} aria-hidden />
-                                  )}
-                                </Button>
-                                <Tooltip.Content>
-                                  {passwordVisible ? '隐藏密码' : '显示密码'}
-                                </Tooltip.Content>
-                              </Tooltip>
-                            </InputGroup.Suffix>
-                          </InputGroup>
-                          <FieldError className="min-[1200px]:col-start-1 min-[1200px]:row-start-3">
-                            {errors.password}
-                          </FieldError>
-                          <Button
-                            aria-label="保存访问密码"
-                            data-testid="share-save-password"
+                          <LockKeyhole
+                            size={18}
+                            className="shrink-0 text-muted"
+                            aria-hidden
+                          />
+                          <span className="grid flex-1 gap-1 text-left">
+                            <span className="font-medium">访问密码</span>
+                            <span className="text-xs text-muted">
+                              {hasPassword ? '已设置' : '未设置'}
+                            </span>
+                          </span>
+                          <Accordion.Indicator>
+                            <ChevronDown size={16} aria-hidden />
+                          </Accordion.Indicator>
+                        </Accordion.Trigger>
+                      </Accordion.Heading>
+                      <Accordion.Panel>
+                        <Accordion.Body className="grid gap-3 pb-4">
+                          <TextField
+                            className="min-w-0 min-[1200px]:grid min-[1200px]:grid-cols-[minmax(0,1fr)_auto] min-[1200px]:gap-x-3"
+                            value={password}
+                            onChange={setPassword}
                             isDisabled={blocked}
-                            className={`${buttonStyle} mt-1 w-fit shrink-0 min-[1200px]:col-start-2 min-[1200px]:row-start-2 min-[1200px]:mt-0 min-[1200px]:self-start`}
-                            onPress={savePassword}
+                            isInvalid={Boolean(errors.password)}
+                            validationBehavior="aria"
+                          >
+                            <Label className="text-sm min-[1200px]:col-span-2">
+                              {hasPassword ? '新密码' : '设置密码'}
+                            </Label>
+                            <InputGroup
+                              fullWidth
+                              className={`h-12 min-h-12 rounded-lg border bg-transparent shadow-none ${errors.password ? 'border-danger' : 'border-border'}`}
+                            >
+                              <InputGroup.Input
+                                id="share-password"
+                                type={passwordVisible ? 'text' : 'password'}
+                                autoComplete="new-password"
+                                autoCapitalize="none"
+                                spellCheck={false}
+                                placeholder="输入 1–128 个字符"
+                                className="h-full min-w-0 py-0 text-sm"
+                              />
+                              <InputGroup.Suffix className="border-0 px-0.5">
+                                <Tooltip>
+                                  <Button
+                                    isIconOnly
+                                    isDisabled={blocked}
+                                    variant="ghost"
+                                    aria-label={
+                                      passwordVisible ? '隐藏密码' : '显示密码'
+                                    }
+                                    aria-pressed={passwordVisible}
+                                    className="size-11 min-w-11 rounded-lg"
+                                    onPress={() =>
+                                      setPasswordVisible(!passwordVisible)
+                                    }
+                                  >
+                                    {passwordVisible ? (
+                                      <EyeOff size={16} aria-hidden />
+                                    ) : (
+                                      <Eye size={16} aria-hidden />
+                                    )}
+                                  </Button>
+                                  <Tooltip.Content>
+                                    {passwordVisible ? '隐藏密码' : '显示密码'}
+                                  </Tooltip.Content>
+                                </Tooltip>
+                              </InputGroup.Suffix>
+                            </InputGroup>
+                            <FieldError className="min-[1200px]:col-start-1 min-[1200px]:row-start-3">
+                              {errors.password}
+                            </FieldError>
+                            <Button
+                              aria-label="保存访问密码"
+                              data-testid="share-save-password"
+                              isDisabled={blocked}
+                              className={`${buttonStyle} mt-1 w-fit shrink-0 min-[1200px]:col-start-2 min-[1200px]:row-start-2 min-[1200px]:mt-0 min-[1200px]:self-start`}
+                              onPress={savePassword}
+                            >
+                              保存
+                            </Button>
+                          </TextField>
+                          <p className="text-xs leading-5 text-muted">
+                            更改密码后，访客需要重新解锁。
+                          </p>
+                          {hasPassword ? (
+                            <Button
+                              isDisabled={blocked}
+                              variant="outline"
+                              className={`${buttonStyle} w-fit`}
+                              onPress={() => open('clear')}
+                            >
+                              清除密码
+                            </Button>
+                          ) : null}
+                        </Accordion.Body>
+                      </Accordion.Panel>
+                    </Accordion.Item>
+                    <Accordion.Item id="expiry">
+                      <Accordion.Heading>
+                        <Accordion.Trigger
+                          aria-label="有效期"
+                          className="min-h-20 gap-3 py-4 text-sm font-normal"
+                        >
+                          <CalendarClock
+                            size={18}
+                            className="shrink-0 text-muted"
+                            aria-hidden
+                          />
+                          <span className="grid min-w-0 flex-1 gap-1 text-left">
+                            <span className="font-medium">有效期</span>
+                            <span className="text-xs text-muted">
+                              {share.expiresAt
+                                ? formatExpiry(share.expiresAt, props.timeZone)
+                                : '不过期'}
+                              {expired ? (
+                                <>
+                                  {' · '}
+                                  <span className="text-danger">已过期</span>
+                                </>
+                              ) : null}
+                            </span>
+                          </span>
+                          <Accordion.Indicator>
+                            <ChevronDown size={16} aria-hidden />
+                          </Accordion.Indicator>
+                        </Accordion.Trigger>
+                      </Accordion.Heading>
+                      <Accordion.Panel>
+                        <Accordion.Body className="grid gap-3 pb-4">
+                          <ExpiryControls
+                            draft={expiry}
+                            onChange={setExpiry}
+                            timeZone={props.timeZone}
+                            disabled={blocked}
+                            error={errors.expiry}
+                          />
+                          <Button
+                            aria-label="保存有效期"
+                            data-testid="share-save-expiry"
+                            isDisabled={blocked}
+                            className={`${buttonStyle} w-fit`}
+                            onPress={() => saveExpiry()}
                           >
                             保存
                           </Button>
-                        </TextField>
-                        <p className="text-xs leading-5 text-muted">
-                          更改密码后，访客需要重新解锁。
-                        </p>
-                        {hasPassword ? (
-                          <Button
-                            isDisabled={blocked}
-                            variant="outline"
-                            className={`${buttonStyle} w-fit`}
-                            onPress={() => open('clear')}
-                          >
-                            清除密码
-                          </Button>
-                        ) : null}
-                      </Accordion.Body>
-                    </Accordion.Panel>
-                  </Accordion.Item>
-                  <Accordion.Item id="expiry">
-                    <Accordion.Heading>
-                      <Accordion.Trigger
-                        aria-label="有效期"
-                        className="min-h-20 gap-3 py-4 text-sm font-normal"
+                        </Accordion.Body>
+                      </Accordion.Panel>
+                    </Accordion.Item>
+                  </Accordion>
+                </Card.Content>
+                <Card.Footer className="grid gap-2 border-t border-border px-4 py-3 md:px-6">
+                  <div className="flex w-full items-center gap-2">
+                    <SettingSwitch
+                      label="启用分享"
+                      selected={enabled && !expired}
+                      disabled={blocked}
+                      onChange={(value) =>
+                        void setEnabled(
+                          value,
+                          document.querySelector<HTMLInputElement>(
+                            'input[aria-label="启用分享"]',
+                          ),
+                        )
+                      }
+                    />
+                    <StorageTip label="启用分享">
+                      停用后，当前地址无法访问，已解锁访客也会失效。
+                    </StorageTip>
+                  </div>
+                  {enabledSaving && !feedback ? (
+                    <p role="status" className="text-xs text-muted">
+                      正在保存…
+                    </p>
+                  ) : null}
+                  {errors.enabled ? (
+                    <p role="alert" className="text-sm text-danger">
+                      {errors.enabled}
+                    </p>
+                  ) : null}
+                </Card.Footer>
+              </Card>
+            </ComponentEntrance>
+            <ComponentEntrance delay={0.055}>
+              <Card className={cardStyle}>
+                <Card.Header className="flex flex-row items-center gap-2 p-4 md:p-6 md:pb-5">
+                  <Eye size={20} aria-hidden />
+                  <Card.Title className="text-base font-medium">
+                    访客展示
+                  </Card.Title>
+                </Card.Header>
+                <Card.Content className="grid gap-5 px-4 pb-4 md:px-6 md:pb-5">
+                  <div className="grid gap-2">
+                    <Label id="layout-label" className="text-sm">
+                      图片布局
+                    </Label>
+                    <Choices
+                      label="layout-label"
+                      value={layout}
+                      onChange={(value) => setLayout(value as Share['layout'])}
+                      disabled={blocked}
+                    >
+                      <ToggleButton
+                        id="grid"
+                        className="h-12 flex-1 rounded-lg data-[selected=true]:bg-accent data-[selected=true]:text-accent-foreground"
                       >
-                        <CalendarClock
-                          size={18}
-                          className="shrink-0 text-muted"
-                          aria-hidden
-                        />
-                        <span className="grid min-w-0 flex-1 gap-1 text-left">
-                          <span className="font-medium">有效期</span>
-                          <span className="text-xs text-muted">
-                            {share.expiresAt
-                              ? formatExpiry(share.expiresAt, props.timeZone)
-                              : '不过期'}
-                            {expired ? (
-                              <>
-                                {' · '}
-                                <span className="text-danger">已过期</span>
-                              </>
-                            ) : null}
-                          </span>
-                        </span>
-                        <Accordion.Indicator>
-                          <ChevronDown size={16} aria-hidden />
-                        </Accordion.Indicator>
-                      </Accordion.Trigger>
-                    </Accordion.Heading>
-                    <Accordion.Panel>
-                      <Accordion.Body className="grid gap-3 pb-4">
-                        <ExpiryControls
-                          draft={expiry}
-                          onChange={setExpiry}
-                          timeZone={props.timeZone}
-                          disabled={blocked}
-                          error={errors.expiry}
-                        />
-                        <Button
-                          aria-label="保存有效期"
-                          data-testid="share-save-expiry"
-                          isDisabled={blocked}
-                          className={`${buttonStyle} w-fit`}
-                          onPress={() => saveExpiry()}
-                        >
-                          保存
-                        </Button>
-                      </Accordion.Body>
-                    </Accordion.Panel>
-                  </Accordion.Item>
-                </Accordion>
-              </Card.Content>
-              <Card.Footer className="grid gap-2 border-t border-border px-4 py-3 md:px-6">
-                <div className="flex w-full items-center gap-2">
+                        <Grid2X2 size={18} aria-hidden />
+                        网格
+                      </ToggleButton>
+                      <ToggleButton
+                        id="masonry"
+                        className="h-12 flex-1 rounded-lg data-[selected=true]:bg-accent data-[selected=true]:text-accent-foreground"
+                      >
+                        <Columns3 size={18} aria-hidden />
+                        瀑布流
+                      </ToggleButton>
+                    </Choices>
+                  </div>
                   <SettingSwitch
-                    label="启用分享"
-                    selected={enabled && !expired}
+                    label="显示图片名称"
+                    selected={showName}
                     disabled={blocked}
-                    onChange={(value) =>
-                      void setEnabled(
-                        value,
-                        document.querySelector<HTMLInputElement>(
-                          'input[aria-label="启用分享"]',
-                        ),
-                      )
-                    }
+                    onChange={setShowName}
                   />
-                  <StorageTip label="启用分享">
-                    停用后，当前地址无法访问，已解锁访客也会失效。
-                  </StorageTip>
-                </div>
-                {enabledSaving && !feedback ? (
-                  <p role="status" className="text-xs text-muted">
-                    正在保存…
+                  {errors.display ? (
+                    <p role="alert" className="text-sm text-danger">
+                      {errors.display}
+                    </p>
+                  ) : null}
+                </Card.Content>
+                <Card.Footer className="flex flex-wrap items-center justify-between gap-3 border-t border-border px-4 py-3 md:px-6">
+                  <p className="text-xs text-muted">
+                    {dirty ? '未保存' : '已保存'}
                   </p>
-                ) : null}
-                {errors.enabled ? (
-                  <p role="alert" className="text-sm text-danger">
-                    {errors.enabled}
-                  </p>
-                ) : null}
-              </Card.Footer>
-            </Card>
-            <Card className={cardStyle}>
-              <Card.Header className="flex flex-row items-center gap-2 p-4 md:p-6 md:pb-5">
-                <Eye size={20} aria-hidden />
-                <Card.Title className="text-base font-medium">
-                  访客展示
-                </Card.Title>
-              </Card.Header>
-              <Card.Content className="grid gap-5 px-4 pb-4 md:px-6 md:pb-5">
-                <div className="grid gap-2">
-                  <Label id="layout-label" className="text-sm">
-                    图片布局
-                  </Label>
-                  <Choices
-                    label="layout-label"
-                    value={layout}
-                    onChange={(value) => setLayout(value as Share['layout'])}
-                    disabled={blocked}
+                  <Button
+                    aria-label="保存访客展示"
+                    data-testid="share-save-display"
+                    isDisabled={!dirty || blocked}
+                    className={buttonStyle}
+                    onPress={saveDisplay}
                   >
-                    <ToggleButton
-                      id="grid"
-                      className="h-12 flex-1 rounded-lg data-[selected=true]:bg-accent data-[selected=true]:text-accent-foreground"
-                    >
-                      <Grid2X2 size={18} aria-hidden />
-                      网格
-                    </ToggleButton>
-                    <ToggleButton
-                      id="masonry"
-                      className="h-12 flex-1 rounded-lg data-[selected=true]:bg-accent data-[selected=true]:text-accent-foreground"
-                    >
-                      <Columns3 size={18} aria-hidden />
-                      瀑布流
-                    </ToggleButton>
-                  </Choices>
-                </div>
-                <SettingSwitch
-                  label="显示图片名称"
-                  selected={showName}
-                  disabled={blocked}
-                  onChange={setShowName}
-                />
-                {errors.display ? (
-                  <p role="alert" className="text-sm text-danger">
-                    {errors.display}
-                  </p>
-                ) : null}
-              </Card.Content>
-              <Card.Footer className="flex flex-wrap items-center justify-between gap-3 border-t border-border px-4 py-3 md:px-6">
-                <p className="text-xs text-muted">
-                  {dirty ? '未保存' : '已保存'}
-                </p>
-                <Button
-                  aria-label="保存访客展示"
-                  data-testid="share-save-display"
-                  isDisabled={!dirty || blocked}
-                  className={buttonStyle}
-                  onPress={saveDisplay}
-                >
-                  保存
-                </Button>
-              </Card.Footer>
-            </Card>
+                    保存
+                  </Button>
+                </Card.Footer>
+              </Card>
+            </ComponentEntrance>
           </div>
-          <Card className={cardStyle}>
-            <Card.Content className="flex flex-row flex-wrap items-center justify-between gap-3 p-4 md:px-6 md:py-4">
-              <div className="flex min-w-0 items-start gap-3">
-                <RefreshCw
-                  size={18}
-                  aria-hidden
-                  className="mt-0.5 shrink-0 text-muted"
-                />
-                <div className="flex items-center gap-2">
-                  <p className="text-sm font-medium">重新生成地址</p>
-                  <StorageTip label="重新生成地址">
-                    旧地址与已解锁会话将立即失效。
-                  </StorageTip>
+          <ComponentEntrance delay={0.055}>
+            <Card className={cardStyle}>
+              <Card.Content className="flex flex-row flex-wrap items-center justify-between gap-3 p-4 md:px-6 md:py-4">
+                <div className="flex min-w-0 items-start gap-3">
+                  <RefreshCw
+                    size={18}
+                    aria-hidden
+                    className="mt-0.5 shrink-0 text-muted"
+                  />
+                  <div className="flex items-center gap-2">
+                    <p className="text-sm font-medium">重新生成地址</p>
+                    <StorageTip label="重新生成地址">
+                      旧地址与已解锁会话将立即失效。
+                    </StorageTip>
+                  </div>
                 </div>
-              </div>
-              <Button
-                variant="outline"
-                className={buttonStyle}
-                isDisabled={blocked}
-                onPress={() => open('rotate')}
-              >
-                重新生成
-              </Button>
-            </Card.Content>
-          </Card>
+                <Button
+                  variant="outline"
+                  className={buttonStyle}
+                  isDisabled={blocked}
+                  onPress={() => open('rotate')}
+                >
+                  重新生成
+                </Button>
+              </Card.Content>
+            </Card>
+          </ComponentEntrance>
         </div>
       )}
       <Modal

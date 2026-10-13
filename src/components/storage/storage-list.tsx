@@ -1,5 +1,6 @@
 'use client';
 
+import { ComponentEntrance } from '../component-entrance';
 import { useEffect, useState, type ComponentProps } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Alert } from '@heroui/react/alert';
@@ -9,7 +10,6 @@ import { Link } from '@heroui/react/link';
 import { ListBox } from '@heroui/react/list-box';
 import { Pagination } from '@heroui/react/pagination';
 import { Select } from '@heroui/react/select';
-import { Skeleton } from '@heroui/react/skeleton';
 import {
   ArrowRight,
   ChevronLeft,
@@ -215,7 +215,10 @@ export function StorageList(
         }
         className="grid gap-5 pb-10 min-[1200px]:gap-6"
       >
-        <div className="flex flex-wrap items-center justify-between gap-3">
+        <ComponentEntrance
+          as="header"
+          className="flex flex-wrap items-center justify-between gap-3"
+        >
           <h1 className="text-[30px] font-medium leading-normal">存储</h1>
           <Link
             href="/settings/storage/new"
@@ -225,12 +228,11 @@ export function StorageList(
             <Plus size={16} aria-hidden />
             添加存储
           </Link>
-        </div>
+        </ComponentEntrance>
         {loading ? (
-          <div role="status" aria-label="正在读取存储" className="grid gap-3">
-            <Skeleton className="h-20 rounded-xl" />
-            <Skeleton className="h-20 rounded-xl" />
-          </div>
+          <p role="status" className="text-sm text-muted">
+            正在读取存储…
+          </p>
         ) : error ? (
           <Alert role="alert" status="danger">
             <Alert.Content>
@@ -261,8 +263,10 @@ export function StorageList(
                 <ArrowRight size={16} aria-hidden />
               </Link>
             </div>
-            {visible.map((row) => (
-              <article
+            {visible.map((row, index) => (
+              <ComponentEntrance
+                as="article"
+                delay={Math.min(index + 1, 3) * 0.055}
                 key={row.id}
                 data-storage-id={row.id}
                 className="grid grid-cols-[24px_minmax(0,1fr)] items-start gap-x-3 gap-y-4 border-b border-border py-5 min-[768px]:grid-cols-[24px_minmax(0,1fr)_auto] min-[768px]:items-center"
@@ -282,7 +286,7 @@ export function StorageList(
                 <div className="col-start-2 justify-self-start min-[768px]:col-start-auto min-[768px]:justify-self-end">
                   {configure(row)}
                 </div>
-              </article>
+              </ComponentEntrance>
             ))}
           </section>
         )}

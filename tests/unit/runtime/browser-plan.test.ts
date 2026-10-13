@@ -6,6 +6,39 @@ function select(suite: string, only?: string) {
 }
 
 describe('focused browser execution plans', () => {
+  it('runs shared admin component motion in full and focused production flows', () => {
+    expect(select('full').stages).toContainEqual([
+      'admin-motion',
+      'admin-motion',
+    ]);
+    expect(select('admin-motion')).toEqual({
+      stages: [['admin-motion', 'adminMotion']],
+      config: {},
+    });
+    expect(() => select('admin-motion', 'unrelated')).toThrow('--only');
+  });
+  it('runs real library component motion in full and focused browser flows', () => {
+    expect(select('full').stages).toContainEqual([
+      'library-motion',
+      'library-motion',
+    ]);
+    expect(select('library-motion')).toEqual({
+      stages: [['library-motion', 'libraryMotion']],
+      config: {},
+    });
+    expect(() => select('library-motion', 'unrelated')).toThrow('--only');
+  });
+  it('runs album card motion in full and focused production browser flows', () => {
+    expect(select('full').stages).toContainEqual([
+      'album-motion',
+      'album-motion',
+    ]);
+    expect(select('album-motion')).toEqual({
+      stages: [['album-motion', 'albumMotion']],
+      config: {},
+    });
+    expect(() => select('album-motion', 'unrelated')).toThrow('--only');
+  });
   it('registers the approved collection shortcuts in full and focused runs', () => {
     expect(select('full').stages).toContainEqual([
       'collection-shortcuts',
@@ -460,6 +493,8 @@ describe('focused browser execution plans', () => {
   it('includes every existing business stage and all sharing scenes in the default full flow', () => {
     expect(select('full')).toEqual({
       stages: [
+        ['admin-motion', 'admin-motion'],
+        ['library-motion', 'library-motion'],
         ['library-batch', 'library-batch'],
         ['library-batch-reprocess', 'library-reprocess'],
         ['library-copy', 'library-copy'],
@@ -467,6 +502,7 @@ describe('focused browser execution plans', () => {
         ['trash-cleanup', 'trash-cleanup'],
         ['shell-navigation', 'shell-navigation'],
         ['albums', 'albums'],
+        ['album-motion', 'album-motion'],
         ['album-cover', 'album-cover'],
         ['tags', 'tags'],
         ['theme', 'theme'],

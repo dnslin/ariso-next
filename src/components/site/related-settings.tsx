@@ -1,5 +1,6 @@
 'use client';
 
+import { ComponentEntrance } from '../component-entrance';
 import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Button } from '@heroui/react/button';
@@ -127,75 +128,77 @@ export function RelatedSettings({ onExpire }: { onExpire: () => void }) {
       ? '正在读取…'
       : `${media.data.defaultVisibility === 'public' ? '默认公开' : '默认私有'} · ${version === 'original' ? '原图' : version === 'compressed' ? '压缩图' : version === 'watermark' ? '水印图' : '缩略图'}`;
   return (
-    <Card className="min-w-0 gap-0 overflow-hidden rounded-[20px] border border-border bg-surface p-0 shadow-none">
-      <div className="flex items-center justify-between gap-3 px-4 pt-4 pb-3 min-[1200px]:px-6">
-        <h2 className="flex items-center gap-2 text-lg font-medium">
-          <SlidersHorizontal className="size-5" aria-hidden />
-          关联设置
-        </h2>
-        <StorageTip label="关联设置">
-          分别管理，不随站点或上传限制一起保存。
-        </StorageTip>
-      </div>
-      <div className="divide-y divide-border border-t border-border">
-        <RelatedSetting
-          label="Logo 与 Favicon"
-          value="独立更新"
-          href="/settings/general/branding"
-          icon={Palette}
-        />
-        <div>
-          <RelatedSetting
-            label="默认存储"
-            value={storageValue}
-            href="/settings/storage"
-            icon={HardDrive}
-          />
-          {storageError ? (
-            <div className="grid gap-2 px-4 pb-3 min-[1200px]:px-6">
-              <p role="alert" className="text-sm text-danger wrap-anywhere">
-                {storageError.message}
-              </p>
-              <Button
-                type="button"
-                variant="outline"
-                isDisabled={storageSettings.isFetching || storages.isFetching}
-                className="min-h-11 w-fit rounded-lg"
-                onPress={() => {
-                  void storageSettings.refetch();
-                  void storages.refetch();
-                }}
-              >
-                重新读取默认存储
-              </Button>
-            </div>
-          ) : null}
+    <ComponentEntrance delay={0.165} className="min-w-0">
+      <Card className="min-w-0 gap-0 overflow-hidden rounded-[20px] border border-border bg-surface p-0 shadow-none">
+        <div className="flex items-center justify-between gap-3 px-4 pt-4 pb-3 min-[1200px]:px-6">
+          <h2 className="flex items-center gap-2 text-lg font-medium">
+            <SlidersHorizontal className="size-5" aria-hidden />
+            关联设置
+          </h2>
+          <StorageTip label="关联设置">
+            分别管理，不随站点或上传限制一起保存。
+          </StorageTip>
         </div>
-        <div>
+        <div className="divide-y divide-border border-t border-border">
           <RelatedSetting
-            label="图片默认值与外链版本"
-            value={mediaValue}
-            href="/settings/processing"
-            icon={Image}
+            label="Logo 与 Favicon"
+            value="独立更新"
+            href="/settings/general/branding"
+            icon={Palette}
           />
-          {media.error ? (
-            <div className="grid gap-2 px-4 pb-3 min-[1200px]:px-6">
-              <p role="alert" className="text-sm text-danger wrap-anywhere">
-                {media.error.message}
-              </p>
-              <Button
-                type="button"
-                variant="outline"
-                isDisabled={media.isFetching}
-                className="min-h-11 w-fit rounded-lg"
-                onPress={() => void media.refetch()}
-              >
-                重新读取图片默认值
-              </Button>
-            </div>
-          ) : null}
+          <div>
+            <RelatedSetting
+              label="默认存储"
+              value={storageValue}
+              href="/settings/storage"
+              icon={HardDrive}
+            />
+            {storageError ? (
+              <div className="grid gap-2 px-4 pb-3 min-[1200px]:px-6">
+                <p role="alert" className="text-sm text-danger wrap-anywhere">
+                  {storageError.message}
+                </p>
+                <Button
+                  type="button"
+                  variant="outline"
+                  isDisabled={storageSettings.isFetching || storages.isFetching}
+                  className="min-h-11 w-fit rounded-lg"
+                  onPress={() => {
+                    void storageSettings.refetch();
+                    void storages.refetch();
+                  }}
+                >
+                  重新读取默认存储
+                </Button>
+              </div>
+            ) : null}
+          </div>
+          <div>
+            <RelatedSetting
+              label="图片默认值与外链版本"
+              value={mediaValue}
+              href="/settings/processing"
+              icon={Image}
+            />
+            {media.error ? (
+              <div className="grid gap-2 px-4 pb-3 min-[1200px]:px-6">
+                <p role="alert" className="text-sm text-danger wrap-anywhere">
+                  {media.error.message}
+                </p>
+                <Button
+                  type="button"
+                  variant="outline"
+                  isDisabled={media.isFetching}
+                  className="min-h-11 w-fit rounded-lg"
+                  onPress={() => void media.refetch()}
+                >
+                  重新读取图片默认值
+                </Button>
+              </div>
+            ) : null}
+          </div>
         </div>
-      </div>
-    </Card>
+      </Card>
+    </ComponentEntrance>
   );
 }

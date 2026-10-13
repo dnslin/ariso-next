@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { Link } from '@heroui/react/link';
 import { buttonVariants } from '@heroui/react/button';
+import { ComponentEntrance } from '../component-entrance';
 
 export const number = (value: number) =>
   new Intl.NumberFormat('zh-CN').format(value);
@@ -34,10 +35,15 @@ export function AnalyticsSection({
   testId?: string;
 }) {
   return (
-    <section data-testid={testId} className="grid min-w-0 gap-4 pt-2">
+    <ComponentEntrance
+      as="section"
+      data-testid={testId}
+      className="grid min-w-0 gap-4 pt-2"
+      delay={0.11}
+    >
       <h2 className="text-lg font-semibold leading-normal">{title}</h2>
       {children}
-    </section>
+    </ComponentEntrance>
   );
 }
 export function AnalyticsLink({

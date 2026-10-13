@@ -1,5 +1,7 @@
 'use client';
 
+import { ComponentEntrance } from '../../components/component-entrance';
+
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { QueryClient, useQuery } from '@tanstack/react-query';
@@ -10,7 +12,6 @@ import { Card } from '@heroui/react/card';
 import { Checkbox } from '@heroui/react/checkbox';
 import { Link } from '@heroui/react/link';
 import { Tooltip } from '@heroui/react/tooltip';
-import { Spinner } from '@heroui/react/spinner';
 import { SearchField } from '@heroui/react/search-field';
 import { Popover } from '@heroui/react/popover';
 import {
@@ -148,6 +149,7 @@ export function TrashScreen({
   );
   const selection = useLibrarySelection(trashQuery, currentItems, page);
   const listRef = useRef<HTMLUListElement>(null);
+  const seenThumbnails = useRef(new Set<string>());
   const [contextMenu, setContextMenu] = useState<
     (LibraryContextMenu & { page: number }) | null
   >(null);
@@ -189,6 +191,7 @@ export function TrashScreen({
     enabled:
       !sessionEnded &&
       !!trashFilters &&
+      !list.isPlaceholderData &&
       !batch.pending &&
       !batch.unresolved &&
       !permanentBatch.pending &&
@@ -457,12 +460,7 @@ export function TrashScreen({
           {missing ? (
             <p role="alert">图片记录已不存在，无法恢复。请返回回收站。</p>
           ) : null}
-          {detail.isPending ? (
-            <p role="status">
-              <Spinner size="sm" />
-              正在读取回收记录…
-            </p>
-          ) : null}
+          {detail.isPending ? <p role="status">正在读取回收记录…</p> : null}
           {record && !(cleanup.visible && !cleanup.confirmation) ? (
             <TrashRecord
               record={record}
@@ -474,7 +472,10 @@ export function TrashScreen({
         </>
       ) : (
         <section className="grid min-w-0 gap-5">
-          <div className="flex items-center justify-between gap-4">
+          <ComponentEntrance
+            as="header"
+            className="flex items-center justify-between gap-4"
+          >
             <div className="flex items-center gap-2">
               <h1
                 id="trash-title"
@@ -520,11 +521,12 @@ export function TrashScreen({
               </Button>
               <Tooltip.Content>刷新回收站</Tooltip.Content>
             </Tooltip>
-          </div>
+          </ComponentEntrance>
           <p className="text-[13px]">
             {data ? `${data.total} 条记录` : '数量待确认'}
           </p>
-          <div
+          <ComponentEntrance
+            delay={0.055}
             data-testid="library-toolbar"
             className="flex min-w-0 flex-wrap items-center gap-3"
           >
@@ -561,7 +563,7 @@ export function TrashScreen({
                 <ListChecks size={18} aria-hidden />
               </ActionIconButton>
             )}
-          </div>
+          </ComponentEntrance>
           {trashFilters ? (
             <TrashFilters
               filters={trashFilters}
@@ -668,12 +670,7 @@ export function TrashScreen({
               </Alert.Content>
             </Alert>
           ) : null}
-          {list.isPending ? (
-            <p role="status">
-              <Spinner size="sm" />
-              正在读取回收记录…
-            </p>
-          ) : null}
+          {list.isPending ? <p role="status">正在读取回收记录…</p> : null}
           {data?.items.length ? (
             <Card className="gap-0 rounded-2xl border border-border bg-background px-3 py-2 shadow-none md:px-5 dark:bg-surface">
               <Card.Content className="p-0">
@@ -681,6 +678,7 @@ export function TrashScreen({
                   ref={listRef}
                   tabIndex={-1}
                   data-testid="trash-list"
+                  aria-busy={list.isFetching}
                   onKeyDownCapture={(event) => {
                     if (
                       (event.key === 'ContextMenu' ||
@@ -701,8 +699,10 @@ export function TrashScreen({
                       event.preventDefault();
                   }}
                 >
-                  {data.items.map((item) => (
-                    <li
+                  {data.items.map((item, index) => (
+                    <ComponentEntrance
+                      as="li"
+                      delay={Math.min(index, 3) * 0.055}
                       key={item.id}
                       data-trash-image-id={item.id}
                       data-selected={
@@ -742,6 +742,7 @@ export function TrashScreen({
                         id={`trash-record-${item.id}`}
                         data-trash-open
                         isDisabled={
+                          list.isPlaceholderData ||
                           batch.pending ||
                           batch.unresolved ||
                           permanentBatch.pending ||
@@ -752,8 +753,10 @@ export function TrashScreen({
                       >
                         <span className="flex min-w-0 items-start gap-3 md:items-center">
                           <TrashThumbnail
-                            key={`${item.thumbnailPath}:${list.dataUpdatedAt}`}
+                            key={item.thumbnailPath}
                             item={item}
+                            readRevision={list.dataUpdatedAt}
+                            seen={seenThumbnails}
                           />
                           <span className="min-w-0 break-words">
                             <span className="block">{item.displayName}</span>
@@ -802,14 +805,14 @@ export function TrashScreen({
                       >
                         <MoreHorizontal size={18} aria-hidden />
                       </ActionIconButton>
-                    </li>
+                    </ComponentEntrance>
                   ))}
                 </ul>
               </Card.Content>
             </Card>
           ) : null}
           {list.isSuccess && data?.items.length === 0 ? (
-            <div
+            <ComponentEntrance
               data-testid="trash-empty"
               className="grid min-h-60 content-center justify-items-center gap-3 text-center"
             >
@@ -829,7 +832,7 @@ export function TrashScreen({
                   返回第一页
                 </Button>
               ) : null}
-            </div>
+            </ComponentEntrance>
           ) : null}
         </section>
       )}

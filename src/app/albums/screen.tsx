@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { QueryClient, useQuery } from '@tanstack/react-query';
+import { keepPreviousData, QueryClient, useQuery } from '@tanstack/react-query';
 import { Button } from '@heroui/react/button';
 import { Link } from '@heroui/react/link';
 import { TextField } from '@heroui/react/textfield';
@@ -10,7 +10,6 @@ import { InputGroup } from '@heroui/react/input-group';
 import { Select } from '@heroui/react/select';
 import { ListBox } from '@heroui/react/list-box';
 import { Pagination } from '@heroui/react/pagination';
-import { Spinner } from '@heroui/react/spinner';
 import { Alert } from '@heroui/react/alert';
 import { Dropdown } from '@heroui/react/dropdown';
 import { Toolbar } from '@heroui/react/toolbar';
@@ -41,7 +40,8 @@ import {
 import { AlbumDialog, type AlbumAction } from './dialog';
 import { AlbumCoverPicker } from './cover-picker';
 import { AlbumCoverSummary } from './cover-preview';
-import { AlbumCard } from './card';
+import { AnimatedAlbumCard } from './motion';
+import { ComponentEntrance } from '../../components/component-entrance';
 import { AlbumImagePicker } from './image-picker';
 import {
   albumRequest,
@@ -116,6 +116,7 @@ export function AlbumsScreen(props: {
           { signal },
         ),
       enabled: !props.albumId,
+      placeholderData: keepPreviousData,
       retry: false,
       networkMode: 'always',
     },
@@ -483,9 +484,12 @@ export function AlbumsScreen(props: {
       <section className="grid min-w-0 grid-cols-1 gap-4">
         {props.albumId ? (
           <div className="flex items-center justify-between gap-3">
-            <h1 className="text-[26px] font-medium leading-normal md:text-[30px]">
+            <ComponentEntrance
+              as="h1"
+              className="text-[26px] font-medium leading-normal md:text-[30px]"
+            >
               相册
-            </h1>
+            </ComponentEntrance>
             <Link
               href="/albums"
               aria-label="返回相册列表"
@@ -497,10 +501,16 @@ export function AlbumsScreen(props: {
           </div>
         ) : (
           <>
-            <h1 className="text-[26px] font-medium leading-normal md:text-[30px]">
+            <ComponentEntrance
+              as="h1"
+              className="text-[26px] font-medium leading-normal md:text-[30px]"
+            >
               相册
-            </h1>
-            <div className="flex w-full gap-2 md:max-w-120 md:gap-4">
+            </ComponentEntrance>
+            <ComponentEntrance
+              delay={0.055}
+              className="flex w-full gap-2 md:max-w-120 md:gap-4"
+            >
               <TextField
                 aria-label="搜索相册"
                 value={q}
@@ -527,59 +537,64 @@ export function AlbumsScreen(props: {
                 <Plus size={16} aria-hidden />
                 新建相册
               </Button>
+            </ComponentEntrance>
+            <div
+              data-testid="albums-list"
+              aria-busy={list.isFetching}
+              className="relative grid grid-cols-1 gap-4 empty:hidden md:grid-cols-[repeat(auto-fill,minmax(300px,365px))]"
+            >
+              {(data?.items ?? []).map((item, index) => (
+                <AnimatedAlbumCard
+                  key={item.id}
+                  index={index}
+                  album={item}
+                  onOpen={() => router.push(`/albums/${item.id}`)}
+                  onEdit={(element) =>
+                    openAction({ kind: 'edit', album: item }, element)
+                  }
+                  onShare={() =>
+                    router.push(
+                      `/shares/${encodeURIComponent(item.id)}?from=album`,
+                    )
+                  }
+                  onDelete={(element) =>
+                    openAction({ kind: 'delete', album: item }, element)
+                  }
+                />
+              ))}
+              {data?.items.length === 0 ? (
+                <ComponentEntrance
+                  key="empty"
+                  data-testid="albums-empty"
+                  className="col-span-full grid min-h-80 content-center justify-items-center gap-4 text-center"
+                >
+                  <Folder size={36} aria-hidden />
+                  <h2 className="text-xl">
+                    {q
+                      ? '未找到相册'
+                      : data.total
+                        ? '本页已无相册'
+                        : '暂无相册'}
+                  </h2>
+                  {page > 1 ? (
+                    <Button
+                      className="h-12 rounded-lg font-normal"
+                      onPress={() => setPage(1)}
+                    >
+                      返回第一页
+                    </Button>
+                  ) : q ? (
+                    <Button
+                      className="h-12 rounded-lg font-normal"
+                      variant="outline"
+                      onPress={() => setQ('')}
+                    >
+                      清除搜索
+                    </Button>
+                  ) : null}
+                </ComponentEntrance>
+              ) : null}
             </div>
-            {data?.items.length ? (
-              <div
-                data-testid="albums-list"
-                className="grid grid-cols-1 gap-4 md:grid-cols-[repeat(auto-fill,minmax(300px,365px))]"
-              >
-                {data.items.map((item) => (
-                  <AlbumCard
-                    key={item.id}
-                    album={item}
-                    onOpen={() => router.push(`/albums/${item.id}`)}
-                    onEdit={(element) =>
-                      openAction({ kind: 'edit', album: item }, element)
-                    }
-                    onShare={() =>
-                      router.push(
-                        `/shares/${encodeURIComponent(item.id)}?from=album`,
-                      )
-                    }
-                    onDelete={(element) =>
-                      openAction({ kind: 'delete', album: item }, element)
-                    }
-                  />
-                ))}
-              </div>
-            ) : null}
-            {data?.items.length === 0 ? (
-              <div
-                data-testid="albums-empty"
-                className="grid min-h-80 content-center justify-items-center gap-4 text-center"
-              >
-                <Folder size={36} aria-hidden />
-                <h2 className="text-xl">
-                  {q ? '未找到相册' : data.total ? '本页已无相册' : '暂无相册'}
-                </h2>
-                {page > 1 ? (
-                  <Button
-                    className="h-12 rounded-lg font-normal"
-                    onPress={() => setPage(1)}
-                  >
-                    返回第一页
-                  </Button>
-                ) : q ? (
-                  <Button
-                    className="h-12 rounded-lg font-normal"
-                    variant="outline"
-                    onPress={() => setQ('')}
-                  >
-                    清除搜索
-                  </Button>
-                ) : null}
-              </div>
-            ) : null}
           </>
         )}
         {(props.albumId ? detail.isPending : list.isPending) ? (
@@ -588,7 +603,6 @@ export function AlbumsScreen(props: {
             data-testid="albums-loading"
             className="flex items-center gap-2 py-8"
           >
-            <Spinner size="sm" />
             正在读取相册…
           </p>
         ) : null}

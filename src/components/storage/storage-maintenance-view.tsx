@@ -1,5 +1,6 @@
 'use client';
 
+import { ComponentEntrance } from '../component-entrance';
 import { useEffect, useRef, useState, type ComponentProps } from 'react';
 import { Button } from '@heroui/react/button';
 import { Chip } from '@heroui/react/chip';
@@ -248,7 +249,10 @@ export function StorageMaintenanceView({
         data-testid={`storage-${view}-view`}
         className={`grid pb-10 [overflow-wrap:anywhere] ${view === 'cleanup' ? 'max-w-[760px] gap-4' : 'gap-5'}`}
       >
-        <header className="flex flex-wrap items-center justify-between gap-3">
+        <ComponentEntrance
+          as="header"
+          className="flex flex-wrap items-center justify-between gap-3"
+        >
           <div className="flex min-w-0 items-center gap-2">
             <h1 className="text-[28px] font-medium leading-normal min-[1200px]:text-[30px]">
               {view === 'default' ? '默认存储设置' : '清理状态'}
@@ -268,7 +272,7 @@ export function StorageMaintenanceView({
             <ArrowLeft size={18} aria-hidden />
             返回
           </Button>
-        </header>
+        </ComponentEntrance>
         <div className="flex flex-wrap items-center gap-3">
           <span className="text-sm">{storage.name}</span>
           <Chip
@@ -345,7 +349,12 @@ export function StorageMaintenanceView({
           </>
         ) : (
           <>
-            <section aria-label="测试对象清理" className="grid gap-3">
+            <ComponentEntrance
+              as="section"
+              delay={0.055}
+              aria-label="测试对象清理"
+              className="grid gap-3"
+            >
               <h2 className="flex items-center gap-3 text-lg font-medium">
                 <ShieldCheck size={20} aria-hidden />
                 连接测试对象
@@ -385,9 +394,11 @@ export function StorageMaintenanceView({
                   对象删除成功前不能解除引用或删除配置。
                 </p>
               ) : null}
-            </section>
+            </ComponentEntrance>
             {
-              <section
+              <ComponentEntrance
+                as="section"
+                delay={0.11}
                 aria-label="受管孤儿对象扫描"
                 className="grid gap-3 border-t border-border pt-4 text-sm leading-normal"
               >
@@ -442,7 +453,7 @@ export function StorageMaintenanceView({
                   <ScanLine size={16} aria-hidden />
                   扫描并清理
                 </Button>
-              </section>
+              </ComponentEntrance>
             }
           </>
         )}

@@ -1,11 +1,11 @@
 'use client';
 
+import { ComponentEntrance } from '../component-entrance';
 import { useEffect, useRef, type ComponentProps } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Button } from '@heroui/react/button';
 import { Card } from '@heroui/react/card';
 import { Link } from '@heroui/react/link';
-import { Skeleton } from '@heroui/react/skeleton';
 import { ArrowLeft, Save } from 'lucide-react';
 import { OwnerShell } from '../shell/owner-shell';
 import {
@@ -108,7 +108,7 @@ export function BrandingPage(
         data-kind={operation?.kind}
         className="grid min-w-0 max-w-[960px] gap-4 pb-8"
       >
-        <div className="flex items-center justify-between gap-3">
+        <ComponentEntrance className="flex items-center justify-between gap-3">
           <h1 className="text-[28px] font-medium min-[1200px]:text-[30px]">
             {preview ? '品牌预览' : 'Logo 与 Favicon'}
           </h1>
@@ -125,7 +125,7 @@ export function BrandingPage(
             <ArrowLeft aria-hidden className="size-4" />
             返回
           </Button>
-        </div>
+        </ComponentEntrance>
         {sessionLost ? (
           <Card className={siteCardClass} role="alert">
             <h2 className="text-lg font-medium">会话已失效</h2>
@@ -144,29 +144,27 @@ export function BrandingPage(
           preview ? (
             <BrandingPreview editor={editor} />
           ) : (
-            <Card className="min-w-0 gap-0 overflow-hidden rounded-[20px] border border-border bg-surface p-0 shadow-none">
-              <Card.Content className="divide-y divide-border p-0">
-                {(['logo', 'favicon'] as const).map((kind) => (
-                  <BrandingRow
-                    key={kind}
-                    kind={kind}
-                    url={brandAsset(editor.saved!, kind).url}
-                    disabled={editor.locked || operation !== null}
-                    onSelect={() => inputs.current[kind]?.click()}
-                    onRemove={() => editor.select(kind, null)}
-                  />
-                ))}
-              </Card.Content>
-            </Card>
+            <ComponentEntrance delay={0.055}>
+              <Card className="min-w-0 gap-0 overflow-hidden rounded-[20px] border border-border bg-surface p-0 shadow-none">
+                <Card.Content className="divide-y divide-border p-0">
+                  {(['logo', 'favicon'] as const).map((kind) => (
+                    <BrandingRow
+                      key={kind}
+                      kind={kind}
+                      url={brandAsset(editor.saved!, kind).url}
+                      disabled={editor.locked || operation !== null}
+                      onSelect={() => inputs.current[kind]?.click()}
+                      onRemove={() => editor.select(kind, null)}
+                    />
+                  ))}
+                </Card.Content>
+              </Card>
+            </ComponentEntrance>
           )
         ) : !sessionLost ? (
           <Card className={siteCardClass} role={loading ? 'status' : 'alert'}>
             {loading ? (
-              <div className="grid gap-4">
-                <span className="sr-only">正在读取品牌设置…</span>
-                <Skeleton className="h-24 rounded-xl" />
-                <Skeleton className="h-24 rounded-xl" />
-              </div>
+              <p className="text-sm text-muted">正在读取品牌设置…</p>
             ) : (
               <>
                 <h2 className="text-lg font-medium">品牌设置读取失败</h2>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Button } from '@heroui/react/button';
 import { Dropdown } from '@heroui/react/dropdown';
 import { Link } from '@heroui/react/link';
@@ -67,7 +68,7 @@ export function AlbumCard({
           className="flex aspect-[333/184] w-full items-center justify-center overflow-hidden rounded-xl bg-default"
         >
           <AlbumCoverImage
-            key={JSON.stringify(album.cover)}
+            key={`${album.cover.imageId}-${album.cover.status}-${album.cover.thumbnailUrl}`}
             cover={album.cover}
           />
         </span>
@@ -78,14 +79,17 @@ export function AlbumCard({
           {album.imageCount} 张图片 · #{album.id.slice(0, 8)}
         </span>
       </Link>
-      {point ? (
-        <span
-          ref={anchor}
-          aria-hidden
-          className="pointer-events-none fixed size-px"
-          style={{ left: point.x, top: point.y }}
-        />
-      ) : null}
+      {point
+        ? createPortal(
+            <span
+              ref={anchor}
+              aria-hidden
+              className="pointer-events-none fixed size-px"
+              style={{ left: point.x, top: point.y }}
+            />,
+            document.body,
+          )
+        : null}
       <Dropdown
         isOpen={open}
         onOpenChange={(next) => {

@@ -1,5 +1,6 @@
 'use client';
 
+import { ComponentEntrance } from '../component-entrance';
 import {
   useCallback,
   useEffect,
@@ -50,6 +51,9 @@ export function TokensPage({ timeZone, ...shell }: Props) {
     refetchOnWindowFocus: false,
   });
   const loading = !query.isFetchedAfterMount || query.isFetching;
+  const initialLoading =
+    !query.isFetchedAfterMount ||
+    (query.data === undefined && query.isFetching);
   const sessionLost =
     expired ||
     (query.error instanceof TokenRequestError && query.error.status === 401);
@@ -130,7 +134,7 @@ export function TokensPage({ timeZone, ...shell }: Props) {
         data-state={
           sessionLost
             ? 'session'
-            : loading
+            : initialLoading
               ? 'loading'
               : query.isError
                 ? 'error'
@@ -138,10 +142,12 @@ export function TokensPage({ timeZone, ...shell }: Props) {
         }
         className="pb-10"
       >
-        <SettingsHeading />
+        <ComponentEntrance>
+          <SettingsHeading />
+        </ComponentEntrance>
         <SettingsCategories items={settingsCategories}>
           <Card className="grid min-w-0 gap-6 rounded-[20px] border border-border bg-surface p-5 shadow-none sm:p-6">
-            <div className="grid gap-4">
+            <ComponentEntrance className="grid gap-4">
               <div className="flex items-center justify-between gap-2">
                 <div className="flex min-w-0 items-center gap-0">
                   <h2 className="flex items-center gap-2 whitespace-nowrap text-xl font-medium">
@@ -179,7 +185,7 @@ export function TokensPage({ timeZone, ...shell }: Props) {
                   <TokenUsageInfo />
                 </span>
               </div>
-            </div>
+            </ComponentEntrance>
             {sessionLost ? (
               <div className="grid gap-3">
                 <p role="alert" className="text-sm text-danger">
@@ -192,7 +198,7 @@ export function TokensPage({ timeZone, ...shell }: Props) {
                   重新登录
                 </Link>
               </div>
-            ) : loading ? (
+            ) : initialLoading ? (
               <div
                 data-testid="api-loading"
                 role="status"
@@ -225,16 +231,18 @@ export function TokensPage({ timeZone, ...shell }: Props) {
                 tokens={tokens}
                 timeZone={timeZone}
                 actions={actions}
+                reading={loading}
               />
             ) : (
-              <div
+              <ComponentEntrance
+                delay={0.055}
                 data-testid="api-empty"
                 className="grid min-h-44 content-center justify-items-center gap-3 py-6 text-center"
               >
                 <KeyRound className="size-8 text-muted" aria-hidden />
                 <h3 className="text-base font-medium">暂无上传 Token</h3>
                 <p className="text-sm text-muted">创建用于脚本上传的 Token。</p>
-              </div>
+              </ComponentEntrance>
             )}
           </Card>
         </SettingsCategories>

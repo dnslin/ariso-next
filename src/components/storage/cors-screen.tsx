@@ -1,10 +1,10 @@
 'use client';
 
+import { ComponentEntrance } from '../component-entrance';
 import { useRef, useState, type ComponentProps } from 'react';
 import Link from 'next/link';
 import { Alert } from '@heroui/react/alert';
 import { Button } from '@heroui/react/button';
-import { Spinner } from '@heroui/react/spinner';
 import { ArrowLeft } from 'lucide-react';
 import { OwnerShell } from '../shell/owner-shell';
 import { CorsDialog, type CorsDialogKind } from './cors-dialog';
@@ -128,12 +128,14 @@ export function CorsScreen({
           <ArrowLeft size={18} aria-hidden />
           返回
         </Link>
-        <h1 className="text-[28px] font-medium leading-normal min-[1200px]:text-[30px]">
+        <ComponentEntrance
+          as="h1"
+          className="text-[28px] font-medium leading-normal min-[1200px]:text-[30px]"
+        >
           {title}
-        </h1>
+        </ComponentEntrance>
         {query.isPending ? (
           <p role="status" className="flex items-center gap-2">
-            <Spinner size="sm" />
             正在读取直传设置
           </p>
         ) : query.isError ? (

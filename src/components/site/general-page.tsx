@@ -1,5 +1,6 @@
 'use client';
 
+import { ComponentEntrance } from '../component-entrance';
 import { useCallback, useEffect, useState, type ComponentProps } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Button } from '@heroui/react/button';
@@ -140,13 +141,15 @@ export function GeneralPage(shell: ShellProps) {
       }
     >
       <section data-testid="site-general" data-state={phase} className="pb-10">
-        <SettingsHeading
-          help={
-            <StorageTip label="基本设置保存">
-              站点信息和上传限制分别保存；其他设置由所属模块管理。
-            </StorageTip>
-          }
-        />
+        <ComponentEntrance>
+          <SettingsHeading
+            help={
+              <StorageTip label="基本设置保存">
+                站点信息和上传限制分别保存；其他设置由所属模块管理。
+              </StorageTip>
+            }
+          />
+        </ComponentEntrance>
         <SettingsCategories
           items={settingsCategories}
           onNavigate={navigation.navigate}

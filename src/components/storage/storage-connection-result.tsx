@@ -1,5 +1,6 @@
 'use client';
 
+import { ComponentEntrance } from '../component-entrance';
 import type { ComponentProps } from 'react';
 import { Alert } from '@heroui/react/alert';
 import { AlertDialog } from '@heroui/react/alert-dialog';
@@ -11,7 +12,7 @@ import type { StorageSummary } from './storage-api';
 import {
   connectionDiagnostic,
   connectionStageRow,
-  ConnectionReportRows,
+  connectionReportRows,
 } from './connection-report';
 import { CorsRows } from './cors-report';
 
@@ -171,8 +172,42 @@ export function StorageConnectionResult({
                 ]
               : []),
           ]
-        : null
-    : null;
+        : connectionReportRows(report, busy || !valid)
+    : saved
+      ? [
+          {
+            label: '连接测试',
+            value: '尚未测试',
+            detail: '需通过后启用',
+          },
+          {
+            label: '浏览器直传',
+            value: storage.corsStatus === 'invalidated' ? '已失效' : '尚未检测',
+            detail: '可在连接通过后检测',
+          },
+        ]
+      : [
+          {
+            label: 'Bucket 支持范围',
+            value: '等待执行',
+            detail: '等待服务端记录结果',
+          },
+          {
+            label: '写入测试对象',
+            value: '等待执行',
+            detail: '等待服务端记录结果',
+          },
+          {
+            label: '鉴权读取',
+            value: '等待执行',
+            detail: '等待服务端记录结果',
+          },
+          {
+            label: '匿名读取 / 清理',
+            value: '等待执行',
+            detail: '等待前一步结束',
+          },
+        ];
   return (
     <OwnerShell {...shell} footer={shortDialog ? undefined : footer}>
       <section
@@ -285,7 +320,10 @@ export function StorageConnectionResult({
           </div>
         ) : (
           <div data-testid="storage-connection-report" className="grid gap-5">
-            <header className="flex flex-wrap items-center justify-between gap-3">
+            <ComponentEntrance
+              as="header"
+              className="flex flex-wrap items-center justify-between gap-3"
+            >
               <h1 className="text-[28px] font-medium leading-normal min-[1200px]:text-[30px]">
                 {title}
               </h1>
@@ -297,7 +335,7 @@ export function StorageConnectionResult({
                 <ArrowLeft size={18} aria-hidden />
                 返回
               </Button>
-            </header>
+            </ComponentEntrance>
             <p className="min-h-[22px] text-[13px] leading-normal">
               {storage.name} · S3 ·{' '}
               {storage.enabled ? '已启用' : valid ? '仍为停用' : '已停用'}
@@ -309,59 +347,7 @@ export function StorageConnectionResult({
             >
               {summary}
             </p>
-            {report ? (
-              rows ? (
-                <CorsRows rows={rows} />
-              ) : (
-                <ConnectionReportRows
-                  report={report}
-                  includeConfiguration={busy || !valid}
-                />
-              )
-            ) : saved ? (
-              <CorsRows
-                rows={[
-                  {
-                    label: '连接测试',
-                    value: '尚未测试',
-                    detail: '需通过后启用',
-                  },
-                  {
-                    label: '浏览器直传',
-                    value:
-                      storage.corsStatus === 'invalidated'
-                        ? '已失效'
-                        : '尚未检测',
-                    detail: '可在连接通过后检测',
-                  },
-                ]}
-              />
-            ) : (
-              <CorsRows
-                rows={[
-                  {
-                    label: 'Bucket 支持范围',
-                    value: '等待执行',
-                    detail: '等待服务端记录结果',
-                  },
-                  {
-                    label: '写入测试对象',
-                    value: '等待执行',
-                    detail: '等待服务端记录结果',
-                  },
-                  {
-                    label: '鉴权读取',
-                    value: '等待执行',
-                    detail: '等待服务端记录结果',
-                  },
-                  {
-                    label: '匿名读取 / 清理',
-                    value: '等待执行',
-                    detail: '等待前一步结束',
-                  },
-                ]}
-              />
-            )}
+            <CorsRows rows={rows} />
             {report ? (
               <p className="text-xs leading-normal text-muted">
                 探测 ID：{report.probeId} · 配置版本：{report.revision} ·

@@ -1,4 +1,4 @@
-import { createElement } from 'react';
+import { createElement, type EffectCallback } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import {
   QueryClient,
@@ -15,9 +15,24 @@ import type {
 
 const context = vi.hoisted(() => ({
   search: '',
+  captureLayouts: false,
+  layouts: [] as EffectCallback[],
   observer: null as QueryObserver<LibraryPage> | null,
   unsubscribe: null as (() => void) | null,
 }));
+vi.mock('react', async (original) => {
+  const actual = await original<typeof import('react')>();
+  return {
+    ...actual,
+    useLayoutEffect: (
+      effect: EffectCallback,
+      deps?: import('react').DependencyList,
+    ) => {
+      if (context.captureLayouts) context.layouts.push(effect);
+      else actual.useLayoutEffect(effect, deps);
+    },
+  };
+});
 vi.mock('next/navigation', () => ({
   useSearchParams: () => new URLSearchParams(context.search),
 }));
@@ -117,6 +132,8 @@ afterEach(() => {
   context.unsubscribe = null;
   context.observer = null;
   context.search = '';
+  context.captureLayouts = false;
+  context.layouts = [];
   clients.splice(0).forEach((value) => value.clear());
   vi.unstubAllGlobals();
 });
@@ -195,4 +212,88 @@ it('keeps invalid URL filters visible without requesting a replacement query or 
   expect(query.filters).toBeNull();
   expect(fetcher).not.toHaveBeenCalled();
   expect(queryClient.getQueryData(key('q=unrelated'))).toEqual(cached);
+});
+
+it.each(['filter', 'page'] as const)(
+  'keeps actual old rows visible while a changed %s request is pending, without treating them as the new cache or restoring its scroll',
+  async (change) => {
+    const queryClient = client();
+    context.search = 'q=a&page=1&pageSize=40';
+    queryClient.setQueryData(key('q=a'), page(['old-row']));
+    let finish!: (response: Response) => void;
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(
+        () =>
+          new Promise<Response>((resolve) => {
+            finish = resolve;
+          }),
+      ),
+    );
+    expect(mount(queryClient).data?.items[0]?.id).toBe('old-row');
+    if (change === 'filter') await mount(queryClient).applyQuery({ q: 'b' });
+    else await mount(queryClient).setPage(2);
+    const scrollTo = vi.fn();
+    vi.stubGlobal('document', {
+      querySelector: () => ({
+        scrollTop: 70,
+        scrollTo,
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+      }),
+    });
+    vi.stubGlobal('requestAnimationFrame', (callback: () => void) => {
+      callback();
+      return 1;
+    });
+    context.captureLayouts = true;
+    const pending = mount(queryClient);
+    context.layouts.splice(0).forEach((effect) => effect());
+    expect(pending).toMatchObject({
+      isPending: false,
+      isFetching: true,
+      isPlaceholderData: true,
+    });
+    expect(pending.data?.items[0]?.id).toBe('old-row');
+    expect(scrollTo).not.toHaveBeenCalled();
+    const target = key(
+      change === 'filter' ? 'q=b' : 'q=a',
+      change === 'page' ? 2 : 1,
+    );
+    expect(queryClient.getQueryData(target)).toBeUndefined();
+    finish(Response.json(page(['new-row'])));
+    await vi.waitFor(() => {
+      const ready = mount(queryClient);
+      expect(ready.isPlaceholderData).toBe(false);
+      expect(ready.data?.items[0]?.id).toBe('new-row');
+    });
+    context.layouts.splice(0).forEach((effect) => effect());
+    expect(scrollTo).toHaveBeenCalledWith(0, 0);
+    expect(queryClient.getQueryData(target)).toEqual(page(['new-row']));
+    expect(queryClient.getQueryData(key('q=a'))).toEqual(page(['old-row']));
+  },
+);
+
+it('a failed replacement request drops retained old rows and exposes the actual error', async () => {
+  const queryClient = client();
+  context.search = 'q=a&page=1&pageSize=40';
+  queryClient.setQueryData(key('q=a'), page(['old-row']));
+  vi.stubGlobal(
+    'fetch',
+    vi
+      .fn()
+      .mockResolvedValue(
+        Response.json(
+          { message: '真实读取失败', code: 'LIBRARY_READ_FAILED' },
+          { status: 500 },
+        ),
+      ),
+  );
+  mount(queryClient);
+  await mount(queryClient).applyQuery({ q: 'b' });
+  await vi.waitFor(() => expect(mount(queryClient).isError).toBe(true));
+  const failed = mount(queryClient);
+  expect(failed.data).toBeUndefined();
+  expect(failed.error?.message).toBe('真实读取失败');
+  expect(failed.isPlaceholderData).toBe(false);
 });

@@ -22,6 +22,7 @@ import { OwnerShell } from '../../components/shell/owner-shell';
 import { useResetUpload } from '../../components/upload/provider';
 import type { LibraryDetail as Detail } from '../../server/library/detail-types';
 import { LibraryLoading } from './library-loading';
+import { ComponentEntrance } from '../../components/component-entrance';
 import { useDetailNavigation } from './use-detail-navigation';
 import { LibraryDetail } from '../../components/library/detail';
 import { useDetailQuery } from '../../components/library/use-detail-query';
@@ -326,7 +327,7 @@ export function LibraryScreen(props: {
           data-loading-mode={query.loadingMode}
         >
           {props.header ?? (
-            <div className="flex min-w-0 items-center justify-between gap-3">
+            <ComponentEntrance className="flex min-w-0 items-center justify-between gap-3">
               <h1
                 id="library-title"
                 tabIndex={-1}
@@ -334,7 +335,7 @@ export function LibraryScreen(props: {
               >
                 图库
               </h1>
-            </div>
+            </ComponentEntrance>
           )}
           {analyticsSource ? (
             <Link
@@ -375,7 +376,7 @@ export function LibraryScreen(props: {
               </ToggleButton>
             </ToggleButtonGroup>
           ) : null}
-          <div className="grid min-w-0 gap-2">
+          <ComponentEntrance className="grid min-w-0 gap-2" delay={0.055}>
             <LibraryToolbar
               query={{
                 ...query,
@@ -428,7 +429,7 @@ export function LibraryScreen(props: {
                 onApply={(patch) => void query.applyQuery(patch)}
               />
             ) : null}
-          </div>
+          </ComponentEntrance>
           {props.afterToolbar}
           {reconciliation.error ? (
             <Alert
@@ -503,49 +504,52 @@ export function LibraryScreen(props: {
                 </Alert>
               ) : null}
               {!query.isPending && !query.error && query.items.length === 0 ? (
-                <div
-                  data-testid="library-empty"
-                  className="grid min-h-60 content-center justify-items-center gap-3 text-center md:min-h-90"
-                >
-                  <Images size={36} aria-hidden />
-                  <h2 className="text-xl font-medium">
-                    {query.total
-                      ? '本页已无图片'
-                      : filtered
-                        ? '没有找到匹配图片'
-                        : props.albumId
-                          ? '相册还没有图片'
-                          : '图库还没有图片'}
-                  </h2>
-                  {query.total || filtered ? (
-                    <p className="text-sm">
+                <ComponentEntrance className="min-w-0">
+                  <div
+                    data-testid="library-empty"
+                    className="grid min-h-60 content-center justify-items-center gap-3 text-center md:min-h-90"
+                  >
+                    <Images size={36} aria-hidden />
+                    <h2 className="text-xl font-medium">
                       {query.total
-                        ? '图片数量已变化，请返回有效页。'
-                        : '请修改或清除筛选条件。'}
-                    </p>
-                  ) : null}
-                  {query.page > 1 ? (
-                    <Button
-                      className="min-h-11 rounded-lg"
-                      onPress={() => {
-                        void query.setPage(1);
-                      }}
-                    >
-                      返回第一页
-                    </Button>
-                  ) : filtered ? (
-                    <Button
-                      className="min-h-11 rounded-lg"
-                      onPress={query.resetQuery}
-                    >
-                      清除筛选
-                    </Button>
-                  ) : null}
-                </div>
+                        ? '本页已无图片'
+                        : filtered
+                          ? '没有找到匹配图片'
+                          : props.albumId
+                            ? '相册还没有图片'
+                            : '图库还没有图片'}
+                    </h2>
+                    {query.total || filtered ? (
+                      <p className="text-sm">
+                        {query.total
+                          ? '图片数量已变化，请返回有效页。'
+                          : '请修改或清除筛选条件。'}
+                      </p>
+                    ) : null}
+                    {query.page > 1 ? (
+                      <Button
+                        className="min-h-11 rounded-lg"
+                        onPress={() => {
+                          void query.setPage(1);
+                        }}
+                      >
+                        返回第一页
+                      </Button>
+                    ) : filtered ? (
+                      <Button
+                        className="min-h-11 rounded-lg"
+                        onPress={query.resetQuery}
+                      >
+                        清除筛选
+                      </Button>
+                    ) : null}
+                  </div>
+                </ComponentEntrance>
               ) : null}
               {query.items.length ? (
                 <LibraryGallery
                   items={query.items}
+                  readRevision={query.dataUpdatedAt}
                   layout={query.layout}
                   album={!!props.albumId}
                   disabled={

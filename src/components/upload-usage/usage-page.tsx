@@ -1,5 +1,6 @@
 'use client';
 
+import { ComponentEntrance } from '../component-entrance';
 import { useCallback, useRef, useState, type ComponentProps } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Button } from '@heroui/react/button';
@@ -52,8 +53,8 @@ export function UploadUsagePage(shell: ShellProps) {
   const loading =
     !site.isFetchedAfterMount ||
     !limits.isFetchedAfterMount ||
-    site.isFetching ||
-    limits.isFetching;
+    (!site.data && site.isFetching) ||
+    (!limits.data && limits.isFetching);
   const error = site.error ?? limits.error;
   const ready =
     !sessionLost && !loading && !error && !!site.data && !!limits.data;
@@ -85,12 +86,14 @@ export function UploadUsagePage(shell: ShellProps) {
           <ArrowLeft className="size-4" aria-hidden />
           返回 Token 列表
         </Link>
-        <div ref={headingRef} className="mb-1 flex items-center gap-2">
-          <h1 className="text-[26px] font-medium leading-normal min-[1200px]:text-[32px]">
-            上传 API 用法
-          </h1>
-          <UsageTips anchorRef={headingRef} />
-        </div>
+        <ComponentEntrance>
+          <div ref={headingRef} className="mb-1 flex items-center gap-2">
+            <h1 className="text-[26px] font-medium leading-normal min-[1200px]:text-[32px]">
+              上传 API 用法
+            </h1>
+            <UsageTips anchorRef={headingRef} />
+          </div>
+        </ComponentEntrance>
         {sessionLost ? (
           <div className="grid gap-3">
             <p role="alert" className="text-sm text-danger">
@@ -109,7 +112,9 @@ export function UploadUsagePage(shell: ShellProps) {
           </p>
         ) : ready ? (
           <>
-            <CurlExample publicUrl={site.data!.publicUrl} />
+            <ComponentEntrance delay={0.055}>
+              <CurlExample publicUrl={site.data!.publicUrl} />
+            </ComponentEntrance>
             <p
               data-testid="upload-usage-limit"
               className="text-xs leading-relaxed text-muted"
@@ -144,7 +149,9 @@ export function UploadUsagePage(shell: ShellProps) {
           查看 OpenAPI 3.0 规范
           <ArrowUpRight className="size-4" aria-hidden />
         </Link>
-        <UsageDetails />
+        <ComponentEntrance delay={0.11} className="min-w-0">
+          <UsageDetails />
+        </ComponentEntrance>
       </section>
     </OwnerShell>
   );

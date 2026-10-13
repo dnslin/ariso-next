@@ -7,6 +7,7 @@ import {
 import { renderToStaticMarkup } from 'react-dom/server';
 import { expect, it, vi } from 'vitest';
 import { StorageConnectionResult } from '../../../src/components/storage/storage-connection-result';
+import { ComponentEntrance } from '../../../src/components/component-entrance';
 import type { StorageSummary } from '../../../src/components/storage/storage-api';
 
 function elements(node: ReactNode): ReactElement<Record<string, unknown>>[] {
@@ -46,7 +47,10 @@ it.each([
       onTest: vi.fn(),
       onEnable: vi.fn(),
     });
-    const header = elements(tree).find((element) => element.type === 'header');
+    const header = elements(tree).find(
+      (element) =>
+        element.type === ComponentEntrance && element.props.as === 'header',
+    );
     expect(header).toBeDefined();
     const back = elements(header).find(
       (element) => element.props.onPress === onReturn,
@@ -55,8 +59,8 @@ it.each([
     expect(back!.props.href).toBeUndefined();
     (back!.props.onPress as () => void)();
     expect(onReturn).toHaveBeenCalledExactlyOnceWith();
-    expect(renderToStaticMarkup(header)).not.toContain(
-      'href="/settings/storage"',
-    );
+    const html = renderToStaticMarkup(header);
+    expect(html).toContain('<header');
+    expect(html).not.toContain('href="/settings/storage"');
   },
 );

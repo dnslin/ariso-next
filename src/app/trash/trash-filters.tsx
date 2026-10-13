@@ -1,5 +1,7 @@
 'use client';
 
+import { ComponentEntrance } from '../../components/component-entrance';
+
 import type { QueryClient } from '@tanstack/react-query';
 import { Label } from '@heroui/react/label';
 import { ListBox } from '@heroui/react/list-box';
@@ -23,7 +25,8 @@ export function TrashFilters({
   onSessionExpired: () => void;
 }) {
   return (
-    <div
+    <ComponentEntrance
+      delay={0.11}
       data-testid="trash-filters"
       aria-label="回收筛选条件"
       className="grid min-w-0 gap-3 md:grid-cols-3"
@@ -61,7 +64,7 @@ export function TrashFilters({
           { id: 'cleanup_failed', name: '清理失败' },
         ]}
       />
-    </div>
+    </ComponentEntrance>
   );
 }
 

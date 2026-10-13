@@ -1,5 +1,6 @@
 'use client';
 
+import { ComponentEntrance } from '../component-entrance';
 import {
   createElement,
   useCallback,
@@ -10,7 +11,6 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Button } from '@heroui/react/button';
 import { Card } from '@heroui/react/card';
 import { Link } from '@heroui/react/link';
-import { Spinner } from '@heroui/react/spinner';
 import { toast } from '@heroui/react/toast';
 import {
   Check,
@@ -55,7 +55,9 @@ export function AccountPage(shell: ShellProps) {
     networkMode: 'always',
     refetchOnWindowFocus: false,
   });
-  const loading = !query.isFetchedAfterMount || query.isFetching;
+  const loading =
+    !query.isFetchedAfterMount ||
+    (query.data === undefined && query.isFetching);
   const email = query.data ?? shell.email;
   const expire = useCallback(() => {
     setExpired(true);
@@ -104,7 +106,9 @@ export function AccountPage(shell: ShellProps) {
         }
         className="pb-10"
       >
-        <SettingsHeading />
+        <ComponentEntrance>
+          <SettingsHeading />
+        </ComponentEntrance>
         <SettingsCategories items={settingsCategories}>
           {sessionLost || (!loading && query.isError) ? (
             <Card
@@ -142,10 +146,9 @@ export function AccountPage(shell: ShellProps) {
               data-testid="account-loading"
               role="status"
               aria-label="正在读取账号"
-              className="min-h-72 gap-3 rounded-[20px] border border-border bg-surface p-4 shadow-none min-[1200px]:p-6"
+              className="gap-3 rounded-[20px] border border-border bg-surface p-4 shadow-none min-[1200px]:p-6"
             >
               <h2 className="flex items-center gap-2 text-xl font-medium">
-                <Spinner size="sm" />
                 正在读取账号
               </h2>
               <p className="text-[13px] leading-normal text-muted">
@@ -154,7 +157,9 @@ export function AccountPage(shell: ShellProps) {
             </Card>
           ) : (
             <div className="grid w-full min-w-0 max-w-240 gap-8">
-              <section
+              <ComponentEntrance
+                as="section"
+                delay={0.055}
                 aria-labelledby="owner-account-heading"
                 className="grid min-w-0 gap-3"
               >
@@ -174,6 +179,7 @@ export function AccountPage(shell: ShellProps) {
                         data-testid="account-change-email"
                         variant="outline"
                         className={`${accountActionClass} bg-background`}
+                        isDisabled={query.isFetching}
                         onPress={() => setKind('email')}
                       >
                         修改邮箱
@@ -192,6 +198,7 @@ export function AccountPage(shell: ShellProps) {
                         data-testid="account-change-password"
                         variant="outline"
                         className={`${accountActionClass} bg-background`}
+                        isDisabled={query.isFetching}
                         onPress={() => setKind('password')}
                       >
                         修改密码
@@ -206,7 +213,7 @@ export function AccountPage(shell: ShellProps) {
                     </span>
                   </AccountSettingRow>
                 </Card>
-              </section>
+              </ComponentEntrance>
               <GithubAccount account={github} />
             </div>
           )}
