@@ -4,7 +4,7 @@
 
 ## 最终行为
 
-- Favicon 上传 PNG、ICO、静态 SVG 后生成 48×48 PNG，等比缩放、透明居中，不裁剪、拉伸或减少颜色；保留解释颜色所需的 ICC 配置，去除其他元数据并采用无损压缩。ICO 选择合适帧，SVG 直接渲染到目标透明画布。生成、元数据清理或数据库提交失败保留原图标，Logo 仍保存原文件。
+- Favicon 上传 PNG、ICO、静态 SVG 后生成 48×48 PNG，等比缩放、透明居中，不裁剪、拉伸或减少颜色；保留解释颜色所需的 ICC 配置、Gamma 和 sRGB 标记，去除其他元数据并采用无损压缩。ICO 选择合适帧，SVG 直接渲染到目标透明画布。生成、元数据清理或数据库提交失败保留原图标，Logo 仍保存原文件。
 - 文字水印描边宽度为0时显式关闭描边，大于0时继续采用指定颜色和宽度。字号、透明度、质量和其他设置不变。
 - 既有 Favicon 不迁移，重新上传时生成优化文件；既有图片重新处理后应用水印修复。
 
@@ -54,6 +54,8 @@
 
 新增 Display P3、两个整数细长 SVG 用例在修复前全部失败；两个小数尺寸用例也先复现空白输出再通过修复。元数据清理失败通过实际工具错误注入验证，旧引用与字节保留，候选文件清理。
 
+两个 Agent 复审 `892545c6` 时进一步复现：无 ICC、Gamma=1 的线性 PNG 清理后失去 Gamma，归一到 sRGB 的正确像素约 `(188,137,225)` 变成 `(128,64,192)`。新增真实上传回归先失败后通过。清理时保留 ICC 组，并在同一次 ExifTool 操作中用 `-tagsfromfile @ -PNG:Gamma -PNG:SRGBRendering` 拷回生成文件自身的两个颜色标签；单标签不能靠组删除的排除选项保留。标准 sRGB 原色的冗余 cHRM 被编码器省略，不据此推断颜色变化。
+
 本轮实际验证（同一 macOS ARM64 环境）：
 
 | 实际命令                                                                                                                                                                                                                | 结果                                                  |
@@ -62,7 +64,7 @@
 | `pnpm run build`、`pnpm run typecheck`、`pnpm run lint`                                                                                                                                                                 | 通过；构建的跨平台可选原生模块追踪诊断仍存在，退出码0 |
 | `pnpm exec vitest run --project media-tools tests/integration/site/branding.test.ts -t 'Display P3\|细长 SVG'`（修复前）                                                                                                | 3项新增用例按预期失败                                 |
 | `pnpm exec vitest run --project media-tools tests/integration/site/branding.test.ts -t '细长 SVG'`（精确尺寸修复前/后）                                                                                                 | 两个小数用例先失败，修复后4/4通过                     |
-| `pnpm exec vitest run --project media-tools tests/integration/site/branding.test.ts tests/integration/site/branding-http.test.ts tests/integration/media/svg.test.ts tests/integration/media/watermark.test.ts`（最终） | 103/103通过                                           |
+| `pnpm exec vitest run --project media-tools tests/integration/site/branding.test.ts tests/integration/site/branding-http.test.ts tests/integration/media/svg.test.ts tests/integration/media/watermark.test.ts`（最终） | 104/104通过                                           |
 | `pnpm exec vitest run --project unit tests/unit/media/svg-policy.test.ts tests/unit/media/processing.test.ts tests/unit/media/watermark.test.ts tests/unit/site/branding-resources.test.ts`                             | 56/56通过                                             |
 | `node docs/tasks/check.mjs`                                                                                                                                                                                             | 120任务、298需求通过                                  |
 

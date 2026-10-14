@@ -78,11 +78,20 @@ export async function generateFavicon(
     'png:exclude-chunks=date,time',
     `png:${path}`,
   ]);
-  // ICC defines how the pixels are displayed. ExifTool removes the other
-  // metadata without ImageMagick's text-chunk exclusion also dropping ICC.
+  // Preserve color interpretation while removing unrelated metadata. Gamma and
+  // sRGB are individual PNG tags, so copy them back after the group deletion.
   const cleanup = startMediaTool(
     'exiftool',
-    ['-all=', '--ICC_Profile:all', '-overwrite_original', path],
+    [
+      '-all=',
+      '--ICC_Profile:all',
+      '-tagsfromfile',
+      '@',
+      '-PNG:Gamma',
+      '-PNG:SRGBRendering',
+      '-overwrite_original',
+      path,
+    ],
     { workspace, cancelSignal: signal, timeout: 30_000 },
   );
   const error = await cleanup.settled;

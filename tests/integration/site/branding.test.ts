@@ -213,6 +213,35 @@ describe('品牌文件真实 SQLite 和磁盘生命周期', () => {
     expect(metadata).toBe('');
   });
 
+  it('Favicon 保留无 ICC 的线性 PNG 颜色解释', async () => {
+    const source = join(directory, 'linear.png');
+    await execa('magick', [
+      '-size',
+      '48x48',
+      'xc:rgb(128,64,192)',
+      '-set',
+      'gamma',
+      '1',
+      '-define',
+      'png:include-chunks=gAMA,cHRM',
+      source,
+    ]);
+    const asset = await service.replace('favicon', (path) =>
+      fs.copyFile(source, path),
+    );
+    const normalized = async (path: string) =>
+      (
+        await execa(
+          'magick',
+          [path, '-colorspace', 'sRGB', '-depth', '8', 'rgba:-'],
+          { encoding: 'buffer' },
+        )
+      ).stdout;
+    const expected = await normalized(source);
+    expect([...expected.subarray(0, 3)]).not.toEqual([128, 64, 192]);
+    expect(await normalized(join(root, asset.key))).toEqual(expected);
+  });
+
   it.each([
     [1, 100],
     [100, 1],
