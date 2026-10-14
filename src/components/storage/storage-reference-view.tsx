@@ -1,7 +1,7 @@
 'use client';
 
 import { ComponentEntrance } from '../component-entrance';
-import type { ComponentProps, MouseEvent } from 'react';
+import type { ComponentProps, MouseEvent, ReactNode } from 'react';
 import { Button } from '@heroui/react/button';
 import { Chip } from '@heroui/react/chip';
 import { Link } from '@heroui/react/link';
@@ -12,10 +12,13 @@ import {
   ListChecks,
   ScanLine,
   Upload,
+  type LucideIcon,
 } from 'lucide-react';
 import { OwnerShell } from '../shell/owner-shell';
 import { StorageTip } from './storage-tip';
 import type { StorageDetail } from './storage-api';
+import { storageReferenceDestination } from './reference-navigation';
+import { StorageReferenceTasks } from './storage-reference-tasks';
 
 export function StorageReferenceView({
   shell,
@@ -38,42 +41,8 @@ export function StorageReferenceView({
   const failedCleanup = storage.probes.filter(
     (probe) => probe.state === 'cleanup' && probe.error,
   ).length;
-  const rows = [
-    {
-      icon: Images,
-      label: '图片与版本',
-      value: `${counts.images ?? 0} 张 / ${counts.versions ?? 0} 个`,
-      active: (counts.images ?? 0) + (counts.versions ?? 0) > 0,
-      href: '/library',
-      action: '查看图片',
-    },
-    {
-      icon: Upload,
-      label: '未结束上传',
-      value: `${counts.uploads ?? 0} 个会话`,
-      active: (counts.uploads ?? 0) + activeWrites > 0,
-      detail: activeWrites > 0 ? `本地活动写入 ${activeWrites} 项` : undefined,
-      href: '/upload',
-      action: '查看上传',
-    },
-    {
-      icon: ListChecks,
-      label: '处理与删除任务',
-      value: `处理 ${counts.jobs ?? 0} 项 / 删除清理 ${counts.cleanupJobs ?? 0} 项`,
-      active: (counts.jobs ?? 0) + (counts.cleanupJobs ?? 0) > 0,
-      href: '/trash',
-      action: '前往回收站',
-    },
-    {
-      icon: ScanLine,
-      label: '测试与受管对象',
-      value: `${counts.probes ?? 0} 个探测 / ${counts.orphans ?? 0} 个孤儿 / ${counts.objects ?? 0} 个对象`,
-      active: true,
-      detail:
-        failedCleanup > 0 ? `${failedCleanup} 个探测对象清理失败` : undefined,
-      action: '查看清理',
-    },
-  ];
+  const libraryHref = storageReferenceDestination(storage.id, false);
+  const trashHref = storageReferenceDestination(storage.id, true);
   return (
     <OwnerShell {...shell}>
       <section
@@ -117,50 +86,134 @@ export function StorageReferenceView({
           </Chip>
         </div>
         <dl data-testid="storage-reference-counts">
-          {rows.map(({ icon: Icon, ...row }, index) => (
-            <ComponentEntrance
-              delay={Math.min(index + 1, 3) * 0.055}
-              key={row.label}
-              className="grid grid-cols-[24px_minmax(0,1fr)] items-start gap-x-3 gap-y-3 border-b border-border py-5 min-[768px]:grid-cols-[24px_minmax(0,1fr)_auto] min-[768px]:items-center"
+          <ReferenceRow
+            icon={Images}
+            label="图片与版本"
+            value={`${counts.libraryImages ?? 0} 张图库图片 · ${counts.trashImages ?? 0} 张回收图片 · ${counts.versions ?? 0} 个版本`}
+            delay={0.055}
+          >
+            {(counts.images ?? 0) + (counts.versions ?? 0) > 0 ? (
+              <dd className="col-start-2 flex flex-wrap items-center gap-2 justify-self-start min-[768px]:col-start-auto">
+                <Link
+                  href={libraryHref}
+                  isDisabled={busy}
+                  onClick={(event) => onNavigate?.(event, libraryHref)}
+                  className="flex min-h-11 items-center gap-2 rounded-lg px-3 text-sm no-underline"
+                >
+                  查看图库
+                  <ArrowRight size={16} aria-hidden />
+                </Link>
+                <Link
+                  href={trashHref}
+                  isDisabled={busy}
+                  onClick={(event) => onNavigate?.(event, trashHref)}
+                  className="flex min-h-11 items-center gap-2 rounded-lg px-3 text-sm no-underline"
+                >
+                  查看回收记录
+                  <ArrowRight size={16} aria-hidden />
+                </Link>
+              </dd>
+            ) : null}
+          </ReferenceRow>
+          <ReferenceRow
+            icon={Upload}
+            label="未结束上传"
+            value={`${counts.uploads ?? 0} 个会话`}
+            delay={0.11}
+            detail={
+              activeWrites > 0 ? (
+                <dd className="text-sm text-warning">
+                  本地活动写入 {activeWrites} 项
+                </dd>
+              ) : null
+            }
+          >
+            {(counts.uploads ?? 0) + activeWrites > 0 ? (
+              <dd className="col-start-2 justify-self-start min-[768px]:col-start-auto">
+                <Link
+                  href="/upload"
+                  isDisabled={busy}
+                  onClick={(event) => onNavigate?.(event, '/upload')}
+                  className="flex min-h-11 items-center gap-2 rounded-lg px-3 text-sm no-underline"
+                >
+                  查看上传
+                  <ArrowRight size={16} aria-hidden />
+                </Link>
+              </dd>
+            ) : null}
+          </ReferenceRow>
+          <ReferenceRow
+            icon={ListChecks}
+            label="处理与删除任务"
+            value={`处理 ${counts.jobs ?? 0} 项 / 删除清理 ${counts.cleanupJobs ?? 0} 项`}
+            delay={0.165}
+          >
+            {(counts.jobs ?? 0) + (counts.cleanupJobs ?? 0) > 0 ? (
+              <dd className="col-start-2 min-w-0 min-[768px]:col-span-2">
+                <StorageReferenceTasks
+                  storage={storage}
+                  busy={busy}
+                  onNavigate={onNavigate}
+                />
+              </dd>
+            ) : null}
+          </ReferenceRow>
+          <ReferenceRow
+            icon={ScanLine}
+            label="测试与受管对象"
+            value={`${counts.probes ?? 0} 个探测 / ${counts.orphans ?? 0} 个孤儿 / ${counts.objects ?? 0} 个对象`}
+            delay={0.165}
+            detail={
+              failedCleanup > 0 ? (
+                <dd className="text-sm text-danger">
+                  {failedCleanup} 个探测对象清理失败
+                </dd>
+              ) : null
+            }
+          >
+            <Button
+              variant="ghost"
+              isDisabled={busy}
+              className="col-start-2 h-11 justify-self-start rounded-lg px-3 text-sm font-normal min-[768px]:col-start-auto"
+              onPress={onCleanup}
             >
-              <Icon size={20} className="mt-0.5" aria-hidden />
-              <div className="grid min-w-0 gap-2">
-                <dt className="text-sm font-medium">{row.label}</dt>
-                <dd className="text-base tabular-nums">{row.value}</dd>
-                {row.detail ? (
-                  <dd
-                    className={`text-sm ${Icon === ScanLine ? 'text-danger' : 'text-warning'}`}
-                  >
-                    {row.detail}
-                  </dd>
-                ) : null}
-              </div>
-              {row.active ? (
-                row.href ? (
-                  <Link
-                    href={row.href}
-                    onClick={(event) => onNavigate?.(event, row.href!)}
-                    className="col-start-2 flex min-h-11 items-center gap-2 justify-self-start rounded-lg px-3 text-sm no-underline min-[768px]:col-start-auto"
-                  >
-                    {row.action}
-                    <ArrowRight size={16} aria-hidden />
-                  </Link>
-                ) : (
-                  <Button
-                    variant="ghost"
-                    isDisabled={busy}
-                    className="col-start-2 h-11 justify-self-start rounded-lg px-3 text-sm font-normal min-[768px]:col-start-auto"
-                    onPress={onCleanup}
-                  >
-                    {row.action}
-                    <ArrowRight size={16} aria-hidden />
-                  </Button>
-                )
-              ) : null}
-            </ComponentEntrance>
-          ))}
+              查看清理
+              <ArrowRight size={16} aria-hidden />
+            </Button>
+          </ReferenceRow>
         </dl>
       </section>
     </OwnerShell>
+  );
+}
+
+function ReferenceRow({
+  icon: Icon,
+  label,
+  value,
+  delay,
+  detail,
+  children,
+}: {
+  icon: LucideIcon;
+  label: string;
+  value: string;
+  delay: number;
+  detail?: ReactNode;
+  children?: ReactNode;
+}) {
+  return (
+    <ComponentEntrance
+      delay={delay}
+      className="grid grid-cols-[24px_minmax(0,1fr)] items-start gap-x-3 gap-y-3 border-b border-border py-5 min-[768px]:grid-cols-[24px_minmax(0,1fr)_auto] min-[768px]:items-center"
+    >
+      <Icon size={20} className="mt-0.5" aria-hidden />
+      <div className="grid min-w-0 gap-2">
+        <dt className="text-sm font-medium">{label}</dt>
+        <dd className="text-base tabular-nums">{value}</dd>
+        {detail}
+      </div>
+      {children}
+    </ComponentEntrance>
   );
 }

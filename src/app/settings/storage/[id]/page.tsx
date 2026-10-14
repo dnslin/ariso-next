@@ -11,18 +11,20 @@ export default async function StorageEditorPage({
   searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ saved?: string }>;
+  searchParams: Promise<{ saved?: string; view?: string }>;
 }) {
   const { id } = await params;
+  const query = await searchParams;
   const owner = await requirePageOwner(
-    `/settings/storage/${encodeURIComponent(id)}`,
+    `/settings/storage/${encodeURIComponent(id)}${query.view === 'references' ? '?view=references' : ''}`,
   );
   const settings = requireSiteSettings(getServerRuntime().connection.db);
   return (
     <StorageEditor
       storageId={id}
       storageRoot={resolve(getServerRuntime().config.dataDir, 'storage')}
-      initialSaved={(await searchParams).saved === '1'}
+      initialSaved={query.saved === '1'}
+      initialReferenceView={query.view === 'references'}
       name={settings.name}
       logoUrl={brandingUrl(settings.logoKey)}
       description={settings.description}

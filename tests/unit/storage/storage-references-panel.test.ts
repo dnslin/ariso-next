@@ -23,6 +23,8 @@ vi.mock('../../../src/components/upload/provider', () => ({
 const references = {
   counts: {
     images: 2,
+    libraryImages: 1,
+    trashImages: 1,
     versions: 3,
     objects: 4,
     jobs: 5,
@@ -75,6 +77,31 @@ const probe: StorageDetail['probes'][number] = {
   updatedAt: '2026-10-04T00:00:00.000Z',
 };
 const storage: StorageDetail = {
+  taskReferences: {
+    jobs: [
+      {
+        id: 'job-ready',
+        imageId: 'ready-image',
+        displayName: '已经就绪的照片',
+        kind: 'process',
+        scope: 'all',
+        status: 'running',
+        processingStatus: 'ready',
+        trashedAt: null,
+        thumbnailPath: null,
+      },
+    ],
+    cleanupJobs: [
+      {
+        id: 'cleanup-trash',
+        imageId: 'trash-image',
+        displayName: '待清理照片',
+        status: 'failed',
+        trashedAt: '2026-10-04T00:00:00.000Z',
+        thumbnailPath: null,
+      },
+    ],
+  },
   id: 'actual-storage-id',
   name: '实际存储',
   type: 's3',
@@ -141,12 +168,29 @@ function renderMaintenance(
   );
 }
 
+it('separates storage-scoped image, processing and deletion destinations', () => {
+  const html = renderReference();
+  expect(html).toContain('查看图库');
+  expect(html).toContain('查看回收记录');
+  expect(html).toContain(
+    '/library?storageId=actual-storage-id&amp;storageReturn=',
+  );
+  expect(html).toContain(
+    '/trash?storageId=actual-storage-id&amp;storageReturn=',
+  );
+  expect(html).toContain('查看处理任务');
+  expect(html).toContain('查看删除清理');
+  expect(html).toContain('image=trash-image');
+  expect(html).not.toContain('查看删除清理（1）');
+  expect(html).not.toContain('前往回收站');
+});
+
 it('keeps overlapping reference categories distinct rather than reporting a summed image total', () => {
   const html = renderReference();
   for (const text of [
     '引用与清理',
     '仍有引用',
-    '2 张 / 3 个',
+    '1 张图库图片 · 1 张回收图片 · 3 个版本',
     '处理 5 项 / 删除清理 2 项',
     '本地活动写入 2 项',
     '1 个探测对象清理失败',

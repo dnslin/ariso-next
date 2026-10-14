@@ -10,6 +10,7 @@ import {
 } from 'react';
 import { toast } from '@heroui/react/toast';
 import { CircleCheck } from 'lucide-react';
+import { useSiteNavigation } from '../site/site-navigation';
 import { smtpSettingsInputSchema } from '../../server/identity/validation';
 import {
   smtpDraft,
@@ -106,6 +107,7 @@ export function useSmtpPage() {
   const inFlight = useRef(false);
   const readAbort = useRef<AbortController | null>(null);
   const focusTarget = useRef<string | null>(null);
+  const editedField = useRef<keyof SmtpDraft | null>(null);
 
   useLayoutEffect(() => {
     if (operation !== 'idle' || !focusTarget.current) return;
@@ -130,15 +132,10 @@ export function useSmtpPage() {
     setDraft((current) => ({ ...current, password: '' }));
   }, []);
   const active = (id: number) => mounted.current && id === epoch.current;
-  const changed = saved
-    ? smtpDraftChanged(draft, saved)
-    : Boolean(
-        draft.host ||
-        draft.username ||
-        draft.password ||
-        draft.fromName ||
-        draft.fromEmail,
-      );
+  const changed = smtpDraftChanged(draft, saved);
+  const navigation = useSiteNavigation(
+    load === 'ready' && changed && operation === 'idle' && !pending,
+  );
 
   const readCurrent = useCallback(
     async (id: number, abort: AbortController) => {
@@ -192,6 +189,7 @@ export function useSmtpPage() {
 
   function change<K extends keyof SmtpDraft>(key: K, value: SmtpDraft[K]) {
     if (load !== 'ready' || pending || inFlight.current) return;
+    editedField.current = key;
     setDraft((current) => ({ ...current, [key]: value }));
     setErrors((current) => ({ ...current, [key]: '' }));
     setMessage('');
@@ -466,5 +464,26 @@ export function useSmtpPage() {
     send,
     busy: operation !== 'idle',
     locked: operation !== 'idle' || !!pending || load !== 'ready',
+    navigation: {
+      ...navigation,
+      cancel: () => {
+        navigation.cancel();
+        requestAnimationFrame(() => {
+          const field = editedField.current;
+          if (!field) return;
+          const testId =
+            field === 'fromName'
+              ? 'from-name'
+              : field === 'fromEmail'
+                ? 'from-email'
+                : field;
+          document
+            .querySelector<HTMLElement>(
+              `[data-testid="smtp-${testId}"]:not(:disabled)`,
+            )
+            ?.focus({ preventScroll: true });
+        });
+      },
+    },
   };
 }

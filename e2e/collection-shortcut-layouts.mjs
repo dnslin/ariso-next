@@ -45,8 +45,10 @@ export async function checkShortcutLayouts(page, output, name, selector) {
           const r = modal.getBoundingClientRect();
           const footer = modal.querySelector('[data-slot$="-footer"]');
           const f = footer?.getBoundingClientRect();
+          const add = modal.querySelector('[data-testid="album-image-add"]');
+          const a = add?.getBoundingClientRect();
           const count = modal.querySelector(
-            '[data-testid="album-image-selected"]',
+            '[data-testid="album-image-selected-toggle"], [data-testid="album-image-selected"]',
           );
           const feedback = modal.querySelector(
             '[data-testid="album-image-submit-error"]',
@@ -63,10 +65,14 @@ export async function checkShortcutLayouts(page, output, name, selector) {
               bottom: r.bottom,
             },
             footer: f ? { top: f.top, bottom: f.bottom } : null,
+            add: a ? { top: a.top, bottom: a.bottom } : null,
             feedback: error
               ? { top: error.top, bottom: error.bottom, height: error.height }
               : null,
-            selectedCountLeft: count?.getBoundingClientRect().left ?? null,
+            selectedCountLeft:
+              count?.dataset.testid === 'album-image-selected'
+                ? count.getBoundingClientRect().left
+                : null,
             small: [...modal.querySelectorAll('button')]
               .filter((n) => {
                 const a = n.getBoundingClientRect();
@@ -99,6 +105,13 @@ export async function checkShortcutLayouts(page, output, name, selector) {
             result.footer.top >= 0,
           `${name}/${theme}/${width}/${height}: footer reachable`,
         );
+        if (name.startsWith('album-image-picker'))
+          assert.ok(
+            result.add &&
+              result.add.top >= result.footer.top &&
+              result.add.bottom <= result.footer.bottom + 1,
+            `${name}/${theme}/${width}/${height}: submit action remains visible`,
+          );
         if (result.feedback)
           assert.ok(
             result.feedback.height > 0 &&

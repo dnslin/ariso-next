@@ -136,6 +136,57 @@ it('跨文档离开仍使用浏览器beforeunload，取消本页历史不改写�
   expect(traverse).not.toHaveBeenCalled();
   expect(runtime.push).not.toHaveBeenCalled();
 });
+it('没有 Navigation API 时仍保护普通链接和刷新，分类导航也可确认放弃', () => {
+  cleanup?.();
+  Reflect.deleteProperty(window, 'navigation');
+  const add = vi.spyOn(document, 'addEventListener');
+  expect(() => {
+    NavigationHarness();
+    cleanup = runtime.effect!() || undefined;
+  }).not.toThrow();
+
+  class ElementStub {
+    closest(): ElementStub | null {
+      return null;
+    }
+  }
+  class AnchorStub extends ElementStub {
+    href = 'http://localhost/settings/email';
+    download = '';
+    target = '';
+  }
+  vi.stubGlobal('Element', ElementStub);
+  vi.stubGlobal('HTMLAnchorElement', AnchorStub);
+  const anchor = new AnchorStub();
+  const target = new ElementStub();
+  target.closest = () => anchor;
+  const click = add.mock.calls.find(([type]) => type === 'click')?.[1] as (
+    event: MouseEvent,
+  ) => void;
+  const preventDefault = vi.fn();
+  click({
+    target,
+    button: 0,
+    defaultPrevented: false,
+    metaKey: false,
+    ctrlKey: false,
+    shiftKey: false,
+    altKey: false,
+    preventDefault,
+    stopPropagation: vi.fn(),
+  } as unknown as MouseEvent);
+  expect(preventDefault).toHaveBeenCalledOnce();
+  expect(NavigationHarness().destination).toBe('/settings/email');
+  NavigationHarness().cancel();
+
+  const refresh = new Event('beforeunload', { cancelable: true });
+  window.dispatchEvent(refresh);
+  expect(refresh.defaultPrevented).toBe(true);
+  NavigationHarness().navigate('/settings/processing');
+  expect(NavigationHarness().destination).toBe('/settings/processing');
+  NavigationHarness().discard();
+  expect(runtime.push).toHaveBeenCalledExactlyOnceWith('/settings/processing');
+});
 it('取消订阅后不再阻止导航；无草稿不注册离开提示', () => {
   cleanup?.();
   expect(attempt().defaultPrevented).toBe(false);

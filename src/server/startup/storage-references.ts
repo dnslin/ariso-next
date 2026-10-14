@@ -15,6 +15,8 @@ import {
 import { storageOrphans } from '../storage/schema.ts';
 import type { StorageReferences } from '../storage/references.ts';
 
+export { readMediaTaskReferences as readStorageTaskReferences } from '../media/references.ts';
+
 /** Same synchronous transaction as the configuration or object ownership check. */
 export function readStorageReferences(
   db: BetterSQLite3Database,
@@ -57,6 +59,8 @@ export function readStorageReferences(
   return {
     counts: {
       images: media.images.length,
+      libraryImages: media.images.filter((image) => !image.trashedAt).length,
+      trashImages: media.images.filter((image) => image.trashedAt).length,
       versions: media.versions.length,
       objects: media.objects.length,
       jobs: media.jobs.length,

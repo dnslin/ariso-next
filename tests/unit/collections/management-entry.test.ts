@@ -1,6 +1,7 @@
 import { createElement, type ReactNode } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { beforeEach, expect, it, vi } from 'vitest';
+import { QueryClient } from '@tanstack/react-query';
 import { TagsScreen } from '../../../src/app/tags/screen';
 import { TagsList } from '../../../src/app/tags/list';
 import { SharesScreen } from '../../../src/app/shares/list-screen';
@@ -13,12 +14,14 @@ const runtime = vi.hoisted(() => ({
   fetching: false,
   error: null as Error | null,
 }));
+const navigationCache = new QueryClient();
 vi.mock('next/navigation', () => ({
   useRouter: () => ({ push: vi.fn() }),
   useSearchParams: () => new URLSearchParams(),
 }));
 vi.mock('@tanstack/react-query', async (original) => ({
   ...(await original<typeof import('@tanstack/react-query')>()),
+  useQueryClient: () => navigationCache,
   useQuery: () => ({
     data: runtime.pending ? undefined : { items: [], total: 0 },
     error: runtime.error,
@@ -131,7 +134,7 @@ it('share settings retains a readable first-read message without a rotating indi
     createElement(SettingsScreen, {
       ...shell,
       albumId: 'album',
-      fromAlbum: false,
+      returnHref: '/shares',
     }),
   );
   expect(html).toContain('分享设置');

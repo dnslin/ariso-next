@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { keepPreviousData, QueryClient, useQuery } from '@tanstack/react-query';
 import { Button } from '@heroui/react/button';
 import { Link } from '@heroui/react/link';
@@ -15,6 +15,7 @@ import { Dropdown } from '@heroui/react/dropdown';
 import { Toolbar } from '@heroui/react/toolbar';
 import { Tooltip } from '@heroui/react/tooltip';
 import { ButtonGroup } from '@heroui/react/button-group';
+import { toast } from '@heroui/react/toast';
 import {
   ArrowLeft,
   ChevronDown,
@@ -50,6 +51,15 @@ import {
   type Album,
   type AlbumPage,
 } from './api';
+import {
+  collectionDetailHref,
+  readCollectionReturn,
+  shareSettingsHref,
+} from './collection-navigation';
+import {
+  useCollectionQuery,
+  useCollectionReturn,
+} from './use-collection-navigation';
 
 export function AlbumsScreen(props: {
   name: string;
@@ -62,11 +72,20 @@ export function AlbumsScreen(props: {
   timeZone?: string;
 }) {
   const router = useRouter();
+  const params = useSearchParams();
   const resetUpload = useResetUpload();
   const [client] = useState(() => new QueryClient());
-  const [q, setQ] = useState('');
-  const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(40);
+  const query = useCollectionQuery('/albums');
+  const { q, page, pageSize } = query;
+  const currentHref = props.albumId
+    ? `/albums/${encodeURIComponent(props.albumId)}${params.size ? `?${params}` : ''}`
+    : query.href;
+  const backHref = readCollectionReturn(
+    params.get('returnTo'),
+    props.albumId ?? '',
+    '/albums',
+  );
+  const [galleryReady, setGalleryReady] = useState(false);
   const [action, setAction] = useState<AlbumAction | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [coverOpen, setCoverOpen] = useState(false);
@@ -115,7 +134,7 @@ export function AlbumsScreen(props: {
           `/api/albums?${new URLSearchParams({ q, page: String(page), pageSize: String(pageSize) })}`,
           { signal },
         ),
-      enabled: !props.albumId,
+      enabled: !props.albumId && !query.error,
       placeholderData: keepPreviousData,
       retry: false,
       networkMode: 'always',
@@ -147,7 +166,7 @@ export function AlbumsScreen(props: {
     return () =>
       window.removeEventListener('ariso:upload-albums-changed', refresh);
   }, [client, props.albumId]);
-  const error = props.albumId ? detail.error : list.error;
+  const error = props.albumId ? detail.error : (query.error ?? list.error);
   const expired = error instanceof AlbumRequestError && error.status === 401;
   useEffect(() => () => client.clear(), [client]);
   function expire() {
@@ -165,9 +184,17 @@ export function AlbumsScreen(props: {
       `/login?reason=expired&returnTo=${encodeURIComponent(window.location.pathname + window.location.search)}`,
     );
   }, [expired, resetUpload, client]);
-  const data = !list.isError ? list.data : undefined;
+  const data = !list.isError && !query.error ? list.data : undefined;
   const missing = error instanceof AlbumRequestError && error.status === 404;
   const album = !expired && !missing ? detail.data?.album : undefined;
+  const rememberReturn = useCollectionReturn(
+    currentHref,
+    props.albumId
+      ? Boolean(album) && galleryReady
+      : !list.isPending && !list.isPlaceholderData && !error,
+    !props.albumId,
+    query.replacedHref,
+  );
   const pages = data ? Math.max(1, Math.ceil(data.total / pageSize)) : 1;
   const albumDialog =
     action && !expired && !missing ? (
@@ -181,11 +208,19 @@ export function AlbumsScreen(props: {
           if (result.error) throw result.error;
         }}
         onComplete={(saved) => {
+          if (action?.kind === 'edit')
+            toast('相册已保存', { variant: 'default' });
+          else if (action?.kind === 'delete')
+            toast('相册已删除', {
+              description: '图片仍在图库。',
+              variant: 'default',
+            });
           closeAction();
           if (saved) {
             client.setQueryData(['album', saved.id], { album: saved });
-            if (action?.kind === 'create') router.push(`/albums/${saved.id}`);
-          } else if (props.albumId) router.push('/albums');
+            if (action?.kind === 'create')
+              router.push(collectionDetailHref(saved.id, currentHref));
+          } else if (props.albumId) router.push(backHref);
           void client.invalidateQueries({ queryKey: ['albums'] });
         }}
       />
@@ -202,10 +237,12 @@ export function AlbumsScreen(props: {
           className="mt-3 min-h-11 font-normal"
           isDisabled={props.albumId ? detail.isFetching : list.isFetching}
           onPress={() => {
-            void (props.albumId ? detail.refetch() : list.refetch());
+            if (!props.albumId && query.error)
+              query.change({ q: '', page: 1, pageSize: 40 });
+            else void (props.albumId ? detail.refetch() : list.refetch());
           }}
         >
-          重试加载
+          {!props.albumId && query.error ? '重置查询' : '重试加载'}
         </Button>
       </Alert.Content>
     </Alert>
@@ -231,6 +268,7 @@ export function AlbumsScreen(props: {
             onRefresh={() => {
               void detail.refetch();
             }}
+            onListReady={() => setGalleryReady(true)}
             afterToolbar={
               <>
                 {readError}
@@ -255,13 +293,14 @@ export function AlbumsScreen(props: {
                 <div className="flex min-w-0 items-center justify-between gap-3">
                   <h1
                     id="library-title"
+                    data-collection-return-fallback
                     tabIndex={-1}
                     className="min-w-0 max-w-full text-[26px] font-medium leading-normal [overflow-wrap:anywhere] md:text-[30px]"
                   >
                     {album.name}
                   </h1>
                   <Link
-                    href="/albums"
+                    href={backHref}
                     aria-label="返回相册列表"
                     className="min-h-11 shrink-0 gap-2 rounded-lg px-3 text-sm font-normal text-foreground no-underline"
                   >
@@ -300,11 +339,11 @@ export function AlbumsScreen(props: {
                   </ActionIconButton>
                   <ActionIconButton
                     label="分享设置"
-                    onPress={() =>
-                      router.push(
-                        `/shares/${encodeURIComponent(album.id)}?from=album`,
-                      )
-                    }
+                    data-collection-return-focus={`album-share-${album.id}`}
+                    onPress={(event) => {
+                      rememberReturn(event.target as HTMLElement);
+                      router.push(shareSettingsHref(album.id, currentHref));
+                    }}
                   >
                     <Share2 size={18} aria-hidden />
                   </ActionIconButton>
@@ -424,8 +463,7 @@ export function AlbumsScreen(props: {
                 value={String(pageSize)}
                 onChange={(value) => {
                   if (value) {
-                    setPageSize(Number(value));
-                    setPage(1);
+                    query.change({ pageSize: Number(value) });
                   }
                 }}
                 className="w-28 shrink-0"
@@ -455,7 +493,7 @@ export function AlbumsScreen(props: {
                     <Pagination.Previous
                       className="h-11 w-full min-w-0 rounded-lg border border-border px-3 font-normal"
                       isDisabled={page <= 1 || list.isFetching}
-                      onPress={() => setPage(page - 1)}
+                      onPress={() => query.change({ page: page - 1 })}
                     >
                       上一页
                     </Pagination.Previous>
@@ -469,7 +507,7 @@ export function AlbumsScreen(props: {
                     <Pagination.Next
                       className="h-11 w-full min-w-0 rounded-lg border border-border px-3 font-normal"
                       isDisabled={!data || page >= pages || list.isFetching}
-                      onPress={() => setPage(page + 1)}
+                      onPress={() => query.change({ page: page + 1 })}
                     >
                       下一页
                     </Pagination.Next>
@@ -491,7 +529,7 @@ export function AlbumsScreen(props: {
               相册
             </ComponentEntrance>
             <Link
-              href="/albums"
+              href={backHref}
               aria-label="返回相册列表"
               className="min-h-11 shrink-0 gap-2 rounded-lg px-3 text-sm font-normal text-foreground no-underline"
             >
@@ -515,8 +553,7 @@ export function AlbumsScreen(props: {
                 aria-label="搜索相册"
                 value={q}
                 onChange={(value) => {
-                  setQ(value);
-                  setPage(1);
+                  query.change({ q: value });
                 }}
                 className="min-w-0 flex-1"
               >
@@ -525,6 +562,7 @@ export function AlbumsScreen(props: {
                     <Search size={16} aria-hidden />
                   </InputGroup.Prefix>
                   <InputGroup.Input
+                    data-collection-return-fallback
                     placeholder="搜索相册…"
                     className="h-11 min-w-0 py-0 text-base md:text-sm"
                   />
@@ -548,15 +586,19 @@ export function AlbumsScreen(props: {
                   key={item.id}
                   index={index}
                   album={item}
-                  onOpen={() => router.push(`/albums/${item.id}`)}
+                  href={collectionDetailHref(item.id, currentHref)}
+                  onNavigate={rememberReturn}
+                  onOpen={(element) => {
+                    rememberReturn(element);
+                    router.push(collectionDetailHref(item.id, currentHref));
+                  }}
                   onEdit={(element) =>
                     openAction({ kind: 'edit', album: item }, element)
                   }
-                  onShare={() =>
-                    router.push(
-                      `/shares/${encodeURIComponent(item.id)}?from=album`,
-                    )
-                  }
+                  onShare={(element) => {
+                    rememberReturn(element);
+                    router.push(shareSettingsHref(item.id, currentHref));
+                  }}
                   onDelete={(element) =>
                     openAction({ kind: 'delete', album: item }, element)
                   }
@@ -579,7 +621,7 @@ export function AlbumsScreen(props: {
                   {page > 1 ? (
                     <Button
                       className="h-12 rounded-lg font-normal"
-                      onPress={() => setPage(1)}
+                      onPress={() => query.change({ page: 1 })}
                     >
                       返回第一页
                     </Button>
@@ -587,7 +629,7 @@ export function AlbumsScreen(props: {
                     <Button
                       className="h-12 rounded-lg font-normal"
                       variant="outline"
-                      onPress={() => setQ('')}
+                      onPress={() => query.change({ q: '' })}
                     >
                       清除搜索
                     </Button>

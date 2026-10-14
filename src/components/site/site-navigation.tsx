@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@heroui/react/button';
 import { Modal } from '@heroui/react/modal';
 
-/** 本页分类、链接和历史遍历共用确认；刷新/关闭由浏览器自身提示。 */
+/** 本页分类、链接和可用的历史遍历共用确认；刷新/关闭由浏览器自身提示。 */
 export function useSiteNavigation(dirty: boolean) {
   const router = useRouter();
   const [destination, setDestination] = useState<
@@ -76,11 +76,14 @@ export function useSiteNavigation(dirty: boolean) {
     }
     document.addEventListener('click', click, true);
     window.addEventListener('beforeunload', warn);
-    window.navigation.addEventListener('navigate', traverse);
+    // Without the Navigation API, same-document Back cannot be intercepted
+    // before traversal. Links and cross-document unload still stay protected.
+    const navigation = window.navigation;
+    navigation?.addEventListener('navigate', traverse);
     return () => {
       document.removeEventListener('click', click, true);
       window.removeEventListener('beforeunload', warn);
-      window.navigation.removeEventListener('navigate', traverse);
+      navigation?.removeEventListener('navigate', traverse);
     };
   }, [dirty, navigate]);
   return {

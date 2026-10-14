@@ -13,6 +13,7 @@ import { StorageReferenceView } from '../../../src/components/storage/storage-re
 import { StorageConnectionResult } from '../../../src/components/storage/storage-connection-result';
 import { StorageLeaveConfirmation } from '../../../src/components/storage/storage-leave-confirmation';
 import type { StorageDetail } from '../../../src/components/storage/storage-api';
+import { storageReferenceDestination } from '../../../src/components/storage/reference-navigation';
 
 const hooks = vi.hoisted(() => ({ cells: [] as unknown[], cursor: 0 }));
 const requests = vi.hoisted(() => ({ push: vi.fn(), storage: vi.fn() }));
@@ -61,6 +62,7 @@ vi.mock('../../../src/components/storage/storage-api', async (original) => ({
 }));
 
 const storage: StorageDetail = {
+  taskReferences: { jobs: [], cleanupJobs: [] },
   id: 'actual-storage',
   name: '实际存储',
   type: 's3',
@@ -233,7 +235,11 @@ it('keeps the S3 draft when returning from its connection result', () => {
   expect(requests.storage).not.toHaveBeenCalled();
 });
 
-it.each(['/library', '/upload', '/trash'])(
+it.each([
+  storageReferenceDestination(storage.id, false),
+  '/upload',
+  storageReferenceDestination(storage.id, true),
+])(
   'confirms dirty reference navigation to %s and can continue without losing the draft',
   (href) => {
     let tree = render();
@@ -265,7 +271,8 @@ it.each(['/library', '/upload', '/trash'])(
 it('preserves clean links and modified or new-tab clicks without intercepting their href', () => {
   const clean = references(render());
   expect(
-    clickReference(clean, '/library').preventDefault,
+    clickReference(clean, storageReferenceDestination(storage.id, false))
+      .preventDefault,
   ).not.toHaveBeenCalled();
   const view = elements(clean).find(
     (element) => element.type === StorageReferenceView,
@@ -285,7 +292,11 @@ it('preserves clean links and modified or new-tab clicks without intercepting th
     { currentTarget: { getAttribute: () => '_blank', focus: vi.fn() } },
   ])
     expect(
-      clickReference(dirty, '/library', modifier).preventDefault,
+      clickReference(
+        dirty,
+        storageReferenceDestination(storage.id, false),
+        modifier,
+      ).preventDefault,
     ).not.toHaveBeenCalled();
   expect(dialog(render()).props.isOpen).toBe(false);
   expect(requests.push).not.toHaveBeenCalled();

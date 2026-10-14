@@ -8,6 +8,7 @@ import { Card } from '@heroui/react/card';
 import { AlertDialog } from '@heroui/react/alert-dialog';
 import { toast } from '@heroui/react/toast';
 import { OwnerShell } from '../shell/owner-shell';
+import { SiteLeaveDialog } from '../site/site-navigation';
 import {
   SettingsCategories,
   SettingsHeading,
@@ -19,7 +20,7 @@ import {
   ProcessingRequestError,
   type SavedProcessingSettings,
 } from './api';
-import { fieldLabels, footerActionClass } from './model';
+import { fieldLabels, footerActionClass, formatProcessingValue } from './model';
 import { ProcessingForm } from './settings-form';
 import { useProcessingSettings } from './use-processing-settings';
 import { usePreview } from './use-preview';
@@ -264,7 +265,10 @@ function ProcessingEditor({
         className="pb-10"
       >
         <SettingsHeading />
-        <SettingsCategories items={settingsCategories}>
+        <SettingsCategories
+          items={settingsCategories}
+          onNavigate={settings.navigation.navigate}
+        >
           {settings.message ? (
             <div className="mb-5 grid gap-3 rounded-xl border border-border p-4 text-sm">
               <p role="alert">{settings.message}</p>
@@ -309,10 +313,16 @@ function ProcessingEditor({
                                 {fieldLabels[field]}
                               </th>
                               <td className="border-t border-border p-2 wrap-anywhere">
-                                {String(settings.saved[field] ?? '空')}
+                                {formatProcessingValue(
+                                  field,
+                                  settings.saved[field],
+                                )}
                               </td>
                               <td className="border-t border-border p-2 wrap-anywhere">
-                                {String(settings.input[field] ?? '空')}
+                                {formatProcessingValue(
+                                  field,
+                                  settings.input[field],
+                                )}
                               </td>
                             </tr>
                           ))}
@@ -364,6 +374,7 @@ function ProcessingEditor({
             </p>
           ) : null}
           <ProcessingForm
+            formEvents={settings.formEvents}
             input={settings.input}
             mode={mode}
             busy={busy}
@@ -395,6 +406,7 @@ function ProcessingEditor({
           />
         </SettingsCategories>
       </section>
+      <SiteLeaveDialog navigation={settings.navigation} pending={false} />
       <div hidden={view !== 'preview'}>
         <PreviewPane
           preview={preview}

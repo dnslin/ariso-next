@@ -700,7 +700,27 @@ try {
     '',
     'Anonymous form never discloses owner email',
   );
-  if (phase('representative')) await matrix('request-form', 1920);
+  if (phase('representative')) {
+    await matrix('request-form', 1920);
+    await resizeViewport(page, 1024, 600);
+    const shortForm = await page.evaluate(() => {
+      const card = document.querySelector('[data-testid="reset-page"]');
+      const submit = document.querySelector('[data-testid="reset-submit"]');
+      const back = document.querySelector('[data-testid="reset-login"]');
+      return {
+        cardTop: card.getBoundingClientRect().top,
+        submitBottom: submit.getBoundingClientRect().bottom,
+        backBottom: back.getBoundingClientRect().bottom,
+        overflow: document.documentElement.scrollWidth > innerWidth,
+      };
+    });
+    assert.equal(shortForm.overflow, false);
+    assert.ok(shortForm.cardTop < 150, 'Short desktop form reduces top space');
+    assert.ok(shortForm.submitBottom <= 600);
+    assert.ok(shortForm.backBottom <= 600);
+    await screenshot('request-form-short-desktop-1024x600');
+    await resizeViewport(page, 1440, 960);
+  }
   if (phase('interactions')) {
     await page.fill('#email', 'invalid-email');
     await activate('submit');

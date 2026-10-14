@@ -317,8 +317,8 @@ try {
     assert.equal(created.status, 201);
     const albumId = created.body.album.id;
     await page.click('a[href="/albums"]');
-    await page.waitForSelector(`a[href="/albums/${albumId}"]`);
-    await page.click(`a[href="/albums/${albumId}"]`);
+    await page.waitForSelector(`a[href^="/albums/${albumId}?"]`);
+    await page.click(`a[href^="/albums/${albumId}?"]`);
     await page.waitForSelector(button('添加图片'));
     await page.waitForSelector('[data-testid="library-empty"]');
     const sourcePath = new URL(await page.url());

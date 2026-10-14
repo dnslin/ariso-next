@@ -477,14 +477,23 @@ async function settingsPresentation() {
             const back = document.querySelector(
               'button[aria-label="返回分享"]',
             );
-            const chip = document.querySelector('main [data-slot="chip"]');
+            const chip = document.querySelector('[data-testid="share-status"]');
             const label = chip?.lastElementChild;
+            const rotateHeading = document.querySelector(
+              '[data-testid="share-rotate-heading"]',
+            );
+            const rotateIcon = document.querySelector(
+              '[data-testid="share-rotate-icon"]',
+            );
+            const rotateLabel = [
+              ...(rotateHeading?.querySelectorAll('p') ?? []),
+            ].find((node) => node.textContent === '重新生成地址');
             const expired = [...document.querySelectorAll('main span')].filter(
               (node) =>
                 node.children.length === 0 && node.textContent === '已过期',
             );
             const reference = document.createElement('span');
-            reference.style.color = 'var(--danger)';
+            reference.className = 'text-danger';
             document.body.append(reference);
             const danger = getComputedStyle(reference).color;
             reference.remove();
@@ -505,12 +514,23 @@ async function settingsPresentation() {
               label: label?.textContent,
               labelColor: label && getComputedStyle(label).color,
               chipColor: chip && getComputedStyle(chip).color,
+              chipBackground: chip && getComputedStyle(chip).backgroundColor,
               dotColor: chip && getComputedStyle(chip.firstElementChild).color,
+              rotateIcon: rotateIcon?.getBoundingClientRect().toJSON(),
+              rotateLabel: rotateLabel?.getBoundingClientRect().toJSON(),
+              view: {
+                label: document
+                  .querySelector('[data-testid="share-view"]')
+                  ?.textContent.trim(),
+                disabled: document.querySelector('[data-testid="share-view"]')
+                  ?.disabled,
+              },
               danger,
               expired: expired.map((node) => {
                 const style = getComputedStyle(node);
                 return {
                   color: style.color,
+                  inChip: chip?.contains(node) ?? false,
                   textShadow: style.textShadow,
                   boxShadow: style.boxShadow,
                   filter: style.filter,
@@ -549,10 +569,23 @@ async function settingsPresentation() {
             presentation.label,
             state === 'active' ? '分享中' : enabled ? '已过期' : '已停用',
           );
+          assert.deepEqual(presentation.view, {
+            label: '查看分享',
+            disabled: state !== 'active',
+          });
           assert.equal(
             presentation.dotColor,
             presentation.chipColor,
-            'Status dot stays neutral',
+            'Status dot follows the state color',
+          );
+          assert.ok(
+            Math.abs(
+              presentation.rotateIcon.y +
+                presentation.rotateIcon.height / 2 -
+                (presentation.rotateLabel.y +
+                  presentation.rotateLabel.height / 2),
+            ) <= 2,
+            'Regenerate icon is vertically centered with its title',
           );
           assert.equal(
             presentation.expired.length,
@@ -561,18 +594,27 @@ async function settingsPresentation() {
           for (const expired of presentation.expired) {
             assert.equal(
               expired.color,
-              presentation.danger,
-              'Expired text uses the existing red status color',
+              expired.inChip ? presentation.chipColor : presentation.danger,
             );
-            assert.notEqual(expired.color, presentation.chipColor);
             assert.equal(expired.textShadow, 'none');
             assert.equal(expired.boxShadow, 'none');
             assert.equal(expired.filter, 'none');
           }
-          if (state !== 'expired')
-            assert.equal(presentation.labelColor, presentation.chipColor);
+          assert.equal(presentation.labelColor, presentation.chipColor);
           await shot(`presentation-${state}-${theme}-${width}`);
         }
+      }
+    }
+    for (const theme of ['light', 'dark']) {
+      for (const width of [390, 1440]) {
+        const states = report.settingsPresentation.filter(
+          (item) => item.theme === theme && item.width === width,
+        );
+        assert.equal(new Set(states.map((item) => item.chipColor)).size, 3);
+        assert.equal(
+          new Set(states.map((item) => item.chipBackground)).size,
+          3,
+        );
       }
     }
   } finally {
@@ -584,7 +626,9 @@ async function settingsPresentation() {
   await page.focus(button('返回分享'));
   await page.keyboard.press('Enter');
   await page.waitForURL(`${config.origin}/shares`);
-  await page.goto(`${config.origin}${settingsPath()}?from=album`);
+  await page.goto(
+    `${config.origin}${settingsPath()}?returnTo=${encodeURIComponent(`/albums/${mainId}`)}`,
+  );
   await page.waitForSelector('[data-testid="share-address"]');
   await page.click(choice('瀑布流'));
   await page.click(button('返回相册'));
@@ -611,6 +655,39 @@ async function settingsPresentation() {
   await page.waitForURL(`${config.origin}/albums/${mainId}`);
   report.checks.push(
     'Settings return is an accessible 44px top-right icon in both themes at desktop/mobile; active and disabled labels stay neutral, expired label/date suffix are red without halo; keyboard return, album destination, unsaved confirmation, draft and focus restoration remain working.',
+  );
+}
+
+async function shareViewUsesSavedAddress() {
+  const saved = await current();
+  for (const width of [1440, 390]) {
+    await settings();
+    await resizeViewport(page, width);
+    await page.click(choice('瀑布流'));
+    await page.evaluate(() => {
+      window.__shareViewCalls = [];
+      window.open = (...args) => {
+        window.__shareViewCalls.push(args);
+        return null;
+      };
+    });
+    await page.click('[data-testid="share-view"]');
+    assert.deepEqual(await page.evaluate(() => window.__shareViewCalls), [
+      [saved.url, '_blank', 'noopener,noreferrer'],
+    ]);
+    assert.equal(
+      await page.evaluate(
+        () =>
+          document.querySelector('[data-testid="share-save-display"]').disabled,
+      ),
+      false,
+      'Opening the saved visitor address preserves the unsaved display draft',
+    );
+    assert.equal((await current()).layout, saved.layout);
+    await shot(`view-saved-address-${width}`);
+  }
+  report.checks.push(
+    'Desktop and mobile View Share open the saved visitor URL in a new tab while preserving unsaved display edits and leaving the saved layout untouched.',
   );
 }
 
@@ -676,6 +753,8 @@ try {
   if (representative) {
     report.stage = 'settings-presentation-feedback';
     await settingsPresentation();
+    report.stage = 'view-saved-share';
+    await shareViewUsesSavedAddress();
     report.stage = 'list-and-settings-layouts';
     await list();
     const listRow = await visibleShareRow(mainId);
@@ -693,9 +772,12 @@ try {
     );
     await layouts('list');
     await page.click(
-      `${await visibleShareRow(mainId)} a[href="${settingsPath()}"]`,
+      `${await visibleShareRow(mainId)} a[href^="${settingsPath()}?"]`,
     );
-    await page.waitForURL(`${config.origin}${settingsPath()}`);
+    await page.waitForFunction(
+      (path) => location.pathname === path,
+      settingsPath(),
+    );
     await page.waitForSelector('[data-testid="share-address"]');
     await layouts('settings');
     await accordion('访问密码');
@@ -1302,7 +1384,7 @@ try {
     await page.waitForSelector(button('分享设置'));
     await page.click(button('分享设置'));
     await page.waitForURL(
-      `${config.origin}${settingsPath(unsharedId)}?from=album`,
+      `${config.origin}${settingsPath(unsharedId)}?returnTo=${encodeURIComponent(`/albums/${unsharedId}`)}`,
     );
     await page.waitForSelector('[data-testid="share-create"]');
     assert.equal(await current(unsharedId), null);
@@ -1710,6 +1792,13 @@ try {
       'Unknown rotate cannot copy an address that may already be revoked',
     );
     assert.equal(
+      await page.evaluate(
+        () => document.querySelector('[data-testid="share-view"]').disabled,
+      ),
+      true,
+      'Unknown rotate cannot open an address that may already be revoked',
+    );
+    assert.equal(
       (await run('pbpaste', [], { encoding: 'utf8' })).stdout,
       pasteboardBeforeRotate,
       'Unknown rotate and failed read never change the native clipboard',
@@ -1752,6 +1841,13 @@ try {
       ),
       false,
       'Confirmed current address can be copied again',
+    );
+    assert.equal(
+      await page.evaluate(
+        () => document.querySelector('[data-testid="share-view"]').disabled,
+      ),
+      false,
+      'Confirmed current address can be viewed again',
     );
     assert.equal(
       (await traffic()).filter((entry) => entry.method === 'POST').length,

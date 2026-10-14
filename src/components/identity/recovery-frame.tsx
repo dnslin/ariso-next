@@ -42,7 +42,7 @@ export function RecoveryFrame({
   );
   return (
     <div
-      className={`grid min-h-dvh content-start justify-items-center px-4 pb-8 ${form ? 'pt-[150px] min-[768px]:pt-[330px]' : 'pt-[130px] min-[768px]:pt-[170px]'}`}
+      className={`grid min-h-dvh content-start justify-items-center px-4 pb-8 ${form ? 'pt-[150px] min-[768px]:pt-[330px] [@media(min-width:768px)_and_(max-height:700px)]:pt-[clamp(40px,calc(50dvh-210px),330px)]' : 'pt-[130px] min-[768px]:pt-[170px]'}`}
     >
       <section
         data-testid="reset-page"

@@ -1,5 +1,7 @@
 'use client';
 
+import { storageReferenceReturn } from '../../components/storage/reference-navigation';
+
 import {
   useEffect,
   useLayoutEffect,
@@ -285,8 +287,14 @@ export function useLibraryQuery(
   }
   function resetQuery() {
     const url = new URL(window.location.href);
+    const storageSource = storageReferenceReturn(
+      url.searchParams.get('storageReturn'),
+    );
+    const albumSource = albumId ? url.searchParams.get('returnTo') : null;
     url.search =
       loadingMode === 'pages' ? '?page=1&pageSize=40' : '?pageSize=40';
+    if (storageSource) url.searchParams.set('storageReturn', storageSource);
+    if (albumSource) url.searchParams.set('returnTo', albumSource);
     window.history.pushState(null, '', url);
   }
   async function refresh() {

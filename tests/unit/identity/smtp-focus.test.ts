@@ -17,6 +17,16 @@ vi.mock('react', async (original) => ({
     runtime.current!.effect(effect, deps),
 }));
 vi.mock('@heroui/react/toast', () => ({ toast: vi.fn() }));
+// Navigation has its own behavior suite; this harness isolates SMTP completion
+// focus from Next's router and document-wide navigation listeners.
+vi.mock('../../../src/components/site/site-navigation', () => ({
+  useSiteNavigation: () => ({
+    destination: null,
+    navigate: vi.fn(),
+    cancel: vi.fn(),
+    discard: vi.fn(),
+  }),
+}));
 const requests = vi.hoisted(() => ({
   read: vi.fn(),
   save: vi.fn(),

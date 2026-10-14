@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { Alert } from '@heroui/react/alert';
 import { Button } from '@heroui/react/button';
 import { CloseButton } from '@heroui/react/close-button';
@@ -9,7 +10,8 @@ import { Pagination } from '@heroui/react/pagination';
 import { Spinner } from '@heroui/react/spinner';
 import { TextField } from '@heroui/react/textfield';
 import { Tooltip } from '@heroui/react/tooltip';
-import { Images, Plus, Search, X } from 'lucide-react';
+import { ChevronDown, ChevronUp, Images, Plus, Search, X } from 'lucide-react';
+import { BatchThumbnail } from '../../components/library/batch-targets';
 import { LibraryLoading } from '../library/library-loading';
 import { type Album } from './api';
 import { AlbumImageChoice } from './image-choice';
@@ -28,10 +30,15 @@ export function AlbumImagePicker({
   onExpire: () => void;
   onChanged: () => Promise<void>;
 }) {
+  const [selectedExpanded, setSelectedExpanded] = useState(false);
+  function closePicker() {
+    setSelectedExpanded(false);
+    onClose();
+  }
   const picker = useAlbumImagePicker({
     albumId: album.id,
     isOpen,
-    onClose,
+    onClose: closePicker,
     onExpire,
     onChanged,
   });
@@ -41,7 +48,7 @@ export function AlbumImagePicker({
     <Modal
       isOpen={isOpen}
       onOpenChange={(open) => {
-        if (!open && !picker.pending) onClose();
+        if (!open && !picker.pending) closePicker();
       }}
     >
       <Modal.Backdrop
@@ -71,7 +78,7 @@ export function AlbumImagePicker({
                 aria-label="关闭选图"
                 isDisabled={picker.pending}
                 className="size-11 shrink-0 rounded-lg bg-transparent"
-                onPress={onClose}
+                onPress={closePicker}
               />
             </Modal.Header>
             <div className="shrink-0 px-5 pt-4">
@@ -124,7 +131,14 @@ export function AlbumImagePicker({
                         existing={existing}
                         selected={picker.selected.has(item.id)}
                         disabled={locked || list.isFetching}
-                        onToggle={picker.toggle}
+                        onToggle={(item) => {
+                          if (
+                            picker.selected.size === 1 &&
+                            picker.selected.has(item.id)
+                          )
+                            setSelectedExpanded(false);
+                          picker.toggle(item);
+                        }}
                       />
                     );
                   })}
@@ -158,7 +172,7 @@ export function AlbumImagePicker({
               <div
                 role="alert"
                 data-testid="album-image-submit-error"
-                className="grid max-h-32 shrink-0 gap-2 overflow-y-auto px-5 pb-4 text-sm text-danger"
+                className="grid max-h-[min(8rem,14dvh)] shrink-0 gap-2 overflow-y-auto px-5 pb-4 text-sm text-danger"
               >
                 <p>{picker.error}</p>
                 {picker.failures.length ? (
@@ -173,51 +187,126 @@ export function AlbumImagePicker({
                 ) : null}
               </div>
             ) : null}
-            <Modal.Footer className="m-0 grid shrink-0 grid-cols-1 gap-3 border-t border-border px-5 py-4">
-              {picker.pages > 1 ? (
-                <Pagination aria-label="选图分页" className="w-full">
-                  <Pagination.Content className="w-full gap-2">
-                    <Pagination.Item className="flex-1">
-                      <Pagination.Previous
-                        className="h-11 w-full rounded-lg border border-border px-2 font-normal"
-                        isDisabled={
-                          picker.page <= 1 || list.isFetching || picker.pending
-                        }
-                        onPress={() => picker.setPage(picker.page - 1)}
+            <Modal.Footer className="m-0 flex max-h-[48dvh] shrink-0 flex-col gap-3 overflow-hidden border-t border-border px-5 py-4">
+              <div
+                data-testid="album-image-footer-scroll"
+                className="grid min-h-0 gap-3 overflow-y-auto overscroll-contain"
+              >
+                {picker.pages > 1 ? (
+                  <Pagination aria-label="选图分页" className="w-full">
+                    <Pagination.Content className="w-full gap-2">
+                      <Pagination.Item className="flex-1">
+                        <Pagination.Previous
+                          className="h-11 w-full rounded-lg border border-border px-2 font-normal"
+                          isDisabled={
+                            picker.page <= 1 ||
+                            list.isFetching ||
+                            picker.pending
+                          }
+                          onPress={() => picker.setPage(picker.page - 1)}
+                        >
+                          上一页
+                        </Pagination.Previous>
+                      </Pagination.Item>
+                      <Pagination.Item>
+                        <Pagination.Summary className="text-xs">
+                          {picker.page}/{picker.pages}
+                        </Pagination.Summary>
+                      </Pagination.Item>
+                      <Pagination.Item className="flex-1">
+                        <Pagination.Next
+                          className="h-11 w-full rounded-lg border border-border px-2 font-normal"
+                          isDisabled={
+                            picker.page >= picker.pages ||
+                            list.isFetching ||
+                            picker.pending
+                          }
+                          onPress={() => picker.setPage(picker.page + 1)}
+                        >
+                          下一页
+                        </Pagination.Next>
+                      </Pagination.Item>
+                    </Pagination.Content>
+                  </Pagination>
+                ) : null}
+                {picker.selected.size ? (
+                  <div className="rounded-lg border border-border bg-background">
+                    <Button
+                      data-testid="album-image-selected-toggle"
+                      variant="ghost"
+                      className="min-h-11 w-full justify-between rounded-lg px-3 text-sm font-normal"
+                      aria-expanded={selectedExpanded}
+                      aria-controls={
+                        selectedExpanded
+                          ? 'album-image-selected-list'
+                          : undefined
+                      }
+                      onPress={() => setSelectedExpanded((value) => !value)}
+                    >
+                      已选 {picker.selected.size} 张 · 查看与移除
+                      {selectedExpanded ? (
+                        <ChevronUp size={16} aria-hidden />
+                      ) : (
+                        <ChevronDown size={16} aria-hidden />
+                      )}
+                    </Button>
+                    {selectedExpanded ? (
+                      <ul
+                        id="album-image-selected-list"
+                        data-testid="album-image-selected-list"
+                        className="grid max-h-[min(11rem,20dvh)] gap-1 overflow-y-auto border-t border-border p-2"
                       >
-                        上一页
-                      </Pagination.Previous>
-                    </Pagination.Item>
-                    <Pagination.Item>
-                      <Pagination.Summary className="text-xs">
-                        {picker.page}/{picker.pages}
-                      </Pagination.Summary>
-                    </Pagination.Item>
-                    <Pagination.Item className="flex-1">
-                      <Pagination.Next
-                        className="h-11 w-full rounded-lg border border-border px-2 font-normal"
-                        isDisabled={
-                          picker.page >= picker.pages ||
-                          list.isFetching ||
-                          picker.pending
-                        }
-                        onPress={() => picker.setPage(picker.page + 1)}
-                      >
-                        下一页
-                      </Pagination.Next>
-                    </Pagination.Item>
-                  </Pagination.Content>
-                </Pagination>
-              ) : null}
-              <div className="flex w-full flex-wrap items-center justify-end gap-2">
+                        {[...picker.selected.values()].map((item) => (
+                          <li
+                            key={item.id}
+                            data-image-id={item.id}
+                            className="flex min-w-0 items-center gap-2 rounded-md px-1 py-1"
+                          >
+                            <BatchThumbnail
+                              key={item.thumbnailUrl}
+                              url={
+                                item.storage.enabled ? item.thumbnailUrl : null
+                              }
+                              className="size-10 rounded-md"
+                            />
+                            <span
+                              className="min-w-0 flex-1 truncate text-sm"
+                              title={item.displayName}
+                            >
+                              {item.displayName}
+                            </span>
+                            <Button
+                              isIconOnly
+                              variant="ghost"
+                              className="size-11 shrink-0 rounded-lg"
+                              aria-label={`移除已选图片：${item.displayName}`}
+                              isDisabled={locked}
+                              onPress={() => {
+                                picker.remove(item.id);
+                                if (picker.selected.size === 1)
+                                  setSelectedExpanded(false);
+                              }}
+                            >
+                              <X size={16} aria-hidden />
+                            </Button>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : null}
+                  </div>
+                ) : null}
+              </div>
+              <div className="flex w-full shrink-0 flex-wrap items-center justify-end gap-2">
                 <div className="mr-auto flex min-w-0 items-center gap-1">
-                  <span
-                    role="status"
-                    data-testid="album-image-selected"
-                    className="sr-only text-sm text-muted min-[360px]:not-sr-only"
-                  >
-                    已选 {picker.selected.size} 张
-                  </span>
+                  {!picker.selected.size ? (
+                    <span
+                      role="status"
+                      data-testid="album-image-selected"
+                      className="sr-only text-sm text-muted min-[360px]:not-sr-only"
+                    >
+                      已选 0 张
+                    </span>
+                  ) : null}
                   {picker.selected.size ? (
                     <Tooltip>
                       <Button
@@ -226,7 +315,10 @@ export function AlbumImagePicker({
                         variant="ghost"
                         className="size-11 shrink-0 rounded-lg"
                         isDisabled={locked}
-                        onPress={picker.clear}
+                        onPress={() => {
+                          picker.clear();
+                          setSelectedExpanded(false);
+                        }}
                       >
                         <X size={16} aria-hidden />
                       </Button>
@@ -238,7 +330,7 @@ export function AlbumImagePicker({
                   variant="outline"
                   className="h-12 rounded-lg font-normal"
                   isDisabled={picker.pending}
-                  onPress={onClose}
+                  onPress={closePicker}
                 >
                   取消
                 </Button>

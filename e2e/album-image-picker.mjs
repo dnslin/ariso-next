@@ -241,6 +241,42 @@ export async function runAlbumImagePicker(page, config) {
       'true',
     );
     await shot('cross-page-selected');
+    await page.click(`${modal} [data-testid="album-image-selected-toggle"]`);
+    await page.waitForSelector(
+      `${modal} [data-testid="album-image-selected-list"]`,
+    );
+    assert.deepEqual(
+      await page.evaluate(() =>
+        [
+          ...document.querySelectorAll(
+            '[data-testid="album-image-selected-list"] li',
+          ),
+        ].map((node) => node.dataset.imageId),
+      ),
+      [id(1), id(41)],
+      'The expanded list reveals selections from both search/page contexts',
+    );
+    await page.click(button(`移除已选图片：${id(1)}`));
+    await selected(1);
+    assert.equal(
+      await page.evaluate(
+        (imageId) =>
+          Boolean(
+            document.querySelector(
+              `[data-testid="album-image-selected-list"] [data-image-id="${imageId}"]`,
+            ),
+          ),
+        id(1),
+      ),
+      false,
+      'An off-page selection can be removed without clearing the other image',
+    );
+    await page.click(button('上一页'));
+    await page.waitForSelector(choice(id(1)));
+    await choose(id(1));
+    await selected(2);
+    await page.click(button('下一页'));
+    await selected(2);
     report.layouts = await checkShortcutLayouts(
       page,
       output,
@@ -248,7 +284,7 @@ export async function runAlbumImagePicker(page, config) {
       modal,
     );
     report.checks.push(
-      'Explicit membership reads disable existing images; two selected images survive distinct searches and page 1 → page 2.',
+      'Explicit membership reads disable existing images; two selected images survive distinct searches and pages; the expanded list reveals both and removes one off-page without clearing the other.',
     );
 
     report.stage = 'known failure preserves query and selection';
@@ -286,7 +322,7 @@ export async function runAlbumImagePicker(page, config) {
     );
     assert.deepEqual(
       await page.evaluate(() =>
-        window.__albumImagePickerRequests.map((entry) => entry.ids),
+        window.__albumImagePickerRequests.map((entry) => [...entry.ids].sort()),
       ),
       [[id(1), id(41)]],
     );
@@ -309,7 +345,7 @@ export async function runAlbumImagePicker(page, config) {
       traffic.map((entry) => entry.mode),
       ['apply', 'check'],
     );
-    assert.deepEqual(traffic[0].ids, [id(1), id(41)]);
+    assert.deepEqual([...traffic[0].ids].sort(), [id(1), id(41)]);
     assert.deepEqual(traffic[1].ids, traffic[0].ids);
     const saved = (await request(`/api/albums/${albumId}`)).body.album;
     assert.equal(saved.imageCount, 3);

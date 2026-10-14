@@ -17,19 +17,7 @@ import {
   ProcessingSwitch,
 } from './fields';
 import { WatermarkAssetField } from './watermark-asset';
-import { cardClass, controlClass } from './model';
-
-export const positionLabels = [
-  '左上',
-  '上中',
-  '右上',
-  '左中',
-  '居中',
-  '右中',
-  '左下',
-  '下中',
-  '右下',
-];
+import { cardClass, controlClass, positionLabels } from './model';
 export type ProcessingChange = <K extends keyof MediaSettingsInput>(
   field: K,
   value: MediaSettingsInput[K],

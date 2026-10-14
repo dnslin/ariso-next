@@ -147,19 +147,19 @@ export async function verifySiteGeneralBehavior(page, config, tools, report) {
       ['publicUrl', 'https://example.test/subpath'],
       ['timeZone', '+08:00'],
     ]) {
+      if (name === 'timeZone') await resizeViewport(page, 390);
       await tools.fill({ [name]: input });
       if (name === 'timeZone') {
-        await resizeViewport(page, 390);
-        await page.mouse.move(200, 420, {
-          label: 'move into settings content',
-        });
-        await page.mouse.wheel(0, -2000, { label: 'return to form heading' });
         await page.waitForFunction(
-          () => document.querySelector('main').scrollTop === 0,
+          () =>
+            document.querySelector('#site-timeZone').value === '+08:00' &&
+            document
+              .querySelector('#site-timeZone')
+              .getAttribute('aria-expanded') === 'true',
         );
       }
       const previous = await tools.read();
-      await page.click(button('保存站点'));
+      await page.click(name === 'timeZone' ? '#site-save' : button('保存站点'));
       await page.waitForFunction(
         (name) =>
           document
@@ -180,7 +180,7 @@ export async function verifySiteGeneralBehavior(page, config, tools, report) {
       if (name === 'timeZone') {
         const visible = await page.evaluate(() => {
           const input = document.querySelector('#site-timeZone');
-          const group = input.closest('[data-slot="textfield"]');
+          const group = input.closest('[data-slot="combo-box"]');
           const bounds = group.getBoundingClientRect();
           const main = document.querySelector('main').getBoundingClientRect();
           const footer = document

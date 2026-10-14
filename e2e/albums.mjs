@@ -88,8 +88,10 @@ async function create(name) {
 }
 async function layouts(state, widths = [360, 390, 430, 768, 1440]) {
   for (const theme of ['light', 'dark']) {
+    report.stage = `layout ${state}/${theme}`;
     await setTheme(page, theme);
     for (const width of widths) {
+      report.stage = `layout ${state}/${theme}/${width}`;
       await resize(width);
       const geometry = await readGeometry(page);
       geometry.sectionOverflow = await page.evaluate(
@@ -342,9 +344,16 @@ try {
   assert.equal(await page.evaluate(() => window.__albumRequests.length), 1);
   await shot('edit-pending-disabled');
   await restore();
-  await page.waitForSelector(button('返回相册'));
-  await layouts('edit-success', [390, 1440]);
-  await page.click(button('返回相册'));
+  report.stage = 'edit success check';
+  await page.waitForSelector('#album-name', { state: 'hidden' });
+  assert.ok(
+    await page.evaluate(() =>
+      [...document.querySelectorAll('[data-slot="toast"]')].some((node) =>
+        node.textContent.includes('相册已保存'),
+      ),
+    ),
+  );
+  await shot('edit-success-toast');
   const boundary = await sql(
     `SELECT name,description FROM albums WHERE id='${boundaryId}'`,
   );
@@ -393,12 +402,20 @@ try {
   await layouts('edit-error', [390, 1440]);
   await restore();
   await intercept('PATCH', 'lost', `/${first}`);
+  await resize(390);
   await page.click(button('重试保存'));
-  await page.waitForSelector(button('返回相册'));
-  await page.click(button('返回相册'));
-  await page.waitForFunction(
-    () => !document.querySelector('[role="dialog"] input'),
+  await page.waitForSelector('#album-name', { state: 'hidden' });
+  assert.ok(
+    await page.evaluate(() =>
+      [...document.querySelectorAll('[data-slot="toast"]')].some((node) =>
+        node.textContent.includes('相册已保存'),
+      ),
+    ),
   );
+  await shot('edit-success-toast-mobile');
+  await page.waitForSelector('[data-slot="toast"]', { state: 'hidden' });
+  report.stage = 'edit success layout';
+  await layouts('edit-success', [390, 1440]);
   assert.equal(
     (await sql(`SELECT name FROM albums WHERE id='${first}'`))[0].name,
     '编辑后的相册',
@@ -450,11 +467,15 @@ try {
   assert.equal(await page.evaluate(() => window.__albumRequests.length), 1);
   await shot('delete-pending-disabled');
   await page.evaluate(() => window.__albumRelease());
-  await page.waitForSelector(button('返回相册列表'));
+  await page.waitForFunction(() => location.pathname === '/albums');
+  assert.equal(new URL(await page.url()).searchParams.get('q'), '同名旅行');
+  await page.waitForFunction(() =>
+    [...document.querySelectorAll('[data-slot="toast"]')].some((node) =>
+      node.textContent.includes('相册已删除'),
+    ),
+  );
   await layouts('delete-success', [390, 1440]);
   assert.equal(await page.evaluate(() => window.__albumRequests.length), 1);
-  await page.click(button('返回相册列表'));
-  await page.waitForURL(`${config.origin}/albums`);
   assert.equal(
     (await sql(`SELECT count(*) AS n FROM albums WHERE id='${first}'`))[0].n,
     0,
@@ -689,14 +710,23 @@ try {
   report.stage = 'loading and list error';
   await intercept('GET', 'hold');
   // Native same-document navigation preserves the boundary instrumentation.
+  const beforeRefresh = (await cards()).map((item) => item.id);
   await page.fill('input[aria-label="搜索相册"]', '分页');
   await page.press('input[aria-label="搜索相册"]', 'Enter');
   await page.waitForFunction(() => typeof window.__albumRelease === 'function');
-  await page.waitForSelector('[data-testid="albums-loading"]');
+  await page.waitForSelector('[data-testid="albums-list"][aria-busy="true"]');
+  assert.deepEqual(
+    (await cards()).map((item) => item.id),
+    beforeRefresh,
+    'Previous albums remain visible while the new query is loading',
+  );
   await layouts('loading', [390, 1440]);
   await restore();
   await page.waitForFunction(
-    () => !document.querySelector('[data-testid="albums-loading"]'),
+    () =>
+      document
+        .querySelector('[data-testid="albums-list"]')
+        ?.getAttribute('aria-busy') === 'false',
   );
   await intercept('GET', 'lost');
   await page.fill('input[aria-label="搜索相册"]', '读取失败');

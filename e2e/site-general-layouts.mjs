@@ -1,13 +1,27 @@
 import assert from 'node:assert/strict';
 import { field } from './site-general-helpers.mjs';
 import { expectThemeEntries } from './theme-helpers.mjs';
-import { resizeViewport } from './browser-geometry.mjs';
+import { resizeViewport, setTheme } from './browser-geometry.mjs';
 
 export async function verifySiteGeneralLayouts(page, tools, report) {
   await tools.open();
   for (const theme of ['light', 'dark']) {
     for (const width of [360, 390, 430, 768, 1440])
       await tools.evidence('ready', width, theme);
+  }
+  for (const width of [1440, 390]) {
+    await resizeViewport(page, width);
+    await setTheme(page, 'light');
+    await page.fill(field('timeZone'), 'Tokyo');
+    await page.waitForFunction(() =>
+      [...document.querySelectorAll('[role="option"]')].some(
+        (option) =>
+          option.textContent.includes('Asia/Tokyo') &&
+          option.getClientRects().length > 0,
+      ),
+    );
+    await tools.evidence('timezone-options', width, 'light');
+    await tools.open();
   }
   for (const width of [390, 1440])
     await tools.evidence('short', width, 'dark', 400);

@@ -62,7 +62,7 @@ export function useSiteSettings(initial: SiteSettingsResponse | null) {
     const target = document.getElementById(focusTarget.id);
     if (target?.matches('input'))
       target
-        .closest('[data-slot="textfield"]')
+        .closest('[data-slot="textfield"], [data-slot="combo-box"]')
         ?.scrollIntoView({ block: 'nearest' });
     target?.focus({ preventScroll: true });
   }, [focusTarget, phase]);

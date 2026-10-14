@@ -1,5 +1,6 @@
 import {
   mediaSettingsInputSchema,
+  watermarkPositions,
   type MediaSettingsInput,
 } from '../../server/media/validation';
 import { previewSettingsSchema } from '../../server/media/preview-validation';
@@ -33,6 +34,73 @@ export const previewTargetLabels = {
   compressed: '压缩图',
   watermark: '水印图',
 } as const;
+export const positionLabels = [
+  '左上',
+  '上中',
+  '右上',
+  '左中',
+  '居中',
+  '右中',
+  '左下',
+  '下中',
+  '右下',
+] as const;
+
+export function formatProcessingValue(
+  field: keyof MediaSettingsInput,
+  value: MediaSettingsInput[keyof MediaSettingsInput],
+): string {
+  if (value === null) {
+    return field === 'maxEdge' ? '不限制' : '未选择素材';
+  }
+  if (value === '') return '未填写';
+  switch (field) {
+    case 'compressionEnabled':
+      return value ? '已开启' : '已关闭';
+    case 'outputFormat':
+      return (
+        { webp: 'WebP', jpeg: 'JPEG', avif: 'AVIF' }[String(value)] ??
+        String(value)
+      );
+    case 'watermarkMode':
+      return (
+        { off: '已关闭', text: '文字水印', image: '图片水印' }[String(value)] ??
+        String(value)
+      );
+    case 'watermarkFont':
+      return (
+        { chinese: '内置中文字体', latin: '内置拉丁字体' }[String(value)] ??
+        String(value)
+      );
+    case 'watermarkPosition': {
+      const index = watermarkPositions.indexOf(
+        value as (typeof watermarkPositions)[number],
+      );
+      return positionLabels[index] ?? String(value);
+    }
+    case 'defaultLinkVersion':
+      return (
+        previewTargetLabels[value as keyof typeof previewTargetLabels] ??
+        String(value)
+      );
+    case 'defaultVisibility':
+      return value === 'public' ? '公开' : '私有';
+    case 'maxEdge':
+    case 'watermarkStrokeWidth':
+      return `${value} px`;
+    case 'quality':
+      return `${value} / 100`;
+    case 'watermarkFontSize':
+    case 'watermarkOpacity':
+    case 'watermarkMargin':
+    case 'watermarkWidth':
+      return `${value}%`;
+    case 'watermarkAssetId':
+      return `已选择素材（${value}）`;
+    default:
+      return String(value);
+  }
+}
 
 export function settingsInput(
   value: SavedProcessingSettings,

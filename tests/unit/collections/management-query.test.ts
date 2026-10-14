@@ -6,7 +6,7 @@ import {
 } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import {
-  type QueryClient,
+  QueryClient,
   type QueryObserver,
   type QueryObserverOptions,
 } from '@tanstack/react-query';
@@ -19,6 +19,7 @@ const runtime = vi.hoisted(() => ({
   harness: null as Harness | null,
   search: '',
 }));
+const navigationCache = new QueryClient();
 vi.mock('react', async (original) => {
   const actual = await original<typeof import('react')>();
   return {
@@ -43,6 +44,7 @@ vi.mock('@tanstack/react-query', async (original) => {
   const actual = await original<typeof import('@tanstack/react-query')>();
   return {
     ...actual,
+    useQueryClient: () => navigationCache,
     useQuery: (options: QueryObserverOptions<unknown>, client: QueryClient) => {
       const harness = runtime.harness!;
       if (!harness.observer) {
@@ -170,6 +172,9 @@ it.each([
       addEventListener: vi.fn(),
       removeEventListener: vi.fn(),
       history: {
+        replaceState: (_state: unknown, _unused: string, url: string) => {
+          runtime.search = url.split('?')[1] ?? '';
+        },
         pushState: (_state: unknown, _unused: string, url: string) => {
           runtime.search = url.split('?')[1] ?? '';
         },
@@ -226,6 +231,9 @@ it.each([
       addEventListener: vi.fn(),
       removeEventListener: vi.fn(),
       history: {
+        replaceState: (_state: unknown, _unused: string, url: string) => {
+          runtime.search = url.split('?')[1] ?? '';
+        },
         pushState: (_state: unknown, _unused: string, url: string) => {
           runtime.search = url.split('?')[1] ?? '';
         },

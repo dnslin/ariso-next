@@ -48,10 +48,11 @@ import { shareRequest, ShareRequestError, shareUrl, type Share } from './api';
 import { useSettings, type Action } from './use-settings';
 import { Choices, ExpiryControls, SettingSwitch } from './controls';
 import { ShareCreateForm } from './create-form';
+import { shareSettingsHref } from '../albums/collection-navigation';
 type SettingsProps = {
   albumId: string;
   timeZone: string;
-  fromAlbum: boolean;
+  returnHref?: string;
   name: string;
   logoUrl?: string | null;
   description: string;
@@ -66,7 +67,10 @@ export function SettingsScreen(props: SettingsProps) {
   const [client] = useState(() => new QueryClient());
   const [expiredSession, setExpiredSession] = useState(false);
   const resetUpload = useResetUpload();
-  const returnTo = `/shares/${encodeURIComponent(props.albumId)}${props.fromAlbum ? '?from=album' : ''}`;
+  const returnTo = shareSettingsHref(
+    props.albumId,
+    props.returnHref ?? '/shares',
+  );
   const onExpire = useCallback(() => {
     setExpiredSession(true);
     resetUpload();
@@ -167,18 +171,18 @@ function SettingsContent({
   returnTo: string;
 }) {
   const router = useRouter();
-  const returnLabel = props.fromAlbum ? '返回相册' : '返回分享';
+  const returnHref = props.returnHref ?? '/shares';
+  const returnLabel = returnHref.startsWith('/shares')
+    ? '返回分享'
+    : returnHref.startsWith('/albums/')
+      ? '返回相册'
+      : '返回相册列表';
   const settings = useSettings(
     initialShare,
     props.albumId,
     props.timeZone,
     onExpire,
-    () =>
-      router.push(
-        props.fromAlbum
-          ? `/albums/${encodeURIComponent(props.albumId)}`
-          : '/shares',
-      ),
+    () => router.push(returnHref),
   );
   const {
     share,
@@ -224,6 +228,7 @@ function SettingsContent({
     endChecking,
     returnPage,
   } = settings;
+  const canViewShare = enabled && !expired && !copyBlocked && Boolean(address);
   const feedbackNode = feedback ? (
     <div
       data-testid="share-feedback"
@@ -284,15 +289,24 @@ function SettingsContent({
         ) : (
           <>
             <Button
-              className={buttonStyle}
-              isDisabled
-              aria-describedby="preview-note"
+              data-testid="share-view"
+              className={`${buttonStyle} gap-2`}
+              variant="outline"
+              isDisabled={!canViewShare}
+              aria-describedby={!canViewShare ? 'share-view-note' : undefined}
+              onPress={() =>
+                window.open(address, '_blank', 'noopener,noreferrer')
+              }
             >
               <Eye size={16} aria-hidden />
-              预览
+              查看分享
             </Button>
-            <span id="preview-note" className="sr-only">
-              访客页面尚未开放
+            <span id="share-view-note" className="sr-only">
+              {!enabled
+                ? '分享已停用'
+                : expired
+                  ? '分享已过期'
+                  : '当前地址尚未确认，请先核对分享状态'}
             </span>
           </>
         )
@@ -351,11 +365,13 @@ function SettingsContent({
                     相册中的公开图片会随内容变化自动更新。
                   </StorageTip>
                 </div>
-                <Chip variant="soft" className="bg-default text-foreground">
+                <Chip
+                  data-testid="share-status"
+                  variant="soft"
+                  color={!enabled ? 'default' : expired ? 'warning' : 'success'}
+                >
                   <span className="mr-1.5 inline-block size-1.5 rounded-full bg-current" />
-                  <span
-                    className={enabled && expired ? 'text-danger' : undefined}
-                  >
+                  <span>
                     {!enabled ? '已停用' : expired ? '已过期' : '分享中'}
                   </span>
                 </Chip>
@@ -661,13 +677,17 @@ function SettingsContent({
           <ComponentEntrance delay={0.055}>
             <Card className={cardStyle}>
               <Card.Content className="flex flex-row flex-wrap items-center justify-between gap-3 p-4 md:px-6 md:py-4">
-                <div className="flex min-w-0 items-start gap-3">
+                <div
+                  data-testid="share-rotate-heading"
+                  className="flex min-w-0 items-center gap-3"
+                >
                   <RefreshCw
+                    data-testid="share-rotate-icon"
                     size={18}
                     aria-hidden
-                    className="mt-0.5 shrink-0 text-muted"
+                    className="shrink-0 text-muted"
                   />
-                  <div className="flex items-center gap-2">
+                  <div className="flex min-h-11 items-center gap-2">
                     <p className="text-sm font-medium">重新生成地址</p>
                     <StorageTip label="重新生成地址">
                       旧地址与已解锁会话将立即失效。

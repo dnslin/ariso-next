@@ -18,9 +18,7 @@ export type AlbumAction =
 
 type AlbumOutcome =
   | { kind: 'idle' }
-  | { kind: 'failed' | 'unknown' | 'missing'; message: string }
-  | { kind: 'updated'; album: Album }
-  | { kind: 'deleted' };
+  | { kind: 'failed' | 'unknown' | 'missing'; message: string };
 
 export function AlbumDialog({
   action,
@@ -52,15 +50,9 @@ export function AlbumDialog({
     };
   }, []);
   const [outcome, setOutcome] = useState<AlbumOutcome>({ kind: 'idle' });
-  const succeeded = outcome.kind === 'updated' || outcome.kind === 'deleted';
   const isForm = mode === 'create' || mode === 'edit';
   const title =
-    (outcome.kind === 'updated'
-      ? '相册已更新'
-      : outcome.kind === 'deleted'
-        ? '相册已删除'
-        : null) ??
-    (outcome.kind === 'unknown'
+    outcome.kind === 'unknown'
       ? '提交结果未知'
       : outcome.kind === 'missing'
         ? '相册已不存在'
@@ -72,7 +64,7 @@ export function AlbumDialog({
             ? '新建相册'
             : mode === 'edit'
               ? '编辑相册'
-              : '删除这本相册？');
+              : '删除这本相册？';
 
   async function verify() {
     if (mode === 'create') {
@@ -95,7 +87,7 @@ export function AlbumDialog({
         current.album.name === input.data.name &&
         current.album.description === input.data.description
       ) {
-        setOutcome({ kind: 'updated', album: current.album });
+        onComplete(current.album);
       } else {
         setOutcome({
           kind: 'failed',
@@ -113,7 +105,7 @@ export function AlbumDialog({
       }
       if (error instanceof AlbumRequestError && error.status === 404) {
         if (mode === 'delete') {
-          setOutcome({ kind: 'deleted' });
+          onComplete(null);
         } else
           setOutcome({
             kind: 'missing',
@@ -187,11 +179,7 @@ export function AlbumDialog({
         onComplete(response.album!);
         return;
       }
-      setOutcome(
-        mode === 'delete'
-          ? { kind: 'deleted' }
-          : { kind: 'updated', album: response.album! },
-      );
+      onComplete(mode === 'delete' ? null : response.album!);
     } catch (error) {
       if (!mounted.current) return;
       if (error instanceof AlbumRequestError && error.status === 401) {
@@ -200,7 +188,7 @@ export function AlbumDialog({
       }
       if (error instanceof AlbumRequestError && error.status === 404) {
         if (mode === 'delete') {
-          setOutcome({ kind: 'deleted' });
+          onComplete(null);
           return;
         }
         setOutcome({
@@ -236,20 +224,10 @@ export function AlbumDialog({
 
   function close() {
     if (pending) return;
-    if (outcome.kind === 'updated') onComplete(outcome.album);
-    else if (outcome.kind === 'deleted') onComplete(null);
-    else onClose(outcome.kind === 'unknown');
+    onClose(outcome.kind === 'unknown');
   }
   let body: ReactNode;
-  if (succeeded)
-    body = (
-      <p>
-        {mode === 'delete'
-          ? `「${album!.name}」#${album!.id.slice(0, 8)} 已删除。图库图片与其他相册未受影响。`
-          : '名称与描述已保存。'}
-      </p>
-    );
-  else if (isForm)
+  if (isForm)
     body = (
       <>
         <p className="text-muted">
@@ -371,14 +349,7 @@ export function AlbumDialog({
                 ) : null}
               </Modal.Body>
               <Modal.Footer className="mt-0 grid grid-cols-2 gap-2.5">
-                {succeeded ? (
-                  <Button
-                    className="col-span-2 h-12 w-full rounded-lg font-normal"
-                    onPress={close}
-                  >
-                    {mode === 'delete' ? '返回相册列表' : '返回相册'}
-                  </Button>
-                ) : outcome.kind === 'unknown' ? (
+                {outcome.kind === 'unknown' ? (
                   <>
                     <Button
                       variant="outline"

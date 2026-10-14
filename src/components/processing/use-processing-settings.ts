@@ -1,10 +1,11 @@
 'use client';
 
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useRef, useState, type ComponentProps } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { toast } from '@heroui/react/toast';
 import type { MediaSettingsInput } from '../../server/media/validation';
 import { useUploadQueue } from '../upload/provider';
+import { useSiteNavigation } from '../site/site-navigation';
 import {
   processingRequest,
   processingSettingsUrl,
@@ -22,16 +23,77 @@ export function useProcessingSettings(initial: SavedProcessingSettings) {
   const [unknown, setUnknown] = useState(false);
   const [different, setDifferent] = useState(false);
   const [expired, setExpired] = useState(false);
+  const [rawInput, setRawInput] = useState<{
+    field: keyof MediaSettingsInput;
+    value: string;
+  } | null>(null);
   const pending = useRef<MediaSettingsInput | null>(null);
+  const editedField = useRef<keyof MediaSettingsInput | null>(null);
+  const focusedInput = useRef<{
+    target: HTMLInputElement;
+    field: keyof MediaSettingsInput;
+  } | null>(null);
   const inFlight = useRef(false);
   const client = useQueryClient();
   const upload = useUploadQueue();
   const expire = useCallback(() => setExpired(true), []);
+  // Compare the focused input's current value instead of its stale committed
+  // value. NumberField uses ungrouped numbers; this does not submit or validate.
+  const comparedInput = rawInput
+    ? {
+        ...input,
+        [rawInput.field]:
+          typeof input[rawInput.field] === 'number'
+            ? rawInput.value.trim() === ''
+              ? Number.NaN
+              : Number(rawInput.value)
+            : rawInput.value,
+      }
+    : input;
+  const navigation = useSiteNavigation(
+    !busy && !unknown && !expired && !settingsMatch(comparedInput, saved),
+  );
+
+  // NumberField and ColorField can keep text locally until blur/commit. Track
+  // that focused text without changing their parsing or validation behavior.
+  const formEvents: Required<
+    Pick<ComponentProps<'div'>, 'onFocusCapture' | 'onInput' | 'onBlurCapture'>
+  > = {
+    onFocusCapture: (event) => {
+      const target = event.target as HTMLElement;
+      if (
+        !target.matches(
+          'input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"])',
+        )
+      )
+        return;
+      const field = target.closest<HTMLElement>('[data-field]')?.dataset
+        .field as keyof MediaSettingsInput | undefined;
+      if (!field) return;
+      const control = target as HTMLInputElement;
+      focusedInput.current = {
+        target: control,
+        field,
+      };
+    },
+    onInput: (event) => {
+      const focused = focusedInput.current;
+      if (!focused || event.target !== focused.target) return;
+      editedField.current = focused.field;
+      setRawInput({ field: focused.field, value: focused.target.value });
+    },
+    onBlurCapture: (event) => {
+      if (event.target !== focusedInput.current?.target) return;
+      focusedInput.current = null;
+      setRawInput(null);
+    },
+  };
 
   function change<K extends keyof MediaSettingsInput>(
     field: K,
     value: MediaSettingsInput[K],
   ) {
+    editedField.current = field;
     setInput((current) => ({ ...current, [field]: value }));
     setErrors((current) => {
       const next = { ...current };
@@ -167,7 +229,48 @@ export function useProcessingSettings(initial: SavedProcessingSettings) {
     save,
     reconcile,
     chooseSaved,
+    formEvents,
+    navigation: {
+      ...navigation,
+      cancel: () => {
+        navigation.cancel();
+        requestAnimationFrame(() => {
+          if (editedField.current)
+            processingField(editedField.current, input)?.focus({
+              preventScroll: true,
+            });
+        });
+      },
+    },
   };
+}
+
+function processingField(
+  field: keyof MediaSettingsInput,
+  input: MediaSettingsInput,
+) {
+  const switchLabel =
+    field === 'compressionEnabled'
+      ? '压缩版本'
+      : field === 'watermarkMode'
+        ? '启用水印'
+        : field === 'maxEdge' && input.maxEdge === null
+          ? '最长边限制'
+          : null;
+  if (switchLabel)
+    return document.querySelector<HTMLElement>(
+      `[role="switch"][aria-label="${switchLabel}"]`,
+    );
+  if (field === 'watermarkPosition')
+    return document.querySelector<HTMLElement>(
+      `[data-position="${input.watermarkPosition}"]`,
+    );
+  const area = document.querySelector(`[data-field="${field}"]`);
+  return [
+    ...(area?.querySelectorAll<HTMLElement>('input,textarea,button') ?? []),
+  ].find(
+    (node) => node.getClientRects().length && !node.hasAttribute('disabled'),
+  );
 }
 
 function focusError(errors: Record<string, string>) {

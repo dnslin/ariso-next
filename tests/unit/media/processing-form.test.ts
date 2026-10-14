@@ -1,12 +1,37 @@
 import { describe, expect, it } from 'vitest';
 import { initialMediaSettings } from '../../../src/server/media/validation';
 import {
+  formatProcessingValue,
   renderingParameters,
   settingsMatch,
   validateProcessingInput,
 } from '../../../src/components/processing/model';
 
 describe('处理设置提交与预览参数', () => {
+  it('核对差异用表单语言呈现布尔、选项、位置、单位和空值', () => {
+    expect(formatProcessingValue('compressionEnabled', true)).toBe('已开启');
+    expect(formatProcessingValue('compressionEnabled', false)).toBe('已关闭');
+    expect(formatProcessingValue('defaultLinkVersion', 'original')).toBe(
+      '原图',
+    );
+    expect(formatProcessingValue('defaultVisibility', 'private')).toBe('私有');
+    expect(formatProcessingValue('outputFormat', 'avif')).toBe('AVIF');
+    expect(formatProcessingValue('watermarkMode', 'image')).toBe('图片水印');
+    expect(formatProcessingValue('watermarkFont', 'chinese')).toBe(
+      '内置中文字体',
+    );
+    expect(formatProcessingValue('watermarkPosition', 'bottom-right')).toBe(
+      '右下',
+    );
+    expect(formatProcessingValue('quality', 82)).toBe('82 / 100');
+    expect(formatProcessingValue('maxEdge', 1920)).toBe('1920 px');
+    expect(formatProcessingValue('maxEdge', null)).toBe('不限制');
+    expect(formatProcessingValue('watermarkMargin', 2.5)).toBe('2.5%');
+    expect(formatProcessingValue('watermarkStrokeWidth', 2)).toBe('2 px');
+    expect(formatProcessingValue('watermarkText', '')).toBe('未填写');
+    expect(formatProcessingValue('watermarkAssetId', null)).toBe('未选择素材');
+  });
+
   it('预览携带全部未保存渲染字段，排除三个站点默认和调度字段', () => {
     const input = {
       ...initialMediaSettings,
