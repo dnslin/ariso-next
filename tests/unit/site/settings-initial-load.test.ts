@@ -285,8 +285,8 @@ afterEach(() => {
 it('初始GET未完成时外壳会话过期，迟到成功不能重新进入编辑器', () => {
   const tree = InitialLoadHarness();
   const loadingHtml = renderToStaticMarkup(tree);
-  expect(loadingHtml).toContain('正在读取站点信息');
-  expect(loadingHtml).toContain('正在读取上传限制');
+  expect(loadingHtml).not.toContain('正在读取站点信息');
+  expect(loadingHtml).not.toContain('正在读取上传限制');
   expect(inputTags(loadingHtml)).toHaveLength(0);
   expect(loadingHtml).not.toContain('id="site-settings-form"');
   expect(loadingHtml).not.toContain('id="upload-limits-form"');

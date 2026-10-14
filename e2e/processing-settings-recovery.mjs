@@ -71,26 +71,18 @@ export async function verifyProcessingSettingsRecovery(
         const editor = document.querySelector(
           '[data-testid="processing-editor"]',
         );
-        const card = editor.querySelector('[role="status"]');
-        const normalized = document.createElement('div');
-        normalized.style.backgroundColor = getComputedStyle(
-          document.documentElement,
-        ).getPropertyValue('--surface');
         return {
           cards: editor.querySelectorAll('[data-slot="card"]').length,
-          title: card.querySelector('h2').innerText,
-          description: card.querySelector('p').innerText,
-          background: getComputedStyle(card).backgroundColor,
-          surface: normalized.style.backgroundColor,
+          text: editor.innerText,
+          status: editor.querySelector('[role="status"]') !== null,
           inputs: editor.querySelectorAll('input, textarea, [data-field]')
             .length,
           footer: document.querySelector('.shell-footer') !== null,
         };
       });
-      assert.equal(loading.cards, 1);
-      assert.equal(loading.title, '正在读取处理设置');
-      assert.equal(loading.description, '请稍候，取得已保存设置后再编辑。');
-      assert.equal(loading.background, loading.surface);
+      assert.equal(loading.cards, 0);
+      assert.equal(loading.status, false);
+      assert.equal(loading.text.includes('正在读取处理设置'), false);
       assert.equal(loading.inputs, 0);
       assert.equal(loading.footer, false);
       report.layouts.at(-1).loading = loading;

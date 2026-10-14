@@ -1,7 +1,5 @@
 'use client';
 
-import { DelayedLoading } from '../delayed-loading';
-
 import { useEffect, useRef, useState, type ComponentProps } from 'react';
 import { useRouter } from 'next/navigation';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -128,13 +126,7 @@ export function StorageEditor({
             返回
           </Link>
         </header>
-        {query.isPending ? (
-          <DelayedLoading>
-            <p role="status" className="flex items-center gap-2">
-              正在读取存储配置
-            </p>
-          </DelayedLoading>
-        ) : (
+        {query.isPending ? null : (
           <Alert role="alert" status="danger">
             <Alert.Content>
               <Alert.Title>无法读取存储配置</Alert.Title>

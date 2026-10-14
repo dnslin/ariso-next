@@ -211,13 +211,13 @@ export async function verifyProcessingSettingsEntry(
     assert.equal(result.footer, false);
     assert.equal(result.save, false);
     assert.equal(result.preview, false);
-    assert.ok(
-      result.text.includes(
-        state === 'loading' ? '正在读取处理设置' : '无法读取处理设置',
-      ),
-    );
-    if (state === 'loading')
-      assert.ok(result.text.includes('请稍候，取得已保存设置后再编辑。'));
+    if (state === 'loading') {
+      assert.equal(result.text.includes('正在读取处理设置'), false);
+      assert.equal(
+        result.text.includes('请稍候，取得已保存设置后再编辑。'),
+        false,
+      );
+    } else assert.ok(result.text.includes('无法读取处理设置'));
     return result;
   };
   const saveCurrent = async (server) => {

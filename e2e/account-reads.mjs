@@ -42,7 +42,15 @@ export async function verifyAccountReads(page, config, report, credentials) {
       const fault = await accountReadFault(page, true);
       try {
         await page.reload();
-        await page.waitForSelector('[data-testid="account-loading"]');
+        await page.waitForSelector(
+          '[data-testid="account-page"][data-state="loading"]',
+        );
+        assert.equal(
+          await page.evaluate(() =>
+            document.querySelector('[data-testid="account-loading"]'),
+          ),
+          null,
+        );
         assert.equal((await fault.result()).status, 200);
         assert.equal(
           await page.evaluate(() =>

@@ -35,7 +35,6 @@ const suites = {
       ['password-reset', 'password-reset'],
       ['smtp', 'smtp'],
       ['uiux-p1', 'uiux-p1'],
-      ['loading-feedback', 'loading-feedback'],
     ],
   },
   'brand-experiment': {},
@@ -83,7 +82,6 @@ const suites = {
     config: (only) => ({ themePhase: only }),
   },
   account: { stages: [['account', 'account']] },
-  'loading-feedback': { stages: [['loading-feedback', 'loadingFeedback']] },
   'identity-session': {
     stages: [['identity-session-scene', 'identitySession']],
     config: () => ({ width: 1440 }),

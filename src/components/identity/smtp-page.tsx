@@ -1,7 +1,5 @@
 'use client';
 
-import { DelayedLoading } from '../delayed-loading';
-
 import { ComponentEntrance } from '../component-entrance';
 import type { ComponentProps } from 'react';
 import { Button } from '@heroui/react/button';
@@ -161,22 +159,8 @@ export function SmtpPage(shell: ShellProps) {
           items={settingsCategories}
           onNavigate={editor.navigation.navigate}
         >
-          {editor.load === 'loading' ? (
-            <DelayedLoading>
-              <Card
-                className={cardClass}
-                role="status"
-                aria-label="正在读取邮件设置"
-              >
-                <h2 className="flex items-center gap-2 text-lg font-medium">
-                  正在读取邮件设置
-                </h2>
-                <p className="text-sm text-muted">
-                  读取完成后即可查看与编辑当前配置。
-                </p>
-              </Card>
-            </DelayedLoading>
-          ) : editor.load === 'session' || editor.load === 'error' ? (
+          {editor.load === 'loading' ? null : editor.load === 'session' ||
+            editor.load === 'error' ? (
             <Card className={cardClass}>
               <h2 className="flex items-center gap-2 text-lg font-medium">
                 <CircleAlert className="size-5" aria-hidden />

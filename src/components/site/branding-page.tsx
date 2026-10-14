@@ -1,7 +1,5 @@
 'use client';
 
-import { DelayedLoading } from '../delayed-loading';
-
 import { ComponentEntrance } from '../component-entrance';
 import { useEffect, useRef, type ComponentProps } from 'react';
 import { useQuery } from '@tanstack/react-query';
@@ -163,27 +161,19 @@ export function BrandingPage(
               </Card>
             </ComponentEntrance>
           )
-        ) : !sessionLost ? (
-          <DelayedLoading pending={loading}>
-            <Card className={siteCardClass} role={loading ? 'status' : 'alert'}>
-              {loading ? (
-                <p className="text-sm text-muted">正在读取品牌设置…</p>
-              ) : (
-                <>
-                  <h2 className="text-lg font-medium">品牌设置读取失败</h2>
-                  <p className="text-sm text-danger">{query.error?.message}</p>
-                  <Button
-                    data-testid="branding-reload"
-                    variant="outline"
-                    className={`${buttonClass} w-fit`}
-                    onPress={() => void query.refetch()}
-                  >
-                    重新读取
-                  </Button>
-                </>
-              )}
-            </Card>
-          </DelayedLoading>
+        ) : !sessionLost && !loading ? (
+          <Card className={siteCardClass} role="alert">
+            <h2 className="text-lg font-medium">品牌设置读取失败</h2>
+            <p className="text-sm text-danger">{query.error?.message}</p>
+            <Button
+              data-testid="branding-reload"
+              variant="outline"
+              className={`${buttonClass} w-fit`}
+              onPress={() => void query.refetch()}
+            >
+              重新读取
+            </Button>
+          </Card>
         ) : null}
         {(['logo', 'favicon'] as const).map((kind) => (
           <input

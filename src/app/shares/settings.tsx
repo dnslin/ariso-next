@@ -1,7 +1,5 @@
 'use client';
 
-import { DelayedLoading } from '../../components/delayed-loading';
-
 import { ComponentEntrance } from '../../components/component-entrance';
 
 import { useCallback, useEffect, useState } from 'react';
@@ -139,13 +137,7 @@ export function SettingsScreen(props: SettingsProps) {
             重试读取
           </Button>
         </div>
-      ) : (
-        <DelayedLoading>
-          <p role="status" className="flex gap-3">
-            正在读取分享设置…
-          </p>
-        </DelayedLoading>
-      )}
+      ) : null}
     </OwnerShell>
   );
 }

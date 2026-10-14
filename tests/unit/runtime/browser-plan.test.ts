@@ -13,16 +13,6 @@ describe('focused browser execution plans', () => {
       config: {},
     });
   });
-  it('includes loading feedback regression in full and focused browser runs', () => {
-    expect(select('full').stages).toContainEqual([
-      'loading-feedback',
-      'loading-feedback',
-    ]);
-    expect(select('loading-feedback')).toEqual({
-      stages: [['loading-feedback', 'loadingFeedback']],
-      config: {},
-    });
-  });
   it('runs shared admin component motion in full and focused production flows', () => {
     expect(select('full').stages).toContainEqual([
       'admin-motion',
@@ -539,7 +529,6 @@ describe('focused browser execution plans', () => {
         ['password-reset', 'password-reset'],
         ['smtp', 'smtp'],
         ['uiux-p1', 'uiux-p1'],
-        ['loading-feedback', 'loading-feedback'],
       ],
       config: {},
     });

@@ -211,7 +211,7 @@ it('keeps independently loaded binding controls while configuration is loading',
   state.view.settings.isFetching = true;
   state.view.settingsReady = state.view.canLink = false;
   const html = render();
-  expect(html).toContain('正在读取登录配置');
+  expect(html).not.toContain('正在读取登录配置');
   expectEnabledButton(html, 'account-github-unlink');
   expect(button(html, 'account-github-config')).toBeNull();
   expect(button(html, 'oauth-settings-reload')).toBeNull();
@@ -224,7 +224,7 @@ it('hides stale binding controls while an independent binding read is in progres
   state.view.binding.isFetching = state.view.bindingLoading = true;
   state.view.bindingReady = state.view.canLink = false;
   const html = render();
-  expect(html).toContain('正在读取绑定状态');
+  expect(html).not.toContain('正在读取绑定状态');
   expectEnabledButton(html, 'account-github-config');
   expect(button(html, 'account-github-unlink')).toBeNull();
   expect(button(html, 'account-github-link')).toBeNull();

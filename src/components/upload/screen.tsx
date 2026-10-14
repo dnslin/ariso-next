@@ -1,7 +1,5 @@
 'use client';
 
-import { DelayedLoading } from '../delayed-loading';
-
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Alert } from '@heroui/react/alert';
@@ -96,11 +94,7 @@ export function UploadScreen(props: ScreenProps) {
       <OwnerShell {...props}>
         <section className="grid gap-5 md:gap-6" aria-labelledby="upload-title">
           <UploadHeading title="上传图片" returnTo={props.returnTo} />
-          {query.isPending ? (
-            <DelayedLoading>
-              <p role="status">正在读取上传设置…</p>
-            </DelayedLoading>
-          ) : (
+          {query.isPending ? null : (
             <div className="grid gap-4">
               <Alert status="danger" role="alert">
                 <Alert.Content>
@@ -126,9 +120,6 @@ export function UploadScreen(props: ScreenProps) {
       <OwnerShell {...props}>
         <section className="grid gap-5 md:gap-6" aria-labelledby="upload-title">
           <UploadHeading title="上传图片" returnTo={props.returnTo} />
-          <DelayedLoading>
-            <p role="status">正在准备上传队列…</p>
-          </DelayedLoading>
         </section>
       </OwnerShell>
     );
