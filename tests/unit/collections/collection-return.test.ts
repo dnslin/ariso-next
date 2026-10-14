@@ -1,11 +1,15 @@
 import type { DependencyList, EffectCallback } from 'react';
 import { QueryClient } from '@tanstack/react-query';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
-import { useCollectionReturn } from '../../../src/app/albums/use-collection-navigation';
+import {
+  useCollectionQuery,
+  useCollectionReturn,
+} from '../../../src/app/albums/use-collection-navigation';
 
 const runtime = vi.hoisted(() => ({
   active: null as Lifetime | null,
   client: null as QueryClient | null,
+  search: '',
 }));
 vi.mock('react', async (original) => {
   const actual = await original<typeof import('react')>();
@@ -36,7 +40,7 @@ vi.mock('@tanstack/react-query', async (original) => ({
   useQueryClient: () => runtime.client,
 }));
 vi.mock('next/navigation', () => ({
-  useSearchParams: () => new URLSearchParams(),
+  useSearchParams: () => new URLSearchParams(runtime.search),
 }));
 
 class Lifetime {
@@ -48,12 +52,24 @@ class Lifetime {
     runtime.active = this;
     return ReturnProbe(href, ready);
   }
+  renderList(path: '/albums' | '/shares') {
+    this.cursor = 0;
+    runtime.active = this;
+    return ListProbe(path);
+  }
   unmount() {
     this.cleanup.forEach((cleanup) => cleanup());
   }
 }
 function ReturnProbe(href: string, ready: boolean) {
   return useCollectionReturn(href, ready);
+}
+function ListProbe(path: '/albums' | '/shares') {
+  const query = useCollectionQuery(path);
+  return {
+    query,
+    remember: useCollectionReturn(query.href, true, true, query.replacedHref),
+  };
 }
 const main = new EventTarget() as EventTarget & {
   scrollTop: number;
@@ -81,6 +97,7 @@ function mount(href: string, ready = true) {
 }
 beforeEach(() => {
   runtime.client = new QueryClient();
+  runtime.search = '';
   main.scrollTop = 0;
   main.scrollTo = vi.fn((x: number, y: number) => {
     main.scrollTop = y;
@@ -92,6 +109,16 @@ beforeEach(() => {
   vi.stubGlobal('document', {
     getElementById: () => main,
     activeElement: source,
+  });
+  vi.stubGlobal('window', {
+    history: {
+      replaceState: vi.fn((_state: unknown, _unused: string, href: string) => {
+        runtime.search = new URL(href, 'http://ariso.internal').search;
+      }),
+      pushState: vi.fn((_state: unknown, _unused: string, href: string) => {
+        runtime.search = new URL(href, 'http://ariso.internal').search;
+      }),
+    },
   });
   vi.stubGlobal('requestAnimationFrame', (callback: () => void) => {
     frames.push(callback);
@@ -161,4 +188,71 @@ it('does not restore or take focus when an album image dialog opens, changes sub
   album.scope.render(href, true);
   expect(frames).toHaveLength(0);
   expect(focus).not.toHaveBeenCalled();
+});
+
+it('does not retain a permanent return entry for each search keystroke', () => {
+  runtime.search = '?page=1&pageSize=40';
+  const defaults = vi.spyOn(runtime.client!, 'setQueryDefaults');
+  const scope = new Lifetime();
+  lifetimes.push(scope);
+  let list = scope.renderList('/albums');
+  frames.splice(0).forEach((frame) => frame());
+  main.scrollTop = 40;
+  list.remember(source);
+  for (const value of ['森', '森林', '森林旅', '森林旅行']) {
+    list.query.change({ q: value });
+    list = scope.renderList('/albums');
+    frames.splice(0).forEach((frame) => frame());
+  }
+  expect(
+    runtime
+      .client!.getQueryCache()
+      .findAll({ queryKey: ['collection-return'] }),
+  ).toHaveLength(0);
+  expect(
+    new Set(defaults.mock.calls.map(([key]) => JSON.stringify(key))),
+  ).toEqual(new Set(['["collection-return"]']));
+
+  main.scrollTop = 550;
+  list.remember(source);
+  expect(
+    runtime
+      .client!.getQueryCache()
+      .findAll({ queryKey: ['collection-return'] }),
+  ).toHaveLength(1);
+  scope.unmount();
+  main.scrollTop = 0;
+  mount(list.query.href);
+  frames.splice(0).forEach((frame) => frame());
+  expect(main.scrollTop).toBe(550);
+  expect(focus).toHaveBeenCalledWith({ preventScroll: true });
+  expect(
+    runtime
+      .client!.getQueryCache()
+      .findAll({ queryKey: ['collection-return'] }),
+  ).toHaveLength(0);
+});
+
+it('keeps the previous page position when pagination adds a browser history entry', () => {
+  runtime.search = '?q=森林&page=1&pageSize=40';
+  const scope = new Lifetime();
+  lifetimes.push(scope);
+  let list = scope.renderList('/shares');
+  frames.splice(0).forEach((frame) => frame());
+  main.scrollTop = 300;
+  main.dispatchEvent(new Event('scroll'));
+  list.query.change({ page: 2 });
+  list = scope.renderList('/shares');
+  frames.splice(0).forEach((frame) => frame());
+  main.scrollTop = 700;
+  main.dispatchEvent(new Event('scroll'));
+  runtime.search = '?q=森林&page=1&pageSize=40';
+  scope.renderList('/shares');
+  frames.splice(0).forEach((frame) => frame());
+  expect(main.scrollTop).toBe(300);
+  expect(
+    runtime
+      .client!.getQueryCache()
+      .findAll({ queryKey: ['collection-return'] }),
+  ).toHaveLength(1);
 });

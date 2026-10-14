@@ -17,11 +17,11 @@
 
 ## 验证与边界
 
-本轮浏览器使用隔离样例数据库、Ego TaskSpace 29。分享状态／刷新图标、图库与回收站搜索、回收站确认／结果／单图清理及原核对场景均通过，报告保存在本目录 `evidence`。[相册完整套件](evidence/albums-browser.json)通过 9 项流程检查及 70 组布局检查，覆盖编辑与删除 Toast、手机和桌面布局，以及原有表单、失败和列表流程。原测试把保留旧列表的刷新误判为必须出现加载占位；已改为核对旧列表在新请求期间保持可见，且容器标记忙碌。
+本轮浏览器使用隔离样例数据库、Ego TaskSpace 29。分享状态／刷新图标、图库与回收站搜索、回收站确认／结果／单图清理及原核对场景均通过，原始报告见[可下载报告包](evidence/browser-reports.tar.gz)。其中 `albums-browser.json` 通过 9 项流程检查及 70 组布局检查，覆盖编辑与删除 Toast、手机和桌面布局，以及原有表单、失败和列表流程。原测试把保留旧列表的刷新误判为必须出现加载占位；已改为核对旧列表在新请求期间保持可见，且容器标记忙碌。
 
 本地环境为 macOS ARM64、Node 24.18.1、pnpm 11.19.0。实际运行 `pnpm install --frozen-lockfile`、`pnpm run format:check`、`pnpm run lint`、`pnpm run typecheck`、`pnpm run test:unit`、`pnpm run build`、`pnpm run test:integration --maxWorkers=4`、`node docs/tasks/check.mjs`。安装、格式、静态检查和构建最终退出码均为 0；单元 193 个文件／2368 项通过，集成 191 个文件／1898 项通过，任务文档检查 120 个任务／298 项需求通过。构建仍打印其他平台可选依赖与 `@opentelemetry/api` 的追踪告警，最终退出码为 0。
 
-实际运行的浏览器定向入口：`--suite=sharing-management --only=representative`、`--suite=trash --only=representative`、`--only=confirmation`、`--only=approved-results`、`--only=cleanup`、`--only=review-fixes`、`--only=approved-query`、`--suite=collection-shortcuts --only=menus` 与 `--suite=albums`，最终均退出码 0。对应[分享](evidence/share-browser.json)、[回收站确认](evidence/trash-confirm-browser.json)、[批量结果](evidence/trash-results-browser.json)、[单图清理](evidence/trash-single-browser.json)、[搜索](evidence/trash-query-browser.json)、[图库菜单／搜索](evidence/collection-shortcuts-browser.json)与[相册](evidence/albums-browser.json)报告可回读。
+实际运行的浏览器定向入口：`--suite=sharing-management --only=representative`、`--suite=trash --only=representative`、`--only=confirmation`、`--only=approved-results`、`--only=cleanup`、`--only=review-fixes`、`--only=approved-query`、`--suite=collection-shortcuts --only=menus` 与 `--suite=albums`，最终均退出码 0。报告包包含分享、回收站确认／结果／单图清理／搜索、图库菜单和相册等 10 份原始 JSON；同目录截图与上表保留逐项设计对照。
 
 相册套件还暴露一个独立边界：长度达到 100 个 emoji 的相册名会让图库筛选控件生成的隐藏原生选项撑宽手机布局。它不是本轮 Toast 改动造成的；本轮未修改该控件，后续应单独修复并回归。
 

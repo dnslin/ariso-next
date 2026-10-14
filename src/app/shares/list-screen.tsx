@@ -68,6 +68,8 @@ export function SharesScreen(props: {
   const rememberReturn = useCollectionReturn(
     query.href,
     !list.isPending && !list.isPlaceholderData && !error,
+    true,
+    query.replacedHref,
   );
   const pages = data ? Math.max(1, Math.ceil(data.total / pageSize)) : 1;
   return (

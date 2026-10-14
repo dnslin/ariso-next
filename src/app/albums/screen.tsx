@@ -193,6 +193,7 @@ export function AlbumsScreen(props: {
       ? Boolean(album) && galleryReady
       : !list.isPending && !list.isPlaceholderData && !error,
     !props.albumId,
+    query.replacedHref,
   );
   const pages = data ? Math.max(1, Math.ceil(data.total / pageSize)) : 1;
   const albumDialog =

@@ -34,7 +34,7 @@ Figma 文件：[Ariso 设计稿](https://www.figma.com/design/74sT9Hrf8G4czcWeTk
 | `pnpm run test:integration --maxWorkers=4`                     | 独立复跑 191 个文件、1898 项通过。先前与浏览器并发运行时有 3 项失败；三项随后单独顺序执行 37 项通过，独立全量复跑也通过。 |
 | `node docs/tasks/check.mjs`                                    | 120 个任务、298 项需求通过，无缺失 ID 或循环。                                                                            |
 
-正式产品浏览器报告：F05 [分享](evidence/f05-browser.json)；F06 [选图](evidence/f06-browser.json)；F07 [站点设置](evidence/f07-browser.json)；F08/F10 [找回密码](evidence/f08-f10-browser.json)；F09 [处理设置](evidence/f09-browser.json)；F11 [图库](evidence/f11-library-browser.json)；F11/F12 [回收站](evidence/f11-f12-browser.json)；[完整集合回归](evidence/f06-f11-browser.json)。相关定向入口 `--suite=sharing-management --only=representative`、`--suite=collection-shortcuts`、`--suite=site-general`、`--suite=password-reset`、`--suite=processing --only=settings`、`--suite=trash --only=representative` 均通过。最后将图库搜索按钮统一为 44px 后，又执行 `--suite=collection-shortcuts --only=menus` 并通过。
+正式产品的 8 份原始浏览器 JSON 见[可下载报告包](evidence/browser-reports.tar.gz)：`f05-browser.json`、`f06-browser.json`、`f07-browser.json`、`f08-f10-browser.json`、`f09-browser.json`、`f11-library-browser.json`、`f11-f12-browser.json`、`f06-f11-browser.json`。相关定向入口 `--suite=sharing-management --only=representative`、`--suite=collection-shortcuts`、`--suite=site-general`、`--suite=password-reset`、`--suite=processing --only=settings`、`--suite=trash --only=representative` 均通过。最后将图库搜索按钮统一为 44px 后，又执行 `--suite=collection-shortcuts --only=menus` 并通过。
 
 ## 人工查看
 

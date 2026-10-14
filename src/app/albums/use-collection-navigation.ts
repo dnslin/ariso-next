@@ -12,9 +12,11 @@ import {
 } from './collection-navigation';
 
 type ReturnPosition = { scrollTop: number; focusKey: string | null };
+const returnKey = ['collection-return'] as const;
 
 export function useCollectionQuery(path: CollectionPath) {
   const params = useSearchParams();
+  const replacedHref = useRef<string | null>(null);
   let query: CollectionQuery = { q: '', page: 1, pageSize: 40 };
   let error: Error | null = null;
   try {
@@ -27,10 +29,19 @@ export function useCollectionQuery(path: CollectionPath) {
     if (patch.q !== undefined || patch.pageSize !== undefined) next.page = 1;
     const href = collectionListHref(path, next);
     // Search replaces the current entry; page changes remain available to Back.
-    if (patch.q !== undefined) window.history.replaceState(null, '', href);
-    else window.history.pushState(null, '', href);
+    if (patch.q !== undefined) {
+      const currentHref = collectionListHref(path, query);
+      replacedHref.current = href !== currentHref ? currentHref : null;
+      window.history.replaceState(null, '', href);
+    } else window.history.pushState(null, '', href);
   }
-  return { ...query, href: collectionListHref(path, query), error, change };
+  return {
+    ...query,
+    href: collectionListHref(path, query),
+    error,
+    change,
+    replacedHref,
+  };
 }
 
 /** Retain only navigation context, using the existing owner QueryClient. */
@@ -38,13 +49,14 @@ export function useCollectionReturn(
   sourceHref: string,
   ready: boolean,
   resetOnNew = true,
+  replacedHrefRef?: { current: string | null },
 ) {
   const href = collectionReturnIdentity(sourceHref);
   const client = useQueryClient();
   const current = useRef<{ href: string; position: ReturnPosition } | null>(
     null,
   );
-  const key = ['collection-return', href] as const;
+  const key = [...returnKey, href] as const;
   function remember(element?: HTMLElement | null) {
     const main = document.getElementById('main-content');
     if (!main) return;
@@ -57,15 +69,20 @@ export function useCollectionReturn(
     position.scrollTop = main.scrollTop;
     position.focusKey = focusKey;
     current.current = { href, position };
-    client.setQueryDefaults(key, { gcTime: Infinity });
+    client.setQueryDefaults(returnKey, { gcTime: Infinity });
     client.setQueryData(key, position);
   }
   useEffect(() => {
     if (!ready) return;
     const main = document.getElementById('main-content');
     if (!main) return;
-    const queryKey = ['collection-return', href] as const;
+    client.setQueryDefaults(returnKey, { gcTime: Infinity });
+    const queryKey = [...returnKey, href] as const;
+    if (replacedHrefRef) replacedHrefRef.current = null;
     const saved = client.getQueryData<ReturnPosition>(queryKey);
+    // The mounted page owns this position again; keep cached positions only
+    // for history entries that are currently away from the list.
+    if (saved) client.removeQueries({ queryKey, exact: true });
     const position: ReturnPosition = saved
       ? { ...saved }
       : { scrollTop: 0, focusKey: null };
@@ -99,12 +116,14 @@ export function useCollectionReturn(
     });
     return () => {
       cancelAnimationFrame(frame);
-      client.setQueryDefaults(queryKey, { gcTime: Infinity });
-      client.setQueryData(queryKey, { ...position });
+      if (replacedHrefRef?.current === href) {
+        replacedHrefRef.current = null;
+        client.removeQueries({ queryKey, exact: true });
+      } else client.setQueryData(queryKey, { ...position });
       main.removeEventListener('scroll', saveScroll);
       main.removeEventListener('focusin', saveFocus);
       if (current.current?.position === position) current.current = null;
     };
-  }, [client, href, ready, resetOnNew]);
+  }, [client, href, ready, resetOnNew, replacedHrefRef]);
   return remember;
 }
