@@ -71,9 +71,6 @@ describe('品牌文件真实 SQLite 和磁盘生命周期', () => {
     ['logo', 'static.jpg', 'image/jpeg'],
     ['logo', 'static.webp', 'image/webp'],
     ['logo', 'static.svg', 'image/svg+xml'],
-    ['favicon', 'source.png', 'image/png'],
-    ['favicon', 'multiple.ico', 'image/x-icon'],
-    ['favicon', 'static.svg', 'image/svg+xml'],
   ] as const)(
     '按内容识别 %s 的 %s，返回确认的 MIME',
     async (kind, fixture, mime) => {
@@ -85,6 +82,153 @@ describe('品牌文件真实 SQLite 和磁盘生命周期', () => {
       expect(await files()).toEqual([asset.key]);
     },
   );
+
+  it.each(['source.png', 'multiple.ico', 'static.svg'])(
+    'Favicon %s 输出单张 48×48 PNG，数据库记录输出类型',
+    async (fixture) => {
+      const asset = await upload('favicon', fixture);
+      const saved = (await service.read(asset.key))!;
+      expect(asset).toMatchObject({
+        key: expect.stringMatching(/^site-favicon-.*\.png$/),
+        mime: 'image/png',
+      });
+      expect(saved.bytes.subarray(0, 8)).toEqual(
+        Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]),
+      );
+      expect(saved.bytes.readUInt32BE(16)).toBe(48);
+      expect(saved.bytes.readUInt32BE(20)).toBe(48);
+      expect(requireSiteSettings(connection.db)).toMatchObject({
+        faviconKey: asset.key,
+        faviconMime: 'image/png',
+      });
+      expect(await files()).toEqual([asset.key]);
+    },
+  );
+
+  it('Favicon 等比缩小并透明居中，删除元数据，简单图标缩到几 KB', async () => {
+    const source = join(directory, 'wide.png');
+    await execa('magick', [
+      '-size',
+      '512x256',
+      'xc:red',
+      '-set',
+      'comment',
+      'remove this metadata',
+      '-define',
+      'png:compression-level=0',
+      source,
+    ]);
+    const asset = await service.replace('favicon', (path) =>
+      fs.copyFile(source, path),
+    );
+    const saved = (await service.read(asset.key))!;
+    expect(saved.bytes.length).toBeLessThan(5 * 1024);
+    expect(saved.bytes.length).toBeLessThan((await fs.stat(source)).size);
+    const { stdout: pixels } = await execa(
+      'magick',
+      [join(root, asset.key), '-depth', '8', 'rgba:-'],
+      { encoding: 'buffer' },
+    );
+    const pixel = (x: number, y: number) => [
+      ...pixels.subarray((y * 48 + x) * 4, (y * 48 + x + 1) * 4),
+    ];
+    expect(pixel(24, 11)[3]).toBe(0);
+    expect(pixel(24, 12)).toEqual([255, 0, 0, 255]);
+    expect(pixel(24, 35)).toEqual([255, 0, 0, 255]);
+    expect(pixel(24, 36)[3]).toBe(0);
+    const { stdout: metadata } = await execa('exiftool', [
+      '-Comment',
+      '-EXIF:all',
+      '-XMP:all',
+      join(root, asset.key),
+    ]);
+    expect(metadata).toBe('');
+  });
+
+  it('小尺寸 SVG 直接按目标像素栅格化，保留清晰边缘与透明区域', async () => {
+    const asset = await service.replace('favicon', (path) =>
+      fs.writeFile(
+        path,
+        '<svg xmlns="http://www.w3.org/2000/svg" width="1" height="1"><rect width="0.5" height="1" fill="red"/></svg>',
+      ),
+    );
+    const { stdout: pixels } = await execa(
+      'magick',
+      [join(root, asset.key), '-depth', '8', 'rgba:-'],
+      { encoding: 'buffer' },
+    );
+    expect(pixels[(24 * 48 + 23) * 4 + 3]).toBe(255);
+    expect(pixels[(24 * 48 + 24) * 4 + 3]).toBe(0);
+  });
+
+  it.each([
+    [64, 48, '0,128,0'],
+    [32, 24, '0,0,255'],
+  ])(
+    '多尺寸 ICO 选择合适帧：%s / %s，避免放大首帧',
+    async (larger, smaller, color) => {
+      const source = join(directory, 'sizes.ico');
+      await execa('magick', [
+        '(',
+        '-size',
+        '16x16',
+        'xc:red',
+        ')',
+        '(',
+        '-size',
+        `${larger}x${larger}`,
+        'xc:blue',
+        ')',
+        '(',
+        '-size',
+        `${smaller}x${smaller}`,
+        'xc:green',
+        ')',
+        source,
+      ]);
+      const asset = await service.replace('favicon', (path) =>
+        fs.copyFile(source, path),
+      );
+      const { stdout } = await execa('magick', [
+        join(root, asset.key),
+        '-format',
+        '%[pixel:p{24,24}]',
+        'info:',
+      ]);
+      expect(stdout).toContain(color);
+    },
+  );
+
+  it('Favicon 生成或数据库提交失败保留旧引用、字节并清理候选', async () => {
+    const first = await upload('favicon');
+    const original = await service.read(first.key);
+    const start = mediaTools.startMediaTool;
+    const tool = vi
+      .spyOn(mediaTools, 'startMediaTool')
+      .mockImplementation((command, args, options) =>
+        start(
+          command,
+          args.includes('-resize')
+            ? [...args, '-invalid-favicon-option']
+            : args,
+          options,
+        ),
+      );
+    await expect(upload('favicon')).rejects.toThrow();
+    tool.mockRestore();
+    expect(requireSiteSettings(connection.db).faviconKey).toBe(first.key);
+    expect(await service.read(first.key)).toEqual(original);
+    expect(await files()).toEqual([first.key]);
+    connection.db.$client.exec(
+      "CREATE TRIGGER reject_favicon BEFORE UPDATE OF favicon_key ON site_settings BEGIN SELECT RAISE(ABORT, 'favicon reference rejected'); END",
+    );
+    await expect(upload('favicon')).rejects.toThrow(
+      'favicon reference rejected',
+    );
+    expect(requireSiteSettings(connection.db).faviconKey).toBe(first.key);
+    expect(await service.read(first.key)).toEqual(original);
+    expect(await files()).toEqual([first.key]);
+  });
 
   it.each([
     ['logo', 'multiple.ico'],

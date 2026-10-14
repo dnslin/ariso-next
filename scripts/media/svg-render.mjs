@@ -4,7 +4,7 @@ import { assertStaticSvg } from './svg-policy.mjs';
 
 // Run parsing and native rendering outside the application process so the media
 // tool deadline, cancellation and crash recovery can terminate the whole job.
-const [sourcePath, outputPath, renderSize] = process.argv.slice(2);
+const [sourcePath, outputPath, renderSize, fitMode] = process.argv.slice(2);
 const source = await readFile(sourcePath, 'utf8');
 let width;
 let height;
@@ -20,7 +20,13 @@ try {
       fitTo:
         renderSize === 'preview'
           ? { mode: width >= height ? 'width' : 'height', value: 640 }
-          : { mode: 'width', value: Number(renderSize) },
+          : {
+              mode:
+                fitMode === 'longest-edge' && height > width
+                  ? 'height'
+                  : 'width',
+              value: Number(renderSize),
+            },
     });
   }
   png = renderer.render().asPng();
