@@ -54,9 +54,11 @@
 
 新增 Display P3、两个整数细长 SVG 用例在修复前全部失败；两个小数尺寸用例也先复现空白输出再通过修复。元数据清理失败通过实际工具错误注入验证，旧引用与字节保留，候选文件清理。
 
-两个 Agent 复审 `892545c6` 时进一步复现：无 ICC、Gamma=1 的线性 PNG 清理后失去 Gamma，归一到 sRGB 的正确像素约 `(188,137,225)` 变成 `(128,64,192)`。新增真实上传回归先失败后通过。清理时保留 ICC 组，并在同一次 ExifTool 操作中用 `-tagsfromfile @ -PNG:Gamma -PNG:SRGBRendering` 拷回生成文件自身的两个颜色标签；单标签不能靠组删除的排除选项保留。标准 sRGB 原色的冗余 cHRM 被编码器省略，不据此推断颜色变化。
+两个 Agent 复审 `892545c6` 时进一步复现：无 ICC、Gamma=1 的线性 PNG 清理后失去 Gamma，归一到 sRGB 的正确像素约 `(188,137,225)` 变成 `(128,64,192)`。新增真实上传回归先失败后通过。清理时保留 ICC 组，并在同一次 ExifTool 操作中用 `-tagsfromfile` 复制 Gamma、sRGB 标记；PNG 从上传的原文件读取这些标签，避免编码器丢弃后无法恢复，SVG/ICO 从生成的 PNG 读取。不会拷回标签、注释或其他元数据。标准 sRGB 原色的冗余 cHRM 被编码器省略，不据此推断颜色变化。
 
 Linux CI 在该回归的输入有效性断言处失败（尚未执行上传前后颜色比较）：编码器选项不能保证在两平台都写出 Gamma 块。最终夹具显式转换为线性 RGB，再由 ExifTool 明确写入 Gamma=1 并删除 sRGB 标记，同时检查输入标签，并比较完整的原始/归一像素来确认样例需要颜色转换。保留了上传前后完整像素相等断言。该调整只涉及测试构造，不改变产品实现；本地品牌文件测试再次48/48通过。
+
+输入修正后，Linux CI 在上传前后比较中揭示真实产品问题：原始 PNG 的线性样本 `(55,13,134)` 编码后失去 Gamma，被当作 sRGB，正确显示应为 `(128,64,192)`。最终修复从原始 PNG 复制颜色标记。额外场景用真实编码器的 `-strip` 模拟版本间丢弃标签的行为，本地先复现相同色差，再验证修复；输入有效性及完整像素断言继续保留。
 
 本轮实际验证（同一 macOS ARM64 环境）：
 
@@ -66,7 +68,7 @@ Linux CI 在该回归的输入有效性断言处失败（尚未执行上传前�
 | `pnpm run build`、`pnpm run typecheck`、`pnpm run lint`                                                                                                                                                                 | 通过；构建的跨平台可选原生模块追踪诊断仍存在，退出码0 |
 | `pnpm exec vitest run --project media-tools tests/integration/site/branding.test.ts -t 'Display P3\|细长 SVG'`（修复前）                                                                                                | 3项新增用例按预期失败                                 |
 | `pnpm exec vitest run --project media-tools tests/integration/site/branding.test.ts -t '细长 SVG'`（精确尺寸修复前/后）                                                                                                 | 两个小数用例先失败，修复后4/4通过                     |
-| `pnpm exec vitest run --project media-tools tests/integration/site/branding.test.ts tests/integration/site/branding-http.test.ts tests/integration/media/svg.test.ts tests/integration/media/watermark.test.ts`（最终） | 104/104通过                                           |
+| `pnpm exec vitest run --project media-tools tests/integration/site/branding.test.ts tests/integration/site/branding-http.test.ts tests/integration/media/svg.test.ts tests/integration/media/watermark.test.ts`（最终） | 105/105通过                                           |
 | `pnpm exec vitest run --project unit tests/unit/media/svg-policy.test.ts tests/unit/media/processing.test.ts tests/unit/media/watermark.test.ts tests/unit/site/branding-resources.test.ts`                             | 56/56通过                                             |
 | `node docs/tasks/check.mjs`                                                                                                                                                                                             | 120任务、298需求通过                                  |
 

@@ -213,60 +213,76 @@ describe('品牌文件真实 SQLite 和磁盘生命周期', () => {
     expect(metadata).toBe('');
   });
 
-  it('Favicon 保留无 ICC 的线性 PNG 颜色解释', async () => {
-    const source = join(directory, 'linear.png');
-    await execa('magick', [
-      '-size',
-      '48x48',
-      'xc:rgb(128,64,192)',
-      '-colorspace',
-      'RGB',
-      '-set',
-      'gamma',
-      '1',
-      '-define',
-      'png:include-chunks=gAMA,cHRM',
-      '-define',
-      'png:exclude-chunks=sRGB',
-      source,
-    ]);
-    // Write explicit color markers rather than relying on encoder defaults.
-    await execa('exiftool', [
-      '-PNG:Gamma=1',
-      '-PNG:SRGBRendering=',
-      '-overwrite_original',
-      source,
-    ]);
-    const { stdout: colorTags } = await execa('exiftool', [
-      '-json',
-      '-n',
-      '-Gamma',
-      '-SRGBRendering',
-      source,
-    ]);
-    const [tags] = JSON.parse(colorTags);
-    expect(tags.Gamma).toBe(1);
-    expect(tags.SRGBRendering).toBeUndefined();
-    const asset = await service.replace('favicon', (path) =>
-      fs.copyFile(source, path),
-    );
-    const normalized = async (path: string) =>
-      (
-        await execa(
-          'magick',
-          [path, '-colorspace', 'sRGB', '-depth', '8', 'rgba:-'],
-          { encoding: 'buffer' },
-        )
-      ).stdout;
-    const expected = await normalized(source);
-    const { stdout: raw } = await execa(
-      'magick',
-      [source, '-depth', '8', 'rgba:-'],
-      { encoding: 'buffer' },
-    );
-    expect(expected).not.toEqual(raw);
-    expect(await normalized(join(root, asset.key))).toEqual(expected);
-  });
+  it.each([false, true])(
+    'Favicon 保留无 ICC 的线性 PNG 颜色解释（编码器丢弃标签：%s）',
+    async (omitColorTags) => {
+      const source = join(directory, 'linear.png');
+      await execa('magick', [
+        '-size',
+        '48x48',
+        'xc:rgb(128,64,192)',
+        '-colorspace',
+        'RGB',
+        '-set',
+        'gamma',
+        '1',
+        '-define',
+        'png:include-chunks=gAMA,cHRM',
+        '-define',
+        'png:exclude-chunks=sRGB',
+        source,
+      ]);
+      // Write explicit color markers rather than relying on encoder defaults.
+      await execa('exiftool', [
+        '-PNG:Gamma=1',
+        '-PNG:SRGBRendering=',
+        '-overwrite_original',
+        source,
+      ]);
+      const { stdout: colorTags } = await execa('exiftool', [
+        '-json',
+        '-n',
+        '-Gamma',
+        '-SRGBRendering',
+        source,
+      ]);
+      const [tags] = JSON.parse(colorTags);
+      expect(tags.Gamma).toBe(1);
+      expect(tags.SRGBRendering).toBeUndefined();
+      if (omitColorTags) {
+        const start = mediaTools.startMediaTool;
+        vi.spyOn(mediaTools, 'startMediaTool').mockImplementation(
+          (command, args, options) =>
+            start(
+              command,
+              command === 'magick' && args.includes('-resize')
+                ? [...args.slice(0, -1), '-strip', args.at(-1)!]
+                : args,
+              options,
+            ),
+        );
+      }
+      const asset = await service.replace('favicon', (path) =>
+        fs.copyFile(source, path),
+      );
+      const normalized = async (path: string) =>
+        (
+          await execa(
+            'magick',
+            [path, '-colorspace', 'sRGB', '-depth', '8', 'rgba:-'],
+            { encoding: 'buffer' },
+          )
+        ).stdout;
+      const expected = await normalized(source);
+      const { stdout: raw } = await execa(
+        'magick',
+        [source, '-depth', '8', 'rgba:-'],
+        { encoding: 'buffer' },
+      );
+      expect(expected).not.toEqual(raw);
+      expect(await normalized(join(root, asset.key))).toEqual(expected);
+    },
+  );
 
   it.each([
     [1, 100],

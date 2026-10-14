@@ -78,15 +78,15 @@ export async function generateFavicon(
     'png:exclude-chunks=date,time',
     `png:${path}`,
   ]);
-  // Preserve color interpretation while removing unrelated metadata. Gamma and
-  // sRGB are individual PNG tags, so copy them back after the group deletion.
+  // Read PNG color tags from the upload: some encoder versions omit them.
+  // Gamma and sRGB are individual tags, so copy them after the group deletion.
   const cleanup = startMediaTool(
     'exiftool',
     [
       '-all=',
       '--ICC_Profile:all',
       '-tagsfromfile',
-      '@',
+      facts.format === 'PNG' ? source : '@',
       '-PNG:Gamma',
       '-PNG:SRGBRendering',
       '-overwrite_original',
