@@ -128,7 +128,7 @@ it.each([
   },
 );
 
-it('share settings retains a readable first-read message without a rotating indicator', () => {
+it('share settings keeps its heading without initial loading feedback', () => {
   runtime.pending = true;
   const html = renderToStaticMarkup(
     createElement(SettingsScreen, {
@@ -138,7 +138,8 @@ it('share settings retains a readable first-read message without a rotating indi
     }),
   );
   expect(html).toContain('分享设置');
-  expect(html).toContain('正在读取分享设置…');
+  expect(html).not.toContain('正在读取分享设置…');
+  expect(html).not.toContain('role="status"');
   expect(html).not.toContain('data-slot="spinner"');
 });
 
