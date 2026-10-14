@@ -275,7 +275,7 @@ it('keeps the initial album read silent without showing an empty result', () => 
   expect(html).toMatch(/<h1[^>]*data-component-entry/);
   expect(html).not.toContain('正在读取相册');
   expect(html).not.toContain('data-testid="albums-empty"');
-  expect(html).not.toContain('data-testid="albums-list"');
+  expect(html).toMatch(/<div data-testid="albums-list"[^>]*><\/div>/);
 });
 
 it('refreshes the current album list count and cover only for uploads with actual album relations', async () => {
