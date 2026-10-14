@@ -28,7 +28,7 @@ export async function verifySharingViewerRepresentatives({
   await session.loaded(40);
   await open();
   await imageLoaded();
-  await capture('visible-name');
+  await capture('name-enabled-canvas');
   await close();
   record(
     'Desktop and 360/390/430/768, light/dark, hidden/visible names and short viewport representative captures',

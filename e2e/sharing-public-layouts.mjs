@@ -168,7 +168,7 @@ export function createSharingPublicLayouts({ page, config, report }) {
                 .textContent.split('暂无可展示的图片').length - 1,
             zeroCount:
               document
-                .querySelector('[data-share-scroll] header p:last-child')
+                .querySelector('[data-share-cover] + header p:last-child')
                 ?.textContent.replace(/\s/g, '') === '0张图片',
             centered:
               iconRect && textRect
@@ -210,19 +210,37 @@ export function createSharingPublicLayouts({ page, config, report }) {
           );
         }
         const sharingGeometry = await page.evaluate(() => {
-          const scroller = document.querySelector('[data-share-scroll]');
-          if (!scroller) return null;
+          const cover = document.querySelector('[data-share-cover]');
+          if (!cover) return null;
+          const content = cover.parentElement.parentElement;
           const gallery = document.querySelector('[data-testid="share-items"]');
           return {
             contentWidth:
-              scroller.clientWidth -
-              parseFloat(getComputedStyle(scroller).paddingLeft) -
-              parseFloat(getComputedStyle(scroller).paddingRight),
+              content.clientWidth -
+              parseFloat(getComputedStyle(content).paddingLeft) -
+              parseFloat(getComputedStyle(content).paddingRight),
             galleryWidth: gallery?.getBoundingClientRect().width,
             columns: Number(gallery?.getAttribute('data-columns')),
+            internalScrollRoot: !!document.querySelector('[data-share-scroll]'),
+            scrollbarWidth: getComputedStyle(document.documentElement)
+              .scrollbarWidth,
+            webkitScrollbar: getComputedStyle(
+              document.documentElement,
+              '::-webkit-scrollbar',
+            ).display,
           };
         });
         if (sharingGeometry) {
+          assert.equal(
+            sharingGeometry.internalScrollRoot,
+            false,
+            'The share has no independent inner scroll container',
+          );
+          assert.ok(
+            sharingGeometry.scrollbarWidth === 'none' ||
+              sharingGeometry.webkitScrollbar === 'none',
+            'The document scrollbar is hidden without disabling scrolling',
+          );
           const expectedWidth =
             Math.min(width, 1192) - (width >= 768 && width < 1200 ? 48 : 32);
           assert.equal(

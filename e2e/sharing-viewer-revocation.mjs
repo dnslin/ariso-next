@@ -134,6 +134,7 @@ export async function verifySharingViewerRevocations({
       await session.loaded(40);
       await viewing.open(imageId);
       await viewing.imageLoaded();
+      const openingScroll = await page.evaluate(() => scrollY);
       await task.cdp('Target.activateTarget', { targetId: owner.targetId });
       const [storage] = await session.sql(
         `SELECT storage_id FROM media_images WHERE id='${imageId}'`,
@@ -171,10 +172,12 @@ export async function verifySharingViewerRevocations({
           assert.equal(
             await page.evaluate(
               () =>
-                document.querySelector('[data-testid="share-viewer-zoom"]')
-                  .disabled,
+                document.querySelector(
+                  '[data-testid="share-viewer-stage"] .yarl__slide_current img',
+                ) !== null,
             ),
-            true,
+            false,
+            'A disabled storage placeholder has no current image bytes or zoom target',
           );
           await viewing.capture(
             'disabled-placeholder',
@@ -190,6 +193,42 @@ export async function verifySharingViewerRevocations({
               imageId,
             ),
             false,
+          );
+          await page.waitForFunction((openingScroll) => {
+            const heading = document.querySelector('[data-share-page] h1');
+            const maximum = Math.max(
+              0,
+              document.scrollingElement.scrollHeight - innerHeight,
+            );
+            return (
+              document.activeElement === heading &&
+              Math.abs(scrollY - Math.min(openingScroll, maximum)) <= 1
+            );
+          }, openingScroll);
+          const restored = await page.evaluate(() => ({
+            headingFocused:
+              document.activeElement ===
+              document.querySelector('[data-share-page] h1'),
+            scroll: scrollY,
+            maximum: Math.max(
+              0,
+              document.scrollingElement.scrollHeight - innerHeight,
+            ),
+          }));
+          assert.equal(
+            restored.headingFocused,
+            true,
+            'A removed source card returns focus to the surviving album heading',
+          );
+          assert.ok(
+            Math.abs(
+              restored.scroll - Math.min(openingScroll, restored.maximum),
+            ) <= 1,
+            'Removal restores the opening document position, clamped to the shorter album',
+          );
+          viewing.record(
+            'Current-member removal restores heading focus and a legal document scroll position',
+            { condition, openingScroll, ...restored },
           );
         }
         viewing.record(

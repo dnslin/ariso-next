@@ -1,0 +1,3522 @@
+{
+  "status": "passed",
+  "taskSpaceId": 36,
+  "phase": "full",
+  "scope": "Production anonymous image viewer, bounded public neighbors and real revocation",
+  "checks": [
+    {
+      "scenario": "Desktop and 360/390/430/768, light/dark, hidden/visible names and short viewport representative captures"
+    },
+    {
+      "scenario": "Real missing preview bytes on an unviewed image show the approved error; retry reads the same original version after restoration without fallback"
+    },
+    {
+      "scenario": "Escape on the actual YARL stage closes the viewer and restores the original card focus without refocusing a button"
+    },
+    {
+      "scenario": "Wheel zoom focus observation on the transparent neighbor arrow",
+      "tag": "BUTTON",
+      "insideViewer": true
+    },
+    {
+      "scenario": "Escape after wheel zoom closes the viewer and restores the source card focus"
+    },
+    {
+      "scenario": "YARL keyboard navigation intermediate focus observation",
+      "focusAfterFirstArrow": {
+        "tag": "DIV",
+        "className": "yarl__container yarl__flex_center",
+        "insideStage": true
+      }
+    },
+    {
+      "scenario": "Continuous ArrowRight and ArrowLeft from the actual YARL stage preserve keyboard navigation without refocusing another control"
+    },
+    {
+      "scenario": "Anonymous viewer loads only current and one neighbor in each direction; hidden names stay absent",
+      "requestedImages": 3
+    },
+    {
+      "scenario": "Enlarged image remains on the pure viewport canvas",
+      "width": 390,
+      "theme": "light",
+      "showName": false,
+      "layout": {
+        "zoom": 2,
+        "text": ""
+      },
+      "canvas": {
+        "role": "dialog",
+        "modal": "true",
+        "position": "fixed",
+        "background": "rgb(11, 11, 13)",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 844
+        },
+        "recovery": false,
+        "ordinaryImage": true,
+        "text": "",
+        "obsoleteControls": 0,
+        "headings": 0,
+        "actions": [
+          {
+            "id": "share-viewer-previous",
+            "label": "上一张",
+            "text": "",
+            "icon": true,
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px"
+          },
+          {
+            "id": "share-viewer-next",
+            "label": "下一张",
+            "text": "",
+            "icon": true,
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px"
+          },
+          {
+            "id": "share-viewer-close",
+            "label": "关闭图片",
+            "text": "",
+            "icon": true,
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px"
+          }
+        ]
+      }
+    },
+    {
+      "scenario": "Enlarged image remains on the pure viewport canvas",
+      "width": 390,
+      "theme": "dark",
+      "showName": false,
+      "layout": {
+        "zoom": 2,
+        "text": ""
+      },
+      "canvas": {
+        "role": "dialog",
+        "modal": "true",
+        "position": "fixed",
+        "background": "rgb(11, 11, 13)",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 844
+        },
+        "recovery": false,
+        "ordinaryImage": true,
+        "text": "",
+        "obsoleteControls": 0,
+        "headings": 0,
+        "actions": [
+          {
+            "id": "share-viewer-previous",
+            "label": "上一张",
+            "text": "",
+            "icon": true,
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px"
+          },
+          {
+            "id": "share-viewer-next",
+            "label": "下一张",
+            "text": "",
+            "icon": true,
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px"
+          },
+          {
+            "id": "share-viewer-close",
+            "label": "关闭图片",
+            "text": "",
+            "icon": true,
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px"
+          }
+        ]
+      }
+    },
+    {
+      "scenario": "Enlarged image remains on the pure viewport canvas",
+      "width": 1440,
+      "theme": "light",
+      "showName": false,
+      "layout": {
+        "zoom": 2,
+        "text": ""
+      },
+      "canvas": {
+        "role": "dialog",
+        "modal": "true",
+        "position": "fixed",
+        "background": "rgb(11, 11, 13)",
+        "viewport": {
+          "width": 1440,
+          "height": 1080
+        },
+        "root": {
+          "left": 0,
+          "right": 1440,
+          "top": 0,
+          "bottom": 1080
+        },
+        "stage": {
+          "left": 0,
+          "right": 1440,
+          "top": 0,
+          "bottom": 1080
+        },
+        "recovery": false,
+        "ordinaryImage": true,
+        "text": "",
+        "obsoleteControls": 0,
+        "headings": 0,
+        "actions": [
+          {
+            "id": "share-viewer-previous",
+            "label": "上一张",
+            "text": "",
+            "icon": true,
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px"
+          },
+          {
+            "id": "share-viewer-next",
+            "label": "下一张",
+            "text": "",
+            "icon": true,
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px"
+          },
+          {
+            "id": "share-viewer-close",
+            "label": "关闭图片",
+            "text": "",
+            "icon": true,
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px"
+          }
+        ]
+      }
+    },
+    {
+      "scenario": "Enlarged image remains on the pure viewport canvas",
+      "width": 1440,
+      "theme": "dark",
+      "showName": false,
+      "layout": {
+        "zoom": 2,
+        "text": ""
+      },
+      "canvas": {
+        "role": "dialog",
+        "modal": "true",
+        "position": "fixed",
+        "background": "rgb(11, 11, 13)",
+        "viewport": {
+          "width": 1440,
+          "height": 1080
+        },
+        "root": {
+          "left": 0,
+          "right": 1440,
+          "top": 0,
+          "bottom": 1080
+        },
+        "stage": {
+          "left": 0,
+          "right": 1440,
+          "top": 0,
+          "bottom": 1080
+        },
+        "recovery": false,
+        "ordinaryImage": true,
+        "text": "",
+        "obsoleteControls": 0,
+        "headings": 0,
+        "actions": [
+          {
+            "id": "share-viewer-previous",
+            "label": "上一张",
+            "text": "",
+            "icon": true,
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px"
+          },
+          {
+            "id": "share-viewer-next",
+            "label": "下一张",
+            "text": "",
+            "icon": true,
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px"
+          },
+          {
+            "id": "share-viewer-close",
+            "label": "关闭图片",
+            "text": "",
+            "icon": true,
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px"
+          }
+        ]
+      }
+    },
+    {
+      "scenario": "Enlarged image remains on the pure viewport canvas",
+      "width": 390,
+      "theme": "light",
+      "showName": true,
+      "layout": {
+        "zoom": 2,
+        "text": ""
+      },
+      "canvas": {
+        "role": "dialog",
+        "modal": "true",
+        "position": "fixed",
+        "background": "rgb(11, 11, 13)",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 844
+        },
+        "recovery": false,
+        "ordinaryImage": true,
+        "text": "",
+        "obsoleteControls": 0,
+        "headings": 0,
+        "actions": [
+          {
+            "id": "share-viewer-previous",
+            "label": "上一张",
+            "text": "",
+            "icon": true,
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px"
+          },
+          {
+            "id": "share-viewer-next",
+            "label": "下一张",
+            "text": "",
+            "icon": true,
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px"
+          },
+          {
+            "id": "share-viewer-close",
+            "label": "关闭图片",
+            "text": "",
+            "icon": true,
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px"
+          }
+        ]
+      }
+    },
+    {
+      "scenario": "Enabled names remain in image alternative text without visible viewer chrome",
+      "width": 390,
+      "theme": "light",
+      "layout": {
+        "nameVisible": false,
+        "alt": "共享照片-007"
+      }
+    },
+    {
+      "scenario": "Enlarged image remains on the pure viewport canvas",
+      "width": 390,
+      "theme": "dark",
+      "showName": true,
+      "layout": {
+        "zoom": 2,
+        "text": ""
+      },
+      "canvas": {
+        "role": "dialog",
+        "modal": "true",
+        "position": "fixed",
+        "background": "rgb(11, 11, 13)",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 844
+        },
+        "recovery": false,
+        "ordinaryImage": true,
+        "text": "",
+        "obsoleteControls": 0,
+        "headings": 0,
+        "actions": [
+          {
+            "id": "share-viewer-previous",
+            "label": "上一张",
+            "text": "",
+            "icon": true,
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px"
+          },
+          {
+            "id": "share-viewer-next",
+            "label": "下一张",
+            "text": "",
+            "icon": true,
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px"
+          },
+          {
+            "id": "share-viewer-close",
+            "label": "关闭图片",
+            "text": "",
+            "icon": true,
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px"
+          }
+        ]
+      }
+    },
+    {
+      "scenario": "Enabled names remain in image alternative text without visible viewer chrome",
+      "width": 390,
+      "theme": "dark",
+      "layout": {
+        "nameVisible": false,
+        "alt": "共享照片-007"
+      }
+    },
+    {
+      "scenario": "Enlarged image remains on the pure viewport canvas",
+      "width": 1440,
+      "theme": "light",
+      "showName": true,
+      "layout": {
+        "zoom": 2,
+        "text": ""
+      },
+      "canvas": {
+        "role": "dialog",
+        "modal": "true",
+        "position": "fixed",
+        "background": "rgb(11, 11, 13)",
+        "viewport": {
+          "width": 1440,
+          "height": 1080
+        },
+        "root": {
+          "left": 0,
+          "right": 1440,
+          "top": 0,
+          "bottom": 1080
+        },
+        "stage": {
+          "left": 0,
+          "right": 1440,
+          "top": 0,
+          "bottom": 1080
+        },
+        "recovery": false,
+        "ordinaryImage": true,
+        "text": "",
+        "obsoleteControls": 0,
+        "headings": 0,
+        "actions": [
+          {
+            "id": "share-viewer-previous",
+            "label": "上一张",
+            "text": "",
+            "icon": true,
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px"
+          },
+          {
+            "id": "share-viewer-next",
+            "label": "下一张",
+            "text": "",
+            "icon": true,
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px"
+          },
+          {
+            "id": "share-viewer-close",
+            "label": "关闭图片",
+            "text": "",
+            "icon": true,
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px"
+          }
+        ]
+      }
+    },
+    {
+      "scenario": "Enabled names remain in image alternative text without visible viewer chrome",
+      "width": 1440,
+      "theme": "light",
+      "layout": {
+        "nameVisible": false,
+        "alt": "共享照片-007"
+      }
+    },
+    {
+      "scenario": "Enlarged image remains on the pure viewport canvas",
+      "width": 1440,
+      "theme": "dark",
+      "showName": true,
+      "layout": {
+        "zoom": 2,
+        "text": ""
+      },
+      "canvas": {
+        "role": "dialog",
+        "modal": "true",
+        "position": "fixed",
+        "background": "rgb(11, 11, 13)",
+        "viewport": {
+          "width": 1440,
+          "height": 1080
+        },
+        "root": {
+          "left": 0,
+          "right": 1440,
+          "top": 0,
+          "bottom": 1080
+        },
+        "stage": {
+          "left": 0,
+          "right": 1440,
+          "top": 0,
+          "bottom": 1080
+        },
+        "recovery": false,
+        "ordinaryImage": true,
+        "text": "",
+        "obsoleteControls": 0,
+        "headings": 0,
+        "actions": [
+          {
+            "id": "share-viewer-previous",
+            "label": "上一张",
+            "text": "",
+            "icon": true,
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px"
+          },
+          {
+            "id": "share-viewer-next",
+            "label": "下一张",
+            "text": "",
+            "icon": true,
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px"
+          },
+          {
+            "id": "share-viewer-close",
+            "label": "关闭图片",
+            "text": "",
+            "icon": true,
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px"
+          }
+        ]
+      }
+    },
+    {
+      "scenario": "Enabled names remain in image alternative text without visible viewer chrome",
+      "width": 1440,
+      "theme": "dark",
+      "layout": {
+        "nameVisible": false,
+        "alt": "共享照片-007"
+      }
+    },
+    {
+      "scenario": "Viewport image dialog traps Tab focus, supports arrow navigation, double-click zoom and pan, and returns source card focus on Escape"
+    },
+    {
+      "scenario": "compressed decodes its existing compressed preview without management controls"
+    },
+    {
+      "scenario": "animation decodes its existing original preview without management controls"
+    },
+    {
+      "scenario": "svg decodes its existing thumbnail preview without management controls"
+    },
+    {
+      "scenario": "ico decodes its existing thumbnail preview without management controls"
+    },
+    {
+      "scenario": "multipage decodes its existing thumbnail preview without management controls"
+    },
+    {
+      "scenario": "Cross-page next image uses public neighbors without extending the 40-card list; close restores opening card focus and scroll",
+      "scroll": 1876.5
+    },
+    {
+      "scenario": "First and last public positions do not wrap; unavailable members retain their ordered viewer placeholders"
+    },
+    {
+      "scenario": "Emulated native touch swipe and pinch change the anonymous image and scale"
+    },
+    {
+      "scenario": "A short viewport fits the full image with reachable icon controls and locks background scrolling",
+      "width": 390,
+      "height": 420,
+      "theme": "light",
+      "fitted": {
+        "left": 0,
+        "right": 390,
+        "top": 0,
+        "bottom": 420,
+        "scroll": 536
+      }
+    },
+    {
+      "scenario": "A short viewport fits the full image with reachable icon controls and locks background scrolling",
+      "width": 390,
+      "height": 420,
+      "theme": "dark",
+      "fitted": {
+        "left": 0,
+        "right": 390,
+        "top": 0,
+        "bottom": 420,
+        "scroll": 536
+      }
+    },
+    {
+      "scenario": "closed in a real owner peer tab clears an already-open anonymous viewer and all album data",
+      "status": 410
+    },
+    {
+      "scenario": "password in a real owner peer tab clears an already-open anonymous viewer and all album data",
+      "status": 401
+    },
+    {
+      "scenario": "expired in a real owner peer tab clears an already-open anonymous viewer and all album data",
+      "status": 410
+    },
+    {
+      "scenario": "rotated in a real owner peer tab clears an already-open anonymous viewer and all album data",
+      "status": 404
+    },
+    {
+      "scenario": "deleted in a real owner peer tab clears an already-open anonymous viewer and all album data",
+      "status": 404
+    },
+    {
+      "scenario": "Current-member removal restores heading focus and a legal document scroll position",
+      "condition": "private",
+      "openingScroll": 0,
+      "headingFocused": true,
+      "scroll": 0,
+      "maximum": 1876
+    },
+    {
+      "scenario": "private of the current public member closes the viewer and removes that member"
+    },
+    {
+      "scenario": "Current-member removal restores heading focus and a legal document scroll position",
+      "condition": "trashed",
+      "openingScroll": 0,
+      "headingFocused": true,
+      "scroll": 0,
+      "maximum": 1876
+    },
+    {
+      "scenario": "trashed of the current public member closes the viewer and removes that member"
+    },
+    {
+      "scenario": "Current-member removal restores heading focus and a legal document scroll position",
+      "condition": "removed",
+      "openingScroll": 0,
+      "headingFocused": true,
+      "scroll": 0,
+      "maximum": 1876
+    },
+    {
+      "scenario": "removed of the current public member closes the viewer and removes that member"
+    },
+    {
+      "scenario": "disabled of the current public member keeps its unavailable position without content URL"
+    },
+    {
+      "scenario": "Actual held neighbor loading status observation",
+      "width": 390,
+      "theme": "light",
+      "loading": {
+        "text": "正在读取图片…",
+        "visible": true,
+        "background": "rgba(0, 0, 0, 0)",
+        "currentImage": "f9e61de5-a910-437c-bd68-64b071b7b8cf",
+        "heldName": "共享照片-008",
+        "navigation": [
+          {
+            "id": "share-viewer-previous",
+            "disabled": true
+          },
+          {
+            "id": "share-viewer-next",
+            "disabled": true
+          }
+        ]
+      }
+    },
+    {
+      "scenario": "Actual held neighbor loading status observation",
+      "width": 390,
+      "theme": "dark",
+      "loading": {
+        "text": "正在读取图片…",
+        "visible": true,
+        "background": "rgba(0, 0, 0, 0)",
+        "currentImage": "f9e61de5-a910-437c-bd68-64b071b7b8cf",
+        "heldName": "共享照片-008",
+        "navigation": [
+          {
+            "id": "share-viewer-previous",
+            "disabled": true
+          },
+          {
+            "id": "share-viewer-next",
+            "disabled": true
+          }
+        ]
+      }
+    },
+    {
+      "scenario": "Actual held neighbor loading status observation",
+      "width": 1440,
+      "theme": "light",
+      "loading": {
+        "text": "正在读取图片…",
+        "visible": true,
+        "background": "rgba(0, 0, 0, 0)",
+        "currentImage": "f9e61de5-a910-437c-bd68-64b071b7b8cf",
+        "heldName": "共享照片-008",
+        "navigation": [
+          {
+            "id": "share-viewer-previous",
+            "disabled": true
+          },
+          {
+            "id": "share-viewer-next",
+            "disabled": true
+          }
+        ]
+      }
+    },
+    {
+      "scenario": "Actual held neighbor loading status observation",
+      "width": 1440,
+      "theme": "dark",
+      "loading": {
+        "text": "正在读取图片…",
+        "visible": true,
+        "background": "rgba(0, 0, 0, 0)",
+        "currentImage": "f9e61de5-a910-437c-bd68-64b071b7b8cf",
+        "heldName": "共享照片-008",
+        "navigation": [
+          {
+            "id": "share-viewer-previous",
+            "disabled": true
+          },
+          {
+            "id": "share-viewer-next",
+            "disabled": true
+          }
+        ]
+      }
+    },
+    {
+      "scenario": "A late named neighbor response cannot restore names or advance an obsolete navigation after showName turns off"
+    },
+    {
+      "scenario": "Closing and opening a different image ignores the previous late neighbor result"
+    },
+    {
+      "scenario": "Neighbor HTTP failure shows the approved recovery page, preserves selected target, and real retry opens that target"
+    },
+    {
+      "scenario": "Real retry button refresh POST dispatch observation",
+      "manualPosts": 1
+    },
+    {
+      "scenario": "A failed status POST preserves current content; its retry sends a new real refresh POST and clears the warning after successful state reconciliation",
+      "manualPosts": 1
+    },
+    {
+      "scenario": "A held authorized neighbor response cannot refill album data after share revocation"
+    }
+  ],
+  "layouts": [
+    {
+      "state": "hidden-name",
+      "width": 360,
+      "height": 844,
+      "theme": "light",
+      "screenshot": "sharing-viewer-hidden-name-light-360.png",
+      "geometry": {
+        "viewport": {
+          "width": 360,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 360,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 360,
+          "height": 844
+        },
+        "targets": [
+          {
+            "label": "上一张",
+            "width": 56,
+            "height": 56,
+            "left": 0,
+            "right": 56,
+            "top": 394,
+            "bottom": 450
+          },
+          {
+            "label": "下一张",
+            "width": 56,
+            "height": 56,
+            "left": 304,
+            "right": 360,
+            "top": 394,
+            "bottom": 450
+          },
+          {
+            "label": "关闭图片",
+            "width": 48,
+            "height": 48,
+            "left": 300,
+            "right": 348,
+            "top": 12,
+            "bottom": 60
+          }
+        ]
+      }
+    },
+    {
+      "state": "hidden-name",
+      "width": 360,
+      "height": 844,
+      "theme": "dark",
+      "screenshot": "sharing-viewer-hidden-name-dark-360.png",
+      "geometry": {
+        "viewport": {
+          "width": 360,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 360,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 360,
+          "height": 844
+        },
+        "targets": [
+          {
+            "label": "上一张",
+            "width": 56,
+            "height": 56,
+            "left": 0,
+            "right": 56,
+            "top": 394,
+            "bottom": 450
+          },
+          {
+            "label": "下一张",
+            "width": 56,
+            "height": 56,
+            "left": 304,
+            "right": 360,
+            "top": 394,
+            "bottom": 450
+          },
+          {
+            "label": "关闭图片",
+            "width": 48,
+            "height": 48,
+            "left": 300,
+            "right": 348,
+            "top": 12,
+            "bottom": 60
+          }
+        ]
+      }
+    },
+    {
+      "state": "hidden-name",
+      "width": 390,
+      "height": 844,
+      "theme": "light",
+      "screenshot": "sharing-viewer-hidden-name-light-390.png",
+      "geometry": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 390,
+          "height": 844
+        },
+        "targets": [
+          {
+            "label": "上一张",
+            "width": 56,
+            "height": 56,
+            "left": 0,
+            "right": 56,
+            "top": 394,
+            "bottom": 450
+          },
+          {
+            "label": "下一张",
+            "width": 56,
+            "height": 56,
+            "left": 334,
+            "right": 390,
+            "top": 394,
+            "bottom": 450
+          },
+          {
+            "label": "关闭图片",
+            "width": 48,
+            "height": 48,
+            "left": 330,
+            "right": 378,
+            "top": 12,
+            "bottom": 60
+          }
+        ]
+      }
+    },
+    {
+      "state": "hidden-name",
+      "width": 390,
+      "height": 844,
+      "theme": "dark",
+      "screenshot": "sharing-viewer-hidden-name-dark-390.png",
+      "geometry": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 390,
+          "height": 844
+        },
+        "targets": [
+          {
+            "label": "上一张",
+            "width": 56,
+            "height": 56,
+            "left": 0,
+            "right": 56,
+            "top": 394,
+            "bottom": 450
+          },
+          {
+            "label": "下一张",
+            "width": 56,
+            "height": 56,
+            "left": 334,
+            "right": 390,
+            "top": 394,
+            "bottom": 450
+          },
+          {
+            "label": "关闭图片",
+            "width": 48,
+            "height": 48,
+            "left": 330,
+            "right": 378,
+            "top": 12,
+            "bottom": 60
+          }
+        ]
+      }
+    },
+    {
+      "state": "hidden-name",
+      "width": 430,
+      "height": 844,
+      "theme": "light",
+      "screenshot": "sharing-viewer-hidden-name-light-430.png",
+      "geometry": {
+        "viewport": {
+          "width": 430,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 430,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 430,
+          "height": 844
+        },
+        "targets": [
+          {
+            "label": "上一张",
+            "width": 56,
+            "height": 56,
+            "left": 0,
+            "right": 56,
+            "top": 394,
+            "bottom": 450
+          },
+          {
+            "label": "下一张",
+            "width": 56,
+            "height": 56,
+            "left": 374,
+            "right": 430,
+            "top": 394,
+            "bottom": 450
+          },
+          {
+            "label": "关闭图片",
+            "width": 48,
+            "height": 48,
+            "left": 370,
+            "right": 418,
+            "top": 12,
+            "bottom": 60
+          }
+        ]
+      }
+    },
+    {
+      "state": "hidden-name",
+      "width": 430,
+      "height": 844,
+      "theme": "dark",
+      "screenshot": "sharing-viewer-hidden-name-dark-430.png",
+      "geometry": {
+        "viewport": {
+          "width": 430,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 430,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 430,
+          "height": 844
+        },
+        "targets": [
+          {
+            "label": "上一张",
+            "width": 56,
+            "height": 56,
+            "left": 0,
+            "right": 56,
+            "top": 394,
+            "bottom": 450
+          },
+          {
+            "label": "下一张",
+            "width": 56,
+            "height": 56,
+            "left": 374,
+            "right": 430,
+            "top": 394,
+            "bottom": 450
+          },
+          {
+            "label": "关闭图片",
+            "width": 48,
+            "height": 48,
+            "left": 370,
+            "right": 418,
+            "top": 12,
+            "bottom": 60
+          }
+        ]
+      }
+    },
+    {
+      "state": "hidden-name",
+      "width": 768,
+      "height": 844,
+      "theme": "light",
+      "screenshot": "sharing-viewer-hidden-name-light-768.png",
+      "geometry": {
+        "viewport": {
+          "width": 768,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 768,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 768,
+          "height": 844
+        },
+        "targets": [
+          {
+            "label": "上一张",
+            "width": 56,
+            "height": 56,
+            "left": 16,
+            "right": 72,
+            "top": 394,
+            "bottom": 450
+          },
+          {
+            "label": "下一张",
+            "width": 56,
+            "height": 56,
+            "left": 696,
+            "right": 752,
+            "top": 394,
+            "bottom": 450
+          },
+          {
+            "label": "关闭图片",
+            "width": 48,
+            "height": 48,
+            "left": 708,
+            "right": 756,
+            "top": 12,
+            "bottom": 60
+          }
+        ]
+      }
+    },
+    {
+      "state": "hidden-name",
+      "width": 768,
+      "height": 844,
+      "theme": "dark",
+      "screenshot": "sharing-viewer-hidden-name-dark-768.png",
+      "geometry": {
+        "viewport": {
+          "width": 768,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 768,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 768,
+          "height": 844
+        },
+        "targets": [
+          {
+            "label": "上一张",
+            "width": 56,
+            "height": 56,
+            "left": 16,
+            "right": 72,
+            "top": 394,
+            "bottom": 450
+          },
+          {
+            "label": "下一张",
+            "width": 56,
+            "height": 56,
+            "left": 696,
+            "right": 752,
+            "top": 394,
+            "bottom": 450
+          },
+          {
+            "label": "关闭图片",
+            "width": 48,
+            "height": 48,
+            "left": 708,
+            "right": 756,
+            "top": 12,
+            "bottom": 60
+          }
+        ]
+      }
+    },
+    {
+      "state": "hidden-name",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light",
+      "screenshot": "sharing-viewer-hidden-name-light-1440.png",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 1080
+        },
+        "root": {
+          "left": 0,
+          "right": 1440,
+          "top": 0,
+          "bottom": 1080
+        },
+        "stage": {
+          "width": 1440,
+          "height": 1080
+        },
+        "targets": [
+          {
+            "label": "上一张",
+            "width": 56,
+            "height": 56,
+            "left": 16,
+            "right": 72,
+            "top": 512,
+            "bottom": 568
+          },
+          {
+            "label": "下一张",
+            "width": 56,
+            "height": 56,
+            "left": 1368,
+            "right": 1424,
+            "top": 512,
+            "bottom": 568
+          },
+          {
+            "label": "关闭图片",
+            "width": 48,
+            "height": 48,
+            "left": 1380,
+            "right": 1428,
+            "top": 12,
+            "bottom": 60
+          }
+        ]
+      }
+    },
+    {
+      "state": "hidden-name",
+      "width": 1440,
+      "height": 1080,
+      "theme": "dark",
+      "screenshot": "sharing-viewer-hidden-name-dark-1440.png",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 1080
+        },
+        "root": {
+          "left": 0,
+          "right": 1440,
+          "top": 0,
+          "bottom": 1080
+        },
+        "stage": {
+          "width": 1440,
+          "height": 1080
+        },
+        "targets": [
+          {
+            "label": "上一张",
+            "width": 56,
+            "height": 56,
+            "left": 16,
+            "right": 72,
+            "top": 512,
+            "bottom": 568
+          },
+          {
+            "label": "下一张",
+            "width": 56,
+            "height": 56,
+            "left": 1368,
+            "right": 1424,
+            "top": 512,
+            "bottom": 568
+          },
+          {
+            "label": "关闭图片",
+            "width": 48,
+            "height": 48,
+            "left": 1380,
+            "right": 1428,
+            "top": 12,
+            "bottom": 60
+          }
+        ]
+      }
+    },
+    {
+      "state": "short-viewport",
+      "width": 390,
+      "height": 420,
+      "theme": "light",
+      "screenshot": "sharing-viewer-short-viewport-light-390x420.png",
+      "geometry": {
+        "viewport": {
+          "width": 390,
+          "height": 420
+        },
+        "root": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 420
+        },
+        "stage": {
+          "width": 390,
+          "height": 420
+        },
+        "targets": [
+          {
+            "label": "上一张",
+            "width": 56,
+            "height": 56,
+            "left": 0,
+            "right": 56,
+            "top": 182,
+            "bottom": 238
+          },
+          {
+            "label": "下一张",
+            "width": 56,
+            "height": 56,
+            "left": 334,
+            "right": 390,
+            "top": 182,
+            "bottom": 238
+          },
+          {
+            "label": "关闭图片",
+            "width": 48,
+            "height": 48,
+            "left": 330,
+            "right": 378,
+            "top": 12,
+            "bottom": 60
+          }
+        ]
+      }
+    },
+    {
+      "state": "short-viewport",
+      "width": 390,
+      "height": 420,
+      "theme": "dark",
+      "screenshot": "sharing-viewer-short-viewport-dark-390x420.png",
+      "geometry": {
+        "viewport": {
+          "width": 390,
+          "height": 420
+        },
+        "root": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 420
+        },
+        "stage": {
+          "width": 390,
+          "height": 420
+        },
+        "targets": [
+          {
+            "label": "上一张",
+            "width": 56,
+            "height": 56,
+            "left": 0,
+            "right": 56,
+            "top": 182,
+            "bottom": 238
+          },
+          {
+            "label": "下一张",
+            "width": 56,
+            "height": 56,
+            "left": 334,
+            "right": 390,
+            "top": 182,
+            "bottom": 238
+          },
+          {
+            "label": "关闭图片",
+            "width": 48,
+            "height": 48,
+            "left": 330,
+            "right": 378,
+            "top": 12,
+            "bottom": 60
+          }
+        ]
+      }
+    },
+    {
+      "state": "name-enabled-canvas",
+      "width": 360,
+      "height": 844,
+      "theme": "light",
+      "screenshot": "sharing-viewer-name-enabled-canvas-light-360.png",
+      "geometry": {
+        "viewport": {
+          "width": 360,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 360,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 360,
+          "height": 844
+        },
+        "targets": [
+          {
+            "label": "上一张",
+            "width": 56,
+            "height": 56,
+            "left": 0,
+            "right": 56,
+            "top": 394,
+            "bottom": 450
+          },
+          {
+            "label": "下一张",
+            "width": 56,
+            "height": 56,
+            "left": 304,
+            "right": 360,
+            "top": 394,
+            "bottom": 450
+          },
+          {
+            "label": "关闭图片",
+            "width": 48,
+            "height": 48,
+            "left": 300,
+            "right": 348,
+            "top": 12,
+            "bottom": 60
+          }
+        ]
+      }
+    },
+    {
+      "state": "name-enabled-canvas",
+      "width": 360,
+      "height": 844,
+      "theme": "dark",
+      "screenshot": "sharing-viewer-name-enabled-canvas-dark-360.png",
+      "geometry": {
+        "viewport": {
+          "width": 360,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 360,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 360,
+          "height": 844
+        },
+        "targets": [
+          {
+            "label": "上一张",
+            "width": 56,
+            "height": 56,
+            "left": 0,
+            "right": 56,
+            "top": 394,
+            "bottom": 450
+          },
+          {
+            "label": "下一张",
+            "width": 56,
+            "height": 56,
+            "left": 304,
+            "right": 360,
+            "top": 394,
+            "bottom": 450
+          },
+          {
+            "label": "关闭图片",
+            "width": 48,
+            "height": 48,
+            "left": 300,
+            "right": 348,
+            "top": 12,
+            "bottom": 60
+          }
+        ]
+      }
+    },
+    {
+      "state": "name-enabled-canvas",
+      "width": 390,
+      "height": 844,
+      "theme": "light",
+      "screenshot": "sharing-viewer-name-enabled-canvas-light-390.png",
+      "geometry": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 390,
+          "height": 844
+        },
+        "targets": [
+          {
+            "label": "上一张",
+            "width": 56,
+            "height": 56,
+            "left": 0,
+            "right": 56,
+            "top": 394,
+            "bottom": 450
+          },
+          {
+            "label": "下一张",
+            "width": 56,
+            "height": 56,
+            "left": 334,
+            "right": 390,
+            "top": 394,
+            "bottom": 450
+          },
+          {
+            "label": "关闭图片",
+            "width": 48,
+            "height": 48,
+            "left": 330,
+            "right": 378,
+            "top": 12,
+            "bottom": 60
+          }
+        ]
+      }
+    },
+    {
+      "state": "name-enabled-canvas",
+      "width": 390,
+      "height": 844,
+      "theme": "dark",
+      "screenshot": "sharing-viewer-name-enabled-canvas-dark-390.png",
+      "geometry": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 390,
+          "height": 844
+        },
+        "targets": [
+          {
+            "label": "上一张",
+            "width": 56,
+            "height": 56,
+            "left": 0,
+            "right": 56,
+            "top": 394,
+            "bottom": 450
+          },
+          {
+            "label": "下一张",
+            "width": 56,
+            "height": 56,
+            "left": 334,
+            "right": 390,
+            "top": 394,
+            "bottom": 450
+          },
+          {
+            "label": "关闭图片",
+            "width": 48,
+            "height": 48,
+            "left": 330,
+            "right": 378,
+            "top": 12,
+            "bottom": 60
+          }
+        ]
+      }
+    },
+    {
+      "state": "name-enabled-canvas",
+      "width": 430,
+      "height": 844,
+      "theme": "light",
+      "screenshot": "sharing-viewer-name-enabled-canvas-light-430.png",
+      "geometry": {
+        "viewport": {
+          "width": 430,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 430,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 430,
+          "height": 844
+        },
+        "targets": [
+          {
+            "label": "上一张",
+            "width": 56,
+            "height": 56,
+            "left": 0,
+            "right": 56,
+            "top": 394,
+            "bottom": 450
+          },
+          {
+            "label": "下一张",
+            "width": 56,
+            "height": 56,
+            "left": 374,
+            "right": 430,
+            "top": 394,
+            "bottom": 450
+          },
+          {
+            "label": "关闭图片",
+            "width": 48,
+            "height": 48,
+            "left": 370,
+            "right": 418,
+            "top": 12,
+            "bottom": 60
+          }
+        ]
+      }
+    },
+    {
+      "state": "name-enabled-canvas",
+      "width": 430,
+      "height": 844,
+      "theme": "dark",
+      "screenshot": "sharing-viewer-name-enabled-canvas-dark-430.png",
+      "geometry": {
+        "viewport": {
+          "width": 430,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 430,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 430,
+          "height": 844
+        },
+        "targets": [
+          {
+            "label": "上一张",
+            "width": 56,
+            "height": 56,
+            "left": 0,
+            "right": 56,
+            "top": 394,
+            "bottom": 450
+          },
+          {
+            "label": "下一张",
+            "width": 56,
+            "height": 56,
+            "left": 374,
+            "right": 430,
+            "top": 394,
+            "bottom": 450
+          },
+          {
+            "label": "关闭图片",
+            "width": 48,
+            "height": 48,
+            "left": 370,
+            "right": 418,
+            "top": 12,
+            "bottom": 60
+          }
+        ]
+      }
+    },
+    {
+      "state": "name-enabled-canvas",
+      "width": 768,
+      "height": 844,
+      "theme": "light",
+      "screenshot": "sharing-viewer-name-enabled-canvas-light-768.png",
+      "geometry": {
+        "viewport": {
+          "width": 768,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 768,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 768,
+          "height": 844
+        },
+        "targets": [
+          {
+            "label": "上一张",
+            "width": 56,
+            "height": 56,
+            "left": 16,
+            "right": 72,
+            "top": 394,
+            "bottom": 450
+          },
+          {
+            "label": "下一张",
+            "width": 56,
+            "height": 56,
+            "left": 696,
+            "right": 752,
+            "top": 394,
+            "bottom": 450
+          },
+          {
+            "label": "关闭图片",
+            "width": 48,
+            "height": 48,
+            "left": 708,
+            "right": 756,
+            "top": 12,
+            "bottom": 60
+          }
+        ]
+      }
+    },
+    {
+      "state": "name-enabled-canvas",
+      "width": 768,
+      "height": 844,
+      "theme": "dark",
+      "screenshot": "sharing-viewer-name-enabled-canvas-dark-768.png",
+      "geometry": {
+        "viewport": {
+          "width": 768,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 768,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 768,
+          "height": 844
+        },
+        "targets": [
+          {
+            "label": "上一张",
+            "width": 56,
+            "height": 56,
+            "left": 16,
+            "right": 72,
+            "top": 394,
+            "bottom": 450
+          },
+          {
+            "label": "下一张",
+            "width": 56,
+            "height": 56,
+            "left": 696,
+            "right": 752,
+            "top": 394,
+            "bottom": 450
+          },
+          {
+            "label": "关闭图片",
+            "width": 48,
+            "height": 48,
+            "left": 708,
+            "right": 756,
+            "top": 12,
+            "bottom": 60
+          }
+        ]
+      }
+    },
+    {
+      "state": "name-enabled-canvas",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light",
+      "screenshot": "sharing-viewer-name-enabled-canvas-light-1440.png",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 1080
+        },
+        "root": {
+          "left": 0,
+          "right": 1440,
+          "top": 0,
+          "bottom": 1080
+        },
+        "stage": {
+          "width": 1440,
+          "height": 1080
+        },
+        "targets": [
+          {
+            "label": "上一张",
+            "width": 56,
+            "height": 56,
+            "left": 16,
+            "right": 72,
+            "top": 512,
+            "bottom": 568
+          },
+          {
+            "label": "下一张",
+            "width": 56,
+            "height": 56,
+            "left": 1368,
+            "right": 1424,
+            "top": 512,
+            "bottom": 568
+          },
+          {
+            "label": "关闭图片",
+            "width": 48,
+            "height": 48,
+            "left": 1380,
+            "right": 1428,
+            "top": 12,
+            "bottom": 60
+          }
+        ]
+      }
+    },
+    {
+      "state": "name-enabled-canvas",
+      "width": 1440,
+      "height": 1080,
+      "theme": "dark",
+      "screenshot": "sharing-viewer-name-enabled-canvas-dark-1440.png",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 1080
+        },
+        "root": {
+          "left": 0,
+          "right": 1440,
+          "top": 0,
+          "bottom": 1080
+        },
+        "stage": {
+          "width": 1440,
+          "height": 1080
+        },
+        "targets": [
+          {
+            "label": "上一张",
+            "width": 56,
+            "height": 56,
+            "left": 16,
+            "right": 72,
+            "top": 512,
+            "bottom": 568
+          },
+          {
+            "label": "下一张",
+            "width": 56,
+            "height": 56,
+            "left": 1368,
+            "right": 1424,
+            "top": 512,
+            "bottom": 568
+          },
+          {
+            "label": "关闭图片",
+            "width": 48,
+            "height": 48,
+            "left": 1380,
+            "right": 1428,
+            "top": 12,
+            "bottom": 60
+          }
+        ]
+      }
+    },
+    {
+      "state": "preview-error",
+      "width": 390,
+      "height": 844,
+      "theme": "light",
+      "screenshot": "sharing-viewer-preview-error-light-390.png",
+      "geometry": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 844
+        },
+        "targets": [
+          {
+            "label": "返回相册",
+            "width": 308,
+            "height": 48,
+            "left": 41,
+            "right": 349,
+            "top": 428,
+            "bottom": 476
+          },
+          {
+            "label": "重新加载",
+            "width": 308,
+            "height": 48,
+            "left": 41,
+            "right": 349,
+            "top": 492,
+            "bottom": 540
+          },
+          {
+            "label": "关闭图片",
+            "width": 48,
+            "height": 48,
+            "left": 330,
+            "right": 378,
+            "top": 12,
+            "bottom": 60
+          }
+        ]
+      }
+    },
+    {
+      "state": "preview-error",
+      "width": 390,
+      "height": 844,
+      "theme": "dark",
+      "screenshot": "sharing-viewer-preview-error-dark-390.png",
+      "geometry": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 844
+        },
+        "targets": [
+          {
+            "label": "返回相册",
+            "width": 308,
+            "height": 48,
+            "left": 41,
+            "right": 349,
+            "top": 428,
+            "bottom": 476
+          },
+          {
+            "label": "重新加载",
+            "width": 308,
+            "height": 48,
+            "left": 41,
+            "right": 349,
+            "top": 492,
+            "bottom": 540
+          },
+          {
+            "label": "关闭图片",
+            "width": 48,
+            "height": 48,
+            "left": 330,
+            "right": 378,
+            "top": 12,
+            "bottom": 60
+          }
+        ]
+      }
+    },
+    {
+      "state": "preview-error",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light",
+      "screenshot": "sharing-viewer-preview-error-light-1440.png",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 1080
+        },
+        "root": {
+          "left": 0,
+          "right": 1440,
+          "top": 0,
+          "bottom": 1080
+        },
+        "targets": [
+          {
+            "label": "返回相册",
+            "width": 430,
+            "height": 48,
+            "left": 505,
+            "right": 935,
+            "top": 546,
+            "bottom": 594
+          },
+          {
+            "label": "重新加载",
+            "width": 430,
+            "height": 48,
+            "left": 505,
+            "right": 935,
+            "top": 610,
+            "bottom": 658
+          },
+          {
+            "label": "关闭图片",
+            "width": 48,
+            "height": 48,
+            "left": 1380,
+            "right": 1428,
+            "top": 12,
+            "bottom": 60
+          }
+        ]
+      }
+    },
+    {
+      "state": "preview-error",
+      "width": 1440,
+      "height": 1080,
+      "theme": "dark",
+      "screenshot": "sharing-viewer-preview-error-dark-1440.png",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 1080
+        },
+        "root": {
+          "left": 0,
+          "right": 1440,
+          "top": 0,
+          "bottom": 1080
+        },
+        "targets": [
+          {
+            "label": "返回相册",
+            "width": 430,
+            "height": 48,
+            "left": 505,
+            "right": 935,
+            "top": 546,
+            "bottom": 594
+          },
+          {
+            "label": "重新加载",
+            "width": 430,
+            "height": 48,
+            "left": 505,
+            "right": 935,
+            "top": 610,
+            "bottom": 658
+          },
+          {
+            "label": "关闭图片",
+            "width": 48,
+            "height": 48,
+            "left": 1380,
+            "right": 1428,
+            "top": 12,
+            "bottom": 60
+          }
+        ]
+      }
+    },
+    {
+      "state": "zoomed",
+      "width": 390,
+      "height": 844,
+      "theme": "light",
+      "screenshot": "sharing-viewer-zoomed-light-390.png",
+      "geometry": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 390,
+          "height": 844
+        },
+        "targets": [
+          {
+            "label": "上一张",
+            "width": 56,
+            "height": 56,
+            "left": 0,
+            "right": 56,
+            "top": 394,
+            "bottom": 450
+          },
+          {
+            "label": "下一张",
+            "width": 56,
+            "height": 56,
+            "left": 334,
+            "right": 390,
+            "top": 394,
+            "bottom": 450
+          },
+          {
+            "label": "关闭图片",
+            "width": 48,
+            "height": 48,
+            "left": 330,
+            "right": 378,
+            "top": 12,
+            "bottom": 60
+          }
+        ]
+      }
+    },
+    {
+      "state": "zoomed",
+      "width": 390,
+      "height": 844,
+      "theme": "dark",
+      "screenshot": "sharing-viewer-zoomed-dark-390.png",
+      "geometry": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 390,
+          "height": 844
+        },
+        "targets": [
+          {
+            "label": "上一张",
+            "width": 56,
+            "height": 56,
+            "left": 0,
+            "right": 56,
+            "top": 394,
+            "bottom": 450
+          },
+          {
+            "label": "下一张",
+            "width": 56,
+            "height": 56,
+            "left": 334,
+            "right": 390,
+            "top": 394,
+            "bottom": 450
+          },
+          {
+            "label": "关闭图片",
+            "width": 48,
+            "height": 48,
+            "left": 330,
+            "right": 378,
+            "top": 12,
+            "bottom": 60
+          }
+        ]
+      }
+    },
+    {
+      "state": "zoomed",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light",
+      "screenshot": "sharing-viewer-zoomed-light-1440.png",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 1080
+        },
+        "root": {
+          "left": 0,
+          "right": 1440,
+          "top": 0,
+          "bottom": 1080
+        },
+        "stage": {
+          "width": 1440,
+          "height": 1080
+        },
+        "targets": [
+          {
+            "label": "上一张",
+            "width": 56,
+            "height": 56,
+            "left": 16,
+            "right": 72,
+            "top": 512,
+            "bottom": 568
+          },
+          {
+            "label": "下一张",
+            "width": 56,
+            "height": 56,
+            "left": 1368,
+            "right": 1424,
+            "top": 512,
+            "bottom": 568
+          },
+          {
+            "label": "关闭图片",
+            "width": 48,
+            "height": 48,
+            "left": 1380,
+            "right": 1428,
+            "top": 12,
+            "bottom": 60
+          }
+        ]
+      }
+    },
+    {
+      "state": "zoomed",
+      "width": 1440,
+      "height": 1080,
+      "theme": "dark",
+      "screenshot": "sharing-viewer-zoomed-dark-1440.png",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 1080
+        },
+        "root": {
+          "left": 0,
+          "right": 1440,
+          "top": 0,
+          "bottom": 1080
+        },
+        "stage": {
+          "width": 1440,
+          "height": 1080
+        },
+        "targets": [
+          {
+            "label": "上一张",
+            "width": 56,
+            "height": 56,
+            "left": 16,
+            "right": 72,
+            "top": 512,
+            "bottom": 568
+          },
+          {
+            "label": "下一张",
+            "width": 56,
+            "height": 56,
+            "left": 1368,
+            "right": 1424,
+            "top": 512,
+            "bottom": 568
+          },
+          {
+            "label": "关闭图片",
+            "width": 48,
+            "height": 48,
+            "left": 1380,
+            "right": 1428,
+            "top": 12,
+            "bottom": 60
+          }
+        ]
+      }
+    },
+    {
+      "state": "zoomed-name-enabled",
+      "width": 390,
+      "height": 844,
+      "theme": "light",
+      "screenshot": "sharing-viewer-zoomed-name-enabled-light-390.png",
+      "geometry": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 390,
+          "height": 844
+        },
+        "targets": [
+          {
+            "label": "上一张",
+            "width": 56,
+            "height": 56,
+            "left": 0,
+            "right": 56,
+            "top": 394,
+            "bottom": 450
+          },
+          {
+            "label": "下一张",
+            "width": 56,
+            "height": 56,
+            "left": 334,
+            "right": 390,
+            "top": 394,
+            "bottom": 450
+          },
+          {
+            "label": "关闭图片",
+            "width": 48,
+            "height": 48,
+            "left": 330,
+            "right": 378,
+            "top": 12,
+            "bottom": 60
+          }
+        ]
+      }
+    },
+    {
+      "state": "zoomed-name-enabled",
+      "width": 390,
+      "height": 844,
+      "theme": "dark",
+      "screenshot": "sharing-viewer-zoomed-name-enabled-dark-390.png",
+      "geometry": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 390,
+          "height": 844
+        },
+        "targets": [
+          {
+            "label": "上一张",
+            "width": 56,
+            "height": 56,
+            "left": 0,
+            "right": 56,
+            "top": 394,
+            "bottom": 450
+          },
+          {
+            "label": "下一张",
+            "width": 56,
+            "height": 56,
+            "left": 334,
+            "right": 390,
+            "top": 394,
+            "bottom": 450
+          },
+          {
+            "label": "关闭图片",
+            "width": 48,
+            "height": 48,
+            "left": 330,
+            "right": 378,
+            "top": 12,
+            "bottom": 60
+          }
+        ]
+      }
+    },
+    {
+      "state": "zoomed-name-enabled",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light",
+      "screenshot": "sharing-viewer-zoomed-name-enabled-light-1440.png",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 1080
+        },
+        "root": {
+          "left": 0,
+          "right": 1440,
+          "top": 0,
+          "bottom": 1080
+        },
+        "stage": {
+          "width": 1440,
+          "height": 1080
+        },
+        "targets": [
+          {
+            "label": "上一张",
+            "width": 56,
+            "height": 56,
+            "left": 16,
+            "right": 72,
+            "top": 512,
+            "bottom": 568
+          },
+          {
+            "label": "下一张",
+            "width": 56,
+            "height": 56,
+            "left": 1368,
+            "right": 1424,
+            "top": 512,
+            "bottom": 568
+          },
+          {
+            "label": "关闭图片",
+            "width": 48,
+            "height": 48,
+            "left": 1380,
+            "right": 1428,
+            "top": 12,
+            "bottom": 60
+          }
+        ]
+      }
+    },
+    {
+      "state": "zoomed-name-enabled",
+      "width": 1440,
+      "height": 1080,
+      "theme": "dark",
+      "screenshot": "sharing-viewer-zoomed-name-enabled-dark-1440.png",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 1080
+        },
+        "root": {
+          "left": 0,
+          "right": 1440,
+          "top": 0,
+          "bottom": 1080
+        },
+        "stage": {
+          "width": 1440,
+          "height": 1080
+        },
+        "targets": [
+          {
+            "label": "上一张",
+            "width": 56,
+            "height": 56,
+            "left": 16,
+            "right": 72,
+            "top": 512,
+            "bottom": 568
+          },
+          {
+            "label": "下一张",
+            "width": 56,
+            "height": 56,
+            "left": 1368,
+            "right": 1424,
+            "top": 512,
+            "bottom": 568
+          },
+          {
+            "label": "关闭图片",
+            "width": 48,
+            "height": 48,
+            "left": 1380,
+            "right": 1428,
+            "top": 12,
+            "bottom": 60
+          }
+        ]
+      }
+    },
+    {
+      "state": "short-viewport-canvas",
+      "width": 390,
+      "height": 420,
+      "theme": "light",
+      "screenshot": "sharing-viewer-short-viewport-canvas-light-390x420.png",
+      "geometry": {
+        "viewport": {
+          "width": 390,
+          "height": 420
+        },
+        "root": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 420
+        },
+        "stage": {
+          "width": 390,
+          "height": 420
+        },
+        "targets": [
+          {
+            "label": "上一张",
+            "width": 56,
+            "height": 56,
+            "left": 0,
+            "right": 56,
+            "top": 182,
+            "bottom": 238
+          },
+          {
+            "label": "下一张",
+            "width": 56,
+            "height": 56,
+            "left": 334,
+            "right": 390,
+            "top": 182,
+            "bottom": 238
+          },
+          {
+            "label": "关闭图片",
+            "width": 48,
+            "height": 48,
+            "left": 330,
+            "right": 378,
+            "top": 12,
+            "bottom": 60
+          }
+        ]
+      }
+    },
+    {
+      "state": "short-viewport-canvas",
+      "width": 390,
+      "height": 420,
+      "theme": "dark",
+      "screenshot": "sharing-viewer-short-viewport-canvas-dark-390x420.png",
+      "geometry": {
+        "viewport": {
+          "width": 390,
+          "height": 420
+        },
+        "root": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 420
+        },
+        "stage": {
+          "width": 390,
+          "height": 420
+        },
+        "targets": [
+          {
+            "label": "上一张",
+            "width": 56,
+            "height": 56,
+            "left": 0,
+            "right": 56,
+            "top": 182,
+            "bottom": 238
+          },
+          {
+            "label": "下一张",
+            "width": 56,
+            "height": 56,
+            "left": 334,
+            "right": 390,
+            "top": 182,
+            "bottom": 238
+          },
+          {
+            "label": "关闭图片",
+            "width": 48,
+            "height": 48,
+            "left": 330,
+            "right": 378,
+            "top": 12,
+            "bottom": 60
+          }
+        ]
+      }
+    },
+    {
+      "state": "disabled-placeholder",
+      "width": 390,
+      "height": 844,
+      "theme": "light",
+      "screenshot": "sharing-viewer-disabled-placeholder-light-390.png",
+      "geometry": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 390,
+          "height": 844
+        },
+        "targets": [
+          {
+            "label": "上一张",
+            "width": 56,
+            "height": 56,
+            "left": 0,
+            "right": 56,
+            "top": 394,
+            "bottom": 450
+          },
+          {
+            "label": "下一张",
+            "width": 56,
+            "height": 56,
+            "left": 334,
+            "right": 390,
+            "top": 394,
+            "bottom": 450
+          },
+          {
+            "label": "关闭图片",
+            "width": 48,
+            "height": 48,
+            "left": 330,
+            "right": 378,
+            "top": 12,
+            "bottom": 60
+          }
+        ]
+      }
+    },
+    {
+      "state": "disabled-placeholder",
+      "width": 390,
+      "height": 844,
+      "theme": "dark",
+      "screenshot": "sharing-viewer-disabled-placeholder-dark-390.png",
+      "geometry": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 390,
+          "height": 844
+        },
+        "targets": [
+          {
+            "label": "上一张",
+            "width": 56,
+            "height": 56,
+            "left": 0,
+            "right": 56,
+            "top": 394,
+            "bottom": 450
+          },
+          {
+            "label": "下一张",
+            "width": 56,
+            "height": 56,
+            "left": 334,
+            "right": 390,
+            "top": 394,
+            "bottom": 450
+          },
+          {
+            "label": "关闭图片",
+            "width": 48,
+            "height": 48,
+            "left": 330,
+            "right": 378,
+            "top": 12,
+            "bottom": 60
+          }
+        ]
+      }
+    },
+    {
+      "state": "disabled-placeholder",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light",
+      "screenshot": "sharing-viewer-disabled-placeholder-light-1440.png",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 1080
+        },
+        "root": {
+          "left": 0,
+          "right": 1440,
+          "top": 0,
+          "bottom": 1080
+        },
+        "stage": {
+          "width": 1440,
+          "height": 1080
+        },
+        "targets": [
+          {
+            "label": "上一张",
+            "width": 56,
+            "height": 56,
+            "left": 16,
+            "right": 72,
+            "top": 512,
+            "bottom": 568
+          },
+          {
+            "label": "下一张",
+            "width": 56,
+            "height": 56,
+            "left": 1368,
+            "right": 1424,
+            "top": 512,
+            "bottom": 568
+          },
+          {
+            "label": "关闭图片",
+            "width": 48,
+            "height": 48,
+            "left": 1380,
+            "right": 1428,
+            "top": 12,
+            "bottom": 60
+          }
+        ]
+      }
+    },
+    {
+      "state": "disabled-placeholder",
+      "width": 1440,
+      "height": 1080,
+      "theme": "dark",
+      "screenshot": "sharing-viewer-disabled-placeholder-dark-1440.png",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 1080
+        },
+        "root": {
+          "left": 0,
+          "right": 1440,
+          "top": 0,
+          "bottom": 1080
+        },
+        "stage": {
+          "width": 1440,
+          "height": 1080
+        },
+        "targets": [
+          {
+            "label": "上一张",
+            "width": 56,
+            "height": 56,
+            "left": 16,
+            "right": 72,
+            "top": 512,
+            "bottom": 568
+          },
+          {
+            "label": "下一张",
+            "width": 56,
+            "height": 56,
+            "left": 1368,
+            "right": 1424,
+            "top": 512,
+            "bottom": 568
+          },
+          {
+            "label": "关闭图片",
+            "width": 48,
+            "height": 48,
+            "left": 1380,
+            "right": 1428,
+            "top": 12,
+            "bottom": 60
+          }
+        ]
+      }
+    },
+    {
+      "state": "neighbor-loading",
+      "width": 390,
+      "height": 844,
+      "theme": "light",
+      "screenshot": "sharing-viewer-neighbor-loading-light-390.png",
+      "geometry": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 390,
+          "height": 844
+        },
+        "targets": [
+          {
+            "label": "上一张",
+            "width": 56,
+            "height": 56,
+            "left": 0,
+            "right": 56,
+            "top": 394,
+            "bottom": 450
+          },
+          {
+            "label": "下一张",
+            "width": 56,
+            "height": 56,
+            "left": 334,
+            "right": 390,
+            "top": 394,
+            "bottom": 450
+          },
+          {
+            "label": "关闭图片",
+            "width": 48,
+            "height": 48,
+            "left": 330,
+            "right": 378,
+            "top": 12,
+            "bottom": 60
+          }
+        ]
+      }
+    },
+    {
+      "state": "neighbor-loading",
+      "width": 390,
+      "height": 844,
+      "theme": "dark",
+      "screenshot": "sharing-viewer-neighbor-loading-dark-390.png",
+      "geometry": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 390,
+          "height": 844
+        },
+        "targets": [
+          {
+            "label": "上一张",
+            "width": 56,
+            "height": 56,
+            "left": 0,
+            "right": 56,
+            "top": 394,
+            "bottom": 450
+          },
+          {
+            "label": "下一张",
+            "width": 56,
+            "height": 56,
+            "left": 334,
+            "right": 390,
+            "top": 394,
+            "bottom": 450
+          },
+          {
+            "label": "关闭图片",
+            "width": 48,
+            "height": 48,
+            "left": 330,
+            "right": 378,
+            "top": 12,
+            "bottom": 60
+          }
+        ]
+      }
+    },
+    {
+      "state": "neighbor-loading",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light",
+      "screenshot": "sharing-viewer-neighbor-loading-light-1440.png",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 1080
+        },
+        "root": {
+          "left": 0,
+          "right": 1440,
+          "top": 0,
+          "bottom": 1080
+        },
+        "stage": {
+          "width": 1440,
+          "height": 1080
+        },
+        "targets": [
+          {
+            "label": "上一张",
+            "width": 56,
+            "height": 56,
+            "left": 16,
+            "right": 72,
+            "top": 512,
+            "bottom": 568
+          },
+          {
+            "label": "下一张",
+            "width": 56,
+            "height": 56,
+            "left": 1368,
+            "right": 1424,
+            "top": 512,
+            "bottom": 568
+          },
+          {
+            "label": "关闭图片",
+            "width": 48,
+            "height": 48,
+            "left": 1380,
+            "right": 1428,
+            "top": 12,
+            "bottom": 60
+          }
+        ]
+      }
+    },
+    {
+      "state": "neighbor-loading",
+      "width": 1440,
+      "height": 1080,
+      "theme": "dark",
+      "screenshot": "sharing-viewer-neighbor-loading-dark-1440.png",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 1080
+        },
+        "root": {
+          "left": 0,
+          "right": 1440,
+          "top": 0,
+          "bottom": 1080
+        },
+        "stage": {
+          "width": 1440,
+          "height": 1080
+        },
+        "targets": [
+          {
+            "label": "上一张",
+            "width": 56,
+            "height": 56,
+            "left": 16,
+            "right": 72,
+            "top": 512,
+            "bottom": 568
+          },
+          {
+            "label": "下一张",
+            "width": 56,
+            "height": 56,
+            "left": 1368,
+            "right": 1424,
+            "top": 512,
+            "bottom": 568
+          },
+          {
+            "label": "关闭图片",
+            "width": 48,
+            "height": 48,
+            "left": 1380,
+            "right": 1428,
+            "top": 12,
+            "bottom": 60
+          }
+        ]
+      }
+    },
+    {
+      "state": "neighbor-error",
+      "width": 390,
+      "height": 844,
+      "theme": "light",
+      "screenshot": "sharing-viewer-neighbor-error-light-390.png",
+      "geometry": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 844
+        },
+        "targets": [
+          {
+            "label": "返回相册",
+            "width": 308,
+            "height": 48,
+            "left": 41,
+            "right": 349,
+            "top": 428,
+            "bottom": 476
+          },
+          {
+            "label": "重新加载",
+            "width": 308,
+            "height": 48,
+            "left": 41,
+            "right": 349,
+            "top": 492,
+            "bottom": 540
+          },
+          {
+            "label": "关闭图片",
+            "width": 48,
+            "height": 48,
+            "left": 330,
+            "right": 378,
+            "top": 12,
+            "bottom": 60
+          }
+        ]
+      }
+    },
+    {
+      "state": "neighbor-error",
+      "width": 390,
+      "height": 844,
+      "theme": "dark",
+      "screenshot": "sharing-viewer-neighbor-error-dark-390.png",
+      "geometry": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 844
+        },
+        "targets": [
+          {
+            "label": "返回相册",
+            "width": 308,
+            "height": 48,
+            "left": 41,
+            "right": 349,
+            "top": 428,
+            "bottom": 476
+          },
+          {
+            "label": "重新加载",
+            "width": 308,
+            "height": 48,
+            "left": 41,
+            "right": 349,
+            "top": 492,
+            "bottom": 540
+          },
+          {
+            "label": "关闭图片",
+            "width": 48,
+            "height": 48,
+            "left": 330,
+            "right": 378,
+            "top": 12,
+            "bottom": 60
+          }
+        ]
+      }
+    },
+    {
+      "state": "neighbor-error",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light",
+      "screenshot": "sharing-viewer-neighbor-error-light-1440.png",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 1080
+        },
+        "root": {
+          "left": 0,
+          "right": 1440,
+          "top": 0,
+          "bottom": 1080
+        },
+        "targets": [
+          {
+            "label": "返回相册",
+            "width": 430,
+            "height": 48,
+            "left": 505,
+            "right": 935,
+            "top": 546,
+            "bottom": 594
+          },
+          {
+            "label": "重新加载",
+            "width": 430,
+            "height": 48,
+            "left": 505,
+            "right": 935,
+            "top": 610,
+            "bottom": 658
+          },
+          {
+            "label": "关闭图片",
+            "width": 48,
+            "height": 48,
+            "left": 1380,
+            "right": 1428,
+            "top": 12,
+            "bottom": 60
+          }
+        ]
+      }
+    },
+    {
+      "state": "neighbor-error",
+      "width": 1440,
+      "height": 1080,
+      "theme": "dark",
+      "screenshot": "sharing-viewer-neighbor-error-dark-1440.png",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 1080
+        },
+        "root": {
+          "left": 0,
+          "right": 1440,
+          "top": 0,
+          "bottom": 1080
+        },
+        "targets": [
+          {
+            "label": "返回相册",
+            "width": 430,
+            "height": 48,
+            "left": 505,
+            "right": 935,
+            "top": 546,
+            "bottom": 594
+          },
+          {
+            "label": "重新加载",
+            "width": 430,
+            "height": 48,
+            "left": 505,
+            "right": 935,
+            "top": 610,
+            "bottom": 658
+          },
+          {
+            "label": "关闭图片",
+            "width": 48,
+            "height": 48,
+            "left": 1380,
+            "right": 1428,
+            "top": 12,
+            "bottom": 60
+          }
+        ]
+      }
+    },
+    {
+      "state": "status-check-error",
+      "width": 390,
+      "height": 844,
+      "theme": "light",
+      "screenshot": "sharing-viewer-status-check-error-light-390.png",
+      "geometry": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 390,
+          "height": 844
+        },
+        "targets": [
+          {
+            "label": "上一张",
+            "width": 56,
+            "height": 56,
+            "left": 0,
+            "right": 56,
+            "top": 394,
+            "bottom": 450
+          },
+          {
+            "label": "下一张",
+            "width": 56,
+            "height": 56,
+            "left": 334,
+            "right": 390,
+            "top": 394,
+            "bottom": 450
+          },
+          {
+            "label": "重试",
+            "width": 62,
+            "height": 44,
+            "left": 275,
+            "right": 337,
+            "top": 772,
+            "bottom": 816
+          },
+          {
+            "label": "关闭图片",
+            "width": 48,
+            "height": 48,
+            "left": 330,
+            "right": 378,
+            "top": 12,
+            "bottom": 60
+          }
+        ]
+      }
+    },
+    {
+      "state": "status-check-error",
+      "width": 390,
+      "height": 844,
+      "theme": "dark",
+      "screenshot": "sharing-viewer-status-check-error-dark-390.png",
+      "geometry": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "root": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 844
+        },
+        "stage": {
+          "width": 390,
+          "height": 844
+        },
+        "targets": [
+          {
+            "label": "上一张",
+            "width": 56,
+            "height": 56,
+            "left": 0,
+            "right": 56,
+            "top": 394,
+            "bottom": 450
+          },
+          {
+            "label": "下一张",
+            "width": 56,
+            "height": 56,
+            "left": 334,
+            "right": 390,
+            "top": 394,
+            "bottom": 450
+          },
+          {
+            "label": "重试",
+            "width": 62,
+            "height": 44,
+            "left": 275,
+            "right": 337,
+            "top": 772,
+            "bottom": 816
+          },
+          {
+            "label": "关闭图片",
+            "width": 48,
+            "height": 48,
+            "left": 330,
+            "right": 378,
+            "top": 12,
+            "bottom": 60
+          }
+        ]
+      }
+    },
+    {
+      "state": "status-check-error",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light",
+      "screenshot": "sharing-viewer-status-check-error-light-1440.png",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 1080
+        },
+        "root": {
+          "left": 0,
+          "right": 1440,
+          "top": 0,
+          "bottom": 1080
+        },
+        "stage": {
+          "width": 1440,
+          "height": 1080
+        },
+        "targets": [
+          {
+            "label": "上一张",
+            "width": 56,
+            "height": 56,
+            "left": 16,
+            "right": 72,
+            "top": 512,
+            "bottom": 568
+          },
+          {
+            "label": "下一张",
+            "width": 56,
+            "height": 56,
+            "left": 1368,
+            "right": 1424,
+            "top": 512,
+            "bottom": 568
+          },
+          {
+            "label": "重试",
+            "width": 62,
+            "height": 44,
+            "left": 800,
+            "right": 862,
+            "top": 1008,
+            "bottom": 1052
+          },
+          {
+            "label": "关闭图片",
+            "width": 48,
+            "height": 48,
+            "left": 1380,
+            "right": 1428,
+            "top": 12,
+            "bottom": 60
+          }
+        ]
+      }
+    },
+    {
+      "state": "status-check-error",
+      "width": 1440,
+      "height": 1080,
+      "theme": "dark",
+      "screenshot": "sharing-viewer-status-check-error-dark-1440.png",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 1080
+        },
+        "root": {
+          "left": 0,
+          "right": 1440,
+          "top": 0,
+          "bottom": 1080
+        },
+        "stage": {
+          "width": 1440,
+          "height": 1080
+        },
+        "targets": [
+          {
+            "label": "上一张",
+            "width": 56,
+            "height": 56,
+            "left": 16,
+            "right": 72,
+            "top": 512,
+            "bottom": 568
+          },
+          {
+            "label": "下一张",
+            "width": 56,
+            "height": 56,
+            "left": 1368,
+            "right": 1424,
+            "top": 512,
+            "bottom": 568
+          },
+          {
+            "label": "重试",
+            "width": 62,
+            "height": 44,
+            "left": 800,
+            "right": 862,
+            "top": 1008,
+            "bottom": 1052
+          },
+          {
+            "label": "关闭图片",
+            "width": 48,
+            "height": 48,
+            "left": 1380,
+            "right": 1428,
+            "top": 12,
+            "bottom": 60
+          }
+        ]
+      }
+    }
+  ],
+  "limitations": [
+    "Physical phones, software keyboards, nonzero safe area and Release containers are outside this browser run."
+  ],
+  "previousPageErrors": [],
+  "stage": "viewer-races",
+  "expectedPreviewErrors": [
+    "http://sharing-53507.localhost:53507/i/679853fd-da52-41ef-ae0f-b65cc54e79db?type=original"
+  ],
+  "browserContexts": "Two real tabs share one Ego profile; production HTTP integration separately uses owner and share-only Cookie requests.",
+  "expectedConsoleErrors": [
+    "分享大图读取失败 [object Object]",
+    "分享状态检查失败 [object Object]"
+  ],
+  "expectedErrorsObserved": 19
+}

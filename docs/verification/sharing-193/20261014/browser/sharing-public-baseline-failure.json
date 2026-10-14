@@ -1,0 +1,19 @@
+{
+  "status": "failed",
+  "phase": "representative",
+  "stage": "gate-and-representatives",
+  "error": "AssertionError [ERR_ASSERTION]: The short password page actually scrolls\n    at passwordHelp (file:///Volumes/data/project/ariso/e2e/sharing-public-layouts.mjs:377:20)\n    at async verifySharingPublicRepresentatives (file:///Volumes/data/project/ariso/e2e/sharing-public-representatives.mjs:87:3)\n    at async file:////[eval2]:53:5",
+  "checks": [
+    {
+      "scenario": "Anonymous HTML/RSC gate, noindex and owner session preserving anonymous scope"
+    },
+    {
+      "scenario": "password access Tips support click, Enter/Space, Escape and outside dismissal with focus return and no submission",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light",
+      "scroll": 0
+    }
+  ],
+  "shortPasswordFailure": null
+}

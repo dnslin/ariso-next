@@ -17,6 +17,8 @@ export function useGalleryViewport(
   useLayoutEffect(() => {
     const element = container.current!;
     const scroller = element.closest<HTMLElement>(scrollRootSelector)!;
+    const documentScroll = scroller === document.scrollingElement;
+    const scrollTarget = documentScroll ? window : scroller;
     let frame = 0;
     function measure() {
       const rect = element.getBoundingClientRect();
@@ -24,8 +26,10 @@ export function useGalleryViewport(
       setViewport({
         width: rect.width,
         windowWidth: window.innerWidth,
-        top: scroller.getBoundingClientRect().top - rect.top,
-        height: scroller.clientHeight,
+        top: documentScroll
+          ? -rect.top
+          : scroller.getBoundingClientRect().top - rect.top,
+        height: documentScroll ? window.innerHeight : scroller.clientHeight,
       });
     }
     function schedule() {
@@ -36,13 +40,13 @@ export function useGalleryViewport(
     observer.observe(element);
     if (observeParent) observer.observe(element.parentElement!);
     observer.observe(scroller);
-    scroller.addEventListener('scroll', schedule, { passive: true });
+    scrollTarget.addEventListener('scroll', schedule, { passive: true });
     window.addEventListener('resize', schedule);
     measure();
     return () => {
       cancelAnimationFrame(frame);
       observer.disconnect();
-      scroller.removeEventListener('scroll', schedule);
+      scrollTarget.removeEventListener('scroll', schedule);
       window.removeEventListener('resize', schedule);
     };
   }, [container, scrollRootSelector, observeParent]);

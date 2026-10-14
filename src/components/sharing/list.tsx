@@ -52,14 +52,11 @@ export function ShareList({
       (item) => item.status !== 'ready' || hasFailed(item.imageId),
     );
   return (
-    <section className="flex h-dvh flex-col">
+    <section data-share-page className="flex min-h-dvh flex-col">
       <div className="shrink-0 pt-[58px] pb-[21px] min-[768px]:pt-12">
         <ShareBrandHeading brand={brand} />
       </div>
-      <div
-        data-share-scroll
-        className="mx-auto w-full max-w-[1192px] min-h-0 flex-1 overflow-auto overscroll-contain px-4 pb-8 min-[768px]:px-6 min-[1200px]:px-4"
-      >
+      <div className="mx-auto w-full max-w-[1192px] px-4 pb-8 min-[768px]:px-6 min-[1200px]:px-4">
         <div
           className="flex flex-col gap-5 min-[768px]:gap-6"
           aria-busy={loading}

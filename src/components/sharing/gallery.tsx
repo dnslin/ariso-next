@@ -22,7 +22,7 @@ export function ShareGallery({
   onOpen: (imageId: string, source: HTMLElement) => void;
 }) {
   const container = useRef<HTMLDivElement>(null);
-  const viewport = useGalleryViewport(container, '[data-share-scroll]', true);
+  const viewport = useGalleryViewport(container, 'html', true);
   const positions = useMemo(
     () =>
       layoutShareGallery(

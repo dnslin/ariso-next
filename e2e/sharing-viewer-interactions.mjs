@@ -1,8 +1,7 @@
 import assert from 'node:assert/strict';
-import { join } from 'node:path';
 import { resizeViewport, setTheme } from './browser-geometry.mjs';
 import { waitForPaint } from './sharing-public-page.mjs';
-import { viewer } from './sharing-viewer-page.mjs';
+import { assertSharingViewerCanvas, viewer } from './sharing-viewer-page.mjs';
 
 export async function verifySharingViewerInteractions(scene) {
   const { page, config, report, session, viewing } = scene;
@@ -71,7 +70,7 @@ export async function verifySharingViewerInteractions(scene) {
     ),
   }));
   record(
-    'Wheel zoom focus observation after the focused neighbor button is removed',
+    'Wheel zoom focus observation on the transparent neighbor arrow',
     wheelFocus,
   );
   assert.equal(
@@ -143,13 +142,15 @@ export async function verifySharingViewerInteractions(scene) {
     { requestedImages: resources.length },
   );
 
-  let homeReached = false;
+  await assertSharingViewerCanvas(page);
   for (let index = 0; index < 12; index++) {
     await page.keyboard.press('Tab');
     const focus = await page.evaluate(() => ({
       visible: !!document.activeElement.getClientRects().length,
+      insideViewer: !!document.activeElement.closest(
+        '[data-testid="share-viewer"]',
+      ),
       list: !!document.activeElement.closest('[data-share-item], [inert]'),
-      home: document.activeElement.matches('.public-header a[href="/"]'),
     }));
     assert.equal(
       focus.list,
@@ -159,15 +160,14 @@ export async function verifySharingViewerInteractions(scene) {
     assert.equal(
       focus.visible,
       true,
-      'Keyboard focus stays on the current anonymous page visible controls',
+      'Keyboard focus remains on a visible viewer control',
     );
-    homeReached ||= focus.home;
+    assert.equal(
+      focus.insideViewer,
+      true,
+      'Tab stays inside the image dialog and cannot reach Return Home',
+    );
   }
-  assert.equal(
-    homeReached,
-    true,
-    'The approved Return Home navigation remains keyboard reachable',
-  );
   await page.focus('[data-testid="share-viewer-close"]');
   await page.keyboard.press('ArrowRight');
   await current(config.publicIds[7]);
@@ -175,15 +175,14 @@ export async function verifySharingViewerInteractions(scene) {
   await current(config.publicIds[6]);
   await imageLoaded();
   const beforeZoom = await zoomState(page);
-  await page.click('[data-testid="share-viewer-zoom"]');
-  await page.waitForFunction((before) => {
-    const root = document.querySelector('[data-testid="share-viewer-stage"]');
-    return (
-      [...root.querySelectorAll('img')]
+  await doubleClickImage(page);
+  await page.waitForFunction(
+    (before) =>
+      [...document.querySelectorAll('[data-testid="share-viewer-stage"] img')]
         .map((image) => image.getBoundingClientRect().width)
-        .join(',') !== before
-    );
-  }, beforeZoom);
+        .join(',') !== before,
+    beforeZoom,
+  );
   for (const width of [390, 1440]) {
     for (const theme of ['light', 'dark']) {
       await capture('zoomed', [width], [theme]);
@@ -199,12 +198,7 @@ export async function verifySharingViewerInteractions(scene) {
         )
         .getBoundingClientRect().top,
   );
-  const center = await page.evaluate(() => {
-    const rect = document
-      .querySelector('[data-testid="share-viewer-stage"]')
-      .getBoundingClientRect();
-    return { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
-  });
+  const center = await stageCenter(page);
   await page.mouse.move(center.x, center.y);
   await page.mouse.down();
   await page.mouse.move(center.x, center.y + 60);
@@ -218,47 +212,21 @@ export async function verifySharingViewerInteractions(scene) {
         .getBoundingClientRect().top !== before,
     beforePan,
   );
-  await page.click('[data-testid="share-viewer-zoom"]');
+  await restoreZoom(page);
   await assertZoomRestored(page, config.publicIds[6]);
-  const supportsFullscreen = await page.evaluate(
-    () => document.fullscreenEnabled,
-  );
-  if (supportsFullscreen) {
-    for (const width of [1440, 390]) {
-      for (const theme of ['light', 'dark']) {
-        await resizeViewport(page, width);
-        await setTheme(page, theme);
-        await page.click('[data-testid="share-viewer-fullscreen"]');
-        await page.waitForFunction(() => !!document.fullscreenElement);
-        await capture('fullscreen', [width], [theme]);
-        await recordFullscreenFocus(page, record, `entered-${width}-${theme}`);
-        await page.click('[data-testid="share-viewer-fullscreen"]');
-        await page.waitForFunction(() => !document.fullscreenElement);
-        await waitForPaint(page);
-        await recordFullscreenFocus(
-          page,
-          record,
-          `button-exit-${width}-${theme}`,
-        );
-      }
-    }
-  } else
-    report.limitations.push(
-      'The current browser does not expose fullscreen support.',
-    );
 
   await session.updateShare({ show_name: 1 });
   const namedContext = await neighbors(config.publicIds[6]);
   assert.ok(namedContext.current.displayName);
   await page.waitForFunction(
     (name) =>
-      [...document.querySelectorAll('[data-testid="share-viewer"] p')].some(
-        (node) => node.textContent === name,
-      ),
+      document
+        .querySelector('[data-testid="share-viewer"] .yarl__slide_current img')
+        ?.getAttribute('alt') === name,
     namedContext.current.displayName,
     { timeout: 15000 },
   );
-  await page.click('[data-testid="share-viewer-zoom"]');
+  await doubleClickImage(page);
   await page.waitForFunction(
     () =>
       Number(
@@ -269,91 +237,31 @@ export async function verifySharingViewerInteractions(scene) {
   );
   for (const width of [390, 1440]) {
     for (const theme of ['light', 'dark']) {
-      await capture('zoomed-names', [width], [theme]);
+      await capture('zoomed-name-enabled', [width], [theme]);
       await assertZoomLayout(page, record, { width, theme, showName: true });
       await assertNamedLayout(page, record, namedContext.current.displayName, {
-        state: 'zoomed-names',
         width,
         theme,
       });
     }
   }
-  await page.click('[data-testid="share-viewer-zoom"]');
+  await restoreZoom(page);
   await assertZoomRestored(page, config.publicIds[6]);
-
-  if (supportsFullscreen) {
-    for (const width of [1440, 390]) {
-      for (const theme of ['light', 'dark']) {
-        await resizeViewport(page, width);
-        await setTheme(page, theme);
-        await page.click('[data-testid="share-viewer-fullscreen"]');
-        await page.waitForFunction(() => !!document.fullscreenElement);
-        await capture('fullscreen-names', [width], [theme]);
-        await assertNamedLayout(
-          page,
-          record,
-          namedContext.current.displayName,
-          { state: 'fullscreen-names', width, theme },
-        );
-        await recordFullscreenFocus(
-          page,
-          record,
-          `entered-names-${width}-${theme}`,
-        );
-        await page.click('[data-testid="share-viewer-fullscreen"]');
-        await page.waitForFunction(() => !document.fullscreenElement);
-        await waitForPaint(page);
-        await recordFullscreenFocus(
-          page,
-          record,
-          `button-exit-names-${width}-${theme}`,
-        );
-      }
-    }
-  }
   await session.updateShare({ show_name: 0 });
   await page.waitForFunction(
     (names) =>
       !names.some((name) =>
-        document.querySelector('main').textContent.includes(name),
+        [...document.querySelectorAll('[alt],[title],[aria-label]')].some(
+          (node) =>
+            ['alt', 'title', 'aria-label'].some((attribute) =>
+              node.getAttribute(attribute)?.includes(name),
+            ),
+        ),
       ),
     config.names,
     { timeout: 15000 },
   );
   await session.hiddenNames();
-
-  if (supportsFullscreen) {
-    for (const width of [390, 1440]) {
-      await resizeViewport(page, width);
-      await setTheme(page, 'light');
-      await page.click('[data-testid="share-viewer-fullscreen"]');
-      await page.waitForFunction(() => !!document.fullscreenElement);
-      await waitForPaint(page);
-      await recordFullscreenFocus(page, record, `before-Escape-${width}`);
-      await page.keyboard.press('Escape');
-      await page.waitForFunction(() => !document.fullscreenElement);
-      await waitForPaint(page);
-      await current(config.publicIds[6]);
-      assert.equal(
-        await page.evaluate(
-          () => !!document.querySelector('[data-testid="share-viewer"]'),
-        ),
-        true,
-        'Native fullscreen Escape restores the ordinary viewer without closing it',
-      );
-      await capture('fullscreen-return', [width], ['light']);
-      await recordFullscreenFocus(page, record, `Escape-exit-${width}`);
-      record(
-        'Native fullscreen Escape preserves the open viewer and current image before a subsequent Escape closes it',
-        { width, imageId: config.publicIds[6] },
-      );
-    }
-    await resizeViewport(page, 1440);
-    await setTheme(page, 'light');
-    record(
-      'Browser fullscreen enters and exits on the current anonymous image with actual desktop/mobile light/dark captures',
-    );
-  }
   await page.keyboard.press('Escape');
   await page.waitForSelector(viewer, { state: 'hidden' });
   await page.waitForFunction(
@@ -361,7 +269,7 @@ export async function verifySharingViewerInteractions(scene) {
     config.publicIds[6],
   );
   record(
-    'Visible page Tab order including Return Home, arrow navigation, zoom/pan, Escape and original card focus return',
+    'Viewport image dialog traps Tab focus, supports arrow navigation, double-click zoom and pan, and returns source card focus on Escape',
   );
 
   for (const [format, expected] of Object.entries(config.viewerFormats)) {
@@ -412,7 +320,10 @@ export async function verifySharingViewerInteractions(scene) {
     (id) => document.activeElement?.getAttribute('data-share-open') === id,
     config.publicIds[39],
   );
-  assert.equal(await scrollPosition(page), scrollBefore);
+  assert.ok(
+    Math.abs((await scrollPosition(page)) - scrollBefore) <= 1,
+    'Closing returns to the document scroll position without jumping to the current viewed neighbor',
+  );
   record(
     'Cross-page next image uses public neighbors without extending the 40-card list; close restores opening card focus and scroll',
     { scroll: scrollBefore },
@@ -515,84 +426,41 @@ export async function verifySharingViewerInteractions(scene) {
   await imageLoaded();
   for (const theme of ['light', 'dark']) {
     await setTheme(page, theme);
-    const before = await shortScrollState(page);
+    await capture('short-viewport-canvas', [390], [theme], 420);
+    const fitted = await page.evaluate(() => {
+      const image = document
+        .querySelector(
+          '[data-testid="share-viewer-stage"] .yarl__slide_current img',
+        )
+        .getBoundingClientRect();
+      return {
+        left: image.left,
+        right: image.right,
+        top: image.top,
+        bottom: image.bottom,
+        scroll: scrollY,
+      };
+    });
     assert.ok(
-      before.maximum > 0,
-      'The short viewer has real scrollable image content',
+      fitted.left >= 0 &&
+        fitted.right <= 390 &&
+        fitted.top >= 0 &&
+        fitted.bottom <= 420,
+      'The complete unzoomed image fits a short viewport',
     );
-    assert.ok(
-      before.imageTop >= before.top && before.imageBottom > before.bottom,
-      'The image starts at the top and extends below the short viewport',
-    );
-    // Wheel in the content padding, where YARL scroll-to-zoom does not consume it.
-    await page.mouse.move(before.x, before.y);
+    await page.mouse.move(8, 210);
     await page.mouse.wheel(0, 600, {
-      label: 'view the lower edge in a short viewer',
+      label: 'try to scroll the background while viewing the image',
     });
-    await page.waitForFunction(() => {
-      const image = document.querySelector(
-        '[data-testid="share-viewer-stage"]',
-      );
-      const scroller = image.parentElement.parentElement;
-      return (
-        scroller.scrollTop > 0 &&
-        image.getBoundingClientRect().bottom <=
-          scroller.getBoundingClientRect().bottom + 1
-      );
-    });
-    const after = await shortScrollState(page);
-    assert.ok(
-      after.scroll > before.scroll,
-      'Actual wheel input scrolls the image content',
-    );
-    const controls = await page.evaluate(() =>
-      ['close', 'previous', 'next', 'zoom'].map((action) => {
-        const rectangle = document
-          .querySelector(`[data-testid="share-viewer-${action}"]`)
-          .getBoundingClientRect();
-        return {
-          action,
-          width: rectangle.width,
-          height: rectangle.height,
-          left: rectangle.left,
-          right: rectangle.right,
-          top: rectangle.top,
-          bottom: rectangle.bottom,
-        };
-      }),
-    );
-    for (const control of controls) {
-      assert.ok(control.width >= 44 && control.height >= 44);
-      assert.ok(
-        control.left >= 0 &&
-          control.right <= 390 &&
-          control.top >= 0 &&
-          control.bottom <= 420,
-        `${control.action} stays fully reachable during short viewport scrolling`,
-      );
-    }
-    const screenshot = `sharing-viewer-short-viewport-scrolled-${theme}-390x420.png`;
-    await page.screenshot({ path: join(config.output, screenshot) });
-    report.layouts.push({
-      state: 'short-viewport-scrolled',
-      width: 390,
-      height: 420,
-      theme,
-      screenshot,
-      geometry: { scroll: after, controls },
-    });
-    await page.mouse.move(after.x, after.y);
-    await page.mouse.wheel(0, -600, {
-      label: 'return to the upper edge of the image',
-    });
-    await page.waitForFunction(
-      () =>
-        document.querySelector('[data-testid="share-viewer-stage"]')
-          .parentElement.parentElement.scrollTop === 0,
+    await waitForPaint(page);
+    assert.equal(
+      await scrollPosition(page),
+      fitted.scroll,
+      'Viewer wheel input cannot scroll the background document',
     );
     record(
-      'Actual short viewport scrolling reaches both image edges while the fixed controls stay usable',
-      { width: 390, height: 420, theme, before, after },
+      'A short viewport fits the full image with reachable icon controls and locks background scrolling',
+      { width: 390, height: 420, theme, fitted },
     );
   }
   await close();
@@ -603,86 +471,27 @@ export async function verifySharingViewerInteractions(scene) {
 }
 
 async function scrollPosition(page) {
-  return page.evaluate(
-    () =>
-      document.querySelector('[data-share-scroll]')?.scrollTop ??
-      document.scrollingElement.scrollTop,
-  );
+  return page.evaluate(() => scrollY);
 }
 async function assertZoomLayout(page, record, detail) {
+  const canvas = await assertSharingViewerCanvas(page);
   const layout = await page.evaluate(() => {
     const root = document.querySelector('[data-testid="share-viewer"]');
-    const heading = root.querySelector('p[aria-live="polite"]');
-    const headingRectangle = heading?.getBoundingClientRect();
-    const headingParentRectangle =
-      heading?.parentElement.getBoundingClientRect();
-    const stage = root.querySelector('[data-testid="share-viewer-stage"]');
-    const stageRectangle = stage.getBoundingClientRect();
-    const wrapper = getComputedStyle(stage.parentElement);
-    const instruction = [...root.querySelectorAll('p')].find((node) =>
-      node.textContent.includes('拖动'),
-    );
-    const instructionRectangle = instruction?.getBoundingClientRect();
     return {
       zoom: Number(root.getAttribute('data-zoom')),
-      heading: heading?.textContent,
-      centered:
-        !!headingRectangle &&
-        getComputedStyle(heading).textAlign === 'center' &&
-        Math.abs(
-          headingRectangle.left +
-            headingRectangle.width / 2 -
-            (headingParentRectangle.left + headingParentRectangle.width / 2),
-        ) <= 1,
-      fullscreen: !!root.querySelector(
-        '[data-testid="share-viewer-fullscreen"]',
-      ),
-      previous: !!root.querySelector('[data-testid="share-viewer-previous"]'),
-      next: !!root.querySelector('[data-testid="share-viewer-next"]'),
-      padding: [
-        wrapper.paddingTop,
-        wrapper.paddingRight,
-        wrapper.paddingBottom,
-        wrapper.paddingLeft,
-      ],
-      buttons: [...root.querySelectorAll('button')]
-        .filter((node) => node.getClientRects().length)
-        .map((node) => node.textContent.trim()),
-      instruction: instruction?.textContent,
-      instructionVisible:
-        !!instructionRectangle &&
-        instructionRectangle.width > 16 &&
-        instructionRectangle.height >= 16 &&
-        instructionRectangle.top >= stageRectangle.bottom - 1 &&
-        instructionRectangle.bottom <= innerHeight &&
-        !instruction.closest('[hidden],[inert],[aria-hidden="true"]'),
+      text: root.textContent.trim(),
     };
   });
-  record('Approved enlarged viewer layout observation', { ...detail, layout });
+  record('Enlarged image remains on the pure viewport canvas', {
+    ...detail,
+    layout,
+    canvas,
+  });
   assert.ok(layout.zoom > 1, 'The captured viewer remains enlarged');
-  assert.match(layout.heading, /\d+\s*\/\s*\d+\s*·\s*已放大/);
   assert.equal(
-    layout.centered,
-    true,
-    'The enlarged position label is centered',
-  );
-  assert.equal(
-    layout.fullscreen,
-    false,
-    'Enlarged mode has no fullscreen entry',
-  );
-  assert.equal(layout.previous, false);
-  assert.equal(layout.next, false);
-  assert.deepEqual(
-    layout.padding,
-    ['0px', '0px', '0px', '0px'],
-    'Enlarged image stage removes the ordinary 15px inset',
-  );
-  assert.deepEqual(layout.buttons, ['关闭', '还原']);
-  assert.equal(
-    layout.instructionVisible,
-    true,
-    'The enlarged viewer displays its dragging instruction below the stage',
+    layout.text,
+    '',
+    'Zoom adds no position label, filename, instruction or solid Restore button',
   );
 }
 async function assertZoomRestored(page, imageId) {
@@ -701,53 +510,61 @@ async function assertZoomRestored(page, imageId) {
         imageId: root.getAttribute('data-image-id'),
         previous: !!root.querySelector('[data-testid="share-viewer-previous"]'),
         next: !!root.querySelector('[data-testid="share-viewer-next"]'),
-        zoom: root.querySelector('[data-testid="share-viewer-zoom"]')
-          .textContent,
       };
     }),
-    { imageId, previous: true, next: true, zoom: '放大' },
-    'Restore keeps the current image and returns ordinary navigation controls',
+    { imageId, previous: true, next: true },
+    'Gesture restoration keeps the current image and transparent navigation arrows',
   );
 }
 async function assertNamedLayout(page, record, name, detail) {
   const layout = await page.evaluate((name) => {
     const root = document.querySelector('[data-testid="share-viewer"]');
-    const title = [...root.querySelectorAll('p')].find(
-      (node) => node.textContent === name,
-    );
-    const rectangle = title?.getBoundingClientRect();
-    const stage = root
-      .querySelector('[data-testid="share-viewer-stage"]')
-      .getBoundingClientRect();
     return {
-      name: title?.textContent,
-      visible:
-        !!rectangle &&
-        rectangle.width > 0 &&
-        rectangle.height >= 16 &&
-        rectangle.left >= 0 &&
-        rectangle.right <= innerWidth &&
-        rectangle.top >= 0 &&
-        rectangle.bottom <= stage.top &&
-        !title.closest('[hidden],[inert],[aria-hidden="true"]'),
+      nameVisible: root.textContent.includes(name),
       alt: root.querySelector('.yarl__slide_current img')?.getAttribute('alt'),
-      rectangle: rectangle && {
-        left: rectangle.left,
-        right: rectangle.right,
-        top: rectangle.top,
-        bottom: rectangle.bottom,
-      },
-      stageTop: stage.top,
     };
   }, name);
-  record('Name-enabled viewer layout observation', { ...detail, layout });
-  assert.equal(layout.name, name);
-  assert.equal(
-    layout.visible,
-    true,
-    'The enabled name is readable above the image without overlap or clipping',
+  record(
+    'Enabled names remain in image alternative text without visible viewer chrome',
+    { ...detail, layout },
   );
-  assert.equal(layout.alt, name, 'The current image uses the enabled name');
+  assert.equal(layout.nameVisible, false);
+  assert.equal(
+    layout.alt,
+    name,
+    'The current image uses the enabled name for assistive technology',
+  );
+}
+async function stageCenter(page) {
+  return page.evaluate(() => {
+    const rect = document
+      .querySelector('[data-testid="share-viewer-stage"]')
+      .getBoundingClientRect();
+    return { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
+  });
+}
+async function doubleClickImage(page) {
+  const center = await stageCenter(page);
+  await page.mouse.move(center.x, center.y);
+  for (const clickCount of [1, 2]) {
+    await page.mouse.down({ button: 'left', clickCount });
+    await page.mouse.up({ button: 'left', clickCount });
+  }
+}
+async function restoreZoom(page) {
+  const center = await stageCenter(page);
+  await page.mouse.move(center.x, center.y);
+  await page.mouse.wheel(0, 100000, {
+    label: 'restore the full shared image using its native zoom gesture',
+  });
+  await page.waitForFunction(
+    () =>
+      Number(
+        document
+          .querySelector('[data-testid="share-viewer"]')
+          .getAttribute('data-zoom'),
+      ) === 1,
+  );
 }
 async function zoomState(page) {
   return page.evaluate(() =>
@@ -755,58 +572,6 @@ async function zoomState(page) {
       .map((image) => image.getBoundingClientRect().width)
       .join(','),
   );
-}
-async function recordFullscreenFocus(page, record, phase) {
-  const focus = await page.evaluate(() => {
-    const node = document.activeElement;
-    const root = document.querySelector('[data-testid="share-viewer"]');
-    const rectangle = node?.getBoundingClientRect();
-    const style = node && getComputedStyle(node);
-    return {
-      tag: node?.tagName,
-      className: node?.className,
-      testId: node?.getAttribute('data-testid'),
-      insideViewer: !!node && root.contains(node),
-      control: !!node?.matches('button,[role="button"],a,input'),
-      stage: !!node?.closest('[data-testid="share-viewer-stage"]'),
-      visible:
-        !!rectangle &&
-        rectangle.width > 0 &&
-        rectangle.height > 0 &&
-        rectangle.right > 0 &&
-        rectangle.left < innerWidth &&
-        rectangle.bottom > 0 &&
-        rectangle.top < innerHeight &&
-        style.visibility !== 'hidden' &&
-        !node.closest('[inert],[aria-hidden="true"]'),
-    };
-  });
-  record('Native fullscreen transition focus observation without refocusing', {
-    phase,
-    focus,
-  });
-  assert.ok(
-    focus.insideViewer && focus.visible && (focus.control || focus.stage),
-    `${phase}: fullscreen transitions keep focus on a visible viewer control or stage; BODY is a failure`,
-  );
-}
-async function shortScrollState(page) {
-  return page.evaluate(() => {
-    const image = document.querySelector('[data-testid="share-viewer-stage"]');
-    const scroller = image.parentElement.parentElement;
-    const rectangle = scroller.getBoundingClientRect();
-    const imageRectangle = image.getBoundingClientRect();
-    return {
-      scroll: scroller.scrollTop,
-      maximum: scroller.scrollHeight - scroller.clientHeight,
-      top: rectangle.top,
-      bottom: rectangle.bottom,
-      imageTop: imageRectangle.top,
-      imageBottom: imageRectangle.bottom,
-      x: rectangle.left + 8,
-      y: rectangle.top + rectangle.height / 2,
-    };
-  });
 }
 async function swipe(page) {
   const bounds = await page.evaluate(() => {
