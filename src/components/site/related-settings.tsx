@@ -1,7 +1,9 @@
 'use client';
 
+import { DelayedLoading } from '../delayed-loading';
+
 import { ComponentEntrance } from '../component-entrance';
-import { useEffect } from 'react';
+import { useEffect, type ReactNode } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Button } from '@heroui/react/button';
 import { Card } from '@heroui/react/card';
@@ -38,26 +40,26 @@ export function RelatedSetting({
   icon: Icon,
 }: {
   label: string;
-  value: string;
+  value: ReactNode;
   href?: string;
   icon: LucideIcon;
 }) {
   const content = (
-    <span className="grid w-full min-w-0 grid-cols-[minmax(0,1fr)_20px] items-center gap-x-3 sm:grid-cols-[minmax(0,1fr)_auto_20px]">
+    <div className="grid w-full min-w-0 grid-cols-[minmax(0,1fr)_20px] items-center gap-x-3 sm:grid-cols-[minmax(0,1fr)_auto_20px]">
       <span className="flex items-center gap-2 text-sm font-medium">
         <Icon className="size-4 shrink-0" aria-hidden />
         {label}
       </span>
-      <span className="col-start-1 row-start-2 mt-1 text-sm font-normal text-muted wrap-anywhere sm:col-start-2 sm:row-start-1 sm:mt-0 sm:text-right">
+      <div className="col-start-1 row-start-2 mt-1 text-sm font-normal text-muted wrap-anywhere sm:col-start-2 sm:row-start-1 sm:mt-0 sm:text-right">
         {value}
-      </span>
+      </div>
       {href ? (
         <ChevronRight
           aria-hidden
           className="col-start-2 row-span-2 row-start-1 size-4 sm:col-start-3 sm:row-span-1"
         />
       ) : null}
-    </span>
+    </div>
   );
   return href ? (
     <Link href={href} className={`${rowClass} text-foreground no-underline`}>
@@ -116,17 +118,21 @@ export function RelatedSettings({ onExpire }: { onExpire: () => void }) {
   useEffect(() => {
     if (sessionLost) onExpire();
   }, [sessionLost, onExpire]);
-  const storageValue = storageError
-    ? '读取失败'
-    : !storageSettings.data || !storages.data
-      ? '正在读取…'
-      : defaultStorageLabel(storageSettings.data, storages.data);
+  const storageValue = storageError ? (
+    '读取失败'
+  ) : !storageSettings.data || !storages.data ? (
+    <DelayedLoading>正在读取…</DelayedLoading>
+  ) : (
+    defaultStorageLabel(storageSettings.data, storages.data)
+  );
   const version = media.data?.defaultLinkVersion;
-  const mediaValue = media.error
-    ? '读取失败'
-    : !media.data
-      ? '正在读取…'
-      : `${media.data.defaultVisibility === 'public' ? '默认公开' : '默认私有'} · ${version === 'original' ? '原图' : version === 'compressed' ? '压缩图' : version === 'watermark' ? '水印图' : '缩略图'}`;
+  const mediaValue = media.error ? (
+    '读取失败'
+  ) : !media.data ? (
+    <DelayedLoading>正在读取…</DelayedLoading>
+  ) : (
+    `${media.data.defaultVisibility === 'public' ? '默认公开' : '默认私有'} · ${version === 'original' ? '原图' : version === 'compressed' ? '压缩图' : version === 'watermark' ? '水印图' : '缩略图'}`
+  );
   return (
     <ComponentEntrance delay={0.165} className="min-w-0">
       <Card className="min-w-0 gap-0 overflow-hidden rounded-[20px] border border-border bg-surface p-0 shadow-none">

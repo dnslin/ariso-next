@@ -1,5 +1,7 @@
 'use client';
 
+import { DelayedLoading } from '../delayed-loading';
+
 import { useEffect, useRef, useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Button } from '@heroui/react/button';
@@ -167,7 +169,9 @@ export function WatermarkAssetField({
               </Button>
             </>
           ) : !asset ? (
-            <p role="status">正在读取素材信息…</p>
+            <DelayedLoading>
+              <p role="status">正在读取素材信息…</p>
+            </DelayedLoading>
           ) : (
             <>
               {uploadedName?.id === id ? (

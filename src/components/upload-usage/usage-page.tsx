@@ -1,5 +1,7 @@
 'use client';
 
+import { DelayedLoading } from '../delayed-loading';
+
 import { ComponentEntrance } from '../component-entrance';
 import { useCallback, useRef, useState, type ComponentProps } from 'react';
 import { useQuery } from '@tanstack/react-query';
@@ -107,9 +109,11 @@ export function UploadUsagePage(shell: ShellProps) {
             </Link>
           </div>
         ) : loading ? (
-          <p role="status" className="text-sm text-muted">
-            正在读取站点地址和上传限制…
-          </p>
+          <DelayedLoading>
+            <p role="status" className="text-sm text-muted">
+              正在读取站点地址和上传限制…
+            </p>
+          </DelayedLoading>
         ) : ready ? (
           <>
             <ComponentEntrance delay={0.055}>

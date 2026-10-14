@@ -1,5 +1,7 @@
 'use client';
 
+import { DelayedLoading } from '../delayed-loading';
+
 import { useRef, useState, type ComponentProps } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Button } from '@heroui/react/button';
@@ -60,16 +62,18 @@ export function ProcessingPage(shell: ShellProps) {
         <SettingsHeading />
         <SettingsCategories items={settingsCategories}>
           {loading ? (
-            <Card
-              role="status"
-              aria-label="正在读取处理设置"
-              className="min-w-0 gap-5 rounded-[20px] border border-border bg-surface p-4 shadow-none min-[1200px]:p-6"
-            >
-              <h2 className="text-lg font-medium">正在读取处理设置</h2>
-              <p className="text-[13px] leading-5 text-muted">
-                请稍候，取得已保存设置后再编辑。
-              </p>
-            </Card>
+            <DelayedLoading>
+              <Card
+                role="status"
+                aria-label="正在读取处理设置"
+                className="min-w-0 gap-5 rounded-[20px] border border-border bg-surface p-4 shadow-none min-[1200px]:p-6"
+              >
+                <h2 className="text-lg font-medium">正在读取处理设置</h2>
+                <p className="text-[13px] leading-5 text-muted">
+                  请稍候，取得已保存设置后再编辑。
+                </p>
+              </Card>
+            </DelayedLoading>
           ) : (
             <div className="grid gap-3 rounded-xl border border-border p-5">
               <h2 className="text-lg font-medium">

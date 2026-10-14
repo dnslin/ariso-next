@@ -1,5 +1,7 @@
 'use client';
 
+import { DelayedLoading } from '../delayed-loading';
+
 import { ComponentEntrance } from '../component-entrance';
 import {
   createElement,
@@ -142,19 +144,21 @@ export function AccountPage(shell: ShellProps) {
               )}
             </Card>
           ) : loading ? (
-            <Card
-              data-testid="account-loading"
-              role="status"
-              aria-label="正在读取账号"
-              className="gap-3 rounded-[20px] border border-border bg-surface p-4 shadow-none min-[1200px]:p-6"
-            >
-              <h2 className="flex items-center gap-2 text-xl font-medium">
-                正在读取账号
-              </h2>
-              <p className="text-[13px] leading-normal text-muted">
-                取得当前邮箱后即可修改账号。
-              </p>
-            </Card>
+            <DelayedLoading>
+              <Card
+                data-testid="account-loading"
+                role="status"
+                aria-label="正在读取账号"
+                className="gap-3 rounded-[20px] border border-border bg-surface p-4 shadow-none min-[1200px]:p-6"
+              >
+                <h2 className="flex items-center gap-2 text-xl font-medium">
+                  正在读取账号
+                </h2>
+                <p className="text-[13px] leading-normal text-muted">
+                  取得当前邮箱后即可修改账号。
+                </p>
+              </Card>
+            </DelayedLoading>
           ) : (
             <div className="grid w-full min-w-0 max-w-240 gap-8">
               <ComponentEntrance

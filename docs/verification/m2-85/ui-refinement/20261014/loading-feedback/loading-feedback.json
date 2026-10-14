@@ -1,0 +1,754 @@
+{
+  "status": "passed",
+  "checks": [
+    {
+      "route": "/settings/general",
+      "mode": "fast",
+      "samples": {
+        "正在读取站点信息取得服务器已保存设置后即可编辑。": {
+          "firstSeen": 42.19999980926514,
+          "initiallyHidden": true,
+          "before": {
+            "width": 1144,
+            "height": 110
+          }
+        },
+        "正在读取上传限制请稍候，取得已保存设置后再编辑。": {
+          "firstSeen": 48.5,
+          "initiallyHidden": true,
+          "before": {
+            "width": 1144,
+            "height": 110
+          }
+        },
+        "正在读取…": {
+          "firstSeen": 48.5,
+          "initiallyHidden": true,
+          "before": {
+            "width": 70,
+            "height": 20
+          }
+        }
+      }
+    },
+    {
+      "route": "/settings/general",
+      "mode": "slow",
+      "samples": {
+        "正在读取站点信息取得服务器已保存设置后即可编辑。": {
+          "firstSeen": 33.59999990463257,
+          "initiallyHidden": true,
+          "before": {
+            "width": 1144,
+            "height": 110
+          },
+          "visibleAfter": 366.2999999523163,
+          "after": {
+            "width": 1144,
+            "height": 110
+          }
+        },
+        "正在读取上传限制请稍候，取得已保存设置后再编辑。": {
+          "firstSeen": 44.59999990463257,
+          "initiallyHidden": true,
+          "before": {
+            "width": 1144,
+            "height": 110
+          },
+          "visibleAfter": 355.2999999523163,
+          "after": {
+            "width": 1144,
+            "height": 110
+          }
+        },
+        "正在读取…": {
+          "firstSeen": 44.69999980926514,
+          "initiallyHidden": true,
+          "before": {
+            "width": 70,
+            "height": 20
+          },
+          "visibleAfter": 355.30000019073486,
+          "after": {
+            "width": 70,
+            "height": 20
+          }
+        }
+      }
+    },
+    {
+      "route": "/settings/processing",
+      "mode": "fast",
+      "samples": {
+        "正在读取处理设置请稍候，取得已保存设置后再编辑。": {
+          "firstSeen": 38,
+          "initiallyHidden": true,
+          "before": {
+            "width": 1144,
+            "height": 118
+          }
+        }
+      }
+    },
+    {
+      "route": "/settings/processing",
+      "mode": "slow",
+      "samples": {
+        "正在读取处理设置请稍候，取得已保存设置后再编辑。": {
+          "firstSeen": 29.299999952316284,
+          "initiallyHidden": true,
+          "before": {
+            "width": 1144,
+            "height": 118
+          },
+          "visibleAfter": 338,
+          "after": {
+            "width": 1144,
+            "height": 118
+          }
+        }
+      }
+    },
+    {
+      "route": "/settings/email",
+      "mode": "fast",
+      "samples": {
+        "正在读取邮件设置读取完成后即可查看与编辑当前配置。": {
+          "firstSeen": 34.10000014305115,
+          "initiallyHidden": true,
+          "before": {
+            "width": 1144,
+            "height": 122
+          }
+        }
+      }
+    },
+    {
+      "route": "/settings/email",
+      "mode": "slow",
+      "samples": {
+        "正在读取邮件设置读取完成后即可查看与编辑当前配置。": {
+          "firstSeen": 28.5,
+          "initiallyHidden": true,
+          "before": {
+            "width": 1144,
+            "height": 122
+          },
+          "visibleAfter": 338.39999985694885,
+          "after": {
+            "width": 1144,
+            "height": 122
+          }
+        }
+      }
+    },
+    {
+      "route": "/settings/account",
+      "mode": "fast",
+      "samples": {
+        "正在读取账号取得当前邮箱后即可修改账号。": {
+          "firstSeen": 31.90000009536743,
+          "initiallyHidden": true,
+          "before": {
+            "width": 1144,
+            "height": 109.5
+          }
+        }
+      }
+    },
+    {
+      "route": "/settings/account",
+      "mode": "slow",
+      "samples": {
+        "正在读取账号取得当前邮箱后即可修改账号。": {
+          "firstSeen": 28.199999809265137,
+          "initiallyHidden": true,
+          "before": {
+            "width": 1144,
+            "height": 109.5
+          },
+          "visibleAfter": 338.5,
+          "after": {
+            "width": 1144,
+            "height": 109.5
+          }
+        }
+      }
+    },
+    {
+      "route": "/settings/account",
+      "mode": "fast",
+      "samples": {
+        "正在读取账号取得当前邮箱后即可修改账号。": {
+          "firstSeen": 34.60000014305115,
+          "initiallyHidden": true,
+          "before": {
+            "width": 1144,
+            "height": 109.5
+          }
+        },
+        "正在读取绑定状态…": {
+          "firstSeen": 98.20000004768372,
+          "initiallyHidden": true,
+          "before": {
+            "width": 742,
+            "height": 20
+          }
+        },
+        "正在读取登录配置…": {
+          "firstSeen": 98.29999995231628,
+          "initiallyHidden": true,
+          "before": {
+            "width": 742,
+            "height": 20
+          }
+        }
+      }
+    },
+    {
+      "route": "/settings/account",
+      "mode": "slow",
+      "samples": {
+        "正在读取账号取得当前邮箱后即可修改账号。": {
+          "firstSeen": 44.30000019073486,
+          "initiallyHidden": true,
+          "before": {
+            "width": 1144,
+            "height": 109.5
+          }
+        },
+        "正在读取绑定状态…": {
+          "firstSeen": 103.20000004768372,
+          "initiallyHidden": true,
+          "before": {
+            "width": 742,
+            "height": 20
+          },
+          "visibleAfter": 302,
+          "after": {
+            "width": 742,
+            "height": 20
+          }
+        },
+        "正在读取登录配置…": {
+          "firstSeen": 103.20000004768372,
+          "initiallyHidden": true,
+          "before": {
+            "width": 742,
+            "height": 20
+          },
+          "visibleAfter": 302.10000014305115,
+          "after": {
+            "width": 742,
+            "height": 20
+          }
+        }
+      }
+    },
+    {
+      "route": "/settings/api",
+      "mode": "fast",
+      "samples": {
+        "正在读取 Token…": {
+          "firstSeen": 63.60000014305115,
+          "initiallyHidden": true,
+          "before": {
+            "width": 1094,
+            "height": 24
+          }
+        }
+      }
+    },
+    {
+      "route": "/settings/api",
+      "mode": "slow",
+      "samples": {
+        "正在读取 Token…": {
+          "firstSeen": 47,
+          "initiallyHidden": true,
+          "before": {
+            "width": 1094,
+            "height": 24
+          },
+          "visibleAfter": 342.60000014305115,
+          "after": {
+            "width": 1094,
+            "height": 24
+          }
+        }
+      }
+    },
+    {
+      "route": "/settings/api/usage",
+      "mode": "fast",
+      "samples": {
+        "正在读取站点地址和上传限制…": {
+          "firstSeen": 73.59999990463257,
+          "initiallyHidden": true,
+          "before": {
+            "width": 840,
+            "height": 20
+          }
+        }
+      }
+    },
+    {
+      "route": "/settings/api/usage",
+      "mode": "slow",
+      "samples": {
+        "正在读取站点地址和上传限制…": {
+          "firstSeen": 53.5,
+          "initiallyHidden": true,
+          "before": {
+            "width": 840,
+            "height": 20
+          },
+          "visibleAfter": 345.5,
+          "after": {
+            "width": 840,
+            "height": 20
+          }
+        }
+      }
+    },
+    {
+      "route": "/settings/general/branding",
+      "mode": "fast",
+      "samples": {
+        "正在读取品牌设置…": {
+          "firstSeen": 46.40000009536743,
+          "initiallyHidden": true,
+          "before": {
+            "width": 960,
+            "height": 62
+          }
+        }
+      }
+    },
+    {
+      "route": "/settings/general/branding",
+      "mode": "slow",
+      "samples": {
+        "正在读取品牌设置…": {
+          "firstSeen": 42.09999990463257,
+          "initiallyHidden": true,
+          "before": {
+            "width": 960,
+            "height": 62
+          },
+          "visibleAfter": 333.5,
+          "after": {
+            "width": 960,
+            "height": 62
+          }
+        }
+      }
+    },
+    {
+      "route": "/settings/storage",
+      "mode": "fast",
+      "samples": {
+        "正在读取存储…": {
+          "firstSeen": 56.299999952316284,
+          "initiallyHidden": true,
+          "before": {
+            "width": 1144,
+            "height": 20
+          }
+        }
+      }
+    },
+    {
+      "route": "/settings/storage",
+      "mode": "slow",
+      "samples": {
+        "正在读取存储…": {
+          "firstSeen": 41.80000019073486,
+          "initiallyHidden": true,
+          "before": {
+            "width": 1144,
+            "height": 20
+          },
+          "visibleAfter": 324.59999990463257,
+          "after": {
+            "width": 1144,
+            "height": 20
+          }
+        }
+      }
+    },
+    {
+      "route": "/settings/storage/new",
+      "mode": "fast",
+      "samples": {
+        "正在读取存储配置": {
+          "firstSeen": 48.200000047683716,
+          "initiallyHidden": true,
+          "before": {
+            "width": 1144,
+            "height": 24
+          }
+        }
+      }
+    },
+    {
+      "route": "/settings/storage/new",
+      "mode": "slow",
+      "samples": {
+        "正在读取存储配置": {
+          "firstSeen": 33,
+          "initiallyHidden": true,
+          "before": {
+            "width": 1144,
+            "height": 24
+          },
+          "visibleAfter": 333.7000000476837,
+          "after": {
+            "width": 1144,
+            "height": 24
+          }
+        }
+      }
+    },
+    {
+      "route": "/settings/storage/27f3c5fd-e3e8-45a9-99d1-8cd981c915f4",
+      "mode": "fast",
+      "samples": {
+        "正在读取存储配置": {
+          "firstSeen": 41.200000047683716,
+          "initiallyHidden": true,
+          "before": {
+            "width": 1144,
+            "height": 24
+          }
+        }
+      }
+    },
+    {
+      "route": "/settings/storage/27f3c5fd-e3e8-45a9-99d1-8cd981c915f4",
+      "mode": "slow",
+      "samples": {
+        "正在读取存储配置": {
+          "firstSeen": 50.700000047683716,
+          "initiallyHidden": true,
+          "before": {
+            "width": 1144,
+            "height": 24
+          },
+          "visibleAfter": 331.2000000476837,
+          "after": {
+            "width": 1144,
+            "height": 24
+          }
+        }
+      }
+    },
+    {
+      "route": "/settings/storage/27f3c5fd-e3e8-45a9-99d1-8cd981c915f4/cors",
+      "mode": "fast",
+      "samples": {
+        "正在读取直传设置": {
+          "firstSeen": 44.700000047683716,
+          "initiallyHidden": true,
+          "before": {
+            "width": 1144,
+            "height": 24
+          }
+        }
+      }
+    },
+    {
+      "route": "/settings/storage/27f3c5fd-e3e8-45a9-99d1-8cd981c915f4/cors",
+      "mode": "slow",
+      "samples": {
+        "正在读取直传设置": {
+          "firstSeen": 41.700000047683716,
+          "initiallyHidden": true,
+          "before": {
+            "width": 1144,
+            "height": 24
+          },
+          "visibleAfter": 326.2000000476837,
+          "after": {
+            "width": 1144,
+            "height": 24
+          }
+        }
+      }
+    },
+    {
+      "route": "/shares/5ccc6030-bca6-4e96-9a64-dc02c8400c99",
+      "mode": "fast",
+      "samples": {
+        "正在读取分享设置…": {
+          "firstSeen": 56.40000009536743,
+          "initiallyHidden": true,
+          "before": {
+            "width": 1144,
+            "height": 24
+          }
+        }
+      }
+    },
+    {
+      "route": "/shares/5ccc6030-bca6-4e96-9a64-dc02c8400c99",
+      "mode": "slow",
+      "samples": {
+        "正在读取分享设置…": {
+          "firstSeen": 41.39999985694885,
+          "initiallyHidden": true,
+          "before": {
+            "width": 1144,
+            "height": 24
+          },
+          "visibleAfter": 332.7000000476837,
+          "after": {
+            "width": 1144,
+            "height": 24
+          }
+        }
+      }
+    },
+    {
+      "route": "/upload",
+      "mode": "fast",
+      "samples": {
+        "正在读取上传设置…": {
+          "firstSeen": 48.5,
+          "initiallyHidden": true,
+          "before": {
+            "width": 1144,
+            "height": 24
+          }
+        }
+      }
+    },
+    {
+      "route": "/upload",
+      "mode": "slow",
+      "samples": {
+        "正在读取上传设置…": {
+          "firstSeen": 39.39999985694885,
+          "initiallyHidden": true,
+          "before": {
+            "width": 1144,
+            "height": 24
+          },
+          "visibleAfter": 333.2000000476837,
+          "after": {
+            "width": 1144,
+            "height": 24
+          }
+        }
+      }
+    },
+    {
+      "width": 360,
+      "theme": "light",
+      "reducedMotion": true,
+      "samples": {
+        "正在读取处理设置请稍候，取得已保存设置后再编辑。": {
+          "firstSeen": 584.5,
+          "initiallyHidden": true,
+          "before": {
+            "width": 328,
+            "height": 102
+          },
+          "visibleAfter": 301.09999990463257,
+          "after": {
+            "width": 328,
+            "height": 102
+          }
+        }
+      }
+    },
+    {
+      "width": 360,
+      "theme": "dark",
+      "reducedMotion": true,
+      "samples": {
+        "正在读取处理设置请稍候，取得已保存设置后再编辑。": {
+          "firstSeen": 1486.7999999523163,
+          "initiallyHidden": true,
+          "before": {
+            "width": 328,
+            "height": 102
+          },
+          "visibleAfter": 292.40000009536743,
+          "after": {
+            "width": 328,
+            "height": 102
+          }
+        }
+      }
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "reducedMotion": true,
+      "samples": {
+        "正在读取处理设置请稍候，取得已保存设置后再编辑。": {
+          "firstSeen": 1505,
+          "initiallyHidden": true,
+          "before": {
+            "width": 358,
+            "height": 102
+          },
+          "visibleAfter": 295,
+          "after": {
+            "width": 358,
+            "height": 102
+          }
+        }
+      }
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "reducedMotion": true,
+      "samples": {
+        "正在读取处理设置请稍候，取得已保存设置后再编辑。": {
+          "firstSeen": 1521,
+          "initiallyHidden": true,
+          "before": {
+            "width": 358,
+            "height": 102
+          },
+          "visibleAfter": 295,
+          "after": {
+            "width": 358,
+            "height": 102
+          }
+        }
+      }
+    },
+    {
+      "width": 430,
+      "theme": "light",
+      "reducedMotion": true,
+      "samples": {
+        "正在读取处理设置请稍候，取得已保存设置后再编辑。": {
+          "firstSeen": 1542.0999999046326,
+          "initiallyHidden": true,
+          "before": {
+            "width": 398,
+            "height": 102
+          },
+          "visibleAfter": 289.7999999523163,
+          "after": {
+            "width": 398,
+            "height": 102
+          }
+        }
+      }
+    },
+    {
+      "width": 430,
+      "theme": "dark",
+      "reducedMotion": true,
+      "samples": {
+        "正在读取处理设置请稍候，取得已保存设置后再编辑。": {
+          "firstSeen": 1514.8999998569489,
+          "initiallyHidden": true,
+          "before": {
+            "width": 398,
+            "height": 102
+          },
+          "visibleAfter": 294.2000000476837,
+          "after": {
+            "width": 398,
+            "height": 102
+          }
+        }
+      }
+    },
+    {
+      "width": 768,
+      "theme": "light",
+      "reducedMotion": true,
+      "samples": {
+        "正在读取处理设置请稍候，取得已保存设置后再编辑。": {
+          "firstSeen": 1496.7999999523163,
+          "initiallyHidden": true,
+          "before": {
+            "width": 736,
+            "height": 102
+          },
+          "visibleAfter": 299.40000009536743,
+          "after": {
+            "width": 736,
+            "height": 102
+          }
+        }
+      }
+    },
+    {
+      "width": 768,
+      "theme": "dark",
+      "reducedMotion": true,
+      "samples": {
+        "正在读取处理设置请稍候，取得已保存设置后再编辑。": {
+          "firstSeen": 1474.5,
+          "initiallyHidden": true,
+          "before": {
+            "width": 736,
+            "height": 102
+          },
+          "visibleAfter": 297,
+          "after": {
+            "width": 736,
+            "height": 102
+          }
+        }
+      }
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "reducedMotion": true,
+      "samples": {
+        "正在读取处理设置请稍候，取得已保存设置后再编辑。": {
+          "firstSeen": 1405,
+          "initiallyHidden": true,
+          "before": {
+            "width": 1144,
+            "height": 118
+          },
+          "visibleAfter": 289.2000000476837,
+          "after": {
+            "width": 1144,
+            "height": 118
+          }
+        }
+      }
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "reducedMotion": true,
+      "samples": {
+        "正在读取处理设置请稍候，取得已保存设置后再编辑。": {
+          "firstSeen": 398.7999999523163,
+          "initiallyHidden": true,
+          "before": {
+            "width": 1144,
+            "height": 118
+          },
+          "visibleAfter": 299.7000000476837,
+          "after": {
+            "width": 1144,
+            "height": 118
+          }
+        }
+      }
+    },
+    {
+      "error": "503",
+      "retryImmediatelyVisible": true
+    },
+    {
+      "retryRestartsDelay": true
+    }
+  ],
+  "browserErrors": []
+}

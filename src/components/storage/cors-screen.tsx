@@ -1,5 +1,7 @@
 'use client';
 
+import { DelayedLoading } from '../delayed-loading';
+
 import { ComponentEntrance } from '../component-entrance';
 import { useRef, useState, type ComponentProps } from 'react';
 import Link from 'next/link';
@@ -135,9 +137,11 @@ export function CorsScreen({
           {title}
         </ComponentEntrance>
         {query.isPending ? (
-          <p role="status" className="flex items-center gap-2">
-            正在读取直传设置
-          </p>
+          <DelayedLoading>
+            <p role="status" className="flex items-center gap-2">
+              正在读取直传设置
+            </p>
+          </DelayedLoading>
         ) : query.isError ? (
           <Alert status="danger" role="alert">
             <Alert.Content>

@@ -1,5 +1,7 @@
 'use client';
 
+import { DelayedLoading } from '../delayed-loading';
+
 import { ComponentEntrance } from '../component-entrance';
 import { useEffect, useState, type ComponentProps } from 'react';
 import { useQuery } from '@tanstack/react-query';
@@ -230,9 +232,11 @@ export function StorageList(
           </Link>
         </ComponentEntrance>
         {loading ? (
-          <p role="status" className="text-sm text-muted">
-            正在读取存储…
-          </p>
+          <DelayedLoading>
+            <p role="status" className="text-sm text-muted">
+              正在读取存储…
+            </p>
+          </DelayedLoading>
         ) : error ? (
           <Alert role="alert" status="danger">
             <Alert.Content>

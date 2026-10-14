@@ -1,5 +1,7 @@
 'use client';
 
+import { DelayedLoading } from '../delayed-loading';
+
 import type { useGithubAccount } from './use-github-account';
 
 type Account = ReturnType<typeof useGithubAccount>;
@@ -44,9 +46,14 @@ export function GithubSettingsStatus({
           ) : null}
         </>
       ) : loading ? (
-        <p role="status" className="flex items-center gap-2 text-sm text-muted">
-          正在读取登录配置…
-        </p>
+        <DelayedLoading>
+          <p
+            role="status"
+            className="flex items-center gap-2 text-sm text-muted"
+          >
+            正在读取登录配置…
+          </p>
+        </DelayedLoading>
       ) : query.isError ? (
         <p role="alert" className="text-[13px] leading-normal text-danger">
           {query.error.message}
@@ -102,9 +109,11 @@ export function GithubBindingStatus({
     );
   if (loading)
     return (
-      <p role="status" className="flex items-center gap-2 text-sm text-muted">
-        正在读取绑定状态…
-      </p>
+      <DelayedLoading>
+        <p role="status" className="flex items-center gap-2 text-sm text-muted">
+          正在读取绑定状态…
+        </p>
+      </DelayedLoading>
     );
   if (query.isError)
     return (

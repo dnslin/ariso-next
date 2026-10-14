@@ -1,5 +1,7 @@
 'use client';
 
+import { DelayedLoading } from '../delayed-loading';
+
 import { ComponentEntrance } from '../component-entrance';
 import {
   useCallback,
@@ -199,14 +201,16 @@ export function TokensPage({ timeZone, ...shell }: Props) {
                 </Link>
               </div>
             ) : initialLoading ? (
-              <div
-                data-testid="api-loading"
-                role="status"
-                aria-label="正在读取 Token 列表"
-                className="text-base leading-normal text-foreground"
-              >
-                正在读取 Token…
-              </div>
+              <DelayedLoading>
+                <div
+                  data-testid="api-loading"
+                  role="status"
+                  aria-label="正在读取 Token 列表"
+                  className="text-base leading-normal text-foreground"
+                >
+                  正在读取 Token…
+                </div>
+              </DelayedLoading>
             ) : query.isError ? (
               <div data-testid="api-load-error" className="grid gap-4">
                 <p

@@ -118,6 +118,7 @@ it.each(pages)('$name 首次读取仍等待本次 GET，缓存不能提前露出
   state.fetching = true;
   const html = page.render();
   expect(html).toContain(page.loading);
+  expect(html).toContain('class="contents invisible" aria-hidden="true"');
   expect(html).not.toContain(page.content);
   expect(html).not.toContain('data-slot="spinner"');
 });
@@ -154,4 +155,5 @@ it.each(pages)('$name 读取返回 401 时立即隐藏已有内容', (page) => {
   expect(html).toContain('会话已失效');
   expect(html).toContain('重新登录');
   expect(html).not.toContain(page.content);
+  expect(html).not.toContain('class="contents invisible"');
 });
