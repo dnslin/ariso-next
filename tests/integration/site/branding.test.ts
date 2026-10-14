@@ -230,6 +230,13 @@ describe('品牌文件真实 SQLite 和磁盘生命周期', () => {
       'png:exclude-chunks=sRGB',
       source,
     ]);
+    // Write explicit color markers rather than relying on encoder defaults.
+    await execa('exiftool', [
+      '-PNG:Gamma=1',
+      '-PNG:SRGBRendering=',
+      '-overwrite_original',
+      source,
+    ]);
     const { stdout: colorTags } = await execa('exiftool', [
       '-json',
       '-n',
