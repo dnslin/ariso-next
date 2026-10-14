@@ -80,8 +80,15 @@ export async function analyticsRecovery(page, config, tools, fixture, report) {
     let boundary = await analyticsBoundary(page, { hold: true }, true);
     try {
       await page.goto(`${config.origin}/dashboard?days=7`);
-      await page.waitForSelector('[data-testid="overview-loading"]');
-      await page.waitForSelector('[data-testid="usage-loading"]');
+      await page.waitForSelector(
+        '[data-testid="dashboard-overview"][aria-busy="true"]',
+      );
+      assert.equal(
+        await page.evaluate(() =>
+          /首次读取统计|正在读取存储占用/.test(document.body.textContent),
+        ),
+        false,
+      );
       assert.equal(
         await page.evaluate(
           () => !!document.querySelector('[data-testid="dashboard-metrics"]'),
@@ -98,12 +105,12 @@ export async function analyticsRecovery(page, config, tools, fixture, report) {
       await boundary.release();
       await page.waitForSelector('[data-testid="dashboard-metrics"]');
       await page.waitForSelector('[data-testid="analytics-usage-summary"]');
-      await page.waitForSelector('[data-testid="overview-loading"]', {
-        state: 'hidden',
-      });
-      await page.waitForSelector('[data-testid="usage-loading"]', {
-        state: 'hidden',
-      });
+      await page.waitForSelector(
+        '[data-testid="dashboard-overview"][aria-busy="true"]',
+        {
+          state: 'hidden',
+        },
+      );
     } finally {
       await boundary.dispose();
     }

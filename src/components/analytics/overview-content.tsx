@@ -14,14 +14,7 @@ import {
 
 const TrendChart = dynamic(() => import('./trend-chart'), {
   ssr: false,
-  loading: () => (
-    <p
-      role="status"
-      className="grid h-[220px] place-items-center text-sm text-muted sm:h-[252px]"
-    >
-      正在读取趋势图…
-    </p>
-  ),
+  loading: () => <div aria-busy="true" className="h-[220px] sm:h-[252px]" />,
 });
 
 export function AnalyticsTrend({

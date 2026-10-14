@@ -8,7 +8,7 @@ import type {
 } from './use-analytics-query';
 import { AnalyticsMetric, AnalyticsMetadata } from './overview-summary';
 import { AnalyticsFailures } from './overview-content';
-import { AnalyticsLoading, AnalyticsReadFailure } from './query-state';
+import { AnalyticsReadFailure } from './query-state';
 import { UsageSummary } from './usage-content';
 import { bytes, number } from './presentation';
 
@@ -88,6 +88,7 @@ export function DashboardPanel({
       className="grid min-w-0 gap-6"
       data-testid="dashboard-overview"
       aria-label="总览"
+      aria-busy={overview.isFetching || usage.isFetching}
     >
       {overview.error ? (
         <AnalyticsReadFailure
@@ -116,8 +117,6 @@ export function DashboardPanel({
           <DashboardResources data={overview.data} usage={usage.data} />
           <AnalyticsFailures data={overview.data} />
         </>
-      ) : !overview.error ? (
-        <AnalyticsLoading scope="overview" />
       ) : null}
       {usage.error ? (
         <AnalyticsReadFailure
@@ -129,11 +128,7 @@ export function DashboardPanel({
           retry={() => void usage.refetch()}
         />
       ) : null}
-      {usage.data ? (
-        <UsageSummary data={usage.data} />
-      ) : !usage.error ? (
-        <AnalyticsLoading scope="usage" />
-      ) : null}
+      {usage.data ? <UsageSummary data={usage.data} /> : null}
     </section>
   );
 }

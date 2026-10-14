@@ -154,13 +154,17 @@ it('retained old records remain readable but cannot open or mutate while a chang
   expect(html).not.toContain('正在读取回收记录');
 });
 
-it('first read and real empty state remain distinct without a rotating indicator', () => {
+it('keeps the first read silent and distinct from the real empty state', () => {
   runtime.pending = true;
+  runtime.fetching = true;
   const loading = renderToStaticMarkup(createElement(TrashScreen, shell));
-  expect(loading).toContain('正在读取回收记录…');
+  expect(loading).toContain('aria-busy="true"');
+  expect(loading).toMatch(/<header[^>]*data-component-entry/);
+  expect(loading).not.toContain('正在读取回收记录');
   expect(loading).not.toContain('data-slot="spinner"');
   expect(loading).not.toContain('data-testid="trash-empty"');
   runtime.pending = false;
+  runtime.fetching = false;
   runtime.items = [];
   const empty = renderToStaticMarkup(createElement(TrashScreen, shell));
   expect(empty).toContain('回收站为空');

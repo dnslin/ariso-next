@@ -167,7 +167,9 @@ async function cardsSettled(count) {
     await new Promise(requestAnimationFrame);
     return (
       ready() &&
-      !document.querySelector('[data-testid="albums-loading"]') &&
+      !document.querySelector(
+        '[data-testid="albums-screen"][aria-busy="true"]',
+      ) &&
       document
         .querySelector('[data-testid="albums-list"]')
         ?.getAttribute('aria-busy') !== 'true'
@@ -477,7 +479,15 @@ try {
     await page.waitForFunction(
       () =>
         window.__motionReadControl.held &&
-        !!document.querySelector('[data-testid="albums-loading"]'),
+        !!document.querySelector(
+          '[data-testid="albums-screen"][aria-busy="true"]',
+        ),
+    );
+    assert.equal(
+      await page.evaluate(() =>
+        document.body.textContent.includes('正在读取相册'),
+      ),
+      false,
     );
     await observe();
     await page.evaluate(() => window.__motionReadControl.release());

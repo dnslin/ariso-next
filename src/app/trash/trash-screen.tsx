@@ -488,7 +488,6 @@ export function TrashScreen({
           {missing ? (
             <p role="alert">图片记录已不存在，无法恢复。请返回回收站。</p>
           ) : null}
-          {detail.isPending ? <p role="status">正在读取回收记录…</p> : null}
           {record && !(cleanup.visible && !cleanup.confirmation) ? (
             <TrashRecord
               record={record}
@@ -499,7 +498,7 @@ export function TrashScreen({
           <CleanupContent cleanup={cleanup} onBack={leaveCleanup} />
         </>
       ) : (
-        <section className="grid min-w-0 gap-5">
+        <section className="grid min-w-0 gap-5" aria-busy={list.isPending}>
           {storageSource ? (
             <Link
               href={storageSource}
@@ -723,7 +722,6 @@ export function TrashScreen({
               </Alert.Content>
             </Alert>
           ) : null}
-          {list.isPending ? <p role="status">正在读取回收记录…</p> : null}
           {data?.items.length ? (
             <Card className="gap-0 rounded-2xl border border-border bg-background px-3 py-2 shadow-none md:px-5 dark:bg-surface">
               <Card.Content className="p-0">

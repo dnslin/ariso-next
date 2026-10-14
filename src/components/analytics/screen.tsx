@@ -19,7 +19,7 @@ import {
 } from './navigation';
 import { AnalyticsScopeDialog } from './scope-dialog';
 import { AnalyticsLink } from './presentation';
-import { AnalyticsLoading, AnalyticsReadFailure } from './query-state';
+import { AnalyticsReadFailure } from './query-state';
 import { AnalyticsOverviewPanel } from './overview-panel';
 import { UsageContent } from './usage-content';
 import { DashboardPanel } from './dashboard-panel';
@@ -127,6 +127,7 @@ export function AnalyticsScreen(props: {
         data-testid="analytics-page"
         data-page={props.dashboard ? 'dashboard' : 'analytics'}
         data-view={view}
+        aria-busy={usageView ? usage.isFetching : overview.isFetching}
         className="grid min-w-0 gap-6 pb-4"
       >
         {usageView || dailyView ? (
@@ -244,8 +245,6 @@ export function AnalyticsScreen(props: {
             ) : null}
             {usage.data ? (
               <UsageContent data={usage.data} timeZone={props.timeZone} />
-            ) : !usage.error ? (
-              <AnalyticsLoading scope="usage" />
             ) : null}
           </>
         ) : props.dashboard && !dailyView ? (

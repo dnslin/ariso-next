@@ -115,13 +115,14 @@ it.each([
   { Screen: TagsScreen, label: '正在读取标签…' },
   { Screen: SharesScreen, label: '正在读取分享…' },
 ])(
-  'first read keeps $label without a spinner or false empty state',
+  'first read omits $label and keeps the page entrance without a false empty state',
   ({ Screen, label }) => {
     runtime.pending = true;
     runtime.fetching = true;
     const html = renderToStaticMarkup(createElement(Screen, shell));
-    expect(html).toContain('role="status"');
-    expect(html).toContain(label);
+    expect(html).toContain('aria-busy="true"');
+    expect(html).toMatch(/<header[^>]*data-component-entry/);
+    expect(html).not.toContain(label);
     expect(html).not.toContain('data-slot="spinner"');
     expect(html).not.toContain('data-testid="tags-empty"');
     expect(html).not.toContain('data-testid="shares-empty"');

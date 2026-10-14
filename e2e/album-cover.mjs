@@ -195,7 +195,8 @@ async function content(id = albumId, query = '') {
   await page.goto(`${config.origin}${at(id)}${query}`);
   await page.waitForSelector('[data-testid="album-cover-summary"]');
   await page.waitForFunction(
-    () => !document.querySelector('[data-testid="library-loading"]'),
+    () =>
+      !document.querySelector('[data-testid="library-list"][aria-busy="true"]'),
   );
 }
 async function picker() {

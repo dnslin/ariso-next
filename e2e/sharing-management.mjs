@@ -83,7 +83,10 @@ async function list() {
   await page.goto(`${config.origin}/shares`);
   await page.waitForSelector('[data-testid="shares-screen"]');
   await page.waitForFunction(
-    () => !document.querySelector('[data-testid="shares-loading"]'),
+    () =>
+      !document.querySelector(
+        '[data-testid="shares-screen"][aria-busy="true"]',
+      ),
   );
 }
 async function visibleShareRow(id) {

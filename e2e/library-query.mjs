@@ -43,7 +43,8 @@ const loaded = (count) =>
       Number(
         document.querySelector('[data-testid="library-list"]')?.dataset
           .loadedCount,
-      ) === count && !document.querySelector('[data-testid="library-loading"]'),
+      ) === count &&
+      !document.querySelector('[data-testid="library-list"][aria-busy="true"]'),
     count,
   );
 async function state() {

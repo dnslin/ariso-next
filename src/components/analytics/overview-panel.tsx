@@ -4,7 +4,7 @@ import type { ReportDays } from './read-analytics';
 import { Button } from '@heroui/react/button';
 import { RefreshCw } from 'lucide-react';
 import type { useAnalyticsOverview } from './use-analytics-query';
-import { AnalyticsLoading, AnalyticsReadFailure } from './query-state';
+import { AnalyticsReadFailure } from './query-state';
 import { AnalyticsPeriods } from './period-controls';
 import { AnalyticsMetadata, AnalyticsMetrics } from './overview-summary';
 import {
@@ -50,6 +50,7 @@ export function AnalyticsOverviewPanel({
       <ComponentEntrance
         className="grid gap-2"
         data-testid="analytics-period-controls"
+        aria-busy={overview.isFetching}
         delay={0.055}
       >
         <AnalyticsPeriods days={days} onChange={onDays} />
@@ -133,8 +134,6 @@ export function AnalyticsOverviewPanel({
             </>
           )}
         </section>
-      ) : !overview.error ? (
-        <AnalyticsLoading scope="overview" />
       ) : null}
       <p className="text-xs text-muted">访问次数为近似值</p>
     </>

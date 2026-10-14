@@ -519,7 +519,11 @@ export function AlbumsScreen(props: {
         ) : undefined
       }
     >
-      <section className="grid min-w-0 grid-cols-1 gap-4">
+      <section
+        className="grid min-w-0 grid-cols-1 gap-4"
+        aria-busy={props.albumId ? detail.isPending : list.isPending}
+        data-testid="albums-screen"
+      >
         {props.albumId ? (
           <div className="flex items-center justify-between gap-3">
             <ComponentEntrance
@@ -639,15 +643,6 @@ export function AlbumsScreen(props: {
             </div>
           </>
         )}
-        {(props.albumId ? detail.isPending : list.isPending) ? (
-          <p
-            role="status"
-            data-testid="albums-loading"
-            className="flex items-center gap-2 py-8"
-          >
-            正在读取相册…
-          </p>
-        ) : null}
         {readError}
       </section>
       {albumDialog}

@@ -4,25 +4,6 @@ import { Button } from '@heroui/react/button';
 import { Alert } from '@heroui/react/alert';
 import { timestamp } from './presentation';
 
-export function AnalyticsLoading({ scope }: { scope: 'overview' | 'usage' }) {
-  return (
-    <div
-      className="grid min-w-0 gap-3 py-5"
-      aria-busy="true"
-      role="status"
-      data-testid={`${scope}-loading`}
-    >
-      <h2 className="text-[22px] font-medium leading-8">
-        {scope === 'overview' ? '首次读取统计' : '正在读取存储占用'}
-      </h2>
-      <p className="text-sm leading-[22px]">
-        {scope === 'overview'
-          ? '正在读取当前数量与已保存统计，请稍候。'
-          : '正在读取当前存储占用，请稍候。'}
-      </p>
-    </div>
-  );
-}
 export function AnalyticsReadFailure({
   scope,
   error,

@@ -14,7 +14,9 @@ async function settledTags(page) {
       document.querySelector(
         '[data-testid="tags-list"],[data-testid="tags-empty"],[data-testid="tags-error"]',
       ) &&
-      !document.querySelector('[data-testid="tags-loading"]'),
+      !document.querySelector(
+        '[aria-labelledby="tags-title"][aria-busy="true"]',
+      ),
   );
 }
 
@@ -45,7 +47,9 @@ async function beginTrace(page) {
           (button) =>
             visible(button) && button.textContent.trim() === '新建标签',
         ),
-        pending: !!document.querySelector('[data-testid="tags-loading"]'),
+        pending: !!document.querySelector(
+          '[aria-labelledby="tags-title"][aria-busy="true"]',
+        ),
         error: !!document.querySelector('[data-testid="tags-error"]'),
         theme: document.documentElement.classList.contains('dark')
           ? 'dark'
@@ -203,8 +207,15 @@ async function emptyNavigation(page, config, report) {
         if (visit === 'enter') {
           await page.waitForFunction(
             () =>
-              !!document.querySelector('[data-testid="tags-loading"]') &&
-              typeof window.__themeTagRelease === 'function',
+              !!document.querySelector(
+                '[aria-labelledby="tags-title"][aria-busy="true"]',
+              ) && typeof window.__themeTagRelease === 'function',
+          );
+          assert.equal(
+            await page.evaluate(() =>
+              document.body.textContent.includes('正在读取标签'),
+            ),
+            false,
           );
           await screenshot(page, config, report, 'empty-pending', width, theme);
           await page.evaluate(() => window.__themeTagRelease());

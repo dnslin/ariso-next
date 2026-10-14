@@ -23,7 +23,9 @@ export async function verifyLibraryFilters({ page, config, sql, report }) {
     await page.waitForFunction(
       () =>
         !!document.querySelector('[data-testid="library-list"]') &&
-        !document.querySelector('[data-testid="library-loading"]'),
+        !document.querySelector(
+          '[data-testid="library-list"][aria-busy="true"]',
+        ),
     );
   }
   async function visit(query = 'q=issue173-&pageSize=40') {

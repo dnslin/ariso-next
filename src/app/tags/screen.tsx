@@ -192,6 +192,7 @@ export function TagsScreen(props: {
       <section
         className="grid min-w-0 gap-5 xl:gap-6"
         aria-labelledby="tags-title"
+        aria-busy={list.isPending && !!query}
       >
         <ComponentEntrance
           as="header"
@@ -270,15 +271,6 @@ export function TagsScreen(props: {
               </InputGroup>
             </TextField>
           </ComponentEntrance>
-        ) : null}
-        {list.isPending && query ? (
-          <p
-            role="status"
-            data-testid="tags-loading"
-            className="flex items-center gap-2 py-8"
-          >
-            正在读取标签…
-          </p>
         ) : null}
         {error ? (
           <Alert

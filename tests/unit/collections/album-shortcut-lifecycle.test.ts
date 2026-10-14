@@ -267,6 +267,17 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 
+it('keeps the initial album read silent without showing an empty result', () => {
+  vi.stubGlobal('fetch', () => new Promise<Response>(() => {}));
+  const render = lifetime(() => AlbumsScreen(props));
+  const html = renderToStaticMarkup(render());
+  expect(html).toContain('aria-busy="true"');
+  expect(html).toMatch(/<h1[^>]*data-component-entry/);
+  expect(html).not.toContain('正在读取相册');
+  expect(html).not.toContain('data-testid="albums-empty"');
+  expect(html).not.toContain('data-testid="albums-list"');
+});
+
 it('refreshes the current album list count and cover only for uploads with actual album relations', async () => {
   let current = album;
   const fetcher = vi.fn(async () =>

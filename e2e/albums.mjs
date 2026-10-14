@@ -55,7 +55,10 @@ async function list() {
   await page.goto(`${config.origin}/albums`);
   await page.waitForSelector('input[aria-label="搜索相册"]');
   await page.waitForFunction(
-    () => !document.querySelector('[data-testid="albums-loading"]'),
+    () =>
+      !document.querySelector(
+        '[data-testid="albums-screen"][aria-busy="true"]',
+      ),
   );
 }
 async function field(label) {
@@ -244,7 +247,9 @@ async function search(value, count) {
   await page.waitForFunction(
     ({ value, count }) =>
       document.querySelector('input[aria-label="搜索相册"]').value === value &&
-      !document.querySelector('[data-testid="albums-loading"]') &&
+      !document.querySelector(
+        '[data-testid="albums-screen"][aria-busy="true"]',
+      ) &&
       document.querySelectorAll('a[data-testid^="album-"]').length === count,
     { value, count },
   );

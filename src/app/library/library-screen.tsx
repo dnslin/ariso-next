@@ -22,7 +22,6 @@ import { storageReferenceReturn } from '../../components/storage/reference-navig
 import { OwnerShell } from '../../components/shell/owner-shell';
 import { useResetUpload } from '../../components/upload/provider';
 import type { LibraryDetail as Detail } from '../../server/library/detail-types';
-import { LibraryLoading } from './library-loading';
 import { ComponentEntrance } from '../../components/component-entrance';
 import { useDetailNavigation } from './use-detail-navigation';
 import { LibraryDetail } from '../../components/library/detail';
@@ -338,6 +337,7 @@ export function LibraryScreen(props: {
           data-loaded-count={query.items.length}
           data-layout={query.layout}
           data-loading-mode={query.loadingMode}
+          aria-busy={query.isPending}
         >
           {props.header ?? (
             <ComponentEntrance className="flex min-w-0 items-center justify-between gap-3">
@@ -488,7 +488,6 @@ export function LibraryScreen(props: {
             <p role="alert">登录已失效，正在返回登录页。</p>
           ) : (
             <>
-              {query.isPending ? <LibraryLoading /> : null}
               {query.error ? (
                 <Alert status="danger" role="alert" data-testid="library-error">
                   <Alert.Content>

@@ -159,7 +159,11 @@ export function SharesScreen(props: {
         )
       }
     >
-      <section data-testid="shares-screen" className="grid min-w-0 gap-4">
+      <section
+        data-testid="shares-screen"
+        className="grid min-w-0 gap-4"
+        aria-busy={list.isPending && !query.error}
+      >
         <ComponentEntrance as="header" className="flex items-center gap-2">
           <h1 className="text-[28px] font-medium leading-normal md:text-[30px]">
             分享
@@ -232,15 +236,6 @@ export function SharesScreen(props: {
               </Link>
             ) : null}
           </ComponentEntrance>
-        ) : null}
-        {list.isPending && !query.error ? (
-          <p
-            role="status"
-            data-testid="shares-loading"
-            className="flex items-center gap-2 py-8"
-          >
-            正在读取分享…
-          </p>
         ) : null}
         {error ? (
           <Alert status="danger" data-testid="shares-error">

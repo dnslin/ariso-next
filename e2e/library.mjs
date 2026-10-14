@@ -324,7 +324,9 @@ libraryVerification: try {
   if (config.libraryPhase !== 'recovery') {
     await intercept('hold');
     await page.click('loc=role:button[name="刷新图库"]');
-    await page.waitForSelector('[data-testid="library-loading"]');
+    await page.waitForSelector(
+      '[data-testid="library-list"][aria-busy="true"]',
+    );
     await layouts('loading');
     await page.waitForFunction(
       () => typeof window.__libraryRelease === 'function',

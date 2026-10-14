@@ -80,7 +80,9 @@ export async function verifyLibrarySelectionReconciliation({
           document.querySelector('[data-testid="library-list"]')?.dataset
             .loadedCount,
         ) === loaded &&
-        !document.querySelector('[data-testid="library-loading"]'),
+        !document.querySelector(
+          '[data-testid="library-list"][aria-busy="true"]',
+        ),
       { number, loaded },
     );
     await settle();
@@ -864,7 +866,9 @@ export async function verifyLibrarySelectionReconciliation({
       () =>
         document.querySelector('[data-testid="library-list"]')?.dataset
           .loadedCount === '0' &&
-        !document.querySelector('[data-testid="library-loading"]'),
+        !document.querySelector(
+          '[data-testid="library-list"][aria-busy="true"]',
+        ),
     );
     await page.evaluate(() => window.__selection174.release());
     await settle();

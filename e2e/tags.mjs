@@ -54,7 +54,10 @@ async function list(query = '') {
     () =>
       !!document.querySelector(
         '[data-testid="tags-list"],[data-testid="tags-empty"],[data-testid="tags-error"]',
-      ) && !document.querySelector('[data-testid="tags-loading"]'),
+      ) &&
+      !document.querySelector(
+        '[aria-labelledby="tags-title"][aria-busy="true"]',
+      ),
   );
 }
 async function rows() {
@@ -73,7 +76,9 @@ async function search(value, count) {
   await page.waitForFunction(
     ({ value, count }) =>
       new URL(location.href).searchParams.get('q') === (value || null) &&
-      !document.querySelector('[data-testid="tags-loading"]') &&
+      !document.querySelector(
+        '[aria-labelledby="tags-title"][aria-busy="true"]',
+      ) &&
       [...document.querySelectorAll('[data-testid^="tag-"]')].filter(
         (row) => row.getClientRects().length,
       ).length === count,
@@ -177,7 +182,10 @@ async function returned() {
     state: 'hidden',
   });
   await page.waitForFunction(
-    () => !document.querySelector('[data-testid="tags-loading"]'),
+    () =>
+      !document.querySelector(
+        '[aria-labelledby="tags-title"][aria-busy="true"]',
+      ),
   );
 }
 async function layouts(state, widths = [390, 1440]) {
@@ -610,7 +618,8 @@ try {
         .includes('issue176-tag-1'),
   );
   await page.waitForFunction(
-    () => !document.querySelector('[data-testid="library-loading"]'),
+    () =>
+      !document.querySelector('[data-testid="library-list"][aria-busy="true"]'),
   );
   const library = await page.fetch('/api/images?tagId=issue176-tag-1');
   assert.equal(library.status, 200);
@@ -622,7 +631,9 @@ try {
     () =>
       document.querySelector('input[aria-label="搜索标签名称"]')?.value ===
         '远行' &&
-      !document.querySelector('[data-testid="tags-loading"]') &&
+      !document.querySelector(
+        '[aria-labelledby="tags-title"][aria-busy="true"]',
+      ) &&
       [...document.querySelectorAll('[data-testid^="tag-"]')].filter(
         (row) => row.getClientRects().length,
       ).length === 1,
@@ -855,7 +866,9 @@ try {
   await page.waitForFunction(
     () =>
       new URL(location.href).searchParams.get('page') === '2' &&
-      !document.querySelector('[data-testid="tags-loading"]'),
+      !document.querySelector(
+        '[aria-labelledby="tags-title"][aria-busy="true"]',
+      ),
   );
   const second = await rows();
   assert.equal(second.length, 40);
@@ -869,7 +882,10 @@ try {
   await page.evaluate(() => history.back());
   await page.waitForURL(pageTwo);
   await page.waitForFunction(
-    () => !document.querySelector('[data-testid="tags-loading"]'),
+    () =>
+      !document.querySelector(
+        '[aria-labelledby="tags-title"][aria-busy="true"]',
+      ),
   );
   assert.deepEqual(
     (await rows()).map((item) => item.id),
@@ -894,7 +910,9 @@ try {
   await page.waitForFunction(
     () =>
       !new URL(location.href).searchParams.has('q') &&
-      !document.querySelector('[data-testid="tags-loading"]') &&
+      !document.querySelector(
+        '[aria-labelledby="tags-title"][aria-busy="true"]',
+      ) &&
       [...document.querySelectorAll('[data-testid^="tag-"]')].filter(
         (row) => row.getClientRects().length,
       ).length === 40,
@@ -920,11 +938,16 @@ try {
   await page.fill('input[aria-label="搜索标签名称"]', '分页');
   await page.press('input[aria-label="搜索标签名称"]', 'Enter');
   await page.waitForFunction(() => typeof window.__tagRelease === 'function');
-  await page.waitForSelector('[data-testid="tags-loading"]');
+  await page.waitForSelector(
+    '[aria-labelledby="tags-title"][aria-busy="true"]',
+  );
   await layouts('loading');
   await restore();
   await page.waitForFunction(
-    () => !document.querySelector('[data-testid="tags-loading"]'),
+    () =>
+      !document.querySelector(
+        '[aria-labelledby="tags-title"][aria-busy="true"]',
+      ),
   );
   await intercept('GET', 'lost');
   await page.focus('input[aria-label="搜索标签名称"]');

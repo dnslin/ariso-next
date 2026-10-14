@@ -28,7 +28,9 @@ export async function verifyLibrarySelection({ page, config, report }) {
           document.querySelector('[data-testid="library-list"]')?.dataset
             .loadedCount,
         ) === count &&
-        !document.querySelector('[data-testid="library-loading"]') &&
+        !document.querySelector(
+          '[data-testid="library-list"][aria-busy="true"]',
+        ) &&
         document
           .querySelector('[data-testid="library-gallery"]')
           ?.getAttribute('aria-busy') === 'false',

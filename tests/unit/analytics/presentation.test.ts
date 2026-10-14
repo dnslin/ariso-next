@@ -20,7 +20,6 @@ import {
   DashboardResources,
 } from '../../../src/components/analytics/dashboard-panel';
 import { AnalyticsOverviewPanel } from '../../../src/components/analytics/overview-panel';
-import { AnalyticsLoading } from '../../../src/components/analytics/query-state';
 import TrendChart from '../../../src/components/analytics/trend-chart';
 import type {
   AnalyticsOverview,
@@ -81,17 +80,26 @@ describe('analytics presentation from real report fields', () => {
       expect(loaded).toContain(height);
     }
     expect(loading).not.toContain('skeleton');
-    expect(loading).toContain('正在读取趋势图');
+    expect(loading).toContain('aria-busy="true"');
+    expect(loading).not.toContain('正在读取趋势图');
   });
-  it('announces the first read without displaying a zero result', () => {
-    for (const scope of ['overview', 'usage'] as const) {
-      const reading = html(AnalyticsLoading, { scope });
+  it('keeps the first dashboard reads silent without displaying a zero result', () => {
+    for (const isFetching of [false, true]) {
+      const query = {
+        data: undefined,
+        error: null,
+        isFetching: true,
+        refetch: vi.fn(),
+      };
+      const reading = html(DashboardPanel, {
+        overview: query,
+        usage: { ...query, isFetching },
+        timeZone: 'UTC',
+      });
       expect(reading).toContain('aria-busy="true"');
-      expect(reading).toContain('role="status"');
-      expect(reading).toContain('请稍候');
-      expect(reading).toContain(
-        scope === 'overview' ? '首次读取统计' : '正在读取存储占用',
-      );
+      expect(reading).not.toContain('role="status"');
+      expect(reading).not.toContain('读取统计');
+      expect(reading).not.toContain('读取存储占用');
       expect(reading).not.toContain('暂无访问');
       expect(reading).not.toContain('0 次');
       expect(reading).not.toContain('skeleton');
@@ -356,7 +364,11 @@ describe('analytics presentation from real report fields', () => {
         onStatistics: vi.fn(),
       });
       expect([...markup.matchAll(/aria-label="统计周期"/g)]).toHaveLength(1);
-      expect(markup).toContain(error ? 'overview-error' : 'overview-loading');
+      if (error) expect(markup).toContain('overview-error');
+      else {
+        expect(markup).toContain('aria-busy="true"');
+        expect(markup).not.toContain('首次读取统计');
+      }
       expect(markup).not.toContain('analytics-overview');
       expect(markup).not.toContain('analytics-metrics');
     }

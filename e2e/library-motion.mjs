@@ -511,7 +511,15 @@ try {
     await page.waitForFunction(
       () =>
         window.__motionReadControl.held &&
-        !!document.querySelector('[data-testid="library-loading"]'),
+        !!document.querySelector(
+          '[data-testid="library-list"][aria-busy="true"]',
+        ),
+    );
+    assert.equal(
+      await page.evaluate(() =>
+        document.body.textContent.includes('正在加载图片，请稍候。'),
+      ),
+      false,
     );
     assert.equal(
       await page.evaluate(

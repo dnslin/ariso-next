@@ -264,8 +264,18 @@ export async function verifyLibraryTrash({ page, config, sql, report }) {
   await page.waitForFunction(
     () => typeof window.__releaseInitialTrashRead === 'function',
   );
-  await page.waitForFunction(() =>
-    document.body.textContent.includes('正在读取回收记录'),
+  await page.waitForFunction(
+    () =>
+      document
+        .querySelector('#trash-title')
+        ?.closest('section')
+        ?.getAttribute('aria-busy') === 'true',
+  );
+  assert.equal(
+    await page.evaluate(() =>
+      document.body.textContent.includes('正在读取回收记录'),
+    ),
+    false,
   );
   assert.equal(
     await page.evaluate(

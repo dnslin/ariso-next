@@ -28,7 +28,9 @@ export async function verifyLibraryScale({ page, config, sql, report }) {
           document.querySelector('[data-testid="library-list"]')?.dataset
             .loadedCount,
         ) === expected &&
-        !document.querySelector('[data-testid="library-loading"]'),
+        !document.querySelector(
+          '[data-testid="library-list"][aria-busy="true"]',
+        ),
       expected,
     );
   const settled = () =>
