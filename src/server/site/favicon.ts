@@ -72,12 +72,20 @@ export async function generateFavicon(
     'center',
     '-extent',
     '48x48',
-    '-strip',
     '-define',
     'png:compression-level=9',
     '-define',
     'png:exclude-chunks=date,time',
     `png:${path}`,
   ]);
+  // ICC defines how the pixels are displayed. ExifTool removes the other
+  // metadata without ImageMagick's text-chunk exclusion also dropping ICC.
+  const cleanup = startMediaTool(
+    'exiftool',
+    ['-all=', '--ICC_Profile:all', '-overwrite_original', path],
+    { workspace, cancelSignal: signal, timeout: 30_000 },
+  );
+  const error = await cleanup.settled;
+  if (error) throw error;
   return { path, extension: 'png', mime: 'image/png' };
 }

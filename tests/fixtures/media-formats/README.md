@@ -7,6 +7,13 @@ source, license, original SHA-256, container expectations, and independently
 specified preview pixels. Expected values describe the required behavior, not a
 claim that the current processing implementation passes.
 
+`DisplayP3-v4.icc` (480 bytes) is the CC0 Display P3 profile from
+[Compact-ICC-Profiles](https://github.com/saucecontrol/Compact-ICC-Profiles/blob/bdd84663061bc4ae95ca70decff54f581e27f702/profiles/DisplayP3-v4.icc),
+used by the Favicon color-management regression. The test generates a PNG locally
+and compares its color-managed pixels before and after upload; it does not depend
+on platform-installed profiles or network access. See the upstream
+[CC0 license](https://github.com/saucecontrol/Compact-ICC-Profiles/blob/bdd84663061bc4ae95ca70decff54f581e27f702/license).
+
 Run `python3 tests/fixtures/media-formats/generate.py` to regenerate with Python 3,
 ImageMagick 7.1.2-32 and libheif 1.23.5 (`heif-enc`). Generation is not part of
 verification: committed bytes are the inputs on both architectures. Encoder

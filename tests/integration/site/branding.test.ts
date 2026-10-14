@@ -161,6 +161,94 @@ describe('品牌文件真实 SQLite 和磁盘生命周期', () => {
     expect(pixels[(24 * 48 + 24) * 4 + 3]).toBe(0);
   });
 
+  it('Favicon 保留 Display P3 颜色解释并移除无关元数据', async () => {
+    const source = join(directory, 'display-p3.png');
+    await execa('magick', [
+      '-size',
+      '48x48',
+      'xc:rgb(128,64,192)',
+      '-profile',
+      join(fixtures, 'DisplayP3-v4.icc'),
+      '-set',
+      'label',
+      'remove this text chunk',
+      '-set',
+      'comment',
+      'remove this metadata',
+      source,
+    ]);
+    const asset = await service.replace('favicon', (path) =>
+      fs.copyFile(source, path),
+    );
+    const output = join(root, asset.key);
+    const normalized = async (path: string) =>
+      (
+        await execa(
+          'magick',
+          [
+            path,
+            '-profile',
+            join(fixtures, 'sRGB2014.icc'),
+            '-depth',
+            '8',
+            'rgba:-',
+          ],
+          { encoding: 'buffer' },
+        )
+      ).stdout;
+    const expected = await normalized(source);
+    // Color-managed display differs from treating the P3 samples as sRGB.
+    expect([...expected.subarray(0, 3)]).not.toEqual([128, 64, 192]);
+    expect(await normalized(output)).toEqual(expected);
+    expect((await service.read(asset.key))!.bytes.length).toBeLessThan(
+      5 * 1024,
+    );
+    const { stdout: metadata } = await execa('exiftool', [
+      '-Label',
+      '-Comment',
+      '-EXIF:all',
+      '-XMP:all',
+      output,
+    ]);
+    expect(metadata).toBe('');
+  });
+
+  it.each([
+    [1, 100],
+    [100, 1],
+    [0.1, 10],
+    [10, 0.1],
+  ])('细长 SVG %s×%s 生成透明居中的 48×48 Favicon', async (width, height) => {
+    const asset = await service.replace('favicon', (path) =>
+      fs.writeFile(
+        path,
+        `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}"><rect width="${width}" height="${height}" fill="red"/></svg>`,
+      ),
+    );
+    const saved = (await service.read(asset.key))!;
+    expect(saved.bytes.readUInt32BE(16)).toBe(48);
+    expect(saved.bytes.readUInt32BE(20)).toBe(48);
+    const { stdout: pixels } = await execa(
+      'magick',
+      [join(root, asset.key), '-depth', '8', 'rgba:-'],
+      { encoding: 'buffer' },
+    );
+    let painted = 0;
+    for (let y = 0; y < 48; y++) {
+      for (let x = 0; x < 48; x++) {
+        const pixel = pixels.subarray((y * 48 + x) * 4, (y * 48 + x + 1) * 4);
+        if (!pixel[3]) continue;
+        expect([...pixel.subarray(0, 3)]).toEqual([255, 0, 0]);
+        expect(width < height ? x : y).toBeGreaterThanOrEqual(23);
+        expect(width < height ? x : y).toBeLessThanOrEqual(24);
+        painted++;
+      }
+    }
+    expect(painted).toBeGreaterThanOrEqual(48);
+    expect(requireSiteSettings(connection.db).faviconKey).toBe(asset.key);
+    expect(await files()).toEqual([asset.key]);
+  });
+
   it.each([
     [64, 48, '0,128,0'],
     [32, 24, '0,0,255'],
@@ -216,6 +304,22 @@ describe('品牌文件真实 SQLite 和磁盘生命周期', () => {
       );
     await expect(upload('favicon')).rejects.toThrow();
     tool.mockRestore();
+    expect(requireSiteSettings(connection.db).faviconKey).toBe(first.key);
+    expect(await service.read(first.key)).toEqual(original);
+    expect(await files()).toEqual([first.key]);
+    const cleanup = vi
+      .spyOn(mediaTools, 'startMediaTool')
+      .mockImplementation((command, args, options) =>
+        start(
+          command,
+          command === 'exiftool' && args.includes('-all=')
+            ? [join(root, 'missing-favicon-output.png')]
+            : args,
+          options,
+        ),
+      );
+    await expect(upload('favicon')).rejects.toThrow();
+    cleanup.mockRestore();
     expect(requireSiteSettings(connection.db).faviconKey).toBe(first.key);
     expect(await service.read(first.key)).toEqual(original);
     expect(await files()).toEqual([first.key]);

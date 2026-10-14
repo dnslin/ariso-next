@@ -4,7 +4,7 @@
 
 ## 最终行为
 
-- Favicon 上传 PNG、ICO、静态 SVG 后生成 48×48 PNG，等比缩放、透明居中，不裁剪、拉伸或减少颜色；去除无关元数据并采用无损压缩。ICO 选择合适帧，小 SVG 直接按目标尺寸栅格化。生成或数据库提交失败保留原图标，Logo 仍保存原文件。
+- Favicon 上传 PNG、ICO、静态 SVG 后生成 48×48 PNG，等比缩放、透明居中，不裁剪、拉伸或减少颜色；保留解释颜色所需的 ICC 配置，去除其他元数据并采用无损压缩。ICO 选择合适帧，SVG 直接渲染到目标透明画布。生成、元数据清理或数据库提交失败保留原图标，Logo 仍保存原文件。
 - 文字水印描边宽度为0时显式关闭描边，大于0时继续采用指定颜色和宽度。字号、透明度、质量和其他设置不变。
 - 既有 Favicon 不迁移，重新上传时生成优化文件；既有图片重新处理后应用水印修复。
 
@@ -44,3 +44,26 @@
 回归覆盖真实PNG尺寸/透明边距/元数据、ICO选帧、小SVG像素锐度、生成与提交失败保留旧文件，以及零宽描边像素、非零描边、文字转义和图片水印。零宽描边修复保留了参考图片的逐像素与尺寸断言。评审中将ICO选帧条件临时从 `>=48` 改为 `>48`，原生48帧用例按预期失败，恢复后通过。
 
 本机无Docker，未执行Linux生产镜像媒体测试；由PR的Media tools作业验证，结果以实际CI为准。不同像素密度下标签栏的人工视觉验收尚未完成。无Figma同步、数据库迁移、发布或部署。
+
+## PR #284 两项 P2 修复
+
+针对 `82f66d45` 的独立评审复现了两个问题。本轮先补回归再修复：
+
+- Display P3 PNG 的 ICC 被直接删除，颜色归一到 sRGB 后由 `(138,59,199)` 错变成 `(128,64,192)`。Favicon 生成后改用现有 ExifTool 的 `-all= --ICC_Profile:all -overwrite_original` 清理其他元数据并保留 ICC，不重新编码像素。测试比较完整的颜色归一像素、无关标签清理和几 KB 的输出大小；ICC 夹具只有 480 字节，来源与 CC0 许可在夹具 README 中记录。
+- 横向和纵向 1:100 静态 SVG 的短边在栅格化时取整为零，被误报为损坏。现在用 Resvg 规范化的 SVG 在 48×48 透明画布内等比渲染，保留原来的 viewBox；使用规范化 XML 中的精确尺寸，避免尺寸 getter 对小数取整。测试覆盖整数、小数细长 SVG 的可见颜色、透明居中、数据库引用与文件生命周期，以及 1:1000000 的固定目标画布。
+
+新增 Display P3、两个整数细长 SVG 用例在修复前全部失败；两个小数尺寸用例也先复现空白输出再通过修复。元数据清理失败通过实际工具错误注入验证，旧引用与字节保留，候选文件清理。
+
+本轮实际验证（同一 macOS ARM64 环境）：
+
+| 实际命令                                                                                                                                                                                                                | 结果                                                  |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- |
+| `pnpm install --frozen-lockfile`                                                                                                                                                                                        | 通过                                                  |
+| `pnpm run build`、`pnpm run typecheck`、`pnpm run lint`                                                                                                                                                                 | 通过；构建的跨平台可选原生模块追踪诊断仍存在，退出码0 |
+| `pnpm exec vitest run --project media-tools tests/integration/site/branding.test.ts -t 'Display P3\|细长 SVG'`（修复前）                                                                                                | 3项新增用例按预期失败                                 |
+| `pnpm exec vitest run --project media-tools tests/integration/site/branding.test.ts -t '细长 SVG'`（精确尺寸修复前/后）                                                                                                 | 两个小数用例先失败，修复后4/4通过                     |
+| `pnpm exec vitest run --project media-tools tests/integration/site/branding.test.ts tests/integration/site/branding-http.test.ts tests/integration/media/svg.test.ts tests/integration/media/watermark.test.ts`（最终） | 103/103通过                                           |
+| `pnpm exec vitest run --project unit tests/unit/media/svg-policy.test.ts tests/unit/media/processing.test.ts tests/unit/media/watermark.test.ts tests/unit/site/branding-resources.test.ts`                             | 56/56通过                                             |
+| `node docs/tasks/check.mjs`                                                                                                                                                                                             | 120任务、298需求通过                                  |
+
+最终提交的格式检查、Linux CI 和两个 Agent 复审结果以 PR 描述中的最新核验为准。无浏览器人工视觉验收、发布或部署。
