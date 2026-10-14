@@ -219,13 +219,27 @@ describe('品牌文件真实 SQLite 和磁盘生命周期', () => {
       '-size',
       '48x48',
       'xc:rgb(128,64,192)',
+      '-colorspace',
+      'RGB',
       '-set',
       'gamma',
       '1',
       '-define',
       'png:include-chunks=gAMA,cHRM',
+      '-define',
+      'png:exclude-chunks=sRGB',
       source,
     ]);
+    const { stdout: colorTags } = await execa('exiftool', [
+      '-json',
+      '-n',
+      '-Gamma',
+      '-SRGBRendering',
+      source,
+    ]);
+    const [tags] = JSON.parse(colorTags);
+    expect(tags.Gamma).toBe(1);
+    expect(tags.SRGBRendering).toBeUndefined();
     const asset = await service.replace('favicon', (path) =>
       fs.copyFile(source, path),
     );
@@ -238,7 +252,12 @@ describe('品牌文件真实 SQLite 和磁盘生命周期', () => {
         )
       ).stdout;
     const expected = await normalized(source);
-    expect([...expected.subarray(0, 3)]).not.toEqual([128, 64, 192]);
+    const { stdout: raw } = await execa(
+      'magick',
+      [source, '-depth', '8', 'rgba:-'],
+      { encoding: 'buffer' },
+    );
+    expect(expected).not.toEqual(raw);
     expect(await normalized(join(root, asset.key))).toEqual(expected);
   });
 
