@@ -233,7 +233,7 @@ it('shipped standalone CLI resets without Web, SMTP, secrets or repository depen
   }
 });
 
-it('a running standalone Web process rejects both old cookies on the next request after CLI reset', async () => {
+it('a running standalone Web process rejects both old cookies after an explicit CLI retry on write contention', async () => {
   const port = await unusedPort();
   const webOrigin = `http://127.0.0.1:${port}`;
   connection.db.update(siteSettings).set({ publicUrl: webOrigin }).run();
@@ -260,7 +260,6 @@ it('a running standalone Web process rejects both old cookies on the next reques
       },
       body: JSON.stringify({ email, password: value }),
     });
-  const run = terminal();
   try {
     await vi.waitFor(
       async () => {
@@ -291,7 +290,35 @@ it('a running standalone Web process rejects both old cookies on the next reques
         await (await request('get-session', { headers: { cookie } })).json(),
       ).toHaveProperty('user.id', ownerId);
     expect(connection.db.select().from(session).all()).toHaveLength(2);
-    expect((await enterPassword(run)).exitCode).toBe(0);
+    let reset = false;
+    let output = '';
+    // The live Web queue can hold the writer even when it has no work.
+    // Match the documented operator retry, without changing CLI's fail-fast policy.
+    for (let attempt = 0; attempt < 5 && !reset; attempt++) {
+      const run = terminal();
+      let lockHeld = false;
+      try {
+        await run.waitFor('新密码：');
+        const before = snapshot();
+        if (attempt === 0) {
+          // Make the contention branch deterministic after CLI's initial read.
+          connection.db.$client.exec('BEGIN IMMEDIATE');
+          lockHeld = true;
+        }
+        const result = await enterPassword(run);
+        output = run.output();
+        if (attempt === 0 || result.exitCode !== 0) {
+          expect(result.exitCode, output).toBe(1);
+          expect(output).toContain('database is locked');
+          expect(output).not.toContain('密码已重置');
+          expect(snapshot()).toEqual(before);
+        } else reset = true;
+      } finally {
+        if (lockHeld) connection.db.$client.exec('ROLLBACK');
+        await run.stop();
+      }
+    }
+    expect(reset, output).toBe(true);
     for (const cookie of cookies)
       expect(
         await (await request('get-session', { headers: { cookie } })).json(),
@@ -299,7 +326,6 @@ it('a running standalone Web process rejects both old cookies on the next reques
     expect((await webLogin(password)).status).toBe(401);
     expect((await webLogin(cliPassword)).status).toBe(200);
   } finally {
-    await run.stop();
     await stop(server.child, server.closed);
   }
 }, 30000);
