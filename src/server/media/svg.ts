@@ -8,6 +8,7 @@ export function startSvgPreview(
   workspace: string,
   signal: AbortSignal,
   renderWidth?: number,
+  fitMode: 'width' | 'longest-edge' = 'width',
 ) {
   return startMediaTool(
     'node',
@@ -16,6 +17,7 @@ export function startSvgPreview(
       sourcePath,
       outputPath,
       renderWidth === undefined ? 'preview' : String(renderWidth),
+      fitMode,
     ],
     {
       workspace,

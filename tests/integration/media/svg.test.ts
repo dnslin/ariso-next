@@ -240,6 +240,34 @@ describe('isolated static SVG preview', () => {
     expect(stdout).toBe('640x320');
   });
 
+  it.each([
+    [1, 1000000],
+    [1000000, 1],
+  ])(
+    'contains an extreme %s×%s canvas in the target raster',
+    async (width, height) => {
+      const f = await fixture(
+        `<rect width="${width}" height="${height}" fill="red"/>`,
+        width,
+        height,
+      );
+      const { child, settled } = startSvgPreview(
+        f.source,
+        f.output,
+        f.workspace,
+        new AbortController().signal,
+        48,
+        'longest-edge',
+      );
+      expect(await settled).toBeUndefined();
+      expect(JSON.parse((await child).stdout)).toEqual({ width, height });
+      const png = await readFile(f.output);
+      expect(png.readUInt32BE(16)).toBe(48);
+      expect(png.readUInt32BE(20)).toBe(48);
+      expect(await readFile(f.source, 'utf8')).toBe(f.text);
+    },
+  );
+
   it('rejects network, local, entity and active resources without producing preview or fetching', async () => {
     const requests: string[] = [];
     const server = createServer((request, response) => {

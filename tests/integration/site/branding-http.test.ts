@@ -183,15 +183,15 @@ it('品牌写入只接受所有者 Cookie 和站点来源，认证在 multipart 
   expect(await readdir(brandingDir)).toEqual([]);
 });
 
-it('按真实内容接受允许格式，匿名读取返回原始字节及确认后的 MIME，SVG 使用图片隔离头', async () => {
+it('按真实内容接受允许格式，Logo 读取原字节，Favicon 读取 48×48 PNG，SVG 使用图片隔离头', async () => {
   for (const [kind, file, mime] of [
     ['logo', 'source.png', 'image/png'],
     ['logo', 'static.jpg', 'image/jpeg'],
     ['logo', 'static.webp', 'image/webp'],
     ['logo', 'static.svg', 'image/svg+xml'],
     ['favicon', 'source.png', 'image/png'],
-    ['favicon', 'multiple.ico', 'image/x-icon'],
-    ['favicon', 'static.svg', 'image/svg+xml'],
+    ['favicon', 'multiple.ico', 'image/png'],
+    ['favicon', 'static.svg', 'image/png'],
   ] as const) {
     const bytes = await readFile(join(fixtures, file));
     const saved = await upload(kind, form(bytes));
@@ -215,7 +215,15 @@ it('按真实内容接受允许格式，匿名读取返回原始字节及确认�
         'sandbox',
       );
     }
-    expect(Buffer.from(await response.arrayBuffer())).toEqual(bytes);
+    const output = Buffer.from(await response.arrayBuffer());
+    if (kind === 'favicon') {
+      expect(output.subarray(0, 8)).toEqual(
+        Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]),
+      );
+      expect(output.readUInt32BE(16)).toBe(48);
+      expect(output.readUInt32BE(20)).toBe(48);
+      expect(asset.url).toMatch(/\.png$/);
+    } else expect(output).toEqual(bytes);
     expect(await (await readSettings()).json()).toMatchObject({
       [`${kind}Url`]: asset.url,
       [`${kind}Mime`]: mime,
@@ -350,7 +358,12 @@ it.each(['logo', 'favicon'] as const)(
     const belowAsset = await belowResponse.json();
     const belowRead = await request(belowAsset.url);
     expect(belowRead.status).toBe(200);
-    expect((await belowRead.arrayBuffer()).byteLength).toBe(maxBytes - 1);
+    const belowBytes = Buffer.from(await belowRead.arrayBuffer());
+    if (kind === 'logo') expect(belowBytes.byteLength).toBe(maxBytes - 1);
+    else {
+      expect(belowBytes.readUInt32BE(16)).toBe(48);
+      expect(belowBytes.readUInt32BE(20)).toBe(48);
+    }
     const exact = sizedSvg(maxBytes);
     expect(exact.length).toBe(maxBytes);
     const success = await upload(kind, form(exact));
@@ -363,7 +376,12 @@ it.each(['logo', 'favicon'] as const)(
     expect(await (await readSettings()).json()).toEqual(before);
     const response = await request(asset.url);
     expect(response.status).toBe(200);
-    expect(Buffer.from(await response.arrayBuffer())).toEqual(exact);
+    const output = Buffer.from(await response.arrayBuffer());
+    if (kind === 'logo') expect(output).toEqual(exact);
+    else {
+      expect(output.readUInt32BE(16)).toBe(48);
+      expect(output.readUInt32BE(20)).toBe(48);
+    }
   },
   30000,
 );

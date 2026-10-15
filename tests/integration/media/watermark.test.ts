@@ -307,6 +307,59 @@ it('fits a tall image within both margins while keeping its aspect ratio', async
 });
 
 it.each(['chinese', 'latin'] as const)(
+  'renders zero-width %s text without any stroke color at the existing font size and opacity',
+  async (watermarkFont) => {
+    connection.db.transaction((tx) =>
+      updateMediaSettings(tx, {
+        ...initialMediaSettings,
+        watermarkMode: 'text',
+        watermarkFont,
+        watermarkText:
+          watermarkFont === 'chinese' ? 'Ariso 光影收藏' : 'Ariso Photo',
+      }),
+    );
+    const snapshot = connection.db.transaction(createProcessingSnapshot);
+    await prepareWatermark({
+      sourceArgs: ['-size', '640x480', 'xc:white'],
+      snapshot,
+      workspace: runtime.temporaryRoot,
+      diskLimitBytes: 64 * 1024 * 1024,
+      signal: new AbortController().signal,
+    });
+    const { stdout } = await execa(
+      'magick',
+      [
+        join(runtime.temporaryRoot, 'watermark-overlay.png'),
+        '-depth',
+        '8',
+        'rgba:-',
+      ],
+      { encoding: 'buffer' },
+    );
+    let visible = 0;
+    let nonWhite = 0;
+    let maxAlpha = 0;
+    for (let offset = 0; offset < stdout.length; offset += 4) {
+      const alpha = stdout[offset + 3]!;
+      maxAlpha = Math.max(maxAlpha, alpha);
+      if (alpha === 0) continue;
+      visible++;
+      if (
+        stdout[offset] !== 255 ||
+        stdout[offset + 1] !== 255 ||
+        stdout[offset + 2] !== 255
+      )
+        nonWhite++;
+    }
+    expect(visible).toBeGreaterThan(0);
+    expect(nonWhite).toBe(0);
+    // Default 50% opacity still limits the real output alpha to half of 255.
+    expect(maxAlpha).toBeGreaterThanOrEqual(127);
+    expect(maxAlpha).toBeLessThanOrEqual(128);
+  },
+);
+
+it.each(['chinese', 'latin'] as const)(
   'renders multiline %s text using the queued color, stroke, font size and opacity',
   async (watermarkFont) => {
     const bytes = await readFile(await image(['-size', '600x300', 'xc:white']));
@@ -562,7 +615,7 @@ it('renders percent expressions, readable file paths, backslashes and newlines a
       '-fill',
       '#123456',
       '-stroke',
-      '#000000',
+      'none',
       '-strokewidth',
       '0',
       `label:@${textFile}`,

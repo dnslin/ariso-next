@@ -17,6 +17,7 @@ import { analyzeMediaError } from '../media/errors.ts';
 import { inspectImageFile } from '../media/file-formats.ts';
 import { startSvgPreview } from '../media/svg.ts';
 import { startMediaTool, terminateMediaTools } from '../media/tools.ts';
+import { generateFavicon } from './favicon.ts';
 import { siteSettings } from './schema.ts';
 import { readSiteSettings, requireSiteSettings } from './settings.ts';
 
@@ -71,6 +72,8 @@ async function validate(
         join(workspace, 'preview.png'),
         workspace,
         signal,
+        kind === 'favicon' ? 48 : undefined,
+        'longest-edge',
       );
       const error = await tool.settled;
       if (error) throw error;
@@ -98,7 +101,7 @@ async function validate(
       if (facts.width === null || facts.height === null)
         throw invalid('Missing image dimensions');
     }
-    return { mime: facts.mime, extension: facts.extension };
+    return facts;
   } catch (cause) {
     signal.throwIfAborted();
     const detail = cause as { code?: string; exitCode?: number };
@@ -194,16 +197,20 @@ export function createBrandingService(context: Context) {
             kind,
             operationSignal,
           );
-          candidate = `site-${kind}-${randomUUID()}.${facts.extension}`;
+          const output =
+            kind === 'favicon'
+              ? await generateFavicon(source, facts, workspace, operationSignal)
+              : { path: source, extension: facts.extension, mime: facts.mime };
+          candidate = `site-${kind}-${randomUUID()}.${output.extension}`;
           operationSignal.throwIfAborted();
-          await rename(source, join(brandingRoot, candidate));
+          await rename(output.path, join(brandingRoot, candidate));
           operationSignal.throwIfAborted();
           const previous = db.transaction((tx) => {
             const settings = requireSiteSettings(tx);
             tx.update(siteSettings)
               .set({
                 [`${kind}Key`]: candidate!,
-                [`${kind}Mime`]: facts.mime,
+                [`${kind}Mime`]: output.mime,
                 updatedAt: new Date(),
               })
               .where(eq(siteSettings.id, 1))
@@ -212,7 +219,7 @@ export function createBrandingService(context: Context) {
           });
           committed = true;
           if (previous) await discard(previous);
-          return { key: candidate, mime: facts.mime };
+          return { key: candidate, mime: output.mime };
         } finally {
           if (candidate && !committed) await discard(candidate);
           try {

@@ -117,7 +117,9 @@ export async function prepareWatermark(input: {
       '-fill',
       snapshot.watermarkColor,
       '-stroke',
-      snapshot.watermarkStrokeColor,
+      snapshot.watermarkStrokeWidth === 0
+        ? 'none'
+        : snapshot.watermarkStrokeColor,
       '-strokewidth',
       String(snapshot.watermarkStrokeWidth),
       `label:${escapeWatermarkText(snapshot.watermarkText)}`,
