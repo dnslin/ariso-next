@@ -1,0 +1,28 @@
+{
+  "before": {
+    "events": 4,
+    "targets": [
+      {
+        "slot": "dropdown-popover",
+        "width": 85,
+        "height": 84
+      },
+      {
+        "slot": "button",
+        "width": 44,
+        "height": 44
+      },
+      {
+        "slot": "button",
+        "width": 44,
+        "height": 44
+      }
+    ]
+  },
+  "fix": "R09 queue dropdown receives a stable minimum width using the existing menu style.",
+  "after": {
+    "uploadPhase": "passed",
+    "browserErrors": []
+  },
+  "diagnosticInstrumentationRemoved": true
+}

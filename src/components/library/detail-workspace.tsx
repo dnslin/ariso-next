@@ -72,10 +72,12 @@ export function DetailVersions({
   detail,
   selected,
   onClose,
+  returnLabel = '返回图库',
 }: {
   detail: LibraryDetail;
   selected: string;
   onClose: () => void;
+  returnLabel?: string;
 }) {
   const heading = useRef<HTMLHeadingElement>(null);
   useEffect(() => {
@@ -86,7 +88,7 @@ export function DetailVersions({
       data-testid="detail-versions"
       className="grid min-w-0 gap-3 xl:gap-4"
     >
-      <DetailReturn onPress={onClose}>返回图库</DetailReturn>
+      <DetailReturn onPress={onClose}>{returnLabel}</DetailReturn>
       <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1">
         <h1
           ref={heading}

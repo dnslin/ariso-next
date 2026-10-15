@@ -16,7 +16,7 @@ export function UploadSubmissionSummaries({
   );
   if (!submissions.size) return null;
   return (
-    <div className="grid gap-3" aria-label="已冻结的上传提交">
+    <div className="grid gap-3" aria-label="已提交的上传设置">
       {[...submissions.values()].map((submission) => (
         <div
           key={submission.id}
@@ -51,10 +51,7 @@ export function UploadSubmissionSummaries({
               ? submission.tags.map((tag) => tag.name).join(' / ')
               : '未选择'}
           </p>
-          <p>
-            已冻结。修改下一次设置不会改变本次提交；各次提交共用最多 3
-            个传输名额。
-          </p>
+          <p>本次上传沿用开始时的设置，所有上传合计最多同时传输 3 张。</p>
         </div>
       ))}
     </div>

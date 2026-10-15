@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState, type ComponentProps } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Alert } from '@heroui/react/alert';
 import { Button } from '@heroui/react/button';
@@ -20,6 +20,7 @@ import {
 import { OwnerShell } from '../shell/owner-shell';
 import { useResetUpload, useUploadQueue } from '../upload/provider';
 import type { UploadSettings } from '../upload/settings';
+import { readUploadReturn, uploadStorageHref } from '../upload/context';
 import { StorageForm } from './storage-form';
 import { storageFormInitial, storageFormPayload } from './storage-form-utils';
 import { StorageConnectionResult } from './storage-connection-result';
@@ -66,6 +67,8 @@ export function StorageEditor({
   initialReferenceView?: boolean;
   initialType?: 'local' | 's3';
 }) {
+  const params = useSearchParams();
+  const uploadReturn = readUploadReturn(params?.get('uploadReturn'));
   const query = useQuery({
     queryKey: ['storage-editor', storageId ?? 'new'],
     queryFn: async ({ signal }) => {
@@ -105,6 +108,7 @@ export function StorageEditor({
         initialSaved={initialSaved}
         initialReferenceView={initialReferenceView}
         initialType={initialType}
+        uploadReturn={uploadReturn}
         initial={query.data}
         detail={query.data.storage}
         refreshError={query.error?.message}
@@ -119,7 +123,7 @@ export function StorageEditor({
             {storageId ? '存储配置' : '添加存储'}
           </h1>
           <Link
-            href="/settings/storage"
+            href={uploadStorageHref('/settings/storage', uploadReturn)}
             className="flex min-h-11 items-center gap-2 rounded-lg px-3 text-sm no-underline"
           >
             <ArrowLeft size={18} aria-hidden />
@@ -155,6 +159,7 @@ function StorageEditorReady({
   detail,
   refreshError,
   onRefresh,
+  uploadReturn,
   ...shell
 }: ShellProps & {
   storageRoot: string;
@@ -164,6 +169,7 @@ function StorageEditorReady({
   initial: { storage?: StorageDetail; settings: StorageSettings };
   detail?: StorageDetail;
   refreshError?: string;
+  uploadReturn: string | null;
   onRefresh: () => Promise<{
     data?: { storage?: StorageDetail; settings: StorageSettings };
   }>;
@@ -236,7 +242,7 @@ function StorageEditorReady({
         Boolean(effective && effective.id === settings.defaultStorageId));
   const navigation = useStorageLeaveConfirmation({ dirty, unknown, busy });
   function returnToList() {
-    navigation.navigate('/settings/storage');
+    navigation.navigate(uploadStorageHref('/settings/storage', uploadReturn));
   }
 
   async function invalidateConsumers() {
@@ -295,7 +301,10 @@ function StorageEditorReady({
         await refresh();
         if (!initial.storage && result.storage)
           router.replace(
-            `/settings/storage/${encodeURIComponent(result.storage.id)}`,
+            uploadStorageHref(
+              `/settings/storage/${encodeURIComponent(result.storage.id)}`,
+              uploadReturn,
+            ),
           );
       } else {
         setUnknown(true);
@@ -408,7 +417,10 @@ function StorageEditorReady({
       await refresh();
       if (!initial.storage)
         router.replace(
-          `/settings/storage/${encodeURIComponent(saved.id)}?saved=1`,
+          uploadStorageHref(
+            `/settings/storage/${encodeURIComponent(saved.id)}?saved=1`,
+            uploadReturn,
+          ),
         );
     } catch (error) {
       if (saved)
@@ -748,7 +760,10 @@ function StorageEditorReady({
                   setMessage('已使用当前保存的配置，请核对后继续。');
                   if (!initial.storage)
                     router.replace(
-                      `/settings/storage/${encodeURIComponent(reconciledStorage.id)}`,
+                      uploadStorageHref(
+                        `/settings/storage/${encodeURIComponent(reconciledStorage.id)}`,
+                        uploadReturn,
+                      ),
                     );
                 }}
               >
@@ -803,7 +818,10 @@ function StorageEditorReady({
             </Button>
             {connected ? (
               <Link
-                href={`/settings/storage/${encodeURIComponent(effective.id)}/cors`}
+                href={uploadStorageHref(
+                  `/settings/storage/${encodeURIComponent(effective.id)}/cors`,
+                  uploadReturn,
+                )}
                 className="flex min-h-11 items-center gap-2 rounded-lg border border-border px-4 text-sm no-underline justify-self-start"
               >
                 <CloudUpload size={16} aria-hidden />
@@ -868,7 +886,9 @@ function StorageEditorReady({
                       : current,
                 );
                 await invalidateConsumers();
-                router.push('/settings/storage');
+                router.push(
+                  uploadStorageHref('/settings/storage', uploadReturn),
+                );
               }}
               onRefresh={() => void refresh()}
               isDisabled={busy || unknown || Boolean(refreshError)}

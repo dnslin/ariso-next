@@ -1356,9 +1356,9 @@ try {
     report.stage = 'first-create-name-and-footer';
     await settings(createNameId);
     await intercept({ method: 'POST', path: shareApi(createNameId) });
-    const hiddenName =
-      '[data-slot="switch-content"]:has(input[aria-label="隐藏图片名称"])';
-    await page.click(hiddenName);
+    const showName =
+      '[data-slot="switch-content"]:has(input[aria-label="显示图片名称"])';
+    await page.click(showName);
     assert.equal(await current(createNameId), null);
     assert.equal(
       (await traffic()).filter((entry) => entry.method === 'POST').length,
@@ -1379,7 +1379,7 @@ try {
     assert.equal(creationWrites[0].body.showName, true);
     await restore();
     report.checks.push(
-      'First-create hidden-name switch stays local until the footer submit; one real POST saves showName and restores heading focus without an extra PATCH.',
+      'First-create display-name switch stays local until the footer submit; one real POST saves showName and restores heading focus without an extra PATCH.',
     );
 
     report.stage = 'album-entry-and-create-current-record';

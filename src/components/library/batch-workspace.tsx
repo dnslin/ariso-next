@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import { QueryClient } from '@tanstack/react-query';
+import { Accordion } from '@heroui/react/accordion';
 import { Button } from '@heroui/react/button';
 import { Modal } from '@heroui/react/modal';
 import { CloseButton } from '@heroui/react/close-button';
@@ -15,7 +16,14 @@ const buttonClass = 'h-11 min-h-11 rounded-lg font-normal';
 function targetDescription(batch: LibraryBatch) {
   const command = batch.workspace?.command;
   return command && 'albumIds' in command
-    ? `相册 ${command.albumIds.join('、')}`
+    ? `相册 ${command.albumIds
+        .map((id) => {
+          const target = batch.workspace?.albumTargets.find(
+            (item) => item.id === id,
+          );
+          return target ? `${target.name} · ${id.slice(0, 8)}` : id;
+        })
+        .join('、')}`
     : command && 'tagIds' in command
       ? `标签 ${command.tagIds.join('、')}`
       : '';
@@ -216,7 +224,7 @@ export function BatchWorkspaceContent({
             </>
           )}
         </p>
-        <p className="text-sm">
+        <p data-testid="batch-target-summary" className="text-sm wrap-anywhere">
           {retained
             ? '继续原操作：'
             : workspace.retrying
@@ -225,6 +233,27 @@ export function BatchWorkspaceContent({
           {label}
           {targetDescription(batch) ? ` · ${targetDescription(batch)}` : ''}
         </p>
+        {workspace.albumTargets.length ? (
+          <Accordion hideSeparator className="max-w-160">
+            <Accordion.Item id="batch-album-target-ids">
+              <Accordion.Heading>
+                <Accordion.Trigger className="min-h-11 py-2 text-xs font-normal text-muted">
+                  查看目标相册完整编号
+                  <Accordion.Indicator className="size-4" />
+                </Accordion.Trigger>
+              </Accordion.Heading>
+              <Accordion.Panel>
+                <Accordion.Body className="grid gap-2 pb-2 pt-1 text-xs">
+                  {workspace.albumTargets.map(({ id, name }) => (
+                    <p key={id} className="wrap-anywhere">
+                      {name} · {id}
+                    </p>
+                  ))}
+                </Accordion.Body>
+              </Accordion.Panel>
+            </Accordion.Item>
+          </Accordion>
+        ) : null}
         {workspace.message ? (
           <p role="alert" className="text-sm">
             {workspace.message}

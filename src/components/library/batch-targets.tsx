@@ -134,6 +134,12 @@ export function useBatchTargets({
       batch.onExpire();
   }, [list.error, batch]);
   function choose(next: string[]) {
+    const names = new Map([
+      ...(list.data?.items ?? []).flatMap((item) =>
+        'name' in item ? [[item.id, item.name] as const] : [],
+      ),
+      ...workspace.albumTargets.map(({ id, name }) => [id, name] as const),
+    ]);
     batch.choose(
       !next.length
         ? null
@@ -146,6 +152,7 @@ export function useBatchTargets({
               type: workspace.action as 'add-tags' | 'remove-tags',
               tagIds: next,
             },
+      albums ? next.map((id) => ({ id, name: names.get(id)! })) : [],
     );
   }
   return {

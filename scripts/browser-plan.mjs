@@ -35,6 +35,7 @@ const suites = {
       ['password-reset', 'password-reset'],
       ['smtp', 'smtp'],
       ['uiux-p1', 'uiux-p1'],
+      ['uiux-20261015', 'uiux-20261015'],
     ],
   },
   'brand-experiment': {},
@@ -130,6 +131,12 @@ const suites = {
   'shell-navigation': { stages: [['shell-navigation', 'shellNavigation']] },
   albums: { primaryPage: true, stages: [['albums', 'albums']] },
   'uiux-p1': { primaryPage: true, stages: [['uiux-p1', 'uiuxP1']] },
+  'uiux-20261015': {
+    primaryPage: true,
+    only: ['settings', 'collections', 'upload', 'viewer', 'metadata'],
+    stages: [['uiux-20261015', 'uiux20261015']],
+    config: (only) => ({ uiux20261015Phase: only }),
+  },
   'album-motion': {
     stages: [['album-motion', 'albumMotion']],
   },

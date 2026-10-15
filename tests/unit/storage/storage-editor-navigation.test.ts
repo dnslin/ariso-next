@@ -16,7 +16,11 @@ import type { StorageDetail } from '../../../src/components/storage/storage-api'
 import { storageReferenceDestination } from '../../../src/components/storage/reference-navigation';
 
 const hooks = vi.hoisted(() => ({ cells: [] as unknown[], cursor: 0 }));
-const requests = vi.hoisted(() => ({ push: vi.fn(), storage: vi.fn() }));
+const requests = vi.hoisted(() => ({
+  push: vi.fn(),
+  storage: vi.fn(),
+  search: '',
+}));
 const returnFocus = vi.fn();
 vi.mock('react', async (original) => ({
   ...(await original<typeof import('react')>()),
@@ -41,6 +45,7 @@ vi.mock('react', async (original) => ({
 }));
 vi.mock('next/navigation', () => ({
   useRouter: () => ({ push: requests.push }),
+  useSearchParams: () => new URLSearchParams(requests.search),
 }));
 vi.mock('@tanstack/react-query', () => ({
   useQuery: () => ({
@@ -180,6 +185,7 @@ function dialog(tree: ReactNode) {
 }
 beforeEach(() => {
   hooks.cells = [];
+  requests.search = '';
   requests.push.mockReset();
   requests.storage.mockReset();
   returnFocus.mockReset();
@@ -188,6 +194,19 @@ beforeEach(() => {
     callback();
     return 0;
   });
+});
+
+it('preserves the upload entry through the existing dirty-draft return confirmation', () => {
+  const source = '/upload?albumId=a&returnTo=%2Falbums%2Fa%3Fpage%3D2';
+  requests.search = new URLSearchParams({ uploadReturn: source }).toString();
+  const current = form(render());
+  current.onChange({ ...current.value, name: '未保存名称' });
+  press(render(), '返回');
+  expect(requests.push).not.toHaveBeenCalled();
+  press(render(), '放弃修改');
+  expect(requests.push).toHaveBeenCalledExactlyOnceWith(
+    `/settings/storage?${requests.search}`,
+  );
 });
 afterEach(() => vi.unstubAllGlobals());
 

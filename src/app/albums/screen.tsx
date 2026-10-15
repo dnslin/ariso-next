@@ -262,6 +262,7 @@ export function AlbumsScreen(props: {
         renderWorkspace={(content, footer) => (
           <LibraryScreen
             {...props}
+            albumName={album.name}
             timeZone={props.timeZone!}
             refreshKey={refreshKey}
             workspace={coverOpen ? { content, footer } : undefined}

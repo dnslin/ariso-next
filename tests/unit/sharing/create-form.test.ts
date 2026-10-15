@@ -24,7 +24,10 @@ it('directly renders an editable creation form, not an intermediate empty-state 
   );
   expect(html).toContain('data-testid="share-create"');
   expect(html).toContain('访问密码');
-  expect(html).toContain('隐藏图片名称');
+  expect(html).toContain('显示图片名称');
+  const nameSwitch = html.match(/<input[^>]*role="switch"[^>]*>/)?.[0];
+  expect(nameSwitch).toBeDefined();
+  expect(nameSwitch).not.toContain('checked=');
   expect(html).toContain('截止方式');
   expect(html).toContain('保留密码');
   expect(html).toContain('id="share-create-form"');

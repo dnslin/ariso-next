@@ -2,6 +2,7 @@
 
 import { ComponentEntrance } from '../component-entrance';
 import { useEffect, useState, type ComponentProps } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { Alert } from '@heroui/react/alert';
 import { Button } from '@heroui/react/button';
@@ -12,6 +13,7 @@ import { Pagination } from '@heroui/react/pagination';
 import { Select } from '@heroui/react/select';
 import {
   ArrowRight,
+  ArrowLeft,
   ChevronLeft,
   ChevronRight,
   Cloud,
@@ -22,6 +24,7 @@ import {
 import { OwnerShell } from '../shell/owner-shell';
 import { StorageUnavailableView } from './storage-unavailable-view';
 import { useResetUpload } from '../upload/provider';
+import { readUploadReturn, uploadStorageHref } from '../upload/context';
 import {
   storageRequest,
   storageSettingsUrl,
@@ -48,6 +51,8 @@ function usageLabel(storage: StorageSummary) {
 export function StorageList(
   shell: Omit<ComponentProps<typeof OwnerShell>, 'children' | 'footer'>,
 ) {
+  const params = useSearchParams();
+  const uploadReturn = readUploadReturn(params?.get('uploadReturn'));
   const [pageNumber, setPageNumber] = useState(1);
   const [showDisabledList, setShowDisabledList] = useState(false);
   const [pageSize, setPageSize] = useState(5);
@@ -112,7 +117,10 @@ export function StorageList(
   );
   const configure = (row: StorageSummary) => (
     <Link
-      href={`/settings/storage/${encodeURIComponent(row.id)}`}
+      href={uploadStorageHref(
+        `/settings/storage/${encodeURIComponent(row.id)}`,
+        uploadReturn,
+      )}
       className="flex h-12 items-center justify-center gap-2 rounded-lg border border-border px-4 text-sm no-underline"
       aria-label={`配置 ${row.name}`}
     >
@@ -203,6 +211,7 @@ export function StorageList(
         shell={shell}
         storages={rows}
         defaultStorageId={settings.data.defaultStorageId}
+        uploadReturn={uploadReturn}
         onReturn={() => setShowDisabledList(true)}
       />
     );
@@ -220,14 +229,25 @@ export function StorageList(
           className="flex flex-wrap items-center justify-between gap-3"
         >
           <h1 className="text-[30px] font-medium leading-normal">存储</h1>
-          <Link
-            href="/settings/storage/new"
-            data-testid="storage-create"
-            className="flex h-12 items-center justify-center gap-2 rounded-lg bg-accent px-4 text-sm text-accent-foreground no-underline"
-          >
-            <Plus size={16} aria-hidden />
-            添加存储
-          </Link>
+          <div className="flex flex-wrap items-center gap-2">
+            {uploadReturn ? (
+              <Link
+                href={uploadReturn}
+                className="flex min-h-11 items-center gap-2 rounded-lg px-3 text-sm text-foreground no-underline"
+              >
+                <ArrowLeft size={18} aria-hidden />
+                返回上传
+              </Link>
+            ) : null}
+            <Link
+              href={uploadStorageHref('/settings/storage/new', uploadReturn)}
+              data-testid="storage-create"
+              className="flex h-12 items-center justify-center gap-2 rounded-lg bg-accent px-4 text-sm text-accent-foreground no-underline"
+            >
+              <Plus size={16} aria-hidden />
+              添加存储
+            </Link>
+          </div>
         </ComponentEntrance>
         {loading ? null : error ? (
           <Alert role="alert" status="danger">

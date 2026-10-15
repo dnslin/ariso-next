@@ -173,6 +173,7 @@ beforeEach(() => {
     workspace: {
       action: 'add-tags',
       items: [],
+      albumTargets: [],
       command: { type: 'add-tags', tagIds: ['existing'] },
       phase: 'choose',
       results: [],

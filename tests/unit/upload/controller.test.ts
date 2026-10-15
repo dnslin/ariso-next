@@ -119,6 +119,75 @@ async function untilTransfer(context: ReturnType<typeof setup>) {
 }
 
 describe('manual upload controller', () => {
+  it('removes only unsubmitted files in the current entry and releases their local previews', async () => {
+    const c = setup();
+    c.controller.add(c.file);
+    const readyId = c.controller.snapshot[0].id;
+    c.respond(accepted('succeeded'));
+    await c.controller.start('private');
+    c.controller.add(c.file);
+    const activeId = c.controller.snapshot[1].id;
+    const active = submission();
+    active.sessions[0].queueItemId = activeId;
+    c.request.mockResolvedValueOnce(Response.json(active));
+    const pending = c.controller.start('private');
+    await untilTransfer(c);
+    c.controller.add(c.file);
+    c.controller.add(c.file);
+    c.controller.add(c.file, 'album:a');
+    c.controller.add(c.file, 'album:a');
+    c.controller.add(c.file, 'album:b');
+    const otherId = c.controller.snapshot.at(-1)!.id;
+    const queued = c.controller.snapshot.slice(2, 4);
+    const revoke = vi.spyOn(URL, 'revokeObjectURL');
+    expect(c.controller.removeQueued()).toBe(2);
+    expect(c.controller.snapshot.slice(0, 2)).toMatchObject([
+      { id: readyId, state: 'ready' },
+      { id: activeId, state: 'uploading' },
+    ]);
+    expect(
+      c.controller.snapshot
+        .filter((item) => item.state === 'queued')
+        .map((item) => item.draftKey),
+    ).toEqual(['album:a', 'album:a', 'album:b']);
+    expect(revoke.mock.calls.map(([url]) => url)).toEqual(
+      queued.map((item) => item.previewUrl),
+    );
+    expect(c.controller.removeQueued('album:a')).toBe(2);
+    expect(c.controller.snapshot.map((item) => item.id)).toEqual([
+      readyId,
+      activeId,
+      otherId,
+    ]);
+    expect(c.controller.snapshot[2].draftKey).toBe('album:b');
+    expect(c.request).toHaveBeenCalledTimes(2);
+    expect(c.transport.upload).toHaveBeenCalledOnce();
+    c.transfer.resolve(accepted('succeeded').sessions[0]);
+    await pending;
+    expect(c.controller.snapshot[1].state).toBe('ready');
+  });
+  it('keeps a submission awaiting its response when queued files are removed', async () => {
+    const c = setup();
+    c.controller.add(c.file, 'album:a');
+    const submittedId = c.controller.snapshot[0].id;
+    const response = deferred<Response>();
+    c.request.mockReturnValueOnce(response.promise);
+    const pending = c.controller.start('private');
+    expect(c.controller.snapshot[0].state).toBe('submitting');
+    c.controller.add(c.file, 'album:a');
+    c.controller.add(c.file, 'album:a');
+    expect(c.controller.removeQueued('album:a')).toBe(2);
+    expect(c.controller.snapshot).toHaveLength(1);
+    expect(c.controller.snapshot[0]).toMatchObject({
+      id: submittedId,
+      state: 'submitting',
+    });
+    const completed = accepted('succeeded');
+    completed.sessions[0].queueItemId = submittedId;
+    response.resolve(Response.json(completed));
+    await pending;
+    expect(c.controller.snapshot[0].state).toBe('ready');
+  });
   it('submits only the chosen entry draft and retains other unsubmitted files', async () => {
     const c = setup();
     c.controller.add(c.file);

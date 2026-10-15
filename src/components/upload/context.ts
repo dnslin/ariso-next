@@ -47,3 +47,22 @@ export function readUploadContext(
 export function albumUploadHref(albumId: string, returnTo: string) {
   return `/upload?${new URLSearchParams({ albumId, returnTo })}`;
 }
+
+/** Storage configuration may return only to a normal or album upload entry. */
+export function readUploadReturn(value: string | null | undefined) {
+  if (!value || !URL.canParse(value, 'http://ariso.internal')) return null;
+  const url = new URL(value, 'http://ariso.internal');
+  if (url.origin !== 'http://ariso.internal' || url.pathname !== '/upload')
+    return null;
+  const context = readUploadContext(Object.fromEntries(url.searchParams));
+  return context.albumId
+    ? albumUploadHref(context.albumId, context.returnTo!)
+    : '/upload';
+}
+
+export function uploadStorageHref(path: string, uploadReturn: string | null) {
+  if (!uploadReturn) return path;
+  const url = new URL(path, 'http://ariso.internal');
+  url.searchParams.set('uploadReturn', uploadReturn);
+  return `${url.pathname}${url.search}`;
+}

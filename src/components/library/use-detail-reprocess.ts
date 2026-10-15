@@ -36,6 +36,7 @@ export interface ReprocessQuery {
 export interface ReprocessNavigation {
   onReturn: () => void;
   onClose: () => void;
+  closeLabel?: string;
   onVersions: () => void;
   onOpen: () => void;
 }
@@ -298,7 +299,11 @@ export function useDetailReprocess(
       view.job?.status === 'failed' || view.job?.status === 'cancelled';
     footerActions = [
       {
-        label: succeeded ? '返回图库' : queued ? '返回图片详情' : '返回详情',
+        label: succeeded
+          ? (navigation.closeLabel ?? '返回图库')
+          : queued
+            ? '返回图片详情'
+            : '返回详情',
         variant: queued ? 'primary' : 'outline',
         disabled: state.pending,
         onPress: succeeded ? navigation.onClose : returnToDetail,

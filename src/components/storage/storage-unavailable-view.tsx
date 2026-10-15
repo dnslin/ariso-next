@@ -4,10 +4,11 @@ import { ComponentEntrance } from '../component-entrance';
 import type { ComponentProps } from 'react';
 import { Button } from '@heroui/react/button';
 import { Link } from '@heroui/react/link';
-import { HardDrive } from 'lucide-react';
+import { ArrowLeft, HardDrive } from 'lucide-react';
 import { OwnerShell } from '../shell/owner-shell';
 import { CorsRows } from './cors-report';
 import type { StorageSummary } from './storage-api';
+import { uploadStorageHref } from '../upload/context';
 
 const actionClass =
   'flex h-12 min-w-0 flex-1 items-center justify-center rounded-lg px-2 text-sm font-normal no-underline min-[1200px]:w-50 min-[1200px]:flex-none';
@@ -17,11 +18,13 @@ export function StorageUnavailableView({
   storages,
   defaultStorageId,
   onReturn,
+  uploadReturn = null,
 }: {
   shell: Omit<ComponentProps<typeof OwnerShell>, 'children' | 'footer'>;
   storages: StorageSummary[];
   defaultStorageId: string | null;
   onReturn: () => void;
+  uploadReturn?: string | null;
 }) {
   const empty = storages.length === 0;
   const nameCounts = new Map<string, number>();
@@ -31,7 +34,10 @@ export function StorageUnavailableView({
     storages.map((storage, index) => (
       <Link
         key={storage.id}
-        href={`/settings/storage/${encodeURIComponent(storage.id)}`}
+        href={uploadStorageHref(
+          `/settings/storage/${encodeURIComponent(storage.id)}`,
+          uploadReturn,
+        )}
         className={`${actionClass} ${index === storages.length - 1 ? 'bg-accent text-accent-foreground' : 'border border-border bg-background text-foreground'}`}
       >
         管理{storage.name}
@@ -44,7 +50,7 @@ export function StorageUnavailableView({
       </Button>
       <Link
         data-testid="storage-create"
-        href="/settings/storage/new"
+        href={uploadStorageHref('/settings/storage/new', uploadReturn)}
         className={`${actionClass} bg-accent text-accent-foreground`}
       >
         添加存储
@@ -58,6 +64,28 @@ export function StorageUnavailableView({
         data-state={empty ? 'empty' : 'ready'}
         className="grid gap-5 pb-10 [overflow-wrap:anywhere]"
       >
+        {!empty || uploadReturn ? (
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            {!empty ? (
+              <Button
+                variant="ghost"
+                className="-my-[13px] min-h-11 w-fit justify-start rounded-none p-0 text-xs font-normal leading-normal text-muted"
+                onPress={onReturn}
+              >
+                ← 返回存储管理
+              </Button>
+            ) : null}
+            {uploadReturn ? (
+              <Link
+                href={uploadReturn}
+                className="ml-auto flex min-h-11 items-center gap-2 rounded-lg px-3 text-sm text-foreground no-underline"
+              >
+                <ArrowLeft size={18} aria-hidden />
+                返回上传
+              </Link>
+            ) : null}
+          </div>
+        ) : null}
         {empty ? (
           <div className="flex min-h-[calc(100dvh-160px)] flex-col items-center justify-center gap-5 text-center">
             <HardDrive size={48} aria-hidden className="text-muted" />
@@ -73,14 +101,20 @@ export function StorageUnavailableView({
             </p>
             <div className="flex w-full max-w-120 flex-wrap justify-center gap-3">
               <Link
-                href="/settings/storage/new?type=local"
+                href={uploadStorageHref(
+                  '/settings/storage/new?type=local',
+                  uploadReturn,
+                )}
                 className="flex min-h-12 min-w-0 flex-1 items-center justify-center rounded-lg border border-border bg-background px-4 text-sm text-foreground no-underline"
               >
                 添加本地存储
               </Link>
               <Link
                 data-testid="storage-create"
-                href="/settings/storage/new?type=s3"
+                href={uploadStorageHref(
+                  '/settings/storage/new?type=s3',
+                  uploadReturn,
+                )}
                 className="flex min-h-12 min-w-0 flex-1 items-center justify-center rounded-lg bg-accent px-4 text-sm text-accent-foreground no-underline"
               >
                 添加 S3 存储
@@ -89,13 +123,6 @@ export function StorageUnavailableView({
           </div>
         ) : (
           <>
-            <Button
-              variant="ghost"
-              className="-my-[13px] min-h-11 w-fit justify-start rounded-none p-0 text-xs font-normal leading-normal text-muted"
-              onPress={onReturn}
-            >
-              ← 返回存储管理
-            </Button>
             <ComponentEntrance
               as="h1"
               className="text-[28px] font-medium leading-normal min-[1200px]:text-[30px]"

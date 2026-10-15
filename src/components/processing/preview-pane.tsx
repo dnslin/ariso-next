@@ -186,7 +186,7 @@ export function PreviewPane({
                   : busy === 'creating'
                     ? '正在提交测试图。'
                     : record?.status === 'queued'
-                      ? '等待共享处理名额。'
+                      ? '排队等待生成预览…'
                       : '服务端正在处理。'}
               </p>
             ) : null}
@@ -194,9 +194,19 @@ export function PreviewPane({
               <div className="grid gap-3 text-sm">
                 <p role="alert">
                   {unknown === 'create' && !submitted?.id
-                    ? '连接中断，无法确认是否已创建预览。没有可查询的 ID，不会自动重复创建。'
+                    ? '暂时无法确认预览是否已生成。'
                     : '操作结果尚未确认，请核对这个预览的实际状态。'}
                 </p>
+                {unknown === 'create' && !submitted?.id ? (
+                  <details className="text-[13px] text-muted">
+                    <summary className="min-h-11 w-fit cursor-pointer py-2">
+                      诊断详情
+                    </summary>
+                    <p className="leading-normal">
+                      连接中断，未收到可查询的预览 ID，不会自动重复创建。
+                    </p>
+                  </details>
+                ) : null}
                 {submitted?.id ? (
                   <Button
                     data-testid="processing-preview-reconcile"

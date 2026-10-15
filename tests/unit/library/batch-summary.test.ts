@@ -52,6 +52,7 @@ function state(overrides: Partial<LibraryBatch> = {}): LibraryBatch {
       items: [item('first')],
       currentCount: 1,
       query: '',
+      albumTargets: [],
       command: { type: 'visibility', visibility: 'public' },
       results: [
         { id: 'first', status: 'changed', message: '已公开', inQuery: true },
@@ -441,3 +442,37 @@ it('keeps the known thumbnail of an invalid failure that only left the filter', 
   expect(html).toContain('图片已不再属于本次查询');
   expect(html).toContain('已删除或离开本次查询，已移除选择');
 });
+
+it.each(['failed', 'unknown'] as const)(
+  'identifies the submitted albums by name and short ID in %s results',
+  (status) => {
+    const batch = state({ unresolved: status === 'unknown' });
+    const targets = [
+      { id: '11111111-aaaa-4aaa-aaaa-111111111111', name: '春日旅行' },
+      { id: '22222222-bbbb-4bbb-bbbb-222222222222', name: '春日旅行' },
+    ];
+    batch.workspace = {
+      ...batch.workspace!,
+      action: 'add-albums',
+      albumTargets: targets,
+      command: { type: 'add-albums', albumIds: targets.map(({ id }) => id) },
+      results: [{ id: 'first', status, message: '等待处理', inQuery: true }],
+      unknownIds: status === 'unknown' ? ['first'] : [],
+    };
+    const html = renderToStaticMarkup(
+      createElement(BatchWorkspaceContent, {
+        batch,
+        client: new QueryClient(),
+      }),
+    );
+    const summary = html.match(
+      /<p[^>]*data-testid="batch-target-summary"[^>]*>([\s\S]*?)<\/p>/,
+    )?.[1];
+    expect(summary).toContain('春日旅行 · 11111111');
+    expect(summary).toContain('春日旅行 · 22222222');
+    expect(summary).not.toContain(targets[0].id);
+    expect(html).toContain('查看目标相册完整编号');
+    expect(html).toContain(targets[0].id);
+    expect(html).toContain(targets[1].id);
+  },
+);
