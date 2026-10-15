@@ -48,3 +48,22 @@
 原始构建、类型、静态、单元和集成日志位于忽略目录`.data/share-*.log`；未把可能含本地运行细节的服务器诊断日志纳入提交。真实预览使用独立临时数据库／本地存储和18张样本，未触及用户数据。发布容器和物理手机未测试；本次未改变服务接口或媒体交付契约。
 
 未获授权合并、发布、部署或清理其它任务资源。本轮没有执行这些操作。
+
+## 2026-10-15：媒体CI日志断言排查
+
+PR #285 的首次CI中，静态检查与生产集成通过；Media tools为504项通过、1项失败。失败点为`watermark-http.test.ts`在取得422响应及核对`cleanup_pending`资产后，立即断言父进程已收集到相同`requestId`的服务日志。
+
+HTTP响应与子进程stdout是独立通道。实际路由先调用Pino记录错误，再返回响应；当前Pino默认目的流异步写入，测试助手通过子进程stdout的`data`事件累积日志。收到HTTP响应并不保证日志已经写出并被父进程消费。
+
+使用同一正式standalone产物做受控复现：仅在该测试的请求前暂停父进程stdout消费，原响应／错误码／清理状态断言全部通过；立即读取时`immediate=false`。恢复消费后，限定时间等待收到了同一请求编号，`eventual=true`；保留原即时判断则稳定失败。临时暂停、诊断输出和即时判断已全部移除。该实验验证测试存在时序假设错误；未发现该场景丢失日志，不将本地受控复现描述为重放Linux CI调度。
+
+最终只把这项日志断言改为现有`expect.poll`，最多等待5秒，仍要求包含相同请求编号，超时仍失败。没有固定睡眠，没有删除或放宽日志内容断言，也没有修改生产日志、HTTP或媒体处理实现。
+
+实际验证环境为Node24.18.1／pnpm11.19.0：
+
+- 修改前定向运行缓存耗尽用例：1项通过，未自然复现CI偶发时序。
+- 受控延迟消费实验：原即时判断失败；同一次请求的等待断言通过，确认日志到达。
+- `pnpm exec vitest run --project media-tools tests/integration/media/watermark-http.test.ts --maxWorkers=1`：8项全部通过。
+- `pnpm exec eslint tests/integration/media/watermark-http.test.ts`、同文件Prettier检查、`pnpm run typecheck`及`git diff --check`：通过。
+
+本地没有Docker，使用已安装真实媒体工具和现有standalone产物完成定向HTTP验证；未重跑生产镜像中的505项媒体套件。更新PR后由CI重新执行该范围，结果另行读取，不把本地8项通过等同于完整CI通过。

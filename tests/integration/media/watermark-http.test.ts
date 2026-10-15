@@ -227,7 +227,10 @@ it('reports production cache exhaustion as 422 and retains its cleanup diagnosti
     error: expect.stringContaining('cache resources exhausted'),
   });
   expect(assets[0].error).toBe(failure.message);
-  expect(server!.logs()).toContain(failure.requestId);
+  // The HTTP response can arrive before the child stdout pipe is consumed.
+  await expect
+    .poll(() => server!.logs(), { timeout: 5000 })
+    .toContain(failure.requestId);
 });
 
 it('rejects a file one byte over 5 MiB without creating an asset', async () => {
