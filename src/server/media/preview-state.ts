@@ -80,8 +80,26 @@ export function queuePreview(
   });
 }
 
+const previewCleanups = new WeakMap<MediaRuntime, Map<string, Promise<void>>>();
+
+/** A reused preview ID waits for its old directory removal before receiving new bytes. */
+export function cleanupPreview(runtime: MediaRuntime, id: string) {
+  let cleanups = previewCleanups.get(runtime);
+  if (!cleanups) {
+    cleanups = new Map();
+    previewCleanups.set(runtime, cleanups);
+  }
+  const current = cleanups.get(id);
+  if (current) return current;
+  const execution = cleanupSettledPreview(runtime, id).finally(() =>
+    cleanups.delete(id),
+  );
+  cleanups.set(id, execution);
+  return execution;
+}
+
 /** Only settled tasks enter this function. A failed cleanup remains retryable and visible. */
-export async function cleanupPreview(runtime: MediaRuntime, id: string) {
+async function cleanupSettledPreview(runtime: MediaRuntime, id: string) {
   const row = requirePreview(runtime, id);
   if (
     ['receiving', 'queued', 'running'].includes(row.status) ||

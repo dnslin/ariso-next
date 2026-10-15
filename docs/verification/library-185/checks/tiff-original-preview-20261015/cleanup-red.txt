@@ -1,0 +1,33 @@
+
+ RUN  v5.0.0 /Volumes/data/project/ariso
+
+ ❯ |media-tools| tests/integration/media/preview.test.ts (36 tests | 1 failed | 35 skipped) 362ms
+   ❯ saved TIFF original previews (7)
+     × waits for an ongoing expiry cleanup before receiving the same TIFF preview again 361ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |media-tools| tests/integration/media/preview.test.ts > saved TIFF original previews > waits for an ongoing expiry cleanup before receiving the same TIFF preview again
+AssertionError: expected 2 to be 1 // Object.is equality
+
+- Expected
++ Received
+
+- 1
++ 2
+
+ ❯ tests/integration/media/preview.test.ts:1237:24
+    1235|     try {
+    1236|       await new Promise<void>((resolve) => setImmediate(resolve));
+    1237|       expect(removals).toBe(1);
+       |                        ^
+    1238|       expect(source).not.toHaveBeenCalled();
+    1239|       expect(previews.get(id).status).toBe('expired');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 35 skipped (36)
+   Start at  10:37:31
+   Duration  1.02s (tests 38%, import 37%, transform 25%)

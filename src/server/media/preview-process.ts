@@ -1,5 +1,5 @@
 import { createReadStream, createWriteStream } from 'node:fs';
-import { mkdir, open, rename, rm } from 'node:fs/promises';
+import { mkdir, open, rename, rm, stat } from 'node:fs/promises';
 import { join, sep } from 'node:path';
 import { pipeline } from 'node:stream/promises';
 import { eq } from 'drizzle-orm';
@@ -11,6 +11,11 @@ import { inspectImage } from './formats.ts';
 import { prepareProcessingInput, startDerivedEncoding } from './processing.ts';
 import { analyzeMediaError, mediaError } from './errors.ts';
 import { releasePreviewWatermark } from './watermark-assets.ts';
+import { startMediaTool } from './tools.ts';
+import {
+  tiffPreviewMaxBytes,
+  tiffPreviewDownloadRequired,
+} from './tiff-preview-policy.ts';
 import {
   cleanupPreview,
   requirePreview,
@@ -90,7 +95,76 @@ export async function processMediaPreview(
           facts.height = prepared.height;
           stepSignal.throwIfAborted();
         }
-        await rename(source, resultPath);
+        if (facts.format === 'TIFF') {
+          step = 'original';
+          if ((await stat(source)).size > tiffPreviewMaxBytes)
+            throw previewError(
+              'TIFF_PREVIEW_DOWNLOAD_REQUIRED',
+              tiffPreviewDownloadRequired,
+              413,
+            );
+          const controller = new AbortController();
+          const cancelSignal = AbortSignal.any([stepSignal, controller.signal]);
+          const tool = startMediaTool(
+            'magick',
+            [
+              '-limit',
+              'memory',
+              '256MiB',
+              '-limit',
+              'map',
+              '0',
+              '-limit',
+              'disk',
+              String(Math.floor(budget.diskLimitBytes)),
+              '-limit',
+              'thread',
+              '1',
+              `tiff:${source}[0]`,
+              '-auto-orient',
+              '-colorspace',
+              'sRGB',
+              '-strip',
+              'png:-',
+            ],
+            {
+              buffer: { stdout: false, stderr: true },
+              workspace,
+              env: { MAGICK_TEMPORARY_PATH: workspace },
+              timeout: 120_000,
+              cancelSignal,
+            },
+          );
+          try {
+            await pipeline(
+              budget.countOutput(tool.child.readable()),
+              createWriteStream(resultPath, { flags: 'wx' }),
+              { signal: cancelSignal },
+            );
+          } catch (error) {
+            controller.abort(error);
+            const toolError = await tool.settled;
+            if (
+              (toolError as { code?: string })?.code ===
+              'MEDIA_TOOL_SHUTDOWN_FAILED'
+            )
+              throw toolError;
+            throw stepSignal.aborted ? stepSignal.reason : error;
+          }
+          const toolError = await tool.settled;
+          if (toolError) throw toolError;
+          const identified = await inspectImage(
+            createReadStream(resultPath),
+            workspace,
+            stepSignal,
+          );
+          if (identified.mime !== 'image/png')
+            throw mediaError(
+              'MEDIA_OUTPUT_INVALID',
+              `Unexpected TIFF preview encoding: ${identified.format}`,
+            );
+          Object.assign(facts, identified);
+        } else await rename(source, resultPath);
         const handle = await open(resultPath, 'r');
         try {
           result = {

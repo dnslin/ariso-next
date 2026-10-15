@@ -48,7 +48,6 @@ export function ShellFixture({ route }: { route: string }) {
           ? 'Ariso 一个很长的工作空间名称用于验证换行'
           : 'Ariso'
       }
-      description="布局验证"
       navigation={route === 'empty' ? [] : navigation}
       user={<span>验证用户</span>}
       footer={<Button id="fixture-save">保存验证设置</Button>}

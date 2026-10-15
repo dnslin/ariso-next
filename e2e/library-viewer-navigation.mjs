@@ -4,7 +4,14 @@ import {
   viewerName,
   viewerQuery,
 } from './library-viewer-fixtures.mjs';
-import { setDetail171Viewport } from './library-detail-171-helpers.mjs';
+import {
+  setDetail171Theme,
+  setDetail171Viewport,
+} from './library-detail-171-helpers.mjs';
+import {
+  assertViewerLayout,
+  readViewerLayout,
+} from './library-viewer-layouts.mjs';
 import {
   button,
   closeViewer,
@@ -15,6 +22,7 @@ import {
   restoreViewerFetch,
   settleViewer,
   viewerState,
+  viewerShot,
   waitViewerImage,
   waitViewerNeighbors,
 } from './library-viewer-helpers.mjs';
@@ -197,6 +205,35 @@ export async function verifyViewerNavigation({ page, config, report }) {
       'uploaded_asc',
     );
     report.preload = windowState;
+    report.stage = 'navigation:visible-arrow-buttons';
+    for (const theme of ['light', 'dark']) {
+      await setDetail171Theme(page, theme);
+      for (const width of [1440, 360, 390, 430, 768]) {
+        await setDetail171Viewport(page, width);
+        const layout = await readViewerLayout(page);
+        assertViewerLayout(layout, true, true);
+        assert.deepEqual(
+          layout.targets.map((target) => target.name).sort(),
+          ['上一张', '下一张', '关闭大图'].sort(),
+        );
+        report.layouts.push({ phase: 'navigation-buttons', theme, ...layout });
+        if ([1440, 390].includes(width))
+          await viewerShot(
+            page,
+            config,
+            report,
+            `navigation-buttons-${theme}-${width}`,
+          );
+      }
+    }
+    await setDetail171Viewport(page, 390, 400);
+    await page.click(button('下一张'));
+    await waitViewerImage(page, viewerId(20), 'compressed');
+    await waitViewerNeighbors(page, viewerId(20));
+    await page.click(button('上一张'));
+    await waitViewerImage(page, viewerId(19), 'compressed');
+    await waitViewerNeighbors(page, viewerId(19));
+    assert.equal(await page.url(), detailUrl);
     report.stage = 'navigation:cross-page-keyboard';
     await page.keyboard.press('ArrowRight');
     await waitViewerImage(page, viewerId(20), 'compressed');
@@ -213,7 +250,8 @@ export async function verifyViewerNavigation({ page, config, report }) {
       const adjacent = await waitViewerNeighbors(page, viewerId(index - 1));
       assert.equal(adjacent.previous.id, viewerId(index - 2));
       assert.equal(adjacent.next.id, viewerId(index));
-      await page.keyboard.press('ArrowRight');
+      if (index === 24) await page.click(button('下一张'));
+      else await page.keyboard.press('ArrowRight');
       await waitViewerImage(page, viewerId(index), 'compressed');
       assert.equal(await page.url(), detailUrl);
       report.navigationSequence.push({
@@ -222,6 +260,12 @@ export async function verifyViewerNavigation({ page, config, report }) {
       });
     }
     assert.equal((await waitViewerNeighbors(page, viewerId(24))).next, null);
+    assert.equal(
+      await page.evaluate(
+        () => !!document.querySelector('button[aria-label="下一张"]'),
+      ),
+      false,
+    );
     await page.keyboard.press('ArrowRight');
     await settleViewer(page);
     assert.equal(
@@ -366,6 +410,30 @@ export async function verifyViewerNavigation({ page, config, report }) {
     viewerId(0),
     'First image never loops',
   );
+  await closeViewer(page);
+  report.stage = 'navigation:first-image-button-boundary';
+  await openViewerSource(page, config, 0);
+  await waitViewerNeighbors(page, viewerId(0));
+  assert.equal(
+    await page.evaluate(
+      () => !!document.querySelector('button[aria-label="上一张"]'),
+    ),
+    false,
+  );
+  await page.click(button('下一张'));
+  await waitViewerImage(page, viewerId(1), 'compressed');
+  await waitViewerNeighbors(page, viewerId(1));
+  await page.click(button('上一张'));
+  await waitViewerImage(page, viewerId(0), 'compressed');
+  await waitViewerNeighbors(page, viewerId(0));
+  assert.equal(
+    await page.evaluate(
+      () => !!document.activeElement?.closest('[data-testid="image-viewer"]'),
+    ),
+    true,
+  );
+  await page.keyboard.press('ArrowRight');
+  await waitViewerImage(page, viewerId(1), 'compressed');
   await closeViewer(page);
   await page.click(button('关闭图片详情'));
   if (savedLayout === 'grid') await page.click('loc=role:radio[name="网格"]');

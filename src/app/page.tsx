@@ -43,11 +43,9 @@ export default async function HomePage() {
         <p className="home-description">
           {settings?.description ?? '轻装简从'}
         </p>
-        <p className="home-availability">
-          {settings
-            ? '登录后进入你的工作空间。'
-            : '首次使用，请完成站点初始化。'}
-        </p>
+        {!settings ? (
+          <p className="home-availability">首次使用，请完成站点初始化。</p>
+        ) : null}
         <Link href={settings ? '/login' : '/setup'}>
           {settings ? '登录' : '开始初始化'}
         </Link>

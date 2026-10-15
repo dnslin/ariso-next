@@ -59,6 +59,8 @@ describe('生产首页与公共壳层', () => {
     expect(first).toMatch(/<h1[^>]*>新站点<\/h1>/);
     expect(first).toContain('name="description" content="新的描述"');
     expect(first).toMatch(/<p[^>]*class="home-description"[^>]*>新的描述<\/p>/);
+    expect(first).not.toContain('登录后进入你的工作空间。');
+    expect(first).not.toContain('home-availability');
 
     database
       .prepare(

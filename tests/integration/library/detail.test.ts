@@ -39,6 +39,7 @@ import {
   resolveLocalUploadStorage,
 } from '../../../src/server/storage/defaults.ts';
 import { storageConfigs } from '../../../src/server/storage/schema.ts';
+import { tiffPreviewMaxBytes } from '../../../src/server/media/tiff-preview-policy.ts';
 import { email, password, seedAuthOwner } from '../identity/auth-fixture.ts';
 import { launch, stop } from '../runtime/process-helpers.ts';
 
@@ -84,6 +85,42 @@ beforeEach(() => {
     })
     .run();
 });
+
+it.each([
+  tiffPreviewMaxBytes - 1,
+  tiffPreviewMaxBytes,
+  tiffPreviewMaxBytes + 1,
+])(
+  'exposes a separate TIFF browser rendering path within the limit while retaining the original download (%s bytes)',
+  (byteSize) => {
+    seed('tiff');
+    connection.db
+      .update(mediaImages)
+      .set({ format: 'TIFF', mime: 'image/tiff', byteSize })
+      .run();
+    connection.db
+      .update(mediaObjects)
+      .set({ format: 'TIFF', mime: 'image/tiff', byteSize })
+      .run();
+    connection.db
+      .update(mediaVersions)
+      .set({ format: 'TIFF', mime: 'image/tiff', byteSize })
+      .run();
+    const original = readLibraryDetail(connection.db, 'tiff').versions[0];
+    expect(original).toMatchObject({
+      mime: 'image/tiff',
+      byteSize,
+      previewPath:
+        byteSize <= tiffPreviewMaxBytes ? '/api/images/tiff/preview' : null,
+      downloadPath: '/i/tiff?type=original&download=1',
+      unavailableReason: null,
+    });
+    connection.db.update(mediaImages).set({ trashedAt: new Date() }).run();
+    expect(
+      readLibraryDetail(connection.db, 'tiff').versions[0].previewPath,
+    ).toBeNull();
+  },
+);
 afterEach(() => {
   connection.close();
   rmSync(directory, { recursive: true, force: true });

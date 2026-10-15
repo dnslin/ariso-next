@@ -282,12 +282,6 @@ html:has([data-share-page])::-webkit-scrollbar {
   line-height: 1.5;
   overflow-wrap: anywhere;
 }
-.shell-description {
-  font-size: 12px;
-}
-.shell-navigation > .shell-description {
-  display: none;
-}
 .shell-navigation nav {
   display: flex;
   flex-wrap: wrap;
@@ -399,9 +393,6 @@ html:has([data-share-page])::-webkit-scrollbar {
   .shell-navigation .shell-brand {
     font-size: 48px;
   }
-  .shell-navigation > .shell-description {
-    display: block;
-  }
   .shell-navigation .shell-nav-link {
     min-height: 40px;
     font-size: 14px;
@@ -413,7 +404,6 @@ html:has([data-share-page])::-webkit-scrollbar {
     padding-inline: 12px;
   }
   .shell-navigation[data-collapsed='true'] .shell-brand,
-  .shell-navigation[data-collapsed='true'] .shell-description,
   .shell-navigation[data-collapsed='true'] .shell-nav-label,
   .shell-navigation[data-collapsed='true'] .shell-nav-unavailable {
     display: none;

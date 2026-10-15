@@ -3,6 +3,11 @@ import type {
   LibraryDetailVersion,
 } from '../../server/library/detail-types';
 import type { VersionKind } from '../../server/media/schema';
+import {
+  canPreviewTiff,
+  tiffPreviewMaxBytes,
+  tiffPreviewDownloadRequired,
+} from '../../server/media/tiff-preview-policy';
 
 export type ViewerDirection = 'previous' | 'next';
 export type ViewerNeighbors = Record<ViewerDirection, string | null>;
@@ -29,7 +34,15 @@ export function viewerVersionReason(
   if (!version) return '此版本不存在。';
   if (version.unavailableReason) return version.unavailableReason;
   if (!version.saved) return '此版本尚未保存。';
+  if (
+    version.mime === 'image/tiff' &&
+    version.byteSize !== null &&
+    version.byteSize > tiffPreviewMaxBytes
+  )
+    return tiffPreviewDownloadRequired;
   if (!version.previewPath) return '此版本仅支持附件下载，请返回详情下载。';
+  if (version.mime === 'image/tiff' && canPreviewTiff(version.byteSize))
+    return null;
   if (!version.mime || !previewMimes.has(version.mime))
     return '此格式无法在查看器中预览，请选择已有的缩略图。';
   return null;
@@ -37,6 +50,14 @@ export function viewerVersionReason(
 
 /** Viewer display never uses the site's default delivery version. */
 export function initialViewerVersion(detail: LibraryDetail): VersionKind {
+  const original = detail.versions.find(
+    (version) => version.kind === 'original',
+  );
+  if (
+    original?.mime === 'image/tiff' &&
+    viewerVersionReason(detail, original) === null
+  )
+    return 'original';
   if (
     detail.classification === 'preview_only' ||
     ['svg', 'ico', 'tiff', 'heif', 'heic'].includes(detail.format)

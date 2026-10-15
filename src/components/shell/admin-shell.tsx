@@ -30,7 +30,6 @@ export type ShellNavigationItem = {
 /** 未开放入口不提供链接；真实入口的鉴权仍在服务端执行。 */
 export function AdminShell({
   name,
-  description,
   logoUrl,
   navigation,
   user,
@@ -157,9 +156,6 @@ export function AdminShell({
             </Tooltip.Content>
           </Tooltip>
         </div>
-        {description ? (
-          <p className="shell-description">{description}</p>
-        ) : null}
         <nav id={navigationId} aria-label="后台导航">
           {links()}
         </nav>
@@ -197,9 +193,6 @@ export function AdminShell({
                       <X size={20} aria-hidden />
                     </Button>
                   </Modal.Header>
-                  {description ? (
-                    <p className="shell-description">{description}</p>
-                  ) : null}
                   <Modal.Body className="shell-menu-body">
                     <nav ref={menuRef} aria-label="后台导航">
                       {links(() => setOpen(false))}

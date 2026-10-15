@@ -139,6 +139,7 @@ export async function seedViewerFixtures(config, sql) {
     ['issue185-apng', 'animated.png', 'apng', 'image/apng', 'animated'],
     ['issue185-svg', 'static.svg', 'svg', 'image/svg+xml', 'preview_only'],
     ['issue185-heic', 'alpha.heic', 'heic', 'image/heic', 'preview_only'],
+    ['issue185-tiff', 'static.tiff', 'tiff', 'image/tiff', 'static'],
   ]) {
     const original = {
       bytes: await readFile(join(formatDirectory, file)),
@@ -147,6 +148,23 @@ export async function seedViewerFixtures(config, sql) {
       width: 64,
       height: 48,
     };
+    if (id === 'issue185-tiff') {
+      const converted = await run(
+        'magick',
+        [
+          join(formatDirectory, file),
+          '-resize',
+          '1200x900!',
+          '-depth',
+          '8',
+          'tiff:-',
+        ],
+        { encoding: 'buffer', maxBuffer: 8 * 1024 * 1024 },
+      );
+      original.bytes = converted.stdout;
+      original.width = 1200;
+      original.height = 900;
+    }
     await image(id, file, original, {
       classification,
       animated: classification === 'animated',
@@ -182,7 +200,7 @@ export async function seedViewerFixtures(config, sql) {
   const result = await sql(
     `SELECT count(*) AS count FROM media_images WHERE storage_id='${viewerStorage}'`,
   );
-  assert.equal(result[0].count, 36);
+  assert.equal(result[0].count, 37);
   return {
     directory,
     async cleanup() {
