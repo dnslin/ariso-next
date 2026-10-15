@@ -461,7 +461,7 @@ export async function verifyProcessingPreviewRecovery(
       for (const oldFact of [
         '排队中',
         '生成中',
-        '等待共享处理名额。',
+        '排队等待生成预览…',
         '服务端正在处理。',
       ])
         assert.equal(

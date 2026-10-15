@@ -70,6 +70,7 @@ export function LibraryScreen(props: {
   initialSidebarCollapsed: boolean;
   timeZone: string;
   albumId?: string;
+  albumName?: string;
   header?: ReactNode;
   toolbarActions?: ReactNode;
   children?: ReactNode;
@@ -218,6 +219,7 @@ export function LibraryScreen(props: {
       ? libraryRequestParams(query.filters, {}).toString()
       : '',
     currentAlbumId: props.albumId,
+    currentAlbumName: props.albumName,
     onExpire: expireSession,
     onRefresh: async (
       results: import('../../server/library/batch-types').BatchItemResult[],

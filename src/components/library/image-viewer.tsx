@@ -13,12 +13,17 @@ import { FocusScope } from 'react-aria/FocusScope';
 import { AlertDialog } from '@heroui/react/alert-dialog';
 import { Button } from '@heroui/react/button';
 import { CloseButton } from '@heroui/react/close-button';
+import { Spinner } from '@heroui/react/spinner';
 import { ChevronLeft, ChevronRight, ImageOff } from 'lucide-react';
 import type { LibraryDetail } from '../../server/library/detail-types';
 import type { LibraryFilters } from '../../server/library/query-schema';
 import type { VersionKind } from '../../server/media/schema';
 import { useImageViewer } from './use-image-viewer';
-import { initialViewerVersion, viewerVersionReason } from './viewer-model';
+import {
+  initialViewerVersion,
+  viewerVersionReason,
+  type ViewerDirection,
+} from './viewer-model';
 import { ViewerImage } from './viewer-image';
 import { tiffPreviewMaxBytes } from '../../server/media/tiff-preview-policy';
 import 'yet-another-react-lightbox/styles.css';
@@ -38,6 +43,38 @@ const containFocus: Plugin = ({ addParent }) => {
 const plugins = [Zoom, containFocus];
 const navigationClass =
   'absolute top-1/2 z-10 size-14 min-w-0 -translate-y-1/2 rounded-none border-0 bg-transparent p-3 text-foreground/80 drop-shadow-[0_1px_3px_var(--background)] hover:bg-transparent hover:text-foreground';
+
+function ViewerPendingNavigation({
+  direction,
+}: {
+  direction: ViewerDirection;
+}) {
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const timer = window.setTimeout(() => setVisible(true), 180);
+    return () => window.clearTimeout(timer);
+  }, []);
+  return (
+    <p
+      role="status"
+      className={
+        visible
+          ? 'pointer-events-none absolute bottom-[max(24px,env(safe-area-inset-bottom))] left-[max(24px,env(safe-area-inset-left))] flex items-center gap-2 rounded-lg bg-surface/90 px-3 py-2 text-[13px] text-foreground'
+          : 'sr-only'
+      }
+    >
+      {visible ? (
+        <Spinner
+          size="sm"
+          color="current"
+          aria-hidden
+          className="motion-reduce:animate-none"
+        />
+      ) : null}
+      正在读取{direction === 'next' ? '下一张' : '上一张'}图片…
+    </p>
+  );
+}
 
 export default function ImageViewer(props: {
   initial: LibraryDetail;
@@ -223,10 +260,10 @@ export default function ImageViewer(props: {
                 className="pointer-events-none absolute inset-0"
               />
               {pendingDirection ? (
-                <p role="status" className="sr-only">
-                  正在读取{pendingDirection === 'next' ? '下一张' : '上一张'}
-                  图片…
-                </p>
+                <ViewerPendingNavigation
+                  key={pendingDirection}
+                  direction={pendingDirection}
+                />
               ) : null}
               {viewer.neighborsError || viewer.statusError ? (
                 <div

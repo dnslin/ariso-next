@@ -32,10 +32,10 @@ export function ShareCreateForm({
     >
       <div className="border-b border-border py-4">
         <SettingSwitch
-          label="隐藏图片名称"
-          selected={!settings.showName}
+          label="显示图片名称"
+          selected={settings.showName}
           disabled={settings.blocked}
-          onChange={(hidden) => settings.setShowName(!hidden)}
+          onChange={settings.setShowName}
         />
       </div>
       <TextField

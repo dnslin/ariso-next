@@ -36,7 +36,10 @@ const settings: UploadSettings = {
   albums: [{ id: 'forest', name: '森林漫步' }],
   tags: [{ id: 'nature', displayName: '自然' }],
 };
-vi.mock('next/navigation', () => ({ useRouter: () => ({ push: vi.fn() }) }));
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({ push: vi.fn() }),
+  useSearchParams: () => new URLSearchParams(),
+}));
 vi.mock('../../../src/components/upload/provider', () => ({
   useUploadQueue: () => ({
     settings,
@@ -201,6 +204,10 @@ it('reflects current draft choices while leaving an earlier frozen submission in
   expect(summary).toContain('2 个相册');
   expect(summary).toContain('1 个标签');
   expect(html).toContain('存储：本地存储');
+  expect(html).toContain(
+    '本次上传沿用开始时的设置，所有上传合计最多同时传输 3 张。',
+  );
+  expect(html).not.toContain('个传输名额');
   expect(frozen).toEqual({
     id: 'old',
     number: 1,
@@ -228,6 +235,14 @@ it('keeps a long storage name complete in the compact summary', () => {
 it('does not claim a storage selection when the configured default is missing', () => {
   state.storageId = 'missing';
   expect(draftMarkup(render())).toContain('未选择可用存储');
+});
+
+it('does not silently choose an enabled default after storage recovery cleared the unavailable choice', () => {
+  state.storageId = '';
+  const html = render();
+  expect(draftMarkup(html)).toContain('未选择可用存储');
+  expect(html).toMatch(/<button[^>]*disabled=""[^>]*>开始上传<\/button>/);
+  expect(state.start).not.toHaveBeenCalled();
 });
 
 it('does not add a redundant compact summary to the empty picker', () => {

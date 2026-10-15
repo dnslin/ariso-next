@@ -153,12 +153,6 @@ function LibrarySearch({ query }: { query: Query }) {
           enterKeyHint="search"
           className="h-11 min-w-0 text-base xl:text-sm"
         />
-        {value ? (
-          <SearchField.ClearButton
-            aria-label="清除搜索"
-            className="size-11 shrink-0"
-          />
-        ) : null}
       </SearchField.Group>
     </SearchField>
   );
@@ -188,10 +182,10 @@ export function LibrarySelect({
       className={className}
     >
       <Select.Trigger
-        className={`h-11 min-w-0 rounded-lg border border-border bg-background text-sm font-normal shadow-none ${compact ? 'px-2 xl:h-9 xl:px-3' : 'px-3'}`}
+        className={`h-11 min-w-0 rounded-lg border border-border bg-background text-sm font-normal shadow-none ${compact ? 'px-2 pe-8 xl:h-9 xl:px-3 xl:pe-9' : 'px-3'}`}
       >
         <Select.Value className="truncate" />
-        {!compact ? <Select.Indicator /> : null}
+        <Select.Indicator />
       </Select.Trigger>
       <Select.Popover>
         <ListBox>

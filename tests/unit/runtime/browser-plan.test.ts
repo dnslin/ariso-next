@@ -6,6 +6,24 @@ function select(suite: string, only?: string) {
 }
 
 describe('focused browser execution plans', () => {
+  it('runs the approved October 15 workflows in full and individually', () => {
+    expect(select('full').stages).toContainEqual([
+      'uiux-20261015',
+      'uiux-20261015',
+    ]);
+    for (const phase of [
+      'settings',
+      'collections',
+      'upload',
+      'viewer',
+      'metadata',
+    ])
+      expect(select('uiux-20261015', phase)).toEqual({
+        stages: [['uiux-20261015', 'uiux20261015']],
+        config: { uiux20261015Phase: phase },
+      });
+    expect(() => select('uiux-20261015', 'unrelated')).toThrow('--only');
+  });
   it('runs the approved P1 workflows in full and focused product verification', () => {
     expect(select('full').stages).toContainEqual(['uiux-p1', 'uiux-p1']);
     expect(select('uiux-p1')).toEqual({
@@ -530,6 +548,7 @@ describe('focused browser execution plans', () => {
         ['password-reset', 'password-reset'],
         ['smtp', 'smtp'],
         ['uiux-p1', 'uiux-p1'],
+        ['uiux-20261015', 'uiux-20261015'],
       ],
       config: {},
     });

@@ -16,7 +16,6 @@ const readBrand = cache(async () => {
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await readBrand();
   return {
-    title: settings?.name ?? 'Ariso',
     description: settings?.description ?? '单用户，自托管图床。',
   };
 }

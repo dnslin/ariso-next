@@ -28,6 +28,7 @@ export interface BatchWorkspace {
   currentCount: number;
   query: string;
   command: Exclude<BatchCommand, { type: 'reprocess' }> | null;
+  albumTargets: { id: string; name: string }[];
   results: BatchItemResult[];
   unknownIds: string[];
   unsentIds: string[];
@@ -106,10 +107,12 @@ export function useLibraryBatch({
   onExpire,
   onRefresh,
   currentAlbumId,
+  currentAlbumName,
 }: {
   selection: LibrarySelection;
   query: string;
   currentAlbumId?: string;
+  currentAlbumName?: string;
   onExpire: () => void;
   onRefresh: (
     results: BatchItemResult[],
@@ -173,6 +176,10 @@ export function useLibraryBatch({
       currentCount: items.filter((item) => item.inCurrentPage).length,
       query,
       command,
+      albumTargets:
+        action === 'remove-albums' && currentAlbumId && currentAlbumName
+          ? [{ id: currentAlbumId, name: currentAlbumName }]
+          : [],
       results: [],
       unknownIds: [],
       unsentIds: [],
@@ -416,8 +423,21 @@ export function useLibraryBatch({
     unresolved: !!workspace?.unknownIds.length,
     reopen: () => setVisible(true),
     onExpire,
-    choose: (command: BatchWorkspace['command']) =>
-      setWorkspace((previous) => previous && { ...previous, command }),
+    choose: (
+      command: BatchWorkspace['command'],
+      albumTargets: BatchWorkspace['albumTargets'] = [],
+    ) => {
+      if (inFlight.current) return;
+      setWorkspace((previous) =>
+        previous?.phase === 'choose'
+          ? {
+              ...previous,
+              command,
+              albumTargets: albumTargets.map((target) => ({ ...target })),
+            }
+          : previous,
+      );
+    },
     submit: () =>
       workspace?.command &&
       void run(

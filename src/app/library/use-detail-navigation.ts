@@ -4,7 +4,9 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 
 /** Native history keeps the mounted list, its loaded pages and scroll position. */
-export function useDetailNavigation() {
+export function useDetailNavigation(
+  fallbackFocus = '[data-testid="library-toolbar"] input',
+) {
   const params = useSearchParams();
   const imageId = params.get('image');
   const view =
@@ -45,17 +47,18 @@ export function useDetailNavigation() {
     }
   }
 
-  const dialogRef = useCallback((node: HTMLElement | null) => {
-    if (node) return;
-    requestAnimationFrame(() => {
-      const target = trigger.current?.isConnected
-        ? trigger.current
-        : document.querySelector<HTMLElement>(
-            '[data-testid="library-toolbar"] input',
-          );
-      target?.focus({ preventScroll: true });
-    });
-  }, []);
+  const dialogRef = useCallback(
+    (node: HTMLElement | null) => {
+      if (node) return;
+      requestAnimationFrame(() => {
+        const target = trigger.current?.isConnected
+          ? trigger.current
+          : document.querySelector<HTMLElement>(fallbackFocus);
+        target?.focus({ preventScroll: true });
+      });
+    },
+    [fallbackFocus],
+  );
 
   function openView(value: 'versions' | 'reprocess', selected?: string) {
     const main = document.getElementById('main-content');
@@ -95,12 +98,10 @@ export function useDetailNavigation() {
           )
         : trigger.current?.isConnected
           ? trigger.current
-          : document.querySelector<HTMLElement>(
-              '[data-testid="library-toolbar"] input',
-            );
+          : document.querySelector<HTMLElement>(fallbackFocus);
       target?.focus({ preventScroll: true });
     }
-  }, [view, imageId]);
+  }, [view, imageId, fallbackFocus]);
   return {
     imageId,
     view,

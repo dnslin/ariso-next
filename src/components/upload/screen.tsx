@@ -1,17 +1,35 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useEffect, useRef } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { Alert } from '@heroui/react/alert';
 import { Button } from '@heroui/react/button';
 import { Link } from '@heroui/react/link';
 import { Card } from '@heroui/react/card';
 import { Toolbar } from '@heroui/react/toolbar';
 import { Tooltip } from '@heroui/react/tooltip';
-import { ArrowLeft, CheckCircle2, CloudUpload } from 'lucide-react';
+import { Dropdown } from '@heroui/react/dropdown';
+import { toast } from '@heroui/react/toast';
+import {
+  ArrowLeft,
+  CheckCircle2,
+  CloudUpload,
+  MoreHorizontal,
+} from 'lucide-react';
 import { OwnerShell } from '../shell/owner-shell';
 import { LibraryDetail } from '../library/detail';
 import { useDetailQuery } from '../library/use-detail-query';
+import { useDetailNavigation } from '../../app/library/use-detail-navigation';
+import { useDetailReprocess } from '../library/use-detail-reprocess';
+import {
+  DetailVersions,
+  DetailVersionsFooter,
+} from '../library/detail-workspace';
+import {
+  DetailReprocess,
+  DetailReprocessFooter,
+} from '../library/detail-reprocess';
+import { initialPreview } from '../library/detail-preview';
 import { bytesLabel } from '../library/detail-labels';
 import { UploadSettingsFields } from './settings';
 import {
@@ -19,7 +37,7 @@ import {
   useUploadQueue,
   uploadTerminalStates,
 } from './provider';
-import { uploadContextItems, uploadDraftKey } from './context';
+import { albumUploadHref, uploadContextItems, uploadDraftKey } from './context';
 import { UploadQueueItem } from './item';
 import { useUploadInput, UploadInputDialog } from './input-controls';
 import { UploadSubmissionSummaries } from './submission-summary';
@@ -37,7 +55,9 @@ type ScreenProps = {
   returnTo?: string;
 };
 export function UploadScreen(props: ScreenProps) {
-  const router = useRouter();
+  const params = useSearchParams();
+  const detail = useDetailNavigation('#upload-title');
+  const currentHref = `/upload${params.size ? `?${params}` : ''}`;
   const {
     client,
     query,
@@ -58,18 +78,25 @@ export function UploadScreen(props: ScreenProps) {
     chosenTags,
   } = useUploadDraft(props.albumId);
   const items = uploadContextItems(allItems, props.albumId);
-  const [detailId, setDetailId] = useState<string | null>(null);
-  const detailQuery = useDetailQuery(client, detailId, '/upload');
-  const input = useUploadInput(controller, uploadDraftKey(props.albumId));
-  const trigger = useRef<HTMLElement | null>(null);
-  const settingsRef = useRef<HTMLDivElement | null>(null);
-  const openDetail = useCallback(
-    (id: string, element: HTMLElement) => {
-      trigger.current = element;
-      setDetailId(id);
-    },
-    [setDetailId],
+  const detailQuery = useDetailQuery(client, detail.imageId, currentHref);
+  const reprocess = useDetailReprocess(detail.imageId, detailQuery, {
+    onReturn: detail.returnToDetail,
+    onClose: detail.close,
+    closeLabel: '返回上传',
+    onVersions: () => detail.openView('versions'),
+    onOpen: () => detail.openView('reprocess'),
+  });
+  const preview = params.get('preview');
+  const selectedPreview =
+    preview &&
+    ['original', 'compressed', 'thumbnail', 'watermark'].includes(preview)
+      ? preview
+      : undefined;
+  const input = useUploadInput(
+    detail.view ? null : controller,
+    uploadDraftKey(props.albumId),
   );
+  const settingsRef = useRef<HTMLDivElement | null>(null);
   const queuedCount = items.filter((item) => item.state === 'queued').length;
   const completedCount = items.filter((item) =>
     uploadTerminalStates.has(item.state),
@@ -80,15 +107,6 @@ export function UploadScreen(props: ScreenProps) {
   const uploading = items.some((item) => item.state === 'uploading');
   const readyCount = items.filter((item) => item.state === 'ready').length;
   const hasStarted = items.some((item) => item.state !== 'queued');
-  const dialogRef = useCallback((node: HTMLElement | null) => {
-    if (!node)
-      requestAnimationFrame(() =>
-        (trigger.current?.isConnected
-          ? trigger.current
-          : document.getElementById('upload-title')
-        )?.focus({ preventScroll: true }),
-      );
-  }, []);
   if (!settings)
     return (
       <OwnerShell {...props}>
@@ -136,83 +154,97 @@ export function UploadScreen(props: ScreenProps) {
   return (
     <OwnerShell
       {...props}
+      returnTo={currentHref}
       footer={
-        <div className="flex w-full flex-wrap items-center gap-3 md:justify-end [&_.button]:min-h-12 [&_.button]:rounded-lg">
-          {props.returnTo && readyCount > 0 ? (
-            <Link
-              href={props.returnTo}
-              className="flex min-h-12 items-center justify-center gap-2 rounded-lg border border-border px-4 text-sm text-foreground no-underline"
-            >
-              <ArrowLeft size={17} aria-hidden />
-              返回相册
-            </Link>
-          ) : null}
-          {completedCount > 0 ? (
+        detail.view === 'reprocess' ? (
+          reprocess.footerActions ? (
+            <DetailReprocessFooter actions={reprocess.footerActions} />
+          ) : null
+        ) : detail.view ? (
+          <DetailVersionsFooter
+            detail={detailQuery.data}
+            onReturn={detail.returnToDetail}
+            onReprocess={reprocess.open}
+          />
+        ) : (
+          <div className="flex w-full flex-wrap items-center gap-3 md:justify-end [&_.button]:min-h-12 [&_.button]:rounded-lg">
+            {props.returnTo && readyCount > 0 ? (
+              <Link
+                href={props.returnTo}
+                className="flex min-h-12 items-center justify-center gap-2 rounded-lg border border-border px-4 text-sm text-foreground no-underline"
+              >
+                <ArrowLeft size={17} aria-hidden />
+                返回相册
+              </Link>
+            ) : null}
+            {completedCount > 0 ? (
+              <Button
+                variant="outline"
+                className="flex-1 md:max-w-45"
+                data-testid="upload-clear-completed"
+                onPress={() => {
+                  controller.clearCompleted(items.map((item) => item.id));
+                }}
+              >
+                清空已完成
+              </Button>
+            ) : null}
+            {items.length > 0 ? (
+              <Button
+                variant="outline"
+                className="flex-1 md:hidden"
+                onPress={choose}
+              >
+                继续添加
+              </Button>
+            ) : null}
             <Button
-              variant="outline"
-              className="flex-1 md:max-w-45"
-              data-testid="upload-clear-completed"
+              className="flex-1 md:max-w-50"
+              isDisabled={
+                queuedCount === 0 || !selectedStorage || missingSourceAlbum
+              }
               onPress={() => {
-                controller.clearCompleted(items.map((item) => item.id));
+                if (selectedStorage)
+                  void controller.start(
+                    visibility,
+                    chosenStorageId !== undefined
+                      ? selectedStorage.id
+                      : undefined,
+                    {
+                      albumIds: chosenAlbums.map((album) => album.id),
+                      tagIds: chosenTags.map((tag) => tag.id),
+                      labels: {
+                        storageId: selectedStorage.id,
+                        storageName: selectedStorage.name,
+                        albums: chosenAlbums.map(
+                          (album) =>
+                            settings.albums.find(
+                              (current) => current.id === album.id,
+                            ) ?? album,
+                        ),
+                        tags: chosenTags.map((tag) => ({
+                          id: tag.id,
+                          name:
+                            settings.tags.find(
+                              (current) => current.id === tag.id,
+                            )?.displayName ?? tag.name,
+                        })),
+                      },
+                    },
+                    items
+                      .filter((item) => item.state === 'queued')
+                      .map((item) => item.id),
+                  );
               }}
             >
-              清空已完成
+              开始上传
             </Button>
-          ) : null}
-          {items.length > 0 ? (
-            <Button
-              variant="outline"
-              className="flex-1 md:hidden"
-              onPress={choose}
-            >
-              继续添加
-            </Button>
-          ) : null}
-          <Button
-            className="flex-1 md:max-w-50"
-            isDisabled={
-              queuedCount === 0 || !selectedStorage || missingSourceAlbum
-            }
-            onPress={() => {
-              if (selectedStorage)
-                void controller.start(
-                  visibility,
-                  chosenStorageId !== undefined
-                    ? selectedStorage.id
-                    : undefined,
-                  {
-                    albumIds: chosenAlbums.map((album) => album.id),
-                    tagIds: chosenTags.map((tag) => tag.id),
-                    labels: {
-                      storageId: selectedStorage.id,
-                      storageName: selectedStorage.name,
-                      albums: chosenAlbums.map(
-                        (album) =>
-                          settings.albums.find(
-                            (current) => current.id === album.id,
-                          ) ?? album,
-                      ),
-                      tags: chosenTags.map((tag) => ({
-                        id: tag.id,
-                        name:
-                          settings.tags.find((current) => current.id === tag.id)
-                            ?.displayName ?? tag.name,
-                      })),
-                    },
-                  },
-                  items
-                    .filter((item) => item.state === 'queued')
-                    .map((item) => item.id),
-                );
-            }}
-          >
-            开始上传
-          </Button>
-        </div>
+          </div>
+        )
       }
     >
       <section
-        className="grid w-full min-w-0 gap-5 md:gap-6 [&_.button]:min-h-11 [&_.button]:rounded-lg"
+        className={`${detail.view ? 'hidden' : 'grid'} w-full min-w-0 gap-5 md:gap-6 [&_.button]:min-h-11 [&_.button]:rounded-lg`}
         aria-labelledby="upload-title"
       >
         <UploadHeading
@@ -283,10 +315,13 @@ export function UploadScreen(props: ScreenProps) {
                 data-testid="upload-queue"
                 className="min-w-0 gap-4 rounded-2xl border border-border bg-background px-3 py-4 shadow-none md:rounded-[20px] md:p-6"
               >
-                <ComponentEntrance delay={0.055} className="hidden md:block">
+                <ComponentEntrance
+                  delay={0.055}
+                  className={queuedCount > 1 ? '' : 'hidden md:block'}
+                >
                   <Toolbar
                     aria-label="上传队列操作"
-                    className="hidden min-h-11 w-full flex-wrap items-center justify-between gap-3 md:flex"
+                    className="flex min-h-11 w-full flex-wrap items-center justify-between gap-3"
                   >
                     <h2 className="text-lg font-medium">
                       {queuedCount > 0
@@ -294,13 +329,17 @@ export function UploadScreen(props: ScreenProps) {
                         : `共 ${items.length} 张`}
                     </h2>
                     <div className="flex shrink-0 gap-2">
-                      <Button variant="outline" onPress={input.chooseDirectory}>
+                      <Button
+                        variant="outline"
+                        className="hidden md:inline-flex"
+                        onPress={input.chooseDirectory}
+                      >
                         选择文件夹
                       </Button>
                       <Tooltip>
                         <Button
                           variant="outline"
-                          className="min-h-11 w-30 shrink-0"
+                          className="hidden min-h-11 w-30 shrink-0 md:inline-flex"
                           onPress={choose}
                         >
                           继续添加
@@ -309,6 +348,42 @@ export function UploadScreen(props: ScreenProps) {
                           可多选图片，已选文件会保留
                         </Tooltip.Content>
                       </Tooltip>
+                      {queuedCount > 1 ? (
+                        <Dropdown>
+                          <Button
+                            isIconOnly
+                            variant="ghost"
+                            aria-label="队列操作"
+                            className="size-11 shrink-0"
+                          >
+                            <MoreHorizontal size={20} aria-hidden />
+                          </Button>
+                          <Dropdown.Popover className="min-w-44 rounded-xl border border-border bg-surface p-1">
+                            <Dropdown.Menu
+                              aria-label="队列操作"
+                              onAction={() => {
+                                const removed = controller.removeQueued(
+                                  uploadDraftKey(props.albumId),
+                                );
+                                toast.success(`已移除 ${removed} 张待上传图片`);
+                                requestAnimationFrame(() =>
+                                  document
+                                    .getElementById('upload-title')
+                                    ?.focus({ preventScroll: true }),
+                                );
+                              }}
+                            >
+                              <Dropdown.Item
+                                id="remove-queued"
+                                textValue={`移除待上传（${queuedCount}）`}
+                                className="min-h-11"
+                              >
+                                移除待上传（{queuedCount}）
+                              </Dropdown.Item>
+                            </Dropdown.Menu>
+                          </Dropdown.Popover>
+                        </Dropdown>
+                      ) : null}
                     </div>
                   </Toolbar>
                 </ComponentEntrance>
@@ -321,7 +396,7 @@ export function UploadScreen(props: ScreenProps) {
                       item={item}
                       controller={controller}
                       client={client}
-                      onOpen={openDetail}
+                      onOpen={detail.open}
                     />
                   </ComponentEntrance>
                 ))}
@@ -383,6 +458,11 @@ export function UploadScreen(props: ScreenProps) {
             >
               <UploadSettingsFields
                 albumId={props.albumId}
+                uploadReturn={
+                  props.albumId
+                    ? albumUploadHref(props.albumId, props.returnTo!)
+                    : '/upload'
+                }
                 started={hasStarted}
                 settings={settings}
                 storageId={storageId}
@@ -405,21 +485,60 @@ export function UploadScreen(props: ScreenProps) {
         }
         clearCompleted={() => controller.clearCompleted()}
       />
-      {detailId ? (
+      {detail.view === 'reprocess' ? (
+        <DetailReprocess state={reprocess} />
+      ) : detail.view &&
+        detailQuery.data &&
+        !detailQuery.isError &&
+        !detailQuery.expired ? (
+        <DetailVersions
+          detail={detailQuery.data}
+          selected={selectedPreview ?? initialPreview(detailQuery.data)}
+          onClose={detail.close}
+          returnLabel="返回上传"
+        />
+      ) : null}
+      {detail.view && detailQuery.isPending ? (
+        <p role="status">正在读取图片详情…</p>
+      ) : null}
+      {detail.view &&
+      (detailQuery.error || detailQuery.statusError) &&
+      !detailQuery.expired ? (
+        <Alert status="danger">
+          <Alert.Content>
+            <Alert.Title>
+              {detailQuery.isError ? '图片详情读取失败' : '任务状态读取失败'}
+            </Alert.Title>
+            <Alert.Description>
+              {(detailQuery.error ?? detailQuery.statusError)?.message}
+            </Alert.Description>
+            <Button
+              variant="outline"
+              className="mt-3 min-h-11"
+              onPress={() => {
+                void (detailQuery.isError
+                  ? detailQuery.refetch()
+                  : detailQuery.retryStatus());
+              }}
+            >
+              重试读取
+            </Button>
+          </Alert.Content>
+        </Alert>
+      ) : null}
+      {detail.imageId ? (
         <LibraryDetail
-          key={detailId}
-          imageId={detailId}
+          key={detail.imageId}
+          imageId={detail.imageId}
           query={detailQuery}
-          onVersions={(selected) => {
-            router.push(
-              `/library?image=${encodeURIComponent(detailId)}&detailView=versions&preview=${encodeURIComponent(selected)}`,
-            );
-          }}
+          hidden={!!detail.view}
+          initialSelected={selectedPreview}
+          onVersions={(selected) => detail.openView('versions', selected)}
           client={client}
-          dialogRef={dialogRef}
-          onClose={() => setDetailId(null)}
+          dialogRef={detail.dialogRef}
+          onClose={detail.close}
           onTrashed={() => {
-            setDetailId(null);
+            detail.close();
             void client.invalidateQueries({ queryKey: ['upload-result'] });
           }}
         />

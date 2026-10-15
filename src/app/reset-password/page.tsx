@@ -6,7 +6,7 @@ import { getAuth } from '../../server/identity/auth';
 import { readSetupOwner } from '../../server/identity/setup';
 import { getServerRuntime } from '../../server/startup/server-start';
 
-export const metadata = { title: '重置密码 · Ariso', referrer: 'no-referrer' };
+export const metadata = { referrer: 'no-referrer' };
 
 export default async function ResetPasswordPage({
   searchParams,

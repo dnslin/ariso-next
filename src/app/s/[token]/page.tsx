@@ -22,15 +22,11 @@ const readBrand = cache(async () => {
   };
 });
 
-export async function generateMetadata(): Promise<Metadata> {
-  const brand = await readBrand();
-  return {
-    title: `${brand.name} · 相册分享`,
-    description: '查看分享的公开图片。',
-    robots: { index: false, follow: false },
-    referrer: 'no-referrer',
-  };
-}
+export const metadata: Metadata = {
+  description: '查看分享的公开图片。',
+  robots: { index: false, follow: false },
+  referrer: 'no-referrer',
+};
 
 export default async function SharePage({
   params,

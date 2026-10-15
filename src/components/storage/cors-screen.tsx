@@ -3,6 +3,7 @@
 import { ComponentEntrance } from '../component-entrance';
 import { useRef, useState, type ComponentProps } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { Alert } from '@heroui/react/alert';
 import { Button } from '@heroui/react/button';
 import { ArrowLeft } from 'lucide-react';
@@ -10,6 +11,7 @@ import { OwnerShell } from '../shell/owner-shell';
 import { CorsDialog, type CorsDialogKind } from './cors-dialog';
 import { CorsReportRows, CorsRows } from './cors-report';
 import { useCorsTest } from './use-cors-test';
+import { readUploadReturn, uploadStorageHref } from '../upload/context';
 
 const actionClass =
   'h-12 min-w-0 flex-1 rounded-lg px-2 text-sm font-normal min-[1200px]:w-50 min-[1200px]:flex-none';
@@ -20,6 +22,8 @@ export function CorsScreen({
 }: Omit<ComponentProps<typeof OwnerShell>, 'children' | 'footer'> & {
   storageId: string;
 }) {
+  const params = useSearchParams();
+  const uploadReturn = readUploadReturn(params?.get('uploadReturn'));
   const { query, busy, testing, message, start, refresh, retryCleanup } =
     useCorsTest(storageId);
   const [overview, setOverview] = useState(false);
@@ -90,7 +94,10 @@ export function CorsScreen({
           </Button>
         ) : result && state.status === 'passed' ? (
           <Link
-            href={`/settings/storage/${storageId}`}
+            href={uploadStorageHref(
+              `/settings/storage/${storageId}`,
+              uploadReturn,
+            )}
             className={`${actionClass} flex items-center justify-center bg-accent text-accent-foreground`}
           >
             管理此存储
@@ -121,7 +128,7 @@ export function CorsScreen({
         className="grid gap-5 pb-10 [overflow-wrap:anywhere]"
       >
         <Link
-          href="/settings/storage"
+          href={uploadStorageHref('/settings/storage', uploadReturn)}
           aria-label="返回存储"
           className="-my-[13px] flex min-h-11 w-fit items-center gap-2 text-sm leading-[18px] text-muted"
         >

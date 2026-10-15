@@ -1,0 +1,49 @@
+{
+  "status": "passed",
+  "checks": [
+    "Desktop/mobile search has no clear cross, typing does not submit, Enter and the search icon submit, deleting the text and submitting clears the query. Sorting retains its direction and a separate dropdown indicator.",
+    "A held real next/previous detail read shows delayed visible feedback, preserves the old image and blocks duplicate navigation. Releasing it removes the status; fast cached navigation does not flash. Escape closes during pending, and reduced motion keeps the status text without rotation."
+  ],
+  "pending": [
+    {
+      "width": 1440,
+      "started": 3724.899999856949,
+      "visible": 3910,
+      "finished": null,
+      "text": "正在读取下一张图片…",
+      "inViewport": true,
+      "spinner": true,
+      "spinnerAnimation": "spin",
+      "closeEnabled": true,
+      "arrowsDisabled": true
+    },
+    {
+      "width": 1440,
+      "fast": {
+        "started": 6041,
+        "visible": null,
+        "finished": 6068.700000047684
+      }
+    },
+    {
+      "width": 390,
+      "started": 4094.699999809265,
+      "visible": 4281.199999809265,
+      "finished": null,
+      "text": "正在读取下一张图片…",
+      "inViewport": true,
+      "spinner": true,
+      "spinnerAnimation": "none",
+      "closeEnabled": true,
+      "arrowsDisabled": true
+    },
+    {
+      "width": 390,
+      "fast": {
+        "started": 5397.699999809265,
+        "visible": null,
+        "finished": 5417
+      }
+    }
+  ]
+}

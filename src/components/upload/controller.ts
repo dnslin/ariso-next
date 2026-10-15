@@ -676,6 +676,18 @@ export class UploadController {
     const entry = this.entries.get(id);
     if (entry?.item.state === 'queued' && !entry.batch) this.clear(entry);
   }
+  removeQueued(draftKey?: string) {
+    const ids = [...this.entries.values()]
+      .filter(
+        (entry) =>
+          entry.item.draftKey === draftKey &&
+          entry.item.state === 'queued' &&
+          !entry.batch,
+      )
+      .map((entry) => entry.item.id);
+    ids.forEach((id) => this.remove(id));
+    return ids.length;
+  }
   async retry(id: string) {
     const entry = this.entries.get(id);
     if (

@@ -86,11 +86,9 @@ export function TagsScreen(props: {
     if (next.q) search.set('q', next.q);
     if (next.page !== 1) search.set('page', String(next.page));
     if (next.pageSize !== 40) search.set('pageSize', String(next.pageSize));
-    window.history.pushState(
-      null,
-      '',
-      `/tags${search.size ? `?${search}` : ''}`,
-    );
+    const href = `/tags${search.size ? `?${search}` : ''}`;
+    if (patch.q !== undefined) window.history.replaceState(null, '', href);
+    else window.history.pushState(null, '', href);
   }
   function close() {
     setOpen(false);

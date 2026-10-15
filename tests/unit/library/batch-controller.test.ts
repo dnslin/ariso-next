@@ -311,6 +311,7 @@ it('limits album-context removal to the current album and retains failed or unkn
       selection: selected,
       query: 'scope=album&albumId=current',
       currentAlbumId: 'current',
+      currentAlbumName: '旅行相册',
       onExpire: vi.fn(),
       onRefresh: async () => {},
     });
@@ -320,6 +321,7 @@ it('limits album-context removal to the current album and retains failed or unkn
   expect(batch.workspace).toMatchObject({
     phase: 'confirm',
     command: { type: 'remove-albums', albumIds: ['current'] },
+    albumTargets: [{ id: 'current', name: '旅行相册' }],
   });
   batch.submit();
   await flush();
@@ -1201,3 +1203,73 @@ it.each(['failed', 'unknown'] as const)(
     expect(get().workspace?.rows[0].result?.cleanup?.status).toBe('succeeded');
   },
 );
+
+it('freezes album names and IDs across unknown checks, closing and failure retry', async () => {
+  const get = mountLibraryBatch();
+  const targets = [
+    { id: '11111111-album-one', name: '同名相册' },
+    { id: '22222222-album-two', name: '同名相册' },
+  ];
+  const command = {
+    type: 'add-albums' as const,
+    albumIds: targets.map(({ id }) => id),
+  };
+  const calls: { mode: string; command: unknown }[] = [];
+  vi.stubGlobal(
+    'fetch',
+    vi.fn(async (_url, init) => {
+      const body = JSON.parse(init.body);
+      calls.push(body);
+      if (calls.length === 1) throw new TypeError('response interrupted');
+      return Response.json({
+        results: [
+          {
+            id: 'image',
+            inQuery: true,
+            status: calls.length === 2 ? 'failed' : 'changed',
+            message: '结果',
+          },
+        ],
+      });
+    }),
+  );
+  get().open('add-albums', focusSource());
+  await flush();
+  get().choose(command, targets);
+  await flush();
+  targets[0].name = '选择后改名';
+  get().submit();
+  await flush();
+  expect(get().workspace?.albumTargets.map(({ name }) => name)).toEqual([
+    '同名相册',
+    '同名相册',
+  ]);
+  expect(get().unresolved).toBe(true);
+  get().close();
+  await flush();
+  get().reopen();
+  await flush();
+  get().choose({ type: 'add-albums', albumIds: ['different'] }, [
+    { id: 'different', name: '其他相册' },
+  ]);
+  await flush();
+  expect(get().workspace?.command).toEqual(command);
+  get().check();
+  await flush();
+  expect(get().workspace?.albumTargets[0]).toEqual({
+    id: '11111111-album-one',
+    name: '同名相册',
+  });
+  get().retryFailures();
+  await flush();
+  expect(calls.map(({ mode }) => mode)).toEqual(['apply', 'check', 'apply']);
+  expect(calls.map(({ command: sent }) => sent)).toEqual([
+    command,
+    command,
+    command,
+  ]);
+  expect(get().workspace).toBeNull();
+  expect(toast.success).toHaveBeenCalledWith('添加到相册完成', {
+    description: '1张已修改 · 0张无需修改',
+  });
+});

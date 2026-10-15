@@ -72,7 +72,7 @@ export function GithubSettingsFields({
         className="text-[13px] leading-normal text-muted"
       >
         {editor.draft.clearSecret
-          ? '保存时将清除密钥并停用。'
+          ? '待保存：清除密钥并停用 GitHub 登录。'
           : settings.saved.hasSecret
             ? '已设置 Client Secret。留空保留现有密钥。'
             : '尚未设置 Client Secret。'}

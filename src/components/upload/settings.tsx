@@ -8,11 +8,13 @@ import { Select } from '@heroui/react/select';
 import { Button } from '@heroui/react/button';
 import { Popover } from '@heroui/react/popover';
 import { Tooltip } from '@heroui/react/tooltip';
-import { CircleHelp } from 'lucide-react';
+import { Link } from '@heroui/react/link';
+import { ChevronRight, CircleHelp } from 'lucide-react';
 import { AlbumDialog } from '../../app/albums/dialog';
 import { UploadCreateTag } from './create-tag';
 import { UploadRelations } from './relations';
 import { useUploadDraft, useUploadQueue } from './provider';
+import { uploadStorageHref } from './context';
 
 export interface UploadSettings {
   maxFileBytes: number;
@@ -34,6 +36,7 @@ export function UploadSettingsFields({
   onVisibility,
   albumId,
   started,
+  uploadReturn = '/upload',
 }: {
   settings: UploadSettings;
   storageId: string | null;
@@ -43,6 +46,7 @@ export function UploadSettingsFields({
   onVisibility: (value: 'public' | 'private') => void;
   albumId?: string;
   started?: boolean;
+  uploadReturn?: string;
 }) {
   const { client, query, controller, expire } = useUploadQueue();
   const { chosenAlbums, setAlbums, chosenTags, setTags } =
@@ -80,14 +84,15 @@ export function UploadSettingsFields({
               className="text-[13px] leading-5"
             >
               {hasStarted
-                ? '这里只影响下一次开始上传。已提交的批次沿用冻结设置。'
+                ? '这里只影响下一次开始上传。已提交的批次沿用开始时的设置。'
                 : '开始上传时固定本次设置。自动拆出的各批共用这些设置。'}
             </Popover.Dialog>
           </Popover.Content>
         </Popover>
       </div>
       <Select
-        value={storageId}
+        value={storageId || null}
+        placeholder="请选择存储"
         isDisabled={disabled || !available}
         onChange={(key) => {
           if (key !== null) onStorage(String(key));
@@ -117,12 +122,24 @@ export function UploadSettingsFields({
         </Select.Popover>
       </Select>
       {!available ? (
-        <p role="alert" className="text-sm">
-          暂无可用存储，请先配置并启用存储。
-        </p>
+        <div className="grid justify-items-start gap-1">
+          <p role="alert" className="text-sm">
+            暂无可用存储，请先配置并启用存储。
+          </p>
+          <Link
+            href={uploadStorageHref('/settings/storage', uploadReturn)}
+            onPress={() => onStorage('')}
+            className="min-h-11 gap-1 rounded-lg px-2 text-sm text-foreground underline underline-offset-4"
+          >
+            管理存储
+            <ChevronRight size={16} aria-hidden />
+          </Link>
+        </div>
       ) : !selected?.enabled ? (
         <p role="alert" className="text-sm">
-          默认存储缺失或已停用，请明确选择可用的存储。
+          {storageId === ''
+            ? '请选择用于本次上传的存储。'
+            : '默认存储缺失或已停用，请明确选择可用的存储。'}
         </p>
       ) : null}
       <Select

@@ -6,7 +6,7 @@ import { readSetupOwner } from '../../server/identity/setup';
 import { readSmtpSettings } from '../../server/identity/mail';
 import { getServerRuntime } from '../../server/startup/server-start';
 
-export const metadata = { title: '找回密码 · Ariso', referrer: 'no-referrer' };
+export const metadata = { referrer: 'no-referrer' };
 
 export default async function ForgotPasswordPage() {
   await connection();

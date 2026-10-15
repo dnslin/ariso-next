@@ -4,7 +4,10 @@ import { QueryClient } from '@tanstack/react-query';
 import { afterEach, expect, it, vi } from 'vitest';
 import { AlbumRequestError, type Album } from '../../../src/app/albums/api';
 import type { TagPage } from '../../../src/app/tags/api';
-import { BatchTargets } from '../../../src/components/library/batch-targets';
+import {
+  BatchTargets,
+  useBatchTargets,
+} from '../../../src/components/library/batch-targets';
 import type { LibraryBatch } from '../../../src/components/library/use-library-batch';
 
 const clients = new Set<QueryClient>();
@@ -62,6 +65,7 @@ function batch(
         action === 'remove-albums'
           ? { type: action, albumIds: [album.id] }
           : { type: action, tagIds: ['tag-one'] },
+      albumTargets: [],
       results: [],
       unknownIds: [],
       unsentIds: [],
@@ -179,4 +183,38 @@ it('gives unselected target controls an explicit border independently of borderl
   expect(control).toMatch(/\sborder\s/);
   expect(control).toContain('border-border');
   expect(control).toContain('bg-background');
+});
+
+it('keeps names of earlier-page album selections while adding a same-name target', () => {
+  const cache = client();
+  const state = batch('remove-albums');
+  state.workspace!.albumTargets = [{ id: album.id, name: '选择时的名称' }];
+  cache.setQueryData(['batch-targets', true, '', 1], {
+    items: [
+      { ...album, name: '后来改名' },
+      { ...album, id: 'second-album', name: '选择时的名称' },
+    ],
+    total: 2,
+    page: 1,
+    pageSize: 20,
+  });
+  let targets!: ReturnType<typeof useBatchTargets>;
+  function Probe() {
+    targets = useBatchTargets({ batch: state, client: cache });
+    return null;
+  }
+  renderToStaticMarkup(createElement(Probe));
+  targets.choose([album.id, 'second-album']);
+  expect(state.choose).toHaveBeenCalledWith(
+    { type: 'remove-albums', albumIds: [album.id, 'second-album'] },
+    [
+      { id: album.id, name: '选择时的名称' },
+      { id: 'second-album', name: '选择时的名称' },
+    ],
+  );
+  targets.choose(['second-album']);
+  expect(state.choose).toHaveBeenLastCalledWith(
+    { type: 'remove-albums', albumIds: ['second-album'] },
+    [{ id: 'second-album', name: '选择时的名称' }],
+  );
 });

@@ -1,0 +1,1838 @@
+{
+  "status": "passed",
+  "checks": [
+    {
+      "id": "R03",
+      "width": 1440,
+      "result": "Same positive switch semantics before creation and after display save; default remains off."
+    },
+    {
+      "id": "R04",
+      "width": 1440,
+      "result": "Mark/cancel never clear saved credentials; outer save clears only saved state and preserves effective state."
+    },
+    {
+      "id": "R10",
+      "width": 1440,
+      "geometry": [
+        {
+          "top": 714,
+          "left": 289,
+          "width": 351.328125,
+          "controlHeight": 48,
+          "inputHeight": 46
+        },
+        {
+          "top": 714,
+          "left": 660.328125,
+          "width": 351.328125,
+          "controlHeight": 48,
+          "inputHeight": 46
+        },
+        {
+          "top": 714,
+          "left": 1031.65625,
+          "width": 351.34375,
+          "controlHeight": 48,
+          "inputHeight": 46
+        }
+      ],
+      "result": "Responsive columns, field validation, 48px input, and independent save verified."
+    },
+    {
+      "id": "R12",
+      "width": 1440,
+      "result": "Queued copy, unknown-first message, diagnostic detail, and existing recreate action verified."
+    },
+    {
+      "id": "R03",
+      "width": 390,
+      "result": "Same positive switch semantics before creation and after display save; default remains off."
+    },
+    {
+      "id": "R04",
+      "width": 390,
+      "result": "Mark/cancel never clear saved credentials; outer save clears only saved state and preserves effective state."
+    },
+    {
+      "id": "R10",
+      "width": 390,
+      "geometry": [
+        {
+          "top": 922,
+          "left": 33,
+          "width": 324,
+          "controlHeight": 48,
+          "inputHeight": 46
+        },
+        {
+          "top": 1042,
+          "left": 33,
+          "width": 324,
+          "controlHeight": 48,
+          "inputHeight": 46
+        },
+        {
+          "top": 1162,
+          "left": 33,
+          "width": 324,
+          "controlHeight": 48,
+          "inputHeight": 46
+        }
+      ],
+      "result": "Responsive columns, field validation, 48px input, and independent save verified."
+    },
+    {
+      "id": "R12",
+      "width": 390,
+      "result": "Queued copy, unknown-first message, diagnostic detail, and existing recreate action verified."
+    },
+    "R01: search and Chinese IME input replace history; clearing resets page; pagination remains reversible, desktop/mobile.",
+    "R06: mobile begins with no unused fields, adds/removes a condition and returns focus; source conditions stay visible; 768/1440 preserve three fields.",
+    "R08: real uploads and selected same-name albums retain names/short IDs in partial failure; full IDs expand; failed-only retry closes with existing success behavior on desktop/mobile. Unknown/check target retention is additionally covered by controller tests.",
+    "R07/R12/1440: disabled storage → actual configuration save → original queue and public draft; no automatic selection; explicit selection and real Local upload complete.",
+    "normal-upload/1440: detail → versions → detail → close and browser Back retain the exact upload entry, focus and scroll.",
+    "album-upload/1440: detail → versions → detail → close and browser Back retain the exact upload entry, focus and scroll.",
+    "R09/1440: removes five current-entry queued files, retains three completed records and two files in the other album entry; other entry uploads still succeed.",
+    "R07/R12/390: disabled storage → actual configuration save → original queue and public draft; no automatic selection; explicit selection and real Local upload complete.",
+    "normal-upload/390: detail → versions → detail → close and browser Back retain the exact upload entry, focus and scroll.",
+    "album-upload/390: detail → versions → detail → close and browser Back retain the exact upload entry, focus and scroll.",
+    "R09/390: removes five current-entry queued files, retains three completed records and two files in the other album entry; other entry uploads still succeed.",
+    "Desktop/mobile search has no clear cross, typing does not submit, Enter and the search icon submit, deleting the text and submitting clears the query. Sorting retains its direction and a separate dropdown indicator.",
+    "A held real next/previous detail read shows delayed visible feedback, preserves the old image and blocks duplicate navigation. Releasing it removes the status; fast cached navigation does not flash. Escape closes during pending, and reduced motion keeps the status text without rotation.",
+    {
+      "id": "tab-flash",
+      "width": 1440,
+      "favicon": "none",
+      "routes": 15,
+      "result": "Dynamic title and icon preserved across real sidebar/category navigation; no document reload."
+    },
+    {
+      "id": "tab-flash",
+      "width": 390,
+      "favicon": "none",
+      "routes": 15,
+      "result": "Dynamic title and icon preserved across real sidebar/category navigation; no document reload."
+    },
+    {
+      "id": "metadata-ssr",
+      "favicon": "none",
+      "path": "/",
+      "title": "Ariso"
+    },
+    {
+      "id": "metadata-ssr",
+      "favicon": "none",
+      "path": "/s/Cb8VS820JMYfYPJ2wvaqXnulKtxcm55TTcgi5SRQ1FY",
+      "title": "Ariso · 相册分享"
+    },
+    {
+      "id": "metadata-ssr",
+      "favicon": "none",
+      "path": "/forgot-password",
+      "title": "找回密码 · Ariso"
+    },
+    {
+      "id": "metadata-ssr",
+      "favicon": "none",
+      "path": "/reset-password",
+      "title": "重置密码 · Ariso"
+    },
+    {
+      "id": "tab-flash",
+      "width": 1440,
+      "favicon": "configured",
+      "routes": 15,
+      "result": "Dynamic title and icon preserved across real sidebar/category navigation; no document reload."
+    },
+    {
+      "id": "tab-flash",
+      "width": 390,
+      "favicon": "configured",
+      "routes": 15,
+      "result": "Dynamic title and icon preserved across real sidebar/category navigation; no document reload."
+    },
+    {
+      "id": "metadata-ssr",
+      "favicon": "configured",
+      "path": "/",
+      "title": "Ariso · 标题验收"
+    },
+    {
+      "id": "metadata-ssr",
+      "favicon": "configured",
+      "path": "/s/Cb8VS820JMYfYPJ2wvaqXnulKtxcm55TTcgi5SRQ1FY",
+      "title": "Ariso · 标题验收 · 相册分享"
+    },
+    {
+      "id": "metadata-ssr",
+      "favicon": "configured",
+      "path": "/forgot-password",
+      "title": "找回密码 · Ariso"
+    },
+    {
+      "id": "metadata-ssr",
+      "favicon": "configured",
+      "path": "/reset-password",
+      "title": "重置密码 · Ariso"
+    },
+    {
+      "id": "metadata-brand-save",
+      "result": "Real name save and favicon replacement refresh the same document/title/icon nodes."
+    }
+  ],
+  "workflows": {
+    "settings": {
+      "checks": [
+        {
+          "id": "R03",
+          "width": 1440,
+          "result": "Same positive switch semantics before creation and after display save; default remains off."
+        },
+        {
+          "id": "R04",
+          "width": 1440,
+          "result": "Mark/cancel never clear saved credentials; outer save clears only saved state and preserves effective state."
+        },
+        {
+          "id": "R10",
+          "width": 1440,
+          "geometry": [
+            {
+              "top": 714,
+              "left": 289,
+              "width": 351.328125,
+              "controlHeight": 48,
+              "inputHeight": 46
+            },
+            {
+              "top": 714,
+              "left": 660.328125,
+              "width": 351.328125,
+              "controlHeight": 48,
+              "inputHeight": 46
+            },
+            {
+              "top": 714,
+              "left": 1031.65625,
+              "width": 351.34375,
+              "controlHeight": 48,
+              "inputHeight": 46
+            }
+          ],
+          "result": "Responsive columns, field validation, 48px input, and independent save verified."
+        },
+        {
+          "id": "R12",
+          "width": 1440,
+          "result": "Queued copy, unknown-first message, diagnostic detail, and existing recreate action verified."
+        },
+        {
+          "id": "R03",
+          "width": 390,
+          "result": "Same positive switch semantics before creation and after display save; default remains off."
+        },
+        {
+          "id": "R04",
+          "width": 390,
+          "result": "Mark/cancel never clear saved credentials; outer save clears only saved state and preserves effective state."
+        },
+        {
+          "id": "R10",
+          "width": 390,
+          "geometry": [
+            {
+              "top": 922,
+              "left": 33,
+              "width": 324,
+              "controlHeight": 48,
+              "inputHeight": 46
+            },
+            {
+              "top": 1042,
+              "left": 33,
+              "width": 324,
+              "controlHeight": 48,
+              "inputHeight": 46
+            },
+            {
+              "top": 1162,
+              "left": 33,
+              "width": 324,
+              "controlHeight": 48,
+              "inputHeight": 46
+            }
+          ],
+          "result": "Responsive columns, field validation, 48px input, and independent save verified."
+        },
+        {
+          "id": "R12",
+          "width": 390,
+          "result": "Queued copy, unknown-first message, diagnostic detail, and existing recreate action verified."
+        }
+      ],
+      "screenshots": [
+        "uiux-20261015-share-name-1440.png",
+        "uiux-20261015-github-marked-1440.png",
+        "uiux-20261015-upload-limits-1440.png",
+        "uiux-20261015-preview-queued-1440.png",
+        "uiux-20261015-preview-unknown-1440.png",
+        "uiux-20261015-share-name-390.png",
+        "uiux-20261015-github-marked-390.png",
+        "uiux-20261015-upload-limits-390.png",
+        "uiux-20261015-preview-queued-390.png",
+        "uiux-20261015-preview-unknown-390.png"
+      ],
+      "injectedStates": [
+        {
+          "width": 1440,
+          "states": [
+            "queued presentation around real job",
+            "lost successful POST response"
+          ]
+        },
+        {
+          "width": 390,
+          "states": [
+            "queued presentation around real job",
+            "lost successful POST response"
+          ]
+        }
+      ],
+      "uploadOperation": {
+        "action": "fill",
+        "field": "maxFileMiB",
+        "value": 61,
+        "step": "complete"
+      }
+    },
+    "collections": {
+      "status": "passed",
+      "checks": [
+        "R01: search and Chinese IME input replace history; clearing resets page; pagination remains reversible, desktop/mobile.",
+        "R06: mobile begins with no unused fields, adds/removes a condition and returns focus; source conditions stay visible; 768/1440 preserve three fields.",
+        "R08: real uploads and selected same-name albums retain names/short IDs in partial failure; full IDs expand; failed-only retry closes with existing success behavior on desktop/mobile. Unknown/check target retention is additionally covered by controller tests."
+      ],
+      "screenshots": [
+        "uiux-r01-tags-1440.png",
+        "uiux-r01-tags-390.png",
+        "uiux-r06-trash-default-390.png",
+        "uiux-r06-trash-source-390.png",
+        "uiux-r06-trash-source-430.png",
+        "uiux-r06-trash-source-768.png",
+        "uiux-r06-trash-source-1440.png",
+        "uiux-r08-batch-targets-1440.png",
+        "uiux-r08-batch-targets-390.png"
+      ]
+    },
+    "upload": {
+      "checks": [
+        "R07/R12/1440: disabled storage → actual configuration save → original queue and public draft; no automatic selection; explicit selection and real Local upload complete.",
+        "normal-upload/1440: detail → versions → detail → close and browser Back retain the exact upload entry, focus and scroll.",
+        "album-upload/1440: detail → versions → detail → close and browser Back retain the exact upload entry, focus and scroll.",
+        "R09/1440: removes five current-entry queued files, retains three completed records and two files in the other album entry; other entry uploads still succeed.",
+        "R07/R12/390: disabled storage → actual configuration save → original queue and public draft; no automatic selection; explicit selection and real Local upload complete.",
+        "normal-upload/390: detail → versions → detail → close and browser Back retain the exact upload entry, focus and scroll.",
+        "album-upload/390: detail → versions → detail → close and browser Back retain the exact upload entry, focus and scroll.",
+        "R09/390: removes five current-entry queued files, retains three completed records and two files in the other album entry; other entry uploads still succeed."
+      ],
+      "layouts": [
+        {
+          "name": "storage-return-unselected",
+          "width": 1440,
+          "screenshot": "upload/storage-return-unselected-1440.png",
+          "geometry": {
+            "width": 1440,
+            "overflow": false,
+            "mainOverflow": false,
+            "targets": [
+              {
+                "name": "跳到主要内容",
+                "width": 120,
+                "height": 48,
+                "navigation": false
+              },
+              {
+                "name": "Ariso 首页",
+                "width": 84,
+                "height": 72,
+                "navigation": false
+              },
+              {
+                "name": "收起侧栏",
+                "width": 44,
+                "height": 44,
+                "navigation": false
+              },
+              {
+                "name": "总览",
+                "width": 191,
+                "height": 40,
+                "navigation": true
+              },
+              {
+                "name": "上传",
+                "width": 191,
+                "height": 40,
+                "navigation": true
+              },
+              {
+                "name": "图库",
+                "width": 191,
+                "height": 40,
+                "navigation": true
+              },
+              {
+                "name": "相册",
+                "width": 191,
+                "height": 40,
+                "navigation": true
+              },
+              {
+                "name": "标签",
+                "width": 191,
+                "height": 40,
+                "navigation": true
+              },
+              {
+                "name": "分享",
+                "width": 191,
+                "height": 40,
+                "navigation": true
+              },
+              {
+                "name": "回收站",
+                "width": 191,
+                "height": 40,
+                "navigation": true
+              },
+              {
+                "name": "访问统计",
+                "width": 191,
+                "height": 40,
+                "navigation": true
+              },
+              {
+                "name": "存储",
+                "width": 191,
+                "height": 40,
+                "navigation": true
+              },
+              {
+                "name": "站点设置",
+                "width": 191,
+                "height": 40,
+                "navigation": true
+              },
+              {
+                "name": "账号菜单",
+                "width": 191,
+                "height": 56,
+                "navigation": false
+              },
+              {
+                "name": "外观：自动；点击切换为亮色",
+                "width": 44,
+                "height": 44,
+                "navigation": false
+              },
+              {
+                "name": "选择文件夹",
+                "width": 104,
+                "height": 44,
+                "navigation": false
+              },
+              {
+                "name": "继续添加",
+                "width": 120,
+                "height": 44,
+                "navigation": false
+              },
+              {
+                "name": "队列操作",
+                "width": 44,
+                "height": 44,
+                "navigation": false
+              },
+              {
+                "name": "移除",
+                "width": 140,
+                "height": 44,
+                "navigation": false
+              },
+              {
+                "name": "移除",
+                "width": 140,
+                "height": 44,
+                "navigation": false
+              },
+              {
+                "name": "移除",
+                "width": 140,
+                "height": 44,
+                "navigation": false
+              },
+              {
+                "name": "上传设置说明",
+                "width": 44,
+                "height": 44,
+                "navigation": false
+              },
+              {
+                "name": "请选择存储",
+                "width": 310,
+                "height": 44,
+                "navigation": false
+              },
+              {
+                "name": "公开",
+                "width": 310,
+                "height": 44,
+                "navigation": false
+              },
+              {
+                "name": "选择相册",
+                "width": 310,
+                "height": 44,
+                "navigation": false
+              },
+              {
+                "name": "选择标签",
+                "width": 310,
+                "height": 44,
+                "navigation": false
+              },
+              {
+                "name": "开始上传",
+                "width": 200,
+                "height": 48,
+                "navigation": false
+              }
+            ]
+          }
+        },
+        {
+          "name": "normal-upload-versions",
+          "width": 1440,
+          "screenshot": "upload/normal-upload-versions-1440.png",
+          "geometry": {
+            "width": 1440,
+            "overflow": false,
+            "mainOverflow": false,
+            "targets": [
+              {
+                "name": "跳到主要内容",
+                "width": 120,
+                "height": 48,
+                "navigation": false
+              },
+              {
+                "name": "Ariso 首页",
+                "width": 84,
+                "height": 72,
+                "navigation": false
+              },
+              {
+                "name": "收起侧栏",
+                "width": 44,
+                "height": 44,
+                "navigation": false
+              },
+              {
+                "name": "总览",
+                "width": 191,
+                "height": 40,
+                "navigation": true
+              },
+              {
+                "name": "上传",
+                "width": 191,
+                "height": 40,
+                "navigation": true
+              },
+              {
+                "name": "图库",
+                "width": 191,
+                "height": 40,
+                "navigation": true
+              },
+              {
+                "name": "相册",
+                "width": 191,
+                "height": 40,
+                "navigation": true
+              },
+              {
+                "name": "标签",
+                "width": 191,
+                "height": 40,
+                "navigation": true
+              },
+              {
+                "name": "分享",
+                "width": 191,
+                "height": 40,
+                "navigation": true
+              },
+              {
+                "name": "回收站",
+                "width": 191,
+                "height": 40,
+                "navigation": true
+              },
+              {
+                "name": "访问统计",
+                "width": 191,
+                "height": 40,
+                "navigation": true
+              },
+              {
+                "name": "存储",
+                "width": 191,
+                "height": 40,
+                "navigation": true
+              },
+              {
+                "name": "站点设置",
+                "width": 191,
+                "height": 40,
+                "navigation": true
+              },
+              {
+                "name": "账号菜单",
+                "width": 191,
+                "height": 56,
+                "navigation": false
+              },
+              {
+                "name": "外观：自动；点击切换为亮色",
+                "width": 44,
+                "height": 44,
+                "navigation": false
+              },
+              {
+                "name": "返回上传",
+                "width": 76,
+                "height": 44,
+                "navigation": false
+              },
+              {
+                "name": "查看版本说明",
+                "width": 86,
+                "height": 44,
+                "navigation": false
+              },
+              {
+                "name": "返回详情",
+                "width": 200,
+                "height": 48,
+                "navigation": false
+              },
+              {
+                "name": "重新处理",
+                "width": 200,
+                "height": 48,
+                "navigation": false
+              }
+            ]
+          }
+        },
+        {
+          "name": "remove-queued-menu",
+          "width": 1440,
+          "screenshot": "upload/remove-queued-menu-1440.png",
+          "geometry": {
+            "width": 1440,
+            "overflow": false,
+            "mainOverflow": false,
+            "targets": []
+          }
+        },
+        {
+          "name": "album-upload-versions",
+          "width": 1440,
+          "screenshot": "upload/album-upload-versions-1440.png",
+          "geometry": {
+            "width": 1440,
+            "overflow": false,
+            "mainOverflow": false,
+            "targets": [
+              {
+                "name": "跳到主要内容",
+                "width": 120,
+                "height": 48,
+                "navigation": false
+              },
+              {
+                "name": "Ariso 首页",
+                "width": 84,
+                "height": 72,
+                "navigation": false
+              },
+              {
+                "name": "收起侧栏",
+                "width": 44,
+                "height": 44,
+                "navigation": false
+              },
+              {
+                "name": "总览",
+                "width": 191,
+                "height": 40,
+                "navigation": true
+              },
+              {
+                "name": "上传",
+                "width": 191,
+                "height": 40,
+                "navigation": true
+              },
+              {
+                "name": "图库",
+                "width": 191,
+                "height": 40,
+                "navigation": true
+              },
+              {
+                "name": "相册",
+                "width": 191,
+                "height": 40,
+                "navigation": true
+              },
+              {
+                "name": "标签",
+                "width": 191,
+                "height": 40,
+                "navigation": true
+              },
+              {
+                "name": "分享",
+                "width": 191,
+                "height": 40,
+                "navigation": true
+              },
+              {
+                "name": "回收站",
+                "width": 191,
+                "height": 40,
+                "navigation": true
+              },
+              {
+                "name": "访问统计",
+                "width": 191,
+                "height": 40,
+                "navigation": true
+              },
+              {
+                "name": "存储",
+                "width": 191,
+                "height": 40,
+                "navigation": true
+              },
+              {
+                "name": "站点设置",
+                "width": 191,
+                "height": 40,
+                "navigation": true
+              },
+              {
+                "name": "账号菜单",
+                "width": 191,
+                "height": 56,
+                "navigation": false
+              },
+              {
+                "name": "外观：自动；点击切换为亮色",
+                "width": 44,
+                "height": 44,
+                "navigation": false
+              },
+              {
+                "name": "返回上传",
+                "width": 76,
+                "height": 44,
+                "navigation": false
+              },
+              {
+                "name": "查看版本说明",
+                "width": 86,
+                "height": 44,
+                "navigation": false
+              },
+              {
+                "name": "返回详情",
+                "width": 200,
+                "height": 48,
+                "navigation": false
+              },
+              {
+                "name": "重新处理",
+                "width": 200,
+                "height": 48,
+                "navigation": false
+              }
+            ]
+          }
+        },
+        {
+          "name": "storage-return-unselected",
+          "width": 390,
+          "screenshot": "upload/storage-return-unselected-390.png",
+          "geometry": {
+            "width": 390,
+            "overflow": false,
+            "mainOverflow": false,
+            "targets": [
+              {
+                "name": "跳到主要内容",
+                "width": 120,
+                "height": 48,
+                "navigation": false
+              },
+              {
+                "name": "Ariso 首页",
+                "width": 63,
+                "height": 54,
+                "navigation": false
+              },
+              {
+                "name": "外观：自动；点击切换为亮色",
+                "width": 44,
+                "height": 44,
+                "navigation": false
+              },
+              {
+                "name": "菜单",
+                "width": 44,
+                "height": 44,
+                "navigation": false
+              },
+              {
+                "name": "修改上传设置",
+                "width": 44,
+                "height": 44,
+                "navigation": false
+              },
+              {
+                "name": "队列操作",
+                "width": 44,
+                "height": 44,
+                "navigation": false
+              },
+              {
+                "name": "移除",
+                "width": 88,
+                "height": 44,
+                "navigation": false
+              },
+              {
+                "name": "移除",
+                "width": 88,
+                "height": 44,
+                "navigation": false
+              },
+              {
+                "name": "移除",
+                "width": 88,
+                "height": 44,
+                "navigation": false
+              },
+              {
+                "name": "选择文件夹",
+                "width": 358,
+                "height": 44,
+                "navigation": false
+              },
+              {
+                "name": "上传设置说明",
+                "width": 44,
+                "height": 44,
+                "navigation": false
+              },
+              {
+                "name": "请选择存储",
+                "width": 324,
+                "height": 44,
+                "navigation": false
+              },
+              {
+                "name": "公开",
+                "width": 324,
+                "height": 44,
+                "navigation": false
+              },
+              {
+                "name": "选择相册",
+                "width": 324,
+                "height": 44,
+                "navigation": false
+              },
+              {
+                "name": "选择标签",
+                "width": 324,
+                "height": 44,
+                "navigation": false
+              },
+              {
+                "name": "继续添加",
+                "width": 174,
+                "height": 44,
+                "navigation": false
+              },
+              {
+                "name": "开始上传",
+                "width": 172,
+                "height": 44,
+                "navigation": false
+              }
+            ]
+          }
+        },
+        {
+          "name": "normal-upload-versions",
+          "width": 390,
+          "screenshot": "upload/normal-upload-versions-390.png",
+          "geometry": {
+            "width": 390,
+            "overflow": false,
+            "mainOverflow": false,
+            "targets": [
+              {
+                "name": "跳到主要内容",
+                "width": 120,
+                "height": 48,
+                "navigation": false
+              },
+              {
+                "name": "Ariso 首页",
+                "width": 63,
+                "height": 54,
+                "navigation": false
+              },
+              {
+                "name": "外观：自动；点击切换为亮色",
+                "width": 44,
+                "height": 44,
+                "navigation": false
+              },
+              {
+                "name": "菜单",
+                "width": 44,
+                "height": 44,
+                "navigation": false
+              },
+              {
+                "name": "返回上传",
+                "width": 80,
+                "height": 44,
+                "navigation": false
+              },
+              {
+                "name": "查看版本说明",
+                "width": 90,
+                "height": 44,
+                "navigation": false
+              },
+              {
+                "name": "返回详情",
+                "width": 173,
+                "height": 48,
+                "navigation": false
+              },
+              {
+                "name": "重新处理",
+                "width": 173,
+                "height": 48,
+                "navigation": false
+              }
+            ]
+          }
+        },
+        {
+          "name": "remove-queued-menu",
+          "width": 390,
+          "screenshot": "upload/remove-queued-menu-390.png",
+          "geometry": {
+            "width": 390,
+            "overflow": false,
+            "mainOverflow": false,
+            "targets": []
+          }
+        },
+        {
+          "name": "album-upload-versions",
+          "width": 390,
+          "screenshot": "upload/album-upload-versions-390.png",
+          "geometry": {
+            "width": 390,
+            "overflow": false,
+            "mainOverflow": false,
+            "targets": [
+              {
+                "name": "跳到主要内容",
+                "width": 120,
+                "height": 48,
+                "navigation": false
+              },
+              {
+                "name": "Ariso 首页",
+                "width": 63,
+                "height": 54,
+                "navigation": false
+              },
+              {
+                "name": "外观：自动；点击切换为亮色",
+                "width": 44,
+                "height": 44,
+                "navigation": false
+              },
+              {
+                "name": "菜单",
+                "width": 44,
+                "height": 44,
+                "navigation": false
+              },
+              {
+                "name": "返回上传",
+                "width": 80,
+                "height": 44,
+                "navigation": false
+              },
+              {
+                "name": "查看版本说明",
+                "width": 90,
+                "height": 44,
+                "navigation": false
+              },
+              {
+                "name": "返回详情",
+                "width": 173,
+                "height": 48,
+                "navigation": false
+              },
+              {
+                "name": "重新处理",
+                "width": 173,
+                "height": 48,
+                "navigation": false
+              }
+            ]
+          }
+        }
+      ],
+      "imageIds": [
+        "49c60e6a-dbef-4350-acb6-b49b851ea192",
+        "5ccdb837-3289-455d-8301-ec6b070667f4",
+        "df7e1414-6e4d-410b-82aa-805c1202f4d2",
+        "a2e880b8-1acb-48f4-ad8f-7c14c950bc9e",
+        "6c94355d-bb00-4420-a03d-3caf1a08fd0c",
+        "a269ad69-2aa8-4a9f-bf39-897bed44590d",
+        "cb5618f1-b593-440d-b0b0-c6a35f5a09db",
+        "ff6e1ff2-ecbf-450a-a976-784df75e3e88",
+        "a062e3ad-83d5-4f46-bcb1-278fa5a9976a",
+        "e05ca173-ba4f-461a-9a3e-b292379136fb"
+      ],
+      "phase": "complete"
+    },
+    "viewer": {
+      "status": "passed",
+      "checks": [
+        "Desktop/mobile search has no clear cross, typing does not submit, Enter and the search icon submit, deleting the text and submitting clears the query. Sorting retains its direction and a separate dropdown indicator.",
+        "A held real next/previous detail read shows delayed visible feedback, preserves the old image and blocks duplicate navigation. Releasing it removes the status; fast cached navigation does not flash. Escape closes during pending, and reduced motion keeps the status text without rotation."
+      ],
+      "pending": [
+        {
+          "width": 1440,
+          "started": 3724.899999856949,
+          "visible": 3910,
+          "finished": null,
+          "text": "正在读取下一张图片…",
+          "inViewport": true,
+          "spinner": true,
+          "spinnerAnimation": "spin",
+          "closeEnabled": true,
+          "arrowsDisabled": true
+        },
+        {
+          "width": 1440,
+          "fast": {
+            "started": 6041,
+            "visible": null,
+            "finished": 6068.700000047684
+          }
+        },
+        {
+          "width": 390,
+          "started": 4094.699999809265,
+          "visible": 4281.199999809265,
+          "finished": null,
+          "text": "正在读取下一张图片…",
+          "inViewport": true,
+          "spinner": true,
+          "spinnerAnimation": "none",
+          "closeEnabled": true,
+          "arrowsDisabled": true
+        },
+        {
+          "width": 390,
+          "fast": {
+            "started": 5397.699999809265,
+            "visible": null,
+            "finished": 5417
+          }
+        }
+      ]
+    },
+    "metadata": {
+      "checks": [
+        {
+          "id": "tab-flash",
+          "width": 1440,
+          "favicon": "none",
+          "routes": 15,
+          "result": "Dynamic title and icon preserved across real sidebar/category navigation; no document reload."
+        },
+        {
+          "id": "tab-flash",
+          "width": 390,
+          "favicon": "none",
+          "routes": 15,
+          "result": "Dynamic title and icon preserved across real sidebar/category navigation; no document reload."
+        },
+        {
+          "id": "metadata-ssr",
+          "favicon": "none",
+          "path": "/",
+          "title": "Ariso"
+        },
+        {
+          "id": "metadata-ssr",
+          "favicon": "none",
+          "path": "/s/Cb8VS820JMYfYPJ2wvaqXnulKtxcm55TTcgi5SRQ1FY",
+          "title": "Ariso · 相册分享"
+        },
+        {
+          "id": "metadata-ssr",
+          "favicon": "none",
+          "path": "/forgot-password",
+          "title": "找回密码 · Ariso"
+        },
+        {
+          "id": "metadata-ssr",
+          "favicon": "none",
+          "path": "/reset-password",
+          "title": "重置密码 · Ariso"
+        },
+        {
+          "id": "tab-flash",
+          "width": 1440,
+          "favicon": "configured",
+          "routes": 15,
+          "result": "Dynamic title and icon preserved across real sidebar/category navigation; no document reload."
+        },
+        {
+          "id": "tab-flash",
+          "width": 390,
+          "favicon": "configured",
+          "routes": 15,
+          "result": "Dynamic title and icon preserved across real sidebar/category navigation; no document reload."
+        },
+        {
+          "id": "metadata-ssr",
+          "favicon": "configured",
+          "path": "/",
+          "title": "Ariso · 标题验收"
+        },
+        {
+          "id": "metadata-ssr",
+          "favicon": "configured",
+          "path": "/s/Cb8VS820JMYfYPJ2wvaqXnulKtxcm55TTcgi5SRQ1FY",
+          "title": "Ariso · 标题验收 · 相册分享"
+        },
+        {
+          "id": "metadata-ssr",
+          "favicon": "configured",
+          "path": "/forgot-password",
+          "title": "找回密码 · Ariso"
+        },
+        {
+          "id": "metadata-ssr",
+          "favicon": "configured",
+          "path": "/reset-password",
+          "title": "重置密码 · Ariso"
+        },
+        {
+          "id": "metadata-brand-save",
+          "result": "Real name save and favicon replacement refresh the same document/title/icon nodes."
+        }
+      ],
+      "routes": [
+        {
+          "width": 1440,
+          "favicon": "none",
+          "path": "/tags",
+          "title": "Ariso"
+        },
+        {
+          "width": 1440,
+          "favicon": "none",
+          "path": "/trash",
+          "title": "Ariso"
+        },
+        {
+          "width": 1440,
+          "favicon": "none",
+          "path": "/settings/general",
+          "title": "Ariso"
+        },
+        {
+          "width": 1440,
+          "favicon": "none",
+          "path": "/dashboard",
+          "title": "Ariso"
+        },
+        {
+          "width": 1440,
+          "favicon": "none",
+          "path": "/upload",
+          "title": "Ariso"
+        },
+        {
+          "width": 1440,
+          "favicon": "none",
+          "path": "/library",
+          "title": "Ariso"
+        },
+        {
+          "width": 1440,
+          "favicon": "none",
+          "path": "/albums",
+          "title": "Ariso"
+        },
+        {
+          "width": 1440,
+          "favicon": "none",
+          "path": "/shares",
+          "title": "Ariso"
+        },
+        {
+          "width": 1440,
+          "favicon": "none",
+          "path": "/analytics",
+          "title": "Ariso"
+        },
+        {
+          "width": 1440,
+          "favicon": "none",
+          "path": "/settings/storage",
+          "title": "Ariso"
+        },
+        {
+          "width": 1440,
+          "favicon": "none",
+          "path": "/settings/processing",
+          "title": "Ariso"
+        },
+        {
+          "width": 1440,
+          "favicon": "none",
+          "path": "/settings/account",
+          "title": "Ariso"
+        },
+        {
+          "width": 1440,
+          "favicon": "none",
+          "path": "/settings/api",
+          "title": "Ariso"
+        },
+        {
+          "width": 1440,
+          "favicon": "none",
+          "path": "/settings/email",
+          "title": "Ariso"
+        },
+        {
+          "width": 1440,
+          "favicon": "none",
+          "path": "/settings/general",
+          "title": "Ariso"
+        },
+        {
+          "width": 390,
+          "favicon": "none",
+          "path": "/tags",
+          "title": "Ariso"
+        },
+        {
+          "width": 390,
+          "favicon": "none",
+          "path": "/trash",
+          "title": "Ariso"
+        },
+        {
+          "width": 390,
+          "favicon": "none",
+          "path": "/settings/general",
+          "title": "Ariso"
+        },
+        {
+          "width": 390,
+          "favicon": "none",
+          "path": "/dashboard",
+          "title": "Ariso"
+        },
+        {
+          "width": 390,
+          "favicon": "none",
+          "path": "/upload",
+          "title": "Ariso"
+        },
+        {
+          "width": 390,
+          "favicon": "none",
+          "path": "/library",
+          "title": "Ariso"
+        },
+        {
+          "width": 390,
+          "favicon": "none",
+          "path": "/albums",
+          "title": "Ariso"
+        },
+        {
+          "width": 390,
+          "favicon": "none",
+          "path": "/shares",
+          "title": "Ariso"
+        },
+        {
+          "width": 390,
+          "favicon": "none",
+          "path": "/analytics",
+          "title": "Ariso"
+        },
+        {
+          "width": 390,
+          "favicon": "none",
+          "path": "/settings/storage",
+          "title": "Ariso"
+        },
+        {
+          "width": 390,
+          "favicon": "none",
+          "path": "/settings/processing",
+          "title": "Ariso"
+        },
+        {
+          "width": 390,
+          "favicon": "none",
+          "path": "/settings/account",
+          "title": "Ariso"
+        },
+        {
+          "width": 390,
+          "favicon": "none",
+          "path": "/settings/api",
+          "title": "Ariso"
+        },
+        {
+          "width": 390,
+          "favicon": "none",
+          "path": "/settings/email",
+          "title": "Ariso"
+        },
+        {
+          "width": 390,
+          "favicon": "none",
+          "path": "/settings/general",
+          "title": "Ariso"
+        },
+        {
+          "width": 1440,
+          "favicon": "configured",
+          "path": "/tags",
+          "title": "Ariso · 标题验收"
+        },
+        {
+          "width": 1440,
+          "favicon": "configured",
+          "path": "/trash",
+          "title": "Ariso · 标题验收"
+        },
+        {
+          "width": 1440,
+          "favicon": "configured",
+          "path": "/settings/general",
+          "title": "Ariso · 标题验收"
+        },
+        {
+          "width": 1440,
+          "favicon": "configured",
+          "path": "/dashboard",
+          "title": "Ariso · 标题验收"
+        },
+        {
+          "width": 1440,
+          "favicon": "configured",
+          "path": "/upload",
+          "title": "Ariso · 标题验收"
+        },
+        {
+          "width": 1440,
+          "favicon": "configured",
+          "path": "/library",
+          "title": "Ariso · 标题验收"
+        },
+        {
+          "width": 1440,
+          "favicon": "configured",
+          "path": "/albums",
+          "title": "Ariso · 标题验收"
+        },
+        {
+          "width": 1440,
+          "favicon": "configured",
+          "path": "/shares",
+          "title": "Ariso · 标题验收"
+        },
+        {
+          "width": 1440,
+          "favicon": "configured",
+          "path": "/analytics",
+          "title": "Ariso · 标题验收"
+        },
+        {
+          "width": 1440,
+          "favicon": "configured",
+          "path": "/settings/storage",
+          "title": "Ariso · 标题验收"
+        },
+        {
+          "width": 1440,
+          "favicon": "configured",
+          "path": "/settings/processing",
+          "title": "Ariso · 标题验收"
+        },
+        {
+          "width": 1440,
+          "favicon": "configured",
+          "path": "/settings/account",
+          "title": "Ariso · 标题验收"
+        },
+        {
+          "width": 1440,
+          "favicon": "configured",
+          "path": "/settings/api",
+          "title": "Ariso · 标题验收"
+        },
+        {
+          "width": 1440,
+          "favicon": "configured",
+          "path": "/settings/email",
+          "title": "Ariso · 标题验收"
+        },
+        {
+          "width": 1440,
+          "favicon": "configured",
+          "path": "/settings/general",
+          "title": "Ariso · 标题验收"
+        },
+        {
+          "width": 390,
+          "favicon": "configured",
+          "path": "/tags",
+          "title": "Ariso · 标题验收"
+        },
+        {
+          "width": 390,
+          "favicon": "configured",
+          "path": "/trash",
+          "title": "Ariso · 标题验收"
+        },
+        {
+          "width": 390,
+          "favicon": "configured",
+          "path": "/settings/general",
+          "title": "Ariso · 标题验收"
+        },
+        {
+          "width": 390,
+          "favicon": "configured",
+          "path": "/dashboard",
+          "title": "Ariso · 标题验收"
+        },
+        {
+          "width": 390,
+          "favicon": "configured",
+          "path": "/upload",
+          "title": "Ariso · 标题验收"
+        },
+        {
+          "width": 390,
+          "favicon": "configured",
+          "path": "/library",
+          "title": "Ariso · 标题验收"
+        },
+        {
+          "width": 390,
+          "favicon": "configured",
+          "path": "/albums",
+          "title": "Ariso · 标题验收"
+        },
+        {
+          "width": 390,
+          "favicon": "configured",
+          "path": "/shares",
+          "title": "Ariso · 标题验收"
+        },
+        {
+          "width": 390,
+          "favicon": "configured",
+          "path": "/analytics",
+          "title": "Ariso · 标题验收"
+        },
+        {
+          "width": 390,
+          "favicon": "configured",
+          "path": "/settings/storage",
+          "title": "Ariso · 标题验收"
+        },
+        {
+          "width": 390,
+          "favicon": "configured",
+          "path": "/settings/processing",
+          "title": "Ariso · 标题验收"
+        },
+        {
+          "width": 390,
+          "favicon": "configured",
+          "path": "/settings/account",
+          "title": "Ariso · 标题验收"
+        },
+        {
+          "width": 390,
+          "favicon": "configured",
+          "path": "/settings/api",
+          "title": "Ariso · 标题验收"
+        },
+        {
+          "width": 390,
+          "favicon": "configured",
+          "path": "/settings/email",
+          "title": "Ariso · 标题验收"
+        },
+        {
+          "width": 390,
+          "favicon": "configured",
+          "path": "/settings/general",
+          "title": "Ariso · 标题验收"
+        }
+      ],
+      "timings": [
+        {
+          "width": 1440,
+          "favicon": "none",
+          "path": "/tags",
+          "ms": 43.60000014305115
+        },
+        {
+          "width": 1440,
+          "favicon": "none",
+          "path": "/trash",
+          "ms": 49.5
+        },
+        {
+          "width": 1440,
+          "favicon": "none",
+          "path": "/settings/general",
+          "ms": 65.39999985694885
+        },
+        {
+          "width": 1440,
+          "favicon": "none",
+          "path": "/dashboard",
+          "ms": 43.59999990463257
+        },
+        {
+          "width": 1440,
+          "favicon": "none",
+          "path": "/upload",
+          "ms": 67.20000004768372
+        },
+        {
+          "width": 1440,
+          "favicon": "none",
+          "path": "/library",
+          "ms": 87
+        },
+        {
+          "width": 1440,
+          "favicon": "none",
+          "path": "/albums",
+          "ms": 39.799999952316284
+        },
+        {
+          "width": 1440,
+          "favicon": "none",
+          "path": "/shares",
+          "ms": 87.79999995231628
+        },
+        {
+          "width": 1440,
+          "favicon": "none",
+          "path": "/analytics",
+          "ms": 80.10000014305115
+        },
+        {
+          "width": 1440,
+          "favicon": "none",
+          "path": "/settings/storage",
+          "ms": 101
+        },
+        {
+          "width": 1440,
+          "favicon": "none",
+          "path": "/settings/general",
+          "ms": 85.40000009536743
+        },
+        {
+          "width": 390,
+          "favicon": "none",
+          "path": "/tags",
+          "ms": 47.09999990463257
+        },
+        {
+          "width": 390,
+          "favicon": "none",
+          "path": "/trash",
+          "ms": 65.30000019073486
+        },
+        {
+          "width": 390,
+          "favicon": "none",
+          "path": "/settings/general",
+          "ms": 62.40000009536743
+        },
+        {
+          "width": 390,
+          "favicon": "none",
+          "path": "/dashboard",
+          "ms": 51.5
+        },
+        {
+          "width": 390,
+          "favicon": "none",
+          "path": "/upload",
+          "ms": 39.200000047683716
+        },
+        {
+          "width": 390,
+          "favicon": "none",
+          "path": "/library",
+          "ms": 51.69999980926514
+        },
+        {
+          "width": 390,
+          "favicon": "none",
+          "path": "/albums",
+          "ms": 48.700000047683716
+        },
+        {
+          "width": 390,
+          "favicon": "none",
+          "path": "/shares",
+          "ms": 52.200000047683716
+        },
+        {
+          "width": 390,
+          "favicon": "none",
+          "path": "/analytics",
+          "ms": 35.40000009536743
+        },
+        {
+          "width": 390,
+          "favicon": "none",
+          "path": "/settings/storage",
+          "ms": 72.10000014305115
+        },
+        {
+          "width": 390,
+          "favicon": "none",
+          "path": "/settings/general",
+          "ms": 51.799999952316284
+        },
+        {
+          "width": 1440,
+          "favicon": "configured",
+          "path": "/tags",
+          "ms": 55.09999990463257
+        },
+        {
+          "width": 1440,
+          "favicon": "configured",
+          "path": "/trash",
+          "ms": 47.39999985694885
+        },
+        {
+          "width": 1440,
+          "favicon": "configured",
+          "path": "/settings/general",
+          "ms": 59.19999980926514
+        },
+        {
+          "width": 1440,
+          "favicon": "configured",
+          "path": "/dashboard",
+          "ms": 44.19999980926514
+        },
+        {
+          "width": 1440,
+          "favicon": "configured",
+          "path": "/upload",
+          "ms": 88
+        },
+        {
+          "width": 1440,
+          "favicon": "configured",
+          "path": "/library",
+          "ms": 92.20000004768372
+        },
+        {
+          "width": 1440,
+          "favicon": "configured",
+          "path": "/albums",
+          "ms": 40.89999985694885
+        },
+        {
+          "width": 1440,
+          "favicon": "configured",
+          "path": "/shares",
+          "ms": 79.5
+        },
+        {
+          "width": 1440,
+          "favicon": "configured",
+          "path": "/analytics",
+          "ms": 75.09999990463257
+        },
+        {
+          "width": 1440,
+          "favicon": "configured",
+          "path": "/settings/storage",
+          "ms": 96.40000009536743
+        },
+        {
+          "width": 1440,
+          "favicon": "configured",
+          "path": "/settings/general",
+          "ms": 78.39999985694885
+        },
+        {
+          "width": 390,
+          "favicon": "configured",
+          "path": "/tags",
+          "ms": 59.799999952316284
+        },
+        {
+          "width": 390,
+          "favicon": "configured",
+          "path": "/trash",
+          "ms": 62.299999952316284
+        },
+        {
+          "width": 390,
+          "favicon": "configured",
+          "path": "/settings/general",
+          "ms": 65.60000014305115
+        },
+        {
+          "width": 390,
+          "favicon": "configured",
+          "path": "/dashboard",
+          "ms": 48.39999985694885
+        },
+        {
+          "width": 390,
+          "favicon": "configured",
+          "path": "/upload",
+          "ms": 94.79999995231628
+        },
+        {
+          "width": 390,
+          "favicon": "configured",
+          "path": "/library",
+          "ms": 55.10000014305115
+        },
+        {
+          "width": 390,
+          "favicon": "configured",
+          "path": "/albums",
+          "ms": 47.40000009536743
+        },
+        {
+          "width": 390,
+          "favicon": "configured",
+          "path": "/shares",
+          "ms": 48.5
+        },
+        {
+          "width": 390,
+          "favicon": "configured",
+          "path": "/analytics",
+          "ms": 40.39999985694885
+        },
+        {
+          "width": 390,
+          "favicon": "configured",
+          "path": "/settings/storage",
+          "ms": 113
+        },
+        {
+          "width": 390,
+          "favicon": "configured",
+          "path": "/settings/general",
+          "ms": 44
+        }
+      ],
+      "traces": [
+        {
+          "width": 1440,
+          "favicon": "none",
+          "empty": [],
+          "missingIcons": [],
+          "replacedTitles": [],
+          "duplicateTitles": [],
+          "sameDocument": true
+        },
+        {
+          "width": 390,
+          "favicon": "none",
+          "empty": [],
+          "missingIcons": [],
+          "replacedTitles": [],
+          "duplicateTitles": [],
+          "sameDocument": true
+        },
+        {
+          "width": 1440,
+          "favicon": "configured",
+          "empty": [],
+          "missingIcons": [],
+          "replacedTitles": [],
+          "duplicateTitles": [],
+          "sameDocument": true
+        },
+        {
+          "width": 390,
+          "favicon": "configured",
+          "empty": [],
+          "missingIcons": [],
+          "replacedTitles": [],
+          "duplicateTitles": [],
+          "sameDocument": true
+        }
+      ]
+    }
+  },
+  "browserErrors": []
+}

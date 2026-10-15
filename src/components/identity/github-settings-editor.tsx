@@ -178,7 +178,7 @@ export function GithubSettingsEditor(props: GithubSettingsEditorProps) {
                       setClearOpen(false);
                     }}
                   >
-                    清除并停用
+                    标记清除
                   </Button>
                 </Modal.Footer>
               </Modal.Dialog>
