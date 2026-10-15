@@ -45,6 +45,9 @@ export async function prepareProcessingInput(options: {
         'error',
         '-nostdin',
         '-y',
+        // Bound native canvas allocations before decoding, including APNG composition.
+        '-max_alloc',
+        String(64 * 1024 * 1024),
         '-threads',
         '1',
         ...(facts.format === 'PNG' ? ['-f', 'apng'] : []),

@@ -3,6 +3,7 @@ import { mkdir, mkdtemp, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { Readable } from 'node:stream';
+import { crc32, createDeflate } from 'node:zlib';
 import { execa } from 'execa';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { openRuntimeDatabase } from '../../../src/server/runtime/db.ts';
@@ -157,6 +158,84 @@ describe('T-MED-06 full-format persistent processing', () => {
     },
   );
 });
+
+// Generate a valid compressed canvas with bounded fixture memory, not a large raw buffer.
+async function largeApng(width: number, height: number) {
+  function chunk(type: string, data: Buffer) {
+    const result = Buffer.alloc(data.length + 12);
+    result.writeUInt32BE(data.length);
+    result.write(type, 4, 'ascii');
+    data.copy(result, 8);
+    result.writeUInt32BE(crc32(result.subarray(4, -4)), result.length - 4);
+    return result;
+  }
+  const header = Buffer.alloc(13);
+  header.writeUInt32BE(width);
+  header.writeUInt32BE(height, 4);
+  header[8] = 8;
+  header[9] = 6; // RGBA, eight bits per channel.
+  const animation = Buffer.alloc(8);
+  animation.writeUInt32BE(1);
+  const frame = Buffer.alloc(26);
+  frame.writeUInt32BE(width, 4);
+  frame.writeUInt32BE(height, 8);
+  frame.writeUInt16BE(1, 20);
+  frame.writeUInt16BE(10, 22);
+  const row = Buffer.alloc(1 + width * 4);
+  const deflate = createDeflate();
+  const compressed: Buffer[] = [];
+  const reading = (async () => {
+    for await (const part of deflate) compressed.push(Buffer.from(part));
+  })();
+  await new Promise<void>((resolve, reject) => {
+    Readable.from(
+      (function* () {
+        for (let y = 0; y < height; y++) yield row;
+      })(),
+    )
+      .pipe(deflate)
+      .once('finish', resolve)
+      .once('error', reject);
+  });
+  await reading;
+  return Buffer.concat([
+    Buffer.from('89504e470d0a1a0a', 'hex'),
+    chunk('IHDR', header),
+    chunk('acTL', animation),
+    chunk('fcTL', frame),
+    chunk('IDAT', Buffer.concat(compressed)),
+    chunk('IEND', Buffer.alloc(0)),
+  ]);
+}
+
+it.each([
+  [5000, 4000],
+  [20000, 1000],
+])(
+  'bounds native APNG canvas allocation for %sx%s and preserves the accepted original',
+  async (width, height) => {
+    const bytes = await largeApng(width, height);
+    expect(bytes.length).toBeLessThan(128 * 1024);
+    const accepted = await accept(bytes);
+    await processNext();
+    const result = state(accepted.imageId);
+    expect(result.image).toMatchObject({
+      width,
+      height,
+      animated: true,
+      processingStatus: 'failed',
+    });
+    expect(result.latestJob?.error).toContain('MEDIA_RESOURCE_LIMIT');
+    expect(result.latestJob?.error).toContain('Cannot allocate memory');
+    expect(
+      result.versions
+        .filter((version) => version.saved)
+        .map((version) => version.kind),
+    ).toEqual(['original']);
+    expect(await versionBytes(accepted.imageId, 'original')).toEqual(bytes);
+  },
+  30000,
+);
 
 it.each(['jpeg', 'webp', 'avif'] as const)(
   'encodes actual %s with the snapshot, shrinks without upscaling, and keeps thumbnails WebP',
