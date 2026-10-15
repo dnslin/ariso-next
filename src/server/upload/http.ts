@@ -1,4 +1,5 @@
 import { randomUUID } from 'node:crypto';
+import { JsonBodyTooLargeError, readBoundedJsonBytes } from '../http/json.ts';
 import { requireOwner } from '../identity/owner.ts';
 import { createRuntimeLogger } from '../runtime/logger.ts';
 import { getServerRuntime } from '../startup/server-start.ts';
@@ -111,27 +112,19 @@ export async function readUploadJson(
     if (optional) return null;
     throw new UploadError('UPLOAD_INVALID_INPUT', '缺少请求内容');
   }
-  const reader = request.body.getReader();
-  const chunks: Uint8Array[] = [];
-  let size = 0;
+  let bytes: Buffer;
   try {
-    while (true) {
-      const { value, done } = await reader.read();
-      if (done) break;
-      size += value.byteLength;
-      if (size > 256 * 1024) {
-        await reader.cancel();
-        throw new UploadError(
-          'UPLOAD_METADATA_TOO_LARGE',
-          '上传元数据超过 256 KiB',
-          413,
-        );
-      }
-      chunks.push(value);
+    bytes = await readBoundedJsonBytes(request);
+  } catch (error) {
+    if (error instanceof JsonBodyTooLargeError) {
+      throw new UploadError(
+        'UPLOAD_METADATA_TOO_LARGE',
+        '上传元数据超过 256 KiB',
+        413,
+      );
     }
-    if (optional && size === 0) return null;
-    return JSON.parse(Buffer.concat(chunks).toString('utf8')) as unknown;
-  } finally {
-    reader.releaseLock();
+    throw error;
   }
+  if (optional && bytes.byteLength === 0) return null;
+  return JSON.parse(bytes.toString('utf8')) as unknown;
 }

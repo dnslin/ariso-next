@@ -8,8 +8,8 @@ export class JsonBodyTooLargeError extends Error {
 }
 
 /** Count received bytes before decoding or parsing, regardless of Content-Length. */
-export async function readBoundedJson(request: Request): Promise<unknown> {
-  if (!request.body) return JSON.parse('') as unknown;
+export async function readBoundedJsonBytes(request: Request): Promise<Buffer> {
+  if (!request.body) return Buffer.alloc(0);
   const reader = request.body.getReader();
   const chunks: Uint8Array[] = [];
   let size = 0;
@@ -24,10 +24,14 @@ export async function readBoundedJson(request: Request): Promise<unknown> {
       }
       chunks.push(value);
     }
-    return JSON.parse(
-      new TextDecoder().decode(Buffer.concat(chunks)),
-    ) as unknown;
+    return Buffer.concat(chunks);
   } finally {
     reader.releaseLock();
   }
+}
+
+export async function readBoundedJson(request: Request): Promise<unknown> {
+  return JSON.parse(
+    new TextDecoder().decode(await readBoundedJsonBytes(request)),
+  ) as unknown;
 }

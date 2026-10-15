@@ -101,3 +101,8 @@ it('preserves JSON parsing and stream errors and releases the reader', async () 
   await expect(readBoundedJson(request)).rejects.toBe(failure);
   expect(body.locked).toBe(false);
 });
+
+it('accepts a leading UTF-8 BOM like Request.json()', async () => {
+  const input = streamed([new TextEncoder().encode('\uFEFF{"value":"中"}')]);
+  expect(await readBoundedJson(input.request)).toEqual({ value: '中' });
+});
