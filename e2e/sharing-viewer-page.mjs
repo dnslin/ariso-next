@@ -81,6 +81,7 @@ export function createSharingViewerPage({ page, config, report, session }) {
               }),
           };
         });
+        await assertSharingViewerCanvas(page);
         assert.ok(geometry.root.left >= -1 && geometry.root.right <= width + 1);
         assert.ok(
           geometry.root.top >= -1 &&
@@ -122,4 +123,114 @@ export function createSharingViewerPage({ page, config, report, session }) {
     return body;
   }
   return { record, current, open, close, imageLoaded, capture, neighbors };
+}
+
+/** Normal viewing is a viewport canvas; recovery can expose real actions. */
+export async function assertSharingViewerCanvas(page) {
+  const canvas = await page.evaluate(() => {
+    const root = document.querySelector('[data-testid="share-viewer"]');
+    const rect = root.getBoundingClientRect();
+    const style = getComputedStyle(root);
+    const stage = root.querySelector('[data-testid="share-viewer-stage"]');
+    const stageRect = stage?.getBoundingClientRect();
+    const recovery = !!root.querySelector('[data-testid="share-viewer-error"]');
+    return {
+      role: root.getAttribute('role'),
+      modal: root.getAttribute('aria-modal'),
+      position: style.position,
+      background: style.backgroundColor,
+      viewport: { width: innerWidth, height: innerHeight },
+      root: {
+        left: rect.left,
+        right: rect.right,
+        top: rect.top,
+        bottom: rect.bottom,
+      },
+      stage: stageRect && {
+        left: stageRect.left,
+        right: stageRect.right,
+        top: stageRect.top,
+        bottom: stageRect.bottom,
+      },
+      recovery,
+      ordinaryImage:
+        !!stage?.querySelector('.yarl__slide_current img') &&
+        !root.querySelector('[role="status"]'),
+      text: root.textContent.trim(),
+      obsoleteControls: root.querySelectorAll(
+        '[data-testid="share-viewer-fullscreen"], [data-testid="share-viewer-zoom"]',
+      ).length,
+      headings: recovery
+        ? 0
+        : root.querySelectorAll('h1,h2,header,footer').length,
+      actions: [
+        ...root.querySelectorAll('button[data-testid^="share-viewer-"]'),
+      ]
+        .filter((node) =>
+          [
+            'share-viewer-close',
+            'share-viewer-previous',
+            'share-viewer-next',
+          ].includes(node.getAttribute('data-testid')),
+        )
+        .map((node) => ({
+          id: node.getAttribute('data-testid'),
+          label: node.getAttribute('aria-label'),
+          text: node.textContent.trim(),
+          icon: !!node.querySelector('svg'),
+          background: getComputedStyle(node).backgroundColor,
+          border: getComputedStyle(node).borderWidth,
+        })),
+    };
+  });
+  assert.equal(canvas.role, 'dialog');
+  assert.equal(canvas.modal, 'true');
+  assert.equal(canvas.position, 'fixed');
+  assert.deepEqual(canvas.root, {
+    left: 0,
+    right: canvas.viewport.width,
+    top: 0,
+    bottom: canvas.viewport.height,
+  });
+  const rgb = canvas.background.match(/\d+/g)?.slice(0, 3).map(Number);
+  assert.ok(
+    rgb?.length === 3 && rgb.every((channel) => channel <= 32),
+    'The viewer covers the page with a near-black canvas in either theme',
+  );
+  assert.equal(
+    canvas.obsoleteControls,
+    0,
+    'Browser fullscreen and solid Zoom controls have been removed',
+  );
+  assert.equal(
+    canvas.headings,
+    0,
+    'The image canvas has no brand, heading, position label or footer',
+  );
+  if (canvas.ordinaryImage)
+    assert.equal(
+      canvas.text,
+      '',
+      'Normal viewing shows only the image and icon actions',
+    );
+  if (!canvas.recovery) {
+    assert.deepEqual(
+      canvas.stage,
+      canvas.root,
+      'The image stage fills the viewport, including short windows',
+    );
+    for (const action of canvas.actions) {
+      assert.ok(
+        action.label && action.icon,
+        `${action.id} is an accessible icon action`,
+      );
+      assert.equal(action.text, '', `${action.id} has no visible button text`);
+      assert.ok(
+        ['transparent', 'rgba(0, 0, 0, 0)'].includes(action.background),
+        `${action.id} has no button fill`,
+      );
+      assert.equal(action.border, '0px', `${action.id} has no button border`);
+    }
+  }
+  return canvas;
 }

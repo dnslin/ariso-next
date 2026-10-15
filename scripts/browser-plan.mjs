@@ -42,7 +42,7 @@ const suites = {
   'sharing-experiment': {},
   'sharing-protocol': {},
   'sharing-public': {
-    only: ['representative', 'behavior', 'race', 'recovery'],
+    only: ['representative', 'behavior', 'race', 'recovery', 'gallery'],
     config: (only) => ({ sharingPublicPhase: only }),
   },
   'sharing-viewer': {

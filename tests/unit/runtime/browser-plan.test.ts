@@ -338,6 +338,7 @@ describe('focused browser execution plans', () => {
     ['sharing-public', 'behavior', { sharingPublicPhase: 'behavior' }],
     ['sharing-public', 'race', { sharingPublicPhase: 'race' }],
     ['sharing-public', 'recovery', { sharingPublicPhase: 'recovery' }],
+    ['sharing-public', 'gallery', { sharingPublicPhase: 'gallery' }],
     [
       'sharing-viewer',
       'representative',

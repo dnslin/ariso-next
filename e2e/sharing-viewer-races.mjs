@@ -70,6 +70,14 @@ export async function verifySharingViewerRaces({
           background: style?.backgroundColor,
           currentImage: root.getAttribute('data-image-id'),
           heldName: window.__viewerHeld.current.displayName,
+          navigation: [
+            ...root.querySelectorAll(
+              '[data-testid="share-viewer-previous"], [data-testid="share-viewer-next"]',
+            ),
+          ].map((node) => ({
+            id: node.getAttribute('data-testid'),
+            disabled: node.disabled,
+          })),
         };
       });
       record('Actual held neighbor loading status observation', {
@@ -87,6 +95,15 @@ export async function verifySharingViewerRaces({
         'The loading status uses neutral text without a colored block',
       );
       assert.equal(loading.currentImage, config.publicIds[6]);
+      assert.equal(
+        loading.navigation.length,
+        2,
+        'Existing transparent neighbor arrows remain visible while loading',
+      );
+      assert.ok(
+        loading.navigation.every((action) => action.disabled),
+        'Loading disables both neighbor arrows against duplicate navigation',
+      );
       assert.ok(loading.heldName, 'The pending response retains its real name');
     }
   }

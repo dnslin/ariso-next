@@ -13,9 +13,8 @@ const { createSharingPublicPage } = await import(
 const { createSharingPublicLayouts } = await import(
   moduleUrl('./sharing-public-layouts.mjs')
 );
-const { verifySharingPublicRepresentatives } = await import(
-  moduleUrl('./sharing-public-representatives.mjs')
-);
+const { verifySharingPublicRepresentatives, verifySharingPublicGallery } =
+  await import(moduleUrl('./sharing-public-representatives.mjs'));
 const { verifySharingPublicPagination } = await import(
   moduleUrl('./sharing-public-pagination.mjs')
 );
@@ -58,6 +57,8 @@ try {
     await verifySharingPublicRaces(scene);
   if (config.sharingPublicPhase === 'recovery')
     await verifySharingPublicRecoveries(scene);
+  if (config.sharingPublicPhase === 'gallery')
+    await verifySharingPublicGallery(scene);
   const errors = await readBrowserErrors(page);
   const unexpected = unexpectedSharingErrors(
     errors,

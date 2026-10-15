@@ -6,7 +6,10 @@ import {
   readGeometry,
   assertGeometry,
 } from './browser-geometry.mjs';
-import { verifyShortEmpty } from './sharing-public-feedback.mjs';
+import {
+  verifySharingDocumentScroll,
+  verifyShortEmpty,
+} from './sharing-public-feedback.mjs';
 import { assertCropped, json } from './sharing-public-page.mjs';
 
 export async function verifySharingPublicRepresentatives({
@@ -16,8 +19,7 @@ export async function verifySharingPublicRepresentatives({
   session,
   layouts,
 }) {
-  const { open, path, publicPath, loaded, hiddenNames, sql, updateShare } =
-    session;
+  const { open, path, publicPath, loaded, hiddenNames, sql } = session;
   const { capture, passwordHelp } = layouts;
   const record = (scenario, detail = {}) =>
     report.checks.push({ scenario, ...detail });
@@ -279,13 +281,29 @@ export async function verifySharingPublicRepresentatives({
   await sql(
     `UPDATE albums SET preferred_cover_image_id='${config.statusIds.pending}' WHERE id='${config.albums.public.id}'`,
   );
+  await verifySharingPublicGallery({ page, config, report, session, layouts });
+}
+
+export async function verifySharingPublicGallery({
+  page,
+  config,
+  report,
+  session,
+  layouts,
+}) {
+  const { open, loaded, updateShare } = session;
+  const { capture } = layouts;
+  report.stage = 'gallery-layouts';
+  await updateShare({ layout: 'grid', show_name: 0 });
   await open();
+  await loaded(40);
   await capture(
     'grid',
     config.sharingPublicPhase === 'representative'
       ? [1440, 390]
       : [360, 390, 430, 768, 1440],
   );
+  await verifySharingDocumentScroll({ page, config, report }, 'grid');
   await resizeViewport(page, 390, 420);
   const shortGeometry = await readGeometry(page);
   assertGeometry(shortGeometry, 'short mobile viewport');
@@ -306,7 +324,8 @@ export async function verifySharingPublicRepresentatives({
       geometry,
     });
   }
-  record('Short viewport scroll reaches the real load-more target', {
+  report.checks.push({
+    scenario: 'Short viewport scroll reaches the real load-more target',
     geometry: shortGeometry,
   });
   await updateShare({ layout: 'masonry', show_name: 1 });
@@ -316,5 +335,6 @@ export async function verifySharingPublicRepresentatives({
     config.names[6],
   );
   await capture('masonry-names');
+  await verifySharingDocumentScroll({ page, config, report }, 'masonry');
   await updateShare({ layout: 'grid', show_name: 0 });
 }

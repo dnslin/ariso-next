@@ -330,16 +330,15 @@ async function descriptionRecovery({ page, config, report, session }) {
   );
   await waitForPaint(page);
   const recovered = await page.evaluate(() => {
-    const scroller = document.querySelector('[data-share-scroll]');
     const gallery = document.querySelector('[data-testid="share-items"]');
     const first = gallery.querySelector('[aria-posinset="1"]');
     const second = gallery.querySelector('[aria-posinset="2"]');
     return {
-      scrollTop: scroller.scrollTop,
+      scrollTop: scrollY,
       galleryTop: gallery.getBoundingClientRect().top,
       firstTop: first?.getBoundingClientRect().top,
       secondTop: second?.getBoundingClientRect().top,
-      viewportBottom: scroller.getBoundingClientRect().bottom,
+      viewportBottom: innerHeight,
     };
   });
   assert.equal(recovered.scrollTop, 0);

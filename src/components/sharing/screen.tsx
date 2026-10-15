@@ -21,6 +21,7 @@ export function ShareScreen({
 }) {
   const [session] = useState(() => new ShareSession(token, initial));
   const source = useRef<HTMLElement | null>(null);
+  const sourceScroll = useRef(0);
   const list = useRef<HTMLDivElement>(null);
   const state = useSyncExternalStore(
     session.subscribe,
@@ -41,7 +42,7 @@ export function ShareScreen({
     if (viewing || !source.current) return;
     const target = source.current;
     source.current = null;
-    // The retained list keeps its scroll position. Removed cards use the heading.
+    // Restore the document viewport as well as focus after the viewer unlocks it.
     if (state.page) {
       if (target.isConnected) target.focus({ preventScroll: true });
       else {
@@ -51,6 +52,7 @@ export function ShareScreen({
           heading.focus({ preventScroll: true });
         }
       }
+      window.scrollTo({ top: sourceScroll.current });
     }
   }, [viewing, state.page]);
   return state.page ? (
@@ -70,6 +72,7 @@ export function ShareScreen({
           onCheck={() => void session.refresh()}
           onOpen={(imageId, target) => {
             source.current = target;
+            sourceScroll.current = window.scrollY;
             void session.openViewer(imageId);
           }}
         />
@@ -77,7 +80,6 @@ export function ShareScreen({
       {state.viewer ? (
         <ShareViewer
           viewer={state.viewer}
-          brand={brand}
           loading={state.viewerLoading}
           error={state.viewerError}
           refreshError={state.refreshError}

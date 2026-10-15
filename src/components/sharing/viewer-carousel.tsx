@@ -8,7 +8,6 @@ import Lightbox, {
 } from 'yet-another-react-lightbox';
 import Inline from 'yet-another-react-lightbox/plugins/inline';
 import Zoom from 'yet-another-react-lightbox/plugins/zoom';
-import type { ZoomRef } from 'yet-another-react-lightbox';
 import { ImageOff } from 'lucide-react';
 import type { PublicShareNeighbors } from '../../server/sharing/public-types';
 import { ViewerImage } from '../library/viewer-image';
@@ -27,7 +26,6 @@ const unavailable = {
 export function ShareViewerCarousel({
   viewer,
   loading,
-  zoomRef,
   revision,
   onNavigate,
   onFailure,
@@ -35,7 +33,6 @@ export function ShareViewerCarousel({
 }: {
   viewer: PublicShareNeighbors;
   loading: boolean;
-  zoomRef: React.RefObject<ZoomRef | null>;
   revision: number;
   onNavigate: (direction: 'previous' | 'next') => void;
   onFailure: (url: string) => void;
@@ -115,7 +112,7 @@ export function ShareViewerCarousel({
           closeOnEscape: false,
         }}
         toolbar={{ buttons: [] }}
-        zoom={{ ref: zoomRef, scrollToZoom: true, maxZoomPixelRatio: 3 }}
+        zoom={{ scrollToZoom: true, maxZoomPixelRatio: 3 }}
         animation={{ fade: 0, swipe: 0, navigation: 0, zoom: 0 }}
         styles={{
           container: { backgroundColor: 'transparent', touchAction: 'none' },

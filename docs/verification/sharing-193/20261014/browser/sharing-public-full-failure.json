@@ -1,0 +1,19 @@
+{
+  "status": "failed",
+  "phase": "full",
+  "stage": "gate-and-representatives",
+  "error": "Error: page.waitForFunction timed out after 10000ms on page p1; last URL was \"http://sharing-52735.localhost:52735/s/[redacted]\"; last title was \"摄影手记 · 相册分享\".\n    at waitForFunctionTimeoutError (file:////[eval1]:19235:12)\n    at file:////[eval1]:18564:19\n    at async file:////[eval1]:16691:28",
+  "checks": [
+    {
+      "scenario": "Anonymous HTML/RSC gate, noindex and owner session preserving anonymous scope"
+    },
+    {
+      "scenario": "password access Tips support click, Enter/Space, Escape and outside dismissal with focus return and no submission",
+      "width": 1440,
+      "height": 1080,
+      "theme": "light",
+      "scroll": 0
+    }
+  ],
+  "shortPasswordFailure": null
+}

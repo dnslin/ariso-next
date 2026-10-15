@@ -104,6 +104,12 @@ input {
   position: relative;
   isolation: isolate;
 }
+html:has([data-share-page]) {
+  scrollbar-width: none;
+}
+html:has([data-share-page])::-webkit-scrollbar {
+  display: none;
+}
 .public-decoration {
   position: absolute;
   inset: 0;
