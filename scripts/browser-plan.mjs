@@ -116,7 +116,7 @@ const suites = {
     config: (only) => ({ tokensPhase: only }),
   },
   library: {
-    only: ['recovery', 'consumers'],
+    only: ['recovery', 'consumers', 'sizes'],
     stages: [['library', 'library']],
     config: (only) => ({ libraryPhase: only }),
   },

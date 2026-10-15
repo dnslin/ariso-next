@@ -229,6 +229,31 @@ Figma基线与人工批准的改动分别记录；本次未修改Figma。组件�
 
 响应式检查时机回归：CDP 从1440切到360后，`innerWidth`已为360，但图库ResizeObserver/下一帧测量尚未更新，现场记录为main=360、scrollWidth=1160、columns=4；两次animation frame后为360/360/2。测试resize等待布局绘制后再执行原无溢出/列数/点击目标断言，不修改生产布局或放宽断言。
 
+## 小图片大小显示修复（2026-10-15）
+
+图库卡片原来固定显示一位小数的 MiB，6631 字节图片会显示为 `0.0 MiB`。卡片现在复用详情的 `bytesLabel`：小于 1024 字节显示 B，小于 1 MiB 显示 KiB，其余保留 MiB。图库、相册卡片和详情使用相同规则，无新增依赖或控件。
+
+回归先运行 `pnpm exec vitest run --project unit tests/unit/library/card.test.ts`，新增大小用例有 8 项失败，确认旧显示问题；修复后图库相关 42 个测试文件、581 项测试通过。覆盖 0、1、42、1023、1024 字节、10 KiB、512 KiB、1 MiB 前后边界和 2.5 MiB，以及图库／相册两种卡片。
+
+实际检查使用 macOS ARM64、Node 24.18.1、pnpm 11.19.0：
+
+- `pnpm install --frozen-lockfile`：通过。
+- `pnpm exec prettier src/app/library/library-card.tsx src/components/library/detail-labels.ts tests/unit/library/card.test.ts e2e/library.mjs scripts/browser-plan.mjs --check`：通过。
+- 同一组文件的 `pnpm exec eslint ... --max-warnings=0`：通过。
+- `pnpm run typecheck`：通过。
+- `pnpm run test:unit`：189 个文件、2349 项通过。
+- `pnpm exec vitest run --project unit tests/unit/runtime/browser-plan.test.ts`：149 项通过。
+- `pnpm exec vitest run --project integration tests/integration/library/detail.test.ts tests/integration/library/base.test.ts`：13 项通过。
+- `pnpm run build`：退出码 0；打包阶段存在可选平台二进制及可选依赖的追踪警告，未据此声称跨平台镜像通过。
+- `EGO_TASK_SPACE=38 BROWSER_REPORT_DIR=test-results/browser-image-size-focused node scripts/verify-browser.mjs --suite library --only sizes`：通过。真实登录、生产 API、隔离 SQLite 和实际 6631 字节 PNG 记录显示 `6.5 KiB`；覆盖 390／1440px、浅／深色、网格／瀑布流共 8 种组合。[场景报告](./image-size-20261015/library.json)、[运行报告](./image-size-20261015/runner.json)。
+- `git diff --check`：通过。
+
+本次只修正 `UI-LIBRARY`／相册卡片的大小文案及详情共用格式，沿用 `30:285/98:748` 家族的现行页面结构、公共外壳与 HeroUI Card／Chip，不修改 Figma、样式或操作。[手机浅色网格](./image-size-20261015/mobile-light-grid.png)和[桌面深色瀑布流](./image-size-20261015/desktop-dark-masonry.png)已实际查看，大小文字可读；截图中的缺失缩略图、处理中、失败和停用存储是既有浏览器测试状态。本次没有重新审计整套 Figma 还原，也不替代用户人工验收。
+
+合并前独立只读审查未发现阻塞问题；复跑卡片和浏览器计划测试，2 个文件、176 项通过。将新增的 `bytes >= 1024` 条件临时反转后，卡片回归有 8 项失败；恢复实现后 27 项全部通过，确认测试可以发现单位选择错误。
+
+先运行的完整定向入口 `node scripts/verify-browser.mjs --suite library` 未通过：空图库桌面检查要求搜索按钮高 36px，当前页面实际为 44px，尚未进入文件大小场景。保留原断言，没有修改无关控件；大小回归以新增 `--only sizes` 入口独立验证。完整集成、完整浏览器套件、远端 CI、生产部署与镜像发布未执行。
+
 ## PR 状态
 
 2026-09-30 已提交并推送 `codex/issue-173-library-query`，PR #218 为 OPEN/DRAFT，GitHub 显示可合并。`gh pr view 218 --json statusCheckRollup` 返回空数组，`gh pr checks 218` 明确报告没有检查；这表示未触发远端检查，不表示 CI 通过。本地适用检查结果见上文。未合并、关闭 Issue、发布镜像、部署或清理 worktree。
