@@ -29,6 +29,7 @@ import {
   verifyViewerPendingNavigation,
 } from './library-viewer-boundaries.mjs';
 import { verifyViewerConsumers } from './library-viewer-consumers.mjs';
+import { verifyTiffPreview } from './library-tiff-preview.mjs';
 
 export async function verifyLibraryViewer(context) {
   const { page, config, sql } = context;
@@ -53,7 +54,9 @@ export async function verifyLibraryViewer(context) {
     report.stage = 'fixture-seed';
     fixtures = await seedViewerFixtures(config, sql);
     const viewerContext = { ...context, fixtures, report };
-    if (config.viewerCheck === 'refresh') {
+    if (config.viewerCheck === 'tiff-preview') {
+      await verifyTiffPreview(viewerContext);
+    } else if (config.viewerCheck === 'refresh') {
       report.stage = 'refresh';
       await verifyViewerRefresh(viewerContext);
     } else if (config.viewerCheck === 'recovery') {
@@ -128,7 +131,10 @@ export async function verifyLibraryViewer(context) {
         await verifyViewerLayouts(viewerContext, 'ready', representative);
         if (!representative) await verifyViewerShortViewport(viewerContext);
         await closeViewer(page);
-        if (!representative) await verifyViewerVersions(viewerContext);
+        if (!representative) {
+          await verifyViewerVersions(viewerContext);
+          await verifyTiffPreview(viewerContext);
+        }
       }
       if (!representative) {
         await verifyViewerNavigation(viewerContext);

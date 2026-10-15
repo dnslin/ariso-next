@@ -10,6 +10,11 @@ import type {
   LibraryDetailVersion,
 } from '../../server/library/detail-types';
 import { bytesLabel, versionLabels } from './detail-labels';
+import {
+  canPreviewTiff,
+  tiffPreviewDownloadRequired,
+  tiffPreviewMaxBytes,
+} from '../../server/media/tiff-preview-policy';
 
 export function initialPreview(detail: LibraryDetail) {
   const order = detail.animated
@@ -21,7 +26,7 @@ export function initialPreview(detail: LibraryDetail) {
         (version) =>
           version.kind === kind &&
           version.previewPath &&
-          version.mime !== 'image/tiff',
+          (version.mime !== 'image/tiff' || canPreviewTiff(version.byteSize)),
       ),
     ) ?? 'original'
   );
@@ -42,7 +47,8 @@ export function PreviewImage({
 }) {
   const [failed, setFailed] = useState(false);
   const [loaded, setLoaded] = useState(false);
-  const previewable = version.mime !== 'image/tiff';
+  const previewable =
+    version.mime !== 'image/tiff' || canPreviewTiff(version.byteSize);
   return (
     <div
       data-testid="preview-stage"
@@ -85,7 +91,10 @@ export function PreviewImage({
               ? '当前版本读取失败。'
               : (version.unavailableReason ??
                 (version.saved && !previewable
-                  ? '此格式无法在浏览器中预览。'
+                  ? version.byteSize !== null &&
+                    version.byteSize > tiffPreviewMaxBytes
+                    ? tiffPreviewDownloadRequired
+                    : '此格式无法在浏览器中预览。'
                   : '此版本仅支持附件下载，无法在浏览器中预览。'))}
           </p>
           {failed && onRetry ? (

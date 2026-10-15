@@ -244,3 +244,7 @@ pnpm exec vitest run --project integration --project media-tools tests/integrati
 匿名分享查看器由 T-SHR-04 / #193 承接。查看器打开期间的真实会话过期只完成源码边界和接口错误单测，未单独取得浏览器场景，不冒充实测。物理手机、Safari系统全屏、软键盘、刘海安全区未实测；AMD64/ARM64镜像与容器验证仅Release流程执行，本次没有触发Release、发布镜像或部署。
 
 创建PR后已运行 `gh pr view 229 --repo dnslin/ariso-next --json number,url,state,isDraft,baseRefName,headRefName,statusCheckRollup` 和 `gh pr checks 229 --repo dnslin/ariso-next`。PR为OPEN / Draft，目标main、源分支正确，statusCheckRollup为空；checks返回“no checks reported”，退出1表示没有可列出的检查。见[PR回读](./pr.json)、[检查输出](./checks/pr-checks.txt)。按实际仓库策略没有远端PR检查，不记CI通过，也不等待或新增工作流。
+
+## TIFF 原图预览补充（2026-10-15）
+
+不超过50 MiB原图临时PNG预览、超限下载提示及既有缩略图保留，详见[实现与本地验证](./tiff-original-preview-20261015.md)。本记录接续同日文案与导航调整，未发布或部署。

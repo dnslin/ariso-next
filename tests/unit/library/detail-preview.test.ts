@@ -9,6 +9,7 @@ import type {
   LibraryDetail,
   LibraryDetailVersion,
 } from '../../../src/server/library/detail-types';
+import { tiffPreviewMaxBytes } from '../../../src/server/media/tiff-preview-policy';
 
 function detail(
   available: string[],
@@ -105,18 +106,36 @@ describe('initial detail preview is independent of the default link', () => {
   it('keeps an explicit original placeholder when no version can be viewed', () => {
     expect(initialPreview(detail([]))).toBe('original');
   });
-  it('opens TIFF using the existing browser-readable thumbnail', () => {
-    const record = detail(['original', 'thumbnail']);
-    record.format = 'tiff';
-    record.mime = 'image/tiff';
-    Object.assign(record.versions[0], { format: 'tiff', mime: 'image/tiff' });
-    expect(initialPreview(record)).toBe('thumbnail');
-  });
-  it('explains an unsupported original without sending TIFF bytes to an img', () => {
+  it.each([tiffPreviewMaxBytes - 1, tiffPreviewMaxBytes])(
+    'previews a TIFF original of %s bytes at original resolution',
+    (byteSize) => {
+      const record = detail(['original', 'thumbnail']);
+      record.format = 'tiff';
+      record.mime = 'image/tiff';
+      Object.assign(record.versions[0], {
+        format: 'tiff',
+        mime: 'image/tiff',
+        byteSize,
+        previewPath: '/api/images/image/preview',
+      });
+      expect(initialPreview(record)).toBe('original');
+      const html = renderToStaticMarkup(
+        createElement(PreviewImage, {
+          version: record.versions[0],
+          name: 'TIFF 图片',
+          width: 640,
+          height: 480,
+        }),
+      );
+      expect(html).toContain('src="/api/images/image/preview"');
+    },
+  );
+  it('requires download above the TIFF limit without loading the original or showing a retry', () => {
     const version = {
       ...detail(['original']).versions[0],
       format: 'tiff',
       mime: 'image/tiff',
+      byteSize: tiffPreviewMaxBytes + 1,
       downloadPath: '/i/image?download=1',
     };
     const html = renderToStaticMarkup(
@@ -130,6 +149,6 @@ describe('initial detail preview is independent of the default link', () => {
     );
     expect(html).not.toContain('<img');
     expect(html).not.toContain('重试预览');
-    expect(html).toContain('此格式无法在浏览器中预览。');
+    expect(html).toContain('TIFF 原图超过 50 MiB，请下载后查看。');
   });
 });

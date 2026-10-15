@@ -2,6 +2,10 @@ import { randomUUID } from 'node:crypto';
 import { mkdir, open } from 'node:fs/promises';
 import { join, sep } from 'node:path';
 import { Readable } from 'node:stream';
+import { setTimeout as delay } from 'node:timers/promises';
+import type { PreviewInput } from './preview-validation.ts';
+import { initialMediaSettings } from './validation.ts';
+import { writeReceivedFile } from './file-write.ts';
 import { create as contentDisposition } from 'content-disposition';
 import { and, eq, inArray, sql } from 'drizzle-orm';
 import type { MediaRuntime } from './process.ts';
@@ -98,72 +102,189 @@ export function startPreviewRuntime(runtime: MediaRuntime) {
           : null,
     };
   }
+  async function receiveSource(
+    id: string,
+    receiveInput: (path: string, signal: AbortSignal) => Promise<PreviewInput>,
+  ) {
+    if (stopping) throw previewError('MEDIA_INTERRUPTED', '服务正在停止', 409);
+    const controller = new AbortController();
+    const execution = (async () => {
+      try {
+        const previous = runtime.db
+          .select()
+          .from(mediaPreviews)
+          .where(eq(mediaPreviews.id, id))
+          .get();
+        if (previous) {
+          await cleanupPreview(runtime, id);
+          if (requirePreview(runtime, id).cleanupStatus !== 'deleted')
+            throw previewError(
+              'MEDIA_PREVIEW_CLEANUP_FAILED',
+              requirePreview(runtime, id).cleanupError ??
+                '预览清理失败，请重试',
+              500,
+            );
+        }
+        controller.signal.throwIfAborted();
+        const now = new Date();
+        runtime.db
+          .insert(mediaPreviews)
+          .values({
+            id,
+            status: 'receiving',
+            cleanupStatus: 'pending',
+            createdAt: now,
+            updatedAt: now,
+          })
+          .onConflictDoUpdate({
+            target: mediaPreviews.id,
+            set: {
+              status: 'receiving',
+              cleanupStatus: 'pending',
+              cleanupError: null,
+              error: null,
+              result: null,
+              unavailableReason: null,
+              expiresAt: null,
+              finishedAt: null,
+              createdAt: now,
+              updatedAt: now,
+            },
+          })
+          .run();
+
+        const directory = pathFor(runtime, id);
+        await mkdir(directory, { recursive: true });
+        const input = await receiveInput(
+          join(directory, 'source'),
+          controller.signal,
+        );
+        controller.signal.throwIfAborted();
+        queuePreview(runtime, id, input);
+        return get(id);
+      } catch (error) {
+        runtime.db
+          .update(mediaPreviews)
+          .set({
+            status: controller.signal.aborted ? 'cancelled' : 'failed',
+            error: analyzeMediaError(error).diagnostic,
+            cleanupStatus: 'pending',
+            finishedAt: new Date(),
+            updatedAt: new Date(),
+          })
+          .where(eq(mediaPreviews.id, id))
+          .run();
+        await cleanupPreview(runtime, id).catch((cleanupError: unknown) => {
+          throw Object.assign(
+            cleanupError instanceof Error
+              ? cleanupError
+              : new Error(String(cleanupError)),
+            { previewId: id },
+          );
+        });
+        throw Object.assign(
+          error instanceof Error ? error : new Error(String(error)),
+          { previewId: id },
+        );
+      }
+    })();
+    active.set(id, { controller, execution });
+    try {
+      return await execution;
+    } finally {
+      active.delete(id);
+    }
+  }
   return {
     ready,
     get,
     maintenance,
     async receive(request: Request) {
       await ready;
-      if (stopping)
-        throw previewError('MEDIA_INTERRUPTED', '服务正在停止', 409);
-      const id = randomUUID();
-      const now = new Date();
-      runtime.db
-        .insert(mediaPreviews)
-        .values({
-          id,
-          status: 'receiving',
-          cleanupStatus: 'pending',
-          createdAt: now,
-          updatedAt: now,
-        })
-        .run();
-      const controller = new AbortController();
-      const execution = (async () => {
-        try {
-          const directory = pathFor(runtime, id);
-          await mkdir(directory, { recursive: true });
-          const { input } = await receivePreviewMultipart(request, {
-            path: join(directory, 'source'),
-            resources: (runtime.resources ??= createMediaResources()),
-            maxBytes: requireUploadSettings(runtime.db).maxFileBytes,
-            signal: controller.signal,
-          });
-          controller.signal.throwIfAborted();
-          queuePreview(runtime, id, input);
-          return get(id);
-        } catch (error) {
-          runtime.db
-            .update(mediaPreviews)
-            .set({
-              status: controller.signal.aborted ? 'cancelled' : 'failed',
-              error: analyzeMediaError(error).diagnostic,
-              cleanupStatus: 'pending',
-              finishedAt: new Date(),
-              updatedAt: new Date(),
-            })
-            .where(eq(mediaPreviews.id, id))
-            .run();
-          await cleanupPreview(runtime, id).catch((cleanupError: unknown) => {
-            throw Object.assign(
-              cleanupError instanceof Error
-                ? cleanupError
-                : new Error(String(cleanupError)),
-              { previewId: id },
-            );
-          });
-          throw Object.assign(
-            error instanceof Error ? error : new Error(String(error)),
-            { previewId: id },
-          );
-        }
-      })();
-      active.set(id, { controller, execution });
-      try {
-        return await execution;
-      } finally {
-        active.delete(id);
+      return receiveSource(randomUUID(), async (path, signal) => {
+        const { input } = await receivePreviewMultipart(request, {
+          path,
+          resources: (runtime.resources ??= createMediaResources()),
+          maxBytes: requireUploadSettings(runtime.db).maxFileBytes,
+          signal,
+        });
+        return input;
+      });
+    },
+    async receiveStored(
+      id: string,
+      source: (signal: AbortSignal) => Promise<Readable>,
+      byteSize: number,
+    ) {
+      await ready;
+      const current = runtime.db
+        .select()
+        .from(mediaPreviews)
+        .where(eq(mediaPreviews.id, id))
+        .get();
+      if (
+        current &&
+        ['queued', 'running', 'succeeded'].includes(get(id).status)
+      )
+        return get(id);
+      const receiving = active.get(id);
+      if (receiving) {
+        await receiving.execution;
+        return get(id);
       }
+      return receiveSource(id, async (path, signal) => {
+        const stream = await source(signal);
+        const receivedBytes = await writeReceivedFile(stream, {
+          path,
+          resources: (runtime.resources ??= createMediaResources()),
+          maxBytes: byteSize,
+          declaredSize: byteSize,
+          signal,
+          sizeError: () =>
+            previewError(
+              'MEDIA_PREVIEW_SIZE_MISMATCH',
+              '原图实际大小与保存记录不一致',
+              409,
+            ),
+          mapError: (error) => error,
+          onFailure: (error) =>
+            runtime.logger.error(
+              { err: error, previewId: id },
+              'Stored preview source write failed',
+            ),
+          onProgress: () => undefined,
+        });
+        if (receivedBytes !== byteSize)
+          throw previewError(
+            'MEDIA_PREVIEW_SIZE_MISMATCH',
+            '原图实际大小与保存记录不一致',
+            409,
+          );
+        const {
+          defaultLinkVersion,
+          defaultVisibility,
+          concurrency,
+          ...settings
+        } = initialMediaSettings;
+        void defaultLinkVersion;
+        void defaultVisibility;
+        void concurrency;
+        return { target: 'original', settings };
+      });
+    },
+    async waitForResult(id: string, signal: AbortSignal) {
+      while (['receiving', 'queued', 'running'].includes(get(id).status)) {
+        await delay(50, undefined, { signal });
+      }
+      signal.throwIfAborted();
+      const row = get(id);
+      if (row.status === 'failed' || row.status === 'cancelled')
+        throw previewError(
+          'MEDIA_PREVIEW_FAILED',
+          row.error ?? 'TIFF 预览生成失败，请重试',
+          500,
+        );
+      return this.result(id);
     },
     run(id: string, signal: AbortSignal) {
       const controller = new AbortController();

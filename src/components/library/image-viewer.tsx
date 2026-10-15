@@ -20,12 +20,14 @@ import type { VersionKind } from '../../server/media/schema';
 import { useImageViewer } from './use-image-viewer';
 import { initialViewerVersion, viewerVersionReason } from './viewer-model';
 import { ViewerImage } from './viewer-image';
+import { tiffPreviewMaxBytes } from '../../server/media/tiff-preview-policy';
 import 'yet-another-react-lightbox/styles.css';
 
 type ViewerSlide = SlideImage & {
   imageId: string;
   contentId: string | null;
   reason: string | null;
+  downloadRequired: boolean;
 };
 function ViewerFocusScope({ children }: ComponentProps) {
   return <FocusScope contain>{children}</FocusScope>;
@@ -78,7 +80,7 @@ export default function ImageViewer(props: {
         ? viewerVersionReason(detail, version)
         : '正在读取相邻图片…';
       const dimensions =
-        version?.width && version.height
+        version?.width && version.height && version.mime !== 'image/tiff'
           ? { width: version.width, height: version.height }
           : decodedDimensions[version?.contentId ?? ''];
       const width = dimensions?.width;
@@ -103,6 +105,10 @@ export default function ImageViewer(props: {
         width: width ? width * scale : undefined,
         height: height ? height * scale : undefined,
         reason,
+        downloadRequired:
+          version?.mime === 'image/tiff' &&
+          version.byteSize !== null &&
+          version.byteSize > tiffPreviewMaxBytes,
       };
     };
     const active = slide(current, current.id, selectedVersion);
@@ -291,7 +297,7 @@ export default function ImageViewer(props: {
                 >
                   <ImageOff aria-hidden />
                   <p>{slide.reason}</p>
-                  {slide.imageId === current.id ? (
+                  {slide.imageId === current.id && !slide.downloadRequired ? (
                     <Button
                       variant="outline"
                       className="min-h-11 rounded-lg"

@@ -181,24 +181,8 @@ export async function verifyViewerVersions({ page, config, sql, report }) {
     await viewerShot(page, config, report, id);
     await closeViewer(page);
   }
-  for (const id of ['issue185-svg', 'issue185-heic', 'issue185-tiff']) {
+  for (const id of ['issue185-svg', 'issue185-heic']) {
     report.stage = `versions:${id}:saved-preview`;
-    if (id === 'issue185-tiff') {
-      await page.goto(`${config.origin}/library?image=${id}`);
-      await page.waitForSelector('[data-testid="detail-body"]');
-      await page.waitForFunction(() => {
-        const image = document.querySelector('[data-testid="detail-preview"]');
-        return image?.complete && image.naturalWidth > 0;
-      });
-      assert.equal(
-        await page.evaluate(() =>
-          document
-            .querySelector('[role="tab"][aria-selected="true"]')
-            .textContent.trim(),
-        ),
-        '缩略图',
-      );
-    }
     await openViewerDirect(page, config, id);
     await waitViewerImage(page, id, 'thumbnail');
     assert.equal(
@@ -225,20 +209,6 @@ export async function verifyViewerVersions({ page, config, sql, report }) {
     // different saved tab first so the explicit-original event really occurs.
     await page.click('loc=role:tab[name="缩略图"]');
     await page.click('loc=role:tab[name="原图"]');
-    if (id === 'issue185-tiff') {
-      const detail = await page.evaluate(() => ({
-        text: document.querySelector('[data-testid="detail-body"]').textContent,
-        originalImage: !!document.querySelector(
-          'img[src="/i/issue185-tiff?type=original"]',
-        ),
-      }));
-      assert.match(detail.text, /此格式无法在浏览器中预览/);
-      assert.equal(detail.originalImage, false);
-      const download = await page.fetch(`/i/${id}?type=original&download=1`);
-      assert.equal(download.status, 200);
-      assert.match(download.headers['content-type'], /image\/tiff/);
-      assert.match(download.headers['content-disposition'], /attachment/);
-    }
     report.stage = `versions:${id}:explicit-original`;
     await page.click(entry);
     await page.waitForSelector(

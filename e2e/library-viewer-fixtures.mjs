@@ -148,6 +148,23 @@ export async function seedViewerFixtures(config, sql) {
       width: 64,
       height: 48,
     };
+    if (id === 'issue185-tiff') {
+      const converted = await run(
+        'magick',
+        [
+          join(formatDirectory, file),
+          '-resize',
+          '1200x900!',
+          '-depth',
+          '8',
+          'tiff:-',
+        ],
+        { encoding: 'buffer', maxBuffer: 8 * 1024 * 1024 },
+      );
+      original.bytes = converted.stdout;
+      original.width = 1200;
+      original.height = 900;
+    }
     await image(id, file, original, {
       classification,
       animated: classification === 'animated',

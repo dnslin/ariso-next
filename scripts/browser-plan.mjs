@@ -164,6 +164,7 @@ const suites = {
       'consumers',
       'deleted-source',
       'pending-navigation',
+      'tiff-preview',
     ],
     stages: [['library-viewer-run', 'libraryViewer']],
     config: (only) => ({

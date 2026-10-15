@@ -6,6 +6,7 @@ import {
   viewerVersionReason,
 } from '../../../src/components/library/viewer-model';
 import type { LibraryDetail } from '../../../src/server/library/detail-types';
+import { tiffPreviewMaxBytes } from '../../../src/server/media/tiff-preview-policy';
 
 function detail(available = ['original', 'compressed', 'thumbnail']) {
   return {
@@ -33,6 +34,31 @@ const version = (record: LibraryDetail, kind = 'original') =>
 afterEach(() => vi.unstubAllGlobals());
 
 describe('viewer version selection', () => {
+  it.each([tiffPreviewMaxBytes - 1, tiffPreviewMaxBytes])(
+    'opens a %s-byte TIFF original through the browser rendering route',
+    (byteSize) => {
+      const record = { ...detail(), format: 'tiff' };
+      Object.assign(version(record), {
+        mime: 'image/tiff',
+        byteSize,
+        previewPath: '/api/images/image/preview',
+      });
+      expect(initialViewerVersion(record)).toBe('original');
+      expect(viewerVersionReason(record, version(record))).toBeNull();
+    },
+  );
+  it('requires download for an explicitly selected TIFF original above 50 MiB', () => {
+    const record = { ...detail(), format: 'tiff' };
+    Object.assign(version(record), {
+      mime: 'image/tiff',
+      byteSize: tiffPreviewMaxBytes + 1,
+      previewPath: null,
+    });
+    expect(initialViewerVersion(record)).toBe('thumbnail');
+    expect(viewerVersionReason(record, version(record))).toBe(
+      'TIFF 原图超过 50 MiB，请下载后查看。',
+    );
+  });
   it('uses saved browser previews independently of the default delivery link', () => {
     expect(initialViewerVersion(detail())).toBe('compressed');
     expect(initialViewerVersion(detail(['original', 'thumbnail']))).toBe(

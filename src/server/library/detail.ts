@@ -13,6 +13,10 @@ import { readGeneratedMediaVersions } from '../media/objects.ts';
 import { mediaJobs, type VersionKind } from '../media/schema.ts';
 import { requireMediaSettings } from '../media/settings.ts';
 import {
+  buildTiffPreviewPath,
+  canPreviewTiff,
+} from '../media/tiff-preview-policy.ts';
+import {
   reprocessUnavailableError,
   reprocessVersions,
   type ReprocessScope,
@@ -203,11 +207,16 @@ export function readLibraryDetail(
           height: saved?.version.height ?? null,
           byteSize: saved?.version.byteSize ?? null,
           previewPath:
-            unavailableReason || saved?.version.mime === 'image/svg+xml'
+            unavailableReason ||
+            saved?.version.mime === 'image/svg+xml' ||
+            (saved?.version.mime === 'image/tiff' &&
+              (image.trashedAt || !canPreviewTiff(saved.version.byteSize)))
               ? null
-              : image.trashedAt
-                ? buildTrashPreviewPath(imageId, kind)
-                : buildImagePath(imageId, kind),
+              : saved?.version.mime === 'image/tiff'
+                ? buildTiffPreviewPath(imageId)
+                : image.trashedAt
+                  ? buildTrashPreviewPath(imageId, kind)
+                  : buildImagePath(imageId, kind),
           downloadPath:
             blocked || unavailableReason
               ? null

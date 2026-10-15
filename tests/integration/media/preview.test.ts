@@ -5,7 +5,7 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { Readable } from 'node:stream';
 import { execa } from 'execa';
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { openRuntimeDatabase } from '../../../src/server/runtime/db.ts';
 import { migrateRuntimeDatabase } from '../../../src/server/runtime/migrations.ts';
@@ -61,6 +61,15 @@ import {
 } from '../../../src/server/media/validation.ts';
 import * as tools from '../../../src/server/media/tools.ts';
 import { createMediaResources } from '../../../src/server/media/resources.ts';
+import { prepareTiffPreview } from '../../../src/server/media/tiff-preview.ts';
+import { tiffPreviewMaxBytes } from '../../../src/server/media/tiff-preview-policy.ts';
+import * as mediaStorage from '../../../src/server/media/storage.ts';
+import {
+  mediaObjects,
+  mediaVersions,
+  mediaImages,
+} from '../../../src/server/media/schema.ts';
+import { storageConfigs } from '../../../src/server/storage/schema.ts';
 
 vi.mock('node:fs', async (original) => {
   const actual = await original<typeof import('node:fs')>();
@@ -164,7 +173,7 @@ async function preview(
 async function accepted(
   changes: Partial<PreviewInput['settings']> = {},
   bytes = source,
-  format: 'PNG' | 'SVG' = 'PNG',
+  format: 'PNG' | 'SVG' | 'TIFF' = 'PNG',
 ) {
   const form = settings(changes);
   const { watermarkAssetId, ...rendering } = form;
@@ -184,10 +193,15 @@ async function accepted(
       imageId: randomUUID(),
       storageId: storage.id,
       key: plan.key,
-      originalName: format === 'SVG' ? 'source.svg' : 'source.png',
+      originalName: `source.${format.toLowerCase()}`,
       visibility: 'private',
       format,
-      mime: format === 'SVG' ? 'image/svg+xml' : 'image/png',
+      mime:
+        format === 'SVG'
+          ? 'image/svg+xml'
+          : format === 'TIFF'
+            ? 'image/tiff'
+            : 'image/png',
       byteSize: bytes.length,
       snapshot,
       expectedVersions: [
@@ -276,6 +290,62 @@ function holdEncodingSettlement(command: 'magick' | 'node' = 'magick') {
 }
 
 describe('temporary previews use the real formal encoding pipeline', () => {
+  it('renders only the first TIFF page as a full-size PNG original preview', async () => {
+    const bytes = Buffer.from(
+      (
+        await execa(
+          'magick',
+          ['-size', '80x40', 'xc:red', '-size', '20x10', 'xc:blue', 'tiff:-'],
+          { encoding: 'buffer' },
+        )
+      ).stdout,
+    );
+    const row = await preview('original', {}, bytes);
+    expect(row.status).toBe('succeeded');
+    expect(row.result).toMatchObject({
+      format: 'PNG',
+      mime: 'image/png',
+      width: 80,
+      height: 40,
+    });
+    const output = await files.readFile(
+      join(runtime.temporaryRoot, `preview-${row.id}`, 'result'),
+    );
+    expect(output.subarray(0, 8)).toEqual(
+      Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]),
+    );
+  });
+  it('rejects oversized TIFF original upload previews before PNG conversion and cleans the temporary input', async () => {
+    const bytes = Buffer.from(
+      (
+        await execa('magick', ['-size', '80x40', 'xc:red', 'tiff:-'], {
+          encoding: 'buffer',
+        })
+      ).stdout,
+    );
+    const id = await enqueue('original', {}, bytes);
+    const directory = join(runtime.temporaryRoot, `preview-${id}`);
+    await files.truncate(join(directory, 'source'), tiffPreviewMaxBytes + 1);
+    const started = vi.spyOn(tools, 'startMediaTool');
+    expect(claimNextPreview(runtime)?.id).toBe(id);
+    await processMediaPreview(runtime, id);
+    expect(requirePreview(runtime, id)).toMatchObject({
+      status: 'failed',
+      cleanupStatus: 'deleted',
+      result: null,
+    });
+    expect(requirePreview(runtime, id).error).toContain(
+      'TIFF 原图超过 50 MiB，请下载后查看。',
+    );
+    expect(
+      started.mock.calls.filter(
+        ([command, args]) => command === 'magick' && args.includes('png:-'),
+      ),
+    ).toHaveLength(0);
+    await expect(files.stat(directory)).rejects.toMatchObject({
+      code: 'ENOENT',
+    });
+  });
   it.each([
     {
       size: 'viewBox-only',
@@ -954,5 +1024,307 @@ it('propagates encoder tool shutdown failure after persisting its failed preview
     result: null,
     error: expect.stringContaining('MEDIA_TOOL_SHUTDOWN_FAILED'),
     cleanupStatus: 'deleted',
+  });
+});
+
+describe('saved TIFF original previews', () => {
+  async function tiffImage(byteSize?: number) {
+    const bytes = Buffer.from(
+      (
+        await execa('magick', ['-size', '80x40', 'xc:red', 'tiff:-'], {
+          encoding: 'buffer',
+        })
+      ).stdout,
+    );
+    const image = await accepted(
+      { compressionEnabled: false, watermarkMode: 'off' },
+      bytes,
+      'TIFF',
+    );
+    const job = claimNextMediaJob(runtime.db)!;
+    await processMediaJob(runtime, job.id);
+    const saved = getImageAccessState(runtime.db, image.imageId)!.versions.find(
+      ({ kind }) => kind === 'original',
+    )!.saved!;
+    if (byteSize !== undefined) {
+      const opened = await readObject(
+        runtime.storageRoot,
+        resolveLocalUploadStorage(runtime.db),
+        saved.object.key,
+        'image/tiff',
+      );
+      opened.stream.destroy();
+      await files.truncate(opened.path, byteSize);
+      runtime.db
+        .update(mediaVersions)
+        .set({ byteSize })
+        .where(
+          and(
+            eq(mediaVersions.imageId, image.imageId),
+            eq(mediaVersions.kind, 'original'),
+          ),
+        )
+        .run();
+      runtime.db
+        .update(mediaObjects)
+        .set({ byteSize })
+        .where(eq(mediaObjects.id, saved.object.id))
+        .run();
+    }
+    return { imageId: image.imageId, objectId: saved.object.id };
+  }
+  function request(imageId: string, signal?: AbortSignal) {
+    return new Request(`http://localhost/api/images/${imageId}/preview`, {
+      signal,
+    });
+  }
+  it('accepts exactly 50 MiB, returns PNG without changing the stored original', async () => {
+    const image = await tiffImage(tiffPreviewMaxBytes);
+    const queue = startMediaQueue(runtime);
+    stops.push(() => queue.stop());
+    const response = await prepareTiffPreview(
+      request(image.imageId),
+      image.imageId,
+      runtime,
+      queue.previews,
+    );
+    expect(response.headers.get('content-type')).toBe('image/png');
+    const bytes = Buffer.from(await response.arrayBuffer());
+    expect(bytes.subarray(0, 8)).toEqual(
+      Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]),
+    );
+    expect(queue.previews.get(`tiff-${image.objectId}`).result).toMatchObject({
+      width: 80,
+      height: 40,
+    });
+    const original = await formalVersion(image.imageId, 'original');
+    expect(original.version.mime).toBe('image/tiff');
+    expect(original.bytes.length).toBe(tiffPreviewMaxBytes);
+    expect(original.bytes.subarray(0, 4)).toEqual(Buffer.from([73, 73, 42, 0]));
+  });
+  it('rejects 50 MiB + 1 before reading or queueing the original', async () => {
+    const image = await tiffImage(tiffPreviewMaxBytes + 1);
+    const previews = startPreviewRuntime(runtime);
+    stops.push(() => previews.stop());
+    const read = vi.spyOn(mediaStorage, 'readMediaObject');
+    await expect(
+      prepareTiffPreview(
+        request(image.imageId),
+        image.imageId,
+        runtime,
+        previews,
+      ),
+    ).rejects.toMatchObject({
+      code: 'TIFF_PREVIEW_DOWNLOAD_REQUIRED',
+      status: 413,
+    });
+    expect(read).not.toHaveBeenCalled();
+    expect(runtime.db.select().from(mediaPreviews).all()).toHaveLength(0);
+  });
+  it('reports a changed source size and cleans the incomplete preview', async () => {
+    const image = await tiffImage();
+    const saved = getImageAccessState(runtime.db, image.imageId)!.versions.find(
+      ({ kind }) => kind === 'original',
+    )!.saved!;
+    runtime.db
+      .update(mediaVersions)
+      .set({ byteSize: saved.version.byteSize + 1 })
+      .where(
+        and(
+          eq(mediaVersions.imageId, image.imageId),
+          eq(mediaVersions.kind, 'original'),
+        ),
+      )
+      .run();
+    const previews = startPreviewRuntime(runtime);
+    stops.push(() => previews.stop());
+    await expect(
+      prepareTiffPreview(
+        request(image.imageId),
+        image.imageId,
+        runtime,
+        previews,
+      ),
+    ).rejects.toMatchObject({
+      code: 'MEDIA_PREVIEW_SIZE_MISMATCH',
+      status: 409,
+    });
+    expect(previews.get(`tiff-${image.objectId}`)).toMatchObject({
+      status: 'failed',
+      cleanupStatus: 'deleted',
+    });
+  });
+  it('shares concurrent and repeated requests, and regenerates after the cached result expires', async () => {
+    const image = await tiffImage();
+    const read = vi.spyOn(mediaStorage, 'readMediaObject');
+    const queue = startMediaQueue(runtime);
+    stops.push(() => queue.stop());
+    const responses = await Promise.all(
+      [1, 2, 3].map(() =>
+        prepareTiffPreview(
+          request(image.imageId),
+          image.imageId,
+          runtime,
+          queue.previews,
+        ),
+      ),
+    );
+    for (const response of responses) await response.arrayBuffer();
+    expect(read).toHaveBeenCalledTimes(1);
+    const cached = await prepareTiffPreview(
+      request(image.imageId),
+      image.imageId,
+      runtime,
+      queue.previews,
+    );
+    await cached.arrayBuffer();
+    expect(read).toHaveBeenCalledTimes(1);
+    const id = `tiff-${image.objectId}`;
+    await queue.previews.maintenance(queue.previews.get(id).expiresAt!);
+    expect(queue.previews.get(id).cleanupStatus).toBe('deleted');
+    const fresh = await prepareTiffPreview(
+      request(image.imageId),
+      image.imageId,
+      runtime,
+      queue.previews,
+    );
+    await fresh.arrayBuffer();
+    expect(read).toHaveBeenCalledTimes(2);
+    expect(queue.previews.get(id).status).toBe('succeeded');
+  });
+  it('waits for an ongoing expiry cleanup before receiving the same TIFF preview again', async () => {
+    const image = await tiffImage();
+    const { bytes } = await formalVersion(image.imageId, 'original');
+    const previews = startPreviewRuntime(runtime);
+    stops.push(() => previews.stop());
+    const id = `tiff-${image.objectId}`;
+    const source = vi.fn(async () => Readable.from(bytes));
+    await previews.receiveStored(id, source, bytes.length);
+    expect(claimNextPreview(runtime)?.id).toBe(id);
+    await previews.run(id, new AbortController().signal);
+    source.mockClear();
+
+    let releaseCleanup!: () => void;
+    const held = new Promise<void>((resolve) => {
+      releaseCleanup = resolve;
+    });
+    releases.push(releaseCleanup);
+    let enteredCleanup!: () => void;
+    const entered = new Promise<void>((resolve) => {
+      enteredCleanup = resolve;
+    });
+    const directory = join(runtime.temporaryRoot, `preview-${id}`);
+    const remove = files.rm;
+    let removals = 0;
+    // The finished encoder has no live tools; keep this race focused on directory removal.
+    vi.spyOn(tools, 'terminateMediaTools').mockResolvedValue(undefined);
+    vi.spyOn(files, 'rm').mockImplementation(async (path, options) => {
+      if (path === directory) {
+        removals++;
+        if (removals === 1) {
+          enteredCleanup();
+          await held;
+        }
+      }
+      return remove(path, options);
+    });
+    const maintenance = previews.maintenance(previews.get(id).expiresAt!);
+    await entered;
+    const received = previews.receiveStored(id, source, bytes.length);
+    void received.catch(() => undefined);
+    try {
+      await new Promise<void>((resolve) => setImmediate(resolve));
+      expect(removals).toBe(1);
+      expect(source).not.toHaveBeenCalled();
+      expect(previews.get(id).status).toBe('expired');
+      releaseCleanup();
+      await Promise.all([maintenance, received]);
+      expect(source).toHaveBeenCalledOnce();
+      expect(await files.readFile(join(directory, 'source'))).toEqual(bytes);
+      expect(claimNextPreview(runtime)?.id).toBe(id);
+      await previews.run(id, new AbortController().signal);
+      const response = await previews.result(id);
+      expect(response.headers.get('content-type')).toBe('image/png');
+      const output = Buffer.from(await response.arrayBuffer());
+      expect(output.subarray(0, 8)).toEqual(
+        Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]),
+      );
+      expect(previews.get(id)).toMatchObject({
+        status: 'succeeded',
+        cleanupStatus: 'retained',
+      });
+    } finally {
+      releaseCleanup();
+      await Promise.allSettled([maintenance, received]);
+    }
+  });
+  it('cancels an HTTP wait without cancelling the shared conversion', async () => {
+    const image = await tiffImage();
+    const previews = startPreviewRuntime(runtime);
+    stops.push(() => previews.stop());
+    const controller = new AbortController();
+    const waiting = prepareTiffPreview(
+      request(image.imageId, controller.signal),
+      image.imageId,
+      runtime,
+      previews,
+    );
+    const rejected = expect(waiting).rejects.toMatchObject({
+      name: 'AbortError',
+    });
+    await vi.waitFor(() =>
+      expect(previews.get(`tiff-${image.objectId}`).status).toBe('queued'),
+    );
+    controller.abort();
+    await rejected;
+    expect(claimNextPreview(runtime)?.id).toBe(`tiff-${image.objectId}`);
+    await previews.run(`tiff-${image.objectId}`, new AbortController().signal);
+    const response = await prepareTiffPreview(
+      request(image.imageId),
+      image.imageId,
+      runtime,
+      previews,
+    );
+    expect(response.headers.get('content-type')).toBe('image/png');
+    await response.arrayBuffer();
+  });
+  it('rejects trashed images and disabled storage even when a preview is cached', async () => {
+    const image = await tiffImage();
+    const queue = startMediaQueue(runtime);
+    stops.push(() => queue.stop());
+    const response = await prepareTiffPreview(
+      request(image.imageId),
+      image.imageId,
+      runtime,
+      queue.previews,
+    );
+    await response.arrayBuffer();
+    runtime.db
+      .update(mediaImages)
+      .set({ trashedAt: new Date() })
+      .where(eq(mediaImages.id, image.imageId))
+      .run();
+    await expect(
+      prepareTiffPreview(
+        request(image.imageId),
+        image.imageId,
+        runtime,
+        queue.previews,
+      ),
+    ).rejects.toMatchObject({ code: 'IMAGE_UNAVAILABLE', status: 404 });
+    runtime.db
+      .update(mediaImages)
+      .set({ trashedAt: null })
+      .where(eq(mediaImages.id, image.imageId))
+      .run();
+    runtime.db.update(storageConfigs).set({ enabled: false }).run();
+    await expect(
+      prepareTiffPreview(
+        request(image.imageId),
+        image.imageId,
+        runtime,
+        queue.previews,
+      ),
+    ).rejects.toMatchObject({ code: 'STORAGE_DISABLED', status: 409 });
   });
 });
