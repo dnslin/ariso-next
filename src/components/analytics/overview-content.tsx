@@ -51,7 +51,7 @@ export function AnalyticsVersions({ data }: { data: AnalyticsOverview }) {
       title={`版本分布 · 最近 ${data.range.days} 天`}
       testId="analytics-versions"
     >
-      <dl>
+      <dl className="grid gap-[18px] border-b border-(--analytics-grid) pb-6 md:mt-1 md:grid-cols-3 md:gap-8">
         {(
           [
             ['original', '原图'],
@@ -61,11 +61,18 @@ export function AnalyticsVersions({ data }: { data: AnalyticsOverview }) {
         ).map(([key, label]) => (
           <div
             key={key}
-            className="flex min-h-[52px] items-center justify-between gap-3 text-sm"
+            className="grid min-w-0 grid-cols-[80px_minmax(0,1fr)_74px] items-center gap-2.5 text-[13px] md:grid-cols-[minmax(0,1fr)_auto]"
           >
-            <dt className="w-14 shrink-0">{label}</dt>
+            <dt className="flex items-center gap-2">
+              <span
+                className="size-2 shrink-0 rounded-full"
+                style={{ background: `var(--analytics-${key})` }}
+                aria-hidden
+              />
+              {label}
+            </dt>
             <span
-              className="mx-3 h-2 min-w-0 flex-1 overflow-hidden rounded-full bg-[var(--analytics-grid)]"
+              className="col-start-2 row-start-1 h-1.5 min-w-0 overflow-hidden rounded-full bg-[var(--analytics-grid)] md:col-span-full md:row-start-2"
               aria-hidden
             >
               <span
@@ -76,7 +83,10 @@ export function AnalyticsVersions({ data }: { data: AnalyticsOverview }) {
                 }}
               />
             </span>
-            <dd className="tabular-nums">{number(data.versions[key])} 次</dd>
+            <dd className="col-start-3 row-start-1 min-w-0 text-right text-sm font-medium tabular-nums wrap-anywhere md:col-start-2 md:text-[17px]">
+              {number(data.versions[key])}{' '}
+              <small className="text-xs font-normal">次</small>
+            </dd>
           </div>
         ))}
       </dl>

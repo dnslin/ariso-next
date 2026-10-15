@@ -124,7 +124,7 @@ export function AnalyticsOverviewPanel({
                 data={displayed}
                 dailyUrl={url('daily', displayed.range.days)}
               />
-              <div className="grid min-w-0 gap-8 min-[1000px]:grid-cols-[0.8fr_1.2fr]">
+              <div className="grid min-w-0 gap-8">
                 <AnalyticsVersions data={displayed} />
                 <AnalyticsPopular
                   data={displayed}

@@ -5,6 +5,7 @@ import {
   button,
 } from './analytics-helpers.mjs';
 import { signInToLibrary } from './library-login.mjs';
+import { assertVersionsAndPopularLayout } from './analytics-layout.mjs';
 
 async function retryWithKeyboard(
   page,
@@ -383,6 +384,7 @@ export async function analyticsRecovery(page, config, tools, fixture, report) {
           .textContent.includes('本周期暂无公开图片访问'),
       );
       await tools.evidence('real-zero-access', 390, 'light');
+      await assertVersionsAndPopularLayout(page, 390, report, 0);
       // Empty rendering is an explicit counts fixture alongside the genuine
       // zero-access response; it cannot be confused with the read-error path.
       boundary = await analyticsBoundary(
@@ -409,6 +411,7 @@ export async function analyticsRecovery(page, config, tools, fixture, report) {
             .textContent.includes('图片库为空'),
         );
         await tools.evidence('empty-counts-render-fixture', 1440, 'dark');
+        await assertVersionsAndPopularLayout(page, 1440, report, 0);
       } finally {
         await boundary.dispose();
       }

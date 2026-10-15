@@ -1,0 +1,95 @@
+{
+  "status": "passed",
+  "stage": "recovery",
+  "checks": [
+    "Initial overview/usage loading and independent read failures never fabricate zeros. Same-period and new-period failures retain the real old report and update time, including overview/chart/control nodes. A 30-day failure explicitly identifies displayed 7-day data and trusted keyboard retry requests 30 days before updating the same chart.",
+    "Invalid days, repeated days and an invalid view expose the explicit reset action without presenting a different period as the requested result.",
+    "Real SQLite zero-access rows produce a zero trend and no invented popular items. Explicit empty-counts rendering stays separate from read failure. Waiting/backlog/incomplete response fixtures expose distinct states; repaired backlog cannot erase the persistent incomplete flag. A real different-timezone historical segment retains its old-timezone explanation.",
+    "The actual registered ten-second poll is exercised with controlled interval ticks and page visibility. Hidden ticks send nothing; restoration immediately reads both endpoints without overlapping or aborting unfinished requests. Real sign-out followed by real HTTP 401 clears the displayed report and returns to login with the complete destination."
+  ],
+  "browserErrors": [],
+  "versionPopularLayouts": [
+    {
+      "viewportWidth": 390,
+      "versions": {
+        "left": 16,
+        "top": 839,
+        "bottom": 1011,
+        "width": 358,
+        "height": 172
+      },
+      "popular": {
+        "left": 16,
+        "top": 1043,
+        "bottom": 1162,
+        "width": 358,
+        "height": 119
+      },
+      "rows": [
+        {
+          "left": 16,
+          "top": 890,
+          "bottom": 910,
+          "width": 358,
+          "height": 20
+        },
+        {
+          "left": 16,
+          "top": 928,
+          "bottom": 948,
+          "width": 358,
+          "height": 20
+        },
+        {
+          "left": 16,
+          "top": 966,
+          "bottom": 986,
+          "width": 358,
+          "height": 20
+        }
+      ],
+      "popularRows": 0
+    },
+    {
+      "viewportWidth": 1440,
+      "versions": {
+        "left": 264,
+        "top": 883,
+        "bottom": 1003.28125,
+        "width": 1144,
+        "height": 120.28125
+      },
+      "popular": {
+        "left": 264,
+        "top": 1035.28125,
+        "bottom": 1154.28125,
+        "width": 1144,
+        "height": 119
+      },
+      "rows": [
+        {
+          "left": 264,
+          "top": 938,
+          "bottom": 978.28125,
+          "width": 360,
+          "height": 40.28125
+        },
+        {
+          "left": 656,
+          "top": 938,
+          "bottom": 978.28125,
+          "width": 360,
+          "height": 40.28125
+        },
+        {
+          "left": 1048,
+          "top": 938,
+          "bottom": 978.28125,
+          "width": 360,
+          "height": 40.28125
+        }
+      ],
+      "popularRows": 0
+    }
+  ]
+}
