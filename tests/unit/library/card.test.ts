@@ -81,6 +81,30 @@ const item: LibraryItem = {
   deletionStatus: null,
 };
 
+it.each([
+  [0, '0 B'],
+  [1, '1 B'],
+  [42, '42 B'],
+  [1023, '1023 B'],
+  [1024, '1.0 KiB'],
+  [10240, '10.0 KiB'],
+  [524288, '512.0 KiB'],
+  [1048575, '1024.0 KiB'],
+  [1048576, '1.0 MiB'],
+  [2621440, '2.5 MiB'],
+])('renders %i bytes as %s in library and album cards', (byteSize, label) => {
+  for (const album of [false, true]) {
+    const html = renderToStaticMarkup(
+      jsx(LibraryCard, {
+        readRevision: 1,
+        item: { ...item, byteSize },
+        album,
+      }),
+    );
+    expect(html).toContain(`${label} · 处理中`);
+  }
+});
+
 it('retries a failed same-URL thumbnail only after a new real read and keeps successful retries through placeholder reads', () => {
   const render = thumbnailCard({
     ...item,

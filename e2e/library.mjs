@@ -231,8 +231,7 @@ libraryVerification: try {
   }
   await page.waitForURL(`${config.origin}/library`);
   await page.waitForSelector('[data-testid="library-empty"]');
-  if (config.libraryPhase !== 'recovery' && config.libraryPhase !== 'consumers')
-    await layouts('empty');
+  if (config.libraryPhase === undefined) await layouts('empty');
   report.checks.push(
     'Anonymous API refuses access; protected library returns to real login; successful login preserves /library; real empty SQLite renders empty state.',
   );
@@ -321,6 +320,47 @@ libraryVerification: try {
     `INSERT INTO media_images (id,storage_id,original_name,display_name,visibility,format,mime,byte_size,processing_status,trashed_at,created_at,updated_at) VALUES ('library-trashed','${storage.id}','trashed.png','不应出现的回收图片','private','png','image/png',1,'ready',${created},${created + 1},${created})`,
   );
   await seedLibraryDetail(config, sql, directory, storage.id);
+  if (config.libraryPhase === 'sizes') {
+    await page.click('loc=role:button[name="刷新图库"]');
+    await count(40);
+    for (const theme of ['light', 'dark']) {
+      await page.evaluate((theme) => {
+        document.documentElement.classList.remove('light', 'dark');
+        document.documentElement.classList.add(theme);
+      }, theme);
+      for (const width of [390, 1440]) {
+        await resize(width);
+        for (const layout of ['网格', '瀑布流']) {
+          await page.click(`loc=role:radio[name="${layout}"]`);
+          await page.waitForFunction(() => {
+            const card = document.querySelector(
+              '[data-image-id="library-001"]',
+            );
+            return (
+              card?.querySelector('span.truncate')?.textContent ===
+              '6.5 KiB · 等待处理'
+            );
+          });
+          assert.equal(
+            png.length,
+            6631,
+            'Size label corresponds to real fixture bytes',
+          );
+          await page.screenshot({
+            path: join(
+              config.output,
+              `library-size-${theme}-${width}-${layout === '网格' ? 'grid' : 'masonry'}.png`,
+            ),
+          });
+          report.checks.push(
+            `${theme} ${width}px ${layout}: 6631-byte image displays 6.5 KiB`,
+          );
+        }
+      }
+    }
+    report.status = 'passed';
+    break libraryVerification;
+  }
   if (config.libraryPhase !== 'recovery') {
     await intercept('hold');
     await page.click('loc=role:button[name="刷新图库"]');

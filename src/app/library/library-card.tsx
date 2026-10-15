@@ -10,6 +10,7 @@ import type { LibraryItem } from '../../server/library/types';
 import { hasCardDiagnostics } from './gallery-layout';
 
 import {
+  bytesLabel,
   processingLabels as statuses,
   stepLabels,
 } from '../../components/library/detail-labels';
@@ -130,8 +131,7 @@ export function LibraryCard({
             {item.visibility === 'private' ? '私有' : '公开'}
           </Chip>
           <span className="truncate">
-            {(item.byteSize / 1048576).toFixed(1)} MiB ·{' '}
-            {statuses[item.processingStatus]}
+            {bytesLabel(item.byteSize)} · {statuses[item.processingStatus]}
           </span>
         </div>
         {hasCardDiagnostics(item) ? (
