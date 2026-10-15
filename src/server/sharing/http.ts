@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server.js';
+import { JsonBodyTooLargeError, readBoundedJson } from '../http/json.ts';
 import { requireOwner } from '../identity/owner.ts';
 import { createRuntimeLogger } from '../runtime/logger.ts';
 import { requireSiteSettings } from '../site/settings.ts';
@@ -16,8 +17,10 @@ export const shareResponseHeaders = {
 
 export async function shareBody(request: Request): Promise<unknown> {
   try {
-    return await request.json();
-  } catch {
+    return await readBoundedJson(request);
+  } catch (error) {
+    if (error instanceof JsonBodyTooLargeError)
+      throw new SharingError('SHARING_INVALID_INPUT', error.message, 413);
     throw new SharingError(
       'SHARING_INVALID_INPUT',
       '请求内容必须是有效的 JSON',

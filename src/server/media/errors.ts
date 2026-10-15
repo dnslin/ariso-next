@@ -35,7 +35,10 @@ export function analyzeMediaError(error: unknown) {
         .join(', ');
     if (detail.code === 'ENOENT' && !code.startsWith('STORAGE_'))
       code = 'MEDIA_TOOL_UNAVAILABLE';
-    if (/cache resources exhausted/i.test(detail.message))
+    if (
+      detail.code === 'ENOMEM' ||
+      /cache resources exhausted|cannot allocate memory/i.test(detail.message)
+    )
       code = 'MEDIA_RESOURCE_LIMIT';
     if (
       detail.code === 'ENOSPC' ||

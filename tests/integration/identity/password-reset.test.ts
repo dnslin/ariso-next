@@ -15,6 +15,7 @@ import {
   vi,
 } from 'vitest';
 import { GET, POST } from '../../../src/app/api/auth/[...all]/route.ts';
+import { POST as changeAccountPassword } from '../../../src/app/api/account/password/route.ts';
 import { getAuth } from '../../../src/server/identity/auth.ts';
 import * as mail from '../../../src/server/identity/mail.ts';
 import { resetCliPassword } from '../../../src/server/identity/reset-password.ts';
@@ -358,6 +359,52 @@ it('changes a real credential once, revokes both old Cookies, and issues no new 
   expect((await login()).status).toBe(401);
   expect((await login(nextPassword)).status).toBe(200);
   expect((await reset(token)).status).toBe(400);
+});
+
+it('invalidates every unused reset link when the authenticated owner changes their password', async () => {
+  saveSmtp();
+  captureMail();
+  const active = cookie(await login());
+  const other = cookie(await login());
+  const currentSession = await readSession(active);
+  await apply();
+  await apply();
+  const response = await changeAccountPassword(
+    new Request(`${origin}/api/account/password`, {
+      method: 'POST',
+      headers: {
+        origin,
+        cookie: active,
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        currentPassword: password,
+        newPassword: nextPassword,
+        confirmPassword: nextPassword,
+      }),
+    }),
+  );
+  expect(response.status).toBe(200);
+  expect(await response.json()).toEqual({ code: 'ACCOUNT_PASSWORD_UPDATED' });
+  expect(response.headers.getSetCookie()).toEqual([]);
+  const changedCredential = credential();
+  for (const delivery of deliveries) {
+    const rejected = await reset(delivery.token, 'previous-link-password');
+    expect(rejected.status).toBe(400);
+    expect(await rejected.json()).toMatchObject({ code: 'INVALID_TOKEN' });
+    const callback = await GET(new Request(delivery.url));
+    expect(callback.headers.get('location')).toBe(
+      `${origin}/reset-password?error=INVALID_TOKEN`,
+    );
+  }
+  expect(credential()).toBe(changedCredential);
+  expect((await readSession(active)).session.id).toBe(
+    currentSession.session.id,
+  );
+  expect(await readSession(other)).toBeNull();
+  expect((await login()).status).toBe(401);
+  expect((await login(nextPassword)).status).toBe(200);
+  expect((await login('previous-link-password')).status).toBe(401);
 });
 
 it('validates password length before consuming and preserves password whitespace', async () => {
