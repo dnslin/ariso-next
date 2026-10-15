@@ -125,6 +125,14 @@ export async function updateOwnerPassword(
           ),
         )
         .run();
+      tx.delete(verification)
+        .where(
+          and(
+            eq(verification.value, owner.user.id),
+            like(verification.identifier, 'reset-password:%'),
+          ),
+        )
+        .run();
     },
     { behavior: 'immediate' },
   );

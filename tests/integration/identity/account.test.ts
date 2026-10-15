@@ -356,6 +356,13 @@ describe('real Cookie account management', () => {
   });
 
   it('password success keeps the exact current Cookie session and revokes other sessions even when requested false', async () => {
+    const records = [
+      resetRecord('reset-password:unused-one'),
+      resetRecord('reset-password:unused-two'),
+      resetRecord('reset-password:other-owner', 'other-owner-id'),
+      resetRecord('oauth-state:unchanged'),
+    ];
+    connection.db.insert(verification).values(records).run();
     const first = await signedCookie();
     const second = await signedCookie();
     const firstSession = await readSession(first);
@@ -376,6 +383,13 @@ describe('real Cookie account management', () => {
     expect(await readSession(second)).toBeNull();
     expect((await changeEmail(second)).status).toBe(401);
     expect(connection.db.select().from(user).all()).toEqual(before.users);
+    expect(
+      connection.db
+        .select()
+        .from(verification)
+        .all()
+        .map((record) => record.id),
+    ).toEqual(records.slice(2).map((record) => record.id));
     expect((await login(email, password)).status).toBe(401);
     expect((await login(email, newPassword)).status).toBe(401);
     expect((await login(email, ` ${newPassword} `)).status).toBe(200);
@@ -462,9 +476,13 @@ describe('real Cookie account management', () => {
     },
   );
 
-  it.each(['email', 'password'])(
-    '%s transaction write failure rolls back every write and a later explicit retry succeeds',
-    async (operation) => {
+  it.each([
+    ['email', 'verification'],
+    ['password', 'session'],
+    ['password', 'verification'],
+  ])(
+    '%s transaction %s deletion failure rolls back every write and a later explicit retry succeeds',
+    async (operation, table) => {
       const cookie = await signedCookie();
       await signedCookie();
       connection.db
@@ -472,7 +490,6 @@ describe('real Cookie account management', () => {
         .values(resetRecord('reset-password:unused'))
         .run();
       const before = snapshot();
-      const table = operation === 'email' ? 'verification' : 'session';
       connection.db.$client.exec(
         `CREATE TRIGGER reject_account_write BEFORE DELETE ON ${table} BEGIN SELECT RAISE(ABORT, 'injected account transaction failure'); END`,
       );
