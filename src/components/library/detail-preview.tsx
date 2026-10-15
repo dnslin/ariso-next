@@ -17,7 +17,12 @@ export function initialPreview(detail: LibraryDetail) {
     : ['compressed', 'original', 'thumbnail'];
   return (
     order.find((kind) =>
-      detail.versions.some((v) => v.kind === kind && v.previewPath),
+      detail.versions.some(
+        (version) =>
+          version.kind === kind &&
+          version.previewPath &&
+          version.mime !== 'image/tiff',
+      ),
     ) ?? 'original'
   );
 }
@@ -37,6 +42,7 @@ export function PreviewImage({
 }) {
   const [failed, setFailed] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  const previewable = version.mime !== 'image/tiff';
   return (
     <div
       data-testid="preview-stage"
@@ -45,7 +51,7 @@ export function PreviewImage({
       }}
       className={`relative w-full min-w-0 max-h-[min(55dvh,420px)] overflow-hidden rounded-xl md:max-h-120 ${width && height ? '' : 'h-62.5'}`}
     >
-      {version.previewPath && !failed && !loaded ? (
+      {version.previewPath && previewable && !failed && !loaded ? (
         <>
           <Skeleton
             data-testid="preview-skeleton"
@@ -57,7 +63,7 @@ export function PreviewImage({
           </span>
         </>
       ) : null}
-      {version.previewPath && !failed ? (
+      {version.previewPath && previewable && !failed ? (
         // The owner cookie and delivery access checks must reach the original route.
         // eslint-disable-next-line @next/next/no-img-element
         <img
@@ -78,7 +84,9 @@ export function PreviewImage({
             {failed
               ? '当前版本读取失败。'
               : (version.unavailableReason ??
-                '此版本仅支持附件下载，无法在浏览器中预览。')}
+                (version.saved && !previewable
+                  ? '此格式无法在浏览器中预览。'
+                  : '此版本仅支持附件下载，无法在浏览器中预览。'))}
           </p>
           {failed && onRetry ? (
             <Button

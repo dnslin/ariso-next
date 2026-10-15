@@ -2,11 +2,21 @@ import { jsx } from 'react/jsx-runtime';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it, vi } from 'vitest';
 import { AdminShell } from '../../../src/components/shell/admin-shell';
+import { OwnerShell } from '../../../src/components/shell/owner-shell';
 import ErrorPage from '../../../src/app/error';
 import { PublicShell } from '../../../src/components/shell/public-shell';
 
 const route = vi.hoisted(() => ({ pathname: '/settings/media/detail' }));
 vi.mock('next/navigation', () => ({ usePathname: () => route.pathname }));
+vi.mock(
+  '../../../src/components/identity/session-controls',
+  async (original) => ({
+    ...(await original<
+      typeof import('../../../src/components/identity/session-controls')
+    >()),
+    useOwnerSession: () => ({ message: '', busy: false, signOut: vi.fn() }),
+  }),
+);
 
 function renderAdmin(pathname: string) {
   route.pathname = pathname;
@@ -25,6 +35,22 @@ function renderAdmin(pathname: string) {
 }
 
 describe('后台壳层导航', () => {
+  it('保留站点名称和导航，不在侧栏展示站点描述', () => {
+    const html = renderToStaticMarkup(
+      jsx(OwnerShell, {
+        name: '测试站点',
+        description: '仅首页展示的站点描述',
+        email: 'owner@example.test',
+        ownerName: '所有者',
+        children: '主要内容',
+      }),
+    );
+    expect(html).toContain('测试站点');
+    expect(html).toContain('图库');
+    expect(html).toContain('主要内容');
+    expect(html).not.toContain('仅首页展示的站点描述');
+  });
+
   it('手机菜单使用有可访问名称的图标按钮，不显示文字按钮', () => {
     const header = renderAdmin('/settings').match(
       /<header[^>]*class="shell-mobile-header"[^>]*>([\s\S]*?)<\/header>/,

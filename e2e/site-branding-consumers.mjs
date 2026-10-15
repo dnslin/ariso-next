@@ -61,6 +61,15 @@ export async function assertBrandConsumers(page, config, expected, report) {
           ),
           expected.description,
         );
+        assert.equal(
+          await page.evaluate(() =>
+            document
+              .querySelector('main')
+              .textContent.includes('登录后进入你的工作空间。'),
+          ),
+          false,
+          'Home omits the workspace login explanation',
+        );
       }
     }
     report.consumers ??= [];
@@ -144,7 +153,7 @@ async function verifyOwnerShellBranding(page, config, tools, expected, report) {
           if (collapsed) await page.click('button[aria-label="展开侧栏"]');
         }
         await page.waitForFunction(
-          ({ width, name, description, logoUrl, current }) => {
+          ({ width, name, logoUrl, current }) => {
             const root = document.querySelector(
               width === 390
                 ? '[role="dialog"][aria-label="导航菜单"]'
@@ -164,8 +173,7 @@ async function verifyOwnerShellBranding(page, config, tools, expected, report) {
               logo.complete &&
               logo.naturalWidth > 0 &&
               link?.getAttribute('aria-label') === `${name} 首页` &&
-              root.querySelector('.shell-description')?.textContent ===
-                description &&
+              !root.querySelector('.shell-description') &&
               active.length === 1 &&
               active[0].getAttribute('href') === current
             );
@@ -290,7 +298,7 @@ async function verifyOwnerShellBranding(page, config, tools, expected, report) {
     );
   }
   report.checks.push(
-    'All 22 implemented owner-shell entries decode the real custom Logo and retain current navigation, latest site name and description at 390/1440; mobile menu and desktop collapsed/expanded branding are exercised.',
+    'All 22 implemented owner-shell entries decode the real custom Logo and retain current navigation and latest site name without displaying a site description at 390/1440; mobile menu and desktop collapsed/expanded branding are exercised.',
   );
 }
 
@@ -406,21 +414,16 @@ export async function verifyBrandingConsumers(page, config, tools, report) {
     await tools.choose('logo', site.logo);
     await tools.save('logo');
     await page.waitForFunction(
-      ({ name, description, faviconUrl }) =>
+      ({ name, faviconUrl }) =>
         [...document.querySelectorAll('a.shell-brand')].some(
           (node) => node.getAttribute('aria-label') === `${name} 首页`,
         ) &&
-        (description
-          ? [...document.querySelectorAll('.shell-description')].some(
-              (node) => node.textContent === description,
-            )
-          : document.querySelectorAll('.shell-description').length === 0) &&
+        document.querySelectorAll('.shell-description').length === 0 &&
         document
           .querySelector('[data-testid="branding-favicon"] img')
           ?.getAttribute('src') === faviconUrl,
       {
         name: site.name,
-        description: site.description,
         faviconUrl: favicon.asset.url,
       },
     );
@@ -469,7 +472,7 @@ export async function verifyBrandingConsumers(page, config, tools, report) {
     `${JSON.stringify(expected, null, 2)}\n`,
   );
   report.checks.push(
-    'A successful Logo write refreshes current management name, description and the other asset changed after the initial GET; two successive real UI Logo/Favicon uploads reach newly requested home/login/share metadata and page content without stale values or HTML interpretation, approved login brand omission preserved.',
+    'A successful Logo write refreshes current management name and the other asset changed after the initial GET without displaying a shell description; two successive real UI Logo/Favicon uploads reach newly requested home/login/share metadata and page content without stale values or HTML interpretation, approved login brand omission and home login-explanation omission preserved.',
   );
   await tools.open();
   await page.click(control('logo', 'delete'));

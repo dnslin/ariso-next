@@ -181,7 +181,7 @@ export async function verifyViewerInteractions({ page, config, sql, report }) {
   await setDetail171Viewport(page, 1440);
   await openViewerSource(page, config, 7);
   const base = await imageBounds(page);
-  assertViewerLayout(await readViewerLayout(page), true);
+  assertViewerLayout(await readViewerLayout(page), true, true);
   await page.mouse.move(base.centerX, base.centerY);
   for (let click = 0; click < 2; click++) {
     await page.mouse.down();
@@ -214,7 +214,7 @@ export async function verifyViewerInteractions({ page, config, sql, report }) {
   await viewerShot(page, config, report, 'desktop-wheel-zoom');
   await page.keyboard.press('Control+0');
   await waitReset(page, base.width);
-  assertViewerLayout(await readViewerLayout(page), true);
+  assertViewerLayout(await readViewerLayout(page), true, true);
   await closeViewer(page, true);
   report.checks.push(
     'Desktop real double-click, +/− keyboard and wheel zoom work without visible zoom controls. Mouse/arrow pan while zoomed retains image identity; keyboard reset restores maximum proportional contain, the viewport stage and Escape return to detail.',
@@ -309,7 +309,7 @@ export async function verifyViewerInteractions({ page, config, sql, report }) {
     await openViewerSource(page, config, 7);
     await waitViewerNeighbors(page, viewerId(7));
     const touchBase = await imageBounds(page);
-    assertViewerLayout(await readViewerLayout(page), true);
+    assertViewerLayout(await readViewerLayout(page), true, true);
     assert.equal(
       await page.evaluate(
         () =>
@@ -326,7 +326,10 @@ export async function verifyViewerInteractions({ page, config, sql, report }) {
     // observes one committed factor per packet, so stretch far enough for the
     // actual picture (not the full-size img box) to exceed the tall viewport.
     const pinchDistances = [30, 40, 50, 65, 80, 100, 130, 180];
-    await pinch(page, touchBase, pinchDistances);
+    // The arrows now occupy the middle of both edges. Begin both fingers
+    // on the picture, rather than on the previous/next buttons.
+    const pinchCenter = { ...touchBase, centerY: touchBase.centerY - 80 };
+    await pinch(page, pinchCenter, pinchDistances);
     await waitZoom(page, touchBase.width);
     const pinched = await imageBounds(page);
     report.touchGeometry = { base: touchBase, pinchDistances, pinched };
@@ -380,9 +383,9 @@ export async function verifyViewerInteractions({ page, config, sql, report }) {
     );
     report.touchGeometry.panned = await imageBounds(page);
     await viewerShot(page, config, report, 'touch-pinch-pan');
-    await pinch(page, touchBase, [180, 130, 100, 80, 60, 40, 20, 5]);
+    await pinch(page, pinchCenter, [180, 130, 100, 80, 60, 40, 20, 5]);
     await waitReset(page, touchBase.width);
-    assertViewerLayout(await readViewerLayout(page), true);
+    assertViewerLayout(await readViewerLayout(page), true, true);
     await swipe(page, touchBase, 'next');
     await waitViewerImage(page, viewerId(8), 'compressed');
     await waitViewerNeighbors(page, viewerId(8));

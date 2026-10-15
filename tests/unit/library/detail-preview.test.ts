@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { initialPreview } from '../../../src/components/library/detail-preview';
+import { createElement } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+import {
+  initialPreview,
+  PreviewImage,
+} from '../../../src/components/library/detail-preview';
 import type {
   LibraryDetail,
   LibraryDetailVersion,
@@ -99,5 +104,32 @@ describe('initial detail preview is independent of the default link', () => {
   });
   it('keeps an explicit original placeholder when no version can be viewed', () => {
     expect(initialPreview(detail([]))).toBe('original');
+  });
+  it('opens TIFF using the existing browser-readable thumbnail', () => {
+    const record = detail(['original', 'thumbnail']);
+    record.format = 'tiff';
+    record.mime = 'image/tiff';
+    Object.assign(record.versions[0], { format: 'tiff', mime: 'image/tiff' });
+    expect(initialPreview(record)).toBe('thumbnail');
+  });
+  it('explains an unsupported original without sending TIFF bytes to an img', () => {
+    const version = {
+      ...detail(['original']).versions[0],
+      format: 'tiff',
+      mime: 'image/tiff',
+      downloadPath: '/i/image?download=1',
+    };
+    const html = renderToStaticMarkup(
+      createElement(PreviewImage, {
+        version,
+        name: 'TIFF 图片',
+        width: 640,
+        height: 480,
+        onRetry: () => {},
+      }),
+    );
+    expect(html).not.toContain('<img');
+    expect(html).not.toContain('重试预览');
+    expect(html).toContain('此格式无法在浏览器中预览。');
   });
 });

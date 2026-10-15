@@ -1,5 +1,7 @@
 # Issue #185：大图查看、同图选版与上下文恢复
 
+2026-10-15 用户要求补充前后切换按钮并修复 TIFF 详情预览，最新实现和验证见[后续记录](./preview-navigation-20261015.md)。本页历史“仅关闭控件”的结论保留为当时验收依据。
+
 2026-10-02，T-LIB-07 / R-15.5-01 / LIBRARY-QUERY。依据 [SPEC-library §6](../../specs/SPEC-library.md#6-大图查看)、[设计交接](../../design/handoff.md)和[执行约定](../../tasks/execution.md)。本记录维护一次证据；PR 链接同一记录，不复制规则。
 
 分支 `codex/issue-185-image-viewer`，关联[草稿PR #229](https://github.com/dnslin/ariso-next/pull/229)。本次人工反馈已改为图片占满视口、图标入口和单一关闭入口，已取得最终构建、分段浏览器复验和独立审计证据。两项范围外检查失败及返修后的最终人工验收仍未完成。未合并、未关闭Issue，保留分支和worktree。

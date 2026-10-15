@@ -53,7 +53,7 @@ export async function verifyViewerPendingNavigation({ page, config, report }) {
       () => typeof window.__viewerRelease === 'function',
     );
     const before = await viewerState(page);
-    await page.keyboard.press('ArrowRight');
+    await page.click(button('下一张'));
     await page.waitForFunction(() =>
       document
         .querySelector('[data-testid="image-viewer"]')
@@ -64,9 +64,18 @@ export async function verifyViewerPendingNavigation({ page, config, report }) {
     );
     report.pendingNavigationFocus = { whileReading: pendingFocus };
     assert.equal(
+      await page.evaluate(() =>
+        ['上一张', '下一张'].every(
+          (name) =>
+            document.querySelector(`button[aria-label="${name}"]`)?.disabled,
+        ),
+      ),
+      true,
+    );
+    assert.equal(
       pendingFocus,
       true,
-      'Pending keyboard navigation retains viewer focus',
+      'Pending arrow-button navigation retains viewer focus',
     );
     await page.keyboard.press('ArrowRight');
     await page.keyboard.press('ArrowRight');

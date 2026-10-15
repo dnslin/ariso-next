@@ -94,7 +94,7 @@ export async function readViewerLayout(page) {
   }, viewer);
 }
 
-export function assertViewerLayout(geometry, ready) {
+export function assertViewerLayout(geometry, ready, navigation = false) {
   assert.equal(geometry.documentOverflow, false);
   assert.equal(geometry.overflow, false);
   for (const rect of [geometry.root, geometry.stage]) {
@@ -134,8 +134,8 @@ export function assertViewerLayout(geometry, ready) {
   if (!ready) return;
   assert.deepEqual(
     geometry.targets.map((target) => target.name),
-    ['关闭大图'],
-    'Normal viewer has only the close control',
+    navigation ? ['关闭大图', '上一张', '下一张'] : ['关闭大图'],
+    'Viewer controls match the available browsing context',
   );
   const picture = geometry.picture;
   assert.ok(picture, 'Ready viewer displays actual delivery pixels');

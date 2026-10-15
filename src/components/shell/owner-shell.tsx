@@ -61,7 +61,6 @@ const navigation = [
 
 export function OwnerShell({
   name,
-  description,
   logoUrl,
   email,
   ownerName,
@@ -88,7 +87,6 @@ export function OwnerShell({
     <OwnerSessionContext value={session}>
       <AdminShell
         name={name}
-        description={description}
         logoUrl={logoUrl}
         navigation={navigation}
         initialSidebarCollapsed={initialSidebarCollapsed}

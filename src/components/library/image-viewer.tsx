@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Lightbox, {
   createModule,
   useContainerRect,
@@ -13,7 +13,7 @@ import { FocusScope } from 'react-aria/FocusScope';
 import { AlertDialog } from '@heroui/react/alert-dialog';
 import { Button } from '@heroui/react/button';
 import { CloseButton } from '@heroui/react/close-button';
-import { ImageOff } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ImageOff } from 'lucide-react';
 import type { LibraryDetail } from '../../server/library/detail-types';
 import type { LibraryFilters } from '../../server/library/query-schema';
 import type { VersionKind } from '../../server/media/schema';
@@ -34,6 +34,8 @@ const containFocus: Plugin = ({ addParent }) => {
   addParent('controller', createModule('viewer-focus', ViewerFocusScope));
 };
 const plugins = [Zoom, containFocus];
+const navigationClass =
+  'absolute top-1/2 z-10 size-14 min-w-0 -translate-y-1/2 rounded-none border-0 bg-transparent p-3 text-foreground/80 drop-shadow-[0_1px_3px_var(--background)] hover:bg-transparent hover:text-foreground';
 
 export default function ImageViewer(props: {
   initial: LibraryDetail;
@@ -53,6 +55,9 @@ export default function ImageViewer(props: {
   const controller =
     useRef<import('yet-another-react-lightbox').ControllerRef>(null);
   const { current, selectedVersion, previous, next, pendingDirection } = viewer;
+  useEffect(() => {
+    if (document.activeElement === document.body) controller.current?.focus();
+  }, [current.id]);
   const contentId = current.versions.find(
     (version) => version.kind === selectedVersion,
   )?.contentId;
@@ -238,8 +243,42 @@ export default function ImageViewer(props: {
               ) : null}
             </>
           ),
-          buttonPrev: () => null,
-          buttonNext: () => null,
+          buttonPrev: () =>
+            previous ? (
+              <Button
+                isIconOnly
+                aria-label="上一张"
+                variant="ghost"
+                className={`${navigationClass} left-0 min-[768px]:left-4`}
+                isDisabled={!!pendingDirection || !!error}
+                onPress={() => {
+                  controller.current?.focus();
+                  void viewer.navigate('previous');
+                }}
+              >
+                <ChevronLeft className="size-8" strokeWidth={1.6} aria-hidden />
+              </Button>
+            ) : null,
+          buttonNext: () =>
+            next ? (
+              <Button
+                isIconOnly
+                aria-label="下一张"
+                variant="ghost"
+                className={`${navigationClass} right-0 min-[768px]:right-4`}
+                isDisabled={!!pendingDirection || !!error}
+                onPress={() => {
+                  controller.current?.focus();
+                  void viewer.navigate('next');
+                }}
+              >
+                <ChevronRight
+                  className="size-8"
+                  strokeWidth={1.6}
+                  aria-hidden
+                />
+              </Button>
+            ) : null,
           buttonZoom: () => null,
           slide: (slideProps) => {
             const slide = slideProps.slide as ViewerSlide;

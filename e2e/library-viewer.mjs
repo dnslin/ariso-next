@@ -40,7 +40,7 @@ export async function verifyLibraryViewer(context) {
     layouts: [],
     screenshots: [],
     rangeAdjustments: [
-      'User manual feedback supersedes the former ready/zoom header, versions, caption and footer design: normal viewer is now a viewport picture stage with only an icon close control. The entry is also an icon; saved-version choice is performed in detail and inherited on entry.',
+      'User manual feedback supersedes the former ready/zoom header, versions, caption and footer design: normal viewer is a viewport picture stage with an icon close control and previous/next icons when the browsing context has neighbors. The entry is also an icon; saved-version choice is performed in detail and inherited on entry.',
       'Native Fullscreen controls/capability/error-portal checks are no longer applicable because the user removed that feature from the viewer. Viewport containment, keyboard/swipe navigation, gesture zoom/pan, Escape and required error recovery remain actual behavior checks.',
     ],
     limitations: [

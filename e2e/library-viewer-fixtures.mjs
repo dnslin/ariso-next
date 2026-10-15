@@ -139,6 +139,7 @@ export async function seedViewerFixtures(config, sql) {
     ['issue185-apng', 'animated.png', 'apng', 'image/apng', 'animated'],
     ['issue185-svg', 'static.svg', 'svg', 'image/svg+xml', 'preview_only'],
     ['issue185-heic', 'alpha.heic', 'heic', 'image/heic', 'preview_only'],
+    ['issue185-tiff', 'static.tiff', 'tiff', 'image/tiff', 'static'],
   ]) {
     const original = {
       bytes: await readFile(join(formatDirectory, file)),
@@ -182,7 +183,7 @@ export async function seedViewerFixtures(config, sql) {
   const result = await sql(
     `SELECT count(*) AS count FROM media_images WHERE storage_id='${viewerStorage}'`,
   );
-  assert.equal(result[0].count, 36);
+  assert.equal(result[0].count, 37);
   return {
     directory,
     async cleanup() {
