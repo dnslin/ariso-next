@@ -1,5 +1,9 @@
 import { hashPassword } from 'better-auth/crypto';
 import {
+  JsonBodyTooLargeError,
+  readBoundedJson,
+} from '../../../server/http/json.ts';
+import {
   insertSetupOwner,
   requireSetupOpen,
   SetupError,
@@ -28,8 +32,13 @@ export async function POST(request: Request) {
     requireSetupOpen(connection.db, setup.databasePath);
     let body: unknown;
     try {
-      body = await request.json();
+      body = await readBoundedJson(request);
     } catch (error) {
+      if (error instanceof JsonBodyTooLargeError)
+        return json(
+          { code: 'INVALID_SETUP_INPUT', message: error.message },
+          413,
+        );
       if (!(error instanceof SyntaxError)) throw error;
       return json(
         {

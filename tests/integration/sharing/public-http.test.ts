@@ -538,3 +538,50 @@ it('deleting the real album cascades its share and grants while retaining the im
   cache(missing);
   await publicBytes();
 });
+
+it('bounds anonymous unlock and refresh JSON before token lookup and preserves valid Unicode passwords', async () => {
+  for (const suffix of ['unlock', 'refresh']) {
+    const bytes = new TextEncoder().encode(
+      JSON.stringify(
+        suffix === 'unlock'
+          ? { password: 'x'.repeat(256 * 1024) }
+          : { ids: ['x'.repeat(256 * 1024)] },
+      ),
+    );
+    let offset = 0;
+    const body = new ReadableStream<Uint8Array>({
+      pull(controller) {
+        if (offset === bytes.length) return controller.close();
+        controller.enqueue(bytes.subarray(offset, offset + 16384));
+        offset = Math.min(offset + 16384, bytes.length);
+      },
+    });
+    const response = await request(`/s/missing-share/${suffix}`, {
+      method: 'POST',
+      headers: { origin: app.origin, 'content-type': 'application/json' },
+      body,
+      duplex: 'half',
+    } as RequestInit);
+    expect(response.status).toBe(413);
+    cache(response);
+    expect(await response.json()).toEqual({
+      code: 'SHARING_INVALID_INPUT',
+      message: '请求内容超过 256 KiB',
+    });
+  }
+  const password = '😀'.repeat(128);
+  const { share } = await seed(password);
+  const unlocked = await post(share.token, 'unlock', { password });
+  expect(unlocked.status).toBe(200);
+  const cookie = unlocked.headers.getSetCookie()[0].split(';')[0];
+  const refreshed = await post(
+    share.token,
+    'refresh',
+    {
+      ids: Array.from({ length: 80 }, (_, index) => `missing-${index}`),
+    },
+    cookie,
+  );
+  expect(refreshed.status).toBe(200);
+  expect(await refreshed.json()).toMatchObject({ items: [], total: 0 });
+});

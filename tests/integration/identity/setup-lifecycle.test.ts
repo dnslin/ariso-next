@@ -99,6 +99,95 @@ describe('setup process lifecycle', () => {
 });
 
 describe('setup hash await boundary (controlled hash, real SQLite)', () => {
+  it('rejects oversized streamed JSON before hashing and accepts a later ordinary setup', async () => {
+    const current = initialize();
+    hashing.hash.mockResolvedValue('controlled-hash');
+    const validBody = await request(current.setup.code!).text();
+    const chunks = [
+      validBody.slice(0, -1),
+      ',"padding":"',
+      'x'.repeat(256 * 1024),
+      '"}',
+    ];
+    let reads = 0;
+    let cancelled = false;
+    const body = new ReadableStream<Uint8Array>(
+      {
+        pull(controller) {
+          if (reads < chunks.length)
+            controller.enqueue(new TextEncoder().encode(chunks[reads++]));
+          else controller.close();
+        },
+        cancel() {
+          cancelled = true;
+        },
+      },
+      { highWaterMark: 0 },
+    );
+    const oversized = new Request('http://localhost/api/setup', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', 'content-length': '1' },
+      body,
+      duplex: 'half',
+    } as RequestInit);
+    const rejected = await POST(oversized);
+    expect(rejected.status).toBe(413);
+    expect(await rejected.json()).toEqual({
+      code: 'INVALID_SETUP_INPUT',
+      message: '请求内容超过 256 KiB',
+    });
+    expect(hashing.hash).not.toHaveBeenCalled();
+    expect(cancelled).toBe(true);
+    expect(reads).toBe(3);
+    expect(body.locked).toBe(false);
+    expectEmpty();
+    expect((await POST(request(current.setup.code!))).status).toBe(200);
+    expect(hashing.hash).toHaveBeenCalledOnce();
+  });
+  it('checks completed setup before consuming the request body', async () => {
+    const current = initialize();
+    hashing.hash.mockResolvedValue('controlled-hash');
+    expect((await POST(request(current.setup.code!))).status).toBe(200);
+    let reads = 0;
+    const body = new ReadableStream<Uint8Array>(
+      {
+        pull(controller) {
+          reads++;
+          controller.enqueue(new Uint8Array(256 * 1024 + 1));
+        },
+      },
+      { highWaterMark: 0 },
+    );
+    const response = await POST(
+      new Request('http://localhost/api/setup', {
+        method: 'POST',
+        body,
+        duplex: 'half',
+      } as RequestInit),
+    );
+    expect(response.status).toBe(409);
+    expect(await response.json()).toMatchObject({
+      code: 'SETUP_ALREADY_COMPLETED',
+    });
+    expect(reads).toBe(0);
+    expect(hashing.hash).toHaveBeenCalledOnce();
+    await body.cancel();
+  });
+  it('preserves the setup malformed JSON error before hashing', async () => {
+    initialize();
+    const response = await POST(
+      new Request('http://localhost/api/setup', {
+        method: 'POST',
+        body: '{',
+      }),
+    );
+    expect(response.status).toBe(400);
+    expect(await response.json()).toEqual({
+      code: 'INVALID_SETUP_INPUT',
+      message: '请提交完整的 JSON 初始化信息',
+    });
+    expect(hashing.hash).not.toHaveBeenCalled();
+  });
   it('hashes outside the transaction and rechecks a code invalidated while awaiting', async () => {
     const current = initialize();
     const pendingHash = Promise.withResolvers<string>();
