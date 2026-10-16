@@ -354,7 +354,7 @@ export function TagDialog({
                     isInvalid={!!fieldError || outcome.kind === 'conflict'}
                     isDisabled={pending}
                     validationBehavior="aria"
-                    className="gap-4"
+                    className="min-w-0 gap-4"
                   >
                     <div className="flex min-h-11 items-center justify-between gap-2">
                       <Label className="text-sm font-normal">

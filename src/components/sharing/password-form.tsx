@@ -118,7 +118,7 @@ export function SharePasswordForm({
       }}
     >
       <TextField
-        className="gap-3"
+        className="min-w-0 gap-3"
         name="password"
         value={password}
         onChange={(value) => {

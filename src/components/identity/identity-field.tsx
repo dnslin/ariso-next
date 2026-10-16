@@ -40,7 +40,7 @@ export function IdentityField({
   const [visible, setVisible] = useState(false);
   return (
     <TextField
-      className={layout === 'login' ? 'gap-1' : 'gap-1.5'}
+      className={`min-w-0 ${layout === 'login' ? 'gap-1' : 'gap-1.5'}`}
       name={name}
       value={value}
       onChange={onChange}

@@ -57,6 +57,14 @@ export async function readGeometry(page) {
       mainOverflow: [...document.querySelectorAll('main')]
         .filter(visible)
         .some((node) => node.scrollWidth > node.clientWidth),
+      overflowingForms: [...document.querySelectorAll('form')]
+        .filter(visible)
+        .filter((node) => node.scrollWidth > node.clientWidth + 1)
+        .map((node) => ({
+          name: node.getAttribute('aria-label') || node.id || 'form',
+          width: node.clientWidth,
+          contentWidth: node.scrollWidth,
+        })),
       targets: [...document.querySelectorAll('button,a,input,textarea')]
         .filter(visible)
         .map((node) => {
@@ -90,6 +98,11 @@ export async function readGeometry(page) {
 export function assertGeometry(geometry, label) {
   assert.equal(geometry.overflow, false, `${label} document overflow`);
   assert.equal(geometry.mainOverflow, false, `${label} main overflow`);
+  assert.deepEqual(
+    geometry.overflowingForms,
+    [],
+    `${label} form content fits its container`,
+  );
   for (const target of geometry.targets)
     assert.ok(
       // Rect subtraction at a distant scroll offset can report 43.99994 for

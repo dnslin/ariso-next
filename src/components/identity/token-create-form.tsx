@@ -39,7 +39,7 @@ export function TokenCreateForm({
           isRequired
           isInvalid={!!errors.name}
           validationBehavior="aria"
-          className="gap-1.5"
+          className="min-w-0 gap-1.5"
         >
           <Label className="text-sm font-normal after:content-none">名称</Label>
           <Input
