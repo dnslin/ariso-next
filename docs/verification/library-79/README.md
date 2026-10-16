@@ -77,7 +77,7 @@ library 负责查询与界面，media 负责回收状态，collections 负责关
 
 ## 双角度评审后的竞态修复
 
-正确性与结构评审发现同一根因：禁用普通详情查询不会取消已发出的 GET；旧 GET 失败会卸载仍负责 POST 及写后核对的动作组件，使页面等待状态无法结束。先按[修复计划](../../../tasks/plan.md)补浏览器回归，再修改实现。
+正确性与结构评审发现同一根因：禁用普通详情查询不会取消已发出的 GET；旧 GET 失败会卸载仍负责 POST 及写后核对的动作组件，使页面等待状态无法结束。先按[修复计划](https://github.com/dnslin/ariso-next/blob/49eb018b84c0b0aafc4dfd6bd6f353bd5f05fd67/tasks/plan.md)补浏览器回归，再修改实现。
 
 旧构建真实复现失败：[错误数据](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-79/review-fix/red-failure.json)、[失败截图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-79/review-fix/red-failure.png)。POST 已返回 200，真实数据库 `trashed_at` 已写入；释放旧 GET 的失败响应后，确认框消失，详情只有读取错误，核对请求没有发出。测试不是伪造业务成功，延迟或丢弃的均为真实服务响应。
 
