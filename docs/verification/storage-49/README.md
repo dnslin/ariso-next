@@ -7,7 +7,7 @@
 2026-09-20 使用 `gh issue view 49/47/48 --json ...` 读取正文与评论（均无评论），并通过 `gh api repos/dnslin/ariso-next/issues/49/dependencies/blocked_by` 和 `blocking` 回读：直接前置 #47、#48；直接后置 #50、#54、#61、#69。
 
 - #47：[PR #86](https://github.com/dnslin/ariso-next/pull/86) 已合并于 `882a546`，CI 与两架构验证均成功；[实际 SQLite 与浏览器证据](../site-47/README.md)包含事务和跨进程读取。
-- #48：[PR #87](https://github.com/dnslin/ariso-next/pull/87) 已合并于 `5e962e8`，CI 与两架构验证均成功；[工程实验](../../tasks/evidence/EV-STORAGE-LOCAL/README.md)包含实际 EXDEV、EACCES、ENOSPC、恢复和句柄释放。
+- #48：[PR #87](https://github.com/dnslin/ariso-next/pull/87) 已合并于 `5e962e8`，CI 与两架构验证均成功；[工程实验](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/evidence/EV-STORAGE-LOCAL/README.md)包含实际 EXDEV、EACCES、ENOSPC、恢复和句柄释放。
 
 两个合并提交均包含在本任务基线 `origin/main=5e962e8`。未仅凭 Issue 关闭状态判断通过。Git HTTPS 最初超时，`git -c http.version=HTTP/1.1 fetch origin` 成功，GitHub API 也回读同一 main SHA。
 

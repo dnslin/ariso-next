@@ -1,6 +1,6 @@
 # Issue #184 独立代码审计
 
-2026-10-09（Asia/Shanghai）。审计对象为本任务隔离工作区的当前实现；审计期间未修改产品代码，未提交或推送。使用 `code-review-and-quality` 与 `vercel-react-best-practices`，依据 `AGENTS.md`、[执行约定](../../tasks/execution.md)、[设计交付规范](../../design/handoff.md)、[SPEC-identity §8.2](../../specs/SPEC-identity.md#82-找回与重置)、[T-ID-07 / DG-RESET](../../archive/m3-m4/platform.md#t-id-07-邮件找回一次重置与恢复界面)。视觉还原由另一个独立设计评审承担。
+2026-10-09（Asia/Shanghai）。审计对象为本任务隔离工作区的当前实现；审计期间未修改产品代码，未提交或推送。使用 `code-review-and-quality` 与 `vercel-react-best-practices`，依据 `AGENTS.md`、[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)、[设计交付规范](../../design/handoff.md)、[SPEC-identity §8.2](../../specs/SPEC-identity.md#82-找回与重置)、[T-ID-07 / DG-RESET](../../archive/m3-m4/platform.md#t-id-07-邮件找回一次重置与恢复界面)。视觉还原由另一个独立设计评审承担。
 
 ## 结论
 

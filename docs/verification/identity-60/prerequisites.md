@@ -6,12 +6,12 @@
 
 使用 `gh issue view 60 --json number,title,body,comments,state,url` 读取任务，当前 OPEN、无评论；使用 `gh api repos/dnslin/ariso-next/issues/60/dependencies/blocked_by` 与 `.../blocking` 核对原生关系。直接前置为 #54、#57、#58、#59，后置为 #61。四项前置均已关闭，但关闭状态不代替实际验收。
 
-| 前置           | 交付与证据                                                                                                                  | 本次核对结论                                                                                                                          |
-| -------------- | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| #54 / T-ID-02  | [PR #93](https://github.com/dnslin/ariso-next/pull/93)，提交 `611d0da`；[初始化证据](../identity-54/README.md)              | 已交付完整事务、错误/并发/重启处理和真实登录；CI、AMD64、ARM64 均成功。没有将 HTTP 证据扩大为页面验收。                               |
-| #57 / T-UI-01  | [PR #96](https://github.com/dnslin/ariso-next/pull/96)，提交 `e26e8ff`；[外壳证据](../ui-57/README.md)                      | 公共/后台组件已交付，CI、AMD64、ARM64 成功。PR 描述明确按所有者指示合并，同时保留真实手机触控、软键盘、非零安全区和其他浏览器未验收。 |
-| #58 / DG-SETUP | [PR #97](https://github.com/dnslin/ariso-next/pull/97)，提交 `83016e4`；[核对证据](../../tasks/evidence/DG-SETUP/README.md) | 两端 11 态与服务端契约走查已交付，最终 CI、AMD64、ARM64 成功；真实页面验收属于 T-ID-03，没有把设计走查当作页面通过。                  |
-| #59 / DG-AUTH  | [PR #98](https://github.com/dnslin/ariso-next/pull/98)，提交 `5fd253a`；[核对证据](../../tasks/evidence/DG-AUTH/README.md)  | 登录状态、限流、会话和回跳规则走查已交付，最终 CI、AMD64、ARM64 成功；同时明确保留 #57 的实际设备证据缺口。                           |
+| 前置           | 交付与证据                                                                                                                                                                                                    | 本次核对结论                                                                                                                          |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| #54 / T-ID-02  | [PR #93](https://github.com/dnslin/ariso-next/pull/93)，提交 `611d0da`；[初始化证据](../identity-54/README.md)                                                                                                | 已交付完整事务、错误/并发/重启处理和真实登录；CI、AMD64、ARM64 均成功。没有将 HTTP 证据扩大为页面验收。                               |
+| #57 / T-UI-01  | [PR #96](https://github.com/dnslin/ariso-next/pull/96)，提交 `e26e8ff`；[外壳证据](../ui-57/README.md)                                                                                                        | 公共/后台组件已交付，CI、AMD64、ARM64 成功。PR 描述明确按所有者指示合并，同时保留真实手机触控、软键盘、非零安全区和其他浏览器未验收。 |
+| #58 / DG-SETUP | [PR #97](https://github.com/dnslin/ariso-next/pull/97)，提交 `83016e4`；[核对证据](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/evidence/DG-SETUP/README.md) | 两端 11 态与服务端契约走查已交付，最终 CI、AMD64、ARM64 成功；真实页面验收属于 T-ID-03，没有把设计走查当作页面通过。                  |
+| #59 / DG-AUTH  | [PR #98](https://github.com/dnslin/ariso-next/pull/98)，提交 `5fd253a`；[核对证据](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/evidence/DG-AUTH/README.md)  | 登录状态、限流、会话和回跳规则走查已交付，最终 CI、AMD64、ARM64 成功；同时明确保留 #57 的实际设备证据缺口。                           |
 
 本轮回读各 PR 的正文、评论及 `statusCheckRollup`。上述远端结果属于前置提交，不是本分支或 T-ID-03 的检查结果。设计走查的证据文件中“运行中”属于记录时状态，最终状态由本次 PR 回读补充；没有改写原始记录。
 

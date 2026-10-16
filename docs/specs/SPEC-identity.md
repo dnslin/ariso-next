@@ -4,7 +4,7 @@
 - 状态：已通过评审；用户于 2026-09-17 确认。未实现，未安装本模块依赖。
 - 日期：2026-09-16。
 - 前置：[site 规格](./SPEC-site.md)已由用户确认；运行基础见 [runtime 归档](../archive/runtime/README.md)。
-- 需求：[PRD](../product/Ariso-PRD-v1.1.md) 3、5.3、6、8.4、20、21.4、23.1、24.2、26.1、26.3、26.12；逐条关系见[覆盖表](../tasks/coverage.md)。
+- 需求：[PRD](../product/Ariso-PRD-v1.1.md) 3、5.3、6、8.4、20、21.4、23.1、24.2、26.1、26.3、26.12；逐条关系见[覆盖表](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/coverage.md)。
 
 当前原型入口见[设计索引](../design/README.md)与[设计交接](../design/handoff.md)，DES／RG 的开放项和真实验证范围见[设计验收](../design/acceptance.md)。历史节点表与批次记录仅供追溯，不表示仍缺整组原型，也不代替业务实现与交互验收。
 
@@ -133,7 +133,7 @@ docker exec -it ariso node dist/cli/reset-password.js
 
 哈希在事务外计算；短事务更新唯一 credential、撤销全部会话和未使用重置凭据。成功后明确提示重新登录；异常或取消无半次密码写入，finally 关闭连接并恢复终端状态。Web 开着时可执行，其他会话下一次请求失效。
 
-`tsconfig.runtime.json` 已包含 `src/cli/**/*.ts`，但 standalone 打包器目前只追踪 prestart/logging，必须把新 CLI 加入 `scripts/package-standalone.mjs` 的入口并在本地 standalone 产物中验证。仅在源码目录执行成功不算交付；生产镜像验证的执行阶段按[适用检查](../tasks/execution.md#适用检查)。
+`tsconfig.runtime.json` 已包含 `src/cli/**/*.ts`，但 standalone 打包器目前只追踪 prestart/logging，必须把新 CLI 加入 `scripts/package-standalone.mjs` 的入口并在本地 standalone 产物中验证。仅在源码目录执行成功不算交付；生产镜像验证的执行阶段按[适用检查](../guides/verification.md#适用检查)。
 
 ## 7. GitHub 主动绑定与配置生效
 
@@ -298,7 +298,7 @@ const settings = readGithubSettings(connection.db);
 | ID-16 | CLI 在 standalone 与双架构容器可用，不依赖 SMTP/Web；取消无修改                                                     | 本地 standalone；发布阶段容器   | R-6.3-02、R-24.1-01              |
 | ID-17 | 桌面/手机/键盘覆盖全部认证和管理状态，缺图先补齐                                                                    | Ego 真实流程、截图及兼容矩阵    | R-22.1-01、R-22.4-01、A-26.13-01 |
 
-通用命令、本地检查与 Release 发布验证范围统一按[适用检查](../tasks/execution.md#适用检查)。CLI 的实际 Docker 命令见第 6 节。第三方回调、真实收件、双架构和浏览器版本分别记录实际证据，测试替身不冒充外部服务验收。规格编写时未执行这些应用测试。
+通用命令、本地检查与 Release 发布验证范围统一按[适用检查](../guides/verification.md#适用检查)。CLI 的实际 Docker 命令见第 6 节。第三方回调、真实收件、双架构和浏览器版本分别记录实际证据，测试替身不冒充外部服务验收。规格编写时未执行这些应用测试。
 
 ## 13. 实施前需要实测的接入点
 

@@ -8,7 +8,7 @@
 
 ## 依据、范围与环境
 
-从 [文档导航](../../README.md) 读取能力地图、PRD 第19章、[analytics 规格](../../specs/SPEC-analytics.md)、[任务卡与 DG-ANALYTICS 消费结论](../../archive/m3-m4/experience.md#t-ana-05-工作台统计图表与详情统计联动)、[设计交接](../../design/handoff.md)及[执行约定](../../tasks/execution.md)。保留 R-19.1-01、R-19.2-03、R-19.3-01/02 和模块职责。访问计数、保留和对象责任协议沿既有实现，本次接入界面及所需异常定位查询；下方2026-10-09删除排行修订按用户明确授权更新冲突PRD条目。
+从 [文档导航](../../README.md) 读取能力地图、PRD 第19章、[analytics 规格](../../specs/SPEC-analytics.md)、[任务卡与 DG-ANALYTICS 消费结论](../../archive/m3-m4/experience.md#t-ana-05-工作台统计图表与详情统计联动)、[设计交接](../../design/handoff.md)及[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)。保留 R-19.1-01、R-19.2-03、R-19.3-01/02 和模块职责。访问计数、保留和对象责任协议沿既有实现，本次接入界面及所需异常定位查询；下方2026-10-09删除排行修订按用户明确授权更新冲突PRD条目。
 
 [Issue 与评论快照](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/issue.json)、[原生 blocked by](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/blocked-by.json)及[blocking](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/blocking.json)于本轮回读。#169/#171/#178/#57/#129 均 closed；无下游 blocking 项。已有真实 overview、usage 和单图 API；原工作台与统计导航仍占位。单图接口仅有累计三版本和三个周期合计，不虚构单图逐日或周期版本字段。
 
@@ -37,7 +37,7 @@
 
 ## 设计与局部原型
 
-本轮实际读取 Figma `451:3748/8551` 工作台、`446:8063/8030` 统计和 `102:3228` 详情的 design context 与截图；历史状态和当前组件边界沿 [DG-ANALYTICS 的逐项证据](../../tasks/evidence/DG-ANALYTICS/README.md#figma只读证据与逐项对照)。公共外壳沿现行 OwnerShell，旧面包屑和文字手机菜单由 handoff 当前规则覆盖。
+本轮实际读取 Figma `451:3748/8551` 工作台、`446:8063/8030` 统计和 `102:3228` 详情的 design context 与截图；历史状态和当前组件边界沿 [DG-ANALYTICS 的逐项证据](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/evidence/DG-ANALYTICS/README.md#figma只读证据与逐项对照)。公共外壳沿现行 OwnerShell，旧面包屑和文字手机菜单由 handoff 当前规则覆盖。
 
 主界面实施者另实际调用 `get_design_context` 与 `get_screenshot` 回读以下节点；主节点和存储节点均获得高保真代码与截图，每日/说明节点的 context 也实际返回截图。节点中的示例照片与固定折线不作为产品素材，业务缩略图及图表消费真实 API；公共图标沿 handoff 复用已有 Lucide。具体读取范围：
 

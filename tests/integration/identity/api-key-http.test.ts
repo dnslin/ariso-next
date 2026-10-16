@@ -453,7 +453,7 @@ it('verification database failure is HTTP 401 with diagnosis, and the same key w
 
 it('generated table remains identical to the pinned CLI schema and a reopened fixture applies no extra migrations', async () => {
   const generated = readFileSync(
-    'docs/tasks/evidence/EV-IDENTITY-02/generated-schema.ts',
+    'tests/fixtures/api-key/generated-schema.ts',
     'utf8',
   );
   const runtimeSchema = readFileSync(

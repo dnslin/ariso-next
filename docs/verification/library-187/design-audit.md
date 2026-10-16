@@ -8,7 +8,7 @@
 
 ## 依据与实际读取
 
-已读取项目 `AGENTS.md`、[设计交付规范](../../design/handoff.md)、[任务执行与验证约定](../../tasks/execution.md) 及 `figma-design-to-code` 技能。独立重新调用 Figma `get_design_context` 并查看其实际返回截图，文件为 `74sT9Hrf8G4czcWeTkET5b`，并非仅接受实现者总结或已下载文件。
+已读取项目 `AGENTS.md`、[设计交付规范](../../design/handoff.md)、[任务执行与验证约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md) 及 `figma-design-to-code` 技能。独立重新调用 Figma `get_design_context` 并查看其实际返回截图，文件为 `74sT9Hrf8G4czcWeTkET5b`，并非仅接受实现者总结或已下载文件。
 
 | 状态         | 桌面节点                                                                         | 手机节点                                                                         | 本地设计证据                                       |
 | ------------ | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------- |

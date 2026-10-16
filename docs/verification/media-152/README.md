@@ -1,6 +1,6 @@
 # T-MED-08 文字与图片水印编码和处理设置
 
-关联 [Issue #152](https://github.com/dnslin/ariso-next/issues/152)。范围与需求沿用[任务卡](../../archive/m3-m4/platform.md#t-med-08-文字与图片水印编码和处理设置)、[SPEC-media §4/5/6.2](../../specs/SPEC-media.md)和[执行约定](../../tasks/execution.md)。
+关联 [Issue #152](https://github.com/dnslin/ariso-next/issues/152)。范围与需求沿用[任务卡](../../archive/m3-m4/platform.md#t-med-08-文字与图片水印编码和处理设置)、[SPEC-media §4/5/6.2](../../specs/SPEC-media.md)和[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)。
 
 2026-09-30 已通过 gh 读取 Issue、全部评论及原生 blocked_by/blocking。无评论；唯一直接前置 #151 已 CLOSED，其代码及[交付记录](../media-151/README.md)已在基线。下游 #153、#188 仍 OPEN。原工作区有其他活跃任务，更新远端后从 `origin/main` 的 `117c66a` 创建独立 worktree `/Volumes/data/project/ariso-issue-152` 与分支 `codex/issue-152-watermark`，未修改用户预览数据。
 

@@ -24,7 +24,7 @@
 
 复用 AdminShell、HeroUI Button/Card/Select/Alert/AlertDialog/ProgressBar，以及 LibraryDetail、DetailCopy、TrashAction。Lucide 提供图标，Tailwind 组合布局。文件图片为真实数据，不复制原型示例照片。桌面分栏、手机堆叠、固定底部操作与状态操作列遵循交接。
 
-必要差异：按 M2 已实现服务只显示 JPEG/PNG 单图选择、本地存储及可见性；原型多文件、目录/粘贴、相册/标签与重新处理入口由后续任务交付，不显示假动作。详情/回收在现有详情浮层完成；返回标签和失效后的回跳由调用页面明确传入。设备范围沿用 [执行约定](../../tasks/execution.md#前端共用验收)，不把浏览器模拟当物理设备实测。
+必要差异：按 M2 已实现服务只显示 JPEG/PNG 单图选择、本地存储及可见性；原型多文件、目录/粘贴、相册/标签与重新处理入口由后续任务交付，不显示假动作。详情/回收在现有详情浮层完成；返回标签和失效后的回跳由调用页面明确传入。设备范围沿用 [执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md#前端共用验收)，不把浏览器模拟当物理设备实测。
 
 依赖依据：[Uppy core](https://uppy.io/docs/uppy/)、[XHRUpload](https://uppy.io/docs/xhr-upload/)、[HeroUI ProgressBar](https://heroui.com/en/docs/react/components/progress-bar)、[Select](https://heroui.com/en/docs/react/components/select)及安装版本的类型定义。未升级前置锁定的 Uppy 版本。
 
@@ -75,7 +75,7 @@
 
 ## 远端边界
 
-`.github/workflows/ci.yml` 只有 workflow_call，`images.yml` 只有 release.published；无 PR/push/workflow_dispatch 验证入口。本次遵循 [执行约定](../../tasks/execution.md#适用检查)执行本地适用检查，不创建 Release、发布镜像或部署。AMD64/ARM64 容器与真实手机触控/软键盘/非零安全区未执行，保留各自责任，不标通过。
+`.github/workflows/ci.yml` 只有 workflow_call，`images.yml` 只有 release.published；无 PR/push/workflow_dispatch 验证入口。本次遵循 [执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md#适用检查)执行本地适用检查，不创建 Release、发布镜像或部署。AMD64/ARM64 容器与真实手机触控/软键盘/非零安全区未执行，保留各自责任，不标通过。
 
 PR：[#125](https://github.com/dnslin/ariso-next/pull/125)，分支 `codex/81-manual-upload`。原实现及本地证据提交为 `06e8959`，当时曾转为待评审；后来发现 UI 差异后恢复草稿。最新收尾及最终验证见顶部链接，当前评审状态以 PR 为准。
 

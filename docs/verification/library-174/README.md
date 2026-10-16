@@ -1,6 +1,6 @@
 # T-LIB-05 / Issue #174：跨页显式选择与已选清单
 
-本记录对应 [Issue #174](https://github.com/dnslin/ariso-next/issues/174)，需求保持 `R-15.6-01`、`A-26.9-04`、`A-26.9-05`、`A-26.9-06`。规则只引用[设计交接](../../design/handoff.md)和[执行约定](../../tasks/execution.md)，不新增第二套规则，不修改冻结 PRD。
+本记录对应 [Issue #174](https://github.com/dnslin/ariso-next/issues/174)，需求保持 `R-15.6-01`、`A-26.9-04`、`A-26.9-05`、`A-26.9-06`。规则只引用[设计交接](../../design/handoff.md)和[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)，不新增第二套规则，不修改冻结 PRD。
 
 ## 范围与前置
 

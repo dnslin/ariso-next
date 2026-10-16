@@ -57,7 +57,7 @@ EGO_TASK_SPACE=3 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/issue-61-brows
 
 ## 状态与设计复验
 
-通过 Figma 工具只读核对 40 个适用节点全部存在；回查不会替代网页运行。完整范围沿 [DG-SETUP](../../tasks/evidence/DG-SETUP/README.md)、[DG-AUTH](../../tasks/evidence/DG-AUTH/README.md) 和 #60 追溯。没有重新评审已确认的产品选择。
+通过 Figma 工具只读核对 40 个适用节点全部存在；回查不会替代网页运行。完整范围沿 [DG-SETUP](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/evidence/DG-SETUP/README.md)、[DG-AUTH](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/evidence/DG-AUTH/README.md) 和 #60 追溯。没有重新评审已确认的产品选择。
 
 | 设计状态                         | 桌面 / 手机节点                             | 本次实际网页验证入口                                                                        |
 | -------------------------------- | ------------------------------------------- | ------------------------------------------------------------------------------------------- |
@@ -81,13 +81,13 @@ EGO_TASK_SPACE=3 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/issue-61-brows
 
 容器真实执行由 PR 触发的现有 `Docker build` 工作流承担，不使用本机 Docker。AMD64/ARM64 原生 runner 各运行身份集成测试，并验证实际镜像、受限挂载、生命周期、迁移和停止备份恢复。PR、push 和手动验证事件不能进入只允许 Release 的发布 job。
 
-远端检查结果只回填 PR 描述及检查页，遵循[执行约定](../../tasks/execution.md#适用检查)，不为检查结果再追加文档提交。本地单元检查不是容器实测成功证据。远端结果取得后仍需检查下述双浏览器缺口；该项未补齐或未获用户明确接受替代验收前，PR 保持草稿。
+远端检查结果只回填 PR 描述及检查页，遵循[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md#适用检查)，不为检查结果再追加文档提交。本地单元检查不是容器实测成功证据。远端结果取得后仍需检查下述双浏览器缺口；该项未补齐或未获用户明确接受替代验收前，PR 保持草稿。
 
 ## 范围限制
 
 两页面使用 `127.0.0.1` 与 `localhost` 的独立 Cookie 状态访问同一真实服务，验证第二页面旧表单和所有者会话隔离；这不是两个浏览器在同一站点 origin 下的实测，不能替代 Issue 原文“双浏览器”验收；该项保持未完成。完整跨浏览器版本矩阵另归专属兼容性任务。
 
-实际验证覆盖响应式、短视口滚动、手机 44px 触控目标及键盘/焦点。保留现有安全区适配；未执行真实手机触摸、物理软键盘和非零安全区设备测试。现行[共用验收](../../tasks/execution.md#前端共用验收)已取消其设备实测门槛，未将豁免写成实测通过。
+实际验证覆盖响应式、短视口滚动、手机 44px 触控目标及键盘/焦点。保留现有安全区适配；未执行真实手机触摸、物理软键盘和非零安全区设备测试。现行[共用验收](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md#前端共用验收)已取消其设备实测门槛，未将豁免写成实测通过。
 
 首次登录故障注入发现：SQLite session 插入失败时 Better Auth 返回空 HTTP 500，页面附带原生 JSON 解析错误。该提示问题已按用户后续要求修复，见[修复与回归记录](login-error-fix/README.md)。修复前截图和报告保留，不代表当前页面行为。
 

@@ -45,7 +45,7 @@ macOS arm64，Node 24.19.0、pnpm 11.19.0。命令的 PATH 前置 `/Users/dnslin
 
 ## 验收范围与远端验证
 
-2026-09-22 所有者取消三项设备实测要求，执行[前端共用验收](../../tasks/execution.md#前端共用验收)，不再作为本 PR 的未完成项。此前未实测的事实保留，不标记为测试通过。已同步全部 GitHub Issue，实际修改含相关条款的 #57、#60、#76、#77、#79、#81。跨浏览器矩阵仍按 T-QA-02 归属，本次记录实际 Ego 环境；#57/#59 的所有者验收决定保留。
+2026-09-22 所有者取消三项设备实测要求，执行[前端共用验收](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md#前端共用验收)，不再作为本 PR 的未完成项。此前未实测的事实保留，不标记为测试通过。已同步全部 GitHub Issue，实际修改含相关条款的 #57、#60、#76、#77、#79、#81。跨浏览器矩阵仍按 T-QA-02 归属，本次记录实际 Ego 环境；#57/#59 的所有者验收决定保留。
 
 代码提交 `8b25712333522dd0a489c5e39aa69ce415fe3af5` 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/35681942917) 和 [Docker build](https://github.com/dnslin/ariso-next/actions/runs/35681943144) 均已通过。CI 执行锁文件安装、UI 实验类型/构建、lint、格式、类型、单元、生产构建、外壳构建及完整集成测试。Docker 工作流在 AMD64、ARM64 原生 runner 上分别通过媒体和身份协议测试、镜像构建、离线运行、真实受限挂载、图片/字体与容器生命周期/迁移/备份恢复验证；`release-checks` 和 `publish` 均跳过，没有发布镜像。[远端结果快照](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/identity-60/remote-checks.json)记录提交、运行链接和各 job 结论。
 

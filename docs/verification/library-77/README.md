@@ -4,7 +4,7 @@
 
 ## 前置与实际交付
 
-从最新 `origin/main`（`33cf562`）创建 `codex/issue-77-library-detail`。原工作区干净，没有其他 worktree。实际读取 Issue 正文、评论和原生 blocked_by/blocking：直接前置 #76、#74 均 closed/completed，评论为空；下游为 #79、#81。核对前置的[图库验证](../library-76/README.md)和[设计适用证据](../../tasks/evidence/DG-LIBRARY-BASE/README.md)，没有重新评审既定产品选择。
+从最新 `origin/main`（`33cf562`）创建 `codex/issue-77-library-detail`。原工作区干净，没有其他 worktree。实际读取 Issue 正文、评论和原生 blocked_by/blocking：直接前置 #76、#74 均 closed/completed，评论为空；下游为 #79、#81。核对前置的[图库验证](../library-76/README.md)和[设计适用证据](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/evidence/DG-LIBRARY-BASE/README.md)，没有重新评审既定产品选择。
 
 - `/library?image=id` 和卡片入口读取所有者专用 `/api/images/{id}`；正常、私有、处理失败、处理中和停用记录保留真实资料。回收或删除中的记录明确说明内容不可用。详情不读取存储文件、不生成派生版本。
 - 版本显示实际编码、尺寸、大小；活动任务和最近失败任务独立展示。基础相册与标签只读，完整编辑仍归 T-LIB-06。
@@ -61,7 +61,7 @@
 
 完整元数据编辑、Lightbox、筛选选择、批量复制、回收恢复界面、重新处理仍归原后续任务。S3 下载和全格式处理未在本切片验证。真实手机触控、物理软键盘、非零安全区及其他浏览器未实测；浏览器响应式与短视口证据不能冒充真实设备结果。
 
-当前 `.github/workflows/ci.yml` 只接受 `workflow_call`，`images.yml` 只接受 `release.published`，不存在独立 PR 或手动容器验证入口。按[适用检查](../../tasks/execution.md#适用检查)执行本地检查，AMD64/ARM64 实际镜像验证留待发布；不触发 Release、镜像发布或部署。实现提交 `f744031`、验证收尾提交 `370f32e` 已推送，[PR #122](https://github.com/dnslin/ariso-next/pull/122) 已转为正式待评审。通过 `gh pr view 122`、提交 `check-runs` / `status` 和 `gh run list --branch codex/issue-77-library-detail` 回读：PR open/ready、无合并冲突、检查 0 项、状态条目 0 项、Actions 运行 0 项；空状态的聚合值为 pending，不代表存在正在执行的检查。未触发容器验证、发布或部署。浏览器全流程、后续短视口补充检查与独立审计均已完成；未合并 PR、关闭 Issue 或删除分支。
+当前 `.github/workflows/ci.yml` 只接受 `workflow_call`，`images.yml` 只接受 `release.published`，不存在独立 PR 或手动容器验证入口。按[适用检查](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md#适用检查)执行本地检查，AMD64/ARM64 实际镜像验证留待发布；不触发 Release、镜像发布或部署。实现提交 `f744031`、验证收尾提交 `370f32e` 已推送，[PR #122](https://github.com/dnslin/ariso-next/pull/122) 已转为正式待评审。通过 `gh pr view 122`、提交 `check-runs` / `status` 和 `gh run list --branch codex/issue-77-library-detail` 回读：PR open/ready、无合并冲突、检查 0 项、状态条目 0 项、Actions 运行 0 项；空状态的聚合值为 pending，不代表存在正在执行的检查。未触发容器验证、发布或部署。浏览器全流程、后续短视口补充检查与独立审计均已完成；未合并 PR、关闭 Issue 或删除分支。
 
 ## 合并前同步 main
 

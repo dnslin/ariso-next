@@ -1,6 +1,6 @@
 # T-DEL-02 S3 内容访问、特殊格式和附件联验
 
-关联 [Issue #161](https://github.com/dnslin/ariso-next/issues/161)。范围与需求沿用[任务卡](../../archive/m3-m4/platform.md#t-del-02-s3-内容访问特殊格式和附件联验)、[SPEC-delivery](../../specs/SPEC-delivery.md)及[执行约定](../../tasks/execution.md)。实现、核心验证与独立代码审计已完成。获批的宽屏旧断言修正已通过；筛选误选已获授权修正并定向验证通过；原生目录枚举取消仍未解决；用户现已明确要求合并PR并关闭Issue，详见末节。
+关联 [Issue #161](https://github.com/dnslin/ariso-next/issues/161)。范围与需求沿用[任务卡](../../archive/m3-m4/platform.md#t-del-02-s3-内容访问特殊格式和附件联验)、[SPEC-delivery](../../specs/SPEC-delivery.md)及[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)。实现、核心验证与独立代码审计已完成。获批的宽屏旧断言修正已通过；筛选误选已获授权修正并定向验证通过；原生目录枚举取消仍未解决；用户现已明确要求合并PR并关闭Issue，详见末节。
 
 2026-10-02 通过 gh 读取 Issue、评论和原生 blocked by / blocking。评论为空，直接前置 #69、#83、#155、#150、#153、#70 全部 CLOSED；实现及交付记录已核对。下游 #162、#164、#169、#193 仍 OPEN。从最新 origin/main `3eb585f` 创建分支 `codex/delivery-s3-161` 与独立 worktree `/Volumes/data/project/ariso-delivery-161`。原目录和真实预览数据未修改。当前必需真实服务按 execution 为 R2 与 SeaweedFS；AWS 实测已取消，不记为通过。
 

@@ -1,6 +1,6 @@
 # T-COL-02 相册列表与管理实施记录
 
-日期：2026-09-29（Asia/Shanghai）。对应 [Issue #175](https://github.com/dnslin/ariso-next/issues/175)、`R-16.1-01` / `R-16.3-01`。业务边界沿用 [collections 规格](../../specs/SPEC-collections.md) §3/7/8；验证及设计规则分别引用[执行约定](../../tasks/execution.md)和[设计交接](../../design/handoff.md)。
+日期：2026-09-29（Asia/Shanghai）。对应 [Issue #175](https://github.com/dnslin/ariso-next/issues/175)、`R-16.1-01` / `R-16.3-01`。业务边界沿用 [collections 规格](../../specs/SPEC-collections.md) §3/7/8；验证及设计规则分别引用[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)和[设计交接](../../design/handoff.md)。
 
 ## 前置与开发环境
 

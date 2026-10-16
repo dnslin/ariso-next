@@ -138,4 +138,4 @@ docker compose --env-file .env.local up --build --detach --wait
 
 欢迎通过 [Issue](https://github.com/dnslin/ariso-next/issues) 反馈问题或提出建议。报告问题时，请提供版本、部署方式、复现步骤及相关日志。
 
-提交改动前请阅读 [AGENTS.md](./AGENTS.md) 和[任务执行与验证约定](./docs/tasks/execution.md#适用检查)。涉及界面的改动还需遵守[设计交付规范](./docs/design/handoff.md)。
+提交改动前请阅读 [AGENTS.md](./AGENTS.md) 和[任务执行与验证约定](./docs/guides/verification.md#适用检查)。涉及界面的改动还需遵守[设计交付规范](./docs/design/handoff.md)。

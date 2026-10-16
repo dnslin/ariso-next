@@ -1,6 +1,6 @@
 # 2026-10-02 人工验收返修
 
-承接 Issue #176 / PR #226，规则仍以 [handoff](../../../design/handoff.md) 与 [execution](../../../tasks/execution.md) 为准，不修改 Figma 或冻结 PRD。
+承接 Issue #176 / PR #226，规则仍以 [handoff](../../../design/handoff.md) 与 [execution](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md) 为准，不修改 Figma 或冻结 PRD。
 
 ## 用户反馈与修改范围
 

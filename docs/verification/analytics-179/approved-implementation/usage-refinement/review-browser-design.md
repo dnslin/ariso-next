@@ -6,7 +6,7 @@
 
 ## 依据与证据范围
 
-按现行[设计交接](../../../../design/handoff.md)、[前端共用验收](../../../../tasks/execution.md#前端共用验收)和ego-browser技能进行复审；复用上轮已实际读取的figma-use、figma-design-to-code及六节点context/截图。本轮再次查看待核对桌面/手机Figma导出，与同视口真实页面核对；未改变的已确认及说明设计沿前次实读基线。[前次Figma与源码报告](./review-design.md)保留当时浏览器硬停的历史边界，本报告记录明确恢复后的新增证据。
+按现行[设计交接](../../../../design/handoff.md)、[前端共用验收](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md#前端共用验收)和ego-browser技能进行复审；复用上轮已实际读取的figma-use、figma-design-to-code及六节点context/截图。本轮再次查看待核对桌面/手机Figma导出，与同视口真实页面核对；未改变的已确认及说明设计沿前次实读基线。[前次Figma与源码报告](./review-design.md)保留当时浏览器硬停的历史边界，本报告记录明确恢复后的新增证据。
 
 基准文件`74sT9Hrf8G4czcWeTkET5b`：已确认451:16780/17096、待核对451:17337/17648、说明452:4005/8758。整页桌面1440×1080、手机390×844；说明设计局部480×328和358×369。其他宽度、深色和零占用沿公共组件与设计注记核对；没有虚称存在相应独立Figma画板。节点链接、最终PNG和组件来源见[Figma记录](./figma/README.md)。
 

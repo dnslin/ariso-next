@@ -2,7 +2,7 @@
 
 日期：2026-10-07。评审者独立于正式产品实现和 Figma 同步，只修改本文件；没有修改产品代码或 Figma，没有提交，也没有重跑实现者已通过的检查。
 
-本记录属于 [本轮返修证据](./README.md)，完成条件继续遵守 [任务执行与验证约定](../../../tasks/execution.md#前端共用验收)。
+本记录属于 [本轮返修证据](./README.md)，完成条件继续遵守 [任务执行与验证约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md#前端共用验收)。
 
 ## 当前结论
 

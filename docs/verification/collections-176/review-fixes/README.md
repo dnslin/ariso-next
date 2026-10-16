@@ -1,6 +1,6 @@
 # PR #226 双角度审查后修复
 
-2026-10-02；Issue #176 / T-COL-03。两个独立 agent 按 code-review-and-quality 与 thermo-nuclear-code-quality-review 审查 `3eb585f...af6b8d8` 的完整两次提交，发现以下三项。本轮已修复、真实浏览器验证及独立复审通过；用户再次人工 UI 验收仍待完成，PR 保持草稿。统一遵守现有 [handoff](../../../design/handoff.md) 与 [execution](../../../tasks/execution.md)。
+2026-10-02；Issue #176 / T-COL-03。两个独立 agent 按 code-review-and-quality 与 thermo-nuclear-code-quality-review 审查 `3eb585f...af6b8d8` 的完整两次提交，发现以下三项。本轮已修复、真实浏览器验证及独立复审通过；用户再次人工 UI 验收仍待完成，PR 保持草稿。统一遵守现有 [handoff](../../../design/handoff.md) 与 [execution](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)。
 
 ## 发现与最终行为
 

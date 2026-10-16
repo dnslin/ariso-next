@@ -1,6 +1,6 @@
 # T-MED-06 全格式分类与派生处理
 
-关联 [Issue #150](https://github.com/dnslin/ariso-next/issues/150)，依据 [任务定义](../../archive/m3-m4/platform.md#t-med-06-全格式分类与派生处理)、[SPEC-media §6/10/13](../../specs/SPEC-media.md) 和[执行约定](../../tasks/execution.md)。
+关联 [Issue #150](https://github.com/dnslin/ariso-next/issues/150)，依据 [任务定义](../../archive/m3-m4/platform.md#t-med-06-全格式分类与派生处理)、[SPEC-media §6/10/13](../../specs/SPEC-media.md) 和[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)。
 
 2026-09-29 使用 `gh issue view 150 --json number,title,body,state,comments,url` 及 GitHub 原生 `dependencies/blocked_by`、`dependencies/blocking` 核对：评论为空，#63、#64、#147 均 CLOSED。下游 #151、#161、#170、#172 保持 OPEN。从已 fetch 的 `origin/main`（`279a84f`）创建独立 worktree 与 `codex/media-formats-150`，保留原目录未提交文档。
 
@@ -59,7 +59,7 @@
 
 适用本地检查与独立代码审计均已通过，已创建正式待评审 [PR #205](https://github.com/dnslin/ariso-next/pull/205)，分支 `codex/media-formats-150`，实现提交 `35a88f9`。2026-09-29 使用 `gh pr view 205 --json url,state,isDraft,mergeable,headRefName,statusCheckRollup` 与 `gh pr checks 205` 回读：OPEN、非草稿、MERGEABLE，检查列表为空，`gh pr checks` 返回 no checks reported（退出 1）。没有远端检查，不记为 CI 通过，也不等待不存在的工作流。AMD64/ARM64 真实镜像与受限挂载仅在 Release 阶段验证，本次未执行。
 
-官方方案依据：[ImageMagick 格式](https://imagemagick.org/formats/)、[FFmpeg 按输出限制帧数](https://ffmpeg.org/ffmpeg.html)、[前置完整实验](../../tasks/evidence/EV-MEDIA-02/README.md)。
+官方方案依据：[ImageMagick 格式](https://imagemagick.org/formats/)、[FFmpeg 按输出限制帧数](https://ffmpeg.org/ffmpeg.html)、[前置完整实验](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/evidence/EV-MEDIA-02/README.md)。
 
 ## 首轮全量集成失败定位
 

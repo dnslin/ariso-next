@@ -1,6 +1,6 @@
 # T-STO-05 真实浏览器 CORS 检测与 origin 失效
 
-关联 [Issue #158](https://github.com/dnslin/ariso-next/issues/158) 与 [PR #217](https://github.com/dnslin/ariso-next/pull/217)。2026-09-30 从 `origin/main` 的 `117c66a` 创建独立 worktree `/Users/dnslin/.codex/worktrees/issue-158-storage-cors/ariso`，分支 `codex/issue-158-storage-cors`。原工作区另有任务使用，本次没有修改它。本记录遵守[任务执行约定](../../tasks/execution.md)与[设计交接](../../design/handoff.md)，不改写冻结 PRD。
+关联 [Issue #158](https://github.com/dnslin/ariso-next/issues/158) 与 [PR #217](https://github.com/dnslin/ariso-next/pull/217)。2026-09-30 从 `origin/main` 的 `117c66a` 创建独立 worktree `/Users/dnslin/.codex/worktrees/issue-158-storage-cors/ariso`，分支 `codex/issue-158-storage-cors`。原工作区另有任务使用，本次没有修改它。本记录遵守[任务执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)与[设计交接](../../design/handoff.md)，不改写冻结 PRD。
 
 **当前 #158 产品页面、专项生产验证、完整浏览器第三轮、独立代码审计与设计还原评审均已通过；用户人工 UI 验收也已通过，已满足正式待评审条件。** 2026-09-30 用户批准此前提出的按钮位置及独立 CORS 页面组合，并限定只实现 #158。2026-09-30 用户查看交付预览后确认“我看了一下这个页面，没什么问题”，本页人工 UI 验收通过。没有扩大到 #198 存储管理、#162 上传链路、#164 孤儿扫描或 #194 站点设置。
 

@@ -4,7 +4,7 @@
 
 ## 依据与方法
 
-已读取 `AGENTS.md`、完整 [设计交付规范](../../design/handoff.md)、[前端共用验收](../../tasks/execution.md#前端共用验收)、T-SITE-05 及 DG-THEME 核对记录。应用 `frontend-ui-engineering` 检查信息层级、组件复用、响应式和可访问状态；应用 `figma-use` 与 `figma-design-to-code`，独立只读获取实际 Figma 设计信息及截图。
+已读取 `AGENTS.md`、完整 [设计交付规范](../../design/handoff.md)、[前端共用验收](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md#前端共用验收)、T-SITE-05 及 DG-THEME 核对记录。应用 `frontend-ui-engineering` 检查信息层级、组件复用、响应式和可访问状态；应用 `figma-use` 与 `figma-design-to-code`，独立只读获取实际 Figma 设计信息及截图。
 
 实时回读并查看的 Figma 节点：基础弹窗 `472:4538/472:9570`，深色设置整页 `472:4254/472:9458`，R4 系统 `529:11662/529:11294`、浅色 `529:12106/529:11498`、深色 `529:11817/529:11363`，公共登录 `265:1392/265:3559`。另回读错误正文 `266:1574/266:3471`，及 R6 图库 `530:14568/530:14911`、图表 `530:15227/530:15650`、匿名分享 `530:15758/530:16187` 的配色代表。
 

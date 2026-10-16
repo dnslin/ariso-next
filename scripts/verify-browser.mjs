@@ -711,7 +711,7 @@ try {
         ['r2', 'seaweedfs'].includes(target.service),
       );
       focusedConfig.r2NoLockEvidence =
-        'docs/tasks/evidence/EV-STORAGE-01/README.md';
+        'https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/evidence/EV-STORAGE-01/README.md';
     }
     if (
       suite === 'storage-cors' ||

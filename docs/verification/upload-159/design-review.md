@@ -1,6 +1,6 @@
 # Issue #159 独立设计还原评审
 
-2026-10-01；独立评审者只读取实现与截图，没有操作实施者使用的 Ego Space6，也没有修改实现或 Figma。规则统一使用 [handoff](../../design/handoff.md) 与 [execution](../../tasks/execution.md#前端共用验收)。
+2026-10-01；独立评审者只读取实现与截图，没有操作实施者使用的 Ego Space6，也没有修改实现或 Figma。规则统一使用 [handoff](../../design/handoff.md) 与 [execution](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md#前端共用验收)。
 
 ## 读取与检查方法
 

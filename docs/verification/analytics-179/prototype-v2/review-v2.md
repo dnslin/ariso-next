@@ -4,7 +4,7 @@
 
 ## 范围与依据
 
-评审者未参与 V2 实现，仅写本文件，不操作浏览器、不改产品、原型或 Figma。沿本轮已实际读取的 `AGENTS.md`、完整 [handoff](../../../design/handoff.md)、[前端共用验收](../../../tasks/execution.md#前端共用验收)及 [已有设计评审](../review-design.md)。既有评审中实际读取的30个 Figma 节点继续用于公共外壳、主题、组件与响应式基准；没有把这些旧节点称为本次新弹窗或异常网格的已批准设计。
+评审者未参与 V2 实现，仅写本文件，不操作浏览器、不改产品、原型或 Figma。沿本轮已实际读取的 `AGENTS.md`、完整 [handoff](../../../design/handoff.md)、[前端共用验收](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md#前端共用验收)及 [已有设计评审](../review-design.md)。既有评审中实际读取的30个 Figma 节点继续用于公共外壳、主题、组件与响应式基准；没有把这些旧节点称为本次新弹窗或异常网格的已批准设计。
 
 本次应用 `frontend-design` 检查层级与克制，`emil-design-eng` 检查短促动效及视觉反馈；按已读的 Figma 技能理解设计依据，遵守 Ego 单一浏览器边界。用户最新要求优先：打开图片只保留缩略图，去除大图和版本切换；图表主导、不用表格；减少说明，使用适量 Lucide 图标、真实 HeroUI 控件及轻动画。
 

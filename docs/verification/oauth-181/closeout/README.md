@@ -1,6 +1,6 @@
 # PR #255 合并授权与主线交汇
 
-日期：2026-10-07。用户明确要求“合并PR，清理并更新本地分支，关闭这个PR”。本轮按该授权结束草稿状态并合并；历史全量失败和最新手机人工验收待完成的事实仍保留，不将合并指令记为检查或验收通过。统一依据仍为[任务执行约定](../../../tasks/execution.md)与[设计交付规范](../../../design/handoff.md)。实际最终合并状态以 [PR #255](https://github.com/dnslin/ariso-next/pull/255) 为准。
+日期：2026-10-07。用户明确要求“合并PR，清理并更新本地分支，关闭这个PR”。本轮按该授权结束草稿状态并合并；历史全量失败和最新手机人工验收待完成的事实仍保留，不将合并指令记为检查或验收通过。统一依据仍为[任务执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)与[设计交付规范](../../../design/handoff.md)。实际最终合并状态以 [PR #255](https://github.com/dnslin/ariso-next/pull/255) 为准。
 
 ## main 并发变化与修复
 

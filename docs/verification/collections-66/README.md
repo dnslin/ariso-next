@@ -4,7 +4,7 @@
 
 ## 前置与范围
 
-通过 `gh issue view` 和原生 `dependencies/blocked_by` / `dependencies/blocking` 读取正文、评论和关系。#66 无评论；直接前置 #50、#65 均为 completed，已分别核对[媒体持久契约证据](../media-50/README.md)和[Unicode/SQLite 实验证据](../../tasks/evidence/EV-COLLECTIONS-01/README.md)。后置为 #67、#73、#76、#83。
+通过 `gh issue view` 和原生 `dependencies/blocked_by` / `dependencies/blocking` 读取正文、评论和关系。#66 无评论；直接前置 #50、#65 均为 completed，已分别核对[媒体持久契约证据](../media-50/README.md)和[Unicode/SQLite 实验证据](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/evidence/EV-COLLECTIONS-01/README.md)。后置为 #67、#73、#76、#83。
 
 从已核对的最新 `origin/main`（`dff12ca29a17da3a1a47289ac4aa78e17dd5c38a`）建立 `codex/issue-66-collections`，工作目录 `/Volumes/data/project/ariso-issue-66`。原目录虽然干净，但有其他活跃任务，因此使用独立 worktree。首次 Git 直连超时；使用系统已有代理 `http://127.0.0.1:7897` 完成 fetch，再确认基线相同。
 
@@ -72,4 +72,4 @@ EGO_TASK_SPACE=12 BROWSER_REPORT_DIR=test-results/collections-66/browser-retry p
 
 管理界面、搜索列表、重命名、封面选择、邻居/完整筛选分别由 T-COL-02/03/04 和 library/sharing 后续任务实现。真实上传交接由 T-UP-01/T-UP-03/T-UP-05 联验；本轮不关闭这些验收。十万图片规模与深分页基准留给 T-LIB-03/T-QA-04。本 Issue 没有界面，Figma、主题、触控、软键盘和安全区没有新增验收对象。
 
-当前工作流只有 release.published 和 workflow_call，无 PR/push 或 workflow_dispatch 入口。按[任务执行约定](../../tasks/execution.md#适用检查)，日常功能 PR 不要求发布期双架构结果；本轮不触发镜像发布或部署，AMD64/ARM64 和真实容器结果保持未执行。本地适用检查与独立审计已通过。[PR #108](https://github.com/dnslin/ariso-next/pull/108) 从草稿转为正式待评审。实际执行 `gh run list --branch codex/issue-66-collections --json databaseId,name,event,status,conclusion,headSha` 返回空数组；`gh pr checks 108` 返回 no checks reported（退出码 1，表示无检查，不是检查失败）；`gh pr view 108 --json isDraft,state,headRefOid,statusCheckRollup` 确认 OPEN、isDraft=false、检查数组为空。没有将“无远端检查”写成“远端验证通过”。实现提交为 `3b5e0a4`，验证证据提交为 `923181f`；最后仅补这段远端状态，不改变已验证代码。未合并、未主动关闭 Issue、未发布或部署，分支与 worktree 保留。
+当前工作流只有 release.published 和 workflow_call，无 PR/push 或 workflow_dispatch 入口。按[任务执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md#适用检查)，日常功能 PR 不要求发布期双架构结果；本轮不触发镜像发布或部署，AMD64/ARM64 和真实容器结果保持未执行。本地适用检查与独立审计已通过。[PR #108](https://github.com/dnslin/ariso-next/pull/108) 从草稿转为正式待评审。实际执行 `gh run list --branch codex/issue-66-collections --json databaseId,name,event,status,conclusion,headSha` 返回空数组；`gh pr checks 108` 返回 no checks reported（退出码 1，表示无检查，不是检查失败）；`gh pr view 108 --json isDraft,state,headRefOid,statusCheckRollup` 确认 OPEN、isDraft=false、检查数组为空。没有将“无远端检查”写成“远端验证通过”。实现提交为 `3b5e0a4`，验证证据提交为 `923181f`；最后仅补这段远端状态，不改变已验证代码。未合并、未主动关闭 Issue、未发布或部署，分支与 worktree 保留。

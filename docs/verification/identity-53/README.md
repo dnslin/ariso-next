@@ -7,7 +7,7 @@
 2026-09-21 通过 `gh issue view 53 --json number,title,body,comments,url,state` 和 `gh api repos/dnslin/ariso-next/issues/53/dependencies/{blocked_by,blocking}` 回读：无评论，直接前置 #47、#52；后置 #54、#67、#69、#73。
 
 - #47：生产 site 数据契约、真实 SQLite 和浏览器证据见 [交付记录](../site-47/README.md)。[PR #86](https://github.com/dnslin/ariso-next/pull/86) 合并提交 `882a5464` 属于本次基线；最新 CI `35498468870`、双架构 `35498469103` 均成功。
-- #52：固定版本的 schema、真实 credential/Cookie、地址刷新、Secret 轮换及同步 SQLite 事务限制见 [接入实验](../../tasks/evidence/EV-IDENTITY-01/README.md)。[PR #91](https://github.com/dnslin/ariso-next/pull/91) 合并提交 `aa7f4be` 即本次基线；复审修复后的最新 CI `35522419393`、双架构 `35522419507` 均成功。没有仅凭 Issue 关闭判定完成。
+- #52：固定版本的 schema、真实 credential/Cookie、地址刷新、Secret 轮换及同步 SQLite 事务限制见 [接入实验](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/evidence/EV-IDENTITY-01/README.md)。[PR #91](https://github.com/dnslin/ariso-next/pull/91) 合并提交 `aa7f4be` 即本次基线；复审修复后的最新 CI `35522419393`、双架构 `35522419507` 均成功。没有仅凭 Issue 关闭判定完成。
 
 原工作区无未提交改动。更新远端后，从 `origin/main` 的 `aa7f4be` 在独立 worktree `/Volumes/data/project/ariso-issue-53` 建立 `codex/issue-53-owner-auth`，保留原工作区。
 

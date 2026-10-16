@@ -6,7 +6,7 @@
 
 ## 依据与方法
 
-实际读取 `AGENTS.md`、[设计交付规范](../../design/handoff.md)、[前端共用验收](../../tasks/execution.md#前端共用验收)、[sharing §7](../../specs/SPEC-sharing.md#7-列表大图与打开中的变化)和 T-SHR-04。使用 `using-agent-skills` 选择 `frontend-ui-engineering` 核对响应式、状态、控件与焦点表达；读取 `figma-design-to-code` 与 `figma-use`，遵守 Figma 读取及项目组件复用边界。
+实际读取 `AGENTS.md`、[设计交付规范](../../design/handoff.md)、[前端共用验收](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md#前端共用验收)、[sharing §7](../../specs/SPEC-sharing.md#7-列表大图与打开中的变化)和 T-SHR-04。使用 `using-agent-skills` 选择 `frontend-ui-engineering` 核对响应式、状态、控件与焦点表达；读取 `figma-design-to-code` 与 `figma-use`，遵守 Figma 读取及项目组件复用边界。
 
 评审者独立查看下表 14 个已保存 Figma PNG，并通过 Figma MCP 实际读取 `434:4029`、`434:4104`、`494:4348`、`494:9536`、`494:4369`、`494:9557` 的设计信息及截图。先检查同视口整页、公共区域与底栏，再检查业务舞台、名称和控件。深色按 handoff 的 Ariso / Dark 语义颜色对照，不能把浅色 Figma 渲染当作深色设计。本次未写入或修改 Figma。
 

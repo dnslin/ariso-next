@@ -17,7 +17,7 @@
 | 设计与人工验收   | 本轮未改产品设计；#199既有设计评审和用户验收有效，不替代本轮浏览器结果。                                                 |
 | 提交、远端PR与CI | 已推送并创建草稿[PR #271](https://github.com/dnslin/ariso-next/pull/271)，OPEN / MERGEABLE；没有远端检查，未记作CI通过。 |
 
-执行和完成条件统一遵守[任务执行约定](../../tasks/execution.md)，设计边界遵守[设计交接](../../design/handoff.md)，不新增共用规则或改冻结PRD。
+执行和完成条件统一遵守[任务执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)，设计边界遵守[设计交接](../../design/handoff.md)，不新增共用规则或改冻结PRD。
 
 ## 原计划与完成点
 

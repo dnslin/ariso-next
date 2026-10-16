@@ -1,6 +1,6 @@
 # OAuth 浏览器恢复与真实 GitHub 验证
 
-2026-10-07，用户完成 GitHub Confirm access 后，按已授权范围接管同一 Ego TaskSpace 6 / p1。实施、验证和完成条件沿用[任务执行约定](../../../tasks/execution.md)；本记录只补实际结果，不另建规则。先前停止、失败和未验证记录保留为各自日期的历史。
+2026-10-07，用户完成 GitHub Confirm access 后，按已授权范围接管同一 Ego TaskSpace 6 / p1。实施、验证和完成条件沿用[任务执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)；本记录只补实际结果，不另建规则。先前停止、失败和未验证记录保留为各自日期的历史。
 
 环境为 macOS arm64、Node 24.18.1、pnpm 11.19.0、HeroUI 3.2.6、现有 Ego Lite。默认与定向运行器各自创建独立生产运行时、数据库及主机名；真实 GitHub 使用本任务的独立 `localhost:3183` 数据。人工验收预览 `127.0.0.1:3182` 的数据保留，没有因验证改写。
 

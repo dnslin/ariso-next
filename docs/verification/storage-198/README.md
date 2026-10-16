@@ -4,7 +4,7 @@
 
 ## 前置、范围与工作区
 
-从 `docs/README.md` 阅读 PRD §9、能力地图、计划、SPEC-storage、[任务卡](../../archive/m3-m4/platform.md#t-sto-07-完整存储管理两端界面)、[DG-STORAGE](../../tasks/evidence/DG-STORAGE/README.md)、设计交接和执行约定。保留原需求编号、模块边界与已确认的普通 Bucket / 单 PUT / 周期扫描方案，没有改写冻结 PRD。
+从 `docs/README.md` 阅读 PRD §9、能力地图、计划、SPEC-storage、[任务卡](../../archive/m3-m4/platform.md#t-sto-07-完整存储管理两端界面)、[DG-STORAGE](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/evidence/DG-STORAGE/README.md)、设计交接和执行约定。保留原需求编号、模块边界与已确认的普通 Bucket / 单 PUT / 周期扫描方案，没有改写冻结 PRD。
 
 实际执行 `gh issue view 198 --repo dnslin/ariso-next --json number,title,body,state,comments,url`，以及 `gh api repos/dnslin/ariso-next/issues/198/dependencies/blocked_by`、`.../blocking`。Issue 开放，无评论；直接前置 #164、#57、#137 均已关闭，无后置阻塞关系。本次没有修改 Issue 状态或关系。
 
@@ -60,7 +60,7 @@ macOS 26.6.2 / ARM64，Node 24.18.1、pnpm 11.19.0、ImageMagick 7.1.2-32、Exif
 3. 用户人工 UI 验收尚未进行。功能浏览器、受影响短框和真实 R2/SeaweedFS 已实际通过；独立设计复审不替代用户验收或批准。
 4. 范围外媒体集成失败保持失败。本次没有更改这些媒体路径、测试超时或断言。
 
-真实服务配置仅在忽略的本机文件中读取，报告不含凭据。两服务使用独立 SQLite、随机 prefix 和 storage ID，最终由真实 SDK 列举核对该命名空间为空。R2 全 Bucket 无锁声明复用同 Bucket 的 [EV-STORAGE-01](../../tasks/evidence/EV-STORAGE-01/README.md) 已有授权证据；本轮没有进入控制台重新检查规则，也没有修改远端 Bucket/CORS。relay 上传没有冒充浏览器 CORS 已通过。
+真实服务配置仅在忽略的本机文件中读取，报告不含凭据。两服务使用独立 SQLite、随机 prefix 和 storage ID，最终由真实 SDK 列举核对该命名空间为空。R2 全 Bucket 无锁声明复用同 Bucket 的 [EV-STORAGE-01](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/evidence/EV-STORAGE-01/README.md) 已有授权证据；本轮没有进入控制台重新检查规则，也没有修改远端 Bucket/CORS。relay 上传没有冒充浏览器 CORS 已通过。
 
 AWS S3 实测已由现行执行约定取消，保持未验证。物理手机触控/软键盘/非零安全区不属于当前验收要求；AMD64/ARM64 镜像与真实容器留到 Release 流程，本次不创建 Release、发布镜像或部署。PR 创建不能替代任务完成；未获确认、缺证据或检查失败时保持草稿。
 

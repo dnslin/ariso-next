@@ -1,6 +1,6 @@
 # 默认浏览器失败后的产品缺陷返修
 
-2026-10-10，所有者授权修复 Issue #184 验证中暴露的产品缺陷，并明确不重复执行无关测试。本轮从 `origin/main`（`eb685ea6`）创建独立工作区、分支 `codex/browser-product-regressions`，保留 [PR #275](https://github.com/dnslin/ariso-next/pull/275) 及已人工验收的密码恢复预览。实施依据继续使用 [SPEC-identity](../../specs/SPEC-identity.md)、[设计交付](../../design/handoff.md)及[执行约定](../../tasks/execution.md)，不新增规则。
+2026-10-10，所有者授权修复 Issue #184 验证中暴露的产品缺陷，并明确不重复执行无关测试。本轮从 `origin/main`（`eb685ea6`）创建独立工作区、分支 `codex/browser-product-regressions`，保留 [PR #275](https://github.com/dnslin/ariso-next/pull/275) 及已人工验收的密码恢复预览。实施依据继续使用 [SPEC-identity](../../specs/SPEC-identity.md)、[设计交付](../../design/handoff.md)及[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)，不新增规则。
 
 ## 实际修复
 

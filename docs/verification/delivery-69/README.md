@@ -6,7 +6,7 @@
 
 ## 前置与实现
 
-通过 `gh issue view 69 --json title,body,comments,state,url` 及原生 `issues/69/dependencies/blocked_by`、`blocking` 核对：无评论，#47、#53、#49、#64、#67、#68 均 closed；原生后置为 #73、#76、#83。前置证据见 [site](../site-47/README.md)、[identity](../identity-53/README.md)、[storage](../storage-49/README.md)、[media 恢复](../media-64/README.md)、[回收恢复](../media-67/README.md)、[本地流实验](../../tasks/evidence/EV-DELIVERY-01/README.md)。历史规格中的“未实现”不覆盖已经交付的模块契约。
+通过 `gh issue view 69 --json title,body,comments,state,url` 及原生 `issues/69/dependencies/blocked_by`、`blocking` 核对：无评论，#47、#53、#49、#64、#67、#68 均 closed；原生后置为 #73、#76、#83。前置证据见 [site](../site-47/README.md)、[identity](../identity-53/README.md)、[storage](../storage-49/README.md)、[media 恢复](../media-64/README.md)、[回收恢复](../media-67/README.md)、[本地流实验](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/evidence/EV-DELIVERY-01/README.md)。历史规格中的“未实现”不覆盖已经交付的模块契约。
 
 从最新 `origin/main` 的 `a4d4f9e40250f2df1000304af727f83fea2ead2c` 创建 `codex/69-local-delivery`，独立 worktree `/Volumes/data/project/ariso-issue-69`。原工作区和 #72 worktree 保留。本任务无页面、Figma、schema 或迁移变更，响应式、主题、触控、软键盘和安全区没有新增界面验收对象。
 
@@ -48,6 +48,6 @@
 
 S3 传输属于 T-DEL-02，本次未使用提供的对象存储凭据。SVG 测试使用登记的真实 SVG 文件验证交付，不声称全格式上传/处理已实现。真实磁盘错误通过对真实 ReadStream 注入 EIO 验证，不声称制造了介质损坏。
 
-发布验证按[现行执行约定](../../tasks/execution.md#适用检查)。仓库工作流仅由 Release 触发镜像流程，CI 仅供工作流调用，没有 PR/push 或手动验证入口。本次不发布 Release、镜像或部署，不以未运行的 AMD64/ARM64 镜像测试冒充通过。推送后回读实际检查状态；不合并、主动关闭 Issue，也不删除分支/worktree。
+发布验证按[现行执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md#适用检查)。仓库工作流仅由 Release 触发镜像流程，CI 仅供工作流调用，没有 PR/push 或手动验证入口。本次不发布 Release、镜像或部署，不以未运行的 AMD64/ARM64 镜像测试冒充通过。推送后回读实际检查状态；不合并、主动关闭 Issue，也不删除分支/worktree。
 
 交付 [PR #114](https://github.com/dnslin/ariso-next/pull/114)，实现提交 `4cfece1068e983400913531b0e6de0f4e8b4d0c3`。实际执行 `gh pr view 114 --json url,isDraft,headRefOid,mergeStateStatus,statusCheckRollup`、`gh run list --branch codex/69-local-delivery --json databaseId,status,conclusion,workflowName`、提交 `check-runs` / `status` API 及 `gh workflow list`：PR 为 CLEAN，无运行、无检查项、无提交状态（数量均 0）。状态 API 的聚合 pending 没有对应检查，不算运行中或通过。按本地适用检查和审计结果转为待评审，不等待不存在的远端日常检查。

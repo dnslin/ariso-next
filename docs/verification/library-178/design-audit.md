@@ -1,6 +1,6 @@
 # Issue #178 独立设计还原评审
 
-日期：2026-10-04。评审独立于实现，实际读取 Figma 设计信息、原图及本轮 Ego 页面截图；没有修改 Figma 或应用代码。执行边界沿用 [设计交接](../../design/handoff.md) 与 [前端共用验收](../../tasks/execution.md#前端共用验收)。
+日期：2026-10-04。评审独立于实现，实际读取 Figma 设计信息、原图及本轮 Ego 页面截图；没有修改 Figma 或应用代码。执行边界沿用 [设计交接](../../design/handoff.md) 与 [前端共用验收](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md#前端共用验收)。
 
 ## 批准修订后当前结论
 

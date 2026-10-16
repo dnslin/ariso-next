@@ -52,7 +52,7 @@
 
 ## 未执行范围
 
-没有发布 Release、发布镜像或部署。AMD64/ARM64 Linux 镜像、受限挂载与容器验证按 [执行约定](../../tasks/execution.md#适用检查) 在 Release 阶段取得证据，本次 macOS ARM64 结果不冒充这两架构验证。预览只用站点 tmp，不消费 S3 对象存储，R2/SeaweedFS 业务矩阵在本任务不适用。没有合并 PR、主动关闭 Issue、删除分支或 worktree。
+没有发布 Release、发布镜像或部署。AMD64/ARM64 Linux 镜像、受限挂载与容器验证按 [执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md#适用检查) 在 Release 阶段取得证据，本次 macOS ARM64 结果不冒充这两架构验证。预览只用站点 tmp，不消费 S3 对象存储，R2/SeaweedFS 业务矩阵在本任务不适用。没有合并 PR、主动关闭 Issue、删除分支或 worktree。
 
 ## 首轮失败与受影响检查复跑
 

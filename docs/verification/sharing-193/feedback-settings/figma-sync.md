@@ -4,7 +4,7 @@
 
 ## 依据、读取与范围
 
-实际读取 `figma-use`、Plugin API 索引与类型，以及既有设计系统工作说明；核对 `getStyledTextSegments`、`setRangeFills`、`detachInstance`、`insertChild`、自动布局、尺寸限制和现有变量绑定的类型。产品约定仍以[设计交付规范](../../../design/handoff.md)和[任务执行与验证](../../../tasks/execution.md)为准。
+实际读取 `figma-use`、Plugin API 索引与类型，以及既有设计系统工作说明；核对 `getStyledTextSegments`、`setRangeFills`、`detachInstance`、`insertChild`、自动布局、尺寸限制和现有变量绑定的类型。产品约定仍以[设计交付规范](../../../design/handoff.md)和[任务执行与验证](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)为准。
 
 文件：`74sT9Hrf8G4czcWeTkET5b`。实际读取两个页面：桌面 `0:1`、手机 `97:748`；再读取当前分享设置族的标题、简介、固定操作栏、原返回按钮/ArrowLeft、过期文本和已有 `destructive` 变量。同步前抓取并查看桌面/手机主页面和真实过期示例节点截图：
 

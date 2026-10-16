@@ -4,7 +4,7 @@
 
 ## 评审方法与范围
 
-评审者未参与本轮 React 页面实现。已读取 `using-agent-skills`、`figma-use`、`figma-design-to-code`，遵守[设计交接](../../design/handoff.md)与[执行约定](../../tasks/execution.md)。通过 Figma 工具独立读取以下 16 个节点的设计上下文及返回截图，再读取真实 Ego Lite 页面截图；不是依据实现者总结判断。先比对整页和公共区域，再比对业务卡片、弹窗与控件。
+评审者未参与本轮 React 页面实现。已读取 `using-agent-skills`、`figma-use`、`figma-design-to-code`，遵守[设计交接](../../design/handoff.md)与[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)。通过 Figma 工具独立读取以下 16 个节点的设计上下文及返回截图，再读取真实 Ego Lite 页面截图；不是依据实现者总结判断。先比对整页和公共区域，再比对业务卡片、弹窗与控件。
 
 Figma 文件为 `74sT9Hrf8G4czcWeTkET5b`。桌面参照 1440×1080，手机参照 390×844；补充 360、430、768 宽度及 480 高度短视口。深色按现有设计交接的主题 token 复核。评审者未操作浏览器；截图由独立浏览器 agent 在唯一 TaskSpace 1 操作真实页面取得。
 

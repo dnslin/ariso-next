@@ -12,7 +12,7 @@ GitHub #197 无评论，原生 blocked by 为 #57/T-UI-01、#139/DG-THEME，本�
 
 校正 DG-THEME 指出的浅色 muted 与 focus 变量。照片保持本色，未新增媒体滤镜、主题监听器、兼容层或依赖。最终全站业务状态矩阵属于 `T-QA-02`；未实现业务不会因主题入口接通变成已实现。
 
-适用依据为 [site §6](../../specs/SPEC-site.md#6-品牌素材与主题)、[任务卡及 DG-THEME](../../archive/m3-m4/experience.md#t-site-05-浅深系统主题与浏览器偏好)、[设计交接](../../design/handoff.md)及[执行约定](../../tasks/execution.md)。应用 using-agent-skills 选取最少技能；UI 实施使用 frontend-ui-engineering、vercel-react-best-practices，Figma 使用 figma-use/figma-design-to-code，真实浏览器使用 ego-browser，独立审计使用 code-review-and-quality。
+适用依据为 [site §6](../../specs/SPEC-site.md#6-品牌素材与主题)、[任务卡及 DG-THEME](../../archive/m3-m4/experience.md#t-site-05-浅深系统主题与浏览器偏好)、[设计交接](../../design/handoff.md)及[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)。应用 using-agent-skills 选取最少技能；UI 实施使用 frontend-ui-engineering、vercel-react-best-practices，Figma 使用 figma-use/figma-design-to-code，真实浏览器使用 ego-browser，独立审计使用 code-review-and-quality。
 
 ## 获批错误正文修正
 

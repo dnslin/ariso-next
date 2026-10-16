@@ -4,7 +4,7 @@
 
 ## 依据与实际读取
 
-实际读取项目 `AGENTS.md`、`using-agent-skills`、`frontend-ui-engineering`、`figma-use`、`figma-design-to-code` 和 `ego-browser` 技能，以及完整[设计交付规范](../../../design/handoff.md)、[前端共用验收](../../../tasks/execution.md#前端共用验收)和[本轮 Figma 同步记录](./figma-sync.md)。设计方向以用户最新两条明确指令为准。
+实际读取项目 `AGENTS.md`、`using-agent-skills`、`frontend-ui-engineering`、`figma-use`、`figma-design-to-code` 和 `ego-browser` 技能，以及完整[设计交付规范](../../../design/handoff.md)、[前端共用验收](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md#前端共用验收)和[本轮 Figma 同步记录](./figma-sync.md)。设计方向以用户最新两条明确指令为准。
 
 独立调用 `get_design_context`，实际读取文件 `74sT9Hrf8G4czcWeTkET5b` 的下列四个已更新节点，并查看工具返回截图。另实际查看同步记录中六张最终 Figma 截图，包括既有深色密码展开场景。没有写入 Figma，也没有操作浏览器。
 

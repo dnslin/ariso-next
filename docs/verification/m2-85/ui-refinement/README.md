@@ -40,7 +40,7 @@ Figma 文件为 `74sT9Hrf8G4czcWeTkET5b`，入口为 [section 1081:19457](https:
 
 ## 2026-09-27 历史记录
 
-2026-09-27；延续 [Issue #85](https://github.com/dnslin/ariso-next/issues/85) / [草稿 PR #126](https://github.com/dnslin/ariso-next/pull/126)。用户提供四张标注截图，并在实施计划后确认“可以 就这么办”，授权本次界面调整和 Figma 同步。规则仍统一维护在[设计交接](../../../design/handoff.md#后台界面精简2026-09-27用户批准)与[执行约定](../../../tasks/execution.md)，未改冻结 PRD、需求编号、数据库或内容访问契约。
+2026-09-27；延续 [Issue #85](https://github.com/dnslin/ariso-next/issues/85) / [草稿 PR #126](https://github.com/dnslin/ariso-next/pull/126)。用户提供四张标注截图，并在实施计划后确认“可以 就这么办”，授权本次界面调整和 Figma 同步。规则仍统一维护在[设计交接](../../../design/handoff.md#后台界面精简2026-09-27用户批准)与[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)，未改冻结 PRD、需求编号、数据库或内容访问契约。
 
 ### 实施结果
 

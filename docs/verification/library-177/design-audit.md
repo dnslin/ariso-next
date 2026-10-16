@@ -1,6 +1,6 @@
 # Issue #177 独立设计还原评审
 
-评审者：独立 `batch_design_audit` agent，未参与界面实现。工作区及分支见[主记录](./README.md)。本报告沿用[设计交接](../../design/handoff.md)及[前端共用验收](../../tasks/execution.md#前端共用验收)，不增加验收规则。
+评审者：独立 `batch_design_audit` agent，未参与界面实现。工作区及分支见[主记录](./README.md)。本报告沿用[设计交接](../../design/handoff.md)及[前端共用验收](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md#前端共用验收)，不增加验收规则。
 
 当前结论：本次范围的功能与独立设计复核通过。首次主体107张与最后8张代表图的未改范围结论保留；人工反馈后47张最终页面及补充41图中的26张受影响状态已实际逐项打开。标签新布局、成功Toast、失败概要/保留页和加载/错误/空/未选/移除状态均已验，两处返回布局偏移已修正，未获批准的新设计偏离为零。用户最终人工验收待完成，PR保持草稿；既有全浏览器详情深链焦点失败没有被记为通过。
 

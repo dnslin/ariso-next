@@ -2,7 +2,7 @@
 
 2026-10-08。所有者已批准完整 feedback1 原型并明确要求实施。本记录区分方案批准、Figma 写入和截图复核；不把它们记为生产页面人工验收。
 
-依据为 [获批原型源码](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/design-plans/issue182-review/prototype.tsx.txt)、本目录 `prototype-feedback-*` 截图、[设计交接](../../design/handoff.md)、[任务执行与验证约定](../../tasks/execution.md) 及 DG-SMTP 既有状态族。实际读取并应用 `figma-use`、`figma-generate-design`、`figma-design-to-code` 与 `figma-generate-library`。先读取主节点设计上下文、截图和真实子节点结构，再修改既有文件 `74sT9Hrf8G4czcWeTkET5b`；没有新建 Figma 文件。
+依据为 [获批原型源码](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/design-plans/issue182-review/prototype.tsx.txt)、本目录 `prototype-feedback-*` 截图、[设计交接](../../design/handoff.md)、[任务执行与验证约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md) 及 DG-SMTP 既有状态族。实际读取并应用 `figma-use`、`figma-generate-design`、`figma-design-to-code` 与 `figma-generate-library`。先读取主节点设计上下文、截图和真实子节点结构，再修改既有文件 `74sT9Hrf8G4czcWeTkET5b`；没有新建 Figma 文件。
 
 ## 写入范围与复用
 

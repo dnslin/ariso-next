@@ -1,6 +1,6 @@
 # T-COL-04 固定相册内容与手动自动封面实施记录
 
-日期：2026-10-01（Asia/Shanghai）。对应 [Issue #180](https://github.com/dnslin/ariso-next/issues/180)、`R-16.1-02` / `R-16.1-04`。业务规则沿用 [collections 规格](../../specs/SPEC-collections.md) §5–8；检查与设计遵守[执行约定](../../tasks/execution.md)及[设计交接](../../design/handoff.md)。本地实现、适用检查与独立审计证据已收齐；用户已明确取消选择页新增相册名称/短 ID 的要求。最终用户人工 UI 验收尚未完成，不能作为全任务完成证明。
+日期：2026-10-01（Asia/Shanghai）。对应 [Issue #180](https://github.com/dnslin/ariso-next/issues/180)、`R-16.1-02` / `R-16.1-04`。业务规则沿用 [collections 规格](../../specs/SPEC-collections.md) §5–8；检查与设计遵守[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)及[设计交接](../../design/handoff.md)。本地实现、适用检查与独立审计证据已收齐；用户已明确取消选择页新增相册名称/短 ID 的要求。最终用户人工 UI 验收尚未完成，不能作为全任务完成证明。
 
 ## 前置与环境
 

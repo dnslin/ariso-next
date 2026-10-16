@@ -1,6 +1,6 @@
 # PR #271 双角度复审修复
 
-本轮承接用户“先规划，然后修复这几个问题”的指令。只修改测试、运行器及证据，没有产品 UI、Figma、接口、数据库、依赖或冻结 PRD 变更。继续使用 `codex/browser-regression-repair` 的独立 worktree，基于 `eacdb7d4` 更新现有草稿 [PR #271](https://github.com/dnslin/ariso-next/pull/271)。执行边界遵守[项目统一约定](../../tasks/execution.md)。
+本轮承接用户“先规划，然后修复这几个问题”的指令。只修改测试、运行器及证据，没有产品 UI、Figma、接口、数据库、依赖或冻结 PRD 变更。继续使用 `codex/browser-regression-repair` 的独立 worktree，基于 `eacdb7d4` 更新现有草稿 [PR #271](https://github.com/dnslin/ariso-next/pull/271)。执行边界遵守[项目统一约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)。
 
 ## 计划与实施结果
 

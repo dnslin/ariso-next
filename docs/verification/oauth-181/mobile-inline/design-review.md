@@ -8,7 +8,7 @@
 
 本轮只调整 `AccountSettingRow` 的手机信息/操作排列。调用路径是 `/settings/account` → `AccountPage` 的邮箱、密码行和 `GithubAccount` 的绑定、站点配置行，共四个消费点。手机信息左对齐、操作在右居中；无操作行使用完整宽度；640px 起通过 `sm:contents` 保持既有标签/值/操作三列。没有增加正式产品的布局开关。
 
-已读取项目 AGENTS.md、完整 [设计交付规范](../../../design/handoff.md) 与 [执行约定](../../../tasks/execution.md)。继续应用 using-agent-skills、frontend-ui-engineering、vercel-react-best-practices；Figma 读取前实际读取并应用 figma-use / figma-design-to-code。UI 技能用于信息层级、换行、响应式与可达操作，Figma 技能用于实际节点读取和截图对照。没有操作 Ego 或其他浏览器、读取凭据、写入产品/Figma、重跑实施者检查或提交。
+已读取项目 AGENTS.md、完整 [设计交付规范](../../../design/handoff.md) 与 [执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)。继续应用 using-agent-skills、frontend-ui-engineering、vercel-react-best-practices；Figma 读取前实际读取并应用 figma-use / figma-design-to-code。UI 技能用于信息层级、换行、响应式与可达操作，Figma 技能用于实际节点读取和截图对照。没有操作 Ego 或其他浏览器、读取凭据、写入产品/Figma、重跑实施者检查或提交。
 
 实际 live 读取文件 `74sT9Hrf8G4czcWeTkET5b` 的设计信息和截图：
 

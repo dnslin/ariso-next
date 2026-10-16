@@ -13,4 +13,4 @@
 
 剩余限制、未执行项及承接任务：
 
-<!-- 规则以 docs/design/handoff.md 与 docs/tasks/execution.md 为准。可以链接同一份验证记录，不必在此重复证据。设计差异未解决且未获明确批准时保留草稿；测试通过不等于设计验收。 -->
+<!-- 规则以 docs/design/handoff.md 与 docs/guides/verification.md 为准。可以链接同一份验证记录，不必在此重复证据。设计差异未解决且未获明确批准时保留草稿；测试通过不等于设计验收。 -->

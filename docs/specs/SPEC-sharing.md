@@ -4,7 +4,7 @@
 - 状态：产品行为已于 2026-09-17 确认；T-SHR-01/02/03 已接入生产协议、管理与匿名列表。T-SHR-04 匿名大图及公开邻居已实施，实际验证和仍待人工验收的部分见 [#193 证据](../verification/sharing-193/README.md)。原型不代替真实界面验收。
 - 日期：2026-09-17。
 - 前置：[site](./SPEC-site.md)、[identity](./SPEC-identity.md)、[collections](./SPEC-collections.md)、[delivery](./SPEC-delivery.md)的已确认契约。
-- 依据：[PRD](../product/Ariso-PRD-v1.1.md) 3、5.5、14、16、17、26.6/26.10；[覆盖表](../tasks/coverage.md)。
+- 依据：[PRD](../product/Ariso-PRD-v1.1.md) 3、5.5、14、16、17、26.6/26.10；[覆盖表](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/coverage.md)。
 - 沿用已批准规则；第 12 节记录匿名大图和异常图片卡片两项补充的确认，不重复确认 PRD 已规定的密码、期限与公开权限。
 
 当前原型入口见[设计索引](../design/README.md)与[设计交接](../design/handoff.md)，DES／RG 的开放项和真实验证范围见[设计验收](../design/acceptance.md)。历史节点表与批次记录仅供追溯，不表示仍缺整组原型，也不代替业务实现与交互验收。

@@ -4,7 +4,7 @@
 
 ## 依据与批准状态
 
-实际读取项目 `AGENTS.md`、[设计交接](../../design/handoff.md)、[前端共用验收](../../tasks/execution.md#前端共用验收)、[T-SHR-03 及 DG-SHARING 消费结论](../../archive/m3-m4/experience.md#t-shr-03-匿名密码页裁剪列表与状态刷新)、[DG-SHARING 记录](../../tasks/evidence/DG-SHARING/README.md)及 sharing 规格。采用 `figma-use` 和 `figma-design-to-code` 指导读取。
+实际读取项目 `AGENTS.md`、[设计交接](../../design/handoff.md)、[前端共用验收](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md#前端共用验收)、[T-SHR-03 及 DG-SHARING 消费结论](../../archive/m3-m4/experience.md#t-shr-03-匿名密码页裁剪列表与状态刷新)、[DG-SHARING 记录](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/evidence/DG-SHARING/README.md)及 sharing 规格。采用 `figma-use` 和 `figma-design-to-code` 指导读取。
 
 准备阶段曾实际读取并查看 21 个代表节点；对应 `figma/` 保留为**批准前历史基线**，其中旧 220/120px 封面及原有纵向数量布局不再作为本轮实现目标。准备稿中的“原型 53542 尚未批准”是当时状态，不作为本轮结论。
 

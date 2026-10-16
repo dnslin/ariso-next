@@ -1,6 +1,6 @@
 # 三页组件与多选上传修正
 
-2026-09-27；延续 [Issue #85](https://github.com/dnslin/ariso-next/issues/85) / [草稿 PR #126](https://github.com/dnslin/ariso-next/pull/126)。用户针对图库详情、回收站与上传三页追加截图反馈，要求固定预览、持续动效、多选与继续添加，并使用现有 HeroUI 组件。执行与设计规则仍在[任务执行约定](../../../tasks/execution.md)和[设计交接](../../../design/handoff.md)，未改冻结 PRD 或既有需求编号。
+2026-09-27；延续 [Issue #85](https://github.com/dnslin/ariso-next/issues/85) / [草稿 PR #126](https://github.com/dnslin/ariso-next/pull/126)。用户针对图库详情、回收站与上传三页追加截图反馈，要求固定预览、持续动效、多选与继续添加，并使用现有 HeroUI 组件。执行与设计规则仍在[任务执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)和[设计交接](../../../design/handoff.md)，未改冻结 PRD 或既有需求编号。
 
 ## 实际变更
 

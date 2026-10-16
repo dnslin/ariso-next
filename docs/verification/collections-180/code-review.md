@@ -10,7 +10,7 @@
 
 ## 审阅依据与范围
 
-已读取项目 `AGENTS.md`、完整审计 skill、`vercel-react-best-practices` 与适用的资源保留/事件订阅规则、[文档入口](../../README.md)、[collections §5–8](../../specs/SPEC-collections.md#5-固定展示规则)、[T-COL-04](../../archive/m3-m4/experience.md#t-col-04-固定相册内容与手动自动封面)、[设计交付规范](../../design/handoff.md)及[执行约定](../../tasks/execution.md)。先阅读新增和修改测试，再阅读实现与调用链。
+已读取项目 `AGENTS.md`、完整审计 skill、`vercel-react-best-practices` 与适用的资源保留/事件订阅规则、[文档入口](../../README.md)、[collections §5–8](../../specs/SPEC-collections.md#5-固定展示规则)、[T-COL-04](../../archive/m3-m4/experience.md#t-col-04-固定相册内容与手动自动封面)、[设计交付规范](../../design/handoff.md)及[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)。先阅读新增和修改测试，再阅读实现与调用链。
 
 检查包含 collections 封面解析与设置、相册列表计数、library 对封面的 thumbnail 组合、相册读写 HTTP 入口、设置界面/结果弹窗/异常预览、LibraryScreen 的两项组合参数及 `e2e/album-cover.mjs` 接入。同步检查既有成员移除、外键、Cookie/来源验证、library 查询状态和已存版本读取逻辑。
 

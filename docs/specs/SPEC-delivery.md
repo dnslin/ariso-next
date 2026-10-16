@@ -4,7 +4,7 @@
 - 状态：已通过评审；用户于 2026-09-17 确认，并将默认链接改为随全站默认版本变化。本地入口的实施与验证见 [T-DEL-01](../verification/delivery-69/README.md)；S3内容协议及真实统计联验见 [T-DEL-02](../verification/delivery-161/README.md)，完整浏览器阻断如实记录；页面集成仍由各界面任务交付。
 - 日期：2026-09-17。
 - 前置：[site](./SPEC-site.md)、[identity](./SPEC-identity.md)、[storage](./SPEC-storage.md)、[media](./SPEC-media.md)的产品契约已确认；media 按本轮反馈采用文件大小限制和按需资源使用。
-- 依据：[PRD](../product/Ariso-PRD-v1.1.md) 5.4、13.4、14、18、19.2、20、26.4–26.8、26.11；[覆盖表](../tasks/coverage.md)。
+- 依据：[PRD](../product/Ariso-PRD-v1.1.md) 5.4、13.4、14、18、19.2、20、26.4–26.8、26.11；[覆盖表](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/coverage.md)。
 - 用户确认记录见第 13 节。默认链接行为与 S3 SVG 响应边界已同步修订 PRD 14.5/14.9。
 
 当前原型入口见[设计索引](../design/README.md)与[设计交接](../design/handoff.md)，DES／RG 的开放项和真实验证范围见[设计验收](../design/acceptance.md)。历史节点表与批次记录仅供追溯，不表示仍缺整组原型，也不代替业务实现与交互验收。

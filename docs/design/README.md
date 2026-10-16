@@ -37,4 +37,4 @@
 
 ## 当前交付边界
 
-当前模块组织沿用 2026-09-20 的分区整理，节点与交互保留，见[完成证据](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/archive/preparation-2026-09/design/verification/module-sections-completed-2026-09-20.json)。M5 首版整体验收已由用户确认通过；后续改动引用具体 UI 家族、状态节点与所属规格，并执行[前端共用验收](../tasks/execution.md#前端共用验收)。
+当前模块组织沿用 2026-09-20 的分区整理，节点与交互保留，见[完成证据](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/archive/preparation-2026-09/design/verification/module-sections-completed-2026-09-20.json)。M5 首版整体验收已由用户确认通过；后续改动引用具体 UI 家族、状态节点与所属规格，并执行[前端共用验收](../guides/verification.md#前端共用验收)。

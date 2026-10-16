@@ -1,6 +1,6 @@
 # Issue #198 独立设计评审
 
-日期：2026-10-04（Asia/Shanghai）。评审者与实现者分离；规则以 [设计交付规范](../../design/handoff.md)、[前端共用验收](../../tasks/execution.md#前端共用验收) 和 [T-STO-07](../../archive/m3-m4/platform.md#t-sto-07-完整存储管理两端界面) 为准。本记录不批准设计偏离，也不代替用户人工验收。
+日期：2026-10-04（Asia/Shanghai）。评审者与实现者分离；规则以 [设计交付规范](../../design/handoff.md)、[前端共用验收](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md#前端共用验收) 和 [T-STO-07](../../archive/m3-m4/platform.md#t-sto-07-完整存储管理两端界面) 为准。本记录不批准设计偏离，也不代替用户人工验收。
 
 ## 实际读取的设计
 

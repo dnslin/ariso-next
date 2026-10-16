@@ -58,7 +58,7 @@
 | 重启确切 Key 清理、邻近文件不动、失败预算与重试                               | `tests/integration/upload/local.test.ts`；持久状态重启恢复测试，不声称每个阶段均做了真实 SIGKILL |
 | 初始化/登录、Cookie/Origin、response 丢失后查询、重复 content、未知二进制 415 | `tests/integration/upload/local-http.test.ts`，真实 standalone HTTP/SQLite                       |
 
-120 秒无进展、1800 秒总时限的新增测试使用受控时钟验证机制；完整真实计时证据沿用 [UPLOAD-V02](../../tasks/evidence/UPLOAD-V02/README.md)，不声称本次重新等待 30 分钟。ENOSPC 和延迟写入为明确故障注入；清理失败使用真实 unlink 目录错误；这些不等于受限挂载容量验收。
+120 秒无进展、1800 秒总时限的新增测试使用受控时钟验证机制；完整真实计时证据沿用 [UPLOAD-V02](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/evidence/UPLOAD-V02/README.md)，不声称本次重新等待 30 分钟。ENOSPC 和延迟写入为明确故障注入；清理失败使用真实 unlink 目录错误；这些不等于受限挂载容量验收。
 
 冻结安装、迁移生成审查、格式、lint、类型、生产构建均通过；单元 **392 项**、全量集成 **438 项**、完整 Ego 浏览器回归通过。实际命令、早期失败与修复记录见 [checks.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/upload-73/checks.json)，浏览器运行记录见 [browser.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/upload-73/browser.json)。
 
@@ -72,4 +72,4 @@ PR #116 后续双 agent 评审确认的三项 P2 已修复：交接活动时间�
 
 - 无产品页面修改；Figma、主题、响应式、触控、软键盘和安全区不属于本次交付。现有 Ego 浏览器回归单独执行，不据此关闭上传界面验收。
 - Uppy 队列、S3、通用 Bearer 上传 API、上传设置界面、水印素材、多格式、多批均为后续任务。本次不关闭这些需求。
-- 本地检查与发布验证边界沿用[执行约定](../../tasks/execution.md#适用检查)。工作流只有 workflow_call 与 release.published，无 PR/push/手动验证入口。本次不发布 Release，不运行镜像发布或部署；AMD64/ARM64 镜像验证留待发布，未标通过。
+- 本地检查与发布验证边界沿用[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md#适用检查)。工作流只有 workflow_call 与 release.published，无 PR/push/手动验证入口。本次不发布 Release，不运行镜像发布或部署；AMD64/ARM64 镜像验证留待发布，未标通过。

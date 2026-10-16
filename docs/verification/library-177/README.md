@@ -1,6 +1,6 @@
 # Issue #177 / T-LIB-08 实施与验收记录
 
-本记录是[草稿PR #231](https://github.com/dnslin/ariso-next/pull/231)的唯一交付证据入口。规则沿用[设计交接](../../design/handoff.md)和[任务执行约定](../../tasks/execution.md)，不另建验收规则。主体实现已有证据。人工验收提出的Toast与标签新稿已完成本地验证和独立代码/设计复审，最新结果见本文末尾；旧通过记录不替代新稿验收，新稿仍待用户人工验收。最新标签完成Toast补改按用户要求未重复测试或评审，详末节。完整浏览器仍有主分支已有焦点失败，PR保持草稿。
+本记录是[草稿PR #231](https://github.com/dnslin/ariso-next/pull/231)的唯一交付证据入口。规则沿用[设计交接](../../design/handoff.md)和[任务执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)，不另建验收规则。主体实现已有证据。人工验收提出的Toast与标签新稿已完成本地验证和独立代码/设计复审，最新结果见本文末尾；旧通过记录不替代新稿验收，新稿仍待用户人工验收。最新标签完成Toast补改按用户要求未重复测试或评审，详末节。完整浏览器仍有主分支已有焦点失败，PR保持草稿。
 
 ## 范围与前置
 

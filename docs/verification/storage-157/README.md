@@ -1,6 +1,6 @@
 # T-STO-04 私有性连接测试与探测清理恢复
 
-关联 [Issue #157](https://github.com/dnslin/ariso-next/issues/157) 与[PR #211](https://github.com/dnslin/ariso-next/pull/211)。实施基线为 `origin/main` 的 `00979f5`，独立分支 `codex/issue-157-storage-probes`，工作区 `/Users/dnslin/.codex/worktrees/issue-157-storage-probes/ariso`。本记录按[任务执行约定](../../tasks/execution.md)维护，不改写冻结 PRD。
+关联 [Issue #157](https://github.com/dnslin/ariso-next/issues/157) 与[PR #211](https://github.com/dnslin/ariso-next/pull/211)。实施基线为 `origin/main` 的 `00979f5`，独立分支 `codex/issue-157-storage-probes`，工作区 `/Users/dnslin/.codex/worktrees/issue-157-storage-probes/ariso`。本记录按[任务执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)维护，不改写冻结 PRD。
 
 当前结论：2026-09-30 根据所有者要求修复 PR 双 agent 评审发现的两项 P2。配置检查未尝试写入时不再删除对象，读取超时由统一错误转换处理。新增回归、完整本地验证与真实 R2/SeaweedFS 复测已通过，独立交叉复审无剩余问题；浏览器首轮超时及原断言完整复测记录见末节。本任务没有 UI 改动。
 
@@ -24,7 +24,7 @@
 
 [真实服务命令与结果](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-157/live/checks.json)记录三轮验证。R2 与 SeaweedFS 的[最终报告](https://github.com/dnslin/ariso-next/tree/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-157/live/run-kr45dq)均通过：首次完整检测、启用门槛、错误凭据拒绝、清理失败持久化、恢复凭据后的手动清理、新 revision 重新检测、全部三个精确 Key 的最终 HEAD 不存在。SeaweedFS 响应版本 4.47；R2 响应 cloudflare，不编造未公开版本。
 
-R2 全 Bucket 无锁确认沿用同一目标 Bucket 的[已有所有者确认](../../tasks/evidence/EV-STORAGE-01/README.md)，在本次新测试 revision 中记录来源。没有伪造公共别名已关闭的确认。缺环境运行按预期退出 1，报告 incomplete，没有远端请求。
+R2 全 Bucket 无锁确认沿用同一目标 Bucket 的[已有所有者确认](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/evidence/EV-STORAGE-01/README.md)，在本次新测试 revision 中记录来源。没有伪造公共别名已关闭的确认。缺环境运行按预期退出 1，报告 incomplete，没有远端请求。
 
 本地真实 HTTP + SQLite 测试覆盖：匿名公开、字节不符、删除失败、配置并发与旧回包、取消 PUT、planned/writing/stored 用量、最多三次重试、旧 probe 清理不覆盖新报告，以及真实子进程 SIGKILL 后恢复。远端错误凭据测试不冒充“PUT 已接受但 DELETE 故障”的云端故障注入，后者目前由本地真实 HTTP 故障服务验证。迟到远端对象扫描继续由 #164 承接。
 

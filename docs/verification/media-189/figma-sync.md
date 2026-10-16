@@ -6,7 +6,7 @@
 
 ## 依据与边界
 
-- 规范沿用 [设计交接](../../design/handoff.md) 和 [任务执行与验证约定](../../tasks/execution.md)，不新增规则来源。
+- 规范沿用 [设计交接](../../design/handoff.md) 和 [任务执行与验证约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)，不新增规则来源。
 - 获批方案来自 [本次网页原型](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/design-plans/issue189-review/index.html)；批准前独立评审见 [原型设计评审](./prototype-design-review.md)。该评审记录是当时的批准前状态，本记录是批准后的回写证据。
 - 批准范围：①默认可见性、默认外链版本与并发分组；②真实测试图选择、四个预览目标与旧结果身份；③读取、会话、保存及预览响应未知的明确核对；④仅属性的素材展示。
 - 本 agent 未修改产品代码、公共组件源、原型、README、冻结 PRD 或其他 Figma 设计家族，未操作浏览器。

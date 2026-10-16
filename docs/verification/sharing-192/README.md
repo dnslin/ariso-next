@@ -2,7 +2,7 @@
 
 [草稿PR #251](https://github.com/dnslin/ariso-next/pull/251)，分支 `codex/issue-192-sharing`；初始产品实现提交 `0e1d4ab6`，本轮局部返修另提交。GitHub实际回读为OPEN、draft、可合并，statusCheckRollup为空；没有远端检查，不记作CI通过。Issue #192仍OPEN，未合并或关闭。
 
-本记录维护本次匿名分享密码页、公开列表及状态检查的实际交付证据；设计规则沿用 [handoff](../../design/handoff.md)，执行及完成条件沿用 [execution](../../tasks/execution.md)。产品需求归 [SPEC-sharing](../../specs/SPEC-sharing.md)，不改写冻结 PRD。
+本记录维护本次匿名分享密码页、公开列表及状态检查的实际交付证据；设计规则沿用 [handoff](../../design/handoff.md)，执行及完成条件沿用 [execution](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)。产品需求归 [SPEC-sharing](../../specs/SPEC-sharing.md)，不改写冻结 PRD。
 
 最新人工反馈的 Tips、EmptyState 和密码锁图标已获明确批准并实施，Figma 已同步；独立人工预览使用自然中文名称与简介。原提案记录保留为历史，最新实际验证见“获批局部反馈实施”。用户于2026-10-06确认“我手动验证的UI没什么问题”，已取得本次UI人工验收反馈；最新组合的自动浏览器检查仍未执行，PR保持草稿。
 

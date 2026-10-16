@@ -1,6 +1,6 @@
 # T-SHR-04 匿名大图与撤权联验
 
-Issue [#193](https://github.com/dnslin/ariso-next/issues/193)，需求 `R-16.3-01`、`R-17.2-01/02`、`R-17.3-01`、`R-17.4-02`、`A-26.10-03/05`。依据为 [sharing §7](../../specs/SPEC-sharing.md#7-列表大图与打开中的变化)、[任务卡](../../archive/m3-m4/experience.md#t-shr-04-匿名大图与删除相册后失效联验)、[设计交接](../../design/handoff.md)和[执行约定](../../tasks/execution.md)。不修改冻结 PRD。
+Issue [#193](https://github.com/dnslin/ariso-next/issues/193)，需求 `R-16.3-01`、`R-17.2-01/02`、`R-17.3-01`、`R-17.4-02`、`A-26.10-03/05`。依据为 [sharing §7](../../specs/SPEC-sharing.md#7-列表大图与打开中的变化)、[任务卡](../../archive/m3-m4/experience.md#t-shr-04-匿名大图与删除相册后失效联验)、[设计交接](../../design/handoff.md)和[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)。不修改冻结 PRD。
 
 匿名功能范围为查看器、公开邻居查询和打开中成员/授权变化。前置 #192、#191、#185、#161、#134 在实施前已从 GitHub 原生依赖回读为 CLOSED。管理查看器、分享管理、相册删除和内容鉴权沿用实际生产能力；不新增下载、管理详情、版本菜单、幻灯片或生成文件。
 
@@ -103,7 +103,7 @@ pnpm exec vitest run --project integration --project media-tools --maxWorkers=1 
 
 ## 限制与人工验收
 
-Ego 两标签是同一 profile，历史中没有取得两个独立浏览器会话证据。2026-10-07 用户明确取消此项要求，按[当前执行约定](../../tasks/execution.md#前端共用验收)不再作为未完成项；取消不记作测试通过。HTTP 联验使用独立 Cookie 请求。AWS、跨浏览器矩阵、真实手机/物理软键盘/非零安全区及 Release 容器本轮未验证，适用范围按执行约定记录。
+Ego 两标签是同一 profile，历史中没有取得两个独立浏览器会话证据。2026-10-07 用户明确取消此项要求，按[当前执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md#前端共用验收)不再作为未完成项；取消不记作测试通过。HTTP 联验使用独立 Cookie 请求。AWS、跨浏览器矩阵、真实手机/物理软键盘/非零安全区及 Release 容器本轮未验证，适用范围按执行约定记录。
 
 人工预览使用另建数据，不复用自动测试场景。地址与独立账号、密码只在本次聊天交付，不提交到仓库或 PR。预览保持运行，直到用户明确要求停止或清理。
 

@@ -10,7 +10,7 @@
 
 ## 实际读取依据
 
-- 完整 [handoff.md](../../../design/handoff.md) 与 [execution.md](../../../tasks/execution.md)，以及既有 [figma-sync.md](../figma-sync.md)、[design-review.md](../design-review.md)。
+- 完整 [handoff.md](../../../design/handoff.md) 与 [execution.md](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)，以及既有 [figma-sync.md](../figma-sync.md)、[design-review.md](../design-review.md)。
 - `frontend-ui-engineering`、`figma-design-to-code` 和 `figma-use` 的适用指导；本轮调用 Figma `get_design_context` 时携带 `figma-design-to-code`，请求真实截图。
 - `OwnerShell`、`SessionControls/useOwnerSession`、`useAccountEditor` 和 `AccountPage/AccountEditor` 的调用关系及当前差异。此次源码变化只让 editor 与 OwnerShell 消费同一会话实例，并复用实际退出确认；既有样式、图标、标题、区域顺序和操作方案未改。
 - `e2e/account-password.mjs`、`account-transport.mjs` 的真实退出响应等待场景和 `account-page.mjs` 的截图/状态断言链。测试源码表达预期，不能视为已经运行成功。

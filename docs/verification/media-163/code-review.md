@@ -21,7 +21,7 @@ pnpm exec vitest run --project integration tests/integration/media/candidate-cle
 
 ## 审查依据与范围
 
-独立审查者实际读取项目 AGENTS.md、`code-review-and-quality` 技能、[执行约定](../../tasks/execution.md)、SPEC-media §11、SPEC-storage §8–10、SPEC-upload §7.3 和 T-MED-14 任务卡。先审查测试，再阅读相对 `origin/main` 的全部生产改动及其完整调用路径。
+独立审查者实际读取项目 AGENTS.md、`code-review-and-quality` 技能、[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)、SPEC-media §11、SPEC-storage §8–10、SPEC-upload §7.3 和 T-MED-14 任务卡。先审查测试，再阅读相对 `origin/main` 的全部生产改动及其完整调用路径。
 
 生产范围为 `cleanup.ts`、`cleanup-object.ts`、`storage.ts`、`errors.ts`、`queue.ts`。相关调用路径包括对象登记、内容处理与候选发布、任务恢复、候选清理、媒体引用、所有者删除入口及 delivery 访问判断。另审查新增 S3 SDK/HTTP 测试、既有 Local 删除和队列测试变化，以及真实服务运行器 `tests/experiments/media-delete/live.ts`。
 

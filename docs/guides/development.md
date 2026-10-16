@@ -55,7 +55,7 @@ pnpm run test:integration
 pnpm run test:browser
 ```
 
-浏览器检查复用 Ego Lite，运行前按 [Ego 冒烟说明](../../e2e/runtime.md) 准备环境。测试自行创建生产服务、临时数据和临时密钥并清理，不连接已有部署。日常 PR 和 main 推送执行日常 Actions 检查；发布仅执行必要镜像验证，耗时实验单独手动执行。具体范围与本地预检统一见[任务执行约定](../tasks/execution.md#适用检查)。
+浏览器检查复用 Ego Lite，运行前按 [Ego 冒烟说明](../../e2e/runtime.md) 准备环境。测试自行创建生产服务、临时数据和临时密钥并清理，不连接已有部署。日常 PR 和 main 推送执行日常 Actions 检查；发布仅执行必要镜像验证，耗时实验单独手动执行。具体范围与本地预检统一见[任务执行约定](verification.md#适用检查)。
 
 `test:integration` 在本地同时执行普通集成和真实工具测试，包含实际 ImageMagick/ExifTool 转换，不需要 Docker。请先完成生产构建；资源紧张时可使用 `pnpm run test:integration --maxWorkers=4`。浏览器检查通过 `test:browser` 复用现有 Ego Lite。
 

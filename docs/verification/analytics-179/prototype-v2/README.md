@@ -13,7 +13,7 @@
 - 全站趋势用曲线，排行用缩略图、名称和比例条，异常用紧凑缩略图卡与两组筛选。重试只更新本地演示状态，关闭保留来源焦点；永久删除没有内容入口。
 - 实际使用已安装 HeroUI3.2.6 的 Card、Button、Modal、CloseButton、Tabs、ToggleButtonGroup、Popover、Tooltip、Accordion、Spinner；状态select仅为原型演示工具。实际读取[Tabs](https://heroui.com/en/docs/react/components/tabs)、[Modal](https://heroui.com/en/docs/react/components/modal)、[Tooltip](https://heroui.com/en/docs/react/components/tooltip)官方说明与本地类型。Recharts3.10.1和Lucide沿现有依赖，无新增依赖。
 - 使用 frontend-design 指导层级与图表布局，emil-design-eng 指导150–180ms局部过渡及减少动效偏好，vercel-react-best-practices 指导图表延迟加载与局部状态，ego-browser执行真实浏览器验证。公共品牌、侧栏、账号布局直接复用 AdminShell，字体与颜色读取项目样式。
-- 参照本轮已实际读取的 Figma 工作台 `451:3748/8551`、统计 `446:8063/8030`、详情 `102:3228` 及 [DG-ANALYTICS](../../../tasks/evidence/DG-ANALYTICS/README.md) 的设计缺口。V2新交互待批准，没有对应已批准节点。两张示例缩略图来自此前实际读取的Figma资产 d4e627b3-e422-490e-9f89-2cecff98e955 与 bcc8fe67-0010-4953-9188-daeac4f46f13，仅用于独立原型。
+- 参照本轮已实际读取的 Figma 工作台 `451:3748/8551`、统计 `446:8063/8030`、详情 `102:3228` 及 [DG-ANALYTICS](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/evidence/DG-ANALYTICS/README.md) 的设计缺口。V2新交互待批准，没有对应已批准节点。两张示例缩略图来自此前实际读取的Figma资产 d4e627b3-e422-490e-9f89-2cecff98e955 与 bcc8fe67-0010-4953-9188-daeac4f46f13，仅用于独立原型。
 
 ## 实际验证
 

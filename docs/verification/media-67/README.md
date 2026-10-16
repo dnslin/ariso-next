@@ -57,4 +57,4 @@ Darwin 25.6.0 arm64，Node 24.18.1，pnpm 11.19.0，ImageMagick 7.1.2-31，ExifT
 - 界面与 Figma 不适用本 Issue；页面回归只证明既有界面未受影响。单图回收恢复 UI 由 #79 / T-LIB-12 实施。
 - 所有版本的链接拦截、恢复同 URL 可访问及停用存储返回不可访问由 #69 / T-DEL-01 联验。本轮只证明资产 ID、对象 Key 与访问状态提供方所读字段保留。历史统计模块尚未交付，本轮没有触碰统计。
 - 永久删除任务的受理、并发停止与对象清理由 T-MED-11 实施。本轮以真实持久删除状态验证禁止恢复，不冒充永久删除流程已交付。
-- 远端只有 `Release checks`（workflow_call）和 `Release images`（release.published），没有 PR/push/workflow_dispatch 验证入口。根据[执行约定](../../tasks/execution.md#适用检查)，日常交付以本地适用检查为准。未发布 Release、镜像或部署；本轮 AMD64/ARM64 容器结果未验证，保留发布阶段验证责任。PR 创建后仍回读远端检查状态，不把“无检查”写成通过。
+- 远端只有 `Release checks`（workflow_call）和 `Release images`（release.published），没有 PR/push/workflow_dispatch 验证入口。根据[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md#适用检查)，日常交付以本地适用检查为准。未发布 Release、镜像或部署；本轮 AMD64/ARM64 容器结果未验证，保留发布阶段验证责任。PR 创建后仍回读远端检查状态，不把“无检查”写成通过。

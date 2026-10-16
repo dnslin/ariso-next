@@ -8,7 +8,7 @@
 
 ## 阅读依据与方法
 
-已实际读取 `frontend-ui-engineering`、`figma-design-to-code`、`figma-use`、项目 [handoff.md](../../design/handoff.md) 和 [execution.md 前端共用验收](../../tasks/execution.md#前端共用验收)，并读取 `AccountPage`、`AccountEditor`、`IdentityField`、`SettingsCategories`、`OwnerShell` 及相关主题样式。最新用户批准的是[图标版反馈原型](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/design-plans/issue165-review/index.html)，原型截图不当作产品验收证据。
+已实际读取 `frontend-ui-engineering`、`figma-design-to-code`、`figma-use`、项目 [handoff.md](../../design/handoff.md) 和 [execution.md 前端共用验收](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md#前端共用验收)，并读取 `AccountPage`、`AccountEditor`、`IdentityField`、`SettingsCategories`、`OwnerShell` 及相关主题样式。最新用户批准的是[图标版反馈原型](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/design-plans/issue165-review/index.html)，原型截图不当作产品验收证据。
 
 通过 Figma `get_design_context` 实际取得主节点 `34:462/102:1713`、邮箱/密码表单 `196:871/1987`、`196:874/1990`，字段错误、提交中、原页成功、密码 unknown、邮箱核对失败/中/后状态的设计信息和截图。深色主页面、代表表单和 unknown 同样实际读取；完整节点映射和最终导出见 [Figma 同步记录](figma-sync.md)。最后的 surface 返修后，还独立调用只读 Plugin API 回读 `702:15198` 的账号卡片 `702:15307`、邮箱弹窗 `702:15484` 和密码 unknown `702:16096`，确认绑定 `VariableID:264:1391`，并查看对应最后导出的 PNG。
 

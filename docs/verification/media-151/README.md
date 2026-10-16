@@ -1,6 +1,6 @@
 # T-MED-13 不可变水印素材与快照引用生命周期
 
-关联 [Issue #151](https://github.com/dnslin/ariso-next/issues/151)，范围与需求沿用[任务卡](../../archive/m3-m4/platform.md#t-med-13-不可变水印素材与快照引用生命周期)、[SPEC-media §4.3/5/12](../../specs/SPEC-media.md)和[执行约定](../../tasks/execution.md)。
+关联 [Issue #151](https://github.com/dnslin/ariso-next/issues/151)，范围与需求沿用[任务卡](../../archive/m3-m4/platform.md#t-med-13-不可变水印素材与快照引用生命周期)、[SPEC-media §4.3/5/12](../../specs/SPEC-media.md)和[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)。
 
 2026-09-29 回读 Issue、评论和原生 blocked_by/blocking：无评论；#150、#51、#53 均为 CLOSED，交付记录分别见 [media-150](../media-150/README.md)、[media-51](../media-51/README.md)、[identity-53](../identity-53/README.md)。下游 #152、#160 仍为 OPEN。原工作区有其他活动任务，更新远端后从 `origin/main` 的 `00979f5` 创建独立 worktree `/Users/dnslin/.codex/worktrees/watermark-assets/ariso` 与分支 `codex/151-watermark-assets`，未覆盖原目录。
 

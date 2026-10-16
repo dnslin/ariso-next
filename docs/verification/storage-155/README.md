@@ -1,6 +1,6 @@
 # T-STO-02 S3 对象操作与方法签名
 
-关联 [Issue #155](https://github.com/dnslin/ariso-next/issues/155) 与[PR #204](https://github.com/dnslin/ariso-next/pull/204)。核心实现与独立审计已完成，R2、SeaweedFS 真实服务验收通过。所有者于 2026-09-28 明确取消 AWS S3 实测要求，依据见[统一执行约定](../../tasks/execution.md#对象存储验证目标调整)；AWS S3 保持未验证。前置 #49、#70、#71 均已关闭。浏览器历史失败、测试时序修正及最终完整通过记录见下文。
+关联 [Issue #155](https://github.com/dnslin/ariso-next/issues/155) 与[PR #204](https://github.com/dnslin/ariso-next/pull/204)。核心实现与独立审计已完成，R2、SeaweedFS 真实服务验收通过。所有者于 2026-09-28 明确取消 AWS S3 实测要求，依据见[统一执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md#对象存储验证目标调整)；AWS S3 保持未验证。前置 #49、#70、#71 均已关闭。浏览器历史失败、测试时序修正及最终完整通过记录见下文。
 
 ## 范围与调用契约
 

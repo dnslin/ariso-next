@@ -46,7 +46,7 @@ prestart 与 Web 初始化都显式解密全部已有秘密，包括停用配置
 
 最终单进程集成 **75 文件 / 596 项全部通过，620.59 秒**，包括普通集成和真实图片工具组。此前开发重编译与进程检查超时未复现；没有把这次通过表述为已修复系统负载问题。单元 **35 文件 / 529 项通过**；冻结安装、迁移生成、格式、lint、类型、无部署环境构建、文档依赖及 5 项自测均通过。构建仍有既有 better-sqlite3 可选 Debug 绑定路径追踪警告，构建退出 0 且隔离产物测试通过。浏览器第二轮曾未通过，后续完整重试通过，详情如下。实际命令汇总见 [local-checks.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-156/local-checks.json)，本机原始日志位于 `/tmp/ariso-156-*.log`。
 
-发布边界遵守[执行约定](../../tasks/execution.md#适用检查)：本次不创建 Release、发布镜像或部署；AMD64/ARM64 镜像和容器验证留在 Release 流程，未标通过。不会主动合并 PR、关闭 Issue、删除分支或 worktree。
+发布边界遵守[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md#适用检查)：本次不创建 Release、发布镜像或部署；AMD64/ARM64 镜像和容器验证留在 Release 流程，未标通过。不会主动合并 PR、关闭 Issue、删除分支或 worktree。
 
 ## 历史验证阻塞与草稿状态
 

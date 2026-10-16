@@ -34,4 +34,4 @@ pnpm --dir tests/experiments/upload run test:browser
 4. Busboy 1.6.0 的 `fileSize` 在等号处发 `limit`；设成最大字节数加一并逐块计数，保证恰好 50 MiB 允许、+1 拒绝。字段总预算计入名称和值，超过后停止保存字段，仍以有界缓冲消费剩余输入。不能忽略 `filesLimit`、`valueTruncated` 或流错误。
 5. 实验不包含认证、完整业务字段语义、图片格式识别、事务交接、服务器磁盘错误与生产清理责任。后续 T-UP-* 需接入实际模块并补测试，不能直接把这个夹具当生产 API。
 
-固定版本依据、实际环境、峰值、审计和未验证范围见[证据报告](../../../docs/tasks/evidence/UPLOAD-V03/README.md)。
+固定版本依据、实际环境、峰值、审计和未验证范围见[证据报告](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/evidence/UPLOAD-V03/README.md)。

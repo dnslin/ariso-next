@@ -1,6 +1,6 @@
 # 页面切换状态与七项界面反馈
 
-2026-09-27，延续 [Issue #85](https://github.com/dnslin/ariso-next/issues/85) / [草稿 PR #126](https://github.com/dnslin/ariso-next/pull/126)。本轮仅处理上传、图库详情、回收站及其必要公共导航。依据仍为[设计交接](../../../design/handoff.md)和[执行约定](../../../tasks/execution.md)，不改冻结 PRD，不新增依赖或数据库结构。
+2026-09-27，延续 [Issue #85](https://github.com/dnslin/ariso-next/issues/85) / [草稿 PR #126](https://github.com/dnslin/ariso-next/pull/126)。本轮仅处理上传、图库详情、回收站及其必要公共导航。依据仍为[设计交接](../../../design/handoff.md)和[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)，不改冻结 PRD，不新增依赖或数据库结构。
 
 ## 实际实现
 

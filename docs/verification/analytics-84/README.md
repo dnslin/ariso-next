@@ -52,7 +52,7 @@ SIGKILL 不执行清理，未提交的内存访问会丢失。持续写入失败
 
 框架等待在途 HTTP 没有应用层绝对截止时间；部署的停止宽限须涵盖传输和批写，超限后 SIGKILL 属于异常退出。当前部署示例保留 30 秒停止宽限。开发入口也接入同一 preload；本轮未单独验证开发模式的信号关停，生产 standalone 已实测。
 
-本地检查不替代 Linux、Docker、AMD64/ARM64 结果。仓库 `ci.yml` 仅供 workflow_call，`images.yml` 仅由 Release published 触发；历史 Analytics experiment 文件已删除。此次不触发 Release、镜像发布或部署，适用检查按[执行约定](../../tasks/execution.md#适用检查)以本地结果完成，未运行发布验证不作为功能 PR 阻塞。
+本地检查不替代 Linux、Docker、AMD64/ARM64 结果。仓库 `ci.yml` 仅供 workflow_call，`images.yml` 仅由 Release published 触发；历史 Analytics experiment 文件已删除。此次不触发 Release、镜像发布或部署，适用检查按[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md#适用检查)以本地结果完成，未运行发布验证不作为功能 PR 阻塞。
 
 ## 提交与远端核验
 

@@ -7,7 +7,7 @@
 ## Design language
 
 - Audited surface：匿名分享密码页的24h访问说明与真正空相册；对应 [局部原型](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/design-plans/issue192-feedback/index.html)、[密码Tips方案](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/design-plans/issue192-feedback/password-tips-plan.md)、[空态方案](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/design-plans/issue192-feedback/empty-state-plan.md)。分享管理、匿名大图、授权契约、非空图库不在本提案范围。
-- Design sources：实际重新读取项目 [AGENTS.md](../../../../AGENTS.md)、[设计交付规范](../../../design/handoff.md)及 [前端共用验收](../../../tasks/execution.md#前端共用验收)。`using-agent-skills`选取`improve-ui`进行只读UI审查，`figma-use`/`figma-design-to-code`指导实际Figma读取。
+- Design sources：实际重新读取项目 [AGENTS.md](../../../../AGENTS.md)、[设计交付规范](../../../design/handoff.md)及 [前端共用验收](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md#前端共用验收)。`using-agent-skills`选取`improve-ui`进行只读UI审查，`figma-use`/`figma-design-to-code`指导实际Figma读取。
 - Documented decisions：用户最新要求长密码说明收进Tips、空态使用占位组件、预览标题/描述用自然中文；具体控件位置、尺寸和新视觉仍待批准。品牌Caveat、中文Noto Sans SC、黄色主操作、语义色、低对比点阵与双柔光、既定封面/正文起点沿上轮获批方案。
 - Governing owners and consumers：产品密码说明由`src/components/sharing/password-form.tsx`持有，空态由`src/components/sharing/list.tsx`呈现。实际读到`DetailTip`仅组合HeroUI Button/Popover和Lucide Info，不消费管理查询；本轮可复用其现有提示能力。空态直接复用已锁HeroUI3.2.6的EmptyState容器，组合Lucide Images与中文段落，不增加本地空态框架。
 - Explicit exceptions：用户明确要求改动这两处局部信息层级；旧Figma是修改前基线，不能因旧稿常驻说明或22px空态标题而拒绝本次提案。新原型尚未批准，不能倒改为既定规范或产品已经完成。

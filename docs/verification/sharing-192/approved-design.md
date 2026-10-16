@@ -1,6 +1,6 @@
 # Issue #192 获批视觉调整与 Figma 同步
 
-2026-10-06，用户批准完整 `refined.html` 方案并要求同步 Figma。本记录补充本次设计决定，不改写冻结需求；公共界面继续遵守 [handoff](../../design/handoff.md)，验证与完成条件继续遵守 [execution](../../tasks/execution.md)。
+2026-10-06，用户批准完整 `refined.html` 方案并要求同步 Figma。本记录补充本次设计决定，不改写冻结需求；公共界面继续遵守 [handoff](../../design/handoff.md)，验证与完成条件继续遵守 [execution](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)。
 
 ## 获批变化
 

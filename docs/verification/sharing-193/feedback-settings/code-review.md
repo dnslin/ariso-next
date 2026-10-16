@@ -4,7 +4,7 @@
 
 ## 范围与依据
 
-评审以 `1518911f` 后的本轮反馈修改为范围，审查 `src/app/shares/settings.tsx`、`e2e/sharing-management.mjs` 及验证中真实失败所需的 `e2e/library-copy-helpers.mjs` 小幅修正与直接调用路径。依据是用户明确指定的右上角图标返回按钮、红色“已过期”文字且不加 Halo，项目 `AGENTS.md`、[设计交付规范](../../../design/handoff.md)、[任务执行与验证约定](../../../tasks/execution.md)，以及实际读取的 `code-review-and-quality` 技能。
+评审以 `1518911f` 后的本轮反馈修改为范围，审查 `src/app/shares/settings.tsx`、`e2e/sharing-management.mjs` 及验证中真实失败所需的 `e2e/library-copy-helpers.mjs` 小幅修正与直接调用路径。依据是用户明确指定的右上角图标返回按钮、红色“已过期”文字且不加 Halo，项目 `AGENTS.md`、[设计交付规范](../../../design/handoff.md)、[任务执行与验证约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)，以及实际读取的 `code-review-and-quality` 技能。
 
 已核对分享设置路由、`useSettings` 的返回与弹窗焦点恢复、现有主题变量、HeroUI 3.2.6 的 Button/Tooltip/Chip 实现和类型、浏览器场景与默认运行器。未重新评审匿名大图或范围外模块，未操作浏览器，未重复实现者已执行的安装、静态、类型或构建检查。
 

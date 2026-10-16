@@ -1,6 +1,6 @@
 # T-LIB-04 / Issue #173：四种布局加载组合与筛选历史
 
-本记录对应 [Issue #173](https://github.com/dnslin/ariso-next/issues/173) 与[PR #218](https://github.com/dnslin/ariso-next/pull/218)。2026-10-01用户已确认第二轮 UI 人工验收通过；随后两个独立agent审查整个PR，发现的两项P2已按下述记录修复。历史记录保留当时结论，不代表当前仍待UI验收。规则沿用[设计交接](../../design/handoff.md)与[任务执行约定](../../tasks/execution.md)。
+本记录对应 [Issue #173](https://github.com/dnslin/ariso-next/issues/173) 与[PR #218](https://github.com/dnslin/ariso-next/pull/218)。2026-10-01用户已确认第二轮 UI 人工验收通过；随后两个独立agent审查整个PR，发现的两项P2已按下述记录修复。历史记录保留当时结论，不代表当前仍待UI验收。规则沿用[设计交接](../../design/handoff.md)与[任务执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)。
 
 ## 人工验收后的代码评审修复（2026-10-01）
 

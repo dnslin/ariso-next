@@ -1,6 +1,6 @@
 # Issue #200 独立产品设计评审
 
-2026-10-08（Asia/Shanghai）。评审者独立于产品 UI 实现者，实际读取 frontend-ui-engineering、Figma 使用与设计转代码技能、[handoff](../../design/handoff.md) 和 [execution](../../tasks/execution.md)。按用户获批原型及[已同步 Figma](./figma-sync.md)评审，不操作或另建 Ego 任务空间，不重复实现者已执行的应用检查。
+2026-10-08（Asia/Shanghai）。评审者独立于产品 UI 实现者，实际读取 frontend-ui-engineering、Figma 使用与设计转代码技能、[handoff](../../design/handoff.md) 和 [execution](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)。按用户获批原型及[已同步 Figma](./figma-sync.md)评审，不操作或另建 Ego 任务空间，不重复实现者已执行的应用检查。
 
 ## 当前结论
 

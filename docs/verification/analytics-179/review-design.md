@@ -4,7 +4,7 @@
 
 ## 范围与依据
 
-评审者未参与产品实现。本轮读取项目 `AGENTS.md`、完整 [设计交付规范](../../design/handoff.md)、[前端共用验收](../../tasks/execution.md#前端共用验收)及 [实施记录](./README.md)。应用 `figma-use`、`figma-design-to-code` 和 `ego-browser` 技能。未修改产品、Figma 或浏览器运行状态。
+评审者未参与产品实现。本轮读取项目 `AGENTS.md`、完整 [设计交付规范](../../design/handoff.md)、[前端共用验收](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md#前端共用验收)及 [实施记录](./README.md)。应用 `figma-use`、`figma-design-to-code` 和 `ego-browser` 技能。未修改产品、Figma 或浏览器运行状态。
 
 实时调用 `get_design_context` 并实际查看30个节点的返回截图，文件均为 `74sT9Hrf8G4czcWeTkET5b`：
 

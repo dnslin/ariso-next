@@ -1,6 +1,6 @@
 # Issue #200 获批上传限制 Figma 同步
 
-2026-10-08（Asia/Shanghai）。用户明确“批准这个原型 按照这个去实施”，授权按已展示原型同步本任务 Figma。依据为 [获批原型源码](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/design-plans/issue200-review/app/settings/processing/page.tsx)、[任务证据](./README.md)、[设计交接](../../design/handoff.md) 与 [执行约定](../../tasks/execution.md)。原型中的 `/settings/processing` 仅是独立预览地址；产品采用基本设置 `/settings/general`。
+2026-10-08（Asia/Shanghai）。用户明确“批准这个原型 按照这个去实施”，授权按已展示原型同步本任务 Figma。依据为 [获批原型源码](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/design-plans/issue200-review/app/settings/processing/page.tsx)、[任务证据](./README.md)、[设计交接](../../design/handoff.md) 与 [执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)。原型中的 `/settings/processing` 仅是独立预览地址；产品采用基本设置 `/settings/general`。
 
 ## 实际同步范围
 

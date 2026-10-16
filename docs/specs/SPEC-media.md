@@ -4,7 +4,7 @@
 - 状态：产品行为已确认，已按 2026-09-17 评审意见修订；工程参数需实测。未实现，未新增依赖。
 - 日期：2026-09-17。
 - 前置：[storage](./SPEC-storage.md)、[site](./SPEC-site.md)、[identity](./SPEC-identity.md)已通过评审；运行基础见 [runtime 归档](../archive/runtime/README.md)。
-- 依据：[PRD](../product/Ariso-PRD-v1.1.md) 10–13、14.1/14.4、18、20、26.7/26.8/26.11；[覆盖表](../tasks/coverage.md)。
+- 依据：[PRD](../product/Ariso-PRD-v1.1.md) 10–13、14.1/14.4、18、20、26.7/26.8/26.11；[覆盖表](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/coverage.md)。
 - 用户确认记录见第 15 节。取消固定尺寸/像素/帧页准入及固定磁盘预留已同步修订 PRD；第 10 节的工程起始参数不冒充用户逐值确认或已完成实测。
 
 当前原型入口见[设计索引](../design/README.md)与[设计交接](../design/handoff.md)，DES／RG 的开放项和真实验证范围见[设计验收](../design/acceptance.md)。历史节点表与批次记录仅供追溯，不表示仍缺整组原型，也不代替业务实现与交互验收。

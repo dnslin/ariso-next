@@ -1,6 +1,6 @@
 # Issue #178 · 5项P2修复后的独立UI状态复核
 
-日期：2026-10-04。本次只复核查询重新应用、清空查询、单图第三周期完成及批量当前周期成功的实际UI。没有修改应用或Figma，没有重跑浏览器或此前全量设计评审。规则沿用 [handoff](../../design/handoff.md) 与 [execution](../../tasks/execution.md#前端共用验收)，前轮完整来源与批准范围见 [设计审计](./design-audit.md)。
+日期：2026-10-04。本次只复核查询重新应用、清空查询、单图第三周期完成及批量当前周期成功的实际UI。没有修改应用或Figma，没有重跑浏览器或此前全量设计评审。规则沿用 [handoff](../../design/handoff.md) 与 [execution](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md#前端共用验收)，前轮完整来源与批准范围见 [设计审计](./design-audit.md)。
 
 设计结论：下面6张最终实际截图已逐一独立读取，没有新增观察到的设计偏差。状态数据更新后仍保持统一公共区域、批准筛选/分页及HeroUI Table/单项展开Accordion；批量常驻mint说明与重复分类汇总没有回归。最终真实UI人工验收尚未进行，PR继续草稿。
 

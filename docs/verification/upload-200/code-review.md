@@ -1,6 +1,6 @@
 # Issue #200 独立代码审计
 
-2026-10-08（Asia/Shanghai）。评审者独立于实现者，实际读取 `code-review-and-quality`、`vercel-react-best-practices`、项目 AGENTS、[execution](../../tasks/execution.md)、[handoff](../../design/handoff.md)、SPEC-upload 的限制及异常约定、T-UP-08 与获批原型。功能、视觉及人工验收分别记录；本文件不替代[设计评审](./design-review.md)或[实施与验证总记录](./README.md)。
+2026-10-08（Asia/Shanghai）。评审者独立于实现者，实际读取 `code-review-and-quality`、`vercel-react-best-practices`、项目 AGENTS、[execution](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)、[handoff](../../design/handoff.md)、SPEC-upload 的限制及异常约定、T-UP-08 与获批原型。功能、视觉及人工验收分别记录；本文件不替代[设计评审](./design-review.md)或[实施与验证总记录](./README.md)。
 
 ## 当前结论
 

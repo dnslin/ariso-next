@@ -4,7 +4,7 @@
 - 状态：产品行为已确认；访问批写/保留、本地与 S3 计数及完整当前数量/登记占用已实现。T-ANA-04 接入周期/历史/单图查询，实际结果见[本次证据](../verification/analytics-169/README.md)；T-ANA-05 的统计界面与人工验收仍未完成。
 - 日期：2026-09-17。
 - 前置：[site](./SPEC-site.md)、[identity](./SPEC-identity.md)、[storage](./SPEC-storage.md)、[media](./SPEC-media.md)、[collections](./SPEC-collections.md)、[delivery](./SPEC-delivery.md)的已确认契约。上传临时占用在组合入口接入 upload 提供方，不让 analytics 反向实现上传协议。
-- 依据：[PRD](../product/Ariso-PRD-v1.1.md) 5.5、10.1、14、18、19、23.1、26.4/26.11/26.13；[覆盖表](../tasks/coverage.md)。
+- 依据：[PRD](../product/Ariso-PRD-v1.1.md) 5.5、10.1、14、18、19、23.1、26.4/26.11/26.13；[覆盖表](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/coverage.md)。
 - 第 12 节记录图片数量口径、永久删除后的历史展示、图表周期联动三组确认结果；计数排除、365 天及改时区不重算历史等规则直接沿用 PRD。
 
 当前原型入口见[设计索引](../design/README.md)与[设计交接](../design/handoff.md)，DES／RG 的开放项和真实验证范围见[设计验收](../design/acceptance.md)。历史节点表与批次记录仅供追溯，不表示仍缺整组原型，也不代替业务实现与交互验收。

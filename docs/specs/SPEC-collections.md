@@ -4,7 +4,7 @@
 - 状态：产品行为已通过评审；用户于 2026-09-17 确认五组建议。T-COL-01 已实施模型与上传关联内部契约，见[实施与验证记录](../verification/collections-66/README.md)；T-COL-02 已实现相册列表和创建、编辑、删除，见[实施与验证记录](../verification/collections-175/README.md)；T-COL-03 已实现标签管理和真实 tagId 图库入口，见[实施与验证记录](../verification/collections-176/README.md)。两项管理 UI 仍待用户人工验收；封面与真实上传联验仍由后续任务承接。
 - 日期：2026-09-17。
 - 前置：[media](./SPEC-media.md)的资产、回收与永久删除契约。管理入口组合 identity，图片展示组合 delivery，不让底层关系操作反向依赖页面或分享模块。
-- 依据：[PRD](../product/Ariso-PRD-v1.1.md) 7.3、8.4、15、16、17、18、22、26.10–26.13；[能力地图](../product/CAPABILITY-MAP.md)、[覆盖表](../tasks/coverage.md)。
+- 依据：[PRD](../product/Ariso-PRD-v1.1.md) 7.3、8.4、15、16、17、18、22、26.10–26.13；[能力地图](../product/CAPABILITY-MAP.md)、[覆盖表](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/coverage.md)。
 - 用户确认记录见第 12 节；2026-09-17 按用户最新决定取消相册调整顺序功能，PRD、依赖及验收同步修订。
 
 当前原型入口见[设计索引](../design/README.md)与[设计交接](../design/handoff.md)，DES／RG 的开放项和真实验证范围见[设计验收](../design/acceptance.md)。历史节点表与批次记录仅供追溯，不表示仍缺整组原型，也不代替业务实现与交互验收。

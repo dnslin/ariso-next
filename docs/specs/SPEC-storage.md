@@ -4,7 +4,7 @@
 - 状态：已通过评审；用户于 2026-09-17 确认。本地存储已交付；S3 对象模块的实施与验收记录见 [T-STO-02 记录](../verification/storage-155/README.md)，配置管理与完整业务接入仍由后续任务承接。
 - 日期：2026-09-17。
 - 前置：[site](./SPEC-site.md)与 [identity](./SPEC-identity.md)已通过评审；运行基础见 [runtime 归档](../archive/runtime/README.md)。
-- 依据：[PRD](../product/Ariso-PRD-v1.1.md) 5.2–5.3、8.1–8.4、9、14.7–14.10、18、20、24.2、26.2、26.4–26.6；[覆盖表](../tasks/coverage.md)。
+- 依据：[PRD](../product/Ariso-PRD-v1.1.md) 5.2–5.3、8.1–8.4、9、14.7–14.10、18、20、24.2、26.2、26.4–26.6；[覆盖表](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/coverage.md)。
 - 本轮用户补充：首版支持普通 Bucket；启用版本控制或对象锁的 Bucket 暂不支持，连接测试必须说明。具体解释见第 5 节，不改写冻结 PRD。
 
 当前原型入口见[设计索引](../design/README.md)与[设计交接](../design/handoff.md)，DES／RG 的开放项和真实验证范围见[设计验收](../design/acceptance.md)。历史节点表与批次记录仅供追溯，不表示仍缺整组原型，也不代替业务实现与交互验收。
@@ -23,7 +23,7 @@ storage 提供配置、路径与对象访问、S3 测试/签名/CORS 检测和�
 
 现有 runtime 已创建 `${DATA_DIR}/storage` 父目录，**没有**创建 `default` 子目录或存储记录。`runPreflight(..., prepare)` 可同步准备目录和业务默认值；Drizzle 使用 better-sqlite3，事务内不得等待网络或异步文件流。
 
-仓库复用 Node 文件 API、Drizzle、Zod、Pino 和 `createSecretCrypto()`。T-STO-02 将 EV-STORAGE-01 已验证的 `@aws-sdk/client-s3` / `@aws-sdk/s3-request-presigner` **3.1136.0** 从开发依赖移入生产依赖，保持锁定版本。已核对安装包的流、条件复制、方法签名和超时类型；本轮真实服务结果见[实施记录](../verification/storage-155/README.md)。当前必需验证目标为 R2、SeaweedFS；AWS S3 因无环境取消实测要求且保持未验证，遵守[执行约定](../tasks/execution.md#对象存储验证目标调整)。
+仓库复用 Node 文件 API、Drizzle、Zod、Pino 和 `createSecretCrypto()`。T-STO-02 将 EV-STORAGE-01 已验证的 `@aws-sdk/client-s3` / `@aws-sdk/s3-request-presigner` **3.1136.0** 从开发依赖移入生产依赖，保持锁定版本。已核对安装包的流、条件复制、方法签名和超时类型；本轮真实服务结果见[实施记录](../verification/storage-155/README.md)。当前必需验证目标为 R2、SeaweedFS；AWS S3 因无环境取消实测要求且保持未验证，遵守[执行约定](../guides/verification.md#对象存储验证目标调整)。
 
 | 库能力                                                             | 本模块使用方式                                                                   |
 | ------------------------------------------------------------------ | -------------------------------------------------------------------------------- |
@@ -313,7 +313,7 @@ connection.db.transaction((tx) => {
 | ST-17 | 管理与凭据接口拒绝匿名/上传 Token；真实错误日志无密钥或签名，诊断路径保留                           | R-20-02/03、R-6.5-01                |
 | ST-18 | 桌面/手机完整保存测试启停默认删除流程、错误/重试/无障碍及规定设计节点                               | R-22.1-01、R-22.4-01、A-26.13-01    |
 
-通用命令、本地检查与 Release 发布验证范围统一按[适用检查](../tasks/execution.md#适用检查)。测试覆盖真实临时目录与磁盘 SQLite、故障注入、请求/流取消和进程恢复；服务协议不能仅靠模拟 SDK 返回值。AWS S3/R2/MinIO 分别记录版本、权限、Bucket 配置、执行结果和对象清理证据；没有服务环境就明确未验收。规格编写时未执行应用测试或连接用户 S3。
+通用命令、本地检查与 Release 发布验证范围统一按[适用检查](../guides/verification.md#适用检查)。测试覆盖真实临时目录与磁盘 SQLite、故障注入、请求/流取消和进程恢复；服务协议不能仅靠模拟 SDK 返回值。AWS S3/R2/MinIO 分别记录版本、权限、Bucket 配置、执行结果和对象清理证据；没有服务环境就明确未验收。规格编写时未执行应用测试或连接用户 S3。
 
 ## 13. 后续规格必须闭合的契约
 

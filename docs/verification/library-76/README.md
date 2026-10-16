@@ -61,11 +61,11 @@
 
 使用 `code-review-and-quality` 做独立只读审计，先审测试，再核对需求、实现、调用链和前端交接。发现的接入与验证问题修复后完成复核，无剩余 Critical / Required 问题，见[审计记录](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-76/audit.json)。实际运行结果仍以本轮报告为准。
 
-本分支 `ci.yml` 仅有 `workflow_call`，`images.yml` 仅由 `release.published` 触发，没有可单独调用的 PR 或手动验证入口。按[当前适用检查](../../tasks/execution.md#适用检查)，日常交付执行本地检查，AMD64/ARM64 容器验证留在发布阶段。本次不创建 Release、不发布镜像、不部署，不将未运行的远端验证标为通过。
+本分支 `ci.yml` 仅有 `workflow_call`，`images.yml` 仅由 `release.published` 触发，没有可单独调用的 PR 或手动验证入口。按[当前适用检查](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md#适用检查)，日常交付执行本地检查，AMD64/ARM64 容器验证留在发布阶段。本次不创建 Release、不发布镜像、不部署，不将未运行的远端验证标为通过。
 
 提交 `1aaeac6` 推送并创建 PR #120 后，实际执行 `gh pr view 120 --json isDraft,mergeable,mergeStateStatus,headRefOid,statusCheckRollup`、`gh run list --branch codex/issue-76-library-base`，并回读该提交的 `check-runs` 与 `status` API。结果：分支可合并、无冲突；运行列表、check runs 和 statuses 均为空。空 status API 返回的 `pending` 不代表存在正在运行的检查，计数为 0；远端检查未执行。新出现的 Analytics experiment 工作流不在本分支及默认分支文件中，也不适用于图库交付，未触发。
 
-本切片未交付完整筛选、20/80 分页、瀑布流、选择、大图或详情，也没有声称十万图片完整查询及浏览器内存目标已经验收。真实手机触控、物理软键盘、非零安全区和其他浏览器未实测，范围沿用[共用验收](../../tasks/execution.md#前端共用验收)。
+本切片未交付完整筛选、20/80 分页、瀑布流、选择、大图或详情，也没有声称十万图片完整查询及浏览器内存目标已经验收。真实手机触控、物理软键盘、非零安全区和其他浏览器未实测，范围沿用[共用验收](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md#前端共用验收)。
 
 ## PR 评审建议优化
 

@@ -72,7 +72,7 @@ Darwin arm64，Node24.18.1、pnpm11.19.0、HeroUI3.2.6、Uppy5.2.0、现有Ego L
 
 全量浏览器的既有 `e2e/interaction-polish.mjs` 要求1920px下上传组合铺满可用正文；但现行handoff的2026-10-01 Issue #159已批准从1200px起组合最大1280px。首次运行时该脚本和上传screen相对于起点均未修改；本轮screen仅添加已批准关系/摘要，不改变组合宽度，不能将相互冲突的既有断言标为通过。本次只记录范围外问题，不顺手改旧测试或已批准布局。现以独立真实实例补跑现有upload业务脚本，通过130组布局和真实上传、取消、回收、未知核对、空/加载/错误/成功/禁用状态；[原始报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/upload-160/reports/regression-upload.json)。polling专项通过，实际取消/清空后新文件继续自动轮询；[原始报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/upload-160/reports/polling-upload-polling.json)。
 
-发布阶段的AMD64/ARM64镜像与实际容器检查未运行，按[执行约定](../../tasks/execution.md#适用检查)在Release执行。真实物理手机、软键盘和安全区实测按现行约定不要求，不标为通过。
+发布阶段的AMD64/ARM64镜像与实际容器检查未运行，按[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md#适用检查)在Release执行。真实物理手机、软键盘和安全区实测按现行约定不要求，不标为通过。
 
 ## 独立审计与设计证据
 

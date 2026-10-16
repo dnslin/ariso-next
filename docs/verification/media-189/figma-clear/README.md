@@ -5,7 +5,7 @@
 ## 实际依据与操作
 
 - 读取 `figma-use`、`figma-generate-design`、`figma-design-to-code`，以及 Plugin API 的字体、Auto Layout、实例属性和变量文档。
-- 读取产品 `watermark-fields.tsx` / `processing-page.tsx` 的公共清空行和处理函数，以及批准原型 `surface.js:198` / `:287`。规范继续采用 [设计交接](../../../design/handoff.md) 和 [任务执行与验证约定](../../../tasks/execution.md)。
+- 读取产品 `watermark-fields.tsx` / `processing-page.tsx` 的公共清空行和处理函数，以及批准原型 `surface.js:198` / `:287`。规范继续采用 [设计交接](../../../design/handoff.md) 和 [任务执行与验证约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)。
 - 实际请求 `get_design_context` 及截图：桌面整页 `60:879`、业务卡 `60:996`；手机整页 `102:2361`、业务卡 `102:2481`。先核对整页与公共区，再核对水印业务结构。
 - 通过 `use_figma` 读取对应祖先、滚动区、已采用/读取失败/临时/到期代表、按钮实例与属性、字体、主题变量。所需本地组件已经存在；定向搜索没有找到 Code Connect 文件。复用 `Button/Outline` `3:23`，真实文本属性为 `Label#3:1`，不创建新公共组件。
 - 写入后读回节点属性并实际导出 PNG，下载后用 `view_image` 查看。原文件中的 UI 均为可编辑文字、实例与框架；本轮完整组合的 IMAGE fill 数为 0，没有上传或铺设整页截图。

@@ -6,7 +6,7 @@
 
 日期：2026-10-06。独立评审者未参与本轮产品或 Figma 实现，只读取文件、实际 Figma 上下文及截图和主任务提供的真实 Ego Lite PNG。本轮没有操作浏览器、重跑作者检查或修改产品、测试、公共规范、Figma；仅维护本记录。
 
-已实际读取 `AGENTS.md`、[设计交接](../../../design/handoff.md)和[前端共用验收](../../../tasks/execution.md#前端共用验收)。设计交接“表单、提示与操作”要求外标签、字段旁文字与边框共同表达错误、提交中禁止重复提交；2026-10-06 #192 局部反馈条目明确批准 Tips、LockKeyhole 和 EmptyState，同时保留直接的错误、限流、重新验证说明。批准来源、原型及同步范围见[同步记录](figma-sync.md)，前一轮提案结论见[提案评审](../feedback-proposal/design-review.md)。原型批准与本次产品复审均不能代替用户对实际产品的人工验收。
+已实际读取 `AGENTS.md`、[设计交接](../../../design/handoff.md)和[前端共用验收](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md#前端共用验收)。设计交接“表单、提示与操作”要求外标签、字段旁文字与边框共同表达错误、提交中禁止重复提交；2026-10-06 #192 局部反馈条目明确批准 Tips、LockKeyhole 和 EmptyState，同时保留直接的错误、限流、重新验证说明。批准来源、原型及同步范围见[同步记录](figma-sync.md)，前一轮提案结论见[提案评审](../feedback-proposal/design-review.md)。原型批准与本次产品复审均不能代替用户对实际产品的人工验收。
 
 通过 `using-agent-skills` 选择并实际读取 `improve-ui`（层级、控件、响应式及克制的说明）、`figma-use` / `figma-design-to-code`（实际设计来源与同视口对照）和 `vercel-react-best-practices`。产品判断以本项目规范和用户最新批准为准。核对了实际 `password-form.tsx`、`list.tsx`、复用的 `DetailTip`、品牌与门禁调用路径，以及主题颜色；不依据 Figma 生成代码替代实际产品。
 

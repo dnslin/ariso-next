@@ -1,6 +1,6 @@
 # T-SITE-03 独立代码审计
 
-2026-10-09，独立 agent 按实际读取的 `code-review-and-quality` 审阅 Issue [#195](https://github.com/dnslin/ariso-next/issues/195)、AGENTS、[site §6/7](../../specs/SPEC-site.md) 和[执行约定](../../tasks/execution.md)。范围为品牌服务、所有者 HTTP 写入、匿名读取、启动/停止、运行时 metadata、真实工具与 HTTP 测试、默认浏览器调用链；未修改产品或测试源码。
+2026-10-09，独立 agent 按实际读取的 `code-review-and-quality` 审阅 Issue [#195](https://github.com/dnslin/ariso-next/issues/195)、AGENTS、[site §6/7](../../specs/SPEC-site.md) 和[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)。范围为品牌服务、所有者 HTTP 写入、匿名读取、启动/停止、运行时 metadata、真实工具与 HTTP 测试、默认浏览器调用链；未修改产品或测试源码。
 
 ## 发现与处理
 

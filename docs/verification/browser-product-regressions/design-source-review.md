@@ -1,6 +1,6 @@
 # 本轮独立设计评审
 
-2026-10-10，独立设计评审者只读产品 diff、现有验收依据与 Figma，未实现本轮产品修复，未操作浏览器、未修改 Figma、未重复测试。采用 `using-agent-skills` 选择 `frontend-ui-engineering`（键盘焦点及状态连续性）、`vercel-react-best-practices`（React 提交与副作用边界）、`figma-design-to-code`（实际读取上下文及截图）；已读 `figma-use`，本轮没有调用原生写入能力。依据为 [设计交接](../../design/handoff.md)、[执行与验收](../../tasks/execution.md)、[identity 规格](../../specs/SPEC-identity.md)、[最新账号手机来源](../oauth-181/mobile-inline/README.md) 和 [SMTP 已获批设计记录](../smtp-182/design-review.md)。
+2026-10-10，独立设计评审者只读产品 diff、现有验收依据与 Figma，未实现本轮产品修复，未操作浏览器、未修改 Figma、未重复测试。采用 `using-agent-skills` 选择 `frontend-ui-engineering`（键盘焦点及状态连续性）、`vercel-react-best-practices`（React 提交与副作用边界）、`figma-design-to-code`（实际读取上下文及截图）；已读 `figma-use`，本轮没有调用原生写入能力。依据为 [设计交接](../../design/handoff.md)、[执行与验收](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)、[identity 规格](../../specs/SPEC-identity.md)、[最新账号手机来源](../oauth-181/mobile-inline/README.md) 和 [SMTP 已获批设计记录](../smtp-182/design-review.md)。
 
 ## 实际读取的设计源
 

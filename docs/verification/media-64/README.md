@@ -1,12 +1,12 @@
 # T-MED-04 任务重启恢复与按需资源
 
-对应 [Issue #64](https://github.com/dnslin/ariso-next/issues/64)。任务、需求编号与边界沿用 [T-MED-04](../../archive/m1-m2/tasks.md#t-med-04-任务重启恢复与按需资源)，规则见 [media §7/10](../../specs/SPEC-media.md)。记录日期：2026-09-22。当前执行范围统一引用[适用检查](../../tasks/execution.md#适用检查)，不改冻结 PRD。
+对应 [Issue #64](https://github.com/dnslin/ariso-next/issues/64)。任务、需求编号与边界沿用 [T-MED-04](../../archive/m1-m2/tasks.md#t-med-04-任务重启恢复与按需资源)，规则见 [media §7/10](../../specs/SPEC-media.md)。记录日期：2026-09-22。当前执行范围统一引用[适用检查](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md#适用检查)，不改冻结 PRD。
 
 最新的双 agent 复审修复与优化结果见[修订验证](./revision/README.md)。下列首轮证据保留原执行结果。
 
 ## 前置与范围
 
-已用 `gh issue view` 和原生 dependencies/blocked_by、dependencies/blocking 核对：#62、#63 均已关闭，无 Issue 评论；直接后置为 #69、#73。前置交付与实际验收见 [T-MED-03](../media-63/README.md) 和 [EV-MEDIA-01](../../tasks/evidence/EV-MEDIA-01/README.md)。当前工作区原为干净 main，从最新 `origin/main` 的 `dfc3d91` 创建 `codex/issue-64-media-recovery`。
+已用 `gh issue view` 和原生 dependencies/blocked_by、dependencies/blocking 核对：#62、#63 均已关闭，无 Issue 评论；直接后置为 #69、#73。前置交付与实际验收见 [T-MED-03](../media-63/README.md) 和 [EV-MEDIA-01](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/evidence/EV-MEDIA-01/README.md)。当前工作区原为干净 main，从最新 `origin/main` 的 `dfc3d91` 创建 `codex/issue-64-media-recovery`。
 
 本次在已交付的静态 JPEG/PNG→WebP 首图路径增加恢复和资源管理。没有新增页面、上传入口、格式、元数据重读、预览或 ready 图片手动重处理，因此不引用不相关 Figma，不更改设计。后续格式可复用步骤发布、资源和工具生命周期接口。
 

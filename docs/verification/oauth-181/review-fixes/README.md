@@ -1,6 +1,6 @@
 # PR #255 双角度评审修复
 
-日期：2026-10-07。本轮在 `8cdcd30c9b3f3a7b001c154f7c9dc78ad4a9087e` 基础上处理用户明确授权的两项建议。规则仍由[任务执行约定](../../../tasks/execution.md)和[设计交付规范](../../../design/handoff.md)维护。
+日期：2026-10-07。本轮在 `8cdcd30c9b3f3a7b001c154f7c9dc78ad4a9087e` 基础上处理用户明确授权的两项建议。规则仍由[任务执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)和[设计交付规范](../../../design/handoff.md)维护。
 
 ## 范围与结果
 

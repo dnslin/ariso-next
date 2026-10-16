@@ -4,7 +4,7 @@
 - 状态：产品行为已确认；用户于 2026-09-17 确认三项新增选择。本地路径与部分 S3 路径已有实现，见下方实施记录；未交付能力仍为计划。S3 迟到写入等前置继续按各任务验收。
 - 日期：2026-09-17。
 - 前置：[identity](./SPEC-identity.md)、[storage](./SPEC-storage.md)、[media](./SPEC-media.md)、[collections](./SPEC-collections.md)、[delivery](./SPEC-delivery.md)已确认产品契约；media 工程参数仍需实测。
-- 依据：[PRD](../product/Ariso-PRD-v1.1.md) 6.5、7–8、9、11.2、11.8、21、22、23.4、26.2–26.7；[覆盖表](../tasks/coverage.md)。
+- 依据：[PRD](../product/Ariso-PRD-v1.1.md) 6.5、7–8、9、11.2、11.8、21、22、23.4、26.2–26.7；[覆盖表](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/coverage.md)。
 
 当前原型入口见[设计索引](../design/README.md)与[设计交接](../design/handoff.md)，DES／RG 的开放项和真实验证范围见[设计验收](../design/acceptance.md)。历史节点表与批次记录仅供追溯，不表示仍缺整组原型，也不代替业务实现与交互验收。
 
@@ -34,7 +34,7 @@ upload 拥有队列、提交设置、上传会话、接收前文件、S3 临时�
 - multipart 需要流式解析。[Busboy](https://github.com/mscdex/busboy)提供文件/字段限制及截断信号，可作为候选；实施前核对维护状态、类型及 Node 24 兼容性，必要时选同类成熟实现。不能用无限 `request.formData()` 将整个大文件放进内存。
 - 已有 [Zod JSON Schema](https://zod.dev/json-schema)支持 OpenAPI 目标和文件结构，先复用其转换能力，再组装 OpenAPI paths/security/encoding；无需默认新增另一套 schema 转换库。流式运行时校验不要求先构造完整 File。
 
-以上是规格编写时的依赖基线。UPLOAD-V03 已在独立实验目录固定 Uppy/Busboy 版本并完成双链路、释放引用和流式解析的本地验证，见[证据报告](../tasks/evidence/UPLOAD-V03/README.md)；Busboy 已随 T-UP-01 接入生产单文件路径，Uppy 已随 T-UP-02 接入业务页面。T-UP-07 扩展同一队列的目录、拖拽与粘贴输入，实际交付、检查与人工验收状态见 [Issue #159 记录](../verification/upload-159/README.md)，不表示完整批次或S3上传已交付。
+以上是规格编写时的依赖基线。UPLOAD-V03 已在独立实验目录固定 Uppy/Busboy 版本并完成双链路、释放引用和流式解析的本地验证，见[证据报告](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/evidence/UPLOAD-V03/README.md)；Busboy 已随 T-UP-01 接入生产单文件路径，Uppy 已随 T-UP-02 接入业务页面。T-UP-07 扩展同一队列的目录、拖拽与粘贴输入，实际交付、检查与人工验收状态见 [Issue #159 记录](../verification/upload-159/README.md)，不表示完整批次或S3上传已交付。
 
 ## 3. 设置、限制与文件输入
 
@@ -129,7 +129,7 @@ complete 只接受 session ID，不接受客户端传来的目标 Key、可信 M
 
 签名到期、浏览器 Abort 或 HEAD 404 都不证明早先发起的远端请求已结束。因此允许迟到对象在两次扫描之间暂时存在，不承诺即时清零或确定的最终删除时刻。终态会话的迟到 complete 不得创建图片；已经交接的正式原图使用独立 Key，不受旧临时 PUT 影响。
 
-**工程前置与实施分工：** UPLOAD-V01（#142）交付协议实验证据、上述决策和任务承接，不交付生产扫描器。T-UP-04（#162）实现上传引用、终态约束、确切 Key 清理与用量；T-STO-06（#164）在完整引用提供方接入后实现 Local/S3 扫描、调度及组合验证。前者不反向依赖后者，整体迟到孤儿回收能力仍须后者实际验收。实验证据见 [UPLOAD-V01](../tasks/evidence/UPLOAD-V01/README.md)。
+**工程前置与实施分工：** UPLOAD-V01（#142）交付协议实验证据、上述决策和任务承接，不交付生产扫描器。T-UP-04（#162）实现上传引用、终态约束、确切 Key 清理与用量；T-STO-06（#164）在完整引用提供方接入后实现 Local/S3 扫描、调度及组合验证。前者不反向依赖后者，整体迟到孤儿回收能力仍须后者实际验收。实验证据见 [UPLOAD-V01](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/evidence/UPLOAD-V01/README.md)。
 
 ## 8. 交接与取消竞争
 
@@ -329,7 +329,7 @@ pnpm run test:integration
 pnpm run test:browser
 ```
 
-实施前必须补齐三项证据：① S3 迟到 PUT 的实验证据与收尾方案；② 默认 50 MiB 边界、超限拒绝、慢网/断连清理与接收/API 等待预算；③ Uppy 双链路共用并发/去重关闭/释放引用和流式解析器的固定版本验证。UPLOAD-V02 已完成独立实验，见[报告](../tasks/evidence/UPLOAD-V02/README.md)；实际部署代理与媒体任务组合仍由消费这些能力的业务任务验收。UPLOAD-V01 已按第 7.3 节明确单 PUT 与周期孤儿扫描方案；其方案前置完成不等于扫描器或上传业务已实现。UPLOAD-S3、扫描与存储删除分别按所属任务的实际检查验收。
+实施前必须补齐三项证据：① S3 迟到 PUT 的实验证据与收尾方案；② 默认 50 MiB 边界、超限拒绝、慢网/断连清理与接收/API 等待预算；③ Uppy 双链路共用并发/去重关闭/释放引用和流式解析器的固定版本验证。UPLOAD-V02 已完成独立实验，见[报告](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/evidence/UPLOAD-V02/README.md)；实际部署代理与媒体任务组合仍由消费这些能力的业务任务验收。UPLOAD-V01 已按第 7.3 节明确单 PUT 与周期孤儿扫描方案；其方案前置完成不等于扫描器或上传业务已实现。UPLOAD-S3、扫描与存储删除分别按所属任务的实际检查验收。
 
 ## 14. 产品确认记录
 

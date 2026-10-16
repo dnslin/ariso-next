@@ -9,8 +9,8 @@
 三项交付均存在于基线 `251b376673cc6f783d738db054aa5dac05281767`，并回读合并 PR 最新检查：
 
 - #47 / [PR #86](https://github.com/dnslin/ariso-next/pull/86)：站点单行表、读取与校验已交付，[SQLite/双架构证据](../site-47/README.md)，CI/AMD64/ARM64 均成功。
-- #55 / [PR #94](https://github.com/dnslin/ariso-next/pull/94)：[固定版本组合、真实浏览器与类型证据](../../tasks/evidence/EV-UI-01/README.md)，CI/AMD64/ARM64 均成功。
-- #56 / [PR #95](https://github.com/dnslin/ariso-next/pull/95)：[设计适用核对](../../tasks/evidence/DG-SHELL/README.md)已进入消费任务；CI/AMD64/ARM64 均成功。它只证明设计走查，不代表本次外壳实际交互已通过。
+- #55 / [PR #94](https://github.com/dnslin/ariso-next/pull/94)：[固定版本组合、真实浏览器与类型证据](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/evidence/EV-UI-01/README.md)，CI/AMD64/ARM64 均成功。
+- #56 / [PR #95](https://github.com/dnslin/ariso-next/pull/95)：[设计适用核对](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/evidence/DG-SHELL/README.md)已进入消费任务；CI/AMD64/ARM64 均成功。它只证明设计走查，不代表本次外壳实际交互已通过。
 
 工作区原本干净，仅一个 main worktree；`git fetch origin` 后从最新 `origin/main` 建立 `codex/issue-57-ui-shell`。没有混入其他任务改动。
 

@@ -2,7 +2,7 @@
 
 最新结果见[合并存储探测迁移后的最终验证](#合并存储探测迁移后的最终验证)。之前各轮的失败与草稿状态保留为历史记录。
 
-关联 [Issue #170](https://github.com/dnslin/ariso-next/issues/170)，依据[任务卡](../../archive/m3-m4/platform.md#t-med-07-完整元数据保存与独立重读)、[SPEC-media §9.1](../../specs/SPEC-media.md#91-元数据) 与[执行约定](../../tasks/execution.md)。
+关联 [Issue #170](https://github.com/dnslin/ariso-next/issues/170)，依据[任务卡](../../archive/m3-m4/platform.md#t-med-07-完整元数据保存与独立重读)、[SPEC-media §9.1](../../specs/SPEC-media.md#91-元数据) 与[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)。
 
 2026-09-29 实际读取 Issue 正文、评论与 GitHub 原生依赖。评论为空；直接前置 #150、#53 均 CLOSED，blocking 为 #171。已核对对应实现和既有验证记录。从已更新的 `origin/main`（`00979f5`）创建独立 worktree `/Users/dnslin/.codex/worktrees/metadata-reread/ariso`，分支 `codex/170-metadata-reread`，不混入其他任务修改。
 

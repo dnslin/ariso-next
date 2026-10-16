@@ -1,6 +1,6 @@
 # T-ANA-03 / Issue #168 完整当前数量与对象占用
 
-日期：2026-10-08。需求 `R-19.1-01`；范围与检查沿用[任务卡](../../archive/m3-m4/experience.md#t-ana-03-完整当前数量与对象占用)、[analytics §7/9](../../specs/SPEC-analytics.md#7-当前数量与对象占用)和[执行约定](../../tasks/execution.md)。本任务无 UI；Figma、响应式、设计评审和界面人工验收不适用。R-19.1-01 的界面呈现仍由 T-ANA-05 承接，本记录不将整个需求标完成。
+日期：2026-10-08。需求 `R-19.1-01`；范围与检查沿用[任务卡](../../archive/m3-m4/experience.md#t-ana-03-完整当前数量与对象占用)、[analytics §7/9](../../specs/SPEC-analytics.md#7-当前数量与对象占用)和[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)。本任务无 UI；Figma、响应式、设计评审和界面人工验收不适用。R-19.1-01 的界面呈现仍由 T-ANA-05 承接，本记录不将整个需求标完成。
 
 ## 前置与实施
 

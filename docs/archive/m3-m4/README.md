@@ -12,7 +12,7 @@
 | [GitHub 任务索引](./github.md)                                                                                                             | 74 个 Issue 与 208 条原生阻塞关系的同步索引                  |
 | [原同步核验](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/github-m3-m4-verification.json) | 原始 GitHub 依赖回读结果，保留原路径与字节                   |
 
-原任务卡保留需求与直接依赖，继续参与结构检查。历史状态与原始报告按记录时点解释，当前工作见[维护计划](../../tasks/plan.md)。可复用经验见[维护指南](../../guides/maintenance.md)，逐轮原始产物通过固定 Git 提交链接追溯。
+原任务卡保留需求与直接依赖，仅供历史追溯，不再运行旧任务检查器。历史状态与原始报告按记录时点解释，当前工作见[维护计划](../../guides/maintenance.md#后续迭代)。可复用经验见[维护指南](../../guides/maintenance.md)，逐轮原始产物通过固定 Git 提交链接追溯。
 
 ## 分项证据入口
 

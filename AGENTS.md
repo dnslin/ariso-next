@@ -20,7 +20,7 @@
 
 ## Frontend Implementation
 
-- 前端实现与代码评审必须遵守完整的[设计交付规范](docs/design/handoff.md)。设计还原、公共界面一致性、图标来源、Tailwind CSS 和 HeroUI 复用规则统一在该文档维护；交付证据与完成条件遵守[前端共用验收](docs/tasks/execution.md#前端共用验收)。
+- 前端实现与代码评审必须遵守完整的[设计交付规范](docs/design/handoff.md)。设计还原、公共界面一致性、图标来源、Tailwind CSS 和 HeroUI 复用规则统一在该文档维护；交付证据与完成条件遵守[前端共用验收](docs/guides/verification.md#前端共用验收)。
 
 ## Working Method
 
@@ -36,7 +36,7 @@
 
 ## Verification
 
-- 本地检查、PR 完成条件与发布验证的执行边界统一遵守[任务执行与验证约定](docs/tasks/execution.md#适用检查)。
+- 本地检查、PR 完成条件与发布验证的执行边界统一遵守[任务执行与验证约定](docs/guides/verification.md#适用检查)。
 
 - Whenever behavior changes, add or update tests that verify the new behavior. Prefer testing externally observable behavior rather than relying on implementation details.
 
