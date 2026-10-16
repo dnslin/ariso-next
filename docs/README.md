@@ -33,7 +33,7 @@
 
 ## 开发与运维
 
-- [本地开发、构建与检查](../README.md#本地开发)
+- [本地开发、构建与检查](./guides/development.md)
 - [Docker 部署](./guides/deployment.md)
 - [升级、停止备份与恢复](./guides/upgrading.md)
 - [当前浏览器冒烟运行方式](../e2e/runtime.md)

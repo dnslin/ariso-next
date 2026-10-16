@@ -14,7 +14,7 @@ docker build --tag ariso:runtime .
 
 该命令构建当前 Docker 平台。不要把 macOS 的依赖目录复制进镜像。日常开发使用[本地适用检查](../tasks/execution.md#适用检查)。PR Actions 在 AMD64 构建真实媒体测试环境；发布前可在独立 Docker 机器按下方相同入口预检。
 
-先按 [README](../../README.md#本地开发) 生成两个独立密钥并填写 `.env.local`。Compose 显式读取它，仅注入密钥及日志级别。它固定容器内 `HOST=0.0.0.0`、`PORT=3000`、`DATA_DIR=/data`，不会把文件中的本机 `DATA_DIR` 用作容器路径。
+先按 [README](../../README.md#2-配置密钥) 生成两个独立密钥并填写 `.env.local`。Compose 显式读取它，仅注入密钥及日志级别。它固定容器内 `HOST=0.0.0.0`、`PORT=3000`、`DATA_DIR=/data`，不会把文件中的本机 `DATA_DIR` 用作容器路径。
 
 ## 仓库内运行示例
 

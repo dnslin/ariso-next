@@ -1,70 +1,141 @@
+<div align="center">
+
 # Ariso
 
-单用户、自托管图床，支持所有者初始化与登录、图片上传与管理、存储配置和水印。通过 Docker Compose 部署，SQLite、图片及站点资源统一持久化。
+**自己的图片，自己的图床。**
 
-文档从[文档导航](./docs/README.md)进入；阶段计划与验收范围见[全栈开发计划](./docs/tasks/plan.md)。
+单用户、自托管图床。上传、整理、处理和分享图片，让博客配图、项目素材和个人相册有一个自己的家。
 
-各模块的检查结果与限制从文档导航进入。早期运行基础证据保留在 [runtime 验证记录](./docs/archive/runtime/runtime-verification.md)。[PRD](./docs/product/Ariso-PRD-v1.1.md) 描述目标产品，不代表全部验收已经完成。
+[快速开始](#快速开始) · [功能](#功能) · [文档](#文档) · [版本下载](https://github.com/dnslin/ariso-next/releases) · [反馈问题](https://github.com/dnslin/ariso-next/issues)
+
+[![Release](https://img.shields.io/github/v/release/dnslin/ariso-next)](https://github.com/dnslin/ariso-next/releases)
+[![CI](https://github.com/dnslin/ariso-next/actions/workflows/ci.yml/badge.svg)](https://github.com/dnslin/ariso-next/actions/workflows/ci.yml)
+
+</div>
+
+## 界面预览
+
+![Ariso 桌面相册：用封面浏览、搜索和整理相册](./docs/assets/albums-desktop.png)
+
+<details>
+<summary>查看手机界面</summary>
+
+<p align="center">
+  <img src="./docs/assets/albums-mobile.png" alt="Ariso 手机相册：搜索、新建和浏览相册" width="390" />
+</p>
+
+</details>
+
+截图来自实际运行的产品，使用示例图片。
+
+## 功能
+
+| 功能       | 你可以做什么                                               |
+| ---------- | ---------------------------------------------------------- |
+| 图片上传   | 选择文件或文件夹、拖放、粘贴图片，通过队列查看进度与结果   |
+| 图库管理   | 搜索、筛选和排序图片，切换网格或瀑布流，批量整理与复制链接 |
+| 相册与标签 | 按项目、主题或旅行整理图片，为相册选择封面                 |
+| 图片处理   | 保留原图，生成压缩图和水印图，查看元数据，按新设置重新处理 |
+| 访问与分享 | 设置图片公开或私有，创建带密码、有效期的相册分享           |
+| 存储管理   | 使用本地目录或 S3 兼容对象存储，配置连接并测试可用性       |
+| 上传 API   | 使用独立 Token 上传，通过 OpenAPI 文档接入脚本和工具       |
+| 回收与统计 | 从回收站恢复图片，查看图片访问趋势与存储用量               |
+| 站点外观   | 自定义名称、描述、Logo 和图标，切换浅色、深色或跟随系统    |
+
+Ariso 面向一个站点所有者。访客通过公开图片地址或相册分享浏览内容；站点不开放多人注册。
+
+## 快速开始
+
+正式部署使用 Docker Compose，支持 `linux/amd64` 和 `linux/arm64`。应用使用 SQLite，无需单独部署数据库。
+
+[GitHub Releases](https://github.com/dnslin/ariso-next/releases) 提供版本镜像及离线镜像包。使用已发布镜像时，按[部署指南](./docs/guides/deployment.md#正式部署目录)准备独立部署目录。
+
+下面从源码构建并启动，需要 Docker、Compose v2 和 OpenSSL。
+
+### 1. 获取项目
+
+```sh
+git clone https://github.com/dnslin/ariso-next.git
+cd ariso-next
+cp .env.example .env.local
+```
+
+### 2. 配置密钥
+
+分别生成认证密钥和加密密钥：
+
+```sh
+openssl rand -base64 32
+openssl rand -hex 32
+```
+
+把第一条输出填入 `.env.local` 的 `BETTER_AUTH_SECRET`，第二条输出填入 `ARISO_ENCRYPTION_KEY`。保存好这个文件，升级时继续使用原有密钥。
+
+Compose 固定使用容器内的 `/data`，无需修改 `.env.local` 中供本地开发使用的 `DATA_DIR`。
+
+### 3. 启动
+
+```sh
+mkdir -p .data
+```
+
+Linux 上还需让容器用户可以写入这个目录：
+
+```sh
+sudo chown 1000:1000 .data
+```
+
+```sh
+docker compose --env-file .env.local up --build --detach --wait
+```
+
+打开 [http://127.0.0.1:3000](http://127.0.0.1:3000)，按页面提示创建所有者账号并配置站点，然后登录上传第一张图片。
+
+默认端口仅供本机访问。需要域名或外部访问时，通过反向代理接入，并把站点公开地址设为实际访问地址。完整配置见[部署指南](./docs/guides/deployment.md)。
+
+数据库、默认本地图片及站点资源保存在 `.data/`。升级前同时备份数据和密钥，操作步骤见[升级与恢复](./docs/guides/upgrading.md)。
+
+## 文档
+
+| 需要做什么                   | 从这里开始                                                                                    |
+| ---------------------------- | --------------------------------------------------------------------------------------------- |
+| 部署、配置反向代理或恢复密码 | [Docker 部署](./docs/guides/deployment.md)                                                    |
+| 升级、备份与恢复             | [升级指南](./docs/guides/upgrading.md)                                                        |
+| 从源码开发、构建和运行检查   | [开发指南](./docs/guides/development.md)                                                      |
+| 对接上传 API                 | 初始化站点后访问 `/api/openapi.json`；[接口契约](./docs/specs/SPEC-upload.md#10-通用上传-api) |
+| 了解产品规则和模块职责       | [文档导航](./docs/README.md)                                                                  |
+
+## 常见问题
+
+<details>
+<summary><strong>必须使用对象存储吗？</strong></summary>
+
+不需要。可以使用本地存储，也可以在后台添加 S3 兼容对象存储。启用前先测试连接；Web 直传还需要配置并检查 CORS，也就是允许浏览器跨域上传的规则。
+
+</details>
+
+<details>
+<summary><strong>怎么把图片放到博客里？</strong></summary>
+
+上传后复制图片链接，或在图库中批量复制 URL、Markdown、HTML。需要让读者直接查看的图片应设为公开；私有图片链接不会因为复制或嵌入而变成公开。
+
+</details>
+
+<details>
+<summary><strong>如何查看更新和开发进度？</strong></summary>
+
+已发布版本与更新说明见 [Releases](https://github.com/dnslin/ariso-next/releases)。开发任务见 [Issues](https://github.com/dnslin/ariso-next/issues)，验收范围与证据从[文档导航](./docs/README.md)进入。
+
+</details>
 
 ## 本地开发
 
-使用 Node 24.x 和 pnpm 11.19.0。已有 nvm 的机器先运行 `nvm install 24`、`nvm use 24`；没有版本管理器时先安装 Node 24，再安装指定 pnpm。下列命令从仓库根目录执行：
+使用 Node.js 24.x 和 pnpm 11.19.0。环境配置、启动命令、生产构建及检查要求统一见[开发指南](./docs/guides/development.md)。
 
-```sh
-node --version
-npm install --global pnpm@11.19.0
-pnpm --version
-pnpm exec node --version
-pnpm install --frozen-lockfile
-cp .env.example .env.local
-node -e "console.log(require('node:crypto').randomBytes(32).toString('base64'))"
-node -e "console.log(require('node:crypto').randomBytes(32).toString('hex'))"
-```
+主要技术栈为 Next.js、React、TypeScript、HeroUI、Tailwind CSS、SQLite 和 Drizzle ORM；图片处理使用 ImageMagick 与 ExifTool。
 
-确认两个 Node 输出均为 `v24.x`。分别把两次随机输出填入 `.env.local` 的 `BETTER_AUTH_SECRET` 和 `ARISO_ENCRYPTION_KEY`，不要复用或相互派生。把 `DATA_DIR` 改为开发专用目录的绝对路径，例如 `/absolute/path/to/ariso/.data`。文件不提交到 Git；保存好原始密钥，后续启动不会替你生成或替换。
+## 参与贡献
 
-```sh
-pnpm run dev
-```
+欢迎通过 [Issue](https://github.com/dnslin/ariso-next/issues) 反馈问题或提出建议。报告问题时，请提供版本、部署方式、复现步骤及相关日志。
 
-开发入口先编译启动程序，再读取 `.env.local` 完成数据目录、SQLite、迁移和配置检查，随后在 `http://127.0.0.1:3000` 启动 Next。首次启动通过 Web 初始化所有者；`/api/health` 应返回 HTTP 200、`Cache-Control: no-store` 和 `{"status":"ok"}`。Ctrl+C 停止服务。
-
-Linux 从源码安装原生依赖时需要 Python 和 C/C++ 构建工具；不要跨操作系统或架构复制 `node_modules`。图片工具完整环境由 Docker 镜像提供。本机环境差异和历史命令见 [历史开发记录](./docs/archive/runtime/development.md)。
-
-本地运行图片处理及完整集成测试还需 PATH 中有 ImageMagick 7（`magick`）和 ExifTool（`exiftool`）。可分别用 `magick -version`、`exiftool -ver` 检查。缺少工具时真实图片测试会失败，不会自动跳过；无需为此安装本机 Docker。
-
-## 本地生产产物
-
-构建无需运行密钥，也不会创建部署数据。`start` 从父进程接收配置，不自行读取 `.env.local`。下面的变量文件须由你创建并信任，含空格的路径须用引号包住：
-
-```sh
-pnpm run build
-set -a
-. ./.env.local
-set +a
-HOST=127.0.0.1 pnpm run start
-```
-
-构建生成 `.next/standalone`，入口依次运行启动检查和标准 Next 服务。本地运行用于开发验证；正式部署方式为 [Docker Compose](./docs/guides/deployment.md)。
-
-## 检查与维护
-
-```sh
-pnpm run format:check
-pnpm run lint
-pnpm run typecheck
-pnpm run test:unit
-pnpm run build
-pnpm run test:integration
-pnpm run test:browser
-```
-
-浏览器检查复用 Ego Lite，运行前按 [Ego 冒烟说明](./e2e/runtime.md) 准备环境。测试自行创建生产服务、临时数据和临时密钥并清理，不连接已有部署。日常 PR 和 main 推送执行日常 Actions 检查；发布仅执行必要镜像验证，耗时实验单独手动执行。具体范围与本地预检统一见[任务执行约定](./docs/tasks/execution.md#适用检查)。
-
-`test:integration` 在本地同时执行普通集成和真实工具测试，包含实际 ImageMagick/ExifTool 转换，不需要 Docker。请先完成生产构建；资源紧张时可使用 `pnpm run test:integration --maxWorkers=4`。浏览器检查通过 `test:browser` 复用现有 Ego Lite。
-
-- [升级、停止备份与恢复](./docs/guides/upgrading.md)
-- [runtime 规格](./docs/archive/runtime/SPEC-runtime.md)与[任务验收清单](./docs/archive/runtime/tasks/todo.md)
-- [实际交付与验收证据](./docs/archive/runtime/runtime-verification.md)
-
-源码按 `src/app`（页面与 HTTP 接口）、`src/server/runtime`（配置、数据库、迁移、加密及日志）、`src/server/startup`（启动编排）和 `src/cli`（独立启动程序）分工。SQL 迁移保存在 `drizzle`；修改数据结构时提交生成的迁移和测试，不在部署时运行 Schema push。
+提交改动前请阅读 [AGENTS.md](./AGENTS.md) 和[任务执行与验证约定](./docs/tasks/execution.md#适用检查)。涉及界面的改动还需遵守[设计交付规范](./docs/design/handoff.md)。
