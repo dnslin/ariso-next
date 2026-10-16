@@ -4,7 +4,7 @@
 
 ## 依据、前置与范围
 
-从[文档导航](../../README.md)读取[site规格](../../specs/SPEC-site.md) §1/3/6/7/9/10、[任务卡与DG-SITE](../../archive/m3-m4/experience.md#t-site-04-品牌设置及登录分享跨页联动)、[设计交付规范](../../design/handoff.md)和[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)。保留 R-21.2-01/02、U-SITE-01/02/03 与 SITE-BRAND 边界，未改写冻结PRD。
+从[文档导航](../../README.md)读取[site规格](../../specs/SPEC-site.md) §1/3/6/7/9/10、[任务卡与DG-SITE](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/m3-m4/experience.md#t-site-04-品牌设置及登录分享跨页联动)、[设计交付规范](../../design/handoff.md)和[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)。保留 R-21.2-01/02、U-SITE-01/02/03 与 SITE-BRAND 边界，未改写冻结PRD。
 
 实际通过gh读取正文、评论与原生blocked_by/blocking：#196 OPEN、无评论，#195/#192/#57/#135均CLOSED、blocking为空；本轮实施前再次核对。初次快照见[Issue](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/issue.json)、[前置](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/blocked-by.json)和[后置](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/blocking.json)。DG-SITE历史前置描述保留当时结论。
 
@@ -45,7 +45,7 @@
 
 ## 原型历史
 
-[最终反馈记录](./login-centering/feedback/README.md)、[第三版居中](./login-centering/README.md)、[第二版](./revision-v2/README.md)、[第一版](./prototype/README.md)保留当时未获批准的结论。4196、4206、4216曾按用户要求保留，本轮已获清理授权；原型演示栏不进入产品。产品批准是其后本轮用户明确回复，不倒改历史记录。
+[最终反馈记录](./login-centering/feedback/README.md)、[第三版居中](./login-centering/README.md)、[第二版](./revision-v2/README.md)、[第一版](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/verification/site-196/prototype/README.md)保留当时未获批准的结论。4196、4206、4216曾按用户要求保留，本轮已获清理授权；原型演示栏不进入产品。产品批准是其后本轮用户明确回复，不倒改历史记录。
 
 用户对第一版已答复“需要调整，保留当前原型”，并指出GitHub图标、登录多余描述、设置粗糙空白三项问题。第二版已据此实际返修、浏览器检查并独立评审，详情见[本轮证据](./revision-v2/README.md)。新版 `127.0.0.1:4206` 与旧版 `127.0.0.1:4196` 均保留，第二版后来同样被要求调整，未获批准；按用户第4节停在设计决定，不继续修改依赖该方案的产品代码。最终产品验收所需独立账号与真实数据将在实施后准备。
 

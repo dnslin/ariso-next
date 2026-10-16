@@ -12,7 +12,7 @@
 
 2026-10-03 通过 `gh issue view 164 --repo dnslin/ariso-next --json number,title,body,state,comments,url` 读取正文及评论（无评论），通过 `gh api repos/dnslin/ariso-next/issues/164/dependencies/blocked_by` 和 `.../blocking` 回读原生关系。#158、#162、#161、#142 为 completed；#163 为 OPEN，没有已提交的开放 PR。后置 #168 与 #198 仍开放。未修改原生依赖或完成状态。
 
-依据 [SPEC-storage §9–10](../../specs/SPEC-storage.md#9-引用完整性并发与删除)、[任务卡](../../archive/m3-m4/platform.md#t-sto-06-完整引用约束位置修改与配置删除)、[UPLOAD-V01 交接](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/evidence/UPLOAD-V01/README.md)及[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md#适用检查)。冻结 PRD、需求编号、模块边界和已确认的单 PUT + 周期扫描方案保持原义。本轮不交付有缺失提供方的组合入口，不用零引用、假接口或一次列举代替扫描验收。
+依据 [SPEC-storage §9–10](../../specs/SPEC-storage.md#9-引用完整性并发与删除)、[任务卡](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/m3-m4/platform.md#t-sto-06-完整引用约束位置修改与配置删除)、[UPLOAD-V01 交接](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/evidence/UPLOAD-V01/README.md)及[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md#适用检查)。冻结 PRD、需求编号、模块边界和已确认的单 PUT + 周期扫描方案保持原义。本轮不交付有缺失提供方的组合入口，不用零引用、假接口或一次列举代替扫描验收。
 
 实现从最新 `origin/main` 的 `c601be4` 建立独立 worktree，分支 `codex/issue-164-storage-listing`。原项目目录无未提交改动，原工作区与预览数据保持不动。
 

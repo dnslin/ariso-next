@@ -8,7 +8,7 @@
 
 ## 依据、范围与环境
 
-从 [文档导航](../../README.md) 读取能力地图、PRD 第19章、[analytics 规格](../../specs/SPEC-analytics.md)、[任务卡与 DG-ANALYTICS 消费结论](../../archive/m3-m4/experience.md#t-ana-05-工作台统计图表与详情统计联动)、[设计交接](../../design/handoff.md)及[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)。保留 R-19.1-01、R-19.2-03、R-19.3-01/02 和模块职责。访问计数、保留和对象责任协议沿既有实现，本次接入界面及所需异常定位查询；下方2026-10-09删除排行修订按用户明确授权更新冲突PRD条目。
+从 [文档导航](../../README.md) 读取能力地图、PRD 第19章、[analytics 规格](../../specs/SPEC-analytics.md)、[任务卡与 DG-ANALYTICS 消费结论](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/m3-m4/experience.md#t-ana-05-工作台统计图表与详情统计联动)、[设计交接](../../design/handoff.md)及[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)。保留 R-19.1-01、R-19.2-03、R-19.3-01/02 和模块职责。访问计数、保留和对象责任协议沿既有实现，本次接入界面及所需异常定位查询；下方2026-10-09删除排行修订按用户明确授权更新冲突PRD条目。
 
 [Issue 与评论快照](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/issue.json)、[原生 blocked by](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/blocked-by.json)及[blocking](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/blocking.json)于本轮回读。#169/#171/#178/#57/#129 均 closed；无下游 blocking 项。已有真实 overview、usage 和单图 API；原工作台与统计导航仍占位。单图接口仅有累计三版本和三个周期合计，不虚构单图逐日或周期版本字段。
 
@@ -16,11 +16,11 @@
 
 ## 2026-10-09 最新用户修订
 
-最新局部原型按用户标注将累计访问移至弹窗头部右侧，并加入280ms数字滚动；手机头部第二行保留完整数值，减少动态效果直接呈现最终值。[本轮证据](./prototype-v2/header-total/README.md)包含12个真实浏览器布局、原生动效记录和独立代码/视觉复审。只更新原型，整版批准、产品新增交互和Figma同步仍未完成。
+最新局部原型按用户标注将累计访问移至弹窗头部右侧，并加入280ms数字滚动；手机头部第二行保留完整数值，减少动态效果直接呈现最终值。[本轮证据](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/verification/analytics-179/prototype-v2/header-total/README.md)包含12个真实浏览器布局、原生动效记录和独立代码/视觉复审。只更新原型，整版批准、产品新增交互和Figma同步仍未完成。
 
 用户明确永久删除图片不参加热门排行，并授权更新冲突文档。真实查询现于LIMIT10前按现存media身份排除，其余项目补足前十；全站累计、趋势及版本计数保留，回收/私有/停用仍可排行。需求编号保留，PRD §19.4、SPEC、handoff、任务卡与coverage已同步。本轮实际失败证据、31项集成、121项定向单元/运行计划、真实浏览器返修、十万规模及限制见[删除排行证据](./deleted-ranking.md)，前端呈现/默认浏览器调用链同步，用户批准优先于旧删除占位设计。
 
-原型圆角/hover、折线及删除数值入口更新见[局部反馈与新截图](./prototype-v2/feedback/README.md)。新增UI仍仅独立原型，未同步Figma、未获整版实施批准；真实产品本轮修正删除排行规则，并修复验证中发现的刷新提示推动周期按钮、造成点击落空的问题。以下既有实施和截图保留当时结果，删除占位相关旧结论由本节替代。
+原型圆角/hover、折线及删除数值入口更新见[局部反馈与新截图](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/verification/analytics-179/prototype-v2/feedback/README.md)。新增UI仍仅独立原型，未同步Figma、未获整版实施批准；真实产品本轮修正删除排行规则，并修复验证中发现的刷新提示推动周期按钮、造成点击落空的问题。以下既有实施和截图保留当时结果，删除占位相关旧结论由本节替代。
 
 本轮收口：冻结安装、最终全量format:check/lint/typecheck/build、31项受影响集成、121项定向单元/运行计划及十万规模通过。真实Ego behavior与consumers在最终构建上退出0，临时数据均清理，错误数组为空；默认full尚未实际运行。初次behavior失败已取证并修复刷新布局位移，没有削弱断言或键盘替代鼠标。独立代码审查和受影响设计复核通过（原型与真实产品范围分别记录）；新增交互仍待整版方案批准、Figma同步及产品实施，最终人工验收未完成。PR #273继续为草稿，未合并/关闭Issue/发布/部署/清理工作区；此前gh回读无远端检查，不记为CI通过。格式与文档依赖的最终结果见删除排行证据。
 
@@ -54,7 +54,7 @@
 
 ### 用户反馈后的第二版
 
-用户要求单图仅保留缩略图、改为图表展示、减少解释并使用HeroUI。已新增[第二版原型及完整证据](./prototype-v2/README.md)，预览 `http://127.0.0.1:4181/analytics`；旧4179保持。采用缩略图身份、版本横条、周期柱图、曲线与排行比例条，真实使用HeroUI控件和局部短动效。桌面/手机、状态、主题、短视口与独立代码/设计复审分别记录在新版证据。**第二版尚未获用户批准，没有实施新增产品交互或同步Figma。**
+用户要求单图仅保留缩略图、改为图表展示、减少解释并使用HeroUI。已新增[第二版原型及完整证据](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/verification/analytics-179/prototype-v2/README.md)，预览 `http://127.0.0.1:4181/analytics`；旧4179保持。采用缩略图身份、版本横条、周期柱图、曲线与排行比例条，真实使用HeroUI控件和局部短动效。桌面/手机、状态、主题、短视口与独立代码/设计复审分别记录在新版证据。**第二版尚未获用户批准，没有实施新增产品交互或同步Figma。**
 
 ## 已执行检查与独立审查
 

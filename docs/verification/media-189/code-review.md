@@ -32,7 +32,7 @@
 ### R2：清空最长边数值未实现规定的 `null` 语义
 
 - 原发现：`ProcessingNumber` 把空数值统一转为 `NaN`，`settings-form.tsx` 对 `maxEdge` 原样接收。清空已开启的最长边数值再保存会产生数字错误；只有显式关闭开关才得到 `null`。
-- 依据：[DG-PROCESSING 对 T-MED-12 的设置主体结论](../../archive/m3-m4/platform.md#dg-processing-对-t-med-12-的核对结论2026-10-04)规定“空最长边按 `maxEdge=null` 保存”。
+- 依据：[DG-PROCESSING 对 T-MED-12 的设置主体结论](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/m3-m4/platform.md#dg-processing-对-t-med-12-的核对结论2026-10-04)规定“空最长边按 `maxEdge=null` 保存”。
 - 推荐修复：在最长边字段的拥有者处理空值为 `null`，必填质量／并发／水印数值继续保持空值错误。不能为了这一个可选字段改变通用数字字段的空值策略。补实际清空、保存和重新读取检查。
 - 源码复审：已复读 `settings-form.tsx` 的 `maxEdge` 回调，它只将该可选字段的 `NaN` 转为 `null`；其他数字字段没有改动。新增浏览器场景用真实控件清空、检查开关关闭和实际 PATCH 的 `maxEdge: null`。源码修正符合边界。
 - 最终功能复审：已读取 `test-results/browser-189-final-full/processing.json`（`phase=all`、`status=passed`），真实清空最长边后开关关闭，显式保存 `null` 并重新读取；必填数字仍保留验证。R2 已关闭。
@@ -184,14 +184,14 @@ R9 的 hook 输入再次改变后，已独立实读 [最终 preview 报告](http
 
 - 位置：`src/components/processing/processing-page.tsx:41`，关联 `use-processing-settings.ts:17–18`；由本 PR 引入。
 - 触发：访问处理页后站内导航离开，另一个标签页／客户端保存新设置，再站内返回。根 QueryClient 留存旧数据，页面立即用缓存初始化编辑器。后续 GET 读取新值，但 hook 只在首次挂载读取 initial；再次保存仍发送旧的完整20字段，可能覆盖已经取得的服务器新设置。初次刷新失败也会继续显示缓存编辑器，未显示本次读取错误。
-- 离线失败：[探针源码](./review-probes/cached-settings-probe.mjs)、[实际输出](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/media-189/review-probes/cached-settings-probe.txt)。安装版本的真实 TanStack QueryObserver 先提供缓存质量82，再完成新 GET 值68。当前生产 hook 转译执行后 input 仍82，实际 save 函数提交20字段／质量82；断言 `82 !== 68`，退出1。hook 的持久槽和 fetch 为隔离接口；未执行实际 React DOM、浏览器导航或真实网络。
+- 离线失败：[探针源码](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/verification/media-189/review-probes/cached-settings-probe.mjs)、[实际输出](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/media-189/review-probes/cached-settings-probe.txt)。安装版本的真实 TanStack QueryObserver 先提供缓存质量82，再完成新 GET 值68。当前生产 hook 转译执行后 input 仍82，实际 save 函数提交20字段／质量82；断言 `82 !== 68`，退出1。hook 的持久槽和 fetch 为隔离接口；未执行实际 React DOM、浏览器导航或真实网络。
 - 最小修复：本次入页 GET 成功后再初始化编辑器，读取失败显示错误。不要用持续同步或 updatedAt key 覆盖正在编辑的草稿／预览，也不新增并发锁协议。补服务器值变化后暖缓存站内返回的行为测试。现有 `page.goto` 会新建文档；原站内导航场景没有在离开期间改变服务器值，均不能覆盖此缺口。
 
 ### R11：未知保存后清空选错焦点目标（P2，必修）
 
 - 位置：`src/components/processing/processing-page.tsx:386–389`；保存禁用条件在203行，清空禁用条件在 `watermark-fields.tsx:279`。由本 PR 的新增清空回调引入；把此前源码候选升级为已确认的回调目标缺陷。
 - 触发：真实成功保存响应丢失后 `unknown=true`，保存禁用、清空仍可用。清空令自己的按钮卸载，却无条件选择禁用保存按钮进行 focus。核对入口仍启用，新增 E2E 已明确要求它承接焦点。
-- 离线失败：[探针源码](./review-probes/clear-focus-probe.mjs)、[实际输出](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/media-189/review-probes/clear-focus-probe.txt)。执行实际生产 JSX 分支与 onAssetClear，取得 saveDisabled=true、reconcileDisabled=false，但回调选择 processing-save；预期 processing-settings-reconcile 断言失败、退出1。隔离了 hook／JSX／document 接口，仅证明实际分支和回调目标，不宣称浏览器 activeElement 实测或已取得浏览器 RED。
+- 离线失败：[探针源码](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/verification/media-189/review-probes/clear-focus-probe.mjs)、[实际输出](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/media-189/review-probes/clear-focus-probe.txt)。执行实际生产 JSX 分支与 onAssetClear，取得 saveDisabled=true、reconcileDisabled=false，但回调选择 processing-save；预期 processing-settings-reconcile 断言失败、退出1。隔离了 hook／JSX／document 接口，仅证明实际分支和回调目标，不宣称浏览器 activeElement 实测或已取得浏览器 RED。
 - 最小修复：未知保存下清空后聚焦现有可用核对入口，正常清空仍聚焦保存并 preventScroll；保留原待核对提交和当前编辑输入。保留严格回归断言，实际浏览器仍待验证。
 
 ### R12：恢复测试混合三个资源生命周期（P2，必修）

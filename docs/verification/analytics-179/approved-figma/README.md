@@ -6,7 +6,7 @@
 
 ## 依据与实际操作
 
-实际读取 AGENTS、完整 handoff、DG-ANALYTICS 消费结论、[最新头部累计原型证据](../prototype-v2/header-total/README.md)、独立原型源码及桌面/手机/深色、排行和异常真实截图。写入前对 `446:8063/8030`、`102:3228`、`451:17337/17648` 获取设计上下文及其中截图，并补读图库 `30:285` 的上下文与截图。
+实际读取 AGENTS、完整 handoff、DG-ANALYTICS 消费结论、[最新头部累计原型证据](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/verification/analytics-179/prototype-v2/header-total/README.md)、独立原型源码及桌面/手机/深色、排行和异常真实截图。写入前对 `446:8063/8030`、`102:3228`、`451:17337/17648` 获取设计上下文及其中截图，并补读图库 `30:285` 的上下文与截图。
 
 使用 figma-use、figma-generate-design、figma-design-to-code；局部可复用组件遵守 figma-generate-library。先检查本地 Code Connect（未发现映射文件）、现有组件属性、变量、文字/效果样式和可用字体，再检查文件库与 Analytics 组件检索。复用原文件语义主题变量、Button、Lucide 图标和离散图片素材；缺少 Analytics 组件，新增本任务的弹层、排行行、信息说明等可编辑组件。普通说明采用中性文字和按需入口，没有复制旧水绿色静态横幅。
 

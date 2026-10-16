@@ -4,15 +4,15 @@
 
 ## 归档范围
 
-| 材料                                                                      | 内容                                                     |
-| ------------------------------------------------------------------------- | -------------------------------------------------------- |
-| [实施任务](./tasks.md)                                                    | 初始化、本地处理、上传、图库、回收恢复和计数的原任务定义 |
-| [GitHub任务索引](./github.md)                                             | 原39个Issue及当时73条原生阻塞关系                        |
-| [M1/M2验收关卡](./acceptance.md)                                          | T-CP-M1、T-CP-M2 的完成范围和原验收条件                  |
-| [M2最终修正与验证](../../verification/m2-85/interaction-polish/README.md) | 当前已交付界面和多文件上传的最终证据入口                 |
-| [回收站所有者预览](../../verification/m2-85/trash-preview/README.md)      | 用户批准的新行为；公开外链仍拒绝回收图片                 |
+| 材料                                                                                                                                 | 内容                                                     |
+| ------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------- |
+| [实施任务](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/m1-m2/tasks.md)           | 初始化、本地处理、上传、图库、回收恢复和计数的原任务定义 |
+| [GitHub任务索引](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/m1-m2/github.md)    | 原39个Issue及当时73条原生阻塞关系                        |
+| [M1/M2验收关卡](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/m1-m2/acceptance.md) | T-CP-M1、T-CP-M2 的完成范围和原验收条件                  |
+| [M2最终修正与验证](../../verification/m2-85/interaction-polish/README.md)                                                            | 当前已交付界面和多文件上传的最终证据入口                 |
+| [回收站所有者预览](../../verification/m2-85/trash-preview/README.md)                                                                 | 用户批准的新行为；公开外链仍拒绝回收图片                 |
 
-原任务卡保留需求与直接依赖，仅供历史追溯，不再运行旧任务检查器。历史状态与原始报告按记录时点解释，当前工作见[维护计划](../../guides/maintenance.md#后续迭代)。可复用经验见[维护指南](../../guides/maintenance.md)，逐轮原始产物通过固定 Git 提交链接追溯。
+原任务卡及直接依赖通过上述固定提交链接追溯，当前只保留本阶段结论与分项证据入口。历史状态与原始报告按记录时点解释，当前工作见[维护计划](../../guides/maintenance.md#后续迭代)。可复用经验见[维护指南](../../guides/maintenance.md)，逐轮原始产物通过固定 Git 提交链接追溯。
 
 ## 原始证据入口
 

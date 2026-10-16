@@ -22,7 +22,7 @@
 
 ## 设计来源与用户决定
 
-实现者和独立评审者分别实时读取 Figma 设计信息与截图。文件为 `74sT9Hrf8G4czcWeTkET5b`；具体节点见下表及[任务核对表](../../archive/m3-m4/experience.md#dg-albums-对-t-col-04-的核对结论2026-09-28)。公共区域沿用 OwnerShell，图标沿用 Lucide，控件使用项目已锁 HeroUI 3.2.6；既有共享工具栏以当前交接的批准记录为准。
+实现者和独立评审者分别实时读取 Figma 设计信息与截图。文件为 `74sT9Hrf8G4czcWeTkET5b`；具体节点见下表及[任务核对表](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/m3-m4/experience.md#dg-albums-对-t-col-04-的核对结论2026-09-28)。公共区域沿用 OwnerShell，图标沿用 Lucide，控件使用项目已锁 HeroUI 3.2.6；既有共享工具栏以当前交接的批准记录为准。
 
 | 范围             | 桌面节点 | 手机节点 |
 | ---------------- | -------- | -------- |

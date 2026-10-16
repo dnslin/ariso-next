@@ -1,6 +1,6 @@
 # 首版设计与前端验收范围
 
-M5 于 2026-10-17 由用户确认手动验收通过，首版 DES/RG 范围随阶段完成，见[M5 归档](../archive/m5/README.md)。此页保留范围索引；[分次交接记录](../archive/m5/design-history.md)保留原有日期、批准范围和当时的验证限制。
+M5 于 2026-10-17 由用户确认手动验收通过，首版 DES/RG 范围随阶段完成，见[M5 归档](../archive/m5/README.md)。此页保留范围索引；[分次交接记录](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/m5/design-history.md)保留原有日期、批准范围和当时的验证限制。
 
 ## DES 主责任
 
@@ -16,7 +16,7 @@ M5 于 2026-10-17 由用户确认手动验收通过，首版 DES/RG 范围随阶
 
 ## RG 回归责任与已补代表
 
-RG-01 覆盖选择清单；RG-02 覆盖详情与大图返回；RG-03 覆盖地址与复制；RG-04 覆盖批量关系及部分失败；RG-05 覆盖处理设置及资源边界；RG-06 覆盖真实格式与附件；RG-07 覆盖跨页面主题及响应式；RG-08 覆盖保存、持久化与请求失败恢复。原代表节点见[准备阶段设计记录](../archive/preparation-2026-09/design/README.md)。
+RG-01 覆盖选择清单；RG-02 覆盖详情与大图返回；RG-03 覆盖地址与复制；RG-04 覆盖批量关系及部分失败；RG-05 覆盖处理设置及资源边界；RG-06 覆盖真实格式与附件；RG-07 覆盖跨页面主题及响应式；RG-08 覆盖保存、持久化与请求失败恢复。原代表节点见[准备阶段设计记录](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/preparation-2026-09/design/README.md)。
 
 ## 真实验证清单
 

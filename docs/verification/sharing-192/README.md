@@ -129,9 +129,9 @@ DOM断言核对实际 `main` 及全部名称属性；锁定HTML/RSC响应仍核�
 
 上述命令均在本任务worktree运行并将Node24路径加入当前PATH。脚本在忽略的测试输出目录保留，实际报告与PNG在本统一证据目录归档；默认产品验证流程尚未增加提案能力，因为产品尚未实施。短规则最终修正后仅重跑短视口，未重复运行未变的产品单元/集成/构建。
 
-真实失败及处理分别保留：短视口原型工具栏遮挡入口；预留工具栏后绝对定位未设左右边界导致卡片缩窄，补左右0修正；滚动过程中主按钮仅部分可见，使用真实滚轮使完整按钮进入视口后再点击；空态滚到最底会卷出图标顶部，按真实内部图标/文字区域回滚后验证完整可见，未缩短设计区或削弱断言。正式数据验证初次使用通用 `header p` 误读公共品牌，改为相册h1所属header取简介后四态通过，未改产品。原失败报告及对应截图保留在 [本轮证据目录](feedback-proposal/)，最终通过不覆盖初次失败。
+真实失败及处理分别保留：短视口原型工具栏遮挡入口；预留工具栏后绝对定位未设左右边界导致卡片缩窄，补左右0修正；滚动过程中主按钮仅部分可见，使用真实滚轮使完整按钮进入视口后再点击；空态滚到最底会卷出图标顶部，按真实内部图标/文字区域回滚后验证完整可见，未缩短设计区或削弱断言。正式数据验证初次使用通用 `header p` 误读公共品牌，改为相册h1所属header取简介后四态通过，未改产品。原失败报告及对应截图保留在 [本轮证据目录](https://github.com/dnslin/ariso-next/tree/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/verification/sharing-192/feedback-proposal)，最终通过不覆盖初次失败。
 
-作者实际查看桌面、手机、浅深色和短视口截图，先核对公共背景、返回入口、品牌与主区，再核对数量、占位和Tips。独立设计者实际重读Figma密码 `432:3573/432:7913`、空态 `433:4020/433:8693` 及截图，逐图评审提案；结果见 [局部提案独立设计评审](feedback-proposal/design-review.md)。此审计只对应提案，不能代替产品实施、真实HeroUI回归、Figma同步或人工批准。
+作者实际查看桌面、手机、浅深色和短视口截图，先核对公共背景、返回入口、品牌与主区，再核对数量、占位和Tips。独立设计者实际重读Figma密码 `432:3573/432:7913`、空态 `433:4020/433:8693` 及截图，逐图评审提案；结果见 [局部提案独立设计评审](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/verification/sharing-192/feedback-proposal/design-review.md)。此审计只对应提案，不能代替产品实施、真实HeroUI回归、Figma同步或人工批准。
 
 ## 获批局部反馈实施（2026-10-06）
 
@@ -190,13 +190,13 @@ DOM断言核对实际 `main` 及全部名称属性；锁定HTML/RSC响应仍核�
 
 三个失败场景的处理和复测如下：
 
-- viewer输入模板曾位于实际Local媒体命名空间而没有对象引用。[真实扫描器可控红绿证据](regression-fixes/viewer-fixture-lifecycle/)证明旧模板和刚写但未登记的文件可被扫描删除；原全量缺失文件的历史扫描时刻不可追溯，不冒充直接删除日志。模板现先在操作临时目录生成，finally清理；发布对象先登记引用、写真实字节、再发布版本。原不可读/无版本/未发布候选负例保留。完整 `--suite library` exit0，library 77项/327布局，viewer 20项/27布局。
+- viewer输入模板曾位于实际Local媒体命名空间而没有对象引用。[真实扫描器可控红绿证据](https://github.com/dnslin/ariso-next/tree/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/verification/sharing-192/regression-fixes/viewer-fixture-lifecycle)证明旧模板和刚写但未登记的文件可被扫描删除；原全量缺失文件的历史扫描时刻不可追溯，不冒充直接删除日志。模板现先在操作临时目录生成，finally清理；发布对象先登记引用、写真实字节、再发布版本。原不可读/无版本/未发布候选负例保留。完整 `--suite library` exit0，library 77项/327布局，viewer 20项/27布局。
 - 回收站准备查询数据时先离开仍消费懒加载预览的文档，再恢复夹具。每个场景及最终收尾均严格检查文档外缓冲的main/peer错误，没有清空或白名单；只增加有限资源时刻诊断。完整 `--suite trash` exit0，query/batch 10项/122布局、cleanup 8项/68布局。历史026/027确切发生时刻与根因仍未确认。
 - 分享密码滚动复用已有原生坐标稳定等待，保留主操作完整可见的严格断言。随后完整复测暴露空态一次滚轮后只到95px、图标426–462/文字474–496仍在150–420可视区域之外；原位截图和中间通过均保留在[复测历史](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-192/regression-fixes/sharing-retry-history.json)。空态按每次真实几何选择原生滚轮方向与距离，最多6次，原最终尺寸/文字/44px/全可见断言及超时不变。完整 `--suite sharing-public` exit0，30项/131布局，含分页、恢复和迟到响应。具体一次滚轮只消费95px的原因未确认，不据此修改产品滚动或布局。
 
 上述完整suite的实际命令和结果见[受影响完整场景复测](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-192/regression-fixes/affected-suite-results.json)。它们是各场景默认入口，未使用only省略场景；这不改写此前全项目命令exit1。
 
-Node24.18.1 / pnpm11.19.0 的冻结安装、完整单元107文件1459项、typecheck、build实际exit0，构建追踪依赖警告原样保留。完整 `pnpm run test:integration --maxWorkers=4` 初次149文件通过/3失败、1482项通过/3失败；三个失败文件低负载25项通过。随后完整单worker151文件/1484项通过、1失败，实际在trash-http beforeEach首INSERT报database is locked，尚未进入业务断言。[双真实连接可控失败](regression-fixes/trash-fixture-lock/)确认deferred事务读后另一连接提交造成SQLITE_BUSY_SNAPSHOT；仅该夹具采用已有immediate模式，产品数据库策略、业务断言及超时不变。完整该文件5项exit0，原两个全量失败记录保留。实际命令、输入边界与结果统一见[检查结果](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-192/regression-fixes/check-results.json)；原始日志和全部截图在忽略的 `test-results/sharing-192/regression-*`，不公开凭证。
+Node24.18.1 / pnpm11.19.0 的冻结安装、完整单元107文件1459项、typecheck、build实际exit0，构建追踪依赖警告原样保留。完整 `pnpm run test:integration --maxWorkers=4` 初次149文件通过/3失败、1482项通过/3失败；三个失败文件低负载25项通过。随后完整单worker151文件/1484项通过、1失败，实际在trash-http beforeEach首INSERT报database is locked，尚未进入业务断言。[双真实连接可控失败](https://github.com/dnslin/ariso-next/tree/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/verification/sharing-192/regression-fixes/trash-fixture-lock)确认deferred事务读后另一连接提交造成SQLITE_BUSY_SNAPSHOT；仅该夹具采用已有immediate模式，产品数据库策略、业务断言及超时不变。完整该文件5项exit0，原两个全量失败记录保留。实际命令、输入边界与结果统一见[检查结果](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-192/regression-fixes/check-results.json)；原始日志和全部截图在忽略的 `test-results/sharing-192/regression-*`，不公开凭证。
 
 收尾发现 `main` 刚合入 #249/#250，更新到 `03db847c`。本任务分支同步该版本，实际解决设计交接与两份运行器单元测试三处相邻冲突：保留 #192/#166 两份批准、batch recovery/library feedback、Token全部suite/only及参数隔离、三个分享suite缺Space前置。自动合并的full仍包含Token→同DATA_DIR重启→Account，以及全部分享阶段。此合并已[独立增量复审](regression-fixes/code-review.md)；合并后的冻结安装、构建、类型和完整单元111文件1531项实际通过。受影响的认证/分享/媒体/既有失败集成29文件283项通过；viewer behavior 17项/15布局、分享完整30项/131布局均通过，最终全项目lint通过。新增main的Token完整浏览器阶段本轮未重跑；不把旧基线51阶段或受影响复测称作新main完整默认exit0。格式、文档检查及具体命令统一见[检查结果](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-192/regression-fixes/check-results.json)。
 

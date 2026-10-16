@@ -6,13 +6,13 @@
 
 | 材料                                                                                                                                       | 内容                                                         |
 | ------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------ |
-| [平台能力实施任务](./platform.md)                                                                                                          | 完整媒体、存储、上传、账号与开放 API 的原任务定义            |
-| [管理与体验实施任务](./experience.md)                                                                                                      | 相册标签、查询批量、分享、品牌主题与报表；保留 M2 关系提供方 |
-| [执行拆解与阶段检查点](./sequence.md)                                                                                                      | 51 张业务卡、114 个步骤及当时的 M3/M4 跨任务检查点           |
-| [GitHub 任务索引](./github.md)                                                                                                             | 74 个 Issue 与 208 条原生阻塞关系的同步索引                  |
+| [平台能力实施任务](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/m3-m4/platform.md)      | 完整媒体、存储、上传、账号与开放 API 的原任务定义            |
+| [管理与体验实施任务](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/m3-m4/experience.md)  | 相册标签、查询批量、分享、品牌主题与报表；保留 M2 关系提供方 |
+| [执行拆解与阶段检查点](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/m3-m4/sequence.md)  | 51 张业务卡、114 个步骤及当时的 M3/M4 跨任务检查点           |
+| [GitHub 任务索引](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/m3-m4/github.md)         | 74 个 Issue 与 208 条原生阻塞关系的同步索引                  |
 | [原同步核验](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/github-m3-m4-verification.json) | 原始 GitHub 依赖回读结果，保留原路径与字节                   |
 
-原任务卡保留需求与直接依赖，仅供历史追溯，不再运行旧任务检查器。历史状态与原始报告按记录时点解释，当前工作见[维护计划](../../guides/maintenance.md#后续迭代)。可复用经验见[维护指南](../../guides/maintenance.md)，逐轮原始产物通过固定 Git 提交链接追溯。
+原任务卡及直接依赖通过上述固定提交链接追溯，当前只保留本阶段结论与分项证据入口。历史状态与原始报告按记录时点解释，当前工作见[维护计划](../../guides/maintenance.md#后续迭代)。可复用经验见[维护指南](../../guides/maintenance.md)，逐轮原始产物通过固定 Git 提交链接追溯。
 
 ## 分项证据入口
 

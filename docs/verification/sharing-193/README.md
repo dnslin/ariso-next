@@ -1,6 +1,6 @@
 # T-SHR-04 匿名大图与撤权联验
 
-Issue [#193](https://github.com/dnslin/ariso-next/issues/193)，需求 `R-16.3-01`、`R-17.2-01/02`、`R-17.3-01`、`R-17.4-02`、`A-26.10-03/05`。依据为 [sharing §7](../../specs/SPEC-sharing.md#7-列表大图与打开中的变化)、[任务卡](../../archive/m3-m4/experience.md#t-shr-04-匿名大图与删除相册后失效联验)、[设计交接](../../design/handoff.md)和[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)。不修改冻结 PRD。
+Issue [#193](https://github.com/dnslin/ariso-next/issues/193)，需求 `R-16.3-01`、`R-17.2-01/02`、`R-17.3-01`、`R-17.4-02`、`A-26.10-03/05`。依据为 [sharing §7](../../specs/SPEC-sharing.md#7-列表大图与打开中的变化)、[任务卡](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/m3-m4/experience.md#t-shr-04-匿名大图与删除相册后失效联验)、[设计交接](../../design/handoff.md)和[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)。不修改冻结 PRD。
 
 匿名功能范围为查看器、公开邻居查询和打开中成员/授权变化。前置 #192、#191、#185、#161、#134 在实施前已从 GitHub 原生依赖回读为 CLOSED。管理查看器、分享管理、相册删除和内容鉴权沿用实际生产能力；不新增下载、管理详情、版本菜单、幻灯片或生成文件。
 

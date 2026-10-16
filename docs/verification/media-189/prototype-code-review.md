@@ -6,7 +6,7 @@
 
 先在 `/Volumes/data/project/ariso` 只读调查实际提供方契约、调用路径、既有测试入口和验证记录；后在独立 worktree `/Users/dnslin/.codex/worktrees/issue-189-processing/ariso` 审计原型。调查期间未修改产品代码、接口、数据库或浏览器数据。
 
-原型审计实际读取并应用 `code-review-and-quality`，按正确性、可读性、职责边界、安全和性能核对。技能实际文件为 `/Users/dnslin/.agents/skills/code-review-and-quality/SKILL.md`。以项目 AGENTS.md、[设计交接](../../design/handoff.md)、[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)、[SPEC-media](../../specs/SPEC-media.md) 和 [T-MED-12 / DG-PROCESSING](../../archive/m3-m4/platform.md#t-med-12-处理设置水印和真实预览界面) 为产品依据；技能没有替代产品契约。
+原型审计实际读取并应用 `code-review-and-quality`，按正确性、可读性、职责边界、安全和性能核对。技能实际文件为 `/Users/dnslin/.agents/skills/code-review-and-quality/SKILL.md`。以项目 AGENTS.md、[设计交接](../../design/handoff.md)、[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)、[SPEC-media](../../specs/SPEC-media.md) 和 [T-MED-12 / DG-PROCESSING](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/m3-m4/platform.md#t-med-12-处理设置水印和真实预览界面) 为产品依据；技能没有替代产品契约。
 
 实际读取的实现与配置包括：
 

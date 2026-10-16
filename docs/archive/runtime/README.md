@@ -4,15 +4,15 @@
 
 本归档保存第一阶段的交付依据和证据。历史正文中的“待评审”“不关闭 Issue”等内容保留为当时的执行记录，不再代表当前任务状态或本阶段执行指令。
 
-| 材料                                                | 内容                                                       |
-| --------------------------------------------------- | ---------------------------------------------------------- |
-| [Runtime 规格](./SPEC-runtime.md)                   | 已批准的运行基础职责与实现约束；下游仍可引用其有效接口约定 |
-| [实现计划](./tasks/plan.md)                         | R1–R5 的实施顺序与检查点                                   |
-| [任务与验收](./tasks/todo.md)                       | RUNTIME-01–26 历史任务                                     |
-| [开发记录](./development.md)                        | 环境、实现过程、失败与修复历史                             |
-| [最终验收](./runtime-verification.md)               | 命令、平台、Actions 与结果说明                             |
-| [容器及图片报告](./verification/runtime-container/) | AMD64、ARM64 的原始 JSON                                   |
-| [浏览器证据](./verification/runtime-browser/)       | 原始 JSON 与 390/1440 截图                                 |
+| 材料                                                                                                                                | 内容                                                       |
+| ----------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| [Runtime 规格](./SPEC-runtime.md)                                                                                                   | 已批准的运行基础职责与实现约束；下游仍可引用其有效接口约定 |
+| [实现计划](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/runtime/tasks/plan.md)   | R1–R5 的实施顺序与检查点                                   |
+| [任务与验收](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/runtime/tasks/todo.md) | RUNTIME-01–26 历史任务                                     |
+| [开发记录](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/runtime/development.md)  | 环境、实现过程、失败与修复历史                             |
+| [最终验收](./runtime-verification.md)                                                                                               | 命令、平台、Actions 与结果说明                             |
+| [容器及图片报告](./verification/runtime-container/)                                                                                 | AMD64、ARM64 的原始 JSON                                   |
+| [浏览器证据](./verification/runtime-browser/)                                                                                       | 原始 JSON 与 390/1440 截图                                 |
 
 历史验收记录为 118 项单元测试、72 项集成测试、Ego Lite 浏览器检查和原生双架构容器验证通过。本次归档没有重新执行这些应用测试。
 

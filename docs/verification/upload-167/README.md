@@ -2,7 +2,7 @@
 
 日期：2026-10-06。Issue：[#167](https://github.com/dnslin/ariso-next/issues/167)。分支：`codex/issue-167-public-upload`。从最新 `origin/main` 的 `a0384c78a05f8457c22fb9e442dc169f25fa8a1d` 创建独立 worktree，保留原项目目录及其他任务。
 
-依据：[SPEC-upload §10](../../specs/SPEC-upload.md#10-通用上传-api)、[T-UP-05](../../archive/m3-m4/platform.md#t-up-05-同步单文件公共上传-api)、[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)、[设计交接](../../design/handoff.md)。沿用任务卡的 R/A 编号及 UP-17–21，不改冻结 PRD。
+依据：[SPEC-upload §10](../../specs/SPEC-upload.md#10-通用上传-api)、[T-UP-05](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/m3-m4/platform.md#t-up-05-同步单文件公共上传-api)、[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)、[设计交接](../../design/handoff.md)。沿用任务卡的 R/A 编号及 UP-17–21，不改冻结 PRD。
 
 ## 交付范围
 

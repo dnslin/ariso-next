@@ -87,7 +87,7 @@ EGO_TASK_SPACE=2 EGO_PAGE_LABEL=p2 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-resu
 
 产品修复后再次 `pnpm run build` 与 `pnpm run typecheck` 均退出0，受影响overview-panel定向ESLint退出0；独立4180预览已重启到最后构建且登录页实际HTTP200。其余已经通过且输入未变的单元/集成/规模检查不机械重跑。
 
-[独立代码评审](./prototype-v2/review-feedback-code.md)已只读审查服务端、消费类型、默认验证调用链及本轮真实十万规模报告，结论 Approve。原型[独立设计复审](./prototype-v2/feedback/review-design.md)只证明本轮原型视觉返修。新增交互的用户批准、Figma同步、其余产品UI实施及最终人工验收仍分别未完成。默认全量浏览器本轮未执行，定向结果不代替它；远端没有 PR 检查，不记作 CI 通过。
+[独立代码评审](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/verification/analytics-179/prototype-v2/review-feedback-code.md)已只读审查服务端、消费类型、默认验证调用链及本轮真实十万规模报告，结论 Approve。原型[独立设计复审](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/verification/analytics-179/prototype-v2/feedback/review-design.md)只证明本轮原型视觉返修。新增交互的用户批准、Figma同步、其余产品UI实施及最终人工验收仍分别未完成。默认全量浏览器本轮未执行，定向结果不代替它；远端没有 PR 检查，不记作 CI 通过。
 
 消费者真实入口：
 

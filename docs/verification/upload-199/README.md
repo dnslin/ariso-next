@@ -1,6 +1,6 @@
 # T-UP-06 / Issue #199 实施记录
 
-2026-10-09（Asia/Shanghai）。关联 [Issue #199](https://github.com/dnslin/ariso-next/issues/199) 与 [PR #269](https://github.com/dnslin/ariso-next/pull/269)。依据 [任务卡](../../archive/m3-m4/platform.md#t-up-06-openapicurl-示例与上传用法页)、[SPEC-upload §10](../../specs/SPEC-upload.md#10-通用上传-api)、[设计交接](../../design/handoff.md)及[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)。保留 R-8.4-08、R-23.4-01、A-26.3-08 和 upload/identity 模块边界，没有改写冻结 PRD。
+2026-10-09（Asia/Shanghai）。关联 [Issue #199](https://github.com/dnslin/ariso-next/issues/199) 与 [PR #269](https://github.com/dnslin/ariso-next/pull/269)。依据 [任务卡](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/m3-m4/platform.md#t-up-06-openapicurl-示例与上传用法页)、[SPEC-upload §10](../../specs/SPEC-upload.md#10-通用上传-api)、[设计交接](../../design/handoff.md)及[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)。保留 R-8.4-08、R-23.4-01、A-26.3-08 和 upload/identity 模块边界，没有改写冻结 PRD。
 
 公开规范、共享 curl、所有者用法页和 Token 入口已实现。用户明确批准表格、复制图标、删减副标题与 Tips 原型后实施，并已实际同步 Figma。独立质量评审通过；完整浏览器流程保留失败，最终用法页定向检查与独立生产设计评审通过，结果分别见下。**2026-10-09 用户明确确认本次 UI 人工验收通过；默认完整浏览器仍有失败/阻塞，PR 保持草稿。**
 
@@ -32,7 +32,7 @@ Local 默认集成和 R2/SeaweedFS 手动入口共用 `usage-examples.ts`，执�
 
 ## 获批设计、Figma与实际页面
 
-用户先要求参数/响应用表格，再要求复制图标、删除“用 Token 从脚本上传图片。”、风险说明改 Tips，最后明确“可以 就按照这个去实施 同步更新 figma”。[原型源](prototype/index.html)及[原型审查历史](design-review.md)保留，不把原型模拟复制当作产品剪贴板证据。原型预览3199继续保留。
+用户先要求参数/响应用表格，再要求复制图标、删除“用 Token 从脚本上传图片。”、风险说明改 Tips，最后明确“可以 就按照这个去实施 同步更新 figma”。[原型源](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/verification/upload-199/prototype/index.html)及[原型审查历史](design-review.md)保留，不把原型模拟复制当作产品剪贴板证据。原型预览3199继续保留。
 
 对应原 Figma 信息与截图均在编写 UI 前实际读取。更新后的节点与19张真实 Figma 截图见[同步记录](figma-sync.md)；主状态248:2137/4061、参数259:1405/3304、响应259:1518/3340、新 Tips984:33083/33890、新复制失败984:33230/33960。原 Token 一次明文失败249:1465/3588只作语义来源，未修改或误搬其关闭语义。
 

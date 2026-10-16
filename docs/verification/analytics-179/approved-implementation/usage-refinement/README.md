@@ -44,7 +44,7 @@ EGO_TASK_SPACE=2 EGO_PAGE_LABEL=p2 BROWSER_REPORT_DIR=test-results/analytics-179
 
 [首轮](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/approved-implementation/usage-refinement/browser/first-pass/runner.json)也通过；代码审查发现按前两标签比较颜色依赖排序，已改为按“已启用/已停用”查找，最终轮真实排序为启用/启用/停用仍通过。该改动提高新增断言有效性，未修改产品输入、运行器分发或旧断言。
 
-另在4180人工预览仅只读补查390×844与1440×1080、浅深色说明弹窗；[实际脚本](./browser/supplement.mjs)、[报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/approved-implementation/usage-refinement/browser/supplement.json)与12张PNG保留。四组正常高度布局、八条操作检查通过：Enter打开、44px关闭按钮点击、返回按钮Enter、源焦点恢复、400px高正文滚至末端且返回可见；hover背景和transform实际记录。报告layouts.width为弹窗宽358/480，视口由文件名390/1440标识。成功路径恢复原主题，themeRestored=true；不将只读补查写作新增默认用例或独立控制台错误检查。
+另在4180人工预览仅只读补查390×844与1440×1080、浅深色说明弹窗；[实际脚本](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/verification/analytics-179/approved-implementation/usage-refinement/browser/supplement.mjs)、[报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/approved-implementation/usage-refinement/browser/supplement.json)与12张PNG保留。四组正常高度布局、八条操作检查通过：Enter打开、44px关闭按钮点击、返回按钮Enter、源焦点恢复、400px高正文滚至末端且返回可见；hover背景和transform实际记录。报告layouts.width为弹窗宽358/480，视口由文件名390/1440标识。成功路径恢复原主题，themeRestored=true；不将只读补查写作新增默认用例或独立控制台错误检查。
 
 本轮仅增加浏览器测试与证据，产品代码未变化，沿用上节实际单元、类型和构建结果，不机械重复。受影响E2E静态检查、格式、文档链接与暂存差异检查另见[收口检查](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/approved-implementation/usage-refinement/checks/browser-closeout.json)。上述定向通过不覆盖历史全量集成1项截断上传失败或默认浏览器14项失败，不能改写为全量全绿。
 

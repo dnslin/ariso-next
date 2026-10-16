@@ -165,9 +165,9 @@ return readPublicSharePage(tx, { share: access.share, cursor, limit: 40 });
 
 管理主页面保留桌面 [30:849](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=30-849)／手机 [101:1463](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=101-1463)，默认每页 40 条；原第二页 62:728／102:5469 原位改为列表加载失败。原设置弹窗 37:322／102:3743 接入完整设置页，不回显旧密码。
 
-DES-06-SHARING 两端各补 25 个管理状态，覆盖创建、独立改密／移除、期限／不过期、过期恢复、启停、重生成与结果未知、复制和展示选项。DES-03 两端各补 25 个匿名状态，覆盖密码、通用失效、品牌／返回、网格／瀑布流、封面、隐藏／显示名称、加载更多、异常占位和精简大图。具体节点见[分享专项记录](../archive/preparation-2026-09/design/sharing-flow-2026-09-18.md)。
+DES-06-SHARING 两端各补 25 个管理状态，覆盖创建、独立改密／移除、期限／不过期、过期恢复、启停、重生成与结果未知、复制和展示选项。DES-03 两端各补 25 个匿名状态，覆盖密码、通用失效、品牌／返回、网格／瀑布流、封面、隐藏／显示名称、加载更多、异常占位和精简大图。具体节点见[分享专项记录](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/preparation-2026-09/design/sharing-flow-2026-09-18.md)。
 
-原型仍为固定样例。[返回上下文补充](../archive/preparation-2026-09/design/context-address-regression-2026-09-19.md)已配置名称／布局对应的大图覆盖、内部切换和关闭，以及各自的48张加载结果；播放器实际返回与焦点恢复尚未验收。配置修改已有连续状态代表设计；完整密码校验与提交中、真实授权撤销、请求竞态及配置持久化仍未验收。深色、其他尺寸、键盘与手势未整体闭合。设计任务保持待查看；Figma 节点检查不替代第 11 节工程验收。
+原型仍为固定样例。[返回上下文补充](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/preparation-2026-09/design/context-address-regression-2026-09-19.md)已配置名称／布局对应的大图覆盖、内部切换和关闭，以及各自的48张加载结果；播放器实际返回与焦点恢复尚未验收。配置修改已有连续状态代表设计；完整密码校验与提交中、真实授权撤销、请求竞态及配置持久化仍未验收。深色、其他尺寸、键盘与手势未整体闭合。设计任务保持待查看；Figma 节点检查不替代第 11 节工程验收。
 
 ## 11. 验收与验证
 
@@ -219,4 +219,4 @@ pnpm run test:browser
 
 两端各 50 个业务状态和 7 个阅读入口已补，原管理列表、加载失败页和设置弹窗原位修订。检查共 120 个根画板／入口，原位置尺寸保持，底部操作、编号对齐、横向边界和跳转目标通过结构检查。匿名门禁未显示相册内容，隐藏名称卡片无名称文本残留；仅为静态节点检查，未验证 HTML／RSC／接口或真实授权。
 
-[设计交付、限制与验证记录](../archive/preparation-2026-09/design/sharing-flow-2026-09-18.md)。本批不修改接口和产品规则，不标记工程或设计任务整体完成。
+[设计交付、限制与验证记录](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/preparation-2026-09/design/sharing-flow-2026-09-18.md)。本批不修改接口和产品规则，不标记工程或设计任务整体完成。

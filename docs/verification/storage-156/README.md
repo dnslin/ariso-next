@@ -1,6 +1,6 @@
 # T-STO-03 多本地/S3 配置与默认选择
 
-关联 [Issue #156](https://github.com/dnslin/ariso-next/issues/156)，范围以[任务卡](../../archive/m3-m4/platform.md#t-sto-03-多本地s3-配置与默认选择提供方)和 [storage §3–6](../../specs/SPEC-storage.md#3-数据模型与状态)为准。需求编号 R-9.1-01、R-9.1-02、R-9.2-01、R-9.3-01、R-24.2-02、R-24.2-03 保留；本任务不代表整个需求或存储管理模块完成。
+关联 [Issue #156](https://github.com/dnslin/ariso-next/issues/156)，范围以[任务卡](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/m3-m4/platform.md#t-sto-03-多本地s3-配置与默认选择提供方)和 [storage §3–6](../../specs/SPEC-storage.md#3-数据模型与状态)为准。需求编号 R-9.1-01、R-9.1-02、R-9.2-01、R-9.3-01、R-24.2-02、R-24.2-03 保留；本任务不代表整个需求或存储管理模块完成。
 
 ## 前置与实际范围
 

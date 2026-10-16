@@ -4,7 +4,7 @@
 
 ## 依据、方法与实际范围
 
-评审者实际读取 `AGENTS.md`、[设计交付规范](../../design/handoff.md)、[前端共用验收](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md#前端共用验收)、[T-MED-12 / DG-PROCESSING](../../archive/m3-m4/platform.md#t-med-12-处理设置水印和真实预览界面)，以及本次获批原型与 [Figma 同步记录](./figma-sync.md)。技能沿用 `using-agent-skills` 与 `figma-design-to-code`；前者选择本轮范围，后者要求以实际设计信息和截图评审，不把组件默认样式作为设计依据。本轮未操作浏览器、未重跑功能检查、未改产品代码或 Figma。
+评审者实际读取 `AGENTS.md`、[设计交付规范](../../design/handoff.md)、[前端共用验收](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md#前端共用验收)、[T-MED-12 / DG-PROCESSING](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/m3-m4/platform.md#t-med-12-处理设置水印和真实预览界面)，以及本次获批原型与 [Figma 同步记录](./figma-sync.md)。技能沿用 `using-agent-skills` 与 `figma-design-to-code`；前者选择本轮范围，后者要求以实际设计信息和截图评审，不把组件默认样式作为设计依据。本轮未操作浏览器、未重跑功能检查、未改产品代码或 Figma。
 
 实际设计来源包括此前读取的 18 个基线节点：设置 `34:338 / 102:1526`，文字 `60:686 / 102:2120`，图片 `60:879 / 102:2361`，默认冲突 `369:5005 / 369:4957`，预览 `367:2258 / 367:5113`，素材上传未采用 `369:5182 / 369:5134`，取消 `369:5217 / 369:5169`，到期 `369:5278 / 369:5230`，清理失败 `369:5289 / 369:5241`。采用本次同步后的截图及新增状态节点，完整节点、同尺寸截图与结构读回见 [Figma 同步证据](./figma-sync.md)。
 

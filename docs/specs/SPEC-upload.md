@@ -271,7 +271,7 @@ curl --request POST 'https://images.example/api/upload' \
 
 ## 12. Figma 与设计缺口
 
-沿用[设计索引](../design/README.md)的稳定主节点。2026-09-18 已补两端各 29 个队列与结果状态，当前节点、演示边界和剩余设计见[上传专项记录](../archive/preparation-2026-09/design/upload-flow-2026-09-18.md)。本节早期缺口清单用于核对完整范围，不能把已补状态与工程验收混同。
+沿用[设计索引](../design/README.md)的稳定主节点。2026-09-18 已补两端各 29 个队列与结果状态，当前节点、演示边界和剩余设计见[上传专项记录](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/preparation-2026-09/design/upload-flow-2026-09-18.md)。本节早期缺口清单用于核对完整范围，不能把已补状态与工程验收混同。
 
 | 功能                | 桌面                | 手机                    | 前置                 |
 | ------------------- | ------------------- | ----------------------- | -------------------- |

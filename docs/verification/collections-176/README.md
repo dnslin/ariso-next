@@ -1,6 +1,6 @@
 # Issue #176 标签管理实施与验证
 
-2026-10-02；T-COL-03 / UI-TAGS；保留 R-16.2-01、R-16.3-02。本记录承接现有 [任务定义与 DG-TAGS](../../archive/m3-m4/experience.md#t-col-03-标签创建重命名删除与图库入口)，统一按 [执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md) 与 [设计交接](../../design/handoff.md) 验证。
+2026-10-02；T-COL-03 / UI-TAGS；保留 R-16.2-01、R-16.3-02。本记录承接现有 [任务定义与 DG-TAGS](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/m3-m4/experience.md#t-col-03-标签创建重命名删除与图库入口)，统一按 [执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md) 与 [设计交接](../../design/handoff.md) 验证。
 
 ## 2026-10-02 所有者合并与关闭指令
 
@@ -60,7 +60,7 @@
 
 ## 设计与浏览器证据
 
-已实际读取对应 Figma context 和截图，独立评审者再次读取并检查真实页面。节点、相同视口、整页与控件对照及偏差处理集中在 [独立设计评审](design-review.md)，读取证据在 [figma/](figma/)。本次复用唯一 Ego Lite TaskSpace 4，独立临时 SQLite 与媒体数据，不操作用户正在预览的真实数据。
+已实际读取对应 Figma context 和截图，独立评审者再次读取并检查真实页面。节点、相同视口、整页与控件对照及偏差处理集中在 [独立设计评审](design-review.md)，读取证据在 [figma/](https://github.com/dnslin/ariso-next/tree/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/verification/collections-176/figma)。本次复用唯一 Ego Lite TaskSpace 4，独立临时 SQLite 与媒体数据，不操作用户正在预览的真实数据。
 
 一级页面无导航目标的旧“工作空间”面包屑按现行 handoff 移除；复用已确认的 OwnerShell 公共布局。桌面表头底色、手机文字字重/字号属于本次实现偏差，已修复并由独立评审者复核真实截图。未修改 Figma，没有以记录原因代替偏离设计的批准。
 

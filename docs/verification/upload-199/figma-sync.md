@@ -1,6 +1,6 @@
 # Issue #199 · Figma 同步记录
 
-2026-10-09，用户明确批准最新交互原型后，由设计同步 agent 实际写入既有文件 [Ariso 页面与组件](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=248-2137)。同步依据为 [获批原型](prototype/index.html) 和 `icons-*`、`tips-*`、`tables-*` 截图。本记录仅证明 Figma 写入和同步者的截图复核，不代表产品 UI 完成、独立生产设计评审或人工验收。
+2026-10-09，用户明确批准最新交互原型后，由设计同步 agent 实际写入既有文件 [Ariso 页面与组件](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=248-2137)。同步依据为 [获批原型](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/verification/upload-199/prototype/index.html) 和 `icons-*`、`tips-*`、`tables-*` 截图。本记录仅证明 Figma 写入和同步者的截图复核，不代表产品 UI 完成、独立生产设计评审或人工验收。
 
 ## 写入范围
 

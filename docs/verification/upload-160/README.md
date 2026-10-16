@@ -1,6 +1,6 @@
 # Issue #160 完整批次、取消与结果队列实施记录
 
-日期：2026-10-02（Asia/Shanghai）。[Issue #160](https://github.com/dnslin/ariso-next/issues/160)，任务 `T-UP-03`，需求编号与模块职责沿用[任务卡](../../archive/m3-m4/platform.md#t-up-03-完整批次快照取消与结果队列)。本地功能已实施，专项验证、独立代码审计及独立设计验收通过；所有者现明确要求合并PR并关闭Issue，见下方指令记录。
+日期：2026-10-02（Asia/Shanghai）。[Issue #160](https://github.com/dnslin/ariso-next/issues/160)，任务 `T-UP-03`，需求编号与模块职责沿用[任务卡](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/m3-m4/platform.md#t-up-03-完整批次快照取消与结果队列)。本地功能已实施，专项验证、独立代码审计及独立设计验收通过；所有者现明确要求合并PR并关闭Issue，见下方指令记录。
 
 实施阶段的交付状态：[草稿PR #225](https://github.com/dnslin/ariso-next/pull/225)，分支 `codex/issue-160-upload-queue`。使用 `gh pr view 225 --json number,url,state,isDraft,headRefName,baseRefName,statusCheckRollup,mergeStateStatus` 实际回读为OPEN/isDraft=true，检查列表为空；没有触发远端检查，不记为CI通过，不等待不存在的工作流。直接推送连接无响应后，仅在当前命令设置获授权的本机代理重试成功，未修改全局配置。
 
@@ -30,7 +30,7 @@
 
 ## 设计批准与交付边界
 
-[任务卡的DG-UPLOAD结论](../../archive/m3-m4/platform.md#dg-upload-对-t-up-03-的核对结论2026-09-30)明确：完整关系搜索多选、同名相册、移除、快速创建后选中与失败保留、下一提交编辑与冻结摘要的呈现关系尚无完整两端交接。原文要求“编写这部分 UI 前补齐两端交接并交用户确认”。初次增量交付时未收到批准，因此当时未编写该部分UI。2026-10-02 用户明确回复“批准你这几个方案”，现按 [补充交接](../../design/handoff.md#上传关系选择与冻结摘要补充2026-10-02用户批准)继续实施，不修改Figma。
+[任务卡的DG-UPLOAD结论](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/m3-m4/platform.md#dg-upload-对-t-up-03-的核对结论2026-09-30)明确：完整关系搜索多选、同名相册、移除、快速创建后选中与失败保留、下一提交编辑与冻结摘要的呈现关系尚无完整两端交接。原文要求“编写这部分 UI 前补齐两端交接并交用户确认”。初次增量交付时未收到批准，因此当时未编写该部分UI。2026-10-02 用户明确回复“批准你这几个方案”，现按 [补充交接](../../design/handoff.md#上传关系选择与冻结摘要补充2026-10-02用户批准)继续实施，不修改Figma。
 
 已批准方案：保留当前桌面右侧360px设置卡及手机下方设置卡，在存储/可见性后加入相册与标签的HeroUI搜索多选。展开层含搜索、勾选列表、新建入口；已选项换行显示可移除标签；同名相册保留名称及完整ID。快建沿已有两端短弹窗，成功选中新ID、失败保留输入和原选择。已有提交时设置卡显示“下一次上传设置”；队列上方沿现有水绿说明区逐次显示文件数、20/20/5与冻结设置，编辑只影响下一次开始。
 

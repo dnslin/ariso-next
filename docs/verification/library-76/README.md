@@ -1,6 +1,6 @@
 # T-LIB-01 基础图库读取与手机网格
 
-日期：2026-09-25。关联 [Issue #76](https://github.com/dnslin/ariso-next/issues/76)、[PR #120](https://github.com/dnslin/ariso-next/pull/120)，模块 `LIBRARY-BASE`，任务定义见 [T-LIB-01](../../archive/m1-m2/tasks.md#t-lib-01-基础图库读取与手机网格)。本次仅交付 R-15.1-01、R-15.2-01 的默认网格、每批 40 条和加载更多，不关闭完整布局、分页、筛选及选择责任。
+日期：2026-09-25。关联 [Issue #76](https://github.com/dnslin/ariso-next/issues/76)、[PR #120](https://github.com/dnslin/ariso-next/pull/120)，模块 `LIBRARY-BASE`，任务定义见 [T-LIB-01](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/m1-m2/tasks.md#t-lib-01-基础图库读取与手机网格)。本次仅交付 R-15.1-01、R-15.2-01 的默认网格、每批 40 条和加载更多，不关闭完整布局、分页、筛选及选择责任。
 
 ## 前置与实现
 
@@ -69,7 +69,7 @@
 
 ## PR 评审建议优化
 
-本轮先按[优化计划](./optimization-plan.md)落实三个建议，不扩展 Issue #76 的产品范围：
+本轮先按[优化计划](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/verification/library-76/optimization-plan.md)落实三个建议，不扩展 Issue #76 的产品范围：
 
 - 卡片把已知任务步骤显示为中文，后端 step 不变；未知步骤保留原值用于诊断。渲染测试覆盖六个已知步骤及未知步骤，真实浏览器断言活动与失败任务显示“生成缩略图”。
 - `identity/owner-page.ts` 统一服务端页面鉴权和跳转，admin/library 复用；保留原 Cookie 识别、returnTo、reason=expired 和非鉴权异常传播。

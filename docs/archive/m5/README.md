@@ -2,14 +2,14 @@
 
 完成日期：2026-10-17。用户明确确认“M5我手动验收通过了”，并要求直接归档。M1–M5 据此全部完成，后续进入[日常维护](../../guides/maintenance.md#后续迭代)。
 
-| 归集材料                                   | 保留价值                                    |
-| ------------------------------------------ | ------------------------------------------- |
-| [验收任务](./acceptance.md)                | T-QA-01–07 原任务、需求、直接前置和验收条件 |
-| [阶段计划摘要](./plan.md)                  | 首版路线、七项验收职责与组织决策            |
-| [准备任务索引](./preparation.md)           | P2 规格/准备任务、交付物和依赖              |
-| [设计交接记录](./design-history.md)        | 分次设计核对、用户批准与当时验证边界        |
-| [首版设计范围](../../design/acceptance.md) | DES/RG 覆盖范围的简洁索引                   |
+| 归集材料                                                                                                                             | 保留价值                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------- |
+| [验收任务](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/m5/acceptance.md)         | T-QA-01–07 原任务、需求、直接前置和验收条件 |
+| [阶段计划摘要](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/m5/plan.md)           | 首版路线、七项验收职责与组织决策            |
+| [准备任务索引](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/m5/preparation.md)    | P2 规格/准备任务、交付物和依赖              |
+| [设计交接记录](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/m5/design-history.md) | 分次设计核对、用户批准与当时验证边界        |
+| [首版设计范围](../../design/acceptance.md)                                                                                           | DES/RG 覆盖范围的简洁索引                   |
 
-本阶段完成依据为用户的手动验收确认。整理未重跑业务、浏览器、规模、镜像或发布检查；历史报告中的失败、未执行和环境限制保留当时结论。原任务 ID 与依赖仅供追溯，旧任务检查器不再保留；关键最终证据本地保留，逐轮原始文件通过固定 Git 提交链接追溯。
+本阶段完成依据为用户的手动验收确认。整理未重跑业务、浏览器、规模、镜像或发布检查；历史报告中的失败、未执行和环境限制保留当时结论。原任务、计划与设计交接通过固定提交追溯，不保留重复本地副本；关键最终证据本地保留，逐轮原始文件通过固定 Git 提交链接追溯。
 
 归档时最新发布为 [v1.0.14](https://github.com/dnslin/ariso-next/releases/tag/v1.0.14)，发布事实与本次人工确认分别记录。后续版本以 [GitHub Releases](https://github.com/dnslin/ariso-next/releases) 为准。

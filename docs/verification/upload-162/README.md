@@ -8,7 +8,7 @@
 
 原生 blocked by 全部关闭：#160、#158、#161、#142、#71、#72、#141。原生 blocking #163、#164、#167 保持开放。前置实验的完成不等于本次生产能力或真实服务联验完成。
 
-需求沿用 T-UP-04 的 R/A 编号与 UP-07–13/23；不改冻结 PRD。依据 [SPEC-upload](../../specs/SPEC-upload.md)、[T-UP-04 / DG-UPLOAD](../../archive/m3-m4/platform.md#t-up-04-s3-直传中转条件交接与最终清理)、[设计交付规范](../../design/handoff.md)、[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)。
+需求沿用 T-UP-04 的 R/A 编号与 UP-07–13/23；不改冻结 PRD。依据 [SPEC-upload](../../specs/SPEC-upload.md)、[T-UP-04 / DG-UPLOAD](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/m3-m4/platform.md#t-up-04-s3-直传中转条件交接与最终清理)、[设计交付规范](../../design/handoff.md)、[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)。
 
 ## 人工反馈后的复制入口返修
 

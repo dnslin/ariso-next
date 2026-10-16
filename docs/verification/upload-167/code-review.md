@@ -1,6 +1,6 @@
 # Issue #167 独立代码评审
 
-日期：2026-10-06。依据：[SPEC-upload §10](../../specs/SPEC-upload.md#10-通用上传-api)、[T-UP-05](../../archive/m3-m4/platform.md#t-up-05-同步单文件公共上传-api)、[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)。使用 `code-review-and-quality`，按实际职责交叉评审，避免评审者自行批准其实现。
+日期：2026-10-06。依据：[SPEC-upload §10](../../specs/SPEC-upload.md#10-通用上传-api)、[T-UP-05](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/m3-m4/platform.md#t-up-05-同步单文件公共上传-api)、[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)。使用 `code-review-and-quality`，按实际职责交叉评审，避免评审者自行批准其实现。
 
 ## 分工与结论
 

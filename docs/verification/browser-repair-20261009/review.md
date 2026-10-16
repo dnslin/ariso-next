@@ -160,7 +160,7 @@ README 对默认上传停在认证前置和公共外壳由站点消费者验证�
 
 环境：Node 24.18.1；命令为 `PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH node --input-type=module`，通过标准输入执行隔离 VM 注入。只从原文件提取 `observeRequests` 到临时目录，原文件未改；传输替身返回原生 `Response`，用于检查工具的持有与还原契约，不作为真实 HTTP 或浏览器证据。
 
-实际执行的标准输入脚本已按相同逻辑保存为 [初审脚本](audit/offline-before.mjs) 和 [复审脚本](audit/offline-after.mjs)，对应实际输出为 [初审结果](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/browser-repair-20261009/audit/offline-before.txt) 与 [复审结果](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/browser-repair-20261009/audit/offline-after.txt)。保存时只调整脚本排版，没有重跑检查或改变结果。相同四个文件也保存在本 worktree 的 `test-results/browser-repair/offline/`，用于本地证据保留。
+实际执行的标准输入脚本已按相同逻辑保存为 [初审脚本](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/verification/browser-repair-20261009/audit/offline-before.mjs) 和 [复审脚本](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/verification/browser-repair-20261009/audit/offline-after.mjs)，对应实际输出为 [初审结果](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/browser-repair-20261009/audit/offline-before.txt) 与 [复审结果](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/browser-repair-20261009/audit/offline-after.txt)。保存时只调整脚本排版，没有重跑检查或改变结果。相同四个文件也保存在本 worktree 的 `test-results/browser-repair/offline/`，用于本地证据保留。
 
 可重现命令（从 worktree 根目录执行）：
 
@@ -170,7 +170,7 @@ PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH node docs/verification/
 
 初审脚本同样从当前源码提取钩子；在修复后的源码上重跑不会再得到历史 TypeError。历史缺陷结果保留在 `offline-before.txt`，不以新输出覆盖。
 
-DocumentTimeline / ScrollTimeline 变更后的独立注入只重跑受影响的两个实际 predicate，未重复未变的 holding 检查。[脚本](audit/offline-timelines.mjs) 与 [实际输出](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/browser-repair-20261009/audit/offline-timelines.txt) 同步保存在 `test-results/browser-repair/offline/`。命令：
+DocumentTimeline / ScrollTimeline 变更后的独立注入只重跑受影响的两个实际 predicate，未重复未变的 holding 检查。[脚本](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/verification/browser-repair-20261009/audit/offline-timelines.mjs) 与 [实际输出](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/browser-repair-20261009/audit/offline-timelines.txt) 同步保存在 `test-results/browser-repair/offline/`。命令：
 
 ```sh
 PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH node docs/verification/browser-repair-20261009/audit/offline-timelines.mjs
@@ -198,4 +198,4 @@ PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH node docs/verification/
 
 去除摘录元数据及明确声明的省略数组后，15 份报告的所有其余字段与原报告深度相等。因此 status、checks、error、requests、清理、恢复、限制，以及原有 events/refinement 等未声明省略内容均保留；失败没有变成通过，行为 check 未裁剪。省略字段仅是发布证据体积整理，产品、实现、测试和原始验证结果没有变化。
 
-实际数据复核命令：`PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH node docs/verification/browser-repair-20261009/audit/excerpt-review.mjs`，退出 0，15/15 PASS。可查看 [复核脚本](audit/excerpt-review.mjs) 与 [逐份结果](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/browser-repair-20261009/audit/excerpt-review.json)。这是只读报告数据核对，没有重跑任何应用测试、浏览器或已通过检查。此前功能修复与代码质量结论保持，默认 70/3 和最终完整默认未重跑的限制不变。
+实际数据复核命令：`PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH node docs/verification/browser-repair-20261009/audit/excerpt-review.mjs`，退出 0，15/15 PASS。可查看 [复核脚本](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/verification/browser-repair-20261009/audit/excerpt-review.mjs) 与 [逐份结果](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/browser-repair-20261009/audit/excerpt-review.json)。这是只读报告数据核对，没有重跑任何应用测试、浏览器或已通过检查。此前功能修复与代码质量结论保持，默认 70/3 和最终完整默认未重跑的限制不变。

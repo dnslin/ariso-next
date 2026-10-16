@@ -1,6 +1,6 @@
 # Issue #179 获批实施独立设计复审
 
-2026-10-10。评审者未参与产品实现或 Figma 写入。本轮实际读取 frontend-design、emil-design-eng、Figma design-to-code 技能和现行 [handoff](../../../design/handoff.md#统计与单图访问局部方案issue-1792026-10-10用户批准)，并读取获批的 [头部累计原型复审](../prototype-v2/header-total/review-design.md)。用户最新明确批准用于产品实施与 Figma 同步；历史原型报告中的待批准状态只描述当时结果。
+2026-10-10。评审者未参与产品实现或 Figma 写入。本轮实际读取 frontend-design、emil-design-eng、Figma design-to-code 技能和现行 [handoff](../../../design/handoff.md#统计与单图访问局部方案issue-1792026-10-10用户批准)，并读取获批的 [头部累计原型复审](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/verification/analytics-179/prototype-v2/header-total/review-design.md)。用户最新明确批准用于产品实施与 Figma 同步；历史原型报告中的待批准状态只描述当时结果。
 
 当前结论：本轮获批实施范围的独立设计复审完成，未发现剩余视觉阻断项。单图正常两端浅深色、长名称、360px、短视口头尾与正文末端、真实hover及补充状态已实际复核；整页沿既有基准，排行三处映射偏差及两端末端可达已关闭，初次/重处理异常的手机浅色和桌面深色已实际对照。排行手机行距有轻微密度差，保留供用户人工验收判断。最终消费者报告已读取通过，先前焦点/滚动失败过程保留。评审者未操作浏览器，不代替独立代码评审、全量运行结论或用户最终人工验收；人工验收仍未完成。
 

@@ -4,7 +4,7 @@
 
 最新进展：用户批准的图库、回收站、上传与公共布局精简见 [2026-09-27 实施与证据](./ui-refinement/README.md)。下文保留此前轮次的实际结果；不将旧截图作为新设计验收。
 
-2026-09-26；[Issue #85](https://github.com/dnslin/ariso-next/issues/85)。范围继承[任务卡](../../archive/m1-m2/acceptance.md#t-cp-m2-本地图床核心冒烟关卡)，执行边界继承[任务执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)。本记录仅覆盖本地 JPEG/PNG 切片，不关闭全格式、S3、完整上传队列或全站设计验收。
+2026-09-26；[Issue #85](https://github.com/dnslin/ariso-next/issues/85)。范围继承[任务卡](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/m1-m2/acceptance.md#t-cp-m2-本地图床核心冒烟关卡)，执行边界继承[任务执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)。本记录仅覆盖本地 JPEG/PNG 切片，不关闭全格式、S3、完整上传队列或全站设计验收。
 
 ## 前置与实施范围
 

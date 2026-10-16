@@ -2,7 +2,7 @@
 
 **当前状态：初版UI未通过人工验收；简化方案已获批准，返修已实现并同步Figma。新浏览器验收因用户接管Ego21暂停，设计状态验收与再次人工验收未完成，PR保持草稿。** 下方初版结论属于历史证据；当前结果见[本轮返修](#人工反馈后的获批返修2026-10-04)。
 
-日期：2026-10-04（Asia/Shanghai）。关联 [Issue #187](https://github.com/dnslin/ariso-next/issues/187)；需求 `R-15.8-01`、`R-15.8-02`、`R-13.4-02`。范围及规则沿 [任务卡](../../archive/m3-m4/experience.md#t-lib-10-跨页批量复制与剪贴板降级)、[library §8](../../specs/SPEC-library.md#8-批量复制与逐版本下载)、[设计交接](../../design/handoff.md)和[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)，不维护第二份规则。
+日期：2026-10-04（Asia/Shanghai）。关联 [Issue #187](https://github.com/dnslin/ariso-next/issues/187)；需求 `R-15.8-01`、`R-15.8-02`、`R-13.4-02`。范围及规则沿 [任务卡](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/m3-m4/experience.md#t-lib-10-跨页批量复制与剪贴板降级)、[library §8](../../specs/SPEC-library.md#8-批量复制与逐版本下载)、[设计交接](../../design/handoff.md)和[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)，不维护第二份规则。
 
 ## 前置与基线
 

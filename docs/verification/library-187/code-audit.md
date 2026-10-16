@@ -1,6 +1,6 @@
 # Issue #187 独立代码审计
 
-日期：2026-10-04。评审者：独立 `code_audit` agent，未参与产品代码实现。使用 `code-review-and-quality`，按仓库 `AGENTS.md`、[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)、[设计交接](../../design/handoff.md)、[T-LIB-10](../../archive/m3-m4/experience.md#t-lib-10-跨页批量复制与剪贴板降级)与 [library §8](../../specs/SPEC-library.md#8-批量复制与逐版本下载)检查。本记录是代码审计，不替代独立设计对照或用户人工验收。
+日期：2026-10-04。评审者：独立 `code_audit` agent，未参与产品代码实现。使用 `code-review-and-quality`，按仓库 `AGENTS.md`、[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)、[设计交接](../../design/handoff.md)、[T-LIB-10](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/m3-m4/experience.md#t-lib-10-跨页批量复制与剪贴板降级)与 [library §8](../../specs/SPEC-library.md#8-批量复制与逐版本下载)检查。本记录是代码审计，不替代独立设计对照或用户人工验收。
 
 ## 当前状态（获批新流程修订后）
 
@@ -120,6 +120,6 @@
 
 - P2：detailedFeedback统一full/revision的GPS、短视口、真实消费及相册成功通知分支；旧15组合仍仅full执行，representative/feedback保持定向范围。五宽度一次捕获替代revision重复调用，没有删断言、降低目标或整套重复执行。全量入口的缺省phase实际进入此分支，不再要求维护者记住返修专用命令。
 - P3：打开时从selection.selected.keys创建独立字符串数组；所有Map写入以item.id/id为键，故与原values取id同义。计数消费ids.length，分批请求直接消费ids；名字、实际版本、原因及权限事实依旧来自服务端结果。删除完整实体类型、storage克隆与提交map，冻结明确选择、查询变化中断、401清理和焦点/滚动语义保持。
-- 验证边界：[check-dispatch.mjs](./review-fixes/check-dispatch.mjs)仅执行真实源码声明与两个真实分支条件；修前full两入口false且断言失败，修后full/revision均true，两个精简模式false。此证据不能证明场景内部或实际浏览器通过。新单元/集成/构建的实际结果见[统一记录](./README.md#双角度评审后的修复2026-10-04)。
+- 验证边界：[check-dispatch.mjs](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/verification/library-187/review-fixes/check-dispatch.mjs)仅执行真实源码声明与两个真实分支条件；修前full两入口false且断言失败，修后full/revision均true，两个精简模式false。此证据不能证明场景内部或实际浏览器通过。新单元/集成/构建的实际结果见[统一记录](./README.md#双角度评审后的修复2026-10-04)。
 
 本轮代码复审通过。获批UI的真实状态验证、独立设计验收与用户最终人工验收继续待完成，PR保持草稿。

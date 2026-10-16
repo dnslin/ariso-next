@@ -166,7 +166,7 @@ ANALYTICS-COUNT 先接本地 delivery 与聚合/日期，再覆盖 S3 和完整�
 
 工作台桌面 [19:38](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=19-38)、手机 [101:793](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=101-793)；统计桌面 [30:1225](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=30-1225)、手机 [102:1038](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-1038)。2026-09-19 已原位同步三个周期的主页面及统计／失败说明，保留原坐标尺寸。
 
-两端各新增 25 个状态与 5 个阅读入口，覆盖周期联动、真实空库／无访问、加载／失败／旧数据、延迟／漏计、旧时区、历史排行、存储四类互斥组成、待核对／停用与当前处理异常。三种周期分别有逐日数值表，不只依赖鼠标悬停或颜色。[具体节点与限制](../archive/preparation-2026-09/design/analytics-flow-2026-09-19.md)。
+两端各新增 25 个状态与 5 个阅读入口，覆盖周期联动、真实空库／无访问、加载／失败／旧数据、延迟／漏计、旧时区、历史排行、存储四类互斥组成、待核对／停用与当前处理异常。三种周期分别有逐日数值表，不只依赖鼠标悬停或颜色。[具体节点与限制](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/preparation-2026-09/design/analytics-flow-2026-09-19.md)。
 
 存储图只展示当前对象占用，不新增存储访问指标或整机磁盘账单。正常图库 90 张、回收 10 张的样例与已确认口径一致；删除后的历史数字保留，回收和停用图片无内容占位。全部数字是合成设计样例，不代表真实数据验证。
 
@@ -224,6 +224,6 @@ pnpm run test:browser
 
 ## 13. 原型进度（2026-09-19）
 
-两端各 25 个新业务状态、5 个阅读入口已补，原工作台与统计三个周期及说明弹窗原位修订。回读 76 个根画板／入口，检查列宽、底栏、编号、跳转、字体、重叠、原位置尺寸及三版本／逐日数值合计。[交付记录](../archive/preparation-2026-09/design/analytics-flow-2026-09-19.md)。
+两端各 25 个新业务状态、5 个阅读入口已补，原工作台与统计三个周期及说明弹窗原位修订。回读 76 个根画板／入口，检查列宽、底栏、编号、跳转、字体、重叠、原位置尺寸及三版本／逐日数值合计。[交付记录](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/preparation-2026-09/design/analytics-flow-2026-09-19.md)。
 
 本批不修改产品与接口契约，未运行真实计数、对象用量、刷库、退出或规模测试。设计样例不能替代第 11 节的工程验收。

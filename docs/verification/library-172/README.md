@@ -1,6 +1,6 @@
 # T-LIB-03 完整查询、分页与邻居接口
 
-关联 [Issue #172](https://github.com/dnslin/ariso-next/issues/172)，保留 `R-15.2-01`、`R-15.3-01`、`R-15.3-02`、`A-26.9-01` 归属。依据 [任务卡](../../archive/m3-m4/experience.md#t-lib-03-完整查询分页与邻居接口)、[library 规格](../../specs/SPEC-library.md)和[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)。
+关联 [Issue #172](https://github.com/dnslin/ariso-next/issues/172)，保留 `R-15.2-01`、`R-15.3-01`、`R-15.3-02`、`A-26.9-01` 归属。依据 [任务卡](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/m3-m4/experience.md#t-lib-03-完整查询分页与邻居接口)、[library 规格](../../specs/SPEC-library.md)和[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)。
 
 ## 范围与前置
 

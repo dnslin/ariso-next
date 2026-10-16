@@ -12,7 +12,7 @@ GitHub #197 无评论，原生 blocked by 为 #57/T-UI-01、#139/DG-THEME，本�
 
 校正 DG-THEME 指出的浅色 muted 与 focus 变量。照片保持本色，未新增媒体滤镜、主题监听器、兼容层或依赖。最终全站业务状态矩阵属于 `T-QA-02`；未实现业务不会因主题入口接通变成已实现。
 
-适用依据为 [site §6](../../specs/SPEC-site.md#6-品牌素材与主题)、[任务卡及 DG-THEME](../../archive/m3-m4/experience.md#t-site-05-浅深系统主题与浏览器偏好)、[设计交接](../../design/handoff.md)及[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)。应用 using-agent-skills 选取最少技能；UI 实施使用 frontend-ui-engineering、vercel-react-best-practices，Figma 使用 figma-use/figma-design-to-code，真实浏览器使用 ego-browser，独立审计使用 code-review-and-quality。
+适用依据为 [site §6](../../specs/SPEC-site.md#6-品牌素材与主题)、[任务卡及 DG-THEME](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/m3-m4/experience.md#t-site-05-浅深系统主题与浏览器偏好)、[设计交接](../../design/handoff.md)及[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)。应用 using-agent-skills 选取最少技能；UI 实施使用 frontend-ui-engineering、vercel-react-best-practices，Figma 使用 figma-use/figma-design-to-code，真实浏览器使用 ego-browser，独立审计使用 code-review-and-quality。
 
 ## 获批错误正文修正
 
@@ -146,7 +146,7 @@ node docs/tasks/check.mjs
 
 独立结构评审发现唯一Required/P2：原型直接导入现已包含主题入口的AdminShell，却仍额外保留ThemeIcon和手机fixed/桌面sticky定位容器。重新构建会重复入口。已删除原型重复状态映射、组件与定位层，直接复用公共外壳；无产品代码变化。独立定向复审通过、无剩余阻塞，见[完整结构报告](./pr-review/structure.md)。
 
-使用[隔离SSR复核程序](./pr-review/prototype-check.mjs)比较固定旧提交与当前原型源码，真实依赖树下旧源有4个入口、严格期望2的断言失败；修复后只有2个响应式公共入口、旧入口为0，[实际结果](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/theme-197/pr-review/prototype-check.json)保留。首轮复核程序模拟document却未提供window，React Aria导入失败；移除该不完整模拟、仅替换原型挂载/演示导航后正常执行，没有stub公共外壳或放宽断言。这项SSR证据不代替浏览器几何或三态操作。
+使用[隔离SSR复核程序](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/verification/theme-197/pr-review/prototype-check.mjs)比较固定旧提交与当前原型源码，真实依赖树下旧源有4个入口、严格期望2的断言失败；修复后只有2个响应式公共入口、旧入口为0，[实际结果](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/theme-197/pr-review/prototype-check.json)保留。首轮复核程序模拟document却未提供window，React Aria导入失败；移除该不完整模拟、仅替换原型挂载/演示导航后正常执行，没有stub公共外壳或放宽断言。这项SSR证据不代替浏览器几何或三态操作。
 
 实际执行 `node .data/theme-197/prototype-review-check.mjs` 通过；`node .data/theme-197/rebuild-icon-review.mjs` 为原型现有build脚本仅将输出目录替换为 `.data/theme-197/icon-prototype-review` 的隔离副本，构建退出0。`pnpm exec eslint design-plans/issue197-icon-review/main.tsx --max-warnings=0` 通过。61500继续提供批准时构建，产品61498预览、数据及历史截图均保留；此次未操作浏览器或重建产品产物。
 

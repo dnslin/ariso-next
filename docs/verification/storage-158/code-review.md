@@ -1,6 +1,6 @@
 # Issue #158 独立代码审计
 
-2026-09-30（Asia/Shanghai）。独立审计 agent 按 `using-agent-skills`、`code-review-and-quality` 和 `vercel-react-best-practices` 执行。已阅读项目 AGENTS、[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)、[设计交接](../../design/handoff.md)、[SPEC-storage §7](../../specs/SPEC-storage.md#7-cors-检测与失效) 与 [T-STO-05](../../archive/m3-m4/platform.md#t-sto-05-真实浏览器-cors-检测与-origin-失效)。本记录是代码审计，不是设计批准或 Issue 完成证明。
+2026-09-30（Asia/Shanghai）。独立审计 agent 按 `using-agent-skills`、`code-review-and-quality` 和 `vercel-react-best-practices` 执行。已阅读项目 AGENTS、[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)、[设计交接](../../design/handoff.md)、[SPEC-storage §7](../../specs/SPEC-storage.md#7-cors-检测与失效) 与 [T-STO-05](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/m3-m4/platform.md#t-sto-05-真实浏览器-cors-检测与-origin-失效)。本记录是代码审计，不是设计批准或 Issue 完成证明。
 
 本文先保留 UI 接入前的首轮审计记录；用户批准 UI 位置与独立页面后，本轮追加审计见文末。旧轮次通过结果不自动覆盖新增 UI。
 

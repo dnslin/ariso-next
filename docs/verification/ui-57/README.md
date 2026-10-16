@@ -1,6 +1,6 @@
 # T-UI-01 公共与后台外壳
 
-关联 [Issue #57](https://github.com/dnslin/ariso-next/issues/57)，需求 R-22.1-01、R-22.3-01、R-22.4-01。消费任务和设计适用范围见 [T-UI-01](../../archive/m1-m2/tasks.md#t-ui-01-heroui-接入与公共后台外壳)。代码与本地验证已完成；真实设备验收未完成，PR 保持草稿。
+关联 [Issue #57](https://github.com/dnslin/ariso-next/issues/57)，需求 R-22.1-01、R-22.3-01、R-22.4-01。消费任务和设计适用范围见 [T-UI-01](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/m1-m2/tasks.md#t-ui-01-heroui-接入与公共后台外壳)。代码与本地验证已完成；真实设备验收未完成，PR 保持草稿。
 
 ## 前置与范围
 

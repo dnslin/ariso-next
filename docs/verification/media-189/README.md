@@ -81,7 +81,7 @@
 
 ## 范围与实际前置
 
-通过 `gh` 读取 Issue、评论及原生关系：Issue 无评论；blocked by #188、#57、#132 均已 completed 关闭；blocking #194 仍 open。前置底层能力已实现，但设计缺口仍由本消费者承接。[任务卡及 DG-PROCESSING 核对结论](../../archive/m3-m4/platform.md#dg-processing-对-t-med-12-的核对结论2026-10-04)明确要求补齐默认字段、任意测试图/完整目标、响应未知组合和素材展示边界后取得用户确认。这不是重新请求实施、提交或 PR 授权。
+通过 `gh` 读取 Issue、评论及原生关系：Issue 无评论；blocked by #188、#57、#132 均已 completed 关闭；blocking #194 仍 open。前置底层能力已实现，但设计缺口仍由本消费者承接。[任务卡及 DG-PROCESSING 核对结论](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/m3-m4/platform.md#dg-processing-对-t-med-12-的核对结论2026-10-04)明确要求补齐默认字段、任意测试图/完整目标、响应未知组合和素材展示边界后取得用户确认。这不是重新请求实施、提交或 PR 授权。
 
 本任务覆盖所有者 `/settings/processing` 的压缩、默认可见性、默认链接、并发、文字/图片水印、素材上传以及未保存渲染参数的真实预览。需求编号保持 `R-14.1-01`、`R-11.3-01`、`R-11.3-02`、`R-11.5-01`、`R-11.5-02`、`R-11.6-01`、`R-11.6-02`、`R-14.4-01`、`R-14.4-02`、`R-11.2-02`、`R-22.1-01`、`R-22.4-01`。重处理、T-SITE-02、发布与部署不属于本次范围。冻结 PRD 未修改。
 

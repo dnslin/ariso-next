@@ -25,7 +25,7 @@ pnpm run dev
 
 开发入口先编译启动程序，再读取 `.env.local` 完成数据目录、SQLite、迁移和配置检查，随后在 `http://127.0.0.1:3000` 启动 Next。首次启动通过 Web 初始化所有者；`/api/health` 应返回 HTTP 200、`Cache-Control: no-store` 和 `{"status":"ok"}`。Ctrl+C 停止服务。
 
-Linux 从源码安装原生依赖时需要 Python 和 C/C++ 构建工具；不要跨操作系统或架构复制 `node_modules`。图片工具完整环境由 Docker 镜像提供。本机环境差异和历史命令见 [历史开发记录](../archive/runtime/development.md)。
+Linux 从源码安装原生依赖时需要 Python 和 C/C++ 构建工具；不要跨操作系统或架构复制 `node_modules`。图片工具完整环境由 Docker 镜像提供。本机环境差异和历史命令见 [历史开发记录](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/runtime/development.md)。
 
 本地运行图片处理及完整集成测试还需 PATH 中有 ImageMagick 7（`magick`）和 ExifTool（`exiftool`）。可分别用 `magick -version`、`exiftool -ver` 检查。缺少工具时真实图片测试会失败，不会自动跳过；无需为此安装本机 Docker。
 
@@ -60,7 +60,7 @@ pnpm run test:browser
 `test:integration` 在本地同时执行普通集成和真实工具测试，包含实际 ImageMagick/ExifTool 转换，不需要 Docker。请先完成生产构建；资源紧张时可使用 `pnpm run test:integration --maxWorkers=4`。浏览器检查通过 `test:browser` 复用现有 Ego Lite。
 
 - [升级、停止备份与恢复](./upgrading.md)
-- [runtime 规格](../archive/runtime/SPEC-runtime.md)与[任务验收清单](../archive/runtime/tasks/todo.md)
+- [runtime 规格](../archive/runtime/SPEC-runtime.md)与[Runtime 历史交付清单](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/runtime/tasks/todo.md)
 - [实际交付与验收证据](../archive/runtime/runtime-verification.md)
 
 源码按 `src/app`（页面与 HTTP 接口）、`src/server/runtime`（配置、数据库、迁移、加密及日志）、`src/server/startup`（启动编排）和 `src/cli`（独立启动程序）分工。SQL 迁移保存在 `drizzle`；修改数据结构时提交生成的迁移和测试，不在部署时运行 Schema push。

@@ -31,7 +31,7 @@
 
 - 澄清前执行 `EGO_TASK_SPACE=9 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=.data/toolbar-20261012/browser-collections node scripts/verify-browser.mjs --suite collection-shortcuts --only menus`，完整快捷操作阶段与菜单阶段分别 5 项检查通过。该历史结果不冒充最新相册位置通过。
 - 首轮 `--suite trash --only representative` 在已选状态等待浅色主题时超时。此前视觉场景手动设定了根主题，不能只依赖系统配色仿真来覆盖它。修正布局辅助脚本，使仿真配色和根主题明确一致；没有删除布局断言或修改产品主题行为。[原失败报告和截图](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261011/clarity-v3/toolbar-20261012/browser/history/trash-query-batch.json)保留。该代表套件没有完整重跑。
-- 最新构建启动后执行 `ego-browser nodejs -e "$(cat .data/toolbar-20261012/verify-final.mjs)"`，[实际驱动脚本](browser/verify-final.mjs)使用相同布局辅助函数检查三个真实页面。最终 [report.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261011/clarity-v3/toolbar-20261012/browser/report.json) 为 `passed`，共 108 个布局、4 项行为检查。另验证相册返回与标题同排，添加菜单仍为“上传新图片 / 从图库选择”，每页选择及取消选择成功。
+- 最新构建启动后执行 `ego-browser nodejs -e "$(cat .data/toolbar-20261012/verify-final.mjs)"`，[实际驱动脚本](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/verification/m2-85/ui-refinement/20261011/clarity-v3/toolbar-20261012/browser/verify-final.mjs)使用相同布局辅助函数检查三个真实页面。最终 [report.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261011/clarity-v3/toolbar-20261012/browser/report.json) 为 `passed`，共 108 个布局、4 项行为检查。另验证相册返回与标题同排，添加菜单仍为“上传新图片 / 从图库选择”，每页选择及取消选择成功。
 - 产品代码、单测和本轮浏览器模块的定向 `pnpm exec prettier ... --check` 通过。全仓格式检查的历史两份失败仍单独保留。
 
 ### 设计对照

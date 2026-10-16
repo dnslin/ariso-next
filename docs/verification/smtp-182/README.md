@@ -18,7 +18,7 @@ Node24.18.1 / pnpm11.19.0实际运行受影响检查：`pnpm exec vitest run --p
 
 2026-10-08 从最新 `origin/main`（`96212bea`）创建管理型独立工作区，分支 `codex/issue-182-smtp`；保留原 main 及其他任务。`gh issue view 182 --json number,title,body,state,comments,url` 与原生依赖接口回读：#182 OPEN、无评论，blocked by #60/#57/#146/#136 均 CLOSED；blocking #184 OPEN。
 
-从[文档导航](../../README.md)读取[任务卡](../../archive/m3-m4/platform.md#t-id-06-smtp-配置真实发送与诊断)、[identity §8.1/10](../../specs/SPEC-identity.md#81-配置和测试)、[DG-SMTP](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/evidence/DG-SMTP/README.md)、[设计交接](../../design/handoff.md)和[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)。需求编号 `R-21.4-01/02`、`R-24.2-02/03`、`A-26.1-09` 保留；重置邮件、CLI 和完整质量关卡由所属任务承接。
+从[文档导航](../../README.md)读取[任务卡](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/m3-m4/platform.md#t-id-06-smtp-配置真实发送与诊断)、[identity §8.1/10](../../specs/SPEC-identity.md#81-配置和测试)、[DG-SMTP](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/evidence/DG-SMTP/README.md)、[设计交接](../../design/handoff.md)和[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)。需求编号 `R-21.4-01/02`、`R-24.2-02/03`、`A-26.1-09` 保留；重置邮件、CLI 和完整质量关卡由所属任务承接。
 
 原有 SMTP 为 EV-IDENTITY-04 协议实验。本次接入生产配置、加密持久化、启动解密检查、SMTP 管理接口和 `/settings/email`。不新增邮件队列、任意收件人接口、兼容路径或重置业务。
 

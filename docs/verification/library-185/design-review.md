@@ -10,7 +10,7 @@
 
 ## 依据与范围
 
-遵守 [设计交付规范](../../design/handoff.md)、[前端共用验收](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md#前端共用验收)、[T-LIB-07 任务卡](../../archive/m3-m4/experience.md#t-lib-07-大图查看同图选版与上下文恢复)及 [library §6](../../specs/SPEC-library.md#6-大图查看)。本次读取 `using-agent-skills` 和 `figma-design-to-code` 技能。
+遵守 [设计交付规范](../../design/handoff.md)、[前端共用验收](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md#前端共用验收)、[T-LIB-07 任务卡](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/m3-m4/experience.md#t-lib-07-大图查看同图选版与上下文恢复)及 [library §6](../../specs/SPEC-library.md#6-大图查看)。本次读取 `using-agent-skills` 和 `figma-design-to-code` 技能。
 
 实际读取节点：
 

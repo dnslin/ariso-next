@@ -19,7 +19,7 @@
 
 ## Figma写入记录
 
-[初次同步](figma/sync-log.md)、[公共导航与字重修正](figma/postfix-log.md)、[站点标题居中最终校准](figma/title-fix-log.md)按顺序保留。各次局部修复只改指定四normal roots，不改产品或全局组件。最新版正常标题是72×28，在44px row内自动y8居中，卡、帮助入口与下方form/link bounds未变化：[桌面JSON](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/upload-200/reports/merge/figma/desktop-title-fix.json)/[实际脚本](figma/desktop-title-fix.js)、[手机JSON](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/upload-200/reports/merge/figma/mobile-title-fix.json)/[实际脚本](figma/mobile-title-fix.js)。
+[初次同步](figma/sync-log.md)、[公共导航与字重修正](figma/postfix-log.md)、[站点标题居中最终校准](figma/title-fix-log.md)按顺序保留。各次局部修复只改指定四normal roots，不改产品或全局组件。最新版正常标题是72×28，在44px row内自动y8居中，卡、帮助入口与下方form/link bounds未变化：[桌面JSON](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/upload-200/reports/merge/figma/desktop-title-fix.json)/[实际脚本](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/verification/upload-200/reports/merge/figma/desktop-title-fix.js)、[手机JSON](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/upload-200/reports/merge/figma/mobile-title-fix.json)/[实际脚本](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/verification/upload-200/reports/merge/figma/mobile-title-fix.js)。
 
 全局Button/Primary原3:22实际Regular400没有改写；八个保存按钮实例按当前产品/获批基准及原#200上传实例实际字体分段采用Noto Sans SC Medium500。桌面总览/访问统计沿真实OwnerShell当前unavailable状态，API后端交付不冒充页面已交付。
 

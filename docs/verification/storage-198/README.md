@@ -4,7 +4,7 @@
 
 ## 前置、范围与工作区
 
-从 `docs/README.md` 阅读 PRD §9、能力地图、计划、SPEC-storage、[任务卡](../../archive/m3-m4/platform.md#t-sto-07-完整存储管理两端界面)、[DG-STORAGE](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/evidence/DG-STORAGE/README.md)、设计交接和执行约定。保留原需求编号、模块边界与已确认的普通 Bucket / 单 PUT / 周期扫描方案，没有改写冻结 PRD。
+从 `docs/README.md` 阅读 PRD §9、能力地图、计划、SPEC-storage、[任务卡](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/m3-m4/platform.md#t-sto-07-完整存储管理两端界面)、[DG-STORAGE](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/evidence/DG-STORAGE/README.md)、设计交接和执行约定。保留原需求编号、模块边界与已确认的普通 Bucket / 单 PUT / 周期扫描方案，没有改写冻结 PRD。
 
 实际执行 `gh issue view 198 --repo dnslin/ariso-next --json number,title,body,state,comments,url`，以及 `gh api repos/dnslin/ariso-next/issues/198/dependencies/blocked_by`、`.../blocking`。Issue 开放，无评论；直接前置 #164、#57、#137 均已关闭，无后置阻塞关系。本次没有修改 Issue 状态或关系。
 

@@ -4,7 +4,7 @@
 
 ## 实际依据与读取
 
-已实际读取figma-use、figma-design-to-code技能，核对现行[设计交接](../../../../design/handoff.md#公共页面导航与布局)、[T-LIB-04任务卡](../../../../archive/m3-m4/experience.md#t-lib-04-四种布局加载组合与筛选历史)及其明确引用的[图库状态表02](../../../../archive/preparation-2026-09/design/library-flow-2026-09-18.md#状态节点)。未按任务卡旧的大筛选弹窗逆向扩展本次修复。
+已实际读取figma-use、figma-design-to-code技能，核对现行[设计交接](../../../../design/handoff.md#公共页面导航与布局)、[T-LIB-04任务卡](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/m3-m4/experience.md#t-lib-04-四种布局加载组合与筛选历史)及其明确引用的[图库状态表02](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/preparation-2026-09/design/library-flow-2026-09-18.md#状态节点)。未按任务卡旧的大筛选弹窗逆向扩展本次修复。
 
 文件`74sT9Hrf8G4czcWeTkET5b`两节点均实际调用`get_design_context`并查看返回截图；随后获取原尺寸PNG、下载至本目录并实际查看：
 

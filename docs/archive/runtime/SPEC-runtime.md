@@ -436,6 +436,6 @@ pnpm run test:integration
 
 规格编写阶段未执行应用验证。后续实现已进入交付阶段，实际命令、平台、结果和限制见 [runtime 验证记录](./runtime-verification.md)。Docker 仍由 GitHub Actions 验证，本机不要求 Docker。
 
-评审已确认：Node/Debian 与依赖基线、工程和命令约定、prestart + 标准 Next 入口、数据库与密钥行为、日志和测试边界。用户已确认继续按 [实现计划](./tasks/plan.md) 推进，实际进度见 [任务清单](./tasks/todo.md)；本 Spec 的批准不代表尚未执行的验收已经通过。
+评审已确认：Node/Debian 与依赖基线、工程和命令约定、prestart + 标准 Next 入口、数据库与密钥行为、日志和测试边界。用户已确认继续按 [实现计划](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/runtime/tasks/plan.md) 推进，实际进度见 [任务清单](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/runtime/tasks/todo.md)；本 Spec 的批准不代表尚未执行的验收已经通过。
 
 > 2026-09-15 验证方式修订：用户确认 E2E 统一使用 ego-browser 技能，不再使用 Playwright，也不下载配套 Chrome/Chromium。CI 命令与 ego 实际浏览器验收分别记录；历史 Playwright 结果不代表 ego 已验证。

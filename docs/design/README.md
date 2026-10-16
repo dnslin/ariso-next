@@ -2,12 +2,12 @@
 
 当前设计文件为 [Ariso Figma](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b)。桌面和手机各按 00–16 统一为 17 个模块分区，同一模块的主页面、操作状态、异常、主题与尺寸对照集中查看。
 
-| 文档                                                            | 用途                                          |
-| --------------------------------------------------------------- | --------------------------------------------- |
-| [设计交付规范](./handoff.md)                                    | 当前视觉、交互、组件复用、UI 家族与已批准修订 |
-| [首版验收范围](./acceptance.md)                                 | DES/RG 范围及 M5 完成依据                     |
-| [首版设计交接](../archive/m5/design-history.md)                 | DG 适用核对、分次批准与当时验证边界           |
-| [准备阶段记录](../archive/preparation-2026-09/design/README.md) | 旧稿、完整状态节点和分区整理证据              |
+| 文档                                                                                                                                                 | 用途                                          |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------- |
+| [设计交付规范](./handoff.md)                                                                                                                         | 当前视觉、交互、组件复用、UI 家族与已批准修订 |
+| [首版验收范围](./acceptance.md)                                                                                                                      | DES/RG 范围及 M5 完成依据                     |
+| [首版设计交接](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/m5/design-history.md)                 | DG 适用核对、分次批准与当时验证边界           |
+| [准备阶段记录](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/preparation-2026-09/design/README.md) | 旧稿、完整状态节点和分区整理证据              |
 
 原型表达视觉和预设交互，不能证明业务已实现。功能范围以 [PRD](../product/Ariso-PRD-v1.1.md) 与 [业务规格](../product/CAPABILITY-MAP.md) 为准；旧稿中的演示数据、旧布局和“下一批”不覆盖当前规则。
 

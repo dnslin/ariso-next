@@ -155,7 +155,7 @@ Issue #184 所有者审阅新版可操作原型后批准：公开登录、找回
 
 结构回读、代表截图、用户设计认可、播放器验证和真实网页验收分别记录。静态状态的自动跳转、预填输入、固定选中数量和成功提示不属于运行证据。当前未关闭责任统一见[待验收清单](./acceptance.md)，不从历史批次的“下一批”重新生成重复任务。
 
-完整来源：[早期与逐批设计索引](../archive/preparation-2026-09/design/README.md)、[并行补全](../archive/preparation-2026-09/design/parallel-design-completion-2026-09-19.md)、[模块整理](../archive/preparation-2026-09/design/module-sections-2026-09-19.md)。
+完整来源：[早期与逐批设计索引](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/preparation-2026-09/design/README.md)、[并行补全](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/preparation-2026-09/design/parallel-design-completion-2026-09-19.md)、[模块整理](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/preparation-2026-09/design/module-sections-2026-09-19.md)。
 
 手机设置分类入口为 [113:1499](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=113-1499)，与全屏后台导航分别验收。
 

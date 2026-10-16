@@ -2,7 +2,7 @@
 
 本轮按用户批准的 [53542 原型](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/design-plans/issue192-feedback/index.html) 和后续明确要求的输入框左侧 LockKeyhole 同步 Figma。已完成 28 张画板的本轮修改及真实 PNG 导出：保留 12 张原画板 ID，新增 16 张深色或说明展开画板。其中 24 张对应当前产品代表状态，四张 revalidate 为保留的历史设计样例，不能据此宣称产品有单独重新验证页面。本记录只证明设计同步和同步者自查；独立设计评审、真实浏览器行为及人工验收另行记录。
 
-依据为 [设计交接](../../../design/handoff.md)、[执行与验证约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)、[前次获批设计记录](../approved-design.md) 与 [本轮原型验证](../feedback-proposal/)。执行前实际读取 using-agent-skills、figma-use、figma-generate-design、figma-design-to-code 和适用的 figma-generate-library 指引，并读取原密码、错误、等待、重新验证、撤权、空态的桌面与手机节点上下文及截图。
+依据为 [设计交接](../../../design/handoff.md)、[执行与验证约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)、[前次获批设计记录](../approved-design.md) 与 [本轮原型验证](https://github.com/dnslin/ariso-next/tree/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/verification/sharing-192/feedback-proposal)。执行前实际读取 using-agent-skills、figma-use、figma-generate-design、figma-design-to-code 和适用的 figma-generate-library 指引，并读取原密码、错误、等待、重新验证、撤权、空态的桌面与手机节点上下文及截图。
 
 ## 节点与截图
 

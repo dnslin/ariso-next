@@ -5,7 +5,7 @@
 在项目规定的 Node 24 / pnpm 环境执行：
 
 ```sh
-pnpm exec vitest run --project integration tests/integration/upload/transport.test.ts
+pnpm exec vitest run --project experiments tests/integration/upload/transport.test.ts
 node tests/experiments/upload-transport/run.ts --smoke
 node tests/experiments/upload-transport/run.ts --real-time > transport-report.json 2> transport-checkpoints.jsonl
 ```

@@ -1,6 +1,6 @@
 # Issue #166 独立设计状态审查
 
-日期：2026-10-06（Asia/Shanghai）。审查依据为 [T-ID-08 / DG-API](../../archive/m3-m4/platform.md#dg-api-对-t-id-08-的核对结论2026-10-05)、[设计交接](../../design/handoff.md)、[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)及用户“批准，按这版实施”的原型意见。实际使用 using-agent-skills、frontend-ui-engineering、figma-design-to-code 和 figma-use；实际读取产品源码、Figma和实现者生成的真实浏览器截图，没有修改产品代码、操作Ego或重复运行功能检查。经实施者指定，曾同步两端空态的能力文案并回读，证据在`empty-copy-sync.json`；最终复核阶段仅读取Figma与截图。
+日期：2026-10-06（Asia/Shanghai）。审查依据为 [T-ID-08 / DG-API](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/m3-m4/platform.md#dg-api-对-t-id-08-的核对结论2026-10-05)、[设计交接](../../design/handoff.md)、[执行约定](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md)及用户“批准，按这版实施”的原型意见。实际使用 using-agent-skills、frontend-ui-engineering、figma-design-to-code 和 figma-use；实际读取产品源码、Figma和实现者生成的真实浏览器截图，没有修改产品代码、操作Ego或重复运行功能检查。经实施者指定，曾同步两端空态的能力文案并回读，证据在`empty-copy-sync.json`；最终复核阶段仅读取Figma与截图。
 
 本记录是本次证据，不另建设计规则。最终业务状态截图复核已补齐，手机401及展开设置分类的独立视觉缺口保留在文末；下表保留初审映射及历史发现，不等于功能验证通过或用户人工验收完成。
 

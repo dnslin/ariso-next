@@ -4,7 +4,7 @@
 
 2026-10-09 后续人工反馈的获批返修已完成实现、Figma 同步、真实浏览器与独立代码/设计复审；当时新版产品人工验收待完成；当前已通过，见上方确认。**当前返修完成状态以[本轮证据](./feedback.md)为准**；下文首轮命令、截图与审计保留为历史，不代替新版验证或人工验收。
 
-2026-10-09，T-ID-07 / `IDENTITY-RESET`。本记录区分生产实现、本地检查、浏览器、设计审计和人工验收；不以其中一项替代另一项。关联 [Issue #184](https://github.com/dnslin/ariso-next/issues/184)、[任务卡](../../archive/m3-m4/platform.md#t-id-07-邮件找回一次重置与恢复界面)、[SPEC-identity §8.2](../../specs/SPEC-identity.md#82-找回与重置)、[DG-RESET](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/evidence/DG-RESET/README.md)。执行和设计规则统一使用 [execution](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md) 与 [handoff](../../design/handoff.md)。
+2026-10-09，T-ID-07 / `IDENTITY-RESET`。本记录区分生产实现、本地检查、浏览器、设计审计和人工验收；不以其中一项替代另一项。关联 [Issue #184](https://github.com/dnslin/ariso-next/issues/184)、[任务卡](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/m3-m4/platform.md#t-id-07-邮件找回一次重置与恢复界面)、[SPEC-identity §8.2](../../specs/SPEC-identity.md#82-找回与重置)、[DG-RESET](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/evidence/DG-RESET/README.md)。执行和设计规则统一使用 [execution](https://github.com/dnslin/ariso-next/blob/d2e2267aca1f3551c41ce809a49bcc7b99016b66/docs/tasks/execution.md) 与 [handoff](../../design/handoff.md)。
 
 ## 范围与实际行为
 
