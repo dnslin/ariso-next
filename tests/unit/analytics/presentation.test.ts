@@ -195,7 +195,11 @@ describe('analytics presentation from real report fields', () => {
       html(AnalyticsPopular, { data: existing, onStatistics: () => {} }),
     ).not.toContain('data-image-id=');
     const versions = html(AnalyticsVersions, { data: existing });
-    expect([...versions.matchAll(/<dd[^>]*>0 次<\/dd>/g)]).toHaveLength(3);
+    expect(
+      [...versions.matchAll(/<dd[^>]*>(.*?)<\/dd>/g)].map((match) =>
+        match[1].replace(/<[^>]*>/g, ''),
+      ),
+    ).toEqual(['0 次', '0 次', '0 次']);
     expect(versions).not.toContain('合计 0 次');
   });
   it('does not call an idle process with no committed batch a failure and distinguishes query time from flush time', () => {

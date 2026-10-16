@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { analyticsBoundary, number } from './analytics-helpers.mjs';
 import { resizeViewport } from './browser-geometry.mjs';
+import { assertVersionsAndPopularLayout } from './analytics-layout.mjs';
 
 const periodControl = (days) =>
   `loc=css:[role="radiogroup"][aria-label="统计周期"] button[role="radio"] >> nth=${[7, 30, 90].indexOf(days)}`;
@@ -264,7 +265,7 @@ export async function analyticsRepresentative(
     for (const theme of ['light', 'dark']) {
       for (const width of path.startsWith('/dashboard')
         ? [390, 1440]
-        : [360, 390, 430, 768, 1440]) {
+        : [360, 390, 430, 768, 1000, 1440, 1642]) {
         await tools.evidence(
           path.startsWith('/dashboard') ? 'dashboard' : 'overview',
           width,
@@ -308,7 +309,10 @@ export async function analyticsRepresentative(
           );
           assert.equal(dashboard.duplicateReports, 0);
           assert.equal(dashboard.uploadEntries, 1);
-        } else await assertPeriodLayout(page);
+        } else {
+          await assertPeriodLayout(page);
+          await assertVersionsAndPopularLayout(page, width, report);
+        }
       }
     }
   }
