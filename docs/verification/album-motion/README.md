@@ -32,4 +32,4 @@
 
 本轮未重复全量单元、全量集成或全量浏览器检查。上一轮取消淡出前已运行全量单元（2271 项）、相关集成（33 项）、后台全部入口导航（94 组）；这些历史结果不替代本轮行为验证。未执行远端 CI 或发布验证；未提交、推送或部署。
 
-证据：[桌面截图](./album-motion-1440.png)、[手机截图](./album-motion-390.png)、[最新精简结果](./verification.json)。完整逐帧报告由本轮测试更新到 `test-results/browser-album-motion/album-motion.json`。截图只能核对布局，进入、移除及补位由逐帧记录另行验证；用户尚未确认当前动效观感。
+证据：[桌面截图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/album-motion/album-motion-1440.png)、[手机截图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/album-motion/album-motion-390.png)、[最新精简结果](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/album-motion/verification.json)。完整逐帧报告由本轮测试更新到 `test-results/browser-album-motion/album-motion.json`。截图只能核对布局，进入、移除及补位由逐帧记录另行验证；用户尚未确认当前动效观感。

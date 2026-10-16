@@ -16,9 +16,9 @@
 
 ## 测试与调用链审计
 
-- 已读 OAuth [旧实现失败](checks/oauth-focus-before.txt)和[修后 16 项通过](checks/oauth-focus-after.txt)；受控 hook 提交模型覆盖“读取承诺先完成、配置按钮后提交”的顺序，能识别原回调丢失回焦。
-- 已读 SMTP [旧实现失败](checks/smtp-focus-before.txt)和[最终 4 项通过](checks/smtp-focus-after.txt)。四项分别验证旧保存帧不抢下一操作焦点、空闲 DOM 提交后选择可用目标、取消未保存确认保留草稿且不发送、发送结束后测试入口恢复可用与焦点。断言包含可观察状态、焦点及实际请求调用数，没有只断言内部 ref。
-- 已读退出 [旧实现失败](checks/session-before.txt)、[修后 3 项通过](checks/session-after.txt)及[真实 SQLite/HTTP 契约 3 项通过](checks/logout-contract.txt)。覆盖第二次 GET 限流、POST 失败后重试、背景空会话不覆盖显式退出，以及服务端读取/删除故障保 Cookie、成功撤销和显式重试。
+- 已读 OAuth [旧实现失败](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/browser-product-regressions/checks/oauth-focus-before.txt)和[修后 16 项通过](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/browser-product-regressions/checks/oauth-focus-after.txt)；受控 hook 提交模型覆盖“读取承诺先完成、配置按钮后提交”的顺序，能识别原回调丢失回焦。
+- 已读 SMTP [旧实现失败](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/browser-product-regressions/checks/smtp-focus-before.txt)和[最终 4 项通过](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/browser-product-regressions/checks/smtp-focus-after.txt)。四项分别验证旧保存帧不抢下一操作焦点、空闲 DOM 提交后选择可用目标、取消未保存确认保留草稿且不发送、发送结束后测试入口恢复可用与焦点。断言包含可观察状态、焦点及实际请求调用数，没有只断言内部 ref。
+- 已读退出 [旧实现失败](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/browser-product-regressions/checks/session-before.txt)、[修后 3 项通过](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/browser-product-regressions/checks/session-after.txt)及[真实 SQLite/HTTP 契约 3 项通过](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/browser-product-regressions/checks/logout-contract.txt)。覆盖第二次 GET 限流、POST 失败后重试、背景空会话不覆盖显式退出，以及服务端读取/删除故障保 Cookie、成功撤销和显式重试。
 - 实际核对 `browser-plan.mjs` 的 SMTP `focus` 登记及对应两个计划测试条目。该参数只进入 `smtpPhase`；原 `representative`、`interactions`、`recovery` 组合保留。默认 full 仍包含 SMTP，`smtp.mjs` 在阶段缺省、`interactions` 或 `focus` 时执行新增保存焦点场景；没有只在定向入口覆盖新能力。
 - `smtp-focus.mjs` 扩大原有动画帧延迟窗口，同时保留真实 PATCH 响应、生产 DOM、原生聚焦和 Enter。最终释放帧及传输夹具，未削弱原确认框、草稿保留或不发送邮件的断言。初审时该浏览器回归场景尚未执行，后续实际结果见补审。
 
@@ -28,12 +28,12 @@
 
 同日独立只读核对新增报告、原观察脚本与原始错误输出；未重跑检查、操作浏览器或修改产品。**本轮定向验证与证据解释无必改项，仍不表示 full 或完整 SMTP 通过。**
 
-- SMTP [运行器](browser-results/smtp-focus/runner.json)与[场景报告](browser-results/smtp-focus/smtp.json)均为 `passed`，阶段明确为 `focus`。1440、390 两个视口在真实保存后继续编辑，延迟帧释放后焦点仍是 `smtp-test`；原生 Enter 打开未保存确认，取消后保留新输入，没有浏览器错误。报告只覆盖该焦点场景，不含真实外部邮件最终收件、其余协议或完整恢复流程。
-- OAuth [报告](browser-results/oauth-focus/report.json)覆盖 1440 浅色、390 深色：真实 PATCH 200、失败重读保留未知、再次核对后焦点到配置入口、键盘重新打开及保留滚动。它支持本次配置核对焦点修复，不自动解除历史三个后继阶段的阻塞或证明历史失败的唯一时序。
-- 退出的[原观察输出](browser-results/logout/initial-observer-failure.txt)保留首次断言失败；[同一实际记录](browser-results/logout/report.json)为 GET 429、POST 200，随后页面实际到 `/login?reason=signed-out`。最初断言要求整个记录数组只有 POST，把成功 POST 前记录的背景 GET 也视作错误。针对本轮缺陷，必要条件是退出成功后不再依赖额外会话读取完成跳转；该 trace 与真实目的地支持此条件。更正是对同一 trace 的只读解释，没有删除、弱化或重跑产品测试，也不把原观察命令写成退出 0。
+- SMTP [运行器](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/browser-product-regressions/browser-results/smtp-focus/runner.json)与[场景报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/browser-product-regressions/browser-results/smtp-focus/smtp.json)均为 `passed`，阶段明确为 `focus`。1440、390 两个视口在真实保存后继续编辑，延迟帧释放后焦点仍是 `smtp-test`；原生 Enter 打开未保存确认，取消后保留新输入，没有浏览器错误。报告只覆盖该焦点场景，不含真实外部邮件最终收件、其余协议或完整恢复流程。
+- OAuth [报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/browser-product-regressions/browser-results/oauth-focus/report.json)覆盖 1440 浅色、390 深色：真实 PATCH 200、失败重读保留未知、再次核对后焦点到配置入口、键盘重新打开及保留滚动。它支持本次配置核对焦点修复，不自动解除历史三个后继阶段的阻塞或证明历史失败的唯一时序。
+- 退出的[原观察输出](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/browser-product-regressions/browser-results/logout/initial-observer-failure.txt)保留首次断言失败；[同一实际记录](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/browser-product-regressions/browser-results/logout/report.json)为 GET 429、POST 200，随后页面实际到 `/login?reason=signed-out`。最初断言要求整个记录数组只有 POST，把成功 POST 前记录的背景 GET 也视作错误。针对本轮缺陷，必要条件是退出成功后不再依赖额外会话读取完成跳转；该 trace 与真实目的地支持此条件。更正是对同一 trace 的只读解释，没有删除、弱化或重跑产品测试，也不把原观察命令写成退出 0。
 
 退出观察脚本在响应完成后写入数组，因此记录只严格证明响应顺序，不能精确证明背景 GET 的发起时刻。它也不能证明所有未来请求均不存在。本轮成功跳转、成功 POST 后没有记录额外 GET，以及源码与真实 HTTP 撤销契约共同支撑修复结论；原 `account-390` 背景 429 的触发来源仍未因此解决。
 
-上传的三个诊断没有产品修改：[Tips](browser-results/upload-diagnostics/usage-focus.json)显示 Escape 后浮层已隐藏，焦点即时及后续 12 帧都在原按钮；[手机关系选择](browser-results/upload-diagnostics/relation-enter.json)显示 390×400 下实际展开，焦点在搜索标签输入；[原生图片输入](browser-results/upload-diagnostics/native-image.json)收到真实 change、`sample.png`，队列为 queued。这三次独立复查未复现原故障，不能回写历史全量为通过。原生目录枚举 cancel 未在这三个诊断中验证，不应声称文件夹已通过。
+上传的三个诊断没有产品修改：[Tips](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/browser-product-regressions/browser-results/upload-diagnostics/usage-focus.json)显示 Escape 后浮层已隐藏，焦点即时及后续 12 帧都在原按钮；[手机关系选择](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/browser-product-regressions/browser-results/upload-diagnostics/relation-enter.json)显示 390×400 下实际展开，焦点在搜索标签输入；[原生图片输入](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/browser-product-regressions/browser-results/upload-diagnostics/native-image.json)收到真实 change、`sample.png`，队列为 queued。这三次独立复查未复现原故障，不能回写历史全量为通过。原生目录枚举 cancel 未在这三个诊断中验证，不应声称文件夹已通过。
 
 功能证据补审与真实截图设计评审分别记录；设计结果以[统一证据](README.md)所链接的独立设计结论为准。本次补审时人工验收尚未完成；所有者随后于 2026-10-10 明确确认本轮人工验收通过，最新状态见统一证据。原 #184 的验收与本次验收分别记录。

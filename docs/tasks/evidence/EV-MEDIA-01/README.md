@@ -44,15 +44,15 @@ git diff --check
 
 本地安装、格式、lint、类型、构建、任务依赖检查与 diff 检查通过。单元 14 文件 / 231 项，集成 28 文件 / 206 项通过，包含两个新增实际子进程测试。构建保留已有 better-sqlite3 可选 Debug 文件追踪诊断，退出码 0，Release SQLite 由实际集成验证。
 
-[本地进程原始报告](./macos-process.json)记录 SIGTERM 3ms、忽略 TERM 后 KILL 254ms、2 秒 timeout 后回收 2187ms。Linux stopped 场景在本机明确 incomplete；这不是容器结果。
+[本地进程原始报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-MEDIA-01/macos-process.json)记录 SIGTERM 3ms、忽略 TERM 后 KILL 254ms、2 秒 timeout 后回收 2187ms。Linux stopped 场景在本机明确 incomplete；这不是容器结果。
 
-Ego Chrome 152 / TaskSpace 4：主页、外壳、静态资源、健康接口和数据库读取错误恢复通过。完整 `pnpm run test:browser` 退出码 1，停在未修改的 `e2e/identity.mjs:204`：group outline-width 实际 2px，旧断言期望 0px。原工作区 #61 正在修订该身份测试，本 PR 不混入其改动。保留[运行器报告](./browser-runner.json)与[失败场景](./browser-identity.json)。完整浏览器回归仍未通过。
+Ego Chrome 152 / TaskSpace 4：主页、外壳、静态资源、健康接口和数据库读取错误恢复通过。完整 `pnpm run test:browser` 退出码 1，停在未修改的 `e2e/identity.mjs:204`：group outline-width 实际 2px，旧断言期望 0px。原工作区 #61 正在修订该身份测试，本 PR 不混入其改动。保留[运行器报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-MEDIA-01/browser-runner.json)与[失败场景](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-MEDIA-01/browser-identity.json)。完整浏览器回归仍未通过。
 
 独立 `code-review-and-quality` 已按实现、失败分支及实际报告复审；审计者另行运行两个新增集成测试通过。已修复透明 WebP 容器名误判、导出样本目录权限，并采纳保留失败资源曲线的建议。最终结论见下节；生产策略与完整浏览器回归的失败没有隐藏或削弱断言。最终覆盖核对补充 PNG 方向 6 样本，已在第四轮两个架构全部通过。审计者逐项比较归档 JSON 与下载报告，并核对每个基础原/派生样本实际字节与摘要。
 
 ## 最终双架构实测
 
-受测提交 [`32e2968`](https://github.com/dnslin/ariso-next/commit/32e29683ef29900e8f5221cdbd3a9daee453c471)，[CI 通过](https://github.com/dnslin/ariso-next/actions/runs/35694650314)，[Docker 实测失败](https://github.com/dnslin/ariso-next/actions/runs/35694650431)。永久报告：[AMD64](./amd64.json)、[ARM64](./arm64.json)。后续归档提交只改文档，不改变受测代码。Actions 同名 artifact 另保留原/派生基础样本。
+受测提交 [`32e2968`](https://github.com/dnslin/ariso-next/commit/32e29683ef29900e8f5221cdbd3a9daee453c471)，[CI 通过](https://github.com/dnslin/ariso-next/actions/runs/35694650314)，[Docker 实测失败](https://github.com/dnslin/ariso-next/actions/runs/35694650431)。永久报告：[AMD64](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-MEDIA-01/amd64.json)、[ARM64](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-MEDIA-01/arm64.json)。后续归档提交只改文档，不改变受测代码。Actions 同名 artifact 另保留原/派生基础样本。
 
 两架构环境均为 Node 24.21.0、Linux 6.17.0-1022-azure、UID 1000、ImageMagick 7.1.1-43 Q16、ExifTool 13.25。未在本机运行 Docker。
 

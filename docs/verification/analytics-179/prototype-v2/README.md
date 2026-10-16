@@ -19,14 +19,14 @@
 
 环境：macOS、Node24.18.1、pnpm11.19.0，现有Ego Lite TaskSpace2/p2，无下载浏览器。独立Next项目在 `design-plans/issue179-review-v2`，根类型项目仅排除此独立子项目，根lint仅忽略其生成文件。根产品业务代码未在本轮修改。该原型不属于产品默认浏览器入口；不修改运行器或把其检查记作产品能力覆盖。
 
-| 检查                                                                                  | 实际结果                                                                                              |
-| ------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| `pnpm exec tsc --noEmit --project design-plans/issue179-review-v2/tsconfig.json`      | 修正初次Tooltip payload类型不匹配后通过；最终独立构建也执行类型检查                                   |
-| `pnpm run lint`                                                                       | 根全量通过；最终新增脚本另定向检查                                                                    |
-| `pnpm run typecheck`                                                                  | 根全量通过，未排除共享产品源码                                                                        |
-| `pnpm exec next build design-plans/issue179-review-v2 --webpack`                      | 最终构建通过，随后以Next生产模式在4181运行                                                            |
-| `ego-browser nodejs < docs/verification/analytics-179/prototype-v2/browser-check.mjs` | [报告](./browser.json)10个截图布局通过；合成原型验证，非产品接口验证                                  |
-| `node design-plans/issue179-review-v2/check-samples.mjs`                              | 三周期等于同一90天序列的后N天；趋势总量/热门10条：1172/1034、5761/3470、17222/5736，均不超过累计24816 |
+| 检查                                                                                  | 实际结果                                                                                                                                                                                           |
+| ------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm exec tsc --noEmit --project design-plans/issue179-review-v2/tsconfig.json`      | 修正初次Tooltip payload类型不匹配后通过；最终独立构建也执行类型检查                                                                                                                                |
+| `pnpm run lint`                                                                       | 根全量通过；最终新增脚本另定向检查                                                                                                                                                                 |
+| `pnpm run typecheck`                                                                  | 根全量通过，未排除共享产品源码                                                                                                                                                                     |
+| `pnpm exec next build design-plans/issue179-review-v2 --webpack`                      | 最终构建通过，随后以Next生产模式在4181运行                                                                                                                                                         |
+| `ego-browser nodejs < docs/verification/analytics-179/prototype-v2/browser-check.mjs` | [报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-v2/browser.json)10个截图布局通过；合成原型验证，非产品接口验证 |
+| `node design-plans/issue179-review-v2/check-samples.mjs`                              | 三周期等于同一90天序列的后N天；趋势总量/热门10条：1172/1034、5761/3470、17222/5736，均不超过累计24816                                                                                              |
 
 浏览器实际检查360/390/430/768/1440宽度、桌面1440×1080、手机390×844、短视口390×400；浅深色、八种状态、信息弹层、展开数值、正文滚动、44px弹窗按钮、Escape关闭及排行来源焦点恢复、两组异常筛选和原位样例重试。控制台错误/警告为空。最后一次样例日期修正后重新构建，并在生产模式补查受影响趋势/排行截图，其他输入未变的通过项不机械重跑。减少动效媒体查询已验证，但该项不替代逐帧动画审计或真机触摸。
 
@@ -34,11 +34,11 @@
 
 ## 视觉对照与独立审查
 
-- [桌面统计](./statistics-desktop.png)、[手机统计](./statistics-mobile.png)、[手机深色](./statistics-mobile-dark.png)：缩略图、累计、版本横条、周期柱图、可折叠数值。两组图表均在标准手机首屏可见。
-- [零访问](./statistics-zero-mobile.png)、[首次失败](./statistics-error-mobile.png)：零值图形真实归零；首次失败不显示伪造更新时间。
-- [短视口首屏](./statistics-short-mobile.png)、[滚动底部](./statistics-short-bottom.png)：关闭和底部工具保持可达，正文可滚至完整范围列表。
-- [桌面排行](./ranking-desktop.png)、[手机首屏](./ranking-mobile.png)、[手机排行行](./ranking-mobile-rows.png)、[历史身份](./ranking-mobile-history.png)：公共外壳、曲线、短日期、长名与回收/删除身份。
-- [桌面异常](./failures-desktop.png)、[手机异常](./failures-mobile.png)：缩略图网格与直接分组操作。
+- [桌面统计](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-v2/statistics-desktop.png)、[手机统计](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-v2/statistics-mobile.png)、[手机深色](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-v2/statistics-mobile-dark.png)：缩略图、累计、版本横条、周期柱图、可折叠数值。两组图表均在标准手机首屏可见。
+- [零访问](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-v2/statistics-zero-mobile.png)、[首次失败](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-v2/statistics-error-mobile.png)：零值图形真实归零；首次失败不显示伪造更新时间。
+- [短视口首屏](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-v2/statistics-short-mobile.png)、[滚动底部](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-v2/statistics-short-bottom.png)：关闭和底部工具保持可达，正文可滚至完整范围列表。
+- [桌面排行](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-v2/ranking-desktop.png)、[手机首屏](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-v2/ranking-mobile.png)、[手机排行行](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-v2/ranking-mobile-rows.png)、[历史身份](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-v2/ranking-mobile-history.png)：公共外壳、曲线、短日期、长名与回收/删除身份。
+- [桌面异常](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-v2/failures-desktop.png)、[手机异常](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-v2/failures-mobile.png)：缩略图网格与直接分组操作。
 
 [独立设计复审](./review-v2.md)发现日期露出ISO尾部、Tabs选中底色错位，均修正；冗余副标题删除，零值动画取证偏差已复核关闭。[独立代码复审](./review-code.md)发现合成趋势小于排行总量及跨周期日期漂移，均校正并加算术断言。最终评审结论以各记录为准，任何原型审查均不等于用户批准。
 

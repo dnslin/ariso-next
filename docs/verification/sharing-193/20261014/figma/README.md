@@ -14,16 +14,16 @@
 
 ## 主要节点与最终截图
 
-| 状态           | 桌面     | 手机     | 截图                                                                |
-| -------------- | -------- | -------- | ------------------------------------------------------------------- |
-| 网格隐藏名称   | 433:3610 | 433:8265 | [桌面](grid-desktop.png)、[手机](grid-mobile.png)                   |
-| 网格显示名称   | 433:3722 | 433:8387 | 层级回读见 list-final 文件                                          |
-| 瀑布流显示名称 | 433:3874 | 433:8549 | [桌面](masonry-desktop.png)、[手机](masonry-mobile.png)             |
-| 首图           | 434:4003 | 434:8782 | [桌面](viewer-first-desktop.png)、[手机](viewer-first-mobile.png)   |
-| 中间图片       | 434:4029 | 434:8808 | [桌面](viewer-middle-desktop.png)、[手机](viewer-middle-mobile.png) |
-| 放大           | 434:4079 | 434:8858 | [桌面](viewer-zoom-desktop.png)、[手机](viewer-zoom-mobile.png)     |
-| 末图           | 434:4150 | 434:8929 | [桌面](viewer-last-desktop.png)、[手机](viewer-last-mobile.png)     |
-| 图片加载失败   | 432:3744 | 432:8084 | [桌面](viewer-error-desktop.png)、[手机](viewer-error-mobile.png)   |
+| 状态           | 桌面     | 手机     | 截图                                                                                                                                                                                                                                                                                                                                                    |
+| -------------- | -------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 网格隐藏名称   | 433:3610 | 433:8265 | [桌面](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-193/20261014/figma/grid-desktop.png)、[手机](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-193/20261014/figma/grid-mobile.png)                   |
+| 网格显示名称   | 433:3722 | 433:8387 | 层级回读见 list-final 文件                                                                                                                                                                                                                                                                                                                              |
+| 瀑布流显示名称 | 433:3874 | 433:8549 | [桌面](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-193/20261014/figma/masonry-desktop.png)、[手机](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-193/20261014/figma/masonry-mobile.png)             |
+| 首图           | 434:4003 | 434:8782 | [桌面](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-193/20261014/figma/viewer-first-desktop.png)、[手机](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-193/20261014/figma/viewer-first-mobile.png)   |
+| 中间图片       | 434:4029 | 434:8808 | [桌面](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-193/20261014/figma/viewer-middle-desktop.png)、[手机](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-193/20261014/figma/viewer-middle-mobile.png) |
+| 放大           | 434:4079 | 434:8858 | [桌面](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-193/20261014/figma/viewer-zoom-desktop.png)、[手机](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-193/20261014/figma/viewer-zoom-mobile.png)     |
+| 末图           | 434:4150 | 434:8929 | [桌面](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-193/20261014/figma/viewer-last-desktop.png)、[手机](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-193/20261014/figma/viewer-last-mobile.png)     |
+| 图片加载失败   | 432:3744 | 432:8084 | [桌面](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-193/20261014/figma/viewer-error-desktop.png)、[手机](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-193/20261014/figma/viewer-error-mobile.png)   |
 
 [Figma 桌面主节点](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=434-4003)、[手机主节点](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=434-8782)。
 

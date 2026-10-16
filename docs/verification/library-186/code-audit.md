@@ -51,7 +51,7 @@
 
 ## 真实浏览器发现后的窄范围独立复核（2026-10-04）
 
-浏览器执行者没有修改生产代码，使用 `code-review-and-quality` 与 `vercel-react-best-practices` 独立复核本次修复。首次实际批量全部派生已由 ImageMagick 完成，摘要显示完成，但逐图行仍显示“等待受理”，导致真实浏览器的逐图终态断言超时。首次失败的页面、报告及真实 worker 日志保留于 [browser-first-failure](./browser-first-failure/)，不以静态渲染测试代替这份失败证据。
+浏览器执行者没有修改生产代码，使用 `code-review-and-quality` 与 `vercel-react-best-practices` 独立复核本次修复。首次实际批量全部派生已由 ImageMagick 完成，摘要显示完成，但逐图行仍显示“等待受理”，导致真实浏览器的逐图终态断言超时。首次失败的页面、报告及真实 worker 日志保留于 [browser-first-failure](https://github.com/dnslin/ariso-next/tree/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-186/browser-first-failure)，不以静态渲染测试代替这份失败证据。
 
 实际读取已锁 HeroUI 3.2.6 的 `Table.Body` 类型与实现、react-aria-components 1.21.1 的 `CollectionProps`，以及 react-aria 3.52.1 的 `useCachedChildren`。动态集合按图片对象身份缓存行内容；结果、未知 IDs、未提交 IDs 与范围来自行渲染闭包，图片对象本身不会随进度改变。HeroUI 将 `dependencies` 原样传给 React Aria；库在这些值变化时清空行缓存。
 
@@ -59,9 +59,9 @@
 
 同时复核 `bg-surface`、提示 `shadow-none`、禁用透明度仅应用于 Radio 内容而保留说明、Table `secondary` 去除默认内容阴影与圆角的局部样式调整。均使用已安装组件和 Tailwind，并限定在本次批量结果与范围组件。样式静态复核不代替独立设计截图验收。
 
-窄范围代码复核未发现集合缓存修复本身的新阻断问题。第二轮真实浏览器完成全部派生与三种局部范围、逐图状态及旧版本断言，证明首轮行缓存缺陷已实际修复。随后在混合失败重试发现本次范围内的新问题：手机底栏五个按钮挤在同一行，按钮宽度仅约 61–63px，完整文字横跨相邻按钮；显式按全部派生重试未受理图没有产生预期任务，另一个水印图却产生新任务。第二轮 [截图与报告](./browser-second-failure/)保留，不把按钮外框大于44px当成文字及实际点击验收。需修复底栏可读宽度与点击命中，再以真实请求确认只提交预期图片和范围。本次实际浏览器全流程尚未通过。复核者实际执行 `git diff --check`，通过。
+窄范围代码复核未发现集合缓存修复本身的新阻断问题。第二轮真实浏览器完成全部派生与三种局部范围、逐图状态及旧版本断言，证明首轮行缓存缺陷已实际修复。随后在混合失败重试发现本次范围内的新问题：手机底栏五个按钮挤在同一行，按钮宽度仅约 61–63px，完整文字横跨相邻按钮；显式按全部派生重试未受理图没有产生预期任务，另一个水印图却产生新任务。第二轮 [截图与报告](https://github.com/dnslin/ariso-next/tree/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-186/browser-second-failure)保留，不把按钮外框大于44px当成文字及实际点击验收。需修复底栏可读宽度与点击命中，再以真实请求确认只提交预期图片和范围。本次实际浏览器全流程尚未通过。复核者实际执行 `git diff --check`，通过。
 
-第三轮已复核底栏局部修复：手机及平板使用明确双列，单按钮占满；桌面保留原操作尺寸。缩短文案、允许按钮内部换行，未改重试图片或范围契约。实际运行 `node scripts/verify-browser.mjs --suite library-reprocess`（Node 24.18.1，Ego space 16/p1，复用本轮构建）退出0。[真实报告](./browser/library-reprocess.json)证明全部场景通过、浏览器错误为空。390×500 多失败底栏五个按钮宽173px、高48px，完整文字留在自身点击区域，`elementFromPoint` 确认每个原生指针命中自己的按钮；实际显式全部派生重试只发送未受理图，随后原水印失败重试只发送原图且仍为水印范围，新 UUID 的两项真实任务均成功。没有以 JavaScript 直接调用回调绕过点击验证。
+第三轮已复核底栏局部修复：手机及平板使用明确双列，单按钮占满；桌面保留原操作尺寸。缩短文案、允许按钮内部换行，未改重试图片或范围契约。实际运行 `node scripts/verify-browser.mjs --suite library-reprocess`（Node 24.18.1，Ego space 16/p1，复用本轮构建）退出0。[真实报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-186/browser/library-reprocess.json)证明全部场景通过、浏览器错误为空。390×500 多失败底栏五个按钮宽173px、高48px，完整文字留在自身点击区域，`elementFromPoint` 确认每个原生指针命中自己的按钮；实际显式全部派生重试只发送未受理图，随后原水印失败重试只发送原图且仍为水印范围，新 UUID 的两项真实任务均成功。没有以 JavaScript 直接调用回调绕过点击验证。
 
 审计同时发现短视口命中断言对无 `data-testid` 的“返回全部结果”可能比较两个空值。已改为 `hit === node` 的实际元素比较，并只复用既有构建再次运行这项定向浏览器套件，退出0；最终报告五个动作均为 `ownHit: true`。没有重跑应用、外壳构建或既有全量流程。最终记录包含54张截图、52组布局和8组行为检查，原生点击、文本可读性及逐图任务行为分别断言。
 

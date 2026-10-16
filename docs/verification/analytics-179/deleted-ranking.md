@@ -16,7 +16,7 @@
 pnpm exec vitest run --project integration tests/integration/analytics/reports.test.ts -t 'excludes permanently removed|real permanent cleanup'
 ```
 
-结果为 2 项失败、13 项未选择：历史 ID 的 1000 次访问占据第一名，只剩 9 张现存图；真实永久清理并刷入删除前待写事件后，接口仍返回 `state: deleted/count: 501`，与期望空排行冲突。原始日志见[失败日志](./deleted-ranking-red.txt)。随后才修改生产 SQL。
+结果为 2 项失败、13 项未选择：历史 ID 的 1000 次访问占据第一名，只剩 9 张现存图；真实永久清理并刷入删除前待写事件后，接口仍返回 `state: deleted/count: 501`，与期望空排行冲突。原始日志见[失败日志](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/deleted-ranking-red.txt)。随后才修改生产 SQL。
 
 修复后运行：
 
@@ -28,7 +28,7 @@ pnpm exec vitest run --project integration tests/integration/analytics/reports.t
 
 ## 实际生产查询规模与计划
 
-环境：macOS 25.6.0 arm64、Apple M4（10 逻辑核）、16 GiB、APFS SSD，Node 24.18.1 / pnpm 11.19.0；同机存在其他任务。本轮旧十万图片 SQLite 备份已不存在，因此只沿现有生产 writer 工具重新准备一次独立数据；未修改工具或用户数据库。精确结果、实际 SQL/参数/EXPLAIN 见[本轮规模报告](./deleted-ranking-scale.json)。
+环境：macOS 25.6.0 arm64、Apple M4（10 逻辑核）、16 GiB、APFS SSD，Node 24.18.1 / pnpm 11.19.0；同机存在其他任务。本轮旧十万图片 SQLite 备份已不存在，因此只沿现有生产 writer 工具重新准备一次独立数据；未修改工具或用户数据库。精确结果、实际 SQL/参数/EXPLAIN 见[本轮规模报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/deleted-ranking-scale.json)。
 
 ```sh
 node tests/verification/analytics/reports-scale.ts --report test-results/analytics-179-deleted-ranking/scale.json
@@ -69,7 +69,7 @@ pnpm exec tsc --noEmit --project tsconfig.runtime.json
 | `pnpm run build`                                                                                       | 退出 0，包含更新后的生产排行查询和呈现                  |
 | `pnpm run test:unit tests/unit/analytics/presentation.test.ts tests/unit/runtime/browser-plan.test.ts` | 2 文件、121 项通过（7 项呈现、114 项默认/定向运行计划） |
 
-新增浏览器脚本及产品组件的定向ESLint、三个analytics脚本的 `node --check`、差异检查均退出0。独立产品预览4180使用隔离数据，已重启到本轮构建；原型4181与旧4179均保留。最初真实产品 behavior 定向检查等待周期切换超时，失败报告与截图见[初次失败](./browser/deleted-ranking-initial-failure/analytics.json)。失败时累计468、今日78、11正常/1回收为实际fixture数据；不能把该失败记作通过，也不能用原型检查替代。后续定位保留[阶段诊断](./browser/deleted-ranking-diagnostic/analytics.json)、[按钮事件追踪](./browser/deleted-ranking-pointer-trace/analytics.json)和[整页完整指针事件](./browser/deleted-ranking-pointer-release/analytics.json)。精确失败点为 period-30-result。按钮中心原本可命中，但刷新中插入 overview-refreshing 段落把按钮下移39.5px；整页可信 pointerdown/up/click 均落在 SECTION，事件y378.5而按钮top396。初次按钮局部追踪只记录down，不能据此认定整页没有up/click；完整追踪纠正了该判断。这是实际页面布局缺陷，不是数据fixture失败或周期key契约错误。
+新增浏览器脚本及产品组件的定向ESLint、三个analytics脚本的 `node --check`、差异检查均退出0。独立产品预览4180使用隔离数据，已重启到本轮构建；原型4181与旧4179均保留。最初真实产品 behavior 定向检查等待周期切换超时，失败报告与截图见[初次失败](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/browser/deleted-ranking-initial-failure/analytics.json)。失败时累计468、今日78、11正常/1回收为实际fixture数据；不能把该失败记作通过，也不能用原型检查替代。后续定位保留[阶段诊断](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/browser/deleted-ranking-diagnostic/analytics.json)、[按钮事件追踪](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/browser/deleted-ranking-pointer-trace/analytics.json)和[整页完整指针事件](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/browser/deleted-ranking-pointer-release/analytics.json)。精确失败点为 period-30-result。按钮中心原本可命中，但刷新中插入 overview-refreshing 段落把按钮下移39.5px；整页可信 pointerdown/up/click 均落在 SECTION，事件y378.5而按钮top396。初次按钮局部追踪只记录down，不能据此认定整页没有up/click；完整追踪纠正了该判断。这是实际页面布局缺陷，不是数据fixture失败或周期key契约错误。
 
 最小修复只在 overview-panel 中把刷新提示移到现有 metadata/刷新Button 容器的底端定位，使用既有20px间隔（2px上距+16px文字行高），保留role=status、可见提示、isPending、generatedAt与lastFlushedAt，不插入新流式行、不推动指标/周期。正常布局不变，不改公共外壳、共享运行器或其他模块，不用等待刷新结束、键盘代替鼠标、重复点击或放宽超时绕过。现有Figma正常主节点以及451:13803刷新失败节点实际读取；该失败节点不冒称有刷新进行中的设计。本次是实现位移修复。
 
@@ -79,11 +79,11 @@ pnpm exec tsc --noEmit --project tsconfig.runtime.json
 EGO_TASK_SPACE=2 EGO_PAGE_LABEL=p2 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/analytics-179-deleted-behavior-refresh-fixed node scripts/verify-browser.mjs --suite analytics --only behavior
 ```
 
-实际退出0，[behavior报告](./browser/deleted-ranking-behavior/analytics.json)为passed、browserErrors为空、fixtureRestored=true，11个实际布局截图。7/30/90天URL/版本/排行/逐日表逐项与SQLite对账；永久删除退出前十且余项补位、累计/趋势历史保留均通过。迟到30天不会覆盖90天，键盘图表值、短视口口径弹窗焦点/滚动回归保持通过。
+实际退出0，[behavior报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/browser/deleted-ranking-behavior/analytics.json)为passed、browserErrors为空、fixtureRestored=true，11个实际布局截图。7/30/90天URL/版本/排行/逐日表逐项与SQLite对账；永久删除退出前十且余项补位、累计/趋势历史保留均通过。迟到30天不会覆盖90天，键盘图表值、短视口口径弹窗焦点/滚动回归保持通过。
 
 新增默认行为回归在360/390/1440宽度真实pointerdown后显式触发现有生产刷新按钮的读取，只延迟7天响应交付，不改正常响应内容；该触发为明确的页面边界控制，不声称同一鼠标能同时点两个按钮。按钮在刷新前后rect完全一致（手机y564、桌面y356.5）；status为16px单行且距元信息/指标各2px，lastFlushedAt仍在。同次pointerup成功选择30天并与真实API对账；旧7天读取被取消、新30天200。测试finally恢复延迟边界并释放尚未松开的鼠标，用户停止时不继续UI操作。临时全页事件trace监听已删除，通用周期测试保留原mouse.click；没有增加产品事件抽象。
 
-同视口证据：[360正常](./browser/deleted-ranking-behavior/analytics-refresh-normal-light-360.png) / [刷新](./browser/deleted-ranking-behavior/analytics-refresh-inflight-light-360.png)、[390正常](./browser/deleted-ranking-behavior/analytics-refresh-normal-light-390.png) / [刷新](./browser/deleted-ranking-behavior/analytics-refresh-inflight-light-390.png)、[1440正常](./browser/deleted-ranking-behavior/analytics-refresh-normal-light-1440.png) / [刷新](./browser/deleted-ranking-behavior/analytics-refresh-inflight-light-1440.png)。正常公共区域、指标与周期的位置保持，进行中提示不遮挡原信息。
+同视口证据：[360正常](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/browser/deleted-ranking-behavior/analytics-refresh-normal-light-360.png) / [刷新](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/browser/deleted-ranking-behavior/analytics-refresh-inflight-light-360.png)、[390正常](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/browser/deleted-ranking-behavior/analytics-refresh-normal-light-390.png) / [刷新](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/browser/deleted-ranking-behavior/analytics-refresh-inflight-light-390.png)、[1440正常](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/browser/deleted-ranking-behavior/analytics-refresh-normal-light-1440.png) / [刷新](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/browser/deleted-ranking-behavior/analytics-refresh-inflight-light-1440.png)。正常公共区域、指标与周期的位置保持，进行中提示不遮挡原信息。
 
 产品修复后再次 `pnpm run build` 与 `pnpm run typecheck` 均退出0，受影响overview-panel定向ESLint退出0；独立4180预览已重启到最后构建且登录页实际HTTP200。其余已经通过且输入未变的单元/集成/规模检查不机械重跑。
 
@@ -95,6 +95,6 @@ EGO_TASK_SPACE=2 EGO_PAGE_LABEL=p2 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-resu
 EGO_TASK_SPACE=2 EGO_PAGE_LABEL=p2 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/analytics-179-deleted-consumers-refresh-fixed node scripts/verify-browser.mjs --suite analytics --only consumers
 ```
 
-实际退出0，[consumers报告](./browser/deleted-ranking-consumers/analytics.json)为passed、browserErrors为空、fixtureRestored=true。[公共外壳报告](./browser/deleted-ranking-consumers/analytics-owner-shell/owner-shell.json)也为passed，沿默认消费者入口检查已实施路由，78张实际截图保留；这些自动结构/行为检查不冒称重新逐图设计审查。工作台以键盘进入统计，正常/回收排行分别按真实ID进入图库/回收站，永久删除整项不在排行。独立代码评审只读核对报告与断言，不重复测试；独立设计评审实际对照本轮六张受影响正常/刷新图，确认公共布局与业务控件位置保持，刷新状态单行无遮挡。
+实际退出0，[consumers报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/browser/deleted-ranking-consumers/analytics.json)为passed、browserErrors为空、fixtureRestored=true。[公共外壳报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/browser/deleted-ranking-consumers/analytics-owner-shell/owner-shell.json)也为passed，沿默认消费者入口检查已实施路由，78张实际截图保留；这些自动结构/行为检查不冒称重新逐图设计审查。工作台以键盘进入统计，正常/回收排行分别按真实ID进入图库/回收站，永久删除整项不在排行。独立代码评审只读核对报告与断言，不重复测试；独立设计评审实际对照本轮六张受影响正常/刷新图，确认公共布局与业务控件位置保持，刷新状态单行无遮挡。
 
 本轮格式检查首次仅新证据文档未格式化而失败，修正后最终 `pnpm run format:check` 退出0；文档依赖检查120任务、298需求通过。具体最终收口与PR状态由统一[实施记录](./README.md)维护。代码、本地检查、这两个真实浏览器阶段及受影响设计复审完成；新增方案批准、其余产品UI实施/Figma同步/最终人工验收和默认全量浏览器仍未完成，保留草稿。没有执行合并、关闭Issue、发布、部署或删除分支/worktree。

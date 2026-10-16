@@ -46,7 +46,7 @@
 | `node docs/tasks/check.mjs` / `node docs/tasks/check.mjs --self-test`                                   | 120任务、298需求；5项拒绝样本通过               |
 | `EGO_TASK_SPACE=5 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/m2-85/browser pnpm run test:browser` | 第三轮完整通过，退出0，历时12分12秒             |
 
-完整结果见[运行器报告](./browser/runner.json)、[桌面 M2](./browser/m2-1440.json)、[手机 M2](./browser/m2-390.json)及[检查输出](./checks/)。第三轮从 20:59:09 至 21:11:21（Asia/Shanghai），包括身份、图库、上传、轮询和共用 UI 回归。
+完整结果见[运行器报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/browser/runner.json)、[桌面 M2](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/browser/m2-1440.json)、[手机 M2](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/browser/m2-390.json)及[检查输出](https://github.com/dnslin/ariso-next/tree/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/checks)。第三轮从 20:59:09 至 21:11:21（Asia/Shanghai），包括身份、图库、上传、轮询和共用 UI 回归。
 
 没有 schema 变化，`db:generate` 不适用。发布阶段的 AMD64/ARM64 镜像与容器验证未执行，不创建 Release 或部署。真实手机触控、物理软键盘和非零安全区未实测，按现有约定不作为本地门槛。
 
@@ -60,22 +60,22 @@
 
 前两次完整浏览器运行均保留为失败，不计通过：
 
-1. [首轮](./attempts/login-rate-limit.json)：身份测试后的真实 HTTP 429 阻止新增 M2 登录。M2 脚本补按页面实际倒计时等待，再重试登录；没有清除服务端限流记录或跳过认证。
-2. [第二轮](./attempts/format-enum.json)：新测试误将媒体格式字段预期写成小写 `webp`。实际媒体契约使用 `WEBP`；修正为精确枚举值，未修改产品实现或削弱文件/版本断言。
+1. [首轮](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/attempts/login-rate-limit.json)：身份测试后的真实 HTTP 429 阻止新增 M2 登录。M2 脚本补按页面实际倒计时等待，再重试登录；没有清除服务端限流记录或跳过认证。
+2. [第二轮](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/attempts/format-enum.json)：新测试误将媒体格式字段预期写成小写 `webp`。实际媒体契约使用 `WEBP`；修正为精确枚举值，未修改产品实现或削弱文件/版本断言。
 
 两端新增核心流程随后在独立生产服务专项运行 `node test-results/m2-85/run-focused.mjs 1440` / `390` 均退出0。该临时调试入口复用正式 `e2e/m2.mjs` 的 before 阶段；报告仍标 running，因为专项没有执行重启后的 after 阶段，不将它写成完整关卡通过。可重复正式入口仍为 `pnpm run test:browser`。
 
 ## 独立双浏览器补充
 
-[结果与三表数据](./second-browser/result.json)。Ego Lite / Chromium152 为已登录所有者，独立 Google Chrome154.0.8037.57 在同一个 `http://127.0.0.1:56157` 测试地址保持匿名。Chrome 原生窗口通过 CUA 操作；未下载浏览器。公开/私有图片均由前述 Ego 专项真实文件选择上传。
+[结果与三表数据](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/second-browser/result.json)。Ego Lite / Chromium152 为已登录所有者，独立 Google Chrome154.0.8037.57 在同一个 `http://127.0.0.1:56157` 测试地址保持匿名。Chrome 原生窗口通过 CUA 操作；未下载浏览器。公开/私有图片均由前述 Ego 专项真实文件选择上传。
 
 - Chrome `/api/images` 显示 `UNAUTHORIZED`，确认与 Ego 会话隔离。
-- [公开原图](./second-browser/chrome-public.png)显示64×48真实JPEG；[私有原图](./second-browser/chrome-private.png)显示 `OWNER_LOGIN_REQUIRED`。
-- [Ego 所有者详情](./second-browser/ego-owner.png)执行真实回收后，Chrome [原链接拒绝](./second-browser/chrome-trashed.png)，错误为 `IMAGE_UNAVAILABLE`。
-- Ego 在回收站执行真实恢复，Chrome 刷新[同一URL重新显示原图](./second-browser/chrome-restored.png)。
+- [公开原图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/second-browser/chrome-public.png)显示64×48真实JPEG；[私有原图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/second-browser/chrome-private.png)显示 `OWNER_LOGIN_REQUIRED`。
+- [Ego 所有者详情](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/second-browser/ego-owner.png)执行真实回收后，Chrome [原链接拒绝](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/second-browser/chrome-trashed.png)，错误为 `IMAGE_UNAVAILABLE`。
+- Ego 在回收站执行真实恢复，Chrome 刷新[同一URL重新显示原图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/second-browser/chrome-restored.png)。
 - 读取真实 SQLite 后严格断言：该公开图累计原图4次（核心匿名2次＋Chrome2次），压缩/水印0次，单图每日4次；私有图没有累计行；全站每日10次（两端专项8次＋Chrome2次）。所有者与拒绝请求未增加计数。
 
-该补充环境使用现有所有者种子夹具，初始化全流程另由正式运行器覆盖；同属Chromium家族，不替代T-QA-03跨引擎与最近两主版本矩阵。临时服务与用户预览数据隔离。补充[平板768×1024深色登录](./second-browser/login-dark-768x1024.png)供设计同视口核对。
+该补充环境使用现有所有者种子夹具，初始化全流程另由正式运行器覆盖；同属Chromium家族，不替代T-QA-03跨引擎与最近两主版本矩阵。临时服务与用户预览数据隔离。补充[平板768×1024深色登录](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/second-browser/login-dark-768x1024.png)供设计同视口核对。
 
 ## PR 与远端检查
 

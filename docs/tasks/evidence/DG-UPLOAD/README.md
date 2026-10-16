@@ -4,7 +4,7 @@
 
 ## 范围与前置
 
-实际使用 `gh issue view 141 --repo dnslin/ariso-next --json title,body,state,comments,url` 与 `gh api repos/dnslin/ariso-next/issues/141/dependencies/blocked_by`、`.../blocking` 读取正文、评论和原生关系。随后回读三个消费者的正文、评论及原生前置；[GitHub 快照](./github.json)保留结果。
+实际使用 `gh issue view 141 --repo dnslin/ariso-next --json title,body,state,comments,url` 与 `gh api repos/dnslin/ariso-next/issues/141/dependencies/blocked_by`、`.../blocking` 读取正文、评论和原生关系。随后回读三个消费者的正文、评论及原生前置；[GitHub 快照](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/DG-UPLOAD/github.json)保留结果。
 
 - #141 OPEN、无评论、无前置，直接阻塞 #159 / T-UP-07、#160 / T-UP-03、#162 / T-UP-04，均 OPEN。
 - #159 的其余前置 #81/#72 已 CLOSED。
@@ -33,18 +33,18 @@
 
 ## 实际 Figma 读取
 
-使用 `figma-use` 只读查询同一文件 `74sT9Hrf8G4czcWeTkET5b`、页面 `0:1`，读取上传主节点、29 对补充状态及快速创建两端节点，共 64 个。保存[节点名称、自然尺寸与文字摘录](./figma/nodes.json)。摘录排除常见公共导航文字，部分实例子文字未被查询返回，不是完整结构导出；首次大查询输出被工具截断，已分为四批重新取得完整的这份摘录。
+使用 `figma-use` 只读查询同一文件 `74sT9Hrf8G4czcWeTkET5b`、页面 `0:1`，读取上传主节点、29 对补充状态及快速创建两端节点，共 64 个。保存[节点名称、自然尺寸与文字摘录](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/DG-UPLOAD/figma/nodes.json)。摘录排除常见公共导航文字，部分实例子文字未被查询返回，不是完整结构导出；首次大查询输出被工具截断，已分为四批重新取得完整的这份摘录。
 
 以下 12 张 PNG 已实际下载并逐张查看，都是 **Figma 浅色设计截图，不是实际网页截图**。整页自然尺寸为桌面 1440×1080、手机 390×844；弹窗自然尺寸列于下表，不冒充整屏视口。没有修改 Figma、主题变量或原型连线，没有运行播放器。
 
-| 两端节点与尺寸                           | 截图                                                                       | 对照结论                                                                                                                         |
-| ---------------------------------------- | -------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| 30:97 · 1440×1080；101:1014 · 390×844    | [桌面主页面](./figma/30-97.png)、[手机主页面](./figma/101-1014.png)        | 桌面输入区与设置并列，手机顺序堆叠，固定开始栏；主节点是当前布局入口。设置只显示折叠值，不证明完整选择/编辑流程已设计。          |
-| 316:4300 · 480×385；316:4291 · 358×405   | [桌面扫描汇总](./figma/316-4300.png)、[手机扫描汇总](./figma/316-4291.png) | 已加入/未加入与具体错误分类、重新选择入口清楚；计数和大小必须取真实输入/配置，不能抄示例。                                       |
-| 317:4617 · 1440×1080；317:4776 · 390×844 | [桌面拆批](./figma/317-4617.png)、[手机拆批](./figma/317-4776.png)         | 三项传输与第四项等待、HEIC 占位，桌面分列/手机分行；说明只展示前四项的样例不能限制真实结果。旧面包屑与整页结构服从当前 handoff。 |
-| 316:5306 · 1440×1080；316:5232 · 390×844 | [桌面下一提交](./figma/316-5306.png)、[手机下一提交](./figma/316-5232.png) | A/B 摘要说明设置互不影响，但没有 B 设置完整编辑入口；具体缺口与负责人写回 T-UP-03。                                              |
-| 317:4052 · 480×411；317:4063 · 358×431   | [桌面处理失败](./figma/317-4052.png)、[手机处理失败](./figma/317-4063.png) | 图片身份、失败步骤、保留版本与三类后续动作可复用；只能接真实 imageId/任务，不为未建图失败提供这些动作。                          |
-| 317:4335 · 480×346；317:4326 · 358×346   | [桌面清理等待](./figma/317-4335.png)、[手机清理等待](./figma/317-4326.png) | “等待远端写入结算”不能直接覆盖当前周期扫描方案；由 T-UP-04 补齐具体阶段/交接文案并提交用户确认，不承诺即时清零。                 |
+| 两端节点与尺寸                           | 截图                                                                                                                                                                                                                                                                                                                         | 对照结论                                                                                                                         |
+| ---------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| 30:97 · 1440×1080；101:1014 · 390×844    | [桌面主页面](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/DG-UPLOAD/figma/30-97.png)、[手机主页面](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/DG-UPLOAD/figma/101-1014.png)        | 桌面输入区与设置并列，手机顺序堆叠，固定开始栏；主节点是当前布局入口。设置只显示折叠值，不证明完整选择/编辑流程已设计。          |
+| 316:4300 · 480×385；316:4291 · 358×405   | [桌面扫描汇总](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/DG-UPLOAD/figma/316-4300.png)、[手机扫描汇总](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/DG-UPLOAD/figma/316-4291.png) | 已加入/未加入与具体错误分类、重新选择入口清楚；计数和大小必须取真实输入/配置，不能抄示例。                                       |
+| 317:4617 · 1440×1080；317:4776 · 390×844 | [桌面拆批](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/DG-UPLOAD/figma/317-4617.png)、[手机拆批](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/DG-UPLOAD/figma/317-4776.png)         | 三项传输与第四项等待、HEIC 占位，桌面分列/手机分行；说明只展示前四项的样例不能限制真实结果。旧面包屑与整页结构服从当前 handoff。 |
+| 316:5306 · 1440×1080；316:5232 · 390×844 | [桌面下一提交](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/DG-UPLOAD/figma/316-5306.png)、[手机下一提交](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/DG-UPLOAD/figma/316-5232.png) | A/B 摘要说明设置互不影响，但没有 B 设置完整编辑入口；具体缺口与负责人写回 T-UP-03。                                              |
+| 317:4052 · 480×411；317:4063 · 358×431   | [桌面处理失败](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/DG-UPLOAD/figma/317-4052.png)、[手机处理失败](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/DG-UPLOAD/figma/317-4063.png) | 图片身份、失败步骤、保留版本与三类后续动作可复用；只能接真实 imageId/任务，不为未建图失败提供这些动作。                          |
+| 317:4335 · 480×346；317:4326 · 358×346   | [桌面清理等待](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/DG-UPLOAD/figma/317-4335.png)、[手机清理等待](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/DG-UPLOAD/figma/317-4326.png) | “等待远端写入结算”不能直接覆盖当前周期扫描方案；由 T-UP-04 补齐具体阶段/交接文案并提交用户确认，不承诺即时清零。                 |
 
 先核对整页公共区域，再核对业务状态：当前主页面与旧补充状态存在时间差；统一外壳、设置栏、一级标题、固定底栏及站内状态保留按[现行 handoff](../../../design/handoff.md#后台界面精简2026-09-27用户批准)，不是本次新增的设计偏离批准。其他已读取状态未逐张截图，不声称全量视觉验收。深色、其他屏宽、短视口、键盘/焦点、点击区及加载/空/错误/成功/禁用仍由三个消费者按[前端共用验收](../../execution.md#前端共用验收)取得真实页面证据。
 
@@ -62,7 +62,7 @@
 
 独立设计 agent 实际读取 Figma 两上传分区、关键节点，并逐张查看全部 12 张截图后复核最终文档。结论为设计适用核对通过，无必须修正项；“关闭的批次设置”已改为“折叠值”以消除歧义。完整批次编辑、选择回填和清理交接缺口的限定范围/责任均被确认；没有批准新的设计偏离。
 
-最终适用检查见[实际检查输出](./checks.txt)：
+最终适用检查见[实际检查输出](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/DG-UPLOAD/checks.txt)：
 
 | 实际命令 / 检查                                                                                                                                                                                                  | 结果                                                                                                                                              |
 | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |

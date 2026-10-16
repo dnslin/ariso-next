@@ -87,6 +87,6 @@
 
 两端共移除 44 个废止画板，并清理保留页面中的入口、说明和连线。新增 2 个图片选择页，保留移出相册流程。检查当前 66 个相册业务状态和 63 个固定底栏，未发现检查范围内的废止入口文字、失效跳转、08-B 画板重叠、底栏下沿错位或正文与底栏重叠。
 
-截图抽查相册搜索结果、回收站分页与深色 SMTP 表单；修正重复分隔线。当前节点、删除清单、分组坐标和底栏记录保存在[审计证据](./verification/figma-audit-2026-09-17.json)的 `albumSortingRemoval`。较早的 `albumManagementBatch`、`albumCanonicalization`、`albumThumbnailEmptyPolish` 仅保留历史证据，不代表已取消功能仍需实现。
+截图抽查相册搜索结果、回收站分页与深色 SMTP 表单；修正重复分隔线。当前节点、删除清单、分组坐标和底栏记录保存在[审计证据](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/archive/preparation-2026-09/design/verification/figma-audit-2026-09-17.json)的 `albumSortingRemoval`。较早的 `albumManagementBatch`、`albumCanonicalization`、`albumThumbnailEmptyPolish` 仅保留历史证据，不代表已取消功能仍需实现。
 
 本次只修改原型和文档，未运行播放器或应用测试。

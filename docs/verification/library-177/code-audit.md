@@ -102,11 +102,11 @@ pnpm exec vitest run --project unit tests/unit/library/batch.test.ts tests/unit/
 
 独立回读最后两处变化：`batch-targets.tsx` 的未选 16px 控件改用现有 `border-foreground`，选中分支继续透明边框与背景，卡片、键盘和选择逻辑未改动；`e2e/library-batch.mjs` 的 one-target 布局检查移除 representative 排除条件，因此代表模式也执行同一桌面/手机、浅深色检查，没有放宽尺寸、边框或点击目标断言。本轮只读审查，不重复运行测试或浏览器。
 
-审计者实际读取已保存 JSON，确认 [最终批量浏览器报告](./reports/batch-browser.json) 为 `status=passed`、`phase=full`，107 张截图、100 项布局、7 组真实行为、`errors=[]`。实际记录为 201 项拆分 `[200,1]`，199 changed / 1 unchanged / 1 failed；重试只包含原失败 ID，最终统计为“本次重试1张 · 1已修改 · 0无需修改 · 0失败”。丢响应流程实际模式为 apply/check/check/apply，核对 200 项后只继续剩余 1 项。恢复保留 201 个 ID、402 个对象/文件及幸存关系的原 joinedAt。该次会话记录没有 429。
+审计者实际读取已保存 JSON，确认 [最终批量浏览器报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-177/reports/batch-browser.json) 为 `status=passed`、`phase=full`，107 张截图、100 项布局、7 组真实行为、`errors=[]`。实际记录为 201 项拆分 `[200,1]`，199 changed / 1 unchanged / 1 failed；重试只包含原失败 ID，最终统计为“本次重试1张 · 1已修改 · 0无需修改 · 0失败”。丢响应流程实际模式为 apply/check/check/apply，核对 200 项后只继续剩余 1 项。恢复保留 201 个 ID、402 个对象/文件及幸存关系的原 joinedAt。该次会话记录没有 429。
 
-[最终代表报告](./reports/batch-representative.json) 为 `status=passed`，8 张截图、8 项布局、`errors=[]`；one-target 四种视口/主题组合均记录未选控件 16×16、四边 1px solid。先前章节中的最终批量浏览器待执行事项现已由上述实际报告收齐；完整运行器与独立设计验收仍分别判断，不以批量通过替代整套通过或设计验收。
+[最终代表报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-177/reports/batch-representative.json) 为 `status=passed`，8 张截图、8 项布局、`errors=[]`；one-target 四种视口/主题组合均记录未选控件 16×16、四边 1px solid。先前章节中的最终批量浏览器待执行事项现已由上述实际报告收齐；完整运行器与独立设计验收仍分别判断，不以批量通过替代整套通过或设计验收。
 
-[完整运行器](./reports/full-browser.json) 保留 `status=failed`。[图库失败报告](./reports/full-library.json) 记录 22 项既有行为通过后，失败于详情重处理深链标题焦点断言；该范围外模块和断言未改动。用户人工 UI 验收仍未执行，PR 保持草稿。
+[完整运行器](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-177/reports/full-browser.json) 保留 `status=failed`。[图库失败报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-177/reports/full-library.json) 记录 22 项既有行为通过后，失败于详情重处理深链标题焦点断言；该范围外模块和断言未改动。用户人工 UI 验收仍未执行，PR 保持草稿。
 
 最终代码审计结论：通过，无未解决的 Issue #177 代码发现；本次批量功能的真实浏览器证据已核对。稳定构建及其他实际命令结果由 [主记录](./README.md) 统一维护。
 
@@ -145,7 +145,7 @@ pnpm exec vitest run --project unit tests/unit/library/batch.test.ts tests/unit/
 
 ## 人工反馈后标签选择新稿的独立代码审计（2026-10-02）
 
-审计者：`batch_backend`，使用 `code-review-and-quality`，只读审查主 agent 编写的 `batch-targets.tsx`、`batch-workspace.tsx` 新稿增量；本人实施的公开/私有 Toast 控制器不计入本段独立结论。依据本轮用户授权与 [最新交接](../../design/handoff.md#批量操作反馈与标签选择返修2026-10-02)，实际读取两文件完整调用路径、目标 API/类型、现有快速新建组件、HeroUI Popover 类型及实现、图库与公共布局消费路径。没有修改作者的应用文件，没有控制已交回用户的 Ego 页面。
+审计者：`batch_backend`，使用 `code-review-and-quality`，只读审查主 agent 编写的 `batch-targets.tsx`、`batch-workspace.tsx` 新稿增量；本人实施的公开/私有 Toast 控制器不计入本段独立结论。依据本轮用户授权与 [最新交接](../../design/handoff.md#批量操作反馈与标签选择返修2026-10-02人工反馈)，实际读取两文件完整调用路径、目标 API/类型、现有快速新建组件、HeroUI Popover 类型及实现、图库与公共布局消费路径。没有修改作者的应用文件，没有控制已交回用户的 Ego 页面。
 
 - 新稿的960px上限、3/2/1列卡片、图片身份与真实页数、名称/ID/数量层次、自然高度48px底栏仅作用于标签 `choose` 状态；相册目标与标签结果/未知/保留失败沿用原布局。固定底栏复用公共 `shell-footer`，没有复制外壳或改变消费路由的公共结构。
 - 搜索/分页仍以 query key 切换读取，已有目标选择留在批量 command 中；提交继续要求真实 command、目标读取成功及非 pending。错误说明和重新读取入口保留，未用 Popover 隐藏错误或失败后果。新增操作说明使用 HeroUI `Popover.Trigger/Content/Dialog/Heading` 标准组合，点击与键盘生命周期由既有控件管理；快速新建继续复用现有组件并使用原 QueryClient 失效流程。
@@ -212,9 +212,9 @@ pnpm exec vitest run --project unit tests/unit/library/batch.test.ts tests/unit/
 
 重试请求记录在点击前清空，并在实际 fetch 调用开始时入队，随后才等待响应；精确要求路径列表为 `['/api/tags']`，同时核对 GET、200 和实际搜索参数，因此额外相册请求即使尚未完成也会被计入。查询、错误重试和取消均要求批量写入请求为空。原四张图片、三个明确标签目标、精确 add/remove 命令、数据库 12 条添加关系与最终 0 条关系断言继续保留；新 mode 仅在适用 library-batch suite 接入，不跳过原完整模式的行为。读取包装没有硬编码成功结果，原夹具 finally 清理与偏好恢复保留。本次新增 e2e 无 Required/Critical 发现。
 
-审计者实际读取红报告 `test-results/browser-library-177-tag-states-red/library-batch.json`：`status=failed`，错误重试实际请求为标签与当前相册两个 GET，精确路径断言失败；41 张截图不作为该次通过证据。修复后实际读取 [最终标签状态报告](./reports/feedback-tag-states.json)：`status=passed`、`phase=tag-states`、3 组行为、41 张实际截图、`errors=[]`。其中 `tagAlbumCacheRetry.retryReads` 只有真实 `/api/tags` GET 200，实际搜索参数为 `Issue 177 标签 A`；两项真实标签选择保留。标签加载、读取失败、明确重试、空搜索、零目标、移除与短视口记录均由此轮新增场景取得，不使用旧 47 张报告代替这些状态。
+审计者实际读取红报告 `test-results/browser-library-177-tag-states-red/library-batch.json`：`status=failed`，错误重试实际请求为标签与当前相册两个 GET，精确路径断言失败；41 张截图不作为该次通过证据。修复后实际读取 [最终标签状态报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-177/reports/feedback-tag-states.json)：`status=passed`、`phase=tag-states`、3 组行为、41 张实际截图、`errors=[]`。其中 `tagAlbumCacheRetry.retryReads` 只有真实 `/api/tags` GET 200，实际搜索参数为 `Issue 177 标签 A`；两项真实标签选择保留。标签加载、读取失败、明确重试、空搜索、零目标、移除与短视口记录均由此轮新增场景取得，不使用旧 47 张报告代替这些状态。
 
-实际读取 [最终受影响单元记录](./reports/feedback-final-affected.txt)：5 文件、60 项通过。审计者此前实际执行 Node24 的 `node --check e2e/library-batch.mjs`、`node --check scripts/verify-browser.mjs` 与 `git diff --check` 均 exit0；本轮只回读最终源码和已完成报告，没有重跑浏览器、构建或全量检查，没有操作交给用户的 Ego 页面。
+实际读取 [最终受影响单元记录](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-177/reports/feedback-final-affected.txt)：5 文件、60 项通过。审计者此前实际执行 Node24 的 `node --check e2e/library-batch.mjs`、`node --check scripts/verify-browser.mjs` 与 `git diff --check` 均 exit0；本轮只回读最终源码和已完成报告，没有重跑浏览器、构建或全量检查，没有操作交给用户的 Ego 页面。
 
 最终独立代码/测试审计结论：标签新稿与新增状态 e2e 通过，本次范围没有未解决 Required/Critical 发现。设计还原与用户人工 UI 验收继续由各自记录判断；本段不将代码、单元或浏览器行为通过替代设计验收。
 

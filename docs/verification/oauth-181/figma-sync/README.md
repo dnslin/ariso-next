@@ -42,7 +42,7 @@
 - 复制失败的完整地址为 `https://photos.example.com/api/auth/callback/github`，长度 51。
 - 未修改产品代码，未提交。未运行产品测试。Figma 静态状态不能证明真实 API、焦点恢复、滚动行为或 GitHub OAuth 流程通过。
 
-完整变更编号和最终截图映射见 [manifest.json](manifest.json)。各阶段更新 JSON 保留工具返回的原始操作清单；其中 operationRemovedIds 也记录一次工具事务内创建后移除的临时图层。最终仍存在的新增节点以 currentCreatedIds 为准。最终清单已按隐藏实例子层和图标交换后的实际 ID 重新核对。截图均直接来自实际 Figma 节点，文件名与节点、尺寸对应关系见 manifest。
+完整变更编号和最终截图映射见 [manifest.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/oauth-181/figma-sync/manifest.json)。各阶段更新 JSON 保留工具返回的原始操作清单；其中 operationRemovedIds 也记录一次工具事务内创建后移除的临时图层。最终仍存在的新增节点以 currentCreatedIds 为准。最终清单已按隐藏实例子层和图标交换后的实际 ID 重新核对。截图均直接来自实际 Figma 节点，文件名与节点、尺寸对应关系见 manifest。
 
 ## 关闭浮层后的未知状态约定
 

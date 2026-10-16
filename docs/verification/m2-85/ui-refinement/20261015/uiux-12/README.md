@@ -73,7 +73,7 @@
 ## 两端和设计对照
 
 - 最终业务流程使用 1440px 桌面与 390px 手机，覆盖 R01–R12 的实际保存、返回、空状态、错误、未知结果与等待反馈。
-- [响应式检查](responsive/checks.json)覆盖 360／390／430／768px × 图库、回收站、基本设置、上传，共16组；430px 使用 640px 短屏。检查文档／主区域无横向溢出，移动可操作目标至少44px。来源筛选的430px短屏另由业务场景覆盖。
+- [响应式检查](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261015/uiux-12/responsive/checks.json)覆盖 360／390／430／768px × 图库、回收站、基本设置、上传，共16组；430px 使用 640px 短屏。检查文档／主区域无横向溢出，移动可操作目标至少44px。来源筛选的430px短屏另由业务场景覆盖。
 - 最终排序内距调整后，图库四个宽度已复验，并追加390px深色实景。
 - 已实际查看桌面上传限制、手机密钥草稿、批量相册异常结果、回收站短屏、大图等待、输入后的无叉号搜索和相册上传版本页截图，并对照 用户批准的本地原型。保留完整业务导航、字段、权限差异和独立保存规则。
 - R02 回到原上传 URL／队列／滚动／焦点，版本页暂停隐藏上传输入的粘贴监听。成功重新处理的来源按钮由单元行为测试覆盖。
@@ -82,7 +82,7 @@
 
 ## 标题测量
 
-[修复前](evidence/metadata-baseline.json)同库18次导航出现18次空标题观察。[修复后](evidence/metadata-after.json)同库18次导航、收起／展开侧栏及浏览器后退／前进没有空标题或标题节点替换。
+[修复前](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261015/uiux-12/evidence/metadata-baseline.json)同库18次导航出现18次空标题观察。[修复后](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261015/uiux-12/evidence/metadata-after.json)同库18次导航、收起／展开侧栏及浏览器后退／前进没有空标题或标题节点替换。
 
 业务场景另覆盖默认／自定义图标 × 桌面／手机，共60次侧栏和设置分类导航。名称真实保存及 favicon 替换后，文档、标题节点和图标节点持续存在；首页、有效公开分享及密码恢复的初始 HTML 标题正确且唯一，分享禁止索引和 referrer 保留。
 

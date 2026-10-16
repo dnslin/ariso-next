@@ -46,9 +46,9 @@ macOS 26.6.2 / ARM64，Node v24.18.1、pnpm 11.19.0，ImageMagick 7.1.2-32、Exi
 | `node docs/tasks/check.mjs --self-test`                     | 5 项拒绝用例通过                                                                                                |
 | `pnpm audit --json`                                         | 退出 1：既有 drizzle-kit 链路 esbuild 的 1 项 moderate（GHSA-67mh-4wv8-2f99），不在 SDK 链路；不在本任务升级    |
 
-首次 `pnpm run format:check` 退出 1，仅指出 `docs/verification/m2-85/remove-explanations/preview-switch/{after,before,mobile}.json` 三份历史证据。对这些文件执行 `git diff --exit-code origin/main -- <三文件>` 返回 0，确认与基线完全相同；当时按范围约束未重排；本轮已获明确授权并修正，见后续重试记录。本次改动的全部可格式化文件已单独执行 Prettier `--check` 并通过，`git diff --check` 通过。证据文本再次扫描未发现配置凭据及完整签名 URL。完整命令汇总见 [local-checks.json](./local-checks.json)。原始日志位于本机 `/tmp/ariso-155-*.log`。schema 未改变，不执行迁移生成。
+首次 `pnpm run format:check` 退出 1，仅指出 `docs/verification/m2-85/remove-explanations/preview-switch/{after,before,mobile}.json` 三份历史证据。对这些文件执行 `git diff --exit-code origin/main -- <三文件>` 返回 0，确认与基线完全相同；当时按范围约束未重排；本轮已获明确授权并修正，见后续重试记录。本次改动的全部可格式化文件已单独执行 Prettier `--check` 并通过，`git diff --check` 通过。证据文本再次扫描未发现配置凭据及完整签名 URL。完整命令汇总见 [local-checks.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-155/local-checks.json)。原始日志位于本机 `/tmp/ariso-155-*.log`。schema 未改变，不执行迁移生成。
 
-首次浏览器失败见 [runner.json](./browser/runner.json)。Ego Lite / Chromium 152 复用 TaskSpace 1，全部数据位于独立临时目录，运行器已停止测试服务器并清理临时数据。图库场景最后留下[剪贴板拒绝反馈截图](./browser/detail-clipboard-denied-light-390.png)，超时后页面仍为“中文下载样本.png”详情，尚不能确定卡住的具体调用；没有生成 `library.json` 最终报告。没有扩大本任务修改图库、详情或浏览器运行器，也没有提高超时、跳过场景或重写失败记录。后续上传与手机 M2 等未完成步骤不得标通过。该结果保留为首次失败证据，后续重试结果单独记录；本次不是 UI 设计验收。
+首次浏览器失败见 [runner.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-155/browser/runner.json)。Ego Lite / Chromium 152 复用 TaskSpace 1，全部数据位于独立临时目录，运行器已停止测试服务器并清理临时数据。图库场景最后留下[剪贴板拒绝反馈截图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-155/browser/detail-clipboard-denied-light-390.png)，超时后页面仍为“中文下载样本.png”详情，尚不能确定卡住的具体调用；没有生成 `library.json` 最终报告。没有扩大本任务修改图库、详情或浏览器运行器，也没有提高超时、跳过场景或重写失败记录。后续上传与手机 M2 等未完成步骤不得标通过。该结果保留为首次失败证据，后续重试结果单独记录；本次不是 UI 设计验收。
 
 ## 2026-09-28 按所有者要求调整与重试
 
@@ -56,21 +56,21 @@ AWS S3 因缺少环境取消实测要求，已同步统一执行约定、任务�
 
 按授权对三份历史 JSON 执行 Prettier，解析后逐份与 HEAD 比较完全一致。全仓 `pnpm run format:check` 现已通过；冻结安装、lint、typecheck、文档检查与 5 项自测均通过。独立评审复核 JSON 语义与服务矩阵，无必修问题。本轮未改生产代码，不机械重跑已通过的应用构建与单元/集成；浏览器按要求完整重试。
 
-浏览器重试命令：`EGO_TASK_SPACE=1 BROWSER_REPORT_DIR=test-results/browser-retry pnpm run test:browser`，退出 1。[重试运行报告](./browser-retry/runner.json)确认基础/故障恢复、桌面与手机认证、图库、上传及轮询、桌面与手机 M2、交互检查、桌面状态保留均通过。手机状态保留失败于等待 `/library` 上的成功读取，最后的 UI 夹具尚未运行；原图库超时未复现。
+浏览器重试命令：`EGO_TASK_SPACE=1 BROWSER_REPORT_DIR=test-results/browser-retry pnpm run test:browser`，退出 1。[重试运行报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-155/browser-retry/runner.json)确认基础/故障恢复、桌面与手机认证、图库、上传及轮询、桌面与手机 M2、交互检查、桌面状态保留均通过。手机状态保留失败于等待 `/library` 上的成功读取，最后的 UI 夹具尚未运行；原图库超时未复现。
 
-从未导航或重载的原测试页面读取到[真实网络记录](./browser-retry/workspace-390-failure-network.json)：唯一提交已 accepted，图片 ready，任务 succeeded；成功读取发生在 `/upload`，早于手机导航完成。`useUploadLifetime` 对 saving 项每 2 秒轮询，成功后正常停止；测试只扣留 XHR 的 load 回调，没有扣留同期读取，因而可能在导航前已经结束。脚本随后等待 `/library` 再出现成功读取，20 秒后超时。独立评审实际读取请求记录、provider、controller 与脚本后确认该测试时序竞态，没有证据指向产品失败。此证据解释本次失败；未修改产品代码，也未把失败包装成通过。所有者随后明确授权修正该测试。`e2e/workspace-continuity.mjs` 现在同时暂缓真实 XHR load 与真实提交 GET 响应的交付，在确认队列仍 saving 后完成导航，再原样释放。新增断言确认至少一份真实响应在 `/upload` 等待，从而必然覆盖导航前轮询的竞态；既有 20 秒上限、提交次数、真实数据库和队列/图片身份断言全部保留。finally 释放两类等待并恢复原始网络方法。产品代码没有变化，后续完整重跑结果单独记录。
+从未导航或重载的原测试页面读取到[真实网络记录](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-155/browser-retry/workspace-390-failure-network.json)：唯一提交已 accepted，图片 ready，任务 succeeded；成功读取发生在 `/upload`，早于手机导航完成。`useUploadLifetime` 对 saving 项每 2 秒轮询，成功后正常停止；测试只扣留 XHR 的 load 回调，没有扣留同期读取，因而可能在导航前已经结束。脚本随后等待 `/library` 再出现成功读取，20 秒后超时。独立评审实际读取请求记录、provider、controller 与脚本后确认该测试时序竞态，没有证据指向产品失败。此证据解释本次失败；未修改产品代码，也未把失败包装成通过。所有者随后明确授权修正该测试。`e2e/workspace-continuity.mjs` 现在同时暂缓真实 XHR load 与真实提交 GET 响应的交付，在确认队列仍 saving 后完成导航，再原样释放。新增断言确认至少一份真实响应在 `/upload` 等待，从而必然覆盖导航前轮询的竞态；既有 20 秒上限、提交次数、真实数据库和队列/图片身份断言全部保留。finally 释放两类等待并恢复原始网络方法。产品代码没有变化，后续完整重跑结果单独记录。
 
 ## 测试时序修正后的验证
 
-独立审计确认暂挂的是实际服务响应，未修改内容或断言；正常路径与 finally 均会释放等待。两端[聚焦验证](./workspace-focused/runner.json)已通过，1440/390 的报告均记录 `heldReadPaths: ['/upload']`，并核对单次提交、图库成功读取、回到上传页的 queue/image ID 与真实 SQL 记录一致。硬刷新、退出、会话过期、结果 401 和最终 UI 夹具也通过。独立评审逐项读取并交叉校验上述证据。
+独立审计确认暂挂的是实际服务响应，未修改内容或断言；正常路径与 finally 均会释放等待。两端[聚焦验证](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-155/workspace-focused/runner.json)已通过，1440/390 的报告均记录 `heldReadPaths: ['/upload']`，并核对单次提交、图库成功读取、回到上传页的 queue/image ID 与真实 SQL 记录一致。硬刷新、退出、会话过期、结果 401 和最终 UI 夹具也通过。独立评审逐项读取并交叉校验上述证据。
 
-聚焦运行临时复用既有生产夹具、初始化和清理代码，命令见 local-checks。前两次拆分准备因紧邻登录失败测试触发内存限流，保存了[初始化后限流](./focused-preparation/setup-rate-limit/workspace-continuity-1440.json)和[重启测试后限流](./focused-preparation/restart-suite-rate-limit/workspace-continuity-1440.json)证据；最终采用初始化后重启的独立场景准备，没有修改产品限流或测试断言。该准备修正不代表产品缺陷。
+聚焦运行临时复用既有生产夹具、初始化和清理代码，命令见 local-checks。前两次拆分准备因紧邻登录失败测试触发内存限流，保存了[初始化后限流](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-155/focused-preparation/setup-rate-limit/workspace-continuity-1440.json)和[重启测试后限流](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-155/focused-preparation/restart-suite-rate-limit/workspace-continuity-1440.json)证据；最终采用初始化后重启的独立场景准备，没有修改产品限流或测试断言。该准备修正不代表产品缺陷。
 
-第一次完整重跑在到达本次修改场景前，桌面 M2 的第四个下载等待达到 300 秒，见[原始失败报告](./browser-after-timing-fix/runner.json)。前三个下载文件存在，第四个未生成；未取得阶段日志时不能确认具体停点。该轮失败保留，不由聚焦通过覆盖。
+第一次完整重跑在到达本次修改场景前，桌面 M2 的第四个下载等待达到 300 秒，见[原始失败报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-155/browser-after-timing-fix/runner.json)。前三个下载文件存在，第四个未生成；未取得阶段日志时不能确认具体停点。该轮失败保留，不由聚焦通过覆盖。
 
-最终完整命令 `EGO_TASK_SPACE=1 BROWSER_REPORT_DIR=test-results/browser-complete pnpm run test:browser` **退出 0**，2026-09-28 08:47:44–09:03:04 UTC，全部适用场景通过，见[完整运行报告](./browser-complete/runner.json)。包括两端初始化/重启、图库、上传与轮询、M2、交互、状态保留和最终 UI/图库夹具。两端状态保留均在完整顺序下再次取得 `heldReadPaths: ['/upload']` 及身份一致性证据。运行器已停止服务、删除临时数据，末尾 UI 运行器按技能关闭同一个 Ego TaskSpace。
+最终完整命令 `EGO_TASK_SPACE=1 BROWSER_REPORT_DIR=test-results/browser-complete pnpm run test:browser` **退出 0**，2026-09-28 08:47:44–09:03:04 UTC，全部适用场景通过，见[完整运行报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-155/browser-complete/runner.json)。包括两端初始化/重启、图库、上传与轮询、M2、交互、状态保留和最终 UI/图库夹具。两端状态保留均在完整顺序下再次取得 `heldReadPaths: ['/upload']` 及身份一致性证据。运行器已停止服务、删除临时数据，末尾 UI 运行器按技能关闭同一个 Ego TaskSpace。
 
-该轮为排查下载等待，曾在 M2 测试中增加仅输出阶段的临时日志；[8 次桌面/手机下载](./browser-complete/download-stages.json)均实际完成事件和保存阶段，未改请求、断言或超时。该停顿未复现，根因尚未确定；不将一次通过表述成已修复此停顿。诊断日志代码已恢复，唯一持久测试改动仍是 workspace-continuity 的同步修正；恢复后重新执行格式、lint、类型及文档检查。完整原始输出保留在本机 `test-results/browser-complete/`，关键报告与实际手机截图随本记录提交。
+该轮为排查下载等待，曾在 M2 测试中增加仅输出阶段的临时日志；[8 次桌面/手机下载](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-155/browser-complete/download-stages.json)均实际完成事件和保存阶段，未改请求、断言或超时。该停顿未复现，根因尚未确定；不将一次通过表述成已修复此停顿。诊断日志代码已恢复，唯一持久测试改动仍是 workspace-continuity 的同步修正；恢复后重新执行格式、lint、类型及文档检查。完整原始输出保留在本机 `test-results/browser-complete/`，关键报告与实际手机截图随本记录提交。
 
 ## 真实服务验证
 
@@ -84,16 +84,16 @@ node tests/experiments/storage-s3/verify-objects.ts \
 # 独立进程将 --service 改为 seaweedfs；AWS 不再是验收要求。
 ```
 
-运行器默认选择 R2、SeaweedFS；仅显式 `--service aws` 时运行可选 AWS 检查。取消 AWS 要求后的[无配置检查](./missing-environment-retry/run-B1BCUC)实际仅生成两个 incomplete 报告并退出 1，确认必需服务缺配置仍不能通过。历史三服务无配置报告原样保留。
+运行器默认选择 R2、SeaweedFS；仅显式 `--service aws` 时运行可选 AWS 检查。取消 AWS 要求后的[无配置检查](https://github.com/dnslin/ariso-next/tree/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-155/missing-environment-retry/run-B1BCUC)实际仅生成两个 incomplete 报告并退出 1，确认必需服务缺配置仍不能通过。历史三服务无配置报告原样保留。
 
 `--wait-for-expiry` 实际等待 GET/HEAD 300 秒、PUT 900 秒后再请求，不能仅凭查询参数判断服务已拒绝过期请求。不加该选项会标 incomplete。缺配置也标 incomplete 并退出 1。报告保留 endpoint、bucket、Key、响应 Server 与 requestId；托管服务没有公开版本号时不编造版本。完整 URL、凭据不写报告。
 
 本轮已有结果：
 
-- [SeaweedFS 4.47](./live/run-P2vuVy/seaweedfs/report.json)：全部 9 项通过，包含真实 GET/HEAD 300 秒、PUT 900 秒过期拒绝与最终 4 个精确 Key 的清理。
-- [R2 当前轮次](./live/run-tAGXDQ/r2/report.json)：全部 9 项通过，包含真实 GET/HEAD 300 秒、PUT 900 秒过期拒绝与最终 4 个精确 Key 的清理。Server 为 cloudflare，未公开具体服务版本。
-- [R2 首轮失败](./live/run-nDOPkc/r2/report.json)：默认 fetch 的 HEAD 请求引发 gzip 响应，缺少 Content-Length，并返回弱 ETag。与同一地址的 `Accept-Encoding: identity` [真实对照](./live/run-tAGXDQ/r2/head-transport-comparison.json)确认原因后，运行器在元数据检查使用 identity；保留原断言并重新实测，生产签名未改变。首轮签名可写窗口结束后，4 个 Key 已再次 DELETE 并确认 HEAD 不存在，见[独立收尾记录](./live/run-nDOPkc/r2/reconciliation.json)；原失败报告不改写。
-- [AWS 缺环境](./missing-environment/run-kUI6Yf/aws/report.json)：未发送请求，incomplete。运行无 `--config` 的三服务检查退出 1，用于确认不会将缺配置伪装为通过。该轮的 R2/SeaweedFS 也标缺配置，不代表上述真实轮次。
+- [SeaweedFS 4.47](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-155/live/run-P2vuVy/seaweedfs/report.json)：全部 9 项通过，包含真实 GET/HEAD 300 秒、PUT 900 秒过期拒绝与最终 4 个精确 Key 的清理。
+- [R2 当前轮次](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-155/live/run-tAGXDQ/r2/report.json)：全部 9 项通过，包含真实 GET/HEAD 300 秒、PUT 900 秒过期拒绝与最终 4 个精确 Key 的清理。Server 为 cloudflare，未公开具体服务版本。
+- [R2 首轮失败](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-155/live/run-nDOPkc/r2/report.json)：默认 fetch 的 HEAD 请求引发 gzip 响应，缺少 Content-Length，并返回弱 ETag。与同一地址的 `Accept-Encoding: identity` [真实对照](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-155/live/run-tAGXDQ/r2/head-transport-comparison.json)确认原因后，运行器在元数据检查使用 identity；保留原断言并重新实测，生产签名未改变。首轮签名可写窗口结束后，4 个 Key 已再次 DELETE 并确认 HEAD 不存在，见[独立收尾记录](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-155/live/run-nDOPkc/r2/reconciliation.json)；原失败报告不改写。
+- [AWS 缺环境](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-155/missing-environment/run-kUI6Yf/aws/report.json)：未发送请求，incomplete。运行无 `--config` 的三服务检查退出 1，用于确认不会将缺配置伪装为通过。该轮的 R2/SeaweedFS 也标缺配置，不代表上述真实轮次。
 
 失败和缺环境报告原样保留。所有清理只针对本轮计划的 Key，不扫描 Bucket。受控实验清理和签名到期不证明通用在途写入生命周期，后者仍由 UPLOAD-V01 与调用方任务承担。
 
@@ -120,7 +120,7 @@ PUT 改用 Node 原生 `finished` 回调同时检测源流错误和提前关闭�
 
 本轮没有 UI/e2e 改动，S3 工厂当前没有应用调用方，设计及人工 UI 验收不适用。未重跑浏览器和 R2/SeaweedFS 真实过期矩阵；上文完整浏览器与真实服务报告保留为此前证据。签名、配置及请求协议未改变，本次异常路径由真实 SDK + localhost HTTP 验证。AWS 实测仍按所有者要求取消，双架构镜像与容器检查仍只在 Release 流程执行。
 
-本轮使用上文相同的 Node 24 / pnpm 环境，实际执行冻结安装、全仓格式、lint、类型、单元、构建及构建后的普通集成/真实图片工具组检查，全部通过。单元 **32 文件 / 478 项**；集成 **63 文件 / 534 项，357.73 秒**；聚焦 S3 **2 文件 / 30 项**。文档依赖检查 120 任务 / 298 需求，5 项拒绝自测也通过。构建仍有既有 better-sqlite3 可选 Debug 绑定追踪警告，实际构建退出 0。完整命令与两轮失败/成功结果见 [local-checks.json 的 reviewFixes](./local-checks.json)；本机原始日志为 `/tmp/ariso-155-review-fixes-*.log`。本轮只修改 S3 模块、对应集成测试和本目录既有两份记录。
+本轮使用上文相同的 Node 24 / pnpm 环境，实际执行冻结安装、全仓格式、lint、类型、单元、构建及构建后的普通集成/真实图片工具组检查，全部通过。单元 **32 文件 / 478 项**；集成 **63 文件 / 534 项，357.73 秒**；聚焦 S3 **2 文件 / 30 项**。文档依赖检查 120 任务 / 298 需求，5 项拒绝自测也通过。构建仍有既有 better-sqlite3 可选 Debug 绑定追踪警告，实际构建退出 0。完整命令与两轮失败/成功结果见 [local-checks.json 的 reviewFixes](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-155/local-checks.json)；本机原始日志为 `/tmp/ariso-155-review-fixes-*.log`。本轮只修改 S3 模块、对应集成测试和本目录既有两份记录。
 
 ## 合并前同步 main
 

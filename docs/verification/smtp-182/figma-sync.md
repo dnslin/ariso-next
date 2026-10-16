@@ -2,7 +2,7 @@
 
 2026-10-08。所有者已批准完整 feedback1 原型并明确要求实施。本记录区分方案批准、Figma 写入和截图复核；不把它们记为生产页面人工验收。
 
-依据为 [获批原型源码](../../../design-plans/issue182-review/prototype.tsx.txt)、本目录 `prototype-feedback-*` 截图、[设计交接](../../design/handoff.md)、[任务执行与验证约定](../../tasks/execution.md) 及 DG-SMTP 既有状态族。实际读取并应用 `figma-use`、`figma-generate-design`、`figma-design-to-code` 与 `figma-generate-library`。先读取主节点设计上下文、截图和真实子节点结构，再修改既有文件 `74sT9Hrf8G4czcWeTkET5b`；没有新建 Figma 文件。
+依据为 [获批原型源码](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/design-plans/issue182-review/prototype.tsx.txt)、本目录 `prototype-feedback-*` 截图、[设计交接](../../design/handoff.md)、[任务执行与验证约定](../../tasks/execution.md) 及 DG-SMTP 既有状态族。实际读取并应用 `figma-use`、`figma-generate-design`、`figma-design-to-code` 与 `figma-generate-library`。先读取主节点设计上下文、截图和真实子节点结构，再修改既有文件 `74sT9Hrf8G4czcWeTkET5b`；没有新建 Figma 文件。
 
 ## 写入范围与复用
 
@@ -75,13 +75,13 @@
 
 本次同步者实际读取 site194 主节点 `467:4002/467:9001` 和 SMTP `34:710/99:786` 的设计上下文及截图，并只读 `468:4012` 分类组与 `902:15685` 的16px Settings图标。发现 SMTP 分类仍为四项独立Frame，没有随公共来源自动更新。复用已有 Link `3:29` 实例的文字属性 `Label#3:4` 与 site194 真实 Settings 图标，插入未选中基本设置；原图片处理、账号与安全、上传API、邮件服务顺序保留，邮件服务仍为黄色选中项。使用 site194 分类组的 gap0、112/112/126/109.25/112px 项宽，五项分类自然宽579.25、高52，业务 Card 起点不变；颜色保留既有 foreground 变量绑定，浅深模式均有实际截图复核。
 
-| SMTP 桌面整页 | 分类组    | 新基本设置项 | 最新自然截图                                |
-| ------------- | --------- | ------------ | ------------------------------------------- |
-| 34:710        | 34:799    | 951:16644    | [浅色主表单](./figma/final-34-710.png)      |
-| 265:1703      | 265:1792  | 951:16660    | [深色主表单](./figma/final-265-1703.png)    |
-| 43:446        | 920:16537 | 951:16676    | [原页接受通知](./figma/final-43-446.png)    |
-| 916:16394     | 916:16489 | 951:16692    | [保存待核对](./figma/final-916-16394.png)   |
-| 916:16630     | 916:16725 | 951:16708    | [密码变更未知](./figma/final-916-16630.png) |
+| SMTP 桌面整页 | 分类组    | 新基本设置项 | 最新自然截图                                                                                                                                                      |
+| ------------- | --------- | ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 34:710        | 34:799    | 951:16644    | [浅色主表单](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/smtp-182/figma/final-34-710.png)      |
+| 265:1703      | 265:1792  | 951:16660    | [深色主表单](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/smtp-182/figma/final-265-1703.png)    |
+| 43:446        | 920:16537 | 951:16676    | [原页接受通知](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/smtp-182/figma/final-43-446.png)    |
+| 916:16394     | 916:16489 | 951:16692    | [保存待核对](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/smtp-182/figma/final-916-16394.png)   |
+| 916:16630     | 916:16725 | 951:16708    | [密码变更未知](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/smtp-182/figma/final-916-16630.png) |
 
 实际只读手机页面组件清单及本任务五整页分类区：共用 `Mobile / SettingsSelector` 为 `113:1498`，SMTP 各状态只显示选中的邮件服务，未发现 SMTP 分类选项家族。没有创建新选项原型，没有修改 site194 或 Issue200 节点。产品手机Select真实选项由五项公共数组提供，其实际验证由浏览器报告承接。
 

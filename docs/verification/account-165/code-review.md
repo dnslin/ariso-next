@@ -79,7 +79,7 @@
 
 下一编辑操作前，通过当前最前方 Toast 的真实关闭控件与 Enter 关闭旧通知，并等待其 ID 与最终节点消失。当前成功仍必须看到本次新通知 ID；旧通知处理没有替代成功回焦或滚动断言。密码竞态仍强制取得 UI 409；合法 UI 赢家核对实际持久密码后使用新输入进入下一轮，达不到指定分支便失败。
 
-共享 Tabs 的 `outline-none` 只加在根节点。已读取 HeroUI 与 React Aria Tabs 源码：根节点使用 `useFocusRing({ within: true })` 表示内部焦点且未设置 tabIndex，因此全局 `[data-focus-visible=true]` 会给整个容器添加多余轮廓。局部规则不继承给实际 Tab、Select、按钮、字段或 TabPanel，它们原有的焦点规则保留。已回读 [处理设置焦点记录](./browser/settings-focus.json)：真实键盘 Tab 在两种主题下保持 Select 的 4px box-shadow 焦点环，Tabs 根轮廓为 none；没有写入处理设置数据。该记录只证明实际测量的消费者与控件，不扩大为全部焦点状态的运行结论。
+共享 Tabs 的 `outline-none` 只加在根节点。已读取 HeroUI 与 React Aria Tabs 源码：根节点使用 `useFocusRing({ within: true })` 表示内部焦点且未设置 tabIndex，因此全局 `[data-focus-visible=true]` 会给整个容器添加多余轮廓。局部规则不继承给实际 Tab、Select、按钮、字段或 TabPanel，它们原有的焦点规则保留。已回读 [处理设置焦点记录](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/account-165/browser/settings-focus.json)：真实键盘 Tab 在两种主题下保持 Select 的 4px box-shadow 焦点环，Tabs 根轮廓为 none；没有写入处理设置数据。该记录只证明实际测量的消费者与控件，不扩大为全部焦点状态的运行结论。
 
 ### 最后加载图标修正复审
 
@@ -89,7 +89,7 @@
 
 ## 已发现的验证与范围外问题
 
-- **已补齐的页面分支**：已回读 [账号通知定位失败记录](./browser/account-toast-locator-failure.json)。该次运行已通过读取、响应式、邮箱和并发密码场景；真实第一轮 UI 409 / 另一请求 200，随后实际字段保留、错误焦点与显式重试断言通过。这不等于整套账号浏览器通过。两个独立 Cookie 会话已覆盖撤销，Ego 的两可导航浏览器上下文仍明确未验证。
+- **已补齐的页面分支**：已回读 [账号通知定位失败记录](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/account-165/browser/account-toast-locator-failure.json)。该次运行已通过读取、响应式、邮箱和并发密码场景；真实第一轮 UI 409 / 另一请求 200，随后实际字段保留、错误焦点与显式重试断言通过。这不等于整套账号浏览器通过。两个独立 Cookie 会话已覆盖撤销，Ego 的两可导航浏览器上下文仍明确未验证。
 - **浏览器脚本失败与修复**：最初 `account-1440` 在 responsive 的取消按钮定位匹配两项，已限定当前 Modal 内业务控件。后续运行在正常密码成功阶段，因前一次密码通知尚可见，旧按标题定位匹配两个通知；保留失败记录，已改为识别本次新增通知 ID。修正后最终账号定向实际通过；此前默认 full 的失败不改写为通过。
 - **既有范围外问题**：`src/components/processing/processing-page.tsx` 的 `SessionLink` 传 `returnTo=/settings/processing`，但原基线和当前 `loginDestination` 都不接受该路由。处理设置会话失效后登录会回 `/admin`，随后进入上传页。本任务新增的账号回跳正确。已向实施者报告，未越界修改。
 - **既有集成失败**：首轮全量及五个失败文件复验中的 SQLite 锁竞争/超时情况，沿用 [只读诊断](./integration-diagnosis.md)，不重新归因或改写通过状态。受影响的代码相对任务基线未改，静态事实不等于基线执行已经排除回归。
@@ -109,10 +109,10 @@
 
 完整 UI 审查还回读 `ui-unit.txt` 的 32/32、`ui-lint.txt`、`ui-typecheck-product.txt`、`ui-build.txt` 和 `ui-build-final.txt`。最终布局修正的构建完成编译、TypeScript 和页面生成，实施者确认退出 0。`ui-build-focus-final.txt`、`ui-delivery-typecheck.txt`、`ui-design-final-lint.txt` 亦已回读，实施者确认三项均退出 0。最后加载图标修正的 `ui-build-spinner-final.txt` 和 `ui-spinner-lint.txt` 已回读，实施者确认退出 0；构建中 TypeScript 与页面生成完成。
 
-已回读 [公共导航](./browser/shell-navigation.json) 与 [图片处理消费者](./browser/processing-consumers.json)，两份记录均为 passed，实施者确认共享消费者定向命令退出 0。全量 integration 首次失败，五个失败文件复验仍有一项锁竞争失败。`browser-full.txt` 本轮在 account-1440 定位阶段退出 1；后续账号定向运行在密码 Toast 定位阶段退出 1，两个实际失败均保留，没有记全量浏览器通过。
+已回读 [公共导航](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/account-165/browser/shell-navigation.json) 与 [图片处理消费者](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/account-165/browser/processing-consumers.json)，两份记录均为 passed，实施者确认共享消费者定向命令退出 0。全量 integration 首次失败，五个失败文件复验仍有一项锁竞争失败。`browser-full.txt` 本轮在 account-1440 定位阶段退出 1；后续账号定向运行在密码 Toast 定位阶段退出 1，两个实际失败均保留，没有记全量浏览器通过。
 
-加载图标修正前的 [账号定向报告](./browser/account-delivery.json) 与 `test-results/browser-account-delivery/runner.json` 均为 passed，实施者确认命令退出 0，独立生产临时目录已移除。报告的 `business` 包含 1440/390 两端 passed，两个视口第一轮均为真实 UI 409 / 并发写入 200，显式重试通过；其后其他 Cookie 会话撤销、未知结果与真实退出失败恢复也通过，`browserErrors=[]`。记录中的真实限流为 page-fetch 的 10 秒窗口及独立 Cookie 登录的 4 秒窗口；未将源码覆盖的 UI 429 分支冒称该轮真实触发。
+加载图标修正前的 [账号定向报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/account-165/browser/account-delivery.json) 与 `test-results/browser-account-delivery/runner.json` 均为 passed，实施者确认命令退出 0，独立生产临时目录已移除。报告的 `business` 包含 1440/390 两端 passed，两个视口第一轮均为真实 UI 409 / 并发写入 200，显式重试通过；其后其他 Cookie 会话撤销、未知结果与真实退出失败恢复也通过，`browserErrors=[]`。记录中的真实限流为 page-fetch 的 10 秒窗口及独立 Cookie 登录的 4 秒窗口；未将源码覆盖的 UI 429 分支冒称该轮真实触发。
 
-最后 [加载图标修正后账号报告](./browser/account-spinner-final.json) 与 `test-results/browser-account-spinner-final/runner.json` 均为 passed，实施者确认账号入口命令退出 0，1440/390 两端完整业务通过且 `browserErrors=[]`。12 项真实样式记录覆盖三种 busy 状态、两端和两主题：Spinner 与按钮前景均为 `rgb(39, 35, 67)`，按钮背景为 `rgb(255, 216, 7)`，按钮 disabled 为 true。两可导航浏览器上下文仍为 unverified。最终设计/人工验收状态继续以统一 [实施记录](./README.md) 为准，不机械重跑已过检查。
+最后 [加载图标修正后账号报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/account-165/browser/account-spinner-final.json) 与 `test-results/browser-account-spinner-final/runner.json` 均为 passed，实施者确认账号入口命令退出 0，1440/390 两端完整业务通过且 `browserErrors=[]`。12 项真实样式记录覆盖三种 busy 状态、两端和两主题：Spinner 与按钮前景均为 `rgb(39, 35, 67)`，按钮背景为 `rgb(255, 216, 7)`，按钮 disabled 为 true。两可导航浏览器上下文仍为 unverified。最终设计/人工验收状态继续以统一 [实施记录](./README.md) 为准，不机械重跑已过检查。
 
 源码未发现未处理的必修问题。真实浏览器、设计对照与用户人工验收分别保留实际完成状态；未完成项不得由本代码审计代替。

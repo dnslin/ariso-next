@@ -20,16 +20,16 @@
 
 以下截图均由评审者通过本地图片查看工具逐张实际查看。深色及缺失图在主线程通知替换稳定帧后再次查看，图片尺寸均为390×844；不以主题过渡帧作为最终设计依据。
 
-| 截图                                                   | 视口     | 观察                                                                                                 |
-| ------------------------------------------------------ | -------- | ---------------------------------------------------------------------------------------------------- |
-| [before-1299.png](./before-1299.png)                   | 1299×865 | 第二版卡片明显偏下，作为本轮失败现象基线。                                                           |
-| [after-1299.png](./after-1299.png)                     | 1299×865 | 同视口卡片上移，左右居中；品牌与卡片间距自然，卡片内部结构未改变。                                   |
-| [after-desktop.png](./after-desktop.png)               | 1920×960 | 与Figma同视口核对公共柔光/点阵、返回首页及卡片外形；卡片自身居中，品牌在其上方。                     |
-| [after-mobile.png](./after-mobile.png)                 | 390×844  | 与Figma同视口核对；16px左右边距、手机控件层级保持，Logo/名称与返回入口不重叠。                       |
-| [after-360.png](./after-360.png)                       | 360×800  | 窄屏仍完整，品牌与卡片不碰撞；卡片轻微下移没有形成明显失衡或横向裁切。                               |
-| [after-short.png](./after-short.png)                   | 390×420  | 滚动后GitHub按钮完整可见，焦点环清楚；上部已离开视口符合该张截图的滚动状态。                         |
-| [after-dark-mobile.png](./after-dark-mobile.png)       | 390×844  | 最终稳定深色下卡片、输入背景、品牌、图标与文字清楚，位置与浅色一致。                                 |
-| [after-missing-mobile.png](./after-missing-mobile.png) | 390×844  | 最终稳定深色缺失状态保留明确图标和“素材无法读取”文字，站点名称与卡片位置保持，没有静默回退内置Logo。 |
+| 截图                                                                                                                                                                                         | 视口     | 观察                                                                                                 |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ---------------------------------------------------------------------------------------------------- |
+| [before-1299.png](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/login-centering/before-1299.png)                   | 1299×865 | 第二版卡片明显偏下，作为本轮失败现象基线。                                                           |
+| [after-1299.png](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/login-centering/after-1299.png)                     | 1299×865 | 同视口卡片上移，左右居中；品牌与卡片间距自然，卡片内部结构未改变。                                   |
+| [after-desktop.png](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/login-centering/after-desktop.png)               | 1920×960 | 与Figma同视口核对公共柔光/点阵、返回首页及卡片外形；卡片自身居中，品牌在其上方。                     |
+| [after-mobile.png](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/login-centering/after-mobile.png)                 | 390×844  | 与Figma同视口核对；16px左右边距、手机控件层级保持，Logo/名称与返回入口不重叠。                       |
+| [after-360.png](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/login-centering/after-360.png)                       | 360×800  | 窄屏仍完整，品牌与卡片不碰撞；卡片轻微下移没有形成明显失衡或横向裁切。                               |
+| [after-short.png](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/login-centering/after-short.png)                   | 390×420  | 滚动后GitHub按钮完整可见，焦点环清楚；上部已离开视口符合该张截图的滚动状态。                         |
+| [after-dark-mobile.png](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/login-centering/after-dark-mobile.png)       | 390×844  | 最终稳定深色下卡片、输入背景、品牌、图标与文字清楚，位置与浅色一致。                                 |
+| [after-missing-mobile.png](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/login-centering/after-missing-mobile.png) | 390×844  | 最终稳定深色缺失状态保留明确图标和“素材无法读取”文字，站点名称与卡片位置保持，没有静默回退内置Logo。 |
 
 ## 先整页与公共区域，再卡片细节
 
@@ -38,7 +38,7 @@
 - **卡片内部保持。** 448px桌面/手机屏宽减32px的外形、24px标题、邮箱/密码图标、忘记密码端侧位置、黄色登录主操作、第三方分隔及GitHub图文均保持；品牌描述没有重新出现。
 - **高度不足时让内容延伸。** 360图虽轻微偏下，仍保留品牌与卡片的必要间隔；390×420滚动后截图显示第三方按钮与焦点未被裁掉。不能为追求所有高度下严格中心而压缩控件、覆盖品牌或隐藏内容。
 
-主线程的真实浏览器几何结果保存于 [geometry.json](./geometry.json)。评审者实际读取该文件并与截图核对，没有自行再次测量：
+主线程的真实浏览器几何结果保存于 [geometry.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/login-centering/geometry.json)。评审者实际读取该文件并与截图核对，没有自行再次测量：
 
 | 视口     | 卡片top / bottom | 卡片中心相对视口中心偏移                          |
 | -------- | ---------------- | ------------------------------------------------- |

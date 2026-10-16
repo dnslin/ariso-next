@@ -40,7 +40,7 @@
 
 新增浏览器断言检查实际 header/body/footer 间距、按钮宽高、短视口说明内容高度和说明背景边界，并滚到底部验证动作可见。Escape 停止扫描前等待 Modal 实际获得焦点，消除测试尚未进入浮层就发送按键的时序问题。原生目录测试监听 change/cancel 并明确拒绝 cancel，没有将取消视为成功或为通过而删除断言。
 
-已只读检查 [最终诊断归档报告](./reports/directory-drag-diagnostic.json) 和 [诊断运行器报告](./reports/directory-drag-runner.json)。报告包含11项行为记录、58组布局记录；390×400短视口正文高度与内容高度均为174.5px，整体滚动高度397px、可视高度366px。诊断通过真实目录拖入继续验证输入流程，报告已明确标记 `Diagnostic only`；其中路径替代不能证明原生文件夹选择通过。实施者反馈独立原生 input 也触发 cancel，目前仍不能把原因归为应用缺陷或宣称目录选择已验证。
+已只读检查 [最终诊断归档报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/upload-159/reports/directory-drag-diagnostic.json) 和 [诊断运行器报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/upload-159/reports/directory-drag-runner.json)。报告包含11项行为记录、58组布局记录；390×400短视口正文高度与内容高度均为174.5px，整体滚动高度397px、可视高度366px。诊断通过真实目录拖入继续验证输入流程，报告已明确标记 `Diagnostic only`；其中路径替代不能证明原生文件夹选择通过。实施者反馈独立原生 input 也触发 cancel，目前仍不能把原因归为应用缺陷或宣称目录选择已验证。
 
 实施者本轮完整单元748项和集成917项通过。正式完整浏览器检查在 identity 断言失败，不能将诊断报告的 `passed` 扩展为 `pnpm run test:browser` 通过。以上完整检查由实施者执行，本审计只读复核范围与结果边界；实际命令、失败原始记录及其他适用检查继续汇总在 [本次验证记录](./README.md)。设计截图由独立设计评审对照，代码审计没有据截图数量给出设计通过结论。
 

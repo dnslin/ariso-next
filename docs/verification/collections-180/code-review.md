@@ -64,7 +64,7 @@ Required / P2（已修复）：内容 Shell 的会话失效 returnTo 保留搜�
 
 ## 深色相册卡片遮挡追加审计
 
-Required / P1（实现与回归已回查）：原相册卡片在深色下整张灰色，图片与名称均被遮挡。审计者实际查看 [390px 深色故障截图](./representative-design-before/album-cover-automatic-content-dark-390.png)，并读取 `dark-overlay-before.txt` 的真实计算样式：图片 `complete=true`、`naturalWidth=64`；卡片 `::after` 背景为 `rgb(34, 37, 47)`、z-index 为 20。问题发生在成功图片已经解码之后，不是 Skeleton 或图片读取失败。
+Required / P1（实现与回归已回查）：原相册卡片在深色下整张灰色，图片与名称均被遮挡。审计者实际查看 [390px 深色故障截图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/collections-180/representative-design-before/album-cover-automatic-content-dark-390.png)，并读取 `dark-overlay-before.txt` 的真实计算样式：图片 `complete=true`、`naturalWidth=64`；卡片 `::after` 背景为 `rgb(34, 37, 47)`、z-index 为 20。问题发生在成功图片已经解码之后，不是 Skeleton 或图片读取失败。
 
 读取已锁 HeroUI 的 `variants/index.css` 和旧构建的实际 CSS 后，确认 `dark:bg-surface` 的 dark 变体同时把背景色应用于元素及其 `::before/::after`。相册原有 after 描边层覆盖整卡，因该类意外获得不透明背景而遮住内容。此次只把 `LibraryCard` 的 `bg-background dark:bg-surface` 改为 `bg-surface`；普通工具类只设置元素本身的背景。当前全局 Light 的 background/surface 都为 `#fffffe`，Dark 的 surface 为 `#22252f`，因此目标卡片背景色保持一致，after 描边/层级与图片裁切也保持原实现。
 
@@ -78,7 +78,7 @@ Required / P1（实现与回归已回查）：原相册卡片在深色下整张�
 
 ## 短视口弹窗修复追加审计
 
-Required / P1（实现与实际回归已回查）：独立设计评审在首轮 [390×400 故障图](./browser-initial/album-cover-save-success-short-390.png) 与 [1440×400 故障图](./browser-initial/album-cover-save-success-short-1440.png) 中发现成功操作区覆盖预览和正文。审计者实际查看前者，确认图片从“重新设置封面”按钮后透出，结果说明不可见。此前“按钮可见”不能检出该缺陷，撤回对首轮短视口证据充分性的判断，不将其作为视觉通过依据。
+Required / P1（实现与实际回归已回查）：独立设计评审在首轮 [390×400 故障图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/collections-180/browser-initial/album-cover-save-success-short-390.png) 与 [1440×400 故障图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/collections-180/browser-initial/album-cover-save-success-short-1440.png) 中发现成功操作区覆盖预览和正文。审计者实际查看前者，确认图片从“重新设置封面”按钮后透出，结果说明不可见。此前“按钮可见”不能检出该缺陷，撤回对首轮短视口证据充分性的判断，不将其作为视觉通过依据。
 
 已回读锁定 HeroUI 3.2.6 的 Modal 类型、组件 Context/slot、variants 和原生 CSS。`Modal.Container` 公开支持 `scroll="inside"`，且它本来就是默认值；inside 会赋予 Dialog `min-h-0/max-h-full`、Body `min-h-0/flex-1/overflow-y-auto`。旧自定义 Body 的 `overflow-visible` 破坏了内部滚动，Dialog 的整体滚动也不能隔离缩小后的正文和操作区。
 
@@ -88,19 +88,19 @@ Required / P1（实现与实际回归已回查）：独立设计评审在首轮 
 
 ## 封面专项最终证据
 
-独立回读 `test-results/collections-180/cover-focused/album-cover.json` 和 [专项日志](./cover-focused.txt)：status=`passed`、进程 exitCode=0，58条 check、138条 layout、158次 screenshot 记录。后者包含重复保存场景的同名覆盖，实际为142个不同文件，不将158条记录描述为158张独立截图。
+独立回读 `test-results/collections-180/cover-focused/album-cover.json` 和 [专项日志](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/collections-180/cover-focused.txt)：status=`passed`、进程 exitCode=0，58条 check、138条 layout、158次 screenshot 记录。后者包含重复保存场景的同名覆盖，实际为142个不同文件，不将158条记录描述为158张独立截图。
 
 所有本次封面行为分支已执行到末尾，包括实际文件恢复、未知结果只读核对、短正文滚动、真实触控命中后保存，以及实际会话删除时保留完整返回地址。手动内容和空摘要预览也补充真实状态截图。该专项通过只代表其覆盖范围；先前失败证据保留，整轮运行器、独立 Figma 设计结论及用户人工验收仍分别由主记录维护，不以代码审计或专项通过替代。
 
-最终完整运行器的封面阶段已独立回读持久化 [报告](./browser/album-cover.json)：status=`passed`，59条 check、142条 layout、162次 screenshot 记录，对应146个不同文件；已逐个确认这些文件存在，没有缺失截图。新增一条列表存储状态核对完成，原封面专项行为及16组短视口回归再次通过。这次封面阶段之后的上传与UI后续阶段也已完成通过，整轮结果由下面独立回读的运行器报告证实。
+最终完整运行器的封面阶段已独立回读持久化 [报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/collections-180/browser/album-cover.json)：status=`passed`，59条 check、142条 layout、162次 screenshot 记录，对应146个不同文件；已逐个确认这些文件存在，没有缺失截图。新增一条列表存储状态核对完成，原封面专项行为及16组短视口回归再次通过。这次封面阶段之后的上传与UI后续阶段也已完成通过，整轮结果由下面独立回读的运行器报告证实。
 
-最终整轮证据已实际回读：[browser/runner.json](./browser/runner.json) status=`passed`，2026-09-30 19:48:57.037Z 至20:19:30.066Z，临时目录已清理。报告包含两端初始化/重启、M2、交互、连续工作区、存储 CORS、libraryQuery、albums、albumCover、uploadPolling、upload、library 和手机公共场景，均 passed。末尾 [UI runner](./browser/ui/runner.json)、[UI browser](./browser/ui/browser.json) 及 [UI library](./browser/ui/library.json) 也均 passed，后两份 errors 为空；两主题五宽度的布局和各自键盘/焦点/短视口等检查记录完整。实施者确认 `pnpm run test:browser` 退出0；这些是实际结果回读，不是审计者重新运行浏览器。提交前最终格式、lint及文档检查由根 agent 执行并维护主记录。
+最终整轮证据已实际回读：[browser/runner.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/collections-180/browser/runner.json) status=`passed`，2026-09-30 19:48:57.037Z 至20:19:30.066Z，临时目录已清理。报告包含两端初始化/重启、M2、交互、连续工作区、存储 CORS、libraryQuery、albums、albumCover、uploadPolling、upload、library 和手机公共场景，均 passed。末尾 [UI runner](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/collections-180/browser/ui/runner.json)、[UI browser](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/collections-180/browser/ui/browser.json) 及 [UI library](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/collections-180/browser/ui/library.json) 也均 passed，后两份 errors 为空；两主题五宽度的布局和各自键盘/焦点/短视口等检查记录完整。实施者确认 `pnpm run test:browser` 退出0；这些是实际结果回读，不是审计者重新运行浏览器。提交前最终格式、lint及文档检查由根 agent 执行并维护主记录。
 
 ## 列表状态名称疑点回查
 
 从末尾截图中 `issue180-disabled` 显示读取失败提出的疑点，经夹具与调用链核对，不构成产品缺陷。该夹具的图为 ready、没有 stored thumbnail；检查 disabled 预览时共享 storage.enabled=0，呈现层返回 disabled 且 thumbnailUrl=null。随后测试恢复 enabled=1，再到最后列表时同一图应返回 missing/null。名称只是固定夹具名称，不是当前状态的证据。
 
-`listOwnerAlbums` 与 `readOwnerAlbum` 共用 `presentAlbums`；状态依次按处理、停用和已存 thumbnail 判定，`AlbumCoverImage` 只按真实 status 与 URL 显示，没有从名称或上次状态推断。已要求浏览器将列表实际 API status 与 UI 占位核对，并再次停用存储验证 identity 保留、URL=null 和占位，不以修改产品文案掩盖夹具状态变化。已回读最终脚本与持久化 [封面报告](./browser/album-cover.json)：真实 GET 在 enabled=1 时返回 missing/null，在再次停用后返回 disabled/null；两次同一 candidate ID。真实列表等待“封面存储已停用”占位再按两端两主题记录截图，没有修改产品代码。
+`listOwnerAlbums` 与 `readOwnerAlbum` 共用 `presentAlbums`；状态依次按处理、停用和已存 thumbnail 判定，`AlbumCoverImage` 只按真实 status 与 URL 显示，没有从名称或上次状态推断。已要求浏览器将列表实际 API status 与 UI 占位核对，并再次停用存储验证 identity 保留、URL=null 和占位，不以修改产品文案掩盖夹具状态变化。已回读最终脚本与持久化 [封面报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/collections-180/browser/album-cover.json)：真实 GET 在 enabled=1 时返回 missing/null，在再次停用后返回 disabled/null；两次同一 candidate ID。真实列表等待“封面存储已停用”占位再按两端两主题记录截图，没有修改产品代码。
 
 ## 可选观察与剩余边界
 

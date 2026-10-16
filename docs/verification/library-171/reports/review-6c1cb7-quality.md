@@ -19,7 +19,7 @@ PR 主动声明尚未实现完整元数据树/搜索/重读页面、名称/visib
 
 ### [P2] 成功核对终态后仍无法退出 unknown，页面内的恢复流程没有闭环
 
-主要位置：[use-detail-reprocess.ts:35](/Volumes/data/project/ariso-issue-171/src/components/library/use-detail-reprocess.ts:35)。同一状态的写入位于 [use-detail-reprocess.ts:79](/Volumes/data/project/ariso-issue-171/src/components/library/use-detail-reprocess.ts:79)。
+主要位置：[use-detail-reprocess.ts:35](https://github.com/dnslin/ariso-next/blob/6c1cb7ff85fd43b5bbcd1545ed24e9232da3162b/src/components/library/use-detail-reprocess.ts#L35)。同一状态的写入位于 [use-detail-reprocess.ts:79](https://github.com/dnslin/ariso-next/blob/6c1cb7ff85fd43b5bbcd1545ed24e9232da3162b/src/components/library/use-detail-reprocess.ts#L79)。
 
 **触发前提：** 单图重处理 POST 的响应在客户端丢失或无法解析。服务端已受理的任务在自动核对或用户第一次点击“核对详情”前完成、失败或取消。另一种情形是请求根本未受理，成功 GET 中也没有新活动任务。
 
@@ -27,7 +27,7 @@ PR 主动声明尚未实现完整元数据树/搜索/重读页面、名称/visib
 
 保留 unknown、禁止自动重发本身是正确的。在读取失败、任务无法归属时不能直接断言“未受理”。问题在于成功核对后的已知终态和无法归属两种情况都没有任何可恢复分支，公开的“核对详情”只刷新数据，无法推进状态。规格在 `SPEC-library.md:166` 要求先核对而非自动重发，在 `:259` 的 LIB-19 要求未知结果具有可恢复反馈。
 
-**为何由本 PR 引入：** 这是本 PR 新增 `useDetailReprocess` 的状态处理路径。此前没有该单图 UI 控制器。新 E2E 在 [library-detail-171.mjs:1137](/Volumes/data/project/ariso-issue-171/e2e/library-detail-171.mjs:1137) 到 1195 行，成功恢复 GET 并实际确认任务 `succeeded` 后，反而持续断言“待核对”与禁提交；该测试验证了不重复 POST，但没有验证核对后的恢复能力。
+**为何由本 PR 引入：** 这是本 PR 新增 `useDetailReprocess` 的状态处理路径。此前没有该单图 UI 控制器。新 E2E 在 [library-detail-171.mjs:1137](https://github.com/dnslin/ariso-next/blob/6c1cb7ff85fd43b5bbcd1545ed24e9232da3162b/e2e/library-detail-171.mjs#L1137) 到 1195 行，成功恢复 GET 并实际确认任务 `succeeded` 后，反而持续断言“待核对”与禁提交；该测试验证了不重复 POST，但没有验证核对后的恢复能力。
 
 **最小证据：** 在评审目录新增隔离测试 `quality-unknown.test.ts`，直接导入 HEAD 的生产 hook，只模拟 React 的状态保存、丢失 POST 响应和成功 GET。4 项复现断言通过：新任务 `succeeded`、新任务 `failed`、最新任务未变化三种情形都仍为 `unknown=true / receipt=null / pending=false`；取消、换范围和再次核对不能恢复，第二次 submit 不发送 POST。对照场景中 `queued` 可以被认领。这里的“通过”表示已确认故障行为，**不是修复通过**。测试没有运行真实媒体任务或浏览器。
 

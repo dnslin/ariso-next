@@ -8,21 +8,21 @@
 
 桌面page为 `0:1`，手机page为 `97:748`。原位优先：品牌 `468:11915/468:12216`，失败 `469:10633/469:10934`，登录 `2:11/102:3020`。其他相关状态按DG-SITE索引检查，缺失的已批准状态仅在对应分区补画。
 
-本次必要节点已实际写入并取得22张真实Figma截图，逐张查看最终构图，主页面修正后替换截图。节点、尺寸和文件见 [manifest.json](figma/manifest.json)。本记录只确认静态设计同步，不替代产品实施、浏览器验证、独立产品设计评审或人工验收。
+本次必要节点已实际写入并取得22张真实Figma截图，逐张查看最终构图，主页面修正后替换截图。节点、尺寸和文件见 [manifest.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/figma/manifest.json)。本记录只确认静态设计同步，不替代产品实施、浏览器验证、独立产品设计评审或人工验收。
 
-| 获批表面           | 桌面节点   | 手机节点   | 最终截图                                                                                  |
-| ------------------ | ---------- | ---------- | ----------------------------------------------------------------------------------------- |
-| 紧凑素材面板       | 468:11915  | 468:12216  | [桌面](figma/settings-desktop.png)、[手机](figma/settings-mobile.png)                     |
-| 登录单卡           | 2:11       | 102:3020   | [桌面](figma/login-desktop.png)、[手机](figma/login-mobile.png)                           |
-| Logo选择预览       | 468:12278  | 468:12606  | [桌面](figma/preview-desktop.png)、[手机](figma/preview-mobile.png)                       |
-| 上传失败，保留文件 | 469:10633  | 469:10934  | [桌面](figma/failed-desktop.png)、[手机](figma/failed-mobile.png)                         |
-| Logo移除确认       | 470:8940   | 470:8953   | [桌面](figma/delete-logo-desktop.png)、[手机](figma/delete-logo-mobile.png)               |
-| Favicon移除确认    | 470:9329   | 470:9342   | [桌面](figma/delete-favicon-desktop.png)、[手机](figma/delete-favicon-mobile.png)         |
-| 素材无法读取       | 470:9718   | 470:10021  | [桌面](figma/missing-desktop.png)、[手机](figma/missing-mobile.png)                       |
-| 上传核对失败       | 1055:19339 | 1055:35771 | [桌面](figma/upload-check-error-desktop.png)、[手机](figma/upload-check-error-mobile.png) |
-| 核对后明确选择     | 1055:19455 | 1055:35814 | [桌面](figma/upload-current-desktop.png)、[手机](figma/upload-current-mobile.png)         |
-| 移除核对失败       | 1055:35885 | 1055:35949 | [桌面](figma/delete-check-error-desktop.png)、[手机](figma/delete-check-error-mobile.png) |
-| 核对后仍有引用     | 1055:35904 | 1055:35968 | [桌面](figma/delete-retained-desktop.png)、[手机](figma/delete-retained-mobile.png)       |
+| 获批表面           | 桌面节点   | 手机节点   | 最终截图                                                                                                                                                                                                                                                                                                                                                                |
+| ------------------ | ---------- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 紧凑素材面板       | 468:11915  | 468:12216  | [桌面](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/figma/settings-desktop.png)、[手机](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/figma/settings-mobile.png)                     |
+| 登录单卡           | 2:11       | 102:3020   | [桌面](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/figma/login-desktop.png)、[手机](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/figma/login-mobile.png)                           |
+| Logo选择预览       | 468:12278  | 468:12606  | [桌面](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/figma/preview-desktop.png)、[手机](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/figma/preview-mobile.png)                       |
+| 上传失败，保留文件 | 469:10633  | 469:10934  | [桌面](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/figma/failed-desktop.png)、[手机](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/figma/failed-mobile.png)                         |
+| Logo移除确认       | 470:8940   | 470:8953   | [桌面](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/figma/delete-logo-desktop.png)、[手机](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/figma/delete-logo-mobile.png)               |
+| Favicon移除确认    | 470:9329   | 470:9342   | [桌面](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/figma/delete-favicon-desktop.png)、[手机](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/figma/delete-favicon-mobile.png)         |
+| 素材无法读取       | 470:9718   | 470:10021  | [桌面](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/figma/missing-desktop.png)、[手机](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/figma/missing-mobile.png)                       |
+| 上传核对失败       | 1055:19339 | 1055:35771 | [桌面](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/figma/upload-check-error-desktop.png)、[手机](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/figma/upload-check-error-mobile.png) |
+| 核对后明确选择     | 1055:19455 | 1055:35814 | [桌面](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/figma/upload-current-desktop.png)、[手机](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/figma/upload-current-mobile.png)         |
+| 移除核对失败       | 1055:35885 | 1055:35949 | [桌面](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/figma/delete-check-error-desktop.png)、[手机](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/figma/delete-check-error-mobile.png) |
+| 核对后仍有引用     | 1055:35904 | 1055:35968 | [桌面](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/figma/delete-retained-desktop.png)、[手机](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/figma/delete-retained-mobile.png)       |
 
 前7组原位更新；后4组只在原站点分区补齐缺少的关键状态。未扩展全套历史组合。
 
@@ -56,14 +56,14 @@
 
 ## 主节点Dark真实渲染补证
 
-已实际读取模式API并临时切换4个原节点，没有复制新设计。原状态均为 `explicitVariableModes={}`、Ariso集合 `VariableCollectionId:2:2` 继承Light `2:0`。加载当前字体后，按桌面/手机页设置本集合Dark `264:0`，实际调用Figma截图，再清除本集合显式模式。最终读回4个节点均恢复 `explicit={}`、`resolved=2:0`。操作、恢复及截图尺寸保存于 [dark-mode-evidence.json](figma/dark-mode-evidence.json)，不是仅凭token存在认定深色截图。
+已实际读取模式API并临时切换4个原节点，没有复制新设计。原状态均为 `explicitVariableModes={}`、Ariso集合 `VariableCollectionId:2:2` 继承Light `2:0`。加载当前字体后，按桌面/手机页设置本集合Dark `264:0`，实际调用Figma截图，再清除本集合显式模式。最终读回4个节点均恢复 `explicit={}`、`resolved=2:0`。操作、恢复及截图尺寸保存于 [dark-mode-evidence.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/figma/dark-mode-evidence.json)，不是仅凭token存在认定深色截图。
 
-| 主节点                       | 实际Dark PNG                                             |
-| ---------------------------- | -------------------------------------------------------- |
-| 品牌桌面468:11915，1440×1080 | [settings-dark-desktop](figma/settings-dark-desktop.png) |
-| 品牌手机468:12216，390×844   | [settings-dark-mobile](figma/settings-dark-mobile.png)   |
-| 登录桌面2:11，1920×960       | [login-dark-desktop](figma/login-dark-desktop.png)       |
-| 登录手机102:3020，390×844    | [login-dark-mobile](figma/login-dark-mobile.png)         |
+| 主节点                       | 实际Dark PNG                                                                                                                                                                                    |
+| ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 品牌桌面468:11915，1440×1080 | [settings-dark-desktop](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/figma/settings-dark-desktop.png) |
+| 品牌手机468:12216，390×844   | [settings-dark-mobile](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/figma/settings-dark-mobile.png)   |
+| 登录桌面2:11，1920×960       | [login-dark-desktop](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/figma/login-dark-desktop.png)       |
+| 登录手机102:3020，390×844    | [login-dark-mobile](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/figma/login-dark-mobile.png)         |
 
 4图已实际逐张查看。首轮真实Dark揭示本轮上传图标错误绑定foreground，已仅将局部上传按钮主组件 `1051:35501` 的3个矢量绑定primary-foreground；登录卡片 `3:39/102:3025` 局部改绑surface以匹配获批产品表面。两变量的Light值与原值一致，没有重复无变化Light截图；修正后重新取Dark图并再次恢复原模式。
 
@@ -73,23 +73,23 @@
 
 收到真实产品确认截图后，只读核对四个正常确认节点的实际树结构，加载现有Noto Sans SC字体后原位修订：桌面 `470:8940/470:9329` 从480改为384px，手机 `470:8953/470:9342` 保持358px；均为20px角。取消70px宽、确认96px宽，桌面48px高、手机44px高，动作行仍靠右。沿用现有Lucide X，在本地44×44自动布局入口中居中，入口图层中文名“关闭（44×44）”，背景绑定既有secondary变量；没有修改公共主组件或历史深色差异。Figma图层名称不替代产品中文aria-label验证。
 
-结构回读显示桌面384×175、手机358×171，四个关闭入口44×44，显式主题模式仍为空；随后实际导出并逐张查看四张Light PNG，标题/说明/短操作无挤压或裁切。已替换本文件表中的四图与manifest尺寸，回读记录见 [normal-delete-evidence.json](figma/normal-delete-evidence.json)。这四张仅是独立弹窗画板，没有整页遮罩背景，也没有补取异常状态或Dark渲染。真实产品手机Favicon上一条通知遮挡已另经产品修复及新截图复审闭环，见 [独立设计评审](design-review.md#已审正常移除确认四张真实图)，不由Figma同步代替。
+结构回读显示桌面384×175、手机358×171，四个关闭入口44×44，显式主题模式仍为空；随后实际导出并逐张查看四张Light PNG，标题/说明/短操作无挤压或裁切。已替换本文件表中的四图与manifest尺寸，回读记录见 [normal-delete-evidence.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/figma/normal-delete-evidence.json)。这四张仅是独立弹窗画板，没有整页遮罩背景，也没有补取异常状态或Dark渲染。真实产品手机Favicon上一条通知遮挡已另经产品修复及新截图复审闭环，见 [独立设计评审](design-review.md#已审正常移除确认四张真实图)，不由Figma同步代替。
 
 ## 恢复状态局部几何补齐
 
 实际对照真实恢复场景后，先报告本轮同步偏差，再按既有获批方案修正五个节点，没有新增产品设计。手机上传明确选择 `1055:35814` 的操作行 `1055:35858` 从纵列改同排，326×44、gap12，两短按钮140/154px宽；整页仍390×844，固定底栏不变。移除核对桌面 `1055:35885` 为384×208、仍有引用桌面 `1055:35904` 为384×229；手机 `1055:35949/1055:35968` 保持358宽，操作44高，最终高度204/225。两端取消/关闭仍不出现于未知结果状态，没有改变结果语义。
 
-实际先读取节点结构、加载当前字体后最小修改，返回受影响ID及尺寸；随后导出五张真实PNG并逐张查看，明确选择与移除操作未挤压、裁切或横溢。五图已替换manifest所指文件，回读及导出尺寸见 [recovery-geometry-evidence.json](figma/recovery-geometry-evidence.json)。没有重复无变化Light图，没有切换主题或补称完整Dark状态已同步；历史公共主题差异与未绘失效状态维持原边界。
+实际先读取节点结构、加载当前字体后最小修改，返回受影响ID及尺寸；随后导出五张真实PNG并逐张查看，明确选择与移除操作未挤压、裁切或横溢。五图已替换manifest所指文件，回读及导出尺寸见 [recovery-geometry-evidence.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/figma/recovery-geometry-evidence.json)。没有重复无变化Light图，没有切换主题或补称完整Dark状态已同步；历史公共主题差异与未绘失效状态维持原边界。
 
 ## 公共消费者只读对照依据
 
 产品消费者回归完成后，先读取 `figma-design-to-code`，再实际读取首页 `2:10/102:3000`、分享 `433:3610/433:8265` 的高保真设计信息及截图；另读取公共柔光 `192:799/192:1836`、手机Header `112:1498` 和侧栏实例 `468:12101`，按整页/公共区域、业务布局顺序对照。以下四张是现有节点的只读参考截图，已导出并逐张查看，**没有修改这些公共节点，也不将其记为本轮同步设计**。manifest的四个附加条目明确标注只读用途。
 
-| 现有节点     | 真实参考PNG                                                | 视口边界                                                           |
-| ------------ | ---------------------------------------------------------- | ------------------------------------------------------------------ |
-| 首页2:10     | [consumer-home-desktop](figma/consumer-home-desktop.png)   | Figma1920×960，真实产品本批1440×1080，不能声称桌面同视口逐像素对照 |
-| 首页102:3000 | [consumer-home-mobile](figma/consumer-home-mobile.png)     | 390×844，与真实产品相同                                            |
-| 分享433:3610 | [consumer-share-desktop](figma/consumer-share-desktop.png) | 1440×1080，与真实产品相同                                          |
-| 分享433:8265 | [consumer-share-mobile](figma/consumer-share-mobile.png)   | 390×844，与真实产品相同                                            |
+| 现有节点     | 真实参考PNG                                                                                                                                                                                       | 视口边界                                                           |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| 首页2:10     | [consumer-home-desktop](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/figma/consumer-home-desktop.png)   | Figma1920×960，真实产品本批1440×1080，不能声称桌面同视口逐像素对照 |
+| 首页102:3000 | [consumer-home-mobile](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/figma/consumer-home-mobile.png)     | 390×844，与真实产品相同                                            |
+| 分享433:3610 | [consumer-share-desktop](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/figma/consumer-share-desktop.png) | 1440×1080，与真实产品相同                                          |
+| 分享433:8265 | [consumer-share-mobile](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/figma/consumer-share-mobile.png)   | 390×844，与真实产品相同                                            |
 
 真实截图使用独立测试Logo/描述、0图分享、真实密码门禁和无效链接，不复制Figma图库样例。首页既有登录入口与Figma双操作、公共柔光强度和旧Header文字菜单差异只记录不扩改。消费者本批仅Light，不能将上述参考图及结构统计称作完整公共Dark矩阵已验证。另已用同视口Figma登录四主图对照真实启用GitHub浅深四图及两张hover图，结论与全部实际查看清单见 [独立设计评审](design-review.md)。

@@ -16,6 +16,6 @@
 
 历史验收记录为 118 项单元测试、72 项集成测试、Ego Lite 浏览器检查和原生双架构容器验证通过。本次归档没有重新执行这些应用测试。
 
-交付范围限于应用运行基础。S3/SMTP/OAuth 真实秘密字段接入、会话失效、media/upload 任务恢复、完整图片格式矩阵及完整浏览器兼容性由[第二阶段](../../tasks/plan.md)继续验收。实际 GHCR 发布尚未执行。
+交付范围限于运行基础。后续业务在 [M1–M5](../README.md)分别完成；这里的双架构与测试数量只描述 Runtime 当时结果，不代表后续版本再次执行。实际发布以 [GitHub Releases](https://github.com/dnslin/ariso-next/releases) 为准。
 
 当前入口见[文档导航](../../README.md)。现行[部署](../../guides/deployment.md)与[升级说明](../../guides/upgrading.md)保留在 guides 中，随产品继续维护。

@@ -61,7 +61,7 @@ Token 调用链为 `verifyTokensSessionExpiry` → SQL 过期会话 → focus �
 
 用户随后明确授权恢复 TaskSpace 6，实施者仅补验代表布局与消费者，没有重新运行原默认全量。本审计继续保持只读、未操作浏览器。
 
-已读取 [焦点样式失败报告](./failures/theme-focus-style-none.json)：representative 在桌面浅色的严格描边断言失败，实际宽度为 2px、offset=-2px，但 outlineStyle 为 none。这是本次主题入口的确定缺陷；此前静态内收修正不足以覆盖 HeroUI 按钮样式，不能用旧 attempt-3 通过记录消除该失败。
+已读取 [焦点样式失败报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/theme-197/failures/theme-focus-style-none.json)：representative 在桌面浅色的严格描边断言失败，实际宽度为 2px、offset=-2px，但 outlineStyle 为 none。这是本次主题入口的确定缺陷；此前静态内收修正不足以覆盖 HeroUI 按钮样式，不能用旧 attempt-3 通过记录消除该失败。
 
 复核安装版本 `button.css`：`.button` 包含 outline-none，聚焦状态又应用 status-focused；现有全局基础层的描边样式因此不足以确保 solid。最小修正仅在设置主题触发器新增 `data-[focus-visible=true]:outline-solid`，以 Tailwind 状态工具类覆盖该样式。该类只在该入口可见焦点状态生效，保留原 -2px 内收、2px 宽度、语义颜色及布局，未改变公共组件或其他按钮。测试仍通过真实键盘取得可见焦点并严格要求 2px solid/-2px，未删除或放宽导致失败的断言。
 
@@ -69,15 +69,15 @@ Token 调用链为 `verifyTokensSessionExpiry` → SQL 过期会话 → focus �
 
 ## 代表通过与消费者定向初始化复审
 
-已读取 [代表布局补验报告](./browser-representative/theme.json)：`status=passed`，33 个布局记录，浏览器错误为空。补修后的 2px solid/-2px 强断言实际通过；这是实施者执行证据的复核，不记作审计者重跑。
+已读取 [代表布局补验报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/theme-197/browser-representative/theme.json)：`status=passed`，33 个布局记录，浏览器错误为空。补修后的 2px solid/-2px 强断言实际通过；这是实施者执行证据的复核，不记作审计者重跑。
 
-已读取 [消费者动画失败报告](./failures/theme-consumers-animation.json)：独立 consumers 模式已取得 127 个布局记录，照片/图表/错误/禁用内容结论已完成且浏览器错误为空，但最后匿名登录页 390px 深色入口瞬时高度为 43.96786px，严格 44px 断言失败。该报告仍为失败，不因接近阈值改记通过。
+已读取 [消费者动画失败报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/theme-197/failures/theme-consumers-animation.json)：独立 consumers 模式已取得 127 个布局记录，照片/图表/错误/禁用内容结论已完成且浏览器错误为空，但最后匿名登录页 390px 深色入口瞬时高度为 43.96786px，严格 44px 断言失败。该报告仍为失败，不因接近阈值改记通过。
 
 根代理在同页稳定状态取得实际高度 44px、min-height 44px、单位 transform，且减少动态效果未启用。只读核对安装版本 `button.css` 的按压 scale(0.97) 与 transform 250ms 过渡，以及现有共用 `browser-geometry.setTheme` 的 reduce 初始化，支持本次定向消费者缺少独立初始化的原因：默认完整主题阶段先执行 representative，消费者原先继承其 reduce 状态，`--only consumers` 则没有该前置。
 
 最新修改仅在消费者页面矩阵与匿名登录的每个 light/dark 循环开头调用已有 `emulateSystem(page, resolved)`，独立设置系统主题及减少动态效果，然后仍通过真实选择器选择偏好。两处调用不依赖先跑 representative，没有改动产品按压动画、固定等待、像素阈值、几何筛选或失败断言。该定向初始化静态复审通过。
 
-已读取修正后的 [消费者补验报告](./browser-consumers/theme.json) 及 [运行器报告](./browser-consumers/runner.json)：两者均为 `status=passed`，128 个布局记录、3 条结论，`browserErrors=[]`、`fixtureRestored=true`。真实照片、非零图表与等价表、分享、错误正文、禁用状态及两端消费者矩阵通过；44px 强断言保留。该结果仅属于 `theme --only consumers` 定向补验，不替代原默认全量结果或人工验收。
+已读取修正后的 [消费者补验报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/theme-197/browser-consumers/theme.json) 及 [运行器报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/theme-197/browser-consumers/runner.json)：两者均为 `status=passed`，128 个布局记录、3 条结论，`browserErrors=[]`、`fixtureRestored=true`。真实照片、非零图表与等价表、分享、错误正文、禁用状态及两端消费者矩阵通过；44px 强断言保留。该结果仅属于 `theme --only consumers` 定向补验，不替代原默认全量结果或人工验收。
 
 ## 执行边界与完成状态
 
@@ -105,7 +105,7 @@ Token 调用链为 `verifyTokensSessionExpiry` → SQL 过期会话 → focus �
 
 首轮新增导航报告 `test-results/theme-197/navigation-fixed/theme.json` 保留失败：16 个零标签过渡及已完成桌面场景没有外壳空白、公共入口或右上新建误现，随后手机等待标签行超时。只读核对 `TagsList`，同一测试 ID 同时用于桌面 TR 和手机 LI，桌面表格在手机隐藏；单个选择器等待会先命中隐藏 TR。最新两处等待遍历该实际标签 ID 的全部节点，并要求至少一个通过 `checkVisibility`（包含 opacity/visibility 检查）。它仍要求真实标签行可见，支持既有响应式 DOM，没有改产品、放宽导航断言或固定延时。该测试定位补修静态复审通过。
 
-已只读核对最终 [导航与主题行为报告](./navigation/theme.json) 和 [定向运行器报告](./navigation/runner.json)（执行原件为 `test-results/theme-197/navigation-fixed-2/`）：两者 `status=passed`，标准入口为 `theme --only behavior`。真实前置标签数为 0，减少动态效果为 no-preference；1440/390 两端两主题共 28 组过渡（16 组零标签、12 组有标签/搜索/失败重试），每组都有实际帧与变更记录，后台外壳持续可见，没有公共外壳或外观入口、零标签/加载/失败时没有右上新建误现。16 条逐字符记录均保留完整值与焦点，清空查询、Tab 离开及真实 GET 响应丢失后的重试均完成；`browserErrors=[]`，独立标签仅按自身 ID 离线清理。报告保留 12 张状态截图供独立设计复核。本次产品、测试及顺序补修独立静态审查通过，受影响行为定向补验通过；原默认全量未重跑，既有失败/未执行项及人工验收未完成的限制仍保留，不能将本次结果写为默认全量通过。
+已只读核对最终 [导航与主题行为报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/theme-197/navigation/theme.json) 和 [定向运行器报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/theme-197/navigation/runner.json)（执行原件为 `test-results/theme-197/navigation-fixed-2/`）：两者 `status=passed`，标准入口为 `theme --only behavior`。真实前置标签数为 0，减少动态效果为 no-preference；1440/390 两端两主题共 28 组过渡（16 组零标签、12 组有标签/搜索/失败重试），每组都有实际帧与变更记录，后台外壳持续可见，没有公共外壳或外观入口、零标签/加载/失败时没有右上新建误现。16 条逐字符记录均保留完整值与焦点，清空查询、Tab 离开及真实 GET 响应丢失后的重试均完成；`browserErrors=[]`，独立标签仅按自身 ID 离线清理。报告保留 12 张状态截图供独立设计复核。本次产品、测试及顺序补修独立静态审查通过，受影响行为定向补验通过；原默认全量未重跑，既有失败/未执行项及人工验收未完成的限制仍保留，不能将本次结果写为默认全量通过。
 
 ## 获批右上主题图标：独立静态复审
 
@@ -115,10 +115,10 @@ Token 调用链为 `verifyTokensSessionExpiry` → SQL 过期会话 → focus �
 
 只读复审 `theme-helpers/behavior/layouts/content/navigation.mjs` 的适配：旧弹窗、单选组及其失效断言删除；服务端两个响应位置严格要求 unknown/disabled/noSVG/no-data-theme。真实循环每次核对偏好、图标、可访问名称、localStorage 与解析主题，键盘循环核对来源焦点。草稿测试从 system 实际按键切换 light，保留两个独立表单、路由及滚动断言；第二标签真实切换后核对图库选中状态和原滚动。公共路由要求零入口，跨标签双向同步、独立系统解析及真实照片/图表/错误/禁用内容断言保留。焦点断言改读实际 box-shadow 的 2px 外环并核对视口及祖先裁剪。默认 `theme.mjs` 仍无条件包含 behavior、representative、consumers，未增加定向旁路；首次错误后的离线清理边界不变。
 
-已只读核对 [本轮产品几何记录](./icon-ui/geometry.json)：1440×1080 与390×844、亮/暗四状态均只有一个可见入口，实际按钮44×44、图标20×20，无横向溢出；桌面入口位于 y=8，正文标题 y=84，手机入口 x=278/y=10。实施者已查看相应四图对照原型，本审计未代替其截图或设计结论。
+已只读核对 [本轮产品几何记录](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/theme-197/icon-ui/geometry.json)：1440×1080 与390×844、亮/暗四状态均只有一个可见入口，实际按钮44×44、图标20×20，无横向溢出；桌面入口位于 y=8，正文标题 y=84，手机入口 x=278/y=10。实施者已查看相应四图对照原型，本审计未代替其截图或设计结论。
 
-已只读核对 [本轮主题三阶段报告](./icon-browser/theme.json) 与 [运行器报告](./icon-browser/runner.json)：标准 `--suite theme` 入口的 behavior、representative、consumers 全部实际通过，163 个布局记录、28 组导航过渡、16 条逐字符搜索记录、8 项对比和4组照片状态，`browserErrors=[]`、`fixtureRestored=true`，独立导航标签离线按自身 ID 清理。SSR 未猜偏好、实际循环、双表单草稿/滚动/路由/焦点、跨标签同步、公共零入口及旧内容断言保留并通过。首轮重载等待误选隐藏响应式入口的 [失败报告](./failures/icon-hidden-responsive-trigger.json) 保留；定位修正复用当前视口入口，不改产品或弱化断言。
+已只读核对 [本轮主题三阶段报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/theme-197/icon-browser/theme.json) 与 [运行器报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/theme-197/icon-browser/runner.json)：标准 `--suite theme` 入口的 behavior、representative、consumers 全部实际通过，163 个布局记录、28 组导航过渡、16 条逐字符搜索记录、8 项对比和4组照片状态，`browserErrors=[]`、`fixtureRestored=true`，独立导航标签离线按自身 ID 清理。SSR 未猜偏好、实际循环、双表单草稿/滚动/路由/焦点、跨标签同步、公共零入口及旧内容断言保留并通过。首轮重载等待误选隐藏响应式入口的 [失败报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/theme-197/failures/icon-hidden-responsive-trigger.json) 保留；定位修正复用当前视口入口，不改产品或弱化断言。
 
-已只读核对 [真实产品边界补验](./icon-ui/boundaries.json)：主区实际滚动676px后入口仍 y=8，公共顶行60px；72px收起侧栏时入口与可见焦点保留；1199/1200px各只有正确位置的一个可见入口且无横向溢出；390×480短视口按钮44px、菜单左侧间距8px且焦点可见；打开菜单时外部主题入口处于 inert 范围，账号区没有重复入口，关闭后焦点回菜单，前台入口为0。此前提出的本轮产品集成证据缺口已补齐。
+已只读核对 [真实产品边界补验](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/theme-197/icon-ui/boundaries.json)：主区实际滚动676px后入口仍 y=8，公共顶行60px；72px收起侧栏时入口与可见焦点保留；1199/1200px各只有正确位置的一个可见入口且无横向溢出；390×480短视口按钮44px、菜单左侧间距8px且焦点可见；打开菜单时外部主题入口处于 inert 范围，账号区没有重复入口，关闭后焦点回菜单，前台入口为0。此前提出的本轮产品集成证据缺口已补齐。
 
 当前代码及测试独立静态审查通过，未发现未解决的本次范围代码问题；本轮主题三阶段和产品边界实际补验通过。上述执行由实施者完成，本审计只复核持久化结果，未运行测试、构建或浏览器。原默认全量未重跑，31项通过/9项失败及未执行项仍保留，不能写为默认全量或远端CI通过；独立设计结论见设计评审，最终人工验收仍未完成，PR继续保留草稿限制。

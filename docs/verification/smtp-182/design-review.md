@@ -10,19 +10,19 @@
 
 Figma 文件 `74sT9Hrf8G4czcWeTkET5b`：实际读取 `34:710`、`99:786` 的设计上下文和返回截图；同步后实际读取深色 `265:1703/265:3791`、保存待核对 `916:16394/917:32173`、密码变更无法确认 `916:16630/917:32306`、清除 `219:2515/219:2541`、SMTP 接受通知 `219:2451/219:2431` 的上下文和截图。也实际读取未保存测试 `219:2523/219:2549`、发送未知 `219:2485/219:2507`、Tips `240:1116/235:2477`，由此发现下列同步遗漏。
 
-已查看同步后的自然尺寸 [桌面浅色](./figma/final-34-710.png)、[手机浅色](./figma/final-99-786.png)、[桌面深色](./figma/final-265-1703.png)、[手机深色](./figma/final-265-3791.png)，与 1440×1080 / 390×844 产品截图对照；工具默认 1024px 缩放截图仅用于状态内容读取，不替代自然尺寸比对。
+已查看同步后的自然尺寸 [桌面浅色](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/smtp-182/figma/final-34-710.png)、[手机浅色](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/smtp-182/figma/final-99-786.png)、[桌面深色](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/smtp-182/figma/final-265-1703.png)、[手机深色](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/smtp-182/figma/final-265-3791.png)，与 1440×1080 / 390×844 产品截图对照；工具默认 1024px 缩放截图仅用于状态内容读取，不替代自然尺寸比对。
 
 最终 Figma 导出位于本目录 `figma/`，含修正后的 Tips、未保存确认、核对状态以及本轮错误消费。文件数量只是证据库存，不替代状态对照。下表为字重/pending修正前的历史初审，最新生产证据与最终范围见下方。
 
 实际查看以下产品截图，先核整页和公共区域，再核业务区域：
 
-| 视口、主题              | 真实截图                                                                            | 对照结果                                                                                                                                                                           |
-| ----------------------- | ----------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1440×1080，浅色         | [桌面](./production-desktop-light.png)                                              | 232px 公共侧栏、正文 32px 起点、统一标题和四个已交付分类、品牌/用户区、固定底栏层级成立；SMTP 标题摘要左、清除/说明右，桌面两列字段及全宽密码沿获批方向。                          |
-| 1440×1080，深色         | [桌面](./production-desktop-dark.png)                                               | 背景、surface、浅文字和黄色主操作符合现行主题；导航当前项为现行深色黄系，清除焦点可见。                                                                                            |
-| 390×844，浅色           | [上部](./production-mobile-light.png)、[下部](./production-mobile-light-bottom.png) | 16px 页面边距、公共 Menu 和分类 Select；标题层级保留，清除另行右对齐；端口/连接并列，长字段独占一行。滚动后密码及必要说明完整，固定两操作栏未覆盖末尾内容。                        |
-| 390×844，深色           | [上部](./production-mobile-dark.png)、[下部](./production-mobile-dark-bottom.png)   | 相同结构和黄色主操作；surface、背景及文字层级清楚，无浅色硬编码块。                                                                                                                |
-| 390×844，深色，清除确认 | [稳定状态](./production-clear-mobile-dark.png)                                      | 最大宽度为屏宽减 32px，标题/正文/操作分层，右上关闭、取消/清除并保存并排；正文保留同时清双方凭据及不提交其他编辑的后果。首张进入动画截图不用于此结论；重拍后背景不再透出底层文字。 |
+| 视口、主题              | 真实截图                                                                                                                                                                                                                                                                                                                        | 对照结果                                                                                                                                                                           |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1440×1080，浅色         | [桌面](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/smtp-182/production-desktop-light.png)                                                                                                                                                                    | 232px 公共侧栏、正文 32px 起点、统一标题和四个已交付分类、品牌/用户区、固定底栏层级成立；SMTP 标题摘要左、清除/说明右，桌面两列字段及全宽密码沿获批方向。                          |
+| 1440×1080，深色         | [桌面](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/smtp-182/production-desktop-dark.png)                                                                                                                                                                     | 背景、surface、浅文字和黄色主操作符合现行主题；导航当前项为现行深色黄系，清除焦点可见。                                                                                            |
+| 390×844，浅色           | [上部](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/smtp-182/production-mobile-light.png)、[下部](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/smtp-182/production-mobile-light-bottom.png) | 16px 页面边距、公共 Menu 和分类 Select；标题层级保留，清除另行右对齐；端口/连接并列，长字段独占一行。滚动后密码及必要说明完整，固定两操作栏未覆盖末尾内容。                        |
+| 390×844，深色           | [上部](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/smtp-182/production-mobile-dark.png)、[下部](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/smtp-182/production-mobile-dark-bottom.png)   | 相同结构和黄色主操作；surface、背景及文字层级清楚，无浅色硬编码块。                                                                                                                |
+| 390×844，深色，清除确认 | [稳定状态](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/smtp-182/production-clear-mobile-dark.png)                                                                                                                                                            | 最大宽度为屏宽减 32px，标题/正文/操作分层，右上关闭、取消/清除并保存并排；正文保留同时清双方凭据及不提交其他编辑的后果。首张进入动画截图不用于此结论；重拍后背景不再透出底层文字。 |
 
 图标从 Lucide 导入；标题 Mail20、字段图标16、清除/发送/保存16，独立 Info 视觉20且目标44。字段文字标签保留，装饰图标 `aria-hidden`。通用控件沿现有 HeroUI Card、Form、TextField/Input、Select、Button、Modal、Tooltip/Popover 和共享 Toast；公共区域复用 OwnerShell / SettingsHeading / SettingsCategories。没有新增页面专用 CSS 或自绘 SVG。
 
@@ -64,7 +64,7 @@ Figma 文件 `74sT9Hrf8G4czcWeTkET5b`：实际读取 `34:710`、`99:786` 的设�
 
 之后用户已明确授权恢复原任务空间3，主 agent 接管回读为 agent。本独立评审继续只读已有输出，不操纵 Ego。恢复后的首轮 `test-results/browser-smtp-resumed/smtp.json` 在 `representative-unconfigured` 阶段因动画等待超时而失败，`checks` / `screenshots` 均为空；未产生可用于新状态设计终审的截图。该失败不能算 SMTP 通过，也不改变此前用户接管时的停止记录。后续修复和重跑结果须另补实际证据。
 
-最新 [完整专项报告](./browser/final/smtp.json) 已实际读取：`status: passed / phase: all`，10项检查、138布局、73请求、10阶段诊断，`browserErrors: []`。这是本地完整 SMTP 专项通过，不能替代历史默认全量或远端 CI。`browserErrors`为空只代表页面运行/资源错误为空；真实截图中的 HTTP429 会话核对诊断及 SMTP502/401仍保留，不把这些正常错误场景说成没有诊断。
+最新 [完整专项报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/smtp-182/browser/final/smtp.json) 已实际读取：`status: passed / phase: all`，10项检查、138布局、73请求、10阶段诊断，`browserErrors: []`。这是本地完整 SMTP 专项通过，不能替代历史默认全量或远端 CI。`browserErrors`为空只代表页面运行/资源错误为空；真实截图中的 HTTP429 会话核对诊断及 SMTP502/401仍保留，不把这些正常错误场景说成没有诊断。
 
 ## 最终构建的真实对照
 
@@ -93,7 +93,7 @@ Figma 文件 `74sT9Hrf8G4czcWeTkET5b`：实际读取 `34:710`、`99:786` 的设�
 | loading-1440-dark / loading-390-light、read-error-dark、session-before-late-write-1440-light / session-before-late-write-390-dark | task T-ID-06真实读取/会话契约；现行公共Card/恢复入口组合 | 加载不暴露假表单；初读失败只有重新读取；会话失效不保留secret控件，明确重新登录。没有对应旧独立Figma加载/session画板，不声称专门节点逐像素还原。          |
 | port-error-dark-390；前述light错误                                                                                                | 218:1059/218:2651及既有字段来源                          | 端口0真实红边、标签、必要文字和焦点，不新增大面积彩色说明；输入仍在。                                                                                    |
 
-表中省略统一 `smtp-` 前缀及 `.png` 扩展以便阅读，完整文件名可由[最终报告](./browser/final/smtp.json)核对。对同构代表之外没有每个瞬时组合单独截长驻图：如清除请求刚进入未知且GET尚未返回，静态clearUnknown家族读取及实际请求行为分别有证据，不能把clear-matched截图记作未知瞬态图。
+表中省略统一 `smtp-` 前缀及 `.png` 扩展以便阅读，完整文件名可由[最终报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/smtp-182/browser/final/smtp.json)核对。对同构代表之外没有每个瞬时组合单独截长驻图：如清除请求刚进入未知且GET尚未返回，静态clearUnknown家族读取及实际请求行为分别有证据，不能把clear-matched截图记作未知瞬态图。
 
 ### 公共来源与实际差异
 

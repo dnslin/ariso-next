@@ -19,7 +19,7 @@
 
 [样本清单](../../../tests/fixtures/media-formats/manifest.json) 保留来源、许可、固定 SHA256 与独立像素期望。复用前置 24 个样本，新增 HEIC depth 和 thumbnail 两个真实辅助图样本；生成方式及原生 `heif-info` 验证见[夹具说明](../../../tests/fixtures/media-formats/README.md)。
 
-[格式持久化报告](./formats-local-arm64.json) 的 26 项全部通过；[运行包完整验证报告](./image-local-arm64.json) 同时记录真实编码、字体和工具版本。[实际输出](./outputs/) 保留预览、编码样本和字体渲染。像素期望来自夹具生成输入，不由本次输出反推。
+[格式持久化报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/media-150/formats-local-arm64.json) 的 26 项全部通过；[运行包完整验证报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/media-150/image-local-arm64.json) 同时记录真实编码、字体和工具版本。[实际输出](./outputs/) 保留预览、编码样本和字体渲染。像素期望来自夹具生成输入，不由本次输出反推。
 
 修改前运行新持久化矩阵，24 项中 22 项失败，仅 JPEG/PNG 通过，失败是旧的格式准入限制或 SVG 尺寸识别；实现后全矩阵通过。原先“JPEG 输出不支持”的测试更新为真实 JPEG 背景/编码断言，水印不支持断言保留。上传断线测试改为拦截新的签名初验函数，未调整行为断言或超时。
 
@@ -67,6 +67,6 @@
 
 ## 完整浏览器回归
 
-完整运行退出 0，见 [browser-runner.json](./browser-runner.json)。现有 Ego Lite TaskSpace 3 同时覆盖 1440/390 初始化与重启、真实上传/复制/下载/匿名访问/回收恢复、处理失败、访问计数和队列恢复；手机图库、上传、后台轮询及两端交互修正、跨页连续性均通过，随后独立 UI/library 套件也通过。公共布局回归含 360/390/430/768/1440、浅深色、短视口、键盘与焦点。临时数据和服务已由运行器清理，成功后结束本任务浏览器空间。
+完整运行退出 0，见 [browser-runner.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/media-150/browser-runner.json)。现有 Ego Lite TaskSpace 3 同时覆盖 1440/390 初始化与重启、真实上传/复制/下载/匿名访问/回收恢复、处理失败、访问计数和队列恢复；手机图库、上传、后台轮询及两端交互修正、跨页连续性均通过，随后独立 UI/library 套件也通过。公共布局回归含 360/390/430/768/1440、浅深色、短视口、键盘与焦点。临时数据和服务已由运行器清理，成功后结束本任务浏览器空间。
 
 本次没有改动 UI，不用这些回归截图冒充新界面设计验收；后续调用方的 Figma 和人工验收仍须单独完成。完整本地产物在 worktree 的 `test-results/browser-150/`，此处只归档运行器结论，避免复制无界面变更的数百张历史页面截图。

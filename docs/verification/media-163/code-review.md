@@ -8,7 +8,7 @@
 
 正确性评审确认一项 P2：共享 `cleanupMediaObject` 在 HEAD 已明确返回 null 后仍调用 DELETE。独立 SDK/HTTP/SQLite 复现 HEAD404 + DELETE403 后，任务 failed、图片 cleanup_failed、剩余项大小为0，但媒体引用仍保留；HEAD200 + DELETE403 对照保留真实失败。规格允许确认当前不存在后完成，迟到孤儿仍由 #164 承接。结构评审无额外必修项，认可修复应放在共享步骤，无需 S3 专用分支或额外抽象。
 
-本轮先添加两个正式 HTTP/SDK 回归：[RED 日志](./reports/absence-red.txt)确认永久删除及独立候选清理都失败。修复保留 HEAD 结果，仅非 null 时执行 DELETE；既有预算、错误、关停及数据库结算不变。混合对象状态测试仅调整缺失 Key 的 DELETE 预期，仍检查全部对象最终不存在。修复后的3文件39项定向验证见[日志](./reports/absence-focused.txt)。
+本轮先添加两个正式 HTTP/SDK 回归：[RED 日志](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/media-163/reports/absence-red.txt)确认永久删除及独立候选清理都失败。修复保留 HEAD 结果，仅非 null 时执行 DELETE；既有预算、错误、关停及数据库结算不变。混合对象状态测试仅调整缺失 Key 的 DELETE 预期，仍检查全部对象最终不存在。修复后的3文件39项定向验证见[日志](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/media-163/reports/absence-focused.txt)。
 
 两位评审者对相对 `f4156c6` 的修复增量复审均通过，无新增必修项。正确性评审者另实际执行：
 
@@ -42,7 +42,7 @@ pnpm exec vitest run --project integration tests/integration/media/candidate-cle
 
 新增 9 项 S3 SDK/HTTP 场景检查实际请求及数据库状态，覆盖停用、各种对象状态、上传保护、自动和手动有限重试、重启、权限拒绝、删除提交后结算失败、终态发布拒绝、迟到对象和 HEAD/DELETE 在途关停。既有队列关停断言同步为保留 `cleanup_pending`，未削弱数据库结算失败传播的断言。
 
-实际读取最终真实报告：[R2](./live/run-PenIQd/r2.json)、[SeaweedFS](./live/run-PenIQd/seaweedfs.json)。每服务 7 个场景通过，7 个确切 Key 均确认清理，最终隔离命名空间列表为空。报告同时记录：
+实际读取最终真实报告：[R2](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/media-163/live/run-PenIQd/r2.json)、[SeaweedFS](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/media-163/live/run-PenIQd/seaweedfs.json)。每服务 7 个场景通过，7 个确切 Key 均确认清理，最终隔离命名空间列表为空。报告同时记录：
 
 - 完成真实原图与派生处理，并核对正常访问、回收、删除中及删除后的 delivery 状态。
 - 故障网关确认真实服务 PUT 返回 200 后丢弃客户端确认，保留未知字节数、已登记 Key 和原有发布版本。此故障发生在本地传输边界，不冒称服务自身丢失响应。
@@ -50,11 +50,11 @@ pnpm exec vitest run --project integration tests/integration/media/candidate-cle
 - 对一个明确候选注入 503，其余 DELETE 实际进入真实服务。完整对象列表只剩失败候选与有效上传对象。重启不发第三次 DELETE，手动新周期完成清理。
 - 使用错误签名取得实际 HTTP403，保留对象与错误。恢复凭据并手动重试后只释放媒体引用，活动上传引用保持。
 
-首轮真实运行暴露 worker 没有活动句柄而自行退出 13，未取得所要求的 SIGKILL 窗口。该问题已通过保持 IPC 监听修复，保留原 SIGKILL 断言，最终两服务真实复跑通过。失败记录仍保留：[R2 首轮](./live/run-LOQ7py/r2.json)、[SeaweedFS 首轮](./live/run-LOQ7py/seaweedfs.json)；首次失败也确认隔离对象清理完成，未改写为通过。
+首轮真实运行暴露 worker 没有活动句柄而自行退出 13，未取得所要求的 SIGKILL 窗口。该问题已通过保持 IPC 监听修复，保留原 SIGKILL 断言，最终两服务真实复跑通过。失败记录仍保留：[R2 首轮](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/media-163/live/run-LOQ7py/r2.json)、[SeaweedFS 首轮](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/media-163/live/run-LOQ7py/seaweedfs.json)；首次失败也确认隔离对象清理完成，未改写为通过。
 
 运行器的 finally 不会将业务失败状态改成 passed。逐 Key 清理失败或最终命名空间仍有对象都会将报告保持为 failed。原始服务配置、Bucket 策略、CORS 和用户预览数据没有作为测试修改对象。
 
-审查者读取了 [unit](./reports/unit.txt)、[lint](./reports/lint.txt)、[typecheck](./reports/typecheck.txt) 与[最终 build](./reports/build.txt) 报告。单元测试为 78 文件、1010 项通过，lint/typecheck/build 由主执行者确认退出 0；build 保留非当前平台可选原生依赖的追踪输出，不冒称这些平台已验证。首轮及第二轮测试类型失败日志保留，修复未放宽业务断言。完整集成、格式及最终交付命令与结果由[主记录](./README.md)统一维护，审查者未重复运行相同检查。
+审查者读取了 [unit](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/media-163/reports/unit.txt)、[lint](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/media-163/reports/lint.txt)、[typecheck](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/media-163/reports/typecheck.txt) 与[最终 build](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/media-163/reports/build.txt) 报告。单元测试为 78 文件、1010 项通过，lint/typecheck/build 由主执行者确认退出 0；build 保留非当前平台可选原生依赖的追踪输出，不冒称这些平台已验证。首轮及第二轮测试类型失败日志保留，修复未放宽业务断言。完整集成、格式及最终交付命令与结果由[主记录](./README.md)统一维护，审查者未重复运行相同检查。
 
 ## 剩余边界
 

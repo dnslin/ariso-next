@@ -12,7 +12,7 @@
 
 状态：产品修改及定向运行检查已完成，等待用户人工验收。完整集成检查仍有两项失败，不记为全量通过。本节只记录本轮结果；下方 2026-09-27 的历史结果不作为本轮通过证据。
 
-用户提供六张真实页面截图及上传下拉框批注，先要求“现在开始做原型”，随后以“就按照这个去改”批准独立原型方向用于产品实施。批准方案见 [六项方案总览](../../../../design-plans/main-ui-review-20261011/README.md)，共用规则见 [设计交付规范](../../../design/handoff.md#后台正常态精简2026-10-11用户批准)。原型模拟数据和工具栏不进入产品。
+用户提供六张真实页面截图及上传下拉框批注，先要求“现在开始做原型”，随后以“就按照这个去改”批准独立原型方向用于产品实施。批准方案见 [六项方案总览](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/design-plans/main-ui-review-20261011/README.md)，共用规则见 [设计交付规范](../../../design/handoff.md#后台正常态精简2026-10-11用户批准)。原型模拟数据和工具栏不进入产品。
 
 ### 批准范围
 
@@ -57,7 +57,7 @@ Figma 文件为 `74sT9Hrf8G4czcWeTkET5b`，入口为 [section 1081:19457](https:
 
 [Figma 同步记录](./figma-sync.md)列出实际读取与更新的节点、字体、尺寸、公共组件及授权边界；[独立设计复验](./design-review.md)逐项记录真实页面与设计比较。主节点为图库详情 36:312 / 102:3228、上传 30:97 / 101:1014、回收列表 30:1037 / 102:852、记录 405:6888 / 405:6735。展开态和动效交接节点见同步记录。
 
-真实代表截图覆盖 1440×1080、390×844 × 浅/深色，包括横图、竖图、上传、回收列表/记录及三种访问说明展开态，共 32 张。图片为独立测试数据 960×640 与 480×960 PNG，不改动用户预览数据。[代表检查报告](./browser/representative.json)与同目录截图对应。
+真实代表截图覆盖 1440×1080、390×844 × 浅/深色，包括横图、竖图、上传、回收列表/记录及三种访问说明展开态，共 32 张。图片为独立测试数据 960×640 与 480×960 PNG，不改动用户预览数据。[代表检查报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/browser/representative.json)与同目录截图对应。
 
 修改前已复现工作区底栏 32px 断层、虚假面包屑与回收标题自动焦点。新增回焦测试还复现了旧 DOM 引用在列表卸载后失效的问题。独立设计复验发现 Popover 双层内边距及桌面竖图首屏溢出，均在本次修复并重拍，不列为后续优化。
 
@@ -75,9 +75,9 @@ macOS 26.6.2 / ARM64，Node 24.18.1，pnpm 11.19.0，现有 Ego Lite / Chromium 
 | `pnpm run format:check` / `node docs/tasks/check.mjs` / `node docs/tasks/check.mjs --self-test`                            | 通过；120 任务、298 需求；5 项拒绝样本通过                |
 | `EGO_TASK_SPACE=6 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/m2-85/ui-refinement/full-browser pnpm run test:browser` | 通过，退出 0，12 分 39.64 秒                              |
 
-[完整运行报告](./regression/runner.json)从 01:38:53 至 01:51:33（Asia/Shanghai），退出 0，临时数据目录已清理。图库 35 项、公共外壳 13 项、上传 15 项、轮询 4 项，以及两端 M2 和共用组件检查均通过。代表状态先通过，再运行完整浏览器回归。新断言验证图片实际解码/自然比例/可视边界、Popover 单层内边距与键盘行为、真实导航和回焦、全宽底栏、上传比例及动效。既有初始化、登录、上传、处理、复制下载、回收恢复、失败和重启流程保留。
+[完整运行报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/regression/runner.json)从 01:38:53 至 01:51:33（Asia/Shanghai），退出 0，临时数据目录已清理。图库 35 项、公共外壳 13 项、上传 15 项、轮询 4 项，以及两端 M2 和共用组件检查均通过。代表状态先通过，再运行完整浏览器回归。新断言验证图片实际解码/自然比例/可视边界、Popover 单层内边距与键盘行为、真实导航和回焦、全宽底栏、上传比例及动效。既有初始化、登录、上传、处理、复制下载、回收恢复、失败和重启流程保留。
 
-专项测试首次在视口刚变化、HeroUI 尚未更新布局时读到旧尺寸而失败；已改为等待真实视口变量和弹层边界，不添加固定延时，不删除滚动断言，重跑通过。新增证据 JSON 的首次格式检查失败，格式化后全仓检查通过。回焦问题保留[修复前失败](./checks/focus-red.json)与[修复后通过](./checks/focus-green.json)，布局及悬停结果见[专项报告](./checks/layout-and-motion.json)，命令输出见 [checks](./checks/)。
+专项测试首次在视口刚变化、HeroUI 尚未更新布局时读到旧尺寸而失败；已改为等待真实视口变量和弹层边界，不添加固定延时，不删除滚动断言，重跑通过。新增证据 JSON 的首次格式检查失败，格式化后全仓检查通过。回焦问题保留[修复前失败](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/checks/focus-red.json)与[修复后通过](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/checks/focus-green.json)，布局及悬停结果见[专项报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/checks/layout-and-motion.json)，命令输出见 [checks](https://github.com/dnslin/ariso-next/tree/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/checks)。
 
 ### 审计与剩余边界
 
@@ -107,7 +107,7 @@ macOS 26.6.2 / ARM64，Node 24.18.1，pnpm 11.19.0，现有 Ego Lite / Chromium 
 
 浏览器对 14 组相关页面提示分别保持真实 GET 响应，验证快速响应不显示、慢响应约 300 毫秒后显示及显示前后占位尺寸相同。使用原设置分类进行真实客户端切换，覆盖 360／390／430／768／1440 宽度、浅深色和减少动态效果模式。503 注入验证错误／重试入口即时显示，重试重新计时。没有给短于阈值的请求增加等待，也没有人为延长提示显示时间。
 
-[机器报告](./20261014/loading-feedback/loading-feedback.json)、[桌面慢加载](./20261014/loading-feedback/loading-feedback-slow.png)和[390px 深色实际表单](./20261014/loading-feedback/loading-feedback-390-dark.png)保留本次状态证据。对照沿用既有设置页面设计，标题、分类、正文起点、固定操作栏及控件布局保持原样；用户批准的差异只有加载提示时机。早期浏览器失败来自采样范围包含未被保持的请求，以及动画帧采样漏掉挂载瞬间；最终用元素变化观察器记录初始隐藏状态，保留原 300 毫秒实现与慢加载断言。
+[机器报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261014/loading-feedback/loading-feedback.json)、[桌面慢加载](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261014/loading-feedback/loading-feedback-slow.png)和[390px 深色实际表单](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261014/loading-feedback/loading-feedback-390-dark.png)保留本次状态证据。对照沿用既有设置页面设计，标题、分类、正文起点、固定操作栏及控件布局保持原样；用户批准的差异只有加载提示时机。早期浏览器失败来自采样范围包含未被保持的请求，以及动画帧采样漏掉挂载瞬间；最终用元素变化观察器记录初始隐藏状态，保留原 300 毫秒实现与慢加载断言。
 
 以上为本次定向验证，不代表完整业务浏览器、远端 CI、发布或部署；用户人工验收另行确认。
 

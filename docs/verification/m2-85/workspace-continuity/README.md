@@ -15,26 +15,26 @@
 
 ## 失败证据与修复
 
-[导航 RED](./attempts/navigation-red.json)及[离开前](./attempts/red-queued.png)、[返回后](./attempts/red-return-empty.png)使用独立旧构建与真实文件。旧侧栏整页导航导致文档身份消失、队列归零和私有设置重置。本次观测没有出现 beforeunload 弹窗，不声称曾接受确认。
+[导航 RED](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/workspace-continuity/attempts/navigation-red.json)及[离开前](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/workspace-continuity/attempts/red-queued.png)、[返回后](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/workspace-continuity/attempts/red-return-empty.png)使用独立旧构建与真实文件。旧侧栏整页导航导致文档身份消失、队列归零和私有设置重置。本次观测没有出现 beforeunload 弹窗，不声称曾接受确认。
 
-原图说明首版错误地以 HeroUI 的 ListContainer 为定位父级；该组件是集合属性注入器，说明按钮实际定位到了 Modal 顶部。[实际失败截图](./attempts/original-info-position-red.png)保留，已把定位上下文设在真实 Tabs 根节点，后续几何断言检查相邻位置与固定预览。768px 实页还发现旧桌面三列文字区挤成竖排，已在窄屏使用缩略图／堆叠资料／操作三列，到宽屏才展开内部资料。
+原图说明首版错误地以 HeroUI 的 ListContainer 为定位父级；该组件是集合属性注入器，说明按钮实际定位到了 Modal 顶部。[实际失败截图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/workspace-continuity/attempts/original-info-position-red.png)保留，已把定位上下文设在真实 Tabs 根节点，后续几何断言检查相邻位置与固定预览。768px 实页还发现旧桌面三列文字区挤成竖排，已在窄屏使用缩略图／堆叠资料／操作三列，到宽屏才展开内部资料。
 
 独立代码审计发现 `useUploadResult` 的 401 出口遗漏清理共享队列；已增加统一 reset，并新增实际服务器 401、Blob revoke 与不触发离开警告的精确回归，不用常规会话检查的通过替代该分支。
 
-首轮集成默认并发有一个 5 秒用例超时、Git 文件清单包含已删除组件、隔离 Next dev 软链解析失败。[摘录](./attempts/integration-parallel-excerpt.txt)保留。删除已暂存后清单正确；串行时 dev 用例通过，没有添加依赖或修改超时。第一次串行与主流程重建重叠，standalone 复制到未完成目录，[失败报告](./attempts/integration-overlap.log)保留。此后构建和集成严格串行执行，失败轮次不记通过。
+首轮集成默认并发有一个 5 秒用例超时、Git 文件清单包含已删除组件、隔离 Next dev 软链解析失败。[摘录](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/workspace-continuity/attempts/integration-parallel-excerpt.txt)保留。删除已暂存后清单正确；串行时 dev 用例通过，没有添加依赖或修改超时。第一次串行与主流程重建重叠，standalone 复制到未完成目录，[失败报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/workspace-continuity/attempts/integration-overlap.log)保留。此后构建和集成严格串行执行，失败轮次不记通过。
 
-完整浏览器首轮在手机详情抓到删除按钮为44px、另外两项为48px，[失败报告](./attempts/browser-action-height-runner.json)与[截图](./attempts/actions-height-red.png)保留。全局按钮最小高度覆盖了局部最小高度，现三处明确设置48px高度，原48px断言保留。专项继续发现 Popover 隐藏时焦点恢复尚未完成；真实浏览器确认随后返回原图说明按钮，测试改为3秒内等待同一焦点目标，并保留精确断言。两次直接重用专项数据还分别遇到已登录和非空图库前置失败；最终完整运行器重新建立独立环境，不把这些轮次记通过。
+完整浏览器首轮在手机详情抓到删除按钮为44px、另外两项为48px，[失败报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/workspace-continuity/attempts/browser-action-height-runner.json)与[截图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/workspace-continuity/attempts/actions-height-red.png)保留。全局按钮最小高度覆盖了局部最小高度，现三处明确设置48px高度，原48px断言保留。专项继续发现 Popover 隐藏时焦点恢复尚未完成；真实浏览器确认随后返回原图说明按钮，测试改为3秒内等待同一焦点目标，并保留精确断言。两次直接重用专项数据还分别遇到已登录和非空图库前置失败；最终完整运行器重新建立独立环境，不把这些轮次记通过。
 
-第二轮完整浏览器的图库／回收站模块通过后，共用界面检查仍按旧 DOM 顺序断言从管理员标签 Shift+Tab 到刷新。[失败报告](./attempts/browser-focus-order-runner.json)保留。标签已按本轮设计移到标题内、位于刷新之前；真实浏览器确认 Tab 到刷新、Shift+Tab 回标签均显示焦点。测试更新为当前视觉／DOM 顺序的双向检查，未修改生产代码或取消键盘断言。
+第二轮完整浏览器的图库／回收站模块通过后，共用界面检查仍按旧 DOM 顺序断言从管理员标签 Shift+Tab 到刷新。[失败报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/workspace-continuity/attempts/browser-focus-order-runner.json)保留。标签已按本轮设计移到标题内、位于刷新之前；真实浏览器确认 Tab 到刷新、Shift+Tab 回标签均显示焦点。测试更新为当前视觉／DOM 顺序的双向检查，未修改生产代码或取消键盘断言。
 
 ## 设计与独立审计
 
 - [Figma 同步／桌面手机节点与实际 context](./figma-sync.md)。
-- [真实页面截图和尺寸](./browser/representative.json)，涵盖1440×1080、390×844及768×1080，浅深色。文件为独立测试渐变图片，图片内容差异不冒充真实产品素材。
+- [真实页面截图和尺寸](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/workspace-continuity/browser/representative.json)，涵盖1440×1080、390×844及768×1080，浅深色。文件为独立测试渐变图片，图片内容差异不冒充真实产品素材。
 - [独立代码审计](./code-review.md)。
 - [独立设计逐项对照](./design-review.md)：本轮26种视觉状态已审范围通过，768布局及最终文件名问题已复验关闭；用户人工验收尚未完成，PR 保持草稿。
 
-最终[完整浏览器报告](./browser/full/runner.json)于2026-09-27 16:02–16:17（Asia/Shanghai）通过，包含图库36组、上传15组、公共侧栏13组、轮询4组及两端核心冒烟、交互和导航连续性。四宽公共界面专项见[报告](./browser/refinement.json)。类型、lint、单元、集成及构建实际输出见[检查日志](./checks/)。此前失败轮次与修复原因保留，不记作通过。
+最终[完整浏览器报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/workspace-continuity/browser/full/runner.json)于2026-09-27 16:02–16:17（Asia/Shanghai）通过，包含图库36组、上传15组、公共侧栏13组、轮询4组及两端核心冒烟、交互和导航连续性。四宽公共界面专项见[报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/workspace-continuity/browser/refinement.json)。类型、lint、单元、集成及构建实际输出见[检查日志](https://github.com/dnslin/ariso-next/tree/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/workspace-continuity/checks)。此前失败轮次与修复原因保留，不记作通过。
 
 ## 本轮实际检查
 

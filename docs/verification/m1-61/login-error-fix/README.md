@@ -25,7 +25,7 @@
 EGO_TASK_SPACE=6 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/issue-61-login-red pnpm run test:browser
 ```
 
-该断言在桌面登录故障阶段失败：[运行记录](red/runner.json)、[失败报告](red/identity-1440-setup.json)。原页面仍展示解析异常，无法满足新的提示要求。修改实现后，同一断言核对完整提示文字通过，新增故障矩阵也全部通过。
+该断言在桌面登录故障阶段失败：[运行记录](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m1-61/login-error-fix/red/runner.json)、[失败报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m1-61/login-error-fix/red/identity-1440-setup.json)。原页面仍展示解析异常，无法满足新的提示要求。修改实现后，同一断言核对完整提示文字通过，新增故障矩阵也全部通过。
 
 ## 实际验证
 
@@ -40,11 +40,11 @@ EGO_TASK_SPACE=6 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/issue-61-login
 | `EGO_TASK_SPACE=6 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/issue-61-login-green pnpm run test:browser`           | 桌面/手机 setup、真实 restart 四阶段通过；两端各 13 类新增故障通过         |
 | `node --check e2e/identity.mjs`、`node --check e2e/identity-session.mjs`、`git diff --check`                             | 通过                                                                       |
 
-[测试摘要](tests.json)保留命令及逐文件结果。[浏览器总报告](runner.json)记录 06:56:07–06:59:16 UTC 的实际通过和临时目录清理；[TaskSpace 清理](space-cleanup.json)确认本任务页面已关闭。
+[测试摘要](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m1-61/login-error-fix/tests.json)保留命令及逐文件结果。[浏览器总报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m1-61/login-error-fix/runner.json)记录 06:56:07–06:59:16 UTC 的实际通过和临时目录清理；[TaskSpace 清理](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m1-61/login-error-fix/space-cleanup.json)确认本任务页面已关闭。
 
-真实数据库故障仍由 SQLite trigger 触发，报告保留空 500 原始状态；[桌面](identity-1440-setup.json)和[手机](identity-390-setup.json)各核对完整中文提示、输入保留、没有会话，以及后续真实登录恢复。[桌面截图](identity-login-unavailable-1440.png)、[手机截图](identity-login-unavailable-390.png)显示修复后提示。
+真实数据库故障仍由 SQLite trigger 触发，报告保留空 500 原始状态；[桌面](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m1-61/login-error-fix/identity-1440-setup.json)和[手机](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m1-61/login-error-fix/identity-390-setup.json)各核对完整中文提示、输入保留、没有会话，以及后续真实登录恢复。[桌面截图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m1-61/login-error-fix/identity-login-unavailable-1440.png)、[手机截图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m1-61/login-error-fix/identity-login-unavailable-390.png)显示修复后提示。
 
-新增故障矩阵见[桌面重启报告](identity-1440-restart.json)及[手机重启报告](identity-390-restart.json)的 `loginFailureChecks`：HTML 502、损坏 JSON、null、数组、非字符串 code、有效未知 code、密码错误 code、登录请求拒绝、空 429，以及会话核对的 HTTP 失败、正文无效、null、请求拒绝。
+新增故障矩阵见[桌面重启报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m1-61/login-error-fix/identity-1440-restart.json)及[手机重启报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m1-61/login-error-fix/identity-390-restart.json)的 `loginFailureChecks`：HTML 502、损坏 JSON、null、数组、非字符串 code、有效未知 code、密码错误 code、登录请求拒绝、空 429，以及会话核对的 HTTP 失败、正文无效、null、请求拒绝。
 
 这 13 类场景在浏览器 fetch 边界受控注入，并明确标注。会话核对场景先完成真实 HTTP 200 登录，故障后核对实际 Cookie 会话存在，再真实退出清理；没有伪造登录成功。真实服务限流时等待页面给出的窗口再手动重试，报告保留 `[429,200]` 等实际状态。每种错误均核对完整提示、输入、按钮恢复、反馈焦点和不跳转。原有真实错误密码、限流、续期、过期和退出失败回归保持通过，浏览器运行错误为空。
 

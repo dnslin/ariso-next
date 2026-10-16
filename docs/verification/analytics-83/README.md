@@ -31,25 +31,25 @@
 
 macOS/Darwin arm64，Node 24.18.1、pnpm 11.19.0、ICU 78.3、ImageMagick 7.1.2-31、ExifTool 13.55。所有主验证命令使用 `PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH`。
 
-| 实际命令                                                                                                 | 结果                                                                                                         |
-| -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| `pnpm install --frozen-lockfile`                                                                         | 通过，锁文件无修改                                                                                           |
-| `pnpm run lint` / `pnpm run typecheck`                                                                   | 通过，最终测试补强后已重跑                                                                                   |
-| `pnpm run test:unit --reporter=default --reporter=junit --outputFile=test-results/analytics-83/unit.xml` | 27 文件、428 项通过，见 [JUnit](./unit.xml)（测试名称中的回车转义为 XML 实体，结果未改动）                   |
-| `pnpm run build`                                                                                         | 通过，见 [构建日志](./build.txt)；保留既有 SQLite 可选 Debug 二进制追踪诊断，实际 Release 驱动由生产集成验证 |
-| `pnpm exec vitest run --project integration tests/integration/analytics/count.test.ts`                   | 新增 13 项真实 HTTP 场景通过                                                                                 |
-| `node docs/tasks/check.mjs` / `node docs/tasks/check.mjs --self-test`                                    | 120 任务、298 需求完整无环；5 个拒绝样本通过                                                                 |
-| `git diff --check`                                                                                       | 通过                                                                                                         |
+| 实际命令                                                                                                 | 结果                                                                                                                                                                                                                         |
+| -------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm install --frozen-lockfile`                                                                         | 通过，锁文件无修改                                                                                                                                                                                                           |
+| `pnpm run lint` / `pnpm run typecheck`                                                                   | 通过，最终测试补强后已重跑                                                                                                                                                                                                   |
+| `pnpm run test:unit --reporter=default --reporter=junit --outputFile=test-results/analytics-83/unit.xml` | 27 文件、428 项通过，见 [JUnit](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-83/unit.xml)（测试名称中的回车转义为 XML 实体，结果未改动）                   |
+| `pnpm run build`                                                                                         | 通过，见 [构建日志](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-83/build.txt)；保留既有 SQLite 可选 Debug 二进制追踪诊断，实际 Release 驱动由生产集成验证 |
+| `pnpm exec vitest run --project integration tests/integration/analytics/count.test.ts`                   | 新增 13 项真实 HTTP 场景通过                                                                                                                                                                                                 |
+| `node docs/tasks/check.mjs` / `node docs/tasks/check.mjs --self-test`                                    | 120 任务、298 需求完整无环；5 个拒绝样本通过                                                                                                                                                                                 |
+| `git diff --check`                                                                                       | 通过                                                                                                                                                                                                                         |
 
-`pnpm run test:integration --maxWorkers=2 --reporter=default --reporter=junit --outputFile=test-results/analytics-83/integration.xml`：475 项全部通过，包含普通集成与真实媒体工具两组，见 [JUnit](./integration.xml)。生产构建先于本次完整集成运行。
+`pnpm run test:integration --maxWorkers=2 --reporter=default --reporter=junit --outputFile=test-results/analytics-83/integration.xml`：475 项全部通过，包含普通集成与真实媒体工具两组，见 [JUnit](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-83/integration.xml)。生产构建先于本次完整集成运行。
 
 `pnpm run format:check` 通过。
 
 以下两轮为修复前历史记录，后续结果见 [回归修复报告](./review/README.md)。
 
-浏览器实际执行 `pnpm --dir tests/experiments/ui install --frozen-lockfile`（通过）及 `EGO_TASK_SPACE=6 EGO_KEEP_SPACE=1 pnpm run test:browser`。首次在手机 390px 重启后的登录故障注入流程超时：提示“尚未确认登录会话，请重试。”已显示，实际焦点为 BODY，未满足既有错误提示聚焦断言。该步骤尚未访问 `/i/`。保留 [首次运行摘要](./browser-first/runner.json) 和 [失败场景](./browser-first/identity-390-restart.json)，不把部分场景通过写成整体通过。
+浏览器实际执行 `pnpm --dir tests/experiments/ui install --frozen-lockfile`（通过）及 `EGO_TASK_SPACE=6 EGO_KEEP_SPACE=1 pnpm run test:browser`。首次在手机 390px 重启后的登录故障注入流程超时：提示“尚未确认登录会话，请重试。”已显示，实际焦点为 BODY，未满足既有错误提示聚焦断言。该步骤尚未访问 `/i/`。保留 [首次运行摘要](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-83/browser-first/runner.json) 和 [失败场景](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-83/browser-first/identity-390-restart.json)，不把部分场景通过写成整体通过。
 
-在同一 Ego Lite TaskSpace 6 检查页面状态后，原代码、断言和超时不变，使用已构建产物执行 `EGO_TASK_SPACE=6 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/browser-retry node scripts/verify-browser.mjs` 复核。第二次仍失败，这次在手机重启后的身份流程等待 `#email` 超时；见 [复核摘要](./browser-retry/runner.json) 和 [失败场景](./browser-retry/identity-390-restart.json)。不把两次不同失败归结为已证明的同一根因。身份/登录代码及浏览器断言未修改，浏览器全套保持未完成，图库后续步骤未运行；PR 保留草稿，等待该范围外问题另行处理。Ego 空间因失败保留，没有新建空间绕过问题。
+在同一 Ego Lite TaskSpace 6 检查页面状态后，原代码、断言和超时不变，使用已构建产物执行 `EGO_TASK_SPACE=6 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/browser-retry node scripts/verify-browser.mjs` 复核。第二次仍失败，这次在手机重启后的身份流程等待 `#email` 超时；见 [复核摘要](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-83/browser-retry/runner.json) 和 [失败场景](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-83/browser-retry/identity-390-restart.json)。不把两次不同失败归结为已证明的同一根因。身份/登录代码及浏览器断言未修改，浏览器全套保持未完成，图库后续步骤未运行；PR 保留草稿，等待该范围外问题另行处理。Ego 空间因失败保留，没有新建空间绕过问题。
 
 ## 审计
 

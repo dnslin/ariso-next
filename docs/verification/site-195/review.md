@@ -4,7 +4,7 @@
 
 ## 发现与处理
 
-- **P2 / 必修，已修复并独立复审**：初版 `src/server/site/branding.ts:246` 的 `read` 在检查当前引用后异步读取文件。读取与成功替换/删除交错时，旧文件正常被移除，但旧请求被误报为 `SITE_ASSET_MISSING / 500`。独立临时副本以 `readFile` gate 固定“查到旧引用 → 替换并删旧文件 → 执行读取”的次序，预期失效 URL 返回 null，实际抛出 500。原始失败见[复现日志](./checks/review-read-race-before.log)。最终实现仅在 ENOENT 后重读当前引用：已失效返回 null；真正仍被引用的缺文件保留 500、路径与 cause。没有引入锁或磁盘重试。原独立 gate 用例与真正缺文件用例复审 **2/2 通过**，见[修复后日志](./checks/review-read-race-after.log)。产品回归另覆盖 replace/remove 两种交错。
+- **P2 / 必修，已修复并独立复审**：初版 `src/server/site/branding.ts:246` 的 `read` 在检查当前引用后异步读取文件。读取与成功替换/删除交错时，旧文件正常被移除，但旧请求被误报为 `SITE_ASSET_MISSING / 500`。独立临时副本以 `readFile` gate 固定“查到旧引用 → 替换并删旧文件 → 执行读取”的次序，预期失效 URL 返回 null，实际抛出 500。原始失败见[复现日志](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-195/checks/review-read-race-before.log)。最终实现仅在 ENOENT 后重读当前引用：已失效返回 null；真正仍被引用的缺文件保留 500、路径与 cause。没有引入锁或磁盘重试。原独立 gate 用例与真正缺文件用例复审 **2/2 通过**，见[修复后日志](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-195/checks/review-read-race-after.log)。产品回归另覆盖 replace/remove 两种交错。
 - **覆盖补充，已落实**：生产 HTTP 尺寸测试初版覆盖 5 MiB 与 +1；最终已补入两个用途的 -1 上传、匿名读取和实际字节长度断言，保留原精确上限、+1 拒绝与旧引用/字节不变验证。实际 HTTP 执行结果由主报告记录，不将实验当作生产服务完成证据。
 
 ## 需求与结构核对
@@ -24,7 +24,7 @@
 
 实际命令：`PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH /Users/dnslin/.nvm/versions/node/v24.18.1/bin/node node_modules/vitest/vitest.mjs run --project media-tools tests/integration/site/branding.test.ts -t '按内容识别 logo 的 source.png'`。
 
-反转 `!allowed.includes(facts.format)` 后，合法 PNG 测试 **1/1 失败**，报“不支持的 logo 格式: PNG”；恢复原条件后相同用例 **1/1 通过**。证据：[变异失败](./checks/review-mutation.log)、[恢复通过](./checks/review-restored.log)。日志中的其余 skipped 是该定向实验的名称过滤，不是修改默认检查或删除断言。
+反转 `!allowed.includes(facts.format)` 后，合法 PNG 测试 **1/1 失败**，报“不支持的 logo 格式: PNG”；恢复原条件后相同用例 **1/1 通过**。证据：[变异失败](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-195/checks/review-mutation.log)、[恢复通过](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-195/checks/review-restored.log)。日志中的其余 skipped 是该定向实验的名称过滤，不是修改默认检查或删除断言。
 
 复审将最终 `branding.ts` 复制到同一个独立副本，保留原先失败的独立 gate 测试，直接 Node/Vitest 运行 `-t 'review: replacement|当前引用缺失'`，两项通过。没有重跑已通过且输入未变的全部测试。
 
@@ -79,26 +79,26 @@
 
 ### Required P2：启动清理遗漏中断的工具进程，已修复
 
-`startMediaTool` 使用独立进程组，父进程突然退出后不能依靠父进程内的超时/取消来回收。旧版品牌 `ready` 直接删除自有工作目录，导致工具仍运行但标记已被删。行为 agent 的新回归真实执行 `replace → inspectImageFile → startMediaTool`，只以阻塞 ExifTool 代身控制中断时机，SIGKILL 父进程后再启动品牌服务。旧实现断言失败：工具仍存活。另一用例模拟工具回收失败，旧实现错误删除目录。见[修复前两项失败](./checks/fix-core-red.log)。
+`startMediaTool` 使用独立进程组，父进程突然退出后不能依靠父进程内的超时/取消来回收。旧版品牌 `ready` 直接删除自有工作目录，导致工具仍运行但标记已被删。行为 agent 的新回归真实执行 `replace → inspectImageFile → startMediaTool`，只以阻塞 ExifTool 代身控制中断时机，SIGKILL 父进程后再启动品牌服务。旧实现断言失败：工具仍存活。另一用例模拟工具回收失败，旧实现错误删除目录。见[修复前两项失败](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-195/checks/fix-core-red.log)。
 
-最终只在清理自有工作目录前 `await terminateMediaTools(path)`，复用媒体模块已有回收方法。成功后删除目录；失败进入原有 catch，保留目录及原错误/路径，下一次启动重试。没有新增进程管理器、锁或状态机。两项回归同时确认旧素材、数据库引用及其他目录保留。加上多图 JPEG 用例，定向 **3/3 通过**，品牌服务全文件 **37/37 通过**，见[定向](./checks/fix-core-green.log)、[全文件](./checks/fix-core-full.log)。
+最终只在清理自有工作目录前 `await terminateMediaTools(path)`，复用媒体模块已有回收方法。成功后删除目录；失败进入原有 catch，保留目录及原错误/路径，下一次启动重试。没有新增进程管理器、锁或状态机。两项回归同时确认旧素材、数据库引用及其他目录保留。加上多图 JPEG 用例，定向 **3/3 通过**，品牌服务全文件 **37/37 通过**，见[定向](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-195/checks/fix-core-green.log)、[全文件](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-195/checks/fix-core-full.log)。
 
 ### Required P2：品牌写入绕过同盘预留，已修复
 
-旧 HTTP 适配器每次创建 `createMediaResources()`，看不到媒体运行时已受理上传的剩余字节。结构 agent 在产品修改前加入回归，使用真实 multipart、文件写入器和资源分配算法，只模拟可用空间及外围 runtime/认证组合。可用 300 MiB、低水位 256 MiB、已预留 40 MiB 时，旧版仍接受完整 5 MiB 品牌上传，测试失败。见[失败](./checks/fix-resources-red.log)。
+旧 HTTP 适配器每次创建 `createMediaResources()`，看不到媒体运行时已受理上传的剩余字节。结构 agent 在产品修改前加入回归，使用真实 multipart、文件写入器和资源分配算法，只模拟可用空间及外围 runtime/认证组合。可用 300 MiB、低水位 256 MiB、已预留 40 MiB 时，旧版仍接受完整 5 MiB 品牌上传，测试失败。见[失败](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-195/checks/fix-resources-red.log)。
 
-最终启动返回已有的 `mediaResources`，品牌适配器直接传给接收器，与上传、队列和水印共用实例。修复后空间不足时拒绝品牌写入，最多写入 4 MiB，原上传的 40 MiB 预留仍可使用，品牌自己的预留释放，**1/1 通过**，见[结果](./checks/fix-resources-green.log)。测试中断言的 `507 / UPLOAD_INSUFFICIENT_SPACE` 是接收器错误；该测试绕过 `siteSettingsResponse`，不能当作真实 HTTP 状态。真实 HTTP 外层仍沿用站点既有 `500 / SITE_INTERNAL_ERROR` 与原错误日志，没有改变接口契约。
+最终启动返回已有的 `mediaResources`，品牌适配器直接传给接收器，与上传、队列和水印共用实例。修复后空间不足时拒绝品牌写入，最多写入 4 MiB，原上传的 40 MiB 预留仍可使用，品牌自己的预留释放，**1/1 通过**，见[结果](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-195/checks/fix-resources-green.log)。测试中断言的 `507 / UPLOAD_INSUFFICIENT_SPACE` 是接收器错误；该测试绕过 `siteSettingsResponse`，不能当作真实 HTTP 状态。真实 HTTP 外层仍沿用站点既有 `500 / SITE_INTERNAL_ERROR` 与原错误日志，没有改变接口契约。
 
 ### Optional：非动画多图 JPEG 覆盖，已采纳
 
 仅把 `animated || (format !== 'ICO' && pageCount !== 1)` 的 `||` 改成 `&&` 时，原 34 项未检出回归。新增 `multiple.mpo` 由现有 `twoImageMpo` 构造器及 CC0 `static.jpg` 生成，来源记录在[夹具说明](../../../tests/fixtures/media-formats/README.md)。与生产接收一致，输入写成无扩展名的 `source`；真实工具确认 `JPEG / animated=false / pageCount=2`。新用例要求 400 拒绝，并验证旧引用与字节不变。未修改产品允许格式。
 
-在独立临时副本运行该项：原版 **1/1 通过** → 条件改错后 **失败** → 恢复 **1/1 通过**。见[原版](./checks/fix-core-mpo-original.log)、[变异](./checks/fix-core-mpo-mutated.log)、[恢复](./checks/fix-core-mpo-restored.log)。实际定向命令为 `node node_modules/vitest/vitest.mjs run --project media-tools tests/integration/site/branding.test.ts --maxWorkers=1 -t '无扩展名的非动画双图'`，使用 Node 24 完整路径，从同一隔离副本执行三次。未变异共享工作区。日志 skipped 为名称过滤，默认流程没有跳过新测试。
+在独立临时副本运行该项：原版 **1/1 通过** → 条件改错后 **失败** → 恢复 **1/1 通过**。见[原版](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-195/checks/fix-core-mpo-original.log)、[变异](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-195/checks/fix-core-mpo-mutated.log)、[恢复](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-195/checks/fix-core-mpo-restored.log)。实际定向命令为 `node node_modules/vitest/vitest.mjs run --project media-tools tests/integration/site/branding.test.ts --maxWorkers=1 -t '无扩展名的非动画双图'`，使用 Node 24 完整路径，从同一隔离副本执行三次。未变异共享工作区。日志 skipped 为名称过滤，默认流程没有跳过新测试。
 
 ### 交叉复审结论
 
 两个 agent 各自只读评审对方的修复，未重复已通过检查。行为评审确认共享预留实际经过 `reserveWrite → consumeWrite → releaseWrite`，认证、取消、上限及提交次序保持原边界；新单元测试被默认 `tests/unit/**/*.test.ts` 收录。结构评审确认工具终止成功才删目录、失败保留诊断及重试依据，复用规范方法，没有不必要复杂度。
 
-结构评审另提出一项非阻塞建议：新增进程启动等待采用既有 `recovery-tools.test.ts` 的 `{ timeout: 3000, interval: 10 }`。已仅调整本次新增等待，断言不变；该项定向 **1/1 通过**，ESLint、Prettier 与 diff 检查通过，见[定向日志](./checks/fix-core-startup-test.log)。没有实际一秒等待超时证据；822ms 是早先整项测试耗时，不能当作等待耗时或失败依据。结构 agent 已核对最终小 diff 与日志，建议关闭。
+结构评审另提出一项非阻塞建议：新增进程启动等待采用既有 `recovery-tools.test.ts` 的 `{ timeout: 3000, interval: 10 }`。已仅调整本次新增等待，断言不变；该项定向 **1/1 通过**，ESLint、Prettier 与 diff 检查通过，见[定向日志](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-195/checks/fix-core-startup-test.log)。没有实际一秒等待超时证据；822ms 是早先整项测试耗时，不能当作等待耗时或失败依据。结构 agent 已核对最终小 diff 与日志，建议关闭。
 
 **当前代码审计通过，无未解决 Required 或 Optional 项。** 本轮统一构建、类型、受影响测试和真实 Ego 的结果见[主报告本轮记录](./README.md#pr-274-评审修复验证)。代码审计通过不替代此前默认全量集成/浏览器的失败记录，PR 保留草稿；本次没有 UI 设计变更。

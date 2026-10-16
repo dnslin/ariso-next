@@ -127,13 +127,13 @@
 111. [T-SITE-03](./../archive/m3-m4/experience.md)
 112. [T-SITE-04](./../archive/m3-m4/experience.md)
 113. [T-SITE-05](./../archive/m3-m4/experience.md)
-114. [T-QA-05](./acceptance-tasks.md)
-115. [T-QA-01](./acceptance-tasks.md)
-116. [T-QA-02](./acceptance-tasks.md)
-117. [T-QA-03](./acceptance-tasks.md)
-118. [T-QA-04](./acceptance-tasks.md)
-119. [T-QA-06](./acceptance-tasks.md)
-120. [T-QA-07](./acceptance-tasks.md)
+114. [T-QA-05](./../archive/m5/acceptance.md)
+115. [T-QA-01](./../archive/m5/acceptance.md)
+116. [T-QA-02](./../archive/m5/acceptance.md)
+117. [T-QA-03](./../archive/m5/acceptance.md)
+118. [T-QA-04](./../archive/m5/acceptance.md)
+119. [T-QA-06](./../archive/m5/acceptance.md)
+120. [T-QA-07](./../archive/m5/acceptance.md)
 
 ## 直接依赖与反向引用
 
@@ -252,13 +252,13 @@
 | [T-SITE-03](./../archive/m3-m4/experience.md) | M4                 | T-SITE-01、T-ID-01、EV-SITE-01                                                                                                                                                                     | T-SITE-04                                                                                                                                                                      |
 | [T-SITE-04](./../archive/m3-m4/experience.md) | M4                 | T-SITE-03、T-SHR-03、T-UI-01、DG-SITE                                                                                                                                                              | T-QA-01                                                                                                                                                                        |
 | [T-SITE-05](./../archive/m3-m4/experience.md) | M4                 | T-UI-01、DG-THEME                                                                                                                                                                                  | T-QA-01                                                                                                                                                                        |
-| [T-QA-05](./acceptance-tasks.md)              | M5                 | T-UP-05、T-MED-10、T-MED-11、T-ID-05、T-ID-06、T-ID-07、T-SHR-04、T-STO-07                                                                                                                         | T-QA-01                                                                                                                                                                        |
-| [T-QA-01](./acceptance-tasks.md)              | M5                 | T-CP-M2、T-SITE-02、T-SITE-04、T-SITE-05、T-ID-07、T-ID-08、T-UP-06、T-UP-03、T-UP-08、T-LIB-08、T-LIB-09、T-LIB-10、T-LIB-11、T-COL-03、T-COL-04、T-MED-07、T-MED-12、T-SHR-04、T-ANA-05、T-QA-05 | T-QA-02、T-QA-04                                                                                                                                                               |
-| [T-QA-02](./acceptance-tasks.md)              | M5                 | T-QA-01                                                                                                                                                                                            | T-QA-03                                                                                                                                                                        |
-| [T-QA-03](./acceptance-tasks.md)              | M5                 | T-QA-02                                                                                                                                                                                            | T-QA-06                                                                                                                                                                        |
-| [T-QA-04](./acceptance-tasks.md)              | M5                 | T-QA-01、EV-LIBRARY-01、EV-ANALYTICS-02                                                                                                                                                            | T-QA-06                                                                                                                                                                        |
-| [T-QA-06](./acceptance-tasks.md)              | M5                 | T-QA-03、T-QA-04、T-ID-09、EV-MEDIA-02                                                                                                                                                             | T-QA-07                                                                                                                                                                        |
-| [T-QA-07](./acceptance-tasks.md)              | 发布               | T-QA-06                                                                                                                                                                                            | 无                                                                                                                                                                             |
+| [T-QA-05](./../archive/m5/acceptance.md)      | M5                 | T-UP-05、T-MED-10、T-MED-11、T-ID-05、T-ID-06、T-ID-07、T-SHR-04、T-STO-07                                                                                                                         | T-QA-01                                                                                                                                                                        |
+| [T-QA-01](./../archive/m5/acceptance.md)      | M5                 | T-CP-M2、T-SITE-02、T-SITE-04、T-SITE-05、T-ID-07、T-ID-08、T-UP-06、T-UP-03、T-UP-08、T-LIB-08、T-LIB-09、T-LIB-10、T-LIB-11、T-COL-03、T-COL-04、T-MED-07、T-MED-12、T-SHR-04、T-ANA-05、T-QA-05 | T-QA-02、T-QA-04                                                                                                                                                               |
+| [T-QA-02](./../archive/m5/acceptance.md)      | M5                 | T-QA-01                                                                                                                                                                                            | T-QA-03                                                                                                                                                                        |
+| [T-QA-03](./../archive/m5/acceptance.md)      | M5                 | T-QA-02                                                                                                                                                                                            | T-QA-06                                                                                                                                                                        |
+| [T-QA-04](./../archive/m5/acceptance.md)      | M5                 | T-QA-01、EV-LIBRARY-01、EV-ANALYTICS-02                                                                                                                                                            | T-QA-06                                                                                                                                                                        |
+| [T-QA-06](./../archive/m5/acceptance.md)      | M5                 | T-QA-03、T-QA-04、T-ID-09、EV-MEDIA-02                                                                                                                                                             | T-QA-07                                                                                                                                                                        |
+| [T-QA-07](./../archive/m5/acceptance.md)      | 发布               | T-QA-06                                                                                                                                                                                            | 无                                                                                                                                                                             |
 
 ## 任务组归属
 
@@ -306,9 +306,9 @@
 | SHARING             | [T-SHR-01](./../archive/m3-m4/experience.md)、[T-SHR-02](./../archive/m3-m4/experience.md)、[T-SHR-03](./../archive/m3-m4/experience.md)、[T-SHR-04](./../archive/m3-m4/experience.md) |
 | ANALYTICS-COUNT     | [T-ANA-01](./../archive/m1-m2/tasks.md)、[T-ANA-02](./../archive/m1-m2/tasks.md)                                                                                                       |
 | ANALYTICS-REPORT    | [T-ANA-03](./../archive/m3-m4/experience.md)、[T-ANA-04](./../archive/m3-m4/experience.md)、[T-ANA-05](./../archive/m3-m4/experience.md)                                               |
-| QUALITY-LOG         | [T-QA-05](./acceptance-tasks.md)                                                                                                                                                       |
-| QUALITY-INTEGRATION | [T-CP-M1](./../archive/m1-m2/acceptance.md)、[T-CP-M2](./../archive/m1-m2/acceptance.md)、[T-QA-01](./acceptance-tasks.md)                                                             |
-| QUALITY-UI          | [T-QA-02](./acceptance-tasks.md)                                                                                                                                                       |
-| QUALITY-COMPAT      | [T-QA-03](./acceptance-tasks.md)                                                                                                                                                       |
-| QUALITY-SCALE       | [T-QA-04](./acceptance-tasks.md)                                                                                                                                                       |
-| QUALITY-RELEASE     | [T-QA-06](./acceptance-tasks.md)、[T-QA-07](./acceptance-tasks.md)                                                                                                                     |
+| QUALITY-LOG         | [T-QA-05](./../archive/m5/acceptance.md)                                                                                                                                               |
+| QUALITY-INTEGRATION | [T-CP-M1](./../archive/m1-m2/acceptance.md)、[T-CP-M2](./../archive/m1-m2/acceptance.md)、[T-QA-01](./../archive/m5/acceptance.md)                                                     |
+| QUALITY-UI          | [T-QA-02](./../archive/m5/acceptance.md)                                                                                                                                               |
+| QUALITY-COMPAT      | [T-QA-03](./../archive/m5/acceptance.md)                                                                                                                                               |
+| QUALITY-SCALE       | [T-QA-04](./../archive/m5/acceptance.md)                                                                                                                                               |
+| QUALITY-RELEASE     | [T-QA-06](./../archive/m5/acceptance.md)、[T-QA-07](./../archive/m5/acceptance.md)                                                                                                     |

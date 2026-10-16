@@ -29,7 +29,7 @@
 - 反转 --only 允许条件：`only === undefined || definition.only?.includes(only)` → `only === undefined && definition.only?.includes(only)`。
 - 同一命令退出1，135失败、5通过；新增 `runs the real theme suite in full and scopes phase options to theme` 明确失败。证明现有测试会拒绝该分发条件回归，而非只检查函数存在。
 - finally 从原副本恢复；恢复内容与仓库原文件逐字节相等。未修改产品、测试、锁文件或共享构建输出。
-- 详细结果：[mutation结果](./mutation.json)、[基线日志](./mutation-baseline.log)、[反转日志](./mutation-inverted.log)。
+- 详细结果：[mutation结果](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/theme-197/pr-review/mutation.json)、[基线日志](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/theme-197/pr-review/mutation-baseline.log)、[反转日志](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/theme-197/pr-review/mutation-inverted.log)。
 
 首次隔离基线错误地使用了未锁packageManager的临时package.json与共享node_modules符号链接，pnpm自动选择全局12.4.2，并输出依赖移除信息。已立即停止该方式并通知主agent，按仓库Node24.18.1/pnpm11.19.0运行 `pnpm install --frozen-lockfile` 退出0；主agent同期冻结恢复也退出0，依赖可用。后续实验使用直接Node/Vitest入口并给副本声明正确packageManager，没有继续依赖变更。此异常未隐藏，也未把首次错误环境的通过结果作为正式实验结论。
 

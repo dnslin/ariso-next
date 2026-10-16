@@ -2,21 +2,21 @@
 
 2026-09-27，按本轮用户反馈授权修改。使用figma-use/figma-generate-design，实际读取现有节点、字体、实例后增量调整。未修改产品代码。
 
-| 场景             | 节点      | 实际context与截图                                                          |
-| ---------------- | --------- | -------------------------------------------------------------------------- |
-| 上传空态桌面     | 30:97     | [图](./figma/figma-30-97.png) · [context](./figma/figma-30-97.txt)         |
-| 上传空态手机     | 101:1014  | [图](./figma/figma-101-1014.png) · [context](./figma/figma-101-1014.txt)   |
-| 上传队列1440     | 584:5440  | [图](./figma/figma-584-5440.png) · [context](./figma/figma-584-5440.txt)   |
-| 上传队列1920     | 585:5435  | [图](./figma/figma-585-5435.png) · [context](./figma/figma-585-5435.txt)   |
-| 上传队列390      | 586:11994 | [图](./figma/figma-586-11994.png) · [context](./figma/figma-586-11994.txt) |
-| 图库详情桌面     | 36:312    | [图](./figma/figma-36-312.png) · [context](./figma/figma-36-312.txt)       |
-| 图库详情手机     | 102:3228  | [图](./figma/figma-102-3228.png) · [context](./figma/figma-102-3228.txt)   |
-| 加载Skeleton代表 | 587:12008 | [图](./figma/figma-587-12008.png) · [context](./figma/figma-587-12008.txt) |
-| 下载提示展开     | 587:12043 | [图](./figma/figma-587-12043.png) · [context](./figma/figma-587-12043.txt) |
-| 复制成功Toast    | 589:12034 | [图](./figma/figma-589-12034.png) · [context](./figma/figma-589-12034.txt) |
-| 复制桌面关闭     | 387:5769  | [图](./figma/figma-387-5769.png) · [context](./figma/figma-387-5769.txt)   |
-| 复制手机关闭     | 387:5709  | [图](./figma/figma-387-5709.png) · [context](./figma/figma-387-5709.txt)   |
-| 交互尺寸说明     | 587:12073 | [图](./figma/figma-587-12073.png) · [context](./figma/figma-587-12073.txt) |
+| 场景             | 节点      | 实际context与截图                                                                                                                                                                                                                                                                                                                            |
+| ---------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 上传空态桌面     | 30:97     | [图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/figma/figma-30-97.png) · [context](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/figma/figma-30-97.txt)         |
+| 上传空态手机     | 101:1014  | [图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/figma/figma-101-1014.png) · [context](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/figma/figma-101-1014.txt)   |
+| 上传队列1440     | 584:5440  | [图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/figma/figma-584-5440.png) · [context](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/figma/figma-584-5440.txt)   |
+| 上传队列1920     | 585:5435  | [图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/figma/figma-585-5435.png) · [context](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/figma/figma-585-5435.txt)   |
+| 上传队列390      | 586:11994 | [图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/figma/figma-586-11994.png) · [context](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/figma/figma-586-11994.txt) |
+| 图库详情桌面     | 36:312    | [图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/figma/figma-36-312.png) · [context](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/figma/figma-36-312.txt)       |
+| 图库详情手机     | 102:3228  | [图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/figma/figma-102-3228.png) · [context](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/figma/figma-102-3228.txt)   |
+| 加载Skeleton代表 | 587:12008 | [图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/figma/figma-587-12008.png) · [context](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/figma/figma-587-12008.txt) |
+| 下载提示展开     | 587:12043 | [图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/figma/figma-587-12043.png) · [context](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/figma/figma-587-12043.txt) |
+| 复制成功Toast    | 589:12034 | [图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/figma/figma-589-12034.png) · [context](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/figma/figma-589-12034.txt) |
+| 复制桌面关闭     | 387:5769  | [图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/figma/figma-387-5769.png) · [context](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/figma/figma-387-5769.txt)   |
+| 复制手机关闭     | 387:5709  | [图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/figma/figma-387-5709.png) · [context](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/figma/figma-387-5709.txt)   |
+| 交互尺寸说明     | 587:12073 | [图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/figma/figma-587-12073.png) · [context](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/figma/figma-587-12073.txt) |
 
 上传：1440可用1144，760队列+24+360设置；1920可用1624，1240队列+24+360设置。取消max1200。空态保留360高选择区，不渲染空队列；选图后左列替换为主要队列，44高数量/继续添加工具栏、96行、64缩略图。手机358，队列上设置下、56缩略图和96行、底栏继续添加/开始上传。云40px持续idle 2.8s ease-in-out，0/-4/0无限循环，reduced-motion静止；替代上轮仅hover方案。
 
@@ -26,4 +26,4 @@
 
 本记录只证明Figma同步与静态设计自检。实现后的独立真实浏览器设计复验、动态行为检查及用户人工验收仍待执行。
 
-图库列表最小补同步：实际重新读取30:285/98:748，原可见性与大小状态在同一纯文字中。仅将每页8张卡片权限前缀分离为紧凑Chip，其余文字与卡片布局保留。为避免影响文件其他画板，仅将这两个代表页对应卡片实例在页内解除实例关联，不修改共享卡片主组件。修改后两端context及截图已归档并实际查看：[桌面](./figma/figma-30-285.png)、[手机](./figma/figma-98-748.png)。未来筛选/瀑布流/选择图片等保持原设计但不扩大本轮产品范围。
+图库列表最小补同步：实际重新读取30:285/98:748，原可见性与大小状态在同一纯文字中。仅将每页8张卡片权限前缀分离为紧凑Chip，其余文字与卡片布局保留。为避免影响文件其他画板，仅将这两个代表页对应卡片实例在页内解除实例关联，不修改共享卡片主组件。修改后两端context及截图已归档并实际查看：[桌面](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/figma/figma-30-285.png)、[手机](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/figma/figma-98-748.png)。未来筛选/瀑布流/选择图片等保持原设计但不扩大本轮产品范围。

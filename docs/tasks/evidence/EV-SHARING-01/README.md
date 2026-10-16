@@ -29,7 +29,7 @@
 | 真实生产权限 | 分享 Cookie 不能取得所有者会话、管理接口或私有图片权限；所有者 Cookie 不跳过分享密码，也不扩大匿名列表。                                   |
 | 输入         | 保留空格/大小写、NFKC 等价字符；1–128 Unicode 码点，空值和超限拒绝。                                                                       |
 
-HTTP 与生产边界共 17 项通过，原始结果见 [sharing-integration.xml](./sharing-integration.xml)。隐藏恢复与迟到响应单元回归 2 项通过，见 [sharing-client.xml](./sharing-client.xml)。真实浏览器结果和最终审计在下方记录，不能由 HTTP/单元结果代替。
+HTTP 与生产边界共 17 项通过，原始结果见 [sharing-integration.xml](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-SHARING-01/sharing-integration.xml)。隐藏恢复与迟到响应单元回归 2 项通过，见 [sharing-client.xml](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-SHARING-01/sharing-client.xml)。真实浏览器结果和最终审计在下方记录，不能由 HTTP/单元结果代替。
 
 ## 环境、命令与结果
 
@@ -62,23 +62,23 @@ node docs/tasks/check.mjs
 
 文档任务检查通过：120 个任务、298 个需求，无缺失 ID 或循环。后续仅在改动、失败或未解决问题影响输入时重跑对应检查。
 
-默认浏览器全量命令退出 1。初始化和重启的 1440/390 两宽度、存储管理及 CORS 已通过。已有图库场景在 `e2e/library-detail-171-confirmation.mjs:31` 期望焦点为 `detail-workspace-title`，实际为 null；流程尚未到分享和其后场景，不算全量通过。本次没有改动该图库实现或断言，范围外问题留待所属任务处理。见 [browser-full.json](./browser-full.json)。新分享场景接入默认入口，定向模式不替代全量结果。
+默认浏览器全量命令退出 1。初始化和重启的 1440/390 两宽度、存储管理及 CORS 已通过。已有图库场景在 `e2e/library-detail-171-confirmation.mjs:31` 期望焦点为 `detail-workspace-title`，实际为 null；流程尚未到分享和其后场景，不算全量通过。本次没有改动该图库实现或断言，范围外问题留待所属任务处理。见 [browser-full.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-SHARING-01/browser-full.json)。新分享场景接入默认入口，定向模式不替代全量结果。
 
-用户追问失败原因后，使用 Node 24、现有 `launchLocalDelivery`、独立新图片和原 Ego TaskSpace 30 的 p5 定向诊断。直接进入重新处理页，标题和选项已显示，实际焦点仍在 BODY；等待标题获得焦点 2 秒仍未发生，排除了只是首轮断言立即读取的问题。`library-screen.tsx` 在详情尚未返回时已经挂载 `DetailReprocess`，此时组件返回 null，标题 ref 为空。设置焦点的 effect 只依赖 receipt/job 状态，详情返回后这些值未改变，不会再次执行；导航的焦点 effect 同样只依赖 view/imageId。该已有图库焦点缺陷仍未修复，不属于分享授权失败。诊断没有修改产品代码，临时服务与独立数据已经回收，见 [focus-diagnosis.json](./focus-diagnosis.json)。
+用户追问失败原因后，使用 Node 24、现有 `launchLocalDelivery`、独立新图片和原 Ego TaskSpace 30 的 p5 定向诊断。直接进入重新处理页，标题和选项已显示，实际焦点仍在 BODY；等待标题获得焦点 2 秒仍未发生，排除了只是首轮断言立即读取的问题。`library-screen.tsx` 在详情尚未返回时已经挂载 `DetailReprocess`，此时组件返回 null，标题 ref 为空。设置焦点的 effect 只依赖 receipt/job 状态，详情返回后这些值未改变，不会再次执行；导航的焦点 effect 同样只依赖 view/imageId。该已有图库焦点缺陷仍未修复，不属于分享授权失败。诊断没有修改产品代码，临时服务与独立数据已经回收，见 [focus-diagnosis.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-SHARING-01/focus-diagnosis.json)。
 
-取消实验使用真实 Next HTTP 服务和阻塞的 CLI 夹具：服务返回 200 后给运行器 SIGINT，运行器按预期退出 1，服务端口关闭、浏览器子进程结束、临时 SQLite 目录删除。该结果证明资源回收，不证明真实 Ego 的取消行为，见 [cancellation.json](./cancellation.json) 与 [cancellation-runner.json](./cancellation-runner.json)。命令与结果汇总见 [checks.json](./checks.json)。
+取消实验使用真实 Next HTTP 服务和阻塞的 CLI 夹具：服务返回 200 后给运行器 SIGINT，运行器按预期退出 1，服务端口关闭、浏览器子进程结束、临时 SQLite 目录删除。该结果证明资源回收，不证明真实 Ego 的取消行为，见 [cancellation.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-SHARING-01/cancellation.json) 与 [cancellation-runner.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-SHARING-01/cancellation-runner.json)。命令与结果汇总见 [checks.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-SHARING-01/checks.json)。
 
 ## 浏览器、评审与完成状态
 
 Ego Lite 唯一 TaskSpace 为 30。真实能力探测 `Target.createBrowserContext` 可以创建上下文，`Target.createTarget` 明确返回 `Target.createTarget is not allowed`；探测上下文已释放。当前 Ego API 不能在该上下文创建受管页面。**同一 origin 的两个独立浏览器上下文仍未验证。** 两个标签页、不同 Cookie Path 或不同主机不能替代此项。当时已向用户说明并询问验收方式，未自行豁免。用户后续取消本次该项必需测试，见下方范围调整记录；未验证的事实保持。
 
-首轮分享定向命令在隐藏检查处超时。前四项 Cookie/并发/主机/所有者场景已通过，后续未完成，见 [browser-before.json](./browser-before.json)。实际读取安装的 Ego SDK 后确认：页面 wait/evaluate/cdp 会激活自身，因此隐藏断言改变了被测状态。改为沿用 `e2e/browser-errors.mjs` 的 Runtime binding 与 `page.events()`，后者仅读协议事件、不激活页面；继续要求真实隐藏事件和恢复行为，不伪造 visibility 或放宽断言。
+首轮分享定向命令在隐藏检查处超时。前四项 Cookie/并发/主机/所有者场景已通过，后续未完成，见 [browser-before.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-SHARING-01/browser-before.json)。实际读取安装的 Ego SDK 后确认：页面 wait/evaluate/cdp 会激活自身，因此隐藏断言改变了被测状态。改为沿用 `e2e/browser-errors.mjs` 的 Runtime binding 与 `page.events()`，后者仅读协议事件、不激活页面；继续要求真实隐藏事件和恢复行为，不伪造 visibility 或放宽断言。
 
-最终分享定向命令退出 0，使用原 TaskSpace 的既有 p5。真实 Cookie、并发授权、主机隔离和所有者边界通过。首次轮询 5,059ms，显示恢复后 74ms 检查，161 个 ID 按 80/80/1 分批；挂起时不重叠，真实 hidden 后停止，转为私有或回收的两条成员被移除。旧刷新尚未交付时，隐藏/恢复也立即开始新检查。列表/邻居/刷新 × 撤销授权/隐藏名称/切换实验批次的 9 种已解码真实迟到响应全部被忽略。见 [browser.json](./browser.json) 与 [browser-runner.json](./browser-runner.json)。
+最终分享定向命令退出 0，使用原 TaskSpace 的既有 p5。真实 Cookie、并发授权、主机隔离和所有者边界通过。首次轮询 5,059ms，显示恢复后 74ms 检查，161 个 ID 按 80/80/1 分批；挂起时不重叠，真实 hidden 后停止，转为私有或回收的两条成员被移除。旧刷新尚未交付时，隐藏/恢复也立即开始新检查。列表/邻居/刷新 × 撤销授权/隐藏名称/切换实验批次的 9 种已解码真实迟到响应全部被忽略。见 [browser.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-SHARING-01/browser.json) 与 [browser-runner.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-SHARING-01/browser-runner.json)。
 
 成功后移除当前页面的具名观察回调、新文档注入脚本和协议订阅，不让后续 suite 继承实验观察器。期间曾误认为取消协议订阅会删除页面绑定函数，核对官方协议后已撤回该判断，删除由错误前提增加的额外异常观察；必要行为断言与已验证的清理均保持。测试服务和临时数据库按运行器退出路径回收。TaskSpace 保留，完整关卡尚未通过，不在失败或未完成状态结束该空间。
 
-独立评审使用 `code-review-and-quality`。首轮指出 `/private` 夹具只是会话探针，已删除它并补真实生产图片测试。另一项指出旧状态检查未 settle 时立即隐藏/恢复会遗漏检查：先取得失败证据，再修复并增加默认单元回归。初始离线失败环境为 Node 26.10.0，仅用作缺陷重现，不算项目验收；修复后的 Node 24.19.0 回归通过，真实浏览器仍需独立验证。原始对照见 [hidden-before.json](./hidden-before.json)、[hidden-after.json](./hidden-after.json)。
+独立评审使用 `code-review-and-quality`。首轮指出 `/private` 夹具只是会话探针，已删除它并补真实生产图片测试。另一项指出旧状态检查未 settle 时立即隐藏/恢复会遗漏检查：先取得失败证据，再修复并增加默认单元回归。初始离线失败环境为 Node 26.10.0，仅用作缺陷重现，不算项目验收；修复后的 Node 24.19.0 回归通过，真实浏览器仍需独立验证。原始对照见 [hidden-before.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-SHARING-01/hidden-before.json)、[hidden-after.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-SHARING-01/hidden-after.json)。
 
 代码实现完成，格式/静态/类型/构建通过，单元与受影响的分享集成通过。集成全量首次失败及修复后的定向结果分别保留。分享真实浏览器已通过，默认浏览器全量失败，后续未执行段保持未验证。独立评审结论见[审计记录](./audit.md)。本任务没有产品 UI，设计评审和产品页面人工验收不适用；不关闭 DES/RG 或 SHARING 业务任务。
 
@@ -122,6 +122,6 @@ Ego Lite 唯一 TaskSpace 为 30。真实能力探测 `Target.createBrowserConte
 
 用户明确要求合并PR #243、关闭Issue #148，并清理本任务和更新本地分支。实际fetch的main为5234763，包含#242、#241及处理设置#244；与本PR重叠的运行器和gate自动合并成功，无冲突。处理设置与分享的定向/default入口、参数边界和退出资源均保留。
 
-只补处理设置新增的6种参数组合和2种存储专属参数拒绝；Node24/pnpm的57项定向单元、类型、语法、定向ESLint/格式及文档检查通过，两位独立评审的定向复审均Approve。运行器合并后1019行，结构审查明确记录本次阈值例外依据，没有为了行数加入无实际收益的通用调度层。命令、结果及两份报告统一见[合并核对证据](./merge-checks.json)。
+只补处理设置新增的6种参数组合和2种存储专属参数拒绝；Node24/pnpm的57项定向单元、类型、语法、定向ESLint/格式及文档检查通过，两位独立评审的定向复审均Approve。运行器合并后1019行，结构审查明确记录本次阈值例外依据，没有为了行数加入无实际收益的通用调度层。命令、结果及两份报告统一见[合并核对证据](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-SHARING-01/merge-checks.json)。
 
 本次不重复应用构建、全量业务测试或浏览器，原历史失败、未执行与用户取消项保持。合并及清理只针对本任务；忽略的原始报告和独立预览数据先保存到私有本地备份，worktree使用应用归档能力，本地main只快进更新。最终PR/Issue与清理实际状态在完成回复和本地收尾记录中回报。

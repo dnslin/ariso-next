@@ -7,7 +7,7 @@
 2026-09-25 按所有者最新要求修复 P2/P3，只执行本地验证。删除本 PR 新增的 `Analytics experiment` 自动工作流，恢复[开发阶段检查约定](../../execution.md#适用检查)；生产发布流程未修改。下文双架构数据是旧提交的真实历史证据，不能算作本轮修改后的 Docker 验证。
 
 - P2：用实际 SIGTERM/SIGINT 到达时 resolve 的 Promise 放行首块，替代 500ms 定时放行。信号处理器只记录与放行，Next 仍负责停止连接、等待在途请求及退出；最终 SQLite 刷库仍同步执行。
-- 回归：运行器故意等待 700ms 再发送信号。相同测试在旧实现的 `signal < first-byte` 断言处失败，修复后 SIGTERM/SIGINT 均通过；完整响应、三表计数及关闭顺序断言没有削弱。实测 SIGTERM/SIGINT 分别在请求开始后 727/726ms 到达，首块分别再晚 4/1ms，计数零损失。见[本轮六场景 trace](./review-regression.json)。
+- 回归：运行器故意等待 700ms 再发送信号。相同测试在旧实现的 `signal < first-byte` 断言处失败，修复后 SIGTERM/SIGINT 均通过；完整响应、三表计数及关闭顺序断言没有削弱。实测 SIGTERM/SIGINT 分别在请求开始后 727/726ms 到达，首块分别再晚 4/1ms，计数零损失。见[本轮六场景 trace](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-ANALYTICS-01/review-regression.json)。
 - P3：每个场景开始时集中定义 `fullBuffer`、`recordCount`、`pendingEvents`、`dropped`，删除重复场景判断，不引入场景框架。
 - 独立代码复审通过，无新增阻断问题。
 
@@ -49,7 +49,7 @@ git diff --check
 
 ## 测量与证据
 
-本地 macOS arm64、Apple M4、16 GiB RAM，Node 24.18.1、pnpm 11.19.0、Next 16.3.5、SQLite 3.53.4。文件系统块大小、总量及可用空间均记录于 [压力原始报告](./local-pressure.json)。测试使用真实磁盘 SQLite WAL，`busy_timeout=100ms`；持续写失败通过 SQLite `query_only` 注入，不声称制造物理磁盘故障。
+本地 macOS arm64、Apple M4、16 GiB RAM，Node 24.18.1、pnpm 11.19.0、Next 16.3.5、SQLite 3.53.4。文件系统块大小、总量及可用空间均记录于 [压力原始报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-ANALYTICS-01/local-pressure.json)。测试使用真实磁盘 SQLite WAL，`busy_timeout=100ms`；持续写失败通过 SQLite `query_only` 注入，不声称制造物理磁盘故障。
 
 | 场景                      | 本地实测                                                                                           |
 | ------------------------- | -------------------------------------------------------------------------------------------------- |
@@ -61,13 +61,13 @@ git diff --check
 | 100000 次/100000 个长尾键 | 420.94ms，100 批                                                                                   |
 | 内存采样                  | 144 点，RSS 峰值 122241024 字节，heap 峰值 23669256 字节；是此数据分布下的采样峰值，不是硬字节上限 |
 
-![本地实际内存和待写键采样曲线](./local-memory.svg)
+![本地实际内存和待写键采样曲线](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-ANALYTICS-01/local-memory.svg)
 
 本实验不是十万图片一年报表查询压测，未验证排行/保留任务。事件键长度及分布也会影响实际内存，不将这些耗时作为产品 SLA。
 
 Next 子进程场景包含 SIGTERM/SIGINT 在途传输、已提交前缀后的 SIGKILL、持续写失败、满缓冲失败退出及退出时刷完 20000 键。正常场景在收到信号后才交付首块，断言完整响应、最终三表一致和刷库先于数据库关闭；满缓冲正常退出额外断言进入退出回调前仍有全部 20000 个待写键。
 
-[六场景真实退出 trace](./local-lifecycle.json)记录收到信号、首块、传输完成、刷库开始/结束及数据库关闭的顺序。
+[六场景真实退出 trace](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-ANALYTICS-01/local-lifecycle.json)记录收到信号、首块、传输完成、刷库开始/结束及数据库关闭的顺序。
 
 | Next 场景     | 退出耗时（ms） | 已接收但丢失 | 数据库三表计数        |
 | ------------- | -------------- | ------------ | --------------------- |
@@ -102,7 +102,7 @@ node docs/tasks/check.mjs --self-test
 git diff --check
 ```
 
-已完成：冻结安装、聚合器 5 项定向单测、真实压力脚本、六场景 Next 测试（补录进程内环境后定向复跑通过）、lint、类型检查、397 项单测和生产构建。降低并发后完整集成 457/457（54 文件）通过；新增六场景关停、Ego Lite 浏览器、格式和文档检查均通过。浏览器见[运行摘要](./browser.json)。
+已完成：冻结安装、聚合器 5 项定向单测、真实压力脚本、六场景 Next 测试（补录进程内环境后定向复跑通过）、lint、类型检查、397 项单测和生产构建。降低并发后完整集成 457/457（54 文件）通过；新增六场景关停、Ego Lite 浏览器、格式和文档检查均通过。浏览器见[运行摘要](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-ANALYTICS-01/browser.json)。
 
 首次全套集成 456/457 通过，既有 `media/tools.test.ts` 等待 ExifTool 子进程 ready 超过原有 3 秒限制；当时同机另一任务也在跑完整套件。原断言定向复跑 8/8 通过，随后全套 `--maxWorkers=2` 457/457 通过（199.58 秒）。未修改测试、放宽超时或跳过检查。
 
@@ -114,10 +114,10 @@ git diff --check
 
 初轮按当时要求新增 `Analytics experiment` PR 工作流（本轮已删除），只构建临时验证镜像并运行实验，不登录镜像仓库、不推送镜像、不部署。生产发布工作流保持原状。首轮及补录环境后的最终轮次均通过。[最终运行 36137834544](https://github.com/dnslin/ariso-next/actions/runs/36137834544) 验证代码提交 `360bbc9d953f37a791f169f1b0db93b87f218dea`。后续证据归档提交仅含文档/JSON，没有修改运行代码。报告顶层 `node` 是测试运行器版本，实际 Next/容器环境以 trace 的 `initialized` 为准；两个容器均实际运行 Node 24.21.0，PID 1，Linux x64/arm64。
 
-| 平台  | 真实压力                      | standalone                     | Docker 六场景               | SIGTERM 耗时      | 退出时刷完 20000 键     |
-| ----- | ----------------------------- | ------------------------------ | --------------------------- | ----------------- | ----------------------- |
-| AMD64 | [通过](./amd64/pressure.json) | [通过](./amd64/lifecycle.json) | [通过](./amd64/docker.json) | 1095.44ms，零损失 | 315.37ms，20 批，零损失 |
-| ARM64 | [通过](./arm64/pressure.json) | [通过](./arm64/lifecycle.json) | [通过](./arm64/docker.json) | 1076.23ms，零损失 | 302.41ms，20 批，零损失 |
+| 平台  | 真实压力                                                                                                                                           | standalone                                                                                                                                          | Docker 六场景                                                                                                                                    | SIGTERM 耗时      | 退出时刷完 20000 键     |
+| ----- | -------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------- | ----------------------- |
+| AMD64 | [通过](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-ANALYTICS-01/amd64/pressure.json) | [通过](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-ANALYTICS-01/amd64/lifecycle.json) | [通过](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-ANALYTICS-01/amd64/docker.json) | 1095.44ms，零损失 | 315.37ms，20 批，零损失 |
+| ARM64 | [通过](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-ANALYTICS-01/arm64/pressure.json) | [通过](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-ANALYTICS-01/arm64/lifecycle.json) | [通过](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-ANALYTICS-01/arm64/docker.json) | 1076.23ms，零损失 | 302.41ms，20 批，零损失 |
 
 两架构 SIGKILL 均保留已提交 1000 次并丢失未提交 17 次；持续写失败保留错误并在退出丢失待写 17 次/满缓冲 20000 次，额外拒绝新键单独记为 dropped。证据同时保留实际内存曲线采样、硬件/文件系统与每批时延，不能把不同环境耗时相互替代。
 

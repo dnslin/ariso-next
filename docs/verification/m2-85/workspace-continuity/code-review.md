@@ -52,7 +52,7 @@
 
 在新构建 `ariso-workspace-51493.localhost:51493`，重新执行完整导航专项，1440×1000 与 390×844 均为 passed，每端 5 项行为。新增结果 401 用例两端均记录目标 `/api/images/{id}` 的真实 HTTP 401、3 个被保持的真实 get-session 响应以及 `beforeUnload: [false]`，queued Blob 显式释放并在重新登录后为空队列。这一用例覆盖 useUploadResult 自身出口，而不是依赖 session-controls。
 
-归档：[桌面报告](./browser/continuity/workspace-continuity-1440.json)、[手机报告](./browser/continuity/workspace-continuity-390.json)。同目录包含两端队列往返、后台完成和 result-401-cleared 实际截图。只运行独立测试服务，未触碰用户手工预览数据。
+归档：[桌面报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/workspace-continuity/browser/continuity/workspace-continuity-1440.json)、[手机报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/workspace-continuity/browser/continuity/workspace-continuity-390.json)。同目录包含两端队列往返、后台完成和 result-401-cleared 实际截图。只运行独立测试服务，未触碰用户手工预览数据。
 
 本轮独立代码审计无剩余阻断发现。完整仓库回归及最终文案构建仍由主 agent 跟进；本报告不将专项通过记作全量通过。
 

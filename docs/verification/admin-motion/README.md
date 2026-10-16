@@ -44,19 +44,19 @@ CORS 只验证设置页面进入和布局。隔离数据库中新增一个禁用
 
 ## 证据与边界
 
-[精简结果](./verification.json) 保留实际入口窗口和检查结果，不提交大量逐帧数据。完整报告为 `test-results/browser-admin-motion/admin-motion.json`，入口报告为同目录 `runner.json`。
+[精简结果](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/admin-motion/verification.json) 保留实际入口窗口和检查结果，不提交大量逐帧数据。完整报告为 `test-results/browser-admin-motion/admin-motion.json`，入口报告为同目录 `runner.json`。
 
 所有 38 张截图保存在本目录。人工视觉核对样本包括上传桌面/手机、品牌桌面、本地存储编辑手机、标签手机和访问统计桌面；页面结构、外壳和表单顺序与原样式一致，未观察到异常占位或宽度溢出。截图用于核对静态布局，逐帧记录用于验证动效。
 
-| 样本         | 桌面                                           | 手机                                          |
-| ------------ | ---------------------------------------------- | --------------------------------------------- |
-| 上传         | [截图](./admin-motion-upload-1440.png)         | [截图](./admin-motion-upload-390.png)         |
-| 访问统计     | [截图](./admin-motion-analytics-1440.png)      | [截图](./admin-motion-analytics-390.png)      |
-| 标签         | [截图](./admin-motion-tags-1440.png)           | [截图](./admin-motion-tags-390.png)           |
-| 分享设置     | [截图](./admin-motion-share-settings-1440.png) | [截图](./admin-motion-share-settings-390.png) |
-| 品牌         | [截图](./admin-motion-branding-1440.png)       | [截图](./admin-motion-branding-390.png)       |
-| 本地存储编辑 | [截图](./admin-motion-storage-local-1440.png)  | [截图](./admin-motion-storage-local-390.png)  |
-| CORS 设置    | [截图](./admin-motion-storage-cors-1440.png)   | [截图](./admin-motion-storage-cors-390.png)   |
-| API 用法     | [截图](./admin-motion-api-usage-1440.png)      | [截图](./admin-motion-api-usage-390.png)      |
+| 样本         | 桌面                                                                                                                                                                     | 手机                                                                                                                                                                    |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 上传         | [截图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/admin-motion/admin-motion-upload-1440.png)         | [截图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/admin-motion/admin-motion-upload-390.png)         |
+| 访问统计     | [截图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/admin-motion/admin-motion-analytics-1440.png)      | [截图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/admin-motion/admin-motion-analytics-390.png)      |
+| 标签         | [截图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/admin-motion/admin-motion-tags-1440.png)           | [截图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/admin-motion/admin-motion-tags-390.png)           |
+| 分享设置     | [截图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/admin-motion/admin-motion-share-settings-1440.png) | [截图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/admin-motion/admin-motion-share-settings-390.png) |
+| 品牌         | [截图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/admin-motion/admin-motion-branding-1440.png)       | [截图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/admin-motion/admin-motion-branding-390.png)       |
+| 本地存储编辑 | [截图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/admin-motion/admin-motion-storage-local-1440.png)  | [截图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/admin-motion/admin-motion-storage-local-390.png)  |
+| CORS 设置    | [截图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/admin-motion/admin-motion-storage-cors-1440.png)   | [截图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/admin-motion/admin-motion-storage-cors-390.png)   |
+| API 用法     | [截图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/admin-motion/admin-motion-api-usage-1440.png)      | [截图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/admin-motion/admin-motion-api-usage-390.png)      |
 
 视口模拟不等同于物理设备验收。未执行全量集成、历史全量浏览器、远端 CI 或发布容器验证；未提交、推送或部署。图库与相册的历史完整流程没有重复执行。用户已授权推广进入节奏，本报告不代替用户对全部页面的最终观感验收。

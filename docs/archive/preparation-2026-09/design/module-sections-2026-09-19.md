@@ -73,10 +73,10 @@
 
 ## 最终验证与历史记录
 
-[完成证据](./verification/module-sections-completed-2026-09-20.json)记录最终回读：两端共 34 个模块分区、48 个旧容器删除、1,737 个根节点无遗漏。内容及交互配置的前后指纹一致，原型流程入口集合相同，全部根节点和分区的位置、尺寸、归属、边界及相互重叠检查通过。旧分区文档链接已更新为主分区或稳定阅读入口。
+[完成证据](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/archive/preparation-2026-09/design/verification/module-sections-completed-2026-09-20.json)记录最终回读：两端共 34 个模块分区、48 个旧容器删除、1,737 个根节点无遗漏。内容及交互配置的前后指纹一致，原型流程入口集合相同，全部根节点和分区的位置、尺寸、归属、边界及相互重叠检查通过。旧分区文档链接已更新为主分区或稳定阅读入口。
 
-代表截图：[桌面相册分区](./verification/module-sections-desktop-albums-2026-09-20.png)、[手机相册分区](./verification/module-sections-mobile-albums-2026-09-20.png)。已检查画板排列、边界和背景区分；这些截图不是所有业务页面的逐页视觉验收。
+代表截图：[桌面相册分区](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/archive/preparation-2026-09/design/verification/module-sections-desktop-albums-2026-09-20.png)、[手机相册分区](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/archive/preparation-2026-09/design/verification/module-sections-mobile-albums-2026-09-20.png)。已检查画板排列、边界和背景区分；这些截图不是所有业务页面的逐页视觉验收。
 
 实际执行 `python3 /tmp/ariso-module-final-check.py`、项目 `prettier --check` 和 `git diff --check`，均通过。本轮没有修改应用代码，未运行应用测试或构建，也未验证真实播放器和业务行为。
 
-此前两次额度中断保留为历史：[2026-09-19 原断点](./verification/module-sections-2026-09-19.json)记录 750 个已移动、987 个待复查；[2026-09-20 续接断点](./verification/module-sections-resume-2026-09-20.json)记录又移动 745 个、合计 1,554 个已定位、183 个待处理。随后已完成最后 183 个手机节点，清理旧容器并完成上述最终检查。历史 JSON 不回写；历史专项正文中的旧分区名称、位置及当批结果不作为当前布局说明。
+此前两次额度中断保留为历史：[2026-09-19 原断点](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/archive/preparation-2026-09/design/verification/module-sections-2026-09-19.json)记录 750 个已移动、987 个待复查；[2026-09-20 续接断点](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/archive/preparation-2026-09/design/verification/module-sections-resume-2026-09-20.json)记录又移动 745 个、合计 1,554 个已定位、183 个待处理。随后已完成最后 183 个手机节点，清理旧容器并完成上述最终检查。历史 JSON 不回写；历史专项正文中的旧分区名称、位置及当批结果不作为当前布局说明。

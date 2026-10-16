@@ -36,6 +36,6 @@
 
 布局沿用现有图库的列数、卡片尺寸、间距、控件和公共外壳。本轮只改变进入和加载行为；截图用于核对布局，逐帧记录用于验证动效。未修改 Figma，未声称用户已经认可动效观感。
 
-最新证据：[精简结果](./verification.json)、[桌面](./library-motion-1440.png)、[手机](./library-motion-390.png)。完整逐帧报告位于 `test-results/browser-library-motion/library-motion.json`。
+最新证据：[精简结果](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-motion/verification.json)、[桌面](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-motion/library-motion-1440.png)、[手机](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-motion/library-motion-390.png)。完整逐帧报告位于 `test-results/browser-library-motion/library-motion.json`。
 
 未执行全量单元、全量集成、全量浏览器、远端 CI 或发布验证。未提交、推送或部署。

@@ -23,7 +23,7 @@
 | 并发 1–4 按需缓存、真实低空间耗尽与清理      | 通过  | 通过  |
 | 既有存储、静态图片、字体及容器生命周期检查   | 通过  | 通过  |
 
-原始媒体报告：[AMD64](./prerequisite-amd64.json)、[ARM64](./prerequisite-arm64.json)。两端均为 Linux、UID 1000、Node 24.21.0、ImageMagick 7.1.1-43 Q16、ExifTool 13.25。完整样本及其他工作流证据在该运行的 artifacts 中。首个手动运行 [35701430895](https://github.com/dnslin/ariso-next/actions/runs/35701430895) 的 ARM64 成功，AMD64 在既有 setup-dev 验证遇到 `@swc/helpers` 环境错误；保留该失败，没有削弱测试，后续 PR 事件运行通过。
+原始媒体报告：[AMD64](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/media-63/prerequisite-amd64.json)、[ARM64](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/media-63/prerequisite-arm64.json)。两端均为 Linux、UID 1000、Node 24.21.0、ImageMagick 7.1.1-43 Q16、ExifTool 13.25。完整样本及其他工作流证据在该运行的 artifacts 中。首个手动运行 [35701430895](https://github.com/dnslin/ariso-next/actions/runs/35701430895) 的 ARM64 成功，AMD64 在既有 setup-dev 验证遇到 `@swc/helpers` 环境错误；保留该失败，没有削弱测试，后续 PR 事件运行通过。
 
 ## 本次交付与覆盖
 
@@ -54,25 +54,25 @@ macOS arm64、Node 24.18.1、pnpm 11.19.0、ImageMagick 7.1.2-31 Q16-HDRI、Exif
 export PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH
 ```
 
-| 实际执行命令或检查                                                                                                                      | 结果                                                                          |
-| --------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
-| `pnpm install --frozen-lockfile`                                                                                                        | 通过                                                                          |
-| `pnpm run db:generate`                                                                                                                  | 生成两个时间列迁移，已检查 SQL                                                |
-| `pnpm run format:check`                                                                                                                 | 最终通过                                                                      |
-| `pnpm run lint`                                                                                                                         | 最终通过                                                                      |
-| `pnpm run typecheck`                                                                                                                    | 最终通过                                                                      |
-| `pnpm run test:unit`                                                                                                                    | 279 项通过                                                                    |
-| `pnpm run build`                                                                                                                        | 修复文件追踪后通过，standalone 与 nft 清单不含项目 src/tests                  |
-| `pnpm exec vitest run --project integration tests/integration/media/queue.test.ts tests/integration/runtime/server-start.test.ts`       | 2 文件、16 项通过：队列 9 项、启动 7 项                                       |
-| 真实 `process.test.ts` 与 `formats-tools.test.ts`                                                                                       | 22 项通过：处理 18 项、格式 4 项；现统一归入 media-tools project              |
-| `pnpm exec vitest run --project integration tests/integration/identity/auth.test.ts`                                                    | 首次整套中的超时单独复测，17 项通过                                           |
-| `pnpm run test:integration --maxWorkers=4 --reporter=default --reporter=junit --outputFile=test-results/media-63/integration-final.xml` | 最终 34 文件、251 项通过，83.30 秒；[原始 XML](./local-integration-final.xml) |
-| `EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/media-63/browser-final pnpm run test:browser`                                         | [运行器](./browser-runner.json) passed；主页及 1440/390 初始化、重启通过      |
-| `git diff --check`                                                                                                                      | 通过                                                                          |
+| 实际执行命令或检查                                                                                                                      | 结果                                                                                                                                                                                      |
+| --------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm install --frozen-lockfile`                                                                                                        | 通过                                                                                                                                                                                      |
+| `pnpm run db:generate`                                                                                                                  | 生成两个时间列迁移，已检查 SQL                                                                                                                                                            |
+| `pnpm run format:check`                                                                                                                 | 最终通过                                                                                                                                                                                  |
+| `pnpm run lint`                                                                                                                         | 最终通过                                                                                                                                                                                  |
+| `pnpm run typecheck`                                                                                                                    | 最终通过                                                                                                                                                                                  |
+| `pnpm run test:unit`                                                                                                                    | 279 项通过                                                                                                                                                                                |
+| `pnpm run build`                                                                                                                        | 修复文件追踪后通过，standalone 与 nft 清单不含项目 src/tests                                                                                                                              |
+| `pnpm exec vitest run --project integration tests/integration/media/queue.test.ts tests/integration/runtime/server-start.test.ts`       | 2 文件、16 项通过：队列 9 项、启动 7 项                                                                                                                                                   |
+| 真实 `process.test.ts` 与 `formats-tools.test.ts`                                                                                       | 22 项通过：处理 18 项、格式 4 项；现统一归入 media-tools project                                                                                                                          |
+| `pnpm exec vitest run --project integration tests/integration/identity/auth.test.ts`                                                    | 首次整套中的超时单独复测，17 项通过                                                                                                                                                       |
+| `pnpm run test:integration --maxWorkers=4 --reporter=default --reporter=junit --outputFile=test-results/media-63/integration-final.xml` | 最终 34 文件、251 项通过，83.30 秒；[原始 XML](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/media-63/local-integration-final.xml) |
+| `EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/media-63/browser-final pnpm run test:browser`                                         | [运行器](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/media-63/browser-runner.json) passed；主页及 1440/390 初始化、重启通过      |
+| `git diff --check`                                                                                                                      | 通过                                                                                                                                                                                      |
 
-首次完整集成为 246 项通过、5 项失败，[原始 XML](./local-integration-first.xml) 保留全部结果。其中 4 项因新增 media 调用使 Next standalone 错误追踪项目 `src/tests`；启动路径由 `join` 改为 `resolve`，利用已有 DATA_DIR 绝对路径契约消除误追踪，没有排除应打包依赖或削弱产物断言。另 1 项为身份测试 5 秒超时，单独复测通过。最终完整复测以 `--maxWorkers=4` 控制本地并行资源竞争，未修改超时、断言或跳过测试。
+首次完整集成为 246 项通过、5 项失败，[原始 XML](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/media-63/local-integration-first.xml) 保留全部结果。其中 4 项因新增 media 调用使 Next standalone 错误追踪项目 `src/tests`；启动路径由 `join` 改为 `resolve`，利用已有 DATA_DIR 绝对路径契约消除误追踪，没有排除应打包依赖或削弱产物断言。另 1 项为身份测试 5 秒超时，单独复测通过。最终完整复测以 `--maxWorkers=4` 控制本地并行资源竞争，未修改超时、断言或跳过测试。
 
-Ego 使用既有 Ego Lite、Chrome 152、TaskSpace 7，完成后已结束该空间，没有下载 Playwright/Chromium。[主页/运行基线](./browser-browser.json)、[桌面初始化](./browser-identity-1440-setup.json)、[桌面重启](./browser-identity-1440-restart.json)、[手机初始化](./browser-identity-390-setup.json)、[手机重启](./browser-identity-390-restart.json) 保留原始检查。当前不新增页面，浏览器结果验证 Web 启动与既有界面回归，不冒充上传或媒体设置/详情 UI 验收。
+Ego 使用既有 Ego Lite、Chrome 152、TaskSpace 7，完成后已结束该空间，没有下载 Playwright/Chromium。[主页/运行基线](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/media-63/browser-browser.json)、[桌面初始化](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/media-63/browser-identity-1440-setup.json)、[桌面重启](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/media-63/browser-identity-1440-restart.json)、[手机初始化](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/media-63/browser-identity-390-setup.json)、[手机重启](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/media-63/browser-identity-390-restart.json) 保留原始检查。当前不新增页面，浏览器结果验证 Web 启动与既有界面回归，不冒充上传或媒体设置/详情 UI 验收。
 
 ## 验证入口与远端结果
 
@@ -80,18 +80,18 @@ Ego 使用既有 Ego Lite、Chrome 152、TaskSpace 7，完成后已结束该空�
 
 业务提交 `fa20fd4` 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/35704396275) 已通过。[首轮双架构运行](https://github.com/dnslin/ariso-next/actions/runs/35704396667) 在新增工具组各有 21 项通过、1 项失败：旧版 ImageMagick 生成的测试底图在 IDAT 后附带文本，ExifTool 对单帧 APNG 样本发出警告。18 项处理测试全部通过；该失败阻止后续容器步骤，不能标整套通过。
 
-已在测试底图生成时增加 `-strip`，保留动画控制块、帧数、尺寸、警告和 MPF 提取等全部断言。该改动不修改业务逻辑；独立审计通过。`pnpm exec vitest run --project media-tools --reporter=default --reporter=junit --outputFile=test-results/media-63/media-tools-fixture-fix.xml` 本地复测 22 项通过。首轮 [AMD64](./remote-first-amd64.xml)、[ARM64](./remote-first-arm64.xml) XML 保留失败。修复后的结果如下。
+已在测试底图生成时增加 `-strip`，保留动画控制块、帧数、尺寸、警告和 MPF 提取等全部断言。该改动不修改业务逻辑；独立审计通过。`pnpm exec vitest run --project media-tools --reporter=default --reporter=junit --outputFile=test-results/media-63/media-tools-fixture-fix.xml` 本地复测 22 项通过。首轮 [AMD64](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/media-63/remote-first-amd64.xml)、[ARM64](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/media-63/remote-first-arm64.xml) XML 保留失败。修复后的结果如下。
 
 业务与样本修复提交 [`e1d736a`](https://github.com/dnslin/ariso-next/commit/e1d736a7bea8c864b2b7b06dcd9b27878b1fb63a) 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/35705138400) 和 [Docker 双架构工作流](https://github.com/dnslin/ariso-next/actions/runs/35705138845) 均成功。实际跟进命令为 `gh run watch 35705138400 --repo dnslin/ariso-next --interval 45 --exit-status` 和 `gh run watch 35705138845 --repo dnslin/ariso-next --interval 45 --exit-status`，均退出 0。
 
-| 远端验证               | 结果及归档                                                                                                     |
-| ---------------------- | -------------------------------------------------------------------------------------------------------------- |
-| CI 普通集成            | 229 项通过，[XML](./remote-integration.xml)                                                                    |
-| CI 单元测试            | 279 项通过，[XML](./remote-unit.xml)                                                                           |
-| AMD64 生产镜像真实工具 | 22 项通过，[XML](./remote-amd64.xml)                                                                           |
-| ARM64 生产镜像真实工具 | 22 项通过，[XML](./remote-arm64.xml)                                                                           |
-| 两架构其他必跑步骤     | 媒体契约、身份、交付、镜像产物隔离、本地存储真实挂载、媒体资源、离线转换与字体、生命周期/迁移/备份恢复全部通过 |
-| 发布步骤               | release-checks/publish 均因非 release 事件跳过，没有镜像发布或部署                                             |
+| 远端验证               | 结果及归档                                                                                                                                              |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| CI 普通集成            | 229 项通过，[XML](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/media-63/remote-integration.xml) |
+| CI 单元测试            | 279 项通过，[XML](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/media-63/remote-unit.xml)        |
+| AMD64 生产镜像真实工具 | 22 项通过，[XML](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/media-63/remote-amd64.xml)        |
+| ARM64 生产镜像真实工具 | 22 项通过，[XML](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/media-63/remote-arm64.xml)        |
+| 两架构其他必跑步骤     | 媒体契约、身份、交付、镜像产物隔离、本地存储真实挂载、媒体资源、离线转换与字体、生命周期/迁移/备份恢复全部通过                                          |
+| 发布步骤               | release-checks/publish 均因非 release 事件跳过，没有镜像发布或部署                                                                                      |
 
 最终归档提交只更新文档和测试报告，不改业务或测试代码。
 

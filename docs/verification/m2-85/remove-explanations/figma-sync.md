@@ -4,14 +4,14 @@
 
 已先实际读取六个现有节点的context与截图，再定点移除目标，重新读取六张最终截图并检查。文件为`74sT9Hrf8G4czcWeTkET5b`。
 
-| 页面         | 节点     | 最终证据                                                                   |
-| ------------ | -------- | -------------------------------------------------------------------------- |
-| 桌面详情     | 36:312   | [截图](./figma/figma-36-312.png) · [context](./figma/figma-36-312.txt)     |
-| 手机详情     | 102:3228 | [截图](./figma/figma-102-3228.png) · [context](./figma/figma-102-3228.txt) |
-| 桌面回收列表 | 30:1037  | [截图](./figma/figma-30-1037.png) · [context](./figma/figma-30-1037.txt)   |
-| 手机回收列表 | 102:852  | [截图](./figma/figma-102-852.png) · [context](./figma/figma-102-852.txt)   |
-| 桌面回收记录 | 405:6888 | [截图](./figma/figma-405-6888.png) · [context](./figma/figma-405-6888.txt) |
-| 手机回收记录 | 405:6735 | [截图](./figma/figma-405-6735.png) · [context](./figma/figma-405-6735.txt) |
+| 页面         | 节点     | 最终证据                                                                                                                                                                                                                                                                                                                                       |
+| ------------ | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 桌面详情     | 36:312   | [截图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/remove-explanations/figma/figma-36-312.png) · [context](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/remove-explanations/figma/figma-36-312.txt)     |
+| 手机详情     | 102:3228 | [截图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/remove-explanations/figma/figma-102-3228.png) · [context](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/remove-explanations/figma/figma-102-3228.txt) |
+| 桌面回收列表 | 30:1037  | [截图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/remove-explanations/figma/figma-30-1037.png) · [context](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/remove-explanations/figma/figma-30-1037.txt)   |
+| 手机回收列表 | 102:852  | [截图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/remove-explanations/figma/figma-102-852.png) · [context](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/remove-explanations/figma/figma-102-852.txt)   |
+| 桌面回收记录 | 405:6888 | [截图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/remove-explanations/figma/figma-405-6888.png) · [context](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/remove-explanations/figma/figma-405-6888.txt) |
+| 手机回收记录 | 405:6735 | [截图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/remove-explanations/figma/figma-405-6735.png) · [context](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/remove-explanations/figma/figma-405-6735.txt) |
 
 移除原图信息节点585:12125/596:11980，不保留44空位。桌面552宽版本条：四项各133.5×44，间隔6；手机358宽：四项各85×44，间隔6。响应式按`(版本条宽度-18)/4`等分，切换版本不新增条件布局。公开/私有Chip与其访问说明沿用，预览舞台和三项底部操作不变。
 

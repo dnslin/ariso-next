@@ -12,7 +12,7 @@
 
 `client.clear()` 会清缓存并取消在途读取，但不会关闭仍挂载 QueryObserver 的十秒 interval。`location.replace` 发起文档导航，在新文档完成前旧文档仍可运行，因此慢导航期间继续发送已经失效的所有者统计请求。任务消费约定明确要求401清理管理缓存和轮询，不能把完成导航当作停轮询本身。
 
-独立复现没有改产品代码：临时 Vitest 用真实 QueryClient/QueryObserver 与生产 `overviewQueryOptions`，首次fetch返回401后调用 `client.clear()`，推进10秒。期望1次请求，实际2次，断言明确失败。命令 `pnpm exec vitest run --project unit tests/unit/analytics/review-179-lifecycle.test.ts`；临时测试执行后删除，保留 [失败日志](./review-code-401-polling.txt)。这是 observer生命周期复现，不冒充实际慢网络浏览器验证。
+独立复现没有改产品代码：临时 Vitest 用真实 QueryClient/QueryObserver 与生产 `overviewQueryOptions`，首次fetch返回401后调用 `client.clear()`，推进10秒。期望1次请求，实际2次，断言明确失败。命令 `pnpm exec vitest run --project unit tests/unit/analytics/review-179-lifecycle.test.ts`；临时测试执行后删除，保留 [失败日志](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/review-code-401-polling.txt)。这是 observer生命周期复现，不冒充实际慢网络浏览器验证。
 
 建议：会话失效进入不可逆的页面结束状态，在清理与导航时先关闭两条查询的 enabled/observer，避免错误被clear后又重新启用；通过真实observer断言401结束后无interval/focus请求、在途取消且迟到不恢复缓存。不要添加独立轮询器或兼容层。
 
@@ -28,7 +28,7 @@
 
 ## 审查期间修复的接线与证据问题
 
-初读时 analytics.mjs 引用的recovery/consumers文件尚未落盘，且 `analyticsTools.open(view=usage)` 固定等overview节点。报告后并发作者完成模块并修正usage选择器；复读已见全部模块，独立调用检查确认usage等待analytics-usage。最初发现源于尚在落盘的脚本，不作为最终未修产品项。辅助检查见 [调用检查记录](./review-code-evidence.txt)，其中注明检查时点。
+初读时 analytics.mjs 引用的recovery/consumers文件尚未落盘，且 `analyticsTools.open(view=usage)` 固定等overview节点。报告后并发作者完成模块并修正usage选择器；复读已见全部模块，独立调用检查确认usage等待analytics-usage。最初发现源于尚在落盘的脚本，不作为最终未修产品项。辅助检查见 [调用检查记录](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/review-code-evidence.txt)，其中注明检查时点。
 
 OwnerShell测试最后的成功文字仍陈述八个入口及统计占位，已提醒实施者与真实十入口断言同步。该项属于证据准确性，功能断言本身已更新。
 
@@ -40,7 +40,7 @@ OwnerShell测试最后的成功文字仍陈述八个入口及统计占位，已�
 
 实际复读 `screen.tsx`、三个 query options、三个 hooks 及新增 observer 测试。页面现在保存独立且不可逆的 `sessionEnded`；401 在首次错误渲染时通过有条件的 `if (unauthorized && !sessionEnded) setSessionEnded(true)` 立即锁定结束状态；React 在提交该次渲染前重渲染，以关闭查询并隐藏统计内容。两条页面查询随后以 `enabled=false` 更新observer，清缓存不会清除该状态并意外重新启用。实际读取已安装TanStack `useBaseQuery.ts`，其内部options effect在调用方清理effect之前注册执行；随后clear取消在途usage并清缓存，再重置上传/跳登录。单图选项同时要求enabled与非null ID。没有新增轮询器、重试或多余生命周期框架。
 
-独立仅运行受影响新增用例：`pnpm exec vitest run --project unit tests/unit/analytics/read-analytics.test.ts -t "ending a session disables every observer"`，Node24.18.1 / pnpm11.19.0，退出0，1项通过，13项因定向未选中。真实observer证明401后两条查询关闭、在途signal abort、隐藏30秒/恢复均无新请求、迟到usage释放后再推进30秒不回填空缓存。输出见 [修复复核](./review-code-401-fixed.txt)。未重跑整个suite或不受影响检查；浏览器与人工验收仍按统一交付记录独立报告。
+独立仅运行受影响新增用例：`pnpm exec vitest run --project unit tests/unit/analytics/read-analytics.test.ts -t "ending a session disables every observer"`，Node24.18.1 / pnpm11.19.0，退出0，1项通过，13项因定向未选中。真实observer证明401后两条查询关闭、在途signal abort、隐藏30秒/恢复均无新请求、迟到usage释放后再推进30秒不回填空缓存。输出见 [修复复核](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/review-code-401-fixed.txt)。未重跑整个suite或不受影响检查；浏览器与人工验收仍按统一交付记录独立报告。
 
 静态检查后的局部调整复读：将401锁定从effect改为上述受条件保护的当前组件render更新，避免同步effect setState规则，也免除一次已提交渲染。guard只在未结束且确认401时执行一次，没有无条件render循环；OwnerShell的expire回调仍锁定相同状态，clear/resetUpload/导航仍只在sessionEnded effect执行。查询关闭、清理与导航顺序不变，未重复已经通过且行为输入未变的observer测试；最终eslint结果由实施者统一记录。
 

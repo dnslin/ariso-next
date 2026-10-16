@@ -56,14 +56,14 @@
 - 打开选择弹窗前先聚焦仍挂载的来源，让 Modal 保存可恢复的来源；已选菜单项本身会在动作后卸载，不能作为恢复目标。复制冻结独立选择快照且只读，不再为了复制暂停现有归属核对。关闭选择弹窗不因此额外触发核对和禁用来源；后台核对改变当前选择也不改写复制快照，服务端仍逐项核对复制时的真实归属。
 - 结果标题聚焦移至旧 Modal 释放 inert（临时阻止背景区域交互）和焦点恢复之后执行，避免布局阶段聚焦被浮层拒绝。双动画帧任务在离开结果、进入手动弹窗或卸载时取消；手动复制优先保留文本焦点。
 - 明确选择压缩/水印且图片格式不适用时，即使仍存在已保存文件，批量复制也逐项拒绝并显示原因。此判断仅限制本次 copy 的显式版本路径；默认链接继续使用 delivery 已批准的不适用→原图规则，不修改公共 delivery 的既有行为。
-- 实际读到 [失败日志](./checks/server-inapplicable-before.txt)：新增回归用例原先返回 `animated-saved?type=compressed`，与预期空列表冲突。修复后 [日志](./checks/server-inapplicable-after.txt)显示同一文件11项通过。此前审查未覆盖“格式不适用但文件仍已保存”的组合，当前以该失败/成功证据补齐，不把旧审查当作该边界已被验证。
+- 实际读到 [失败日志](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-187/checks/server-inapplicable-before.txt)：新增回归用例原先返回 `animated-saved?type=compressed`，与预期空列表冲突。修复后 [日志](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-187/checks/server-inapplicable-after.txt)显示同一文件11项通过。此前审查未覆盖“格式不适用但文件仍已保存”的组合，当前以该失败/成功证据补齐，不把旧审查当作该边界已被验证。
 - `full-r3` 的失败点已推进到结果标题焦点；脚本按顺序已完成选择弹窗 Escape 回焦及生成状态 Tab/Shift+Tab 断言，但整体仍失败。最终结果标题与其余场景须以随后完整真实浏览器重验为准，不能把这个部分结果记为整套通过。
 
 最终代码审计结论：通过。主 agent 继续执行受影响检查及浏览器复验；人工 UI 验收仍待用户完成。
 
 ### 空结果与错误反馈焦点复审
 
-2026-10-04，独立复读最新 `copy-dialog.tsx`。浏览器续跑在全不可复制反馈阶段复现：生成状态文字卸载后，活动焦点回到 BODY；失败保留于 [feedback 报告](./browser/feedback/library-copy.json)。现有聚焦 effect 增补生成结束后的反馈目标：全失败或 HTTP 错误时，聚焦同一 Modal 的现有标题；生成中仍聚焦状态文字。标题使用 ref 与 `tabIndex=-1`，不进入正常 Tab 控件序列。状态/结果改变和卸载继续取消尚未执行的动画帧。
+2026-10-04，独立复读最新 `copy-dialog.tsx`。浏览器续跑在全不可复制反馈阶段复现：生成状态文字卸载后，活动焦点回到 BODY；失败保留于 [feedback 报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-187/browser/feedback/library-copy.json)。现有聚焦 effect 增补生成结束后的反馈目标：全失败或 HTTP 错误时，聚焦同一 Modal 的现有标题；生成中仍聚焦状态文字。标题使用 ref 与 `tabIndex=-1`，不进入正常 Tab 控件序列。状态/结果改变和卸载继续取消尚未执行的动画帧。
 
 此修改没有替换弹窗的焦点管理，没有新增状态机或公共组件。手动复制进入 result 且无错误，不满足反馈标题分支，完整文本的自动聚焦/全选继续保留。静态复审通过；全失败、HTTP 错误、Tab/Shift+Tab 和手动文本的最终实际结论仍以主 agent 随后的真实浏览器重验为准，不把该失败报告记为通过。
 
@@ -71,9 +71,9 @@
 
 2026-10-04，最终复读 `e2e/library-copy.mjs`、`library-copy-helpers.mjs` 与浏览器运行器接入，并实际读取以下报告。产品最后只移除空结果明细的行间 gap 以还原既定设计，未改变行为。
 
-- [full-r4](./browser/full-r4/library-copy.json)整体状态仍为 failed：虚拟化停用卡片没有业务打开区域，旧测试目标 `[data-library-open]` 找不到。此前已实际完成201项跨页分批、全部15种格式/选版组合（初始默认URL及后续14组）、乱序重排、原生剪贴板逐字比对、特殊名称、缺失版本、权限提示、无内容请求/计数副作用和原生拒绝后的手动全选复制。不能将这个报告改记为整套通过。
+- [full-r4](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-187/browser/full-r4/library-copy.json)整体状态仍为 failed：虚拟化停用卡片没有业务打开区域，旧测试目标 `[data-library-open]` 找不到。此前已实际完成201项跨页分批、全部15种格式/选版组合（初始默认URL及后续14组）、乱序重排、原生剪贴板逐字比对、特殊名称、缺失版本、权限提示、无内容请求/计数副作用和原生拒绝后的手动全选复制。不能将这个报告改记为整套通过。
 - 最终 `choose` 通过 main 中实际鼠标滚动等待目标虚拟化卡片出现，再点击其 Checkbox。没有通过修改 React 状态或接口返回跳过用户操作；找不到目标仍失败。焦点断言在独立反馈场景中收集后于末尾 AggregateError 抛出，失败仍阻止 passed，不削弱原断言。
-- [feedback-r4](./browser/feedback-r4/library-copy.json)实际状态 passed、stage complete、浏览器错误为空。覆盖初始跨批复制、Escape回焦、生成中Tab/Shift+Tab、结果标题焦点、完整手动文本、全不可复制不写剪贴板及弹窗焦点、HTTP错误反馈焦点和重试、相册加入顺序以及真实401清理。剪贴板原内容已恢复。
+- [feedback-r4](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-187/browser/feedback-r4/library-copy.json)实际状态 passed、stage complete、浏览器错误为空。覆盖初始跨批复制、Escape回焦、生成中Tab/Shift+Tab、结果标题焦点、完整手动文本、全不可复制不写剪贴板及弹窗焦点、HTTP错误反馈焦点和重试、相册加入顺序以及真实401清理。剪贴板原内容已恢复。
 - 最终401测试确实删除了隔离数据库中存在的 owner session，实际 `/api/images/copy` 返回401、`UNAUTHORIZED`、`Cache-Control: no-store`，写剪贴板次数为0；随后稳定进入登录页且私有复制/选择表面消失。早期仅注入401保留有效Cookie时会被登录守卫重定向，已由真实会话失效场景替换，未绕过登录守卫或弱化期望。
 
 结论：完整适用功能范围的证据来自已执行的核心15组合报告与最终反馈通过报告，需按场景合并读取；未声称单次full命令整体通过。最终代码及测试审计通过，无未解决的必须修复项。设计评审与用户人工验收仍依各自记录处理。
@@ -116,7 +116,7 @@
 
 2026-10-04，用户要求两位独立agent重新评审完整3371991 PR：pr238_correctness_review使用code-review-and-quality未提出高置信阻塞代码缺陷；pr238_structure_review使用thermo-nuclear-code-quality-review提出P2默认full排除revision独占的新消费/成功反馈检查，以及P3完整选择实体快照无消费者。用户明确要求规划并解决两项。
 
-原两位评审者分别复读修复diff、分派条件、选择Map写入、请求/弹窗消费与[离线诊断前后记录](./review-fixes/dispatch-after.txt)，均确认P2与P3关闭，未发现新增必须修复项；评审者没有参与代码实现，也没有代执行或重跑主agent的检查。
+原两位评审者分别复读修复diff、分派条件、选择Map写入、请求/弹窗消费与[离线诊断前后记录](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-187/review-fixes/dispatch-after.txt)，均确认P2与P3关闭，未发现新增必须修复项；评审者没有参与代码实现，也没有代执行或重跑主agent的检查。
 
 - P2：detailedFeedback统一full/revision的GPS、短视口、真实消费及相册成功通知分支；旧15组合仍仅full执行，representative/feedback保持定向范围。五宽度一次捕获替代revision重复调用，没有删断言、降低目标或整套重复执行。全量入口的缺省phase实际进入此分支，不再要求维护者记住返修专用命令。
 - P3：打开时从selection.selected.keys创建独立字符串数组；所有Map写入以item.id/id为键，故与原values取id同义。计数消费ids.length，分批请求直接消费ids；名字、实际版本、原因及权限事实依旧来自服务端结果。删除完整实体类型、storage克隆与提交map，冻结明确选择、查询变化中断、401清理和焦点/滚动语义保持。

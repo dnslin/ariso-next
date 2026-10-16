@@ -23,4 +23,4 @@
 
 场景已改为先迁移到390×844，再以真实键盘打开Popover，并在相同视口截图。其余桌面/手机、主题、短视口代表检查保留；不将CDP从桌面切换到手机设备模式等同于一般窗口resize，也不为此次仿真迁移增加产品定位补丁。
 
-迁移后再打开的最终场景已实际通过，见[complete报告](./browser/analytics-179-approved-detail-complete/analytics.json)及[手机周期说明图](./product/analytics-image-period-scope-light-390.png)。该结果证明本轮固定视口场景正常，不补写未观测的中间scale，也不等同真实手机旋转验证。
+迁移后再打开的最终场景已实际通过，见[complete报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/approved-implementation/browser/analytics-179-approved-detail-complete/analytics.json)及[手机周期说明图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/approved-implementation/product/analytics-image-period-scope-light-390.png)。该结果证明本轮固定视口场景正常，不补写未观测的中间scale，也不等同真实手机旋转验证。

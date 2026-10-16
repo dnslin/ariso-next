@@ -11,7 +11,7 @@
 
 从 [docs/README](../../../README.md) 阅读当前入口，再对照 [计划](../../plan.md)、[执行约定](../../execution.md)、[DG 定义](../../gates.md#dg-shell-公共返回设计适用核对)、[设计交接](../../../design/handoff.md)、[DES/RG](../../../design/acceptance.md)、[PRD §22](../../../product/Ariso-PRD-v1.1.md#22-界面与兼容性)、[site](../../../specs/SPEC-site.md) 与 [identity](../../../specs/SPEC-identity.md) 的输入/错误/权限契约。
 
-节点来源为既有[公共返回及主题/导航记录](../../../archive/preparation-2026-09/design/README.md)、[固定底栏记录](../../../archive/preparation-2026-09/design/album-management-2026-09-17.md#固定底栏规范)、[R6 两端主题与屏宽矩阵](../../../archive/preparation-2026-09/design/parallel-theme-widths-2026-09-19.md)；当前[模块整理证据](../../../archive/preparation-2026-09/design/verification/module-sections-completed-2026-09-20.json)说明节点 ID 保留。本次是文档与既有节点索引走查，没有重新读取实时 Figma、截图或播放器操作，不将历史截图检查记成本次执行。
+节点来源为既有[公共返回及主题/导航记录](../../../archive/preparation-2026-09/design/README.md)、[固定底栏记录](../../../archive/preparation-2026-09/design/album-management-2026-09-17.md#固定底栏规范)、[R6 两端主题与屏宽矩阵](../../../archive/preparation-2026-09/design/parallel-theme-widths-2026-09-19.md)；当前[模块整理证据](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/archive/preparation-2026-09/design/verification/module-sections-completed-2026-09-20.json)说明节点 ID 保留。本次是文档与既有节点索引走查，没有重新读取实时 Figma、截图或播放器操作，不将历史截图检查记成本次执行。
 
 已核对 `src/app/page.tsx`、`src/app/layout.tsx` 和根 `package.json`：根应用仍为工程状态页，尚无产品外壳。阅读 [EV-UI-01](../EV-UI-01/README.md) 与 [T-SITE-01](../../../verification/site-47/README.md) 证据，前者只交付隔离依赖实验，后者交付站点底层配置；它们不证明导航、品牌联动或全站主题已经实现。本次不消费这些契约做业务实现，也不替 #57 宣告前置全部验收。
 

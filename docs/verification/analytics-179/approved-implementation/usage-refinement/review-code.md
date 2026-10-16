@@ -27,11 +27,11 @@
 
 已实际读取本目录 checks 中实施者生成的日志，评审者没有重复运行：
 
-- [RED](checks/red.txt)：presentation 9 项中 3 失败、6 通过；旧实现缺少总量待确认标签及 HeroUI 状态 Chip，新增断言真实失败。
-- [GREEN](checks/green.txt)：同一 presentation 文件 9/9 通过。
-- [受影响单元](checks/unit.txt)：7 文件、209 项通过。覆盖启停两态、非零已确认、非零未知、零值及确认时间，既有数量与排行断言保留。
-- [类型](checks/typecheck.txt) 与 [静态检查](checks/lint-final.txt) 的实际输出已阅读。最终命令退出状态由实施记录统一记录，不以本评审重复执行替代。
-- **构建通过，保留警告。** 补核对 [命令退出记录](checks/commands.json)：pnpm run build 的实际 session 98389 已退出 0，buildId 为 Hn8-wzoibe5gmMI5ZnWmF-，与工作区 .next/BUILD_ID 一致。[构建日志](checks/build.txt) 前部实际完成编译、TypeScript 与 29/29 页面生成。已读 scripts/package-standalone.mjs：37 行附近将 nft 返回的 warnings 逐项 console.warn，Error 对象按警告打印而未抛出；后续仍执行文件复制。standalone/entrypoint.sh 实际修改时间为 2026-10-10 12:35:34，晚于 BUILD_ID 的 12:35:25，符合归档的完成顺序。实施者另记录重启后 /login HTTP 200；评审者未重新请求服务，也不将 HTTP 检查记作浏览器验证。
+- [RED](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/approved-implementation/usage-refinement/checks/red.txt)：presentation 9 项中 3 失败、6 通过；旧实现缺少总量待确认标签及 HeroUI 状态 Chip，新增断言真实失败。
+- [GREEN](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/approved-implementation/usage-refinement/checks/green.txt)：同一 presentation 文件 9/9 通过。
+- [受影响单元](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/approved-implementation/usage-refinement/checks/unit.txt)：7 文件、209 项通过。覆盖启停两态、非零已确认、非零未知、零值及确认时间，既有数量与排行断言保留。
+- [类型](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/approved-implementation/usage-refinement/checks/typecheck.txt) 与 [静态检查](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/approved-implementation/usage-refinement/checks/lint-final.txt) 的实际输出已阅读。最终命令退出状态由实施记录统一记录，不以本评审重复执行替代。
+- **构建通过，保留警告。** 补核对 [命令退出记录](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/approved-implementation/usage-refinement/checks/commands.json)：pnpm run build 的实际 session 98389 已退出 0，buildId 为 Hn8-wzoibe5gmMI5ZnWmF-，与工作区 .next/BUILD_ID 一致。[构建日志](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/approved-implementation/usage-refinement/checks/build.txt) 前部实际完成编译、TypeScript 与 29/29 页面生成。已读 scripts/package-standalone.mjs：37 行附近将 nft 返回的 warnings 逐项 console.warn，Error 对象按警告打印而未抛出；后续仍执行文件复制。standalone/entrypoint.sh 实际修改时间为 2026-10-10 12:35:34，晚于 BUILD_ID 的 12:35:25，符合归档的完成顺序。实施者另记录重启后 /login HTTP 200；评审者未重新请求服务，也不将 HTTP 检查记作浏览器验证。
 - 历史观察：初审仅读到日志尾部 @opentelemetry/api 依赖解析 Error 时，暂记“尚未取得成功退出证据”；上述补充证据已关闭该不确定项。警告仍在原日志保留，不能据此声称无警告、可选依赖全可用、跨平台容器或 Release 验证通过。本次仅接受该环境下构建命令成功退出与产物完成的结论，未重跑构建。
 
 新增浏览器断言逻辑可执行且未削弱既有断言，但本轮尚未真实执行，不能由先前统计浏览器报告代替。Figma 同步、独立视觉复核、最终人工验收及远端 CI 各自单独记录。

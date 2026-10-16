@@ -37,8 +37,8 @@ Popover 现由 Content `p-0` 与 Dialog `p-4` 单层提供 16px 内边距，无�
 
 ## 最终运行证据复核
 
-审计者实际读取 [完整运行器](./regression/runner.json)：`passed`，2026-09-26 17:38:53Z 至 17:51:33Z（北京时间 2026-09-27），临时目录已删除。并读取 [图库](./regression/library.json) 35 项、[公共外壳](./regression/owner-shell.json) 13 项、[上传](./regression/upload.json) 15 项、[轮询](./regression/upload-polling.json) 4 项及两端 M2 报告，状态均为 `passed`；隔离 UI 的 runner/library/browser 报告同样通过。
+审计者实际读取 [完整运行器](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/regression/runner.json)：`passed`，2026-09-26 17:38:53Z 至 17:51:33Z（北京时间 2026-09-27），临时目录已删除。并读取 [图库](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/regression/library.json) 35 项、[公共外壳](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/regression/owner-shell.json) 13 项、[上传](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/regression/upload.json) 15 项、[轮询](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/regression/upload-polling.json) 4 项及两端 M2 报告，状态均为 `passed`；隔离 UI 的 runner/library/browser 报告同样通过。
 
-[回焦绿证据](./checks/focus-green.json) 中实际 activeId 等于来源记录 ID，与先前红证据形成回归对照。[布局和动效](./checks/layout-and-motion.json) 保留三条实际路由、四个视口的 16 组测量及弹层/动效检查。完整图库流程覆盖访问说明键盘开闭、权限名称、返回来源焦点、自然比例预览、短视口滚动和 Tab 跳过禁用版本；上传流程覆盖真实 XHR 暂挂、pulse 与 reduced-motion、成功态互斥，以及原先提交/取消故障语义。
+[回焦绿证据](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/checks/focus-green.json) 中实际 activeId 等于来源记录 ID，与先前红证据形成回归对照。[布局和动效](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/checks/layout-and-motion.json) 保留三条实际路由、四个视口的 16 组测量及弹层/动效检查。完整图库流程覆盖访问说明键盘开闭、权限名称、返回来源焦点、自然比例预览、短视口滚动和 Tab 跳过禁用版本；上传流程覆盖真实 XHR 暂挂、pulse 与 reduced-motion、成功态互斥，以及原先提交/取消故障语义。
 
 审计者未重新执行完整测试，也未操作浏览器；结论来自代码阅读及实际归档结果核对。物理设备安全区、发布容器以及用户人工验收不因本记录而标记通过。

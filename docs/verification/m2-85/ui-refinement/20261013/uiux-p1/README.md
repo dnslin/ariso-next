@@ -1,6 +1,6 @@
 # 四项 P1 获批实施记录
 
-用户在审阅 [交互原型](../../../../../../design-plans/uiux-review-20261013/p1-prototype/README.md)后，于 2026-10-13 明确要求“按照这个去实施”。实施基于优化方案，限定 F01–F04；不实施 P2，不改变既有业务定位、保存契约或已接受的动画。
+用户在审阅 [交互原型](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/design-plans/uiux-review-20261013/p1-prototype/README.md)后，于 2026-10-13 明确要求“按照这个去实施”。实施基于优化方案，限定 F01–F04；不实施 P2，不改变既有业务定位、保存契约或已接受的动画。
 
 ## 产品对照
 
@@ -47,20 +47,20 @@
 | F03  | 队列前摘要、修改定位、开始后下一次设置                 | 手机摘要可见、桌面设置列保留；20 张真实上传采用开始时设置，后改草稿不影响已提交批次 |
 | F04  | 存储筛选、重处理任务、删除清理、返回引用页             | 图库和回收均限定来源存储；图片状态与任务状态分别显示；跳转到具体图片或回收记录      |
 
-机器原始结果已打包为[浏览器报告](evidence/browser-reports.tar.gz)，内含 `uiux-p1.json` 与 `runner.json`。最终运行退出码为 0，四项流程均通过；捕获的浏览器脚本异常为空。报告压缩存放，避免原始跟踪淹没 PR 代码差异。
+机器原始结果已打包为[浏览器报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261013/uiux-p1/evidence/browser-reports.tar.gz)，内含 `uiux-p1.json` 与 `runner.json`。最终运行退出码为 0，四项流程均通过；捕获的浏览器脚本异常为空。报告压缩存放，避免原始跟踪淹没 PR 代码差异。
 
 PR #283 评审修订后，在 Node 24.18.1、macOS ARM64 和独立 Ego 任务空间 30 上重新运行 `EGO_TASK_SPACE=30 BROWSER_REPORT_DIR=test-results/browser-uiux-p1-pr283 node scripts/verify-browser.mjs --suite uiux-p1`，设置离开、相册／分享返回、上传和存储引用四段均通过。新报告以 `pr283-review-uiux-p1.json`、`pr283-review-runner.json` 收入同一压缩包；历史报告和截图保留原记录。
 
-| 流程         | 桌面截图                                                      | 手机截图                                                                                                                 |
-| ------------ | ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| F01 离开确认 | [处理设置](evidence/uiux-p1-settings-leave-1440.png)          | [处理设置](evidence/uiux-p1-settings-leave-390.png)、[邮件设置](evidence/uiux-p1-settings-smtp-leave-390.png)            |
-| F02 返回来源 | [相册](evidence/uiux-p1-return-1440.png)                      | [相册](evidence/uiux-p1-return-390.png)、[分享](evidence/uiux-p1-return-shares-390.png)                                  |
-| F03 上传     | [12 张队列](evidence/uiux-p1-upload-queued-12-light-1440.png) | [12 张队列](evidence/uiux-p1-upload-queued-12-light-390.png)、[深色完成状态](evidence/uiux-p1-upload-ready-dark-390.png) |
-| F04 引用任务 | [引用区](evidence/uiux-p1-storage-1440.png)                   | [引用区](evidence/uiux-p1-storage-390.png)                                                                               |
+| 流程         | 桌面截图                                                                                                                                                                                                          | 手机截图                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| F01 离开确认 | [处理设置](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261013/uiux-p1/evidence/uiux-p1-settings-leave-1440.png)          | [处理设置](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261013/uiux-p1/evidence/uiux-p1-settings-leave-390.png)、[邮件设置](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261013/uiux-p1/evidence/uiux-p1-settings-smtp-leave-390.png)            |
+| F02 返回来源 | [相册](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261013/uiux-p1/evidence/uiux-p1-return-1440.png)                      | [相册](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261013/uiux-p1/evidence/uiux-p1-return-390.png)、[分享](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261013/uiux-p1/evidence/uiux-p1-return-shares-390.png)                                  |
+| F03 上传     | [12 张队列](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261013/uiux-p1/evidence/uiux-p1-upload-queued-12-light-1440.png) | [12 张队列](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261013/uiux-p1/evidence/uiux-p1-upload-queued-12-light-390.png)、[深色完成状态](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261013/uiux-p1/evidence/uiux-p1-upload-ready-dark-390.png) |
+| F04 引用任务 | [引用区](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261013/uiux-p1/evidence/uiux-p1-storage-1440.png)                   | [引用区](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261013/uiux-p1/evidence/uiux-p1-storage-390.png)                                                                                                                                                                                                                                   |
 
 ## 本地人工验收入口
 
-[打开正式产品预览](http://127.0.0.1:3108/settings/storage/909a471a-8a66-40a1-9a48-23342cbd59c6?view=references)。[桌面实图](evidence/preview-storage-1440.png)与[手机实图](evidence/preview-storage-390.png)已核对：未显示会话错误，无横向溢出。该站点使用隔离的本地数据库和样例图片，不读取线上数据。摄影归档样例包含待处理、已就绪但等待重处理、删除清理失败的记录，方便检查对象跳转。
+[打开正式产品预览](http://127.0.0.1:3108/settings/storage/909a471a-8a66-40a1-9a48-23342cbd59c6?view=references)。[桌面实图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261013/uiux-p1/evidence/preview-storage-1440.png)与[手机实图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261013/uiux-p1/evidence/preview-storage-390.png)已核对：未显示会话错误，无横向溢出。该站点使用隔离的本地数据库和样例图片，不读取线上数据。摄影归档样例包含待处理、已就绪但等待重处理、删除清理失败的记录，方便检查对象跳转。
 
 可依次体验：处理／邮件设置修改后切分类；相册或分享搜索“旅行”后翻到第二页并进入返回；手机宽度上传多张图片后点击摘要“修改”；摄影归档引用区进入图库、处理任务和删除清理，再返回来源。
 

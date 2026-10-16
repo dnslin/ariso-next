@@ -10,7 +10,7 @@
 
 handoff“表单、提示与操作”的图表等价数值要求，不应被解释为必须保留已被用户否决的 Accordion：本轮三点及三版本均直接呈现数值，周期范围放入可点击 Info，源码为图提供包含相同数值的辅助阅读名称。本次没有新增单图逐日记录，也没有把三个相互包含的窗口改成可相加的分段。
 
-评审者没有操作浏览器、修改产品、原型或 Figma，仅写本文件。截图由根 agent 持有的唯一 TaskSpace 2 捕获，原型行为证据为 [browser.json](./browser.json)；本报告实际查看静态图并只读源码，不代称亲自执行 hover、按压、Escape 等操作。
+评审者没有操作浏览器、修改产品、原型或 Figma，仅写本文件。截图由根 agent 持有的唯一 TaskSpace 2 捕获，原型行为证据为 [browser.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-v2/feedback/browser.json)；本报告实际查看静态图并只读源码，不代称亲自执行 hover、按压、Escape 等操作。
 
 ## 本轮对照
 
@@ -23,19 +23,19 @@ handoff“表单、提示与操作”的图表等价数值要求，不应被解�
 | 零值         | 稳定状态要求保留真实0          | 三版本横条为空，三个点为0且位于同一零基线，直接数字不依赖悬停                           | 不把空或真实0混成错误，也不以长度表达非零          |
 | 排行删除边界 | 第10项为已永久删除占位         | 源码改为现存样例“山间小路”，保留10个可打开项；实际末端图复核通过                        | 旧排行规则已被用户新要求覆盖，历史总计不因此清零   |
 
-实际同视口先查看整页与公共区域，再看图表和控件。已读 [统计桌面](./statistics-desktop.png)、[手机](./statistics-mobile.png)、[深色手机](./statistics-mobile-dark.png)、[零值手机](./zero-mobile.png)、[桌面 hover](./hover-desktop.png)、[桌面最终态](./final-desktop.png)及[排行桌面](./ranking-desktop.png) / [手机首屏](./ranking-mobile.png)。公共外壳保持232px桌面侧栏、桌面正文起点和手机16px边距；场景 Tab 选中状态可读，趋势短日期和排行图表主导的层级保持。
+实际同视口先查看整页与公共区域，再看图表和控件。已读 [统计桌面](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-v2/feedback/statistics-desktop.png)、[手机](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-v2/feedback/statistics-mobile.png)、[深色手机](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-v2/feedback/statistics-mobile-dark.png)、[零值手机](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-v2/feedback/zero-mobile.png)、[桌面 hover](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-v2/feedback/hover-desktop.png)、[桌面最终态](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-v2/feedback/final-desktop.png)及[排行桌面](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-v2/feedback/ranking-desktop.png) / [手机首屏](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-v2/feedback/ranking-mobile.png)。公共外壳保持232px桌面侧栏、桌面正文起点和手机16px边距；场景 Tab 选中状态可读，趋势短日期和排行图表主导的层级保持。
 
 单图仅64px / 48px缩略图负责身份识别，无大图及版本切换控件。移除展开区后，桌面与390×844手机弹窗均自然缩短，图表仍为主要正文内容。折线三个分类标签与值分离清楚，使用同一水绿色，未与三版本颜色建立误导的一一映射。原型状态选择器是演示工具，不记作产品交付控件。
 
-实际查看 [390×400首屏](./short-mobile.png)及[正文末端](./short-bottom.png)：正文可独立滚到折线底部与三个周期标签，身份行、右上关闭和底部工具留在视口。最高点在末端截图上方被当前滚动位置裁去属于正常滚动，不把末端一张图当成整段内容同时可见。
+实际查看 [390×400首屏](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-v2/feedback/short-mobile.png)及[正文末端](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-v2/feedback/short-bottom.png)：正文可独立滚到折线底部与三个周期标签，身份行、右上关闭和底部工具留在视口。最高点在末端截图上方被当前滚动位置裁去属于正常滚动，不把末端一张图当成整段内容同时可见。
 
 ## 收口与未验证项
 
 周期组的内 ToggleButton 是8px，外组保留12px以对应4px内距，不把整个嵌套容器笼统称为8px。实施者已明确此映射边界；只读当前 `copy-dialog.tsx` 的外10px / 内7px / 3px内距也使用同类嵌套关系，但不能声称两个实现逐像素相同。此项已澄清，不作为必修差异。
 
-实际查看 [手机排行末端](./ranking-mobile-bottom.png)：第10项“山间小路”有缩略图、名称、次数42及横条，未保留永久删除项；回收项仍显示身份占位与历史次数，符合本次只排除永久删除的边界。此图是示例呈现证据，不能证明产品服务端已在排序前过滤。
+实际查看 [手机排行末端](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-v2/feedback/ranking-mobile-bottom.png)：第10项“山间小路”有缩略图、名称、次数42及横条，未保留永久删除项；回收项仍显示身份占位与历史次数，符合本次只排除永久删除的边界。此图是示例呈现证据，不能证明产品服务端已在排序前过滤。
 
-实际查看 [手机异常网格](./failures-mobile.png)：两列卡片的16px圆角、8px统计 / 重试按钮和长名称换行符合要求。首张补图的场景 Tab 落在灰色过渡帧；实施者只等待有限动画结束后补拍，评审者实际复读新图，活动“处理异常”为深底白字、未选中“访问统计”为透明底深字，当前场景清楚。此项属于证据捕获时机，未要求更改正确的标签状态实现；已关闭。
+实际查看 [手机异常网格](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-v2/feedback/failures-mobile.png)：两列卡片的16px圆角、8px统计 / 重试按钮和长名称换行符合要求。首张补图的场景 Tab 落在灰色过渡帧；实施者只等待有限动画结束后补拍，评审者实际复读新图，活动“处理异常”为深底白字、未选中“访问统计”为透明底深字，当前场景清楚。此项属于证据捕获时机，未要求更改正确的标签状态实现；已关闭。
 
 本轮实际查看12张独立图，追加重拍仅限 hover 与异常稳定态，没有机械重复未改布局。当前无剩余必修视觉差异；没有新增必须实施的布局或文案建议。源码 diff 未改变场景组原有420px最大宽度，不将其误记为本轮设计变更。
 
@@ -47,7 +47,7 @@ handoff“表单、提示与操作”的图表等价数值要求，不应被解�
 
 独立结论：本次真实产品刷新提示的布局修复通过视觉复审，无新增遮挡或周期按钮位移。此节评审生产构建页面，范围仅为已有统计页的正常 / 刷新中状态，与上文独立示例原型分开；不表示单图折线、异常网格等原型方案已实施或获批。
 
-实际查看六张真实页面截图：360px [正常](../../browser/deleted-ranking-behavior/analytics-refresh-normal-light-360.png) / [刷新中](../../browser/deleted-ranking-behavior/analytics-refresh-inflight-light-360.png)、390px [正常](../../browser/deleted-ranking-behavior/analytics-refresh-normal-light-390.png) / [刷新中](../../browser/deleted-ranking-behavior/analytics-refresh-inflight-light-390.png)、1440px [正常](../../browser/deleted-ranking-behavior/analytics-refresh-normal-light-1440.png) / [刷新中](../../browser/deleted-ranking-behavior/analytics-refresh-inflight-light-1440.png)。先对照整页与公共区域，再对照元信息、状态提示、指标和周期。三组各自使用相同视口，浅色桌面侧栏、手机页眉、标题、固定底栏及正文起点在正常 / 刷新中保持一致。
+实际查看六张真实页面截图：360px [正常](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/browser/deleted-ranking-behavior/analytics-refresh-normal-light-360.png) / [刷新中](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/browser/deleted-ranking-behavior/analytics-refresh-inflight-light-360.png)、390px [正常](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/browser/deleted-ranking-behavior/analytics-refresh-normal-light-390.png) / [刷新中](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/browser/deleted-ranking-behavior/analytics-refresh-inflight-light-390.png)、1440px [正常](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/browser/deleted-ranking-behavior/analytics-refresh-normal-light-1440.png) / [刷新中](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/browser/deleted-ranking-behavior/analytics-refresh-inflight-light-1440.png)。先对照整页与公共区域，再对照元信息、状态提示、指标和周期。三组各自使用相同视口，浅色桌面侧栏、手机页眉、标题、固定底栏及正文起点在正常 / 刷新中保持一致。
 
 正常布局沿已实际读取的 Figma `446:8063 / 446:8030` 及现行 handoff；360px按同一响应式结构补查。本轮没有对应的 Figma 请求进行中节点，不能将刷新失败节点当作此状态的设计依据，也不声称对进行中状态完成了逐像素 Figma 还原。修复依据是保留正常几何、已有元信息和可读的刷新反馈。
 
@@ -57,6 +57,6 @@ handoff“表单、提示与操作”的图表等价数值要求，不应被解�
 | 手机文字与覆盖 | 需核对绝对定位提示会否换行压住指标           | 360/390图中均为单行，16px行高；与元信息、指标各留2px，无重叠                                                   | 固定行高不能代替实际手机宽度检查 |
 | 元信息         | 更新时间、最近写入和等待状态必须保留         | 截图更新时间和“本进程尚无已提交的访问批次”完整可见；源码保留 lastFlushedAt、waiting/backlogged/incomplete 分支 | 不用隐藏元信息换取稳定布局       |
 
-同时只读 [analytics.json](../../browser/deleted-ranking-behavior/analytics.json) 的 `refreshPointer`：360/390两端元信息底部256、提示258–274、指标顶部276；1440桌面分别为176.5、178.5–194.5、196.5。三个视口的周期按钮在刷新前 / 中的坐标及尺寸完全一致：手机y564、桌面y356.5，桌面宽104px。提示采用 `absolute inset-x-0 top-full mt-0.5 text-[12px] leading-4`，整行宽度明确；实际图中未发生意外收窄换行。
+同时只读 [analytics.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/browser/deleted-ranking-behavior/analytics.json) 的 `refreshPointer`：360/390两端元信息底部256、提示258–274、指标顶部276；1440桌面分别为176.5、178.5–194.5、196.5。三个视口的周期按钮在刷新前 / 中的坐标及尺寸完全一致：手机y564、桌面y356.5，桌面宽104px。提示采用 `absolute inset-x-0 top-full mt-0.5 text-[12px] leading-4`，整行宽度明确；实际图中未发生意外收窄换行。
 
 行为报告记录通过：真实延迟刷新落在可信指针按下 / 抬起之间，同次释放成功选择并加载30天，last-flush元信息仍可见。该行为由实施者执行，本评审者只读报告与截图，没有重跑浏览器；视觉结果与坐标证据相符。六张图只证明当前文案在三个浅色代表宽度的正常 / 刷新状态；其他健康状态分支本次仅核对源码保留，不虚称新增全组合截图。此局部通过不代替最终产品 UI 人工验收或整版方案批准。

@@ -32,7 +32,7 @@
 
 ## 检查和范围
 
-[统一回读证据](./verification/parallel-design-completion-2026-09-19.json)记录六个Agent的交付文件、最终节点和检查结果。主Agent另行核对原位置、端别、编号顺序、画板／分区重叠、字体、横向边界、固定底栏及跳转目标，并抽查业务数量、格式规则、保存结果和代表截图。各专项记录保留更细的检查与复用规则。
+[统一回读证据](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/archive/preparation-2026-09/design/verification/parallel-design-completion-2026-09-19.json)记录六个Agent的交付文件、最终节点和检查结果。主Agent另行核对原位置、端别、编号顺序、画板／分区重叠、字体、横向边界、固定底栏及跳转目标，并抽查业务数量、格式规则、保存结果和代表截图。各专项记录保留更细的检查与复用规则。
 
 实际执行：`python3 /tmp/ariso-parallel-check.py`、相关文档的项目`prettier --write`／`prettier --check`、`git diff --check`。结果均通过。没有修改应用代码、安装依赖、创建Issue或提交；未运行应用测试、类型检查和构建。
 

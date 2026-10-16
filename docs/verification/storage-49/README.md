@@ -40,8 +40,8 @@
 新增实际执行：
 
 - `pnpm run format:check`：初次生成的两份迁移 JSON 不符合格式；Prettier 格式化后通过。
-- `EGO_KEEP_SPACE=1 pnpm run test:browser`：Ego Lite / Chrome 152，空间 12，390/1440 页面无横向溢出，资源/健康检查通过，错误为空。两张截图目视检查通过；随后 `task.finish({ keep: [] })` 关闭空间。原始[浏览器报告](./browser.json)与[运行及清理报告](./browser-runner.json)。
-- `node tests/verification/storage-local/run.mjs --source-root /tmp --storage-root /Volumes/data --target-root /Volumes/data --report /tmp/issue49-production-storage.json`：真实双卷通过，[原始报告](./macos.json)。直接 rename 得 EXDEV；两卷各覆盖成功、复制中取消、发布前取消、发布后交接；4 MiB 字节一致，输入及读取句柄 EBADF，旧对象与邻接文件保留。低空间和 Linux 输出描述符清单留待 Actions。
+- `EGO_KEEP_SPACE=1 pnpm run test:browser`：Ego Lite / Chrome 152，空间 12，390/1440 页面无横向溢出，资源/健康检查通过，错误为空。两张截图目视检查通过；随后 `task.finish({ keep: [] })` 关闭空间。原始[浏览器报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-49/browser.json)与[运行及清理报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-49/browser-runner.json)。
+- `node tests/verification/storage-local/run.mjs --source-root /tmp --storage-root /Volumes/data --target-root /Volumes/data --report /tmp/issue49-production-storage.json`：真实双卷通过，[原始报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-49/macos.json)。直接 rename 得 EXDEV；两卷各覆盖成功、复制中取消、发布前取消、发布后交接；4 MiB 字节一致，输入及读取句柄 EBADF，旧对象与邻接文件保留。低空间和 Linux 输出描述符清单留待 Actions。
 - `node docs/tasks/check.mjs` 与 `git diff --check`：通过。
 
 首次全量集成发现旧 secret-preflight/startup 夹具移除了业务迁移，新的生产启动因此缺少 storage 表；停止该轮（exit 130）后，将真实 storage 迁移加入这些隔离夹具，保留原故障和恢复断言。两文件定向 17 项通过；`pnpm run test:integration --reporter=default --reporter=junit --outputFile=test-results/integration.xml` 全量重跑 15 文件、104 项通过，包含隔离无密钥构建。未跳过失败检查。
@@ -52,7 +52,7 @@
 
 `.github/workflows/images.yml` 新增当前生产实现验证，加载镜像中的 `dist/server/storage/local.js`，挂入独立测试脚本。两个原生架构使用非 root 用户与真实独立 tmpfs，32 MiB 限制卷验证小文件、ENOSPC、清理 EACCES、恢复、字节及 `/proc/self/fd`。`--require-complete` 拒绝缺少实际环境；PR 事件不发布镜像。提交 `8bc9bbc` 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/35501776328) 与 [Docker 双架构](https://github.com/dnslin/ariso-next/actions/runs/35501776441) 均成功；容器生命周期、迁移回滚与备份恢复亦通过。`release-checks`、`publish` 因非发布事件跳过，没有发布镜像或部署。
 
-原始报告：[AMD64](./amd64.json)、[ARM64](./arm64.json)。两架构 Linux 6.17.0-1022-azure / Node 24.21.0 / UID 1000，实际加载生产编译文件。32 MiB 卷初始可用 33,554,432 字节，4 MiB 小文件成功；ENOSPC partial 为 33,538,048 字节。清理权限失败时保留 partial 与 journal，恢复权限后仅删除该对象，剩余空间恢复为 33,538,048 字节；保留四个哨兵文件，随后重新完成成功与取消矩阵。所有流关闭，`/proc/self/fd` 中没有夹具文件描述符，两报告 `incomplete` 均为空。
+原始报告：[AMD64](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-49/amd64.json)、[ARM64](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-49/arm64.json)。两架构 Linux 6.17.0-1022-azure / Node 24.21.0 / UID 1000，实际加载生产编译文件。32 MiB 卷初始可用 33,554,432 字节，4 MiB 小文件成功；ENOSPC partial 为 33,538,048 字节。清理权限失败时保留 partial 与 journal，恢复权限后仅删除该对象，剩余空间恢复为 33,538,048 字节；保留四个哨兵文件，随后重新完成成功与取消矩阵。所有流关闭，`/proc/self/fd` 中没有夹具文件描述符，两报告 `incomplete` 均为空。
 
 实际远端命令：
 

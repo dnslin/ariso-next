@@ -27,19 +27,19 @@
 - 三版本横条有直接名称、颜色及数值；周期柱图有独立标签与数值、共同零基线，三个窗口没有堆叠。窗口相互包含的说明放入 Info，不增加常驻大段文案。
 - 手机保留桌面顺序，358px弹窗与右上44px关闭清楚；正常390×844第一屏可读两组图，浅深主题层级一致。错误态保留身份行，只显示简短错误和重试，不将失败渲染为0。
 - 排行采用缩略图、名称、次数和横条，异常采用两列手机 / 三列桌面缩略图网格与逐张操作，没有表格作为主视觉。两类异常有独立筛选与数量。手机实际排行长名、回收与删除边界已补图复核，见下节。
-- 动画源码限定按钮160ms、横条180ms；图表关闭持续动画，减少动画偏好禁用过渡。静态截图不能证明完整时序或键盘行为，这些以 [browser.json](./browser.json) 的原型行为记录为准。
+- 动画源码限定按钮160ms、横条180ms；图表关闭持续动画，减少动画偏好禁用过渡。静态截图不能证明完整时序或键盘行为，这些以 [browser.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-v2/browser.json) 的原型行为记录为准。
 
 非阻断建议：周期柱图可使用同一色系，减少与上方三版本颜色一一对应的误解；累计与底部两个口径入口可在后续获批实现时核对是否重复。两项不影响本次提案可理解性，不擅自改方案。
 
 ## 修正复核与剩余边界
 
-已实际复读修正后的 [桌面排行](./ranking-desktop.png)、[手机排行首屏](./ranking-mobile.png)、[手机异常](./failures-mobile.png)和[零值](./statistics-zero-mobile.png)：Tabs 背景与标签重合、选中文字反色清楚；日期为 `MM/DD`；零值三横条没有有色长度。删除重复页说明后，标题与图表更直接。上述首轮必修项均关闭。
+已实际复读修正后的 [桌面排行](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-v2/ranking-desktop.png)、[手机排行首屏](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-v2/ranking-mobile.png)、[手机异常](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-v2/failures-mobile.png)和[零值](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-v2/statistics-zero-mobile.png)：Tabs 背景与标签重合、选中文字反色清楚；日期为 `MM/DD`；零值三横条没有有色长度。删除重复页说明后，标题与图表更直接。上述首轮必修项均关闭。
 
-实际查看 [短视口正文底部](./statistics-short-bottom.png)：390×400 下正文已经滚至展开的数值与范围末端，右上关闭、身份行与底部工具保留可见；没有被长正文推出视口。补查通过。
+实际查看 [短视口正文底部](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-v2/statistics-short-bottom.png)：390×400 下正文已经滚至展开的数值与范围末端，右上关闭、身份行与底部工具保留可见；没有被长正文推出视口。补查通过。
 
-实际查看 [手机排行行](./ranking-mobile-rows.png)及[历史图片边界](./ranking-mobile-history.png)：长名称与次数分列、横条宽度仍足以比较；回收/删除项用占位图标与直接状态文字、历史次数保留，第10项不可操作的弱化层级清楚。首项键盘焦点轮廓完整可见，整行目标没有缩成小图标。两张图补齐手机首屏未展示实际排行的缺口，复核通过。
+实际查看 [手机排行行](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-v2/ranking-mobile-rows.png)及[历史图片边界](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-v2/ranking-mobile-history.png)：长名称与次数分列、横条宽度仍足以比较；回收/删除项用占位图标与直接状态文字、历史次数保留，第10项不可操作的弱化层级清楚。首项键盘焦点轮廓完整可见，整行目标没有缩成小图标。两张图补齐手机首屏未展示实际排行的缺口，复核通过。
 
-代表单图提案入口：[桌面](./statistics-desktop.png)、[手机](./statistics-mobile.png)、[深色手机](./statistics-mobile-dark.png)、[读取失败](./statistics-error-mobile.png)；异常提案入口：[桌面](./failures-desktop.png)、[手机](./failures-mobile.png)。当前没有剩余必修视觉问题。样例趋势的跨周期日期与总量一致性另由 [代码审查](./review-code.md)定向复核；本视觉结论不代替数据核对，也不要求布局未变时重复拍同一截图。
+代表单图提案入口：[桌面](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-v2/statistics-desktop.png)、[手机](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-v2/statistics-mobile.png)、[深色手机](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-v2/statistics-mobile-dark.png)、[读取失败](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-v2/statistics-error-mobile.png)；异常提案入口：[桌面](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-v2/failures-desktop.png)、[手机](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-v2/failures-mobile.png)。当前没有剩余必修视觉问题。样例趋势的跨周期日期与总量一致性另由 [代码审查](./review-code.md)定向复核；本视觉结论不代替数据核对，也不要求布局未变时重复拍同一截图。
 
 此原型使用独立示例数据。没有验证产品 API、真实重试、单图统计权限或真实资源生命周期；原型中的成功反馈不证明生产行为。V2 未获用户批准，未同步 Figma，未修改产品，也未完成 UI 人工验收。已有产品范围的独立评审通过不能替代这些未完成项。
 

@@ -48,6 +48,6 @@ git diff --check
 
 ## 证据和边界
 
-[精简结果](./verification.json) 保存全部 94 项检查及新增回归的实际参数。完整报告和本轮截图保存在 `test-results/browser-{library,admin,album}-motion-fixes/`。不重复提交整套截图；桌面站点设置和图库截图已经人工核对，结构、公共外壳与原有排布一致。旧验证材料保持原结论。
+[精简结果](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/motion-review-20261013/review-fixes/verification.json) 保存全部 94 项检查及新增回归的实际参数。完整报告和本轮截图保存在 `test-results/browser-{library,admin,album}-motion-fixes/`。不重复提交整套截图；桌面站点设置和图库截图已经人工核对，结构、公共外壳与原有排布一致。旧验证材料保持原结论。
 
 本记录仅报告本轮本地结果。远端检查以更新后 PR Actions 对应提交的实际结果为准。本轮没有重复完整业务浏览器流程、本地全量集成、远端 S3 检测或发布容器验证；定向动效检查不替代这些验收。

@@ -17,18 +17,18 @@
 
 ## 实际查看截图
 
-| 截图                                                   | 视口      | 复核范围                                        |
-| ------------------------------------------------------ | --------- | ----------------------------------------------- |
-| [settings-1299.png](./settings-1299.png)               | 1299×865  | 桌面公共外壳、业务限宽、两行密度与动作对齐      |
-| [settings-mobile.png](./settings-mobile.png)           | 390×844   | 手机页眉、资源行结构、格式换行与按钮触达        |
-| [login-1299.png](./login-1299.png)                     | 1299×865  | 公共背景、品牌收紧、表单与GitHub图文            |
-| [login-mobile.png](./login-mobile.png)                 | 390×844   | 手机公共背景、品牌名称、登录层级与GitHub图文    |
-| [settings-desktop.png](./settings-desktop.png)         | 1440×1080 | 最终构建品牌主状态，对照Figma同视口整页与公共区 |
-| [login-figma-desktop.png](./login-figma-desktop.png)   | 1920×960  | 登录主状态，对照Figma同视口公共背景与表单       |
-| [settings-dark-mobile.png](./settings-dark-mobile.png) | 390×844   | 深色品牌资源行、标识、分隔线与按钮              |
-| [login-dark-mobile.png](./login-dark-mobile.png)       | 390×844   | 深色品牌/表单/GitHub图文对比                    |
-| [settings-360.png](./settings-360.png)                 | 360×800   | 窄屏资源信息换行与下行动作                      |
-| [login-missing-mobile.png](./login-missing-mobile.png) | 390×844   | 品牌素材缺失、可读错误与保留站点名称            |
+| 截图                                                                                                                                                                                     | 视口      | 复核范围                                        |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | ----------------------------------------------- |
+| [settings-1299.png](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/revision-v2/settings-1299.png)               | 1299×865  | 桌面公共外壳、业务限宽、两行密度与动作对齐      |
+| [settings-mobile.png](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/revision-v2/settings-mobile.png)           | 390×844   | 手机页眉、资源行结构、格式换行与按钮触达        |
+| [login-1299.png](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/revision-v2/login-1299.png)                     | 1299×865  | 公共背景、品牌收紧、表单与GitHub图文            |
+| [login-mobile.png](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/revision-v2/login-mobile.png)                 | 390×844   | 手机公共背景、品牌名称、登录层级与GitHub图文    |
+| [settings-desktop.png](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/revision-v2/settings-desktop.png)         | 1440×1080 | 最终构建品牌主状态，对照Figma同视口整页与公共区 |
+| [login-figma-desktop.png](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/revision-v2/login-figma-desktop.png)   | 1920×960  | 登录主状态，对照Figma同视口公共背景与表单       |
+| [settings-dark-mobile.png](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/revision-v2/settings-dark-mobile.png) | 390×844   | 深色品牌资源行、标识、分隔线与按钮              |
+| [login-dark-mobile.png](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/revision-v2/login-dark-mobile.png)       | 390×844   | 深色品牌/表单/GitHub图文对比                    |
+| [settings-360.png](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/revision-v2/settings-360.png)                 | 360×800   | 窄屏资源信息换行与下行动作                      |
+| [login-missing-mobile.png](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/revision-v2/login-missing-mobile.png) | 390×844   | 品牌素材缺失、可读错误与保留站点名称            |
 
 上表10张均由评审者调用本地图片查看工具实际逐张查看；主线程替换最终 `settings-mobile.png` 去除格式行多余分隔点后，评审者再次查看了替换后的图片。实际重新显示本轮已读取的品牌和登录Figma截图，与1440×1080及1920×960同视口页面核对。1299px截图仅作为额外宽度观察，不用于冒充基准视口。
 
@@ -59,6 +59,6 @@
 
 ## 补充静态观察
 
-另实际逐张查看 [preview-short.png](./preview-short.png)（390×420）、[upload-failed-short.png](./upload-failed-short.png)（390×420）与 [delete-retained-mobile.png](./delete-retained-mobile.png)（390×844）。短视口预览的取消/上传固定操作栏完整显示，上传按钮焦点描边清楚；所选文件卡片向下延续，不由该截图推断剩余内容的滚动可达性。失败图的“素材未能更新”及文件保留/重试说明均可见，使用简短错误文字，固定操作栏仍完整。核对后仍有引用的弹窗有明确标题、服务器仍有素材的说明，以及“使用服务器素材/再次明确移除”两项后续操作；未以成功状态掩盖仍有引用，背景两资源状态仍可辨认。
+另实际逐张查看 [preview-short.png](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/revision-v2/preview-short.png)（390×420）、[upload-failed-short.png](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/revision-v2/upload-failed-short.png)（390×420）与 [delete-retained-mobile.png](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/revision-v2/delete-retained-mobile.png)（390×844）。短视口预览的取消/上传固定操作栏完整显示，上传按钮焦点描边清楚；所选文件卡片向下延续，不由该截图推断剩余内容的滚动可达性。失败图的“素材未能更新”及文件保留/重试说明均可见，使用简短错误文字，固定操作栏仍完整。核对后仍有引用的弹窗有明确标题、服务器仍有素材的说明，以及“使用服务器素材/再次明确移除”两项后续操作；未以成功状态掩盖仍有引用，背景两资源状态仍可辨认。
 
 三图未见新增静态视觉阻塞，不改变原送审结论。评审者没有操作浏览器或重跑行为；焦点移动、滚动可达性、真实文件保留与删除核对结果仍须看主线程运行记录。Ego Space5已交还用户，本轮未恢复或绕过接管。

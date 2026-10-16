@@ -51,7 +51,7 @@
 - 登录验证紧接图库验证时实际触发 HTTP 429。图库测试遵守页面给出的等待时间，再显式重试一次；不绕过服务限流。
 - 同一 Ego 标签页的 50 条历史上限已在 #76 证据中确认。独立 UI 夹具开始时重置本测试页导航历史，再执行全部原有历史断言，避免跨套件累积影响结果。
 
-最终[浏览器报告](./browser.json)汇总真实运行器状态、13 项行为检查和各状态布局测量。截图：[手机浅色](./detail-ready-light-390.png)、[桌面深色](./detail-ready-dark-1440.png)、[复制弹窗](./detail-copy-light-390.png)、[真实复制拒绝](./detail-clipboard-denied-light-390.png)、[390×400 短视口](./detail-short-viewport.png)。原始运行目录为 `test-results/browser-77-pass` 与 `test-results/browser-77-short-final`；临时驱动及配置不作为产品代码提交。Ego 空间 5 已正常结束。
+最终[浏览器报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-77/browser.json)汇总真实运行器状态、13 项行为检查和各状态布局测量。截图：[手机浅色](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-77/detail-ready-light-390.png)、[桌面深色](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-77/detail-ready-dark-1440.png)、[复制弹窗](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-77/detail-copy-light-390.png)、[真实复制拒绝](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-77/detail-clipboard-denied-light-390.png)、[390×400 短视口](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-77/detail-short-viewport.png)。原始运行目录为 `test-results/browser-77-pass` 与 `test-results/browser-77-short-final`；临时驱动及配置不作为产品代码提交。Ego 空间 5 已正常结束。
 
 ## 审计
 

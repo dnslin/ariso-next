@@ -16,11 +16,11 @@
 
 已新增实际调用测试 `tests/unit/scripts/browser-control.test.ts`，由默认 unit glob 包含。测试调用真实 `verifyLibrary` / `verifyOwnerShell`，仅在页面传输边界注入 Error，不模拟正常产品 UI；核对原错误 instance 传播、离线失败报告，以及停止后不能调用 evaluate/snapshot/screenshot/CDP 清理。图库先允许安装 observer 再让首次设备设置失败，实际覆盖已安装资源的停止场景。普通错误仍要求诊断/清理。
 
-首次命令 `PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH pnpm exec vitest run --project unit tests/unit/scripts/browser-control.test.ts`：exit 1，8 个停止场景 FAIL、2 个普通错误场景 PASS。错误种类为 user takeover、space inactive、space unassigned、control unavailable，各覆盖两个真实入口。[初次失败日志](audit/browser-control-before.txt) 同步保存在 `test-results/browser-repair/offline/browser-control-before.log`。尚未以修改断言或增加 skip 处理失败。
+首次命令 `PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH pnpm exec vitest run --project unit tests/unit/scripts/browser-control.test.ts`：exit 1，8 个停止场景 FAIL、2 个普通错误场景 PASS。错误种类为 user takeover、space inactive、space unassigned、control unavailable，各覆盖两个真实入口。[初次失败日志](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/browser-repair-20261009/audit/browser-control-before.txt) 同步保存在 `test-results/browser-repair/offline/browser-control-before.log`。尚未以修改断言或增加 skip 处理失败。
 
 实现者新增实际共用 `isBrowserControlStop`，两个入口错误路径停止后只写报告并传播原错误。图库的 history、pending-error 内部 finally 与外层 cleanup 均有停止条件；owner-shell 的内部 held settings 清理同样遵守停止，待清理脚本 ID 写入报告。普通错误继续诊断/清理。评审者读取这些改动，未修改 e2e/实验实现。
 
-测试另提取实际 history 与 pending-error 的完整 try/catch/finally 片段，注入原错误并核对停止时 0 次 evaluate、普通失败时 1 次恢复；使用真实共用错误识别函数，没有复写 regex。扩展时最初未将该 helper 传入 VM，产生 4 项测试夹具 ReferenceError；[该次日志](audit/browser-control-fixture-error.txt) 保留，修正 VM 依赖后未改变业务断言。最终同一命令 exit 0，14/14 PASS，见 [修复后日志](audit/browser-control-after.txt)，本地同名文件位于 `test-results/browser-repair/offline/`。Required 已解决；不把隔离传输测试记作浏览器 UI 验证。
+测试另提取实际 history 与 pending-error 的完整 try/catch/finally 片段，注入原错误并核对停止时 0 次 evaluate、普通失败时 1 次恢复；使用真实共用错误识别函数，没有复写 regex。扩展时最初未将该 helper 传入 VM，产生 4 项测试夹具 ReferenceError；[该次日志](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/browser-repair-20261009/audit/browser-control-fixture-error.txt) 保留，修正 VM 依赖后未改变业务断言。最终同一命令 exit 0，14/14 PASS，见 [修复后日志](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/browser-repair-20261009/audit/browser-control-after.txt)，本地同名文件位于 `test-results/browser-repair/offline/`。Required 已解决；不把隔离传输测试记作浏览器 UI 验证。
 
 ## 已解决 Required：正常结束后的浏览器清理失败仍写 passed
 
@@ -28,11 +28,11 @@ root 自审发现正常流程先设置 `report.status='passed'`，最外层 `fin
 
 独立测试直接提取实际最外层 `finally`，仅在传输边界注入错误，并使用真实 `writeFile` 写临时 JSON。初始报告设 passed，分别覆盖移除脚本/还原 fetch 两处，各注入用户接管和普通错误。断言原始 Error instance 传播及没有后续浏览器调用后，再要求写出的报告为 failed、保留错误、正确识别停止及记录停止后的待清理 observer。原文件实现未由评审者修改。
 
-命令 `PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH pnpm exec vitest run --project unit tests/unit/scripts/browser-control.test.ts -t 'library outer cleanup boundary'`：exit 1，新 4 项全部 FAIL，均实际得到报告 status=passed；原 14 项因名称过滤未重跑，过滤不改变默认入口。见 [新边界失败日志](audit/browser-cleanup-before.txt)，本地原始日志为 `test-results/browser-repair/offline/browser-cleanup-before.log`。
+命令 `PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH pnpm exec vitest run --project unit tests/unit/scripts/browser-control.test.ts -t 'library outer cleanup boundary'`：exit 1，新 4 项全部 FAIL，均实际得到报告 status=passed；原 14 项因名称过滤未重跑，过滤不改变默认入口。见 [新边界失败日志](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/browser-repair-20261009/audit/browser-cleanup-before.txt)，本地原始日志为 `test-results/browser-repair/offline/browser-cleanup-before.log`。
 
 实现者在原清理 try 增加 catch，记录 failed、cleanupError 和实际停止标记，以 `error ??=` 保留已有主体错误；记录待清理资源后抛回原始清理 Error，离线写报告的 finally 保留，不重试或继续浏览器操作。函数局部 `scriptRemoved` 只在真实 remove 调用成功后设为 true，待清理信息分别记录脚本移除状态及 `restoreFetch=true`，避免还原 fetch 失败时误记脚本仍待移除。普通清理错误同样不会留下 passed 报告。
 
-独立复审仅为真实 outer-finally 提取环境传入该局部变量初始 false，新增精确资源状态断言；同一名称过滤命令 exit 0，新 4 项 PASS，原 14 项本次未重跑，见 [新边界修复日志](audit/browser-cleanup-after.txt)，本地原始日志为 `test-results/browser-repair/offline/browser-cleanup-after.log`。分别证明移除阶段失败时 `scriptRemoved=false`、还原阶段失败时 `scriptRemoved=true`，并核对真实失败报告、原始 Error instance、普通/停止分类和没有后续浏览器调用。此 Required 已解决；没有把该离线传输注入记作真实浏览器验证。
+独立复审仅为真实 outer-finally 提取环境传入该局部变量初始 false，新增精确资源状态断言；同一名称过滤命令 exit 0，新 4 项 PASS，原 14 项本次未重跑，见 [新边界修复日志](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/browser-repair-20261009/audit/browser-cleanup-after.txt)，本地原始日志为 `test-results/browser-repair/offline/browser-cleanup-after.log`。分别证明移除阶段失败时 `scriptRemoved=false`、还原阶段失败时 `scriptRemoved=true`，并核对真实失败报告、原始 Error instance、普通/停止分类和没有后续浏览器调用。此 Required 已解决；没有把该离线传输注入记作真实浏览器验证。
 
 ## 已解决 Required：清理 pending 请求会改变真实响应结果
 
@@ -65,7 +65,7 @@ Token 的新定向失败报告分别记录了按钮高度 `48.5467529296875`、`
 
 ## OAuth 根因与修复复审
 
-评审者读取实际失败报告 `test-results/browser-repair/oauth-trace/oauth-all-before.json` 的事件序列，关键原始事件已摘录为 [焦点证据](audit/oauth-focus-events.json)。事件只包含时间、按键、节点标识和弹窗状态，没有输入值或凭证。
+评审者读取实际失败报告 `test-results/browser-repair/oauth-trace/oauth-all-before.json` 的事件序列，关键原始事件已摘录为 [焦点证据](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/browser-repair-20261009/audit/oauth-focus-events.json)。事件只包含时间、按键、节点标识和弹窗状态，没有输入值或凭证。
 
 | 页面时间（ms） | 实际事件                               |
 | -------------- | -------------------------------------- |
@@ -107,7 +107,7 @@ Token 的新定向失败报告分别记录了按钮高度 `48.5467529296875`、`
 
 有意义失效注入：从真实 helper 提取临时副本，仅删除 `[...dependencies, runtime]` 中的 runtime 依赖，在重启失败时再次执行同一个阻断契约。该契约实际失败（浏览器仍被调用且 upload 被记为 passed），测试明确捕获这个失败，证明断言能发现前置失效；原源码未改，未创建产品模拟 UI。
 
-实际命令 `PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH pnpm exec vitest run --project unit tests/unit/runtime/browser-upload.test.ts`：exit 0，17/17 PASS，包含上述失效注入捕获；见 [上传 runner 独立测试日志](audit/browser-upload.txt)，本地原始日志为 `test-results/browser-repair/offline/browser-upload.log`。只运行此新增文件，未重复旧 runner/plan/stages 检查或浏览器；未发现新增 Critical / Required。真实重启及两项上传最终定向已由实现者运行通过，独立核对见下文。
+实际命令 `PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH pnpm exec vitest run --project unit tests/unit/runtime/browser-upload.test.ts`：exit 0，17/17 PASS，包含上述失效注入捕获；见 [上传 runner 独立测试日志](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/browser-repair-20261009/audit/browser-upload.txt)，本地原始日志为 `test-results/browser-repair/offline/browser-upload.log`。只运行此新增文件，未重复旧 runner/plan/stages 检查或浏览器；未发现新增 Critical / Required。真实重启及两项上传最终定向已由实现者运行通过，独立核对见下文。
 
 ## 已完成定向结果核对
 
@@ -128,9 +128,9 @@ OAuth runner 时间为 `2026-10-09T06:38:56.808Z` 至 `06:39:50.465Z`；设置�
 
 ## 默认完整流程结果与源码消费边界
 
-评审者只读最终 [默认 runner](browser/reports/full-runner.json)，核对其与 `test-results/browser-repair/full/runner.json` 内容一致。该次使用 Node v24.18.1，从 `2026-10-09T06:46:10.063Z` 到 `07:30:48.633Z`，实际 **70 passed / 3 failed / 0 blocked**，整体 status=failed。失败仅为 processing、upload、upload-polling，具体业务失败已在前文单独记录；不将通过阶段数量记作完整流程通过。
+评审者只读最终 [默认 runner](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/browser-repair-20261009/browser/reports/full-runner.json)，核对其与 `test-results/browser-repair/full/runner.json` 内容一致。该次使用 Node v24.18.1，从 `2026-10-09T06:46:10.063Z` 到 `07:30:48.633Z`，实际 **70 passed / 3 failed / 0 blocked**，整体 status=failed。失败仅为 processing、upload、upload-polling，具体业务失败已在前文单独记录；不将通过阶段数量记作完整流程通过。
 
-Token 1440/390、OAuth 两宽度的 before/restart/after/enable-restart/enabled、upload-settings、site-general 与 isolated-ui 均明确 passed。在发布摘录生成之前，已核对原样归档的实验图库、实验 UI runner 和 site-general 公共外壳与其本地源报告内容一致。现在公开的对应入口是 [实验图库摘录](browser/reports/full-isolated-library.excerpt.json)、[完整实验 UI runner](browser/reports/full-isolated-ui-runner.json) 和 [site-general 公共外壳摘录](browser/reports/full-site-owner-shell.excerpt.json)；摘录的省略范围另见末尾复核。图库报告 passed、5 checks，`pendingError={status:503,released:false}`，没有 pendingBrowserCleanup、cleanupError 或停止标记；正常清理路径已实际执行。公共外壳由默认站点消费者验证通过，33 pages、9 checks；默认 upload main 在认证前置失败，没有到达其 owner-shell 或上传断言。上传 main 只具有早期定向 PASS，此时修复认证前置后的完整上传结果尚待核对，最终结果见下方收尾复审。未操作浏览器的评审者只读这些报告。
+Token 1440/390、OAuth 两宽度的 before/restart/after/enable-restart/enabled、upload-settings、site-general 与 isolated-ui 均明确 passed。在发布摘录生成之前，已核对原样归档的实验图库、实验 UI runner 和 site-general 公共外壳与其本地源报告内容一致。现在公开的对应入口是 [实验图库摘录](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/browser-repair-20261009/browser/reports/full-isolated-library.excerpt.json)、[完整实验 UI runner](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/browser-repair-20261009/browser/reports/full-isolated-ui-runner.json) 和 [site-general 公共外壳摘录](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/browser-repair-20261009/browser/reports/full-site-owner-shell.excerpt.json)；摘录的省略范围另见末尾复核。图库报告 passed、5 checks，`pendingError={status:503,released:false}`，没有 pendingBrowserCleanup、cleanupError 或停止标记；正常清理路径已实际执行。公共外壳由默认站点消费者验证通过，33 pages、9 checks；默认 upload main 在认证前置失败，没有到达其 owner-shell 或上传断言。上传 main 只具有早期定向 PASS，此时修复认证前置后的完整上传结果尚待核对，最终结果见下方收尾复审。未操作浏览器的评审者只读这些报告。
 
 源码消费有明确区别：本次原有六项修复在对应阶段运行前已实施；最终控制权 guard / 清理 catch 在 full 后段加载实验图库模块前已加入，末段 `07:30:38.667Z` 至 `07:30:48.376Z` 的 isolated-ui 正常路径通过。控制异常仍由先前实际函数/片段注入验证，正常浏览器 PASS 不能代替异常边界测试。processing helper 在原 processing 失败后修改；上传 runner 在原 upload / polling 失败后修改，而 runner 进程已启动，故此次默认结果没有验证这两处新修复。后续完整 processing 及 upload-regression（包含 polling）的真实定向结果已分别核对，见下文；不能将定向结果追认成该次默认全量整体通过。
 
@@ -138,7 +138,7 @@ Token 1440/390、OAuth 两宽度的 before/restart/after/enable-restart/enabled�
 
 ## 后修 processing 完整复验核对
 
-发布摘录生成之前，独立核对 processing 原样归档与 `test-results/browser-repair/processing-final/` 的两份源报告内容一致。现在公开的是 [完整 processing 最终 runner](browser/reports/processing-final-runner.json) 与 [processing 行为摘录](browser/reports/processing-final-processing.excerpt.json)，不把后者当作完整几何观察报告。该次 Node v24.18.1，`2026-10-09T07:32:12.876Z` 至 `07:34:57.295Z`；runner status=passed，processing 和 shell-navigation 两个 stage 均 passed。processing 报告 passed、44 checks / 100 layouts、`originalSettingsRestored=true`、`browserErrors=[]`。
+发布摘录生成之前，独立核对 processing 原样归档与 `test-results/browser-repair/processing-final/` 的两份源报告内容一致。现在公开的是 [完整 processing 最终 runner](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/browser-repair-20261009/browser/reports/processing-final-runner.json) 与 [processing 行为摘录](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/browser-repair-20261009/browser/reports/processing-final-processing.excerpt.json)，不把后者当作完整几何观察报告。该次 Node v24.18.1，`2026-10-09T07:32:12.876Z` 至 `07:34:57.295Z`；runner status=passed，processing 和 shell-navigation 两个 stage 均 passed。processing 报告 passed、44 checks / 100 layouts、`originalSettingsRestored=true`、`browserErrors=[]`。
 
 核对业务 check 记录，原越界 quality 输入/无 PATCH/错误焦点、透明度文字图片共享、无效 `#AB` blur 保留与小数保存读回、预览与真实会话过期/未知提交恢复均实际执行。此证据补足 processing helper 所有既有消费者的最终源码验证，不以新增即时 input.value 断言替代保存与恢复测试。公共导航也已完成，不只依据先生成的 processing.json 判断整个 suite 成功。
 
@@ -146,7 +146,7 @@ README 对默认上传停在认证前置和公共外壳由站点消费者验证�
 
 ## 后修 upload-regression 完整复验与最终限制
 
-发布摘录生成之前，独立核对上传原样归档与 `test-results/browser-repair/upload-final/` 的四份源报告内容一致。现在公开的是 [完整最终上传 runner](browser/reports/upload-final-runner.json)、[上传行为摘录](browser/reports/upload-final.excerpt.json)、[完整轮询报告](browser/reports/upload-polling-final.json) 与 [上传公共外壳摘录](browser/reports/upload-final-owner-shell.excerpt.json)。Node v24.18.1，`2026-10-09T07:35:24.249Z` 至 `07:37:23.610Z`，runner status=passed；upload-runtime、upload、upload-polling-runtime、upload-polling 四个 stage 全部 passed。上传为 16 checks / 140 layouts，轮询 4 checks；上传公共外壳 9 checks、33 pages / 11 collapsed，均 passed，没有清理失败或待清理资源字段。
+发布摘录生成之前，独立核对上传原样归档与 `test-results/browser-repair/upload-final/` 的四份源报告内容一致。现在公开的是 [完整最终上传 runner](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/browser-repair-20261009/browser/reports/upload-final-runner.json)、[上传行为摘录](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/browser-repair-20261009/browser/reports/upload-final.excerpt.json)、[完整轮询报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/browser-repair-20261009/browser/reports/upload-polling-final.json) 与 [上传公共外壳摘录](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/browser-repair-20261009/browser/reports/upload-final-owner-shell.excerpt.json)。Node v24.18.1，`2026-10-09T07:35:24.249Z` 至 `07:37:23.610Z`，runner status=passed；upload-runtime、upload、upload-polling-runtime、upload-polling 四个 stage 全部 passed。上传为 16 checks / 140 layouts，轮询 4 checks；上传公共外壳 9 checks、33 pages / 11 collapsed，均 passed，没有清理失败或待清理资源字段。
 
 轮询报告真实记录旧读仍被持有时只发起一次读取、传输进度 6814/6814，以及放行后第二次读取完成；取消并清空后新增文件的独立一组也恢复轮询。运行前置各自的真实服务重启通过，而不是只依靠离线 stage 测试判断认证前置完成。此次补足默认 upload 因 429 未到达的外壳与上传业务验证，原 429 失败报告保留。
 
@@ -160,7 +160,7 @@ README 对默认上传停在认证前置和公共外壳由站点消费者验证�
 
 环境：Node 24.18.1；命令为 `PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH node --input-type=module`，通过标准输入执行隔离 VM 注入。只从原文件提取 `observeRequests` 到临时目录，原文件未改；传输替身返回原生 `Response`，用于检查工具的持有与还原契约，不作为真实 HTTP 或浏览器证据。
 
-实际执行的标准输入脚本已按相同逻辑保存为 [初审脚本](audit/offline-before.mjs) 和 [复审脚本](audit/offline-after.mjs)，对应实际输出为 [初审结果](audit/offline-before.txt) 与 [复审结果](audit/offline-after.txt)。保存时只调整脚本排版，没有重跑检查或改变结果。相同四个文件也保存在本 worktree 的 `test-results/browser-repair/offline/`，用于本地证据保留。
+实际执行的标准输入脚本已按相同逻辑保存为 [初审脚本](audit/offline-before.mjs) 和 [复审脚本](audit/offline-after.mjs)，对应实际输出为 [初审结果](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/browser-repair-20261009/audit/offline-before.txt) 与 [复审结果](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/browser-repair-20261009/audit/offline-after.txt)。保存时只调整脚本排版，没有重跑检查或改变结果。相同四个文件也保存在本 worktree 的 `test-results/browser-repair/offline/`，用于本地证据保留。
 
 可重现命令（从 worktree 根目录执行）：
 
@@ -170,7 +170,7 @@ PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH node docs/verification/
 
 初审脚本同样从当前源码提取钩子；在修复后的源码上重跑不会再得到历史 TypeError。历史缺陷结果保留在 `offline-before.txt`，不以新输出覆盖。
 
-DocumentTimeline / ScrollTimeline 变更后的独立注入只重跑受影响的两个实际 predicate，未重复未变的 holding 检查。[脚本](audit/offline-timelines.mjs) 与 [实际输出](audit/offline-timelines.txt) 同步保存在 `test-results/browser-repair/offline/`。命令：
+DocumentTimeline / ScrollTimeline 变更后的独立注入只重跑受影响的两个实际 predicate，未重复未变的 holding 检查。[脚本](audit/offline-timelines.mjs) 与 [实际输出](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/browser-repair-20261009/audit/offline-timelines.txt) 同步保存在 `test-results/browser-repair/offline/`。命令：
 
 ```sh
 PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH node docs/verification/browser-repair-20261009/audit/offline-timelines.mjs
@@ -198,4 +198,4 @@ PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH node docs/verification/
 
 去除摘录元数据及明确声明的省略数组后，15 份报告的所有其余字段与原报告深度相等。因此 status、checks、error、requests、清理、恢复、限制，以及原有 events/refinement 等未声明省略内容均保留；失败没有变成通过，行为 check 未裁剪。省略字段仅是发布证据体积整理，产品、实现、测试和原始验证结果没有变化。
 
-实际数据复核命令：`PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH node docs/verification/browser-repair-20261009/audit/excerpt-review.mjs`，退出 0，15/15 PASS。可查看 [复核脚本](audit/excerpt-review.mjs) 与 [逐份结果](audit/excerpt-review.json)。这是只读报告数据核对，没有重跑任何应用测试、浏览器或已通过检查。此前功能修复与代码质量结论保持，默认 70/3 和最终完整默认未重跑的限制不变。
+实际数据复核命令：`PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH node docs/verification/browser-repair-20261009/audit/excerpt-review.mjs`，退出 0，15/15 PASS。可查看 [复核脚本](audit/excerpt-review.mjs) 与 [逐份结果](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/browser-repair-20261009/audit/excerpt-review.json)。这是只读报告数据核对，没有重跑任何应用测试、浏览器或已通过检查。此前功能修复与代码质量结论保持，默认 70/3 和最终完整默认未重跑的限制不变。

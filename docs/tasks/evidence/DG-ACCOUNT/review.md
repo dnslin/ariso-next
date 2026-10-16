@@ -6,7 +6,7 @@
 
 独立审计者使用 `code-review-and-quality`，读取项目 AGENTS.md、`docs/README.md`、[执行约定](../../execution.md)、[设计交接](../../../design/handoff.md)、[待验收清单](../../../design/acceptance.md)、SPEC-identity §5–7/10–14，以及基线 `569e34d7d2e628bba290734fba707b4c5756a557` 后的本次文档差异。审查对象为两消费卡的 DG-ACCOUNT 小节、gates 证据入口、本目录 README 和 GitHub/Figma JSON。没有改业务代码或重审已确认产品选择。
 
-实际只读操作包括 `gh issue view 127 --repo dnslin/ariso-next --json number,title,body,state,comments,url`、原生 `dependencies/blocked_by` 与 `dependencies/blocking` 回读、`git diff`、相关实现/测试/配置阅读及 Node 24 对 JSON 的解析。#127 仍 OPEN、无评论、无直接前置，直接消费者为 #165/T-ID-04 和 #181/T-ID-05，与 [GitHub 快照](./github.json)一致。
+实际只读操作包括 `gh issue view 127 --repo dnslin/ariso-next --json number,title,body,state,comments,url`、原生 `dependencies/blocked_by` 与 `dependencies/blocking` 回读、`git diff`、相关实现/测试/配置阅读及 Node 24 对 JSON 的解析。#127 仍 OPEN、无评论、无直接前置，直接消费者为 #165/T-ID-04 和 #181/T-ID-05，与 [GitHub 快照](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/DG-ACCOUNT/github.json)一致。
 
 ## 核对结果
 

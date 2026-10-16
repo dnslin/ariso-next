@@ -19,19 +19,19 @@ Node24.18.1、pnpm11.19.0、macOS、现有Ego Lite。初次读取TaskSpace2返�
 
 - 独立项目 `pnpm exec tsc --noEmit --project design-plans/issue179-review-v2/tsconfig.json` 退出0。
 - 受影响app定向ESLint退出0；最终独立 `pnpm exec next build design-plans/issue179-review-v2 --webpack` 退出0，并在4181使用Next生产模式运行。
-- `ego-browser nodejs < docs/verification/analytics-179/prototype-v2/feedback/check.mjs` [报告](./browser.json)通过。桌面1440×1080、手机390×844、390×400短视口，浅深色、零访问、三点直接数值、无Accordion、14px弹窗/8px关闭、透明hover、按压矩阵为单位变换、正文可滚到底、十条现存示例排行、Escape回来源焦点均实际检查。
+- `ego-browser nodejs < docs/verification/analytics-179/prototype-v2/feedback/check.mjs` [报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-v2/feedback/browser.json)通过。桌面1440×1080、手机390×844、390×400短视口，浅深色、零访问、三点直接数值、无Accordion、14px弹窗/8px关闭、透明hover、按压矩阵为单位变换、正文可滚到底、十条现存示例排行、Escape回来源焦点均实际检查。
 - `ego-browser nodejs < docs/verification/analytics-179/prototype-v2/feedback/details.mjs` 补真实关闭hover、手机排行末端、异常网格。过渡完成后补图，不用截图数量替代视觉对照。
 
 首次浏览器断言发现生成CSS仍为旧24/20px，而源码已14px；移走仅该独立项目的`.next/cache`后重建，生成CSS及真实computed style一致。首次服务启动与浏览器重载竞争导致connection refused，待服务实际200后恢复原页面。按压初次断言严格比较字符串`none`，实际为单位矩阵；改为严格比较六个矩阵值`[1,0,0,1,0,0]`验证无缩放/位移，没有放宽几何要求。补图末尾自动滚动点击被html拦截，检查页面后改用真实focus+Enter恢复演示入口；异常Tab初图在过渡帧，等待有限动画结束后仅重拍该图。失败均保持为取证/运行记录，不冒称首轮全绿。
 
 ## 同视口设计对照
 
-- [桌面单图](./statistics-desktop.png)、[手机单图](./statistics-mobile.png)、[深色](./statistics-mobile-dark.png)：公共区域保留，缩略图、累计、版本、近期折线层级保留，三个数字无需hover可读，说明入口已删除。
-- [零值](./zero-mobile.png)：三个点同一零基线，版本条归零。
-- [短视口](./short-mobile.png)、[正文底部](./short-bottom.png)：固定关闭/工具区可达，正文滚动到完整折线。
-- [真实hover](./hover-desktop.png)：关闭透明背景，无放大/缩小或新增彩色块。
-- [桌面排行](./ranking-desktop.png)、[手机首屏](./ranking-mobile.png)、[手机末端](./ranking-mobile-bottom.png)：Tab方圆角与周期控件保留清楚层级，第10项现存样例而非删除占位。
-- [手机异常](./failures-mobile.png)：16px卡片、8px操作、稳定选中态。
+- [桌面单图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-v2/feedback/statistics-desktop.png)、[手机单图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-v2/feedback/statistics-mobile.png)、[深色](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-v2/feedback/statistics-mobile-dark.png)：公共区域保留，缩略图、累计、版本、近期折线层级保留，三个数字无需hover可读，说明入口已删除。
+- [零值](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-v2/feedback/zero-mobile.png)：三个点同一零基线，版本条归零。
+- [短视口](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-v2/feedback/short-mobile.png)、[正文底部](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-v2/feedback/short-bottom.png)：固定关闭/工具区可达，正文滚动到完整折线。
+- [真实hover](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-v2/feedback/hover-desktop.png)：关闭透明背景，无放大/缩小或新增彩色块。
+- [桌面排行](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-v2/feedback/ranking-desktop.png)、[手机首屏](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-v2/feedback/ranking-mobile.png)、[手机末端](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-v2/feedback/ranking-mobile-bottom.png)：Tab方圆角与周期控件保留清楚层级，第10项现存样例而非删除占位。
+- [手机异常](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-v2/feedback/failures-mobile.png)：16px卡片、8px操作、稳定选中态。
 
 [独立代码复审](../review-feedback-code.md)关闭portal作用域问题，并分别评审真实排行查询；[独立设计复审](./review-design.md)只对原型视觉给结论，不能代替真实产品验证或用户批准。
 

@@ -41,9 +41,9 @@
 
 已直接读取主执行者日志：
 
-- [pr247-p2-page-boundary-before.txt](./p2-page-boundary-before.txt)：修复前新增四个入口用例失败，原 full/m2-mobile 两个用例通过，110 项未执行。四项失败都是 p2 未被拒绝、随后命中 ENOTDIR；没有启动应用或浏览器。
-- [pr247-p2-unit.txt](./p2-unit.txt)：修复后 4 文件、162 项全部通过。新计划测试检查默认及定向脚本选择和精确配置对象；M2 测试用现有 stage helper 验证相同目录、顺序、owner/before 阻塞和异常 setup code，而非仅断言函数存在。
-- 首次类型失败保留在 [pr247-p2-typecheck-before.txt](./p2-typecheck-before.txt)：browser-m2.test.ts:43 的 TS2322 来自 helper 默认 dependencies=[] 推断过窄。现已读取 helper 的明确 JSDoc 及测试回调的 Record<string, unknown> 类型修改，均无运行逻辑变化。主执行者实际运行 `pnpm exec tsc --noEmit --project tsconfig.json` 退出 0，最终日志为 [pr247-p2-typecheck.txt](./p2-typecheck.txt)。本评审没有重复执行。
-- 主执行者实际对 8 个受影响文件执行 eslint，退出 0，见 [pr247-p2-lint.txt](./p2-lint.txt)；类型补充后只重查 M2 helper/test 两文件，退出 0，见 [pr247-p2-lint-types.txt](./p2-lint-types.txt)。两份日志已读；格式和最终机械等价记录由主执行者继续保存，本报告不提前声称结果。
+- [pr247-p2-page-boundary-before.txt](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-190/p2-page-boundary-before.txt)：修复前新增四个入口用例失败，原 full/m2-mobile 两个用例通过，110 项未执行。四项失败都是 p2 未被拒绝、随后命中 ENOTDIR；没有启动应用或浏览器。
+- [pr247-p2-unit.txt](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-190/p2-unit.txt)：修复后 4 文件、162 项全部通过。新计划测试检查默认及定向脚本选择和精确配置对象；M2 测试用现有 stage helper 验证相同目录、顺序、owner/before 阻塞和异常 setup code，而非仅断言函数存在。
+- 首次类型失败保留在 [pr247-p2-typecheck-before.txt](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-190/p2-typecheck-before.txt)：browser-m2.test.ts:43 的 TS2322 来自 helper 默认 dependencies=[] 推断过窄。现已读取 helper 的明确 JSDoc 及测试回调的 Record<string, unknown> 类型修改，均无运行逻辑变化。主执行者实际运行 `pnpm exec tsc --noEmit --project tsconfig.json` 退出 0，最终日志为 [pr247-p2-typecheck.txt](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-190/p2-typecheck.txt)。本评审没有重复执行。
+- 主执行者实际对 8 个受影响文件执行 eslint，退出 0，见 [pr247-p2-lint.txt](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-190/p2-lint.txt)；类型补充后只重查 M2 helper/test 两文件，退出 0，见 [pr247-p2-lint-types.txt](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-190/p2-lint-types.txt)。两份日志已读；格式和最终机械等价记录由主执行者继续保存，本报告不提前声称结果。
 
 未重新做真实浏览器重启或界面矩阵；这次是已验证流程的必要边界修复与机械组织调整，用户只授权关键检查。原 full 的 40 passed / 7 failed / 1 blocked、后续定向恢复、人工验收未完成、通知遮挡及 main 冲突事实均不变。没有对生产 sharing 新增必修发现，也没有将此次复审等同于整个 PR 已可合并。

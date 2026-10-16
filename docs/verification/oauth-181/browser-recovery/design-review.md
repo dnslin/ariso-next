@@ -79,7 +79,7 @@ Figma 文件为 `74sT9Hrf8G4czcWeTkET5b`。本轮实际读取的最新节点如�
 | `oauth-390-before-unbound-disabled-configuration-short-{light,dark}-390.png` | 实际 PNG 为390×400，内部滚动后保存与取消保持可见，聚焦保存的轮廓完整；不将静态图单独当成滚动/键盘断言通过。                                                                                                                                                           |
 | `oauth-390-before-callback-manual-{light,dark}-390.png`                      | 390×844，拒绝复制后保留同一弹窗与完整只读地址及选择入口。此前成功复制通知仍在底部，约 y760–821，覆盖约 y725–773 的取消按钮底部14px；48px按钮仅约34px露出。依 execution 第50行“至少44px点击目标”报告实现者。该图保留为失败证据；下文真实手机补图已确认返修关闭此问题。 |
 
-全部上述文件位于 [真实浏览器输出](../../../../test-results/issue181-browser-resumed/)。旧失败流程保留；最终完整设计结论使用实现者后续定向重跑目录及结果，不用本轮静态读取消除旧失败。
+全部上述文件位于 真实浏览器输出（临时产物未保留：`../../../../test-results/issue181-browser-resumed/`）。旧失败流程保留；最终完整设计结论使用实现者后续定向重跑目录及结果，不用本轮静态读取消除旧失败。
 
 细节差异已查清并修正真正来源：运行时 `Tabs` 的既有 8px 根间距让分类下的业务起点比原 Figma 约低 8px，获批原型与正式产品复用同一公共组件；密码圆点的 `tracking-[3px]` 也在获批原型和正式代码中一致。同步者只将 Figma 桌面业务前置 8px、标题改为 18/28、普通值行高改为 20，并同步密码点距，没有修改已批准产品或公共组件。手机没有实测时没有套用桌面位移。
 
@@ -87,11 +87,11 @@ Figma 文件为 `74sT9Hrf8G4czcWeTkET5b`。本轮实际读取的最新节点如�
 
 收到手机图后再次原生读取 `102:1713`，发现手机 Figma 缺少实际已选分类图标、密码 3px 点距，邮箱/密码操作的静态最小宽度为 96px。获批原型与正式产品同源：小于 768px 时全局 44px 点击目标规则覆盖最小宽度工具类，实际中文按钮自然宽 90px、高 44px。390 的真实布局为邮箱值 x161/y341/h20，操作 x161/y369/w90/h44；密码值 y446/h20，操作 y474/h44；配置操作 y728.5/h44。
 
-手机 Figma 已按独立测量同步。评审者实际查看 `mobile-main-light-after.png`、`mobile-main-dark-after.png`、`mobile-bound-light-after.png`、`mobile-expanded-light-after.png` 和完整展开 `mobile-expanded-full-content-after.png`，并再次原生读取 `102:1713` 的最新设计信息与截图。分类选择器含16px已选图标、y208；Card y324、标题18/28、普通值20、密码点距3以及四字操作自然90×44均与实际正常页一致。同步按手机分类标签旧内距、4px分类内部间距和实际8px Tabs间距组合还原，没有直接将整页挪8px。原生文本框取整带来的绑定块44对DOM43.5、配置y729对DOM728.5和110px字形宽对109.25px均保留真实近似，不称像素全同。完整展开有两份各三行公开快照；静态完整图不能代替产品滚动验证。详见 [手机精度记录](./figma-adjustment/mobile-manifest.json)。
+手机 Figma 已按独立测量同步。评审者实际查看 `mobile-main-light-after.png`、`mobile-main-dark-after.png`、`mobile-bound-light-after.png`、`mobile-expanded-light-after.png` 和完整展开 `mobile-expanded-full-content-after.png`，并再次原生读取 `102:1713` 的最新设计信息与截图。分类选择器含16px已选图标、y208；Card y324、标题18/28、普通值20、密码点距3以及四字操作自然90×44均与实际正常页一致。同步按手机分类标签旧内距、4px分类内部间距和实际8px Tabs间距组合还原，没有直接将整页挪8px。原生文本框取整带来的绑定块44对DOM43.5、配置y729对DOM728.5和110px字形宽对109.25px均保留真实近似，不称像素全同。完整展开有两份各三行公开快照；静态完整图不能代替产品滚动验证。详见 [手机精度记录](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/oauth-181/browser-recovery/figma-adjustment/mobile-manifest.json)。
 
 ## 最终定向生命周期的实际图
 
-实际读取 [最终运行器结果](../../../../test-results/issue181-oauth-reconciled/runner.json) 与 before、after、enabled 三份报告，均为 `passed`；报告明确只使用独立运行时和 UI 专用绑定关系，不能作为真实 GitHub 授权、交换或登录的证据。前序失败记录保留，当前图与当前结果单独审查。
+实际读取 最终运行器结果（临时产物未保留：`../../../../test-results/issue181-oauth-reconciled/runner.json`） 与 before、after、enabled 三份报告，均为 `passed`；报告明确只使用独立运行时和 UI 专用绑定关系，不能作为真实 GitHub 授权、交换或登录的证据。前序失败记录保留，当前图与当前结果单独审查。
 
 | 已实际查看的最终图（均在 `issue181-oauth-reconciled`）                                                                                                                             | 设计对照与结论                                                                                                                                                                                                                                                                    |
 | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -105,11 +105,11 @@ Figma 文件为 `74sT9Hrf8G4czcWeTkET5b`。本轮实际读取的最新节点如�
 
 本轮看到的新 Figma 来源偏差是 Accordion 的左右内距。真实桌面展开 `...-configuration-difference-light-1440.png` 中摘要起点 x285、Trigger 与快照 x301；手机图摘要 x33、Trigger 与快照 x49。这些起点结合真实图视觉对照与已安装样式读取确定，不声称进行了新的 Accordion DOM 测量。获批原型与正式 `GithubPendingSummary` 的 `Accordion.Trigger`/`Accordion.Body` 均没有覆盖横向 padding，HeroUI 已有 `.accordion__trigger` 与 `.accordion__body-inner` 默认 `px-4`（16px）。同步前 Figma `expanded-light-after.png` 和手机完整业务图将它们与摘要同起点，漏掉该成熟组件默认值。同步者已修正 Figma 的 Trigger/Body 横内距，没有修改已批准产品或公共规范。
 
-评审者实际查看 `accordion-desktop-expanded-light-after.png`、`accordion-desktop-collapsed-dark-after.png`、`accordion-mobile-expanded-light-after.png`、`accordion-mobile-collapsed-dark-after.png` 和 `accordion-mobile-expanded-full-content-after.png`，并再次原生读取 `847:15346` 的设计信息与截图。Trigger/Body 均有16px横内距，右箭头保持16px内收、展开旋转与固定“查看配置差异”文案；两份三行、份内4px/份间12px未改变。手机首屏没有截到 Accordion，实际以完整业务导出及真实滚动底部图核对。此来源偏差已关闭；保留 [前后清单与原生坐标](./figma-adjustment/accordion-manifest.json)。
+评审者实际查看 `accordion-desktop-expanded-light-after.png`、`accordion-desktop-collapsed-dark-after.png`、`accordion-mobile-expanded-light-after.png`、`accordion-mobile-collapsed-dark-after.png` 和 `accordion-mobile-expanded-full-content-after.png`，并再次原生读取 `847:15346` 的设计信息与截图。Trigger/Body 均有16px横内距，右箭头保持16px内收、展开旋转与固定“查看配置差异”文案；两份三行、份内4px/份间12px未改变。手机首屏没有截到 Accordion，实际以完整业务导出及真实滚动底部图核对。此来源偏差已关闭；保留 [前后清单与原生坐标](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/oauth-181/browser-recovery/figma-adjustment/accordion-manifest.json)。
 
 ## 手机补图与长内容返修复核
 
-已实际查看 [真实补图清单](./real-ui/manifest.json) 中全部32张产品图，并读取41项实际几何记录；数据来自实现者的独立真实 OAuth 测试夹具，评审者未操作浏览器、读取私有凭证或修改数据。设计结论来自下面的逐项对照，图片总数只标明读取范围。
+已实际查看 [真实补图清单](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/oauth-181/browser-recovery/real-ui/manifest.json) 中全部32张产品图，并读取41项实际几何记录；数据来自实现者的独立真实 OAuth 测试夹具，评审者未操作浏览器、读取私有凭证或修改数据。设计结论来自下面的逐项对照，图片总数只标明读取范围。
 
 | 真实补图                                                                                   | 对照与结论                                                                                                                                                                                                                                       |
 | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -125,7 +125,7 @@ Figma 文件为 `74sT9Hrf8G4czcWeTkET5b`。本轮实际读取的最新节点如�
 
 ## 共享分类的三路由最终复核
 
-实际读取 [消费者结果](./settings-consumers.json)：Node v24.18.1、`suite=tokens`、`only=consumers`、运行器与唯一报告均 `passed`、`browserErrors=[]`。该定向结果只验证共享消费者，不记作上传 Token 全生命周期或默认全量流程通过。
+实际读取 [消费者结果](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/oauth-181/browser-recovery/settings-consumers.json)：Node v24.18.1、`suite=tokens`、`only=consumers`、运行器与唯一报告均 `passed`、`browserErrors=[]`。该定向结果只验证共享消费者，不记作上传 Token 全生命周期或默认全量流程通过。
 
 已实际查看 `consumers/tokens-{1440,390}-consumer-{processing,account,api}-{light,dark}.png` 全部12张及 `tokens-390-consumer-api-categories-open-{light,dark}.png`。先核对整页公共 Header/侧栏、品牌、导航、账号区、正文边距与标题，再核对共享分类。1440三页均使用232px侧栏、主区x264及同一标题起点；三分类各自黄色选中、图标和文字完整，Indicator没有覆盖文字。390三页均保留64px公共Header、44px Menu、外置“设置分类”标签和当前分类图标；键盘切换后的可见焦点轮廓不遮挡文字，展开菜单顺序与勾选正确。对照前文实际读取的公共节点与 handoff 当前来源条目，没有新的公共区域偏差。
 

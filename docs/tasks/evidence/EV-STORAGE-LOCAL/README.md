@@ -31,7 +31,7 @@ JSON 是实验责任夹具，不是生产引用表。它验证调用方在 I/O �
 
 独立 worktree：`/Users/dnslin/.codex/worktrees/issue-48-storage-io/ariso`，从最新 `origin/main` 的 `882a546` 建立。原 `/Volumes/data/project/ariso` 保留 main 与干净状态。
 
-Darwin 25.6.0 arm64，Node 24.18.1，pnpm 11.19.0，UID 501。源卷 `/Volumes/data` 为 `/dev/disk7s1`，目标位于系统 Data 卷 `/dev/disk3s1`。实际设备号分别 16777244、16777230。详见 [macOS 原始报告](./macos.json)。所有实验目录均由 mkdtemp 创建，结束后已清理；传入根目录未删除。
+Darwin 25.6.0 arm64，Node 24.18.1，pnpm 11.19.0，UID 501。源卷 `/Volumes/data` 为 `/dev/disk7s1`，目标位于系统 Data 卷 `/dev/disk3s1`。实际设备号分别 16777244、16777230。详见 [macOS 原始报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-STORAGE-LOCAL/macos.json)。所有实验目录均由 mkdtemp 创建，结束后已清理；传入根目录未删除。
 
 ```sh
 export PATH="$HOME/.nvm/versions/node/v24.18.1/bin:$PATH"
@@ -54,7 +54,7 @@ git diff --check
 
 - 安装、lint、格式、类型、构建退出码 0；单元 8 文件/161 项，集成 13 文件/82 项通过；最后根内链接写入断言调整后，定向集成再次通过。
 - 构建保留已有 better-sqlite3 可选 Debug 二进制追踪诊断，退出码仍为 0；实际 Release SQLite 由集成检查通过，未修改或隐藏该诊断。
-- [Ego 原始报告](./browser.json)：Chrome 152，390/1440 两视口、静态资源与健康接口通过，errors 为空，TaskSpace 11 成功关闭。没有下载浏览器；无新增产品界面或 Figma 变更。
+- [Ego 原始报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-STORAGE-LOCAL/browser.json)：Chrome 152，390/1440 两视口、静态资源与健康接口通过，errors 为空，TaskSpace 11 成功关闭。没有下载浏览器；无新增产品界面或 Figma 变更。
 - 初始定向测试因实验尚未实现失败；随后通过。类型检查曾因 Node 类型不公开流 fd 属性失败，改为记录公开 open 事件的描述符并断言 EBADF 后通过。
 - 首次跨盘 CLI 使用相同 storage/target 根被空相对路径拒绝；第二次目标目录未创建报 ENOENT。创建专用目标父目录后执行上列命令通过，未弱化路径断言。
 - macOS 报告明确 `incomplete: ["low-space"]`；未在本机填满真实磁盘或运行 Docker。
@@ -65,7 +65,7 @@ git diff --check
 
 实验没有安装新工具。脚本仅临时 bind mount，不进入生产镜像。Actions 保存 `storage-verification-amd64` / `storage-verification-arm64`；现有 Docker 生命周期与图片检查照常执行。PR 事件不运行 release publish，不发布镜像、不部署。
 
-实现提交 [`77c1d2a`](https://github.com/dnslin/ariso-next/commit/77c1d2a14bb8f9d5dc833df203ef2587d8753ecc) 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/35500210985) 与 [Docker 双架构](https://github.com/dnslin/ariso-next/actions/runs/35500210911) 全部通过。旧提交的重复运行已取消。永久原始报告：[AMD64](./amd64.json)、[ARM64](./arm64.json)。报告归档提交仅更新文档，不改变受测代码或工作流；最新提交的复跑可在 [PR #87](https://github.com/dnslin/ariso-next/pull/87) 检查页查看。
+实现提交 [`77c1d2a`](https://github.com/dnslin/ariso-next/commit/77c1d2a14bb8f9d5dc833df203ef2587d8753ecc) 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/35500210985) 与 [Docker 双架构](https://github.com/dnslin/ariso-next/actions/runs/35500210911) 全部通过。旧提交的重复运行已取消。永久原始报告：[AMD64](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-STORAGE-LOCAL/amd64.json)、[ARM64](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-STORAGE-LOCAL/arm64.json)。报告归档提交仅更新文档，不改变受测代码或工作流；最新提交的复跑可在 [PR #87](https://github.com/dnslin/ariso-next/pull/87) 检查页查看。
 
 两架构均为 Linux 6.17.0-1022-azure / Node 24.21.0 / UID 1000。独立卷起始可用 33,554,432 字节；4 MiB 文件成功；真实 ENOSPC 时剩余 0 字节，partial 为 33,546,240 字节。清理后恢复 33,546,240 字节可用空间，保留两个各占 4 KiB 的哨兵文件。恢复后再次完整执行成功及三个取消时点矩阵，全部通过；两份报告 `incomplete` 均为空。
 

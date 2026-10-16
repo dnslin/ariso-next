@@ -16,13 +16,13 @@
 
 ## 尚未收齐的验证门槛
 
-实际读取的首轮 [browser-first/storage-admin.json](browser-first/storage-admin.json) 为 `failed`，停在 `Path Style` 开关角色定位；第二轮 [browser-second/storage-admin.json](browser-second/storage-admin.json) 为 `failed`，停在保存待测结果页的返回链接点击目标断言，实测为 86.703125×18px。第二轮失败不是重复的开关失败，不能混写为同一原因。复审源码已核对 HeroUI Switch 根上的可访问名称及返回链接的真实最小44px目标；这些源码修复仍由最终浏览器结果承接。
+实际读取的首轮 [browser-first/storage-admin.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-198/browser-first/storage-admin.json) 为 `failed`，停在 `Path Style` 开关角色定位；第二轮 [browser-second/storage-admin.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-198/browser-second/storage-admin.json) 为 `failed`，停在保存待测结果页的返回链接点击目标断言，实测为 86.703125×18px。第二轮失败不是重复的开关失败，不能混写为同一原因。复审源码已核对 HeroUI Switch 根上的可访问名称及返回链接的真实最小44px目标；这些源码修复仍由最终浏览器结果承接。
 
-新版故障/live脚本已改走默认/清理的真实独立入口，并加入受影响回归场景。本轮已实际读取[browser/storage-admin.json](browser/storage-admin.json)及其runner，均为`passed`，包含10条行为结论与120张布局记录。报告覆盖独立启用请求体、测试期间输入保留、重测失败停用且保留默认、CORS返回真实配置、清理重试、孤儿扫描失败与重试、引用上传/清理/删除、全停用与空配置。该运行使用最后视觉修正之前的产物，因此不替代新弹窗尺寸与列表样式的真实截图补验，也不把HTTP故障夹具当作R2/SeaweedFS验证；最终新产物短框与真实服务结果见下文。
+新版故障/live脚本已改走默认/清理的真实独立入口，并加入受影响回归场景。本轮已实际读取[browser/storage-admin.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-198/browser/storage-admin.json)及其runner，均为`passed`，包含10条行为结论与120张布局记录。报告覆盖独立启用请求体、测试期间输入保留、重测失败停用且保留默认、CORS返回真实配置、清理重试、孤儿扫描失败与重试、引用上传/清理/删除、全停用与空配置。该运行使用最后视觉修正之前的产物，因此不替代新弹窗尺寸与列表样式的真实截图补验，也不把HTTP故障夹具当作R2/SeaweedFS验证；最终新产物短框与真实服务结果见下文。
 
-第三轮[browser-third/storage-admin.json](browser-third/storage-admin.json)实际执行到CORS成功后的管理链接断言，结果仍为`failed`：10秒内无法在业务section里找到底栏链接。该失败与下节测试选择范围问题吻合，没有伪造点击或跳过断言。选择器源码修复已静态复核，最终主流程报告已通过真实配置返回断言；失败历史仍保留。
+第三轮[browser-third/storage-admin.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-198/browser-third/storage-admin.json)实际执行到CORS成功后的管理链接断言，结果仍为`failed`：10秒内无法在业务section里找到底栏链接。该失败与下节测试选择范围问题吻合，没有伪造点击或跳过断言。选择器源码修复已静态复核，最终主流程报告已通过真实配置返回断言；失败历史仍保留。
 
-已实际读取 [checks/unit-final.log](checks/unit-final.log)：本轮四个受影响单元文件23项通过；[checks/maintenance-final.log](checks/maintenance-final.log) 为维护视图追加复验1文件6项通过。最终静态/类型/构建执行见[实施记录](README.md)及其日志。构建日志保留可选平台绑定/依赖追踪警告，不因警告推断失败，也不伪造退出码。[checks/integration-retry.log](checks/integration-retry.log) 仍为7文件80项中2文件2项失败，分别为原媒体 reprocess 路径SQLite lock和SVG 5秒超时，不能标为通过。本审计没有重复执行这些测试。
+已实际读取 [checks/unit-final.log](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-198/checks/unit-final.log)：本轮四个受影响单元文件23项通过；[checks/maintenance-final.log](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-198/checks/maintenance-final.log) 为维护视图追加复验1文件6项通过。最终静态/类型/构建执行见[实施记录](README.md)及其日志。构建日志保留可选平台绑定/依赖追踪警告，不因警告推断失败，也不伪造退出码。[checks/integration-retry.log](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-198/checks/integration-retry.log) 仍为7文件80项中2文件2项失败，分别为原媒体 reprocess 路径SQLite lock和SVG 5秒超时，不能标为通过。本审计没有重复执行这些测试。
 
 ## 最后链接增量复审
 
@@ -40,7 +40,7 @@
 
 ## 弹窗宽度修复与最小补验增量
 
-实际读取[live-browser-first/storage-admin-live.json](live-browser-first/storage-admin-live.json)：第一轮SeaweedFS已完成创建停用、真实连接通过、单独启用、默认、留空凭据改名，以及真实中转上传与停用检查，但在清空默认弹窗尺寸断言失败，手机宽度实测390px，要求358px。该轮不是完整服务流程通过，也不能证明R2执行。最小短框首轮同样取得390≠358的失败，未削弱断言。
+实际读取[live-browser-first/storage-admin-live.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-198/live-browser-first/storage-admin-live.json)：第一轮SeaweedFS已完成创建停用、真实连接通过、单独启用、默认、留空凭据改名，以及真实中转上传与停用检查，但在清空默认弹窗尺寸断言失败，手机宽度实测390px，要求358px。该轮不是完整服务流程通过，也不能证明R2执行。最小短框首轮同样取得390≠358的失败，未削弱断言。
 
 四处AlertDialog Container已将宽度表达式改为`w-[calc(100%_-_32px)]!`，确保减号两侧在生成CSS中为合法空格。审计实际读取最新构建CSS确认`width:calc(100% - 32px)!important`与`max-height:calc(100dvh - 32px)`，并核对R2标题`leading-normal`。这修复实际失败，而不是仅更换等价类名；空状态的原生成CSS已经正确，没有把撤回的试改认作新缺陷。
 
@@ -54,13 +54,13 @@
 
 宽度表达式正确后，HeroUI Container自身`flex:1`仍会在手机撑满屏宽。四处Container补`flex-none`，没有改变弹窗语义或操作；已核对源码与生成CSS的`.flex-none{flex:none}`。最小脚本聚焦选择器改为底栏直接子级的首个button，避免两操作按钮造成定位歧义；Tab/Shift+Tab的焦点陷阱和短视口可达断言完整保留，没有跳过或伪造操作。
 
-实际读取[dialog-browser/storage-admin-dialogs.json](dialog-browser/storage-admin-dialogs.json)，最终状态`passed`。三类真实HTTP故障报告均保持`passed:false`且阶段正确。12组浅深色1440/390几何记录均为桌面480px、手机358px，Container相同宽度且`flex:0 0 auto`；24px内距、16px间隔、20px标题、Body/Footer额外margin为0、所有底栏按钮48px均满足严格断言。三类状态的焦点陷阱通过，390×480短视口聚焦操作分别落在327–375px、391–439px、327–375px，均完整可达。
+实际读取[dialog-browser/storage-admin-dialogs.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-198/dialog-browser/storage-admin-dialogs.json)，最终状态`passed`。三类真实HTTP故障报告均保持`passed:false`且阶段正确。12组浅深色1440/390几何记录均为桌面480px、手机358px，Container相同宽度且`flex:0 0 auto`；24px内距、16px间隔、20px标题、Body/Footer额外margin为0、所有底栏按钮48px均满足严格断言。三类状态的焦点陷阱通过，390×480短视口聚焦操作分别落在327–375px、391–439px、327–375px，均完整可达。
 
 短框专项最终功能/几何补验已取得真实通过证据。该结果不替代整个设计验收；live的清空默认、删除与R2确认新产物结果另见下节。没有新增Critical或Required代码问题，本轮只读取源码/CSS/报告并更新本文件，未重复运行验证。
 
 ## 最终真实服务结果
 
-实际读取[live-browser/storage-admin-live.json](live-browser/storage-admin-live.json)及[runner.json](live-browser/runner.json)，总结果与SeaweedFS、R2两服务均为`passed`。runner记录Node v24.18.1、macOS ARM64、独立临时应用，2026-10-04 08:50:07–08:50:48 UTC执行完成，并移除临时目录。两服务均经真实页面创建停用配置、连接检测、手动启用、设为默认、留空凭据改名，再进行真实中转上传和64×48缩略图读取、引用锁定、停用保留默认与拒绝新内容、清空默认、回收站/永久清理及扫描后删除配置。两份持久连接报告的五阶段均通过，`stale:false`、`cleanupPending:false`；删除后独立SDK列举各自随机前缀及storage ID构成的精确命名空间，`finalKeys:[]`。
+实际读取[live-browser/storage-admin-live.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-198/live-browser/storage-admin-live.json)及[runner.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-198/live-browser/runner.json)，总结果与SeaweedFS、R2两服务均为`passed`。runner记录Node v24.18.1、macOS ARM64、独立临时应用，2026-10-04 08:50:07–08:50:48 UTC执行完成，并移除临时目录。两服务均经真实页面创建停用配置、连接检测、手动启用、设为默认、留空凭据改名，再进行真实中转上传和64×48缩略图读取、引用锁定、停用保留默认与拒绝新内容、清空默认、回收站/永久清理及扫描后删除配置。两份持久连接报告的五阶段均通过，`stale:false`、`cleanupPending:false`；删除后独立SDK列举各自随机前缀及storage ID构成的精确命名空间，`finalKeys:[]`。
 
 SeaweedFS配置证据来自真实配置API：版本未启用、锁未配置，匿名读取403拒绝。R2配置证据明确为官方能力与所有者声明，`automaticVersionOrLockDetection:false`；匿名400 `InvalidArgument`按已实现的R2需要授权分类处理。R2本轮整个Bucket无锁声明复用此前获授权的同Bucket证据，确认时间不代表本轮重新进入控制台核锁。报告明确未修改远端Bucket策略或CORS；新配置没有通过浏览器CORS检测，上传实际走中转，不能声称真实服务直传已验证。
 
@@ -74,7 +74,7 @@ SeaweedFS配置证据来自真实配置API：版本未启用、锁未配置，�
 
 共用几何读取新增实际`buttonWidths`，`assertStorageShortDialog`严格要求每个按钮宽度等于弹窗宽度减50px：桌面430×48、手机308×48。R2另外要求恰好两按钮、四组浅深色1440/390记录；原三类短框也沿相同断言补查，不削弱已有报告、焦点与短视口断言。静态增量未发现新的Critical或Required代码问题。
 
-已实际读取最后[dialog-browser/storage-admin-dialogs.json](dialog-browser/storage-admin-dialogs.json)及[runner.json](dialog-browser/runner.json)，均`passed`。16组几何记录为原三类故障12组加R2确认4组，所有按钮实际宽高均为桌面430×48、手机308×48；R2每组均有两个全宽操作。通过报告还保留原三类真实持久故障与焦点陷阱，以及R2仅开框取消、不发起测试和保持未测试停用的结果。runner记录08:57:24–08:57:34 UTC、Node v24.18.1、macOS ARM64及临时目录已移除。新增按钮宽度与取消边界补验已通过，不使用此前未检查按钮宽度的live报告替代本次结果。源码专项审计最终通过；四项设计批准、用户人工验收和两项媒体集成失败继续开放，保留草稿。本审计仅读源码和实际报告并更新本文件，没有重跑任何测试。
+已实际读取最后[dialog-browser/storage-admin-dialogs.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-198/dialog-browser/storage-admin-dialogs.json)及[runner.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-198/dialog-browser/runner.json)，均`passed`。16组几何记录为原三类故障12组加R2确认4组，所有按钮实际宽高均为桌面430×48、手机308×48；R2每组均有两个全宽操作。通过报告还保留原三类真实持久故障与焦点陷阱，以及R2仅开框取消、不发起测试和保持未测试停用的结果。runner记录08:57:24–08:57:34 UTC、Node v24.18.1、macOS ARM64及临时目录已移除。新增按钮宽度与取消边界补验已通过，不使用此前未检查按钮宽度的live报告替代本次结果。源码专项审计最终通过；四项设计批准、用户人工验收和两项媒体集成失败继续开放，保留草稿。本审计仅读源码和实际报告并更新本文件，没有重跑任何测试。
 
 ## 待用户批准的既有设计缺口
 
@@ -117,11 +117,11 @@ SeaweedFS配置证据来自真实配置API：版本未启用、锁未配置，�
 
 共用 `readGeometry` 仅对 `input[data-slot="input-group-input"]` 测量其实际 HeroUI InputGroup，另外保留内部 input 的原始宽高。已读取库的 group click→input.focus 实现；普通控件、溢出检查与手机/桌面 44/24px 阈值不变。最终场景另实际点击前置图标并确认输入聚焦，不能以换用大容器掩盖不可点击的空白。
 
-最终实际读取 [feedback-browser/storage-admin-feedback.json](feedback-browser/storage-admin-feedback.json) 与 [runner.json](feedback-browser/runner.json)，均为 `passed`，执行时间11:04:15–11:05:01 UTC，macOS ARM64、Node v24.18.1、Ego Space20/p1。报告含28组布局与12项提示交互：引用 Local 覆盖浅深色360/390/430/768/1440及390×480短视口，新建 Local/S3 和真实字段错误覆盖两端浅深色。所有展开提示为44×44px、transform:none，桌面悬停与真实Tab聚焦可读，Enter/点击展开、Escape/可见背景点击关闭、浮层卸载及精确原触发器回焦均通过。启用说明不带 ListBox 语义，打开说明不改变启用值；短视口关闭后直接点击引用/清理操作成功，没有通过预先移焦来绕过 Tooltip 遮挡。
+最终实际读取 [feedback-browser/storage-admin-feedback.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-198/feedback-browser/storage-admin-feedback.json) 与 [runner.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-198/feedback-browser/runner.json)，均为 `passed`，执行时间11:04:15–11:05:01 UTC，macOS ARM64、Node v24.18.1、Ego Space20/p1。报告含28组布局与12项提示交互：引用 Local 覆盖浅深色360/390/430/768/1440及390×480短视口，新建 Local/S3 和真实字段错误覆盖两端浅深色。所有展开提示为44×44px、transform:none，桌面悬停与真实Tab聚焦可读，Enter/点击展开、Escape/可见背景点击关闭、浮层卸载及精确原触发器回焦均通过。启用说明不带 ListBox 语义，打开说明不改变启用值；短视口关闭后直接点击引用/清理操作成功，没有通过预先移焦来绕过 Tooltip 遮挡。
 
 Local 相对路径与 S3 Endpoint 分别真实提交无效值并取得400 `STORAGE_INVALID_INPUT`。错误文字与输入关联、原值保留、自动焦点、输入/组 invalid 状态均通过；聚焦时实测2px danger ring，移焦后仍有1px solid danger outline。断言测量实际 border/outline/box-shadow 中的可见错误边界并与普通边界比较，不将只有颜色或CSS变量认作错误可见。两个无效创建未新增配置，默认指针不变，维护测试/扫描/删除请求为0。
 
-历史 [feedback-browser-first](feedback-browser-first/)、[second](feedback-browser-second/)、[third](feedback-browser-third/)、[fourth](feedback-browser-fourth/)、[fifth](feedback-browser-fifth/)、[sixth](feedback-browser-sixth/)、[seventh](feedback-browser-seventh/)、[eighth](feedback-browser-eighth/) 保留原始失败。测量与时序维护没有削弱阈值或业务断言：回焦严格等待库的异步恢复后再核对原可访问名称；背景点击使用真实浮层外坐标，避免给 inert 页面标题发送不可接收的输入；错误边界补量 HeroUI 的实际 ring，而非为少测 ring 的脚本改产品。不同设备代表验证在已完成精确回焦后移焦并关闭提示再切换CDP设备类型，桌面开态直接切手机类型保持未验证。另实际读取 [desktop-window-resize.json](feedback-browser-sixth/desktop-window-resize.json)：正常桌面窗口以 mobile=false 从1440缩至390，Tooltip 从426–746重新定位到142–390，scrollWidth为390、原Tip焦点保留，证明正常缩窄没有文档溢出；不能把这一结果冒充混合仿真类型切换通过。
+历史 [feedback-browser-first](https://github.com/dnslin/ariso-next/tree/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-198/feedback-browser-first)、[second](https://github.com/dnslin/ariso-next/tree/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-198/feedback-browser-second)、[third](https://github.com/dnslin/ariso-next/tree/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-198/feedback-browser-third)、[fourth](https://github.com/dnslin/ariso-next/tree/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-198/feedback-browser-fourth)、[fifth](https://github.com/dnslin/ariso-next/tree/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-198/feedback-browser-fifth)、[sixth](https://github.com/dnslin/ariso-next/tree/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-198/feedback-browser-sixth)、[seventh](https://github.com/dnslin/ariso-next/tree/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-198/feedback-browser-seventh)、[eighth](https://github.com/dnslin/ariso-next/tree/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-198/feedback-browser-eighth) 保留原始失败。测量与时序维护没有削弱阈值或业务断言：回焦严格等待库的异步恢复后再核对原可访问名称；背景点击使用真实浮层外坐标，避免给 inert 页面标题发送不可接收的输入；错误边界补量 HeroUI 的实际 ring，而非为少测 ring 的脚本改产品。不同设备代表验证在已完成精确回焦后移焦并关闭提示再切换CDP设备类型，桌面开态直接切手机类型保持未验证。另实际读取 [desktop-window-resize.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-198/feedback-browser-sixth/desktop-window-resize.json)：正常桌面窗口以 mobile=false 从1440缩至390，Tooltip 从426–746重新定位到142–390，scrollWidth为390、原Tip焦点保留，证明正常缩窄没有文档溢出；不能把这一结果冒充混合仿真类型切换通过。
 
 本审计实际执行 `git diff --check` 时通过，只读取源码、依赖类型和真实报告，没有重复运行应用测试、构建或浏览器大套。设计结论与用户再次人工验收分别承接；既有完整媒体集成失败、R2 等未批准设计补充没有因本次呈现返修而关闭，PR继续保持草稿。
 
@@ -131,6 +131,6 @@ Local 相对路径与 S3 Endpoint 分别真实提交无效值并取得400 `STORA
 
 修复后两名原独立评审者分别复核本轮完整差异、调用链、类型、单元与浏览器测试，没有参与实现。最终结论为本修复范围通过、无剩余Critical/Required：显式默认意图与服务器状态分离；正常/恢复共享具体第二阶段；默认阶段仅回读；已确认删除统一更新实际上传client且不重置队列。复审发现的新接续阶段明确409误入unknown也已修正并真实验证可纠正、同ID继续保存。
 
-两位评审者实际读取[red](review-fixes/browser-red/storage-admin-regressions.json)、[green](review-fixes/browser/storage-admin-regressions.json)与runner及最终检查日志，核对7场景23断言7布局通过、86文件1128单元和3文件15存储集成通过；未各自机械重跑全套检查。正确性评审另用Node24真实helper最小实验核对409结构及pending阶段；结构评审确认删掉settings长期副本、配置默认副本与syncDefault约定，没有增加通用状态框架。当前editor898行，未跨越1000行；截图/JSON与代码规模分开计算。原Optional内容视图枚举、overview读取优化保留未实施。
+两位评审者实际读取[red](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-198/review-fixes/browser-red/storage-admin-regressions.json)、[green](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-198/review-fixes/browser/storage-admin-regressions.json)与runner及最终检查日志，核对7场景23断言7布局通过、86文件1128单元和3文件15存储集成通过；未各自机械重跑全套检查。正确性评审另用Node24真实helper最小实验核对409结构及pending阶段；结构评审确认删掉settings长期副本、配置默认副本与syncDefault约定，没有增加通用状态框架。当前editor898行，未跨越1000行；截图/JSON与代码规模分开计算。原Optional内容视图枚举、overview读取优化保留未实施。
 
 测试通过范围与实际命令统一见[本轮实施记录](README.md#本轮环境命令与结果)。原完整媒体失败、完整Figma及人工验收仍开放；本结论不支持把草稿直接转为正式待评审。两位最终报告在本节收敛，不另建一套仓库规则或重复证据记录。

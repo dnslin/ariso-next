@@ -6,7 +6,7 @@
 
 从[文档导航](../../README.md)读取[site规格](../../specs/SPEC-site.md) §1/3/6/7/9/10、[任务卡与DG-SITE](../../archive/m3-m4/experience.md#t-site-04-品牌设置及登录分享跨页联动)、[设计交付规范](../../design/handoff.md)和[执行约定](../../tasks/execution.md)。保留 R-21.2-01/02、U-SITE-01/02/03 与 SITE-BRAND 边界，未改写冻结PRD。
 
-实际通过gh读取正文、评论与原生blocked_by/blocking：#196 OPEN、无评论，#195/#192/#57/#135均CLOSED、blocking为空；本轮实施前再次核对。初次快照见[Issue](./issue.json)、[前置](./blocked-by.json)和[后置](./blocking.json)。DG-SITE历史前置描述保留当时结论。
+实际通过gh读取正文、评论与原生blocked_by/blocking：#196 OPEN、无评论，#195/#192/#57/#135均CLOSED、blocking为空；本轮实施前再次核对。初次快照见[Issue](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/issue.json)、[前置](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/blocked-by.json)和[后置](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/blocking.json)。DG-SITE历史前置描述保留当时结论。
 
 从 origin/main 的 9ab5be055e9790d1b243935e259d5af87cccd610 创建独立worktree及 codex/issue-196-brand-settings 分支，原项目目录保留；实施时再次fetch未发现新的main提交。
 

@@ -6,7 +6,7 @@
 
 - 桌面 11-B：[11 · 回收站](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=209-2272)
 - 手机 11-B：[11 · 回收站](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=209-2280)
-- [节点与检查记录](./verification/trash-flow-2026-09-18.json)
+- [节点与检查记录](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/archive/preparation-2026-09/design/verification/trash-flow-2026-09-18.json)
 
 ## 阅读顺序
 

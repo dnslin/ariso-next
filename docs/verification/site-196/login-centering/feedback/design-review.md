@@ -6,17 +6,17 @@
 
 ## 实际查看
 
-| 截图                                               | 视口     | 观察                                                                                                         |
-| -------------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------ |
-| [dark-hover-700.png](./dark-hover-700.png)         | 700×865  | 用户反馈同视口。忘记密码hover仅覆盖文字周围短按钮，未横跨表单，44px触达高度保持。                            |
-| [light-1012.png](./light-1012.png)                 | 1012×865 | 用户第二视口。Logo与站点名称都消失；单卡居中，忘记密码位于卡片中轴。                                         |
-| [light-1920.png](./light-1920.png)                 | 1920×960 | 与Figma同视口核对公共区与卡片。无品牌区方向与旧稿一致；卡片自身居中仍按最新用户要求，不称绝对top逐像素还原。 |
-| [light-390.png](./light-390.png)                   | 390×844  | 与手机Figma同视口。16px左右边距、字段层级与GitHub图标保持；忘记密码短按钮靠右。                              |
-| [dark-390.png](./dark-390.png)                     | 390×844  | 深色文字、输入、按钮和边界清楚，没有品牌区残留。                                                             |
-| [short-forgot-focus.png](./short-forgot-focus.png) | 390×420  | 忘记密码完整可见，焦点环围绕短按钮，无整行高亮。                                                             |
-| [short-github-focus.png](./short-github-focus.png) | 390×420  | 滚动后GitHub按钮及焦点环完整可见，未被裁切。                                                                 |
+| 截图                                                                                                                                                                                              | 视口     | 观察                                                                                                         |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------ |
+| [dark-hover-700.png](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/login-centering/feedback/dark-hover-700.png)         | 700×865  | 用户反馈同视口。忘记密码hover仅覆盖文字周围短按钮，未横跨表单，44px触达高度保持。                            |
+| [light-1012.png](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/login-centering/feedback/light-1012.png)                 | 1012×865 | 用户第二视口。Logo与站点名称都消失；单卡居中，忘记密码位于卡片中轴。                                         |
+| [light-1920.png](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/login-centering/feedback/light-1920.png)                 | 1920×960 | 与Figma同视口核对公共区与卡片。无品牌区方向与旧稿一致；卡片自身居中仍按最新用户要求，不称绝对top逐像素还原。 |
+| [light-390.png](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/login-centering/feedback/light-390.png)                   | 390×844  | 与手机Figma同视口。16px左右边距、字段层级与GitHub图标保持；忘记密码短按钮靠右。                              |
+| [dark-390.png](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/login-centering/feedback/dark-390.png)                     | 390×844  | 深色文字、输入、按钮和边界清楚，没有品牌区残留。                                                             |
+| [short-forgot-focus.png](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/login-centering/feedback/short-forgot-focus.png) | 390×420  | 忘记密码完整可见，焦点环围绕短按钮，无整行高亮。                                                             |
+| [short-github-focus.png](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/login-centering/feedback/short-github-focus.png) | 390×420  | 滚动后GitHub按钮及焦点环完整可见，未被裁切。                                                                 |
 
-七图均由评审者实际逐张查看。另实际读取 [geometry.json](./geometry.json) 和 [keyboard-short.json](./keyboard-short.json)：主线程测得700视口忘记密码从414×44收为80×44，移出短按钮后的hover为false；700/1012/1920/390/360/430/768代表视口的卡片水平和垂直中心偏移均0，scrollWidth均等于视口宽度。1920下忘记密码沿原有桌面规则为80×36，手机/中间宽度为80×44。测量由主线程执行，本评审未自行复测；360/430/768本次只有记录，不另称已看截图。
+七图均由评审者实际逐张查看。另实际读取 [geometry.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/login-centering/feedback/geometry.json) 和 [keyboard-short.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/login-centering/feedback/keyboard-short.json)：主线程测得700视口忘记密码从414×44收为80×44，移出短按钮后的hover为false；700/1012/1920/390/360/430/768代表视口的卡片水平和垂直中心偏移均0，scrollWidth均等于视口宽度。1920下忘记密码沿原有桌面规则为80×36，手机/中间宽度为80×44。测量由主线程执行，本评审未自行复测；360/430/768本次只有记录，不另称已看截图。
 
 源码只读核对确认：登录分支只渲染LoginDemo；名称、描述与素材仍供后台/预览使用；w-fit与px3只改忘记密码按钮，手机44px与桌面36px既定高度保持。数据与其他页面不因删除登录品牌区而清空，职责结论另见 [代码审查](./code-review.md)。
 

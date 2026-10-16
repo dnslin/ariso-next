@@ -42,9 +42,9 @@ prestart 与 Web 初始化都显式解密全部已有秘密，包括停用配置
 
 首轮完整集成 **9 文件失败 / 66 文件通过，28 项失败 / 558 项通过**。失败暴露旧夹具缺少新迁移、无列名七列 INSERT，以及新 HTTP 入口使用 join 导致 Next 将源码与测试文件收入 standalone。先通过既有失败断言重现，再更新三个启动夹具的实际迁移与精确历史记录、实验 INSERT 的明确列名，并按现有 server-start 模式使用 resolve 构造绝对运行路径。未删除测试或放宽断言。修复后重新构建，隔离产物、日志检查 **12/12**，启动和秘密恢复 **17/17**，prestart 与图库 SQLite **18 项**通过。后者首次聚焦命令中的 logging 因与产物重建重叠而未执行，随后独立 12/12 已补齐，不能把首次整条命令标通过。
 
-首轮还出现开发重编译 120 秒超时和进程检查未按预期退出。同期浏览器在桌面 M2 上传等待超时；服务日志明确记录 `ps` 超过现有 1000ms，导致媒体任务失败。保留[浏览器失败报告](./browser-first/runner.json)、[页面等待失败](./browser-first/m2-failure.json)及[不含进程清单的诊断](./browser-first/process-timeout.json)。未修改产品时限或媒体逻辑；后续按单进程集成、再浏览器的顺序重跑，结果单独记录，首次失败不改写为通过。
+首轮还出现开发重编译 120 秒超时和进程检查未按预期退出。同期浏览器在桌面 M2 上传等待超时；服务日志明确记录 `ps` 超过现有 1000ms，导致媒体任务失败。保留[浏览器失败报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-156/browser-first/runner.json)、[页面等待失败](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-156/browser-first/m2-failure.json)及[不含进程清单的诊断](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-156/browser-first/process-timeout.json)。未修改产品时限或媒体逻辑；后续按单进程集成、再浏览器的顺序重跑，结果单独记录，首次失败不改写为通过。
 
-最终单进程集成 **75 文件 / 596 项全部通过，620.59 秒**，包括普通集成和真实图片工具组。此前开发重编译与进程检查超时未复现；没有把这次通过表述为已修复系统负载问题。单元 **35 文件 / 529 项通过**；冻结安装、迁移生成、格式、lint、类型、无部署环境构建、文档依赖及 5 项自测均通过。构建仍有既有 better-sqlite3 可选 Debug 绑定路径追踪警告，构建退出 0 且隔离产物测试通过。浏览器第二轮曾未通过，后续完整重试通过，详情如下。实际命令汇总见 [local-checks.json](./local-checks.json)，本机原始日志位于 `/tmp/ariso-156-*.log`。
+最终单进程集成 **75 文件 / 596 项全部通过，620.59 秒**，包括普通集成和真实图片工具组。此前开发重编译与进程检查超时未复现；没有把这次通过表述为已修复系统负载问题。单元 **35 文件 / 529 项通过**；冻结安装、迁移生成、格式、lint、类型、无部署环境构建、文档依赖及 5 项自测均通过。构建仍有既有 better-sqlite3 可选 Debug 绑定路径追踪警告，构建退出 0 且隔离产物测试通过。浏览器第二轮曾未通过，后续完整重试通过，详情如下。实际命令汇总见 [local-checks.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-156/local-checks.json)，本机原始日志位于 `/tmp/ariso-156-*.log`。
 
 发布边界遵守[执行约定](../../tasks/execution.md#适用检查)：本次不创建 Release、发布镜像或部署；AMD64/ARM64 镜像和容器验证留在 Release 流程，未标通过。不会主动合并 PR、关闭 Issue、删除分支或 worktree。
 
@@ -52,7 +52,7 @@ prestart 与 Web 初始化都显式解密全部已有秘密，包括停用配置
 
 第二轮浏览器按顺序独立运行，使用同一 Ego Lite TaskSpace 2 和新的临时数据。桌面 M2、交互、工作区连续性，以及手机身份、图库、上传和轮询检查通过。手机 `m2-390-before` 在原有 300000ms 脚本时限被中止，未生成该阶段完成报告。服务日志确认手机公开和私有 JPG 均已上传并完成派生；公开 JPG 恢复后的原图字节也已读取。无法从当前日志确定具体挂起的浏览器操作，不能认定为本次代码缺陷，也不能认定与本次改动无关。未放宽时限、跳过断言或修改媒体/UI 逻辑。
 
-保留[第二轮总报告](./browser-final/runner.json)、[停点上下文](./browser-final/timeout-context.json)及同目录已完成子报告。手机剩余 M2、重启、交互、工作区连续性与末尾 UI fixture 检查未完成；截图和成功子场景不替代整套通过。因适用浏览器检查未通过，PR 保留草稿，任务尚未达到正式待评审条件。
+保留[第二轮总报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-156/browser-final/runner.json)、[停点上下文](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-156/browser-final/timeout-context.json)及同目录已完成子报告。手机剩余 M2、重启、交互、工作区连续性与末尾 UI fixture 检查未完成；截图和成功子场景不替代整套通过。因适用浏览器检查未通过，PR 保留草稿，任务尚未达到正式待评审条件。
 
 独立审计者再次只读核对第二轮报告、空阶段日志和运行器，确认当前证据不足以归因；代码审计结论不变，但建议保留草稿，不将浏览器验收标完成。证据整理后重跑 `pnpm run format:check`、`node docs/tasks/check.mjs`、`node docs/tasks/check.mjs --self-test` 和 `git diff --check`，全部通过。
 
@@ -60,13 +60,13 @@ prestart 与 Web 初始化都显式解密全部已有秘密，包括停用配置
 
 ## 用户要求重试：测试空间缺失
 
-再次执行 `EGO_TASK_SPACE=2 BROWSER_REPORT_DIR=test-results/storage-156-browser-retry3 pnpm run test:browser`，外壳与 UI 夹具构建完成，但浏览器启动即返回 `task space not found: 2`，退出 1，尚未进入业务验证。`ego-browser nodejs` 中调用 `listTaskSpaces()` 返回空列表。保留[第三次报告](./browser-retry3/runner.json)与[Ego 错误](./browser-retry3/ego.log)。按 ego-browser 技能要求，未自行新建空间恢复，已请求用户允许新建测试空间；PR 保持草稿，历史验证结论不变。
+再次执行 `EGO_TASK_SPACE=2 BROWSER_REPORT_DIR=test-results/storage-156-browser-retry3 pnpm run test:browser`，外壳与 UI 夹具构建完成，但浏览器启动即返回 `task space not found: 2`，退出 1，尚未进入业务验证。`ego-browser nodejs` 中调用 `listTaskSpaces()` 返回空列表。保留[第三次报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-156/browser-retry3/runner.json)与[Ego 错误](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-156/browser-retry3/ego.log)。按 ego-browser 技能要求，未自行新建空间恢复，已请求用户允许新建测试空间；PR 保持草稿，历史验证结论不变。
 
 ## 最终浏览器重试通过
 
 用户明确允许新建测试空间后，创建 Ego Lite 空间（新分配 ID 仍为 2）。在同一未修改的生产代码与测试脚本上执行 `EGO_TASK_SPACE=2 BROWSER_REPORT_DIR=test-results/storage-156-browser-retry4 pnpm run test:browser`，**退出 0，完整通过**。运行时间为 2026-09-29 02:26:23–02:41:01 UTC，Node 24.18.1 / macOS ARM64。所有测试使用独立临时数据，结束后运行器删除临时目录并关闭测试空间。
 
-[最终总报告](./browser-passed/runner.json)及同目录子报告包含：桌面/手机身份初始化与重启、M2、交互、工作区连续性，图库、公共页面、上传与轮询；[UI 夹具报告](./browser-passed/ui/browser.json)验证浅深色、360/390/430/768/1440 宽度、键盘与焦点、短视口及适用状态。全部原始截图仍保存在本 worktree 的 `test-results/storage-156-browser-retry4/`。本 Issue 没有 UI 改动，本次为既有页面功能回归，不冒充新增设计验收。
+[最终总报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-156/browser-passed/runner.json)及同目录子报告包含：桌面/手机身份初始化与重启、M2、交互、工作区连续性，图库、公共页面、上传与轮询；[UI 夹具报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-156/browser-passed/ui/browser.json)验证浅深色、360/390/430/768/1440 宽度、键盘与焦点、短视口及适用状态。全部原始截图仍保存在本 worktree 的 `test-results/storage-156-browser-retry4/`。本 Issue 没有 UI 改动，本次为既有页面功能回归，不冒充新增设计验收。
 
 此前手机 M2 超时本轮未复现，没有放宽时限、跳过断言或修改产品代码，不能将重试通过表述为已定位或修复间歇超时根因。历史失败报告继续保留。本次适用浏览器验证阻塞已解除，结合此前通过的本地检查和独立代码审计，PR 可转正式待评审。发布容器与双架构检查仍按 Release 流程执行，未标通过。
 

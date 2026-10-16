@@ -10,29 +10,29 @@
 
 四个实际修改对象的 Noto Sans SC Regular / wght400、14px、150%行高、HEIGHT自动增高、416px桌面/310px手机文字宽度均未改变。修改前后正文均42px两行。卡片仍为桌面480×286、x720/y170；手机358×286、x16/y130。正文自然折行，不因句号强制另起一行；主操作位置未移动。
 
-| 节点 / 状态               | 视口     | 实际最终回读                   | 结论                                             |
-| ------------------------- | -------- | ------------------------------ | ------------------------------------------------ |
-| 216:2335 / accepted桌面   | 1920×960 | [截图](./figma-216-2335.png)   | 连续正文自然两行；标题、Info及主次操作位置保持。 |
-| 216:2280 / accepted手机   | 390×844  | [截图](./figma-216-2280.png)   | 连续正文自然两行；卡片、Info及主次操作位置保持。 |
-| 1010:16966 / Tips打开桌面 | 1920×960 | [截图](./figma-1010-16966.png) | 仅底层正文改连续，弹层及控件位置保持。           |
-| 1010:33128 / Tips打开手机 | 390×844  | [截图](./figma-1010-33128.png) | 仅底层正文改连续，关闭入口及弹层位置保持。       |
-| 3:119 / 独立反馈桌面      | 448×191  | [截图](./figma-3-119.png)      | 原来已自然折行，无修改。                         |
-| 102:3257 / 独立反馈手机   | 358×191  | [截图](./figma-102-3257.png)   | 原来已自然折行，无修改。                         |
+| 节点 / 状态               | 视口     | 实际最终回读                                                                                                                                                           | 结论                                             |
+| ------------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ |
+| 216:2335 / accepted桌面   | 1920×960 | [截图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/identity-184/accepted-wrap/figma-216-2335.png)   | 连续正文自然两行；标题、Info及主次操作位置保持。 |
+| 216:2280 / accepted手机   | 390×844  | [截图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/identity-184/accepted-wrap/figma-216-2280.png)   | 连续正文自然两行；卡片、Info及主次操作位置保持。 |
+| 1010:16966 / Tips打开桌面 | 1920×960 | [截图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/identity-184/accepted-wrap/figma-1010-16966.png) | 仅底层正文改连续，弹层及控件位置保持。           |
+| 1010:33128 / Tips打开手机 | 390×844  | [截图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/identity-184/accepted-wrap/figma-1010-33128.png) | 仅底层正文改连续，关闭入口及弹层位置保持。       |
+| 3:119 / 独立反馈桌面      | 448×191  | [截图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/identity-184/accepted-wrap/figma-3-119.png)      | 原来已自然折行，无修改。                         |
+| 102:3257 / 独立反馈手机   | 358×191  | [截图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/identity-184/accepted-wrap/figma-102-3257.png)   | 原来已自然折行，无修改。                         |
 
 文件为 [Ariso Figma](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=216-2335)。六张PNG均由截图工具实际回读并原样下载、实际查看，不含密码、token或私密部署信息。
 
 ## 最终真实页面独立复核
 
-评审者实际查看下列六张最终实拍和[旧构建强制换行实拍](./before-forced-break.png)，按同视口先核对整页及公共区域，再核对卡片正文和控件。浅色与已同步 Figma 对照；深色沿用公共主题规则，本轮未新增暗色画板。
+评审者实际查看下列六张最终实拍和[旧构建强制换行实拍](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/identity-184/accepted-wrap/before-forced-break.png)，按同视口先核对整页及公共区域，再核对卡片正文和控件。浅色与已同步 Figma 对照；深色沿用公共主题规则，本轮未新增暗色画板。
 
-| 实拍 / 主题                                                        | 视口     | 对应 Figma              | 独立结论                                                                          |
-| ------------------------------------------------------------------ | -------- | ----------------------- | --------------------------------------------------------------------------------- |
-| [accepted 浅色桌面](./password-reset-accepted-light-1920.png)      | 1920×960 | 216:2335                | 返回首页、背景、卡片与操作位置保持；第二句接在第一句后，按容器宽度自然折行。      |
-| [accepted 深色桌面](./password-reset-accepted-dark-1920.png)       | 1920×960 | 216:2335 / 公共深色主题 | 整页层级与浅色一致；正文连续、无裁切，主次操作未位移。                            |
-| [accepted 浅色手机](./password-reset-accepted-light-390.png)       | 390×844  | 216:2280                | 返回首页、卡片及操作位置保持；第一句恰好填满首行，第二句自然排到下一行。          |
-| [accepted 深色手机](./password-reset-accepted-dark-390.png)        | 390×844  | 216:2280 / 公共深色主题 | 与浅色保持相同排版；正文无溢出，视觉层级和主次操作保持。                          |
-| [Tips 打开浅色桌面](./password-reset-accepted-tips-light-1920.png) | 1920×960 | 1010:16966              | 底层正文自然折行；Tips 相对 Info 入口的位置、宽度及主操作位置保持。               |
-| [Tips 打开浅色手机](./password-reset-accepted-tips-light-390.png)  | 390×844  | 1010:33128              | Tips 相对入口布局、关闭入口及卡片保持；遮挡底层正文属于已有打开态，本轮未改交互。 |
+| 实拍 / 主题                                                                                                                                                                                                | 视口     | 对应 Figma              | 独立结论                                                                          |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ----------------------- | --------------------------------------------------------------------------------- |
+| [accepted 浅色桌面](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/identity-184/accepted-wrap/password-reset-accepted-light-1920.png)      | 1920×960 | 216:2335                | 返回首页、背景、卡片与操作位置保持；第二句接在第一句后，按容器宽度自然折行。      |
+| [accepted 深色桌面](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/identity-184/accepted-wrap/password-reset-accepted-dark-1920.png)       | 1920×960 | 216:2335 / 公共深色主题 | 整页层级与浅色一致；正文连续、无裁切，主次操作未位移。                            |
+| [accepted 浅色手机](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/identity-184/accepted-wrap/password-reset-accepted-light-390.png)       | 390×844  | 216:2280                | 返回首页、卡片及操作位置保持；第一句恰好填满首行，第二句自然排到下一行。          |
+| [accepted 深色手机](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/identity-184/accepted-wrap/password-reset-accepted-dark-390.png)        | 390×844  | 216:2280 / 公共深色主题 | 与浅色保持相同排版；正文无溢出，视觉层级和主次操作保持。                          |
+| [Tips 打开浅色桌面](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/identity-184/accepted-wrap/password-reset-accepted-tips-light-1920.png) | 1920×960 | 1010:16966              | 底层正文自然折行；Tips 相对 Info 入口的位置、宽度及主操作位置保持。               |
+| [Tips 打开浅色手机](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/identity-184/accepted-wrap/password-reset-accepted-tips-light-390.png)  | 390×844  | 1010:33128              | Tips 相对入口布局、关闭入口及卡片保持；遮挡底层正文属于已有打开态，本轮未改交互。 |
 
 本轮六张实拍的公共区域和卡片位置与相同视口设计一致。桌面旧图与最终图的主操作均位于同一位置，正文仍为两行，改变的是句间自然续排。标题周围的描边是提交后真实焦点状态，不要求静态 Figma 添加描边。手机本轮闭态与打开态截图卡片均位于 y130；前轮打开态曾记录的滚动差异与根因未验证边界仍见[上一轮设计复核](../feedback-figma.md)，此次没有控制浏览器或据此调整公共布局。
 

@@ -24,9 +24,9 @@
 
 审计返修已先取得真实失败证据：仅水印中间压缩完成后恢复计数应为0、实际为2；实际执行步骤与发布目标分开后，28项重处理测试完整通过。全量检查又发现 Node 24 原生源码加载不支持错误类参数属性，已改为普通字段赋值；旧schema升级夹具使用当前ORM插入新增列，已固定前驱SQL及旧列比较，并增加新宽高为空断言。清理放在本轮任务领取后，保留队列启动、停止及数据库关闭行为；上述队列和升级回归由4失败变为32项全部通过。没有修改超时、跳过检查或弱化断言。
 
-首轮全量集成在修复前取得39失败/914通过，包含上述真实缺陷与同时运行检查时的超时；最终修复后的全量检查单worker执行。Ego首轮完整流程在手机初始化的既有焦点检查失败；[首次报告](./browser-first-run.json)不计通过。最终在同一个 TaskSpace 9 重跑完整命令通过，手机初始化的原焦点断言没有修改。成功后 `taskSpace(9).finish({ keep: [] })` 实际执行一次并完成。
+首轮全量集成在修复前取得39失败/914通过，包含上述真实缺陷与同时运行检查时的超时；最终修复后的全量检查单worker执行。Ego首轮完整流程在手机初始化的既有焦点检查失败；[首次报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/media-153/browser-first-run.json)不计通过。最终在同一个 TaskSpace 9 重跑完整命令通过，手机初始化的原焦点断言没有修改。成功后 `taskSpace(9).finish({ keep: [] })` 实际执行一次并完成。
 
-最终全量集成和浏览器均通过。[命令摘要](./checks.txt)、[浏览器最终报告](./browser-final-run.json)和[独立界面夹具报告](./browser-ui-run.json)保留真实环境与结果。
+最终全量集成和浏览器均通过。[命令摘要](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/media-153/checks.txt)、[浏览器最终报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/media-153/browser-final-run.json)和[独立界面夹具报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/media-153/browser-ui-run.json)保留真实环境与结果。
 
 | 实际命令                                                                                                                                     | 结果                                         |
 | -------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- |

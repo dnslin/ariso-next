@@ -31,7 +31,7 @@
 
 ## 已核验 GREEN 与最终边界
 
-实际只读核对归档的 [runner.json](browser/green/runner.json) 与 [analytics.json](browser/green/analytics.json)：
+实际只读核对归档的 [runner.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/pr-review-20261010/fix/browser/green/runner.json) 与 [analytics.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/pr-review-20261010/fix/browser/green/analytics.json)：
 
 - Node `v24.18.1`，suite `analytics`、only `consumers`；两个报告均为 `passed`，本次真实生产构建的独立运行地址为 `http://ariso-64408.localhost:64408`。
 - `emptyFailureFilters` 含 initial 与 reprocess 两项；两者均 `normalTotal=9`、`filteredTotal=0`，精确空结果文案与“清除筛选”按钮匹配，`cleared=true`。

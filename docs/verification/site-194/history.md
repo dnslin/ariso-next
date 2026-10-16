@@ -49,18 +49,18 @@ pnpm exec vitest run --project integration --project media-tools --maxWorkers=1 
 
 设计来源：Figma文件74sT9Hrf8G4czcWeTkET5b，实际调用 get_design_context 读取主节点467:4002/467:9001与地址更新468:11189/468:11481，取得信息与截图；DG-SITE列出的字段错/保存中/读错/深色代表仍为正式产品基线，后续实际实施再读相应细节。使用 using-agent-skills 选择最少技能；遵循 frontend-ui-engineering、vercel-react-best-practices、figma-design-to-code 和 ego-browser。实施另遵循 incremental-implementation、git-workflow-and-versioning，独立评审使用 code-review-and-quality。公共最新修订覆盖旧面包屑/文字菜单/邮件分类，不擅改公共来源。
 
-[可查看原型](http://127.0.0.1:3194/settings/general)，无需账号，仅独立示例，不连接真实写入API。原型文件见 [目录说明](../../../design-plans/issue194-review/README.md)。保持服务供用户审批，不停止/清理。
+[可查看原型](http://127.0.0.1:3194/settings/general)，无需账号，仅独立示例，不连接真实写入API。原型文件见 [目录说明](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/design-plans/issue194-review/README.md)。保持服务供用户审批，不停止/清理。
 
 以下为首版真实截图。用户最新反馈否定其关联设置的空白和按钮布局；本表不作为第二版的视觉验收。
 
-| 视口/状态/主题          | 真实原型截图                                                    | 对照结论                                                                    |
-| ----------------------- | --------------------------------------------------------------- | --------------------------------------------------------------------------- |
-| 1440×1080 正常/浅色     | [桌面](./screenshots/issue194-prototype-desktop.png)            | 复用公共外壳；卡片顺序、两列外标签和固定保存栏保留；中性文字/Tips为建议改变 |
-| 390×844 正常/浅色       | [手机](./screenshots/issue194-prototype-mobile.png)             | 单列与44/48px操作沿既有层级；顶部状态选择仅原型工具                         |
-| 390×844 结果未知/浅色   | [未知](./screenshots/issue194-prototype-mobile-unknown.png)     | 保留输入、禁用保存、仅只读核对；补充建议未获批                              |
-| 390×844 地址更新/浅色   | [更新](./screenshots/issue194-prototype-mobile-origin.png)      | 原页持久后果、已保存地址/回调及维护入口；新地址重新登录说明可读             |
-| 1440×1080 地址更新/浅色 | [更新桌面](./screenshots/issue194-prototype-desktop-origin.png) | 已保存地址与回调不随编辑输入改变；后果保持可读                              |
-| 390×844 核对差异/浅色   | [差异](./screenshots/issue194-prototype-mobile-reconciled.png)  | 两项选择清楚，读取不改草稿，无重复通知遮挡底栏                              |
+| 视口/状态/主题          | 真实原型截图                                                                                                                                                                          | 对照结论                                                                    |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| 1440×1080 正常/浅色     | [桌面](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-194/screenshots/issue194-prototype-desktop.png)            | 复用公共外壳；卡片顺序、两列外标签和固定保存栏保留；中性文字/Tips为建议改变 |
+| 390×844 正常/浅色       | [手机](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-194/screenshots/issue194-prototype-mobile.png)             | 单列与44/48px操作沿既有层级；顶部状态选择仅原型工具                         |
+| 390×844 结果未知/浅色   | [未知](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-194/screenshots/issue194-prototype-mobile-unknown.png)     | 保留输入、禁用保存、仅只读核对；补充建议未获批                              |
+| 390×844 地址更新/浅色   | [更新](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-194/screenshots/issue194-prototype-mobile-origin.png)      | 原页持久后果、已保存地址/回调及维护入口；新地址重新登录说明可读             |
+| 1440×1080 地址更新/浅色 | [更新桌面](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-194/screenshots/issue194-prototype-desktop-origin.png) | 已保存地址与回调不随编辑输入改变；后果保持可读                              |
+| 390×844 核对差异/浅色   | [差异](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-194/screenshots/issue194-prototype-mobile-reconciled.png)  | 两项选择清楚，读取不改草稿，无重复通知遮挡底栏                              |
 
 功能与设计分开：Ego TaskSpace 2实际打开原型、切换状态、查看两端；编译首轮导航超时但已提交到页面，按技能在原Page继续观察成功，未另建空间。原型截图不算产品UI验证，完整断点/深色对照/键盘/复制拒绝/短视口与真实API状态未验证。原型状态和其他模块动作只演示交互方向，最终实现须接实际API并默认运行新增场景。用户设计审批已提出，尚未收到答复；Figma没有写入或同步，产品人工验收没有执行，尚无产品测试账号。
 

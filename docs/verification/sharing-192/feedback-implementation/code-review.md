@@ -32,28 +32,28 @@
 
 ## 失败证据与修正复审
 
-[修改前真实缺口](browser-red/report.json)记录缺失锁图标、常驻说明、重复空态及缺少零数量。两次代表阶段失败与一次恢复阶段失败分别保留在 `browser-representative-first`、`browser-representative-second` 和 `browser-recovery-first`，未覆盖为成功。
+[修改前真实缺口](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-192/feedback-implementation/browser-red/report.json)记录缺失锁图标、常驻说明、重复空态及缺少零数量。两次代表阶段失败与一次恢复阶段失败分别保留在 `browser-representative-first`、`browser-representative-second` 和 `browser-recovery-first`，未覆盖为成功。
 
 独立复核了三项测试时序修正：
 
-1. 原生滚轮返回后立即读取 scroll 会先读到0。改为等待真实滚动与完整主按钮可见，原断言保留；[实际诊断](browser-short-diagnostic/report.json)证明390×420可以滚动至123，完整按钮为315–363px。
-2. 第二次在滚动尚未稳定时读取117，再读到115.5。未放宽相等断言；[独立实际诊断](browser-short-diagnostic/scroll-settling.json)显示七帧123且 Popover 打开/关闭始终123。测试等待字体就绪及真实坐标连续稳定后取基线，严格 deepEqual 仍保留，没有改变产品滚动。
+1. 原生滚轮返回后立即读取 scroll 会先读到0。改为等待真实滚动与完整主按钮可见，原断言保留；[实际诊断](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-192/feedback-implementation/browser-short-diagnostic/report.json)证明390×420可以滚动至123，完整按钮为315–363px。
+2. 第二次在滚动尚未稳定时读取117，再读到115.5。未放宽相等断言；[独立实际诊断](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-192/feedback-implementation/browser-short-diagnostic/scroll-settling.json)显示七帧123且 Popover 打开/关闭始终123。测试等待字体就绪及真实坐标连续稳定后取基线，严格 deepEqual 仍保留，没有改变产品滚动。
 3. 恢复阶段在宽度已变为1440但 Gallery 的 ResizeObserver → requestAnimationFrame → React render 尚未完成时读到2列。复核了 Gallery 原实现与本次修正：capture 只增加等待实际 data-columns 完成4/3/2更新，随后原内容宽度与列数断言全部保留，没有改产品 Gallery、超时或期望值。
 
 ## 实际验证边界
 
 初审独立读取了实现者执行的以下报告，而未重复运行浏览器。代表、恢复及429的修正前JSON已移至 `browser-info-red` 保留历史；Info图标修正后的最终报告见后文：
 
-- [代表阶段修正前历史](browser-info-red/prior-representative-report.json)：通过，普通 Tips、错密、提交中、解锁、真实空态及其短视口等14项检查、61个布局记录；检查/截图数量不代替设计对照。
-- [恢复阶段修正前历史](browser-info-red/prior-recovery-report.json)：通过，7项检查、36个布局记录，包含真实撤权清空、自动聚焦、Tips保持状态、回调错误诊断与首次读取失败后的原URL重试。
-- [独立预览数据](browser-live/live-copy-report.json)：新版产品在桌面/手机浅深四态保留中文相册名称和简介，真实匿名返回200、total=0、items为空；没有预览样本英文标记，浏览器错误为空。
-- [独立真实429修正前历史](browser-info-red/prior-429-report.json)：通过，实际20次错密后命中生产限流，响应 `Retry-After: 57`，主操作在倒计时中禁用，58.071秒后启用并正确解锁返回200。桌面/手机浅深四个布局保留16px锁图标、48px输入、44px Tips 入口和直接可读的等待原因，无常驻访问说明或横向溢出；Tips 类型为 button，倒计时中没有额外 unlock，记录的 unlock 响应仅429和200。默认 `behavior` 的原429场景注册未变，本次独立补验没有重跑未变分页或竞态。
+- [代表阶段修正前历史](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-192/feedback-implementation/browser-info-red/prior-representative-report.json)：通过，普通 Tips、错密、提交中、解锁、真实空态及其短视口等14项检查、61个布局记录；检查/截图数量不代替设计对照。
+- [恢复阶段修正前历史](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-192/feedback-implementation/browser-info-red/prior-recovery-report.json)：通过，7项检查、36个布局记录，包含真实撤权清空、自动聚焦、Tips保持状态、回调错误诊断与首次读取失败后的原URL重试。
+- [独立预览数据](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-192/feedback-implementation/browser-live/live-copy-report.json)：新版产品在桌面/手机浅深四态保留中文相册名称和简介，真实匿名返回200、total=0、items为空；没有预览样本英文标记，浏览器错误为空。
+- [独立真实429修正前历史](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-192/feedback-implementation/browser-info-red/prior-429-report.json)：通过，实际20次错密后命中生产限流，响应 `Retry-After: 57`，主操作在倒计时中禁用，58.071秒后启用并正确解锁返回200。桌面/手机浅深四个布局保留16px锁图标、48px输入、44px Tips 入口和直接可读的等待原因，无常驻访问说明或横向溢出；Tips 类型为 button，倒计时中没有额外 unlock，记录的 unlock 响应仅429和200。默认 `behavior` 的原429场景注册未变，本次独立补验没有重跑未变分页或竞态。
 
 最终安装、格式/静态/类型/构建的实际结果由[统一证据](../README.md)记录；早期格式失败和构建输出也需原样保留并按实际退出状态说明。本审查不把历史全量范围外失败、缺失远端CI、发布容器或用户人工验收记为通过。Figma写入与真实页面设计对照由另一位独立设计评审者分别确认，PR完成状态仍按共用执行约定处理。
 
 ## 收尾 Info 图标修正复审
 
-本节追加审查后续发现的手机 Tips 图标尺寸问题，以上通过结果保留为修正前版本的实际历史，不倒改旧报告。独立读取了[真实390px失败证据](browser-info-red/report.json)：Info 为20×20px，左右 margin 为-2px；获批原型与 Figma 要求16×16px及零水平负边距。
+本节追加审查后续发现的手机 Tips 图标尺寸问题，以上通过结果保留为修正前版本的实际历史，不倒改旧报告。独立读取了[真实390px失败证据](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-192/feedback-implementation/browser-info-red/report.json)：Info 为20×20px，左右 margin 为-2px；获批原型与 Figma 要求16×16px及零水平负边距。
 
 实际核对已锁 `@heroui/styles` 的 `button.css`，默认按钮 SVG 样式为 `size-5 -mx-0.5`，`sm:size-4` 仅在更宽视口生效，确实能覆盖 Lucide 的 `size={16}` 属性。因此这是当前产品未覆盖组件默认样式的实现偏差，不是获批设计或公共规范要求20px图标。
 
@@ -63,10 +63,10 @@
 
 **本次代码及新增断言复审通过，未发现新的 Required / P1 / P2 问题。** 图标修正后的实际验证现已补证。独立实际回读如下最终JSON，没有重跑已通过检查：
 
-- [最新检查记录](check-results.json)：Node24.18.1、pnpm11.19.0，冻结安装、typecheck、lint和build均exit0。格式及整组历史结果继续以统一证据为准，不由本次局部检查替代。
-- [最新版代表运行器](browser-representative/runner.json)与 `sharing-public.json`：通过，14项检查、61个布局；正常、错密、提交中和展开Tips的实际Info均16×16px、左右margin0px，原交互及状态保持断言保留。
-- [最新版恢复运行器](browser-recovery/runner.json)与 `sharing-public.json`：通过，7项检查、36个布局；授权失效、展开Tips、首次读取中的实际Info均16×16px、左右margin0px，数据清空、聚焦和原URL恢复继续通过。
-- [最新版真实429](browser-429/report.json)：通过，真实20次错密后429，`Retry-After: 59`，59.808秒后启用并正确解锁200；四个桌面/手机浅深布局Info16×16px、Tips命中区90×44px，倒计时中Tips不额外解锁，记录的unlock响应仍仅429和200。此数字与原57秒/58.071秒历史分别记录。
-- [最新版人工预览门禁](browser-live/live-gate-report.json)：通过，桌面/手机浅深四个布局及8张门禁/展开Tips截图记录真实Ariso品牌，Info16×16px、Tips90×44px；卡片304px高、输入48px高及锁16px保持。截图由独立设计评审者另行对照，不由此几何结论替代。
+- [最新检查记录](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-192/feedback-implementation/check-results.json)：Node24.18.1、pnpm11.19.0，冻结安装、typecheck、lint和build均exit0。格式及整组历史结果继续以统一证据为准，不由本次局部检查替代。
+- [最新版代表运行器](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-192/feedback-implementation/browser-representative/runner.json)与 `sharing-public.json`：通过，14项检查、61个布局；正常、错密、提交中和展开Tips的实际Info均16×16px、左右margin0px，原交互及状态保持断言保留。
+- [最新版恢复运行器](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-192/feedback-implementation/browser-recovery/runner.json)与 `sharing-public.json`：通过，7项检查、36个布局；授权失效、展开Tips、首次读取中的实际Info均16×16px、左右margin0px，数据清空、聚焦和原URL恢复继续通过。
+- [最新版真实429](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-192/feedback-implementation/browser-429/report.json)：通过，真实20次错密后429，`Retry-After: 59`，59.808秒后启用并正确解锁200；四个桌面/手机浅深布局Info16×16px、Tips命中区90×44px，倒计时中Tips不额外解锁，记录的unlock响应仍仅429和200。此数字与原57秒/58.071秒历史分别记录。
+- [最新版人工预览门禁](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-192/feedback-implementation/browser-live/live-gate-report.json)：通过，桌面/手机浅深四个布局及8张门禁/展开Tips截图记录真实Ariso品牌，Info16×16px、Tips90×44px；卡片304px高、输入48px高及锁16px保持。截图由独立设计评审者另行对照，不由此几何结论替代。
 
 最终代码与受影响行为验证审查通过；Figma与真实页面的设计结论仍由独立设计评审者给出，用户人工验收保持独立状态。

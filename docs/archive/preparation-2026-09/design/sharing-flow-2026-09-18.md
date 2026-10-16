@@ -6,7 +6,7 @@
 
 - 分享管理续篇：桌面 [10 · 分享管理与访客浏览](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=209-2271)；手机 [10 · 分享管理与访客浏览](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=209-2279)。
 - 匿名分享：桌面 [10 · 分享管理与访客浏览](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=209-2271)；手机 [10 · 分享管理与访客浏览](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=209-2279)。
-- [120 个画板与入口检查](./verification/sharing-flow-2026-09-18.json)。
+- [120 个画板与入口检查](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/archive/preparation-2026-09/design/verification/sharing-flow-2026-09-18.json)。
 
 ## 阅读顺序与节点
 

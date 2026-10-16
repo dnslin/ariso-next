@@ -51,7 +51,7 @@
 
 用户指出“请检查邮箱”反馈第一行右侧仍有空间、第二句却从下一行开始，并明确要求实施。来源是 Figma 四个正文 Text 的真实换行与产品 accepted 段落中的 `<br />`，不是通用布局或宽度限制。产品只删除该标签，将原文连续排列；文案、字号、卡片、Tips、操作、请求及数据契约不改。Figma 同步及逐项设计对照见[本轮记录](./accepted-wrap/README.md)。本轮继续使用原隔离工作区、分支和草稿 PR #275，未修改原工作区、冻结 PRD 或公共组件。
 
-修改前在旧 standalone 上运行新增浏览器断言，实际申请成功后以 `no forced line break: 1 !== 0` 失败。1920px 浅色段落右边界1167、第一句末字右边界1061，剩余106px；第二句首字仍比前字低21px。删除标签并完成新构建后，相同入口通过。公开文字和真实 Range 几何的红绿结果见[归档 JSON](./accepted-wrap/layout-results.json)，[修改前实拍](./accepted-wrap/before-forced-break.png)。
+修改前在旧 standalone 上运行新增浏览器断言，实际申请成功后以 `no forced line break: 1 !== 0` 失败。1920px 浅色段落右边界1167、第一句末字右边界1061，剩余106px；第二句首字仍比前字低21px。删除标签并完成新构建后，相同入口通过。公开文字和真实 Range 几何的红绿结果见[归档 JSON](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/identity-184/accepted-wrap/layout-results.json)，[修改前实拍](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/identity-184/accepted-wrap/before-forced-break.png)。
 
 | 实际命令                                                                                                                                                                                         | 结果                                                                                      |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------- |

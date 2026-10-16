@@ -28,7 +28,7 @@
 
 Figma 文件 `74sT9Hrf8G4czcWeTkET5b`，主节点桌面 `34:462`、手机 `102:1713`。已实际调用两个主节点的设计信息并查看本轮导出；桌面基准 1440×1080，手机 390×844。初次静态检查使用 `desktop-account-light.png`、`mobile-account-light.png` 和 `desktop-pending-dark.png`。发现手机对齐问题后，实际重新查看修正后的 `mobile-account-light.png` 并重读 `102:1713` 的设计信息；桌面未变图没有机械重跑。
 
-最终实际读取 [同步记录](./figma/README.md)和 [节点、状态、主题与截图清单](./figma/manifest.json)，逐一确认清单中的 34 张整页与 2 张完整内容图已实际查看。最后修正涉及 12 张整页和 2 张完整内容图，仅重看这些受影响图；另只读调用展开业务节点 `847:32274` 的真实设计信息，核对两份快照的三行结构和 4px / 12px 间距。
+最终实际读取 [同步记录](./figma/README.md)和 [节点、状态、主题与截图清单](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/oauth-181/layout-revision/figma/manifest.json)，逐一确认清单中的 34 张整页与 2 张完整内容图已实际查看。最后修正涉及 12 张整页和 2 张完整内容图，仅重看这些受影响图；另只读调用展开业务节点 `847:32274` 的真实设计信息，核对两份快照的三行结构和 4px / 12px 间距。
 
 ## 正式源码与获批原型对照
 

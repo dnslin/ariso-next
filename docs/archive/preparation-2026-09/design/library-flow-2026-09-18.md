@@ -6,7 +6,7 @@
 
 - [07 · 图库与图片详情](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=209-1014)
 - [07 · 图库与图片详情](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=209-2268)
-- [审计记录](./verification/library-flow-2026-09-18.json)
+- [审计记录](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/archive/preparation-2026-09/design/verification/library-flow-2026-09-18.json)
 
 ## 阅读顺序
 

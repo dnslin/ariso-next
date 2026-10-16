@@ -1,6 +1,6 @@
 # 已批准产品的桌面与手机 Figma 精度同步
 
-2026-10-07。独立设计者以本轮真实 1440×1080 产品截图发现静态精度差异。获批原型与正式代码一致，因此仅更新 Figma，不改产品或公共规范。完整实际写入 ID、原始坐标和截图对应见 [manifest.json](manifest.json)。
+2026-10-07。独立设计者以本轮真实 1440×1080 产品截图发现静态精度差异。获批原型与正式代码一致，因此仅更新 Figma，不改产品或公共规范。完整实际写入 ID、原始坐标和截图对应见 [manifest.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/oauth-181/browser-recovery/figma-adjustment/manifest.json)。
 
 实际重新读取主节点 `34:462` 与深色节点设计信息和截图，逐项核对已安装 HeroUI 样式、获批原型及正式源码后，对 17 个桌面账号来源状态同步以下精度：
 
@@ -27,7 +27,7 @@
 
 ## 手机真实测量后的追加同步
 
-实际读取 `oauth-390-before.json` 的 `layouts` 及 390×844 真实图，只保存 [相关数值布局](mobile-product-layout.json)，不读取 requests 或凭据。手机完整写入与最终坐标见 [mobile-manifest.json](mobile-manifest.json)，前后设计读取见 [mobile-design-context.json](mobile-design-context.json)。
+实际读取 `oauth-390-before.json` 的 `layouts` 及 390×844 真实图，只保存 [相关数值布局](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/oauth-181/browser-recovery/figma-adjustment/mobile-product-layout.json)，不读取 requests 或凭据。手机完整写入与最终坐标见 [mobile-manifest.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/oauth-181/browser-recovery/figma-adjustment/mobile-manifest.json)，前后设计读取见 [mobile-design-context.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/oauth-181/browser-recovery/figma-adjustment/mobile-design-context.json)。
 
 - 更新 17 个账号手机来源页与原完整滚动区域 `819:27634`。移除 Figma 标题容器多出的 4px 底部留白，分类内部间距 6→4px，再按实际手机 Tabs 组合表达 8px 业务前间距。Main、手机公共 Header 与所有共享母版保持原位；这不是从桌面推测位移。
 - 手机分类当前值复用原选择器克隆为本地 `863:31005`，加入实际已选 ShieldCheck 16px 图标。原公共 `113:1498` 未改。
@@ -50,7 +50,7 @@
 
 Figma Sidebar 的描述行与独立测试站点空描述有真实数据差异，导航位置随是否存在描述变化；本轮没有把该数据差异误改为公共组件问题。
 
-实际工具为 `figma_get_design_context`（带 `skillNames=figma-design-to-code` 并包含初次截图）、`figma_get_screenshot`、`figma_use_figma` 与本地源码只读检索。写入和 native 坐标读取结果记录在 manifest；设计读取文本在 [design-context.json](design-context.json)，未保存临时截图 URL。
+实际工具为 `figma_get_design_context`（带 `skillNames=figma-design-to-code` 并包含初次截图）、`figma_get_screenshot`、`figma_use_figma` 与本地源码只读检索。写入和 native 坐标读取结果记录在 manifest；设计读取文本在 [design-context.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/oauth-181/browser-recovery/figma-adjustment/design-context.json)，未保存临时截图 URL。
 
 本轮没有操作 Ego、读取登录/OAuth 凭据、修改产品、重跑应用检查或提交。Figma 静态同步不证明浏览器功能与真实 OAuth 通过；用户人工 UI 验收已由父任务单独记录。
 
@@ -58,7 +58,7 @@ Figma Sidebar 的描述行与独立测试站点空描述有真实数据差异，
 
 后续真实展开图对照发现，Figma 的“查看配置差异”与快照漏表达 HeroUI 继承的左右 16px 内距。已实际读取已安装 `accordion.css` 第 14–15、56–60 行、正式 `github-settings-summary.tsx` 第 76–91 行及获批 `account-rows-preview.tsx` 第 254–260 行；产品与原型保留该内距，仅覆盖垂直间距和文字样式。本次修正 Figma，产品保持不动。
 
-定向更新桌面 5 个待重启来源 `196:2001`、`196:2002`、`196:2006`、`814:15096`、`847:15346`，手机对应 5 个来源 `196:2011`、`196:2012`、`196:2016`、`814:29997`、`847:32261`，以及原手机完整滚动区域 `819:27634`。实际写入 13 个 trigger/body 原生节点；完整 ID、写入结果与前后坐标见 [accordion-manifest.json](accordion-manifest.json)，桌面展开节点前后实时设计读取见 [accordion-design-context.json](accordion-design-context.json)。没有修改摘要位置、其它行、公共来源或按钮组件。
+定向更新桌面 5 个待重启来源 `196:2001`、`196:2002`、`196:2006`、`814:15096`、`847:15346`，手机对应 5 个来源 `196:2011`、`196:2012`、`196:2016`、`814:29997`、`847:32261`，以及原手机完整滚动区域 `819:27634`。实际写入 13 个 trigger/body 原生节点；完整 ID、写入结果与前后坐标见 [accordion-manifest.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/oauth-181/browser-recovery/figma-adjustment/accordion-manifest.json)，桌面展开节点前后实时设计读取见 [accordion-design-context.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/oauth-181/browser-recovery/figma-adjustment/accordion-design-context.json)。没有修改摘要位置、其它行、公共来源或按钮组件。
 
 | 区域                       | 摘要 x 保持 | 修正前 trigger / 快照 x | 修正后 trigger / 快照 x |
 | -------------------------- | ----------- | ----------------------- | ----------------------- |
@@ -68,4 +68,4 @@ Figma Sidebar 的描述行与独立测试站点空描述有真实数据差异，
 
 两端 trigger 与展开 body 均左右 16px；折叠和旋转 180° 的展开箭头按原生边界核对，右内距均为 16px。两份快照仍各三行，份内 4px、份间 12px。产品的 301/49px 由实际摘要边界、已安装样式与真实截图共同核对，没有另取 Accordion DOM 矩形；表内修正后的 Figma 坐标来自原生节点读取。
 
-新增 `accordion-*-{before,after}.png` 四组代表状态：桌面展开 Light、桌面折叠 Dark、手机展开 Light、手机折叠 Dark。手机视口中的 Accordion 在首屏下方，另导出 [完整展开内容](accordion-mobile-expanded-full-content-after.png)（358×819）核对触发器、快照与箭头；导出后恢复视口裁切和透明业务容器。旧精度同步与布局历史截图完整保留。同步者已查看四张最终整页与完整内容图；独立设计结论继续由 [design-review.md](../design-review.md) 维护。
+新增 `accordion-*-{before,after}.png` 四组代表状态：桌面展开 Light、桌面折叠 Dark、手机展开 Light、手机折叠 Dark。手机视口中的 Accordion 在首屏下方，另导出 [完整展开内容](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/oauth-181/browser-recovery/figma-adjustment/accordion-mobile-expanded-full-content-after.png)（358×819）核对触发器、快照与箭头；导出后恢复视口裁切和透明业务容器。旧精度同步与布局历史截图完整保留。同步者已查看四张最终整页与完整内容图；独立设计结论继续由 [design-review.md](../design-review.md) 维护。

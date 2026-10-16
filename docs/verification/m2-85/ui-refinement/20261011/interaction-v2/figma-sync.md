@@ -87,18 +87,18 @@ Executed Figma structural readback on the whole section before the final share-f
 
 Ten representative exports were downloaded and visually inspected. The final tag, upload, and Toast exports were refreshed after spacing, checkbox, and dark-palette corrections. `sips -g pixelWidth -g pixelHeight` confirmed the exported dimensions. These checks cover visual states, not production API behavior or every Figma Player transition.
 
-| Evidence                       | Node       | Export                                         |
-| ------------------------------ | ---------- | ---------------------------------------------- |
-| Gallery desktop light          | 1117:35539 | [PNG](figma/library-desktop-light.png)         |
-| Updated original album desktop | 38:378     | [PNG](figma/original-album-desktop-light.png)  |
-| Album mobile dark              | 1117:38497 | [PNG](figma/album-mobile-dark.png)             |
-| Upload desktop light           | 1118:35415 | [PNG](figma/upload-desktop-light.png)          |
-| Share mobile light             | 1118:37585 | [PNG](figma/share-mobile-light.png)            |
-| Selection desktop light        | 1118:57516 | [PNG](figma/selection-desktop-light.png)       |
-| Tag desktop dark               | 1118:62128 | [PNG](figma/tag-desktop-dark.png)              |
-| Tag mobile light               | 1118:62672 | [PNG](figma/tag-mobile-light.png)              |
-| Permanent delete mobile light  | 1118:74276 | [PNG](figma/permanent-delete-mobile-light.png) |
-| Trash Toast desktop dark       | 1118:72167 | [PNG](figma/trash-toast-desktop-dark.png)      |
+| Evidence                       | Node       | Export                                                                                                                                                                                                    |
+| ------------------------------ | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Gallery desktop light          | 1117:35539 | [PNG](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261011/interaction-v2/figma/library-desktop-light.png)         |
+| Updated original album desktop | 38:378     | [PNG](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261011/interaction-v2/figma/original-album-desktop-light.png)  |
+| Album mobile dark              | 1117:38497 | [PNG](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261011/interaction-v2/figma/album-mobile-dark.png)             |
+| Upload desktop light           | 1118:35415 | [PNG](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261011/interaction-v2/figma/upload-desktop-light.png)          |
+| Share mobile light             | 1118:37585 | [PNG](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261011/interaction-v2/figma/share-mobile-light.png)            |
+| Selection desktop light        | 1118:57516 | [PNG](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261011/interaction-v2/figma/selection-desktop-light.png)       |
+| Tag desktop dark               | 1118:62128 | [PNG](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261011/interaction-v2/figma/tag-desktop-dark.png)              |
+| Tag mobile light               | 1118:62672 | [PNG](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261011/interaction-v2/figma/tag-mobile-light.png)              |
+| Permanent delete mobile light  | 1118:74276 | [PNG](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261011/interaction-v2/figma/permanent-delete-mobile-light.png) |
+| Trash Toast desktop dark       | 1118:72167 | [PNG](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261011/interaction-v2/figma/trash-toast-desktop-dark.png)      |
 
 ## Evidence Boundary
 
@@ -130,7 +130,7 @@ The eight existing first-create and create-failure screens now reuse the mature 
 | 1118:78656      | 1127:40653                 |
 | 1118:78878      | 1127:40682                 |
 
-The refreshed [share mobile screenshot](figma/share-mobile-light.png) was exported at 390 x 844, downloaded to `.data/main-ui-review-20261011/interaction-v2/figma/share-mobile-light.png`, copied to this versioned `figma/` evidence directory, and visually inspected. The selected mode, label, timezone note, and surrounding spacing are visible. `figma-nodes.json` contains this patch's full returned node IDs and scoped readback under `shareExpiryAlignment`.
+The refreshed [share mobile screenshot](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261011/interaction-v2/figma/share-mobile-light.png) was exported at 390 x 844, downloaded to `.data/main-ui-review-20261011/interaction-v2/figma/share-mobile-light.png`, copied to this versioned `figma/` evidence directory, and visually inspected. The selected mode, label, timezone note, and surrounding spacing are visible. `figma-nodes.json` contains this patch's full returned node IDs and scoped readback under `shareExpiryAlignment`.
 
 ### Selected Switch Token
 

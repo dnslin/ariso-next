@@ -15,7 +15,7 @@
 
 修改前浏览器实测：file input 的 multiple=false，选中一张后选择按钮 disabled=true；同一图片原图 412.5×275、正文 435px，压缩图 448.5×299、正文 459px。原图独有的 footer 提示造成 24px 正文高度差。
 
-[修改前测量](./attempts/before.json)保留原始几何。多文件提交先取得 [schema 拒绝的失败证据](./attempts/multi-upload-red.txt)。独立审计还发现：批次查询把尚在传输的文件误标 unknown 并停止显示后续进度。[新增真实时序单测先失败](./attempts/inflight-poll-red.txt)，再修正为区分传输未开始／在途／结束，只有结束且结果无法确认时才显示 unknown。在途的 queued 回读或查询失败不会抹掉传输进度。
+[修改前测量](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/attempts/before.json)保留原始几何。多文件提交先取得 [schema 拒绝的失败证据](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/attempts/multi-upload-red.txt)。独立审计还发现：批次查询把尚在传输的文件误标 unknown 并停止显示后续进度。[新增真实时序单测先失败](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/attempts/inflight-poll-red.txt)，再修正为区分传输未开始／在途／结束，只有结束且结果无法确认时才显示 unknown。在途的 queued 回读或查询失败不会抹掉传输进度。
 
 ## 设计与审计入口
 
@@ -39,19 +39,19 @@
 | `pnpm run format:check`                                                                                                                  | 通过，证据归档后运行                           |
 | `EGO_TASK_SPACE=6 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/m2-85/interaction-polish/full-browser-verified pnpm run test:browser` | 通过，最终连续运行 13 分 44 秒                 |
 
-最终 grid 修正后，图库／详情／回收专项通过（35 条行为检查、220 组布局测量）。上传专项也通过（15 条行为检查、130 组布局测量）。[两份原始报告与独立复验截图](./browser/reviewed/)已原样归档。最终类型与 lint 复跑通过。完整运行还发现旧测试要求新增说明图标与主按钮同为 48px；现分别严格检查 44px 图标与 48px 主操作。768px 实测进一步发现三个主操作分配为 200/200/192px，已改为三列同宽 grid，并由同一精确尺寸断言复跑通过。
+最终 grid 修正后，图库／详情／回收专项通过（35 条行为检查、220 组布局测量）。上传专项也通过（15 条行为检查、130 组布局测量）。[两份原始报告与独立复验截图](https://github.com/dnslin/ariso-next/tree/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/browser/reviewed)已原样归档。最终类型与 lint 复跑通过。完整运行还发现旧测试要求新增说明图标与主按钮同为 48px；现分别严格检查 44px 图标与 48px 主操作。768px 实测进一步发现三个主操作分配为 200/200/192px，已改为三列同宽 grid，并由同一精确尺寸断言复跑通过。
 
-随后完整运行在轮询专项发现旧的“文件已传输 100%”文案断言已失效：[原始失败报告](./attempts/upload-polling-legacy-copy.json)。保存状态实际已经出现，当前文案为“文件传输结束，正在核对保存与处理结果。”。测试更新文案并增加真实 XHR 进度的 loaded/total 核对，保留原先在途请求重叠、过期结果和自动继续轮询的断言，专项已复跑通过：两轮真实 XHR 都传输 6814/6814 字节，旧读取结束后自动发起第二次读取，最终真实数据库为 ready。该次完整运行失败不计通过。
+随后完整运行在轮询专项发现旧的“文件已传输 100%”文案断言已失效：[原始失败报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/attempts/upload-polling-legacy-copy.json)。保存状态实际已经出现，当前文案为“文件传输结束，正在核对保存与处理结果。”。测试更新文案并增加真实 XHR 进度的 loaded/total 核对，保留原先在途请求重叠、过期结果和自动继续轮询的断言，专项已复跑通过：两轮真实 XHR 都传输 6814/6814 字节，旧读取结束后自动发起第二次读取，最终真实数据库为 ready。该次完整运行失败不计通过。
 
 首次专项浏览器用例错误地等待已经缓存的图片再次发请求，已改为首次读取真实原图；另一次几何断言过早采样弹窗入场动画，已改为等待实际动画结束。
 
-独立设计复验发现手机成功行的操作被移到下一行，以及 Toast 被 Modal 遮罩覆盖。[真实 Toast 失败证据](./attempts/toast-layer-red.json)显示命中失败，层级 100 小于遮罩 100000。实现移除错误的层级覆写，沿用 HeroUI 的 overlay+1；队列所有状态复用右侧操作列。完整浏览器首轮因此主动中断并[保留中断报告](./attempts/browser-interrupted.json)，以新构建复跑。失败与中断不计通过，未伪造图片响应或削弱功能断言。
+独立设计复验发现手机成功行的操作被移到下一行，以及 Toast 被 Modal 遮罩覆盖。[真实 Toast 失败证据](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/attempts/toast-layer-red.json)显示命中失败，层级 100 小于遮罩 100000。实现移除错误的层级覆写，沿用 HeroUI 的 overlay+1；队列所有状态复用右侧操作列。完整浏览器首轮因此主动中断并[保留中断报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/attempts/browser-interrupted.json)，以新构建复跑。失败与中断不计通过，未伪造图片响应或削弱功能断言。
 
-手机专项另捕获 Toast 入场采样先后顺序问题：[失败报告](./attempts/toast-transition-order.json)。HeroUI 在 data-entering 移除后才启动 CSS 过渡；测试先等实际进入过渡，再等动画完成，保留原点击命中／层级／1px几何断言。独立复审确认未削弱断言，手机专项复跑通过（含工具栏左右方向键）。
+手机专项另捕获 Toast 入场采样先后顺序问题：[失败报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/attempts/toast-transition-order.json)。HeroUI 在 data-entering 移除后才启动 CSS 过渡；测试先等实际进入过渡，再等动画完成，保留原点击命中／层级／1px几何断言。独立复审确认未削弱断言，手机专项复跑通过（含工具栏左右方向键）。
 
 用户人工验收尚未完成，PR 保持草稿。发布阶段 AMD64／ARM64 镜像及容器验证本轮未执行；未合并、关闭 Issue、发布、部署或删除分支／worktree。
 
-[桌面专项](./browser/interaction-polish-1440.json)与[手机专项](./browser/interaction-polish-390.json)均通过，覆盖多选／追加／真实三图与原字节、共享设置、固定舞台、真实图片响应等待、Popover键盘、Toast到期和关闭焦点。截图与报告在同一目录，原始命令日志在 [checks](./checks/)。
+[桌面专项](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/browser/interaction-polish-1440.json)与[手机专项](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/browser/interaction-polish-390.json)均通过，覆盖多选／追加／真实三图与原字节、共享设置、固定舞台、真实图片响应等待、Popover键盘、Toast到期和关闭焦点。截图与报告在同一目录，原始命令日志在 [checks](https://github.com/dnslin/ariso-next/tree/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/checks)。
 
 ## 人工验收入口
 
@@ -67,7 +67,7 @@
 
 ## 最终连续运行
 
-[完整运行报告](./browser/full/runner.json)确认最终退出 0，2026-09-27 03:32–03:45（Asia/Shanghai），独立数据已清理。图库／详情／回收 36 条行为检查与 220 组布局、上传 15 条行为检查与 130 组布局、轮询 4 条、桌面／手机新增交互各 5 条全部通过；初始化、重启、错误恢复、公共外壳与 UI 夹具也通过。全部实际截图与分项 JSON 在[完整证据目录](./browser/full/)，原命令输出见 [browser.txt](./checks/browser.txt)。
+[完整运行报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/browser/full/runner.json)确认最终退出 0，2026-09-27 03:32–03:45（Asia/Shanghai），独立数据已清理。图库／详情／回收 36 条行为检查与 220 组布局、上传 15 条行为检查与 130 组布局、轮询 4 条、桌面／手机新增交互各 5 条全部通过；初始化、重启、错误恢复、公共外壳与 UI 夹具也通过。全部实际截图与分项 JSON 在[完整证据目录](https://github.com/dnslin/ariso-next/tree/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/browser/full)，原命令输出见 [browser.txt](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/checks/browser.txt)。
 
 最终新增专项明确验证了 Toolbar 左右键、真实 Toast 命中、三个成功行操作位置、真实原图等待时的 Skeleton，以及同一预览舞台的版本切换。此处的最终报告承接前面专项的修正，不以早期失败或中断代替通过。
 

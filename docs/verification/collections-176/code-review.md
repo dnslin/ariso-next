@@ -94,7 +94,7 @@ try {
 补充读取 `src/components/identity/return-to.ts`、其完整单元测试、标签最终 dialog/list/screen、浏览器适用选择器以及已锁 HeroUI 3.2.6 的 AlertDialog / Modal 类型和实现。
 
 - 登录目的地沿现有 allowlist 增加已实现 `/tags`，原始搜索、页码、pageSize 和 hash 按已有机制保留；未开放 `/tags/unknown` 或外部 URL。新增测试验证真实查询返回和拒绝边界，没有扩大授权或引入新重定向规则。
-- 主流程先添加回归断言，取得 `loginDestination('/tags?q=Go&page=2&pageSize=20')` 实际返回 `/admin` 的失败，再加入 allowlist。独立回读 [失败记录](login-return-before.txt) 和 [修复后记录](login-return-after.txt)：同一文件从 19 通过 / 1 失败变为 20 通过。本轮审计者没有重复执行该测试。
+- 主流程先添加回归断言，取得 `loginDestination('/tags?q=Go&page=2&pageSize=20')` 实际返回 `/admin` 的失败，再加入 allowlist。独立回读 [失败记录](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/collections-176/login-return-before.txt) 和 [修复后记录](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/collections-176/login-return-after.txt)：同一文件从 19 通过 / 1 失败变为 20 通过。本轮审计者没有重复执行该测试。
 - 删除采用库已有 AlertDialog，其 Dialog 实际输出 `role="alertdialog"`；创建/编辑继续 Modal。两者共享的 Backdrop / Container / Header / Heading / Body / Footer API 已由安装包类型确认。`isDismissable={!pending}`、`isKeyboardDismissDisabled={pending}` 显式保持原来的取消与提交中禁关闭行为，没有依赖 AlertDialog 不同的默认值。浏览器脚本已同时匹配 dialog / alertdialog，通用几何检查不依赖角色名称。
 - 表头透明背景、手机链接常规字重、搜索框 14px 常规字重仅调整样式；没有改变名称、关系、点击目标或查询契约。是否满足 Figma 由独立设计评审与真实截图确认，本审计不替其下结论。
 
@@ -114,9 +114,9 @@ try {
 
 加载失败改为页面失败标题、可读错误提示和 OwnerShell 固定底栏的重新加载按钮。已有 reload 逻辑继续区分非法 URL 查询和正常读取失败；没有把失败显示为空列表或零数量。失败时隐藏正常搜索/创建区域，成功重读后按查询状态恢复。浏览器脚本已增加空值/超长/控制字符对应真实标题、修改按钮与纠正输入后的正常标题断言，最终执行结果仍由主流程收齐。
 
-独立回读 [真实旧构建失败记录](attempts/validation-before/validation-before.json)：空值标题实际为“新建标签”，期望“请输入标签名称”；超长同样错误，两个场景均取得 AssertionError 及对应截图。此记录证明先复现再修复，不能当修复后浏览器通过。
+独立回读 [真实旧构建失败记录](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/collections-176/attempts/validation-before/validation-before.json)：空值标题实际为“新建标签”，期望“请输入标签名称”；超长同样错误，两个场景均取得 AssertionError 及对应截图。此记录证明先复现再修复，不能当修复后浏览器通过。
 
-主流程串行集成已完成；独立读取 [integration-serial.txt](integration-serial.txt) 结尾，108 个文件、980 个测试通过。这是主流程运行证据，未由审计者重复执行。四并发失败/中断历史继续保留。最终 UI 构建及全浏览器验证仍在收齐，设计结论继续由独立设计评审负责。最后源码结论维持 **Critical 0、Required 0**。
+主流程串行集成已完成；独立读取 [integration-serial.txt](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/collections-176/integration-serial.txt) 结尾，108 个文件、980 个测试通过。这是主流程运行证据，未由审计者重复执行。四并发失败/中断历史继续保留。最终 UI 构建及全浏览器验证仍在收齐，设计结论继续由独立设计评审负责。最后源码结论维持 **Critical 0、Required 0**。
 
 ### 未知结果退出与最终反馈收敛
 
@@ -130,9 +130,9 @@ try {
 
 最后实际复读确认 notice 使用 `whitespace-pre-wrap` 保留输入中的空白；既有全局 `p { overflow-wrap: anywhere }` 已保证长名称可换行，没有重复增加局部规则或修改全局样式。对话框 onClose 为无参数，旧 preserve 分支已删除。最终浏览器脚本检查未知关闭后的待核对提示、原输入名称、写入一次和重新打开空白新表单；不再查找已经删除的额外按钮。
 
-**最终源码审计：Critical 0、Required 0。** 没有把这一源码结论写成完整浏览器通过。独立读取 [完整浏览器 runner](browser/runner.json) 与主实施记录，完整 `pnpm run test:browser` 实际失败于旧上传页面 1920px 布局断言，其后的未执行场景不计通过。独立对比 `origin/main` 与当前分支：`src/components/upload/screen.tsx` 和 `e2e/interaction-polish.mjs` 无 diff，上传 composition 的 `min-[1200px]:max-w-[1280px]` 在两边完全相同。该范围外问题只报告，不修改上传实现、不削弱旧断言。
+**最终源码审计：Critical 0、Required 0。** 没有把这一源码结论写成完整浏览器通过。独立读取 [完整浏览器 runner](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/collections-176/browser/runner.json) 与主实施记录，完整 `pnpm run test:browser` 实际失败于旧上传页面 1920px 布局断言，其后的未执行场景不计通过。独立对比 `origin/main` 与当前分支：`src/components/upload/screen.tsx` 和 `e2e/interaction-polish.mjs` 无 diff，上传 composition 的 `min-[1200px]:max-w-[1280px]` 在两边完全相同。该范围外问题只报告，不修改上传实现、不削弱旧断言。
 
-最终受影响场景记录已实际回读：[affected-runner](browser-affected/affected-runner.json)、[tags](browser-affected/tags.json) 和 [shell-navigation](browser-affected/shell-navigation.json) 均为 passed，没有 error。标签记录包含 12 项功能检查、114 个视口/主题布局、118 张实际截图；覆盖第二页精确键核对、未知结果关闭提示与新表单、单次写入、同名重建的新 ID、真实搜索清除、分页返回与短视口键盘焦点。导航记录覆盖 `/upload`、`/library`、`/albums`、相册内容、`/trash`、`/tags`、`/admin` 七个消费入口，两端浅深色统一品牌、账号、导航顺序与当前项；共 38 个布局记录、82 张截图。
+最终受影响场景记录已实际回读：[affected-runner](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/collections-176/browser-affected/affected-runner.json)、[tags](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/collections-176/browser-affected/tags.json) 和 [shell-navigation](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/collections-176/browser-affected/shell-navigation.json) 均为 passed，没有 error。标签记录包含 12 项功能检查、114 个视口/主题布局、118 张实际截图；覆盖第二页精确键核对、未知结果关闭提示与新表单、单次写入、同名重建的新 ID、真实搜索清除、分页返回与短视口键盘焦点。导航记录覆盖 `/upload`、`/library`、`/albums`、相册内容、`/trash`、`/tags`、`/admin` 七个消费入口，两端浅深色统一品牌、账号、导航顺序与当前项；共 38 个布局记录、82 张截图。
 
 这些直接运行结果证明本次受影响场景通过，不能替代完整浏览器流程未通过的事实。最后源码复读仅新增 FieldError 的 `leading-normal` 和明确删除失败时的目标名称保留/“返回标签”文案；它们没有改变 schema、状态判断、关系或提交行为，未发现新增代码问题。**最终源码审计仍为 Critical 0、Required 0。** 本轮审计只读源码和已生成记录，没有重复运行检查、操作 Git 或扩大范围；对应结果以主 [实施与验证记录](README.md) 和 [设计评审](design-review.md) 的实际证据为准。用户人工 UI 验收仍未执行，未声明通过。
 
@@ -157,7 +157,7 @@ try {
 
 独立复读 `Providers` 的最后修改和 HeroUI 3.2.6 Toast.CloseButton 实现/CSS：库默认关闭按钮为 `opacity-0`、`pointer-events-none`，仅在通知 hover 时显示。本次只为已有 44px 关闭按钮添加 `focus-visible:pointer-events-auto focus-visible:opacity-100`，使键盘获得可见焦点时显示并可点击；仍使用库提供的关闭操作和既有可访问名称。没有增加焦点监听、计时器、通知队列、状态或卸载逻辑，ToastProvider 的位置、通知内容、导航和 QueryClient 创建方式没有变化。
 
-此 Providers 是标签成功消息及既有图库复制/下载/移入回收站、回收站恢复、存储复制消息共用的通知渲染入口。修复适用于它们的关闭按钮，不改变这些调用的成功判断、消息、请求或资源生命周期。实际键盘缺陷由主流程复现为 Tab 后 `:focus-visible=true` 但仍透明且不能接收指针，Enter 已能关闭；最后修复后的键盘结果仍以本轮真实浏览器证据为准。[已有 hover 失败记录](manual-revision/attempts/toast-hover-required/green.json) 保留，不能冒称修复后的通过证据。
+此 Providers 是标签成功消息及既有图库复制/下载/移入回收站、回收站恢复、存储复制消息共用的通知渲染入口。修复适用于它们的关闭按钮，不改变这些调用的成功判断、消息、请求或资源生命周期。实际键盘缺陷由主流程复现为 Tab 后 `:focus-visible=true` 但仍透明且不能接收指针，Enter 已能关闭；最后修复后的键盘结果仍以本轮真实浏览器证据为准。[已有 hover 失败记录](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/collections-176/manual-revision/attempts/toast-hover-required/green.json) 保留，不能冒称修复后的通过证据。
 
 独立复读 `e2e/ui-refinement.mjs`：`getComputedStyle(...).transform` 的 `none` 与浏览器返回的 `matrix(1, 0, 0, 1, 0, 0)` 均转换成 DOMMatrixReadOnly，再对当前二维变换的六个系数严格断言 `[1, 0, 0, 1, 0, 0]`。平移、缩放、旋转和倾斜仍会失败，未放宽为任意 matrix 或删除断言；保持 idle/hover/keyboard focus 三个状态、单层背景、44px 点击区、可见焦点、Popover 操作和 Escape 返回焦点检查。该 helper 由另一实施者修改，本审计者仅复读；AccessDisclosure 本身由本审计者实施、主实施者另行独立复读的分工保持。
 
@@ -171,9 +171,9 @@ try {
 
 ### 最后文字重叠检查与实际短补验
 
-独立实际读取新增 `e2e/toast-layout.mjs`、`e2e/tags.mjs` 的布局调用，以及本轮短验证脚本与 [toast-content.json](manual-revision/toast-content.json)。helper 对真实通知标题的文字节点建立 DOM Range，逐行读取渲染矩形，断言每个片段完整容纳在通知边界，并逐个检测与 44px 关闭按钮矩形是否相交，没有仅根据整块标题宽度或截图数量推断无覆盖。完整标签布局检查中通知可自然过期，未出现时记录 null；短补验明确断言通知存在、包含实际提交名称、至少两行文字，避免这个可过期分支使最后修复验证空通过。未新增业务能力或模拟成功写入。
+独立实际读取新增 `e2e/toast-layout.mjs`、`e2e/tags.mjs` 的布局调用，以及本轮短验证脚本与 [toast-content.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/collections-176/manual-revision/toast-content.json)。helper 对真实通知标题的文字节点建立 DOM Range，逐行读取渲染矩形，断言每个片段完整容纳在通知边界，并逐个检测与 44px 关闭按钮矩形是否相交，没有仅根据整块标题宽度或截图数量推断无覆盖。完整标签布局检查中通知可自然过期，未出现时记录 null；短补验明确断言通知存在、包含实际提交名称、至少两行文字，避免这个可过期分支使最后修复验证空通过。未新增业务能力或模拟成功写入。
 
-实际短补验命令 `node work/run-manual-tags-browser.mjs toast-content` 在 Node 24.18.1、保留的独立 Ego Space 5、独立 50953 数据库执行，结果 **passed**。390×844 浅深两主题均通过真实 50 码点标签创建后的通知检查，文本四行完整容纳且不覆盖关闭按钮；关闭按钮为 44×44，键盘 focus-visible 时 opacity 1 / pointer auto，Enter 实际关闭。生成 [浅色截图](manual-revision/toast-content-light-390.png) 与 [深色截图](manual-revision/toast-content-dark-390.png)，测试创建的标签随后由真实 API 删除。记录确认原 57635 预览数据不变。
+实际短补验命令 `node work/run-manual-tags-browser.mjs toast-content` 在 Node 24.18.1、保留的独立 Ego Space 5、独立 50953 数据库执行，结果 **passed**。390×844 浅深两主题均通过真实 50 码点标签创建后的通知检查，文本四行完整容纳且不覆盖关闭按钮；关闭按钮为 44×44，键盘 focus-visible 时 opacity 1 / pointer auto，Enter 实际关闭。生成 [浅色截图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/collections-176/manual-revision/toast-content-light-390.png) 与 [深色截图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/collections-176/manual-revision/toast-content-dark-390.png)，测试创建的标签随后由真实 API 删除。记录确认原 57635 预览数据不变。
 
 **最终独立源码审计：Critical 0、Required 0。** 完整标签专项的 12 项功能检查、114 个布局和 118 张截图是在最后 Toast.Content 排版补修之前执行；最后补修后只运行上述两主题短补验，没有再执行完整标签专项或完整 browser 流程。其余先前限制和范围外上传失败保留，最后人工复验仍由用户完成。本审计者只读源码与已生成证据并更新本报告，没有重复执行检查；AccessDisclosure 的独立源码复读仍由主实施者完成。
 
@@ -195,6 +195,6 @@ try {
 
 独立AST比对确认原71处assert在最终主脚本59+布局12处全部保留；69处除空白一致，2处仅提取相同textContent读取。SQL校验、单次写入、布局矩阵、连续操作顺序与finally清理均保留。最终tags.mjs855行、tags-layout158行、tags-dialog27行；纯重组净减86行，新增reconciliation408行另计。没有改服务端、schema、依赖或公共UI配置。
 
-实际回读[旧包4案失败证据](review-fixes/tag-reconciliation-red.json)、[修复后8案](review-fixes/tag-reconciliation-green.json)、[完整流程内8案](review-fixes/tags-regression/tag-reconciliation-green.json)和[最终完整标签报告](review-fixes/tags-regression/tags.json)。逐案核对真实提交状态、交付状态、SQL关系、图片ID、核对请求及一次写入；502/丢响应确实发生在真实写入后，模拟400则明确在写入前拒绝，`realStatus:null`。完整标签结果passed，14项检查、114布局、126截图。新增8案交替桌面浅色与手机深色，不声称四组合全矩阵。
+实际回读[旧包4案失败证据](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/collections-176/review-fixes/tag-reconciliation-red.json)、[修复后8案](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/collections-176/review-fixes/tag-reconciliation-green.json)、[完整流程内8案](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/collections-176/review-fixes/tags-regression/tag-reconciliation-green.json)和[最终完整标签报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/collections-176/review-fixes/tags-regression/tags.json)。逐案核对真实提交状态、交付状态、SQL关系、图片ID、核对请求及一次写入；502/丢响应确实发生在真实写入后，模拟400则明确在写入前拒绝，`realStatus:null`。完整标签结果passed，14项检查、114布局、126截图。新增8案交替桌面浅色与手机深色，不声称四组合全矩阵。
 
 **最终独立代码复审Approve，Critical0 / Required0。** 复审者执行只读分析、AST对比和`git diff --check`（exit0），没有重复运行浏览器/产品全套，也不从日志片段自行推断主流程构建退出码。适用实际命令、环境与运行结果集中在[审查修复记录](review-fixes/README.md)。独立设计状态复核见[设计报告最新节](design-review.md#pr-226-审查修复后的受影响状态复核2026-10-02)，不以代码Approve替代设计或用户人工验收。历史整站浏览器范围外上传失败、未执行物理设备/发布验证和后置能力均保留。

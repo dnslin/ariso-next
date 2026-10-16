@@ -58,7 +58,7 @@ pnpm exec drizzle-kit generate --config tests/experiments/api-key/drizzle.config
 
 两个测试文件位于 `tests/integration/identity/`。`pnpm run test:integration` → Vitest integration/media-tools 两项目 → integration 的 `tests/integration/**/*.test.ts` 包含两文件且不在 exclude 中。本任务不修改共用运行器或浏览器参数。Release 的原生双架构身份检查使用同一 identity 目录，会纳入新场景；日常 PR 不触发 Release。
 
-最终插件实验 **2 文件 / 39 项全部通过，无跳过**，其中 SQLite 8 项、HTTP 31 项。原始 [api-key.xml](./api-key.xml)从默认完整集成流程提取。完整调用链确实执行新增能力；未修改默认 include/exclude，不只运行定向测试。
+最终插件实验 **2 文件 / 39 项全部通过，无跳过**，其中 SQLite 8 项、HTTP 31 项。原始 [api-key.xml](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-IDENTITY-02/api-key.xml)从默认完整集成流程提取。完整调用链确实执行新增能力；未修改默认 include/exclude，不只运行定向测试。
 
 | 实际命令                                                                                                                                                                                                                                   | 最终结果                                                                                                                                   |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -75,7 +75,7 @@ pnpm exec drizzle-kit generate --config tests/experiments/api-key/drizzle.config
 | `git diff --check`                                                                                                                                                                                                                         | 通过。                                                                                                                                     |
 | `pnpm audit --json`                                                                                                                                                                                                                        | 退出 1，既有依赖告警见下节，不记作通过。                                                                                                   |
 
-完整首轮的两项失败均为 `Test timed out in 5000ms`，分别是 watermark GET/download 计数，以及 owner/private/thumbnail/HEAD/304 排除场景。本轮没有修改 analytics 或生产源码。降低并行压力后只复跑失败范围，分别耗时约 2.0s/3.0s 通过。这个结果支持并行资源竞争的判断，但不宣称已修复既有测试稳定性，也不把首轮完整命令改写为退出 0。[首轮失败原始 JUnit](./integration-failures.xml)、[定向恢复](./analytics-retry.xml)、[检查摘要](./verification-summary.json)、[实际环境](./environment.json)。已通过且输入未变的检查不机械重复。
+完整首轮的两项失败均为 `Test timed out in 5000ms`，分别是 watermark GET/download 计数，以及 owner/private/thumbnail/HEAD/304 排除场景。本轮没有修改 analytics 或生产源码。降低并行压力后只复跑失败范围，分别耗时约 2.0s/3.0s 通过。这个结果支持并行资源竞争的判断，但不宣称已修复既有测试稳定性，也不把首轮完整命令改写为退出 0。[首轮失败原始 JUnit](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-IDENTITY-02/integration-failures.xml)、[定向恢复](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-IDENTITY-02/analytics-retry.xml)、[检查摘要](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-IDENTITY-02/verification-summary.json)、[实际环境](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-IDENTITY-02/environment.json)。已通过且输入未变的检查不机械重复。
 
 构建保留无 DATA_DIR / BETTER_AUTH_SECRET / ARISO_ENCRYPTION_KEY 的回归。初次 exploratory 单项实验曾先于构建运行；该项不作为最终交付证据。正式集成在构建之后执行。
 
@@ -92,11 +92,11 @@ pnpm exec vitest run --project integration tests/integration/identity/api-key-ht
 
 前一命令在修复前失败 1 项；后一命令只用于缩短受影响重跑，不替代默认全量入口。类型检查另外发现两个表驱动数组被推断为包含 undefined，现已声明对应 Record 数组类型，不弱化输入或断言。HTTP 清理可重复调用，初始化失败关闭端口，测试 finally 关闭连接/删除临时目录；不使用用户预览数据。
 
-独立 agent 最终复审给出 **Approve**，上述 Required 已关闭，没有剩余必改项。复审实际读取修复前失败和修复后两项通过的结果，核对日期检查、类型声明、错误传播、HTTP 清理与重启后的日志收集；`git diff --check` 通过。没有机械重复实现者的完整检查。原始失败/修复记录：[修复前](./expiry-overflow-before.txt)、[修复后](./expiry-overflow-after.txt)。
+独立 agent 最终复审给出 **Approve**，上述 Required 已关闭，没有剩余必改项。复审实际读取修复前失败和修复后两项通过的结果，核对日期检查、类型声明、错误传播、HTTP 清理与重启后的日志收集；`git diff --check` 通过。没有机械重复实现者的完整检查。原始失败/修复记录：[修复前](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-IDENTITY-02/expiry-overflow-before.txt)、[修复后](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-IDENTITY-02/expiry-overflow-after.txt)。
 
 ## 范围外诊断与未执行项
 
-`pnpm audit --json` 返回非零：**9 项既有告警（3 moderate、5 high、1 critical）**，见[原始字段摘要](./audit-summary.json)。锁文件只有新增插件及其引用，原有包版本未变；没有 API Key 包独立告警。critical 为现有 Next 16.3.5 的 [next/og ImageResponse 公告](https://github.com/advisories/GHSA-vcvr-r3jv-pc5j)；其他为现有 esbuild、brace-expansion、braces 等链。该结果是依赖审计报告，不声称已修复或已证明应用可利用。按修改边界，本次不升级 Next/原有工具链。
+`pnpm audit --json` 返回非零：**9 项既有告警（3 moderate、5 high、1 critical）**，见[原始字段摘要](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-IDENTITY-02/audit-summary.json)。锁文件只有新增插件及其引用，原有包版本未变；没有 API Key 包独立告警。critical 为现有 Next 16.3.5 的 [next/og ImageResponse 公告](https://github.com/advisories/GHSA-vcvr-r3jv-pc5j)；其他为现有 esbuild、brace-expansion、braces 等链。该结果是依赖审计报告，不声称已修复或已证明应用可利用。按修改边界，本次不升级 Next/原有工具链。
 
 生产构建退出 0，同时 nft 追踪打印原有平台可选 resvg、SQLite Debug、OpenTelemetry 等缺失依赖诊断，日志保留；不把诊断删掉或记作无警告构建。真实 standalone 回归由全量集成检查提供。
 

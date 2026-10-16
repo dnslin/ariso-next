@@ -32,13 +32,13 @@
 
 root 已执行并确认：
 
-| 检查                                   | 结果与日志                                                                   |
-| -------------------------------------- | ---------------------------------------------------------------------------- |
-| runner / plan 两个相关单元测试文件     | 160 passed，退出 0；[merge-unit.txt](./merge-unit.txt)                       |
-| 5 个受影响文件 ESLint                  | 退出 0；[merge-lint.txt](./merge-lint.txt)                                   |
-| `pnpm run build`                       | 退出 0；编译 7.9 秒，19 个静态页面；[merge-build.txt](./merge-build.txt)     |
-| build 后 sharing production HTTP 测试  | 1 文件、7 passed，退出 0；[merge-sharing-http.txt](./merge-sharing-http.txt) |
-| `tsc --noEmit --project tsconfig.json` | 退出 0；[merge-typecheck.txt](./merge-typecheck.txt)                         |
+| 检查                                   | 结果与日志                                                                                                                                                                                  |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| runner / plan 两个相关单元测试文件     | 160 passed，退出 0；[merge-unit.txt](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-190/merge-unit.txt)                       |
+| 5 个受影响文件 ESLint                  | 退出 0；[merge-lint.txt](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-190/merge-lint.txt)                                   |
+| `pnpm run build`                       | 退出 0；编译 7.9 秒，19 个静态页面；[merge-build.txt](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-190/merge-build.txt)     |
+| build 后 sharing production HTTP 测试  | 1 文件、7 passed，退出 0；[merge-sharing-http.txt](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-190/merge-sharing-http.txt) |
+| `tsc --noEmit --project tsconfig.json` | 退出 0；[merge-typecheck.txt](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-190/merge-typecheck.txt)                         |
 
 构建路由表同时列出 `/api/account`、邮箱/密码修改、`/settings/account` 与相册分享/rotate、`/api/shares`、匿名协议路由。日志尾部保留既有可选平台及 OpenTelemetry tracing 解析诊断；root 确认实际命令退出 0，不将这些诊断隐去，也不把它们误报为本轮构建失败。
 

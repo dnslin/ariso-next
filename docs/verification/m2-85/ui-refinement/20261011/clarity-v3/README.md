@@ -2,7 +2,7 @@
 
 日期：2026-10-11。状态：产品实施、定向浏览器验证及本轮 Figma 同步完成。用户已批准 `61512` 原型；没有提交、推送、创建 PR、合并或发布。真实预览为 `http://127.0.0.1:3001`，原数据和账号不变。
 
-批准范围见[规划及25项文案对照](../../../../../../design-plans/main-ui-review-20261011/clarity-review-v3/PLAN.md)，共用规则见[交接规范](../../../../../design/handoff.md#界面减负第三版2026-10-11用户批准)。不改上传、查询、鉴权、存储生命周期或公开分享契约。
+批准范围见[规划及25项文案对照](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/design-plans/main-ui-review-20261011/clarity-review-v3/PLAN.md)，共用规则见[交接规范](../../../../../design/handoff.md#界面减负第三版2026-10-11用户批准)。不改上传、查询、鉴权、存储生命周期或公开分享契约。
 
 ## 实施
 
@@ -36,7 +36,7 @@
 
 ## 浏览器验证
 
-执行命令：`EGO_TASK_SPACE=8 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=.data/clarity-review-v3/<run> node scripts/verify-browser.mjs --suite <suite> [--only <phase>]`。报告与代表截图已归档至 [browser](browser/)，首次失败报告仍保留原失败状态。
+执行命令：`EGO_TASK_SPACE=8 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=.data/clarity-review-v3/<run> node scripts/verify-browser.mjs --suite <suite> [--only <phase>]`。报告与代表截图已归档至 [browser](https://github.com/dnslin/ariso-next/tree/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261011/clarity-v3/browser)，首次失败报告仍保留原失败状态。
 
 | 范围                                                                  | 最终证据                                                                                                                           |
 | --------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
@@ -49,11 +49,11 @@
 
 统计动态图表的占位原为 180px，桌面实际图表为 252px。返回时异步增加的 72px 会改变已恢复的滚动位置。本轮改为手机 220px、桌面 252px，并新增尺寸单测；没有放宽滚动断言。
 
-首次分享完整浏览器运行停在原生剪贴板恢复等值检查，尚未进入产品场景；没有删除该断言或清空用户剪贴板。随后独立 behavior/recovery 通过。标签 Tips 的 Enter 打开、Esc 关闭及回焦通过后，跨 desktop/mobile 仿真仍打开的 Tooltip 导致 scale/定位冻结；后续表单流程改为真实 Tab 回输入框、确认提示关闭再切仿真，并保留原失败报告。[补充检查](browser/tips-resize.json)验证了同一仿真模式内桌面调整宽度、手机横竖屏调整时浮层打开仍不溢出。该检查不作为物理手机旋转已通过的证据。
+首次分享完整浏览器运行停在原生剪贴板恢复等值检查，尚未进入产品场景；没有删除该断言或清空用户剪贴板。随后独立 behavior/recovery 通过。标签 Tips 的 Enter 打开、Esc 关闭及回焦通过后，跨 desktop/mobile 仿真仍打开的 Tooltip 导致 scale/定位冻结；后续表单流程改为真实 Tab 回输入框、确认提示关闭再切仿真，并保留原失败报告。[补充检查](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261011/clarity-v3/browser/tips-resize.json)验证了同一仿真模式内桌面调整宽度、手机横竖屏调整时浮层打开仍不溢出。该检查不作为物理手机旋转已通过的证据。
 
 ## 设计对照
 
-[真实页面截图](browser/manual/report.json)覆盖标签、分享列表、分享设置、基本设置、访问统计和回收站，共 6 页 × 2 主题 × 2 视口（1440×900、390×844）24 张；均等待字体及页面内容就绪，无横向溢出。人工复核了标签手机编辑、分享请求中与失败、统计失败保留旧结果、回收站 hover 和选中。示例数据不同的页面不作逐像素相等声明。
+[真实页面截图](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261011/clarity-v3/browser/manual/report.json)覆盖标签、分享列表、分享设置、基本设置、访问统计和回收站，共 6 页 × 2 主题 × 2 视口（1440×900、390×844）24 张；均等待字体及页面内容就绪，无横向溢出。人工复核了标签手机编辑、分享请求中与失败、统计失败保留旧结果、回收站 hover 和选中。示例数据不同的页面不作逐像素相等声明。
 
 Figma 在[既有文件的 v3 补充区](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1132-40444)同步，准确范围见[节点及截图索引](figma/README.md)。原主节点按批准内容局部修改，保留原表格、分页及独立保存；桌面/手机分享列表的设置图标及 Tips 补项已提交。新增可编辑状态帧用于表达图标组、提示与保留旧结果，不作整页或 Figma Player 运行验收。
 

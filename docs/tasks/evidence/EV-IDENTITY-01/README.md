@@ -24,18 +24,18 @@ pnpm run db:generate
 
 ## 实验结论与下游接入要求
 
-| 项目           | 实际验证                                                                                                                                                                                                                                                                 |
-| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| 初始化持久化   | 两个独立 Node 进程同时尝试写同一磁盘库；一个成功，一个被所有者唯一约束拒绝；只留下一个匹配 user.id 的 credential。注入 credential 写失败后 user 一起回滚，移除故障可重试。                                                                                               |
-| 数据约束       | ownerSlot 默认 1，拒绝 NULL/0/2；拒绝重复 credential 和第二个 GitHub provider 记录。库 internalAdapter 能写入并读回额外字段。                                                                                                                                            |
-| 注册与字段     | HTTP 和 `auth.api.signUpEmail` 均返回 `EMAIL_PASSWORD_SIGN_UP_DISABLED`。登录后客户端写 ownerSlot 返回 400 / `FIELD_NOT_ALLOWED`，会话响应不返回 ownerSlot。                                                                                                             |
-| 真正登录与退出 | setup 夹具只调用库 hashPassword 并同步写 user/account，随后通过真实 Next HTTP 登录。原始 Set-Cookie 断言 HttpOnly、SameSite=Lax、Path=/、7 天 Max-Age、无 Domain；HTTP 与 `auth.api.getSession` 结果相同；退出清 Cookie 并使重放失效。                                   |
-| Secret 轮换    | 停止旧 Next 进程，以不同 Secret 和相同磁盘库启动新进程；旧 Cookie 在 HTTP 和服务端会话 API 均得到 null；用户、credential、原会话行保持不变；密码仍能重新登录。                                                                                                           |
-| A→B→A          | 单个当前实例按已保存 origin 刷新，验证 HTTP→HTTPS→HTTP 原始 Secure / `__Secure-` 策略和清 Cookie 属性。当前来源通过，旧来源、缺 Origin 的带 Cookie 写入、外部 callbackURL 均拒绝。原始 HTTP 导航请求验证 cross-site CSRF 拒绝。                                          |
-| 限流           | 固定同一实验 IP，默认 10 秒/3 次登录阈值后得到 429 和正的 X-Retry-After；A→B→A 实例刷新仍拒绝。该版本模块级 memory store 保留同进程限流；不承诺跨进程保留。                                                                                                              |
-| OAuth state    | 在 A/B/A 分别生成真实库 state，检查 GitHub authorize URL 的 redirect_uri；缺 Cookie、缺 state、重复消费被拒绝；实例切换再返回原 origin 后，原 Cookie 可完成一次取消回调。服务端 signInSocial 生成的 state 也经过真实 HTTP 回调校验。没有调用 GitHub token/profile 服务。 |
-| 浏览器         | Ego Lite / Chrome 152 实际 A→B→A 登录、会话、Host-only、HttpOnly、SameSite=Lax 和退出通过，见 [browser.json](./browser.json)。未读取或归档会话 Cookie 值。                                                                                                               |
-| 同步事务       | `transaction: true` 的库 adapter 接收异步回调时，真实 better-sqlite3 报 Transaction function cannot return a promise。实验显式 false；密码哈希在短同步事务外，不能把异步库流程包进 SQLite 同步事务。                                                                     |
+| 项目           | 实际验证                                                                                                                                                                                                                                                                       |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 初始化持久化   | 两个独立 Node 进程同时尝试写同一磁盘库；一个成功，一个被所有者唯一约束拒绝；只留下一个匹配 user.id 的 credential。注入 credential 写失败后 user 一起回滚，移除故障可重试。                                                                                                     |
+| 数据约束       | ownerSlot 默认 1，拒绝 NULL/0/2；拒绝重复 credential 和第二个 GitHub provider 记录。库 internalAdapter 能写入并读回额外字段。                                                                                                                                                  |
+| 注册与字段     | HTTP 和 `auth.api.signUpEmail` 均返回 `EMAIL_PASSWORD_SIGN_UP_DISABLED`。登录后客户端写 ownerSlot 返回 400 / `FIELD_NOT_ALLOWED`，会话响应不返回 ownerSlot。                                                                                                                   |
+| 真正登录与退出 | setup 夹具只调用库 hashPassword 并同步写 user/account，随后通过真实 Next HTTP 登录。原始 Set-Cookie 断言 HttpOnly、SameSite=Lax、Path=/、7 天 Max-Age、无 Domain；HTTP 与 `auth.api.getSession` 结果相同；退出清 Cookie 并使重放失效。                                         |
+| Secret 轮换    | 停止旧 Next 进程，以不同 Secret 和相同磁盘库启动新进程；旧 Cookie 在 HTTP 和服务端会话 API 均得到 null；用户、credential、原会话行保持不变；密码仍能重新登录。                                                                                                                 |
+| A→B→A          | 单个当前实例按已保存 origin 刷新，验证 HTTP→HTTPS→HTTP 原始 Secure / `__Secure-` 策略和清 Cookie 属性。当前来源通过，旧来源、缺 Origin 的带 Cookie 写入、外部 callbackURL 均拒绝。原始 HTTP 导航请求验证 cross-site CSRF 拒绝。                                                |
+| 限流           | 固定同一实验 IP，默认 10 秒/3 次登录阈值后得到 429 和正的 X-Retry-After；A→B→A 实例刷新仍拒绝。该版本模块级 memory store 保留同进程限流；不承诺跨进程保留。                                                                                                                    |
+| OAuth state    | 在 A/B/A 分别生成真实库 state，检查 GitHub authorize URL 的 redirect_uri；缺 Cookie、缺 state、重复消费被拒绝；实例切换再返回原 origin 后，原 Cookie 可完成一次取消回调。服务端 signInSocial 生成的 state 也经过真实 HTTP 回调校验。没有调用 GitHub token/profile 服务。       |
+| 浏览器         | Ego Lite / Chrome 152 实际 A→B→A 登录、会话、Host-only、HttpOnly、SameSite=Lax 和退出通过，见 [browser.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-IDENTITY-01/browser.json)。未读取或归档会话 Cookie 值。 |
+| 同步事务       | `transaction: true` 的库 adapter 接收异步回调时，真实 better-sqlite3 报 Transaction function cannot return a promise。实验显式 false；密码哈希在短同步事务外，不能把异步库流程包进 SQLite 同步事务。                                                                           |
 
 **HTTP 与受信任服务端 API 不可互换。** 实测直接 `auth.api.signInEmail` 即使传旧/不可信 Origin、处于 HTTP 限流状态，仍可登录并生成 Cookie。来源/CSRF 和限流是库路由入口的职责，不能把直接服务端调用包装为公开登录接口。下游本地登录使用 `auth.handler(request)`；自定义管理写入按规格明确检查来源与所有者。读取会话的 HTTP/API 结果一致，不代表所有写入保护一致。
 
@@ -59,7 +59,7 @@ EGO_TASK_SPACE=16 BROWSER_REPORT_DIR=test-results/identity-runtime-browser pnpm 
 pnpm audit --json
 ```
 
-本地安装、格式、lint、typecheck、190 项单元测试、生产构建和全部 140 项集成测试通过。身份实验的 11 项实际结果见 [local-identity.xml](./local-identity.xml)。Ego 认证实验通过；同一 TaskSpace 16 的生产浏览器冒烟在 390/1440 两宽度通过，静态资源、健康接口及错误监控通过，见 [runtime-browser.json](./runtime-browser.json)；TaskSpace 已成功关闭。首轮远端 CI/Docker 已通过，详见下节；Issue 状态和合并仍由用户决定。
+本地安装、格式、lint、typecheck、190 项单元测试、生产构建和全部 140 项集成测试通过。身份实验的 11 项实际结果见 [local-identity.xml](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-IDENTITY-01/local-identity.xml)。Ego 认证实验通过；同一 TaskSpace 16 的生产浏览器冒烟在 390/1440 两宽度通过，静态资源、健康接口及错误监控通过，见 [runtime-browser.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-IDENTITY-01/runtime-browser.json)；TaskSpace 已成功关闭。首轮远端 CI/Docker 已通过，详见下节；Issue 状态和合并仍由用户决定。
 
 生产构建退出 0，但 nft 打包器打印缺失 `build/Debug/better_sqlite3.node` 的诊断。实际使用的是 Release 二进制，保留原始诊断并以生产集成与镜像检查判断产物可用性，不隐藏日志。`pnpm audit` 报一个 moderate：原有 drizzle-kit 的 esbuild 0.18.20 开发服务器公告 GHSA-67mh-4wv8-2f99；新增依赖复用同一链。实验不运行 esbuild 开发服务器，也不把它打入生产，不在本 Issue 升级原有工具链。
 
@@ -69,7 +69,7 @@ pnpm audit --json
 
 已使用 `code-review-and-quality` 完成独立审计，未发现必改问题。审计重点为需求覆盖、HTTP/API 保护边界、state 一次消费、真实磁盘并发、依赖与生产模块隔离。审计代理用 Node 24.19.0 / pnpm 11.19.0 独立重跑 `pnpm exec vitest run --project integration tests/integration/identity --reporter=verbose`，2 文件 / 11 项通过。其早先 Node 26 复跑不计入项目验收。`.github/workflows/images.yml` 为 AMD64/ARM64 原生 runner 增加同一组 identity 实验，并归档 JUnit；现有真实 Docker 构建、图片、存储、生命周期检查继续执行。PR 事件不会触发 publish。
 
-提交 [f57ff5f](https://github.com/dnslin/ariso-next/commit/f57ff5fdb1767ece3e006a6efb60aaf714bbbac8) 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/35513964773) 和 [Docker 双架构](https://github.com/dnslin/ariso-next/actions/runs/35513964843) 均 success。AMD64/ARM64 各 11 项认证实验通过，原始 JUnit 已归档：[AMD64](./amd64.xml)、[ARM64](./arm64.xml)。原生 runner 为 Node 24.20.0；实际 Docker 为 Node 24.21.0。容器生命周期、迁移、备份恢复原始报告：[AMD64](./container-amd64.json)、[ARM64](./container-arm64.json)。两架构的图片转换、受限挂载存储及镜像内容检查均通过。release-checks / publish 因非 release 事件跳过，没有发布镜像或部署。
+提交 [f57ff5f](https://github.com/dnslin/ariso-next/commit/f57ff5fdb1767ece3e006a6efb60aaf714bbbac8) 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/35513964773) 和 [Docker 双架构](https://github.com/dnslin/ariso-next/actions/runs/35513964843) 均 success。AMD64/ARM64 各 11 项认证实验通过，原始 JUnit 已归档：[AMD64](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-IDENTITY-01/amd64.xml)、[ARM64](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-IDENTITY-01/arm64.xml)。原生 runner 为 Node 24.20.0；实际 Docker 为 Node 24.21.0。容器生命周期、迁移、备份恢复原始报告：[AMD64](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-IDENTITY-01/container-amd64.json)、[ARM64](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-IDENTITY-01/container-arm64.json)。两架构的图片转换、受限挂载存储及镜像内容检查均通过。release-checks / publish 因非 release 事件跳过，没有发布镜像或部署。
 
 ```sh
 gh pr checks 91
@@ -104,6 +104,6 @@ pnpm exec vitest run --project integration tests/integration/identity --reporter
 BROWSER_REPORT_DIR=test-results/identity-review-browser node tests/experiments/identity/run-browser.ts
 ```
 
-格式、lint、类型检查、197 项单元测试、生产构建、141 项完整集成测试均通过。构建仍输出前述 SQLite Debug 二进制诊断，退出码为 0。独立复审额外指出资源初始化早期的取消窗口，已将监听提前，并重新执行相关格式、lint、类型检查及全部 12 项 identity 集成测试，均通过，见 [原始 JUnit](./review-fixes/local-identity.xml)。真实 Ego Lite A→B→A 登录、会话和退出通过，见 [复跑浏览器报告](./review-fixes/browser.json)；TaskSpace 17 已关闭。本轮无生产 UI 改动，未重复执行原先的 390/1440 生产冒烟。
+格式、lint、类型检查、197 项单元测试、生产构建、141 项完整集成测试均通过。构建仍输出前述 SQLite Debug 二进制诊断，退出码为 0。独立复审额外指出资源初始化早期的取消窗口，已将监听提前，并重新执行相关格式、lint、类型检查及全部 12 项 identity 集成测试，均通过，见 [原始 JUnit](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-IDENTITY-01/review-fixes/local-identity.xml)。真实 Ego Lite A→B→A 登录、会话和退出通过，见 [复跑浏览器报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-IDENTITY-01/review-fixes/browser.json)；TaskSpace 17 已关闭。本轮无生产 UI 改动，未重复执行原先的 390/1440 生产冒烟。
 
 使用 `debugging-and-error-recovery`、`test-driven-development` 修复，并按 `code-review-and-quality` 独立复审修复和回归测试，最终无剩余必改问题。远端 CI 与 AMD64/ARM64 Docker 需在推送后重新执行；最新结果以 [PR #91](https://github.com/dnslin/ariso-next/pull/91) 的当前提交检查为准。未合并、发布或部署。

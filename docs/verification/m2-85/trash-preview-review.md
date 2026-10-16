@@ -25,10 +25,10 @@
 
 已审查新增的 SQLite/真实 HTTP 集成测试：覆盖四版本读取、匿名及替代凭据拒绝、HEAD/no-store、删除/停用/恢复状态、条件请求之前的授权、文件打开时身份失效及流关闭。真实 HTTP 测试在进程停止后核对三张统计表为空。浏览器脚本新增真实缩略图/详情解码和匿名拒绝断言，并保留 `/i` 全版本回收拒绝与恢复原链接验证。
 
-审计者本轮执行文件读取、`git diff`、`git status` 和 `rg`，没有独立运行构建、测试或浏览器。实际读取了本轮最终运行输出： [图库与错误恢复](./trash-preview/browser/library.json)、[桌面 M2](./trash-preview/browser/m2-1440.json)、[手机 M2](./trash-preview/browser/m2-390.json)、[完整运行器](./trash-preview/browser/runner.json)。图库报告包含真实预览请求阻断后刷新解码成功；两端 M2 包含管理预览、匿名拒绝、原外链回收拒绝、恢复与重启后统计核对。完整运行器于 `2026-09-26T16:12:57.793Z` 完成（北京时间 2026-09-27），`status=passed` 且临时目录已删除。单元日志为 30 文件、461 项通过；集成日志为 62 文件、512 项通过。构建、类型与 lint 由实现者执行并报告退出码 0，审计者读取了对应日志但未重复运行。设计对照及用户人工验收分别由对应记录承接，不能由本代码审计代替。
+审计者本轮执行文件读取、`git diff`、`git status` 和 `rg`，没有独立运行构建、测试或浏览器。实际读取了本轮最终运行输出： [图库与错误恢复](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/trash-preview/browser/library.json)、[桌面 M2](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/trash-preview/browser/m2-1440.json)、[手机 M2](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/trash-preview/browser/m2-390.json)、[完整运行器](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/trash-preview/browser/runner.json)。图库报告包含真实预览请求阻断后刷新解码成功；两端 M2 包含管理预览、匿名拒绝、原外链回收拒绝、恢复与重启后统计核对。完整运行器于 `2026-09-26T16:12:57.793Z` 完成（北京时间 2026-09-27），`status=passed` 且临时目录已删除。单元日志为 30 文件、461 项通过；集成日志为 62 文件、512 项通过。构建、类型与 lint 由实现者执行并报告退出码 0，审计者读取了对应日志但未重复运行。设计对照及用户人工验收分别由对应记录承接，不能由本代码审计代替。
 
 ## 清理失败文案补审
 
 2026-09-27 再次核对 `detail.ts` 与对应集成断言：`cleanup_failed` 现在准确显示“图片清理失败，无法预览”，`deleting` 仍显示“图片正在删除”。两种状态仍不给出预览路径，未改变访问、缓存或统计规则；无新增阻断项。
 
-已读取 [文案浏览器复验](./trash-preview/browser/cleanup-label-recheck.json)，状态为 `passed`，涵盖两端、两种主题下的准确提示和无图片内容，恢复测试状态后相同缩略图仍可解码。实现者另报告先取得旧文案断言失败，再取得相关 6 项通过，并重新构建。此前 512 项集成及完整浏览器结果属于同轮文案修正之前；本次只重跑受影响检查，未将它们写成文案修正后重新完整执行。
+已读取 [文案浏览器复验](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/trash-preview/browser/cleanup-label-recheck.json)，状态为 `passed`，涵盖两端、两种主题下的准确提示和无图片内容，恢复测试状态后相同缩略图仍可解码。实现者另报告先取得旧文案断言失败，再取得相关 6 项通过，并重新构建。此前 512 项集成及完整浏览器结果属于同轮文案修正之前；本次只重跑受影响检查，未将它们写成文案修正后重新完整执行。

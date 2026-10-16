@@ -42,13 +42,13 @@
 | `EGO_TASK_SPACE=18 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/identity-53-runtime-browser pnpm run test:browser` | 通过，390/1440、静态资源、健康接口与错误监控                                      |
 | `git diff --check`                                                                                                     | 通过                                                                              |
 
-[单元 JUnit](./local-unit.xml) 与 [集成 JUnit](./local-integration.xml) 保留最终原始结果。
+[单元 JUnit](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/identity-53/local-unit.xml) 与 [集成 JUnit](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/identity-53/local-integration.xml) 保留最终原始结果。
 
 身份测试直接使用生产 standalone、真实 SQLite 和库签名 Cookie，覆盖 Cookie-only 权限、路径／方法矩阵、7 天有效／1 天续期、过期／退出重放、地址 A→B→A、限流状态及跨进程 Secret 更换。续期／过期只修改真实登录生成会话的时间字段，不手造会话。
 
-[身份浏览器报告](./browser/runner.json)及三个阶段的 [首会话](./browser/first-session.json)、[第二会话](./browser/second-session.json)、[退出隔离](./browser/logout-first.json) 记录同一 Ego Lite 的两个主机 Cookie 容器，分别使用 127.0.0.1 与 localhost；不是两个独立浏览器进程。两个会话真实登录产生且 session ID 不同，退出第一会话不影响第二会话，旧 origin 登录返回 403，HttpOnly 不可由脚本读取。没有归档 Cookie 或 token 值。TaskSpace 18 已执行 `task.finish({ keep: [] })` 成功关闭。
+[身份浏览器报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/identity-53/browser/runner.json)及三个阶段的 [首会话](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/identity-53/browser/first-session.json)、[第二会话](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/identity-53/browser/second-session.json)、[退出隔离](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/identity-53/browser/logout-first.json) 记录同一 Ego Lite 的两个主机 Cookie 容器，分别使用 127.0.0.1 与 localhost；不是两个独立浏览器进程。两个会话真实登录产生且 session ID 不同，退出第一会话不影响第二会话，旧 origin 登录返回 403，HttpOnly 不可由脚本读取。没有归档 Cookie 或 token 值。TaskSpace 18 已执行 `task.finish({ keep: [] })` 成功关闭。
 
-[生产冒烟](./runtime-browser/browser.json)和 [运行清理](./runtime-browser/runner.json) 通过，390/1440 截图已目视核对。只证明现有工程页面没有回归，不冒充登录 UI 的键盘、主题、触控、软键盘或安全区域验收。HTTPS Secure 策略通过原始 HTTP 响应头验证；Ego 使用本地 HTTP，不冒充真实 TLS 部署。
+[生产冒烟](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/identity-53/runtime-browser/browser.json)和 [运行清理](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/identity-53/runtime-browser/runner.json) 通过，390/1440 截图已目视核对。只证明现有工程页面没有回归，不冒充登录 UI 的键盘、主题、触控、软键盘或安全区域验收。HTTPS Secure 策略通过原始 HTTP 响应头验证；Ego 使用本地 HTTP，不冒充真实 TLS 部署。
 
 过程中真实失败与修复：新增认证表使 runtime 健康测试的表清单需更新，同时继续断言无所有者种子；退出两种数据库故障在旧构建均为 200，修复后返回 500 且恢复可重试；JSON null 登录在旧 hook 误报 500，修复后由库返回 400。没有跳过测试或降低断言。
 
@@ -62,9 +62,9 @@
 
 ## 远端验证
 
-提交 `1cedfbe` 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/35547748346) 和 [Docker 双架构](https://github.com/dnslin/ariso-next/actions/runs/35547748439) 全部成功。两个原生 runner 各执行 27 项 identity 测试（12 项已有实验及 15 项本次生产认证），全部通过：[AMD64 JUnit](./amd64-identity.xml)、[ARM64 JUnit](./arm64-identity.xml)。
+提交 `1cedfbe` 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/35547748346) 和 [Docker 双架构](https://github.com/dnslin/ariso-next/actions/runs/35547748439) 全部成功。两个原生 runner 各执行 27 项 identity 测试（12 项已有实验及 15 项本次生产认证），全部通过：[AMD64 JUnit](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/identity-53/amd64-identity.xml)、[ARM64 JUnit](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/identity-53/arm64-identity.xml)。
 
-两架构实际完成镜像构建、生产文件及原生驱动检查、离线图片转换、存储受限挂载、容器停止／重启、迁移故障回滚、拒绝旧版本和停止后整目录备份恢复。容器原始报告：[AMD64](./amd64-container.json)、[ARM64](./arm64-container.json)。`release-checks` 与 `publish` 均跳过，没有镜像发布或部署。
+两架构实际完成镜像构建、生产文件及原生驱动检查、离线图片转换、存储受限挂载、容器停止／重启、迁移故障回滚、拒绝旧版本和停止后整目录备份恢复。容器原始报告：[AMD64](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/identity-53/amd64-container.json)、[ARM64](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/identity-53/arm64-container.json)。`release-checks` 与 `publish` 均跳过，没有镜像发布或部署。
 
 实际使用 `gh pr checks 92`、`gh run view 35547748346`、`gh run view 35547748439`，并用以下命令分别下载 `amd64`、`arm64` 证据：
 
@@ -83,4 +83,4 @@ gh run download 35547748439 --name container-verification-<arch> --dir test-resu
 
 环境仍为 macOS arm64、Node 24.19.0、pnpm 11.19.0。单独筛选续期用例通过（1 项；其他 14 项由命令筛选排除，不是代码跳过）。`pnpm exec vitest run --project integration tests/integration/identity/auth.test.ts --sequence.shuffle --sequence.seed=53` 打乱顺序后 15 项全部通过。
 
-本次未改生产实现、schema、依赖或浏览器脚本；不重复原有 UI/浏览器验收。`pnpm run lint`、`pnpm run typecheck`、`pnpm run format:check` 和 `git diff --check` 全部通过。`pnpm run test:integration --reporter=default --reporter=junit --outputFile=test-results/issue-53-fixture-fix.xml` 全量 21 文件、156 项通过，含隔离无部署密钥构建；见 [本次 JUnit](./fixture-fix-integration.xml)。按 `code-review-and-quality` 和严格结构评审标准独立复审通过，无剩余必改项。推送后的 CI 与双架构验证继续以 PR #92 当前提交 checks 为准。
+本次未改生产实现、schema、依赖或浏览器脚本；不重复原有 UI/浏览器验收。`pnpm run lint`、`pnpm run typecheck`、`pnpm run format:check` 和 `git diff --check` 全部通过。`pnpm run test:integration --reporter=default --reporter=junit --outputFile=test-results/issue-53-fixture-fix.xml` 全量 21 文件、156 项通过，含隔离无部署密钥构建；见 [本次 JUnit](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/identity-53/fixture-fix-integration.xml)。按 `code-review-and-quality` 和严格结构评审标准独立复审通过，无剩余必改项。推送后的 CI 与双架构验证继续以 PR #92 当前提交 checks 为准。

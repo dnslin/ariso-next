@@ -48,7 +48,7 @@
 
 ## 运行修正与边界
 
-归档包括[运行器结果](review-fixes/browser/runner.json)、[完整快捷流程结果](review-fixes/browser/collection-shortcuts.json)，以及[第一次记录器失败](review-fixes/browser/first-recorder-failure.json)、[第二次刷新触发选择失败](review-fixes/browser/second-refresh-trigger-failure.json)、[第一次扩大选图检查失败](review-fixes/browser/first-expanded-picker-failure.json)。失败记录不覆盖，不将此前分段通过拼接为一次完整通过。
+归档包括[运行器结果](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261011/review-fixes/browser/runner.json)、[完整快捷流程结果](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261011/review-fixes/browser/collection-shortcuts.json)，以及[第一次记录器失败](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261011/review-fixes/browser/first-recorder-failure.json)、[第二次刷新触发选择失败](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261011/review-fixes/browser/second-refresh-trigger-failure.json)、[第一次扩大选图检查失败](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261011/review-fixes/browser/first-expanded-picker-failure.json)。失败记录不覆盖，不将此前分段通过拼接为一次完整通过。
 
 浏览器首次定向运行的请求记录器没有覆盖上传控制器初始化时绑定的 `fetch`。改用运行器既有代理后，真实提交和存储 ID 断言通过。第二次运行将工具栏显式重置列表后的图库节点变化误归到详情刷新；改为通过既有后台刷新事件验证节点连续性，未删除或放宽节点相等断言。最终定向运行通过。
 
@@ -71,11 +71,11 @@
 
 截图先检查公共外壳、标题/返回、左侧查询与右侧操作组，再检查错误文字、重试点击区、固定底栏及手机换行。390/1440、浅深色均无横向溢出，重试高度至少 44px，原图库节点保留。截图中的名称、彩色图片与数量属于隔离测试数据。
 
-| 状态     | 实际截图与结论                                                                                                          |
-| -------- | ----------------------------------------------------------------------------------------------------------------------- |
-| 桌面浅色 | [1440px](review-fixes/browser/review279-album-error-light-1440.png)：公共侧栏、工具栏和固定底栏保留；错误与重试直接可见 |
-| 桌面深色 | [1440px](review-fixes/browser/review279-album-error-dark-1440.png)：沿用原语义色，错误与内容层级分明                    |
-| 手机浅色 | [390px](review-fixes/browser/review279-album-error-light-390.png)：原搜索与操作自然换行，错误和重试可达，无横向溢出     |
-| 手机深色 | [390px](review-fixes/browser/review279-album-error-dark-390.png)：标题/返回与底栏保持一致，错误正文可读                 |
+| 状态     | 实际截图与结论                                                                                                                                                                                                                                                      |
+| -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 桌面浅色 | [1440px](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261011/review-fixes/browser/review279-album-error-light-1440.png)：公共侧栏、工具栏和固定底栏保留；错误与重试直接可见 |
+| 桌面深色 | [1440px](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261011/review-fixes/browser/review279-album-error-dark-1440.png)：沿用原语义色，错误与内容层级分明                    |
+| 手机浅色 | [390px](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261011/review-fixes/browser/review279-album-error-light-390.png)：原搜索与操作自然换行，错误和重试可达，无横向溢出     |
+| 手机深色 | [390px](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261011/review-fixes/browser/review279-album-error-dark-390.png)：标题/返回与底栏保持一致，错误正文可读                 |
 
 独立只读复审检查了三处产品修改、对应单元测试、浏览器阶段和调用链，未发现高置信阻断问题。没有改动用户预览、账号或数据。

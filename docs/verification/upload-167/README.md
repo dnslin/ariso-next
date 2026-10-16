@@ -22,7 +22,7 @@ macOS arm64；Node `24.18.1`，pnpm `11.19.0`，Next `16.3.5`，Busboy `1.6.0`�
 
 `pnpm run test:integration` 实际调用 `vitest run --project integration --project media-tools`。新增 api/public-receive 测试只归 media-tools，其余 receipt/multipart/result 归普通 integration；两组均在默认命令执行。新增 CLI/HTTP 单元测试归默认 unit。先完成生产 build，再运行集成；审计修改后更新生产包，最终集成期间不再重建或修改产品代码。
 
-实际命令与最终结果记录在 [checks.json](./checks.json)。首轮中间状态和最终复验分别保留，未将定向通过记成默认全量通过。
+实际命令与最终结果记录在 [checks.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/upload-167/checks.json)。首轮中间状态和最终复验分别保留，未将定向通过记成默认全量通过。
 
 | 检查                                                        | 实际结果                                                                                                           |
 | ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
@@ -51,7 +51,7 @@ macOS arm64；Node `24.18.1`，pnpm `11.19.0`，Next `16.3.5`，Busboy `1.6.0`�
 
 按执行约定，必需矩阵为 R2 与 SeaweedFS。两服务各 6 项通过：所有者创建/启用专用存储并 probe 清理、无 body 的 401、重复单值 400/明确错误码/零远端对象、private ready/同 job/三个真实版本/原图字节、thumbnail 发布失败保留 original+compressed、专用命名空间清空。每服务 6 个登记对象最终 HEAD absent。独立进程与数据库已关停清除。
 
-报告：[R2](./live/r2.json)、[SeaweedFS](./live/seaweedfs.json)。归档前实际扫描 access key、secret key 和夹具密码，未发现泄漏。AWS 未实测，按当前约定不要求，不计为通过。
+报告：[R2](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/upload-167/live/r2.json)、[SeaweedFS](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/upload-167/live/seaweedfs.json)。归档前实际扫描 access key、secret key 和夹具密码，未发现泄漏。AWS 未实测，按当前约定不要求，不计为通过。
 
 ## 状态与限制
 

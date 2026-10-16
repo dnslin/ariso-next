@@ -25,17 +25,17 @@
 | pnpm run format:check                         | 首轮仅两份新增README格式不符，已格式化；最终全部改动定向格式检查通过（命令覆盖已修改及新增文本文件）                                                                                                                                                                 |
 | node docs/tasks/check.mjs                     | 通过：120 tasks、298 requirements，无缺失ID或循环                                                                                                                                                                                                                    |
 
-默认完整浏览器实际结束为 **59阶段通过、20失败、2前置阻断**（exit1）；temporaryDirectoryRemoved=true，未记录清理错误（原报告未写cleanupErrors字段）。原始阶段与依赖结果见 [full-runner.json](./browser/full-runner.json)，失败归属、历史依据和后续未执行边界统一见 [浏览器记录](./browser/README.md)及[失败摘要](./browser/full-failures.json)，不重复维护每项诊断。没有通过定向结果改写默认全量失败。
+默认完整浏览器实际结束为 **59阶段通过、20失败、2前置阻断**（exit1）；temporaryDirectoryRemoved=true，未记录清理错误（原报告未写cleanupErrors字段）。原始阶段与依赖结果见 [full-runner.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/browser/full-runner.json)，失败归属、历史依据和后续未执行边界统一见 [浏览器记录](./browser/README.md)及[失败摘要](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/browser/full-failures.json)，不重复维护每项诊断。没有通过定向结果改写默认全量失败。
 
 本次引入布局/入口后的严格测试预期已修：旧branding协议登录显式returnTo=/upload；identity按实际卡片高度严格核对居中；upload-settings Tab序列包含新增品牌入口；新品牌代表从底栏取消真实Tab至保存，检查focus-visible及2px指示，再Shift+Tab返回。新增品牌场景图库和相册详情使用实际分页契约；离开预览按真实已保存偏好精确等待，不改公共helper或产品导航。定向复验分别归档。
 
-完整集成唯一失败与 [analytics-169](../../analytics-169/README.md)及其[原失败段](../../analytics-169/integration-first-failure.txt)记录同类ECONNRESET。本轮未改上传API/接收器/对应测试，不扩修；原文件定向15/15不能代替完整失败结果。
+完整集成唯一失败与 [analytics-169](../../analytics-169/README.md)及其[原失败段](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-169/integration-first-failure.txt)记录同类ECONNRESET。本轮未改上传API/接收器/对应测试，不扩修；原文件定向15/15不能代替完整失败结果。
 
 独立审查补上测试失败时的离线恢复：仅恢复本场景的9项站点字段，消费者失败清理自己的相册；成功消费者把必要原行交给真实重启阶段，重启阶段无论成败都恢复。恢复不操作Ego、不掩盖主失败。使用项目真实迁移的独立SQLite实测失败后精确恢复引用NULL对、含单引号文本和时间戳，并保留原Error。删除核对条件变异令两项行为断言失败，源码按字节还原，证明对应测试能捕获反向条件。
 
-品牌最终默认组合（不带only）见[场景](./browser/default-final.json)、[真实重启](./browser/default-final-restart.json)和[运行器](./browser/default-final-runner.json)：四阶段18项检查/118项布局及重启1项检查全部passed；temporaryDirectoryRemoved=true，重启阶段原站点恢复。末尾失效测试前实际会话静默11046ms、无在途请求；产品限流未改变，所有既有断言保留。前三次组合的弹窗尺寸先后与第四次真实429失败均保留，不倒改历史结果。
+品牌最终默认组合（不带only）见[场景](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/browser/default-final.json)、[真实重启](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/browser/default-final-restart.json)和[运行器](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/browser/default-final-runner.json)：四阶段18项检查/118项布局及重启1项检查全部passed；temporaryDirectoryRemoved=true，重启阶段原站点恢复。末尾失效测试前实际会话静默11046ms、无在途请求；产品限流未改变，所有既有断言保留。前三次组合的弹窗尺寸先后与第四次真实429失败均保留，不倒改历史结果。
 
-日志见[checks目录](./checks/)。测试日志可能含预期失败/故障注入，不以error字符串代替进程结果。实际密码、setup码和人工验收凭证不归档。
+日志见[checks目录](https://github.com/dnslin/ariso-next/tree/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/checks)。测试日志可能含预期失败/故障注入，不以error字符串代替进程结果。实际密码、setup码和人工验收凭证不归档。
 
 ## 浏览器与设计
 

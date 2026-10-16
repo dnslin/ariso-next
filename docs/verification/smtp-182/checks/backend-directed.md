@@ -17,7 +17,7 @@
 | `pnpm exec eslint src/server/identity/account.ts src/app/api/settings/smtp --max-warnings=0`                                                                                                                                                                                                                    | 输入摘要变更后通过                                                                                     |
 | `git diff --check`                                                                                                                                                                                                                                                                                              | 通过                                                                                                   |
 
-受影响文件已经实际运行 `pnpm exec prettier --write`。输入摘要的回归单元检查原始输出见 [backend-input-unit.txt](./backend-input-unit.txt)。
+受影响文件已经实际运行 `pnpm exec prettier --write`。输入摘要的回归单元检查原始输出见 [backend-input-unit.txt](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/smtp-182/checks/backend-input-unit.txt)。
 
 15 个生产集成场景使用真实 SQLite 迁移、Better Auth Cookie 与所有者鉴权、生产 Route Handler 和 Nodemailer。SMTP 协议通过隔离 smtp-server 与临时证书验证；仅测试里注入 CA 和缩短故障超时，生产保持证书验证、10 秒连接、10 秒问候和 30 秒 socket 超时。
 

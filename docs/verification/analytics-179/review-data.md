@@ -22,7 +22,7 @@
 
 已事先与父 agent 协调数据文件停止修改，仅对 `src/server/media/failures.ts` 做一次受控变异：把 reprocess 条件 `processingStatus = ready` 改为 `pending`。保存原始字节，以 `finally` 原样恢复并断言一致；没有产品修改遗留。
 
-实际命令：`pnpm exec vitest run --project integration tests/integration/library/query.test.ts -t "locates current initial and latest reprocess failures"`，环境 PATH 前置 Node 24.18.1，pnpm 11.19.0。结果：退出 1，新增测试在 query.test.ts:134 明确失败，实际返回 `[pending]`，期望 `[reprocess-a, reprocess-b]`。证明该行为断言能捕获新增 ready 条件回归。其余 33 项是 `-t` 定向未选中，不是产品 skip。完整输出见 [变异日志](./review-data-mutation.txt)。恢复后未机械重跑实现者已通过的 suite；本实验不声称完整 suite 通过。
+实际命令：`pnpm exec vitest run --project integration tests/integration/library/query.test.ts -t "locates current initial and latest reprocess failures"`，环境 PATH 前置 Node 24.18.1，pnpm 11.19.0。结果：退出 1，新增测试在 query.test.ts:134 明确失败，实际返回 `[pending]`，期望 `[reprocess-a, reprocess-b]`。证明该行为断言能捕获新增 ready 条件回归。其余 33 项是 `-t` 定向未选中，不是产品 skip。完整输出见 [变异日志](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/review-data-mutation.txt)。恢复后未机械重跑实现者已通过的 suite；本实验不声称完整 suite 通过。
 
 ## 未完成项
 

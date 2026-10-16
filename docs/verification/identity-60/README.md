@@ -35,7 +35,7 @@ macOS arm64，Node 24.19.0、pnpm 11.19.0。命令的 PATH 前置 `/Users/dnslin
 
 无 schema 变化，`db:generate` 不适用。测试出现的真实失败均修复后重跑：旧首页“未开放”断言随本次真实入口开放更新，并继续断言未交付入口不可见；新增 ListBox 泛型和 HTTP 测试请求头类型；RSC 请求先规范化 `_rsc`，测试按实际协议检查不能泄露邮箱；浏览器扩展遮挡通过正常 UI/键盘操作处理，不隐藏扩展伪造截图。
 
-[单元 JUnit](./local-unit.xml)、[集成 JUnit](./local-integration.xml)、[浏览器运行与清理报告](./browser/runner.json)及两端 [1440](./browser/identity-1440-restart.json) / [390](./browser/identity-390-restart.json)会话检查均保留。截图覆盖 360/390/430/768/1440 浅深色且无横向溢出，手机可见触控目标均至少 44px；代表截图见本目录 browser。短视口滚动、Tab/Enter、时区别名/关键词/Esc、错误焦点、无推荐、真实提交丢响应核对均有断言。丢响应与无推荐为明确受控浏览器故障注入；初始化/登录/限流/退出仍调用真实服务，续期和过期使用一次性真实数据库。
+[单元 JUnit](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/identity-60/local-unit.xml)、[集成 JUnit](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/identity-60/local-integration.xml)、[浏览器运行与清理报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/identity-60/browser/runner.json)及两端 [1440](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/identity-60/browser/identity-1440-restart.json) / [390](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/identity-60/browser/identity-390-restart.json)会话检查均保留。截图覆盖 360/390/430/768/1440 浅深色且无横向溢出，手机可见触控目标均至少 44px；代表截图见本目录 browser。短视口滚动、Tab/Enter、时区别名/关键词/Esc、错误焦点、无推荐、真实提交丢响应核对均有断言。丢响应与无推荐为明确受控浏览器故障注入；初始化/登录/限流/退出仍调用真实服务，续期和过期使用一次性真实数据库。
 
 ## 审计
 
@@ -47,8 +47,8 @@ macOS arm64，Node 24.19.0、pnpm 11.19.0。命令的 PATH 前置 `/Users/dnslin
 
 2026-09-22 所有者取消三项设备实测要求，执行[前端共用验收](../../tasks/execution.md#前端共用验收)，不再作为本 PR 的未完成项。此前未实测的事实保留，不标记为测试通过。已同步全部 GitHub Issue，实际修改含相关条款的 #57、#60、#76、#77、#79、#81。跨浏览器矩阵仍按 T-QA-02 归属，本次记录实际 Ego 环境；#57/#59 的所有者验收决定保留。
 
-代码提交 `8b25712333522dd0a489c5e39aa69ce415fe3af5` 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/35681942917) 和 [Docker build](https://github.com/dnslin/ariso-next/actions/runs/35681943144) 均已通过。CI 执行锁文件安装、UI 实验类型/构建、lint、格式、类型、单元、生产构建、外壳构建及完整集成测试。Docker 工作流在 AMD64、ARM64 原生 runner 上分别通过媒体和身份协议测试、镜像构建、离线运行、真实受限挂载、图片/字体与容器生命周期/迁移/备份恢复验证；`release-checks` 和 `publish` 均跳过，没有发布镜像。[远端结果快照](./remote-checks.json)记录提交、运行链接和各 job 结论。
+代码提交 `8b25712333522dd0a489c5e39aa69ce415fe3af5` 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/35681942917) 和 [Docker build](https://github.com/dnslin/ariso-next/actions/runs/35681943144) 均已通过。CI 执行锁文件安装、UI 实验类型/构建、lint、格式、类型、单元、生产构建、外壳构建及完整集成测试。Docker 工作流在 AMD64、ARM64 原生 runner 上分别通过媒体和身份协议测试、镜像构建、离线运行、真实受限挂载、图片/字体与容器生命周期/迁移/备份恢复验证；`release-checks` 和 `publish` 均跳过，没有发布镜像。[远端结果快照](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/identity-60/remote-checks.json)记录提交、运行链接和各 job 结论。
 
-另已执行 `node docs/tasks/check.mjs`（120 个任务、298 个需求，无缺失或循环）、`node docs/tasks/check.mjs --self-test`（5 个拒绝用例通过）、`git diff --check`，以及相关文档 79 个相对链接核对，均通过。最后一次代码修改后重新执行 build、lint、typecheck、format 和身份认证集成测试（[16 项通过记录](./auth-final.txt)）；远端再次执行完整检查通过。
+另已执行 `node docs/tasks/check.mjs`（120 个任务、298 个需求，无缺失或循环）、`node docs/tasks/check.mjs --self-test`（5 个拒绝用例通过）、`git diff --check`，以及相关文档 79 个相对链接核对，均通过。最后一次代码修改后重新执行 build、lint、typecheck、format 和身份认证集成测试（[16 项通过记录](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/identity-60/auth-final.txt)）；远端再次执行完整检查通过。
 
 [PR #100](https://github.com/dnslin/ariso-next/pull/100) 的设备验收阻塞已取消；两个独立角度代码审计及修复复核已通过。最终提交的检查状态以 PR 为准。未合并、关闭 Issue、发布镜像、部署或清理分支/worktree。

@@ -4,7 +4,7 @@
 
 ## 源码结论
 
-源码与最终功能证据复审通过，没有未解决的 Critical/Required 项。配置与解绑终态焦点、当前按钮恢复和复制通知缺陷已修正。最新 [OAuth 生命周期](oauth-lifecycle.json) 对应 `issue181-oauth-final-focus`，于 `2026-10-07T12:11:00.145Z` 五阶段全部 passed，成功解绑最终焦点断言已实际执行。[真实 GitHub](real-oauth.json) 于 `2026-10-07T12:16:04.241399+00:00` 完成，27 条记录均 passed，包括真实外部授权、主动绑定、已绑定登录、停用与密钥替换重启和最终解绑。以下失败记录是保留的历史 RED；这些 OAuth 结果不改变默认 full 的范围外失败。
+源码与最终功能证据复审通过，没有未解决的 Critical/Required 项。配置与解绑终态焦点、当前按钮恢复和复制通知缺陷已修正。最新 [OAuth 生命周期](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/oauth-181/browser-recovery/oauth-lifecycle.json) 对应 `issue181-oauth-final-focus`，于 `2026-10-07T12:11:00.145Z` 五阶段全部 passed，成功解绑最终焦点断言已实际执行。[真实 GitHub](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/oauth-181/browser-recovery/real-oauth.json) 于 `2026-10-07T12:16:04.241399+00:00` 完成，27 条记录均 passed，包括真实外部授权、主动绑定、已绑定登录、停用与密钥替换重启和最终解绑。以下失败记录是保留的历史 RED；这些 OAuth 结果不改变默认 full 的范围外失败。
 
 - HTTP 500 场景继续使用真实 SQLite UPDATE 触发器。测试先等 HTTP 500，再等真实 `oauth-page[data-state="verified"]`，保留 Client ID 与 Secret 草稿断言，要求 Save 不存在，通过实际 GET 核对 saved 为 disabled / browser-oauth-replace / noSecret，effective 仍等于本轮初始进程快照。预期值来自同一场景前面真实保存、替换、清除步骤；没有伪造成功响应或放宽错误断言。
 - 真实调用链为 `submit` → 错误反馈 → `readCurrentSettings` checking/verified → finally 清除 inFlight → modal 允许关闭。新增等待与快照断言在采集几何、关闭、焦点恢复和下一次重新打开之前执行，修复了先前只等错误文字就请求 Escape 的契约缺口。触发器仍在 finally 删除，产品 saving/checking 禁止关闭没有改变。

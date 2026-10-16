@@ -12,7 +12,7 @@
 
 旧版源码与服务未覆盖。第二版源码在 `design-plans/issue196-brand-review-v2`，复用实际 `AdminShell`、`PublicShell`、`IdentityField` 与主题/Toast Provider。业务使用 HeroUI Card、Chip、Button、Skeleton、Form、AlertDialog；布局使用 Tailwind。演示控制栏用原有details/select，只用于切换模拟场景，不进入产品。
 
-实际读取 `using-agent-skills`、`frontend-ui-engineering`、`vercel-react-best-practices` 和Figma技能；独立设计评审用 `improve-ui` 做只读问题与修订计划，由实施者执行，不混淆其只读角色。计划见 [revision-plan.md](../../../../design-plans/issue196-brand-review/revision-plan.md)。独立代码评审使用 `code-review-and-quality`。
+实际读取 `using-agent-skills`、`frontend-ui-engineering`、`vercel-react-best-practices` 和Figma技能；独立设计评审用 `improve-ui` 做只读问题与修订计划，由实施者执行，不混淆其只读角色。计划见 [revision-plan.md](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/design-plans/issue196-brand-review/revision-plan.md)。独立代码评审使用 `code-review-and-quality`。
 
 已检查项目Lucide实际导出，没有Github图标。根据 handoff 允许的两种图标来源，读取Gravity官方文档及实际LogoGithub类型后，仅在第二版原型包增加 `@gravity-ui/icons@2.22.0`，采用深导入；根产品依赖未变。HeroUI Card/Chip组合及Skeleton实现均核对v3官方资料与安装类型，未引入另一套UI库。
 
@@ -22,14 +22,14 @@
 
 独立评审按整页/公共区域在先、业务/控件在后的顺序实际对照，详见 [design-review.md](./design-review.md)。主要截图：
 
-| 状态             | 桌面                                  | 手机/补充                                                                        |
-| ---------------- | ------------------------------------- | -------------------------------------------------------------------------------- |
-| 品牌设置浅色     | [1440×1080](./settings-desktop.png)   | [390×844](./settings-mobile.png)、[360×800](./settings-360.png)                  |
-| 登录浅色         | [1920×960](./login-figma-desktop.png) | [390×844](./login-mobile.png)                                                    |
-| 深色             | —                                     | [设置](./settings-dark-mobile.png)、[登录](./login-dark-mobile.png)，390×844     |
-| 素材缺失         | —                                     | [登录390×844](./login-missing-mobile.png)                                        |
-| 短视口           | —                                     | [预览390×420](./preview-short.png)、[上传失败390×420](./upload-failed-short.png) |
-| 删除核对仍有引用 | —                                     | [390×844](./delete-retained-mobile.png)                                          |
+| 状态             | 桌面                                                                                                                                                                    | 手机/补充                                                                                                                                                                                                                                                                                                                                            |
+| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 品牌设置浅色     | [1440×1080](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/revision-v2/settings-desktop.png)   | [390×844](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/revision-v2/settings-mobile.png)、[360×800](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/revision-v2/settings-360.png)                  |
+| 登录浅色         | [1920×960](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/revision-v2/login-figma-desktop.png) | [390×844](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/revision-v2/login-mobile.png)                                                                                                                                                                                      |
+| 深色             | —                                                                                                                                                                       | [设置](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/revision-v2/settings-dark-mobile.png)、[登录](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/revision-v2/login-dark-mobile.png)，390×844     |
+| 素材缺失         | —                                                                                                                                                                       | [登录390×844](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/revision-v2/login-missing-mobile.png)                                                                                                                                                                          |
+| 短视口           | —                                                                                                                                                                       | [预览390×420](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/revision-v2/preview-short.png)、[上传失败390×420](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/revision-v2/upload-failed-short.png) |
+| 删除核对仍有引用 | —                                                                                                                                                                       | [390×844](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/revision-v2/delete-retained-mobile.png)                                                                                                                                                                            |
 
 截图临时隐藏原型演示控制栏，未隐藏业务内容或错误；截图完成恢复控制栏。1299×865额外截图保留，不冒充Figma基准。
 
@@ -37,15 +37,15 @@
 
 环境：macOS、Node24.18.1、pnpm11.19.0、现有Ego Lite。独立原型不读取产品数据库、不创建账号、不调用产品API，文件选择只做浏览器Blob预览。
 
-| 命令                                                                                         | 结果与证据                                                                                     |
-| -------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| `pnpm --dir design-plans/issue196-brand-review-v2 add --save-exact @gravity-ui/icons@2.22.0` | 完成；只增加原型importer与图标依赖                                                             |
-| `pnpm install --frozen-lockfile`                                                             | 通过                                                                                           |
-| `pnpm --dir design-plans/issue196-brand-review-v2 install --frozen-lockfile`                 | 通过                                                                                           |
-| `pnpm exec next build design-plans/issue196-brand-review-v2 --webpack`                       | 通过；首轮后仅因手机分隔点和加载状态文字修正重跑受影响原型构建，[最终输出](./checks/build.txt) |
-| `pnpm run lint`                                                                              | 通过，[输出](./checks/lint.txt)                                                                |
-| `pnpm run typecheck`                                                                         | 通过，[输出](./checks/typecheck.txt)；独立原型自身类型检查由其Next构建执行                     |
-| `pnpm run format:check`                                                                      | 通过，[输出](./checks/format.txt)                                                              |
+| 命令                                                                                         | 结果与证据                                                                                                                                                                                                             |
+| -------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm --dir design-plans/issue196-brand-review-v2 add --save-exact @gravity-ui/icons@2.22.0` | 完成；只增加原型importer与图标依赖                                                                                                                                                                                     |
+| `pnpm install --frozen-lockfile`                                                             | 通过                                                                                                                                                                                                                   |
+| `pnpm --dir design-plans/issue196-brand-review-v2 install --frozen-lockfile`                 | 通过                                                                                                                                                                                                                   |
+| `pnpm exec next build design-plans/issue196-brand-review-v2 --webpack`                       | 通过；首轮后仅因手机分隔点和加载状态文字修正重跑受影响原型构建，[最终输出](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/revision-v2/checks/build.txt) |
+| `pnpm run lint`                                                                              | 通过，[输出](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/revision-v2/checks/lint.txt)                                                                |
+| `pnpm run typecheck`                                                                         | 通过，[输出](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/revision-v2/checks/typecheck.txt)；独立原型自身类型检查由其Next构建执行                     |
+| `pnpm run format:check`                                                                      | 通过，[输出](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/revision-v2/checks/format.txt)                                                              |
 
 首次第二版构建存在原型旧CSS构建缓存，先确认实际样式来源，再将本任务原型生成的`.next`移到临时目录后重建；未修改公共CSS，不以截图隐藏控制栏掩盖样式缓存。最终浏览器访问最终构建。
 

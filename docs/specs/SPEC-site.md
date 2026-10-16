@@ -242,6 +242,6 @@ const settings = requireSiteSettings(connection.db);
 
 ## 13. 原型补充进度（2026-09-19）
 
-两端各 37 个状态和 6 个阅读入口已补，原基本设置及保存弹窗原位更新。[站点专项记录](../archive/preparation-2026-09/design/site-flow-2026-09-19.md)列明全部节点、保存边界、品牌格式／5 MiB、地址／时区影响、上传限制和主题；[结构检查](../archive/preparation-2026-09/design/verification/site-flow-2026-09-19.json)覆盖两端共 90 个画板／入口。
+两端各 37 个状态和 6 个阅读入口已补，原基本设置及保存弹窗原位更新。[站点专项记录](../archive/preparation-2026-09/design/site-flow-2026-09-19.md)列明全部节点、保存边界、品牌格式／5 MiB、地址／时区影响、上传限制和主题；[结构检查](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/archive/preparation-2026-09/design/verification/site-flow-2026-09-19.json)覆盖两端共 90 个画板／入口。
 
 DES-06-SITE 仍待查看与交互验收。品牌跨页面联动、配置连续性、长地址完整阅读及主题已有代表设计；主题持久化、全部深色、更多尺寸和真实联动仍须验证；上传容量工程上界按 upload 前置验证。真实文件解析、事务、中断恢复、浏览器、OAuth 和 CORS 不用静态原型代替。规格契约保持已评审内容，本轮未实施应用代码。

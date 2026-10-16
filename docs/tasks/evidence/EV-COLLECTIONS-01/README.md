@@ -22,7 +22,7 @@ macOS arm64、Linux AMD64 和 ARM64 实验三项验收通过：Unicode 规则符
 
 ## 验收证据
 
-完整输入、显示名称、规范键、数据库记录和冲突结果见 [macOS 原始报告](./macos.json)、[Linux AMD64](./amd64.json)、[Linux ARM64](./arm64.json)。
+完整输入、显示名称、规范键、数据库记录和冲突结果见 [macOS 原始报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-COLLECTIONS-01/macos.json)、[Linux AMD64](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-COLLECTIONS-01/amd64.json)、[Linux ARM64](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-COLLECTIONS-01/arm64.json)。
 
 | 场景             | 实际断言                                                                                                                        |
 | ---------------- | ------------------------------------------------------------------------------------------------------------------------------- |
@@ -79,7 +79,7 @@ gh run download 35693081487 --repo dnslin/ariso-next --name collections-verifica
 
 ## 未完成与范围外问题
 
-`pnpm run test:browser` 使用现有 Ego Lite / Chrome 152、TaskSpace 4，退出码 1。首页、资源、健康接口、错误恢复和外壳阶段已完成；桌面 setup 在 `e2e/identity.mjs:204` 失败：聚焦后字段组 outline 宽度期望 `0px`、实际 `2px`。其后的身份流程没有执行。见 [运行器报告](./browser-runner.json) 和 [初始化失败报告](./browser-identity-failure.json)。没有把该项标为通过，也未改身份页面、CSS 或断言。失败 TaskSpace 按 Ego 规则保留；自建服务与临时目录已清理。
+`pnpm run test:browser` 使用现有 Ego Lite / Chrome 152、TaskSpace 4，退出码 1。首页、资源、健康接口、错误恢复和外壳阶段已完成；桌面 setup 在 `e2e/identity.mjs:204` 失败：聚焦后字段组 outline 宽度期望 `0px`、实际 `2px`。其后的身份流程没有执行。见 [运行器报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-COLLECTIONS-01/browser-runner.json) 和 [初始化失败报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-COLLECTIONS-01/browser-identity-failure.json)。没有把该项标为通过，也未改身份页面、CSS 或断言。失败 TaskSpace 按 Ego 规则保留；自建服务与临时目录已清理。
 
 该检查及对应生产界面与分支基线相同，本次只新增实验和开发依赖。此范围外问题保留给所属身份/外壳任务；按用户明确指示，不再作为本 PR 转为正式待评审的阻塞项。生产 collections、上传关系、管理界面、跨浏览器矩阵仍不属于本前置实验。
 

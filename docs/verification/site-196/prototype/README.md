@@ -53,7 +53,7 @@ macOS 26.6.2 / arm64；Node 24.18.1、pnpm 11.19.0。命令使用 `PATH=/Users/d
 | `pnpm run typecheck`                                                | 通过，Next路由类型、应用与runtime检查均执行                                                                     |
 | `node docs/tasks/check.mjs`                                         | 通过，120任务、298需求；任务关联未变化                                                                          |
 
-`pnpm run format:check` 全仓仅报告设计评审文档在并行定稿后格式不符；定稿交回后，对该文件执行 `pnpm exec prettier ... --write` 及 `--check` 通过，其余输入未变化。最终证据补写后再定向核对格式。原始命令输出见[构建](../checks/prototype-build.txt)、[静态检查](../checks/lint.txt)、[类型检查](../checks/typecheck.txt)。
+`pnpm run format:check` 全仓仅报告设计评审文档在并行定稿后格式不符；定稿交回后，对该文件执行 `pnpm exec prettier ... --write` 及 `--check` 通过，其余输入未变化。最终证据补写后再定向核对格式。原始命令输出见[构建](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/checks/prototype-build.txt)、[静态检查](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/checks/lint.txt)、[类型检查](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/checks/typecheck.txt)。
 
 Ego Lite Space5/p1 实际执行下列原型操作。每条都是内存演示，不是 HTTP/DB 成功证据。
 
@@ -65,14 +65,14 @@ Ego Lite Space5/p1 实际执行下列原型操作。每条都是内存演示，�
 
 截图均来自真实页面；为对照业务区，仅在拍照时隐藏原型演示面板，之后恢复。业务区尺寸、主题及差异处理见独立设计报告。
 
-| 范围                    | 桌面 / 手机截图                                                        |
-| ----------------------- | ---------------------------------------------------------------------- |
-| 品牌主页面，Light       | [1440×1080](./settings-desktop.png) / [390×844](./settings-mobile.png) |
-| 登录品牌提案，Light     | [1920×960](./login-desktop.png) / [390×844](./login-mobile.png)        |
-| 登录素材缺失，Light     | [390×844](./login-missing-mobile.png)                                  |
-| 真实文件失败保留，Light | [390×844](./upload-failed-mobile.png)                                  |
-| 上传结果待核对，Light   | [390×844](./upload-unknown-mobile.png)                                 |
-| 移除核对失败，Light     | [390×844](./delete-check-error-mobile.png)                             |
+| 范围                    | 桌面 / 手机截图                                                                                                                                                                                                                                                                                                                        |
+| ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 品牌主页面，Light       | [1440×1080](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/prototype/settings-desktop.png) / [390×844](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/prototype/settings-mobile.png) |
+| 登录品牌提案，Light     | [1920×960](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/prototype/login-desktop.png) / [390×844](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/prototype/login-mobile.png)        |
+| 登录素材缺失，Light     | [390×844](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/prototype/login-missing-mobile.png)                                                                                                                                                                  |
+| 真实文件失败保留，Light | [390×844](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/prototype/upload-failed-mobile.png)                                                                                                                                                                  |
+| 上传结果待核对，Light   | [390×844](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/prototype/upload-unknown-mobile.png)                                                                                                                                                                 |
+| 移除核对失败，Light     | [390×844](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/prototype/delete-check-error-mobile.png)                                                                                                                                                             |
 
 前七张在发现旧面板CSS前拍摄，隐藏面板后的业务区域样式未变；删除核对失败图来自干净构建。拍照不替代操作验证。浏览器已通过 `task.handOff()` 交给用户审批；之后未再次操作，也未声称完成最终产品验收。恢复浏览器工作需要用户明确批准继续或要求恢复。
 

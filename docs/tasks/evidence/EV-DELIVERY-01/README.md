@@ -56,7 +56,7 @@ git diff --check
 
 验证过程：首次接入时 headers 文件尚未完成，Next 构建/HTTP 测试失败；依赖文件完成后原断言通过。lint 曾因匿名默认导出配置警告失败，改为命名配置后通过。生产构建仍保留既有 better-sqlite3 Debug 二进制追踪诊断；不隐藏日志，以退出码和实际 Release SQLite 回归为准。
 
-本地格式、lint、类型检查、267 项单元测试、生产构建及 shell 验证应用构建通过。全套集成首次通过 213 项；随后新增 3 组场景，最终 delivery 定向复跑 12 项通过，见 [JUnit](./local-delivery.xml)。真实浏览器完成中文 PNG/SVG 附件下载，下载名及落盘字节一致，HEAD/304 无正文，见 [浏览器报告](./browser.json)。环境见 [environment.json](./environment.json)。
+本地格式、lint、类型检查、267 项单元测试、生产构建及 shell 验证应用构建通过。全套集成首次通过 213 项；随后新增 3 组场景，最终 delivery 定向复跑 12 项通过，见 [JUnit](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-DELIVERY-01/local-delivery.xml)。真实浏览器完成中文 PNG/SVG 附件下载，下载名及落盘字节一致，HEAD/304 无正文，见 [浏览器报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-DELIVERY-01/browser.json)。环境见 [environment.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-DELIVERY-01/environment.json)。
 
 新增 HTTP 矩阵初次发现测试夹具使用非 IP 字符串导致认证库仍按同一个来源限流；改为合法的独立实验 IP，保留真实限流。另一项测试误要求库必须给 ASCII filename 加引号，现使用公开解析器断言相同文件名；不要求 HTTP 可选的引号形式。修正后原业务断言通过。
 
@@ -66,7 +66,7 @@ git diff --check
 
 ## 远端验证
 
-PR 将触发 CI 与 Docker build。images 工作流在原生 AMD64/ARM64 runner 上运行同一生产模式 Next HTTP 实验，保存 delivery JUnit 和服务日志；同时保留现有 Docker 构建、镜像内容、图片转换、存储挂载与生命周期检查。只运行验证事件，发布仍限定 release，不发布镜像或部署。实现提交 [`1e48918`](https://github.com/dnslin/ariso-next/commit/1e489181466b0c263a81c920849ec3dc3e0f53c8) 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/35693366039) 与 [Docker 双架构](https://github.com/dnslin/ariso-next/actions/runs/35693366034) 全部 success。CI 为 267 项单元、216 项集成通过；AMD64/ARM64 各 12 项 delivery 实验通过，见 [AMD64 JUnit](./amd64.xml)、[ARM64 JUnit](./arm64.xml)。原生 runner 使用 Node 24.20.0，实际 Docker 使用 Node 24.21.0。两架构镜像、图片转换、受限挂载存储与容器生命周期全部通过；容器原始报告：[AMD64](./container-amd64.json)、[ARM64](./container-arm64.json)。release-checks / publish 按非 release 事件跳过，没有发布镜像或部署。
+PR 将触发 CI 与 Docker build。images 工作流在原生 AMD64/ARM64 runner 上运行同一生产模式 Next HTTP 实验，保存 delivery JUnit 和服务日志；同时保留现有 Docker 构建、镜像内容、图片转换、存储挂载与生命周期检查。只运行验证事件，发布仍限定 release，不发布镜像或部署。实现提交 [`1e48918`](https://github.com/dnslin/ariso-next/commit/1e489181466b0c263a81c920849ec3dc3e0f53c8) 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/35693366039) 与 [Docker 双架构](https://github.com/dnslin/ariso-next/actions/runs/35693366034) 全部 success。CI 为 267 项单元、216 项集成通过；AMD64/ARM64 各 12 项 delivery 实验通过，见 [AMD64 JUnit](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-DELIVERY-01/amd64.xml)、[ARM64 JUnit](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-DELIVERY-01/arm64.xml)。原生 runner 使用 Node 24.20.0，实际 Docker 使用 Node 24.21.0。两架构镜像、图片转换、受限挂载存储与容器生命周期全部通过；容器原始报告：[AMD64](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-DELIVERY-01/container-amd64.json)、[ARM64](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-DELIVERY-01/container-arm64.json)。release-checks / publish 按非 release 事件跳过，没有发布镜像或部署。
 
 ```sh
 gh pr checks 103 --repo dnslin/ariso-next

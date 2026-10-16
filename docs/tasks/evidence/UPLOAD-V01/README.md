@@ -40,7 +40,7 @@
 | `node docs/tasks/check.mjs`、`node docs/tasks/check.mjs --self-test`                    | 120 任务、298 需求无环；5 个校验器拒绝用例通过                                                    |
 | `git diff --check`                                                                      | 通过；本轮修改文档的 275 个相对文件链接均存在                                                     |
 
-本轮命令结果亦见[验证摘要](./decision-validation.json)。`gh pr view 202 --json state,isDraft,statusCheckRollup` 核对远端检查列表为空；没有远端检查不记作 CI 通过。适用本地检查及审计完成后转正式待评审，合并与 Issue 关闭仍由所有者决定。
+本轮命令结果亦见[验证摘要](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/UPLOAD-V01/decision-validation.json)。`gh pr view 202 --json state,isDraft,statusCheckRollup` 核对远端检查列表为空；没有远端检查不记作 CI 通过。适用本地检查及审计完成后转正式待评审，合并与 Issue 关闭仍由所有者决定。
 
 独立 agent 使用 `code-review-and-quality` 审计最终四份规格、任务卡及证据：无必须修正项。确认保留单 PUT、扫描保护有效引用和活动写入、#164 承接生产实现、无倒置依赖、配置删除后的限制明确。前轮实验代码独立审计见历史记录。本轮功能结论为方案与开发交接合格；生产扫描器未实现、未测试，不能以本 PR 合并代替 #164 验收。
 
@@ -112,7 +112,7 @@ node tests/experiments/upload-late-put/run.ts \
 
 - runner 与 transport 的新测试先因模块不存在失败，随后实现后通过。
 - `pnpm exec vitest run --project integration tests/integration/storage/late-put-runner.test.ts tests/integration/storage/late-put-recovery.test.ts tests/integration/storage/late-put-suite.test.ts tests/integration/storage/late-put-transport.test.ts`：4 文件、12 测试通过（审计修复后复跑）。覆盖限速跨期、重复 PUT、取消、早拒绝、连接重置、超时、背压、重启后的失败/重试及禁止引用释放。
-- 实际运行无配置实验：AWS、R2、SeaweedFS 均为 incomplete，未进行远端操作，未产生远端遗留对象。原始报告见 [AWS](./environment/run-vn8jp9/aws/report.json)、[R2](./environment/run-vn8jp9/r2/report.json)、[SeaweedFS](./environment/run-vn8jp9/seaweedfs/report.json)。
+- 实际运行无配置实验：AWS、R2、SeaweedFS 均为 incomplete，未进行远端操作，未产生远端遗留对象。原始报告见 [AWS](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/UPLOAD-V01/environment/run-vn8jp9/aws/report.json)、[R2](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/UPLOAD-V01/environment/run-vn8jp9/r2/report.json)、[SeaweedFS](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/UPLOAD-V01/environment/run-vn8jp9/seaweedfs/report.json)。
 - `node docs/tasks/check.mjs`：120 任务、298 需求通过；`--self-test`：5 个拒绝用例通过。
 
 | 命令                                                                                            | 结果                                                                                                                                                                       |
@@ -151,8 +151,8 @@ node tests/experiments/upload-late-put/run.ts \
 
 Node 24.18.1 下实际运行本机忽略路径中的 `node .data/upload-v01-preflight.mjs`，依次调用已有 SDK 的 HeadBucket、GetBucketCors；SeaweedFS 另调用 GetBucketVersioning 和 GetObjectLockConfiguration。此脚本仅做只读预检，未发送 PUT/Copy/Delete，凭据未纳入证据。
 
-- [SeaweedFS 原始结果](./preflight/seaweedfs.json)：`images` 桶 HEAD 200；版本配置未返回启用/暂停状态；对象锁配置明确不存在；CORS 返回 NoSuchCORSConfiguration。
-- [R2 原始结果](./preflight/r2.json)：用户提供的 `images` 桶 HEAD 403，CORS AccessDenied 403。此前 EV-STORAGE-01 桶名为 `image`，不能自动改桶或沿用旧桶声明。
+- [SeaweedFS 原始结果](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/UPLOAD-V01/preflight/seaweedfs.json)：`images` 桶 HEAD 200；版本配置未返回启用/暂停状态；对象锁配置明确不存在；CORS 返回 NoSuchCORSConfiguration。
+- [R2 原始结果](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/UPLOAD-V01/preflight/r2.json)：用户提供的 `images` 桶 HEAD 403，CORS AccessDenied 403。此前 EV-STORAGE-01 桶名为 `image`，不能自动改桶或沿用旧桶声明。
 
 因此 PR #202 继续保留草稿。尚缺两服务真实写入与浏览器证据、在途进程中断/响应丢失实验及有限最终收尾协议；这些阻塞独立于 AWS。原无配置报告和此前验证记录保留为历史，不改写结果。
 
@@ -162,13 +162,13 @@ Node 24.18.1 下实际运行本机忽略路径中的 `node .data/upload-v01-pref
 
 前文 NoSuchCORSConfiguration 只说明缺少桶级规则，不能据此断言 SeaweedFS 缺少有效 CORS。[官方文档](https://github.com/seaweedfs/seaweedfs/wiki/S3-CORS)说明没有桶级规则时可使用全局设置。此前将“无桶级规则”写成 CORS 阻塞的判断过强，现予更正。
 
-实际向测试对象路径发 OPTIONS，Origin 为 `http://127.0.0.1:47070`，请求方法 PUT、请求头 content-type。响应 200，允许该 Origin、PUT 和 content-type。见[原始响应](./preflight/seaweedfs-cors-options.json)。未修改服务器或桶配置；此证据只证明预检允许，不能替代真实浏览器 PUT 及可读响应验证，也不能确定响应头由全局 SeaweedFS 配置还是前置代理生成。
+实际向测试对象路径发 OPTIONS，Origin 为 `http://127.0.0.1:47070`，请求方法 PUT、请求头 content-type。响应 200，允许该 Origin、PUT 和 content-type。见[原始响应](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/UPLOAD-V01/preflight/seaweedfs-cors-options.json)。未修改服务器或桶配置；此证据只证明预检允许，不能替代真实浏览器 PUT 及可读响应验证，也不能确定响应头由全局 SeaweedFS 配置还是前置代理生成。
 
 ## 桶名纠正与 CORS 复核
 
 所有者明确 R2 桶名为 `image` 后，只修改本机忽略配置中的 R2 桶名，重新执行 `node .data/upload-v01-preflight.mjs`。R2 与 SeaweedFS 均 HeadBucket 200；R2 GetBucketCors 仍 AccessDenied 403，只表示当前凭据不能读取此管理配置，不据此判断浏览器一定失败。
 
-另用 Node 24 的 fetch 向两服务独立实验路径发送 OPTIONS，Origin 为 `http://127.0.0.1:47070`，请求 PUT/content-type。SeaweedFS 返回 200，R2 返回 204，均包含匹配 origin、PUT 及 content-type 的允许头。没有写入对象或修改 Bucket 配置。原始证据：[SeaweedFS](./preflight-corrected-bucket/seaweedfs.json)、[R2](./preflight-corrected-bucket/r2.json)、[SeaweedFS OPTIONS](./preflight-corrected-bucket/seaweedfs-options.json)、[R2 OPTIONS](./preflight-corrected-bucket/r2-options.json)。
+另用 Node 24 的 fetch 向两服务独立实验路径发送 OPTIONS，Origin 为 `http://127.0.0.1:47070`，请求 PUT/content-type。SeaweedFS 返回 200，R2 返回 204，均包含匹配 origin、PUT 及 content-type 的允许头。没有写入对象或修改 Bucket 配置。原始证据：[SeaweedFS](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/UPLOAD-V01/preflight-corrected-bucket/seaweedfs.json)、[R2](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/UPLOAD-V01/preflight-corrected-bucket/r2.json)、[SeaweedFS OPTIONS](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/UPLOAD-V01/preflight-corrected-bucket/seaweedfs-options.json)、[R2 OPTIONS](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/UPLOAD-V01/preflight-corrected-bucket/r2-options.json)。
 
 纠正此前判断：SeaweedFS 的 NoSuchCORSConfiguration 仅表示无桶级配置，不能直接推断实际缺少 CORS。[官方说明](https://github.com/seaweedfs/seaweedfs/wiki/S3-CORS)支持桶级 PutBucketCors 和全局 allowedOrigins；当前实际响应已允许实验来源，具体由服务全局配置还是代理提供，本轮未读取部署配置，不能断言。OPTIONS 也不能替代真实浏览器 PUT 的可读成功响应和服务端对象核对。
 
@@ -234,11 +234,11 @@ R2 对同 Key 操作之间的 1.1 秒等待仅用于遵守[写入频率限制](h
 
 ### 证据入口
 
-| 场景                                    | SeaweedFS                                                                                         | R2                                                                                  |
-| --------------------------------------- | ------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| 真实浏览器与短窗口（R2 短窗口失败保留） | [完整报告](./live/short/seaweedfs/report.json)、[浏览器记录](./live/short/seaweedfs/browser.json) | [完整报告](./live/short/r2/report.json)、[浏览器记录](./live/short/r2/browser.json) |
-| PUT/Copy 响应丢失、SIGKILL 恢复         | [报告](./live/faults/seaweedfs/report.json)                                                       | [报告](./live/faults/r2/report.json)                                                |
-| Multipart Abort、重放与 Complete        | [报告](./live/multipart/seaweedfs.json)                                                           | [报告](./live/multipart/r2.json)                                                    |
+| 场景                                    | SeaweedFS                                                                                                                                                                                                                                                                                                                         | R2                                                                                                                                                                                                                                                                                                                  |
+| --------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 真实浏览器与短窗口（R2 短窗口失败保留） | [完整报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/UPLOAD-V01/live/short/seaweedfs/report.json)、[浏览器记录](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/UPLOAD-V01/live/short/seaweedfs/browser.json) | [完整报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/UPLOAD-V01/live/short/r2/report.json)、[浏览器记录](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/UPLOAD-V01/live/short/r2/browser.json) |
+| PUT/Copy 响应丢失、SIGKILL 恢复         | [报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/UPLOAD-V01/live/faults/seaweedfs/report.json)                                                                                                                                                                       | [报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/UPLOAD-V01/live/faults/r2/report.json)                                                                                                                                                                |
+| Multipart Abort、重放与 Complete        | [报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/UPLOAD-V01/live/multipart/seaweedfs.json)                                                                                                                                                                           | [报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/UPLOAD-V01/live/multipart/r2.json)                                                                                                                                                                    |
 
 `pnpm run format:check` 最终仍因仓库原有的三份 `docs/verification/m2-85/remove-explanations/preview-switch/{after,before,mobile}.json` 格式失败。本次文件已格式化并定向检查，未修改范围外文件。`node docs/tasks/check.mjs`：120 任务、298 需求通过；`--self-test`：5 项通过；`git diff --check` 通过。
 
@@ -253,11 +253,11 @@ R2 对同 Key 操作之间的 1.1 秒等待仅用于遵守[写入频率限制](h
 | r2        | probe.bin  | 09:11:21.008Z | 09:11:31.000Z | 09:11:42.082Z  | HTTP 200；对象重新出现；GET 全量 SHA256 一致 |
 | r2        | upload.bin | 09:11:21.004Z | 09:11:31.000Z | 09:11:42.082Z  | HTTP 200；对象重新出现；GET 全量 SHA256 一致 |
 
-原始报告：[SeaweedFS 900 秒](./live/900/seaweedfs/report.json)、[R2 900 秒](./live/900/r2/report.json)。四个样本均完整发送 2,097,152 字节，完整内容 SHA256 为 `5256ec18f11624025905d057d6befb03d77b243511ac5f77ed5e0221ce6d84b5`（以各报告原始哈希为准）。签名到期后新发起请求均返回 403；这与已开始的请求仍成功并不矛盾。两轮正式进程在报告持久化修复前启动，均正常退出 0，最终报告完整；保存队列与失败路径的修复由最终 22 项定向测试另行验证，未将旧进程冒称为重跑后的版本。
+原始报告：[SeaweedFS 900 秒](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/UPLOAD-V01/live/900/seaweedfs/report.json)、[R2 900 秒](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/UPLOAD-V01/live/900/r2/report.json)。四个样本均完整发送 2,097,152 字节，完整内容 SHA256 为 `5256ec18f11624025905d057d6befb03d77b243511ac5f77ed5e0221ce6d84b5`（以各报告原始哈希为准）。签名到期后新发起请求均返回 403；这与已开始的请求仍成功并不矛盾。两轮正式进程在报告持久化修复前启动，均正常退出 0，最终报告完整；保存队列与失败路径的修复由最终 22 项定向测试另行验证，未将旧进程冒称为重跑后的版本。
 
 本轮结果是普通 PUT 的真实反例，而不是最终协议通过。任何生产责任释放仍需三个事实同时成立：不能再开始新写入；所有已开始的写入有确定结果；之后删除及不存在核对完成。第二项在未知客户端/失联场景下尚缺依据。Multipart 仍需验证未知 Complete 的逻辑终态，因此本轮不改生产协议、不解锁下游、不将 PR 转为正式待评审。底层物理回收不单独作为应用验收要求，见后续补充验证的边界更正。
 
-最终执行 `node .data/upload-v01-recheck.mjs`：从本轮各报告读取已登记确切 Key，逐一 HEAD、必要时按既有 uploadId Abort、DELETE、HEAD。涵盖成功、失败及重跑记录共 **34 个 Key**；复查前均不存在，最终均 HEAD404，错误 0。原始记录见[最终复查](./live/final-recheck.json)，时间 2026-09-28T09:12:18.917Z 至 2026-09-28T09:12:57.762Z。这是一轮已知受控发送器均退出后的清理记录；不扫描 Bucket，不证明内部残片回收，也不释放生产场景的未知在途写入责任。
+最终执行 `node .data/upload-v01-recheck.mjs`：从本轮各报告读取已登记确切 Key，逐一 HEAD、必要时按既有 uploadId Abort、DELETE、HEAD。涵盖成功、失败及重跑记录共 **34 个 Key**；复查前均不存在，最终均 HEAD404，错误 0。原始记录见[最终复查](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/UPLOAD-V01/live/final-recheck.json)，时间 2026-09-28T09:12:18.917Z 至 2026-09-28T09:12:57.762Z。这是一轮已知受控发送器均退出后的清理记录；不扫描 Bucket，不证明内部残片回收，也不释放生产场景的未知在途写入责任。
 
 ## Multipart 候选的补充验证与版本前置
 
@@ -328,12 +328,12 @@ node tests/experiments/upload-late-put/multipart-completion.ts run \
 
 证据：
 
-| 实验                              | SeaweedFS                                                             | R2                                                                 |
-| --------------------------------- | --------------------------------------------------------------------- | ------------------------------------------------------------------ |
-| Create 丢失响应后按 Key 恢复      | [报告](./multipart-followup/creation/seaweedfs.json)                  | [报告](./multipart-followup/creation/r2.json)                      |
-| Complete 第一轮                   | [报告](./multipart-followup/completion-round-1/seaweedfs/report.json) | [报告](./multipart-followup/completion-round-1/r2/report.json)     |
-| Complete 第二轮，保留 R2 429 失败 | [报告](./multipart-followup/completion-round-2/seaweedfs/report.json) | [失败报告](./multipart-followup/completion-round-2/r2/report.json) |
-| Complete 最终断言版本             | [报告](./multipart-followup/completion-final/seaweedfs/report.json)   | [报告](./multipart-followup/completion-final/r2/report.json)       |
+| 实验                              | SeaweedFS                                                                                                                                                                             | R2                                                                                                                                                                                 |
+| --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Create 丢失响应后按 Key 恢复      | [报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/UPLOAD-V01/multipart-followup/creation/seaweedfs.json)                  | [报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/UPLOAD-V01/multipart-followup/creation/r2.json)                      |
+| Complete 第一轮                   | [报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/UPLOAD-V01/multipart-followup/completion-round-1/seaweedfs/report.json) | [报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/UPLOAD-V01/multipart-followup/completion-round-1/r2/report.json)     |
+| Complete 第二轮，保留 R2 429 失败 | [报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/UPLOAD-V01/multipart-followup/completion-round-2/seaweedfs/report.json) | [失败报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/UPLOAD-V01/multipart-followup/completion-round-2/r2/report.json) |
+| Complete 最终断言版本             | [报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/UPLOAD-V01/multipart-followup/completion-final/seaweedfs/report.json)   | [报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/UPLOAD-V01/multipart-followup/completion-final/r2/report.json)       |
 
 最终轮两服务均 observed/退出 0，每服务包含丢响应、两种顺序基线、三个并发样本。第二轮 R2 failed/退出 1 仍是有效的限流失败观测，不被第三轮成功覆盖。SeaweedFS 最终轮 concurrent-3 客户端先在 `09:31:57.389Z` 收到 Abort204，再在 `.392Z` 收到 Complete200，随后 GET 内容正确。只说明收到 Abort 时另一个调用仍未返回，不据此推断提供方内部提交先后。
 
@@ -341,6 +341,6 @@ node tests/experiments/upload-late-put/multipart-completion.ts run \
 
 本轮冻结安装、构建、lint、类型检查均退出 0；单元 31 文件/468 测试、完整集成 72 文件/550 测试通过，最终新增两文件定向 14 测试通过（1.50 秒）。构建仍包含既有可选依赖/跟踪诊断，未改动相关依赖。
 
-最后执行 `node .data/upload-v01-multipart-recheck.mjs`，仅从本轮报告提取确切 Key/uploadId，对 38 个 Key 再做 HEAD、Abort、DELETE、HEAD。2026-09-28T09:34:54.838Z 至 2026-09-28T09:35:47.463Z，复查前全部不存在，清理后全部 HEAD404，错误 0。见[最终复查报告](./multipart-followup/final-recheck.json)。本轮所有受控请求均已结束，凭据和完整签名未归档；此记录不冒充未知客户端场景的生产责任释放。
+最后执行 `node .data/upload-v01-multipart-recheck.mjs`，仅从本轮报告提取确切 Key/uploadId，对 38 个 Key 再做 HEAD、Abort、DELETE、HEAD。2026-09-28T09:34:54.838Z 至 2026-09-28T09:35:47.463Z，复查前全部不存在，清理后全部 HEAD404，错误 0。见[最终复查报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/UPLOAD-V01/multipart-followup/final-recheck.json)。本轮所有受控请求均已结束，凭据和完整签名未归档；此记录不冒充未知客户端场景的生产责任释放。
 
 本轮全库 `format:check` 仍只因前述三份原有预览 JSON 失败，本次文件格式通过。文档检查为 120 任务/298 需求，校验器自测 5 项通过，`git diff --check` 通过。真实 R2 第二轮 429 失败及提供方版本/逻辑终态前置保留，PR 继续草稿；不把本地测试通过写成 Issue 验收完成。

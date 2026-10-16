@@ -4,15 +4,15 @@
 
 ## 依据和实际读取
 
-实际读取figma-use、figma-design-to-code技能、现行[设计交接](../../../../design/handoff.md#统计与单图访问局部方案issue-1792026-10-10用户批准)、获批[局部原型说明](../../../../../design-plans/issue179-usage-review/README.md)及原型`app/page.tsx`。代码对照覆盖[UsageContent](../../../../../src/components/analytics/usage-content.tsx)、[ScopeDialog](../../../../../src/components/analytics/scope-dialog.tsx)、[Screen](../../../../../src/components/analytics/screen.tsx)、[Presentation](../../../../../src/components/analytics/presentation.tsx)及已安装HeroUI CloseButton/Chip样式。
+实际读取figma-use、figma-design-to-code技能、现行[设计交接](../../../../design/handoff.md#统计与单图访问局部方案issue-1792026-10-10用户批准)、获批[局部原型说明](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/design-plans/issue179-usage-review/README.md)及原型`app/page.tsx`。代码对照覆盖[UsageContent](../../../../../src/components/analytics/usage-content.tsx)、[ScopeDialog](../../../../../src/components/analytics/scope-dialog.tsx)、[Screen](../../../../../src/components/analytics/screen.tsx)、[Presentation](../../../../../src/components/analytics/presentation.tsx)及已安装HeroUI CloseButton/Chip样式。
 
-文件`74sT9Hrf8G4czcWeTkET5b`的六个适用节点均实际调用`get_design_context`、查看返回截图并查看本地最终PNG。两说明节点在文案及控件来源修正后再次读取context与最终截图，没有重复读取未改变的四页。节点、可编辑层和同步过程见[Figma记录](./figma/README.md)及[manifest](./figma/manifest.json)。
+文件`74sT9Hrf8G4czcWeTkET5b`的六个适用节点均实际调用`get_design_context`、查看返回截图并查看本地最终PNG。两说明节点在文案及控件来源修正后再次读取context与最终截图，没有重复读取未改变的四页。节点、可编辑层和同步过程见[Figma记录](./figma/README.md)及[manifest](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/approved-implementation/usage-refinement/figma/manifest.json)。
 
-| 适用节点              | 实际查看截图                                                               | 范围                                                  |
-| --------------------- | -------------------------------------------------------------------------- | ----------------------------------------------------- |
-| 451:16780 / 451:17096 | [桌面已确认](./figma/451-16780.png)、[手机已确认](./figma/451-17096.png)   | 1440×1080 / 390×844；启用、停用均有非零已确认组成     |
-| 451:17337 / 451:17648 | [桌面待核对](./figma/451-17337.png)、[手机待核对](./figma/451-17648.png)   | 同视口；独立warning，未知卡不画完整比例               |
-| 452:4005 / 452:8758   | [桌面占用说明](./figma/452-4005.png)、[手机占用说明](./figma/452-8758.png) | 480×328 / 358×369局部弹窗；三段真实口径及原有关闭控件 |
+| 适用节点              | 实际查看截图                                                                                                                                                                                                                                                                                                                                                                                                       | 范围                                                  |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------- |
+| 451:16780 / 451:17096 | [桌面已确认](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/approved-implementation/usage-refinement/figma/451-16780.png)、[手机已确认](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/approved-implementation/usage-refinement/figma/451-17096.png)   | 1440×1080 / 390×844；启用、停用均有非零已确认组成     |
+| 451:17337 / 451:17648 | [桌面待核对](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/approved-implementation/usage-refinement/figma/451-17337.png)、[手机待核对](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/approved-implementation/usage-refinement/figma/451-17648.png)   | 同视口；独立warning，未知卡不画完整比例               |
+| 452:4005 / 452:8758   | [桌面占用说明](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/approved-implementation/usage-refinement/figma/452-4005.png)、[手机占用说明](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/approved-implementation/usage-refinement/figma/452-8758.png) | 480×328 / 358×369局部弹窗；三段真实口径及原有关闭控件 |
 
 1034:19241为三种Chip构建资产，不计作第七个产品页面或状态。设计中的8.6GiB、存储名与时间均为示例；没有读取或修改人工预览数据。
 
@@ -42,4 +42,4 @@
 
 本轮没有新产品截图，因此不能完成同视口“Figma与真实页面”的设计审查。1440桌面、360/390/430/768手机/平板、浅深主题、长名称/大数值换行、390/1440×400短视口、卡片末端、说明弹窗滚动、键盘/焦点/关闭回原入口及真实hover均待恢复浏览器后验证。零占用、无存储、缺确认时间及加载/错误/刷新状态也没有本轮新视觉证据。
 
-浏览器硬停边界沿[本轮实施记录](./README.md#浏览器与设计边界)，本评审未尝试claim、重试或换浏览器绕过。需用户明确恢复浏览器后沿原TaskSpace继续；最终人工验收仍待用户完成。Figma/源码侧通过不能代替上述未完成项，PR继续保留草稿。
+浏览器硬停边界沿[本轮实施记录](./README.md#恢复后的浏览器验证与独立评审)，本评审未尝试claim、重试或换浏览器绕过。需用户明确恢复浏览器后沿原TaskSpace继续；最终人工验收仍待用户完成。Figma/源码侧通过不能代替上述未完成项，PR继续保留草稿。

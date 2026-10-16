@@ -57,11 +57,11 @@
 
 没有 schema 变化，未运行 `db:generate`。统计文件超时没有通过修改业务、增加超时或删除断言处理；按既有验证记录限制并行数量后重新执行完整集成。
 
-开发模式额外实测：Node 24 启动 `next dev`，在同一 Ego task space 使用临时初始化数据库，未包装原生 fetch；真实选择后依次到达 queued / ready。201、202 和实际状态查询均返回成功，验证 React StrictMode 重复挂载不破坏控制器。[结果记录](./browser/dev-strictmode.json)。
+开发模式额外实测：Node 24 启动 `next dev`，在同一 Ego task space 使用临时初始化数据库，未包装原生 fetch；真实选择后依次到达 queued / ready。201、202 和实际状态查询均返回成功，验证 React StrictMode 重复挂载不破坏控制器。[结果记录](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/upload-81/browser/dev-strictmode.json)。
 
 ### 浏览器证据
 
-[完整运行](./browser/runner.json)、[上传行为与布局](./browser/upload.json)、[隔离 UI 运行](./browser/ui-runner.json)。上传共 14 组行为与 130 组布局；既有图库/详情/回收 27 组行为、220 组布局也随完整运行通过。
+[完整运行](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/upload-81/browser/runner.json)、[上传行为与布局](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/upload-81/browser/upload.json)、[隔离 UI 运行](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/upload-81/browser/ui-runner.json)。上传共 14 组行为与 130 组布局；既有图库/详情/回收 27 组行为、220 组布局也随完整运行通过。
 
 - 真实文件选择、手动提交、真实 worker 处理成功；无自动上传。移除、交接、成功、失败和取消后通过 `HeapProfiler.collectGarbage` 与 `WeakRef` 核对 File 释放，Blob URL 集合和 input files 均清空。
 - 真实格式检查失败无 imageId；持久化派生版本失败保留 imageId 与原图。失败项进入实际详情回收后，数据库回收标记正确，原图记录及磁盘字节仍存在。
@@ -71,7 +71,7 @@
 - 真实修改默认存储及停用配置验证开始时解析和禁用状态。读取响应丢失呈现错误并可重试。
 - 13 状态分别以浅/深色、360/390/430/768/1440 宽度检查无横向溢出、可见按钮/链接至少 44px。减少动态效果和短视口操作栏已检查。设备模拟不算物理软键盘和安全区证据。
 
-截图：[桌面选择](./browser/upload-empty-light-1440.png)、[手机待提交](./browser/upload-queued-light-390.png)、[手机保存中](./browser/upload-saving-dark-390.png)、[桌面结果](./browser/upload-ready-light-1440.png)、[手机处理失败](./browser/upload-processing-failed-dark-390.png)、[设置错误](./browser/upload-settings-error-light-390.png)、[短视口](./browser/upload-short-viewport.png)。
+截图：[桌面选择](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/upload-81/browser/upload-empty-light-1440.png)、[手机待提交](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/upload-81/browser/upload-queued-light-390.png)、[手机保存中](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/upload-81/browser/upload-saving-dark-390.png)、[桌面结果](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/upload-81/browser/upload-ready-light-1440.png)、[手机处理失败](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/upload-81/browser/upload-processing-failed-dark-390.png)、[设置错误](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/upload-81/browser/upload-settings-error-light-390.png)、[短视口](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/upload-81/browser/upload-short-viewport.png)。
 
 ## 远端边界
 
@@ -91,8 +91,8 @@ PR：[#125](https://github.com/dnslin/ariso-next/pull/125)，分支 `codex/81-ma
 
 新增 `e2e/upload-polling.mjs` 并接入正式浏览器运行器。测试使用真实文件、服务、数据库和响应，只在浏览器边界延后 XHR 通知与状态 GET。旧 GET 持有超过前台查询间隔后释放，要求页面自动到达 ready 并核对数据库；还验证实际取消、清空后新文件遇到同类时序仍能自动完成。没有人工调用控制器、点击重试或刷新页面来救援。
 
-- [RED](./polling/red.json)：隔离复制的 `65f0484` 生产构建；旧 GET 释放后 8 秒仍为 processing-queued，只有 1 次状态 GET，预期 ready 断言失败。
-- [GREEN](./polling/green.json)：修复构建；两个场景均自动发出第 2 次状态 GET，页面和数据库均 ready。
+- [RED](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/upload-81/polling/red.json)：隔离复制的 `65f0484` 生产构建；旧 GET 释放后 8 秒仍为 processing-queued，只有 1 次状态 GET，预期 ready 断言失败。
+- [GREEN](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/upload-81/polling/green.json)：修复构建；两个场景均自动发出第 2 次状态 GET，页面和数据库均 ready。
 - 两次专项使用 Node 24.18.1、pnpm 11.19.0、macOS ARM64、现有 Ego Lite 的同一 TaskSpace 4。临时应用和数据与用户端口 3000 分离。运行命令为 `node /tmp/pr125-polling-browser-run.mjs <standalone目录> <报告目录>`；RED 输入是隔离的旧构建，GREEN 输入为 `.next/standalone`，报告分别为 `test-results/pr125-polling-red` / `test-results/pr125-polling-green`。该临时运行器只用于复现；可重复执行的正式入口为 `pnpm run test:browser`。
 
 本轮检查使用 Node 24.18.1 / pnpm 11.19.0：
@@ -110,6 +110,6 @@ PR：[#125](https://github.com/dnslin/ariso-next/pull/125)，分支 `codex/81-ma
 | `EGO_TASK_SPACE=4 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/pr125-p2-final pnpm run test:browser` | 退出 0；完整套件通过，包含两项轮询回归场景                                 |
 | `node docs/tasks/check.mjs`、`node docs/tasks/check.mjs --self-test`、`git diff --check`                 | 120 任务、298 需求与 5 项拒绝夹具通过；差异检查通过                        |
 
-完整浏览器运行于 2026-09-26T11:53:30.508Z 至 12:02:42.714Z，见[运行报告](./polling/runner.json)、[轮询回归](./polling/full-upload-polling.json)、[上传行为与布局](./polling/upload.json)、[图库与详情](./polling/library.json)、[通用组件](./polling/ui-runner.json)。首次集成的两项超时保留[原始失败摘要](./polling/integration-first-failed.txt)；单项及完整串行复验均通过，没有跳过测试或放宽时限。
+完整浏览器运行于 2026-09-26T11:53:30.508Z 至 12:02:42.714Z，见[运行报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/upload-81/polling/runner.json)、[轮询回归](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/upload-81/polling/full-upload-polling.json)、[上传行为与布局](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/upload-81/polling/upload.json)、[图库与详情](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/upload-81/polling/library.json)、[通用组件](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/upload-81/polling/ui-runner.json)。首次集成的两项超时保留[原始失败摘要](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/upload-81/polling/integration-first-failed.txt)；单项及完整串行复验均通过，没有跳过测试或放宽时限。
 
 代码审计核对持续调度、请求去重、终态／未知状态停止、卸载后的异步清理和 StrictMode 生命周期，未发现本次修复引入的新 Required 项。页面外观未变，沿用上方已确认设计对照；本轮证明自动恢复行为，不扩大视觉或设备验收范围。PR 修复期间保持草稿，适用检查完成后恢复待评审。未触发发布、部署或合并；双架构容器仍留待发布验证。

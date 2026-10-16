@@ -60,19 +60,19 @@ EGO_TASK_SPACE=20 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/ui-runtime pn
 
 首次独立复现可省略 EGO_TASK_SPACE/EGO_KEEP_SPACE；脚本创建空间并在成功后关闭。连续任务复跑必须复用首次输出的空间 ID。失败返回非零并保留报告，停止自建服务；浏览器空间保留供诊断。
 
-| 检查                     | 实际结果                                                |
-| ------------------------ | ------------------------------------------------------- |
-| 两套冻结安装、类型、构建 | 通过                                                    |
-| 根 lint / format:check   | 通过                                                    |
-| 根 test:unit             | 10 文件、197 项通过                                     |
-| 根 test:integration      | 24 文件、196 项通过                                     |
-| UI 生产浏览器脚本        | 通过，见 [browser.json](./browser.json)                 |
-| 原应用生产冒烟           | 通过，见 [runtime-browser.json](./runtime-browser.json) |
-| UI 依赖审计              | 0 漏洞                                                  |
+| 检查                     | 实际结果                                                                                                                                                              |
+| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 两套冻结安装、类型、构建 | 通过                                                                                                                                                                  |
+| 根 lint / format:check   | 通过                                                                                                                                                                  |
+| 根 test:unit             | 10 文件、197 项通过                                                                                                                                                   |
+| 根 test:integration      | 24 文件、196 项通过                                                                                                                                                   |
+| UI 生产浏览器脚本        | 通过，见 [browser.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-UI-01/browser.json)                 |
+| 原应用生产冒烟           | 通过，见 [runtime-browser.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-UI-01/runtime-browser.json) |
+| UI 依赖审计              | 0 漏洞                                                                                                                                                                |
 
 浏览器实际断言：服务端 HTML、无水合/客户端错误；系统浅→深变化；显式浅色刷新后保留；空表单错误及自动聚焦；输入后 Enter 成功；Query 加载、空、503 与恢复；Modal Enter 打开、Tab 焦点限制、Esc 关闭及返回触发按钮；浅深色各 360/390/430/768/1440 宽度无横向溢出，页面按钮/输入至少 44px；390×400 短视口下输入及关闭弹窗。后者启用触控模拟与减少动态效果，不能声称验证了真实触屏或动画时长。
 
-截图：[浅色手机](./light-390.png)、[深色手机](./dark-390.png)、[浅色桌面](./light-1440.png)、[深色桌面](./dark-1440.png)。完整十张截图随复现生成在 `test-results/ui/`。没有产品原型差异，因为不是产品页面。
+截图：[浅色手机](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-UI-01/light-390.png)、[深色手机](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-UI-01/dark-390.png)、[浅色桌面](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-UI-01/light-1440.png)、[深色桌面](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-UI-01/dark-1440.png)。完整十张截图随复现生成在 `test-results/ui/`。没有产品原型差异，因为不是产品页面。
 
 首次类型/构建暴露错误子路径和 Turbopack 隔离根目录外 tsconfig 继承问题，分别改为真实导出路径与独立配置后通过；首次 lint 的两个匿名配置导出警告已修复。根构建退出 0，但原有 nft 打印缺失 Debug/better_sqlite3.node 的诊断；实际 Release 二进制通过生产集成与浏览器，不隐藏诊断、不在本任务修改原有打包器。
 
@@ -80,7 +80,7 @@ EGO_TASK_SPACE=20 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/ui-runtime pn
 
 真实手机软键盘、非零安全区、真实触控、Safari/Firefox/Edge 未执行，保持未验收；窄视口和桌面触控模拟不替代设备证据。这些是后续产品页面验收范围，当前只证明指定库的最小真实页面组合可构建、水合和交互。
 
-提交 `99613ed` 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/35560955444) 与 [Docker build](https://github.com/dnslin/ariso-next/actions/runs/35560955609) 全部适用检查通过，原始状态见 [ci.json](./ci.json)、[docker.json](./docker.json)。AMD64 和 ARM64 均实际完成构建、离线运行、存储有限挂载、图片转换、生命周期、迁移及备份恢复验证；release-checks 和 publish 按非 release 事件跳过，未发布镜像或部署。
+提交 `99613ed` 的 [CI](https://github.com/dnslin/ariso-next/actions/runs/35560955444) 与 [Docker build](https://github.com/dnslin/ariso-next/actions/runs/35560955609) 全部适用检查通过，原始状态见 [ci.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-UI-01/ci.json)、[docker.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-UI-01/docker.json)。AMD64 和 ARM64 均实际完成构建、离线运行、存储有限挂载、图片转换、生命周期、迁移及备份恢复验证；release-checks 和 publish 按非 release 事件跳过，未发布镜像或部署。
 
 [PR #94](https://github.com/dnslin/ariso-next/pull/94) 保留每个提交的实时检查结果；本次证据补充不修改实现，仍等待其对应最新提交检查通过后转为正式待评审。Ego TaskSpace 20 已成功关闭。
 
@@ -101,7 +101,7 @@ pnpm exec vitest run --project integration tests/integration/runtime/ui-browser-
 pnpm --dir tests/experiments/ui run test:browser
 ```
 
-额外使用真实 Next 生产服务及移除 Ego 的 PATH 复现命令缺失，结果为退出 1、服务端口关闭、旧报告移除；见 [runner-missing.json](./runner-missing.json)。正常 Ego TaskSpace 21 的完整页面验证通过并自动关闭，见更新后的 [browser.json](./browser.json) 和 [runner.json](./runner.json)。上述机器报告描述本地运行，不冒充远端执行。
+额外使用真实 Next 生产服务及移除 Ego 的 PATH 复现命令缺失，结果为退出 1、服务端口关闭、旧报告移除；见 [runner-missing.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-UI-01/runner-missing.json)。正常 Ego TaskSpace 21 的完整页面验证通过并自动关闭，见更新后的 [browser.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-UI-01/browser.json) 和 [runner.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-UI-01/runner.json)。上述机器报告描述本地运行，不冒充远端执行。
 
 修复经 `code-review-and-quality` 独立只读复核，无新增阻塞问题。远端最新提交结果继续以 [PR #94 检查页](https://github.com/dnslin/ariso-next/pull/94/checks) 为准，上方固定链接保留先前提交的历史证据。
 

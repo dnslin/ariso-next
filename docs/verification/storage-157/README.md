@@ -22,7 +22,7 @@
 
 环境：macOS ARM64，Node **24.18.1**，pnpm **11.19.0**。命令前置 `PATH=/Users/dnslin/.nvm/versions/node/v24.18.1/bin:$PATH`；全部业务验证使用独立随机存储命名空间和临时 SQLite，不修改用户预览数据或 Bucket 配置。
 
-[真实服务命令与结果](./live/checks.json)记录三轮验证。R2 与 SeaweedFS 的[最终报告](./live/run-kr45dq/)均通过：首次完整检测、启用门槛、错误凭据拒绝、清理失败持久化、恢复凭据后的手动清理、新 revision 重新检测、全部三个精确 Key 的最终 HEAD 不存在。SeaweedFS 响应版本 4.47；R2 响应 cloudflare，不编造未公开版本。
+[真实服务命令与结果](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-157/live/checks.json)记录三轮验证。R2 与 SeaweedFS 的[最终报告](https://github.com/dnslin/ariso-next/tree/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-157/live/run-kr45dq)均通过：首次完整检测、启用门槛、错误凭据拒绝、清理失败持久化、恢复凭据后的手动清理、新 revision 重新检测、全部三个精确 Key 的最终 HEAD 不存在。SeaweedFS 响应版本 4.47；R2 响应 cloudflare，不编造未公开版本。
 
 R2 全 Bucket 无锁确认沿用同一目标 Bucket 的[已有所有者确认](../../tasks/evidence/EV-STORAGE-01/README.md)，在本次新测试 revision 中记录来源。没有伪造公共别名已关闭的确认。缺环境运行按预期退出 1，报告 incomplete，没有远端请求。
 
@@ -36,7 +36,7 @@ R2 全 Bucket 无锁确认沿用同一目标 Bucket 的[已有所有者确认](.
 
 这些错误不是本次新增探测路径造成；首轮按 AGENTS.md 的范围限制，向所有者请求允许最小修正，答复前未修改范围外文件。当时构建未完成，因此完整普通/真实工具集成、真实 HTTP 路由及浏览器检查未完成。独立审计尝试 HTTP 测试时也因 `.next/standalone/entrypoint.sh` 不存在而初始化失败，6 项未执行，不能计为通过。
 
-首轮实际命令汇总见 [local-checks.json](./local-checks.json)。
+首轮实际命令汇总见 [local-checks.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-157/local-checks.json)。
 
 | 命令                                                 | 结果                                                       |
 | ---------------------------------------------------- | ---------------------------------------------------------- |
@@ -53,7 +53,7 @@ R2 全 Bucket 无锁确认沿用同一目标 Bucket 的[已有所有者确认](.
 | `node docs/tasks/check.mjs --self-test`              | 5 项拒绝自测通过                                           |
 | `git diff --check`                                   | 通过                                                       |
 
-[类型失败](./typecheck-failed.txt)、[构建失败](./build-failed.txt)和[原样 main 类型复现](./baseline-typecheck.txt)均保留。原始输出在本机 `/tmp/ariso-157-*.log`。使用了 using-agent-skills、增量实现、接口设计、测试与代码审计技能；Next API 入口另按 vercel-react-best-practices 核对服务端鉴权、调用顺序和静态路径。
+[类型失败](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-157/typecheck-failed.txt)、[构建失败](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-157/build-failed.txt)和[原样 main 类型复现](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-157/baseline-typecheck.txt)均保留。原始输出在本机 `/tmp/ariso-157-*.log`。使用了 using-agent-skills、增量实现、接口设计、测试与代码审计技能；Next API 入口另按 vercel-react-best-practices 核对服务端鉴权、调用顺序和静态路径。
 
 ## 独立代码审计
 
@@ -77,15 +77,15 @@ AWS 实测要求按执行约定取消，保持未验证。AMD64/ARM64 镜像与�
 
 2026-09-29 所有者批准修复五个文件的既有类型错误。`verify-media.ts` 与 formats、format-recovery、svg 测试在本地读写前复用 `requireLocalStorage`；analytics usage 夹具补齐 extension/coder，以 `satisfies Parameters<typeof acceptSession>[2]` 绑定当前契约。没有修改生产业务边界、弱化断言或增加依赖。
 
-首轮完整集成另发现新增探测 HTTP 用例位于共享服务器停服用例之后，真实请求因此连接被拒绝。已把探测用例移到停服之前，所有断言原样保留；[六项 HTTP 检查](./approved-repair/storage-http.txt)全部通过。
+首轮完整集成另发现新增探测 HTTP 用例位于共享服务器停服用例之后，真实请求因此连接被拒绝。已把探测用例移到停服之前，所有断言原样保留；[六项 HTTP 检查](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-157/approved-repair/storage-http.txt)全部通过。
 
-独立 agent 再次审计补修，结论无剩余 Required；媒体及 analytics 四文件全部通过。审计者还从 `.next/standalone` 导入 `dist/cli/verify-media.js` 调用 `verifyMediaFormats`，使用真实媒体夹具和独立临时目录，[全部 26 种样本通过](./approved-repair/packaged-media.json)，含 SVG/resvg。构建退出码为 0；打包追踪器报告其他平台 resvg 可选依赖无法解析，本机打包行为已实际验证，其他架构仍按 Release 流程验收。
+独立 agent 再次审计补修，结论无剩余 Required；媒体及 analytics 四文件全部通过。审计者还从 `.next/standalone` 导入 `dist/cli/verify-media.js` 调用 `verifyMediaFormats`，使用真实媒体夹具和独立临时目录，[全部 26 种样本通过](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-157/approved-repair/packaged-media.json)，含 SVG/resvg。构建退出码为 0；打包追踪器报告其他平台 resvg 可选依赖无法解析，本机打包行为已实际验证，其他架构仍按 Release 流程验收。
 
-完整普通/真实工具集成共 87 文件 / 736 项，首轮 730 通过、6 失败。除上述 HTTP 顺序问题，还复现规模统计夹具按旧表位置写入 7 列、与当前 23 列不符；已改为显式七列写入，保留统计生成逻辑和全部断言，独立复审无 Required。另四项为身份/访问计数的 5000ms 超时；没有修改相关实现、超时或断言。降低到 `--maxWorkers=1` 复跑四个失败文件，36/37 通过；最后单独复跑访问计数文件，13/13 全部通过。因此完整测试集合均已取得通过结果，首轮失败和复测记录均保留；不声称首轮完整命令退出成功。见[首轮失败](./approved-repair/integration-first.txt)、[四文件复测](./approved-repair/integration-recheck.txt)、[访问计数复测](./approved-repair/count-recheck.txt)。
+完整普通/真实工具集成共 87 文件 / 736 项，首轮 730 通过、6 失败。除上述 HTTP 顺序问题，还复现规模统计夹具按旧表位置写入 7 列、与当前 23 列不符；已改为显式七列写入，保留统计生成逻辑和全部断言，独立复审无 Required。另四项为身份/访问计数的 5000ms 超时；没有修改相关实现、超时或断言。降低到 `--maxWorkers=1` 复跑四个失败文件，36/37 通过；最后单独复跑访问计数文件，13/13 全部通过。因此完整测试集合均已取得通过结果，首轮失败和复测记录均保留；不声称首轮完整命令退出成功。见[首轮失败](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-157/approved-repair/integration-first.txt)、[四文件复测](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-157/approved-repair/integration-recheck.txt)、[访问计数复测](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-157/approved-repair/count-recheck.txt)。
 
-`pnpm run test:browser` 最终退出 0；现有 Ego Lite / Chromium 152，仅使用 TaskSpace 8，成功后由运行器关闭。覆盖首页、真实读取失败重试、公共外壳、两端初始化/身份、图库/详情/回收站、相册、上传/轮询、M2 上传下载与进程重启、交互与页面切换、公共组件夹具；360/390/430/768/1440 浅深色及短视口/键盘场景由现有脚本执行。[运行器结果](./approved-repair/browser-runner.json)确认临时目录已删除，[分项断言](./approved-repair/browser-checks.json)保留逐组实际结果。原始报告和截图在本机工作区 `test-results/browser/`；本次为已有页面回归，不冒充新增 UI 的 Figma 对照或人工设计验收。
+`pnpm run test:browser` 最终退出 0；现有 Ego Lite / Chromium 152，仅使用 TaskSpace 8，成功后由运行器关闭。覆盖首页、真实读取失败重试、公共外壳、两端初始化/身份、图库/详情/回收站、相册、上传/轮询、M2 上传下载与进程重启、交互与页面切换、公共组件夹具；360/390/430/768/1440 浅深色及短视口/键盘场景由现有脚本执行。[运行器结果](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-157/approved-repair/browser-runner.json)确认临时目录已删除，[分项断言](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-157/approved-repair/browser-checks.json)保留逐组实际结果。原始报告和截图在本机工作区 `test-results/browser/`；本次为已有页面回归，不冒充新增 UI 的 Figma 对照或人工设计验收。
 
-最终命令及环境继续统一见 [local-checks.json](./local-checks.json)：Node 24.18.1 / pnpm 11.19.0 / macOS ARM64；冻结安装、格式、lint、类型、542 项单元、构建及浏览器命令成功；完整 736 项集成集合经保留断言的失败文件复测收齐通过证据。真实 R2/SeaweedFS 结果沿用本分支此前最终运行，本轮未修改 S3/probe 生产代码，无需重复远端写入。AMD64/ARM64 镜像仍按 Release 流程验证；AWS 未实测，按既有约定不再作为本任务门槛。
+最终命令及环境继续统一见 [local-checks.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-157/local-checks.json)：Node 24.18.1 / pnpm 11.19.0 / macOS ARM64；冻结安装、格式、lint、类型、542 项单元、构建及浏览器命令成功；完整 736 项集成集合经保留断言的失败文件复测收齐通过证据。真实 R2/SeaweedFS 结果沿用本分支此前最终运行，本轮未修改 S3/probe 生产代码，无需重复远端写入。AMD64/ARM64 镜像仍按 Release 流程验证；AWS 未实测，按既有约定不再作为本任务门槛。
 
 ## 2026-09-30 双 agent 评审修复
 
@@ -96,15 +96,15 @@ AWS 实测要求按执行约定取消，保持未验证。AMD64/ARM64 镜像与�
 
 [SPEC-storage 6.2](../../specs/SPEC-storage.md#62-四步连接测试)同步明确未写入时跳过删除的边界；未修改冻结 PRD。
 
-先取得失败回归再修改实现。planned 三个失败场景来自独立 agent 的实际运行，原 stdout 仅留工具会话，因此明确保存为[运行摘要](./review-fixes/probe-red-summary.json)，不冒充原始日志；修复后[16 项通过](./review-fixes/probe-green.txt)。等待响应头、读取响应体两项超时[先失败](./review-fixes/timeout-red.txt)，修复后协议测试[39 项通过](./review-fixes/timeout-green.txt)，包含两项主动取消不误报超时的断言。
+先取得失败回归再修改实现。planned 三个失败场景来自独立 agent 的实际运行，原 stdout 仅留工具会话，因此明确保存为[运行摘要](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-157/review-fixes/probe-red-summary.json)，不冒充原始日志；修复后[16 项通过](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-157/review-fixes/probe-green.txt)。等待响应头、读取响应体两项超时[先失败](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-157/review-fixes/timeout-red.txt)，修复后协议测试[39 项通过](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-157/review-fixes/timeout-green.txt)，包含两项主动取消不误报超时的断言。
 
 HTTP 集成更新了配置检查失败后的释放与重试 404 契约，另保留真实 S3 协议夹具：随机 64 字节实际写入、鉴权读取、匿名拒绝、DELETE 403、管理路由重试 502、两次删除同一个 Key，且仍保留对象与清理引用。没有删除原失败检查来换取通过。
 
-本轮[真实两服务报告](./review-fixes/live/checks.json)全部通过。SeaweedFS 的错误凭据在配置阶段被拒绝，后续四阶段 skipped，无清理引用和占用，手动清理明确不适用且未执行。R2 的能力检查通过后才尝试 PUT，错误凭据使 PUT/DELETE 失败，保留确切 Key 和一个待核对对象，恢复凭据后手动清理成功。两服务都验证了恢复凭据不能直接启用，新 revision 完整重测后才可启用；每个服务三个精确 Key 最终 HEAD 不存在，临时数据库删除。旧报告保留当时行为，不把 SeaweedFS 本轮未执行的清理写成通过。
+本轮[真实两服务报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-157/review-fixes/live/checks.json)全部通过。SeaweedFS 的错误凭据在配置阶段被拒绝，后续四阶段 skipped，无清理引用和占用，手动清理明确不适用且未执行。R2 的能力检查通过后才尝试 PUT，错误凭据使 PUT/DELETE 失败，保留确切 Key 和一个待核对对象，恢复凭据后手动清理成功。两服务都验证了恢复凭据不能直接启用，新 revision 完整重测后才可启用；每个服务三个精确 Key 最终 HEAD 不存在，临时数据库删除。旧报告保留当时行为，不把 SeaweedFS 本轮未执行的清理写成通过。
 
 两个 agent 分别实际读取 code-review-and-quality 与 thermo-nuclear-code-quality-review，采用交叉复审，未由实现者给自己的修改验收。正确性评审检查另一 agent 的超时实现、取消区别、响应元数据及流释放，并实际运行两文件 59 项通过。结构评审检查主 agent 的清理修复、规格及回归：复用既有持久化状态和事务，不增加影子状态或额外清理层，未发现 Required 或 Optional 项。HTTP 回归另经未参与实现的 agent 只读复审，确认真实写入和 502 覆盖未被削弱。主 agent 独立检查真实服务运行器的固定预期、revision、引用和占用断言；没有根据被测结果临时放宽预期。
 
-本轮完整集成命令退出 0，87 文件 / 745 项全部通过。浏览器首轮在图库单组触发运行器 300000ms 超时，后续场景未执行；空日志不能确定具体卡点。实际检查 TaskSpace 10 仍由 agent 控制，页面已返回图片详情，无权限提示，未认定为剪贴板功能失败。保留首轮证据后，在同一空间重跑完整流程，不增加时限、不跳过断言。完整重跑最终退出 0，21 份结果报告均已保存，首轮图库超时没有再次出现；不声称已定位或修复该超时的根因。运行器完成后关闭 TaskSpace 10，独立临时目录删除。见[首轮失败](./review-fixes/browser-first-runner.json)、[最终运行器](./review-fixes/browser-retry-runner.json)和[最终分项断言](./review-fixes/browser-retry-checks.json)。原始截图及日志在本机工作区 test-results/pr211-review-fixes/browser-first 与 browser-retry。
+本轮完整集成命令退出 0，87 文件 / 745 项全部通过。浏览器首轮在图库单组触发运行器 300000ms 超时，后续场景未执行；空日志不能确定具体卡点。实际检查 TaskSpace 10 仍由 agent 控制，页面已返回图片详情，无权限提示，未认定为剪贴板功能失败。保留首轮证据后，在同一空间重跑完整流程，不增加时限、不跳过断言。完整重跑最终退出 0，21 份结果报告均已保存，首轮图库超时没有再次出现；不声称已定位或修复该超时的根因。运行器完成后关闭 TaskSpace 10，独立临时目录删除。见[首轮失败](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-157/review-fixes/browser-first-runner.json)、[最终运行器](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-157/review-fixes/browser-retry-runner.json)和[最终分项断言](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-157/review-fixes/browser-retry-checks.json)。原始截图及日志在本机工作区 test-results/pr211-review-fixes/browser-first 与 browser-retry。
 
 本轮最终适用检查汇总（Node 24.18.1 / pnpm 11.19.0 / macOS ARM64）：
 
@@ -119,7 +119,7 @@ HTTP 集成更新了配置检查失败后的释放与重试 404 契约，另保�
 | node docs/tasks/check.mjs、node docs/tasks/check.mjs --self-test | 120 任务 / 298 需求、5 项拒绝自测通过                                                                    |
 | 真实 S3 运行器（完整命令见 JSON）                                | R2 / SeaweedFS 全部通过                                                                                  |
 
-命令环境和结果统一见 [local-checks.json](./local-checks.json)，[交叉审计结论](./review-fixes/audit.json)无剩余修改项。集成日志中的一次性测试 setup code 已脱敏，构建记录摘录全部不同的打包追踪诊断，重复解析栈未提交；完整本地日志路径保留在摘录中。本轮没有 UI 修改，Figma 和人工 UI 验收不适用。无新增 Release、镜像发布或部署；AWS 与双架构容器验证边界沿用前述执行约定。
+命令环境和结果统一见 [local-checks.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-157/local-checks.json)，[交叉审计结论](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-157/review-fixes/audit.json)无剩余修改项。集成日志中的一次性测试 setup code 已脱敏，构建记录摘录全部不同的打包追踪诊断，重复解析栈未提交；完整本地日志路径保留在摘录中。本轮没有 UI 修改，Figma 和人工 UI 验收不适用。无新增 Release、镜像发布或部署；AWS 与双架构容器验证边界沿用前述执行约定。
 
 ### 推送后的主分支同步
 
@@ -127,7 +127,7 @@ HTTP 集成更新了配置检查失败后的释放与重试 404 契约，另保�
 
 独立结构审查确认这六文件与 main 完全一致，两项 S3 修复、规格及对应回归与同步前提交保持一致，无行为丢失或未解决冲突。主分支历史验证日志包含行尾空白，本次不改写该证据；差异检查以实际 PR 基线 main 为准。
 
-同步后重新执行冻结安装、格式、lint、类型、572 项全单元及构建，均通过。完整普通/真实工具集成退出 0，88 文件 / 772 项全部通过，见[同步后集成](./review-fixes/main-sync-integration.txt)和[同步后单元](./review-fixes/main-sync-unit.txt)。最终命令继续统一记录于 local-checks.json。同步未改变本任务的 S3 实现或 UI，因此本轮真实 R2/SeaweedFS 与完整 Ego 浏览器结果沿用同步前的实际通过记录，没有把它们写成同步后重新执行；主分支图库的自身验证见 library-172 记录。
+同步后重新执行冻结安装、格式、lint、类型、572 项全单元及构建，均通过。完整普通/真实工具集成退出 0，88 文件 / 772 项全部通过，见[同步后集成](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-157/review-fixes/main-sync-integration.txt)和[同步后单元](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-157/review-fixes/main-sync-unit.txt)。最终命令继续统一记录于 local-checks.json。同步未改变本任务的 S3 实现或 UI，因此本轮真实 R2/SeaweedFS 与完整 Ego 浏览器结果沿用同步前的实际通过记录，没有把它们写成同步后重新执行；主分支图库的自身验证见 library-172 记录。
 
 ### 合并前同步水印模块
 
@@ -135,4 +135,4 @@ HTTP 集成更新了配置检查失败后的释放与重试 404 契约，另保�
 
 启动入口同时保留水印与存储探测实例；两者都在关闭 SQLite 前完成停止，水印继续复用现有媒体资源对象。启动、密钥预检和 prestart 夹具更新迁移引用及完整顺序断言。独立 agent 增加从真实 main 迁移集升级的回归：水印资产、预览引用、媒体设置、存储配置及旧迁移进度保持不变，第二次升级幂等；12 项迁移专项通过。另一 agent 实施启动组合后，由未参与该实现的 agent 复审，确认无实例或停止流程遗漏。
 
-本轮合并前冻结安装、格式、lint、类型、构建与 600 项单元全部通过；完整普通/真实工具集成 92 文件 / 823 项全部通过，退出 0，见[合并前集成](./merge-preparation/integration.txt)。迁移生成器复查没有额外 schema 变更。实际命令和结果记录于 local-checks.json 的 mergePreparation。此前的浏览器和真实云服务验证不改写为本轮重跑。原始浏览器截图与日志已复制保留到 /Users/dnslin/.codex/exports/ariso-issue-157.ynnt8G，供 worktree 清理后查阅。
+本轮合并前冻结安装、格式、lint、类型、构建与 600 项单元全部通过；完整普通/真实工具集成 92 文件 / 823 项全部通过，退出 0，见[合并前集成](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-157/merge-preparation/integration.txt)。迁移生成器复查没有额外 schema 变更。实际命令和结果记录于 local-checks.json 的 mergePreparation。此前的浏览器和真实云服务验证不改写为本轮重跑。原始浏览器截图与日志已复制保留到 /Users/dnslin/.codex/exports/ariso-issue-157.ynnt8G，供 worktree 清理后查阅。

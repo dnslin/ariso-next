@@ -16,7 +16,7 @@ R2、SeaweedFS 是当前必需服务。2026-09-29 所有者提供配置并纠正
 
 ### 对象责任
 
-实现入口：`tests/experiments/analytics-usage/usage.ts`。行为断言在 `tests/integration/analytics/usage.test.ts`，输出 [本地用量证据](./usage.json)。
+实现入口：`tests/experiments/analytics-usage/usage.ts`。行为断言在 `tests/integration/analytics/usage.test.ts`，输出 [本地用量证据](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-ANALYTICS-02/usage.json)。
 
 - 同一事务交接 upload→media；注入 SQLite 触发器失败，断言资产和责任均回滚。成功后原图只计一次，版本表不作为第二份对象。
 - 当前原图、派生、回收、处理中／待清理四类互斥。按 `storageId + key` 区分对象，同 Key 跨存储不合并。
@@ -36,7 +36,7 @@ R2、SeaweedFS 是当前必需服务。2026-09-29 所有者提供配置并纠正
 
 按当前生产单进程同步 SQLite 模型，轮换顺序交错排行、刷库和清理，并分别记录操作耗时及含前序等待的端到端耗时；不声称多线程同时运行。使用生产 `pruneDailyStats`，断言过期每日清理和重复清理不减少累计。
 
-实际 [规模报告](./scale.json) 保存三轮原始数据。机器为 Apple M4、16 GiB 内存、APFS SSD，SQLite 3.53.4。数据包含 100000 张图片、1807615 行单图每日统计、90000 行累计、252997080 次合成访问。
+实际 [规模报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-ANALYTICS-02/scale.json) 保存三轮原始数据。机器为 Apple M4、16 GiB 内存、APFS SSD，SQLite 3.53.4。数据包含 100000 张图片、1807615 行单图每日统计、90000 行累计、252997080 次合成访问。
 
 | 测量                      | 生产索引基线     | 覆盖索引 + 明确指定排行 SQL 计划 |
 | ------------------------- | ---------------- | -------------------------------- |
@@ -104,11 +104,11 @@ node tests/experiments/analytics-usage/run-live.ts --config /absolute/private/up
 
 本轮仅补充真实实验报告、失败诊断和文档，没有改变实验代码、生产代码或依赖。沿用提交 `315015a` 的运行器，Node 24.18.1、macOS arm64；密钥仅存在忽略路径 `.data/analytics-143-targets.json`，不进入报告和提交。未修改 Bucket 配置，测试对象均处于本轮随机 `ariso/analytics-143-<uuid>/` 命名空间。
 
-| 服务            | 实际 Bucket | 本轮结果                                                                                                                              | 原始证据                                                                                     |
-| --------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
-| SeaweedFS       | `images`    | 9 阶段通过，4 个 Key 最终 HEAD 确认不存在                                                                                             | [报告](./live/seaweedfs.json)                                                                |
-| R2              | `image`     | 用户纠正 Bucket 后 9 阶段通过，4 个 Key 最终 HEAD 确认不存在                                                                          | [报告](./live/r2.json)                                                                       |
-| R2 首次错误配置 | `images`    | 首次 PUT403，清理 DELETE403；HEAD Bucket、限定前缀 LIST、尝试 Key 的 HEAD 也均403。不能宣称这个错误 Bucket 的对象状态已核实或清理成功 | [失败报告](./live/r2-wrong-bucket.json)、[只读诊断](./live/r2-wrong-bucket-diagnostics.json) |
+| 服务            | 实际 Bucket | 本轮结果                                                                                                                              | 原始证据                                                                                                                                                                                                                                                                                                                               |
+| --------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| SeaweedFS       | `images`    | 9 阶段通过，4 个 Key 最终 HEAD 确认不存在                                                                                             | [报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-ANALYTICS-02/live/seaweedfs.json)                                                                                                                                                                                     |
+| R2              | `image`     | 用户纠正 Bucket 后 9 阶段通过，4 个 Key 最终 HEAD 确认不存在                                                                          | [报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-ANALYTICS-02/live/r2.json)                                                                                                                                                                                            |
+| R2 首次错误配置 | `images`    | 首次 PUT403，清理 DELETE403；HEAD Bucket、限定前缀 LIST、尝试 Key 的 HEAD 也均403。不能宣称这个错误 Bucket 的对象状态已核实或清理成功 | [失败报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-ANALYTICS-02/live/r2-wrong-bucket.json)、[只读诊断](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-ANALYTICS-02/live/r2-wrong-bucket-diagnostics.json) |
 
 两份成功报告逐阶段对账一致：初始 3 个 writing 对象均待核对；HEAD 确认后 6144 字节；正式 Key 事务交接后仍为 6144；临时对象删除后 4096。2MiB 迟到对象已在远端出现、但提供方尚未扫描发现时仍报告“已登记 4096”，不冒充远端精确总量。限定前缀分页列举发现后为 2101248，删除孤儿后回到 4096，删除 probe 后为 1024。最终再清理原图，成功实验的全部 8 个明确 Key 均确认不存在。
 

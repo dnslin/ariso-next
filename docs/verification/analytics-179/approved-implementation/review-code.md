@@ -12,7 +12,7 @@
 
 **P2，已修复：单图统计401只停止自身，清缓存可重新启动页面其他查询。** 初版 `ImageStatisticsDialog` 持久锁定自己的 `enabled`，但图库和回收站的 `onSessionExpired` 直接 `client.clear()` 后导航。它们的列表、详情和任务状态 observer 仍启用；当清理后发生下一次 React options publication 时，可重新创建并读取查询。在导航延迟期间，失效会话会再次发起私有读取。
 
-审查者使用项目实际 `@tanstack/react-query` 在 Node v24.18.1 执行受控 `QueryClient`/`QueryObserver` 复现，采用图库列表同样的 `staleTime: Infinity`。首次订阅读一次；直接清理后再次 `observer.setOptions`，读取次数从1变2。先设置 `enabled:false` 再清理并发布禁用选项，读取次数保持1。两条断言实际通过，输出见[复现日志](./review-401-observer.txt)。禁用 observer 允许创建无数据的空 query 条目，不能把空条目误判为私有数据残留。
+审查者使用项目实际 `@tanstack/react-query` 在 Node v24.18.1 执行受控 `QueryClient`/`QueryObserver` 复现，采用图库列表同样的 `staleTime: Infinity`。首次订阅读一次；直接清理后再次 `observer.setOptions`，读取次数从1变2。先设置 `enabled:false` 再清理并发布禁用选项，读取次数保持1。两条断言实际通过，输出见[复现日志](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/approved-implementation/review-401-observer.txt)。禁用 observer 允许创建无数据的空 query 条目，不能把空条目误判为私有数据残留。
 
 修复复审：图库页面锁定 `sessionEnded`，该状态传入 `useLibraryQuery` 的分页/连续列表，传入 `useDetailQuery` 并同时禁用详情与 `useDetailStatus`，禁用选择核对。回收站同样禁用列表、详情与选择核对。两页先完成禁用状态的渲染、移除业务子树，再在 effect 中清理缓存、上传状态并跳登录。统计页原有 overview/usage 会话锁继续复用。单图弹窗的本地锁保证父页面清理前自身停止；共享详情 hook 的新增 `enabled` 默认开启，上传详情既有调用未改变。没有添加兼容分支或重试层。
 
@@ -54,7 +54,7 @@
 
 ## 单图完整场景实录核验
 
-只读核验[最终单图报告](./browser/analytics-179-approved-detail-complete/analytics.json)及[runner报告](./browser/analytics-179-approved-detail-complete/runner.json)，没有重新执行。runner为Node v24.18.1、suite=analytics、only=detail、TaskSpace2/p1，status=passed，analytics阶段passed，temporaryDirectoryRemoved=true；业务报告status=passed、fixtureRestored=true、browserErrors=[]。该结果只代表定向detail，不能替代默认full或consumer。
+只读核验[最终单图报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/approved-implementation/browser/analytics-179-approved-detail-complete/analytics.json)及[runner报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/approved-implementation/browser/analytics-179-approved-detail-complete/runner.json)，没有重新执行。runner为Node v24.18.1、suite=analytics、only=detail、TaskSpace2/p1，status=passed，analytics阶段passed，temporaryDirectoryRemoved=true；业务报告status=passed、fixtureRestored=true、browserErrors=[]。该结果只代表定向detail，不能替代默认full或consumer。
 
 - 四个独立ID的累计/周期真实对账分别为累计72、66、54和0；7/30/90合计为12/36/72、11/33/66、9/27/54、0/0/0。7天没有旧时区段，前3个ID的30/90天有旧时区段，和报告中的SQLite比较断言一致。
 - 报告记录16次布局/截图采集，其中15组直接弹窗几何，另1次为范围Popover。桌面弹窗实际宽740、手机358，没有自身横向溢出。390×400短视口弹窗top16/bottom384，footer保持383；键盘滚动后日期字形仍在SVG/图表边界内。长名称可读区域42px、行高21px、完整内容210px，真实End/Home和Tab操作执行通过。
@@ -150,7 +150,7 @@ consumer新增1440与390第十行键盘focus，要求该整行top/bottom位于�
 
 ## 单图最新最终实录核验
 
-独立只读核验 [detail-final-pass业务报告](./browser/analytics-179-approved-detail-final-pass/analytics.json) 与 [runner](./browser/analytics-179-approved-detail-final-pass/runner.json)：Node v24.18.1，suite=analytics/only=detail，runner和analytics阶段passed，temporaryDirectoryRemoved=true；业务status=passed、fixtureRestored=true、browserErrors=[]。未重复执行。
+独立只读核验 [detail-final-pass业务报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/approved-implementation/browser/analytics-179-approved-detail-final-pass/analytics.json) 与 [runner](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/approved-implementation/browser/analytics-179-approved-detail-final-pass/runner.json)：Node v24.18.1，suite=analytics/only=detail，runner和analytics阶段passed，temporaryDirectoryRemoved=true；业务status=passed、fixtureRestored=true、browserErrors=[]。未重复执行。
 
 新增末端检查实际从scrollTop235滚至292，clientHeight153、scrollHeight445，精确到正文末端；390×400末端与360窄屏图均落盘。累计Info和关闭hover两者raw transform为单位matrix，transformIsIdentity=true，前景rgb(39,35,67)、透明背景；pressed仍为none/透明。19次布局采集包含正常浅深/手机/桌面、短视口末端、360、hover及原状态，不能以数量代替独立设计对照。
 
@@ -224,7 +224,7 @@ consumerStep只记录正在执行的业务节点；失败采集新增快照sourc
 
 ## 来源页误消费根因确认与最终门禁复审
 
-独立只读核验 [source-audit失败报告](./browser/analytics-179-source-audit/analytics.json)：set发生于来源/analytics?days=30、modal=true、t3308.2，保存准确imageId/scroll1000；68.3ms后同来源URL、modal=true、同值发生remove，堆栈落在恢复函数移除处；随后管理页快照null。fixtureRestored=true、browserErrors=[]。这明确证明保存成功后被来源页误消费，撤回之前“保存handler缺失/未保存”的归因；onClick不是必要修复，最终已撤回，HeroUI原onPress保留。
+独立只读核验 [source-audit失败报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/approved-implementation/browser/analytics-179-source-audit/analytics.json)：set发生于来源/analytics?days=30、modal=true、t3308.2，保存准确imageId/scroll1000；68.3ms后同来源URL、modal=true、同值发生remove，堆栈落在恢复函数移除处；随后管理页快照null。fixtureRestored=true、browserErrors=[]。这明确证明保存成功后被来源页误消费，撤回之前“保存handler缺失/未保存”的归因；onClick不是必要修复，最终已撤回，HeroUI原onPress保留。
 
 最终代码复审Approve，无新增Critical/Required。restoreAnalyticsReturn只接当前source和页面已有statisticsOpen布尔值，首行打开时返回；screen传statisticsId!==null且将statisticsId纳入effect依赖。因此弹窗打开时overview更新不恢复刚保存快照，打开动作也会cleanup先前帧。此前实际完成后remove、取消保留、目标缺失保留的修复保持。不新建标记、会话数据结构、监听器或重试层，新增函数仍属于既有navigation模块。
 
@@ -242,10 +242,10 @@ pointer到library保存的准确source=/analytics?days=30、真实imageId和scro
 
 ## 新主线身份与工作区连续性最终实录
 
-独立读取最新 `test-results/analytics-179-final-identity`、`analytics-179-final-workspace` 的runner与业务JSON。两runner均Node v24.18.1、suite分别identity-session/workspace-continuity，实际阶段与总status=passed，temporaryDirectoryRemoved=true；两业务status=passed，均1440px。稳定归档：[身份报告](./browser/analytics-179-final-identity/identity-session-1440.json) / [runner](./browser/analytics-179-final-identity/runner.json)、[连续性报告](./browser/analytics-179-final-workspace/workspace-continuity-1440.json) / [runner](./browser/analytics-179-final-workspace/runner.json)。审查者未重新执行。
+独立读取最新 `test-results/analytics-179-final-identity`、`analytics-179-final-workspace` 的runner与业务JSON。两runner均Node v24.18.1、suite分别identity-session/workspace-continuity，实际阶段与总status=passed，temporaryDirectoryRemoved=true；两业务status=passed，均1440px。稳定归档：[身份报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/approved-implementation/browser/analytics-179-final-identity/identity-session-1440.json) / [runner](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/approved-implementation/browser/analytics-179-final-identity/runner.json)、[连续性报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/approved-implementation/browser/analytics-179-final-workspace/workspace-continuity-1440.json) / [runner](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/approved-implementation/browser/analytics-179-final-workspace/runner.json)。审查者未重新执行。
 
 身份实录browserErrors=[]：真实429/10秒窗口、首页已登录默认进入后台、已有local returnTo与外部目的地拒绝、实际session续期Cookie推进、dashboard会话过期、SQLite退出失败留页及后台检查不覆盖成功重试均通过。登录异常明确标注边界注入，包含不同错误响应、session核对失败以及延迟React提交后重复反馈聚焦；不称所有异常均来自真实服务故障。
 
 连续性实录确认原生侧栏与浏览器历史保持队列ID/Blob/private/同document；真实上传接受后在library后台读回完成，原queue/image身份保留且submission仅一次。硬刷新确有beforeunload警告和新document/空队列；真实注销、过期撤销Blob与清队列通过。独立上传结果401读自真实/api/images路径，sessionChecksHeld=3，beforeUnload=[false]，证明未被独立session检查先触发掩盖。
 
-最新消费者稳定归档也已存在：[业务](./browser/analytics-179-source-gate-pass/analytics.json) / [runner](./browser/analytics-179-source-gate-pass/runner.json)。当前最终代码结论Approve，无未关闭本轮必修项；最终单图、消费者、身份与连续性的实录已核验。两项定向不替代account390完整或默认full；默认历史失败、原集成上传偶发失败与其精确复跑、设计对照、人工验收和远端CI均沿统一证据分别保留。主代理报告最新串行链退出0，本审查不重复执行或扩充通过范围。
+最新消费者稳定归档也已存在：[业务](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/approved-implementation/browser/analytics-179-source-gate-pass/analytics.json) / [runner](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/approved-implementation/browser/analytics-179-source-gate-pass/runner.json)。当前最终代码结论Approve，无未关闭本轮必修项；最终单图、消费者、身份与连续性的实录已核验。两项定向不替代account390完整或默认full；默认历史失败、原集成上传偶发失败与其精确复跑、设计对照、人工验收和远端CI均沿统一证据分别保留。主代理报告最新串行链退出0，本审查不重复执行或扩充通过范围。

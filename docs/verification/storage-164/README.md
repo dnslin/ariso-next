@@ -33,9 +33,9 @@
 
 Local 首轮聚焦命令 `pnpm exec vitest run --project integration tests/integration/storage/local-listing.test.ts tests/integration/storage/local.test.ts`：2 文件 / 29 项通过。新增行为覆盖批大小与分页、大小/特殊字符/partial、命名空间隔离、空或未创建目录、下一轮迟到文件、配置链接和不跟随对象别名、非目录错误、取消与提前结束。
 
-真实服务首轮发现 SeaweedFS 将 URL 编码响应中的文件名空格写为 `+`，原实现误读为加号。R2 首轮通过；两服务自己的计划对象均清理成功。失败原样保留在 [修复前真实报告](./live-listing-before.json)。已补请求感知的协议失败回归，再移除无必要的 EncodingType 请求与 URL 解码路径。现有 Ariso Key 校验已禁止 XML 不支持的控制字符，不新增服务商特判或解码兼容层。
+真实服务首轮发现 SeaweedFS 将 URL 编码响应中的文件名空格写为 `+`，原实现误读为加号。R2 首轮通过；两服务自己的计划对象均清理成功。失败原样保留在 [修复前真实报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-164/live-listing-before.json)。已补请求感知的协议失败回归，再移除无必要的 EncodingType 请求与 URL 解码路径。现有 Ariso Key 校验已禁止 XML 不支持的控制字符，不新增服务商特判或解码兼容层。
 
-真实 R2/SeaweedFS 列举验证由 `tests/experiments/storage-s3/verify-listing.ts` 执行；最终两服务各 12 项通过，见[最终真实报告](./live-listing.json)。初始 5 个对象按 batchSize=2 返回 3 批，覆盖真实大小、中文/空格/加号/字面 `%2F`、停用维护与邻接隔离；已知对象确切删除后写入迟到对象，新建适配器从头列举可见；每服务 7 个计划 Key 删除后逐个 HEAD 为不存在，两个新命名空间最终为空。重建适配器的验证只证明枚举无跨轮缓存，不冒充 Web 调度或进程重启恢复。所有对象先使用新随机 ID 登记，本轮只删除自身明确 Key，不改变真实预览数据、Bucket 配置或策略。报告不含凭据或签名。
+真实 R2/SeaweedFS 列举验证由 `tests/experiments/storage-s3/verify-listing.ts` 执行；最终两服务各 12 项通过，见[最终真实报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-164/live-listing.json)。初始 5 个对象按 batchSize=2 返回 3 批，覆盖真实大小、中文/空格/加号/字面 `%2F`、停用维护与邻接隔离；已知对象确切删除后写入迟到对象，新建适配器从头列举可见；每服务 7 个计划 Key 删除后逐个 HEAD 为不存在，两个新命名空间最终为空。重建适配器的验证只证明枚举无跨轮缓存，不冒充 Web 调度或进程重启恢复。所有对象先使用新随机 ID 登记，本轮只删除自身明确 Key，不改变真实预览数据、Bucket 配置或策略。报告不含凭据或签名。
 
 本轮没有页面、公共组件、交互、业务 HTTP 契约或应用调用方变化。Figma 两端及状态节点、截图和设计还原评审、人工 UI 验收不适用；未运行浏览器检查，不将历史 UI 证据当作本轮通过。既有 Ego Lite 是后续浏览器验证唯一使用的浏览器，不安装其他浏览器。Release 双架构镜像和容器验证未执行，按现有发布流程承接；没有发布、部署或创建 Release。AWS S3 按现行执行约定取消实测要求，保持未验证。
 
@@ -104,7 +104,7 @@ startup 管理组合显式读取 media/upload/probe 的真实引用与本地活�
 
 ### 实际对象与恢复证据
 
-[完整维护真实报告](./live-maintenance.json)由以下命令首次运行取得退出 0，两服务各 14 项通过：
+[完整维护真实报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-164/live-maintenance.json)由以下命令首次运行取得退出 0，两服务各 14 项通过：
 
 ```sh
 node tests/experiments/storage-s3/verify-maintenance.ts \

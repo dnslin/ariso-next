@@ -82,7 +82,7 @@
 
 回读两端 60 个补充节点（含阅读指引），核对字体、水平越界、固定底栏、原型目标与画板／分区重叠。抽查队列、45 张拆批、处理失败、混合结果、扫描汇总及空队列截图，并修正复用组件列宽。字体沿用 Noto Sans SC、Caveat 和既有桌面来源中的 Inter。
 
-节点清单、分组坐标、连线及检查证据见[上传审计记录](./verification/upload-flow-2026-09-18.json)。未执行播放器、真实浏览器上传、应用测试或构建；本次仅修改原型与文档。
+节点清单、分组坐标、连线及检查证据见[上传审计记录](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/archive/preparation-2026-09/design/verification/upload-flow-2026-09-18.json)。未执行播放器、真实浏览器上传、应用测试或构建；本次仅修改原型与文档。
 
 ## 缩略图补充（2026-09-18）
 

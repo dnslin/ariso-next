@@ -7,7 +7,7 @@
 - 桌面分区 [07 · 图库与图片详情](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=209-1014)：x=14200，y=96754，6600 × 7340。
 - 手机分区 [07 · 图库与图片详情](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=209-2268)：x=5400，y=79994，2200 × 7000。
 - 仅 00 为评审阅读入口。01 是固定数据的「素材收藏」相册列表；02–25 是业务状态。异常演示入口只存在于 00。
-- [结构与交互审计](./verification/parallel-special-formats-2026-09-19.json)
+- [结构与交互审计](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/archive/preparation-2026-09/design/verification/parallel-special-formats-2026-09-19.json)
 
 ## 格式矩阵与复用规则
 

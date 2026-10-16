@@ -60,7 +60,7 @@ Optional：OAS3.0.4在multipart下忽略style/explode，重复字段依赖数组
 
 ### 最终本次范围复核结论
 
-独立审查者只读核对归档的 [usage-final-runner.json](browser/reports/usage-final-runner.json)、[usage-final.json](browser/reports/usage-final.json) 与 [preview-final.json](browser/reports/preview-final.json)。新构建后的完整 `--suite upload-usage` 未传 `--only`，Node v24.18.1、TaskSpace 8/p1，运行器与本场景均为 passed；报告包含 24 个布局、36 张截图、10 项检查且浏览器错误为空。代表、交互与恢复均实际执行，真实站点地址/限制、公开规范、跨断点 Tips、键盘表格滚动、Token 返回滚动与焦点、两种命令的原生复制、拒绝复制后的完整手动选择及恢复复制均有实际通过证据。
+独立审查者只读核对归档的 [usage-final-runner.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/upload-199/browser/reports/usage-final-runner.json)、[usage-final.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/upload-199/browser/reports/usage-final.json) 与 [preview-final.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/upload-199/browser/reports/preview-final.json)。新构建后的完整 `--suite upload-usage` 未传 `--only`，Node v24.18.1、TaskSpace 8/p1，运行器与本场景均为 passed；报告包含 24 个布局、36 张截图、10 项检查且浏览器错误为空。代表、交互与恢复均实际执行，真实站点地址/限制、公开规范、跨断点 Tips、键盘表格滚动、Token 返回滚动与焦点、两种命令的原生复制、拒绝复制后的完整手动选择及恢复复制均有实际通过证据。
 
 两项局部字号修正现在已有动态依据。最终人工预览 `http://127.0.0.1:3299` 的相同桌面/手机视口报告记录表格正文 13px、只读命令字段 12px/180px，两端一致；真实剪贴板恢复复制保持选区，另保存 14 张预览截图。测试没有跳过原失败断言；原默认全量中的 14px 失败继续作为修前证据保留。
 
@@ -68,7 +68,7 @@ Optional：OAS3.0.4在multipart下忽略style/explode，重复字段依赖数组
 
 ### 打开后真实会话失效的补充复核
 
-证据复核进一步发现此前 owner 307 只覆盖匿名入口，没有覆盖页面已打开后的会话失效。实施者仅新增 recovery 行为场景，产品与构建输入未变。独立审查者只读核对脚本及 [recovery-final-runner.json](browser/reports/recovery-final-runner.json)、[recovery-final.json](browser/reports/recovery-final.json)：先在隔离 runner 数据库实际过期 owner session，再触发公共 shell 的 focus 检查；页面进入 session 状态，真实设置 GET 返回 401。两主题、1440/390 均断言复制按钮、命令、缓存限制和重试入口消失，随后真实登录保留 `/settings/api/usage` 返回路径，恢复的命令精确匹配实际站点地址。没有伪造 HTTP 响应、跳过旧断言或修改用户预览数据。
+证据复核进一步发现此前 owner 307 只覆盖匿名入口，没有覆盖页面已打开后的会话失效。实施者仅新增 recovery 行为场景，产品与构建输入未变。独立审查者只读核对脚本及 [recovery-final-runner.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/upload-199/browser/reports/recovery-final-runner.json)、[recovery-final.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/upload-199/browser/reports/recovery-final.json)：先在隔离 runner 数据库实际过期 owner session，再触发公共 shell 的 focus 检查；页面进入 session 状态，真实设置 GET 返回 401。两主题、1440/390 均断言复制按钮、命令、缓存限制和重试入口消失，随后真实登录保留 `/settings/api/usage` 返回路径，恢复的命令精确匹配实际站点地址。没有伪造 HTTP 响应、跳过旧断言或修改用户预览数据。
 
 新增场景仍处于 `phase === undefined || phase === 'recovery'` 分支，默认完整入口会执行；定向 phase 继续由 upload-usage suite 独占。此次实际仅运行 `--suite upload-usage --only recovery`：Node v24.18.1、TaskSpace 8/p1，运行器与场景 passed，6 个布局、6 张截图，浏览器错误为空。此前完整 suite 的 24 布局/36 截图报告继续支持未变部分，不能写成新增场景后又重跑了完整 suite。
 

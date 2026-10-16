@@ -6,7 +6,7 @@
 
 - 桌面 05-B：[05 · 工作台与访问统计](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=209-1012)。
 - 手机 05-B：[05 · 工作台与访问统计](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=209-2266)。
-- [76 个根画板与入口检查](./verification/analytics-flow-2026-09-19.json)。
+- [76 个根画板与入口检查](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/archive/preparation-2026-09/design/verification/analytics-flow-2026-09-19.json)。
 
 ## 阅读顺序与节点
 

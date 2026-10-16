@@ -12,28 +12,28 @@
 
 ## 原节点与最终截图
 
-| 区域           | 桌面节点      | 手机节点         | 修改及证据                                                                                                                                      |
-| -------------- | ------------- | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| 图库详情       | 36:312        | 102:3228         | 返回统一、8px版本控件、公开入口替代常驻说明、透明完整图片。[桌面](./figma/figma-36-312.png)、[手机](./figma/figma-102-3228.png)                 |
-| 回收列表       | 30:1037       | 102:852          | 管理缩略图、仅管理员可见入口、移除虚假面包屑、底栏铺满。[桌面](./figma/figma-30-1037.png)、[手机](./figma/figma-102-852.png)                    |
-| 回收详情       | 405:6888      | 405:6735         | 图片与资料桌面并排/手机上下；顶部返回，底部仅恢复图片；状态入口展开说明。[桌面](./figma/figma-405-6888.png)、[手机](./figma/figma-405-6735.png) |
-| 上传           | 30:97         | 101:1014         | 760/360列与360高，手机堆叠；页尾铺满。[桌面](./figma/figma-30-97.png)、[手机](./figma/figma-101-1014.png)                                       |
-| 图库与公共区域 | 30:285、30:98 | 98:748、106:1494 | 去虚假面包屑、数量底栏铺满；侧栏/菜单保留现有公共实现。[桌面图库](./figma/figma-30-285.png)、[手机图库](./figma/figma-98-748.png)               |
-| 上传处理中代表 | 316:5019      | 316:5160         | 同步去面包屑与全宽底栏。[桌面](./figma/figma-316-5019.png)、[手机](./figma/figma-316-5160.png)                                                  |
+| 区域           | 桌面节点      | 手机节点         | 修改及证据                                                                                                                                                                                                                                                                                                                                                                                                        |
+| -------------- | ------------- | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 图库详情       | 36:312        | 102:3228         | 返回统一、8px版本控件、公开入口替代常驻说明、透明完整图片。[桌面](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/figma/figma-36-312.png)、[手机](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/figma/figma-102-3228.png)                 |
+| 回收列表       | 30:1037       | 102:852          | 管理缩略图、仅管理员可见入口、移除虚假面包屑、底栏铺满。[桌面](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/figma/figma-30-1037.png)、[手机](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/figma/figma-102-852.png)                    |
+| 回收详情       | 405:6888      | 405:6735         | 图片与资料桌面并排/手机上下；顶部返回，底部仅恢复图片；状态入口展开说明。[桌面](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/figma/figma-405-6888.png)、[手机](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/figma/figma-405-6735.png) |
+| 上传           | 30:97         | 101:1014         | 760/360列与360高，手机堆叠；页尾铺满。[桌面](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/figma/figma-30-97.png)、[手机](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/figma/figma-101-1014.png)                                       |
+| 图库与公共区域 | 30:285、30:98 | 98:748、106:1494 | 去虚假面包屑、数量底栏铺满；侧栏/菜单保留现有公共实现。[桌面图库](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/figma/figma-30-285.png)、[手机图库](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/figma/figma-98-748.png)               |
+| 上传处理中代表 | 316:5019      | 316:5160         | 同步去面包屑与全宽底栏。[桌面](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/figma/figma-316-5019.png)、[手机](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/figma/figma-316-5160.png)                                                  |
 
 传输316:4563/4708、保存316:4802/4945同样同步了公共布局。其他历史状态未批量重绘，不宣称全部画板完成同步；产品共用外壳的全部消费路由仍须真实浏览器检查。
 
 ## 展开状态与交互
 
-| 场景             | 桌面                                     | 手机                                     |
-| ---------------- | ---------------------------------------- | ---------------------------------------- |
-| 图库访问说明     | [578:12064](./figma/figma-578-12064.png) | [578:11894](./figma/figma-578-11894.png) |
-| 回收详情访问说明 | [578:12108](./figma/figma-578-12108.png) | [578:11936](./figma/figma-578-11936.png) |
-| 回收列表访问说明 | [578:12235](./figma/figma-578-12235.png) | [578:11986](./figma/figma-578-11986.png) |
+| 场景             | 桌面                                                                                                                                                                      | 手机                                                                                                                                                                      |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 图库访问说明     | [578:12064](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/figma/figma-578-12064.png) | [578:11894](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/figma/figma-578-11894.png) |
+| 回收详情访问说明 | [578:12108](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/figma/figma-578-12108.png) | [578:11936](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/figma/figma-578-11936.png) |
+| 回收列表访问说明 | [578:12235](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/figma/figma-578-12235.png) | [578:11986](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/figma/figma-578-11986.png) |
 
 状态入口44px，桌面说明宽320、手机358，内边距16、文字13px/20行高。原型状态入口点击关联展开代表，再点收起；实现使用可键盘访问的Popover，Esc关闭并回焦点。公开说明贴近可见性入口，复制/下载动作保留必要提醒。回收说明准确保留“管理预览仅本人可见，原外链仍不可访问”，不扩大内容权限。
 
-动效与响应式交接已写入Figma节点579:11977：[截图](./figma/figma-579-11977.png)。云图标40px，精细指针hover上移4px、150ms ease-out；reduced-motion静止。上传中仅轻微透明度变化，成功使用既有CheckCircle2短暂反馈，空闲不循环。这里记录设计意图，没有生成动画视频或把静态图当动态验证。
+动效与响应式交接已写入Figma节点579:11977：[截图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/figma/figma-579-11977.png)。云图标40px，精细指针hover上移4px、150ms ease-out；reduced-motion静止。上传中仅轻微透明度变化，成功使用既有CheckCircle2短暂反馈，空闲不循环。这里记录设计意图，没有生成动画视频或把静态图当动态验证。
 
 ## 自检与实施边界
 
@@ -45,4 +45,4 @@
 
 实际检查复制与手动复制语义后，仅把已实现流程六节点的可见按钮文字统一为“返回”：手机387:5709、387:5728、387:5928；桌面387:5769、387:5788、387:5972。对应实例文字ID依次为I387:5726;3:22、I387:5745;3:22、I387:5937;3:22、I387:5786;3:22、I387:5805;3:22、I387:5981;3:22。六节点均重新读取设计信息及截图，并实际看图确认文字，无按钮形状修改。
 
-证据：[手机复制](./figma/figma-387-5709.png)、[手机版本](./figma/figma-387-5728.png)、[手机手动复制](./figma/figma-387-5928.png)、[桌面复制](./figma/figma-387-5769.png)、[桌面版本](./figma/figma-387-5788.png)、[桌面手动复制](./figma/figma-387-5972.png)。387:5983属于批量无可复制项，387:5994/6005/6050/6061属于下载结果，不在本次detail-copy文字改动范围，保持原状。
+证据：[手机复制](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/figma/figma-387-5709.png)、[手机版本](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/figma/figma-387-5728.png)、[手机手动复制](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/figma/figma-387-5928.png)、[桌面复制](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/figma/figma-387-5769.png)、[桌面版本](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/figma/figma-387-5788.png)、[桌面手动复制](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/figma/figma-387-5972.png)。387:5983属于批量无可复制项，387:5994/6005/6050/6061属于下载结果，不在本次detail-copy文字改动范围，保持原状。

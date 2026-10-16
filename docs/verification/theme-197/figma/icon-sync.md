@@ -22,7 +22,7 @@
 | 旧设置重复入口               | 897:15585 / 897:15620                                                     | 在本次两个深色设置代表中隐藏                                             |
 | 前台旧入口                   | 桌面5处、手机9处                                                          | 隐藏并标记“已移除2026-10-10 / 前台主题入口”                              |
 
-全部新增和修改ID见 [icon-sync.json](icon-sync.json)，关键节点回读见 [icon-readback.json](icon-readback.json)。此外，其他历史设置“界面主题”实例名称已标为废弃，旧主题说明卡也标为废弃，以免继续被当作本次适用设计。
+全部新增和修改ID见 [icon-sync.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/theme-197/figma/icon-sync.json)，关键节点回读见 [icon-readback.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/theme-197/figma/icon-readback.json)。此外，其他历史设置“界面主题”实例名称已标为废弃，旧主题说明卡也标为废弃，以免继续被当作本次适用设计。
 
 同步范围限于新公共源、工作台两端、指定统计/设置代表、旧主题规范替代标记及已识别的前台入口。原手机页眉112:1498保持不变，其397份历史实例未整体换源。未声称全文件已同步，也未改统计内容或其他业务设计。Figma控件使用原生组件、文字与矢量，不是整页截图替代。已复用本地语义变量和现有图标按钮结构；新文字使用已有 Noto Sans SC，手机品牌保留 Caveat。
 
@@ -30,20 +30,20 @@
 
 以下截图均在写入后由Figma重新导出并实际查看：
 
-- [三状态与替代规范](icon-spec.png)（920×320，浅色）
-- [桌面工作台](icon-desktop-workbench.png)（1440×1080，浅色）
-- [手机工作台](icon-mobile-workbench.png)（390×844，浅色）
-- [桌面统计](icon-desktop-analytics.png)（1440×1080，浅色）
-- [桌面深色设置](icon-desktop-dark-settings.png)（1440×1080，深色）
-- [手机深色设置](icon-mobile-dark-settings.png)（390×844，深色）
-- [前台桌面登录](icon-public-desktop.png)（原图1920×960，导出1600×800，无入口）
-- [前台手机登录](icon-public-mobile.png)（390×844，无入口）
+- [三状态与替代规范](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/theme-197/figma/icon-spec.png)（920×320，浅色）
+- [桌面工作台](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/theme-197/figma/icon-desktop-workbench.png)（1440×1080，浅色）
+- [手机工作台](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/theme-197/figma/icon-mobile-workbench.png)（390×844，浅色）
+- [桌面统计](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/theme-197/figma/icon-desktop-analytics.png)（1440×1080，浅色）
+- [桌面深色设置](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/theme-197/figma/icon-desktop-dark-settings.png)（1440×1080，深色）
+- [手机深色设置](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/theme-197/figma/icon-mobile-dark-settings.png)（390×844，深色）
+- [前台桌面登录](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/theme-197/figma/icon-public-desktop.png)（原图1920×960，导出1600×800，无入口）
+- [前台手机登录](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/theme-197/figma/icon-public-mobile.png)（390×844，无入口）
 
 回读确认：工作台标题桌面y84、手机y88；主题按钮不占账号区；深色设置旧入口不再占关联设置行；前台登录没有主题入口。Figma可点击原型的循环反应未另行接线，三状态和行为通过组件及规范表达；运行时行为以真实产品测试为准。
 
 ## 独立产品设计复核
 
-实际查看 [desktop-light](../icon-ui/desktop-light.png)、[desktop-dark](../icon-ui/desktop-dark.png)、[mobile-light](../icon-ui/mobile-light.png)、[mobile-dark](../icon-ui/mobile-dark.png)，并读取 [geometry.json](../icon-ui/geometry.json)。按相同视口先检查整页与后台共享区域，再检查业务区和控件。
+实际查看 [desktop-light](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/theme-197/icon-ui/desktop-light.png)、[desktop-dark](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/theme-197/icon-ui/desktop-dark.png)、[mobile-light](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/theme-197/icon-ui/mobile-light.png)、[mobile-dark](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/theme-197/icon-ui/mobile-dark.png)，并读取 [geometry.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/theme-197/icon-ui/geometry.json)。按相同视口先检查整页与后台共享区域，再检查业务区和控件。
 
 | 层次         | 对照结果                                                                                                                                   |
 | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------ |

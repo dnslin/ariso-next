@@ -24,6 +24,6 @@
 
 首轮普通utility被公共未分层CSS覆盖，源码初审没有发现该级联问题；主线程已从computedStyle定位到main仍为grid且保留88px/32px内距。最终局部重要类与w-full修复这一实际边界，不是修改公共规则。主线程另诊断产物残留旧普通class，移动第三版自身.next后清洁重建；构建缓存处理不属于本次源码审查执行结果。
 
-已读取主线程实际报告：[geometry.json](./geometry.json) 显示1299×865卡片宽448px、中心偏移0；1920×960、390×844、430×844、768×1024偏移均为0；360×800偏移6.5px。不能称全部视口严格居中。[short-viewport.json](./short-viewport.json) 显示420px高视口的内容可滚动，操作按钮位于188–232px可见范围，邮箱和密码保留。本审查没有再次驱动浏览器，以上为对已有报告的证据核对。
+已读取主线程实际报告：[geometry.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/login-centering/geometry.json) 显示1299×865卡片宽448px、中心偏移0；1920×960、390×844、430×844、768×1024偏移均为0；360×800偏移6.5px。不能称全部视口严格居中。[short-viewport.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/login-centering/short-viewport.json) 显示420px高视口的内容可滚动，操作按钮位于188–232px可见范围，邮箱和密码保留。本审查没有再次驱动浏览器，以上为对已有报告的证据核对。
 
 最终仍为原型代码差异审查通过，无遗留必改项；产品实施和用户批准继续分别记录。

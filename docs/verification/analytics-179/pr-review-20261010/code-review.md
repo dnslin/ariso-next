@@ -60,8 +60,8 @@
 pnpm exec vitest run --project integration tests/integration/analytics/reports.test.ts -t 'excludes permanently removed images before taking the top ten'
 ```
 
-- 变异后：退出 1，目标测试真实断言失败。预期十个存活图片 ID，实际空数组，失败在 `reports.test.ts:362`。不是启动失败。[失败日志](mutation-popular-existence.log)。
-- 字节恢复后：同一命令退出 0，目标测试 1 项通过；另外 14 项未被定向选中，不记为通过。[恢复日志](mutation-restored.log)。
+- 变异后：退出 1，目标测试真实断言失败。预期十个存活图片 ID，实际空数组，失败在 `reports.test.ts:362`。不是启动失败。[失败日志](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/pr-review-20261010/mutation-popular-existence.log)。
+- 字节恢复后：同一命令退出 0，目标测试 1 项通过；另外 14 项未被定向选中，不记为通过。[恢复日志](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/pr-review-20261010/mutation-restored.log)。
 - 最后实际执行 `git diff --quiet -- src`，退出 0，确认产品源文件未被本轮变异或评审改动。
 
 实验表明新增永久删除排行条件的这一真实行为受有效断言保护；不能据此推断所有新增能力都有充分覆盖。前述失败筛选空结果仍缺行为测试。

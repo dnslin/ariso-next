@@ -10,7 +10,7 @@
 
 从 [文档导航](../../README.md) 读取能力地图、PRD 第19章、[analytics 规格](../../specs/SPEC-analytics.md)、[任务卡与 DG-ANALYTICS 消费结论](../../archive/m3-m4/experience.md#t-ana-05-工作台统计图表与详情统计联动)、[设计交接](../../design/handoff.md)及[执行约定](../../tasks/execution.md)。保留 R-19.1-01、R-19.2-03、R-19.3-01/02 和模块职责。访问计数、保留和对象责任协议沿既有实现，本次接入界面及所需异常定位查询；下方2026-10-09删除排行修订按用户明确授权更新冲突PRD条目。
 
-[Issue 与评论快照](./issue.json)、[原生 blocked by](./blocked-by.json)及[blocking](./blocking.json)于本轮回读。#169/#171/#178/#57/#129 均 closed；无下游 blocking 项。已有真实 overview、usage 和单图 API；原工作台与统计导航仍占位。单图接口仅有累计三版本和三个周期合计，不虚构单图逐日或周期版本字段。
+[Issue 与评论快照](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/issue.json)、[原生 blocked by](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/blocked-by.json)及[blocking](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/blocking.json)于本轮回读。#169/#171/#178/#57/#129 均 closed；无下游 blocking 项。已有真实 overview、usage 和单图 API；原工作台与统计导航仍占位。单图接口仅有累计三版本和三个周期合计，不虚构单图逐日或周期版本字段。
 
 原项目 `/Volumes/data/project/ariso` 干净，另有其他任务 worktree。更新远端后从 `origin/main`（`4db067f2`）创建管理型独立工作区 `/Users/dnslin/.codex/worktrees/issue-179-analytics-ui/ariso` 和 `codex/issue-179-analytics-ui`，原目录及其他任务保留。环境为 macOS、Node24.18.1、pnpm11.19.0、现有 Ego Lite；不下载浏览器，不发布 Release、镜像或部署。
 
@@ -46,11 +46,11 @@
 - 每日等价数值桌面/手机 `451:18568/18835`。核对日期范围、时区、每日数值、今日未结束和合计；7/30/90行来自响应，不沿静态示例补数。
 - 访问口径桌面/手机 `452:3994/8747`；占用口径桌面/手机 `452:4005/8758`。沿现行短对话框规则补右上关闭，遵守用户本轮静态说明不用大面积彩色块的明确指令。
 
-已有设计范围的真实产品截图保存在 [product](./product/)，逐项同视口对照见 [独立设计评审](./review-design.md)。桌面1440×1080、手机390×844主屏，以及360/430/768、浅深主题和390/1440×400短视口均已取得真实页面证据。访问趋势键盘读数、完整每日表、图表点击和对话框焦点分别由行为场景验证。独立评审实际读取30个主屏与状态节点，另含首读 `451:12898/13086`、首次失败 `451:13199/13387`、刷新旧值 `451:13803/14165`、空库 `451:11794/12107`、无访问 `451:12347/12659`、延迟 `451:14454/14818`、漏计 `451:15109/15473`、旧时区 `451:15764/16128`、占用失败 `451:17884/18075`。原型截图不作为产品验收。
+已有设计范围的真实产品截图保存在 [product](https://github.com/dnslin/ariso-next/tree/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/product)，逐项同视口对照见 [独立设计评审](./review-design.md)。桌面1440×1080、手机390×844主屏，以及360/430/768、浅深主题和390/1440×400短视口均已取得真实页面证据。访问趋势键盘读数、完整每日表、图表点击和对话框焦点分别由行为场景验证。独立评审实际读取30个主屏与状态节点，另含首读 `451:12898/13086`、首次失败 `451:13199/13387`、刷新旧值 `451:13803/14165`、空库 `451:11794/12107`、无访问 `451:12347/12659`、延迟 `451:14454/14818`、漏计 `451:15109/15473`、旧时区 `451:15764/16128`、占用失败 `451:17884/18075`。原型截图不作为产品验收。
 
-单图统计区、异常逐张定位和排行返回属于该 DG 明确的表达缺口。已制作[独立可查看原型](../../../design-plans/issue179-review/index.html)，临时地址 `http://127.0.0.1:4179`；采用现有详情资料下方的紧凑累计/版本/周期表，异常复用图库，排行按真实ID进入管理记录。原型数字为合成样例，不是生产统计验证。
+单图统计区、异常逐张定位和排行返回属于该 DG 明确的表达缺口。已制作[独立可查看原型](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/design-plans/issue179-review/index.html)，临时地址 `http://127.0.0.1:4179`；采用现有详情资料下方的紧凑累计/版本/周期表，异常复用图库，排行按真实ID进入管理记录。原型数字为合成样例，不是生产统计验证。
 
-原型提供有访问、零访问、加载、读取失败、旧数据、积压延迟、漏计和记录不存在，以及浅深色切换。[桌面](./prototype-desktop.png)、[手机统计](./prototype-mobile-statistics.png)、[手机异常](./prototype-mobile-failures.png)是原型真实浏览器截图，不是产品交付截图。初次手机检查发现弹层高度超过视口，已修正为工具栏下的明确可用高度并复核正文滚动与底栏。第一版已被用户否决，按要求保持可查看，不再作为待实施方案。新版见下方；批准不替代最终产品人工验收。
+原型提供有访问、零访问、加载、读取失败、旧数据、积压延迟、漏计和记录不存在，以及浅深色切换。[桌面](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-desktop.png)、[手机统计](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-mobile-statistics.png)、[手机异常](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/prototype-mobile-failures.png)是原型真实浏览器截图，不是产品交付截图。初次手机检查发现弹层高度超过视口，已修正为工具栏下的明确可用高度并复核正文滚动与底栏。第一版已被用户否决，按要求保持可查看，不再作为待实施方案。新版见下方；批准不替代最终产品人工验收。
 
 ### 用户反馈后的第二版
 
@@ -77,7 +77,7 @@
 
 两项集成失败的实际定向命令分别为 `pnpm exec vitest run --project integration tests/integration/identity/auth.test.ts -t 'production constraints reject'`（1通过，19未选中，不记全文件通过）和 `pnpm exec vitest run --project media-tools tests/integration/upload/usage.test.ts`（1/1通过）。本轮不把初次失败改写为首轮全绿，也不把本轮构建竞争归作历史上传ECONNRESET。
 
-首轮32个代表布局后，设计审查发现三项本次实现偏差，并逐项修复：桌面周期组明确从x264左对齐、104px按钮/12px间距；说明弹窗明确桌面480px、手机两侧16px且正文独立滚动；首次读取用20px圆角细边卡、22px标题和短说明替换两块大Skeleton。前两项最新真实截图复核通过；最后一项最新构建退出0，[手机首读补图](./product/analytics-initial-loading-final-light-390.png)独立复核通过。旧差异截图保存在 [product/before](./product/before/)，不覆盖失败历史。
+首轮32个代表布局后，设计审查发现三项本次实现偏差，并逐项修复：桌面周期组明确从x264左对齐、104px按钮/12px间距；说明弹窗明确桌面480px、手机两侧16px且正文独立滚动；首次读取用20px圆角细边卡、22px标题和短说明替换两块大Skeleton。前两项最新真实截图复核通过；最后一项最新构建退出0，[手机首读补图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/product/analytics-initial-loading-final-light-390.png)独立复核通过。旧差异截图保存在 [product/before](https://github.com/dnslin/ariso-next/tree/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/product/before)，不覆盖失败历史。
 
 最新首读修改后实际执行 `pnpm exec vitest run --project unit tests/unit/analytics/presentation.test.ts`，6/6通过；对应两个文件的 `pnpm exec prettier --check`、`pnpm exec eslint` 通过，`pnpm run build` 再次退出0。其他呈现用例覆盖空库仍有保留历史、无访问不补热门项、null写入批次不当故障、查询与写入时间分开、waiting/backlog/incomplete/旧时区，以及未知对象不绘完整比例。运行计划及命令入口单测实际120/120通过，默认浏览器入口及phase归属已纳入测试与独立代码复审，没有只新增一个默认不执行的定向脚本。
 
@@ -94,15 +94,15 @@ BROWSER_REPORT_DIR=test-results/analytics-179-consumers-verified node scripts/ve
 
 恢复场景10个布局通过：首次读取、overview/usage独立错误、旧值与原时间保留、真实重试请求、非法参数明确重置、真实SQLite零访问、单独空计数呈现夹具、waiting/backlog/incomplete/旧时区。实际10秒interval经受控时间触发，隐藏不查、恢复即查、在途不重叠；真实注销后的401清数据并跳回带完整目标的登录。网络故障、健康字段和可见性是明确边界注入，不冒充真实写入故障或系统后台窗口；空计数夹具不证明真实空库契约。
 
-[代表报告](./browser/analytics-179-design-recheck/analytics.json)、[行为报告](./browser/analytics-179-behavior-fixed/analytics.json)和[恢复报告](./browser/analytics-179-recovery-verified-4/analytics.json)保留实际断言、限制、清理状态及对应runner结果。所有场景自有临时数据，最终 `fixtureRestored=true`；人工预览数据独立。初次定位/门控/布局测量失败未改为通过：脚本按真实radio语义、React Aria键盘press事件与渲染完成条件修正，不弱化断言或为脚本改产品。
+[代表报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/browser/analytics-179-design-recheck/analytics.json)、[行为报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/browser/analytics-179-behavior-fixed/analytics.json)和[恢复报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/browser/analytics-179-recovery-verified-4/analytics.json)保留实际断言、限制、清理状态及对应runner结果。所有场景自有临时数据，最终 `fixtureRestored=true`；人工预览数据独立。初次定位/门控/布局测量失败未改为通过：脚本按真实radio语义、React Aria键盘press事件与渲染完成条件修正，不弱化断言或为脚本改产品。
 
-公共导航消费检查首次发现起点错误硬编码/upload，修复为routes[0]；随后已批准的上传API用法页因返回链接在标题上方，h1比业务起点低60px。仅此明确路径改测既有返回链接，其余仍测h1，保留严格x/y≤1px及source记录，没有放宽公共区域断言，也未改已批准产品布局。最新consumers退出0：15条已实现路由分别在1440/390/768检查（45页），另15条桌面折叠状态；真实工作台入口、正常排行与指定回收记录导航通过。[消费报告](./browser/analytics-179-consumers-verified/analytics.json)及[公共外壳报告](./browser/analytics-179-consumers-verified/analytics-owner-shell/owner-shell.json)保留严格位置、导航、键盘与账号断言；[截图](./product/analytics-owner-shell/)归档全部消费路由。
+公共导航消费检查首次发现起点错误硬编码/upload，修复为routes[0]；随后已批准的上传API用法页因返回链接在标题上方，h1比业务起点低60px。仅此明确路径改测既有返回链接，其余仍测h1，保留严格x/y≤1px及source记录，没有放宽公共区域断言，也未改已批准产品布局。最新consumers退出0：15条已实现路由分别在1440/390/768检查（45页），另15条桌面折叠状态；真实工作台入口、正常排行与指定回收记录导航通过。[消费报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/browser/analytics-179-consumers-verified/analytics.json)及[公共外壳报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/browser/analytics-179-consumers-verified/analytics-owner-shell/owner-shell.json)保留严格位置、导航、键盘与账号断言；[截图](https://github.com/dnslin/ariso-next/tree/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/product/analytics-owner-shell)归档全部消费路由。
 
-首读卡片最终视觉补图命令 `ego-browser nodejs < /tmp/ariso179-loading-visual.mjs`，仅访问上述独立人工预览，临时门控两条读取；未改SQLite、图片或账号数据。[只读记录](./browser/analytics-179-loading-final/preview-readonly.json)标明 `fetchRestored=true`，释放响应后恢复真实overview和usage。该单点补图不计作默认runner或全量通过。占用首次失败另以 `ego-browser nodejs < /tmp/ariso179-usage-error-visual.mjs` 单点补查：[错误卡完整区域](./product/analytics-usage-first-read-error-final-light-390.png)独立设计复核通过；[只读记录](./browser/analytics-179-usage-error-final/preview-readonly.json)明确usage 500为注入、overview真实200，fetch还原后两资源真实读取恢复，未改数据或账号。
+首读卡片最终视觉补图命令 `ego-browser nodejs < /tmp/ariso179-loading-visual.mjs`，仅访问上述独立人工预览，临时门控两条读取；未改SQLite、图片或账号数据。[只读记录](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/browser/analytics-179-loading-final/preview-readonly.json)标明 `fetchRestored=true`，释放响应后恢复真实overview和usage。该单点补图不计作默认runner或全量通过。占用首次失败另以 `ego-browser nodejs < /tmp/ariso179-usage-error-visual.mjs` 单点补查：[错误卡完整区域](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/product/analytics-usage-first-read-error-final-light-390.png)独立设计复核通过；[只读记录](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/browser/analytics-179-usage-error-final/preview-readonly.json)明确usage 500为注入、overview真实200，fetch还原后两资源真实读取恢复，未改数据或账号。
 
 `node docs/tasks/check.mjs` 通过（120任务/298需求，无缺失ID或循环）；`git diff --check` 通过。未执行默认全量browser、发布镜像/容器检查或最终人工验收。局部新交互仍待原型批准，不能由已通过的分阶段结果代替。
 
-独立数据审查见 [review-data.md](./review-data.md)。对新增 ready 判定的受控变异使新增查询测试按预期失败，原字节已恢复，[日志](./review-data-mutation.txt)保留。独立整体代码审查见 [review-code.md](./review-code.md)：发现401清缓存后仍轮询，先取得失败证据，再以持久会话终止状态禁用查询、取消在途请求并清缓存；新增测试与独立定向复审通过，结论Approve。独立设计评审已实时读取30节点，并实际对照产品各布局，[记录](./review-design.md)保留三项实现偏差及修复复核。首读卡片最新截图复核通过；局部交互和最终人工验收仍未完成。
+独立数据审查见 [review-data.md](./review-data.md)。对新增 ready 判定的受控变异使新增查询测试按预期失败，原字节已恢复，[日志](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/review-data-mutation.txt)保留。独立整体代码审查见 [review-code.md](./review-code.md)：发现401清缓存后仍轮询，先取得失败证据，再以持久会话终止状态禁用查询、取消在途请求并清缓存；新增测试与独立定向复审通过，结论Approve。独立设计评审已实时读取30节点，并实际对照产品各布局，[记录](./review-design.md)保留三项实现偏差及修复复核。首读卡片最新截图复核通过；局部交互和最终人工验收仍未完成。
 
 ## 当前状态
 

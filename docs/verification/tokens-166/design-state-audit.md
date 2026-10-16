@@ -48,14 +48,14 @@ Figma 文件 `74sT9Hrf8G4czcWeTkET5b`。桌面完整页为1440×1080、手机390
 
 ## 获批补齐状态
 
-已实际读取14个新增节点的设计信息与截图，结构详见 [final-structure.json](figma/final-structure.json)。桌面/手机按 checking、check-failed、none、one、many、present、missing 排列：
+已实际读取14个新增节点的设计信息与截图，结构详见 [final-structure.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/tokens-166/figma/final-structure.json)。桌面/手机按 checking、check-failed、none、one、many、present、missing 排列：
 
 - 桌面 `722:7673/7683/7696/7706/7717/7729/7740`；手机 `722:15381/15391/15404/15414/15425/15437/15448`，每项均以前述 `722:` 为前缀。
 - creating unknown 的 checking/check-failed/checked 对应前五项，one/many 摘要复用 `TokenSummary`，按名称→真实状态/期限→创建时间→ID排列。
 - action checking/check-failed 复用前两项；checked 的 current存在/缺失对应 present/missing，按最新 GET 展示，不推断是哪次请求造成。
 - checking/unknown 使用 RefreshCw20标题图标；首次核对“核对列表”，核对失败“重新核对 Token 列表”。关闭核对未知/失败后先读取真实列表，不能开放旧缓存。
 
-Figma根结构只读回核、最新主页面截图、空文案同步和其余状态信息/截图均在 [figma](figma/) 目录。初次写入 [sync.json](figma/sync.json)保留作历史，不用于最终尺寸；14新状态自然宽度480/358，字号、字体、层数与后续摘要次序修改以 final-structure 为准。
+Figma根结构只读回核、最新主页面截图、空文案同步和其余状态信息/截图均在 [figma](https://github.com/dnslin/ariso-next/tree/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/tokens-166/figma) 目录。初次写入 [sync.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/tokens-166/figma/sync.json)保留作历史，不用于最终尺寸；14新状态自然宽度480/358，字号、字体、层数与后续摘要次序修改以 final-structure 为准。
 
 ## 失败文案的真实边界
 
@@ -71,15 +71,15 @@ Figma根结构只读回核、最新主页面截图、空文案同步和其余状
 
 本节仅记录实际打开并检查的最终真实截图。`tokens-166-final-green` 是产物目录名，不能据此认定功能全量通过；其代表截图阶段完成后，精确选择范围的断言失败，功能结论由实施者单独诊断和复测。`tokens-166-recovery-final` 的已有截图也不代表该流程整体通过。
 
-| 最终输入                                              | 实际复核覆盖                                                                                                                          | 与依据逐项核对的结论                                                                                                                                                                                                                                                     |
-| ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `tokens-166-final-green` 的 `page`                    | 1440×1080 / 390×844 浅深整页；补看360/430/768浅深                                                                                     | 先检查公共区域，再检查卡片。标题图标与“创建”同排符合获批原型；手机保留层级、16px页面内距、48px按钮；居中空列表沿 handoff 公共空态规则，简短能力说明无上传已实现承诺；用法入口真实标“尚未开放”。                                                                          |
-| 同批 `create` / `name-error`                          | 1440 / 390 / 360 / 430 / 768 浅深                                                                                                     | 480px最大宽度、手机宽度减32px、24/20px内距、22/18px标题、48px表单与主次按钮。字段错误标题与红字/边框已恢复；真实焦点环可见，错误留原表单。补充宽度未见新的结构或层级偏差。                                                                                               |
-| 同批 `expiry-error-short`                             | 390×400 浅深                                                                                                                          | 内容在弹窗内按实际滚动位置展示，期限错误紧跟字段、底部主次操作可见；截图不单独证明键盘或滚动行为，这些由浏览器行为场景验证。                                                                                                                                             |
-| 同批 `creating`                                       | 1440×1080 浅深                                                                                                                        | 已恢复480×195短容器、“正在创建”、14px生成说明、单个48px中性禁用“处理中…”；无关闭/完整表单/取消，与249:1328一致。手机及限时处理中待新截图复核。                                                                                                                           |
-| 同批 `secret` / `secret-copied`                       | 1440×1080 浅深                                                                                                                        | 完整值仍在原弹窗，真实长值采用可选择的三行文本框；相对短样例的自然增高保留可读性。复制后稳定完整中性Toast为420×60、距右/底28px，CircleCheck20、14px文字、44px关闭目标；标题保留“保存你的 Token”，沿DG-API即时反馈覆盖旧成功段落。选择/滚动是否保留由行为测试单独给结论。 |
-| `tokens-166-recovery-final` 的 `create-known-failure` | 1440×1080 浅深                                                                                                                        | 已恢复“创建失败”、实际错误、重试/取消与44px关闭。真实HTTP400错误折行使容器自然增高至约276px；不是固定样例高度255px的结构偏差。仅真实确认拒绝使用“本次未创建”，未知结果仍进入核对。手机待新截图。                                                                         |
-| [公共外壳最终证据](browser/shell/)                    | 全部14个消费路由：桌面1440与手机390浅深整页；14个手机深色菜单，上传API手机浅色菜单；公共按钮360/430/768/987及390×560的focus/hover代表 | 品牌、侧栏、账号区、设置分类与当前路由高亮一致；菜单/关闭44px目标与焦点环清晰，短视口菜单区域滚动、账号区保留。只检查公共组件一致性，不把其余业务页当作本次重新设计范围；未见本次公共组件退化。                                                                          |
+| 最终输入                                                                                                                                          | 实际复核覆盖                                                                                                                          | 与依据逐项核对的结论                                                                                                                                                                                                                                                     |
+| ------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `tokens-166-final-green` 的 `page`                                                                                                                | 1440×1080 / 390×844 浅深整页；补看360/430/768浅深                                                                                     | 先检查公共区域，再检查卡片。标题图标与“创建”同排符合获批原型；手机保留层级、16px页面内距、48px按钮；居中空列表沿 handoff 公共空态规则，简短能力说明无上传已实现承诺；用法入口真实标“尚未开放”。                                                                          |
+| 同批 `create` / `name-error`                                                                                                                      | 1440 / 390 / 360 / 430 / 768 浅深                                                                                                     | 480px最大宽度、手机宽度减32px、24/20px内距、22/18px标题、48px表单与主次按钮。字段错误标题与红字/边框已恢复；真实焦点环可见，错误留原表单。补充宽度未见新的结构或层级偏差。                                                                                               |
+| 同批 `expiry-error-short`                                                                                                                         | 390×400 浅深                                                                                                                          | 内容在弹窗内按实际滚动位置展示，期限错误紧跟字段、底部主次操作可见；截图不单独证明键盘或滚动行为，这些由浏览器行为场景验证。                                                                                                                                             |
+| 同批 `creating`                                                                                                                                   | 1440×1080 浅深                                                                                                                        | 已恢复480×195短容器、“正在创建”、14px生成说明、单个48px中性禁用“处理中…”；无关闭/完整表单/取消，与249:1328一致。手机及限时处理中待新截图复核。                                                                                                                           |
+| 同批 `secret` / `secret-copied`                                                                                                                   | 1440×1080 浅深                                                                                                                        | 完整值仍在原弹窗，真实长值采用可选择的三行文本框；相对短样例的自然增高保留可读性。复制后稳定完整中性Toast为420×60、距右/底28px，CircleCheck20、14px文字、44px关闭目标；标题保留“保存你的 Token”，沿DG-API即时反馈覆盖旧成功段落。选择/滚动是否保留由行为测试单独给结论。 |
+| `tokens-166-recovery-final` 的 `create-known-failure`                                                                                             | 1440×1080 浅深                                                                                                                        | 已恢复“创建失败”、实际错误、重试/取消与44px关闭。真实HTTP400错误折行使容器自然增高至约276px；不是固定样例高度255px的结构偏差。仅真实确认拒绝使用“本次未创建”，未知结果仍进入核对。手机待新截图。                                                                         |
+| [公共外壳最终证据](https://github.com/dnslin/ariso-next/tree/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/tokens-166/browser/shell) | 全部14个消费路由：桌面1440与手机390浅深整页；14个手机深色菜单，上传API手机浅色菜单；公共按钮360/430/768/987及390×560的focus/hover代表 | 品牌、侧栏、账号区、设置分类与当前路由高亮一致；菜单/关闭44px目标与焦点环清晰，短视口菜单区域滚动、账号区保留。只检查公共组件一致性，不把其余业务页当作本次重新设计范围；未见本次公共组件退化。                                                                          |
 
 公共消费路由为 upload、admin-entry、library、albums、album-content、tags、trash、storage-list、storage-new、storage-edit、storage-cors、processing-settings、account-settings、api-settings。旧Figma工作空间面包屑、未实现导航项与旧手机“菜单”文字入口，按handoff当前公共外壳说明处理；不为还原旧画板重新引入占位能力。桌面业务卡片上移56px由已移除的旧面包屑造成，不是卡片内距偏差。
 
@@ -98,7 +98,7 @@ Figma根结构只读回核、最新主页面截图、空文案同步和其余状
 | `close-warning`、`close-warning-expiring`    | 249:1512 / 249:1524                 | 标题、原关闭正文、44px返回复制X与48px主次操作正确。发现容器269px而原设计255px、正文额外下移14px：来源为本组件未覆盖HeroUI Body的3px上下内距和8px相邻顶部间距，且继承muted正文色。实施者已沿本模块其他Body补`m-0 flex-none p-0 text-foreground`；仅修改两个Token组件，待新截图复核。 |
 | `expired-revoke-confirm`                     | 249:1560                            | 标题“撤销过期 Token？”、实际目标名和已失效/移除记录说明，以及确认撤销/取消结构正确，480×255尺寸符合设计。正文继承HeroUI muted色的差异同时扩核到`TokenActionDialog`所有动作分支；原设计为foreground，实施者已给该Body补`text-foreground`，待新截图确认。                             |
 
-本批回核的Figma截图包括 [主页面](figma/approved-desktop.png)、[复制失败](figma/state-249-1465.png)、[关闭限时提醒](figma/state-249-1524.png)和[过期撤销](figma/state-249-1560.png)，并读取对应设计信息。正文间距偏差来源确认于已安装HeroUI的`alert-dialog.css`中`alert-dialog__body`与`header + body`条目，未归因于公共规范，也未修改Figma或引入新视觉方案。
+本批回核的Figma截图包括 [主页面](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/tokens-166/figma/approved-desktop.png)、[复制失败](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/tokens-166/figma/state-249-1465.png)、[关闭限时提醒](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/tokens-166/figma/state-249-1524.png)和[过期撤销](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/tokens-166/figma/state-249-1560.png)，并读取对应设计信息。正文间距偏差来源确认于已安装HeroUI的`alert-dialog.css`中`alert-dialog__body`与`header + body`条目，未归因于公共规范，也未修改Figma或引入新视觉方案。
 
 ### 手机与动作处理态补齐复核
 
@@ -130,7 +130,7 @@ Figma根结构只读回核、最新主页面截图、空文案同步和其余状
 
 ### 正式行为批次的差异闭环
 
-新构建的 [行为报告](browser/behavior/tokens.json) 与 [运行器报告](browser/behavior/runner.json) 实际记录 `passed`，实施者完成了原生剪贴板成功/拒绝、创建与生命周期操作、返回焦点及真实Cookie会话失效。本设计评审没有重复执行这些检查；旧批次失败仍保留其真实结论。
+新构建的 [行为报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/tokens-166/browser/behavior/tokens.json) 与 [运行器报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/tokens-166/browser/behavior/runner.json) 实际记录 `passed`，实施者完成了原生剪贴板成功/拒绝、创建与生命周期操作、返回焦点及真实Cookie会话失效。本设计评审没有重复执行这些检查；旧批次失败仍保留其真实结论。
 
 实际打开其中34张修改后或此前缺失的截图，仍先检查整页公共区域，再按相同视口对照设计。此前已逐项检查且实现输入未变的其余状态不机械复读。
 
@@ -148,21 +148,21 @@ Figma根结构只读回核、最新主页面截图、空文案同步和其余状
 
 实际打开 `test-results/tokens-166-recovery-focus` 中8张两端浅深加载/读取失败截图及6张桌面浅深核对代表截图。报告的明确失败、未知状态退出、读取异常三组已完成；整轮后续在单条候选返回焦点的键盘环断言处失败，实施者正在调整测试准备方式。此处只补已实际检查的视觉结论，旧报告仍为 `failed`。
 
-| 截图                            | 同视口逐项对照                                                                                                                                                                                                                                   |
-| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `loading`，1440/390浅深         | 对照248:1875/3971：16/24左对齐“正在读取 Token…”、创建禁用、主卡内真实加载状态，已移除双骨架。公共外壳与卡片内距保留桌面/手机层级，没有新增静态彩色提示块。                                                                                       |
-| `read-error`，1440/390浅深      | 对照248:2003/4013：16/24读取失败说明、实际异常、桌面160×48/手机全宽48px重新加载。未把读取失败当成空列表，创建禁用；较长实际错误在手机自然折行，说明与操作没有被裁切。此前字号/手机按钮偏差已由新截图关闭。                                       |
-| `create-one-checking`，1440浅深 | 再读取最新722:7673截图并保存[核对中依据](figma/approved-checking-desktop.png)。480×195、RefreshCw20标题、真实读取说明、48pxdisabled核对按钮与禁用X符合获批布局；加载转圈属于同一操作反馈。                                                       |
-| `create-check-failed`，1440浅深 | 再读取722:7683并保存[核对失败依据](figma/approved-check-failed-desktop.png)。标题、保留待核对状态说明、“重新核对 Token 列表”与返回列表两级48px操作、X44正确。实际失败上下文另行红字显示，使255px样例自然增高约35px；没有裁切异常或增加新结果页。 |
-| `create-checked-one`，1440浅深  | 再读取722:7706并保存[单条候选依据](figma/approved-checked-one-desktop.png)。480×360、完整值不可找回/按ID核对说明、TokenSummary的名称→状态/期限→创建时间→ID、单个返回列表处理操作均一致。候选名称由实际记录替换，不据同名声称本次已创建。         |
+| 截图                            | 同视口逐项对照                                                                                                                                                                                                                                                                                                                                                             |
+| ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `loading`，1440/390浅深         | 对照248:1875/3971：16/24左对齐“正在读取 Token…”、创建禁用、主卡内真实加载状态，已移除双骨架。公共外壳与卡片内距保留桌面/手机层级，没有新增静态彩色提示块。                                                                                                                                                                                                                 |
+| `read-error`，1440/390浅深      | 对照248:2003/4013：16/24读取失败说明、实际异常、桌面160×48/手机全宽48px重新加载。未把读取失败当成空列表，创建禁用；较长实际错误在手机自然折行，说明与操作没有被裁切。此前字号/手机按钮偏差已由新截图关闭。                                                                                                                                                                 |
+| `create-one-checking`，1440浅深 | 再读取最新722:7673截图并保存[核对中依据](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/tokens-166/figma/approved-checking-desktop.png)。480×195、RefreshCw20标题、真实读取说明、48pxdisabled核对按钮与禁用X符合获批布局；加载转圈属于同一操作反馈。                                                       |
+| `create-check-failed`，1440浅深 | 再读取722:7683并保存[核对失败依据](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/tokens-166/figma/approved-check-failed-desktop.png)。标题、保留待核对状态说明、“重新核对 Token 列表”与返回列表两级48px操作、X44正确。实际失败上下文另行红字显示，使255px样例自然增高约35px；没有裁切异常或增加新结果页。 |
+| `create-checked-one`，1440浅深  | 再读取722:7706并保存[单条候选依据](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/tokens-166/figma/approved-checked-one-desktop.png)。480×360、完整值不可找回/按ID核对说明、TokenSummary的名称→状态/期限→创建时间→ID、单个返回列表处理操作均一致。候选名称由实际记录替换，不据同名声称本次已创建。         |
 
 这批补齐状态未发现新的必修设计差异。手机核对代表、两端none/many与动作present/missing等剩余获批状态继续等待实施者后续实际截图；完整设计结论与人工验收状态不由本批部分截图替代。
 
 ### 最终核对状态与公共分类复核
 
-实际打开 [创建核对截图](browser/create-recovery/) 的36张截图，其中6张桌面核对中/失败/单条候选复用上一批已读且未变的输入；其余30张逐张补核。实际打开 [动作核对截图](browser/action-recovery/) 全部52张截图。两组均包含1440×1080与390×844、浅深主题，先核整页公共区域，再核浮层布局、控件、摘要与真实状态。已回读两组 `runner.json` 和 `tokens.json` 的 `status: passed`，没有重复执行功能检查，也没有将历史失败改写为通过。
+实际打开 [创建核对截图](https://github.com/dnslin/ariso-next/tree/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/tokens-166/browser/create-recovery) 的36张截图，其中6张桌面核对中/失败/单条候选复用上一批已读且未变的输入；其余30张逐张补核。实际打开 [动作核对截图](https://github.com/dnslin/ariso-next/tree/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/tokens-166/browser/action-recovery) 全部52张截图。两组均包含1440×1080与390×844、浅深主题，先核整页公共区域，再核浮层布局、控件、摘要与真实状态。已回读两组 `runner.json` 和 `tokens.json` 的 `status: passed`，没有重复执行功能检查，也没有将历史失败改写为通过。
 
-本批再次读取并实际检查14个获批新状态的最终Figma截图。桌面核对中、失败、单条候选沿上一批已读取的最新截图，其余11项新增保存在 [figma](figma/) 的 `approved-*.png`；节点结构仍以 [final-structure.json](figma/final-structure.json) 为准。
+本批再次读取并实际检查14个获批新状态的最终Figma截图。桌面核对中、失败、单条候选沿上一批已读取的最新截图，其余11项新增保存在 [figma](https://github.com/dnslin/ariso-next/tree/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/tokens-166/figma) 的 `approved-*.png`；节点结构仍以 [final-structure.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/tokens-166/figma/final-structure.json) 为准。
 
 | 真实状态                                          | Figma（桌面 / 手机）                 | 同视口逐项对照结论                                                                                                                                                                                               |
 | ------------------------------------------------- | ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -175,7 +175,7 @@ Figma根结构只读回核、最新主页面截图、空文案同步和其余状
 | 动作目标存在（启用 / 停用；含撤销未发送）         | 722:7729 / 722:15437                 | 已核对当前状态标题、只展示现在数据/不推断原因的说明、单条真实摘要与返回列表处理操作正确。实际启用或停用与背景记录相符，不照样例固定写“已启用”，也不声称目标仍能上传。                                            |
 | 动作目标缺失                                      | 722:7740 / 722:15448                 | 目标不在当前列表标题、可能撤销或自动清理说明、实际目标ID与单个返回列表操作正确。ID保留使短样例自然增高，未增加行为；没有声称已确认哪一次撤销成功，也没有重复发撤销请求。                                         |
 
-公共分类实际打开 [consumers](browser/consumers/) 全部12张截图，覆盖图片处理、账号与安全、上传API三个已实现路由的两端浅深主题。桌面分类始终按图片处理→账号与安全→上传API排列，SlidersHorizontal / ShieldCheck / KeyRound对应各类；当前项黄色高亮正确。手机选择器当前名称与同一图标一致，标题Settings图标、品牌/菜单/账号区沿公共外壳，未见其他消费页面因本次图标补充发生退化。已读取共用 `SettingsCategories` 的同一items映射与报告：两端选项顺序/标签/图标/current selection断言通过。本批手机截图均是选择器关闭态，展开选项列表的视觉尚无独立截图，不以功能断言替代该状态的截图结论。
+公共分类实际打开 [consumers](https://github.com/dnslin/ariso-next/tree/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/tokens-166/browser/consumers) 全部12张截图，覆盖图片处理、账号与安全、上传API三个已实现路由的两端浅深主题。桌面分类始终按图片处理→账号与安全→上传API排列，SlidersHorizontal / ShieldCheck / KeyRound对应各类；当前项黄色高亮正确。手机选择器当前名称与同一图标一致，标题Settings图标、品牌/菜单/账号区沿公共外壳，未见其他消费页面因本次图标补充发生退化。已读取共用 `SettingsCategories` 的同一items映射与报告：两端选项顺序/标签/图标/current selection断言通过。本批手机截图均是选择器关闭态，展开选项列表的视觉尚无独立截图，不以功能断言替代该状态的截图结论。
 
 ### 独立设计结论与保留边界
 
@@ -207,6 +207,6 @@ Figma根结构只读回核、最新主页面截图、空文案同步和其余状
 | 既有深色创建/字段错误四节点                   | 新KeyRound/CalendarDays固定紫色在深背景对比不足，属于Figma新图层绑定问题；只修对应图层。评审实际复读四张截图并用只读Plugin API确认paint为#F4F1F8、绑定foreground VariableID:2:4。其它新状态未取得最终深色视觉覆盖。 |
 | 说明浮层                                      | 最后修正固定文字高度导致末行截断，以HUG文字回读；当前实际能力仍是时区/清理说明和未开放用法，未造公共上传说明。                                                                                                      |
 
-最终Figma材料见[返修目录](figma/refinement/)，批准原型见[原型及审批记录](../../../design-plans/issue166/refinement/plan.md)。公共区域复用现行shell/handoff，旧Figma面包屑、菜单与待实现分类不作为恢复要求，未改公共外壳或未来guide。
+最终Figma材料见[返修目录](https://github.com/dnslin/ariso-next/tree/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/tokens-166/figma/refinement)，批准原型见[原型及审批记录](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/design-plans/issue166/refinement/plan.md)。公共区域复用现行shell/handoff，旧Figma面包屑、菜单与待实现分类不作为恢复要求，未改公共外壳或未来guide。
 
 本轮**产品浏览器行为、真实页面视觉和产品人工验收仍未完成**。原型最后记录排列调整没有新截图；此次Figma静态结论不代替新产品截图、短视口、响应式、两主题、键盘焦点与真实剪贴板复验。浏览器用户接管边界及恢复指令统一见README，PR保持草稿。

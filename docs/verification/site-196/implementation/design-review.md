@@ -4,7 +4,7 @@
 
 ## 已审：登录手机代表状态
 
-实际逐张查看真实产品 [Light 390×844](product/login-light-390.png)、[Dark 390×844](product/login-dark-390.png)，来自 `test-results/issue196-full/identity-login-{light,dark}-390.png`。同视口对照本轮已实际读取并同步的 Figma `102:3020`（[Light](figma/login-mobile.png)、[补取的Dark](figma/login-dark-mobile.png)），深色同时参照已批准原型。只读核对 `PublicShell`、`LoginForm` 和实际浏览器记录 `identity-390-setup.json` 的390px登录条目。Dark实际渲染与历史公共稿差异见下节。
+实际逐张查看真实产品 [Light 390×844](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/product/login-light-390.png)、[Dark 390×844](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/product/login-dark-390.png)，来自 `test-results/issue196-full/identity-login-{light,dark}-390.png`。同视口对照本轮已实际读取并同步的 Figma `102:3020`（[Light](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/figma/login-mobile.png)、[补取的Dark](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/figma/login-dark-mobile.png)），深色同时参照已批准原型。只读核对 `PublicShell`、`LoginForm` 和实际浏览器记录 `identity-390-setup.json` 的390px登录条目。Dark实际渲染与历史公共稿差异见下节。
 
 先核对整页与公共区域：没有上方Logo、站点名或品牌描述；返回首页、点阵/柔光、浅色背景及深色表面层级沿用公共外壳。卡片左右16px，短内容没有被额外品牌空间向下推。Light/Dark实测均为 left16/top213/358×418，中心为422，恰为844px视口中心；截图与几何记录相符。
 
@@ -18,12 +18,12 @@
 
 实际逐张查看以下7张真实产品截图，同视口对照已读取/同步的Figma主页面 `468:11915/468:12216` 和预览 `468:12278/468:12606`。桌面1440×1080，手机390×844，短视口390×420；主页面另补取并实际查看相同视口Dark Figma，选择预览Dark仍参照获批原型及共享主题。
 
-| 真实产品状态             | 截图                                                                                                        |
-| ------------------------ | ----------------------------------------------------------------------------------------------------------- |
-| 内置素材，桌面Light/Dark | [Light](product/site-branding-ready-light-1440.png)、[Dark](product/site-branding-ready-dark-1440.png)      |
-| 内置素材，手机Light/Dark | [Light](product/site-branding-ready-light-390.png)、[Dark](product/site-branding-ready-dark-390.png)        |
-| 选择Logo，桌面/手机Light | [桌面](product/site-branding-selected-light-1440.png)、[手机](product/site-branding-selected-light-390.png) |
-| 选择Logo，手机Dark短视口 | [390×420](product/site-branding-short-selected-focus-dark-390x420.png)                                      |
+| 真实产品状态             | 截图                                                                                                                                                                                                                                                                                                                                                                                      |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 内置素材，桌面Light/Dark | [Light](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/product/site-branding-ready-light-1440.png)、[Dark](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/product/site-branding-ready-dark-1440.png)      |
+| 内置素材，手机Light/Dark | [Light](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/product/site-branding-ready-light-390.png)、[Dark](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/product/site-branding-ready-dark-390.png)        |
+| 选择Logo，桌面/手机Light | [桌面](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/product/site-branding-selected-light-1440.png)、[手机](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/product/site-branding-selected-light-390.png) |
+| 选择Logo，手机Dark短视口 | [390×420](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/product/site-branding-short-selected-focus-dark-390x420.png)                                                                                                                                                                             |
 
 整页与公共区域：桌面保留232px侧栏与32px正文边距，手机保留品牌/44px菜单入口与16px正文边距；返回基本设置、页面标题和说明位置一致。当前真实站点描述为空，侧栏没有Figma样例描述，导航随公共外壳自然上移，预览也不填样例描述；Owner替代样例用户名。这些是实际数据差异，未复制或另造公共区域。主列表没有重复固定返回栏，选择预览仍有固定取消/上传栏。
 
@@ -39,13 +39,13 @@
 
 ## 已审：正常移除确认（四张真实图）
 
-实际逐张查看 [Logo手机Dark](product/site-branding-delete-logo-dark-390.png)、[Logo桌面Light](product/site-branding-delete-logo-light-1440.png)、[Favicon手机Light](product/site-branding-delete-favicon-light-390.png)、[Favicon桌面Dark](product/site-branding-delete-favicon-dark-1440.png)。分别为390×844与1440×1080。同端对照已同步Figma正常确认节点 `470:8940/470:8953`、`470:9329/470:9342` 的真实PNG，另只读 `BrandingRemoval` 及 [behavior定向记录](browser/behavior.json)。Figma删除节点为独立弹窗画板，不含整页背景；其Dark尚无实际截图，不以变量绑定代替Dark渲染证据。
+实际逐张查看 [Logo手机Dark](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/product/site-branding-delete-logo-dark-390.png)、[Logo桌面Light](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/product/site-branding-delete-logo-light-1440.png)、[Favicon手机Light](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/product/site-branding-delete-favicon-light-390.png)、[Favicon桌面Dark](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/product/site-branding-delete-favicon-dark-1440.png)。分别为390×844与1440×1080。同端对照已同步Figma正常确认节点 `470:8940/470:8953`、`470:9329/470:9342` 的真实PNG，另只读 `BrandingRemoval` 及 [behavior定向记录](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/browser/behavior.json)。Figma删除节点为独立弹窗画板，不含整页背景；其Dark尚无实际截图，不以变量绑定代替Dark渲染证据。
 
 先核对整页和公共区域：桌面232px侧栏、手机品牌/菜单和主面板在遮罩后保持原位置；Logo被移除后的内置品牌与Favicon自定义状态来自实际连续操作。桌面弹窗在视口中间，手机弹窗贴近底部、左右16px；遮罩明确压低背景，Light白表面及Dark深色表面仍与背景分离。Logo两图及Favicon桌面图没有正文或操作裁切。
 
 再核对弹窗：标题明确区分Logo/Favicon，正文说明恢复内置标识且站点名称/描述不变；取消和确认移除为两个短操作，黄色主操作清楚，20px圆角、紧凑间距符合获批原型。首轮对照发现Figma桌面独立画板仍480px宽、关闭图标没有44px入口，已仅局部同步四个正常确认节点并实际重看四张新PNG：桌面384×175、手机358×171，20px角，关闭44×44且中文图层名，取消/确认桌面48px高、手机44px高。Figma与产品的这两项剩余差异已闭环；产品使用中文可达名称“关闭”，Figma图层名不充当运行时可达性验证。截图与结构记录见 [正常确认同步](figma-sync.md#正常移除确认局部同步补齐)。只读定向记录确认390/768/1440浅深两主题关闭入口均44×44，手机操作44px、平板/桌面48px；本批没有重复操作浏览器或声称已逐图审查全部12种布局。
 
-首轮Favicon手机Light图中，上一操作的“Logo 已移除”通知覆盖弹窗底部，取消和确认移除只露顶部；失败图保留为 [修前证据](browser/toast-overlap-before.png)。修复后本评审实际重看替换后的四张产品图：手机Favicon的两个完整44px操作均可见，其他三图层级/位置保持，未发现新增裁切。只读最终behavior记录为passed（8检查、12布局、原配置已恢复），并核对运行器在1秒内用两按钮中心的 `elementFromPoint` 检查实际命中自身，未等待通知自然过期才判通过。该遮挡问题已闭环，本批正常确认四图未发现设计阻塞项。正常删除与异常/核对状态分开给结论，不扩大本批覆盖范围。
+首轮Favicon手机Light图中，上一操作的“Logo 已移除”通知覆盖弹窗底部，取消和确认移除只露顶部；失败图保留为 [修前证据](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/browser/toast-overlap-before.png)。修复后本评审实际重看替换后的四张产品图：手机Favicon的两个完整44px操作均可见，其他三图层级/位置保持，未发现新增裁切。只读最终behavior记录为passed（8检查、12布局、原配置已恢复），并核对运行器在1秒内用两按钮中心的 `elementFromPoint` 检查实际命中自身，未等待通知自然过期才判通过。该遮挡问题已闭环，本批正常确认四图未发现设计阻塞项。正常删除与异常/核对状态分开给结论，不扩大本批覆盖范围。
 
 ## 主节点Dark补证与差异来源
 
@@ -55,7 +55,7 @@
 
 ## 已审：恢复与异常状态（42张真实图，分批结论）
 
-本批实际逐张查看 [截图清单](design-reviewed-recovery.json) 中42张PNG，没有操作Ego或重跑行为。8个关键状态均看390×844和1440×1080、Light/Dark四种组合；另外5种过程状态各看手机Light和桌面Dark代表。清单不把72条layout统计计作72张独立设计审查。
+本批实际逐张查看 [截图清单](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/design-reviewed-recovery.json) 中42张PNG，没有操作Ego或重跑行为。8个关键状态均看390×844和1440×1080、Light/Dark四种组合；另外5种过程状态各看手机Light和桌面Dark代表。清单不把72条layout统计计作72张独立设计审查。
 
 | 实际状态                             | 覆盖                  | 对照依据与控件结论                                                                                                                                                        |
 | ------------------------------------ | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -74,17 +74,17 @@
 
 实际重新查看对应Figma的失败、上传核对错误、上传明确选择、缺失素材两端共8张整页Light图，以及移除核对错误/仍有引用两端共4张Light弹窗图。发现的本轮局部几何偏差已先报告并修复：手机上传明确选择1055:35814改同排两短按钮140/154×44；移除异常桌面1055:35885/1055:35904改384px宽，手机1055:35949/1055:35968改44px操作。实际重看这五张新导出图，操作清楚无挤压，差异闭环，见 [同步记录](figma-sync.md#恢复状态局部几何补齐)。未因此修改获批产品。以上Light截图不等于完整Dark状态同步；本批真实Dark截图参照获批原型与公共主题，异常状态Dark Figma仍未实际逐图渲染。失效/未绘过程状态不能声称有对应Figma节点。
 
-首轮实际发现两项问题，修前代表图保留在 [state-before](browser/state-before)：missing-file公共品牌区露浏览器坏图标、文字偏移/截断；expired-delete会话已失效仍保留“正在核对”进行中文案。修复后只增量逐张查看这两组390/1440浅深共八张替换图：公共品牌现为小型ImageOff图标与“Logo 无法加载”文字，两端无坏img残留、偏移或截断，仍保留实际缺失引用而非静默冒充内置素材；业务面板与公共导航未改形。失效弹窗改为“尚不能确认移除结果。请先核对服务器当前素材”，禁用按钮为“核对服务器素材”，不再显示进行中；重新登录入口完整可见，遮罩及弹窗位置保持。只读运行器确认取证前严格检查公共Logo文字/无img与phase unknown/无正在核对或正在移除。两项设计发现均已闭环，本批42张所覆盖恢复状态未发现剩余设计阻塞项。Figma缺失素材公共区域仍是示例内置字标，本轮不扩改历史公共稿；该实际异常提示不是宣称已有对应完整Figma状态。
+首轮实际发现两项问题，修前代表图保留在 [state-before](https://github.com/dnslin/ariso-next/tree/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/browser/state-before)：missing-file公共品牌区露浏览器坏图标、文字偏移/截断；expired-delete会话已失效仍保留“正在核对”进行中文案。修复后只增量逐张查看这两组390/1440浅深共八张替换图：公共品牌现为小型ImageOff图标与“Logo 无法加载”文字，两端无坏img残留、偏移或截断，仍保留实际缺失引用而非静默冒充内置素材；业务面板与公共导航未改形。失效弹窗改为“尚不能确认移除结果。请先核对服务器当前素材”，禁用按钮为“核对服务器素材”，不再显示进行中；重新登录入口完整可见，遮罩及弹窗位置保持。只读运行器确认取证前严格检查公共Logo文字/无img与phase unknown/无正在核对或正在移除。两项设计发现均已闭环，本批42张所覆盖恢复状态未发现剩余设计阻塞项。Figma缺失素材公共区域仍是示例内置字标，本轮不扩改历史公共稿；该实际异常提示不是宣称已有对应完整Figma状态。
 
-最终只读 [recovery.json](browser/recovery.json) 为passed、6项检查、72条布局，结束时间2026-10-10T15:23:23.054Z，原站点已恢复；这是修复后新代码的最终记录。运行器使用真实服务写入/拒绝/会话失效并明确注入传输故障，验证File保留、GET核对不自动重放和重新登录返回。记录有4条资源加载失败，对应主动移除品牌文件的missing-file场景，不能写成浏览器完全无错误。行为最终结果由统一验证记录承接，用户人工验收仍未完成。
+最终只读 [recovery.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/browser/recovery.json) 为passed、6项检查、72条布局，结束时间2026-10-10T15:23:23.054Z，原站点已恢复；这是修复后新代码的最终记录。运行器使用真实服务写入/拒绝/会话失效并明确注入传输故障，验证File保留、GET核对不自动重放和重新登录返回。记录有4条资源加载失败，对应主动移除品牌文件的missing-file场景，不能写成浏览器完全无错误。行为最终结果由统一验证记录承接，用户人工验收仍未完成。
 
 ## 已审：公共消费者与外壳（19张真实Light图）
 
-实际逐张查看 [公共消费者清单](design-reviewed-consumers.json) 中19张真实PNG：首页/登录/公开分享first与updated各390×844、1440×1080，桌面侧栏展开/收起、手机菜单、真实分享密码门禁和无效页面。先应用 `figma-design-to-code` 再实际读取首页 `2:10/102:3000`、分享 `433:3610/433:8265` 的设计信息及截图，另读取公共柔光 `192:799/192:1836`、手机Header `112:1498` 和侧栏实例 `468:12101`。首页/分享只读参考图见 [Figma同步附录](figma-sync.md#公共消费者只读对照依据)，本批没有改Figma公共节点。
+实际逐张查看 [公共消费者清单](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/design-reviewed-consumers.json) 中19张真实PNG：首页/登录/公开分享first与updated各390×844、1440×1080，桌面侧栏展开/收起、手机菜单、真实分享密码门禁和无效页面。先应用 `figma-design-to-code` 再实际读取首页 `2:10/102:3000`、分享 `433:3610/433:8265` 的设计信息及截图，另读取公共柔光 `192:799/192:1836`、手机Header `112:1498` 和侧栏实例 `468:12101`。首页/分享只读参考图见 [Figma同步附录](figma-sync.md#公共消费者只读对照依据)，本批没有改Figma公共节点。
 
 先核对整页和公共区域：点阵、右上暖色/左下水绿色柔光、返回首页、内容宽度及业务区上下位置保持。手机分享390视口和桌面分享1440视口与Figma相同；首页手机390相同，桌面产品1440而原Figma1920，只做居中/响应式关系对照，不宣称同视口逐像素还原。真实RGB测试Logo在首页192px高区域、分享71px高区域及外壳48px高区域按比例显示；更新后的纯绿Logo替换前一RGB素材，没有旧图残留、拉伸、侵入菜单或正文。测试描述中的 `<b>纯文本</b>` 实际作为文字展示；更新为空描述后首页不继续显示旧描述。Logo存在时以实际图片承担字标，站点名称仍由元数据和可达名称承接，不另造第二个大字标。
 
-外壳展开与手机菜单的Logo/描述和导航分开，Owner账号留在底部；收起后仍是现有窄图标导航，不额外塞品牌图。菜单关闭入口清楚，无新遮挡。只读 [consumers记录](browser/consumers.json) 为passed、3检查、19布局，并有22个已实现入口×390/1440共44份公共外壳结构核对；该统计不充当44张人工图像评审。只读 [restart记录](browser/restart.json) 为passed、1检查，真实进程重启后持久化与恢复内置通过，不由静态截图推断持久化。
+外壳展开与手机菜单的Logo/描述和导航分开，Owner账号留在底部；收起后仍是现有窄图标导航，不额外塞品牌图。菜单关闭入口清楚，无新遮挡。只读 [consumers记录](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/browser/consumers.json) 为passed、3检查、19布局，并有22个已实现入口×390/1440共44份公共外壳结构核对；该统计不充当44张人工图像评审。只读 [restart记录](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/browser/restart.json) 为passed、1检查，真实进程重启后持久化与恢复内置通过，不由静态截图推断持久化。
 
 再核对业务：登录first/update两端均保持居中单卡，没有Logo、站点名或品牌描述，本环境GitHub关闭，未填假按钮。分享真实独立相册为0张、无封面，与Figma48图样例不同；封面占位、标题/数量、空状态完整，未伪造图库或样例描述。分享密码门禁与无效页保留当前Logo/站点描述，正文明确且未将门禁绕开成图库，Logo不挤卡片。此批只审查品牌影响，不扩大到分享功能全流程。
 
@@ -92,9 +92,9 @@
 
 ## 已审：启用GitHub的登录与忘记密码hover（6张真实图）
 
-实际逐张查看 [登录清单](design-reviewed-login.json) 中4张启用GitHub图（1920×960、390×844各Light/Dark）和2张Dark忘记密码hover图。重新实际查看已同步Figma `2:11/102:3020` 的四张相同视口Light/Dark PNG，先核对整页背景/返回首页与卡片位置，再核对表单/第三方操作。配置来自真实保存并经生产进程重启生效的独立测试OAuth设置，没有执行外部OAuth授权。
+实际逐张查看 [登录清单](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/design-reviewed-login.json) 中4张启用GitHub图（1920×960、390×844各Light/Dark）和2张Dark忘记密码hover图。重新实际查看已同步Figma `2:11/102:3020` 的四张相同视口Light/Dark PNG，先核对整页背景/返回首页与卡片位置，再核对表单/第三方操作。配置来自真实保存并经生产进程重启生效的独立测试OAuth设置，没有执行外部OAuth授权。
 
-四图卡片本身居中且没有上方Logo/名称/品牌描述。只读 [login-enabled记录](browser/login-enabled.json) 显示桌面448×441、left736/top259.5；手机358×469、left16/top187.5，与同步Figma几何相同且中心误差在1px内。两主题主次表面清楚；深色邮箱/锁/GitHub图标均可读，保持批准产品而不复制旧Figma未绑定图标和过强柔光的缺口。
+四图卡片本身居中且没有上方Logo/名称/品牌描述。只读 [login-enabled记录](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/browser/login-enabled.json) 显示桌面448×441、left736/top259.5；手机358×469、left16/top187.5，与同步Figma几何相同且中心误差在1px内。两主题主次表面清楚；深色邮箱/锁/GitHub图标均可读，保持批准产品而不复制旧Figma未绑定图标和过强柔光的缺口。
 
 GitHub库SVG实际显示于文字左侧，第三方分隔线与按钮对齐，桌面36px/手机44px高，手机操作未挤压主登录按钮。忘记密码桌面居中且在主登录后，手机靠右且在主登录前；实际80×36/80×44。两张hover仅在短文字范围出现下划线，没有先前通栏大hover区域，也不推动卡片或其他操作。此批未发现本次范围的设计阻塞项；未将真实配置生效或图标存在声称为外部OAuth登录成功，截图也不替代读屏实测。
 

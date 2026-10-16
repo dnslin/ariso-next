@@ -27,10 +27,10 @@
 
 已读主代理实际日志：
 
-- [provider-green.log](./provider-green.log)：1 文件 4 项通过。
-- [editor-focused-final.log](./editor-focused-final.log)：4 文件 26 项通过。
-- [editor-focused.log](./editor-focused.log)：原接口适配阶段 21 通过、2 失败保留。分别是 harness 没有完成 render-phase 初始化导致草稿仍为 50，和 `const editor = editor(...)` 同名遮蔽造成 ReferenceError。修复保留状态重渲染和 helper 命名后才取得上面的结果；不倒改首轮记录。
-- [interface-red.log](./interface-red.log)、[provider-red.log](./provider-red.log)、[provider-red-repeat.log](./provider-red-repeat.log) 保留接口/提供方实现前失败。
+- [provider-green.log](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/upload-200/reports/review-fixes/provider-green.log)：1 文件 4 项通过。
+- [editor-focused-final.log](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/upload-200/reports/review-fixes/editor-focused-final.log)：4 文件 26 项通过。
+- [editor-focused.log](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/upload-200/reports/review-fixes/editor-focused.log)：原接口适配阶段 21 通过、2 失败保留。分别是 harness 没有完成 render-phase 初始化导致草稿仍为 50，和 `const editor = editor(...)` 同名遮蔽造成 ReferenceError。修复保留状态重渲染和 helper 命名后才取得上面的结果；不倒改首轮记录。
+- [interface-red.log](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/upload-200/reports/review-fixes/interface-red.log)、[provider-red.log](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/upload-200/reports/review-fixes/provider-red.log)、[provider-red-repeat.log](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/upload-200/reports/review-fixes/provider-red-repeat.log) 保留接口/提供方实现前失败。
 
 ## 新增条件变异实验
 
@@ -51,10 +51,10 @@ phase === 'checking' || (phase === 'unknown' && phase === 'different');
 
 此变异让 unknown/different 完成态意外解除写入锁，对应允许未经核对再次保存的真实风险。
 
-- 原始：[correctness-mutation-baseline.log](./correctness-mutation-baseline.log)，10/10 通过，退出 0。
-- 变异：[correctness-mutation.log](./correctness-mutation.log)，3 失败、7 通过，退出 1；失败正是未知保存保持锁定，以及两种差异选择前保持锁定的测试。
-- 恢复：[correctness-mutation-restored.log](./correctness-mutation-restored.log)，10/10 通过，退出 0。
-- 恢复副本与本轮 worktree 源文件逐字节一致，摘要见 [correctness-mutation-restored-sha256.txt](./correctness-mutation-restored-sha256.txt)。没有为了实验改产品或测试断言。
+- 原始：[correctness-mutation-baseline.log](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/upload-200/reports/review-fixes/correctness-mutation-baseline.log)，10/10 通过，退出 0。
+- 变异：[correctness-mutation.log](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/upload-200/reports/review-fixes/correctness-mutation.log)，3 失败、7 通过，退出 1；失败正是未知保存保持锁定，以及两种差异选择前保持锁定的测试。
+- 恢复：[correctness-mutation-restored.log](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/upload-200/reports/review-fixes/correctness-mutation-restored.log)，10/10 通过，退出 0。
+- 恢复副本与本轮 worktree 源文件逐字节一致，摘要见 [correctness-mutation-restored-sha256.txt](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/upload-200/reports/review-fixes/correctness-mutation-restored-sha256.txt)。没有为了实验改产品或测试断言。
 
 ## 仍需独立完成的验证
 

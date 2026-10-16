@@ -11,9 +11,9 @@
 | 回收列表4图 | `browser/trash-{light,dark}-{390,1440}.png`            | 标题同行132管理Chip，刷新仍右侧独立44，浅深色无重叠，不再额外占整行说明。                                                       |
 | 回收记录4图 | `browser/trash-record-{light,dark}-{390,1440}.png`     | 标题同行管理Chip；顶部返回、自然比例预览、两列/手机上下和仅恢复底栏保持一致。                                                   |
 
-入口示例：[768待修复](./browser/upload-ready-light-768.png)、[390成功队列](./browser/upload-ready-light-390.png)、[桌面原图说明](./browser/original-info-light-1440.png)、[手机删除确认](./browser/delete-confirm-light-390.png)、[深色回收记录](./browser/trash-record-dark-1440.png)。全部证据在[本轮浏览器目录](./browser/)。
+入口示例：[768待修复](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/workspace-continuity/browser/upload-ready-light-768.png)、[390成功队列](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/workspace-continuity/browser/upload-ready-light-390.png)、[桌面原图说明](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/workspace-continuity/browser/original-info-light-1440.png)、[手机删除确认](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/workspace-continuity/browser/delete-confirm-light-390.png)、[深色回收记录](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/workspace-continuity/browser/trash-record-dark-1440.png)。全部证据在[本轮浏览器目录](https://github.com/dnslin/ariso-next/tree/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/workspace-continuity/browser)。
 
-768设计补充为[606:12016](./figma/figma-606-12016.png)：352队列+24间隔+360设置不变，队列56缩略图/88操作与中间堆叠保持至xl；工具栏使用“待上传 N 张”或“共 N 张”。已实际看新原型，文字可读，等待修正真实图。具体设计见[同步记录](./figma-sync.md)。
+768设计补充为[606:12016](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/workspace-continuity/figma/figma-606-12016.png)：352队列+24间隔+360设置不变，队列56缩略图/88操作与中间堆叠保持至xl；工具栏使用“待上传 N 张”或“共 N 张”。已实际看新原型，文字可读，等待修正真实图。具体设计见[同步记录](./figma-sync.md)。
 
 最终结论：本轮明确列出的视觉范围通过。768排版与删除确认原文件名两项缺口均已修复并实际复验关闭。静态截图不能代替键盘、权限、版本切换、删除恢复、动效及路由持续性行为证据。未来相册标签/大图/版本信息不进入本次范围；历史未覆盖状态仍按此前记录。用户人工验收仍待执行。
 

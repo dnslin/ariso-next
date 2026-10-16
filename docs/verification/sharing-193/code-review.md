@@ -168,7 +168,7 @@ Zoom 控件卸载路径已取得第六项独立 RED：`browser-wheel-zoom-initia
 
 已再次实际读取最终 viewer、carousel、share-session、screen、公开查询/集合/交付代码、共用运行器 diff、真实鼠标/键盘/迟到响应脚本及保存报告。本次模块职责和三项预载边界保持清晰；没有增加依赖、管理 DTO、通用 viewer 框架、静默资源回退或额外授权层。请求取消和来源返回沿现有会话/列表职责，六项问题都按具体失败路径修复，没有新的未处理生产代码发现。
 
-最终 [交互报告](./browser-interactions.json) 来自 `interactions-verified`，runner 与场景均 passed，56 checks、20 layouts。它覆盖真实舞台 Escape、滚轮放大卸载按钮后的焦点与 Escape、连续方向键、名称开关、普通/放大/全屏、原生全屏 Escape、真实拖动、模拟原生触摸滑动/双指缩放、关闭后的来源焦点及滚动、短视口实际滚动。最终 [迟到响应与重试报告](./browser-race.json) 来自 `race-recovered`，runner 与场景均 passed，10 checks、12 layouts；`manualPosts: 1`，九项预期错误被按具体注入场景核对，旧页面错误为零。旧 full 失败和所有恢复前失败仍独立保留。
+最终 [交互报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-193/browser-interactions.json) 来自 `interactions-verified`，runner 与场景均 passed，56 checks、20 layouts。它覆盖真实舞台 Escape、滚轮放大卸载按钮后的焦点与 Escape、连续方向键、名称开关、普通/放大/全屏、原生全屏 Escape、真实拖动、模拟原生触摸滑动/双指缩放、关闭后的来源焦点及滚动、短视口实际滚动。最终 [迟到响应与重试报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-193/browser-race.json) 来自 `race-recovered`，runner 与场景均 passed，10 checks、12 layouts；`manualPosts: 1`，九项预期错误被按具体注入场景核对，旧页面错误为零。旧 full 失败和所有恢复前失败仍独立保留。
 
 代表布局的最终输入取 `viewer-complete` 已完成的 representative 部分；九项打开中撤权/成员变化取 `viewer-final` 已完成的 revocation 部分。后续生产修改只修焦点和指定状态布局，相关改变由最终 interactions/race 覆盖，未变化部分没有机械重跑。它们分别构成本 Issue 场景证据，不能拼接为某一轮完整 `full` 或默认浏览器全部通过。
 

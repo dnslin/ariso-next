@@ -43,7 +43,7 @@ git diff --check
 
 运行器任何缺失样本、工具错误、受阻结果或断言失败均返回非零；独立场景继续收集证据。成功/失败报告都保存实际命令、工具版本、原生信息、期望与实际。命令保留真实临时路径，报告 artifact 字段映射为导出后的 `outputs/` 相对路径。运行器清理自己创建的临时工作区；业务数据不参与实验。
 
-实际全格式报告：[local-arm64.json](./local-arm64.json)，对应导出文件在 [outputs](./outputs/)。共 24 个格式样本、29 项矩阵检查通过，报告包含原生 SVG 失败对照和通过的候选准入路径。原生失败被明确保留，不计为生产能力通过。
+实际全格式报告：[local-arm64.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-MEDIA-02/local-arm64.json)，对应导出文件在 [outputs](https://github.com/dnslin/ariso-next/tree/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-MEDIA-02/outputs)。共 24 个格式样本、29 项矩阵检查通过，报告包含原生 SVG 失败对照和通过的候选准入路径。原生失败被明确保留，不计为生产能力通过。
 
 | 实际命令                                                                                     | 结果                                                                                           |
 | -------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
@@ -64,21 +64,21 @@ git diff --check
 
 完整格式检查失败于既有 `docs/verification/m2-85/remove-explanations/preview-switch/{after,before,mobile}.json`。逐份使用 `git show origin/main:<path>` 确认与本地字节相同，并以当前 Prettier 配置检查主分支内容，三份均失败。这不是本次新增问题；按用户“范围外只报告”要求保留原文件，不削弱格式检查或增加忽略。浏览器完整回归也未通过，PR 保留草稿。
 
-浏览器使用已有 Ego Lite / Chromium，TaskSpace 2；临时 DATA_DIR、密钥和端口，绕过本地代理。实际命令带 `EGO_KEEP_SPACE=1`。桌面完整流程、两端身份重启、图库、公共布局、上传轮询、手机 M2 与交互修正均通过。随后 `workspace-continuity-390` 在 `/library` 等待新的 `job.status=succeeded` 轮询 20 秒超时。[运行器报告](./browser-runner.json)、[失败场景](./browser-workspace-390.json)和[现场网络观测](./browser-failure-observation.json)保留原值：唯一读取发生于 `/upload`，真实资产已经 ready、任务已经 succeeded。失败的测试要求成功读取发生于 `/library`，没有控制读取在导航前完成的竞态。该测试及相关业务文件本次未改，未放宽断言、修改范围外代码或通过重跑掩盖失败。后续手机状态检查和最终独立 UI/library 套件未执行，不能计为通过。运行器已清理临时进程和数据，失败浏览器空间按 Ego 规则保留供诊断。
+浏览器使用已有 Ego Lite / Chromium，TaskSpace 2；临时 DATA_DIR、密钥和端口，绕过本地代理。实际命令带 `EGO_KEEP_SPACE=1`。桌面完整流程、两端身份重启、图库、公共布局、上传轮询、手机 M2 与交互修正均通过。随后 `workspace-continuity-390` 在 `/library` 等待新的 `job.status=succeeded` 轮询 20 秒超时。[运行器报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-MEDIA-02/browser-runner.json)、[失败场景](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-MEDIA-02/browser-workspace-390.json)和[现场网络观测](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-MEDIA-02/browser-failure-observation.json)保留原值：唯一读取发生于 `/upload`，真实资产已经 ready、任务已经 succeeded。失败的测试要求成功读取发生于 `/library`，没有控制读取在导航前完成的竞态。该测试及相关业务文件本次未改，未放宽断言、修改范围外代码或通过重跑掩盖失败。后续手机状态检查和最终独立 UI/library 套件未执行，不能计为通过。运行器已清理临时进程和数据，失败浏览器空间按 Ego 规则保留供诊断。
 
-检查输出摘要见 [checks.json](./checks.json)。
+检查输出摘要见 [checks.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-MEDIA-02/checks.json)。
 
 ## 格式修正与浏览器重试（2026-09-28）
 
 所有者明确授权修正上述三份历史 JSON，并重试浏览器。使用 Node 24.18.1 / pnpm 11.19.0 执行 `pnpm install --frozen-lockfile`、对三份文件执行 `pnpm exec prettier --write`、`pnpm run format:check`，均通过。逐份解析并与修正前 HEAD 内容比较，JSON 值完全一致；独立审计确认只有数组排版及末尾换行变化。上文首次格式失败记录保留，当前格式问题已消除。
 
-原样执行 `BROWSER_REPORT_DIR=test-results/browser-retry pnpm run test:browser`，保留既有 NO_PROXY/no_proxy 并补充 localhost、127.0.0.1、::1、.localhost。重试仍失败，见[重试运行器](./browser-retry-runner.json)与[手机初始化现场](./browser-retry-identity-390.json)。基础页面、错误恢复、桌面身份初始化和重启、M2、交互及跨页连续性通过；本次在手机初始化 `e2e/identity.mjs` 的 `HeroUI retains the group focus ring` 断言失败，比首次轮询超时更早。失败现场仍聚焦 password，输入框外层 box-shadow 为透明的 0px 阴影，未显示要求的 2px 焦点环。本次未到达手机后台轮询场景，不能说原超时已通过重试。后续手机及独立 UI/library 套件未执行。未更改测试断言、超时或业务代码；运行器已清理临时服务和数据，失败浏览器空间保留。
+原样执行 `BROWSER_REPORT_DIR=test-results/browser-retry pnpm run test:browser`，保留既有 NO_PROXY/no_proxy 并补充 localhost、127.0.0.1、::1、.localhost。重试仍失败，见[重试运行器](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-MEDIA-02/browser-retry-runner.json)与[手机初始化现场](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-MEDIA-02/browser-retry-identity-390.json)。基础页面、错误恢复、桌面身份初始化和重启、M2、交互及跨页连续性通过；本次在手机初始化 `e2e/identity.mjs` 的 `HeroUI retains the group focus ring` 断言失败，比首次轮询超时更早。失败现场仍聚焦 password，输入框外层 box-shadow 为透明的 0px 阴影，未显示要求的 2px 焦点环。本次未到达手机后台轮询场景，不能说原超时已通过重试。后续手机及独立 UI/library 套件未执行。未更改测试断言、超时或业务代码；运行器已清理临时服务和数据，失败浏览器空间保留。
 
 独立复核确认首次超时的代码链路：测试只阻断 XHR onload，saving 状态仍触发每 2 秒后台读取；手机打开菜单期间可在 `/upload` 得到 succeeded，控制器置 ready 后停止轮询。此后测试等待 `/library` 再次读取成功便会超时。这不证明任务丢失，也不证明完整浏览器套件已通过。当前仍保留草稿，待解决浏览器失败。
 
 ## 第二次原样浏览器重试（2026-09-28）
 
-按所有者再次重试要求，在相同 Node 24.18.1 / pnpm 11.19.0、现有 Ego TaskSpace 2 执行 `EGO_TASK_SPACE=2 BROWSER_REPORT_DIR=test-results/browser-retry-2 pnpm run test:browser`。保留并补充本地 NO_PROXY/no_proxy；未修改业务、断言或超时时间，使用新的临时数据。命令退出码 1，见[运行器报告](./browser-retry-2-runner.json)与[图库报告](./browser-retry-2-library.json)。
+按所有者再次重试要求，在相同 Node 24.18.1 / pnpm 11.19.0、现有 Ego TaskSpace 2 执行 `EGO_TASK_SPACE=2 BROWSER_REPORT_DIR=test-results/browser-retry-2 pnpm run test:browser`。保留并补充本地 NO_PROXY/no_proxy；未修改业务、断言或超时时间，使用新的临时数据。命令退出码 1，见[运行器报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-MEDIA-02/browser-retry-2-runner.json)与[图库报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-MEDIA-02/browser-retry-2-library.json)。
 
 基础页面、错误恢复、桌面身份初始化与重启、桌面 M2/交互/跨页连续性、手机身份初始化与重启通过。本次未重现焦点环失败，但手机图库点击“关闭图片详情”时被 `role="alert"` 层拦截指针，3 秒后超时。失败后读取页面，图片详情仍打开；不将提示层随后消失解释为该测试已通过。手机上传、轮询、M2/交互/跨页连续性及最终独立 UI/library 套件尚未执行，因此首次手机后台轮询超时仍未取得通过结果。运行器清理临时服务和数据，失败浏览器空间保留；PR 继续保持草稿。
 

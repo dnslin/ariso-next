@@ -1,6 +1,6 @@
 # 首轮完整集成失败只读诊断
 
-日期：2026-10-05（Asia/Shanghai）。本记录基于[首轮完整输出](./checks/integration.txt)、失败测试、启动调用链和基线 `d337f6f1dc70b0b0fcfc9ba8586df5674c16faf3` 的只读核对。诊断者未修改产品代码或测试，也未另跑检查。
+日期：2026-10-05（Asia/Shanghai）。本记录基于[首轮完整输出](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/account-165/checks/integration.txt)、失败测试、启动调用链和基线 `d337f6f1dc70b0b0fcfc9ba8586df5674c16faf3` 的只读核对。诊断者未修改产品代码或测试，也未另跑检查。
 
 ## 已确认结果
 

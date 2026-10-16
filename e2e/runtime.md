@@ -1,66 +1,77 @@
-# Ego Lite 生产页面与外壳验证
+# 本地浏览器回归
 
-先启动现有 Ego Lite，确保 `ego-browser` 在 PATH 中。使用项目 Node 24 和 pnpm：
+`e2e/` 验证当前生产页面的真实操作、响应式布局、键盘与焦点、错误恢复和浏览器错误。阶段任务完成后继续保留这些场景，后续迭代按受影响的功能选择运行范围。
+
+GitHub Actions 不执行浏览器验收或浏览器工具自测；本地与发布检查的边界见[任务执行约定](../docs/tasks/execution.md#适用检查)。本页说明运行方式，不记录某次验收是否通过。
+
+## 运行前准备
+
+- 在仓库根目录使用项目要求的 Node 24 和锁定 pnpm，先执行 `pnpm install --frozen-lockfile`。
+- 已启动 Ego Lite，且 `ego-browser` 在 PATH 中。运行器复用现有浏览器，不下载浏览器。
+- 先执行 `pnpm run build`，生成生产 Standalone。产品代码改变后重新构建。
+- 媒体场景需要 ImageMagick 7（`magick`）和 ExifTool（`exiftool`）；完整流程及 SMTP/密码重置场景需要 `openssl`。部分剪贴板场景使用 macOS 系统工具。
+
+运行器复制生产 Standalone 到临时目录，使用一次性密钥和独立数据库启动应用，并在结束时清理自建进程、夹具和数据。默认不连接已有部署。少数定向入口使用现有预览或真实对象存储，运行前须核对下文参数边界。
+
+## 全量回归
 
 ```sh
 pnpm run build
 pnpm run test:browser
 ```
 
-`test:browser` 先构建 `tests/experiments/shell`，再运行 `scripts/verify-browser.mjs`。运行器复制生产 Standalone 到临时目录，以一次性密钥和空 DATA_DIR 启动完整生产入口。同时以独立端口启动外壳夹具。两者自行清理，不使用真实业务数据，不安装浏览器。
+`test:browser` 实际依次构建 `tests/experiments/shell`、`tests/experiments/ui`，再运行 [`scripts/verify-browser.mjs`](../scripts/verify-browser.mjs)。完整流程包含生产启动、初始化与重启、身份、图库、上传、存储、处理、相册、标签、分享、统计及设置；也包含运行器显式调用的历史协议实验和隔离 UI。
 
-生产页面验证中文、动态标题、字体、浅深色 360/390/430/768/1440 宽度、404 返回首页、资源、健康接口和浏览器错误。隔离夹具直接导入实际 Shell/Providers/CSS，验证导航与分类、Modal 全屏/键盘/焦点/滚动、断点边界、44px 点击区、短视口底栏、长名称与空导航。外壳夹具本身不证明身份、图库或设置写入已经交付。
+[`scripts/browser-plan.mjs`](../scripts/browser-plan.mjs) 中的 `full` 是业务阶段清单。运行器还调度初始化、重启及独立夹具，因此仅执行某一个旧场景（例如 `e2e/runtime.mjs`）不等于完成全量业务回归。
 
-浏览器错误通过 Ego 的文档外事件缓冲收集，保留页面 URL、错误类型与消息，导航不会清空前页错误。运行器先注入一条精确匹配的测试错误，验证导航到正常页面后门禁仍会拒绝；之后的普通场景要求零错误。
-
-随后在一次性生产数据库中临时改名站点表，触发真实读取失败；恢复表后点击“重试”，必须在不刷新页面的情况下恢复首页。故障期间只接受并记录 React 生产构建的服务端渲染错误 441，恢复后重新要求零错误。数据库操作使用运行器的 Node 24 和既有 SQLite 驱动，避免 Ego 内嵌进程的原生模块加载限制；失败时恢复表名并由运行器清理整个临时目录。
-
-`e2e/identity.mjs` 在首页和外壳验证后接入同一 TaskSpace/p1。运行器分别为 1440 桌面和 390 手机宽度创建空 DATA_DIR，执行未初始化登录提示、两步初始化、真实错误码反馈与字段保留、时区选择、错误密码、受保护页回跳、登录和退出。两端都停止并重启实际生产进程，复用同一端口、密钥和该端数据目录，再验证旧初始化码返回 409、已初始化 `/setup` 跳转及再次登录退出。浏览器请求操作真实接口，不用种子账号绕过初始化。`e2e/identity-session.mjs` 在重启阶段继续触发真实登录限流，检查错误提示、按响应头倒计时禁用及恢复登录。受控调整临时数据库的会话时间后，验证窗口获得焦点时真实续期、浏览器 Cookie 到期时间更新，以及会话过期后的提示与重新登录；临时 SQLite 触发器阻止退出删除时，页面必须保留会话并提示失败，成功的后台核对也不能清掉退出失败。撤销故障后重排真实响应，使后台空会话先于退出成功响应返回，验证后台核对不能抢走主动退出的跳转，最终显示已退出。
-
-桌面场景在实际 POST 已完成后，受控丢弃浏览器收到的响应，再通过真实 `/api/auth/get-session` 核对是否初始化；测试不返回伪造的接口成功结果。手机场景受控移除浏览器时区推荐，验证必须手选有效时区。这两项是故障注入证据，不能表述为真实网络故障或物理设备能力。
-
-初始化和登录页覆盖浅深色 360/390/430/768/1440、无横向溢出与手机 44px 触控目标，登录使用键盘触发；检查初始化未自动创建会话，初始化码和密码未进入 localStorage、sessionStorage 或 URL。截图只在空表单状态保存；若现有密码管理器显示保存登录浮层，通过其实际关闭按钮收起后截图，不删除或隐藏扩展节点。运行器通过标准输入传入临时码和密码，写日志前移除这些值；临时生产进程与数据由统一清理流程回收。
-
-根生产构建仍使用 Turbopack。夹具固定使用 Next 的 `--webpack`：共享仓库根目录的 Turbopack 会发现根应用 instrumentation，导致没有部署环境的纯组件夹具错误启动。独立 Webpack 夹具无生产启动钩子，不通过假密钥或替换生产行为规避。
-
-默认报告目录 `test-results/browser/`，包括 runner.json、browser.json、shell-browser.json、error-recovery.json、ego.log、server.log、shell-server.log、identity-{宽度}-{setup/restart}.json/.log 及各场景截图。`BROWSER_REPORT_DIR` 可指定输出目录。每轮先移除旧断言报告并写本轮状态；失败非零退出，保留诊断，停止自建进程并删除临时目录。失败 TaskSpace 保留供诊断，ID 输出在日志和 browser.json。
-
-同一任务重跑必须复用空间：
+首次完整运行可创建测试空间。后续重跑须复用同一空间；将示例中的 `22` 换成首次报告中的实际 ID：
 
 ```sh
 EGO_TASK_SPACE=22 EGO_KEEP_SPACE=1 pnpm run test:browser
 ```
 
-将 22 替换为本任务首次输出的 ID。默认独立运行成功即关闭空间；连续任务设置 `EGO_KEEP_SPACE=1`，完成后调用一次 `task.finish({ keep: [] })`。不得新建空间绕过失败。
+`EGO_KEEP_SPACE=1` 保留成功的完整流程空间，便于连续检查；默认完整流程成功后结束空间。失败或用户接管时保留空间用于诊断，不新建空间绕过失败。用户接管浏览器后，停止继续操作，恢复须取得授权。
 
-`e2e/storage-cors.mjs` 使用手机初始化后的同一隔离数据库和 TaskSpace，通过真实管理接口创建独立 S3 配置，再打开实际 `/settings/storage/:id` 页面，以键盘触发开始检测。`e2e/storage-cors-ui.mjs` 通过生产 React 处理函数发送签名 PUT、GET、HEAD，核对可读响应、完整小样本、服务端复核/清理及刷新后的持久结果。运行器的独立 HTTP 故障服务覆盖缺失 CORS 头、删除失败、UI 手动重试和挂起 PUT；真实导航至图库时在浏览器 fetch 边界拒绝完成回报（不替换其他响应），确认原 probe 仍为 running；仅提前该临时 probe 的数据库期限，由生产维护循环接管清理。导航本身可能与正常完成回报竞速，不作为“回报必定丢失”的假定。读取失败只丢弃实际 GET 响应，以真实键盘激活重新加载后恢复；真实配置修订触发失效和重测门槛。`e2e/storage-cors-layout.mjs` 检查浅深色与响应式、短视口、长名称、键盘焦点、实际系统剪贴板与页面完整 JSON 等值（macOS `pbpaste`，不请求浏览器读取权限）以及浏览器策略拒绝时的完整可选文本。`e2e/storage-cors-origin.mjs` 在独立测试库通过既有事务修改/恢复有效长站点来源，验证失效、长 JSON 完整选择与短视口正文滚动后重新实测；不访问该合成域名。不存在、已删除与 Local 存储页面必须显示真实错误且不创建 probe；键盘清理重试完成后焦点必须保留在弹窗内。最终要求故障服务的对象列表为空。报告为 `storage-cors.json` 并保存各状态截图；HTTP 故障服务不验证真实 S3 签名或云服务兼容性，截图和行为断言仍须另经 Figma 设计对照及用户人工验收。
+## 按功能定向回归
 
-真实 Cloudflare R2 与 SeaweedFS 验证复用 `tests/experiments/storage-s3/verify-cors-browser.mjs`。该入口需要已初始化的独立应用、私有服务配置和临时所有者账号文件，通过 `EGO_TASK_SPACE` 复用现有空间；不会创建或关闭空间、修改 Bucket CORS 或启动另一个应用。使用与 Bucket CORS 一致的 `--origin`，例如既有实验的 `http://127.0.0.1:47070`。参数 `--r2-no-lock-evidence` 必须指向同一 Bucket 已有的所有者无锁确认。浏览器完成后再以真实 SDK 核对本轮每个 Key 的 HEAD 404 和独立存储前缀的空对象列表。真实环境缺失或任一步失败均非零退出，不能用本地故障服务代替两服务验收。
-
-`e2e/m2.mjs` / `e2e/m2-core.mjs` 在两个空目录初始化环境分别执行桌面和手机的 JPEG/PNG × 公私有上传矩阵，使用真实文件选择、复制、下载、回收和恢复。匿名页使用同一 TaskSpace 的独立主机隔离 Cookie；这不是第二浏览器引擎。原图核对磁盘和下载字节，三张统计表在实际周期刷库和生产 stop/start 后精确复核。重启夹具仅持有实际上传任务的调度，恢复后要求同一任务、快照和原图对象，且每个版本只存在一次。输出 `m2-1440.json`、`m2-390.json` 及前后阶段日志；本切片范围和独立双浏览器证据见 [M2 报告](../docs/verification/m2-85/README.md)。
-
-`tests/experiments/sharing/browser.mjs` 验证 EV-SHARING-01 的隔离协议页面。默认 `test:browser` 在 delivery 实验后、最终 UI 实验关闭空间前执行同一脚本。定向重跑仅启动分享实验的独立 Next HTTP 服务和 SQLite，不启动业务 Standalone 或其他浏览器场景：
+定向入口要求已有 `EGO_TASK_SPACE`，复用当前任务空间，不自行创建或结束空间。普通定向场景仍启动一次性生产应用，但跳过完整流程的实验 UI 和外壳构建；提前完成生产构建后可直接调用：
 
 ```sh
-EGO_TASK_SPACE=22 node scripts/verify-browser.mjs --suite sharing-experiment
+EGO_TASK_SPACE=22 node scripts/verify-browser.mjs --suite library --only sizes
+EGO_TASK_SPACE=22 node scripts/verify-browser.mjs --suite viewer --only tiff-preview
+EGO_TASK_SPACE=22 node scripts/verify-browser.mjs --suite theme --only behavior
+EGO_TASK_SPACE=22 node scripts/verify-browser.mjs --suite uiux-20261015 --only settings
 ```
 
-沿用本任务的实际空间 ID；`EGO_PAGE_LABEL` 可选择既有隔离测试页，`BROWSER_REPORT_DIR` 可选择报告目录。此 suite 不接受 `--only`、`--storage-config` 或 `--preview-config`。浏览器脚本不创建或结束 TaskSpace；默认完整入口仍由最后 UI 实验结束空间，连续任务由调用方统一结束。失败或用户接管后保留空间用于诊断，不能新建空间或切换接口绕过停止边界。
+`--suite` 选择功能，`--only` 只运行该功能允许的阶段。可用值以[执行计划](../scripts/browser-plan.mjs)为准，不在文档重复维护长列表。定向通过只证明所选范围，不代替默认完整流程。
 
-实验检查真实响应 Cookie 的 HttpOnly、SameSite=Lax、无 Domain、分享路径、24 小时持久期及本地 HTTP 的 Secure=false；同 origin 的两个标签分别并发解锁不同相册、同时解锁同一相册，检查两次独立授权都有效。浏览器按 Cookie 路径访问 owner 仍是匿名，真实所有者 Cookie 也不能绕过分享密码；显式转发分享 Cookie 的 owner 拒绝与真实私有图片内容拒绝另由 HTTP 集成测试验证。使用同一 Ego profile 的不同主机证明 Cookie 不跨主机，但该检查不是两个独立浏览器上下文；报告固定保留 `twoBrowserContexts: unverified`，不得据此关闭该验收项。
+当前 CLI 未提供 `--help`。参数定义见[运行器入口](../scripts/verify-browser.mjs)，功能与阶段定义见[执行计划](../scripts/browser-plan.mjs)。不要直接用 `node e2e/<文件>.mjs` 替代运行器：大多数场景需要运行器注入配置和 Ego 的测试空间接口。
 
-真实标签页切换验证五秒自动检查、161 个公开 ID 的 80/80/1 顺序分批、挂起期间不重叠、隐藏停止及显示立即恢复。另将真实 HTTP 响应完整解析后暂缓交给客户端，再撤销授权、通过真实响应隐藏名称或显式切换实验批次；放行同一已解析响应后，items/neighbors/refresh 的旧结果均不得填回。此方法沿用已有选中项核对实验的真实 Response 延迟，不伪造成功 DTO。立即隐藏再显示时，旧已解析刷新仍未返回也必须开始新的检查。批次切换是探针显式操作，不声称已交付对应产品交互。
+特殊入口的额外边界：
 
-输出 `sharing-experiment.json`、`sharing-experiment.log` 和 `sharing-server.log`。报告不保存 Cookie 值、密码或完整分享 Token。范围是库与 HTTP/浏览器协议实验，不交付匿名相册界面、不替代 Figma 对照、生产 sharing 业务验收或双独立浏览器上下文证据；完成状态见 [EV-SHARING-01 报告](../docs/tasks/evidence/EV-SHARING-01/README.md)。
+| 入口                                                                     | 前提与用途                                                                           |
+| ------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
+| `--suite storage-admin --only live --storage-config <文件>`              | 配置必须包含真实 R2 和 SeaweedFS；会在自有前缀执行真实存储操作。私有配置不提交仓库。 |
+| `--suite storage-admin --only feedback --preview-config <文件>`          | 使用指定的现有预览及账号；不是默认的一次性应用。                                     |
+| `--suite brand-experiment` / `--suite sharing-experiment`                | 启动历史原型夹具，验证其协议或实验行为；不单独证明生产产品能力。                     |
+| `--suite branding` / `--suite sharing-public` / `--suite sharing-viewer` | 启动各自独立的生产夹具；属于生产回归。                                               |
 
-设备实测范围按[前端共用验收](../docs/tasks/execution.md#前端共用验收)，上述三项设备要求已由所有者取消；跨浏览器矩阵仍归 T-QA-02。浏览器证据来自工作站的现有 Ego Lite；日常本地检查和 Release 发布验证范围统一按[适用检查](../docs/tasks/execution.md#适用检查)。
+真实存储 CORS 的单独入口是 [`tests/experiments/storage-s3/verify-cors-browser.mjs`](../tests/experiments/storage-s3/verify-cors-browser.mjs)。它需要已初始化的独立应用、私有服务配置、账号文件及实际 Bucket 的无锁确认，复用现有空间，不修改 Bucket CORS。参数定义以该入口为准。本地故障服务不替代真实 R2/SeaweedFS 结果。
 
-`e2e/sharing-viewer.mjs` 验证 T-SHR-04 真实匿名查看器。默认完整入口在 sharing-public 后执行；定向 `--suite sharing-viewer` 的 `--only` 只接受 `representative`、`interactions`、`revocation`、`race`，不复用 sharing-public 的阶段参数。夹具扩展现有独立分享数据库，发布真实 compressed PNG、动画 GIF 和 SVG/ICO/多页预览；不修改人工预览或用户数据。
+独立身份会话验证可运行 [`scripts/verify-identity-auth.ts`](../scripts/verify-identity-auth.ts)。它验证两个隔离会话及退出互不影响，同样要求生产构建和已有空间：
 
-代表状态检查浅深色 360/390/430/768/1440、名称策略和短视口，真实移除未曾加载的文件触发错误并恢复同版本。交互检查按需公开邻居、40→41跨批次、首尾、缩放/平移、浏览器手势、键盘、全屏、关闭后的滚动和焦点。另一标签通过真实所有者接口撤权；race 延迟实际响应，检查旧邻居/名称不能填回和检查失败重试。两个 Ego 标签仍属同一 profile，独立浏览器上下文保持未验证；独立 Cookie 的真实 HTTP 联验和 R2/SeaweedFS 结果见 [#193 证据](../docs/verification/sharing-193/README.md)。输出 `sharing-viewer.json/.log`、服务端日志和状态截图。
+```sh
+EGO_TASK_SPACE=22 node scripts/verify-identity-auth.ts
+```
 
-`e2e/smtp.mjs` 是 T-ID-06 的生产 SMTP 页面入口。默认完整流程在手机隔离数据库的业务阶段执行一次，同一脚本覆盖桌面及手机；定向 `--suite smtp` 的 `--only` 仅接受 `representative`、`interactions`、`recovery`，参数由 SMTP 场景独立消费。定向调用要求已有 `EGO_TASK_SPACE`，不创建或关闭空间。共用入口启动临时 SMTP 服务和独立生产数据目录，使用 `NODE_EXTRA_CA_CERTS` 信任该次生成的测试 CA，保留生产证书验证；不修改用户预览数据、不需要外部邮箱凭证。
+## 报告与失败诊断
 
-SMTP 场景覆盖加载/未配置、浅深色 360/390/430/768/1440、短视口、配置凭据后的 Tips 指针/键盘/手机收起与回焦、保存和测试分开、密码省略保留与替换、明确清除凭据、脏表单测试确认，以及真实 TLS/STARTTLS/无认证中继收件。连接拒绝、STARTTLS 未宣告、认证拒绝、DATA 投递拒绝和 DATA 后 socket reset 均来自本地真实 SMTP 服务。HTTP 响应丢失是在实际读写完成后丢弃响应，用于检查保存/清除回读与未知发送不自动重发。`smtp-recovery.mjs` 继续检查回读失败后的显式重读、公开密码存在状态不能证明替换、主动重输密码保存，以及第二次真实保存造成配置不一致时的两种编辑恢复选择；恢复选择本身不自动写入。输出 `smtp.json`、`smtp.log` 和状态截图，运行器结束时关闭监听并清理临时证书。可执行场景清单不等于该次验证通过；实际结果、设计对照、外部邮箱收件及人工验收状态以 [Issue #182 记录](../docs/verification/smtp-182/README.md) 为准。
+默认报告在 `test-results/browser/`，定向入口通常在 `test-results/browser-<suite>/`。可通过 `BROWSER_REPORT_DIR` 指定独立目录。运行器每次重写本轮状态和断言报告，长期保留的结论应另存到任务证据中。
 
-`e2e/analytics.mjs` 接入默认完整流程的生产业务阶段，默认依次执行 `representative`、`behavior`、`recovery`、`consumers`。定向 `--suite analytics --only <阶段>` 仅接受这四项，参数以 `analyticsPhase` 交给统计场景，不分发至其他模块。复用已有 `EGO_TASK_SPACE` / `EGO_PAGE_LABEL`，使用运行器的临时Standalone和独立数据；夹具自行创建并撤销上传Token，核对真实SQLite周期/排行/对象占用，结束时清理自有记录与文件。网络响应迟到、读取故障、健康字段及可见性/10秒时钟均为明确的页面边界注入，不修改人工预览。输出 `analytics.json`、runner结果和状态截图；阶段通过不等于默认全量通过，实际状态及局部原型待批准范围见 [Issue #179 记录](../docs/verification/analytics-179/README.md)。
+- `runner.json`：运行范围、各阶段结果、失败原因及清理状态。
+- 各场景 JSON、日志与截图：行为断言、视口、浏览器错误及失败现场。
+- `server.log` 和夹具日志：本轮临时服务诊断；运行器会移除临时密码、初始化码等敏感值。
+
+失败返回非零退出码。先检查首个失败阶段和依赖被阻塞的阶段，再在同一空间定向复查；不要放宽断言、增加全局重试或替换真实成功响应来消除失败。报告中的历史结果不随以后重新执行而自动改写。
+
+浏览器场景使用真实生产接口和独立数据。受控丢弃/延迟真实响应、调整临时数据库或注入服务故障的检查，应记录为故障注入；不能称为真实网络事故。Chromium 的手机视口和键盘模拟不等于物理设备或其他浏览器验证。截图、功能断言、设计对照、用户手动验收和发布镜像验证分别记录。

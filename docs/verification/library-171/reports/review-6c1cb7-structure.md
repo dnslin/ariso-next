@@ -6,11 +6,11 @@
 
 ## 1. P2 / Required：把重处理阶段与动作收回同一个详情控制边界
 
-主要位置：[library-screen.tsx:153](/Volumes/data/project/ariso-issue-171/src/app/library/library-screen.tsx:153)。相关位置：[library-screen.tsx:168](/Volumes/data/project/ariso-issue-171/src/app/library/library-screen.tsx:168)、[library-screen.tsx:406](/Volumes/data/project/ariso-issue-171/src/app/library/library-screen.tsx:406)、[detail-reprocess.tsx:70](/Volumes/data/project/ariso-issue-171/src/components/library/detail-reprocess.tsx:70)、[detail-reprocess.tsx:289](/Volumes/data/project/ariso-issue-171/src/components/library/detail-reprocess.tsx:289)、[detail-reprocess-confirmation.tsx:90](/Volumes/data/project/ariso-issue-171/src/components/library/detail-reprocess-confirmation.tsx:90)。全部是 HEAD 的 1-based 行号。
+主要位置：[library-screen.tsx:153](https://github.com/dnslin/ariso-next/blob/6c1cb7ff85fd43b5bbcd1545ed24e9232da3162b/src/app/library/library-screen.tsx#L153)。相关位置：[library-screen.tsx:168](https://github.com/dnslin/ariso-next/blob/6c1cb7ff85fd43b5bbcd1545ed24e9232da3162b/src/app/library/library-screen.tsx#L168)、[library-screen.tsx:406](https://github.com/dnslin/ariso-next/blob/6c1cb7ff85fd43b5bbcd1545ed24e9232da3162b/src/app/library/library-screen.tsx#L406)、[detail-reprocess.tsx:70](https://github.com/dnslin/ariso-next/blob/6c1cb7ff85fd43b5bbcd1545ed24e9232da3162b/src/components/library/detail-reprocess.tsx#L70)、[detail-reprocess.tsx:289](https://github.com/dnslin/ariso-next/blob/6c1cb7ff85fd43b5bbcd1545ed24e9232da3162b/src/components/library/detail-reprocess.tsx#L289)、[detail-reprocess-confirmation.tsx:90](https://github.com/dnslin/ariso-next/blob/6c1cb7ff85fd43b5bbcd1545ed24e9232da3162b/src/components/library/detail-reprocess-confirmation.tsx#L90)。全部是 HEAD 的 1-based 行号。
 
 这次新增的重处理行为跨越了本可封闭的业务边界。列表父页面现在必须知道 `confirmed`、`receipt`、受理 jobId 与最新任务是否匹配，以及 succeeded/failed/cancelled 三种终态。它据此隐藏底栏、复位处理结果、进入新范围。正文和底栏又分别使用完全相同的条件 `receipt && (receipt.scope !== 'all' || (job && job.status !== 'queued'))` 决定当前是否是结果界面。提交禁用条件分别在底栏 354–360 行与确认弹窗 90–96 行组合 `pending/unknown/query.isFetching/query.isError/unavailable`。父页面 408 行还需要认识“读取失败时重处理界面应保留缓存”的特殊规则。
 
-相对 base，`LibraryScreen` 从 371 行增至 483 行。原来它只打开详情并接收删除完成回调；新增部分把任务阶段、错误保留、确认层和底栏策略加入了列表外壳。`useDetailReprocess`、`useDetailQuery` 已经抽成文件，但组件间传递的是两个 hook 的完整 `ReturnType`，没有形成清楚的动作与显示契约。测试也因此以 `as Props['query']` 构造只包含少数字段的整个查询对象，例如 [detail-help.test.ts:91](/Volumes/data/project/ariso-issue-171/tests/unit/library/detail-help.test.ts:91)。这不是单纯文件偏长，而是同一业务决定已有多个维护点。
+相对 base，`LibraryScreen` 从 371 行增至 483 行。原来它只打开详情并接收删除完成回调；新增部分把任务阶段、错误保留、确认层和底栏策略加入了列表外壳。`useDetailReprocess`、`useDetailQuery` 已经抽成文件，但组件间传递的是两个 hook 的完整 `ReturnType`，没有形成清楚的动作与显示契约。测试也因此以 `as Props['query']` 构造只包含少数字段的整个查询对象，例如 [detail-help.test.ts:91](https://github.com/dnslin/ariso-next/blob/6c1cb7ff85fd43b5bbcd1545ed24e9232da3162b/tests/unit/library/detail-help.test.ts#L91)。这不是单纯文件偏长，而是同一业务决定已有多个维护点。
 
 实际维护风险是：改变一次确认取消、核对失败、任务完成后重开或全部派生排队的规则，需要同时调整父列表、正文、固定底栏与弹窗，否则正文阶段、底栏动作和可提交状态可能不一致。当前源码已经需要同一结果条件写两次，并由父列表补终态复位与缓存错误例外；这些就是现存的协调成本，不是假设的新需求。
 
@@ -24,13 +24,13 @@
 
 ## 2. P2 / Required：拆开 2056 行浏览器脚本中的串联场景与数据生命周期
 
-主要位置：[library-detail-171.mjs:330](/Volumes/data/project/ariso-issue-171/e2e/library-detail-171.mjs:330)。相关位置：[library-detail-171.mjs:349](/Volumes/data/project/ariso-issue-171/e2e/library-detail-171.mjs:349)、[library-detail-171.mjs:584](/Volumes/data/project/ariso-issue-171/e2e/library-detail-171.mjs:584)、[library-detail-171.mjs:794](/Volumes/data/project/ariso-issue-171/e2e/library-detail-171.mjs:794)、[library-detail-171.mjs:1600](/Volumes/data/project/ariso-issue-171/e2e/library-detail-171.mjs:1600)、[library-detail-171.mjs:1733](/Volumes/data/project/ariso-issue-171/e2e/library-detail-171.mjs:1733)。
+主要位置：[library-detail-171.mjs:330](https://github.com/dnslin/ariso-next/blob/6c1cb7ff85fd43b5bbcd1545ed24e9232da3162b/e2e/library-detail-171.mjs#L330)。相关位置：[library-detail-171.mjs:349](https://github.com/dnslin/ariso-next/blob/6c1cb7ff85fd43b5bbcd1545ed24e9232da3162b/e2e/library-detail-171.mjs#L349)、[library-detail-171.mjs:584](https://github.com/dnslin/ariso-next/blob/6c1cb7ff85fd43b5bbcd1545ed24e9232da3162b/e2e/library-detail-171.mjs#L584)、[library-detail-171.mjs:794](https://github.com/dnslin/ariso-next/blob/6c1cb7ff85fd43b5bbcd1545ed24e9232da3162b/e2e/library-detail-171.mjs#L794)、[library-detail-171.mjs:1600](https://github.com/dnslin/ariso-next/blob/6c1cb7ff85fd43b5bbcd1545ed24e9232da3162b/e2e/library-detail-171.mjs#L1600)、[library-detail-171.mjs:1733](https://github.com/dnslin/ariso-next/blob/6c1cb7ff85fd43b5bbcd1545ed24e9232da3162b/e2e/library-detail-171.mjs#L1733)。
 
 该文件在 base 中不存在，本 PR 一次新增 2056 行。`verifyReprocess` 从 330 至 1614 行，单函数 **1285 行**。它包含确认弹窗几何、两主题多宽度矩阵、真实 worker 连续任务、fetch 响应丢失与读取失败注入、四版本下载字节核对、设置与存储禁用矩阵、直接修改持久任务、创建真实候选文件、轮询失败恢复，以及统一的 finally 清理。视觉检查函数也直接嵌在这段流程内。
 
 超长本身不是唯一理由。这里存在真实的顺序依赖：794 行后的真实全部重处理先生成完整四版本，随后下载段和禁用设置段使用这些产物；1613 行才调用来源返回验证，1733 行直接选择水印图，依赖前面的工作已生成该版本。1285 行函数又把多个场景共享的设置、任务快照、候选文件恢复集中到末尾。结果是无法只运行确认交互、丢响应、下载或返回上下文的一项来诊断失败；一个前序布局断言失败，就无法获得后面的业务证据。调整任何一个场景前，维护者必须先理解整段数据库、文件、浏览器 fetch 与版本产物的生命周期。
 
-现有工程已经使用窄场景模块，例如 [library-detail-reconciliation.mjs:3](/Volumes/data/project/ariso-issue-171/e2e/library-detail-reconciliation.mjs:3) 的 68 行独立核对场景。没有证据表明这次必须改为单个超过千行的过程。完整覆盖、真实 worker 与浅深色证据都可以保留，不需要减少断言或换一套测试工具。
+现有工程已经使用窄场景模块，例如 [library-detail-reconciliation.mjs:3](https://github.com/dnslin/ariso-next/blob/6c1cb7ff85fd43b5bbcd1545ed24e9232da3162b/e2e/library-detail-reconciliation.mjs#L3) 的 68 行独立核对场景。没有证据表明这次必须改为单个超过千行的过程。完整覆盖、真实 worker 与浅深色证据都可以保留，不需要减少断言或换一套测试工具。
 
 最小修复路线：
 

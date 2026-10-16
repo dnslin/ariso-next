@@ -13,10 +13,10 @@
 
 原相册主节点与工具栏 ID 未变。以下图为当前相册布局证据：
 
-| 范围             | 桌面                                           | 手机                                          |
-| ---------------- | ---------------------------------------------- | --------------------------------------------- |
-| 最新相册工具栏   | [PNG](album-toolbar-relocated-desktop.png)     | [PNG](album-toolbar-relocated-mobile.png)     |
-| 最新相册组成位置 | [PNG](album-composition-relocated-desktop.png) | [PNG](album-composition-relocated-mobile.png) |
+| 范围             | 桌面                                                                                                                                                                                                                         | 手机                                                                                                                                                                                                                        |
+| ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 最新相册工具栏   | [PNG](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261011/clarity-v3/toolbar-20261012/figma/album-toolbar-relocated-desktop.png)     | [PNG](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261011/clarity-v3/toolbar-20261012/figma/album-toolbar-relocated-mobile.png)     |
+| 最新相册组成位置 | [PNG](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261011/clarity-v3/toolbar-20261012/figma/album-composition-relocated-desktop.png) | [PNG](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261011/clarity-v3/toolbar-20261012/figma/album-composition-relocated-mobile.png) |
 
 整页图仅检查工具栏与原标题/底栏的位置关系，不作为整页像素验收。原主节点的历史侧栏、主题图标、查询控件及内容没有重绘，与产品仍有既有差异。
 
@@ -48,13 +48,13 @@
 
 ## 局部截图
 
-| 范围                   | 桌面                               | 手机                              |
-| ---------------------- | ---------------------------------- | --------------------------------- |
-| 图库原主节点           | [PNG](library-primary-desktop.png) | [PNG](library-primary-mobile.png) |
-| 相册详情澄清前，已取代 | [PNG](album-primary-desktop.png)   | [PNG](album-primary-mobile.png)   |
-| 回收站原主节点         | [PNG](trash-primary-desktop.png)   | [PNG](trash-primary-mobile.png)   |
-| v3 回收站正常浅色      | [PNG](trash-v3-desktop-light.png)  | [PNG](trash-v3-mobile-light.png)  |
-| v3 回收站正常深色      | [PNG](trash-v3-desktop-dark.png)   | [PNG](trash-v3-mobile-dark.png)   |
+| 范围                   | 桌面                                                                                                                                                                                                             | 手机                                                                                                                                                                                                            |
+| ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 图库原主节点           | [PNG](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261011/clarity-v3/toolbar-20261012/figma/library-primary-desktop.png) | [PNG](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261011/clarity-v3/toolbar-20261012/figma/library-primary-mobile.png) |
+| 相册详情澄清前，已取代 | [PNG](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261011/clarity-v3/toolbar-20261012/figma/album-primary-desktop.png)   | [PNG](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261011/clarity-v3/toolbar-20261012/figma/album-primary-mobile.png)   |
+| 回收站原主节点         | [PNG](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261011/clarity-v3/toolbar-20261012/figma/trash-primary-desktop.png)   | [PNG](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261011/clarity-v3/toolbar-20261012/figma/trash-primary-mobile.png)   |
+| v3 回收站正常浅色      | [PNG](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261011/clarity-v3/toolbar-20261012/figma/trash-v3-desktop-light.png)  | [PNG](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261011/clarity-v3/toolbar-20261012/figma/trash-v3-mobile-light.png)  |
+| v3 回收站正常深色      | [PNG](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261011/clarity-v3/toolbar-20261012/figma/trash-v3-desktop-dark.png)   | [PNG](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/ui-refinement/20261011/clarity-v3/toolbar-20261012/figma/trash-v3-mobile-dark.png)   |
 
 截图均直接导出工具栏现有节点，不是整页验收截图。
 

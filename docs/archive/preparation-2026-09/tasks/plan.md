@@ -312,7 +312,7 @@ analytics 工程验证仍需：当前 Next/Docker 关停顺序与最终刷库、
 
 ## 32. 阅读指引对齐与图片处理原型（2026-09-18）
 
-按用户反馈，存储十张指引共 84 个入口采用固定编号列、标题左对齐；上传／相册共 60 个普通按钮也左对齐。原位置、尺寸及存储跳转保持不变，证据见[阅读指引审计](../design/verification/guide-alignment-2026-09-18.json)。
+按用户反馈，存储十张指引共 84 个入口采用固定编号列、标题左对齐；上传／相册共 60 个普通按钮也左对齐。原位置、尺寸及存储跳转保持不变，证据见[阅读指引审计](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/archive/preparation-2026-09/design/verification/guide-alignment-2026-09-18.json)。
 
 新增桌面／手机各 42 个业务状态与 5 个阅读入口，按五组排列在 14-B。覆盖保存／默认外链、水印素材、临时预览、四种重处理范围、旧版本保留、空间／存储与元数据异常；原设置页接入新主线，边距修正为短边百分比。图片状态带缩略图，存储停用例外；底栏独立固定。详见[图片处理专项记录](../design/media-flow-2026-09-18.md)。
 
@@ -424,6 +424,6 @@ RG-03代表设计已补，RG-02完成匿名分享代表路径配置。两端各�
 
 2026-09-19 曾在移动 750 个节点后因额度中断；2026-09-20 又移动 745 个后再次中断，当时剩余 183 个手机节点。两次断点 JSON 保留历史。随后已完成最后 183 个节点并执行最终回读，当前没有待移动节点或待删除旧分区。
 
-[统一模块目录](../design/module-sections-2026-09-19.md)与[完成证据](../design/verification/module-sections-completed-2026-09-20.json)记录结果。77,460 个内容节点及 9,938 条交互配置的前后指纹一致，原型流程入口集合相同；全部节点归属、位置、尺寸及分区无重叠检查通过，两端相册分区截图抽查通过。
+[统一模块目录](../design/module-sections-2026-09-19.md)与[完成证据](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/archive/preparation-2026-09/design/verification/module-sections-completed-2026-09-20.json)记录结果。77,460 个内容节点及 9,938 条交互配置的前后指纹一致，原型流程入口集合相同；全部节点归属、位置、尺寸及分区无重叠检查通过，两端相册分区截图抽查通过。
 
 实际执行 `python3 /tmp/ariso-module-final-check.py`、项目 `prettier --check`、`git diff --check`，均通过。没有应用代码修改，未运行应用测试、构建或真实播放器。该整理不改变业务开发任务的前置与验收要求。

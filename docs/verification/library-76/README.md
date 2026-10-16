@@ -47,19 +47,19 @@
 
 首次类型检查遇到尚在编写的 API 错误状态类型，完成类型收窄后重跑通过。构建仍打印已有 `better-sqlite3/build/Debug/better_sqlite3.node` 追踪诊断，实际使用 Release 二进制，构建退出码为 0；没有借本任务改动打包器。
 
-首轮 Ego 截图遇到 `Page.captureScreenshot` 超时，同空间首次诊断截图也超时。将已安装 Ego Lite 窗口打开到前台后，同一空间截图恢复。没有下载浏览器、另建空间或跳过截图断言。见[首次运行](./browser-first-runner.json)及[原始截图超时](./browser-first.json)。
+首轮 Ego 截图遇到 `Page.captureScreenshot` 超时，同空间首次诊断截图也超时。将已安装 Ego Lite 窗口打开到前台后，同一空间截图恢复。没有下载浏览器、另建空间或跳过截图断言。见[首次运行](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-76/browser-first-runner.json)及[原始截图超时](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-76/browser-first.json)。
 
-第二轮发现匿名进入 `/library` 后登录返回 `/admin`，见[失败记录](./browser-login-failure.json)。已将新交付路由加入现有返回白名单并新增回归测试，不允许外站或未实现子路径。审计发现短视口测试误滚动 window，已改为真实 `.shell-content` 并检查末尾内容不被底栏遮挡；图库组合层统一退出按钮为 44px。网络错误提供中文提示并保留原始 cause。修复后重跑类型、lint、单元、构建与图库 HTTP 检查。
+第二轮发现匿名进入 `/library` 后登录返回 `/admin`，见[失败记录](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-76/browser-login-failure.json)。已将新交付路由加入现有返回白名单并新增回归测试，不允许外站或未实现子路径。审计发现短视口测试误滚动 window，已改为真实 `.shell-content` 并检查末尾内容不被底栏遮挡；图库组合层统一退出按钮为 44px。网络错误提供中文提示并保留原始 cause。修复后重跑类型、lint、单元、构建与图库 HTTP 检查。
 
-第三轮生产图库场景全部通过，但既有独立 UI 实验断言 `history.length + 1` 失败。CDP 回读确认同一标签页经多轮运行累积到 Chromium 的 50 条历史上限；已用 `Page.resetNavigationHistory` 只重置测试标签页导航历史，保留全部断言后重跑完整命令。见[历史上限失败记录](./browser-history-failure.json)。
+第三轮生产图库场景全部通过，但既有独立 UI 实验断言 `history.length + 1` 失败。CDP 回读确认同一标签页经多轮运行累积到 Chromium 的 50 条历史上限；已用 `Page.resetNavigationHistory` 只重置测试标签页导航历史，保留全部断言后重跑完整命令。见[历史上限失败记录](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-76/browser-history-failure.json)。
 
-最终完整命令退出码 0。见[完整运行器](./browser-runner.json)、[图库行为及 40 组布局](./library.json)、[独立 UI 运行器](./ui-runner.json)和[既有图库实验](./ui-library.json)。图库使用真实 SQLite 资产和实际缩略图字节；网络故障场景只在真实响应边界丢弃/延迟响应，未用模拟成功结果替代后端。40→80→85 顺序、同时间 ID 稳定性、追加失败保留与同游标重试、禁止重复提交、菜单与末批焦点、会话失效均通过。
+最终完整命令退出码 0。见[完整运行器](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-76/browser-runner.json)、[图库行为及 40 组布局](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-76/library.json)、[独立 UI 运行器](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-76/ui-runner.json)和[既有图库实验](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-76/ui-library.json)。图库使用真实 SQLite 资产和实际缩略图字节；网络故障场景只在真实响应边界丢弃/延迟响应，未用模拟成功结果替代后端。40→80→85 顺序、同时间 ID 稳定性、追加失败保留与同游标重试、禁止重复提交、菜单与末批焦点、会话失效均通过。
 
-代表截图：[手机网格](./library-populated-light-390.png)、[桌面深色](./library-populated-dark-1440.png)、[加载](./library-loading-light-390.png)、[空库](./library-empty-light-390.png)、[读取失败](./library-error-light-390.png)、[短视口末尾](./library-short-viewport.png)。全部 360/390/430/768/1440px、浅深主题及加载/空/错误/混合成功状态的测量结果在图库 JSON 中。
+代表截图：[手机网格](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-76/library-populated-light-390.png)、[桌面深色](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-76/library-populated-dark-1440.png)、[加载](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-76/library-loading-light-390.png)、[空库](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-76/library-empty-light-390.png)、[读取失败](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-76/library-error-light-390.png)、[短视口末尾](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-76/library-short-viewport.png)。全部 360/390/430/768/1440px、浅深主题及加载/空/错误/混合成功状态的测量结果在图库 JSON 中。
 
 ## 审计与远端边界
 
-使用 `code-review-and-quality` 做独立只读审计，先审测试，再核对需求、实现、调用链和前端交接。发现的接入与验证问题修复后完成复核，无剩余 Critical / Required 问题，见[审计记录](./audit.json)。实际运行结果仍以本轮报告为准。
+使用 `code-review-and-quality` 做独立只读审计，先审测试，再核对需求、实现、调用链和前端交接。发现的接入与验证问题修复后完成复核，无剩余 Critical / Required 问题，见[审计记录](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-76/audit.json)。实际运行结果仍以本轮报告为准。
 
 本分支 `ci.yml` 仅有 `workflow_call`，`images.yml` 仅由 `release.published` 触发，没有可单独调用的 PR 或手动验证入口。按[当前适用检查](../../tasks/execution.md#适用检查)，日常交付执行本地检查，AMD64/ARM64 容器验证留在发布阶段。本次不创建 Release、不发布镜像、不部署，不将未运行的远端验证标为通过。
 
@@ -89,6 +89,6 @@
 | `EGO_TASK_SPACE=4 EGO_KEEP_SPACE=1 BROWSER_REPORT_DIR=test-results/browser-120-optimization pnpm run test:browser` | 完整运行退出码 0；两端身份、图库及既有 UI 实验通过      |
 | `node docs/tasks/check.mjs`、`node docs/tasks/check.mjs --self-test`、`git diff --check`                           | 通过；120 任务、298 需求和 5 项自测                     |
 
-见[本轮运行器](./optimization-runner.json)、[图库行为与 40 组布局](./optimization-library.json)、[桌面中文状态](./optimization-dark-1440.png)、[手机截图](./optimization-light-390.png)。本轮采用已有 Ego Lite，没有下载浏览器。真实手机、安全区及发布容器验证边界维持上文说明。
+见[本轮运行器](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-76/optimization-runner.json)、[图库行为与 40 组布局](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-76/optimization-library.json)、[桌面中文状态](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-76/optimization-dark-1440.png)、[手机截图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-76/optimization-light-390.png)。本轮采用已有 Ego Lite，没有下载浏览器。真实手机、安全区及发布容器验证边界维持上文说明。
 
-三项代码改动分别提交为 `d31d001`（路径）、`d92206d`（鉴权）、`c4af70f`（中文步骤）；独立复核与未知步骤补测记录见[本轮审计](./optimization-audit.json)。
+三项代码改动分别提交为 `d31d001`（路径）、`d92206d`（鉴权）、`c4af70f`（中文步骤）；独立复核与未知步骤补测记录见[本轮审计](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-76/optimization-audit.json)。

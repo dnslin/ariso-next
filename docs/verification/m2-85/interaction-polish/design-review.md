@@ -2,11 +2,11 @@
 
 本轮先检查1920×1080浅色上传三代表，均实际打开真实截图，对照本轮已读取的Figma585:5435及30:97的响应式规则。未控制正在运行的Ego。当前仅此局部检查完成，不能判定三页全部通过。
 
-| 实际截图                                                 | 整页与业务对照                                                                                                            | 结论                               |
-| -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ---------------------------------- |
-| [空态](./browser/interaction-1920-upload-empty.png)      | 侧栏232、正文左264右32；选择区1240、间隔24、设置360、高360，取消max1200后右侧空白问题消除；不放空队列卡，底栏铺满内容区。 | 本轮布局通过                       |
-| [三项待上传](./browser/interaction-1920-queue-three.png) | 队列在主要左列、设置右列。44工具栏，64缩略图，96行与16行间距；文件/大小/状态/操作列稳定，继续添加与移除明确。             | 本轮布局通过                       |
-| [三项成功](./browser/interaction-1920-queue-ready.png)   | 继续复用同一列结构与缩略图；成功状态/权限/查看详情不挤压列；底部清空已完成与禁用开始上传清楚。                            | 本轮布局通过；静态图不证明批次行为 |
+| 实际截图                                                                                                                                                                                       | 整页与业务对照                                                                                                            | 结论                               |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ---------------------------------- |
+| [空态](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/browser/interaction-1920-upload-empty.png)      | 侧栏232、正文左264右32；选择区1240、间隔24、设置360、高360，取消max1200后右侧空白问题消除；不放空队列卡，底栏铺满内容区。 | 本轮布局通过                       |
+| [三项待上传](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/browser/interaction-1920-queue-three.png) | 队列在主要左列、设置右列。44工具栏，64缩略图，96行与16行间距；文件/大小/状态/操作列稳定，继续添加与移除明确。             | 本轮布局通过                       |
+| [三项成功](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/browser/interaction-1920-queue-ready.png)   | 继续复用同一列结构与缩略图；成功状态/权限/查看详情不挤压列；底部清空已完成与禁用开始上传清楚。                            | 本轮布局通过；静态图不证明批次行为 |
 
 已看三图没有发现本轮新增需要修正的设计偏差。原型未来相册标签等仍不属本轮，不以空字段补齐。图标持续动效、批次设置冻结、继续添加语义需行为证据；手机、图库版本切换、权限/下载说明、回收及浅深主题尚待后续真实图。用户人工验收仍待执行。
 
@@ -18,10 +18,10 @@
 
 发现两项需本轮修复或补证：
 
-- 手机[成功队列](./browser/interaction-390-queue-ready.png)的查看详情落到单独下一行，行高显著增加，三项成功后设置被推至底栏下方。需复用待上传右侧操作位置，保持队列列宽/行高一致。
-- [桌面复制Toast](./browser/interaction-1920-copy-toast.png)的顶部提示被modal背板压暗；[手机复制Toast](./browser/interaction-390-copy-toast.png)没有可见提示。需确认Toast在modal之上，并在可见稳定时截图。当前不判Toast设计通过。
+- 手机[成功队列](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/browser/interaction-390-queue-ready.png)的查看详情落到单独下一行，行高显著增加，三项成功后设置被推至底栏下方。需复用待上传右侧操作位置，保持队列列宽/行高一致。
+- [桌面复制Toast](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/browser/interaction-1920-copy-toast.png)的顶部提示被modal背板压暗；[手机复制Toast](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/browser/interaction-390-copy-toast.png)没有可见提示。需确认Toast在modal之上，并在可见稳定时截图。当前不判Toast设计通过。
 
-对应主态证据：[手机空态](./browser/interaction-390-upload-empty.png)、[手机待上传](./browser/interaction-390-queue-three.png)、[桌面详情](./browser/interaction-1920-detail.png)、[手机详情](./browser/interaction-390-detail.png)、[桌面Skeleton](./browser/interaction-1920-preview-skeleton.png)、[手机Skeleton](./browser/interaction-390-preview-skeleton.png)。至此实际查看12张本轮页面图。深色和回收代表尚未进入本次视觉复验，整体本轮结论待上述问题处理。
+对应主态证据：[手机空态](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/browser/interaction-390-upload-empty.png)、[手机待上传](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/browser/interaction-390-queue-three.png)、[桌面详情](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/browser/interaction-1920-detail.png)、[手机详情](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/browser/interaction-390-detail.png)、[桌面Skeleton](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/browser/interaction-1920-preview-skeleton.png)、[手机Skeleton](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/browser/interaction-390-preview-skeleton.png)。至此实际查看12张本轮页面图。深色和回收代表尚未进入本次视觉复验，整体本轮结论待上述问题处理。
 
 ## 两项修正复验
 
@@ -55,12 +55,12 @@
 
 实际查看1440×1080与390×844的六张深色图，按已读取的30:97/101:1014、584:5440/586:11994及既有主题规则对照：
 
-| 状态       | 桌面证据                                               | 手机证据                                             | 结论                                                                                       |
-| ---------- | ------------------------------------------------------ | ---------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| 空态       | [1440](./browser/reviewed/upload-empty-dark-1440.png)  | [390](./browser/reviewed/upload-empty-dark-390.png)  | 760+24+360桌面分栏、手机358宽上下结构、选择区360/280高、全宽底栏一致；深色文字及边界可读。 |
-| 单项待上传 | [1440](./browser/reviewed/upload-queued-dark-1440.png) | [390](./browser/reviewed/upload-queued-dark-390.png) | 64/56缩略图、文件信息与右操作同行，手机底栏继续添加/开始上传清楚；设置区域不被挤压。       |
-| 单项成功   | [1440](./browser/reviewed/upload-ready-dark-1440.png)  | [390](./browser/reviewed/upload-ready-dark-390.png)  | 成功Chip和查看详情保持同行，禁用开始上传与清空已完成状态清楚，未重现成功行额外换行。       |
+| 状态       | 桌面证据                                                                                                                                                                                     | 手机证据                                                                                                                                                                                   | 结论                                                                                       |
+| ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
+| 空态       | [1440](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/browser/reviewed/upload-empty-dark-1440.png)  | [390](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/browser/reviewed/upload-empty-dark-390.png)  | 760+24+360桌面分栏、手机358宽上下结构、选择区360/280高、全宽底栏一致；深色文字及边界可读。 |
+| 单项待上传 | [1440](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/browser/reviewed/upload-queued-dark-1440.png) | [390](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/browser/reviewed/upload-queued-dark-390.png) | 64/56缩略图、文件信息与右操作同行，手机底栏继续添加/开始上传清楚；设置区域不被挤压。       |
+| 单项成功   | [1440](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/browser/reviewed/upload-ready-dark-1440.png)  | [390](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/browser/reviewed/upload-ready-dark-390.png)  | 成功Chip和查看详情保持同行，禁用开始上传与清空已完成状态清楚，未重现成功行额外换行。       |
 
-六图本轮范围通过，无新增视觉偏差。深色单项复用最终队列行结构；多项排布另由前述浅色三项截图验证，不将单项截图说成深色多项实测。图库及回收已查看图原样归档在[评审截图目录](./browser/reviewed/)，例如[桌面深色详情](./browser/reviewed/detail-ready-dark-1440.png)、[手机深色回收记录](./browser/reviewed/trash-record-dark-390.png)、[手机深色恢复确认](./browser/reviewed/trash-restore-confirm-dark-390.png)。
+六图本轮范围通过，无新增视觉偏差。深色单项复用最终队列行结构；多项排布另由前述浅色三项截图验证，不将单项截图说成深色多项实测。图库及回收已查看图原样归档在[评审截图目录](https://github.com/dnslin/ariso-next/tree/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/browser/reviewed)，例如[桌面深色详情](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/browser/reviewed/detail-ready-dark-1440.png)、[手机深色回收记录](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/browser/reviewed/trash-record-dark-390.png)、[手机深色恢复确认](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/browser/reviewed/trash-restore-confirm-dark-390.png)。
 
 **独立设计结论：本轮明确列出的38种截图状态通过，两项发现已修复并实际复验关闭；用户人工验收仍待执行。** 本报告不扩大至全部历史节点，不替代动态行为、物理设备或完整运行器结果。当前没有在已查看范围内仍待修复的本轮设计问题；未逐项视觉检查的历史状态及未来功能继续保留原边界。

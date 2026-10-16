@@ -6,7 +6,7 @@
 
 - [14 · 图片处理与水印](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=209-2275)：x=7200、y=96754、6600×6250。
 - [14 · 图片处理与水印](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=209-2283)：x=2800、y=79994、2200×5000。
-- [验证记录](./verification/parallel-reprocess-disabled-2026-09-19.json)。
+- [验证记录](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/archive/preparation-2026-09/design/verification/parallel-reprocess-disabled-2026-09-19.json)。
 
 ## 范围规则
 

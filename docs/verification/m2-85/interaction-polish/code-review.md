@@ -52,11 +52,11 @@
 - `typecheck-final.txt`：Next 类型生成及两个 TypeScript 项目检查无错误；主执行者已确认退出 0。
 - `lint-final.txt`：`eslint . --max-warnings=0` 无诊断；主执行者已确认退出 0。
 - `build.txt`：Next 编译及 12 页静态生成成功；打包 tracer 输出依赖／map 文件 warnings，由现有打包脚本 `console.warn` 输出，不能将日志中的 Error 对象误称零告警。主执行者确认最终 build 退出 0，且 focused 使用实际新构建运行。
-- [图库 focused 报告](./browser/reviewed/library.json)：status passed，35 条行为检查、220 条布局记录。
-- [上传 focused 报告](./browser/reviewed/upload.json)：status passed，15 条行为检查、130 条布局记录。
+- [图库 focused 报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/browser/reviewed/library.json)：status passed，35 条行为检查、220 条布局记录。
+- [上传 focused 报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/browser/reviewed/upload.json)：status passed，15 条行为检查、130 条布局记录。
 
 当前代码审计没有未解决阻断发现。完整 runner 仍在运行，未记为通过。设计结论由独立设计评审给出，用户人工验收仍是交付边界。
 
 最后两处测试修正由 `scope_review` 独立只读复审通过：上传轮询检查当前精确保存文案，并用真实 XHR progress 的可计算非零 loaded/total 验证传输完成；Toast 先等 data-entering 移除，再等实际 CSS transition 完成。原有过期读取恢复、取消、真实点击命中、层级和 1px 几何断言均保留。主执行者专项复跑通过，最终全套结果见主记录。
 
-主执行记录最终确认完整 `pnpm run test:browser` 退出 0，[最终报告](./browser/full/runner.json)覆盖两端 M2、新交互、上传轮询及公共布局。此前“待完整运行”的记载保留其当时范围，最终执行结论以该报告为准。用户人工验收仍未执行。
+主执行记录最终确认完整 `pnpm run test:browser` 退出 0，[最终报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/interaction-polish/browser/full/runner.json)覆盖两端 M2、新交互、上传轮询及公共布局。此前“待完整运行”的记载保留其当时范围，最终执行结论以该报告为准。用户人工验收仍未执行。

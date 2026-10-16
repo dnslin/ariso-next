@@ -92,7 +92,7 @@ EGO_TASK_SPACE=<已有编号> node tests/experiments/storage-s3/run.ts \
 
 全量集成首次以 `pnpm run test:integration --maxWorkers=4` 运行：38 文件/314 测试，312 通过、2 项已有 identity/runtime 测试超时。并行验证期间机器有其他任务同时运行；没有修改超时、断言或生产代码，改用 `pnpm run test:integration --maxWorkers=1` 完整重跑后，先前两项通过；38 文件/314 测试中 313 通过，`identity/setup-dev.test.ts` 的临时 Next 开发项目加载失败：`Cannot find module pino-std-serializers`。该用例在首轮通过；随后 `pnpm exec vitest run --project integration tests/integration/identity/setup-dev.test.ts --maxWorkers=1` 单独复查 1/1 通过（31.93 秒），未修改其代码/超时。全量命令均返回 1，不能称全量集成通过。
 
-原始报告：[AWS](./results/aws/report.json)、[R2](./results/r2/report.json)、[MinIO](./results/minio/report.json)。浏览器工具回归证据见 [fixture.json](./browser-fixture.json)，其中动态 localhost 地址只属于本地夹具。
+原始报告：[AWS](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-STORAGE-01/results/aws/report.json)、[R2](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-STORAGE-01/results/r2/report.json)、[MinIO](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-STORAGE-01/results/minio/report.json)。浏览器工具回归证据见 [fixture.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-STORAGE-01/browser-fixture.json)，其中动态 localhost 地址只属于本地夹具。
 
 ## 审计与未完成项
 
@@ -118,7 +118,7 @@ EGO_TASK_SPACE=<已有编号> node tests/experiments/storage-s3/run.ts \
 
 按所有者要求使用 SeaweedFS 替代 MinIO。SeaweedFS 桶为 `images`，R2 桶为 `image`，R2 使用不含桶路径的官方 S3 API Endpoint 和 `auto` 区域。凭据只保存在 Git 忽略的本地 `.data`，未提交。所有者确认 R2 没有对象锁规则，但最后提供的公开状态仍是开启；未收到关闭确认，未生成虚假的私有桶声明，也未运行写入实验。SeaweedFS 的公共入口状态与实际版本仍待确认。
 
-使用 Node 24.18.1、SDK 3.1136.0 运行本地只读脚本 `node .data/seaweed-preflight.mjs` 和 `node .data/r2-preflight.mjs`：SeaweedFS HeadBucket 200、版本查询 200 且无启用状态、锁查询明确 404 ObjectLockConfigurationNotFoundError；R2 HeadBucket 200，版本和锁查询均 403 AccessDenied，不记为能力检测通过。R2 仍按既有官方能力加所有者声明规则验收。见脱敏原始记录 [SeaweedFS](./preflight/seaweedfs.json) 和 [R2](./preflight/r2.json)。这些检查没有写入、读取现有对象或修改桶配置。
+使用 Node 24.18.1、SDK 3.1136.0 运行本地只读脚本 `node .data/seaweed-preflight.mjs` 和 `node .data/r2-preflight.mjs`：SeaweedFS HeadBucket 200、版本查询 200 且无启用状态、锁查询明确 404 ObjectLockConfigurationNotFoundError；R2 HeadBucket 200，版本和锁查询均 403 AccessDenied，不记为能力检测通过。R2 仍按既有官方能力加所有者声明规则验收。见脱敏原始记录 [SeaweedFS](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-STORAGE-01/preflight/seaweedfs.json) 和 [R2](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-STORAGE-01/preflight/r2.json)。这些检查没有写入、读取现有对象或修改桶配置。
 
 替换目标的回归先失败后通过。本轮执行 `pnpm install --frozen-lockfile`、`pnpm run format:check`、`pnpm run lint`、`pnpm run typecheck`、`pnpm run build` 均退出 0（构建仍有上述可选 Debug 绑定诊断）；`pnpm run test:unit --maxWorkers=1` 为 316/316 通过；`pnpm exec vitest run --project unit --project integration tests/unit/storage/s3-protocol.test.ts tests/integration/storage/s3-protocol.test.ts tests/integration/storage/s3-runner.test.ts` 为 24/24 通过；`node docs/tasks/check.mjs` 与 `git diff --check` 通过。审计确认没有把 SeaweedFS 标为 MinIO，没有更改 R2 能力例外或虚构私有性声明。本轮未重跑全量集成和浏览器；前述全量失败记录仍保留。
 
@@ -139,7 +139,7 @@ EGO_TASK_SPACE=<已有编号> node tests/experiments/storage-s3/run.ts \
 
 R2 的已提供 `r2.dev` 公共入口实测返回 401，不能读取本轮对象；不推断所有其他入口已关闭。`node .data/r2-cors-check.mjs` 的 OPTIONS 复查返回 403，服务正文明确 `CORS not configured for this bucket`，解释浏览器上传失败；GetBucketCors 返回 AccessDenied，未修改配置。需要针对实验 origin `http://127.0.0.1:47070` 配置允许 PUT 和 content-type 的 CORS 后再测。R2 匿名 400 和 HEAD 覆盖属于实际协议差异，不放宽断言掩盖，后续须评估规格与服务支持边界。
 
-实测证据：[SeaweedFS 报告](./live/run-34lgzF/seaweedfs/report.json)、[浏览器请求与下载](./live/run-34lgzF/seaweedfs/browser.json)、[R2 报告](./live/run-34lgzF/r2/report.json)、[R2 CORS](./live/run-34lgzF/r2/cors.json)。SeaweedFS 响应 Server 标识为 4.47。报告保留精确 Key、请求 ID、状态和响应头；已脱敏 HTTP/2 `:path` 中的预签名参数及服务错误正文回显的凭据标识。
+实测证据：[SeaweedFS 报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-STORAGE-01/live/run-34lgzF/seaweedfs/report.json)、[浏览器请求与下载](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-STORAGE-01/live/run-34lgzF/seaweedfs/browser.json)、[R2 报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-STORAGE-01/live/run-34lgzF/r2/report.json)、[R2 CORS](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-STORAGE-01/live/run-34lgzF/r2/cors.json)。SeaweedFS 响应 Server 标识为 4.47。报告保留精确 Key、请求 ID、状态和响应头；已脱敏 HTTP/2 `:path` 中的预签名参数及服务错误正文回显的凭据标识。
 
 两个服务各创建 3 个小测试对象，所有受控 SDK/浏览器写入结束后删除，6 个 Key 均鉴权 HEAD 404，未修改已有文件。签名地址未分发，不再复用；这证明本轮受控实验清理，不代表 UPLOAD-V01 通用迟到 PUT 协议已完成。AWS 未测试，未知公开别名未验证，PR 保持草稿。
 
@@ -147,7 +147,7 @@ R2 的已提供 `r2.dev` 公共入口实测返回 401，不能读取本轮对象
 
 ## 2026-09-23 R2 CORS 配置后复测
 
-用户更新 CORS 后，Node 24.18.1 下执行 `node .data/r2-retest.mjs`，复用既有 SDK/浏览器辅助函数，Ego Lite TaskSpace 15 完成后关闭。新一轮独立报告：[R2](./live/run-C4ORic/r2/report.json)、[浏览器请求与下载](./live/run-C4ORic/r2/browser.json)。旧失败报告保持原样。
+用户更新 CORS 后，Node 24.18.1 下执行 `node .data/r2-retest.mjs`，复用既有 SDK/浏览器辅助函数，Ego Lite TaskSpace 15 完成后关闭。新一轮独立报告：[R2](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-STORAGE-01/live/run-C4ORic/r2/report.json)、[浏览器请求与下载](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-STORAGE-01/live/run-C4ORic/r2/browser.json)。旧失败报告保持原样。
 
 OPTIONS 预检通过，允许实验来源 `http://127.0.0.1:47070`；真实浏览器 PUT 成功，响应可跨域读取，实际请求无 Authorization/Cookie；下载文件名为 `旅行.svg` 且字节一致。基础流读写、条件复制、旧 ETag 拒绝、签名 PUT 与 GET/HEAD 方法隔离复测通过。匿名 API 仍返回 400 InvalidArgument / Authorization；签名 GET 响应覆盖通过，签名 HEAD 仍返回原始 image/svg+xml 且缺少指定附件/缓存头。这两项继续标为失败，未修改或放宽断言。
 
@@ -162,7 +162,7 @@ OPTIONS 预检通过，允许实验来源 `http://127.0.0.1:47070`；真实浏�
 - SeaweedFS：同一矩阵中匿名存在/不存在对象均 403 AccessDenied，错误签名 403；GET/HEAD 覆盖在两种认证方式中均生效。
 - 两个新测试对象均 DELETE 204 后鉴权 HEAD 404；没有修改已有对象或桶配置，没有签发 PUT URL。
 
-[Cloudflare 官方兼容表](https://developers.cloudflare.com/r2/api/s3/api/) 列出 HeadObject/GetObject 支持，但没有明确列出 HEAD 的 response-* 覆盖参数，也没有承诺此匿名请求必须返回 403；不能把文档未列出解释成官方明确承诺不支持。本轮结论依据实际对照响应，保留现有失败，不调整产品契约或削弱断言。原始证据：[R2](./live/comparison-OH5ASB/r2.json)、[SeaweedFS](./live/comparison-OH5ASB/seaweedfs.json)。
+[Cloudflare 官方兼容表](https://developers.cloudflare.com/r2/api/s3/api/) 列出 HeadObject/GetObject 支持，但没有明确列出 HEAD 的 response-* 覆盖参数，也没有承诺此匿名请求必须返回 403；不能把文档未列出解释成官方明确承诺不支持。本轮结论依据实际对照响应，保留现有失败，不调整产品契约或削弱断言。原始证据：[R2](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-STORAGE-01/live/comparison-OH5ASB/r2.json)、[SeaweedFS](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-STORAGE-01/live/comparison-OH5ASB/seaweedfs.json)。
 
 本轮只新增观测记录和文档。执行格式检查、`node docs/tasks/check.mjs`、`git diff --check` 并扫描报告不含提供的凭据或预签名查询；未修改实现，未重跑全量测试和构建。
 
@@ -172,7 +172,7 @@ OPTIONS 预检通过，允许实验来源 `http://127.0.0.1:47070`；真实浏�
 
 新增回归先出现两个预期失败，实施后执行 `pnpm exec vitest run --project unit --project integration tests/unit/storage/s3-protocol.test.ts tests/integration/storage/s3-protocol.test.ts tests/integration/storage/s3-runner.test.ts`，30/30 通过。历史原始响应及按旧规则记录的失败不改写；新规则依据前述实测和明确的服务边界，并非把所有 400 或任意 HEAD 响应视为通过。
 
-新规则真实复测：`node .data/rules-verify.mjs` 调用本次修改后的 `checkAnonymous`、`signReads` 和 GET 响应检查函数，SeaweedFS/R2 各 5 项（匿名拒绝、GET 覆盖、HEAD 元数据、方法隔离、清理）全部通过，退出 0。只新建并清理两个小对象，均 HEAD 404；未签发 PUT URL，不重写历史报告。证据：[SeaweedFS](./live/accepted-rules-SiAovj/seaweedfs.json)、[R2](./live/accepted-rules-SiAovj/r2.json)。本次没有重跑浏览器，既有真实 CORS/下载通过证据仍有效，GET 签名与浏览器实现未改。
+新规则真实复测：`node .data/rules-verify.mjs` 调用本次修改后的 `checkAnonymous`、`signReads` 和 GET 响应检查函数，SeaweedFS/R2 各 5 项（匿名拒绝、GET 覆盖、HEAD 元数据、方法隔离、清理）全部通过，退出 0。只新建并清理两个小对象，均 HEAD 404；未签发 PUT URL，不重写历史报告。证据：[SeaweedFS](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-STORAGE-01/live/accepted-rules-SiAovj/seaweedfs.json)、[R2](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-STORAGE-01/live/accepted-rules-SiAovj/r2.json)。本次没有重跑浏览器，既有真实 CORS/下载通过证据仍有效，GET 签名与浏览器实现未改。
 
 本轮 `pnpm install --frozen-lockfile`、`pnpm run lint`、`pnpm run typecheck`、`pnpm run format:check`、`pnpm run build` 通过；构建仍有已记录的可选 Debug 绑定诊断。`pnpm run test:unit --maxWorkers=1` 为 322/322 通过。
 

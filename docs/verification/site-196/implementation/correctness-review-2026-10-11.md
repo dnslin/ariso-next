@@ -37,10 +37,10 @@
 
 输出捕获归档（当时未重定向，现从工具输出转录；不冒称原始重定向日志）：
 
-- [selected-unit.log](./checks/review-2026-10-11/selected-unit.log)
-- [mutation-baseline.log](./checks/review-2026-10-11/mutation-baseline.log)
-- [mutation-failed.log](./checks/review-2026-10-11/mutation-failed.log)（失败概要与定位，完整堆栈见本次工具记录）
-- [mutation-restored.log](./checks/review-2026-10-11/mutation-restored.log)
+- [selected-unit.log](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/checks/review-2026-10-11/selected-unit.log)
+- [mutation-baseline.log](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/checks/review-2026-10-11/mutation-baseline.log)
+- [mutation-failed.log](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/checks/review-2026-10-11/mutation-failed.log)（失败概要与定位，完整堆栈见本次工具记录）
+- [mutation-restored.log](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/site-196/implementation/checks/review-2026-10-11/mutation-restored.log)
 
 ## 原交付验证核对（非本审查重跑）
 

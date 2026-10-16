@@ -10,9 +10,9 @@
 
 位置：`src/components/identity/smtp-draft.ts:24`、`:28–33`。服务器 `src/server/identity/validation.ts:7` 与 `:116` 会把发件人邮箱 trim 并转为小写；客户端草稿仅 trim。输入 `Owner@Example.com`，PATCH 已成功但响应丢失时，GET 返回 `owner@example.com`，`smtpDraftMatches` 返回 false，把公开配置实际一致误报为不一致。相同问题影响 `smtpDraftChanged`。
 
-建议：客户端提交、比较采用同样的小写规则，补“混合大小写邮箱经过真实服务器归一后，回读仍一致”的行为单元检查。无需改变服务器契约。独立复现加载了真实草稿模块，Node 24.18.1 下结果见 [code-review-email.txt](./checks/code-review-email.txt)。审计者未修改产品代码。
+建议：客户端提交、比较采用同样的小写规则，补“混合大小写邮箱经过真实服务器归一后，回读仍一致”的行为单元检查。无需改变服务器契约。独立复现加载了真实草稿模块，Node 24.18.1 下结果见 [code-review-email.txt](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/smtp-182/checks/code-review-email.txt)。审计者未修改产品代码。
 
-主 agent 已在 `smtpDraftInput` 使用 `.trim().toLowerCase()`，并新增大小写回读一致、dirty 为 false 的行为测试。审计者实际复读了修复和测试；[修复前](./checks/client-email-before.txt)目标场景失败、[修复后](./checks/client-email-after.txt)5 项通过。复审确认解决根因，没有改变密码字节或其他字段规则。
+主 agent 已在 `smtpDraftInput` 使用 `.trim().toLowerCase()`，并新增大小写回读一致、dirty 为 false 的行为测试。审计者实际复读了修复和测试；[修复前](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/smtp-182/checks/client-email-before.txt)目标场景失败、[修复后](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/smtp-182/checks/client-email-after.txt)5 项通过。复审确认解决根因，没有改变密码字节或其他字段规则。
 
 ## 阅读范围与五维结论
 
@@ -36,7 +36,7 @@
 
 `pnpm exec vitest run --project integration tests/integration/identity/smtp-production.test.ts -t 'STARTTLS refuses a server without an upgrade'`
 
-有效环境 Node 24.18.1 / pnpm 11.19.0。目标 1 项如预期失败，14 项未选；预期 TLS / ETLS / STARTTLS 实际退化为 authentication / EAUTH / AUTH。测试确实能捕获强制升级回归。随后从完整字节副本恢复 `mail.ts` 并验证逐字节相等，没有遗留 mutation。见 [code-review-mutation.txt](./checks/code-review-mutation.txt)。首次调用误用机器默认 Node 26 / pnpm 11.25，已恢复后在正确环境重做；默认环境结果不作为项目验证证据。
+有效环境 Node 24.18.1 / pnpm 11.19.0。目标 1 项如预期失败，14 项未选；预期 TLS / ETLS / STARTTLS 实际退化为 authentication / EAUTH / AUTH。测试确实能捕获强制升级回归。随后从完整字节副本恢复 `mail.ts` 并验证逐字节相等，没有遗留 mutation。见 [code-review-mutation.txt](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/smtp-182/checks/code-review-mutation.txt)。首次调用误用机器默认 Node 26 / pnpm 11.25，已恢复后在正确环境重做；默认环境结果不作为项目验证证据。
 
 另外用 Node 24.18.1 加载真实 `smtp-draft.ts` 转译输出，复现上述大小写不一致。这不是新测试套件，也没有修改既有测试。
 
@@ -83,7 +83,7 @@ SMTP 浏览器 fixture 使用隔离数据库、临时证书与本地真实 SMTP�
 
 对 `tests/integration/runtime/{health,prestart,secret-preflight,startup}.test.ts` 的变更已逐项复读。prestart 新增 SMTP 启动解密读取，需要隔离夹具包含真实 `0026_sloppy_tarot.sql`。这些修改仅补迁移和表集合、迁移 checkpoint 16；原失败恢复、数据保留及生产产物断言均保留，没有跳过检查或降低断言。
 
-已实际读取日志：[runtime 首次修复](./checks/integration-runtime-retry.txt)29 通过/1 checkpoint 失败；[checkpoint 修复后](./checks/integration-startup-migration-retry.txt)目标 1 通过；[稳定生产产物后的 HTTP 重跑](./checks/integration-http-retry.txt)4 文件26项通过。首次全量失败与并行构建覆盖产物的问题仍保留历史记录，定向恢复不能改称首次全量通过。没有为审计机械再跑已通过输入不变的检查。
+已实际读取日志：[runtime 首次修复](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/smtp-182/checks/integration-runtime-retry.txt)29 通过/1 checkpoint 失败；[checkpoint 修复后](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/smtp-182/checks/integration-startup-migration-retry.txt)目标 1 通过；[稳定生产产物后的 HTTP 重跑](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/smtp-182/checks/integration-http-retry.txt)4 文件26项通过。首次全量失败与并行构建覆盖产物的问题仍保留历史记录，定向恢复不能改称首次全量通过。没有为审计机械再跑已通过输入不变的检查。
 
 设计评审后的 pending 清除/说明入口复审：有凭据时保持入口，使用 editor.locked 禁用，openClear 本身仍拒绝 pending；回读确认已清除后入口按当前无凭据状态消失。三处 Label 仅统一 medium，不改变字段行为。
 
@@ -91,7 +91,7 @@ SMTP 浏览器 fixture 使用隔离数据库、临时证书与本地真实 SMTP�
 
 主 agent 在实际预览发现重新登录后未返回 SMTP。审计者复读 `src/components/identity/return-to.ts`、LoginPage → loginDestination → LoginForm 的真实调用链，以及 `return-to.test.ts` 和更新的生命周期场景。
 
-修复仅在已交付入口清单加入 `/settings/email`，不放开其未实施子路径或外部 URL。新 unit 保留外部/子路径拒绝断言，同时验证路由与 hash。[修改前](./checks/return-before.txt)新增场景失败、23 项通过；[修改后](./checks/return-after.txt)24 项通过。该修复属于本次 SMTP 闭环所需，未增加新的路由抽象。
+修复仅在已交付入口清单加入 `/settings/email`，不放开其未实施子路径或外部 URL。新 unit 保留外部/子路径拒绝断言，同时验证路由与 hash。[修改前](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/smtp-182/checks/return-before.txt)新增场景失败、23 项通过；[修改后](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/smtp-182/checks/return-after.txt)24 项通过。该修复属于本次 SMTP 闭环所需，未增加新的路由抽象。
 
 e2e 的实际 401 恢复现在点击 SMTP 页内“重新登录”，检查 login 的 reason/returnTo，输入真实账号密码并键盘提交，检查最后进入 `/settings/email` 且 SMTP 密码为空。只按真实 auth 429 的 x-retry-after 进行有限重试，不人工改目的地，也不以账号页登录后手动 goto 替代验证。测试设计能抓住本次遗漏。
 
@@ -128,7 +128,7 @@ e2e 的实际 401 恢复现在点击 SMTP 页内“重新登录”，检查 logi
 
 停止要求明确是用户接管后的浏览器硬停止，需要用户明确授权继续原空间3后才能恢复。主 agent 已停止浏览器工作并请求该授权；本审计者没有尝试接管、新建空间、切换浏览器或重跑检查。
 
-合并后的离线受影响检查已有真实结果：[5个 runtime/SMTP 文件45项通过](./checks/integration-concurrency.txt)；[main26→SMTP27 两次 prestart](./checks/migration-upgrade.txt)通过，analytics 索引保留、SMTP 表创建，28个正式迁移且重复执行成功。审计者实际读了结果，没有机械重跑。
+合并后的离线受影响检查已有真实结果：[5个 runtime/SMTP 文件45项通过](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/smtp-182/checks/integration-concurrency.txt)；[main26→SMTP27 两次 prestart](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/smtp-182/checks/migration-upgrade.txt)通过，analytics 索引保留、SMTP 表创建，28个正式迁移且重复执行成功。审计者实际读了结果，没有机械重跑。
 
 **本阶段最终审计：0 Critical，1 未解决 Required / P2（SMTP 真实浏览器执行与生命周期回归证据缺失）。** 代码静态、条件 mutation、相关单元/协议集成及合并迁移复审结论保持通过。有效测试场景已经接默认流程，但尚未运行不能关闭 Required。独立设计最终状态、外部 SMTP 最终收件和所有者人工验收另依统一记录，PR 应保持草稿；后续取得明确恢复授权和真实结果后再定向复审。
 
@@ -194,7 +194,7 @@ Tips 宽度/单层内距、有限 DocumentTimeline 等待、真实 Tab 短视口
 - Providers 同时保留 general/email 的 footer 避让位置；shell-navigation 案例保留所有既有路由并包含两者。没有将另一项能力覆盖成 SMTP 专用入口。
 - `scripts/browser-plan.mjs:23–24` 的默认 stages 明确包含 site-general、smtp 各一次。完整 runner 在390循环执行该列表；两项业务脚本各自覆盖自己的宽度，默认未附定向 phase，所以各自全部场景有真实调用入口。
 - site-general 的 config 只生成 siteGeneralPhase，SMTP 只生成 smtpPhase；focusedConfig 只展开所选 suite 的 plan.config。默认 business 调用传 identityConfig，不展开定向 config。两脚本分别只读自身 phase，siteGeneralPhase 不会误分发给 SMTP。
-- 两个 parent 的测试均保留，参数适用集合、完整 stage 列表和错误参数断言未删除或减弱。实际读取主 agent [受影响参数测试结果](./checks/general-sync-unit.txt)：2文件265项通过；审计者没有重复执行。
+- 两个 parent 的测试均保留，参数适用集合、完整 stage 列表和错误参数断言未删除或减弱。实际读取主 agent [受影响参数测试结果](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/smtp-182/checks/general-sync-unit.txt)：2文件265项通过；审计者没有重复执行。
 
 本轮 CloseButton 的基础 invisible 配合 frontmost/expanded 且非 exiting/hidden 祖先条件，直接恢复 HeroUI 对后层缩放关闭按钮的隐藏语义。visibility:hidden 使后层目标不可输入；前层/展开状态保持44px、常显。退出或超量隐藏的通知不会被新 visible 条件重新暴露，没有改全局尺寸阈值或通知布局。
 
@@ -218,11 +218,11 @@ Tips 宽度/单层内距、有限 DocumentTimeline 等待、真实 Tab 短视口
 
 实际读取安装库 modal.css，Modal.Header 默认 flex-col；SMTP短对话框显式 flex-row/items-center/justify-start/text-left使标题保持获批44px标题行的左对齐。关闭44px、正文滚动、busy禁用和区域间距语义保留。截图视觉结论由独立设计评审者负责，本审计不将源码修正代替视觉对照。
 
-[冻结最终SMTP场景](./browser/final/smtp.json) 与实际 test-results/browser-smtp-themes-final/smtp.json 的 JSON 内容一致（公开记录经过格式化）；[最终运行器](./browser/final/runner.json) status/stage 均passed，结束2026-10-08 10:12:14 UTC，主 agent 命令exit0。phase=all实际执行representative/interactions/recovery：10项业务检查、138项布局、73次请求、10项真实HTTP SMTP诊断，browserErrors为空。两宽度实际注销、SMTP401、迟到保存200、真实Next Link卸载后的PATCH/POST/GET迟到结果，以及重新登录空密码闭环均完成。
+[冻结最终SMTP场景](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/smtp-182/browser/final/smtp.json) 与实际 test-results/browser-smtp-themes-final/smtp.json 的 JSON 内容一致（公开记录经过格式化）；[最终运行器](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/smtp-182/browser/final/runner.json) status/stage 均passed，结束2026-10-08 10:12:14 UTC，主 agent 命令exit0。phase=all实际执行representative/interactions/recovery：10项业务检查、138项布局、73次请求、10项真实HTTP SMTP诊断，browserErrors为空。两宽度实际注销、SMTP401、迟到保存200、真实Next Link卸载后的PATCH/POST/GET迟到结果，以及重新登录空密码闭环均完成。
 
 最终记录保留1次 get-session 429、retryAfter8秒以及10项有意触发的HTTP502诊断。browserErrors为空表示没有浏览器运行/资源错误，不表示HTTP错误为0。故障场景中仍有真实服务器响应与SMTP投递确定性；条件 mutation、协议测试和最终浏览器证据可以互相补充，不能相互替代。
 
-[公共导航场景](./browser/shell-navigation/shell-navigation.json) 与[运行器](./browser/shell-navigation/runner.json)均passed；18实际路由×两宽度×两主题的公共区域、分类、高亮和10项图标状态共82布局已核对。general和email同时覆盖，没有把主入口合并后的公共消费检查局限在SMTP路由。额外 site-general consumers 当前runner仍running，未取得finishedAt，本审计不将它写为通过。
+[公共导航场景](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/smtp-182/browser/shell-navigation/shell-navigation.json) 与[运行器](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/smtp-182/browser/shell-navigation/runner.json)均passed；18实际路由×两宽度×两主题的公共区域、分类、高亮和10项图标状态共82布局已核对。general和email同时覆盖，没有把主入口合并后的公共消费检查局限在SMTP路由。额外 site-general consumers 当前runner仍running，未取得finishedAt，本审计不将它写为通过。
 
 原默认运行器仍failed，6个失败阶段tokens-1440/processing/library/library-batch/library-reprocess/library-copy继续保留；用户接管停止及此前SMTP动画、短视口、焦点、滚动、通知、429专项失败也保留历史结果。最新专项pass不修改它们，也不构成默认全量pass。
 
@@ -230,7 +230,7 @@ Tips 宽度/单层内距、有限 DocumentTimeline 等待、真实 Tab 短视口
 
 ## 非 SMTP 公共消费最终补验
 
-最后只读[基本设置消费者](./browser/site-consumers/site-general.json)、[公共壳](./browser/site-consumers/owner-shell.json)及[运行器](./browser/site-consumers/runner.json)：消费者 phase=consumers/passed、runner stage/site-general均passed，结束2026-10-08 10:17:26 UTC，实际命令exit0。原公开地址/站点数据与原生Clipboard恢复标志均true，没有清理错误，browserErrors为空。10项布局、1项业务检查覆盖真实长地址复制、页面/滚动/选择/焦点保留、拒绝后完整手工文本以及已有存储/处理路由导航。
+最后只读[基本设置消费者](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/smtp-182/browser/site-consumers/site-general.json)、[公共壳](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/smtp-182/browser/site-consumers/owner-shell.json)及[运行器](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/smtp-182/browser/site-consumers/runner.json)：消费者 phase=consumers/passed、runner stage/site-general均passed，结束2026-10-08 10:17:26 UTC，实际命令exit0。原公开地址/站点数据与原生Clipboard恢复标志均true，没有清理错误，browserErrors为空。10项布局、1项业务检查覆盖真实长地址复制、页面/滚动/选择/焦点保留、拒绝后完整手工文本以及已有存储/处理路由导航。
 
 实际回读 SavedAddresses，成功复制会调用共享 HeroUI toast，随后复制会关闭上一条通知再发布新通知；本轮真实复制已执行该非SMTP消费路径。它与SMTP两宽度连续保存的严格堆叠/44px目标回归相互补充；本轮报告没有独立列出复制通知关闭目标测量，不能把它扩称另一轮全部Toast状态几何检查。
 
@@ -257,7 +257,7 @@ Tips 宽度/单层内距、有限 DocumentTimeline 等待、真实 Tab 短视口
 
 `pnpm exec vitest run --project unit tests/unit/identity/smtp-request.test.ts`
 
-原实现5/5通过。仅反转 `smtp-draft.ts:25` 的密码提交条件后，同一命令1失败/4通过，空密码不应出现于PATCH的断言捕获回归；见[本轮变异日志](./checks/pr265-condition-mutation.txt)。通过 `finally` 从完整字节备份精确恢复，备份比较、目标文件差异检查与工作树检查均确认无遗留变异。这个结果不外推其他场景的变异覆盖。
+原实现5/5通过。仅反转 `smtp-draft.ts:25` 的密码提交条件后，同一命令1失败/4通过，空密码不应出现于PATCH的断言捕获回归；见[本轮变异日志](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/smtp-182/checks/pr265-condition-mutation.txt)。通过 `finally` 从完整字节备份精确恢复，备份比较、目标文件差异检查与工作树检查均确认无遗留变异。这个结果不外推其他场景的变异覆盖。
 
 结构评审者只执行冻结git对象/差异、证据JSON与TypeScript AST统计，未运行应用检查。两个 agent 均未重跑全量检查、浏览器或邮件，未改变人工预览数据。本轮功能结论不代替新的设计对照或人工验收。
 

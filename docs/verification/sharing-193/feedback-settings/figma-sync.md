@@ -8,12 +8,12 @@
 
 文件：`74sT9Hrf8G4czcWeTkET5b`。实际读取两个页面：桌面 `0:1`、手机 `97:748`；再读取当前分享设置族的标题、简介、固定操作栏、原返回按钮/ArrowLeft、过期文本和已有 `destructive` 变量。同步前抓取并查看桌面/手机主页面和真实过期示例节点截图：
 
-| 视口/状态            | 节点                                                                               | 同步前截图                                           |
-| -------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------- |
-| 1440×1080 主设置     | [431:3753](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=431-3753)   | [before-431-3753.png](./figma/before-431-3753.png)   |
-| 390×844 主设置       | [431:8415](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=431-8415)   | [before-431-8415.png](./figma/before-431-8415.png)   |
-| 1440×1080 已过期设置 | [776:23915](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=776-23915) | [before-776-23915.png](./figma/before-776-23915.png) |
-| 390×844 已过期设置   | [776:30713](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=776-30713) | [before-776-30713.png](./figma/before-776-30713.png) |
+| 视口/状态            | 节点                                                                               | 同步前截图                                                                                                                                                                                      |
+| -------------------- | ---------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1440×1080 主设置     | [431:3753](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=431-3753)   | [before-431-3753.png](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-193/feedback-settings/figma/before-431-3753.png)   |
+| 390×844 主设置       | [431:8415](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=431-8415)   | [before-431-8415.png](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-193/feedback-settings/figma/before-431-8415.png)   |
+| 1440×1080 已过期设置 | [776:23915](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=776-23915) | [before-776-23915.png](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-193/feedback-settings/figma/before-776-23915.png) |
+| 390×844 已过期设置   | [776:30713](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=776-30713) | [before-776-30713.png](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-193/feedback-settings/figma/before-776-30713.png) |
 
 当前设置主页面与补充状态分别同步桌面 44 个、手机 44 个。历史“R4·修改前”节点 `529:11830` / `529:11376` 保留作历史对照。没有重画公共侧栏、品牌区、账号区、手机导航，亦未改分享列表、匿名分享门禁或大图节点。
 
@@ -33,14 +33,14 @@
 
 以下六张为实际 Figma 写入后截图，已逐张查看。手机截图采用上述44px修正后的最终版本。实施对照指出复用图标初次仍是16×16、产品实现为18×18；已只对本次88个当前设置状态的ArrowLeft按原比例调整为18×18并保持居中，回读两页各44个图标均为18×18、相对44px按钮 x=13/y=13；六张最终截图均已更新为该版本。历史R4·修改前节点回读仍为16×16，未改动。
 
-| 视口/状态                  | 节点                                                                               | 最终截图                                           | 本轮核对                                                           |
-| -------------------------- | ---------------------------------------------------------------------------------- | -------------------------------------------------- | ------------------------------------------------------------------ |
-| 1440×1080 主设置           | 431:3753                                                                           | [after-431-3753.png](./figma/after-431-3753.png)   | 整页公共区域保留；标题同排右侧描边箭头；简介下一行；底栏只保留预览 |
-| 390×844 主设置             | 431:8415                                                                           | [after-431-8415.png](./figma/after-431-8415.png)   | 手机公共导航保留；右上44px箭头；简介全宽；底栏无返回文字按钮       |
-| 1440×1080 已过期设置       | 776:23915                                                                          | [after-776-23915.png](./figma/after-776-23915.png) | 标签/有效期“已过期”均变为语义红；日期、圆点、背景保留；无 Halo     |
-| 390×844 已过期设置         | 776:30713                                                                          | [after-776-30713.png](./figma/after-776-30713.png) | 同上；手机标题、控件、卡片层级连续                                 |
-| 1440×1080 既有深色密码展开 | [776:24374](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=776-24374) | [after-776-24374.png](./figma/after-776-24374.png) | 深色既有公共区域和访问布局保留；返回箭头及描边可见                 |
-| 390×844 既有深色密码展开   | [776:31024](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=776-31024) | [after-776-31024.png](./figma/after-776-31024.png) | 同上；手机按钮44px、原底栏预览保留                                 |
+| 视口/状态                  | 节点                                                                               | 最终截图                                                                                                                                                                                      | 本轮核对                                                           |
+| -------------------------- | ---------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| 1440×1080 主设置           | 431:3753                                                                           | [after-431-3753.png](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-193/feedback-settings/figma/after-431-3753.png)   | 整页公共区域保留；标题同排右侧描边箭头；简介下一行；底栏只保留预览 |
+| 390×844 主设置             | 431:8415                                                                           | [after-431-8415.png](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-193/feedback-settings/figma/after-431-8415.png)   | 手机公共导航保留；右上44px箭头；简介全宽；底栏无返回文字按钮       |
+| 1440×1080 已过期设置       | 776:23915                                                                          | [after-776-23915.png](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-193/feedback-settings/figma/after-776-23915.png) | 标签/有效期“已过期”均变为语义红；日期、圆点、背景保留；无 Halo     |
+| 390×844 已过期设置         | 776:30713                                                                          | [after-776-30713.png](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-193/feedback-settings/figma/after-776-30713.png) | 同上；手机标题、控件、卡片层级连续                                 |
+| 1440×1080 既有深色密码展开 | [776:24374](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=776-24374) | [after-776-24374.png](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-193/feedback-settings/figma/after-776-24374.png) | 深色既有公共区域和访问布局保留；返回箭头及描边可见                 |
+| 390×844 既有深色密码展开   | [776:31024](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=776-31024) | [after-776-31024.png](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-193/feedback-settings/figma/after-776-31024.png) | 同上；手机按钮44px、原底栏预览保留                                 |
 
 本轮Figma只编辑既有节点族。没有新增深色过期或“从相册进入”画板；变量具备既有浅深模式不等同于这些产品状态已浏览器验收。真实产品的访问目的地、Tooltip、键盘焦点、主题与过期状态仍以本轮浏览器和独立评审记录为准。
 

@@ -63,9 +63,9 @@ wc -l e2e/trash-*.mjs
 
 本审实际读取以下四份最终报告，均为主执行者在同一 TaskSpace 28 执行的结果：
 
-- [review-fixes runner](./browser-review-fixes/runner.json) 与 [业务报告](./browser-review-fixes/trash-query-batch.json)：均为 `passed`，三项真实行为、6张截图及6项布局，主页面与另一页面的 `errors` 均为空。
-- [approved-query runner](./browser-review-query/runner.json) 与 [业务报告](./browser-review-query/trash-query-batch.json)：均为 `passed`，一组既有查询行为、17张截图及17项布局，`errors` 为空。实际覆盖三筛选、停用存储、搜索/存储清除、20/40/80、选择清空及详情返回完整查询，也确认拆分残留赋值的修复没有阻止后续查询断言。
+- [review-fixes runner](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-178/browser-review-fixes/runner.json) 与 [业务报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-178/browser-review-fixes/trash-query-batch.json)：均为 `passed`，三项真实行为、6张截图及6项布局，主页面与另一页面的 `errors` 均为空。
+- [approved-query runner](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-178/browser-review-query/runner.json) 与 [业务报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-178/browser-review-query/trash-query-batch.json)：均为 `passed`，一组既有查询行为、17张截图及17项布局，`errors` 为空。实际覆盖三筛选、停用存储、搜索/存储清除、20/40/80、选择清空及详情返回完整查询，也确认拆分残留赋值的修复没有阻止后续查询断言。
 
-另读取了保留的 [首次失败报告](./browser-review-fixes-initial/trash-query-batch.json)：它因原图预览资源错误在 `assertNoBrowserErrors` 失败。主执行者修正故障注入与预览加载顺序后重新运行；失败证据保留，最终报告没有放宽或删除该断言。
+另读取了保留的 [首次失败报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-178/browser-review-fixes-initial/trash-query-batch.json)：它因原图预览资源错误在 `assertNoBrowserErrors` 失败。主执行者修正故障注入与预览加载顺序后重新运行；失败证据保留，最终报告没有放宽或删除该断言。
 
 上述真实浏览器不是本审独立执行。未重复整组201项浏览器及71张结果图、远端存储实验、Release容器或人工UI验收。

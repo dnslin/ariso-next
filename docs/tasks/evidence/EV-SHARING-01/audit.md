@@ -32,11 +32,11 @@ fixture、HTTP、客户端和启动器职责清晰。取消刷新只保存独立
 
 ## 验证证据与完成边界
 
-已读取最终 [browser.json](./browser.json) 与 [browser-runner.json](./browser-runner.json)：Node 24.19.0，原 TaskSpace 30 的既有 p5，运行器退出 0。首轮检查 5059ms，恢复检查 74ms，两次真实 hidden 事件，两个成员被移除，九种迟到响应全部被忽略，`visibilityObserverRemoved=true`。Cookie 实际存储期限为 86400 秒，HttpOnly/Lax、无 Domain 和路径隔离均通过。
+已读取最终 [browser.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-SHARING-01/browser.json) 与 [browser-runner.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-SHARING-01/browser-runner.json)：Node 24.19.0，原 TaskSpace 30 的既有 p5，运行器退出 0。首轮检查 5059ms，恢复检查 74ms，两次真实 hidden 事件，两个成员被移除，九种迟到响应全部被忽略，`visibilityObserverRemoved=true`。Cookie 实际存储期限为 86400 秒，HttpOnly/Lax、无 Domain 和路径隔离均通过。
 
-已核对 [17 项集成结果](./sharing-integration.xml)、[2 项客户端回归](./sharing-client.xml)、[取消结果](./cancellation.json) 与[检查汇总](./checks.json)。原单元全量 1202 项及新增运行器参数 49 项的结果按实际执行时点分别记录，没有冒称重新运行了全量。评审者仅执行必要的离线缺陷重现与修复验证，没有机械重复实现者已通过的检查。
+已核对 [17 项集成结果](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-SHARING-01/sharing-integration.xml)、[2 项客户端回归](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-SHARING-01/sharing-client.xml)、[取消结果](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-SHARING-01/cancellation.json) 与[检查汇总](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-SHARING-01/checks.json)。原单元全量 1202 项及新增运行器参数 49 项的结果按实际执行时点分别记录，没有冒称重新运行了全量。评审者仅执行必要的离线缺陷重现与修复验证，没有机械重复实现者已通过的检查。
 
-[默认浏览器全量](./browser-full.json)在未修改的 `e2e/library-detail-171-confirmation.mjs:31` 焦点断言失败，未到达分享及后续场景。定向分享通过不能改记该全量失败。该范围外问题没有在本次修复。
+[默认浏览器全量](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-SHARING-01/browser-full.json)在未修改的 `e2e/library-detail-171-confirmation.mjs:31` 焦点断言失败，未到达分享及后续场景。定向分享通过不能改记该全量失败。该范围外问题没有在本次修复。
 
 同 origin 的两个独立浏览器上下文仍为 `unverified`；多标签、不同主机或 Cookie Path 均未被用来替代。HTTPS 的 Secure 项只证明真实响应头，不证明 TLS 部署。相册分页、真实邻居、生产匿名页面、完整 Local/S3 联验与 Release 验证继续按统一报告的范围和执行时机处理。本任务没有产品 UI，设计评审和人工 UI 验收不适用。
 
@@ -54,7 +54,7 @@ fixture、HTTP、客户端和启动器职责清晰。取消刷新只保存独立
 
 恢复浏览器后，独立设计评审已实际查看24张新确认/范围/聚焦图并通过本次实际页面终审；用户的新预览反馈为没有问题。原两项修复已在默认浏览器实际执行并通过，其后既有恢复场景因辅助状态aria-busy被React Aria过滤而失败。独立诊断读取源码、类型、真实DOM和跨文档生命周期，确认实际按钮已禁用、没有本轮footer/相册的影响路径，未修改或重跑该范围外场景。当前证据与限制统一见 [最新验证记录](../../../verification/library-171/README.md#恢复浏览器后的实际验证2026-10-05)，不改写当时未执行的历史审计。
 
-新增处理中标记补丁的独立代码复审通过，无Critical或Required。公开render接口保留原section、role、样式、children、事件及ref；pending直接随正常渲染映射，实际SSR两态回归取得修复前失败和修复后通过。用户已取消本轮重复浏览器要求，未重跑或冒称完整恢复流程通过，详见 [本次代码审计](../../../verification/library-171/two-fixes-243/busy-fix/code-audit.txt)。
+新增处理中标记补丁的独立代码复审通过，无Critical或Required。公开render接口保留原section、role、样式、children、事件及ref；pending直接随正常渲染映射，实际SSR两态回归取得修复前失败和修复后通过。用户已取消本轮重复浏览器要求，未重跑或冒称完整恢复流程通过，详见 [本次代码审计](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-171/two-fixes-243/busy-fix/code-audit.txt)。
 
 ## 完整 PR 双角度独立复审（2026-10-05）
 

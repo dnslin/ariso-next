@@ -27,7 +27,7 @@ EGO_TASK_SPACE=19 node scripts/verify-browser.mjs --suite album-motion
 - 首次后台运行在旧图库入口尚未完成进入时开始切页。图库改用公共入口后被观察器识别，原测试误把上升中的透明度当成退出淡出。测试改为等待初始真实入口透明度为 1、位移归零，保留严格无淡出断言。
 - 第二次后台运行的 CORS 冷导航出现约 135 毫秒长帧，首次 0 透明度后直接采到 0.283，实际采到的 0.1–0.9 窗口仅 234.9 毫秒，因此按原阈值失败。未预热 CORS、未降低阈值；在同空间新文档完整重跑并记录长任务后通过。最终观察到的单个长任务为标签页 50 毫秒。一次冷导航采样缺帧仍是本轮证据边界。
 
-原始失败记录保留于 `/tmp/ariso-motion-review-admin-initial-entry-failure.json` 和 `/tmp/ariso-motion-review-admin-cors-window-failure.json`。最终完整报告位于 `test-results/browser-{admin,library,album}-motion/`，精简结果见 [verification.json](./verification.json)。这些定向检查不代表完整业务浏览器、CI、容器发布或部署验收。
+原始失败记录保留于 `/tmp/ariso-motion-review-admin-initial-entry-failure.json` 和 `/tmp/ariso-motion-review-admin-cors-window-failure.json`。最终完整报告位于 `test-results/browser-{admin,library,album}-motion/`，精简结果见 [verification.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/motion-review-20261013/verification.json)。这些定向检查不代表完整业务浏览器、CI、容器发布或部署验收。
 
 ## 配套检查
 

@@ -38,21 +38,21 @@
 
 迁移测试保留历史字段逐值断言，明确新增列默认值，检查向前迁移记录及重复执行不重放；没有通过删除旧断言或跳过检查消除失败。审计者没有独立重跑全量构建、lint、typecheck、集成、浏览器或云服务操作；其实际交付结果由本任务主记录维护。
 
-追加夹具复审时全量检查尚在进行。提交前已读取[完整集成结果](./local/integration-final.txt)与[完整浏览器结果](./local/browser-final.json)，分别记录 863 项通过与浏览器运行器 passed；最终结果由[主记录](./README.md)汇总。审计者未独立重跑这些全量检查，不改变草稿和 UI 未验收结论。
+追加夹具复审时全量检查尚在进行。提交前已读取[完整集成结果](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-158/local/integration-final.txt)与[完整浏览器结果](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-158/local/browser-final.json)，分别记录 863 项通过与浏览器运行器 passed；最终结果由[主记录](./README.md)汇总。审计者未独立重跑这些全量检查，不改变草稿和 UI 未验收结论。
 
 ## 证据边界与未完成项
 
 ### 浏览器登录限流修复复审
 
-已实际读取 [CORS 首轮失败](./local/cors-first.json) 和 [浏览器首轮失败](./local/browser-first.json)：身份场景之后的 CORS 脚本在登录请求收到真实 HTTP 429，尚未开始存储检测。修复只调整脚本登录准备步骤，不改变应用认证或限流规则。
+已实际读取 [CORS 首轮失败](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-158/local/cors-first.json) 和 [浏览器首轮失败](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-158/local/browser-first.json)：身份场景之后的 CORS 脚本在登录请求收到真实 HTTP 429，尚未开始存储检测。修复只调整脚本登录准备步骤，不改变应用认证或限流规则。
 
 已对照现有 `e2e/library-trash.mjs` 的服务端等待头处理。新增逻辑仅在 429 时读取 `x-retry-after` 或 `retry-after`，要求有限正数，完整等待后重试，最多重试 6 次，并记录 `loginRetrySeconds`。最终仍严格断言 HTTP 200；无效等待头、其他错误和重试耗尽均失败，没有清空限流数据、跳过登录或放宽成功条件。此修复符合实际失败原因，未发现新的阻断代码问题。
 
-审计者实际运行 `pnpm exec eslint e2e/storage-cors.mjs --max-warnings=0` 和 `git diff --check`，均通过。提交前已读取[修复后的完整浏览器结果](./local/browser-final.json)和[CORS 场景结果](./local/cors-final.json)：运行器及 storageCors 均 passed，登录按服务端期限等待 7 秒后通过，故障与到期场景完成后对象列表为空。这是实施 agent 的实际运行记录，审计者没有独立重跑完整浏览器，也没有以静态审查代替运行结果。
+审计者实际运行 `pnpm exec eslint e2e/storage-cors.mjs --max-warnings=0` 和 `git diff --check`，均通过。提交前已读取[修复后的完整浏览器结果](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-158/local/browser-final.json)和[CORS 场景结果](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-158/local/cors-final.json)：运行器及 storageCors 均 passed，登录按服务端期限等待 7 秒后通过，故障与到期场景完成后对象列表为空。这是实施 agent 的实际运行记录，审计者没有独立重跑完整浏览器，也没有以静态审查代替运行结果。
 
 ### 浏览器证据的适用范围
 
-已实际读取 [真实服务浏览器报告](./browser-service/live/storage-cors.json)、[确切 Key 与最终对象列表](./browser-service/live/live.json) 和 [执行说明](./browser-service/checks.json)。记录显示 R2、SeaweedFS 的可读浏览器 PUT/GET/HEAD、服务器核验/删除、持久结果以及清理后 HEAD 404/空前缀列表通过；这是其他实施 agent 的实际执行记录，本审计没有重复执行云请求。
+已实际读取 [真实服务浏览器报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-158/browser-service/live/storage-cors.json)、[确切 Key 与最终对象列表](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-158/browser-service/live/live.json) 和 [执行说明](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-158/browser-service/checks.json)。记录显示 R2、SeaweedFS 的可读浏览器 PUT/GET/HEAD、服务器核验/删除、持久结果以及清理后 HEAD 404/空前缀列表通过；这是其他实施 agent 的实际执行记录，本审计没有重复执行云请求。
 
 `e2e/storage-cors.mjs` 在真实浏览器中执行自己的 `perform()`，没有通过真实页面点击运行生产 `runCorsSample/useCorsTest`。因此这些记录只能证明协议和应用 API，不能代替生产 UI 功能证据。HTTP 故障夹具也不验证 S3 签名；真实服务报告承担此项证据。
 
@@ -89,7 +89,7 @@ JS
 
 ### P2：复制按钮处理期间丢失键盘焦点
 
-浏览器 agent 在生产 Standalone 复现：聚焦“复制 CORS 示例”后按 Enter，出现成功反馈，但 activeElement 从 BUTTON 变为 BODY。审计者实际读取[复制焦点 RED](./ui/regressions/copy-focus-red.json)，并查看[失败截图](./ui/regressions/cors-copy-focus-failure-1440.png)；记录视口为 1440×480，`insideDialog=false`。
+浏览器 agent 在生产 Standalone 复现：聚焦“复制 CORS 示例”后按 Enter，出现成功反馈，但 activeElement 从 BUTTON 变为 BODY。审计者实际读取[复制焦点 RED](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-158/ui/regressions/copy-focus-red.json)，并查看[失败截图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-158/ui/regressions/cors-copy-focus-failure-1440.png)；记录视口为 1440×480，`insideDialog=false`。
 
 已核对生产修改：复制按钮由 `isDisabled={copying}` 改用 HeroUI 的 `isPending={copying}`，保留 `writing` 防重复标记。前者移除焦点能力，后者按既有组件 API 保持焦点且阻止重复操作。审计者实际读取 `production-fixture-3/storage-cors.json`：checks 已记录复制成功反馈、对话框焦点与 Escape 回归、短视口及真实 Permissions-Policy 复制拒绝后完整选中文本通过。第 3 轮之后在缓存故障注入时序失败，整体 status 为 failed；仅上述局部回归可作为本修复的 GREEN。
 
@@ -113,29 +113,29 @@ JS
 
 已用 PNG 文件头实际核对：保存的 Figma 主图为 1440×1080 / 390×844，第 4 轮对应浅色成功页截图也是这两个尺寸；布局脚本在其他断点和浅深色分别记录截图。1440×480 / 390×480 的短视口图是额外行为证据，不冒充主图同视口设计验收。审计没有据尺寸一致、44px 断言或无溢出宣布视觉还原通过。
 
-初审指出成功 Toast 不能证明剪贴板值逐字一致。最终脚本已在应用复制后立即通过 macOS `pbpaste` 读取真实剪贴板，与完整展示 JSON 严格比较；[最终 focused 报告](./ui/focused/storage-cors.json)包含普通及长 origin 两次 `completeJsonEqual=true`。拒绝分支仍验证完整 JSON 与选中范围。该证据缺口已补齐；失败的第 3/4 轮保留原状态。
+初审指出成功 Toast 不能证明剪贴板值逐字一致。最终脚本已在应用复制后立即通过 macOS `pbpaste` 读取真实剪贴板，与完整展示 JSON 严格比较；[最终 focused 报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-158/ui/focused/storage-cors.json)包含普通及长 origin 两次 `completeJsonEqual=true`。拒绝分支仍验证完整 JSON 与选中范围。该证据缺口已补齐；失败的第 3/4 轮保留原状态。
 
 ### 短视口、禁用原因与清理焦点追加修复
 
-审计者实际读取[第 8 轮 RED 报告](./ui/regressions/long-origin-short-red.json)：该轮因 `Long JSON field must not overlap the footer` 断言失败。另查看[失败截图](./ui/regressions/cors-long-origin-example-short-390.png)，确认 390×480 长来源示例的 JSON 正文与底部按钮重叠。这是已复现的布局问题，不以先前截图数量或对话框外框未越界替代。
+审计者实际读取[第 8 轮 RED 报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-158/ui/regressions/long-origin-short-red.json)：该轮因 `Long JSON field must not overlap the footer` 断言失败。另查看[失败截图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-158/ui/regressions/cors-long-origin-example-short-390.png)，确认 390×480 长来源示例的 JSON 正文与底部按钮重叠。这是已复现的布局问题，不以先前截图数量或对话框外框未越界替代。
 
-已复审 `CorsDialog` 的最小修复：对话框裁剪外部溢出，正文使用 `overflow-y-auto`，标题与操作区 `shrink-0`。同时读取已安装 HeroUI CSS，确认其 dialog 为纵向 flex、body 已有 `min-h-0 flex-1`；因此滚动责任位于正文，操作区保持独立。没有新增布局抽象。已读取[第 9 轮 GREEN](./ui/focused/storage-cors.json)：390×480 下 body.bottom=311、footerTop=327、overflowY=auto；实际滚动至 scrollTop=111，配合 clientHeight=224 到达 scrollHeight=335。正文按滚动区域裁剪，底部操作保持独立，完整文本仍可选择和复制。
+已复审 `CorsDialog` 的最小修复：对话框裁剪外部溢出，正文使用 `overflow-y-auto`，标题与操作区 `shrink-0`。同时读取已安装 HeroUI CSS，确认其 dialog 为纵向 flex、body 已有 `min-h-0 flex-1`；因此滚动责任位于正文，操作区保持独立。没有新增布局抽象。已读取[第 9 轮 GREEN](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-158/ui/focused/storage-cors.json)：390×480 下 body.bottom=311、footerTop=327、overflowY=auto；实际滚动至 scrollTop=111，配合 clientHeight=224 到达 scrollHeight=335。正文按滚动区域裁剪，底部操作保持独立，完整文本仍可选择和复制。
 
 已查看第 7 轮 `cors-invalidated-dialog-light-390.png`：重新检测按钮禁用，但连接前置原因仅在遮罩后的主页面中。当前通过 `connectionRequired={!connected}` 将真实当前 revision 的连接前置说明放入弹窗既有说明区。没有把 enabled 用作前置，也未将失效结果误解释为全部连接失败；原因只在确实缺少当前连接通过结果时出现。最终 focused 场景同时断言弹窗内重新检测禁用和当前连接前置说明存在，之后通过真实当前 revision 连接测试恢复检测；该回归通过。
 
-已读取[清理焦点 RED](./ui/regressions/cleanup-focus/result.json)并查看[失败截图](./ui/regressions/cleanup-focus/cleanup-focus.png)：键盘激活“重试清理”后，完成时按钮移除，焦点由 BUTTON 落到 BODY，`withinDialog=false`。当前回调类型明确为 `Promise<void>`，等待既有清理请求及查询刷新结束；操作期间改用 `isPending` 保留按钮焦点，完成后的下一动画帧仅当焦点仍为 BODY 时转向仍存在的“刷新清理状态”按钮。若弹窗关闭，其 ref 清空，不会抢走用户已转移的焦点；若用户已经聚焦别处，也不执行转移。失败仍由 hook 保留可见错误与清理责任。未发现这段改动新增资源或生命周期问题。[最终 focused 报告](./ui/focused/storage-cors.json)的 cleanupFocus 为 BUTTON“刷新清理状态”、withinDialog=true，实际键盘回归通过。
+已读取[清理焦点 RED](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-158/ui/regressions/cleanup-focus/result.json)并查看[失败截图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-158/ui/regressions/cleanup-focus/cleanup-focus.png)：键盘激活“重试清理”后，完成时按钮移除，焦点由 BUTTON 落到 BODY，`withinDialog=false`。当前回调类型明确为 `Promise<void>`，等待既有清理请求及查询刷新结束；操作期间改用 `isPending` 保留按钮焦点，完成后的下一动画帧仅当焦点仍为 BODY 时转向仍存在的“刷新清理状态”按钮。若弹窗关闭，其 ref 清空，不会抢走用户已转移的焦点；若用户已经聚焦别处，也不执行转移。失败仍由 hook 保留可见错误与清理责任。未发现这段改动新增资源或生命周期问题。[最终 focused 报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-158/ui/focused/storage-cors.json)的 cleanupFocus 为 BUTTON“刷新清理状态”、withinDialog=true，实际键盘回归通过。
 
 ### 本轮最终代码审计结论
 
 当前 #158 已实现范围内未发现未解决的代码问题。已复审最后的 `storage-cors-origin.mjs` 与测试差异：长 origin 通过真实事务更新并在 finally 恢复；滚动断言验证正文裁剪与实际滚动到底，未因 field 原始矩形延伸到裁剪区之外而放宽可见重叠要求；复制与清理焦点检查均读取真实浏览器/系统状态。没有自行删除测试对象来伪造应用清理，也没有跳过失败断言。
 
-已实际读取[最终 focused 报告](./ui/focused/storage-cors.json)，整体 status=passed，包含缓存读取错误恢复、复制焦点/完整内容/真实拒绝、长 origin 短视口、连接前置原因、清理重试焦点及导航后维护清理。还读取[生产 UI 两服务结果](./ui/live/storage-cors.json)和[确切 Key 清理结果](./ui/live/live.json)，均 passed：R2、SeaweedFS 经真实页面激活生产传输，服务器核验及删除通过，最终确切 Key 不存在且独立前缀对象列表为空。这些是实施 agent 的实际执行记录，审计者没有独立重跑浏览器或云请求。
+已实际读取[最终 focused 报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-158/ui/focused/storage-cors.json)，整体 status=passed，包含缓存读取错误恢复、复制焦点/完整内容/真实拒绝、长 origin 短视口、连接前置原因、清理重试焦点及导航后维护清理。还读取[生产 UI 两服务结果](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-158/ui/live/storage-cors.json)和[确切 Key 清理结果](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-158/ui/live/live.json)，均 passed：R2、SeaweedFS 经真实页面激活生产传输，服务器核验及删除通过，最终确切 Key 不存在且独立前缀对象列表为空。这些是实施 agent 的实际执行记录，审计者没有独立重跑浏览器或云请求。
 
 本轮审计只运行前述 QueryClient 复现，其余为生产代码、已安装 CSS、脚本与实际 RED/GREEN 报告和截图复核。包含新增 UI 的项目完整 `pnpm run test:browser` 此刻仍由主 agent 执行，最终结果在主记录维护；本结论不提前将其记为通过。独立设计还原评审及用户人工验收分别由对应记录和用户确认承担，本代码审计不代替。
 
 ### 完整浏览器首轮导航前置失败的追加复审
 
-已读取[完整回归首轮失败](./ui/regressions/full-browser-first/runner.json)及[具体失败](./ui/regressions/full-browser-first/storage-cors.json)：测试断言导航后对应 probe 仍为 running，但条件更新返回 0 而非 1。追读 `runCorsSample` 与 `useCorsTest.start`，浏览器中断会形成失败 results，随后仍尝试调用 complete；因此导航不保证回报丢失。已读本地 `navigation-race-red/result.json`，确实捕获导航时的 complete 尝试，但该诊断未证明正常中断的成功清理，不将它写成该路径通过。原先不确定的 running 前置是测试问题，不能把可能发生的合法立即清理记为产品缺陷。
+已读取[完整回归首轮失败](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-158/ui/regressions/full-browser-first/runner.json)及[具体失败](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-158/ui/regressions/full-browser-first/storage-cors.json)：测试断言导航后对应 probe 仍为 running，但条件更新返回 0 而非 1。追读 `runCorsSample` 与 `useCorsTest.start`，浏览器中断会形成失败 results，随后仍尝试调用 complete；因此导航不保证回报丢失。已读本地 `navigation-race-red/result.json`，确实捕获导航时的 complete 尝试，但该诊断未证明正常中断的成功清理，不将它写成该路径通过。原先不确定的 running 前置是测试问题，不能把可能发生的合法立即清理记为产品缺陷。
 
 复审的修改只涉及浏览器测试。它通过实际公共图库链接离开检测页，在 held PUT 期间仅让该 storage 的真实生产 POST complete 调用于网络发送前抛连接错误；其余请求继续真实执行，没有伪造服务器成功响应。测试现在等待且断言恰好一次 complete 尝试，检查其真实 body 中 PUT 为中断/超时错误、GET/HEAD 因前一步失败未执行，三项均为 status=0/responseType=error。这修复了初稿仅记录 attempts 而未保证故障实际触发的证据缺口。
 
@@ -143,7 +143,7 @@ JS
 
 截至本段写入，包含补强断言的完整浏览器第 2 轮仍由主 agent 执行。本审计只读复核上述差异与失败/诊断证据，未操作浏览器或测试数据，不将尚未取得的最终 GREEN 记为通过。
 
-追加 GREEN：已实际读取[完整浏览器第 2 轮的 CORS 模块报告](./ui/full-browser/storage-cors.json)，status=passed。`navigationInterruption` 记录实际图库导航、恰好一次 complete 尝试，以及真实 PUT 中断错误和 GET/HEAD 未执行结果。导航后的真实读取仍包含 running probe `f441ab6a-7bf4-4627-9e90-544266866a0b`；同一 probe 的最终报告为 passed=false、cleanupPending=false，错误为 `STORAGE_CORS_EXPIRED`。该模块已执行并通过保留的条件更新、维护后空 probes、报告归属、重开失败页面与对象列表为空断言。完整测试中的 CORS 回归证据已补齐，原失败保留不改写。本审计没有独立重跑浏览器；其他业务模块仍在继续，项目完整运行器的最终状态由主记录维护，此处不提前宣布整套通过。
+追加 GREEN：已实际读取[完整浏览器第 2 轮的 CORS 模块报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-158/ui/full-browser/storage-cors.json)，status=passed。`navigationInterruption` 记录实际图库导航、恰好一次 complete 尝试，以及真实 PUT 中断错误和 GET/HEAD 未执行结果。导航后的真实读取仍包含 running probe `f441ab6a-7bf4-4627-9e90-544266866a0b`；同一 probe 的最终报告为 passed=false、cleanupPending=false，错误为 `STORAGE_CORS_EXPIRED`。该模块已执行并通过保留的条件更新、维护后空 probes、报告归属、重开失败页面与对象列表为空断言。完整测试中的 CORS 回归证据已补齐，原失败保留不改写。本审计没有独立重跑浏览器；其他业务模块仍在继续，项目完整运行器的最终状态由主记录维护，此处不提前宣布整套通过。
 
 ## 合并最新 main 后的迁移冲突复审
 
@@ -153,6 +153,6 @@ JS
 
 `migrations.test.ts` 保留双方旧数据和历史进度断言：水印资产、预览引用、设置、存储和待清理 probe 均逐值比较；新增 10 个水印默认字段及 CORS 的 null/0 默认字段分别验证。元数据、水印、CORS 的时间顺序、已应用进度前缀、外键检查、重复执行不重放均保留。审计者在 Node 24.18.1 / pnpm 11.19.0 下实际运行 `pnpm exec vitest run --project integration tests/integration/runtime/migrations.test.ts`，退出 0，1 个文件 13 项通过。
 
-启动夹具按实际表范围补全：`prestart` 只有最小存储/身份表，读取新的 CORS 0015 即可；`secret-preflight` 和 `startup` 已有 media_settings，必须先执行真实 main 水印 0014，再执行 CORS 0015。审计发现两处 secret-preflight 严格进度预期漏记第 10 项，startup 一处漏记第 13 项。实现者以真实运行取得[RED](./merge-main/fixture-red.txt)：5 项失败、12 项通过，均显示相应遗漏的进度项；修复仅补上 10/13，没有放宽顺序或移除数据、密钥、回滚与恢复断言。[GREEN](./merge-main/fixture-green.txt)记录同两文件 17 项全部通过。审计者已读取两份原始输出并复查最终差异，未冒称独立运行这两份启动测试。
+启动夹具按实际表范围补全：`prestart` 只有最小存储/身份表，读取新的 CORS 0015 即可；`secret-preflight` 和 `startup` 已有 media_settings，必须先执行真实 main 水印 0014，再执行 CORS 0015。审计发现两处 secret-preflight 严格进度预期漏记第 10 项，startup 一处漏记第 13 项。实现者以真实运行取得[RED](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-158/merge-main/fixture-red.txt)：5 项失败、12 项通过，均显示相应遗漏的进度项；修复仅补上 10/13，没有放宽顺序或移除数据、密钥、回滚与恢复断言。[GREEN](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/storage-158/merge-main/fixture-green.txt)记录同两文件 17 项全部通过。审计者已读取两份原始输出并复查最终差异，未冒称独立运行这两份启动测试。
 
 本轮迁移合并范围未发现未解决问题；历史迁移未改写，快照链和夹具完整性成立。审计者另运行相关差异的 `git diff --check`，通过。合并后的全量集成与浏览器检查仍由主 agent 执行，实际结果以主记录为准；本结论不提前将它们记为通过。

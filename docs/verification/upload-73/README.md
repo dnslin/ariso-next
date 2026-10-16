@@ -60,7 +60,7 @@
 
 120 秒无进展、1800 秒总时限的新增测试使用受控时钟验证机制；完整真实计时证据沿用 [UPLOAD-V02](../../tasks/evidence/UPLOAD-V02/README.md)，不声称本次重新等待 30 分钟。ENOSPC 和延迟写入为明确故障注入；清理失败使用真实 unlink 目录错误；这些不等于受限挂载容量验收。
 
-冻结安装、迁移生成审查、格式、lint、类型、生产构建均通过；单元 **392 项**、全量集成 **438 项**、完整 Ego 浏览器回归通过。实际命令、早期失败与修复记录见 [checks.json](./checks.json)，浏览器运行记录见 [browser.json](./browser.json)。
+冻结安装、迁移生成审查、格式、lint、类型、生产构建均通过；单元 **392 项**、全量集成 **438 项**、完整 Ego 浏览器回归通过。实际命令、早期失败与修复记录见 [checks.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/upload-73/checks.json)，浏览器运行记录见 [browser.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/upload-73/browser.json)。
 
 真实图片工具测试归入现有 `media-tools` 项目；本地 `test:integration` 同时执行两个项目，发布时该组由既有工作流在真实镜像内执行。归组后新上传两文件 **14 项**再次通过，没有跳过测试。
 

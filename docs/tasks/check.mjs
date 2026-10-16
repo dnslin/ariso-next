@@ -10,7 +10,7 @@ const files = [
   '../archive/m1-m2/acceptance.md',
   '../archive/m3-m4/platform.md',
   '../archive/m3-m4/experience.md',
-  'acceptance-tasks.md',
+  '../archive/m5/acceptance.md',
 ];
 const ids = (text) => [...text.matchAll(/`([^`]+)`/g)].map((m) => m[1]);
 const requirementIds = (text) =>

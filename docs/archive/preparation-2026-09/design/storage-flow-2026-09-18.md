@@ -96,13 +96,13 @@
 
 手机报告使用纵向文字，桌面报告使用一致列宽。图内编辑输入复用组件属性覆盖，避免只修改文字却仍显示旧组件值。空白模板已移除。
 
-证据见 [存储审计记录](./verification/storage-flow-2026-09-18.json)。执行本批文档的项目 Prettier 格式化与检查、`git diff --check`，并核对 JSON 中状态数量、底栏和位置；未运行播放器、真实服务测试、应用测试或构建。
+证据见 [存储审计记录](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/archive/preparation-2026-09/design/verification/storage-flow-2026-09-18.json)。执行本批文档的项目 Prettier 格式化与检查、`git diff --check`，并核对 JSON 中状态数量、底栏和位置；未运行播放器、真实服务测试、应用测试或构建。
 
 ## 阅读指引对齐修订（2026-09-18）
 
 按用户反馈，两端十张阅读指引的 84 个入口改为固定编号列（36 px）和左对齐标题；每行编号从 x=16 开始，标题从 x=64 开始。画板位置、尺寸及原目标不变。同时统一上传／相册共 60 个普通阅读按钮的左对齐。
 
-节点与前后位置／目标比对见[阅读入口审计](./verification/guide-alignment-2026-09-18.json)。截图复核两端浏览器直传指引；未执行播放器。
+节点与前后位置／目标比对见[阅读入口审计](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/archive/preparation-2026-09/design/verification/guide-alignment-2026-09-18.json)。截图复核两端浏览器直传指引；未执行播放器。
 
 ## 六项并行补充（2026-09-19）
 

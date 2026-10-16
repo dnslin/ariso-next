@@ -70,21 +70,21 @@ git diff --check
 
 首次独立复现省略 EGO_TASK_SPACE/EGO_KEEP_SPACE；runner 创建一个空间并在所有测试通过后关闭。连续复跑使用首次输出的空间 ID。本轮始终复用空间 10，全部运行通过后已调用 finish 关闭。
 
-| 检查                   | 结果                                                                            |
-| ---------------------- | ------------------------------------------------------------------------------- |
-| 根与隔离项目冻结安装   | 通过                                                                            |
-| UI typecheck / build   | 通过                                                                            |
-| UI 依赖审计            | 0 已报告漏洞，见 [dependency-audit.json](./dependency-audit.json)               |
-| SQLite 行为测试        | 9 项通过                                                                        |
-| SQLite 十万行实验      | 26 组实际测量完成，见 [sqlite.json](./sqlite.json)                              |
-| 根格式、lint、类型     | 通过                                                                            |
-| 根单元测试             | 19 文件、312 项通过                                                             |
-| 根构建                 | 退出码 0，保留下述既有诊断                                                      |
-| 全部集成及真实工具测试 | 38 文件、304 项通过，包含新增 9 项                                              |
-| UI 与根浏览器流程      | 独立 UI 与根入口整套回归均通过，见 [runtime-runner.json](./runtime-runner.json) |
-| 文档依赖与自测         | 120 任务、298 需求通过；5 项拒绝场景通过                                        |
+| 检查                   | 结果                                                                                                                                                                                               |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 根与隔离项目冻结安装   | 通过                                                                                                                                                                                               |
+| UI typecheck / build   | 通过                                                                                                                                                                                               |
+| UI 依赖审计            | 0 已报告漏洞，见 [dependency-audit.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-LIBRARY-01/dependency-audit.json)               |
+| SQLite 行为测试        | 9 项通过                                                                                                                                                                                           |
+| SQLite 十万行实验      | 26 组实际测量完成，见 [sqlite.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-LIBRARY-01/sqlite.json)                              |
+| 根格式、lint、类型     | 通过                                                                                                                                                                                               |
+| 根单元测试             | 19 文件、312 项通过                                                                                                                                                                                |
+| 根构建                 | 退出码 0，保留下述既有诊断                                                                                                                                                                         |
+| 全部集成及真实工具测试 | 38 文件、304 项通过，包含新增 9 项                                                                                                                                                                 |
+| UI 与根浏览器流程      | 独立 UI 与根入口整套回归均通过，见 [runtime-runner.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-LIBRARY-01/runtime-runner.json) |
+| 文档依赖与自测         | 120 任务、298 需求通过；5 项拒绝场景通过                                                                                                                                                           |
 
-UI 原始证据：[browser.json](./browser.json)、[browser-runner.json](./browser-runner.json)。代表截图：[浅色手机](./light-390.png)、[深色桌面](./dark-1440.png)、[无系统全屏的短视口](./no-fullscreen.png)。全部十种布局的几何数据保存在浏览器报告中。
+UI 原始证据：[browser.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-LIBRARY-01/browser.json)、[browser-runner.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-LIBRARY-01/browser-runner.json)。代表截图：[浅色手机](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-LIBRARY-01/light-390.png)、[深色桌面](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-LIBRARY-01/dark-1440.png)、[无系统全屏的短视口](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/EV-LIBRARY-01/no-fullscreen.png)。全部十种布局的几何数据保存在浏览器报告中。
 
 浏览器实际覆盖：逐字符输入不改 URL/历史/请求次数，搜索只增加一条历史，前进/后退恢复已应用输入；切布局不增加列表请求并保留选择；同查询翻页及后退恢复选择；重建窗口保持 imageId；放大后方向键平移而不切图；实际桌面系统全屏进入/退出；Esc 关闭恢复 URL/滚动/焦点/选择且不重查列表；无下载、分享、幻灯片；新查询加载期间无旧项操作、503、空结果与恢复，查询变化后不恢复旧选择。没有实际点击排序按钮，因此不将其称为全部筛选排序历史验证。
 

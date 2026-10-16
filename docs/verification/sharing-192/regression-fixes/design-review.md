@@ -16,7 +16,7 @@
 
 - 存储列表 [30:1413](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=30-1413)，1440×1080；[102:1231](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-1231)，390×844。
 - Local 编辑 [77:757](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=77-757)，1440×1080；[102:2586](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-2586)，390×844。
-- 原尺寸设计截图保留在 [regression-design-figma](figma/)。这是本轮读取所得，不是产品截图或新的获批设计。
+- 原尺寸设计截图保留在 [regression-design-figma](https://github.com/dnslin/ariso-next/tree/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-192/regression-fixes/figma)。这是本轮读取所得，不是产品截图或新的获批设计。
 
 旧稿中的“工作空间”面包屑按 handoff 公共界面规则移除；手机文字菜单按 #174 用户批准改为 Lucide 图标。存储字段图标、Tips 和相关操作排列按 storage-198 已获批准的返修核对，该 Issue 的最终人工验收记录已替代其历史待批准状态。本轮没有重新审计或改写已确认的产品选择，也没有把旧稿与获批实现之间的差别认定为新增缺陷。
 
@@ -24,12 +24,12 @@
 
 先检查整页和公共区域，再检查业务布局和控件。实际逐张打开以下 8 张生产预览截图；浅色与同尺寸原稿对照，深色按 handoff 当前 Ariso Dark 语义颜色对照。四个设计节点当前为浅色稿，未声称读取了不存在的深色版本。
 
-| 实际状态与视口                  | 页面截图                                                                                                  | 逐项结果                                                                                                                                                                                                              |
-| ------------------------------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 列表读取错误，1440×1080 浅/深   | [浅](storage-admin-list-error-light-1440.png)、[深](storage-admin-list-error-dark-1440.png)               | 232px 侧栏、正文 x264、品牌/账号/当前存储项保持公共来源；标题、简介与右侧添加入口保持层级。错误替换列表内容而不冒充空列表，错误标题、原因与重新加载在同一现有 Alert 中。浅深色文字可读，没有新增静态彩色说明块。      |
-| 列表读取错误，390×844 浅/深     | [浅](storage-admin-list-error-light-390.png)、[深](storage-admin-list-error-dark-390.png)                 | 品牌与菜单图标保持顶部公共区域；正文左右 16px，标题、简介、添加入口、错误按阅读顺序排列。错误原因完整换行，重新加载按钮独立可识别，内容未被裁切。没有仅因默认列表有分页而在读取错误时显示虚假条数。                   |
-| Local 字段错误，1440×1080 浅/深 | [浅](storage-admin-local-field-error-light-1440.png)、[深](storage-admin-local-field-error-dark-1440.png) | 公共外壳及返回目的地保持；名称/路径外标签与字段图标、启用/默认设置、相关操作和固定底栏顺序保持。根目录外路径被拒绝后保留输入；路径文字、危险色边界及紧随字段的原因共同表达错误，未仅靠颜色。真实目录与说明保持可读。  |
-| Local 字段错误，390×844 浅/深   | [浅](storage-admin-local-field-error-light-390.png)、[深](storage-admin-local-field-error-dark-390.png)   | 顶部品牌/菜单、16px 页面边距、标题/简介/返回和业务字段层级保持。路径错误及完整目录在窄屏自然换行，正文有滚动区；取消/保存留在固定底栏，错误没有覆盖操作。截图显示提交后的字段焦点仍在原输入，未以错误状态重置其内容。 |
+| 实际状态与视口                  | 页面截图                                                                                                                                                                                                                                                                                                                                                                                          | 逐项结果                                                                                                                                                                                                              |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 列表读取错误，1440×1080 浅/深   | [浅](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-192/regression-fixes/storage-admin-list-error-light-1440.png)、[深](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-192/regression-fixes/storage-admin-list-error-dark-1440.png)               | 232px 侧栏、正文 x264、品牌/账号/当前存储项保持公共来源；标题、简介与右侧添加入口保持层级。错误替换列表内容而不冒充空列表，错误标题、原因与重新加载在同一现有 Alert 中。浅深色文字可读，没有新增静态彩色说明块。      |
+| 列表读取错误，390×844 浅/深     | [浅](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-192/regression-fixes/storage-admin-list-error-light-390.png)、[深](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-192/regression-fixes/storage-admin-list-error-dark-390.png)                 | 品牌与菜单图标保持顶部公共区域；正文左右 16px，标题、简介、添加入口、错误按阅读顺序排列。错误原因完整换行，重新加载按钮独立可识别，内容未被裁切。没有仅因默认列表有分页而在读取错误时显示虚假条数。                   |
+| Local 字段错误，1440×1080 浅/深 | [浅](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-192/regression-fixes/storage-admin-local-field-error-light-1440.png)、[深](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-192/regression-fixes/storage-admin-local-field-error-dark-1440.png) | 公共外壳及返回目的地保持；名称/路径外标签与字段图标、启用/默认设置、相关操作和固定底栏顺序保持。根目录外路径被拒绝后保留输入；路径文字、危险色边界及紧随字段的原因共同表达错误，未仅靠颜色。真实目录与说明保持可读。  |
+| Local 字段错误，390×844 浅/深   | [浅](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-192/regression-fixes/storage-admin-local-field-error-light-390.png)、[深](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-192/regression-fixes/storage-admin-local-field-error-dark-390.png)   | 顶部品牌/菜单、16px 页面边距、标题/简介/返回和业务字段层级保持。路径错误及完整目录在窄屏自然换行，正文有滚动区；取消/保存留在固定底栏，错误没有覆盖操作。截图显示提交后的字段焦点仍在原输入，未以错误状态重置其内容。 |
 
 页面上的 `Verification: actual storage read response was lost` 是本轮真实读取后故意丢失客户端响应的诊断原因，不是本次新增的产品固定文案；本次也没有把该测试夹具描述转换成新产品文案。
 
@@ -37,7 +37,7 @@
 
 评审者读取了实现者的实际报告，未重新执行浏览器场景：
 
-- [定向结果](targeted-results.json) 为 `passed`，10 项 checks、120 项布局记录。Local 非法路径对应真实 PATCH 400；可见提示的角色为 `alert`，保存路径仍为 `storage-admin-198`。
+- [定向结果](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/sharing-192/regression-fixes/targeted-results.json) 为 `passed`，10 项 checks、120 项布局记录。Local 非法路径对应真实 PATCH 400；可见提示的角色为 `alert`，保存路径仍为 `storage-admin-198`。
 - 忽略目录中的 `regression-storage-diagnostic/runner.json` 中 `storage-admin` 与 `shell-navigation` 均为 `passed`；`shell-navigation.json` 为 `passed`，2 项 checks、62 项布局记录。
 
 **功能证据支持此次错误可定位、拒绝后的数据未被错误保存；它不能替代设计对照。** 初次读取失败、保存消息和刷新读取失败共用现有 Alert，本轮以列表读取错误与 Local 字段拒绝作为视觉代表，没有另行操作或截图每个消息分支。

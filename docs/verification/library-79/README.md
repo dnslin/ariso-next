@@ -57,7 +57,7 @@ library 负责查询与界面，media 负责回收状态，collections 负责关
 
 第五轮完整运行通过，UTC 2026-09-25 19:02:47–19:08:42，退出码 0。生产服务的真实 SQLite、身份、图库/详情/回收以及隔离 UI 均通过。图库/详情/回收共 23 组行为检查与 220 个布局检查；其中本次新增 10 组行为，回收页面 10 状态 × 5 宽度 × 2 主题共 100 个布局检查。宽度为 360/390/430/768/1440，另测 390×400 短视口、触控模拟、键盘取消及焦点回归、44px 目标和减少动态效果。最终截图人工核对完成。现有 Ego Lite 的任务空间 8 已结束，未下载 Chromium。
 
-证据：[完整运行结果](./browser/runner.json)、[业务断言与布局数据](./browser/library.json)、[隔离 UI 运行结果](./browser/ui-runner.json)。截图：[桌面深色列表](./browser/trash-list-dark-1440.png)、[手机记录](./browser/trash-record-light-390.png)、[手机恢复确认](./browser/trash-restore-confirm-light-390.png)、[停用存储长名称反馈](./browser/trash-disabled-restored-dark-390.png)、[短视口底栏](./browser/trash-short-viewport.png)。
+证据：[完整运行结果](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-79/browser/runner.json)、[业务断言与布局数据](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-79/browser/library.json)、[隔离 UI 运行结果](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-79/browser/ui-runner.json)。截图：[桌面深色列表](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-79/browser/trash-list-dark-1440.png)、[手机记录](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-79/browser/trash-record-light-390.png)、[手机恢复确认](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-79/browser/trash-restore-confirm-light-390.png)、[停用存储长名称反馈](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-79/browser/trash-disabled-restored-dark-390.png)、[短视口底栏](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-79/browser/trash-short-viewport.png)。
 
 网络断言使用真实服务与真实保存的图片字节：回收后所有保存版本拒绝所有者及匿名内容访问；回收站没有 `/i/` 内容请求；恢复后同一匿名 URL 返回相同字节。故障场景只丢弃或延迟真实请求响应，删除冲突、记录删除及会话失效由真实数据库状态触发，不用模拟成功替代真实写入。
 
@@ -79,7 +79,7 @@ library 负责查询与界面，media 负责回收状态，collections 负责关
 
 正确性与结构评审发现同一根因：禁用普通详情查询不会取消已发出的 GET；旧 GET 失败会卸载仍负责 POST 及写后核对的动作组件，使页面等待状态无法结束。先按[修复计划](../../../tasks/plan.md)补浏览器回归，再修改实现。
 
-旧构建真实复现失败：[错误数据](./review-fix/red-failure.json)、[失败截图](./review-fix/red-failure.png)。POST 已返回 200，真实数据库 `trashed_at` 已写入；释放旧 GET 的失败响应后，确认框消失，详情只有读取错误，核对请求没有发出。测试不是伪造业务成功，延迟或丢弃的均为真实服务响应。
+旧构建真实复现失败：[错误数据](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-79/review-fix/red-failure.json)、[失败截图](https://raw.githubusercontent.com/dnslin/ariso-next/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-79/review-fix/red-failure.png)。POST 已返回 200，真实数据库 `trashed_at` 已写入；释放旧 GET 的失败响应后，确认框消失，详情只有读取错误，核对请求没有发出。测试不是伪造业务成功，延迟或丢弃的均为真实服务响应。
 
 修复限定三个组件：两处父组件在操作开始时同步取消精确图片查询，并暂停普通读取；`onPending` 必需且保持稳定，卸载时释放页面的等待状态。原有离页迟到保护保留，不宣称服务器写入被取消。没有新增依赖、接口、数据契约或状态机。
 
@@ -87,6 +87,6 @@ library 负责查询与界面，media 负责回收状态，collections 负责关
 
 本轮 Node 24.18.1 / pnpm 11.19.0 已执行冻结安装、类型、lint、格式、构建、434 项单元、文档检查及 5 项自检；通过。构建仍有前述可选 Debug 路径追踪警告。`pnpm run test:integration --maxWorkers=4` 随后通过，共 58 文件、485 项。完整浏览器命令 `BROWSER_REPORT_DIR=test-results/browser-race-green EGO_TASK_SPACE=9 EGO_KEEP_SPACE=1 pnpm run test:browser` 通过，退出 0，UTC 2026-09-26 05:42:01–05:47:58；共 27 组行为、220 个布局检查。三个竞态均观察到旧读取的 AbortSignal 中止，最终业务结果正确且没有重复 POST。隔离 UI 套件也通过，任务空间 9 已结束。
 
-修复后证据：[完整运行](./review-fix/runner.json)、[业务与竞态断言](./review-fix/library.json)、[隔离 UI](./review-fix/ui-runner.json)。本轮没有修改样式或布局；原视觉证据保留，浏览器仍重新执行所有布局断言。修复期间 PR 暂转草稿，所有适用检查与复审通过后恢复待评审。
+修复后证据：[完整运行](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-79/review-fix/runner.json)、[业务与竞态断言](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-79/review-fix/library.json)、[隔离 UI](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/library-79/review-fix/ui-runner.json)。本轮没有修改样式或布局；原视觉证据保留，浏览器仍重新执行所有布局断言。修复期间 PR 暂转草稿，所有适用检查与复审通过后恢复待评审。
 
 修复提交 `6b15000` 已推送，PR #124 已恢复正式待评审。回读 PR 为非草稿、CLEAN，分支 Actions 运行及提交 check runs / statuses 数量均为 0；按仓库执行约定，无适用 PR 工作流可等待。未执行合并或发布。

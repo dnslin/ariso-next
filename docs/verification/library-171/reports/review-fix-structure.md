@@ -8,15 +8,15 @@
 
 中间版本曾用 `vi.mock('react')` 重写 `useState`、`useRef`、`useEffect`，自行维护槽位、依赖比较、cleanup 和最多 10 次同步重渲染。这会把 React 生命周期变成项目额外维护的测试框架，也无法证明真实 React 的挂载和异步执行语义。我已将它作为 P2 / Required 返回主任务。
 
-最终完整回读 [reprocess-recovery.test.ts:1](/Volumes/data/project/ariso-issue-171/tests/unit/library/reprocess-recovery.test.ts:1) 确认上述运行器、React mock、模拟 renderer 和手动 effects 循环已全部删除。407 行测试直接导入并调用生产模型，覆盖新匹配任务的五种阶段、旧任务排除、实际提交范围、已知 receipt 身份、核对前后恢复资格、活动任务阻止恢复和阶段推导。它不再声称完成异步挂载、切图 cleanup 或焦点的单元实测。
+最终完整回读 `/Volumes/data/project/ariso-issue-171/tests/unit/library/reprocess-recovery.test.ts:1` 确认上述运行器、React mock、模拟 renderer 和手动 effects 循环已全部删除。407 行测试直接导入并调用生产模型，覆盖新匹配任务的五种阶段、旧任务排除、实际提交范围、已知 receipt 身份、核对前后恢复资格、活动任务阻止恢复和阶段推导。它不再声称完成异步挂载、切图 cleanup 或焦点的单元实测。
 
-[detail-reprocess-model.ts:37](/Volumes/data/project/ariso-issue-171/src/components/library/detail-reprocess-model.ts:37) 的 `reprocessAvailability` 是从 hook 收拢的真实可用性规则；[use-detail-reprocess.ts:142](/Volumes/data/project/ariso-issue-171/src/components/library/use-detail-reprocess.ts:142) 直接消费它，旧的同一套表达式已从 hook 删除。`resumeReprocessState` 也被 [use-detail-reprocess.ts:260](/Volumes/data/project/ariso-issue-171/src/components/library/use-detail-reprocess.ts:260) 的实际恢复动作调用。因此测试与产品没有各存一套派生逻辑，也没有新增通用状态容器、测试依赖或框架。该 Required 关闭。
+`/Volumes/data/project/ariso-issue-171/src/components/library/detail-reprocess-model.ts:37` 的 `reprocessAvailability` 是从 hook 收拢的真实可用性规则；`/Volumes/data/project/ariso-issue-171/src/components/library/use-detail-reprocess.ts:142` 直接消费它，旧的同一套表达式已从 hook 删除。`resumeReprocessState` 也被 `/Volumes/data/project/ariso-issue-171/src/components/library/use-detail-reprocess.ts:260` 的实际恢复动作调用。因此测试与产品没有各存一套派生逻辑，也没有新增通用状态容器、测试依赖或框架。该 Required 关闭。
 
 纯模型测试的结论只适用于状态规则。真实提交次数、worker 结果和回焦仍由已经保留的真实 E2E 断言承担；本轮这些场景未运行。挂载期间竞态及 cleanup 不能因纯模型测试存在就记为已验证。
 
 ## 原 Required 1 已关闭：重处理阶段与动作收回控制器
 
-核对了 [use-detail-reprocess.ts:76](/Volumes/data/project/ariso-issue-171/src/components/library/use-detail-reprocess.ts:76)、[detail-reprocess-model.ts:156](/Volumes/data/project/ariso-issue-171/src/components/library/detail-reprocess-model.ts:156)、[library-screen.tsx:157](/Volumes/data/project/ariso-issue-171/src/app/library/library-screen.tsx:157)、[detail-reprocess.tsx:275](/Volumes/data/project/ariso-issue-171/src/components/library/detail-reprocess.tsx:275) 和 [detail-reprocess-confirmation.tsx:20](/Volumes/data/project/ariso-issue-171/src/components/library/detail-reprocess-confirmation.tsx:20)。
+核对了 `/Volumes/data/project/ariso-issue-171/src/components/library/use-detail-reprocess.ts:76`、`/Volumes/data/project/ariso-issue-171/src/components/library/detail-reprocess-model.ts:156`、`/Volumes/data/project/ariso-issue-171/src/app/library/library-screen.tsx:157`、`/Volumes/data/project/ariso-issue-171/src/components/library/detail-reprocess.tsx:275` 和 `/Volumes/data/project/ariso-issue-171/src/components/library/detail-reprocess-confirmation.tsx:20`。
 
 - `reprocessView` 一次推导 selection / all-queued / result，并以 `receiptJob` 匹配实际受理任务。原先正文和底栏重复的完整结果判定已经删除。
 - `canSubmit`、`choicesDisabled` 和恢复资格由同一个生产模型计算，hook 统一产生 footer actions。确认层与底栏不再各自组合 pending / unknown / query error / scope 的规则。
@@ -30,7 +30,7 @@
 
 ## 原 Required 2 已关闭：浏览器场景形成独立的准备与清理边界
 
-入口 [library-detail-171.mjs:34](/Volumes/data/project/ariso-issue-171/e2e/library-detail-171.mjs:34) 从 2056 行缩为 48 行，仅组合和导出 verifier。另有 13 个窄模块；场景最大 300 行，共用 helpers 为 252 行、布局测量为 228 行。原来 1285 行的 `verifyReprocess` 及它共享的巨大闭包已消除。
+入口 `/Volumes/data/project/ariso-issue-171/e2e/library-detail-171.mjs:34` 从 2056 行缩为 48 行，仅组合和导出 verifier。另有 13 个窄模块；场景最大 300 行，共用 helpers 为 252 行、布局测量为 228 行。原来 1285 行的 `verifyReprocess` 及它共享的巨大闭包已消除。
 
 逐个完整读取后的边界如下：
 
@@ -45,7 +45,7 @@
 | 持久任务展示       | 自己保存 job/image，创建真实候选文件；finally 恢复 job/image 并删除候选记录和文件                                         |
 | 上传及相册消费者   | 自己执行真实上传、建立临时相册并在 finally 删除相册；接受的上传内容留在 runner 的 disposable DATA_DIR，这一边界有注释说明 |
 
-[prepareDetail171Versions:61](/Volumes/data/project/ariso-issue-171/e2e/library-detail-171-helpers.mjs:61) 在缺版本时走真实 all-scope POST 和 worker，按回执 ID 等待终态，检查 succeeded、expectedVersions、四个 saved 版本与原图对象不变，再恢复设置。没有 mock 成功响应，也没有把产品数据构造移到一个隐含闭包中。`seedLibraryDetail` 实际提供版本展示场景所需的 original/compressed，故它不依赖别的 verifier 生成派生内容。
+`/Volumes/data/project/ariso-issue-171/e2e/library-detail-171-helpers.mjs:61` 在缺版本时走真实 all-scope POST 和 worker，按回执 ID 等待终态，检查 succeeded、expectedVersions、四个 saved 版本与原图对象不变，再恢复设置。没有 mock 成功响应，也没有把产品数据构造移到一个隐含闭包中。`seedLibraryDetail` 实际提供版本展示场景所需的 original/compressed，故它不依赖别的 verifier 生成派生内容。
 
 核对的核心断言保留了：真实对象替换且原图不变、同图第二任务、只提交一次、状态轮询停止与手动恢复、四版本下载字节与 filename、多主题尺寸与 44px 控件、确认取消/Escape/回焦、来源过滤/选择/布局/滚动/触发焦点、上传队列和相册消费者。
 

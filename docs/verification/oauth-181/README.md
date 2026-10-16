@@ -35,7 +35,7 @@
 
 ## 设计依据与原型
 
-Figma 文件为 `74sT9Hrf8G4czcWeTkET5b`。已实际读取设计 context 和截图，保留在 [figma](./figma/)：
+Figma 文件为 `74sT9Hrf8G4czcWeTkET5b`。已实际读取设计 context 和截图，保留在 [figma](https://github.com/dnslin/ariso-next/tree/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/oauth-181/figma)：
 
 | 内容           | 桌面 / 手机节点       |
 | -------------- | --------------------- |
@@ -51,7 +51,7 @@ Figma 文件为 `74sT9Hrf8G4czcWeTkET5b`。已实际读取设计 context 和截�
 
 现有 Ego TaskSpace 42 / p1 曾 `handOff()` 供原型审阅，用户批准后接管同一空间。用户另授权用已登录 GitHub 自行申请测试 OAuth App，已创建 `airsoe` 所有的 [Ariso Issue 181 OAuth test](https://github.com/settings/applications/3909482)，仅登记 `http://127.0.0.1:3182/api/auth/callback/github` 和 `http://localhost:3182/api/auth/callback/github`。生成 Secret 时 GitHub 要求 Confirm access，按 ego-browser 技能交回同一空间，等待用户重新认证；未绕过停止边界或另建空间。原型预览由当前任务独立服务保持可用，不需要账号或密码。2026-10-07 用户要求继续后，接管原空间实际返回 `task space not found: 42`；没有操作其他空间或新建空间。已请求用户指定可接管的现有空间，或明确授权新建本任务空间，并确认 GitHub 重新认证是否完成。当前无法核对其最新状态，浏览器与真实 OAuth 保持未验证。
 
-实际原型核对覆盖 1440×1080、390×844 两端浅深色以及 390×600 短视口。截图保留在 ignored 的 `.data/oauth-181/prototype/screenshots` 和 `design-review`。配置与保存按钮可达、Esc 后焦点回入口、完整回调地址复制失败后可选择、保存后账号页持续呈现保存与生效差异。两处原型错误已修复并由独立设计评审者复核：解绑未知不再断言旧绑定；已有 Secret 不再被误判为必填。Figma 已原生同步获批业务方案，保留主要原节点与公共组件，18 张实际导出图由独立设计代理复核，见 [同步记录与逐项证据](./figma-sync/README.md)及 [节点 / 截图映射](./figma-sync/manifest.json)。保存未知来源页 `814:14898 / 814:29892` 与解绑未知 `196:1999 / 196:2009` 均保留“上次读取”和 GET 恢复入口。最终产品截图、逐项真实页面设计核对和人工验收仍待完成。
+实际原型核对覆盖 1440×1080、390×844 两端浅深色以及 390×600 短视口。截图保留在 ignored 的 `.data/oauth-181/prototype/screenshots` 和 `design-review`。配置与保存按钮可达、Esc 后焦点回入口、完整回调地址复制失败后可选择、保存后账号页持续呈现保存与生效差异。两处原型错误已修复并由独立设计评审者复核：解绑未知不再断言旧绑定；已有 Secret 不再被误判为必填。Figma 已原生同步获批业务方案，保留主要原节点与公共组件，18 张实际导出图由独立设计代理复核，见 [同步记录与逐项证据](./figma-sync/README.md)及 [节点 / 截图映射](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/oauth-181/figma-sync/manifest.json)。保存未知来源页 `814:14898 / 814:29892` 与解绑未知 `196:1999 / 196:2009` 均保留“上次读取”和 GET 恢复入口。最终产品截图、逐项真实页面设计核对和人工验收仍待完成。
 
 生产界面复用 OwnerShell、设置分类与 HeroUI Modal / Form / TextField / Input / Switch / Button / Toast。配置与绑定分别读取，各自错误不会伪装成停用或未绑定。Secret 草稿只在打开的配置浮层中保存，取消或关闭后销毁；空字符串不发送，清除经确认后发送 `null`。配置保存或解绑结果未知时，关闭浮层后仍保留待核对状态及只读 GET 入口，读取成功前禁止相应写入。解绑后的焦点回到当前可用的绑定或配置入口。上述关闭回归已加入默认两端 OAuth 场景，目前仅静态检查通过，浏览器尚未执行。
 
@@ -147,7 +147,7 @@ Figma 文件为 `74sT9Hrf8G4czcWeTkET5b`。已实际读取设计 context 和截�
 
 ## 恢复后的最终实施与验证（2026-10-07）
 
-用户完成 GitHub Confirm access 后，接管同一空间 6。实际保存测试 App Secret 到本地私有文件，完成真实 GitHub 授权、同邮箱未绑定拒绝、主动绑定不同邮箱、登录与 provider ID/公开用户名核对、五个令牌字段清空、站点新回调授权、停用/启用重启保留关系、第二个真实 Secret 的轮换与重启后登录、最终 UI 解绑及本地密码/当前会话保留。解绑后真实 GitHub 登录不能重建用户、绑定或会话。凭证、授权码与 Cookie 不写入证据、代码或 PR。详见[真实 OAuth 记录](./browser-recovery/real-oauth.json)。
+用户完成 GitHub Confirm access 后，接管同一空间 6。实际保存测试 App Secret 到本地私有文件，完成真实 GitHub 授权、同邮箱未绑定拒绝、主动绑定不同邮箱、登录与 provider ID/公开用户名核对、五个令牌字段清空、站点新回调授权、停用/启用重启保留关系、第二个真实 Secret 的轮换与重启后登录、最终 UI 解绑及本地密码/当前会话保留。解绑后真实 GitHub 登录不能重建用户、绑定或会话。凭证、授权码与 Cookie 不写入证据、代码或 PR。详见[真实 OAuth 记录](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/oauth-181/browser-recovery/real-oauth.json)。
 
 默认浏览器入口实际终结失败，68 阶段为 55 passed、7 failed、6 blocked。本次 OAuth 失败已定位并修复：测试等待实际读回终态；产品在输入禁用和按钮卸载重建后恢复正确的当前动作焦点；复制重试只关闭自身旧通知。最终定向 OAuth 五阶段及三消费页面通过，手机异常、手动复制、长邮箱、两份快照滚动均补实测，独立代码与设计复审通过。Figma 同步实际组件内距和字体细节，原生导出复核通过；没有改变已批准布局。用户的 UI 人工验收完成状态保留。
 

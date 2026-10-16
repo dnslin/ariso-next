@@ -6,7 +6,7 @@
 
 - [桌面阅读入口](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=530-11746)
 - [手机阅读入口](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=530-11532)
-- [验证记录](./verification/parallel-forms-exceptions-2026-09-19.json)
+- [验证记录](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/archive/preparation-2026-09/design/verification/parallel-forms-exceptions-2026-09-19.json)
 
 ## 新分区与状态
 

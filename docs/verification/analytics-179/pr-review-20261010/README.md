@@ -34,6 +34,6 @@
 
 审查整个固定PR：39个产品文件、31个测试/浏览器文件、6个配置等文件；另外9个业务文档、30个原型文件和699个证据文件按职责分类核验，不以大量截图/日志替代源码审查。依赖原生blocked-by实际回读169/171/178/57/129均closed，blocking为空。
 
-五轴评审执行一次技能要求的排行条件变异：[失败实录](./mutation-popular-existence.log)、[恢复后通过](./mutation-restored.log)。实际命令及断言解释见其独立报告；14项未选中是该命令的定向范围，不是修改测试跳过标记。源码已从原始字节恢复，主代理核对产品目录无差异。本次没有重复应用构建、全量单元/集成或浏览器流程，也未重新进行视觉审查。
+五轴评审执行一次技能要求的排行条件变异：[失败实录](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/pr-review-20261010/mutation-popular-existence.log)、[恢复后通过](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/pr-review-20261010/mutation-restored.log)。实际命令及断言解释见其独立报告；14项未选中是该命令的定向范围，不是修改测试跳过标记。源码已从原始字节恢复，主代理核对产品目录无差异。本次没有重复应用构建、全量单元/集成或浏览器流程，也未重新进行视觉审查。
 
-格式、文档依赖、报告链接与暂存差异检查的本轮收口结果见[检查记录](./checks.json)。PR保持草稿，当前没有远端检查；不合并、关闭Issue或清理预览与工作区。
+格式、文档依赖、报告链接与暂存差异检查的本轮收口结果见[检查记录](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/analytics-179/pr-review-20261010/checks.json)。PR保持草稿，当前没有远端检查；不合并、关闭Issue或清理预览与工作区。

@@ -1,6 +1,6 @@
 # GitHub 账号页获批 settings rows 的 Figma 同步
 
-2026-10-07。依据用户已批准的带图标原型 `account-rows-preview.tsx` 与 `prototype-ui.tsx` 的 rows 分支，实际写入 [桌面账号主节点](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=34-462) 与 [手机账号主节点](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-1713)。节点、状态与最终截图的完整对应在 [manifest.json](manifest.json)，结构读取结果在 [structure-audit.json](structure-audit.json)，写入调用结果摘要在 [write-results.json](write-results.json)。
+2026-10-07。依据用户已批准的带图标原型 `account-rows-preview.tsx` 与 `prototype-ui.tsx` 的 rows 分支，实际写入 [桌面账号主节点](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=34-462) 与 [手机账号主节点](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=102-1713)。节点、状态与最终截图的完整对应在 [manifest.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/oauth-181/layout-revision/figma/manifest.json)，结构读取结果在 [structure-audit.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/oauth-181/layout-revision/figma/structure-audit.json)，写入调用结果摘要在 [write-results.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/oauth-181/layout-revision/figma/write-results.json)。
 
 ## 实际同步范围
 

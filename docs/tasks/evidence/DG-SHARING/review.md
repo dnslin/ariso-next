@@ -8,7 +8,7 @@
 - `m3-m4-experience.md` 三个消费卡新增结论，`gates.md`、设计 README/acceptance 的入口差异；当前 Figma 根节点索引、文字/尺寸记录及独立设计审计。
 - 当前生产公共外壳、collections 成员/封面/删除、delivery 地址构造，以及管理 `ImageViewer`、`useImageViewer`、详情/邻居/状态读取路径与类型。
 - `tests/experiments/sharing/` 的模型、HTTP 和客户端，分享单元/集成测试，`package.json`、Vitest 配置及默认浏览器运行器。
-- 用 `gh issue view` 和原生 dependencies API 独立读取 #134、#190/191/192/193 及消费者前置状态。读取结果与本次保存的 [GitHub 证据](./github.json)一致。
+- 用 `gh issue view` 和原生 dependencies API 独立读取 #134、#190/191/192/193 及消费者前置状态。读取结果与本次保存的 [GitHub 证据](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/DG-SHARING/github.json)一致。
 
 没有运行安装、应用测试、构建或浏览器检查，没有修改产品代码、依赖、冻结 PRD 或 Figma。只读取已有验证调用链，不重复实现者的检查。Figma 实时读取和截图目视对照由另一个独立[设计评审](./design-review.md)承担；本审计核对文字/节点与契约，不声称自己验证了真实页面。
 

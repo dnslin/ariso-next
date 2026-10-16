@@ -27,10 +27,10 @@
 
 ## 已有证据与未执行项
 
-早期专项 before 的 `running` 记录仅作调试依据，未计作完整通过。最终复核实际读取第三轮运行输出，归档入口为 [桌面 M2](./browser/m2-1440.json)、[手机 M2](./browser/m2-390.json) 和 [运行器报告](./browser/runner.json)。两端报告均为 `passed`，分别记录 1440×1080、390×844 浅色视口，包含四种格式/权限组合、处理失败、重启后三表精确核对以及同任务、快照、原图对象和单份版本恢复。
+早期专项 before 的 `running` 记录仅作调试依据，未计作完整通过。最终复核实际读取第三轮运行输出，归档入口为 [桌面 M2](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/browser/m2-1440.json)、[手机 M2](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/browser/m2-390.json) 和 [运行器报告](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/browser/runner.json)。两端报告均为 `passed`，分别记录 1440×1080、390×844 浅色视口，包含四种格式/权限组合、处理失败、重启后三表精确核对以及同任务、快照、原图对象和单份版本恢复。
 
 同轮身份 setup/restart、图库、上传及轮询报告均为 `passed`。运行器于 `2026-09-26T13:11:21.018Z` 完成，整体状态为 `passed`，`temporaryDirectoryRemoved=true`。审计同时回读最终脚本与差异，没有发现跳过失败、删除断言或伪造成功状态。
 
-补充双浏览器记录见 [second-browser/result.json](./second-browser/result.json)。它明确区分 Ego Lite 所有者与同 origin 的 Chrome 154 匿名身份，记录公开读取、私有拒绝、回收拒绝、恢复及持久计数；两个 Ego 页面没有被当成两个浏览器。此审计读取了记录，未重新执行该人工操作；截图的设计对照由独立设计评审负责。
+补充双浏览器记录见 [second-browser/result.json](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/verification/m2-85/second-browser/result.json)。它明确区分 Ego Lite 所有者与同 origin 的 Chrome 154 匿名身份，记录公开读取、私有拒绝、回收拒绝、恢复及持久计数；两个 Ego 页面没有被当成两个浏览器。此审计读取了记录，未重新执行该人工操作；截图的设计对照由独立设计评审负责。
 
 本审计实际执行了文件读取、`git diff`、`git status`、`rg` 与 `gh issue view 85 --json title,body,comments,state,url`。未独立执行安装、构建、单元、集成或浏览器测试，其结果须以实施报告和实际运行日志为准。本次已完成最终浏览器报告复核。设计缺口和用户人工验收不得由本代码审计结论替代。

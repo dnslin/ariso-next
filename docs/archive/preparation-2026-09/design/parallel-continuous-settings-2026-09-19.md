@@ -7,7 +7,7 @@
 - 桌面分区 [阅读入口](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=529-12713)，00 指引 [529:12713](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=529-12713)。
 - 手机分区 [阅读入口](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=529-12543)，00 指引 [529:12543](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=529-12543)。
 - 桌面位置 21200 / 96754，尺寸 6600 × 8000；手机位置 8000 / 79994，尺寸 2200 × 6300。
-- [节点与语义验证](./verification/parallel-continuous-settings-2026-09-19.json)。
+- [节点与语义验证](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/archive/preparation-2026-09/design/verification/parallel-continuous-settings-2026-09-19.json)。
 
 ## 阅读顺序
 

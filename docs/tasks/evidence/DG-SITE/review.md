@@ -6,7 +6,7 @@
 
 ## 范围与需求覆盖
 
-实际审查 `gates.md` 的 DG-SITE 记录、T-SITE-02/04 与 T-UP-08 的新增核对结论、`design/acceptance.md` 的证据入口及本目录 README。保留既有需求编号、任务职责和原生依赖；[GitHub 快照](./github.json) 的三项直接消费者与本地任务依赖一致。#195/T-SITE-03 尚未完成，阻塞真实品牌操作，但不阻塞本 DG 的只读适用核对。
+实际审查 `gates.md` 的 DG-SITE 记录、T-SITE-02/04 与 T-UP-08 的新增核对结论、`design/acceptance.md` 的证据入口及本目录 README。保留既有需求编号、任务职责和原生依赖；[GitHub 快照](https://github.com/dnslin/ariso-next/blob/edb097b1fd7396e2797aac2d04e826ab986062e2/docs/tasks/evidence/DG-SITE/github.json) 的三项直接消费者与本地任务依赖一致。#195/T-SITE-03 尚未完成，阻塞真实品牌操作，但不阻塞本 DG 的只读适用核对。
 
 三个消费卡分别写出可复用主/状态节点、桌面/手机与主题适用范围、真实验收责任及具体表达缺口。DES-06-SITE、RG-03/08 继续开放。新增文字没有实现或批准新交互；缺口由对应消费任务在产品代码实施前补原型并取得用户批准。本次不重画既有图、不写 Figma、不改冻结 PRD。
 
