@@ -1,4 +1,5 @@
-import { rm } from 'node:fs/promises';
+import { rm, writeFile } from 'node:fs/promises';
+import { request as httpRequest } from 'node:http';
 import { eq } from 'drizzle-orm';
 import { afterEach, beforeEach, expect, it } from 'vitest';
 import {
@@ -9,10 +10,13 @@ import {
 import { session } from '../../../src/server/identity/schema.ts';
 import {
   mediaImages,
+  mediaObjects,
   mediaSettings,
+  mediaVersions,
 } from '../../../src/server/media/schema.ts';
 import { storageConfigs } from '../../../src/server/storage/schema.ts';
 import { launchLocalDelivery } from './local-fixture.ts';
+import { stop } from '../runtime/process-helpers.ts';
 
 let app: Awaited<ReturnType<typeof launchLocalDelivery>>;
 let asset: Awaited<ReturnType<typeof app.seed>>;
@@ -173,6 +177,60 @@ it('returns explicit no-store method and parameter errors through Next HTTP', as
   expect((await request('?type=original', {}, 'missing')).status).toBe(404);
 });
 
+it('a real client disconnect during image delivery does not produce error logs', async () => {
+  const size = 16 * 1024 * 1024;
+  await writeFile(
+    asset.path,
+    Buffer.concat([asset.bytes, Buffer.alloc(size - asset.bytes.length)]),
+  );
+  app.db.transaction(
+    (tx) => {
+      tx.update(mediaImages)
+        .set({ byteSize: size })
+        .where(eq(mediaImages.id, asset.imageId))
+        .run();
+      tx.update(mediaObjects)
+        .set({ byteSize: size })
+        .where(eq(mediaObjects.imageId, asset.imageId))
+        .run();
+      tx.update(mediaVersions)
+        .set({ byteSize: size })
+        .where(eq(mediaVersions.imageId, asset.imageId))
+        .run();
+    },
+    { behavior: 'immediate' },
+  );
+  let received = 0;
+  await new Promise<void>((resolve, reject) => {
+    const req = httpRequest(
+      `${app.origin}/i/${asset.imageId}?type=original`,
+      (res) => {
+        res.once('data', (chunk: Buffer) => {
+          received += chunk.length;
+          res.destroy();
+          resolve();
+        });
+        res.on('error', reject);
+      },
+    );
+    req.on('error', reject);
+    req.end();
+  });
+  expect(received).toBeGreaterThan(0);
+  expect(received).toBeLessThan(size);
+  expect((await fetch(`${app.origin}/api/health`)).status).toBe(200);
+  // Stop drains the server and its stdout so an asynchronous stream error cannot
+  // arrive after the assertion. The fixture can close an already stopped process.
+  await stop(app.child, app.closed);
+  const errors = app
+    .logs()
+    .split('\n')
+    .filter((line) => line.startsWith('{'))
+    .map((line) => JSON.parse(line))
+    .filter((row) => row.level === 'error' || row.level === 'fatal');
+  expect(errors).toEqual([]);
+});
+
 it('serves authenticated trash previews while public URLs and alternate credentials remain denied', async () => {
   update({ trashedAt: new Date(), processingStatus: 'failed' });
   const url = `${app.origin}/api/trash/${asset.imageId}/preview?type=original`;
@@ -235,7 +293,6 @@ it('serves authenticated trash previews while public URLs and alternate credenti
   expect((await fetch(url, { headers })).status).toBe(401);
   // Graceful shutdown flushes all accepted events before checking absence.
   // The fixture's finally close can safely observe the already exited process.
-  const { stop } = await import('../runtime/process-helpers.ts');
   await stop(app.child, app.closed);
   expect(app.db.select().from(analyticsDaily).all()).toEqual([]);
   expect(app.db.select().from(analyticsImageDaily).all()).toEqual([]);

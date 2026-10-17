@@ -63,6 +63,18 @@ function sameTarget(a: Selection, b: Selection) {
   return a.object.id === b.object.id && a.actualVersion === b.actualVersion;
 }
 
+function isRequestCancellation(error: unknown, signal: AbortSignal) {
+  return (
+    signal.aborted &&
+    (error === signal.reason ||
+      (error instanceof Error &&
+        error.name === 'AbortError' &&
+        'code' in error &&
+        error.code === 'ABORT_ERR' &&
+        error.cause === signal.reason))
+  );
+}
+
 export async function prepareImageDelivery(
   request: Request,
   imageId: string,
@@ -140,12 +152,15 @@ export async function prepareImageDelivery(
         continue;
       }
       source = opened.stream;
-      source.on('error', (err) =>
-        logger.error(
-          { err, imageId, objectId: selected.object.id },
-          'Image file stream failed',
-        ),
-      );
+      source.on('error', (err) => {
+        // Node wraps this request's abort reason in AbortError.cause. A concurrent
+        // disk failure still needs its own log, even after the request is aborted.
+        if (!isRequestCancellation(err, request.signal))
+          logger.error(
+            { err, imageId, objectId: selected.object.id },
+            'Image file stream failed',
+          );
+      });
       if (
         opened.size !== selected.version.byteSize ||
         opened.size !== selected.object.byteSize
@@ -198,10 +213,11 @@ export async function prepareImageDelivery(
     const code = err instanceof Error && 'code' in err ? err.code : undefined;
     const recognized = isDeliveryErrorCode(code);
     if (
-      !recognized ||
-      code === 'STORAGE_OBJECT_MISSING' ||
-      code === 'STORAGE_OPERATION_FAILED' ||
-      code === 'STORAGE_TIMEOUT'
+      !isRequestCancellation(err, request.signal) &&
+      (!recognized ||
+        code === 'STORAGE_OBJECT_MISSING' ||
+        code === 'STORAGE_OPERATION_FAILED' ||
+        code === 'STORAGE_TIMEOUT')
     )
       logger.error({ err, imageId }, 'Image delivery failed');
     return imageFailure(request, recognized ? code : 'DELIVERY_FAILED');

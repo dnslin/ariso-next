@@ -437,6 +437,7 @@ describe('delivery with SQLite and local objects', () => {
       }
       expect(streams[0]!.destroyed).toBe(true);
       expect(onAccess).toHaveBeenCalledTimes(1);
+      if (action === 'cancel') expect(logger.error).not.toHaveBeenCalled();
     },
   );
 
@@ -447,9 +448,42 @@ describe('delivery with SQLite and local objects', () => {
     expect(streams[0]!.destroyed).toBe(true);
     expect(streams[0]!.closed).toBe(true);
     expect(onAccess).not.toHaveBeenCalled();
+    expect(logger.error).not.toHaveBeenCalled();
   });
 
-  it('propagates request abortion to the actual file stream', async () => {
+  it.each([
+    undefined,
+    Object.assign(new Error('client disconnected'), {
+      name: 'ResponseAborted',
+    }),
+    'navigation cancelled',
+  ])(
+    'does not log a request cancelled before preparation (%s)',
+    async (reason) => {
+      const controller = new AbortController();
+      controller.abort(reason);
+      await error(
+        await request('', { signal: controller.signal }),
+        500,
+        'DELIVERY_FAILED',
+      );
+      expect(logger.error).not.toHaveBeenCalled();
+    },
+  );
+
+  it('closes a request cancelled during file opening without error logs', async () => {
+    const controller = new AbortController();
+    interceptOpened(() => controller.abort(new Error('page navigation')));
+    await error(
+      await request('', { signal: controller.signal }),
+      500,
+      'DELIVERY_FAILED',
+    );
+    expect(streams[0]!.closed).toBe(true);
+    expect(logger.error).not.toHaveBeenCalled();
+  });
+
+  it('propagates request abortion to the actual file stream without error logs', async () => {
     interceptOpened(() => undefined);
     const controller = new AbortController();
     const response = await request('', { signal: controller.signal });
@@ -458,6 +492,64 @@ describe('delivery with SQLite and local objects', () => {
     await finished(streams[0]!).catch(() => undefined);
     expect(streams[0]!.closed).toBe(true);
     expect(onAccess).not.toHaveBeenCalled();
+    expect(logger.error).not.toHaveBeenCalled();
+  });
+
+  it('does not log request cancellation after the first consumed block', async () => {
+    await saveVersion('original', Buffer.alloc(1024 * 1024, 42));
+    interceptOpened(() => undefined);
+    const controller = new AbortController();
+    const response = await request('', { signal: controller.signal });
+    const reader = response.body!.getReader();
+    expect((await reader.read()).value!.length).toBeGreaterThan(0);
+    controller.abort(new Error('page navigation'));
+    await expect(reader.read()).rejects.toThrow();
+    await finished(streams[0]!).catch(() => undefined);
+    expect(streams[0]!.closed).toBe(true);
+    expect(onAccess).toHaveBeenCalledTimes(1);
+    expect(logger.error).not.toHaveBeenCalled();
+  });
+
+  it.each(['EIO', 'ABORT_ERR'])(
+    'retains a real %s source failure even if the request is cancelled',
+    async (code) => {
+      interceptOpened(() => undefined);
+      const controller = new AbortController();
+      const response = await request('', { signal: controller.signal });
+      const failure = Object.assign(new Error('independent source failure'), {
+        name: code === 'ABORT_ERR' ? 'AbortError' : 'Error',
+        code,
+      });
+      streams[0]!.destroy(failure);
+      controller.abort(new Error('page navigation'));
+      await expect(response.arrayBuffer()).rejects.toThrow();
+      await finished(streams[0]!).catch(() => undefined);
+      expect(logger.error).toHaveBeenCalledExactlyOnceWith(
+        expect.objectContaining({ err: failure, imageId }),
+        'Image file stream failed',
+      );
+      expect(onAccess).not.toHaveBeenCalled();
+    },
+  );
+
+  it('retains an opening failure even when request cancellation has arrived', async () => {
+    const controller = new AbortController();
+    const failure = Object.assign(new Error('disk read failed'), {
+      code: 'EIO',
+    });
+    vi.spyOn(local, 'readObject').mockImplementationOnce(async () => {
+      controller.abort(new Error('page navigation'));
+      throw failure;
+    });
+    await error(
+      await request('', { signal: controller.signal }),
+      500,
+      'DELIVERY_FAILED',
+    );
+    expect(logger.error).toHaveBeenCalledExactlyOnceWith(
+      { err: failure, imageId },
+      'Image delivery failed',
+    );
   });
 
   it('counts a public image after owner session is revoked during open', async () => {
