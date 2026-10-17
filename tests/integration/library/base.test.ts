@@ -430,30 +430,34 @@ describe('owner-only list HTTP', () => {
         items: [{ id: 'http-private-failed' }],
       });
       const reprocessId = 'http-ready-reprocess-failed';
-      const accepted = live.db.transaction((tx) =>
-        acceptOriginal(tx, {
-          imageId: reprocessId,
-          storageId: storage.id,
-          key: 'private-key/reprocess',
-          originalName: 'reprocess.png',
-          visibility: 'private',
-          format: 'PNG',
-          mime: 'image/png',
-          byteSize: 42,
-          snapshot: createProcessingSnapshot(tx),
-          expectedVersions: ['thumbnail'],
-        }),
+      // The running queue must not claim this fixture before its failed job
+      // and ready image are committed; acquire the writer before reading settings.
+      const accepted = live.db.transaction(
+        (tx) => {
+          const accepted = acceptOriginal(tx, {
+            imageId: reprocessId,
+            storageId: storage.id,
+            key: 'private-key/reprocess',
+            originalName: 'reprocess.png',
+            visibility: 'private',
+            format: 'PNG',
+            mime: 'image/png',
+            byteSize: 42,
+            snapshot: createProcessingSnapshot(tx),
+            expectedVersions: ['thumbnail'],
+          });
+          tx.update(mediaImages)
+            .set({ processingStatus: 'ready' })
+            .where(eq(mediaImages.id, reprocessId))
+            .run();
+          tx.update(mediaJobs)
+            .set({ status: 'failed' })
+            .where(eq(mediaJobs.id, accepted.jobId))
+            .run();
+          return accepted;
+        },
+        { behavior: 'immediate' },
       );
-      live.db
-        .update(mediaImages)
-        .set({ processingStatus: 'ready' })
-        .where(eq(mediaImages.id, reprocessId))
-        .run();
-      live.db
-        .update(mediaJobs)
-        .set({ status: 'failed' })
-        .where(eq(mediaJobs.id, accepted.jobId))
-        .run();
       const reprocessFailures = await fetch(
         `${origin}/api/images?failure=reprocess`,
         { headers: { cookie } },
