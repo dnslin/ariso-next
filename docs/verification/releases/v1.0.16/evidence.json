@@ -1,0 +1,283 @@
+{
+  "version": "v1.0.16",
+  "verifiedOn": "2026-10-17",
+  "revision": "b6fc4c6a32a16dece19976267347a9f5c43da51f",
+  "release": "https://github.com/dnslin/ariso-next/releases/tag/v1.0.16",
+  "ci": "https://github.com/dnslin/ariso-next/actions/runs/39012841525",
+  "releaseActions": "https://github.com/dnslin/ariso-next/actions/runs/39013617120",
+  "manifest": {
+    "image": "ghcr.io/dnslin/ariso-next:v1.0.16",
+    "digest": "sha256:8b0eb220f45e899f6e0dd92e3e39e981778912f2559c219d339557a3826f4d4b",
+    "platforms": ["linux/amd64", "linux/arm64"]
+  },
+  "assets": [
+    {
+      "name": "ariso-v1.0.16-linux-amd64.tar.gz",
+      "bytes": 414718652,
+      "digest": "sha256:cea76b3c2c891d7a9bc66a66c8be506fb52c062d78d9d010097c260096628aa2"
+    },
+    {
+      "name": "ariso-v1.0.16-linux-arm64.tar.gz",
+      "bytes": 406669900,
+      "digest": "sha256:5df1338e933c1de67dc987f4a71d3842ab66cf53e8cbf38a007d873a86818815"
+    },
+    {
+      "name": "SHA256SUMS",
+      "bytes": 198,
+      "digest": "sha256:d8053a6e4022d134cf1323d46048f197856705c7c2ecce0208097511396ae234"
+    }
+  ],
+  "releaseChecks": {
+    "amd64": {
+      "status": "passed",
+      "checks": [
+        "offline runtime baseline and packaged files",
+        "packaged media conversions, formats, metadata and fonts",
+        "production HTTP upload, persistence, lifecycle and recovery"
+      ],
+      "formatChecksPassed": 26
+    },
+    "arm64": {
+      "status": "passed",
+      "checks": [
+        "offline runtime baseline and packaged files",
+        "packaged media conversions, formats, metadata and fonts",
+        "production HTTP upload, persistence, lifecycle and recovery"
+      ],
+      "formatChecksPassed": 26
+    }
+  },
+  "deployment": {
+    "backupDirectory": "/opt/ariso-next/backups/release-v1.0.16-8Xy2XMHr",
+    "backupBytes": 116541440,
+    "previousImage": "ghcr.io/dnslin/ariso-next:v1.0.15",
+    "image": "ghcr.io/dnslin/ariso-next:v1.0.16",
+    "revision": "b6fc4c6a32a16dece19976267347a9f5c43da51f"
+  },
+  "cancellation": {
+    "imageId": "c85d7b34-c18d-4674-9ca8-79011bd70a5e",
+    "totalBytes": 16188528,
+    "before": {
+      "version": "v1.0.15",
+      "disconnects": 2,
+      "bytesReadPerRequest": 1024,
+      "errorRecords": [
+        {
+          "level": "error",
+          "time": "2026-10-17T07:29:13.512Z",
+          "module": "delivery",
+          "err": {
+            "type": "AbortError",
+            "message": "The operation was aborted",
+            "stack": "AbortError: The operation was aborted\n    at stream.<computed>.AbortError.cause (node:internal/streams/add-abort-signal:47:22)\n    at [nodejs.internal.kHybridDispatch] (node:internal/event_target:869:20)\n    at AbortSignal.dispatchEvent (node:internal/event_target:810:26)\n    at runAbort (node:internal/abort_controller:561:10)\n    at abortSignal (node:internal/abort_controller:525:3)\n    at AbortController.abort (node:internal/abort_controller:580:5)\n    at AbortSignal.abort (node:internal/deps/undici/undici:12058:14)\n    at [nodejs.internal.kHybridDispatch] (node:internal/event_target:869:20)\n    at AbortSignal.dispatchEvent (node:internal/event_target:810:26)\n    at runAbort (node:internal/abort_controller:561:10)",
+            "cause": {
+              "type": "te",
+              "message": "",
+              "stack": "ResponseAborted: \n    at ServerResponse.<anonymous> (/app/.next/server/chunks/[root-of-the-server]__1a-zxqe._.js:450:105554)\n    at ServerResponse.wrapper (node:events:639:12)\n    at ServerResponse.emit (node:events:526:24)\n    at emitCloseNT (node:_http_server:1156:10)\n    at Socket.onServerResponseClose (node:_http_server:292:5)\n    at Socket.emit (node:events:526:24)\n    at TCP.<anonymous> (node:net:362:12)",
+              "name": "ResponseAborted"
+            },
+            "code": "ABORT_ERR",
+            "name": "AbortError"
+          },
+          "imageId": "c85d7b34-c18d-4674-9ca8-79011bd70a5e",
+          "objectId": "61161621-4f98-4437-a0fa-5734c5661ed1",
+          "msg": "Image file stream failed"
+        },
+        {
+          "level": "error",
+          "time": "2026-10-17T07:29:13.518Z",
+          "module": "delivery",
+          "err": {
+            "type": "AbortError",
+            "message": "The operation was aborted",
+            "stack": "AbortError: The operation was aborted\n    at stream.<computed>.AbortError.cause (node:internal/streams/add-abort-signal:47:22)\n    at [nodejs.internal.kHybridDispatch] (node:internal/event_target:869:20)\n    at AbortSignal.dispatchEvent (node:internal/event_target:810:26)\n    at runAbort (node:internal/abort_controller:561:10)\n    at abortSignal (node:internal/abort_controller:525:3)\n    at AbortController.abort (node:internal/abort_controller:580:5)\n    at AbortSignal.abort (node:internal/deps/undici/undici:12058:14)\n    at [nodejs.internal.kHybridDispatch] (node:internal/event_target:869:20)\n    at AbortSignal.dispatchEvent (node:internal/event_target:810:26)\n    at runAbort (node:internal/abort_controller:561:10)",
+            "cause": {
+              "type": "te",
+              "message": "",
+              "stack": "ResponseAborted: \n    at ServerResponse.<anonymous> (/app/.next/server/chunks/[root-of-the-server]__1a-zxqe._.js:450:105554)\n    at ServerResponse.wrapper (node:events:639:12)\n    at ServerResponse.emit (node:events:526:24)\n    at emitCloseNT (node:_http_server:1156:10)\n    at Socket.onServerResponseClose (node:_http_server:292:5)\n    at Socket.emit (node:events:526:24)\n    at TCP.<anonymous> (node:net:362:12)",
+              "name": "ResponseAborted"
+            },
+            "code": "ABORT_ERR",
+            "name": "AbortError"
+          },
+          "imageId": "c85d7b34-c18d-4674-9ca8-79011bd70a5e",
+          "objectId": "61161621-4f98-4437-a0fa-5734c5661ed1",
+          "msg": "Image file stream failed"
+        }
+      ]
+    },
+    "after": {
+      "nativeDisconnects": 10,
+      "bytesReadPerRequest": 1024,
+      "pageSwitches": [
+        {
+          "round": 1,
+          "pendingImages": 17,
+          "destination": "https://ariso.447654.xyz/analytics"
+        },
+        {
+          "round": 2,
+          "pendingImages": 17,
+          "destination": "https://ariso.447654.xyz/albums"
+        },
+        {
+          "round": 3,
+          "pendingImages": 17,
+          "destination": "https://ariso.447654.xyz/analytics"
+        },
+        {
+          "round": 4,
+          "pendingImages": 17,
+          "destination": "https://ariso.447654.xyz/albums"
+        },
+        {
+          "round": 5,
+          "pendingImages": 17,
+          "destination": "https://ariso.447654.xyz/analytics"
+        }
+      ],
+      "browserAbort": {
+        "status": 200,
+        "firstBlock": 4096,
+        "aborted": true
+      },
+      "finalServerLogRecords": [
+        {
+          "level": "info",
+          "time": "2026-10-17T07:36:05.206Z",
+          "module": "runtime.prestart",
+          "phase": "prestart",
+          "msg": "prestart completed"
+        },
+        {
+          "level": "info",
+          "time": "2026-10-17T07:36:05.667Z",
+          "module": "runtime.console",
+          "msg": "▲ Next.js 16.3.5"
+        },
+        {
+          "level": "info",
+          "time": "2026-10-17T07:36:05.673Z",
+          "module": "runtime.console",
+          "msg": "- Local:         http://localhost:3000"
+        },
+        {
+          "level": "info",
+          "time": "2026-10-17T07:36:05.673Z",
+          "module": "runtime.console",
+          "msg": "- Network:       http://0.0.0.0:3000"
+        },
+        {
+          "level": "info",
+          "time": "2026-10-17T07:36:05.673Z",
+          "module": "runtime.console",
+          "msg": "✓ Ready in 0ms"
+        },
+        {
+          "level": "info",
+          "time": "2026-10-17T07:36:05.679Z",
+          "module": "runtime.console",
+          "msg": "✓ Running next.config took 5ms"
+        },
+        {
+          "level": "info",
+          "time": "2026-10-17T07:36:41.865Z",
+          "module": "collections.tags",
+          "method": "GET",
+          "path": "/api/tags",
+          "status": 200,
+          "msg": "Tag management succeeded"
+        }
+      ],
+      "errorCount": 0
+    }
+  },
+  "runtime": {
+    "freshLogin": true,
+    "logoutRevokedSession": true,
+    "existingSessionStatus": 200,
+    "apiChecks": [
+      {
+        "path": "/api/auth/sign-in/email",
+        "status": 200
+      },
+      {
+        "path": "/api/auth/get-session",
+        "status": 200
+      },
+      {
+        "path": "/api/images",
+        "status": 200
+      },
+      {
+        "path": "/api/albums",
+        "status": 200
+      },
+      {
+        "path": "/api/tags",
+        "status": 200
+      },
+      {
+        "path": "/api/storages",
+        "status": 200
+      },
+      {
+        "path": "/api/shares",
+        "status": 200
+      },
+      {
+        "path": "/api/settings/site",
+        "status": 200
+      },
+      {
+        "path": "/api/analytics/overview?days=7",
+        "status": 200
+      },
+      {
+        "path": "/api/auth/sign-out",
+        "status": 200
+      },
+      {
+        "path": "/api/auth/get-session",
+        "status": 200
+      },
+      {
+        "path": "/api/health",
+        "status": 200
+      }
+    ],
+    "mediaReads": [
+      {
+        "storage": "S3 图片存储",
+        "type": "original",
+        "status": 200,
+        "contentType": "image/avif",
+        "bytes": 7167
+      },
+      {
+        "storage": "S3 图片存储",
+        "type": "thumbnail",
+        "status": 200,
+        "contentType": "image/webp",
+        "bytes": 4370
+      },
+      {
+        "storage": "默认本地存储",
+        "type": "original",
+        "status": 200,
+        "contentType": "image/avif",
+        "bytes": 200298
+      },
+      {
+        "storage": "默认本地存储",
+        "type": "thumbnail",
+        "status": 200,
+        "contentType": "image/webp",
+        "bytes": 32384
+      }
+    ],
+    "browserErrors": [],
+    "integrity": "ok",
+    "foreignKeyErrors": []
+  }
+}
