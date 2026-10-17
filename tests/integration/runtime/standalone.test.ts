@@ -1,9 +1,19 @@
-import { cp, mkdtemp, readFile, readdir, rm } from 'node:fs/promises';
+import {
+  cp,
+  mkdir,
+  mkdtemp,
+  readFile,
+  readdir,
+  rm,
+  symlink,
+  writeFile,
+} from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { execa } from 'execa';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { launch, stop } from './process-helpers';
+import { verifyStandaloneNativeBindings } from '../../../scripts/standalone-trace.mjs';
 
 let directory: string;
 let app: string;
@@ -86,6 +96,49 @@ describe('isolated production directory', () => {
         name.startsWith('ariso-verify-image-'),
       ),
     ).toEqual([]);
+  });
+
+  it('隔离产物实际加载 SQLite 与 SVG 原生模块，SVG 工作进程生成正确尺寸的 PNG', async () => {
+    verifyStandaloneNativeBindings(app);
+    const source = join(directory, 'source.svg');
+    const target = join(directory, 'rendered.png');
+    await writeFile(
+      source,
+      '<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"><rect width="10" height="10" fill="red"/></svg>',
+    );
+    await execa(
+      process.execPath,
+      [
+        join(app, 'scripts/media/svg-render.mjs'),
+        source,
+        target,
+        '32',
+        'longest-edge',
+      ],
+      { cwd: directory, env: {}, extendEnv: false },
+    );
+    const png = await readFile(target);
+    expect(png.subarray(0, 8)).toEqual(
+      Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]),
+    );
+    expect(png.readUInt32BE(16)).toBe(32);
+    expect(png.readUInt32BE(20)).toBe(32);
+  });
+
+  it('原生验证拒绝借用源码安装的依赖，避免缺失打包文件时误报通过', async () => {
+    const fallback = join(directory, 'fallback');
+    await mkdir(fallback);
+    await writeFile(join(fallback, 'package.json'), '{}');
+    await symlink(resolve('node_modules'), join(fallback, 'node_modules'));
+    expect(() => verifyStandaloneNativeBindings(fallback)).toThrow(
+      'resolved outside package',
+    );
+  });
+
+  it('原生验证接受指向同一产物的目录别名', async () => {
+    const alias = join(directory, 'app-alias');
+    await symlink(app, alias);
+    expect(() => verifyStandaloneNativeBindings(alias)).not.toThrow();
   });
 
   it.each([

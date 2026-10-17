@@ -10,9 +10,18 @@ import {
 import { dirname, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import nft from 'next/dist/compiled/@vercel/nft/index.js';
+import {
+  partitionTraceWarnings,
+  verifyStandaloneNativeBindings,
+} from './standalone-trace.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const output = join(root, '.next/standalone');
+// Next already traced and packaged its server. In particular, shutdown.js must
+// not recursively trace Next's development/runtime alternatives a second time.
+// Use a function: pnpm's hidden .pnpm directory is not matched by default globs.
+const ignoreNext = (file) =>
+  file.startsWith('node_modules/next/') || file.includes('/node_modules/next/');
 // Reuse Next's tracer for the CLI graph, which is not reachable from Web routes.
 const { fileList, warnings } = await nft.nodeFileTrace(
   [
@@ -26,6 +35,7 @@ const { fileList, warnings } = await nft.nodeFileTrace(
   {
     base: root,
     processCwd: root,
+    ignore: ignoreNext,
   },
 );
 // Verification reads explicitly copied fixtures and creates temporary outputs.
@@ -33,11 +43,15 @@ const { fileList, warnings } = await nft.nodeFileTrace(
 const verification = await nft.nodeFileTrace(['scripts/verify-image.mjs'], {
   base: root,
   processCwd: root,
+  ignore: ignoreNext,
   analysis: { emitGlobs: false },
 });
 for (const file of verification.fileList) fileList.add(file);
-for (const warning of [...warnings, ...verification.warnings])
-  console.warn(warning);
+const diagnostics = partitionTraceWarnings([
+  ...warnings,
+  ...verification.warnings,
+]);
+for (const warning of diagnostics.unexpected) console.warn(warning);
 for (const file of fileList) {
   // Next has already written its package.json and standard server.js.
   if (file === 'package.json') continue;
@@ -83,3 +97,8 @@ for (const file of [
   ...manifest.samples.map((sample) => sample.file),
 ])
   await copyFile(join(formatFixtures, file), join(formatOutput, file));
+
+verifyStandaloneNativeBindings(output);
+console.log(
+  `Standalone packaged; native SQLite/SVG verified (${diagnostics.expected.length} unavailable optional candidates).`,
+);
