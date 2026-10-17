@@ -1,10 +1,16 @@
-import { randomBytes } from 'node:crypto';
-import { mkdtemp, rm, stat } from 'node:fs/promises';
+import { randomBytes, randomUUID } from 'node:crypto';
+import { mkdtemp, readFile, rm, stat } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { Readable } from 'node:stream';
+import { eq } from 'drizzle-orm';
 import { expect, it, vi } from 'vitest';
-import { requireMediaSettings } from '../../../src/server/media/settings.ts';
+import { acceptOriginal } from '../../../src/server/media/images.ts';
+import { mediaImages, mediaJobs } from '../../../src/server/media/schema.ts';
+import {
+  createProcessingSnapshot,
+  requireMediaSettings,
+} from '../../../src/server/media/settings.ts';
 import { openRuntimeDatabase } from '../../../src/server/runtime/db.ts';
 import { requireSiteSettings } from '../../../src/server/site/settings.ts';
 import { resolveLocalUploadStorage } from '../../../src/server/storage/defaults.ts';
@@ -13,6 +19,7 @@ import {
   readObject,
   writeObject,
 } from '../../../src/server/storage/local.ts';
+import { readStorageScan } from '../../../src/server/storage/scans.ts';
 import { launch, stop } from '../runtime/process-helpers.ts';
 
 it('M1: empty directory → setup → login → logout → real restart preserves owner, settings and default storage bytes', async () => {
@@ -123,14 +130,45 @@ it('M1: empty directory → setup → login → logout → real restart preserve
       concurrency: 1,
       updatedAt: expect.any(Date),
     });
-    // Exercise the default provider's real object API; this is not an upload UI claim.
-    const bytes = randomBytes(65536);
+    await expect
+      .poll(() => readStorageScan(db, storage.id)?.status, { timeout: 5000 })
+      .toBe('passed');
+    // Exercise the provider with an owned original; unreferenced files are orphans.
+    // This is a persistence fixture, not an upload or processing UI claim.
+    const bytes = await readFile(
+      resolve('tests/fixtures/runtime/images/sample.png'),
+    );
     const write = planLocalWrite('m1/persistence');
     await writeObject(
       join(data, 'storage'),
       storage,
       write,
       Readable.from([bytes]),
+    );
+    db.transaction(
+      (tx) => {
+        const accepted = acceptOriginal(tx, {
+          imageId: randomUUID(),
+          storageId: storage.id,
+          key: write.key,
+          originalName: 'm1-persistence.png',
+          visibility: 'private',
+          format: 'PNG',
+          mime: 'image/png',
+          byteSize: bytes.length,
+          snapshot: createProcessingSnapshot(tx),
+          expectedVersions: [],
+        });
+        tx.update(mediaJobs)
+          .set({ status: 'succeeded' })
+          .where(eq(mediaJobs.id, accepted.jobId))
+          .run();
+        tx.update(mediaImages)
+          .set({ processingStatus: 'ready', classification: 'static' })
+          .where(eq(mediaImages.id, accepted.imageId))
+          .run();
+      },
+      { behavior: 'immediate' },
     );
     const owner = db.$client.prepare('SELECT id, email FROM user').get();
     const login = async () => {
@@ -171,6 +209,7 @@ it('M1: empty directory → setup → login → logout → real restart preserve
     await stop(server.child, server.closed);
     connection.close();
     connection = undefined;
+    const restartStartedAt = Date.now();
     server = await launch(resolve('.next/standalone'), directory, {
       ...env,
       PORT: String(server.port),
@@ -180,6 +219,19 @@ it('M1: empty directory → setup → login → logout → real restart preserve
     expect(server.logs()).not.toContain('setup-code');
     connection = openRuntimeDatabase(join(data, 'ariso.db'));
     const restarted = connection.db;
+    await vi.waitFor(
+      () => {
+        const scan = readStorageScan(restarted, storage.id);
+        expect(scan?.startedAt.getTime()).toBeGreaterThanOrEqual(
+          restartStartedAt,
+        );
+        expect(scan?.status).toBe('passed');
+        expect(scan?.finishedAt).not.toBeNull();
+        expect(scan?.protectedCount).toBeGreaterThanOrEqual(1);
+        expect(scan?.deletedCount).toBe(0);
+      },
+      { timeout: 5000 },
+    );
     expect(requireSiteSettings(restarted)).toEqual(site);
     expect(requireMediaSettings(restarted)).toEqual(media);
     expect(resolveLocalUploadStorage(restarted)).toEqual(storage);
