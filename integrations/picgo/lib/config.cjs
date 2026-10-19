@@ -64,8 +64,9 @@ function config(ctx) {
       name: 'timeoutSeconds',
       type: 'input',
       required: false,
-      alias: '请求超时（秒）',
-      message: '默认 3000 秒，包含上传和等待处理；断线后请先到图库核对',
+      alias: '连接空闲超时（秒）',
+      message:
+        '默认 3000 秒，不是整次请求的总时限；持续传输时总耗时可超过此值，断线后请先到图库核对',
       default: saved.timeoutSeconds ?? 3000,
     },
   ];
@@ -110,7 +111,7 @@ function readConfig(ctx) {
     timeoutSeconds <= 0 ||
     timeoutSeconds * 1000 > 2147483647
   )
-    throw new Error('请求超时须为正整数秒，且不超过 2147483 秒');
+    throw new Error('连接空闲超时须为正整数秒，且不超过 2147483 秒');
   return {
     url: new URL('/api/upload', site).href,
     token,

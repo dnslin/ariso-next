@@ -2,6 +2,22 @@
 
 2026-10-19（Asia/Shanghai）。关联 [Issue #292](https://github.com/dnslin/ariso-next/issues/292)。规格与使用边界见 [SPEC-upload §10.4](../../specs/SPEC-upload.md#104-picgo-上传器维护期新增)和[接入指南](../../guides/picgo.md)。
 
+## 评审修复与定向检查
+
+初次交付提交 `b7ad14d` 之后按双 agent 评审修复两项：curl/PicGo 真实存储入口共用 `live-storage-fixture.ts` 的建立、探测、报告及清理流程；两入口合计从 476 行缩到 76 行，共享实现 247 行。curl 的额外无残留对象断言、跨服务继续执行和 PicGo 包清理仍保留。结构评审 agent 只读复核通过，没有再次执行测试。
+
+超时配置、指南、插件 README 和规格统一说明为“连接空闲超时”，不是整次请求的总时限；持续传输时总耗时可以超过配置值。上传运行行为保持不变。
+
+本轮在 Node 24.18.1 / pnpm 11.19.0 仅执行相关检查：
+
+- `pnpm exec vitest run --project unit tests/unit/upload/live-storage-fixture.test.ts`：3 项通过，覆盖成功、场景失败、清理失败的报告及资源收尾。
+- `pnpm --dir integrations/picgo test`：11 项通过，新增真实 Core 分段响应测试，1 秒空闲配置在持续传输约 1.5 秒后成功且只有一次 POST；旧说明先失败，修正文案后通过。
+- `pnpm exec tsc --noEmit --project tsconfig.json`、`pnpm --dir integrations/picgo typecheck`、变动 TypeScript/CJS 文件的定向 ESLint 和 Prettier、`git diff --check`：通过。
+- 两个 CLI 入口实际加载并使用空目标配置，均在分配资源前报错退出；不把这个入口检查当作外部存储验收。
+- 重新执行原有 `pnpm --dir integrations/picgo pack --out ../../test-results/picgo-package/picgo-plugin-ariso.tgz` 更新本地候选包，没有发布 npm。
+
+按用户要求未重复完整构建、全量测试、GUI/Typora、浏览器或 R2/SeaweedFS 矩阵。下列完整验证是初次交付与对应提交的历史证据，不冒充本轮重跑结果；远端 CI 按 PR 当前提交另行核对。
+
 ## 实现范围与工程检查
 
 实现为同仓独立 CommonJS 包 `picgo-plugin-ariso@0.1.0`，无运行依赖，许可证仅覆盖插件目录，按用户决定采用 MIT。没有新增服务端协议、数据库迁移或 Token 权限。单文件 multipart 明确公开，支持一个存储、相册、完整标签及固定版本链接；整批成功才交付，失败停止、不重试、不删除已保存资产。指南、用法页和现有检查入口同步接入。正式 npm 发布、合并、Issue 关闭与生产部署均未执行。
