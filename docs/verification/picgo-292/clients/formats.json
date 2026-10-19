@@ -1,0 +1,34 @@
+{
+  "status": "passed",
+  "client": "PicGo GUI 3.0.3 actual localhost Server",
+  "checks": [
+    {
+      "input": "static.jpg",
+      "url": "http://127.0.0.1:51631/i/fd76ef9e-aaf6-45ed-aee2-ad23f9a1e5a1?type=compressed",
+      "status": 200,
+      "mime": "image/webp",
+      "bytes": 138
+    },
+    {
+      "input": "static.webp",
+      "url": "http://127.0.0.1:51631/i/40398cea-8f54-4287-903a-477eb164051d?type=compressed",
+      "status": 200,
+      "mime": "image/webp",
+      "bytes": 212
+    },
+    {
+      "input": "animated.gif",
+      "url": "http://127.0.0.1:51631/i/691f63d6-43c8-4bd8-81d8-0ea09330dc93?type=original",
+      "status": 200,
+      "mime": "image/gif",
+      "bytes": 344
+    },
+    {
+      "input": "static.avif",
+      "url": "http://127.0.0.1:51631/i/6280384a-321d-4207-9bc9-38c809a22375?type=compressed",
+      "status": 200,
+      "mime": "image/webp",
+      "bytes": 138
+    }
+  ]
+}

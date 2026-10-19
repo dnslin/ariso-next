@@ -64,6 +64,23 @@ async function screenshot(name) {
 async function layout(name) {
   const state = await geometry.readGeometry(page);
   geometry.assertGeometry(state, name);
+  const picgo = await page.evaluate(() => {
+    const card = document.querySelector('[data-testid="upload-usage-picgo"]');
+    const link = card.querySelector('a');
+    const rect = card.getBoundingClientRect();
+    const target = link.getBoundingClientRect();
+    return {
+      left: rect.left,
+      right: rect.right,
+      viewportWidth: innerWidth,
+      noInternalOverflow: card.scrollWidth <= card.clientWidth,
+      targetWidth: target.width,
+      targetHeight: target.height,
+    };
+  });
+  assert.ok(picgo.left >= 0 && picgo.right <= picgo.viewportWidth, name);
+  assert.equal(picgo.noInternalOverflow, true, name);
+  assert.ok(picgo.targetWidth >= 44 && picgo.targetHeight >= 44, name);
   report.layouts.push({ name, ...state });
   await screenshot(name);
 }
@@ -90,6 +107,35 @@ async function load() {
   await page.goto(`${config.origin}/settings/api/usage`);
   await page.waitForSelector(ready);
 }
+async function verifyPicGoGuide() {
+  const guide = await page.evaluate(() => {
+    const card = document.querySelector('[data-testid="upload-usage-picgo"]');
+    const link = card.querySelector('a');
+    return {
+      text: card.textContent.replace(/\s+/g, ' '),
+      href: link.href,
+      target: link.target,
+      rel: link.rel,
+    };
+  });
+  assert.ok(guide.text.includes('通过此上传器上传的图片将公开'));
+  assert.ok(guide.text.includes('按指南安装 Ariso 插件，GUI 与 Core 分别配置'));
+  assert.equal(
+    guide.href,
+    'https://github.com/dnslin/ariso-next/blob/main/docs/guides/picgo.md',
+  );
+  assert.equal(guide.target, '_blank');
+  assert.ok(guide.rel.includes('noopener'));
+  assert.ok(guide.rel.includes('noreferrer'));
+  await page.focus('a[href="/api/openapi.json"]');
+  await page.keyboard.press('Tab');
+  assert.equal(
+    await page.evaluate(() => document.activeElement?.dataset.testid),
+    'upload-usage-picgo-guide',
+    'The PicGo guide is reachable in the existing documentation tab order',
+  );
+  report.checks.push({ picgoGuide: guide, keyboardReachable: true });
+}
 async function tables() {
   for (const label of ['请求参数', '响应与异常']) {
     const selector = `loc=role:button[name="${label}"]`;
@@ -100,7 +146,19 @@ async function tables() {
           ?.getAttribute('aria-expanded'),
       label,
     );
-    if (expanded !== 'true') await page.click(selector);
+    if (expanded !== 'true') {
+      // Expanding the preceding panel moves this trigger, including below the
+      // viewport. Activate the focused trigger without a moving pointer target.
+      await page.focus(selector);
+      await page.keyboard.press('Enter');
+      await page.waitForFunction(
+        (label) =>
+          [...document.querySelectorAll('button')]
+            .find((node) => node.textContent.trim() === label)
+            ?.getAttribute('aria-expanded') === 'true',
+        label,
+      );
+    }
   }
   for (const label of ['请求参数表', '响应字段表', 'HTTP 状态表'])
     await page.waitForSelector(`[aria-label="${label}"]`);
@@ -694,6 +752,7 @@ try {
   );
   const phase = config.uploadUsagePhase;
   await load();
+  await verifyPicGoGuide();
   const specificationLink = await page.evaluate(() => {
     const node = document.querySelector('a[href="/api/openapi.json"]');
     return { href: node?.href, target: node?.target };

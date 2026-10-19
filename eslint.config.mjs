@@ -5,6 +5,11 @@ import nextTs from 'eslint-config-next/typescript';
 export default defineConfig([
   ...nextVitals,
   ...nextTs,
+  {
+    files: ['integrations/picgo/**/*.cjs'],
+    // PicGo loads its plugin entry with require().
+    rules: { '@typescript-eslint/no-require-imports': 'off' },
+  },
   globalIgnores([
     '.next/**',
     'tests/experiments/shell/.next/**',

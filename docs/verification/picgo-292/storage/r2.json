@@ -1,0 +1,239 @@
+{
+  "service": "r2",
+  "node": "v24.18.1",
+  "picgoCore": "3.1.0",
+  "startedAt": "2026-10-19T07:21:33.360Z",
+  "finishedAt": "2026-10-19T07:22:48.866Z",
+  "status": "passed",
+  "storageId": "f0087652-875d-442d-9f9b-f28fda18aae6",
+  "checks": [
+    {
+      "name": "real-s3-probe-and-enable",
+      "status": "passed",
+      "detail": {
+        "storageId": "f0087652-875d-442d-9f9b-f28fda18aae6",
+        "probeCleaned": true
+      }
+    },
+    {
+      "name": "single-path-public-fixed-default-link-and-owner-targets",
+      "detail": {
+        "imageId": "e976c335-7218-4899-9ed6-231daaef62df",
+        "version": "compressed",
+        "public": true,
+        "albumCount": 1,
+        "tagCount": 1
+      },
+      "status": "passed"
+    },
+    {
+      "name": "base64-through-real-core-transformer-and-original-bytes",
+      "detail": {
+        "imageId": "f326a38d-9aaf-4a19-95c6-39b83b8de2bc",
+        "originalBytes": 6631
+      },
+      "status": "passed"
+    },
+    {
+      "name": "multi-image-order-and-complete-output",
+      "detail": {
+        "imageIds": [
+          "9251ec3c-505f-4d7f-a078-2b9a26d08246",
+          "bc0d43ad-ada5-4218-8264-733a38290720"
+        ],
+        "order": ["PicGo 旅行's.png", "second.png"]
+      },
+      "status": "passed"
+    },
+    {
+      "name": "second-image-failure-retains-first-and-stops-with-no-output",
+      "detail": {
+        "savedImageId": "59e180f0-922e-47b8-a56e-a979858c04d7",
+        "outputCount": 0,
+        "failedEvents": 1,
+        "laterImageCreated": false
+      },
+      "status": "passed"
+    },
+    {
+      "name": "missing-selected-version-retains-image-and-does-not-fallback",
+      "detail": {
+        "savedImageId": "0bd88a50-c2d2-46f3-af6b-555109af78e8",
+        "outputCount": 0,
+        "fallback": false
+      },
+      "status": "passed"
+    },
+    {
+      "name": "core-http-server-returns-failure-with-no-short-url-list",
+      "detail": {
+        "httpStatus": 500,
+        "success": false,
+        "resultCount": 0,
+        "savedImageId": "0a86dd2d-362a-4827-99cc-d1a85cc2f6a4"
+      },
+      "status": "passed"
+    },
+    {
+      "name": "invalid-token-creates-no-image-and-keeps-token-out-of-diagnostics",
+      "detail": {
+        "outputCount": 0,
+        "imageCountUnchanged": true,
+        "tokenLeaked": false
+      },
+      "status": "passed"
+    },
+    {
+      "name": "size-limit-rejection-creates-no-image",
+      "detail": {
+        "outputCount": 0,
+        "imageCountUnchanged": true,
+        "errorCode": "UPLOAD_FILE_TOO_LARGE"
+      },
+      "status": "passed"
+    },
+    {
+      "name": "lost-response-after-server-accepts-does-not-retry",
+      "detail": {
+        "savedImageId": "7debd6b9-9c1b-48d7-b664-d460b8595634",
+        "requestCount": 1,
+        "outputCount": 0,
+        "retried": false
+      },
+      "status": "passed"
+    },
+    {
+      "name": "own-namespace-empty-after-cleanup",
+      "status": "passed",
+      "detail": []
+    }
+  ],
+  "keys": [
+    "original/e976c335-7218-4899-9ed6-231daaef62df.png",
+    "images/e976c335-7218-4899-9ed6-231daaef62df/compressed/f496e724-f5c3-4446-ad5b-71421c0519b5",
+    "images/e976c335-7218-4899-9ed6-231daaef62df/thumbnail/05439eaf-7d2e-4672-b3f8-f54ce09da904",
+    "original/f326a38d-9aaf-4a19-95c6-39b83b8de2bc.png",
+    "images/f326a38d-9aaf-4a19-95c6-39b83b8de2bc/compressed/b956b650-2c50-424b-a30a-4dfa332a18cf",
+    "images/f326a38d-9aaf-4a19-95c6-39b83b8de2bc/thumbnail/6484a871-d360-49e5-b3d8-1bfb6f89806f",
+    "original/9251ec3c-505f-4d7f-a078-2b9a26d08246.png",
+    "images/9251ec3c-505f-4d7f-a078-2b9a26d08246/compressed/6d41ee33-6363-424f-b87e-a19530eae6a2",
+    "images/9251ec3c-505f-4d7f-a078-2b9a26d08246/thumbnail/d528eeaf-e95f-4d1f-9156-0ab0a30dfae1",
+    "original/bc0d43ad-ada5-4218-8264-733a38290720.png",
+    "images/bc0d43ad-ada5-4218-8264-733a38290720/compressed/ba9ed8db-30d8-434b-84fb-cf935aa215a2",
+    "images/bc0d43ad-ada5-4218-8264-733a38290720/thumbnail/9127f434-40a6-4314-8292-d9f0e02b40f4",
+    "original/59e180f0-922e-47b8-a56e-a979858c04d7.png",
+    "images/59e180f0-922e-47b8-a56e-a979858c04d7/compressed/6e6dc505-1037-422d-85f9-b28f0e28473d",
+    "images/59e180f0-922e-47b8-a56e-a979858c04d7/thumbnail/b647d181-396f-4c17-b4cb-bee615e8d82f",
+    "original/0bd88a50-c2d2-46f3-af6b-555109af78e8.png",
+    "images/0bd88a50-c2d2-46f3-af6b-555109af78e8/compressed/755c9cf3-21df-458e-a7e0-760bfa77e2b0",
+    "images/0bd88a50-c2d2-46f3-af6b-555109af78e8/thumbnail/ae4c7ecf-849f-4b4a-96e7-939f17ca5b21",
+    "original/0a86dd2d-362a-4827-99cc-d1a85cc2f6a4.png",
+    "images/0a86dd2d-362a-4827-99cc-d1a85cc2f6a4/compressed/7b9dbeb4-5b3c-4a80-8586-ee17f8c3ec88",
+    "images/0a86dd2d-362a-4827-99cc-d1a85cc2f6a4/thumbnail/070c8a50-7e45-4663-b514-55c042fb9560",
+    "original/7debd6b9-9c1b-48d7-b664-d460b8595634.png",
+    "images/7debd6b9-9c1b-48d7-b664-d460b8595634/compressed/31ee1d0b-d798-4e49-86f7-824b910c9e85",
+    "images/7debd6b9-9c1b-48d7-b664-d460b8595634/thumbnail/159ddc8b-3afc-4fef-880d-d089b06e7b05"
+  ],
+  "cleanup": [
+    {
+      "key": "original/e976c335-7218-4899-9ed6-231daaef62df.png",
+      "result": "absent"
+    },
+    {
+      "key": "images/e976c335-7218-4899-9ed6-231daaef62df/compressed/f496e724-f5c3-4446-ad5b-71421c0519b5",
+      "result": "absent"
+    },
+    {
+      "key": "images/e976c335-7218-4899-9ed6-231daaef62df/thumbnail/05439eaf-7d2e-4672-b3f8-f54ce09da904",
+      "result": "absent"
+    },
+    {
+      "key": "original/f326a38d-9aaf-4a19-95c6-39b83b8de2bc.png",
+      "result": "absent"
+    },
+    {
+      "key": "images/f326a38d-9aaf-4a19-95c6-39b83b8de2bc/compressed/b956b650-2c50-424b-a30a-4dfa332a18cf",
+      "result": "absent"
+    },
+    {
+      "key": "images/f326a38d-9aaf-4a19-95c6-39b83b8de2bc/thumbnail/6484a871-d360-49e5-b3d8-1bfb6f89806f",
+      "result": "absent"
+    },
+    {
+      "key": "original/9251ec3c-505f-4d7f-a078-2b9a26d08246.png",
+      "result": "absent"
+    },
+    {
+      "key": "images/9251ec3c-505f-4d7f-a078-2b9a26d08246/compressed/6d41ee33-6363-424f-b87e-a19530eae6a2",
+      "result": "absent"
+    },
+    {
+      "key": "images/9251ec3c-505f-4d7f-a078-2b9a26d08246/thumbnail/d528eeaf-e95f-4d1f-9156-0ab0a30dfae1",
+      "result": "absent"
+    },
+    {
+      "key": "original/bc0d43ad-ada5-4218-8264-733a38290720.png",
+      "result": "absent"
+    },
+    {
+      "key": "images/bc0d43ad-ada5-4218-8264-733a38290720/compressed/ba9ed8db-30d8-434b-84fb-cf935aa215a2",
+      "result": "absent"
+    },
+    {
+      "key": "images/bc0d43ad-ada5-4218-8264-733a38290720/thumbnail/9127f434-40a6-4314-8292-d9f0e02b40f4",
+      "result": "absent"
+    },
+    {
+      "key": "original/59e180f0-922e-47b8-a56e-a979858c04d7.png",
+      "result": "absent"
+    },
+    {
+      "key": "images/59e180f0-922e-47b8-a56e-a979858c04d7/compressed/6e6dc505-1037-422d-85f9-b28f0e28473d",
+      "result": "absent"
+    },
+    {
+      "key": "images/59e180f0-922e-47b8-a56e-a979858c04d7/thumbnail/b647d181-396f-4c17-b4cb-bee615e8d82f",
+      "result": "absent"
+    },
+    {
+      "key": "original/0bd88a50-c2d2-46f3-af6b-555109af78e8.png",
+      "result": "absent"
+    },
+    {
+      "key": "images/0bd88a50-c2d2-46f3-af6b-555109af78e8/compressed/755c9cf3-21df-458e-a7e0-760bfa77e2b0",
+      "result": "absent"
+    },
+    {
+      "key": "images/0bd88a50-c2d2-46f3-af6b-555109af78e8/thumbnail/ae4c7ecf-849f-4b4a-96e7-939f17ca5b21",
+      "result": "absent"
+    },
+    {
+      "key": "original/0a86dd2d-362a-4827-99cc-d1a85cc2f6a4.png",
+      "result": "absent"
+    },
+    {
+      "key": "images/0a86dd2d-362a-4827-99cc-d1a85cc2f6a4/compressed/7b9dbeb4-5b3c-4a80-8586-ee17f8c3ec88",
+      "result": "absent"
+    },
+    {
+      "key": "images/0a86dd2d-362a-4827-99cc-d1a85cc2f6a4/thumbnail/070c8a50-7e45-4663-b514-55c042fb9560",
+      "result": "absent"
+    },
+    {
+      "key": "original/7debd6b9-9c1b-48d7-b664-d460b8595634.png",
+      "result": "absent"
+    },
+    {
+      "key": "images/7debd6b9-9c1b-48d7-b664-d460b8595634/compressed/31ee1d0b-d798-4e49-86f7-824b910c9e85",
+      "result": "absent"
+    },
+    {
+      "key": "images/7debd6b9-9c1b-48d7-b664-d460b8595634/thumbnail/159ddc8b-3afc-4fef-880d-d089b06e7b05",
+      "result": "absent"
+    }
+  ],
+  "limits": [
+    "Packed npm artifact installed locally; real Core lifecycle and standalone HTTP with isolated database/storage namespace.",
+    "No npm publication, production data, GUI, clipboard shortcut, Typora, bucket policy/CORS or container release verification."
+  ]
+}
