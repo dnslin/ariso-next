@@ -1,0 +1,81 @@
+{
+  "status": "passed",
+  "node": "v24.18.1",
+  "picgoCore": "3.1.0",
+  "startedAt": "2026-10-19T07:40:42.140Z",
+  "finishedAt": "2026-10-19T07:40:47.087Z",
+  "scenarios": [
+    {
+      "name": "completed-201-delayed-1500ms-long-budget-succeeds",
+      "status": "passed",
+      "timeoutSeconds": 10,
+      "proxyDelayMs": 1500,
+      "clientElapsedMs": 2133,
+      "outputUrls": [
+        "http://127.0.0.1:51631/i/7bde0e05-cfc7-42fe-9683-47d4578eb186?type=original"
+      ],
+      "errorMessages": [],
+      "finishedEvents": 1,
+      "requests": [
+        {
+          "startedAt": 1792395642819,
+          "status": 201,
+          "imageId": "7bde0e05-cfc7-42fe-9683-47d4578eb186",
+          "upstreamReadyAt": 1792395643439,
+          "releaseAt": 1792395644940,
+          "responseDelivered": true
+        }
+      ],
+      "createdImages": [
+        {
+          "id": "7bde0e05-cfc7-42fe-9683-47d4578eb186",
+          "originalName": "core-delay.png",
+          "visibility": "public",
+          "processingStatus": "ready"
+        }
+      ],
+      "anonymousImageStatus": 200,
+      "byteEquality": true,
+      "credentialMatches": false,
+      "retried": false
+    },
+    {
+      "name": "completed-201-delayed-1500ms-one-second-budget-fails",
+      "status": "passed",
+      "timeoutSeconds": 1,
+      "proxyDelayMs": 1500,
+      "clientElapsedMs": 1003,
+      "outputUrls": [],
+      "errorMessages": [
+        "Error: Ariso http://127.0.0.1:59418/api/upload · core-delay.png：timeout of 1000ms exceeded；上传结果未确认，服务器可能继续处理，请先到图库核对，不要直接重传。本批已有 0 张上传并选链成功，已保存图片不会删除，后续图片未上传。"
+      ],
+      "finishedEvents": 0,
+      "requests": [
+        {
+          "startedAt": 1792395644955,
+          "status": 201,
+          "imageId": "41eb390e-737c-4e28-afa6-f2620b4e0152",
+          "upstreamReadyAt": 1792395645577,
+          "releaseAt": 1792395647078,
+          "responseDelivered": false
+        }
+      ],
+      "createdImages": [
+        {
+          "id": "41eb390e-737c-4e28-afa6-f2620b4e0152",
+          "originalName": "core-delay.png",
+          "visibility": "public",
+          "processingStatus": "ready"
+        }
+      ],
+      "anonymousImageStatus": 200,
+      "byteEquality": true,
+      "credentialMatches": false,
+      "retried": false
+    }
+  ],
+  "limits": [
+    "An observing localhost proxy delays the completed real Ariso 201 response by 1500ms. This verifies client waiting/timeout behavior; it does not simulate or claim a genuinely slow media-processing job.",
+    "Existing task-owned Local fixture remains running; no site settings changed; no npm publication, GUI, clipboard or Typora execution."
+  ]
+}

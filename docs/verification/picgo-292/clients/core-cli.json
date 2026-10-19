@@ -1,0 +1,195 @@
+{
+  "status": "passed",
+  "node": "v24.18.1",
+  "picgoCore": "3.1.0",
+  "os": "macOS 26.6.2",
+  "startedAt": "2026-10-19T07:39:41.030Z",
+  "finishedAt": "2026-10-19T07:40:03.341Z",
+  "artifactFiles": [
+    "LICENSE",
+    "README.md",
+    "index.cjs",
+    "lib/config.cjs",
+    "lib/result.cjs",
+    "package.json"
+  ],
+  "scenarios": [
+    {
+      "name": "real-core-cli-normal-single-image-success",
+      "status": "passed",
+      "exitCode": 0,
+      "signal": null,
+      "debug": false,
+      "stdout": "[PicGo INFO]: Before transform\n[PicGo INFO]: Transforming... Current transformer is [path]\n[PicGo INFO]: Before upload\n[PicGo INFO]: Uploading... Current uploader is [ariso]\n[PicGo INFO]: Ariso 已保存：core-cli-first.png；图片 ID：9ef9943a-b085-4514-a24e-2e0de2350b5b；http://127.0.0.1:51631/i/9ef9943a-b085-4514-a24e-2e0de2350b5b?type=original；请求 ID：b9014cff-d273-4181-8745-4a5dec3cc561\n[PicGo SUCCESS]: \nhttp://127.0.0.1:51631/i/9ef9943a-b085-4514-a24e-2e0de2350b5b?type=original\n",
+      "stderr": "",
+      "credentialScan": {
+        "stdout": false,
+        "stderr": false,
+        "log": false
+      },
+      "savedLogLines": [
+        "2026-10-19 15:39:42 [PicGo INFO] Ariso 已保存：core-cli-first.png；图片 ID：9ef9943a-b085-4514-a24e-2e0de2350b5b；http://127.0.0.1:51631/i/9ef9943a-b085-4514-a24e-2e0de2350b5b?type=original；请求 ID：b9014cff-d273-4181-8745-4a5dec3cc561 "
+      ],
+      "stdoutUrlLines": [
+        "http://127.0.0.1:51631/i/9ef9943a-b085-4514-a24e-2e0de2350b5b?type=original"
+      ],
+      "stderrUrlLines": [],
+      "requests": [
+        {
+          "filename": "core-cli-first.png",
+          "status": 201,
+          "imageId": "9ef9943a-b085-4514-a24e-2e0de2350b5b",
+          "errorCode": null
+        }
+      ],
+      "createdImages": [
+        {
+          "id": "9ef9943a-b085-4514-a24e-2e0de2350b5b",
+          "originalName": "core-cli-first.png",
+          "visibility": "public",
+          "processingStatus": "ready"
+        }
+      ],
+      "anonymousImageStatus": 200,
+      "byteEquality": true
+    },
+    {
+      "name": "real-core-cli-debug-single-image-success",
+      "status": "passed",
+      "exitCode": 0,
+      "signal": null,
+      "debug": true,
+      "stdout": "[PicGo INFO]: Before transform\n[PicGo INFO]: Transforming... Current transformer is [path]\n[PicGo INFO]: Before upload\n[PicGo INFO]: Uploading... Current uploader is [ariso]\n[PicGo INFO]: Ariso 已保存：core-cli-first.png；图片 ID：e65a48be-5550-430d-ad31-92e42ad9763e；http://127.0.0.1:51631/i/e65a48be-5550-430d-ad31-92e42ad9763e?type=original；请求 ID：cc83bd0b-148d-4f6f-8980-bcc6b39630ae\n[PicGo SUCCESS]: \nhttp://127.0.0.1:51631/i/e65a48be-5550-430d-ad31-92e42ad9763e?type=original\n",
+      "stderr": "",
+      "credentialScan": {
+        "stdout": false,
+        "stderr": false,
+        "log": false
+      },
+      "savedLogLines": [
+        "2026-10-19 15:39:42 [PicGo INFO] Ariso 已保存：core-cli-first.png；图片 ID：9ef9943a-b085-4514-a24e-2e0de2350b5b；http://127.0.0.1:51631/i/9ef9943a-b085-4514-a24e-2e0de2350b5b?type=original；请求 ID：b9014cff-d273-4181-8745-4a5dec3cc561 ",
+        "2026-10-19 15:39:48 [PicGo INFO] Ariso 已保存：core-cli-first.png；图片 ID：e65a48be-5550-430d-ad31-92e42ad9763e；http://127.0.0.1:51631/i/e65a48be-5550-430d-ad31-92e42ad9763e?type=original；请求 ID：cc83bd0b-148d-4f6f-8980-bcc6b39630ae "
+      ],
+      "stdoutUrlLines": [
+        "http://127.0.0.1:51631/i/e65a48be-5550-430d-ad31-92e42ad9763e?type=original"
+      ],
+      "stderrUrlLines": [],
+      "requests": [
+        {
+          "filename": "core-cli-first.png",
+          "status": 201,
+          "imageId": "e65a48be-5550-430d-ad31-92e42ad9763e",
+          "errorCode": null
+        }
+      ],
+      "createdImages": [
+        {
+          "id": "e65a48be-5550-430d-ad31-92e42ad9763e",
+          "originalName": "core-cli-first.png",
+          "visibility": "public",
+          "processingStatus": "ready"
+        }
+      ],
+      "anonymousImageStatus": 200,
+      "byteEquality": true
+    },
+    {
+      "name": "real-core-cli-normal-second-image-failure",
+      "status": "passed",
+      "exitCode": 0,
+      "signal": null,
+      "debug": false,
+      "stdout": "[PicGo INFO]: Before transform\n[PicGo INFO]: Transforming... Current transformer is [path]\n[PicGo WARN]: can't get /var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-picgo-package-r9xmKp/core-cli-second-invalid.png's image size\n[PicGo WARN]: fallback to 200 * 200\n[PicGo INFO]: Before upload\n[PicGo INFO]: Uploading... Current uploader is [ariso]\n[PicGo INFO]: Ariso 已保存：core-cli-first.png；图片 ID：575c178c-b588-4181-a2aa-7129b7811361；http://127.0.0.1:51631/i/575c178c-b588-4181-a2aa-7129b7811361?type=original；请求 ID：32be052b-e2b2-4c71-9820-b9f053657e86\n[PicGo WARN]: failed\n[PicGo ERROR]: Error: Ariso http://127.0.0.1:59166/api/upload · core-cli-second-invalid.png：HTTP 415 / MEDIA_FORMAT_UNSUPPORTED / validating：Unsupported image format: TXT；尚未创建图片；请求 ID：9ada48b9-7999-416d-a6f3-38e0dcef462c。本批已有 1 张上传并选链成功，已保存图片不会删除，后续图片未上传。\n    at Object.handle (/private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-picgo-package-r9xmKp/node_modules/picgo-plugin-ariso/index.cjs:103:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async Hn.doUpload (/Users/dnslin/.codex/worktrees/issue-292-picgo/ariso/integrations/picgo/node_modules/.pnpm/picgo@3.1.0_debug@4.4.3_supports-color@7.2.0__supports-color@7.2.0/node_modules/picgo/dist/index.cjs.js:1:100573)\n    at async Hn.start (/Users/dnslin/.codex/worktrees/issue-292-picgo/ariso/integrations/picgo/node_modules/.pnpm/picgo@3.1.0_debug@4.4.3_supports-color@7.2.0__supports-color@7.2.0/node_modules/picgo/dist/index.cjs.js:1:99033)\n    at async $o.upload (/Users/dnslin/.codex/worktrees/issue-292-picgo/ariso/integrations/picgo/node_modules/.pnpm/picgo@3.1.0_debug@4.4.3_supports-color@7.2.0__supports-color@7.2.0/node_modules/picgo/dist/index.cjs.js:1:249710)\n    at async Command.<anonymous> (/Users/dnslin/.codex/worktrees/issue-292-picgo/ariso/integrations/picgo/node_modules/.pnpm/picgo@3.1.0_debug@4.4.3_supports-color@7.2.0__supports-color@7.2.0/node_modules/picgo/dist/index.cjs.js:1:41215)\n",
+      "stderr": "",
+      "credentialScan": {
+        "stdout": false,
+        "stderr": false,
+        "log": false
+      },
+      "savedLogLines": [
+        "2026-10-19 15:39:42 [PicGo INFO] Ariso 已保存：core-cli-first.png；图片 ID：9ef9943a-b085-4514-a24e-2e0de2350b5b；http://127.0.0.1:51631/i/9ef9943a-b085-4514-a24e-2e0de2350b5b?type=original；请求 ID：b9014cff-d273-4181-8745-4a5dec3cc561 ",
+        "2026-10-19 15:39:48 [PicGo INFO] Ariso 已保存：core-cli-first.png；图片 ID：e65a48be-5550-430d-ad31-92e42ad9763e；http://127.0.0.1:51631/i/e65a48be-5550-430d-ad31-92e42ad9763e?type=original；请求 ID：cc83bd0b-148d-4f6f-8980-bcc6b39630ae ",
+        "2026-10-19 15:39:55 [PicGo INFO] Ariso 已保存：core-cli-first.png；图片 ID：575c178c-b588-4181-a2aa-7129b7811361；http://127.0.0.1:51631/i/575c178c-b588-4181-a2aa-7129b7811361?type=original；请求 ID：32be052b-e2b2-4c71-9820-b9f053657e86 "
+      ],
+      "stdoutUrlLines": [],
+      "stderrUrlLines": [],
+      "requests": [
+        {
+          "filename": "core-cli-first.png",
+          "status": 201,
+          "imageId": "575c178c-b588-4181-a2aa-7129b7811361",
+          "errorCode": null
+        },
+        {
+          "filename": "core-cli-second-invalid.png",
+          "status": 415,
+          "imageId": null,
+          "errorCode": "MEDIA_FORMAT_UNSUPPORTED"
+        }
+      ],
+      "createdImages": [
+        {
+          "id": "575c178c-b588-4181-a2aa-7129b7811361",
+          "originalName": "core-cli-first.png",
+          "visibility": "public",
+          "processingStatus": "ready"
+        }
+      ],
+      "successUrlCount": 0,
+      "thirdRequestSent": false,
+      "retainedFirstAnonymousStatus": 200
+    },
+    {
+      "name": "real-core-cli-debug-second-image-failure",
+      "status": "passed",
+      "exitCode": 1,
+      "signal": null,
+      "debug": true,
+      "stdout": "[PicGo INFO]: Before transform\n[PicGo INFO]: Transforming... Current transformer is [path]\n[PicGo WARN]: can't get /var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-picgo-package-r9xmKp/core-cli-second-invalid.png's image size\n[PicGo WARN]: fallback to 200 * 200\n[PicGo INFO]: Before upload\n[PicGo INFO]: Uploading... Current uploader is [ariso]\n[PicGo INFO]: Ariso 已保存：core-cli-first.png；图片 ID：f1e75849-05e0-4529-8c43-de6f22ed77e9；http://127.0.0.1:51631/i/f1e75849-05e0-4529-8c43-de6f22ed77e9?type=original；请求 ID：96d3d9d6-b8da-45c3-9ed2-3c6590e4916e\n[PicGo WARN]: failed\n[PicGo ERROR]: Error: Ariso http://127.0.0.1:59166/api/upload · core-cli-second-invalid.png：HTTP 415 / MEDIA_FORMAT_UNSUPPORTED / validating：Unsupported image format: TXT；尚未创建图片；请求 ID：7911cd78-c536-4c2e-985c-5ccfa9693f28。本批已有 1 张上传并选链成功，已保存图片不会删除，后续图片未上传。\n    at Object.handle (/private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-picgo-package-r9xmKp/node_modules/picgo-plugin-ariso/index.cjs:103:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async Hn.doUpload (/Users/dnslin/.codex/worktrees/issue-292-picgo/ariso/integrations/picgo/node_modules/.pnpm/picgo@3.1.0_debug@4.4.3_supports-color@7.2.0__supports-color@7.2.0/node_modules/picgo/dist/index.cjs.js:1:100573)\n    at async Hn.start (/Users/dnslin/.codex/worktrees/issue-292-picgo/ariso/integrations/picgo/node_modules/.pnpm/picgo@3.1.0_debug@4.4.3_supports-color@7.2.0__supports-color@7.2.0/node_modules/picgo/dist/index.cjs.js:1:99033)\n    at async $o.upload (/Users/dnslin/.codex/worktrees/issue-292-picgo/ariso/integrations/picgo/node_modules/.pnpm/picgo@3.1.0_debug@4.4.3_supports-color@7.2.0__supports-color@7.2.0/node_modules/picgo/dist/index.cjs.js:1:249710)\n    at async Command.<anonymous> (/Users/dnslin/.codex/worktrees/issue-292-picgo/ariso/integrations/picgo/node_modules/.pnpm/picgo@3.1.0_debug@4.4.3_supports-color@7.2.0__supports-color@7.2.0/node_modules/picgo/dist/index.cjs.js:1:41215)\n[PicGo ERROR]: Error: Ariso http://127.0.0.1:59166/api/upload · core-cli-second-invalid.png：HTTP 415 / MEDIA_FORMAT_UNSUPPORTED / validating：Unsupported image format: TXT；尚未创建图片；请求 ID：7911cd78-c536-4c2e-985c-5ccfa9693f28。本批已有 1 张上传并选链成功，已保存图片不会删除，后续图片未上传。\n    at Object.handle (/private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-picgo-package-r9xmKp/node_modules/picgo-plugin-ariso/index.cjs:103:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async Hn.doUpload (/Users/dnslin/.codex/worktrees/issue-292-picgo/ariso/integrations/picgo/node_modules/.pnpm/picgo@3.1.0_debug@4.4.3_supports-color@7.2.0__supports-color@7.2.0/node_modules/picgo/dist/index.cjs.js:1:100573)\n    at async Hn.start (/Users/dnslin/.codex/worktrees/issue-292-picgo/ariso/integrations/picgo/node_modules/.pnpm/picgo@3.1.0_debug@4.4.3_supports-color@7.2.0__supports-color@7.2.0/node_modules/picgo/dist/index.cjs.js:1:99033)\n    at async $o.upload (/Users/dnslin/.codex/worktrees/issue-292-picgo/ariso/integrations/picgo/node_modules/.pnpm/picgo@3.1.0_debug@4.4.3_supports-color@7.2.0__supports-color@7.2.0/node_modules/picgo/dist/index.cjs.js:1:249710)\n    at async Command.<anonymous> (/Users/dnslin/.codex/worktrees/issue-292-picgo/ariso/integrations/picgo/node_modules/.pnpm/picgo@3.1.0_debug@4.4.3_supports-color@7.2.0__supports-color@7.2.0/node_modules/picgo/dist/index.cjs.js:1:41215)\n",
+      "stderr": "node:internal/process/promises:394\n    triggerUncaughtException(err, true /* fromPromise */);\n    ^\n\nError: Ariso http://127.0.0.1:59166/api/upload · core-cli-second-invalid.png：HTTP 415 / MEDIA_FORMAT_UNSUPPORTED / validating：Unsupported image format: TXT；尚未创建图片；请求 ID：7911cd78-c536-4c2e-985c-5ccfa9693f28。本批已有 1 张上传并选链成功，已保存图片不会删除，后续图片未上传。\n    at Object.handle (/private/var/folders/vn/m5rx_gkd0pn8z5c8stq_7pzc0000gn/T/ariso-picgo-package-r9xmKp/node_modules/picgo-plugin-ariso/index.cjs:103:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async Hn.doUpload (/Users/dnslin/.codex/worktrees/issue-292-picgo/ariso/integrations/picgo/node_modules/.pnpm/picgo@3.1.0_debug@4.4.3_supports-color@7.2.0__supports-color@7.2.0/node_modules/picgo/dist/index.cjs.js:1:100573)\n    at async Hn.start (/Users/dnslin/.codex/worktrees/issue-292-picgo/ariso/integrations/picgo/node_modules/.pnpm/picgo@3.1.0_debug@4.4.3_supports-color@7.2.0__supports-color@7.2.0/node_modules/picgo/dist/index.cjs.js:1:99033)\n    at async $o.upload (/Users/dnslin/.codex/worktrees/issue-292-picgo/ariso/integrations/picgo/node_modules/.pnpm/picgo@3.1.0_debug@4.4.3_supports-color@7.2.0__supports-color@7.2.0/node_modules/picgo/dist/index.cjs.js:1:249710)\n    at async Command.<anonymous> (/Users/dnslin/.codex/worktrees/issue-292-picgo/ariso/integrations/picgo/node_modules/.pnpm/picgo@3.1.0_debug@4.4.3_supports-color@7.2.0__supports-color@7.2.0/node_modules/picgo/dist/index.cjs.js:1:41215)\n\nNode.js v24.18.1\n",
+      "credentialScan": {
+        "stdout": false,
+        "stderr": false,
+        "log": false
+      },
+      "savedLogLines": [
+        "2026-10-19 15:39:42 [PicGo INFO] Ariso 已保存：core-cli-first.png；图片 ID：9ef9943a-b085-4514-a24e-2e0de2350b5b；http://127.0.0.1:51631/i/9ef9943a-b085-4514-a24e-2e0de2350b5b?type=original；请求 ID：b9014cff-d273-4181-8745-4a5dec3cc561 ",
+        "2026-10-19 15:39:48 [PicGo INFO] Ariso 已保存：core-cli-first.png；图片 ID：e65a48be-5550-430d-ad31-92e42ad9763e；http://127.0.0.1:51631/i/e65a48be-5550-430d-ad31-92e42ad9763e?type=original；请求 ID：cc83bd0b-148d-4f6f-8980-bcc6b39630ae ",
+        "2026-10-19 15:39:55 [PicGo INFO] Ariso 已保存：core-cli-first.png；图片 ID：575c178c-b588-4181-a2aa-7129b7811361；http://127.0.0.1:51631/i/575c178c-b588-4181-a2aa-7129b7811361?type=original；请求 ID：32be052b-e2b2-4c71-9820-b9f053657e86 ",
+        "2026-10-19 15:40:03 [PicGo INFO] Ariso 已保存：core-cli-first.png；图片 ID：f1e75849-05e0-4529-8c43-de6f22ed77e9；http://127.0.0.1:51631/i/f1e75849-05e0-4529-8c43-de6f22ed77e9?type=original；请求 ID：96d3d9d6-b8da-45c3-9ed2-3c6590e4916e "
+      ],
+      "stdoutUrlLines": [],
+      "stderrUrlLines": [],
+      "requests": [
+        {
+          "filename": "core-cli-first.png",
+          "status": 201,
+          "imageId": "f1e75849-05e0-4529-8c43-de6f22ed77e9",
+          "errorCode": null
+        },
+        {
+          "filename": "core-cli-second-invalid.png",
+          "status": 415,
+          "imageId": null,
+          "errorCode": "MEDIA_FORMAT_UNSUPPORTED"
+        }
+      ],
+      "createdImages": [
+        {
+          "id": "f1e75849-05e0-4529-8c43-de6f22ed77e9",
+          "originalName": "core-cli-first.png",
+          "visibility": "public",
+          "processingStatus": "ready"
+        }
+      ],
+      "successUrlCount": 0,
+      "thirdRequestSent": false,
+      "retainedFirstAnonymousStatus": 200
+    }
+  ],
+  "limits": [
+    "Real Core CLI child process with independently installed packed plugin; existing task-owned Local fixture. No GUI, clipboard or Typora execution in this report.",
+    "CLI exit code is recorded as observed and is not used as the success criterion.",
+    "Fixture remains running; no site settings changed."
+  ]
+}

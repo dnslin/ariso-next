@@ -19,6 +19,7 @@ import {
 import { CurlExample } from './curl-example';
 import { UsageDetails } from './usage-details';
 import { UsageTips } from './usage-tips';
+import { PicGoGuide } from './picgo-guide';
 
 type ShellProps = Omit<
   ComponentProps<typeof OwnerShell>,
@@ -145,6 +146,7 @@ export function UploadUsagePage(shell: ShellProps) {
           查看 OpenAPI 3.0 规范
           <ArrowUpRight className="size-4" aria-hidden />
         </Link>
+        <PicGoGuide />
         <ComponentEntrance delay={0.11} className="min-w-0">
           <UsageDetails />
         </ComponentEntrance>

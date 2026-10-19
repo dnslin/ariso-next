@@ -8,7 +8,7 @@
 
 | 修改范围                     | 检查与条件                                                                                                                                                    |
 | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 每轮本地交付                 | `pnpm install --frozen-lockfile`，确认依赖可复现                                                                                                              |
+| 每轮本地交付                 | `pnpm install --frozen-lockfile`、`pnpm --dir integrations/picgo install --frozen-lockfile`，确认主项目与独立插件依赖可复现                                   |
 | 文档与配置                   | `pnpm run format:check`、本地链接/锚点及对应配置检查；共用脚本变更实际执行其入口                                                                              |
 | 产品实现                     | `pnpm run lint`、`pnpm run typecheck`、`pnpm run test:unit`、`pnpm run build`、`pnpm run test:integration`                                                    |
 | 数据结构                     | `pnpm run db:generate` 并审查生成 SQL；生产只执行已提交的向前迁移                                                                                             |

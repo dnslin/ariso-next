@@ -103,6 +103,7 @@ docker compose --env-file .env.local up --build --detach --wait
 | 升级、备份与恢复             | [升级指南](./docs/guides/upgrading.md)                                                        |
 | 从源码开发、构建和运行检查   | [开发指南](./docs/guides/development.md)                                                      |
 | 对接上传 API                 | 初始化站点后访问 `/api/openapi.json`；[接口契约](./docs/specs/SPEC-upload.md#10-通用上传-api) |
+| 从 PicGo 上传公开配图        | [PicGo 接入指南](./docs/guides/picgo.md)；当前安装本地候选包，尚未发布 npm                    |
 | 了解产品规则和模块职责       | [文档导航](./docs/README.md)                                                                  |
 
 ## 常见问题

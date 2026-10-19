@@ -12,6 +12,7 @@ npm install --global pnpm@11.19.0
 pnpm --version
 pnpm exec node --version
 pnpm install --frozen-lockfile
+pnpm --dir integrations/picgo install --frozen-lockfile
 cp .env.example .env.local
 node -e "console.log(require('node:crypto').randomBytes(32).toString('base64'))"
 node -e "console.log(require('node:crypto').randomBytes(32).toString('hex'))"

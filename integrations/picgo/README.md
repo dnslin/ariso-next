@@ -50,6 +50,12 @@ PicGo-Core 使用独立配置目录。在该目录创建 package.json，运行 `
 
 完整操作见 [PicGo 接入指南](https://github.com/dnslin/ariso-next/blob/main/docs/guides/picgo.md)。
 
+## 已验证范围
+
+本轮在 macOS 26.6.2 ARM64 实测 PicGo GUI 3.0.3、Core 3.1.0、Typora 1.14.10 的 PicGo.app 路径，以及 Local、Cloudflare R2、SeaweedFS 存储。GUI 文件与剪贴板、Typora 单图/多图和部分失败不替换原路径均通过。PNG、JPEG、WebP、GIF、AVIF 已实际上传并显示所选版本。
+
+Windows、Linux、Typora 的 Core 模式与 AWS S3 尚未验证。完整命令、客户端范围和故障证据见[验证记录](https://github.com/dnslin/ariso-next/blob/main/docs/verification/picgo-292/README.md)。
+
 ## 许可证
 
 此插件包采用 [MIT](LICENSE) 许可证。
