@@ -2,23 +2,21 @@
 
 通过 PicGo 上传到自己的 Ariso，并复制固定版本的稳定图片链接。
 
-**通过此上传器上传的图片将公开。** 首版用于公开配图，不读取私有图片或管理相册。插件尚未发布到 npm；当前只提供本地候选包。
+**通过此上传器上传的图片将公开。** 首版用于公开配图，不读取私有图片或管理相册。插件包名为 `picgo-plugin-ariso`，上传器 ID 为 `ariso`。
 
-## 安装本地候选包
+## 安装
 
-从 Ariso 源码根目录使用项目要求的 Node 24 和 pnpm 11.19.0：
+PicGo GUI 的插件设置中搜索 `ariso` 并安装，完整退出再重新启动 PicGo，在图床设置中选择 Ariso。插件安装需要本机 Node.js/npm；插件要求 Node.js 20.19.0 或更新版本。
+
+PicGo-Core 使用以下命令安装、配置并启用上传器：
 
 ```sh
-pnpm --dir integrations/picgo install --frozen-lockfile
-pnpm --dir integrations/picgo typecheck
-pnpm --dir integrations/picgo test
-mkdir -p test-results/picgo-package
-pnpm --dir integrations/picgo pack --out ../../test-results/picgo-package/picgo-plugin-ariso.tgz
+picgo install ariso
+picgo set uploader
+picgo use uploader
 ```
 
-PicGo GUI 可在插件设置中导入 `integrations/picgo` 文件夹；复验正式包时，在独立 PicGo 配置目录安装打出的 tgz。更新插件后完整退出并重启 PicGo。GUI 的插件安装还需要本机 Node.js/npm。
-
-PicGo-Core 使用独立配置目录。在该目录创建 package.json，运行 `npm install /绝对路径/picgo-plugin-ariso.tgz`，再用 `picgo --config /该目录/config.json` 配置并选择 `ariso` 上传器。GUI 和 Core 的配置与插件安装不共用。
+两条交互命令中选择 `ariso`。GUI 和 Core 的配置与插件安装不共用；指定 Core 配置文件时，应在各条命令中使用同一 `--config /绝对路径/config.json`。手动安装与源码打包见[完整指南](https://github.com/dnslin/ariso-next/blob/main/docs/guides/picgo.md#2-安装插件)。
 
 ## 配置
 

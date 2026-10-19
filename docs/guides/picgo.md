@@ -6,9 +6,9 @@ Ariso 上传器把 PicGo 处理后的图片交给现有上传 API，等待图片
 
 ## 当前交付边界
 
-插件源码在 [`integrations/picgo/`](../../integrations/picgo/)，包名 `picgo-plugin-ariso`，上传器 ID `ariso`。当前使用本地候选包，**尚未发布 npm**；不能据此假设在插件搜索中已经可以找到 `ariso`。
+插件源码在 [`integrations/picgo/`](../../integrations/picgo/)，包名 `picgo-plugin-ariso`，上传器 ID `ariso`。安装使用 npm 包 `picgo-plugin-ariso`，首个版本为 `0.1.0`。
 
-本轮在 macOS 26.6.2 ARM64 实测 PicGo GUI 3.0.3（官方 ARM64 包）、Core 3.1.0 与 Typora 1.14.10。GUI 文件和剪贴板上传、Typora → PicGo.app 的验证连接、单图、多图及第二张失败不替换路径已通过；Core 已验证候选包安装、程序入口、Server 和 CLI 普通/debug 上传。Local、Cloudflare R2、SeaweedFS 分别通过。实际范围见[本轮验证记录](../verification/picgo-292/README.md)；Core CLI 交互配置、Typora Core 模式、Windows 和 Linux 不在本轮支持声明中。
+本轮在 macOS 26.6.2 ARM64 实测 PicGo GUI 3.0.3（官方 ARM64 包）、Core 3.1.0 与 Typora 1.14.10。GUI 文件和剪贴板上传、Typora → PicGo.app 的验证连接、单图、多图及第二张失败不替换路径已通过；Core 已验证打包安装、程序入口、Server 和 CLI 普通/debug 上传。Local、Cloudflare R2、SeaweedFS 分别通过。实际范围见[本轮验证记录](../verification/picgo-292/README.md)；Core CLI 交互配置、Typora Core 模式、Windows 和 Linux 不在本轮支持声明中。
 
 首版支持一个默认相册、一个默认标签和公开配图。不提供远端删除、私有归档、远程 URL 导入、自动重试、去重或公开任务轮询。冻结 PRD 中不开发官方 PicGo 插件是首版历史范围；本能力由首版之后的 [Issue #292](https://github.com/dnslin/ariso-next/issues/292)新增。
 
@@ -20,44 +20,46 @@ Ariso 上传器把 PicGo 处理后的图片交给现有上传 API，等待图片
 
 Token 填入 PicGo 本地配置。密码输入框只遮挡输入，不代表配置文件已经加密。不要把 Token 放入仓库、截图、文章、排障日志或共享配置；需要停用时在 Ariso 撤销 Token，已上传图片不会随之删除。
 
-## 2. 安装本地候选包
+## 2. 安装插件
 
-GUI 插件安装需要本机已有 Node.js 和 npm；先确认在终端能运行 `node --version` 与 `npm --version`。GUI 与 Core 使用不同配置目录，安装一处不会自动安装到另一处。
-
-在项目的插件目录执行以下命令，生成候选 `.tgz` 包。保留命令输出的实际文件名，不执行 `npm publish`。
-
-```sh
-cd integrations/picgo
-npm pack
-```
+插件要求 Node.js 20.19.0 或更新版本。GUI 插件安装需要本机已有 Node.js 和 npm；先确认在终端能运行 `node --version` 与 `npm --version`。GUI 与 Core 使用不同配置目录，安装一处不会自动安装到另一处。
 
 ### PicGo GUI
 
-先启动 PicGo 完成首次初始化，再完整退出应用。在其配置文件所在目录运行安装命令；下例为 macOS，替换为候选包的实际绝对路径和版本：
+在「插件设置」搜索 `ariso`，安装 `picgo-plugin-ariso`。完整退出并重新启动 PicGo，在图床设置中选择 Ariso，填写下一节的配置并设为默认图床。关闭主窗口不等于退出进程；更新插件后也要完整重启。
+
+如搜索结果尚未同步，可手动安装。先启动 PicGo 完成首次初始化，再完整退出应用。在实际 `data.json` 所在目录安装；下例为 macOS：
 
 ```sh
 cd "$HOME/Library/Application Support/picgo"
-npm install --save '/absolute/path/picgo-plugin-ariso-<version>.tgz'
+npm install --save picgo-plugin-ariso@0.1.0
 ```
 
-Windows 配置文件通常为 `%APPDATA%\picgo\data.json`；Linux 通常为 `$XDG_CONFIG_HOME/picgo/data.json` 或 `~/.config/picgo/data.json`。应在实际 `data.json` 所在目录安装；这些路径是定位指引，不是对应平台的验收声明。
-
-重新启动 PicGo，在图床设置中选择 Ariso，填写下一节的配置并设为默认图床。更新候选包后也要完整退出再启动，关闭主窗口不等于退出进程。其他本地导入方式见 [PicGo 插件安装测试说明](https://docs.picgo.app/core/dev-guide/deploy)。
-
-正式发布之后才可在 GUI 插件搜索中安装 `ariso`，或通过 Core 的 `picgo install ariso` 安装；当前不要使用这两种方式寻找本地候选包。
+Windows 配置文件通常为 `%APPDATA%\picgo\data.json`；Linux 通常为 `$XDG_CONFIG_HOME/picgo/data.json` 或 `~/.config/picgo/data.json`。这些路径是定位指引，不是对应平台的验收声明。
 
 ### PicGo-Core
 
-安装或使用已有的 Core，先运行 `picgo -h` 使配置目录完成初始化。默认配置位于 `~/.picgo/config.json`；指定其他配置时，在其实际配置目录安装同一 `.tgz` 包，不要写到 GUI 的目录。
+安装或使用已有的 Core，运行以下命令：
 
 ```sh
-cd "$HOME/.picgo"
-npm install --save '/absolute/path/picgo-plugin-ariso-<version>.tgz'
+picgo install ariso
 picgo set uploader
 picgo use uploader
 ```
 
-两条交互命令中选择 `ariso`，按提示填写和启用上传器。Core CLI、Core Server 和 Typora 的 Core 模式仍须分别验证；**退出码 0 不能单独证明上传成功**，还应核对输出地址和 Ariso 图库。
+两条交互命令中选择 `ariso`，按提示填写和启用上传器。默认配置位于 `~/.picgo/config.json`；使用其他配置文件时，在各条命令中指定同一个 `--config /绝对路径/config.json`，不要写到 GUI 的目录。
+
+Core CLI、Core Server 和 Typora 的 Core 模式仍须分别验证；**退出码 0 不能单独证明上传成功**，还应核对输出地址和 Ariso 图库。
+
+### 从源码打包
+
+需要复验源码时，在 `integrations/picgo` 目录运行 `npm pack`，再将安装命令中的包名替换为生成的 `.tgz` 绝对路径。例如，在 GUI 或 Core 的实际配置目录执行：
+
+```sh
+npm install --save '/absolute/path/picgo-plugin-ariso-0.1.0.tgz'
+```
+
+源码开发与测试仍使用项目锁定的 Node 24、pnpm 11.19.0 及独立插件锁文件。更多本地导入方式见 [PicGo 插件安装测试说明](https://docs.picgo.app/core/dev-guide/deploy)。
 
 ## 3. 配置上传器
 

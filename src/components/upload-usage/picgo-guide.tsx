@@ -16,7 +16,7 @@ export function PicGoGuide() {
         通过此上传器上传的图片将公开。
       </p>
       <p className="text-xs leading-relaxed text-muted">
-        插件尚未发布到 npm；当前按指南安装本地候选包。
+        按指南安装 Ariso 插件，GUI 与 Core 分别配置。
       </p>
       <Link
         data-testid="upload-usage-picgo-guide"

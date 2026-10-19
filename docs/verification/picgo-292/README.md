@@ -2,6 +2,12 @@
 
 2026-10-19（Asia/Shanghai）。关联 [Issue #292](https://github.com/dnslin/ariso-next/issues/292)。规格与使用边界见 [SPEC-upload §10.4](../../specs/SPEC-upload.md#104-picgo-上传器维护期新增)和[接入指南](../../guides/picgo.md)。
 
+## 正式发布准备（2026-10-19）
+
+用户授权合并 PR、关闭 Issue、清理任务分支、发布应用及 npm 包，并更新 README。应用候选版本为 `v1.1.0`，插件版本为 `0.1.0`。根 README 增加 PicGo 功能入口，指南与插件 README 改为 npm 安装方式；用法页仅将“尚未发布”替换为安装指引，同步原浏览器场景的文案断言。下方首轮记录中的“未发布”和截图保留当时状态，不作为正式发布结果。
+
+本次只执行变动文件的 `pnpm exec prettier --check`、`pnpm exec eslint src/components/upload-usage/picgo-guide.tsx e2e/upload-usage.mjs`、`node --check e2e/upload-usage.mjs` 与 `git diff --check`，均通过。按用户要求不重复完整本地测试或浏览器矩阵；最终提交的 PR CI 和双架构发布检查另行核对。实际发布结果以 [GitHub Release](https://github.com/dnslin/ariso-next/releases/tag/v1.1.0) 和 [npm 包版本](https://www.npmjs.com/package/picgo-plugin-ariso/v/0.1.0)为准，准备工作本身不证明发布成功。本轮没有生产部署。
+
 ## 评审修复与定向检查
 
 初次交付提交 `b7ad14d` 之后按双 agent 评审修复两项：curl/PicGo 真实存储入口共用 `live-storage-fixture.ts` 的建立、探测、报告及清理流程；两入口合计从 476 行缩到 76 行，共享实现 247 行。curl 的额外无残留对象断言、跨服务继续执行和 PicGo 包清理仍保留。结构评审 agent 只读复核通过，没有再次执行测试。

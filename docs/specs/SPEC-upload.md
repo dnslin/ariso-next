@@ -261,7 +261,7 @@ curl --request POST 'https://images.example/api/upload' \
 
 ### 10.4 PicGo 上传器（维护期新增）
 
-[Issue #292](https://github.com/dnslin/ariso-next/issues/292)在首版完成后增加官方维护的 PicGo 上传器，不改写冻结 PRD 的首版排除项。源码位于 `integrations/picgo/`，包名为 `picgo-plugin-ariso`，上传器 ID 为 `ariso`；独立 CommonJS 包不加入主应用运行依赖。安装与配置见[接入指南](../guides/picgo.md)。正式 npm 发布、生产部署和第三方收录另行授权，支持声明以实际客户端验收记录为准。
+[Issue #292](https://github.com/dnslin/ariso-next/issues/292)在首版完成后增加官方维护的 PicGo 上传器，不改写冻结 PRD 的首版排除项。源码位于 `integrations/picgo/`，包名为 `picgo-plugin-ariso`，上传器 ID 为 `ariso`；独立 CommonJS 包不加入主应用运行依赖。安装与配置见[接入指南](../guides/picgo.md)。插件独立发布到 npm；生产部署和第三方收录另行授权，支持声明以实际客户端验收记录为准。
 
 上传器仅用于公开配图，每次明确提交 `visibility=public`；不继承站点私有默认值，也不扩大上传 Token 权限。站点地址为根地址，去除末尾 `/` 后请求现有 `/api/upload`；不新增服务端接口、数据字段、公开轮询或幂等协议。
 

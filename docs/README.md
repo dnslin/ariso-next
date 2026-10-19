@@ -9,7 +9,7 @@ Ariso 首版 M1–M5 已完成。M5 于 2026-10-17 由用户确认手动验收�
 | 从源码开发、运行检查       | [本地开发](./guides/development.md)                                                  |
 | 安装与正式发布             | [Docker 部署](./guides/deployment.md)                                                |
 | 升级、备份与恢复           | [升级指南](./guides/upgrading.md)                                                    |
-| 从 PicGo 上传公开配图      | [PicGo 接入指南](./guides/picgo.md)（本地候选包，尚未发布 npm）                      |
+| 从 PicGo 上传公开配图      | [PicGo 接入指南](./guides/picgo.md)                                                  |
 | 了解已归集的工程经验       | [迭代与验证经验](./guides/maintenance.md)                                            |
 | 确定下一项改动的范围与验证 | [后续迭代](guides/maintenance.md#后续迭代)、[执行与验证约定](guides/verification.md) |
 

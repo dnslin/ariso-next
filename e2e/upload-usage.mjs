@@ -119,7 +119,7 @@ async function verifyPicGoGuide() {
     };
   });
   assert.ok(guide.text.includes('通过此上传器上传的图片将公开'));
-  assert.ok(guide.text.includes('尚未发布到 npm'));
+  assert.ok(guide.text.includes('按指南安装 Ariso 插件，GUI 与 Core 分别配置'));
   assert.equal(
     guide.href,
     'https://github.com/dnslin/ariso-next/blob/main/docs/guides/picgo.md',
