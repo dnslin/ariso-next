@@ -1,0 +1,676 @@
+{
+  "runId": "ariso-image-workflows-20261021",
+  "fileKey": "74sT9Hrf8G4czcWeTkET5b",
+  "scope": "Sync four approved flows into existing desktop/mobile module sections",
+  "modules": {
+    "libraryDesktop": "209:1014",
+    "libraryMobile": "209:2268",
+    "sharingDesktop": "209:2271",
+    "sharingMobile": "209:2279",
+    "processingDesktop": "209:2275",
+    "processingMobile": "209:2283"
+  },
+  "components": {
+    "FolderDown": "1216:46537",
+    "ImageUp": "1216:46542",
+    "CircleAlert": "1216:46548",
+    "Unlink": "1216:46553",
+    "ExternalLink": "1216:46561",
+    "MountainPhoto": "1216:46566",
+    "StarsPhoto": "1216:46567",
+    "ImageRow": "1218:46540",
+    "Notice": "1218:46548",
+    "DangerNotice": "1218:46556",
+    "GalleryDesktop": "1219:46551",
+    "GalleryMobile": "1231:47911"
+  },
+  "screens": [
+    {
+      "id": "1220:46543",
+      "name": "2026-10-21 · D / ZIP / entry",
+      "parent": "209:1014",
+      "width": 1440,
+      "height": 1080,
+      "mobile": false,
+      "dark": false
+    },
+    {
+      "id": "1220:46790",
+      "name": "2026-10-21 · D / ZIP / context",
+      "parent": "209:1014",
+      "width": 1440,
+      "height": 1080,
+      "mobile": false,
+      "dark": false
+    },
+    {
+      "id": "1220:47051",
+      "name": "2026-10-21 · D / ZIP / ready",
+      "parent": "209:1014",
+      "width": 1440,
+      "height": 1080,
+      "mobile": false,
+      "dark": false
+    },
+    {
+      "id": "1220:47358",
+      "name": "2026-10-21 · D / ZIP / checking",
+      "parent": "209:1014",
+      "width": 1440,
+      "height": 1080,
+      "mobile": false,
+      "dark": false
+    },
+    {
+      "id": "1220:47666",
+      "name": "2026-10-21 · D / ZIP / unavailable",
+      "parent": "209:1014",
+      "width": 1440,
+      "height": 1080,
+      "mobile": false,
+      "dark": false
+    },
+    {
+      "id": "1220:47988",
+      "name": "2026-10-21 · D / ZIP / failure",
+      "parent": "209:1014",
+      "width": 1440,
+      "height": 1080,
+      "mobile": false,
+      "dark": false
+    },
+    {
+      "id": "1220:48302",
+      "name": "2026-10-21 · D / ZIP / started",
+      "parent": "209:1014",
+      "width": 1440,
+      "height": 1080,
+      "mobile": false,
+      "dark": false
+    },
+    {
+      "id": "1221:46932",
+      "name": "2026-10-21 · D / 替换图片 / choose",
+      "parent": "209:1014",
+      "width": 1440,
+      "height": 1080,
+      "mobile": false,
+      "dark": false
+    },
+    {
+      "id": "1221:47188",
+      "name": "2026-10-21 · D / 替换图片 / review",
+      "parent": "209:1014",
+      "width": 1440,
+      "height": 1080,
+      "mobile": false,
+      "dark": false
+    },
+    {
+      "id": "1221:47432",
+      "name": "2026-10-21 · D / 替换图片 / processing",
+      "parent": "209:1014",
+      "width": 1440,
+      "height": 1080,
+      "mobile": false,
+      "dark": false
+    },
+    {
+      "id": "1221:47683",
+      "name": "2026-10-21 · D / 替换图片 / failure",
+      "parent": "209:1014",
+      "width": 1440,
+      "height": 1080,
+      "mobile": false,
+      "dark": false
+    },
+    {
+      "id": "1221:47934",
+      "name": "2026-10-21 · D / 替换图片 / success",
+      "parent": "209:1014",
+      "width": 1440,
+      "height": 1080,
+      "mobile": false,
+      "dark": false
+    },
+    {
+      "id": "1221:48178",
+      "name": "2026-10-21 · D / 替换图片 / incompatible",
+      "parent": "209:1014",
+      "width": 1440,
+      "height": 1080,
+      "mobile": false,
+      "dark": false
+    },
+    {
+      "id": "1222:47054",
+      "name": "2026-10-21 · D / 私有单图分享 / create",
+      "parent": "209:2271",
+      "width": 1440,
+      "height": 1080,
+      "mobile": false,
+      "dark": false
+    },
+    {
+      "id": "1222:47294",
+      "name": "2026-10-21 · D / 私有单图分享 / created",
+      "parent": "209:2271",
+      "width": 1440,
+      "height": 1080,
+      "mobile": false,
+      "dark": false
+    },
+    {
+      "id": "1222:47559",
+      "name": "2026-10-21 · D / 私有单图分享 / original",
+      "parent": "209:2271",
+      "width": 1440,
+      "height": 1080,
+      "mobile": false,
+      "dark": false
+    },
+    {
+      "id": "1222:47806",
+      "name": "2026-10-21 · D / 私有单图分享 / revoke",
+      "parent": "209:2271",
+      "width": 1440,
+      "height": 1080,
+      "mobile": false,
+      "dark": false
+    },
+    {
+      "id": "1222:48106",
+      "name": "2026-10-21 · D / 私有单图分享 / revoked",
+      "parent": "209:2271",
+      "width": 1440,
+      "height": 1080,
+      "mobile": false,
+      "dark": false
+    },
+    {
+      "id": "1222:48347",
+      "name": "2026-10-21 · D / 私有单图分享 / failure",
+      "parent": "209:2271",
+      "width": 1440,
+      "height": 1080,
+      "mobile": false,
+      "dark": false
+    },
+    {
+      "id": "1222:48594",
+      "name": "2026-10-21 · D / 私有单图分享 / copy-failure",
+      "parent": "209:2271",
+      "width": 1440,
+      "height": 1080,
+      "mobile": false,
+      "dark": false
+    },
+    {
+      "id": "1222:48866",
+      "name": "2026-10-21 · D / 私有单图访客 / 有效",
+      "parent": "209:2271",
+      "width": 1440,
+      "height": 1080,
+      "mobile": false,
+      "public": true
+    },
+    {
+      "id": "1222:48982",
+      "name": "2026-10-21 · D / 私有单图访客 / 到期或撤销",
+      "parent": "209:2271",
+      "width": 1440,
+      "height": 1080,
+      "mobile": false,
+      "public": true
+    },
+    {
+      "id": "1223:47241",
+      "name": "2026-10-21 · D / 尺寸外链 / uncreated",
+      "parent": "209:2275",
+      "width": 1440,
+      "height": 1080,
+      "mobile": false,
+      "dark": false
+    },
+    {
+      "id": "1223:47497",
+      "name": "2026-10-21 · D / 尺寸外链 / processing",
+      "parent": "209:2275",
+      "width": 1440,
+      "height": 1080,
+      "mobile": false,
+      "dark": false
+    },
+    {
+      "id": "1223:47747",
+      "name": "2026-10-21 · D / 尺寸外链 / ready",
+      "parent": "209:2275",
+      "width": 1440,
+      "height": 1080,
+      "mobile": false,
+      "dark": false
+    },
+    {
+      "id": "1223:47995",
+      "name": "2026-10-21 · D / 尺寸外链 / failure",
+      "parent": "209:2275",
+      "width": 1440,
+      "height": 1080,
+      "mobile": false,
+      "dark": false
+    },
+    {
+      "id": "1223:48251",
+      "name": "2026-10-21 · D / 尺寸外链 / small",
+      "parent": "209:2275",
+      "width": 1440,
+      "height": 1080,
+      "mobile": false,
+      "dark": false
+    },
+    {
+      "id": "1223:48499",
+      "name": "2026-10-21 · D / 尺寸外链 / unsupported",
+      "parent": "209:2275",
+      "width": 1440,
+      "height": 1080,
+      "mobile": false,
+      "dark": false
+    },
+    {
+      "id": "1223:48754",
+      "name": "2026-10-21 · D / 尺寸外链 / original",
+      "parent": "209:2275",
+      "width": 1440,
+      "height": 1080,
+      "mobile": false,
+      "dark": false
+    },
+    {
+      "id": "1223:49008",
+      "name": "2026-10-21 · D / 尺寸外链 / copy-failure",
+      "parent": "209:2275",
+      "width": 1440,
+      "height": 1080,
+      "mobile": false,
+      "dark": false
+    },
+    {
+      "id": "1223:49262",
+      "name": "2026-10-21 · D / 尺寸外链 / default",
+      "parent": "209:2275",
+      "width": 1440,
+      "height": 1080,
+      "mobile": false,
+      "dark": false
+    },
+    {
+      "id": "1223:49510",
+      "name": "2026-10-21 · D / 尺寸外链 / dark",
+      "parent": "209:2275",
+      "width": 1440,
+      "height": 1080,
+      "mobile": false,
+      "dark": true
+    },
+    {
+      "id": "1220:65737",
+      "name": "2026-10-21 · M / ZIP / entry",
+      "parent": "209:2268",
+      "width": 390,
+      "height": 844,
+      "mobile": true,
+      "dark": false
+    },
+    {
+      "id": "1220:65863",
+      "name": "2026-10-21 · M / ZIP / context",
+      "parent": "209:2268",
+      "width": 390,
+      "height": 844,
+      "mobile": true,
+      "dark": false
+    },
+    {
+      "id": "1220:66003",
+      "name": "2026-10-21 · M / ZIP / ready",
+      "parent": "209:2268",
+      "width": 390,
+      "height": 844,
+      "mobile": true,
+      "dark": false
+    },
+    {
+      "id": "1220:66189",
+      "name": "2026-10-21 · M / ZIP / checking",
+      "parent": "209:2268",
+      "width": 390,
+      "height": 844,
+      "mobile": true,
+      "dark": false
+    },
+    {
+      "id": "1220:66376",
+      "name": "2026-10-21 · M / ZIP / unavailable",
+      "parent": "209:2268",
+      "width": 390,
+      "height": 844,
+      "mobile": true,
+      "dark": false
+    },
+    {
+      "id": "1220:66577",
+      "name": "2026-10-21 · M / ZIP / failure",
+      "parent": "209:2268",
+      "width": 390,
+      "height": 844,
+      "mobile": true,
+      "dark": false
+    },
+    {
+      "id": "1220:66770",
+      "name": "2026-10-21 · M / ZIP / started",
+      "parent": "209:2268",
+      "width": 390,
+      "height": 844,
+      "mobile": true,
+      "dark": false
+    },
+    {
+      "id": "1221:65977",
+      "name": "2026-10-21 · M / 替换图片 / choose",
+      "parent": "209:2268",
+      "width": 390,
+      "height": 844,
+      "mobile": true,
+      "dark": false
+    },
+    {
+      "id": "1221:66112",
+      "name": "2026-10-21 · M / 替换图片 / review",
+      "parent": "209:2268",
+      "width": 390,
+      "height": 844,
+      "mobile": true,
+      "dark": false
+    },
+    {
+      "id": "1221:66235",
+      "name": "2026-10-21 · M / 替换图片 / processing",
+      "parent": "209:2268",
+      "width": 390,
+      "height": 844,
+      "mobile": true,
+      "dark": false
+    },
+    {
+      "id": "1221:66365",
+      "name": "2026-10-21 · M / 替换图片 / failure",
+      "parent": "209:2268",
+      "width": 390,
+      "height": 844,
+      "mobile": true,
+      "dark": false
+    },
+    {
+      "id": "1221:66495",
+      "name": "2026-10-21 · M / 替换图片 / success",
+      "parent": "209:2268",
+      "width": 390,
+      "height": 844,
+      "mobile": true,
+      "dark": false
+    },
+    {
+      "id": "1221:66618",
+      "name": "2026-10-21 · M / 替换图片 / incompatible",
+      "parent": "209:2268",
+      "width": 390,
+      "height": 844,
+      "mobile": true,
+      "dark": false
+    },
+    {
+      "id": "1222:66774",
+      "name": "2026-10-21 · M / 私有单图分享 / create",
+      "parent": "209:2279",
+      "width": 390,
+      "height": 844,
+      "mobile": true,
+      "dark": false
+    },
+    {
+      "id": "1222:66893",
+      "name": "2026-10-21 · M / 私有单图分享 / created",
+      "parent": "209:2279",
+      "width": 390,
+      "height": 844,
+      "mobile": true,
+      "dark": false
+    },
+    {
+      "id": "1222:67037",
+      "name": "2026-10-21 · M / 私有单图分享 / original",
+      "parent": "209:2279",
+      "width": 390,
+      "height": 844,
+      "mobile": true,
+      "dark": false
+    },
+    {
+      "id": "1222:67163",
+      "name": "2026-10-21 · M / 私有单图分享 / revoke",
+      "parent": "209:2279",
+      "width": 390,
+      "height": 844,
+      "mobile": true,
+      "dark": false
+    },
+    {
+      "id": "1222:67342",
+      "name": "2026-10-21 · M / 私有单图分享 / revoked",
+      "parent": "209:2279",
+      "width": 390,
+      "height": 844,
+      "mobile": true,
+      "dark": false
+    },
+    {
+      "id": "1222:67462",
+      "name": "2026-10-21 · M / 私有单图分享 / failure",
+      "parent": "209:2279",
+      "width": 390,
+      "height": 844,
+      "mobile": true,
+      "dark": false
+    },
+    {
+      "id": "1222:67588",
+      "name": "2026-10-21 · M / 私有单图分享 / copy-failure",
+      "parent": "209:2279",
+      "width": 390,
+      "height": 844,
+      "mobile": true,
+      "dark": false
+    },
+    {
+      "id": "1222:67739",
+      "name": "2026-10-21 · M / 私有单图访客 / 有效",
+      "parent": "209:2279",
+      "width": 390,
+      "height": 844,
+      "mobile": true,
+      "public": true
+    },
+    {
+      "id": "1222:67864",
+      "name": "2026-10-21 · M / 私有单图访客 / 到期或撤销",
+      "parent": "209:2279",
+      "width": 390,
+      "height": 844,
+      "mobile": true,
+      "public": true
+    },
+    {
+      "id": "1223:67615",
+      "name": "2026-10-21 · M / 尺寸外链 / uncreated",
+      "parent": "209:2283",
+      "width": 390,
+      "height": 844,
+      "mobile": true,
+      "dark": false
+    },
+    {
+      "id": "1223:67750",
+      "name": "2026-10-21 · M / 尺寸外链 / processing",
+      "parent": "209:2283",
+      "width": 390,
+      "height": 844,
+      "mobile": true,
+      "dark": false
+    },
+    {
+      "id": "1223:67879",
+      "name": "2026-10-21 · M / 尺寸外链 / ready",
+      "parent": "209:2283",
+      "width": 390,
+      "height": 844,
+      "mobile": true,
+      "dark": false
+    },
+    {
+      "id": "1223:68006",
+      "name": "2026-10-21 · M / 尺寸外链 / failure",
+      "parent": "209:2283",
+      "width": 390,
+      "height": 844,
+      "mobile": true,
+      "dark": false
+    },
+    {
+      "id": "1223:68141",
+      "name": "2026-10-21 · M / 尺寸外链 / small",
+      "parent": "209:2283",
+      "width": 390,
+      "height": 844,
+      "mobile": true,
+      "dark": false
+    },
+    {
+      "id": "1223:68268",
+      "name": "2026-10-21 · M / 尺寸外链 / unsupported",
+      "parent": "209:2283",
+      "width": 390,
+      "height": 844,
+      "mobile": true,
+      "dark": false
+    },
+    {
+      "id": "1223:68402",
+      "name": "2026-10-21 · M / 尺寸外链 / original",
+      "parent": "209:2283",
+      "width": 390,
+      "height": 844,
+      "mobile": true,
+      "dark": false
+    },
+    {
+      "id": "1223:68535",
+      "name": "2026-10-21 · M / 尺寸外链 / copy-failure",
+      "parent": "209:2283",
+      "width": 390,
+      "height": 844,
+      "mobile": true,
+      "dark": false
+    },
+    {
+      "id": "1223:68668",
+      "name": "2026-10-21 · M / 尺寸外链 / default",
+      "parent": "209:2283",
+      "width": 390,
+      "height": 844,
+      "mobile": true,
+      "dark": false
+    },
+    {
+      "id": "1223:68795",
+      "name": "2026-10-21 · M / 尺寸外链 / dark",
+      "parent": "209:2283",
+      "width": 390,
+      "height": 844,
+      "mobile": true,
+      "dark": true
+    },
+    {
+      "id": "1226:47449",
+      "name": "2026-10-21 · D / ZIP / excluded",
+      "parent": "209:1014",
+      "width": 1440,
+      "height": 1080,
+      "mobile": false,
+      "dark": false
+    },
+    {
+      "id": "1226:65815",
+      "name": "2026-10-21 · M / ZIP / excluded",
+      "parent": "209:2268",
+      "width": 390,
+      "height": 844,
+      "mobile": true,
+      "dark": false
+    }
+  ],
+  "review": {
+    "id": "1226:65995",
+    "width": 4480,
+    "height": 3328
+  },
+  "flowStartingPoints": [
+    {
+      "nodeId": "1220:46543",
+      "name": "ImageWorkflows · ZIP"
+    },
+    {
+      "nodeId": "1221:46932",
+      "name": "ImageWorkflows · 替换图片"
+    },
+    {
+      "nodeId": "1222:47054",
+      "name": "ImageWorkflows · 私有单图分享"
+    },
+    {
+      "nodeId": "1223:47241",
+      "name": "ImageWorkflows · 尺寸外链"
+    },
+    {
+      "nodeId": "1220:65737",
+      "name": "ImageWorkflows · ZIP"
+    },
+    {
+      "nodeId": "1221:65977",
+      "name": "ImageWorkflows · 替换图片"
+    },
+    {
+      "nodeId": "1222:66774",
+      "name": "ImageWorkflows · 私有单图分享"
+    },
+    {
+      "nodeId": "1223:67615",
+      "name": "ImageWorkflows · 尺寸外链"
+    }
+  ],
+  "completedSteps": [
+    "source and product fonts inspected",
+    "code connect absent confirmed",
+    "existing components variables and styles inspected",
+    "library search attempted",
+    "minimal editable assets created",
+    "all four desktop/mobile flows synchronized",
+    "prototype links connected",
+    "all fonts and native layer structure read back",
+    "composition screenshot compared and corrected",
+    "final screenshot visually inspected"
+  ],
+  "pendingValidations": [],
+  "productRuntimeAcceptance": "Not represented by Figma evidence"
+}
