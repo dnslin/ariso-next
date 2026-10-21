@@ -203,8 +203,7 @@ for (const target of targets) {
       query: '',
       version: 'original',
     });
-    assert.equal(prepared.items.length, 1);
-    assert.equal(prepared.unavailable.length, 0);
+    assert.match(prepared.downloadUrl, /^\/api\/images\/archives\//);
     const zipPath = join(output, 'download.zip');
     await writeFile(zipPath, await bytes(prepared.downloadUrl));
     const zip = JSON.parse(

@@ -66,19 +66,23 @@ it.each([
   expect(getServerRuntime).not.toHaveBeenCalled();
 });
 
-it('returns an explicit mixed preparation with no browser download URL until failures are excluded', async () => {
-  const result = {
-    items: [],
-    unavailable: [{ imageId: 'one', displayName: 'one', reason: '版本未生成' }],
-    totalBytes: 0,
-    downloadUrl: null,
-    expiresAt: null,
-  };
-  prepare.mockResolvedValue(result);
+it('returns only a download URL on success and reports unavailable sources as an HTTP conflict', async () => {
+  const result = { downloadUrl: '/api/images/archives/ticket' };
+  prepare.mockResolvedValueOnce(result);
   const response = await post();
   expect(response.status).toBe(200);
   expect(await response.json()).toEqual(result);
   expect(prepare).toHaveBeenCalledWith(valid, expect.any(AbortSignal));
+
+  prepare.mockRejectedValueOnce(
+    new LibraryQueryError('请求的图片版本不可用', 'ARCHIVE_UNAVAILABLE', 409),
+  );
+  const unavailable = await post();
+  expect(unavailable.status).toBe(409);
+  expect(await unavailable.json()).toEqual({
+    code: 'ARCHIVE_UNAVAILABLE',
+    message: '请求的图片版本不可用',
+  });
 });
 
 it('keeps the authenticated native ZIP response and supplies an owner recheck to its stream', async () => {

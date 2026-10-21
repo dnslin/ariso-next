@@ -134,15 +134,10 @@ it('streams complete stored ZIP bytes for public and private originals with safe
     second.imageId,
     first.imageId,
   ]);
-  expect(prepared.unavailable).toEqual([]);
-  expect(prepared.totalBytes).toBe(first.bytes.length + second.bytes.length);
-  expect(prepared.items.map((item) => item.filename)).toEqual([
-    '旅行.png',
-    '旅行 (2).png',
-  ]);
+  expect(prepared).toEqual({ downloadUrl: expect.any(String) });
   expect(prepared.downloadUrl).toMatch(/^\/api\/images\/archives\//);
   const response = await archive.download(
-    prepared.downloadUrl!.split('/').at(-1)!,
+    prepared.downloadUrl.split('/').at(-1)!,
     request(),
     owner,
   );
@@ -155,7 +150,7 @@ it('streams complete stored ZIP bytes for public and private originals with safe
   ]);
 });
 
-it('reports every unavailable selected item and never creates a partial-download ticket', async () => {
+it('rejects the first unavailable source without creating a partial-download ticket', async () => {
   const good = await seed('good.png');
   const trashed = await seed('trash.png');
   connection.db
@@ -163,18 +158,18 @@ it('reports every unavailable selected item and never creates a partial-download
     .set({ trashedAt: new Date() })
     .where(eq(mediaImages.id, trashed.imageId))
     .run();
-  const result = await prepare([good.imageId, trashed.imageId, 'missing']);
-  expect(result.items.map((item) => item.imageId)).toEqual([good.imageId]);
-  expect(result.unavailable.map((item) => item.imageId)).toEqual([
-    trashed.imageId,
-    'missing',
-  ]);
-  expect(result.downloadUrl).toBeNull();
-  const excluded = await prepare([good.imageId]);
-  expect(excluded.downloadUrl).toBeTruthy();
-  const version = await prepare([good.imageId], 'compressed');
-  expect(version.unavailable[0].reason).toContain('版本');
-  expect(version.downloadUrl).toBeNull();
+  await expect(
+    prepare([good.imageId, trashed.imageId, 'missing']),
+  ).rejects.toMatchObject({ status: 409 });
+  await expect(prepare([good.imageId, 'missing'])).rejects.toMatchObject({
+    status: 409,
+  });
+  const changedSelection = await prepare([good.imageId]);
+  expect(changedSelection.downloadUrl).toBeTruthy();
+  await expect(prepare([good.imageId], 'compressed')).rejects.toMatchObject({
+    status: 409,
+    message: expect.stringContaining('版本'),
+  });
 });
 
 it('rejects empty, oversized and non-fixed version requests before creating a list', async () => {
@@ -195,7 +190,7 @@ it('rejects empty, oversized and non-fixed version requests before creating a li
 it('requires the owner again, rejects expired lists, and rechecks trashed or disabled sources before delivery', async () => {
   const image = await seed('one.png');
   const prepared = await prepare([image.imageId]);
-  const id = prepared.downloadUrl!.split('/').at(-1)!;
+  const id = prepared.downloadUrl.split('/').at(-1)!;
   await expect(
     archive.download(id, request(), async () => {
       throw Object.assign(new Error('请先登录'), { status: 401 });
@@ -229,7 +224,7 @@ it('does not expose bytes when the owner session is revoked while the streaming 
     if (!loggedIn) throw Object.assign(new Error('请先登录'), { status: 401 });
   };
   const response = await archive.download(
-    prepared.downloadUrl!.split('/').at(-1)!,
+    prepared.downloadUrl.split('/').at(-1)!,
     request(),
     readOwner,
   );
@@ -284,9 +279,8 @@ it('proxies private S3 bytes into the same ZIP without a public signature or acc
       secretCrypto,
     });
     const prepared = await prepare([image.imageId]);
-    expect(prepared.unavailable).toEqual([]);
     const response = await archive.download(
-      prepared.downloadUrl!.split('/').at(-1)!,
+      prepared.downloadUrl.split('/').at(-1)!,
       request(),
       owner,
     );
@@ -310,11 +304,7 @@ it('reports a physically missing file before preparing and rejects an otherwise 
     .where(eq(mediaImages.id, image.imageId))
     .run();
   await expect(
-    archive.download(
-      prepared.downloadUrl!.split('/').at(-1)!,
-      request(),
-      owner,
-    ),
+    archive.download(prepared.downloadUrl.split('/').at(-1)!, request(), owner),
   ).rejects.toMatchObject({ status: 409 });
   connection.db
     .update(mediaImages)
@@ -322,10 +312,10 @@ it('reports a physically missing file before preparing and rejects an otherwise 
     .where(eq(mediaImages.id, image.imageId))
     .run();
   await local.deleteObject(join(directory, 'storage'), storage, image.key);
-  const missing = await prepare([image.imageId]);
-  expect(missing.items).toEqual([]);
-  expect(missing.unavailable[0].reason).toContain('文件不存在');
-  expect(missing.downloadUrl).toBeNull();
+  await expect(prepare([image.imageId])).rejects.toMatchObject({
+    status: 409,
+    message: expect.stringContaining('文件不存在'),
+  });
 });
 
 it('destroys the active file source when the browser cancels and aborts rather than silently omitting a later missing file', async () => {
@@ -337,7 +327,7 @@ it('destroys the active file source when the browser cancels and aborts rather t
   );
   const prepared = await prepare([large.imageId]);
   const response = await archive.download(
-    prepared.downloadUrl!.split('/').at(-1)!,
+    prepared.downloadUrl.split('/').at(-1)!,
     request(),
     owner,
   );
@@ -357,7 +347,7 @@ it('destroys the active file source when the browser cancels and aborts rather t
   const later = await seed('later.png');
   const both = await prepare([large.imageId, later.imageId]);
   const failing = await archive.download(
-    both.downloadUrl!.split('/').at(-1)!,
+    both.downloadUrl.split('/').at(-1)!,
     request(),
     owner,
   );
@@ -373,7 +363,7 @@ it('cancels unconsumed responses during shutdown and rejects preparation after s
   const image = await seed('one.png');
   const prepared = await prepare([image.imageId]);
   const response = await archive.download(
-    prepared.downloadUrl!.split('/').at(-1)!,
+    prepared.downloadUrl.split('/').at(-1)!,
     request(),
     owner,
   );

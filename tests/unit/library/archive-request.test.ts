@@ -4,11 +4,7 @@ import { requestArchivePreparation } from '../../../src/components/library/archi
 afterEach(() => vi.unstubAllGlobals());
 it('prepares the explicit frozen selection and fixed version without fetching ZIP bytes into a Blob', async () => {
   const result = {
-    items: [{ imageId: 'one', filename: 'one.png', byteSize: 8 }],
-    unavailable: [],
-    totalBytes: 8,
     downloadUrl: '/api/images/archives/ticket',
-    expiresAt: '2026-10-21T10:00:00Z',
   };
   const fetch = vi.fn().mockResolvedValue(Response.json(result));
   vi.stubGlobal('fetch', fetch);

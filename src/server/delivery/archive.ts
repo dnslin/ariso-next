@@ -44,20 +44,11 @@ export function createArchiveService(
   async function check(input: ArchiveRequest, signal: AbortSignal) {
     const selection = archiveSelection(options, input);
     const targets: ArchiveTarget[] = [];
-    const result: ArchivePreparation = {
-      items: [],
-      unavailable: [],
-      totalBytes: 0,
-      downloadUrl: null,
-      expiresAt: null,
-    };
     const names = new Set<string>();
     for (const imageId of input.ids) {
       signal.throwIfAborted();
-      let displayName = imageId;
       try {
         const target = selectArchiveTarget(options, input, imageId, names);
-        displayName = target.image.displayName;
         if (!selection.has(imageId))
           throw new LibraryQueryError(
             '图片已不属于当前筛选范围',
@@ -78,36 +69,23 @@ export function createArchiveService(
         if (!sameSignedTarget(target, current))
           throw deliveryError('IMAGE_CHANGED');
         targets.push(target);
-        result.items.push({
-          imageId,
-          displayName,
-          filename: target.filename,
-          byteSize: opened.size,
-        });
-        result.totalBytes += opened.size;
       } catch (err) {
         signal.throwIfAborted();
+        if (err instanceof LibraryQueryError) throw err;
         const code =
           err instanceof Error && 'code' in err && isDeliveryErrorCode(err.code)
             ? err.code
             : null;
-        if (
-          !(err instanceof LibraryQueryError) &&
-          (!code || code.startsWith('STORAGE_'))
-        )
+        if (!code || code.startsWith('STORAGE_'))
           options.logger.error({ err, imageId }, 'Archive source check failed');
-        result.unavailable.push({
-          imageId,
-          displayName,
-          reason: code
-            ? deliveryErrors[code][1]
-            : err instanceof LibraryQueryError
-              ? err.message
-              : '文件无法读取，请检查存储后重试',
-        });
+        throw new LibraryQueryError(
+          code ? deliveryErrors[code][1] : '文件无法读取，请检查存储后重试',
+          'ARCHIVE_UNAVAILABLE',
+          code ? 409 : 500,
+        );
       }
     }
-    return { result, targets };
+    return targets;
   }
 
   async function checked(input: ArchiveRequest, signal?: AbortSignal) {
@@ -132,16 +110,11 @@ export function createArchiveService(
       signal?: AbortSignal,
     ): Promise<ArchivePreparation> {
       const input = parseArchiveRequest(value);
-      const { result } = await checked(input, signal);
+      await checked(input, signal);
       available();
-      if (!result.unavailable.length && result.items.length) {
-        const id = randomUUID();
-        const expiresAt = Date.now() + 600_000;
-        lists.set(id, { input, expiresAt });
-        result.downloadUrl = `/api/images/archives/${id}`;
-        result.expiresAt = new Date(expiresAt).toISOString();
-      }
-      return result;
+      const id = randomUUID();
+      lists.set(id, { input, expiresAt: Date.now() + 600_000 });
+      return { downloadUrl: `/api/images/archives/${id}` };
     },
     async download(
       id: string,
@@ -157,13 +130,7 @@ export function createArchiveService(
           'ARCHIVE_EXPIRED',
           410,
         );
-      const { result, targets } = await checked(list.input, request.signal);
-      if (result.unavailable.length)
-        throw new LibraryQueryError(
-          '下载清单中的图片已不可用，请重新检查',
-          'ARCHIVE_UNAVAILABLE',
-          409,
-        );
+      const targets = await checked(list.input, request.signal);
       await readOwner();
       available();
       request.signal.throwIfAborted();

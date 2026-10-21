@@ -41,15 +41,6 @@ export function useLibraryArchive({
         active.signal,
       );
       active.signal.throwIfAborted();
-      if (result.unavailable.length) {
-        toast(`无法下载${versionLabels[version]}`, {
-          variant: 'danger',
-          description: result.unavailable[0].reason,
-        });
-        return;
-      }
-      if (!result.downloadUrl || !result.items.length)
-        throw new Error('没有可下载的图片，请选择其他版本。');
       startArchiveDownload(result.downloadUrl);
     } catch (error) {
       if (active.signal.aborted) return;
@@ -58,8 +49,10 @@ export function useLibraryArchive({
         onExpire();
         return;
       }
-      toast(error instanceof Error ? error.message : '打包下载失败，请重试。', {
+      toast(`无法下载${versionLabels[version]}`, {
         variant: 'danger',
+        description:
+          error instanceof Error ? error.message : '打包下载失败，请重试。',
       });
     } finally {
       if (controller.current === active) {

@@ -28,13 +28,13 @@ export async function requestArchivePreparation(
     body = await response.json();
   } catch {
     throw new ArchiveRequestError(
-      `下载清单响应无法读取（HTTP ${response.status}），请重试。`,
+      `打包下载响应无法读取（HTTP ${response.status}），请重试。`,
       response.status,
     );
   }
   if (!response.ok || !body)
     throw new ArchiveRequestError(
-      body?.message ?? `下载清单请求失败（HTTP ${response.status}），请重试。`,
+      body?.message ?? `打包下载请求失败（HTTP ${response.status}），请重试。`,
       response.status,
     );
   return body;
