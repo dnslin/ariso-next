@@ -113,14 +113,43 @@ async function start(overrides: Record<string, string> = {}) {
   runs.push(run);
   return run;
 }
-async function expectHealthy(run: Awaited<ReturnType<typeof launch>>) {
-  await expect.poll(() => run.logs(), { timeout: 15000 }).toContain('Ready in');
-  const response = await fetch(`http://127.0.0.1:${run.port}/api/health`, {
-    signal: AbortSignal.timeout(2000),
-  });
-  expect(response.status).toBe(200);
-  expect(await response.json()).toEqual({ status: 'ok' });
-  await stop(run.child, run.closed);
+async function expectHealthy(
+  run: Awaited<ReturnType<typeof launch>>,
+  phase: string,
+) {
+  const startedAt = Date.now();
+  let step = 'waiting for HTTP readiness';
+  try {
+    // Next logs Ready before initializing handlers. Keep the startup budget,
+    // but wait for the actual HTTP endpoint rather than that early log line.
+    await expect
+      .poll(
+        async () => {
+          step = 'requesting /api/health';
+          const response = await fetch(
+            `http://127.0.0.1:${run.port}/api/health`,
+            {
+              signal: AbortSignal.timeout(2000),
+            },
+          );
+          step = 'reading /api/health';
+          expect(response.status).toBe(200);
+          return response.json();
+        },
+        { timeout: 15000 },
+      )
+      .toEqual({ status: 'ok' });
+    expect(run.logs()).toContain('Ready in');
+    step = 'stopping server';
+    await stop(run.child, run.closed);
+  } catch (cause) {
+    throw new Error(
+      `${phase}: ${step} failed after ${Date.now() - startedAt}ms\n` +
+        `pid=${run.child.pid}, port=${run.port}, exitCode=${run.child.exitCode}, signalCode=${run.child.signalCode}\n` +
+        `stdout:\n${run.stdout()}\nstderr:\n${run.stderr()}`,
+      { cause },
+    );
+  }
 }
 function inspect() {
   const db = new Database(join(env.DATA_DIR, 'ariso.db'));
@@ -149,6 +178,7 @@ it('空生产数据库接受不同合法密钥，生产产物不包含测试表�
   for (let attempt = 0; attempt < 2; attempt++) {
     await expectHealthy(
       await start({ ARISO_ENCRYPTION_KEY: randomBytes(32).toString('hex') }),
+      `empty database start ${attempt + 1}`,
     );
   }
   const db = new Database(join(env.DATA_DIR, 'ariso.db'));
@@ -171,11 +201,35 @@ it('空生产数据库接受不同合法密钥，生产产物不包含测试表�
   expect(files.some((file) => file.includes('secret-preflight'))).toBe(false);
 }, 30000);
 
+it('waits for HTTP readiness after the framework startup log', async () => {
+  const preload = join(directory, 'delay-router.cjs');
+  // Delay the real router in this isolated process after Next prints Ready.
+  await writeFile(
+    preload,
+    `const Module = require('node:module');
+const load = Module._load;
+Module._load = function (id, ...args) {
+  const loaded = load.call(this, id, ...args);
+  if (id !== './router-server') return loaded;
+  return { ...loaded, async initialize(...options) {
+    console.info('test: delaying router initialization');
+    await new Promise(resolve => setTimeout(resolve, 2500));
+    return loaded.initialize(...options);
+  } };
+};\n`,
+  );
+  const run = await start({
+    NODE_OPTIONS: `--require ${JSON.stringify(preload)}`,
+  });
+  await expectHealthy(run, 'delayed HTTP readiness');
+  expect(run.logs()).toContain('test: delaying router initialization');
+}, 30000);
+
 it.each(['wrong key', 'invalid ciphertext', 'tampered ciphertext'])(
   '%s 阻止入口启动 Web，保留已提交迁移与密文，修复后继续且不重放迁移',
   async (fault) => {
     writeMigrations(join(app, 'drizzle'), [migration]);
-    await expectHealthy(await start());
+    await expectHealthy(await start(), `${fault}: initial start`);
     const crypto = createSecretCrypto(
       Buffer.from(env.ARISO_ENCRYPTION_KEY, 'hex'),
     );
@@ -283,7 +337,7 @@ it.each(['wrong key', 'invalid ciphertext', 'tampered ciphertext'])(
     const repaired = inspect();
     for (let attempt = 0; attempt < 2; attempt++) {
       const recovered = await start({ NODE_OPTIONS: '' });
-      await expectHealthy(recovered);
+      await expectHealthy(recovered, `${fault}: repaired start ${attempt + 1}`);
       expect(recovered.logs()).toContain('secret-preflight-complete');
       expect(inspect()).toEqual(repaired);
     }
