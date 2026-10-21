@@ -701,7 +701,7 @@ describe('production library queries', () => {
       activeJob: { id: 'active' },
       latestFailedJob: { id: 'latest', error: 'latest failure' },
       versions: { thumbnail: true },
-      thumbnailUrl: '/i/ready?type=thumbnail',
+      thumbnailUrl: '/i/ready?type=thumbnail&v=thumb',
     });
     expect(result.items.find((item) => item.id === 'trashed')).toMatchObject({
       trashedAt: new Date(2000).toISOString(),

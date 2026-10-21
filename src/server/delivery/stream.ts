@@ -1,11 +1,11 @@
-import type { ReadStream } from 'node:fs';
+import type { Readable } from 'node:stream';
 import { finished } from 'node:stream/promises';
 
 /** No Web queue: constructing a Response must not start delivery or counting.
  * The caller logs source errors; onError reports only adapter/consumer failures.
  */
 export function responseStream(
-  source: ReadStream,
+  source: Readable,
   signal: AbortSignal,
   onStart: () => void,
   onError: (error: unknown) => void,

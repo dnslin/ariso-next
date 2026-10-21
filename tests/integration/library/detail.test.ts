@@ -111,7 +111,9 @@ it.each([
       mime: 'image/tiff',
       byteSize,
       previewPath:
-        byteSize <= tiffPreviewMaxBytes ? '/api/images/tiff/preview' : null,
+        byteSize <= tiffPreviewMaxBytes
+          ? `/api/images/tiff/preview?v=${encodeURIComponent(original.contentId!)}`
+          : null,
       downloadPath: '/i/tiff?type=original&download=1',
       unavailableReason: null,
     });
@@ -224,7 +226,7 @@ it('returns actual saved versions, relationships and separate task summaries wit
     height: 400,
     byteSize: 31,
     format: 'WEBP',
-    previewPath: '/i/detail?type=compressed',
+    previewPath: '/i/detail?type=compressed&v=compressed',
     downloadPath: '/i/detail?type=compressed&download=1',
     links: { url: 'https://images.example.test/i/detail?type=compressed' },
   });
@@ -249,7 +251,13 @@ it('returns actual saved versions, relationships and separate task summaries wit
   const after = readLibraryDetail(connection.db, 'detail').versions.find(
     (v) => v.kind === 'compressed',
   )!;
-  expect(after).toEqual({ ...before, contentId: 'replacement' });
+  expect(after).toEqual({
+    ...before,
+    contentId: 'replacement',
+    previewPath: '/i/detail?type=compressed&v=replacement',
+  });
+  expect(after.links).toEqual(before.links);
+  expect(after.downloadPath).toBe(before.downloadPath);
   expect(
     detail.versions.find((v) => v.kind === 'thumbnail')!.contentId,
   ).toBeNull();
@@ -369,7 +377,7 @@ it('allows owner trash preview while suppressing copy/download, disabled, missin
   expect(detail.trashedAt).not.toBeNull();
   expect(detail.versions.every((v) => !v.links && !v.downloadPath)).toBe(true);
   expect(detail.versions[0]).toMatchObject({
-    previewPath: '/api/trash/states/preview?type=original',
+    previewPath: `/api/trash/states/preview?type=original&v=${encodeURIComponent(objectId)}`,
     unavailableReason: null,
   });
   expect(detail.defaultLink.links).toBeNull();

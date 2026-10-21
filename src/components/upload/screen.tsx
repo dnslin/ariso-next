@@ -18,6 +18,11 @@ import {
 } from 'lucide-react';
 import { OwnerShell } from '../shell/owner-shell';
 import { LibraryDetail } from '../library/detail';
+import {
+  DetailReplacement,
+  DetailReplacementFooter,
+  useDetailReplacement,
+} from '../library/detail-replacement';
 import { useDetailQuery } from '../library/use-detail-query';
 import { useDetailNavigation } from '../../app/library/use-detail-navigation';
 import { useDetailReprocess } from '../library/use-detail-reprocess';
@@ -85,6 +90,21 @@ export function UploadScreen(props: ScreenProps) {
     closeLabel: '返回上传',
     onVersions: () => detail.openView('versions'),
     onOpen: () => detail.openView('reprocess'),
+  });
+  const replacement = useDetailReplacement({
+    detail: detail.view === 'replace' ? detailQuery.data : undefined,
+    onReturn: async () => {
+      await Promise.all([
+        detailQuery.refetch(),
+        client.invalidateQueries({ queryKey: ['upload-result'] }),
+      ]);
+      detail.returnToDetail();
+    },
+    onCompleted: () => {
+      void detailQuery.refetch();
+      void client.invalidateQueries({ queryKey: ['upload-result'] });
+    },
+    onSessionExpire: () => detailQuery.setUnavailable(401),
   });
   const preview = params.get('preview');
   const selectedPreview =
@@ -156,7 +176,9 @@ export function UploadScreen(props: ScreenProps) {
       {...props}
       returnTo={currentHref}
       footer={
-        detail.view === 'reprocess' ? (
+        detail.view === 'replace' ? (
+          <DetailReplacementFooter state={replacement} />
+        ) : detail.view === 'reprocess' ? (
           reprocess.footerActions ? (
             <DetailReprocessFooter actions={reprocess.footerActions} />
           ) : null
@@ -485,7 +507,9 @@ export function UploadScreen(props: ScreenProps) {
         }
         clearCompleted={() => controller.clearCompleted()}
       />
-      {detail.view === 'reprocess' ? (
+      {detail.view === 'replace' ? (
+        <DetailReplacement state={replacement} />
+      ) : detail.view === 'reprocess' ? (
         <DetailReprocess state={reprocess} />
       ) : detail.view &&
         detailQuery.data &&
@@ -534,6 +558,7 @@ export function UploadScreen(props: ScreenProps) {
           hidden={!!detail.view}
           initialSelected={selectedPreview}
           onVersions={(selected) => detail.openView('versions', selected)}
+          onReplace={() => detail.openView('replace')}
           client={client}
           dialogRef={detail.dialogRef}
           onClose={detail.close}

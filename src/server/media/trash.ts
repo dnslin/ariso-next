@@ -1,6 +1,7 @@
 import { eq } from 'drizzle-orm';
 import type { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
 import { mediaImages } from './schema.ts';
+import { revokeImageShares } from '../sharing/image-configuration.ts';
 
 export class MediaTrashError extends Error {
   constructor(
@@ -41,6 +42,7 @@ function setTrashed(
 
       let trashedAt = image.trashedAt;
       if ((trashedAt !== null) !== trashed) {
+        if (trashed) revokeImageShares(tx, imageId);
         trashedAt = trashed ? new Date() : null;
         tx.update(mediaImages)
           .set({ trashedAt })

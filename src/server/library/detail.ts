@@ -24,7 +24,7 @@ import {
 import { requireSiteSettings } from '../site/settings.ts';
 import { storageConfigs } from '../storage/schema.ts';
 import type { LibraryDetail, LibraryDetailLinks } from './detail-types.ts';
-import type { LibraryJobSummary } from './types.ts';
+import type { LibraryActiveJob, LibraryJobSummary } from './types.ts';
 
 /** Owner-only record read. Delivery remains responsible for authorizing every content request. */
 export function readLibraryDetail(
@@ -100,7 +100,32 @@ export function readLibraryDetail(
         )
         .orderBy(desc(mediaJobs.createdAt), desc(sql`${mediaJobs}.rowid`))
         .get() ?? null;
-    const activeJob = summary(['queued', 'running']);
+    const current = tx
+      .select({
+        id: mediaJobs.id,
+        kind: mediaJobs.kind,
+        status: mediaJobs.status,
+        scope: mediaJobs.scope,
+        step: mediaJobs.step,
+        error: mediaJobs.error,
+      })
+      .from(mediaJobs)
+      .where(
+        and(
+          eq(mediaJobs.imageId, imageId),
+          inArray(mediaJobs.kind, ['process', 'replace', 'size']),
+          inArray(mediaJobs.status, ['queued', 'running']),
+        ),
+      )
+      .orderBy(desc(mediaJobs.createdAt), desc(sql`${mediaJobs}.rowid`))
+      .get();
+    const activeJob: LibraryActiveJob | null = current
+      ? {
+          ...current,
+          kind: current.kind as LibraryActiveJob['kind'],
+          status: current.status as LibraryActiveJob['status'],
+        }
+      : null;
     const activeMetadata =
       metadataJob?.status === 'queued' || metadataJob?.status === 'running';
     const editUnavailableReason =
@@ -164,6 +189,7 @@ export function readLibraryDetail(
       pageCount: image.pageCount,
       classification: image.classification,
       visibility: image.visibility,
+      contentUpdatedAt: image.contentUpdatedAt?.toISOString() ?? null,
       processingStatus: image.processingStatus,
       createdAt: image.createdAt.toISOString(),
       trashedAt: image.trashedAt?.toISOString() ?? null,
@@ -195,6 +221,17 @@ export function readLibraryDetail(
                 : status === 'failed'
                   ? '该版本处理失败'
                   : '该版本尚未保存');
+        const previewPath =
+          unavailableReason ||
+          saved?.version.mime === 'image/svg+xml' ||
+          (saved?.version.mime === 'image/tiff' &&
+            (image.trashedAt || !canPreviewTiff(saved.version.byteSize)))
+            ? null
+            : saved?.version.mime === 'image/tiff'
+              ? buildTiffPreviewPath(imageId)
+              : image.trashedAt
+                ? buildTrashPreviewPath(imageId, kind)
+                : buildImagePath(imageId, kind);
         return {
           kind,
           contentId: saved?.object.id ?? null,
@@ -206,17 +243,9 @@ export function readLibraryDetail(
           width: saved?.version.width ?? null,
           height: saved?.version.height ?? null,
           byteSize: saved?.version.byteSize ?? null,
-          previewPath:
-            unavailableReason ||
-            saved?.version.mime === 'image/svg+xml' ||
-            (saved?.version.mime === 'image/tiff' &&
-              (image.trashedAt || !canPreviewTiff(saved.version.byteSize)))
-              ? null
-              : saved?.version.mime === 'image/tiff'
-                ? buildTiffPreviewPath(imageId)
-                : image.trashedAt
-                  ? buildTrashPreviewPath(imageId, kind)
-                  : buildImagePath(imageId, kind),
+          previewPath: previewPath
+            ? `${previewPath}${previewPath.includes('?') ? '&' : '?'}v=${encodeURIComponent(saved!.object.id)}`
+            : null,
           downloadPath:
             blocked || unavailableReason
               ? null

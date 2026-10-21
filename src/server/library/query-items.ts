@@ -10,7 +10,11 @@ import {
 import { storageConfigs } from '../storage/schema.ts';
 import { albumImages } from '../collections/schema.ts';
 import { readGeneratedMediaVersions } from '../media/objects.ts';
-import type { LibraryItem, LibraryJobSummary } from './types.ts';
+import type {
+  LibraryActiveJob,
+  LibraryItem,
+  LibraryJobSummary,
+} from './types.ts';
 
 export const libraryColumns = {
   id: mediaImages.id,
@@ -61,6 +65,7 @@ export function readLibraryItems(
       kind: mediaVersions.kind,
       width: mediaVersions.width,
       height: mediaVersions.height,
+      objectId: mediaObjects.id,
     })
     .from(mediaVersions)
     .innerJoin(mediaObjects, eq(mediaVersions.objectId, mediaObjects.id))
@@ -71,7 +76,7 @@ export function readLibraryItems(
       ),
     )
     .all();
-  // One batch returns active/failed process summaries plus each kind's latest job, including terminal states.
+  // Active content work is shared; process and metadata histories keep their original meaning.
   const ranked = db
     .select({
       imageId: mediaJobs.imageId,
@@ -94,7 +99,7 @@ export function readLibraryItems(
     .where(
       and(
         inArray(mediaJobs.imageId, ids),
-        inArray(mediaJobs.kind, ['process', 'metadata']),
+        inArray(mediaJobs.kind, ['process', 'metadata', 'replace', 'size']),
       ),
     )
     .as('ranked_jobs');
@@ -106,7 +111,12 @@ export function readLibraryItems(
         eq(ranked.latestRank, 1),
         and(
           eq(ranked.kind, 'process'),
-          inArray(ranked.status, ['queued', 'running', 'failed']),
+          eq(ranked.status, 'failed'),
+          eq(ranked.rank, 1),
+        ),
+        and(
+          inArray(ranked.kind, ['process', 'replace', 'size']),
+          inArray(ranked.status, ['queued', 'running']),
           eq(ranked.rank, 1),
         ),
       ),
@@ -124,9 +134,11 @@ export function readLibraryItems(
       watermark: false,
     };
     let thumbnailDimensions: LibraryItem['thumbnailDimensions'] = null;
+    let thumbnailContentId: string | null = null;
     for (const version of saved) {
       if (version.imageId !== row.id) continue;
       versions[version.kind] = true;
+      if (version.kind === 'thumbnail') thumbnailContentId = version.objectId;
       if (
         version.kind === 'thumbnail' &&
         version.width !== null &&
@@ -135,14 +147,12 @@ export function readLibraryItems(
         thumbnailDimensions = { width: version.width, height: version.height };
       }
     }
-    const summary = (failed: boolean): LibraryJobSummary | null => {
+    const failureSummary = (): LibraryJobSummary | null => {
       const job = jobs.find(
         (job) =>
           job.imageId === row.id &&
           job.kind === 'process' &&
-          (failed
-            ? job.status === 'failed'
-            : job.status === 'queued' || job.status === 'running'),
+          job.status === 'failed',
       );
       return job
         ? {
@@ -160,6 +170,22 @@ export function readLibraryItems(
         job.kind === 'metadata' &&
         job.latestRank === 1,
     );
+    const active = jobs.find(
+      (job) =>
+        job.imageId === row.id &&
+        job.kind !== 'metadata' &&
+        (job.status === 'queued' || job.status === 'running'),
+    );
+    const activeJob: LibraryActiveJob | null = active
+      ? {
+          id: active.id,
+          kind: active.kind as LibraryActiveJob['kind'],
+          status: active.status as LibraryActiveJob['status'],
+          scope: active.scope,
+          step: active.step,
+          error: active.error,
+        }
+      : null;
     const processing = jobs.find(
       (job) =>
         job.imageId === row.id &&
@@ -184,11 +210,11 @@ export function readLibraryItems(
       thumbnailUrl:
         row.storage.enabled && !row.deletionStatus && versions.thumbnail
           ? row.trashedAt
-            ? buildTrashPreviewPath(row.id, 'thumbnail')
-            : buildImagePath(row.id, 'thumbnail')
+            ? `${buildTrashPreviewPath(row.id, 'thumbnail')}&v=${encodeURIComponent(thumbnailContentId!)}`
+            : `${buildImagePath(row.id, 'thumbnail')}&v=${encodeURIComponent(thumbnailContentId!)}`
           : null,
-      activeJob: summary(false),
-      latestFailedJob: summary(true),
+      activeJob,
+      latestFailedJob: failureSummary(),
       processingJob: processing
         ? {
             id: processing.id,

@@ -758,7 +758,15 @@ it('从旧 schema 升级保留默认、图片对象和上传会话引用，外�
         'pending.png', 3, 'existing-storage', 'queued', 'pending-image', 1000, 1000);
     `);
     const readReferences = () => [
-      previous.db.select().from(mediaImages).all(),
+      // Read only predecessor columns: 0028 adds content_updated_at.
+      previous.db.$client
+        .prepare(
+          `SELECT id, storage_id, original_name, display_name,
+        visibility, format, mime, width, height, byte_size, animated, page_count,
+        classification, processing_status, trashed_at, deletion_status, created_at,
+        updated_at FROM media_images`,
+        )
+        .all(),
       previous.db.$client
         .prepare(
           `SELECT id, image_id, job_id, storage_id, key, purpose,
@@ -784,6 +792,9 @@ it('从旧 schema 升级保留默认、图片对象和上传会话引用，外�
     const before = readReferences();
     migrateRuntimeDatabase(previous.db, resolve('drizzle'));
     expect(readReferences()).toEqual(before);
+    expect(
+      previous.db.select().from(mediaImages).get()!.contentUpdatedAt,
+    ).toBeNull();
     expect(
       previous.db.select().from(uploadSubmissions).get()!.apiTokenId,
     ).toBeNull();

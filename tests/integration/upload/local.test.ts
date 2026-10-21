@@ -8,6 +8,7 @@ import { readUsage } from '../../../src/server/analytics/usage.ts';
 import * as formats from '../../../src/server/media/file-formats.ts';
 import { claimNextMediaJob } from '../../../src/server/media/queue.ts';
 import { processMediaJob } from '../../../src/server/media/process.ts';
+import { requestReprocess } from '../../../src/server/media/reprocess.ts';
 import { collectionFixture } from '../collections/helpers.ts';
 import {
   createAlbum,
@@ -126,7 +127,7 @@ describe('real local upload reception and ownership', () => {
       .get()!;
   }
 
-  it('retains actual image watermark A for all 45 frozen files while new submissions use B, then releases A after the last pending group terminates', async () => {
+  it('retains frozen watermark A through pending uploads and current published recipes, then releases it after both roles use B', async () => {
     const { db } = fixture;
     const watermarksRoot = join(fixture.storageRoot, 'watermarks');
     const context = {
@@ -202,6 +203,13 @@ describe('real local upload reception and ownership', () => {
     expect(getWatermarkAsset(db, a.id)?.status).toBe('ready');
     expect(await readFile(join(watermarksRoot, a.path))).toEqual(bytes);
     cancelSession(db, last.id);
+    // Current watermark recipes must remain rebuildable for replacement.
+    expect(await cleanupWatermarkAssets(context)).toEqual([]);
+    expect(getWatermarkAsset(db, a.id)?.status).toBe('ready');
+    for (const imageId of [accepted.imageId!, acceptedMiddle.imageId!]) {
+      requestReprocess(db, imageId, { scope: 'watermark' });
+      expect((await processNext(watermarksRoot)).status).toBe('succeeded');
+    }
     expect(await cleanupWatermarkAssets(context)).toEqual([]);
     expect(getWatermarkAsset(db, a.id)?.status).toBe('deleted');
     await expect(stat(join(watermarksRoot, a.path))).rejects.toMatchObject({

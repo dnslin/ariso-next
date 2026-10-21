@@ -1,7 +1,8 @@
 import type { BatchAction } from '../../components/library/use-library-batch';
 import type { SelectedLibraryItem } from '../../server/library/selection-types';
 
-export type SelectionBatchAction = BatchAction | 'reprocess' | 'copy';
+export type SelectionBatchAction =
+  BatchAction | 'reprocess' | 'copy' | 'archive';
 
 export function selectionBatchActions(
   items: SelectedLibraryItem[],
@@ -10,6 +11,7 @@ export function selectionBatchActions(
   if (!items.length) return [];
   return [
     'copy',
+    'archive',
     'add-albums',
     ...(items.some((item) => item.visibility === 'private')
       ? (['public'] as const)

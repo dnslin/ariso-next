@@ -26,6 +26,7 @@ const item: LibraryItem = {
   thumbnailUrl: '/i/image?type=thumbnail',
   thumbnailDimensions: { width: 640, height: 480 },
   activeJob: {
+    kind: 'process',
     id: 'job',
     status: 'running',
     scope: 'all',

@@ -18,9 +18,11 @@ export function BrandMetadata({
       ? '找回密码 · Ariso'
       : pathname === '/reset-password'
         ? '重置密码 · Ariso'
-        : pathname.startsWith('/s/')
-          ? `${name} · 相册分享`
-          : name;
+        : pathname.startsWith('/s/image/')
+          ? `${name} · 图片分享`
+          : pathname.startsWith('/s/')
+            ? `${name} · 相册分享`
+            : name;
   return (
     <>
       <title>{title}</title>

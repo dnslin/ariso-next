@@ -2,6 +2,7 @@ import { eq } from 'drizzle-orm';
 import { z } from 'zod';
 import type { MediaTransaction } from './images.ts';
 import { mediaImages } from './schema.ts';
+import { revokeImageShares } from '../sharing/image-configuration.ts';
 
 export const imageFieldsSchema = z
   .strictObject({
@@ -63,10 +64,12 @@ export function updateImageFields(
     (patch.displayName !== undefined &&
       patch.displayName !== image.displayName) ||
     (patch.visibility !== undefined && patch.visibility !== image.visibility);
-  if (changed)
+  if (changed) {
+    if (patch.visibility === 'public') revokeImageShares(tx, imageId);
     tx.update(mediaImages)
       .set({ ...patch, updatedAt: new Date() })
       .where(eq(mediaImages.id, imageId))
       .run();
+  }
   return { changed };
 }

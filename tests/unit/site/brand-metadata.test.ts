@@ -34,6 +34,11 @@ it('renders the public share title in the initial HTML', () => {
   expect(render()).toBe('<title>旅行相册 · 相册分享</title>');
 });
 
+it('uses the single-image share title without exposing image details', () => {
+  route.pathname = '/s/image/temporary-token';
+  expect(render()).toBe('<title>旅行相册 · 图片分享</title>');
+});
+
 it.each([
   ['/forgot-password', '找回密码 · Ariso'],
   ['/reset-password', '重置密码 · Ariso'],

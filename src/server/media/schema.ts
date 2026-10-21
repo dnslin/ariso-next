@@ -126,6 +126,7 @@ export const mediaImages = sqliteTable(
       enum: ['deleting', 'cleanup_failed'],
     }),
     createdAt: integer('created_at', { mode: 'timestamp_ms' }).notNull(),
+    contentUpdatedAt: integer('content_updated_at', { mode: 'timestamp_ms' }),
     updatedAt: integer('updated_at', { mode: 'timestamp_ms' }).notNull(),
   },
   (t) => [
@@ -152,7 +153,9 @@ export const mediaJobs = sqliteTable(
     imageId: text('image_id')
       .notNull()
       .references(() => mediaImages.id),
-    kind: text('kind', { enum: ['process', 'metadata'] }).notNull(),
+    kind: text('kind', {
+      enum: ['process', 'metadata', 'replace', 'size'],
+    }).notNull(),
     scope: text('scope', {
       enum: ['all', 'compressed', 'thumbnail', 'watermark'],
     }).notNull(),
@@ -343,3 +346,10 @@ export const mediaPreviews = sqliteTable(
   },
   (t) => [index('media_previews_status_created').on(t.status, t.createdAt)],
 );
+
+export { mediaReplacements } from './replacement-schema.ts';
+export {
+  mediaSizeVersions,
+  mediaSizeRequests,
+  mediaSizeCandidates,
+} from './size-schema.ts';

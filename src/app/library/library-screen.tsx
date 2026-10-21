@@ -25,6 +25,11 @@ import type { LibraryDetail as Detail } from '../../server/library/detail-types'
 import { ComponentEntrance } from '../../components/component-entrance';
 import { useDetailNavigation } from './use-detail-navigation';
 import { LibraryDetail } from '../../components/library/detail';
+import {
+  DetailReplacement,
+  DetailReplacementFooter,
+  useDetailReplacement,
+} from '../../components/library/detail-replacement';
 import { useDetailQuery } from '../../components/library/use-detail-query';
 import { DetailReadError } from '../../components/library/read-detail';
 import { useDetailReprocess } from '../../components/library/use-detail-reprocess';
@@ -54,6 +59,8 @@ import {
 import { useLibraryBatch } from '../../components/library/use-library-batch';
 import { useLibraryCopy } from '../../components/library/use-library-copy';
 import { CopyDialog } from '../../components/library/copy-dialog';
+import { useLibraryArchive } from '../../components/library/use-library-archive';
+import { ArchiveDialog } from '../../components/library/archive-dialog';
 import {
   BatchWorkspaceContent,
   BatchWorkspaceFooter,
@@ -135,6 +142,18 @@ export function LibraryScreen(props: {
     onClose: detail.close,
     onVersions: () => detail.openView('versions'),
     onOpen: () => detail.openView('reprocess'),
+  });
+  const replacement = useDetailReplacement({
+    detail: detail.view === 'replace' ? detailQuery.data : undefined,
+    onReturn: async () => {
+      await Promise.all([detailQuery.refetch(), query.refreshCurrent()]);
+      detail.returnToDetail();
+    },
+    onCompleted: () => {
+      void detailQuery.refetch();
+      void query.refreshCurrent();
+    },
+    onSessionExpire: () => detailQuery.setUnavailable(401),
   });
   const [statisticsId, setStatisticsId] = useState<string | null>(null);
   const statisticsScroll = useRef(0);
@@ -242,7 +261,9 @@ export function LibraryScreen(props: {
   const batch = useLibraryBatch(batchOptions);
   const batchReprocess = useBatchReprocess(batchOptions);
   const copy = useLibraryCopy(batchOptions);
-  const batchPending = batch.pending || batchReprocess.pending || copy.pending;
+  const archive = useLibraryArchive(batchOptions);
+  const batchPending =
+    batch.pending || batchReprocess.pending || copy.pending || archive.pending;
   const batchUnresolved = batch.unresolved || batchReprocess.unresolved;
   const batchContentVisible =
     (batch.visible &&
@@ -308,6 +329,8 @@ export function LibraryScreen(props: {
           batch.workspace?.phase === 'result' &&
           !batch.workspace.action.endsWith('tags') ? (
           <BatchWorkspaceFooter batch={batch} />
+        ) : detail.view === 'replace' ? (
+          <DetailReplacementFooter state={replacement} />
         ) : detail.view === 'reprocess' ? (
           reprocess.footerActions ? (
             <DetailReprocessFooter actions={reprocess.footerActions} />
@@ -425,6 +448,7 @@ export function LibraryScreen(props: {
                     onBatch={(action, element) => {
                       if (action === 'reprocess') batchReprocess.open(element);
                       else if (action === 'copy') copy.open(element);
+                      else if (action === 'archive') archive.open(element);
                       else batch.open(action, element);
                     }}
                   />
@@ -455,6 +479,23 @@ export function LibraryScreen(props: {
             ) : null}
           </ComponentEntrance>
           {props.afterToolbar}
+          {query.statusError ? (
+            <Alert status="danger">
+              <Alert.Content>
+                <Alert.Title>活动任务状态读取失败</Alert.Title>
+                <Alert.Description>
+                  {query.statusError.message} 已保留当前图片和选择。
+                </Alert.Description>
+                <Button
+                  variant="outline"
+                  className="mt-3 min-h-11"
+                  onPress={query.retryStatus}
+                >
+                  重新核对
+                </Button>
+              </Alert.Content>
+            </Alert>
+          ) : null}
           {reconciliation.error ? (
             <Alert
               status="danger"
@@ -618,7 +659,9 @@ export function LibraryScreen(props: {
         </section>
         {props.children}
       </div>
-      {detail.view === 'reprocess' ? (
+      {detail.view === 'replace' ? (
+        <DetailReplacement state={replacement} />
+      ) : detail.view === 'reprocess' ? (
         <DetailReprocess state={reprocess} />
       ) : detail.view &&
         detailQuery.data &&
@@ -678,6 +721,7 @@ export function LibraryScreen(props: {
           hidden={!!detail.view || statisticsId === detail.imageId}
           onStatistics={openStatistics}
           onVersions={(selected) => detail.openView('versions', selected)}
+          onReplace={() => detail.openView('replace')}
           initialSelected={selectedPreview}
           albumId={props.albumId}
           viewerFilters={
@@ -711,6 +755,7 @@ export function LibraryScreen(props: {
       ) : null}
       <BatchReprocessContent batch={batchReprocess} />
       <CopyDialog copy={copy} />
+      <ArchiveDialog archive={archive} />
       <BatchWorkspaceContent
         batch={batch}
         client={client}

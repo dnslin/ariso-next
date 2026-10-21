@@ -11,12 +11,20 @@ export const processingLabels = {
   failed: '处理失败',
 };
 export const stepLabels: Record<string, string> = {
+  receiving: '接收新文件',
+  size: '生成尺寸',
+  sizes: '更新尺寸',
   identify: '识别图片',
   original: '保存原图',
   compressed: '生成压缩图',
   thumbnail: '生成缩略图',
   watermark: '生成水印图',
   complete: '处理完成',
+};
+export const activeJobLabels = {
+  process: '当前任务',
+  replace: '替换图片',
+  size: '生成尺寸',
 };
 export function bytesLabel(bytes: number) {
   return bytes >= 1048576

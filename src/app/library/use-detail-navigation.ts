@@ -11,8 +11,10 @@ export function useDetailNavigation(
   const imageId = params.get('image');
   const view =
     imageId &&
-    ['versions', 'reprocess'].includes(params.get('detailView') ?? '')
-      ? (params.get('detailView') as 'versions' | 'reprocess')
+    ['versions', 'reprocess', 'replace'].includes(
+      params.get('detailView') ?? '',
+    )
+      ? (params.get('detailView') as 'versions' | 'reprocess' | 'replace')
       : null;
   const listScroll = useRef(0);
   const trigger = useRef<HTMLElement | null>(null);
@@ -60,7 +62,10 @@ export function useDetailNavigation(
     [fallbackFocus],
   );
 
-  function openView(value: 'versions' | 'reprocess', selected?: string) {
+  function openView(
+    value: 'versions' | 'reprocess' | 'replace',
+    selected?: string,
+  ) {
     const main = document.getElementById('main-content');
     if (!view) listScroll.current = main?.scrollTop ?? 0;
     const url = new URL(window.location.href);
@@ -77,7 +82,11 @@ export function useDetailNavigation(
       const main = document.getElementById('main-content');
       if (main) main.scrollTop = listScroll.current;
       document
-        .querySelector<HTMLElement>('[data-testid="detail-version-entry"]')
+        .querySelector<HTMLElement>(
+          view === 'replace'
+            ? '[data-testid="detail-more-entry"]'
+            : '[data-testid="detail-version-entry"]',
+        )
         ?.focus();
     });
   }
@@ -94,7 +103,9 @@ export function useDetailNavigation(
       if (main) main.scrollTop = listScroll.current;
       const target = imageId
         ? document.querySelector<HTMLElement>(
-            '[data-testid="detail-version-entry"]',
+            previous === 'replace'
+              ? '[data-testid="detail-more-entry"]'
+              : '[data-testid="detail-version-entry"]',
           )
         : trigger.current?.isConnected
           ? trigger.current

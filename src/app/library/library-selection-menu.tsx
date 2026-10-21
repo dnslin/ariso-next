@@ -13,6 +13,7 @@ import {
   CheckCheck,
   Copy,
   FolderInput,
+  FolderDown,
   FolderMinus,
   Globe,
   Image as ImageIcon,
@@ -51,6 +52,7 @@ export interface LibraryContextMenu {
 
 const actionIcons = {
   copy: Copy,
+  archive: FolderDown,
   'add-albums': FolderInput,
   'remove-albums': FolderMinus,
   public: Globe,
@@ -62,6 +64,13 @@ const actionIcons = {
   restore: Undo2,
 };
 const buttonClass = 'h-11 rounded-lg px-2 font-normal xl:h-9 xl:px-3';
+
+function actionLabel(action: SelectionBatchAction) {
+  if (action === 'archive') return '打包下载';
+  if (action === 'copy') return '复制链接';
+  if (action === 'reprocess') return '重新处理';
+  return batchLabels[action];
+}
 
 function SelectedThumbnail({ item }: { item: SelectedLibraryItem }) {
   const [failed, setFailed] = useState(false);
@@ -135,7 +144,9 @@ export function LibrarySelectionMenu({
       : selectionBatchActions([...selection.selected.values()], !!contextMenu);
   const compact = !!contextMenu;
   const shortcutActions: SelectionBatchAction[] =
-    scope === 'trash' ? ['restore'] : ['copy', 'add-albums', 'add-tags'];
+    scope === 'trash'
+      ? ['restore']
+      : ['copy', 'archive', 'add-albums', 'add-tags'];
   const menuActions = compact
     ? actions
     : actions.filter((action) => !shortcutActions.includes(action));
@@ -233,10 +244,7 @@ export function LibrarySelectionMenu({
         {onBatch
           ? shortcutActions.map((action, index) => {
               const Icon = actionIcons[action];
-              const label =
-                action === 'copy'
-                  ? '复制链接'
-                  : batchLabels[action as keyof typeof batchLabels];
+              const label = actionLabel(action);
               return (
                 <ActionIconButton
                   key={action}
@@ -349,22 +357,12 @@ export function LibrarySelectionMenu({
                       <Dropdown.Item
                         key={action}
                         id={action}
-                        textValue={
-                          action === 'reprocess'
-                            ? '重新处理'
-                            : action === 'copy'
-                              ? '复制链接'
-                              : batchLabels[action]
-                        }
+                        textValue={actionLabel(action)}
                         isDisabled={blocked}
                         className={`min-h-11 gap-3 rounded-lg xl:min-h-9 ${action === 'trash' ? 'text-danger' : ''}`}
                       >
                         <Icon size={16} aria-hidden />
-                        {action === 'reprocess'
-                          ? '重新处理'
-                          : action === 'copy'
-                            ? '复制链接'
-                            : batchLabels[action]}
+                        {actionLabel(action)}
                       </Dropdown.Item>
                     );
                   })

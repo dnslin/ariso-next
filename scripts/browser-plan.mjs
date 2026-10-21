@@ -36,9 +36,13 @@ const suites = {
       ['smtp', 'smtp'],
       ['uiux-p1', 'uiux-p1'],
       ['uiux-20261015', 'uiux-20261015'],
+      ['image-workflows', 'image-workflows'],
     ],
   },
   'brand-experiment': {},
+  'image-workflows': {
+    stages: [['image-workflows', 'imageWorkflows']],
+  },
   branding: {},
   'sharing-experiment': {},
   'sharing-protocol': {},

@@ -91,6 +91,7 @@ export async function prepareImageDelivery(
         input.selectedVersion,
         owner,
         options.access,
+        input.preset,
       );
     for (let attempt = 0; attempt < 2; attempt++) {
       request.signal.throwIfAborted();

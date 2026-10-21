@@ -10,6 +10,8 @@ import {
 } from 'drizzle-orm/sqlite-core';
 import { albums } from '../collections/schema.ts';
 
+export { imageShares } from './image-schema.ts';
+
 export const albumShares = sqliteTable(
   'album_shares',
   {

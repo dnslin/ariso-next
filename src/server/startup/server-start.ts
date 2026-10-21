@@ -21,6 +21,8 @@ import { readStorageReferences } from './storage-references.ts';
 import type { ReadStorageReferences } from '../storage/references.ts';
 import { releaseStorageHistory } from '../upload/usage.ts';
 import { createBrandingService } from '../site/branding.ts';
+import { createArchiveService } from '../delivery/archive.ts';
+import { createReplacementService } from '../media/replacement.ts';
 
 type ServerRuntime = ReturnType<typeof initializeServerRuntime>;
 
@@ -63,6 +65,21 @@ function initializeServerRuntime() {
       );
     });
     const secretCrypto = createSecretCrypto(config.encryptionKey);
+    const archive = createArchiveService({
+      db: connection.db,
+      storageRoot: resolve(config.dataDir, 'storage'),
+      secretCrypto,
+      logger: createRuntimeLogger('delivery.archive', config.logLevel),
+    });
+    const replacements = createReplacementService({
+      db: connection.db,
+      storageRoot: resolve(config.dataDir, 'storage'),
+      temporaryRoot: resolve(config.dataDir, 'tmp'),
+      watermarksRoot: resolve(config.dataDir, 'assets', 'watermarks'),
+      resources: mediaResources,
+      secretCrypto,
+      logger: createRuntimeLogger('media.replace', config.logLevel),
+    });
     const mediaQueue = startMediaQueue({
       db: connection.db,
       // DATA_DIR is absolute; keep runtime data paths absolute for output tracing.
@@ -104,6 +121,7 @@ function initializeServerRuntime() {
         key,
         uploads.activeWrites(id) +
           mediaQueue.activeWrites(id) +
+          replacements.activeWrites(id) +
           storageProbes.activeWrites(id),
       );
     const storageMaintenance = startStorageMaintenance({
@@ -134,6 +152,8 @@ function initializeServerRuntime() {
       analytics,
       sharing,
       branding,
+      archive,
+      replacements,
       get stopping() {
         return stopping !== undefined;
       },
@@ -141,6 +161,8 @@ function initializeServerRuntime() {
         return (stopping ??= storageMaintenance
           .stop()
           .finally(() => sharing.stop())
+          .finally(() => archive.close())
+          .finally(() => replacements.close())
           .finally(() => uploads.stop())
           .finally(() => mediaQueue.stop())
           .finally(() => watermarks.stop())

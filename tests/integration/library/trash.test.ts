@@ -226,7 +226,8 @@ it('exposes an owner thumbnail only for an available stored version, including f
     .run();
   expect(readPage().items[0]).toMatchObject({
     processingStatus: 'failed',
-    thumbnailUrl: '/api/trash/preview/preview?type=thumbnail',
+    thumbnailUrl:
+      '/api/trash/preview/preview?type=thumbnail&v=thumbnail-object',
   });
   connection.db.update(mediaObjects).set({ status: 'writing' }).run();
   expect(readPage().items[0].thumbnailUrl).toBeNull();

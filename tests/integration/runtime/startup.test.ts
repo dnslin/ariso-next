@@ -1,4 +1,3 @@
-import { readFileSync } from 'node:fs';
 import { randomBytes } from 'node:crypto';
 import { once } from 'node:events';
 import {
@@ -30,45 +29,19 @@ import {
   upgradeMigration,
   brokenMigration,
   writeMigrations as writeRuntimeMigrations,
+  readProductionMigrations,
 } from '../../fixtures/runtime/migrations';
 import { launch, stop, unusedPort } from './process-helpers';
 
-const storageMigration = {
-  tag: '0000_storage',
-  when: 1,
-  sql: readFileSync(resolve('drizzle/0001_calm_hulk.sql'), 'utf8'),
-};
+const productionMigrations = readProductionMigrations();
+const productionHistory = productionMigrations.map(({ when }) => ({
+  created_at: when,
+}));
 function writeMigrations(
   ...[folder, migrations]: Parameters<typeof writeRuntimeMigrations>
 ) {
-  const identityMigration = {
-    tag: '0001_identity',
-    when: 2,
-    sql: readFileSync(resolve('drizzle/0004_shiny_korath.sql'), 'utf8'),
-  };
   return writeRuntimeMigrations(folder, [
-    storageMigration,
-    identityMigration,
-    ...[
-      '0002_red_gideon',
-      '0003_wealthy_hydra',
-      '0005_sharp_paper_doll',
-      '0006_material_joseph',
-      '0008_numerous_nick_fury',
-      '0009_wide_scarlet_witch',
-      '0010_giant_moondragon',
-      '0011_little_shinko_yamashiro',
-      '0012_storage_probes',
-      '0014_sticky_blacklash',
-      '0015_fluffy_venus',
-      '0020_woozy_swordsman',
-      '0025_shiny_namora',
-      '0027_colossal_iron_lad',
-    ].map((tag, index) => ({
-      tag,
-      when: index + 3,
-      sql: readFileSync(resolve(`drizzle/${tag}.sql`), 'utf8'),
-    })),
+    ...productionMigrations,
     ...migrations,
   ]);
 }
@@ -312,25 +285,7 @@ describe('完整生产入口的失败与恢复', () => {
     ).toEqual([]);
     expect(
       query('SELECT created_at FROM __drizzle_migrations ORDER BY created_at'),
-    ).toEqual([
-      { created_at: 1 },
-      { created_at: 2 },
-      { created_at: 3 },
-      { created_at: 4 },
-      { created_at: 5 },
-      { created_at: 6 },
-      { created_at: 7 },
-      { created_at: 8 },
-      { created_at: 9 },
-      { created_at: 10 },
-      { created_at: 11 },
-      { created_at: 12 },
-      { created_at: 13 },
-      { created_at: 14 },
-      { created_at: 15 },
-      { created_at: 16 },
-      { created_at: 1000 },
-    ]);
+    ).toEqual([...productionHistory, { created_at: 1000 }]);
     writeMigrations(folder, [
       initialMigration,
       upgradeMigration,

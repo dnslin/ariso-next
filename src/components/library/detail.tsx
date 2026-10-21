@@ -16,9 +16,18 @@ import { Modal } from '@heroui/react/modal';
 import { CloseButton } from '@heroui/react/close-button';
 import { Skeleton } from '@heroui/react/skeleton';
 import { Toolbar } from '@heroui/react/toolbar';
+import { Dropdown } from '@heroui/react/dropdown';
 import { Tooltip } from '@heroui/react/tooltip';
 import { toast } from '@heroui/react/toast';
-import { BarChart3, Expand, Layers } from 'lucide-react';
+import {
+  BarChart3,
+  Expand,
+  Layers,
+  MoreHorizontal,
+  ImageUp,
+  Share2,
+} from 'lucide-react';
+import { DetailImageShare } from './detail-image-share';
 import type { LibraryDetail as Detail } from '../../server/library/detail-types';
 import type { LibraryFilters } from '../../server/library/query-schema';
 import type { VersionKind } from '../../server/media/schema';
@@ -32,6 +41,7 @@ import {
   bytesLabel,
   processingLabels,
   stepLabels,
+  activeJobLabels,
   versionLabels,
 } from './detail-labels';
 
@@ -53,6 +63,8 @@ function DetailContent({
   onVersions,
   onView,
   onStatistics,
+  onReplace,
+  onShare,
 }: {
   detail: Detail;
   onCopy: () => void;
@@ -66,6 +78,8 @@ function DetailContent({
   onVersions: () => void;
   onView: () => void;
   onStatistics?: () => void;
+  onReplace: () => void;
+  onShare: () => void;
 }) {
   const [viewerTooltipOpen, setViewerTooltipOpen] = useState(false);
   useEffect(() => {
@@ -191,6 +205,54 @@ function DetailContent({
                   </Button>
                   <Tooltip.Content>查看大图</Tooltip.Content>
                 </Tooltip>
+                <Dropdown>
+                  <Button
+                    data-testid="detail-more-entry"
+                    aria-label="更多图片操作"
+                    isIconOnly
+                    variant="ghost"
+                    className="size-11 shrink-0 rounded-lg text-muted"
+                    isDisabled={refreshing}
+                  >
+                    <MoreHorizontal size={20} aria-hidden />
+                  </Button>
+                  <Dropdown.Popover
+                    placement="bottom end"
+                    className="rounded-xl border border-border bg-background dark:bg-surface"
+                  >
+                    <Dropdown.Menu aria-label="图片详情更多操作">
+                      <Dropdown.Item
+                        id="replace"
+                        textValue="替换图片"
+                        className="min-h-11 gap-3"
+                        onAction={onReplace}
+                        isDisabled={
+                          !!detail.trashedAt ||
+                          !!detail.deletionStatus ||
+                          !detail.storage.enabled ||
+                          detail.processingStatus !== 'ready'
+                        }
+                      >
+                        <ImageUp size={18} aria-hidden />
+                        替换图片
+                      </Dropdown.Item>
+                      {detail.visibility === 'private' ? (
+                        <Dropdown.Item
+                          id="share"
+                          textValue="临时分享"
+                          className="min-h-11 gap-3"
+                          onAction={onShare}
+                          isDisabled={
+                            !!detail.trashedAt || !!detail.deletionStatus
+                          }
+                        >
+                          <Share2 size={18} aria-hidden />
+                          临时分享
+                        </Dropdown.Item>
+                      ) : null}
+                    </Dropdown.Menu>
+                  </Dropdown.Popover>
+                </Dropdown>
               </div>
               <AccessDisclosure
                 label={detail.visibility === 'private' ? '私有' : '公开'}
@@ -214,6 +276,12 @@ function DetailContent({
                   {!detail.storage.enabled ? '（存储已停用）' : ''} ·{' '}
                   {new Date(detail.createdAt).toLocaleString('zh-CN')}
                 </p>
+                {detail.contentUpdatedAt ? (
+                  <p>
+                    内容更新：
+                    {new Date(detail.contentUpdatedAt).toLocaleString('zh-CN')}
+                  </p>
+                ) : null}
               </div>
               <div>
                 <p>
@@ -246,10 +314,8 @@ function DetailContent({
               ) : null}
               {detail.activeJob ? (
                 <p role="status">
-                  当前任务：
-                  {detail.activeJob.status === 'queued'
-                    ? '等待执行'
-                    : '执行中'}{' '}
+                  {activeJobLabels[detail.activeJob.kind]}：
+                  {detail.activeJob.status === 'queued' ? '等待执行' : '执行中'}{' '}
                   · {stepLabels[detail.activeJob.step] ?? detail.activeJob.step}
                 </p>
               ) : null}
@@ -349,9 +415,11 @@ export function LibraryDetail({
   initialSelected,
   viewerFilters,
   onStatistics,
+  onReplace,
 }: {
   initialSelected?: string;
   onStatistics?: () => void;
+  onReplace: () => void;
   viewerFilters?: LibraryFilters;
   query: ReturnType<typeof useDetailQuery>;
   hidden?: boolean;
@@ -372,6 +440,7 @@ export function LibraryDetail({
     setObservationPaused,
   } = query;
   const [copyOpen, setCopyOpen] = useState(false);
+  const [shareOpen, setShareOpen] = useState(false);
   const [selected, setSelected] = useState<string | null>(
     initialSelected ?? null,
   );
@@ -438,7 +507,7 @@ export function LibraryDetail({
         <Modal.Dialog
           aria-label="图片详情"
           data-testid="library-detail"
-          className="h-(--visual-viewport-height) max-h-full min-h-0 max-w-none rounded-none bg-background p-4 pt-[max(16px,env(safe-area-inset-top))] md:h-160 md:max-w-260 md:rounded-3xl md:p-6"
+          className={`h-(--visual-viewport-height) max-h-full min-h-0 max-w-none rounded-none bg-background p-4 pt-[max(16px,env(safe-area-inset-top))] md:rounded-3xl md:p-6 ${shareOpen ? 'md:h-auto md:max-h-[calc(var(--visual-viewport-height)-48px)] md:max-w-300' : 'md:h-160 md:max-w-260'}`}
         >
           <Modal.Header className="flex shrink-0 flex-row items-center justify-between gap-3">
             <div ref={dialogRef}>
@@ -516,54 +585,73 @@ export function LibraryDetail({
             </Alert>
           ) : null}
           {query.data && !query.isError && !expired && !unavailable ? (
-            <DetailContent
-              detail={query.data}
-              selected={selected ?? initialPreview(query.data)}
-              onSelect={setSelected}
-              onStatistics={onStatistics}
-              onVersions={() =>
-                onVersions(selected ?? initialPreview(query.data))
-              }
-              onView={() => {
-                detailScroll.current =
-                  document.querySelector<HTMLElement>(
-                    '[data-testid="detail-body"]',
-                  )?.scrollTop ?? 0;
-                setViewer({
-                  initial: query.data!,
-                  initialVersion: selected
-                    ? (selected as VersionKind)
-                    : initialViewerVersion(query.data!),
-                  filters: viewerFilters,
-                });
-              }}
-              revision={previewRevision}
-              refreshing={query.isFetching || mutationPending}
-              mutationPending={mutationPending}
-              trash={{
-                record: query.data,
-                operation: 'trash',
-                onPending: onMutationPending,
-                onUnavailable: (status) => {
-                  setUnavailable(status);
-                  if (status === 404)
-                    void client.invalidateQueries({ queryKey: ['library'] });
-                },
-                onVerified: (record) =>
-                  client.setQueryData(
-                    ['library-detail', imageId, albumId],
-                    record,
-                  ),
-                onComplete: onTrashed,
-              }}
-              onRefresh={() => {
-                void refreshDetail();
-              }}
-              onCopy={() => {
-                setCopyOpen(true);
-                void query.refetch();
-              }}
-            />
+            shareOpen ? (
+              <DetailImageShare
+                detail={query.data}
+                onSessionExpire={() => setUnavailable(401)}
+                onClose={() => {
+                  setShareOpen(false);
+                  requestAnimationFrame(() =>
+                    document
+                      .querySelector<HTMLElement>(
+                        '[data-testid="detail-more-entry"]',
+                      )
+                      ?.focus({ preventScroll: true }),
+                  );
+                }}
+              />
+            ) : (
+              <DetailContent
+                detail={query.data}
+                selected={selected ?? initialPreview(query.data)}
+                onSelect={setSelected}
+                onStatistics={onStatistics}
+                onReplace={onReplace}
+                onShare={() => setShareOpen(true)}
+                onVersions={() =>
+                  onVersions(selected ?? initialPreview(query.data))
+                }
+                onView={() => {
+                  detailScroll.current =
+                    document.querySelector<HTMLElement>(
+                      '[data-testid="detail-body"]',
+                    )?.scrollTop ?? 0;
+                  setViewer({
+                    initial: query.data!,
+                    initialVersion: selected
+                      ? (selected as VersionKind)
+                      : initialViewerVersion(query.data!),
+                    filters: viewerFilters,
+                  });
+                }}
+                revision={previewRevision}
+                refreshing={query.isFetching || mutationPending}
+                mutationPending={mutationPending}
+                trash={{
+                  record: query.data,
+                  operation: 'trash',
+                  onPending: onMutationPending,
+                  onUnavailable: (status) => {
+                    setUnavailable(status);
+                    if (status === 404)
+                      void client.invalidateQueries({ queryKey: ['library'] });
+                  },
+                  onVerified: (record) =>
+                    client.setQueryData(
+                      ['library-detail', imageId, albumId],
+                      record,
+                    ),
+                  onComplete: onTrashed,
+                }}
+                onRefresh={() => {
+                  void refreshDetail();
+                }}
+                onCopy={() => {
+                  setCopyOpen(true);
+                  void query.refetch();
+                }}
+              />
+            )
           ) : null}
           {copyOpen && query.data && !expired ? (
             <DetailCopy

@@ -173,14 +173,14 @@ it('keeps mixed states and stored versions independent from storage and reproces
     .where(eq(mediaObjects.id, 'thumb'))
     .run();
   expect(readLibraryPage(connection.db).items[0].thumbnailUrl).toBe(
-    '/i/mixed?type=thumbnail',
+    '/i/mixed?type=thumbnail&v=thumb',
   );
   for (const status of ['pending', 'processing', 'failed'] as const) {
     connection.db.update(mediaImages).set({ processingStatus: status }).run();
     expect(readLibraryPage(connection.db).items[0]).toMatchObject({
       processingStatus: status,
       versions: { thumbnail: true },
-      thumbnailUrl: '/i/mixed?type=thumbnail',
+      thumbnailUrl: '/i/mixed?type=thumbnail&v=thumb',
     });
   }
   connection.db.update(storageConfigs).set({ enabled: false }).run();

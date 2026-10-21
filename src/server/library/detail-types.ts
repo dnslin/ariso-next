@@ -1,6 +1,7 @@
 import type { VersionKind } from '../media/schema.ts';
 import type {
   LibraryJobSummary,
+  LibraryActiveJob,
   LibraryMetadataJob,
   LibraryProcessingJob,
 } from './types.ts';
@@ -58,6 +59,7 @@ export interface LibraryDetail {
   visibility: 'public' | 'private';
   processingStatus: 'pending' | 'processing' | 'ready' | 'failed';
   createdAt: string;
+  contentUpdatedAt?: string | null;
   trashedAt: string | null;
   deletionStatus: 'deleting' | 'cleanup_failed' | null;
   storage: { id: string; name: string; enabled: boolean };
@@ -71,7 +73,7 @@ export interface LibraryDetail {
     downloadPath: string | null;
     unavailableReason: string | null;
   };
-  activeJob: LibraryJobSummary | null;
+  activeJob: LibraryActiveJob | null;
   latestFailedJob: LibraryJobSummary | null;
   metadataJob: LibraryMetadataJob | null;
   processingJob: LibraryProcessingJob | null;

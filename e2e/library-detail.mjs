@@ -52,11 +52,28 @@ export async function clipboardDeniedProxy(origin) {
   };
 }
 
-// Select through the shared single-entry format menu with real pointer input.
+// Choose the visible format, then activate the single shared copy action.
 export async function selectCopyFormat(page, label) {
-  await page.click('loc=role:button[name="选择复制格式"]');
-  await page.waitForSelector(`loc=role:menuitem[name="${label}"]`);
-  await page.click(`loc=role:menuitem[name="${label}"]`);
+  const formats = {
+    '复制 URL': 'url',
+    '复制 Markdown': 'markdown',
+    '复制 HTML': 'html',
+  };
+  const format = formats[label];
+  assert.ok(format, `Unsupported copy format: ${label}`);
+  await page.click(
+    `[data-testid="detail-copy-format"] [data-copy-format="${format}"]`,
+  );
+  await page.waitForFunction(
+    (format) =>
+      document
+        .querySelector(
+          `[data-testid="detail-copy-format"] [data-copy-format="${format}"]`,
+        )
+        ?.getAttribute('aria-checked') === 'true',
+    format,
+  );
+  await page.click('[data-testid="detail-copy-submit"]');
 }
 
 // Add real saved versions to existing cards without changing list pagination.

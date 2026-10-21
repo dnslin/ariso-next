@@ -1,5 +1,6 @@
 import { and, eq, inArray } from 'drizzle-orm';
 import { createReadStream } from 'node:fs';
+import { finished } from 'node:stream/promises';
 import { mkdir, rm } from 'node:fs/promises';
 import { sep } from 'node:path';
 import { createMediaResources } from './resources.ts';
@@ -28,6 +29,9 @@ import {
   reconcileMediaObjects,
 } from './steps.ts';
 import { mediaJobSteps, reprocessVersions } from './reprocess.ts';
+import { mediaReplacements } from './replacement-schema.ts';
+import { replacementCompression } from './replacement-render.ts';
+import { prepareImageSizes } from './size-process.ts';
 import { advanceMediaStep, settleMediaFailure } from './recovery.ts';
 import {
   mediaImages,
@@ -92,6 +96,16 @@ export async function processMediaJob(
             : inputDirectory,
       });
     const { snapshot } = job;
+    const replacement =
+      job.kind === 'replace'
+        ? db
+            .select()
+            .from(mediaReplacements)
+            .where(eq(mediaReplacements.jobId, jobId))
+            .get()
+        : undefined;
+    if (job.kind === 'replace' && !replacement?.originalObjectId)
+      throw mediaError('MEDIA_REPLACEMENT_INCOMPLETE', '替换原图尚未保存');
     const original = db
       .select()
       .from(mediaObjects)
@@ -103,6 +117,13 @@ export async function processMediaJob(
         ),
       )
       .get()!;
+    const sourceObject = replacement
+      ? db
+          .select()
+          .from(mediaObjects)
+          .where(eq(mediaObjects.id, replacement.originalObjectId!))
+          .get()!
+      : original.media_objects;
     budget = beginStep();
     let stepSignal = AbortSignal.any([signal, budget.signal]);
     const input = await readMediaInput(temporaryRoot, jobId);
@@ -112,7 +133,7 @@ export async function processMediaJob(
       (await mediaSourcePath(
         runtime,
         sourceStorage,
-        original.media_objects,
+        sourceObject,
         `${inputDirectory}${sep}original`,
         stepSignal,
       ));
@@ -125,11 +146,23 @@ export async function processMediaJob(
       input?.facts,
     );
     const generatedPaths = new Map<string, string>();
-    job.expectedVersions = reprocessVersions(
-      job.scope,
-      facts.classification,
-      snapshot,
-    );
+    if (
+      replacement &&
+      facts.classification !== 'static' &&
+      job.expectedVersions.some(
+        (kind) => kind === 'compressed' || kind === 'watermark',
+      )
+    )
+      throw mediaError(
+        'MEDIA_REPLACEMENT_NOT_APPLICABLE',
+        '新图片无法生成已有的压缩图或水印图，请使用静态图片或上传为新图片',
+      );
+    if (!replacement)
+      job.expectedVersions = reprocessVersions(
+        job.scope,
+        facts.classification,
+        snapshot,
+      );
     const workVersions = mediaJobSteps(job);
     db.transaction((tx) => {
       activeMediaJob(tx, jobId);
@@ -139,29 +172,44 @@ export async function processMediaJob(
         width: facts.width,
         height: facts.height,
       };
-      tx.update(mediaImages)
-        .set({
-          ...details,
-          animated: facts.animated,
-          pageCount: facts.pageCount,
-          classification: facts.classification,
-          updatedAt: new Date(),
-        })
-        .where(eq(mediaImages.id, image.id))
-        .run();
-      tx.update(mediaVersions)
-        .set(details)
-        .where(
-          and(
-            eq(mediaVersions.imageId, image.id),
-            eq(mediaVersions.kind, 'original'),
-          ),
-        )
-        .run();
-      tx.update(mediaObjects)
-        .set({ format: facts.format, mime: facts.mime, updatedAt: new Date() })
-        .where(eq(mediaObjects.id, original.media_objects.id))
-        .run();
+      if (replacement) {
+        tx.update(mediaReplacements)
+          .set({ facts })
+          .where(eq(mediaReplacements.jobId, jobId))
+          .run();
+        tx.update(mediaObjects)
+          .set({ ...details, updatedAt: new Date() })
+          .where(eq(mediaObjects.id, sourceObject.id))
+          .run();
+      } else {
+        tx.update(mediaImages)
+          .set({
+            ...details,
+            animated: facts.animated,
+            pageCount: facts.pageCount,
+            classification: facts.classification,
+            updatedAt: new Date(),
+          })
+          .where(eq(mediaImages.id, image.id))
+          .run();
+        tx.update(mediaVersions)
+          .set(details)
+          .where(
+            and(
+              eq(mediaVersions.imageId, image.id),
+              eq(mediaVersions.kind, 'original'),
+            ),
+          )
+          .run();
+        tx.update(mediaObjects)
+          .set({
+            format: facts.format,
+            mime: facts.mime,
+            updatedAt: new Date(),
+          })
+          .where(eq(mediaObjects.id, original.media_objects.id))
+          .run();
+      }
       tx.update(mediaJobs)
         .set({ expectedVersions: job.expectedVersions })
         .where(eq(mediaJobs.id, jobId))
@@ -171,7 +219,32 @@ export async function processMediaJob(
     });
 
     step = 'metadata';
-    await readAndStoreMetadata(runtime, jobId, sourcePath, workspace, signal);
+    const metadata = await readAndStoreMetadata(
+      runtime,
+      jobId,
+      sourcePath,
+      workspace,
+      signal,
+      !!replacement,
+    );
+    if (
+      replacement &&
+      metadata &&
+      'data' in metadata &&
+      metadata.data &&
+      metadata.photography &&
+      metadata.readAt
+    )
+      db.update(mediaReplacements)
+        .set({
+          metadata: {
+            data: metadata.data,
+            photography: metadata.photography,
+            readAt: metadata.readAt,
+          },
+        })
+        .where(eq(mediaReplacements.jobId, jobId))
+        .run();
     step = 'identify';
 
     const prepared = await prepareProcessingInput({
@@ -184,7 +257,12 @@ export async function processMediaJob(
     facts.width = prepared.width;
     facts.height = prepared.height;
 
-    if (facts.format === 'SVG')
+    if (replacement)
+      db.update(mediaReplacements)
+        .set({ facts })
+        .where(eq(mediaReplacements.jobId, jobId))
+        .run();
+    if (!replacement && facts.format === 'SVG')
       db.transaction((tx) => {
         activeMediaJob(tx, jobId);
         const dimensions = { width: facts.width, height: facts.height };
@@ -206,6 +284,7 @@ export async function processMediaJob(
     budget = undefined;
 
     for (const kind of workVersions) {
+      const snapshot = replacement?.snapshots[kind] ?? job.snapshot;
       step = kind;
       signal.throwIfAborted();
       budget = beginStep();
@@ -243,7 +322,19 @@ export async function processMediaJob(
       const controller = new AbortController();
       const cancelSignal = AbortSignal.any([stepSignal, controller.signal]);
       let compressedPath: string | undefined;
-      if (kind === 'watermark' && snapshot.compressionEnabled) {
+      if (replacement && kind === 'watermark' && snapshot.compressionEnabled) {
+        compressedPath = await replacementCompression(
+          {
+            input: prepared.input,
+            facts,
+            snapshot,
+            workspace,
+            signal: cancelSignal,
+            diskLimitBytes: budget.diskLimitBytes,
+          },
+          (source) => budget!.countOutput(source),
+        );
+      } else if (kind === 'watermark' && snapshot.compressionEnabled) {
         const compressed = savedMediaCandidate(db, jobId, 'compressed');
         if (!compressed)
           throw mediaError(
@@ -273,19 +364,26 @@ export async function processMediaJob(
         diskLimitBytes: budget.diskLimitBytes,
       });
       let saved;
+      const encoded = budget.countOutput(child.readable());
+      // Storage may reject before attaching a reader; disposal is still observed.
+      const encodedClosed = finished(encoded, { cleanup: true }).catch(
+        () => undefined,
+      );
       try {
         const { storage } = activeMediaJob(db, jobId);
         saved = await writeMediaObject(
           runtime,
           storage,
           plan,
-          budget.countOutput(child.readable()),
+          encoded,
           `image/${kind === 'thumbnail' ? 'webp' : snapshot.outputFormat}`,
           `${inputDirectory}${sep}derived-${plan.objectId}`,
           cancelSignal,
         );
       } catch (error) {
         controller.abort();
+        encoded.destroy();
+        await encodedClosed;
         const toolError = await settled;
         if (
           (toolError as (Error & { code?: string }) | undefined)?.code ===
@@ -346,6 +444,13 @@ export async function processMediaJob(
       budget = undefined;
     }
 
+    step = 'sizes';
+    const versionCandidates = new Map(
+      job.expectedVersions.map(
+        (kind) => [kind, savedMediaCandidate(db, jobId, kind)!] as const,
+      ),
+    );
+    await prepareImageSizes(runtime, jobId, versionCandidates, signal);
     step = 'complete';
     signal.throwIfAborted();
     completeMediaJob(db, jobId);

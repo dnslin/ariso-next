@@ -7,6 +7,14 @@ import { cleanupMediaObject } from './cleanup-object.ts';
 import { analyzeMediaError } from './errors.ts';
 import type { MediaRuntime } from './process.ts';
 import {
+  mediaSizeVersions,
+  mediaSizeRequests,
+  mediaSizeCandidates,
+} from './size-schema.ts';
+import { mediaReplacements } from './replacement-schema.ts';
+import { revokeImageShares } from '../sharing/image-configuration.ts';
+import { discardMediaInput } from './input.ts';
+import {
   mediaCleanupJobs,
   mediaImages,
   mediaJobs,
@@ -126,6 +134,7 @@ export function requestPermanentDelete(
           '永久删除任务不存在',
         );
       const now = new Date();
+      revokeImageShares(tx, imageId, now);
       tx.update(mediaImages)
         .set({ deletionStatus: 'deleting', updatedAt: now })
         .where(eq(mediaImages.id, imageId))
@@ -312,6 +321,39 @@ export async function cleanupPermanentDeletes(
       );
     }
     if (signal?.aborted) break;
+    const inputJobs = db
+      .select({ id: mediaJobs.id })
+      .from(mediaJobs)
+      .where(eq(mediaJobs.imageId, job.imageId))
+      .all();
+    try {
+      for (const inputJob of inputJobs)
+        await discardMediaInput(runtime.temporaryRoot, inputJob.id);
+    } catch (error) {
+      const diagnostic =
+        'MEDIA_INPUT_CLEANUP_FAILED: ' + analyzeMediaError(error).diagnostic;
+      const now = new Date();
+      db.transaction((tx) => {
+        tx.update(mediaImages)
+          .set({ deletionStatus: 'cleanup_failed', updatedAt: now })
+          .where(eq(mediaImages.id, job.imageId))
+          .run();
+        tx.update(mediaCleanupJobs)
+          .set({
+            status: 'failed',
+            error: diagnostic,
+            finishedAt: now,
+            updatedAt: now,
+          })
+          .where(eq(mediaCleanupJobs.id, job.id))
+          .run();
+      });
+      runtime.logger.error(
+        { err: error, imageId: job.imageId },
+        'Media input cleanup failed',
+      );
+      continue;
+    }
     db.transaction(
       (tx) => {
         if (hasActiveJob(tx, job.imageId)) return;
@@ -346,6 +388,22 @@ export async function cleanupPermanentDeletes(
         }
         tx.delete(mediaVersions)
           .where(eq(mediaVersions.imageId, job.imageId))
+          .run();
+        tx.delete(mediaSizeVersions)
+          .where(eq(mediaSizeVersions.imageId, job.imageId))
+          .run();
+        const imageJobs = tx
+          .select({ id: mediaJobs.id })
+          .from(mediaJobs)
+          .where(eq(mediaJobs.imageId, job.imageId));
+        tx.delete(mediaSizeRequests)
+          .where(inArray(mediaSizeRequests.jobId, imageJobs))
+          .run();
+        tx.delete(mediaSizeCandidates)
+          .where(inArray(mediaSizeCandidates.jobId, imageJobs))
+          .run();
+        tx.delete(mediaReplacements)
+          .where(eq(mediaReplacements.imageId, job.imageId))
           .run();
         tx.delete(mediaMetadata)
           .where(eq(mediaMetadata.imageId, job.imageId))

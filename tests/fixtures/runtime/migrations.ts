@@ -1,5 +1,19 @@
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+/** Current SQL is required by Web startup. Keep fixture fault timestamps >=1000. */
+export function readProductionMigrations() {
+  const folder = fileURLToPath(new URL('../../../drizzle/', import.meta.url));
+  const journal = JSON.parse(
+    readFileSync(join(folder, 'meta/_journal.json'), 'utf8'),
+  ) as { entries: { tag: string }[] };
+  return journal.entries.map(({ tag }, index) => ({
+    tag,
+    when: index + 1,
+    sql: readFileSync(join(folder, `${tag}.sql`), 'utf8'),
+  }));
+}
 
 export const initialMigration = {
   tag: '0000_initial',

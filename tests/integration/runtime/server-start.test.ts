@@ -70,6 +70,30 @@ function run(
 }
 
 describe('Web startup and real health handler', () => {
+  it('图片工作流服务可由原生 Node 导入，并保留业务错误的状态与代码', () => {
+    const sizes = new URL(
+      '../../../src/server/media/sizes.ts',
+      import.meta.url,
+    );
+    const query = new URL(
+      '../../../src/server/library/query-schema.ts',
+      import.meta.url,
+    );
+    run(`
+      const { parseImageSizeInput } = await import(${JSON.stringify(sizes.href)});
+      assert.throws(
+        () => parseImageSizeInput({ version: 'original', preset: 'small' }),
+        error => error instanceof Error && error.code === 'MEDIA_SIZE_INVALID' && error.status === 400,
+      );
+      const { parseLibraryQuery } = await import(${JSON.stringify(query.href)});
+      assert.throws(
+        () => parseLibraryQuery(new URLSearchParams('unknown=value')),
+        error => error instanceof Error && error.code === 'LIBRARY_INVALID_QUERY' && error.status === 400,
+      );
+      assert.equal(existsSync(databasePath), false);
+    `);
+  });
+
   it.each([
     { NEXT_RUNTIME: 'edge' },
     { NEXT_RUNTIME: undefined },

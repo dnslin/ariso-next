@@ -47,12 +47,15 @@ vi.mock('@tanstack/react-query', async (original) => {
     useQueryClient: () => navigationCache,
     useQuery: (options: QueryObserverOptions<unknown>, client: QueryClient) => {
       const harness = runtime.harness!;
-      if (!harness.observer) {
+      const index = harness.queryCursor++;
+      let observer = harness.observers[index];
+      if (!observer) {
         harness.client = client;
-        harness.observer = new actual.QueryObserver(client, options);
-        harness.unsubscribe = harness.observer.subscribe(() => {});
-      } else harness.observer.setOptions(options);
-      return harness.observer.getCurrentResult();
+        observer = new actual.QueryObserver(client, options);
+        harness.observers[index] = observer;
+        harness.unsubscribes.push(observer.subscribe(() => {}));
+      } else observer.setOptions(options);
+      return observer.getCurrentResult();
     },
   };
 });
@@ -73,9 +76,13 @@ const shell = {
 class Harness {
   cells: unknown[] = [];
   cursor = 0;
-  observer: QueryObserver<unknown> | null = null;
+  queryCursor = 0;
+  observers: QueryObserver<unknown>[] = [];
+  get observer() {
+    return this.observers[0];
+  }
   client: QueryClient | null = null;
-  unsubscribe: (() => void) | null = null;
+  unsubscribes: (() => void)[] = [];
   constructor(readonly Screen: typeof TagsScreen | typeof SharesScreen) {}
   state(initial: unknown) {
     const index = this.cursor++;
@@ -95,6 +102,7 @@ class Harness {
   }
   render() {
     this.cursor = 0;
+    this.queryCursor = 0;
     runtime.harness = this;
     try {
       return this.Screen(shell);
@@ -109,8 +117,8 @@ class Harness {
     (input.props.onChange as (value: string) => void)(value);
   }
   dispose() {
-    this.unsubscribe?.();
-    this.observer?.destroy();
+    for (const unsubscribe of this.unsubscribes) unsubscribe();
+    for (const observer of this.observers) observer.destroy();
     this.client?.clear();
   }
 }

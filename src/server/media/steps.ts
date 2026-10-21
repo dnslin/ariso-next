@@ -1,4 +1,4 @@
-import { and, eq, inArray } from 'drizzle-orm';
+import { and, eq, inArray, sql } from 'drizzle-orm';
 import type { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
 import { resolveUploadStorage } from '../storage/defaults.ts';
 import { inspectImage } from './formats.ts';
@@ -19,7 +19,12 @@ import {
   mediaObjects,
   mediaVersions,
   type DerivedVersionKind,
+  type VersionKind,
 } from './schema.ts';
+import { mediaReplacements } from './replacement-schema.ts';
+import { mediaMetadata } from './schema.ts';
+import { revokeImageShares } from '../sharing/image-configuration.ts';
+import { publishImageSizes } from './size-process.ts';
 
 export function activeMediaJob(db: BetterSQLite3Database, jobId: string) {
   const job = db.select().from(mediaJobs).where(eq(mediaJobs.id, jobId)).get();
@@ -55,6 +60,7 @@ export function savedMediaCandidate(
         eq(mediaObjects.jobId, jobId),
         eq(mediaObjects.purpose, kind),
         eq(mediaObjects.status, 'stored'),
+        sql`not exists (select 1 from media_size_candidates where job_id = ${mediaObjects.jobId} and object_id = ${mediaObjects.id})`,
       ),
     )
     .get();
@@ -119,7 +125,7 @@ export function saveMediaCandidate(
 export function replaceMediaVersion(
   db: BetterSQLite3Database,
   imageId: string,
-  kind: DerivedVersionKind,
+  kind: VersionKind,
   objectId: string,
   details: {
     byteSize: number;
@@ -165,6 +171,73 @@ export function completeMediaJob(db: BetterSQLite3Database, jobId: string) {
         `Missing saved versions for ${jobId}`,
       );
     const now = new Date();
+    if (job.kind === 'replace') {
+      const replacement = tx
+        .select()
+        .from(mediaReplacements)
+        .where(eq(mediaReplacements.jobId, jobId))
+        .get();
+      const object = replacement?.originalObjectId
+        ? tx
+            .select()
+            .from(mediaObjects)
+            .where(eq(mediaObjects.id, replacement.originalObjectId))
+            .get()
+        : undefined;
+      if (
+        image.trashedAt ||
+        !replacement?.facts ||
+        !replacement.metadata ||
+        object?.status !== 'stored'
+      )
+        throw mediaError(
+          'MEDIA_REPLACEMENT_INCOMPLETE',
+          '替换内容尚未完整准备或图片已回收',
+        );
+      const facts = replacement.facts;
+      replaceMediaVersion(
+        tx,
+        image.id,
+        'original',
+        object.id,
+        {
+          byteSize: object.byteSize!,
+          width: facts.width,
+          height: facts.height,
+          format: facts.format,
+          mime: facts.mime,
+        },
+        now,
+      );
+      tx.update(mediaImages)
+        .set({
+          originalName: replacement.originalName,
+          format: facts.format,
+          mime: facts.mime,
+          width: facts.width,
+          height: facts.height,
+          byteSize: object.byteSize!,
+          animated: facts.animated,
+          pageCount: facts.pageCount,
+          classification: facts.classification,
+          contentUpdatedAt: now,
+        })
+        .where(eq(mediaImages.id, image.id))
+        .run();
+      const metadata = {
+        status: 'succeeded' as const,
+        data: replacement.metadata.data,
+        photography: replacement.metadata.photography,
+        readAt: new Date(replacement.metadata.readAt),
+        attemptedAt: new Date(replacement.metadata.readAt),
+        error: null,
+      };
+      tx.insert(mediaMetadata)
+        .values({ imageId: image.id, ...metadata })
+        .onConflictDoUpdate({ target: mediaMetadata.imageId, set: metadata })
+        .run();
+      revokeImageShares(tx, image.id, now);
+    }
     if (image.processingStatus === 'ready')
       for (const { kind, object } of candidates) {
         replaceMediaVersion(
@@ -182,6 +255,7 @@ export function completeMediaJob(db: BetterSQLite3Database, jobId: string) {
           now,
         );
       }
+    publishImageSizes(tx, jobId);
     tx.update(mediaJobs)
       .set({
         status: 'succeeded',
@@ -230,8 +304,15 @@ export async function reconcileMediaObjects(
 ) {
   const { db, logger } = runtime;
   const { storage, job } = activeMediaJob(db, jobId);
-  const outputFormat =
-    kind === 'thumbnail' ? 'webp' : job.snapshot.outputFormat;
+  const snapshot =
+    job.kind === 'replace'
+      ? db
+          .select()
+          .from(mediaReplacements)
+          .where(eq(mediaReplacements.jobId, jobId))
+          .get()!.snapshots[kind]!
+      : job.snapshot;
+  const outputFormat = kind === 'thumbnail' ? 'webp' : snapshot.outputFormat;
   const candidates = db
     .select()
     .from(mediaObjects)
@@ -244,6 +325,7 @@ export async function reconcileMediaObjects(
           'cleanup_pending',
           'cleanup_failed',
         ]),
+        sql`not exists (select 1 from media_size_candidates where job_id = ${mediaObjects.jobId} and object_id = ${mediaObjects.id})`,
       ),
     )
     .all();

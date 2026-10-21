@@ -124,16 +124,18 @@ export async function readAndStoreMetadata(
   sourcePath: string,
   workspace: string,
   signal: AbortSignal,
+  deferPublication = false,
 ) {
   const { db, logger } = runtime;
   const { image } = activeMediaJob(db, jobId);
-  db.insert(mediaMetadata)
-    .values({ imageId: image.id, status: 'running', attemptedAt: new Date() })
-    .onConflictDoUpdate({
-      target: mediaMetadata.imageId,
-      set: { status: 'running', attemptedAt: new Date(), error: null },
-    })
-    .run();
+  if (!deferPublication)
+    db.insert(mediaMetadata)
+      .values({ imageId: image.id, status: 'running', attemptedAt: new Date() })
+      .onConflictDoUpdate({
+        target: mediaMetadata.imageId,
+        set: { status: 'running', attemptedAt: new Date(), error: null },
+      })
+      .run();
   let data;
   try {
     signal.throwIfAborted();
@@ -196,6 +198,7 @@ export async function readAndStoreMetadata(
   } catch (error) {
     // Shutdown and runtime cancellation belong to job recovery, not a successful processing result.
     if (
+      deferPublication ||
       signal.aborted ||
       (error as { code?: string })?.code === 'MEDIA_TOOL_SHUTDOWN_FAILED'
     )
@@ -218,6 +221,13 @@ export async function readAndStoreMetadata(
     );
     return { error };
   }
+  if (deferPublication)
+    return {
+      error: null,
+      data,
+      photography: photographyFields(data),
+      readAt: Date.now(),
+    };
   // Database/storage validity failures are not extraction failures and must remain visible to the job runner.
   db.transaction((tx) => {
     const { job } = activeMediaJob(tx, jobId);
