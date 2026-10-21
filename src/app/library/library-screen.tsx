@@ -55,7 +55,6 @@ import { useLibraryBatch } from '../../components/library/use-library-batch';
 import { useLibraryCopy } from '../../components/library/use-library-copy';
 import { CopyDialog } from '../../components/library/copy-dialog';
 import { useLibraryArchive } from '../../components/library/use-library-archive';
-import { ArchiveDialog } from '../../components/library/archive-dialog';
 import {
   BatchWorkspaceContent,
   BatchWorkspaceFooter,
@@ -441,9 +440,9 @@ export function LibraryScreen(props: {
                     onBatch={(action, element) => {
                       if (action === 'reprocess') batchReprocess.open(element);
                       else if (action === 'copy') copy.open(element);
-                      else if (action === 'archive') archive.open(element);
                       else batch.open(action, element);
                     }}
+                    onArchive={(version) => void archive.start(version)}
                   />
                 ) : undefined
               }
@@ -748,7 +747,6 @@ export function LibraryScreen(props: {
       ) : null}
       <BatchReprocessContent batch={batchReprocess} />
       <CopyDialog copy={copy} />
-      <ArchiveDialog archive={archive} />
       <BatchWorkspaceContent
         batch={batch}
         client={client}

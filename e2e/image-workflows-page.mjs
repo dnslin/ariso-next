@@ -11,7 +11,7 @@ import {
 export const workflowButton = (name) =>
   `loc=role:button[name=${JSON.stringify(name)}]`;
 export const detailDialog = '[data-testid="library-detail"]';
-export const archiveDialog = '[data-testid="library-archive-dialog"]';
+export const archiveMenu = '[data-testid="library-archive-menu"]';
 export function createImageWorkflowPage(page, config, report, fixture) {
   const listUrl = `${config.origin}/library?${new URLSearchParams({ q: fixture.prefix, page: '1', pageSize: '20' })}`;
   async function visit() {

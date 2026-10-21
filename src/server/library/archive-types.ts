@@ -1,4 +1,9 @@
-export const archiveVersions = ['original', 'compressed', 'watermark'] as const;
+export const archiveVersions = [
+  'original',
+  'compressed',
+  'thumbnail',
+  'watermark',
+] as const;
 export type ArchiveVersion = (typeof archiveVersions)[number];
 
 export interface ArchiveRequest {

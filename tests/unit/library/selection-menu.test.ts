@@ -66,17 +66,18 @@ it.each(['normal', 'trash'] as const)(
         disabled: false,
         onOpen: vi.fn(),
         onBatch: vi.fn(),
+        onArchive: vi.fn(),
         onPermanentDelete: vi.fn(),
       }),
     );
     const popover = html.match(
-      /<div[^>]*data-slot="dropdown-popover"[^>]*>/,
+      /<div[^>]*data-slot="dropdown-popover"[^>]*class="[^"]*flex-col[^"]*"[^>]*>/,
     )?.[0];
     const popoverClasses = popover?.match(/class="([^"]*)"/)?.[1].split(' ');
     expect(popoverClasses).toContain('flex');
     expect(popoverClasses).toContain('flex-col');
     expect(popoverClasses).toContain('overflow-hidden');
-    const menu = html.match(/<div[^>]*data-slot="dropdown-menu"[^>]*>/)?.[0];
+    const menu = html.match(/<div[^>]*aria-label="已选图片操作"[^>]*>/)?.[0];
     const menuClasses = menu?.match(/class="([^"]*)"/)?.[1].split(' ');
     expect(menu).toContain('role="menu"');
     expect(menuClasses).toContain('min-h-0');
@@ -95,6 +96,7 @@ it('blocks pending actions without making the operation trigger unfocusable', ()
       pending: true,
       onOpen: vi.fn(),
       onBatch: vi.fn(),
+      onArchive: vi.fn(),
     }),
   );
   const trigger = html.match(
@@ -121,6 +123,7 @@ it.each([
       pending: true,
       onOpen: vi.fn(),
       onBatch: vi.fn(),
+      onArchive: vi.fn(),
       onPermanentDelete: vi.fn(),
     }),
   );
@@ -142,6 +145,7 @@ it('keeps genuinely unavailable shortcuts disabled', () => {
       disabled: true,
       onOpen: vi.fn(),
       onBatch: vi.fn(),
+      onArchive: vi.fn(),
     }),
   );
   const button = html.match(/<button[^>]*aria-label="添加标签"[^>]*>/)?.[0];
@@ -156,6 +160,7 @@ it('separates selection management and shortcut icons from the business menu', (
       disabled: false,
       onOpen: vi.fn(),
       onBatch: vi.fn(),
+      onArchive: vi.fn(),
     }),
   );
   expect(html).toContain('aria-label="管理选择，已选 1 张"');
