@@ -179,29 +179,48 @@ try {
   );
   await storageLayouts(page, config, report, 'list');
   const heldRead = await storageReadFault(page, '/api/storages', 'hold');
-  await page.reload();
-  await page.waitForSelector('[role="status"]');
-  await page.waitForFunction(
-    () => typeof window.__releaseStorageRead === 'function',
-  );
-  await storageLayouts(page, config, report, 'list-loading', [1440, 390]);
-  await page.evaluate(() => {
-    window.__storageReadMode = 'normal';
-    window.__releaseStorageRead();
-  });
-  await page.waitForSelector('[data-testid="storage-list"]');
-  await page.cdp('Page.removeScriptToEvaluateOnNewDocument', heldRead);
+  try {
+    await page.reload();
+    await page.waitForSelector(
+      '[data-testid="storage-list"][data-state="loading"]',
+    );
+    assert.equal((await heldRead.result()).status, 200);
+    assert.equal(
+      await page.evaluate(() => document.querySelector('[data-storage-id]')),
+      null,
+      'Initial loading exposes no stale storage rows',
+    );
+    await storageLayouts(page, config, report, 'list-loading', [1440, 390]);
+    await heldRead.release();
+    await page.waitForSelector(
+      '[data-testid="storage-list"][data-state="ready"]',
+    );
+  } finally {
+    await heldRead.dispose();
+  }
   const rejectedRead = await storageReadFault(page, '/api/storages', 'fail');
-  await page.reload();
-  await page.waitForSelector('[role="alert"]');
-  await storageLayouts(page, config, report, 'list-error', [1440, 390]);
-  await page.evaluate(() => {
-    window.__storageReadMode = 'normal';
-  });
-  await page.focus(button('重新加载'));
-  await page.keyboard.press('Enter');
-  await page.waitForSelector('[data-testid="storage-list"]');
-  await page.cdp('Page.removeScriptToEvaluateOnNewDocument', rejectedRead);
+  try {
+    await page.reload();
+    await page.waitForSelector(
+      '[data-testid="storage-list"][data-state="error"]',
+    );
+    await page.waitForSelector('[role="alert"]');
+    assert.equal((await rejectedRead.result()).status, 200);
+    assert.equal(
+      await page.evaluate(() => document.querySelector('[data-storage-id]')),
+      null,
+      'A lost read never exposes stale storage management rows',
+    );
+    await storageLayouts(page, config, report, 'list-error', [1440, 390]);
+    await rejectedRead.release();
+    await page.focus(button('重新加载'));
+    await page.keyboard.press('Enter');
+    await page.waitForSelector(
+      '[data-testid="storage-list"][data-state="ready"]',
+    );
+  } finally {
+    await rejectedRead.dispose();
+  }
   report.checks.push(
     'Actual list reads expose loading/error and keyboard retry recovers the real stored rows.',
   );
@@ -214,33 +233,49 @@ try {
   await runStorageLocalValidation({ page, config, report, local, storage });
   await page.fill(field('localPath'), 'storage-admin-198');
   await page.fill(field('name'), 'Issue 198 renamed local');
-  await loseStorageMutation(page, `/api/storages/${local.id}`, 'PATCH');
-  await save();
-  await page.waitForFunction(() => window.__storageMutationUsed);
-  assert.equal(await page.evaluate(() => window.__storageMutationStatus), 200);
-  await page.waitForFunction(() => document.body.textContent.includes('核对'));
-  await page.waitForFunction(
-    async (id) =>
-      (await (await fetch(`/api/storages/${id}`)).json()).name ===
+  const lostSave = await loseStorageMutation(
+    page,
+    `/api/storages/${local.id}`,
+    'PATCH',
+  );
+  try {
+    await save();
+    await page.waitForFunction(() => window.__storageMutationUsed);
+    assert.equal(
+      await page.evaluate(() => window.__storageMutationStatus),
+      200,
+    );
+    await page.waitForFunction(() =>
+      document.body.textContent.includes('核对'),
+    );
+    await page.waitForFunction(
+      async (id) =>
+        (await (await fetch(`/api/storages/${id}`)).json()).name ===
+        'Issue 198 renamed local',
+      local.id,
+    );
+    assert.equal(
+      (await request('/api/storages')).filter((item) => item.id === local.id)
+        .length,
+      1,
+    );
+    assert.equal(
+      (await storage(local.id)).configRevision,
+      local.configRevision,
+    );
+    await page.waitForFunction(
+      () => !document.querySelector('[data-testid="storage-save"]').disabled,
+    );
+    assert.equal(
+      await page.evaluate(
+        () => document.querySelector('input[name="name"]').value,
+      ),
       'Issue 198 renamed local',
-    local.id,
-  );
-  assert.equal(
-    (await request('/api/storages')).filter((item) => item.id === local.id)
-      .length,
-    1,
-  );
-  assert.equal((await storage(local.id)).configRevision, local.configRevision);
-  await page.waitForFunction(
-    () => !document.querySelector('[data-testid="storage-save"]').disabled,
-  );
-  assert.equal(
-    await page.evaluate(
-      () => document.querySelector('input[name="name"]').value,
-    ),
-    'Issue 198 renamed local',
-    'Unknown successful save keeps the user input during reconciliation',
-  );
+      'Unknown successful save keeps the user input during reconciliation',
+    );
+  } finally {
+    await lostSave.dispose();
+  }
   await page.fill(field('name'), 'Issue 198 reconciled local');
   await save();
   await savedByName('Issue 198 reconciled local');

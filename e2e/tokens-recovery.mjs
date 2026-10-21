@@ -9,6 +9,8 @@ import {
   tokenSelector,
   tokensRequest,
   displayedTokenTime,
+  readTokenRowIds,
+  assertTokenRefetchPending,
 } from './tokens-page.mjs';
 import { tokensReadFault, tokensWriteFault } from './tokens-transport.mjs';
 
@@ -101,6 +103,7 @@ export async function verifyTokenExitRecovery(
       } finally {
         await write.dispose();
       }
+      const cachedIds = await readTokenRowIds(page);
       const read = await tokensReadFault(page, !failedReturn, false);
       try {
         if (failedReturn) await page.click(tokenControl('revoke-cancel'));
@@ -118,31 +121,15 @@ export async function verifyTokenExitRecovery(
           await page.keyboard.press('Escape');
         }
         await page.waitForSelector(revokeDialog, { state: 'hidden' });
-        await page.waitForSelector(
-          `[data-testid="api-page"][data-state="${failedReturn ? 'error' : 'loading'}"]`,
-        );
         assert.equal(
           (await read.result()).status,
           200,
           'Leaving an unresolved dialog reads the actual list',
         );
-        assert.equal(
-          await page.evaluate(
-            () =>
-              document.querySelector('[data-testid="api-create-open"]')
-                .disabled,
-          ),
-          true,
-          'Actions remain disabled until the real list is read',
-        );
-        assert.equal(
-          await page.evaluate(() =>
-            document.querySelector('[data-testid="api-list"]'),
-          ),
-          null,
-          'Unresolved exit cannot restore a stale interactive list',
-        );
-        if (!failedReturn) await read.release();
+        if (!failedReturn) {
+          await assertTokenRefetchPending(page, cachedIds);
+          await read.release();
+        }
       } finally {
         await read.dispose();
       }
@@ -201,21 +188,13 @@ export async function verifyTokenExitRecovery(
     } finally {
       await write.dispose();
     }
+    const cachedIds = await readTokenRowIds(page);
     const read = await tokensReadFault(page, true, false);
     try {
       await page.click(tokenControl('check-back'));
       await page.waitForSelector(createDialog, { state: 'hidden' });
-      await page.waitForSelector(
-        '[data-testid="api-page"][data-state="loading"]',
-      );
       assert.equal((await read.result()).status, 200);
-      assert.equal(
-        await page.evaluate(
-          () =>
-            document.querySelector('[data-testid="api-create-open"]').disabled,
-        ),
-        true,
-      );
+      await assertTokenRefetchPending(page, cachedIds);
       await read.release();
     } finally {
       await read.dispose();
