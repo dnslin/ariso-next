@@ -6,7 +6,16 @@ import { createMediaDeliveryFixture } from '../delivery/media-fixture.ts';
 import { receiveImageReplacement } from '../../../src/server/media/replacement.ts';
 import { patchMediaSettings } from '../../../src/server/media/settings.ts';
 import { readMediaMetadata } from '../../../src/server/media/metadata.ts';
-import { mediaJobs, mediaObjects } from '../../../src/server/media/schema.ts';
+import {
+  mediaJobs,
+  mediaObjects,
+  mediaVersions,
+} from '../../../src/server/media/schema.ts';
+import { requestImageSize } from '../../../src/server/media/sizes.ts';
+import {
+  mediaSizeCandidates,
+  mediaSizeVersions,
+} from '../../../src/server/media/size-schema.ts';
 import { trashImage } from '../../../src/server/media/trash.ts';
 import {
   requestPermanentDelete,
@@ -51,7 +60,155 @@ async function input() {
     body: data,
   });
 }
+
+function publishedReferences(imageId: string) {
+  return {
+    image: app.state(imageId).image,
+    metadata: readMediaMetadata(app.db, imageId),
+    versions: app.db
+      .select()
+      .from(mediaVersions)
+      .where(eq(mediaVersions.imageId, imageId))
+      .orderBy(mediaVersions.kind)
+      .all(),
+    sizes: app.db
+      .select()
+      .from(mediaSizeVersions)
+      .where(eq(mediaSizeVersions.imageId, imageId))
+      .orderBy(mediaSizeVersions.sourceVersion, mediaSizeVersions.preset)
+      .all(),
+  };
+}
+
+async function publishedImage() {
+  const { imageId } = await app.accept(
+    'tests/fixtures/runtime/images/sample.png',
+  );
+  const queries = ['original', 'compressed', 'thumbnail', 'watermark'].map(
+    (version) => '?type=' + version,
+  );
+  for (const version of ['compressed', 'watermark'] as const)
+    for (const preset of ['small', 'medium', 'large'] as const) {
+      expect(
+        requestImageSize(app.db, imageId, { version, preset }).status,
+      ).toBe('queued');
+      expect((await app.processNext()).status).toBe('succeeded');
+      queries.push(`?type=${version}&preset=${preset}`);
+    }
+  const contents = new Map<string, Buffer>();
+  for (const query of queries) {
+    const response = await app.request(imageId, query);
+    expect(response.status, query).toBe(200);
+    contents.set(query, Buffer.from(await response.arrayBuffer()));
+  }
+  return { imageId, references: publishedReferences(imageId), contents };
+}
+
+async function expectPublishedUnchanged(
+  before: Awaited<ReturnType<typeof publishedImage>>,
+) {
+  expect(publishedReferences(before.imageId)).toEqual(before.references);
+  for (const [query, bytes] of before.contents) {
+    const response = await app.request(before.imageId, query);
+    expect(response.status, query).toBe(200);
+    expect(Buffer.from(await response.arrayBuffer()), query).toEqual(bytes);
+  }
+}
+
 describe('atomic replacement lifecycle', () => {
+  it('keeps every published role and preset URL on old bytes throughout all replacement writes', async () => {
+    const before = await publishedImage();
+    const written = new Set<string>();
+    const write = mediaStorage.writeMediaObject;
+    vi.spyOn(mediaStorage, 'writeMediaObject').mockImplementation(
+      async (...args) => {
+        const saved = await write(...args);
+        const object = app.db
+          .select()
+          .from(mediaObjects)
+          .where(eq(mediaObjects.key, args[2].key))
+          .get()!;
+        const size = app.db
+          .select()
+          .from(mediaSizeCandidates)
+          .where(eq(mediaSizeCandidates.objectId, object.id))
+          .get();
+        written.add(
+          size ? `${size.sourceVersion}:${size.preset}` : object.purpose,
+        );
+        await expectPublishedUnchanged(before);
+        return saved;
+      },
+    );
+    const replacement = await receiveImageReplacement(
+      app.runtime,
+      before.imageId,
+      await input(),
+    );
+    await expectPublishedUnchanged(before);
+    expect((await app.processNext()).status).toBe('succeeded');
+    expect(app.job(replacement.jobId).status).toBe('succeeded');
+    expect([...written].sort()).toEqual(
+      [
+        'original',
+        'compressed',
+        'thumbnail',
+        'watermark',
+        'compressed:small',
+        'compressed:medium',
+        'compressed:large',
+        'watermark:small',
+        'watermark:medium',
+        'watermark:large',
+      ].sort(),
+    );
+    for (const [query, bytes] of before.contents) {
+      const response = await app.request(before.imageId, query);
+      expect(response.status, query).toBe(200);
+      expect(Buffer.from(await response.arrayBuffer()), query).not.toEqual(
+        bytes,
+      );
+    }
+  });
+  it('retains every old role and preset reference and HTTP payload when a later size candidate fails', async () => {
+    const before = await publishedImage();
+    let sizesWritten = 0;
+    const write = mediaStorage.writeMediaObject;
+    vi.spyOn(mediaStorage, 'writeMediaObject').mockImplementation(
+      async (...args) => {
+        const saved = await write(...args);
+        const size = app.db
+          .select({ objectId: mediaSizeCandidates.objectId })
+          .from(mediaSizeCandidates)
+          .innerJoin(
+            mediaObjects,
+            eq(mediaSizeCandidates.objectId, mediaObjects.id),
+          )
+          .where(eq(mediaObjects.key, args[2].key))
+          .get();
+        if (size && ++sizesWritten === 2)
+          throw Object.assign(
+            new Error('later replacement size write failed'),
+            {
+              code: 'EACCES',
+            },
+          );
+        return saved;
+      },
+    );
+    const replacement = await receiveImageReplacement(
+      app.runtime,
+      before.imageId,
+      await input(),
+    );
+    expect((await app.processNext()).status).toBe('failed');
+    expect(sizesWritten).toBe(2);
+    expect(app.job(replacement.jobId).error).toContain('sizes:');
+    expect(app.job(replacement.jobId).error).toContain(
+      'later replacement size write failed',
+    );
+    await expectPublishedUnchanged(before);
+  });
   it('records a requested cancellation without an error log or changed content', async () => {
     const image = await app.accept('tests/fixtures/runtime/images/sample.png');
     const before = app.state(image.imageId).image;
