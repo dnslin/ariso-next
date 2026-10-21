@@ -15,7 +15,9 @@ describe('focused browser execution plans', () => {
       stages: [['image-workflows', 'imageWorkflows']],
       config: {},
     });
-    expect(selectBrowserPlan({ suite: 'image-workflows', pageLabel: 'p2' })).toEqual(select('image-workflows'));
+    expect(
+      selectBrowserPlan({ suite: 'image-workflows', pageLabel: 'p2' }),
+    ).toEqual(select('image-workflows'));
     expect(() => select('image-workflows', 'unrelated')).toThrow('--only');
     for (const field of ['storageConfig', 'previewConfig'])
       expect(() =>

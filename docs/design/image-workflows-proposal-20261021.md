@@ -45,7 +45,7 @@
 | 现有派生处理已能从 S3 取原件并写回产物                              | [`media/process.ts:85`](../../src/server/media/process.ts#L85)、[`media/storage.ts:113`](../../src/server/media/storage.ts#L113)                                     |
 | 派生图通过候选对象和完成事务一起发布                                | [`media/steps.ts:63`](../../src/server/media/steps.ts#L63)、[`media/steps.ts:155`](../../src/server/media/steps.ts#L155)                                             |
 | 当前重处理在处理中保持旧字节，失败会回滚；关闭类型仍保留旧派生      | [`reprocess.test.ts:48`](../../tests/integration/delivery/reprocess.test.ts#L48)、[`reprocess.test.ts:172`](../../tests/integration/delivery/reprocess.test.ts#L172) |
-| 设计时规格明确不包含原图替换                                            | [media 规格](../specs/SPEC-media.md)                                                                                                                                 |
+| 设计时规格明确不包含原图替换                                        | [media 规格](../specs/SPEC-media.md)                                                                                                                                 |
 | 相册分享只查询公开图片，不能拿一个单图相册绕过私有限制              | [`collections/queries.ts:73`](../../src/server/collections/queries.ts#L73)                                                                                           |
 | 私有 `/i` 仅接受所有者，分享 Cookie 不提供权限                      | [`delivery/access.ts:23`](../../src/server/delivery/access.ts#L23)、[`sharing/delivery.test.ts:53`](../../tests/integration/sharing/delivery.test.ts#L53)            |
 | 图片响应禁用缓存；S3 已发出的签名仍有 300 秒窗口                    | [`delivery/headers.ts:42`](../../src/server/delivery/headers.ts#L42)、[`storage/s3.ts:741`](../../src/server/storage/s3.ts#L741)                                     |
