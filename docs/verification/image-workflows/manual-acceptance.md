@@ -1,15 +1,15 @@
 # 四项图片功能人工验收
 
-2026-10-21用户明确停止后续自动测试，改为直接手动检查本地UI。当前预览使用已包含打包A菜单的生产构建；本轮修复尚未推送，没有合并或部署。以下项目等待用户确认，不能由已有自动化结果代替。
+2026-10-21用户明确停止后续自动测试，改为直接手动检查本地UI。当前预览使用已包含打包A菜单的生产构建；本轮另包含3项P2审计修复及ZIP响应简化，没有合并或部署。以下项目等待用户确认，不能由已有自动化结果代替。
 
 预览保持运行：[打开图库](http://ariso-image-preview-56369.localhost:56369/library)。三张演示照片均已上传并完成派生，固定入口如下。
 
 | 界面             | 固定入口                                                                                                                                   | 手动进入                                                   |
 | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------- |
 | 批量打包下载     | [图库](http://ariso-image-preview-56369.localhost:56369/library)                                                                           | 选择两张以上图片，点操作栏打包图标；也可在所选图片上右键。 |
-| 替换图片         | [演示·山野旅行](http://ariso-image-preview-56369.localhost:56369/library?image=f0321a42-ca1f-4ae3-98b0-40f95557e18d)                       | 右上更多 → 替换图片 → 选一张新图。                         |
-| 私有图片临时分享 | [演示·星空与远山](http://ariso-image-preview-56369.localhost:56369/library?image=cc836158-5f84-452e-9a83-15b8b2b881a6)                     | 右上更多 → 临时分享。                                      |
-| 多尺寸图片外链   | [演示·山野旅行-02](http://ariso-image-preview-56369.localhost:56369/library?image=02f032d1-fa7f-4f5a-80bb-2f6f02a773a1&preview=compressed) | 复制链接 → 压缩图或水印图 → 640/1280/1920尺寸。            |
+| 替换图片         | [演示·山野旅行](http://ariso-image-preview-56369.localhost:56369/library?image=bf649cc8-a917-416f-93d3-dd4d4c0eeb93)                       | 右上更多 → 替换图片 → 选一张新图。                         |
+| 私有图片临时分享 | [演示·星空与远山](http://ariso-image-preview-56369.localhost:56369/library?image=868dad81-d292-4ed1-9807-a66e90a3231f)                     | 右上更多 → 临时分享。                                      |
+| 多尺寸图片外链   | [演示·山野旅行-02](http://ariso-image-preview-56369.localhost:56369/library?image=33077562-ec8a-4715-b01e-c2587dc8e82f&preview=compressed) | 复制链接 → 压缩图或水印图 → 640/1280/1920尺寸。            |
 
 相关界面：[分享管理](http://ariso-image-preview-56369.localhost:56369/shares?kind=image)、[上传](http://ariso-image-preview-56369.localhost:56369/upload)、[设置分类](http://ariso-image-preview-56369.localhost:56369/settings/general)。刷新详情会回到原详情；临时分享、复制链接与打包版本菜单从表中入口重新打开。
 
