@@ -117,6 +117,72 @@ export function requestMetadataRead(
   );
 }
 
+/** Extract complete metadata without changing any published image state. */
+export async function extractMetadata(
+  sourcePath: string,
+  workspace: string,
+  signal: AbortSignal,
+) {
+  signal.throwIfAborted();
+  const tool = startMediaTool(
+    'exiftool',
+    [
+      '-json',
+      '-a',
+      '-G1:3:4',
+      '-struct',
+      '-api',
+      'structformat=jsonq',
+      sourcePath,
+    ],
+    {
+      workspace,
+      cancelSignal: signal,
+      timeout: 30_000,
+      maxBuffer: 32 * 1024 * 1024,
+      encoding: 'buffer',
+    },
+  );
+  const error = await tool.settled;
+  if (error) {
+    if (!(error instanceof ExecaError)) throw error;
+    // Execa's full message embeds partial stdout, which may contain private GPS/EXIF.
+    const diagnostics = [
+      error.shortMessage,
+      Buffer.from(error.stderr ?? '')
+        .toString('utf8')
+        .trim(),
+    ];
+    // An ordinary exit can report its cause only in a complete JSON Error tag.
+    // Never parse stdout truncated by timeout, cancellation or the output limit.
+    if (
+      error.exitCode !== undefined &&
+      !error.isMaxBuffer &&
+      !error.timedOut &&
+      !error.isCanceled
+    ) {
+      try {
+        parseMetadata(Buffer.from(error.stdout ?? '').toString('utf8'));
+      } catch (diagnostic) {
+        if (!(diagnostic instanceof Error)) throw diagnostic;
+        diagnostics.push(diagnostic.message);
+      }
+    }
+    throw mediaError(
+      error.isMaxBuffer
+        ? 'MEDIA_METADATA_OUTPUT_LIMIT'
+        : error.timedOut
+          ? 'MEDIA_TOOL_TIMEOUT'
+          : (error.code ?? 'MEDIA_METADATA_READ_FAILED'),
+      diagnostics.filter(Boolean).join('\n'),
+    );
+  }
+  const data = parseMetadata(
+    Buffer.from((await tool.child).stdout).toString('utf8'),
+  );
+  return { data, photography: photographyFields(data), readAt: Date.now() };
+}
+
 /** Shares the bounded read; standalone rereads publish data and task success together. */
 export async function readAndStoreMetadata(
   runtime: MediaRuntime,
@@ -124,81 +190,22 @@ export async function readAndStoreMetadata(
   sourcePath: string,
   workspace: string,
   signal: AbortSignal,
-  deferPublication = false,
 ) {
   const { db, logger } = runtime;
   const { image } = activeMediaJob(db, jobId);
-  if (!deferPublication)
-    db.insert(mediaMetadata)
-      .values({ imageId: image.id, status: 'running', attemptedAt: new Date() })
-      .onConflictDoUpdate({
-        target: mediaMetadata.imageId,
-        set: { status: 'running', attemptedAt: new Date(), error: null },
-      })
-      .run();
-  let data;
+  db.insert(mediaMetadata)
+    .values({ imageId: image.id, status: 'running', attemptedAt: new Date() })
+    .onConflictDoUpdate({
+      target: mediaMetadata.imageId,
+      set: { status: 'running', attemptedAt: new Date(), error: null },
+    })
+    .run();
+  let metadata: Awaited<ReturnType<typeof extractMetadata>>;
   try {
-    signal.throwIfAborted();
-    const tool = startMediaTool(
-      'exiftool',
-      [
-        '-json',
-        '-a',
-        '-G1:3:4',
-        '-struct',
-        '-api',
-        'structformat=jsonq',
-        sourcePath,
-      ],
-      {
-        workspace,
-        cancelSignal: signal,
-        timeout: 30_000,
-        maxBuffer: 32 * 1024 * 1024,
-        encoding: 'buffer',
-      },
-    );
-    const error = await tool.settled;
-    if (error) {
-      if (!(error instanceof ExecaError)) throw error;
-      // Execa's full message embeds partial stdout, which may contain private GPS/EXIF.
-      const diagnostics = [
-        error.shortMessage,
-        Buffer.from(error.stderr ?? '')
-          .toString('utf8')
-          .trim(),
-      ];
-      // An ordinary exit can report its cause only in a complete JSON Error tag.
-      // Never parse stdout truncated by timeout, cancellation or the output limit.
-      if (
-        error.exitCode !== undefined &&
-        !error.isMaxBuffer &&
-        !error.timedOut &&
-        !error.isCanceled
-      ) {
-        try {
-          parseMetadata(Buffer.from(error.stdout ?? '').toString('utf8'));
-        } catch (diagnostic) {
-          if (!(diagnostic instanceof Error)) throw diagnostic;
-          diagnostics.push(diagnostic.message);
-        }
-      }
-      throw mediaError(
-        error.isMaxBuffer
-          ? 'MEDIA_METADATA_OUTPUT_LIMIT'
-          : error.timedOut
-            ? 'MEDIA_TOOL_TIMEOUT'
-            : (error.code ?? 'MEDIA_METADATA_READ_FAILED'),
-        diagnostics.filter(Boolean).join('\n'),
-      );
-    }
-    data = parseMetadata(
-      Buffer.from((await tool.child).stdout).toString('utf8'),
-    );
+    metadata = await extractMetadata(sourcePath, workspace, signal);
   } catch (error) {
     // Shutdown and runtime cancellation belong to job recovery, not a successful processing result.
     if (
-      deferPublication ||
       signal.aborted ||
       (error as { code?: string })?.code === 'MEDIA_TOOL_SHUTDOWN_FAILED'
     )
@@ -221,13 +228,6 @@ export async function readAndStoreMetadata(
     );
     return { error };
   }
-  if (deferPublication)
-    return {
-      error: null,
-      data,
-      photography: photographyFields(data),
-      readAt: Date.now(),
-    };
   // Database/storage validity failures are not extraction failures and must remain visible to the job runner.
   db.transaction((tx) => {
     const { job } = activeMediaJob(tx, jobId);
@@ -239,8 +239,8 @@ export async function readAndStoreMetadata(
     tx.update(mediaMetadata)
       .set({
         status: 'succeeded',
-        data,
-        photography: photographyFields(data),
+        data: metadata.data,
+        photography: metadata.photography,
         readAt: now,
         error: null,
       })

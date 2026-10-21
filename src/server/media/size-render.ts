@@ -1,7 +1,5 @@
-import { createReadStream } from 'node:fs';
 import { mkdir, rm } from 'node:fs/promises';
 import { sep } from 'node:path';
-import { finished } from 'node:stream/promises';
 import { and, eq } from 'drizzle-orm';
 import type { MediaRuntime } from './process.ts';
 import { mediaObjects } from './schema.ts';
@@ -10,15 +8,10 @@ import { sizePresets, type ImageSizeInput } from './size-types.ts';
 import { ImageSizeError } from './sizes.ts';
 import { activeMediaJob } from './steps.ts';
 import { markMediaCandidates } from './steps.ts';
-import { planDerivedObject } from './objects.ts';
+import { planDerivedObject, storeMediaObject } from './objects.ts';
 import { createMediaResources } from './resources.ts';
-import {
-  mediaSourcePath,
-  readMediaObject,
-  writeMediaObject,
-} from './storage.ts';
-import { startDerivedEncoding } from './processing.ts';
-import { inspectImage } from './formats.ts';
+import { mediaSourcePath } from './storage.ts';
+import { writeEncodedCandidate } from './encoded-candidate.ts';
 import { mediaError } from './errors.ts';
 
 export async function renderSizeCandidate(
@@ -133,99 +126,52 @@ export async function renderSizeCandidate(
           .run();
       return next;
     });
-    const controller = new AbortController();
-    const cancelSignal = AbortSignal.any([stepSignal, controller.signal]);
-    const tool = await startDerivedEncoding({
-      input: `${outputFormat}:${sourcePath}`,
-      facts: {
-        format: ({ jpeg: 'JPEG', webp: 'WEBP', avif: 'AVIF' } as const)[
-          outputFormat
-        ],
-        animated: false,
+    const { saved, facts } = await writeEncodedCandidate(
+      runtime,
+      jobId,
+      plan,
+      {
+        input: `${outputFormat}:${sourcePath}`,
+        facts: {
+          format: ({ jpeg: 'JPEG', webp: 'WEBP', avif: 'AVIF' } as const)[
+            outputFormat
+          ],
+          animated: false,
+        },
+        kind: 'compressed',
+        snapshot: {
+          ...job.snapshot,
+          outputFormat,
+          maxEdge: sizePresets[input.preset],
+          watermarkMode: 'off',
+        },
+        workspace,
+        signal: stepSignal,
+        diskLimitBytes: budget.diskLimitBytes,
       },
-      kind: 'compressed',
-      snapshot: {
-        ...job.snapshot,
-        outputFormat,
-        maxEdge: sizePresets[input.preset],
-        watermarkMode: 'off',
-      },
-      workspace,
-      signal: cancelSignal,
-      diskLimitBytes: budget.diskLimitBytes,
-    });
-    const encoded = budget.countOutput(tool.child.readable());
-    // The writer may reject before it consumes the stream; preserve its error,
-    // and observe disposal after abort instead of leaving an unhandled event.
-    const encodedClosed = finished(encoded, { cleanup: true }).catch(
-      () => undefined,
+      `${inputDirectory}${sep}result`,
+      (source) => budget!.countOutput(source),
     );
-    let saved: Awaited<ReturnType<typeof writeMediaObject>>;
-    try {
-      const current = activeMediaJob(db, jobId);
-      saved = await writeMediaObject(
-        runtime,
-        current.storage,
-        plan,
-        encoded,
-        `image/${outputFormat}`,
-        `${inputDirectory}${sep}result`,
-        cancelSignal,
-      );
-    } catch (error) {
-      controller.abort(error);
-      encoded.destroy();
-      await encodedClosed;
-      const toolError = await tool.settled;
-      if (
-        (toolError as { code?: string })?.code === 'MEDIA_TOOL_SHUTDOWN_FAILED'
-      )
-        throw toolError;
-      throw stepSignal.aborted ? stepSignal.reason : error;
-    }
-    const toolError = await tool.settled;
-    if (toolError) throw toolError;
-    const { storage: currentStorage } = activeMediaJob(db, jobId);
-    const output = saved.path
-      ? { stream: createReadStream(saved.path) }
-      : await readMediaObject(
-          runtime,
-          currentStorage,
-          saved.key,
-          `image/${outputFormat}`,
-          stepSignal,
-        );
-    const facts = await inspectImage(output.stream, workspace, stepSignal);
-    if (facts.mime !== `image/${outputFormat}` || facts.animated)
+    if (facts.animated)
       throw mediaError('MEDIA_OUTPUT_INVALID', '尺寸图片编码与预期不一致');
     db.transaction((tx) => {
       const current = activeMediaJob(tx, jobId);
       if (current.image.trashedAt)
         throw new ImageSizeError('MEDIA_IMAGE_UNAVAILABLE', 409, '图片已回收');
       const now = new Date();
-      tx.update(mediaObjects)
-        .set({
-          status: 'stored',
+      storeMediaObject(
+        tx,
+        plan.objectId,
+        {
           byteSize: saved.size,
-          byteSizeConfirmedAt: now,
           width: facts.width,
           height: facts.height,
           format: facts.format,
           mime: facts.mime,
-          updatedAt: now,
-        })
-        .where(eq(mediaObjects.id, plan.objectId))
-        .run();
-      if (plan.temporaryObjectId)
-        tx.update(mediaObjects)
-          .set({
-            status: 'deleted',
-            byteSize: 0,
-            byteSizeConfirmedAt: now,
-            updatedAt: now,
-          })
-          .where(eq(mediaObjects.id, plan.temporaryObjectId))
-          .run();
+        },
+        plan.temporaryObjectId,
+        now,
+      );
     });
   } catch (error) {
     toolCleanupFailed =

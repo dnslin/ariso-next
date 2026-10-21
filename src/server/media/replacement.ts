@@ -16,7 +16,11 @@ import { createMediaResources } from './resources.ts';
 import { identifyImageFile } from './file-formats.ts';
 import { discardMediaInput, retainMediaInput } from './input.ts';
 import { mediaError, analyzeMediaError } from './errors.ts';
-import { markUnpublishedMediaObjects, planDerivedObject } from './objects.ts';
+import {
+  markUnpublishedMediaObjects,
+  planDerivedObject,
+  storeMediaObject,
+} from './objects.ts';
 import { createProcessingSnapshot } from './settings.ts';
 import { MediaReprocessError } from './reprocess.ts';
 import {
@@ -289,27 +293,13 @@ export async function receiveImageReplacement(
         throw mediaError('MEDIA_IMAGE_UNAVAILABLE', '图片状态已变化');
       signal.throwIfAborted();
       const now = new Date();
-      tx.update(mediaObjects)
-        .set({
-          status: 'stored',
-          byteSize: saved.size,
-          byteSizeConfirmedAt: now,
-          format: facts.format,
-          mime: facts.mime,
-          updatedAt: now,
-        })
-        .where(eq(mediaObjects.id, plan.objectId))
-        .run();
-      if (plan.temporaryObjectId)
-        tx.update(mediaObjects)
-          .set({
-            status: 'deleted',
-            byteSize: 0,
-            byteSizeConfirmedAt: now,
-            updatedAt: now,
-          })
-          .where(eq(mediaObjects.id, plan.temporaryObjectId))
-          .run();
+      storeMediaObject(
+        tx,
+        plan.objectId,
+        { byteSize: saved.size, format: facts.format, mime: facts.mime },
+        plan.temporaryObjectId,
+        now,
+      );
       tx.update(mediaJobs)
         .set({
           status: 'queued',

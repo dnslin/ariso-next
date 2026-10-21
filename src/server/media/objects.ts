@@ -61,6 +61,42 @@ export function planDerivedObject(
   return { objectId, temporaryObjectId, storageId: image.storageId, ...write };
 }
 
+/** The caller's transaction owns publication and progress, independently of storage facts. */
+export function storeMediaObject(
+  db: BetterSQLite3Database,
+  objectId: string,
+  details: {
+    byteSize: number;
+    format: string;
+    mime: string;
+    width?: number;
+    height?: number;
+  },
+  temporaryObjectId: string | undefined,
+  now: Date,
+) {
+  db.update(mediaObjects)
+    .set({
+      ...details,
+      status: 'stored',
+      byteSizeConfirmedAt: now,
+      error: null,
+      updatedAt: now,
+    })
+    .where(eq(mediaObjects.id, objectId))
+    .run();
+  if (temporaryObjectId)
+    db.update(mediaObjects)
+      .set({
+        status: 'deleted',
+        byteSize: 0,
+        byteSizeConfirmedAt: now,
+        updatedAt: now,
+      })
+      .where(eq(mediaObjects.id, temporaryObjectId))
+      .run();
+}
+
 /** Stored results for the supplied jobs; this does not imply publication in media_versions. */
 export function readGeneratedMediaVersions(
   db: BetterSQLite3Database,

@@ -10,7 +10,7 @@ import {
 } from './storage.ts';
 import type { MediaRuntime } from './process.ts';
 import { startMediaTool } from './tools.ts';
-import { markUnpublishedMediaObjects } from './objects.ts';
+import { markUnpublishedMediaObjects, storeMediaObject } from './objects.ts';
 import { mediaJobSteps } from './reprocess.ts';
 import { advanceMediaStep } from './recovery.ts';
 import {
@@ -91,26 +91,7 @@ export function saveMediaCandidate(
       format: result.format,
       mime: result.mime,
     };
-    tx.update(mediaObjects)
-      .set({
-        ...details,
-        status: 'stored',
-        byteSizeConfirmedAt: now,
-        error: null,
-        updatedAt: now,
-      })
-      .where(eq(mediaObjects.id, objectId))
-      .run();
-    if (temporaryObjectId)
-      tx.update(mediaObjects)
-        .set({
-          status: 'deleted',
-          byteSize: 0,
-          byteSizeConfirmedAt: now,
-          updatedAt: now,
-        })
-        .where(eq(mediaObjects.id, temporaryObjectId))
-        .run();
+    storeMediaObject(tx, objectId, details, temporaryObjectId, now);
     if (
       image.processingStatus !== 'ready' &&
       job.expectedVersions.includes(kind)

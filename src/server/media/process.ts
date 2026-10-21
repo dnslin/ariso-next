@@ -1,6 +1,4 @@
 import { and, eq, inArray } from 'drizzle-orm';
-import { createReadStream } from 'node:fs';
-import { finished } from 'node:stream/promises';
 import { mkdir, rm } from 'node:fs/promises';
 import { sep } from 'node:path';
 import { createMediaResources } from './resources.ts';
@@ -8,16 +6,12 @@ import { terminateMediaTools } from './tools.ts';
 import type { Logger } from 'pino';
 import type { openRuntimeDatabase } from '../runtime/db.ts';
 import type { createSecretCrypto } from '../runtime/crypto.ts';
-import {
-  mediaSourcePath,
-  readMediaObject,
-  writeMediaObject,
-} from './storage.ts';
+import { mediaSourcePath } from './storage.ts';
 import { discardMediaInput, readMediaInput } from './input.ts';
-import { readAndStoreMetadata } from './metadata.ts';
-import { inspectImage } from './formats.ts';
+import { extractMetadata, readAndStoreMetadata } from './metadata.ts';
 import { inspectImageFile } from './file-formats.ts';
-import { prepareProcessingInput, startDerivedEncoding } from './processing.ts';
+import { prepareProcessingInput } from './processing.ts';
+import { writeEncodedCandidate } from './encoded-candidate.ts';
 import { analyzeMediaError, mediaError } from './errors.ts';
 import { planDerivedObject, markUnpublishedMediaObjects } from './objects.ts';
 import {
@@ -219,32 +213,14 @@ export async function processMediaJob(
     });
 
     step = 'metadata';
-    const metadata = await readAndStoreMetadata(
-      runtime,
-      jobId,
-      sourcePath,
-      workspace,
-      signal,
-      !!replacement,
-    );
-    if (
-      replacement &&
-      metadata &&
-      'data' in metadata &&
-      metadata.data &&
-      metadata.photography &&
-      metadata.readAt
-    )
+    if (replacement) {
+      const metadata = await extractMetadata(sourcePath, workspace, signal);
       db.update(mediaReplacements)
-        .set({
-          metadata: {
-            data: metadata.data,
-            photography: metadata.photography,
-            readAt: metadata.readAt,
-          },
-        })
+        .set({ metadata })
         .where(eq(mediaReplacements.jobId, jobId))
         .run();
+    } else
+      await readAndStoreMetadata(runtime, jobId, sourcePath, workspace, signal);
     step = 'identify';
 
     const prepared = await prepareProcessingInput({
@@ -319,8 +295,6 @@ export async function processMediaJob(
         return candidate;
       });
       activeMediaJob(db, jobId);
-      const controller = new AbortController();
-      const cancelSignal = AbortSignal.any([stepSignal, controller.signal]);
       let compressedPath: string | undefined;
       if (replacement && kind === 'watermark' && snapshot.compressionEnabled) {
         compressedPath = await replacementCompression(
@@ -329,7 +303,7 @@ export async function processMediaJob(
             facts,
             snapshot,
             workspace,
-            signal: cancelSignal,
+            signal: stepSignal,
             diskLimitBytes: budget.diskLimitBytes,
           },
           (source) => budget!.countOutput(source),
@@ -349,82 +323,28 @@ export async function processMediaJob(
             storage,
             compressed,
             `${inputDirectory}${sep}compressed-source`,
-            cancelSignal,
+            stepSignal,
           ));
       }
-      const { child, settled } = await startDerivedEncoding({
-        input: prepared.input,
-        facts,
-        kind,
-        snapshot,
-        compressedPath,
-        watermarksRoot: runtime.watermarksRoot,
-        workspace,
-        signal: cancelSignal,
-        diskLimitBytes: budget.diskLimitBytes,
-      });
-      let saved;
-      const encoded = budget.countOutput(child.readable());
-      // Storage may reject before attaching a reader; disposal is still observed.
-      const encodedClosed = finished(encoded, { cleanup: true }).catch(
-        () => undefined,
+      const { saved, facts: result } = await writeEncodedCandidate(
+        runtime,
+        jobId,
+        plan,
+        {
+          input: prepared.input,
+          facts,
+          kind,
+          snapshot,
+          compressedPath,
+          watermarksRoot: runtime.watermarksRoot,
+          workspace,
+          signal: stepSignal,
+          diskLimitBytes: budget.diskLimitBytes,
+        },
+        `${inputDirectory}${sep}derived-${plan.objectId}`,
+        (source) => budget!.countOutput(source),
       );
-      try {
-        const { storage } = activeMediaJob(db, jobId);
-        saved = await writeMediaObject(
-          runtime,
-          storage,
-          plan,
-          encoded,
-          `image/${kind === 'thumbnail' ? 'webp' : snapshot.outputFormat}`,
-          `${inputDirectory}${sep}derived-${plan.objectId}`,
-          cancelSignal,
-        );
-      } catch (error) {
-        controller.abort();
-        encoded.destroy();
-        await encodedClosed;
-        const toolError = await settled;
-        if (
-          (toolError as (Error & { code?: string }) | undefined)?.code ===
-          'MEDIA_TOOL_SHUTDOWN_FAILED'
-        )
-          throw toolError;
-        // Cancellation here is cleanup, not the cause of a storage failure.
-        if (stepSignal.aborted) throw stepSignal.reason;
-        let cause = error;
-        while (cause instanceof Error && cause.cause instanceof Error)
-          cause = cause.cause;
-        const code = (cause as NodeJS.ErrnoException)?.code;
-        if (
-          toolError &&
-          !(toolError as Error & { isCanceled?: boolean }).isCanceled &&
-          (code === 'ERR_STREAM_PREMATURE_CLOSE' || code === 'EPIPE')
-        )
-          throw toolError;
-        throw error;
-      }
-      const toolError = await settled;
-      if (toolError) throw toolError;
-      const { storage } = activeMediaJob(db, jobId);
       if (saved.path) generatedPaths.set(saved.key, saved.path);
-      const output = saved.path
-        ? { stream: createReadStream(saved.path) }
-        : await readMediaObject(
-            runtime,
-            storage,
-            saved.key,
-            'image/webp',
-            stepSignal,
-          );
-      const result = await inspectImage(output.stream, workspace, stepSignal);
-      const outputFormat =
-        kind === 'thumbnail' ? 'webp' : snapshot.outputFormat;
-      if (result.mime !== `image/${outputFormat}`)
-        throw mediaError(
-          'MEDIA_OUTPUT_INVALID',
-          `Unexpected derived encoding: ${result.format}`,
-        );
       saveMediaCandidate(
         db,
         jobId,
