@@ -123,6 +123,53 @@ it('leaves the current image unchanged and sends no request for a cancelled choo
   expect(completed).not.toHaveBeenCalled();
 });
 
+it('shows the actual qualification refusal after selection without sending a file', async () => {
+  fetcher.mockResolvedValueOnce(
+    Response.json({ unavailableReason: '当前图片已有活动内容任务', job: null }),
+  );
+  await session.start();
+  await session.choose(new File(['chosen'], 'chosen.png'));
+  expect(session.getSnapshot()).toMatchObject({
+    error: '当前图片已有活动内容任务',
+    selecting: false,
+    uploading: false,
+  });
+  expect(Upload.instances).toHaveLength(0);
+  expect(completed).not.toHaveBeenCalled();
+});
+
+it('exposes the selected-file qualification handoff and sends only that file when a second selection is attempted', async () => {
+  let resolve!: (response: Response) => void;
+  fetcher.mockReturnValueOnce(
+    new Promise<Response>((done) => {
+      resolve = done;
+    }),
+  );
+  const initial = session.start();
+  const firstFile = new File(['first selection'], 'first.png');
+  const first = session.choose(firstFile);
+  expect(session.getSnapshot()).toMatchObject({
+    selecting: true,
+    checking: true,
+    uploading: false,
+  });
+  await session.choose(new File(['second selection'], 'second.png'));
+  expect(Upload.instances).toHaveLength(0);
+  resolve(Response.json(available));
+  await initial;
+  expect(Upload.instances).toHaveLength(1);
+  expect(Upload.current.body?.get('file')).toBe(firstFile);
+  Upload.current.complete(202, {
+    imageId: 'image',
+    jobId: 'first-selected-file',
+    status: 'queued',
+    byteSize: firstFile.size,
+  });
+  await first;
+  expect(session.getSnapshot().selecting).toBe(false);
+  expect(Upload.instances).toHaveLength(1);
+});
+
 it('keeps the actual rejected-upload error until another file is selected and never retries by itself', async () => {
   const { submission } = await ready();
   fetcher.mockResolvedValueOnce(Response.json(available));

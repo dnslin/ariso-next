@@ -5,6 +5,7 @@ import { DetailReplacementStatus } from '../../../src/components/library/detail-
 import type { DetailReplacementController } from '../../../src/components/library/use-detail-replacement';
 
 const idle = {
+  selecting: false,
   setup: { unavailableReason: null, job: null },
   checking: false,
   uploading: false,
@@ -27,6 +28,41 @@ function render(patch: Record<string, unknown> = {}) {
 it('adds no replacement page, candidate, confirmation or normal-state notice to the original detail', () => {
   expect(render()).toBe('');
 });
+
+it('keeps initial qualification loading out of the normal detail instead of adding an unexplained progress notice', () => {
+  expect(render({ setup: null, checking: true, selecting: false })).toBe('');
+});
+
+it('describes the chosen file waiting for qualification as submitting without claiming any upload progress', () => {
+  const html = render({ setup: null, checking: true, selecting: true });
+  expect(html).toContain('data-state="submitting"');
+  expect(html).toContain('正在提交替换…');
+  expect(html).toContain('role="status"');
+  expect(html).not.toContain('aria-label="替换文件传输进度"');
+  expect(html).not.toMatch(/正在上传|已上传|文件已发送|aria-valuenow/);
+});
+
+it.each(['failed', 'cancelled'] as const)(
+  'does not show the historical %s error as the newly selected file awaits qualification',
+  (status) => {
+    const html = render({
+      selecting: true,
+      checking: true,
+      job: {
+        id: 'historical-replacement',
+        status,
+        step: 'watermark',
+        error: '旧替换任务的错误',
+      },
+    });
+    expect(html).toContain('data-state="submitting"');
+    expect(html).toContain('role="status"');
+    expect(html).toContain('正在提交替换…');
+    expect(html).not.toContain('旧替换任务的错误');
+    expect(html).not.toContain('role="alert"');
+    expect(html).not.toContain('aria-label="替换文件传输进度"');
+  },
+);
 
 it('shows actual transfer progress in the detail without an extra submit action', () => {
   const html = render({ uploading: true, progress: 30 });

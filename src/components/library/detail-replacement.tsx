@@ -18,16 +18,21 @@ export function DetailReplacementStatus({
       ? 'processing'
       : state.unknown
         ? 'unknown'
-        : state.error || failed
-          ? 'failed'
-          : state.job?.status === 'succeeded'
-            ? 'succeeded'
-            : null;
+        : state.selecting
+          ? 'submitting'
+          : state.error || failed
+            ? 'failed'
+            : state.job?.status === 'succeeded'
+              ? 'succeeded'
+              : null;
   if (!phase) return null;
-  const error = state.error || state.job?.error;
+  const error =
+    state.error ||
+    (phase === 'failed' || phase === 'unknown' ? state.job?.error : null);
   let label = error || '替换未完成';
   if (!error) {
-    if (phase === 'uploading')
+    if (phase === 'submitting') label = '正在提交替换…';
+    else if (phase === 'uploading')
       label = state.transferComplete
         ? '文件已发送，等待服务器受理…'
         : '正在上传新图片…';
@@ -44,7 +49,9 @@ export function DetailReplacementStatus({
     <div
       data-testid="detail-replacement-status"
       data-state={phase}
-      role={error || failed || state.unknown ? 'alert' : 'status'}
+      role={
+        error || phase === 'failed' || phase === 'unknown' ? 'alert' : 'status'
+      }
       className="grid gap-2 rounded-lg border border-border p-3 text-sm"
     >
       <p className="break-all whitespace-pre-wrap">{label}</p>

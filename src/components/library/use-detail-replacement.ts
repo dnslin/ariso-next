@@ -73,12 +73,7 @@ export function useDetailReplacement({
     session,
     active,
     choicesDisabled:
-      snapshot.uploading ||
-      active ||
-      snapshot.unknown ||
-      snapshot.checking ||
-      !snapshot.setup ||
-      !!snapshot.setup.unavailableReason,
+      snapshot.uploading || active || snapshot.unknown || snapshot.selecting,
   };
 }
 export type DetailReplacementController = ReturnType<

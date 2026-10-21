@@ -7,6 +7,7 @@ export type ReplacementJob = NonNullable<ReplacementSetup['job']>;
 export type ReplacementSnapshot = {
   setup: ReplacementSetup | null;
   checking: boolean;
+  selecting: boolean;
   uploading: boolean;
   transferComplete: boolean;
   progress: number | null;
@@ -36,6 +37,7 @@ export class ReplacementSession {
   private snapshot: ReplacementSnapshot = {
     setup: null,
     checking: false,
+    selecting: false,
     uploading: false,
     transferComplete: false,
     progress: null,
@@ -47,7 +49,6 @@ export class ReplacementSession {
   private reader: AbortController | null = null;
   private reading: Promise<void> | null = null;
   private upload: XMLHttpRequest | null = null;
-  private selecting = false;
   private timer: ReturnType<typeof setTimeout> | undefined;
   private stopped = false;
   private visible = true;
@@ -114,13 +115,13 @@ export class ReplacementSession {
     if (
       !file ||
       this.stopped ||
-      this.selecting ||
+      this.snapshot.selecting ||
       this.upload ||
       this.snapshot.unknown ||
       replacementJobActive(this.snapshot.job)
     )
       return;
-    this.selecting = true;
+    this.update({ selecting: true });
     try {
       if (!this.snapshot.setup || this.snapshot.checking) {
         await this.read();
@@ -135,7 +136,7 @@ export class ReplacementSession {
       }
       await this.submit(file);
     } finally {
-      this.selecting = false;
+      this.update({ selecting: false });
     }
   }
   private expire() {
@@ -157,7 +158,7 @@ export class ReplacementSession {
   }
   private async readCurrent(preserveError: boolean) {
     if (
-      ((this.stopped || !this.visible) && !this.selecting) ||
+      ((this.stopped || !this.visible) && !this.snapshot.selecting) ||
       this.reader ||
       this.upload
     )
@@ -213,7 +214,8 @@ export class ReplacementSession {
               ? error.message
               : '任务状态读取失败，请重新核对。';
           this.update({ error: message });
-          if (this.stopped && this.selecting) this.onBackgroundError(message);
+          if (this.stopped && this.snapshot.selecting)
+            this.onBackgroundError(message);
         }
       }
     } finally {
@@ -266,7 +268,7 @@ export class ReplacementSession {
   private async submit(file: File) {
     const { setup, unknown, checking } = this.snapshot;
     if (
-      (this.stopped && !this.selecting) ||
+      (this.stopped && !this.snapshot.selecting) ||
       this.upload ||
       checking ||
       unknown ||
@@ -319,11 +321,11 @@ export class ReplacementSession {
   stop() {
     this.stopped = true;
     clearTimeout(this.timer);
-    if (!this.selecting) this.reader?.abort();
+    if (!this.snapshot.selecting) this.reader?.abort();
     // Closing details detaches observation, not the already chosen upload.
     // Its one XHR settles normally and releases its reference in submit.finally.
     if (
-      this.selecting ||
+      this.snapshot.selecting ||
       this.upload ||
       replacementJobActive(this.snapshot.job)
     )
