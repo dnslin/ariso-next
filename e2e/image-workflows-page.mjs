@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { join } from 'node:path';
+import { activateDetailMenuAction } from './image-replacement-helpers.mjs';
 import {
   resizeViewport,
   setTheme,
@@ -40,11 +41,7 @@ export function createImageWorkflowPage(page, config, report, fixture) {
     await page.waitForSelector('[data-testid="detail-body"]');
   }
   async function more(name) {
-    await page.click('[data-testid="detail-more-entry"]');
-    await page.waitForSelector(
-      `loc=role:menuitem[name=${JSON.stringify(name)}]`,
-    );
-    await page.click(`loc=role:menuitem[name=${JSON.stringify(name)}]`);
+    return activateDetailMenuAction(page, name, report);
   }
   async function revealWithKeyboard(selector, expectedValue) {
     // Ego's terminal text selector is used only by Page.focus. DOM reads use

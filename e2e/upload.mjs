@@ -13,6 +13,9 @@ const { createUploadLayouts } = await import(
 const { runUploadStorageAvailability } = await import(
   new URL('./upload-storage-availability.mjs', config.libraryDetailScript).href
 );
+const { verifyUploadedImageReplacement } = await import(
+  new URL('./image-replacement-helpers.mjs', config.libraryDetailScript).href
+);
 const task = await taskSpace(config.spaceId);
 const page = task.page(config.pageLabel ?? 'p1');
 const sql = (statement) => identitySql(config, statement);
@@ -345,6 +348,12 @@ try {
   report.checks.push(
     'Result URL uses real image ID, authenticated delivery returns bytes, and a user click writes the real clipboard.',
   );
+  await verifyUploadedImageReplacement({
+    page,
+    config,
+    report,
+    imageId: successId,
+  });
   await page.waitForSelector(button('关闭图片详情'));
   await page.click(button('关闭图片详情'));
   await state('ready');

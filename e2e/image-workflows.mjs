@@ -35,8 +35,9 @@ const report = {
   limitations: [
     'Images enter the real owner upload submission and multipart reception APIs, then run through the installed media worker in the disposable Local standalone runtime. No database fixture substitutes for upload or processing.',
     'The anonymous page uses a unique localhost subdomain with host-isolated cookies in the same Ego profile. Its actual null session and denied ordinary private URL are asserted; it is not a separate Chromium BrowserContext.',
-    'The handover check deliberately holds a real multipart body at the receiving boundary. This is a controlled timing fixture, not evidence of an actual network incident.',
+    'The handover check temporarily caps upload speed only on the current browser target. It closes details while the actual selected-file XHR and its server receiving task are pending, then restores normal speed and matches the same XHR receipt to the completed job. This is controlled timing, not an actual network incident.',
     'Chromium viewport, theme, keyboard, geometry and screenshots are local browser evidence. Physical devices, other engines, Figma design acceptance and release deployment are separate checks.',
+    'Ego menu pointer activation incorrectly reported an enabled replacement item as disabled or did not open its picker. Detail menu actions use native focus/Enter; replacement arms the SDK FileChooser before Enter and calls its setFiles. This suite does not claim Ego pointer acceptance for that action; independent IAB pointer evidence is recorded separately.',
     'External R2 and SeaweedFS business verification is provided by the separate real-storage verifier.',
   ],
 };

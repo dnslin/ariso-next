@@ -34,7 +34,6 @@ export async function createImageWorkflowFixture(page, config, report) {
   const directory = join(config.output, prefix);
   await mkdir(directory, { recursive: true });
   const images = [];
-  const held = [];
   let previousSettings, album, tag;
   const patch = {
     compressionEnabled: true,
@@ -154,60 +153,7 @@ export async function createImageWorkflowFixture(page, config, report) {
       byteSize: content.value.length,
     };
   }
-  async function holdReplacement(imageId, path) {
-    const data = await readFile(path),
-      boundary = `ariso-${randomUUID()}`;
-    let sender,
-      released = false;
-    const controller = new AbortController();
-    const body = new ReadableStream({
-      start(value) {
-        sender = value;
-        value.enqueue(
-          Buffer.from(
-            `--${boundary}\r\nContent-Disposition: form-data; name="file"; filename="${prefix}-held.png"\r\nContent-Type: image/png\r\n\r\n`,
-          ),
-        );
-        value.enqueue(data.subarray(0, 100));
-      },
-    });
-    const promise = response(`/api/images/${imageId}/replace`, {
-      method: 'POST',
-      headers: { 'Content-Type': `multipart/form-data; boundary=${boundary}` },
-      body,
-      duplex: 'half',
-      signal: controller.signal,
-    }).then(async (result) => {
-      const receipt = await result.json();
-      assert.equal(result.status, 202, JSON.stringify(receipt));
-      return receipt;
-    });
-    void promise.catch(() => undefined);
-    const operation = {
-      promise,
-      release() {
-        if (released) return;
-        released = true;
-        sender.enqueue(data.subarray(100));
-        sender.enqueue(Buffer.from(`\r\n--${boundary}--\r\n`));
-        sender.close();
-      },
-      abort() {
-        controller.abort();
-      },
-    };
-    held.push(operation);
-    await waitForImageWorkflow(
-      () => json(`/api/images/${imageId}/replace`),
-      (state) =>
-        state.job?.status === 'running' && state.job.step === 'receiving',
-      'Real pending multipart owns a running reception',
-    );
-    return operation;
-  }
   async function dispose() {
-    for (const operation of held) operation.abort();
-    await Promise.allSettled(held.map((operation) => operation.promise));
     for (const id of images) {
       const current = await response(`/api/images/${id}`);
       if (current.status === 404) continue;
@@ -315,7 +261,6 @@ export async function createImageWorkflowFixture(page, config, report) {
       detail,
       bytes,
       dimensions,
-      holdReplacement,
       dispose,
     };
   } catch (error) {
