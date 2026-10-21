@@ -55,6 +55,7 @@ export class ReplacementSession {
   private trackedJobId: string | null = null;
   private baselineJobId: string | null = null;
   private completedJobId: string | null = null;
+  private rejection: string | null = null;
   private onChanged = notifyLibraryChanged;
   private readonly url: string;
   constructor(
@@ -121,7 +122,8 @@ export class ReplacementSession {
       replacementJobActive(this.snapshot.job)
     )
       return;
-    this.update({ selecting: true });
+    this.rejection = null;
+    this.update({ selecting: true, error: '' });
     try {
       if (!this.snapshot.setup || this.snapshot.checking) {
         await this.read();
@@ -166,12 +168,24 @@ export class ReplacementSession {
     clearTimeout(this.timer);
     const controller = new AbortController();
     this.reader = controller;
-    this.update({ checking: true, ...(preserveError ? {} : { error: '' }) });
+    this.update({
+      checking: true,
+      ...(preserveError || this.rejection !== null ? {} : { error: '' }),
+    });
     try {
       const setup = await shareRequest<ReplacementSetup>(this.url, {
         signal: controller.signal,
       });
       if (controller.signal.aborted) return;
+      if (this.rejection !== null) {
+        this.update({
+          setup,
+          job: null,
+          unknown: false,
+          error: this.rejection,
+        });
+        return;
+      }
       if (
         !this.trackedJobId &&
         (replacementJobActive(setup.job) ||
@@ -213,7 +227,12 @@ export class ReplacementSession {
             error instanceof Error
               ? error.message
               : '任务状态读取失败，请重新核对。';
-          this.update({ error: message });
+          this.update({
+            error:
+              this.rejection === null
+                ? message
+                : `${this.rejection}\n${message}`,
+          });
           if (this.stopped && this.snapshot.selecting)
             this.onBackgroundError(message);
         }
@@ -306,7 +325,16 @@ export class ReplacementSession {
         error instanceof Error ? error.message : '替换提交结果待核对。';
       this.onChanged();
       if (error instanceof UploadError && error.status === 401) this.expire();
-      else {
+      else if (
+        error instanceof UploadError &&
+        error.status >= 400 &&
+        error.status < 500
+      ) {
+        this.rejection = message;
+        this.trackedJobId = null;
+        this.update({ unknown: false, job: null, error: message });
+        if (this.stopped) this.onBackgroundError(message);
+      } else {
         reconcile = !this.stopped;
         this.update({ unknown: true, error: message });
         if (this.stopped) this.onBackgroundError(message);

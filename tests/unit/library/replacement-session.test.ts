@@ -1,5 +1,8 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
-import { ReplacementSession } from '../../../src/components/library/replacement-session';
+import {
+  ReplacementSession,
+  type ReplacementSetup,
+} from '../../../src/components/library/replacement-session';
 
 class Upload {
   static current: Upload;
@@ -201,6 +204,127 @@ it('keeps the actual rejected-upload error until another file is selected and ne
   expect(completed).not.toHaveBeenCalled();
 });
 
+it('retains the rejected 409 attempt through unrelated active and successful jobs until an explicit new selection', async () => {
+  const { submission } = await ready();
+  let latest: ReplacementSetup = {
+    unavailableReason: '图片已有活动内容任务',
+    job: {
+      id: 'other-job-B',
+      status: 'running',
+      step: 'compressed',
+      error: null,
+      finishedAt: null,
+    },
+  };
+  fetcher.mockImplementation(async () => Response.json(latest));
+  Upload.current.complete(409, {
+    message: 'A替换被拒绝：图片已有活动内容任务',
+  });
+  await submission;
+  const states = [session.getSnapshot()];
+  await session.read();
+  states.push(session.getSnapshot());
+  session.setVisible(false);
+  session.setVisible(true);
+  await session.read();
+  states.push(session.getSnapshot());
+  latest = {
+    unavailableReason: null,
+    job: {
+      id: 'other-job-B',
+      status: 'succeeded',
+      step: 'complete',
+      error: null,
+      finishedAt: '2026-10-21T00:00:00Z',
+    },
+  };
+  await session.read();
+  states.push(session.getSnapshot());
+  session.setVisible(false);
+  session.setVisible(true);
+  await session.read();
+  states.push(session.getSnapshot());
+  expect(completed).not.toHaveBeenCalled();
+  for (const state of states)
+    expect(state).toMatchObject({
+      error: 'A替换被拒绝：图片已有活动内容任务',
+      unknown: false,
+      job: null,
+    });
+  expect(Upload.instances).toHaveLength(1);
+
+  let releaseQualification!: (response: Response) => void;
+  fetcher.mockReturnValueOnce(
+    new Promise<Response>((resolve) => {
+      releaseQualification = resolve;
+    }),
+  );
+  const qualification = session.read();
+  const selected = new File(['explicit new selection'], 'new-attempt.png');
+  const next = session.choose(selected);
+  expect(session.getSnapshot()).toMatchObject({
+    selecting: true,
+    checking: true,
+  });
+  expect(Upload.instances).toHaveLength(1);
+  releaseQualification(Response.json(latest));
+  await qualification;
+  expect(Upload.instances).toHaveLength(2);
+  expect(Upload.current.body?.get('file')).toBe(selected);
+  Upload.current.complete(202, {
+    imageId: 'image',
+    jobId: 'own-new-receipt',
+    status: 'queued',
+    byteSize: selected.size,
+  });
+  await next;
+  expect(session.getSnapshot()).toMatchObject({
+    error: '',
+    job: { id: 'own-new-receipt', status: 'queued' },
+  });
+  latest = {
+    unavailableReason: null,
+    job: {
+      id: 'own-new-receipt',
+      status: 'succeeded',
+      step: 'complete',
+      error: null,
+      finishedAt: '2026-10-21T00:01:00Z',
+    },
+  };
+  await session.read();
+  expect(completed).toHaveBeenCalledOnce();
+});
+
+it('keeps the actual 422 rejection instead of replacing it with its failed media job during later reads', async () => {
+  const { submission } = await ready();
+  fetcher.mockImplementation(async () =>
+    Response.json({
+      unavailableReason: null,
+      job: {
+        id: 'failed-input-A',
+        status: 'failed',
+        step: 'identify',
+        error: '内部任务识别诊断',
+        finishedAt: '2026-10-21T00:00:00Z',
+      },
+    }),
+  );
+  Upload.current.complete(422, { message: '实际422：替换图片格式无法识别' });
+  await submission;
+  await session.read();
+  session.setVisible(false);
+  session.setVisible(true);
+  await session.read();
+  expect(session.getSnapshot()).toMatchObject({
+    error: '实际422：替换图片格式无法识别',
+    unknown: false,
+    job: null,
+  });
+  expect(completed).not.toHaveBeenCalled();
+  expect(Upload.instances).toHaveLength(1);
+});
+
 it('waits for publication after queued and running size generation instead of treating upload acceptance as completion', async () => {
   const { submission } = await ready();
   Upload.current.complete(202, {
@@ -234,43 +358,50 @@ it('waits for publication after queued and running size generation instead of tr
     expect(Upload.instances).toHaveLength(1);
   }
 });
-it('reads back a lost upload response instead of resubmitting, then reports completion once the job succeeds', async () => {
-  const { submission } = await ready();
-  fetcher.mockResolvedValueOnce(
-    Response.json({
-      unavailableReason: '已有任务',
+it.each(['network', '503'] as const)(
+  'reads back an uncertain %s response instead of resubmitting, then reports completion once the job succeeds',
+  async (failure) => {
+    const { submission } = await ready();
+    fetcher.mockResolvedValueOnce(
+      Response.json({
+        unavailableReason: '已有任务',
+        job: {
+          id: 'job-2',
+          status: 'running',
+          step: 'compressed',
+          error: null,
+          finishedAt: null,
+        },
+      }),
+    );
+    if (failure === 'network') Upload.current.onerror?.();
+    else
+      Upload.current.complete(503, {
+        message: '服务器响应暂时不可用，结果待核对',
+      });
+    await submission;
+    expect(session.getSnapshot()).toMatchObject({
+      unknown: false,
+      error: '',
+      job: { id: 'job-2', status: 'running' },
+    });
+    const done = {
+      unavailableReason: null,
       job: {
         id: 'job-2',
-        status: 'running',
-        step: 'compressed',
+        status: 'succeeded',
+        step: 'complete',
         error: null,
-        finishedAt: null,
+        finishedAt: '2026-10-21T00:00:00Z',
       },
-    }),
-  );
-  Upload.current.onerror?.();
-  await submission;
-  expect(session.getSnapshot()).toMatchObject({
-    unknown: false,
-    error: '',
-    job: { id: 'job-2', status: 'running' },
-  });
-  const done = {
-    unavailableReason: null,
-    job: {
-      id: 'job-2',
-      status: 'succeeded',
-      step: 'complete',
-      error: null,
-      finishedAt: '2026-10-21T00:00:00Z',
-    },
-  };
-  fetcher.mockResolvedValueOnce(Response.json(done));
-  await session.read();
-  fetcher.mockResolvedValueOnce(Response.json(done));
-  await session.read();
-  expect(completed).toHaveBeenCalledTimes(1);
-});
+    };
+    fetcher.mockResolvedValueOnce(Response.json(done));
+    await session.read();
+    fetcher.mockResolvedValueOnce(Response.json(done));
+    await session.read();
+    expect(completed).toHaveBeenCalledTimes(1);
+  },
+);
 it('retains the real processing failure without reporting success or automatically resubmitting', async () => {
   const { submission } = await ready();
   Upload.current.complete(202, {
