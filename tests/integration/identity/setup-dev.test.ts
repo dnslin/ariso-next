@@ -72,7 +72,8 @@ it('real Next dev recompilation retains the startup code and the original code c
       ['install', '--offline', '--frozen-lockfile', '--ignore-scripts'],
       {
         cwd: directory,
-        env: { ...env, CI: 'true' },
+        // action-setup installs into PNPM_HOME/store; retain it for offline reuse.
+        env: { ...env, PNPM_HOME: process.env.PNPM_HOME, CI: 'true' },
         extendEnv: false,
         timeout: 15000,
       },
