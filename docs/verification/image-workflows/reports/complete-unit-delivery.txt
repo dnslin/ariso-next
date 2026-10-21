@@ -1,0 +1,38 @@
+Source: /tmp/ariso-294-delivery-unit.log
+Command: pnpm run test:unit --maxWorkers 2
+Environment: Node 24.18.1, pnpm 11.19.0, macOS arm64
+Observed exit code: 0
+
+Already up to date
+Done in 37ms using pnpm v11.19.0
+$ pnpm --dir integrations/picgo test && vitest run --project unit --maxWorkers 2
+$ node --test test/*.test.cjs
+✔ describes and preserves idle timeout during a continuously streamed response (1520.803125ms)
+✔ uploads transformed bytes publicly and returns the server-selected fixed version (1.866709ms)
+✔ does not output a default URL when the image was saved but the selected version is unavailable (0.91225ms)
+✔ stops a partial batch without exposing a short URL list or retrying (0.41325ms)
+✔ applies current targets and an explicit version even when the site default is unavailable (0.176042ms)
+✔ keeps metadata warnings as warnings, without exposing credentials in diagnostic text (0.128791ms)
+✔ preserves safe network diagnostics without forwarding a raw request or retrying (0.173208ms)
+✔ does not treat HTML, an undefined response, or incomplete success JSON as an image URL (0.224458ms)
+✔ preflights the whole batch before creating an image (0.158292ms)
+✔ handles base64 input and retains input order only for a complete successful batch (0.226417ms)
+✔ rejects invalid configuration before sending a request and discloses public uploads in the config UI (0.31975ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1842.118958
+
+ RUN  v5.0.0 /Users/dnslin/.codex/worktrees/image-workflows/ariso
+
+[controlled storage fault logs omitted; original log retained locally]
+
+
+ Test Files  222 passed (222)
+      Tests  2566 passed (2566)
+   Start at  21:05:23
+   Duration  79.46s (tests 80%, import 18%, transform 2%)

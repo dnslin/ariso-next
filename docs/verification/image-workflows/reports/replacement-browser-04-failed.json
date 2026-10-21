@@ -1,0 +1,394 @@
+{
+  "run": "browser-pr294-simple-focused-04",
+  "status": "failed",
+  "startedAt": "2026-10-21T12:31:30.997Z",
+  "finishedAt": "2026-10-21T12:34:19.514Z",
+  "taskSpaceId": 19,
+  "temporaryDirectoryRemoved": true,
+  "runnerStages": {
+    "image-workflows": {
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (image-workflows.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/image-workflows/ariso/scripts/verify-browser.mjs:267:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/image-workflows/ariso/scripts/browser-stages.mjs:17:5)\n    at async runBusinessBrowserStage (file:///Users/dnslin/.codex/worktrees/image-workflows/ariso/scripts/browser-business.mjs:22:18)\n    at async file:///Users/dnslin/.codex/worktrees/image-workflows/ariso/scripts/verify-browser.mjs:801:24"
+    }
+  },
+  "pageStatus": "failed",
+  "pageStage": "replacement-native-reception-focus-return",
+  "pageError": "Error: page.waitForFunction timed out after 10000ms on page p1; last URL was \"http://ariso-64969.localhost:64969/library?q=image-workflows-cf82e3bd&page=1&pageSize=20\"; last title was \"Ariso\".\n    at waitForFunctionTimeoutError (file:////[eval1]:19509:12)\n    at file:////[eval1]:18834:19\n    at async file:////[eval1]:16940:28",
+  "checksPassed": 30,
+  "layoutsRecorded": 99,
+  "ownerVisibility": [
+    {
+      "phase": "after-share-visitor-return",
+      "before": {
+        "hidden": false,
+        "visibilityState": "visible",
+        "hasFocus": true,
+        "href": "http://ariso-64969.localhost:64969/library?q=image-workflows-cf82e3bd&page=1&pageSize=20&image=fba77484-f47c-4022-8d2b-97658b456114"
+      },
+      "after": {
+        "hidden": false,
+        "visibilityState": "visible",
+        "hasFocus": true,
+        "href": "http://ariso-64969.localhost:64969/library?q=image-workflows-cf82e3bd&page=1&pageSize=20&image=fba77484-f47c-4022-8d2b-97658b456114"
+      }
+    },
+    {
+      "phase": "after-revoked-visitor-return",
+      "before": {
+        "hidden": false,
+        "visibilityState": "visible",
+        "hasFocus": true,
+        "href": "http://ariso-64969.localhost:64969/library?q=image-workflows-cf82e3bd&page=1&pageSize=20&image=fba77484-f47c-4022-8d2b-97658b456114"
+      },
+      "after": {
+        "hidden": false,
+        "visibilityState": "visible",
+        "hasFocus": true,
+        "href": "http://ariso-64969.localhost:64969/library?q=image-workflows-cf82e3bd&page=1&pageSize=20&image=fba77484-f47c-4022-8d2b-97658b456114"
+      }
+    },
+    {
+      "phase": "before-native-replacement-reception",
+      "before": {
+        "hidden": false,
+        "visibilityState": "visible",
+        "hasFocus": true,
+        "href": "http://ariso-64969.localhost:64969/library?q=image-workflows-cf82e3bd&page=1&pageSize=20&image=fba77484-f47c-4022-8d2b-97658b456114"
+      },
+      "after": {
+        "hidden": false,
+        "visibilityState": "visible",
+        "hasFocus": true,
+        "href": "http://ariso-64969.localhost:64969/library?q=image-workflows-cf82e3bd&page=1&pageSize=20&image=fba77484-f47c-4022-8d2b-97658b456114"
+      }
+    }
+  ],
+  "replacementReceptionDiagnostics": [
+    {
+      "phase": "before-receiving-capture",
+      "at": "2026-10-21T12:33:53.953Z",
+      "uploadCapBytesPerSecond": 128,
+      "expectedJobId": "0ff99d86-88df-4313-84f4-1078c7052fd7",
+      "browser": {
+        "at": "2026-10-21T12:33:53.950Z",
+        "hidden": false,
+        "visibilityState": "visible",
+        "hasFocus": true,
+        "href": "http://ariso-64969.localhost:64969/library?q=image-workflows-cf82e3bd&page=1&pageSize=20&image=fba77484-f47c-4022-8d2b-97658b456114",
+        "cardText": "image-workflows-cf82e3bd-private私有17.4 KiB · 已就绪",
+        "cardJobId": null,
+        "detailOpen": true,
+        "detailStatus": "正在上传新图片…",
+        "focus": {
+          "tag": "BODY",
+          "id": "",
+          "role": null,
+          "ariaLabel": null,
+          "text": "((a,b,c,d,e,f,g,h)=>{let i=document.documentElement,j=[\"light\",\"dark\"];function k(b){var c;(Array.isArray(a)?a:[a]).forE",
+          "connected": true
+        },
+        "xhrCount": 3,
+        "xhr": {
+          "filename": "held.png",
+          "status": null,
+          "ended": false,
+          "aborted": false
+        }
+      },
+      "replacement": {
+        "unavailableReason": "图片已有活动内容任务",
+        "job": {
+          "id": "0ff99d86-88df-4313-84f4-1078c7052fd7",
+          "status": "running",
+          "step": "receiving",
+          "error": null,
+          "finishedAt": null
+        }
+      },
+      "detail": {
+        "activeJob": {
+          "id": "0ff99d86-88df-4313-84f4-1078c7052fd7",
+          "kind": "replace",
+          "status": "running",
+          "scope": "all",
+          "step": "receiving",
+          "error": null
+        },
+        "processingJob": {
+          "id": "9c6b9f83-78c6-4e52-99b0-03cefd6e05a0",
+          "status": "succeeded",
+          "scope": "all",
+          "expectedVersions": ["compressed", "thumbnail", "watermark"],
+          "generatedVersions": [],
+          "step": "complete",
+          "error": null
+        },
+        "originalName": "replacement.png",
+        "contentUpdatedAt": "2026-10-21T12:33:47.390Z",
+        "width": 1600,
+        "height": 1000
+      }
+    },
+    {
+      "phase": "after-receiving-capture",
+      "at": "2026-10-21T12:33:59.884Z",
+      "uploadCapBytesPerSecond": 128,
+      "expectedJobId": "0ff99d86-88df-4313-84f4-1078c7052fd7",
+      "browser": {
+        "at": "2026-10-21T12:33:59.871Z",
+        "hidden": false,
+        "visibilityState": "visible",
+        "hasFocus": true,
+        "href": "http://ariso-64969.localhost:64969/library?q=image-workflows-cf82e3bd&page=1&pageSize=20&image=fba77484-f47c-4022-8d2b-97658b456114",
+        "cardText": "image-workflows-cf82e3bd-private私有17.4 KiB · 已就绪",
+        "cardJobId": null,
+        "detailOpen": true,
+        "detailStatus": "正在上传新图片…89%",
+        "focus": {
+          "tag": "BUTTON",
+          "id": "react-aria97474169-_r_k_",
+          "role": null,
+          "ariaLabel": "关闭图片详情",
+          "text": "",
+          "connected": true
+        },
+        "xhrCount": 3,
+        "xhr": {
+          "filename": "held.png",
+          "status": null,
+          "ended": false,
+          "aborted": false
+        }
+      },
+      "replacement": {
+        "unavailableReason": "图片已有活动内容任务",
+        "job": {
+          "id": "0ff99d86-88df-4313-84f4-1078c7052fd7",
+          "status": "running",
+          "step": "receiving",
+          "error": null,
+          "finishedAt": null
+        }
+      },
+      "detail": {
+        "activeJob": {
+          "id": "0ff99d86-88df-4313-84f4-1078c7052fd7",
+          "kind": "replace",
+          "status": "running",
+          "scope": "all",
+          "step": "receiving",
+          "error": null
+        },
+        "processingJob": {
+          "id": "9c6b9f83-78c6-4e52-99b0-03cefd6e05a0",
+          "status": "succeeded",
+          "scope": "all",
+          "expectedVersions": ["compressed", "thumbnail", "watermark"],
+          "generatedVersions": [],
+          "step": "complete",
+          "error": null
+        },
+        "originalName": "replacement.png",
+        "contentUpdatedAt": "2026-10-21T12:33:47.390Z",
+        "width": 1600,
+        "height": 1000
+      }
+    },
+    {
+      "phase": "before-detail-close",
+      "at": "2026-10-21T12:33:59.894Z",
+      "uploadCapBytesPerSecond": 128,
+      "expectedJobId": "0ff99d86-88df-4313-84f4-1078c7052fd7",
+      "browser": {
+        "at": "2026-10-21T12:33:59.886Z",
+        "hidden": false,
+        "visibilityState": "visible",
+        "hasFocus": true,
+        "href": "http://ariso-64969.localhost:64969/library?q=image-workflows-cf82e3bd&page=1&pageSize=20&image=fba77484-f47c-4022-8d2b-97658b456114",
+        "cardText": "image-workflows-cf82e3bd-private私有17.4 KiB · 已就绪",
+        "cardJobId": null,
+        "detailOpen": true,
+        "detailStatus": "正在上传新图片…89%",
+        "focus": {
+          "tag": "BUTTON",
+          "id": "react-aria97474169-_r_k_",
+          "role": null,
+          "ariaLabel": "关闭图片详情",
+          "text": "",
+          "connected": true
+        },
+        "xhrCount": 3,
+        "xhr": {
+          "filename": "held.png",
+          "status": null,
+          "ended": false,
+          "aborted": false
+        }
+      },
+      "replacement": {
+        "unavailableReason": "图片已有活动内容任务",
+        "job": {
+          "id": "0ff99d86-88df-4313-84f4-1078c7052fd7",
+          "status": "running",
+          "step": "receiving",
+          "error": null,
+          "finishedAt": null
+        }
+      },
+      "detail": {
+        "activeJob": {
+          "id": "0ff99d86-88df-4313-84f4-1078c7052fd7",
+          "kind": "replace",
+          "status": "running",
+          "scope": "all",
+          "step": "receiving",
+          "error": null
+        },
+        "processingJob": {
+          "id": "9c6b9f83-78c6-4e52-99b0-03cefd6e05a0",
+          "status": "succeeded",
+          "scope": "all",
+          "expectedVersions": ["compressed", "thumbnail", "watermark"],
+          "generatedVersions": [],
+          "step": "complete",
+          "error": null
+        },
+        "originalName": "replacement.png",
+        "contentUpdatedAt": "2026-10-21T12:33:47.390Z",
+        "width": 1600,
+        "height": 1000
+      }
+    },
+    {
+      "phase": "after-detail-close",
+      "at": "2026-10-21T12:34:00.044Z",
+      "uploadCapBytesPerSecond": 128,
+      "expectedJobId": "0ff99d86-88df-4313-84f4-1078c7052fd7",
+      "browser": {
+        "at": "2026-10-21T12:34:00.036Z",
+        "hidden": false,
+        "visibilityState": "visible",
+        "hasFocus": true,
+        "href": "http://ariso-64969.localhost:64969/library?q=image-workflows-cf82e3bd&page=1&pageSize=20",
+        "cardText": "image-workflows-cf82e3bd-private私有17.4 KiB · 已就绪替换图片：执行中 · 接收新文件",
+        "cardJobId": null,
+        "detailOpen": false,
+        "detailStatus": null,
+        "focus": {
+          "tag": "BODY",
+          "id": "",
+          "role": null,
+          "ariaLabel": null,
+          "text": "((a,b,c,d,e,f,g,h)=>{let i=document.documentElement,j=[\"light\",\"dark\"];function k(b){var c;(Array.isArray(a)?a:[a]).forE",
+          "connected": true
+        },
+        "xhrCount": 3,
+        "xhr": {
+          "filename": "held.png",
+          "status": null,
+          "ended": false,
+          "aborted": false
+        }
+      },
+      "replacement": {
+        "unavailableReason": "图片已有活动内容任务",
+        "job": {
+          "id": "0ff99d86-88df-4313-84f4-1078c7052fd7",
+          "status": "running",
+          "step": "receiving",
+          "error": null,
+          "finishedAt": null
+        }
+      },
+      "detail": {
+        "activeJob": {
+          "id": "0ff99d86-88df-4313-84f4-1078c7052fd7",
+          "kind": "replace",
+          "status": "running",
+          "scope": "all",
+          "step": "receiving",
+          "error": null
+        },
+        "processingJob": {
+          "id": "9c6b9f83-78c6-4e52-99b0-03cefd6e05a0",
+          "status": "succeeded",
+          "scope": "all",
+          "expectedVersions": ["compressed", "thumbnail", "watermark"],
+          "generatedVersions": [],
+          "step": "complete",
+          "error": null
+        },
+        "originalName": "replacement.png",
+        "contentUpdatedAt": "2026-10-21T12:33:47.390Z",
+        "width": 1600,
+        "height": 1000
+      }
+    },
+    {
+      "phase": "failed-replacement-native-reception-focus-return-before-network-restore",
+      "at": "2026-10-21T12:34:10.082Z",
+      "uploadCapBytesPerSecond": 128,
+      "expectedJobId": "0ff99d86-88df-4313-84f4-1078c7052fd7",
+      "browser": {
+        "at": "2026-10-21T12:34:10.071Z",
+        "hidden": false,
+        "visibilityState": "visible",
+        "hasFocus": true,
+        "href": "http://ariso-64969.localhost:64969/library?q=image-workflows-cf82e3bd&page=1&pageSize=20",
+        "cardText": "image-workflows-cf82e3bd-private私有17.4 KiB · 已就绪替换图片：执行中 · 接收新文件",
+        "cardJobId": null,
+        "detailOpen": false,
+        "detailStatus": null,
+        "focus": {
+          "tag": "BODY",
+          "id": "",
+          "role": null,
+          "ariaLabel": null,
+          "text": "((a,b,c,d,e,f,g,h)=>{let i=document.documentElement,j=[\"light\",\"dark\"];function k(b){var c;(Array.isArray(a)?a:[a]).forE",
+          "connected": true
+        },
+        "xhrCount": 3,
+        "xhr": {
+          "filename": "held.png",
+          "status": null,
+          "ended": false,
+          "aborted": false
+        }
+      },
+      "replacement": {
+        "unavailableReason": "图片已有活动内容任务",
+        "job": {
+          "id": "0ff99d86-88df-4313-84f4-1078c7052fd7",
+          "status": "running",
+          "step": "receiving",
+          "error": null,
+          "finishedAt": null
+        }
+      },
+      "detail": {
+        "activeJob": {
+          "id": "0ff99d86-88df-4313-84f4-1078c7052fd7",
+          "kind": "replace",
+          "status": "running",
+          "scope": "all",
+          "step": "receiving",
+          "error": null
+        },
+        "processingJob": {
+          "id": "9c6b9f83-78c6-4e52-99b0-03cefd6e05a0",
+          "status": "succeeded",
+          "scope": "all",
+          "expectedVersions": ["compressed", "thumbnail", "watermark"],
+          "generatedVersions": [],
+          "step": "complete",
+          "error": null
+        },
+        "originalName": "replacement.png",
+        "contentUpdatedAt": "2026-10-21T12:33:47.390Z",
+        "width": 1600,
+        "height": 1000
+      }
+    }
+  ],
+  "source": "test-results/browser-pr294-simple-focused-04"
+}

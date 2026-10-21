@@ -2,7 +2,7 @@
 
 - 日期：2026-10-21。
 - 文件：`74sT9Hrf8G4czcWeTkET5b`。
-- 状态：四项获批原型已同步为原生可编辑设计；结构、字体和代表组合截图已实际核对。此记录不表示新增功能的产品运行、浏览器或用户人工验收已完成。
+- 状态：四项获批原型已同步为原生可编辑设计；替换的后续精简已原位同步，见[替换修订](./replacement-simple-20261021.md)。下文66画板和58连接的统计属于首轮快照；本轮12个替换状态最新结构与连接另记，不将旧统计称为当前结果。此记录不表示产品运行、浏览器或人工验收完成。
 - [组合视觉核对画板 1226:65995](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1226-65995)：4480 × 3328，包含 12 个桌面 / 手机代表界面，均为原生节点克隆。
 - 原型参考：`http://127.0.0.1:61731/library?scene=download`，以及本聊天可视化目录内已批准的四项界面与 ZIP 图标 / 右键补充。
 
@@ -25,7 +25,7 @@
 | ZIP：预检查        | [1220:47051](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1220-47051) | [1220:66003](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1220-66003) |
 | ZIP：明确排除后    | [1226:47449](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1226-47449) | [1226:65815](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1226-65815) |
 | ZIP：读取失败      | [1220:47988](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1220-47988) | [1220:66577](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1220-66577) |
-| 替换：新旧对比     | [1221:47188](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1221-47188) | [1221:66112](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1221-66112) |
+| 替换：直接上传中   | [1221:47188](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1221-47188) | [1221:66112](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1221-66112) |
 | 替换：处理中       | [1221:47432](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1221-47432) | [1221:66235](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1221-66235) |
 | 替换：失败保留旧图 | [1221:47683](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1221-47683) | [1221:66365](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1221-66365) |
 | 替换：成功         | [1221:47934](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1221-47934) | [1221:66495](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1221-66495) |
@@ -50,15 +50,15 @@
 ## 实际同步内容
 
 - ZIP：操作栏 44px 下载图标、右键 / 更多菜单、固定版本、文件清单及大小、检查中、未生成版本、明确排除、读取失败、交给浏览器下载。排除后的清单为 2 张 / 640 KiB，不把原来的 3 张总量沿用到新清单。
-- 替换：新旧图片对比、保留外链和关系摘要、确认后果、候选处理中、失败保留全部旧引用、成功与不兼容文件。手机使用可滚动工作页及固定操作栏。
+- 替换首轮曾使用新旧对比、确认和手机工作页；用户后续要求已覆盖该呈现。当前12个画板改为原详情内选择即上传、简短上传/处理/失败/成功状态，取消独立工作页与确认。最新原生1898后代节点、10条替换状态演示连接、字体和图片证据见[最终修订记录](./figma-replacement-parity-20261021.json)。
 - 私有分享：期限、创建、已创建、原图 GPS / 拍摄信息说明、复制失败、撤销确认、撤销后状态；匿名访客有效及到期 / 撤销页。匿名画板不展示图片名称、相册或后台资料。
 - 尺寸：版本、固定最长边、实际宽高、首次生成、处理中、就绪、生成失败、小图不放大、动画限制、原图原字节、默认链接及手动复制。保留默认链接语义，尺寸仅扩展明确的压缩 / 水印版本。
 - 深浅色继续绑定同一 Ariso 语义变量，增加两端深色尺寸代表。未添加新变量集合或硬编码替代现有主题变量。
 - 原型中的四项场景切换、演示状态选择器及“尚未接入真实服务”标签属于演示工具，没有作为产品内容同步。
 
-## 原生结构、字体与素材证明
+## 首轮历史结构、字体与素材证明
 
-最终回读的 66 个画板共包含 8211 个后代节点。节点类型、实例数量、变量绑定、文本样式、每个图片填充的节点 ID / 类型 / 尺寸均写入 [figma-validation.json](./figma-validation.json)。
+首轮回读的 66 个画板共包含 8211 个后代节点。节点类型、实例数量、变量绑定、文本样式、每个图片填充的节点 ID / 类型 / 尺寸均写入 [figma-validation.json](./figma-validation.json)。
 
 - 中文全部为 Noto Sans SC；品牌为 Caveat；未发现非产品字体，未发现中文字体偏离，未发现仍为 1px 高的可见文本。
 - 复用文件现有按钮、图标按钮、Select、格式选择、公共外壳、主题入口和中文正文样式。没有将本地 Ariso 控件称为官方 HeroUI Figma 库。
@@ -66,14 +66,18 @@
 - 手机卡片为 173px，照片内容为 171 × 129.75，边框占用 2px；分享身份卡为桌面 526 × 106、手机 326 × 106。已修正实例宽度、身份卡裁切和文本换行。
 - 图片填充仅有获批原型同源的 400 × 267 独立照片和原有 20 × 20 点阵纹理。点阵可铺满页面，但不是完整界面截图。未导入或叠放整页 UI 位图。
 
-组合画板本身的回读为 1486 个后代节点，其中 301 个 TEXT、560 个 FRAME、452 个 VECTOR、163 个 INSTANCE、6 个 RECTANGLE、4 个 ELLIPSE；它是检查用途的原生组合，不是新的产品页面。
+首轮组合画板的回读为 1486 个后代节点，其中 301 个 TEXT、560 个 FRAME、452 个 VECTOR、163 个 INSTANCE、6 个 RECTANGLE、4 个 ELLIPSE；它是检查用途的原生组合，不是新的产品页面。
 
-## 视觉对照与验证边界
+## 首轮历史截图与验证边界
 
 已实际取得组合截图并与批准原型对照。针对横排高度、文本自动换行、手机卡片母版和分享身份卡进行局部修正。最后一次截图为 4480 × 3328，并从同一 PNG 裁出 ZIP、分享与手机失效页检查细节；最终无上述裁切和重叠问题。没有对未修改的状态反复重建或把截图当成真实权限验证。
 
-本机截图位于 `/tmp/ariso-image-workflows-figma-final.png`，细节图位于 `/tmp/ariso-figma-final-detail-0.png` 至 `-2.png`。这些是临时检查文件；持久来源为上方 Figma 组合画板。按本次文件范围约定，仅将 JSON / Markdown 证据写入仓库。
+首轮本机截图位于 `/tmp/ariso-image-workflows-figma-final.png`，细节图位于 `/tmp/ariso-figma-final-detail-0.png` 至 `-2.png`。这些是临时检查文件；持久来源为上方 Figma 组合画板。按本次文件范围约定，仅将 JSON / Markdown 证据写入仓库。
 
 两页各增加四个 `ImageWorkflows ·` 演示起点，连接 29 条主要流程，共 58 条。已有流程入口保留；只清除本轮克隆携带的旧跨流程连接。计时跳转只是状态演示，未执行真实上传、下载、剪贴板、S3 或到期授权。Select 的全部操作系统行为与右键事件仍由产品浏览器验证承担，不能用 Figma 连接证明。
 
 本次 Figma 同步子任务只改 Figma 与上述证据文件；没有修改产品功能代码、PRD、SPEC 或 handoff，没有提交或推送。
+
+本轮替换精简后的最终截图为 `/tmp/ariso-294-replacement-figma-final.png`，12个状态的最新原生结构、字体与连接由[修订证据](./figma-replacement-simple-20261021.json)维护。首轮总数不冒充修订后的全部66画板总数。
+
+已按真实详情公共布局完成[最终局部对齐](./figma-replacement-parity-20261021.json)：桌面1040×640及85px底栏，手机358×238.73预览及77px底栏；14个视图共56个44px按钮的图标均新鲜回读为20px。新增3个精确Lucide SVG母组件及一个本任务20px图标槽按钮派生，不修改共享759/3:*或其他54画板。当前12状态1898后代、10条演示连接；组合另保留1条处理演示连接。[唯一组合截图](./screenshots/figma-replacement-parity.png)已实际检查并归档。
