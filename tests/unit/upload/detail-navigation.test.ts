@@ -29,10 +29,30 @@ vi.mock('next/navigation', () => ({
   useSearchParams: () => new URL(hooks.href).searchParams,
 }));
 const main = { scrollTop: 0 };
-const trigger = { focus: vi.fn(), isConnected: true };
-const fallback = { focus: vi.fn() };
+const body = {};
+let active: unknown;
+let frames: (() => void)[];
+function focusable() {
+  const node = {
+    isConnected: true,
+    getClientRects: () => [{}],
+    matches: () => false,
+    closest: () => null,
+    focus: vi.fn((): void => {
+      active = node;
+    }),
+  };
+  return node;
+}
+const trigger = focusable();
+const fallback = focusable();
 const versionEntry = { focus: vi.fn() };
 let history: string[];
+function flush() {
+  const pending = frames;
+  frames = [];
+  pending.forEach((callback) => callback());
+}
 function render() {
   hooks.cursor = 0;
   // eslint-disable-next-line react-hooks/rules-of-hooks -- This harness retains mocked hook cells across history updates.
@@ -42,11 +62,25 @@ beforeEach(() => {
   hooks.cells = [];
   main.scrollTop = 360;
   vi.clearAllMocks();
-  vi.stubGlobal('requestAnimationFrame', (callback: () => void) => callback());
+  active = body;
+  frames = [];
+  vi.stubGlobal('requestAnimationFrame', (callback: () => void) => {
+    frames.push(callback);
+    return frames.length;
+  });
+  vi.stubGlobal('cancelAnimationFrame', vi.fn());
   vi.stubGlobal('document', {
+    body,
+    get activeElement() {
+      return active;
+    },
     getElementById: () => main,
     querySelector: (selector: string) =>
-      selector === '#upload-title' ? fallback : versionEntry,
+      selector === '#upload-title'
+        ? fallback
+        : selector.includes('data-image-id')
+          ? null
+          : versionEntry,
   });
   vi.stubGlobal('window', {
     location: {
@@ -81,11 +115,13 @@ it.each(['/upload', '/upload?albumId=a&returnTo=%2Falbums%2Fa%3Fpage%3D2'])(
     expect(new URL(hooks.href).searchParams.get('detailView')).toBe('versions');
     expect(main.scrollTop).toBe(0);
     render().returnToDetail();
+    flush();
     expect(new URL(hooks.href).searchParams.get('image')).toBe('image');
     expect(main.scrollTop).toBe(360);
     render().close();
     expect(hooks.href).toBe(`http://ariso.test${source}`);
     render().dialogRef(null);
+    flush();
     expect(trigger.focus).toHaveBeenCalledWith({ preventScroll: true });
     expect(main.scrollTop).toBe(360);
   },
@@ -98,6 +134,7 @@ it('browser back from versions returns to the upload entry without visiting the 
   render();
   window.history.back();
   render();
+  flush();
   expect(hooks.href).toBe('http://ariso.test/upload?albumId=a');
   expect(main.scrollTop).toBe(360);
   expect(trigger.focus).toHaveBeenCalledWith({ preventScroll: true });
@@ -108,6 +145,7 @@ it('a direct versions URL closes to its upload entry and focuses its heading', (
     'http://ariso.test/upload?albumId=a&image=image&detailView=versions&preview=original';
   render().close();
   render().dialogRef(null);
+  flush();
   expect(hooks.href).toBe('http://ariso.test/upload?albumId=a');
   expect(fallback.focus).toHaveBeenCalledWith({ preventScroll: true });
 });

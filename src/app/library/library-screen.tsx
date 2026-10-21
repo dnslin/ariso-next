@@ -267,6 +267,18 @@ export function LibraryScreen(props: {
     onSessionExpired: expireSession,
     onInvalid: query.onSelectionInvalid,
   });
+  const { resumeCloseFocus } = detail;
+  useEffect(() => {
+    resumeCloseFocus(
+      !detail.imageId && query.canOperate && !reconciliation.pending,
+    );
+  }, [
+    detail.imageId,
+    query.canOperate,
+    query.dataUpdatedAt,
+    reconciliation.pending,
+    resumeCloseFocus,
+  ]);
   if (query.expired && !sessionEnded) setSessionEnded(true);
   async function onTrashed(record: Detail) {
     selection.remove(record.id);
