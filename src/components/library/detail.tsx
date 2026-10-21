@@ -28,6 +28,11 @@ import {
   Share2,
 } from 'lucide-react';
 import { DetailImageShare } from './detail-image-share';
+import { DetailReplacementStatus } from './detail-replacement';
+import {
+  useDetailReplacement,
+  type DetailReplacementController,
+} from './use-detail-replacement';
 import type { LibraryDetail as Detail } from '../../server/library/detail-types';
 import type { LibraryFilters } from '../../server/library/query-schema';
 import type { VersionKind } from '../../server/media/schema';
@@ -63,7 +68,7 @@ function DetailContent({
   onVersions,
   onView,
   onStatistics,
-  onReplace,
+  replacement,
   onShare,
 }: {
   detail: Detail;
@@ -78,10 +83,11 @@ function DetailContent({
   onVersions: () => void;
   onView: () => void;
   onStatistics?: () => void;
-  onReplace: () => void;
+  replacement: DetailReplacementController;
   onShare: () => void;
 }) {
   const [viewerTooltipOpen, setViewerTooltipOpen] = useState(false);
+  const replacementInput = useRef<HTMLInputElement>(null);
   useEffect(() => {
     if (!viewerTooltipOpen) return;
     const close = () => setViewerTooltipOpen(false);
@@ -139,6 +145,20 @@ function DetailContent({
   }
   return (
     <>
+      <input
+        ref={replacementInput}
+        type="file"
+        hidden
+        data-testid="replacement-file-input"
+        aria-label="选择替换图片文件"
+        accept="image/*,.heic,.heif,.tif,.tiff,.ico,.svg"
+        disabled={replacement.choicesDisabled}
+        onChange={(event) => {
+          const file = event.currentTarget.files?.[0] ?? null;
+          event.currentTarget.value = '';
+          if (file) void replacement.session.choose(file);
+        }}
+      />
       {!mutationPending ? (
         <Modal.Body
           data-testid="detail-body"
@@ -225,12 +245,14 @@ function DetailContent({
                         id="replace"
                         textValue="替换图片"
                         className="min-h-11 gap-3"
-                        onAction={onReplace}
+                        onAction={() => replacementInput.current?.click()}
                         isDisabled={
                           !!detail.trashedAt ||
                           !!detail.deletionStatus ||
                           !detail.storage.enabled ||
-                          detail.processingStatus !== 'ready'
+                          detail.processingStatus !== 'ready' ||
+                          !!detail.activeJob ||
+                          replacement.choicesDisabled
                         }
                       >
                         <ImageUp size={18} aria-hidden />
@@ -312,19 +334,22 @@ function DetailContent({
                   </Alert.Content>
                 </Alert>
               ) : null}
-              {detail.activeJob ? (
+              <DetailReplacementStatus state={replacement} />
+              {detail.activeJob &&
+              detail.activeJob.id !== replacement.job?.id ? (
                 <p role="status">
                   {activeJobLabels[detail.activeJob.kind]}：
                   {detail.activeJob.status === 'queued' ? '等待执行' : '执行中'}{' '}
                   · {stepLabels[detail.activeJob.step] ?? detail.activeJob.step}
                 </p>
               ) : null}
-              {detail.latestFailedJob ? (
+              {detail.latestFailedJob &&
+              detail.latestFailedJob.id !== replacement.job?.id ? (
                 <Alert status="danger">
                   <Alert.Content>
                     <Alert.Title>
                       {detail.processingStatus === 'ready'
-                        ? '最近重处理失败，已保存版本仍可使用'
+                        ? '最近任务失败，已保存版本仍可使用'
                         : '最近处理任务失败'}{' '}
                       ·{' '}
                       {stepLabels[detail.latestFailedJob.step] ??
@@ -415,11 +440,11 @@ export function LibraryDetail({
   initialSelected,
   viewerFilters,
   onStatistics,
-  onReplace,
+  onReplacementChanged,
 }: {
   initialSelected?: string;
   onStatistics?: () => void;
-  onReplace: () => void;
+  onReplacementChanged: () => void;
   viewerFilters?: LibraryFilters;
   query: ReturnType<typeof useDetailQuery>;
   hidden?: boolean;
@@ -445,6 +470,14 @@ export function LibraryDetail({
     initialSelected ?? null,
   );
   const [previewRevision, setPreviewRevision] = useState(0);
+  const replacement = useDetailReplacement({
+    imageId,
+    onCompleted: () => {
+      void refreshDetail();
+    },
+    onChanged: onReplacementChanged,
+    onSessionExpire: () => setUnavailable(401),
+  });
   const [viewer, setViewer] = useState<{
     initial: Detail;
     initialVersion: VersionKind;
@@ -606,7 +639,7 @@ export function LibraryDetail({
                 selected={selected ?? initialPreview(query.data)}
                 onSelect={setSelected}
                 onStatistics={onStatistics}
-                onReplace={onReplace}
+                replacement={replacement}
                 onShare={() => setShareOpen(true)}
                 onVersions={() =>
                   onVersions(selected ?? initialPreview(query.data))

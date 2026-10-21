@@ -32,7 +32,6 @@ const main = { scrollTop: 0 };
 const trigger = { focus: vi.fn(), isConnected: true };
 const fallback = { focus: vi.fn() };
 const versionEntry = { focus: vi.fn() };
-const moreEntry = { focus: vi.fn() };
 let history: string[];
 function render() {
   hooks.cursor = 0;
@@ -47,11 +46,7 @@ beforeEach(() => {
   vi.stubGlobal('document', {
     getElementById: () => main,
     querySelector: (selector: string) =>
-      selector === '#upload-title'
-        ? fallback
-        : selector === '[data-testid="detail-more-entry"]'
-          ? moreEntry
-          : versionEntry,
+      selector === '#upload-title' ? fallback : versionEntry,
   });
   vi.stubGlobal('window', {
     location: {
@@ -116,23 +111,3 @@ it('a direct versions URL closes to its upload entry and focuses its heading', (
   expect(hooks.href).toBe('http://ariso.test/upload?albumId=a');
   expect(fallback.focus).toHaveBeenCalledWith({ preventScroll: true });
 });
-
-it.each(['/library', '/upload?albumId=a'])(
-  'returns from replacement to its more-action trigger within %s',
-  (source) => {
-    hooks.href = `http://ariso.test${source}`;
-    render().open('image', trigger as unknown as HTMLElement);
-    render().openView('replace');
-    const navigation = render();
-    vi.clearAllMocks();
-    navigation.returnToDetail();
-    expect(new URL(hooks.href).searchParams.get('detailView')).toBeNull();
-    expect(new URL(hooks.href).searchParams.get('image')).toBe('image');
-    expect(main.scrollTop).toBe(360);
-    expect(moreEntry.focus).toHaveBeenCalled();
-    expect(versionEntry.focus).not.toHaveBeenCalled();
-    render();
-    expect(moreEntry.focus).toHaveBeenLastCalledWith({ preventScroll: true });
-    expect(versionEntry.focus).not.toHaveBeenCalled();
-  },
-);

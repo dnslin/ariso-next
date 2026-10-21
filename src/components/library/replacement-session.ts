@@ -1,19 +1,17 @@
 import { shareRequest, ShareRequestError } from '../../app/shares/api';
 import type { readImageReplacement } from '../../server/media/replacement';
+import { notifyLibraryChanged } from './library-changes';
 
 export type ReplacementSetup = ReturnType<typeof readImageReplacement>;
 export type ReplacementJob = NonNullable<ReplacementSetup['job']>;
 export type ReplacementSnapshot = {
   setup: ReplacementSetup | null;
-  file: File | null;
-  previewUrl: string | null;
   checking: boolean;
   uploading: boolean;
   transferComplete: boolean;
   progress: number | null;
   job: ReplacementJob | null;
   error: string;
-  message: string;
   unknown: boolean;
 };
 type Receipt = {
@@ -37,39 +35,46 @@ export const replacementJobActive = (job: ReplacementJob | null) =>
 export class ReplacementSession {
   private snapshot: ReplacementSnapshot = {
     setup: null,
-    file: null,
-    previewUrl: null,
     checking: false,
     uploading: false,
     transferComplete: false,
     progress: null,
     job: null,
     error: '',
-    message: '',
     unknown: false,
   };
   private listeners = new Set<() => void>();
   private reader: AbortController | null = null;
+  private reading: Promise<void> | null = null;
   private upload: XMLHttpRequest | null = null;
+  private selecting = false;
   private timer: ReturnType<typeof setTimeout> | undefined;
   private stopped = false;
   private visible = true;
   private trackedJobId: string | null = null;
   private baselineJobId: string | null = null;
   private completedJobId: string | null = null;
-  private previewReleased = false;
+  private onChanged = notifyLibraryChanged;
   private readonly url: string;
   constructor(
     imageId: string,
     private onCompleted: () => void,
     private onExpired: () => void,
+    private onBackgroundError: (message: string) => void,
   ) {
     this.url = `/api/images/${encodeURIComponent(imageId)}/replace`;
   }
   getSnapshot = () => this.snapshot;
-  setCallbacks(onCompleted: () => void, onExpired: () => void) {
-    this.onCompleted = onCompleted;
-    this.onExpired = onExpired;
+  setCallbacks(callbacks: {
+    onCompleted: () => void;
+    onExpired: () => void;
+    onChanged: () => void;
+    onBackgroundError: (message: string) => void;
+  }) {
+    this.onCompleted = callbacks.onCompleted;
+    this.onExpired = callbacks.onExpired;
+    this.onChanged = callbacks.onChanged;
+    this.onBackgroundError = callbacks.onBackgroundError;
   }
   subscribe = (listener: () => void) => {
     this.listeners.add(listener);
@@ -78,16 +83,14 @@ export class ReplacementSession {
     };
   };
   private update(patch: Partial<ReplacementSnapshot>) {
-    if (this.stopped) return;
     this.snapshot = { ...this.snapshot, ...patch };
     for (const listener of this.listeners) listener();
   }
   start() {
     this.stopped = false;
-    if (this.reader?.signal.aborted) this.reader = null;
-    if (this.snapshot.file && this.previewReleased) {
-      this.previewReleased = false;
-      this.update({ previewUrl: URL.createObjectURL(this.snapshot.file) });
+    if (this.reader?.signal.aborted) {
+      this.reader = null;
+      this.reading = null;
     }
     return this.read();
   }
@@ -107,37 +110,58 @@ export class ReplacementSession {
         void this.read();
       }, 1500);
   }
-  choose(file: File | null) {
-    if (this.snapshot.uploading || replacementJobActive(this.snapshot.job))
+  async choose(file: File | null) {
+    if (
+      !file ||
+      this.stopped ||
+      this.selecting ||
+      this.upload ||
+      this.snapshot.unknown ||
+      replacementJobActive(this.snapshot.job)
+    )
       return;
-    if (this.snapshot.previewUrl && !this.previewReleased)
-      URL.revokeObjectURL(this.snapshot.previewUrl);
-    this.previewReleased = false;
-    this.trackedJobId = null;
-    this.update({
-      file,
-      previewUrl: file ? URL.createObjectURL(file) : null,
-      error: '',
-      message: '',
-      job: null,
-    });
+    this.selecting = true;
+    try {
+      if (!this.snapshot.setup || this.snapshot.checking) {
+        await this.read();
+        if (this.snapshot.error || !this.snapshot.setup) return;
+      }
+      const unavailable = this.snapshot.setup.unavailableReason;
+      if (unavailable) {
+        this.update({ error: unavailable });
+        if (this.stopped) this.onBackgroundError(unavailable);
+        this.onChanged();
+        return;
+      }
+      await this.submit(file);
+    } finally {
+      this.selecting = false;
+    }
   }
   private expire() {
-    if (this.snapshot.previewUrl && !this.previewReleased)
-      URL.revokeObjectURL(this.snapshot.previewUrl);
-    this.previewReleased = true;
     this.update({
       setup: null,
-      file: null,
-      previewUrl: null,
       job: null,
       unknown: false,
       error: '登录已失效',
     });
     this.onExpired();
   }
-  async read(preserveError = false) {
-    if (this.stopped || !this.visible || this.reader || this.upload) return;
+  read(preserveError = false): Promise<void> {
+    if (this.reading) return this.reading;
+    const reading = this.readCurrent(preserveError).finally(() => {
+      if (this.reading === reading) this.reading = null;
+    });
+    this.reading = reading;
+    return reading;
+  }
+  private async readCurrent(preserveError: boolean) {
+    if (
+      ((this.stopped || !this.visible) && !this.selecting) ||
+      this.reader ||
+      this.upload
+    )
+      return;
     clearTimeout(this.timer);
     const controller = new AbortController();
     this.reader = controller;
@@ -147,7 +171,13 @@ export class ReplacementSession {
         signal: controller.signal,
       });
       if (controller.signal.aborted) return;
-      if (!this.trackedJobId && replacementJobActive(setup.job))
+      if (
+        !this.trackedJobId &&
+        (replacementJobActive(setup.job) ||
+          (setup.job?.id !== this.baselineJobId &&
+            (setup.job?.status === 'failed' ||
+              setup.job?.status === 'cancelled')))
+      )
         this.trackedJobId = setup.job!.id;
       if (
         this.snapshot.unknown &&
@@ -156,21 +186,19 @@ export class ReplacementSession {
       )
         this.trackedJobId = setup.job.id;
       const job = setup.job?.id === this.trackedJobId ? setup.job : null;
-      const wasUnknown = this.snapshot.unknown;
+      const previousJob = this.snapshot.job;
       this.update({
         setup,
         job,
         unknown: false,
-        ...(wasUnknown
-          ? {
-              message: job
-                ? '已读取服务端替换任务。'
-                : '当前未发现新的替换任务，请核对后再明确提交。',
-            }
-          : {}),
         ...(job ? { error: '' } : {}),
-        ...(job && !replacementJobActive(job) ? { message: '' } : {}),
       });
+      if (
+        job &&
+        !replacementJobActive(job) &&
+        (previousJob?.id !== job.id || previousJob.status !== job.status)
+      )
+        this.onChanged();
       if (job?.status === 'succeeded' && this.completedJobId !== job.id) {
         this.completedJobId = job.id;
         this.onCompleted();
@@ -179,13 +207,14 @@ export class ReplacementSession {
       if (!controller.signal.aborted) {
         if (error instanceof ShareRequestError && error.status === 401)
           this.expire();
-        else
-          this.update({
-            error:
-              error instanceof Error
-                ? error.message
-                : '任务状态读取失败，请重新核对。',
-          });
+        else {
+          const message =
+            error instanceof Error
+              ? error.message
+              : '任务状态读取失败，请重新核对。';
+          this.update({ error: message });
+          if (this.stopped && this.selecting) this.onBackgroundError(message);
+        }
       }
     } finally {
       if (this.reader === controller) {
@@ -234,13 +263,12 @@ export class ReplacementSession {
       xhr.send(data);
     });
   }
-  async submit() {
-    const { file, setup, unknown, checking } = this.snapshot;
+  private async submit(file: File) {
+    const { setup, unknown, checking } = this.snapshot;
     if (
-      this.stopped ||
+      (this.stopped && !this.selecting) ||
       this.upload ||
       checking ||
-      !file ||
       unknown ||
       !setup ||
       setup.unavailableReason ||
@@ -254,13 +282,12 @@ export class ReplacementSession {
       transferComplete: false,
       progress: null,
       error: '',
-      message: '',
       job: null,
     });
     let reconcile = false;
     try {
       const receipt = await this.send(file);
-      if (this.stopped) return;
+      this.onChanged();
       this.trackedJobId = receipt.jobId;
       this.update({
         job: {
@@ -270,20 +297,17 @@ export class ReplacementSession {
           error: null,
           finishedAt: null,
         },
-        message: '新文件已受理。正在准备候选版本，当前外链仍可读取旧图片。',
         unknown: false,
       });
     } catch (error) {
-      if (!this.stopped) {
-        if (error instanceof UploadError && error.status === 401) this.expire();
-        else {
-          reconcile = true;
-          this.update({
-            unknown: true,
-            error:
-              error instanceof Error ? error.message : '替换提交结果待核对。',
-          });
-        }
+      const message =
+        error instanceof Error ? error.message : '替换提交结果待核对。';
+      this.onChanged();
+      if (error instanceof UploadError && error.status === 401) this.expire();
+      else {
+        reconcile = !this.stopped;
+        this.update({ unknown: true, error: message });
+        if (this.stopped) this.onBackgroundError(message);
       }
     } finally {
       this.upload = null;
@@ -292,17 +316,17 @@ export class ReplacementSession {
     if (reconcile && !this.stopped) await this.read(true);
     else this.schedule();
   }
-  cancelUpload() {
-    if (this.snapshot.uploading && !this.snapshot.transferComplete)
-      this.upload?.abort();
-  }
   stop() {
     this.stopped = true;
     clearTimeout(this.timer);
-    this.reader?.abort();
-    this.upload?.abort();
-    if (this.snapshot.previewUrl && !this.previewReleased)
-      URL.revokeObjectURL(this.snapshot.previewUrl);
-    this.previewReleased = true;
+    if (!this.selecting) this.reader?.abort();
+    // Closing details detaches observation, not the already chosen upload.
+    // Its one XHR settles normally and releases its reference in submit.finally.
+    if (
+      this.selecting ||
+      this.upload ||
+      replacementJobActive(this.snapshot.job)
+    )
+      this.onChanged();
   }
 }

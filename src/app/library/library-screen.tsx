@@ -25,11 +25,6 @@ import type { LibraryDetail as Detail } from '../../server/library/detail-types'
 import { ComponentEntrance } from '../../components/component-entrance';
 import { useDetailNavigation } from './use-detail-navigation';
 import { LibraryDetail } from '../../components/library/detail';
-import {
-  DetailReplacement,
-  DetailReplacementFooter,
-  useDetailReplacement,
-} from '../../components/library/detail-replacement';
 import { useDetailQuery } from '../../components/library/use-detail-query';
 import { DetailReadError } from '../../components/library/read-detail';
 import { useDetailReprocess } from '../../components/library/use-detail-reprocess';
@@ -142,18 +137,6 @@ export function LibraryScreen(props: {
     onClose: detail.close,
     onVersions: () => detail.openView('versions'),
     onOpen: () => detail.openView('reprocess'),
-  });
-  const replacement = useDetailReplacement({
-    detail: detail.view === 'replace' ? detailQuery.data : undefined,
-    onReturn: async () => {
-      await Promise.all([detailQuery.refetch(), query.refreshCurrent()]);
-      detail.returnToDetail();
-    },
-    onCompleted: () => {
-      void detailQuery.refetch();
-      void query.refreshCurrent();
-    },
-    onSessionExpire: () => detailQuery.setUnavailable(401),
   });
   const [statisticsId, setStatisticsId] = useState<string | null>(null);
   const statisticsScroll = useRef(0);
@@ -329,8 +312,6 @@ export function LibraryScreen(props: {
           batch.workspace?.phase === 'result' &&
           !batch.workspace.action.endsWith('tags') ? (
           <BatchWorkspaceFooter batch={batch} />
-        ) : detail.view === 'replace' ? (
-          <DetailReplacementFooter state={replacement} />
         ) : detail.view === 'reprocess' ? (
           reprocess.footerActions ? (
             <DetailReprocessFooter actions={reprocess.footerActions} />
@@ -659,9 +640,7 @@ export function LibraryScreen(props: {
         </section>
         {props.children}
       </div>
-      {detail.view === 'replace' ? (
-        <DetailReplacement state={replacement} />
-      ) : detail.view === 'reprocess' ? (
+      {detail.view === 'reprocess' ? (
         <DetailReprocess state={reprocess} />
       ) : detail.view &&
         detailQuery.data &&
@@ -721,7 +700,9 @@ export function LibraryScreen(props: {
           hidden={!!detail.view || statisticsId === detail.imageId}
           onStatistics={openStatistics}
           onVersions={(selected) => detail.openView('versions', selected)}
-          onReplace={() => detail.openView('replace')}
+          onReplacementChanged={() => {
+            void query.refreshCurrent();
+          }}
           initialSelected={selectedPreview}
           albumId={props.albumId}
           viewerFilters={

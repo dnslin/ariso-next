@@ -1,30 +1,36 @@
 'use client';
 
-import { useEffect, useMemo, useSyncExternalStore } from 'react';
-import type { LibraryDetail } from '../../server/library/detail-types';
+import { useEffect, useMemo, useRef, useSyncExternalStore } from 'react';
+import { toast } from '@heroui/react/toast';
 import {
   ReplacementSession,
   replacementJobActive,
 } from './replacement-session';
+import { notifyLibraryChanged } from './library-changes';
+
+function reportBackgroundError(message: string) {
+  toast('替换图片未完成', { variant: 'danger', description: message });
+}
 
 export function useDetailReplacement({
-  detail,
-  onReturn,
+  imageId,
   onCompleted,
+  onChanged,
   onSessionExpire,
 }: {
-  detail: LibraryDetail | undefined;
-  onReturn: () => void;
+  imageId: string;
   onCompleted: () => void;
-  onSessionExpire?: () => void;
+  onChanged: () => void;
+  onSessionExpire: () => void;
 }) {
-  const imageId = detail?.id ?? null;
+  const attached = useRef(true);
   const session = useMemo(
     () =>
       new ReplacementSession(
-        imageId ?? '',
+        imageId,
         () => undefined,
         () => undefined,
+        reportBackgroundError,
       ),
     [imageId],
   );
@@ -34,41 +40,45 @@ export function useDetailReplacement({
     session.getSnapshot,
   );
   useEffect(() => {
-    session.setCallbacks(onCompleted, () => {
-      if (onSessionExpire) onSessionExpire();
-      else
-        window.location.replace(
-          `/login?reason=expired&returnTo=${encodeURIComponent(window.location.pathname + window.location.search)}`,
-        );
+    session.setCallbacks({
+      onCompleted,
+      onChanged: () => {
+        notifyLibraryChanged();
+        onChanged();
+      },
+      onBackgroundError: reportBackgroundError,
+      onExpired: () => {
+        if (attached.current) onSessionExpire();
+        else
+          window.location.replace(
+            `/login?reason=expired&returnTo=${encodeURIComponent(window.location.pathname + window.location.search)}`,
+          );
+      },
     });
-  }, [session, onCompleted, onSessionExpire]);
+  }, [session, onCompleted, onChanged, onSessionExpire]);
   useEffect(() => {
-    if (!imageId) return;
+    attached.current = true;
     void session.start();
     const visible = () => session.setVisible(!document.hidden);
     document.addEventListener('visibilitychange', visible);
     return () => {
+      attached.current = false;
       document.removeEventListener('visibilitychange', visible);
       session.stop();
     };
-  }, [session, imageId]);
+  }, [session]);
   const active = replacementJobActive(snapshot.job);
   return {
     ...snapshot,
     session,
-    detail,
-    onReturn,
     active,
-    choicesDisabled: snapshot.uploading || active || snapshot.unknown,
-    canSubmit:
-      !!snapshot.file &&
-      !snapshot.uploading &&
-      !active &&
-      !snapshot.checking &&
-      !snapshot.unknown &&
-      !!snapshot.setup &&
-      !snapshot.setup.unavailableReason &&
-      snapshot.job?.status !== 'succeeded',
+    choicesDisabled:
+      snapshot.uploading ||
+      active ||
+      snapshot.unknown ||
+      snapshot.checking ||
+      !snapshot.setup ||
+      !!snapshot.setup.unavailableReason,
   };
 }
 export type DetailReplacementController = ReturnType<
