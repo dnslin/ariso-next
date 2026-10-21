@@ -3,7 +3,10 @@ import { join } from 'node:path';
 import { and, eq } from 'drizzle-orm';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { createMediaDeliveryFixture } from '../delivery/media-fixture.ts';
-import { receiveImageReplacement } from '../../../src/server/media/replacement.ts';
+import {
+  readImageReplacement,
+  receiveImageReplacement,
+} from '../../../src/server/media/replacement.ts';
 import { patchMediaSettings } from '../../../src/server/media/settings.ts';
 import { readMediaMetadata } from '../../../src/server/media/metadata.ts';
 import {
@@ -32,6 +35,7 @@ import {
 import { requestReprocess } from '../../../src/server/media/reprocess.ts';
 import * as mediaStorage from '../../../src/server/media/storage.ts';
 import * as mediaInput from '../../../src/server/media/input.ts';
+import { storageConfigs } from '../../../src/server/storage/schema.ts';
 
 let app: Awaited<ReturnType<typeof createMediaDeliveryFixture>>;
 beforeEach(async () => {
@@ -332,6 +336,43 @@ describe('atomic replacement lifecycle', () => {
         )
         .get()!.status,
     ).toBe('cleanup_pending');
+  });
+  it('keeps replacement status readable when its storage is disabled and rejects another submission with a conflict', async () => {
+    const { imageId } = await app.accept(
+      'tests/fixtures/runtime/images/sample.png',
+    );
+    const replacement = await receiveImageReplacement(
+      app.runtime,
+      imageId,
+      await input(),
+    );
+    app.db
+      .update(storageConfigs)
+      .set({ enabled: false })
+      .where(eq(storageConfigs.id, app.state(imageId).image.storageId))
+      .run();
+
+    expect(readImageReplacement(app.db, imageId)).toMatchObject({
+      unavailableReason: '图片所属存储已停用',
+      job: { id: replacement.jobId, status: 'queued' },
+    });
+    await expect(
+      receiveImageReplacement(app.runtime, imageId, await input()),
+    ).rejects.toMatchObject({ code: 'STORAGE_DISABLED', status: 409 });
+
+    const failed = await app.processNext();
+    expect(failed.status).toBe('failed');
+    expect(failed.error).toContain('STORAGE_DISABLED');
+    expect(readImageReplacement(app.db, imageId)).toEqual({
+      unavailableReason: '图片所属存储已停用',
+      job: {
+        id: replacement.jobId,
+        status: 'failed',
+        step: failed.step,
+        error: failed.error,
+        finishedAt: failed.finishedAt!.toISOString(),
+      },
+    });
   });
   it('rejects another content task and deletes queued replacement records through the real cleanup path', async () => {
     const asset = await app.accept('tests/fixtures/runtime/images/sample.png');

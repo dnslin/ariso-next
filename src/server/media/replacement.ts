@@ -51,7 +51,22 @@ export function replacementAdmission(
       409,
       '仅可替换未回收且已就绪的图片',
     );
-  const storage = resolveUploadStorage(db, image.storageId);
+  let storage: ReturnType<typeof resolveUploadStorage>;
+  try {
+    storage = resolveUploadStorage(db, image.storageId);
+  } catch (error) {
+    if (
+      error instanceof Error &&
+      'code' in error &&
+      error.code === 'STORAGE_DISABLED'
+    )
+      throw new MediaReprocessError(
+        'STORAGE_DISABLED',
+        409,
+        '图片所属存储已停用',
+      );
+    throw error;
+  }
   if (
     db
       .select()
