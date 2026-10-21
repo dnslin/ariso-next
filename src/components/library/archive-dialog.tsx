@@ -54,7 +54,7 @@ export function ArchiveDialog({ archive }: { archive: LibraryArchive }) {
               className="size-11 shrink-0 rounded-lg bg-transparent"
             />
           </Modal.Header>
-          <Modal.Body className="m-0 grid min-w-0 gap-4 p-0 text-sm leading-6">
+          <Modal.Body className="m-0 grid min-w-0 auto-rows-max content-start gap-4 p-0 text-sm leading-6">
             {started ? (
               <div
                 role="status"
