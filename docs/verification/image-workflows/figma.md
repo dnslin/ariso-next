@@ -2,13 +2,13 @@
 
 - 日期：2026-10-21。
 - 文件：`74sT9Hrf8G4czcWeTkET5b`。
-- 状态：四项获批原型已同步为原生可编辑设计；替换的后续精简已原位同步，见[替换修订](./replacement-simple-20261021.md)。下文66画板和58连接的统计属于首轮快照；本轮12个替换状态最新结构与连接另记，不将旧统计称为当前结果。此记录不表示产品运行、浏览器或人工验收完成。
+- 状态：四项获批原型已同步为原生可编辑设计；ZIP已按用户选定A方案改为[版本菜单，选即下载](./figma-zip-menu-20261021.md)，替换保留[最近精简](./replacement-simple-20261021.md)。当前共60个状态画板；首轮66画板及58连接仅为历史快照，不代表当前统计。此记录不表示产品运行、浏览器或人工验收完成。
 - [组合视觉核对画板 1226:65995](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1226-65995)：4480 × 3328，包含 12 个桌面 / 手机代表界面，均为原生节点克隆。
-- 原型参考：`http://127.0.0.1:61731/library?scene=download`，以及本聊天可视化目录内已批准的四项界面与 ZIP 图标 / 右键补充。
+- 原型参考：`http://127.0.0.1:61731/library?scene=download&archiveUI=menu&open=versions`，以及本聊天可视化目录内已批准的四项界面与 ZIP 图标 / 右键补充。
 
 ## 写入范围与层级
 
-共 66 个状态画板：桌面 33 个，均为 1440 × 1080；手机 33 个，均为 390 × 844。ZIP 每端 8 个、替换每端 6 个、私有分享及访客每端 9 个、尺寸外链每端 10 个。
+当前共60个状态画板：桌面30个（1440×1080）、手机30个（390×844）。ZIP每端5个；替换每端6个、私有分享及访客每端9个、尺寸外链每端10个。ZIP原每端8个状态中的预检查、不可用清单和排除后确认已删除，其他能力未改。
 
 | 模块                    | 桌面分区 / 当前边界        | 手机分区 / 当前边界       |
 | ----------------------- | -------------------------- | ------------------------- |
@@ -18,38 +18,36 @@
 
 新状态直接归入既有分区，使用右侧已核对的内容空位。分区外框相应扩展，未重排其他模块画板。没有创建 07-B 或其他独立模块分区。既有 09 是标签模块，未将分享放入 09。
 
-| 状态入口           | 桌面                                                                                 | 手机                                                                                 |
-| ------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
-| ZIP：操作栏入口    | [1220:46543](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1220-46543) | [1220:65737](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1220-65737) |
-| ZIP：右键 / 更多   | [1220:46790](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1220-46790) | [1220:65863](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1220-65863) |
-| ZIP：预检查        | [1220:47051](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1220-47051) | [1220:66003](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1220-66003) |
-| ZIP：明确排除后    | [1226:47449](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1226-47449) | [1226:65815](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1226-65815) |
-| ZIP：读取失败      | [1220:47988](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1220-47988) | [1220:66577](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1220-66577) |
-| 替换：直接上传中   | [1221:47188](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1221-47188) | [1221:66112](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1221-66112) |
-| 替换：处理中       | [1221:47432](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1221-47432) | [1221:66235](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1221-66235) |
-| 替换：失败保留旧图 | [1221:47683](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1221-47683) | [1221:66365](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1221-66365) |
-| 替换：成功         | [1221:47934](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1221-47934) | [1221:66495](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1221-66495) |
-| 私有分享：创建     | [1222:47054](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1222-47054) | [1222:66774](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1222-66774) |
-| 私有分享：已创建   | [1222:47294](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1222-47294) | [1222:66893](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1222-66893) |
-| 私有分享：原图 GPS | [1222:47559](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1222-47559) | [1222:67037](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1222-67037) |
-| 私有分享：撤销确认 | [1222:47806](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1222-47806) | [1222:67163](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1222-67163) |
-| 访客：有效         | [1222:48866](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1222-48866) | [1222:67739](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1222-67739) |
-| 访客：到期 / 撤销  | [1222:48982](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1222-48982) | [1222:67864](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1222-67864) |
-| 尺寸：首次生成     | [1223:47241](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1223-47241) | [1223:67615](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1223-67615) |
-| 尺寸：已就绪       | [1223:47747](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1223-47747) | [1223:67879](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1223-67879) |
-| 尺寸：生成失败     | [1223:47995](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1223-47995) | [1223:68006](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1223-68006) |
-| 尺寸：小图不放大   | [1223:48251](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1223-48251) | [1223:68141](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1223-68141) |
-| 尺寸：动画限制     | [1223:48499](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1223-48499) | [1223:68268](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1223-68268) |
-| 尺寸：原图原字节   | [1223:48754](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1223-48754) | [1223:68402](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1223-68402) |
-| 尺寸：默认链接     | [1223:49262](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1223-49262) | [1223:68668](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1223-68668) |
-| 尺寸：复制失败     | [1223:49008](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1223-49008) | [1223:68535](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1223-68535) |
-| 尺寸：深色代表     | [1223:49510](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1223-49510) | [1223:68795](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1223-68795) |
+| 状态入口            | 桌面                                                                                 | 手机                                                                                 |
+| ------------------- | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
+| ZIP：工具栏版本菜单 | [1220:46543](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1220-46543) | [1220:65737](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1220-65737) |
+| ZIP：右键版本子菜单 | [1220:46790](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1220-46790) | [1220:65863](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1220-65863) |
+| ZIP：简短真实错误   | [1220:47988](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1220-47988) | [1220:66577](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1220-66577) |
+| 替换：直接上传中    | [1221:47188](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1221-47188) | [1221:66112](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1221-66112) |
+| 替换：处理中        | [1221:47432](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1221-47432) | [1221:66235](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1221-66235) |
+| 替换：失败保留旧图  | [1221:47683](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1221-47683) | [1221:66365](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1221-66365) |
+| 替换：成功          | [1221:47934](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1221-47934) | [1221:66495](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1221-66495) |
+| 私有分享：创建      | [1222:47054](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1222-47054) | [1222:66774](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1222-66774) |
+| 私有分享：已创建    | [1222:47294](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1222-47294) | [1222:66893](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1222-66893) |
+| 私有分享：原图 GPS  | [1222:47559](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1222-47559) | [1222:67037](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1222-67037) |
+| 私有分享：撤销确认  | [1222:47806](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1222-47806) | [1222:67163](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1222-67163) |
+| 访客：有效          | [1222:48866](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1222-48866) | [1222:67739](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1222-67739) |
+| 访客：到期 / 撤销   | [1222:48982](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1222-48982) | [1222:67864](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1222-67864) |
+| 尺寸：首次生成      | [1223:47241](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1223-47241) | [1223:67615](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1223-67615) |
+| 尺寸：已就绪        | [1223:47747](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1223-47747) | [1223:67879](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1223-67879) |
+| 尺寸：生成失败      | [1223:47995](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1223-47995) | [1223:68006](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1223-68006) |
+| 尺寸：小图不放大    | [1223:48251](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1223-48251) | [1223:68141](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1223-68141) |
+| 尺寸：动画限制      | [1223:48499](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1223-48499) | [1223:68268](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1223-68268) |
+| 尺寸：原图原字节    | [1223:48754](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1223-48754) | [1223:68402](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1223-68402) |
+| 尺寸：默认链接      | [1223:49262](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1223-49262) | [1223:68668](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1223-68668) |
+| 尺寸：复制失败      | [1223:49008](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1223-49008) | [1223:68535](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1223-68535) |
+| 尺寸：深色代表      | [1223:49510](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1223-49510) | [1223:68795](https://www.figma.com/design/74sT9Hrf8G4czcWeTkET5b?node-id=1223-68795) |
 
 完整画板、创建与变更节点 ID、父层级和尺寸见 [figma-state.json](./figma-state.json)、[figma-nodes.json](./figma-nodes.json) 与 [figma-revisions.json](./figma-revisions.json)。
 
 ## 实际同步内容
 
-- ZIP：操作栏 44px 下载图标、右键 / 更多菜单、固定版本、文件清单及大小、检查中、未生成版本、明确排除、读取失败、交给浏览器下载。排除后的清单为 2 张 / 640 KiB，不把原来的 3 张总量沿用到新清单。
+- ZIP：工具栏44px打包图标展开原图、压缩图、缩略图、水印图四项版本菜单；右键“打包下载”提供相同子菜单，选中即发起。没有遮罩、对话框、文件清单、ZIP数量/大小摘要、同名/私有/GPS提示或二次确认。不可用版本用简短真实错误表达，不静默跳过。图库原有选集数量保留，详见[A方案证据](./figma-zip-menu-20261021.json)。
 - 替换首轮曾使用新旧对比、确认和手机工作页；用户后续要求已覆盖该呈现。当前12个画板改为原详情内选择即上传、简短上传/处理/失败/成功状态，取消独立工作页与确认。最新原生1898后代节点、10条替换状态演示连接、字体和图片证据见[最终修订记录](./figma-replacement-parity-20261021.json)。
 - 私有分享：期限、创建、已创建、原图 GPS / 拍摄信息说明、复制失败、撤销确认、撤销后状态；匿名访客有效及到期 / 撤销页。匿名画板不展示图片名称、相册或后台资料。
 - 尺寸：版本、固定最长边、实际宽高、首次生成、处理中、就绪、生成失败、小图不放大、动画限制、原图原字节、默认链接及手动复制。保留默认链接语义，尺寸仅扩展明确的压缩 / 水印版本。
@@ -81,3 +79,9 @@
 本轮替换精简后的最终截图为 `/tmp/ariso-294-replacement-figma-final.png`，12个状态的最新原生结构、字体与连接由[修订证据](./figma-replacement-simple-20261021.json)维护。首轮总数不冒充修订后的全部66画板总数。
 
 已按真实详情公共布局完成[最终局部对齐](./figma-replacement-parity-20261021.json)：桌面1040×640及85px底栏，手机358×238.73预览及77px底栏；14个视图共56个44px按钮的图标均新鲜回读为20px。新增3个精确Lucide SVG母组件及一个本任务20px图标槽按钮派生，不修改共享759/3:*或其他54画板。当前12状态1898后代、10条演示连接；组合另保留1条处理演示连接。[唯一组合截图](./screenshots/figma-replacement-parity.png)已实际检查并归档。
+
+## ZIP A方案后续同步
+
+桌面及手机ZIP由16根收敛为10根，保留工具栏版本菜单、右键子菜单、准备中、真实错误和普通图库；删除6个失效确认状态。当前ZIP范围1283个后代节点、30条演示连接，组合ZIP克隆仅作视觉依据。所有中文为Noto Sans SC、品牌为Caveat；无旧遮罩/清单/确认图层，无指向已删除ZIP根的连接。12个替换状态仍为1898后代，未改其它能力或共享母组件。
+
+[详细记录](./figma-zip-menu-20261021.md)与[原生节点证据](./figma-zip-menu-20261021.json)保存实际root ID、删除项和回读。准备中/错误态版本菜单已按真实行为关闭；post-fix最终唯一组合截图为 `/tmp/ariso-294-zip-menu-figma.png`（4480×3328），已实际目视。按用户明确要求，本轮未运行产品或浏览器测试；设计演示不执行真实下载，不代表实现、CI或人工验收通过。

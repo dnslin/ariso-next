@@ -27,7 +27,7 @@
   "screens": [
     {
       "id": "1220:46543",
-      "name": "2026-10-21 · D / ZIP / entry",
+      "name": "2026-10-21 · D / ZIP / toolbar-menu",
       "parent": "209:1014",
       "width": 1440,
       "height": 1080,
@@ -36,16 +36,7 @@
     },
     {
       "id": "1220:46790",
-      "name": "2026-10-21 · D / ZIP / context",
-      "parent": "209:1014",
-      "width": 1440,
-      "height": 1080,
-      "mobile": false,
-      "dark": false
-    },
-    {
-      "id": "1220:47051",
-      "name": "2026-10-21 · D / ZIP / ready",
+      "name": "2026-10-21 · D / ZIP / context-submenu",
       "parent": "209:1014",
       "width": 1440,
       "height": 1080,
@@ -54,16 +45,7 @@
     },
     {
       "id": "1220:47358",
-      "name": "2026-10-21 · D / ZIP / checking",
-      "parent": "209:1014",
-      "width": 1440,
-      "height": 1080,
-      "mobile": false,
-      "dark": false
-    },
-    {
-      "id": "1220:47666",
-      "name": "2026-10-21 · D / ZIP / unavailable",
+      "name": "2026-10-21 · D / ZIP / preparing",
       "parent": "209:1014",
       "width": 1440,
       "height": 1080,
@@ -72,7 +54,7 @@
     },
     {
       "id": "1220:47988",
-      "name": "2026-10-21 · D / ZIP / failure",
+      "name": "2026-10-21 · D / ZIP / error",
       "parent": "209:1014",
       "width": 1440,
       "height": 1080,
@@ -81,7 +63,7 @@
     },
     {
       "id": "1220:48302",
-      "name": "2026-10-21 · D / ZIP / started",
+      "name": "2026-10-21 · D / ZIP / idle",
       "parent": "209:1014",
       "width": 1440,
       "height": 1080,
@@ -315,7 +297,7 @@
     },
     {
       "id": "1220:65737",
-      "name": "2026-10-21 · M / ZIP / entry",
+      "name": "2026-10-21 · M / ZIP / toolbar-menu",
       "parent": "209:2268",
       "width": 390,
       "height": 844,
@@ -324,16 +306,7 @@
     },
     {
       "id": "1220:65863",
-      "name": "2026-10-21 · M / ZIP / context",
-      "parent": "209:2268",
-      "width": 390,
-      "height": 844,
-      "mobile": true,
-      "dark": false
-    },
-    {
-      "id": "1220:66003",
-      "name": "2026-10-21 · M / ZIP / ready",
+      "name": "2026-10-21 · M / ZIP / context-submenu",
       "parent": "209:2268",
       "width": 390,
       "height": 844,
@@ -342,16 +315,7 @@
     },
     {
       "id": "1220:66189",
-      "name": "2026-10-21 · M / ZIP / checking",
-      "parent": "209:2268",
-      "width": 390,
-      "height": 844,
-      "mobile": true,
-      "dark": false
-    },
-    {
-      "id": "1220:66376",
-      "name": "2026-10-21 · M / ZIP / unavailable",
+      "name": "2026-10-21 · M / ZIP / preparing",
       "parent": "209:2268",
       "width": 390,
       "height": 844,
@@ -360,7 +324,7 @@
     },
     {
       "id": "1220:66577",
-      "name": "2026-10-21 · M / ZIP / failure",
+      "name": "2026-10-21 · M / ZIP / error",
       "parent": "209:2268",
       "width": 390,
       "height": 844,
@@ -369,7 +333,7 @@
     },
     {
       "id": "1220:66770",
-      "name": "2026-10-21 · M / ZIP / started",
+      "name": "2026-10-21 · M / ZIP / idle",
       "parent": "209:2268",
       "width": 390,
       "height": 844,
@@ -600,24 +564,6 @@
       "height": 844,
       "mobile": true,
       "dark": true
-    },
-    {
-      "id": "1226:47449",
-      "name": "2026-10-21 · D / ZIP / excluded",
-      "parent": "209:1014",
-      "width": 1440,
-      "height": 1080,
-      "mobile": false,
-      "dark": false
-    },
-    {
-      "id": "1226:65815",
-      "name": "2026-10-21 · M / ZIP / excluded",
-      "parent": "209:2268",
-      "width": 390,
-      "height": 844,
-      "mobile": true,
-      "dark": false
     }
   ],
   "review": {
@@ -673,5 +619,7 @@
   ],
   "pendingValidations": [],
   "productRuntimeAcceptance": "Not represented by Figma evidence",
-  "replacementRevision": "figma-replacement-parity-20261021.json"
+  "replacementRevision": "figma-replacement-parity-20261021.json",
+  "zipMenuRevision": "figma-zip-menu-20261021.json",
+  "currentStateCount": 60
 }
