@@ -12,9 +12,19 @@ import {
   Image,
   Palette,
   SlidersHorizontal,
+  ShieldCheck,
   type LucideIcon,
 } from 'lucide-react';
 import { StorageTip } from '../storage/storage-tip';
+import {
+  accessProtectionQueryKey,
+  accessProtectionRequest,
+  AccessProtectionRequestError,
+} from '../access-protection/api';
+import {
+  accessProtectionPath,
+  protectionModeLabels,
+} from '../access-protection/model';
 import {
   storageRequest,
   storageSettingsUrl,
@@ -105,6 +115,11 @@ export function RelatedSettings({ onExpire }: { onExpire: () => void }) {
         signal,
       }),
   });
+  const protection = useQuery({
+    ...common,
+    queryKey: accessProtectionQueryKey,
+    queryFn: ({ signal }) => accessProtectionRequest({ signal }),
+  });
   const storageError = storageSettings.error ?? storages.error;
   const sessionLost =
     (storageSettings.error instanceof StorageRequestError &&
@@ -112,7 +127,9 @@ export function RelatedSettings({ onExpire }: { onExpire: () => void }) {
     (storages.error instanceof StorageRequestError &&
       storages.error.status === 401) ||
     (media.error instanceof ProcessingRequestError &&
-      media.error.status === 401);
+      media.error.status === 401) ||
+    (protection.error instanceof AccessProtectionRequestError &&
+      protection.error.status === 401);
   useEffect(() => {
     if (sessionLost) onExpire();
   }, [sessionLost, onExpire]);
@@ -193,6 +210,36 @@ export function RelatedSettings({ onExpire }: { onExpire: () => void }) {
                   onPress={() => void media.refetch()}
                 >
                   重新读取图片默认值
+                </Button>
+              </div>
+            ) : null}
+          </div>
+          <div>
+            <RelatedSetting
+              label="访问防护"
+              value={
+                protection.error
+                  ? '读取失败'
+                  : protection.data
+                    ? `${protectionModeLabels[protection.data.mode]} · ${protection.data.rate} 次/秒 · 突发 ${protection.data.burst} 次`
+                    : ''
+              }
+              href={accessProtectionPath}
+              icon={ShieldCheck}
+            />
+            {protection.error ? (
+              <div className="grid gap-2 px-4 pb-3 min-[1200px]:px-6">
+                <p role="alert" className="text-sm text-danger wrap-anywhere">
+                  {protection.error.message}
+                </p>
+                <Button
+                  type="button"
+                  variant="outline"
+                  isDisabled={protection.isFetching}
+                  className="min-h-11 w-fit rounded-lg"
+                  onPress={() => void protection.refetch()}
+                >
+                  重新读取访问防护
                 </Button>
               </div>
             ) : null}

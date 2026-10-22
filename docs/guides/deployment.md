@@ -14,7 +14,7 @@ docker build --tag ariso:runtime .
 
 该命令构建当前 Docker 平台。不要把 macOS 的依赖目录复制进镜像。日常开发使用[本地适用检查](verification.md#适用检查)。PR Actions 在 AMD64 构建真实媒体测试环境；发布前可在独立 Docker 机器按下方相同入口预检。
 
-先按 [README](../../README.md#2-配置密钥) 生成两个独立密钥并填写 `.env.local`。Compose 显式读取它，仅注入密钥及日志级别。它固定容器内 `HOST=0.0.0.0`、`PORT=3000`、`DATA_DIR=/data`，不会把文件中的本机 `DATA_DIR` 用作容器路径。
+先按 [README](../../README.md#2-配置密钥) 生成两个独立密钥并填写 `.env.local`。Compose 显式读取它，注入密钥、日志级别与可选的可信代理配置。它固定容器内 `HOST=0.0.0.0`、`PORT=3000`、`DATA_DIR=/data`，不会把文件中的本机 `DATA_DIR` 用作容器路径。
 
 ## 仓库内运行示例
 
@@ -65,6 +65,18 @@ CLI 只撤销尚未消费的邮件重置凭据。已经消费令牌并正在执�
 
 ## 正式部署目录
 
+### 匿名图片访问防护的来源配置
+
+访问防护默认“仅观察”。要启用拦截，先设置 `ARISO_TRUSTED_PROXIES`，重启使来源配置生效，再到“基本设置 → 访问防护”保存模式。限频数值与模式保存后无需重启。
+
+- 无前置代理：明确填写 `none`，使用 TCP 连接来源，忽略访客伪造的转发头。
+- 有前置代理：填写应用实际看到的代理 IP/CIDR，逗号分隔。代理须正确提供 `X-Forwarded-For`，Ariso 从靠近应用的一端向左解析，停在第一个不可信地址。
+- 留空：来源未确认，可以观察或关闭，不允许新启用拦截；不要填 `none` 来跳过代理配置。否则所有用户可能共用代理 IP 的额度。
+
+例如宿主机直接反向代理到本机监听时，可按实际连接来源使用 `127.0.0.1/32,::1/128`。Docker 场景应用可能看到网桥地址，必须以容器实际连接来源为准，不能照搬本机示例或信任整个互联网。该配置不限制管理或上传，已登录所有者仍豁免匿名限频。
+
+已有部署升级时将该变量加入 Compose 的 `environment` 并保留正确值；标准启动入口负责清除访客伪造的内部来源头。S3 仍直连，此功能不保证存储费用封顶。规则与边界见[访问防护规格](../specs/SPEC-access-protection.md)。
+
 将已验证镜像标记为自己的固定版本，例如 `ariso:reviewed-runtime`，或使用正式 Release 对应的确切 GHCR 版本。以下示例使用本地构建标签：
 
 ```sh
@@ -82,6 +94,7 @@ services:
       PORT: '3000'
       DATA_DIR: /data
       LOG_LEVEL: ${LOG_LEVEL:-info}
+      ARISO_TRUSTED_PROXIES: ${ARISO_TRUSTED_PROXIES:-}
       BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:?Set BETTER_AUTH_SECRET}
       ARISO_ENCRYPTION_KEY: ${ARISO_ENCRYPTION_KEY:?Set ARISO_ENCRYPTION_KEY}
     ports:

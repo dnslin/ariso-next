@@ -43,6 +43,7 @@ export async function launchS3Delivery(
   target: DeliveryTarget,
   evidencePath?: string,
   signal?: AbortSignal,
+  runtimeEnv: Record<string, string | undefined> = {},
 ) {
   signal?.throwIfAborted();
   const directory = await mkdtemp(join(tmpdir(), 'ariso-delivery-s3-'));
@@ -59,6 +60,7 @@ export async function launchS3Delivery(
     all_proxy: process.env.all_proxy,
     NO_PROXY: process.env.NO_PROXY,
     no_proxy: process.env.no_proxy,
+    ...runtimeEnv,
   });
   const origin = `http://127.0.0.1:${server.port}`;
   const storageId = `delivery-161-${randomUUID()}`;
@@ -318,11 +320,18 @@ export async function launchS3Delivery(
   }
 }
 
-export async function launchProtocolDelivery() {
+export async function launchProtocolDelivery(
+  runtimeEnv: Record<string, string | undefined> = {},
+) {
   const endpoint = await startProtocolEndpoint();
   let app: Awaited<ReturnType<typeof launchS3Delivery>> | undefined;
   try {
-    app = await launchS3Delivery(endpoint.target);
+    app = await launchS3Delivery(
+      endpoint.target,
+      undefined,
+      undefined,
+      runtimeEnv,
+    );
     const delivery = app;
     const publicAsset = await app.seed({ fourVersions: true });
     const privateAsset = await app.seed({

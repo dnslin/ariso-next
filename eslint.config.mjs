@@ -12,6 +12,8 @@ export default defineConfig([
   },
   globalIgnores([
     '.next/**',
+    'design-plans/access-protection/prototype/.next/**',
+    'design-plans/access-protection/prototype/next-env.d.ts',
     'tests/experiments/shell/.next/**',
     'tests/experiments/shell/next-env.d.ts',
     'tests/experiments/ui/.next/**',

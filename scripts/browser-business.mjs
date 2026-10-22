@@ -1,15 +1,33 @@
 import assert from 'node:assert/strict';
+import { runAccessProtectionBrowser } from './browser-access-protection.mjs';
 
 /** Run one business scene, isolating the two upload authentication prerequisites. */
 export async function runBusinessBrowserStage({
   check,
   runBrowser,
+  signal,
+  secrets,
   restart,
   config,
   script,
   name = script,
   dependencies = /** @type {string[]} */ ([]),
 }) {
+  if (script === 'access-protection') {
+    return check(
+      name,
+      () =>
+        runAccessProtectionBrowser({
+          runBrowser,
+          signal,
+          secrets,
+          spaceId: config.spaceId,
+          pageLabel: config.pageLabel,
+          output: config.output,
+        }),
+      dependencies,
+    );
+  }
   if (script === 'upload' || script === 'upload-polling') {
     const runtime = `${script}-runtime`;
     await check(

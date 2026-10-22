@@ -9,6 +9,7 @@ import { Spinner } from '@heroui/react/spinner';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import type { PublicShareNeighbors } from '../../server/sharing/public-types';
 import { ShareViewerCarousel } from './viewer-carousel';
+import { probeMediaRateLimit, useRetryCountdown } from './media-rate-limit';
 
 const iconClass =
   'absolute z-10 min-w-0 rounded-none border-0 bg-transparent p-3 text-white/80 drop-shadow-[0_1px_3px_#0009] hover:bg-transparent hover:text-white';
@@ -39,14 +40,41 @@ export default function ShareViewer({
   const [zoom, setZoom] = useState(1);
   const [failedUrl, setFailedUrl] = useState<string | null>(null);
   const [revision, setRevision] = useState(0);
+  const [limitCheck, setLimitCheck] = useState<{
+    url: string;
+    revision: number;
+    retryAt: number | null;
+  } | null>(null);
   const current = viewer.current!;
   const contentFailed =
     !!current.previewUrl && failedUrl === current.previewUrl;
   const failed = !!error || contentFailed;
+  const currentCheck =
+    contentFailed &&
+    limitCheck?.url === current.previewUrl &&
+    limitCheck.revision === revision
+      ? limitCheck
+      : null;
+  const retryAt = currentCheck?.retryAt ?? null;
+  const seconds = useRetryCountdown(retryAt);
+  useEffect(() => {
+    const url = current.previewUrl;
+    if (!contentFailed || !url) return;
+    const controller = new AbortController();
+    void probeMediaRateLimit(
+      url,
+      window.location.origin,
+      controller.signal,
+    ).then((retryAt) => {
+      if (!controller.signal.aborted) setLimitCheck({ url, revision, retryAt });
+    });
+    return () => controller.abort();
+  }, [contentFailed, current.previewUrl, revision]);
   useEffect(() => {
     if (failed) root.current?.focus({ preventScroll: true });
   }, [failed]);
   function retry() {
+    if (loading || seconds > 0) return;
     setFailedUrl(null);
     setRevision((value) => value + 1);
     onRetry();
@@ -89,12 +117,24 @@ export default function ShareViewer({
               className="w-full max-w-120 gap-4 rounded-3xl border border-border bg-surface p-6 text-foreground shadow-none"
             >
               <h1 className="text-[22px] leading-8 font-medium">
-                图片加载失败
+                {retryAt === null ? '图片加载失败' : '访问较频繁，请稍后重试'}
               </h1>
               <p className="text-sm leading-[22px]">
-                {error || '无法加载这张图片。'}
+                {retryAt === null
+                  ? error || '无法加载这张图片。'
+                  : '当前网络的图片请求较多，稍等片刻后可重新加载。'}
               </p>
-              <p className="text-sm leading-[22px]">请重试或返回相册。</p>
+              <p
+                className="text-sm leading-[22px]"
+                role="status"
+                aria-live="polite"
+              >
+                {retryAt === null
+                  ? '请重试或返回相册。'
+                  : seconds > 0
+                    ? `${seconds} 秒后可以重试`
+                    : '现在可以重新加载'}
+              </p>
               <Button
                 variant="outline"
                 className="h-12 w-full rounded-lg text-sm font-normal"
@@ -105,7 +145,7 @@ export default function ShareViewer({
               <Button
                 variant="outline"
                 className="h-12 w-full rounded-lg text-sm font-normal"
-                isDisabled={loading}
+                isDisabled={loading || seconds > 0}
                 onPress={retry}
               >
                 {loading ? <Spinner size="sm" /> : null}重新加载

@@ -158,6 +158,10 @@ describe('initialized production auth', () => {
     for (const [query, destination] of [
       ['', '/admin'],
       ['?returnTo=%2Flibrary%3Fimage%3Dphoto-1', '/library?image=photo-1'],
+      [
+        '?returnTo=%2Fsettings%2Fgeneral%2Faccess-protection',
+        '/settings/general/access-protection',
+      ],
       ['?returnTo=https%3A%2F%2Fevil.test%2Flibrary', '/admin'],
       ['?returnTo=%2Flogin', '/admin'],
     ]) {

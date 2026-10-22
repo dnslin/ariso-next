@@ -1,0 +1,682 @@
+{
+  "status": "passed",
+  "checks": [
+    {
+      "scenario": "owner-five-80-image-pages-after-anonymous-exhaustion",
+      "pages": 5,
+      "pageSize": 80,
+      "passed": true
+    },
+    {
+      "scenario": "owner-three-tabs-80-images-each",
+      "tabs": 3,
+      "passed": true
+    },
+    {
+      "scenario": "owner-viewer-50-next-after-anonymous-exhaustion",
+      "passed": true
+    },
+    {
+      "scenario": "native-mixed-200-zip",
+      "count": 200,
+      "bytes": 1326200
+    },
+    {
+      "scenario": "real-owner-settings-save",
+      "saved": {
+        "mode": "observe",
+        "rate": 10,
+        "burst": 200
+      },
+      "toast": {
+        "desktop": {
+          "toast": {
+            "x": 992,
+            "y": 924,
+            "width": 420,
+            "height": 56,
+            "top": 924,
+            "right": 1412,
+            "bottom": 980,
+            "left": 992
+          },
+          "button": {
+            "x": 1208,
+            "y": 1012,
+            "width": 200,
+            "height": 48,
+            "top": 1012,
+            "right": 1408,
+            "bottom": 1060,
+            "left": 1208
+          },
+          "footer": {
+            "x": 232,
+            "y": 999,
+            "width": 1208,
+            "height": 81,
+            "top": 999,
+            "right": 1440,
+            "bottom": 1080,
+            "left": 232
+          },
+          "overlapsSave": false,
+          "unobstructed": true
+        },
+        "mobile": {
+          "toast": {
+            "x": 16,
+            "y": 688,
+            "width": 358,
+            "height": 56,
+            "top": 688,
+            "right": 374,
+            "bottom": 744,
+            "left": 16
+          },
+          "button": {
+            "x": 294,
+            "y": 776,
+            "width": 80,
+            "height": 48,
+            "top": 776,
+            "right": 374,
+            "bottom": 824,
+            "left": 294
+          },
+          "footer": {
+            "x": 0,
+            "y": 763,
+            "width": 390,
+            "height": 81,
+            "top": 763,
+            "right": 390,
+            "bottom": 844,
+            "left": 0
+          },
+          "overlapsSave": false,
+          "unobstructed": true
+        }
+      },
+      "passed": true
+    },
+    {
+      "scenario": "canonical-visitor-after-real-browser-sign-out",
+      "browserSession": "null",
+      "independentControllerSession": "preserved"
+    },
+    {
+      "scenario": "anonymous-album-five-pages-200-items",
+      "passed": true
+    },
+    {
+      "scenario": "anonymous-visible-thumbnails-after-five-batches",
+      "distinctDecodedVisibleImages": 88,
+      "passed": true
+    },
+    {
+      "scenario": "anonymous-viewer-20-next-with-neighbor-preload",
+      "passed": true
+    },
+    {
+      "scenario": "external-80-plus-80-local-and-s3-images",
+      "loaded": 160,
+      "referrerVariants": ["normal", "no-referrer"]
+    }
+  ],
+  "layouts": [
+    {
+      "label": "access-owner-library",
+      "screenshot": "access-owner-library.png"
+    },
+    {
+      "label": "access-settings-desktop",
+      "screenshot": "access-settings-desktop.png"
+    },
+    {
+      "label": "access-settings-mobile",
+      "screenshot": "access-settings-mobile.png"
+    }
+  ],
+  "limitations": [
+    "Published Local and S3 protocol fixture bytes are isolated; this suite does not prove upload processing or real R2/SeaweedFS compatibility.",
+    "Visitor pages use the configured canonical site origin after a real browser UI sign-out. Null browser sessions and the Node controller's separate surviving owner session are asserted; this is not a separate browser profile.",
+    "S3 address reuse remains possible by design. This suite verifies no new Ariso proxying, not a hard bandwidth or cost ceiling."
+  ],
+  "stage": "two-real-external-embed-pages",
+  "ownerNavigation": [
+    {
+      "step": 1,
+      "from": "f5005388-8180-40e7-ab17-54b94109901e",
+      "to": "ea7c652c-6cbb-444f-a44d-335f79a10b04",
+      "fromVersion": "original",
+      "version": "original",
+      "action": "keyboard"
+    },
+    {
+      "step": 2,
+      "from": "ea7c652c-6cbb-444f-a44d-335f79a10b04",
+      "to": "0c57dc04-c3f5-4438-af97-ad02cc01d1ab",
+      "fromVersion": "original",
+      "version": "compressed",
+      "action": "keyboard"
+    },
+    {
+      "step": 3,
+      "from": "0c57dc04-c3f5-4438-af97-ad02cc01d1ab",
+      "to": "14a9c212-7d28-47fd-907e-8648fdd3dbce",
+      "fromVersion": "compressed",
+      "version": "original",
+      "action": "keyboard"
+    },
+    {
+      "step": 4,
+      "from": "14a9c212-7d28-47fd-907e-8648fdd3dbce",
+      "to": "8d32bf8c-122c-43b6-9f23-01f4eeaaf11d",
+      "fromVersion": "original",
+      "version": "compressed",
+      "action": "button"
+    },
+    {
+      "step": 5,
+      "from": "8d32bf8c-122c-43b6-9f23-01f4eeaaf11d",
+      "to": "f1dfdaf4-a593-426e-b0b8-087be7921509",
+      "fromVersion": "compressed",
+      "version": "original",
+      "action": "button"
+    },
+    {
+      "step": 6,
+      "from": "f1dfdaf4-a593-426e-b0b8-087be7921509",
+      "to": "b69d320e-9379-472f-ae5d-4c8878f50d1e",
+      "fromVersion": "original",
+      "version": "compressed",
+      "action": "button"
+    },
+    {
+      "step": 7,
+      "from": "b69d320e-9379-472f-ae5d-4c8878f50d1e",
+      "to": "65355381-a55c-4018-8f56-49bbb74c8cc3",
+      "fromVersion": "compressed",
+      "version": "original",
+      "action": "button"
+    },
+    {
+      "step": 8,
+      "from": "65355381-a55c-4018-8f56-49bbb74c8cc3",
+      "to": "aa541be2-3502-49a4-b78d-6c57f92838f9",
+      "fromVersion": "original",
+      "version": "compressed",
+      "action": "button"
+    },
+    {
+      "step": 9,
+      "from": "aa541be2-3502-49a4-b78d-6c57f92838f9",
+      "to": "ef2280e5-f6b3-4b49-ae30-b295c85b8290",
+      "fromVersion": "compressed",
+      "version": "original",
+      "action": "button"
+    },
+    {
+      "step": 10,
+      "from": "ef2280e5-f6b3-4b49-ae30-b295c85b8290",
+      "to": "59239758-200b-487e-8bcf-9da4f878317b",
+      "fromVersion": "original",
+      "version": "compressed",
+      "action": "button"
+    },
+    {
+      "step": 11,
+      "from": "59239758-200b-487e-8bcf-9da4f878317b",
+      "to": "a8c57eeb-4424-47b2-8e5d-aabb65769756",
+      "fromVersion": "compressed",
+      "version": "original",
+      "action": "button"
+    },
+    {
+      "step": 12,
+      "from": "a8c57eeb-4424-47b2-8e5d-aabb65769756",
+      "to": "c24609a5-e9aa-4918-b14a-a1588185efd6",
+      "fromVersion": "original",
+      "version": "compressed",
+      "action": "button"
+    },
+    {
+      "step": 13,
+      "from": "c24609a5-e9aa-4918-b14a-a1588185efd6",
+      "to": "2a94ce6f-77d9-46bd-b5cf-747156af47eb",
+      "fromVersion": "compressed",
+      "version": "original",
+      "action": "button"
+    },
+    {
+      "step": 14,
+      "from": "2a94ce6f-77d9-46bd-b5cf-747156af47eb",
+      "to": "7e2d90f1-802a-4544-9a78-10a7fc0c36ea",
+      "fromVersion": "original",
+      "version": "compressed",
+      "action": "button"
+    },
+    {
+      "step": 15,
+      "from": "7e2d90f1-802a-4544-9a78-10a7fc0c36ea",
+      "to": "78450cd5-ca7a-476f-a5d0-d21ad99ed062",
+      "fromVersion": "compressed",
+      "version": "original",
+      "action": "button"
+    },
+    {
+      "step": 16,
+      "from": "78450cd5-ca7a-476f-a5d0-d21ad99ed062",
+      "to": "29d44f5f-7933-4a02-b256-19ef7691eb1b",
+      "fromVersion": "original",
+      "version": "compressed",
+      "action": "button"
+    },
+    {
+      "step": 17,
+      "from": "29d44f5f-7933-4a02-b256-19ef7691eb1b",
+      "to": "5456b50c-2e19-4a8e-a973-660049232ae6",
+      "fromVersion": "compressed",
+      "version": "original",
+      "action": "button"
+    },
+    {
+      "step": 18,
+      "from": "5456b50c-2e19-4a8e-a973-660049232ae6",
+      "to": "2fdf2224-943e-4545-ac5d-a60157f45724",
+      "fromVersion": "original",
+      "version": "compressed",
+      "action": "button"
+    },
+    {
+      "step": 19,
+      "from": "2fdf2224-943e-4545-ac5d-a60157f45724",
+      "to": "3a5ad127-c966-4bd3-9742-9cba1e9f1cd2",
+      "fromVersion": "compressed",
+      "version": "original",
+      "action": "button"
+    },
+    {
+      "step": 20,
+      "from": "3a5ad127-c966-4bd3-9742-9cba1e9f1cd2",
+      "to": "fa756c75-9380-4b98-9e67-05ff64f50391",
+      "fromVersion": "original",
+      "version": "compressed",
+      "action": "button"
+    },
+    {
+      "step": 21,
+      "from": "fa756c75-9380-4b98-9e67-05ff64f50391",
+      "to": "1daacda3-dc8d-4e84-86e8-24e5352795e3",
+      "fromVersion": "compressed",
+      "version": "original",
+      "action": "button"
+    },
+    {
+      "step": 22,
+      "from": "1daacda3-dc8d-4e84-86e8-24e5352795e3",
+      "to": "9832b592-6416-405b-b96f-9ace6b18bd40",
+      "fromVersion": "original",
+      "version": "compressed",
+      "action": "button"
+    },
+    {
+      "step": 23,
+      "from": "9832b592-6416-405b-b96f-9ace6b18bd40",
+      "to": "6eb3715b-f907-49b7-8674-2f44df088ac6",
+      "fromVersion": "compressed",
+      "version": "original",
+      "action": "button"
+    },
+    {
+      "step": 24,
+      "from": "6eb3715b-f907-49b7-8674-2f44df088ac6",
+      "to": "35085a30-955d-4987-b1cc-c27ea33abd6f",
+      "fromVersion": "original",
+      "version": "compressed",
+      "action": "button"
+    },
+    {
+      "step": 25,
+      "from": "35085a30-955d-4987-b1cc-c27ea33abd6f",
+      "to": "f6eef426-6605-4882-8156-0e9a6a747a96",
+      "fromVersion": "compressed",
+      "version": "original",
+      "action": "button"
+    },
+    {
+      "step": 26,
+      "from": "f6eef426-6605-4882-8156-0e9a6a747a96",
+      "to": "2614015d-b972-46f0-a457-d44e327910ec",
+      "fromVersion": "original",
+      "version": "compressed",
+      "action": "button"
+    },
+    {
+      "step": 27,
+      "from": "2614015d-b972-46f0-a457-d44e327910ec",
+      "to": "c4508192-e986-47a1-a053-2a68a43d91ba",
+      "fromVersion": "compressed",
+      "version": "original",
+      "action": "button"
+    },
+    {
+      "step": 28,
+      "from": "c4508192-e986-47a1-a053-2a68a43d91ba",
+      "to": "7c71418a-2c49-4356-8271-d2cdd94ed4f6",
+      "fromVersion": "original",
+      "version": "compressed",
+      "action": "button"
+    },
+    {
+      "step": 29,
+      "from": "7c71418a-2c49-4356-8271-d2cdd94ed4f6",
+      "to": "170d0da4-785c-49e0-81f2-c8e0ec54d6d1",
+      "fromVersion": "compressed",
+      "version": "original",
+      "action": "button"
+    },
+    {
+      "step": 30,
+      "from": "170d0da4-785c-49e0-81f2-c8e0ec54d6d1",
+      "to": "7c49e939-7d74-4f0b-81a7-4b7bec50bcae",
+      "fromVersion": "original",
+      "version": "compressed",
+      "action": "button"
+    },
+    {
+      "step": 31,
+      "from": "7c49e939-7d74-4f0b-81a7-4b7bec50bcae",
+      "to": "c22d2b6c-66ed-4731-8eba-d566fc054ca0",
+      "fromVersion": "compressed",
+      "version": "original",
+      "action": "button"
+    },
+    {
+      "step": 32,
+      "from": "c22d2b6c-66ed-4731-8eba-d566fc054ca0",
+      "to": "92d650e3-6b3b-4377-8511-449d30a0f810",
+      "fromVersion": "original",
+      "version": "compressed",
+      "action": "button"
+    },
+    {
+      "step": 33,
+      "from": "92d650e3-6b3b-4377-8511-449d30a0f810",
+      "to": "41ea75be-9c98-4e65-bf13-05098991fb2a",
+      "fromVersion": "compressed",
+      "version": "original",
+      "action": "button"
+    },
+    {
+      "step": 34,
+      "from": "41ea75be-9c98-4e65-bf13-05098991fb2a",
+      "to": "0d8cbff2-71a9-431e-804e-d56eeba8b075",
+      "fromVersion": "original",
+      "version": "compressed",
+      "action": "button"
+    },
+    {
+      "step": 35,
+      "from": "0d8cbff2-71a9-431e-804e-d56eeba8b075",
+      "to": "6dc5ea49-4e69-4678-9a69-a8ab5af98c5a",
+      "fromVersion": "compressed",
+      "version": "original",
+      "action": "button"
+    },
+    {
+      "step": 36,
+      "from": "6dc5ea49-4e69-4678-9a69-a8ab5af98c5a",
+      "to": "ab5aa976-169f-4d5c-bc62-8efee2408e03",
+      "fromVersion": "original",
+      "version": "compressed",
+      "action": "button"
+    },
+    {
+      "step": 37,
+      "from": "ab5aa976-169f-4d5c-bc62-8efee2408e03",
+      "to": "3c22f93e-e5df-489b-8fe5-f181ceebc098",
+      "fromVersion": "compressed",
+      "version": "original",
+      "action": "button"
+    },
+    {
+      "step": 38,
+      "from": "3c22f93e-e5df-489b-8fe5-f181ceebc098",
+      "to": "af3d14dd-36eb-4e8b-9c5c-bbaa953e0d44",
+      "fromVersion": "original",
+      "version": "compressed",
+      "action": "button"
+    },
+    {
+      "step": 39,
+      "from": "af3d14dd-36eb-4e8b-9c5c-bbaa953e0d44",
+      "to": "285cce7e-8336-4ee5-bed6-84b9a283a9fc",
+      "fromVersion": "compressed",
+      "version": "original",
+      "action": "button"
+    },
+    {
+      "step": 40,
+      "from": "285cce7e-8336-4ee5-bed6-84b9a283a9fc",
+      "to": "e87f3a10-df0b-4754-a5dd-2f04291a64b0",
+      "fromVersion": "original",
+      "version": "compressed",
+      "action": "button"
+    },
+    {
+      "step": 41,
+      "from": "e87f3a10-df0b-4754-a5dd-2f04291a64b0",
+      "to": "67fa16d7-e4d6-4f3b-bdb9-6c32c0f6ed6e",
+      "fromVersion": "compressed",
+      "version": "original",
+      "action": "button"
+    },
+    {
+      "step": 42,
+      "from": "67fa16d7-e4d6-4f3b-bdb9-6c32c0f6ed6e",
+      "to": "dbfe865d-23d8-455b-b0e2-7f885b3b7b84",
+      "fromVersion": "original",
+      "version": "compressed",
+      "action": "button"
+    },
+    {
+      "step": 43,
+      "from": "dbfe865d-23d8-455b-b0e2-7f885b3b7b84",
+      "to": "786b0731-050b-4865-b946-c6af5aabe06f",
+      "fromVersion": "compressed",
+      "version": "original",
+      "action": "button"
+    },
+    {
+      "step": 44,
+      "from": "786b0731-050b-4865-b946-c6af5aabe06f",
+      "to": "793802cf-1929-410d-84d2-0a1fe942d223",
+      "fromVersion": "original",
+      "version": "compressed",
+      "action": "button"
+    },
+    {
+      "step": 45,
+      "from": "793802cf-1929-410d-84d2-0a1fe942d223",
+      "to": "0eae817e-a0d5-4b79-bb38-be00a2eb59a3",
+      "fromVersion": "compressed",
+      "version": "original",
+      "action": "button"
+    },
+    {
+      "step": 46,
+      "from": "0eae817e-a0d5-4b79-bb38-be00a2eb59a3",
+      "to": "eee631c3-fc76-4f47-9f28-cb835ad67710",
+      "fromVersion": "original",
+      "version": "compressed",
+      "action": "button"
+    },
+    {
+      "step": 47,
+      "from": "eee631c3-fc76-4f47-9f28-cb835ad67710",
+      "to": "380a7c9d-c9ae-4a41-85bc-6ef682fa1e81",
+      "fromVersion": "compressed",
+      "version": "original",
+      "action": "button"
+    },
+    {
+      "step": 48,
+      "from": "380a7c9d-c9ae-4a41-85bc-6ef682fa1e81",
+      "to": "bfb08ddc-ff02-481d-a551-0c7a2eb24cba",
+      "fromVersion": "original",
+      "version": "compressed",
+      "action": "button"
+    },
+    {
+      "step": 49,
+      "from": "bfb08ddc-ff02-481d-a551-0c7a2eb24cba",
+      "to": "98ce8da7-4a62-4974-a374-22f6ccbf21c4",
+      "fromVersion": "compressed",
+      "version": "original",
+      "action": "button"
+    },
+    {
+      "step": 50,
+      "from": "98ce8da7-4a62-4974-a374-22f6ccbf21c4",
+      "to": "9e27908b-c1f9-4766-8398-6329f8429620",
+      "fromVersion": "original",
+      "version": "compressed",
+      "action": "button"
+    }
+  ],
+  "navigationProgress": {
+    "viewer": "anonymous",
+    "step": 20,
+    "phase": "decoded",
+    "from": "e87f3a10-df0b-4754-a5dd-2f04291a64b0",
+    "to": "af3d14dd-36eb-4e8b-9c5c-bbaa953e0d44",
+    "action": "button"
+  },
+  "ownerInitialVersion": "original",
+  "anonymousNavigation": [
+    {
+      "step": 1,
+      "from": "f94bf8af-7210-437c-995f-af2481d87a3c",
+      "to": "6bb6382c-7e2c-4878-9f73-d500e0b77e55",
+      "action": "button"
+    },
+    {
+      "step": 2,
+      "from": "6bb6382c-7e2c-4878-9f73-d500e0b77e55",
+      "to": "d91a618a-c1c4-4bb9-91ce-03b904b38909",
+      "action": "button"
+    },
+    {
+      "step": 3,
+      "from": "d91a618a-c1c4-4bb9-91ce-03b904b38909",
+      "to": "ed084df3-65d9-4b25-af7e-32875ae16a30",
+      "action": "button"
+    },
+    {
+      "step": 4,
+      "from": "ed084df3-65d9-4b25-af7e-32875ae16a30",
+      "to": "9822ab86-caa7-4424-aaeb-21701164a891",
+      "action": "button"
+    },
+    {
+      "step": 5,
+      "from": "9822ab86-caa7-4424-aaeb-21701164a891",
+      "to": "b1814d88-445c-4179-851b-c97aaafc7321",
+      "action": "button"
+    },
+    {
+      "step": 6,
+      "from": "b1814d88-445c-4179-851b-c97aaafc7321",
+      "to": "4ff25da8-9b6f-49f4-b5f1-784276ac25d8",
+      "action": "button"
+    },
+    {
+      "step": 7,
+      "from": "4ff25da8-9b6f-49f4-b5f1-784276ac25d8",
+      "to": "b49ffdf1-9e0e-48c0-9b3c-c7138a730c5b",
+      "action": "button"
+    },
+    {
+      "step": 8,
+      "from": "b49ffdf1-9e0e-48c0-9b3c-c7138a730c5b",
+      "to": "bb8786f8-b2d5-4e2b-b8a0-0046452e7f18",
+      "action": "button"
+    },
+    {
+      "step": 9,
+      "from": "bb8786f8-b2d5-4e2b-b8a0-0046452e7f18",
+      "to": "046db575-0d07-4196-9383-691a41187c28",
+      "action": "button"
+    },
+    {
+      "step": 10,
+      "from": "046db575-0d07-4196-9383-691a41187c28",
+      "to": "39251581-62c5-455a-b5d3-6f24240a2c4a",
+      "action": "button"
+    },
+    {
+      "step": 11,
+      "from": "39251581-62c5-455a-b5d3-6f24240a2c4a",
+      "to": "c958e268-3482-417d-976e-31fa4ee16f2e",
+      "action": "button"
+    },
+    {
+      "step": 12,
+      "from": "c958e268-3482-417d-976e-31fa4ee16f2e",
+      "to": "9c8c0dfa-d118-4cfa-bf22-042dcfeb701a",
+      "action": "button"
+    },
+    {
+      "step": 13,
+      "from": "9c8c0dfa-d118-4cfa-bf22-042dcfeb701a",
+      "to": "93f7a893-c4e1-41c7-8954-db127f1acd4d",
+      "action": "button"
+    },
+    {
+      "step": 14,
+      "from": "93f7a893-c4e1-41c7-8954-db127f1acd4d",
+      "to": "9e27908b-c1f9-4766-8398-6329f8429620",
+      "action": "button"
+    },
+    {
+      "step": 15,
+      "from": "9e27908b-c1f9-4766-8398-6329f8429620",
+      "to": "bfb08ddc-ff02-481d-a551-0c7a2eb24cba",
+      "action": "button"
+    },
+    {
+      "step": 16,
+      "from": "bfb08ddc-ff02-481d-a551-0c7a2eb24cba",
+      "to": "eee631c3-fc76-4f47-9f28-cb835ad67710",
+      "action": "button"
+    },
+    {
+      "step": 17,
+      "from": "eee631c3-fc76-4f47-9f28-cb835ad67710",
+      "to": "793802cf-1929-410d-84d2-0a1fe942d223",
+      "action": "button"
+    },
+    {
+      "step": 18,
+      "from": "793802cf-1929-410d-84d2-0a1fe942d223",
+      "to": "dbfe865d-23d8-455b-b0e2-7f885b3b7b84",
+      "action": "button"
+    },
+    {
+      "step": 19,
+      "from": "dbfe865d-23d8-455b-b0e2-7f885b3b7b84",
+      "to": "e87f3a10-df0b-4754-a5dd-2f04291a64b0",
+      "action": "button"
+    },
+    {
+      "step": 20,
+      "from": "e87f3a10-df0b-4754-a5dd-2f04291a64b0",
+      "to": "af3d14dd-36eb-4e8b-9c5c-bbaa953e0d44",
+      "action": "button"
+    }
+  ],
+  "visitorErrors": [],
+  "browserErrors": []
+}

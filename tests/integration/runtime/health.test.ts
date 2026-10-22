@@ -50,6 +50,7 @@ it('未初始化的隔离生产产物返回 200 / no-store，健康检查不发�
           )
           .all(),
       ).toEqual([
+        { name: 'access_protection_settings' },
         { name: 'account' },
         { name: 'album_images' },
         { name: 'album_shares' },
@@ -106,6 +107,13 @@ it('未初始化的隔离生产产物返回 200 / no-store，健康检查不发�
         },
       ]);
       expect(db.prepare('SELECT * FROM site_settings').all()).toEqual([]);
+      expect(
+        db
+          .prepare(
+            'SELECT mode, rate, burst FROM access_protection_settings WHERE id = 1',
+          )
+          .get(),
+      ).toEqual({ mode: 'observe', rate: 10, burst: 200 });
       for (const table of [
         'account',
         'apikey',

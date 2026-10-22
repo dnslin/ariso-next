@@ -18,6 +18,7 @@ const productionHistory = productionMigrations.map(({ when }) => ({
 }));
 const productionTableNames = [
   '__drizzle_migrations',
+  'access_protection_settings',
   'account',
   'album_images',
   'album_shares',

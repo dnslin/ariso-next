@@ -5,6 +5,8 @@ import { Readable } from 'node:stream';
 import type { ReadableStream as NodeReadableStream } from 'node:stream/web';
 import { pipeline } from 'node:stream/promises';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
+import type { Logger } from 'pino';
+import { createAccessProtectionRuntime } from '../../../src/server/access-protection/runtime.ts';
 import { createAccessCollector } from '../../../src/server/analytics/collector.ts';
 import * as analytics from '../../../src/server/analytics/collector.ts';
 import * as local from '../../../src/server/storage/local.ts';
@@ -35,6 +37,11 @@ import { GET, HEAD } from '../../../src/app/i/[imageId]/route.ts';
 
 let fixture: Awaited<ReturnType<typeof createCountFixture>>;
 let collector: ReturnType<typeof createAccessCollector>;
+let accessProtection: ReturnType<typeof createAccessProtectionRuntime>;
+const protectionLogs = {
+  info: vi.fn<Logger['info']>(),
+  warn: vi.fn<Logger['warn']>(),
+};
 let server: Server;
 let origin: string;
 let beforeBody: (() => Promise<void> | void) | undefined;
@@ -45,9 +52,16 @@ const readObject = local.readObject;
 beforeEach(async () => {
   fixture = await createCountFixture();
   collector = createAccessCollector();
+  protectionLogs.info.mockReset();
+  protectionLogs.warn.mockReset();
+  accessProtection = createAccessProtectionRuntime({
+    db: fixture.db,
+    logger: protectionLogs,
+  });
   dependencies.runtime.mockReturnValue({
     connection: fixture.connection,
     config: { dataDir: fixture.directory, logLevel: 'info' },
+    accessProtection,
   });
   dependencies.owner.mockImplementation(async (request: Request) =>
     request.headers.get('cookie') === 'owner=yes' ? { id: 'owner' } : null,
@@ -101,6 +115,7 @@ afterEach(async () => {
     server.close((error) => (error ? reject(error) : resolve())),
   );
   await transfer;
+  accessProtection.stop();
   vi.restoreAllMocks();
   await fixture.close();
 });
