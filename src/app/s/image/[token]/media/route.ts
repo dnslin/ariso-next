@@ -2,6 +2,7 @@ import { resolve } from 'node:path';
 import { createSecretCrypto } from '../../../../../server/runtime/crypto.ts';
 import { createRuntimeLogger } from '../../../../../server/runtime/logger.ts';
 import { getServerRuntime } from '../../../../../server/startup/server-start.ts';
+import { readOptionalOwner } from '../../../../../server/identity/owner.ts';
 import {
   imageShareFailure,
   prepareImageShareDelivery,
@@ -15,6 +16,11 @@ async function handle(
 ) {
   try {
     const server = getServerRuntime();
+    const limited = server.accessProtection.check(
+      request,
+      !!(await readOptionalOwner(request)),
+    );
+    if (limited) return limited;
     return await prepareImageShareDelivery(
       request,
       (await context.params).token,

@@ -21,6 +21,11 @@ async function handle(
   try {
     const { imageId } = await context.params;
     const server = getServerRuntime();
+    const limited = server.accessProtection.check(
+      request,
+      !!(await readOptionalOwner(request)),
+    );
+    if (limited) return limited;
     const analyticsLogger = createRuntimeLogger(
       'analytics',
       server.config.logLevel,

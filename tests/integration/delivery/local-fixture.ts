@@ -16,12 +16,15 @@ import {
 import { email, password, seedAuthOwner } from '../identity/auth-fixture.ts';
 import { launch, stop } from '../runtime/process-helpers.ts';
 
-export async function launchLocalDelivery() {
+export async function launchLocalDelivery(
+  runtimeEnv: Record<string, string | undefined> = {},
+) {
   const directory = await mkdtemp(join(tmpdir(), 'ariso-delivery-http-'));
   const dataDir = join(directory, 'data');
   const server = await launch(resolve('.next/standalone'), directory, {
     DATA_DIR: dataDir,
     HOST: '127.0.0.1',
+    ...runtimeEnv,
   });
   const origin = `http://127.0.0.1:${server.port}`;
   let connection: ReturnType<typeof openRuntimeDatabase> | undefined;

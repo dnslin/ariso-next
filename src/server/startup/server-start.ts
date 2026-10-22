@@ -23,6 +23,7 @@ import { releaseStorageHistory } from '../upload/usage.ts';
 import { createBrandingService } from '../site/branding.ts';
 import { createArchiveService } from '../delivery/archive.ts';
 import { createReplacementService } from '../media/replacement.ts';
+import { createAccessProtectionRuntime } from '../access-protection/runtime.ts';
 
 type ServerRuntime = ReturnType<typeof initializeServerRuntime>;
 
@@ -136,6 +137,10 @@ function initializeServerRuntime() {
       db: connection.db,
       logger: createRuntimeLogger('sharing', config.logLevel),
     });
+    const accessProtection = createAccessProtectionRuntime({
+      db: connection.db,
+      logger: createRuntimeLogger('access-protection', config.logLevel),
+    });
     let stopping: Promise<void> | undefined;
     const runtime = {
       config,
@@ -154,6 +159,7 @@ function initializeServerRuntime() {
       branding,
       archive,
       replacements,
+      accessProtection,
       get stopping() {
         return stopping !== undefined;
       },
@@ -161,6 +167,7 @@ function initializeServerRuntime() {
         return (stopping ??= storageMaintenance
           .stop()
           .finally(() => sharing.stop())
+          .finally(() => accessProtection.stop())
           .finally(() => archive.close())
           .finally(() => replacements.close())
           .finally(() => uploads.stop())
