@@ -7,6 +7,7 @@ services:
       PORT: '3000'
       DATA_DIR: /data
       LOG_LEVEL: ${LOG_LEVEL:-info}
+      ARISO_TRUSTED_PROXIES: ${ARISO_TRUSTED_PROXIES:-}
       BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:?Set BETTER_AUTH_SECRET in the explicit --env-file}
       ARISO_ENCRYPTION_KEY: ${ARISO_ENCRYPTION_KEY:?Set ARISO_ENCRYPTION_KEY in the explicit --env-file}
     ports:
