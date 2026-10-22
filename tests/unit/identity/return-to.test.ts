@@ -133,3 +133,11 @@ it('returns to delivered branding settings after reauthentication', () => {
     '/admin',
   );
 });
+
+it('returns to access protection after login without allowing other new destinations', () => {
+  const path = '/settings/general/access-protection';
+  expect(loginDestination(path)).toBe(path);
+  expect(loginDestination(`${path}#main-content`)).toBe(`${path}#main-content`);
+  expect(loginDestination(`${path}/unimplemented`)).toBe('/admin');
+  expect(loginDestination(`https://evil.test${path}`)).toBe('/admin');
+});
