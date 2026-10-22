@@ -13,6 +13,14 @@ const { monitorViewerRequests, waitViewerNeighbors, restoreViewerFetch } =
 const { openIdentityAccountMenu } = await import(
   new URL('./identity-session.mjs', config.loginScript).href
 );
+const {
+  verifyDraftRecovery,
+  verifyLoadedShare,
+  retrySessionRead,
+  readBrowserSession,
+} = await import(
+  new URL('./access-protection-regressions.mjs', config.loginScript).href
+);
 const { installBrowserErrors, assertNoBrowserErrors, isBrowserControlStop } =
   await import(config.errorsScript);
 const execute = promisify(execFile);
@@ -31,16 +39,21 @@ const report = {
 let visitor, embedA, embedB, failure, observer, visitorObserver;
 const ownerTabs = [];
 const owner = async (path, method = 'GET', input) => {
-  const response = await fetch(new URL(path, config.origin), {
-    method,
-    headers: {
-      cookie: config.ownerCookie,
-      origin: config.origin,
-      ...(input === undefined ? {} : { 'content-type': 'application/json' }),
-    },
-    ...(input === undefined ? {} : { body: JSON.stringify(input) }),
-    signal: AbortSignal.timeout(60000),
-  });
+  const request = () =>
+    fetch(new URL(path, config.origin), {
+      method,
+      headers: {
+        cookie: config.ownerCookie,
+        origin: config.origin,
+        ...(input === undefined ? {} : { 'content-type': 'application/json' }),
+      },
+      ...(input === undefined ? {} : { body: JSON.stringify(input) }),
+      signal: AbortSignal.timeout(60000),
+    });
+  const response =
+    path === '/api/auth/get-session' && method === 'GET'
+      ? await retrySessionRead(request, report)
+      : await request();
   const body = await response.json();
   assert.equal(
     response.status,
@@ -512,6 +525,7 @@ try {
     toast: { desktop: desktopNotice, mobile: mobileNotice },
     passed: true,
   });
+  await verifyDraftRecovery(page, config, owner, report);
 
   report.stage = 'browser-owner-sign-out';
   assert.equal(
@@ -520,9 +534,7 @@ try {
     'Anonymous share refresh uses the configured canonical origin',
   );
   const controllerSessionBefore = await owner('/api/auth/get-session');
-  const browserSessionBefore = await page.fetch('/api/auth/get-session');
-  assert.equal(browserSessionBefore.status, 200);
-  const browserSession = JSON.parse(browserSessionBefore.body);
+  const browserSession = await readBrowserSession(page, report);
   assert.ok(
     controllerSessionBefore?.session?.id && browserSession?.session?.id,
     'Both independently created owner sessions are valid before logout',
@@ -532,13 +544,16 @@ try {
     controllerSessionBefore.session.id,
     'Browser sign-in must not reuse the Node controller session',
   );
+  // Let the completed save notice dismiss before opening the mobile account popover.
+  await page.waitForSelector('loc=role:button[name="关闭通知"]', {
+    state: 'hidden',
+  });
   await openIdentityAccountMenu(page);
   await page.click('loc=role:button[name="退出登录"]');
   await page.waitForURL(`${config.origin}/login?reason=signed-out`);
-  const browserSessionAfter = await page.fetch('/api/auth/get-session');
-  assert.equal(browserSessionAfter.status, 200);
+  const browserSessionAfter = await readBrowserSession(page, report);
   assert.equal(
-    JSON.parse(browserSessionAfter.body),
+    browserSessionAfter,
     null,
     'The real browser session was revoked and its Cookie cleared',
   );
@@ -567,9 +582,7 @@ try {
   await visitor.goto(`${config.anonymousOrigin}/s/${config.shareToken}`);
   await visitor.waitForSelector('[data-testid="share-items"]');
   await resizeViewport(visitor, 1440, 1080);
-  const visitorSession = await visitor.fetch('/api/auth/get-session');
-  assert.equal(visitorSession.status, 200);
-  assert.equal(JSON.parse(visitorSession.body), null);
+  assert.equal(await readBrowserSession(visitor, report), null);
   for (let loaded = 80; loaded <= 200; loaded += 40) {
     await visitor.click('[data-testid="share-load-more"]');
     await visitor.waitForFunction(
@@ -702,6 +715,7 @@ try {
     loaded: 160,
     referrerVariants: ['normal', 'no-referrer'],
   });
+  await verifyLoadedShare(page, config, owner, report);
   report.browserErrors = await assertNoBrowserErrors(page);
   report.status = 'passed';
 } catch (error) {
