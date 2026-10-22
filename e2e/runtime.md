@@ -49,6 +49,8 @@ EGO_TASK_SPACE=22 node scripts/verify-browser.mjs --suite access-protection
 
 `image-workflows` 通过正式上传接口准备代表图片，验证 ZIP 两个入口及实际解包、保留外链的替换、三个尺寸的实际像素和临时分享。除媒体工具外，它还需要系统 Python 3 的标准库解包 ZIP。匿名访客使用独立的 localhost 子域名隔离所有者 Cookie，并核对实际会话为空；这与独立浏览器配置文件的验证范围不同。真实 R2/SeaweedFS 另由存储验证脚本执行。
 
+`access-protection` 复用公共浏览器执行器，夹具仅负责隔离应用和数据的创建、清理。除浏览、外链和 ZIP 外，还验证真实会话失效与重新登录后的草稿恢复、未知提交核对，以及后台 HEAD 被限频时已加载图片保持原节点、不重新下载，撤销后仍移除图片。
+
 `access-protection` 使用独立生产应用和本地 S3 协议服务，检查真实设置保存、所有者图库与大图、匿名相册、两个外站页面各 80 张嵌图，以及匿名额度耗尽后的 200 张混合来源 ZIP。测试图片通过夹具登记，不作为上传和媒体处理证据；ZIP 使用 Python 标准库解包校验。该套件不连接生产存储，也不代表真实 R2/SeaweedFS 验证。
 
 当前 CLI 未提供 `--help`。参数定义见[运行器入口](../scripts/verify-browser.mjs)，功能与阶段定义见[执行计划](../scripts/browser-plan.mjs)。不要直接用 `node e2e/<文件>.mjs` 替代运行器：大多数场景需要运行器注入配置和 Ego 的测试空间接口。
