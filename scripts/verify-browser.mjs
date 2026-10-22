@@ -801,6 +801,8 @@ try {
         const passed = await runBusinessBrowserStage({
           check,
           runBrowser,
+          signal: controller.signal,
+          secrets,
           restart: restartProduction,
           config: focusedConfig,
           script,
@@ -910,6 +912,8 @@ try {
         runBusinessBrowserStage({
           check,
           runBrowser,
+          signal: controller.signal,
+          secrets,
           restart: restartProduction,
           config: { ...identityConfig, ...extra },
           script,

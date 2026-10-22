@@ -12,7 +12,7 @@ afterEach(async () => {
   );
 });
 
-async function run(args: string[]) {
+async function run(args: string[], accessOutcome?: 'failed' | 'interrupted') {
   const output = await mkdtemp(join(tmpdir(), 'browser-business-cli-'));
   directories.push(output);
   const traceFile = join(output, 'trace.jsonl');
@@ -31,17 +31,18 @@ async function run(args: string[]) {
         EGO_PAGE_LABEL: 'p1',
         BROWSER_REPORT_DIR: output,
         BROWSER_CLI_TRACE: traceFile,
+        BROWSER_ACCESS_OUTCOME: accessOutcome,
       },
       encoding: 'utf8',
       timeout: 10000,
     },
   );
   expect(result.error, result.stderr).toBeUndefined();
-  expect(result.status, result.stderr).toBe(0);
+  expect(result.status, result.stderr).toBe(accessOutcome ? 1 : 0);
   const report = JSON.parse(
     await readFile(join(output, 'runner.json'), 'utf8'),
   );
-  expect(report.status).toBe('passed');
+  expect(report.status).toBe(accessOutcome ? 'failed' : 'passed');
   const events: {
     kind: string;
     script?: string;
@@ -52,11 +53,18 @@ async function run(args: string[]) {
     hasPasswordResetFixture?: boolean;
     spaceId?: number;
     pageLabel?: string;
+    phase?: string;
   }[] = (await readFile(traceFile, 'utf8'))
     .trim()
     .split('\n')
     .map((line) => JSON.parse(line));
-  return { report, events, files: await readdir(output) };
+  return {
+    report,
+    events,
+    files: await readdir(output),
+    output,
+    stdout: result.stdout,
+  };
 }
 
 function expectUploadRuntime(
@@ -88,8 +96,11 @@ describe('actual business CLI connections without external services', () => {
     ]);
     expect(report.stages.branding.status).toBe('passed');
     expect(
-      events.filter((event) => event.kind === 'access-protection'),
-    ).toEqual([{ kind: 'access-protection', spaceId: 8, pageLabel: 'p1' }]);
+      events.filter((event) => event.kind === 'access-protection-fixture'),
+    ).toEqual([
+      { kind: 'access-protection-fixture', phase: 'start' },
+      { kind: 'access-protection-fixture', phase: 'close' },
+    ]);
     expect(scripts.filter((script) => plannedScripts.includes(script))).toEqual(
       plannedScripts,
     );
@@ -172,14 +183,17 @@ describe('actual business CLI connections without external services', () => {
     expect(report.stages).toBeUndefined();
   });
 
-  it('executes focused access protection through its isolated verification boundary', async () => {
-    const { events, report, files } = await run([
+  it('runs the real access-protection stage and fixture wrapper through shared logging and cleanup', async () => {
+    const { events, report, files, output, stdout } = await run([
       '--suite',
       'access-protection',
     ]);
     expect(
-      events.filter((event) => event.kind === 'access-protection'),
-    ).toEqual([{ kind: 'access-protection', spaceId: 8, pageLabel: 'p1' }]);
+      events.filter((event) => event.kind === 'access-protection-fixture'),
+    ).toEqual([
+      { kind: 'access-protection-fixture', phase: 'start' },
+      { kind: 'access-protection-fixture', phase: 'close' },
+    ]);
     expect(
       events
         .filter((event) => event.kind === 'browser')
@@ -187,7 +201,46 @@ describe('actual business CLI connections without external services', () => {
     ).toEqual(['access-protection.mjs']);
     expect(report.accessProtection).toBe('passed');
     expect(files).toContain('access-protection.log');
+    const log = await readFile(join(output, 'access-protection.log'), 'utf8');
+    expect(log).toBe('[redacted] [redacted] [redacted] [redacted]\n');
+    for (const secret of [
+      'access-fixture-password',
+      'access-fixture-owner-cookie',
+      'access-fixture-share-token',
+      'image-share-secret',
+    ])
+      expect(stdout).not.toContain(secret);
   });
+
+  it.each(['failed', 'interrupted'] as const)(
+    'closes the access-protection fixture after the shared browser is %s',
+    async (outcome) => {
+      const { events, report, output } = await run(
+        ['--suite', 'access-protection'],
+        outcome,
+      );
+      expect(report.stages['access-protection'].status).toBe('failed');
+      expect(report.accessProtection).toBeUndefined();
+      expect(
+        events.filter((event) =>
+          ['access-protection-browser', 'access-protection-fixture'].includes(
+            event.kind,
+          ),
+        ),
+      ).toEqual([
+        { kind: 'access-protection-fixture', phase: 'start' },
+        {
+          kind: 'access-protection-browser',
+          phase: 'close',
+          code: outcome === 'failed' ? 1 : 0,
+        },
+        { kind: 'access-protection-fixture', phase: 'close' },
+      ]);
+      expect(
+        await readFile(join(output, 'access-protection.log'), 'utf8'),
+      ).toBe('[redacted] [redacted] [redacted] [redacted]\n');
+    },
+  );
 
   it.each([
     ['upload-regression', undefined, ['upload', 'upload-polling']],

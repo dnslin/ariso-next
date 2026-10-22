@@ -1,10 +1,12 @@
 import assert from 'node:assert/strict';
-import { runAccessProtectionVerification } from './verify-access-protection.ts';
+import { runAccessProtectionBrowser } from './browser-access-protection.mjs';
 
 /** Run one business scene, isolating the two upload authentication prerequisites. */
 export async function runBusinessBrowserStage({
   check,
   runBrowser,
+  signal,
+  secrets,
   restart,
   config,
   script,
@@ -15,7 +17,10 @@ export async function runBusinessBrowserStage({
     return check(
       name,
       () =>
-        runAccessProtectionVerification({
+        runAccessProtectionBrowser({
+          runBrowser,
+          signal,
+          secrets,
           spaceId: config.spaceId,
           pageLabel: config.pageLabel,
           output: config.output,

@@ -3,24 +3,27 @@ import { resolve } from 'node:path';
 
 /**
  * Called by the normal browser runner; owns and cleans only its disposable app.
- * @param {{runBrowser: (script: string, config: Record<string, unknown>, logName: string) => Promise<void>, spaceId: number, pageLabel?: string, output: string, secrets?: string[], report?: {accessProtection?: string}}} options
+ * @param {{runBrowser: (script: string, config: Record<string, unknown>, logName: string) => Promise<void>, signal: AbortSignal, spaceId: number, pageLabel?: string, output: string, secrets: string[]}} options
  */
 export async function runAccessProtectionBrowser({
   runBrowser,
+  signal,
   spaceId,
   pageLabel,
   output,
-  secrets = [],
-  report,
+  secrets,
 }) {
+  signal.throwIfAborted();
   const { launchAccessProtectionBrowserFixture } =
     await import('../e2e/access-protection-fixture.ts');
   const fixture = await launchAccessProtectionBrowserFixture();
   try {
+    signal.throwIfAborted();
     secrets.push(
       fixture.browserInput.credentials.password,
       fixture.browserInput.ownerCookie,
       fixture.browserInput.shareToken,
+      fixture.browserInput.imageShareToken,
     );
     await runBrowser(
       '../e2e/access-protection.mjs',
@@ -35,7 +38,6 @@ export async function runAccessProtectionBrowser({
       },
       'access-protection.log',
     );
-    if (report) report.accessProtection = 'passed';
   } finally {
     await fixture.close();
   }

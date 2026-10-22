@@ -3,6 +3,7 @@ import { once } from 'node:events';
 import { createServer } from 'node:http';
 import { albumImages, albums } from '../src/server/collections/schema.ts';
 import { createShare } from '../src/server/sharing/configuration.ts';
+import { createImageShare } from '../src/server/sharing/image-configuration.ts';
 import { email, password } from '../tests/integration/identity/auth-fixture.ts';
 import { launchAccessProtectionFixture } from '../tests/integration/delivery/access-protection-fixture.ts';
 
@@ -46,6 +47,10 @@ export async function launchAccessProtectionBrowserFixture() {
       layout: 'grid',
       showName: true,
     });
+    const imageShare = createImageShare(app.db, local[1].imageId, {
+      sourceVersion: 'original',
+      hours: 1,
+    });
     // Share refresh POSTs must use the configured site origin. The browser
     // explicitly signs out before visitor checks; the Node controller keeps its
     // own independently issued owner session.
@@ -82,6 +87,8 @@ export async function launchAccessProtectionBrowserFixture() {
         credentials: { email, password },
         albumId,
         shareToken: share.token,
+        imageShareToken: imageShare.token,
+        privateImageId: local[1].imageId,
         localImageId: local[0].imageId,
         remoteImageId: remote[0].imageId,
         archiveIds: [...local.slice(0, 100), ...remote.slice(0, 100)].map(

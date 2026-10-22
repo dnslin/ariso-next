@@ -49,6 +49,8 @@ function fixture({
         check,
         restart,
         runBrowser,
+        signal: new AbortController().signal,
+        secrets: [],
         config,
         script,
         name,

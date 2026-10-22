@@ -3,7 +3,6 @@ import { EventEmitter } from 'node:events';
 import { appendFileSync } from 'node:fs';
 import * as files from 'node:fs/promises';
 import { registerHooks } from 'node:module';
-import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const runner = new URL(
@@ -16,10 +15,12 @@ const children = new Map();
 const initialized = new Set();
 let nextPid = 100000;
 
-function close(child) {
-  child.exitCode = 0;
+function close(child, code = 0) {
+  child.exitCode = code;
   children.delete(child.pid);
-  child.emit('close', 0);
+  if (child.script === 'access-protection.mjs')
+    trace({ kind: 'access-protection-browser', phase: 'close', code });
+  child.emit('close', code);
 }
 
 export function spawn(command, args, options = {}) {
@@ -36,6 +37,7 @@ export function spawn(command, args, options = {}) {
     const configLine = source.slice(0, source.indexOf('\n'));
     const config = JSON.parse(configLine.slice('const config = '.length, -1));
     const script = source.split('\n')[1].slice('// CLI scene: '.length);
+    child.script = script;
     trace({
       kind: 'browser',
       script,
@@ -45,7 +47,23 @@ export function spawn(command, args, options = {}) {
       themePhase: config.themePhase,
       hasPasswordResetFixture: !!config.passwordResetFixture,
     });
-    setImmediate(() => close(child));
+    setImmediate(() => {
+      if (script === 'access-protection.mjs') {
+        child.stdout.emit(
+          'data',
+          `${config.credentials.password} ${config.ownerCookie} ${config.shareToken} ${config.imageShareToken}\n`,
+        );
+        if (process.env.BROWSER_ACCESS_OUTCOME === 'interrupted') {
+          process.emit('SIGINT');
+          return;
+        }
+        if (process.env.BROWSER_ACCESS_OUTCOME === 'failed') {
+          close(child, 1);
+          return;
+        }
+      }
+      close(child);
+    });
   };
   if (command === 'sh') {
     const dataDirectory = options.env.DATA_DIR;
@@ -123,22 +141,20 @@ export const runBrandBrowser = async () => {};
 export const runBrandingBrowser = async ({ spaceId, pageLabel }) => {
   trace({ kind: 'branding', spaceId, pageLabel });
 };
-export const runAccessProtectionVerification = async ({
-  spaceId,
-  pageLabel,
-  output,
-}) => {
-  trace({ kind: 'access-protection', spaceId, pageLabel });
-  trace({
-    kind: 'browser',
-    script: 'access-protection.mjs',
-    hasPasswordResetFixture: false,
-  });
-  await files.writeFile(
-    join(output, 'access-protection.log'),
-    'CLI access-protection fixture completed\n',
-  );
-  return { status: 'passed' };
+export const launchAccessProtectionBrowserFixture = async () => {
+  trace({ kind: 'access-protection-fixture', phase: 'start' });
+  return {
+    browserInput: {
+      origin: 'http://access-fixture.test',
+      credentials: { password: 'access-fixture-password' },
+      ownerCookie: 'access-fixture-owner-cookie',
+      shareToken: 'access-fixture-share-token',
+      imageShareToken: 'image-share-secret',
+    },
+    close: async () => {
+      trace({ kind: 'access-protection-fixture', phase: 'close' });
+    },
+  };
 };
 export const createSharingRunner = () =>
   Object.fromEntries(
@@ -159,16 +175,21 @@ const substitutes = new Map([
   ['./browser-brand.mjs', ['runBrandBrowser']],
   ['./browser-branding.mjs', ['runBrandingBrowser']],
   ['./browser-sharing.mjs', ['createSharingRunner']],
-  ['./verify-access-protection.ts', ['runAccessProtectionVerification']],
+  [
+    '../e2e/access-protection-fixture.ts',
+    ['launchAccessProtectionBrowserFixture'],
+  ],
 ]);
 registerHooks({
   resolve(specifier, context, nextResolve) {
     if (
       (context.parentURL === runner && substitutes.has(specifier)) ||
       (context.parentURL ===
-        new URL('../../../../scripts/browser-business.mjs', import.meta.url)
-          .href &&
-        specifier === './verify-access-protection.ts')
+        new URL(
+          '../../../../scripts/browser-access-protection.mjs',
+          import.meta.url,
+        ).href &&
+        specifier === '../e2e/access-protection-fixture.ts')
     )
       return { url: `cli-fixture:${specifier}`, shortCircuit: true };
     return nextResolve(specifier, context);
