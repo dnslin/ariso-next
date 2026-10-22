@@ -24,6 +24,7 @@ export function Providers({ children }: { children: ReactNode }) {
             className={
               pathname === '/settings/processing' ||
               pathname === '/settings/general' ||
+              pathname === '/settings/general/access-protection' ||
               pathname === '/settings/email' ||
               pathname.startsWith('/shares/')
                 ? 'bottom-[100px] sm:end-7'

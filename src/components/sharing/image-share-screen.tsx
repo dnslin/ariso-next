@@ -7,6 +7,7 @@ import { Card } from '@heroui/react/card';
 import { Spinner } from '@heroui/react/spinner';
 import { Clock3, Unlink } from 'lucide-react';
 import { ShareBrandHeading, type ShareBrand } from './brand';
+import { mediaRetryAt, useRetryCountdown } from './media-rate-limit';
 
 type View = { expiresAt: string; mediaUrl: string };
 export function ImageShareScreen({
@@ -24,11 +25,25 @@ export function ImageShareScreen({
   const [failed, setFailed] = useState(false);
   const [checking, setChecking] = useState(false);
   const [revision, setRevision] = useState(0);
+  const [retryAt, setRetryAt] = useState<number | null>(null);
+  const seconds = useRetryCountdown(retryAt);
   const activeRequest = useRef<AbortController | null>(null);
   const mediaUrl = `/s/image/${encodeURIComponent(token)}/media`;
   const check = useCallback(
     async (retryImage = false) => {
-      if (activeRequest.current) return;
+      if (activeRequest.current || (retryAt !== null && Date.now() < retryAt))
+        return;
+      if (status === 429) {
+        // A HEAD would consume the only allowance when burst=1. Retry the
+        // original image directly; its GET still applies all access checks.
+        if (retryImage) {
+          setRetryAt(null);
+          setStatus(200);
+          setFailed(false);
+          setRevision((value) => value + 1);
+        }
+        return;
+      }
       const controller = new AbortController();
       activeRequest.current = controller;
       setChecking(true);
@@ -36,10 +51,12 @@ export function ImageShareScreen({
         const response = await fetch(mediaUrl, {
           method: 'HEAD',
           cache: 'no-store',
+          redirect: 'manual',
           signal: controller.signal,
         });
         if (controller.signal.aborted) return;
         setStatus(response.status);
+        setRetryAt(mediaRetryAt(response));
         if (response.ok && retryImage) {
           setFailed(false);
           setRevision((value) => value + 1);
@@ -53,7 +70,7 @@ export function ImageShareScreen({
         }
       }
     },
-    [mediaUrl],
+    [mediaUrl, retryAt, status],
   );
   useEffect(() => {
     const visible = () => {
@@ -123,26 +140,39 @@ export function ImageShareScreen({
           className="mx-auto w-full max-w-120 gap-4 rounded-2xl border border-border bg-surface p-6 shadow-none"
         >
           <Card.Header className="grid gap-3">
-            <Unlink size={28} aria-hidden className="text-muted" />
+            {status === 429 ? (
+              <Clock3 size={28} aria-hidden className="text-muted" />
+            ) : (
+              <Unlink size={28} aria-hidden className="text-muted" />
+            )}
             <h1 id="image-share-state-title" className="text-xl font-medium">
-              {unavailable ? '分享已失效' : '图片暂时无法读取'}
+              {unavailable
+                ? '分享已失效'
+                : status === 429
+                  ? '访问较频繁，请稍后重试'
+                  : '图片暂时无法读取'}
             </h1>
           </Card.Header>
           <Card.Content className="grid gap-4 p-0">
             <p role="status" className="text-sm leading-6 text-muted">
               {unavailable
                 ? '链接可能已到期或被撤销，请联系分享者获取新的地址。'
-                : '图片可能暂时不可用，请稍后重新检查。'}
+                : status === 429
+                  ? seconds > 0
+                    ? `${seconds} 秒后可以重试`
+                    : '现在可以重新加载'
+                  : '图片可能暂时不可用，请稍后重新检查。'}
             </p>
             {!unavailable ? (
               <Button
                 className="min-h-12 rounded-lg"
-                isDisabled={checking}
+                isDisabled={checking || seconds > 0}
                 onPress={() => {
                   void check(true);
                 }}
               >
-                {checking ? <Spinner size="sm" /> : null}重新检查
+                {checking ? <Spinner size="sm" /> : null}
+                {status === 429 ? '重新加载' : '重新检查'}
               </Button>
             ) : null}
           </Card.Content>
