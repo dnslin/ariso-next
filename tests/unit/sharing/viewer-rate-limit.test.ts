@@ -251,8 +251,8 @@ it('keeps the ordinary manual retry available while a diagnostic HEAD is still p
   expect(props.onRetry).toHaveBeenCalledOnce();
 });
 
-function singleTokenShare() {
-  const limiter = createAccessLimiter({ rate: 1, burst: 1 });
+function rateLimitedShare(policy = { rate: 1, burst: 1 }) {
+  const limiter = createAccessLimiter(policy);
   const requests: string[] = [];
   const request = (method: string) => {
     requests.push(method);
@@ -281,14 +281,15 @@ function singleTokenShare() {
     const element = image(tree);
     expect(element).toBeDefined();
     const response = request('GET');
-    if (!response.ok) (element!.props.onError as () => void)();
+    if (response.ok) (element!.props.onLoad as (() => void) | undefined)?.();
+    else (element!.props.onError as () => void)();
     return response;
   };
   return { limiter, requests, shareProps, get, image };
 }
 
 it('recovers a confirmed 429 with one GET at rate=1 burst=1 instead of consuming its only allowance with HEAD', async () => {
-  const share = singleTokenShare();
+  const share = rateLimitedShare();
   share.limiter.take('192.0.2.20', Date.now());
   expect(share.get(harness.renderShare(share.shareProps)).status).toBe(429);
   await vi.advanceTimersByTimeAsync(0);
@@ -308,7 +309,7 @@ it('recovers a confirmed 429 with one GET at rate=1 burst=1 instead of consuming
 });
 
 it('does not spend the refilled single allowance on a visibility check while waiting for a manual rate-limit retry', async () => {
-  const share = singleTokenShare();
+  const share = rateLimitedShare();
   share.limiter.take('192.0.2.20', Date.now());
   share.get(harness.renderShare(share.shareProps));
   await vi.advanceTimersByTimeAsync(0);
@@ -322,9 +323,65 @@ it('does not spend the refilled single allowance on a visibility check while wai
 });
 
 it('retains HEAD checks for visibility changes when the share is not rate limited', async () => {
-  const share = singleTokenShare();
+  const share = rateLimitedShare();
   harness.renderShare(share.shareProps);
   document.dispatchEvent(new Event('visibilitychange'));
   await vi.advanceTimersByTimeAsync(0);
   expect(share.requests).toEqual(['HEAD']);
+});
+
+it('retains a loaded share image when a visibility check is rate limited and resumes later checks without reloading it', async () => {
+  const share = rateLimitedShare({ rate: 10, burst: 200 });
+  expect(share.get(harness.renderShare(share.shareProps)).status).toBe(200);
+  const loaded = share.image(harness.renderShare(share.shareProps))!;
+  for (let request = 0; request < 199; request++)
+    expect(share.limiter.take('192.0.2.20', Date.now()).allowed).toBe(true);
+
+  document.dispatchEvent(new Event('visibilitychange'));
+  await vi.advanceTimersByTimeAsync(0);
+  let tree = harness.renderShare(share.shareProps);
+  expect(share.image(tree)).toBeDefined();
+  expect(share.image(tree)!.key).toBe(loaded.key);
+  expect(text(tree)).not.toContain('访问较频繁');
+  expect(share.requests).toEqual(['GET', 'HEAD']);
+  document.dispatchEvent(new Event('visibilitychange'));
+  await vi.advanceTimersByTimeAsync(1000);
+  tree = harness.renderShare(share.shareProps);
+  expect(share.requests).toEqual(['GET', 'HEAD']);
+  expect(share.image(tree)!.key).toBe(loaded.key);
+
+  document.dispatchEvent(new Event('visibilitychange'));
+  await vi.advanceTimersByTimeAsync(0);
+  tree = harness.renderShare(share.shareProps);
+  expect(share.image(tree)!.key).toBe(loaded.key);
+  expect(share.requests).toEqual(['GET', 'HEAD', 'HEAD']);
+});
+
+it.each([404, 410])(
+  'still withdraws a loaded share image when a visibility check confirms HTTP %s',
+  async (status) => {
+    const share = rateLimitedShare();
+    expect(share.get(harness.renderShare(share.shareProps)).status).toBe(200);
+    fetcher.mockResolvedValue(new Response(null, { status }));
+    document.dispatchEvent(new Event('visibilitychange'));
+    await vi.advanceTimersByTimeAsync(0);
+    const tree = harness.renderShare(share.shareProps);
+    expect(share.image(tree)).toBeUndefined();
+    expect(text(tree)).toContain('分享已失效');
+    expect(text(tree)).not.toContain('重新加载');
+  },
+);
+
+it('still expires a loaded share while a visibility rate limit is cooling down', async () => {
+  const share = rateLimitedShare();
+  share.shareProps.initial.view!.expiresAt = new Date(
+    Date.now() + 500,
+  ).toISOString();
+  expect(share.get(harness.renderShare(share.shareProps)).status).toBe(200);
+  document.dispatchEvent(new Event('visibilitychange'));
+  await vi.advanceTimersByTimeAsync(500);
+  const tree = harness.renderShare(share.shareProps);
+  expect(share.image(tree)).toBeUndefined();
+  expect(text(tree)).toContain('分享已失效');
+  expect(share.requests).toEqual(['GET', 'HEAD']);
 });

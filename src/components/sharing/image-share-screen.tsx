@@ -28,6 +28,7 @@ export function ImageShareScreen({
   const [retryAt, setRetryAt] = useState<number | null>(null);
   const seconds = useRetryCountdown(retryAt);
   const activeRequest = useRef<AbortController | null>(null);
+  const imageLoaded = useRef(false);
   const mediaUrl = `/s/image/${encodeURIComponent(token)}/media`;
   const check = useCallback(
     async (retryImage = false) => {
@@ -55,14 +56,24 @@ export function ImageShareScreen({
           signal: controller.signal,
         });
         if (controller.signal.aborted) return;
-        setStatus(response.status);
+        // A throttled background check does not revoke bytes already displayed.
+        if (
+          response.status !== 429 ||
+          status !== 200 ||
+          retryImage ||
+          !imageLoaded.current
+        )
+          setStatus(response.status);
         setRetryAt(mediaRetryAt(response));
         if (response.ok && retryImage) {
           setFailed(false);
           setRevision((value) => value + 1);
         }
       } catch {
-        if (!controller.signal.aborted) setFailed(true);
+        if (!controller.signal.aborted) {
+          imageLoaded.current = false;
+          setFailed(true);
+        }
       } finally {
         if (activeRequest.current === controller) {
           activeRequest.current = null;
@@ -123,7 +134,11 @@ export function ImageShareScreen({
               unoptimized
               sizes="(max-width: 768px) 100vw, 960px"
               className="object-contain"
+              onLoad={() => {
+                imageLoaded.current = true;
+              }}
               onError={() => {
+                imageLoaded.current = false;
                 setFailed(true);
                 void check();
               }}
