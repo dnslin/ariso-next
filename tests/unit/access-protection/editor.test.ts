@@ -89,8 +89,15 @@ const initial: AccessProtectionSettingsResponse = {
   clientIp: { ready: true, message: null },
 };
 let harness: Harness;
+let stored: Map<string, string>;
 beforeEach(() => {
   harness = new Harness();
+  stored = new Map();
+  vi.stubGlobal('sessionStorage', {
+    getItem: (key: string) => stored.get(key) ?? null,
+    setItem: (key: string, value: string) => stored.set(key, value),
+    removeItem: (key: string) => stored.delete(key),
+  });
   actions.fetch.mockReset();
   actions.toast.mockReset();
   actions.toast.close.mockReset();
@@ -274,4 +281,161 @@ it('prevents overlapping writes and ignores a late success after unmount', async
   await saving;
   expect(actions.cache).not.toHaveBeenCalled();
   expect(actions.toast).not.toHaveBeenCalled();
+});
+
+it('restores the draft after session expiry and a login remount, following a fresh server read', () => {
+  harness.render();
+  harness.render().change('rate', 27);
+  harness.render().expire();
+  expect(harness.render()).toMatchObject({
+    expired: true,
+    input: { rate: 27 },
+  });
+  harness.unmount();
+  harness = new Harness();
+  expect(harness.render(null).locked).toBe(true);
+  harness.render();
+  expect(harness.render()).toMatchObject({
+    expired: false,
+    locked: false,
+    dirty: true,
+    input: { rate: 27 },
+    saved: { rate: 10 },
+  });
+});
+
+it('preserves an incomplete numeric draft across login without turning it into a valid default', () => {
+  harness.render();
+  harness.render().change('rate', Number.NaN);
+  harness.render().expire();
+  harness.render();
+  harness.unmount();
+  harness = new Harness();
+  harness.render();
+  expect(harness.render().input.rate).toBeNaN();
+});
+
+it('reconciles an uncertain submitted value after login without repeating PATCH', async () => {
+  harness.render();
+  harness.render().change('rate', 27);
+  actions.fetch.mockRejectedValueOnce(new Error('response lost'));
+  await harness.render().save();
+  harness.render().expire();
+  harness.render();
+  harness.unmount();
+  harness = new Harness();
+  const committed = { ...initial, rate: 27 };
+  harness.render(committed);
+  expect(harness.render(committed)).toMatchObject({
+    input: { rate: 27 },
+    phase: 'ready',
+    dirty: false,
+    locked: false,
+  });
+  expect(actions.fetch).toHaveBeenCalledTimes(1);
+  expect(stored.size).toBe(0);
+});
+
+it('retains the submitted draft and requires a choice when fresh login data differs', async () => {
+  harness.render();
+  harness.render().change('rate', 27);
+  actions.fetch.mockRejectedValueOnce(new Error('response lost'));
+  await harness.render().save();
+  harness.render().expire();
+  harness.render();
+  harness.unmount();
+  harness = new Harness();
+  const changed = { ...initial, rate: 35 };
+  harness.render(changed);
+  expect(harness.render(changed)).toMatchObject({
+    phase: 'different',
+    locked: true,
+    input: { rate: 27 },
+    saved: { rate: 35 },
+  });
+  await harness.render(changed).save();
+  expect(actions.fetch).toHaveBeenCalledTimes(1);
+  harness.render(changed).chooseSaved(true);
+  expect(harness.render(changed).input.rate).toBe(35);
+  expect(stored.size).toBe(0);
+});
+
+it('does not silently overwrite settings changed elsewhere while the owner was logged out', () => {
+  harness.render();
+  harness.render().change('rate', 27);
+  harness.render().expire();
+  harness.render();
+  harness.unmount();
+  harness = new Harness();
+  const changed = { ...initial, burst: 300 };
+  harness.render(changed);
+  expect(harness.render(changed)).toMatchObject({
+    phase: 'different',
+    input: { rate: 27, burst: 200 },
+    saved: { burst: 300 },
+  });
+});
+
+it('clears the recoverable draft after a successful save', async () => {
+  harness.render();
+  harness.render().change('rate', 27);
+  harness.render();
+  expect(stored.size).toBe(1);
+  actions.fetch.mockResolvedValueOnce(Response.json({ ...initial, rate: 27 }));
+  await harness.render().save();
+  harness.render();
+  expect(stored.size).toBe(0);
+});
+
+it('explicitly discards recovered input so another visit cannot restore it', () => {
+  harness.render();
+  harness.render().change('rate', 27);
+  harness.render().expire();
+  harness.render();
+  harness.unmount();
+  harness = new Harness();
+  harness.render();
+  harness.render().discard();
+  harness.render();
+  expect(stored.size).toBe(0);
+  harness.unmount();
+  harness = new Harness();
+  harness.render();
+  expect(harness.render()).toMatchObject({ input: { rate: 10 }, dirty: false });
+});
+
+it('keeps a restored conflict pending across another remount until the owner chooses', () => {
+  harness.render();
+  harness.render().change('rate', 27);
+  harness.render();
+  harness.unmount();
+  harness = new Harness();
+  const changed = { ...initial, burst: 300 };
+  harness.render(changed);
+  expect(harness.render(changed).phase).toBe('different');
+  harness.unmount();
+  harness = new Harness();
+  harness.render(changed);
+  expect(harness.render(changed)).toMatchObject({
+    phase: 'different',
+    input: { rate: 27 },
+  });
+  harness.render(changed).chooseSaved(false);
+  expect(harness.render(changed).phase).toBe('ready');
+});
+
+it('does not show a false conflict when the freshly read settings already match the draft', () => {
+  harness.render();
+  harness.render().change('rate', 27);
+  harness.render();
+  harness.unmount();
+  harness = new Harness();
+  const changed = { ...initial, rate: 27 };
+  harness.render(changed);
+  expect(harness.render(changed)).toMatchObject({
+    phase: 'ready',
+    dirty: false,
+    input: { rate: 27 },
+  });
+  expect(stored.size).toBe(0);
 });

@@ -170,7 +170,13 @@ export function AccessProtectionPage(
         ) : null}
       </section>
       <SiteLeaveDialog
-        navigation={navigation}
+        navigation={{
+          ...navigation,
+          discard: () => {
+            editor.discard();
+            navigation.discard();
+          },
+        }}
         pending={editor.busy || editor.uncertain}
       />
     </OwnerShell>

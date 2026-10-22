@@ -21,6 +21,7 @@ import {
   protectionMatches,
   protectionSubmission,
 } from './model';
+import { readAccessProtectionDraft, storeAccessProtectionDraft } from './draft';
 
 type Phase =
   'ready' | 'saving' | 'unknown' | 'checking' | 'check-error' | 'different';
@@ -28,6 +29,7 @@ type Phase =
 export function useAccessProtection(
   initial: AccessProtectionSettingsResponse | null,
 ) {
+  const [recovery] = useState(readAccessProtectionDraft);
   const [saved, setSaved] = useState<AccessProtectionSettingsResponse | null>(
     null,
   );
@@ -40,14 +42,31 @@ export function useAccessProtection(
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [message, setMessage] = useState('');
   const [expired, setExpired] = useState(false);
-  const pending = useRef<AccessProtectionInput | null>(null);
+  const [pending, setPending] = useState<AccessProtectionInput | null>(
+    recovery.draft?.pending ?? null,
+  );
   const request = useRef<AbortController | null>(null);
   const active = useRef(true);
   const notice = useRef<string | null>(null);
   const client = useQueryClient();
   if (!saved && initial && !expired) {
     setSaved(initial);
-    setInput(protectionInput(initial));
+    const draft = recovery.draft;
+    const confirmed =
+      !!draft &&
+      protectionMatches(
+        draft.pending ?? protectionSubmission(draft.input, initial),
+        initial,
+      );
+    setInput(draft && !confirmed ? draft.input : protectionInput(initial));
+    if (confirmed) setPending(null);
+    else if (
+      draft &&
+      (draft.pending ||
+        draft.needsReview ||
+        !protectionMatches(draft.saved, initial))
+    )
+      setPhase('different');
   }
   const busy = !expired && (phase === 'saving' || phase === 'checking');
   const uncertain = [
@@ -62,6 +81,33 @@ export function useAccessProtection(
   const dirty =
     !!saved && !protectionMatches(protectionSubmission(input, saved), saved);
 
+  const notify = useCallback((title: string) => {
+    if (notice.current) toast.close(notice.current);
+    notice.current = toast(title, { variant: 'default' });
+  }, []);
+  useEffect(() => {
+    if (recovery.error) notify(recovery.error);
+  }, [recovery, notify]);
+  useEffect(() => {
+    if (!saved) return;
+    try {
+      storeAccessProtectionDraft(
+        dirty || pending
+          ? {
+              input,
+              saved: protectionInput(saved),
+              pending,
+              needsReview: phase === 'different',
+            }
+          : null,
+      );
+    } catch (error) {
+      notify(
+        `无法暂存访问防护草稿，离开页面可能丢失输入：${error instanceof Error ? error.message : String(error)}`,
+      );
+    }
+  }, [input, saved, pending, dirty, phase, notify]);
+
   useEffect(() => {
     active.current = true;
     return () => {
@@ -75,10 +121,6 @@ export function useAccessProtection(
     request.current?.abort();
     setExpired(true);
   }, []);
-  function notify(title: string) {
-    if (notice.current) toast.close(notice.current);
-    notice.current = toast(title, { variant: 'default' });
-  }
   function focusErrors(fields: { field: string; message: string }[]) {
     setErrors(
       Object.fromEntries(fields.map(({ field, message }) => [field, message])),
@@ -130,7 +172,7 @@ export function useAccessProtection(
     }
     const controller = new AbortController();
     request.current = controller;
-    pending.current = parsed.data;
+    setPending(parsed.data);
     setPhase('saving');
     setErrors({});
     setMessage('');
@@ -144,13 +186,13 @@ export function useAccessProtection(
       if (!active.current) return;
       accept(value);
       setInput(protectionInput(value));
-      pending.current = null;
+      setPending(null);
       setPhase('ready');
       notify('访问防护已保存');
     } catch (error) {
       if (!active.current) return;
       if (error instanceof AccessProtectionRequestError && error.status < 500) {
-        pending.current = null;
+        setPending(null);
         setPhase('ready');
         setMessage(error.message);
         focusErrors(error.fields);
@@ -187,9 +229,9 @@ export function useAccessProtection(
       });
       if (!active.current) return;
       accept(value);
-      if (pending.current && protectionMatches(pending.current, value)) {
+      if (pending && protectionMatches(pending, value)) {
         setInput(protectionInput(value));
-        pending.current = null;
+        setPending(null);
         setPhase('ready');
         notify('已确认上次保存');
       } else {
@@ -208,10 +250,24 @@ export function useAccessProtection(
   function chooseSaved(useSaved: boolean) {
     if (!saved || expired || request.current || !active.current) return;
     if (useSaved) setInput(protectionInput(saved));
-    pending.current = null;
+    setPending(null);
     setErrors({});
     setMessage('');
     setPhase('ready');
+  }
+  function discard() {
+    try {
+      storeAccessProtectionDraft(null);
+    } catch (error) {
+      notify(
+        `无法清除访问防护草稿：${error instanceof Error ? error.message : String(error)}`,
+      );
+    }
+    if (saved) setInput(protectionInput(saved));
+    setPending(null);
+    setPhase('ready');
+    setErrors({});
+    setMessage('');
   }
   return {
     saved,
@@ -230,6 +286,7 @@ export function useAccessProtection(
     save,
     reconcile,
     chooseSaved,
+    discard,
     expire,
   };
 }
