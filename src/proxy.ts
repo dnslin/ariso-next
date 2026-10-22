@@ -8,10 +8,26 @@ import {
   shareGrantCookie,
 } from './server/sharing/authorization.ts';
 import { shareResponseHeaders } from './server/sharing/http.ts';
+import { readPublicImageShare } from './server/sharing/image-configuration.ts';
+import { SharingError } from './server/sharing/errors.ts';
 import { getServerRuntime } from './server/startup/server-start.ts';
 
 /** Validate before Next normalizes away unknown query keys (e.g. __proto__, nxtP*). */
 export function proxy(request: NextRequest) {
+  if (request.nextUrl.pathname.startsWith('/s/image/')) {
+    let status = 200;
+    try {
+      const token = decodeURIComponent(
+        request.nextUrl.pathname.split('/')[3] ?? '',
+      );
+      readPublicImageShare(getServerRuntime().connection.db, token);
+    } catch (error) {
+      if (error instanceof SharingError) status = error.status;
+      else if (error instanceof URIError) status = 404;
+      else throw error;
+    }
+    return NextResponse.next({ status, headers: shareResponseHeaders });
+  }
   if (request.nextUrl.pathname.startsWith('/s/')) {
     const token = decodeURIComponent(request.nextUrl.pathname.split('/')[2]);
     const runtime = getServerRuntime();
@@ -44,5 +60,10 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/api/images', '/api/images/:id/neighbors', '/s/:token'],
+  matcher: [
+    '/api/images',
+    '/api/images/:id/neighbors',
+    '/s/:token',
+    '/s/image/:token',
+  ],
 };

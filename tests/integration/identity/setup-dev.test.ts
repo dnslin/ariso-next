@@ -2,7 +2,7 @@ import { spawn } from 'node:child_process';
 import { randomBytes } from 'node:crypto';
 import { once } from 'node:events';
 import { constants } from 'node:fs';
-import { appendFile, cp, mkdtemp, rm } from 'node:fs/promises';
+import { appendFile, cp, mkdtemp, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { execa } from 'execa';
@@ -64,6 +64,24 @@ it('real Next dev recompilation retains the startup code and the original code c
       verbatimSymlinks: true,
       mode: constants.COPYFILE_FICLONE,
     });
+    // Copied pnpm shims contain the original project's absolute NODE_PATH.
+    // Let the locked package manager recreate them for this isolated project.
+    await rm(join(directory, 'node_modules', '.bin'), { recursive: true });
+    await execa(
+      'pnpm',
+      ['install', '--offline', '--frozen-lockfile', '--ignore-scripts'],
+      {
+        cwd: directory,
+        // action-setup installs into PNPM_HOME/store; retain it for offline reuse.
+        env: { ...env, PNPM_HOME: process.env.PNPM_HOME, CI: 'true' },
+        extendEnv: false,
+        timeout: 15000,
+      },
+    );
+    const nextBin = join(directory, 'node_modules', '.bin', 'next');
+    expect(await readFile(nextBin, 'utf8')).not.toContain(
+      resolve('node_modules'),
+    );
     await execa(process.execPath, ['dist/cli/prestart.js'], {
       cwd: directory,
       env,
@@ -71,15 +89,8 @@ it('real Next dev recompilation retains the startup code and the original code c
       timeout: 15000,
     });
     child = spawn(
-      process.execPath,
-      [
-        'node_modules/next/dist/bin/next',
-        'dev',
-        '--hostname',
-        '127.0.0.1',
-        '--port',
-        String(port),
-      ],
+      nextBin,
+      ['dev', '--hostname', '127.0.0.1', '--port', String(port)],
       {
         cwd: directory,
         env,

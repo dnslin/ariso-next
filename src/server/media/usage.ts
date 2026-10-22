@@ -58,7 +58,7 @@ export const mediaUsageObjects = sql`select
   o.storage_id storageId, o.key objectKey, 0 ownerPriority, o.status != 'planned' occupied,
   case when i.trashed_at is not null or i.deletion_status is not null then 'recycle'
     when o.status = 'stored' and v.kind = 'original' then 'original'
-    when o.status = 'stored' and v.kind in ('compressed', 'thumbnail', 'watermark') then 'derived'
+    when o.status = 'stored' and (v.kind in ('compressed', 'thumbnail', 'watermark') or exists (select 1 from media_size_versions s where s.image_id = o.image_id and s.object_id = o.id)) then 'derived'
     else 'pending' end usageGroup,
   case when o.status = 'writing' then null else o.byte_size end knownBytes,
   o.byte_size_confirmed_at confirmedAt

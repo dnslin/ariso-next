@@ -13,6 +13,7 @@ import {
   CheckCheck,
   Copy,
   FolderInput,
+  FolderDown,
   FolderMinus,
   Globe,
   Image as ImageIcon,
@@ -42,6 +43,11 @@ import {
   ActionIconButton,
   actionGroupClass,
 } from '../../components/library/action-button';
+import {
+  ArchiveMenu,
+  ArchiveVersionMenu,
+} from '../../components/library/archive-menu';
+import type { ArchiveVersion } from '../../server/library/archive-types';
 
 export interface LibraryContextMenu {
   x: number;
@@ -51,6 +57,7 @@ export interface LibraryContextMenu {
 
 const actionIcons = {
   copy: Copy,
+  archive: FolderDown,
   'add-albums': FolderInput,
   'remove-albums': FolderMinus,
   public: Globe,
@@ -62,6 +69,13 @@ const actionIcons = {
   restore: Undo2,
 };
 const buttonClass = 'h-11 rounded-lg px-2 font-normal xl:h-9 xl:px-3';
+
+function actionLabel(action: SelectionBatchAction) {
+  if (action === 'archive') return '打包下载';
+  if (action === 'copy') return '复制链接';
+  if (action === 'reprocess') return '重新处理';
+  return batchLabels[action];
+}
 
 function SelectedThumbnail({ item }: { item: SelectedLibraryItem }) {
   const [failed, setFailed] = useState(false);
@@ -92,6 +106,7 @@ export function LibrarySelectionMenu({
   contextMenu,
   onContextMenuClose,
   onBatch,
+  onArchive,
   onPermanentDelete,
   scope = 'normal',
 }: {
@@ -102,7 +117,11 @@ export function LibrarySelectionMenu({
   onOpen: (id: string, element: HTMLElement) => void;
   contextMenu?: LibraryContextMenu | null;
   onContextMenuClose?: () => void;
-  onBatch?: (action: SelectionBatchAction, element: HTMLElement) => void;
+  onBatch?: (
+    action: Exclude<SelectionBatchAction, 'archive'>,
+    element: HTMLElement,
+  ) => void;
+  onArchive?: (version: ArchiveVersion) => void;
   onPermanentDelete?: (element: HTMLElement) => void;
   scope?: 'normal' | 'trash';
 }) {
@@ -135,7 +154,9 @@ export function LibrarySelectionMenu({
       : selectionBatchActions([...selection.selected.values()], !!contextMenu);
   const compact = !!contextMenu;
   const shortcutActions: SelectionBatchAction[] =
-    scope === 'trash' ? ['restore'] : ['copy', 'add-albums', 'add-tags'];
+    scope === 'trash'
+      ? ['restore']
+      : ['copy', 'archive', 'add-albums', 'add-tags'];
   const menuActions = compact
     ? actions
     : actions.filter((action) => !shortcutActions.includes(action));
@@ -232,11 +253,18 @@ export function LibrarySelectionMenu({
       >
         {onBatch
           ? shortcutActions.map((action, index) => {
+              if (action === 'archive')
+                return onArchive ? (
+                  <ArchiveMenu
+                    key={action}
+                    disabled={disabled || !actions.includes(action)}
+                    pending={pending}
+                    separator={!!index}
+                    onDownload={onArchive}
+                  />
+                ) : null;
               const Icon = actionIcons[action];
-              const label =
-                action === 'copy'
-                  ? '复制链接'
-                  : batchLabels[action as keyof typeof batchLabels];
+              const label = actionLabel(action);
               return (
                 <ActionIconButton
                   key={action}
@@ -318,14 +346,23 @@ export function LibrarySelectionMenu({
               className="min-h-0 flex-1 overflow-y-auto overscroll-contain"
               disabledKeys={blocked ? ['open'] : []}
               onAction={(key) => {
-                activatedContext.current = contextMenu ?? null;
                 if (key === 'delete-permanent') {
+                  activatedContext.current = contextMenu ?? null;
                   const target = contextMenu?.target ?? menuTrigger.current;
                   if (target) onPermanentDelete?.(target);
-                } else if (actions.includes(key as SelectionBatchAction)) {
+                } else if (
+                  key !== 'archive' &&
+                  actions.includes(key as SelectionBatchAction)
+                ) {
+                  activatedContext.current = contextMenu ?? null;
                   const target = contextMenu?.target ?? menuTrigger.current;
-                  if (target) onBatch?.(key as SelectionBatchAction, target);
+                  if (target)
+                    onBatch?.(
+                      key as Exclude<SelectionBatchAction, 'archive'>,
+                      target,
+                    );
                 } else if (key === 'open') {
+                  activatedContext.current = contextMenu ?? null;
                   const id = selection.selected.keys().next().value;
                   const target = contextMenu?.target ?? trigger.current;
                   if (id && target) onOpen(id, target);
@@ -344,27 +381,38 @@ export function LibrarySelectionMenu({
               ) : null}
               {onBatch
                 ? menuActions.map((action) => {
+                    if (action === 'archive')
+                      return onArchive ? (
+                        <Dropdown.SubmenuTrigger key={action}>
+                          <Dropdown.Item
+                            id="archive"
+                            textValue="打包下载"
+                            isDisabled={blocked}
+                            className="min-h-11 gap-3 rounded-lg xl:min-h-9"
+                          >
+                            <FolderDown size={16} aria-hidden />
+                            打包下载
+                            <Dropdown.SubmenuIndicator />
+                          </Dropdown.Item>
+                          <Dropdown.Popover className="min-w-52 overflow-hidden rounded-xl border border-border bg-background p-1.5 shadow-xl dark:bg-surface">
+                            <ArchiveVersionMenu
+                              disabled={blocked}
+                              onDownload={onArchive}
+                            />
+                          </Dropdown.Popover>
+                        </Dropdown.SubmenuTrigger>
+                      ) : null;
                     const Icon = actionIcons[action];
                     return (
                       <Dropdown.Item
                         key={action}
                         id={action}
-                        textValue={
-                          action === 'reprocess'
-                            ? '重新处理'
-                            : action === 'copy'
-                              ? '复制链接'
-                              : batchLabels[action]
-                        }
+                        textValue={actionLabel(action)}
                         isDisabled={blocked}
                         className={`min-h-11 gap-3 rounded-lg xl:min-h-9 ${action === 'trash' ? 'text-danger' : ''}`}
                       >
                         <Icon size={16} aria-hidden />
-                        {action === 'reprocess'
-                          ? '重新处理'
-                          : action === 'copy'
-                            ? '复制链接'
-                            : batchLabels[action]}
+                        {actionLabel(action)}
                       </Dropdown.Item>
                     );
                   })

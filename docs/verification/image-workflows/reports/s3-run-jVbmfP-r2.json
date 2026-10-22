@@ -1,0 +1,24 @@
+{
+  "service": "r2",
+  "startedAt": "2026-10-21T08:07:18.320Z",
+  "finishedAt": "2026-10-21T08:07:48.807Z",
+  "environment": {
+    "node": "v24.18.1",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "target": {
+    "endpoint": "https://24aefab5f3cb70b3568d7aeaf292135b.r2.cloudflarestorage.com",
+    "bucket": "image"
+  },
+  "status": "passed",
+  "checks": [
+    "formal multipart upload and real S3 processing",
+    "anonymous private stream without signed redirect or ordinary link access",
+    "three real size outputs including no upscale",
+    "real S3 ZIP download and unpacked original bytes",
+    "atomic replacement retains identity and preset URLs, updates bytes and revokes sharing"
+  ],
+  "cleanup": "passed: only owned exact keys removed and confirmed absent",
+  "error": null
+}

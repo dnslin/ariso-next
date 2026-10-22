@@ -41,9 +41,12 @@ EGO_TASK_SPACE=22 node scripts/verify-browser.mjs --suite library --only sizes
 EGO_TASK_SPACE=22 node scripts/verify-browser.mjs --suite viewer --only tiff-preview
 EGO_TASK_SPACE=22 node scripts/verify-browser.mjs --suite theme --only behavior
 EGO_TASK_SPACE=22 node scripts/verify-browser.mjs --suite uiux-20261015 --only settings
+EGO_TASK_SPACE=22 node scripts/verify-browser.mjs --suite image-workflows
 ```
 
 `--suite` 选择功能，`--only` 只运行该功能允许的阶段。可用值以[执行计划](../scripts/browser-plan.mjs)为准，不在文档重复维护长列表。定向通过只证明所选范围，不代替默认完整流程。
+
+`image-workflows` 通过正式上传接口准备代表图片，验证 ZIP 两个入口及实际解包、保留外链的替换、三个尺寸的实际像素和临时分享。除媒体工具外，它还需要系统 Python 3 的标准库解包 ZIP。匿名访客使用独立的 localhost 子域名隔离所有者 Cookie，并核对实际会话为空；这与独立浏览器配置文件的验证范围不同。真实 R2/SeaweedFS 另由存储验证脚本执行。
 
 当前 CLI 未提供 `--help`。参数定义见[运行器入口](../scripts/verify-browser.mjs)，功能与阶段定义见[执行计划](../scripts/browser-plan.mjs)。不要直接用 `node e2e/<文件>.mjs` 替代运行器：大多数场景需要运行器注入配置和 Ego 的测试空间接口。
 

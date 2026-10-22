@@ -109,38 +109,23 @@ async function capture(
   width,
   height,
   theme,
-  menu = false,
+  formatRow = false,
   screenshotRequired = true,
 ) {
   await resizeViewport(page, width, height);
   await setTheme(page, theme);
   await settle();
   const geometry = await page.evaluate(() => {
-    const d = document.querySelector(
-      '[role="dialog"][aria-label="复制图片链接"]',
-    );
-    const rect = (node) => {
-      if (!node) return null;
-      const r = node.getBoundingClientRect();
-      return {
-        x: r.x,
-        y: r.y,
-        top: r.top,
-        bottom: r.bottom,
-        right: r.right,
-        width: r.width,
-        height: r.height,
-      };
-    };
-    const menu = [...document.querySelectorAll('[role="menu"]')].find(
-      (n) => n.getClientRects().length,
-    );
-    const trigger = d.querySelector('button[aria-label="选择复制格式"]');
+    const d = document.querySelector('[data-testid="detail-copy-dialog"]');
+    const rect = (node) => node?.getBoundingClientRect().toJSON() ?? null;
     const body = d.querySelector('[data-slot="modal-body"]');
+    const group = d.querySelector('[data-testid="detail-copy-format"]');
+    const preview = d.querySelector('[data-testid="detail-copy-preview"]');
     return {
       width: innerWidth,
       height: innerHeight,
       overflow: document.documentElement.scrollWidth > innerWidth,
+      dialogOverflow: d.scrollWidth > d.clientWidth,
       dialog: rect(d),
       header: rect(d.querySelector('[data-slot="modal-header"]')),
       body: {
@@ -148,17 +133,39 @@ async function capture(
         scrollTop: body.scrollTop,
         clientHeight: body.clientHeight,
         scrollHeight: body.scrollHeight,
+        overflow: body.scrollWidth > body.clientWidth,
       },
       footer: rect(d.querySelector('[data-slot="modal-footer"]')),
-      trigger: rect(trigger),
+      trigger: rect(d.querySelector('[data-testid="detail-copy-submit"]')),
       close: rect(d.querySelector('button[aria-label="关闭复制链接"]')),
-      menu: rect(menu),
-      items: menu
-        ? [...menu.querySelectorAll('[role="menuitem"]')].map((n) => ({
-            name: n.textContent.trim(),
-            ...rect(n),
+      format: rect(group),
+      items: group
+        ? [...group.querySelectorAll('[data-copy-format]')].map((node) => ({
+            name: node.textContent.trim(),
+            ...rect(node),
           }))
         : [],
+      link: preview
+        ? {
+            ...rect(preview),
+            readOnly: preview.readOnly,
+            wrap: preview.wrap,
+            value: preview.value,
+            overflow: preview.scrollWidth > preview.clientWidth,
+          }
+        : null,
+      source: rect(
+        d.querySelector('[data-testid="detail-copy-source-preview"]'),
+      ),
+      sourceUrl:
+        d
+          .querySelector('[data-testid="detail-copy-source-preview"] img')
+          ?.getAttribute('src') ?? null,
+      version: rect(d.querySelector('[data-testid="detail-copy-version"]')),
+      size: rect(d.querySelector('[data-testid="detail-copy-size"]')),
+      primaryActions: d.querySelectorAll('[data-testid="detail-copy-submit"]')
+        .length,
+      manual: !!d.querySelector('textarea[aria-label="手动复制文本"]'),
       titleFont: getComputedStyle(
         d.querySelector('[data-slot="modal-heading"]'),
       ).fontSize,
@@ -167,45 +174,85 @@ async function capture(
     };
   });
   assert.equal(geometry.overflow, false, `${name}: no document overflow`);
+  assert.equal(geometry.dialogOverflow, false, `${name}: no dialog overflow`);
+  assert.equal(geometry.body.overflow, false, `${name}: no body overflow`);
+  if (width < 768) {
+    assert.ok(
+      geometry.dialog.left >= -1 && geometry.dialog.right <= width + 1,
+      `${name}: mobile full-width work page`,
+    );
+    assert.ok(
+      geometry.dialog.width >= width - 1,
+      `${name}: mobile is not a narrow desktop modal`,
+    );
+    assert.ok(
+      geometry.dialog.top >= -1 && geometry.dialog.bottom <= height + 1,
+      `${name}: mobile viewport containment`,
+    );
+  } else {
+    assert.ok(
+      geometry.dialog.x >= 23 && geometry.dialog.right <= width - 23,
+      `${name}: desktop viewport insets`,
+    );
+    assert.ok(
+      geometry.dialog.width <= 1025,
+      `${name}: desktop two-column copy workspace width`,
+    );
+    assert.ok(
+      geometry.dialog.top >= 23 && geometry.dialog.bottom <= height - 23,
+      `${name}: desktop viewport containment`,
+    );
+    if (!geometry.manual) {
+      assert.ok(
+        geometry.source.right <= geometry.version.left,
+        `${name}: source preview precedes the form`,
+      );
+      assert.ok(
+        Math.abs(geometry.version.top - geometry.size.top) < 1,
+        `${name}: version and size share a row`,
+      );
+    }
+  }
   assert.ok(
-    geometry.dialog.x >= 15 && geometry.dialog.right <= width - 15,
-    `${name}: 16px viewport insets`,
-  );
-  assert.ok(
-    geometry.dialog.width <= 481,
-    `${name}: copy dialog has at most 480px width`,
-  );
-  assert.ok(
-    geometry.dialog.top >= 15 && geometry.dialog.bottom <= height - 15,
-    `${name}: vertical viewport containment`,
+    geometry.source,
+    `${name}: actual source preview pane remains present`,
   );
   assert.ok(
     geometry.close.width >= 44 && geometry.close.height >= 44,
     `${name}: close target >=44px`,
   );
-  if (geometry.trigger)
-    assert.ok(geometry.trigger.height >= 48, `${name}: format trigger >=48px`);
-  if (menu) {
-    assert.ok(
-      geometry.menu && geometry.items.length === 3,
-      `${name}: actual three-item format menu`,
+  if (!geometry.manual) {
+    assert.equal(
+      geometry.primaryActions,
+      1,
+      `${name}: one generation/copy primary action`,
     );
+    assert.ok(geometry.trigger.height >= 48, `${name}: primary action >=48px`);
     assert.deepEqual(
       geometry.items.map((item) => item.name),
-      ['复制 URL', '复制 Markdown', '复制 HTML'],
-    );
-    assert.ok(
-      geometry.menu.x >= 0 &&
-        geometry.menu.right <= width &&
-        geometry.menu.top >= 0 &&
-        geometry.menu.bottom <= height,
-      `${name}: menu within viewport`,
+      ['URL', 'Markdown', 'HTML'],
+      `${name}: three formats are always present`,
     );
     for (const item of geometry.items)
       assert.ok(
         item.width >= 44 && item.height >= 44,
         `${name}: ${item.name} target >=44px`,
       );
+    assert.equal(
+      geometry.link.readOnly,
+      true,
+      `${name}: complete preview is read-only`,
+    );
+    assert.equal(
+      geometry.link.wrap,
+      'soft',
+      `${name}: preview wraps without changing its value`,
+    );
+    assert.equal(
+      geometry.link.overflow,
+      false,
+      `${name}: long link text fits the preview`,
+    );
   }
   const screenshot = `${name}-${theme}-${width}${height === 400 ? '-short' : ''}.png`;
   if (screenshotRequired)
@@ -216,6 +263,7 @@ async function capture(
   report.layouts.push({
     name,
     theme,
+    formatRow,
     screenshot: screenshotRequired ? screenshot : null,
     ...geometry,
   });
@@ -271,55 +319,60 @@ async function reveal(selector, edge = 'start') {
 }
 async function clickDisabledTrigger() {
   const position = await page.evaluate(() => {
-    const n = document.querySelector('button[aria-label="选择复制格式"]'),
-      r = n.getBoundingClientRect();
+    const node = document.querySelector('[data-testid="detail-copy-submit"]'),
+      rect = node.getBoundingClientRect();
     return {
-      disabled: n.disabled,
-      x: r.x + r.width / 2,
-      y: r.y + r.height / 2,
+      disabled: node.disabled,
+      x: rect.x + rect.width / 2,
+      y: rect.y + rect.height / 2,
     };
   });
   assert.equal(position.disabled, true);
+  const before = await page.evaluate(
+    () => window.__clipboardCalls ?? window.__copyProbeCalls ?? 0,
+  );
   await page.mouse.click(position.x, position.y);
   assert.equal(
-    await page.evaluate(() => !!document.querySelector('[role="menu"]')),
-    false,
-    'Disabled trigger does not open the format menu',
+    await page.evaluate(
+      () => window.__clipboardCalls ?? window.__copyProbeCalls ?? 0,
+    ),
+    before,
+    'Disabled primary does not write to the Clipboard',
   );
 }
-
 async function pressedCopyTargets() {
   await resizeViewport(page, 390, 844);
   await setTheme(page, 'dark');
-  for (const [name, minimum] of [
-    ['选择复制格式', 48],
-    ['关闭复制链接', 44],
+  for (const [selector, name, minimum] of [
+    ['[data-testid="detail-copy-submit"]', '复制链接', 48],
+    ['button[aria-label="关闭复制链接"]', '关闭复制链接', 44],
   ]) {
-    await page.focus(button(name));
+    await page.focus(selector);
     await page.keyboard.down('Space');
     try {
       await page.waitForFunction(
-        (name) =>
-          document
-            .querySelector(`button[aria-label="${name}"]`)
-            ?.hasAttribute('data-pressed'),
-        name,
+        (selector) =>
+          document.querySelector(selector)?.hasAttribute('data-pressed'),
+        selector,
       );
-      const target = await page.evaluate((name) => {
-        const n = document.querySelector(`button[aria-label="${name}"]`),
-          r = n.getBoundingClientRect();
-        return {
-          name,
-          width: r.width,
-          height: r.height,
-          pressed: n.hasAttribute('data-pressed'),
-        };
-      }, name);
+      const target = await page.evaluate(
+        ({ selector, name }) => {
+          const node = document.querySelector(selector),
+            r = node.getBoundingClientRect();
+          return {
+            name,
+            width: r.width,
+            height: r.height,
+            pressed: node.hasAttribute('data-pressed'),
+          };
+        },
+        { selector, name },
+      );
       assert.ok(
         target.width >= 44 && target.height >= minimum,
         `${name}: pressed target keeps required dimensions`,
       );
-      const screenshot = `copy-pressed-${name === '选择复制格式' ? 'trigger' : 'close'}-dark-390.png`;
+      const screenshot = `copy-pressed-${name === '复制链接' ? 'submit' : 'close'}-dark-390.png`;
       await page.screenshot({
         path: join(config.output, screenshot),
         fullPage: true,
@@ -328,13 +381,7 @@ async function pressedCopyTargets() {
     } finally {
       await page.keyboard.up('Space');
     }
-    if (name === '选择复制格式') {
-      await page.waitForSelector('loc=role:menu[name="复制格式"]');
-      await page.keyboard.press('Escape');
-      await page.waitForSelector('loc=role:menu[name="复制格式"]', {
-        state: 'hidden',
-      });
-    } else {
+    if (name === '关闭复制链接') {
       await page.waitForSelector(dialog, { state: 'hidden' });
       await openCopy();
     }
@@ -369,16 +416,25 @@ async function copyAndRead(format, expected, mode) {
   });
   const keyboard = format === 'markdown' && mode === 'default';
   if (keyboard) {
-    await page.focus(button('选择复制格式'));
-    await page.keyboard.press('Enter');
-    await page.waitForSelector('loc=role:menuitem[name="复制 URL"]');
-    await page.keyboard.press('Home');
-    await page.keyboard.press('ArrowDown');
+    await page.focus(
+      '[data-testid="detail-copy-format"] [data-copy-format="markdown"]',
+    );
+    await page.keyboard.press('Space');
     await page.waitForFunction(
       () =>
-        document.activeElement?.getAttribute('role') === 'menuitem' &&
-        document.activeElement?.textContent.trim() === '复制 Markdown',
+        document
+          .querySelector('[data-copy-format="markdown"]')
+          ?.getAttribute('aria-checked') === 'true',
     );
+    assert.equal(
+      await page.evaluate(
+        () =>
+          document.querySelector('[data-testid="detail-copy-preview"]').value,
+      ),
+      expected,
+      'Keyboard format selection updates the full preview before copying',
+    );
+    await page.focus('[data-testid="detail-copy-submit"]');
     await page.keyboard.press('Enter');
   } else
     await selectCopyFormat(
@@ -392,23 +448,28 @@ async function copyAndRead(format, expected, mode) {
       text: window.__copyProbeText,
     })),
     { calls: 1, text: expected },
-    `${mode} ${format}: this activation completes one native write`,
+    `${mode} ${format}: activation completes one native write`,
   );
-  await page.waitForFunction(
-    () =>
-      !document.querySelector('[role="menu"]') &&
-      document
-        .querySelector('[data-slot="toast"]')
-        ?.textContent.includes('已复制到剪贴板'),
+  await page.waitForFunction(() =>
+    document
+      .querySelector('[data-slot="toast"]')
+      ?.textContent.includes('已复制到剪贴板'),
   );
   const { stdout } = await run('pbpaste', [], { encoding: 'utf8' });
   assert.equal(
-    stdout === expected,
-    true,
+    stdout,
+    expected,
     `${mode} ${format}: exact native pasteboard text`,
   );
   await page.waitForFunction(
-    () => document.activeElement?.getAttribute('aria-label') === '选择复制格式',
+    () => document.activeElement?.dataset.testid === 'detail-copy-submit',
+  );
+  assert.equal(
+    await page.evaluate(
+      () => document.querySelector('[data-testid="detail-copy-preview"]').value,
+    ),
+    expected,
+    'Preview keeps the exact full copied text',
   );
   report.clipboard.push({
     mode,
@@ -416,8 +477,8 @@ async function copyAndRead(format, expected, mode) {
     length: expected.length,
     exact: true,
     mechanism: 'macOS pbpaste immediately after native application write',
-    focus: '选择复制格式',
-    activation: keyboard ? 'keyboard Home/ArrowDown/Enter' : 'pointer',
+    focus: 'detail-copy-submit',
+    activation: keyboard ? 'keyboard Space/Enter' : 'pointer',
     nativeCalls: 1,
   });
 }
@@ -471,37 +532,45 @@ try {
   await openDetail();
   await openCopy();
   const entry = await page.evaluate(() => {
-    const d = document.querySelector(
-      '[role="dialog"][aria-label="复制图片链接"]',
-    );
+    const d = document.querySelector('[data-testid="detail-copy-dialog"]');
     return {
-      single: d.querySelectorAll('button[aria-label="选择复制格式"]').length,
-      oldFormatButtons: [...d.querySelectorAll('button')]
-        .filter((n) => /^复制 (URL|Markdown|HTML)$/.test(n.textContent.trim()))
-        .map((n) => n.textContent.trim()),
+      single: d.querySelectorAll('[data-testid="detail-copy-submit"]').length,
+      formats: [...d.querySelectorAll('[data-copy-format]')].map((node) =>
+        node.textContent.trim(),
+      ),
+      dropdowns: d.querySelectorAll('button[aria-label="选择复制格式"]').length,
+      source: d
+        .querySelector('[data-testid="detail-copy-source-preview"] img')
+        ?.getAttribute('src'),
+      preview: d.querySelector('[data-testid="detail-copy-preview"]').value,
     };
   });
   report.entry = entry;
   if (config.phase === 'red') {
     report.expectedFailure = true;
     await page.screenshot({
-      path: join(config.output, 'old-three-format-buttons.png'),
+      path: join(config.output, 'old-hidden-format-menu.png'),
       fullPage: true,
     });
-    report.redScreenshot = 'old-three-format-buttons.png';
+    report.redScreenshot = 'old-hidden-format-menu.png';
   }
-  assert.equal(
-    entry.single,
-    1,
-    'Copy formats must have exactly one shared dropdown entry',
-  );
+  assert.equal(entry.single, 1, 'Copy formats share one primary copy action');
   assert.deepEqual(
-    entry.oldFormatButtons,
-    [],
-    'Format actions must live in the menu',
+    entry.formats,
+    ['URL', 'Markdown', 'HTML'],
+    'The approved formats are always visible',
+  );
+  assert.equal(entry.dropdowns, 0, 'Formats are not hidden in a dropdown');
+  assert.ok(
+    entry.source,
+    'Copy workspace displays the actual resolved source image',
+  );
+  assert.ok(
+    entry.preview,
+    'Ready default mode exposes the complete link preview',
   );
   report.checks.push(
-    'Exactly one copy-format trigger; the three old adjacent format buttons are absent.',
+    'One primary action, three always-visible formats, complete read-only preview and actual source role preview.',
   );
   assert.equal(
     config.phase,
@@ -532,51 +601,47 @@ try {
     ]) {
       await capture('library-copy', width, height, theme);
       if (height === 400) {
-        const before = await reveal('p.rounded-lg');
-        await capture('library-copy-tip', width, height, theme);
-        const after = await reveal('button[aria-label="选择复制格式"]', 'end');
+        const before = await reveal('[data-testid="detail-copy-format"]');
+        await capture('library-copy-formats', width, height, theme, true);
+        const after = await reveal(
+          '[data-testid="detail-copy-preview"]',
+          'end',
+        );
         assert.equal(
           after.header,
           before.header,
-          'Short viewport scroll preserves fixed header',
+          'Short viewport body scrolling keeps the header fixed',
         );
+        await capture('library-copy-preview', width, height, theme, true);
       }
-      await page.click(button('选择复制格式'));
-      await page.waitForSelector('loc=role:menuitem[name="复制 URL"]');
-      await capture('library-menu', width, height, theme, true);
-      await page.keyboard.press('Escape');
-      await page.waitForSelector('loc=role:menu[name="复制格式"]', {
-        state: 'hidden',
-      });
-      assert.ok(
-        await page.evaluate(
-          () =>
-            !!document.querySelector(
-              '[role="dialog"][aria-label="复制图片链接"]',
-            ),
-        ),
-        'Escape closes only the menu',
-      );
+      await page.focus('[data-copy-format="url"]');
+      await page.keyboard.press('Space');
       await page.waitForFunction(
         () =>
-          document.activeElement?.getAttribute('aria-label') === '选择复制格式',
+          document
+            .querySelector('[data-copy-format="url"]')
+            ?.getAttribute('aria-checked') === 'true',
       );
+      assert.equal(
+        await page.evaluate(
+          () =>
+            document.querySelector('[data-testid="detail-copy-preview"]').value,
+        ),
+        detail.defaultLink.links.url,
+      );
+      await page.keyboard.press('Escape');
+      await page.waitForSelector(dialog, { state: 'hidden' });
+      await page.waitForFunction(
+        () => document.activeElement?.textContent.trim() === '复制链接',
+      );
+      await openCopy();
     }
   report.checks.push(
-    '360/390/430/768/1440 and 390×400 in both themes: one 48px format trigger, three >=44px menu items, viewport containment; menu Escape retains the copy dialog and restores trigger focus.',
+    '360/390/430/768/1440 and 390×400 in both themes retain the full source/form workspace, three >=44px formats, one >=48px primary action, read-only wrapped preview and viewport containment; Escape returns focus to the originating detail action.',
   );
-  // Intermediate widths need focused geometry only, not another business matrix.
   for (const theme of ['light', 'dark'])
-    for (const width of [360, 430, 768]) {
+    for (const width of [360, 430, 768])
       await capture('copy-layout', width, 844, theme, false, false);
-      await page.click(button('选择复制格式'));
-      await page.waitForSelector('loc=role:menuitem[name="复制 URL"]');
-      await capture('menu-layout', width, 844, theme, true, false);
-      await page.keyboard.press('Escape');
-      await page.waitForSelector('loc=role:menu[name="复制格式"]', {
-        state: 'hidden',
-      });
-    }
   await pressedCopyTargets();
   await resizeViewport(page, 1440, 1080);
   for (const format of ['url', 'markdown', 'html'])
@@ -591,7 +656,7 @@ try {
   );
   for (const format of ['url', 'markdown', 'html'])
     await copyAndRead(format, original.links[format], 'fixed-original');
-  // Native write happens inside trusted menu activation, before this gate waits.
+  // Native write happens inside trusted primary-button activation, before this gate waits.
   await page.evaluate(() => {
     const native = navigator.clipboard.writeText.bind(navigator.clipboard);
     window.__clipboardCalls = 0;
@@ -613,7 +678,7 @@ try {
   assert.deepEqual(
     await page.evaluate(() => ({
       calls: window.__clipboardCalls,
-      trigger: document.querySelector('button[aria-label="选择复制格式"]')
+      trigger: document.querySelector('[data-testid="detail-copy-submit"]')
         .disabled,
       mode: [
         ...document.querySelectorAll(
@@ -635,7 +700,8 @@ try {
     window.__restoreClipboard();
   });
   await page.waitForFunction(
-    () => !document.querySelector('button[aria-label="选择复制格式"]').disabled,
+    () =>
+      !document.querySelector('[data-testid="detail-copy-submit"]').disabled,
   );
   report.checks.push(
     'A real native Clipboard write followed by a controlled completion gate disables format and version changes; repeated real pointer activation starts no second write.',
@@ -657,7 +723,7 @@ try {
   assert.equal(
     await page.evaluate(
       () =>
-        document.querySelector('button[aria-label="选择复制格式"]').disabled,
+        document.querySelector('[data-testid="detail-copy-submit"]').disabled,
     ),
     true,
   );
@@ -675,9 +741,17 @@ try {
   assert.equal(
     await page.evaluate(
       () =>
-        document.querySelector('button[aria-label="选择复制格式"]').disabled,
+        document.querySelector('[data-testid="detail-copy-submit"]').disabled,
+    ),
+    false,
+    'Read failure keeps the single retry action available',
+  );
+  assert.equal(
+    await page.evaluate(
+      () => document.querySelector('[data-copy-format="url"]').disabled,
     ),
     true,
+    'Read failure does not permit a stale copy format activation',
   );
   await capture('copy-read-error', 390, 844, 'dark');
   await page.click(button('重试读取'));
@@ -685,7 +759,7 @@ try {
   assert.equal(
     await page.evaluate(
       () =>
-        document.querySelector('button[aria-label="选择复制格式"]').disabled,
+        document.querySelector('[data-testid="detail-copy-submit"]').disabled,
     ),
     false,
   );
@@ -697,7 +771,7 @@ try {
   assert.equal(
     await page.evaluate(
       () =>
-        document.querySelector('button[aria-label="选择复制格式"]').disabled,
+        document.querySelector('[data-testid="detail-copy-submit"]').disabled,
     ),
     true,
   );
@@ -705,7 +779,7 @@ try {
   await page.keyboard.press('Escape');
   await page.keyboard.press('Escape');
   report.checks.push(
-    'Actual detail pending/error/no-links disable the format entry; retry re-reads the real endpoint and restores the available entry.',
+    'Pending and no-links disable copying; read failure exposes the single retry action; successful retry restores copying without changing format or link semantics.',
   );
   // Other consumers use the same shared detail/copy implementation.
   const albumResponse = await page.fetch('/api/albums', {
@@ -864,7 +938,7 @@ try {
               );
               assert.equal(after.header.top, before.header.top);
               assert.equal(after.footer.bottom, before.footer.bottom);
-              await reveal('.modal__body p:last-child', 'end');
+              await reveal('textarea[aria-label="手动复制文本"]', 'end');
               await capture('copy-manual-tip', width, height, theme);
             }
           }

@@ -1,0 +1,40 @@
+Source: /tmp/ariso-294-delivery-integration.log
+Command: pnpm run test:integration --maxWorkers 1 --reporter=verbose
+Environment: Node 24.18.1, pnpm 11.19.0, macOS arm64
+Observed exit code: 0
+
+ ✓ |media-tools| tests/integration/media/watermark-assets.test.ts > adopts inside settings transaction and keeps the immutable snapshot after replacement 109ms
+ ✓ |media-tools| tests/integration/media/watermark-assets.test.ts > rejects expired and cleanup-marked assets and never adopts on a failed save 77ms
+ ✓ |media-tools| tests/integration/media/watermark-assets.test.ts > preserves selected image parameters while off/text but omits unused assets from new snapshots 77ms
+ ✓ |media-tools| tests/integration/media/watermark-assets.test.ts > keeps preview references beyond asset expiry, across reopen, and releases only the named preview 105ms
+ ✓ |media-tools| tests/integration/media/watermark-assets.test.ts > keeps queued, running and automatic retry snapshots, then releases final failures without losing history 113ms
+ ✓ |media-tools| tests/integration/media/watermark-assets.test.ts > does not pin succeeded content task history 106ms
+ ✓ |media-tools| tests/integration/media/watermark-assets.test.ts > does not pin cancelled content task history 105ms
+ ✓ |media-tools| tests/integration/media/watermark-assets.test.ts > keeps upload snapshots until every session is terminal or hands responsibility to a content task 110ms
+ ✓ |media-tools| tests/integration/media/watermark-assets.test.ts > retains failed cleanup responsibility and retries after restart without touching unrelated files 134ms
+ ✓ |media-tools| tests/integration/media/watermark-assets.test.ts > does not delete active writes and recovers a crashed write by its registered path 43ms
+ ✓ |media-tools| tests/integration/media/watermark-assets.test.ts > accepts exactly 5 MiB and rejects oversized or empty files before registering ownership 80ms
+ ✓ |media-tools| tests/integration/media/watermark-assets.test.ts > rejects new references after cleanup is claimed, including from a second connection 105ms
+ ✓ |media-tools| tests/integration/media/watermark-assets.test.ts > persists the resource failure that cancelled decoding rather than a generic abort 28ms
+ ✓ |media-tools| tests/integration/upload/formats.test.ts > full-format upload to persistent media processing > alpha-heic is identified from bytes, accepted and processed to ready 402ms
+ ✓ |media-tools| tests/integration/upload/formats.test.ts > full-format upload to persistent media processing > animated-png is identified from bytes, accepted and processed to ready 296ms
+ ✓ |media-tools| tests/integration/upload/formats.test.ts > full-format upload to persistent media processing > static-svg is identified from bytes, accepted and processed to ready 334ms
+ ✓ |media-tools| tests/integration/upload/formats.test.ts > full-format upload to persistent media processing > accepts dangerous SVG original then records preview failure without losing original bytes 265ms
+ ✓ |media-tools| tests/integration/media/formats-tools.test.ts > native container identification through tool stdin > jpeg dimensions come from raster headers rather than contradictory EXIF tags 206ms
+ ✓ |media-tools| tests/integration/media/formats-tools.test.ts > native container identification through tool stdin > png dimensions come from raster headers rather than contradictory EXIF tags 200ms
+ ✓ |media-tools| tests/integration/media/formats-tools.test.ts > native container identification through tool stdin > identifies a valid single-frame APNG rather than treating it as static PNG 111ms
+ ✓ |media-tools| tests/integration/media/formats-tools.test.ts > native container identification through tool stdin > reads the actual MPF image count from stdin for two-image MPO 155ms
+ ✓ |media-tools| tests/integration/media/formats-tools.test.ts > identifies quality 100 lossless WebP output in stream and file paths 117ms
+ ✓ |media-tools| tests/integration/upload/public-receive.test.ts > closes the already-open source before cleanup when destination-open fails before the copy pipeline takes ownership 153ms
+ ✓ |media-tools| tests/integration/upload/public-receive.test.ts > closes the already-open source before cleanup when disk-reservation fails before the copy pipeline takes ownership 131ms
+ ✓ |media-tools| tests/integration/media/watermark-runtime.test.ts > receives a real PNG through FormData and persists the exact bytes and ready metadata 99ms
+ ✓ |media-tools| tests/integration/media/watermark-runtime.test.ts > cancels unfinished request bodies, settles their work before stop resolves and refuses later uploads 17ms
+ ✓ |media-tools| tests/integration/media/watermark-runtime.test.ts > recovers interrupted writes and expired temporary assets by their registered directories only 125ms
+ ✓ |media-tools| tests/integration/media/watermark-runtime.test.ts > rejects malformed multipart and invalid form shape without creating an asset 18ms
+ ✓ |media-tools| tests/integration/media/watermark-runtime.test.ts > rejects a file one byte over 5 MiB before registering an asset 20ms
+ ✓ |media-tools| tests/integration/media/watermark-runtime.test.ts > cancels an oversized multipart envelope before consuming the rest of its stream 19ms
+
+ Test Files  171 passed (171)
+      Tests  1796 passed (1796)
+   Start at  21:06:56
+   Duration  765.42s (tests 94%, import 5%)

@@ -2,6 +2,7 @@ import { z } from 'zod';
 import type { getImageAccessState } from '../media/images.ts';
 import { versionKinds, type VersionKind } from '../media/schema.ts';
 import { deliveryError } from './errors.ts';
+import { sizePresets, type SizePreset } from '../media/size-types.ts';
 
 const versionSchema = z.enum(versionKinds);
 const imageIdSchema = z
@@ -15,6 +16,8 @@ export function parseImageRequest(
 ) {
   const versions = searchParams.getAll('type');
   const downloads = searchParams.getAll('download');
+  const presets = searchParams.getAll('preset');
+  const preset = presets[0];
   const selected = versions.length
     ? versionSchema.safeParse(versions[0])
     : null;
@@ -23,7 +26,12 @@ export function parseImageRequest(
     versions.length > 1 ||
     (selected !== null && !selected.success) ||
     downloads.length > 1 ||
-    (downloads.length === 1 && downloads[0] !== '1')
+    (downloads.length === 1 && downloads[0] !== '1') ||
+    presets.length > 1 ||
+    (presets.length === 1 &&
+      (!Object.hasOwn(sizePresets, preset) ||
+        !selected?.success ||
+        (selected.data !== 'compressed' && selected.data !== 'watermark')))
   ) {
     throw deliveryError('INVALID_IMAGE_REQUEST');
   }
@@ -31,6 +39,7 @@ export function parseImageRequest(
     imageId,
     selectedVersion: selected?.success ? selected.data : undefined,
     download: downloads.length === 1,
+    ...(presets.length ? { preset: preset as SizePreset } : {}),
   };
 }
 
@@ -38,10 +47,12 @@ export function buildImagePath(
   imageId: string,
   selectedVersion?: VersionKind,
   download = false,
+  preset?: SizePreset,
 ) {
   const query = new URLSearchParams();
   if (selectedVersion !== undefined) query.set('type', selectedVersion);
   if (download) query.set('download', '1');
+  if (preset) query.set('preset', preset);
   const path = `/i/${encodeURIComponent(imageId)}`;
   return query.size ? `${path}?${query}` : path;
 }
@@ -51,9 +62,12 @@ export function buildImageUrl(
   imageId: string,
   selectedVersion?: VersionKind,
   download = false,
+  preset?: SizePreset,
 ) {
-  return new URL(buildImagePath(imageId, selectedVersion, download), publicUrl)
-    .href;
+  return new URL(
+    buildImagePath(imageId, selectedVersion, download, preset),
+    publicUrl,
+  ).href;
 }
 
 export function resolveImageVersion(
@@ -106,8 +120,9 @@ export function buildImageLinks(
   imageId: string,
   displayName: string,
   selectedVersion?: VersionKind,
+  preset?: SizePreset,
 ) {
-  const url = buildImageUrl(publicUrl, imageId, selectedVersion);
+  const url = buildImageUrl(publicUrl, imageId, selectedVersion, false, preset);
   const alt = displayName
     .replace(/[\\[\]`*_{}()!<>]/g, '\\$&')
     .replace(/[\r\n]/g, ' ');
@@ -115,6 +130,12 @@ export function buildImageLinks(
     url,
     markdown: `![${alt}](<${url.replace(/[<>]/g, (character) => encodeURIComponent(character))}>)`,
     html: `<img src="${escapeHtml(url)}" alt="${escapeHtml(displayName)}">`,
-    downloadUrl: buildImageUrl(publicUrl, imageId, selectedVersion, true),
+    downloadUrl: buildImageUrl(
+      publicUrl,
+      imageId,
+      selectedVersion,
+      true,
+      preset,
+    ),
   };
 }

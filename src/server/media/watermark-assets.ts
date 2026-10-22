@@ -215,6 +215,10 @@ function referenced(
       .from(previews)
       .where(eq(previews.assetId, id))
       .get() ||
+    tx.get(sql`select 1 from media_versions v
+      join media_objects o on o.id = v.object_id
+      join media_jobs j on j.id = o.job_id
+      where v.kind = 'watermark' and json_extract(j.snapshot, '$.watermarkAsset.id') = ${id} limit 1`) ||
     context.hasUploadReference(tx, id),
   );
 }

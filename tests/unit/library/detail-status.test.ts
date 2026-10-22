@@ -67,6 +67,7 @@ it('retains unauthorized status for session expiry instead of returning stale su
 
 const job = {
   id: 'job',
+  kind: 'process',
   status: 'queued',
   scope: 'all',
   step: 'identify',

@@ -52,6 +52,7 @@ it('keeps low-frequency tag and processing operations out of the compact context
   const items = [item('a', 'private', true)];
   expect(selectionBatchActions(items, true)).toEqual([
     'copy',
+    'archive',
     'add-albums',
     'public',
     'remove-albums',

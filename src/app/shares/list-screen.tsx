@@ -18,10 +18,9 @@ import { StorageTip } from '../../components/storage/storage-tip';
 import { useResetUpload } from '../../components/upload/provider';
 import { shareRequest, ShareRequestError } from './api';
 import { SharesList, type SharePage } from './list';
-import {
-  useCollectionQuery,
-  useCollectionReturn,
-} from '../albums/use-collection-navigation';
+import { ImageSharesList, type ImageSharePage } from './image-list';
+import { useShareListQuery } from './use-list-query';
+import { useCollectionReturn } from '../albums/use-collection-navigation';
 
 export function SharesScreen(props: {
   name: string;
@@ -34,7 +33,7 @@ export function SharesScreen(props: {
 }) {
   const resetUpload = useResetUpload();
   const [client] = useState(() => new QueryClient());
-  const query = useCollectionQuery('/shares');
+  const query = useShareListQuery();
   const { q, page, pageSize } = query;
   const expire = useCallback(() => {
     resetUpload();
@@ -43,7 +42,7 @@ export function SharesScreen(props: {
       `/login?reason=expired&returnTo=${encodeURIComponent(window.location.pathname + window.location.search)}`,
     );
   }, [resetUpload, client]);
-  const list = useQuery(
+  const albumList = useQuery(
     {
       queryKey: ['shares', q, page, pageSize],
       queryFn: ({ signal }) =>
@@ -52,12 +51,28 @@ export function SharesScreen(props: {
           { signal },
         ),
       placeholderData: keepPreviousData,
-      enabled: !query.error,
+      enabled: !query.error && query.kind === 'album',
       retry: false,
       networkMode: 'always',
     },
     client,
   );
+  const imageList = useQuery(
+    {
+      queryKey: ['image-shares', q, page, pageSize],
+      queryFn: ({ signal }) =>
+        shareRequest<ImageSharePage>(
+          `/api/shares/images?${new URLSearchParams({ q, page: String(page), pageSize: String(pageSize) })}`,
+          { signal },
+        ),
+      placeholderData: keepPreviousData,
+      enabled: !query.error && query.kind === 'image',
+      retry: false,
+      networkMode: 'always',
+    },
+    client,
+  );
+  const list = query.kind === 'image' ? imageList : albumList;
   useEffect(() => () => client.clear(), [client]);
   useEffect(() => {
     if (list.error instanceof ShareRequestError && list.error.status === 401)
@@ -169,16 +184,52 @@ export function SharesScreen(props: {
             分享
           </h1>
           <StorageTip label="分享">
-            每个相册最多一个分享链接，只展示公开图片。时间按 {props.timeZone}{' '}
-            显示。
+            相册链接只展示公开图片。单张私有图片使用独立的有期限查看页。 时间按{' '}
+            {props.timeZone} 显示。
           </StorageTip>
         </ComponentEntrance>
         <ComponentEntrance
           delay={0.055}
-          className="w-full min-w-0 md:max-w-120"
+          className="grid w-full min-w-0 gap-3 sm:grid-cols-[12rem_minmax(0,30rem)]"
         >
+          <Select
+            aria-label="分享类型"
+            value={query.kind}
+            onChange={(value) => {
+              if (value)
+                query.change({ kind: value as 'album' | 'image', q: '' });
+            }}
+            className="w-full"
+          >
+            <Select.Trigger className="h-11 rounded-lg border border-border bg-background font-normal">
+              <Select.Value />
+              <Select.Indicator />
+            </Select.Trigger>
+            <Select.Popover>
+              <ListBox>
+                <ListBox.Item
+                  id="album"
+                  textValue="相册分享"
+                  className="min-h-11"
+                >
+                  相册分享
+                  <ListBox.ItemIndicator />
+                </ListBox.Item>
+                <ListBox.Item
+                  id="image"
+                  textValue="私有图片分享"
+                  className="min-h-11"
+                >
+                  私有图片分享
+                  <ListBox.ItemIndicator />
+                </ListBox.Item>
+              </ListBox>
+            </Select.Popover>
+          </Select>
           <TextField
-            aria-label="搜索分享相册"
+            aria-label={
+              query.kind === 'image' ? '搜索分享图片' : '搜索分享相册'
+            }
             value={q}
             onChange={(value) => {
               query.change({ q: value });
@@ -191,20 +242,34 @@ export function SharesScreen(props: {
               </InputGroup.Prefix>
               <InputGroup.Input
                 data-collection-return-fallback
-                placeholder="搜索分享相册…"
+                placeholder={
+                  query.kind === 'image' ? '搜索分享图片…' : '搜索分享相册…'
+                }
                 className="h-11 min-w-0 py-0 text-base md:text-sm"
               />
             </InputGroup>
           </TextField>
         </ComponentEntrance>
-        {data?.items.length ? (
+        {!error && query.kind === 'album' && albumList.data?.items.length ? (
           <SharesList
-            items={data.items}
-            total={data.total}
+            items={albumList.data.items}
+            total={albumList.data.total}
             timeZone={props.timeZone}
             disabled={list.isFetching}
             returnTo={query.href}
             onNavigate={rememberReturn}
+          />
+        ) : null}
+        {!error && query.kind === 'image' && imageList.data?.items.length ? (
+          <ImageSharesList
+            items={imageList.data.items}
+            total={imageList.data.total}
+            timeZone={props.timeZone}
+            disabled={list.isFetching}
+            onSessionExpire={expire}
+            onRefresh={() => {
+              void imageList.refetch();
+            }}
           />
         ) : null}
         {data?.items.length === 0 ? (
@@ -215,7 +280,9 @@ export function SharesScreen(props: {
             <LinkIcon size={36} aria-hidden />
             <h2 className="text-xl">
               {q
-                ? '没有找到分享相册'
+                ? query.kind === 'image'
+                  ? '没有找到分享图片'
+                  : '没有找到分享相册'
                 : data.total
                   ? '本页已无分享'
                   : '还没有分享链接'}
@@ -229,10 +296,10 @@ export function SharesScreen(props: {
               </Button>
             ) : !q ? (
               <Link
-                href="/albums"
+                href={query.kind === 'image' ? '/library' : '/albums'}
                 className="h-12 justify-center rounded-lg bg-accent px-6 text-sm font-normal text-accent-foreground no-underline"
               >
-                前往相册
+                {query.kind === 'image' ? '前往图库' : '前往相册'}
               </Link>
             ) : null}
           </ComponentEntrance>

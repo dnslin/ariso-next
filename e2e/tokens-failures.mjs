@@ -7,6 +7,8 @@ import {
   tokenControl,
   tokenSelector,
   tokensRequest,
+  readTokenRowIds,
+  assertTokenRefetchPending,
 } from './tokens-page.mjs';
 import { tokensReadFault, tokensWriteFault } from './tokens-transport.mjs';
 
@@ -331,32 +333,17 @@ async function verifyActionFailures(page, ui, report, width, registerSecret) {
     } finally {
       await fault.dispose();
     }
+    const cachedIds = await readTokenRowIds(page);
     const read = await tokensReadFault(page, true, false);
     try {
       await page.click(tokenControl('revoke-cancel'));
       await page.waitForSelector(revokeDialog, { state: 'hidden' });
-      await page.waitForSelector(
-        '[data-testid="api-page"][data-state="loading"]',
-      );
       assert.equal(
         (await read.result()).status,
         200,
         'Leaving a known failure reads the actual list',
       );
-      assert.equal(
-        await page.evaluate(
-          () =>
-            document.querySelector('[data-testid="api-create-open"]').disabled,
-        ),
-        true,
-      );
-      assert.equal(
-        await page.evaluate(() =>
-          document.querySelector('[data-testid="api-list"]'),
-        ),
-        null,
-        'A known failure cannot restore stale interactive actions',
-      );
+      await assertTokenRefetchPending(page, cachedIds);
       await read.release();
     } finally {
       await read.dispose();

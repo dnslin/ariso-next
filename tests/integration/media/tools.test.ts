@@ -24,6 +24,7 @@ import {join} from 'node:path';
 import {spawn} from 'node:child_process';
 if (process.env.IGNORE_TERM) process.on('SIGTERM', () => {});
 const workspace = process.argv.find(arg => arg.startsWith('registry:temporary-path=') || arg.startsWith('ArisoWorkspace=') || arg.startsWith('title=ArisoWorkspace=')).split('ArisoWorkspace=').at(-1).replace('registry:temporary-path=', '');
+if (process.env.DELAY_READY) await new Promise(resolve => setTimeout(resolve, Number(process.env.DELAY_READY)));
 if (process.env.SPAWN_DESCENDANT) spawn(process.execPath, ['-e', "const fs=require('node:fs');const path=require('node:path');process.on('SIGTERM',()=>{});fs.writeFileSync(path.join(process.argv[1],'descendant-ready'),String(process.pid));let i=0;setInterval(()=>fs.writeFileSync(path.join(process.argv[1],'descendant-cache'),String(++i)),10)", workspace], {stdio:'ignore'});
 writeFileSync(join(workspace, 'ready'), String(process.pid));
 let count = 0;
@@ -47,7 +48,7 @@ async function ready(path = workspace) {
     .toMatch(/^\d+$/);
 }
 
-async function expectWritesStopped() {
+async function expectWritesStopped(processId?: number) {
   // Awaiting termination may precede the first write for very fast cancellation.
   const before = await readFile(join(workspace, 'cache'), 'utf8').catch(
     (error) => {
@@ -63,7 +64,9 @@ async function expectWritesStopped() {
     },
   );
   expect(after).toBe(before);
-  const pid = Number(await readFile(join(workspace, 'ready'), 'utf8'));
+  const pid =
+    processId ?? Number(await readFile(join(workspace, 'ready'), 'utf8'));
+  expect(Number.isInteger(pid) && pid > 0).toBe(true);
   const { stdout } = await execa('ps', ['-axo', 'pid=,stat=']);
   expect(
     stdout.split('\n').some((line) => {
@@ -167,18 +170,21 @@ describe('media tool lifecycle', () => {
   it('reads full arguments only for discovered group leaders during recovery', async () => {
     const originalPath = process.env.PATH;
     const ps = (await execa('which', ['ps'])).stdout;
-    const calls = join(directory, 'ps-calls.jsonl');
+    const calls = join(directory, 'ps-calls.tsv');
+    const [callsPath, psPath] = [calls, ps].map(
+      (value) => `'${value.replaceAll("'", "'\\''")}'`,
+    );
     await writeFile(
       join(bin, 'ps'),
-      `#!${process.execPath}
-import {appendFileSync} from 'node:fs';
-import {spawnSync} from 'node:child_process';
-const args = process.argv.slice(2);
-appendFileSync(${JSON.stringify(calls)}, JSON.stringify(args) + '\\n');
-const result = spawnSync(${JSON.stringify(ps)}, args, {encoding: 'utf8'});
-process.stdout.write(result.stdout);
-process.stderr.write(result.stderr);
-process.exit(result.status);
+      `#!/bin/sh
+task_record=
+task_separator=
+for task_argument do
+  task_record="$task_record$task_separator$task_argument"
+  task_separator='\t'
+done
+printf '%s\\n' "$task_record" >> ${callsPath}
+exec ${psPath} "$@"
 `,
       { mode: 0o755 },
     );
@@ -195,7 +201,7 @@ process.exit(result.status);
       const argumentsRead = (await readFile(calls, 'utf8'))
         .trim()
         .split('\n')
-        .map((line) => JSON.parse(line) as string[])
+        .map((line) => line.split('\t'))
         .filter((args) => args.some((arg) => arg.includes('command=')));
       expect(argumentsRead).toHaveLength(1);
       expect(argumentsRead[0]).toContain('-p');
@@ -209,14 +215,44 @@ process.exit(result.status);
   });
 
   it('terminates a timed-out process and preserves the timeout diagnostic', async () => {
+    // Keep running-timeout coverage independent from Node's cold startup.
+    await writeFile(
+      join(bin, 'magick'),
+      `#!/bin/sh
+trap '' TERM
+printf '%s' "$$" > "$ARISO_TOOL_TEST_WORKSPACE/ready"
+while :; do
+  printf 'running\\n' >> "$ARISO_TOOL_TEST_WORKSPACE/cache"
+  sleep 0.01
+done
+`,
+      { mode: 0o755 },
+    );
     const { settled } = startMediaTool('magick', [], {
       workspace,
-      env: { ...env(), IGNORE_TERM: '1' },
+      env: { ...env(), ARISO_TOOL_TEST_WORKSPACE: workspace },
       timeout: 1500,
     });
     await ready();
     expect(await settled).toMatchObject({ timedOut: true });
     await expectWritesStopped();
+  });
+
+  it('times out before codec readiness without leaving a process or later writes', async () => {
+    const { child, settled } = startMediaTool('magick', [], {
+      workspace,
+      env: { ...env(), IGNORE_TERM: '1', DELAY_READY: '3000' },
+      timeout: 1500,
+    });
+    expect(await settled).toMatchObject({ timedOut: true });
+    expect(child.pid).toBeTypeOf('number');
+    await expect(readFile(join(workspace, 'ready'))).rejects.toMatchObject({
+      code: 'ENOENT',
+    });
+    await expectWritesStopped(child.pid);
+    await expect(readFile(join(workspace, 'ready'))).rejects.toMatchObject({
+      code: 'ENOENT',
+    });
   });
 
   it.each(['SIGTERM', 'SIGKILL'] as const)(

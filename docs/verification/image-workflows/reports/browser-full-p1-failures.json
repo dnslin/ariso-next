@@ -1,0 +1,81 @@
+{
+  "scope": "Selected original JSON fields from four failure groups; this full run did not pass.",
+  "groups": [
+    {
+      "group": "error-recovery",
+      "reports": [
+        {
+          "sourcePath": "test-results/browser/error-recovery.json",
+          "selectedFields": {
+            "status": "failed",
+            "error": "Error: page.waitForSelector timed out after 10000ms: loc=role:button[name=\"重试\"]\n    at waitForSelectorInPage (file:////[eval1]:16399:11)\n    at async file:////[eval1]:16940:28"
+          }
+        }
+      ]
+    },
+    {
+      "group": "tokens",
+      "reports": [
+        {
+          "sourcePath": "test-results/browser/tokens-1440.json",
+          "selectedFields": {
+            "status": "failed",
+            "taskSpaceId": 7,
+            "origin": "http://ariso-59458.localhost:59458",
+            "stage": "known-failures",
+            "finishedAt": "2026-10-21T08:30:04.427Z",
+            "error": "Error: page.waitForSelector timed out after 10000ms: [data-testid=\"api-page\"][data-state=\"loading\"]\n    at waitForSelectorInPage (file:////[eval1]:16399:11)\n    at async file:////[eval1]:16940:28"
+          }
+        }
+      ]
+    },
+    {
+      "group": "processing-layout",
+      "reports": [
+        {
+          "sourcePath": "test-results/browser/processing.json",
+          "selectedFields": {
+            "status": "failed",
+            "taskSpaceId": 7,
+            "origin": "http://ariso-59458.localhost:59458",
+            "phase": "all",
+            "stage": "representative",
+            "finishedAt": "2026-10-21T08:33:34.781Z",
+            "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n'8px' !== '16px'\n\n    at verifyProcessingLayouts (file:///Users/dnslin/.codex/worktrees/image-workflows/ariso/e2e/processing-layout.mjs:42:10)\n    at async file:////[eval2]:59:5",
+            "originalSettingsRestored": true
+          }
+        }
+      ]
+    },
+    {
+      "group": "copy-format-selection",
+      "reports": [
+        {
+          "sourcePath": "test-results/browser/m2-1440.json",
+          "selectedFields": {
+            "status": "failed",
+            "width": 1440,
+            "height": 1080,
+            "theme": "light",
+            "error": "Error: page.waitForFunction timed out after 10000ms on page p1; last URL was \"http://ariso-59458.localhost:59458/upload?image=f1870ba0-1de3-48fe-ac5e-7e2a69c59855\"; last title was \"Ariso\".\n    at waitForFunctionTimeoutError (file:////[eval1]:19509:12)\n    at file:////[eval1]:18834:19\n    at async file:////[eval1]:16940:28"
+          }
+        },
+        {
+          "sourcePath": "test-results/browser/interaction-polish-1440.json",
+          "selectedFields": {
+            "status": "failed",
+            "width": 1920,
+            "height": 1080,
+            "stage": {
+              "x": 464,
+              "y": 360,
+              "width": 547.125,
+              "height": 299
+            },
+            "error": "Error: page.waitForFunction timed out after 10000ms on page p1; last URL was \"http://ariso-59458.localhost:59458/library?image=81f5b97c-b790-4440-b214-4cb5fd8e678b\"; last title was \"Ariso\".\n    at waitForFunctionTimeoutError (file:////[eval1]:19509:12)\n    at file:////[eval1]:18834:19\n    at async file:////[eval1]:16940:28"
+          }
+        }
+      ]
+    }
+  ]
+}

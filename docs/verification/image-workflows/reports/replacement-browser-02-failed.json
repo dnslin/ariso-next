@@ -1,0 +1,22 @@
+{
+  "run": "browser-pr294-simple-focused-02",
+  "status": "failed",
+  "startedAt": "2026-10-21T12:12:41.298Z",
+  "finishedAt": "2026-10-21T12:15:11.422Z",
+  "taskSpaceId": 19,
+  "temporaryDirectoryRemoved": true,
+  "runnerStages": {
+    "image-workflows": {
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (image-workflows.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/image-workflows/ariso/scripts/verify-browser.mjs:267:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/image-workflows/ariso/scripts/browser-stages.mjs:17:5)\n    at async runBusinessBrowserStage (file:///Users/dnslin/.codex/worktrees/image-workflows/ariso/scripts/browser-business.mjs:22:18)\n    at async file:///Users/dnslin/.codex/worktrees/image-workflows/ariso/scripts/verify-browser.mjs:801:24"
+    }
+  },
+  "pageStatus": "failed",
+  "pageStage": "replacement-error-390x400-primary-focus",
+  "pageError": "Error: page.waitForFunction timed out after 10000ms on page p1; last URL was \"http://ariso-63934.localhost:63934/library?q=image-workflows-4cf88512&page=1&pageSize=20&image=c96c16dd-af63-4186-a482-4463b0f013da\"; last title was \"Ariso\".\n    at waitForFunctionTimeoutError (file:////[eval1]:19509:12)\n    at file:////[eval1]:18834:19\n    at async file:////[eval1]:16940:28",
+  "checksPassed": 25,
+  "layoutsRecorded": 87,
+  "ownerVisibility": null,
+  "replacementReceptionDiagnostics": null,
+  "source": "test-results/browser-pr294-simple-focused-02"
+}

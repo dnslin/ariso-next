@@ -15,6 +15,7 @@ import {
   type MediaRuntime,
 } from '../../../src/server/media/process.ts';
 import { claimNextMediaJob } from '../../../src/server/media/queue.ts';
+import { processImageSizeJob } from '../../../src/server/media/size-process.ts';
 import { mediaJobs } from '../../../src/server/media/schema.ts';
 import {
   createProcessingSnapshot,
@@ -53,7 +54,8 @@ export async function createMediaDeliveryFixture() {
   async function processNext() {
     const claimed = claimNextMediaJob(db);
     if (!claimed) throw new Error('Expected a queued media job');
-    await processMediaJob(runtime, claimed.id);
+    if (claimed.kind === 'size') await processImageSizeJob(runtime, claimed.id);
+    else await processMediaJob(runtime, claimed.id);
     return job(claimed.id);
   }
   async function accept(file: string) {

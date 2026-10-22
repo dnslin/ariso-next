@@ -54,6 +54,7 @@ import {
 import { useLibraryBatch } from '../../components/library/use-library-batch';
 import { useLibraryCopy } from '../../components/library/use-library-copy';
 import { CopyDialog } from '../../components/library/copy-dialog';
+import { useLibraryArchive } from '../../components/library/use-library-archive';
 import {
   BatchWorkspaceContent,
   BatchWorkspaceFooter,
@@ -242,7 +243,9 @@ export function LibraryScreen(props: {
   const batch = useLibraryBatch(batchOptions);
   const batchReprocess = useBatchReprocess(batchOptions);
   const copy = useLibraryCopy(batchOptions);
-  const batchPending = batch.pending || batchReprocess.pending || copy.pending;
+  const archive = useLibraryArchive(batchOptions);
+  const batchPending =
+    batch.pending || batchReprocess.pending || copy.pending || archive.pending;
   const batchUnresolved = batch.unresolved || batchReprocess.unresolved;
   const batchContentVisible =
     (batch.visible &&
@@ -263,6 +266,18 @@ export function LibraryScreen(props: {
     onSessionExpired: expireSession,
     onInvalid: query.onSelectionInvalid,
   });
+  const { resumeCloseFocus } = detail;
+  useEffect(() => {
+    resumeCloseFocus(
+      !detail.imageId && query.canOperate && !reconciliation.pending,
+    );
+  }, [
+    detail.imageId,
+    query.canOperate,
+    query.dataUpdatedAt,
+    reconciliation.pending,
+    resumeCloseFocus,
+  ]);
   if (query.expired && !sessionEnded) setSessionEnded(true);
   async function onTrashed(record: Detail) {
     selection.remove(record.id);
@@ -427,6 +442,7 @@ export function LibraryScreen(props: {
                       else if (action === 'copy') copy.open(element);
                       else batch.open(action, element);
                     }}
+                    onArchive={(version) => void archive.start(version)}
                   />
                 ) : undefined
               }
@@ -455,6 +471,23 @@ export function LibraryScreen(props: {
             ) : null}
           </ComponentEntrance>
           {props.afterToolbar}
+          {query.statusError ? (
+            <Alert status="danger">
+              <Alert.Content>
+                <Alert.Title>活动任务状态读取失败</Alert.Title>
+                <Alert.Description>
+                  {query.statusError.message} 已保留当前图片和选择。
+                </Alert.Description>
+                <Button
+                  variant="outline"
+                  className="mt-3 min-h-11"
+                  onPress={query.retryStatus}
+                >
+                  重新核对
+                </Button>
+              </Alert.Content>
+            </Alert>
+          ) : null}
           {reconciliation.error ? (
             <Alert
               status="danger"
@@ -678,6 +711,9 @@ export function LibraryScreen(props: {
           hidden={!!detail.view || statisticsId === detail.imageId}
           onStatistics={openStatistics}
           onVersions={(selected) => detail.openView('versions', selected)}
+          onReplacementChanged={() => {
+            void query.refreshCurrent();
+          }}
           initialSelected={selectedPreview}
           albumId={props.albumId}
           viewerFilters={

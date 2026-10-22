@@ -1,88 +1,69 @@
 import { randomBytes } from 'node:crypto';
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync } from 'node:fs';
 import { cp, mkdtemp, readdir, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import Database from 'better-sqlite3';
 import { afterAll, afterEach, beforeAll, beforeEach, expect, it } from 'vitest';
 import { createSecretCrypto } from '../../../src/server/runtime/crypto';
-import { writeMigrations as writeRuntimeMigrations } from '../../fixtures/runtime/migrations';
+import {
+  readProductionMigrations,
+  writeMigrations as writeRuntimeMigrations,
+} from '../../fixtures/runtime/migrations';
 import { launch, stop, unusedPort } from './process-helpers';
 
-const storageMigration = {
-  tag: '0000_storage',
-  when: 1,
-  sql: readFileSync(resolve('drizzle/0001_calm_hulk.sql'), 'utf8'),
-};
+const productionMigrations = readProductionMigrations();
+const productionHistory = productionMigrations.map(({ when }) => ({
+  created_at: when,
+}));
+const productionTableNames = [
+  '__drizzle_migrations',
+  'account',
+  'album_images',
+  'album_shares',
+  'albums',
+  'analytics_daily',
+  'analytics_image_daily',
+  'analytics_image_totals',
+  'apikey',
+  'identity_github_settings',
+  'identity_smtp_settings',
+  'image_shares',
+  'image_tags',
+  'media_cleanup_jobs',
+  'media_images',
+  'media_jobs',
+  'media_metadata',
+  'media_objects',
+  'media_previews',
+  'media_replacements',
+  'media_settings',
+  'media_size_candidates',
+  'media_size_requests',
+  'media_size_versions',
+  'media_versions',
+  'media_watermark_assets',
+  'media_watermark_preview_refs',
+  'session',
+  'share_grants',
+  'site_settings',
+  'storage_configs',
+  'storage_orphans',
+  'storage_probes',
+  'storage_scans',
+  'storage_settings',
+  'tags',
+  'upload_sessions',
+  'upload_settings',
+  'upload_submissions',
+  'user',
+  'verification',
+];
 function writeMigrations(
   ...[folder, migrations]: Parameters<typeof writeRuntimeMigrations>
 ) {
-  const identityMigration = {
-    tag: '0001_identity',
-    when: 2,
-    sql: readFileSync(resolve('drizzle/0004_shiny_korath.sql'), 'utf8'),
-  };
   return writeRuntimeMigrations(folder, [
-    storageMigration,
-    identityMigration,
-    {
-      tag: '0002_upload',
-      when: 3,
-      sql: readFileSync(resolve('drizzle/0008_numerous_nick_fury.sql'), 'utf8'),
-    },
-    {
-      tag: '0003_analytics',
-      when: 4,
-      sql: readFileSync(resolve('drizzle/0009_wide_scarlet_witch.sql'), 'utf8'),
-    },
-    {
-      tag: '0004_storage_settings',
-      when: 5,
-      sql: readFileSync(resolve('drizzle/0010_giant_moondragon.sql'), 'utf8'),
-    },
-    {
-      tag: '0005_media_settings',
-      when: 6,
-      sql: readFileSync(resolve('drizzle/0003_wealthy_hydra.sql'), 'utf8'),
-    },
-    {
-      tag: '0006_watermark_assets',
-      when: 7,
-      sql: readFileSync(
-        resolve('drizzle/0011_little_shinko_yamashiro.sql'),
-        'utf8',
-      ),
-    },
-    {
-      tag: '0007_storage_probes',
-      when: 8,
-      sql: readFileSync(resolve('drizzle/0012_storage_probes.sql'), 'utf8'),
-    },
-    {
-      tag: '0008_media_watermark',
-      when: 9,
-      sql: readFileSync(resolve('drizzle/0014_sticky_blacklash.sql'), 'utf8'),
-    },
-    {
-      tag: '0009_storage_cors',
-      when: 10,
-      sql: readFileSync(resolve('drizzle/0015_fluffy_venus.sql'), 'utf8'),
-    },
-    {
-      tag: '0010_media_previews',
-      when: 11,
-      sql: readFileSync(resolve('drizzle/0020_woozy_swordsman.sql'), 'utf8'),
-    },
-    {
-      tag: '0011_github',
-      when: 12,
-      sql: readFileSync(resolve('drizzle/0025_shiny_namora.sql'), 'utf8'),
-    },
-    {
-      tag: '0012_smtp',
-      when: 13,
-      sql: readFileSync(resolve('drizzle/0027_colossal_iron_lad.sql'), 'utf8'),
-    },
+    ...productionMigrations,
     ...migrations,
   ]);
 }
@@ -132,14 +113,43 @@ async function start(overrides: Record<string, string> = {}) {
   runs.push(run);
   return run;
 }
-async function expectHealthy(run: Awaited<ReturnType<typeof launch>>) {
-  await expect.poll(() => run.logs(), { timeout: 15000 }).toContain('Ready in');
-  const response = await fetch(`http://127.0.0.1:${run.port}/api/health`, {
-    signal: AbortSignal.timeout(2000),
-  });
-  expect(response.status).toBe(200);
-  expect(await response.json()).toEqual({ status: 'ok' });
-  await stop(run.child, run.closed);
+async function expectHealthy(
+  run: Awaited<ReturnType<typeof launch>>,
+  phase: string,
+) {
+  const startedAt = Date.now();
+  let step = 'waiting for HTTP readiness';
+  try {
+    // Next logs Ready before initializing handlers. Keep the startup budget,
+    // but wait for the actual HTTP endpoint rather than that early log line.
+    await expect
+      .poll(
+        async () => {
+          step = 'requesting /api/health';
+          const response = await fetch(
+            `http://127.0.0.1:${run.port}/api/health`,
+            {
+              signal: AbortSignal.timeout(2000),
+            },
+          );
+          step = 'reading /api/health';
+          expect(response.status).toBe(200);
+          return response.json();
+        },
+        { timeout: 15000 },
+      )
+      .toEqual({ status: 'ok' });
+    expect(run.logs()).toContain('Ready in');
+    step = 'stopping server';
+    await stop(run.child, run.closed);
+  } catch (cause) {
+    throw new Error(
+      `${phase}: ${step} failed after ${Date.now() - startedAt}ms\n` +
+        `pid=${run.child.pid}, port=${run.port}, exitCode=${run.child.exitCode}, signalCode=${run.child.signalCode}\n` +
+        `stdout:\n${run.stdout()}\nstderr:\n${run.stderr()}`,
+      { cause },
+    );
+  }
 }
 function inspect() {
   const db = new Database(join(env.DATA_DIR, 'ariso.db'));
@@ -168,6 +178,7 @@ it('空生产数据库接受不同合法密钥，生产产物不包含测试表�
   for (let attempt = 0; attempt < 2; attempt++) {
     await expectHealthy(
       await start({ ARISO_ENCRYPTION_KEY: randomBytes(32).toString('hex') }),
+      `empty database start ${attempt + 1}`,
     );
   }
   const db = new Database(join(env.DATA_DIR, 'ariso.db'));
@@ -178,45 +189,10 @@ it('空生产数据库接受不同合法密钥，生产产物不包含测试表�
           "SELECT name FROM sqlite_master WHERE type = 'table' ORDER BY name",
         )
         .all(),
-    ).toEqual([
-      { name: '__drizzle_migrations' },
-      { name: 'account' },
-      { name: 'analytics_daily' },
-      { name: 'analytics_image_daily' },
-      { name: 'analytics_image_totals' },
-      { name: 'identity_github_settings' },
-      { name: 'identity_smtp_settings' },
-      { name: 'media_previews' },
-      { name: 'media_settings' },
-      { name: 'media_watermark_assets' },
-      { name: 'media_watermark_preview_refs' },
-      { name: 'session' },
-      { name: 'storage_configs' },
-      { name: 'storage_probes' },
-      { name: 'storage_settings' },
-      { name: 'upload_sessions' },
-      { name: 'upload_settings' },
-      { name: 'upload_submissions' },
-      { name: 'user' },
-      { name: 'verification' },
-    ]);
+    ).toEqual(productionTableNames.map((name) => ({ name })));
     expect(
       db.prepare('SELECT created_at FROM __drizzle_migrations').all(),
-    ).toEqual([
-      { created_at: 1 },
-      { created_at: 2 },
-      { created_at: 3 },
-      { created_at: 4 },
-      { created_at: 5 },
-      { created_at: 6 },
-      { created_at: 7 },
-      { created_at: 8 },
-      { created_at: 9 },
-      { created_at: 10 },
-      { created_at: 11 },
-      { created_at: 12 },
-      { created_at: 13 },
-    ]);
+    ).toEqual(productionHistory);
   } finally {
     db.close();
   }
@@ -225,11 +201,35 @@ it('空生产数据库接受不同合法密钥，生产产物不包含测试表�
   expect(files.some((file) => file.includes('secret-preflight'))).toBe(false);
 }, 30000);
 
+it('waits for HTTP readiness after the framework startup log', async () => {
+  const preload = join(directory, 'delay-router.cjs');
+  // Delay the real router in this isolated process after Next prints Ready.
+  await writeFile(
+    preload,
+    `const Module = require('node:module');
+const load = Module._load;
+Module._load = function (id, ...args) {
+  const loaded = load.call(this, id, ...args);
+  if (id !== './router-server') return loaded;
+  return { ...loaded, async initialize(...options) {
+    console.info('test: delaying router initialization');
+    await new Promise(resolve => setTimeout(resolve, 2500));
+    return loaded.initialize(...options);
+  } };
+};\n`,
+  );
+  const run = await start({
+    NODE_OPTIONS: `--require ${JSON.stringify(preload)}`,
+  });
+  await expectHealthy(run, 'delayed HTTP readiness');
+  expect(run.logs()).toContain('test: delaying router initialization');
+}, 30000);
+
 it.each(['wrong key', 'invalid ciphertext', 'tampered ciphertext'])(
   '%s 阻止入口启动 Web，保留已提交迁移与密文，修复后继续且不重放迁移',
   async (fault) => {
     writeMigrations(join(app, 'drizzle'), [migration]);
-    await expectHealthy(await start());
+    await expectHealthy(await start(), `${fault}: initial start`);
     const crypto = createSecretCrypto(
       Buffer.from(env.ARISO_ENCRYPTION_KEY, 'hex'),
     );
@@ -308,43 +308,11 @@ it.each(['wrong key', 'invalid ciphertext', 'tampered ciphertext'])(
     }
     const afterFailure = inspect();
     expect(afterFailure).toEqual({
-      tables: [
-        { name: '__drizzle_migrations' },
-        { name: 'account' },
-        { name: 'analytics_daily' },
-        { name: 'analytics_image_daily' },
-        { name: 'analytics_image_totals' },
-        { name: 'identity_github_settings' },
-        { name: 'identity_smtp_settings' },
-        { name: 'media_previews' },
-        { name: 'media_settings' },
-        { name: 'media_watermark_assets' },
-        { name: 'media_watermark_preview_refs' },
-        { name: 'secret_sample' },
-        { name: 'session' },
-        { name: 'storage_configs' },
-        { name: 'storage_probes' },
-        { name: 'storage_settings' },
-        { name: 'upload_sessions' },
-        { name: 'upload_settings' },
-        { name: 'upload_submissions' },
-        { name: 'user' },
-        { name: 'verification' },
-      ],
+      tables: [...productionTableNames, 'secret_sample']
+        .sort()
+        .map((name) => ({ name })),
       migrations: [
-        { created_at: 1 },
-        { created_at: 2 },
-        { created_at: 3 },
-        { created_at: 4 },
-        { created_at: 5 },
-        { created_at: 6 },
-        { created_at: 7 },
-        { created_at: 8 },
-        { created_at: 9 },
-        { created_at: 10 },
-        { created_at: 11 },
-        { created_at: 12 },
-        { created_at: 13 },
+        ...productionHistory,
         { created_at: 1000 },
         { created_at: 2000 },
       ],
@@ -369,7 +337,7 @@ it.each(['wrong key', 'invalid ciphertext', 'tampered ciphertext'])(
     const repaired = inspect();
     for (let attempt = 0; attempt < 2; attempt++) {
       const recovered = await start({ NODE_OPTIONS: '' });
-      await expectHealthy(recovered);
+      await expectHealthy(recovered, `${fault}: repaired start ${attempt + 1}`);
       expect(recovered.logs()).toContain('secret-preflight-complete');
       expect(inspect()).toEqual(repaired);
     }

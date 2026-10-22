@@ -28,6 +28,47 @@ export const displayedTokenTime = (value, timeZone) =>
     hourCycle: 'h23',
   }).format(new Date(value));
 
+export function readTokenRowIds(page) {
+  return page.evaluate(() =>
+    [...document.querySelectorAll('[data-testid="api-token"]')].map(
+      (node) => node.dataset.tokenId,
+    ),
+  );
+}
+
+export async function assertTokenRefetchPending(page, cachedIds) {
+  await page.waitForSelector('[data-testid="api-page"][data-state="ready"]');
+  await page.waitForFunction(
+    () =>
+      document.querySelector('[data-testid="api-create-open"]')?.disabled &&
+      [
+        ...document.querySelectorAll(
+          '[data-testid="api-toggle"],[data-testid="api-revoke"]',
+        ),
+      ].every((node) => node.disabled),
+  );
+  assert.deepEqual(
+    await readTokenRowIds(page),
+    cachedIds,
+    'A held background refresh preserves the exact cached row IDs',
+  );
+  const controls = await page.evaluate(() => ({
+    createDisabled: document.querySelector('[data-testid="api-create-open"]')
+      .disabled,
+    actions: [
+      ...document.querySelectorAll(
+        '[data-testid="api-toggle"],[data-testid="api-revoke"]',
+      ),
+    ].map((node) => node.disabled),
+  }));
+  assert.equal(controls.createDisabled, true);
+  assert.equal(controls.actions.length, cachedIds.length * 2);
+  assert.ok(
+    controls.actions.every(Boolean),
+    'Every cached toggle and revoke stays disabled until the actual read settles',
+  );
+}
+
 export async function tokensSignIn(page, config, report, width) {
   const current = new URL(await page.url());
   if (

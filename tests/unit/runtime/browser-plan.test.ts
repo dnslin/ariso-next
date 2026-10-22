@@ -6,6 +6,28 @@ function select(suite: string, only?: string) {
 }
 
 describe('focused browser execution plans', () => {
+  it('runs all four real image workflows in full and on the selected managed page', () => {
+    expect(select('full').stages).toContainEqual([
+      'image-workflows',
+      'image-workflows',
+    ]);
+    expect(select('image-workflows')).toEqual({
+      stages: [['image-workflows', 'imageWorkflows']],
+      config: {},
+    });
+    expect(
+      selectBrowserPlan({ suite: 'image-workflows', pageLabel: 'p2' }),
+    ).toEqual(select('image-workflows'));
+    expect(() => select('image-workflows', 'unrelated')).toThrow('--only');
+    for (const field of ['storageConfig', 'previewConfig'])
+      expect(() =>
+        selectBrowserPlan({
+          suite: 'image-workflows',
+          pageLabel: 'p1',
+          [field]: 'unused.json',
+        }),
+      ).toThrow();
+  });
   it('runs the approved October 15 workflows in full and individually', () => {
     expect(select('full').stages).toContainEqual([
       'uiux-20261015',
@@ -549,6 +571,7 @@ describe('focused browser execution plans', () => {
         ['smtp', 'smtp'],
         ['uiux-p1', 'uiux-p1'],
         ['uiux-20261015', 'uiux-20261015'],
+        ['image-workflows', 'image-workflows'],
       ],
       config: {},
     });

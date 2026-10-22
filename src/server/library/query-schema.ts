@@ -1,12 +1,13 @@
 import { z } from 'zod';
 
 export class LibraryQueryError extends Error {
-  constructor(
-    message: string,
-    readonly code = 'LIBRARY_INVALID_QUERY',
-    readonly status = 400,
-  ) {
+  readonly code: string;
+  readonly status: number;
+
+  constructor(message: string, code = 'LIBRARY_INVALID_QUERY', status = 400) {
     super(message);
+    this.code = code;
+    this.status = status;
   }
 }
 

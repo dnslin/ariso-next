@@ -71,9 +71,9 @@ export async function runBrandingBrowser({
       ['logo', 'static.jpg', 'JPEG', 'image/jpeg', 64, 48],
       ['logo', 'static.webp', 'WEBP', 'image/webp', 64, 48],
       ['logo', 'static.svg', 'SVG', 'image/svg+xml', 64, 48],
-      ['favicon', 'source.png', 'PNG', 'image/png', 64, 48],
-      ['favicon', 'multiple.ico', 'ICO', 'image/x-icon', 64, 64],
-      ['favicon', 'static.svg', 'SVG', 'image/svg+xml', 64, 48],
+      ['favicon', 'source.png', 'PNG', 'image/png', 48, 48],
+      ['favicon', 'multiple.ico', 'ICO', 'image/png', 48, 48],
+      ['favicon', 'static.svg', 'SVG', 'image/png', 48, 48],
     ])
       samples.push({
         kind,

@@ -161,7 +161,7 @@ export function DetailPreview({
             className="grid gap-3 p-0 pt-3 data-[inert]:hidden"
           >
             <PreviewImage
-              key={`${revision}:${version.previewPath}:${version.format}:${version.byteSize}`}
+              key={`${revision}:${version.contentId}:${version.previewPath}:${version.format}:${version.byteSize}`}
               version={version}
               name={detail.displayName}
               width={detail.width}

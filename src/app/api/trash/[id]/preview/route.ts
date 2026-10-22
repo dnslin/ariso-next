@@ -23,7 +23,7 @@ async function handle(
     if (
       !selectedVersion ||
       download ||
-      [...query.keys()].some((key) => key !== 'type')
+      [...query.keys()].some((key) => key !== 'type' && key !== 'v')
     )
       return imageFailure(request, 'INVALID_IMAGE_REQUEST');
     const server = getServerRuntime();

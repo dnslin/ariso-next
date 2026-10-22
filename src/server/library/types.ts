@@ -19,6 +19,11 @@ export interface LibraryJobSummary {
   error: string | null;
 }
 
+export interface LibraryActiveJob extends LibraryJobSummary {
+  kind: 'process' | 'replace' | 'size';
+  status: 'queued' | 'running';
+}
+
 export interface LibraryItem {
   id: string;
   displayName: string;
@@ -38,7 +43,7 @@ export interface LibraryItem {
   >;
   thumbnailUrl: string | null;
   thumbnailDimensions: { width: number; height: number } | null;
-  activeJob: LibraryJobSummary | null;
+  activeJob: LibraryActiveJob | null;
   latestFailedJob: LibraryJobSummary | null;
   metadataJob: LibraryMetadataJob | null;
   processingJob: LibraryProcessingJob | null;

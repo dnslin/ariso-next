@@ -1,0 +1,22 @@
+{
+  "run": "browser-pr294-simple-focused-03",
+  "status": "failed",
+  "startedAt": "2026-10-21T12:19:05.281Z",
+  "finishedAt": "2026-10-21T12:21:53.008Z",
+  "taskSpaceId": 19,
+  "temporaryDirectoryRemoved": true,
+  "runnerStages": {
+    "image-workflows": {
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Ego browser verification failed (image-workflows.log)\n\n1 !== 0\n\n    at runBrowser (file:///Users/dnslin/.codex/worktrees/image-workflows/ariso/scripts/verify-browser.mjs:267:12)\n    at async runBrowserStage (file:///Users/dnslin/.codex/worktrees/image-workflows/ariso/scripts/browser-stages.mjs:17:5)\n    at async runBusinessBrowserStage (file:///Users/dnslin/.codex/worktrees/image-workflows/ariso/scripts/browser-business.mjs:22:18)\n    at async file:///Users/dnslin/.codex/worktrees/image-workflows/ariso/scripts/verify-browser.mjs:801:24"
+    }
+  },
+  "pageStatus": "failed",
+  "pageStage": "replacement-native-reception-close-details",
+  "pageError": "Error: page.waitForFunction timed out after 10000ms on page p1; last URL was \"http://ariso-64342.localhost:64342/library?q=image-workflows-4d0d7ca0&page=1&pageSize=20\"; last title was \"Ariso\".\n    at waitForFunctionTimeoutError (file:////[eval1]:19509:12)\n    at file:////[eval1]:18834:19\n    at async file:////[eval1]:16940:28",
+  "checksPassed": 30,
+  "layoutsRecorded": 99,
+  "ownerVisibility": null,
+  "replacementReceptionDiagnostics": null,
+  "source": "test-results/browser-pr294-simple-focused-03"
+}

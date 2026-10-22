@@ -222,26 +222,76 @@ export async function storageShortViewport(page, config, report) {
 // The successful bytes still come from the production server. Only delivery of
 // a response is held/lost, so these scenarios cannot manufacture saved data.
 export async function storageReadFault(page, path, mode) {
-  return page.cdp('Page.addScriptToEvaluateOnNewDocument', {
-    source: `(() => {
-      const original = window.fetch;
-      window.__storageReadMode = ${JSON.stringify(mode)};
-      window.fetch = async (...args) => {
-        const response = await original(...args);
-        if (new URL(String(args[0]), location.href).pathname === ${JSON.stringify(path)} && (!args[1]?.method || args[1].method === 'GET')) {
-          if (window.__storageReadMode === 'hold') await new Promise(resolve => { window.__releaseStorageRead = resolve; });
-          if (window.__storageReadMode === 'fail') throw new TypeError('Verification: actual storage read response was lost');
-        }
+  const initialize = ({ path, mode }) => {
+    const state = {
+      original: window.fetch,
+      mode,
+      releases: [],
+      observed: { settled: false },
+    };
+    const gate = new Promise((resolve) => state.releases.push(resolve));
+    window.__storageReadFault = state;
+    window.fetch = async (...args) => {
+      const response = await state.original(...args);
+      if (
+        new URL(String(args[0]), location.href).pathname !== path ||
+        (args[1]?.method ?? 'GET').toUpperCase() !== 'GET'
+      )
         return response;
-      };
-    })();`,
-  });
+      state.observed = { settled: true, status: response.status };
+      if (state.mode === 'hold') await gate;
+      if (state.mode === 'fail')
+        throw new TypeError(
+          'Verification: actual storage read response was lost',
+        );
+      return response;
+    };
+  };
+  const { identifier } = await page.cdp(
+    'Page.addScriptToEvaluateOnNewDocument',
+    {
+      source: `(${initialize.toString()})(${JSON.stringify({ path, mode })});`,
+    },
+  );
+  return {
+    async result() {
+      await page.waitForFunction(
+        () => window.__storageReadFault?.observed.settled,
+      );
+      return page.evaluate(() => window.__storageReadFault.observed);
+    },
+    async release() {
+      await page.evaluate(() => {
+        const state = window.__storageReadFault;
+        if (!state) return;
+        state.mode = 'normal';
+        for (const release of state.releases) release();
+      });
+    },
+    async dispose() {
+      try {
+        await page.cdp('Page.removeScriptToEvaluateOnNewDocument', {
+          identifier,
+        });
+      } finally {
+        await page.evaluate(() => {
+          const state = window.__storageReadFault;
+          if (!state) return;
+          state.mode = 'normal';
+          for (const release of state.releases) release();
+          window.fetch = state.original;
+          delete window.__storageReadFault;
+        });
+      }
+    },
+  };
 }
 
 export async function loseStorageMutation(page, path, method) {
   await page.evaluate(
     ({ path, method }) => {
       const original = window.fetch;
+      window.__storageMutationOriginal = original;
       window.__storageMutationUsed = false;
       window.__storageMutationStatus = null;
       window.fetch = async (...args) => {
@@ -262,4 +312,15 @@ export async function loseStorageMutation(page, path, method) {
     },
     { path, method },
   );
+  return {
+    async dispose() {
+      await page.evaluate(() => {
+        if (!window.__storageMutationOriginal) return;
+        window.fetch = window.__storageMutationOriginal;
+        delete window.__storageMutationOriginal;
+        delete window.__storageMutationUsed;
+        delete window.__storageMutationStatus;
+      });
+    },
+  };
 }

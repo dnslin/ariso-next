@@ -9,13 +9,14 @@ import {
   mediaJobs,
   mediaObjects,
   type DerivedVersionKind,
+  type VersionKind,
 } from './schema.ts';
 
 /** Commit the returned plan before storage I/O. Both final and partial keys have owners. */
 export function planDerivedObject(
   tx: MediaTransaction,
   jobId: string,
-  purpose: DerivedVersionKind,
+  purpose: VersionKind,
 ) {
   const job = tx.select().from(mediaJobs).where(eq(mediaJobs.id, jobId)).get();
   if (!job) throw new Error(`Media job not found: ${jobId}`);
@@ -58,6 +59,42 @@ export function planDerivedObject(
     )
     .run();
   return { objectId, temporaryObjectId, storageId: image.storageId, ...write };
+}
+
+/** The caller's transaction owns publication and progress, independently of storage facts. */
+export function storeMediaObject(
+  db: BetterSQLite3Database,
+  objectId: string,
+  details: {
+    byteSize: number;
+    format: string;
+    mime: string;
+    width?: number;
+    height?: number;
+  },
+  temporaryObjectId: string | undefined,
+  now: Date,
+) {
+  db.update(mediaObjects)
+    .set({
+      ...details,
+      status: 'stored',
+      byteSizeConfirmedAt: now,
+      error: null,
+      updatedAt: now,
+    })
+    .where(eq(mediaObjects.id, objectId))
+    .run();
+  if (temporaryObjectId)
+    db.update(mediaObjects)
+      .set({
+        status: 'deleted',
+        byteSize: 0,
+        byteSizeConfirmedAt: now,
+        updatedAt: now,
+      })
+      .where(eq(mediaObjects.id, temporaryObjectId))
+      .run();
 }
 
 /** Stored results for the supplied jobs; this does not imply publication in media_versions. */
@@ -109,6 +146,7 @@ export function markUnpublishedMediaObjects(
         eq(mediaObjects.jobId, jobId),
         inArray(mediaObjects.status, ['planned', 'writing', 'stored']),
         sql`not exists (select 1 from media_versions where object_id = ${mediaObjects.id})`,
+        sql`not exists (select 1 from media_size_versions where image_id = ${mediaObjects.imageId} and object_id = ${mediaObjects.id})`,
       ),
     )
     .run();

@@ -83,6 +83,25 @@ export function recoverMediaJobs(db: BetterSQLite3Database) {
         .where(eq(mediaJobs.status, 'running'))
         .all();
       for (const job of interrupted) {
+        if (job.kind === 'replace' && job.step === 'receiving') {
+          const now = new Date();
+          tx.update(mediaJobs)
+            .set({
+              status: 'failed',
+              error:
+                'MEDIA_INTERRUPTED: 替换文件接收被中断，请重新选择文件提交',
+              finishedAt: now,
+              updatedAt: now,
+            })
+            .where(eq(mediaJobs.id, job.id))
+            .run();
+          markUnpublishedMediaObjects(
+            tx,
+            job.id,
+            'Replacement reception interrupted',
+          );
+          continue;
+        }
         const image = tx
           .select({ deletionStatus: mediaImages.deletionStatus })
           .from(mediaImages)

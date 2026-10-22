@@ -28,6 +28,7 @@ import type {
 } from '../../server/library/batch-types';
 import { subscribeLibraryChanges } from '../../components/library/library-changes';
 import { readLibraryStatuses } from '../../components/library/read-detail-status';
+import { useActiveLibraryStatus } from './use-active-library-status';
 import {
   libraryListKey,
   libraryRequestParams,
@@ -212,6 +213,13 @@ export function useLibraryQuery(
     [pages],
   );
   const [refreshAvailable, setRefreshAvailable] = useState(false);
+  const activity = useActiveLibraryStatus(
+    client,
+    queryKey,
+    items,
+    enabled && !expired,
+    refreshCurrent,
+  );
   useEffect(() => subscribeLibraryChanges(() => setRefreshAvailable(true)), []);
 
   // History restores cached pages and their scroll without replaying cursor requests.
@@ -503,10 +511,13 @@ export function useLibraryQuery(
     isFetchNextPageError:
       loadingMode === 'more' && infinite.isFetchNextPageError,
     error: queryError ?? active.error,
-    expired,
+    expired: expired || activity.expired,
+    statusError: activity.error,
+    retryStatus: activity.retry,
     canOperate:
       enabled &&
       !expired &&
+      !activity.expired &&
       !active.isPending &&
       (!active.isFetching ||
         (loadingMode === 'more' && infinite.isFetchingNextPage)),

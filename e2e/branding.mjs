@@ -49,6 +49,7 @@ for (const sample of config.samples) {
     const asset = await response.json();
     if (response.status !== 200) return { status: response.status, asset };
     const read = await fetch(asset.url);
+    const published = new Uint8Array(await read.arrayBuffer());
     document.querySelector('#branding-protocol-check')?.remove();
     const section = document.createElement('section');
     section.id = 'branding-protocol-check';
@@ -70,7 +71,19 @@ for (const sample of config.samples) {
       headers: Object.fromEntries(read.headers),
       width: image.naturalWidth,
       height: image.naturalHeight,
-      pixel: [...context.getImageData(1, 1, 1, 1).data],
+      pixel: [
+        ...context.getImageData(
+          sample.kind === 'favicon' ? 6 : 1,
+          sample.kind === 'favicon' ? 12 : 1,
+          1,
+          1,
+        ).data,
+      ],
+      corner: [...context.getImageData(1, 1, 1, 1).data],
+      signature: [...published.subarray(0, 8)],
+      originalBytesPreserved:
+        published.length === bytes.length &&
+        published.every((byte, index) => byte === bytes[index]),
       userAgent: navigator.userAgent,
     };
   }, sample);
@@ -81,9 +94,22 @@ for (const sample of config.samples) {
   assert.equal(result.width, sample.width);
   assert.equal(result.height, sample.height);
   assert.ok(
-    result.pixel[0] > 230 && result.pixel[1] < 20 && result.pixel[2] < 20,
-    'Decoded upper-left pixel must be red',
+    result.pixel[0] > 230 &&
+      result.pixel[1] < 20 &&
+      result.pixel[2] < 20 &&
+      result.pixel[3] === 255,
+    'The decoded red fixture quadrant remains opaque red',
   );
+  if (sample.kind === 'favicon') {
+    assert.match(result.asset.url, /\.png$/);
+    assert.deepEqual(result.signature, [137, 80, 78, 71, 13, 10, 26, 10]);
+    if (sample.format !== 'ICO')
+      assert.equal(
+        result.corner[3],
+        0,
+        'A non-square favicon keeps transparent centered padding',
+      );
+  } else assert.equal(result.originalBytesPreserved, true);
   const settings = await readSettings();
   assert.equal(settings[`${sample.kind}Url`], result.asset.url);
   if (sample.kind === 'logo' && sample.format === 'SVG') {

@@ -258,6 +258,21 @@ it('serves authenticated trash previews while public URLs and alternate credenti
   const head = await fetch(url, { method: 'HEAD', headers });
   expect(head.status).toBe(200);
   expect(await head.text()).toBe('');
+  const original = app.db
+    .select({ objectId: mediaVersions.objectId })
+    .from(mediaVersions)
+    .where(eq(mediaVersions.imageId, asset.imageId))
+    .get()!;
+  const versioned = `${url}&v=${encodeURIComponent(original.objectId)}`;
+  for (const method of ['GET', 'HEAD']) {
+    const response = await fetch(versioned, { method, headers });
+    expect(response.status).toBe(200);
+    expect(response.headers.get('x-ariso-image-version')).toBe('original');
+    if (method === 'GET')
+      expect(Buffer.from(await response.arrayBuffer())).toEqual(asset.bytes);
+    else expect(await response.text()).toBe('');
+  }
+  expect((await fetch(versioned)).status).toBe(401);
   for (const query of [
     '',
     '?type=bad',

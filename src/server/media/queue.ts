@@ -7,6 +7,7 @@ import { and, asc, eq, ne, sql } from 'drizzle-orm';
 import type { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
 import { processMediaJob, type MediaRuntime } from './process.ts';
 import { processMetadataJob } from './metadata-job.ts';
+import { processImageSizeJob } from './size-process.ts';
 import { mediaImages, mediaJobs } from './schema.ts';
 import { readMediaSettings } from './settings.ts';
 import { recoverMediaJobs } from './recovery.ts';
@@ -97,6 +98,9 @@ function claimNextMediaWork(runtime: MediaRuntime) {
 export function startMediaQueue(runtime: MediaRuntime) {
   const controller = new AbortController();
   const { signal } = controller;
+  // Recover only work that predates this runtime, before HTTP can accept new work.
+  recoverMediaJobs(runtime.db);
+  recoverMediaCandidateCleanup(runtime.db);
   const previews = startPreviewRuntime(runtime);
   const active = new Map<
     string,
@@ -113,8 +117,6 @@ export function startMediaQueue(runtime: MediaRuntime) {
     try {
       await previews.ready;
       if (!runtime.db.$client.open) return;
-      recoverMediaJobs(runtime.db);
-      recoverMediaCandidateCleanup(runtime.db);
       // A previous recovery may have persisted failure just before the process
       // was killed. Discover owned workspaces independently of task status.
       let entries: string[];
@@ -133,8 +135,10 @@ export function startMediaQueue(runtime: MediaRuntime) {
             .from(mediaJobs)
             .where(eq(mediaJobs.id, jobId))
             .get();
-          if (job && !['queued', 'running'].includes(job.status))
+          if (job && !['queued', 'running'].includes(job.status)) {
+            await terminateMediaTools(`${runtime.temporaryRoot}${sep}${entry}`);
             await discardMediaInput(runtime.temporaryRoot, jobId);
+          }
           continue;
         }
         if (!entry.startsWith('media-')) continue;
@@ -181,9 +185,11 @@ export function startMediaQueue(runtime: MediaRuntime) {
           const execution = (
             job.kind === 'preview'
               ? previews.run(job.id, jobSignal)
-              : (job.kind === 'metadata'
-                  ? processMetadataJob
-                  : processMediaJob)(runtime, job.id, jobSignal)
+              : (job.kind === 'size'
+                  ? processImageSizeJob
+                  : job.kind === 'metadata'
+                    ? processMetadataJob
+                    : processMediaJob)(runtime, job.id, jobSignal)
           )
             .catch((err: unknown) => {
               failure ??= err;

@@ -13,6 +13,7 @@ import {
   bytesLabel,
   processingLabels as statuses,
   stepLabels,
+  activeJobLabels,
 } from '../../components/library/detail-labels';
 
 export function LibraryCard({
@@ -149,9 +150,9 @@ export function LibraryCard({
         {item.activeJob ? (
           <p
             className="truncate text-[11px] leading-4 min-[1200px]:text-xs"
-            title={`当前任务：${item.activeJob.status === 'queued' ? '等待执行' : '执行中'} · ${stepLabels[item.activeJob.step] ?? item.activeJob.step}`}
+            title={`${activeJobLabels[item.activeJob.kind]}：${item.activeJob.status === 'queued' ? '等待执行' : '执行中'} · ${stepLabels[item.activeJob.step] ?? item.activeJob.step}`}
           >
-            当前任务：
+            {activeJobLabels[item.activeJob.kind]}：
             {item.activeJob.status === 'queued' ? '等待执行' : '执行中'} ·{' '}
             {stepLabels[item.activeJob.step] ?? item.activeJob.step}
           </p>

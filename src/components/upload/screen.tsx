@@ -534,6 +534,9 @@ export function UploadScreen(props: ScreenProps) {
           hidden={!!detail.view}
           initialSelected={selectedPreview}
           onVersions={(selected) => detail.openView('versions', selected)}
+          onReplacementChanged={() => {
+            void client.invalidateQueries({ queryKey: ['upload-result'] });
+          }}
           client={client}
           dialogRef={detail.dialogRef}
           onClose={detail.close}

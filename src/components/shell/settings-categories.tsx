@@ -75,13 +75,13 @@ export function SettingsCategories({
       keyboardActivation="manual"
     >
       <div className="settings-desktop">
-        <Tabs.ListContainer className="w-fit max-w-full rounded-lg">
-          <Tabs.List aria-label="设置分类" className="rounded-lg p-1">
+        <Tabs.ListContainer className="w-fit max-w-full rounded-[16px]">
+          <Tabs.List aria-label="设置分类" className="rounded-[16px] p-1">
             {items.map(({ href, label, icon }) => (
               <Tabs.Tab
                 key={href}
                 id={href}
-                className="h-11 w-auto shrink-0 gap-2 rounded-lg whitespace-nowrap data-[selected=true]:bg-accent data-[selected=true]:text-foreground"
+                className="h-11 w-auto shrink-0 gap-2 rounded-[12px] whitespace-nowrap data-[selected=true]:bg-accent data-[selected=true]:text-foreground"
               >
                 {icon}
                 {label}

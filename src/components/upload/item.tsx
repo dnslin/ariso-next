@@ -187,8 +187,12 @@ function ProcessingOptions({
                 <p role="alert">提交结果未知，请在图片详情核对，勿重复提交。</p>
               ) : activeJob ? (
                 <p role="status">
-                  当前重处理：
-                  {activeJob.status === 'queued' ? '服务端排队' : '处理中'}
+                  {activeJob.kind === 'replace'
+                    ? '当前替换'
+                    : activeJob.kind === 'size'
+                      ? '当前尺寸任务'
+                      : '当前重处理'}
+                  ：{activeJob.status === 'queued' ? '服务端排队' : '处理中'}
                   {activeJob.step
                     ? ` · ${stepLabels[activeJob.step] ?? activeJob.step}`
                     : ''}

@@ -1,0 +1,23 @@
+ ✓ |media-tools| tests/integration/media/watermark-assets.test.ts > persists the resource failure that cancelled decoding rather than a generic abort 34ms
+ ✓ |media-tools| tests/integration/upload/formats.test.ts > full-format upload to persistent media processing > alpha-heic is identified from bytes, accepted and processed to ready 449ms
+ ✓ |media-tools| tests/integration/upload/formats.test.ts > full-format upload to persistent media processing > animated-png is identified from bytes, accepted and processed to ready 328ms
+ ✓ |media-tools| tests/integration/upload/formats.test.ts > full-format upload to persistent media processing > static-svg is identified from bytes, accepted and processed to ready 371ms
+ ✓ |media-tools| tests/integration/upload/formats.test.ts > full-format upload to persistent media processing > accepts dangerous SVG original then records preview failure without losing original bytes 298ms
+ ✓ |media-tools| tests/integration/media/formats-tools.test.ts > native container identification through tool stdin > jpeg dimensions come from raster headers rather than contradictory EXIF tags 227ms
+ ✓ |media-tools| tests/integration/media/formats-tools.test.ts > native container identification through tool stdin > png dimensions come from raster headers rather than contradictory EXIF tags 219ms
+ ✓ |media-tools| tests/integration/media/formats-tools.test.ts > native container identification through tool stdin > identifies a valid single-frame APNG rather than treating it as static PNG 121ms
+ ✓ |media-tools| tests/integration/media/formats-tools.test.ts > native container identification through tool stdin > reads the actual MPF image count from stdin for two-image MPO 172ms
+ ✓ |media-tools| tests/integration/media/formats-tools.test.ts > identifies quality 100 lossless WebP output in stream and file paths 129ms
+ ✓ |media-tools| tests/integration/upload/public-receive.test.ts > closes the already-open source before cleanup when destination-open fails before the copy pipeline takes ownership 180ms
+ ✓ |media-tools| tests/integration/upload/public-receive.test.ts > closes the already-open source before cleanup when disk-reservation fails before the copy pipeline takes ownership 154ms
+ ✓ |media-tools| tests/integration/media/watermark-runtime.test.ts > receives a real PNG through FormData and persists the exact bytes and ready metadata 106ms
+ ✓ |media-tools| tests/integration/media/watermark-runtime.test.ts > cancels unfinished request bodies, settles their work before stop resolves and refuses later uploads 18ms
+ ✓ |media-tools| tests/integration/media/watermark-runtime.test.ts > recovers interrupted writes and expired temporary assets by their registered directories only 125ms
+ ✓ |media-tools| tests/integration/media/watermark-runtime.test.ts > rejects malformed multipart and invalid form shape without creating an asset 18ms
+ ✓ |media-tools| tests/integration/media/watermark-runtime.test.ts > rejects a file one byte over 5 MiB before registering an asset 22ms
+ ✓ |media-tools| tests/integration/media/watermark-runtime.test.ts > cancels an oversized multipart envelope before consuming the rest of its stream 22ms
+
+ Test Files  171 passed (171)
+      Tests  1794 passed (1794)
+   Start at  19:02:53
+   Duration  823.43s (tests 94%, import 6%)

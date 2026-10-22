@@ -184,7 +184,13 @@ it.each([
 ])(
   'renders readable task step %s for active and failed jobs',
   (step, label) => {
-    const job = { id: 'job', scope: 'all' as const, step, error: null };
+    const job = {
+      id: 'job',
+      kind: 'process' as const,
+      scope: 'all' as const,
+      step,
+      error: null,
+    };
     const html = renderToStaticMarkup(
       jsx(LibraryCard, {
         readRevision: 1,
@@ -198,6 +204,33 @@ it.each([
     expect(html).toContain(`当前任务：执行中 · ${label}`);
     expect(html).toContain(`最近任务失败 · ${label}`);
     expect(html).not.toContain(` · ${step}`);
+  },
+);
+
+it.each([
+  ['replace', '替换图片'],
+  ['size', '生成尺寸'],
+] as const)(
+  'shows the real %s task rather than calling it reprocessing',
+  (kind, label) => {
+    const html = renderToStaticMarkup(
+      jsx(LibraryCard, {
+        readRevision: 1,
+        item: {
+          ...item,
+          activeJob: {
+            id: 'new-work',
+            kind,
+            status: 'running',
+            scope: 'all',
+            step: kind === 'replace' ? 'receiving' : 'size',
+            error: null,
+          },
+        },
+      }),
+    );
+    expect(html).toContain(`${label}：执行中`);
+    expect(html).not.toContain('重处理');
   },
 );
 
