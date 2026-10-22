@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "pending": {
+    "saveDisabled": true,
+    "inputsDisabled": true
+  },
+  "serverValidation": "Actual server 422 from test-rewritten PATCH rate=0; visible input 15 retained",
+  "unknownResult": "Actual successful PATCH response deliberately dropped; duplicate submit disabled; actual GET reconciliation confirmed 15",
+  "restored": {
+    "mode": "observe",
+    "rate": 10,
+    "burst": 200
+  },
+  "scope": "Transport perturbations are explicitly injected in this isolated preview; product APIs and UI are real."
+}
