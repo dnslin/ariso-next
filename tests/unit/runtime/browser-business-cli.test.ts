@@ -87,6 +87,9 @@ describe('actual business CLI connections without external services', () => {
       { kind: 'branding', spaceId: 8, pageLabel: 'p1' },
     ]);
     expect(report.stages.branding.status).toBe('passed');
+    expect(
+      events.filter((event) => event.kind === 'access-protection'),
+    ).toEqual([{ kind: 'access-protection', spaceId: 8, pageLabel: 'p1' }]);
     expect(scripts.filter((script) => plannedScripts.includes(script))).toEqual(
       plannedScripts,
     );
@@ -167,6 +170,23 @@ describe('actual business CLI connections without external services', () => {
     expect(events).toEqual([{ kind: 'branding', spaceId: 8, pageLabel: 'p1' }]);
     expect(report.suite).toBe('branding');
     expect(report.stages).toBeUndefined();
+  });
+
+  it('executes focused access protection through its isolated verification boundary', async () => {
+    const { events, report, files } = await run([
+      '--suite',
+      'access-protection',
+    ]);
+    expect(
+      events.filter((event) => event.kind === 'access-protection'),
+    ).toEqual([{ kind: 'access-protection', spaceId: 8, pageLabel: 'p1' }]);
+    expect(
+      events
+        .filter((event) => event.kind === 'browser')
+        .map((event) => event.script),
+    ).toEqual(['access-protection.mjs']);
+    expect(report.accessProtection).toBe('passed');
+    expect(files).toContain('access-protection.log');
   });
 
   it.each([

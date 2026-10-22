@@ -6,6 +6,17 @@ function select(suite: string, only?: string) {
 }
 
 describe('focused browser execution plans', () => {
+  it('includes access protection in full and focused verification', () => {
+    expect(select('full').stages).toContainEqual([
+      'access-protection',
+      'access-protection',
+    ]);
+    expect(select('access-protection')).toEqual({
+      stages: [['access-protection', 'accessProtection']],
+      config: {},
+    });
+    expect(() => select('access-protection', 'unknown')).toThrow('--only');
+  });
   it('runs all four real image workflows in full and on the selected managed page', () => {
     expect(select('full').stages).toContainEqual([
       'image-workflows',
@@ -572,6 +583,7 @@ describe('focused browser execution plans', () => {
         ['uiux-p1', 'uiux-p1'],
         ['uiux-20261015', 'uiux-20261015'],
         ['image-workflows', 'image-workflows'],
+        ['access-protection', 'access-protection'],
       ],
       config: {},
     });

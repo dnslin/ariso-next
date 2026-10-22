@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { runAccessProtectionVerification } from './verify-access-protection.ts';
 
 /** Run one business scene, isolating the two upload authentication prerequisites. */
 export async function runBusinessBrowserStage({
@@ -10,6 +11,18 @@ export async function runBusinessBrowserStage({
   name = script,
   dependencies = /** @type {string[]} */ ([]),
 }) {
+  if (script === 'access-protection') {
+    return check(
+      name,
+      () =>
+        runAccessProtectionVerification({
+          spaceId: config.spaceId,
+          pageLabel: config.pageLabel,
+          output: config.output,
+        }),
+      dependencies,
+    );
+  }
   if (script === 'upload' || script === 'upload-polling') {
     const runtime = `${script}-runtime`;
     await check(

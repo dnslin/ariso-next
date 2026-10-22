@@ -37,11 +37,15 @@ const suites = {
       ['uiux-p1', 'uiux-p1'],
       ['uiux-20261015', 'uiux-20261015'],
       ['image-workflows', 'image-workflows'],
+      ['access-protection', 'access-protection'],
     ],
   },
   'brand-experiment': {},
   'image-workflows': {
     stages: [['image-workflows', 'imageWorkflows']],
+  },
+  'access-protection': {
+    stages: [['access-protection', 'accessProtection']],
   },
   branding: {},
   'sharing-experiment': {},

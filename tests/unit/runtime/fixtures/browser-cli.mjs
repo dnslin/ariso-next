@@ -3,6 +3,7 @@ import { EventEmitter } from 'node:events';
 import { appendFileSync } from 'node:fs';
 import * as files from 'node:fs/promises';
 import { registerHooks } from 'node:module';
+import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const runner = new URL(
@@ -122,6 +123,23 @@ export const runBrandBrowser = async () => {};
 export const runBrandingBrowser = async ({ spaceId, pageLabel }) => {
   trace({ kind: 'branding', spaceId, pageLabel });
 };
+export const runAccessProtectionVerification = async ({
+  spaceId,
+  pageLabel,
+  output,
+}) => {
+  trace({ kind: 'access-protection', spaceId, pageLabel });
+  trace({
+    kind: 'browser',
+    script: 'access-protection.mjs',
+    hasPasswordResetFixture: false,
+  });
+  await files.writeFile(
+    join(output, 'access-protection.log'),
+    'CLI access-protection fixture completed\n',
+  );
+  return { status: 'passed' };
+};
 export const createSharingRunner = () =>
   Object.fromEntries(
     ['runViewer', 'runPublic', 'runProtocol', 'runExperiment', 'stop'].map(
@@ -141,10 +159,17 @@ const substitutes = new Map([
   ['./browser-brand.mjs', ['runBrandBrowser']],
   ['./browser-branding.mjs', ['runBrandingBrowser']],
   ['./browser-sharing.mjs', ['createSharingRunner']],
+  ['./verify-access-protection.ts', ['runAccessProtectionVerification']],
 ]);
 registerHooks({
   resolve(specifier, context, nextResolve) {
-    if (context.parentURL === runner && substitutes.has(specifier))
+    if (
+      (context.parentURL === runner && substitutes.has(specifier)) ||
+      (context.parentURL ===
+        new URL('../../../../scripts/browser-business.mjs', import.meta.url)
+          .href &&
+        specifier === './verify-access-protection.ts')
+    )
       return { url: `cli-fixture:${specifier}`, shortCircuit: true };
     return nextResolve(specifier, context);
   },
