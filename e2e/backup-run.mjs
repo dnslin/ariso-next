@@ -66,7 +66,51 @@ async function capture(name) {
           ),
       );
       const geometry = await readGeometry(page);
-      assertGeometry(geometry, `${name}/${width}x${height}/${theme}`);
+      if (name === 'home') {
+        assert.equal(geometry.overflow, false, 'Home fits the viewport');
+        assert.equal(geometry.mainOverflow, false, 'Home content fits');
+        assert.equal(
+          await page.evaluate(() =>
+            document.body.innerText.includes('开源 · 极简 · 图片托管'),
+          ),
+          false,
+          'Home omits the removed caption',
+        );
+      } else {
+        assertGeometry(geometry, `${name}/${width}x${height}/${theme}`);
+      }
+      if (name === 'confirm-backup') {
+        const buttons = await page.evaluate(() => {
+          const footer = document.querySelector('.alert-dialog__footer');
+          const rect = footer.getBoundingClientRect();
+          return {
+            width: rect.width,
+            buttons: [...footer.querySelectorAll('button')].map((button) => {
+              const box = button.getBoundingClientRect();
+              return {
+                left: box.left - rect.left,
+                width: box.width,
+                top: box.top,
+              };
+            }),
+          };
+        });
+        const [cancel, confirm] = buttons.buttons;
+        assert.equal(buttons.buttons.length, 2);
+        assert.ok(
+          Math.abs(cancel.width - confirm.width) < 1,
+          'Equal button widths',
+        );
+        assert.ok(
+          Math.abs(cancel.top - confirm.top) < 1,
+          'Buttons share a row',
+        );
+        assert.ok(Math.abs(cancel.left) < 1, 'Cancel aligns to the left edge');
+        assert.ok(
+          Math.abs(confirm.left + confirm.width - buttons.width) < 1,
+          'Confirm aligns to the right edge',
+        );
+      }
       const filename = `backup-${name}-${width}x${height}-${theme}.png`;
       await page.screenshot({
         path: join(config.output, filename),
@@ -83,6 +127,21 @@ async function capture(name) {
   }
   await resizeViewport(page, 1440, 1080);
   await setTheme(page, 'light');
+  if (name === 'confirm-backup') {
+    await page.focus('.alert-dialog__footer button:first-child');
+    await page.keyboard.press('Tab');
+    assert.equal(
+      await page.evaluate(() => document.activeElement?.dataset.testid),
+      'backup-confirm-submit',
+      'Tab reaches the confirmation button',
+    );
+    await page.keyboard.press('Shift+Tab');
+    assert.equal(
+      await page.evaluate(() => document.activeElement?.textContent),
+      '取消',
+      'Shift+Tab returns to cancel',
+    );
+  }
 }
 
 async function api(path) {
@@ -95,6 +154,9 @@ try {
   errorScript = await installBrowserErrors(page);
   await resizeViewport(page, 1440, 1080);
   if (config.phase === 'create') {
+    await page.goto(config.sourceOrigin);
+    await page.waitForSelector('#home-heading');
+    await capture('home');
     await signIn(config.sourceOrigin);
     await page.goto(`${config.sourceOrigin}/settings/backup`);
     await page.waitForSelector('#backup-create');

@@ -1,0 +1,61 @@
+{
+  "status": "passed",
+  "build": {
+    "version": "v0.0.0-ui.1",
+    "revision": "37d75d5a500938cbfb3cfc77b81d348c359f1c71"
+  },
+  "browserRecovery": {
+    "action": "open -a /Applications/ego lite.app",
+    "blankScreenshotMs": 40,
+    "underlyingCause": "not established; normal application activation restored screenshot capture"
+  },
+  "officialCommand": "EGO_TASK_SPACE=2 EGO_PAGE_LABEL=p1 BROWSER_REPORT_DIR=test-results/home-backup-ui-screenshots node scripts/verify-browser.mjs --suite backup",
+  "officialStatus": "passed",
+  "phases": [
+    "create",
+    "download",
+    "source-data-removed",
+    "restore",
+    "activated"
+  ],
+  "screenshots": [
+    "configured-home-360x780-light.png",
+    "configured-home-390x560-dark.png",
+    "configured-home-360x780-dark.png",
+    "configured-home-768x1024-light.png",
+    "configured-home-390x560-light.png",
+    "configured-home-390x844-light.png",
+    "configured-home-390x844-dark.png",
+    "configured-home-430x932-dark.png",
+    "configured-home-768x1024-dark.png",
+    "configured-home-1440x1080-light.png",
+    "configured-home-1440x1080-dark.png",
+    "configured-home-430x932-light.png",
+    "backup-confirm-backup-360x780-dark.png",
+    "backup-confirm-backup-390x560-dark.png",
+    "backup-confirm-backup-390x844-dark.png",
+    "backup-confirm-backup-430x932-light.png",
+    "backup-confirm-backup-768x1024-light.png",
+    "backup-confirm-backup-768x1024-dark.png",
+    "backup-confirm-backup-430x932-dark.png",
+    "backup-confirm-backup-1440x1080-dark.png",
+    "backup-confirm-backup-390x560-light.png",
+    "backup-confirm-backup-360x780-light.png",
+    "backup-confirm-backup-1440x1080-light.png",
+    "backup-confirm-backup-390x844-light.png"
+  ],
+  "visualReview": {
+    "screens": ["configured homepage", "start-backup confirmation"],
+    "viewports": [
+      "1440x1080",
+      "390x844",
+      "360x780",
+      "430x932",
+      "768x1024",
+      "390x560"
+    ],
+    "themes": ["light", "dark"],
+    "method": "full-page contact sheets plus original-size desktop and mobile spot checks",
+    "result": "requested copy removed, configured description preserved, buttons aligned and equal-width; no new clipping observed"
+  }
+}

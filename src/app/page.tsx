@@ -48,7 +48,6 @@ export default async function HomePage() {
         <Link href={settings ? '/login' : '/setup'}>
           {settings ? '登录' : '开始初始化'}
         </Link>
-        <p className="home-caption">开源 · 极简 · 图片托管</p>
       </div>
     </PublicShell>
   );
