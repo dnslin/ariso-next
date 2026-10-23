@@ -140,6 +140,11 @@ it.each(activationCheckpoints)(
 it('rejects nonempty targets, but permits generated empty paths and defaults', () => {
   const blank = createBackupDataFixture(join(root, 'blank'), false);
   try {
+    expect(
+      blank.db.$client
+        .prepare('SELECT id FROM access_protection_settings')
+        .all(),
+    ).toEqual([{ id: 1 }]);
     expect(() =>
       assertEmptyRestoreTarget({ db: blank.db, dataDir: blank.paths.dataDir }),
     ).not.toThrow();

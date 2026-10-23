@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { createContentMutations } from '../../../src/server/runtime/content-mutations.ts';
+import { accessProtectionSettingsResponse } from '../../../src/server/access-protection/settings-http.ts';
 
 const runtime = vi.hoisted(() => ({
   current: {} as Record<string, unknown>,
@@ -159,6 +160,12 @@ const routes: Route[] = [
     load: () => import('../../../src/app/api/settings/site/route.ts'),
   },
   {
+    path: 'settings/access-protection',
+    method: 'PATCH',
+    load: () =>
+      import('../../../src/app/api/settings/access-protection/route.ts'),
+  },
+  {
     path: 'settings/upload',
     method: 'PATCH',
     load: () => import('../../../src/app/api/settings/upload/route.ts'),
@@ -272,10 +279,52 @@ beforeEach(() => {
     contentMutations,
     config: { logLevel: 'silent' },
     connection: { db: {} },
+    accessProtection: { reset: vi.fn() },
   };
 });
 
 describe('explicit content mutation routes during backup', () => {
+  it('keeps access-protection reads available during backup', async () => {
+    const response = await accessProtectionSettingsResponse(
+      new Request('http://localhost/api/settings/access-protection'),
+      () => ({ mode: 'observe' }),
+    );
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual({ mode: 'observe' });
+  });
+
+  it('waits for an admitted access-protection change before backup can drain', async () => {
+    const contentMutations = createContentMutations();
+    runtime.current.contentMutations = contentMutations;
+    const entered = Promise.withResolvers<void>();
+    const finish = Promise.withResolvers<void>();
+    const response = accessProtectionSettingsResponse(
+      new Request('http://localhost/api/settings/access-protection', {
+        method: 'PATCH',
+      }),
+      async () => {
+        entered.resolve();
+        await finish.promise;
+        return { mode: 'off' };
+      },
+      'settings/access-protection/route.ts:PATCH',
+    );
+    await entered.promise;
+    contentMutations.closeAdmission();
+    let drained = false;
+    const idle = contentMutations.waitForIdle().then(() => {
+      drained = true;
+    });
+    await Promise.resolve();
+    expect(contentMutations.activeCount).toBe(1);
+    expect(drained).toBe(false);
+    finish.resolve();
+    expect((await response).status).toBe(200);
+    await idle;
+    expect(contentMutations.activeCount).toBe(0);
+    expect(drained).toBe(true);
+  });
+
   for (const route of routes) {
     it(`${route.method} ${route.path} rejects before parsing input or changing data`, async () => {
       const request = new Request(`http://localhost/api/${route.path}`, {

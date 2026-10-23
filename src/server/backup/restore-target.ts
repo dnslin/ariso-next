@@ -23,6 +23,7 @@ const emptyConfigurationTables = new Set([
   'site_settings',
   'identity_github_settings',
   'identity_smtp_settings',
+  'access_protection_settings',
 ]);
 export function assertEmptyRestoreTarget(options: {
   db: ReturnType<typeof openRuntimeDatabase>['db'];
