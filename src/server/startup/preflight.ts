@@ -1,3 +1,4 @@
+import { activatePendingRestore } from '../backup/activate.ts';
 import { resolve } from 'node:path';
 import { parseRuntimeEnv, type RuntimeConfig } from '../runtime/env.ts';
 import { initializeRuntimePaths } from '../runtime/paths.ts';
@@ -13,6 +14,7 @@ export function runPreflight(
   ) => undefined,
 ) {
   const config = parseRuntimeEnv(env);
+  activatePendingRestore(config);
   const paths = initializeRuntimePaths(config.dataDir);
   const connection = openRuntimeDatabase(paths.database);
   try {

@@ -16,6 +16,7 @@ const state = vi.hoisted(() => ({
   albums: [] as UploadRelation[],
   tags: [] as UploadRelation[],
   start: vi.fn(),
+  paused: false,
 }));
 const settings: UploadSettings = {
   maxFileBytes: 50 * 1048576,
@@ -139,6 +140,7 @@ function draftMarkup(html: string) {
 }
 beforeEach(() => {
   vi.clearAllMocks();
+  state.paused = false;
   state.items = queue(1);
   state.storageId = undefined;
   state.visibility = undefined;
@@ -305,4 +307,16 @@ it('focuses the settings section when no selector can be operated', () => {
   });
   action(summary)!();
   expect(section.focus).toHaveBeenCalledWith({ preventScroll: true });
+});
+
+vi.mock('../../../src/components/backup/use-backup-activity', () => ({
+  useBackupActivity: () => ({ paused: state.paused }),
+}));
+
+it('retains the upload draft but disables starting it during a backup', () => {
+  state.paused = true;
+  const html = render();
+  expect(html).toMatch(/<button[^>]*disabled[^>]*>开始上传<\/button>/);
+  expect(html).toContain('本地存储');
+  expect(state.start).not.toHaveBeenCalled();
 });

@@ -23,31 +23,43 @@ export function GET(request: Request, context: Context) {
   });
 }
 export function PATCH(request: Request, context: Context) {
-  return collectionResponse(request, 'albums', async () => {
-    const { id } = await context.params;
-    const input = await collectionBody(request);
-    return getServerRuntime().connection.db.transaction(
-      (tx) => {
-        updateAlbum(tx, id, input);
-        return { album: readOwnerAlbum(tx, id) };
-      },
-      { behavior: 'immediate' },
-    );
-  });
+  return collectionResponse(
+    request,
+    'albums',
+    async () => {
+      const { id } = await context.params;
+      const input = await collectionBody(request);
+      return getServerRuntime().connection.db.transaction(
+        (tx) => {
+          updateAlbum(tx, id, input);
+          return { album: readOwnerAlbum(tx, id) };
+        },
+        { behavior: 'immediate' },
+      );
+    },
+    200,
+    'albums/[id]:PATCH',
+  );
 }
 export function DELETE(request: Request, context: Context) {
-  return collectionResponse(request, 'albums', async () => {
-    const { id } = await context.params;
-    return getServerRuntime().connection.db.transaction(
-      (tx) => {
-        if (!deleteAlbum(tx, id))
-          throw new CollectionError(
-            'COLLECTION_TARGET_NOT_FOUND',
-            '相册不存在或已被删除',
-          );
-        return { deleted: true };
-      },
-      { behavior: 'immediate' },
-    );
-  });
+  return collectionResponse(
+    request,
+    'albums',
+    async () => {
+      const { id } = await context.params;
+      return getServerRuntime().connection.db.transaction(
+        (tx) => {
+          if (!deleteAlbum(tx, id))
+            throw new CollectionError(
+              'COLLECTION_TARGET_NOT_FOUND',
+              '相册不存在或已被删除',
+            );
+          return { deleted: true };
+        },
+        { behavior: 'immediate' },
+      );
+    },
+    200,
+    'albums/[id]:DELETE',
+  );
 }

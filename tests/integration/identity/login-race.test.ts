@@ -1,3 +1,4 @@
+import { createContentMutations } from '../../../src/server/runtime/content-mutations.ts';
 import { randomBytes } from 'node:crypto';
 import { resolve } from 'node:path';
 import { migrate } from 'drizzle-orm/better-sqlite3/migrator';
@@ -55,6 +56,7 @@ beforeEach(async () => {
   migrate(connection.db, { migrationsFolder: resolve('drizzle') });
   await seedAuthOwner(connection, origin);
   auth = getAuth({
+    contentMutations: createContentMutations(),
     connection,
     github: { enabled: false, clientId: '', clientSecret: null },
     config: parseRuntimeEnv({

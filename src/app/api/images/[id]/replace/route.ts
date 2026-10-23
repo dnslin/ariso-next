@@ -1,3 +1,4 @@
+import { isContentMutationPaused } from '../../../../../server/runtime/content-mutations.ts';
 import { requireOwner } from '../../../../../server/identity/owner.ts';
 import { getServerRuntime } from '../../../../../server/startup/server-start.ts';
 import { readImageReplacement } from '../../../../../server/media/replacement.ts';
@@ -15,13 +16,27 @@ async function handle(request: Request, context: Context, write: boolean) {
   let imageId: string | undefined;
   try {
     await requireOwner(request);
-    imageId = (await context.params).id;
-    const app = getServerRuntime();
-    const data = write
-      ? await app.replacements.receive(imageId, request)
-      : readImageReplacement(app.connection.db, imageId);
-    return Response.json(data, { status: write ? 202 : 200, headers });
+    const runMutation = async () => {
+      imageId = (await context.params).id;
+      const app = getServerRuntime();
+      const data = write
+        ? await app.replacements.receive(imageId, request)
+        : readImageReplacement(app.connection.db, imageId);
+      return Response.json(data, { status: write ? 202 : 200, headers });
+    };
+    return write
+      ? await getServerRuntime().contentMutations.run(
+          'images/[id]/replace/route.ts:handle',
+          runMutation,
+        )
+      : await runMutation();
   } catch (error) {
+    if (isContentMutationPaused(error))
+      return Response.json(
+        { code: error.code, message: error.message },
+        { status: 409, headers },
+      );
+
     if (
       error instanceof MediaReprocessError ||
       error instanceof MultipartReceiveError ||

@@ -15,16 +15,20 @@ export async function storageResponse(
     },
   ) => unknown | Promise<unknown>,
   status = 200,
+  mutation?: string,
 ) {
   const headers = { 'Cache-Control': 'no-store' };
   try {
     await requireOwner(request);
-    const { connection, config } = getServerRuntime();
-    return Response.json(
-      await operation(connection.db, {
+    const app = getServerRuntime();
+    const { connection, config } = app;
+    const invoke = () =>
+      operation(connection.db, {
         storageRoot: resolve(config.dataDir, 'storage'),
         secretCrypto: createSecretCrypto(config.encryptionKey),
-      }),
+      });
+    return Response.json(
+      await (mutation ? app.contentMutations.run(mutation, invoke) : invoke()),
       { status, headers },
     );
   } catch (error) {

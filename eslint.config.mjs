@@ -26,6 +26,8 @@ export default defineConfig([
     'tests/experiments/analytics/next-app/next-env.d.ts',
     'tests/experiments/sharing/next-app/.next/**',
     'tests/experiments/sharing/next-app/next-env.d.ts',
+    'prototypes/backup-restore/.next/**',
+    'prototypes/backup-restore/next-env.d.ts',
     'out/**',
     'build/**',
     'dist/**',

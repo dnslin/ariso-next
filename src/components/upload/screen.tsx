@@ -17,6 +17,7 @@ import {
   MoreHorizontal,
 } from 'lucide-react';
 import { OwnerShell } from '../shell/owner-shell';
+import { useBackupActivity } from '../backup/use-backup-activity';
 import { LibraryDetail } from '../library/detail';
 import { useDetailQuery } from '../library/use-detail-query';
 import { useDetailNavigation } from '../../app/library/use-detail-navigation';
@@ -55,6 +56,7 @@ type ScreenProps = {
   returnTo?: string;
 };
 export function UploadScreen(props: ScreenProps) {
+  const { paused } = useBackupActivity();
   const params = useSearchParams();
   const detail = useDetailNavigation('#upload-title');
   const currentHref = `/upload${params.size ? `?${params}` : ''}`;
@@ -93,7 +95,7 @@ export function UploadScreen(props: ScreenProps) {
       ? preview
       : undefined;
   const input = useUploadInput(
-    detail.view ? null : controller,
+    detail.view || paused ? null : controller,
     uploadDraftKey(props.albumId),
   );
   const settingsRef = useRef<HTMLDivElement | null>(null);
@@ -193,6 +195,7 @@ export function UploadScreen(props: ScreenProps) {
               <Button
                 variant="outline"
                 className="flex-1 md:hidden"
+                isDisabled={paused}
                 onPress={choose}
               >
                 继续添加
@@ -201,10 +204,13 @@ export function UploadScreen(props: ScreenProps) {
             <Button
               className="flex-1 md:max-w-50"
               isDisabled={
-                queuedCount === 0 || !selectedStorage || missingSourceAlbum
+                paused ||
+                queuedCount === 0 ||
+                !selectedStorage ||
+                missingSourceAlbum
               }
               onPress={() => {
-                if (selectedStorage)
+                if (selectedStorage && !paused)
                   void controller.start(
                     visibility,
                     chosenStorageId !== undefined
@@ -332,6 +338,7 @@ export function UploadScreen(props: ScreenProps) {
                       <Button
                         variant="outline"
                         className="hidden md:inline-flex"
+                        isDisabled={paused}
                         onPress={input.chooseDirectory}
                       >
                         选择文件夹
@@ -340,6 +347,7 @@ export function UploadScreen(props: ScreenProps) {
                         <Button
                           variant="outline"
                           className="hidden min-h-11 w-30 shrink-0 md:inline-flex"
+                          isDisabled={paused}
                           onPress={choose}
                         >
                           继续添加
@@ -421,6 +429,7 @@ export function UploadScreen(props: ScreenProps) {
                   <div className="grid w-full grid-cols-2 gap-3 min-[1200px]:flex min-[1200px]:w-auto">
                     <Button
                       className="h-12 min-h-12 min-w-0 w-full px-2 font-normal min-[1200px]:w-40 min-[1200px]:px-4 min-[1200px]:font-medium"
+                      isDisabled={paused}
                       onPress={choose}
                     >
                       选择图片
@@ -428,6 +437,7 @@ export function UploadScreen(props: ScreenProps) {
                     <Button
                       variant="outline"
                       className="h-12 min-h-12 min-w-0 w-full px-2 font-normal min-[1200px]:w-40 min-[1200px]:px-4 min-[1200px]:font-medium"
+                      isDisabled={paused}
                       onPress={input.chooseDirectory}
                     >
                       选择文件夹
@@ -443,6 +453,7 @@ export function UploadScreen(props: ScreenProps) {
               <Button
                 variant="outline"
                 className="mt-3 min-h-11 w-full md:hidden"
+                isDisabled={paused}
                 onPress={input.chooseDirectory}
               >
                 选择文件夹

@@ -409,3 +409,14 @@ it('does not invent a complete cache before upload starts or restore a cleared s
   render();
   expect(queue.controller).toBeNull();
 });
+
+it('ends the owner upload lifetime on the public restore entry', async () => {
+  await started();
+  const controller = queue.controller!;
+  controller.add(smallFile());
+  runtime.pathname = '/setup/restore';
+  render();
+  expect(queue.controller).toBeNull();
+  expect(controller.add(smallFile())?.reason).toBe('closed');
+  expect(queue.client.getQueryData(['upload-settings'])).toBeUndefined();
+});

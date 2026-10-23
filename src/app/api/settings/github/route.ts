@@ -23,12 +23,15 @@ export function GET(request: Request) {
 }
 
 export function PATCH(request: Request) {
-  return accountResponse(request, async ({ connection, config, github }) =>
-    updateGithubSettings(
-      connection.db,
-      createSecretCrypto(config.encryptionKey),
-      github,
-      await readAccountInput(request, githubSettingsInputSchema),
-    ),
+  return accountResponse(
+    request,
+    async ({ connection, config, github }) =>
+      updateGithubSettings(
+        connection.db,
+        createSecretCrypto(config.encryptionKey),
+        github,
+        await readAccountInput(request, githubSettingsInputSchema),
+      ),
+    'settings.github',
   );
 }

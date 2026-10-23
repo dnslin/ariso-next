@@ -113,6 +113,121 @@ const job = (id: string) =>
   connection.db.select().from(mediaJobs).where(eq(mediaJobs.id, id)).get()!;
 
 describe('persistent media queue', () => {
+  it('does not wait for temporary preview maintenance at the persistent snapshot boundary', async () => {
+    const pending = Promise.withResolvers<void>();
+    const entered = Promise.withResolvers<void>();
+    const service = start();
+    service.pause();
+    vi.spyOn(service.previews, 'maintenance').mockImplementation(async () => {
+      entered.resolve();
+      await pending.promise;
+    });
+    try {
+      await entered.promise;
+      await expect(
+        service.waitForIdle(AbortSignal.timeout(100)),
+      ).resolves.toBeUndefined();
+    } finally {
+      pending.resolve();
+    }
+  });
+
+  it('pauses new persistent claims, drains the running job and resumes queued work without recovery', async () => {
+    const pending = Promise.withResolvers<void>();
+    const first = enqueue();
+    const second = enqueue();
+    let signal: AbortSignal | undefined;
+    vi.spyOn(processing, 'processMediaJob').mockImplementation(
+      async (runtime, id, currentSignal) => {
+        if (id === first.jobId) {
+          signal = currentSignal;
+          await pending.promise;
+        }
+        runtime.db
+          .update(mediaJobs)
+          .set({ status: 'succeeded' })
+          .where(eq(mediaJobs.id, id))
+          .run();
+      },
+    );
+    const service = start();
+    try {
+      await vi.waitFor(() => expect(job(first.jobId).status).toBe('running'));
+      service.pause();
+      let idle = false;
+      const drained = service.waitForIdle().then(() => {
+        idle = true;
+      });
+      await Promise.resolve();
+      expect(idle).toBe(false);
+      expect(signal?.aborted).toBe(false);
+      pending.resolve();
+      await drained;
+      await setTimeout(100);
+      expect(job(second.jobId).status).toBe('queued');
+      expect(job(first.jobId).recoveryCount).toBe(0);
+      service.resume();
+      await vi.waitFor(() =>
+        expect(job(second.jobId).status).toBe('succeeded'),
+      );
+    } finally {
+      pending.resolve();
+    }
+  });
+
+  it('continues claiming temporary previews while persistent work is paused and idle', async () => {
+    const previewId = randomUUID();
+    const pending = Promise.withResolvers<void>();
+    const previewProcessor = vi
+      .spyOn(previewProcessing, 'processMediaPreview')
+      .mockImplementation(async (runtime, id) => {
+        await pending.promise;
+        runtime.db
+          .update(mediaPreviews)
+          .set({ status: 'cancelled' })
+          .where(eq(mediaPreviews.id, id))
+          .run();
+      });
+    const service = start();
+    service.pause();
+    await service.previews.ready;
+    const now = new Date();
+    connection.db
+      .insert(mediaPreviews)
+      .values({
+        id: previewId,
+        status: 'receiving',
+        cleanupStatus: 'pending',
+        createdAt: now,
+        updatedAt: now,
+      })
+      .run();
+    const { defaultLinkVersion, defaultVisibility, concurrency, ...rendering } =
+      initialMediaSettings;
+    void defaultLinkVersion;
+    void defaultVisibility;
+    void concurrency;
+    queuePreview(
+      {
+        db: connection.db,
+        storageRoot: join(directory, 'storage'),
+        temporaryRoot: join(directory, 'tmp'),
+        logger,
+      },
+      previewId,
+      { target: 'original', settings: previewSettingsSchema.parse(rendering) },
+    );
+    const queued = enqueue();
+    try {
+      await vi.waitFor(() => expect(previewProcessor).toHaveBeenCalledOnce());
+      await service.waitForIdle();
+      expect(service.previews.get(previewId).status).toBe('running');
+      expect(job(queued.jobId).status).toBe('queued');
+    } finally {
+      pending.resolve();
+    }
+  });
+
   it('preserves interrupted input and only removes inputs of known terminal media jobs', async () => {
     const active = enqueue();
     const settled = enqueue();

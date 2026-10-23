@@ -1,3 +1,4 @@
+import { createContentMutations } from '../../../src/server/runtime/content-mutations.ts';
 import { beforeEach, expect, it, vi } from 'vitest';
 import { POST } from '../../../src/app/api/images/batch/route.ts';
 import { requireOwner } from '../../../src/server/identity/owner.ts';
@@ -21,6 +22,7 @@ vi.mock('../../../src/server/library/batch.ts', async (original) => ({
 beforeEach(() => {
   vi.resetAllMocks();
   vi.mocked(getServerRuntime).mockReturnValue({
+    contentMutations: createContentMutations(),
     connection: { db: {} },
     config: { logLevel: 'debug' },
   } as ReturnType<typeof getServerRuntime>);
@@ -69,7 +71,7 @@ it.each([
     body: { code: 'LIBRARY_INVALID_BATCH' },
   });
   expect(runLibraryBatch).not.toHaveBeenCalled();
-  expect(getServerRuntime).not.toHaveBeenCalled();
+  expect(getServerRuntime().contentMutations.activeCount).toBe(0);
 });
 it('returns actual per-image mixed results rather than treating HTTP 200 as every item succeeding', async () => {
   const result = {

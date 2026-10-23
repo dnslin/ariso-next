@@ -7,8 +7,13 @@ export function POST(
   request: Request,
   context: { params: Promise<{ id: string; probeId: string }> },
 ) {
-  return storageResponse(request, async () => {
-    const { id, probeId } = await context.params;
-    return getServerRuntime().storageProbes.retryCleanup(id, probeId);
-  });
+  return storageResponse(
+    request,
+    async () => {
+      const { id, probeId } = await context.params;
+      return getServerRuntime().storageProbes.retryCleanup(id, probeId);
+    },
+    200,
+    'storages/[id]/probes/[probeId]/retry-cleanup/route.ts:POST',
+  );
 }

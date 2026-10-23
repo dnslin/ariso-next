@@ -1,3 +1,4 @@
+import { isContentMutationPaused } from '../../../../../server/runtime/content-mutations.ts';
 import { ZodError } from 'zod';
 import { requireOwner } from '../../../../../server/identity/owner.ts';
 import {
@@ -18,15 +19,26 @@ export async function POST(
   let imageId: string | undefined;
   try {
     await requireOwner(request);
-    imageId = (await context.params).id;
-    const body = await request.text();
-    const result = requestReprocess(
-      getServerRuntime().connection.db,
-      imageId,
-      body.length ? JSON.parse(body) : {},
+    return await getServerRuntime().contentMutations.run(
+      'images/[id]/reprocess/route.ts:POST',
+      async () => {
+        imageId = (await context.params).id;
+        const body = await request.text();
+        const result = requestReprocess(
+          getServerRuntime().connection.db,
+          imageId,
+          body.length ? JSON.parse(body) : {},
+        );
+        return Response.json(result, { status: 202, headers });
+      },
     );
-    return Response.json(result, { status: 202, headers });
   } catch (error) {
+    if (isContentMutationPaused(error))
+      return Response.json(
+        { code: error.code, message: error.message },
+        { status: 409, headers },
+      );
+
     if (error instanceof SyntaxError || error instanceof ZodError)
       return Response.json(
         { code: 'INVALID_REPROCESS_INPUT', message: '请提供有效的重处理范围' },

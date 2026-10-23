@@ -1,3 +1,4 @@
+import { createContentMutations } from '../../../src/server/runtime/content-mutations.ts';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { POST } from '../../../src/app/api/uploads/sessions/[id]/resubmit/route.ts';
 import { requireOwner } from '../../../src/server/identity/owner.ts';
@@ -34,6 +35,7 @@ beforeEach(() => {
   vi.resetAllMocks();
   resubmit.mockResolvedValue(replacement);
   vi.mocked(getServerRuntime).mockReturnValue({
+    contentMutations: createContentMutations(),
     uploads: { resubmit },
   } as unknown as ReturnType<typeof getServerRuntime>);
 });

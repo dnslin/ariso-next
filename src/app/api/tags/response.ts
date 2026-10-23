@@ -24,6 +24,7 @@ export function tagResponse(
   request: Request,
   operation: () => Promise<TagResult> | TagResult,
   status = 200,
+  mutation?: string,
 ) {
   const context = {
     method: request.method,
@@ -68,5 +69,6 @@ export function tagResponse(
       }
     },
     status,
+    mutation,
   );
 }

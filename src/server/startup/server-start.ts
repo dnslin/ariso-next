@@ -24,6 +24,12 @@ import { createBrandingService } from '../site/branding.ts';
 import { createArchiveService } from '../delivery/archive.ts';
 import { createReplacementService } from '../media/replacement.ts';
 import { createAccessProtectionRuntime } from '../access-protection/runtime.ts';
+import { createContentMutations } from '../runtime/content-mutations.ts';
+import { createBackupQuiescence } from '../backup/quiescence.ts';
+import { BackupError } from '../backup/errors.ts';
+import { createBackupRuntime } from '../backup/runtime.ts';
+import { readBuildIdentity } from '../runtime/build-info.ts';
+import { createRestoreRuntime } from '../backup/restore-runtime.ts';
 
 type ServerRuntime = ReturnType<typeof initializeServerRuntime>;
 
@@ -33,6 +39,8 @@ const processState = globalThis as typeof globalThis & {
 
 function initializeServerRuntime() {
   const config = parseRuntimeEnv();
+  const application = readBuildIdentity();
+  const contentMutations = createContentMutations();
   const connection = openRuntimeDatabase(join(config.dataDir, 'ariso.db'));
   try {
     verifyStorageSecrets(
@@ -45,6 +53,14 @@ function initializeServerRuntime() {
     );
     readSmtpConfig(connection.db, createSecretCrypto(config.encryptionKey));
     const setup = createSetupState(connection.db, connection.db.$client.name);
+    const restore = createRestoreRuntime({
+      db: connection.db,
+      dataDir: config.dataDir,
+      encryptionKey: config.encryptionKey,
+      application,
+      setup,
+      logger: createRuntimeLogger('backup.restore', config.logLevel),
+    });
     if (!setup.code) {
       requireInitialSettings(connection.db, connection.db.$client.name);
     } else {
@@ -141,6 +157,32 @@ function initializeServerRuntime() {
       db: connection.db,
       logger: createRuntimeLogger('access-protection', config.logLevel),
     });
+    const backupQuiescence = createBackupQuiescence({
+      contentMutations,
+      mediaQueue,
+      uploads,
+      storageMaintenance,
+      storageProbes,
+      watermarks,
+      branding,
+      flushAnalytics() {
+        if (!analytics.flush())
+          throw new BackupError(
+            'BACKUP_ANALYTICS_FLUSH_FAILED',
+            503,
+            '访问统计暂时无法保存，请稍后重试备份',
+          );
+      },
+    });
+    const backups = createBackupRuntime({
+      db: connection.db,
+      dataDir: config.dataDir,
+      encryptionKey: config.encryptionKey,
+      application,
+      logger: createRuntimeLogger('backup', config.logLevel),
+      contentMutations,
+      quiescence: backupQuiescence,
+    });
     let stopping: Promise<void> | undefined;
     const runtime = {
       config,
@@ -160,12 +202,18 @@ function initializeServerRuntime() {
       archive,
       replacements,
       accessProtection,
+      contentMutations,
+      backupQuiescence,
+      backups,
+      restore,
       get stopping() {
         return stopping !== undefined;
       },
       stop() {
-        return (stopping ??= storageMaintenance
+        return (stopping ??= backups
           .stop()
+          .finally(() => restore.stop())
+          .finally(() => storageMaintenance.stop())
           .finally(() => sharing.stop())
           .finally(() => accessProtection.stop())
           .finally(() => archive.close())

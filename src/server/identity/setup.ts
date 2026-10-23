@@ -52,10 +52,48 @@ export function createSetupState(
     code: readSetupOwner(db, databasePath)
       ? null
       : randomBytes(24).toString('base64url'),
+    activeSetupRequests: 0,
+    restoreJobId: null as string | null,
   };
 }
 
 export type SetupState = ReturnType<typeof createSetupState>;
+
+export function requireSetupNotRestoring(state: SetupState) {
+  if (state.restoreJobId)
+    throw new SetupError(
+      'RESTORE_IN_PROGRESS',
+      409,
+      '正在恢复站点，请继续或先放弃本次恢复',
+    );
+}
+
+/** Keep normal concurrent setup's existing final-transaction check; only restore is mutually exclusive. */
+export function beginSetupRequest(state: SetupState) {
+  requireSetupNotRestoring(state);
+  state.activeSetupRequests++;
+  let released = false;
+  return () => {
+    if (released) return;
+    released = true;
+    state.activeSetupRequests--;
+  };
+}
+
+export function claimRestoreSetup(state: SetupState, id: string) {
+  requireSetupNotRestoring(state);
+  if (state.activeSetupRequests)
+    throw new SetupError(
+      'SETUP_IN_PROGRESS',
+      409,
+      '初始化正在提交，请等待完成后再操作',
+    );
+  state.restoreJobId = id;
+}
+
+export function releaseRestoreSetup(state: SetupState, id: string) {
+  if (state.restoreJobId === id) state.restoreJobId = null;
+}
 
 export function requireSetupOpen(
   db: BetterSQLite3Database,

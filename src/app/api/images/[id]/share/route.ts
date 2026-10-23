@@ -21,19 +21,26 @@ export function GET(request: Request, context: Context) {
   );
 }
 export function POST(request: Request, context: Context) {
-  return ownerShareResponse(request, async () => ({
-    share: createImageShare(
-      getServerRuntime().connection.db,
-      (await context.params).id,
-      await shareBody(request),
-    ),
-  }));
+  return ownerShareResponse(
+    request,
+    async () => ({
+      share: createImageShare(
+        getServerRuntime().connection.db,
+        (await context.params).id,
+        await shareBody(request),
+      ),
+    }),
+    'image-share:POST',
+  );
 }
 export function DELETE(request: Request, context: Context) {
-  return ownerShareResponse(request, async () =>
-    revokeOwnerImageShare(
-      getServerRuntime().connection.db,
-      (await context.params).id,
-    ),
+  return ownerShareResponse(
+    request,
+    async () =>
+      revokeOwnerImageShare(
+        getServerRuntime().connection.db,
+        (await context.params).id,
+      ),
+    'image-share:DELETE',
   );
 }

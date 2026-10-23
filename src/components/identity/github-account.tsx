@@ -170,7 +170,10 @@ export function GithubAccount({
                 role="alert"
                 className="mt-1 text-[13px] leading-normal text-danger"
               >
-                {account.linkError || 'GitHub 绑定未完成，请检查授权后重试。'}
+                {account.linkError ||
+                  (view.callbackBackupPaused
+                    ? '站点正在创建备份，请在备份结束后重新绑定 GitHub'
+                    : 'GitHub 绑定未完成，请检查授权后重试。')}
               </p>
             ) : null}
           </AccountSettingRow>

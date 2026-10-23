@@ -1,3 +1,4 @@
+import { isContentMutationPaused } from '../../../../server/runtime/content-mutations.ts';
 import { requireOwner } from '../../../../server/identity/owner.ts';
 import {
   parseLibraryBatch,
@@ -14,37 +15,51 @@ export async function POST(request: Request) {
   const headers = { 'Cache-Control': 'no-store' };
   try {
     await requireOwner(request);
-    let body: unknown;
-    try {
-      body = await request.json();
-    } catch (error) {
-      if (error instanceof SyntaxError)
-        throw new LibraryQueryError(
-          '批量操作请求必须为有效 JSON',
-          'LIBRARY_INVALID_BATCH',
+    return await getServerRuntime().contentMutations.run(
+      'images/batch/route.ts:POST',
+      async () => {
+        let body: unknown;
+        try {
+          body = await request.json();
+        } catch (error) {
+          if (error instanceof SyntaxError)
+            throw new LibraryQueryError(
+              '批量操作请求必须为有效 JSON',
+              'LIBRARY_INVALID_BATCH',
+            );
+          throw error;
+        }
+        // Admission is already checked; reject malformed input before accessing selected images.
+        const input = parseLibraryBatch(body);
+        const server = getServerRuntime();
+        const logger = createRuntimeLogger(
+          'library.batch',
+          server.config.logLevel,
         );
-      throw error;
-    }
-    // Reject malformed requests before touching the runtime or any selected image.
-    const input = parseLibraryBatch(body);
-    const server = getServerRuntime();
-    const logger = createRuntimeLogger('library.batch', server.config.logLevel);
-    return Response.json(
-      await runLibraryBatch(server.connection.db, input, (err, imageId) => {
-        logger.error(
-          {
-            err,
-            imageId,
-            command: input.command.type,
-            mode: input.mode,
-            count: input.ids.length,
-          },
-          'Library batch item failed',
+        return Response.json(
+          await runLibraryBatch(server.connection.db, input, (err, imageId) => {
+            logger.error(
+              {
+                err,
+                imageId,
+                command: input.command.type,
+                mode: input.mode,
+                count: input.ids.length,
+              },
+              'Library batch item failed',
+            );
+          }),
+          { headers },
         );
-      }),
-      { headers },
+      },
     );
   } catch (err) {
+    if (isContentMutationPaused(err))
+      return Response.json(
+        { code: err.code, message: err.message },
+        { status: 409, headers },
+      );
+
     if (
       err instanceof LibraryQueryError ||
       (err instanceof Error &&

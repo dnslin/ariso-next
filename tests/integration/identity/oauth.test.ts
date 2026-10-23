@@ -1,3 +1,4 @@
+import { createContentMutations } from '../../../src/server/runtime/content-mutations.ts';
 import { randomBytes } from 'node:crypto';
 import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -152,6 +153,7 @@ beforeEach(async () => {
     LOG_LEVEL: 'fatal',
   });
   runtimeState.runtime = {
+    contentMutations: createContentMutations(),
     connection,
     config,
     github: captureGithubSettings(
@@ -783,4 +785,62 @@ it('the adapter preserves unrelated model/provider constraints and GitHub storag
     connection.db.$client.exec('DROP TRIGGER reject_github_insert');
   }
   expect(connection.db.select().from(account).all()).toEqual([credential]);
+});
+it('backup blocks a late new GitHub binding while preserving the owner account and allowing a fresh retry', async () => {
+  const flow = await begin(true);
+  const oldFetch = globalThis.fetch;
+  const reached = Promise.withResolvers<void>();
+  const resume = Promise.withResolvers<void>();
+  vi.stubGlobal(
+    'fetch',
+    async (input: string | URL | Request, init?: RequestInit) => {
+      if (
+        String(input instanceof Request ? input.url : input) ===
+        'https://github.com/login/oauth/access_token'
+      ) {
+        reached.resolve();
+        await resume.promise;
+      }
+      return oldFetch(input, init);
+    },
+  );
+  const pending = callback(flow);
+  await reached.promise;
+  runtimeState.runtime.contentMutations.closeAdmission();
+  resume.resolve();
+  const response = await pending;
+  expect(response.status).toBe(302);
+  expect(response.headers.get('location')).toBe(
+    `${origin}/settings/account?github=error&error=site_backup_in_progress`,
+  );
+  expect(githubAccount()).toBeUndefined();
+  expect(connection.db.select().from(user).all()).toHaveLength(1);
+  expect(runtimeState.runtime.contentMutations.activeCount).toBe(0);
+  runtimeState.runtime.contentMutations.openAdmission();
+  const retried = await callback(await begin(true));
+  expect(retried.headers.get('location')).toBe(
+    `${origin}/settings/account?github=linked`,
+  );
+  expect(githubAccount()?.accountId).toBe('181');
+});
+it('backup keeps an already bound GitHub login and its session usable', async () => {
+  await callback(await begin(true));
+  const linked = githubAccount()!;
+  runtimeState.runtime.contentMutations.closeAdmission();
+  expect((await bindingGet(request('/api/account/github'))).status).toBe(200);
+  expect((await settingsGet(request('/api/settings/github'))).status).toBe(200);
+  expect(
+    (await patch({ enabled: false }, ownerCookie, 'https://foreign.test'))
+      .status,
+  ).toBe(403);
+  const response = await callback(await begin(false));
+  expect(response.status).toBe(302);
+  expect(response.headers.get('location')).toBe(`${origin}/admin`);
+  expect(githubAccount()?.id).toBe(linked.id);
+  expect(
+    await getAuth()!.api.getSession({
+      headers: new Headers({ cookie: cookies(response) }),
+      query: { disableRefresh: true },
+    }),
+  ).not.toBeNull();
 });

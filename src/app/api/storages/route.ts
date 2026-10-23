@@ -22,5 +22,6 @@ export function POST(request: Request) {
         context,
       ),
     201,
+    'storages/route.ts:POST',
   );
 }

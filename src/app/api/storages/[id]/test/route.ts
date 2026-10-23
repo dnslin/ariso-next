@@ -12,9 +12,14 @@ export function POST(
   request: Request,
   context: { params: Promise<{ id: string }> },
 ) {
-  return storageResponse(request, async () => {
-    const { id } = await context.params;
-    const input = inputSchema.parse(await request.json());
-    return getServerRuntime().storageProbes.test(id, input, request.signal);
-  });
+  return storageResponse(
+    request,
+    async () => {
+      const { id } = await context.params;
+      const input = inputSchema.parse(await request.json());
+      return getServerRuntime().storageProbes.test(id, input, request.signal);
+    },
+    200,
+    'storages/[id]/test/route.ts:POST',
+  );
 }

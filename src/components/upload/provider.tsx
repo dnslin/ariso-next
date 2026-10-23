@@ -110,7 +110,12 @@ function useUploadLifetime() {
     // The root provider survives owner-route navigation; public auth routes end ownership.
     // eslint-disable-next-line react-hooks/set-state-in-effect -- Route entry activates the external upload lifetime once.
     if (pathname === '/upload') setStarted(true);
-    else if (pathname === '/login' || pathname === '/setup') reset();
+    else if (
+      pathname === '/login' ||
+      pathname === '/setup' ||
+      pathname === '/setup/restore'
+    )
+      reset();
   }, [pathname, reset]);
   const expire = useCallback(() => {
     reset();

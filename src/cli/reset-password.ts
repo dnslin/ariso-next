@@ -6,6 +6,7 @@ import { drizzle } from 'drizzle-orm/better-sqlite3';
 import { createInterface } from 'node:readline/promises';
 import { Writable } from 'node:stream';
 import {
+  assertRestoreNotActivating,
   readCliCredential,
   resetCliPassword,
 } from '../server/identity/reset-password.ts';
@@ -52,6 +53,7 @@ async function main() {
     );
   const dataDir = process.env.DATA_DIR ?? '/data';
   if (!isAbsolute(dataDir)) throw new Error('DATA_DIR: 必须是非空绝对路径');
+  assertRestoreNotActivating(dataDir);
   const databasePath = join(dataDir, 'ariso.db');
   if (!existsSync(databasePath))
     throw new Error(`${databasePath}: 未初始化，请先完成 setup`);

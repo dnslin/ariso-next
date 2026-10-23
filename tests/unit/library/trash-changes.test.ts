@@ -160,3 +160,7 @@ it('does not publish before the resulting record can be verified', async () => {
   expect(c.onComplete).not.toHaveBeenCalled();
   expect(calls.notify).not.toHaveBeenCalled();
 });
+
+vi.mock('../../../src/components/backup/use-backup-activity', () => ({
+  useBackupActivity: () => ({ paused: false }),
+}));

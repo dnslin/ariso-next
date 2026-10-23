@@ -1,3 +1,4 @@
+import { isContentMutationPaused } from '../../../../../server/runtime/content-mutations.ts';
 import { ZodError } from 'zod';
 import { CollectionError } from '../../../../../server/collections/errors.ts';
 import { isDeliveryErrorCode } from '../../../../../server/delivery/errors.ts';
@@ -18,23 +19,37 @@ export async function PATCH(
   let imageId: string | undefined;
   try {
     await requireOwner(request);
-    const { id } = await context.params;
-    imageId = id;
-    parseImageRequest(id, new URLSearchParams());
-    let input: unknown;
-    try {
-      input = await request.json();
-    } catch {
-      return Response.json(
-        { code: 'COLLECTION_INVALID_INPUT', message: '图片关系须为 JSON 对象' },
-        { status: 400, headers },
-      );
-    }
-    return Response.json(
-      updateImageCollections(getServerRuntime().connection.db, id, input),
-      { headers },
+    return await getServerRuntime().contentMutations.run(
+      'images/[id]/collections/route.ts:PATCH',
+      async () => {
+        const { id } = await context.params;
+        imageId = id;
+        parseImageRequest(id, new URLSearchParams());
+        let input: unknown;
+        try {
+          input = await request.json();
+        } catch {
+          return Response.json(
+            {
+              code: 'COLLECTION_INVALID_INPUT',
+              message: '图片关系须为 JSON 对象',
+            },
+            { status: 400, headers },
+          );
+        }
+        return Response.json(
+          updateImageCollections(getServerRuntime().connection.db, id, input),
+          { headers },
+        );
+      },
     );
   } catch (err) {
+    if (isContentMutationPaused(err))
+      return Response.json(
+        { code: err.code, message: err.message },
+        { status: 409, headers },
+      );
+
     if (err instanceof ZodError)
       return Response.json(
         {

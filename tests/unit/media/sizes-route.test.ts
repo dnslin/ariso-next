@@ -1,3 +1,4 @@
+import { createContentMutations } from '../../../src/server/runtime/content-mutations.ts';
 import { beforeEach, expect, it, vi } from 'vitest';
 import { GET, POST } from '../../../src/app/api/images/[id]/sizes/route.ts';
 import { requireOwner } from '../../../src/server/identity/owner.ts';
@@ -33,6 +34,7 @@ const select = {
 beforeEach(() => {
   vi.resetAllMocks();
   vi.mocked(getServerRuntime).mockReturnValue({
+    contentMutations: createContentMutations(),
     connection: { db: { select: () => select } },
   } as unknown as ReturnType<typeof getServerRuntime>);
   vi.mocked(requireSiteSettings).mockReturnValue({
@@ -106,14 +108,16 @@ it('returns escaped stable links only for a ready result', async () => {
     links: { url: 'https://ariso.test/i/one?type=compressed&preset=medium' },
   });
 });
-it('rejects malformed or ambiguous selections before runtime access', async () => {
+it('rejects invalid reads before runtime access and invalid writes before changing data', async () => {
   for (const response of [
     await get('version=compressed&preset=medium&preset=large'),
     await get('version=original&preset=small'),
-    await post('{'),
   ])
     expect(response.status).toBe(400);
   expect(getServerRuntime).not.toHaveBeenCalled();
+  expect((await post('{')).status).toBe(400);
+  expect(requestImageSize).not.toHaveBeenCalled();
+  expect(getServerRuntime().contentMutations.activeCount).toBe(0);
 });
 it('keeps lifecycle and persistence failures visible instead of claiming acceptance', async () => {
   vi.mocked(requestImageSize).mockImplementationOnce(() => {

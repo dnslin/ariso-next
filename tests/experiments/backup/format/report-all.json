@@ -1,0 +1,596 @@
+{
+  "scope": "isolated-format-experiment-not-product-implementation",
+  "startedAt": "2026-10-22T09:29:48.166Z",
+  "command": "/Users/dnslin/.nvm/versions/node/v24.18.1/bin/node tests/experiments/backup/format/run.mjs --all",
+  "environment": {
+    "node": "v24.18.1",
+    "platform": "darwin",
+    "arch": "arm64",
+    "cpu": "Apple M4",
+    "cpus": 10,
+    "totalMemoryBytes": 17179869184,
+    "freeDiskBytes": 86892716032
+  },
+  "parameters": {
+    "zip64": true,
+    "store": true,
+    "scryptLogN": 18,
+    "largeBytes": 4296015872,
+    "objectEntries": 100000
+  },
+  "instrumentation": {
+    "rssSampleIntervalMs": 50,
+    "webStreamQueueSizing": "byteLength",
+    "sha256": "only marked comparison fixtures; every entry still validates CRC and length"
+  },
+  "cases": [
+    {
+      "label": "small-streaming-roundtrip-and-unicode",
+      "status": "passed",
+      "elapsedMs": 1062.2899169999998,
+      "entryCount": 6,
+      "originalBytes": 312542,
+      "ciphertextBytes": 313662,
+      "header": {
+        "headerBytes": 150,
+        "logN": 18
+      },
+      "zipBytes": 313416
+    },
+    {
+      "label": "wrong-password-does-not-publish",
+      "status": "passed",
+      "elapsedMs": 483.07908299999986,
+      "observedError": "no identity matched any of the file's recipients"
+    },
+    {
+      "label": "ciphertext-bit-flip-rejected",
+      "status": "passed",
+      "elapsedMs": 485.36187500000005,
+      "observedError": "invalid tag"
+    },
+    {
+      "label": "missing-final-authentication-rejected",
+      "status": "passed",
+      "elapsedMs": 488.1548749999997,
+      "observedError": "invalid tag"
+    },
+    {
+      "label": "excessive-kdf-profile-rejected-before-kdf",
+      "status": "passed",
+      "elapsedMs": 45.71225000000004,
+      "observedError": "UNSUPPORTED_SCRYPT_WORK_FACTOR"
+    },
+    {
+      "label": "oversized-header-rejected-before-kdf",
+      "status": "passed",
+      "elapsedMs": 45.73133299999972,
+      "observedError": "AGE_HEADER_TOO_LONG"
+    },
+    {
+      "label": "zip-crc-mismatch",
+      "status": "passed",
+      "elapsedMs": 47.231083000000126,
+      "observedError": "CRC_MISMATCH: objects/local/a.bin\n+ actual - expected\n\n+ 3881685062\n- 3881685063\n           ^\n"
+    },
+    {
+      "label": "zip-size-mismatch",
+      "status": "passed",
+      "elapsedMs": 46.68183299999964,
+      "observedError": "compressed/uncompressed size mismatch for stored file: 300123 != 300124"
+    },
+    {
+      "label": "zip-path-escape",
+      "status": "passed",
+      "elapsedMs": 45.98466600000029,
+      "observedError": "invalid relative path: ../evil/x.bin"
+    },
+    {
+      "label": "zip-duplicate-entry",
+      "status": "passed",
+      "elapsedMs": 46.725625000000036,
+      "observedError": "DUPLICATE_ENTRY: objects/local/a.bin"
+    },
+    {
+      "label": "source-read-failure-does-not-publish",
+      "status": "passed",
+      "elapsedMs": 497.71629200000007
+    },
+    {
+      "label": "worker-cancellation-does-not-publish",
+      "status": "passed",
+      "elapsedMs": 508.06091700000025,
+      "retainedPartialAfterForcedTermination": true,
+      "coordinatorRemovedPartial": true
+    },
+    {
+      "label": "official-age-cli-bidirectional",
+      "status": "passed",
+      "elapsedMs": 1316.1955830000006,
+      "decrypt": {
+        "exitCode": 0,
+        "prompts": 1
+      },
+      "encrypt": {
+        "exitCode": 0,
+        "prompts": 2
+      },
+      "profile": {
+        "headerBytes": 150,
+        "logN": 18
+      }
+    },
+    {
+      "label": "zip64-real-file-over-4gib",
+      "status": "passed",
+      "elapsedMs": 35160.282417,
+      "payloadBytes": 4296015872,
+      "ciphertextBytes": 4297065331,
+      "verifiedBytes": 4296015909,
+      "entryCount": 2
+    },
+    {
+      "label": "zip64-one-hundred-thousand-objects",
+      "status": "passed",
+      "elapsedMs": 5675.208667000006,
+      "objectCount": 100000,
+      "archiveEntryCount": 100001,
+      "ciphertextBytes": 18293788,
+      "verifiedBytes": 2888926
+    }
+  ],
+  "workerMeasurements": [
+    {
+      "label": "tiny-encrypt",
+      "elapsedMs": 515.988916,
+      "baselineRss": 81412096,
+      "peakRss": 384122880,
+      "rssGrowth": 302710784,
+      "mainEventLoopMaxMs": 12.042239,
+      "mainEventLoopP99Ms": 12.042239,
+      "httpProbeCount": 10,
+      "httpProbeFailures": 0,
+      "httpP95Ms": 0.7474580000000515,
+      "httpMaxMs": 3.2970000000000113,
+      "stages": [
+        {
+          "stage": "kdf-start",
+          "atMs": 45.828208000000004
+        },
+        {
+          "stage": "kdf-complete",
+          "atMs": 493.48125
+        }
+      ],
+      "workerExited": true
+    },
+    {
+      "label": "tiny-decrypt",
+      "elapsedMs": 498.59199999999987,
+      "baselineRss": 379535360,
+      "peakRss": 388694016,
+      "rssGrowth": 9158656,
+      "mainEventLoopMaxMs": 12.247039,
+      "mainEventLoopP99Ms": 12.247039,
+      "httpProbeCount": 9,
+      "httpProbeFailures": 0,
+      "httpP95Ms": 0.5972090000000208,
+      "httpMaxMs": 0.9249169999999367,
+      "stages": [
+        {
+          "stage": "kdf-start",
+          "atMs": 43.42962499999999
+        },
+        {
+          "stage": "kdf-complete",
+          "atMs": 480.31475
+        }
+      ],
+      "workerExited": true
+    },
+    {
+      "label": "tiny-validate",
+      "elapsedMs": 47.10766599999988,
+      "baselineRss": 384057344,
+      "peakRss": 387973120,
+      "rssGrowth": 3915776,
+      "mainEventLoopMaxMs": 12.025855,
+      "mainEventLoopP99Ms": 12.025855,
+      "httpProbeCount": 0,
+      "httpProbeFailures": 0,
+      "httpP95Ms": null,
+      "httpMaxMs": null,
+      "stages": [],
+      "workerExited": true
+    },
+    {
+      "label": "wrong-password",
+      "elapsedMs": 482.99629200000004,
+      "baselineRss": 383942656,
+      "peakRss": 391413760,
+      "rssGrowth": 7471104,
+      "mainEventLoopMaxMs": 12.525567,
+      "mainEventLoopP99Ms": 12.525567,
+      "httpProbeCount": 9,
+      "httpProbeFailures": 0,
+      "httpP95Ms": 0.46641700000009223,
+      "httpMaxMs": 0.5185839999999189,
+      "stages": [
+        {
+          "stage": "kdf-start",
+          "atMs": 46.92708300000004
+        }
+      ],
+      "workerExited": true
+    },
+    {
+      "label": "bit-flip",
+      "elapsedMs": 485.3035,
+      "baselineRss": 387104768,
+      "peakRss": 393527296,
+      "rssGrowth": 6422528,
+      "mainEventLoopMaxMs": 12.558335,
+      "mainEventLoopP99Ms": 12.558335,
+      "httpProbeCount": 9,
+      "httpProbeFailures": 0,
+      "httpP95Ms": 0.5418749999998909,
+      "httpMaxMs": 0.5543330000000424,
+      "stages": [
+        {
+          "stage": "kdf-start",
+          "atMs": 43.34066699999994
+        },
+        {
+          "stage": "kdf-complete",
+          "atMs": 481.80387500000006
+        }
+      ],
+      "workerExited": true
+    },
+    {
+      "label": "truncated",
+      "elapsedMs": 488.09879200000023,
+      "baselineRss": 389087232,
+      "peakRss": 394690560,
+      "rssGrowth": 5603328,
+      "mainEventLoopMaxMs": 12.304383,
+      "mainEventLoopP99Ms": 12.304383,
+      "httpProbeCount": 9,
+      "httpProbeFailures": 0,
+      "httpP95Ms": 0.5047079999999369,
+      "httpMaxMs": 0.7008749999999964,
+      "stages": [
+        {
+          "stage": "kdf-start",
+          "atMs": 43.60041700000011
+        },
+        {
+          "stage": "kdf-complete",
+          "atMs": 479.99908300000016
+        }
+      ],
+      "workerExited": true
+    },
+    {
+      "label": "factor",
+      "elapsedMs": 45.630709000000024,
+      "baselineRss": 390070272,
+      "peakRss": 393314304,
+      "rssGrowth": 3244032,
+      "mainEventLoopMaxMs": 12.034047,
+      "mainEventLoopP99Ms": 12.034047,
+      "httpProbeCount": 0,
+      "httpProbeFailures": 0,
+      "httpP95Ms": null,
+      "httpMaxMs": null,
+      "stages": [],
+      "workerExited": true
+    },
+    {
+      "label": "long-header",
+      "elapsedMs": 45.62154099999998,
+      "baselineRss": 389431296,
+      "peakRss": 393199616,
+      "rssGrowth": 3768320,
+      "mainEventLoopMaxMs": 12.034047,
+      "mainEventLoopP99Ms": 12.034047,
+      "httpProbeCount": 0,
+      "httpProbeFailures": 0,
+      "httpP95Ms": null,
+      "httpMaxMs": null,
+      "stages": [],
+      "workerExited": true
+    },
+    {
+      "label": "zip-crc-mismatch",
+      "elapsedMs": 46.87954200000013,
+      "baselineRss": 390004736,
+      "peakRss": 395509760,
+      "rssGrowth": 5505024,
+      "mainEventLoopMaxMs": 12.066815,
+      "mainEventLoopP99Ms": 12.066815,
+      "httpProbeCount": 0,
+      "httpProbeFailures": 0,
+      "httpP95Ms": null,
+      "httpMaxMs": null,
+      "stages": [],
+      "workerExited": true
+    },
+    {
+      "label": "zip-size-mismatch",
+      "elapsedMs": 46.30629199999976,
+      "baselineRss": 391528448,
+      "peakRss": 395673600,
+      "rssGrowth": 4145152,
+      "mainEventLoopMaxMs": 12.034047,
+      "mainEventLoopP99Ms": 12.034047,
+      "httpProbeCount": 0,
+      "httpProbeFailures": 0,
+      "httpP95Ms": null,
+      "httpMaxMs": null,
+      "stages": [],
+      "workerExited": true
+    },
+    {
+      "label": "zip-path-escape",
+      "elapsedMs": 45.609750000000076,
+      "baselineRss": 391659520,
+      "peakRss": 395837440,
+      "rssGrowth": 4177920,
+      "mainEventLoopMaxMs": 12.034047,
+      "mainEventLoopP99Ms": 12.034047,
+      "httpProbeCount": 0,
+      "httpProbeFailures": 0,
+      "httpP95Ms": null,
+      "httpMaxMs": null,
+      "stages": [],
+      "workerExited": true
+    },
+    {
+      "label": "zip-duplicate-entry",
+      "elapsedMs": 46.380499999999756,
+      "baselineRss": 392249344,
+      "peakRss": 396853248,
+      "rssGrowth": 4603904,
+      "mainEventLoopMaxMs": 12.025855,
+      "mainEventLoopP99Ms": 12.025855,
+      "httpProbeCount": 0,
+      "httpProbeFailures": 0,
+      "httpP95Ms": null,
+      "httpMaxMs": null,
+      "stages": [],
+      "workerExited": true
+    },
+    {
+      "label": "source-failure",
+      "elapsedMs": 497.6484169999999,
+      "baselineRss": 392806400,
+      "peakRss": 402751488,
+      "rssGrowth": 9945088,
+      "mainEventLoopMaxMs": 12.271615,
+      "mainEventLoopP99Ms": 12.271615,
+      "httpProbeCount": 9,
+      "httpProbeFailures": 0,
+      "httpP95Ms": 0.47212500000023283,
+      "httpMaxMs": 0.5619579999997768,
+      "stages": [
+        {
+          "stage": "kdf-start",
+          "atMs": 42.56779199999983
+        },
+        {
+          "stage": "kdf-complete",
+          "atMs": 479.40250000000015
+        }
+      ],
+      "workerExited": true
+    },
+    {
+      "label": "cancel-worker",
+      "elapsedMs": 507.71124999999984,
+      "baselineRss": 398016512,
+      "peakRss": 409255936,
+      "rssGrowth": 11239424,
+      "mainEventLoopMaxMs": 12.550143,
+      "mainEventLoopP99Ms": 12.550143,
+      "httpProbeCount": 9,
+      "httpProbeFailures": 0,
+      "httpP95Ms": 0.4826250000000982,
+      "httpMaxMs": 0.4857919999999467,
+      "stages": [
+        {
+          "stage": "kdf-start",
+          "atMs": 43.55329099999972
+        },
+        {
+          "stage": "kdf-complete",
+          "atMs": 482.58862499999987
+        }
+      ],
+      "workerExited": true
+    },
+    {
+      "label": "cli-decrypted-zip-validate",
+      "elapsedMs": 47.70166599999993,
+      "baselineRss": 404766720,
+      "peakRss": 408420352,
+      "rssGrowth": 3653632,
+      "mainEventLoopMaxMs": 12.025855,
+      "mainEventLoopP99Ms": 12.025855,
+      "httpProbeCount": 0,
+      "httpProbeFailures": 0,
+      "httpP95Ms": null,
+      "httpMaxMs": null,
+      "stages": [],
+      "workerExited": true
+    },
+    {
+      "label": "cli-generated-age-decrypt",
+      "elapsedMs": 515.5426669999997,
+      "baselineRss": 404471808,
+      "peakRss": 409862144,
+      "rssGrowth": 5390336,
+      "mainEventLoopMaxMs": 12.558335,
+      "mainEventLoopP99Ms": 12.558335,
+      "httpProbeCount": 10,
+      "httpProbeFailures": 0,
+      "httpP95Ms": 0.5561250000000655,
+      "httpMaxMs": 0.6665839999996024,
+      "stages": [
+        {
+          "stage": "kdf-start",
+          "atMs": 43.356667000000016
+        },
+        {
+          "stage": "kdf-complete",
+          "atMs": 496.45166699999936
+        }
+      ],
+      "workerExited": true
+    },
+    {
+      "label": "cli-generated-zip-validate",
+      "elapsedMs": 47.12529100000029,
+      "baselineRss": 405258240,
+      "peakRss": 408993792,
+      "rssGrowth": 3735552,
+      "mainEventLoopMaxMs": 12.025855,
+      "mainEventLoopP99Ms": 12.025855,
+      "httpProbeCount": 0,
+      "httpProbeFailures": 0,
+      "httpP95Ms": null,
+      "httpMaxMs": null,
+      "stages": [],
+      "workerExited": true
+    },
+    {
+      "label": "large-encrypt",
+      "elapsedMs": 17617.8445,
+      "baselineRss": 404930560,
+      "peakRss": 500137984,
+      "rssGrowth": 95207424,
+      "mainEventLoopMaxMs": 12.820479,
+      "mainEventLoopP99Ms": 12.427263,
+      "httpProbeCount": 346,
+      "httpProbeFailures": 0,
+      "httpP95Ms": 0.5052500000001601,
+      "httpMaxMs": 0.9746250000007421,
+      "stages": [
+        {
+          "stage": "kdf-start",
+          "atMs": 43.38108300000022
+        },
+        {
+          "stage": "kdf-complete",
+          "atMs": 481.8137079999997
+        }
+      ],
+      "workerExited": true
+    },
+    {
+      "label": "large-decrypt",
+      "elapsedMs": 15233.279707999998,
+      "baselineRss": 495599616,
+      "peakRss": 506413056,
+      "rssGrowth": 10813440,
+      "mainEventLoopMaxMs": 12.738559,
+      "mainEventLoopP99Ms": 12.427263,
+      "httpProbeCount": 298,
+      "httpProbeFailures": 0,
+      "httpP95Ms": 0.5099999999983993,
+      "httpMaxMs": 1.0244590000002063,
+      "stages": [
+        {
+          "stage": "kdf-start",
+          "atMs": 44.48254100000122
+        },
+        {
+          "stage": "kdf-complete",
+          "atMs": 490.59020800000144
+        }
+      ],
+      "workerExited": true
+    },
+    {
+      "label": "large-validate",
+      "elapsedMs": 2130.5412499999948,
+      "baselineRss": 499810304,
+      "peakRss": 504856576,
+      "rssGrowth": 5046272,
+      "mainEventLoopMaxMs": 12.509183,
+      "mainEventLoopP99Ms": 12.427263,
+      "httpProbeCount": 41,
+      "httpProbeFailures": 0,
+      "httpP95Ms": 0.5404169999965234,
+      "httpMaxMs": 0.7227080000011483,
+      "stages": [],
+      "workerExited": true
+    },
+    {
+      "label": "many-encrypt",
+      "elapsedMs": 2020.432249999998,
+      "baselineRss": 346472448,
+      "peakRss": 1228570624,
+      "rssGrowth": 882098176,
+      "mainEventLoopMaxMs": 12.779519,
+      "mainEventLoopP99Ms": 12.386303,
+      "httpProbeCount": 39,
+      "httpProbeFailures": 0,
+      "httpP95Ms": 0.523750000000291,
+      "httpMaxMs": 0.6852500000022701,
+      "stages": [
+        {
+          "stage": "kdf-start",
+          "atMs": 52.61520899999596
+        },
+        {
+          "stage": "kdf-complete",
+          "atMs": 512.3412089999983
+        }
+      ],
+      "workerExited": true
+    },
+    {
+      "label": "many-decrypt",
+      "elapsedMs": 595.0220409999965,
+      "baselineRss": 1194622976,
+      "peakRss": 1199325184,
+      "rssGrowth": 4702208,
+      "mainEventLoopMaxMs": 12.402687,
+      "mainEventLoopP99Ms": 12.402687,
+      "httpProbeCount": 11,
+      "httpProbeFailures": 0,
+      "httpP95Ms": 0.44058400000358233,
+      "httpMaxMs": 0.9734580000003916,
+      "stages": [
+        {
+          "stage": "kdf-start",
+          "atMs": 46.11779099999694
+        },
+        {
+          "stage": "kdf-complete",
+          "atMs": 500.39383299999463
+        }
+      ],
+      "workerExited": true
+    },
+    {
+      "label": "many-validate",
+      "elapsedMs": 3058.6513750000013,
+      "baselineRss": 1194508288,
+      "peakRss": 1206288384,
+      "rssGrowth": 11780096,
+      "mainEventLoopMaxMs": 12.402687,
+      "mainEventLoopP99Ms": 12.042239,
+      "httpProbeCount": 60,
+      "httpProbeFailures": 0,
+      "httpP95Ms": 0.4479170000049635,
+      "httpMaxMs": 0.48766699999396224,
+      "stages": [],
+      "workerExited": true
+    }
+  ],
+  "status": "passed",
+  "cleanedTemporaryDirectory": true,
+  "finishedAt": "2026-10-22T09:30:34.132Z"
+}

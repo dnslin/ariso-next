@@ -1,0 +1,195 @@
+{
+  "command": "/Users/dnslin/.nvm/versions/node/v24.18.1/bin/node tests/experiments/backup/format/fresh-memory.mjs",
+  "node": "v24.18.1",
+  "startedAt": "2026-10-22T09:31:42.018Z",
+  "processIsolation": "new Node process per operation; one worker plus loopback HTTP probe in each",
+  "instrumentation": {
+    "rssSampleIntervalMs": 25,
+    "webStreamQueueSizing": "byteLength",
+    "sha256": "only marked comparison fixtures; every entry still validates CRC and length"
+  },
+  "measurements": [
+    {
+      "label": "large-encrypt",
+      "status": "passed",
+      "result": {
+        "count": 2,
+        "inputBytes": 4296015909,
+        "archiveBytes": 4297065331,
+        "expected": {
+          "manifest.json": {
+            "bytes": 37,
+            "sha256": "b71580ee2d485664a61a31c69a0a710c62d7c26009346068584b8a8904a1b913"
+          },
+          "objects/local/large-original.bin": {
+            "bytes": 4296015872,
+            "sha256": "4587ebd714bb911ed28845fd4646c70bba23a82caf626a7d217ef1f941866bcf"
+          }
+        }
+      },
+      "elapsedMs": 17860.831041,
+      "baselineRss": 78217216,
+      "peakRss": 491585536,
+      "sampleIntervalMs": 25,
+      "mainEventLoopMaxMs": 15.941631,
+      "httpProbeCount": 692,
+      "httpProbeFailures": 0,
+      "httpP95Ms": 0.4699999999997999,
+      "httpMaxMs": 3.657459000000003,
+      "snapshots": [
+        {
+          "stage": "before-finalize",
+          "rss": 491159552,
+          "heapTotal": 47202304,
+          "heapUsed": 10836616,
+          "external": 14652406,
+          "arrayBuffers": 10860397
+        },
+        {
+          "stage": "after-finalize",
+          "rss": 491208704,
+          "heapTotal": 47202304,
+          "heapUsed": 10889256,
+          "external": 14652446,
+          "arrayBuffers": 10860397
+        }
+      ],
+      "workerExited": true
+    },
+    {
+      "label": "large-decrypt",
+      "status": "passed",
+      "result": {
+        "profile": {
+          "headerBytes": 150,
+          "logN": 18
+        },
+        "zipBytes": 4296016317
+      },
+      "elapsedMs": 15352.575958,
+      "baselineRss": 78364672,
+      "peakRss": 482246656,
+      "sampleIntervalMs": 25,
+      "mainEventLoopMaxMs": 15.302655,
+      "httpProbeCount": 592,
+      "httpProbeFailures": 0,
+      "httpP95Ms": 0.48712499999965075,
+      "httpMaxMs": 7.937541999999993,
+      "snapshots": [],
+      "workerExited": true
+    },
+    {
+      "label": "large-validate",
+      "status": "passed",
+      "result": {
+        "count": 2,
+        "bytes": 4296015909,
+        "hashes": {
+          "manifest.json": "b71580ee2d485664a61a31c69a0a710c62d7c26009346068584b8a8904a1b913",
+          "objects/local/large-original.bin": "4587ebd714bb911ed28845fd4646c70bba23a82caf626a7d217ef1f941866bcf"
+        }
+      },
+      "elapsedMs": 1998.6055840000001,
+      "baselineRss": 78446592,
+      "peakRss": 184942592,
+      "sampleIntervalMs": 25,
+      "mainEventLoopMaxMs": 12.541951,
+      "httpProbeCount": 77,
+      "httpProbeFailures": 0,
+      "httpP95Ms": 0.7017910000000143,
+      "httpMaxMs": 3.8760830000000084,
+      "snapshots": [],
+      "workerExited": true
+    },
+    {
+      "label": "many-encrypt",
+      "status": "passed",
+      "result": {
+        "count": 100001,
+        "inputBytes": 2888926,
+        "archiveBytes": 18293788,
+        "expected": {
+          "manifest.json": {
+            "bytes": 36,
+            "sha256": "5af24df122cb66a42df329829b1fba21e9bdb98ed1d1321fa5eefcebcc817295"
+          }
+        }
+      },
+      "elapsedMs": 2279.757416,
+      "baselineRss": 78659584,
+      "peakRss": 1196457984,
+      "sampleIntervalMs": 25,
+      "mainEventLoopMaxMs": 12.828671,
+      "httpProbeCount": 87,
+      "httpProbeFailures": 0,
+      "httpP95Ms": 0.8129170000001977,
+      "httpMaxMs": 3.9641249999999957,
+      "snapshots": [
+        {
+          "stage": "before-finalize",
+          "rss": 668319744,
+          "heapTotal": 276938752,
+          "heapUsed": 160585392,
+          "external": 10981430,
+          "arrayBuffers": 7183518
+        },
+        {
+          "stage": "after-finalize",
+          "rss": 1097433088,
+          "heapTotal": 671662080,
+          "heapUsed": 548234712,
+          "external": 7604828,
+          "arrayBuffers": 3806876
+        }
+      ],
+      "workerExited": true
+    },
+    {
+      "label": "many-decrypt",
+      "status": "passed",
+      "result": {
+        "profile": {
+          "headerBytes": 150,
+          "logN": 18
+        },
+        "zipBytes": 18289142
+      },
+      "elapsedMs": 596.963625,
+      "baselineRss": 78790656,
+      "peakRss": 403832832,
+      "sampleIntervalMs": 25,
+      "mainEventLoopMaxMs": 12.697599,
+      "httpProbeCount": 22,
+      "httpProbeFailures": 0,
+      "httpP95Ms": 0.7862079999999878,
+      "httpMaxMs": 3.796915999999996,
+      "snapshots": [],
+      "workerExited": true
+    },
+    {
+      "label": "many-validate",
+      "status": "passed",
+      "result": {
+        "count": 100001,
+        "bytes": 2888926,
+        "hashes": {
+          "manifest.json": "5af24df122cb66a42df329829b1fba21e9bdb98ed1d1321fa5eefcebcc817295"
+        }
+      },
+      "elapsedMs": 3016.491791,
+      "baselineRss": 78659584,
+      "peakRss": 148226048,
+      "sampleIntervalMs": 25,
+      "mainEventLoopMaxMs": 12.328959,
+      "httpProbeCount": 119,
+      "httpProbeFailures": 0,
+      "httpP95Ms": 0.5940410000000043,
+      "httpMaxMs": 3.7887079999999997,
+      "snapshots": [],
+      "workerExited": true
+    }
+  ],
+  "status": "passed",
+  "cleanedTemporaryDirectory": true,
+  "finishedAt": "2026-10-22T09:32:23.792Z"
+}

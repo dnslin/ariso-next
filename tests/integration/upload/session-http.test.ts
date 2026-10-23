@@ -1,3 +1,4 @@
+import { createContentMutations } from '../../../src/server/runtime/content-mutations.ts';
 import { Readable } from 'node:stream';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { DELETE } from '../../../src/app/api/uploads/sessions/[id]/route.ts';
@@ -30,6 +31,7 @@ beforeEach(() => {
   vi.resetAllMocks();
   cancel.mockResolvedValue({ id: 'session', state: 'cancelled' });
   vi.mocked(getServerRuntime).mockReturnValue({
+    contentMutations: createContentMutations(),
     uploads: { cancel },
   } as unknown as ReturnType<typeof getServerRuntime>);
 });

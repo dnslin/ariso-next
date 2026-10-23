@@ -12,10 +12,14 @@ export function GET(request: Request) {
   return storageResponse(request, (db) => readStorageSettings(db));
 }
 export function PATCH(request: Request) {
-  return storageResponse(request, async (db) =>
-    setDefaultStorage(
-      db,
-      storageDefaultInputSchema.parse(await request.json()).defaultStorageId,
-    ),
+  return storageResponse(
+    request,
+    async (db) =>
+      setDefaultStorage(
+        db,
+        storageDefaultInputSchema.parse(await request.json()).defaultStorageId,
+      ),
+    200,
+    'settings/storage/route.ts:PATCH',
   );
 }

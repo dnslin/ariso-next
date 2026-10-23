@@ -1,0 +1,209 @@
+{
+  "scope": "Isolated activation model; not integrated production startup",
+  "node": "v24.18.1",
+  "platform": "darwin",
+  "physicalPowerLossTested": false,
+  "actualSigkillCheckpoints": 27,
+  "passed": 2,
+  "failed": 31,
+  "elapsedMs": 10955,
+  "temporaryResourcesRemoved": true,
+  "results": [
+    {
+      "name": "SIGKILL:activating.temp-written",
+      "passed": false,
+      "durationMs": 403,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\nnull !== 0\n\n    at file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:62:14\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async test (file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:20:20)\n    at async file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:53:5"
+    },
+    {
+      "name": "SIGKILL:activating.file-synced",
+      "passed": false,
+      "durationMs": 378,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\nnull !== 0\n\n    at file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:62:14\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async test (file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:20:20)\n    at async file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:53:5"
+    },
+    {
+      "name": "SIGKILL:activating.renamed",
+      "passed": false,
+      "durationMs": 326,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\nnull !== 0\n\n    at file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:62:14\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async test (file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:20:20)\n    at async file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:53:5"
+    },
+    {
+      "name": "SIGKILL:activating.directory-synced",
+      "passed": false,
+      "durationMs": 369,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\nnull !== 0\n\n    at file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:62:14\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async test (file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:20:20)\n    at async file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:53:5"
+    },
+    {
+      "name": "SIGKILL:storage.old-moved",
+      "passed": false,
+      "durationMs": 317,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\nnull !== 0\n\n    at file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:62:14\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async test (file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:20:20)\n    at async file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:53:5"
+    },
+    {
+      "name": "SIGKILL:storage.old-directory-synced",
+      "passed": false,
+      "durationMs": 327,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\nnull !== 0\n\n    at file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:62:14\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async test (file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:20:20)\n    at async file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:53:5"
+    },
+    {
+      "name": "SIGKILL:storage.published",
+      "passed": false,
+      "durationMs": 317,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\nnull !== 0\n\n    at file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:62:14\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async test (file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:20:20)\n    at async file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:53:5"
+    },
+    {
+      "name": "SIGKILL:storage.directory-synced",
+      "passed": false,
+      "durationMs": 321,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\nnull !== 0\n\n    at file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:62:14\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async test (file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:20:20)\n    at async file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:53:5"
+    },
+    {
+      "name": "SIGKILL:assets.old-moved",
+      "passed": false,
+      "durationMs": 324,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\nnull !== 0\n\n    at file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:62:14\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async test (file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:20:20)\n    at async file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:53:5"
+    },
+    {
+      "name": "SIGKILL:assets.old-directory-synced",
+      "passed": false,
+      "durationMs": 323,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\nnull !== 0\n\n    at file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:62:14\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async test (file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:20:20)\n    at async file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:53:5"
+    },
+    {
+      "name": "SIGKILL:assets.published",
+      "passed": false,
+      "durationMs": 313,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\nnull !== 0\n\n    at file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:62:14\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async test (file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:20:20)\n    at async file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:53:5"
+    },
+    {
+      "name": "SIGKILL:assets.directory-synced",
+      "passed": false,
+      "durationMs": 325,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\nnull !== 0\n\n    at file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:62:14\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async test (file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:20:20)\n    at async file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:53:5"
+    },
+    {
+      "name": "SIGKILL:old-db.ariso.db.moved",
+      "passed": false,
+      "durationMs": 334,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\nnull !== 0\n\n    at file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:62:14\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async test (file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:20:20)\n    at async file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:53:5"
+    },
+    {
+      "name": "SIGKILL:old-db.ariso.db-wal.moved",
+      "passed": false,
+      "durationMs": 323,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\nnull !== 0\n\n    at file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:62:14\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async test (file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:20:20)\n    at async file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:53:5"
+    },
+    {
+      "name": "SIGKILL:old-db.ariso.db-shm.moved",
+      "passed": false,
+      "durationMs": 325,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\nnull !== 0\n\n    at file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:62:14\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async test (file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:20:20)\n    at async file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:53:5"
+    },
+    {
+      "name": "SIGKILL:old-db.directories-synced",
+      "passed": false,
+      "durationMs": 387,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\nnull !== 0\n\n    at file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:62:14\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async test (file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:20:20)\n    at async file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:53:5"
+    },
+    {
+      "name": "SIGKILL:database.temporary-written",
+      "passed": false,
+      "durationMs": 331,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\nnull !== 0\n\n    at file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:62:14\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async test (file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:20:20)\n    at async file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:53:5"
+    },
+    {
+      "name": "SIGKILL:database.temporary-synced",
+      "passed": false,
+      "durationMs": 341,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\nnull !== 0\n\n    at file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:62:14\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async test (file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:20:20)\n    at async file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:53:5"
+    },
+    {
+      "name": "SIGKILL:database.published",
+      "passed": false,
+      "durationMs": 341,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\nnull !== 0\n\n    at file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:62:14\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async test (file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:20:20)\n    at async file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:53:5"
+    },
+    {
+      "name": "SIGKILL:database.directory-synced",
+      "passed": false,
+      "durationMs": 339,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\nnull !== 0\n\n    at file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:62:14\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async test (file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:20:20)\n    at async file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:53:5"
+    },
+    {
+      "name": "SIGKILL:completed.temp-written",
+      "passed": false,
+      "durationMs": 344,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\nnull !== 0\n\n    at file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:62:14\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async test (file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:20:20)\n    at async file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:53:5"
+    },
+    {
+      "name": "SIGKILL:completed.file-synced",
+      "passed": false,
+      "durationMs": 353,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\nnull !== 0\n\n    at file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:62:14\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async test (file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:20:20)\n    at async file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:53:5"
+    },
+    {
+      "name": "SIGKILL:completed.renamed",
+      "passed": false,
+      "durationMs": 326,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\nnull !== 0\n\n    at file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:62:14\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async test (file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:20:20)\n    at async file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:53:5"
+    },
+    {
+      "name": "SIGKILL:completed.directory-synced",
+      "passed": false,
+      "durationMs": 326,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\nnull !== 0\n\n    at file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:62:14\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async test (file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:20:20)\n    at async file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:53:5"
+    },
+    {
+      "name": "SIGKILL:normal.paths-created",
+      "passed": false,
+      "durationMs": 349,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\nnull !== 0\n\n    at file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:62:14\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async test (file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:20:20)\n    at async file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:53:5"
+    },
+    {
+      "name": "SIGKILL:normal.database-opened",
+      "passed": false,
+      "durationMs": 333,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\nnull !== 0\n\n    at file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:62:14\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async test (file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:20:20)\n    at async file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:53:5"
+    },
+    {
+      "name": "SIGKILL:background.started",
+      "passed": false,
+      "durationMs": 332,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\nnull !== 0\n\n    at file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:62:14\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async test (file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:20:20)\n    at async file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:53:5"
+    },
+    {
+      "name": "missing initial storage/assets is valid",
+      "passed": false,
+      "durationMs": 303,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\nnull !== 0\n\n    at file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:79:12\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async test (file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:20:20)\n    at async file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:73:3"
+    },
+    {
+      "name": "completed preserves subsequent rows and CLI password",
+      "passed": false,
+      "durationMs": 294,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\nnull !== 0\n\n    at file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:90:12\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async test (file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:20:20)\n    at async file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:86:3"
+    },
+    {
+      "name": "CLI cannot modify an activating published database",
+      "passed": false,
+      "durationMs": 370,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\nnull !== 0\n\n    at file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:112:12\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async test (file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:20:20)\n    at async file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:105:3"
+    },
+    {
+      "name": "CLI rechecks after initial authorization race",
+      "passed": false,
+      "durationMs": 342,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\nnull !== 0\n\n    at file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:126:12\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async test (file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:20:20)\n    at async file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/activation/run.mjs:118:3"
+    },
+    {
+      "name": "initial nonempty target is rejected before publication",
+      "passed": true,
+      "durationMs": 194
+    },
+    {
+      "name": "post-move directory conflict does not overwrite unknown files",
+      "passed": true,
+      "durationMs": 284
+    }
+  ]
+}

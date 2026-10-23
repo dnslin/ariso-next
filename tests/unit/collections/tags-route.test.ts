@@ -1,3 +1,4 @@
+import { createContentMutations } from '../../../src/server/runtime/content-mutations.ts';
 import { beforeEach, expect, it, vi } from 'vitest';
 import { POST } from '../../../src/app/api/tags/route.ts';
 import { GET as GET_TAG, PATCH } from '../../../src/app/api/tags/[id]/route.ts';
@@ -24,6 +25,7 @@ beforeEach(() => {
   vi.clearAllMocks();
   transaction.mockReset();
   vi.mocked(getServerRuntime).mockReturnValue({
+    contentMutations: createContentMutations(),
     config: { logLevel: 'debug' },
     connection: { db: { transaction } },
   } as unknown as ReturnType<typeof getServerRuntime>);
@@ -34,6 +36,7 @@ it.each(['debug', 'fatal'] as const)(
   async (logLevel) => {
     const error = new Error('tag database write failure');
     vi.mocked(getServerRuntime).mockReturnValue({
+      contentMutations: createContentMutations(),
       config: { logLevel },
       connection: {
         db: {

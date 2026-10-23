@@ -48,6 +48,9 @@ jobs:
           context: .
           platforms: linux/${{ matrix.arch }}
           load: true
+          build-args: |
+            ARISO_BUILD_VERSION=${{ inputs.version }}
+            ARISO_BUILD_REVISION=${{ github.sha }}
           labels: |
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
             org.opencontainers.image.revision=${{ github.sha }}

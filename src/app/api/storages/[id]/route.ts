@@ -32,21 +32,31 @@ export function GET(request: Request, context: Context) {
   });
 }
 export function PATCH(request: Request, context: Context) {
-  return storageResponse(request, async (db, settingsContext) => {
-    const { id } = await context.params;
-    return updateStorage(
-      db,
-      id,
-      storageUpdateInputSchema.parse(await request.json()),
-      settingsContext,
-      getServerRuntime().storageReferences,
-    );
-  });
+  return storageResponse(
+    request,
+    async (db, settingsContext) => {
+      const { id } = await context.params;
+      return updateStorage(
+        db,
+        id,
+        storageUpdateInputSchema.parse(await request.json()),
+        settingsContext,
+        getServerRuntime().storageReferences,
+      );
+    },
+    200,
+    'storages/[id]/route.ts:PATCH',
+  );
 }
 
 export function DELETE(request: Request, context: Context) {
-  return storageResponse(request, async () => {
-    const { id } = await context.params;
-    return getServerRuntime().storageMaintenance.deleteStorage(id);
-  });
+  return storageResponse(
+    request,
+    async () => {
+      const { id } = await context.params;
+      return getServerRuntime().storageMaintenance.deleteStorage(id);
+    },
+    200,
+    'storages/[id]/route.ts:DELETE',
+  );
 }

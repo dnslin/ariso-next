@@ -43,6 +43,8 @@ EGO_TASK_SPACE=22 node scripts/verify-browser.mjs --suite theme --only behavior
 EGO_TASK_SPACE=22 node scripts/verify-browser.mjs --suite uiux-20261015 --only settings
 EGO_TASK_SPACE=22 node scripts/verify-browser.mjs --suite image-workflows
 EGO_TASK_SPACE=22 node scripts/verify-browser.mjs --suite access-protection
+EGO_TASK_SPACE=22 node scripts/verify-browser.mjs --suite backup
+EGO_TASK_SPACE=22 node scripts/verify-browser.mjs --suite backup --storage-config /private/one-provider.json
 ```
 
 `--suite` 选择功能，`--only` 只运行该功能允许的阶段。可用值以[执行计划](../scripts/browser-plan.mjs)为准，不在文档重复维护长列表。定向通过只证明所选范围，不代替默认完整流程。
@@ -52,8 +54,15 @@ EGO_TASK_SPACE=22 node scripts/verify-browser.mjs --suite access-protection
 `access-protection` 复用公共浏览器执行器，夹具仅负责隔离应用和数据的创建、清理。除浏览、外链和 ZIP 外，还验证真实会话失效与重新登录后的草稿恢复、未知提交核对，以及后台 HEAD 被限频时已加载图片保持原节点、不重新下载，撤销后仍移除图片。
 
 `access-protection` 使用独立生产应用和本地 S3 协议服务，检查真实设置保存、所有者图库与大图、匿名相册、两个外站页面各 80 张嵌图，以及匿名额度耗尽后的 200 张混合来源 ZIP。测试图片通过夹具登记，不作为上传和媒体处理证据；ZIP 使用 Python 标准库解包校验。该套件不连接生产存储，也不代表真实 R2/SeaweedFS 验证。
+`backup` 使用带明确版本和修订号的 Standalone 产物及打包后的备份 worker，直接复用其只读应用文件。它启动两个随机端口的独立本地实例，经正式 HTTP 接口准备图片、相册和标签，在真实上传尚未结束时通过页面创建备份，检查修改暂停和浏览、外链可用。随后由浏览器原生下载加密文件，删除源实例数据，再通过新实例页面导入、解密、确认恢复和刷新重新授权。运行器重启目标后验证登录、两张图片、相册和标签关系及原图访问。运行期间不得重建或重新打包 Standalone。
+
+该场景不接受 `--only`，复用 `EGO_PAGE_LABEL`（默认 `p1`）指定的页面，不创建或结束空间。源与目标分别使用 `127.0.0.1` 和 `localhost` 隔离 Cookie；它们仍属于同一浏览器配置文件。报告中的 `backup.json` 记录流程与清理结果，各阶段报告和 1440×1080、390×844、360×780、430×932、768×1024、390×560 浅深色视口截图写入同一目录，包含密码、确认、恢复配置等中间页面；原生下载留存为 `backup.age`。两实例及数据始终由运行器清理，截图对照、失败场景和 HTTP 集成证据分别记录；这一入口不代表已完成 Figma 对照、S3 恢复或发布验证。
 
 当前 CLI 未提供 `--help`。参数定义见[运行器入口](../scripts/verify-browser.mjs)，功能与阶段定义见[执行计划](../scripts/browser-plan.mjs)。不要直接用 `node e2e/<文件>.mjs` 替代运行器：大多数场景需要运行器注入配置和 Ego 的测试空间接口。
+
+`backup --storage-config` 可选加载一个提供方的私有配置文件，结构与 `scripts/verify-backup-s3.ts --config` 相同（只允许单元素数组）。使用现有 420 字节 PNG，源实例含本地与两个 S3 配置，S3 一设为默认，S3 二在上传后停用；每个原 S3 都使用本轮独立的随机源和恢复前缀。下载后清空源 DATA_DIR 与源 S3 命名空间，再经页面配置新目标并恢复。R2 必须先由所有者确认整个目标 Bucket 无锁规则，场景随后实际点击页面确认，不能用脚本代替事前授权。
+
+S3 激活检查先断言默认/停用状态保留，再仅在临时目标实例启用第二个 S3，以便逐图检查浏览器实际图片和集合关系。此验收操作在报告中单独记录；停用时不能浏览不等于文件丢失。运行器只清理本轮登记的命名空间，邻接参照文件在源删除、恢复完成与最终清理后均须保留一致，核对后才移除本测试自己的参照文件。S3 凭据只用于请求及输入，不写入报告。该入口仍不包含大文件或容量压测。
 
 特殊入口的额外边界：
 

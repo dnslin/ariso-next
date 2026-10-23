@@ -604,3 +604,62 @@ it('rejects foreign origins and unexposed auth methods without generating tokens
   expect(deliveries).toEqual([]);
   expect(connection.db.select().from(smtpSettings).all()).toHaveLength(1);
 });
+it('backup pauses actual password reset without consuming its real token, while login and reset-email requests remain available', async () => {
+  saveSmtp();
+  captureMail();
+  expect((await apply()).status).toBe(200);
+  const token = deliveries[0].token;
+  const before = credential();
+  runtime.contentMutations.closeAdmission();
+  const rejected = await reset(token);
+  expect(rejected.status).toBe(409);
+  expect(await rejected.json()).toMatchObject({
+    code: 'SITE_BACKUP_IN_PROGRESS',
+  });
+  expect(credential()).toBe(before);
+  expect(
+    connection.db
+      .select()
+      .from(verification)
+      .all()
+      .some((row) => row.identifier === `reset-password:${token}`),
+  ).toBe(true);
+  const loggedIn = await login();
+  expect(loggedIn.status).toBe(200);
+  expect(await readSession(cookie(loggedIn))).not.toBeNull();
+  expect((await apply()).status).toBe(200);
+  runtime.contentMutations.openAdmission();
+  expect((await reset(token)).status).toBe(200);
+  expect((await login(nextPassword)).status).toBe(200);
+  expect((await reset(token)).status).toBe(400);
+});
+it('backup preparation drains a password reset already hashing before snapshot admission closes', async () => {
+  saveSmtp();
+  captureMail();
+  await apply();
+  const token = deliveries[0].token;
+  const context = await auth.$context;
+  const originalHash = context.password.hash;
+  const reached = Promise.withResolvers<void>();
+  const resume = Promise.withResolvers<void>();
+  vi.spyOn(context.password, 'hash').mockImplementation(async (value) => {
+    reached.resolve();
+    await resume.promise;
+    return originalHash(value);
+  });
+  const pending = reset(token);
+  await reached.promise;
+  runtime.contentMutations.closeAdmission();
+  expect(runtime.contentMutations.activeCount).toBe(1);
+  let drained = false;
+  const idle = runtime.contentMutations.waitForIdle().then(() => {
+    drained = true;
+  });
+  await Promise.resolve();
+  expect(drained).toBe(false);
+  resume.resolve();
+  expect((await pending).status).toBe(200);
+  await idle;
+  expect(drained).toBe(true);
+  expect(runtime.contentMutations.activeCount).toBe(0);
+});

@@ -1,6 +1,6 @@
 import { createElement, type ReactNode } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { expect, it, vi } from 'vitest';
+import { afterEach, expect, it, vi } from 'vitest';
 import { LibrarySelectionMenu } from '../../../src/app/library/library-selection-menu';
 import type { LibrarySelection } from '../../../src/app/library/use-library-selection';
 
@@ -178,4 +178,32 @@ it('separates selection management and shortcut icons from the business menu', (
   ])
     expect(html).not.toContain(`textValue="${old}"`);
   expect(html).toContain('更多图片操作');
+});
+
+const backup = vi.hoisted(() => ({ paused: false }));
+vi.mock('../../../src/components/backup/use-backup-activity', () => ({
+  useBackupActivity: () => backup,
+}));
+afterEach(() => {
+  backup.paused = false;
+});
+
+it('disables modification shortcuts during a backup while keeping copy and browsing usable', () => {
+  backup.paused = true;
+  const html = renderToStaticMarkup(
+    createElement(LibrarySelectionMenu, {
+      selection,
+      loadingMode: 'pages',
+      disabled: false,
+      onOpen: vi.fn(),
+      onBatch: vi.fn(),
+      onArchive: vi.fn(),
+    }),
+  );
+  const button = (label: string) =>
+    html.match(new RegExp(`<button[^>]*aria-label="${label}"[^>]*>`))?.[0];
+  expect(button('复制链接')).not.toMatch(/\sdisabled(?:=|\s|>)/);
+  expect(button('添加到相册')).toMatch(/\sdisabled(?:=|\s|>)/);
+  expect(button('添加标签')).toMatch(/\sdisabled(?:=|\s|>)/);
+  expect(html).toContain('备份期间修改已暂停，浏览与复制仍可用。');
 });

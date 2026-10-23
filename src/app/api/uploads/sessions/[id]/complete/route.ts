@@ -12,5 +12,6 @@ export async function POST(
     async ({ uploads }) =>
       sessionResult(await uploads.complete((await context.params).id)),
     202,
+    'uploads/sessions/[id]/complete/route.ts:POST',
   );
 }

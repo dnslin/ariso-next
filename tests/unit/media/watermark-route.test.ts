@@ -1,3 +1,4 @@
+import { createContentMutations } from '../../../src/server/runtime/content-mutations.ts';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { POST } from '../../../src/app/api/media/watermark-assets/route.ts';
 import { requireOwner } from '../../../src/server/identity/owner.ts';
@@ -21,6 +22,7 @@ vi.mock('../../../src/server/runtime/logger.ts', () => ({
 beforeEach(() => {
   vi.resetAllMocks();
   vi.mocked(getServerRuntime).mockReturnValue({
+    contentMutations: createContentMutations(),
     watermarks: { receive },
   } as unknown as ReturnType<typeof getServerRuntime>);
 });

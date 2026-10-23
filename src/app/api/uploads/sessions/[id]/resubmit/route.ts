@@ -24,5 +24,6 @@ export async function POST(
       );
     },
     201,
+    'uploads/sessions/[id]/resubmit/route.ts:POST',
   );
 }

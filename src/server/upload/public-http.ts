@@ -85,34 +85,36 @@ export async function publicUploadResponse(request: Request) {
       );
     stage = 'receiving';
     const runtime = getServerRuntime();
-    const context = {
-      db: runtime.connection.db,
-      storageRoot: resolve(runtime.config.dataDir, 'storage'),
-      temporaryRoot: resolve(runtime.config.dataDir, 'tmp'),
-    };
-    const id = createPublicReceipt(context);
-    const accepted = await runtime.uploads.receivePublic(
-      id,
-      request,
-      token.tokenId,
-    );
-    if (!accepted.imageId || !accepted.jobId)
-      throw new UploadError(
-        'UPLOAD_INTERNAL_ERROR',
-        '上传没有完成媒体任务交接',
-        500,
+    return await runtime.contentMutations.run('upload.public', async () => {
+      const context = {
+        db: runtime.connection.db,
+        storageRoot: resolve(runtime.config.dataDir, 'storage'),
+        temporaryRoot: resolve(runtime.config.dataDir, 'tmp'),
+      };
+      const id = createPublicReceipt(context);
+      const accepted = await runtime.uploads.receivePublic(
+        id,
+        request,
+        token.tokenId,
       );
-    imageId = accepted.imageId;
-    stage = 'waiting';
-    const result = await waitPublicUpload(
-      context,
-      { imageId, jobId: accepted.jobId },
-      requestId,
-      { signal: request.signal },
-    );
-    return Response.json(result.body, {
-      status: result.status,
-      headers,
+      if (!accepted.imageId || !accepted.jobId)
+        throw new UploadError(
+          'UPLOAD_INTERNAL_ERROR',
+          '上传没有完成媒体任务交接',
+          500,
+        );
+      imageId = accepted.imageId;
+      stage = 'waiting';
+      const result = await waitPublicUpload(
+        context,
+        { imageId, jobId: accepted.jobId },
+        requestId,
+        { signal: request.signal },
+      );
+      return Response.json(result.body, {
+        status: result.status,
+        headers,
+      });
     });
   } catch (error) {
     // Log the failure without request headers, Token plaintext or SQL-bound request data.

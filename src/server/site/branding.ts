@@ -20,6 +20,7 @@ import { startMediaTool, terminateMediaTools } from '../media/tools.ts';
 import { generateFavicon } from './favicon.ts';
 import { siteSettings } from './schema.ts';
 import { readSiteSettings, requireSiteSettings } from './settings.ts';
+import { waitForSettled, waitWithSignal } from '../runtime/idle.ts';
 
 export const BRAND_MAX_BYTES = 5 * 1024 * 1024;
 export type BrandingKind = 'logo' | 'favicon';
@@ -177,6 +178,10 @@ export function createBrandingService(context: Context) {
   }
   return {
     ready,
+    async waitForIdle(signal?: AbortSignal) {
+      await waitWithSignal(ready, signal);
+      await waitForSettled(active, signal);
+    },
     replace(
       kind: BrandingKind,
       receive: (path: string, signal: AbortSignal) => Promise<unknown>,

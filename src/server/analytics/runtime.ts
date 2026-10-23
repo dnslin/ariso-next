@@ -13,6 +13,12 @@ export function startAnalyticsRuntime(options: {
   flusher.start();
   return {
     health: flusher.health,
+    flush() {
+      while (flusher.health().pendingKeys) {
+        if (!flusher.flushAccessBatch()) return false;
+      }
+      return true;
+    },
     stop() {
       retention.stop();
       return flusher.stop();

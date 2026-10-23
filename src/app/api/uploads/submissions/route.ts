@@ -13,5 +13,6 @@ export async function POST(request: Request) {
         createSubmission(connection.db, await readUploadJson(request)),
       ),
     201,
+    'uploads/submissions/route.ts:POST',
   );
 }

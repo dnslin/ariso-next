@@ -1,3 +1,4 @@
+import { isContentMutationPaused } from '../../../../server/runtime/content-mutations.ts';
 import { randomUUID } from 'node:crypto';
 import { requireOwner } from '../../../../server/identity/owner.ts';
 import { analyzeMediaError } from '../../../../server/media/errors.ts';
@@ -10,11 +11,25 @@ export async function POST(request: Request) {
   const headers = { 'Cache-Control': 'no-store' };
   try {
     await requireOwner(request);
-    return Response.json(await getServerRuntime().watermarks.receive(request), {
-      status: 201,
-      headers,
-    });
+    return await getServerRuntime().contentMutations.run(
+      'media/watermark-assets/route.ts:POST',
+      async () => {
+        return Response.json(
+          await getServerRuntime().watermarks.receive(request),
+          {
+            status: 201,
+            headers,
+          },
+        );
+      },
+    );
   } catch (error) {
+    if (isContentMutationPaused(error))
+      return Response.json(
+        { code: error.code, message: error.message },
+        { status: 409, headers },
+      );
+
     const detail = error as { code?: string; status?: number };
     const analysis = analyzeMediaError(error);
     const code =

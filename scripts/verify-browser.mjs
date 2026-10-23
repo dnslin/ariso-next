@@ -21,6 +21,7 @@ import { runBusinessBrowserStage } from './browser-business.mjs';
 import { createSharingRunner } from './browser-sharing.mjs';
 import { runBrandBrowser } from './browser-brand.mjs';
 import { runBrandingBrowser } from './browser-branding.mjs';
+import { runBackupBrowser } from './browser-backup.mjs';
 import { startSmtpBrowserFixture } from '../e2e/smtp-fixture.mjs';
 import { startPasswordResetBrowserFixture } from '../e2e/password-reset-fixture.mjs';
 
@@ -318,7 +319,7 @@ const check = (name, operation, dependencies = []) => {
   );
 };
 
-if (suite === 'brand-experiment' || suite === 'branding') {
+if (['brand-experiment', 'branding', 'backup'].includes(suite)) {
   try {
     const spaceId = Number(process.env.EGO_TASK_SPACE);
     assert.ok(
@@ -326,14 +327,24 @@ if (suite === 'brand-experiment' || suite === 'branding') {
       'Existing Ego space required',
     );
     report.taskSpaceId = spaceId;
-    const run = suite === 'branding' ? runBrandingBrowser : runBrandBrowser;
+    const run =
+      suite === 'backup'
+        ? runBackupBrowser
+        : suite === 'branding'
+          ? runBrandingBrowser
+          : runBrandBrowser;
     await run({
       spaceId,
       pageLabel,
       output,
       runBrowser,
       signal: controller.signal,
+      secrets,
+      ...(suite === 'backup'
+        ? { storageConfig: values['storage-config'] }
+        : {}),
     });
+    if (suite === 'backup') report.backup = 'passed';
     report.status = 'passed';
   } catch (error) {
     report.error = redact(error.stack ?? String(error));

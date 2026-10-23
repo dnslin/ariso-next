@@ -48,6 +48,7 @@ const suites = {
     stages: [['access-protection', 'accessProtection']],
   },
   branding: {},
+  backup: {},
   'sharing-experiment': {},
   'sharing-protocol': {},
   'sharing-public': {
@@ -323,8 +324,10 @@ export function selectBrowserPlan({
     '--preview-config applies only to storage-admin feedback',
   );
   assert.ok(
-    !storageConfig || (suite === 'storage-admin' && only === 'live'),
-    '--storage-config applies only to storage-admin live',
+    !storageConfig ||
+      suite === 'backup' ||
+      (suite === 'storage-admin' && only === 'live'),
+    '--storage-config applies only to storage-admin live or backup',
   );
   assert.match(pageLabel, /^p[1-9]\d*$/, 'Invalid EGO_PAGE_LABEL');
   assert.ok(

@@ -8,6 +8,7 @@ import { Spinner } from '@heroui/react/spinner';
 import { ArrowLeft } from 'lucide-react';
 import type { CleanupController } from './use-cleanup';
 import { bytesLabel } from './detail-labels';
+import { useBackupActivity } from '../backup/use-backup-activity';
 
 const purposeLabels = {
   original: '原图',
@@ -28,6 +29,7 @@ export function CleanupContent({
   cleanup: CleanupController;
   onBack: () => void;
 }) {
+  const { paused } = useBackupActivity();
   const heading = useRef<HTMLHeadingElement>(null);
   const { record, task, pending, unknown, error } = cleanup;
   const modal =
@@ -171,7 +173,9 @@ export function CleanupContent({
                 <Button
                   className="h-12 w-full rounded-lg font-normal"
                   data-testid="cleanup-submit"
-                  isDisabled={pending}
+                  isDisabled={
+                    pending || (paused && cleanup.confirmation && !unknown)
+                  }
                   onPress={() => {
                     if (succeeded) onBack();
                     else if (unknown) void cleanup.check();
@@ -436,6 +440,7 @@ export function CleanupFooter({
   cleanup: CleanupController;
   onBack: () => void;
 }) {
+  const { paused } = useBackupActivity();
   if (
     !cleanup.visible ||
     cleanup.confirmation ||
@@ -474,7 +479,7 @@ export function CleanupFooter({
             ? 'h-12 min-h-12 min-w-0 flex-1 rounded-lg font-normal md:w-60 md:flex-none'
             : actionClass
         }
-        isDisabled={cleanup.pending}
+        isDisabled={cleanup.pending || (paused && retry)}
         onPress={() => {
           void (retry ? cleanup.retry() : cleanup.check());
         }}

@@ -12,7 +12,9 @@ export function GET(request: Request) {
 }
 
 export function PATCH(request: Request) {
-  return siteSettingsResponse(request, async (db) =>
-    patchSiteSettingsResponse(db, await request.json()),
+  return siteSettingsResponse(
+    request,
+    async (db) => patchSiteSettingsResponse(db, await request.json()),
+    'settings/site/route.ts:PATCH',
   );
 }

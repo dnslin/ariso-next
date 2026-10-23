@@ -1,0 +1,591 @@
+{
+  "scope": "isolated-format-experiment-not-product-implementation",
+  "startedAt": "2026-10-22T09:18:13.499Z",
+  "command": "/Users/dnslin/.nvm/versions/node/v24.18.1/bin/node tests/experiments/backup/format/run.mjs --all",
+  "environment": {
+    "node": "v24.18.1",
+    "platform": "darwin",
+    "arch": "arm64",
+    "cpu": "Apple M4",
+    "cpus": 10,
+    "totalMemoryBytes": 17179869184,
+    "freeDiskBytes": 86897836032
+  },
+  "parameters": {
+    "zip64": true,
+    "store": true,
+    "scryptLogN": 18,
+    "largeBytes": 4296015872,
+    "objectEntries": 100000
+  },
+  "cases": [
+    {
+      "label": "small-streaming-roundtrip-and-unicode",
+      "status": "passed",
+      "elapsedMs": 1080.6926250000001,
+      "entryCount": 6,
+      "originalBytes": 312542,
+      "ciphertextBytes": 313662,
+      "header": {
+        "headerBytes": 150,
+        "logN": 18
+      },
+      "zipBytes": 313416
+    },
+    {
+      "label": "wrong-password-does-not-publish",
+      "status": "passed",
+      "elapsedMs": 483.50241600000004,
+      "observedError": "no identity matched any of the file's recipients"
+    },
+    {
+      "label": "ciphertext-bit-flip-rejected",
+      "status": "passed",
+      "elapsedMs": 487.568542,
+      "observedError": "invalid tag"
+    },
+    {
+      "label": "missing-final-authentication-rejected",
+      "status": "passed",
+      "elapsedMs": 491.83295799999996,
+      "observedError": "invalid tag"
+    },
+    {
+      "label": "excessive-kdf-profile-rejected-before-kdf",
+      "status": "passed",
+      "elapsedMs": 46.88737500000025,
+      "observedError": "UNSUPPORTED_SCRYPT_WORK_FACTOR"
+    },
+    {
+      "label": "oversized-header-rejected-before-kdf",
+      "status": "passed",
+      "elapsedMs": 46.15629200000012,
+      "observedError": "AGE_HEADER_TOO_LONG"
+    },
+    {
+      "label": "zip-crc-mismatch",
+      "status": "passed",
+      "elapsedMs": 47.250790999999936,
+      "observedError": "CRC_MISMATCH: objects/local/a.bin\n+ actual - expected\n\n+ 3881685062\n- 3881685063\n           ^\n"
+    },
+    {
+      "label": "zip-size-mismatch",
+      "status": "passed",
+      "elapsedMs": 47.09329200000002,
+      "observedError": "compressed/uncompressed size mismatch for stored file: 300123 != 300124"
+    },
+    {
+      "label": "zip-path-escape",
+      "status": "passed",
+      "elapsedMs": 46.68445900000006,
+      "observedError": "invalid relative path: ../evil/x.bin"
+    },
+    {
+      "label": "zip-duplicate-entry",
+      "status": "passed",
+      "elapsedMs": 48.013208000000304,
+      "observedError": "DUPLICATE_ENTRY: objects/local/a.bin"
+    },
+    {
+      "label": "source-read-failure-does-not-publish",
+      "status": "passed",
+      "elapsedMs": 500.2998749999997
+    },
+    {
+      "label": "worker-cancellation-does-not-publish",
+      "status": "passed",
+      "elapsedMs": 506.08887500000037,
+      "retainedPartialAfterForcedTermination": true,
+      "coordinatorRemovedPartial": true
+    },
+    {
+      "label": "official-age-cli-bidirectional",
+      "status": "passed",
+      "elapsedMs": 1340.4195000000004,
+      "decrypt": {
+        "exitCode": 0,
+        "prompts": 1
+      },
+      "encrypt": {
+        "exitCode": 0,
+        "prompts": 2
+      },
+      "profile": {
+        "headerBytes": 150,
+        "logN": 18
+      }
+    },
+    {
+      "label": "zip64-real-file-over-4gib",
+      "status": "passed",
+      "elapsedMs": 36751.057457999996,
+      "payloadBytes": 4296015872,
+      "ciphertextBytes": 4297065331,
+      "verifiedBytes": 4296015909,
+      "entryCount": 2
+    },
+    {
+      "label": "zip64-one-hundred-thousand-objects",
+      "status": "passed",
+      "elapsedMs": 5846.3450840000005,
+      "objectCount": 100000,
+      "archiveEntryCount": 100001,
+      "ciphertextBytes": 18293788,
+      "verifiedBytes": 2888926
+    }
+  ],
+  "workerMeasurements": [
+    {
+      "label": "tiny-encrypt",
+      "elapsedMs": 530.7675839999999,
+      "baselineRss": 81084416,
+      "peakRss": 383696896,
+      "rssGrowth": 302612480,
+      "mainEventLoopMaxMs": 12.427263,
+      "mainEventLoopP99Ms": 12.427263,
+      "httpProbeCount": 10,
+      "httpProbeFailures": 0,
+      "httpP95Ms": 0.8730419999999981,
+      "httpMaxMs": 3.92025000000001,
+      "stages": [
+        {
+          "stage": "kdf-start",
+          "atMs": 46.919124999999994
+        },
+        {
+          "stage": "kdf-complete",
+          "atMs": 501.66679200000004
+        }
+      ],
+      "workerExited": true
+    },
+    {
+      "label": "tiny-decrypt",
+      "elapsedMs": 500.651792,
+      "baselineRss": 379109376,
+      "peakRss": 388169728,
+      "rssGrowth": 9060352,
+      "mainEventLoopMaxMs": 12.550143,
+      "mainEventLoopP99Ms": 12.550143,
+      "httpProbeCount": 9,
+      "httpProbeFailures": 0,
+      "httpP95Ms": 0.5556669999999713,
+      "httpMaxMs": 0.6021670000000086,
+      "stages": [
+        {
+          "stage": "kdf-start",
+          "atMs": 44.38741700000003
+        },
+        {
+          "stage": "kdf-complete",
+          "atMs": 483.03312500000004
+        }
+      ],
+      "workerExited": true
+    },
+    {
+      "label": "tiny-validate",
+      "elapsedMs": 48.699333000000024,
+      "baselineRss": 383549440,
+      "peakRss": 387940352,
+      "rssGrowth": 4390912,
+      "mainEventLoopMaxMs": 12.034047,
+      "mainEventLoopP99Ms": 12.034047,
+      "httpProbeCount": 0,
+      "httpProbeFailures": 0,
+      "httpP95Ms": null,
+      "httpMaxMs": null,
+      "stages": [],
+      "workerExited": true
+    },
+    {
+      "label": "wrong-password",
+      "elapsedMs": 483.421875,
+      "baselineRss": 383909888,
+      "peakRss": 391380992,
+      "rssGrowth": 7471104,
+      "mainEventLoopMaxMs": 12.320767,
+      "mainEventLoopP99Ms": 12.320767,
+      "httpProbeCount": 9,
+      "httpProbeFailures": 0,
+      "httpP95Ms": 0.5066249999999854,
+      "httpMaxMs": 1.0944170000000213,
+      "stages": [
+        {
+          "stage": "kdf-start",
+          "atMs": 45.921833000000106
+        }
+      ],
+      "workerExited": true
+    },
+    {
+      "label": "bit-flip",
+      "elapsedMs": 487.512375,
+      "baselineRss": 387088384,
+      "peakRss": 392626176,
+      "rssGrowth": 5537792,
+      "mainEventLoopMaxMs": 12.320767,
+      "mainEventLoopP99Ms": 12.320767,
+      "httpProbeCount": 9,
+      "httpProbeFailures": 0,
+      "httpP95Ms": 0.5025000000000546,
+      "httpMaxMs": 0.7359999999998763,
+      "stages": [
+        {
+          "stage": "kdf-start",
+          "atMs": 43.744459000000006
+        },
+        {
+          "stage": "kdf-complete",
+          "atMs": 484.0310000000002
+        }
+      ],
+      "workerExited": true
+    },
+    {
+      "label": "truncated",
+      "elapsedMs": 491.7672080000002,
+      "baselineRss": 388169728,
+      "peakRss": 393920512,
+      "rssGrowth": 5750784,
+      "mainEventLoopMaxMs": 12.312575,
+      "mainEventLoopP99Ms": 12.312575,
+      "httpProbeCount": 9,
+      "httpProbeFailures": 0,
+      "httpP95Ms": 0.5167499999997744,
+      "httpMaxMs": 0.905500000000302,
+      "stages": [
+        {
+          "stage": "kdf-start",
+          "atMs": 43.977750000000015
+        },
+        {
+          "stage": "kdf-complete",
+          "atMs": 483.2957500000002
+        }
+      ],
+      "workerExited": true
+    },
+    {
+      "label": "factor",
+      "elapsedMs": 46.80354200000011,
+      "baselineRss": 389201920,
+      "peakRss": 392970240,
+      "rssGrowth": 3768320,
+      "mainEventLoopMaxMs": 12.025855,
+      "mainEventLoopP99Ms": 12.025855,
+      "httpProbeCount": 0,
+      "httpProbeFailures": 0,
+      "httpP95Ms": null,
+      "httpMaxMs": null,
+      "stages": [],
+      "workerExited": true
+    },
+    {
+      "label": "long-header",
+      "elapsedMs": 46.07841700000017,
+      "baselineRss": 389070848,
+      "peakRss": 392953856,
+      "rssGrowth": 3883008,
+      "mainEventLoopMaxMs": 12.025855,
+      "mainEventLoopP99Ms": 12.025855,
+      "httpProbeCount": 0,
+      "httpProbeFailures": 0,
+      "httpP95Ms": null,
+      "httpMaxMs": null,
+      "stages": [],
+      "workerExited": true
+    },
+    {
+      "label": "zip-crc-mismatch",
+      "elapsedMs": 46.91783299999997,
+      "baselineRss": 389873664,
+      "peakRss": 395722752,
+      "rssGrowth": 5849088,
+      "mainEventLoopMaxMs": 12.025855,
+      "mainEventLoopP99Ms": 12.025855,
+      "httpProbeCount": 0,
+      "httpProbeFailures": 0,
+      "httpP95Ms": null,
+      "httpMaxMs": null,
+      "stages": [],
+      "workerExited": true
+    },
+    {
+      "label": "zip-size-mismatch",
+      "elapsedMs": 46.73766599999999,
+      "baselineRss": 391626752,
+      "peakRss": 395886592,
+      "rssGrowth": 4259840,
+      "mainEventLoopMaxMs": 12.025855,
+      "mainEventLoopP99Ms": 12.025855,
+      "httpProbeCount": 0,
+      "httpProbeFailures": 0,
+      "httpP95Ms": null,
+      "httpMaxMs": null,
+      "stages": [],
+      "workerExited": true
+    },
+    {
+      "label": "zip-path-escape",
+      "elapsedMs": 46.32549999999992,
+      "baselineRss": 391856128,
+      "peakRss": 395821056,
+      "rssGrowth": 3964928,
+      "mainEventLoopMaxMs": 12.025855,
+      "mainEventLoopP99Ms": 12.025855,
+      "httpProbeCount": 0,
+      "httpProbeFailures": 0,
+      "httpP95Ms": null,
+      "httpMaxMs": null,
+      "stages": [],
+      "workerExited": true
+    },
+    {
+      "label": "zip-duplicate-entry",
+      "elapsedMs": 47.684417000000394,
+      "baselineRss": 392069120,
+      "peakRss": 396984320,
+      "rssGrowth": 4915200,
+      "mainEventLoopMaxMs": 12.189695,
+      "mainEventLoopP99Ms": 12.189695,
+      "httpProbeCount": 0,
+      "httpProbeFailures": 0,
+      "httpP95Ms": null,
+      "httpMaxMs": null,
+      "stages": [],
+      "workerExited": true
+    },
+    {
+      "label": "source-failure",
+      "elapsedMs": 500.21391600000015,
+      "baselineRss": 392937472,
+      "peakRss": 402882560,
+      "rssGrowth": 9945088,
+      "mainEventLoopMaxMs": 12.820479,
+      "mainEventLoopP99Ms": 12.820479,
+      "httpProbeCount": 9,
+      "httpProbeFailures": 0,
+      "httpP95Ms": 0.4806659999999283,
+      "httpMaxMs": 0.62887499999988,
+      "stages": [
+        {
+          "stage": "kdf-start",
+          "atMs": 43.24454100000003
+        },
+        {
+          "stage": "kdf-complete",
+          "atMs": 481.45316600000024
+        }
+      ],
+      "workerExited": true
+    },
+    {
+      "label": "cancel-worker",
+      "elapsedMs": 505.71054200000026,
+      "baselineRss": 398147584,
+      "peakRss": 409108480,
+      "rssGrowth": 10960896,
+      "mainEventLoopMaxMs": 12.230655,
+      "mainEventLoopP99Ms": 12.230655,
+      "httpProbeCount": 10,
+      "httpProbeFailures": 0,
+      "httpP95Ms": 0.46820800000023155,
+      "httpMaxMs": 0.47687500000029104,
+      "stages": [
+        {
+          "stage": "kdf-start",
+          "atMs": 43.609709000000294
+        },
+        {
+          "stage": "kdf-complete",
+          "atMs": 480.8375000000001
+        }
+      ],
+      "workerExited": true
+    },
+    {
+      "label": "cli-decrypted-zip-validate",
+      "elapsedMs": 48.827000000000226,
+      "baselineRss": 404619264,
+      "peakRss": 408616960,
+      "rssGrowth": 3997696,
+      "mainEventLoopMaxMs": 12.025855,
+      "mainEventLoopP99Ms": 12.025855,
+      "httpProbeCount": 0,
+      "httpProbeFailures": 0,
+      "httpP95Ms": null,
+      "httpMaxMs": null,
+      "stages": [],
+      "workerExited": true
+    },
+    {
+      "label": "cli-generated-age-decrypt",
+      "elapsedMs": 508.7673329999998,
+      "baselineRss": 404635648,
+      "peakRss": 410173440,
+      "rssGrowth": 5537792,
+      "mainEventLoopMaxMs": 12.779519,
+      "mainEventLoopP99Ms": 12.779519,
+      "httpProbeCount": 10,
+      "httpProbeFailures": 0,
+      "httpP95Ms": 0.4584999999997308,
+      "httpMaxMs": 0.7218329999996058,
+      "stages": [
+        {
+          "stage": "kdf-start",
+          "atMs": 44.31950000000052
+        },
+        {
+          "stage": "kdf-complete",
+          "atMs": 488.443166
+        }
+      ],
+      "workerExited": true
+    },
+    {
+      "label": "cli-generated-zip-validate",
+      "elapsedMs": 47.191749999999956,
+      "baselineRss": 405618688,
+      "peakRss": 409468928,
+      "rssGrowth": 3850240,
+      "mainEventLoopMaxMs": 12.025855,
+      "mainEventLoopP99Ms": 12.025855,
+      "httpProbeCount": 0,
+      "httpProbeFailures": 0,
+      "httpP95Ms": null,
+      "httpMaxMs": null,
+      "stages": [],
+      "workerExited": true
+    },
+    {
+      "label": "large-encrypt",
+      "elapsedMs": 18490.022625,
+      "baselineRss": 405454848,
+      "peakRss": 496287744,
+      "rssGrowth": 90832896,
+      "mainEventLoopMaxMs": 12.845055,
+      "mainEventLoopP99Ms": 12.533759,
+      "httpProbeCount": 362,
+      "httpProbeFailures": 0,
+      "httpP95Ms": 0.5175840000001699,
+      "httpMaxMs": 1.019125000000713,
+      "stages": [
+        {
+          "stage": "kdf-start",
+          "atMs": 43.605375000000095
+        },
+        {
+          "stage": "kdf-complete",
+          "atMs": 482.00145800000064
+        }
+      ],
+      "workerExited": true
+    },
+    {
+      "label": "large-decrypt",
+      "elapsedMs": 15940.286041999996,
+      "baselineRss": 491896832,
+      "peakRss": 496271360,
+      "rssGrowth": 4374528,
+      "mainEventLoopMaxMs": 12.754943,
+      "mainEventLoopP99Ms": 12.468223,
+      "httpProbeCount": 312,
+      "httpProbeFailures": 0,
+      "httpP95Ms": 0.5183749999996508,
+      "httpMaxMs": 0.6690830000006827,
+      "stages": [
+        {
+          "stage": "kdf-start",
+          "atMs": 66.3904169999987
+        },
+        {
+          "stage": "kdf-complete",
+          "atMs": 520.252666999997
+        }
+      ],
+      "workerExited": true
+    },
+    {
+      "label": "large-validate",
+      "elapsedMs": 2102.045833999997,
+      "baselineRss": 483196928,
+      "peakRss": 486916096,
+      "rssGrowth": 3719168,
+      "mainEventLoopMaxMs": 12.836863,
+      "mainEventLoopP99Ms": 12.386303,
+      "httpProbeCount": 41,
+      "httpProbeFailures": 0,
+      "httpP95Ms": 0.5627500000045984,
+      "httpMaxMs": 0.6805420000018785,
+      "stages": [],
+      "workerExited": true
+    },
+    {
+      "label": "many-encrypt",
+      "elapsedMs": 2060.380541999999,
+      "baselineRss": 429146112,
+      "peakRss": 993624064,
+      "rssGrowth": 564477952,
+      "mainEventLoopMaxMs": 12.533759,
+      "mainEventLoopP99Ms": 12.476415,
+      "httpProbeCount": 40,
+      "httpProbeFailures": 0,
+      "httpP95Ms": 0.5670000000027358,
+      "httpMaxMs": 0.7866250000006403,
+      "stages": [
+        {
+          "stage": "kdf-start",
+          "atMs": 66.39779199999612
+        },
+        {
+          "stage": "kdf-complete",
+          "atMs": 526.3699999999953
+        }
+      ],
+      "workerExited": true
+    },
+    {
+      "label": "many-decrypt",
+      "elapsedMs": 611.9474590000027,
+      "baselineRss": 959741952,
+      "peakRss": 1232388096,
+      "rssGrowth": 272646144,
+      "mainEventLoopMaxMs": 12.271615,
+      "mainEventLoopP99Ms": 12.263423,
+      "httpProbeCount": 12,
+      "httpProbeFailures": 0,
+      "httpP95Ms": 0.4146669999972801,
+      "httpMaxMs": 0.5180830000026617,
+      "stages": [
+        {
+          "stage": "kdf-start",
+          "atMs": 45.07729200000176
+        },
+        {
+          "stage": "kdf-complete",
+          "atMs": 507.47991699999693
+        }
+      ],
+      "workerExited": true
+    },
+    {
+      "label": "many-validate",
+      "elapsedMs": 3172.935958999995,
+      "baselineRss": 1227636736,
+      "peakRss": 1237188608,
+      "rssGrowth": 9551872,
+      "mainEventLoopMaxMs": 12.312575,
+      "mainEventLoopP99Ms": 12.148735,
+      "httpProbeCount": 63,
+      "httpProbeFailures": 0,
+      "httpP95Ms": 0.4470000000001164,
+      "httpMaxMs": 0.5343749999956344,
+      "stages": [],
+      "workerExited": true
+    }
+  ],
+  "status": "passed",
+  "cleanedTemporaryDirectory": true,
+  "finishedAt": "2026-10-22T09:19:01.278Z"
+}

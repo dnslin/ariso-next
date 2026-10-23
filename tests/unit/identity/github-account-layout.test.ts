@@ -270,3 +270,10 @@ it('shows each expanded configuration snapshot as separate enable, Client ID and
     ['当前生效 · 启用', 'Client ID：effective-client', '密钥已设置'],
   ]);
 });
+it('explains a backup pause in the existing binding alert and preserves other callback errors', () => {
+  state.view.callbackFailed = true;
+  state.view.callbackBackupPaused = true;
+  expect(render()).toContain('站点正在创建备份，请在备份结束后重新绑定 GitHub');
+  state.view.callbackBackupPaused = false;
+  expect(render()).toContain('GitHub 绑定未完成，请检查授权后重试。');
+});

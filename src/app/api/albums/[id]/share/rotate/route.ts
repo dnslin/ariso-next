@@ -7,10 +7,14 @@ export function POST(
   request: Request,
   context: { params: Promise<{ id: string }> },
 ) {
-  return ownerShareResponse(request, async () => ({
-    share: rotateShare(
-      getServerRuntime().connection.db,
-      (await context.params).id,
-    ),
-  }));
+  return ownerShareResponse(
+    request,
+    async () => ({
+      share: rotateShare(
+        getServerRuntime().connection.db,
+        (await context.params).id,
+      ),
+    }),
+    'albums/[id]/share/rotate:POST',
+  );
 }

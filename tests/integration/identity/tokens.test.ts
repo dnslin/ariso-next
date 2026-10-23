@@ -1,3 +1,4 @@
+import { createContentMutations } from '../../../src/server/runtime/content-mutations.ts';
 import { execFile } from 'node:child_process';
 import { createHash, randomBytes, randomUUID } from 'node:crypto';
 import {
@@ -187,6 +188,7 @@ describe('production Cookie Token management and upload-only verifier', () => {
   beforeEach(async () => {
     ownerId = await seedAuthOwner(connection, origin);
     auth = getAuth({
+      contentMutations: createContentMutations(),
       connection,
       config: parseRuntimeEnv(env),
       github: { enabled: false, clientId: '', clientSecret: null },

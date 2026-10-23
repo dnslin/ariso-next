@@ -15,12 +15,15 @@ export function GET(request: Request) {
 }
 
 export function DELETE(request: Request) {
-  return accountResponse(request, (server, owner) =>
-    unlinkGithubAccount(
-      server.connection.db,
-      owner.user.id,
-      getAuth(server)!,
-      request,
-    ),
+  return accountResponse(
+    request,
+    (server, owner) =>
+      unlinkGithubAccount(
+        server.connection.db,
+        owner.user.id,
+        getAuth(server)!,
+        request,
+      ),
+    'account.github.unlink',
   );
 }

@@ -20,20 +20,28 @@ export function GET(request: Request, context: Context) {
   }));
 }
 export function POST(request: Request, context: Context) {
-  return ownerShareResponse(request, async () => ({
-    share: await createShare(
-      getServerRuntime().connection.db,
-      (await context.params).id,
-      await shareBody(request),
-    ),
-  }));
+  return ownerShareResponse(
+    request,
+    async () => ({
+      share: await createShare(
+        getServerRuntime().connection.db,
+        (await context.params).id,
+        await shareBody(request),
+      ),
+    }),
+    'albums/[id]/share:POST',
+  );
 }
 export function PATCH(request: Request, context: Context) {
-  return ownerShareResponse(request, async () => ({
-    share: await updateShare(
-      getServerRuntime().connection.db,
-      (await context.params).id,
-      await shareBody(request),
-    ),
-  }));
+  return ownerShareResponse(
+    request,
+    async () => ({
+      share: await updateShare(
+        getServerRuntime().connection.db,
+        (await context.params).id,
+        await shareBody(request),
+      ),
+    }),
+    'albums/[id]/share:PATCH',
+  );
 }

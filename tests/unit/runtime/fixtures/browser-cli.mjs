@@ -156,6 +156,13 @@ export const launchAccessProtectionBrowserFixture = async () => {
     },
   };
 };
+export const runBackupBrowser = async ({
+  spaceId,
+  pageLabel,
+  storageConfig,
+}) => {
+  trace({ kind: 'backup', spaceId, pageLabel, storageConfig });
+};
 export const createSharingRunner = () =>
   Object.fromEntries(
     ['runViewer', 'runPublic', 'runProtocol', 'runExperiment', 'stop'].map(
@@ -174,6 +181,7 @@ const substitutes = new Map([
   ['../tests/integration/delivery/s3-fixture.ts', ['launchProtocolDelivery']],
   ['./browser-brand.mjs', ['runBrandBrowser']],
   ['./browser-branding.mjs', ['runBrandingBrowser']],
+  ['./browser-backup.mjs', ['runBackupBrowser']],
   ['./browser-sharing.mjs', ['createSharingRunner']],
   [
     '../e2e/access-protection-fixture.ts',

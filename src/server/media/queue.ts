@@ -20,6 +20,7 @@ import { discardMediaInput } from './input.ts';
 import { cleanupPermanentDeletes } from './cleanup.ts';
 import { claimNextPreview, startPreviewRuntime } from './previews.ts';
 import { mediaPreviews } from './schema.ts';
+import { waitForSettled } from '../runtime/idle.ts';
 
 /** Claim and persist ownership before any asynchronous storage or tool work. */
 export function claimNextMediaJob(db: BetterSQLite3Database) {
@@ -72,7 +73,7 @@ function nextMediaJob(db: BetterSQLite3Database) {
     .get();
 }
 
-function claimNextMediaWork(runtime: MediaRuntime) {
+function claimNextMediaWork(runtime: MediaRuntime, persistent = true) {
   return runtime.db.transaction(
     (tx) => {
       const preview = tx
@@ -81,14 +82,14 @@ function claimNextMediaWork(runtime: MediaRuntime) {
         .where(eq(mediaPreviews.status, 'queued'))
         .orderBy(asc(mediaPreviews.createdAt), asc(sql`${mediaPreviews}.rowid`))
         .get();
-      const media = nextMediaJob(tx);
+      const media = persistent ? nextMediaJob(tx) : null;
       if (preview && (!media || preview.createdAt < media.createdAt)) {
         const claimed = claimNextPreview({ ...runtime, db: tx });
         return claimed
           ? { ...claimed, kind: 'preview' as const, imageId: null }
           : null;
       }
-      return claimNextMediaJob(tx);
+      return persistent ? claimNextMediaJob(tx) : null;
     },
     { behavior: 'immediate' },
   );
@@ -112,7 +113,9 @@ export function startMediaQueue(runtime: MediaRuntime) {
     }
   >();
   let failure: unknown;
+  let paused = false;
   let maintenance: Promise<void> | undefined;
+  let persistentMaintenance: Promise<void> | undefined;
   async function consume() {
     try {
       await previews.ready;
@@ -171,7 +174,7 @@ export function startMediaQueue(runtime: MediaRuntime) {
         }
         const limit = readMediaSettings(runtime.db)?.concurrency ?? 1;
         while (!signal.aborted && active.size < limit) {
-          const job = claimNextMediaWork(runtime);
+          const job = claimNextMediaWork(runtime, !paused);
           if (!job) break;
           const storageId = job.imageId
             ? runtime.db
@@ -213,17 +216,25 @@ export function startMediaQueue(runtime: MediaRuntime) {
           // One maintenance batch at a time; remote I/O never blocks claims or cancellation.
           maintenance = (async () => {
             await previews.maintenance();
-            await cleanupPermanentDeletes(
-              runtime,
-              new Set(
-                [...active.values()].flatMap(({ imageId }) =>
-                  imageId ? [imageId] : [],
+            if (paused) return;
+            persistentMaintenance = (async () => {
+              await cleanupPermanentDeletes(
+                runtime,
+                new Set(
+                  [...active.values()].flatMap(({ imageId }) =>
+                    imageId ? [imageId] : [],
+                  ),
                 ),
-              ),
-              signal,
-            );
-            if (runtime.db.$client.open && !signal.aborted)
-              await cleanupMediaCandidates(runtime, signal);
+                signal,
+              );
+              if (runtime.db.$client.open && !signal.aborted && !paused)
+                await cleanupMediaCandidates(runtime, signal);
+            })();
+            try {
+              await persistentMaintenance;
+            } finally {
+              persistentMaintenance = undefined;
+            }
           })()
             .catch((err: unknown) => {
               if (
@@ -272,6 +283,24 @@ export function startMediaQueue(runtime: MediaRuntime) {
   }
   const completion = consume();
   return {
+    pause() {
+      paused = true;
+    },
+    resume() {
+      paused = false;
+    },
+    async waitForIdle(signal?: AbortSignal) {
+      await waitForSettled(
+        [
+          ...(persistentMaintenance ? [persistentMaintenance] : []),
+          ...[...active.values()]
+            .filter(({ imageId }) => imageId !== null)
+            .map(({ execution }) => execution),
+        ],
+        signal,
+      );
+      if (failure) throw failure;
+    },
     activeWrites(storageId: string) {
       return [...active.values()].filter(
         (operation) => operation.storageId === storageId,

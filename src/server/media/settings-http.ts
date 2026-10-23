@@ -8,13 +8,19 @@ export async function mediaSettingsResponse(
   operation: (
     db: ReturnType<typeof getServerRuntime>['connection']['db'],
   ) => unknown | Promise<unknown>,
+  mutation?: string,
 ) {
   const headers = { 'Cache-Control': 'no-store' };
   try {
     await requireOwner(request);
-    return Response.json(await operation(getServerRuntime().connection.db), {
-      headers,
-    });
+    const app = getServerRuntime();
+    const invoke = () => operation(app.connection.db);
+    return Response.json(
+      await (mutation ? app.contentMutations.run(mutation, invoke) : invoke()),
+      {
+        headers,
+      },
+    );
   } catch (error) {
     if (error instanceof ZodError || error instanceof SyntaxError) {
       return Response.json(

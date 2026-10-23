@@ -9,11 +9,14 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export function PATCH(request: Request) {
-  return accountResponse(request, async ({ connection }, owner) =>
-    updateOwnerEmail(
-      connection.db,
-      owner,
-      await readAccountInput(request, accountEmailInputSchema),
-    ),
+  return accountResponse(
+    request,
+    async ({ connection }, owner) =>
+      updateOwnerEmail(
+        connection.db,
+        owner,
+        await readAccountInput(request, accountEmailInputSchema),
+      ),
+    'account.email',
   );
 }
