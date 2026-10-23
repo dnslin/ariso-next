@@ -446,6 +446,36 @@ export async function verifyBrandingConsumers(page, config, tools, report) {
         await page.waitForSelector('main');
         const label =
           path === '/' ? 'home' : path === '/login' ? 'login' : 'share';
+        if (path === '/') {
+          const entry = await page.evaluate(() => {
+            const link = document.querySelector('main a[href="/login"]');
+            const button = link.getBoundingClientRect();
+            const description = document
+              .querySelector('.home-description')
+              .getBoundingClientRect();
+            const style = getComputedStyle(link);
+            return {
+              text: link.textContent,
+              width: button.width,
+              height: button.height,
+              centerOffset: button.x + button.width / 2 - innerWidth / 2,
+              gap: button.top - description.bottom,
+              radius: parseFloat(style.borderRadius),
+              visible: button.bottom <= innerHeight,
+              overflow: document.documentElement.scrollWidth > innerWidth,
+            };
+          });
+          assert.equal(entry.text, '登录');
+          assert.equal(entry.width, 112);
+          assert.equal(entry.height, 44);
+          assert.ok(Math.abs(entry.centerOffset) < 1, 'Home entry is centered');
+          assert.equal(entry.gap, 32);
+          assert.ok(entry.radius >= 22, 'Home entry has a capsule shape');
+          assert.equal(entry.visible, true);
+          assert.equal(entry.overflow, false);
+          report.homeEntries ??= [];
+          report.homeEntries.push({ viewportWidth: width, ...entry });
+        }
         const screenshot = `site-branding-${label}-${site.logo === 'source.png' ? 'first' : 'updated'}-${width}.png`;
         await page.screenshot({ path: join(config.output, screenshot) });
         report.layouts.push({

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { connection } from 'next/server';
 import { cache } from 'react';
+import { buttonVariants } from '@heroui/react/button';
 import { Link } from '@heroui/react/link';
 import { PublicShell } from '../components/shell/public-shell';
 import { SiteLogo } from '../components/site/logo';
@@ -45,7 +46,13 @@ export default async function HomePage() {
         {!settings ? (
           <p className="home-availability">首次使用，请完成站点初始化。</p>
         ) : null}
-        <Link href={settings ? '/login' : '/setup'}>
+        <Link
+          href={settings ? '/login' : '/setup'}
+          className={buttonVariants({
+            className:
+              'mt-3 h-11 min-h-11 min-w-28! rounded-full bg-foreground px-6 text-sm font-normal text-background min-[768px]:mt-2',
+          })}
+        >
           {settings ? '登录' : '开始初始化'}
         </Link>
       </div>
