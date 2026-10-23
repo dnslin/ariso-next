@@ -1,4 +1,3 @@
-import { randomBytes, randomUUID } from 'node:crypto';
 import {
   closeSync,
   fsyncSync,
@@ -13,6 +12,10 @@ import { finished } from 'node:stream/promises';
 import { createSecretCrypto } from '../runtime/crypto.ts';
 import { createS3Storage } from '../storage/s3.ts';
 import { stageError } from '../storage/probes.ts';
+import {
+  createConnectionReport,
+  runConnectionTest,
+} from '../storage/connection-test.ts';
 import type { ConnectionReport } from '../storage/probe-types.ts';
 import { storageCreateInputSchema } from '../storage/validation.ts';
 import { BackupError } from './errors.ts';
@@ -42,9 +45,9 @@ type StoredTarget = Omit<
   probeKey?: string;
   connectionReport?: ConnectionReport;
   cleared?: boolean;
-  pendingKey?: string;
-  pendingOperation?: 'put' | 'delete';
-  pendingStartedEmpty?: boolean;
+  pending?:
+    | { operation: 'put'; key: string; startedEmpty: boolean }
+    | { operation: 'delete'; key: string };
 };
 type RemoteState = {
   jobId: string;
@@ -302,15 +305,11 @@ export function createRestoreRemote(options: Options): RestoreRemote {
     return new BackupError(
       'RESTORE_REMOTE_WRITE_UNCERTAIN',
       409,
-      `远端尚未确认本次变更结果，仍保留清理责任：${item.storageId}/${item.pendingKey}。请检查提供方请求结果后重试；该请求仍可能在远端继续执行。`,
+      `远端尚未确认本次变更结果，仍保留清理责任：${item.storageId}/${item.pending?.key}。请检查提供方请求结果后重试；该请求仍可能在远端继续执行。`,
     );
   }
   function settlePending(item: StoredTarget) {
-    patch(item, {
-      pendingKey: undefined,
-      pendingOperation: undefined,
-      pendingStartedEmpty: undefined,
-    });
+    patch(item, { pending: undefined });
   }
   async function trackedWrite(
     item: StoredTarget,
@@ -327,15 +326,13 @@ export function createRestoreRemote(options: Options): RestoreRemote {
   ) {
     try {
       input.signal?.throwIfAborted();
-      if (item.pendingKey) throw uncertain(item);
+      if (item.pending) throw uncertain(item);
     } catch (error) {
       source.destroy();
       throw error;
     }
     patch(item, {
-      pendingKey: key,
-      pendingOperation: 'put',
-      pendingStartedEmpty: input.startedEmpty,
+      pending: { operation: 'put', key, startedEmpty: input.startedEmpty },
       cleanupPending: true,
       cleared: false,
     });
@@ -383,11 +380,9 @@ export function createRestoreRemote(options: Options): RestoreRemote {
     signal?: AbortSignal,
   ) {
     signal?.throwIfAborted();
-    if (item.pendingKey) throw uncertain(item);
+    if (item.pending) throw uncertain(item);
     patch(item, {
-      pendingKey: key,
-      pendingOperation: 'delete',
-      pendingStartedEmpty: undefined,
+      pending: { operation: 'delete', key },
       cleanupPending: true,
       cleared: false,
     });
@@ -492,9 +487,9 @@ export function createRestoreRemote(options: Options): RestoreRemote {
     retainOwner = false,
   ) {
     if (
-      (item.cleared && !item.pendingKey) ||
+      (item.cleared && !item.pending) ||
       (!item.cleanupPending &&
-        !item.pendingKey &&
+        !item.pending &&
         !item.writeStarted &&
         !item.probeKey &&
         item.claim !== 'owned')
@@ -511,16 +506,11 @@ export function createRestoreRemote(options: Options): RestoreRemote {
           '未确认本任务拥有目标，保留远端对象供检查',
         );
       known(item, found);
-      if (item.pendingKey) {
-        if (item.pendingOperation === 'put') {
-          if (!item.pendingStartedEmpty || !found.has(item.pendingKey))
+      if (item.pending) {
+        if (item.pending.operation === 'put') {
+          if (!item.pending.startedEmpty || !found.has(item.pending.key))
             throw uncertain(item);
-        } else if (item.pendingOperation === 'delete') {
-          if (found.has(item.pendingKey)) throw uncertain(item);
-        } else
-          throw new Error(
-            `Remote change record is incomplete: ${item.storageId}`,
-          );
+        } else if (found.has(item.pending.key)) throw uncertain(item);
         // Persist the observed outcome before starting a different remote mutation.
         settlePending(item);
       }
@@ -539,7 +529,7 @@ export function createRestoreRemote(options: Options): RestoreRemote {
       let keptOwner = false;
       if (remaining.has(ownerKey)) {
         await verifyOwner(item, storage, signal);
-        if (retainOwner && item.pendingKey !== ownerKey) keptOwner = true;
+        if (retainOwner) keptOwner = true;
         else {
           await trackedDelete(item, storage, ownerKey, signal);
         }
@@ -662,9 +652,7 @@ export function createRestoreRemote(options: Options): RestoreRemote {
         writeStarted: previous?.writeStarted ?? false,
         claim: previous?.claim ?? 'none',
         cleared: previous?.cleared,
-        pendingKey: previous?.pendingKey,
-        pendingOperation: previous?.pendingOperation,
-        pendingStartedEmpty: previous?.pendingStartedEmpty,
+        pending: previous?.pending,
         ...(previous?.probeKey ? { probeKey: previous.probeKey } : {}),
       };
       const next = {
@@ -720,113 +708,52 @@ export function createRestoreRemote(options: Options): RestoreRemote {
           });
           throw error;
         }
-        const bounded = AbortSignal.any([
-          ...(signal ? [signal] : []),
-          AbortSignal.timeout(30_000),
-        ]);
-        const report: ConnectionReport = {
-          probeId: randomUUID(),
+        const report = createConnectionReport({
           storageId,
           revision: item.revision,
-          passed: false,
-          stale: false,
           cleanupPending: false,
-          stages: (
-            ['configuration', 'write', 'read', 'anonymous', 'delete'] as const
-          ).map((stage) => ({ stage, status: 'pending' })),
+          wholeBucketHasNoLockRules: input.wholeBucketHasNoLockRules,
           deploymentRequirement:
             'Bucket 必须保持私有，并关闭公共域名/CDN 等旁路；测试不枚举公共别名。',
-          testedAt: new Date().toISOString(),
-          ownerConfirmation: {
-            wholeBucketHasNoLockRules: input.wholeBucketHasNoLockRules === true,
-            confirmedAt: input.wholeBucketHasNoLockRules
-              ? new Date().toISOString()
-              : null,
-          },
-        };
-        let stage = report.stages[0];
-        const perform = async (
-          name: typeof stage.stage,
-          operation: () => Promise<unknown>,
-        ) => {
-          stage = report.stages.find((entry) => entry.stage === name)!;
-          stage.evidence = await operation();
-          stage.status = 'passed';
-        };
+        });
+        const key = `restore/probes/${report.probeId}`;
         try {
-          try {
-            await perform('configuration', async () => {
-              const result = await storage.checkBucket({
-                r2NoBucketLocksConfirmed: input.wholeBucketHasNoLockRules,
-                signal: bounded,
+          await runConnectionTest({
+            storage,
+            key,
+            report,
+            signal,
+            formatError: stageError,
+            afterConfiguration: (checkSignal) =>
+              claim(item, storage, checkSignal),
+            async write(bytes, writeSignal) {
+              patch(item, { probeKey: key, cleanupPending: true });
+              const result = await trackedWrite(
+                item,
+                storage,
+                key,
+                Readable.from([bytes]),
+                {
+                  size: bytes.length,
+                  contentType: 'application/octet-stream',
+                  signal: writeSignal,
+                  startedEmpty: true,
+                },
+              );
+              return result.metadata;
+            },
+            cleanup: (cleanupSignal) => cleanupTarget(item, cleanupSignal),
+            onStage(stage) {
+              if (stage.status !== 'failed') return;
+              patch(item, {
+                ...(stage.stage === 'delete' ? { cleanupPending: true } : {}),
+                failure: {
+                  code: stage.error?.code ?? 'RESTORE_REMOTE_FAILED',
+                  message: stage.error!.message,
+                },
               });
-              await claim(item, storage, bounded);
-              return result;
-            });
-            const bytes = randomBytes(64);
-            const key = `restore/probes/${report.probeId}`;
-            patch(item, { probeKey: key, cleanupPending: true });
-            await perform(
-              'write',
-              async () =>
-                (
-                  await trackedWrite(
-                    item,
-                    storage,
-                    key,
-                    Readable.from([bytes]),
-                    {
-                      size: bytes.length,
-                      contentType: 'application/octet-stream',
-                      signal: bounded,
-                      startedEmpty: true,
-                    },
-                  )
-                ).metadata,
-            );
-            await perform('read', async () => {
-              const result = await storage.readObject(key, { signal: bounded });
-              const chunks: Buffer[] = [];
-              let length = 0;
-              try {
-                for await (const chunk of result.stream) {
-                  length += chunk.length;
-                  if (length > bytes.length)
-                    throw new Error('目标探测读取长度不一致');
-                  chunks.push(Buffer.from(chunk));
-                }
-                if (!Buffer.concat(chunks).equals(bytes))
-                  throw new Error('目标探测读取内容不一致');
-                return result.metadata;
-              } finally {
-                result.stream.destroy();
-              }
-            });
-            await perform('anonymous', () =>
-              storage.checkAnonymous(key, { signal: bounded }),
-            );
-          } catch (error) {
-            stage.status = 'failed';
-            stage.error = stageError(error);
-            patch(item, { failure: errorDetails(error) });
-            for (const entry of report.stages)
-              if (entry.status === 'pending' && entry.stage !== 'delete')
-                entry.status = 'skipped';
-          }
-          try {
-            await perform('delete', () =>
-              cleanupTarget(item, AbortSignal.timeout(30_000)),
-            );
-          } catch (error) {
-            stage.status = 'failed';
-            stage.error = stageError(error);
-            patch(item, { cleanupPending: true, failure: errorDetails(error) });
-          }
-          report.passed = report.stages.every(
-            (entry) => entry.status === 'passed',
-          );
-          report.cleanupPending = item.cleanupPending;
-          report.testedAt = new Date().toISOString();
+            },
+          });
           const failure = report.stages.findLast(
             (entry) => entry.status === 'failed',
           )?.error;
@@ -908,7 +835,7 @@ export function createRestoreRemote(options: Options): RestoreRemote {
       for (const item of current().targets) {
         // A retry starts from empty payload keys, so an old confirmed object cannot
         // be mistaken for a later unacknowledged PUT of the same key.
-        if (item.pendingKey) await cleanupTarget(item, signal, true);
+        if (item.pending) await cleanupTarget(item, signal, true);
         const storage = client(item);
         try {
           await claim(item, storage, signal);
@@ -966,7 +893,7 @@ export function createRestoreRemote(options: Options): RestoreRemote {
           '远端对象尚未全部写入完成',
         );
       for (const item of current().targets) {
-        if (item.pendingKey) throw uncertain(item);
+        if (item.pending) throw uncertain(item);
         const storage = client(item);
         try {
           const listed = new Map<string, number>();

@@ -536,7 +536,10 @@ it.each(['data', 'probe', 'owner'] as const)(
       const record = JSON.parse(
         await readFile(join(directory, 'remote.json'), 'utf8'),
       );
-      expect(record.targets[0].pendingKey).toBe(lateKey.slice(prefix.length));
+      expect(record.targets[0].pending).toMatchObject({
+        operation: 'put',
+        key: lateKey.slice(prefix.length),
+      });
       expect(endpoint!.objects.has(lateKey)).toBe(false);
     } finally {
       release.resolve();
@@ -657,7 +660,7 @@ it('removes the previous confirmed payload before retrying so an old object cann
   const record = JSON.parse(
     await readFile(join(directory, 'remote.json'), 'utf8'),
   );
-  expect(record.targets[0].pendingKey).toBeUndefined();
+  expect(record.targets[0].pending).toBeUndefined();
   expect(remote.list()[0].cleanupPending).toBe(false);
 });
 
@@ -748,8 +751,7 @@ it('remembers an observed late PUT commit when deletion succeeds but its reply i
     await readFile(join(directory, 'remote.json'), 'utf8'),
   );
   expect(pending.targets[0]).toMatchObject({
-    pendingOperation: 'delete',
-    pendingKey: entry.key,
+    pending: { operation: 'delete', key: entry.key },
   });
   endpoint!.control.dropDeleteResponse = '';
   // A fresh coordinator has only the persisted observation, not the lost reply.
@@ -806,8 +808,7 @@ it('does not send a second DELETE while an earlier deletion may still execute', 
       await readFile(join(directory, 'remote.json'), 'utf8'),
     );
     expect(record.targets[0]).toMatchObject({
-      pendingOperation: 'delete',
-      pendingKey: entry.key,
+      pending: { operation: 'delete', key: entry.key },
     });
   } finally {
     release.resolve();
@@ -819,6 +820,5 @@ it('does not send a second DELETE while an earlier deletion may still execute', 
   const settled = JSON.parse(
     await readFile(join(directory, 'remote.json'), 'utf8'),
   );
-  expect(settled.targets[0].pendingOperation).toBeUndefined();
-  expect(settled.targets[0].pendingKey).toBeUndefined();
+  expect(settled.targets[0].pending).toBeUndefined();
 });
