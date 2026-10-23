@@ -1,0 +1,114 @@
+{
+  "service": "r2",
+  "serviceVersion": "not-reported",
+  "startedAt": "2026-10-23T01:26:18.465Z",
+  "finishedAt": "2026-10-23T01:27:16.504Z",
+  "status": "passed",
+  "environment": {
+    "node": "v24.18.1",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "provider": {
+    "endpoint": "https://24aefab5f3cb70b3568d7aeaf292135b.r2.cloudflarestorage.com",
+    "region": "auto",
+    "bucket": "image",
+    "forcePathStyle": true
+  },
+  "application": {
+    "version": "v1.2.1-local.3",
+    "revision": "76adb636d444eba2e3404c30cae9adfa57882334"
+  },
+  "prefixes": {
+    "source": "ariso-backup-verification/0c5a0097-ca06-4e9d-990b-d42e6e793984/source",
+    "destination": "ariso-backup-verification/0c5a0097-ca06-4e9d-990b-d42e6e793984/destination",
+    "sentinel": "ariso-backup-verification/0c5a0097-ca06-4e9d-990b-d42e6e793984/sentinel"
+  },
+  "scopes": [
+    {
+      "role": "source",
+      "id": "d829aaf0-76dd-40ba-86da-041c9c8e3f85",
+      "pathPrefix": "ariso-backup-verification/0c5a0097-ca06-4e9d-990b-d42e6e793984/source"
+    },
+    {
+      "role": "source",
+      "id": "b100f1cd-96f6-4c5e-89e7-3ac7ee03ca75",
+      "pathPrefix": "ariso-backup-verification/0c5a0097-ca06-4e9d-990b-d42e6e793984/source"
+    },
+    {
+      "role": "sentinel",
+      "id": "c548d74c-3e8e-4b83-99e8-4624883f3934",
+      "pathPrefix": "ariso-backup-verification/0c5a0097-ca06-4e9d-990b-d42e6e793984/sentinel"
+    },
+    {
+      "role": "destination",
+      "id": "d829aaf0-76dd-40ba-86da-041c9c8e3f85",
+      "pathPrefix": "ariso-backup-verification/0c5a0097-ca06-4e9d-990b-d42e6e793984/destination"
+    },
+    {
+      "role": "destination",
+      "id": "b100f1cd-96f6-4c5e-89e7-3ac7ee03ca75",
+      "pathPrefix": "ariso-backup-verification/0c5a0097-ca06-4e9d-990b-d42e6e793984/destination"
+    }
+  ],
+  "sample": {
+    "pngBytes": 420,
+    "sourceImages": 3,
+    "savedVersions": 12,
+    "backupBytes": 508264
+  },
+  "sourceRemoval": [
+    {
+      "storageId": "d829aaf0-76dd-40ba-86da-041c9c8e3f85",
+      "removed": 4
+    },
+    {
+      "storageId": "b100f1cd-96f6-4c5e-89e7-3ac7ee03ca75",
+      "removed": 4
+    }
+  ],
+  "checks": [
+    "Three small real PNG uploads cover Local and two S3 configurations; one S3 is disabled with retained media",
+    "Source process stopped and DATA_DIR deleted; both original S3 test namespaces removed and checked empty",
+    "Restore uses new S3 namespaces and current tested revisions; explicit restart activates the original account with retained data identities",
+    "All saved version bytes and retained upload token verified; unrelated sentinel unchanged and old S3 namespaces remain empty"
+  ],
+  "cleanup": [
+    {
+      "role": "source",
+      "id": "d829aaf0-76dd-40ba-86da-041c9c8e3f85",
+      "pathPrefix": "ariso-backup-verification/0c5a0097-ca06-4e9d-990b-d42e6e793984/source",
+      "status": "passed",
+      "removed": 0
+    },
+    {
+      "role": "source",
+      "id": "b100f1cd-96f6-4c5e-89e7-3ac7ee03ca75",
+      "pathPrefix": "ariso-backup-verification/0c5a0097-ca06-4e9d-990b-d42e6e793984/source",
+      "status": "passed",
+      "removed": 0
+    },
+    {
+      "role": "sentinel",
+      "id": "c548d74c-3e8e-4b83-99e8-4624883f3934",
+      "pathPrefix": "ariso-backup-verification/0c5a0097-ca06-4e9d-990b-d42e6e793984/sentinel",
+      "status": "passed",
+      "removed": 1
+    },
+    {
+      "role": "destination",
+      "id": "d829aaf0-76dd-40ba-86da-041c9c8e3f85",
+      "pathPrefix": "ariso-backup-verification/0c5a0097-ca06-4e9d-990b-d42e6e793984/destination",
+      "status": "passed",
+      "removed": 4
+    },
+    {
+      "role": "destination",
+      "id": "b100f1cd-96f6-4c5e-89e7-3ac7ee03ca75",
+      "pathPrefix": "ariso-backup-verification/0c5a0097-ca06-4e9d-990b-d42e6e793984/destination",
+      "status": "passed",
+      "removed": 4
+    }
+  ],
+  "error": null
+}

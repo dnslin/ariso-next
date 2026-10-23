@@ -1,0 +1,968 @@
+{
+  "createdNodeIds": [
+    "1304:50937",
+    "1304:50938",
+    "1304:50939",
+    "1304:50940",
+    "1304:50941",
+    "1304:50942",
+    "1304:50943",
+    "1304:50944",
+    "1304:50945",
+    "1304:50946",
+    "1304:50947"
+  ],
+  "mutatedNodeIds": [
+    "1289:48292",
+    "1291:48356",
+    "1291:48361",
+    "1291:48722",
+    "1291:49031",
+    "1291:49336",
+    "1291:49596",
+    "1296:49416",
+    "1289:48446",
+    "1292:49015",
+    "1292:49022",
+    "1292:49227",
+    "1292:49234",
+    "1292:49555",
+    "1292:49562",
+    "1293:49419",
+    "1293:49426",
+    "1293:49622",
+    "1298:49426",
+    "1291:48717",
+    "1289:48287",
+    "1291:49331",
+    "1291:49591",
+    "1282:47861",
+    "1282:47875",
+    "1289:48162",
+    "1291:48221",
+    "1291:48562",
+    "1291:48943",
+    "1291:49226",
+    "1291:49502",
+    "1293:49559",
+    "1289:48402",
+    "1291:48479",
+    "1291:48484",
+    "1291:48865",
+    "1291:49125",
+    "1291:49427",
+    "1291:49672",
+    "1296:49425",
+    "1289:48530",
+    "1292:49121",
+    "1292:49128",
+    "1292:49391",
+    "1292:49398",
+    "1292:49661",
+    "1292:49668",
+    "1293:49471",
+    "1293:49478",
+    "1293:49693",
+    "1298:49440",
+    "1291:48860",
+    "1289:48397",
+    "1291:49422",
+    "1291:49667",
+    "1282:47862",
+    "1282:47876",
+    "1289:48299",
+    "1291:48371",
+    "1291:48732",
+    "1291:49064",
+    "1291:49343",
+    "1291:49605",
+    "1293:49626",
+    "1299:49486",
+    "1299:49793",
+    "1299:49794",
+    "1299:50140",
+    "1299:50509",
+    "1299:50804",
+    "1299:51075",
+    "1299:51270",
+    "1299:51273",
+    "1299:51464",
+    "1299:51465",
+    "1299:51702",
+    "1299:51703",
+    "1299:51979",
+    "1299:51980",
+    "1299:52443",
+    "1299:52444",
+    "1299:52594",
+    "1299:52562",
+    "1299:50139",
+    "1299:49482",
+    "1299:50800",
+    "1299:51071",
+    "1299:50423",
+    "1299:52113",
+    "1299:49441",
+    "1299:49754",
+    "1299:50091",
+    "1299:50460",
+    "1299:50747",
+    "1299:51023",
+    "1299:52554",
+    "1299:49643",
+    "1299:49962",
+    "1299:49963",
+    "1299:50325",
+    "1299:50653",
+    "1299:50943",
+    "1299:51199",
+    "1299:51347",
+    "1299:51350",
+    "1299:51567",
+    "1299:51568",
+    "1299:51859",
+    "1299:51860",
+    "1299:52082",
+    "1299:52083",
+    "1299:52492",
+    "1299:52493",
+    "1299:52704",
+    "1299:52672",
+    "1299:50324",
+    "1299:49639",
+    "1299:50939",
+    "1299:51195",
+    "1299:50614",
+    "1299:52178",
+    "1299:49611",
+    "1299:49936",
+    "1299:50289",
+    "1299:50617",
+    "1299:50898",
+    "1299:51160",
+    "1299:52663",
+    "1282:47854"
+  ],
+  "removedNodeIds": ["1281:47854", "1284:47854"],
+  "links": [
+    {
+      "fromNodeId": "1289:48292",
+      "fromName": "Action / 创建备份",
+      "toNodeId": "1282:47857",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1291:48356",
+      "fromName": "Action / 取消",
+      "toNodeId": "1282:47855",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1291:48361",
+      "fromName": "Action / 创建备份",
+      "toNodeId": "1282:47859",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1291:48722",
+      "fromName": "Action / 开始备份",
+      "toNodeId": "1282:47861",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1291:49031",
+      "fromName": "Action / 前往图库继续浏览",
+      "toNodeId": "1282:47883",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1291:49336",
+      "fromName": "Action / 创建备份",
+      "toNodeId": "1282:47857",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1291:49596",
+      "fromName": "Action / 重新备份",
+      "toNodeId": "1282:47857",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1296:49416",
+      "fromName": "Action / 退出恢复",
+      "toNodeId": "1282:47855",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1289:48446",
+      "fromName": "Action / 解密并继续",
+      "toNodeId": "1282:47869",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1292:49015",
+      "fromName": "Action / 上一步",
+      "toNodeId": "1282:47867",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1292:49022",
+      "fromName": "Action / 配置恢复位置",
+      "toNodeId": "1282:47871",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1292:49227",
+      "fromName": "Action / 上一步",
+      "toNodeId": "1282:47869",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1292:49234",
+      "fromName": "Action / 核对恢复信息",
+      "toNodeId": "1282:47873",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1292:49555",
+      "fromName": "Action / 上一步",
+      "toNodeId": "1282:47871",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1292:49562",
+      "fromName": "Action / 开始恢复",
+      "toNodeId": "1282:47875",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1293:49419",
+      "fromName": "Action / 重试恢复",
+      "toNodeId": "1282:47875",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1293:49426",
+      "fromName": "Action / 检查存储配置",
+      "toNodeId": "1282:47871",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1293:49622",
+      "fromName": "Action / 返回备份与恢复",
+      "toNodeId": "1282:47861",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1298:49426",
+      "fromName": "Action / 查看备份进度",
+      "toNodeId": "1282:47861",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1291:48717",
+      "fromName": "Action / 取消",
+      "toNodeId": "1282:47857",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1289:48287",
+      "fromName": "Action / 查看恢复流程",
+      "toNodeId": "1282:47867",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1291:49331",
+      "fromName": "Action / 查看恢复流程",
+      "toNodeId": "1282:47867",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1291:49591",
+      "fromName": "Action / 查看恢复流程",
+      "toNodeId": "1282:47867",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1282:47861",
+      "fromName": "D / B04 备份进度 / Light",
+      "toNodeId": "1282:47863",
+      "trigger": "AFTER_TIMEOUT"
+    },
+    {
+      "fromNodeId": "1282:47875",
+      "fromName": "D / R05 恢复进度 / Light",
+      "toNodeId": "1282:47877",
+      "trigger": "AFTER_TIMEOUT"
+    },
+    {
+      "fromNodeId": "1289:48162",
+      "fromName": "Icon / Sun",
+      "toNodeId": "1299:49404",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1291:48221",
+      "fromName": "Icon / Sun",
+      "toNodeId": "1299:49717",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1291:48562",
+      "fromName": "Icon / Sun",
+      "toNodeId": "1299:50054",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1291:48943",
+      "fromName": "Icon / Sun",
+      "toNodeId": "1299:50423",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1291:49226",
+      "fromName": "Icon / Sun",
+      "toNodeId": "1299:50710",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1291:49502",
+      "fromName": "Icon / Sun",
+      "toNodeId": "1299:50986",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1293:49559",
+      "fromName": "Icon / Sun",
+      "toNodeId": "1299:52517",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1289:48402",
+      "fromName": "Action / 创建备份",
+      "toNodeId": "1282:47858",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1291:48479",
+      "fromName": "Action / 取消",
+      "toNodeId": "1282:47856",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1291:48484",
+      "fromName": "Action / 创建备份",
+      "toNodeId": "1282:47860",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1291:48865",
+      "fromName": "Action / 开始备份",
+      "toNodeId": "1282:47862",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1291:49125",
+      "fromName": "Action / 前往图库继续浏览",
+      "toNodeId": "1282:47884",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1291:49427",
+      "fromName": "Action / 创建备份",
+      "toNodeId": "1282:47858",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1291:49672",
+      "fromName": "Action / 重新备份",
+      "toNodeId": "1282:47858",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1296:49425",
+      "fromName": "Action / 退出恢复",
+      "toNodeId": "1282:47856",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1289:48530",
+      "fromName": "Action / 解密并继续",
+      "toNodeId": "1282:47870",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1292:49121",
+      "fromName": "Action / 上一步",
+      "toNodeId": "1282:47868",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1292:49128",
+      "fromName": "Action / 配置恢复位置",
+      "toNodeId": "1282:47872",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1292:49391",
+      "fromName": "Action / 上一步",
+      "toNodeId": "1282:47870",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1292:49398",
+      "fromName": "Action / 核对恢复信息",
+      "toNodeId": "1282:47874",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1292:49661",
+      "fromName": "Action / 上一步",
+      "toNodeId": "1282:47872",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1292:49668",
+      "fromName": "Action / 开始恢复",
+      "toNodeId": "1282:47876",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1293:49471",
+      "fromName": "Action / 重试恢复",
+      "toNodeId": "1282:47876",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1293:49478",
+      "fromName": "Action / 检查存储配置",
+      "toNodeId": "1282:47872",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1293:49693",
+      "fromName": "Action / 返回备份与恢复",
+      "toNodeId": "1282:47862",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1298:49440",
+      "fromName": "Action / 查看备份进度",
+      "toNodeId": "1282:47862",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1291:48860",
+      "fromName": "Action / 取消",
+      "toNodeId": "1282:47858",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1289:48397",
+      "fromName": "Action / 查看恢复流程",
+      "toNodeId": "1282:47868",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1291:49422",
+      "fromName": "Action / 查看恢复流程",
+      "toNodeId": "1282:47868",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1291:49667",
+      "fromName": "Action / 查看恢复流程",
+      "toNodeId": "1282:47868",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1282:47862",
+      "fromName": "M / B04 备份进度 / Light",
+      "toNodeId": "1282:47864",
+      "trigger": "AFTER_TIMEOUT"
+    },
+    {
+      "fromNodeId": "1282:47876",
+      "fromName": "M / R05 恢复进度 / Light",
+      "toNodeId": "1282:47878",
+      "trigger": "AFTER_TIMEOUT"
+    },
+    {
+      "fromNodeId": "1289:48299",
+      "fromName": "Icon / Sun",
+      "toNodeId": "1299:49608",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1291:48371",
+      "fromName": "Icon / Sun",
+      "toNodeId": "1299:49933",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1291:48732",
+      "fromName": "Icon / Sun",
+      "toNodeId": "1299:50286",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1291:49064",
+      "fromName": "Icon / Sun",
+      "toNodeId": "1299:50614",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1291:49343",
+      "fromName": "Icon / Sun",
+      "toNodeId": "1299:50895",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1291:49605",
+      "fromName": "Icon / Sun",
+      "toNodeId": "1299:51157",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1293:49626",
+      "fromName": "Icon / Sun",
+      "toNodeId": "1299:52660",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:49486",
+      "fromName": "Action / 创建备份",
+      "toNodeId": "1299:49717",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:49793",
+      "fromName": "Action / 取消",
+      "toNodeId": "1299:49404",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:49794",
+      "fromName": "Action / 创建备份",
+      "toNodeId": "1299:50054",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:50140",
+      "fromName": "Action / 开始备份",
+      "toNodeId": "1299:50423",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:50509",
+      "fromName": "Action / 前往图库继续浏览",
+      "toNodeId": "1299:52517",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:50804",
+      "fromName": "Action / 创建备份",
+      "toNodeId": "1299:49717",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:51075",
+      "fromName": "Action / 重新备份",
+      "toNodeId": "1299:49717",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:51270",
+      "fromName": "Action / 退出恢复",
+      "toNodeId": "1299:49404",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:51273",
+      "fromName": "Action / 解密并继续",
+      "toNodeId": "1299:51387",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:51464",
+      "fromName": "Action / 上一步",
+      "toNodeId": "1299:51233",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:51465",
+      "fromName": "Action / 配置恢复位置",
+      "toNodeId": "1299:51593",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:51702",
+      "fromName": "Action / 上一步",
+      "toNodeId": "1299:51387",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:51703",
+      "fromName": "Action / 核对恢复信息",
+      "toNodeId": "1299:51907",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:51979",
+      "fromName": "Action / 上一步",
+      "toNodeId": "1299:51593",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:51980",
+      "fromName": "Action / 开始恢复",
+      "toNodeId": "1299:52113",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:52443",
+      "fromName": "Action / 重试恢复",
+      "toNodeId": "1299:52113",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:52444",
+      "fromName": "Action / 检查存储配置",
+      "toNodeId": "1299:51593",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:52594",
+      "fromName": "Action / 返回备份与恢复",
+      "toNodeId": "1299:50423",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:52562",
+      "fromName": "Action / 查看备份进度",
+      "toNodeId": "1299:50423",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:50139",
+      "fromName": "Action / 取消",
+      "toNodeId": "1299:49717",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:49482",
+      "fromName": "Action / 查看恢复流程",
+      "toNodeId": "1299:51233",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:50800",
+      "fromName": "Action / 查看恢复流程",
+      "toNodeId": "1299:51233",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:51071",
+      "fromName": "Action / 查看恢复流程",
+      "toNodeId": "1299:51233",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:50423",
+      "fromName": "D / B04 备份进度 / Dark",
+      "toNodeId": "1299:50710",
+      "trigger": "AFTER_TIMEOUT"
+    },
+    {
+      "fromNodeId": "1299:52113",
+      "fromName": "D / R05 恢复进度 / Dark",
+      "toNodeId": "1299:52243",
+      "trigger": "AFTER_TIMEOUT"
+    },
+    {
+      "fromNodeId": "1299:49441",
+      "fromName": "Icon / Moon",
+      "toNodeId": "1282:47855",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:49754",
+      "fromName": "Icon / Moon",
+      "toNodeId": "1282:47857",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:50091",
+      "fromName": "Icon / Moon",
+      "toNodeId": "1282:47859",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:50460",
+      "fromName": "Icon / Moon",
+      "toNodeId": "1282:47861",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:50747",
+      "fromName": "Icon / Moon",
+      "toNodeId": "1282:47863",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:51023",
+      "fromName": "Icon / Moon",
+      "toNodeId": "1282:47865",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:52554",
+      "fromName": "Icon / Moon",
+      "toNodeId": "1282:47883",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:49643",
+      "fromName": "Action / 创建备份",
+      "toNodeId": "1299:49933",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:49962",
+      "fromName": "Action / 取消",
+      "toNodeId": "1299:49608",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:49963",
+      "fromName": "Action / 创建备份",
+      "toNodeId": "1299:50286",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:50325",
+      "fromName": "Action / 开始备份",
+      "toNodeId": "1299:50614",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:50653",
+      "fromName": "Action / 前往图库继续浏览",
+      "toNodeId": "1299:52660",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:50943",
+      "fromName": "Action / 创建备份",
+      "toNodeId": "1299:49933",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:51199",
+      "fromName": "Action / 重新备份",
+      "toNodeId": "1299:49933",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:51347",
+      "fromName": "Action / 退出恢复",
+      "toNodeId": "1299:49608",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:51350",
+      "fromName": "Action / 解密并继续",
+      "toNodeId": "1299:51490",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:51567",
+      "fromName": "Action / 上一步",
+      "toNodeId": "1299:51310",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:51568",
+      "fromName": "Action / 配置恢复位置",
+      "toNodeId": "1299:51750",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:51859",
+      "fromName": "Action / 上一步",
+      "toNodeId": "1299:51490",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:51860",
+      "fromName": "Action / 核对恢复信息",
+      "toNodeId": "1299:52010",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:52082",
+      "fromName": "Action / 上一步",
+      "toNodeId": "1299:51750",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:52083",
+      "fromName": "Action / 开始恢复",
+      "toNodeId": "1299:52178",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:52492",
+      "fromName": "Action / 重试恢复",
+      "toNodeId": "1299:52178",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:52493",
+      "fromName": "Action / 检查存储配置",
+      "toNodeId": "1299:51750",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:52704",
+      "fromName": "Action / 返回备份与恢复",
+      "toNodeId": "1299:50614",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:52672",
+      "fromName": "Action / 查看备份进度",
+      "toNodeId": "1299:50614",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:50324",
+      "fromName": "Action / 取消",
+      "toNodeId": "1299:49933",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:49639",
+      "fromName": "Action / 查看恢复流程",
+      "toNodeId": "1299:51310",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:50939",
+      "fromName": "Action / 查看恢复流程",
+      "toNodeId": "1299:51310",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:51195",
+      "fromName": "Action / 查看恢复流程",
+      "toNodeId": "1299:51310",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:50614",
+      "fromName": "M / B04 备份进度 / Dark",
+      "toNodeId": "1299:50895",
+      "trigger": "AFTER_TIMEOUT"
+    },
+    {
+      "fromNodeId": "1299:52178",
+      "fromName": "M / R05 恢复进度 / Dark",
+      "toNodeId": "1299:52288",
+      "trigger": "AFTER_TIMEOUT"
+    },
+    {
+      "fromNodeId": "1299:49611",
+      "fromName": "Icon / Moon",
+      "toNodeId": "1282:47856",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:49936",
+      "fromName": "Icon / Moon",
+      "toNodeId": "1282:47858",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:50289",
+      "fromName": "Icon / Moon",
+      "toNodeId": "1282:47860",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:50617",
+      "fromName": "Icon / Moon",
+      "toNodeId": "1282:47862",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:50898",
+      "fromName": "Icon / Moon",
+      "toNodeId": "1282:47864",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:51160",
+      "fromName": "Icon / Moon",
+      "toNodeId": "1282:47866",
+      "trigger": "ON_CLICK"
+    },
+    {
+      "fromNodeId": "1299:52663",
+      "fromName": "Icon / Moon",
+      "toNodeId": "1282:47884",
+      "trigger": "ON_CLICK"
+    }
+  ],
+  "startingPoints": [
+    {
+      "nodeId": "1282:47855",
+      "name": "桌面 · 浅色 · 创建备份"
+    },
+    {
+      "nodeId": "1282:47867",
+      "name": "桌面 · 浅色 · 新实例恢复"
+    },
+    {
+      "nodeId": "1282:47879",
+      "name": "桌面 · 浅色 · 部署重启后登录"
+    },
+    {
+      "nodeId": "1282:47856",
+      "name": "手机 · 浅色 · 创建备份"
+    },
+    {
+      "nodeId": "1282:47868",
+      "name": "手机 · 浅色 · 新实例恢复"
+    },
+    {
+      "nodeId": "1282:47880",
+      "name": "手机 · 浅色 · 部署重启后登录"
+    },
+    {
+      "nodeId": "1299:49404",
+      "name": "桌面 · 深色 · 创建备份"
+    },
+    {
+      "nodeId": "1299:51233",
+      "name": "桌面 · 深色 · 新实例恢复"
+    },
+    {
+      "nodeId": "1299:52333",
+      "name": "桌面 · 深色 · 部署重启后登录"
+    },
+    {
+      "nodeId": "1299:49608",
+      "name": "手机 · 深色 · 创建备份"
+    },
+    {
+      "nodeId": "1299:51310",
+      "name": "手机 · 深色 · 新实例恢复"
+    },
+    {
+      "nodeId": "1299:52376",
+      "name": "手机 · 深色 · 部署重启后登录"
+    }
+  ],
+  "noteId": "1304:50937"
+}

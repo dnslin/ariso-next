@@ -37,6 +37,10 @@
 
 `media` 把资产状态、处理任务和删除清理放在一起，是因为它们共同维护同一张图片及其文件的一致性。模块内仍区分处理、元数据与清理职责，具体代码组织在该模块 Spec 中定义。
 
+### 后续迭代的已确认方案
+
+- [整站备份与恢复](../specs/SPEC-backup.md)：产品方案和[交互原型](../../prototypes/backup-restore/README.md)于 2026-10-22 获用户确认，随后获准继续实现 S3。已按[技术方案](../../tasks/plan.md)与[任务拆分](../../tasks/todo.md)接入 Local/S3 备份、下载与空白实例恢复；新 S3 保留原 ID，逐个测试当前配置 revision 后执行，准备完成后手动重启启用。取消遗留只能在原坐标修正凭据并继续清理。上一轮[本地记录](../verification/backup-implementation/README.md)保持历史范围；小样本真实提供方、浏览器与最终专项复核已完成，见 [S3 实施记录](../verification/backup-implementation/s3.md)。本轮不做大文件或容量压测，未发布部署，不改写首版完成结论。
+
 ## 3. 跨模块流程的责任
 
 2026-10-22 后续迭代增加[访问防护](../specs/SPEC-access-protection.md)：独立维护匿名限频设置与进程内计数。媒体 Route Handler 组合真实所有者身份、HTTP 来源与限频结果，不改变 S3 直连和既有文件访问权限。入口与设计以用户批准的精简 Tips 原型为准。

@@ -1,0 +1,294 @@
+{
+  "image": "ariso:backup-local-verification",
+  "platform": "linux/arm64",
+  "host": "linux/arm64",
+  "failureNetwork": "Linux Docker host network; direct loopback TCP probe",
+  "backupMethod": "stopped whole-directory tar -cpf archive; restore with tar -xpf",
+  "checks": [
+    "final image health, JSON logs, static assets, Node 24 architecture and PID 1",
+    "empty data directory prepares default local storage without an owner",
+    "concurrent setup commits one owner and the initial site/media settings without a session",
+    "real image upload completes its media job and delivers the original bytes through HTTP",
+    "production login and logout revoke the cookie before restart",
+    "packaged docker exec -it CLI resets password while Web is running and revokes both cookies on the next request",
+    "container recreation preserves configuration, library image and original bytes, emits no setup code and supports fresh login/logout",
+    "stop/start/restart persistence and repeated migrations",
+    "MIGRATION_FAILED",
+    "SCHEMA_TOO_NEW",
+    "upgrade data preserved, failed migration rolled back and old schema refused",
+    "stopped whole-directory backup and restore before old-version startup"
+  ],
+  "stops": [
+    {
+      "exitCode": 143,
+      "elapsedMs": 177
+    },
+    {
+      "exitCode": 143,
+      "elapsedMs": 180
+    },
+    {
+      "exitCode": 143,
+      "elapsedMs": -250
+    },
+    {
+      "exitCode": 143,
+      "elapsedMs": 170
+    },
+    {
+      "exitCode": 143,
+      "elapsedMs": 337
+    },
+    {
+      "exitCode": 143,
+      "elapsedMs": 443
+    }
+  ],
+  "status": "passed",
+  "imageId": "sha256:8f59f461211b48cfbd09bbb55e6c6760b67cdca9082b1d8e80caba6b945a92f6",
+  "imageArchitecture": "arm64",
+  "identity": {
+    "beforeSetup": {
+      "owners": [],
+      "credentials": [],
+      "site": [],
+      "media": [],
+      "storage": [
+        {
+          "id": "ee9984d9-9040-410e-aff3-25c5f820ac21",
+          "name": "默认本地存储",
+          "type": "local",
+          "enabled": 1,
+          "created_at": 1792683852555,
+          "updated_at": 1792683852555,
+          "local_path": "default",
+          "endpoint": null,
+          "region": null,
+          "bucket": null,
+          "path_prefix": null,
+          "force_path_style": null,
+          "access_key_encrypted": null,
+          "secret_key_encrypted": null,
+          "config_revision": 1,
+          "connection_status": "untested",
+          "connection_revision": null,
+          "connection_tested_at": null,
+          "cors_status": "untested",
+          "cors_revision": null,
+          "cors_origin": null,
+          "cors_tested_at": null,
+          "connection_report": null,
+          "cors_report": null
+        }
+      ],
+      "storageSettings": [
+        {
+          "id": 1,
+          "default_storage_id": "ee9984d9-9040-410e-aff3-25c5f820ac21"
+        }
+      ],
+      "sessionCount": 0,
+      "defaultDirectory": true
+    },
+    "setupStatuses": [200, 409],
+    "afterSetup": {
+      "owners": [
+        {
+          "id": "656dd800-33c1-4401-9d0f-846b7bf7fbad",
+          "email": "container-owner@example.test",
+          "owner_slot": 1
+        }
+      ],
+      "credentials": [
+        {
+          "id": "61c467d6-6f24-4d00-a5fa-29b0bf439bbb",
+          "account_id": "656dd800-33c1-4401-9d0f-846b7bf7fbad",
+          "user_id": "656dd800-33c1-4401-9d0f-846b7bf7fbad",
+          "provider_id": "credential"
+        }
+      ],
+      "site": [
+        {
+          "id": 1,
+          "public_url": "http://127.0.0.1:46513",
+          "time_zone": "UTC",
+          "name": "Ariso",
+          "description": "",
+          "logo_key": null,
+          "logo_mime": null,
+          "favicon_key": null,
+          "favicon_mime": null,
+          "updated_at": 1792683858321
+        }
+      ],
+      "media": [
+        {
+          "id": 1,
+          "compression_enabled": 1,
+          "output_format": "webp",
+          "quality": 82,
+          "max_edge": null,
+          "jpeg_background": "#FFFFFF",
+          "watermark_mode": "off",
+          "default_link_version": "compressed",
+          "default_visibility": "public",
+          "concurrency": 1,
+          "updated_at": 1792683858321,
+          "watermark_asset_id": null,
+          "watermark_text": "",
+          "watermark_font": "chinese",
+          "watermark_font_size": 3,
+          "watermark_color": "#FFFFFF",
+          "watermark_stroke_color": "#000000",
+          "watermark_stroke_width": 0,
+          "watermark_opacity": 50,
+          "watermark_position": "bottom-right",
+          "watermark_margin": 2,
+          "watermark_width": 20
+        }
+      ],
+      "storage": [
+        {
+          "id": "ee9984d9-9040-410e-aff3-25c5f820ac21",
+          "name": "默认本地存储",
+          "type": "local",
+          "enabled": 1,
+          "created_at": 1792683852555,
+          "updated_at": 1792683852555,
+          "local_path": "default",
+          "endpoint": null,
+          "region": null,
+          "bucket": null,
+          "path_prefix": null,
+          "force_path_style": null,
+          "access_key_encrypted": null,
+          "secret_key_encrypted": null,
+          "config_revision": 1,
+          "connection_status": "untested",
+          "connection_revision": null,
+          "connection_tested_at": null,
+          "cors_status": "untested",
+          "cors_revision": null,
+          "cors_origin": null,
+          "cors_tested_at": null,
+          "connection_report": null,
+          "cors_report": null
+        }
+      ],
+      "storageSettings": [
+        {
+          "id": 1,
+          "default_storage_id": "ee9984d9-9040-410e-aff3-25c5f820ac21"
+        }
+      ],
+      "sessionCount": 0,
+      "defaultDirectory": true
+    },
+    "cliRecovery": {
+      "terminalRestored": true,
+      "hiddenInput": true,
+      "revokedSessions": 2,
+      "oldPasswordRejected": true,
+      "newPasswordAccepted": true
+    },
+    "afterRestart": {
+      "owners": [
+        {
+          "id": "656dd800-33c1-4401-9d0f-846b7bf7fbad",
+          "email": "container-owner@example.test",
+          "owner_slot": 1
+        }
+      ],
+      "credentials": [
+        {
+          "id": "61c467d6-6f24-4d00-a5fa-29b0bf439bbb",
+          "account_id": "656dd800-33c1-4401-9d0f-846b7bf7fbad",
+          "user_id": "656dd800-33c1-4401-9d0f-846b7bf7fbad",
+          "provider_id": "credential"
+        }
+      ],
+      "site": [
+        {
+          "id": 1,
+          "public_url": "http://127.0.0.1:46513",
+          "time_zone": "UTC",
+          "name": "Ariso",
+          "description": "",
+          "logo_key": null,
+          "logo_mime": null,
+          "favicon_key": null,
+          "favicon_mime": null,
+          "updated_at": 1792683858321
+        }
+      ],
+      "media": [
+        {
+          "id": 1,
+          "compression_enabled": 1,
+          "output_format": "webp",
+          "quality": 82,
+          "max_edge": null,
+          "jpeg_background": "#FFFFFF",
+          "watermark_mode": "off",
+          "default_link_version": "compressed",
+          "default_visibility": "public",
+          "concurrency": 1,
+          "updated_at": 1792683858321,
+          "watermark_asset_id": null,
+          "watermark_text": "",
+          "watermark_font": "chinese",
+          "watermark_font_size": 3,
+          "watermark_color": "#FFFFFF",
+          "watermark_stroke_color": "#000000",
+          "watermark_stroke_width": 0,
+          "watermark_opacity": 50,
+          "watermark_position": "bottom-right",
+          "watermark_margin": 2,
+          "watermark_width": 20
+        }
+      ],
+      "storage": [
+        {
+          "id": "ee9984d9-9040-410e-aff3-25c5f820ac21",
+          "name": "默认本地存储",
+          "type": "local",
+          "enabled": 1,
+          "created_at": 1792683852555,
+          "updated_at": 1792683852555,
+          "local_path": "default",
+          "endpoint": null,
+          "region": null,
+          "bucket": null,
+          "path_prefix": null,
+          "force_path_style": null,
+          "access_key_encrypted": null,
+          "secret_key_encrypted": null,
+          "config_revision": 1,
+          "connection_status": "untested",
+          "connection_revision": null,
+          "connection_tested_at": null,
+          "cors_status": "untested",
+          "cors_revision": null,
+          "cors_origin": null,
+          "cors_tested_at": null,
+          "connection_report": null,
+          "cors_report": null
+        }
+      ],
+      "storageSettings": [
+        {
+          "id": 1,
+          "default_storage_id": "ee9984d9-9040-410e-aff3-25c5f820ac21"
+        }
+      ],
+      "sessionCount": 0,
+      "defaultDirectory": true
+    }
+  },
+  "media": {
+    "imageId": "0fd811a6-88af-49b1-b02f-29d1f2efefba",
+    "byteLength": 6631,
+    "processingStatus": "succeeded"
+  },
+  "cleaned": true
+}

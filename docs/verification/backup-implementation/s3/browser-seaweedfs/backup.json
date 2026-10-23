@@ -1,0 +1,97 @@
+{
+  "status": "passed",
+  "checks": [
+    "create",
+    "download",
+    "source-data-removed",
+    "restore",
+    "activated"
+  ],
+  "remote": {
+    "service": "seaweedfs",
+    "scopes": [
+      {
+        "role": "sentinel",
+        "id": "417edd67-7fc9-47e0-ab31-810c39f3b9d2",
+        "pathPrefix": "ariso-backup-browser/8d00905c-e7fd-499d-b36b-0e7f50a84207/neighbor"
+      },
+      {
+        "role": "source",
+        "id": "68185677-7305-45d3-93da-3fb8e283ed1d",
+        "pathPrefix": "ariso-backup-browser/8d00905c-e7fd-499d-b36b-0e7f50a84207/source-0-bbd26940-b511-43db-b6b5-818fa7d3d9df"
+      },
+      {
+        "role": "destination",
+        "id": "68185677-7305-45d3-93da-3fb8e283ed1d",
+        "pathPrefix": "ariso-backup-browser/8d00905c-e7fd-499d-b36b-0e7f50a84207/destination-0-4cb16040-135b-439a-a4a4-a95126ee954e"
+      },
+      {
+        "role": "source",
+        "id": "76737ccf-22d9-48ed-9e42-06c1d5aca892",
+        "pathPrefix": "ariso-backup-browser/8d00905c-e7fd-499d-b36b-0e7f50a84207/source-1-1cac7f24-4662-4f55-adf4-cc016acafba7"
+      },
+      {
+        "role": "destination",
+        "id": "76737ccf-22d9-48ed-9e42-06c1d5aca892",
+        "pathPrefix": "ariso-backup-browser/8d00905c-e7fd-499d-b36b-0e7f50a84207/destination-1-224f5977-a94e-4852-a827-7f8cf9e70b85"
+      }
+    ],
+    "sourceRemoval": [
+      {
+        "id": "68185677-7305-45d3-93da-3fb8e283ed1d",
+        "removed": 6
+      },
+      {
+        "id": "76737ccf-22d9-48ed-9e42-06c1d5aca892",
+        "removed": 3
+      }
+    ],
+    "cleanup": [
+      {
+        "role": "source",
+        "id": "68185677-7305-45d3-93da-3fb8e283ed1d",
+        "pathPrefix": "ariso-backup-browser/8d00905c-e7fd-499d-b36b-0e7f50a84207/source-0-bbd26940-b511-43db-b6b5-818fa7d3d9df",
+        "removed": 0,
+        "status": "passed"
+      },
+      {
+        "role": "destination",
+        "id": "68185677-7305-45d3-93da-3fb8e283ed1d",
+        "pathPrefix": "ariso-backup-browser/8d00905c-e7fd-499d-b36b-0e7f50a84207/destination-0-4cb16040-135b-439a-a4a4-a95126ee954e",
+        "removed": 6,
+        "status": "passed"
+      },
+      {
+        "role": "source",
+        "id": "76737ccf-22d9-48ed-9e42-06c1d5aca892",
+        "pathPrefix": "ariso-backup-browser/8d00905c-e7fd-499d-b36b-0e7f50a84207/source-1-1cac7f24-4662-4f55-adf4-cc016acafba7",
+        "removed": 0,
+        "status": "passed"
+      },
+      {
+        "role": "destination",
+        "id": "76737ccf-22d9-48ed-9e42-06c1d5aca892",
+        "pathPrefix": "ariso-backup-browser/8d00905c-e7fd-499d-b36b-0e7f50a84207/destination-1-224f5977-a94e-4852-a827-7f8cf9e70b85",
+        "removed": 3,
+        "status": "passed"
+      },
+      {
+        "role": "sentinel",
+        "id": "417edd67-7fc9-47e0-ab31-810c39f3b9d2",
+        "pathPrefix": "ariso-backup-browser/8d00905c-e7fd-499d-b36b-0e7f50a84207/neighbor",
+        "status": "passed"
+      }
+    ],
+    "sentinelChecks": [
+      "source-prepared",
+      "source-removed",
+      "restored",
+      "after-source-and-destination-cleanup"
+    ]
+  },
+  "application": {
+    "version": "v1.2.1-local.3",
+    "revision": "76adb636d444eba2e3404c30cae9adfa57882334"
+  },
+  "cleanup": "passed"
+}
