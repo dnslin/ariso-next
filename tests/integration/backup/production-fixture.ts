@@ -95,6 +95,8 @@ export async function startBackupProductionInstance(
   await mkdir(directory, { recursive: true });
   const dataDir = join(directory, 'data');
   const env = {
+    // CI may run with a UID absent from passwd; SDK config still needs an isolated home.
+    HOME: directory,
     DATA_DIR: dataDir,
     HOST: '127.0.0.1',
     PATH: `${dirname(process.execPath)}:/opt/homebrew/bin:${process.env.PATH ?? '/usr/bin:/bin'}`,

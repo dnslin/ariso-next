@@ -1,7 +1,9 @@
-import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 export type BuildIdentity = { version: string; revision: string };
+
+// Metadata is packaged explicitly; Node reads its runtime path outside Next's asset graph.
+const { readFileSync } = process.getBuiltinModule('node:fs');
 
 /** A development build is usable, but cannot claim a release-compatible backup. */
 export function readBuildIdentity(
