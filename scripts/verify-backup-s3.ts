@@ -11,6 +11,7 @@ import { z } from 'zod';
 import { createS3Storage } from '../src/server/storage/s3.ts';
 import { s3EndpointSchema } from '../src/server/storage/validation.ts';
 import { stageError } from '../src/server/storage/probes.ts';
+import type { ConnectionReport } from '../src/server/storage/probe-types.ts';
 import { publicUploadSuccessSchema } from '../src/server/upload/public-contract.ts';
 import type { RestoreJob } from '../src/server/backup/types.ts';
 import { RESTORE_CHUNK_BYTES } from '../src/server/backup/restore-upload.ts';
@@ -368,7 +369,7 @@ export async function verifyBackupS3Provider(
       remoteIds.push(created.id);
       register('source', created.id);
       await persist();
-      const tested = await httpJson<{ passed: boolean }>(
+      const tested = await httpJson<ConnectionReport>(
         await source.ownerJson(`/api/storages/${created.id}/test`, 'POST', {
           revision: created.configRevision,
           ...(provider.service === 'r2'
@@ -378,7 +379,10 @@ export async function verifyBackupS3Provider(
         200,
         'Test source S3 current revision',
       );
-      assert.ok(tested.passed, 'Source S3 connection/protection checks passed');
+      assert.ok(
+        tested.passed,
+        `Source S3 connection/protection checks failed: ${JSON.stringify(tested.stages)}`,
+      );
       await expectHttp(
         await source.ownerJson(`/api/storages/${created.id}`, 'PATCH', {
           enabled: true,
