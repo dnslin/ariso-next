@@ -71,6 +71,7 @@ export function BackupConfirmation({
           </AlertDialog.Body>
           <AlertDialog.Footer className="m-0! grid grid-cols-2 gap-3 p-0">
             <Button
+              fullWidth
               variant="outline"
               className="h-12 rounded-lg"
               isDisabled={busy}
@@ -79,6 +80,7 @@ export function BackupConfirmation({
               {cancel ? '继续备份' : '取消'}
             </Button>
             <Button
+              fullWidth
               data-testid="backup-confirm-submit"
               className="h-12 rounded-lg"
               isDisabled={busy}
