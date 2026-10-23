@@ -30,5 +30,6 @@ export function POST(
       );
     },
     201,
+    'storages/[id]/cors-tests/route.ts:POST',
   );
 }

@@ -1,0 +1,50 @@
+{
+  "scope": "Isolated HTTP chunk receiver model; not integrated restore API",
+  "node": "v24.18.1",
+  "platform": "darwin",
+  "actualBlockBytes": 8388608,
+  "simulatedRequestDeadlineMs": 1500,
+  "productionRequestDeadlineMs": 1860000,
+  "real31MinuteTransferTested": false,
+  "passed": 5,
+  "failed": 0,
+  "temporaryResourcesRemoved": true,
+  "results": [
+    {
+      "name": "sequential 8MiB blocks and last tail",
+      "passed": true,
+      "durationMs": 60,
+      "bytes": 16777233,
+      "blockSize": 8388608
+    },
+    {
+      "name": "duplicate out of order and short block preserve accepted prefix",
+      "passed": true,
+      "durationMs": 24
+    },
+    {
+      "name": "reset waits for old writer before truncating",
+      "passed": true,
+      "durationMs": 70
+    },
+    {
+      "name": "aggregate transfer exceeds single request deadline",
+      "passed": true,
+      "durationMs": 2544,
+      "requestDeadlineMs": 1500,
+      "requestDurationsMs": [638, 629, 631, 645],
+      "totalDurationMs": 2543,
+      "bytes": 33554432
+    },
+    {
+      "name": "negative whole file request hits actual Node request deadline",
+      "passed": true,
+      "durationMs": 1522,
+      "outcome": {
+        "error": "ECONNRESET"
+      },
+      "requestDeadlineMs": 1500,
+      "elapsedMs": 1520
+    }
+  ]
+}

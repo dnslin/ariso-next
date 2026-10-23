@@ -44,6 +44,9 @@ jobs:
 
   runtime:
     name: Production integration
+    env:
+      ARISO_BUILD_VERSION: v0.0.0-ci
+      ARISO_BUILD_REVISION: ${{ github.sha }}
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
@@ -77,6 +80,9 @@ jobs:
 
   media-tools:
     name: Media tools
+    env:
+      ARISO_BUILD_VERSION: v0.0.0-ci
+      ARISO_BUILD_REVISION: ${{ github.sha }}
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
@@ -92,7 +98,7 @@ jobs:
       - name: Verify production build context
         run: bash scripts/verify-build-context.sh
       - name: Build media test runtime
-        run: docker build --tag ariso:pr .
+        run: docker build --build-arg ARISO_BUILD_VERSION --build-arg ARISO_BUILD_REVISION --tag ariso:pr .
       - name: Run real media tools tests
         run: bash scripts/verify-media-tools.sh ariso:pr
       - name: Preserve media evidence

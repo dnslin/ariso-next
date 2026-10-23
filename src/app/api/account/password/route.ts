@@ -9,11 +9,14 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export function POST(request: Request) {
-  return accountResponse(request, async ({ connection }, owner) =>
-    updateOwnerPassword(
-      connection.db,
-      owner,
-      await readAccountInput(request, accountPasswordInputSchema),
-    ),
+  return accountResponse(
+    request,
+    async ({ connection }, owner) =>
+      updateOwnerPassword(
+        connection.db,
+        owner,
+        await readAccountInput(request, accountPasswordInputSchema),
+      ),
+    'account.password',
   );
 }

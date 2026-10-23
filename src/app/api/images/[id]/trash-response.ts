@@ -1,3 +1,4 @@
+import { isContentMutationPaused } from '../../../../server/runtime/content-mutations.ts';
 import { requireOwner } from '../../../../server/identity/owner.ts';
 import {
   MediaTrashError,
@@ -15,10 +16,21 @@ export async function respondToTrashMutation(
   let imageId: string | undefined;
   try {
     await requireOwner(request);
-    imageId = (await context.params).id;
-    const { connection } = getServerRuntime();
-    return Response.json(operation(connection.db, imageId), { headers });
+    return await getServerRuntime().contentMutations.run(
+      'images/[id]/trash-response.ts:respondToTrashMutation',
+      async () => {
+        imageId = (await context.params).id;
+        const { connection } = getServerRuntime();
+        return Response.json(operation(connection.db, imageId), { headers });
+      },
+    );
   } catch (err) {
+    if (isContentMutationPaused(err))
+      return Response.json(
+        { code: err.code, message: err.message },
+        { status: 409, headers },
+      );
+
     if (err instanceof MediaTrashError)
       return Response.json(
         { code: err.code, message: err.message },

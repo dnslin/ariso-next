@@ -30,6 +30,7 @@ const { fileList, warnings } = await nft.nodeFileTrace(
     'dist/cli/logging.js',
     'dist/cli/shutdown.js',
     'dist/cli/http.js',
+    'dist/cli/backup-worker.js',
     'scripts/media/svg-render.mjs',
   ],
   {
@@ -76,6 +77,11 @@ for (const file of fileList) {
 for (const directory of ['drizzle', 'public', '.next/static']) {
   await cp(join(root, directory), join(output, directory), { recursive: true });
 }
+await mkdir(join(output, 'dist'), { recursive: true });
+await copyFile(
+  join(root, 'dist/build-info.json'),
+  join(output, 'dist/build-info.json'),
+);
 await cp(
   join(root, 'tests/fixtures/runtime/images'),
   join(output, 'verification/fixtures'),

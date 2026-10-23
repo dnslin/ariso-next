@@ -134,6 +134,9 @@ export function useGithubAccountView(
     editorOpen,
     unlinkOpen,
     callbackFailed: parameters.get('github') === 'error',
+    callbackBackupPaused:
+      parameters.get('github') === 'error' &&
+      parameters.get('error') === 'site_backup_in_progress',
     openEditor: () => setEditorOpen(true),
     openUnlink: () => setUnlinkOpen(true),
     closeEditor,

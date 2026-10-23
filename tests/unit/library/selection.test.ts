@@ -1,6 +1,6 @@
 import { createElement, useState } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import {
   useLibrarySelection,
   type LibrarySelection,
@@ -454,3 +454,7 @@ describe('explicit library selection', () => {
     expect(html).not.toContain('<img');
   });
 });
+
+vi.mock('../../../src/components/backup/use-backup-activity', () => ({
+  useBackupActivity: () => ({ paused: false }),
+}));

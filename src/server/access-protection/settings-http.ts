@@ -67,17 +67,18 @@ export async function accessProtectionSettingsResponse(
     request: Request,
     reset: () => void,
   ) => unknown | Promise<unknown>,
+  mutation?: string,
 ) {
   const headers = { 'Cache-Control': 'no-store' };
   try {
     await requireOwner(request);
     const server = getServerRuntime();
+    const invoke = () =>
+      operation(server.connection.db, request, server.accessProtection.reset);
     return Response.json(
-      await operation(
-        server.connection.db,
-        request,
-        server.accessProtection.reset,
-      ),
+      await (mutation
+        ? server.contentMutations.run(mutation, invoke)
+        : invoke()),
       { headers },
     );
   } catch (error) {

@@ -4,6 +4,8 @@
 
 ## 适用检查
 
+代理不得使用用户本机 Docker/Colima，包括任务专属环境。下表涉及 Docker 的检查只在 CI 或用户指定的远端环境执行；本地仅做不依赖 Docker 的检查。评审复用已有证据，只有相关代码变化、失败或明确覆盖缺口才增加定向检查，不重复整套无关测试。历史本地容器记录保留原执行事实，不代表后续允许重跑。
+
 从仓库根目录使用 Node 24 与锁定 pnpm 执行。只报告实际运行的命令、环境、结果与未执行范围；下面的清单不代表本轮已经通过。
 
 | 修改范围                     | 检查与条件                                                                                                                                                    |
@@ -20,6 +22,23 @@
 先完成生产构建，再运行依赖 standalone 产物的集成和浏览器检查，不能一边重打包一边运行测试。集成可先定向执行 `pnpm exec vitest run --project integration tests/integration/<module>/<case>.test.ts`；资源紧张时降低 worker 数，不改超时、断言或跳过测试。
 
 邮件与 CLI 集成要求 PATH 中有 `openssl`、`/usr/bin/python3` 可用。测试创建临时证书和隔离数据库，不需要外部 SMTP 凭证；真实外部收件分别验证。涉及 `tests/experiments/ui` 或其依赖时，在本地执行该目录的冻结安装、typecheck 和 build；`test:browser` 自行构建浏览器外壳夹具。
+
+## 备份与恢复的构建身份
+
+依赖真实 standalone 的备份/恢复检查，构建时同时提供显式版本和完整 revision。未提供时仍可完成正常应用构建，但备份/恢复创建会返回构建身份不可用；不能把这个预期拒绝当作可用流程。
+
+```sh
+ARISO_BUILD_VERSION=v0.0.0-local.1 \
+ARISO_BUILD_REVISION="$(git rev-parse HEAD)" \
+pnpm run build
+pnpm exec vitest run --project media-tools tests/integration/backup/production.test.ts
+```
+
+上述版本是本地预发布例子。记录实际版本、revision、是否含未提交改动、Node/pnpm 和媒体工具环境；HEAD 不代表所有未提交源码。目标恢复实例使用同一构建产物，部署密钥和 DATA_DIR 可以不同。构建身份在 `dist/build-info.json` 中，不能通过测试启动时临时注入环境变量冒充已打包身份。Docker 构建参数见[部署指南](./deployment.md#镜像与配置)。
+
+默认构建仍使用 Turbopack。打包检查同时验证 worker 真实运行和 standalone 没有源码、测试、夹具或任务日志；编译成功或没有追踪警告不能代替包清单检查。HTTP 双实例恢复、浏览器/设计对照、正式容器运行与容量分别记证据。Local/S3 代码已实现；上一轮本地记录保持历史范围，不能用旧 S3 拒绝测试代替当前 S3 恢复验证。实际提供方、浏览器和最终复核结果见 [S3 实施记录](../verification/backup-implementation/s3.md)，本轮按用户要求只做小样本，不执行大文件或容量压测。
+
+S3 独立真实验证使用 `scripts/verify-backup-s3.ts --config <私有配置>`；浏览器复用已有任务空间，以 `scripts/verify-browser.mjs --suite backup --storage-config <单提供方私有配置>` 运行。每个原 S3 使用独立的新命名空间，先测试当前 revision；取消遗留只可在原坐标修凭据。脚本创建的源/目标命名空间与邻接参照文件分别登记和核对，不连接原站目录或清理其他前缀。真实结果由实际报告确认，命令存在不代表已经通过。
 
 ## CI 与发布边界
 

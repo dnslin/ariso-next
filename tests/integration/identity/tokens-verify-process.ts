@@ -1,3 +1,4 @@
+import { createContentMutations } from '../../../src/server/runtime/content-mutations.ts';
 import { join } from 'node:path';
 import { getAuth } from '../../../src/server/identity/auth.ts';
 import { verifyUploadToken } from '../../../src/server/identity/tokens.ts';
@@ -13,6 +14,7 @@ try {
   const result = await verifyUploadToken(
     new Request(url, { method, headers }),
     getAuth({
+      contentMutations: createContentMutations(),
       config,
       connection,
       github: captureGithubSettings(

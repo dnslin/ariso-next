@@ -18,5 +18,6 @@ export function PATCH(request: Request) {
   return accessProtectionSettingsResponse(
     request,
     patchAccessProtectionSettingsResponse,
+    'settings/access-protection/route.ts:PATCH',
   );
 }

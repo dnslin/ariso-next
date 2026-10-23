@@ -1,3 +1,4 @@
+import { createContentMutations } from '../../../src/server/runtime/content-mutations.ts';
 import { beforeEach, expect, it, vi } from 'vitest';
 const startCors = vi.hoisted(() => vi.fn());
 const finishCors = vi.hoisted(() => vi.fn());
@@ -6,6 +7,7 @@ vi.mock('../../../src/server/identity/owner.ts', () => ({
 }));
 vi.mock('../../../src/server/startup/server-start.ts', () => ({
   getServerRuntime: () => ({
+    contentMutations: createContentMutations(),
     connection: { db: {} },
     config: { dataDir: '/tmp/cors-http', encryptionKey: Buffer.alloc(32, 37) },
     storageProbes: { startCors, finishCors },

@@ -17,7 +17,11 @@ export function GET(request: Request) {
 }
 
 export function PATCH(request: Request) {
-  return uploadResponse(request, async ({ connection }) =>
-    patchUploadSettings(connection.db, await readUploadJson(request)),
+  return uploadResponse(
+    request,
+    async ({ connection }) =>
+      patchUploadSettings(connection.db, await readUploadJson(request)),
+    200,
+    'settings/upload/route.ts:PATCH',
   );
 }

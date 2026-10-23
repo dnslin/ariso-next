@@ -39,7 +39,8 @@ function shareErrorResponse(err: unknown, request: Request) {
     typeof err.code === 'string' &&
     (err.code.startsWith('SHARING_') ||
       err.code === 'UNAUTHORIZED' ||
-      err.code === 'INVALID_ORIGIN')
+      err.code === 'INVALID_ORIGIN' ||
+      err.code === 'SITE_BACKUP_IN_PROGRESS')
   )
     return NextResponse.json(
       { code: err.code, message: err.message },
@@ -67,12 +68,18 @@ function shareErrorResponse(err: unknown, request: Request) {
 export async function ownerShareResponse(
   request: Request,
   operation: () => unknown | Promise<unknown>,
+  mutation?: string,
 ) {
   try {
     await requireOwner(request);
-    return NextResponse.json(await operation(), {
-      headers: shareResponseHeaders,
-    });
+    return NextResponse.json(
+      await (mutation
+        ? getServerRuntime().contentMutations.run(mutation, operation)
+        : operation()),
+      {
+        headers: shareResponseHeaders,
+      },
+    );
   } catch (err) {
     return shareErrorResponse(err, request);
   }

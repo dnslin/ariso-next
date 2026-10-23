@@ -30,5 +30,6 @@ export function POST(request: Request) {
       );
     },
     201,
+    'tags:POST',
   );
 }

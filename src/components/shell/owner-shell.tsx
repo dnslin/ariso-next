@@ -15,6 +15,7 @@ import {
   Trash2,
 } from 'lucide-react';
 import { AdminShell } from './admin-shell';
+import { BackupPauseNotice } from '../backup/pause-notice';
 import {
   OwnerSessionContext,
   SessionControls,
@@ -53,6 +54,7 @@ const navigation = [
       '/settings/api',
       '/settings/api/usage',
       '/settings/email',
+      '/settings/backup',
     ],
     label: '站点设置',
     icon: <SlidersHorizontal />,
@@ -98,6 +100,7 @@ export function OwnerShell({
         }
         footer={footer}
       >
+        <BackupPauseNotice />
         {children}
       </AdminShell>
     </OwnerSessionContext>

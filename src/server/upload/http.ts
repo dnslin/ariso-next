@@ -48,15 +48,21 @@ export async function uploadResponse(
     runtime: ReturnType<typeof getServerRuntime>,
   ) => unknown | Promise<unknown>,
   status = 200,
+  mutation?: string,
 ) {
   const requestId = randomUUID();
   const headers = { 'Cache-Control': 'no-store' };
   try {
     await requireOwner(request);
-    return Response.json(await operation(getServerRuntime()), {
-      status,
-      headers,
-    });
+    const app = getServerRuntime();
+    const invoke = () => operation(app);
+    return Response.json(
+      await (mutation ? app.contentMutations.run(mutation, invoke) : invoke()),
+      {
+        status,
+        headers,
+      },
+    );
   } catch (error) {
     const detail = error as {
       code?: string;

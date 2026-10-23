@@ -48,6 +48,7 @@ import {
   ArchiveVersionMenu,
 } from '../../components/library/archive-menu';
 import type { ArchiveVersion } from '../../server/library/archive-types';
+import { useBackupActivity } from '../../components/backup/use-backup-activity';
 
 export interface LibraryContextMenu {
   x: number;
@@ -125,6 +126,7 @@ export function LibrarySelectionMenu({
   onPermanentDelete?: (element: HTMLElement) => void;
   scope?: 'normal' | 'trash';
 }) {
+  const { paused } = useBackupActivity();
   const [open, setOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const contextAnchor = useRef<HTMLSpanElement>(null);
@@ -269,7 +271,11 @@ export function LibrarySelectionMenu({
                 <ActionIconButton
                   key={action}
                   label={label}
-                  isDisabled={disabled || !actions.includes(action)}
+                  isDisabled={
+                    disabled ||
+                    !actions.includes(action) ||
+                    (paused && action !== 'copy')
+                  }
                   isPending={pending}
                   onPress={(event) => {
                     if (event.target instanceof HTMLElement)
@@ -286,7 +292,7 @@ export function LibrarySelectionMenu({
           <ActionIconButton
             label="永久删除所选"
             className="text-danger"
-            isDisabled={disabled || allDeleting}
+            isDisabled={disabled || allDeleting || paused}
             isPending={pending}
             onPress={(event) => {
               if (event.target instanceof HTMLElement)
@@ -332,6 +338,11 @@ export function LibrarySelectionMenu({
             placement="bottom start"
             className="flex flex-col overflow-hidden rounded-lg border border-border bg-background dark:bg-surface"
           >
+            {paused ? (
+              <p className="px-3 py-2 text-xs text-muted">
+                备份期间修改已暂停，浏览与复制仍可用。
+              </p>
+            ) : null}
             {!compact ? (
               <p className="shrink-0 px-3 pt-2 pb-1 text-xs text-muted">
                 {currentLabel} {selection.currentCount} 张
@@ -346,6 +357,11 @@ export function LibrarySelectionMenu({
               className="min-h-0 flex-1 overflow-y-auto overscroll-contain"
               disabledKeys={blocked ? ['open'] : []}
               onAction={(key) => {
+                if (
+                  paused &&
+                  !['open', 'copy', 'archive'].includes(String(key))
+                )
+                  return;
                 if (key === 'delete-permanent') {
                   activatedContext.current = contextMenu ?? null;
                   const target = contextMenu?.target ?? menuTrigger.current;
@@ -408,7 +424,7 @@ export function LibrarySelectionMenu({
                         key={action}
                         id={action}
                         textValue={actionLabel(action)}
-                        isDisabled={blocked}
+                        isDisabled={blocked || (paused && action !== 'copy')}
                         className={`min-h-11 gap-3 rounded-lg xl:min-h-9 ${action === 'trash' ? 'text-danger' : ''}`}
                       >
                         <Icon size={16} aria-hidden />
@@ -421,7 +437,7 @@ export function LibrarySelectionMenu({
                 <Dropdown.Item
                   id="delete-permanent"
                   textValue="永久删除所选"
-                  isDisabled={blocked || allDeleting}
+                  isDisabled={blocked || allDeleting || paused}
                   className="min-h-11"
                 >
                   永久删除所选

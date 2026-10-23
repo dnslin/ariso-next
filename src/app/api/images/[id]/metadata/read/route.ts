@@ -1,3 +1,4 @@
+import { isContentMutationPaused } from '../../../../../../server/runtime/content-mutations.ts';
 import { requireOwner } from '../../../../../../server/identity/owner.ts';
 import {
   MediaMetadataError,
@@ -17,20 +18,31 @@ export async function POST(
   let imageId: string | undefined;
   try {
     await requireOwner(request);
-    imageId = (await context.params).id;
-    if ((await request.text()).length > 0)
-      return Response.json(
-        {
-          code: 'INVALID_METADATA_READ_INPUT',
-          message: '元数据重读不接受请求参数',
-        },
-        { status: 422, headers },
-      );
-    return Response.json(
-      requestMetadataRead(getServerRuntime().connection.db, imageId),
-      { status: 202, headers },
+    return await getServerRuntime().contentMutations.run(
+      'images/[id]/metadata/read/route.ts:POST',
+      async () => {
+        imageId = (await context.params).id;
+        if ((await request.text()).length > 0)
+          return Response.json(
+            {
+              code: 'INVALID_METADATA_READ_INPUT',
+              message: '元数据重读不接受请求参数',
+            },
+            { status: 422, headers },
+          );
+        return Response.json(
+          requestMetadataRead(getServerRuntime().connection.db, imageId),
+          { status: 202, headers },
+        );
+      },
     );
   } catch (err) {
+    if (isContentMutationPaused(err))
+      return Response.json(
+        { code: err.code, message: err.message },
+        { status: 409, headers },
+      );
+
     if (err instanceof MediaMetadataError)
       return Response.json(
         { code: err.code, message: err.message },

@@ -121,6 +121,7 @@ it('生产 API 流式 PUT 保留字节、实际大小和编码 Key，GET 后流�
       expect(requests[0]?.body).toEqual(bytes);
       expect(requests[0]?.headers['content-length']).toBe(String(bytes.length));
       expect(requests[0]?.headers['content-type']).toBe('image/png');
+      expect(requests[0]?.headers['if-none-match']).toBeUndefined();
       expect(
         requests[0]?.headers['x-amz-sdk-checksum-algorithm'],
       ).toBeUndefined();
@@ -703,6 +704,121 @@ it('远端连接重置不当作对象缺失或清理成功，也不暗中重试'
         'HEAD',
         'DELETE',
       ]);
+    },
+  );
+});
+
+it('停用存储允许备份维护读取，保留普通读写禁用和真实字节流', async () => {
+  const bytes = Buffer.from('retained disabled object');
+  await withEndpoint(
+    () => ({
+      status: 200,
+      body: bytes,
+      headers: { 'content-length': String(bytes.length) },
+    }),
+    async ({ disabled, requests }) => {
+      await expect(disabled.readObject('images/saved')).rejects.toMatchObject({
+        code: 'STORAGE_DISABLED',
+      });
+      const result = await disabled.readObjectForMaintenance('images/saved');
+      expect(result.size).toBe(bytes.length);
+      expect(await buffer(result.stream)).toEqual(bytes);
+      await expect(disabled.readObject('images/saved')).rejects.toMatchObject({
+        code: 'STORAGE_DISABLED',
+      });
+      expect(requests.map((request) => request.method)).toEqual(['GET']);
+    },
+  );
+});
+
+it('条件 PUT 争用同一对象时仅一个成功，412 不覆盖赢家并关闭两个输入流', async () => {
+  const marker = 'restore-owner.json';
+  const scope = '/test-bucket/照片 + %/ariso/test-storage/';
+  const neighbor =
+    '/test-bucket/照片 + %/ariso/another-storage/restore-owner.json';
+  const objects = new Map<string, Buffer>([
+    [neighbor, Buffer.from('other task')],
+  ]);
+  await withEndpoint(
+    (request): Reply => {
+      const path = decodeURIComponent(
+        new URL(request.url, 'http://fixture').pathname,
+      );
+      if (request.method === 'PUT') {
+        if (request.headers['if-none-match'] === '*' && objects.has(path))
+          return { status: 412, body: errorXml('PreconditionFailed') };
+        objects.set(path, request.body);
+        return { status: 200, headers: { etag: '"owner-marker"' } };
+      }
+      if (request.method === 'DELETE') {
+        objects.delete(path);
+        return { status: 204 };
+      }
+      const body = objects.get(path);
+      return body
+        ? {
+            status: 200,
+            body,
+            headers: { 'content-length': String(body.length) },
+          }
+        : { status: 404, body: errorXml('NoSuchKey') };
+    },
+    async ({ storage, requests }) => {
+      const contents = ['owner A', 'owner B'];
+      const sources = contents.map((value) => Readable.from([value]));
+      const results = await Promise.allSettled(
+        sources.map((source) =>
+          storage.writeObject(marker, source, {
+            size: 7,
+            contentType: 'application/json',
+            ifNoneMatch: '*',
+          }),
+        ),
+      );
+      expect(
+        results.filter((result) => result.status === 'fulfilled'),
+      ).toHaveLength(1);
+      const failed = results.find((result) => result.status === 'rejected');
+      expect(failed).toMatchObject({
+        status: 'rejected',
+        reason: {
+          code: 'STORAGE_OBJECT_CHANGED',
+          operation: 'write',
+          key: marker,
+          storageId: 'test-storage',
+          httpStatusCode: 412,
+          serviceCode: 'PreconditionFailed',
+        },
+      });
+      expect(sources.every((source) => source.destroyed)).toBe(true);
+      expect(requests).toHaveLength(2);
+      expect(
+        requests.every(
+          (request) =>
+            request.method === 'PUT' &&
+            request.headers['if-none-match'] === '*',
+        ),
+      ).toBe(true);
+      expect(
+        requests.every(
+          (request) =>
+            decodeURIComponent(
+              new URL(request.url, 'http://fixture').pathname,
+            ) ===
+            scope + marker,
+        ),
+      ).toBe(true);
+      const winner = results.findIndex(
+        (result) => result.status === 'fulfilled',
+      );
+      const read = await storage.readObject(marker);
+      expect((await buffer(read.stream)).toString()).toBe(contents[winner]);
+      await storage.deleteObject(marker);
+      expect(objects.has(scope + marker)).toBe(false);
+      expect(objects.get(neighbor)?.toString()).toBe('other task');
+      expect(
+        requests.filter((request) => request.method === 'DELETE'),
+      ).toHaveLength(1);
     },
   );
 });

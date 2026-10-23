@@ -1,0 +1,389 @@
+{
+  "command": "/Users/dnslin/.nvm/versions/node/v24.18.1/bin/node tests/experiments/backup/format/fresh-memory.mjs --compare",
+  "node": "v24.18.1",
+  "startedAt": "2026-10-22T09:38:31.242Z",
+  "processIsolation": "new Node process per operation; one worker plus loopback HTTP probe in each",
+  "instrumentation": {
+    "rssSampleIntervalMs": 25,
+    "webStreamQueueSizing": "byteLength",
+    "sha256": "only marked comparison fixtures; every entry still validates CRC and length"
+  },
+  "comparison": {
+    "yazlVersion": "3.3.1",
+    "repeats": 2,
+    "workload": "100000 objects plus manifest; identical plaintext and validation"
+  },
+  "measurements": [
+    {
+      "label": "zip-stream-1-encrypt",
+      "status": "passed",
+      "result": {
+        "count": 100001,
+        "inputBytes": 2888926,
+        "archiveBytes": 18293788,
+        "expected": {
+          "manifest.json": {
+            "bytes": 36,
+            "sha256": "5af24df122cb66a42df329829b1fba21e9bdb98ed1d1321fa5eefcebcc817295"
+          }
+        }
+      },
+      "elapsedMs": 1967.526166,
+      "baselineRss": 78626816,
+      "peakRss": 1177010176,
+      "sampleIntervalMs": 25,
+      "mainEventLoopMaxMs": 11.771903,
+      "httpProbeCount": 77,
+      "httpProbeFailures": 0,
+      "httpP95Ms": 0.8345419999998285,
+      "httpMaxMs": 3.818957999999995,
+      "snapshots": [
+        {
+          "stage": "before-finalize",
+          "rss": 672317440,
+          "heapTotal": 272482304,
+          "heapUsed": 144741960,
+          "external": 11177810,
+          "arrayBuffers": 7379898
+        },
+        {
+          "stage": "after-finalize",
+          "rss": 1033797632,
+          "heapTotal": 615153664,
+          "heapUsed": 541939016,
+          "external": 7604828,
+          "arrayBuffers": 3806876
+        }
+      ],
+      "workerExited": true
+    },
+    {
+      "label": "zip-stream-1-decrypt",
+      "status": "passed",
+      "result": {
+        "profile": {
+          "headerBytes": 150,
+          "logN": 18
+        },
+        "zipBytes": 18289142
+      },
+      "elapsedMs": 589.388959,
+      "baselineRss": 78397440,
+      "peakRss": 408944640,
+      "sampleIntervalMs": 25,
+      "mainEventLoopMaxMs": 11.534335,
+      "httpProbeCount": 23,
+      "httpProbeFailures": 0,
+      "httpP95Ms": 0.7530830000000037,
+      "httpMaxMs": 3.8605830000000054,
+      "snapshots": [],
+      "workerExited": true
+    },
+    {
+      "label": "zip-stream-1-validate",
+      "status": "passed",
+      "result": {
+        "count": 100001,
+        "bytes": 2888926,
+        "hashes": {
+          "manifest.json": "5af24df122cb66a42df329829b1fba21e9bdb98ed1d1321fa5eefcebcc817295"
+        }
+      },
+      "elapsedMs": 3038.8312090000004,
+      "baselineRss": 78430208,
+      "peakRss": 148570112,
+      "sampleIntervalMs": 25,
+      "mainEventLoopMaxMs": 11.812863,
+      "httpProbeCount": 120,
+      "httpProbeFailures": 0,
+      "httpP95Ms": 0.6751250000000084,
+      "httpMaxMs": 3.731540999999993,
+      "snapshots": [],
+      "workerExited": true
+    },
+    {
+      "label": "yazl-1-encrypt",
+      "status": "passed",
+      "result": {
+        "count": 100001,
+        "inputBytes": 2888926,
+        "expected": {
+          "manifest.json": {
+            "bytes": 36,
+            "sha256": "5af24df122cb66a42df329829b1fba21e9bdb98ed1d1321fa5eefcebcc817295"
+          }
+        },
+        "archiveBytes": 19194005,
+        "maxActiveSources": 1,
+        "comparisonWriter": "yazl@3.3.1"
+      },
+      "elapsedMs": 7691.244375,
+      "baselineRss": 78364672,
+      "peakRss": 880033792,
+      "sampleIntervalMs": 25,
+      "mainEventLoopMaxMs": 11.927551,
+      "httpProbeCount": 300,
+      "httpProbeFailures": 0,
+      "httpP95Ms": 0.6352080000000058,
+      "httpMaxMs": 3.8660409999999956,
+      "snapshots": [
+        {
+          "stage": "before-end-after-queue",
+          "rss": 530235392,
+          "heapTotal": 218513408,
+          "heapUsed": 87214336,
+          "external": 10489597,
+          "arrayBuffers": 6658753
+        },
+        {
+          "stage": "last-source-ended",
+          "rss": 852361216,
+          "heapTotal": 462831616,
+          "heapUsed": 383656944,
+          "external": 12784501,
+          "arrayBuffers": 8953617
+        },
+        {
+          "stage": "output-completed",
+          "rss": 880033792,
+          "heapTotal": 349782016,
+          "heapUsed": 146899008,
+          "external": 29409699,
+          "arrayBuffers": 25565845
+        }
+      ],
+      "workerExited": true
+    },
+    {
+      "label": "yazl-1-decrypt",
+      "status": "passed",
+      "result": {
+        "profile": {
+          "headerBytes": 150,
+          "logN": 18
+        },
+        "zipBytes": 19189151
+      },
+      "elapsedMs": 602.380958,
+      "baselineRss": 78708736,
+      "peakRss": 395788288,
+      "sampleIntervalMs": 25,
+      "mainEventLoopMaxMs": 11.476991,
+      "httpProbeCount": 23,
+      "httpProbeFailures": 0,
+      "httpP95Ms": 0.726791999999989,
+      "httpMaxMs": 3.865208999999993,
+      "snapshots": [],
+      "workerExited": true
+    },
+    {
+      "label": "yazl-1-validate",
+      "status": "passed",
+      "result": {
+        "count": 100001,
+        "bytes": 2888926,
+        "hashes": {
+          "manifest.json": "5af24df122cb66a42df329829b1fba21e9bdb98ed1d1321fa5eefcebcc817295"
+        }
+      },
+      "elapsedMs": 3115.016834,
+      "baselineRss": 78495744,
+      "peakRss": 146685952,
+      "sampleIntervalMs": 25,
+      "mainEventLoopMaxMs": 11.558911,
+      "httpProbeCount": 123,
+      "httpProbeFailures": 0,
+      "httpP95Ms": 0.5876670000000104,
+      "httpMaxMs": 3.8745420000000053,
+      "snapshots": [],
+      "workerExited": true
+    },
+    {
+      "label": "zip-stream-2-encrypt",
+      "status": "passed",
+      "result": {
+        "count": 100001,
+        "inputBytes": 2888926,
+        "archiveBytes": 18293788,
+        "expected": {
+          "manifest.json": {
+            "bytes": 36,
+            "sha256": "5af24df122cb66a42df329829b1fba21e9bdb98ed1d1321fa5eefcebcc817295"
+          }
+        }
+      },
+      "elapsedMs": 1974.9789170000001,
+      "baselineRss": 78462976,
+      "peakRss": 1193426944,
+      "sampleIntervalMs": 25,
+      "mainEventLoopMaxMs": 11.919359,
+      "httpProbeCount": 77,
+      "httpProbeFailures": 0,
+      "httpP95Ms": 0.7941670000000158,
+      "httpMaxMs": 3.8651669999999996,
+      "snapshots": [
+        {
+          "stage": "before-finalize",
+          "rss": 648232960,
+          "heapTotal": 257998848,
+          "heapUsed": 147186072,
+          "external": 17403746,
+          "arrayBuffers": 13605834
+        },
+        {
+          "stage": "after-finalize",
+          "rss": 1096466432,
+          "heapTotal": 676495360,
+          "heapUsed": 555080504,
+          "external": 7604828,
+          "arrayBuffers": 3806876
+        }
+      ],
+      "workerExited": true
+    },
+    {
+      "label": "zip-stream-2-decrypt",
+      "status": "passed",
+      "result": {
+        "profile": {
+          "headerBytes": 150,
+          "logN": 18
+        },
+        "zipBytes": 18289142
+      },
+      "elapsedMs": 597.643833,
+      "baselineRss": 78626816,
+      "peakRss": 405487616,
+      "sampleIntervalMs": 25,
+      "mainEventLoopMaxMs": 11.796479,
+      "httpProbeCount": 23,
+      "httpProbeFailures": 0,
+      "httpP95Ms": 0.8020000000000209,
+      "httpMaxMs": 4.007582999999997,
+      "snapshots": [],
+      "workerExited": true
+    },
+    {
+      "label": "zip-stream-2-validate",
+      "status": "passed",
+      "result": {
+        "count": 100001,
+        "bytes": 2888926,
+        "hashes": {
+          "manifest.json": "5af24df122cb66a42df329829b1fba21e9bdb98ed1d1321fa5eefcebcc817295"
+        }
+      },
+      "elapsedMs": 3069.0492919999997,
+      "baselineRss": 78430208,
+      "peakRss": 148619264,
+      "sampleIntervalMs": 25,
+      "mainEventLoopMaxMs": 11.788287,
+      "httpProbeCount": 121,
+      "httpProbeFailures": 0,
+      "httpP95Ms": 0.6214580000000183,
+      "httpMaxMs": 4.497415999999987,
+      "snapshots": [],
+      "workerExited": true
+    },
+    {
+      "label": "yazl-2-encrypt",
+      "status": "passed",
+      "result": {
+        "count": 100001,
+        "inputBytes": 2888926,
+        "expected": {
+          "manifest.json": {
+            "bytes": 36,
+            "sha256": "5af24df122cb66a42df329829b1fba21e9bdb98ed1d1321fa5eefcebcc817295"
+          }
+        },
+        "archiveBytes": 19194005,
+        "maxActiveSources": 1,
+        "comparisonWriter": "yazl@3.3.1"
+      },
+      "elapsedMs": 7822.336499999999,
+      "baselineRss": 78512128,
+      "peakRss": 937820160,
+      "sampleIntervalMs": 25,
+      "mainEventLoopMaxMs": 11.812863,
+      "httpProbeCount": 306,
+      "httpProbeFailures": 0,
+      "httpP95Ms": 0.6032079999995403,
+      "httpMaxMs": 4.064291999999995,
+      "snapshots": [
+        {
+          "stage": "before-end-after-queue",
+          "rss": 531644416,
+          "heapTotal": 180649984,
+          "heapUsed": 94447688,
+          "external": 10489597,
+          "arrayBuffers": 6658753
+        },
+        {
+          "stage": "last-source-ended",
+          "rss": 907689984,
+          "heapTotal": 463618048,
+          "heapUsed": 384047992,
+          "external": 27663050,
+          "arrayBuffers": 23832166
+        },
+        {
+          "stage": "output-completed",
+          "rss": 682573824,
+          "heapTotal": 362561536,
+          "heapUsed": 156290776,
+          "external": 44155503,
+          "arrayBuffers": 40311649
+        }
+      ],
+      "workerExited": true
+    },
+    {
+      "label": "yazl-2-decrypt",
+      "status": "passed",
+      "result": {
+        "profile": {
+          "headerBytes": 150,
+          "logN": 18
+        },
+        "zipBytes": 19189151
+      },
+      "elapsedMs": 600.703541,
+      "baselineRss": 78446592,
+      "peakRss": 403800064,
+      "sampleIntervalMs": 25,
+      "mainEventLoopMaxMs": 11.796479,
+      "httpProbeCount": 23,
+      "httpProbeFailures": 0,
+      "httpP95Ms": 1.004958000000002,
+      "httpMaxMs": 3.8713750000000005,
+      "snapshots": [],
+      "workerExited": true
+    },
+    {
+      "label": "yazl-2-validate",
+      "status": "passed",
+      "result": {
+        "count": 100001,
+        "bytes": 2888926,
+        "hashes": {
+          "manifest.json": "5af24df122cb66a42df329829b1fba21e9bdb98ed1d1321fa5eefcebcc817295"
+        }
+      },
+      "elapsedMs": 3092.3753749999996,
+      "baselineRss": 78446592,
+      "peakRss": 142327808,
+      "sampleIntervalMs": 25,
+      "mainEventLoopMaxMs": 11.624447,
+      "httpProbeCount": 122,
+      "httpProbeFailures": 0,
+      "httpP95Ms": 0.5682079999999985,
+      "httpMaxMs": 3.7008749999999964,
+      "snapshots": [],
+      "workerExited": true
+    }
+  ],
+  "status": "passed",
+  "cleanedTemporaryDirectory": true,
+  "finishedAt": "2026-10-22T09:39:06.309Z"
+}

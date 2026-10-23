@@ -10,6 +10,7 @@ import type { LibraryDetail } from '../../server/library/detail-types';
 import { DetailReadError, readDetail } from './read-detail';
 import { notifyLibraryChanged } from './library-changes';
 import { bytesLabel } from './detail-labels';
+import { useBackupActivity } from '../backup/use-backup-activity';
 
 /** A lost write response is reconciled by reading; never retry the write automatically. */
 export function TrashAction({
@@ -29,6 +30,7 @@ export function TrashAction({
   onComplete: (record: LibraryDetail) => void;
   onUnavailable: (status: 401 | 404) => void;
 }) {
+  const { paused } = useBackupActivity();
   const [open, setOpen] = useState(false);
   const [busy, setBusy] = useState(false);
   const [unknown, setUnknown] = useState(false);
@@ -90,6 +92,10 @@ export function TrashAction({
   }
 
   async function run(write: boolean) {
+    if (write && paused) {
+      setMessage('站点正在创建备份，请在备份结束后修改图片。');
+      return;
+    }
     if (running.current) return;
     running.current = true;
     setBusy(true);
@@ -138,7 +144,7 @@ export function TrashAction({
         <Button
           variant={restoring ? 'primary' : 'outline'}
           className="h-12 w-full rounded-lg"
-          isDisabled={disabled && !unknown}
+          isDisabled={(disabled || paused) && !unknown}
           onPress={() => setOpen(true)}
         >
           {label}
@@ -202,7 +208,7 @@ export function TrashAction({
                   aria-label={
                     !restoring && !busy && !unknown ? '确认删除图片' : undefined
                   }
-                  isDisabled={busy || (disabled && !unknown)}
+                  isDisabled={busy || ((disabled || paused) && !unknown)}
                   onPress={() => {
                     void run(!unknown);
                   }}
@@ -227,6 +233,11 @@ export function TrashAction({
             : restoring
               ? '记录已在图库。'
               : '记录已在回收站。'}
+        </p>
+      ) : null}
+      {paused ? (
+        <p className="text-sm text-muted">
+          备份期间暂时无法删除或恢复图片，浏览仍可用。
         </p>
       ) : null}
       {unknown && !open ? (

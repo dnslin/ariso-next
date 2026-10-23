@@ -33,5 +33,6 @@ export function POST(request: Request) {
       );
     },
     201,
+    'albums:POST',
   );
 }

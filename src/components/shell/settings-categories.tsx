@@ -7,6 +7,7 @@ import { Select } from '@heroui/react/select';
 import { Label } from '@heroui/react/label';
 import { ListBox } from '@heroui/react/list-box';
 import {
+  Archive,
   KeyRound,
   Mail,
   Settings,
@@ -39,6 +40,11 @@ export const settingsCategories = [
     href: '/settings/email',
     label: '邮件服务',
     icon: <Mail className="size-4" aria-hidden />,
+  },
+  {
+    href: '/settings/backup',
+    label: '备份与恢复',
+    icon: <Archive className="size-4" aria-hidden />,
   },
 ];
 

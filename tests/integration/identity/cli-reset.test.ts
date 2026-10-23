@@ -1,3 +1,4 @@
+import { createContentMutations } from '../../../src/server/runtime/content-mutations.ts';
 import { spawn } from 'node:child_process';
 import { randomBytes, randomUUID } from 'node:crypto';
 import {
@@ -165,6 +166,7 @@ beforeEach(async () => {
   migrate(connection.db, { migrationsFolder: resolve('drizzle') });
   ownerId = await seedAuthOwner(connection, origin);
   auth = getAuth({
+    contentMutations: createContentMutations(),
     connection,
     github: { enabled: false, clientId: '', clientSecret: null },
     config: parseRuntimeEnv({

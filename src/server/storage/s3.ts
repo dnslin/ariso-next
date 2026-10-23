@@ -248,6 +248,47 @@ export function createS3Storage(config: S3StorageConfig) {
       code: 'STORAGE_BUCKET_UNSUPPORTED',
     });
   }
+  async function readObjectForMaintenance(
+    key: string,
+    options: RequestOptions & { ifMatch?: string } = {},
+  ) {
+    const request = scope(options.signal);
+    try {
+      request.signal.throwIfAborted();
+      const result = await client.send(
+        new GetObjectCommand({ ...object(key), IfMatch: options.ifMatch }),
+        { abortSignal: request.signal },
+      );
+      const body = result.Body;
+      if (!(body instanceof Readable))
+        throw new Error('S3 did not return a Node readable body');
+      addAbortSignal(request.signal, body);
+      const stream = new PassThrough();
+      // Pipe preserves backpressure. Closing the consumer must destroy the HTTP body
+      // immediately, including while the remote peer has stopped sending bytes.
+      stream.once('close', () => {
+        body.destroy();
+        request.close();
+      });
+      body.once('end', () => request.close());
+      body.once('error', (cause) =>
+        stream.destroy(
+          failure(cause, key, 'read', request.signal, result.$metadata),
+        ),
+      );
+      body.pipe(stream);
+      return {
+        stream,
+        size: result.ContentLength,
+        contentType: result.ContentType,
+        etag: result.ETag,
+        metadata: result.$metadata,
+      };
+    } catch (cause) {
+      request.close();
+      throw failure(cause, key, 'read', request.signal);
+    }
+  }
   return {
     /** Maintenance lists only this configuration's namespace, including while disabled. */
     async *listObjects(
@@ -562,7 +603,11 @@ export function createS3Storage(config: S3StorageConfig) {
     async writeObject(
       key: string,
       source: Readable,
-      options: RequestOptions & { size: number; contentType: string },
+      options: RequestOptions & {
+        size: number;
+        contentType: string;
+        ifNoneMatch?: '*';
+      },
     ) {
       try {
         enabled();
@@ -585,6 +630,7 @@ export function createS3Storage(config: S3StorageConfig) {
                 Body: addAbortSignal(signal, source),
                 ContentLength: options.size,
                 ContentType: options.contentType,
+                IfNoneMatch: options.ifNoneMatch,
               }),
               { abortSignal: signal },
             );
@@ -606,43 +652,10 @@ export function createS3Storage(config: S3StorageConfig) {
       options: RequestOptions & { ifMatch?: string } = {},
     ) {
       enabled();
-      const request = scope(options.signal);
-      try {
-        request.signal.throwIfAborted();
-        const result = await client.send(
-          new GetObjectCommand({ ...object(key), IfMatch: options.ifMatch }),
-          { abortSignal: request.signal },
-        );
-        const body = result.Body;
-        if (!(body instanceof Readable))
-          throw new Error('S3 did not return a Node readable body');
-        addAbortSignal(request.signal, body);
-        const stream = new PassThrough();
-        // Pipe preserves backpressure. Closing the consumer must destroy the HTTP body
-        // immediately, including while the remote peer has stopped sending bytes.
-        stream.once('close', () => {
-          body.destroy();
-          request.close();
-        });
-        body.once('end', () => request.close());
-        body.once('error', (cause) =>
-          stream.destroy(
-            failure(cause, key, 'read', request.signal, result.$metadata),
-          ),
-        );
-        body.pipe(stream);
-        return {
-          stream,
-          size: result.ContentLength,
-          contentType: result.ContentType,
-          etag: result.ETag,
-          metadata: result.$metadata,
-        };
-      } catch (cause) {
-        request.close();
-        throw failure(cause, key, 'read', request.signal);
-      }
+      return readObjectForMaintenance(key, options);
     },
+    /** Backups include retained objects even while their configuration is disabled. */
+    readObjectForMaintenance,
     /** Maintenance HEAD is also needed after disabling a configuration. */
     async inspectObject(key: string, options: RequestOptions = {}) {
       return run(key, 'inspect', options, async (signal) => {

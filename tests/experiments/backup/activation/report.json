@@ -1,0 +1,279 @@
+{
+  "scope": "Isolated activation model; not integrated production startup",
+  "node": "v24.18.1",
+  "platform": "darwin",
+  "physicalPowerLossTested": false,
+  "actualSigkillCheckpoints": 27,
+  "passed": 36,
+  "failed": 0,
+  "elapsedMs": 10785,
+  "temporaryResourcesRemoved": true,
+  "results": [
+    {
+      "name": "SIGKILL:activating.temp-written",
+      "passed": true,
+      "durationMs": 312,
+      "actualSignal": "SIGKILL",
+      "traceEvents": 82,
+      "replayPassed": true
+    },
+    {
+      "name": "SIGKILL:activating.file-synced",
+      "passed": true,
+      "durationMs": 307,
+      "actualSignal": "SIGKILL",
+      "traceEvents": 84,
+      "replayPassed": true
+    },
+    {
+      "name": "SIGKILL:activating.renamed",
+      "passed": true,
+      "durationMs": 305,
+      "actualSignal": "SIGKILL",
+      "traceEvents": 78,
+      "replayPassed": true
+    },
+    {
+      "name": "SIGKILL:activating.directory-synced",
+      "passed": true,
+      "durationMs": 300,
+      "actualSignal": "SIGKILL",
+      "traceEvents": 80,
+      "replayPassed": true
+    },
+    {
+      "name": "SIGKILL:storage.old-moved",
+      "passed": true,
+      "durationMs": 299,
+      "actualSignal": "SIGKILL",
+      "traceEvents": 77,
+      "replayPassed": true
+    },
+    {
+      "name": "SIGKILL:storage.old-directory-synced",
+      "passed": true,
+      "durationMs": 307,
+      "actualSignal": "SIGKILL",
+      "traceEvents": 80,
+      "replayPassed": true
+    },
+    {
+      "name": "SIGKILL:storage.published",
+      "passed": true,
+      "durationMs": 303,
+      "actualSignal": "SIGKILL",
+      "traceEvents": 80,
+      "replayPassed": true
+    },
+    {
+      "name": "SIGKILL:storage.directory-synced",
+      "passed": true,
+      "durationMs": 316,
+      "actualSignal": "SIGKILL",
+      "traceEvents": 83,
+      "replayPassed": true
+    },
+    {
+      "name": "SIGKILL:assets.old-moved",
+      "passed": true,
+      "durationMs": 304,
+      "actualSignal": "SIGKILL",
+      "traceEvents": 80,
+      "replayPassed": true
+    },
+    {
+      "name": "SIGKILL:assets.old-directory-synced",
+      "passed": true,
+      "durationMs": 315,
+      "actualSignal": "SIGKILL",
+      "traceEvents": 83,
+      "replayPassed": true
+    },
+    {
+      "name": "SIGKILL:assets.published",
+      "passed": true,
+      "durationMs": 315,
+      "actualSignal": "SIGKILL",
+      "traceEvents": 83,
+      "replayPassed": true
+    },
+    {
+      "name": "SIGKILL:assets.directory-synced",
+      "passed": true,
+      "durationMs": 322,
+      "actualSignal": "SIGKILL",
+      "traceEvents": 86,
+      "replayPassed": true
+    },
+    {
+      "name": "SIGKILL:old-db.ariso.db.moved",
+      "passed": true,
+      "durationMs": 319,
+      "actualSignal": "SIGKILL",
+      "traceEvents": 86,
+      "replayPassed": true
+    },
+    {
+      "name": "SIGKILL:old-db.ariso.db-wal.moved",
+      "passed": true,
+      "durationMs": 322,
+      "actualSignal": "SIGKILL",
+      "traceEvents": 86,
+      "replayPassed": true
+    },
+    {
+      "name": "SIGKILL:old-db.ariso.db-shm.moved",
+      "passed": true,
+      "durationMs": 321,
+      "actualSignal": "SIGKILL",
+      "traceEvents": 86,
+      "replayPassed": true
+    },
+    {
+      "name": "SIGKILL:old-db.directories-synced",
+      "passed": true,
+      "durationMs": 329,
+      "actualSignal": "SIGKILL",
+      "traceEvents": 89,
+      "replayPassed": true
+    },
+    {
+      "name": "SIGKILL:database.temporary-written",
+      "passed": true,
+      "durationMs": 334,
+      "actualSignal": "SIGKILL",
+      "traceEvents": 91,
+      "replayPassed": true
+    },
+    {
+      "name": "SIGKILL:database.temporary-synced",
+      "passed": true,
+      "durationMs": 332,
+      "actualSignal": "SIGKILL",
+      "traceEvents": 93,
+      "replayPassed": true
+    },
+    {
+      "name": "SIGKILL:database.published",
+      "passed": true,
+      "durationMs": 323,
+      "actualSignal": "SIGKILL",
+      "traceEvents": 95,
+      "replayPassed": true
+    },
+    {
+      "name": "SIGKILL:database.directory-synced",
+      "passed": true,
+      "durationMs": 331,
+      "actualSignal": "SIGKILL",
+      "traceEvents": 97,
+      "replayPassed": true
+    },
+    {
+      "name": "SIGKILL:completed.temp-written",
+      "passed": true,
+      "durationMs": 340,
+      "actualSignal": "SIGKILL",
+      "traceEvents": 98,
+      "replayPassed": true
+    },
+    {
+      "name": "SIGKILL:completed.file-synced",
+      "passed": true,
+      "durationMs": 339,
+      "actualSignal": "SIGKILL",
+      "traceEvents": 100,
+      "replayPassed": true
+    },
+    {
+      "name": "SIGKILL:completed.renamed",
+      "passed": true,
+      "durationMs": 312,
+      "actualSignal": "SIGKILL",
+      "traceEvents": 81,
+      "replayPassed": true
+    },
+    {
+      "name": "SIGKILL:completed.directory-synced",
+      "passed": true,
+      "durationMs": 311,
+      "actualSignal": "SIGKILL",
+      "traceEvents": 83,
+      "replayPassed": true
+    },
+    {
+      "name": "SIGKILL:normal.paths-created",
+      "passed": true,
+      "durationMs": 313,
+      "actualSignal": "SIGKILL",
+      "traceEvents": 85,
+      "replayPassed": true
+    },
+    {
+      "name": "SIGKILL:normal.database-opened",
+      "passed": true,
+      "durationMs": 322,
+      "actualSignal": "SIGKILL",
+      "traceEvents": 87,
+      "replayPassed": true
+    },
+    {
+      "name": "SIGKILL:background.started",
+      "passed": true,
+      "durationMs": 319,
+      "actualSignal": "SIGKILL",
+      "traceEvents": 89,
+      "replayPassed": true
+    },
+    {
+      "name": "missing initial storage/assets is valid",
+      "passed": true,
+      "durationMs": 285
+    },
+    {
+      "name": "completed preserves subsequent rows and CLI password",
+      "passed": true,
+      "durationMs": 321
+    },
+    {
+      "name": "CLI cannot modify an activating published database",
+      "passed": true,
+      "durationMs": 331
+    },
+    {
+      "name": "CLI remains available when no restore task exists",
+      "passed": true,
+      "durationMs": 1
+    },
+    {
+      "name": "CLI rechecks after initial authorization race",
+      "passed": true,
+      "durationMs": 335
+    },
+    {
+      "name": "initial nonempty target is rejected before publication",
+      "passed": true,
+      "durationMs": 192
+    },
+    {
+      "name": "post-move directory conflict does not overwrite unknown files",
+      "passed": true,
+      "durationMs": 283
+    },
+    {
+      "name": "negative control: retained real old WAL is rejected by data oracle",
+      "passed": true,
+      "durationMs": 135,
+      "observed": {
+        "error": "database disk image is malformed",
+        "code": "SQLITE_CORRUPT"
+      }
+    },
+    {
+      "name": "negative control: production path initialization breaks in-flight rename",
+      "passed": true,
+      "durationMs": 284,
+      "detected": "DIRECTORY_CONFLICT: assets"
+    }
+  ]
+}

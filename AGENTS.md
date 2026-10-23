@@ -36,6 +36,10 @@
 
 ## Verification
 
+- 本项目的代理不得使用用户本机 Docker 或 Colima 执行构建、测试、安装或部署，也不得为此创建本地容器环境。容器检查只在 CI 或用户指定的远端环境执行。
+
+- 评审优先复用已有验证证据；只有代码变化、失败或具体未覆盖风险才执行对应定向检查，不重复整套无关测试。
+
 - 本地检查、PR 完成条件与发布验证的执行边界统一遵守[任务执行与验证约定](docs/guides/verification.md#适用检查)。
 
 - Whenever behavior changes, add or update tests that verify the new behavior. Prefer testing externally observable behavior rather than relying on implementation details.

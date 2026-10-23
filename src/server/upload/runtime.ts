@@ -22,6 +22,7 @@ import { receiveSession } from './receive.ts';
 import { receivePublicSession } from './public-receive.ts';
 import { UploadError } from './errors.ts';
 import { uploadSessions } from './schema.ts';
+import { waitForSettled } from '../runtime/idle.ts';
 
 export function startUploadRuntime(
   context: UploadContext & { logger: Pick<Logger, 'info' | 'error'> },
@@ -37,6 +38,7 @@ export function startUploadRuntime(
   >();
   const cleaning = new Map<string, Promise<void>>();
   const stopping = new AbortController();
+  let paused = false;
   recoverUploadSessions(context.db);
   function clean(id: string) {
     const existing = cleaning.get(id);
@@ -49,22 +51,28 @@ export function startUploadRuntime(
   }
   const maintenance = (async () => {
     while (!stopping.signal.aborted) {
-      expireUploadSessions(context.db);
-      for (const [id, operation] of active) {
-        if (getSession(context.db, id).state === 'expired')
-          operation.controller.abort(
-            new UploadError('UPLOAD_EXPIRED', '提交一小时内无上传活动', 409),
-          );
-      }
-      for (const { id } of pendingCleanups(context.db)) {
-        if (active.has(id)) continue;
-        try {
-          await clean(id);
-        } catch (err) {
-          context.logger.error({ err, sessionId: id }, 'Upload cleanup failed');
+      if (!paused) {
+        expireUploadSessions(context.db);
+        for (const [id, operation] of active) {
+          if (getSession(context.db, id).state === 'expired')
+            operation.controller.abort(
+              new UploadError('UPLOAD_EXPIRED', '提交一小时内无上传活动', 409),
+            );
         }
+        for (const { id } of pendingCleanups(context.db)) {
+          if (paused || stopping.signal.aborted) break;
+          if (active.has(id)) continue;
+          try {
+            await clean(id);
+          } catch (err) {
+            context.logger.error(
+              { err, sessionId: id },
+              'Upload cleanup failed',
+            );
+          }
+        }
+        if (!paused) purgeUploadResults(context.db);
       }
-      purgeUploadResults(context.db);
       try {
         await delay(60_000, undefined, { signal: stopping.signal, ref: false });
       } catch (error) {
@@ -112,6 +120,21 @@ export function startUploadRuntime(
     return promise;
   }
   return {
+    pause() {
+      paused = true;
+    },
+    resume() {
+      paused = false;
+    },
+    waitForIdle(signal?: AbortSignal) {
+      return waitForSettled(
+        [
+          ...cleaning.values(),
+          ...[...active.values()].map((operation) => operation.promise),
+        ],
+        signal,
+      );
+    },
     activeWrites(storageId: string) {
       let writes = 0;
       for (const [id, operation] of active) {

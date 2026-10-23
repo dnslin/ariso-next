@@ -8,6 +8,8 @@ import {
   requireSetupOpen,
   SetupError,
   verifySetupCode,
+  beginSetupRequest,
+  requireSetupNotRestoring,
 } from '../../../server/identity/setup.ts';
 import { setupInputSchema } from '../../../server/identity/validation.ts';
 import { prepareInitialMedia } from '../../../server/media/settings.ts';
@@ -28,6 +30,7 @@ function json(body: object, status: number) {
 
 export async function POST(request: Request) {
   const { connection, setup, config } = getServerRuntime();
+  let release: (() => void) | undefined;
   try {
     requireSetupOpen(connection.db, setup.databasePath);
     let body: unknown;
@@ -63,10 +66,12 @@ export async function POST(request: Request) {
       );
     const input = parsed.data;
     verifySetupCode(connection.db, setup, input.code);
+    release = beginSetupRequest(setup);
     const passwordHash = await hashPassword(input.password);
     connection.db.transaction(
       (tx) => {
         verifySetupCode(tx, setup, input.code);
+        requireSetupNotRestoring(setup);
         const storage = resolveUploadStorage(tx);
         if (storage.type !== 'local')
           throw new Error('初始化默认存储必须为本地存储');
@@ -104,5 +109,7 @@ export async function POST(request: Request) {
       },
       500,
     );
+  } finally {
+    release?.();
   }
 }

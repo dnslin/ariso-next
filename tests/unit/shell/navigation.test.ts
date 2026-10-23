@@ -5,6 +5,7 @@ import { AdminShell } from '../../../src/components/shell/admin-shell';
 import { OwnerShell } from '../../../src/components/shell/owner-shell';
 import ErrorPage from '../../../src/app/error';
 import { PublicShell } from '../../../src/components/shell/public-shell';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const route = vi.hoisted(() => ({ pathname: '/settings/media/detail' }));
 vi.mock('next/navigation', () => ({ usePathname: () => route.pathname }));
@@ -37,12 +38,15 @@ function renderAdmin(pathname: string) {
 describe('后台壳层导航', () => {
   it('保留站点名称和导航，不在侧栏展示站点描述', () => {
     const html = renderToStaticMarkup(
-      jsx(OwnerShell, {
-        name: '测试站点',
-        description: '仅首页展示的站点描述',
-        email: 'owner@example.test',
-        ownerName: '所有者',
-        children: '主要内容',
+      jsx(QueryClientProvider, {
+        client: new QueryClient(),
+        children: jsx(OwnerShell, {
+          name: '测试站点',
+          description: '仅首页展示的站点描述',
+          email: 'owner@example.test',
+          ownerName: '所有者',
+          children: '主要内容',
+        }),
       }),
     );
     expect(html).toContain('测试站点');

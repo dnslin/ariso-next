@@ -111,3 +111,7 @@ it.each([true, false])(
     expect(html).not.toContain('永久删除完成');
   },
 );
+
+vi.mock('../../../src/components/backup/use-backup-activity', () => ({
+  useBackupActivity: () => ({ paused: false }),
+}));

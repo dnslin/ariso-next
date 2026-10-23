@@ -1,3 +1,4 @@
+import { isContentMutationPaused } from '../runtime/content-mutations.ts';
 import { betterAuth, type BetterAuthOptions } from 'better-auth';
 import { APIError, createAuthMiddleware } from 'better-auth/api';
 import { drizzleAdapter } from '@better-auth/drizzle-adapter';
@@ -18,7 +19,7 @@ import {
 
 type Runtime = Pick<
   ReturnType<typeof getServerRuntime>,
-  'connection' | 'config' | 'github'
+  'connection' | 'config' | 'github' | 'contentMutations'
 >;
 type LoginCredential = Pick<
   typeof schema.account.$inferSelect,
@@ -43,8 +44,17 @@ function createAuth(runtime: Runtime, origin: string) {
       const create = adapter.create;
       adapter.create = async (input) => {
         try {
-          return await create(input);
+          return await (input.model === 'account' &&
+          input.data.providerId === 'github'
+            ? runtime.contentMutations.run('identity.github.callback', () =>
+                create(input),
+              )
+            : create(input));
         } catch (error) {
+          if (isContentMutationPaused(error))
+            throw new APIError('FOUND', undefined, {
+              Location: `${origin}/settings/account?github=error&error=site_backup_in_progress`,
+            });
           const cause =
             error instanceof Error && error.cause instanceof Error
               ? error.cause
@@ -381,7 +391,8 @@ export function getAuth(runtime: Runtime = getServerRuntime()) {
 
 /** 仅放行本任务已交付的库路径；后续能力由所属任务扩展。 */
 export async function handleAuthRequest(request: Request) {
-  const auth = getAuth();
+  const runtime = getServerRuntime();
+  const auth = getAuth(runtime);
   if (!auth)
     return Response.json(
       { code: 'SETUP_REQUIRED', message: '请先完成初始化' },
@@ -418,7 +429,22 @@ export async function handleAuthRequest(request: Request) {
       },
     );
   }
-  const response = await auth.handler(request);
+  let response: Response;
+  try {
+    // The library consumes the reset token before hashing. Own the whole request,
+    // so accepted resets finish before snapshotting and paused resets retain it.
+    response = await (pathname === '/api/auth/reset-password'
+      ? runtime.contentMutations.run('identity.password.reset', () =>
+          auth.handler(request),
+        )
+      : auth.handler(request));
+  } catch (error) {
+    if (!isContentMutationPaused(error)) throw error;
+    response = Response.json(
+      { code: error.code, message: error.message },
+      { status: 409 },
+    );
+  }
   // Better Auth 1.7.5 会吞掉退出时的数据库异常并返回 success。
   // 验证原 Cookie 已失效后才交付清 Cookie 响应；失败留给调用方重试。
   if (pathname === '/api/auth/sign-out' && response.ok) {

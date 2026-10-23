@@ -1,3 +1,4 @@
+import { isContentMutationPaused } from '../runtime/content-mutations.ts';
 import { requireOwner } from '../identity/owner.ts';
 import { createRuntimeLogger } from '../runtime/logger.ts';
 import { getServerRuntime } from '../startup/server-start.ts';
@@ -17,19 +18,34 @@ export async function respondToMediaCleanup(
   let imageId: string | undefined;
   try {
     await requireOwner(request);
-    imageId = (await context.params).id;
-    const db = getServerRuntime().connection.db;
-    const result =
-      operation === 'read'
-        ? readMediaCleanup(db, imageId)
-        : operation === 'retry'
-          ? retryMediaCleanup(db, imageId)
-          : requestPermanentDelete(db, imageId);
-    return Response.json(result, {
-      status: operation === 'read' || result.status === 'succeeded' ? 200 : 202,
-      headers,
-    });
+    const runMutation = async () => {
+      imageId = (await context.params).id;
+      const db = getServerRuntime().connection.db;
+      const result =
+        operation === 'read'
+          ? readMediaCleanup(db, imageId)
+          : operation === 'retry'
+            ? retryMediaCleanup(db, imageId)
+            : requestPermanentDelete(db, imageId);
+      return Response.json(result, {
+        status:
+          operation === 'read' || result.status === 'succeeded' ? 200 : 202,
+        headers,
+      });
+    };
+    return operation !== 'read'
+      ? await getServerRuntime().contentMutations.run(
+          'media/cleanup-http.ts:respondToMediaCleanup',
+          runMutation,
+        )
+      : await runMutation();
   } catch (err) {
+    if (isContentMutationPaused(err))
+      return Response.json(
+        { code: err.code, message: err.message },
+        { status: 409, headers },
+      );
+
     if (err instanceof Error && 'code' in err && 'status' in err) {
       const { code, status } = err;
       if (

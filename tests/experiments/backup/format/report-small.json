@@ -1,0 +1,383 @@
+{
+  "scope": "isolated-format-experiment-not-product-implementation",
+  "startedAt": "2026-10-22T09:17:13.954Z",
+  "command": "/Users/dnslin/.nvm/versions/node/v24.18.1/bin/node tests/experiments/backup/format/run.mjs --small",
+  "environment": {
+    "node": "v24.18.1",
+    "platform": "darwin",
+    "arch": "arm64",
+    "cpu": "Apple M4",
+    "cpus": 10,
+    "totalMemoryBytes": 17179869184,
+    "freeDiskBytes": 86899298304
+  },
+  "parameters": {
+    "zip64": true,
+    "store": true,
+    "scryptLogN": 18,
+    "largeBytes": 4296015872,
+    "objectEntries": 100000
+  },
+  "cases": [
+    {
+      "label": "small-streaming-roundtrip-and-unicode",
+      "status": "passed",
+      "elapsedMs": 1078.0400829999999,
+      "entryCount": 6,
+      "originalBytes": 312542,
+      "ciphertextBytes": 313662,
+      "header": {
+        "headerBytes": 150,
+        "logN": 18
+      },
+      "zipBytes": 313416
+    },
+    {
+      "label": "wrong-password-does-not-publish",
+      "status": "passed",
+      "elapsedMs": 482.60016699999983,
+      "observedError": "no identity matched any of the file's recipients"
+    },
+    {
+      "label": "ciphertext-bit-flip-rejected",
+      "status": "passed",
+      "elapsedMs": 487.033958,
+      "observedError": "invalid tag"
+    },
+    {
+      "label": "missing-final-authentication-rejected",
+      "status": "passed",
+      "elapsedMs": 490.8905420000001,
+      "observedError": "invalid tag"
+    },
+    {
+      "label": "excessive-kdf-profile-rejected-before-kdf",
+      "status": "passed",
+      "elapsedMs": 46.12133300000005,
+      "observedError": "UNSUPPORTED_SCRYPT_WORK_FACTOR"
+    },
+    {
+      "label": "oversized-header-rejected-before-kdf",
+      "status": "passed",
+      "elapsedMs": 45.424499999999625,
+      "observedError": "AGE_HEADER_TOO_LONG"
+    },
+    {
+      "label": "zip-crc-mismatch",
+      "status": "passed",
+      "elapsedMs": 47.70683300000019,
+      "observedError": "CRC_MISMATCH: objects/local/a.bin\n+ actual - expected\n\n+ 3881685062\n- 3881685063\n           ^\n"
+    },
+    {
+      "label": "zip-size-mismatch",
+      "status": "passed",
+      "elapsedMs": 46.612458999999944,
+      "observedError": "compressed/uncompressed size mismatch for stored file: 300123 != 300124"
+    },
+    {
+      "label": "zip-path-escape",
+      "status": "passed",
+      "elapsedMs": 45.7001250000003,
+      "observedError": "invalid relative path: ../evil/x.bin"
+    },
+    {
+      "label": "zip-duplicate-entry",
+      "status": "passed",
+      "elapsedMs": 46.95316600000024,
+      "observedError": "DUPLICATE_ENTRY: objects/local/a.bin"
+    },
+    {
+      "label": "source-read-failure-does-not-publish",
+      "status": "passed",
+      "elapsedMs": 499.60133300000007
+    },
+    {
+      "label": "worker-cancellation-does-not-publish",
+      "status": "passed",
+      "elapsedMs": 508.82854199999974,
+      "retainedPartialAfterForcedTermination": true,
+      "coordinatorRemovedPartial": true
+    },
+    {
+      "label": "official-age-cli-bidirectional",
+      "status": "failed",
+      "elapsedMs": 0.24000000000023647,
+      "error": "official age CLI missing: /Users/dnslin/.codex/worktrees/backup-restore-prototype/.data/backup-experiment-tools/bin/age"
+    }
+  ],
+  "workerMeasurements": [
+    {
+      "label": "tiny-encrypt",
+      "elapsedMs": 526.4765000000001,
+      "baselineRss": 81690624,
+      "peakRss": 383860736,
+      "rssGrowth": 302170112,
+      "mainEventLoopMaxMs": 12.640255,
+      "mainEventLoopP99Ms": 12.640255,
+      "httpProbeCount": 10,
+      "httpProbeFailures": 0,
+      "httpP95Ms": 0.7576249999999618,
+      "httpMaxMs": 3.5162500000000136,
+      "stages": [
+        {
+          "stage": "kdf-start",
+          "atMs": 54.28820900000001
+        },
+        {
+          "stage": "kdf-complete",
+          "atMs": 503.24287499999997
+        }
+      ],
+      "workerExited": true
+    },
+    {
+      "label": "tiny-decrypt",
+      "elapsedMs": 501.0256249999999,
+      "baselineRss": 379273216,
+      "peakRss": 387956736,
+      "rssGrowth": 8683520,
+      "mainEventLoopMaxMs": 12.500991,
+      "mainEventLoopP99Ms": 12.500991,
+      "httpProbeCount": 9,
+      "httpProbeFailures": 0,
+      "httpP95Ms": 0.664792000000034,
+      "httpMaxMs": 0.7675000000000409,
+      "stages": [
+        {
+          "stage": "kdf-start",
+          "atMs": 43.490542000000005
+        },
+        {
+          "stage": "kdf-complete",
+          "atMs": 487.01095900000007
+        }
+      ],
+      "workerExited": true
+    },
+    {
+      "label": "tiny-validate",
+      "elapsedMs": 49.80154199999993,
+      "baselineRss": 383336448,
+      "peakRss": 387694592,
+      "rssGrowth": 4358144,
+      "mainEventLoopMaxMs": 12.034047,
+      "mainEventLoopP99Ms": 12.034047,
+      "httpProbeCount": 0,
+      "httpProbeFailures": 0,
+      "httpP95Ms": null,
+      "httpMaxMs": null,
+      "stages": [],
+      "workerExited": true
+    },
+    {
+      "label": "wrong-password",
+      "elapsedMs": 482.522209,
+      "baselineRss": 383614976,
+      "peakRss": 390856704,
+      "rssGrowth": 7241728,
+      "mainEventLoopMaxMs": 12.328959,
+      "mainEventLoopP99Ms": 12.328959,
+      "httpProbeCount": 9,
+      "httpProbeFailures": 0,
+      "httpP95Ms": 0.5170000000000528,
+      "httpMaxMs": 0.7485840000001645,
+      "stages": [
+        {
+          "stage": "kdf-start",
+          "atMs": 43.18599999999992
+        }
+      ],
+      "workerExited": true
+    },
+    {
+      "label": "bit-flip",
+      "elapsedMs": 486.9832500000002,
+      "baselineRss": 386547712,
+      "peakRss": 392708096,
+      "rssGrowth": 6160384,
+      "mainEventLoopMaxMs": 12.771327,
+      "mainEventLoopP99Ms": 12.771327,
+      "httpProbeCount": 9,
+      "httpProbeFailures": 0,
+      "httpP95Ms": 0.4881670000002032,
+      "httpMaxMs": 0.7161670000000413,
+      "stages": [
+        {
+          "stage": "kdf-start",
+          "atMs": 43.69820900000013
+        },
+        {
+          "stage": "kdf-complete",
+          "atMs": 483.48795900000005
+        }
+      ],
+      "workerExited": true
+    },
+    {
+      "label": "truncated",
+      "elapsedMs": 490.8366249999999,
+      "baselineRss": 388251648,
+      "peakRss": 393904128,
+      "rssGrowth": 5652480,
+      "mainEventLoopMaxMs": 12.574719,
+      "mainEventLoopP99Ms": 12.574719,
+      "httpProbeCount": 9,
+      "httpProbeFailures": 0,
+      "httpP95Ms": 0.48050000000012005,
+      "httpMaxMs": 0.5040420000000267,
+      "stages": [
+        {
+          "stage": "kdf-start",
+          "atMs": 43.51474999999982
+        },
+        {
+          "stage": "kdf-complete",
+          "atMs": 482.63558299999977
+        }
+      ],
+      "workerExited": true
+    },
+    {
+      "label": "factor",
+      "elapsedMs": 46.04670800000031,
+      "baselineRss": 389251072,
+      "peakRss": 392511488,
+      "rssGrowth": 3260416,
+      "mainEventLoopMaxMs": 12.083199,
+      "mainEventLoopP99Ms": 12.083199,
+      "httpProbeCount": 0,
+      "httpProbeFailures": 0,
+      "httpP95Ms": null,
+      "httpMaxMs": null,
+      "stages": [],
+      "workerExited": true
+    },
+    {
+      "label": "long-header",
+      "elapsedMs": 45.3342090000001,
+      "baselineRss": 388694016,
+      "peakRss": 393019392,
+      "rssGrowth": 4325376,
+      "mainEventLoopMaxMs": 12.050431,
+      "mainEventLoopP99Ms": 12.050431,
+      "httpProbeCount": 0,
+      "httpProbeFailures": 0,
+      "httpP95Ms": null,
+      "httpMaxMs": null,
+      "stages": [],
+      "workerExited": true
+    },
+    {
+      "label": "zip-crc-mismatch",
+      "elapsedMs": 47.32962499999985,
+      "baselineRss": 389840896,
+      "peakRss": 395247616,
+      "rssGrowth": 5406720,
+      "mainEventLoopMaxMs": 12.025855,
+      "mainEventLoopP99Ms": 12.025855,
+      "httpProbeCount": 0,
+      "httpProbeFailures": 0,
+      "httpP95Ms": null,
+      "httpMaxMs": null,
+      "stages": [],
+      "workerExited": true
+    },
+    {
+      "label": "zip-size-mismatch",
+      "elapsedMs": 46.23616600000014,
+      "baselineRss": 391249920,
+      "peakRss": 395608064,
+      "rssGrowth": 4358144,
+      "mainEventLoopMaxMs": 12.034047,
+      "mainEventLoopP99Ms": 12.034047,
+      "httpProbeCount": 0,
+      "httpProbeFailures": 0,
+      "httpP95Ms": null,
+      "httpMaxMs": null,
+      "stages": [],
+      "workerExited": true
+    },
+    {
+      "label": "zip-path-escape",
+      "elapsedMs": 45.32995800000026,
+      "baselineRss": 391577600,
+      "peakRss": 395444224,
+      "rssGrowth": 3866624,
+      "mainEventLoopMaxMs": 12.017663,
+      "mainEventLoopP99Ms": 12.017663,
+      "httpProbeCount": 0,
+      "httpProbeFailures": 0,
+      "httpP95Ms": null,
+      "httpMaxMs": null,
+      "stages": [],
+      "workerExited": true
+    },
+    {
+      "label": "zip-duplicate-entry",
+      "elapsedMs": 46.55712500000027,
+      "baselineRss": 391708672,
+      "peakRss": 396656640,
+      "rssGrowth": 4947968,
+      "mainEventLoopMaxMs": 12.075007,
+      "mainEventLoopP99Ms": 12.075007,
+      "httpProbeCount": 0,
+      "httpProbeFailures": 0,
+      "httpP95Ms": null,
+      "httpMaxMs": null,
+      "stages": [],
+      "workerExited": true
+    },
+    {
+      "label": "source-failure",
+      "elapsedMs": 499.52591699999994,
+      "baselineRss": 392609792,
+      "peakRss": 401752064,
+      "rssGrowth": 9142272,
+      "mainEventLoopMaxMs": 12.558335,
+      "mainEventLoopP99Ms": 12.558335,
+      "httpProbeCount": 9,
+      "httpProbeFailures": 0,
+      "httpP95Ms": 0.5375420000000304,
+      "httpMaxMs": 0.7140840000001845,
+      "stages": [
+        {
+          "stage": "kdf-start",
+          "atMs": 43.123749999999745
+        },
+        {
+          "stage": "kdf-complete",
+          "atMs": 480.9737089999999
+        }
+      ],
+      "workerExited": true
+    },
+    {
+      "label": "cancel-worker",
+      "elapsedMs": 508.44558400000005,
+      "baselineRss": 397017088,
+      "peakRss": 408485888,
+      "rssGrowth": 11468800,
+      "mainEventLoopMaxMs": 12.533759,
+      "mainEventLoopP99Ms": 12.533759,
+      "httpProbeCount": 9,
+      "httpProbeFailures": 0,
+      "httpP95Ms": 0.4711669999996957,
+      "httpMaxMs": 0.4863749999999527,
+      "stages": [
+        {
+          "stage": "kdf-start",
+          "atMs": 43.37991699999975
+        },
+        {
+          "stage": "kdf-complete",
+          "atMs": 483.3572919999997
+        }
+      ],
+      "workerExited": true
+    }
+  ],
+  "status": "failed",
+  "error": "AssertionError [ERR_ASSERTION]: official age CLI missing: /Users/dnslin/.codex/worktrees/backup-restore-prototype/.data/backup-experiment-tools/bin/age\n    at cli (file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/format/run.mjs:160:3)\n    at file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/format/run.mjs:236:23\n    at check (file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/format/run.mjs:120:27)\n    at file:///Users/dnslin/.codex/worktrees/backup-restore-prototype/ariso/tests/experiments/backup/format/run.mjs:234:11",
+  "cleanedTemporaryDirectory": true,
+  "finishedAt": "2026-10-22T09:17:17.788Z"
+}

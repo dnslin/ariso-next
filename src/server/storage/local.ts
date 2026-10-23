@@ -260,6 +260,17 @@ export async function readObject(
   signal?: AbortSignal,
 ) {
   requireEnabled(storage);
+  return readObjectForMaintenance(root, storage, key, contentType, signal);
+}
+
+/** Full backups must also read persisted objects on disabled local stores. */
+export async function readObjectForMaintenance(
+  root: string,
+  storage: LocalStorage,
+  key: string,
+  contentType: string,
+  signal?: AbortSignal,
+) {
   let path: string | undefined;
   try {
     const directory = namespace(root, storage, false);

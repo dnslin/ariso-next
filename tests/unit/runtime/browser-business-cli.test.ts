@@ -242,6 +242,30 @@ describe('actual business CLI connections without external services', () => {
     },
   );
 
+  it('dispatches backup to its two-instance fixture without generic fixtures', async () => {
+    const { events, report } = await run(['--suite', 'backup']);
+    expect(events).toEqual([{ kind: 'backup', spaceId: 8, pageLabel: 'p1' }]);
+    expect(report.suite).toBe('backup');
+    expect(report.backup).toBe('passed');
+  });
+  it('passes an explicitly selected private provider file only to the backup suite', async () => {
+    const { events, report } = await run([
+      '--suite',
+      'backup',
+      '--storage-config',
+      '/private/provider.json',
+    ]);
+    expect(events).toEqual([
+      {
+        kind: 'backup',
+        spaceId: 8,
+        pageLabel: 'p1',
+        storageConfig: '/private/provider.json',
+      },
+    ]);
+    expect(report.backup).toBe('passed');
+  });
+
   it.each([
     ['upload-regression', undefined, ['upload', 'upload-polling']],
     ['upload-regression', 'main', ['upload']],

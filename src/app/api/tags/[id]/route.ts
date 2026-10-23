@@ -21,22 +21,32 @@ export function GET(request: Request, context: Context) {
 }
 
 export function PATCH(request: Request, context: Context) {
-  return tagResponse(request, async () => {
-    const { id } = await context.params;
-    const input = await collectionBody(request);
-    return getServerRuntime().connection.db.transaction(
-      (tx) => renameTag(tx, id, input),
-      { behavior: 'immediate' },
-    );
-  });
+  return tagResponse(
+    request,
+    async () => {
+      const { id } = await context.params;
+      const input = await collectionBody(request);
+      return getServerRuntime().connection.db.transaction(
+        (tx) => renameTag(tx, id, input),
+        { behavior: 'immediate' },
+      );
+    },
+    200,
+    'tags/[id]:PATCH',
+  );
 }
 
 export function DELETE(request: Request, context: Context) {
-  return tagResponse(request, async () => {
-    const { id } = await context.params;
-    return getServerRuntime().connection.db.transaction(
-      (tx) => ({ deleted: deleteTag(tx, id) }),
-      { behavior: 'immediate' },
-    );
-  });
+  return tagResponse(
+    request,
+    async () => {
+      const { id } = await context.params;
+      return getServerRuntime().connection.db.transaction(
+        (tx) => ({ deleted: deleteTag(tx, id) }),
+        { behavior: 'immediate' },
+      );
+    },
+    200,
+    'tags/[id]:DELETE',
+  );
 }

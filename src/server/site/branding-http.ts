@@ -9,50 +9,56 @@ import { siteSettingsResponse } from './settings-http.ts';
 import { brandingUrl } from './urls.ts';
 
 export function writeBrandingResponse(request: Request, kind: string) {
-  return siteSettingsResponse(request, async () => {
-    if (kind !== 'logo' && kind !== 'favicon')
-      throw Object.assign(new Error('品牌素材用途不存在'), {
-        code: 'NOT_FOUND',
-        status: 404,
-      });
-    const { branding, mediaResources } = getServerRuntime();
-    if (request.method === 'DELETE') {
-      await branding.remove(kind, request.signal);
-      return { url: null, mime: null };
-    }
-    const asset = await branding.replace(
-      kind,
-      async (path, signal) => {
-        try {
-          await receiveMultipart(request, {
-            path,
-            signal,
-            maxBytes: BRAND_MAX_BYTES,
-            resources: mediaResources,
-          });
-        } catch (cause) {
-          if (cause instanceof MultipartReceiveError && cause.status < 500) {
-            const tooLarge = cause.code === 'UPLOAD_FILE_TOO_LARGE';
-            throw Object.assign(
-              new Error(
-                tooLarge
-                  ? '品牌素材不能超过 5 MiB'
-                  : '请上传一个有效的 file 文件',
-                { cause },
-              ),
-              {
-                code: tooLarge ? 'SITE_ASSET_TOO_LARGE' : 'SITE_ASSET_INVALID',
-                status: tooLarge ? 413 : 400,
-              },
-            );
+  return siteSettingsResponse(
+    request,
+    async () => {
+      if (kind !== 'logo' && kind !== 'favicon')
+        throw Object.assign(new Error('品牌素材用途不存在'), {
+          code: 'NOT_FOUND',
+          status: 404,
+        });
+      const { branding, mediaResources } = getServerRuntime();
+      if (request.method === 'DELETE') {
+        await branding.remove(kind, request.signal);
+        return { url: null, mime: null };
+      }
+      const asset = await branding.replace(
+        kind,
+        async (path, signal) => {
+          try {
+            await receiveMultipart(request, {
+              path,
+              signal,
+              maxBytes: BRAND_MAX_BYTES,
+              resources: mediaResources,
+            });
+          } catch (cause) {
+            if (cause instanceof MultipartReceiveError && cause.status < 500) {
+              const tooLarge = cause.code === 'UPLOAD_FILE_TOO_LARGE';
+              throw Object.assign(
+                new Error(
+                  tooLarge
+                    ? '品牌素材不能超过 5 MiB'
+                    : '请上传一个有效的 file 文件',
+                  { cause },
+                ),
+                {
+                  code: tooLarge
+                    ? 'SITE_ASSET_TOO_LARGE'
+                    : 'SITE_ASSET_INVALID',
+                  status: tooLarge ? 413 : 400,
+                },
+              );
+            }
+            throw cause;
           }
-          throw cause;
-        }
-      },
-      request.signal,
-    );
-    return { url: brandingUrl(asset.key), mime: asset.mime };
-  });
+        },
+        request.signal,
+      );
+      return { url: brandingUrl(asset.key), mime: asset.mime };
+    },
+    'site/branding-http.ts:writeBrandingResponse',
+  );
 }
 
 export async function readBrandingResponse(request: Request, key: string) {

@@ -200,7 +200,8 @@ describe('compiled prestart CLI', () => {
     writeFileSync(env.DATA_DIR, 'keep');
     const result = run();
     expect(result.status).toBe(1);
-    expect(result.stdout).toContain('EEXIST');
+    // Restore discovery reads DATA_DIR before normal directory initialization.
+    expect(result.stdout).toContain('ENOTDIR');
     expect(result.stdout).toContain(env.DATA_DIR);
     expect(readFileSync(env.DATA_DIR, 'utf8')).toBe('keep');
   });

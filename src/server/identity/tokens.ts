@@ -55,11 +55,15 @@ export async function uploadTokenResponse(
   operation: (
     auth: TokenAuth,
   ) => Promise<{ response: unknown; headers: Headers }>,
+  mutation?: string,
 ) {
   const headers = new Headers({ 'Cache-Control': 'no-store' });
   try {
     await requireOwnerSession(request);
-    const result = await operation(getAuth()!);
+    const invoke = () => operation(getAuth()!);
+    const result = await (mutation
+      ? getServerRuntime().contentMutations.run(mutation, invoke)
+      : invoke());
     result.headers.set('Cache-Control', 'no-store');
     return Response.json(result.response, { headers: result.headers });
   } catch (error) {

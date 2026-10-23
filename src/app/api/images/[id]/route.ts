@@ -1,3 +1,4 @@
+import { isContentMutationPaused } from '../../../../server/runtime/content-mutations.ts';
 import { respondToMediaCleanup } from '../../../../server/media/cleanup-http.ts';
 import { isDeliveryErrorCode } from '../../../../server/delivery/errors.ts';
 import { parseImageRequest } from '../../../../server/delivery/links.ts';
@@ -61,31 +62,42 @@ export async function PATCH(
   let imageId: string | undefined;
   try {
     await requireOwner(request);
-    const { id } = await context.params;
-    imageId = id;
-    parseImageRequest(id, new URLSearchParams());
-    let input: unknown;
-    try {
-      input = await request.json();
-    } catch {
-      return Response.json(
-        { code: 'INVALID_IMAGE_FIELDS', message: '图片资料须为 JSON 对象' },
-        { status: 400, headers },
-      );
-    }
-    const patch = imageFieldsSchema.parse(input);
-    const db = getServerRuntime().connection.db;
-    return Response.json(
-      db.transaction(
-        (tx) => {
-          updateImageFields(tx, id, patch);
-          return readLibraryDetail(tx, id);
-        },
-        { behavior: 'immediate' },
-      ),
-      { headers },
+    return await getServerRuntime().contentMutations.run(
+      'images/[id]/route.ts:PATCH',
+      async () => {
+        const { id } = await context.params;
+        imageId = id;
+        parseImageRequest(id, new URLSearchParams());
+        let input: unknown;
+        try {
+          input = await request.json();
+        } catch {
+          return Response.json(
+            { code: 'INVALID_IMAGE_FIELDS', message: '图片资料须为 JSON 对象' },
+            { status: 400, headers },
+          );
+        }
+        const patch = imageFieldsSchema.parse(input);
+        const db = getServerRuntime().connection.db;
+        return Response.json(
+          db.transaction(
+            (tx) => {
+              updateImageFields(tx, id, patch);
+              return readLibraryDetail(tx, id);
+            },
+            { behavior: 'immediate' },
+          ),
+          { headers },
+        );
+      },
     );
   } catch (err) {
+    if (isContentMutationPaused(err))
+      return Response.json(
+        { code: err.code, message: err.message },
+        { status: 409, headers },
+      );
+
     if (err instanceof ZodError)
       return Response.json(
         {

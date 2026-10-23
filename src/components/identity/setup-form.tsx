@@ -162,6 +162,14 @@ export function SetupForm() {
       ) {
         window.location.replace('/login?setup=completed');
       } else if (
+        response.status === 409 &&
+        body.code === 'RESTORE_IN_PROGRESS'
+      ) {
+        setUnknown(false);
+        setMessage(
+          '当前恢复尚未结束。请从下方“从备份恢复”入口继续处理或放弃任务，再进行初始化。',
+        );
+      } else if (
         response.status === 401 &&
         body.code === 'INVALID_SETUP_CODE'
       ) {

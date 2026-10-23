@@ -1,0 +1,45 @@
+{
+  "status": "passed",
+  "application": {
+    "version": "v1.2.1-local.3",
+    "revision": "76adb636d444eba2e3404c30cae9adfa57882334"
+  },
+  "environment": {
+    "platform": "linux",
+    "arch": "arm64",
+    "node": "v24.22.1",
+    "imageMagick": "7.1.1-43 Q16 aarch64",
+    "exifTool": "13.25"
+  },
+  "scope": "Linux standalone Worker and actual HTTP Local/two-S3 restore with a localhost SDK protocol fixture; not external provider compatibility",
+  "command": "node node_modules/vitest/vitest.mjs run --project media-tools --maxWorkers 1 tests/integration/backup/production-s3.test.ts",
+  "testFiles": 1,
+  "tests": 1,
+  "durationSeconds": 10.93,
+  "network": "none",
+  "dependencies": "Copied complete /app from matching Linux builder stage into a task named volume; no host node_modules",
+  "readonlyHostMounts": [
+    "tests/integration",
+    "scripts/verify-backup-s3.ts",
+    "vitest.config.ts"
+  ],
+  "images": {
+    "builder": "ariso:backup-s3-local-builder",
+    "runner": "ariso:backup-s3-local",
+    "inventory": [
+      "\"sha256:2c7cec688c3026869b137e20f84b8e104e0d24313331cdc6597c490a0f1b8a93\" \"linux\" \"arm64\"",
+      "\"sha256:6316a66420f1aad35b52e261dbda1073edebb8ac4e7baad86b292d95f69b6a41\" \"linux\" \"arm64\""
+    ]
+  },
+  "cleanup": {
+    "scriptExit": 0,
+    "independentlyConfirmedAbsent": {
+      "containers": [
+        "ariso-backup-s3-copy-20261023-012913-5121",
+        "ariso-backup-s3-test-20261023-012913-5121"
+      ],
+      "volume": "ariso-backup-s3-linux-20261023-012913-5121"
+    },
+    "otherResourcesModified": false
+  }
+}

@@ -12,7 +12,9 @@ export function GET(request: Request) {
 }
 
 export function PATCH(request: Request) {
-  return mediaSettingsResponse(request, async (db) =>
-    patchMediaSettings(db, await request.json()),
+  return mediaSettingsResponse(
+    request,
+    async (db) => patchMediaSettings(db, await request.json()),
+    'settings/media/route.ts:PATCH',
   );
 }

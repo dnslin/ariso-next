@@ -27,11 +27,17 @@ export async function collectionResponse(
   resource: keyof typeof failureMessages,
   operation: () => Promise<unknown> | unknown,
   status = 200,
+  mutation?: string,
 ) {
   const headers = { 'Cache-Control': 'no-store' };
   try {
     await requireOwner(request);
-    return Response.json(await operation(), { status, headers });
+    return Response.json(
+      await (mutation
+        ? getServerRuntime().contentMutations.run(mutation, operation)
+        : operation()),
+      { status, headers },
+    );
   } catch (err) {
     if (err instanceof CollectionError)
       return Response.json(
@@ -46,7 +52,8 @@ export async function collectionResponse(
       'code' in err &&
       'status' in err &&
       ((err.code === 'UNAUTHORIZED' && err.status === 401) ||
-        (err.code === 'INVALID_ORIGIN' && err.status === 403))
+        (err.code === 'INVALID_ORIGIN' && err.status === 403) ||
+        (err.code === 'SITE_BACKUP_IN_PROGRESS' && err.status === 409))
     )
       return Response.json(
         { code: err.code, message: err.message },

@@ -17,6 +17,20 @@ describe('focused browser execution plans', () => {
     });
     expect(() => select('access-protection', 'unknown')).toThrow('--only');
   });
+  it('runs backup with its own two-instance fixture on the supplied page', () => {
+    expect(selectBrowserPlan({ suite: 'backup', pageLabel: 'p2' })).toEqual({
+      stages: [],
+      config: {},
+    });
+    expect(() => select('backup', 'unrelated')).toThrow('--only');
+    expect(
+      selectBrowserPlan({
+        suite: 'backup',
+        pageLabel: 'p2',
+        storageConfig: '/private/provider.json',
+      }),
+    ).toEqual({ stages: [], config: {} });
+  });
   it('runs all four real image workflows in full and on the selected managed page', () => {
     expect(select('full').stages).toContainEqual([
       'image-workflows',

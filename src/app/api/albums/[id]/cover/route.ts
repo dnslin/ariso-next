@@ -16,20 +16,26 @@ export function PUT(
   request: Request,
   context: { params: Promise<{ id: string }> },
 ) {
-  return collectionResponse(request, 'albums', async () => {
-    const { id } = await context.params;
-    const parsed = inputSchema.safeParse(await collectionBody(request));
-    if (!parsed.success)
-      throw new CollectionError(
-        'COLLECTION_INVALID_INPUT',
-        '请指定封面图片 ID，或用 null 切回自动封面',
+  return collectionResponse(
+    request,
+    'albums',
+    async () => {
+      const { id } = await context.params;
+      const parsed = inputSchema.safeParse(await collectionBody(request));
+      if (!parsed.success)
+        throw new CollectionError(
+          'COLLECTION_INVALID_INPUT',
+          '请指定封面图片 ID，或用 null 切回自动封面',
+        );
+      return getServerRuntime().connection.db.transaction(
+        (tx) => {
+          setAlbumCover(tx, id, parsed.data.imageId);
+          return { album: readOwnerAlbum(tx, id) };
+        },
+        { behavior: 'immediate' },
       );
-    return getServerRuntime().connection.db.transaction(
-      (tx) => {
-        setAlbumCover(tx, id, parsed.data.imageId);
-        return { album: readOwnerAlbum(tx, id) };
-      },
-      { behavior: 'immediate' },
-    );
-  });
+    },
+    200,
+    'albums/[id]/cover:PUT',
+  );
 }

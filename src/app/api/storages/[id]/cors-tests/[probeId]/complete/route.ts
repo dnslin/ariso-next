@@ -25,14 +25,19 @@ export function POST(
   request: Request,
   context: { params: Promise<{ id: string; probeId: string }> },
 ) {
-  return storageResponse(request, async () => {
-    const { id, probeId } = await context.params;
-    const input = inputSchema.parse(await request.json());
-    return getServerRuntime().storageProbes.finishCors(
-      id,
-      probeId,
-      request.headers.get('origin'),
-      input.results,
-    );
-  });
+  return storageResponse(
+    request,
+    async () => {
+      const { id, probeId } = await context.params;
+      const input = inputSchema.parse(await request.json());
+      return getServerRuntime().storageProbes.finishCors(
+        id,
+        probeId,
+        request.headers.get('origin'),
+        input.results,
+      );
+    },
+    200,
+    'storages/[id]/cors-tests/[probeId]/complete/route.ts:POST',
+  );
 }

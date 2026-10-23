@@ -19,11 +19,14 @@ export function GET(request: Request) {
 }
 
 export function PATCH(request: Request) {
-  return accountResponse(request, async ({ connection, config }) =>
-    updateSmtpSettings(
-      connection.db,
-      createSecretCrypto(config.encryptionKey),
-      await readAccountInput(request, smtpSettingsInputSchema, '邮件设置'),
-    ),
+  return accountResponse(
+    request,
+    async ({ connection, config }) =>
+      updateSmtpSettings(
+        connection.db,
+        createSecretCrypto(config.encryptionKey),
+        await readAccountInput(request, smtpSettingsInputSchema, '邮件设置'),
+      ),
+    'settings.smtp',
   );
 }

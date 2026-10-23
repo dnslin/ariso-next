@@ -1,3 +1,4 @@
+import { createContentMutations } from '../../../src/server/runtime/content-mutations.ts';
 import { fork } from 'node:child_process';
 import { once } from 'node:events';
 import { fileURLToPath } from 'node:url';
@@ -75,6 +76,7 @@ async function run() {
   const connection = openRuntimeDatabase(input.database);
   try {
     const auth = getAuth({
+      contentMutations: createContentMutations(),
       connection,
       github: { enabled: false, clientId: '', clientSecret: null },
       config: parseRuntimeEnv({

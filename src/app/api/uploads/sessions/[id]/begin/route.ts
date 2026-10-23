@@ -12,5 +12,6 @@ export async function POST(
         request.headers.get('origin'),
       ),
     200,
+    'uploads/sessions/[id]/begin/route.ts:POST',
   );
 }

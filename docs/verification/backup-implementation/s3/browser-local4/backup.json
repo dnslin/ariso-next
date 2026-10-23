@@ -1,0 +1,97 @@
+{
+  "status": "passed",
+  "checks": [
+    "create",
+    "download",
+    "source-data-removed",
+    "restore",
+    "activated"
+  ],
+  "remote": {
+    "service": "r2",
+    "scopes": [
+      {
+        "role": "sentinel",
+        "id": "4964e890-69a7-4324-baa7-302cc9e9ac60",
+        "pathPrefix": "ariso-backup-browser/0aa97f22-78c3-4c49-9fbe-e45a136e36a3/neighbor"
+      },
+      {
+        "role": "source",
+        "id": "783c92f6-34df-47d5-8094-388b5f11f62e",
+        "pathPrefix": "ariso-backup-browser/0aa97f22-78c3-4c49-9fbe-e45a136e36a3/source-0-28e1e9a9-0e6b-4802-a84b-72f96e9863d7"
+      },
+      {
+        "role": "destination",
+        "id": "783c92f6-34df-47d5-8094-388b5f11f62e",
+        "pathPrefix": "ariso-backup-browser/0aa97f22-78c3-4c49-9fbe-e45a136e36a3/destination-0-e77199ab-69c4-4f8e-abe6-7243b790d6a5"
+      },
+      {
+        "role": "source",
+        "id": "4ba34300-9263-4359-a055-ac6a0d4fde41",
+        "pathPrefix": "ariso-backup-browser/0aa97f22-78c3-4c49-9fbe-e45a136e36a3/source-1-f27d7adb-9ea2-43e2-9fc6-48f91969a447"
+      },
+      {
+        "role": "destination",
+        "id": "4ba34300-9263-4359-a055-ac6a0d4fde41",
+        "pathPrefix": "ariso-backup-browser/0aa97f22-78c3-4c49-9fbe-e45a136e36a3/destination-1-3cb2c3a0-830f-4a70-8661-5627e6422fe6"
+      }
+    ],
+    "sourceRemoval": [
+      {
+        "id": "783c92f6-34df-47d5-8094-388b5f11f62e",
+        "removed": 6
+      },
+      {
+        "id": "4ba34300-9263-4359-a055-ac6a0d4fde41",
+        "removed": 3
+      }
+    ],
+    "cleanup": [
+      {
+        "role": "source",
+        "id": "783c92f6-34df-47d5-8094-388b5f11f62e",
+        "pathPrefix": "ariso-backup-browser/0aa97f22-78c3-4c49-9fbe-e45a136e36a3/source-0-28e1e9a9-0e6b-4802-a84b-72f96e9863d7",
+        "removed": 0,
+        "status": "passed"
+      },
+      {
+        "role": "destination",
+        "id": "783c92f6-34df-47d5-8094-388b5f11f62e",
+        "pathPrefix": "ariso-backup-browser/0aa97f22-78c3-4c49-9fbe-e45a136e36a3/destination-0-e77199ab-69c4-4f8e-abe6-7243b790d6a5",
+        "removed": 6,
+        "status": "passed"
+      },
+      {
+        "role": "source",
+        "id": "4ba34300-9263-4359-a055-ac6a0d4fde41",
+        "pathPrefix": "ariso-backup-browser/0aa97f22-78c3-4c49-9fbe-e45a136e36a3/source-1-f27d7adb-9ea2-43e2-9fc6-48f91969a447",
+        "removed": 0,
+        "status": "passed"
+      },
+      {
+        "role": "destination",
+        "id": "4ba34300-9263-4359-a055-ac6a0d4fde41",
+        "pathPrefix": "ariso-backup-browser/0aa97f22-78c3-4c49-9fbe-e45a136e36a3/destination-1-3cb2c3a0-830f-4a70-8661-5627e6422fe6",
+        "removed": 3,
+        "status": "passed"
+      },
+      {
+        "role": "sentinel",
+        "id": "4964e890-69a7-4324-baa7-302cc9e9ac60",
+        "pathPrefix": "ariso-backup-browser/0aa97f22-78c3-4c49-9fbe-e45a136e36a3/neighbor",
+        "status": "passed"
+      }
+    ],
+    "sentinelChecks": [
+      "source-prepared",
+      "source-removed",
+      "restored",
+      "after-source-and-destination-cleanup"
+    ]
+  },
+  "application": {
+    "version": "v1.2.1-local.4",
+    "revision": "76adb636d444eba2e3404c30cae9adfa57882334"
+  },
+  "cleanup": "passed"
+}

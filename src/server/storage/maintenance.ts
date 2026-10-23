@@ -5,6 +5,7 @@ import type { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
 import { removeEmptyNamespace } from './local.ts';
 import { requireNoStorageReferences } from './references.ts';
 import { scanStorage, type ScanContext } from './scans.ts';
+import { waitForSettled } from '../runtime/idle.ts';
 import {
   storageConfigs,
   storageOrphans,
@@ -21,6 +22,7 @@ export function startStorageMaintenance(
   intervalMs = 60_000,
 ) {
   const stopping = new AbortController();
+  let paused = false;
   const active = new Map<string, Promise<unknown>>();
   const deleting = new Map<
     string,
@@ -47,7 +49,7 @@ export function startStorageMaintenance(
         .from(storageConfigs)
         .all();
       for (const { id } of configs) {
-        if (stopping.signal.aborted) break;
+        if (stopping.signal.aborted || paused) break;
         if (deleting.has(id)) continue;
         try {
           await scan(id);
@@ -156,6 +158,15 @@ export function startStorageMaintenance(
     });
   }
   return {
+    pause() {
+      paused = true;
+    },
+    resume() {
+      paused = false;
+    },
+    waitForIdle(signal?: AbortSignal) {
+      return waitForSettled([...active.values(), ...deleting.values()], signal);
+    },
     scan,
     deleteStorage(id: string) {
       if (stopping.signal.aborted)

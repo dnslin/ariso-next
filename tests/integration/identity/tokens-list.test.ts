@@ -1,3 +1,4 @@
+import { createContentMutations } from '../../../src/server/runtime/content-mutations.ts';
 import { randomBytes } from 'node:crypto';
 import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
@@ -18,6 +19,7 @@ it('the production plugin lists every Cookie-owned Token beyond the adapter defa
     const origin = 'http://localhost:3000';
     const ownerId = await seedAuthOwner(connection, origin);
     const auth = getAuth({
+      contentMutations: createContentMutations(),
       connection,
       github: { enabled: false, clientId: '', clientSecret: null },
       config: parseRuntimeEnv({

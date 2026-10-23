@@ -175,11 +175,16 @@ export async function accountResponse(
     runtime: ReturnType<typeof getServerRuntime>,
     owner: OwnerSession,
   ) => unknown | Promise<unknown>,
+  mutation?: string,
 ) {
   const headers = { 'Cache-Control': 'no-store' };
   try {
     const owner = await requireOwnerSession(request);
-    const result = await operation(getServerRuntime(), owner);
+    const runtime = getServerRuntime();
+    const invoke = () => operation(runtime, owner);
+    const result = await (mutation
+      ? runtime.contentMutations.run(mutation, invoke)
+      : invoke());
     if (result instanceof Response) {
       result.headers.set('Cache-Control', 'no-store');
       return result;

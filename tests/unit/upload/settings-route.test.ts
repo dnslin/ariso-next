@@ -1,3 +1,4 @@
+import { createContentMutations } from '../../../src/server/runtime/content-mutations.ts';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { GET, PATCH } from '../../../src/app/api/settings/upload/route.ts';
 import { requireOwner } from '../../../src/server/identity/owner.ts';
@@ -32,6 +33,7 @@ const request = (method = 'GET', body?: string) =>
 beforeEach(() => {
   vi.resetAllMocks();
   vi.mocked(getServerRuntime).mockReturnValue({
+    contentMutations: createContentMutations(),
     connection: { db: {} },
   } as ReturnType<typeof getServerRuntime>);
   vi.mocked(requireUploadSettings).mockReturnValue(settings);

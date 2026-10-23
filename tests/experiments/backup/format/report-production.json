@@ -1,0 +1,70 @@
+{
+  "scope": "Formal format functions; isolated Node processes, not complete product runtime",
+  "results": [
+    {
+      "phase": "interop",
+      "status": "passed",
+      "officialVersion": "v1.3.2",
+      "fromJs": {
+        "exitCode": 0,
+        "prompts": 1
+      },
+      "fromCli": {
+        "exitCode": 0,
+        "prompts": 2
+      },
+      "elapsedMs": 2047.5660000000003,
+      "peakRssBytes": 642793472,
+      "environment": {
+        "node": "v24.18.1",
+        "platform": "darwin",
+        "arch": "arm64",
+        "cpu": "Apple M4",
+        "cpus": 10,
+        "memoryBytes": 17179869184
+      }
+    },
+    {
+      "phase": "large",
+      "status": "passed",
+      "bytes": 4296015872,
+      "sha256": "4587ebd714bb911ed28845fd4646c70bba23a82caf626a7d217ef1f941866bcf",
+      "encryptedBytes": 4297065295,
+      "extracted": {
+        "entries": 1,
+        "bytes": 4296015872
+      },
+      "elapsedMs": 45650.744666,
+      "peakRssBytes": 480460800,
+      "environment": {
+        "node": "v24.18.1",
+        "platform": "darwin",
+        "arch": "arm64",
+        "cpu": "Apple M4",
+        "cpus": 10,
+        "memoryBytes": 17179869184
+      }
+    },
+    {
+      "phase": "many",
+      "status": "passed",
+      "objects": 100000,
+      "allExtractedBytesCompared": true,
+      "extracted": {
+        "entries": 100000,
+        "bytes": 2888890
+      },
+      "elapsedMs": 1001221.738208,
+      "peakRssBytes": 1168179200,
+      "environment": {
+        "node": "v24.18.1",
+        "platform": "darwin",
+        "arch": "arm64",
+        "cpu": "Apple M4",
+        "cpus": 10,
+        "memoryBytes": 17179869184
+      }
+    }
+  ],
+  "temporaryResourcesRemoved": true
+}

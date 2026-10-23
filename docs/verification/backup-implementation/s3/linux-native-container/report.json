@@ -1,0 +1,56 @@
+{
+  "image": "ariso:backup-s3-local",
+  "platform": "linux/arm64",
+  "host": "linux/arm64",
+  "imageId": "sha256:b80d3bd312366f1704f68e396dd8134f2e1efb3a1f8cf6ad07b69215f4ff7f85",
+  "imageArchitecture": "arm64",
+  "failureNetwork": "Linux Docker host network; direct loopback TCP probe",
+  "backupMethod": "stopped whole-directory tar -cpf archive; restore with tar -xpf",
+  "checks": [
+    "final image health, JSON logs, static assets, Node 24 architecture and PID 1",
+    "empty data directory prepares default local storage without an owner",
+    "concurrent setup commits one owner and the initial site/media settings without a session",
+    "real image upload completes its media job and delivers the original bytes through HTTP",
+    "production login and logout revoke the cookie before restart",
+    "packaged docker exec -it CLI resets password while Web is running and revokes both cookies on the next request",
+    "container recreation preserves configuration, library image and original bytes, emits no setup code and supports fresh login/logout",
+    "stop/start/restart persistence and repeated migrations",
+    "MIGRATION_FAILED",
+    "SCHEMA_TOO_NEW",
+    "upgrade data preserved, failed migration rolled back and old schema refused",
+    "stopped whole-directory backup and restore before old-version startup"
+  ],
+  "stops": [
+    {
+      "exitCode": 143,
+      "elapsedMs": 146
+    },
+    {
+      "exitCode": 143,
+      "elapsedMs": 155
+    },
+    {
+      "exitCode": 143,
+      "elapsedMs": 212
+    },
+    {
+      "exitCode": 143,
+      "elapsedMs": 174
+    },
+    {
+      "exitCode": 143,
+      "elapsedMs": 221
+    },
+    {
+      "exitCode": 143,
+      "elapsedMs": 151
+    }
+  ],
+  "status": "passed",
+  "cleaned": true,
+  "media": {
+    "imageId": "0b2112f9-4d7e-4953-a08f-46d4d78165ff",
+    "byteLength": 6631,
+    "processingStatus": "succeeded"
+  }
+}

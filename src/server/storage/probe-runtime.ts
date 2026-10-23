@@ -9,6 +9,7 @@ import { setTimeout as delay } from 'node:timers/promises';
 import { and, eq, lte } from 'drizzle-orm';
 import type { Logger } from 'pino';
 import { storageProbes } from './schema.ts';
+import { waitForSettled } from '../runtime/idle.ts';
 import {
   cleanupProbe,
   probeError,
@@ -31,6 +32,7 @@ export function startStorageProbeRuntime(
   >();
   const cleaning = new Map<string, Promise<void>>();
   const stopping = new AbortController();
+  let paused = false;
   recoverProbes(context);
   recoverCorsProbes(context);
   function clean(id: string) {
@@ -50,32 +52,34 @@ export function startStorageProbeRuntime(
   }
   const maintenance = (async () => {
     while (!stopping.signal.aborted) {
-      expireCorsProbes(context);
-      const pending = context.db
-        .select()
-        .from(storageProbes)
-        .where(
-          and(
-            eq(storageProbes.state, 'cleanup'),
-            lte(storageProbes.nextCleanupAt, new Date()),
-          ),
-        )
-        .all();
-      for (const probe of pending) {
-        if (stopping.signal.aborted) break;
-        if (active.has(probe.storageId)) continue;
-        try {
-          await clean(probe.id);
-        } catch (err) {
-          context.logger.error(
-            {
-              err,
-              storageId: probe.storageId,
-              probeId: probe.id,
-              key: probe.key,
-            },
-            'Storage probe cleanup failed',
-          );
+      if (!paused) {
+        expireCorsProbes(context);
+        const pending = context.db
+          .select()
+          .from(storageProbes)
+          .where(
+            and(
+              eq(storageProbes.state, 'cleanup'),
+              lte(storageProbes.nextCleanupAt, new Date()),
+            ),
+          )
+          .all();
+        for (const probe of pending) {
+          if (stopping.signal.aborted || paused) break;
+          if (active.has(probe.storageId)) continue;
+          try {
+            await clean(probe.id);
+          } catch (err) {
+            context.logger.error(
+              {
+                err,
+                storageId: probe.storageId,
+                probeId: probe.id,
+                key: probe.key,
+              },
+              'Storage probe cleanup failed',
+            );
+          }
         }
       }
       try {
@@ -104,6 +108,21 @@ export function startStorageProbeRuntime(
     return promise;
   }
   return {
+    pause() {
+      paused = true;
+    },
+    resume() {
+      paused = false;
+    },
+    waitForIdle(signal?: AbortSignal) {
+      return waitForSettled(
+        [
+          ...cleaning.values(),
+          ...[...active.values()].map((operation) => operation.promise),
+        ],
+        signal,
+      );
+    },
     activeWrites(storageId: string) {
       return active.has(storageId) ? 1 : 0;
     },

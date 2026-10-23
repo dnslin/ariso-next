@@ -1,0 +1,10 @@
+@import '../../../src/app/globals.css';
+@source '../components';
+@source '../../../src/components';
+
+/* Local presentation only; product styling stays in the imported stylesheet. */
+@media (prefers-reduced-motion: reduce) {
+  [data-prototype] * {
+    scroll-behavior: auto !important;
+  }
+}

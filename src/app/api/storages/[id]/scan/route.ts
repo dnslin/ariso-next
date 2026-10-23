@@ -8,8 +8,13 @@ export function POST(
   request: Request,
   context: { params: Promise<{ id: string }> },
 ) {
-  return storageResponse(request, async () => {
-    const { id } = await context.params;
-    return getServerRuntime().storageMaintenance.scan(id);
-  });
+  return storageResponse(
+    request,
+    async () => {
+      const { id } = await context.params;
+      return getServerRuntime().storageMaintenance.scan(id);
+    },
+    200,
+    'storages/[id]/scan/route.ts:POST',
+  );
 }
