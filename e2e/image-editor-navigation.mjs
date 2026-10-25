@@ -15,6 +15,7 @@ const exit = `${editor} > div:first-child button:text-is("退出编辑")`;
 export async function verifyEditorLeave({ page, config, report, fixture, ui }) {
   report.stage = 'draft-navigation-open-single';
   async function assertDraft(text) {
+    await page.click(button('水印'));
     assert.equal(
       await page.evaluate(
         (selector) => document.querySelector(selector)?.value,

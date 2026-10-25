@@ -46,9 +46,12 @@ vi.mock('react', async (original) => ({
 vi.mock('next/navigation', () => ({ useSearchParams: () => state.params }));
 const main = { scrollTop: 88 };
 const target = { isConnected: true, focus: vi.fn() };
+function NavigationHarness() {
+  return useImageEditorNavigation();
+}
 function render() {
   state.cursor = 0;
-  const result = useImageEditorNavigation();
+  const result = NavigationHarness();
   state.effects.splice(0).forEach((effect) => effect());
   return result;
 }
