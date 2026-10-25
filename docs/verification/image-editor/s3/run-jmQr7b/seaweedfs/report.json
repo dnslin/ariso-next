@@ -1,0 +1,26 @@
+{
+  "service": "seaweedfs",
+  "startedAt": "2026-10-25T13:48:57.436Z",
+  "finishedAt": "2026-10-25T13:49:22.637Z",
+  "environment": {
+    "node": "v24.18.1",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "target": {
+    "endpoint": "https://fs.447654.xyz",
+    "bucket": "images"
+  },
+  "status": "passed",
+  "checks": [
+    "formal authenticated multipart upload into fixture-owned S3 namespace",
+    "owner source endpoint streams exact original bytes without redirect",
+    "Logo upload and authenticated pixels; template create/read/rename preserve full recipe",
+    "native PNG original/site-watermark previews preserve proportions and create no library images",
+    "default copy, exact-request idempotency, real mask pixels/full dimensions/SHA, source bytes preserved",
+    "overwrite preserves ID/associations and rebuilds saved roles/sizes after settings change; metadata/SHA refresh; copy remains independent",
+    "template deletion leaves previously saved flat image pixels unchanged"
+  ],
+  "cleanup": "passed: only fixture-owned exact keys removed and confirmed absent",
+  "error": null
+}
