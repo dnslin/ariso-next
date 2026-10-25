@@ -52,6 +52,7 @@ export const sessionStates = [
   'validating',
   'finalizing',
   'accepted',
+  'duplicate',
   'cancelled',
   'failed',
   'expired',
@@ -77,6 +78,7 @@ export const uploadSessions = sqliteTable(
       mode: 'timestamp_ms',
     }),
     sourceEtag: text('source_etag'),
+    sourceSha256: text('source_sha256'),
     temporaryBytes: integer('temporary_bytes'),
     finalBytes: integer('final_bytes'),
     confirmedAt: integer('confirmed_at', { mode: 'timestamp_ms' }),
@@ -85,6 +87,10 @@ export const uploadSessions = sqliteTable(
     byteSize: integer('byte_size'),
     // Historical result identifiers deliberately do not reference mutable media rows.
     imageId: text('image_id'),
+    existingImageId: text('existing_image_id'),
+    existingImageTrashed: integer('existing_image_trashed', {
+      mode: 'boolean',
+    }),
     jobId: text('job_id'),
     errorCode: text('error_code'),
     error: text('error'),
@@ -105,7 +111,7 @@ export const uploadSessions = sqliteTable(
     index('upload_sessions_final_key').on(t.storageId, t.finalKey),
     check(
       'upload_sessions_state',
-      sql`${t.state} in ('queued', 'receiving', 'validating', 'finalizing', 'accepted', 'cancelled', 'failed', 'expired')`,
+      sql`${t.state} in ('queued', 'receiving', 'validating', 'finalizing', 'accepted', 'duplicate', 'cancelled', 'failed', 'expired')`,
     ),
   ],
 );

@@ -1,0 +1,1 @@
+CREATE INDEX `media_objects_missing_original_sha256` ON `media_objects` (`purpose`,`content_sha256`) WHERE "media_objects"."purpose" = 'original' and "media_objects"."content_sha256" is null and "media_objects"."status" = 'stored';

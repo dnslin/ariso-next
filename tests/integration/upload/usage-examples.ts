@@ -22,6 +22,7 @@ import {
   buildUploadCurl,
   type UploadCurlExample,
 } from '../../../src/shared/upload-usage.ts';
+import { scenarioPng } from './scenario-png.ts';
 import type { publicUploadFixture } from './api-fixture.ts';
 
 type Fixture = Awaited<ReturnType<typeof publicUploadFixture>>;
@@ -111,6 +112,7 @@ export async function verifyUploadCurlExamples(
   async function successful(
     result: Awaited<ReturnType<typeof executeExample>>,
     visibility: 'public' | 'private',
+    expectedBytes: Buffer,
   ) {
     assert.equal(result.status, 201, JSON.stringify(result.body));
     const body = result.body;
@@ -169,7 +171,7 @@ export async function verifyUploadCurlExamples(
       delivered = await fetch(location, { signal: AbortSignal.timeout(30000) });
     }
     assert.equal(delivered.status, 200);
-    assert.deepEqual(Buffer.from(await delivered.arrayBuffer()), fixture.bytes);
+    assert.deepEqual(Buffer.from(await delivered.arrayBuffer()), expectedBytes);
     const tokenRead = await fixture.request(`/i/${image.id}?type=original`, {
       headers: { authorization: `Bearer ${key}` },
     });
@@ -236,8 +238,12 @@ export async function verifyUploadCurlExamples(
     await check(
       `minimal-generated-curl-uses-current-default-${visibility}`,
       async () => {
+        const expectedBytes = await scenarioPng(
+          visibility === 'public' ? '#557799' : '#997755',
+        );
+        await writeFile(file, expectedBytes);
         const result = await executeExample(fixture, 'minimal', key, { file });
-        const detail = await successful(result, visibility);
+        const detail = await successful(result, visibility, expectedBytes);
         assert.deepEqual(
           db
             .select()
@@ -258,6 +264,38 @@ export async function verifyUploadCurlExamples(
       },
     );
   }
+  await check(
+    'duplicate-generated-curl-does-not-return-existing-private-image',
+    async () => {
+      const images = db.select().from(mediaImages).all();
+      const jobs = db.select().from(mediaJobs).all();
+      const objects = db.select().from(mediaObjects).all();
+      const result = await executeExample(fixture, 'minimal', key, { file });
+      assert.equal(result.status, 409);
+      assert.equal(result.body.imageId, null);
+      assert.equal(result.body.status, 'not_created');
+      assert.equal(result.body.error.code, 'UPLOAD_DUPLICATE');
+      assert.equal(result.body.error.stage, 'deduplication');
+      assert.equal(typeof result.body.requestId, 'string');
+      assert.deepEqual(Object.keys(result.body).sort(), [
+        'error',
+        'imageId',
+        'requestId',
+        'status',
+      ]);
+      for (const image of images)
+        assert.ok(!JSON.stringify(result.body).includes(image.id));
+      assert.deepEqual(db.select().from(mediaImages).all(), images);
+      assert.deepEqual(db.select().from(mediaJobs).all(), jobs);
+      assert.deepEqual(db.select().from(mediaObjects).all(), objects);
+      return {
+        status: 409,
+        code: 'UPLOAD_DUPLICATE',
+        createdImages: 0,
+        existingPrivateIdentityExposed: false,
+      };
+    },
+  );
   assert.equal(
     (
       await fixture.ownerJson('/api/settings/media', 'PATCH', {
@@ -282,12 +320,14 @@ export async function verifyUploadCurlExamples(
   await check(
     'full-generated-curl-repeated-album-and-tag-fields-private',
     async () => {
+      const expectedBytes = await scenarioPng('#337755');
+      await writeFile(file, expectedBytes);
       const result = await executeExample(fixture, 'full', key, {
         file,
         storageId,
         albumIds: [albums[0].id, albums[1].id, albums[0].id],
       });
-      const detail = await successful(result, 'private');
+      const detail = await successful(result, 'private', expectedBytes);
       assert.deepEqual(
         db
           .select()

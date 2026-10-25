@@ -95,6 +95,23 @@ function filePath(key: string) {
     key,
   );
 }
+/** A valid same-size PNG with different density metadata, for scenarios requiring another asset. */
+function differentPngBytes(source: Buffer) {
+  const result = Buffer.from(source);
+  for (let offset = 8; offset < result.length;) {
+    const size = result.readUInt32BE(offset);
+    if (result.toString('ascii', offset + 4, offset + 8) === 'pHYs') {
+      result.writeUInt32BE(result.readUInt32BE(offset + 8) + 1, offset + 8);
+      result.writeUInt32BE(
+        crc32(result.subarray(offset + 4, offset + 8 + size)),
+        offset + 8 + size,
+      );
+      return result;
+    }
+    offset += size + 12;
+  }
+  throw new Error('The PNG fixture must contain its pHYs metadata chunk');
+}
 function assertNoAssets() {
   for (const table of [
     mediaImages,
@@ -186,7 +203,10 @@ describe('real local upload reception and ownership', () => {
 
     // A later group still hands the same immutable source to media after B is selected.
     const middle = first.sessions.find((s) => s.groupIndex === 1)!;
+    const originalBytes = bytes;
+    bytes = differentPngBytes(bytes);
     const acceptedMiddle = await receive(middle.id);
+    bytes = originalBytes;
     expect(
       db
         .select()
@@ -312,7 +332,7 @@ describe('real local upload reception and ownership', () => {
     });
   });
 
-  it('stores exact original bytes with detected PNG metadata, distinct duplicate IDs and frozen settings', async () => {
+  it('stores exact original bytes with detected PNG metadata and frozen settings, then skips identical bytes', async () => {
     const first = submission();
     fixture.db
       .update(mediaSettings)
@@ -339,8 +359,13 @@ describe('real local upload reception and ownership', () => {
       .set({ defaultStorageId: fixture.storage.id })
       .run();
     const second = await receive(submission('second').sessions[0].id);
-    expect(second.imageId).not.toBe(accepted.imageId);
-    expect(fixture.db.select().from(mediaImages).all()).toHaveLength(2);
+    expect(second).toMatchObject({
+      state: 'duplicate',
+      imageId: null,
+      existingImageId: accepted.imageId,
+    });
+    await cleanupSession(fixture, second.id);
+    expect(fixture.db.select().from(mediaImages).all()).toHaveLength(1);
   });
 
   it('rolls back asset, object, job and relationship rows when the selected album was deleted', async () => {
@@ -382,6 +407,7 @@ describe('real local upload reception and ownership', () => {
       getOrCreateTags(tx, ['原标签']),
     );
     expect(replacement.id).not.toBe(tag.id);
+    bytes = differentPngBytes(bytes);
     await expect(receive(batch.sessions[1].id)).rejects.toMatchObject({
       code: 'COLLECTION_TARGET_REMOVED',
     });

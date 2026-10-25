@@ -1,4 +1,5 @@
 import { readFile, access, mkdir } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
 import { join } from 'node:path';
 import { and, eq } from 'drizzle-orm';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -36,6 +37,7 @@ import { requestReprocess } from '../../../src/server/media/reprocess.ts';
 import * as mediaStorage from '../../../src/server/media/storage.ts';
 import * as mediaInput from '../../../src/server/media/input.ts';
 import { storageConfigs } from '../../../src/server/storage/schema.ts';
+import { findDuplicateImage } from '../../../src/server/media/duplicates.ts';
 
 let app: Awaited<ReturnType<typeof createMediaDeliveryFixture>>;
 beforeEach(async () => {
@@ -69,6 +71,17 @@ function publishedReferences(imageId: string) {
   return {
     image: app.state(imageId).image,
     metadata: readMediaMetadata(app.db, imageId),
+    originalFingerprint: app.db
+      .select({ hash: mediaObjects.contentSha256 })
+      .from(mediaVersions)
+      .innerJoin(mediaObjects, eq(mediaObjects.id, mediaVersions.objectId))
+      .where(
+        and(
+          eq(mediaVersions.imageId, imageId),
+          eq(mediaVersions.kind, 'original'),
+        ),
+      )
+      .get()?.hash,
     versions: app.db
       .select()
       .from(mediaVersions)
@@ -85,9 +98,19 @@ function publishedReferences(imageId: string) {
 }
 
 async function publishedImage() {
-  const { imageId } = await app.accept(
+  const { imageId, bytes } = await app.accept(
     'tests/fixtures/runtime/images/sample.png',
   );
+  app.db
+    .update(mediaObjects)
+    .set({ contentSha256: createHash('sha256').update(bytes).digest('hex') })
+    .where(
+      and(
+        eq(mediaObjects.imageId, imageId),
+        eq(mediaObjects.purpose, 'original'),
+      ),
+    )
+    .run();
   const queries = ['original', 'compressed', 'thumbnail', 'watermark'].map(
     (version) => '?type=' + version,
   );
@@ -152,6 +175,14 @@ describe('atomic replacement lifecycle', () => {
     await expectPublishedUnchanged(before);
     expect((await app.processNext()).status).toBe('succeeded');
     expect(app.job(replacement.jobId).status).toBe('succeeded');
+    expect(publishedReferences(before.imageId).originalFingerprint).toBe(
+      createHash('sha256')
+        .update(await readFile('tests/fixtures/media-formats/static.jpg'))
+        .digest('hex'),
+    );
+    expect(
+      findDuplicateImage(app.db, before.references.originalFingerprint!),
+    ).toBeUndefined();
     expect([...written].sort()).toEqual(
       [
         'original',
@@ -173,6 +204,30 @@ describe('atomic replacement lifecycle', () => {
         bytes,
       );
     }
+  });
+  it('allows explicit replacement with content already used by another image identity', async () => {
+    const existing = await app.accept(
+      'tests/fixtures/media-formats/static.jpg',
+    );
+    const hash = createHash('sha256').update(existing.bytes).digest('hex');
+    app.db
+      .update(mediaObjects)
+      .set({ contentSha256: hash })
+      .where(
+        and(
+          eq(mediaObjects.imageId, existing.imageId),
+          eq(mediaObjects.purpose, 'original'),
+        ),
+      )
+      .run();
+    const target = await app.accept('tests/fixtures/runtime/images/sample.png');
+    await receiveImageReplacement(app.runtime, target.imageId, await input());
+    expect((await app.processNext()).status).toBe('succeeded');
+    expect(publishedReferences(target.imageId).originalFingerprint).toBe(hash);
+    expect(publishedReferences(existing.imageId).originalFingerprint).toBe(
+      hash,
+    );
+    expect(findDuplicateImage(app.db, hash)?.id).toBe(existing.imageId);
   });
   it('retains every old role and preset reference and HTTP payload when a later size candidate fails', async () => {
     const before = await publishedImage();

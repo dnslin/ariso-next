@@ -47,6 +47,7 @@ export function releaseStorageHistory(
           eq(uploadSessions.storageId, storageId),
           inArray(uploadSessions.state, [
             'accepted',
+            'duplicate',
             'failed',
             'cancelled',
             'expired',

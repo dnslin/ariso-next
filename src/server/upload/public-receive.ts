@@ -15,7 +15,7 @@ import {
   prepareLocalObjectPath,
   publishLocalObject,
 } from '../storage/local.ts';
-import { acceptSession } from './accept.ts';
+import { acceptSession, finishDuplicateSession } from './accept.ts';
 import type { UploadContext } from './cleanup.ts';
 import { UploadError } from './errors.ts';
 import { receiveMultipart } from './multipart.ts';
@@ -99,7 +99,7 @@ export async function receivePublicSession(
     let declaredMime: string | null = null;
     const fields: Record<string, string | string[]> = { albumId: [], tag: [] };
     let lastProgress = Date.now();
-    const { byteSize } = await receiveMultipart(request, {
+    const { byteSize, sha256 } = await receiveMultipart(request, {
       path,
       resources: (context.resources ??= createMediaResources()),
       maxBytes: maxFileBytes,
@@ -184,6 +184,7 @@ export async function receivePublicSession(
             declaredSize: byteSize,
             declaredMime,
             byteSize,
+            sourceSha256: sha256,
             state: 'validating',
             updatedAt: now,
           })
@@ -193,6 +194,8 @@ export async function receivePublicSession(
       },
       { behavior: 'immediate' },
     );
+    const duplicate = finishDuplicateSession(db, id);
+    if (duplicate) return duplicate;
     stage = 'validating';
     const root = uploadTemporaryRoot(context);
     const workspace = `${root}${sep}upload-${id}`;

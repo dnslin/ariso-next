@@ -1,4 +1,4 @@
-import { randomUUID } from 'node:crypto';
+import { createHash, randomUUID } from 'node:crypto';
 import { Readable } from 'node:stream';
 import { eq } from 'drizzle-orm';
 import { afterEach, beforeEach, expect, it } from 'vitest';
@@ -245,6 +245,7 @@ it('deduplicates exact identities across providers, keeps planned zero and writi
 
 it('transfers actual local objects atomically, preserves retained temp bytes, and rolls back failed handoff', async () => {
   const { db } = fixture;
+  const originalBytes = Buffer.alloc(20);
   const session = createSubmission(db, {
     requestId: 'handoff',
     files: [{ queueItemId: 'one', originalName: 'one.png', declaredSize: 20 }],
@@ -253,7 +254,7 @@ it('transfers actual local objects atomically, preserves retained temp bytes, an
     fixture.storageRoot,
     fixture.storage,
     { key: 'original/one.png', temporaryKey: 'uploads/one.partial' },
-    Readable.from(Buffer.alloc(20)),
+    Readable.from(originalBytes),
   );
   expect(
     (
@@ -270,6 +271,7 @@ it('transfers actual local objects atomically, preserves retained temp bytes, an
       finalKey: 'original/one.png',
       finalBytes: 20,
       byteSize: 20,
+      sourceSha256: createHash('sha256').update(originalBytes).digest('hex'),
       confirmedAt: time,
     })
     .where(eq(uploadSessions.id, session.id))

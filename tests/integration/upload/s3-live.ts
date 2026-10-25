@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { randomBytes, randomUUID } from 'node:crypto';
+import { createHash, randomBytes, randomUUID } from 'node:crypto';
 import { mkdir, mkdtemp, readFile, writeFile } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
 import { parseArgs } from 'node:util';
@@ -32,6 +32,7 @@ import {
 import { collectionFixture } from '../collections/helpers.ts';
 import { configSchema } from '../../experiments/storage-s3/config.ts';
 import { uploadOrigin, uploadRequest } from './s3-fixture.ts';
+import { scenarioPng } from './scenario-png.ts';
 
 const fields = configSchema.shape;
 const targetSchema = z.object({
@@ -146,7 +147,7 @@ async function runTarget(target: Target, output: string) {
   const bytes = await readFile(
     resolve('tests/fixtures/runtime/images/sample.png'),
   );
-  const submit = () =>
+  const submit = (fileBytes = bytes) =>
     createSubmission(local.db, {
       requestId: randomUUID(),
       storageId,
@@ -154,7 +155,7 @@ async function runTarget(target: Target, output: string) {
         {
           queueItemId: randomUUID(),
           originalName: 'live.fake',
-          declaredSize: bytes.length,
+          declaredSize: fileBytes.length,
           declaredMime: 'application/octet-stream',
         },
       ],
@@ -176,7 +177,10 @@ async function runTarget(target: Target, output: string) {
     assert.equal(response.status, 200);
     return Buffer.from(await response.arrayBuffer());
   }
-  async function processAccepted(session: ReturnType<typeof getSession>) {
+  async function processAccepted(
+    session: ReturnType<typeof getSession>,
+    expectedBytes = bytes,
+  ) {
     const claimed = claimNextMediaJob(local.db);
     assert.equal(claimed?.id, session.jobId);
     await processMediaJob(context, session.jobId!, AbortSignal.timeout(120000));
@@ -207,7 +211,19 @@ async function runTarget(target: Target, output: string) {
         .all()
         .some((version) => version.kind === 'thumbnail'),
     );
-    assert.deepEqual(await originalBytes(image.id), bytes);
+    assert.deepEqual(await originalBytes(image.id), expectedBytes);
+    const original = local.db
+      .select()
+      .from(mediaObjects)
+      .where(eq(mediaObjects.imageId, image.id))
+      .all()
+      .find(
+        (object) => object.purpose === 'original' && object.status === 'stored',
+      );
+    assert.equal(
+      original?.contentSha256,
+      createHash('sha256').update(expectedBytes).digest('hex'),
+    );
     return {
       imageId: image.id,
       jobId: job.id,
@@ -253,6 +269,63 @@ async function runTarget(target: Target, output: string) {
     });
     await check('direct-media-and-original-delivery', () =>
       processAccepted(getSession(local.db, first.id)),
+    );
+    await check(
+      'identical-direct-upload-is-skipped-without-another-image-or-job',
+      async () => {
+        const duplicate = submit();
+        const begun = await runtime.begin(duplicate.id, uploadOrigin);
+        assert.equal(begun.route, 'direct');
+        assert.ok('upload' in begun && begun.upload);
+        const temporaryKey = getSession(local.db, duplicate.id).temporaryKey!;
+        const finalKey = `original/${duplicate.candidateImageId}.png`;
+        track(temporaryKey);
+        track(finalKey);
+        await save();
+        const response = await fetch(begun.upload.url, {
+          method: begun.upload.method,
+          headers: begun.upload.headers,
+          body: new Uint8Array(bytes),
+          signal: AbortSignal.timeout(30000),
+        });
+        assert.equal(response.status, 200);
+        await observeWriteRate();
+        const result = await runtime.complete(duplicate.id);
+        assert.equal(result.state, 'duplicate');
+        assert.equal(result.existingImageId, first.candidateImageId);
+        assert.equal(result.existingImageTrashed, false);
+        assert.equal(result.imageId, null);
+        assert.equal(result.jobId, null);
+        assert.equal(result.cleanupStatus, 'none');
+        assert.equal(
+          (await runtime.complete(duplicate.id)).existingImageId,
+          first.candidateImageId,
+        );
+        assert.equal(local.db.select().from(mediaImages).all().length, 1);
+        assert.equal(local.db.select().from(mediaJobs).all().length, 1);
+        assert.equal(
+          await client.inspectObject(temporaryKey, {
+            signal: AbortSignal.timeout(30000),
+          }),
+          null,
+        );
+        assert.equal(
+          await client.inspectObject(finalKey, {
+            signal: AbortSignal.timeout(30000),
+          }),
+          null,
+        );
+        assert.deepEqual(readUploadReferences(local.db), []);
+        assert.deepEqual(readUploadUsage(local.db), []);
+        return {
+          state: result.state,
+          existingImageId: result.existingImageId,
+          images: 1,
+          jobs: 1,
+          temporaryObject: 'absent',
+          finalCandidate: 'absent',
+        };
+      },
     );
     await check('old-signed-put-does-not-replace-formal-original', async () => {
       const changed = Buffer.from(bytes);
@@ -305,14 +378,18 @@ async function runTarget(target: Target, output: string) {
       .set({ corsStatus: 'failed' })
       .where(eq(storageConfigs.id, storageId))
       .run();
-    const relayed = submit();
+    const relayBytes = await scenarioPng('#315c7c');
+    const relayed = submit(relayBytes);
     track(`original/${relayed.candidateImageId}.png`);
     await save();
     await check('relay-receive-publish-and-transfer', async () => {
       const choice = await runtime.begin(relayed.id, uploadOrigin);
       assert.equal(choice.route, 'relay');
       assert.ok(choice.reason);
-      const result = await runtime.receive(relayed.id, uploadRequest(bytes));
+      const result = await runtime.receive(
+        relayed.id,
+        uploadRequest(relayBytes),
+      );
       assert.equal(result.state, 'accepted');
       assert.deepEqual(readUploadUsage(local.db), []);
       return {
@@ -322,7 +399,47 @@ async function runTarget(target: Target, output: string) {
       };
     });
     await check('relay-media-and-original-delivery', () =>
-      processAccepted(getSession(local.db, relayed.id)),
+      processAccepted(getSession(local.db, relayed.id), relayBytes),
+    );
+    await check(
+      'identical-relay-upload-matches-the-direct-original-without-another-image-or-job',
+      async () => {
+        const duplicate = submit();
+        const finalKey = `original/${duplicate.candidateImageId}.png`;
+        track(finalKey);
+        await save();
+        assert.equal(
+          (await runtime.begin(duplicate.id, uploadOrigin)).route,
+          'relay',
+        );
+        const result = await runtime.receive(
+          duplicate.id,
+          uploadRequest(bytes),
+        );
+        assert.equal(result.state, 'duplicate');
+        assert.equal(result.existingImageId, first.candidateImageId);
+        assert.equal(result.imageId, null);
+        assert.equal(result.jobId, null);
+        assert.equal(result.cleanupStatus, 'none');
+        assert.equal(local.db.select().from(mediaImages).all().length, 2);
+        assert.equal(local.db.select().from(mediaJobs).all().length, 2);
+        assert.equal(
+          await client.inspectObject(finalKey, {
+            signal: AbortSignal.timeout(30000),
+          }),
+          null,
+        );
+        assert.deepEqual(readUploadReferences(local.db), []);
+        assert.deepEqual(readUploadUsage(local.db), []);
+        assert.deepEqual(await originalBytes(first.candidateImageId), bytes);
+        return {
+          state: result.state,
+          existingImageId: result.existingImageId,
+          images: 2,
+          jobs: 2,
+          finalCandidate: 'absent',
+        };
+      },
     );
     report.status = 'passed';
   } catch (error) {

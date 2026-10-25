@@ -182,6 +182,7 @@ export function pendingCleanups(db: BetterSQLite3Database) {
       and(
         inArray(uploadSessions.state, [
           'accepted',
+          'duplicate',
           'failed',
           'cancelled',
           'expired',
@@ -213,6 +214,7 @@ export function purgeUploadResults(
             or(
               notInArray(uploadSessions.state, [
                 'accepted',
+                'duplicate',
                 'failed',
                 'cancelled',
                 'expired',
@@ -256,6 +258,7 @@ export function purgeUploadResults(
             isNull(uploadSessions.submissionId),
             inArray(uploadSessions.state, [
               'accepted',
+              'duplicate',
               'failed',
               'cancelled',
               'expired',

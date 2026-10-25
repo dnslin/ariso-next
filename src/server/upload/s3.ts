@@ -1,4 +1,5 @@
 import { createReadStream, createWriteStream } from 'node:fs';
+import { createHash } from 'node:crypto';
 import { Transform } from 'node:stream';
 import { pipeline } from 'node:stream/promises';
 import { mkdir, rm } from 'node:fs/promises';
@@ -10,7 +11,7 @@ import { createMediaResources } from '../media/resources.ts';
 import { clientConfig } from '../storage/probes.ts';
 import { createS3Storage } from '../storage/s3.ts';
 import { requireSiteSettings } from '../site/settings.ts';
-import { acceptSession } from './accept.ts';
+import { acceptSession, finishDuplicateSession } from './accept.ts';
 import { cleanupSession, type UploadContext } from './cleanup.ts';
 import { UploadError } from './errors.ts';
 import { uploadSessions, uploadSubmissions } from './schema.ts';
@@ -155,7 +156,7 @@ export async function failUpload(
   error: unknown,
 ) {
   const current = getSession(context.db, id);
-  if (current.state === 'accepted') return;
+  if (current.state === 'accepted' || current.state === 'duplicate') return;
   context.db
     .update(uploadSessions)
     .set({
@@ -189,7 +190,8 @@ export async function completeSession(
   signal: AbortSignal,
 ) {
   const initial = getPreparedSession(context.db, id);
-  if (initial.state === 'accepted') return initial;
+  if (initial.state === 'accepted' || initial.state === 'duplicate')
+    return initial;
   if (initial.route !== 'direct' || initial.state !== 'receiving')
     throw new UploadError(
       'UPLOAD_STATE_CONFLICT',
@@ -247,6 +249,7 @@ export async function completeSession(
       signal,
     });
     const resources = (context.resources ??= createMediaResources());
+    const hash = createHash('sha256');
     let bytes = 0;
     try {
       resources.reserveWrite(`upload-${id}`, dirname(path), object.size);
@@ -268,6 +271,7 @@ export async function completeSession(
               );
               resources.consumeWrite(`upload-${id}`, chunk.length);
               bytes += chunk.length;
+              hash.update(chunk);
               callback(null, chunk);
             } catch (error) {
               callback(error as Error);
@@ -288,6 +292,13 @@ export async function completeSession(
       read.stream.destroy();
     }
     signal.throwIfAborted();
+    context.db
+      .update(uploadSessions)
+      .set({ sourceSha256: hash.digest('hex'), byteSize: bytes })
+      .where(eq(uploadSessions.id, id))
+      .run();
+    const duplicate = finishDuplicateSession(context.db, id);
+    if (duplicate) return duplicate;
     const facts = await identifyImageFile(path, workspace, signal);
     const key = `original/${initial.candidateImageId}.${facts.extension}`;
     requireSessionStorage(context.db, initial);

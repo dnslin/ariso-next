@@ -1,4 +1,4 @@
-import { randomBytes, randomUUID } from 'node:crypto';
+import { createHash, randomBytes, randomUUID } from 'node:crypto';
 import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
@@ -133,6 +133,7 @@ beforeEach(async () => {
         format: 'PNG',
         mime: 'image/png',
         byteSize: bytes.length,
+        contentSha256: createHash('sha256').update(bytes).digest('hex'),
         snapshot: createProcessingSnapshot(tx),
         expectedVersions: ['compressed', 'thumbnail'],
       });

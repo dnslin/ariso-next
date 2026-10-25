@@ -9,6 +9,7 @@ import {
   iterateBackupFiles,
 } from '../../../src/server/backup/manifest.ts';
 import { createBackupDataFixture, fixtureApplication } from './data-fixture.ts';
+import { assertEmptyRestoreTarget } from '../../../src/server/backup/restore-target.ts';
 let root: string;
 let fixture: ReturnType<typeof createBackupDataFixture>;
 beforeEach(() => {
@@ -18,6 +19,52 @@ beforeEach(() => {
 afterEach(() => {
   fixture.close();
   rmSync(root, { recursive: true, force: true });
+});
+it('preserves saved collection rules and current original fingerprints in a portable snapshot', async () => {
+  fixture.addImage('fingerprinted', 'original bytes');
+  const db = fixture.db.$client;
+  const rules = JSON.stringify({ tagState: 'none', recentDays: 7 });
+  db.prepare(
+    'INSERT INTO smart_collections(id,name,rules,created_at,updated_at) VALUES(?,?,?,?,?)',
+  ).run('smart', '最近待整理', rules, 1, 1);
+  db.prepare('UPDATE media_objects SET content_sha256=? WHERE id=?').run(
+    'a'.repeat(64),
+    'fingerprinted-original',
+  );
+  const destination = join(root, 'smart-snapshot.db');
+  await snapshotDatabase({ db: fixture.db, destination });
+  const copy = new Database(destination, { readonly: true });
+  try {
+    expect(
+      copy
+        .prepare('SELECT name,rules FROM smart_collections WHERE id=?')
+        .get('smart'),
+    ).toEqual({ name: '最近待整理', rules });
+    expect(
+      copy
+        .prepare('SELECT content_sha256 FROM media_objects WHERE id=?')
+        .get('fingerprinted-original'),
+    ).toEqual({ content_sha256: 'a'.repeat(64) });
+    expect(copy.pragma('foreign_key_check')).toEqual([]);
+  } finally {
+    copy.close();
+  }
+});
+
+it('does not treat a site containing saved collections as an empty restore target', () => {
+  const empty = createBackupDataFixture(join(root, 'empty'), false);
+  try {
+    empty.db.$client
+      .prepare(
+        'INSERT INTO smart_collections(id,name,rules,created_at,updated_at) VALUES(?,?,?,?,?)',
+      )
+      .run('smart', 'Saved rules', '{}', 1, 1);
+    expect(() =>
+      assertEmptyRestoreTarget({ db: empty.db, dataDir: empty.paths.dataDir }),
+    ).toThrow('smart_collections');
+  } finally {
+    empty.close();
+  }
 });
 it('snapshots a consistent real schema, preserving identity and queued/failed work while dropping transient grants and sessions only in the copy', async () => {
   fixture.addImage('saved', 'original bytes');
