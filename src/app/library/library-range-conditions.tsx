@@ -6,6 +6,15 @@ import { CalendarDays, ChevronDown, HardDrive } from 'lucide-react';
 import type { LibraryFilters } from '../../server/library/query-schema';
 import type { LibraryQueryPatch } from './query-state';
 
+function megabytesInBytes(input: string) {
+  const value = input.trim();
+  if (!value) return null;
+  if (!/^(?:\d+(?:\.\d{0,6})?|\.\d{1,6})$/.test(value)) return NaN;
+  const [integer, fraction = ''] = value.split('.');
+  // Shift decimal digits as text; binary floating-point multiplication loses byte precision.
+  return Number(`${integer || '0'}${fraction.padEnd(6, '0')}`);
+}
+
 export function LibraryRangeCondition({
   kind,
   filters,
@@ -92,10 +101,8 @@ export function LibraryRangeCondition({
                   uploadedBefore: null,
                 });
               } else {
-                const lower =
-                  minimum.trim() === '' ? null : Number(minimum) * 1000000;
-                const upper =
-                  maximum.trim() === '' ? null : Number(maximum) * 1000000;
+                const lower = megabytesInBytes(minimum);
+                const upper = megabytesInBytes(maximum);
                 if (
                   [lower, upper].some(
                     (value) =>
