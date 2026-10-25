@@ -196,6 +196,57 @@ try {
   report.checks.push(
     'Collection name and criteria survive a real page reload.',
   );
+  await page.click(button('添加条件'));
+  await page.snapshot();
+  await page.click('text="原图大小"');
+  await page.click(button('编辑原图大小'));
+  await page.fill('loc=role:textbox[name="大于（MB）"]', '1.001');
+  await page.click(button('应用大小'));
+  await page.waitForFunction(
+    () =>
+      new URLSearchParams(location.search).get('sizeGreaterThan') === '1001000',
+  );
+  await loaded(0);
+  assert.equal(
+    new URL(await page.url()).searchParams.get('sizeGreaterThan'),
+    '1001000',
+  );
+  await page.click(button('编辑原图大小'));
+  await page.fill('loc=role:textbox[name="大于（MB）"]', '1.000001');
+  await page.fill('loc=role:textbox[name="小于（MB）"]', '1.001');
+  await page.click(button('应用大小'));
+  await page.waitForFunction(() => {
+    const params = new URLSearchParams(location.search);
+    return (
+      params.get('sizeGreaterThan') === '1000001' &&
+      params.get('sizeLessThan') === '1001000'
+    );
+  });
+  await loaded(0);
+  let sizeParams = new URL(await page.url()).searchParams;
+  assert.equal(sizeParams.get('sizeGreaterThan'), '1000001');
+  assert.equal(sizeParams.get('sizeLessThan'), '1001000');
+  await page.click(button('编辑原图大小'));
+  await page.fill('loc=role:textbox[name="大于（MB）"]', '1.1234567');
+  await page.click(button('应用大小'));
+  await page.waitForFunction(() =>
+    [...document.querySelectorAll('[role="alert"]')].some((node) =>
+      node.textContent.includes('最多保留 6 位小数'),
+    ),
+  );
+  sizeParams = new URL(await page.url()).searchParams;
+  assert.equal(sizeParams.get('sizeGreaterThan'), '1000001');
+  assert.equal(sizeParams.get('sizeLessThan'), '1001000');
+  await screenshot('decimal-size-validation.png');
+  await page.fill('loc=role:textbox[name="大于（MB）"]', '');
+  await page.fill('loc=role:textbox[name="小于（MB）"]', '');
+  await page.click(button('应用大小'));
+  await loaded(2);
+  await page.reload();
+  await loaded(2);
+  report.checks.push(
+    'Real size form applies 1.001 / 1.000001 MB as exact byte query values, rejects excess precision without replacing the query, and clears both bounds.',
+  );
   await page.fill(
     'loc=role:searchbox[name="搜索图片名称"]',
     `${fixture.prefix}-no-matching-image`,
@@ -412,6 +463,57 @@ try {
   await loaded(2);
   report.checks.push(
     'Real browser rename, save-as and delete persist through HTTP without deleting images.',
+  );
+  await page.click(button('切换集合：已整理的规则'));
+  await page.snapshot();
+  await page.click('text="最近上传的截图"');
+  const screenshotDialog = '[role="dialog"][aria-label="选择截图标签"]';
+  await page.waitForSelector(screenshotDialog);
+  await page.click(button('创建“截图”标签'));
+  await page.waitForFunction(
+    () =>
+      !!document.querySelector(
+        '[role="dialog"][aria-label="选择截图标签"] button[type="submit"]:not(:disabled)',
+      ),
+  );
+  const screenshotTags = await fixture.json(
+    '/api/tags?q=' + encodeURIComponent('截图'),
+  );
+  const screenshotTag = screenshotTags.items.find(
+    (tag) => tag.displayName === '截图',
+  );
+  assert.ok(screenshotTag?.id);
+  await fixture.json(
+    `/api/images/${fixture.publicImage.id}/collections`,
+    'PATCH',
+    { tagIds: [screenshotTag.id] },
+  );
+  await verifyCollectionDialog(
+    screenshotDialog,
+    ['创建“截图”标签', '取消', '应用模板'],
+    'screenshot-template-layout',
+  );
+  await screenshot('screenshot-template-dialog.png');
+  await page.click(button('应用模板'));
+  await page.waitForSelector(screenshotDialog, { state: 'hidden' });
+  await loaded(1);
+  const screenshotParams = new URL(await page.url()).searchParams;
+  assert.deepEqual(screenshotParams.getAll('tagId'), [screenshotTag.id]);
+  assert.equal(screenshotParams.get('recentDays'), '7');
+  assert.equal(screenshotParams.get('tagState'), null);
+  assert.equal(screenshotParams.get('sizeGreaterThan'), null);
+  assert.equal(screenshotParams.get('q'), null);
+  assert.equal(
+    (await fixture.json(`/api/library/collections/${collectionId}`)).collection
+      .rules.tagState,
+    'none',
+  );
+  await page.click(button('刷新图库'));
+  await page.waitForSelector('[role="dialog"][aria-label="刷新已保存集合"]');
+  await page.click(button('放弃修改并刷新'));
+  await loaded(2);
+  report.checks.push(
+    'The dedicated screenshot dialog creates a real tag, applies its ID with a rolling seven-day query, preserves saved collection rules, and remains keyboard reachable on desktop/mobile/short viewports.',
   );
   for (const [width, height] of [
     [1440, 1080],

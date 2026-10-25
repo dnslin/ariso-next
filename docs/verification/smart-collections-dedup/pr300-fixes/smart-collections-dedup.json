@@ -1,0 +1,531 @@
+{
+  "status": "passed",
+  "checks": [
+    {
+      "scenario": "formal-upload",
+      "imageId": "b965f349-0537-4217-88d4-3f0ea3848e3b",
+      "originalName": "image-workflows-9d4e3154-public.png",
+      "width": 1600,
+      "height": 1000,
+      "visibility": "public",
+      "versions": ["original", "compressed", "thumbnail", "watermark"]
+    },
+    {
+      "scenario": "formal-upload",
+      "imageId": "d28fb0d2-de99-437b-8dea-167760738ceb",
+      "originalName": "image-workflows-9d4e3154-private.png",
+      "width": 1000,
+      "height": 1600,
+      "visibility": "private",
+      "versions": ["original", "compressed", "thumbnail", "watermark"]
+    },
+    {
+      "scenario": "formal-upload",
+      "imageId": "c53ad9da-0bdf-459c-915f-51e16d74d09a",
+      "originalName": "image-workflows-9d4e3154-small.png",
+      "width": 300,
+      "height": 200,
+      "visibility": "public",
+      "versions": ["original", "compressed", "thumbnail", "watermark"]
+    },
+    {
+      "scenario": "formal-upload",
+      "imageId": "ab36eb32-a388-4e69-b8cf-b79b5f2a9dcd",
+      "originalName": "image-workflows-9d4e3154-preview.gif",
+      "width": 320,
+      "height": 200,
+      "visibility": "public",
+      "versions": ["original", "thumbnail"]
+    },
+    "Saved query displays three actual untagged uploads, excluding the tagged original.",
+    "Adding a tag removes an image from the saved untagged query after refresh.",
+    "Collection name and criteria survive a real page reload.",
+    "Real size form applies 1.001 / 1.000001 MB as exact byte query values, rejects excess precision without replacing the query, and clears both bounds.",
+    "A real unmatched search shows the empty state; restoring the original condition restores both images without changing the saved definition.",
+    {
+      "scenario": "rename-dialog-label-escape-focus",
+      "label": {
+        "text": "集合名称",
+        "visible": true,
+        "aboveInput": true,
+        "placeholder": "例如：待整理的图片",
+        "focused": true
+      },
+      "returnedFocus": "集合操作",
+      "draftPersisted": false
+    },
+    "All three collection dialogs remain at most 480px wide and keep both actions keyboard reachable without overflow at desktop, 390px mobile and 360×480 short viewport sizes; keeping edits preserves the real query.",
+    {
+      "scenario": "collection-empty-name-validation",
+      "submitDisabled": false,
+      "inlineValidationShown": true,
+      "collectionCreated": false
+    },
+    "Real browser rename, save-as and delete persist through HTTP without deleting images.",
+    "The dedicated screenshot dialog creates a real tag, applies its ID with a rolling seven-day query, preserves saved collection rules, and remains keyboard reachable on desktop/mobile/short viewports.",
+    "Browser file upload recognizes identical bytes, creates no image, exposes existing detail, and offers no duplicate retry.",
+    "Escape closes the existing-image detail and returns keyboard focus to the same duplicate row’s view-existing-image button.",
+    "A duplicate of a trashed image opens its real record, restores explicitly and returns to the retained queue without creating a copy."
+  ],
+  "layouts": [
+    {
+      "width": 1440,
+      "height": 1080,
+      "overflow": false,
+      "mainOverflow": false,
+      "theme": "light"
+    },
+    {
+      "width": 1440,
+      "height": 1080,
+      "overflow": false,
+      "mainOverflow": false,
+      "theme": "dark"
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "overflow": false,
+      "mainOverflow": false,
+      "theme": "light"
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "overflow": false,
+      "mainOverflow": false,
+      "theme": "dark"
+    },
+    {
+      "width": 360,
+      "height": 640,
+      "overflow": false,
+      "mainOverflow": false,
+      "theme": "light"
+    },
+    {
+      "width": 360,
+      "height": 640,
+      "overflow": false,
+      "mainOverflow": false,
+      "theme": "dark"
+    },
+    {
+      "width": 430,
+      "height": 932,
+      "overflow": false,
+      "mainOverflow": false,
+      "theme": "light"
+    },
+    {
+      "width": 430,
+      "height": 932,
+      "overflow": false,
+      "mainOverflow": false,
+      "theme": "dark"
+    },
+    {
+      "width": 768,
+      "height": 1024,
+      "overflow": false,
+      "mainOverflow": false,
+      "theme": "light"
+    },
+    {
+      "width": 768,
+      "height": 1024,
+      "overflow": false,
+      "mainOverflow": false,
+      "theme": "dark"
+    }
+  ],
+  "modalLayouts": [
+    {
+      "name": "smart-collection-rename-layout",
+      "width": 1440,
+      "height": 1080,
+      "dialogWidth": 480,
+      "dialogHeight": 238,
+      "left": 480,
+      "right": 960,
+      "top": 421,
+      "bottom": 659,
+      "pageOverflow": false,
+      "dialogOverflow": false,
+      "scrollable": false,
+      "actions": [
+        {
+          "name": "取消",
+          "width": 210,
+          "height": 48,
+          "inViewport": true,
+          "unobstructed": true
+        },
+        {
+          "name": "保存",
+          "width": 210,
+          "height": 48,
+          "inViewport": true,
+          "unobstructed": true
+        }
+      ]
+    },
+    {
+      "name": "smart-collection-rename-layout",
+      "width": 390,
+      "height": 844,
+      "dialogWidth": 358,
+      "dialogHeight": 234,
+      "left": 16,
+      "right": 374,
+      "top": 305,
+      "bottom": 539,
+      "pageOverflow": false,
+      "dialogOverflow": false,
+      "scrollable": false,
+      "actions": [
+        {
+          "name": "取消",
+          "width": 149,
+          "height": 44,
+          "inViewport": true,
+          "unobstructed": true
+        },
+        {
+          "name": "保存",
+          "width": 149,
+          "height": 44,
+          "inViewport": true,
+          "unobstructed": true
+        }
+      ]
+    },
+    {
+      "name": "smart-collection-rename-layout",
+      "width": 360,
+      "height": 480,
+      "dialogWidth": 328,
+      "dialogHeight": 234,
+      "left": 16,
+      "right": 344,
+      "top": 123,
+      "bottom": 357,
+      "pageOverflow": false,
+      "dialogOverflow": false,
+      "scrollable": false,
+      "actions": [
+        {
+          "name": "取消",
+          "width": 134,
+          "height": 44,
+          "inViewport": true,
+          "unobstructed": true
+        },
+        {
+          "name": "保存",
+          "width": 134,
+          "height": 44,
+          "inViewport": true,
+          "unobstructed": true
+        }
+      ]
+    },
+    {
+      "name": "smart-collection-refresh-layout",
+      "width": 1440,
+      "height": 1080,
+      "dialogWidth": 480,
+      "dialogHeight": 174,
+      "left": 480,
+      "right": 960,
+      "top": 453,
+      "bottom": 627,
+      "pageOverflow": false,
+      "dialogOverflow": false,
+      "scrollable": false,
+      "actions": [
+        {
+          "name": "保留当前修改",
+          "width": 116,
+          "height": 48,
+          "inViewport": true,
+          "unobstructed": true
+        },
+        {
+          "name": "放弃修改并刷新",
+          "width": 130,
+          "height": 48,
+          "inViewport": true,
+          "unobstructed": true
+        }
+      ]
+    },
+    {
+      "name": "smart-collection-refresh-layout",
+      "width": 390,
+      "height": 844,
+      "dialogWidth": 358,
+      "dialogHeight": 190,
+      "left": 16,
+      "right": 374,
+      "top": 327,
+      "bottom": 517,
+      "pageOverflow": false,
+      "dialogOverflow": false,
+      "scrollable": false,
+      "actions": [
+        {
+          "name": "保留当前修改",
+          "width": 116,
+          "height": 44,
+          "inViewport": true,
+          "unobstructed": true
+        },
+        {
+          "name": "放弃修改并刷新",
+          "width": 130,
+          "height": 44,
+          "inViewport": true,
+          "unobstructed": true
+        }
+      ]
+    },
+    {
+      "name": "smart-collection-refresh-layout",
+      "width": 360,
+      "height": 480,
+      "dialogWidth": 328,
+      "dialogHeight": 190,
+      "left": 16,
+      "right": 344,
+      "top": 145,
+      "bottom": 335,
+      "pageOverflow": false,
+      "dialogOverflow": false,
+      "scrollable": false,
+      "actions": [
+        {
+          "name": "保留当前修改",
+          "width": 116,
+          "height": 44,
+          "inViewport": true,
+          "unobstructed": true
+        },
+        {
+          "name": "放弃修改并刷新",
+          "width": 130,
+          "height": 44,
+          "inViewport": true,
+          "unobstructed": true
+        }
+      ]
+    },
+    {
+      "name": "smart-collection-leave-layout",
+      "width": 1440,
+      "height": 1080,
+      "dialogWidth": 480,
+      "dialogHeight": 174,
+      "left": 480,
+      "right": 960,
+      "top": 453,
+      "bottom": 627,
+      "pageOverflow": false,
+      "dialogOverflow": false,
+      "scrollable": false,
+      "actions": [
+        {
+          "name": "继续编辑",
+          "width": 88,
+          "height": 48,
+          "inViewport": true,
+          "unobstructed": true
+        },
+        {
+          "name": "放弃并离开",
+          "width": 102,
+          "height": 48,
+          "inViewport": true,
+          "unobstructed": true
+        }
+      ]
+    },
+    {
+      "name": "smart-collection-leave-layout",
+      "width": 390,
+      "height": 844,
+      "dialogWidth": 358,
+      "dialogHeight": 190,
+      "left": 16,
+      "right": 374,
+      "top": 327,
+      "bottom": 517,
+      "pageOverflow": false,
+      "dialogOverflow": false,
+      "scrollable": false,
+      "actions": [
+        {
+          "name": "继续编辑",
+          "width": 88,
+          "height": 44,
+          "inViewport": true,
+          "unobstructed": true
+        },
+        {
+          "name": "放弃并离开",
+          "width": 102,
+          "height": 44,
+          "inViewport": true,
+          "unobstructed": true
+        }
+      ]
+    },
+    {
+      "name": "smart-collection-leave-layout",
+      "width": 360,
+      "height": 480,
+      "dialogWidth": 328,
+      "dialogHeight": 190,
+      "left": 16,
+      "right": 344,
+      "top": 145,
+      "bottom": 335,
+      "pageOverflow": false,
+      "dialogOverflow": false,
+      "scrollable": false,
+      "actions": [
+        {
+          "name": "继续编辑",
+          "width": 88,
+          "height": 44,
+          "inViewport": true,
+          "unobstructed": true
+        },
+        {
+          "name": "放弃并离开",
+          "width": 102,
+          "height": 44,
+          "inViewport": true,
+          "unobstructed": true
+        }
+      ]
+    },
+    {
+      "name": "screenshot-template-layout",
+      "width": 1440,
+      "height": 1080,
+      "dialogWidth": 480,
+      "dialogHeight": 334,
+      "left": 480,
+      "right": 960,
+      "top": 373,
+      "bottom": 707,
+      "pageOverflow": false,
+      "dialogOverflow": false,
+      "scrollable": false,
+      "actions": [
+        {
+          "name": "创建“截图”标签",
+          "width": 144,
+          "height": 44,
+          "inViewport": true,
+          "unobstructed": true
+        },
+        {
+          "name": "取消",
+          "width": 210,
+          "height": 48,
+          "inViewport": true,
+          "unobstructed": true
+        },
+        {
+          "name": "应用模板",
+          "width": 210,
+          "height": 48,
+          "inViewport": true,
+          "unobstructed": true
+        }
+      ]
+    },
+    {
+      "name": "screenshot-template-layout",
+      "width": 390,
+      "height": 844,
+      "dialogWidth": 358,
+      "dialogHeight": 350,
+      "left": 16,
+      "right": 374,
+      "top": 247,
+      "bottom": 597,
+      "pageOverflow": false,
+      "dialogOverflow": false,
+      "scrollable": false,
+      "actions": [
+        {
+          "name": "创建“截图”标签",
+          "width": 144,
+          "height": 44,
+          "inViewport": true,
+          "unobstructed": true
+        },
+        {
+          "name": "取消",
+          "width": 149,
+          "height": 44,
+          "inViewport": true,
+          "unobstructed": true
+        },
+        {
+          "name": "应用模板",
+          "width": 149,
+          "height": 44,
+          "inViewport": true,
+          "unobstructed": true
+        }
+      ]
+    },
+    {
+      "name": "screenshot-template-layout",
+      "width": 360,
+      "height": 480,
+      "dialogWidth": 328,
+      "dialogHeight": 350,
+      "left": 16,
+      "right": 344,
+      "top": 65,
+      "bottom": 415,
+      "pageOverflow": false,
+      "dialogOverflow": false,
+      "scrollable": false,
+      "actions": [
+        {
+          "name": "创建“截图”标签",
+          "width": 144,
+          "height": 44,
+          "inViewport": true,
+          "unobstructed": true
+        },
+        {
+          "name": "取消",
+          "width": 134,
+          "height": 44,
+          "inViewport": true,
+          "unobstructed": true
+        },
+        {
+          "name": "应用模板",
+          "width": 134,
+          "height": 44,
+          "inViewport": true,
+          "unobstructed": true
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Disposable Local standalone, real uploads and media worker. External S3 providers and physical mobile devices are not covered by this browser suite."
+  ],
+  "initialSnapshot": "[p1 \"Ariso\" | space \"Ariso PR300 修复验收\"(4): 1 managed, 0 untracked — p1* \"Ariso\"]\nroot\n  container\n    container \"后台侧栏\"\n      container\n        anchor \"Ariso 首页\" [ref=367, url=http://ariso-49394.localhost:49394/]\n          text \"Ariso\"\n        button \"收起侧栏\" [ref=368, loc=css:button[aria-label=\"收起侧栏\"]]\n          svg_root\n      container \"后台导航\"\n        anchor \"总览\" [ref=369, loc=css:a[aria-label=\"总览\"], url=http://ariso-49394.localhost:49394/dashboard]\n          svg_root\n          text \"总览\"\n        anchor \"上传\" [ref=370, loc=css:a[aria-label=\"上传\"], url=http://ariso-49394.localhost:49394/upload]\n          svg_root\n          text \"上传\"\n        anchor \"图库\" [ref=371, loc=css:a[aria-label=\"图库\"], url=http://ariso-49394.localhost:49394/library]\n          svg_root\n          text \"图库\"\n        anchor \"相册\" [ref=372, loc=css:a[aria-label=\"相册\"], url=http://ariso-49394.localhost:49394/albums]\n          svg_root\n          text \"相册\"\n        anchor \"标签\" [ref=373, loc=css:a[aria-label=\"标签\"], url=http://ariso-49394.localhost:49394/tags]\n          svg_root\n          text \"标签\"\n        anchor \"分享\" [ref=374, loc=css:a[aria-label=\"分享\"], url=http://ariso-49394.localhost:49394/shares]\n          svg_root\n          text \"分享\"\n        anchor \"回收站\" [ref=375, loc=css:a[aria-label=\"回收站\"], url=http://ariso-49394.localhost:49394/trash]\n          svg_root\n          text \"回收站\"\n        paragraph\n          text \"管理\"\n        anchor \"访问统计\" [ref=376, loc=css:a[aria-label=\"访问统计\"], url=http://ariso-49394.localhost:49394/analytics]\n          svg_root\n          text \"访问统计\"\n        anchor \"存储\" [ref=377, loc=css:a[aria-label=\"存储\"], url=http://ariso-49394.localhost:49394/settings/storage]\n          svg_root\n          text \"存储\"\n        anchor \"站点设置\" [ref=378, loc=css:a[aria-label=\"站点设置\"], url=http://ariso-49394.localhost:49394/settings/general]\n          svg_root\n          text \"站点设置\"\n      button \"账号菜单\" [ref=379, loc=css:button[aria-label=\"账号菜单\"]]\n        text \"O\"\n        container\n          text \"Owner\"\n          text \"站点所有者\"\n    container\n      button \"外观：自动；点击切换为亮色\" [ref=380]\n        svg_root\n      container [ref=381]\n        container \"图库\"\n          heading [ref=382]\n            text \"图库\"\n          container\n            button \"切换集合：最近待整理的图片\" [ref=383, loc=css:button[aria-label=\"切换集合：最近待整理的图片\"]]\n              svg_root\n              text \"最近待整理的图片\"\n              svg_root\n            button \"集合操作\" [ref=384, loc=css:button[aria-label=\"集合操作\"]]\n              svg_root\n          container\n            container\n              group\n                button \"搜索图库图片\" [ref=385, loc=css:button[aria-label=\"搜索图库图片\"]]\n                  svg_root\n                searchbox \"搜索图片名称\" [ref=386, loc=css:input[placeholder=\"搜索图片名称…\"]]\n                  text \"image-workflows-9d4e3154\"\n              container\n                button \"图片排序 上传时间 ↓ 上传时间 ↓\" [ref=387]\n                  text \"上传时间 ↓\"\n                  svg_root\n                radiogroup \"图片布局\"\n                  radiobutton \"网格\" [ref=388, loc=css:button[aria-label=\"网格\"]]\n                    svg_root\n                  radiobutton \"瀑布流\" [ref=389, loc=css:button[aria-label=\"瀑布流\"]]\n                    svg_root\n                button \"刷新图库\" [ref=390, loc=css:button[aria-label=\"刷新图库\"]]\n                  svg_root\n            container \"图片筛选条件\"\n              button [ref=391]\n                svg_root\n                text \"添加条件\"\n              container\n                text \"没有标签\"\n                button \"移除没有标签条件\" [ref=392, loc=css:button[aria-label=\"移除没有标签条件\"]]\n                  svg_root\n              container\n                button \"编辑最近上传时间\" [ref=393, loc=css:button[aria-label=\"编辑最近上传时间\"]]\n                  svg_root\n                  text \"最近 7 天\"\n                  svg_root\n                button \"移除最近上传条件\" [ref=394, loc=css:button[aria-label=\"移除最近上传条件\"]]\n                  svg_root\n              button [ref=395]\n                text \"清除筛选条件\"\n          list \"图库图片\"\n            listitem\n              svg_root\n              button \"查看图片：image-workflows-9d4e3154-preview\" [ref=396, loc=css:button[aria-label=\"查看图片：image-workflows-9d4e3154-preview\"]]\n              image\n              container\n                paragraph\n                  text \"image-workflows-9d4e3154-preview\"\n                container\n                  container\n                    svg_root\n                    text \"公开\"\n                  container\n                    text \"669 B\"\n                    text \"·\"\n                    text \"已就绪\"\n            listitem\n              svg_root\n              button \"查看图片：image-workflows-9d4e3154-small\" [ref=397, loc=css:button[aria-label=\"查看图片：image-workflows-9d4e3154-small\"]]\n              image\n              container\n                paragraph\n                  text \"image-workflows-9d4e3154-small\"\n                container\n                  container\n                    svg_root\n                    text \"公开\"\n                  container\n                    text \"2.6 KiB\"\n                    text \"·\"\n                    text \"已就绪\"\n            listitem\n              svg_root\n              button \"查看图片：image-workflows-9d4e3154-public\" [ref=398, loc=css:button[aria-label=\"查看图片：image-workflows-9d4e3154-public\"]]\n              image\n              container\n                paragraph\n                  text \"image-workflows-9d4e3154-public\"\n                container\n                  container\n                    svg_root\n                    text \"公开\"\n                  container\n                    text \"17.6 KiB\"\n                    text \"·\"\n                    text \"已就绪\"\n          paragraph [ref=399]\n            text \"已加载全部图片\"\n      container\n        status\n          text \"3 张图片 · 已加载 3 张\"\n        container\n          button \"图片加载方式 加载更多 加载更多\" [ref=400]\n            text \"加载更多\"\n            svg_root\n          button \"每批图片数 40 张 / 批 40 张 / 批\" [ref=401]\n            text \"40 张 / 批\"\n            svg_root\n",
+  "uploadSnapshot": "[p1 \"Ariso\" | space \"Ariso PR300 修复验收\"(4): 1 managed, 0 untracked — p1* \"Ariso\"]\nroot\n  container\n    container \"后台侧栏\"\n      container\n        anchor \"Ariso 首页\" [ref=520, url=http://ariso-49394.localhost:49394/]\n          text \"Ariso\"\n        button \"收起侧栏\" [ref=521, loc=css:button[aria-label=\"收起侧栏\"]]\n          svg_root\n      container \"后台导航\"\n        anchor \"总览\" [ref=522, loc=css:a[aria-label=\"总览\"], url=http://ariso-49394.localhost:49394/dashboard]\n          svg_root\n          text \"总览\"\n        anchor \"上传\" [ref=523, loc=css:a[aria-label=\"上传\"], url=http://ariso-49394.localhost:49394/upload]\n          svg_root\n          text \"上传\"\n        anchor \"图库\" [ref=524, loc=css:a[aria-label=\"图库\"], url=http://ariso-49394.localhost:49394/library]\n          svg_root\n          text \"图库\"\n        anchor \"相册\" [ref=525, loc=css:a[aria-label=\"相册\"], url=http://ariso-49394.localhost:49394/albums]\n          svg_root\n          text \"相册\"\n        anchor \"标签\" [ref=526, loc=css:a[aria-label=\"标签\"], url=http://ariso-49394.localhost:49394/tags]\n          svg_root\n          text \"标签\"\n        anchor \"分享\" [ref=527, loc=css:a[aria-label=\"分享\"], url=http://ariso-49394.localhost:49394/shares]\n          svg_root\n          text \"分享\"\n        anchor \"回收站\" [ref=528, loc=css:a[aria-label=\"回收站\"], url=http://ariso-49394.localhost:49394/trash]\n          svg_root\n          text \"回收站\"\n        paragraph\n          text \"管理\"\n        anchor \"访问统计\" [ref=529, loc=css:a[aria-label=\"访问统计\"], url=http://ariso-49394.localhost:49394/analytics]\n          svg_root\n          text \"访问统计\"\n        anchor \"存储\" [ref=530, loc=css:a[aria-label=\"存储\"], url=http://ariso-49394.localhost:49394/settings/storage]\n          svg_root\n          text \"存储\"\n        anchor \"站点设置\" [ref=531, loc=css:a[aria-label=\"站点设置\"], url=http://ariso-49394.localhost:49394/settings/general]\n          svg_root\n          text \"站点设置\"\n      button \"账号菜单\" [ref=532, loc=css:button[aria-label=\"账号菜单\"]]\n        text \"O\"\n        container\n          text \"Owner\"\n          text \"站点所有者\"\n    container\n      button \"外观：自动；点击切换为亮色\" [ref=533]\n        svg_root\n      container [ref=534]\n        container \"上传图片\"\n          heading [ref=535]\n            text \"上传图片\"\n          container\n            container\n              svg_root\n              heading\n                text \"拖入图片或粘贴截图\"\n              container\n                button [ref=536]\n                  text \"选择图片\"\n                button [ref=537]\n                  text \"选择文件夹\"\n              paragraph\n                text \"支持多选 · 单文件最大\"\n                text \"50.0 MiB\"\n            container [ref=538]\n              container\n                heading\n                  text \"本次上传设置\"\n                button \"上传设置说明\" [ref=539, loc=css:button[aria-label=\"上传设置说明\"]]\n                  svg_root\n              container\n                text \"存储位置\"\n                button \"默认本地存储 存储位置\" [ref=540]\n                  text \"默认本地存储\"\n                  svg_root\n              container\n                text \"可见性\"\n                button \"公开 可见性\" [ref=541]\n                  text \"公开\"\n                  svg_root\n              container\n                text \"相册\"\n                button \"选择相册\" [ref=542, loc=css:button[aria-label=\"选择相册\"]]\n                  text \"选择相册（可多选）\"\n                  svg_root\n              container\n                text \"标签\"\n                button \"选择标签\" [ref=543, loc=css:button[aria-label=\"选择标签\"]]\n                  text \"选择标签（可多选）\"\n                  svg_root\n      button [ref=544]\n        text \"开始上传\"\n",
+  "browserErrors": []
+}
