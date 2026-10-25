@@ -386,13 +386,14 @@ export function useEditorState({
     setReviewedIds((all) => all.filter((value) => value !== id));
   }
   function naturalSize(id: string, width: number, height: number) {
-    setImages((all) =>
-      all.map((image) =>
-        image.id === id && (image.width !== width || image.height !== height)
-          ? { ...image, width, height }
-          : image,
-      ),
-    );
+    setImages((all) => {
+      const image = all.find((item) => item.id === id);
+      if (!image || (image.width === width && image.height === height))
+        return all;
+      return all.map((item) =>
+        item === image ? { ...item, width, height } : item,
+      );
+    });
   }
   const startBatch = () => {
     const template = templates.find((item) => item.id === templateId);

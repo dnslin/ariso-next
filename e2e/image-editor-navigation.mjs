@@ -13,6 +13,7 @@ const dialog = '[role="dialog"][aria-label="离开图片编辑器"]';
 const exit = `${editor} > div:first-child button:text-is("退出编辑")`;
 
 export async function verifyEditorLeave({ page, config, report, fixture, ui }) {
+  report.stage = 'draft-navigation-open-single';
   async function assertDraft(text) {
     assert.equal(
       await page.evaluate(
@@ -40,12 +41,16 @@ export async function verifyEditorLeave({ page, config, report, fixture, ui }) {
   await readyEditor(page);
   await addDraft('NAV-SINGLE');
   const origin = await page.url();
-  for (const action of ['exit', 'back', 'sidebar']) {
+  for (const action of ['exit', 'back', 'sidebar', 'current-sidebar']) {
+    report.stage = `draft-navigation-cancel-${action}`;
     const input = await field(page, '水印文字');
     if (action === 'back') await page.focus(input);
     if (action === 'exit') await page.click(exit);
     else if (action === 'back') await page.evaluate(() => history.back());
-    else await page.click('a[href="/albums"]');
+    else
+      await page.click(
+        `a[href="${action === 'current-sidebar' ? '/library' : '/albums'}"]`,
+      );
     await page.waitForSelector(dialog);
     assert.equal(await page.url(), origin);
     if (action === 'back')
@@ -62,16 +67,20 @@ export async function verifyEditorLeave({ page, config, report, fixture, ui }) {
       );
     await assertDraft('NAV-SINGLE');
   }
-  await page.click('a[href="/albums"]');
+  report.stage = 'draft-navigation-discard-current-library';
+  await page.click('a[href="/library"]');
   await page.waitForSelector(dialog);
   await page.click(`${dialog} button:text-is("返回")`);
-  await page.waitForURL(`${config.origin}/albums`);
+  await page.waitForURL(`${config.origin}/library`);
+  await page.waitForSelector(editor, { state: 'hidden' });
   report.checks.push({
-    scenario: 'single-draft-back-exit-sidebar-cancel-and-discard',
+    scenario:
+      'single-draft-back-exit-sidebar-current-library-cancel-and-discard',
     confirmed: true,
   });
 
   for (const view of ['templates', 'batch']) {
+    report.stage = `draft-navigation-${view}-open`;
     await ui.visit();
     await ui.select(fixture.publicImage);
     await ui.select(fixture.privateImage);
@@ -101,6 +110,7 @@ export async function verifyEditorLeave({ page, config, report, fixture, ui }) {
     await page.click(button(view === 'templates' ? '编辑模板' : '批量设置'));
     await page.waitForSelector(`${editor}[data-view="${view}"]`);
     const key = `ariso:editor-review-refresh:${view}`;
+    report.stage = `draft-navigation-${view}-real-reload`;
     const marker = await page.evaluate((key) => {
       const marker = crypto.randomUUID();
       window.__editorReviewDocument = marker;

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 
 type Launch = {
@@ -11,6 +11,8 @@ type Launch = {
 const key = (token: string) => `ariso:image-edit-selection:${token}`;
 export function useImageEditorNavigation() {
   const params = useSearchParams();
+  const token = params.get('imageEdit');
+  const previousToken = useRef(token);
   const [workspace, setWorkspace] = useState<Launch | null>(null);
   const [message, setMessage] = useState('');
   const origin = useRef<{
@@ -18,7 +20,7 @@ export function useImageEditorNavigation() {
     scroll: number;
     pushed: boolean;
   }>({ target: null, scroll: 0, pushed: false });
-  const restorePosition = () => {
+  const restorePosition = useCallback(() => {
     const saved = origin.current;
     requestAnimationFrame(() => {
       const main = document.getElementById('main-content');
@@ -32,17 +34,15 @@ export function useImageEditorNavigation() {
         target?.focus({ preventScroll: true });
       });
     });
-  };
-  useEffect(() => {
-    const pop = () => {
-      if (!new URL(window.location.href).searchParams.has('imageEdit')) {
-        setWorkspace(null);
-        restorePosition();
-      }
-    };
-    window.addEventListener('popstate', pop);
-    return () => window.removeEventListener('popstate', pop);
   }, []);
+  useEffect(() => {
+    const previous = previousToken.current;
+    previousToken.current = token;
+    if (previous !== token && workspace && workspace.token !== token) {
+      setWorkspace(null);
+      restorePosition();
+    }
+  }, [token, workspace, restorePosition]);
   function open(
     ids: string[],
     target: HTMLElement | null,
@@ -73,7 +73,6 @@ export function useImageEditorNavigation() {
     });
   }
   function close() {
-    setWorkspace(null);
     if (origin.current.pushed) {
       origin.current.pushed = false;
       window.history.back();
@@ -82,7 +81,6 @@ export function useImageEditorNavigation() {
       url.searchParams.delete('imageEdit');
       window.history.replaceState(null, '', url);
     }
-    restorePosition();
   }
   function restore() {
     const token = params.get('imageEdit');
