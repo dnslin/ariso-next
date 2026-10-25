@@ -37,7 +37,7 @@ export function StorageReferenceTasks({
       label: '查看处理任务',
       tasks: storage.taskReferences.jobs.map((job) => ({
         ...job,
-        detail: `${job.kind === 'metadata' ? '元数据读取' : job.processingStatus === 'ready' ? '重处理' : '图片处理'} · ${taskStatus[job.status]} · 图片：${imageStatus[job.processingStatus]}`,
+        detail: `${job.kind === 'fingerprint' ? '原图指纹检查' : job.kind === 'metadata' ? '元数据读取' : job.processingStatus === 'ready' ? '重处理' : '图片处理'} · ${taskStatus[job.status]} · 图片：${imageStatus[job.processingStatus]}`,
         href: storageReferenceDestination(
           storage.id,
           Boolean(job.trashedAt),

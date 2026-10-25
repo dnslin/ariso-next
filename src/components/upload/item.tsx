@@ -1,6 +1,7 @@
 'use client';
 
 import { memo, useCallback, useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { QueryClient } from '@tanstack/react-query';
 import { AlertDialog } from '@heroui/react/alert-dialog';
 import { Alert } from '@heroui/react/alert';
@@ -10,8 +11,13 @@ import { Chip } from '@heroui/react/chip';
 import { Modal } from '@heroui/react/modal';
 import { Card } from '@heroui/react/card';
 import { ProgressBar } from '@heroui/react/progress-bar';
+import { initialPreview } from '../library/detail-preview';
 import { notifyLibraryChanged } from '../library/library-changes';
-import { bytesLabel, stepLabels } from '../library/detail-labels';
+import {
+  bytesLabel,
+  processingLabels,
+  stepLabels,
+} from '../library/detail-labels';
 import { useResetUpload } from './provider';
 import { UploadResult, useUploadResult } from './result';
 import { UploadTransferDetails } from './transfer-details';
@@ -29,7 +35,8 @@ export const uploadLabels: Record<UploadState, string> = {
   saving: '正在核验和保存',
   'processing-queued': '服务端排队',
   processing: '图片处理中',
-  ready: '成功',
+  ready: '新增成功',
+  duplicate: '重复跳过',
   'upload-failed': '上传失败 · 未创建图片',
   'processing-failed': '处理失败 · 原图保留',
   cancelled: '已取消',
@@ -285,7 +292,10 @@ export const UploadQueueItem = memo(function UploadQueueItem({
   onOpen: (id: string, element: HTMLElement) => void;
 }) {
   const resetUpload = useResetUpload();
+  const router = useRouter();
   const [confirm, setConfirm] = useState(false);
+  const duplicate = item.state === 'duplicate';
+  const resultImageId = duplicate ? item.existingImageId : item.imageId;
   const processingFailed = item.state === 'processing-failed';
   const [mutationPending, setMutationPending] = useState(false);
   const [unavailable, setUnavailable] = useState<401 | 404 | null>(null);
@@ -301,15 +311,24 @@ export const UploadQueueItem = memo(function UploadQueueItem({
     [client, item.imageId, item.state],
   );
   const query = useUploadResult(
-    item.imageId,
+    resultImageId,
     item.state,
     client,
     mutationPending || !!unavailable,
   );
   const serverPreview =
-    !mutationPending && !unavailable && !query.isError && !query.data?.trashedAt
+    !mutationPending &&
+    !unavailable &&
+    !query.isError &&
+    (!query.data?.trashedAt || duplicate)
       ? (query.data?.versions.find((version) => version.kind === 'thumbnail')
-          ?.previewPath ?? null)
+          ?.previewPath ??
+        (duplicate && query.data
+          ? query.data.versions.find(
+              (version) => version.kind === initialPreview(query.data!),
+            )?.previewPath
+          : null) ??
+        null)
       : null;
   const canCancel =
     !!item.sessionId &&
@@ -320,12 +339,12 @@ export const UploadQueueItem = memo(function UploadQueueItem({
       data-testid="upload-item"
       data-queue-id={item.id}
       data-state={item.state}
-      data-image-id={item.imageId ?? ''}
+      data-image-id={resultImageId ?? ''}
       className="min-w-0 gap-3 rounded-none border-0 bg-transparent p-0 py-2 shadow-none"
     >
       <div
         data-testid="upload-file-row"
-        className="grid min-w-0 grid-cols-[56px_minmax(0,1fr)_88px] items-center gap-2 md:min-h-20 xl:grid-cols-[64px_minmax(0,1fr)_140px] xl:gap-4"
+        className="grid min-w-0 grid-cols-[56px_minmax(0,1fr)_104px] items-center gap-2 md:min-h-20 xl:grid-cols-[64px_minmax(0,1fr)_140px] xl:gap-4"
       >
         <UploadPreview
           key={item.previewUrl ?? serverPreview}
@@ -357,7 +376,7 @@ export const UploadQueueItem = memo(function UploadQueueItem({
                 {uploadLabels[item.state]}
               </Chip>
             </div>
-            {item.visibility ? (
+            {!duplicate && item.visibility ? (
               <div className="flex flex-wrap items-center gap-x-1 gap-y-0.5">
                 <span>图片状态：</span>
                 <Chip
@@ -375,7 +394,20 @@ export const UploadQueueItem = memo(function UploadQueueItem({
             ) : null}
           </div>
         </div>
-        <div className="w-22 xl:w-35">
+        <div className="w-26 xl:w-35">
+          {duplicate && item.existingImageId ? (
+            <Button
+              variant="outline"
+              className="h-11 w-full whitespace-nowrap rounded-lg px-2 text-sm font-normal"
+              onPress={(event) =>
+                onOpen(item.existingImageId!, event.target as HTMLElement)
+              }
+            >
+              {(query.data ? !!query.data.trashedAt : item.existingImageTrashed)
+                ? '查看回收记录'
+                : '查看已有图片'}
+            </Button>
+          ) : null}
           {item.imageId ? (
             processingFailed ? (
               <ProcessingOptions
@@ -409,6 +441,27 @@ export const UploadQueueItem = memo(function UploadQueueItem({
                 查看详情
               </Button>
             )
+          ) : null}
+          {item.imageId &&
+          item.state === 'ready' &&
+          query.data?.processingStatus === 'ready' &&
+          query.data.classification === 'static' &&
+          ['jpeg', 'png', 'webp'].includes(query.data.format.toLowerCase()) &&
+          !query.data.trashedAt &&
+          !query.data.deletionStatus &&
+          query.data.storage.enabled &&
+          !query.data.activeJob ? (
+            <Button
+              variant="outline"
+              className="mt-2 h-11 w-full rounded-lg text-sm font-normal"
+              onPress={() =>
+                router.push(
+                  `/library/edit?${new URLSearchParams({ image: item.imageId!, returnTo: window.location.pathname + window.location.search })}`,
+                )
+              }
+            >
+              编辑图片
+            </Button>
           ) : null}
           {item.state === 'queued' ? (
             <Button
@@ -496,7 +549,7 @@ export const UploadQueueItem = memo(function UploadQueueItem({
           处理步骤：{stepLabels[item.step] ?? item.step}
         </p>
       ) : null}
-      {item.error && !processingFailed ? (
+      {item.error && !processingFailed && !duplicate ? (
         <Alert
           status={item.state === 'unknown' ? 'warning' : 'danger'}
           role="alert"
@@ -518,6 +571,26 @@ export const UploadQueueItem = memo(function UploadQueueItem({
           重新核对
         </Button>
       ) : null}
+      {duplicate ? (
+        <div
+          className="grid gap-1 text-sm"
+          data-testid="upload-duplicate-result"
+        >
+          <p>
+            {(query.data ? !!query.data.trashedAt : item.existingImageTrashed)
+              ? '回收站已有相同图片，未新增。'
+              : '图片已存在，未新增。'}
+            本次设置没有修改已有图片。
+          </p>
+          {query.data ? (
+            <p className="text-xs text-muted">
+              已有图片：{processingLabels[query.data.processingStatus]} ·{' '}
+              {query.data.visibility === 'private' ? '私有' : '公开'}
+              {!query.data.storage.enabled ? ' · 存储已停用' : ''}
+            </p>
+          ) : null}
+        </div>
+      ) : null}
       {item.state === 'upload-failed' ? (
         <p className="text-sm">
           {item.canRetry
@@ -525,7 +598,8 @@ export const UploadQueueItem = memo(function UploadQueueItem({
             : '未创建图片。本地文件已释放，再次上传请重新选择。'}
         </p>
       ) : null}
-      {(item.imageId || ['cancelled', 'upload-failed'].includes(item.state)) &&
+      {(item.imageId ||
+        ['cancelled', 'upload-failed', 'duplicate'].includes(item.state)) &&
       (item.cleanupStatus === 'pending' || item.cleanupStatus === 'failed') ? (
         <p className="text-sm">
           {item.cleanupStatus === 'pending'
@@ -538,7 +612,7 @@ export const UploadQueueItem = memo(function UploadQueueItem({
         <p role="alert" className="text-sm">
           图片记录已不存在，无法回收。请在图库核对。
         </p>
-      ) : item.imageId && !mutationPending ? (
+      ) : resultImageId && !mutationPending ? (
         <UploadResult query={query} />
       ) : null}
     </Card>

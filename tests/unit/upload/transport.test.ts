@@ -76,6 +76,36 @@ afterEach(() => {
 });
 
 describe('fixed upload routes and transmission settlement', () => {
+  it.each(['local', 'relay', 'direct'])(
+    'passes a %s duplicate receipt through without retry or cancellation',
+    async (route) => {
+      const duplicate = {
+        ...failed,
+        state: 'duplicate',
+        existingImageId: 'old-image',
+        existingImageTrashed: false,
+      };
+      request
+        .mockReset()
+        .mockResolvedValueOnce(
+          Response.json(route === 'direct' ? direct : { route, reason: null }),
+        );
+      mock.upload.mockResolvedValue({
+        successful: [
+          { response: { body: route === 'direct' ? {} : duplicate } },
+        ],
+      });
+      if (route === 'direct')
+        request.mockResolvedValueOnce(Response.json(duplicate));
+      expect(
+        await transport().upload('session', vi.fn(), vi.fn(), vi.fn()),
+      ).toEqual(duplicate);
+      expect(mock.upload).toHaveBeenCalledOnce();
+      expect(mock.cancelAll).not.toHaveBeenCalled();
+      expect(request).toHaveBeenCalledTimes(route === 'direct' ? 2 : 1);
+    },
+  );
+
   it('sends raw PUT with fixed headers, completes only after success and reports the selected route', async () => {
     mock.upload.mockResolvedValue({ successful: [{ response: { body: {} } }] });
     request.mockResolvedValueOnce(Response.json(accepted));

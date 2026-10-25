@@ -1,4 +1,5 @@
 'use client';
+import { notifyLibraryChanged } from '../../components/library/library-changes';
 
 import { ComponentEntrance } from '../../components/component-entrance';
 
@@ -341,6 +342,7 @@ export function TagsScreen(props: {
             await list.refetch();
           }}
           onComplete={(message, status = 'success') => {
+            if (status === 'success') notifyLibraryChanged();
             if (message) {
               if (status === 'unknown') setNotice(message);
               else {

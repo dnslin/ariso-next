@@ -427,3 +427,34 @@ it('uses the accepted storage identity when the default changes after settings w
   c.settle(0, 'failed');
   await running;
 });
+
+it('advances to the next upload group after a duplicate without retrying or creating a fake image', async () => {
+  const c = setup(1);
+  c.add(2);
+  const started = c.controller.start('private');
+  await vi.waitFor(() => expect(c.transports[0].upload).toHaveBeenCalledOnce());
+  expect(c.transports[1].upload).not.toHaveBeenCalled();
+  const first = c.batches[0].sessions[0];
+  Object.assign(first, {
+    state: 'duplicate',
+    existingImageId: 'already-saved',
+    existingImageTrashed: false,
+  });
+  c.transports[0].resolve({ ...first });
+  await vi.waitFor(() => expect(c.transports[1].upload).toHaveBeenCalledOnce());
+  c.settle(1);
+  await started;
+  expect(c.controller.snapshot[0]).toMatchObject({
+    state: 'duplicate',
+    imageId: undefined,
+    existingImageId: 'already-saved',
+    canRetry: false,
+  });
+  await vi.waitFor(() =>
+    expect(c.controller.snapshot[1]).toMatchObject({
+      state: 'processing',
+      imageId: 'image-1',
+    }),
+  );
+  expect(c.transports[0].upload).toHaveBeenCalledOnce();
+});

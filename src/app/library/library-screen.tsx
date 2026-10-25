@@ -61,6 +61,11 @@ import {
 } from '../../components/library/batch-workspace';
 import { libraryRequestParams } from './query-state';
 import { LibraryReadError, useLibraryQuery } from './use-library-query';
+import type { SmartCollection } from '../../server/library/smart-rules';
+import {
+  SmartCollectionToolbar,
+  type SmartCollectionToolbarHandle,
+} from './smart-collection-toolbar';
 
 export function LibraryScreen(props: {
   name: string;
@@ -71,6 +76,8 @@ export function LibraryScreen(props: {
   initialSidebarCollapsed: boolean;
   timeZone: string;
   albumId?: string;
+  collection?: SmartCollection;
+  initialQuery?: string;
   albumName?: string;
   header?: ReactNode;
   toolbarActions?: ReactNode;
@@ -88,10 +95,15 @@ export function LibraryScreen(props: {
   const params = useSearchParams();
   const returnTo = `${pathname}${params.size ? `?${params}` : ''}`;
   const [client] = useState(() => new QueryClient());
+  const smartCollectionToolbar = useRef<SmartCollectionToolbarHandle>(null);
   const [sessionEnded, setSessionEnded] = useState(false);
   const query = useLibraryQuery(
     client,
-    { albumId: props.albumId },
+    {
+      albumId: props.albumId,
+      collection: props.collection,
+      initialQuery: props.initialQuery,
+    },
     !sessionEnded,
   );
   const { onListReady } = props;
@@ -171,6 +183,7 @@ export function LibraryScreen(props: {
       ? preview
       : undefined;
   const selectionIdentity = JSON.stringify([
+    props.collection?.id,
     props.albumId,
     query.filters,
     query.loadingMode,
@@ -376,6 +389,19 @@ export function LibraryScreen(props: {
               ) : null}
             </ComponentEntrance>
           )}
+          {!props.albumId && query.filters ? (
+            <SmartCollectionToolbar
+              ref={smartCollectionToolbar}
+              key={props.collection?.id ?? 'all'}
+              filters={query.filters}
+              initialCollection={props.collection}
+              client={client}
+              onApply={query.applyQuery}
+              onReplaceQuery={query.replaceQuery}
+              getQueryRevision={query.getQueryRevision}
+              onSessionExpired={expireSession}
+            />
+          ) : null}
           {analyticsSource ? (
             <Link
               href={analyticsSource}
@@ -420,7 +446,9 @@ export function LibraryScreen(props: {
               query={{
                 ...query,
                 refresh: async () => {
-                  await query.refresh();
+                  if (props.collection && smartCollectionToolbar.current)
+                    await smartCollectionToolbar.current.refresh();
+                  else await query.refresh();
                   props.onRefresh?.();
                 },
               }}

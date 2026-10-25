@@ -1,3 +1,6 @@
+vi.mock('../../../src/components/upload/fingerprint-coverage', () => ({
+  UploadFingerprintCoverage: () => null,
+}));
 import { createElement, type ReactNode } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { beforeEach, expect, it, vi } from 'vitest';
@@ -147,7 +150,9 @@ it('keeps real upload outcome counts and the clear-result consequence visible', 
   ];
   const html = renderToStaticMarkup(createElement(UploadScreen, shell));
   expect(html).toContain('本次上传结果');
-  expect(html).toContain('成功 1 张 · 失败 1 张 · 取消 1 张');
+  expect(html).toContain(
+    '新增成功 1 张 · 重复跳过 0 张 · 失败 1 张 · 取消 1 张',
+  );
   expect(html).toContain('清空结果不会删除图片');
 });
 

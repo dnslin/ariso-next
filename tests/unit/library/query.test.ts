@@ -7,6 +7,45 @@ import {
 } from '../../../src/server/library/query-schema.ts';
 const parse = (value = '') => parseLibraryQuery(new URLSearchParams(value));
 
+it('supports untagged and strict original-byte bounds without losing cursor identity', () => {
+  const query = parse(
+    'tagState=none&sizeGreaterThan=10000000&sizeLessThan=20000000',
+  );
+  expect(query.filters).toMatchObject({
+    tagState: 'none',
+    sizeGreaterThan: 10000000,
+    sizeLessThan: 20000000,
+  });
+  const cursor = encodeLibraryCursor(query.filters, 12000000, 'one');
+  expect(() =>
+    parse(
+      `tagState=none&sizeGreaterThan=10000001&sizeLessThan=20000000&cursor=${cursor}`,
+    ),
+  ).toThrow();
+});
+
+it.each([
+  'tagState=none&tagId=x',
+  'sizeGreaterThan=-1',
+  'sizeGreaterThan=1.5',
+  'sizeGreaterThan=2&sizeLessThan=2',
+  'scope=trash&tagState=none',
+  'recentDays=0&relativeTo=2026-10-24T00:00:00Z',
+  'recentDays=7',
+  'recentDays=7&relativeTo=2026-10-24T00:00:00Z&uploadedFrom=2026-10-01T00:00:00Z',
+])('rejects conflicting smart query %s', (value) =>
+  expect(() => parse(value)).toThrow(),
+);
+
+it('binds rolling days to one explicit instant across later requests', () => {
+  const value = 'recentDays=7&relativeTo=2026-10-24T12:00:00Z';
+  const first = parse(value);
+  expect(first.filters.uploadedFrom).toBe('2026-10-17T12:00:00.000Z');
+  expect(first.filters.recentDays).toBe(7);
+  const cursor = encodeLibraryCursor(first.filters, 100, 'id');
+  expect(parse(`${value}&cursor=${cursor}`).filters).toEqual(first.filters);
+});
+
 it('normalizes equivalent queries before binding cursors', () => {
   const original = parse(
     'tagId=b&tagId=a&tagId=b&q=%20Photo%20&uploadedFrom=2026-01-01T08:00:00%2B08:00',

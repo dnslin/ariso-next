@@ -17,6 +17,7 @@ import type {
 
 const terminal = new Set<UploadItem['state']>([
   'ready',
+  'duplicate',
   'upload-failed',
   'processing-failed',
   'cancelled',
@@ -193,6 +194,8 @@ export class UploadController {
     this.update(entry, {
       sessionId: session.id,
       imageId: session.imageId ?? undefined,
+      existingImageId: session.existingImageId ?? undefined,
+      existingImageTrashed: session.existingImageTrashed ?? undefined,
       jobId: session.jobId ?? undefined,
       cleanupStatus: session.cleanupStatus,
       cleanupError:
@@ -231,6 +234,9 @@ export class UploadController {
           this.options.onLibraryChanged?.(entry.item);
         }
       }
+    } else if (session.state === 'duplicate') {
+      this.release(entry);
+      this.update(entry, { state: 'duplicate' });
     } else if (session.state === 'cancelled') {
       this.release(entry);
       this.update(entry, { state: 'cancelled' });
@@ -648,7 +654,7 @@ export class UploadController {
           result.cleanupStatus === 'none'
             ? undefined
             : result.error?.split('\n清理失败:').at(-1),
-        ...(result.state === 'accepted'
+        ...(['accepted', 'duplicate'].includes(result.state)
           ? {}
           : { error: result.error ?? undefined }),
       });
