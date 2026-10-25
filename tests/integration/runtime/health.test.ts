@@ -64,6 +64,8 @@ it('未初始化的隔离生产产物返回 200 / no-store，健康检查不发�
         { name: 'image_shares' },
         { name: 'image_tags' },
         { name: 'media_cleanup_jobs' },
+        { name: 'media_edit_requests' },
+        { name: 'media_edit_templates' },
         { name: 'media_images' },
         { name: 'media_jobs' },
         { name: 'media_metadata' },

@@ -211,6 +211,7 @@ export const mediaObjects = sqliteTable(
       ],
     }).notNull(),
     byteSize: integer('byte_size'),
+    contentSha256: text('content_sha256'),
     byteSizeConfirmedAt: integer('byte_size_confirmed_at', {
       mode: 'timestamp_ms',
     }),
@@ -353,3 +354,5 @@ export {
   mediaSizeRequests,
   mediaSizeCandidates,
 } from './size-schema.ts';
+
+export { mediaEditRequests, mediaEditTemplates } from './editing-schema.ts';

@@ -5,6 +5,7 @@ import {
   mkdir,
   readlink,
   readFile,
+  rm,
   symlink,
 } from 'node:fs/promises';
 import { dirname, join, relative, resolve } from 'node:path';
@@ -103,6 +104,10 @@ for (const file of [
   ...manifest.samples.map((sample) => sample.file),
 ])
   await copyFile(join(formatFixtures, file), join(formatOutput, file));
+
+// Enforce the compiled-only application boundary after all trace-driven copies.
+// Dependency source under node_modules remains part of its runtime package.
+await rm(join(output, 'src'), { recursive: true, force: true });
 
 verifyStandaloneNativeBindings(output);
 console.log(

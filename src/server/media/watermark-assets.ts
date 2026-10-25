@@ -219,6 +219,16 @@ function referenced(
       join media_objects o on o.id = v.object_id
       join media_jobs j on j.id = o.job_id
       where v.kind = 'watermark' and json_extract(j.snapshot, '$.watermarkAsset.id') = ${id} limit 1`) ||
+    tx.get(
+      sql`select 1 from media_edit_templates where watermark_asset_id = ${id} limit 1`,
+    ) ||
+    tx.get(sql`select 1 from media_edit_requests r join media_jobs j on j.id = r.job_id
+      where json_extract(r.watermark_asset, '$.id') = ${id}
+      and not exists (select 1 from media_objects rendered where rendered.id=r.rendered_object_id and rendered.status='stored')
+      and (j.status in ('queued','running') or (j.status='failed'
+        and exists (select 1 from media_images target where target.id=j.image_id and target.deletion_status is null)
+        and exists (select 1 from media_versions v join media_objects source on source.id=v.object_id join media_images i on i.id=v.image_id
+          where v.image_id=r.source_image_id and v.kind='original' and v.object_id=r.source_object_id and source.status='stored' and i.deletion_status is null))) limit 1`) ||
     context.hasUploadReference(tx, id),
   );
 }

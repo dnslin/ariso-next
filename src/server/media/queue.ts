@@ -1,4 +1,5 @@
 import { setTimeout } from 'node:timers/promises';
+import { randomUUID } from 'node:crypto';
 import { rm } from 'node:fs/promises';
 import { readdirSync } from 'node:fs';
 import { sep } from 'node:path';
@@ -73,7 +74,11 @@ function nextMediaJob(db: BetterSQLite3Database) {
     .get();
 }
 
-function claimNextMediaWork(runtime: MediaRuntime, persistent = true) {
+function claimNextMediaWork(
+  runtime: MediaRuntime,
+  persistent = true,
+  before?: Date,
+) {
   return runtime.db.transaction(
     (tx) => {
       const preview = tx
@@ -84,16 +89,33 @@ function claimNextMediaWork(runtime: MediaRuntime, persistent = true) {
         .get();
       const media = persistent ? nextMediaJob(tx) : null;
       if (preview && (!media || preview.createdAt < media.createdAt)) {
+        if (before && preview.createdAt > before) return null;
         const claimed = claimNextPreview({ ...runtime, db: tx });
         return claimed
           ? { ...claimed, kind: 'preview' as const, imageId: null }
           : null;
       }
+      if (before && (!media || media.createdAt > before)) return null;
       return persistent ? claimNextMediaJob(tx) : null;
     },
     { behavior: 'immediate' },
   );
 }
+
+export type TransientPreviewScheduler = <T>(
+  operation: (signal: AbortSignal) => Promise<T>,
+  externalSignal: AbortSignal,
+) => Promise<T>;
+type TransientPreview = {
+  id: string;
+  kind: 'transient-preview';
+  imageId: null;
+  createdAt: Date;
+  externalSignal: AbortSignal;
+  detach: () => void;
+  reject: (reason: unknown) => void;
+  run: (signal: AbortSignal) => Promise<void>;
+};
 
 /** One scheduler per Web runtime; a reduced limit only affects new claims. */
 export function startMediaQueue(runtime: MediaRuntime) {
@@ -112,6 +134,63 @@ export function startMediaQueue(runtime: MediaRuntime) {
       execution: Promise<void>;
     }
   >();
+  const pendingPreviews = new Map<string, TransientPreview>();
+  signal.addEventListener(
+    'abort',
+    () => {
+      for (const pending of pendingPreviews.values()) {
+        pending.detach();
+        pending.reject(signal.reason);
+      }
+      pendingPreviews.clear();
+    },
+    { once: true },
+  );
+  const runTransientPreview: TransientPreviewScheduler = (
+    operation,
+    externalSignal,
+  ) =>
+    new Promise((resolve, reject) => {
+      if (signal.aborted) {
+        reject(signal.reason);
+        return;
+      }
+      if (externalSignal.aborted) {
+        reject(externalSignal.reason);
+        return;
+      }
+      if (!runtime.db.$client.open) {
+        reject(mediaError('MEDIA_INTERRUPTED', 'Media queue is not running'));
+        return;
+      }
+      const id = `transient-preview-${randomUUID()}`;
+      const abort = () => {
+        if (pendingPreviews.delete(id)) reject(externalSignal.reason);
+      };
+      externalSignal.addEventListener('abort', abort, { once: true });
+      pendingPreviews.set(id, {
+        id,
+        kind: 'transient-preview',
+        imageId: null,
+        createdAt: new Date(),
+        externalSignal,
+        detach: () => externalSignal.removeEventListener('abort', abort),
+        reject,
+        async run(currentSignal) {
+          try {
+            currentSignal.throwIfAborted();
+            resolve(await operation(currentSignal));
+          } catch (error) {
+            reject(error);
+            if (
+              (error as { code?: string } | null)?.code ===
+              'MEDIA_TOOL_SHUTDOWN_FAILED'
+            )
+              throw error;
+          }
+        },
+      });
+    });
   let failure: unknown;
   let paused = false;
   let maintenance: Promise<void> | undefined;
@@ -174,8 +253,15 @@ export function startMediaQueue(runtime: MediaRuntime) {
         }
         const limit = readMediaSettings(runtime.db)?.concurrency ?? 1;
         while (!signal.aborted && active.size < limit) {
-          const job = claimNextMediaWork(runtime, !paused);
+          const transient = pendingPreviews.values().next().value;
+          const job =
+            claimNextMediaWork(runtime, !paused, transient?.createdAt) ??
+            transient;
           if (!job) break;
+          if (job.kind === 'transient-preview') {
+            pendingPreviews.delete(job.id);
+            job.detach();
+          }
           const storageId = job.imageId
             ? runtime.db
                 .select({ storageId: mediaImages.storageId })
@@ -184,15 +270,21 @@ export function startMediaQueue(runtime: MediaRuntime) {
                 .get()!.storageId
             : null;
           const jobController = new AbortController();
-          const jobSignal = AbortSignal.any([signal, jobController.signal]);
+          const jobSignal = AbortSignal.any([
+            signal,
+            jobController.signal,
+            ...(job.kind === 'transient-preview' ? [job.externalSignal] : []),
+          ]);
           const execution = (
-            job.kind === 'preview'
-              ? previews.run(job.id, jobSignal)
-              : (job.kind === 'size'
-                  ? processImageSizeJob
-                  : job.kind === 'metadata'
-                    ? processMetadataJob
-                    : processMediaJob)(runtime, job.id, jobSignal)
+            job.kind === 'transient-preview'
+              ? job.run(jobSignal)
+              : job.kind === 'preview'
+                ? previews.run(job.id, jobSignal)
+                : (job.kind === 'size'
+                    ? processImageSizeJob
+                    : job.kind === 'metadata'
+                      ? processMetadataJob
+                      : processMediaJob)(runtime, job.id, jobSignal)
           )
             .catch((err: unknown) => {
               failure ??= err;
@@ -259,7 +351,10 @@ export function startMediaQueue(runtime: MediaRuntime) {
         }
         await setTimeout(50, undefined, {
           signal,
-          ref: active.size > 0 || maintenance !== undefined,
+          ref:
+            active.size > 0 ||
+            pendingPreviews.size > 0 ||
+            maintenance !== undefined,
         });
       }
     } catch (err) {
@@ -275,6 +370,7 @@ export function startMediaQueue(runtime: MediaRuntime) {
         );
       }
     } finally {
+      controller.abort(mediaError('MEDIA_INTERRUPTED', 'Media queue stopped'));
       await Promise.all([
         maintenance,
         ...[...active.values()].map(({ execution }) => execution),
@@ -307,6 +403,7 @@ export function startMediaQueue(runtime: MediaRuntime) {
       ).length;
     },
     previews,
+    runTransientPreview,
     async stop() {
       controller.abort(
         mediaError('MEDIA_INTERRUPTED', 'Web runtime is stopping'),

@@ -144,11 +144,14 @@ export function* requiredBackupObjects(db: Database.Database) {
     .prepare(
       `SELECT o.storage_id AS storageId,o.key,o.byte_size AS size,s.type,s.local_path AS localPath,s.enabled
     FROM media_objects o JOIN media_images i ON i.id=o.image_id JOIN storage_configs s ON s.id=o.storage_id
-    WHERE i.deletion_status IS NULL AND o.purpose!='temporary' AND (
+    WHERE o.purpose!='temporary' AND ((i.deletion_status IS NULL AND (
       o.status='stored' OR EXISTS(SELECT 1 FROM media_versions v WHERE v.object_id=o.id)
       OR EXISTS(SELECT 1 FROM media_size_versions v WHERE v.object_id=o.id OR v.source_object_id=o.id)
       OR EXISTS(SELECT 1 FROM media_replacements r JOIN media_jobs j ON j.id=r.job_id WHERE r.original_object_id=o.id AND j.status='queued')
-      OR EXISTS(SELECT 1 FROM media_size_requests r JOIN media_jobs j ON j.id=r.job_id WHERE r.source_object_id=o.id AND j.status='queued'))
+      OR EXISTS(SELECT 1 FROM media_size_requests r JOIN media_jobs j ON j.id=r.job_id WHERE r.source_object_id=o.id AND j.status='queued')
+      OR EXISTS(SELECT 1 FROM media_edit_requests r JOIN media_jobs j ON j.id=r.job_id WHERE r.rendered_object_id=o.id AND j.status='queued')))
+      OR EXISTS(SELECT 1 FROM media_edit_requests r JOIN media_jobs j ON j.id=r.job_id WHERE r.source_object_id=o.id AND j.status='queued'
+        AND NOT EXISTS(SELECT 1 FROM media_objects rendered WHERE rendered.id=r.rendered_object_id AND rendered.status='stored')))
     ORDER BY o.storage_id,o.key`,
     )
     .iterate() as Iterable<{
@@ -209,6 +212,13 @@ export function* requiredBackupAssets(db: Database.Database) {
     UNION SELECT json_extract(snapshot,'$.watermarkAsset.path'),json_extract(snapshot,'$.watermarkAsset.byteSize') FROM media_jobs WHERE status='queued'
     UNION SELECT json_extract(j.snapshot,'$.watermarkAsset.path'),json_extract(j.snapshot,'$.watermarkAsset.byteSize') FROM media_versions v JOIN media_objects o ON o.id=v.object_id JOIN media_jobs j ON j.id=o.job_id WHERE v.kind='watermark'
     UNION SELECT json_extract(value,'$.watermarkAsset.path'),json_extract(value,'$.watermarkAsset.byteSize') FROM media_replacements r JOIN media_jobs j ON j.id=r.job_id,json_each(r.snapshots) WHERE j.status='queued'
+    UNION SELECT a.path,a.byte_size FROM media_edit_templates t JOIN media_watermark_assets a ON a.id=t.watermark_asset_id
+    UNION SELECT json_extract(r.watermark_asset,'$.path'),json_extract(r.watermark_asset,'$.byteSize') FROM media_edit_requests r JOIN media_jobs j ON j.id=r.job_id
+      WHERE NOT EXISTS(SELECT 1 FROM media_objects rendered WHERE rendered.id=r.rendered_object_id AND rendered.status='stored')
+      AND (j.status='queued' OR (j.status='failed'
+        AND EXISTS(SELECT 1 FROM media_images target WHERE target.id=j.image_id AND target.deletion_status IS NULL)
+        AND EXISTS(SELECT 1 FROM media_versions v JOIN media_objects source ON source.id=v.object_id JOIN media_images i ON i.id=v.image_id
+          WHERE v.image_id=r.source_image_id AND v.kind='original' AND v.object_id=r.source_object_id AND source.status='stored' AND i.deletion_status IS NULL)))
   ) WHERE path IS NOT NULL ORDER BY path`,
     )
     .iterate() as Iterable<{ path: string; size: number }>;

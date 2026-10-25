@@ -50,6 +50,7 @@ export default defineConfig({
           exclude: [
             ...browserToolingTests,
             ...experimentTests,
+            'tests/integration/media/edit-*.test.ts',
             'tests/integration/backup/production*.test.ts',
             'tests/integration/delivery/formats.test.ts',
             'tests/integration/delivery/reprocess.test.ts',
@@ -95,6 +96,7 @@ export default defineConfig({
           environment: 'node',
           include: [
             'tests/integration/backup/production*.test.ts',
+            'tests/integration/media/edit-*.test.ts',
             'tests/integration/delivery/formats.test.ts',
             'tests/integration/delivery/reprocess.test.ts',
             'tests/integration/media/metadata.test.ts',
