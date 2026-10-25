@@ -13,9 +13,7 @@ export function releaseImage(src: string) {
 }
 
 export function loadImage(src: string): Promise<HTMLImageElement> {
-  // Generated previews are transient; only retain reusable source assets.
-  const reusable = !src.startsWith('data:');
-  const previous = reusable ? loadedImages.get(src) : undefined;
+  const previous = loadedImages.get(src);
   if (previous) return previous;
   const loading = new Promise<HTMLImageElement>((resolve, reject) => {
     const image = new window.Image();
@@ -26,7 +24,7 @@ export function loadImage(src: string): Promise<HTMLImageElement> {
     };
     image.src = src;
   });
-  if (reusable) loadedImages.set(src, loading);
+  loadedImages.set(src, loading);
   return loading;
 }
 
@@ -122,7 +120,7 @@ function drawWatermark(
 export async function renderEditedImage(
   image: DemoImage,
   recipe: Recipe,
-): Promise<string> {
+): Promise<HTMLCanvasElement> {
   const source = await loadImage(image.src);
   const width = source.naturalWidth;
   const height = source.naturalHeight;
@@ -186,5 +184,5 @@ export async function renderEditedImage(
     }
     drawWatermark(output.context, recipe.watermark, width, height, logo);
   }
-  return output.element.toDataURL('image/png');
+  return output.element;
 }

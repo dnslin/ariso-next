@@ -67,7 +67,11 @@ export default function EditorCanvas({
   const transformer = useRef<Konva.Transformer>(null);
   const start = useRef<{ x: number; y: number } | null>(null);
   const [size, setSize] = useState({ width: 700, height: 460 });
-  const [bitmap, setBitmap] = useState<HTMLImageElement>();
+  const [bitmap, setBitmap] = useState<{
+    source: HTMLImageElement | HTMLCanvasElement;
+    width: number;
+    height: number;
+  }>();
   const [error, setError] = useState('');
   const [retry, setRetry] = useState(0);
   const [draft, setDraft] = useState<Region | null>(null);
@@ -111,16 +115,23 @@ export default function EditorCanvas({
     let active = true;
     void (async () => {
       try {
-        const src = compare
-          ? image.src
+        const source = compare
+          ? await loadImage(image.src)
           : await renderEditedImage(image, recipe);
-        const rendered = await loadImage(src);
         if (active) {
+          const rendered = {
+            source,
+            width:
+              source instanceof HTMLCanvasElement
+                ? source.width
+                : source.naturalWidth,
+            height:
+              source instanceof HTMLCanvasElement
+                ? source.height
+                : source.naturalHeight,
+          };
           setBitmap(rendered);
-          naturalCallback.current?.(
-            rendered.naturalWidth,
-            rendered.naturalHeight,
-          );
+          naturalCallback.current?.(rendered.width, rendered.height);
           setError('');
         }
       } catch (failure) {
@@ -147,8 +158,8 @@ export default function EditorCanvas({
     transformer.current?.getLayer()?.batchDraw();
   }, [selectedRegionId, recipe.regions, compare, readOnly, tool, size, zoom]);
 
-  const naturalWidth = bitmap?.naturalWidth ?? image.width;
-  const naturalHeight = bitmap?.naturalHeight ?? image.height;
+  const naturalWidth = bitmap?.width ?? image.width;
+  const naturalHeight = bitmap?.height ?? image.height;
   const scale =
     Math.min(
       Math.max(1, size.width - 32) / naturalWidth,
@@ -341,7 +352,7 @@ export default function EditorCanvas({
         >
           <Layer>
             <KonvaImage
-              image={bitmap}
+              image={bitmap.source}
               width={width}
               height={height}
               listening={false}
