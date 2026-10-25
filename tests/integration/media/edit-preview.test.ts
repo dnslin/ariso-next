@@ -23,6 +23,7 @@ import { patchMediaSettings } from '../../../src/server/media/settings.ts';
 import {
   mediaImages,
   mediaJobs,
+  mediaSettings,
   mediaWatermarkPreviewRefs,
 } from '../../../src/server/media/schema.ts';
 
@@ -71,6 +72,16 @@ function gate<T = void>() {
 }
 
 describe('owner image edit preview runtime', () => {
+  it('renders an original preview without reading site watermark settings', async () => {
+    const source = await accept(['-size', '100x80', 'xc:white']);
+    app.db.delete(mediaSettings).run();
+    const png = await previews.render(
+      source.imageId,
+      { sourceObjectId: source.objectId, recipe: emptyImageEditRecipe() },
+      new AbortController().signal,
+    );
+    expect(await facts(png)).toBe('100 80');
+  });
   it('returns a transparent PNG preview after encoding the actual WebP mother image', async () => {
     const input = join(app.runtime.temporaryRoot, 'transparent.webp');
     await execa('magick', [

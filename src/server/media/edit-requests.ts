@@ -93,7 +93,7 @@ function editStorage(db: BetterSQLite3Database, storageId: string) {
 }
 
 /** Copy admission does not need the old derived versions' watermark recipes. */
-function requireEditSource(db: BetterSQLite3Database, imageId: string) {
+export function requireEditSource(db: BetterSQLite3Database, imageId: string) {
   const image = requireImage(db, imageId);
   if (
     image.trashedAt ||
