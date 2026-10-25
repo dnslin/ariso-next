@@ -9,6 +9,8 @@ import {
   type ReactNode,
 } from 'react';
 import { QueryClient } from '@tanstack/react-query';
+import dynamic from 'next/dynamic';
+import { useImageEditorNavigation } from '../../components/image-editor/navigation';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { Alert } from '@heroui/react/alert';
 import { Button } from '@heroui/react/button';
@@ -61,6 +63,13 @@ import {
 } from '../../components/library/batch-workspace';
 import { libraryRequestParams } from './query-state';
 import { LibraryReadError, useLibraryQuery } from './use-library-query';
+const ImageEditorWorkspace = dynamic(
+  () =>
+    import('../../components/image-editor/editor-workspace').then(
+      (module) => module.ImageEditorWorkspace,
+    ),
+  { ssr: false, loading: () => <p role="status">正在打开图片编辑器…</p> },
+);
 
 export function LibraryScreen(props: {
   name: string;
@@ -84,6 +93,7 @@ export function LibraryScreen(props: {
 }) {
   const resetUpload = useResetUpload();
   const detail = useDetailNavigation();
+  const imageEditor = useImageEditorNavigation();
   const pathname = usePathname();
   const params = useSearchParams();
   const returnTo = `${pathname}${params.size ? `?${params}` : ''}`;
@@ -316,8 +326,8 @@ export function LibraryScreen(props: {
       {...props}
       returnTo={returnTo}
       footer={
-        batchReprocess.visible &&
-        batchReprocess.workspace?.phase === 'result' ? (
+        imageEditor.workspace ? null : batchReprocess.visible &&
+          batchReprocess.workspace?.phase === 'result' ? (
           <BatchReprocessFooter batch={batchReprocess} />
         ) : batch.visible &&
           batch.workspace?.phase === 'result' &&
@@ -342,7 +352,10 @@ export function LibraryScreen(props: {
     >
       <div
         className={
-          props.workspace || detail.view || batchContentVisible
+          imageEditor.workspace ||
+          props.workspace ||
+          detail.view ||
+          batchContentVisible
             ? 'hidden'
             : 'contents'
         }
@@ -425,7 +438,25 @@ export function LibraryScreen(props: {
                 },
               }}
               album={!!props.albumId}
-              actions={props.toolbarActions}
+              actions={
+                <>
+                  {props.toolbarActions}
+                  <Button
+                    variant="outline"
+                    className="min-h-11 rounded-lg text-sm xl:min-h-9"
+                    isDisabled={!query.canOperate}
+                    onPress={(event) =>
+                      imageEditor.open(
+                        query.items.map((image) => image.id),
+                        event.target as HTMLElement,
+                        'templates',
+                      )
+                    }
+                  >
+                    编辑模板
+                  </Button>
+                </>
+              }
               selectionMenu={
                 selection.selected.size ? (
                   <LibrarySelectionMenu
@@ -438,7 +469,13 @@ export function LibraryScreen(props: {
                     pending={reconciliation.pending || batchPending}
                     onOpen={detail.open}
                     onBatch={(action, element) => {
-                      if (action === 'reprocess') batchReprocess.open(element);
+                      if (action === 'edit')
+                        imageEditor.open(
+                          [...selection.selected.keys()],
+                          element,
+                        );
+                      else if (action === 'reprocess')
+                        batchReprocess.open(element);
                       else if (action === 'copy') copy.open(element);
                       else batch.open(action, element);
                     }}
@@ -708,7 +745,12 @@ export function LibraryScreen(props: {
           key={detail.imageId}
           imageId={detail.imageId}
           query={detailQuery}
-          hidden={!!detail.view || statisticsId === detail.imageId}
+          hidden={
+            !!imageEditor.workspace ||
+            !!detail.view ||
+            statisticsId === detail.imageId
+          }
+          onEdit={(id, element) => imageEditor.open([id], element)}
           onStatistics={openStatistics}
           onVersions={(selected) => detail.openView('versions', selected)}
           onReplacementChanged={() => {
@@ -753,6 +795,36 @@ export function LibraryScreen(props: {
         currentAlbumId={props.albumId}
       />
       {props.workspace?.content}
+      {imageEditor.recoverable && (
+        <Alert status="warning">
+          <Alert.Content>
+            <Alert.Title>可恢复图片编辑</Alert.Title>
+            <Alert.Description>
+              页面已刷新。已受理任务继续处理，可恢复选择并核对保存结果。
+            </Alert.Description>
+            <Button className="mt-3 min-h-11" onPress={imageEditor.restore}>
+              恢复图片编辑
+            </Button>
+          </Alert.Content>
+        </Alert>
+      )}
+      {imageEditor.message && (
+        <p role="alert" className="my-3 text-sm text-danger">
+          {imageEditor.message}
+        </p>
+      )}
+      {imageEditor.workspace && (
+        <ImageEditorWorkspace
+          key={imageEditor.workspace.token}
+          imageIds={imageEditor.workspace.ids}
+          initialView={imageEditor.workspace.initialView}
+          onClose={imageEditor.close}
+          onChanged={() => {
+            void query.refreshCurrent();
+            if (detail.imageId) void detailQuery.refetch();
+          }}
+        />
+      )}
     </OwnerShell>
   );
 }

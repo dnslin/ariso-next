@@ -32,6 +32,7 @@ export function parseLibraryLocation(
       key === 'image' ||
       key === 'detailView' ||
       key === 'preview' ||
+      key === 'imageEdit' ||
       key === 'analyticsReturn' ||
       key === 'storageReturn' ||
       (fixedAlbumId && key === 'returnTo')

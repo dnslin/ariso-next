@@ -1,6 +1,7 @@
 'use client';
 
 import { memo, useCallback, useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { QueryClient } from '@tanstack/react-query';
 import { AlertDialog } from '@heroui/react/alert-dialog';
 import { Alert } from '@heroui/react/alert';
@@ -285,6 +286,7 @@ export const UploadQueueItem = memo(function UploadQueueItem({
   onOpen: (id: string, element: HTMLElement) => void;
 }) {
   const resetUpload = useResetUpload();
+  const router = useRouter();
   const [confirm, setConfirm] = useState(false);
   const processingFailed = item.state === 'processing-failed';
   const [mutationPending, setMutationPending] = useState(false);
@@ -409,6 +411,27 @@ export const UploadQueueItem = memo(function UploadQueueItem({
                 查看详情
               </Button>
             )
+          ) : null}
+          {item.imageId &&
+          item.state === 'ready' &&
+          query.data?.processingStatus === 'ready' &&
+          query.data.classification === 'static' &&
+          ['jpeg', 'png', 'webp'].includes(query.data.format.toLowerCase()) &&
+          !query.data.trashedAt &&
+          !query.data.deletionStatus &&
+          query.data.storage.enabled &&
+          !query.data.activeJob ? (
+            <Button
+              variant="outline"
+              className="mt-2 h-11 w-full rounded-lg text-sm font-normal"
+              onPress={() =>
+                router.push(
+                  `/library/edit?${new URLSearchParams({ image: item.imageId!, returnTo: window.location.pathname + window.location.search })}`,
+                )
+              }
+            >
+              编辑图片
+            </Button>
           ) : null}
           {item.state === 'queued' ? (
             <Button
