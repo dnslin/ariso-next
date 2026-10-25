@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState, useSyncExternalStore } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
 import { Button, Link, ProgressBar } from '@heroui/react';
 import {
@@ -11,35 +11,10 @@ import {
   RotateCcw,
   Square,
 } from 'lucide-react';
-import type { ImageEditSession } from './session';
 import { editJobActive } from './session';
 import { useImageEditor } from './state';
 import { stepLabels } from '../library/detail-labels';
 
-function sessionStore(sessions: ImageEditSession[]) {
-  let snapshot = sessions.map((session) => session.getSnapshot());
-  return {
-    getSnapshot: () => snapshot,
-    subscribe: (listener: () => void) => {
-      snapshot = sessions.map((session) => session.getSnapshot());
-      const unsub = sessions.map((session) =>
-        session.subscribe(() => {
-          snapshot = sessions.map((item) => item.getSnapshot());
-          listener();
-        }),
-      );
-      return () => unsub.forEach((fn) => fn());
-    },
-  };
-}
-export function useEditSessionSnapshots(sessions: ImageEditSession[]) {
-  const store = useMemo(() => sessionStore(sessions), [sessions]);
-  return useSyncExternalStore(
-    store.subscribe,
-    store.getSnapshot,
-    store.getSnapshot,
-  );
-}
 function Thumbnail({ src, name }: { src: string; name: string }) {
   const [failed, setFailed] = useState(false);
   return (
@@ -62,7 +37,7 @@ function Thumbnail({ src, name }: { src: string; name: string }) {
 }
 export function EditResults() {
   const editor = useImageEditor();
-  const snapshots = useEditSessionSnapshots(editor.sessions);
+  const snapshots = editor.snapshots;
   const succeeded = snapshots.filter(
     (snapshot) => snapshot.job?.status === 'succeeded',
   ).length;

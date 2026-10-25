@@ -194,3 +194,33 @@ it('取消订阅后不再阻止导航；无草稿不注册离开提示', () => {
   cleanup = runtime.effect!() || undefined;
   expect(attempt().defaultPrevented).toBe(false);
 });
+
+it('工作区自己的退出动作与链接共用确认，取消不执行，放弃只执行一次', () => {
+  const close = vi.fn();
+  NavigationHarness().request(close);
+  expect(close).not.toHaveBeenCalled();
+  NavigationHarness().cancel();
+  expect(close).not.toHaveBeenCalled();
+  NavigationHarness().request(close);
+  NavigationHarness().discard();
+  NavigationHarness().discard();
+  expect(close).toHaveBeenCalledOnce();
+  expect(runtime.push).not.toHaveBeenCalled();
+  expect(traverse).not.toHaveBeenCalled();
+});
+
+it('无草稿的工作区退出直接执行，不显示确认', () => {
+  const close = vi.fn();
+  NavigationHarness(false).request(close);
+  expect(close).toHaveBeenCalledOnce();
+  expect(runtime.destination).toBeNull();
+});
+
+it('同一路径清除工作区查询参数仍是离开，不被当成当前页面忽略', () => {
+  window.location.pathname = '/library';
+  window.location.search = '?imageEdit=one';
+  NavigationHarness().navigate('/library');
+  expect(NavigationHarness().destination).toBe('/library');
+  NavigationHarness().discard();
+  expect(runtime.push).toHaveBeenCalledWith('/library');
+});

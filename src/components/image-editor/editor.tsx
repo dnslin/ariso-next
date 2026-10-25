@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { Button, Dropdown, Label, Spinner } from '@heroui/react';
@@ -29,7 +29,6 @@ import {
 import { recipeSummary } from './types';
 import TemplateDialog from './template-dialog';
 import { useImageEditor } from './state';
-import { useEditSessionSnapshots } from './results';
 import { editJobActive } from './session';
 import { FinalPreview } from './final-preview';
 
@@ -63,7 +62,7 @@ export function Editor() {
   const [showTemplate, setShowTemplate] = useState(false);
   const [assetBusy, setAssetBusy] = useState(false);
   const [previewOpen, setPreviewOpen] = useState(false);
-  const tracked = useEditSessionSnapshots(editor.sessions);
+  const tracked = editor.snapshots;
   const saving =
     editor.submittingBatch ||
     tracked.some(
@@ -108,14 +107,6 @@ export function Editor() {
     setZoom(1);
     setCompare(false);
   };
-  useEffect(() => {
-    if (!edited) return;
-    const beforeUnload = (event: BeforeUnloadEvent) => {
-      event.preventDefault();
-    };
-    window.addEventListener('beforeunload', beforeUnload);
-    return () => window.removeEventListener('beforeunload', beforeUnload);
-  }, [edited]);
   return (
     <section data-editor className="flex h-full min-h-[560px] min-w-0 flex-col">
       <header className="flex shrink-0 items-center justify-between gap-3 border-b border-border px-4 py-3 lg:px-6">

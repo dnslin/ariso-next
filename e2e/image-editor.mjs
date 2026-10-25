@@ -9,6 +9,7 @@ const { createImageWorkflowFixture, waitForImageWorkflow } = await load(
 );
 const { createImageWorkflowPage } = await load('./image-workflows-page.mjs');
 const { signInToLibrary } = await load('./library-login.mjs');
+const { verifyEditorLeave } = await load('./image-editor-navigation.mjs');
 const { resizeViewport, setTheme } = await load('./browser-geometry.mjs');
 const { visibleThemeTrigger, chooseTheme } = await load('./theme-helpers.mjs');
 const { installBrowserErrors, assertNoBrowserErrors, isBrowserControlStop } =
@@ -154,6 +155,9 @@ try {
   report.stage = 'library-batch-entry-return-state';
   await verifyEditorReturn({ page, report, fixture, ui });
 
+  report.stage = 'unsaved-workspace-navigation';
+  await verifyEditorLeave({ page, config, report, fixture, ui });
+
   report.stage = 'single-real-canvas-and-server-previews';
   await resizeViewport(page, 1440, 1000);
   await ui.openDetail(fixture.privateImage);
@@ -227,6 +231,12 @@ try {
   });
   await capture(page, config, report, 'single-results', button('完成'));
   await restoreFetch(page);
+  await page.click(button('完成'));
+  await page.waitForSelector(editor, { state: 'hidden' });
+  report.checks.push({
+    scenario: 'accepted-copy-leaves-without-discarding-server-job',
+    requestId: copyJob.requestId,
+  });
 
   report.stage = 'overwrite-published-roles-and-size';
   await verifyOverwriteVersions({

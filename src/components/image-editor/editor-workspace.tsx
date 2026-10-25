@@ -6,12 +6,12 @@ import { ImageEditorProvider, useImageEditor } from './state';
 import { Editor } from './editor';
 import TemplatesPage from './templates-page';
 import BatchPage from './batch-page';
-import { EditResults, useEditSessionSnapshots } from './results';
+import { EditResults } from './results';
 import { editJobActive } from './session';
 
 function WorkspaceContent() {
   const editor = useImageEditor();
-  const snapshots = useEditSessionSnapshots(editor.sessions);
+  const snapshots = editor.snapshots;
   const sourceFrozen =
     editor.updatingSources.includes(editor.currentId) ||
     editor.sessions.some(
@@ -188,7 +188,7 @@ function WorkspaceContent() {
         <Modal.Backdrop
           isOpen
           onOpenChange={(open) => {
-            if (!open) editor.setLeaving(false);
+            if (!open) editor.cancelClose();
           }}
         >
           <Modal.Container placement="center" size="sm">

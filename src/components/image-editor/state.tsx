@@ -13,7 +13,6 @@ import { toast } from '@heroui/react/toast';
 import {
   copyImageEditRecipe,
   emptyImageEditRecipe,
-  hasImageEdits,
   imageEditRecipeSchema,
   type ImageEditRecipe,
 } from '../../shared/image-editing';
@@ -29,6 +28,8 @@ import {
   deleteEditTemplate,
 } from './client';
 import { ImageEditSession } from './session';
+import { hasUnsavedImageEdits, useEditSessionSnapshots } from './session-state';
+import { useSiteNavigation } from '../site/site-navigation';
 import type {
   EditIntent,
   EditJob,
@@ -90,7 +91,6 @@ export function useEditorState({
   const [loading, setLoading] = useState(true);
   const [loadRound, setLoadRound] = useState(0);
   const [message, setMessage] = useState('');
-  const [leaving, setLeaving] = useState(false);
   const [templates, setTemplates] = useState<EditTemplate[]>([]);
   const [templatesLoading, setTemplatesLoading] = useState(true);
   const [templateError, setTemplateError] = useState('');
@@ -109,6 +109,10 @@ export function useEditorState({
   const [saveMode, setSaveMode] = useState<SaveMode>('copy');
   const [batchMode, setBatchMode] = useState(imageIds.length > 1);
   const [sessions, setSessions] = useState<ImageEditSession[]>([]);
+  const snapshots = useEditSessionSnapshots(sessions);
+  const navigation = useSiteNavigation(
+    hasUnsavedImageEdits(history, sessions, snapshots),
+  );
   const [submittingBatch, setSubmittingBatch] = useState(false);
   const stop = useRef(false);
   const submitted = useRef(false);
@@ -602,6 +606,7 @@ export function useEditorState({
     renameTemplate,
     deleteTemplate,
     sessions,
+    snapshots,
     submittingBatch,
     stopPending: () => {
       stop.current = true;
@@ -612,17 +617,10 @@ export function useEditorState({
       ),
     saveImages,
     returnToEditing,
-    onClose: () => {
-      if (
-        view !== 'results' &&
-        Object.values(history).some((item) => hasImageEdits(item.current))
-      )
-        setLeaving(true);
-      else onClose();
-    },
-    confirmClose: onClose,
-    leaving,
-    setLeaving,
+    onClose: () => navigation.request(onClose),
+    confirmClose: navigation.discard,
+    leaving: navigation.destination !== null,
+    cancelClose: navigation.cancel,
     expire,
   };
 }
