@@ -41,7 +41,7 @@ import {
   subscribeLibraryChanges,
 } from '../../components/library/library-changes';
 import type { LibraryQueryPatch } from './query-state';
-import { LibraryFilterOptionsField } from './library-filter-options';
+import { ScreenshotTemplateDialog } from './screenshot-template-dialog';
 import {
   SmartCollectionRequestError,
   smartCollectionRequest,
@@ -72,11 +72,9 @@ export function SmartCollectionToolbar({
   const router = useRouter();
   const pathname = usePathname();
   const [collection, setCollection] = useState(initialCollection);
-  const [mode, setMode] = useState<
-    'save' | 'rename' | 'delete' | 'screenshot' | null
-  >(null);
+  const [mode, setMode] = useState<'save' | 'rename' | 'delete' | null>(null);
+  const [screenshotOpen, setScreenshotOpen] = useState(false);
   const [name, setName] = useState('');
-  const [tagIds, setTagIds] = useState<string[]>([]);
   const [pending, setPending] = useState(false);
   const [unknown, setUnknown] = useState(false);
   const [error, setError] = useState('');
@@ -246,32 +244,12 @@ export function SmartCollectionToolbar({
   }
   async function template(kind: string) {
     if (kind === 'screenshot') {
-      setTagIds([]);
-      open('screenshot');
+      setScreenshotOpen(true);
       return;
     }
     await onApply(
       smartCollectionTemplate(kind === 'untagged' ? 'untagged' : 'large'),
     );
-  }
-  async function createScreenshotTag() {
-    if (inFlight.current) return;
-    inFlight.current = true;
-    setPending(true);
-    setError('');
-    try {
-      const result = await smartCollectionRequest<{ tag: { id: string } }>(
-        '/api/tags',
-        { method: 'POST', body: JSON.stringify({ name: '截图' }) },
-      );
-      setTagIds([result.tag.id]);
-      await client.invalidateQueries({ queryKey: ['library-filter-options'] });
-    } catch (cause) {
-      failed(cause);
-    } finally {
-      inFlight.current = false;
-      setPending(false);
-    }
   }
   useImperativeHandle(ref, () => ({
     refresh: async () => {
@@ -440,6 +418,17 @@ export function SmartCollectionToolbar({
           </Alert.Content>
         </Alert>
       )}
+      {screenshotOpen && (
+        <ScreenshotTemplateDialog
+          client={client}
+          onSessionExpired={onSessionExpired}
+          onClose={() => setScreenshotOpen(false)}
+          onApply={async (ids) =>
+            (await onApply(smartCollectionTemplate('screenshot', ids))) !==
+            undefined
+          }
+        />
+      )}
       <Modal
         isOpen={!!mode}
         onOpenChange={(isOpen) => {
@@ -451,35 +440,27 @@ export function SmartCollectionToolbar({
             <Modal.Dialog
               className="max-h-[calc(var(--visual-viewport-height)-32px)] w-full max-w-120 overflow-y-auto rounded-2xl p-6"
               aria-label={
-                mode === 'screenshot'
-                  ? '选择截图标签'
-                  : mode === 'delete'
-                    ? '删除智能集合'
-                    : mode === 'rename'
-                      ? '重命名集合'
-                      : '保存为智能集合'
+                mode === 'delete'
+                  ? '删除智能集合'
+                  : mode === 'rename'
+                    ? '重命名集合'
+                    : '保存为智能集合'
               }
             >
               <Modal.Header>
                 <Modal.Heading>
-                  {mode === 'screenshot'
-                    ? '选择截图标签'
-                    : mode === 'delete'
-                      ? '删除智能集合'
-                      : mode === 'rename'
-                        ? '重命名集合'
-                        : '保存为智能集合'}
+                  {mode === 'delete'
+                    ? '删除智能集合'
+                    : mode === 'rename'
+                      ? '重命名集合'
+                      : '保存为智能集合'}
                 </Modal.Heading>
               </Modal.Header>
               <Form
                 className="grid gap-5"
                 onSubmit={(event) => {
                   event.preventDefault();
-                  if (mode === 'screenshot') {
-                    void onApply(
-                      smartCollectionTemplate('screenshot', tagIds),
-                    ).then(() => setMode(null));
-                  } else void save();
+                  void save();
                 }}
               >
                 <Modal.Body className="grid gap-4 px-0">
@@ -487,28 +468,6 @@ export function SmartCollectionToolbar({
                     <p className="text-sm">
                       删除“{collection?.name}”的筛选条件，所有图片都会保留。
                     </p>
-                  ) : mode === 'screenshot' ? (
-                    <>
-                      <p className="text-sm text-muted">
-                        选择用来标记截图的真实标签，模板按最近 7 天筛选。
-                      </p>
-                      <LibraryFilterOptionsField
-                        kind="tags"
-                        label="截图标签"
-                        selectedIds={tagIds}
-                        onChange={setTagIds}
-                        client={client}
-                        onSessionExpired={onSessionExpired}
-                        presentation="field"
-                      />
-                      <Button
-                        variant="ghost"
-                        isDisabled={pending}
-                        onPress={() => void createScreenshotTag()}
-                      >
-                        创建“截图”标签
-                      </Button>
-                    </>
                   ) : (
                     <TextField
                       value={name}
@@ -548,19 +507,13 @@ export function SmartCollectionToolbar({
                     type="submit"
                     variant={mode === 'delete' ? 'danger' : 'primary'}
                     className="min-h-12 flex-1"
-                    isDisabled={
-                      pending ||
-                      unknown ||
-                      (mode === 'screenshot' && !tagIds.length)
-                    }
+                    isDisabled={pending || unknown}
                   >
                     {pending
                       ? '正在保存…'
                       : mode === 'delete'
                         ? '删除集合'
-                        : mode === 'screenshot'
-                          ? '应用模板'
-                          : '保存'}
+                        : '保存'}
                   </Button>
                 </Modal.Footer>
               </Form>
