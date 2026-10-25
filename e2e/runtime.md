@@ -42,6 +42,7 @@ EGO_TASK_SPACE=22 node scripts/verify-browser.mjs --suite viewer --only tiff-pre
 EGO_TASK_SPACE=22 node scripts/verify-browser.mjs --suite theme --only behavior
 EGO_TASK_SPACE=22 node scripts/verify-browser.mjs --suite uiux-20261015 --only settings
 EGO_TASK_SPACE=22 node scripts/verify-browser.mjs --suite image-workflows
+EGO_TASK_SPACE=22 node scripts/verify-browser.mjs --suite smart-collections-dedup
 EGO_TASK_SPACE=22 node scripts/verify-browser.mjs --suite access-protection
 EGO_TASK_SPACE=22 node scripts/verify-browser.mjs --suite backup
 EGO_TASK_SPACE=22 node scripts/verify-browser.mjs --suite backup --storage-config /private/one-provider.json
@@ -50,6 +51,8 @@ EGO_TASK_SPACE=22 node scripts/verify-browser.mjs --suite backup --storage-confi
 `--suite` 选择功能，`--only` 只运行该功能允许的阶段。可用值以[执行计划](../scripts/browser-plan.mjs)为准，不在文档重复维护长列表。定向通过只证明所选范围，不代替默认完整流程。
 
 `image-workflows` 通过正式上传接口准备代表图片，验证 ZIP 两个入口及实际解包、保留外链的替换、三个尺寸的实际像素和临时分享。除媒体工具外，它还需要系统 Python 3 的标准库解包 ZIP。匿名访客使用独立的 localhost 子域名隔离所有者 Cookie，并核对实际会话为空；这与独立浏览器配置文件的验证范围不同。真实 R2/SeaweedFS 另由存储验证脚本执行。
+
+`smart-collections-dedup` 通过正式接口上传并处理四张图片，验证集合条件持久化、加标签后退出无标签集合、更名/另存为/删除，以及真实文件重复上传、查看已有图、回收记录恢复与队列保留。覆盖1440/390/360/430/768宽度的浅深色布局；原文件重复与图库数量由实际接口断言，截图中的合成图片是测试素材。此入口不代表真实对象存储或物理手机验证。
 
 `access-protection` 复用公共浏览器执行器，夹具仅负责隔离应用和数据的创建、清理。除浏览、外链和 ZIP 外，还验证真实会话失效与重新登录后的草稿恢复、未知提交核对，以及后台 HEAD 被限频时已加载图片保持原节点、不重新下载，撤销后仍移除图片。
 
