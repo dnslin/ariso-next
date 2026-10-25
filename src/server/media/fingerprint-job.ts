@@ -5,6 +5,7 @@ import { activeMediaJob } from './steps.ts';
 import { readMediaObject } from './storage.ts';
 import { mediaJobs, mediaObjects, mediaVersions } from './schema.ts';
 import { settleMediaFailure } from './recovery.ts';
+import { analyzeMediaError } from './errors.ts';
 
 /** Stream the immutable original once. No decoding, derived versions, metadata tools or temporary file. */
 export async function processFingerprintJob(
@@ -74,6 +75,26 @@ export async function processFingerprintJob(
     const interrupted =
       signal.aborted &&
       (signal.reason as { code?: string })?.code === 'MEDIA_INTERRUPTED';
+    if (!interrupted && analyzeMediaError(error).code === 'STORAGE_DISABLED') {
+      const paused = db
+        .update(mediaJobs)
+        .set({ status: 'queued', startedAt: null, updatedAt: new Date() })
+        .where(
+          and(
+            eq(mediaJobs.id, jobId),
+            eq(mediaJobs.status, 'running'),
+            sql`exists(select 1 from media_images where id=${mediaJobs.imageId} and deletion_status is null)`,
+          ),
+        )
+        .run();
+      if (paused.changes) {
+        runtime.logger.info(
+          { err: error, jobId },
+          'Original fingerprint paused because storage is disabled',
+        );
+        return;
+      }
+    }
     if (!interrupted) settleMediaFailure(db, jobId, 'fingerprint', error);
     runtime.logger.error(
       { err: error, jobId },

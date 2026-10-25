@@ -59,25 +59,6 @@ export function enqueueFingerprintJobs(db: BetterSQLite3Database) {
   if (!candidate) return 0;
   return db.transaction(
     (tx) => {
-      // A storage disable is an operational pause; re-enabling makes its work runnable again.
-      tx.update(mediaJobs)
-        .set({
-          status: 'queued',
-          error: null,
-          finishedAt: null,
-          retryCount: 0,
-          recoveryCount: 0,
-          updatedAt: new Date(),
-        })
-        .where(
-          and(
-            eq(mediaJobs.kind, 'fingerprint'),
-            eq(mediaJobs.status, 'failed'),
-            sql`${mediaJobs.error} like '%STORAGE_DISABLED%'`,
-            sql`exists (select 1 from media_images i join storage_configs s on s.id=i.storage_id where i.id=${mediaJobs.imageId} and i.deletion_status is null and s.enabled=1)`,
-          ),
-        )
-        .run();
       const active = tx.get<{ count: number }>(
         sql`select count(*) count from media_jobs j join media_images i on i.id=j.image_id join storage_configs s on s.id=i.storage_id where j.kind='fingerprint' and j.status in ('queued','running') and s.enabled=1 and i.deletion_status is null`,
       )!.count;

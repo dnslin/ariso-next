@@ -3,7 +3,7 @@ import Database from 'better-sqlite3';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { eq } from 'drizzle-orm';
-import { afterEach, beforeEach, expect, it } from 'vitest';
+import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { collectionFixture } from '../collections/helpers.ts';
 import {
   mediaImages,
@@ -23,6 +23,10 @@ import { processFingerprintJob } from '../../../src/server/media/fingerprint-job
 import { acceptOriginal } from '../../../src/server/media/images.ts';
 import { replacementAdmission } from '../../../src/server/media/replacement.ts';
 import { requestReprocess } from '../../../src/server/media/reprocess.ts';
+import * as mediaStorage from '../../../src/server/media/storage.ts';
+import { mediaError } from '../../../src/server/media/errors.ts';
+import { trashImage } from '../../../src/server/media/trash.ts';
+import { requestPermanentDelete } from '../../../src/server/media/cleanup.ts';
 
 let fixture: ReturnType<typeof collectionFixture>;
 let bytes: Buffer;
@@ -30,7 +34,10 @@ beforeEach(async () => {
   fixture = collectionFixture();
   bytes = await readFile('tests/fixtures/media-formats/source.png');
 });
-afterEach(() => fixture.close());
+afterEach(() => {
+  vi.restoreAllMocks();
+  fixture.close();
+});
 function runtime() {
   return {
     ...fixture,
@@ -144,6 +151,198 @@ it('shows disabled-storage coverage instead of claiming completion and starts af
   enqueueFingerprintJobs(fixture.db);
   await processFingerprintJob(runtime(), claimNextMediaJob(fixture.db)!.id);
   expect(readFingerprintCoverage(fixture.db).complete).toBe(true);
+});
+
+it.each(['after-claim', 'before-read', 'after-read'] as const)(
+  'pauses the same claimed fingerprint at %s without consuming or replenishing retry budgets',
+  async (boundary) => {
+    const object = await oldImage('pausing');
+    enqueueFingerprintJobs(fixture.db);
+    const job = claimNextMediaJob(fixture.db)!;
+    fixture.db
+      .update(mediaJobs)
+      .set({ retryCount: 1, recoveryCount: 2 })
+      .where(eq(mediaJobs.id, job.id))
+      .run();
+    const disable = () =>
+      fixture.db
+        .update(storageConfigs)
+        .set({ enabled: false })
+        .where(eq(storageConfigs.id, fixture.storage.id))
+        .run();
+    let readCompleted = false;
+    if (boundary === 'after-claim') disable();
+    else {
+      const read = mediaStorage.readMediaObject;
+      vi.spyOn(mediaStorage, 'readMediaObject').mockImplementationOnce(
+        async (...args) => {
+          if (boundary === 'before-read') disable();
+          const source = await read(...args);
+          if (boundary === 'after-read')
+            source.stream.once('end', () => {
+              readCompleted = true;
+              disable();
+            });
+          return source;
+        },
+      );
+    }
+    await processFingerprintJob(runtime(), job.id);
+    expect(readCompleted).toBe(boundary === 'after-read');
+    expect(
+      fixture.db.select().from(mediaJobs).where(eq(mediaJobs.id, job.id)).get(),
+    ).toMatchObject({
+      id: job.id,
+      status: 'queued',
+      retryCount: 1,
+      recoveryCount: 2,
+      startedAt: null,
+      finishedAt: null,
+      nextAttemptAt: null,
+    });
+    expect(
+      fixture.db
+        .select()
+        .from(mediaObjects)
+        .where(eq(mediaObjects.id, object.id))
+        .get()?.contentSha256,
+    ).toBeNull();
+    expect(readFingerprintCoverage(fixture.db)).toMatchObject({
+      unavailable: 1,
+      failed: 0,
+      running: 0,
+    });
+    expect(enqueueFingerprintJobs(fixture.db)).toBe(0);
+    expect(claimNextMediaJob(fixture.db)).toBeNull();
+    fixture.db
+      .update(storageConfigs)
+      .set({ enabled: true })
+      .where(eq(storageConfigs.id, fixture.storage.id))
+      .run();
+    expect(enqueueFingerprintJobs(fixture.db)).toBe(0);
+    const resumed = claimNextMediaJob(fixture.db)!;
+    expect(resumed).toMatchObject({
+      id: job.id,
+      retryCount: 1,
+      recoveryCount: 2,
+    });
+    await processFingerprintJob(runtime(), resumed.id);
+    expect(
+      fixture.db.select().from(mediaJobs).where(eq(mediaJobs.id, job.id)).get(),
+    ).toMatchObject({ status: 'succeeded', retryCount: 1, recoveryCount: 2 });
+    expect(
+      fixture.db
+        .select()
+        .from(mediaObjects)
+        .where(eq(mediaObjects.id, object.id))
+        .get()?.contentSha256,
+    ).toBe(createHash('sha256').update(bytes).digest('hex'));
+    expect(fixture.db.select().from(mediaJobs).all()).toHaveLength(2);
+  },
+);
+
+it('does not revive a real read failure merely because its diagnostic path contains STORAGE_DISABLED', async () => {
+  await oldImage('STORAGE_DISABLED-missing', false);
+  enqueueFingerprintJobs(fixture.db);
+  const job = claimNextMediaJob(fixture.db)!;
+  fixture.db
+    .update(mediaJobs)
+    .set({ retryCount: 1, recoveryCount: 2 })
+    .where(eq(mediaJobs.id, job.id))
+    .run();
+  await processFingerprintJob(runtime(), job.id);
+  const failed = fixture.db
+    .select()
+    .from(mediaJobs)
+    .where(eq(mediaJobs.id, job.id))
+    .get()!;
+  expect(failed).toMatchObject({
+    status: 'failed',
+    retryCount: 1,
+    recoveryCount: 2,
+  });
+  expect(failed.error).toContain('STORAGE_OBJECT_MISSING');
+  expect(failed.error).toContain('STORAGE_DISABLED');
+  enqueueFingerprintJobs(fixture.db);
+  expect(
+    fixture.db.select().from(mediaJobs).where(eq(mediaJobs.id, job.id)).get(),
+  ).toEqual(failed);
+  expect(claimNextMediaJob(fixture.db)).toBeNull();
+  expect(readFingerprintCoverage(fixture.db)).toMatchObject({
+    failed: 1,
+    pending: 0,
+    completed: 0,
+  });
+});
+
+it('keeps permanent deletion authoritative when storage is also disabled at the read boundary', async () => {
+  const object = await oldImage('deleting');
+  enqueueFingerprintJobs(fixture.db);
+  const job = claimNextMediaJob(fixture.db)!;
+  fixture.db
+    .update(mediaJobs)
+    .set({ retryCount: 1, recoveryCount: 2 })
+    .where(eq(mediaJobs.id, job.id))
+    .run();
+  const read = mediaStorage.readMediaObject;
+  vi.spyOn(mediaStorage, 'readMediaObject').mockImplementationOnce(
+    async (...args) => {
+      fixture.db
+        .update(storageConfigs)
+        .set({ enabled: false })
+        .where(eq(storageConfigs.id, fixture.storage.id))
+        .run();
+      trashImage(fixture.db, 'deleting');
+      requestPermanentDelete(fixture.db, 'deleting');
+      return read(...args);
+    },
+  );
+  await processFingerprintJob(runtime(), job.id);
+  expect(
+    fixture.db.select().from(mediaJobs).where(eq(mediaJobs.id, job.id)).get(),
+  ).toMatchObject({ status: 'cancelled', retryCount: 1, recoveryCount: 2 });
+  expect(
+    fixture.db
+      .select()
+      .from(mediaObjects)
+      .where(eq(mediaObjects.id, object.id))
+      .get()?.contentSha256,
+  ).toBeNull();
+});
+
+it('leaves an interrupted disabled-storage attempt to the existing recovery budget', async () => {
+  await oldImage('interrupted-disabled');
+  enqueueFingerprintJobs(fixture.db);
+  const job = claimNextMediaJob(fixture.db)!;
+  fixture.db
+    .update(mediaJobs)
+    .set({ retryCount: 1, recoveryCount: 1 })
+    .where(eq(mediaJobs.id, job.id))
+    .run();
+  const signal = new AbortController();
+  const read = mediaStorage.readMediaObject;
+  vi.spyOn(mediaStorage, 'readMediaObject').mockImplementationOnce(
+    async (...args) => {
+      fixture.db
+        .update(storageConfigs)
+        .set({ enabled: false })
+        .where(eq(storageConfigs.id, fixture.storage.id))
+        .run();
+      signal.abort(
+        mediaError('MEDIA_INTERRUPTED', 'controlled runtime shutdown'),
+      );
+      return read(...args);
+    },
+  );
+  await processFingerprintJob(runtime(), job.id, signal.signal);
+  expect(
+    fixture.db.select().from(mediaJobs).where(eq(mediaJobs.id, job.id)).get(),
+  ).toMatchObject({ status: 'running', retryCount: 1, recoveryCount: 1 });
+  recoverMediaJobs(fixture.db);
+  expect(
+    fixture.db.select().from(mediaJobs).where(eq(mediaJobs.id, job.id)).get(),
+  ).toMatchObject({ status: 'queued', retryCount: 1, recoveryCount: 2 });
+  expect(claimNextMediaJob(fixture.db)).toBeNull();
 });
 
 it('retains failed originals in coverage and retries explicitly without changing their asset state', async () => {
