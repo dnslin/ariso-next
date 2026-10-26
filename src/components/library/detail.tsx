@@ -26,6 +26,7 @@ import {
   MoreHorizontal,
   ImageUp,
   Share2,
+  Pencil,
 } from 'lucide-react';
 import { DetailImageShare } from './detail-image-share';
 import { DetailReplacementStatus } from './detail-replacement';
@@ -70,6 +71,7 @@ function DetailContent({
   onStatistics,
   replacement,
   onShare,
+  onEdit,
 }: {
   detail: Detail;
   onCopy: () => void;
@@ -85,9 +87,11 @@ function DetailContent({
   onStatistics?: () => void;
   replacement: DetailReplacementController;
   onShare: () => void;
+  onEdit?: (element: HTMLElement) => void;
 }) {
   const [viewerTooltipOpen, setViewerTooltipOpen] = useState(false);
   const replacementInput = useRef<HTMLInputElement>(null);
+  const moreTrigger = useRef<HTMLButtonElement>(null);
   useEffect(() => {
     if (!viewerTooltipOpen) return;
     const close = () => setViewerTooltipOpen(false);
@@ -228,6 +232,7 @@ function DetailContent({
                 <Dropdown>
                   <Button
                     data-testid="detail-more-entry"
+                    ref={moreTrigger}
                     aria-label="更多图片操作"
                     isIconOnly
                     variant="ghost"
@@ -241,6 +246,31 @@ function DetailContent({
                     className="rounded-xl border border-border bg-background dark:bg-surface"
                   >
                     <Dropdown.Menu aria-label="图片详情更多操作">
+                      {onEdit && (
+                        <Dropdown.Item
+                          id="edit-image"
+                          textValue="编辑图片"
+                          className="min-h-11 gap-3"
+                          isDisabled={
+                            !!detail.trashedAt ||
+                            !!detail.deletionStatus ||
+                            !detail.storage.enabled ||
+                            detail.processingStatus !== 'ready' ||
+                            !!detail.activeJob ||
+                            detail.classification !== 'static' ||
+                            !['jpeg', 'png', 'webp'].includes(
+                              detail.format.toLowerCase(),
+                            )
+                          }
+                          onAction={() => {
+                            if (moreTrigger.current)
+                              onEdit(moreTrigger.current);
+                          }}
+                        >
+                          <Pencil size={18} aria-hidden />
+                          编辑图片
+                        </Dropdown.Item>
+                      )}
                       <Dropdown.Item
                         id="replace"
                         textValue="替换图片"
@@ -441,10 +471,12 @@ export function LibraryDetail({
   viewerFilters,
   onStatistics,
   onReplacementChanged,
+  onEdit,
 }: {
   initialSelected?: string;
   onStatistics?: () => void;
   onReplacementChanged: () => void;
+  onEdit?: (imageId: string, element: HTMLElement) => void;
   viewerFilters?: LibraryFilters;
   query: ReturnType<typeof useDetailQuery>;
   hidden?: boolean;
@@ -641,6 +673,9 @@ export function LibraryDetail({
                 onStatistics={onStatistics}
                 replacement={replacement}
                 onShare={() => setShareOpen(true)}
+                onEdit={
+                  onEdit ? (element) => onEdit(imageId, element) : undefined
+                }
                 onVersions={() =>
                   onVersions(selected ?? initialPreview(query.data))
                 }

@@ -28,6 +28,7 @@ import {
   Trash2,
   Undo2,
   X,
+  Pencil,
 } from 'lucide-react';
 import { batchLabels } from '../../components/library/use-library-batch';
 import {
@@ -68,6 +69,7 @@ const actionIcons = {
   reprocess: RefreshCw,
   trash: Trash2,
   restore: Undo2,
+  edit: Pencil,
 };
 const buttonClass = 'h-11 rounded-lg px-2 font-normal xl:h-9 xl:px-3';
 
@@ -75,6 +77,7 @@ function actionLabel(action: SelectionBatchAction) {
   if (action === 'archive') return '打包下载';
   if (action === 'copy') return '复制链接';
   if (action === 'reprocess') return '重新处理';
+  if (action === 'edit') return '编辑所选图片';
   return batchLabels[action];
 }
 

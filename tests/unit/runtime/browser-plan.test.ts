@@ -6,6 +6,17 @@ function select(suite: string, only?: string) {
 }
 
 describe('focused browser execution plans', () => {
+  it('runs real image editing as a focused and full production flow', () => {
+    expect(select('full').stages).toContainEqual([
+      'image-editor',
+      'image-editor',
+    ]);
+    expect(select('image-editor')).toEqual({
+      stages: [['image-editor', 'imageEditor']],
+      config: {},
+    });
+    expect(() => select('image-editor', 'unrelated')).toThrow('--only');
+  });
   it('runs smart collections and exact duplicates as a focused production flow', () => {
     expect(select('full').stages).toContainEqual([
       'smart-collections-dedup',
@@ -610,6 +621,7 @@ describe('focused browser execution plans', () => {
         ['uiux-p1', 'uiux-p1'],
         ['uiux-20261015', 'uiux-20261015'],
         ['image-workflows', 'image-workflows'],
+        ['image-editor', 'image-editor'],
         ['smart-collections-dedup', 'smart-collections-dedup'],
         ['access-protection', 'access-protection'],
       ],

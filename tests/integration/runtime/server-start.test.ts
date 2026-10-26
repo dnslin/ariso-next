@@ -200,20 +200,48 @@ describe('Web shutdown ownership', () => {
     run(`
       await prepare();
       const state = startServer();
+      async function waitForEntry(promise, label) {
+        let timer;
+        try {
+          await Promise.race([
+            promise,
+            new Promise((_, reject) => { timer = setTimeout(() => reject(new Error('Timed out waiting for ' + label)), 1000); }),
+          ]);
+        } finally { clearTimeout(timer); }
+      }
+      const previewEntered = Promise.withResolvers();
+      const finishPreview = Promise.withResolvers();
+      const originalEditClose = state.editPreviews.close.bind(state.editPreviews);
+      let previewCalls = 0;
+      state.editPreviews.close = async () => {
+        previewCalls += 1;
+        await originalEditClose();
+        previewEntered.resolve();
+        await finishPreview.promise;
+      };
       const originalStop = state.mediaQueue.stop.bind(state.mediaQueue);
-      let finish;
+      const queueEntered = Promise.withResolvers();
+      const finish = Promise.withResolvers();
       let calls = 0;
       state.mediaQueue.stop = async () => {
         calls += 1;
         await originalStop();
-        await new Promise(resolve => { finish = resolve; });
+        queueEntered.resolve();
+        await finish.promise;
       };
       const originalUploadStop = state.uploads.stop.bind(state.uploads);
-      let finishUploads;
+      const uploadsEntered = Promise.withResolvers();
+      const finishUploads = Promise.withResolvers();
+      let uploadCalls = 0;
       state.uploads.stop = async () => {
+        uploadCalls += 1;
         await originalUploadStop();
-        await new Promise(resolve => { finishUploads = resolve; });
+        uploadsEntered.resolve();
+        await finishUploads.promise;
       };
+      const originalClose = state.connection.close.bind(state.connection);
+      let closeCalls = 0;
+      state.connection.close = () => { closeCalls += 1; return originalClose(); };
       let flushCalls = 0;
       const analyticsStop = state.analytics.stop.bind(state.analytics);
       state.analytics.stop = () => {
@@ -227,17 +255,31 @@ describe('Web shutdown ownership', () => {
       assert.equal(state.connection.db.$client.open, true);
       assert.throws(getServerRuntime, /stopping/);
       assert.equal(GET().status, 503);
-      await new Promise(resolve => setImmediate(resolve));
+      await waitForEntry(previewEntered.promise, 'editor preview cleanup');
+      assert.equal(previewCalls, 1);
+      assert.equal(uploadCalls, 0);
       assert.equal(calls, 0);
       assert.equal(state.connection.db.$client.open, true);
-      finishUploads();
-      await new Promise(resolve => setImmediate(resolve));
+      assert.equal(closeCalls, 0);
+      finishPreview.resolve();
+      await waitForEntry(uploadsEntered.promise, 'upload cleanup');
+      assert.equal(uploadCalls, 1);
+      assert.equal(calls, 0);
+      assert.equal(flushCalls, 0);
+      assert.equal(state.connection.db.$client.open, true);
+      finishUploads.resolve();
+      await waitForEntry(queueEntered.promise, 'media queue cleanup');
       assert.equal(calls, 1);
       assert.equal(flushCalls, 0);
-      finish();
+      assert.equal(closeCalls, 0);
+      assert.equal(state.connection.db.$client.open, true);
+      finish.resolve();
       await stopping;
       assert.equal(flushCalls, 1);
       assert.equal(state.connection.db.$client.open, false);
+      assert.equal(closeCalls, 1);
+      await state.stop();
+      assert.equal(closeCalls, 1);
     `);
   });
 

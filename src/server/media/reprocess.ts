@@ -6,6 +6,9 @@ import { storageConfigs } from '../storage/schema.ts';
 import { mediaImages, mediaJobs, type DerivedVersionKind } from './schema.ts';
 import { createProcessingSnapshot, requireMediaSettings } from './settings.ts';
 import type { ProcessingSnapshot } from './validation.ts';
+import { mediaEditRequests } from './editing-schema.ts';
+import { retryImageEdit } from './edit-requests.ts';
+import { mediaVersions } from './schema.ts';
 
 export const reprocessInputSchema = z.strictObject({
   scope: z.enum(['all', 'compressed', 'thumbnail', 'watermark']).default('all'),
@@ -160,6 +163,41 @@ export function requestReprocess(
         scope,
       );
       if (unavailable) throw unavailable;
+      if (
+        scope === 'all' &&
+        image.processingStatus === 'failed' &&
+        !tx
+          .select({ id: mediaVersions.objectId })
+          .from(mediaVersions)
+          .where(
+            and(
+              eq(mediaVersions.imageId, imageId),
+              eq(mediaVersions.kind, 'original'),
+            ),
+          )
+          .get()
+      ) {
+        const edit = tx
+          .select({ id: mediaEditRequests.id })
+          .from(mediaEditRequests)
+          .innerJoin(mediaJobs, eq(mediaJobs.id, mediaEditRequests.jobId))
+          .where(eq(mediaJobs.imageId, imageId))
+          .get();
+        if (edit) {
+          const retried = retryImageEdit(tx, edit.id);
+          const job = tx
+            .select()
+            .from(mediaJobs)
+            .where(eq(mediaJobs.id, retried.jobId))
+            .get()!;
+          return {
+            jobId: job.id,
+            status: 'queued' as const,
+            scope: job.scope,
+            expectedVersions: job.expectedVersions,
+          };
+        }
+      }
       const snapshot = createProcessingSnapshot(tx);
       const expectedVersions = reprocessVersions(
         scope,

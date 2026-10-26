@@ -26,6 +26,8 @@ export default defineConfig([
     'tests/experiments/sharing/next-app/next-env.d.ts',
     'prototypes/backup-restore/.next/**',
     'prototypes/backup-restore/next-env.d.ts',
+    'prototypes/image-editor/.next/**',
+    'prototypes/image-editor/next-env.d.ts',
     'prototypes/smart-collections/.next/**',
     'prototypes/smart-collections/next-env.d.ts',
     'prototypes/browser-extension/.next/**',

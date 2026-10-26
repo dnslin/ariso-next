@@ -62,6 +62,8 @@ describe('applied library URL', () => {
       'image=one&detailView=versions&preview=compressed',
       'image=one&detailView=reprocess&preview=original',
       'image=one&preview=thumbnail',
+      'imageEdit=editor-session-one',
+      'image=one&imageEdit=editor-session-two',
     ]) {
       const page = parse(`${query}&${detail}`);
       expect(page).toEqual(list);

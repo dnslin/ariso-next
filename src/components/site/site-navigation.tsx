@@ -9,12 +9,19 @@ import { Modal } from '@heroui/react/modal';
 export function useSiteNavigation(dirty: boolean) {
   const router = useRouter();
   const [destination, setDestination] = useState<
-    string | { key: string } | null
+    string | { key: string } | { action: () => void } | null
   >(null);
   const leaving = useRef(false);
+  const request = useCallback(
+    (action: () => void) => {
+      if (dirty && !leaving.current) setDestination({ action });
+      else action();
+    },
+    [dirty],
+  );
   const navigate = useCallback(
     (href: string) => {
-      if (href === window.location.pathname) return;
+      if (href === window.location.pathname + window.location.search) return;
       if (dirty && !leaving.current) setDestination(href);
       else router.push(href);
     },
@@ -89,13 +96,16 @@ export function useSiteNavigation(dirty: boolean) {
   return {
     destination,
     navigate,
+    request,
     cancel: () => setDestination(null),
     discard: () => {
       if (!destination) return;
       leaving.current = true;
       setDestination(null);
       if (typeof destination === 'string') router.push(destination);
-      else window.navigation.traverseTo(destination.key);
+      else if ('key' in destination)
+        window.navigation.traverseTo(destination.key);
+      else destination.action();
     },
   };
 }

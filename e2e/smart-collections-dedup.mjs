@@ -601,8 +601,12 @@ try {
   );
   assert.ok(duplicateQueueId, 'The duplicate row has a real queue identity');
   await page.click(button('查看已有图片'));
-  await page.waitForSelector('[data-testid="library-detail"]');
-  assert.ok((await page.snapshot()).includes(fixture.publicImage.displayName));
+  await page.waitForSelector(
+    '[data-testid="library-detail"] [data-testid="detail-body"]',
+  );
+  const existingDetail = await page.snapshot();
+  assert.ok(existingDetail.includes(fixture.publicImage.displayName));
+  assert.ok(existingDetail.includes(fixture.publicImage.id));
   report.checks.push(
     'Browser file upload recognizes identical bytes, creates no image, exposes existing detail, and offers no duplicate retry.',
   );
