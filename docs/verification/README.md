@@ -12,6 +12,7 @@
 | 最新一轮主要界面交付               | [十二项 UI/UX 优化](./m2-85/ui-refinement/20261015/uiux-12/README.md)                                                          |
 | 浏览器兼容与表单裁切               | [Safari 与 Chrome 受影响页面矩阵](./safari-compat-20261016/README.md)                                                          |
 | Favicon 色彩、细长 SVG 与水印      | [最终行为及回归修复](./favicon-watermark-20261014/PR.md)                                                                       |
+| 同仓库三个模块整理                 | [2026-10-26 workspace、打包与接口联验](./monorepo/README.md)                                                                   |
 | 当前浏览器运行入口                 | [浏览器冒烟说明](../../e2e/runtime.md)                                                                                         |
 
 ## 如何读报告

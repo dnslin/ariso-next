@@ -5,12 +5,10 @@ import nextTs from 'eslint-config-next/typescript';
 export default defineConfig([
   ...nextVitals,
   ...nextTs,
-  {
-    files: ['integrations/picgo/**/*.cjs'],
-    // PicGo loads its plugin entry with require().
-    rules: { '@typescript-eslint/no-require-imports': 'off' },
-  },
   globalIgnores([
+    // Each client owns its lint config; lint:all runs all three workspace packages.
+    'integrations/browser-extension/**',
+    'integrations/picgo/**',
     '.next/**',
     'design-plans/access-protection/prototype/.next/**',
     'design-plans/access-protection/prototype/next-env.d.ts',
@@ -30,6 +28,8 @@ export default defineConfig([
     'prototypes/backup-restore/next-env.d.ts',
     'prototypes/smart-collections/.next/**',
     'prototypes/smart-collections/next-env.d.ts',
+    'prototypes/browser-extension/.next/**',
+    'prototypes/browser-extension/next-env.d.ts',
     'out/**',
     'build/**',
     'dist/**',

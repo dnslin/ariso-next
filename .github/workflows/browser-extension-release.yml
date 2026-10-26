@@ -1,0 +1,66 @@
+name: Release Chrome extension
+
+on:
+  push:
+    tags: ['browser-extension-v*']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: browser-extension-release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  package:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    # This workflow only runs for maintainer-pushed module tags, never PR events.
+    permissions:
+      contents: write
+    env:
+      RELEASE_TAG: ${{ github.ref_name }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+      - name: Verify tag matches Chrome extension version
+        run: |
+          node --input-type=module <<'JS'
+          import { readFileSync } from 'node:fs';
+          const { version } = JSON.parse(readFileSync('integrations/browser-extension/package.json', 'utf8'));
+          if (process.env.RELEASE_TAG !== `browser-extension-v${version}`)
+            throw new Error(`Release tag must equal browser-extension-v${version}`);
+          JS
+      - uses: pnpm/action-setup@v6
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter ariso-browser-extension lint
+      - run: pnpm --filter ariso-browser-extension typecheck
+      - run: pnpm --filter ariso-browser-extension test
+      - name: Build and package Chrome extension
+        run: pnpm --filter ariso-browser-extension zip
+      - uses: actions/upload-artifact@v7
+        with:
+          name: browser-extension-package
+          path: integrations/browser-extension/.output/*.zip
+          if-no-files-found: error
+          retention-days: 14
+      - name: Publish module GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          existing=$(gh api --paginate "repos/$GH_REPO/releases" --jq '.[] | select(.tag_name == env.RELEASE_TAG) | .draft')
+          if [ "$existing" = false ]; then
+            echo "Release $RELEASE_TAG is already published; leaving assets unchanged"
+            exit 0
+          fi
+          if [ -z "$existing" ]; then
+            gh release create "$RELEASE_TAG" --verify-tag --draft --latest=false \
+              --title "Ariso browser extension ${RELEASE_TAG#browser-extension-v}" \
+              --notes 'Chrome MV3 ZIP for manual installation. See integrations/browser-extension/README.md. Extension store publication is not performed by this workflow.'
+          fi
+          gh release upload "$RELEASE_TAG" integrations/browser-extension/.output/*.zip --clobber
+          gh release edit "$RELEASE_TAG" --draft=false --latest=false
+          gh release view "$RELEASE_TAG" --json url --jq .url >> "$GITHUB_STEP_SUMMARY"

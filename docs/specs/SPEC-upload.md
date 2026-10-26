@@ -184,7 +184,11 @@ db.transaction((tx) => {
 
 ### 10.1 请求
 
-唯一业务入口 `POST /api/upload`，只认 `Authorization: Bearer <token>`；Cookie 不能替代。读取文件体前由 identity 验证 Token；接纳请求后中途 Token 到期/撤销不追溯取消该次上传或处理，新请求拒绝。Token 撤销不删除任何图片和任务。
+文件接收入口 `POST /api/upload`，只认 `Authorization: Bearer <token>`；Cookie 不能替代。读取文件体前由 identity 验证 Token；接纳请求后中途 Token 到期/撤销不追溯取消该次上传或处理，新请求拒绝。Token 撤销不删除任何图片和任务。
+
+浏览器插件通过同一 Token 调用只读 `GET /api/upload/capabilities`。成功仅返回 `maxFileBytes`、`queueLimit`、`defaultVisibility`、`defaultLinkVersion`、`defaultStorageAvailable` 和 `requestId`；全部响应 `no-store`。认证优先，无效 Token 为 401，认证通过但上传配置未初始化为 409；默认存储未设或停用时返回 `defaultStorageAvailable=false`，不执行存储写入探测。错误为 `{ error: { code, stage, message }, requestId }`，不包含图片或管理列表。运行时与 OpenAPI 复用同一响应 Schema。
+
+官方浏览器插件位于 `integrations/browser-extension/`，沿用约 360px 的已认可小窗设计，支持文件、主动粘贴和网页图片右键保存。扩展页面发送文件，服务器不抓取来源 URL，也不新增公开状态轮询。接入和构建见[插件说明](../../integrations/browser-extension/README.md)，实现范围见[浏览器插件规格](./SPEC-browser-extension.md)。
 
 | multipart 字段 | 规则                                                                              |
 | -------------- | --------------------------------------------------------------------------------- |
@@ -329,7 +333,7 @@ curl --request POST 'https://images.example/api/upload' \
 | UP-14 | 删除相册/标签使未交接文件明确失败；已接收项保留；旧素材在最后引用结束前不清理                                                                        |
 | UP-15 | 失败不暂停其他图，终态释放 File/Blob/插件引用；无资产失败不出现假详情，传输重试需重新选择                                                            |
 | UP-16 | 原图已存但处理失败保留资产/版本；同 ID 重处理使用最新设置；清空结果不删图片                                                                          |
-| UP-17 | Bearer 仅 POST 公共上传，Cookie 不替代；内部状态/设置/清理拒绝 Token；撤销不级联删任务                                                               |
+| UP-17 | Bearer 仅 POST 公共上传与 GET 上传能力，Cookie 不替代；内部状态/设置/清理拒绝 Token；撤销不级联删任务                                                |
 | UP-18 | 单文件 multipart 任意字段顺序、重复数组/单值错误、未知字段、第二文件和截断全部有真实请求验证                                                         |
 | UP-19 | API 仅 ready 返回 201；处理失败非2xx含 ID/failed/步骤；交接前失败明确无资产                                                                          |
 | UP-20 | HTTP等待超时/断连不篡改媒体状态，只等待本次任务；期间回收/删除返回原 ID 和不可用；无公开轮询，重复 POST 新图风险明确                                 |

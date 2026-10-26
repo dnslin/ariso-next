@@ -8,8 +8,10 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY integrations/browser-extension/package.json ./integrations/browser-extension/package.json
+COPY integrations/picgo/package.json ./integrations/picgo/package.json
 RUN npm install --global "$(node --print "require('./package.json').packageManager")" \
-    && pnpm install --frozen-lockfile
+    && pnpm --filter ariso-next install --frozen-lockfile
 
 COPY next.config.ts postcss.config.mjs tsconfig.json tsconfig.runtime.json ./
 COPY src ./src

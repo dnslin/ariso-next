@@ -39,6 +39,21 @@ export const publicUploadErrorDetailSchema = z.strictObject({
   message: z.string().min(1),
 });
 
+/** Minimal read-only configuration for upload clients, never management lists. */
+export const publicUploadCapabilitiesSchema = z.strictObject({
+  maxFileBytes: z.int().positive(),
+  queueLimit: z.int().positive(),
+  defaultVisibility: z.enum(['public', 'private']),
+  defaultLinkVersion: z.enum(versionKinds),
+  defaultStorageAvailable: z.boolean(),
+  requestId: idSchema,
+});
+
+export const publicUploadCapabilitiesErrorSchema = z.strictObject({
+  error: publicUploadErrorDetailSchema,
+  requestId: idSchema,
+});
+
 const processingVersionSchema = z.strictObject({
   status: z.enum(['succeeded', 'not_applicable', 'disabled', 'not_generated']),
   reason: z.string().nullable(),
@@ -109,3 +124,9 @@ export type PublicUploadErrorDetail = z.infer<
 export type PublicUploadSuccess = z.infer<typeof publicUploadSuccessSchema>;
 export type PublicUploadError = z.infer<typeof publicUploadErrorSchema>;
 export type PublicUploadResponse = z.infer<typeof publicUploadResponseSchema>;
+export type PublicUploadCapabilities = z.infer<
+  typeof publicUploadCapabilitiesSchema
+>;
+export type PublicUploadCapabilitiesError = z.infer<
+  typeof publicUploadCapabilitiesErrorSchema
+>;

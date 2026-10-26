@@ -59,7 +59,7 @@ Core CLI、Core Server 和 Typora 的 Core 模式仍须分别验证；**退出�
 npm install --save '/absolute/path/picgo-plugin-ariso-0.1.0.tgz'
 ```
 
-源码开发与测试仍使用项目锁定的 Node 24、pnpm 11.19.0 及独立插件锁文件。更多本地导入方式见 [PicGo 插件安装测试说明](https://docs.picgo.app/core/dev-guide/deploy)。
+源码开发与测试使用 Node 24、pnpm 11.19.0 和仓库根锁文件。先在根目录执行 `pnpm install --frozen-lockfile`，再用 `pnpm --filter picgo-plugin-ariso lint`、`typecheck`、`test` 检查本模块。发布标签为 `picgo-v<版本>`，GitHub Release 提供 `.tgz`；npm 发布由维护者另行执行。完整边界见[模块组织](./modules.md)。更多本地导入方式见 [PicGo 插件安装测试说明](https://docs.picgo.app/core/dev-guide/deploy)。
 
 ## 3. 配置上传器
 

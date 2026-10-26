@@ -55,6 +55,20 @@ picgo use uploader
 
 Windows、Linux、Typora 的 Core 模式与 AWS S3 尚未验证。完整命令、客户端范围和故障证据见[验证记录](https://github.com/dnslin/ariso-next/blob/main/docs/verification/picgo-292/README.md)。
 
+## 源码开发与打包
+
+本包属于 Ariso 同一仓库的 pnpm workspace，独立声明依赖，共用根锁文件。在仓库根目录运行：
+
+```sh
+pnpm install --frozen-lockfile
+pnpm --filter picgo-plugin-ariso lint
+pnpm --filter picgo-plugin-ariso typecheck
+pnpm --filter picgo-plugin-ariso test
+pnpm --filter picgo-plugin-ariso pack
+```
+
+运行时代码为 CommonJS 源码，打包无需编译。`files` 限定发布内容，开发依赖不进入插件运行包。`picgo-v<版本>` 标签工作流生成 `.tgz` GitHub Release；npm 发布仍由维护者另行执行。详见[模块组织](https://github.com/dnslin/ariso-next/blob/main/docs/guides/modules.md)。
+
 ## 许可证
 
 此插件包采用 [MIT](LICENSE) 许可证。

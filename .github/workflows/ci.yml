@@ -14,27 +14,58 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  changes:
+    name: Select affected modules
+    runs-on: ubuntu-24.04
+    outputs:
+      app: ${{ steps.modules.outputs.app }}
+      browser: ${{ steps.modules.outputs.browser }}
+      picgo: ${{ steps.modules.outputs.picgo }}
+      contract: ${{ steps.modules.outputs.contract }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+      - id: modules
+        run: node scripts/ci-module-changes.mjs
+
   checks:
+    needs: changes
+    # Keep the existing required check red if module selection fails, rather than skipping it.
+    if: always() && !cancelled()
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
+      - name: Require successful module selection
+        if: needs.changes.result != 'success'
+        run: |
+          echo "Affected-module selection failed" >&2
+          exit 1
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
         with:
           node-version: '24'
       - uses: pnpm/action-setup@v6
       - run: pnpm install --frozen-lockfile
-      - name: Install PicGo plugin development dependencies
-        run: pnpm --dir integrations/picgo install --frozen-lockfile
-      - run: pnpm run lint
       - run: pnpm run format:check
-      - run: pnpm run openapi:check
-      - run: pnpm run typecheck
+      - name: Lint Ariso
+        if: needs.changes.outputs.app == 'true'
+        run: pnpm run lint
+      - name: Verify public API schema
+        if: needs.changes.outputs.app == 'true'
+        run: pnpm run openapi:check
+      - name: Check Ariso types
+        if: needs.changes.outputs.app == 'true'
+        run: pnpm run typecheck
       # Browser acceptance and browser tooling tests run locally.
       - name: Run unit tests without browser tooling
+        if: needs.changes.outputs.app == 'true'
         run: pnpm run test:unit --reporter=default --reporter=junit --outputFile=test-results/unit.xml
       - name: Preserve unit test reports
-        if: always()
+        if: always() && needs.changes.outputs.app == 'true'
         uses: actions/upload-artifact@v7
         with:
           name: unit-tests
@@ -42,8 +73,62 @@ jobs:
           if-no-files-found: warn
           retention-days: 14
 
+      - name: Lint Chrome extension
+        if: needs.changes.outputs.browser == 'true'
+        run: pnpm --filter ariso-browser-extension lint
+      - name: Check Chrome extension types
+        if: needs.changes.outputs.browser == 'true'
+        run: pnpm --filter ariso-browser-extension typecheck
+      - name: Run Chrome extension unit tests
+        if: needs.changes.outputs.browser == 'true'
+        run: pnpm --filter ariso-browser-extension test --reporter=default --reporter=junit --outputFile=../../test-results/browser-unit.xml
+      - name: Preserve Chrome extension unit reports
+        if: always() && needs.changes.outputs.browser == 'true'
+        uses: actions/upload-artifact@v7
+        with:
+          name: browser-extension-tests
+          path: test-results/browser-unit.xml
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Build and package Chrome extension
+        if: needs.changes.outputs.browser == 'true'
+        run: pnpm --filter ariso-browser-extension zip
+      - name: Preserve Chrome extension package
+        if: needs.changes.outputs.browser == 'true'
+        uses: actions/upload-artifact@v7
+        with:
+          name: browser-extension-package
+          path: integrations/browser-extension/.output/*.zip
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Lint PicGo source
+        if: needs.changes.outputs.picgo == 'true'
+        run: pnpm --filter picgo-plugin-ariso lint
+      - name: Check PicGo types
+        if: needs.changes.outputs.picgo == 'true'
+        run: pnpm --filter picgo-plugin-ariso typecheck
+      - name: Run PicGo unit tests
+        if: needs.changes.outputs.picgo == 'true'
+        run: pnpm --filter picgo-plugin-ariso test
+      - name: Package PicGo source
+        if: needs.changes.outputs.picgo == 'true'
+        run: |
+          mkdir -p "$RUNNER_TEMP/picgo-package"
+          pnpm --filter picgo-plugin-ariso pack --pack-destination "$RUNNER_TEMP/picgo-package"
+      - name: Preserve PicGo package
+        if: needs.changes.outputs.picgo == 'true'
+        uses: actions/upload-artifact@v7
+        with:
+          name: picgo-package
+          path: ${{ runner.temp }}/picgo-package/*.tgz
+          if-no-files-found: error
+          retention-days: 14
+
   runtime:
     name: Production integration
+    needs: changes
+    if: needs.changes.outputs.app == 'true'
     env:
       ARISO_BUILD_VERSION: v0.0.0-ci
       ARISO_BUILD_REVISION: ${{ github.sha }}
@@ -56,8 +141,6 @@ jobs:
           node-version: '24'
       - uses: pnpm/action-setup@v6
       - run: pnpm install --frozen-lockfile
-      - name: Install PicGo plugin types for the production build
-        run: pnpm --dir integrations/picgo install --frozen-lockfile
       - name: Build without deployment state
         shell: bash
         run: |
@@ -80,6 +163,8 @@ jobs:
 
   media-tools:
     name: Media tools
+    needs: changes
+    if: needs.changes.outputs.app == 'true'
     env:
       ARISO_BUILD_VERSION: v0.0.0-ci
       ARISO_BUILD_REVISION: ${{ github.sha }}
@@ -92,13 +177,17 @@ jobs:
           node-version: '24'
       - uses: pnpm/action-setup@v6
       - run: pnpm install --frozen-lockfile
-      - name: Install PicGo Core for plugin integration tests
-        run: pnpm --dir integrations/picgo install --frozen-lockfile
       - run: pnpm run build
       - name: Verify production build context
         run: bash scripts/verify-build-context.sh
       - name: Build media test runtime
         run: docker build --build-arg ARISO_BUILD_VERSION --build-arg ARISO_BUILD_REVISION --tag ariso:pr .
+      - name: Verify production image runtime
+        run: >-
+          node scripts/verify-release-image.mjs
+          --image ariso:pr
+          --platform linux/amd64
+          --output-dir test-results/release-image
       - name: Run real media tools tests
         run: bash scripts/verify-media-tools.sh ariso:pr
       - name: Preserve media evidence
@@ -106,6 +195,8 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: media-tools
-          path: test-results/media-process.xml
+          path: |
+            test-results/media-process.xml
+            test-results/release-image
           if-no-files-found: warn
           retention-days: 14

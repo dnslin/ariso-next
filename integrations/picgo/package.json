@@ -28,11 +28,15 @@
   },
   "packageManager": "pnpm@11.19.0",
   "scripts": {
+    "lint": "eslint . --max-warnings=0",
     "test": "node --test test/*.test.cjs",
     "typecheck": "tsc --project tsconfig.json"
   },
   "devDependencies": {
+    "@eslint/js": "9.39.5",
     "@types/node": "24.13.4",
+    "eslint": "9.39.5",
+    "globals": "17.4.0",
     "picgo": "3.1.0",
     "typescript": "6.0.3"
   }

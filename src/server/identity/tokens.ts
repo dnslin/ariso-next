@@ -129,14 +129,15 @@ export async function uploadTokenResponse(
   }
 }
 
-/** 供公共单文件上传组合；这里只验证凭据，不接纳或创建上传。 */
+/** 仅供公共上传及其能力查询；这里只验证凭据，不接纳或创建上传。 */
 export async function verifyUploadToken(
   request: Request,
   auth: TokenAuth | null = getAuth(),
 ) {
+  const path = new URL(request.url).pathname;
   if (
-    request.method !== 'POST' ||
-    new URL(request.url).pathname !== '/api/upload'
+    !(request.method === 'POST' && path === '/api/upload') &&
+    !(request.method === 'GET' && path === '/api/upload/capabilities')
   )
     return null;
   const bearer = /^Bearer (\S+)$/i.exec(
