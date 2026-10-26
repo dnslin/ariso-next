@@ -15,4 +15,29 @@
 
 迁移回归实际从主分支0033状态升级，保留智能集合规则、摘要列和原索引、既有迁移记录；两张编辑表新增后重复迁移不重放，外键检查为空。迁移文件15项通过。
 
-其他已执行的定向检查：摘要、迁移、备份快照三文件34项通过；整合后类型检查、完整ESLint通过。后续完整单元、构建、集成、两个真实浏览器专项、独立复核和最终CI结果在PR记录。只有最新提交全部CI通过且没有遗留评审项才合并。
+其他已执行的定向检查：摘要、迁移、备份快照三文件34项通过；整合后类型检查、完整ESLint通过。
+
+## 最终本地验证
+
+生产源码固定为`157a99a094b613bead4a519e4a08be5945a77a4e`，构建身份`v0.0.0-image-editor-pr.4`。随后仅修正一个浏览器就绪等待并追加证据，生产源码未变。
+
+| 实际命令                                                                                                                                    | 结果                                           |
+| ------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------- |
+| 主项目/PicGo `pnpm install --frozen-lockfile`                                                                                               | 通过                                           |
+| `pnpm run db:generate`                                                                                                                      | 生成并审查0034，仅两张编辑表                   |
+| `pnpm run typecheck`、`pnpm run lint`、`pnpm run format:check`、`pnpm run openapi:check`                                                    | 通过                                           |
+| `pnpm run test:unit --maxWorkers=2`                                                                                                         | 261文件、2850项通过，另执行PicGo独立测试       |
+| `ARISO_BUILD_VERSION=v0.0.0-image-editor-pr.4 ARISO_BUILD_REVISION=157a99a094b613bead4a519e4a08be5945a77a4e pnpm run build`                 | 通过，原生绑定及standalone边界校验通过         |
+| `pnpm run test:integration --maxWorkers=2`                                                                                                  | 219文件、2275项通过，包含普通与media-tools两组 |
+| `EGO_TASK_SPACE=6 BROWSER_REPORT_DIR=/tmp/ariso-pr301-merged-editor-browser node scripts/verify-browser.mjs --suite image-editor`           | 19组行为、48组布局通过                         |
+| `EGO_TASK_SPACE=6 BROWSER_REPORT_DIR=/tmp/ariso-pr301-merged-smart-browser node scripts/verify-browser.mjs --suite smart-collections-dedup` | 17组行为、10组布局、12组弹窗布局通过           |
+
+两个浏览器专项错误均为空，临时实例和夹具已清理，测试空间6已关闭。[编辑报告](./final-20261026/editor/image-editor.json)、[智能集合/判重报告](./final-20261026/smart/smart-collections-dedup.json)与同目录runner保留实际状态。
+
+智能集合首轮在重复上传详情中读取弹窗容器后立即断言名称，数据尚未到达。失败截图及随后快照显示正确名称和ID，定位为测试就绪同步而非产品数据错误。改为等待既有`detail-body`标记，保留名称断言并增加图片ID断言；没有改超时或跳过用例，重跑全专项通过。首轮报告保留本机`/tmp/ariso-pr301-merged-smart-browser-attempt1/`。
+
+## 独立复核与合并条件
+
+[标准质量复核](./final-20261026/main-integration-quality.md)与[严格维护性复核](./final-20261026/main-integration-thermo.md)均批准固定整合源码，没有遗留Required。日志修复的[标准复核](./final-20261026/logging-quality.md)与[严格复核](./final-20261026/logging-thermo.md)同样批准，并确认未放宽预算或断言。评审者实际执行范围与复用主代理证据分开记录。
+
+平台最新CI与合并状态记录在PR；只有最终提交全部CI通过且没有遗留评审项才合并。没有发布部署，未使用本机Docker/Colima。此次未重新连接真实R2/SeaweedFS，也未重复其他引擎、物理设备、跨架构或容量验证。

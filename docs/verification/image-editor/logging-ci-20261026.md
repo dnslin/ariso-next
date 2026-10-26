@@ -44,3 +44,5 @@
 - `pnpm run format:check`、`git diff --check`：通过。
 
 本机复用同一生产源码的隔离standalone（构建`v0.0.0-image-editor-pr.3` / `1a2bcfd8`），没有为测试改动重复构建或重跑无关浏览器流程。完整CI会重新构建并执行其全部检查，平台最新结果以[PR #301](https://github.com/dnslin/ariso-next/pull/301)为准。仅全部CI通过且无遗留问题才合并；本机未使用Docker/Colima，没有发布或部署。
+
+随后因主分支合入PR #300而整合最新main，日志修复原样保留；新组合重新构建并通过219文件2275项完整集成。新迁移、浏览器及独立复核证据见[整合记录](./main-integration-20261026.md)。
