@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { randomBytes, randomUUID } from 'node:crypto';
+import { createHash, randomBytes, randomUUID } from 'node:crypto';
 import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
@@ -215,6 +215,7 @@ export async function launchS3Delivery(
             format,
             mime,
             byteSize: bytes.length,
+            contentSha256: createHash('sha256').update(bytes).digest('hex'),
             classification: options.classification ?? 'static',
             snapshot: {
               ...createProcessingSnapshot(tx),

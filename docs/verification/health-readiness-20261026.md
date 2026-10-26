@@ -2,7 +2,7 @@
 
 - 起点：main `5c330551aeeb7236974ffbef0898411a43a2e7c8`，对应[失败CI](https://github.com/dnslin/ariso-next/actions/runs/40252541471)。日志测试4项已通过，唯一失败是健康检查的正常启动用例发生HTTP TimeoutError。
 - 用户要求：修复超时，不放宽或跳过测试。main CI全绿后清理PR #301的分支/worktree，同步主仓库最新main并保留其他未提交改动；不发布部署。
-- 本次代码范围只有`tests/integration/runtime/health.test.ts`。生产健康接口、依赖、CI配置均未改。
+- 健康修复仅涉及`tests/integration/runtime/health.test.ts`。后续完整CI发现并修正的S3交付夹具问题见[补充记录](./s3-delivery-fixture-20261026.md)；生产健康接口、依赖、CI配置均未改。
 
 ## 根因与失败先行
 

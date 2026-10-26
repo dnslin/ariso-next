@@ -1,14 +1,17 @@
-import { eq } from 'drizzle-orm';
+import { createHash } from 'node:crypto';
+import { and, eq } from 'drizzle-orm';
 import { afterAll, beforeAll, expect, it } from 'vitest';
 import { analyticsImageTotals } from '../../../src/server/analytics/schema.ts';
 import {
   mediaImages,
+  mediaJobs,
   mediaObjects,
   mediaSettings,
   mediaVersions,
   versionKinds,
 } from '../../../src/server/media/schema.ts';
 import { storageConfigs } from '../../../src/server/storage/schema.ts';
+import { enqueueFingerprintJobs } from '../../../src/server/media/fingerprints.ts';
 import { launchProtocolDelivery } from './s3-fixture.ts';
 
 let app: Awaited<ReturnType<typeof launchProtocolDelivery>>;
@@ -17,6 +20,54 @@ beforeAll(async () => {
 }, 30000);
 afterAll(async () => {
   await app?.close();
+});
+
+it('published fixtures carry the actual uploaded original digest without background backfill', async () => {
+  const asset = await app.seed();
+  const object = app.db
+    .select()
+    .from(mediaObjects)
+    .where(eq(mediaObjects.id, asset.objectId))
+    .get()!;
+  expect(object.contentSha256).toBe(
+    createHash('sha256').update(asset.bytes).digest('hex'),
+  );
+  expect(enqueueFingerprintJobs(app.db)).toBe(0);
+});
+
+it('presigns an unhashed legacy original without remote inspection while backfill awaits retry', async () => {
+  const asset = await app.seed();
+  app.db.transaction((tx) => {
+    tx.update(mediaObjects)
+      .set({ contentSha256: null })
+      .where(eq(mediaObjects.id, asset.objectId))
+      .run();
+    expect(enqueueFingerprintJobs(tx)).toBe(1);
+    // Keep legitimate background I/O outside this delivery-only measurement.
+    tx.update(mediaJobs)
+      .set({ nextAttemptAt: new Date(Date.now() + 86400000) })
+      .where(
+        and(
+          eq(mediaJobs.imageId, asset.imageId),
+          eq(mediaJobs.kind, 'fingerprint'),
+        ),
+      )
+      .run();
+  });
+  const before = app.endpoint.requests.length;
+  const response = await request(asset.imageId);
+  expect(response.status).toBe(302);
+  expect(app.endpoint.requests.length).toBe(before);
+  expect(
+    app.db
+      .select()
+      .from(mediaObjects)
+      .where(eq(mediaObjects.id, asset.objectId))
+      .get()!.contentSha256,
+  ).toBeNull();
+  const remote = await fetch(response.headers.get('location')!);
+  expect(remote.status).toBe(200);
+  expect(Buffer.from(await remote.arrayBuffer())).toEqual(asset.bytes);
 });
 
 async function request(
