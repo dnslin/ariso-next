@@ -360,3 +360,5 @@ export {
   mediaSizeRequests,
   mediaSizeCandidates,
 } from './size-schema.ts';
+
+export { mediaEditRequests, mediaEditTemplates } from './editing-schema.ts';

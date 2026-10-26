@@ -38,12 +38,23 @@ function records(run: Awaited<ReturnType<typeof launch>>) {
   });
 }
 
-it('隔离最终产物启动及正常请求输出逐行 JSON，故障入口不进入生产应用', async () => {
-  const run = await launch(app, directory);
+async function expectProductionLogging(overrides: Record<string, string> = {}) {
+  const run = await launch(app, directory, overrides);
   try {
+    // Next prints Ready before loading config and request handlers. Use the
+    // existing startup budget for real HTTP readiness, not that early log.
     await expect
-      .poll(() => run.logs(), { timeout: 15000 })
-      .toContain('Ready in');
+      .poll(
+        async () => {
+          const ready = await fetch(`http://127.0.0.1:${run.port}/api/health`, {
+            signal: AbortSignal.timeout(2000),
+          });
+          expect(ready.status).toBe(200);
+          return ready.json();
+        },
+        { timeout: 15000 },
+      )
+      .toEqual({ status: 'ok' });
     const response = await fetch(`http://127.0.0.1:${run.port}/api/health`, {
       signal: AbortSignal.timeout(2000),
     });
@@ -78,6 +89,34 @@ it('隔离最终产物启动及正常请求输出逐行 JSON，故障入口不�
   expect(
     files.some((file) => /framework-error|log-event|^tests/.test(file)),
   ).toBe(false);
+  return run.logs();
+}
+
+it('隔离最终产物启动及正常请求输出逐行 JSON，故障入口不进入生产应用', async () => {
+  await expectProductionLogging();
+}, 30000);
+
+it('Ready日志早于处理器就绪时仍按启动预算检查真实产物，保留原请求期限', async () => {
+  const preload = join(directory, 'delay-logging-router.cjs');
+  // The real Next router loads after its Ready log; reproduce that gap deterministically.
+  await writeFile(
+    preload,
+    `const Module = require('node:module');
+const load = Module._load;
+Module._load = function (id, ...args) {
+  const loaded = load.call(this, id, ...args);
+  if (id !== './router-server') return loaded;
+  return { ...loaded, async initialize(...options) {
+    console.info('test: delayed logging router initialization');
+    await new Promise(resolve => setTimeout(resolve, 2500));
+    return loaded.initialize(...options);
+  } };
+};\n`,
+  );
+  const logs = await expectProductionLogging({
+    NODE_OPTIONS: `--no-experimental-strip-types --require ${JSON.stringify(preload)}`,
+  });
+  expect(logs).toContain('test: delayed logging router initialization');
 }, 30000);
 
 it('最终产物的启动失败为 JSON，保留配置位置且不泄露非法输入', async () => {

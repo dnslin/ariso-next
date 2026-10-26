@@ -24,6 +24,7 @@ import {
 } from './steps.ts';
 import { mediaJobSteps, reprocessVersions } from './reprocess.ts';
 import { mediaReplacements } from './replacement-schema.ts';
+import { prepareEditedOriginal } from './edit-process.ts';
 import { replacementCompression } from './replacement-render.ts';
 import { prepareImageSizes } from './size-process.ts';
 import { advanceMediaStep, settleMediaFailure } from './recovery.ts';
@@ -89,6 +90,9 @@ export async function processMediaJob(
             ? `${storageRoot}${sep}${storage.localPath}`
             : inputDirectory,
       });
+    step = job.step === 'editing' ? 'editing' : 'identify';
+    await prepareEditedOriginal(runtime, jobId, workspace, signal);
+    step = 'identify';
     const { snapshot } = job;
     const replacement =
       job.kind === 'replace'

@@ -55,6 +55,65 @@ const migrate = (folder: string) =>
   migrateRuntimeDatabase(connection.db, folder);
 
 describe('runtime forward migrations', () => {
+  it('从已合入的摘要与智能集合迁移升级编辑表，保留规则、列、索引和既有迁移记录', () => {
+    const currentFolder = resolve('drizzle');
+    const journal = JSON.parse(
+      readFileSync(join(currentFolder, 'meta/_journal.json'), 'utf8'),
+    ) as {
+      entries: { idx: number; tag: string }[];
+    };
+    const previousEntries = journal.entries.filter((entry) => entry.idx <= 33);
+    const previousFolder = join(directory, 'main-before-editor');
+    mkdirSync(join(previousFolder, 'meta'), { recursive: true });
+    writeFileSync(
+      join(previousFolder, 'meta/_journal.json'),
+      JSON.stringify({ ...journal, entries: previousEntries }),
+    );
+    for (const entry of previousEntries)
+      copyFileSync(
+        join(currentFolder, `${entry.tag}.sql`),
+        join(previousFolder, `${entry.tag}.sql`),
+      );
+    migrate(previousFolder);
+    const db = connection.db.$client;
+    const columns = db.pragma('table_info(media_objects)') as {
+      name: string;
+    }[];
+    expect(
+      columns.filter((column) => column.name === 'content_sha256'),
+    ).toHaveLength(1);
+    const indexes = db.pragma('index_list(media_objects)');
+    const priorProgress = progress();
+    const rules = JSON.stringify({ tagState: 'none', recentDays: 7 });
+    db.prepare(
+      'INSERT INTO smart_collections(id,name,rules,created_at,updated_at) VALUES(?,?,?,?,?)',
+    ).run('retained', '待整理', rules, 1, 1);
+    migrate(currentFolder);
+    expect(
+      db
+        .prepare(
+          "SELECT name FROM sqlite_master WHERE type='table' AND name LIKE 'media_edit_%' ORDER BY name",
+        )
+        .all(),
+    ).toEqual([
+      { name: 'media_edit_requests' },
+      { name: 'media_edit_templates' },
+    ]);
+    expect(db.pragma('table_info(media_objects)')).toEqual(columns);
+    expect(db.pragma('index_list(media_objects)')).toEqual(indexes);
+    expect(
+      db
+        .prepare('SELECT name,rules FROM smart_collections WHERE id=?')
+        .get('retained'),
+    ).toEqual({ name: '待整理', rules });
+    const upgraded = progress();
+    expect(upgraded).toHaveLength(journal.entries.length);
+    expect(upgraded.slice(0, priorProgress.length)).toEqual(priorProgress);
+    migrate(currentFolder);
+    expect(progress()).toEqual(upgraded);
+    expect(db.pragma('foreign_key_check')).toEqual([]);
+  });
+
   it('真实存储探测数据库升级元数据和 CORS 字段时保留历史数据，新列默认值正确，重跑不重放', () => {
     const currentFolder = resolve('drizzle');
     const journal = JSON.parse(

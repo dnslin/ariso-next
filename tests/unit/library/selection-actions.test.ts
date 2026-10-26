@@ -53,6 +53,7 @@ it('keeps low-frequency tag and processing operations out of the compact context
   expect(selectionBatchActions(items, true)).toEqual([
     'copy',
     'archive',
+    'edit',
     'add-albums',
     'public',
     'remove-albums',

@@ -23,6 +23,7 @@ import { releaseStorageHistory } from '../upload/usage.ts';
 import { createBrandingService } from '../site/branding.ts';
 import { createArchiveService } from '../delivery/archive.ts';
 import { createReplacementService } from '../media/replacement.ts';
+import { createEditPreviewRuntime } from '../media/edit-preview.ts';
 import { createAccessProtectionRuntime } from '../access-protection/runtime.ts';
 import { createContentMutations } from '../runtime/content-mutations.ts';
 import { createBackupQuiescence } from '../backup/quiescence.ts';
@@ -106,6 +107,24 @@ function initializeServerRuntime() {
       resources: mediaResources,
       secretCrypto,
       logger: createRuntimeLogger('media.queue', config.logLevel),
+    });
+    const editPreviews = createEditPreviewRuntime(
+      {
+        db: connection.db,
+        storageRoot: resolve(config.dataDir, 'storage'),
+        temporaryRoot: resolve(config.dataDir, 'tmp'),
+        watermarksRoot: resolve(config.dataDir, 'assets', 'watermarks'),
+        resources: mediaResources,
+        secretCrypto,
+        logger: createRuntimeLogger('media.edit-preview', config.logLevel),
+      },
+      mediaQueue.runTransientPreview,
+    );
+    void editPreviews.ready.catch((err) => {
+      createRuntimeLogger('media.edit-preview', config.logLevel).error(
+        { err },
+        'Image editor preview startup cleanup failed',
+      );
     });
     const uploads = startUploadRuntime({
       db: connection.db,
@@ -191,6 +210,7 @@ function initializeServerRuntime() {
       github,
       mediaResources,
       mediaQueue,
+      editPreviews,
       uploads,
       storageProbes,
       storageReferences,
@@ -218,6 +238,7 @@ function initializeServerRuntime() {
           .finally(() => accessProtection.stop())
           .finally(() => archive.close())
           .finally(() => replacements.close())
+          .finally(() => editPreviews.close())
           .finally(() => uploads.stop())
           .finally(() => mediaQueue.stop())
           .finally(() => watermarks.stop())

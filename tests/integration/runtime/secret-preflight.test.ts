@@ -32,6 +32,8 @@ const productionTableNames = [
   'image_shares',
   'image_tags',
   'media_cleanup_jobs',
+  'media_edit_requests',
+  'media_edit_templates',
   'media_images',
   'media_jobs',
   'media_metadata',

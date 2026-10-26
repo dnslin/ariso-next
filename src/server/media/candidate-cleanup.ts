@@ -5,6 +5,7 @@ import type { MediaRuntime } from './process.ts';
 import { mediaObjects } from './schema.ts';
 
 const unreferenced = sql`not exists (select 1 from media_versions where object_id = ${mediaObjects.id})`;
+const noEditReader = sql`not exists (select 1 from media_edit_requests e join media_jobs j on j.id=e.job_id where e.source_object_id=${mediaObjects.id} and j.status in ('queued','running') and not exists (select 1 from media_objects rendered where rendered.id=e.rendered_object_id and rendered.status='stored'))`;
 const settled = sql`not exists (select 1 from media_jobs where id = ${mediaObjects.jobId} and status in ('queued', 'running'))`;
 const notDeleting = sql`not exists (select 1 from media_images where id = ${mediaObjects.imageId} and deletion_status is not null)`;
 
@@ -16,6 +17,7 @@ export function recoverMediaCandidateCleanup(db: MediaRuntime['db']) {
       and(
         eq(mediaObjects.status, 'cleanup_failed'),
         unreferenced,
+        noEditReader,
         settled,
         notDeleting,
       ),
@@ -37,6 +39,7 @@ export async function cleanupMediaCandidates(
       and(
         eq(mediaObjects.status, 'cleanup_pending'),
         unreferenced,
+        noEditReader,
         settled,
         notDeleting,
       ),

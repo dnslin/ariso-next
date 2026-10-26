@@ -210,7 +210,10 @@ function hasActiveJob(db: BetterSQLite3Database, imageId: string) {
           inArray(mediaJobs.status, ['queued', 'running']),
         ),
       )
-      .get() !== undefined
+      .get() !== undefined ||
+    db.get(
+      sql`select 1 from media_edit_requests e join media_jobs j on j.id=e.job_id where e.source_image_id=${imageId} and j.status in ('queued','running') and not exists (select 1 from media_objects rendered where rendered.id=e.rendered_object_id and rendered.status='stored') limit 1`,
+    ) !== undefined
   );
 }
 

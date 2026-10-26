@@ -1,0 +1,26 @@
+{
+  "service": "r2",
+  "startedAt": "2026-10-25T13:48:13.298Z",
+  "finishedAt": "2026-10-25T13:48:57.435Z",
+  "environment": {
+    "node": "v24.18.1",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "target": {
+    "endpoint": "https://24aefab5f3cb70b3568d7aeaf292135b.r2.cloudflarestorage.com",
+    "bucket": "image"
+  },
+  "status": "passed",
+  "checks": [
+    "formal authenticated multipart upload into fixture-owned S3 namespace",
+    "owner source endpoint streams exact original bytes without redirect",
+    "Logo upload and authenticated pixels; template create/read/rename preserve full recipe",
+    "native PNG original/site-watermark previews preserve proportions and create no library images",
+    "default copy, exact-request idempotency, real mask pixels/full dimensions/SHA, source bytes preserved",
+    "overwrite preserves ID/associations and rebuilds saved roles/sizes after settings change; metadata/SHA refresh; copy remains independent",
+    "template deletion leaves previously saved flat image pixels unchanged"
+  ],
+  "cleanup": "passed: only fixture-owned exact keys removed and confirmed absent",
+  "error": null
+}
