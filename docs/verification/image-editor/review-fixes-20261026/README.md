@@ -2,7 +2,7 @@
 
 - 日期：2026-10-26，Asia/Shanghai。
 - 用户要求：先规划，再修复两份独立评审的问题；继续不合并、发布或部署。
-- [修复计划](../../../../tasks/image-editor/plan.md#pr-301-评审修复计划2026-10-26)、[任务清单](../../../../tasks/image-editor/todo.md#pr-301-评审修复)。原组合工作区没有改动。
+- [修复计划](https://github.com/dnslin/ariso-next/blob/4b64ed7ad81e96cb9abd62520c5abbbfc31b77e5/tasks/image-editor/plan.md#pr-301-评审修复计划2026-10-26)、[任务清单](https://github.com/dnslin/ariso-next/blob/4b64ed7ad81e96cb9abd62520c5abbbfc31b77e5/tasks/image-editor/todo.md#pr-301-评审修复)。原组合工作区没有改动。
 - 原评审提交：`8f9fce05`。修复生产源码及最终构建提交：`1a2bcfd8b63187f8364a411870911cb2d57bb00b`，构建版本`v0.0.0-image-editor-pr.3`。
 - 环境：macOS arm64、Node24.18.1、pnpm11.19.0、原生ImageMagick/ExifTool。未使用本机Docker/Colima。
 

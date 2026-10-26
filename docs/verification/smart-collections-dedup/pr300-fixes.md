@@ -1,6 +1,6 @@
 # PR #300 评审修复（2026-10-26）
 
-用户要求先规划，再修复评审问题。基线为6bf923d5；[计划与验收](../../../tasks/pr300-review-fixes/plan.md)、[任务表](../../../tasks/pr300-review-fixes/todo.md)单独记录，不覆盖备份任务。修改限定当前独立工作树，不连接生产数据，暂不合并、发布或部署。
+用户要求先规划，再修复评审问题。基线为6bf923d5；[计划与验收](https://github.com/dnslin/ariso-next/blob/4b64ed7ad81e96cb9abd62520c5abbbfc31b77e5/tasks/pr300-review-fixes/plan.md)、[任务表](https://github.com/dnslin/ariso-next/blob/4b64ed7ad81e96cb9abd62520c5abbbfc31b77e5/tasks/pr300-review-fixes/todo.md)单独记录，不覆盖备份任务。修改限定当前独立工作树，不连接生产数据，暂不合并、发布或部署。
 
 ## 已确认问题与修正
 

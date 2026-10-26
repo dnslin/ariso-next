@@ -1,6 +1,6 @@
 # 备份与恢复：依赖与隔离实验记录
 
-日期：2026-10-22。对应[技术方案](../../../tasks/plan.md)和[任务清单 A01/A02/A05](../../../tasks/todo.md)。
+日期：2026-10-22。对应[技术方案](https://github.com/dnslin/ariso-next/blob/4b64ed7ad81e96cb9abd62520c5abbbfc31b77e5/tasks/plan.md)和[任务清单 A01/A02/A05](https://github.com/dnslin/ariso-next/blob/4b64ed7ad81e96cb9abd62520c5abbbfc31b77e5/tasks/todo.md)。
 
 本轮完成新依赖安装、归档格式和恢复启用实验。产品备份/恢复接口、内容暂停、启动和 CLI 接入尚未实现。实验只使用自建临时数据，没有读取现有站点图片、配置密钥或 S3；没有提交、推送、发布或部署。
 
