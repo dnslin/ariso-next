@@ -20,6 +20,11 @@ const positiveInteger = z
 const instant = z.iso
   .datetime({ offset: true })
   .transform((value) => new Date(value).toISOString());
+const byteBound = z
+  .string()
+  .regex(/^(0|[1-9]\d*)$/)
+  .transform(Number)
+  .pipe(z.number().int().nonnegative().safe());
 
 /** Shared by HTTP and future filter controls; unknown/scope-inapplicable fields are errors. */
 export const libraryQuerySchema = z
@@ -32,6 +37,11 @@ export const libraryQuerySchema = z
       .default(''),
     albumId: id.optional(),
     tagId: z.array(id).default([]),
+    tagState: z.literal('none').optional(),
+    sizeGreaterThan: byteBound.optional(),
+    sizeLessThan: byteBound.optional(),
+    recentDays: positiveInteger.pipe(z.number().max(36500)).optional(),
+    relativeTo: instant.optional(),
     uploadedFrom: instant.optional(),
     uploadedBefore: instant.optional(),
     format: z
@@ -68,6 +78,21 @@ export const libraryQuerySchema = z
   .superRefine((value, ctx) => {
     const reject = (message: string) =>
       ctx.addIssue({ code: 'custom', message });
+    if (value.tagState && value.tagId.length)
+      reject('无标签与指定标签不能同时筛选');
+    if (
+      value.sizeGreaterThan !== undefined &&
+      value.sizeLessThan !== undefined &&
+      value.sizeGreaterThan >= value.sizeLessThan
+    )
+      reject('原图大小下界必须小于上界');
+    if ((value.recentDays === undefined) !== (value.relativeTo === undefined))
+      reject('最近天数需要固定的本次查询时刻');
+    if (
+      value.recentDays !== undefined &&
+      (value.uploadedFrom || value.uploadedBefore)
+    )
+      reject('最近天数与绝对上传日期不能同时筛选');
     if (value.page !== undefined && value.cursor !== undefined)
       reject('页码与游标不能同时使用');
     if (
@@ -92,6 +117,10 @@ export const libraryQuerySchema = z
     if (
       value.scope === 'trash' &&
       (value.albumId !== undefined ||
+        value.tagState !== undefined ||
+        value.recentDays !== undefined ||
+        value.sizeGreaterThan !== undefined ||
+        value.sizeLessThan !== undefined ||
         value.tagId.length > 0 ||
         value.uploadedFrom !== undefined ||
         value.uploadedBefore !== undefined ||
@@ -106,7 +135,22 @@ export const libraryQuerySchema = z
       q: value.q,
       albumId: value.albumId ?? null,
       tagIds: [...new Set(value.tagId)].sort(),
-      uploadedFrom: value.uploadedFrom ?? null,
+      ...(value.tagState ? { tagState: value.tagState } : {}),
+      ...(value.sizeGreaterThan !== undefined
+        ? { sizeGreaterThan: value.sizeGreaterThan }
+        : {}),
+      ...(value.sizeLessThan !== undefined
+        ? { sizeLessThan: value.sizeLessThan }
+        : {}),
+      ...(value.recentDays !== undefined
+        ? { recentDays: value.recentDays, relativeTo: value.relativeTo! }
+        : {}),
+      uploadedFrom:
+        value.recentDays !== undefined
+          ? new Date(
+              Date.parse(value.relativeTo!) - value.recentDays * 86400000,
+            ).toISOString()
+          : (value.uploadedFrom ?? null),
       uploadedBefore: value.uploadedBefore ?? null,
       format: value.format ?? null,
       storageId: value.storageId ?? null,

@@ -66,6 +66,7 @@ function activeContentJob(
     .where(
       and(
         eq(mediaJobs.imageId, imageId),
+        ne(mediaJobs.kind, 'fingerprint'),
         inArray(mediaJobs.status, ['queued', 'running']),
         exceptJobId ? ne(mediaJobs.id, exceptJobId) : undefined,
       ),

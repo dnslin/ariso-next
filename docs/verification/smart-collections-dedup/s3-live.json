@@ -1,0 +1,268 @@
+[
+  {
+    "service": "seaweedfs",
+    "node": "v24.18.1",
+    "startedAt": "2026-10-23T18:25:17.179Z",
+    "finishedAt": "2026-10-23T18:25:26.305Z",
+    "status": "passed",
+    "checks": [
+      {
+        "name": "direct-put-conditional-complete-idempotent",
+        "status": "passed",
+        "detail": {
+          "imageId": "57fde58c-ebaf-4f89-857f-83d2d5c6b53e",
+          "jobId": "f8320ce5-a623-40ef-a542-15411d65c0c7"
+        }
+      },
+      {
+        "name": "direct-media-and-original-delivery",
+        "status": "passed",
+        "detail": {
+          "imageId": "57fde58c-ebaf-4f89-857f-83d2d5c6b53e",
+          "jobId": "f8320ce5-a623-40ef-a542-15411d65c0c7",
+          "processingStatus": "ready"
+        }
+      },
+      {
+        "name": "identical-direct-upload-is-skipped-without-another-image-or-job",
+        "status": "passed",
+        "detail": {
+          "state": "duplicate",
+          "existingImageId": "57fde58c-ebaf-4f89-857f-83d2d5c6b53e",
+          "images": 1,
+          "jobs": 1,
+          "temporaryObject": "absent",
+          "finalCandidate": "absent"
+        }
+      },
+      {
+        "name": "old-signed-put-does-not-replace-formal-original",
+        "status": "passed",
+        "detail": {
+          "lateTemporaryKey": "uploads/d086bf61-4d81-4d3f-a81d-d818f5daeef5/57fde58c-ebaf-4f89-857f-83d2d5c6b53e",
+          "formalImageId": "57fde58c-ebaf-4f89-857f-83d2d5c6b53e"
+        }
+      },
+      {
+        "name": "cancel-and-late-complete-cannot-create-image",
+        "status": "passed",
+        "detail": {
+          "sessionId": "edf8a7fa-6e05-4095-97aa-20ee9eba9750",
+          "lateKey": "uploads/edf8a7fa-6e05-4095-97aa-20ee9eba9750/ed18de4b-76ec-4848-ada4-360545e7ebff"
+        }
+      },
+      {
+        "name": "relay-receive-publish-and-transfer",
+        "status": "passed",
+        "detail": {
+          "sessionId": "084e6185-307b-4a0d-aa07-e9a3867fc27f",
+          "imageId": "99d2a607-a854-4fa0-bc3f-e0ff57d9cd8b",
+          "reason": "当前站点的跨域检测未通过或已失效，本次文件通过 Ariso 服务器上传到 S3。"
+        }
+      },
+      {
+        "name": "relay-media-and-original-delivery",
+        "status": "passed",
+        "detail": {
+          "imageId": "99d2a607-a854-4fa0-bc3f-e0ff57d9cd8b",
+          "jobId": "f6367415-54ce-4583-89e6-242577d4a1df",
+          "processingStatus": "ready"
+        }
+      },
+      {
+        "name": "identical-relay-upload-matches-the-direct-original-without-another-image-or-job",
+        "status": "passed",
+        "detail": {
+          "state": "duplicate",
+          "existingImageId": "57fde58c-ebaf-4f89-857f-83d2d5c6b53e",
+          "images": 2,
+          "jobs": 2,
+          "finalCandidate": "absent"
+        }
+      }
+    ],
+    "cleanup": [
+      {
+        "key": "uploads/d086bf61-4d81-4d3f-a81d-d818f5daeef5/57fde58c-ebaf-4f89-857f-83d2d5c6b53e",
+        "currentObject": "absent"
+      },
+      {
+        "key": "original/57fde58c-ebaf-4f89-857f-83d2d5c6b53e.png",
+        "currentObject": "absent"
+      },
+      {
+        "key": "images/57fde58c-ebaf-4f89-857f-83d2d5c6b53e/compressed/fa1f971c-e6bf-4274-96cf-0ec3399d3048",
+        "currentObject": "absent"
+      },
+      {
+        "key": "images/57fde58c-ebaf-4f89-857f-83d2d5c6b53e/thumbnail/c7332364-07a3-4b07-9bcc-1067f6cdf9c7",
+        "currentObject": "absent"
+      },
+      {
+        "key": "uploads/0e934aee-25c6-4044-a736-65ce1f62ee9a/5a069ebe-0a0b-4a2f-95a1-906dc9dab51d",
+        "currentObject": "absent"
+      },
+      {
+        "key": "original/5a069ebe-0a0b-4a2f-95a1-906dc9dab51d.png",
+        "currentObject": "absent"
+      },
+      {
+        "key": "uploads/edf8a7fa-6e05-4095-97aa-20ee9eba9750/ed18de4b-76ec-4848-ada4-360545e7ebff",
+        "currentObject": "absent"
+      },
+      {
+        "key": "original/99d2a607-a854-4fa0-bc3f-e0ff57d9cd8b.png",
+        "currentObject": "absent"
+      },
+      {
+        "key": "images/99d2a607-a854-4fa0-bc3f-e0ff57d9cd8b/compressed/70c27b75-a448-411e-977b-8b177f8ee7ab",
+        "currentObject": "absent"
+      },
+      {
+        "key": "images/99d2a607-a854-4fa0-bc3f-e0ff57d9cd8b/thumbnail/ed11b867-8c15-44d7-9141-d6f3a0675f71",
+        "currentObject": "absent"
+      },
+      {
+        "key": "original/04083724-de1f-4b24-a9be-58f68ca1ba05.png",
+        "currentObject": "absent"
+      }
+    ],
+    "limits": [
+      "Backend S3/direct/relay/media/delivery only; route fixtures seed current CORS status. Browser CORS is verified separately.",
+      "No bucket policy/CORS changes, AWS service, container release or scanner validation."
+    ]
+  },
+  {
+    "service": "r2",
+    "node": "v24.18.1",
+    "startedAt": "2026-10-23T18:25:26.328Z",
+    "finishedAt": "2026-10-23T18:25:50.505Z",
+    "status": "passed",
+    "checks": [
+      {
+        "name": "direct-put-conditional-complete-idempotent",
+        "status": "passed",
+        "detail": {
+          "imageId": "d1bc6ffa-55cb-4d2a-b6b5-605ec19c8ad0",
+          "jobId": "40cdd51c-950d-4418-9a1b-589bbac7cd6a"
+        }
+      },
+      {
+        "name": "direct-media-and-original-delivery",
+        "status": "passed",
+        "detail": {
+          "imageId": "d1bc6ffa-55cb-4d2a-b6b5-605ec19c8ad0",
+          "jobId": "40cdd51c-950d-4418-9a1b-589bbac7cd6a",
+          "processingStatus": "ready"
+        }
+      },
+      {
+        "name": "identical-direct-upload-is-skipped-without-another-image-or-job",
+        "status": "passed",
+        "detail": {
+          "state": "duplicate",
+          "existingImageId": "d1bc6ffa-55cb-4d2a-b6b5-605ec19c8ad0",
+          "images": 1,
+          "jobs": 1,
+          "temporaryObject": "absent",
+          "finalCandidate": "absent"
+        }
+      },
+      {
+        "name": "old-signed-put-does-not-replace-formal-original",
+        "status": "passed",
+        "detail": {
+          "lateTemporaryKey": "uploads/4352c4ba-38d2-412a-b7cc-4fdfc1f7363e/d1bc6ffa-55cb-4d2a-b6b5-605ec19c8ad0",
+          "formalImageId": "d1bc6ffa-55cb-4d2a-b6b5-605ec19c8ad0"
+        }
+      },
+      {
+        "name": "cancel-and-late-complete-cannot-create-image",
+        "status": "passed",
+        "detail": {
+          "sessionId": "5a90e3cd-4074-4882-95f4-a62b43f00ca1",
+          "lateKey": "uploads/5a90e3cd-4074-4882-95f4-a62b43f00ca1/a4cad402-6481-46c6-8ab4-f86bc541f6a5"
+        }
+      },
+      {
+        "name": "relay-receive-publish-and-transfer",
+        "status": "passed",
+        "detail": {
+          "sessionId": "d2e955c9-8f97-4e6a-afae-211fe5b214f0",
+          "imageId": "ccbfac99-ccad-46b0-972f-e42d35f07614",
+          "reason": "当前站点的跨域检测未通过或已失效，本次文件通过 Ariso 服务器上传到 S3。"
+        }
+      },
+      {
+        "name": "relay-media-and-original-delivery",
+        "status": "passed",
+        "detail": {
+          "imageId": "ccbfac99-ccad-46b0-972f-e42d35f07614",
+          "jobId": "a7f5a9e7-83d8-449c-8fc4-4cddacdd5258",
+          "processingStatus": "ready"
+        }
+      },
+      {
+        "name": "identical-relay-upload-matches-the-direct-original-without-another-image-or-job",
+        "status": "passed",
+        "detail": {
+          "state": "duplicate",
+          "existingImageId": "d1bc6ffa-55cb-4d2a-b6b5-605ec19c8ad0",
+          "images": 2,
+          "jobs": 2,
+          "finalCandidate": "absent"
+        }
+      }
+    ],
+    "cleanup": [
+      {
+        "key": "uploads/4352c4ba-38d2-412a-b7cc-4fdfc1f7363e/d1bc6ffa-55cb-4d2a-b6b5-605ec19c8ad0",
+        "currentObject": "absent"
+      },
+      {
+        "key": "original/d1bc6ffa-55cb-4d2a-b6b5-605ec19c8ad0.png",
+        "currentObject": "absent"
+      },
+      {
+        "key": "images/d1bc6ffa-55cb-4d2a-b6b5-605ec19c8ad0/compressed/9f6cd278-acd7-487f-9da8-d1c385314d41",
+        "currentObject": "absent"
+      },
+      {
+        "key": "images/d1bc6ffa-55cb-4d2a-b6b5-605ec19c8ad0/thumbnail/b5ace6bd-ff75-4973-b1da-fe9f5a30a3d0",
+        "currentObject": "absent"
+      },
+      {
+        "key": "uploads/b353afca-0c57-4116-826e-efe10f790dc1/9c36da50-dc25-49d4-9786-6afc91ed5730",
+        "currentObject": "absent"
+      },
+      {
+        "key": "original/9c36da50-dc25-49d4-9786-6afc91ed5730.png",
+        "currentObject": "absent"
+      },
+      {
+        "key": "uploads/5a90e3cd-4074-4882-95f4-a62b43f00ca1/a4cad402-6481-46c6-8ab4-f86bc541f6a5",
+        "currentObject": "absent"
+      },
+      {
+        "key": "original/ccbfac99-ccad-46b0-972f-e42d35f07614.png",
+        "currentObject": "absent"
+      },
+      {
+        "key": "images/ccbfac99-ccad-46b0-972f-e42d35f07614/compressed/949e58b1-c689-4a8d-ac76-a16aa1dbfdec",
+        "currentObject": "absent"
+      },
+      {
+        "key": "images/ccbfac99-ccad-46b0-972f-e42d35f07614/thumbnail/73b4f3dc-8822-44af-acdc-1f8862232fd6",
+        "currentObject": "absent"
+      },
+      {
+        "key": "original/a0f3344a-4bcb-40f5-bd26-fae07337fa21.png",
+        "currentObject": "absent"
+      }
+    ],
+    "limits": [
+      "Backend S3/direct/relay/media/delivery only; route fixtures seed current CORS status. Browser CORS is verified separately.",
+      "No bucket policy/CORS changes, AWS service, container release or scanner validation."
+    ]
+  }
+]

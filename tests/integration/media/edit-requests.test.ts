@@ -24,6 +24,7 @@ import {
 } from '../../../src/server/media/edit-requests.ts';
 import { requestReprocess } from '../../../src/server/media/reprocess.ts';
 import { patchMediaSettings } from '../../../src/server/media/settings.ts';
+import { enqueueFingerprintJobs } from '../../../src/server/media/fingerprints.ts';
 import {
   requestPermanentDelete,
   readMediaCleanup,
@@ -81,6 +82,25 @@ const count = (table: typeof mediaImages | typeof mediaJobs) =>
     .get()!.count;
 
 describe('persistent image edit requests', () => {
+  it.each(['queued', 'running'] as const)(
+    'admits editing while a %s fingerprint backfill retains the original',
+    (status) => {
+      const image = source();
+      expect(enqueueFingerprintJobs(fixture.db)).toBe(1);
+      fixture.db
+        .update(mediaJobs)
+        .set({ status })
+        .where(eq(mediaJobs.kind, 'fingerprint'))
+        .run();
+      expect(readImageEditContext(fixture.db, image.id).sourceObjectId).toBe(
+        image.objectId,
+      );
+      expect(
+        requestImageEdit(fixture.db, image.id, input(image.objectId)),
+      ).toMatchObject({ status: 'queued', mode: 'copy' });
+    },
+  );
+
   it('describes current copy watermark settings independently of old published roles', () => {
     const image = source();
     expect(readImageEditContext(fixture.db, image.id).watermarkPreview).toEqual(

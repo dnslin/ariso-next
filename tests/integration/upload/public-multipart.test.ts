@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -48,7 +49,10 @@ it.each([true, false])(
         },
       },
     );
-    expect(result).toEqual({ byteSize: 5 });
+    expect(result).toEqual({
+      byteSize: 5,
+      sha256: createHash('sha256').update('image').digest('hex'),
+    });
     expect(seen).toEqual([
       ['tag', '旅行'],
       ['tag', 'Go'],

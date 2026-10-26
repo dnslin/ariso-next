@@ -8,7 +8,7 @@ import {
   prepareLocalObjectPath,
   publishLocalObject,
 } from '../storage/local.ts';
-import { acceptSession } from './accept.ts';
+import { acceptSession, finishDuplicateSession } from './accept.ts';
 import { type UploadContext } from './cleanup.ts';
 import { UploadError } from './errors.ts';
 import { receiveMultipart } from './multipart.ts';
@@ -24,6 +24,7 @@ export async function receiveSession(
 ) {
   const { db, storageRoot } = context;
   const initial = getPreparedSession(db, id);
+  if (initial.state === 'duplicate') return initial;
   if (
     initial.route === 'direct' ||
     (initial.state !== 'queued' &&
@@ -105,7 +106,7 @@ export async function receiveSession(
         : session.temporaryPath!;
     await mkdir(dirname(path), { recursive: true });
     let lastProgress = Date.now();
-    const { byteSize } = await receiveMultipart(request, {
+    const { byteSize, sha256 } = await receiveMultipart(request, {
       path,
       resources: (context.resources ??= createMediaResources()),
       maxBytes: submission.maxFileBytes,
@@ -130,12 +131,15 @@ export async function receiveSession(
       .set({
         state: 'validating',
         byteSize,
+        sourceSha256: sha256,
         temporaryBytes: storage.type === 'local' ? byteSize : null,
         confirmedAt: new Date(),
         updatedAt: new Date(),
       })
       .where(eq(uploadSessions.id, id))
       .run();
+    const duplicate = finishDuplicateSession(db, id);
+    if (duplicate) return duplicate;
     // Signature admission does not decode; the durable media job classifies and renders.
     const facts = await identifyImageFile(
       path,

@@ -1,3 +1,4 @@
+import { distinctPng } from '../tests/fixtures/media-formats/distinct-png.ts';
 import assert from 'node:assert/strict';
 import { randomUUID, createHash } from 'node:crypto';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
@@ -411,7 +412,13 @@ export async function verifyBackupS3Provider(
     const images = [];
     for (const [index, storageId] of [localId, ...remoteIds].entries())
       images.push(
-        await upload(source, token.key, png, storageId, `small-${index}.png`),
+        await upload(
+          source,
+          token.key,
+          distinctPng(png, `storage-${index}`),
+          storageId,
+          `small-${index}.png`,
+        ),
       );
     report.sample.sourceImages = images.length;
     const album = await httpJson<{ album: { id: string } }>(

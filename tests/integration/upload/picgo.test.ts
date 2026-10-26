@@ -27,7 +27,7 @@ it('uploads through the packed plugin, real Core lifecycle and isolated Local HT
   try {
     const storage = fixture.connection.db.select().from(storageConfigs).get()!;
     const checks = await verifyPicgoUploads(fixture, packaged, storage.id);
-    expect(checks).toHaveLength(9);
+    expect(checks).toHaveLength(11);
   } finally {
     await fixture.close();
   }

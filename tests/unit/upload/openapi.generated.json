@@ -16,7 +16,7 @@
       "post": {
         "operationId": "uploadImage",
         "summary": "上传一张图片并等待本次处理结果",
-        "description": "只使用 Authorization: Bearer <token>，在读取文件体前认证；Cookie 不能代替。Token 可上传到所有者图库，中途到期或撤销不取消已接纳请求。\n\n每次请求必需且恰好一个 file，字段顺序任意。storageId 省略才采用默认存储；空串无效。visibility 省略采用正式提交时的默认可见性。\n\nalbumId 和 tag 用重复同名字段；相册 ID 去重，不接受名称、逗号串或 albumId[]。标签按名称匹配/创建，逗号属于名称；标签含 1–50 个 Unicode 码点，不含换行或控制字符。拒绝未知字段和重复 storageId/visibility。\n\n文件大小使用接收开始时的站点当前上限。初始默认 50 MiB，可由所有者调整；该默认值不是本站当前上限，规范不把它写成 file 的固定 maxLength。普通字段总字节数不超过 256 KiB。\n\n只有本次媒体任务完成才返回 201，status 表示本次结果；currentImageStatus 仅在当前图片状态不同或已接收后不可用时出现。只列已保存版本。actualVersion 可为 null，此时 defaultResolution.available=false 且 code=VERSION_UNAVAILABLE，固定版本链接仍可用。\n\n私有图片也正常返回 201，但图片链接需要所有者 Cookie；上传 Bearer Token 不授权查看私有图片。\n\n交接后最多等待 900 秒（含排队）。代理与客户端超时应覆盖接收及等待。等待超时或断连不终止已接收后的处理任务；结果不确定时到所有者图库核对。\n\n不提供幂等键或公开状态轮询。每个 POST 都是一次新上传，相同文件也可生成新 imageId；不要盲目自动重发，以免重复。",
+        "description": "只使用 Authorization: Bearer <token>，在读取文件体前认证；Cookie 不能代替。Token 可上传到所有者图库，中途到期或撤销不取消已接纳请求。\n\n每次请求必需且恰好一个 file，字段顺序任意。storageId 省略才采用默认存储；空串无效。visibility 省略采用正式提交时的默认可见性。\n\nalbumId 和 tag 用重复同名字段；相册 ID 去重，不接受名称、逗号串或 albumId[]。标签按名称匹配/创建，逗号属于名称；标签含 1–50 个 Unicode 码点，不含换行或控制字符。拒绝未知字段和重复 storageId/visibility。\n\n文件大小使用接收开始时的站点当前上限。初始默认 50 MiB，可由所有者调整；该默认值不是本站当前上限，规范不把它写成 file 的固定 maxLength。普通字段总字节数不超过 256 KiB。\n\n只有本次媒体任务完成才返回 201，status 表示本次结果；currentImageStatus 仅在当前图片状态不同或已接收后不可用时出现。只列已保存版本。actualVersion 可为 null，此时 defaultResolution.available=false 且 code=VERSION_UNAVAILABLE，固定版本链接仍可用。\n\n私有图片也正常返回 201，但图片链接需要所有者 Cookie；上传 Bearer Token 不授权查看私有图片。\n\n交接后最多等待 900 秒（含排队）。代理与客户端超时应覆盖接收及等待。等待超时或断连不终止已接收后的处理任务；结果不确定时到所有者图库核对。\n\n不提供幂等键或公开状态轮询。完整原文件按 SHA-256 检测重复，改名仍视为相同内容；命中当前原图（含回收站）返回 409 / UPLOAD_DUPLICATE，不新增图片、不覆盖已有设置、不返回已有图片链接。旧图库指纹尚未补齐时只能检测已覆盖图片。结果不确定时先核对图库，不盲目自动重发。",
         "security": [{ "uploadToken": [] }],
         "x-wait-timeout-ms": 900000,
         "requestBody": {
@@ -97,7 +97,7 @@
             }
           },
           "409": {
-            "description": "存储/目标状态冲突，或已接收图片已回收、删除/任务不可用（IMAGE_UNAVAILABLE，保留原 imageId）。 尚未创建资产时 imageId=null、status=not_created；已接收后的错误保留 imageId。error 包含 code、stage、message，requestId 用于诊断。",
+            "description": "完全相同的原文件返回 UPLOAD_DUPLICATE，stage=deduplication、imageId=null、status=not_created；不返回已有图片的 ID、名称或链接。亦用于存储/目标状态冲突，或已接收图片已回收、删除/任务不可用（IMAGE_UNAVAILABLE，保留原 imageId）。 尚未创建资产时 imageId=null、status=not_created；已接收后的错误保留 imageId。error 包含 code、stage、message，requestId 用于诊断。",
             "headers": {
               "Cache-Control": {
                 "description": "结果禁止共享缓存。",

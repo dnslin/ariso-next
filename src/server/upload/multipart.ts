@@ -1,4 +1,5 @@
 import type { createMediaResources } from '../media/resources.ts';
+import { createHash } from 'node:crypto';
 import { Readable, Transform } from 'node:stream';
 import { pipeline } from 'node:stream/promises';
 import busboy from 'busboy';
@@ -36,7 +37,8 @@ export async function receiveMultipart(
     onField?: (name: string, value: string) => void;
     onFile?: (info: busboy.FileInfo) => void;
   },
-): Promise<{ byteSize: number }> {
+): Promise<{ byteSize: number; sha256: string }> {
+  const hash = createHash('sha256');
   const error = (
     code: string,
     status: number,
@@ -224,6 +226,9 @@ export async function receiveMultipart(
       },
       mapError: diskFailure,
       onFailure: fail,
+      onChunk: (chunk) => {
+        hash.update(chunk);
+      },
       onProgress(bytes) {
         byteSize = bytes;
         idle.refresh();
@@ -271,7 +276,7 @@ export async function receiveMultipart(
         400,
         'Received size differs from declared size',
       );
-    return { byteSize };
+    return { byteSize, sha256: hash.digest('hex') };
   } catch (cause) {
     if (cause instanceof MultipartReceiveError || cause instanceof UploadError)
       throw cause;

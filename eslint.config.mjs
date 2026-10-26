@@ -30,6 +30,8 @@ export default defineConfig([
     'prototypes/backup-restore/next-env.d.ts',
     'prototypes/image-editor/.next/**',
     'prototypes/image-editor/next-env.d.ts',
+    'prototypes/smart-collections/.next/**',
+    'prototypes/smart-collections/next-env.d.ts',
     'out/**',
     'build/**',
     'dist/**',

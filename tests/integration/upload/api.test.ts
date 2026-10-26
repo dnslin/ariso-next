@@ -573,25 +573,36 @@ it('returns a real failed image and failed step while retaining original and ear
   }
 }, 30000);
 
-it('a repeated POST creates a new image; its upload Token cannot manage Tokens, use Web uploads or read private content', async () => {
-  const ids: string[] = [];
-  for (let attempt = 0; attempt < 2; attempt++) {
-    const response = await fixture.upload(
-      key,
-      fixture.form([['visibility', 'private']]),
-    );
-    expect(response.status, await response.clone().text()).toBe(201);
-    ids.push((await response.json()).imageId);
-  }
-  expect(ids[0]).not.toBe(ids[1]);
-  expect(fixture.connection.db.select().from(mediaImages).all()).toHaveLength(
-    2,
+it('a repeated POST reports a duplicate without its private image identity; the upload Token still cannot manage Tokens, use Web uploads or read private content', async () => {
+  const first = await fixture.upload(
+    key,
+    fixture.form([['visibility', 'private']]),
   );
-  expect(fixture.connection.db.select().from(mediaJobs).all()).toHaveLength(2);
+  expect(first.status, await first.clone().text()).toBe(201);
+  const original = await first.json();
+  const duplicate = await errorResult(
+    await fixture.upload(key, fixture.form([['visibility', 'private']])),
+    409,
+    'deduplication',
+  );
+  expect(duplicate.error.code).toBe('UPLOAD_DUPLICATE');
+  expect(JSON.stringify(duplicate)).not.toContain(original.imageId);
+  expect(duplicate).not.toHaveProperty('url');
+  expect(duplicate).not.toHaveProperty('versions');
+  expect(fixture.connection.db.select().from(mediaImages).get()).toMatchObject({
+    id: original.imageId,
+    visibility: 'private',
+  });
+  expect(fixture.connection.db.select().from(mediaImages).all()).toHaveLength(
+    1,
+  );
+  expect(fixture.connection.db.select().from(mediaJobs).all()).toHaveLength(1);
   for (const [path, method, body] of [
     ['/api/upload-tokens', 'GET', undefined],
     ['/api/upload-tokens', 'POST', { name: 'denied' }],
     ['/api/uploads/submissions', 'POST', { requestId: 'denied', files: [] }],
+    ['/api/uploads/fingerprints', 'GET', undefined],
+    ['/api/uploads/fingerprints', 'POST', undefined],
     ['/api/settings/upload', 'GET', undefined],
   ] as const) {
     const response = await fixture.request(path, {
@@ -606,7 +617,7 @@ it('a repeated POST creates a new image; its upload Token cannot manage Tokens, 
     expect(response.status).toBe(401);
     expect(response.headers.getSetCookie()).toEqual([]);
   }
-  for (const imageId of ids) {
+  for (const imageId of [original.imageId]) {
     const response = await fixture.request(`/i/${imageId}?type=original`, {
       headers: { authorization: `Bearer ${key}` },
     });

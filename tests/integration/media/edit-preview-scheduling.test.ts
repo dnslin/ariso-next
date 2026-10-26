@@ -16,6 +16,8 @@ import { patchMediaSettings } from '../../../src/server/media/settings.ts';
 import { mediaError } from '../../../src/server/media/errors.ts';
 import * as processing from '../../../src/server/media/process.ts';
 import * as previewProcessing from '../../../src/server/media/preview-process.ts';
+import * as fingerprinting from '../../../src/server/media/fingerprint-job.ts';
+import { enqueueFingerprintJobs } from '../../../src/server/media/fingerprints.ts';
 
 let app: ReturnType<typeof collectionFixture>;
 let queue: ReturnType<typeof startMediaQueue> | undefined;
@@ -73,6 +75,41 @@ const status = (jobId: string) =>
   app.db.select().from(mediaJobs).where(eq(mediaJobs.id, jobId)).get()!.status;
 
 describe('transient editor previews in the media scheduler', () => {
+  it('runs an interactive preview before an older background fingerprint job', async () => {
+    const accepted = enqueue();
+    finish(accepted.jobId);
+    expect(enqueueFingerprintJobs(app.db)).toBe(1);
+    app.db
+      .update(mediaJobs)
+      .set({ createdAt: new Date(1) })
+      .where(eq(mediaJobs.kind, 'fingerprint'))
+      .run();
+    const release = Promise.withResolvers<void>();
+    const started: string[] = [];
+    vi.spyOn(fingerprinting, 'processFingerprintJob').mockImplementation(
+      async (_runtime, jobId) => {
+        started.push('fingerprint');
+        await release.promise;
+        finish(jobId);
+      },
+    );
+    const service = start();
+    const preview = service.runTransientPreview(async () => {
+      started.push('preview');
+      return 'interactive';
+    }, new AbortController().signal);
+    try {
+      await vi.waitFor(() => expect(started[0]).toBe('preview'));
+      await expect(preview).resolves.toBe('interactive');
+      await vi.waitFor(() =>
+        expect(started).toEqual(['preview', 'fingerprint']),
+      );
+    } finally {
+      release.resolve();
+      await preview;
+    }
+  });
+
   it('shares one configured slot with persistent work and returns each callback result in order', async () => {
     const releasePersistent = Promise.withResolvers<void>();
     const releaseFirst = Promise.withResolvers<void>();

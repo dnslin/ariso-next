@@ -20,10 +20,12 @@ export function TrashRecord({
   record,
   onBack,
   onStatistics,
+  backLabel = '返回回收站列表',
 }: {
   record: LibraryDetail;
   onBack: () => void;
-  onStatistics: () => void;
+  onStatistics?: () => void;
+  backLabel?: string;
 }) {
   const preview = record.versions.find(
     (version) => version.kind === initialPreview(record),
@@ -61,7 +63,7 @@ export function TrashRecord({
         <Button
           variant="outline"
           className="min-h-11 justify-self-start rounded-lg px-3 text-sm"
-          aria-label="返回回收站列表"
+          aria-label={backLabel}
           onPress={onBack}
         >
           <ArrowLeft size={16} aria-hidden />
@@ -76,18 +78,20 @@ export function TrashRecord({
       >
         回收记录
       </ComponentEntrance>
-      <ComponentEntrance delay={0.055} className="w-fit">
-        <Button
-          variant="ghost"
-          aria-label="图片访问统计"
-          data-testid="trash-statistics-entry"
-          className="min-h-11 w-fit gap-2 rounded-lg"
-          onPress={onStatistics}
-        >
-          <BarChart3 size={18} aria-hidden />
-          访问统计
-        </Button>
-      </ComponentEntrance>
+      {onStatistics ? (
+        <ComponentEntrance delay={0.055} className="w-fit">
+          <Button
+            variant="ghost"
+            aria-label="图片访问统计"
+            data-testid="trash-statistics-entry"
+            className="min-h-11 w-fit gap-2 rounded-lg"
+            onPress={onStatistics}
+          >
+            <BarChart3 size={18} aria-hidden />
+            访问统计
+          </Button>
+        </ComponentEntrance>
+      ) : null}
       <p>
         {record.displayName} · {record.trashedAt ? '已回收' : '已恢复'}
       </p>

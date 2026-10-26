@@ -12,6 +12,7 @@ export type UploadState =
   | 'processing-queued'
   | 'processing'
   | 'ready'
+  | 'duplicate'
   | 'upload-failed'
   | 'processing-failed'
   | 'cancelled'
@@ -33,6 +34,8 @@ export type UploadItem = {
   frozenSubmission?: UploadSubmissionSummary;
   sessionId?: string;
   imageId?: string;
+  existingImageId?: string;
+  existingImageTrashed?: boolean;
   jobId?: string;
   error?: string;
   step?: string;
@@ -55,6 +58,8 @@ export type UploadSessionResult = Pick<
   | 'error'
   | 'cleanupStatus'
 > & {
+  existingImageId?: string | null;
+  existingImageTrashed?: boolean | null;
   route?: 'local' | 'relay' | 'direct' | null;
   routeReason?: string | null;
   job?: Pick<

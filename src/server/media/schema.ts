@@ -154,7 +154,7 @@ export const mediaJobs = sqliteTable(
       .notNull()
       .references(() => mediaImages.id),
     kind: text('kind', {
-      enum: ['process', 'metadata', 'replace', 'size'],
+      enum: ['process', 'metadata', 'replace', 'size', 'fingerprint'],
     }).notNull(),
     scope: text('scope', {
       enum: ['all', 'compressed', 'thumbnail', 'watermark'],
@@ -227,6 +227,12 @@ export const mediaObjects = sqliteTable(
   },
   (t) => [
     unique('media_objects_storage_key').on(t.storageId, t.key),
+    index('media_objects_content_sha256').on(t.contentSha256),
+    index('media_objects_missing_original_sha256')
+      .on(t.purpose, t.contentSha256)
+      .where(
+        sql`${t.purpose} = 'original' and ${t.contentSha256} is null and ${t.status} = 'stored'`,
+      ),
     unique('media_objects_version_identity').on(t.imageId, t.id, t.purpose),
     foreignKey({
       columns: [t.imageId, t.storageId],

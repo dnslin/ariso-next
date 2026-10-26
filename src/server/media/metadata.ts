@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import { ExecaError } from 'execa';
-import { and, eq, inArray } from 'drizzle-orm';
+import { and, eq, inArray, ne } from 'drizzle-orm';
 import type { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
 import { mediaImages, mediaJobs, mediaMetadata } from './schema.ts';
 import { storageConfigs } from '../storage/schema.ts';
@@ -75,6 +75,7 @@ export function requestMetadataRead(
         .where(
           and(
             eq(mediaJobs.imageId, imageId),
+            ne(mediaJobs.kind, 'fingerprint'),
             inArray(mediaJobs.status, ['queued', 'running']),
           ),
         )

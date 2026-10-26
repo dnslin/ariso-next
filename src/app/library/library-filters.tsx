@@ -26,6 +26,8 @@ import { libraryDateRange } from '../../server/library/query-dates';
 import type { LibraryFilters } from '../../server/library/query-schema';
 import type { LibraryQueryPatch } from './query-state';
 import { LibraryFilterOptionsField } from './library-filter-options';
+import { LibraryRangeCondition } from './library-range-conditions';
+import { subscribeLibraryChanges } from '../../components/library/library-changes';
 
 type Props = {
   filters: LibraryFilters;
@@ -272,6 +274,9 @@ function DateEditor({
 
 const categories = [
   { id: 'tags', name: '标签' },
+  { id: 'untagged', name: '没有标签' },
+  { id: 'recent', name: '最近上传' },
+  { id: 'size', name: '原图大小' },
   { id: 'date', name: '上传日期' },
   { id: 'visibility', name: '可见性' },
   { id: 'status', name: '处理状态' },
@@ -290,6 +295,13 @@ export function LibraryFiltersBar({
 }: Props) {
   const [client] = useState(() => new QueryClient());
   useEffect(() => () => client.clear(), [client]);
+  useEffect(
+    () =>
+      subscribeLibraryChanges(() => {
+        void client.invalidateQueries({ queryKey: ['library-filter-options'] });
+      }),
+    [client],
+  );
   const [added, setAdded] = useState<Category[]>([]);
   const [dateOpen, setDateOpen] = useState(false);
   const [dateBoundary, setDateBoundary] = useState<HTMLElement | null>(null);
@@ -299,7 +311,14 @@ export function LibraryFiltersBar({
   const addRef = useRef<HTMLButtonElement>(null);
   const active: Record<Category, boolean> = {
     tags: filters.tagIds.length > 0,
-    date: !!(filters.uploadedFrom || filters.uploadedBefore),
+    untagged: filters.tagState === 'none',
+    recent: filters.recentDays !== undefined,
+    size:
+      filters.sizeGreaterThan !== undefined ||
+      filters.sizeLessThan !== undefined,
+    date:
+      filters.recentDays === undefined &&
+      !!(filters.uploadedFrom || filters.uploadedBefore),
     visibility: !!filters.visibility,
     status: !!filters.status,
     storages: !!filters.storageId,
@@ -314,6 +333,9 @@ export function LibraryFiltersBar({
   );
   const clears: Record<Category, LibraryQueryPatch> = {
     tags: { tagId: [] },
+    untagged: { tagState: null },
+    recent: { recentDays: null, relativeTo: null, uploadedFrom: null },
+    size: { sizeGreaterThan: null, sizeLessThan: null },
     date: { uploadedFrom: null, uploadedBefore: null },
     visibility: { visibility: null },
     status: { status: null },
@@ -341,12 +363,23 @@ export function LibraryFiltersBar({
       : '不限',
   ].join(' 至 ');
   const fields: Record<Category, ReactNode> = {
+    untagged: <span className="px-3 text-sm">没有标签</span>,
+    recent: (
+      <LibraryRangeCondition
+        kind="recent"
+        filters={filters}
+        onApply={onApply}
+      />
+    ),
+    size: (
+      <LibraryRangeCondition kind="size" filters={filters} onApply={onApply} />
+    ),
     tags: (
       <LibraryFilterOptionsField
         kind="tags"
         label="标签（匹配任意一个）"
         selectedIds={filters.tagIds}
-        onChange={(tagId) => onApply({ tagId })}
+        onChange={(tagId) => onApply({ tagId, tagState: null })}
         client={client}
         onSessionExpired={onSessionExpired}
       />
@@ -474,9 +507,23 @@ export function LibraryFiltersBar({
         <Dropdown.Popover className="rounded-xl border border-border bg-surface">
           <Dropdown.Menu
             aria-label="添加筛选条件"
-            onAction={(key) =>
-              setAdded((current) => [...current, key as Category])
-            }
+            onAction={(key) => {
+              if (key === 'untagged') {
+                setAdded((current) => current.filter((id) => id !== 'tags'));
+                onApply({ tagState: 'none', tagId: [] });
+              } else if (key === 'recent') {
+                setAdded((current) => current.filter((id) => id !== 'date'));
+                onApply({
+                  recentDays: '7',
+                  uploadedFrom: null,
+                  uploadedBefore: null,
+                });
+              } else {
+                if (key === 'tags' && filters.tagState)
+                  onApply({ tagState: null });
+                setAdded((current) => [...current, key as Category]);
+              }
+            }}
           >
             {!available.length ? (
               <Dropdown.Item
@@ -535,6 +582,11 @@ export function LibraryFiltersBar({
             )
               onApply({
                 tagId: [],
+                tagState: null,
+                recentDays: null,
+                relativeTo: null,
+                sizeGreaterThan: null,
+                sizeLessThan: null,
                 uploadedFrom: null,
                 uploadedBefore: null,
                 visibility: null,

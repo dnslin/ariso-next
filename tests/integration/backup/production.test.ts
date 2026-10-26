@@ -1,3 +1,4 @@
+import { distinctPng } from '../../fixtures/media-formats/distinct-png.ts';
 import { execFile } from 'node:child_process';
 import { createHash, randomBytes, randomUUID } from 'node:crypto';
 import { existsSync } from 'node:fs';
@@ -827,7 +828,10 @@ it('backs up a real Local site and restores it after the entire source DATA_DIR 
       await target.request('/api/upload', {
         method: 'POST',
         headers: { authorization: `Bearer ${token.key}` },
-        body: form(small, '恢复后新增.png'),
+        body: form(
+          distinctPng(small, 'post-restore-new-image'),
+          '恢复后新增.png',
+        ),
         signal: AbortSignal.timeout(120_000),
       }),
       'Original upload token still works',

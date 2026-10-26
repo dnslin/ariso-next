@@ -1,6 +1,7 @@
 import { createMediaResources } from '../../../src/server/media/resources.ts';
 import { crc32 } from 'node:zlib';
-import { randomUUID } from 'node:crypto';
+import { createHash, randomUUID } from 'node:crypto';
+import { Readable } from 'node:stream';
 import { chmodSync, writeFileSync } from 'node:fs';
 import { eq } from 'drizzle-orm';
 import {
@@ -24,6 +25,7 @@ import {
   cancelSession,
 } from '../../../src/server/upload/sessions.ts';
 import { acceptSession } from '../../../src/server/upload/accept.ts';
+import { writeObject } from '../../../src/server/storage/local.ts';
 import { uploadSessions } from '../../../src/server/upload/schema.ts';
 import { hasUploadWatermarkReference } from '../../../src/server/upload/watermark-references.ts';
 import {
@@ -311,6 +313,7 @@ it.each(['succeeded', 'cancelled'] as const)(
 
 it('keeps upload snapshots until every session is terminal or hands responsibility to a content task', async () => {
   prepareInitialStorage(connection.db, { storage: join(directory, 'storage') });
+  const originalBytes = readFileSync('tests/fixtures/media-formats/source.png');
   const a = await upload();
   connection.db.transaction((tx) =>
     updateMediaSettings(
@@ -328,7 +331,7 @@ it('keeps upload snapshots until every session is terminal or hands responsibili
     files: [1, 2].map(() => ({
       queueItemId: randomUUID(),
       originalName: 'test.png',
-      declaredSize: 64,
+      declaredSize: originalBytes.length,
     })),
   });
   const externalContext = {
@@ -351,16 +354,26 @@ it('keeps upload snapshots until every session is terminal or hands responsibili
   cancelSession(connection.db, submission.sessions[0].id);
   await cleanupWatermarkAssets(externalContext);
   expect(getWatermarkAsset(connection.db, a.id)?.status).toBe('ready');
+  await writeObject(
+    join(directory, 'storage'),
+    resolveLocalUploadStorage(connection.db),
+    { key: 'fixed.png', temporaryKey: 'uploads/fixed.partial' },
+    Readable.from(originalBytes),
+  );
   connection.db
     .update(uploadSessions)
-    .set({ finalKey: 'fixed.png', byteSize: 64 })
+    .set({
+      finalKey: 'fixed.png',
+      byteSize: originalBytes.length,
+      sourceSha256: createHash('sha256').update(originalBytes).digest('hex'),
+    })
     .where(eq(uploadSessions.id, submission.sessions[1].id))
     .run();
   const accepted = acceptSession(connection.db, submission.sessions[1].id, {
     format: 'PNG',
     mime: 'image/png',
-    width: 8,
-    height: 8,
+    width: originalBytes.readUInt32BE(16),
+    height: originalBytes.readUInt32BE(20),
     coder: 'png',
     extension: 'png',
   });

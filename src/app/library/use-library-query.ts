@@ -1,6 +1,11 @@
 'use client';
 
 import { storageReferenceReturn } from '../../components/storage/reference-navigation';
+import type { SmartCollection } from '../../server/library/smart-rules';
+import {
+  resolveCollectionRules,
+  SmartCollectionRequestError,
+} from './smart-collection-client';
 
 import {
   useEffect,
@@ -46,9 +51,15 @@ import {
 } from './library-preferences';
 
 const parsers = {
+  scope: parseAsString,
   q: parseAsString,
   albumId: parseAsString,
   tagId: parseAsNativeArrayOf(parseAsString),
+  tagState: parseAsString,
+  sizeGreaterThan: parseAsString,
+  sizeLessThan: parseAsString,
+  recentDays: parseAsString,
+  relativeTo: parseAsString,
   uploadedFrom: parseAsString,
   uploadedBefore: parseAsString,
   format: parseAsString,
@@ -116,7 +127,15 @@ const cacheOptions = {
 
 export function useLibraryQuery(
   client: QueryClient,
-  { albumId }: { albumId?: string } = {},
+  {
+    albumId,
+    collection,
+    initialQuery,
+  }: {
+    albumId?: string;
+    collection?: SmartCollection;
+    initialQuery?: string;
+  } = {},
   activeSession = true,
 ) {
   const params = useSearchParams();
@@ -125,6 +144,60 @@ export function useLibraryQuery(
     shallow: true,
     scroll: false,
   });
+  const collectionReady = !collection || params.get('scope') === 'normal';
+  const collectionStarted = useRef(false);
+  const queryChange = useRef(0);
+  const [actionError, setActionError] = useState<Error | null>(null);
+  const [resolving, setResolving] = useState(false);
+  useEffect(() => {
+    const invalidate = () => {
+      queryChange.current++;
+    };
+    const onHistory = () => {
+      invalidate();
+      setResolving(false);
+    };
+    window.addEventListener('popstate', onHistory);
+    return () => {
+      invalidate();
+      window.removeEventListener('popstate', onHistory);
+    };
+  }, []);
+  useEffect(() => {
+    if (collectionStarted.current || !collection || !initialQuery) return;
+    collectionStarted.current = true;
+    const url = new URL(window.location.href);
+    const saved = new URLSearchParams(initialQuery);
+    const hasDraft = [...url.searchParams.keys()].some(
+      (key) =>
+        !['page', 'pageSize', 'image', 'detailView', 'preview'].includes(key),
+    );
+    if (!hasDraft) {
+      for (const key of ['page', 'pageSize', 'image', 'detailView', 'preview'])
+        for (const value of url.searchParams.getAll(key)) saved.set(key, value);
+      url.search = saved.toString();
+    } else if (url.searchParams.has('recentDays')) {
+      // The server supplies the opening instant; data refreshes retain it afterward.
+      url.searchParams.set(
+        'relativeTo',
+        new URLSearchParams(initialQuery).get('relativeTo') ??
+          new Date().toISOString(),
+      );
+    }
+    url.searchParams.set('scope', 'normal');
+    const update = Object.fromEntries(
+      Object.keys(parsers).map((key) => [
+        key,
+        key === 'tagId'
+          ? url.searchParams.getAll(key)
+          : url.searchParams.get(key),
+      ]),
+    );
+    // Nuqs publishes the new search state even during the router's first hydration.
+    void setParams(update, { history: 'replace' }).catch((error: unknown) => {
+      setActionError(error instanceof Error ? error : new Error(String(error)));
+    });
+  }, [collection, initialQuery, setParams]);
   const preferences = useSyncExternalStore(
     subscribeLibraryPreferences,
     getLibraryPreferences,
@@ -162,6 +235,7 @@ export function useLibraryQuery(
   const loadingMode: LibraryLoadingMode = hasPage ? 'pages' : 'more';
   const queryKey = libraryListKey(filters, loadingMode, page);
   const enabled =
+    collectionReady &&
     activeSession &&
     preferences !== null &&
     filters !== null &&
@@ -192,7 +266,9 @@ export function useLibraryQuery(
   );
   const active = loadingMode === 'pages' ? paged : infinite;
   const expired =
-    active.error instanceof LibraryReadError && active.error.status === 401;
+    (active.error instanceof LibraryReadError && active.error.status === 401) ||
+    (actionError instanceof SmartCollectionRequestError &&
+      actionError.status === 401);
   const pages = useMemo(
     () =>
       !enabled || expired
@@ -250,20 +326,83 @@ export function useLibraryQuery(
     };
   }, [identity, scrollReady]);
 
-  async function applyQuery(patch: LibraryQueryPatch) {
+  async function applyQuery(
+    patch: LibraryQueryPatch,
+    resolvedRelativeTo?: string | null,
+  ) {
+    const change = ++queryChange.current;
+    setActionError(null);
+    if (!patch.recentDays) setResolving(false);
     const { pageSize, ...values } = patch;
-    const update = {
+    const update: Record<string, string | string[] | null> = {
       ...values,
       pageSize: String(pageSize ?? filters?.pageSize ?? 40),
       page: loadingMode === 'pages' ? '1' : null,
       image: null,
     };
+    if (patch.recentDays) {
+      update.uploadedFrom = null;
+      update.uploadedBefore = null;
+      update.relativeTo = null;
+    }
+    if (patch.recentDays === null) update.relativeTo = null;
+    if (
+      (patch.uploadedFrom !== undefined && patch.uploadedFrom !== null) ||
+      (patch.uploadedBefore !== undefined && patch.uploadedBefore !== null)
+    ) {
+      update.recentDays = null;
+      update.relativeTo = null;
+    }
     const next = new URLSearchParams(params.toString());
     for (const [key, value] of Object.entries(update)) {
       next.delete(key);
       if (Array.isArray(value)) {
         for (const id of value) next.append(key, id);
       } else if (value !== null) next.set(key, value);
+    }
+    if (patch.recentDays && resolvedRelativeTo) {
+      update.relativeTo = resolvedRelativeTo;
+      next.set('relativeTo', resolvedRelativeTo);
+    } else if (patch.recentDays) {
+      setResolving(true);
+      try {
+        const rules = Object.fromEntries(
+          [...new Set(next.keys())]
+            .filter(
+              (key) =>
+                ![
+                  'scope',
+                  'page',
+                  'pageSize',
+                  'image',
+                  'detailView',
+                  'preview',
+                  'relativeTo',
+                  'analyticsReturn',
+                  'storageReturn',
+                  'returnTo',
+                ].includes(key),
+            )
+            .map((key) => [
+              key,
+              key === 'tagId' ? next.getAll(key) : next.get(key)!,
+            ]),
+        );
+        const resolved = await resolveCollectionRules(rules);
+        if (change !== queryChange.current) return;
+        update.relativeTo = new URLSearchParams(resolved.query).get(
+          'relativeTo',
+        );
+        next.set('relativeTo', update.relativeTo!);
+      } catch (error) {
+        if (change === queryChange.current)
+          setActionError(
+            error instanceof Error ? error : new Error(String(error)),
+          );
+        return;
+      } finally {
+        if (change === queryChange.current) setResolving(false);
+      }
     }
     // Applying filters starts at the beginning; browser Back restores the untouched old cache.
     let target: LibraryFilters | null = null;
@@ -275,11 +414,38 @@ export function useLibraryQuery(
     if (target && JSON.stringify(target) !== JSON.stringify(filters)) {
       const key = libraryListKey(target, loadingMode, 1);
       await client.cancelQueries({ queryKey: key, exact: true });
+      if (change !== queryChange.current) return;
       client.removeQueries({ queryKey: key, exact: true });
     }
+    if (change !== queryChange.current) return;
     return setParams(update);
   }
+  async function replaceQuery(value: string, expectedChange?: number) {
+    if (expectedChange !== undefined && expectedChange !== queryChange.current)
+      return false;
+    const next = new URLSearchParams(value);
+    next.set('pageSize', String(filters?.pageSize ?? 40));
+    const target = parseLibraryLocation(next, albumId).filters;
+    if (JSON.stringify(target) === JSON.stringify(filters)) {
+      const revision = queryChange.current;
+      await refreshCurrent();
+      return revision === queryChange.current;
+    }
+    const patch = Object.fromEntries(
+      Object.keys(parsers)
+        .filter((key) => !['scope', 'page', 'pageSize', 'image'].includes(key))
+        .map((key) => [
+          key,
+          key === 'tagId' ? next.getAll(key) : next.get(key),
+        ]),
+    ) as LibraryQueryPatch;
+    const applied = await applyQuery(patch, next.get('relativeTo'));
+    if (!applied) return false;
+    return true;
+  }
   async function setLoadingMode(mode: LibraryLoadingMode) {
+    queryChange.current++;
+    setResolving(false);
     if (mode === loadingMode) return;
     // A mode switch starts a new first batch; old mode history remains cacheable.
     await client.cancelQueries({
@@ -294,6 +460,8 @@ export function useLibraryQuery(
     setLibraryPreferences({ loadingMode: mode });
   }
   function resetQuery() {
+    queryChange.current++;
+    setResolving(false);
     const url = new URL(window.location.href);
     const storageSource = storageReferenceReturn(
       url.searchParams.get('storageReturn'),
@@ -301,6 +469,7 @@ export function useLibraryQuery(
     const albumSource = albumId ? url.searchParams.get('returnTo') : null;
     url.search =
       loadingMode === 'pages' ? '?page=1&pageSize=40' : '?pageSize=40';
+    if (collection) url.searchParams.set('scope', 'normal');
     if (storageSource) url.searchParams.set('storageReturn', storageSource);
     if (albumSource) url.searchParams.set('returnTo', albumSource);
     window.history.pushState(null, '', url);
@@ -308,6 +477,10 @@ export function useLibraryQuery(
   async function refresh() {
     setRefreshAvailable(false);
     if (!enabled) return;
+    if (filters?.recentDays !== undefined) {
+      await applyQuery({ recentDays: String(filters.recentDays) });
+      return;
+    }
     if (loadingMode === 'more') {
       // Refresh starts from the first batch, keeping its real cards visible.
       const dataUpdatedAt = client.getQueryState(queryKey)?.dataUpdatedAt;
@@ -499,8 +672,14 @@ export function useLibraryQuery(
       setLibraryPreferences({ layout: value }),
     setLoadingMode,
     applyQuery,
+    replaceQuery,
+    getQueryRevision: () => queryChange.current,
     resetQuery,
-    setPage: (value: number) => setParams({ page: String(value), image: null }),
+    setPage: (value: number) => {
+      queryChange.current++;
+      setResolving(false);
+      return setParams({ page: String(value), image: null });
+    },
     items,
     total: pages.at(-1)?.total,
     pages,
@@ -510,12 +689,13 @@ export function useLibraryQuery(
     isFetchingNextPage: loadingMode === 'more' && infinite.isFetchingNextPage,
     isFetchNextPageError:
       loadingMode === 'more' && infinite.isFetchNextPageError,
-    error: queryError ?? active.error,
+    error: queryError ?? actionError ?? active.error,
     expired: expired || activity.expired,
     statusError: activity.error,
     retryStatus: activity.retry,
     canOperate:
       enabled &&
+      !resolving &&
       !expired &&
       !activity.expired &&
       !active.isPending &&

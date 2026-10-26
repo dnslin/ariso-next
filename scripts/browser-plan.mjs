@@ -38,6 +38,7 @@ const suites = {
       ['uiux-20261015', 'uiux-20261015'],
       ['image-workflows', 'image-workflows'],
       ['image-editor', 'image-editor'],
+      ['smart-collections-dedup', 'smart-collections-dedup'],
       ['access-protection', 'access-protection'],
     ],
   },
@@ -45,6 +46,9 @@ const suites = {
   'brand-experiment': {},
   'image-workflows': {
     stages: [['image-workflows', 'imageWorkflows']],
+  },
+  'smart-collections-dedup': {
+    stages: [['smart-collections-dedup', 'smartCollectionsDedup']],
   },
   'access-protection': {
     stages: [['access-protection', 'accessProtection']],

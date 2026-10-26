@@ -6,11 +6,18 @@ import { getServerRuntime } from '../../../server/startup/server-start.ts';
 export async function respondToLibraryQuery(
   request: Request,
   read: () => unknown | Promise<unknown>,
+  mutation?: string,
+  status = 200,
 ) {
   const headers = { 'Cache-Control': 'no-store' };
   try {
     await requireOwner(request);
-    return Response.json(await read(), { headers });
+    return Response.json(
+      await (mutation
+        ? getServerRuntime().contentMutations.run(mutation, read)
+        : read()),
+      { headers, status },
+    );
   } catch (err) {
     if (
       err instanceof LibraryQueryError ||
@@ -18,7 +25,8 @@ export async function respondToLibraryQuery(
         'code' in err &&
         'status' in err &&
         ((err.code === 'UNAUTHORIZED' && err.status === 401) ||
-          (err.code === 'INVALID_ORIGIN' && err.status === 403)))
+          (err.code === 'INVALID_ORIGIN' && err.status === 403) ||
+          (err.code === 'SITE_BACKUP_IN_PROGRESS' && err.status === 409)))
     )
       return Response.json(
         { code: err.code, message: err.message },

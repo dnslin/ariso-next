@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "542c288c-fdb4-40ae-9f32-b6078dd94c7a",
+  "id": "36b03ef1-687d-43ae-826b-e3b925571885",
   "prevId": "4a2bee91-7066-4805-81c6-7d42b7a96555",
   "tables": {
     "access_protection_settings": {
@@ -1210,182 +1210,6 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
-    "media_edit_requests": {
-      "name": "media_edit_requests",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "text",
-          "primaryKey": true,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "job_id": {
-          "name": "job_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "source_image_id": {
-          "name": "source_image_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "source_object_id": {
-          "name": "source_object_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "mode": {
-          "name": "mode",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "recipe": {
-          "name": "recipe",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "watermark_asset": {
-          "name": "watermark_asset",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "rendered_object_id": {
-          "name": "rendered_object_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        }
-      },
-      "indexes": {
-        "media_edit_requests_job": {
-          "name": "media_edit_requests_job",
-          "columns": ["job_id"],
-          "isUnique": true
-        },
-        "media_edit_requests_source": {
-          "name": "media_edit_requests_source",
-          "columns": ["source_object_id"],
-          "isUnique": false
-        },
-        "media_edit_requests_source_image": {
-          "name": "media_edit_requests_source_image",
-          "columns": ["source_image_id"],
-          "isUnique": false
-        }
-      },
-      "foreignKeys": {
-        "media_edit_requests_job_id_media_jobs_id_fk": {
-          "name": "media_edit_requests_job_id_media_jobs_id_fk",
-          "tableFrom": "media_edit_requests",
-          "tableTo": "media_jobs",
-          "columnsFrom": ["job_id"],
-          "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "media_edit_requests_rendered_object_id_media_objects_id_fk": {
-          "name": "media_edit_requests_rendered_object_id_media_objects_id_fk",
-          "tableFrom": "media_edit_requests",
-          "tableTo": "media_objects",
-          "columnsFrom": ["rendered_object_id"],
-          "columnsTo": ["id"],
-          "onDelete": "set null",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "checkConstraints": {}
-    },
-    "media_edit_templates": {
-      "name": "media_edit_templates",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "text",
-          "primaryKey": true,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "name": {
-          "name": "name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "recipe": {
-          "name": "recipe",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "watermark_asset_id": {
-          "name": "watermark_asset_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        }
-      },
-      "indexes": {
-        "media_edit_templates_asset": {
-          "name": "media_edit_templates_asset",
-          "columns": ["watermark_asset_id"],
-          "isUnique": false
-        }
-      },
-      "foreignKeys": {
-        "media_edit_templates_watermark_asset_id_media_watermark_assets_id_fk": {
-          "name": "media_edit_templates_watermark_asset_id_media_watermark_assets_id_fk",
-          "tableFrom": "media_edit_templates",
-          "tableTo": "media_watermark_assets",
-          "columnsFrom": ["watermark_asset_id"],
-          "columnsTo": ["id"],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "checkConstraints": {}
-    },
     "media_images": {
       "name": "media_images",
       "columns": {
@@ -1924,6 +1748,11 @@
         }
       },
       "indexes": {
+        "media_objects_content_sha256": {
+          "name": "media_objects_content_sha256",
+          "columns": ["content_sha256"],
+          "isUnique": false
+        },
         "media_objects_storage_key": {
           "name": "media_objects_storage_key",
           "columns": ["storage_id", "key"],
@@ -3810,6 +3639,13 @@
           "notNull": false,
           "autoincrement": false
         },
+        "source_sha256": {
+          "name": "source_sha256",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
         "temporary_bytes": {
           "name": "temporary_bytes",
           "type": "integer",
@@ -3855,6 +3691,20 @@
         "image_id": {
           "name": "image_id",
           "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "existing_image_id": {
+          "name": "existing_image_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "existing_image_trashed": {
+          "name": "existing_image_trashed",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
@@ -3965,7 +3815,7 @@
       "checkConstraints": {
         "upload_sessions_state": {
           "name": "upload_sessions_state",
-          "value": "\"upload_sessions\".\"state\" in ('queued', 'receiving', 'validating', 'finalizing', 'accepted', 'cancelled', 'failed', 'expired')"
+          "value": "\"upload_sessions\".\"state\" in ('queued', 'receiving', 'validating', 'finalizing', 'accepted', 'duplicate', 'cancelled', 'failed', 'expired')"
         }
       }
     },

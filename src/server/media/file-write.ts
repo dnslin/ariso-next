@@ -16,6 +16,7 @@ export async function writeReceivedFile(
     mapError: (cause: Error) => Error;
     onFailure: (cause: Error) => void;
     onProgress: (bytes: number) => void;
+    onChunk?: (chunk: Buffer) => void;
   },
 ): Promise<number> {
   const directory = dirname(options.path);
@@ -70,6 +71,7 @@ export async function writeReceivedFile(
               options.resources.consumeWrite(options.path, result.bytesWritten);
             }
             byteSize += chunk.length;
+            options.onChunk?.(chunk);
             options.onProgress(byteSize);
           })().catch((cause: Error) => {
             throw options.mapError(cause);

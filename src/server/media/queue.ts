@@ -8,6 +8,8 @@ import { and, asc, eq, ne, sql } from 'drizzle-orm';
 import type { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
 import { processMediaJob, type MediaRuntime } from './process.ts';
 import { processMetadataJob } from './metadata-job.ts';
+import { processFingerprintJob } from './fingerprint-job.ts';
+import { enqueueFingerprintJobs } from './fingerprints.ts';
 import { processImageSizeJob } from './size-process.ts';
 import { mediaImages, mediaJobs } from './schema.ts';
 import { readMediaSettings } from './settings.ts';
@@ -67,10 +69,15 @@ function nextMediaJob(db: BetterSQLite3Database) {
         eq(mediaJobs.status, 'queued'),
         sql`exists (select 1 from media_images where id = ${mediaJobs.imageId} and deletion_status is null)`,
         sql`(${mediaJobs.nextAttemptAt} is null or ${mediaJobs.nextAttemptAt} <= ${Date.now()})`,
-        sql`not exists (select 1 from media_jobs active where active.image_id = ${mediaJobs.imageId} and (active.status = 'running' or (active.status = 'queued' and active.rowid < ${mediaJobs}.rowid)))`,
+        sql`not exists (select 1 from media_jobs active where active.image_id = ${mediaJobs.imageId} and (active.status = 'running' or (active.status = 'queued' and active.rowid < ${mediaJobs}.rowid and (active.kind != 'fingerprint' or ${mediaJobs.kind} = 'fingerprint'))))`,
+        sql`(${mediaJobs.kind} != 'fingerprint' or (not exists(select 1 from media_jobs f where f.kind='fingerprint' and f.status='running') and exists(select 1 from media_images i join storage_configs s on s.id=i.storage_id where i.id=${mediaJobs.imageId} and s.enabled=1)))`,
       ),
     )
-    .orderBy(asc(mediaJobs.createdAt), asc(sql`${mediaJobs}.rowid`))
+    .orderBy(
+      asc(sql`case when ${mediaJobs.kind}='fingerprint' then 1 else 0 end`),
+      asc(mediaJobs.createdAt),
+      asc(sql`${mediaJobs}.rowid`),
+    )
     .get();
 }
 
@@ -88,14 +95,23 @@ function claimNextMediaWork(
         .orderBy(asc(mediaPreviews.createdAt), asc(sql`${mediaPreviews}.rowid`))
         .get();
       const media = persistent ? nextMediaJob(tx) : null;
-      if (preview && (!media || preview.createdAt < media.createdAt)) {
+      if (
+        preview &&
+        (!media ||
+          media.kind === 'fingerprint' ||
+          preview.createdAt < media.createdAt)
+      ) {
         if (before && preview.createdAt > before) return null;
         const claimed = claimNextPreview({ ...runtime, db: tx });
         return claimed
           ? { ...claimed, kind: 'preview' as const, imageId: null }
           : null;
       }
-      if (before && (!media || media.createdAt > before)) return null;
+      if (
+        before &&
+        (!media || media.kind === 'fingerprint' || media.createdAt > before)
+      )
+        return null;
       return persistent ? claimNextMediaJob(tx) : null;
     },
     { behavior: 'immediate' },
@@ -280,11 +296,13 @@ export function startMediaQueue(runtime: MediaRuntime) {
               ? job.run(jobSignal)
               : job.kind === 'preview'
                 ? previews.run(job.id, jobSignal)
-                : (job.kind === 'size'
-                    ? processImageSizeJob
-                    : job.kind === 'metadata'
-                      ? processMetadataJob
-                      : processMediaJob)(runtime, job.id, jobSignal)
+                : (job.kind === 'fingerprint'
+                    ? processFingerprintJob
+                    : job.kind === 'size'
+                      ? processImageSizeJob
+                      : job.kind === 'metadata'
+                        ? processMetadataJob
+                        : processMediaJob)(runtime, job.id, jobSignal)
           )
             .catch((err: unknown) => {
               failure ??= err;
@@ -321,6 +339,8 @@ export function startMediaQueue(runtime: MediaRuntime) {
               );
               if (runtime.db.$client.open && !signal.aborted && !paused)
                 await cleanupMediaCandidates(runtime, signal);
+              if (runtime.db.$client.open && !signal.aborted && !paused)
+                enqueueFingerprintJobs(runtime.db);
             })();
             try {
               await persistentMaintenance;

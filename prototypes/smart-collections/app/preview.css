@@ -1,0 +1,18 @@
+@import '../../../src/app/globals.css';
+
+@source './';
+@source '../../../src/components';
+@source '../../../src/app/library';
+
+/* Only the prototype review strip changes the shared shell's available height. */
+.prototype-stage .admin-shell {
+  height: calc(100dvh - 44px);
+}
+.prototype-stage .shell-footer {
+  min-height: 80px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .prototype-stage * {
+    scroll-behavior: auto;
+  }
+}

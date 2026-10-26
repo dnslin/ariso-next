@@ -97,6 +97,14 @@ export async function publicUploadResponse(request: Request) {
         request,
         token.tokenId,
       );
+      if (accepted.state === 'duplicate') {
+        stage = 'deduplication';
+        throw new UploadError(
+          'UPLOAD_DUPLICATE',
+          '相同图片已存在，本次未新增。请登录图库核对。',
+          409,
+        );
+      }
       if (!accepted.imageId || !accepted.jobId)
         throw new UploadError(
           'UPLOAD_INTERNAL_ERROR',

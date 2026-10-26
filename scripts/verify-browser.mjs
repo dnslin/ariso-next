@@ -84,6 +84,8 @@ for (const name of [
   'image-workflows.json',
   'image-editor.json',
   'image-editor-failure.png',
+  'smart-collections-dedup.json',
+  'smart-collections-dedup-failure.png',
   'image-workflows-failure.png',
   'library-filters.json',
   'library-scale.json',

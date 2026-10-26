@@ -94,13 +94,16 @@ export function startUploadRuntime(
     const storageId = getSession(context.db, id).storageId;
     const promise = operation(controller.signal)
       .then(async (result) => {
-        if (result.state === 'accepted' && result.cleanupStatus !== 'none') {
+        if (
+          ['accepted', 'duplicate'].includes(result.state) &&
+          result.cleanupStatus !== 'none'
+        ) {
           try {
             await clean(id);
           } catch (err) {
             context.logger.error(
               { err, sessionId: id },
-              'Accepted upload temporary cleanup failed',
+              'Finished upload temporary cleanup failed',
             );
           }
         }
@@ -111,7 +114,9 @@ export function startUploadRuntime(
             storageId: result.storageId,
             byteSize: result.byteSize,
           },
-          'Upload accepted',
+          result.state === 'duplicate'
+            ? 'Duplicate upload skipped'
+            : 'Upload accepted',
         );
         return getPreparedSession(context.db, id);
       })
@@ -217,7 +222,9 @@ export function startUploadRuntime(
       const session = getSession(context.db, id);
       if (
         active.has(id) ||
-        !['accepted', 'failed', 'cancelled', 'expired'].includes(session.state)
+        !['accepted', 'duplicate', 'failed', 'cancelled', 'expired'].includes(
+          session.state,
+        )
       )
         throw new UploadError(
           'UPLOAD_STATE_CONFLICT',

@@ -1,4 +1,5 @@
 'use client';
+import { notifyLibraryChanged } from '../library/library-changes';
 
 import { useRef, useState } from 'react';
 import { AlertDialog } from '@heroui/react/alert-dialog';
@@ -38,6 +39,7 @@ export function StorageDeleteDialog({
       onRefresh();
     } catch (cause) {
       if (cause instanceof StorageRequestError && cause.status === 404) {
+        notifyLibraryChanged();
         await onDeleted();
         return;
       }
@@ -54,6 +56,7 @@ export function StorageDeleteDialog({
     setError('');
     try {
       await storageRequest(storageUrl(storage.id), { method: 'DELETE' });
+      notifyLibraryChanged();
       await onDeleted();
     } catch (cause) {
       if (!(cause instanceof StorageRequestError) || cause.status >= 500) {

@@ -50,6 +50,7 @@ const productionTableNames = [
   'session',
   'share_grants',
   'site_settings',
+  'smart_collections',
   'storage_configs',
   'storage_orphans',
   'storage_probes',

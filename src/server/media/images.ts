@@ -29,6 +29,7 @@ export type AcceptOriginalInput = Pick<
     imageId: string;
     jobId?: string;
     key: string;
+    contentSha256?: string;
     snapshot: ProcessingSnapshot;
     expectedVersions: DerivedVersionKind[];
   };
@@ -74,6 +75,7 @@ export function acceptOriginal(
       storageId: input.storageId,
       key: input.key,
       purpose: 'original',
+      contentSha256: input.contentSha256,
       status: 'stored',
       byteSize: input.byteSize,
       byteSizeConfirmedAt: now,

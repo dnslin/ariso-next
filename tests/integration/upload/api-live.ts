@@ -18,6 +18,7 @@ import {
 } from '../../../src/server/upload/usage.ts';
 import { configSchema } from '../../experiments/storage-s3/config.ts';
 import { publicUploadFixture, responseWithoutBody } from './api-fixture.ts';
+import { scenarioPng } from './scenario-png.ts';
 
 const fields = configSchema.shape;
 const targetSchema = z.object({
@@ -246,15 +247,55 @@ async function runTarget(target: Target, output: string) {
       },
     );
     await check(
+      'identical-api-upload-returns-409-without-private-image-identity-or-links',
+      async () => {
+        const existing = db.select().from(mediaImages).get()!;
+        const response = await fixture!.upload(
+          token.key,
+          fixture!.form([
+            ['storageId', report.storageId!],
+            ['visibility', 'public'],
+          ]),
+        );
+        assert.equal(response.status, 409, await response.clone().text());
+        const body = await response.json();
+        assert.equal(body.imageId, null);
+        assert.equal(body.status, 'not_created');
+        assert.equal(body.error.code, 'UPLOAD_DUPLICATE');
+        assert.equal(body.error.stage, 'deduplication');
+        assert.equal(typeof body.requestId, 'string');
+        assert.equal('url' in body, false);
+        assert.equal('versions' in body, false);
+        assert.equal(JSON.stringify(body).includes(existing.id), false);
+        assert.deepEqual(db.select().from(mediaImages).all(), [existing]);
+        assert.equal(db.select().from(mediaJobs).all().length, 1);
+        assert.deepEqual(readUploadReferences(db), []);
+        assert.deepEqual(readUploadUsage(db), []);
+        assert.deepEqual(await originalBytes(existing.id), fixture!.bytes);
+        return {
+          status: response.status,
+          imageId: body.imageId,
+          result: body.status,
+          code: body.error.code,
+          stage: body.error.stage,
+          exposesExistingIdentity: false,
+          exposesLink: false,
+          images: 1,
+          jobs: 1,
+        };
+      },
+    );
+    await check(
       'processing-failure-preserves-real-image-original-and-earlier-versions',
       async () => {
+        const failureBytes = await scenarioPng('#e28b32');
         db.$client.exec(
           "CREATE TRIGGER fail_live_thumbnail BEFORE INSERT ON media_versions WHEN NEW.kind = 'thumbnail' BEGIN SELECT RAISE(ABORT, 'controlled live thumbnail publication failure'); END",
         );
         try {
           const response = await fixture!.upload(
             token.key,
-            fixture!.form([['storageId', report.storageId!]]),
+            fixture!.form([['storageId', report.storageId!]], failureBytes),
           );
           assert.equal(response.status, 422);
           const body = await response.json();
@@ -282,7 +323,7 @@ async function runTarget(target: Target, output: string) {
             'compressed',
             'original',
           ]);
-          assert.deepEqual(await originalBytes(body.imageId), fixture!.bytes);
+          assert.deepEqual(await originalBytes(body.imageId), failureBytes);
           return {
             imageId: image.id,
             jobId: job.id,

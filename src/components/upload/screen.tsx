@@ -30,6 +30,9 @@ import {
   DetailReprocess,
   DetailReprocessFooter,
 } from '../library/detail-reprocess';
+import { TrashRecord } from '../../app/trash/trash-record';
+import { TrashAction } from '../library/trash-actions';
+import { UploadFingerprintCoverage } from './fingerprint-coverage';
 import { initialPreview } from '../library/detail-preview';
 import { bytesLabel } from '../library/detail-labels';
 import { UploadSettingsFields } from './settings';
@@ -81,6 +84,16 @@ export function UploadScreen(props: ScreenProps) {
   } = useUploadDraft(props.albumId);
   const items = uploadContextItems(allItems, props.albumId);
   const detailQuery = useDetailQuery(client, detail.imageId, currentHref);
+  const trashRecord = detailQuery.data?.trashedAt ? detailQuery.data : null;
+  const trashRecordId = trashRecord?.id;
+  useEffect(() => {
+    if (!trashRecordId) return;
+    const main = document.getElementById('main-content');
+    if (main) main.scrollTop = 0;
+    document
+      .getElementById('trash-record-title')
+      ?.focus({ preventScroll: true });
+  }, [trashRecordId]);
   const reprocess = useDetailReprocess(detail.imageId, detailQuery, {
     onReturn: detail.returnToDetail,
     onClose: detail.close,
@@ -95,7 +108,7 @@ export function UploadScreen(props: ScreenProps) {
       ? preview
       : undefined;
   const input = useUploadInput(
-    detail.view || paused ? null : controller,
+    detail.view || trashRecord || paused ? null : controller,
     uploadDraftKey(props.albumId),
   );
   const settingsRef = useRef<HTMLDivElement | null>(null);
@@ -158,7 +171,29 @@ export function UploadScreen(props: ScreenProps) {
       {...props}
       returnTo={currentHref}
       footer={
-        detail.view === 'reprocess' ? (
+        trashRecord ? (
+          <div className="flex w-full items-center justify-end gap-3 [&_.button]:min-h-12 [&_.button]:rounded-lg">
+            <Button variant="outline" onPress={detail.close}>
+              返回上传
+            </Button>
+            <TrashAction
+              record={trashRecord}
+              operation="restore"
+              onPending={detailQuery.onMutationPending}
+              onUnavailable={detailQuery.setUnavailable}
+              onVerified={(record) =>
+                client.setQueryData(
+                  ['library-detail', record.id, undefined],
+                  record,
+                )
+              }
+              onComplete={() => {
+                detail.close();
+                void client.invalidateQueries({ queryKey: ['upload-result'] });
+              }}
+            />
+          </div>
+        ) : detail.view === 'reprocess' ? (
           reprocess.footerActions ? (
             <DetailReprocessFooter actions={reprocess.footerActions} />
           ) : null
@@ -250,7 +285,7 @@ export function UploadScreen(props: ScreenProps) {
       }
     >
       <section
-        className={`${detail.view ? 'hidden' : 'grid'} w-full min-w-0 gap-5 md:gap-6 [&_.button]:min-h-11 [&_.button]:rounded-lg`}
+        className={`${detail.view || trashRecord ? 'hidden' : 'grid'} w-full min-w-0 gap-5 md:gap-6 [&_.button]:min-h-11 [&_.button]:rounded-lg`}
         aria-labelledby="upload-title"
       >
         <UploadHeading
@@ -290,11 +325,12 @@ export function UploadScreen(props: ScreenProps) {
           {terminal || saving ? (
             <p className="text-sm">
               {terminal
-                ? `成功 ${readyCount} 张 · 失败 ${items.filter((item) => item.state === 'upload-failed' || item.state === 'processing-failed').length} 张 · 取消 ${items.filter((item) => item.state === 'cancelled').length} 张。清空结果不会删除图片。`
+                ? `新增成功 ${readyCount} 张 · 重复跳过 ${items.filter((item) => item.state === 'duplicate').length} 张 · 失败 ${items.filter((item) => item.state === 'upload-failed' || item.state === 'processing-failed').length} 张 · 取消 ${items.filter((item) => item.state === 'cancelled').length} 张。清空结果不会删除图片。`
                 : '文件传输结束，正在核对保存与处理结果。'}
             </p>
           ) : null}
         </UploadHeading>
+        <UploadFingerprintCoverage client={client} paused={paused} />
         {input.controls}
         <div
           data-testid="upload-composition"
@@ -496,6 +532,15 @@ export function UploadScreen(props: ScreenProps) {
         }
         clearCompleted={() => controller.clearCompleted()}
       />
+      {trashRecord && !detailQuery.isError && !detailQuery.expired ? (
+        <div ref={(node) => detail.dialogRef(node)}>
+          <TrashRecord
+            record={trashRecord}
+            onBack={detail.close}
+            backLabel="返回上传"
+          />
+        </div>
+      ) : null}
       {detail.view === 'reprocess' ? (
         <DetailReprocess state={reprocess} />
       ) : detail.view &&
@@ -537,7 +582,7 @@ export function UploadScreen(props: ScreenProps) {
           </Alert.Content>
         </Alert>
       ) : null}
-      {detail.imageId ? (
+      {detail.imageId && !trashRecord ? (
         <LibraryDetail
           key={detail.imageId}
           imageId={detail.imageId}

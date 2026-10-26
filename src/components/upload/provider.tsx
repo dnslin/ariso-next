@@ -23,6 +23,7 @@ import { uploadDraftKey, type UploadDraft } from './context';
 
 export const uploadTerminalStates = new Set<UploadItem['state']>([
   'ready',
+  'duplicate',
   'upload-failed',
   'processing-failed',
   'cancelled',

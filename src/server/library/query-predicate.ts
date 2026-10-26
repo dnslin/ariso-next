@@ -10,6 +10,7 @@ import {
   isNotNull,
   isNull,
   lt,
+  notExists,
   or,
   sql,
 } from 'drizzle-orm';
@@ -104,6 +105,19 @@ export function libraryPredicate(
           ),
       ),
     );
+  if (filters.tagState === 'none')
+    conditions.push(
+      notExists(
+        db
+          .select({ id: imageTags.imageId })
+          .from(imageTags)
+          .where(eq(imageTags.imageId, mediaImages.id)),
+      ),
+    );
+  if (filters.sizeGreaterThan !== undefined)
+    conditions.push(gt(mediaImages.byteSize, filters.sizeGreaterThan));
+  if (filters.sizeLessThan !== undefined)
+    conditions.push(lt(mediaImages.byteSize, filters.sizeLessThan));
   if (filters.q) {
     const literal = `%${filters.q.replace(/[!%_]/g, '!$&')}%`;
     conditions.push(

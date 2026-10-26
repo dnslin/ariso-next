@@ -1,4 +1,4 @@
-import { randomUUID } from 'node:crypto';
+import { createHash, randomUUID } from 'node:crypto';
 import * as fs from 'node:fs';
 import * as files from 'node:fs/promises';
 import { tmpdir } from 'node:os';
@@ -203,6 +203,7 @@ async function accepted(
             ? 'image/tiff'
             : 'image/png',
       byteSize: bytes.length,
+      contentSha256: createHash('sha256').update(bytes).digest('hex'),
       snapshot,
       expectedVersions: [
         ...(snapshot.compressionEnabled ? ['compressed' as const] : []),
@@ -1055,6 +1056,9 @@ describe('saved TIFF original previews', () => {
       );
       opened.stream.destroy();
       await files.truncate(opened.path, byteSize);
+      const hash = createHash('sha256');
+      for await (const chunk of fs.createReadStream(opened.path))
+        hash.update(chunk);
       runtime.db
         .update(mediaVersions)
         .set({ byteSize })
@@ -1067,7 +1071,7 @@ describe('saved TIFF original previews', () => {
         .run();
       runtime.db
         .update(mediaObjects)
-        .set({ byteSize })
+        .set({ byteSize, contentSha256: hash.digest('hex') })
         .where(eq(mediaObjects.id, saved.object.id))
         .run();
     }

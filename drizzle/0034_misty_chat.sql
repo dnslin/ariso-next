@@ -25,5 +25,4 @@ CREATE TABLE `media_edit_templates` (
 	FOREIGN KEY (`watermark_asset_id`) REFERENCES `media_watermark_assets`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
-CREATE INDEX `media_edit_templates_asset` ON `media_edit_templates` (`watermark_asset_id`);--> statement-breakpoint
-ALTER TABLE `media_objects` ADD `content_sha256` text;
+CREATE INDEX `media_edit_templates_asset` ON `media_edit_templates` (`watermark_asset_id`);

@@ -3,7 +3,7 @@ import { createReadStream } from 'node:fs';
 import { finished } from 'node:stream/promises';
 import { mkdir } from 'node:fs/promises';
 import { join, sep } from 'node:path';
-import { and, desc, eq, inArray } from 'drizzle-orm';
+import { and, desc, eq, inArray, ne } from 'drizzle-orm';
 import type { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
 import { normalizeOriginalName } from '../upload/validation.ts';
 import {
@@ -78,6 +78,7 @@ export function replacementAdmission(
       .where(
         and(
           eq(mediaJobs.imageId, imageId),
+          ne(mediaJobs.kind, 'fingerprint'),
           inArray(mediaJobs.status, ['queued', 'running']),
         ),
       )
@@ -193,7 +194,7 @@ export async function receiveImageReplacement(
   let budget: ReturnType<typeof resources.beginStep> | undefined;
   try {
     await mkdir(directory, { recursive: true });
-    const { byteSize } = await receiveMultipart(request, {
+    const { byteSize, sha256 } = await receiveMultipart(request, {
       path: source,
       resources,
       maxBytes: limits.maxFileBytes,
@@ -300,6 +301,10 @@ export async function receiveImageReplacement(
         plan.temporaryObjectId,
         now,
       );
+      tx.update(mediaObjects)
+        .set({ contentSha256: sha256 })
+        .where(eq(mediaObjects.id, plan.objectId))
+        .run();
       tx.update(mediaJobs)
         .set({
           status: 'queued',
