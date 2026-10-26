@@ -3,8 +3,8 @@
 - 日期：2026-10-25。
 - 状态：用户已认可简约原型，Chrome 首版代码及试用包已实现。核心原生实传通过；全量项目检查及部分物理输入／平台矩阵仍未关闭，详见实施记录。
 - 依据：[实施计划](./plan.md)、[首版规格](../../docs/specs/SPEC-browser-extension.md)。
-- 目录约定：`EXT` 表示 `integrations/browser-extension/`，`PROTO` 表示 `prototypes/browser-extension/`。下面代码路径均相对仓库根目录，`EXT/` 与 `PROTO/` 是阅读缩写，执行命令使用完整实际路径。
-- [上一轮原型验证](../../prototypes/browser-extension/evidence/verification.md)保留历史完成事实。以下涉及新版布局与交互的检查重新待验，不沿用旧版 26 项结论；用户反馈已经记录，其余项不能用演示通过替代。
+- 目录约定：`EXT` 表示 `integrations/browser-extension/`；`PROTO` 表示[固定提交中的原型目录](https://github.com/dnslin/ariso-next/tree/65759f16247f971a5eb0006503c5c0108ba1350c/prototypes/browser-extension)，仅用于下方历史原型任务的路径缩写，已从当前目录清理。正式扩展路径相对仓库根目录，执行命令使用完整实际路径。
+- [上一轮原型验证](https://github.com/dnslin/ariso-next/blob/65759f16247f971a5eb0006503c5c0108ba1350c/prototypes/browser-extension/evidence/verification.md)保留历史完成事实。以下涉及新版布局与交互的检查重新待验，不沿用旧版 26 项结论；用户反馈已经记录，其余项不能用演示通过替代。
 
 ## 通用检查与命令
 

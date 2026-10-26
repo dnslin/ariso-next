@@ -2,7 +2,7 @@
 
 - 日期：2026-10-25。
 - 授权：用户认可交互原型并明确要求正式实现图片编辑、模板、批量，默认另存新图，完成测试和浏览器验证；不发布部署。
-- 依据：[方案](../../docs/design/image-editor-proposal-20261025.md)、[原型](../../prototypes/image-editor/README.md)。既有 `tasks/plan.md`（备份）与浏览器扩展计划保留。
+- 依据：[方案](../../docs/design/image-editor-proposal-20261025.md)、[原型](https://github.com/dnslin/ariso-next/blob/65759f16247f971a5eb0006503c5c0108ba1350c/prototypes/image-editor/README.md)。既有 `tasks/plan.md`（备份）与浏览器扩展计划保留。
 
 ## 边界与方案
 

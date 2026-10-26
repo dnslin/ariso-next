@@ -167,7 +167,7 @@ pnpm --filter ariso-browser-extension zip
 
 ## 8. 交付顺序与验收
 
-本节给出交付里程碑，不覆盖现有 `tasks/plan.md`、`tasks/todo.md` 的备份恢复计划。详细任务已拆至[独立实施计划](../../tasks/browser-extension/plan.md)和[开发清单](../../tasks/browser-extension/todo.md)。用户要求先看[交互原型](../../prototypes/browser-extension/README.md)，收到布局和流程反馈后继续正式实现。
+本节给出交付里程碑，不覆盖现有 `tasks/plan.md`、`tasks/todo.md` 的备份恢复计划。详细任务已拆至[独立实施计划](../../tasks/browser-extension/plan.md)和[开发清单](../../tasks/browser-extension/todo.md)。用户要求先看[交互原型](https://github.com/dnslin/ariso-next/blob/65759f16247f971a5eb0006503c5c0108ba1350c/prototypes/browser-extension/README.md)，收到布局和流程反馈后继续正式实现。
 
 | 顺序 | 可独立验证的结果               | 验收重点                                                                                     |
 | ---- | ------------------------------ | -------------------------------------------------------------------------------------------- |

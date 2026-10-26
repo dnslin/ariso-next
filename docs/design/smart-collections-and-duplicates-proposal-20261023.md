@@ -5,7 +5,7 @@
 - 源码基线：`c018b93c`。以下现状来自本轮源码、规格与测试结构阅读，不代表运行验证。
 - 范围：保存图片筛选条件、动态查看匹配图片，以及普通上传时识别完全相同的原文件。
 - 沿用现有[能力边界](../product/CAPABILITY-MAP.md)、[设计交付规范](./handoff.md)与[验证约定](../guides/verification.md)。本草案不覆盖已有备份恢复任务计划，也不改写已批准规格。
-- 原型入口：[智能集合与重复检测原型说明](../../prototypes/smart-collections/README.md)。设计轮仅更新方案与独立前端原型；2026-10-24后进入正式实现，进度与结果见[实施记录](../verification/smart-collections-dedup/README.md)。
+- 原型入口：[智能集合与重复检测原型说明](https://github.com/dnslin/ariso-next/blob/65759f16247f971a5eb0006503c5c0108ba1350c/prototypes/smart-collections/README.md)。设计轮仅更新方案与独立前端原型；2026-10-24后进入正式实现，进度与结果见[实施记录](../verification/smart-collections-dedup/README.md)。
 
 ## 1. 结论与确认状态
 
@@ -243,7 +243,7 @@ pnpm run openapi:check
 
 “截图使用标签”“重复默认跳过并提示查看已有图片”“最近默认滚动 7 天”“API / PicGo 重复明确报错且不返回旧链接”均已确认，不再列入待评审选项。
 
-独立交互原型已完成构建与浏览器检查，并于2026-10-24获用户认可。实际流程、截图与验证边界见[原型检查记录](../../prototypes/smart-collections/evidence/verification.md)；该原型检查仅证明模拟交互；2026-10-24后的正式产品结果见[实施记录](../verification/smart-collections-dedup/README.md)。
+独立交互原型已完成构建与浏览器检查，并于2026-10-24获用户认可。实际流程、截图与验证边界见[原型检查记录](https://github.com/dnslin/ariso-next/blob/65759f16247f971a5eb0006503c5c0108ba1350c/prototypes/smart-collections/evidence/verification.md)；该原型检查仅证明模拟交互；2026-10-24后的正式产品结果见[实施记录](../verification/smart-collections-dedup/README.md)。
 
 ## 8. 原型设计阶段的检查记录
 

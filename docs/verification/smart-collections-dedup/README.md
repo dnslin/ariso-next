@@ -1,6 +1,6 @@
 # 智能集合与完全重复检测实施记录
 
-用户于 2026-10-24 认可[原型](../../../prototypes/smart-collections/README.md)，授权按[方案](../../design/smart-collections-and-duplicates-proposal-20261023.md)正式实施、测试和浏览器验证；暂不发布部署。
+用户于 2026-10-24 认可[原型](https://github.com/dnslin/ariso-next/blob/65759f16247f971a5eb0006503c5c0108ba1350c/prototypes/smart-collections/README.md)，授权按[方案](../../design/smart-collections-and-duplicates-proposal-20261023.md)正式实施、测试和浏览器验证；暂不发布部署。
 
 功能实现与本地验证已完成。全量集成最后一次为2199项通过、1项夹具失败；修复后相关13项定向通过，未再次全量重跑。构建、单元、静态检查、定向浏览器与真实R2/SeaweedFS检查通过。代码位于 `codex/smart-collections-dedup`。保留前轮原型与证据，不连接生产数据，不使用本机 Docker/Colima。
 

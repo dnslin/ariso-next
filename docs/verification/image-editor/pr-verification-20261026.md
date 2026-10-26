@@ -36,7 +36,7 @@
 
 ## 设计与历史证据
 
-本轮依据用户批准的[可交互原型](../../../prototypes/image-editor/README.md)，没有新Figma节点。已有[实施记录](./README.md)保留组合工作区的历史测试、48组布局和R2/SeaweedFS证据。其计数不冒充独立PR结果。
+本轮依据用户批准的[可交互原型](https://github.com/dnslin/ariso-next/blob/65759f16247f971a5eb0006503c5c0108ba1350c/prototypes/image-editor/README.md)，没有新Figma节点。已有[实施记录](./README.md)保留组合工作区的历史测试、48组布局和R2/SeaweedFS证据。其计数不冒充独立PR结果。
 
 正式界面继续复用OwnerShell、HeroUI、Lucide和Tailwind。独立拆分未改动画布及控件实现，图库入口组合已纳入本轮复核。
 

@@ -242,11 +242,11 @@ pnpm run test:browser
 
 原型只使用模拟数据验证布局、状态和交互，不执行真实备份、上传私有文件或写入 S3。原型结果不能证明数据库一致性、加密正确性、暂停边界或断电恢复，这些仍由后端实验和集成测试验证。
 
-用户于 2026-10-22 明确认可[隔离原型](../../prototypes/backup-restore/README.md)，当时要求先整理技术方案，暂不修改业务代码。该原型复用现有公共外壳、主题、设置分类和表单，覆盖创建备份、空实例恢复及暂停修改，作为正式前端依据。随后按用户授权完成 Figma 同步并开始本地业务实现；当前状态以本文开头与实施记录为准。
+用户于 2026-10-22 明确认可[隔离原型](https://github.com/dnslin/ariso-next/blob/65759f16247f971a5eb0006503c5c0108ba1350c/prototypes/backup-restore/README.md)，当时要求先整理技术方案，暂不修改业务代码。该原型复用现有公共外壳、主题、设置分类和表单，覆盖创建备份、空实例恢复及暂停修改，作为正式前端依据。随后按用户授权完成 Figma 同步并开始本地业务实现；当前状态以本文开头与实施记录为准。
 
 ## 12. 设计阶段证据边界
 
-以下保留设计阶段当时的检查边界：核查实现、类型、配置及官方资料，更新产品方案并制作隔离原型。原型实际检查见[验证记录](../../prototypes/backup-restore/evidence/verification.md)。当时没有实现真实备份 API、加密归档、业务暂停或恢复启用，也没有连接生产。后续正式实现与真实本地 HTTP 恢复的证据另见[实施记录](../verification/backup-implementation/README.md)，不混入该历史表格。
+以下保留设计阶段当时的检查边界：核查实现、类型、配置及官方资料，更新产品方案并制作隔离原型。原型实际检查见[验证记录](https://github.com/dnslin/ariso-next/blob/65759f16247f971a5eb0006503c5c0108ba1350c/prototypes/backup-restore/evidence/verification.md)。当时没有实现真实备份 API、加密归档、业务暂停或恢复启用，也没有连接生产。后续正式实现与真实本地 HTTP 恢复的证据另见[实施记录](../verification/backup-implementation/README.md)，不混入该历史表格。
 
 设计阶段文档检查使用 Node 24.18.1、pnpm 11.19.0：
 

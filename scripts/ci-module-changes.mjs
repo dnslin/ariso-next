@@ -62,10 +62,7 @@ export function selectChangedModules(paths) {
       ['README.md', 'LICENSE', 'AGENTS.md'].includes(path)
     )
       continue;
-    else if (/^(prototypes|design-plans)\//.test(path)) {
-      // Prototype TS/JS is still covered by the root's existing static checks.
-      if (/\.[cm]?[jt]sx?$/.test(path)) modules.app = true;
-    } else if (
+    else if (
       /^(src|tests|scripts|drizzle|public|e2e)\//.test(path) ||
       appFiles.has(path) ||
       /^(next|postcss|drizzle)\.config\.[^/]+$/.test(path)

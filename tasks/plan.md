@@ -2,7 +2,7 @@
 
 - 状态：本地与 S3 备份、下载和空白新实例恢复已实现。上一轮[本地实施记录](../docs/verification/backup-implementation/README.md)保留历史范围；本轮小样本提供方、浏览器及最终专项复核已完成，结果见 [S3 实施记录](../docs/verification/backup-implementation/s3.md)。
 - 日期：2026-10-22 至 23。
-- 范围：[产品规格](../docs/specs/SPEC-backup.md)、[已认可原型](../prototypes/backup-restore/README.md)。
+- 范围：[产品规格](../docs/specs/SPEC-backup.md)、[已认可原型](https://github.com/dnslin/ariso-next/blob/65759f16247f971a5eb0006503c5c0108ba1350c/prototypes/backup-restore/README.md)。
 - 执行清单：[任务拆分](./todo.md)。本目录只保存本项后续迭代的计划，不恢复已经退出的旧 `docs/tasks` 系统，不创建远端 Issue。
 
 ## 1. 结论与边界

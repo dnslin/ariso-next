@@ -48,7 +48,7 @@
 
 ## 设计依据与未验证项
 
-沿用[认可原型](../../../prototypes/backup-restore/README.md)和[Figma 关键状态](../backup-figma/README.md)。没有改原型源码或 Figma。实际页面在纯本地范围下省略 S3 表单，新增真实的重新授权、版本不可用、未知结果与清理待完成反馈。已初始化站点的备份页提供新实例恢复说明；恢复入口位于空白实例的 `/setup`。
+沿用[认可原型](https://github.com/dnslin/ariso-next/blob/65759f16247f971a5eb0006503c5c0108ba1350c/prototypes/backup-restore/README.md)和[Figma 关键状态](../backup-figma/README.md)。没有改原型源码或 Figma。实际页面在纯本地范围下省略 S3 表单，新增真实的重新授权、版本不可用、未知结果与清理待完成反馈。已初始化站点的备份页提供新实例恢复说明；恢复入口位于空白实例的 `/setup`。
 
 本记录尚未完成真实浏览器逐项操作、桌面/手机/浅深色截图及 Figma 对照。不能以 SSR 文字/属性断言代替这些检查。完整项目构建、所有单元/集成、两实例恢复后媒体/分享/账号核对和发布形态检查由主任务汇总。
 

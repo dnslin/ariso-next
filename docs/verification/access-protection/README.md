@@ -1,6 +1,6 @@
 # 访问防护实施与验收
 
-日期：2026-10-22。用户已批准 [Tips 精简原型](../../../design-plans/access-protection/README.md) 并授权开发。范围以 [访问防护规格](../../specs/SPEC-access-protection.md) 为准。
+日期：2026-10-22。用户已批准 [Tips 精简原型](https://github.com/dnslin/ariso-next/blob/65759f16247f971a5eb0006503c5c0108ba1350c/design-plans/access-protection/README.md) 并授权开发。范围以 [访问防护规格](../../specs/SPEC-access-protection.md) 为准。
 
 本页保留初始实现证据。PR #295 的三项 P2 修复、真实登录回归与后续验证见[修复验收记录](./p2-fixes.md)。
 

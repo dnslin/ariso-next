@@ -43,7 +43,7 @@
 
 ### 后续迭代的已确认方案
 
-- [整站备份与恢复](../specs/SPEC-backup.md)：产品方案和[交互原型](../../prototypes/backup-restore/README.md)于 2026-10-22 获用户确认，随后获准继续实现 S3。已按[技术方案](../../tasks/plan.md)与[任务拆分](../../tasks/todo.md)接入 Local/S3 备份、下载与空白实例恢复；新 S3 保留原 ID，逐个测试当前配置 revision 后执行，准备完成后手动重启启用。取消遗留只能在原坐标修正凭据并继续清理。上一轮[本地记录](../verification/backup-implementation/README.md)保持历史范围；小样本真实提供方、浏览器与最终专项复核已完成，见 [S3 实施记录](../verification/backup-implementation/s3.md)。本轮不做大文件或容量压测，未发布部署，不改写首版完成结论。
+- [整站备份与恢复](../specs/SPEC-backup.md)：产品方案和[交互原型](https://github.com/dnslin/ariso-next/blob/65759f16247f971a5eb0006503c5c0108ba1350c/prototypes/backup-restore/README.md)于 2026-10-22 获用户确认，随后获准继续实现 S3。已按[技术方案](../../tasks/plan.md)与[任务拆分](../../tasks/todo.md)接入 Local/S3 备份、下载与空白实例恢复；新 S3 保留原 ID，逐个测试当前配置 revision 后执行，准备完成后手动重启启用。取消遗留只能在原坐标修正凭据并继续清理。上一轮[本地记录](../verification/backup-implementation/README.md)保持历史范围；小样本真实提供方、浏览器与最终专项复核已完成，见 [S3 实施记录](../verification/backup-implementation/s3.md)。本轮不做大文件或容量压测，未发布部署，不改写首版完成结论。
 
 ## 3. 跨模块流程的责任
 

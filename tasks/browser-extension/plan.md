@@ -8,9 +8,9 @@
 
 ## 当前交付与原型检查点
 
-原型位于 `prototypes/browser-extension/`，使用隔离 Next.js 页面，端口为 `3176`。紧凑上传小窗入口为 `/`，网页右键收集演示入口为 `/?view=web`；连接、默认配置和主题收进设置视图。日常只显示 Ariso 小标题和设置图标、拖入／粘贴／选择、紧凑列表及上传／复制，移除大标题、全页导航、右侧设置栏和宣传说明卡。
+原型原位于 `prototypes/browser-extension/`，现已[归档](../../docs/archive/prototypes-20261026.md)。以下保留当时的设计范围：使用隔离 Next.js 页面，端口为 `3176`。紧凑上传小窗入口为 `/`，网页右键收集演示入口为 `/?view=web`；连接、默认配置和主题收进设置视图。日常只显示 Ariso 小标题和设置图标、拖入／粘贴／选择、紧凑列表及上传／复制，移除大标题、全页导航、右侧设置栏和宣传说明卡。
 
-上一轮实际命令、26 项页面检查、4 项文本输出测试和截图保留在[历史原型验证记录](../../prototypes/browser-extension/evidence/verification.md)。紧凑版的实际命令、24 项新版检查、截图和未验证项见[精简版验证](../../prototypes/browser-extension/evidence/compact-verification.md)，没有把旧版通过项当作新版验证。用户对上一轮界面大小的反馈已记录，新版布局和流程仍待体验。
+上一轮实际命令、26 项页面检查、4 项文本输出测试和截图保留在[历史原型验证记录](https://github.com/dnslin/ariso-next/blob/65759f16247f971a5eb0006503c5c0108ba1350c/prototypes/browser-extension/evidence/verification.md)。紧凑版的实际命令、24 项新版检查、截图和未验证项见[精简版验证](https://github.com/dnslin/ariso-next/blob/65759f16247f971a5eb0006503c5c0108ba1350c/prototypes/browser-extension/evidence/compact-verification.md)，没有把旧版通过项当作新版验证。用户对上一轮界面大小的反馈已记录，新版布局和流程仍待体验。
 
 原型应体现“加入图片 → 检查本次设置 → 开始上传 → 复制结果”，并能演示右键收集、来源授权、获取失败、服务器处理、重复、版本不可用和结果未知。它不读取真实 Token、不连接生产 Ariso，也不能证明浏览器扩展权限已经可用。
 
@@ -23,7 +23,7 @@
 3. `src/server/upload/public-result.ts` 等待同一次媒体任务，处理预算为 900 秒。正式上传放在小窗内可持续打开的扩展页面，后台只处理入口和任务转交；具体窗口方式在正式阶段验证，不能假定 action popup 关闭后仍可长上传。
 4. `src/server/upload/page-settings.ts` 会返回管理用相册、标签和存储列表，不能直接作为 Token 能力查询的响应。新接口只读上传限制、媒体默认值及默认存储可用状态。
 5. 当前工作区存在重复检测改动。实现前核对目标 revision 与这些改动的合入状态；不得假定生产已具备工作区行为。
-6. 根 TypeScript 配置目前覆盖仓库内所有 TS/TSX，ESLint 已列出部分独立原型生成目录。引入 WXT 后需要明确独立包和生成目录的检查边界，并让独立包自己的检查成为必需项。
+6. 原型阶段根 TypeScript 检查包含原型源码，ESLint 单独排除其生成目录。原型与专用排除项现已清理；正式扩展按[模块组织](../../docs/guides/modules.md)维护独立包和生成目录的检查边界。
 
 ## 方案与责任
 

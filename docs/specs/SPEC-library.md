@@ -17,7 +17,7 @@ library 负责查询参数、分页/加载更多、界面偏好、选择范围�
 
 不提供全站匿名图库、一次选中全部筛选结果、跨存储迁移、AI 搜索或拍摄参数搜索。library 仅为智能集合持久保存查询定义，不保存图片成员副本或建立后台归类队列；浏览器偏好不写站点设置。2026-10-21 用户批准批量 ZIP、图片替换及尺寸外链扩展，按本规格与 media/delivery 的对应契约执行。
 
-2026-10-25用户批准按[图片编辑原型](../../prototypes/image-editor/README.md)正式实现单张编辑、模板及批量处理。详情更多菜单、图库所选操作与上传完成项进入同一编辑器；模板不扩充公共侧栏。图库工作区保持挂载，退出恢复查询、选择、滚动和焦点；直达页`/library/edit`用于上传入口与刷新恢复。默认另存新图，已受理任务关闭页面后继续；请求编号与轻量冻结配方可在当前浏览器会话恢复，未知结果先核对，不重复另存。图片属性编辑资格与位图编辑资格独立，后者以media真实上下文为准。行为契约见[media第18节](./SPEC-media.md#18-图片编辑模板与批量处理2026-10-25用户批准)，实际验收见[实施记录](../verification/image-editor/README.md)。
+2026-10-25用户批准按[图片编辑原型](https://github.com/dnslin/ariso-next/blob/65759f16247f971a5eb0006503c5c0108ba1350c/prototypes/image-editor/README.md)正式实现单张编辑、模板及批量处理。详情更多菜单、图库所选操作与上传完成项进入同一编辑器；模板不扩充公共侧栏。图库工作区保持挂载，退出恢复查询、选择、滚动和焦点；直达页`/library/edit`用于上传入口与刷新恢复。默认另存新图，已受理任务关闭页面后继续；请求编号与轻量冻结配方可在当前浏览器会话恢复，未知结果先核对，不重复另存。图片属性编辑资格与位图编辑资格独立，后者以media真实上下文为准。行为契约见[media第18节](./SPEC-media.md#18-图片编辑模板与批量处理2026-10-25用户批准)，实际验收见[实施记录](../verification/image-editor/README.md)。
 
 ## 2. 工程与库能力依据
 
@@ -330,7 +330,7 @@ LIBRARY-BASE → LIBRARY-QUERY → LIBRARY-BATCH 按覆盖表前置推进；每�
 
 ## 智能集合扩展（2026-10-24，用户批准原型与实施）
 
-[已认可方案](../design/smart-collections-and-duplicates-proposal-20261023.md)与[原型](../../prototypes/smart-collections/README.md)作为交互依据。`smart_collections` 保存名称与规范化筛选规则，排序包含在规则中；不保存图片成员、页码、游标和本次浏览时间。删除集合不删除图片。
+[已认可方案](../design/smart-collections-and-duplicates-proposal-20261023.md)与[原型](https://github.com/dnslin/ariso-next/blob/65759f16247f971a5eb0006503c5c0108ba1350c/prototypes/smart-collections/README.md)作为交互依据。`smart_collections` 保存名称与规范化筛选规则，排序包含在规则中；不保存图片成员、页码、游标和本次浏览时间。删除集合不删除图片。
 
 所有者接口为 `GET/POST /api/library/collections` 和 `GET/PATCH/DELETE /api/library/collections/{id}`。修改纳入现有内容修改暂停边界。详情入口为 `/library/collections/{id}`；失效标签/相册/存储条件保留并提示修复，已删除集合不能退回全部图片。
 

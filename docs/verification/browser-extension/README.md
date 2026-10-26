@@ -2,7 +2,7 @@
 
 - 日期：2026-10-25。
 - 状态：Chrome 首版代码和试用包已实现。未发布商店、未部署生产，项目全量检查未全绿。
-- 依据：[规格](../../specs/SPEC-browser-extension.md)、[开发清单](../../../tasks/browser-extension/todo.md)、[使用说明](../../../integrations/browser-extension/README.md)、用户认可的[简约原型](../../../prototypes/browser-extension/README.md)。
+- 依据：[规格](../../specs/SPEC-browser-extension.md)、[开发清单](../../../tasks/browser-extension/todo.md)、[使用说明](../../../integrations/browser-extension/README.md)、用户认可的[简约原型](https://github.com/dnslin/ariso-next/blob/65759f16247f971a5eb0006503c5c0108ba1350c/prototypes/browser-extension/README.md)。
 - 环境：Node 24.18.1、pnpm 11.19.0、Chrome for Testing 151.0.7922.34。使用独立临时配置；原生截图出现 GPU 空白后改用同配置的软件渲染模式，没有改变业务逻辑。未使用本机 Docker／Colima。
 - 基础 revision：`c018b93c482349be70413fa870990fc2ac7321fe`，工作区包含本轮及并行任务的未提交改动，revision 不代表全部源码。
 

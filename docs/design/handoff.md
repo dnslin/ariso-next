@@ -423,7 +423,7 @@ Figma实际节点、截图、产品对照与适用检查统一见[本轮实施�
 
 ## 访问防护（2026-10-22，用户批准原型）
 
-用户批准 [Tips 精简版原型](../../design-plans/access-protection/README.md)进入开发，保留 S3 直连与真实所有者会话豁免。
+用户批准 [Tips 精简版原型](https://github.com/dnslin/ariso-next/blob/65759f16247f971a5eb0006503c5c0108ba1350c/design-plans/access-protection/README.md)进入开发，保留 S3 直连与真实所有者会话豁免。
 
 - 入口位于“基本设置 → 关联设置”，不新增一级导航或设置分类；独立子页复用品牌设置的960px内容区域、返回和固定保存底栏。
 - 模式使用三项单选，常驻短标签；频率与突发额度使用外标签数字输入，单位直接显示。完整含义放在模式及字段旁现有 StorageTip，字段 Tips 位于 NumberField 外。
@@ -435,7 +435,7 @@ Figma实际节点、截图、产品对照与适用检查统一见[本轮实施�
 
 ## 智能集合与完全重复检测（2026-10-24，用户批准原型）
 
-用户认可[独立原型](../../prototypes/smart-collections/README.md)，授权按[方案](./smart-collections-and-duplicates-proposal-20261023.md)正式实施与验证，暂不发布部署。
+用户认可[独立原型](https://github.com/dnslin/ariso-next/blob/65759f16247f971a5eb0006503c5c0108ba1350c/prototypes/smart-collections/README.md)，授权按[方案](./smart-collections-and-duplicates-proposal-20261023.md)正式实施与验证，暂不发布部署。
 
 - 图库标题区提供集合选择与更名/删除；原有筛选条件条支持保存、修改和另存为。截图使用真实标签ID，最近默认滚动7天；模板替换整组条件，不携带旧筛选。
 - 保存失败保留输入；已删除集合或标签明确提示，不能静默显示全部图片。跨窗口刷新读取最新保存规则，本地未保存修改先确认。

@@ -94,18 +94,21 @@ describe('module change selection', () => {
       all,
     );
   });
-  it('keeps known prose-only changes out of product suites but still checks prototype source as app TypeScript', () => {
+  it('keeps known prose-only changes out of product suites', () => {
     expect(
       selectChangedModules([
         'docs/guides/picgo.md',
         'tasks/browser-extension/plan.md',
-        'prototypes/browser-extension/README.md',
+        'docs/archive/prototypes-20261026.md',
         'README.md',
       ]),
     ).toEqual(none);
-    expect(
-      selectChangedModules(['prototypes/browser-extension/app/page.tsx']),
-    ).toEqual({ ...none, app: true });
+  });
+  it.each([
+    'prototypes/browser-extension/app/page.tsx',
+    'design-plans/access-protection/README.md',
+  ])('treats retired prototype path %s as unknown ownership', (path) => {
+    expect(selectChangedModules([path])).toEqual(all);
   });
   it('unions independent changes, preserves an empty diff, and runs all for an unknown path', () => {
     expect(selectChangedModules([])).toEqual(none);

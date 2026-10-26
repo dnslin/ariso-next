@@ -429,7 +429,7 @@ Figma节点与适用状态见[同步记录](../verification/image-workflows/figm
 
 ## 18. 图片编辑、模板与批量处理（2026-10-25，用户批准）
 
-用户认可[图片编辑原型](../../prototypes/image-editor/README.md)并授权正式实施、测试及浏览器验收，不发布部署。默认另存新图，支持明确切换覆盖原图。实际完成状态与验证边界见[实施记录](../verification/image-editor/README.md)。
+用户认可[图片编辑原型](https://github.com/dnslin/ariso-next/blob/65759f16247f971a5eb0006503c5c0108ba1350c/prototypes/image-editor/README.md)并授权正式实施、测试及浏览器验收，不发布部署。默认另存新图，支持明确切换覆盖原图。实际完成状态与验证边界见[实施记录](../verification/image-editor/README.md)。
 
 - 首版支持JPEG、PNG、静态WebP；保持完整显示像素与原格式。JPEG母图质量95，PNG/WebP无损保留透明。先纠正方向、局部打码、合成自定义水印，再编码并剥离原元数据。动画、多页、SVG等继续原有上传/交付，不静默取第一帧进入编辑器。
 - 打码支持多个矩形、马赛克或不透明纯色。自定义水印为文字或图片二选一，支持相对位置/大小、透明度、旋转和平铺；内置字体，超画布明确失败。模板使用规范化坐标与素材ID，不接受任意URL/文件路径。

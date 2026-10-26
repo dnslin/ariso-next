@@ -4,7 +4,7 @@
 
 - 日期：2026-10-25。
 - 状态：正式实现与本轮验收已完成；未发布、未部署、未合并或推送。
-- 授权：用户认可[交互原型](../../../prototypes/image-editor/README.md)，要求正式实现、测试及浏览器验证，默认另存新图。
+- 授权：用户认可[交互原型](https://github.com/dnslin/ariso-next/blob/65759f16247f971a5eb0006503c5c0108ba1350c/prototypes/image-editor/README.md)，要求正式实现、测试及浏览器验证，默认另存新图。
 - 计划：[实施方案与API合同](../../../tasks/image-editor/plan.md)、[已完成任务](../../../tasks/image-editor/todo.md)。保留工作区先前智能集合、浏览器扩展等未提交改动，不把这些改动归为本功能。
 - 环境：macOS arm64、Node24.18.1、pnpm11.19.0，原生ImageMagick/ExifTool；没有使用本机Docker/Colima。
 - 本地构建身份：`v0.0.0-image-editor.1` / `c018b93c482349be70413fa870990fc2ac7321fe`。代码来自含未提交修改的工作区，不能把HEAD当成全部源码身份；该版本不是发布版本。

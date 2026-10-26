@@ -1,6 +1,6 @@
 # 访问防护
 
-用户于 2026-10-22 确认保留 S3 直连、有效所有者会话豁免的基础防刷方案，并批准 Tips 精简版原型进入开发。原型与批准范围见 [原型说明](../../design-plans/access-protection/README.md)。正式实施和验证证据另行记录，原型通过不代表功能验收通过。
+用户于 2026-10-22 确认保留 S3 直连、有效所有者会话豁免的基础防刷方案，并批准 Tips 精简版原型进入开发。原型与批准范围见 [原型说明](https://github.com/dnslin/ariso-next/blob/65759f16247f971a5eb0006503c5c0108ba1350c/design-plans/access-protection/README.md)。正式实施和验证证据另行记录，原型通过不代表功能验收通过。
 
 ## 目标与边界
 
