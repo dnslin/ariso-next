@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { spawn } from 'node:child_process';
 import { randomBytes } from 'node:crypto';
 import { once } from 'node:events';
-import { cp, mkdtemp, readdir, rm } from 'node:fs/promises';
+import { cp, mkdtemp, readdir, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import Database from 'better-sqlite3';
@@ -29,18 +29,31 @@ afterAll(async () => {
   await rm(directory, { recursive: true, force: true });
 });
 
-it('未初始化的隔离生产产物返回 200 / no-store，健康检查不发起外部连接', async () => {
+async function expectIsolatedHealth(extraNodeOptions = '') {
   // Node 内置诊断通道观察客户端 TCP 连接，不拦截或替换实际请求。
   const observer = `import { channel } from 'node:diagnostics_channel';
     channel('net.client.socket').subscribe(() => console.log('health-test-outbound'));
     console.log('health-test-observer-ready');`;
   const run = await launch(app, directory, {
-    NODE_OPTIONS: `--no-experimental-strip-types --import=data:text/javascript,${encodeURIComponent(observer)}`,
+    NODE_OPTIONS: `--no-experimental-strip-types ${extraNodeOptions} --import=data:text/javascript,${encodeURIComponent(observer)}`,
   });
   try {
+    // Next logs Ready before loading request handlers. Keep the startup budget
+    // separate from the two normal requests' unchanged header/body deadlines.
     await expect
-      .poll(() => run.logs(), { timeout: 15000 })
-      .toContain('Ready in');
+      .poll(
+        async () => {
+          const { response, body } = await requestHealth(
+            `http://127.0.0.1:${run.port}/api/health`,
+          );
+          expect(response.status).toBe(200);
+          expect(response.headers.get('cache-control')).toBe('no-store');
+          return body;
+        },
+        { timeout: 15000 },
+      )
+      .toBe('{"status":"ok"}');
+    expect(run.logs()).toContain('Ready in');
     const db = new Database(join(directory, `data-${run.port}`, 'ariso.db'));
     try {
       expect(
@@ -182,6 +195,33 @@ it('未初始化的隔离生产产物返回 200 / no-store，健康检查不发�
   }
   expect(run.logs()).toContain('health-test-observer-ready');
   expect(run.logs()).not.toContain('health-test-outbound');
+  return run.logs();
+}
+
+it('未初始化的隔离生产产物返回 200 / no-store，健康检查不发起外部连接', async () => {
+  await expectIsolatedHealth();
+}, 30000);
+
+it('框架提前输出Ready时，仍按原启动预算等待真实健康服务并执行完整隔离检查', async () => {
+  const preload = join(directory, 'delay-health-router.cjs');
+  await writeFile(
+    preload,
+    `const Module = require('node:module');
+const load = Module._load;
+Module._load = function (id, ...args) {
+  const loaded = load.call(this, id, ...args);
+  if (id !== './router-server') return loaded;
+  return { ...loaded, async initialize(...options) {
+    console.info('test: delayed health router initialization');
+    await new Promise(resolve => setTimeout(resolve, 2500));
+    return loaded.initialize(...options);
+  } };
+};\n`,
+  );
+  const logs = await expectIsolatedHealth(
+    `--require ${JSON.stringify(preload)}`,
+  );
+  expect(logs).toContain('test: delayed health router initialization');
 }, 30000);
 
 it.each(['close-database', 'stall-headers', 'stall-body'] as const)(
