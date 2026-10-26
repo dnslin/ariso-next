@@ -1,0 +1,68 @@
+name: Release PicGo plugin
+
+on:
+  push:
+    tags: ['picgo-v*']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: picgo-release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  package:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    # No npm token/OIDC publication is configured. npm publish remains a manual maintainer action.
+    permissions:
+      contents: write
+    env:
+      RELEASE_TAG: ${{ github.ref_name }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+      - name: Verify tag matches PicGo version
+        run: |
+          node --input-type=module <<'JS'
+          import { readFileSync } from 'node:fs';
+          const { version } = JSON.parse(readFileSync('integrations/picgo/package.json', 'utf8'));
+          if (process.env.RELEASE_TAG !== `picgo-v${version}`)
+            throw new Error(`Release tag must equal picgo-v${version}`);
+          JS
+      - uses: pnpm/action-setup@v6
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter picgo-plugin-ariso lint
+      - run: pnpm --filter picgo-plugin-ariso typecheck
+      - run: pnpm --filter picgo-plugin-ariso test
+      - name: Package PicGo CommonJS source
+        run: |
+          mkdir -p "$RUNNER_TEMP/picgo-release"
+          pnpm --filter picgo-plugin-ariso pack --pack-destination "$RUNNER_TEMP/picgo-release"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: picgo-package
+          path: ${{ runner.temp }}/picgo-release/*.tgz
+          if-no-files-found: error
+          retention-days: 14
+      - name: Publish module GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          existing=$(gh api --paginate "repos/$GH_REPO/releases" --jq '.[] | select(.tag_name == env.RELEASE_TAG) | .draft')
+          if [ "$existing" = false ]; then
+            echo "Release $RELEASE_TAG is already published; leaving assets unchanged"
+            exit 0
+          fi
+          if [ -z "$existing" ]; then
+            gh release create "$RELEASE_TAG" --verify-tag --draft --latest=false \
+              --title "Ariso PicGo plugin ${RELEASE_TAG#picgo-v}" \
+              --notes 'CommonJS source TGZ for manual installation. See integrations/picgo/README.md. npm publication remains an explicit maintainer action and is not performed by this workflow.'
+          fi
+          gh release upload "$RELEASE_TAG" "$RUNNER_TEMP/picgo-release/"*.tgz --clobber
+          gh release edit "$RELEASE_TAG" --draft=false --latest=false
+          gh release view "$RELEASE_TAG" --json url --jq .url >> "$GITHUB_STEP_SUMMARY"

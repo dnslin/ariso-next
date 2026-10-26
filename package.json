@@ -14,10 +14,15 @@
     "dev": "pnpm run build:runtime && node --env-file=.env.local dist/cli/prestart.js && NEXT_EXIT_TIMEOUT_MS=6000 node --env-file=.env.local --import ./dist/cli/http.js --import ./dist/cli/shutdown.js node_modules/next/dist/bin/next dev --hostname 127.0.0.1 --port 3000",
     "db:generate": "drizzle-kit generate --config=drizzle.config.ts",
     "lint": "eslint . --max-warnings=0",
+    "lint:all": "pnpm --recursive --include-workspace-root run lint",
     "format:check": "prettier . --check",
     "format": "prettier . --write",
-    "typecheck": "pnpm --dir integrations/picgo typecheck && next typegen && tsc --noEmit --project tsconfig.json && tsc --noEmit --project tsconfig.runtime.json",
-    "test:unit": "pnpm --dir integrations/picgo test && vitest run --project unit",
+    "typecheck": "next typegen && tsc --noEmit --project tsconfig.json && tsc --noEmit --project tsconfig.runtime.json",
+    "typecheck:all": "pnpm --recursive --include-workspace-root run typecheck",
+    "test": "pnpm run test:unit",
+    "test:unit": "vitest run --project unit",
+    "test:all": "pnpm --recursive --include-workspace-root run test",
+    "check:all": "pnpm run lint:all && pnpm run typecheck:all && pnpm run test:all",
     "test:integration": "vitest run --project integration --project media-tools",
     "test:experiments": "vitest run --project experiments",
     "test:browser": "pnpm run build:shell && pnpm --dir tests/experiments/ui run build && node scripts/verify-browser.mjs",
@@ -88,6 +93,7 @@
     "smtp-server": "3.19.17",
     "tailwindcss": "4.3.3",
     "typescript": "6.0.3",
+    "vite": "8.3.0",
     "vitest": "5.0.0"
   }
 }

@@ -1,0 +1,144 @@
+{
+  "date": "2026-10-25",
+  "environment": "Codex in-app Chromium browser; isolated prototype",
+  "checks": [
+    {
+      "name": "示例多图上传",
+      "passed": true
+    },
+    {
+      "name": "网页右键加入同一队列",
+      "passed": true
+    },
+    {
+      "name": "空Token连接校验",
+      "passed": true
+    },
+    {
+      "name": "连接成功演示",
+      "passed": true
+    },
+    {
+      "name": "取消连接修改保留已保存地址",
+      "passed": true
+    },
+    {
+      "name": "重复图片单独显示未新增",
+      "passed": true
+    },
+    {
+      "name": "版本缺失保留已保存状态",
+      "passed": true
+    },
+    {
+      "name": "用户明确选择已有原图",
+      "passed": true
+    },
+    {
+      "name": "来源获取失败不会进入上传队列",
+      "passed": true
+    },
+    {
+      "name": "实际文件选择进入队列",
+      "passed": true
+    },
+    {
+      "name": "实际本地图片完成演示",
+      "passed": true
+    },
+    {
+      "name": "图片粘贴事件进入队列（合成事件）",
+      "passed": true
+    },
+    {
+      "name": "拖入文件进入队列（合成事件）",
+      "passed": true
+    },
+    {
+      "name": "不确定结果单独显示且不自动重传",
+      "passed": true
+    },
+    {
+      "name": "上传失败与来源失败分别显示",
+      "passed": true
+    },
+    {
+      "name": "失效Token阻止新上传并保留待上传文件",
+      "passed": true
+    },
+    {
+      "name": "私有保存不提供匿名链接复制",
+      "passed": true
+    },
+    {
+      "name": "停止客户端传输保留待核对状态",
+      "passed": true
+    },
+    {
+      "name": "复制失败提供完整可选文本",
+      "passed": true
+    },
+    {
+      "name": "360/390/430/768/1440无横向溢出",
+      "passed": true
+    },
+    {
+      "name": "Esc关闭连接弹窗并恢复焦点",
+      "passed": true
+    },
+    {
+      "name": "窄窗口主要点击目标至少44px",
+      "passed": true
+    },
+    {
+      "name": "构建后网页演示直达入口可用",
+      "passed": true
+    },
+    {
+      "name": "构建后页面无控制台警告或错误",
+      "passed": true
+    },
+    {
+      "name": "长站点地址无横向溢出",
+      "passed": true
+    },
+    {
+      "name": "长文件名保持完整title且不撑破窄窗口",
+      "passed": true
+    }
+  ],
+  "responsive": [
+    {
+      "overflow": false,
+      "scrollWidth": 360,
+      "width": 360
+    },
+    {
+      "overflow": false,
+      "scrollWidth": 390,
+      "width": 390
+    },
+    {
+      "overflow": false,
+      "scrollWidth": 430,
+      "width": 430
+    },
+    {
+      "overflow": false,
+      "scrollWidth": 768,
+      "width": 768
+    },
+    {
+      "overflow": false,
+      "scrollWidth": 1440,
+      "width": 1440
+    }
+  ],
+  "unverified": [
+    "真实Chrome/Edge扩展安装与权限",
+    "真实Ariso API上传",
+    "原生系统图片剪贴板和物理文件拖入",
+    "系统剪贴板复制文本的端到端回读"
+  ],
+  "console": []
+}

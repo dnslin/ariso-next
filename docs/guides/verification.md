@@ -10,7 +10,7 @@
 
 | 修改范围                     | 检查与条件                                                                                                                                                    |
 | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 每轮本地交付                 | `pnpm install --frozen-lockfile`、`pnpm --dir integrations/picgo install --frozen-lockfile`，确认主项目与独立插件依赖可复现                                   |
+| 每轮本地交付                 | `pnpm install --frozen-lockfile`，从根目录一次安装三个 workspace 模块，共用根锁文件                                                                           |
 | 文档与配置                   | `pnpm run format:check`、本地链接/锚点及对应配置检查；共用脚本变更实际执行其入口                                                                              |
 | 产品实现                     | `pnpm run lint`、`pnpm run typecheck`、`pnpm run test:unit`、`pnpm run build`、`pnpm run test:integration`                                                    |
 | 数据结构                     | `pnpm run db:generate` 并审查生成 SQL；生产只执行已提交的向前迁移                                                                                             |
@@ -18,6 +18,10 @@
 | 界面与交互                   | `pnpm run test:browser`，具体场景接入 `scripts/verify-browser.mjs`；运行条件和定向范围见[浏览器说明](../../e2e/runtime.md)                                    |
 | 历史实验                     | `pnpm run test:experiments` 仅在修改对应实验或具体调查时执行，不作为日常 PR/发布前置                                                                          |
 | Docker、启动、打包或发布验证 | 先在独立 Docker 环境运行 `scripts/verify-release-image.mjs`；媒体工具相关修改同时执行 `scripts/verify-media-tools.sh`，见[发布验证](./deployment.md#发布验证) |
+
+`lint`、`typecheck`、`test:unit` 和 `build` 检查主站；`check:all` 聚合三个模块的 lint、类型和单元测试。插件通过 `pnpm --filter ariso-browser-extension ...` 或 `pnpm --filter picgo-plugin-ariso ...` 单独执行，打包及发布约定见[模块组织](./modules.md)。
+
+日常 CI 按修改路径选择模块。共用锁文件和配置变化检查三个模块；上传 API、Token 或图片交付契约变化同时检查主站与两个插件，并运行真实 HTTP 联验。浏览器插件独立生成 Chrome ZIP；PicGo 直接打包 CommonJS 源码，没有单独编译步骤。
 
 先完成生产构建，再运行依赖 standalone 产物的集成和浏览器检查，不能一边重打包一边运行测试。集成可先定向执行 `pnpm exec vitest run --project integration tests/integration/<module>/<case>.test.ts`；资源紧张时降低 worker 数，不改超时、断言或跳过测试。
 
@@ -42,13 +46,15 @@ S3 独立真实验证使用 `scripts/verify-backup-s3.ts --config <私有配置>
 
 ## CI 与发布边界
 
-PR 和 main 推送的日常 Actions 包括格式、静态分析、类型、API 契约、构建、单元、普通集成和 AMD64 真实媒体工具验证。媒体测试使用与生产相同的 Debian 镜像，curl 只在测试派生镜像中。静态/单元与构建/集成分别并行，普通集成使用两个 worker。
+PR 和 main 推送的日常 Actions 先选择受影响模块，再执行对应检查。格式检查始终执行；选中主站时执行静态分析、类型、API 契约、构建、单元、普通集成和 AMD64 真实媒体工具验证。两个插件各自执行 lint、类型、单元和打包。媒体测试使用与生产相同的 Debian 镜像，curl 只在测试派生镜像中。静态/单元与构建/集成分别并行，普通集成使用两个 worker。
 
 Actions 不执行浏览器验收、浏览器运行器及其工具测试，也不构建浏览器专用外壳。本地单元、集成和浏览器入口保留原范围。无需浏览器的 HTTP、数据库及 SMTP 产品测试继续参与日常 CI；生产回归使用实验夹具不等于旧原型测试，不能按目录名批量排除。
 
 旧身份、API Key、统计、查询、Unicode、分享、媒体进程、存储及迟到 PUT 原型由 experiments 显式执行。完整格式、受限资源与竞争实验使用手动工作流，不作为每次 PR 或发布的前置。无部署密钥、无数据库、无初始化副作用的构建要求保留；standalone 实际启动由生产集成检查。
 
-Release 通过手动入口指定版本，分别在原生 AMD64/ARM64 runner 构建并验证，再发布同轮已验证镜像。镜像推送和离线包上传成功后才公布 Release，不重复整套日常检查。不用连续创建正式版本调试发布流程；本地单一架构通过不代表另一架构通过。
+主站 Release 通过手动入口指定版本，分别在原生 AMD64/ARM64 runner 构建并验证，再发布同轮已验证镜像。镜像推送和离线包上传成功后才公布 Release，不重复整套日常检查。不用连续创建正式版本调试发布流程；本地单一架构通过不代表另一架构通过。
+
+插件 Release 由各自版本标签触发，具体标签、产物和 npm／商店边界见[模块组织](./modules.md#独立发布)。
 
 同轮实现、评审修复与本地证据收齐后统一推送，PR 记录实际命令、环境、结果与未执行项，并核对 Actions。没有配置必需检查、没有远端检查结果或仅有模拟接口，都不能写成验证通过。缺真实服务环境如实记录；规模结果写明 CPU、内存、磁盘、数据分布与冷暖查询，规格起始参数不冒充实测阈值。
 

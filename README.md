@@ -134,6 +134,8 @@ docker compose --env-file .env.local up --build --detach --wait
 
 使用 Node.js 24.x 和 pnpm 11.19.0。环境配置、启动命令、生产构建及检查要求统一见[开发指南](./docs/guides/development.md)。
 
+仓库包含 Ariso 主站、Chrome 浏览器插件和 PicGo 上传器三个模块。共用根目录的 pnpm workspace 与锁文件，各自声明依赖并独立检查、打包和发布；目录、命令与发布边界见[模块组织](./docs/guides/modules.md)。
+
 主要技术栈为 Next.js、React、TypeScript、HeroUI、Tailwind CSS、SQLite 和 Drizzle ORM；图片处理使用 ImageMagick 与 ExifTool。
 
 ## 参与贡献

@@ -3,6 +3,8 @@ import {
   publicUploadErrorSchema,
   publicUploadInputSchema,
   publicUploadSuccessSchema,
+  publicUploadCapabilitiesSchema,
+  publicUploadCapabilitiesErrorSchema,
 } from './public-contract.ts';
 import { PUBLIC_UPLOAD_WAIT_TIMEOUT_MS } from './public-result.ts';
 
@@ -59,7 +61,7 @@ function response(description: string, schemaName: string) {
   };
 }
 
-/** The only public business operation is upload; internal Web routes stay private. */
+/** Upload clients may read minimal capabilities; internal Web routes stay private. */
 export function createUploadOpenApiDocument(publicUrl?: string) {
   const responses: Record<string, ReturnType<typeof response>> = {
     '201': response(
@@ -82,7 +84,7 @@ export function createUploadOpenApiDocument(publicUrl?: string) {
       title: 'Ariso 上传 API',
       version: '1.0.0',
       description:
-        '单文件同步上传契约。GET /api/openapi.json 提供本站当前地址的规范；/settings/api 提供用法及 Token 管理。此规范不公开内部 Web 管理接口。',
+        '单文件同步上传及最小上传能力查询契约。GET /api/openapi.json 提供本站当前地址的规范；/settings/api 提供用法及 Token 管理。此规范不公开内部 Web 管理接口。',
     },
     servers: [
       {
@@ -132,6 +134,33 @@ export function createUploadOpenApiDocument(publicUrl?: string) {
           responses,
         },
       },
+      '/api/upload/capabilities': {
+        get: {
+          operationId: 'getUploadCapabilities',
+          summary: '验证上传 Token 并读取当前上传能力',
+          description:
+            '使用同一个上传 Bearer Token，只返回当前单图限制、队列上限、默认可见性、默认链接版本和默认存储可用状态。认证优先；合法 Token 在设置未初始化时得到 409。默认存储可用表示目标存在且启用，不代表已执行写入探测。此接口不返回管理列表、所有者资料或存储凭据，不授权管理接口或私有图片读取。',
+          security: [{ uploadToken: [] }],
+          responses: {
+            '200': response(
+              '当前上传能力；每次上传仍重新校验 Token 与配置。',
+              'PublicUploadCapabilities',
+            ),
+            '401': response(
+              errorResponses['401'],
+              'PublicUploadCapabilitiesError',
+            ),
+            '409': response(
+              '已认证，但上传、媒体或存储设置尚未初始化。',
+              'PublicUploadCapabilitiesError',
+            ),
+            '500': response(
+              '读取上传能力失败；error 和 requestId 保留诊断信息。',
+              'PublicUploadCapabilitiesError',
+            ),
+          },
+        },
+      },
     },
     components: {
       securitySchemes: {
@@ -139,13 +168,21 @@ export function createUploadOpenApiDocument(publicUrl?: string) {
           type: 'http',
           scheme: 'bearer',
           description:
-            '所有者在 /settings/api 创建的上传 Token；仅授权上传，不授权管理接口或私有图片读取。',
+            '所有者在 /settings/api 创建的上传 Token；仅授权上传及最小上传能力查询，不授权管理接口或私有图片读取。',
         },
       },
       schemas: {
         PublicUploadInput: schema(publicUploadInputSchema, 'input'),
         PublicUploadSuccess: schema(publicUploadSuccessSchema, 'output'),
         PublicUploadError: schema(publicUploadErrorSchema, 'output'),
+        PublicUploadCapabilities: schema(
+          publicUploadCapabilitiesSchema,
+          'output',
+        ),
+        PublicUploadCapabilitiesError: schema(
+          publicUploadCapabilitiesErrorSchema,
+          'output',
+        ),
       },
     },
   };

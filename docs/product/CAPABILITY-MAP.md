@@ -35,6 +35,10 @@
 
 接口由提供能力的模块定义，使用方在自己的 Spec 中引用。每个模块的管理入口都使用 `identity` 验证所有者身份；这个入口检查不要求底层文件读写或配置读取能力反向调用认证。
 
+仓库交付分为主站、浏览器插件和 PicGo 三个模块，目录及发布责任见[模块组织](../guides/modules.md)。上表业务模块仍是主站内部的职责划分，不新增部署服务。
+
+官方 [Chrome 浏览器插件](../specs/SPEC-browser-extension.md)是独立上传客户端，通过上传 Token 查询最小能力并发送文件，复用 identity／upload／media／delivery。源码及用法在 `integrations/browser-extension/`，不增加服务端模块、会话或表；范围及未关闭检查见[实施记录](../verification/browser-extension/README.md)。
+
 `media` 把资产状态、处理任务和删除清理放在一起，是因为它们共同维护同一张图片及其文件的一致性。模块内仍区分处理、元数据与清理职责，具体代码组织在该模块 Spec 中定义。
 
 ### 后续迭代的已确认方案

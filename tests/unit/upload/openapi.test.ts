@@ -4,13 +4,16 @@ import { createUploadOpenApiDocument } from '../../../src/server/upload/openapi.
 import { PUBLIC_UPLOAD_WAIT_TIMEOUT_MS } from '../../../src/server/upload/public-result.ts';
 
 describe('public upload OpenAPI contract', () => {
-  it('only exposes the implemented synchronous Bearer upload operation', () => {
+  it('only exposes synchronous Bearer upload and its minimal capability read', () => {
     const document = createUploadOpenApiDocument('https://images.example.test');
     expect(document.openapi).toBe('3.0.4');
     expect(document.servers).toEqual([
       { url: 'https://images.example.test', description: '当前站点公开地址' },
     ]);
-    expect(Object.keys(document.paths)).toEqual(['/api/upload']);
+    expect(Object.keys(document.paths)).toEqual([
+      '/api/upload',
+      '/api/upload/capabilities',
+    ]);
     expect(Object.keys(document.paths['/api/upload'])).toEqual(['post']);
     const upload = document.paths['/api/upload'].post;
     expect(upload.security).toEqual([{ uploadToken: [] }]);
@@ -43,6 +46,40 @@ describe('public upload OpenAPI contract', () => {
     expect(upload.description).toContain('私有图片');
     expect(upload['x-wait-timeout-ms']).toBe(PUBLIC_UPLOAD_WAIT_TIMEOUT_MS);
     expect(upload.responses['504'].description).toContain('处理任务仍会继续');
+  });
+
+  it('documents a read-only authenticated capabilities response without management data', () => {
+    const document = createUploadOpenApiDocument();
+    const capabilities = document.paths['/api/upload/capabilities'];
+    expect(Object.keys(capabilities)).toEqual(['get']);
+    expect(capabilities.get.security).toEqual([{ uploadToken: [] }]);
+    expect(capabilities.get).not.toHaveProperty('requestBody');
+    expect(Object.keys(capabilities.get.responses)).toEqual([
+      '200',
+      '401',
+      '409',
+      '500',
+    ]);
+    expect(
+      capabilities.get.responses['200'].headers['Cache-Control'].schema.enum,
+    ).toEqual(['no-store']);
+    const schema = document.components.schemas.PublicUploadCapabilities;
+    expect(Object.keys(schema.properties ?? {})).toEqual([
+      'maxFileBytes',
+      'queueLimit',
+      'defaultVisibility',
+      'defaultLinkVersion',
+      'defaultStorageAvailable',
+      'requestId',
+    ]);
+    expect(schema.required).toEqual(Object.keys(schema.properties ?? {}));
+    expect(schema.additionalProperties).toBe(false);
+    expect(schema.properties?.defaultStorageAvailable).toMatchObject({
+      type: 'boolean',
+    });
+    expect(
+      document.components.schemas.PublicUploadCapabilitiesError.required,
+    ).toEqual(['error', 'requestId']);
   });
 
   it('keeps repeat multipart fields optional and binary files required', () => {

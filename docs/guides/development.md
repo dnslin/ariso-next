@@ -12,11 +12,12 @@ npm install --global pnpm@11.19.0
 pnpm --version
 pnpm exec node --version
 pnpm install --frozen-lockfile
-pnpm --dir integrations/picgo install --frozen-lockfile
 cp .env.example .env.local
 node -e "console.log(require('node:crypto').randomBytes(32).toString('base64'))"
 node -e "console.log(require('node:crypto').randomBytes(32).toString('hex'))"
 ```
+
+根目录一次安装会准备三个模块，不再进入插件目录分别安装。模块检查、开发和打包命令见[模块组织](./modules.md)。
 
 确认两个 Node 输出均为 `v24.x`。分别把两次随机输出填入 `.env.local` 的 `BETTER_AUTH_SECRET` 和 `ARISO_ENCRYPTION_KEY`，不要复用或相互派生。把 `DATA_DIR` 改为开发专用目录的绝对路径，例如 `/absolute/path/to/ariso/.data`。文件不提交到 Git；保存好原始密钥，后续启动不会替你生成或替换。
 

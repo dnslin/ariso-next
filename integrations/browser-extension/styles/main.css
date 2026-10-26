@@ -1,0 +1,88 @@
+@import 'tailwindcss';
+@import '@heroui/styles';
+@source '../components';
+@source '../entrypoints/uploader';
+
+@font-face {
+  font-family: 'Caveat';
+  src: url('/fonts/caveat.woff2') format('woff2');
+  font-weight: 400 700;
+  font-display: swap;
+}
+:root,
+.light {
+  --background: #fffffe;
+  --foreground: #272343;
+  --muted: oklch(0.326 0.042 272.656);
+  --accent: #ffd807;
+  --accent-foreground: #272343;
+  --surface: #fffffe;
+  --surface-foreground: #272343;
+  --default: #e3f6f5;
+  --default-foreground: #272343;
+  --border: #bae8e8;
+  --focus: #386176;
+  --danger: oklch(0.6 0.2 25);
+  --field-background: #fffffe;
+  --field-foreground: #272343;
+  --field-border: #bae8e8;
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei',
+    system-ui, sans-serif;
+}
+.dark {
+  --background: #181a22;
+  --foreground: #f4f1f8;
+  --muted: #b8b9c9;
+  --surface: #22252f;
+  --surface-foreground: #f4f1f8;
+  --default: #253d40;
+  --default-foreground: #f4f1f8;
+  --border: #607d85;
+  --focus: #82dbd3;
+  --danger: #ff858a;
+  --field-background: #22252f;
+  --field-foreground: #f4f1f8;
+  --field-border: #607d85;
+}
+html {
+  color-scheme: light;
+}
+html.dark {
+  color-scheme: dark;
+}
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  line-height: 1.5;
+}
+p {
+  overflow-wrap: anywhere;
+}
+.select__trigger {
+  border-radius: 8px;
+}
+.select__popover {
+  border-radius: 12px;
+}
+.select__popover .list-box-item {
+  border-radius: 8px;
+}
+@layer base {
+  :focus-visible,
+  [data-focus-visible='true'] {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0s !important;
+    transition-duration: 0s !important;
+    scroll-behavior: auto !important;
+  }
+}
