@@ -321,7 +321,7 @@ export function QueuePanel({
               className="w-28 min-w-0 shrink-0"
               value={format}
               options={formats}
-              onChange={(value) => onFormat(value as CopyFormat)}
+              onChange={onFormat}
             />
             <Button
               className={`${primary} min-w-0 flex-1`}

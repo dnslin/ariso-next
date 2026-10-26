@@ -1,12 +1,7 @@
 import { useState } from 'react';
 import { Button } from '@heroui/react';
 import { ChevronDown, ChevronRight, Moon, Sun } from 'lucide-react';
-import type {
-  ExtensionSettings,
-  LinkVersion,
-  SavedConnection,
-  Visibility,
-} from '../lib/types';
+import type { ExtensionSettings, SavedConnection } from '../lib/types';
 import { Choice, Field } from './ui';
 
 const versions = [
@@ -64,7 +59,7 @@ export function SettingsPanel({
           ]}
           onChange={(value) =>
             patch({
-              visibility: value === 'site' ? null : (value as Visibility),
+              visibility: value === 'site' ? null : value,
             })
           }
           disabled={busy}
@@ -73,7 +68,7 @@ export function SettingsPanel({
           label="链接版本"
           value={settings.linkVersion}
           options={versions}
-          onChange={(value) => patch({ linkVersion: value as LinkVersion })}
+          onChange={(value) => patch({ linkVersion: value })}
           disabled={busy}
         />
         <Button

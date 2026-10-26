@@ -15,7 +15,7 @@ export const primary =
 export const secondary =
   'min-h-11 rounded-lg border border-border bg-surface px-4 text-sm font-medium text-foreground shadow-none';
 
-export function Choice({
+export function Choice<const Value extends string>({
   label,
   value,
   options,
@@ -25,9 +25,9 @@ export function Choice({
   className,
 }: {
   label: string;
-  value: string;
-  options: readonly (readonly [string, string])[];
-  onChange: (value: string) => void;
+  value: NoInfer<Value>;
+  options: readonly (readonly [Value, string])[];
+  onChange: (value: NoInfer<Value>) => void;
   disabled?: boolean;
   compact?: boolean;
   className?: string;
@@ -36,7 +36,10 @@ export function Choice({
     <Select
       aria-label={label}
       value={value}
-      onChange={(key) => key !== null && onChange(String(key))}
+      onChange={(key) => {
+        const selected = options.find(([option]) => option === key);
+        if (selected) onChange(selected[0]);
+      }}
       isDisabled={disabled}
       className={className ?? 'w-full min-w-0'}
     >
