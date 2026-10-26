@@ -1,3 +1,6 @@
+vi.mock('../../../src/components/upload/fingerprint-coverage', () => ({
+  UploadFingerprintCoverage: () => null,
+}));
 import { Children, createElement, isValidElement, type ReactNode } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { beforeEach, expect, it, vi } from 'vitest';
@@ -60,6 +63,7 @@ vi.mock('../../../src/components/upload/provider', () => ({
   }),
   uploadTerminalStates: new Set([
     'ready',
+    'duplicate',
     'upload-failed',
     'processing-failed',
     'cancelled',
@@ -319,4 +323,15 @@ it('retains the upload draft but disables starting it during a backup', () => {
   expect(html).toMatch(/<button[^>]*disabled[^>]*>开始上传<\/button>/);
   expect(html).toContain('本地存储');
   expect(state.start).not.toHaveBeenCalled();
+});
+
+it('counts duplicate skips separately from new images and failures', () => {
+  state.items = [
+    { ...queue(1)[0], state: 'duplicate', existingImageId: 'existing' },
+    { ...queue(1)[0], id: 'created', state: 'ready', imageId: 'created-image' },
+    { ...queue(1)[0], id: 'failed', state: 'upload-failed' },
+  ];
+  const html = render();
+  expect(html).toContain('新增成功 1 张 · 重复跳过 1 张 · 失败 1 张');
+  expect(html).toContain('本次上传结果');
 });

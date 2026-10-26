@@ -9,12 +9,43 @@ import {
 import { useLibraryQuery } from '../../../src/app/library/use-library-query';
 import { useLibrarySelection } from '../../../src/app/library/use-library-selection';
 import { selectionBatchActions } from '../../../src/app/library/library-actions';
+import { smartCollectionTemplate } from '../../../src/app/library/smart-collection-templates';
 import type {
   LibraryItem,
   LibraryPage,
 } from '../../../src/server/library/types';
 
-const context = vi.hoisted(() => ({ search: '', mode: 'more' }));
+const context = vi.hoisted(() => ({
+  search: '',
+  mode: 'more',
+  bootstrapTarget: null as unknown,
+  bootstrap: null as (() => void) | null,
+  captureCleanup: false,
+  cleanupEffect: null as (() => void | (() => void)) | null,
+}));
+vi.mock('react', async (original) => {
+  const actual = await original<typeof import('react')>();
+  return {
+    ...actual,
+    useEffect: (
+      effect: () => void | (() => void),
+      dependencies?: unknown[],
+    ) => {
+      if (
+        context.bootstrapTarget &&
+        dependencies?.includes(context.bootstrapTarget)
+      )
+        context.bootstrap = effect;
+      if (
+        context.captureCleanup &&
+        dependencies?.length === 0 &&
+        !context.cleanupEffect
+      )
+        context.cleanupEffect = effect;
+      actual.useEffect(effect, dependencies);
+    },
+  };
+});
 vi.mock('next/navigation', () => ({
   useSearchParams: () => new URLSearchParams(context.search),
 }));
@@ -22,11 +53,14 @@ vi.mock('nuqs', async (original) => ({
   ...(await original<typeof import('nuqs')>()),
   useQueryStates: () => [
     {},
-    async (patch: Record<string, string | null>) => {
+    async (patch: Record<string, string | string[] | null>) => {
       const params = new URLSearchParams(context.search);
       for (const [key, value] of Object.entries(patch)) {
         if (value === null) params.delete(key);
-        else params.set(key, value);
+        else if (Array.isArray(value)) {
+          params.delete(key);
+          for (const item of value) params.append(key, item);
+        } else params.set(key, value);
       }
       context.search = params.toString();
       return params;
@@ -45,15 +79,300 @@ vi.mock('../../../src/app/library/library-preferences', async (original) => ({
     if (patch.loadingMode) context.mode = patch.loadingMode;
   },
 }));
-function mount(client: QueryClient) {
+function mount(
+  client: QueryClient,
+  options?: Parameters<typeof useLibraryQuery>[1],
+) {
   let result!: ReturnType<typeof useLibraryQuery>;
   function Probe() {
-    result = useLibraryQuery(client);
+    result = useLibraryQuery(client, options);
     return null;
   }
   renderToStaticMarkup(createElement(Probe));
   return result;
 }
+
+it('publishes a newly opened collection through the query adapter before enabling its list', async () => {
+  context.search = 'image=selected';
+  const collection = {
+    id: 'saved',
+    name: '待整理',
+    rules: { q: 'prefix', tagState: 'none' },
+    createdAt: '',
+    updatedAt: '',
+  };
+  context.bootstrapTarget = collection;
+  vi.stubGlobal('window', {
+    location: {
+      href: 'http://ariso.test/library/collections/saved?image=selected',
+    },
+    history: { replaceState: vi.fn() },
+  });
+  const client = new QueryClient();
+  mount(client, {
+    collection,
+    initialQuery:
+      'scope=normal&q=prefix&tagState=none&pageSize=40&sort=uploaded_desc',
+  });
+  expect(context.bootstrap).toBeTypeOf('function');
+  context.bootstrap!();
+  await Promise.resolve();
+  const opened = mount(client, {
+    collection,
+    initialQuery:
+      'scope=normal&q=prefix&tagState=none&pageSize=40&sort=uploaded_desc',
+  });
+  expect(opened.filters).toMatchObject({ q: 'prefix', tagState: 'none' });
+  expect(new URLSearchParams(context.search).get('scope')).toBe('normal');
+  expect(new URLSearchParams(context.search).get('image')).toBe('selected');
+  client.clear();
+});
+
+it('does not let a late relative-time response overwrite a newer absolute-date edit', async () => {
+  let release!: (response: Response) => void;
+  vi.stubGlobal(
+    'fetch',
+    vi.fn(
+      () =>
+        new Promise<Response>((resolve) => {
+          release = resolve;
+        }),
+    ),
+  );
+  const client = new QueryClient();
+  const hook = mount(client);
+  const pending = hook.applyQuery({ recentDays: '7' });
+  await hook.applyQuery({
+    uploadedFrom: '2026-10-01T00:00:00Z',
+    uploadedBefore: '2026-10-02T00:00:00Z',
+  });
+  release(
+    Response.json({ query: 'recentDays=7&relativeTo=2026-10-24T00:00:00Z' }),
+  );
+  await pending;
+  expect(new URLSearchParams(context.search).get('uploadedFrom')).toBe(
+    '2026-10-01T00:00:00Z',
+  );
+  expect(new URLSearchParams(context.search).has('recentDays')).toBe(false);
+  client.clear();
+});
+
+it('does not restore pending relative criteria after the user resets the query', async () => {
+  let release!: (response: Response) => void;
+  vi.stubGlobal(
+    'fetch',
+    vi.fn(
+      () =>
+        new Promise<Response>((resolve) => {
+          release = resolve;
+        }),
+    ),
+  );
+  vi.stubGlobal('window', {
+    location: { href: 'http://ariso.test/library' },
+    history: {
+      pushState: (_data: unknown, _unused: string, url: URL) => {
+        context.search = url.searchParams.toString();
+      },
+    },
+  });
+  const client = new QueryClient();
+  const hook = mount(client);
+  const pending = hook.applyQuery({ recentDays: '7' });
+  hook.resetQuery();
+  release(
+    Response.json({ query: 'recentDays=7&relativeTo=2026-10-24T00:00:00Z' }),
+  );
+  await pending;
+  expect(new URLSearchParams(context.search).has('recentDays')).toBe(false);
+  client.clear();
+});
+
+it('does not publish a pending relative response after leaving the page', async () => {
+  context.captureCleanup = true;
+  vi.stubGlobal('window', {
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+  });
+  let release!: (response: Response) => void;
+  vi.stubGlobal(
+    'fetch',
+    vi.fn(
+      () =>
+        new Promise<Response>((resolve) => {
+          release = resolve;
+        }),
+    ),
+  );
+  const client = new QueryClient();
+  const hook = mount(client);
+  const pending = hook.applyQuery({ recentDays: '7' });
+  const cleanup = context.cleanupEffect!();
+  expect(cleanup).toBeTypeOf('function');
+  cleanup!();
+  release(
+    Response.json({ query: 'recentDays=7&relativeTo=2026-10-24T00:00:00Z' }),
+  );
+  await pending;
+  expect(context.search).toBe('');
+  client.clear();
+});
+
+it('does not let a pending relative response replace same-page browser history after Back', async () => {
+  context.captureCleanup = true;
+  const events = new EventTarget();
+  vi.stubGlobal('window', {
+    addEventListener: events.addEventListener.bind(events),
+    removeEventListener: events.removeEventListener.bind(events),
+  });
+  let release!: (response: Response) => void;
+  vi.stubGlobal(
+    'fetch',
+    vi.fn(
+      () =>
+        new Promise<Response>((resolve) => {
+          release = resolve;
+        }),
+    ),
+  );
+  const client = new QueryClient();
+  const hook = mount(client);
+  const cleanup = context.cleanupEffect!();
+  const pending = hook.applyQuery({ recentDays: '7' });
+  context.search = 'q=previous-history';
+  events.dispatchEvent(new Event('popstate'));
+  release(
+    Response.json({ query: 'recentDays=7&relativeTo=2026-10-24T00:00:00Z' }),
+  );
+  await pending;
+  expect(context.search).toBe('q=previous-history');
+  cleanup!();
+  client.clear();
+});
+
+it('replaces an older collection definition completely using the returned server boundary', async () => {
+  context.search = 'tagState=none&format=jpeg&albumId=old&storageId=old';
+  const fetcher = vi.fn();
+  vi.stubGlobal('fetch', fetcher);
+  const client = new QueryClient();
+  const hook = mount(client);
+  expect(
+    await hook.replaceQuery(
+      'q=latest&tagId=current&recentDays=7&relativeTo=2026-10-24T00:00:00Z',
+      hook.getQueryRevision(),
+    ),
+  ).toBe(true);
+  expect(
+    parseLibraryLocation(new URLSearchParams(context.search)).filters,
+  ).toMatchObject({
+    q: 'latest',
+    tagIds: ['current'],
+    recentDays: 7,
+    format: null,
+    albumId: null,
+    storageId: null,
+  });
+  expect(new URLSearchParams(context.search).has('tagState')).toBe(false);
+  expect(fetcher).not.toHaveBeenCalled();
+  client.clear();
+});
+
+it('retains edits made while the latest saved definition is being read', async () => {
+  const client = new QueryClient();
+  const hook = mount(client);
+  const revision = hook.getQueryRevision();
+  await hook.applyQuery({ q: 'local draft' });
+  expect(await hook.replaceQuery('q=remote', revision)).toBe(false);
+  expect(new URLSearchParams(context.search).get('q')).toBe('local draft');
+  client.clear();
+});
+
+it('applies the screenshot template without retaining previous format, storage, album, status or sort filters', async () => {
+  context.search =
+    'q=before&format=jpeg&albumId=old&storageId=old&visibility=private&status=failed&failure=initial&sort=size_asc';
+  vi.stubGlobal(
+    'fetch',
+    vi.fn(async () =>
+      Response.json({ query: 'recentDays=7&relativeTo=2026-10-24T00:00:00Z' }),
+    ),
+  );
+  const client = new QueryClient();
+  await mount(client).applyQuery(
+    smartCollectionTemplate('screenshot', ['real-screenshot']),
+  );
+  expect(
+    parseLibraryLocation(new URLSearchParams(context.search)).filters,
+  ).toMatchObject({
+    q: '',
+    tagIds: ['real-screenshot'],
+    recentDays: 7,
+    format: null,
+    albumId: null,
+    storageId: null,
+    visibility: null,
+    status: null,
+    failure: null,
+    sort: 'uploaded_desc',
+  });
+  client.clear();
+});
+
+it('keeps a saved collection query ready when resetting invalid criteria', () => {
+  context.search = 'scope=normal&tagId=removed';
+  const pushState = vi.fn();
+  vi.stubGlobal('window', {
+    location: {
+      href: `http://ariso.test/library/collections/saved?${context.search}`,
+    },
+    history: { pushState },
+  });
+  mount(new QueryClient(), {
+    collection: {
+      id: 'saved',
+      name: '保存集合',
+      rules: { tagId: ['removed'] },
+      createdAt: '',
+      updatedAt: '',
+    },
+    initialQuery: context.search,
+  }).resetQuery();
+  expect((pushState.mock.calls[0][2] as URL).searchParams.get('scope')).toBe(
+    'normal',
+  );
+});
+
+it('keeps relative time stable for data refresh and resolves a new boundary only on explicit refresh', async () => {
+  context.search = 'recentDays=7&relativeTo=2026-10-24T12%3A00%3A00.000Z';
+  const previous = context.search;
+  const fetcher = vi.fn(async (url: string, init?: RequestInit) => {
+    if (url === '/api/library/collections/resolve') {
+      expect(JSON.parse(String(init?.body))).toMatchObject({ recentDays: '7' });
+      expect(JSON.parse(String(init?.body))).not.toHaveProperty('relativeTo');
+      return Response.json({
+        query: 'recentDays=7&relativeTo=2026-10-25T12%3A00%3A00.000Z',
+      });
+    }
+    expect(
+      new URL(url, 'http://localhost').searchParams.get('relativeTo'),
+    ).toBe('2026-10-24T12:00:00.000Z');
+    return Response.json({
+      items: [],
+      total: 0,
+      hasMore: false,
+      nextCursor: null,
+    });
+  });
+  vi.stubGlobal('fetch', fetcher);
+  const client = new QueryClient();
+  await mount(client).refreshCurrent();
+  expect(context.search).toBe(previous);
+  await mount(client).refresh();
+  expect(new URLSearchParams(context.search).get('relativeTo')).toBe(
+    '2026-10-25T12:00:00.000Z',
+  );
+  expect(new URLSearchParams(context.search).has('uploadedFrom')).toBe(false);
+  client.clear();
+});
 
 it('clears library filters without removing the storage reference return destination', () => {
   const source = '/settings/storage/archive?view=references';
@@ -110,6 +429,10 @@ afterEach(() => {
   vi.unstubAllGlobals();
   context.search = '';
   context.mode = 'more';
+  context.bootstrapTarget = null;
+  context.bootstrap = null;
+  context.captureCleanup = false;
+  context.cleanupEffect = null;
 });
 
 it('refreshes from the first cursor without replacing real cards with an empty loading state', async () => {

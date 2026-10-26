@@ -16,6 +16,8 @@ export function sessionResult(session: UploadSession) {
     declaredSize: session.declaredSize,
     state: session.state,
     imageId: session.imageId,
+    existingImageId: session.existingImageId,
+    existingImageTrashed: session.existingImageTrashed,
     jobId: session.jobId,
     byteSize: session.byteSize,
     errorCode: session.errorCode,

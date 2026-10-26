@@ -1,0 +1,163 @@
+{
+  "date": "2026-10-23",
+  "scope": "独立原型的上传、重复结果、API/PicGo 提示和共享图库交互；不是产品后端验收",
+  "origin": "http://127.0.0.1:3173",
+  "browser": {
+    "tool": "ego-browser",
+    "spaceId": 7,
+    "page": "p2",
+    "spaceFinishedByUploadWorker": false,
+    "finalPage": "/upload"
+  },
+  "implementationFiles": [
+    "app/upload-preview.tsx",
+    "app/upload-queue.tsx",
+    "app/api-preview.tsx"
+  ],
+  "checks": [
+    {
+      "name": "手动开始及四类结果",
+      "result": "passed",
+      "observation": "选择四个示例文件后保持等待开始；点击开始上传后展示传输、检查与处理阶段，最终一项新增成功、一项普通重复、一项回收站重复、一项传输失败。汇总为新增成功1、重复跳过2、失败1。"
+    },
+    {
+      "name": "失败项单独重试",
+      "result": "passed",
+      "observation": "只有失败行提供重试上传。点击后该行完成为新增成功；两项重复保持不变；汇总变为新增成功2、重复跳过2、失败0。"
+    },
+    {
+      "name": "已有图片与冻结设置",
+      "result": "passed",
+      "observation": "上传批次设置为本地存储、私有、无相册、截图标签。重复湖泊的详情仍为公开且尚未添加标签。将下一次可见性改为公开后，原批次摘要仍是私有，已新增截图仍为私有。"
+    },
+    {
+      "name": "回收站重复及恢复",
+      "result": "passed",
+      "observation": "重复项进入回收站详情，点击恢复后返回原队列；该行显示已有图片已恢复到图库、本次未新增，并改为查看已有图片。未生成额外副本。"
+    },
+    {
+      "name": "详情返回焦点",
+      "result": "passed",
+      "observation": "打开普通重复详情后返回，document.activeElement 文本为查看已有图片，队列四行仍在。详情只保留共享顶部返回，不再重复底栏返回。"
+    },
+    {
+      "name": "示例选择键盘操作",
+      "result": "passed",
+      "observation": "四个原生checkbox具有可访问名称与tabIndex=0。聚焦新截图并按Space后加入数量变3，再按Space恢复4。"
+    },
+    {
+      "name": "API与PicGo重复响应",
+      "result": "passed",
+      "observation": "点击模拟提交后显示409、UPLOAD_DUPLICATE、stage=deduplication、status=not_created、imageId=null。响应没有url或versions字段；页面明确PicGo中止本次输出、不替换编辑器图片地址。"
+    },
+    {
+      "name": "旧图库指纹补齐场景",
+      "result": "passed",
+      "observation": "初始显示尚未完成与未覆盖提示；点击继续检查后最终显示旧图库检查完成8/8。该进度仅为示例计时，不读取真实原图。"
+    },
+    {
+      "name": "上传中跨页及智能集合联动",
+      "result": "passed_after_fix",
+      "observation": "四行仍为uploading时点击图库，后台新截图完成并出现在图库。进入最近上传的截图集合后可见新截图和两张原截图，共3张。返回上传保留ready、duplicate、trash、failed四行及冻结摘要。图库与上传各仅有一个main-content节点。",
+      "fix": "原先Prototype位于catch-all page，路由切换会卸载队列；主代理将其移到持续存在的layout。UploadPreview通过active参数保留状态与计时器，非上传路由不渲染Frame，避免隐藏重复公共DOM。"
+    },
+    {
+      "name": "无真实API请求",
+      "result": "passed",
+      "observation": "源码没有fetch或XMLHttpRequest；浏览器性能资源列表中/api/请求数量为0。显示的POST /api/upload只是说明文本。"
+    }
+  ],
+  "responsiveChecks": [
+    {
+      "viewport": [1440, 1080],
+      "theme": "light",
+      "horizontalOverflow": false,
+      "visualReview": true
+    },
+    {
+      "viewport": [390, 844],
+      "theme": "light",
+      "horizontalOverflow": false,
+      "footerBottom": 844,
+      "visualReview": true
+    },
+    {
+      "viewport": [390, 600],
+      "theme": "dark",
+      "horizontalOverflow": false,
+      "footerBottom": 600,
+      "visualReview": true,
+      "notes": "手机修改按钮聚焦本地存储字段；API响应可在正文中完整滚动阅读。"
+    },
+    {
+      "viewport": [320, 844],
+      "theme": "dark",
+      "horizontalOverflow": false,
+      "mainOverflow": false,
+      "footerBottom": 844,
+      "visualReview": false
+    },
+    {
+      "viewport": [768, 844],
+      "theme": "dark",
+      "horizontalOverflow": false,
+      "mainOverflow": false,
+      "footerBottom": 844,
+      "visualReview": false
+    },
+    {
+      "viewport": [1024, 844],
+      "theme": "dark",
+      "horizontalOverflow": false,
+      "mainOverflow": false,
+      "footerBottom": 844,
+      "visualReview": false
+    }
+  ],
+  "screenshots": [
+    {
+      "file": "upload-desktop-results.png",
+      "pixels": [1440, 1080],
+      "theme": "light"
+    },
+    {
+      "file": "upload-mobile-light-390.png",
+      "pixels": [390, 844],
+      "theme": "light"
+    },
+    {
+      "file": "upload-api-mobile-dark-390x600.png",
+      "pixels": [390, 600],
+      "theme": "dark"
+    }
+  ],
+  "commands": [
+    {
+      "command": "pnpm exec prettier --check prototypes/smart-collections/app/upload-preview.tsx prototypes/smart-collections/app/upload-queue.tsx prototypes/smart-collections/app/api-preview.tsx",
+      "result": "passed"
+    },
+    {
+      "command": "pnpm exec eslint prototypes/smart-collections/app/upload-preview.tsx prototypes/smart-collections/app/upload-queue.tsx prototypes/smart-collections/app/api-preview.tsx --max-warnings=0",
+      "result": "passed"
+    },
+    {
+      "command": "pnpm exec tsc --noEmit --incremental false --project prototypes/smart-collections/tsconfig.json",
+      "result": "passed",
+      "notes": "共享组件初次尚未写入时出现缺失模块错误；共享组件到位及active接口调整后通过。"
+    },
+    {
+      "command": "sips -g pixelWidth -g pixelHeight prototypes/smart-collections/evidence/upload-desktop-results.png prototypes/smart-collections/evidence/upload-mobile-light-390.png prototypes/smart-collections/evidence/upload-api-mobile-dark-390x600.png",
+      "result": "passed"
+    }
+  ],
+  "harnessNotes": [
+    "Ego视口设置不能假定跨round持久，三张最终截图均在同一round设置视口后截取，innerWidth/innerHeight与实际PNG尺寸一致。",
+    "一次补齐完成的精确文本等待因段落同时含8/8计数超时，随后读取真实页面确认已完成8/8；不是产品操作失败。",
+    "共享CSS的HMR曾重置演示数据；最终截图在修正后的样式下重新生成。"
+  ],
+  "notVerified": [
+    "真实文件哈希、服务端并发、数据库、对象存储清理、真实API或PicGo客户端",
+    "本子任务未运行产品测试、产品构建或容器",
+    "尚无用户最终人工验收"
+  ]
+}

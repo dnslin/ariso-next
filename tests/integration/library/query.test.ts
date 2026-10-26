@@ -77,6 +77,58 @@ afterEach(() => {
 });
 
 describe('production library queries', () => {
+  it('uses the fixed rolling boundary and current original size while keeping the first upload time', () => {
+    const boundary = Date.parse('2026-10-17T12:00:00.000Z');
+    seed('before', { createdAt: new Date(boundary - 1), byteSize: 11000000 });
+    seed('edge', { createdAt: new Date(boundary), byteSize: 11000000 });
+    seed('after', { createdAt: new Date(boundary + 1), byteSize: 11000000 });
+    const value =
+      'recentDays=7&relativeTo=2026-10-24T12:00:00Z&sizeGreaterThan=10000000';
+    expect(ids(value)).toEqual(['after', 'edge']);
+    connection.db
+      .update(mediaImages)
+      .set({
+        byteSize: 10000000,
+        contentUpdatedAt: new Date('2026-10-24T12:00:00Z'),
+      })
+      .where(eq(mediaImages.id, 'edge'))
+      .run();
+    expect(ids(value)).toEqual(['after']);
+    connection.db
+      .update(mediaImages)
+      .set({ contentUpdatedAt: new Date('2026-10-24T12:00:00Z') })
+      .where(eq(mediaImages.id, 'before'))
+      .run();
+    expect(ids(value)).toEqual(['after']);
+  });
+  it('recomputes untagged membership and strict original size boundaries for lists and explicit selection', () => {
+    seed('equal', { byteSize: 10000000 });
+    seed('inside', {
+      byteSize: 10000001,
+      processingStatus: 'failed',
+      storageId: 'storage-3',
+    });
+    seed('upper', { byteSize: 20000000 });
+    seed('tagged', { byteSize: 15000000 });
+    seed('trash', { byteSize: 15000000, trashedAt: new Date() });
+    tag('tagged', 'tag-1');
+    const value =
+      'tagState=none&sizeGreaterThan=10000000&sizeLessThan=20000000';
+    expect(ids(value)).toEqual(['inside']);
+    expect(
+      readLibrarySelection(connection.db, {
+        ids: ['inside', 'equal', 'tagged'],
+        query: value,
+      }).items.map((item) => item.id),
+    ).toEqual(['inside']);
+    tag('inside', 'tag-1');
+    expect(ids(value)).toEqual([]);
+    connection.db
+      .delete(imageTags)
+      .where(eq(imageTags.imageId, 'inside'))
+      .run();
+    expect(ids(value)).toEqual(['inside']);
+  });
   it('locates current initial and latest reprocess failures with the same IDs as media counts', () => {
     seed('initial', { processingStatus: 'failed' });
     seed('reprocess-a');

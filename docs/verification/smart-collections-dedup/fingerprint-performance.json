@@ -1,0 +1,59 @@
+{
+  "date": "2026-10-24",
+  "node": "v24.18.1",
+  "scope": "Isolated local SQLite WAL database; synthetic rows, no real library or object storage access",
+  "cadence": "Queue loop is 50 ms; enqueue runs once per maintenance, scheduled 1000 ms after maintenance settles, unless paused/stopping",
+  "baselineCapturedBeforeFix": true,
+  "cases": [
+    {
+      "images": 1000,
+      "objects": 4000,
+      "jobs": 2000,
+      "allOriginalsHaveHash": true,
+      "unhashedDerivatives": 3000,
+      "enqueued": 0,
+      "queryCount": 1,
+      "plans": [
+        {
+          "sql": "select o.id from media_objects o\n    where o.purpose='original' and o.content_sha256 is null and o.status='stored'\n    and exists(select 1 from media_versions v join media_images i on i.id=v.image_id\n      join storage_configs s on s.id=i.storage_id\n      where v.image_id=o.image_id and v.kind='original' and v.object_id=o.id\n        and i.deletion_status is null and s.enabled=1) limit 1",
+          "plan": [
+            "SEARCH o USING INDEX media_objects_missing_original_sha256 (purpose=? AND content_sha256=?)",
+            "CORRELATED SCALAR SUBQUERY 1",
+            "SEARCH v USING INDEX sqlite_autoindex_media_versions_1 (image_id=? AND kind=?)",
+            "SEARCH i USING INDEX sqlite_autoindex_media_images_1 (id=?)",
+            "SEARCH s USING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+          ]
+        }
+      ],
+      "beforeMs": [1.553, 1.647, 1.481, 1.508, 1.527, 1.533, 1.543],
+      "afterMs": [0.0278, 0.0198, 0.0208, 0.0186, 0.0227, 0.0159, 0.0187],
+      "beforeMedianMs": 1.533,
+      "afterMedianMs": 0.0198
+    },
+    {
+      "images": 10000,
+      "objects": 40000,
+      "jobs": 20000,
+      "allOriginalsHaveHash": true,
+      "unhashedDerivatives": 30000,
+      "enqueued": 0,
+      "queryCount": 1,
+      "plans": [
+        {
+          "sql": "select o.id from media_objects o\n    where o.purpose='original' and o.content_sha256 is null and o.status='stored'\n    and exists(select 1 from media_versions v join media_images i on i.id=v.image_id\n      join storage_configs s on s.id=i.storage_id\n      where v.image_id=o.image_id and v.kind='original' and v.object_id=o.id\n        and i.deletion_status is null and s.enabled=1) limit 1",
+          "plan": [
+            "SEARCH o USING INDEX media_objects_missing_original_sha256 (purpose=? AND content_sha256=?)",
+            "CORRELATED SCALAR SUBQUERY 1",
+            "SEARCH v USING INDEX sqlite_autoindex_media_versions_1 (image_id=? AND kind=?)",
+            "SEARCH i USING INDEX sqlite_autoindex_media_images_1 (id=?)",
+            "SEARCH s USING INDEX sqlite_autoindex_storage_configs_1 (id=?)"
+          ]
+        }
+      ],
+      "beforeMs": [22.065, 21.505, 21.994, 22.42, 22.373, 21.88, 22.077],
+      "afterMs": [0.0295, 0.02, 0.0185, 0.0157, 0.0165, 0.0156, 0.0165],
+      "beforeMedianMs": 22.065,
+      "afterMedianMs": 0.0165
+    }
+  ]
+}

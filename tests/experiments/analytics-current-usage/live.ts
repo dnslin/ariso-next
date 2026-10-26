@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { randomBytes, randomUUID } from 'node:crypto';
+import { createHash, randomBytes, randomUUID } from 'node:crypto';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 import { setTimeout as delay } from 'node:timers/promises';
@@ -67,6 +67,7 @@ export async function runCurrentUsageService(
   const keys = Object.fromEntries(names.map((name) => [name, `${name}.bin`]));
   const attempted = new Set<string>();
   const bytes = new Map<string, number>();
+  const hashes = new Map<string, string>();
   const report = {
     service: config.service,
     endpoint: config.endpoint,
@@ -230,12 +231,13 @@ export async function runCurrentUsageService(
     }
     async function write(name: string, size: number) {
       const key = keys[name];
+      const body = Buffer.alloc(size);
       attempted.add(key); // A failed PUT can still have written the remote object.
       await client!.send(
         new PutObjectCommand({
           Bucket: config.bucket,
           Key: prefix + key,
-          Body: Buffer.alloc(size),
+          Body: body,
         }),
       );
       const head = await inspectSampleObject(
@@ -246,6 +248,7 @@ export async function runCurrentUsageService(
       assert.equal(head.exists, true);
       assert.equal(head.bytes, size);
       bytes.set(name, head.bytes!);
+      hashes.set(name, createHash('sha256').update(body).digest('hex'));
       return head;
     }
     const b = (name: string) => {
@@ -281,6 +284,7 @@ export async function runCurrentUsageService(
       .set({
         finalBytes: b('original'),
         byteSize: b('original'),
+        sourceSha256: hashes.get('original')!,
         temporaryBytes: b('temporary'),
         confirmedAt: new Date(),
       })

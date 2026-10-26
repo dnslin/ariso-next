@@ -34,6 +34,12 @@ describe('public upload OpenAPI contract', () => {
       '507',
     ]);
     expect(upload.description).toContain('不提供幂等键');
+    expect(upload.description).toContain('SHA-256');
+    expect(upload.description).not.toContain('相同文件也可生成');
+    expect(upload.responses['409'].description).toContain('UPLOAD_DUPLICATE');
+    expect(upload.responses['409'].description).toContain(
+      '不返回已有图片的 ID、名称或链接',
+    );
     expect(upload.description).toContain('私有图片');
     expect(upload['x-wait-timeout-ms']).toBe(PUBLIC_UPLOAD_WAIT_TIMEOUT_MS);
     expect(upload.responses['504'].description).toContain('处理任务仍会继续');

@@ -241,3 +241,36 @@ test('rejects invalid configuration before sending a request and discloses publi
   );
   assert.equal(fields.find((field) => field.name === 'token').type, 'password');
 });
+
+test('reports duplicate files clearly and never returns an existing link or a partial batch', async () => {
+  let count = 0;
+  const f = fixture(async () => {
+    count++;
+    return count === 1
+      ? { status: 201, data: ready() }
+      : {
+          status: 409,
+          data: {
+            imageId: null,
+            status: 'not_created',
+            error: {
+              code: 'UPLOAD_DUPLICATE',
+              stage: 'deduplication',
+              message: '相同文件已存在，请登录图库核对',
+            },
+            requestId: 'duplicate-request',
+          },
+        };
+  });
+  f.ctx.output.push(
+    { fileName: 'duplicate.png', buffer: Buffer.from('same') },
+    { fileName: 'later.png', buffer: Buffer.from('later') },
+  );
+  await assert.rejects(
+    f.uploader.handle(f.ctx),
+    /HTTP 409.*UPLOAD_DUPLICATE.*已存在，未新增/,
+  );
+  assert.equal(count, 2);
+  assert.deepEqual(f.ctx.output, []);
+  assert.doesNotMatch(JSON.stringify(f.events), /https:\/\/public.example/);
+});

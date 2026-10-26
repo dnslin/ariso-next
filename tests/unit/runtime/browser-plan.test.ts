@@ -6,6 +6,19 @@ function select(suite: string, only?: string) {
 }
 
 describe('focused browser execution plans', () => {
+  it('runs smart collections and exact duplicates as a focused production flow', () => {
+    expect(select('full').stages).toContainEqual([
+      'smart-collections-dedup',
+      'smart-collections-dedup',
+    ]);
+    expect(select('smart-collections-dedup')).toEqual({
+      stages: [['smart-collections-dedup', 'smartCollectionsDedup']],
+      config: {},
+    });
+    expect(() => select('smart-collections-dedup', 'unrelated')).toThrow(
+      '--only',
+    );
+  });
   it('includes access protection in full and focused verification', () => {
     expect(select('full').stages).toContainEqual([
       'access-protection',
@@ -597,6 +610,7 @@ describe('focused browser execution plans', () => {
         ['uiux-p1', 'uiux-p1'],
         ['uiux-20261015', 'uiux-20261015'],
         ['image-workflows', 'image-workflows'],
+        ['smart-collections-dedup', 'smart-collections-dedup'],
         ['access-protection', 'access-protection'],
       ],
       config: {},

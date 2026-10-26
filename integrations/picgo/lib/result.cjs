@@ -30,11 +30,14 @@ function readResult(response, selected) {
       text(data.requestId) &&
       (data.imageId === null || text(data.imageId))
     ) {
-      const asset = data.imageId
-        ? `图片 ID：${data.imageId}；已接收，请到图库核对`
-        : data.status === 'not_created'
-          ? '尚未创建图片'
-          : '结果未确认，请到图库核对';
+      const asset =
+        data.error.code === 'UPLOAD_DUPLICATE' && data.imageId === null
+          ? '已存在，未新增；请登录图库查看，不自动返回已有图片链接'
+          : data.imageId
+            ? `图片 ID：${data.imageId}；已接收，请到图库核对`
+            : data.status === 'not_created'
+              ? '尚未创建图片'
+              : '结果未确认，请到图库核对';
       throw new Error(
         `HTTP ${status} / ${data.error.code} / ${data.error.stage}：${data.error.message}；${asset}；请求 ID：${data.requestId}`,
       );

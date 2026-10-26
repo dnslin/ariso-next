@@ -124,3 +124,7 @@ PRD 第 22 节的移动端完整功能、浏览器兼容、简体中文、键盘
 - [PhotoPrism 目录文档](https://docs.photoprism.app/user-guide/backups/folders/)区分原文件、缩略图、元数据辅助文件和临时文件。本地图据此明确文件存取与图片资产生命周期的责任，并遵守 Ariso 同一图片全部版本位于同一存储配置的要求。
 
 本地图的评审已确认三项：11 个模块的职责边界、第 2–3 节的依赖及组合关系、第 4 节的推进顺序。`SPEC-runtime.md` 也已通过评审，RUNTIME-01–26 已全部完成，实际结果见归档验收记录。首版完成结论见[阶段归档](../archive/README.md)，后续改动按维护指南推进。
+
+### 智能集合与完全重复检测（2026-10-24）
+
+用户已认可[方案与原型](../design/smart-collections-and-duplicates-proposal-20261023.md)并授权正式实现和验证。library保存查询规则并执行动态匹配；media保存原图指纹并补齐旧数据；upload负责所有入口判重、重复终态与API409，PicGo不返回旧链接。沿用既有模块，不新增独立服务。实施结果见[验证记录](../verification/smart-collections-dedup/README.md)，不包含发布部署。

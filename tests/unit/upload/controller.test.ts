@@ -119,6 +119,82 @@ async function untilTransfer(context: ReturnType<typeof setup>) {
 }
 
 describe('manual upload controller', () => {
+  it('finishes duplicates separately, keeps the existing image identity, and never retries their upload', async () => {
+    const c = setup();
+    c.controller.add(c.file, 'album:chosen');
+    c.respond(submission());
+    const pending = c.controller.start('public', 'other-storage', {
+      albumIds: ['chosen'],
+      tagIds: ['new-tag'],
+    });
+    await untilTransfer(c);
+    c.transfer.resolve({
+      ...queued,
+      state: 'duplicate',
+      existingImageId: 'existing',
+      imageId: null,
+      cleanupStatus: 'none',
+    });
+    await pending;
+    const item = c.controller.snapshot[0];
+    expect(item).toMatchObject({
+      state: 'duplicate',
+      existingImageId: 'existing',
+      imageId: undefined,
+      canRetry: false,
+      previewUrl: null,
+    });
+    expect(c.onLibraryChanged).not.toHaveBeenCalled();
+    await c.controller.retry(item.id);
+    await c.controller.cancel(item.id);
+    await c.controller.refresh();
+    expect(c.createTransport).toHaveBeenCalledOnce();
+    expect(c.request).toHaveBeenCalledTimes(1);
+    c.controller.clearCompleted();
+    expect(c.controller.snapshot).toEqual([]);
+  });
+  it('keeps duplicate cleanup observable until completion without creating or retrying an image', async () => {
+    const c = setup();
+    c.controller.add(c.file);
+    c.respond(
+      submission({
+        state: 'duplicate',
+        existingImageId: 'existing',
+        cleanupStatus: 'pending',
+      }),
+    );
+    await c.controller.start('private');
+    c.respond(
+      submission({
+        state: 'duplicate',
+        existingImageId: 'existing',
+        cleanupStatus: 'failed',
+        error: '重复图片\n清理失败:删除被拒绝',
+      }),
+    );
+    await c.controller.refresh();
+    expect(c.controller.snapshot[0]).toMatchObject({
+      state: 'duplicate',
+      cleanupStatus: 'failed',
+      cleanupError: '删除被拒绝',
+      error: undefined,
+    });
+    c.respond({
+      ...queued,
+      state: 'duplicate',
+      existingImageId: 'existing',
+      cleanupStatus: 'none',
+    });
+    await c.controller.retryCleanup(c.controller.snapshot[0].id);
+    expect(c.controller.snapshot[0]).toMatchObject({
+      state: 'duplicate',
+      cleanupStatus: 'none',
+      error: undefined,
+    });
+    expect(c.transport.upload).not.toHaveBeenCalled();
+    expect(c.onLibraryChanged).not.toHaveBeenCalled();
+  });
+
   it('removes only unsubmitted files in the current entry and releases their local previews', async () => {
     const c = setup();
     c.controller.add(c.file);

@@ -1,4 +1,5 @@
 'use client';
+import { notifyLibraryChanged } from '../../components/library/library-changes';
 
 import { useEffect, useRef, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -208,6 +209,7 @@ export function AlbumsScreen(props: {
           if (result.error) throw result.error;
         }}
         onComplete={(saved) => {
+          notifyLibraryChanged();
           if (action?.kind === 'edit')
             toast('相册已保存', { variant: 'default' });
           else if (action?.kind === 'delete')

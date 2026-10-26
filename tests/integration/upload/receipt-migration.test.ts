@@ -42,7 +42,10 @@ it('upgrades existing upload ownership without losing cleanup fields and permits
         (id, submission_id, queue_item_id, group_index, original_name, declared_size, declared_mime, storage_id, state, candidate_image_id, candidate_job_id, route, temporary_path, temporary_key, final_key, temporary_bytes, final_bytes, confirmed_at, error_code, error, cleanup_status, cleanup_attempts, next_cleanup_at, created_at, updated_at)
       VALUES ('saved-session', 'saved-submission', 'saved-queue-item', 1, 'saved.png', 100, 'image/png', 'saved-storage', 'failed', 'saved-image', 'saved-job', 'relay', '/controlled/tmp/source', 'uploads/source', 'original/candidate.png', 100, 100, 2000, 'UPLOAD_INTERRUPTED', 'saved cleanup failure', 'pending', 2, 10000, 1000, 2000);
     `);
-    const session = db.prepare('SELECT * FROM upload_sessions').all();
+    const session = db.prepare('SELECT * FROM upload_sessions').all() as Record<
+      string,
+      unknown
+    >[];
     const submission = db
       .prepare('SELECT * FROM upload_submissions')
       .all() as Record<string, unknown>[];
@@ -52,7 +55,14 @@ it('upgrades existing upload ownership without losing cleanup fields and permits
         .all();
     const originalProgress = progress();
     migrateRuntimeDatabase(connection.db, current);
-    expect(db.prepare('SELECT * FROM upload_sessions').all()).toEqual(session);
+    expect(db.prepare('SELECT * FROM upload_sessions').all()).toEqual(
+      session.map((row) => ({
+        ...row,
+        source_sha256: null,
+        existing_image_id: null,
+        existing_image_trashed: null,
+      })),
+    );
     expect(db.prepare('SELECT * FROM upload_submissions').all()).toEqual(
       submission.map((row) => ({ ...row, api_token_id: null })),
     );
@@ -79,6 +89,16 @@ it('upgrades existing upload ownership without losing cleanup fields and permits
       storage_id: null,
     });
     expect(db.pragma('foreign_key_check')).toEqual([]);
+    db.prepare(
+      "UPDATE upload_sessions SET state='duplicate',existing_image_id='already-saved',existing_image_trashed=0 WHERE id='api-receipt'",
+    ).run();
+    expect(
+      db
+        .prepare(
+          "SELECT state,source_sha256 FROM upload_sessions WHERE id='api-receipt'",
+        )
+        .get(),
+    ).toEqual({ state: 'duplicate', source_sha256: null });
     const upgradedProgress = progress();
     expect(upgradedProgress).toHaveLength(journal.entries.length);
     expect(upgradedProgress.slice(0, originalProgress.length)).toEqual(

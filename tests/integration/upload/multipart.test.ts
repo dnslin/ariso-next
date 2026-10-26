@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { appendFileSync, statfsSync } from 'node:fs';
 import * as fsPromises from 'node:fs/promises';
 import { mkdir, mkdtemp, readFile, rm, stat } from 'node:fs/promises';
@@ -84,7 +85,12 @@ describe('production multipart reception', () => {
           code: 'UPLOAD_FILE_TOO_LARGE',
         });
       else {
-        await expect(result).resolves.toEqual({ byteSize: maximum });
+        await expect(result).resolves.toEqual({
+          byteSize: maximum,
+          sha256: createHash('sha256')
+            .update('x'.repeat(maximum))
+            .digest('hex'),
+        });
         expect((await stat(join(directory, 'original'))).size).toBe(maximum);
       }
     },
@@ -272,7 +278,10 @@ describe('production multipart reception', () => {
       const bytes = body('image');
       await expect(
         receive(request(bytes, known ? bytes.length : undefined)),
-      ).resolves.toEqual({ byteSize: 5 });
+      ).resolves.toEqual({
+        byteSize: 5,
+        sha256: createHash('sha256').update('image').digest('hex'),
+      });
       expect(await readFile(join(directory, 'original'), 'utf8')).toBe('image');
     },
   );
@@ -524,7 +533,10 @@ describe('shared multipart disk reservations', () => {
     });
     await expect(
       receive(request(body('xxxxxx'), undefined, 65536), 6, 6),
-    ).resolves.toEqual({ byteSize: 6 });
+    ).resolves.toEqual({
+      byteSize: 6,
+      sha256: createHash('sha256').update('xxxxxx').digest('hex'),
+    });
     expect(await readFile(join(directory, 'original'), 'utf8')).toBe('xxxxxx');
     expect(free).toBe(lowWaterBytes);
   });
@@ -594,7 +606,10 @@ describe('shared multipart disk reservations', () => {
         cancel: 'UPLOAD_CANCELLED',
       };
       if (outcome === 'success')
-        await expect(pending).resolves.toEqual({ byteSize: 5 });
+        await expect(pending).resolves.toEqual({
+          byteSize: 5,
+          sha256: createHash('sha256').update('image').digest('hex'),
+        });
       else
         await expect(pending).rejects.toMatchObject({ code: codes[outcome] });
       await rm(workspace, { recursive: true, force: true });

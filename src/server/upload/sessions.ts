@@ -206,6 +206,7 @@ export function cancelSession(
   return db.transaction(
     (tx) => {
       const session = getSession(tx, id);
+      if (session.state === 'duplicate') return session;
       if (session.state === 'accepted')
         throw new UploadError(
           'UPLOAD_ALREADY_ACCEPTED',

@@ -15,7 +15,7 @@
 
 library 负责查询参数、分页/加载更多、界面偏好、选择范围、详情与大图查看、批量编排和逐项结果。图片字段/版本/任务归 media，关系/相册固定展示规则归 collections，存储状态归 storage，访问和链接归 delivery。查询可组合提供方的只读数据，修改必须调用提供方业务函数，不直接复制其校验或维护第二份图片索引。
 
-不提供全站匿名图库、一次选中全部筛选结果、跨存储迁移、AI 搜索或拍摄参数搜索。library 不新增业务数据表或后台工作队列；浏览器偏好不写站点设置。2026-10-21 用户批准批量 ZIP、图片替换及尺寸外链扩展，按本规格与 media/delivery 的对应契约执行。
+不提供全站匿名图库、一次选中全部筛选结果、跨存储迁移、AI 搜索或拍摄参数搜索。library 仅为智能集合持久保存查询定义，不保存图片成员副本或建立后台归类队列；浏览器偏好不写站点设置。2026-10-21 用户批准批量 ZIP、图片替换及尺寸外链扩展，按本规格与 media/delivery 的对应契约执行。
 
 ## 2. 工程与库能力依据
 
@@ -325,3 +325,13 @@ LIBRARY-BASE → LIBRARY-QUERY → LIBRARY-BATCH 按覆盖表前置推进；每�
 回收站原型本批新增两端各 29 个业务状态与 5 个阅读入口，原回收列表移除内容缩略图。覆盖恢复幸存关系、停用存储、排队／写入等待、清理失败与有限重试、批量受理和最终结果。节点与固定样例边界见[回收站专项记录](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/preparation-2026-09/design/trash-flow-2026-09-18.md)。不改变上述业务契约，不代表真实恢复、文件清理、重启重试或浏览器交互已通过；完整查询选择、逐项结果和主题尺寸仍须按设计验收索引验证。
 
 2026-09-19 补[图库与标签返回代表路径](https://github.com/dnslin/ariso-next/blob/975f63eeb3e9b19a0ace827ba3fe646565d5b2e2/docs/archive/preparation-2026-09/design/library-return-regression-2026-09-19.md)：四种来源的布局切换、第一张图片的四版本详情／大图、已选10张清单返回均有对应状态。其他卡片、跨页组合、直接链接、请求次数、历史与焦点仍须第11节真实验收；原型覆盖／替换动作不改变第4、5、7节的产品规则。
+
+## 智能集合扩展（2026-10-24，用户批准原型与实施）
+
+[已认可方案](../design/smart-collections-and-duplicates-proposal-20261023.md)与[原型](../../prototypes/smart-collections/README.md)作为交互依据。`smart_collections` 保存名称与规范化筛选规则，排序包含在规则中；不保存图片成员、页码、游标和本次浏览时间。删除集合不删除图片。
+
+所有者接口为 `GET/POST /api/library/collections` 和 `GET/PATCH/DELETE /api/library/collections/{id}`。修改纳入现有内容修改暂停边界。详情入口为 `/library/collections/{id}`；失效标签/相册/存储条件保留并提示修复，已删除集合不能退回全部图片。
+
+图库新增 `tagState=none`、原图严格大小比较 `sizeGreaterThan/sizeLessThan`（字节），以及 `recentDays/relativeTo`。最近默认滚动7天；打开集合或主动刷新确定本次浏览的时间基准，后续页、邻居、选择核对与批量操作沿用。后台重读不清空仍有效选择。截图使用真实标签ID；10 MB为10,000,000字节。列表、数量与批量归属共用同一谓词。
+
+正式测试和浏览器结果见[本轮实施记录](../verification/smart-collections-dedup/README.md)，原型模拟不作为后端验收。

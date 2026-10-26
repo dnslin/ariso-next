@@ -8,7 +8,7 @@ import { Info } from 'lucide-react';
 import type { RefObject } from 'react';
 
 const description =
-  '超时或断线先到图库核对。等待超时不会取消处理；重复 POST 可能产生新图片。此接口没有公开轮询或幂等键。';
+  '相同原文件返回 409 / UPLOAD_DUPLICATE，未新增且不返回旧图链接。旧图尚未补齐检测信息时可能无法识别重复。超时或断线先到图库核对，等待超时不会取消处理。此接口没有公开轮询或幂等键。';
 const buttonClass =
   'size-11 min-w-11 shrink-0 rounded-lg bg-transparent p-0 text-muted hover:bg-transparent';
 const contentClass =

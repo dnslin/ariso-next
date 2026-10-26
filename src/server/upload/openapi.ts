@@ -30,7 +30,7 @@ const errorResponses = {
   '401': 'Bearer Token 缺失、无效、已停用或已过期；Cookie 不能代替 Token。',
   '408': '接收超时：120 秒无进度，或超过 1800 秒接收预算。',
   '409':
-    '存储/目标状态冲突，或已接收图片已回收、删除/任务不可用（IMAGE_UNAVAILABLE，保留原 imageId）。',
+    '完全相同的原文件返回 UPLOAD_DUPLICATE，stage=deduplication、imageId=null、status=not_created；不返回已有图片的 ID、名称或链接。亦用于存储/目标状态冲突，或已接收图片已回收、删除/任务不可用（IMAGE_UNAVAILABLE，保留原 imageId）。',
   '413': '文件超过接收开始时固定的站点当前大小上限。',
   '415': '不是支持的图片，或无法识别图片内容。',
   '422': '已接收后的图片处理失败；保留真实 imageId、原图和已保存版本。',
@@ -105,7 +105,7 @@ export function createUploadOpenApiDocument(publicUrl?: string) {
             '只有本次媒体任务完成才返回 201，status 表示本次结果；currentImageStatus 仅在当前图片状态不同或已接收后不可用时出现。只列已保存版本。actualVersion 可为 null，此时 defaultResolution.available=false 且 code=VERSION_UNAVAILABLE，固定版本链接仍可用。',
             '私有图片也正常返回 201，但图片链接需要所有者 Cookie；上传 Bearer Token 不授权查看私有图片。',
             '交接后最多等待 900 秒（含排队）。代理与客户端超时应覆盖接收及等待。等待超时或断连不终止已接收后的处理任务；结果不确定时到所有者图库核对。',
-            '不提供幂等键或公开状态轮询。每个 POST 都是一次新上传，相同文件也可生成新 imageId；不要盲目自动重发，以免重复。',
+            '不提供幂等键或公开状态轮询。完整原文件按 SHA-256 检测重复，改名仍视为相同内容；命中当前原图（含回收站）返回 409 / UPLOAD_DUPLICATE，不新增图片、不覆盖已有设置、不返回已有图片链接。旧图库指纹尚未补齐时只能检测已覆盖图片。结果不确定时先核对图库，不盲目自动重发。',
           ].join('\n\n'),
           security: [{ uploadToken: [] }],
           'x-wait-timeout-ms': PUBLIC_UPLOAD_WAIT_TIMEOUT_MS,

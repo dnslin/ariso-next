@@ -11,6 +11,7 @@ import {
 } from '../../../src/server/collections/schema.ts';
 import { mediaImages } from '../../../src/server/media/schema.ts';
 import { unusedPort } from '../runtime/process-helpers.ts';
+import { scenarioPng } from './scenario-png.ts';
 import type { publicUploadFixture } from './api-fixture.ts';
 import type { packagedPicgo } from './picgo-fixture.ts';
 
@@ -55,7 +56,11 @@ export async function verifyPicgoUploads(
   await writeFile(third, fixture.bytes);
   await writeFile(invalid, Buffer.from('not an image'));
   const images = () => db.select().from(mediaImages).all();
-  async function assertPublicUrl(url: string, version: string) {
+  async function assertPublicUrl(
+    url: string,
+    version: string,
+    expectedBytes = fixture.bytes,
+  ) {
     const parsed = new URL(url);
     assert.equal(parsed.origin, fixture.origin);
     assert.equal(parsed.search, `?type=${version}`);
@@ -75,7 +80,7 @@ export async function verifyPicgoUploads(
     assert.equal(response.status, 200);
     const bytes = Buffer.from(await response.arrayBuffer());
     assert.ok(bytes.length > 0);
-    if (version === 'original') assert.deepEqual(bytes, fixture.bytes);
+    if (version === 'original') assert.deepEqual(bytes, expectedBytes);
     return image;
   }
 
@@ -139,30 +144,59 @@ export async function verifyPicgoUploads(
   );
 
   await check(
+    'duplicate-renamed-file-errors-without-existing-link-or-new-image',
+    async () => {
+      const before = images();
+      const { client, errors, finished } = packageFixture.createClient(config);
+      const output = await client.upload([second]);
+      assert.deepEqual(output, []);
+      assert.equal(errors.length, 1);
+      assert.equal(finished.length, 0);
+      assert.match(
+        String(errors[0]),
+        /HTTP 409.*UPLOAD_DUPLICATE.*deduplication/,
+      );
+      assert.match(String(errors[0]), /已存在，未新增/);
+      assert.ok(!String(errors[0]).includes(before[0].id));
+      assert.deepEqual(images(), before);
+      return { outputCount: 0, createdImages: 0, code: 'UPLOAD_DUPLICATE' };
+    },
+  );
+
+  await check(
     'base64-through-real-core-transformer-and-original-bytes',
     async () => {
       const { client, errors } = packageFixture.createClient({
         ...config,
         linkVersion: 'original',
       });
+      const expectedBytes = await scenarioPng('#118877');
       client.setConfig({ 'picBed.transformer': 'base64' });
       const output = await client.upload([
         {
           fileName: 'base64.png',
           extname: '.png',
-          base64Image: fixture.bytes.toString('base64'),
+          base64Image: expectedBytes.toString('base64'),
         },
       ]);
       assert.ok(Array.isArray(output));
       assert.equal(output.length, 1);
       assert.deepEqual(errors, []);
       assert.ok(output[0].imgUrl);
-      const image = await assertPublicUrl(output[0].imgUrl, 'original');
-      return { imageId: image.id, originalBytes: fixture.bytes.length };
+      const image = await assertPublicUrl(
+        output[0].imgUrl,
+        'original',
+        expectedBytes,
+      );
+      return { imageId: image.id, originalBytes: expectedBytes.length };
     },
   );
 
   await check('multi-image-order-and-complete-output', async () => {
+    const firstBytes = await scenarioPng('#995544');
+    const secondBytes = await scenarioPng('#445599');
+    await writeFile(path, firstBytes);
+    await writeFile(second, secondBytes);
     const { client, errors } = packageFixture.createClient({
       ...config,
       linkVersion: 'original',
@@ -172,9 +206,15 @@ export async function verifyPicgoUploads(
     assert.equal(output.length, 2);
     assert.deepEqual(errors, []);
     const saved = [];
-    for (const item of output) {
+    for (const [index, item] of output.entries()) {
       assert.ok(item.imgUrl);
-      saved.push(await assertPublicUrl(item.imgUrl, 'original'));
+      saved.push(
+        await assertPublicUrl(
+          item.imgUrl,
+          'original',
+          index === 0 ? firstBytes : secondBytes,
+        ),
+      );
     }
     assert.deepEqual(
       saved.map((image) => image.originalName),
@@ -187,8 +227,43 @@ export async function verifyPicgoUploads(
   });
 
   await check(
+    'second-image-duplicate-stops-batch-with-no-short-url-list',
+    async () => {
+      const before = new Set(images().map((image) => image.id));
+      const expectedBytes = await scenarioPng('#aa7722');
+      await writeFile(path, expectedBytes);
+      const { client, errors, finished } = packageFixture.createClient(config);
+      // second is already stored by the successful multi-image scenario.
+      const output = await client.upload([path, second, third]);
+      assert.deepEqual(output, []);
+      assert.equal(errors.length, 1);
+      assert.equal(finished.length, 0);
+      assert.match(
+        String(errors[0]),
+        /HTTP 409.*UPLOAD_DUPLICATE.*已存在，未新增/,
+      );
+      const created = images().filter((image) => !before.has(image.id));
+      assert.equal(created.length, 1);
+      assert.equal(created[0].originalName, "PicGo 旅行's.png");
+      await assertPublicUrl(
+        `${fixture.origin}/i/${created[0].id}?type=original`,
+        'original',
+        expectedBytes,
+      );
+      return {
+        outputCount: 0,
+        savedImageId: created[0].id,
+        code: 'UPLOAD_DUPLICATE',
+        laterImageCreated: false,
+      };
+    },
+  );
+
+  await check(
     'second-image-failure-retains-first-and-stops-with-no-output',
     async () => {
+      const expectedBytes = await scenarioPng('#883399');
+      await writeFile(path, expectedBytes);
       const before = new Set(images().map((image) => image.id));
       const { client, errors, finished } = packageFixture.createClient(config);
       const output = await client.upload([path, invalid, third]);
@@ -210,6 +285,7 @@ export async function verifyPicgoUploads(
       await assertPublicUrl(
         `${fixture.origin}/i/${created[0].id}?type=original`,
         'original',
+        expectedBytes,
       );
       return {
         savedImageId: created[0].id,
@@ -223,6 +299,8 @@ export async function verifyPicgoUploads(
   await check(
     'missing-selected-version-retains-image-and-does-not-fallback',
     async () => {
+      const expectedBytes = await scenarioPng('#668822');
+      await writeFile(path, expectedBytes);
       const before = new Set(images().map((image) => image.id));
       const { client, errors, finished } = packageFixture.createClient({
         ...config,
@@ -243,6 +321,8 @@ export async function verifyPicgoUploads(
   await check(
     'core-http-server-returns-failure-with-no-short-url-list',
     async () => {
+      const expectedBytes = await scenarioPng('#cc4466');
+      await writeFile(path, expectedBytes);
       const before = new Set(images().map((image) => image.id));
       const { client, errors } = packageFixture.createClient(config);
       const port = await unusedPort();
@@ -333,6 +413,8 @@ export async function verifyPicgoUploads(
     }
   });
   await check('lost-response-after-server-accepts-does-not-retry', async () => {
+    const expectedBytes = await scenarioPng('#3366aa');
+    await writeFile(path, expectedBytes);
     const before = new Set(images().map((image) => image.id));
     let requests = 0;
     let upstreamError: unknown;
@@ -383,6 +465,7 @@ export async function verifyPicgoUploads(
       await assertPublicUrl(
         `${fixture.origin}/i/${created[0].id}?type=original`,
         'original',
+        expectedBytes,
       );
       return {
         savedImageId: created[0].id,

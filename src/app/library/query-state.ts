@@ -10,6 +10,11 @@ export type LibraryQueryPatch = {
   q?: string | null;
   albumId?: string | null;
   tagId?: string[] | null;
+  tagState?: 'none' | null;
+  sizeGreaterThan?: string | null;
+  sizeLessThan?: string | null;
+  recentDays?: string | null;
+  relativeTo?: string | null;
   uploadedFrom?: string | null;
   uploadedBefore?: string | null;
   format?: LibraryFilters['format'];
@@ -61,35 +66,7 @@ export function parseLibraryLocation(
   return { filters: result.data.filters, page: result.data.page ?? 1 };
 }
 
-export function libraryRequestParams(
-  filters: LibraryFilters,
-  position: { page?: number; cursor?: string | null },
-) {
-  const params = new URLSearchParams({
-    scope: filters.scope,
-    pageSize: String(filters.pageSize),
-  });
-  for (const key of [
-    'q',
-    'albumId',
-    'uploadedFrom',
-    'uploadedBefore',
-    'format',
-    'storageId',
-    'visibility',
-    'status',
-    'failure',
-    'deletionStatus',
-  ] as const) {
-    const value = filters[key];
-    if (value !== null && value !== '') params.set(key, value);
-  }
-  for (const id of filters.tagIds) params.append('tagId', id);
-  if (filters.scope === 'normal') params.set('sort', filters.sort);
-  if (position.page !== undefined) params.set('page', String(position.page));
-  if (position.cursor) params.set('cursor', position.cursor);
-  return params;
-}
+export { libraryRequestParams } from '../../server/library/query-params';
 
 export function libraryListKey(
   filters: LibraryFilters | null,
