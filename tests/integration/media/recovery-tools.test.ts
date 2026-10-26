@@ -611,10 +611,10 @@ describe('T-MED-04 actual processing recovery', () => {
       for (let index = 0; index < concurrency + 2; index += 1)
         accepted.push(await accept(index % 2 ? 'jpg' : 'png'));
       connection.db.$client.exec(`
-      CREATE TABLE claim_observations (active INTEGER NOT NULL, allowed INTEGER NOT NULL);
+      CREATE TABLE claim_observations (job_id TEXT NOT NULL, kind TEXT NOT NULL, active INTEGER NOT NULL, allowed INTEGER NOT NULL);
       CREATE TRIGGER observe_claim AFTER UPDATE OF status ON media_jobs
       WHEN NEW.status = 'running' AND OLD.status <> 'running'
-      BEGIN INSERT INTO claim_observations SELECT (SELECT count(*) FROM media_jobs WHERE status = 'running'), (SELECT concurrency FROM media_settings); END;
+      BEGIN INSERT INTO claim_observations SELECT NEW.id, NEW.kind, (SELECT count(*) FROM media_jobs WHERE status = 'running'), (SELECT concurrency FROM media_settings); END;
     `);
       queue = startMediaQueue(runtime);
       await expect
@@ -646,10 +646,38 @@ describe('T-MED-04 actual processing recovery', () => {
           .all(),
       ).toHaveLength(concurrency);
       await Promise.all(accepted.map((image) => completed(image.imageId)));
+      // Include a real background claim so this assertion cannot depend on
+      // whether image processing finishes before the maintenance tick.
+      await expect
+        .poll(
+          () =>
+            (
+              connection.db.$client
+                .prepare(
+                  "SELECT count(*) AS count FROM claim_observations WHERE kind = 'fingerprint'",
+                )
+                .get() as { count: number }
+            ).count,
+          { timeout: 3000, interval: 10 },
+        )
+        .toBeGreaterThan(0);
       const observations = connection.db.$client
-        .prepare('SELECT active, allowed FROM claim_observations')
-        .all() as { active: number; allowed: number }[];
-      expect(observations).toHaveLength(concurrency + 2);
+        .prepare(
+          'SELECT job_id AS jobId, kind, active, allowed FROM claim_observations',
+        )
+        .all() as {
+        jobId: string;
+        kind: string;
+        active: number;
+        allowed: number;
+      }[];
+      const processingClaims = observations.filter(
+        (row) => row.kind === 'process',
+      );
+      expect(processingClaims).toHaveLength(concurrency + 2);
+      expect(processingClaims.map((row) => row.jobId).sort()).toEqual(
+        accepted.map((image) => image.jobId).sort(),
+      );
       expect(Math.max(...observations.map((row) => row.active))).toBe(
         concurrency,
       );
