@@ -2,7 +2,13 @@ import { createServer } from 'node:http';
 import { act, createElement } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
-import { fakeBrowser, resetBrowser, stores } from './browser-fake';
+import {
+  fakeBrowser,
+  grants,
+  permissionRequests,
+  resetBrowser,
+  stores,
+} from './browser-fake';
 import { successfulResponse } from './fixtures';
 vi.mock('wxt/browser', async () => ({
   browser: (await import('./browser-fake')).fakeBrowser,
@@ -11,6 +17,7 @@ import { App } from '../entrypoints/uploader/App';
 import { UploadController } from '../lib/controller';
 import { defaultSettings } from '../lib/settings-input';
 import { sourceRequestsKey } from '../lib/sources';
+import { originPattern } from '../lib/permissions';
 import type { Capabilities } from '../lib/types';
 
 let server: ReturnType<typeof createServer>;
@@ -20,10 +27,16 @@ let container: HTMLDivElement;
 let controller: UploadController;
 let capabilities: Capabilities;
 let uploaded: string[];
+let sourceReads: string[];
+let sourceReleases: Array<() => void>;
+let holdSources: boolean;
 
 beforeEach(async () => {
   resetBrowser();
   uploaded = [];
+  sourceReads = [];
+  sourceReleases = [];
+  holdSources = false;
   vi.stubGlobal('IS_REACT_ACT_ENVIRONMENT', true);
   vi.stubGlobal(
     'ResizeObserver',
@@ -65,6 +78,19 @@ beforeEach(async () => {
       response.end();
       return;
     }
+    if (request.url?.startsWith('/source/')) {
+      sourceReads.push(request.url);
+      if (request.url === '/source/denied.png') {
+        response.statusCode = 403;
+        response.end('Controlled source denied');
+        return;
+      }
+      if (holdSources)
+        await new Promise<void>((resolve) => sourceReleases.push(resolve));
+      response.setHeader('content-type', 'image/png');
+      response.end(new Uint8Array([137, 80, 78, 71, 1, 2, 3, 4]));
+      return;
+    }
     response.setHeader('content-type', 'application/json');
     if (request.url === '/api/upload/capabilities') {
       response.end(JSON.stringify(capabilities));
@@ -84,6 +110,7 @@ beforeEach(async () => {
   controller = new UploadController();
 });
 afterEach(async () => {
+  sourceReleases.forEach((release) => release());
   await act(async () => root.unmount());
   container.remove();
   await new Promise<void>((resolve) => {
@@ -356,4 +383,134 @@ it('不支持的来源显示获取失败而不让页面崩溃', async () => {
   );
   expect(container.querySelector('h1')?.textContent).toBe('Ariso');
   expect(controller.getSnapshot().items).toHaveLength(0);
+});
+
+it('满队列不下载已授权来源，保留任务，释放容量后只在明确重试时读取', async () => {
+  capabilities.queueLimit = 1;
+  await mount();
+  await addFile();
+  grants.add(originPattern(siteUrl));
+  const request = { id: 'full-source', url: `${siteUrl}/source/full.png` };
+  await act(async () =>
+    fakeBrowser.storage.session.set({
+      [sourceRequestsKey + request.id]: request,
+    }),
+  );
+  await until(
+    () =>
+      !!container.querySelector(
+        '[aria-label="待读取的网页图片"] [role="alert"]',
+      ),
+  );
+  expect(sourceReads).toEqual([]);
+  expect(uploaded).toEqual([]);
+  expect(controller.getSnapshot().items).toHaveLength(1);
+  expect(stores.session[sourceRequestsKey + request.id]).toEqual(request);
+  expect(container.textContent).toContain('队列已满');
+
+  await click('移除ui-image.png');
+  expect(controller.getSnapshot().items).toHaveLength(0);
+  expect(sourceReads).toEqual([]);
+  expect(findButton('重新读取图片')?.disabled).toBe(false);
+  await click('重新读取图片');
+  await until(() => controller.getSnapshot().items.length === 1);
+  expect(sourceReads).toEqual(['/source/full.png']);
+  expect(controller.getSnapshot().items[0]?.source).toBe('web');
+  await until(
+    () => stores.session[sourceRequestsKey + request.id] === undefined,
+  );
+  expect(uploaded).toEqual([]);
+});
+
+it('满队列时手动读取不会先申请来源权限或发起下载', async () => {
+  capabilities.queueLimit = 1;
+  await mount();
+  await addFile();
+  const request = {
+    id: 'permission-full',
+    url: `${siteUrl}/source/permission.png`,
+  };
+  await act(async () =>
+    fakeBrowser.storage.session.set({
+      [sourceRequestsKey + request.id]: request,
+    }),
+  );
+  await until(() => !!findButton('允许读取并加入'));
+  await click('允许读取并加入');
+  await until(
+    () =>
+      !!container.querySelector(
+        '[aria-label="待读取的网页图片"] [role="alert"]',
+      ),
+  );
+  expect(permissionRequests).toEqual([]);
+  expect(sourceReads).toEqual([]);
+  expect(stores.session[sourceRequestsKey + request.id]).toEqual(request);
+});
+
+it('多个已授权来源共享剩余容量，在途下载占用名额且不会超额读取', async () => {
+  capabilities.queueLimit = 1;
+  holdSources = true;
+  await mount();
+  grants.add(originPattern(siteUrl));
+  const requests = Array.from({ length: 5 }, (_, index) => ({
+    id: `capacity-${index}`,
+    url: `${siteUrl}/source/capacity-${index}.png`,
+  }));
+  await act(async () =>
+    fakeBrowser.storage.session.set(
+      Object.fromEntries(
+        requests.map((request) => [sourceRequestsKey + request.id, request]),
+      ),
+    ),
+  );
+  await until(
+    () =>
+      sourceReads.length > 0 &&
+      (sourceReads.length === requests.length ||
+        container.querySelectorAll(
+          '[aria-label="待读取的网页图片"] [role="alert"]',
+        ).length ===
+          requests.length - 1),
+  );
+  expect(sourceReads).toHaveLength(1);
+  expect(sourceReleases).toHaveLength(1);
+  expect(controller.getSnapshot().items).toHaveLength(0);
+  sourceReleases.forEach((release) => release());
+  await until(() => controller.getSnapshot().items.length === 1);
+  expect(sourceReads).toHaveLength(1);
+  expect(controller.getSnapshot().items[0]?.source).toBe('web');
+  await until(
+    () =>
+      Object.keys(stores.session).filter((key) =>
+        key.startsWith(sourceRequestsKey),
+      ).length === 4,
+  );
+  expect(uploaded).toEqual([]);
+});
+
+it('来源下载失败后释放名额，后续图片仍能加入且原错误记录保留', async () => {
+  capabilities.queueLimit = 1;
+  await mount();
+  grants.add(originPattern(siteUrl));
+  const denied = { id: 'denied-source', url: `${siteUrl}/source/denied.png` };
+  await act(async () =>
+    fakeBrowser.storage.session.set({
+      [sourceRequestsKey + denied.id]: denied,
+    }),
+  );
+  await until(() => container.textContent?.includes('HTTP 403') === true);
+  expect(controller.getSnapshot().items).toHaveLength(0);
+  const valid = {
+    id: 'following-source',
+    url: `${siteUrl}/source/following.png`,
+  };
+  await act(async () =>
+    fakeBrowser.storage.session.set({ [sourceRequestsKey + valid.id]: valid }),
+  );
+  await until(() => controller.getSnapshot().items.length === 1);
+  expect(sourceReads).toEqual(['/source/denied.png', '/source/following.png']);
+  expect(stores.session[sourceRequestsKey + denied.id]).toEqual(denied);
+  expect(container.textContent).toContain('HTTP 403');
+  expect(uploaded).toEqual([]);
 });

@@ -24,6 +24,7 @@ export function useSources(
 ) {
   const [entries, setEntries] = useState<SourceEntry[]>([]);
   const working = useRef(new Set<string>());
+  const reading = useRef(0);
   const removed = useRef(new Set<string>());
   const observed = useRef(new Set<string>());
 
@@ -79,11 +80,25 @@ export function useSources(
   );
 
   const consume = useCallback(
-    async (request: SourceRequest, filePromise: Promise<File>) => {
+    async (request: SourceRequest, read: () => Promise<File>) => {
+      if (controller.remainingSlots() <= reading.current) {
+        setState(request.id, {
+          state: 'failed',
+          message: '上传队列已满（含正在读取的图片），请腾出名额后重新读取。',
+        });
+        return;
+      }
       working.current.add(request.id);
       setState(request.id, { state: 'fetching', message: undefined });
       try {
-        const file = await filePromise;
+        let file: File;
+        reading.current++;
+        try {
+          // Invoke only after admission, still synchronously within a user gesture.
+          file = await read();
+        } finally {
+          reading.current--;
+        }
         if (removed.current.has(request.id)) return;
         const result = controller.addFiles([file], 'web');
         if (!result.added)
@@ -117,7 +132,8 @@ export function useSources(
         .then(() => hasSourcePermission(entry.url))
         .then((allowed) => {
           if (removed.current.has(entry.id)) return;
-          if (allowed) return consume(entry, fetchSource(entry, maxFileBytes));
+          if (allowed)
+            return consume(entry, () => fetchSource(entry, maxFileBytes));
           setState(entry.id, { state: 'permission' });
         })
         .catch((error) =>
@@ -129,9 +145,7 @@ export function useSources(
 
   function authorize(entry: SourceEntry) {
     if (maxFileBytes === undefined || working.current.has(entry.id)) return;
-    // Call the permission API before yielding the user's button gesture.
-    const file = authorizeAndFetchSource(entry, maxFileBytes);
-    void consume(entry, file);
+    void consume(entry, () => authorizeAndFetchSource(entry, maxFileBytes));
   }
   async function dismiss(entry: SourceEntry) {
     if (working.current.has(entry.id)) return;

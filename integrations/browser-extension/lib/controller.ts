@@ -40,6 +40,12 @@ export class UploadController {
   setCapabilities(capabilities: Capabilities) {
     this.capabilities = capabilities;
   }
+  remainingSlots() {
+    return Math.max(
+      0,
+      (this.capabilities?.queueLimit ?? 0) - this.snapshot.items.length,
+    );
+  }
   private publish(
     items: readonly UploadItem[] = this.snapshot.items,
     busy = this.snapshot.busy,
@@ -61,8 +67,7 @@ export class UploadController {
     let rejected = 0;
     for (const file of files) {
       if (
-        this.snapshot.items.length + added.length >=
-          this.capabilities.queueLimit ||
+        added.length >= this.remainingSlots() ||
         !file.size ||
         file.size > this.capabilities.maxFileBytes ||
         (!file.type.startsWith('image/') && !IMAGE_NAME.test(file.name))
