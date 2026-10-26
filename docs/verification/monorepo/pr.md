@@ -30,3 +30,9 @@
 日常 PR 工作流运行三模块静态检查、类型、单元与打包，以及主站生产集成和真实媒体工具集成。Docker 只在 GitHub runner 执行：构建上下文验证、生产镜像构建、既有 `verify-release-image.mjs` 的运行环境／真实媒体／HTTP 持久化与生命周期检查，随后执行容器内 media-tools 测试。镜像不推送 registry。
 
 远端运行、最终 revision 和结果以 PR 说明及关联 Actions 为准。未创建版本标签，未执行发布工作流、npm 发布、商店提交或生产部署。
+
+## 首轮远端归档修复
+
+Actions 运行 `40248808253` 中，浏览器单元测试与 Chrome ZIP 构建成功，但上传 ZIP 时失败：`actions/upload-artifact` 默认忽略 `.output` 这样的隐藏目录。根据[官方输入说明](https://github.com/actions/upload-artifact#uploading-hidden-files)，日常 CI 和浏览器标签工作流对限定的 `.output/*.zip` 路径显式设置 `include-hidden-files: true`，继续保留“找不到产物即失败”。没有改变构建、测试或发布条件。
+
+本地对两份工作流重新执行 Prettier、actionlint 1.7.12 与 `git diff --check`，均通过。修复后的实际产物上传由后续远端运行验证。
